@@ -27,7 +27,7 @@ import fusion
 
 public class SigninExternalAccountsCapability {
     public init() {}
-    
+
     public func signInWithAccount<T: CoreElements>(userName: String,
                                                    password: String,
                                                    loginRobot: LoginRobot,

@@ -27,7 +27,7 @@ public class StringCryptoTransformer: CryptoTransformer {
         guard let string = value as? String else {
             return nil
         }
-        
+
         do {
             let locked = try Locked<String>(clearValue: string, with: self.key)
             let result = locked.encryptedValue as NSData
@@ -35,16 +35,16 @@ public class StringCryptoTransformer: CryptoTransformer {
         } catch let error {
             assert(false, "Error while encrypting value: \(error.localizedDescription)")
         }
-        
+
         return nil
     }
-    
+
     // Data -> String
     override public func reverseTransformedValue(_ value: Any?) -> Any? {
         guard let data = value as? Data else {
             return nil
         }
-        
+
         let locked = Locked<String>(encryptedValue: data)
         do {
             let string = try locked.unlock(with: self.key)
@@ -52,7 +52,7 @@ public class StringCryptoTransformer: CryptoTransformer {
         } catch let error {
             assert(false, "Error while decrypting value: \(error.localizedDescription)")
         }
-        
+
         return nil
     }
 }
@@ -62,11 +62,11 @@ public class CryptoTransformer: ValueTransformer {
     public init(key: MainKey) {
         self.key = key
     }
-    
+
     override public class func transformedValueClass() -> AnyClass {
         return NSData.self
     }
-    
+
     override public class func allowsReverseTransformation() -> Bool {
         return true
     }

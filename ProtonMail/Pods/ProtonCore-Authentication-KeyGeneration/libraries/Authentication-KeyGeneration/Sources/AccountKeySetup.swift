@@ -28,34 +28,34 @@ import ProtonCoreUtilities
 
 /// class for key migeration phase 2
 final class AccountKeySetup {
-    
+
     /// account level key. on phase 2 user key used for
     struct UserKey {
         /// armored key
         let armoredKey: ArmoredKey
-        
+
         /// user key password salt - shoudle be 128 bits
         let passwordSalt: Data
-        
+
         /// hashed password with password salt. this is the key passphrase
         let password: Passphrase
     }
-    
+
     /// address key
     struct AddressKey {
-        
+
         /// address id
         let addressId: String
-        
+
         /// armored key
         let armoredKey: ArmoredKey
-        
+
         /// on phase 2. token used to encrypt address key
         let token: ArmoredMessage
-        
+
         /// detached signaute.
         let signature: ArmoredSignature
-        
+
         /// signed key metadata
         ///     simple:
         ///     let keylist: [[String: Any]] = [[
@@ -74,14 +74,14 @@ final class AccountKeySetup {
 
     /// new account key struct
     struct GeneratedAccountKey {
-        
+
         /// account level user key
         let userKey: UserKey
-        
+
         /// user address keys
         let addressKeys: [AddressKey]
     }
-    
+
     /// generate account user-key address key. used right after create a new user and address.
     ///   at this moment address doesn't have any key yet
     /// - Parameters:
@@ -93,14 +93,14 @@ final class AccountKeySetup {
         let newPasswordSalt: Data = try PasswordHash.random(bits: PasswordSaltSize.accountKey.int32Bits)
         /// generate key hashed password.
         let userKeyPassphrase = PasswordHash.passphrase(password, salt: newPasswordSalt)
-        
+
         guard let firstAddr = addresses.first else {
             throw KeySetupError.keyGenerationFailed
         }
-        
+
         // in our system the PGP `User ID Packet-Tag 13` we use email address as username and email address
         let armoredUserKey = try Generator.generateECCKey(email: firstAddr.email, passphase: userKeyPassphrase)
-        
+
         /// blow logic could be in function `setupSetupKeysRoute`.
         ///   - but for the securty reason. we generate the password and token here.
         ///   - we dont want it keep in the memory and pass cross different functions.
@@ -109,13 +109,13 @@ final class AccountKeySetup {
         let addressKeys = try addresses.map { addr -> AddressKey in
             // generate addr passphrase
             let addrPassphrase = try PasswordHash.genAddrPassphrase()
-            
+
             /// generate a new key.  id: address email.  passphrase: hexed secret (should be 64 bytes) with default key type
             let armoredAddrKey = try Generator.generateECCKey(email: addr.email, passphase: addrPassphrase)
-            
+
             /// generate token.   token is hexed secret encrypted by `UserKey.publicKey`. Note: we don't need to inline sign
             let token = try addrPassphrase.encrypt(publicKey: armoredUserKey)
-            
+
             /// gnerenate a detached signature.  sign the hexed secret by user key
             let userSigner = SigningKey.init(privateKey: armoredUserKey,
                                              passphrase: userKeyPassphrase)
@@ -135,10 +135,10 @@ final class AccountKeySetup {
                 "Primary": 1,
                 "Flags": keyFlags.rawValue
             ]]
-            
+
             /// encode to json format
             let jsonKeylist = keylist.json()
-            
+
             /// sign detached. keylist.json signed by primary address key. on signup situation this is the address key we are going to submit.
             let addSigner = SigningKey.init(privateKey: armoredAddrKey,
                                             passphrase: addrPassphrase)
@@ -152,7 +152,7 @@ final class AccountKeySetup {
                               token: token, signature: tokenSignature,
                               signedKeyList: signedKeyList)
         }
-        
+
         return GeneratedAccountKey(userKey: UserKey(armoredKey: armoredUserKey,
                                                     passwordSalt: newPasswordSalt,
                                                     password: userKeyPassphrase),
@@ -176,7 +176,7 @@ final class AccountKeySetup {
         guard let authForKey = try SrpAuthForVerifier(password, modulus, newSaltForKey) else {
             throw KeySetupError.cantHashPassword
         }
-        
+
         let verifierForKey = try authForKey.generateVerifier(2048)
 
         let passwordAuth = PasswordAuth(modulusID: modulusId, salt: newSaltForKey.encodeBase64(), verifer: verifierForKey.encodeBase64())
@@ -195,5 +195,5 @@ final class AccountKeySetup {
                                              privateKey: accountKey.userKey.armoredKey,
                                              keySalt: accountKey.userKey.passwordSalt.encodeBase64(),
                                              passwordAuth: passwordAuth)
-    }    
+    }
 }

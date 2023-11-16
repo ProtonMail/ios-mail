@@ -53,14 +53,14 @@ public class Autolocker {
     private var countdownStartedAtUptime: TimeInterval?
     private var userSettingsProvider: SettingsProvider
     private var timeProvider: TimeProvider
-    
+
     private var secondsSinceCountdownStarted: TimeInterval? {
         guard let countdownStartedAt = countdownStartedAt else {
             return nil
         }
         return timeProvider.date.timeIntervalSince(countdownStartedAt)
     }
-    
+
     private var secondsSinceCountdownUptime: TimeInterval? {
         guard let countdownStartedAtUptime = countdownStartedAtUptime else {
             return nil
@@ -80,19 +80,19 @@ public class Autolocker {
     public convenience init(lockTimeProvider: SettingsProvider) {
         self.init(lockTimeProvider: lockTimeProvider, timeProvider: AutolockerTimeProvider())
     }
-    
+
     /// Asks to register the moment we start the countdown for the autolock
     public func startCountdown() {
         countdownStartedAt = timeProvider.date
         countdownStartedAtUptime = timeProvider.deviceUptime
     }
-    
+
     /// Disables the countdown
     public func releaseCountdown() {
         countdownStartedAt = nil
         countdownStartedAtUptime = nil
     }
-    
+
     public func shouldAutolockNow() -> Bool {
         guard hasCountdownStarted else { return false }
 
@@ -105,7 +105,7 @@ public class Autolocker {
             return shouldAutolockIfTimeElapsed(minutes: numberOfMinutes) || hasTimeBeenTampered()
         }
     }
-    
+
     /// Returns `true` if the number of minutes elapsed since countdown started is higher than the minutes passed as parameter.
     private func shouldAutolockIfTimeElapsed(minutes: Int) -> Bool {
         guard let secondsSinceCountdownStarted = secondsSinceCountdownStarted else {
@@ -114,7 +114,7 @@ public class Autolocker {
         let secondsToPassForAutolock = TimeInterval(minutes * 60)
         return secondsSinceCountdownStarted > secondsToPassForAutolock
     }
-    
+
     /// Returns `true` if determines the device date/time has been modified trying to bypass the autolock feature.
     ///
     /// The way to detect tampering is based on these scenarios:

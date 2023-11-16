@@ -23,19 +23,19 @@ public struct ProtonColorPalettemacOS {
     static let instance = ProtonColorPalettemacOS()
 
     private init() {}
-    
+
     // MARK: - Backdrop
     public let BackdropNorm = ProtonColor(name: "ProtonCarbonBackdropNorm")
-    
+
     // MARK: - Background
     public let BackgroundNorm = ProtonColor(name: "ProtonCarbonBackgroundNorm")
     public let BackgroundStrong = ProtonColor(name: "ProtonCarbonBackgroundStrong")
     public let BackgroundWeak = ProtonColor(name: "ProtonCarbonBackgroundWeak")
-    
+
     // MARK: - Border
     public let BorderNorm = ProtonColor(name: "ProtonCarbonBorderNorm")
     public let BorderWeak = ProtonColor(name: "ProtonCarbonBorderWeak")
-    
+
     // MARK: - Field
     public let FieldDisabled = ProtonColor(name: "ProtonCarbonFieldDisabled")
     public let FieldFocus = ProtonColor(name: "ProtonCarbonFieldFocus")
@@ -43,7 +43,7 @@ public struct ProtonColorPalettemacOS {
     public let FieldHighlightError = ProtonColor(name: "ProtonCarbonFieldHighlightError")
     public let FieldHover = ProtonColor(name: "ProtonCarbonFieldHover")
     public let FieldNorm = ProtonColor(name: "ProtonCarbonFieldNorm")
-    
+
     // MARK: - Interaction
     public let InteractionDefault = ProtonColor(name: "ProtonCarbonInteractionDefault")
     public let InteractionDefaultActive = ProtonColor(name: "ProtonCarbonInteractionDefaultActive")
@@ -54,15 +54,15 @@ public struct ProtonColorPalettemacOS {
     public let InteractionWeak = ProtonColor(name: "ProtonCarbonInteractionWeak")
     public let InteractionWeakActive = ProtonColor(name: "ProtonCarbonInteractionWeakActive")
     public let InteractionWeakHover = ProtonColor(name: "ProtonCarbonInteractionWeakHover")
-    
+
     // MARK: - Link
     public let LinkActive = ProtonColor(name: "ProtonCarbonLinkActive")
     public let LinkHover = ProtonColor(name: "ProtonCarbonLinkHover")
     public let LinkNorm = ProtonColor(name: "ProtonCarbonLinkNorm")
-    
+
     // MARK: - Primary
     public let Primary = ProtonColor(name: "ProtonCarbonPrimary")
-    
+
     // MARK: - Shade
     public let Shade0 = ProtonColor(name: "ProtonCarbonShade0")
     public let Shade10 = ProtonColor(name: "ProtonCarbonShade10")
@@ -72,11 +72,11 @@ public struct ProtonColorPalettemacOS {
     public let Shade60 = ProtonColor(name: "ProtonCarbonShade60")
     public let Shade80 = ProtonColor(name: "ProtonCarbonShade80")
     public let Shade100 = ProtonColor(name: "ProtonCarbonShade100")
-    
+
     // MARK: - Shadow
     public let ShadowLifted = ProtonColor(name: "ProtonCarbonShadowLifted")
     public let ShadowNorm = ProtonColor(name: "ProtonCarbonShadowNorm")
-    
+
     // MARK: - Signal
     public let SignalDanger = ProtonColor(name: "ProtonCarbonSignalDanger")
     public let SignalDangerActive = ProtonColor(name: "ProtonCarbonSignalDangerActive")
@@ -90,14 +90,14 @@ public struct ProtonColorPalettemacOS {
     public let SignalWarning = ProtonColor(name: "ProtonCarbonSignalWarning")
     public let SignalWarningActive = ProtonColor(name: "ProtonCarbonSignalWarningActive")
     public let SignalWarningHover = ProtonColor(name: "ProtonCarbonSignalWarningHover")
-    
+
     // MARK: - Text
     public let TextDisabled = ProtonColor(name: "ProtonCarbonTextDisabled")
     public let TextHint = ProtonColor(name: "ProtonCarbonTextHint")
     public let TextInvert = ProtonColor(name: "ProtonCarbonTextInvert")
     public let TextNorm = ProtonColor(name: "ProtonCarbonTextNorm")
     public let TextWeak = ProtonColor(name: "ProtonCarbonTextWeak")
-    
+
     // MARK: Accent
     public let PurpleBase = ProtonColor(name: "SharedPurpleBase")
     public let EnzianBase = ProtonColor(name: "SharedEnzianBase")
@@ -119,7 +119,7 @@ public struct ProtonColorPalettemacOS {
     public let ForestBase = ProtonColor(name: "SharedForestBase")
     public let OliveBase = ProtonColor(name: "SharedOliveBase")
     public let PickleBase = ProtonColor(name: "SharedPickleBase")
-    
+
     // MARK: Two special colors that consistently occur in designs even though they are not part af the palette
     public let White = ProtonColor(name: "White")
     public let Black = ProtonColor(name: "Black")

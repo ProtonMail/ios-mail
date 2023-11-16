@@ -31,6 +31,7 @@ import ProtonCoreKeymaker
 import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonMailAnalytics
+import ProtonCoreFeatureFlags
 
 // sourcery: mock
 protocol UsersManagerProtocol: AnyObject {
@@ -269,7 +270,15 @@ class UsersManager: UsersManagerProtocol {
         Breadcrumbs.shared.add(message: "restored \(self.users.count) users", to: .randomLogout)
 
         if !ProcessInfo.isRunningUnitTests {
-            users.forEach { user in Task { await user.fetchUserInfo() } }
+            users.forEach { user in
+                Task {
+                    try await FeatureFlagsRepository.shared.fetchFlags(
+                        for: user.userID.rawValue,
+                        with: user.apiService
+                    )
+                    await user.fetchUserInfo()
+                }
+            }
         }
 
         self.users.first?.cacheService.cleanSoftDeletedMessagesAndConversation()
@@ -346,6 +355,7 @@ extension UsersManager {
         var isPrimaryAccountLogout = false
         loggingOutUserIDs.insert(user.userID)
         user.cleanUp().ensure {
+            FeatureFlagsRepository.shared.resetFlags(for: user.userID.rawValue)
             defer {
                 self.loggingOutUserIDs.remove(user.userID)
             }

@@ -1,0 +1,50 @@
+
+"support form" = "supportformular";
+
+"email" = "e-mail";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "Fejlfinding";
+
+"Allow alternative routing" = "Tillad alternativ routing";
+
+"No internet connection" = "Ingen internetforbindelse";
+
+"Internet Service Provider (ISP) problem" = "Problem med internetudbyder (ISP)";
+
+"Government block" = "Regeringsblokering";
+
+"Antivirus interference" = "Antivirus forstyrrelser";
+
+"Proxy/Firewall interference" = "Proxy/firewall-forstyrrelse";
+
+"Proton is down" = "Proton er nede";
+
+"Still can't find a solution" = "Kan stadig ikke finde en løsning";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Hvis Proton-websteder er blokeret, giver denne indstilling appen mulighed for at prøve alternativ netværksrouting for at nå Proton, hvilket kan være nyttige til at omgå firewalls eller netværksproblemer. Vi anbefaler at holde denne indstilling slået til for større pålidelighed. %1$@";
+
+"Learn more" = "Få mere at vide";
+
+"Please make sure that your internet connection is working." = "Sørg for at din internetforbindelse fungerer.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Prøv at forbinde til Proton fra et andet netværk (eller brug %1$@ eller %2$@).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Dit land blokerer muligvis for adgangen til Proton. Prøv at bruge %1$@ (eller enhver anden VPN) eller %2$@ til at tilgå Proton.";
+
+"Temporarily disable or remove your antivirus software." = "Deaktiver midlertidigt eller fjern din antivirussoftware.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "Deaktivér eventuelle proxier eller firewalls, eller kontakt din netværksadministrator.";
+
+"Check Proton Status for our system status." = "Tjek Proton Status for vores systemstatus.";
+
+"Proton Status" = "Proton Status";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontakt os direkte via vores supportformular, e-mail (support@protonmail.zendesk.com) eller Twitter.";
+
+"Subject..." = "Emne...";
+
+"Please share your problem." = "Del dit problem.";
+
+"Back" = "Tilbage";

@@ -25,11 +25,11 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public final class OrganizationsRequest: BaseApiRequest<OrganizationsResponse> {
-    
+
     override public init(api: APIService) {
         super.init(api: api)
     }
-    
+
     override public var path: String { "/core/v4/organizations" }
 }
 

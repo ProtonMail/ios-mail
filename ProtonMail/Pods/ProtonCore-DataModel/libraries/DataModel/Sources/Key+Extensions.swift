@@ -28,12 +28,12 @@ extension Array where Element: Key {
         // For now keep the warning in favor of refactoring this method.
         return NSKeyedArchiver.archivedData(withRootObject: self)
     }
-    
+
     public var isKeyV2: Bool {
         for key in self where key.isKeyV2 {
             return true
         }
         return false
     }
-    
+
 }

@@ -30,7 +30,7 @@ extension AuthService {
     struct SetupKeysEndpoint: Request {
         let addresses: [[String: Any]]
         let privateKey: ArmoredKey
-        
+
         /// base64 encoded need random value
         let keySalt: String
         let passwordAuth: PasswordAuth

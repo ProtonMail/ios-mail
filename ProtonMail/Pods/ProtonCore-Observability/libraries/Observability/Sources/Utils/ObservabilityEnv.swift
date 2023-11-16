@@ -24,13 +24,13 @@ import ProtonCoreNetworking
 import ProtonCoreFeatureSwitch
 
 public struct ObservabilityEnv {
-    
+
     public static var current = ObservabilityEnv()
-    
+
     public static func report<Labels: Encodable & Equatable>(_ event: ObservabilityEvent<PayloadWithLabels<Labels>>) {
         ObservabilityEnv.current.observabilityService?.report(event)
     }
-    
+
     /// The setupWorld function sets up the service used to report events before the
     /// user is logged in. Session ID is not relevant in the context of Observability.
     /// - Parameters:
@@ -39,6 +39,6 @@ public struct ObservabilityEnv {
     public mutating func setupWorld(requestPerformer: RequestPerforming) {
         self.observabilityService = ObservabilityServiceImpl(requestPerformer: requestPerformer)
     }
-    
+
     var observabilityService: ObservabilityService?
 }

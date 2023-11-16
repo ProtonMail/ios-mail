@@ -36,7 +36,7 @@ final class CreateAddressViewModel {
         case createAddressError(CreateAddressError)
         case loginError(LoginError)
         case createAddressKeysError(CreateAddressKeysError)
-        
+
         var originalError: Error {
             switch self {
             case .availabilityError(let availabilityError): return availabilityError
@@ -47,24 +47,24 @@ final class CreateAddressViewModel {
             }
         }
     }
-    
+
     let isLoading = Observable<Bool>(false)
     let error = Publisher<(String, Int, PossibleErrors)>()
     let finished = Publisher<LoginData>()
     var externalEmail: String { data.email }
     let defaultUsername: String?
     var signUpDomain: String { login.currentlyChosenSignUpDomain }
-    
+
     var currentlyChosenSignUpDomain: String {
         get { login.currentlyChosenSignUpDomain }
         set { login.currentlyChosenSignUpDomain = newValue }
     }
     var allSignUpDomains: [String] { login.allSignUpDomains }
-    
+
     private let data: CreateAddressData
     private var login: Login
     private(set) var user: User
-    
+
     init(data: CreateAddressData, login: Login, defaultUsername: String?) {
         self.data = data
         self.login = login
@@ -73,11 +73,11 @@ final class CreateAddressViewModel {
     }
 
     // MARK: - Actions
-    
+
     func validate(username: String) -> Result<(), UsernameValidationError> {
         !username.isEmpty ? .success : .failure(.emptyUsername)
     }
-    
+
     func finish(username: String) {
         isLoading.value = true
         checkAvailability(username: username) { [weak self] in
@@ -86,7 +86,7 @@ final class CreateAddressViewModel {
     }
 
     // MARK: - Private interface
-    
+
     private func checkAvailability(username: String, success: @escaping () -> Void) {
         login.checkAvailabilityForInternalAccount(username: username) { [weak self] result in
             switch result {
@@ -144,7 +144,7 @@ final class CreateAddressViewModel {
             }
         }
     }
-    
+
     private func finishFlow() {
         PMLog.debug("Finishing the flow")
         login.finishLoginFlow(mailboxPassword: data.mailboxPassword, passwordMode: data.passwordMode) { [weak self] result in

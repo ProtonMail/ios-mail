@@ -1,0 +1,50 @@
+
+"support form" = "客服表单";
+
+"email" = "邮箱";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "故障排除";
+
+"Allow alternative routing" = "允许使用备用线路";
+
+"No internet connection" = "网络未连接";
+
+"Internet Service Provider (ISP) problem" = "运营商（ISP）问题";
+
+"Government block" = "政府封锁";
+
+"Antivirus interference" = "杀毒软件干扰";
+
+"Proxy/Firewall interference" = "代理服务器或防火墙干扰";
+
+"Proton is down" = "Proton 系统故障";
+
+"Still can't find a solution" = "问题仍未解决";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "当 Proton 网站遭到封禁时，此选项允许程序改用其他线路连接 Proton 以绕过防火墙或规避网络故障。推荐开启以增强连接稳定性。%1$@";
+
+"Learn more" = "了解详情";
+
+"Please make sure that your internet connection is working." = "请确认您已连接网络。";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "尝试更换网络后再连接 Proton（或使用 %1$@ 或 %2$@）。";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "您所在的国家可能屏蔽了 Proton。尝试使用 %1$@（或其他 VPN）或 %2$@ 连接 Proton。";
+
+"Temporarily disable or remove your antivirus software." = "暂时关闭或卸载杀毒软件。";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "关闭代理服务器和防火墙，或联系网络管理员。";
+
+"Check Proton Status for our system status." = "查看 Proton 系统运行状态。";
+
+"Proton Status" = "Proton 运行状态";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "通过客服表单、邮箱（support@protonmail.zendesk.com）或 Twitter 联系我们。";
+
+"Subject..." = "主题...";
+
+"Please share your problem." = "请说明您的问题。";
+
+"Back" = "上一步";

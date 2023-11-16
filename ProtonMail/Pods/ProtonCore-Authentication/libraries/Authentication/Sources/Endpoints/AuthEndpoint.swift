@@ -28,7 +28,7 @@ import ProtonCoreServices
 import ProtonCoreUtilities
 
 extension AuthService {
-    
+
     struct AuthRouteResponse: APIDecodableResponse, CredentialConvertible, Encodable {
         var accessToken: String
         var tokenType: String
@@ -39,10 +39,10 @@ extension AuthService {
         var eventID: String
         var serverProof: String?
         var passwordMode: PasswordMode
-        
+
         var _2FA: TwoFA
     }
-    
+
     struct AuthEndpoint: Request {
         struct AuthEndpointData {
             let username: String
@@ -51,37 +51,37 @@ extension AuthService {
             let srpSession: String
             let challenge: ChallengeProperties?
         }
-        
+
         struct SSOEndpointData {
             let ssoResponseToken: String
         }
-        
+
         let data: Either<AuthEndpointData, SSOEndpointData>
-        
+
         init(data: Either<AuthEndpointData, SSOEndpointData>) {
             self.data = data
         }
-        
+
         var path: String {
             "/auth/v4"
         }
-        
+
         var method: HTTPMethod {
             .post
         }
-        
+
         var header: [String: Any] {
             return ["X-Accept-ExtAcc": true]
         }
-        
+
         var challengeProperties: ChallengeProperties? {
             if case let .left(authEndpointData) = data {
                 return authEndpointData.challenge
             }
-            
+
             return nil
         }
-        
+
         var parameters: [String: Any]? {
             switch data {
             case .left(let authEndpointData):
@@ -97,9 +97,9 @@ extension AuthService {
                 ]
             }
         }
-        
+
         var authCredential: AuthCredential?
-        
+
         var isAuth: Bool {
             false
         }

@@ -22,33 +22,33 @@
 import Foundation
 
 public struct AccountAvailableForCreation {
-    
+
     public enum AccountTypes {
         case free(status: AccountStatus? = nil)
         case subuser(ownerUserId: String, ownerUserPassword: String, alsoPublic: Bool, domain: String? = nil, status: SubuserAccountStatus? = nil)
         case plan(named: String, status: AccountStatus? = nil)
         case external
-        
+
         var isNotPaid: Bool {
             guard case .plan = self else { return true }
             return false
         }
     }
-    
+
     public enum KeyTypes: String {
         case none = "None"
         case rsa2048 = "RSA2048"
         case rsa4096 = "RSA4096"
         case curve25519 = "Curve25519"
     }
-    
+
     public enum AddressTypes {
         case noAddress
         case addressButNoKeys
         case addressWithKeys(type: KeyTypes)
         case userKeyNoAddress(type: KeyTypes)
     }
-    
+
     public enum AccountStatus: Int {
         case deleted = 0
         case disabled = 1
@@ -57,7 +57,7 @@ public struct AccountAvailableForCreation {
         case admin = 4
         case `super` = 5
     }
-    
+
     public enum SubuserAccountStatus: Int {
         case deleted = 0
         case disabled = 1
@@ -80,7 +80,7 @@ public struct AccountAvailableForCreation {
         case csa = 18
         case spammer = 19
     }
-    
+
     public enum AccountAuth: Int {
         case zero = 0
         case one = 1
@@ -88,7 +88,7 @@ public struct AccountAvailableForCreation {
         case three = 3
         case four = 4
     }
-    
+
     public let type: AccountTypes
     public let username: String
     public let password: String
@@ -97,7 +97,7 @@ public struct AccountAvailableForCreation {
     public let address: AddressTypes
     public let mailboxPassword: String?
     public let description: String
-    
+
     public var statusValue: Int? {
         switch type {
         case .free(let status): return status?.rawValue
@@ -106,7 +106,7 @@ public struct AccountAvailableForCreation {
         case .external: return nil
         }
     }
-    
+
     public init(type: AccountTypes = .free(),
                 username: String,
                 password: String,
@@ -124,7 +124,7 @@ public struct AccountAvailableForCreation {
         self.mailboxPassword = mailboxPassword
         self.description = description
     }
-    
+
     public static func freeNoAddressNoKeys(
         username: String? = nil, password: String? = nil
     ) -> AccountAvailableForCreation {
@@ -132,7 +132,7 @@ public struct AccountAvailableForCreation {
               password: password ?? .random,
               description: "Free account with no address nor keys")
     }
-    
+
     public static func freeWithAddressButWithoutKeys(
         username: String? = nil, password: String? = nil
     ) -> AccountAvailableForCreation {
@@ -141,7 +141,7 @@ public struct AccountAvailableForCreation {
               address: .addressButNoKeys,
               description: "Free with address but without keys")
     }
-    
+
     public static func freeWithAddressAndKeys(
         username: String? = nil, password: String? = nil
     ) -> AccountAvailableForCreation {
@@ -150,7 +150,7 @@ public struct AccountAvailableForCreation {
               address: .addressWithKeys(type: .curve25519),
               description: "Free with address and keys")
     }
-    
+
     public static func freeWithAddressAndMailboxPassword(
         username: String? = nil, password: String? = nil
     ) -> AccountAvailableForCreation {
@@ -160,7 +160,7 @@ public struct AccountAvailableForCreation {
               mailboxPassword: .random,
               description: "Free account with mailbox password")
     }
-    
+
     public static func freeUserWithKeyNoAddress(
         username: String? = nil, password: String? = nil
     ) -> AccountAvailableForCreation {
@@ -169,7 +169,7 @@ public struct AccountAvailableForCreation {
               address: .userKeyNoAddress(type: .curve25519),
               description: "Free account with no address nor keys")
     }
-    
+
     public static func external(
         email: String? = nil, password: String? = nil
     ) -> AccountAvailableForCreation {
@@ -178,7 +178,7 @@ public struct AccountAvailableForCreation {
               password: password ?? .random,
               description: "External account with no keys")
     }
-    
+
     public static func paid(
         plan: String, username: String? = nil, password: String? = nil
     ) -> AccountAvailableForCreation {
@@ -187,7 +187,7 @@ public struct AccountAvailableForCreation {
               password: password ?? .random,
               description: "Paid")
     }
-    
+
     public static func deletedWithAddressAndKeys(
         username: String? = nil, password: String? = nil
     ) -> AccountAvailableForCreation {
@@ -197,7 +197,7 @@ public struct AccountAvailableForCreation {
               address: .addressWithKeys(type: .curve25519),
               description: "Deleted account with address and keys")
     }
-    
+
     public static func disabledWithAddressAndKeys(
         username: String? = nil, password: String? = nil
     ) -> AccountAvailableForCreation {
@@ -207,7 +207,7 @@ public struct AccountAvailableForCreation {
               address: .addressWithKeys(type: .curve25519),
               description: "Disabled account with address and keys")
     }
-    
+
     public static func vpnAdminWithAddressAndKeys(
         username: String? = nil, password: String? = nil
     ) -> AccountAvailableForCreation {
@@ -217,7 +217,7 @@ public struct AccountAvailableForCreation {
               address: .addressWithKeys(type: .curve25519),
               description: "VPN admin account with address and keys")
     }
-    
+
     public static func adminWithAddressAndKeys(
         username: String? = nil, password: String? = nil
     ) -> AccountAvailableForCreation {
@@ -227,7 +227,7 @@ public struct AccountAvailableForCreation {
               address: .addressWithKeys(type: .curve25519),
               description: "Admin account with address and keys")
     }
-    
+
     public static func superWithAddressAndKeys(
         username: String? = nil, password: String? = nil
     ) -> AccountAvailableForCreation {
@@ -237,7 +237,7 @@ public struct AccountAvailableForCreation {
               address: .addressWithKeys(type: .curve25519),
               description: "Super account with address and keys")
     }
-    
+
     public static func subuserPublic(
         username: String? = nil, password: String? = nil, ownerUserId: String, ownerUserPassword: String
     ) -> AccountAvailableForCreation {
@@ -247,7 +247,7 @@ public struct AccountAvailableForCreation {
               address: .addressWithKeys(type: .curve25519),
               description: "Subuser public account")
     }
-    
+
     public static func subuserPrivate(
         username: String? = nil, password: String? = nil, ownerUserId: String, ownerUserPassword: String
     ) -> AccountAvailableForCreation {
@@ -257,7 +257,7 @@ public struct AccountAvailableForCreation {
               address: .addressWithKeys(type: .curve25519),
               description: "Subuser private account")
     }
-    
+
     public static func deletedSubuserPrivate(
         username: String? = nil, password: String? = nil, ownerUserId: String, ownerUserPassword: String
     ) -> AccountAvailableForCreation {
@@ -440,7 +440,7 @@ extension String {
         }
         return result
     }
-    
+
     static var randomEmail: String {
         return "\(random)@\(random).tests"
     }

@@ -99,3 +99,5 @@ class TestApi: Request {
     var method: HTTPMethod = .get
     var parameters: [String: Any]?
 }
+
+// swiftlint:enable empty_string

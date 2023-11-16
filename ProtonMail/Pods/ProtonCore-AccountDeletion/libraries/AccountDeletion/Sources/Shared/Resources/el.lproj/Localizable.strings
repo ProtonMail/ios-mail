@@ -1,0 +1,16 @@
+
+"Delete account" = "Διαγραφή λογαριασμού";
+
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Αυτό θα διαγράψει οριστικά το λογαριασμό σας και όλα τα δεδομένα του. Δεν θα μπορέσετε να επανενεργοποιήσετε αυτόν τον λογαριασμό.";
+
+"Account deleted.\nLogging out..." = "Ο λογαριασμός διαγράφηκε.\nΑποσύνδεση...";
+
+"Close" = "Κλείσιμο";
+
+"OK" = "ΟΚ";
+
+"A networking error has occured" = "Προέκυψε σφάλμα δικτύου";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Οι διακομιστές Proton δεν είναι προσβάσιμοι. Αυτό μπορεί να προκληθεί από λανθασμένη διαμόρφωση δικτύου, λόγο ότι διακομιστές Proton που δεν λειτουργούν ή διακομιστές Proton μπλοκάρονται";
+
+"Troubleshoot" = "Αντιμετώπιση προβλημάτων";

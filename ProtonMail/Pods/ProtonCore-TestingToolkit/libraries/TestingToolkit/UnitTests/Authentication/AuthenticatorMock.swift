@@ -37,9 +37,8 @@ public struct AuthenticatorMock: AuthenticatorInterface {
     public func authenticate(idpEmail: String, responseToken: SSOResponseToken, completion: @escaping Authenticator.Completion) {
         authenticateStubWithSSO(idpEmail, responseToken, completion)
     }
-    
+
     @FuncStub(AuthenticatorMock.authenticate(username:password:challenge:intent:srpAuth:completion:)) public var authenticateStub
-    // swiftlint:disable:next function_parameter_count
     public func authenticate(username: String, password: String, challenge: ChallengeProperties?, intent: Intent?, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion) {
         authenticateStub(username, password, challenge, intent, srpAuth, completion)
     }
@@ -58,12 +57,12 @@ public struct AuthenticatorMock: AuthenticatorInterface {
     public func checkAvailableUsernameWithoutSpecifyingDomain(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
         checkAvailableUsernameWithoutSpecifyingDomainStub(username, completion)
     }
-    
+
     @FuncStub(Self.checkAvailableUsernameWithinDomain) public var checkAvailableUsernameWithinDomainStub
     public func checkAvailableUsernameWithinDomain(_ username: String, domain: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
         checkAvailableUsernameWithinDomainStub(username, domain, completion)
     }
-    
+
     @FuncStub(Self.checkAvailableExternal) public var checkAvailableExternalStub
     public func checkAvailableExternal(_ email: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
         checkAvailableExternalStub(email, completion)
@@ -93,7 +92,7 @@ public struct AuthenticatorMock: AuthenticatorInterface {
     public func getKeySalts(_ credential: Credential?, completion: @escaping (Result<[KeySalt], AuthErrors>) -> Void) {
         getKeySaltsStub(credential, completion)
     }
-    
+
     @FuncStub(Self.forkSession) public var forkSessionStub
     public func forkSession(_ credential: Credential?,
                             completion: @escaping (Result<AuthService.ForkSessionResponse, AuthErrors>) -> Void) {

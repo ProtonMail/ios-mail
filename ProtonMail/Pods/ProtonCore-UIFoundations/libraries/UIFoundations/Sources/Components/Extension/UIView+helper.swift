@@ -57,19 +57,19 @@ public extension UIView {
         }
         return 0
     }
-    
+
     func asImage() -> UIImage {
         let renderer = UIGraphicsImageRenderer(size: frame.size)
         return renderer.image { context in
             layer.render(in: context.cgContext)
         }
     }
-    
+
     func addConstraints(_ constraintsMaker: (UIView) -> [NSLayoutConstraint]) {
         translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate(constraintsMaker(self))
     }
-    
+
     func addSubviews(_ subviews: UIView...) {
         subviews.forEach(addSubview)
     }

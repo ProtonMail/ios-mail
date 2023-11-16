@@ -51,16 +51,16 @@ class SummaryViewController: UIViewController, AccessibleView {
 
     weak var delegate: SummaryViewControllerDelegate?
     var viewModel: SummaryViewModel!
-    
+
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     // MARK: Outlets
     @IBOutlet weak var imageView: UIImageView!
-    
+
     @IBOutlet weak var summaryImage: UIImageView!
-    
+
     @IBOutlet weak var summaryWhole: UIImageView!
-    
+
     @IBOutlet weak var header: UILabel! {
         didSet {
             header.textColor = ColorProvider.TextNorm
@@ -100,11 +100,11 @@ class SummaryViewController: UIViewController, AccessibleView {
     }
 
     // MARK: Actions
-    
+
     @IBAction func onStartButtonTap(_ sender: ProtonButton) {
         delegate?.startButtonTap()
     }
-    
+
     // MARK: Private methods
 
     func setupUI() {

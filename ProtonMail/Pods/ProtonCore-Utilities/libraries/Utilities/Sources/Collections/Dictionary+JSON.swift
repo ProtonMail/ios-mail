@@ -23,7 +23,7 @@ import Foundation
 import ProtonCoreLog
 
 extension Dictionary where Key == String, Value == Any {
-    
+
     /**
      base class for convert anyobject to a json string
 

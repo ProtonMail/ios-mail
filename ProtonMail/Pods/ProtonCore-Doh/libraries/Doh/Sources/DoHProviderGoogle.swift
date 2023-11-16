@@ -23,9 +23,9 @@ import Foundation
 import ProtonCoreLog
 
 public struct Google: DoHProviderInternal {
-    
+
     let supported: [DNSRecordType] = [.a, .txt]
-    
+
     let networkingEngine: DoHNetworkingEngine
 
     init(networkingEngine: DoHNetworkingEngine) {

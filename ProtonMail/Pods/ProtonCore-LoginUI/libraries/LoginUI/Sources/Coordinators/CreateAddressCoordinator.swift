@@ -75,7 +75,7 @@ final class CreateAddressCoordinator {
         createAddressViewController.onDohTroubleshooting = { [weak self] in
             guard let self = self else { return }
             self.container.executeDohTroubleshootMethodFromApiDelegate()
-            
+
             self.container.troubleShootingHelper.showTroubleShooting(over: self.navigationController)
         }
         navigationController.pushViewController(createAddressViewController, animated: true)

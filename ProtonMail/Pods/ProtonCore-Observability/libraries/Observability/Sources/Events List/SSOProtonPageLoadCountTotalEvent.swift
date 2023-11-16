@@ -33,7 +33,7 @@ extension ObservabilityEvent where Payload == PayloadWithLabels<SSOProtonPageLoa
     public static func ssoProtonPageLoadCountTotal(status: HTTPResponseCodeStatus) -> Self {
         .init(name: "ios_core_login_ssoProton_pageLoad_total", labels: .init(status: status))
     }
-    
+
     public static func ssoProtonPageLoadCountTotal(error: ResponseError) -> Self {
         let name = "ios_core_login_ssoProton_pageLoad_total"
         if let httpCode = error.httpCode {
@@ -46,7 +46,7 @@ extension ObservabilityEvent where Payload == PayloadWithLabels<SSOProtonPageLoa
                 break
             }
         }
-        
+
         return .init(name: name, labels: .init(status: .unknown))
     }
 }

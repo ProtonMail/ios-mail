@@ -25,7 +25,7 @@ import ProtonCoreUtilities
 private class Handler {}
 
 public enum LUITranslation: TranslationsExposing {
-    
+
     public static var bundle: Bundle {
         #if SPM
         return Bundle.module
@@ -33,9 +33,9 @@ public enum LUITranslation: TranslationsExposing {
         return Bundle(path: Bundle(for: Handler.self).path(forResource: "Translations-LoginUI", ofType: "bundle")!)!
         #endif
     }
-    
+
     public static var prefixForMissingValue: String = ""
-    
+
     case _ls_welcome_footer
     case _core_external_accounts_address_required_popup_title
     case _core_external_accounts_update_required_popup_title
@@ -149,7 +149,7 @@ public enum LUITranslation: TranslationsExposing {
     case _core_cancel_button
     case _core_sign_in_screen_title
     case _core_api_might_be_blocked_button
-    
+
     public var l10n: String {
         switch self {
         case ._ls_welcome_footer:

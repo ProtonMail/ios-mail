@@ -26,7 +26,7 @@ public struct FigmaShadow {
     let lightAlpha: CGFloat
     let darkRGB: Int
     let darkAlpha: CGFloat
-    
+
     let x: CGFloat
     let y: CGFloat
     let blur: CGFloat
@@ -64,7 +64,7 @@ public extension UIView {
             layer.shadowPath = shadowPath.cgPath
             self.layer.addSublayer(layer)
         }
-        
+
     }
 
     func clearShadow() {
@@ -77,23 +77,23 @@ public extension UIView {
 #endif
 
 extension FigmaShadow {
-    
+
     internal static var shadowBase: FigmaShadow {
         .init(lightRGB: 0x000000, lightAlpha: 0.05, darkRGB: 0x000000, darkAlpha: 0.80, x: 0, y: 0, blur: 1, spread: 0)
     }
-    
+
     internal static var shadowNorm: FigmaShadow {
         .init(lightRGB: 0x000000, lightAlpha: 0.10, darkRGB: 0x000000, darkAlpha: 0.80, x: 0, y: 1, blur: 2, spread: 0)
     }
-    
+
     internal static var shadowRaised: FigmaShadow {
         .init(lightRGB: 0x000000, lightAlpha: 0.10, darkRGB: 0x000000, darkAlpha: 0.80, x: 0, y: 8, blur: 4, spread: 0)
     }
-    
+
     internal static var shadowLifted: FigmaShadow {
         .init(lightRGB: 0x000000, lightAlpha: 0.10, darkRGB: 0x000000, darkAlpha: 0.86, x: 0, y: 8, blur: 24, spread: 0)
     }
-    
+
 }
 
 public extension Collection where Element == FigmaShadow {

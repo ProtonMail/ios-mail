@@ -51,7 +51,7 @@ final class PasswordUpdate {
                                 originalUserKeys: originalKeys,
                                 updatedAddresses: nil)
     }
-    
+
     func updatePasswordV1(userKeys: [Key], addressKeys: [Address], oldPassword: String, newPassword: String) throws -> UpdatedKeyResult {
         let saltOfNewPassword = try Crypto.random(byte: 16) // mailbox pwd need 128 bits
         let hashedNewPassword = PasswordHash.passphrase(newPassword, salt: saltOfNewPassword)
@@ -59,10 +59,10 @@ final class PasswordUpdate {
                                                                     newPass: hashedNewPassword)
         let updatedUserKeys = userKeyResult.filter({ $0.isUpdated })
         let originalUserKeys = userKeyResult.filter({ $0.isUpdated })
-        
+
         let addressKeyResult = try
         Crypto.updateAddrKeysPasswordIfPossible(addresses: addressKeys, currPass: Passphrase.init(value: oldPassword), newPass: hashedNewPassword)
-        
+
         return UpdatedKeyResult(saltOfNewPassword: saltOfNewPassword,
                                 hashedNewPassword: hashedNewPassword.value,
                                 updatedUserKeys: updatedUserKeys,
@@ -72,7 +72,7 @@ final class PasswordUpdate {
 }
 
 extension Crypto {
-    
+
     /// update the key password if possible. this is mostly used for update user key pass,
     ///  in the real case, some accounts reset the password/key. they lost the password. but we will keep the old key inactive in our system.
     ///  when we update the keys and update those inactive keys the update passpharse might be failed.
@@ -116,7 +116,7 @@ extension Crypto {
         }
         return outKeys
     }
-    
+
     /// we only care the first key update. logic same as `updateKeysPasswordIfPossible`
     internal static func updateAddrKeysPasswordIfPossible(addresses: [Address], currPass: Passphrase, newPass: Passphrase) throws -> [Address] {
         var outAddresses = [Address]()
@@ -152,15 +152,15 @@ extension Crypto {
                     outKeys.append(newK)
                 }
             }
-            
+
             guard outKeys.count == addr.keys.count else {
                 throw PasswordUpdateError.keyUpdateFailed
             }
-            
+
             guard !outKeys.isEmpty && outKeys[0].isUpdated else {
                 throw PasswordUpdateError.keyUpdateFailed
             }
-            
+
             for iKey in outKeys {
                 if iKey.isUpdated == false {
                     continue
@@ -186,5 +186,5 @@ extension Crypto {
         }
         return outAddresses
     }
-    
+
 }

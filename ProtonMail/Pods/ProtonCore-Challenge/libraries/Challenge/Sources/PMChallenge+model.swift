@@ -65,7 +65,7 @@ extension PMChallenge {
             self.mobileCountryCode = countryCode ?? ""
         }
     }
-    
+
     public struct Frame: Codable, Equatable {
         private(set) var name: String
         public init(name: String?) throws {
@@ -75,19 +75,19 @@ extension PMChallenge {
     // Ask Anti-abuse team for the version
     static let VERSION = "2.0.3"
     public struct Challenge: Codable {
-        
+
         public internal(set) var behaviouralFingerprint: BehaviouralFingerprint = BehaviouralFingerprint()
         public internal(set) var deviceFingerprint: DeviceFingerprint = DeviceFingerprint()
-        
+
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(behaviouralFingerprint, forKey: .behaviouralFingerprint)
             try container.encode(deviceFingerprint, forKey: .deviceFingerprint)
         }
-        
+
         public struct BehaviouralFingerprint: Codable {
             // MARK: Signup data
-            
+
             /// version: String   new value for tracking the challenge object version. this value only change when challenge schema changed
             public internal(set) var v: String = VERSION
 
@@ -111,7 +111,7 @@ extension PMChallenge {
             public internal(set) var pasteUsername: [String] = []
             /// Phrases pasted during recovery inputs
             public internal(set) var pasteRecovery: [String] = []
-            
+
             public func encode(to encoder: Encoder) throws {
                 // Since some of variables are deprecated
                 // to remove these variables from JSONEncoder
@@ -130,7 +130,7 @@ extension PMChallenge {
                 try container.encode(pasteUsername, forKey: .pasteUsername)
                 try container.encode(pasteRecovery, forKey: .pasteRecovery)
             }
-            
+
             func asDictionary() throws -> [String: Any] {
                 let data = try JSONEncoder().encode(self)
                 guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
@@ -141,7 +141,7 @@ extension PMChallenge {
                 return dictionary
             }
         }
-        
+
         public struct DeviceFingerprint: Codable {
             // MARK: Device relative setting
             /// Timezone of Operating System, e.g. `Asia/Taipei`
@@ -170,7 +170,7 @@ extension PMChallenge {
             public internal(set) var uuid = UIDevice.current.identifierForVendor?.uuidString ?? "unknow"
             /// same as web, iframe-  name: username, recovery
             public internal(set) var frame: [Frame] = []
-            
+
             public func encode(to encoder: Encoder) throws {
                 // Since some of variables are deprecated
                 // to remove these variables from JSONEncoder
@@ -191,7 +191,7 @@ extension PMChallenge {
                 try container.encode(uuid, forKey: .uuid)
                 try container.encode(frame, forKey: .frame)
             }
-            
+
             func asDictionary() throws -> [String: Any] {
                 let data = try JSONEncoder().encode(self)
                 guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
@@ -202,9 +202,9 @@ extension PMChallenge {
                 return dictionary
             }
         }
-        
+
         // MARK: - API
-        
+
         /// Converts `PMChallenge` object into an array of json dictionaries.
         ///
         /// This function is the combination of `getUsernameChallenge()` and `getRecoveryChallenge()`.
@@ -217,7 +217,7 @@ extension PMChallenge {
         public func allFingerprintDict() -> [[String: Any]] {
             convertIntoArryOfJson(asDict: asDictionary)
         }
-        
+
         /// Converts `PMChallenge` object into an array of json dictionaries.
         ///
         /// This function is the combination of `getUsernameChallenge()` and `getRecoveryChallenge()`.
@@ -231,7 +231,7 @@ extension PMChallenge {
         public func toDictArray() -> [[String: Any]] {
             allFingerprintDict()
         }
-        
+
         /// Converts `PMChallenge` `DeviceFingerprint` object into an array of json dictionaries.
         ///
         /// This function is the combination of `getUsernameChallenge()` and `getRecoveryChallenge()`.
@@ -245,7 +245,7 @@ extension PMChallenge {
         public func deviceFingerprintDict() -> [[String: Any]] {
             convertIntoArryOfJson(asDict: deviceFingerprint.asDictionary)
         }
-        
+
         /// Converts `PMChallenge` `BehaviouralFingerprint` object to json dictionary array
         ///
         /// This function is the combination of `getUsernameChallenge()` and `getRecoveryChallenge()`.
@@ -259,16 +259,16 @@ extension PMChallenge {
         public func behaviouralFingerprintDict() -> [[String: Any]] {
             convertIntoArryOfJson(asDict: behaviouralFingerprint.asDictionary)
         }
-        
+
         // MARK: - Internal
-        
+
         /// Converts `PMChallenge` object into a json dictionary.
         /// - Throws: JSONSerialization exception.
         /// - Returns: Challenge data converted into a json dictionary.
         func asDictionary() throws -> [String: Any] {
             let data = try JSONEncoder().encode(self)
             guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: [String: Any]] else {
-                throw NSError()
+                throw NSError(domain: "PMChalleng", code: 0)
             }
             return dictionary
                 .reduce([String: Any]()) { emptyDict, tuple in
@@ -277,7 +277,7 @@ extension PMChallenge {
                     return dict
                 }
         }
-        
+
         /// Converts `PMChallenge` object into a json encoded String.
         /// - Throws: JSONEncoder exception.
         /// - Returns: Challenge data converted into a json encoded String.
@@ -286,7 +286,7 @@ extension PMChallenge {
             let str = String(data: data, encoding: .utf8)
             return str ?? ""
         }
-        
+
         private func convertIntoArryOfJson(asDict: () throws -> [String: Any]) -> [[String: Any]] {
             do {
                 let dict = try asDict()
@@ -306,17 +306,17 @@ extension PMChallenge {
                 }
             }
         }
-        
+
         private func collectKeyboardData() -> [String] {
             let keyboards = UITextInputMode.activeInputModes
-            
+
             let names = keyboards.map { info -> String in
                 let id: String = (info.value(forKey: "identifier") as? String) ?? ""
                 return id
             }
             return names
         }
-        
+
         mutating func reset() {
             behaviouralFingerprint.timeUsername = []
             behaviouralFingerprint.keydownUsername = []
@@ -330,7 +330,7 @@ extension PMChallenge {
             behaviouralFingerprint.pasteRecovery = []
             deviceFingerprint.frame = []
         }
-        
+
         mutating func fetchValues(device: UIDevice = .current,
                                   locale: Locale = .autoupdatingCurrent,
                                   timeZone: TimeZone = .autoupdatingCurrent) {
@@ -344,7 +344,7 @@ extension PMChallenge {
             deviceFingerprint.isDarkmodeOn = UITraitCollection.current.userInterfaceStyle == .dark
             deviceFingerprint.preferredContentSize = UIApplication.getInstance()?.preferredContentSizeCategory.rawValue ?? UIContentSizeCategory.medium.rawValue
         }
-        
+
         /// Convert `PMChallenge` object into a json dictionary
         ///
         /// This function is the combination of `asDictionary()` and `asString()`.
@@ -369,9 +369,9 @@ extension PMChallenge {
                 }
             }
         }
-        
+
         private func getUsernameChallenge(dict: [String: Any]) -> [String: Any] {
-            
+
             var challenge = dict
 
             // remove the recovery keys in username
@@ -381,12 +381,12 @@ extension PMChallenge {
             challenge.removeValue(forKey: "clickRecovery")
             challenge.removeValue(forKey: "timeRecovery")
             challenge.removeValue(forKey: "copyRecovery")
-            
+
             return challenge
         }
-        
+
         private func getRecoveryChallenge(dict: [String: Any]) -> [String: Any] {
-            
+
             var challenge = dict
 
             // remove the username keys in recovery
@@ -396,10 +396,12 @@ extension PMChallenge {
             challenge.removeValue(forKey: "keydownUsername")
             challenge.removeValue(forKey: "copyUsername")
             challenge.removeValue(forKey: "pasteUsername")
-            
+
             return challenge
         }
     }
 }
 
 #endif
+
+// swiftlint:enable identifier_name

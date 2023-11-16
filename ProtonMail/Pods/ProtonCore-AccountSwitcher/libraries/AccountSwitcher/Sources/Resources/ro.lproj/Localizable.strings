@@ -1,0 +1,28 @@
+
+"switch to" = "comutare la";
+
+"Manage accounts" = "Gestionare conturi";
+
+"Signed in to Proton Mail" = "Conectat la Proton Mail";
+
+"Signed out of Proton Mail" = "Deconectat din Proton Mail";
+
+"Sign out" = "Deconectare";
+
+"Remove account from this device" = "Eliminare cont din acest dispozitiv";
+
+"Remove account" = "Eliminare cont";
+
+"You will be signed out and all the data associated with this account will be removed from this device." = "Contul va fi deconectat și toate datele asociate cu acesta vor fi eliminate din acest dispozitiv.";
+
+"Remove" = "Eliminare";
+
+"Are you sure you want to sign out %@?" = "Sigur doriți să vă deconectați din %@?";
+
+"Dismiss account switcher" = "Renunțare la comutatorul de cont";
+
+"Sign in to another account" = "Conectare la alt cont";
+
+"Cancel" = "Anulare";
+
+"Sign in" = "Autentificare";

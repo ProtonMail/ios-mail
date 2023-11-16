@@ -27,28 +27,28 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public class Authenticator: NSObject, AuthenticatorInterface {
-    
+
     public typealias Errors = AuthErrors
     public typealias Completion = (Result<Status, AuthErrors>) -> Void
-    
+
     public enum Status {
         case ask2FA(TwoFactorContext)
         case newCredential(Credential, PasswordMode)
         case updatedCredential(Credential)
         case ssoChallenge(SSOChallengeResponse)
     }
-    
+
     public var apiService: APIService!
     public init(api: APIService) {
         self.apiService = api
         super.init()
     }
-    
+
     // we do not want this to be ever used
     override private init() { }
 
     private let srpBuilder = SRPBuilder()
-    
+
     /// login with SSO
     public func authenticate(idpEmail: String,
                              responseToken: SSOResponseToken,
@@ -66,7 +66,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
             }
         }
     }
-    
+
     /// Clear login, when previously unauthenticated
     public func authenticate(username: String,
                              password: String,
@@ -96,8 +96,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
             }
         }
     }
-    
-    // swiftlint:disable:next function_parameter_count
+
     private func handleAuthInfoResponse(username: String,
                                         password: String,
                                         challenge: ChallengeProperties?,
@@ -109,7 +108,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
             completion(.failure(.from(responseError)))
             return
         }
-        
+
         // 2. build SRP things
         do {
             let srpClientInfo = try self.srpBuilder.buildSRP(
@@ -124,7 +123,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
                 ),
                 srpAuth: srpAuth
             )
-            
+
             switch srpClientInfo {
             case .failure(let error):
                 return completion(.failure(error))
@@ -160,7 +159,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
             return completion(.failure(.parsingError(parsingError)))
         }
     }
-    
+
     /// Continue clear login flow with 2FA code
     public func confirm2FA(_ twoFactorCode: String,
                            context: TwoFactorContext, completion: @escaping Completion)  {
@@ -177,7 +176,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
             }
         }
     }
-    
+
     // Refresh expired access token using refresh token
     public func refreshCredential(_ oldCredential: Credential, completion: @escaping Completion) {
         self.apiService.refreshCredential(oldCredential) { (result: Result<Credential, ResponseError>) in
@@ -194,12 +193,12 @@ public class Authenticator: NSObject, AuthenticatorInterface {
         _ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void
     ) {
         let route = AuthService.UserAvailableWithoutSpecifyingDomainEndpoint(username: username)
-        
+
         self.apiService.perform(request: route) { (_, result: Result<AuthService.UserAvailableResponse, ResponseError>) in
             completion(result.map { _ in () }.mapError { AuthErrors.from($0) })
         }
     }
-    
+
     public func checkAvailableUsernameWithinDomain(
         _ username: String, domain: String, completion: @escaping (Result<(), AuthErrors>) -> Void
     ) {
@@ -208,10 +207,10 @@ public class Authenticator: NSObject, AuthenticatorInterface {
             completion(result.map { _ in () }.mapError { AuthErrors.from($0) })
         }
     }
-    
+
     public func checkAvailableExternal(_ email: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
         let route = AuthService.UserAvailableExternalEndpoint(email: email)
-        
+
         self.apiService.perform(request: route) { (_, result: Result<AuthService.UserAvailableExternalResponse, ResponseError>) in
             completion(result.map { _ in () }.mapError { AuthErrors.from($0) })
         }
@@ -245,7 +244,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
             }
         }
     }
-    
+
     public func createUser(userParameters: UserParameters, completion: @escaping (Result<(), AuthErrors>) -> Void) {
         let route = AuthService.CreateUserEndpoint(userParameters: userParameters)
         self.apiService.perform(request: route, response: Response()) { (_, response) in
@@ -277,7 +276,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
             response.user
         })
     }
-    
+
     public func getAddresses(_ credential: Credential? = nil, completion: @escaping (Result<[Address], AuthErrors>) -> Void) {
         var route = AuthService.AddressEndpoint()
         if let auth = credential {
@@ -287,7 +286,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
             response.addresses
         })
     }
-    
+
     public func getKeySalts(_ credential: Credential? = nil, completion: @escaping (Result<[KeySalt], AuthErrors>) -> Void) {
         var route = AuthService.KeySaltsEndpoint()
         if let auth = credential {
@@ -297,7 +296,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
             response.keySalts
         })
     }
-    
+
     public func forkSession(_ credential: Credential? = nil, completion: @escaping (Result<AuthService.ForkSessionResponse, AuthErrors>) -> Void) {
         var route = AuthService.ForkSessionEndpoint()
         if let auth = credential {
@@ -305,7 +304,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
         }
         self.apiService.perform(request: route, decodableCompletion: mapError(completion))
     }
-    
+
     public func closeSession(_ credential: Credential? = nil, completion: @escaping (Result<AuthService.EndSessionResponse, AuthErrors>) -> Void) {
         var route = AuthService.EndSessionEndpoint()
         if let auth = credential {
@@ -318,7 +317,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
         let route = AuthService.ModulusEndpoint()
         self.apiService.perform(request: route, decodableCompletion: mapError(completion))
     }
-    
+
     private func mapValueAndError<T, S>(_ completion: @escaping (Result<T, AuthErrors>) -> Void,
                                         _ f: @escaping (S) -> T) -> (URLSessionDataTask?, Result<S, ResponseError>) -> Void {
         return { (_, result: Result<S, ResponseError>) -> Void in
@@ -327,7 +326,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
             })
         }
     }
-    
+
     private func mapError<T>(_ completion: @escaping (Result<T, AuthErrors>) -> Void) -> (URLSessionDataTask?, Result<T, ResponseError>) -> Void {
         return { (_, result: Result<T, ResponseError>) in
             completion(result.mapError {

@@ -36,9 +36,9 @@ private let commonLoginIssuesPageHeader = "Common Login Problems"
 private let customerSupportPageHeader = "Support Form"
 
 public final class NeedHelpRobot: CoreElements {
-    
+
     public let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
-    
+
     public func needHelpOptionsDisplayed() -> NeedHelpRobot {
         button(helpViewCloseButtonId).checkExists()
         staticText(forgotUsernameLabel).checkExists()
@@ -47,35 +47,35 @@ public final class NeedHelpRobot: CoreElements {
         staticText(customerSupportLabel).checkExists()
         return self
     }
-    
+
     public func forgotUsernameLink() -> NeedHelpRobot {
         staticText(forgotUsernameLabel).tap()
         _ = safari.staticTexts[forgotUsernamePageHeader].exists
         return NeedHelpRobot()
     }
-    
+
     public func forgotPasswordLink() -> NeedHelpRobot {
         staticText(forgotPasswordLabel).tap()
         _ = safari.staticTexts[forgotPasswordPageHeader].exists
         return NeedHelpRobot()
     }
-    
+
     public func otherSignInIssuesLink() -> NeedHelpRobot {
         staticText(otherSignInIssuesLabel).tap()
         _ = safari.staticTexts[commonLoginIssuesPageHeader].exists
         return NeedHelpRobot()
     }
-    
+
     public func customerSupportLink() {
         staticText(customerSupportLabel).tap()
         _ = safari.staticTexts[customerSupportPageHeader].exists
     }
-    
+
     public func goBackToSampleApp(app: XCUIApplication) -> NeedHelpRobot {
         app.activate()
         return self
     }
-    
+
     public func closeNeedHelpScreen() -> LoginRobot{
         button(helpViewCloseButtonId).waitUntilExists().tap()
         return LoginRobot()

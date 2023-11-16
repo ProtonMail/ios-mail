@@ -44,10 +44,6 @@ struct PaymentsAlertManager {
 
     var alertManager: AlertManagerProtocol
 
-    init (alertManager: AlertManagerProtocol) {
-        self.alertManager = alertManager
-    }
-
     func retryAlert(confirmAction: ActionCallback, cancelAction: ActionCallback) {
         alertManager.title = PSTranslation.error_apply_payment_on_registration_title.l10n
         alertManager.message = PSTranslation.error_apply_payment_on_registration_message.l10n
@@ -77,7 +73,7 @@ struct PaymentsAlertManager {
         alertManager.cancelButtonStyle = .default
         alertManager.showAlert(confirmAction: nil, cancelAction: nil)
     }
-    
+
     func creditsAppliedAlert(confirmAction: ActionCallback, cancelAction: ActionCallback) {
         alertManager.title = nil
         alertManager.message = PSTranslation.popup_credits_applied_message.l10n

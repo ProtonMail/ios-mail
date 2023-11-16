@@ -44,7 +44,7 @@ public enum SignupInitialMode {
 public enum LoginFeatureAvailability<Parameters> {
     case notAvailable
     case available(parameters: Parameters)
-    
+
     var isAvailable: Bool {
         if case .available = self { return true }
         return false
@@ -58,7 +58,7 @@ public struct SignupParameters {
     let separateDomainsButton: Bool
     let passwordRestrictions: SignupPasswordRestrictions
     let summaryScreenVariant: SummaryScreenVariant
-    
+
     public init(separateDomainsButton: Bool,
                 passwordRestrictions: SignupPasswordRestrictions,
                 summaryScreenVariant: SummaryScreenVariant) {
@@ -92,12 +92,12 @@ public struct SignupPasswordRestrictions: OptionSet {
 public typealias PaymentsAvailability = LoginFeatureAvailability<PaymentsParameters>
 
 public struct PaymentsParameters {
-    
+
     let listOfIAPIdentifiers: ListOfIAPIdentifiers
     let listOfShownPlanNames: ListOfShownPlanNames
     let customPlansDescription: CustomPlansDescription
     var reportBugAlertHandler: BugAlertHandler
-    
+
     public init(listOfIAPIdentifiers: ListOfIAPIdentifiers,
                 listOfShownPlanNames: ListOfShownPlanNames,
                 customPlansDescription: CustomPlansDescription = [:],

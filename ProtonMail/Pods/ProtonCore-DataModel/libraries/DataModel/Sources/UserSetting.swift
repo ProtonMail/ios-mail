@@ -62,7 +62,7 @@ public struct UserSetting {
     let phone: NotifySetting
     let password: PasswordSetting
     let twoFA: TFASetting
-    
+
     // "News": 244,
     let news: Int
     // "Locale": "en_US",

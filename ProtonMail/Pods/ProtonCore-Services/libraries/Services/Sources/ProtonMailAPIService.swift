@@ -51,7 +51,7 @@ public enum PMAPIServiceTrustKitProviderWrapper: TrustKitProvider {
 }
 
 extension PMAPIService.APIResponseCompletion {
- 
+
     func call<T>(task: URLSessionDataTask?, error: API.APIError)
     where Left == JSONCompletion, Right == (_ task: URLSessionDataTask?, _ result: Result<T, API.APIError>) -> Void, T: APIDecodableResponse {
         switch self {
@@ -59,7 +59,7 @@ extension PMAPIService.APIResponseCompletion {
         case .right(let decodableCompletion): decodableCompletion(task, .failure(error))
         }
     }
-    
+
     func call<T>(task: URLSessionDataTask?, response: Either<[String: Any], T>)
     where Left == JSONCompletion, Right == (_ task: URLSessionDataTask?, _ result: Result<T, API.APIError>) -> Void, T: APIDecodableResponse {
         switch (self, response) {
@@ -72,7 +72,7 @@ extension PMAPIService.APIResponseCompletion {
 }
 
 extension PMAPIService.ResponseFromSession {
-    
+
     func possibleError<T>() -> SessionResponseError?
     where Left == Result<JSONDictionary, SessionResponseError>, Right == Result<T, SessionResponseError>, T: SessionDecodableResponse {
         switch self {
@@ -83,17 +83,17 @@ extension PMAPIService.ResponseFromSession {
 }
 
 extension ResponseError: APIResponse {
-    
+
     public var code: Int? {
         get { responseCode }
         set { self = ResponseError(httpCode: httpCode, responseCode: newValue, userFacingMessage: userFacingMessage, underlyingError: underlyingError) }
     }
-    
+
     public var error: String? {
         get { userFacingMessage }
         set { self = ResponseError(httpCode: httpCode, responseCode: responseCode, userFacingMessage: newValue, underlyingError: underlyingError) }
     }
-    
+
     public var details: APIResponseDetails? {
         guard let sessionError = underlyingError as? SessionResponseError else { return nil }
         switch sessionError {
@@ -101,15 +101,15 @@ extension ResponseError: APIResponse {
             if let humanVerificationDetails = try? JSONDecoder.decapitalisingFirstLetter.decode(ResponseWithHumanVerificationDetails.self, from: body).details {
                 return .humanVerification(humanVerificationDetails)
             }
-            
+
             if let deviceVerificationDetails = try? JSONDecoder.decapitalisingFirstLetter.decode(ResponseWithDeviceVerificationDetails.self, from: body).details {
                 return .deviceVerification(deviceVerificationDetails)
             }
-            
+
             if let missingScopesDetails = try? JSONDecoder.decapitalisingFirstLetter.decode(ResponseWithMissingScopesDetails.self, from: body).details {
                 return .missingScopes(missingScopesDetails)
             }
-            
+
             return nil
         case .configurationError, .networkingEngineError, .responseBodyIsNotAJSONDictionary(body: nil, _), .responseBodyIsNotADecodableObject(body: nil, _): return nil
         }
@@ -117,26 +117,26 @@ extension ResponseError: APIResponse {
 }
 
 extension Either: APIResponse where Left == JSONDictionary, Right == ResponseError {
-    
+
     var responseDictionary: JSONDictionary { mapRight { $0.serialized }.value() }
-    
+
     public var code: Int? {
         get { mapLeft { $0.code }.mapRight { $0.code }.value() }
         set { self = mapLeft { var tmp = $0; tmp.code = newValue; return tmp }.mapRight { var tmp = $0; tmp.code = newValue; return tmp } }
     }
-    
+
     public var error: String? {
         get { mapLeft { $0.error }.mapRight { $0.error }.value() }
         set { self = mapLeft { var tmp = $0; tmp.error = newValue; return tmp }.mapRight { var tmp = $0; tmp.error = newValue; return tmp } }
     }
-    
+
     public var details: APIResponseDetails? {
         mapLeft { $0.details }.mapRight { $0.details }.value()
     }
 }
 
 public class PMAPIService: APIService {
-    
+
     typealias ResponseFromSession<T> = Either<Result<JSONDictionary, SessionResponseError>, Result<T, SessionResponseError>> where T: SessionDecodableResponse
     typealias ResponseInPMAPIService<T> = Either<Result<JSONDictionary, API.APIError>, Result<T, API.APIError>> where T: APIDecodableResponse
     typealias APIResponseCompletion<T> = Either<JSONCompletion, DecodableCompletion<T>> where T: APIDecodableResponse
@@ -147,30 +147,30 @@ public class PMAPIService: APIService {
     public weak var loggingDelegate: APIServiceLoggingDelegate?
     public weak var serviceDelegate: APIServiceDelegate?
     public weak var missingScopesDelegate: MissingScopesDelegate?
-    
+
     public static var noTrustKit: Bool = false
     public static var trustKit: TrustKit?
-    
+
     /// the session ID. this can be changed
     public var sessionUID: String = ""
-    
+
     @available(*, deprecated, message: "This will be changed to DoHInterface type")
     public var doh: DoH & ServerConfig { get { dohInterface as! DoH & ServerConfig } set { dohInterface = newValue } }
 
     public var dohInterface: DoHInterface
-    
+
     public var signUpDomain: String {
         return self.dohInterface.getSignUpString()
     }
-    
+
     let jsonDecoder: JSONDecoder = .decapitalisingFirstLetter
-    
+
     private(set) var session: Session
-    
+
     private(set) var isHumanVerifyUIPresented = Atomic(false)
     private(set) var isForceUpgradeUIPresented = Atomic(false)
     private(set) var isPasswordVerifyUIPresented = Atomic(false)
-    
+
     let protonMailResponseCodeHandler = ProtonMailResponseCodeHandler()
     let hvDispatchGroup = DispatchGroup()
 
@@ -179,7 +179,7 @@ public class PMAPIService: APIService {
     let dvSynchronizingQueue = DispatchQueue(label: "ch.proton.api.device_verification_async", qos: .userInitiated, attributes: .concurrent)
     let dvCompletionQueue = DispatchQueue.main
     let dvDispatchGroup = DispatchGroup()
-    
+
     let fetchAuthCredentialsAsyncQueue = DispatchQueue(label: "ch.proton.api.credential_fetch_async", qos: .userInitiated)
     let fetchAuthCredentialsSyncSerialQueue = DispatchQueue(label: "ch.proton.api.credential_fetch_sync", qos: .userInitiated)
     let fetchAuthCredentialCompletionBlockBackgroundQueue = DispatchQueue(
@@ -191,7 +191,7 @@ public class PMAPIService: APIService {
         ChallengeProperties(challenges: challengeParametersProvider.provideParametersForSessionFetching(),
                             productPrefix: challengeParametersProvider.prefix)
     }
-    
+
     /**
      `createAPIService` creates `PMAPIService` with `doh` and `sessionID`
      It should be used when user is loged in and there is a `sessionUID` in cached `Credentials`
@@ -264,7 +264,7 @@ public class PMAPIService: APIService {
               trustKitProvider: trustKitProvider,
               challengeParametersProvider: challengeParametersProvider)
     }
-    
+
     /**
      `createAPIServiceWithoutSession` creates `PMAPIService` with `environment` and without `sessionID`
      It should be used when user has logged out or never logged in
@@ -291,12 +291,12 @@ public class PMAPIService: APIService {
     public func acquireSessionIfNeeded(completion: @escaping (Result<SessionAcquiringResult, APIError>) -> Void) {
         fetchExistingCredentialsOrAcquireNewUnauthCredentials(deviceFingerprints: deviceFingerprints) { result in
             switch result {
-            case .foundExisting:
-                completion(.success(.sessionAlreadyPresent))
+            case .foundExisting(let authCredential):
+                completion(.success(.sessionAlreadyPresent(authCredential)))
             case .triedAcquiringNew(.wrongConfigurationNoDelegate):
                 completion(.success(.sessionUnavailableAndNotFetched))
-            case .triedAcquiringNew(.acquired):
-                completion(.success(.sessionFetchedAndAvailable))
+            case .triedAcquiringNew(.acquired(let authCredential)):
+                completion(.success(.sessionFetchedAndAvailable(authCredential)))
             case .triedAcquiringNew(.acquiringError(let error)):
                 // no http code means the request failed because the servers are not reachable — we need to return the error
                 if error.httpCode == nil {
@@ -332,17 +332,17 @@ public class PMAPIService: APIService {
 
         dohInterface.setUpCookieSynchronization(storage: self.session.sessionConfiguration.httpCookieStorage)
     }
-    
+
     public func getSession() -> Session? {
         return session
     }
-    
+
     public func setSessionUID(uid: String) {
         self.sessionUID = uid
     }
-    
+
     func transformJSONCompletion(_ jsonCompletion: @escaping JSONCompletion) -> JSONCompletion {
-        
+
         { task, result in
             switch result {
             case .failure: jsonCompletion(task, result)
@@ -353,12 +353,14 @@ public class PMAPIService: APIService {
                         error = NSError(
                             domain: ResponseErrorDomains.withResponseCode.rawValue,
                             code: responseCode,
+                            responseDictionary: dict,
                             localizedDescription: dict["Error"] as? String ?? ""
                         )
                     } else {
                         error = NSError(
                             domain: ResponseErrorDomains.withStatusCode.rawValue,
                             code: httpResponse.statusCode,
+                            responseDictionary: dict,
                             localizedDescription: dict["Error"] as? String ?? ""
                         )
                     }
@@ -414,12 +416,12 @@ extension PMAPIService {
                   trustKitProvider: trustKitProvider,
                   challengeParametersProvider: challengeParametersProvider)
     }
-    
+
     internal func getResponseError(task: URLSessionDataTask?, response: APIResponse, error: NSError?) -> ResponseError {
         return ResponseError(httpCode: (task?.response as? HTTPURLResponse)?.statusCode,
                              responseCode: response.code,
                              userFacingMessage: response.errorMessage,
                              underlyingError: error)
     }
-    
+
 }

@@ -1,0 +1,134 @@
+
+"OK" = "好";
+
+"Cancel" = "取消";
+
+"Warning" = "警告";
+
+"Select a plan" = "請選擇一個方案";
+
+"Current plan" = "目前方案";
+
+"Subscription" = "訂閲計劃";
+
+"Upgrade your plan" = "升級您的方案";
+
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "非自動續約的年繳制訂購授權僅適用於手機APP中。";
+
+"You cannot manage subscriptions inside the mobile application." = "您無法在手機APP中管理訂購授權。";
+
+"Your plan will automatically renew on %@" = "您的方案自動續約日期為 %@";
+
+"Current plan will expire on %@" = "您的方案到期日為 %@";
+
+"Contact an administrator to make changes to your Proton subscription." = "聯絡管理員以進行 Proton 訂購授權變更。";
+
+"%@ storage" = "%@ 雲端儲存";
+
+"%@ storage / user" = "%@ 雲端儲存 / 使用者";
+
+"for %@" = "為期 %@";
+
+"Custom email addresses" = "自訂電子郵件信箱";
+
+"Priority customer support" = "優先客戶專屬支援";
+
+"Adblocker (NetShield)" = "廣告攔截程式 (NetShield)";
+
+"Streaming service support" = "支援影音串流服務";
+
+"High speed" = "高速";
+
+"Highest speed" = "極速";
+
+"Multi-user support" = "多使用者支援";
+
+"The basic for private and secure communications." = "私人和通訊安全的基本。";
+
+"Full-featured mailbox with advanced protection." = "完整的電子郵件信箱搭配進階保護。";
+
+"Limited time offer" = "限時特惠";
+
+"Complete payment?" = "是否已完成付款？";
+
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Proton Bundle 方案訂購授權已經開始。按下繼續以完成付款處理，並建立您的帳號";
+
+"Complete payment" = "付款完成";
+
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "由於發生異常，因此無法完成帳號的設定程序。\n請稍候再重新操作。";
+
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "IAP 訂購授權已在處理中，請參考 Apple 訂購與取消授權的相關說明。";
+
+"One plan for all Proton services" = "一個方案，盡享所有 Proton 服務";
+
+"The no-cost starter account designed to empower everyone with privacy by default." = "免費版帳號提供所有人以隱私權為宗旨的服務。";
+
+"The privacy-first email and calendar solution for your everyday communication needs." = "隱私權至上的電子郵件與行事曆解決方案，是您日常聯絡通訊需求的最佳選擇。";
+
+"Your privacy and security are our priority." = "您的隱私與安全是我們的首要任務。";
+
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "著重儲存空間的方案，提供 200 GB 雲端儲存空間，以保護您的檔案機密。";
+
+"The ultimate privacy pack with access to all premium Proton services." = "隱私權至上，無限量 Proton 服務吃到飽的終極套餐。";
+
+"Only non-renewing annual subscriptions are available via this app" = "此應用程式僅提供非續購型年約授權";
+
+"Unlimited folders, labels, and filters" = "資料夾、標籤和篩選器無上限";
+
+"Up to %@ storage" = "多至 %@ 儲存空間";
+
+"Free VPN on a single device" = "單一裝置的免費 VPN";
+
+"Highest VPN speed" = "頂尖 VPN 速度";
+
+"Built-in ad-blocker (NetShield)" = "內建廣告攔截程式 (NetShield)";
+
+"Access to streaming services globally" = "存取全球影音串流服務";
+
+"Secure Core servers" = "Secure Core伺服器";
+
+"TOR over VPN" = "VPN透過Tor";
+
+"P2P/BitTorrent" = "P2P/BitTorrent";
+
+"Get %@" = "取得 %@";
+
+"Get Proton for free" = "免費取得 Proton";
+
+"Extend subscription" = "延長訂閱";
+
+"%@ of %@" = "已用 %@，最多 %@";
+
+"Connection issues" = "連線問題";
+
+"Check your internet connection" = "檢查您的網路連線";
+
+"Strict no-logs policy" = "嚴格的無日誌政策";
+
+"Plan successfully upgraded" = "方案升級成功";
+
+"Integrated 2FA authenticator" = "使用二步驟驗證";
+
+"Priority support" = "優先支援";
+
+"Unlimited devices" = "無限裝置數";
+
+"%@ email aliases" = "%@電子信箱別名";
+
+"Unlimited email aliases" = "無限電子郵件別名";
+
+"Unlimited logins and notes" = "無限登入資訊與筆記";
+
+"Up to %@ forwarding mailboxes" = "最多%@個轉寄電子郵件信箱";
+
+"Custom fields" = "自訂欄位";
+
+"For next-level password management and identity protection." = "使用密碼管理器及身分保護以增加安全性。";
+
+"Pay monthly" = "月繳";
+
+"Pay annually" = "年繳";
+
+"Pay every two years" = "雙年繳";
+
+"Free" = "免費";

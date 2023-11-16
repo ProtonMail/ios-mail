@@ -31,7 +31,7 @@ import ProtonCoreHumanVerificationResourcesmacOS
 private class Handler {}
 
 public enum HVTranslation: TranslationsExposing {
-    
+
     public static var bundle: Bundle {
         #if SPM
         return spmResourcesBundle
@@ -39,9 +39,9 @@ public enum HVTranslation: TranslationsExposing {
         return Bundle(path: Bundle(for: Handler.self).path(forResource: "Translations-HumanVerification", ofType: "bundle")!)!
         #endif
     }
-    
+
     public static var prefixForMissingValue: String = ""
-    
+
     case delete_network_error
     case help_button
     case ok_button
@@ -57,7 +57,7 @@ public enum HVTranslation: TranslationsExposing {
     case email_verification_button
     case verification_code
     case verification_verify_button
-    
+
     public var l10n: String {
         switch self {
         case .delete_network_error:

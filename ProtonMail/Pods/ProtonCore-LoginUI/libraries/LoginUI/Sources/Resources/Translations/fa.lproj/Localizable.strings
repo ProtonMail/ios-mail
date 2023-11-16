@@ -1,0 +1,220 @@
+
+"Privacy by default" = "حریم شخصی به صورت پیشفرص";
+
+"Proton address required" = "آدرس Proton نیاز است";
+
+"Update required" = "بروزرسانی ضروری است";
+
+"Please enter your Proton Account password." = "لطفا گذرواژه حساب کاربری Proton خود را وارد کنید.";
+
+"OK" = "تایید";
+
+"Help" = "راهنمایی";
+
+"Continue" = "ادامه";
+
+"Password" = "گذرواژه";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked";
+
+"Search country" = "جستجوی کشور";
+
+"Code sent to %@" = "کد به %@ ارسال شد";
+
+"Request new code?" = "درخواست کد جدید?";
+
+"Resend" = "ارسال مجدد";
+
+"Get a replacement code sent to %@." = "کد جایگزین به %@ ارسال شود.";
+
+"Request new code" = "درخواست کد جدید";
+
+"Enter your Proton Account details." = "اطلاعات حساب Proton خود را وارد کنید.";
+
+"Email or username" = "رایانامه یا نام‌کاربری";
+
+"Sign in" = "ورود";
+
+"Sign in with password" = "Sign in with password";
+
+"Sign in with SSO" = "Sign in with SSO";
+
+"Sign in to your organization" = "Sign in to your organization";
+
+"Create an account" = "ایجاد حساب کاربری";
+
+"How can we help?" = "چه طور می‌توانیم کمک کنیم؟";
+
+"Forgot username" = "فراموشی نام کاربری";
+
+"Forgot password" = "فراموشی گذرواژه";
+
+"Other sign-in issues" = "سایر مشکلات ورود";
+
+"Customer support" = "پشتیبانی مشتری";
+
+"Still need help? Contact us directly." = "هنوز به کمک نیاز دارید؟ با ما به صورت مستقیم تماس بگیرید.";
+
+"Please enter your Proton Account email or username." = "لطفا ایمیل حساب کاربری یا نام کاربری Proton خود را وارد کنید.";
+
+"Complete Setup" = "تکمیل عملیات راه‌اندازی";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
+
+"Account setup required" = "راه‌اندازی حساب کاربری لازم است";
+
+"Incorrect mailbox password" = "گذرواژهٔ صندوق پستی نادرست است";
+
+"Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
+
+"Proton address required" = "آدرس Proton نیاز است";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account.";
+
+"Username" = "نام کاربری";
+
+"Please enter a username." = "لطفا یک نام کاربری وارد کنید.";
+
+"Unlock your mailbox" = "نامه‌دان خود را باز کنید";
+
+"Mailbox password" = "گذرواژه نامه‌دان";
+
+"Unlock" = "بازگشایی";
+
+"Forgot password" = "فراموشی گذرواژه";
+
+"Two-factor authentication" = "احراز هویت دو مرحله‌ای";
+
+"Authenticate" = "احراز هویت";
+
+"Two-factor code" = "کد دو مرحله‌ای";
+
+"Recovery code" = "کد بازیابی";
+
+"Use recovery code" = "از کد بازیابی استفاده کنید";
+
+"Use two-factor code" = "استفاده از کد دو مرحله ای";
+
+"Enter the 6-digit code." = "کد ۶-رقمی را وارد کنید.";
+
+"Enter an 8-character recovery code." = "یک کد بازیابی ۸ نویسه ای را وارد کنید.";
+
+"Learn more" = "بیشتر بدانید";
+
+"Change your password" = "گذرواژه خود را تغییر دهید";
+
+"Change password" = "تغییر گذرواژه";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "برای استفاده از برنامه Proton به عنوان عضوی از یک سازمان، شما اول باید گذرواژه خود را از طریق ورود به Proton از طریق یک مرورگر تغییر دهید.";
+
+"Error occured" = "خطایی روی داد";
+
+"Create your Proton Account" = "حساب Proton خود را ایجاد کنید";
+
+"One account for all Proton services." = "یک حساب برای همه سرویس های پروتون.";
+
+"Next" = "بعدی";
+
+"Use your current email instead" = "در عوض از ایمیل فعلی خود استفاده کنید";
+
+"Create a secure Proton Mail address instead" = "به جای آن یک آدرس Proton Mail امن ایجاد کنید";
+
+"Email" = "رایانامه";
+
+"Create your password" = "گذرواژه خود را ایجاد کنید";
+
+"Password must contain at least 8 characters" = "گذرواژه باید حداقل ۸ نویسه داشته باشد";
+
+"Repeat password" = "تکرار گذرواژه";
+
+"Domain" = "دامنه";
+
+"Set recovery method" = "تعیین روش بازیابی";
+
+"Set recovery method (optional)" = "تعیین روش بازیابی (اختیاری)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "اگر شما راهی برای دسترسی به حساب کاربری خود نداشتید ما دستورالعمل های بازیابی را به این ایمیل یا شماره تلفن ارسال خواهیم کرد.";
+
+"Email" = "رایانامه";
+
+"Phone" = "تلفن";
+
+"Recovery email" = "رایانامه بازیابی";
+
+"Recovery phone number" = "شماره تلفن بازیابی";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "با کلیک کردن روی بعدی، شما با شرایط و ضوابط Proton موافقت میکنید";
+
+"Terms and Conditions" = "شرایط و قوانین";
+
+"Skip" = "جهش";
+
+"Skip recovery method?" = "رد شدن از تعیین روش بازیابی؟";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "یک روش بازیابی به شما کمک میکند که در صورت فراموشی رمز عبور یا عدم امکان ورود به حساب کاربری، به حساب کاربری خود دسترسی پیدا کنید.";
+
+"Set recovery method" = "تعیین روش بازیابی";
+
+"Your account is being created" = "Your account is being created";
+
+"This should take no more than a minute." = "This should take no more than a minute.";
+
+"Creating your account" = "درحال ایجاد حساب کاربری شما";
+
+"Generating your address" = "در حال ساخت آدرس شما";
+
+"Securing your account" = "درحال امن کردن حساب شما";
+
+"Verifying your payment" = "درحال تایید پرداخت شما";
+
+"Account verification" = "تایید حساب";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
+
+"Verification code" = "کد تأیید";
+
+"Enter the 6-digit code." = "کد ۶-رقمی را وارد کنید.";
+
+"Did not receive a code?" = "یک کد دریافت نشد?";
+
+"Terms and Conditions" = "شرایط و قوانین";
+
+"Invalid token request" = "درخواست توکن نامعتبر";
+
+"Invalid token error" = "خطای توکن نامعتبر";
+
+"Create user failed" = "Create user failed";
+
+"Invalid hashed password" = "گذرواژه هش شده نامعتبر است";
+
+"Password can not be empty.\nPlease try again." = "گذرواژه نمیتواند خالی باشد. \nلطفا دوباره تلاش کنید.";
+
+"Password must contain at least %@ characters." = "گذرواژه باید حداقل %@ نویسه داشته باشد.";
+
+"Passwords do not match.\nPlease try again." = "گذرواژه ها یکسان نیستند. \nلطفا دوباره تلاش کنید.";
+
+"Email address already used." = "این رایانامه پیشتر استفاده شده است.";
+
+"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
+
+"Change email address" = "تغییر آدرس ایمیل";
+
+"Congratulations" = "Congratulations";
+
+"Your Proton Free account was successfully created." = "حساب کاربری Proton Free شما با موفقیت ایجاد شد.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
+
+"Your Proton account was successfully created." = "حساب کاربری Proton شما با موفقیت ایجاد شد.";
+
+"Enjoy the world of privacy." = "از دنیای حریم خصوصی لذت ببرید.";
+
+"Cancel" = "انصراف";
+
+"Sign in" = "ورود";
+
+"Troubleshoot" = "عیب یابی";

@@ -22,6 +22,8 @@
 
 "Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
 
+"%1$@ of %2$@" = "%1$@ of %2$@";
+
 "%@ storage" = "%@ storage";
 
 "%@ storage / user" = "%@ storage / user";
@@ -112,13 +114,9 @@
 
 "Unlimited devices" = "Unlimited devices";
 
-"%@ email aliases" = "%@ email aliases";
-
 "Unlimited email aliases" = "Unlimited email aliases";
 
 "Unlimited logins and notes" = "Unlimited logins and notes";
-
-"Up to %@ forwarding mailboxes" = "Up to %@ forwarding mailboxes";
 
 "Custom fields" = "Custom fields";
 

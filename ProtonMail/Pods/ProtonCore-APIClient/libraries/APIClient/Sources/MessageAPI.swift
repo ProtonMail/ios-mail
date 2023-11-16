@@ -64,3 +64,5 @@ class MessageAPI: APIClient {
     // Unlabel Messages [/messages/unlabel] [PUT]
     static let v_remove_label_from_message: Int = 3
 }
+
+// swiftlint:enable identifier_name

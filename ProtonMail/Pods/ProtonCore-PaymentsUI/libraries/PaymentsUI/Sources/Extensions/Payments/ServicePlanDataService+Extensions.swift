@@ -26,10 +26,10 @@ import ProtonCoreUIFoundations
 import ProtonCorePayments
 
 extension ServicePlanDataServiceProtocol {
-    
+
     func endDateString(plan: InAppPurchasePlan) -> NSAttributedString? {
         guard let endDate = currentSubscription?.endDate, endDate.isFuture else { return nil }
-        
+
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yy"
         let endDateString = dateFormatter.string(from: endDate)

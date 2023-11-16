@@ -43,7 +43,7 @@ extension UIViewController {
         PMBanner.dismissAll(on: self)
         banner.show(at: position, on: self)
     }
-    
+
     func showBannerWithoutButton(message: String, style: PMBannerNewStyle = .error, position: PMBannerPosition) {
         unlockUI()
         let banner = PMBanner(message: message, style: style, dismissDuration: Double.infinity)
@@ -126,7 +126,7 @@ extension LoginErrorCapable {
             showBanner(message: LUITranslation.error_missing_sub_user_configuration.l10n)
         }
     }
-    
+
     func showInfo(message: String) {
         showBannerWithoutButton(message: message, style: .info, position: bannerPosition)
     }
@@ -140,7 +140,7 @@ extension LoginErrorCapable {
 
     func onFirstPasswordChangeNeeded() {
     }
-    
+
     func onLearnMoreAboutExternalAccountsNotSupported() {
     }
 }

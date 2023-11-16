@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCoreFeatureSwitch
+import ProtonCoreFeatureFlags
 import ProtonCoreServices
 import ProtonCoreObservability
 import ProtonCoreUtilities
@@ -35,6 +35,7 @@ public enum PurchaseResult {
 }
 
 public protocol PurchaseManagerProtocol {
+    /// Plan corresponding to the first successful transaction pending to process, if any
     var unfinishedPurchasePlan: InAppPurchasePlan? { get }
 
     func buyPlan(plan: InAppPurchasePlan,
@@ -115,7 +116,6 @@ final class PurchaseManager: PurchaseManagerProtocol {
             return
         }
 
-        // TODO: test purchase process with PlansDataSource object
         let planName: String
         let planId: String
         switch planService {
@@ -181,7 +181,6 @@ final class PurchaseManager: PurchaseManagerProtocol {
         let subscriptionRequest = paymentsApi.buySubscriptionForZeroRequest(api: apiService, planId: planId)
         let subscriptionResponse = try subscriptionRequest.awaitResponse(responseObject: SubscriptionResponse())
         if let newSubscription = subscriptionResponse.newSubscription {
-            // TODO: test purchase process with PlansDataSource object
             switch planService {
             case .left(let planService):
                 planService.updateCurrentSubscription { [weak self] in
@@ -202,12 +201,12 @@ final class PurchaseManager: PurchaseManagerProtocol {
                         self?.storeKitManager.refreshHandler(.finished(.resolvingIAPToSubscription))
                     } catch {
                         finishCallback(.purchasedPlan(accountPlan: plan))
-                        self?.storeKitManager.refreshHandler(.errored(StoreKitManagerErrors.noNewSubscriptionInSuccessfullResponse))
+                        self?.storeKitManager.refreshHandler(.errored(StoreKitManagerErrors.noNewSubscriptionInSuccessfulResponse))
                     }
                 }
             }
         } else {
-            throw StoreKitManager.Errors.noNewSubscriptionInSuccessfullResponse
+            throw StoreKitManager.Errors.noNewSubscriptionInSuccessfulResponse
         }
         return
     }
@@ -219,16 +218,18 @@ final class PurchaseManager: PurchaseManagerProtocol {
         self.storeKitManager.purchaseProduct(plan: plan, amountDue: amountDue) { result in
             if case .cancelled = result {
                 finishCallback(.purchaseCancelled)
-            } else if case .resolvingIAPToCredits = result {
+            } else if case .resolvingIAPToCredits = result,
+                      !FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
                 finishCallback(.toppedUpCredits)
-            } else if case .resolvingIAPToCreditsCausedByError = result {
+            } else if case .resolvingIAPToCreditsCausedByError = result,
+                      !FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
                 finishCallback(.toppedUpCredits)
             } else {
                 finishCallback(.purchasedPlan(accountPlan: plan))
             }
         } errorCompletion: { [weak self] error in
             // ignored payment errors
-            if let error = error as? StoreKitManagerErrors, error == .notAllowed || error.isUnknown {
+            if let error = error as? StoreKitManagerErrors, error == .notAllowed || error.isUnknown || error == .alreadyPurchasedPlanDoesNotMatchBackend {
                 finishCallback(.purchaseCancelled)
             } else if let error = error as? StoreKitManagerErrors, case .apiMightBeBlocked(let message, let originalError) = error {
                 finishCallback(.apiMightBeBlocked(message: message, originalError: originalError, processingPlan: self?.unfinishedPurchasePlan))

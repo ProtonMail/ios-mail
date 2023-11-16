@@ -30,32 +30,32 @@ extension AuthService {
             static let userName = "Username"
             static let intent = "Intent"
         }
-        
+
         let username: String
         private let intent: Intent?
-        
+
         init(username: String, intent: Intent? = nil) {
             self.username = username
             self.intent = intent
         }
-        
+
         var path: String {
             return "/auth/info"
         }
-        
+
         var method: HTTPMethod {
             return .post
         }
-        
+
         var parameters: [String: Any]? {
             var parameters = [Key.userName: username]
             if let intent {
                 parameters[Key.intent] = intent.rawValue
             }
-            
+
             return parameters
         }
-        
+
         var isAuth: Bool {
             return false
         }

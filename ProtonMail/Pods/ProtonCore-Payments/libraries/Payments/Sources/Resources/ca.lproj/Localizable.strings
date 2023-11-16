@@ -1,0 +1,46 @@
+
+"Contact customer support" = "Contacta amb atenció al client";
+
+"Failed to get list of available products from App Store." = "No s'ha pogut obtenir la llista de productes disponibles de l'App Store.";
+
+"Purchase is not possible." = "La compra no és possible.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple ens informa que heu millorat el vostre pla, però falten algunes dades tècniques. Empleneu l'informe d'error i el nostre equip us contactarà.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple ens ha informat que heu millorat el vostre pla, però hem detectat que heu sortit del vostre compte des de llavors.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "No hem pogut comprovar que el producte que heu comprat a l'App Store concori amb cap producte del nostre servidor. Empleneu l’informe d’errors i el nostre equip d'atenció al client us contactarà.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Inicieu la sessió al compte de Proton Mail del qual voleu millorar el pla per poder completar la compra.";
+
+"Apple informed us they could not process the purchase." = "Apple informa que no han pogut processar la compra.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Hem activat la vostra subscripció satisfactòriament. Torneu a carregar l'aplicació per començar a utilitzar el nou pla de serveis.";
+
+"Please unlock the app to proceed with your service plan activation" = "Desbloquegeu l'aplicació per continuar amb l'activació del vostre pla de serveis";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Inicieu la sessió al compte de Proton Mail pel qual esteu millorant el pla per poder completar l'activació del pla.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Estat del token de pagament incorrecte. Torneu a carregar l'aplicació. Si l'error persisteix, contacteu amb suport.";
+
+"Do you want to activate the purchase for %@ address?" = "Voleu activar la compra per l'adreça %@?";
+
+"Yes, activate it for " = "Sí, activeu-lo per ";
+
+"No, for another Proton Mail account" = "No, per a un altre compte de Proton Mail";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "No hem pogut millorar el vostre compte al pla que heu seleccionat, de manera que hem afegit el vostre pagament com a crèdit al vostre compte. Per obtenir més informació i completar l'actualització, poseu-vos en contacte amb Suport.";
+
+"Contact Support" = "Contacta amb el suport";
+
+"Dismiss" = "Descarta";
+
+"Payment failed" = "Error en el pagament";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Us heu registrat correctament, però el vostre pagament no s'ha processat. Per reenviar la informació de pagament, feu clic en «Tornar-ho a intentar». Només us cobrarem una vegada. Si el problema persisteix, contacteu amb atenció al client.";
+
+"Retry" = "Reintenta";
+
+"OK" = "OK";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "No es pot connectar als servidors del Proton. La causa podria ser una mala configuració de la xarxa, que els servidors del Proton estiguin essent blocats o que els servidors actualment no funcionin";

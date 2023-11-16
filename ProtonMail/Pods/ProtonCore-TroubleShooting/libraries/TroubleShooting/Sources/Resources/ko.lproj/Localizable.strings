@@ -1,0 +1,50 @@
+
+"support form" = "지원 양식";
+
+"email" = "이메일";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "문제 해결";
+
+"Allow alternative routing" = "대체 라우팅 허용";
+
+"No internet connection" = "인터넷에 연결되지 않음";
+
+"Internet Service Provider (ISP) problem" = "인터넷 서비스 제공사업자 (ISP) 문제";
+
+"Government block" = "정부 차단";
+
+"Antivirus interference" = "안티바이러스 간섭";
+
+"Proxy/Firewall interference" = "프록시/방화벽 환경";
+
+"Proton is down" = "Proton에 접속할 수 없음";
+
+"Still can't find a solution" = "아직 해결책을 찾지 못했습니다.";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Proton이 차단되었을 때 방화벽을 우회하거나 네트워크에 문제가 발생한 경우 대체 네트워크 라우팅을 이용해 접속을 시도합니다. 이 설정을 계속 켜두는게 좋습니다. %1$@";
+
+"Learn more" = "더 알아보기";
+
+"Please make sure that your internet connection is working." = "인터넷 연결이 잘 작동하는지 확인하세요.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "다른 네트워크에서 Proton에 연결해 보세요 (혹은 %1$@ 및 %2$@ 사용).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "국가에서 Proton에 접근하는 것을 차단하고 있을 수 있습니다. %1$@ (또는 다른 VPN) 이나 %2$@ 으로 Proton에 접속을 시도해보세요.";
+
+"Temporarily disable or remove your antivirus software." = "일시적으로 안티바이러스 소프트웨어를 비활성화하거나 제거하세요.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "프록시와 방화벽을 비활성화 하거나 네트워크 관리자에게 문의하세요.";
+
+"Check Proton Status for our system status." = "Proton Status에서 시스템 상태를 확인하세요.";
+
+"Proton Status" = "Proton 상태";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "이메일 (support@protonmail.zendesk.com), 혹은 Twitter를 통해 직접 문의하세요.";
+
+"Subject..." = "제목...";
+
+"Please share your problem." = "겪고 계신 문제에 대해 저희에게 알려주세요.";
+
+"Back" = "이전";

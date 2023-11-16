@@ -1,0 +1,46 @@
+
+"Contact customer support" = "Ügyfélszolgálat elérése";
+
+"Failed to get list of available products from App Store." = "Nem sikerült beolvasni az elérhető áruk listáját az App Store-ból.";
+
+"Purchase is not possible." = "A vásárlás nem lehetséges.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Az Apple azt jelezte vissza, hogy ön nagyobb csomagra váltott, de bizonyos technikai adatok hiányoznak. Kérjük, töltsön ki egy hiba jelentést és a támogatási csoportunk felveszi önnel a kapcsolatot.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Az Apple azt jelezte vissza, hogy ön nagyobb csomagra váltott, de úgy vettük észre, hogy azóta kilépett a fiókból.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nem sikerült összeegyeztetni a megvásárolt AppStore terméket a rendelkezésre álló termékeinkkel. Kérjük, küldjön egy hibabejelentést és ügyfélszolgálatunk felveszi önnel a kapcsolatot.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Kérjük, vásárlás befejezéséhez, jelentkezzen be abba a Poton Mail fiókba, amelyhez nagyobb csomagra fizet elő.";
+
+"Apple informed us they could not process the purchase." = "Az Apple azt jelezte vissza, hogy nem tudták feldolgozni a vásárlást.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Új előfizetését sikeresen aktiváltuk. Indítsa újra az alkalmazást, az új csomag funkcióinak eléréséhez.";
+
+"Please unlock the app to proceed with your service plan activation" = "Kérjük, szolgáltatási csomagjának aktiválásához oldja fel az alkalmazást";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Kérjük, csomag aktiválásának befejezéséhez, jelentkezzen be abba a Poton Mail fiókba, amelyhez nagyobb csomagra fizet elő.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Hibás fizetési token állapot. Indítsa újra az alkalmazást. Ha a hiba továbbra is fennáll, kérjük lépjen kapcsolatba velünk.";
+
+"Do you want to activate the purchase for %@ address?" = "Aktiválja a vásárlást a %@ címhez?";
+
+"Yes, activate it for " = "Igen, aktiváljuk ehhez: ";
+
+"No, for another Proton Mail account" = "Nem, egy másik Proton Mail fiókhoz";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Nem sikerült az előfizetés váltása a kiválasztott csomagra, és a befizetett összeget kreditként elhelyeztük a fiókjában. További információkért és a váltás befejezéséhez, kérjük lépjen kapcsolatba velünk.";
+
+"Contact Support" = "Kapcsolatfelvétel";
+
+"Dismiss" = "Elvetés";
+
+"Payment failed" = "Fizetés sikertelen";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Sikeresen regisztrált, de a befizetés nem került feldolgozásra. A fizetési információk újbóli elküldéséhez kattintson az Újra gombra. A díj csak egyszer kerül felszámolásra. Ha a probléma továbbra is fennáll, forduljon az ügyfélszolgálatunkhoz.";
+
+"Retry" = "Újra";
+
+"OK" = "OK";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "A Proton szerverek nem érhetők el. Ezt hibás hálózati beállítások is okozhatják. A Proton szerverei nem működnek vagy le vannak tiltva.";

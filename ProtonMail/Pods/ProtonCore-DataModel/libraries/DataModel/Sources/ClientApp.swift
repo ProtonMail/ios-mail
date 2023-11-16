@@ -30,7 +30,7 @@ public enum ClientApp: Codable, Equatable {
     case other(named: String)
 
     public static var allDefinedCases: [ClientApp] = [.mail, .vpn, .drive, .calendar, .pass]
-    
+
     public var name: String {
         // this name is used in requests to our BE and should not be changed
         // without checking the affected place and consulting the changes with BE devs

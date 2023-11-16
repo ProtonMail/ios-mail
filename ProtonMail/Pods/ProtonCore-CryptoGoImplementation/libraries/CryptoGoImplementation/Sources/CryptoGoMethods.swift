@@ -27,7 +27,7 @@ import ProtonCoreCryptoGoInterface
 public enum CryptoGoMethodsImplementation: CryptoGoMethods {
 
     public var ConstantsAES256: String { GoLibs.ConstantsAES256 }
-    
+
     case instance
 
     // initializers for types
@@ -39,7 +39,6 @@ public enum CryptoGoMethodsImplementation: CryptoGoMethods {
     public func CryptoKey(fromArmored armored: String?) -> ProtonCoreCryptoGoInterface.CryptoKey? {
         GoLibs.CryptoKey(fromArmored: armored)
     }
-
 
     public func CryptoNewKeyRing(_ key: ProtonCoreCryptoGoInterface.CryptoKey?, _ error: NSErrorPointer) -> ProtonCoreCryptoGoInterface.CryptoKeyRing? {
         GoLibs.CryptoNewKeyRing(key?.toGoLibsType, error)
@@ -73,6 +72,10 @@ public enum CryptoGoMethodsImplementation: CryptoGoMethods {
         GoLibs.CryptoPGPSignature(fromArmored: armored)
     }
 
+    public func CryptoPGPSignature(_ data: Data?) -> ProtonCoreCryptoGoInterface.CryptoPGPSignature? {
+        GoLibs.CryptoPGPSignature(data)
+    }
+
     public func HelperGo2IOSReader(_ reader: ProtonCoreCryptoGoInterface.CryptoReaderProtocol?) -> ProtonCoreCryptoGoInterface.HelperGo2IOSReader? {
         GoLibs.HelperGo2IOSReader(reader?.toGoLibsType)
     }
@@ -104,15 +107,15 @@ public enum CryptoGoMethodsImplementation: CryptoGoMethods {
     public func SrpAuth(_ version: Int, _ username: String?, _ password: Data?, _ b64salt: String?, _ signedModulus: String?, _ serverEphemeral: String?) -> ProtonCoreCryptoGoInterface.SrpAuth? {
         GoLibs.SrpAuth(version, username: username, password: password, b64salt: b64salt, signedModulus: signedModulus, serverEphemeral: serverEphemeral)
     }
-    
+
     public func SrpNewAuth(_ version: Int, _ username: String?, _ password: Data?, _ b64salt: String?, _ signedModulus: String?, _ serverEphemeral: String?, _ error: NSErrorPointer) -> ProtonCoreCryptoGoInterface.SrpAuth? {
         GoLibs.SrpNewAuth(version, username, password, b64salt, signedModulus, serverEphemeral, error)
     }
-    
+
     public func SrpNewAuthForVerifier(_ password: Data?, _ signedModulus: String?, _ rawSalt: Data?, _ error: NSErrorPointer) -> ProtonCoreCryptoGoInterface.SrpAuth? {
         GoLibs.SrpNewAuthForVerifier(password, signedModulus, rawSalt, error)
     }
-    
+
     public func SrpRandomBits(_ bits: Int, _ error: NSErrorPointer) -> Data? {
         GoLibs.SrpRandomBits(bits, error)
     }
@@ -126,7 +129,7 @@ public enum CryptoGoMethodsImplementation: CryptoGoMethods {
     }
 
     public func SrpNewServerFromSigned(_ signedModulus: String?, _ verifier: Data?, _ bitLength: Int, _ error: NSErrorPointer) -> ProtonCoreCryptoGoInterface.SrpServer? {
-        let value: GoLibs.SrpServer? =  GoLibs.SrpNewServerFromSigned(signedModulus, verifier, bitLength, error)
+        let value: GoLibs.SrpServer? = GoLibs.SrpNewServerFromSigned(signedModulus, verifier, bitLength, error)
         return value
     }
 
@@ -139,7 +142,7 @@ public enum CryptoGoMethodsImplementation: CryptoGoMethods {
     public func ArmorArmorKey(_ input: Data?, _ error: NSErrorPointer) -> String {
         GoLibs.ArmorArmorKey(input, error)
     }
-    
+
     public func ArmorArmorWithType(_ input: Data?, _ armorType: String?, _ error: NSErrorPointer) -> String {
         GoLibs.ArmorArmorWithType(input, armorType, error)
     }
@@ -155,7 +158,7 @@ public enum CryptoGoMethodsImplementation: CryptoGoMethods {
     public func CryptoGenerateKey(_ name: String?, _ email: String?, _ keyType: String?, _ bits: Int, _ error: NSErrorPointer) -> ProtonCoreCryptoGoInterface.CryptoKey? {
         GoLibs.CryptoGenerateKey(name, email, keyType, bits, error)
     }
-    
+
     public func CryptoGenerateSessionKey(_ error: NSErrorPointer) -> ProtonCoreCryptoGoInterface.CryptoSessionKey? {
         GoLibs.CryptoGenerateSessionKey(error)
     }
@@ -195,7 +198,7 @@ public enum CryptoGoMethodsImplementation: CryptoGoMethods {
     public func HelperDecryptSessionKeyExplicitVerify(_ dataPacket: Data?, _ sessionKey: ProtonCoreCryptoGoInterface.CryptoSessionKey?, _ publicKeyRing: ProtonCoreCryptoGoInterface.CryptoKeyRing?, _ verifyTime: Int64, _ error: NSErrorPointer) -> ProtonCoreCryptoGoInterface.HelperExplicitVerifyMessage? {
         GoLibs.HelperDecryptSessionKeyExplicitVerify(dataPacket, sessionKey?.toGoLibsType, publicKeyRing?.toGoLibsType, verifyTime, error)
     }
-    
+
     public func HelperDecryptAttachment(_ keyPacket: Data?, _ dataPacket: Data?, _ keyRing: ProtonCoreCryptoGoInterface.CryptoKeyRing?, _ error: NSErrorPointer) -> ProtonCoreCryptoGoInterface.CryptoPlainMessage? {
         GoLibs.HelperDecryptAttachment(keyPacket, dataPacket, keyRing?.toGoLibsType, error)
     }
@@ -258,11 +261,11 @@ public enum CryptoGoMethodsImplementation: CryptoGoMethods {
     public func SrpECDLPChallenge(_ b64Challenge: String?, _ deadlineUnixMilli: Int64, _ error: NSErrorPointer) -> String {
         GoLibs.SrpECDLPChallenge(b64Challenge, deadlineUnixMilli, error)
     }
-    
+
     public func SubtleDecryptWithoutIntegrity(_ key: Data?, _ input: Data?, _ iv: Data?, _ error: NSErrorPointer) -> Data? {
         GoLibs.SubtleDecryptWithoutIntegrity(key, input, iv, error)
     }
-    
+
     public func SubtleDeriveKey(_ password: String?, _ salt: Data?, _ n: Int, _ error: NSErrorPointer) -> Data? {
         GoLibs.SubtleDeriveKey(password, salt, n, error)
     }

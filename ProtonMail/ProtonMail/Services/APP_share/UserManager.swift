@@ -26,7 +26,6 @@ import ProtonCoreAuthentication
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreNetworking
-import ProtonCoreFeatureSwitch
 #if !APP_EXTENSION
 import ProtonCorePayments
 #endif
@@ -277,22 +276,13 @@ class UserManager: ObservableObject {
 
     func activatePayments() {
         #if !APP_EXTENSION
-        self.payments.storeKitManager.delegate = container.storeKitManager
-        self.payments.storeKitManager.subscribeToPaymentQueue()
-
-        if !FeatureFactory.shared.isEnabled(.dynamicPlans) {
-            self.payments.storeKitManager.updateAvailableProductsList { _ in }
-        }
+        payments.activate(delegate: container.storeKitManager)
         #endif
     }
 
     func deactivatePayments() {
         #if !APP_EXTENSION
-        self.payments.storeKitManager.unsubscribeFromPaymentQueue()
-        // this will ensure no unnecessary screen refresh happens, which was the source of crash previously
-        self.payments.storeKitManager.refreshHandler = { _ in }
-        // this will ensure no unnecessary communication with proton backend happens
-        self.payments.storeKitManager.delegate = nil
+        payments.deactivate()
         #endif
     }
 

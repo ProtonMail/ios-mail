@@ -29,12 +29,12 @@ import ProtonCoreNetworking
 public final class AuthHelperDelegateMock: AuthHelperDelegate {
 
     public init() {}
-    
+
     @FuncStub(AuthHelperDelegateMock.credentialsWereUpdated) public var credentialsWereUpdatedStub
     public func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
         credentialsWereUpdatedStub(authCredential, credential, sessionUID)
     }
-    
+
     @FuncStub(AuthHelperDelegateMock.sessionWasInvalidated) public var sessionWasInvalidatedStub
     public func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
         sessionWasInvalidatedStub(sessionUID, isAuthenticatedSession)

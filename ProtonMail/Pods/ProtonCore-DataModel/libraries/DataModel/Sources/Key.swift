@@ -27,27 +27,27 @@ import Foundation
 
     public let keyID: String
     public var privateKey: String
-    
+
     // TODO:: this is a bit set. need to refactor to a struct
     public var keyFlags: Int = 0
-    
+
     // key migration step 1 08/01/2019
     public var token: String?
     public var signature: String?
-    
+
     // old activetion flow
     public var activation: String? // armed pgp msg, token encrypted by user's public key and
-    
+
     // unused
     public var active: Int = 0
     public var version: Int = 0
-    
+
     // the other way: first key will be the primary
     public var primary: Int = 0
-    
+
     // local var use when update the key password
     public var isUpdated: Bool = false
-    
+
     public init(keyID: String, privateKey: String?, keyFlags: Int = 0,
                 token: String? = nil, signature: String? = nil, activation: String? = nil,
                 active: Int = 0, version: Int = 0, primary: Int = 0, isUpdated: Bool = false) {
@@ -83,19 +83,19 @@ extension Key {
 }
 
 // exposed interfaces
-extension Key {    
+extension Key {
     public var isKeyV2: Bool {
         return token != nil && signature != nil
     }
-    
+
     public var isExternalAddressKey: Bool {
         KeyFlags(rawValue: UInt8(truncating: keyFlags as NSNumber)).contains(.signifyingExternalAddress)
     }
-    
+
     public var cannotEncryptEmail: Bool {
         KeyFlags(rawValue: UInt8(truncating: keyFlags as NSNumber)).contains(.cannotEncryptEmail)
     }
-    
+
     public var dontExpectSignedEmails: Bool {
         KeyFlags(rawValue: UInt8(truncating: keyFlags as NSNumber)).contains(.dontExpectSignedEmails)
     }

@@ -39,7 +39,7 @@ public final class AccountSummaryRobot: CoreElements {
         staticText(welcomeLabel).checkExists()
         return T()
     }
-    
+
     public func startUsingAppTap<T: CoreElements>(robot _: T.Type) -> T{
         button(startUsingAppButtonId).wait(time: 100).tap()
         return T()

@@ -1,0 +1,134 @@
+
+"OK" = "تایید";
+
+"Cancel" = "انصراف";
+
+"Warning" = "هشدار";
+
+"Select a plan" = "یک طرح انتخاب کنید";
+
+"Current plan" = "طرح جاری";
+
+"Subscription" = "اشتراک";
+
+"Upgrade your plan" = "طرح سرویس خود را ارتقا دهید";
+
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
+
+"You cannot manage subscriptions inside the mobile application." = "You cannot manage subscriptions inside the mobile application.";
+
+"Your plan will automatically renew on %@" = "طرح شما بطور خودکار تمدید خواهد شد در %@";
+
+"Current plan will expire on %@" = "طرح فعلی در %@ تمام خواهد شد";
+
+"Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
+
+"%@ storage" = "%@ فضای ذخیره سازی";
+
+"%@ storage / user" = "%@ فضای ذخیره سازی / کاربر";
+
+"for %@" = "برای %@";
+
+"Custom email addresses" = "آدرس ایمیل‌های سفارشی";
+
+"Priority customer support" = "اولویت پشتیبانی مشتری";
+
+"Adblocker (NetShield)" = "مسدودکننده آگهی (NetShield)";
+
+"Streaming service support" = "پشتیبانی از سرویس استریم";
+
+"High speed" = "سرعت بالا";
+
+"Highest speed" = "بالاترین سرعت";
+
+"Multi-user support" = "پشتیبانی چند کاربره";
+
+"The basic for private and secure communications." = "بنایی برای ارتباطات خصوصی و امن.";
+
+"Full-featured mailbox with advanced protection." = "نامه‌دان کامل با محافظت پیشرفته.";
+
+"Limited time offer" = "Limited time offer";
+
+"Complete payment?" = "تکمیل عملیات پرداخت؟";
+
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
+
+"Complete payment" = "تکمیل عملیات پرداخت";
+
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "The account setup process could not be finalized due to an unexpected error.\nPlease try again.";
+
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase.";
+
+"One plan for all Proton services" = "یک طرح سرویس برای همه سرویس‌های Proton";
+
+"The no-cost starter account designed to empower everyone with privacy by default." = "حساب آغازین بدون هزینه طراحی شده تا به هر کسی با حریم خصوصی به‌ صورت پیش فرض قدرت بدهد.";
+
+"The privacy-first email and calendar solution for your everyday communication needs." = "The privacy-first email and calendar solution for your everyday communication needs.";
+
+"Your privacy and security are our priority." = "حریم خصوصی و امنیت شما اولویت ماست.";
+
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "The storage-focused plan with 200 GB of cloud storage to keep your files private.";
+
+"The ultimate privacy pack with access to all premium Proton services." = "The ultimate privacy pack with access to all premium Proton services.";
+
+"Only non-renewing annual subscriptions are available via this app" = "Only non-renewing annual subscriptions are available via this app";
+
+"Unlimited folders, labels, and filters" = "پوشه‌ها، برچسب‌ها و فیلترهای نامحدود";
+
+"Up to %@ storage" = "فضای ذخیر سازی تا %@";
+
+"Free VPN on a single device" = "VPN رایگان در یک دستگاه";
+
+"Highest VPN speed" = "بالاترین سرعت VPN";
+
+"Built-in ad-blocker (NetShield)" = "مسدودکنندهٔ آگهی تعبیه شده (NetShield)";
+
+"Access to streaming services globally" = "به سرویس‌های پخش آنلاین به صورت جهانی دسترسی پیدا کنید";
+
+"Secure Core servers" = "سرورهای Secure Core";
+
+"TOR over VPN" = "Tor روی VPN";
+
+"P2P/BitTorrent" = "P2P/BitTorrent";
+
+"Get %@" = "%@ را دریافت کنید";
+
+"Get Proton for free" = "دریافت رایگان Proton";
+
+"Extend subscription" = "Extend subscription";
+
+"%@ of %@" = "%@ از %@";
+
+"Connection issues" = "مشکل در برقراری ارتباط";
+
+"Check your internet connection" = "اتصال اینترنت خود را بررسی کنید";
+
+"Strict no-logs policy" = "سیاست سخت‌گیرانه عدم ثبت رویدادها";
+
+"Plan successfully upgraded" = "طرح سرویس با موفقیت ارتقا یافت";
+
+"Integrated 2FA authenticator" = "Integrated 2FA authenticator";
+
+"Priority support" = "اولویت پشتیبانی";
+
+"Unlimited devices" = "Unlimited devices";
+
+"%@ email aliases" = "%@ email aliases";
+
+"Unlimited email aliases" = "Unlimited email aliases";
+
+"Unlimited logins and notes" = "Unlimited logins and notes";
+
+"Up to %@ forwarding mailboxes" = "Up to %@ forwarding mailboxes";
+
+"Custom fields" = "Custom fields";
+
+"For next-level password management and identity protection." = "For next-level password management and identity protection.";
+
+"Pay monthly" = "Pay monthly";
+
+"Pay annually" = "Pay annually";
+
+"Pay every two years" = "Pay every two years";
+
+"Free" = "Free";

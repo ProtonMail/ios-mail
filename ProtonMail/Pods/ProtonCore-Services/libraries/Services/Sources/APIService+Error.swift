@@ -78,9 +78,9 @@ public class APIErrorCode {
     public static let tooManyFailedVerificationAttempts = 85131
     public static let humanVerificationAddressAlreadyTaken = 2001
     public static let tls = 3500
-    
+
     public static let humanVerificationEditEmail = 9100 // internal error
-    
+
     public static let potentiallyBlocked = 111_222_333 // internal error
 }
 
@@ -88,22 +88,22 @@ public extension ResponseError {
     var isApiIsBlockedError: Bool {
         return bestShotAtReasonableErrorCode == APIErrorCode.potentiallyBlocked
     }
-    
+
     var isAppVersionTooOldForExternalAccountsError: Bool {
         guard let responseCode = responseCode else { return false }
         return responseCode == APIErrorCode.appVersionTooOldForExternalAccounts
     }
-    
+
     var isAppVersionNotSupportedForExternalAccountsError: Bool {
         guard let responseCode = responseCode else { return false }
         return responseCode == APIErrorCode.appVersionNotSupportedForExternalAccounts
     }
-    
+
     var isSwitchToSSOError: Bool {
         guard let responseCode = responseCode else { return false }
         return responseCode == APIErrorCode.switchToSSOError
     }
-    
+
     var isSwitchToSRPError: Bool {
         guard let responseCode = responseCode else { return false }
         return responseCode == APIErrorCode.switchToSRPError
@@ -176,7 +176,7 @@ public extension NSError {
         }
         return isInternetIssue
     }
-    
+
     class func apiServiceError(code: Int, localizedDescription: String, localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
         return NSError(
             domain: "APIService",

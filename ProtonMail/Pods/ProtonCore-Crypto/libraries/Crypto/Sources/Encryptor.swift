@@ -25,7 +25,7 @@ import ProtonCoreCryptoGoInterface
 import ProtonCoreUtilities
 
 public enum Encryptor {
-    
+
     /// encrypt a clear text with a public key. signer is optional
     /// - Parameters:
     ///   - publicKey: armored public to encrypt text
@@ -36,7 +36,7 @@ public enum Encryptor {
     public static func encrypt(publicKey: ArmoredKey, cleartext: String, signerKey: SigningKey? = nil, signatureContext: SignatureContext? = nil) throws -> ArmoredMessage {
         return try Crypto().encryptAndSign(plainRaw: Either.left(cleartext), publicKey: publicKey, signingKey: signerKey, signatureContext: signatureContext)
     }
-    
+
     /// encrypt a raw session key with recipent's public key.
     /// - Parameters:
     ///   - publicKey: armored public key
@@ -45,7 +45,7 @@ public enum Encryptor {
     public static func encryptSession(publicKey: ArmoredKey, sessionKey: SessionKey) throws -> Based64String {
         return try Crypto().encryptSessionKey(publicKey: publicKey, sessionKey: sessionKey)
     }
-    
+
     /// encrypt a clear data with a public key. signer is optional
     /// - Parameters:
     ///   - publicKey: armored public to encrypt text
@@ -56,7 +56,7 @@ public enum Encryptor {
     public static func encrypt(publicKey: ArmoredKey, clearData: Data, signerKey: SigningKey? = nil, signatureContext: SignatureContext? = nil) throws -> ArmoredMessage {
         return try Crypto().encryptAndSign(plainRaw: Either.right(clearData), publicKey: publicKey, signingKey: signerKey, signatureContext: signatureContext)
     }
-    
+
     /// encrypt a clear data with a public key. signer is optional. this func usually used when encrypt some blobs.
     ///  for saving time splited packet key packet can reencrypt by other keys very cheap.
     /// - Parameters:
@@ -68,8 +68,7 @@ public enum Encryptor {
     public static func encryptSplit(publicKey: ArmoredKey, clearData: Data, signerKey: SigningKey? = nil, signatureContext: SignatureContext? = nil) throws -> SplitPacket {
         return try Crypto().encryptAndSign(plainRaw: Either.right(clearData), publicKey: publicKey, signingKey: signerKey, signatureContext: signatureContext)
     }
-    
-    // swiftlint:disable function_parameter_count
+
     /// streaming encryption
     public static func encryptStreamHash(nodeKey: ArmoredKey, nodePassphase: Passphrase,
                                          contentKeyPacket: Data,
@@ -80,12 +79,12 @@ public enum Encryptor {
             try FileManager.default.removeItem(at: cyphertextFile)
         }
         FileManager.default.createFile(atPath: cyphertextFile.path, contents: Data(), attributes: nil)
-        
+
         let readFileHandle = try FileHandle(forReadingFrom: clearFile)
         defer { readFileHandle.closeFile() }
         let writeFileHandle = try FileHandle(forWritingTo: cyphertextFile)
         defer { writeFileHandle.closeFile() }
-        
+
         guard let size = try FileManager.default.attributesOfItem(atPath: clearFile.path)[.size] as? Int else {
             throw CryptoError.streamCleartextFileHasNoSize
         }
@@ -93,13 +92,13 @@ public enum Encryptor {
         var error: NSError?
         let sessionKey = CryptoGo.HelperDecryptSessionKey(nodeKey.value, nodePassphase.data, contentKeyPacket, &error)
         guard error == nil else { throw error! }
-        
+
         let hash = try Crypto().encryptStreamRetSha256(sessionKey!, nil,
                                                        readFileHandle, writeFileHandle,
                                                        size, chunkSize)
         return hash
     }
-    
+
     public static func encryptStream(publicKey: ArmoredKey,
                                      clearFile: URL, cyphertextFile: URL,
                                      chunkSize: Int) throws -> Data {
@@ -108,16 +107,16 @@ public enum Encryptor {
             try FileManager.default.removeItem(at: cyphertextFile)
         }
         FileManager.default.createFile(atPath: cyphertextFile.path, contents: Data(), attributes: nil)
-        
+
         let readFileHandle = try FileHandle(forReadingFrom: clearFile)
         defer { readFileHandle.closeFile() }
         let writeFileHandle = try FileHandle(forWritingTo: cyphertextFile)
         defer { writeFileHandle.closeFile() }
-        
+
         guard let size = try FileManager.default.attributesOfItem(atPath: clearFile.path)[.size] as? Int else {
             throw CryptoError.streamCleartextFileHasNoSize
         }
-        
+
         let keyPacket = try Crypto().encryptStream(publicKey,
                                                    readFileHandle,
                                                    writeFileHandle,
@@ -125,7 +124,7 @@ public enum Encryptor {
                                                    chunkSize)
         return keyPacket
     }
-    
+
     /// encrypt string with a token password.
     /// - Parameters:
     ///   - clearText: clear text
@@ -134,7 +133,7 @@ public enum Encryptor {
     public static func encrypt(clearText: String, token: TokenPassword) throws -> ArmoredMessage {
         return try Crypto().encrypt(input: .left(clearText), token: token)
     }
-    
+
     /// encrypt data with a token password.
     /// - Parameters:
     ///   - clearText: clear text
@@ -143,5 +142,5 @@ public enum Encryptor {
     public static func encrypt(clearData: Data, token: TokenPassword) throws -> ArmoredMessage {
         return try Crypto().encrypt(input: .right(clearData), token: token)
     }
-    
+
 }

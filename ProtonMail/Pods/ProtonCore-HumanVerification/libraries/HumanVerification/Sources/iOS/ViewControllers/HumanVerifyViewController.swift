@@ -85,7 +85,7 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
     deinit {
         userContentController.removeAllUserScripts()
     }
-    
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if UIApplication.shared.applicationState != .background,
@@ -111,7 +111,7 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
     }
 
     // MARK: Private interface
-    
+
     private func configureUI() {
         title = viewTitle ?? HVTranslation.title.l10n
         closeBarButtonItem.tintColor = ColorProvider.IconNorm
@@ -122,7 +122,7 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
         setupWebView()
         setWebViewInterfaceStyle()
     }
-    
+
     private func setWebViewInterfaceStyle() {
         if overrideUserInterfaceStyle != .unspecified {
             webViewInterfaceStyle = overrideUserInterfaceStyle

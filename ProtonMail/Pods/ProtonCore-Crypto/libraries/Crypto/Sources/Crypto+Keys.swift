@@ -26,7 +26,7 @@ import ProtonCoreDataModel
 
 /// Array<Key> extensions
 extension Array where Element: Key {
-    
+
     /// loop and combin all keys in binary
     public var toArmoredPrivateKeys: [ArmoredKey] {
         return self.map { item in
@@ -36,7 +36,7 @@ extension Array where Element: Key {
 }
 
 extension Key {
-    
+
     /// Key_1_2  the func to get the real passphrase that can decrypt the body. TODO:: add unit tests
     /// - Parameters:
     ///   - userBinKeys: user keys need to unarmed to binary
@@ -47,7 +47,7 @@ extension Key {
         guard let token = self.token, let signature = self.signature else {
             return mailboxPassphrase
         }
-        
+
         let plainToken: String
         do {
             var userkeys: [DecryptionKey] = []
@@ -59,7 +59,7 @@ extension Key {
         } catch {
             throw error
         }
-        
+
         let verification = try Sign.verifyDetached(signature: ArmoredSignature.init(value: signature),
                             plainText: plainToken, verifierKeys: userPrivateKeys)
 
@@ -68,7 +68,7 @@ extension Key {
         }
         return Passphrase.init(value: plainToken)
     }
-    
+
     public func passphrase(userKeys: [Key], mailboxPassphrase: String) throws -> Passphrase {
         return try self.passphrase(userPrivateKeys: userKeys.toArmoredPrivateKeys,
                                    mailboxPassphrase: Passphrase.init(value: mailboxPassphrase))

@@ -34,7 +34,7 @@ public enum CreateAccountError: Error {
     case cannotDecodeResponseBody
     case cannotFindAccountDetailsInResponseBody
     case actualError(Error)
-    
+
     public var userFacingMessageInQuarkCommands: String {
         switch self {
         case .cannotConstructUrl: return "cannot construct url"
@@ -51,7 +51,7 @@ extension QuarkCommands {
                               currentlyUsedHostUrl host: String,
                               callCompletionBlockOn: DispatchQueue = .main,
                               completion: @escaping (Result<CreatedAccountDetails, CreateAccountError>) -> Void) {
-        
+
         var urlString: String
         switch account.type {
         case .free:
@@ -64,15 +64,15 @@ extension QuarkCommands {
         case .external:
             urlString = "\(host)/internal/quark/user:create?-e=true&-em=\(account.username.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&-p=\(account.password)"
         }
-        
+
         if account.type.isNotPaid {
-            
+
             if let recoveryEmail = account.recoveryEmail { urlString.append("&-r=\(recoveryEmail)") }
-            
+
             if let statusValue = account.statusValue { urlString.append("&-s=\(statusValue)") }
-            
+
             if let auth = account.auth { urlString.append("&-a=\(auth.rawValue)") }
-            
+
             switch account.address {
             case .noAddress:
                 break
@@ -84,13 +84,13 @@ extension QuarkCommands {
                 urlString.append("&--create-address=null")
                 urlString.append("&-k=\(type.rawValue)")
             }
-            
+
             if let mailboxPassword = account.mailboxPassword { urlString.append("&-m=\(mailboxPassword)") }
-            
+
         }
-        
+
         guard let url = URL(string: urlString) else { completion(.failure(.cannotConstructUrl)); return }
-        
+
         let completion: (Result<CreatedAccountDetails, CreateAccountError>) -> Void = { result in
             callCompletionBlockOn.async { completion(result) }
         }
@@ -100,23 +100,23 @@ extension QuarkCommands {
                 completion(.failure(.actualError(error)))
                 return
             }
-            
+
             guard account.type.isNotPaid else {
                 completion(.success(CreatedAccountDetails(details: "", id: "", account: account)))
                 return
             }
-            
+
             let detailsRegex = "\\s?ID.*:[\\s\\S]*</span>"
             guard let detailsRange = input.range(of: detailsRegex, options: .regularExpression) else {
                 completion(.failure(.cannotFindAccountDetailsInResponseBody)); return
             }
             let detailsString = input[detailsRange].dropLast(7)
-            
+
             guard let idRange = detailsString.range(of: "ID:\\s.*", options: .regularExpression) else {
                 completion(.failure(.cannotFindAccountDetailsInResponseBody)); return
             }
             let idString = detailsString[idRange].dropFirst(4)
-            
+
             let created = CreatedAccountDetails(details: String(detailsString), id: String(idString), account: account)
             completion(.success(created))
         }.resume()

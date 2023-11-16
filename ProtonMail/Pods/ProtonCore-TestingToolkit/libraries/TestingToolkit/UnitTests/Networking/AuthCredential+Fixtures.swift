@@ -28,7 +28,7 @@ public extension AuthCredential {
     static var dummy: AuthCredential {
         .init(sessionID: .empty, accessToken: .empty, refreshToken: .empty, userName: .empty, userID: .empty, privateKey: nil, passwordKeySalt: nil)
     }
-    
+
     func updated(sessionID: String? = nil,
                  accessToken: String? = nil,
                  refreshToken: String? = nil,
@@ -44,7 +44,7 @@ public extension AuthCredential {
                        privateKey: privateKey ?? self.privateKey,
                        passwordKeySalt: passwordKeySalt ?? self.passwordKeySalt)
     }
-    
+
     static func areEqualFieldwise(_ lhs: AuthCredential, _ rhs: AuthCredential) -> Bool {
         return lhs.sessionID == rhs.sessionID &&
                lhs.accessToken == rhs.accessToken &&

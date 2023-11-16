@@ -26,7 +26,7 @@ import ProtonCoreUtilities
 
 /// signing
 public enum Sign {
-    
+
     /// sign data detached
     /// - Parameters:
     ///   - signingKey: signer
@@ -49,7 +49,7 @@ public enum Sign {
     public static func signDetached(signingKey: SigningKey, plainText: String, trimTrailingSpaces: Bool = true, signatureContext: SignatureContext? = nil) throws -> ArmoredSignature {
         return try Crypto().signDetached(plainRaw: .left(plainText), signer: signingKey, trimTrailingSpaces: trimTrailingSpaces, signatureContext: signatureContext)
     }
-    
+
     /// verify detached signature
     /// - Parameters:
     ///   - signature: signature
@@ -64,7 +64,7 @@ public enum Sign {
     public static func verifyDetached(signature: ArmoredSignature, plainText: String, verifierKey: ArmoredKey, verifyTime: Int64 = 0, trimTrailingSpaces: Bool = true, verificationContext: VerificationContext? = nil) throws -> Bool {
         return try Crypto().verifyDetached(input: .left(plainText), signature: .left(signature), verifier: verifierKey, verifyTime: verifyTime, trimTrailingSpaces: trimTrailingSpaces, verificationContext: verificationContext)
     }
-    
+
     /// verify detached signature
     /// - Parameters:
     ///   - unArmoredSignature: raw signature
@@ -81,7 +81,7 @@ public enum Sign {
         return try Crypto().verifyDetached(input: .left(plainText), signature: .right(unArmoredSignature),
                                            verifier: verifierKey, verifyTime: verifyTime, trimTrailingSpaces: trimTrailingSpaces, verificationContext: verificationContext)
     }
-    
+
     /// verify detached signature
     /// - Parameters:
     ///   - signature: signature
@@ -97,7 +97,7 @@ public enum Sign {
         return try Crypto().verifyDetached(input: .left(plainText), signature: .left(signature),
                                            verifiers: verifierKeys, verifyTime: verifyTime, trimTrailingSpaces: trimTrailingSpaces, verificationContext: verificationContext)
     }
-    
+
     /// verify detached signature
     /// - Parameters:
     ///   - unArmoredSignature: raw signature
@@ -114,7 +114,7 @@ public enum Sign {
         return try Crypto().verifyDetached(input: .left(plainText), signature: .right(unArmoredSignature),
                                            verifiers: verifierKeys, verifyTime: verifyTime, trimTrailingSpaces: trimTrailingSpaces, verificationContext: verificationContext)
     }
-    
+
     /// verify detached signature
     /// - Parameters:
     ///   - signature: signature
@@ -126,7 +126,7 @@ public enum Sign {
     public static func verifyDetached(signature: ArmoredSignature, plainData: Data, verifierKeys: [ArmoredKey], verifyTime: Int64 = 0, verificationContext: VerificationContext? = nil) throws -> Bool {
         return try Crypto().verifyDetached(input: .right(plainData), signature: .left(signature), verifiers: verifierKeys, verifyTime: verifyTime, trimTrailingSpaces: false, verificationContext: verificationContext)
     }
-    
+
     /// verify detached signature
     /// - Parameters:
     ///   - unArmoredSignature: raw signature
@@ -140,7 +140,7 @@ public enum Sign {
         return try Crypto().verifyDetached(input: .right(plainData), signature: .right(unArmoredSignature),
                                            verifiers: verifierKeys, verifyTime: verifyTime, trimTrailingSpaces: false, verificationContext: verificationContext)
     }
-    
+
     /// verify detached signature
     /// - Parameters:
     ///   - signature: signature
@@ -153,7 +153,7 @@ public enum Sign {
         return try Crypto().verifyDetached(input: .right(plainData), signature: .left(signature),
                                            verifier: verifierKey, verifyTime: verifyTime, trimTrailingSpaces: false, verificationContext: verificationContext)
     }
-    
+
     /// verify detached signature
     /// - Parameters:
     ///   - unArmoredSignature: raw signature
@@ -167,7 +167,7 @@ public enum Sign {
         return try Crypto().verifyDetached(input: .right(plainData), signature: .right(unArmoredSignature),
                                            verifier: verifierKey, verifyTime: verifyTime, trimTrailingSpaces: false, verificationContext: verificationContext)
     }
-    
+
     /// Sign file using the streaming api, and encrypt the detached signature.
     /// - Parameters:
     ///   - publicKey: key used to encrypt the detached signature

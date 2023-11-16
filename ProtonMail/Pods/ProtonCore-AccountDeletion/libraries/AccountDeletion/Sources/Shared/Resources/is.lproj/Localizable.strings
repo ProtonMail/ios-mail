@@ -1,0 +1,16 @@
+
+"Delete account" = "Eyða notandaaðgangi";
+
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Þetta mun eyða reikningnum þínum og öllum gögnum hans varanlega. Þú getur ekki endurvirkjað þennan notandareikning.";
+
+"Account deleted.\nLogging out..." = "Account deleted.\nSigning out...";
+
+"Close" = "Loka";
+
+"OK" = "Í lagi";
+
+"A networking error has occured" = "A networking error has occured";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked";
+
+"Troubleshoot" = "Leysa vandamál";

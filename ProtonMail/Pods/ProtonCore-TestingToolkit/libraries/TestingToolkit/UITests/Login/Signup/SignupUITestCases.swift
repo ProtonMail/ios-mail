@@ -27,43 +27,43 @@ import fusion
 
 public class SignupUITestCases {
     public init() {}
-    
+
     public func testCloseButtonExists(signupRobot: SignupRobot) {
         signupRobot
             .verify.signupScreenIsShown()
             .verify.closeButtonIsShown()
     }
-    
+
     public func testCloseButtonDoesntExist(signupRobot: SignupRobot) {
         signupRobot
             .verify.signupScreenIsShown()
             .verify.closeButtonIsNotShown()
     }
-    
+
     public func testBothAccountInternalFirst(signupRobot: SignupRobot) {
         signupRobot
             .verify.signupScreenIsShown()
             .verify.otherAccountExtButtonIsShown()
     }
-    
+
     public func testBothAccountExternalFirst(signupRobot: SignupRobot) {
         signupRobot
             .verify.signupScreenIsShown()
             .verify.otherAccountIntButtonIsShown()
     }
-    
+
     public func testInternalAccountOnly(signupRobot: SignupRobot) {
         signupRobot
             .verify.signupScreenIsShown()
             .verify.otherAccountButtonIsNotShown()
     }
-    
+
     public func testExtAccountOnly(signupRobot: SignupRobot) {
         signupRobot
             .verify.signupScreenIsShown()
             .verify.otherAccountButtonIsNotShown()
     }
-    
+
     public func testBothAccountExtExternalSignupFeatureOn(signupRobot: SignupRobot) {
         signupRobot
             .verify.signupScreenIsShown()
@@ -71,14 +71,14 @@ public class SignupUITestCases {
             .otherAccountButtonTap()
             .verify.otherAccountIntButtonIsShown()
     }
-    
+
     public func testSwitchIntToLogin(signupRobot: SignupRobot) {
         signupRobot
             .verify.signupScreenIsShown()
             .signinButtonTap()
             .verify.loginScreenIsShown()
     }
-    
+
     public func testSwitchExtToLogin(signupRobot: SignupRobot) {
         signupRobot
             .verify.signupScreenIsShown()
@@ -87,7 +87,7 @@ public class SignupUITestCases {
             .signinButtonTap()
             .verify.loginScreenIsShown()
     }
-    
+
     public func testSignupNewIntAccountSuccess(signupRobot: SignupRobot,
                                                randomName: String,
                                                password: String,
@@ -112,7 +112,7 @@ public class SignupUITestCases {
             )
             .accountSummaryElementsDisplayed(robot: AccountSummaryRobot.self)
     }
-    
+
     public func testSignupExistingIntAccount(signupRobot: SignupRobot, existingName: String) {
         signupRobot
             .verify.signupScreenIsShown()
@@ -120,7 +120,7 @@ public class SignupUITestCases {
             .nextButtonTap(robot: SignupRobot.self)
             .verify.usernameAlreadyExists()
     }
-    
+
     // no plan selector
     public func testSignupNewExtAccountSuccess(signupRobot: SignupRobot,
                                                randomEmail: String,
@@ -141,7 +141,7 @@ public class SignupUITestCases {
             .verify.completeScreenIsShown(robot: AccountSummaryRobot.self)
             .accountSummaryElementsDisplayed(robot: AccountSummaryRobot.self)
     }
-    
+
     public func testSignupExistingExtAccount(signupRobot: SignupRobot,
                                              existingEmail: String,
                                              existingEmailPassword: String,
@@ -162,7 +162,7 @@ public class SignupUITestCases {
             .signInButtonTapAfterEmailError(to: CreateProtonmailRobot.self)
             .createPMAddressIsShown()
     }
-    
+
     public func testPasswordVerificationEmpty(signupRobot: SignupRobot, randomName: String) {
         signupRobot
             .verify.signupScreenIsShown()
@@ -172,7 +172,7 @@ public class SignupUITestCases {
             .nextButtonTap(robot: PasswordRobot.self)
             .verify.passwordEmpty()
     }
-    
+
     public func testPasswordVerificationTooShort(signupRobot: SignupRobot,
                                                  randomName: String,
                                                  shortPassword: String) {
@@ -185,7 +185,7 @@ public class SignupUITestCases {
             .nextButtonTap(robot: PasswordRobot.self)
             .verify.passwordTooShort()
     }
-    
+
     public func testPasswordVerificationRepeatPasswordEmpty(signupRobot: SignupRobot,
                                                             randomName: String,
                                                             password: String) {
@@ -198,7 +198,7 @@ public class SignupUITestCases {
             .nextButtonTap(robot: PasswordRobot.self)
             .verify.passwordNotEqual()
     }
-    
+
     public func testPasswordVerificationPasswordEmpty(signupRobot: SignupRobot,
                                                       randomName: String,
                                                       password: String) {
@@ -211,7 +211,7 @@ public class SignupUITestCases {
             .nextButtonTap(robot: PasswordRobot.self)
             .verify.passwordNotEqual()
     }
-    
+
     public func testPasswordsVerificationDoNotMatch(signupRobot: SignupRobot,
                                                     randomName: String,
                                                     password: String) {
@@ -225,7 +225,7 @@ public class SignupUITestCases {
             .nextButtonTap(robot: PasswordRobot.self)
             .verify.passwordNotEqual()
     }
-    
+
     public func testRecoveryVerificationEmail(signupRobot: SignupRobot,
                                               randomName: String,
                                               password: String,
@@ -242,7 +242,7 @@ public class SignupUITestCases {
             .insertRecoveryEmail(email: testEmail)
             .verify.nextButtonIsEnabled()
     }
-    
+
     public func testRecoveryVerificationPhone(signupRobot: SignupRobot,
                                               randomName: String,
                                               password: String,
@@ -262,7 +262,7 @@ public class SignupUITestCases {
             .nextButtonTap()
             .verify.phoneNumberInvalid()
     }
-    
+
     public func testRecoverySelectCountryAndCheckCode(signupRobot: SignupRobot,
                                                       randomName: String,
                                                       password: String,
@@ -285,7 +285,7 @@ public class SignupUITestCases {
             .verify.recoveryScreenIsShown()
             .verify.verifyCountryCode(code: exampleCode)
     }
-    
+
     public func testSignupNewIntAccountHVRequired(signupRobot: SignupRobot,
                                                   randomName: String,
                                                   password: String) {
@@ -307,7 +307,7 @@ public class SignupUITestCases {
             .verify.recoveryScreenIsShown()
             .verify.humanVerificationRequired()
     }
-    
+
     public func testSignupNewIntStayInRecoveryMethod(signupRobot: SignupRobot,
                                                      randomName: String,
                                                      password: String) {
@@ -329,7 +329,7 @@ public class SignupUITestCases {
             .recoveryMethodTap()
             .verify.recoveryScreenIsShown()
     }
-    
+
     public func testSignupNewExtSendCodeRequestNewCode(signupRobot: SignupRobot,
                                                        randomEmail: String,
                                                        defaultCode: String) {
@@ -345,7 +345,7 @@ public class SignupUITestCases {
             .verify.resendEmailMessage(email: email)
             .verify.verifyVerificationCode(code: defaultCode)
     }
-    
+
     public func testSignupNewExtSendCodeCancel(signupRobot: SignupRobot, randomEmail: String) {
         let email = randomEmail
         signupRobot
@@ -358,7 +358,7 @@ public class SignupUITestCases {
             .cancelButtonTap()
             .verify.emailVerificationScreenIsShown()
     }
-    
+
     public func testSignupNewExtWrongVerificationCodeResend(signupRobot: SignupRobot,
                                                             randomEmail: String,
                                                             emailVerificationWrongCode: String,
@@ -376,7 +376,7 @@ public class SignupUITestCases {
             .verify.resendEmailMessage(email: email)
             .verify.verifyVerificationCode(code: defaultCode)
     }
-    
+
     public func testSignupNewExtWrongVerificationCodeChangeEmail(signupRobot: SignupRobot,
                                                                  randomEmail: String,
                                                                  emailVerificationWrongCode: String) {
@@ -394,7 +394,7 @@ public class SignupUITestCases {
             .waitDisapper()
             .verify.signupScreenIsShown()
     }
-    
+
     public func testSignupNewIntTermsAndConditions(signupRobot: SignupRobot, randomName: String, password: String) {
         signupRobot
             .verify.signupScreenIsShown()
@@ -411,7 +411,7 @@ public class SignupUITestCases {
             .backButton()
             .verify.recoveryScreenIsShown()
     }
-    
+
     public func testSignupNewExtAccountWithFreePlanSuccess(signupRobot: SignupRobot,
                                                            randomEmail: String,
                                                            password: String,

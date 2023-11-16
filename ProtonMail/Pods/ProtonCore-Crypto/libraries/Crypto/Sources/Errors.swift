@@ -26,43 +26,43 @@ public enum CryptoError: Error {
     case couldNotCreateKey
     case couldNotCreateKeyRing
     case couldNotCreateRandomToken
-    
+
     case couldNotSignDetached
-    
+
     case attachmentCouldNotBeEncrypted
     case attachmentCouldNotBeDecrypted
-    
+
     case messageCouldNotBeEncrypted
     case messageCouldNotBeDecrypted
-    
+
     case messageCouldNotBeDecryptedWithExplicitVerification
-    
+
     case sessionKeyCouldNotBeDecrypted
     case sessionKeyCouldNotBeEncrypted
-    
+
     case splitMessageDataNil
     case splitMessageKeyNil
-    
+
     case signerNotPrivateKey
-    
+
     case streamCleartextFileHasNoSize
-    
+
     case emptyResult
-    
+
     case outputFileAlreadyExists
-    
+
     case tokenDecryptionFailed
     case tokenSignatureVerificationFailed
-    
+
     case decryptAndVerifyFailed
-    
+
     case emptyAddressKeys
-    
+
     case signatureContextNotInitialised
     case verificationContextNotInitialised
-    
+
     case encryptedSignatureDecryptionFailed
-    
+
 }
 
 public enum CryptoKeyError: Error {
@@ -83,7 +83,7 @@ public enum SessionError: Error {
 public enum SignError: Error {
     case invalidPublicKey
     case invalidPrivateKey
-    
+
     case invalidSigningKey
 }
 

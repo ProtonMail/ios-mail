@@ -28,7 +28,7 @@ public extension UILabel {
         let termsText = NSMutableAttributedString(string: text)
         let foregroundColor: UIColor = ColorProvider.InteractionNorm
         actionHandler(handler: handler)
-        
+
         if termsText.setAttributes(textToFind: link, attributes: [
             NSAttributedString.Key.foregroundColor: foregroundColor,
             NSAttributedString.Key.underlineColor: UIColor.clear
@@ -39,7 +39,7 @@ public extension UILabel {
             isUserInteractionEnabled = true
         }
     }
-    
+
     private func actionHandler(handler: (() -> Void)? = nil) {
         struct ActionHandler {
             static var handler: (() -> Void)?

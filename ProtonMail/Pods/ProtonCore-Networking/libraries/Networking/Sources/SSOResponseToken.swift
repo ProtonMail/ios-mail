@@ -22,7 +22,7 @@
 public struct SSOResponseToken: Equatable {
     public let token: String
     public let uid: String
-    
+
     public init(token: String, uid: String) {
         self.token = token
         self.uid = uid

@@ -23,34 +23,34 @@
 /// the feature
 /// TODO:: add encode & decode for parsing local/remote file
 public struct Feature {
-    
+
     public init(name: String, isEnable: Bool = false) {
         self.init(name: name, isEnable: isEnable, flags: [])
     }
-    
+
     // foroge this for now. it is for supporting exsiting feature flag
     public init(name: String, isEnable: Bool, flags: FeatureFlag) {
         self.name = name
         self.isEnable = isEnable
         self.featureFlags = flags
     }
-    
+
     /// feature name.
     let name: String
-    
+
     // use it later
     let version: Version? = nil
-    
+
     // default status
     var isEnable: Bool
-    
+
     // more visiblity/modification control
     var featureFlags: FeatureFlag
-    
+
     public func `copy`(isEnable: Bool) -> Feature {
         return Feature.init(name: self.name, isEnable: isEnable, flags: self.featureFlags)
     }
-    
+
     public static func Parse(dict: [String: Any]) -> Feature? {
         guard let name = dict["name"] as? String else {
             return nil

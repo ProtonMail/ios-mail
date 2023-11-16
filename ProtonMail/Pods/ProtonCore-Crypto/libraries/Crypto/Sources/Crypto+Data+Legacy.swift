@@ -23,25 +23,25 @@ import Foundation
 import ProtonCoreCryptoGoInterface
 
 extension Data {
-    
+
     public func getKeyPackage(publicKey: String, algo: String) throws -> Data? {
         // TODO: Needs double check
         let symKey = CryptoGo.CryptoNewSessionKeyFromToken(self.mutable as Data, algo)
         let key = try throwing { error in CryptoGo.CryptoNewKeyFromArmored(publicKey, &error) }
         let keyRing = try throwing { error in CryptoGo.CryptoNewKeyRing(key, &error) }
-        
+
         return try keyRing?.encryptSessionKey(symKey)
     }
-    
+
     public func getKeyPackage(publicKey binKey: Data, algo: String) throws -> Data? {
         // TODO: Needs double check
         let symKey = CryptoGo.CryptoNewSessionKeyFromToken(self.mutable as Data, algo)
         let key = try throwing { error in CryptoGo.CryptoNewKey(binKey, &error) }
         let keyRing = try throwing { error in CryptoGo.CryptoNewKeyRing(key, &error) }
-        
+
         return try keyRing?.encryptSessionKey(symKey)
     }
-    
+
     public func getSymmetricPacket(withPwd pwd: String, algo: String) throws -> Data? {
         // TODO: Needs double check
         let symKey = CryptoGo.CryptoNewSessionKeyFromToken(self.mutable as Data, algo)
@@ -52,7 +52,7 @@ extension Data {
 }
 
 extension Data {
-    
+
     @available(*, deprecated, message: "Please use the non-optional variant")
     public func decryptAttachment(_ keyPackage: Data, passphrase: String, privKeys: [Data]) throws -> Data? {
         return try Crypto().decryptAttachment(keyPacket: keyPackage, dataPacket: self, privateKey: privKeys, passphrase: passphrase)
@@ -65,37 +65,37 @@ extension Data {
     func decryptAttachmentWithSingleKey(_ keyPackage: Data, passphrase: String, privateKey: String) throws -> Data? {
         return try Crypto().decryptAttachment(keyPacket: keyPackage, dataPacket: self, privateKey: privateKey, passphrase: passphrase)
     }
-    
+
     func decryptAttachmentWithSingleKeyNonOptional(_ keyPackage: Data, passphrase: String, privateKey: String) throws -> Data {
         let split = SplitPacket.init(dataPacket: self, keyPacket: keyPackage)
         let decryptionKey = DecryptionKey.init(privateKey: ArmoredKey.init(value: privateKey),
                                                passphrase: Passphrase.init(value: passphrase))
         return try Decryptor.decrypt(decryptionKeys: [decryptionKey], split: split)
     }
-    
+
     @available(*, deprecated, message: "Please use the non-optional variant")
     public func signAttachment(byPrivKey: String, passphrase: String) throws -> String? {
         return try Crypto.signDetached(plainData: self, privateKey: byPrivKey, passphrase: passphrase)
     }
-    
+
     public func signAttachmentNonOptional(byPrivKey: String, passphrase: String) throws -> String {
         let signer = SigningKey.init(privateKey: ArmoredKey.init(value: byPrivKey),
                                      passphrase: Passphrase.init(value: passphrase))
         return try Sign.signDetached(signingKey: signer, plainData: self).value
     }
-    
+
     @available(*, deprecated, message: "Please use the non-optional variant")
     public func encryptAttachment(fileName: String, pubKey: String) throws -> SplitMessage? {
         return try Crypto().encryptAttachment(plainData: self, fileName: fileName, publicKey: pubKey)
     }
-    
+
     public func encryptAttachmentNonOptional(fileName: String, pubKey: String) throws -> SplitMessage {
         return try Crypto().encryptAttachmentNonOptional(plainData: self, fileName: fileName, publicKey: ArmoredKey.init(value: pubKey))
     }
-    
+
     // could remove and dirrectly use Crypto()
     static func makeEncryptAttachmentProcessor(fileName: String, totalSize: Int, pubKey: String) throws -> AttachmentProcessor {
         return try Crypto().encryptAttachmentLowMemory(fileName: fileName, totalSize: totalSize, publicKey: ArmoredKey.init(value: pubKey))
     }
-    
+
 }

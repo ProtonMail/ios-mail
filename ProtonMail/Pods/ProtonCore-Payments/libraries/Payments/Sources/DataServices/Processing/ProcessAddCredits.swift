@@ -36,6 +36,7 @@ import ProtonCoreLog
  
 */
 
+@available(*, deprecated, message: "Adding credits is no longer supported on mobile. Please enable Auto-renewable Subscriptions")
 final class ProcessAddCredits: ProcessProtocol {
 
     unowned let dependencies: ProcessDependencies
@@ -47,19 +48,19 @@ final class ProcessAddCredits: ProcessProtocol {
     }
 
     func process(transaction: SKPaymentTransaction, plan: PlanToBeProcessed, completion: @escaping ProcessCompletionCallback) throws {
-        
+
         guard Thread.isMainThread == false else {
             assertionFailure("This is a blocking network request, should never be called from main thread")
             throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
         }
-        
+
         #if DEBUG_CORE_INTERNALS
         guard TemporaryHacks.simulateBackendPlanPurchaseFailure == false else {
             TemporaryHacks.simulateBackendPlanPurchaseFailure = false
             throw StoreKitManager.Errors.invalidPurchase
         }
         #endif
-        
+
         // Step 3. Get the payment token
         try tokenHandler?.getToken(transaction: transaction, plan: plan, completion: completion, finishCompletion: { [weak self] result in
             self?.finish(transaction: transaction, result: result, completion: completion)
@@ -67,7 +68,7 @@ final class ProcessAddCredits: ProcessProtocol {
             try self?.addCredits(transaction: transaction, plan: plan, token: token, completion: completion)
         })
     }
-    
+
     private func addCredits(transaction: SKPaymentTransaction, plan: PlanToBeProcessed, token: PaymentToken, completion: @escaping ProcessCompletionCallback) throws {
         do {
             // Step 4. Try do add credits
@@ -78,19 +79,19 @@ final class ProcessAddCredits: ProcessProtocol {
             PMLog.debug("StoreKit: credits added success (1)")
             dependencies.updateCurrentSubscription { [weak self] in
                 self?.finish(transaction: transaction, result: .finished(.resolvingIAPToCredits), completion: completion)
-                
+
             } failure: { [weak self] _ in
                 self?.finish(transaction: transaction, result: .finished(.resolvingIAPToCredits), completion: completion)
             }
         } catch let error where error.isApplePaymentAlreadyRegisteredError {
             PMLog.debug("StoreKit: apple payment already registered")
             finish(transaction: transaction, result: .finished(.withPurchaseAlreadyProcessed), completion: completion)
-            
+
         } catch {
             completion(.erroredWithUnspecifiedError(error))
         }
     }
-    
+
     private func finish(transaction: SKPaymentTransaction, result: ProcessCompletionResult, completion: @escaping ProcessCompletionCallback) {
         // Step 5. Finish the IAP transaction
         dependencies.finishTransaction(transaction) { [weak self] in

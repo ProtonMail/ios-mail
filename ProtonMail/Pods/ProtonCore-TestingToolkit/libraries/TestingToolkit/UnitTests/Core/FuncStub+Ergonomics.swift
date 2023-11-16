@@ -19,8 +19,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-// swiftlint:disable function_parameter_count
-
 extension FuncStub where Input == Void, A1 == Absent, A2 == Absent, A3 == Absent, A4 == Absent, A5 == Absent, A6 == Absent, A7 == Absent,
                          A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
 

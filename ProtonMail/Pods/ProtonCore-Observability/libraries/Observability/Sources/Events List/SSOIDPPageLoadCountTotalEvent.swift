@@ -34,7 +34,7 @@ extension ObservabilityEvent where Payload == PayloadWithLabels<SSPIDPPageLoadLa
     public static func ssoIDPPageLoadCountTotal(status: HTTPResponseCodeStatus) -> Self {
         .init(name: "ios_core_login_ssoIdentityProvider_pageLoad_total", labels: .init(status: status))
     }
-    
+
     public static func ssoIDPPageLoadCountTotal(error: ResponseError) -> Self {
         let name = "ios_core_login_ssoIdentityProvider_pageLoad_total"
         if let httpCode = error.httpCode {
@@ -47,7 +47,7 @@ extension ObservabilityEvent where Payload == PayloadWithLabels<SSPIDPPageLoadLa
                 break
             }
         }
-        
+
         return .init(name: name, labels: .init(status: .unknown))
     }
 }

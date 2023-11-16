@@ -24,7 +24,7 @@ import Foundation
 
 public protocol CryptoGoMethods {
     var ConstantsAES256: String { get }
-    
+
     // initializers
     func CryptoKey(_ binKeys: Data?) -> CryptoKey?
     func CryptoKey(fromArmored armored: String?) -> CryptoKey?
@@ -35,7 +35,7 @@ public protocol CryptoGoMethods {
     func CryptoPlainMessage(from text: String?) -> CryptoPlainMessage?
     func CryptoKeyRing(_ key: CryptoKey?) -> CryptoKeyRing?
     func CryptoPGPSignature(fromArmored armored: String?) -> CryptoPGPSignature?
-
+    func CryptoPGPSignature(_ data: Data?) -> CryptoPGPSignature?
     func HelperGo2IOSReader(_ reader: CryptoReaderProtocol?) -> HelperGo2IOSReader?
     func HelperMobileReadResult(_ n: Int, eof: Bool, data: Data?) -> HelperMobileReadResult?
     func HelperMobile2GoReader(_ reader: HelperMobileReaderProtocol?) -> HelperMobile2GoReader?
@@ -46,11 +46,11 @@ public protocol CryptoGoMethods {
     func CryptoVerificationContext(_ value: String?, isRequired: Bool, requiredAfter: Int64) -> CryptoVerificationContext?
 
     func SrpAuth(_ version: Int, _ username: String?, _ password: Data?, _ b64salt: String?, _ signedModulus: String?, _ serverEphemeral: String?) -> SrpAuth?
-    
+
     func SrpNewAuth(_ version: Int, _ username: String?, _ password: Data?, _ b64salt: String?, _ signedModulus: String?, _ serverEphemeral: String?, _ error: NSErrorPointer) -> SrpAuth?
-    
+
     func SrpNewAuthForVerifier(_ password: Data?, _ signedModulus: String?, _ rawSalt: Data?, _ error: NSErrorPointer) -> SrpAuth?
-    
+
     func SrpRandomBits(_ bits: Int, _ error: NSErrorPointer) -> Data?
 
     func SrpRandomBytes(_ byes: Int, _ error: NSErrorPointer) -> Data?
@@ -99,9 +99,9 @@ public protocol CryptoGoMethods {
     func SrpMailboxPassword(_ password: Data?, _ salt: Data?, _ error: NSErrorPointer) -> Data?
     func SrpArgon2PreimageChallenge(_ b64Challenge: String?, _ deadlineUnixMilli: Int64, _ error: NSErrorPointer) -> String
     func SrpECDLPChallenge(_ b64Challenge: String?, _ deadlineUnixMilli: Int64, _ error: NSErrorPointer) -> String
-    
+
     func SubtleDecryptWithoutIntegrity(_ key: Data?, _ input: Data?, _ iv: Data?, _ error: NSErrorPointer) -> Data?
-    
+
     func SubtleDeriveKey(_ password: String?, _ salt: Data?, _ n: Int, _ error: NSErrorPointer) -> Data?
 
     func SubtleEncryptWithoutIntegrity(_ key: Data?, _ input: Data?, _ iv: Data?, _ error: NSErrorPointer) -> Data?

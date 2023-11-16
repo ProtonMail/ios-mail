@@ -28,13 +28,13 @@ import ProtonCoreTestingToolkit
 import ProtonCoreServices
 
 public final class APIServiceDelegateMock: APIServiceDelegate {
-    
+
     public init() {}
 
     @PropertyStub(\APIServiceDelegateMock.locale,
                    initialGet: Locale.autoupdatingCurrent.identifier) public var localeStub
     public var locale: String { localeStub() }
-    
+
     @FuncStub(APIServiceDelegateMock.onUpdate) public var onUpdateStub
     public func onUpdate(serverTime: Int64) { onUpdateStub(serverTime) }
 
@@ -46,7 +46,7 @@ public final class APIServiceDelegateMock: APIServiceDelegate {
 
     @PropertyStub(\APIServiceDelegateMock.userAgent, initialGet: nil) public var userAgentStub
     public var userAgent: String? { userAgentStub() }
-    
+
     @PropertyStub(\APIServiceDelegateMock.additionalHeaders, initialGet: nil) public var additionalHeadersStub
     public var additionalHeaders: [String: String]? { additionalHeadersStub() }
 

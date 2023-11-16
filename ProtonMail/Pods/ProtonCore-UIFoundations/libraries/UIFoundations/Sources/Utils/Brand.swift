@@ -25,7 +25,7 @@ public enum Brand {
     case proton
     case vpn
     case pass
-    
+
     public static var currentBrand: Brand = .proton
 }
 

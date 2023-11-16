@@ -44,7 +44,7 @@ enum DisplayProgressState {
 class DisplayProgress {
     let step: DisplayProgressStep
     var state: DisplayProgressState
-    
+
     init(step: DisplayProgressStep, state: DisplayProgressState) {
         self.step = step
         self.state = state
@@ -54,15 +54,15 @@ class DisplayProgress {
 class CompleteViewModel {
     var signupService: Signup
     var loginService: Login
-    
+
     var displayProgress: [DisplayProgress] = []
     var displayProgressWidth: [CGFloat?] = []
-    
+
     init(signupService: Signup, loginService: Login, initDisplaySteps: [DisplayProgressStep]) {
         self.signupService = signupService
         self.loginService = loginService
         initProgressSteps(initDisplaySteps: initDisplaySteps)
-        
+
         self.loginService.startGeneratingAddress = {
             self.progressStepWait(progressStep: .generatingAddress)
         }
@@ -70,7 +70,7 @@ class CompleteViewModel {
             self.progressStepWait(progressStep: .generatingKeys)
         }
     }
-    
+
     var progressCompletion: (() -> Void)?
 
     func createNewUser(userName: String, password: String, email: String?, phoneNumber: String?,
@@ -104,7 +104,7 @@ class CompleteViewModel {
             }
         }
     }
-    
+
     func progressStepWait(progressStep: DisplayProgressStep) {
         // mark found item as waiting
         // mark all items before as done
@@ -118,7 +118,7 @@ class CompleteViewModel {
         }
         progressCompletion?()
     }
-    
+
     func progressStepAllDone() {
         // mark all items as done
         displayProgress.forEach {
@@ -130,7 +130,7 @@ class CompleteViewModel {
     }
 
     // MARK: Private methods
-    
+
     private func createNewUsernameAccount(userName: String, password: String, email: String?, phoneNumber: String?,
                                           completion: @escaping (Result<(LoginData), Error>) -> Void) {
         loginService.checkAvailabilityForUsernameAccount(username: userName) { [weak self] result in
@@ -160,7 +160,7 @@ class CompleteViewModel {
             }
         }
     }
-    
+
     private func createNewInternalAccount(userName: String, password: String, email: String?, phoneNumber: String?,
                                           completion: @escaping (Result<(LoginData), Error>) -> Void) {
         loginService.checkAvailabilityForInternalAccount(username: userName) { [weak self] result in
@@ -208,7 +208,7 @@ class CompleteViewModel {
             }
         }
     }
-    
+
     private func initProgressSteps(initDisplaySteps: [DisplayProgressStep]) {
         // initial array
         initDisplaySteps.uniqued().forEach {
@@ -224,11 +224,11 @@ extension CompleteViewModel {
             displayProgressWidth.append(nil)
         }
     }
-    
+
     func updateProgressWidth(index: Int, width: CGFloat) {
         displayProgressWidth[index] = width
     }
-    
+
     var getMaxProgressWidth: CGFloat? {
         let widthArray = displayProgressWidth.compactMap { $0 }
         if widthArray.count == displayProgressWidth.count {

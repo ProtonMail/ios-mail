@@ -32,7 +32,7 @@ private let cellId = "CountryCodeTableViewCell.Switzerland"
 public final class CountrySelectorRobot: CoreElements {
 
     public let verify = Verify()
-    
+
     public final class Verify: CoreElements {
         @discardableResult
         public func countrySelectorScreenIsShown() -> CountrySelectorRobot {
@@ -40,12 +40,12 @@ public final class CountrySelectorRobot: CoreElements {
             return CountrySelectorRobot()
         }
     }
-    
+
     public func insertCountryName(name: String) -> CountrySelectorRobot {
         otherElement(searchId).tap().typeText(name)
         return self
     }
-    
+
     public func selectTopCountry() -> RecoveryRobot {
         cell(cellId).tap()
         return RecoveryRobot()

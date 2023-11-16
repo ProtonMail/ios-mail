@@ -24,11 +24,11 @@ import ProtonCoreDataModel
 import ProtonCoreNetworking
 
 extension AuthService {
-    
+
     public struct AddressesResponse: APIDecodableResponse, Encodable {
         let addresses: [Address]
     }
-    
+
     struct AddressEndpoint: Request {
         struct Response: Codable {
             let addresses: [Address]
@@ -39,13 +39,13 @@ extension AuthService {
         var method: HTTPMethod {
             return .get
         }
-        
+
         var isAuth: Bool {
             return true
         }
 
         var parameters: [String: Any]?
-        
+
         var auth: AuthCredential?
         var authCredential: AuthCredential? {
             return self.auth

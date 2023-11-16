@@ -23,59 +23,59 @@ import Foundation
 import ProtonCoreNetworking
 
 extension AuthService {
-    
+
     // This is temp. it belongs to core common
     static let urlQueryValueAllowed: CharacterSet = {
         let generalDelimitersToEncode = ":#[]@"
         let subDelimitersToEncode = "!$&'()*+,;="
-        
+
         var allowed = CharacterSet.urlQueryAllowed
         allowed.remove(charactersIn: generalDelimitersToEncode + subDelimitersToEncode)
-        
+
         return allowed
     }()
-    
+
     public struct UserAvailableResponse: APIDecodableResponse, Encodable {}
-    
+
     struct UserAvailableWithoutSpecifyingDomainEndpoint: Request {
-        
+
         let username: String
-        
+
         init(username: String)  {
             self.username = username
         }
-        
+
         var path: String {
             return "/users" + "/available?Name=" + (self.username.addingPercentEncoding(withAllowedCharacters: urlQueryValueAllowed) ?? "")
         }
-        
+
         var method: HTTPMethod {
             return .get
         }
-        
+
         var isAuth: Bool {
             return false
         }
     }
-    
+
     struct UserAvailableWithinDomainEndpoint: Request {
-        
+
         let username: String
         let domain: String
-        
+
         init(username: String, domain: String)  {
             self.username = username
             self.domain = domain
         }
-        
+
         var path: String {
             let usernameWithDomain = "\(username)@\(domain)"
             let encodedParameter = usernameWithDomain.addingPercentEncoding(withAllowedCharacters: urlQueryValueAllowed)
             return "/users/available?ParseDomain=1&Name=\(encodedParameter ?? "")"
         }
-        
+
         var method: HTTPMethod { .get }
-        
+
         var isAuth: Bool { false }
     }
 }

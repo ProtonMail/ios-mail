@@ -23,7 +23,7 @@ import Foundation
 
 public protocol TranslationsExposing: CaseIterable {
     var l10n: String { get }
-    
+
     static var bundle: Bundle { get }
     static var prefixForMissingValue: String { get set }
 }

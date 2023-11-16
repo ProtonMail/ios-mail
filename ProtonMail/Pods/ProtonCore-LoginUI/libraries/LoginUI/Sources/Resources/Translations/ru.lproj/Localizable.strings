@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Конфиденциальность по умолчанию";
+
+"Proton address required" = "Требуется адрес Proton";
+
+"Update required" = "Требуется обновление";
+
+"Please enter your Proton Account password." = "Введите пароль вашего аккаунта Proton.";
+
+"OK" = "OK";
+
+"Help" = "Помощь";
+
+"Continue" = "Продолжить";
+
+"Password" = "Пароль";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Серверы Proton недоступны. Это может быть вызвано неправильной настройкой сети, сбоем серверов Proton или тем, что сервисы Proton были заблокированы";
+
+"Search country" = "Найти страну";
+
+"Code sent to %@" = "Код отправлен на %@";
+
+"Request new code?" = "Запросить новый код?";
+
+"Resend" = "Отправить заново";
+
+"Get a replacement code sent to %@." = "Получить замену кода, отправленного на %@.";
+
+"Request new code" = "Запросить новый код";
+
+"Enter your Proton Account details." = "Введите информацию о вашем аккаунте Proton.";
+
+"Email or username" = "Электронная почта или имя пользователя";
+
+"Sign in" = "Войти";
+
+"Sign in with password" = "Войти с помощью пароля";
+
+"Sign in with SSO" = "Войти с помощью системы единого входа";
+
+"Sign in to your organization" = "Войдите в вашу организацию";
+
+"Create an account" = "Создать аккаунт";
+
+"How can we help?" = "Как мы можем помочь?";
+
+"Forgot username" = "Забыли имя пользователя";
+
+"Forgot password" = "Забыли пароль";
+
+"Other sign-in issues" = "Другие проблемы с входом";
+
+"Customer support" = "Поддержка клиентов";
+
+"Still need help? Contact us directly." = "Все ещё нужна помощь? Свяжитесь с нами напрямую.";
+
+"Please enter your Proton Account email or username." = "Пожалуйста, введите электронную почту или имя пользователя вашего аккаунта Proton.";
+
+"Complete Setup" = "Завершить настройку";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "В вашем аккаунте отсутствуют ключи, войдите в систему через браузер, чтобы автоматически сгенерировать необходимые ключи. После входа в систему через браузер вернитесь в приложение и войдите в систему.";
+
+"Account setup required" = "Требуется настройка аккаунта";
+
+"Incorrect mailbox password" = "Неверный пароль почтового ящика";
+
+"Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
+
+"Proton address required" = "Требуется адрес Proton";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Чтобы использовать Proton Mail и Proton Calendar, вам нужна эл. почта Proton.\nВы также сможете использовать %@ для входа, и для восстановления вашей учетной записи.";
+
+"Username" = "Имя пользователя";
+
+"Please enter a username." = "Введите имя пользователя.";
+
+"Unlock your mailbox" = "Разблокируйте свой почтовый ящик";
+
+"Mailbox password" = "Пароль почтового ящика";
+
+"Unlock" = "Разблокировать";
+
+"Forgot password" = "Забыли пароль";
+
+"Two-factor authentication" = "Двухфакторная аутентификация";
+
+"Authenticate" = "Аутентифицировать";
+
+"Two-factor code" = "Код двухфакторной аутентификации";
+
+"Recovery code" = "Код восстановления";
+
+"Use recovery code" = "Использовать код восстановления";
+
+"Use two-factor code" = "Использовать код двухфакторной аутентификации";
+
+"Enter the 6-digit code." = "Введите код из шести цифр.";
+
+"Enter an 8-character recovery code." = "Введите восьмизначный код восстановления.";
+
+"Learn more" = "Узнать больше";
+
+"Change your password" = "Измените пароль";
+
+"Change password" = "Изменить пароль";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Чтобы пользоваться приложением Proton в качестве участника организации, вам необходимо сначала поменять ваш пароль, войдя в Proton при помощи браузера.";
+
+"Error occured" = "Произошла ошибка";
+
+"Create your Proton Account" = "Создайте свой аккаунт Proton";
+
+"One account for all Proton services." = "Один аккаунт для всех служб Proton.";
+
+"Next" = "Далее";
+
+"Use your current email instead" = "Использовать ваш текущий адрес электронной почты";
+
+"Create a secure Proton Mail address instead" = "Создать защищенный адрес Proton Mail";
+
+"Email" = "Электронная почта";
+
+"Create your password" = "Создайте пароль";
+
+"Password must contain at least 8 characters" = "Пароль должен содержать хотя бы 8 символов";
+
+"Repeat password" = "Повторите пароль";
+
+"Domain" = "Домен";
+
+"Set recovery method" = "Установить способ восстановления";
+
+"Set recovery method (optional)" = "Установить метод аварийного восстановления (по желанию)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Мы отправим инструкции для аварийного восстановления доступа на эту почту или телефон, если по каким-то причинам вы не сможете получить доступ к вашему аккаунту.";
+
+"Email" = "Электронная почта";
+
+"Phone" = "Телефон";
+
+"Recovery email" = "Адрес резервной эл. почты";
+
+"Recovery phone number" = "Номер телефона для восстановления доступа";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Нажимая кнопку Далее, вы соглашаетесь с условиями Proton";
+
+"Terms and Conditions" = "Условия";
+
+"Skip" = "Пропустить";
+
+"Skip recovery method?" = "Пропустить способ восстановления?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Метод восстановления поможет вам получить доступ к аккаунту, если вы забудете пароль или он будет заблокирован.";
+
+"Set recovery method" = "Установить способ восстановления";
+
+"Your account is being created" = "Your account is being created";
+
+"This should take no more than a minute." = "Обычно на это требуется менее минуты.";
+
+"Creating your account" = "Создание аккаунта";
+
+"Generating your address" = "Генерирование вашего адреса";
+
+"Securing your account" = "Защита вашей учетной записи";
+
+"Verifying your payment" = "Подтверждение вашего платежа";
+
+"Account verification" = "Проверка аккаунта";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Чтобы обеспечить вашу безопасность, нам нужно удостовериться, что введенный адрес принадлежит вам. Мы отправили код подтверждения на %@. Пожалуйста, введите этот код ниже:";
+
+"Verification code" = "Код подтверждения";
+
+"Enter the 6-digit code." = "Введите код из шести цифр.";
+
+"Did not receive a code?" = "Не получили код?";
+
+"Terms and Conditions" = "Условия";
+
+"Invalid token request" = "Недействительный запрос токена";
+
+"Invalid token error" = "Ошибка недействительного токена";
+
+"Create user failed" = "Create user failed";
+
+"Invalid hashed password" = "Неверный хешированный пароль";
+
+"Password can not be empty.\nPlease try again." = "Пароль не может быть пустым.\nПожалуйста, попробуйте еще раз.";
+
+"Password must contain at least %@ characters." = "Пароль должен содержать хотя бы $%@ символов.";
+
+"Passwords do not match.\nPlease try again." = "Пароль и подтверждение не совпадают.\nПожалуйста, попробуйте еще раз.";
+
+"Email address already used." = "Адрес электронной почты уже используется.";
+
+"Please ask your admin to configure your sub-user." = "Пожалуйста, попросите администратора настроить вашего субпользователя.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Вы хотите получить новый код подтверждения или использовать другой адрес электронной почты?";
+
+"Change email address" = "Изменить адрес электронной почты";
+
+"Congratulations" = "Congratulations";
+
+"Your Proton Free account was successfully created." = "Ваш аккаунт Proton Free был успешно создан.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Ваш платеж был подтвержден, а ваш аккаунт %@ успешно создан.";
+
+"Your Proton account was successfully created." = "Ваш аккаунт Proton был успешно создан.";
+
+"Enjoy the world of privacy." = "Пользуйтесь миром конфиденциальности.";
+
+"Cancel" = "Отменить";
+
+"Sign in" = "Войти";
+
+"Troubleshoot" = "Устранение неполадок";

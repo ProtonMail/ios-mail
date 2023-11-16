@@ -44,9 +44,9 @@ import ProtonCoreServices
 
 final class WeaklyProxingScriptHandler<OtherHandler: WKScriptMessageHandler>: NSObject, WKScriptMessageHandler {
     private weak var otherHandler: OtherHandler?
-    
+
     init(_ otherHandler: OtherHandler) { self.otherHandler = otherHandler }
-    
+
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard let otherHandler = otherHandler else { return }
         otherHandler.userContentController(userContentController, didReceive: message)
@@ -59,33 +59,32 @@ public protocol AccountDeletionWebViewDelegate {
 }
 
 final class AccountDeletionWebView: AccountDeletionViewController {
-    
+
     #if canImport(UIKit)
     var banner: PMBanner?
     var loader = UIActivityIndicatorView()
     #endif
-    
+
     #if canImport(AppKit)
     var loader = NSProgressIndicator()
     #endif
-    
-    // swiftlint:disable weak_delegate
+
     /// The delegate is being kept strongly so that the client doesn't have to care
     /// about keeping some object to receive the completion block.
     var stronglyKeptDelegate: AccountDeletionWebViewDelegate?
     let userContentController = WKUserContentController()
     let viewModel: AccountDeletionViewModelInterface
     var webView: WKWebView?
-    
+
     init(viewModel: AccountDeletionViewModelInterface) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let webView = configureUI()
@@ -95,16 +94,16 @@ final class AccountDeletionWebView: AccountDeletionViewController {
         generateAccessibilityIdentifiers()
         #endif
     }
-    
+
     private func configureUI() -> WKWebView {
         styleUI()
-        
+
         userContentController.add(WeaklyProxingScriptHandler(self), name: "iOS")
-        
+
         let webViewConfiguration = WKWebViewConfiguration()
         webViewConfiguration.userContentController = userContentController
         viewModel.setup(webViewConfiguration: webViewConfiguration)
-        
+
         if #available(macOS 10.15, *) {
             webViewConfiguration.defaultWebpagePreferences.preferredContentMode = .mobile
         }
@@ -114,7 +113,7 @@ final class AccountDeletionWebView: AccountDeletionViewController {
         webView.uiDelegate = self
         webView.isHidden = true
         view.addSubview(webView)
-        
+
         webView.translatesAutoresizingMaskIntoConstraints = false
         if #available(macOS 11, *) {
             let layoutGuide = view.safeAreaLayoutGuide
@@ -128,28 +127,28 @@ final class AccountDeletionWebView: AccountDeletionViewController {
             webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
             webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         }
-        
+
         view.addSubview(loader)
         loader.translatesAutoresizingMaskIntoConstraints = false
-        
+
         #if canImport(UIKit)
         loader.style = .large
         loader.centerInSuperview()
         loader.startAnimating()
         #endif
-        
+
         #if canImport(AppKit)
         loader.style = .spinning
         loader.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         loader.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loader.startAnimation(nil)
         #endif
-        
+
         return webView
     }
-    
+
     private var lastLoadingURL: String?
-    
+
     private func loadWebContent(webView: WKWebView) {
         URLCache.shared.removeAllCachedResponses()
         let requestObj = viewModel.getURLRequest
@@ -163,11 +162,11 @@ final class AccountDeletionWebView: AccountDeletionViewController {
 }
 
 extension AccountDeletionWebView: WKNavigationDelegate {
-    
+
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         decisionHandler(.allow)
     }
-    
+
     func webView(_ webView: WKWebView,
                  didReceive challenge: URLAuthenticationChallenge,
                  completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
@@ -178,15 +177,15 @@ extension AccountDeletionWebView: WKNavigationDelegate {
             challengeCompletionHandler: completionHandler
         )
     }
-    
+
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         handleLoadingError(webView, error: error)
     }
-    
+
     func webView(_ webView: WKWebView, didFail _: WKNavigation!, withError error: Error) {
         handleLoadingError(webView, error: error)
     }
-    
+
     private func handleLoadingError(_ webView: WKWebView, error: Error) {
         PMLog.debug("webview load fail with error \(error)")
         guard let loadingURL = lastLoadingURL else { return }
@@ -198,7 +197,7 @@ extension AccountDeletionWebView: WKNavigationDelegate {
             }
         }
     }
-    
+
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         PMLog.debug("webview did finish navigation")
     }
@@ -207,9 +206,9 @@ extension AccountDeletionWebView: WKNavigationDelegate {
 extension AccountDeletionWebView: WKUIDelegate {
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         guard let url = navigationAction.request.url else { return nil }
-        
+
         openUrl(url)
-        
+
         configuration.userContentController = userContentController
         return WKWebView(frame: webView.frame, configuration: configuration)
     }
@@ -229,14 +228,14 @@ extension AccountDeletionWebView: WKScriptMessageHandler {
             self.stronglyKeptDelegate?.shouldCloseWebView(self, completion: completion)
         }
     }
-    
+
     func onAccountDeletionAppFailure(message: String) {
         let viewModel = self.viewModel
         self.stronglyKeptDelegate?.shouldCloseWebView(self, completion: {
             viewModel.deleteAccountDidErrorOut(message: message)
         })
     }
-    
+
     func apiMightBeBlockedFailure(message: String, originalError: Error) {
         let viewModel = self.viewModel
         self.stronglyKeptDelegate?.shouldCloseWebView(self, completion: {

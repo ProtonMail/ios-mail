@@ -22,7 +22,7 @@
 import Foundation
 
 final class DoHCookieSynchronizer {
-    
+
     let cookieStorage: HTTPCookieStorage
     weak var doh: DoH?
 
@@ -30,28 +30,28 @@ final class DoHCookieSynchronizer {
         self.cookieStorage = cookieStorage
         self.doh = doh
     }
-    
+
     func synchronizeCookies(
         for host: ProductionHosts,
         with headers: [String: String]
     ) async {
-        
+
         // The feature works as follows:
         // 1. Get the cookies for default host from the response headers
         // 2. Set these cookies (they wouldn't be set otherwise because they are not proxy domain cookies)
         // 3. Set cookies with the same properties for proxy domains
         // It works because backend always sets the cookies for the default host, never for proxy domain
-        
+
         guard let doh = doh else {
             return
         }
-        
+
         let domains = doh.fetchAllProxyDomainUrls(for: host)
         // this ensures we don't do any unnecessary work if no proxy domain is in use
         guard !domains.isEmpty else {
             return
         }
-        
+
         let url = host.url
 
         await MainActor.run { [weak self] in

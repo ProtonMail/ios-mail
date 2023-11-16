@@ -1,4 +1,3 @@
-// !swiftlint:disable file_header
 //
 //  JKBCrypt.swift
 //  JKBCrypt
@@ -385,15 +384,13 @@ public class JKBCrypt: NSObject {
 
     // MARK: - Private Class Methods
 
-    /**
-     Encodes an NSData composed of signed chararacters and returns slightly modified
-     Base64 encoded string.
-
-     :param: data    The data to be encoded. Passing nil will result in nil being returned.
-     :param: length  The length. Must be greater than 0 and no longer than the length of data.
-
-     :returns: String  A Base64 encoded string.
-     */
+    /// Encodes an NSData composed of signed chararacters and returns slightly modified
+    /// Base64 encoded string.
+    ///
+    /// :param: data    The data to be encoded. Passing nil will result in nil being returned.
+    /// :param: length  The length. Must be greater than 0 and no longer than the length of data.
+    ///
+    /// :returns: String  A Base64 encoded string.
     fileprivate class func encodeData(_ data: Data, ofLength length: UInt) -> String {
 
         if data.count == 0 || length == 0 {
@@ -446,13 +443,11 @@ public class JKBCrypt: NSObject {
         return result
     }
 
-    /**
-     Returns the Base64 encoded signed character of the provided unicode character.
-
-     :param: x   The 16-bit unicode character whose Base64 counterpart, if any, will be returned.
-
-     :returns: Int8  The Base64 encoded signed character or -1 if none exists.
-     */
+    /// Returns the Base64 encoded signed character of the provided unicode character.
+    ///
+    /// :param: x   The 16-bit unicode character whose Base64 counterpart, if any, will be returned.
+    ///
+    /// :returns: Int8  The Base64 encoded signed character or -1 if none exists.
     fileprivate class func char64of(_ x: Character) -> Int8 {
         let xAsInt: Int32 = Int32(x.utf16Value())
 
@@ -465,15 +460,13 @@ public class JKBCrypt: NSObject {
         return index_64[Int(xAsInt)]
     }
 
-    /**
-     Cyclically extracts a word of key material from the provided NSData.
-
-     :param: d       The NSData from which the word will be extracted.
-     :param: offp    The "pointer" (as a one-entry array) to the current offset into data.
-
-     :returns: UInt32 The next word of material from the data.
-     */
-    // class private func streamToWord(data: NSData, inout off offp: Int32) -> Int32 {
+    /// Cyclically extracts a word of key material from the provided NSData.
+    ///
+    /// :param: d       The NSData from which the word will be extracted.
+    /// :param: offp    The "pointer" (as a one-entry array) to the current offset into data.
+    ///
+    /// :returns: UInt32 The next word of material from the data.
+    /// class private func streamToWord(data: NSData, inout off offp: Int32) -> Int32 {
     fileprivate class func streamToWordWithData(_ data: UnsafeMutablePointer<Int8>, ofLength length: Int, off offp: inout Int32) -> Int32 {
         var word: Int32 = 0
         var off: Int32 = offp
@@ -488,15 +481,14 @@ public class JKBCrypt: NSObject {
 
     // MARK: - Private Instance Methods
 
-    /**
-     Enciphers the provided array using the Blowfish algorithm.
-
-     :param: lr  The left-right array containing two 32-bit half blocks.
-     :param: off The offset into the array.
-
-     :returns: <void>
-     */
-    // private func encipher(inout lr: [Int32], off: Int) {
+    /// Enciphers the provided array using the Blowfish algorithm.
+    ///
+    /// :param: lr  The left-right array containing two 32-bit half blocks.
+    /// :param: off The offset into the array.
+    ///
+    /// :returns: <void>
+    ///
+    /// private func encipher(inout lr: [Int32], off: Int) {
     fileprivate func encipher(/*inout*/ _ lr: UnsafeMutablePointer<Int32>, off: Int) {
         if off < 0 {
             // Invalid offset.
@@ -531,14 +523,13 @@ public class JKBCrypt: NSObject {
         lr[off + 1] = l
     }
 
-    /**
-     Keys the receiver's blowfish cipher using the provided key.
-
-     :param: key The array containing the key.
-
-     :returns: <void>
-     */
-    // private func key(key: NSData) {
+    /// Keys the receiver's blowfish cipher using the provided key.
+    ///
+    /// :param: key The array containing the key.
+    ///
+    /// :returns: <void>
+    ///
+    /// private func key(key: NSData) {
     fileprivate func key(_ key: Data) {
         var i: Int
         var koffp: Int32 = 0
@@ -569,16 +560,14 @@ public class JKBCrypt: NSObject {
         }
     }
 
-    /**
-     Performs the "enhanced key schedule" step described by Provos and Mazieres
-     in "A Future-Adaptable Password Scheme"
-     http://www.openbsd.org/papers/bcrypt-paper.ps
-
-     :param: data    The salt data.
-     :param: key     The password data.
-
-     :returns: <void>
-     */
+    /// Performs the "enhanced key schedule" step described by Provos and Mazieres
+    /// in "A Future-Adaptable Password Scheme"
+    /// http://www.openbsd.org/papers/bcrypt-paper.ps
+    ///
+    /// :param: data    The salt data.
+    /// :param: key     The password data.
+    ///
+    /// :returns: <void>
     fileprivate func enhanceKeyScheduleWithData(_ data: Data, key: Data) {
         var i: Int
         var koffp: Int32 = 0

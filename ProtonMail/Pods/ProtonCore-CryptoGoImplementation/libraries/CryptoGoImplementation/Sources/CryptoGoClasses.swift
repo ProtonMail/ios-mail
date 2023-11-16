@@ -126,8 +126,6 @@ extension ProtonCoreCryptoGoInterface.CryptoKeyRing {
     }
 }
 
-
-
 extension GoLibs.CryptoKeyRing: ProtonCoreCryptoGoInterface.CryptoKeyRing {
     public func decryptMIMEMessage(_ message: ProtonCoreCryptoGoInterface.CryptoPGPMessage?, verifyKey: ProtonCoreCryptoGoInterface.CryptoKeyRing?, callbacks: ProtonCoreCryptoGoInterface.CryptoMIMECallbacksProtocol?, verifyTime: Int64) {
         decryptMIMEMessage(
@@ -226,7 +224,6 @@ extension GoLibs.CryptoKeyRing: ProtonCoreCryptoGoInterface.CryptoKeyRing {
         )
     }
 
-
     public func decryptSessionKey(_ keyPacket: Data?) throws -> ProtonCoreCryptoGoInterface.CryptoSessionKey {
         let value: GoLibs.CryptoSessionKey = try decryptSessionKey(keyPacket)
         return value
@@ -234,6 +231,12 @@ extension GoLibs.CryptoKeyRing: ProtonCoreCryptoGoInterface.CryptoKeyRing {
 
     public func encrypt(_ message: ProtonCoreCryptoGoInterface.CryptoPlainMessage?, privateKey: ProtonCoreCryptoGoInterface.CryptoKeyRing?) throws -> ProtonCoreCryptoGoInterface.CryptoPGPMessage {
         let value: GoLibs.CryptoPGPMessage = try encrypt(message?.toGoLibsType,
+                                                         privateKey: privateKey?.toGoLibsType)
+        return value
+    }
+
+    public func encrypt(withCompression message: ProtonCoreCryptoGoInterface.CryptoPlainMessage?, privateKey: ProtonCoreCryptoGoInterface.CryptoKeyRing?) throws -> ProtonCoreCryptoGoInterface.CryptoPGPMessage {
+        let value: GoLibs.CryptoPGPMessage = try encrypt(withCompression: message?.toGoLibsType,
                                                          privateKey: privateKey?.toGoLibsType)
         return value
     }
@@ -455,7 +458,6 @@ extension ProtonCoreCryptoGoInterface.CryptoVerificationContext {
 }
 
 extension GoLibs.CryptoVerificationContext: ProtonCoreCryptoGoInterface.CryptoVerificationContext {}
-
 
 // MARK: - SrpAuth
 extension GoLibs.SrpAuth: ProtonCoreCryptoGoInterface.SrpAuth {

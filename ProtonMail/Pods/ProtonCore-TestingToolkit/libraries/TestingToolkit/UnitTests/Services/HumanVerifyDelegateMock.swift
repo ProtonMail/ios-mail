@@ -41,19 +41,19 @@ public final class HumanVerifyDelegateMock: HumanVerifyDelegate {
         get { paymentDelegateForLoginAndSignupStub() }
         set { paymentDelegateForLoginAndSignupStub(newValue) }
     }
-    
+
     @FuncStub(HumanVerifyDelegateMock.onHumanVerify) public var onHumanVerifyStub
     public func onHumanVerify(parameters: HumanVerifyParameters,
                               currentURL: URL?,
                               completion: @escaping ((HumanVerifyFinishReason) -> Void)) {
         onHumanVerifyStub(parameters, currentURL, completion)
     }
-    
+
     @FuncStub(HumanVerifyDelegateMock.onDeviceVerify, initialReturn: nil) public var onDeviceVerifyStub
     public func onDeviceVerify(parameters: DeviceVerifyParameters) -> String? {
         onDeviceVerifyStub(parameters)
     }
-    
+
     @FuncStub(HumanVerifyDelegateMock.getSupportURL, initialReturn: URL(string: "https://protoncore.unittest")!) public var getSupportURLStub
     public func getSupportURL() -> URL {
         getSupportURLStub()

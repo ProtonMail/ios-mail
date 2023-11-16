@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>%d users</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d useqdac</string>
+        <key>other</key>
+        <string>%d yiseqdacen</string>
+      </dict>
+    </dict>
+    <key>%d email addresses</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d tansa n yimayl</string>
+        <key>other</key>
+        <string>%d n tansiwin imayl</string>
+      </dict>
+    </dict>
+    <key>%d email addresses / user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d tansa n yimayl / aseqdac</string>
+        <key>other</key>
+        <string>%d tansiwin n yimayl / iseqdac</string>
+      </dict>
+    </dict>
+    <key>%d calendars</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d uwitay</string>
+        <key>other</key>
+        <string>%d yiwitayen</string>
+      </dict>
+    </dict>
+    <key>%d folders / labels</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d ukaram / tebzimt</string>
+        <key>other</key>
+        <string>%d n Ikaramen / Tebzimin</string>
+      </dict>
+    </dict>
+    <key>%d countries</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d n tmurt</string>
+        <key>other</key>
+        <string>%d n tmure</string>
+      </dict>
+    </dict>
+    <key>%d connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d n tuqqna</string>
+        <key>other</key>
+        <string>%d n tuqqniwin</string>
+      </dict>
+    </dict>
+    <key>%d VPN connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d tuqqna VPN</string>
+        <key>other</key>
+        <string>%d n tuqqniwin VPN</string>
+      </dict>
+    </dict>
+    <key>%d high-speed VPN connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d n tuqqna VPN s urured ɛlayen</string>
+        <key>other</key>
+        <string>%d n tuqqna VPN s urured ɛlayen</string>
+      </dict>
+    </dict>
+    <key>%d custom domains</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d taɣult tudmawant</string>
+        <key>other</key>
+        <string>%d tiɣula tudmawanin</string>
+      </dict>
+    </dict>
+    <key>%d vaults</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d usenduq</string>
+        <key>other</key>
+        <string>%d yisendyaq</string>
+      </dict>
+    </dict>
+    <key>Support for %d custom email domains</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Asefrek i %d taɣult n yimayl udmawan</string>
+        <key>other</key>
+        <string>Asefrek i %d tiɣula n yimayl udmawan</string>
+      </dict>
+    </dict>
+    <key>%d folders and labels</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d ukaram d tebzimt</string>
+        <key>other</key>
+        <string>%d yikaramen d tebzimin</string>
+      </dict>
+    </dict>
+    <key>%d calendars</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d uwitay</string>
+        <key>other</key>
+        <string>%d yiwitayen</string>
+      </dict>
+    </dict>
+    <key>High-speed VPN on %d devices</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>VPN arurad agafay ɣef %d yibenk</string>
+        <key>other</key>
+        <string>VPN arurad agafay ɣef %d yibenkan</string>
+      </dict>
+    </dict>
+    <key>%d+ servers in %d countries</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@SERVERS@ deg %#@COUNTRIES@</string>
+      <key>SERVERS</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d+ uqeddac</string>
+        <key>other</key>
+        <string>%d+ yiqeddacen</string>
+      </dict>
+      <key>COUNTRIES</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d n tmurt</string>
+        <key>other</key>
+        <string>%d n tmure</string>
+      </dict>
+    </dict>
+    <key>%d servers in %d countries (US, NL, JP)</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@SERVERS@ deg %#@COUNTRIES@</string>
+      <key>SERVERS</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Aqeddac %d</string>
+        <key>other</key>
+        <string>%d yiqeddacen</string>
+      </dict>
+      <key>COUNTRIES</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d tmurt (US, NL, JP)</string>
+        <key>other</key>
+        <string>%d tmura (US, NL, JP)</string>
+      </dict>
+    </dict>
+    <key>%d of %d users</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE1@ n %#@VARIABLE2@</string>
+      <key>VARIABLE1</key>
+      <dict>
+        <key>one</key>
+        <string>%d</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d</string>
+      </dict>
+      <key>VARIABLE2</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d useqdac</string>
+        <key>other</key>
+        <string>%d yiseqdacen</string>
+      </dict>
+    </dict>
+    <key>%d of %d email addresses</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE1@ n %#@VARIABLE2@</string>
+      <key>VARIABLE1</key>
+      <dict>
+        <key>one</key>
+        <string>%d</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d</string>
+      </dict>
+      <key>VARIABLE2</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d tansa n yimayl</string>
+        <key>other</key>
+        <string>%d n tansiwin imayl</string>
+      </dict>
+    </dict>
+    <key>%d of %d calendars</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE1@ n %#@VARIABLE2@</string>
+      <key>VARIABLE1</key>
+      <dict>
+        <key>one</key>
+        <string>%d</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d</string>
+      </dict>
+      <key>VARIABLE2</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d uwitay</string>
+        <key>other</key>
+        <string>%d yiwitayen</string>
+      </dict>
+    </dict>
+    <key>%d addresses per user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d tansa n yimayl i useqdac</string>
+        <key>other</key>
+        <string>%d tansiwin n yimayl i useqdac</string>
+      </dict>
+    </dict>
+    <key>%d calendars per user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d uwitay i yal aseqdac</string>
+        <key>other</key>
+        <string>%d yiwitayen i yal aseq</string>
+      </dict>
+    </dict>
+    <key>%d VPN connections per user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d n tuqqna VPN i useqdac</string>
+        <key>other</key>
+        <string>%d n tuqqniwin VPN i useqdac</string>
+      </dict>
+    </dict>
+    <key>Pay for %d months</key>
+    <dict>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Pay for %d month</string>
+        <key>other</key>
+        <string>Pay for %d months</string>
+      </dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+    </dict>
+    <key>Medium VPN speed %d VPN connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Medium VPN speed %d VPN connection</string>
+        <key>other</key>
+        <string>Medium VPN speed %d VPN connections</string>
+      </dict>
+    </dict>
+  </dict>
+</plist>

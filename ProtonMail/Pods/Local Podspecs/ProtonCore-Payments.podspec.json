@@ -50,6 +50,9 @@
     ],
     "ProtonCore-Services": [
       "14.0.0"
+    ],
+    "ProtonCore-FeatureFlags": [
+      "14.0.0"
     ]
   },
   "source_files": [

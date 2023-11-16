@@ -29,20 +29,20 @@ public enum StoreKitManagerErrors: LocalizedError {
     case alreadyPurchasedPlanDoesNotMatchBackend
     case noActiveUsername
     case transactionFailedByUnknownReason
-    case noNewSubscriptionInSuccessfullResponse
+    case noNewSubscriptionInSuccessfulResponse
     case wrongTokenStatus(PaymentToken.Status)
     case notAllowed
     case unknown(code: Int, originalError: NSError)
     case appIsLocked
     case pleaseSignIn
     case apiMightBeBlocked(message: String, originalError: Error)
-    
+
     @available(*, deprecated, message: "This is never returned anymore — the success callback with `.resolvingIAPToCreditsCausedByError` is returned instead")
     static var creditsApplied: StoreKitManagerErrors { .transactionFailedByUnknownReason }
-    
+
     @available(*, deprecated, message: "This is never returned anymore — the success callback with `.cancelled` is returned instead")
     static var cancelled: StoreKitManagerErrors { .transactionFailedByUnknownReason }
-    
+
     var isUnknown: Bool {
         switch self {
         case .unknown: return true
@@ -59,7 +59,7 @@ public enum StoreKitManagerErrors: LocalizedError {
         case .alreadyPurchasedPlanDoesNotMatchBackend: return PSTranslation._error_backend_mismatch.l10n
         case .noActiveUsername: return PSTranslation._error_no_active_username_in_user_data_service.l10n
         case .transactionFailedByUnknownReason: return PSTranslation._error_transaction_failed_by_unknown_reason.l10n
-        case .noNewSubscriptionInSuccessfullResponse: return PSTranslation._error_no_new_subscription_in_response.l10n
+        case .noNewSubscriptionInSuccessfulResponse: return PSTranslation._error_no_new_subscription_in_response.l10n
         case .appIsLocked: return PSTranslation._error_unlock_to_proceed_with_iap.l10n
         case .pleaseSignIn: return PSTranslation._error_please_sign_in_iap.l10n
         case .wrongTokenStatus: return PSTranslation._error_wrong_token_status.l10n
@@ -73,16 +73,16 @@ extension StoreKitManagerErrors: Equatable {
     public static func == (lhs: StoreKitManagerErrors, rhs: StoreKitManagerErrors) -> Bool {
         switch (lhs, rhs) {
         case (.unavailableProduct, .unavailableProduct),
-             (.invalidPurchase, .invalidPurchase),
-             (.receiptLost, .receiptLost),
-             (.haveTransactionOfAnotherUser, .haveTransactionOfAnotherUser),
-             (.alreadyPurchasedPlanDoesNotMatchBackend, .alreadyPurchasedPlanDoesNotMatchBackend),
-             (.noActiveUsername, .noActiveUsername),
-             (.transactionFailedByUnknownReason, .transactionFailedByUnknownReason),
-             (.noNewSubscriptionInSuccessfullResponse, .noNewSubscriptionInSuccessfullResponse),
-             (.notAllowed, .notAllowed),
-             (.appIsLocked, .appIsLocked),
-             (.pleaseSignIn, .pleaseSignIn):
+            (.invalidPurchase, .invalidPurchase),
+            (.receiptLost, .receiptLost),
+            (.haveTransactionOfAnotherUser, .haveTransactionOfAnotherUser),
+            (.alreadyPurchasedPlanDoesNotMatchBackend, .alreadyPurchasedPlanDoesNotMatchBackend),
+            (.noActiveUsername, .noActiveUsername),
+            (.transactionFailedByUnknownReason, .transactionFailedByUnknownReason),
+            (.noNewSubscriptionInSuccessfulResponse, .noNewSubscriptionInSuccessfulResponse),
+            (.notAllowed, .notAllowed),
+            (.appIsLocked, .appIsLocked),
+            (.pleaseSignIn, .pleaseSignIn):
             return true
         case let (.wrongTokenStatus(ltoken), .wrongTokenStatus(rtoken)):
             return ltoken == rtoken

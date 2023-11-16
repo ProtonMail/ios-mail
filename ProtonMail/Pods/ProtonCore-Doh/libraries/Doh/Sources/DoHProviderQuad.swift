@@ -23,9 +23,9 @@ import Foundation
 import ProtonCoreLog
 
 struct Quad9: DoHProviderInternal {
-    
+
     let supported: [DNSRecordType] = [.a, .txt]
-    
+
     let networkingEngine: DoHNetworkingEngine
 
     init(networkingEngine: DoHNetworkingEngine) {

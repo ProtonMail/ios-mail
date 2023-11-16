@@ -1,0 +1,50 @@
+
+"support form" = "მხარდაჭერის ფორმა";
+
+"email" = "ელფოსტა";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "შეცდომების გასწორება";
+
+"Allow alternative routing" = "ალტერნატიული რაუტინგის ჩართვა";
+
+"No internet connection" = "ინტერნეტი არ გაქვთ";
+
+"Internet Service Provider (ISP) problem" = "ინტერნეტ სერვის პროვაიდერის (ISP) პრობლემა";
+
+"Government block" = "მთავრობის ბლოკი";
+
+"Antivirus interference" = "ანტივირუსის ჩარევა";
+
+"Proxy/Firewall interference" = "პროქსის/ბრანდმაუერის მიერ გამოწვეული პრობლემები";
+
+"Proton is down" = "Proton-ი გათიშულია";
+
+"Still can't find a solution" = "გადაწყვეტა ჯერ კიდევ ვერ ვიპოვე";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "იმ შემთხვევაში, თუ Proton-ის საიტები დაბლოკილია, ეს პარამეტრი აპს საშუალებას აძლევს, Proton-მდე მისასვლელად ქსელის ალტერნატიული რაუტინგი სცადოს, რაც შეიძლება, სასარგებლო იყოს ბრანდმაუერის ან ქსელის პრობლემების გვერდის ავლით. მეტი საიმედოობისთვის გირჩევთ, ჩართოთ ეს პარამეტრი. %1$@";
+
+"Learn more" = "მეტის ნახვა";
+
+"Please make sure that your internet connection is working." = "დარწმუნდით, რომ ინტერნეტი გაქვთ.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "სცადეთ, მიუერთდეთ Proton-ს სხვა ქსელიდან (ან სცადეთ %1$@ ან %2$@).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "შესაძლოა, თქვენს ქვეყანაში Proton-ზე წვდომა დაბლოკილია. Proton-ზე წვდომისთვის, სცადეთ, გამოიყენოთ %1$@ (ან ნებისმიერი სხვა VPN) ან %2$@.";
+
+"Temporarily disable or remove your antivirus software." = "დროებით გამორთეთ ან წაშალეთ ანტივირუსი.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "გამორთეთ ყველა პროქსი ან ბრანდმაუერი ან დაუკავშირდით თქვენი ქსელის ადმინისტრატორს.";
+
+"Check Proton Status for our system status." = "ჩვენი სისტემის სტატუსის გასაგებად შეამოწმეთ Proton-ის მდგომარეობა.";
+
+"Proton Status" = "Proton-ის სტატუსი";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "დაგვიკავშირდით, პირდაპირ, მხარდაჭერის ფორმით, ელფოსტით(support@protonmail.zendesk.com) ან ტვიტერით.";
+
+"Subject..." = "საგანი...";
+
+"Please share your problem." = "გაგვიზიარეთ თქვენი პრობლემა.";
+
+"Back" = "უკან";

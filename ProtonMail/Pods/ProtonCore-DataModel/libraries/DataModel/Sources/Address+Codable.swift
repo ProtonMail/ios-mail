@@ -23,18 +23,18 @@ import Foundation
 
 extension Address {
     enum CodingKeys: String, CodingKey {
-        
+
         case addressID = "ID"
         case domainID
-        
+
         case email
-        
+
         case send
         case receive
         case status
         case type
         case order
-    
+
         case displayName
         case signature
         case hasKeys

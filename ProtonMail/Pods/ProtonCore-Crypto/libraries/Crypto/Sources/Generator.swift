@@ -24,7 +24,7 @@ import Foundation
 import ProtonCoreCryptoGoInterface
 
 public enum Generator {
-    
+
     public static func generateECCKey(email: String, passphase: Passphrase) throws -> ArmoredKey{
         var error: NSError?
         // in our system the PGP `User ID Packet-Tag 13` we use email address as username and email address

@@ -23,7 +23,7 @@ import Foundation
 import ProtonCoreDoh
 
 final class ProductionVPN: DoH, VerificationModifiable {
-    
+
     let defaultHost: String = ProductionHosts.legacyProtonVPNAPI.urlString
     let captchaHost: String = ProductionHosts.legacyProtonVPNAPI.urlString
 

@@ -25,7 +25,7 @@ import ProtonCoreCryptoGoInterface
 import ProtonCoreDataModel
 
 public enum Decryptor {
-    
+
     /// decrypt armored message return string value
     /// - Parameters:
     ///   - decryptionKeys: decryption keys
@@ -34,7 +34,7 @@ public enum Decryptor {
     public static func decrypt(decryptionKeys: [DecryptionKey], encrypted: ArmoredMessage) throws -> String {
         return try Crypto().decrypt(decryptionKeys: decryptionKeys, encrypted: encrypted)
     }
-    
+
     /// decrypt armored message return binary value
     /// - Parameters:
     ///   - decryptionKeys: decryption keys
@@ -43,7 +43,7 @@ public enum Decryptor {
     public static func decrypt(decryptionKeys: [DecryptionKey], encrypted: ArmoredMessage) throws -> Data {
         return try Crypto().decrypt(decryptionKeys: decryptionKeys, encrypted: encrypted)
     }
-    
+
     /// decrypt split packet
     /// - Parameters:
     ///   - decryptionKeys: decryption keys
@@ -52,11 +52,11 @@ public enum Decryptor {
     public static func decrypt(decryptionKeys: [DecryptionKey], split: SplitPacket) throws -> Data {
         return try Crypto().decrypt(decryptionKeys: decryptionKeys, split: split)
     }
-    
+
     public static func decryptSessionKey(decryptionKeys: [DecryptionKey], keyPacket: Data) throws -> SessionKey {
         return try Crypto().decryptSessionKey(decryptionKeys: decryptionKeys, keyPacket: keyPacket)
     }
-    
+
     /// decrypt and verify with passed in verifierKeys
     /// - Parameters:
     ///   - decryptionKeys: keys used for decryption
@@ -71,7 +71,7 @@ public enum Decryptor {
                                              encrypted: value,
                                              verifications: verificationKeys, verifyTime: verifyTime, verificationContext: verificationContext)
     }
-    
+
     /// decrypt and verify with passed in verifierKeys
     /// - Parameters:
     ///   - decryptionKeys: keys used for decryption
@@ -86,7 +86,7 @@ public enum Decryptor {
                                              encrypted: value,
                                              verifications: verificationKeys, verifyTime: verifyTime, verificationContext: verificationContext)
     }
-    
+
     /// decrypt and verify with passed in verifierKeys
     /// - Parameters:
     ///   - decryptionKeys: keys used for decryption
@@ -97,11 +97,11 @@ public enum Decryptor {
     /// - Returns: verifiedString object. contains error if any
     public static func decryptAndVerify(decryptionKeys: [DecryptionKey], value: SplitPacket,
                                         verificationKeys: [ArmoredKey], verifyTime: Int64 = 0, verificationContext: VerificationContext? = nil) throws -> VerifiedString {
-        
+
         return try Crypto().decryptAndVerify(decryptionKeys: decryptionKeys, split: value,
                                              verifications: verificationKeys, verifyTime: verifyTime, verificationContext: verificationContext)
     }
-    
+
     /// decrypt and verify with passed in verifierKeys
     /// - Parameters:
     ///   - decryptionKeys: keys used for decryption
@@ -112,11 +112,11 @@ public enum Decryptor {
     /// - Returns: verifiedString object. contains error if any
     public static func decryptAndVerify(decryptionKeys: [DecryptionKey], value: SplitPacket,
                                         verificationKeys: [ArmoredKey], verifyTime: Int64 = 0, verificationContext: VerificationContext? = nil) throws -> VerifiedData {
-        
+
         return try Crypto().decryptAndVerify(decryptionKeys: decryptionKeys, split: value,
                                              verifications: verificationKeys, verifyTime: verifyTime, verificationContext: verificationContext)
     }
-    
+
     /// decrypt and verify with passed in verifierKeys
     /// - Parameters:
     ///   - decryptionKey: single key used for decryption
@@ -130,7 +130,7 @@ public enum Decryptor {
         return try Crypto().decryptAndVerify(decryptionKeys: [decryptionKey], split: value,
                                              verifications: verificationKeys, verifyTime: verifyTime, verificationContext: verificationContext)
     }
-    
+
     /// decrypt and verify with passed in verifierKeys
     /// - Parameters:
     ///   - decryptionKey: single key used for decryption
@@ -145,7 +145,7 @@ public enum Decryptor {
                                              encrypted: value,
                                              verifications: verificationKeys, verifyTime: verifyTime, verificationContext: verificationContext)
     }
-    
+
     /// decrypt session key and verify the detached signature with passed in verifierKeys
     /// - Parameters:
     ///   - decryptionKey: single key used for decryption
@@ -161,7 +161,7 @@ public enum Decryptor {
                                              keyPacket: keyPacket, signature: signature,
                                              verificationKeys: verificationKeys, verifyTime: verifyTime, verificationContext: verificationContext)
     }
-    
+
     /// decrypt address token and verify a detached signature with self
     /// - Parameters:
     ///   - decryptionKey: single key used for decryption
@@ -176,7 +176,7 @@ public enum Decryptor {
                                              encrypted: addrToken, signature: detachedSign,
                                              verificationKeys: verificationKeys, verifyTime: verifyTime, verificationContext: verificationContext)
     }
-    
+
     /// decrypt random passpharase and verify a detached signature with self
     /// - Parameters:
     ///   - decryptionKey: single key used for decryption
@@ -191,8 +191,7 @@ public enum Decryptor {
                                              encrypted: encPasspharse, signature: detachedSign,
                                              verificationKeys: verificationKeys, verifyTime: verifyTime, verificationContext: verificationContext)
     }
-    
-    // swiftlint:disable function_parameter_count
+
     /// decrypt a file using the streaming api and verify the signature
     /// - Parameters:
     ///   - encryptedFile: The file containing the encrypted data
@@ -221,8 +220,7 @@ public enum Decryptor {
                                    verificationKeys: verificationKeys, encryptedSignature: ArmoredMessage(value: signature.value),
                                    chunckSize: chunckSize, removeClearTextFileIfAlreadyExists: removeClearTextFileIfAlreadyExists, verificationContext: verificationContext)
     }
-    
-    // swiftlint:disable function_parameter_count
+
     /// decrypt a file using the streaming api and verify the signature
     /// - Parameters:
     ///   - encryptedFile: The file containing the encrypted data
@@ -250,7 +248,7 @@ public enum Decryptor {
                                    verificationKeys: verificationKeys, encryptedSignature: encryptedSignature,
                                    chunckSize: chunckSize, removeClearTextFileIfAlreadyExists: removeClearTextFileIfAlreadyExists, verificationContext: verificationContext)
     }
-    
+
     /// decrypt armored message with a token password. if the clear content is data type. need to expose a new interface or convert result back to data
     /// - Parameters:
     ///   - encrypted: armored message

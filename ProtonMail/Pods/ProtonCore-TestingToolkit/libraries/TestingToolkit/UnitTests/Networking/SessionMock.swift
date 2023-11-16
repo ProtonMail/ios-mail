@@ -28,28 +28,28 @@ import ProtonCoreNetworking
 public typealias AnyDecodableResponseCompletion = (_ task: URLSessionDataTask?, _ result: Result<Any, SessionResponseError>) -> Void
 
 public final class SessionMock: Session {
-    
+
     public init() {}
-    
+
     private func eraseGenerics<T>(from completion: @escaping DecodableResponseCompletion<T>) -> AnyDecodableResponseCompletion where T: SessionDecodableResponse {
         { task, result in completion(task, result.map { $0 as! T }) }
     }
-    
+
     @PropertyStub(\Session.sessionConfiguration, initialGet: .default) public var sessionConfigurationStub
     public var sessionConfiguration: URLSessionConfiguration { sessionConfigurationStub() }
-    
+
     @ThrowingFuncStub(SessionMock.generate, initialReturn: .crash) public var generateStub
     public func generate(with method: HTTPMethod, urlString: String, parameters: Any?, timeout: TimeInterval?, retryPolicy: ProtonRetryPolicy.RetryMode) throws -> SessionRequest {
         try generateStub(method, urlString, parameters, timeout, retryPolicy)
     }
-    
+
     @FuncStub(SessionMock.request(with:onDataTaskCreated:completion:)) public var requestJSONStub
     public func request(with request: ProtonCoreNetworking.SessionRequest,
                         onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                         completion: @escaping JSONResponseCompletion) {
         requestJSONStub(request, onDataTaskCreated, completion)
     }
-    
+
     private func genericRequestErased(with request: SessionRequest,
                                       jsonDecoder: JSONDecoder?,
                                       onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
@@ -61,24 +61,21 @@ public final class SessionMock: Session {
                            completion: @escaping DecodableResponseCompletion<T>) where T: Decodable {
         requestDecodableStub(request, jsonDecoder, onDataTaskCreated, eraseGenerics(from: completion))
     }
-    
+
     @FuncStub(SessionMock.download(with:destinationDirectoryURL:completion:)) public var downloadStub
     public func download(with request: SessionRequest, destinationDirectoryURL: URL, completion: @escaping DownloadCompletion) {
         downloadStub(request, destinationDirectoryURL, completion)
     }
-    
+
     @FuncStub(SessionMock.upload(with:keyPacket:dataPacket:signature:completion:uploadProgress:)) public var uploadJSONStub
-    // swiftlint:disable function_parameter_count
     public func upload(with request: SessionRequest, keyPacket: Data, dataPacket: Data, signature: Data?,
                        completion: @escaping JSONResponseCompletion, uploadProgress: ProgressCompletion?) {
         uploadJSONStub(request, keyPacket, dataPacket, signature, completion, uploadProgress)
     }
-    
-    // swiftlint:disable function_parameter_count
+
     private func uploadNoGenerics(with: SessionRequest, keyPacket: Data, dataPacket: Data, signature: Data?, jsonDecoder: JSONDecoder?,
                                   completion: @escaping AnyDecodableResponseCompletion, uploadProgress: ProgressCompletion?) {}
     @FuncStub(SessionMock.uploadNoGenerics(with:keyPacket:dataPacket:signature:jsonDecoder:completion:uploadProgress:)) public var uploadDecodableStub
-    // swiftlint:disable function_parameter_count
     public func upload<T>(with request: SessionRequest,
                           keyPacket: Data,
                           dataPacket: Data,
@@ -88,12 +85,12 @@ public final class SessionMock: Session {
                           uploadProgress: ProgressCompletion?) where T: SessionDecodableResponse {
         uploadDecodableStub(request, keyPacket, dataPacket, signature, jsonDecoder, eraseGenerics(from: completion), uploadProgress)
     }
-    
+
     @FuncStub(SessionMock.upload(with:files:completion:uploadProgress:)) public var uploadWithFilesJSONStub
     public func upload(with request: SessionRequest, files: [String: URL], completion: @escaping JSONResponseCompletion, uploadProgress: ProgressCompletion?) {
         uploadWithFilesJSONStub(request, files, completion, uploadProgress)
     }
-    
+
     private func uploadNoGenerics(with: SessionRequest, files: [String: URL], jsonDecoder: JSONDecoder?, completion: @escaping AnyDecodableResponseCompletion, uploadProgress: ProgressCompletion?) {}
     @FuncStub(SessionMock.uploadNoGenerics(with:files:jsonDecoder:completion:uploadProgress:)) public var uploadWithFilesDecodableStub
     public func upload<T>(with request: SessionRequest,
@@ -105,7 +102,6 @@ public final class SessionMock: Session {
     }
 
     @FuncStub(SessionMock.uploadFromFile(with:keyPacket:dataPacketSourceFileURL:signature:completion:uploadProgress:)) public var uploadFromFileJSONStub
-    // swiftlint:disable function_parameter_count
     public func uploadFromFile(with request: SessionRequest,
                                keyPacket: Data,
                                dataPacketSourceFileURL: URL,
@@ -114,12 +110,11 @@ public final class SessionMock: Session {
                                uploadProgress: ProgressCompletion?) {
         uploadFromFileJSONStub(request, keyPacket, dataPacketSourceFileURL, signature, completion, uploadProgress)
     }
-    
+
     private func uploadFromFileNoGenerics(with request: SessionRequest, keyPacket: Data, dataPacketSourceFileURL: URL, signature: Data?,
                                           jsonDecoder: JSONDecoder?, completion: @escaping AnyDecodableResponseCompletion,
                                           uploadProgress: ProgressCompletion?) {}
     @FuncStub(SessionMock.uploadFromFileNoGenerics(with:keyPacket:dataPacketSourceFileURL:signature:jsonDecoder:completion:uploadProgress:)) public var uploadFromFileDecodableStub
-    // swiftlint:disable function_parameter_count
     public func uploadFromFile<T>(with request: SessionRequest,
                                   keyPacket: Data,
                                   dataPacketSourceFileURL: URL,
@@ -129,7 +124,7 @@ public final class SessionMock: Session {
                                   uploadProgress: ProgressCompletion?) where T: SessionDecodableResponse {
         uploadFromFileDecodableStub(request, keyPacket, dataPacketSourceFileURL, signature, jsonDecoder, eraseGenerics(from: completion), uploadProgress)
     }
-    
+
     @FuncStub(SessionMock.setChallenge) public var setChallengeStub
     public func setChallenge(noTrustKit: Bool, trustKit: TrustKit?) {
         setChallengeStub(noTrustKit, trustKit)
@@ -139,5 +134,5 @@ public final class SessionMock: Session {
     public func failsTLS(request: SessionRequest) -> String? {
         failsTLSStub(request)
     }
-    
+
 }

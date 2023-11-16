@@ -37,7 +37,6 @@ public final class PropertyStub<Property> {
 
 public final class StubbedProperty<Property> {
 
-    // swiftlint:disable:next operator_usage_whitespace
     public typealias SetCapturedArguments = CapturedArguments<Property, Property, Absent, Absent, Absent, Absent, Absent,
                                                               Absent, Absent, Absent, Absent, Absent, Absent>
 

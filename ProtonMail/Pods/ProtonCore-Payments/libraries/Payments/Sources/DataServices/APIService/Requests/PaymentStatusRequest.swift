@@ -25,7 +25,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 final class PaymentStatusRequest: BaseApiRequest<PaymentStatusResponse> {
-    
+
     override init(api: APIService) {
         super.init(api: api)
     }

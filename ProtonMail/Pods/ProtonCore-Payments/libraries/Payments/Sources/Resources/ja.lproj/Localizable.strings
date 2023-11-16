@@ -1,0 +1,46 @@
+
+"Contact customer support" = "カスタマーサポートに連絡する";
+
+"Failed to get list of available products from App Store." = "App Store 上の利用可能製品の一覧の取得に失敗しました。";
+
+"Purchase is not possible." = "購入処理を進めることができません。";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Appleからサブスクリプションプランのアップグレードの通知を受けましたが、いくつかの技術情報が見当たりません。顧客サポートチームがご連絡しますので、バグ報告をお願いします。";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Appleからサービスプランのアップグレードの通知を受けましたが、サインアウトしている事を検出しました。";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "あなたが購入したApp Storeの商品を、当社のサーバー上の製品に一致させることができませんでした。バグ報告に記入してくだされば、当社の顧客サポートチームからご連絡いたします。";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "購入手続きを完了するには、プランをアップグレードする Proton Mail アカウントにサインインしてください。";
+
+"Apple informed us they could not process the purchase." = "Appleが購入の手続きを進める事ができませんでした。";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "購読の有効化に成功しました。アプリの再起動をして新しいプランになっていることを確認してください。";
+
+"Please unlock the app to proceed with your service plan activation" = "サービスプランの有効化のために、アプリをロック解除してください。";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "プランの有効化を完了するには、プランをアップグレードする Proton Mail アカウントにサインインしてください。";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "支払いトークンのステータスが間違っています。アプリを再起動してください。エラーが解決しない場合はサポートにお問い合わせください。";
+
+"Do you want to activate the purchase for %@ address?" = "購読したプランをアドレス %@ に対して有効化しますか？";
+
+"Yes, activate it for " = "はい、有効化してください ";
+
+"No, for another Proton Mail account" = "いいえ、別のProton Mailのアカウント用です";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "選択したプランにアカウントをアップグレードできなかったため、お支払額をアカウントのクレジット残高に追加しました。アップグレードを完了するには、サポートにご連絡ください。";
+
+"Contact Support" = "サポートへ連絡";
+
+"Dismiss" = "却下";
+
+"Payment failed" = "支払いに失敗しました";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "登録は完了しましたが、支払いが未完了です。支払い情報を再送するには【再試行】をタップしてください。重複して課金されることはありません。問題が発生した場合は、カスタマーサポートへご連絡ください。";
+
+"Retry" = "再試行";
+
+"OK" = "OK";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton のサーバーに到達できません。原因として、誤ったネットワーク設定や Proton サーバーが稼働していない、あるいはブロックされているなどが考えられます";

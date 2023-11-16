@@ -26,23 +26,23 @@ import ProtonCoreUtilities
 
 public final class SSOChallengeResponse: Response, APIDecodableResponse {
     public var ssoChallengeToken: String
-    
+
     public init(ssoChallengeToken: String) {
         self.ssoChallengeToken = ssoChallengeToken
     }
-    
+
     public convenience init(_ response: [String: Any]) throws {
         guard let ssoChallengeToken = response["SSOChallengeToken"] as? String else {
             throw AuthErrors.switchToSRPError
         }
         self.init(ssoChallengeToken: ssoChallengeToken)
     }
-    
+
     @available(*, unavailable)
     required init() {
         fatalError("init() has not been implemented")
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case ssoChallengeToken = "SSOChallengeToken"
     }

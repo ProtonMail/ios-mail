@@ -24,7 +24,7 @@ import ProtonCoreAuthentication
 import ProtonCoreNetworking
 
 extension AuthService {
-    
+
     // active a key when Activation is not null --- Response
     struct KeyActivationEndpointV1: Request {
         let addressID: String

@@ -27,10 +27,10 @@ import TrustKit
 import ProtonCoreServices
 
 public final class URLCacheMock: URLCacheInterface {
-    
+
     public init() {}
-    
+
     @FuncStub(URLCacheMock.removeAllCachedResponses) public var removeAllCachedResponsesStub
     public func removeAllCachedResponses() { removeAllCachedResponsesStub() }
-    
+
 }

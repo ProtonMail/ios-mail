@@ -25,10 +25,10 @@
 import Foundation
 
 public final class Atomic<A> {
-    
+
     private let serialAccessQueue = DispatchQueue(label: "ch.proton.atomic_queue")
     private var internalValue: A
-    
+
     public init(_ value: A) {
         self.internalValue = value
     }
@@ -38,7 +38,7 @@ public final class Atomic<A> {
             self.internalValue
         }
     }
-    
+
     public func fetch<T>(_ fetchingKeyPath: KeyPath<A, T>) -> T {
         serialAccessQueue.sync {
             self.internalValue[keyPath: fetchingKeyPath]
@@ -50,7 +50,7 @@ public final class Atomic<A> {
             transform(&self.internalValue)
         }
     }
-    
+
     public func transform<T>(_ transform: (A) -> T) -> T {
         serialAccessQueue.sync {
             transform(self.internalValue)

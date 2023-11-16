@@ -32,16 +32,16 @@ public final class AuthDelegateMock: AuthDelegate {
 
     @FuncStub(AuthDelegateMock.authCredential(sessionUID:), initialReturn: nil) public var getTokenAuthCredentialStub
     public func authCredential(sessionUID: String) -> AuthCredential? { getTokenAuthCredentialStub(sessionUID) }
-    
+
     @FuncStub(AuthDelegateMock.credential(sessionUID:), initialReturn: nil) public var getTokenCredentialStub
     public func credential(sessionUID: String) -> Credential? { getTokenCredentialStub(sessionUID) }
-    
+
     @FuncStub(AuthDelegateMock.onAuthenticatedSessionInvalidated) public var onAuthenticatedSessionInvalidatedStub
     public func onAuthenticatedSessionInvalidated(sessionUID uid: String) { onAuthenticatedSessionInvalidatedStub(uid) }
-    
+
     @FuncStub(AuthDelegateMock.onUpdate) public var onUpdateStub
     public func onUpdate(credential: Credential, sessionUID: String) { onUpdateStub(credential, sessionUID) }
-    
+
     @FuncStub(AuthDelegateMock.onUnauthenticatedSessionInvalidated) public var onUnauthenticatedSessionInvalidatedStub
     public func onUnauthenticatedSessionInvalidated(sessionUID: String) {
         onUnauthenticatedSessionInvalidatedStub(sessionUID)

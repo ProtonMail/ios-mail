@@ -54,13 +54,13 @@ public struct PurchasablePlanDescription {
 }
 
 struct PlanDetails {
-    
+
     enum Highlight: Equatable {
         case no
         case preferred
         case offer(percentage: String?, description: String)
     }
-    
+
     let name: String
     let title: String?
     var price: String?
@@ -80,7 +80,6 @@ let percentageNumberFormatter: NumberFormatter = {
 }()
 
 extension PlanDetails {
-    // swiftlint:disable function_parameter_count
     static func createPlan(from details: Plan,
                            plan: InAppPurchasePlan,
                            countriesCount: Int?,
@@ -149,7 +148,7 @@ extension PlanDetails {
                             (.checkmark, details.highSpeedDescription)
                           ],
                           isPreferred: false)
-            
+
         case "c277c92ffb58ea9aeef4d621a3cc83991c402db7a0f61b598454e34286061711":
             strDetails = (name: "Plus",
                           description: nil,

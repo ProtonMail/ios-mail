@@ -57,3 +57,5 @@ public extension URLRequest {
         }
     }
 }
+
+// swiftlint:enable no_print

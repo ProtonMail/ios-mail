@@ -27,7 +27,7 @@ public struct CryptoSubtle {
         var error: NSError?
         return CryptoGo.CryptoRandomToken(len, &error)
     }
-    
+
     public static func DeriveKey(_ one: String, _ two: Data, _ three: Int, _ four: inout NSError?) -> Data? {
         return CryptoGo.SubtleDeriveKey(one, two, three, &four)
     }

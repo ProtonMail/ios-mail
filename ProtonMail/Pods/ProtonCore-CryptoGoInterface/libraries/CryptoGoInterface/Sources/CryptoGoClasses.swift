@@ -75,6 +75,7 @@ public protocol CryptoKeyRing {
     func decryptMIMEMessage(_ message: CryptoPGPMessage?, verifyKey: CryptoKeyRing?, callbacks: CryptoMIMECallbacksProtocol?, verifyTime: Int64)
     func decryptSessionKey(_ keyPacket: Data?) throws -> CryptoSessionKey
     func encrypt(_ message: CryptoPlainMessage?, privateKey: CryptoKeyRing?) throws -> CryptoPGPMessage
+    func encrypt(withCompression message: CryptoPlainMessage?, privateKey: CryptoKeyRing?) throws -> CryptoPGPMessage
     func encryptSessionKey(_ sk: CryptoSessionKey?) throws -> Data
     func encryptSplitStream(_ dataPacketWriter: CryptoWriterProtocol?, plainMessageMetadata: CryptoPlainMessageMetadata?, sign signKeyRing: CryptoKeyRing?) throws -> CryptoEncryptSplitResult
     func encrypt(withContext message: CryptoPlainMessage?, privateKey: CryptoKeyRing?, signingContext: CryptoSigningContext?) throws -> CryptoPGPMessage
@@ -207,7 +208,6 @@ public protocol CryptoPlainMessageMetadata {
     var modTime: Int64 { get set }
 }
 
-
 @objc public protocol CryptoMIMECallbacksProtocol {
     func onAttachment(_ headers: String?, data: Data?)
     func onBody(_ body: String?, mimetype: String?)
@@ -215,7 +215,6 @@ public protocol CryptoPlainMessageMetadata {
     func onError(_ err: Error?)
     func onVerified(_ verified: Int)
 }
-
 
 public protocol SrpAuth {
     var modulus: Data? { get set }
@@ -238,12 +237,12 @@ public protocol SrpServer {
      * GetSharedSession returns the shared secret as byte if the session has concluded in valid state.
      */
     func getSharedSession() throws -> Data
-    
+
     /**
      * IsCompleted returns true if the exchange has been concluded in valid state.
      */
     func isCompleted() -> Bool
-    
+
     /**
      * VerifyProofs Verifies the client proof and - if valid - generates the shared secret and returnd the server proof.
      It concludes the exchange in valid state if successful.

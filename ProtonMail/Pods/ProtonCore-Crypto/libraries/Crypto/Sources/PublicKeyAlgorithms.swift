@@ -26,7 +26,7 @@ public enum PublicKeyAlgorithms {
     case rsa
     // ECC (Elliptic Curve Cryptography)
     case x25519
-    
+
     public var raw: String {
         switch self {
         case .rsa:
