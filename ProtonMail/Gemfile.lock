@@ -295,8 +295,8 @@ GEM
       xcpretty (~> 0.2, >= 0.0.7)
 
 PLATFORMS
-  universal-darwin-23
   universal-darwin-22
+  universal-darwin-23
 
 DEPENDENCIES
   activesupport (= 7.0.8)

@@ -40,6 +40,7 @@ protocol MailboxViewModelUIProtocol: AnyObject {
     func updateTitle()
     func updateUnreadButton(count: Int)
     func updateTheUpdateTimeLabel()
+    func selectionDidChange()
 }
 
 class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
@@ -434,6 +435,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     /// - Parameter section: section index
     /// - Returns: row count
     func rowCount(section: Int) -> Int {
+        guard diffableDataSource?.snapshot().indexOfSection(section) != nil else { return 0 }
         return diffableDataSource?.snapshot().numberOfItems(inSection: section) ?? 0
     }
 
@@ -992,16 +994,41 @@ extension MailboxViewModel {
 
 // Message Selection
 extension MailboxViewModel {
-    func select(id: String) {
-        self.selectedIDs.insert(id)
+
+    func canSelectMore() -> Bool {
+        if UserInfo.enableSelectAll {
+            let maximum = dependencies.featureFlagCache.featureFlags(for: user.userID)[.mailboxSelectionLimitation]
+            return selectedIDs.count < maximum
+        } else {
+            return true
+        }
+    }
+
+    /// - Returns: Does id allow to be added?
+    func select(id: String) -> Bool {
+        if UserInfo.enableSelectAll {
+            let maximum = dependencies.featureFlagCache.featureFlags(for: user.userID)[.mailboxSelectionLimitation]
+            guard selectedIDs.count < maximum else {
+                uiDelegate?.selectionDidChange()
+                return false
+            }
+            self.selectedIDs.insert(id)
+            uiDelegate?.selectionDidChange()
+            return true
+        } else {
+            selectedIDs.insert(id)
+            return true
+        }
     }
 
     func removeSelected(id: String) {
         self.selectedIDs.remove(id)
+        uiDelegate?.selectionDidChange()
     }
 
     func removeAllSelectedIDs() {
         self.selectedIDs.removeAll()
+        uiDelegate?.selectionDidChange()
     }
 
     func selectionContains(id: String) -> Bool {
