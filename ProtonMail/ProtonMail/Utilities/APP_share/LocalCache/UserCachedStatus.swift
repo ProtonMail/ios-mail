@@ -175,7 +175,9 @@ final class UserCachedStatus: UserCachedStatusProvider {
         let protectedUserDefaultsKeys: [String] = [
             Key.initialUserLoggedInVersion,
             UserDefaultsKeys.lastTourVersion.name,
-            "latest_core_data_cache" // CoreDataCache.Key.coreDataVersion
+            "latest_core_data_cache", // CoreDataCache.Key.coreDataVersion
+            BackendConfigurationCache.Key.environment.rawValue,
+            BackendConfigurationCache.Key.environmentCustomDomain.rawValue
         ]
 
         for key in userDefaults.dictionaryRepresentation().keys where !protectedUserDefaultsKeys.contains(key) {
