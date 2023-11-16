@@ -27,7 +27,6 @@ let userCachedStatus = UserCachedStatus(keychain: KeychainWrapper.keychain)
 
 // sourcery: mock
 protocol UserCachedStatusProvider: AnyObject {
-    var keymakerRandomkey: String? { get set }
     var lastDraftMessageID: String? { get set }
 
     func getDefaultSignaureSwitchStatus(uid: String) -> Bool?
@@ -66,29 +65,12 @@ final class UserCachedStatus: UserCachedStatusProvider {
         static let localSystemUpTime = "localSystemUpTime"
         static let localServerTime = "localServerTime"
 
-        // Random pin protection
-        static let randomPinForProtection = "randomPinForProtection"
-
-
         static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
     }
 
     // Do not set values for these keys, they are only needed to check for data saved by older versions
     struct LegacyKey {
         static let defaultSignatureStatus = "defaultSignatureStatus"
-    }
-
-    var keymakerRandomkey: String? {
-        get {
-            return KeychainWrapper.keychain.string(forKey: Key.randomPinForProtection)
-        }
-        set {
-            if let value = newValue {
-                KeychainWrapper.keychain.set(value, forKey: Key.randomPinForProtection)
-            } else {
-                KeychainWrapper.keychain.remove(forKey: Key.randomPinForProtection)
-            }
-        }
     }
 
     private(set) var hasShownStorageOverAlert: Bool = false

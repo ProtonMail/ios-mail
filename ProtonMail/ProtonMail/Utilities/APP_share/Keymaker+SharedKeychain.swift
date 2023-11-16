@@ -50,7 +50,7 @@ extension RandomPinProtection {
     }
 
     static var randomPin: RandomPinProtection? {
-        guard let keymakerRandomkey = userCachedStatus.keymakerRandomkey else {
+        guard let keymakerRandomkey = KeychainWrapper.keychain[.keymakerRandomKey] else {
             return nil
         }
         return RandomPinProtection.init(pin: keymakerRandomkey)

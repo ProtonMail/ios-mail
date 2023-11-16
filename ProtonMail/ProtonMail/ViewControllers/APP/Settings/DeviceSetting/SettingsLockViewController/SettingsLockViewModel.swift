@@ -128,7 +128,7 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
             if let randomProtection = RandomPinProtection.randomPin {
                 dependencies.coreKeyMaker.deactivate(randomProtection)
             }
-            dependencies.userPreferences.setKeymakerRandomkey(key: nil)
+            KeychainWrapper.keychain[.keymakerRandomKey] = nil
             dependencies.notificationCenter.post(name: .appLockProtectionDisabled, object: nil, userInfo: nil)
         }
     }
@@ -140,11 +140,11 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
             }
             dependencies.notificationCenter.post(name: .appKeyEnabled, object: nil, userInfo: nil)
         }
-        dependencies.userPreferences.setKeymakerRandomkey(key: nil)
+        KeychainWrapper.keychain[.keymakerRandomKey] = nil
     }
 
     private func disableAppKey(completion: (() -> Void)? = nil) {
-        dependencies.userPreferences.setKeymakerRandomkey(key: String.randomString(32))
+        KeychainWrapper.keychain[.keymakerRandomKey] = String.randomString(32)
         if let randomProtection = RandomPinProtection.randomPin {
             dependencies.coreKeyMaker.activate(randomProtection) { [unowned self] success in
                 guard success else { return }
@@ -257,10 +257,6 @@ extension SettingsLockViewModel {
 }
 
 extension UserCachedStatus: LockPreferences {
-    func setKeymakerRandomkey(key: String?) {
-        keymakerRandomkey = key
-    }
-
     func setLockTime(value: ProtonCoreKeymaker.AutolockTimeout) {
         lockTime = value
     }

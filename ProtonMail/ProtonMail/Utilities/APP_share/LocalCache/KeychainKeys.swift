@@ -15,10 +15,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import ProtonCoreKeymaker
 
-// sourcery: mock
-protocol LockPreferences {
-    func setLockTime(value: AutolockTimeout)
+class KeychainKeys {
+    static let keymakerRandomKey = StringKeychainKey(name: "randomPinForProtection")
+}
+
+final class StringKeychainKey: KeychainKeys {
+    let name: String
+
+    init(name: String) {
+        self.name = name
+    }
+}
+
+extension Keychain {
+    subscript(_ key: StringKeychainKey) -> String? {
+        get {
+            string(forKey: key.name)
+        }
+        set {
+            if let newValue {
+                set(newValue, forKey: key.name)
+            } else {
+                remove(forKey: key.name)
+            }
+        }
+    }
 }
