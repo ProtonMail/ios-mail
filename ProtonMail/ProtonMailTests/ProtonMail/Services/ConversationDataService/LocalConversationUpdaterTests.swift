@@ -57,18 +57,13 @@ final class LocalConversationUpdaterTests: XCTestCase {
             Message.Location.almostAllMail.labelID
         ]
         try prepareTestData(labelIDs: labelIDs, unread: true)
-        let e = expectation(description: "Closure is called")
 
-        sut.editLabels(
+        try sut.editLabels(
             conversationIDs: [conversationID],
             labelToRemove: Message.Location.inbox.labelID,
             labelToAdd: Message.Location.spam.labelID,
             isFolder: true
-        ) { _ in
-            e.fulfill()
-        }
-
-        waitForExpectations(timeout: 1)
+        )
 
         XCTAssertFalse(
             testConversation.contains(of: Message.Location.inbox.rawValue)
@@ -113,18 +108,13 @@ final class LocalConversationUpdaterTests: XCTestCase {
             Message.Location.almostAllMail.labelID
         ]
         try prepareTestData(labelIDs: labelIDs, unread: true)
-        let e = expectation(description: "Closure is called")
 
-        sut.editLabels(
+        try sut.editLabels(
             conversationIDs: [conversationID],
             labelToRemove: Message.Location.inbox.labelID,
             labelToAdd: Message.Location.trash.labelID,
             isFolder: true
-        ) { _ in
-            e.fulfill()
-        }
-
-        waitForExpectations(timeout: 1)
+        )
 
         XCTAssertFalse(
             testConversation.contains(of: Message.Location.inbox.rawValue)
@@ -176,18 +166,13 @@ final class LocalConversationUpdaterTests: XCTestCase {
             Message.Location.allmail.labelID
         ]
         try prepareTestData(labelIDs: labelIDs)
-        let e = expectation(description: "Closure is called")
 
-        sut.editLabels(
+        try sut.editLabels(
             conversationIDs: [conversationID],
             labelToRemove: Message.Location.trash.labelID,
             labelToAdd: Message.Location.inbox.labelID,
             isFolder: true
-        ) { _ in
-            e.fulfill()
-        }
-
-        waitForExpectations(timeout: 1)
+        )
 
         XCTAssertFalse(
             testConversation.contains(of: Message.Location.trash.rawValue)
