@@ -31,7 +31,7 @@ public protocol PlansDataSourceProtocol {
     var paymentMethods: [PaymentMethod]? { get }
     var willRenewAutomatically: Bool { get }
     var hasPaymentMethods: Bool { get }
-    
+
     func fetchIAPAvailability() async throws
     func fetchAvailablePlans() async throws
     func fetchCurrentPlan() async throws
@@ -47,19 +47,19 @@ class PlansDataSource: PlansDataSourceProtocol {
         guard paymentsBackendStatusAcceptsIAP else { return false }
         return true
     }
-    
+
     var paymentsBackendStatusAcceptsIAP: Bool {
         willSet { localStorage.paymentsBackendStatusAcceptsIAP = newValue }
     }
-    
+
     var availablePlans: AvailablePlans?
     var currentPlan: CurrentPlan?
     var paymentMethods: [PaymentMethod]?
-    
+
     private let apiService: APIService
     private let storeKitDataSource: StoreKitDataSourceProtocol
     private let localStorage: ServicePlanDataStorage
-    
+
     init(apiService: APIService,
          storeKitDataSource: StoreKitDataSourceProtocol,
          localStorage: ServicePlanDataStorage) {
@@ -68,13 +68,13 @@ class PlansDataSource: PlansDataSourceProtocol {
         self.localStorage = localStorage
         paymentsBackendStatusAcceptsIAP = localStorage.paymentsBackendStatusAcceptsIAP
     }
-    
+
     func fetchIAPAvailability() async throws {
         let paymentStatusRequest = PaymentStatusRequest(api: apiService)
         let paymentStatusResponse = try await paymentStatusRequest.response(responseObject: PaymentStatusResponse())
         paymentsBackendStatusAcceptsIAP = paymentStatusResponse.isAvailable ?? false
     }
-    
+
     func fetchAvailablePlans() async throws {
         let availablePlansRequest = AvailablePlansRequest(api: apiService)
         let availablePlansResponse: AvailablePlansResponse
@@ -95,7 +95,7 @@ class PlansDataSource: PlansDataSourceProtocol {
         try await storeKitDataSource.fetchAvailableProducts(availablePlans: backendAvailablePlans)
         availablePlans = storeKitDataSource.filterAccordingToAvailableProducts(availablePlans: backendAvailablePlans)
     }
-    
+
     func fetchCurrentPlan() async throws {
         let currentPlanRequest = CurrentPlanRequest(api: apiService)
         let currentPlanResponse: CurrentPlanResponse
@@ -108,19 +108,19 @@ class PlansDataSource: PlansDataSourceProtocol {
         }
         currentPlan = currentPlanResponse.currentPlan
     }
-    
+
     func fetchPaymentMethods() async throws {
         let paymentMethodsRequest = MethodRequest(api: apiService)
         let paymentMethodsResponse = try await paymentMethodsRequest.response(responseObject: MethodResponse())
         paymentMethods = paymentMethodsResponse.methods
     }
-    
+
     func createIconURL(iconName: String) -> URL? {
         let iconRequest = PlanIconsRequest(api: apiService, iconName: iconName)
         let urlString = apiService.dohInterface.getCurrentlyUsedHostUrl() + iconRequest.path
         return URL(string: urlString)
     }
-    
+
     var willRenewAutomatically: Bool {
         currentPlan?.subscriptions.first?.willRenew ?? false
     }

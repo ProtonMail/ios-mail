@@ -63,7 +63,7 @@ class SignupViewModel {
         challenge.appendCheckedUsername(username)
         loginService.checkAvailabilityForUsernameAccount(username: username, completion: completion)
     }
-    
+
     func checkExternalEmailAccount(
         email: String,
         completion: @escaping (Result<(), AvailabilityError>) -> Void,
@@ -82,7 +82,7 @@ class SignupViewModel {
             }
         }
     }
-    
+
     func checkInternalAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
         challenge.appendCheckedUsername(username)
         loginService.checkAvailabilityForInternalAccount(username: username, completion: completion)

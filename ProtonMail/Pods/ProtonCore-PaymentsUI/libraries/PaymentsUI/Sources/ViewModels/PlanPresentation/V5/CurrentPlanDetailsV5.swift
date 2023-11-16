@@ -32,29 +32,29 @@ struct CurrentPlanDetailsV5 {
     let endDate: NSAttributedString? // "Current plan will expire on 10.10.24"
     let entitlements: [Entitlement]
     let hidePriceDetails: Bool
-    
+
     enum Entitlement: Equatable {
         case progress(ProgressEntitlement)
         case description(DescriptionEntitlement)
-        
+
         struct ProgressEntitlement: Equatable {
             var text: String
             var min: Int
             var max: Int
             var current: Int
         }
-        
+
         struct DescriptionEntitlement: Equatable {
             var text: String
             var iconUrl: URL?
             var hint: String?
         }
     }
-    
+
     static func createPlan(from details: CurrentPlan.Subscription,
                            plansDataSource: PlansDataSourceProtocol?) async throws -> CurrentPlanDetailsV5 {
         var entitlements = [Entitlement]()
-        
+
         for entitlement in details.entitlements {
             switch entitlement {
             case .progress(let entitlement):
@@ -72,7 +72,7 @@ struct CurrentPlanDetailsV5 {
                 )))
             }
         }
-        
+
         var hidePriceDetails = false
         var price: String
         if let amount = details.amount, amount != 0 {
@@ -81,11 +81,11 @@ struct CurrentPlanDetailsV5 {
                 price = ""
             } else {
                 price = PriceFormatter.formatPlanPrice(price: Double(amount) / 100, currencyCode: details.currency)
-            }   
+            }
         } else {
             price = PUITranslations.plan_details_free_price.l10n
         }
-        
+
         return .init(
             title: details.title,
             description: details.description,
@@ -96,23 +96,23 @@ struct CurrentPlanDetailsV5 {
             hidePriceDetails: hidePriceDetails
         )
     }
-    
+
     static func endDateString(date: Int?, renew: Bool) -> NSAttributedString? {
         guard let date = date else { return nil }
         let endDate = Date(timeIntervalSince1970: .init(date))
         guard endDate.isFuture else { return nil }
-        
+
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yy"
         let endDateString = dateFormatter.string(from: endDate)
         var string: String
-        
+
         if renew {
             string = String(format: PUITranslations.plan_details_renew_auto_expired.l10n, endDateString)
         } else {
             string = String(format: PUITranslations.plan_details_renew_expired.l10n, endDateString)
         }
-        
+
         return string.getAttributedString(replacement: endDateString, attrFont: .systemFont(ofSize: 13, weight: .bold))
     }
 }

@@ -31,7 +31,7 @@ public final class PasswordHash {
         case hashSizeWrong
         case cantGenerateRandomBits
     }
-    
+
     public static func random(bits: Int32) throws -> Data {
         guard let data = try SrpRandomBits(Int(bits)) else {
             throw PasswordError.cantGenerateRandomBits
@@ -41,7 +41,7 @@ public final class PasswordHash {
     }
 
     public static func hashPassword(_ password: String, salt: Data) -> String {
-        
+
         /// This Mutable data process looks usless.
         let byteArray = NSMutableData()
         byteArray.append(salt)
@@ -60,11 +60,11 @@ public final class PasswordHash {
         }
         return ""
     }
-    
+
     public static func passphrase(_ password: String, salt: Data) -> Passphrase {
         return .init(value: self.hashPassword(password, salt: salt))
     }
-    
+
     /// Generate a 32 byte random secret and encode it in a 64 byte hex string
     /// - Returns: Passphrase
     public static func genAddrPassphrase() throws -> Passphrase {
@@ -75,7 +75,7 @@ public final class PasswordHash {
         assert(hexSecret.count == 64)
         return Passphrase.init(value: hexSecret)
     }
-    
+
     static func bcrypt(_ password: String, salt: Data) throws -> String {
         var error: NSError?
         let passSlice = password.data(using: .utf8)

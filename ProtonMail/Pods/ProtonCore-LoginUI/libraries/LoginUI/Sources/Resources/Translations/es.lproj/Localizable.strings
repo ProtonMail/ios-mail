@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Privacidad por defecto";
+
+"Proton address required" = "Es necesaria una dirección Proton.";
+
+"Update required" = "Actualización requerida";
+
+"Please enter your Proton Account password." = "Introduce la contraseña de tu cuenta Proton.";
+
+"OK" = "Aceptar";
+
+"Help" = "Ayuda";
+
+"Continue" = "Continuar";
+
+"Password" = "Contraseña";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Los servidores de Proton son inaccesibles. Puede deberse a una configuración de red incorrecta, a que los servidores de Proton no funcionan o a que los servidores de Proton estén bloqueados";
+
+"Search country" = "Buscar país";
+
+"Code sent to %@" = "Código enviado a %@";
+
+"Request new code?" = "¿Solicitar un código nuevo?";
+
+"Resend" = "Reenviar";
+
+"Get a replacement code sent to %@." = "Obtener un código de reemplazo enviado a %@.";
+
+"Request new code" = "Solicitar un nuevo código";
+
+"Enter your Proton Account details." = "Introduce los datos de tu cuenta de Proton.";
+
+"Email or username" = "Dirección de correo electrónico o nombre de usuario";
+
+"Sign in" = "Iniciar sesión";
+
+"Sign in with password" = "Iniciar sesión con contraseña";
+
+"Sign in with SSO" = "Iniciar sesión con SSO";
+
+"Sign in to your organization" = "Iniciar sesión en tu organización";
+
+"Create an account" = "Crear una cuenta";
+
+"How can we help?" = "¿Cómo podemos ayudarte?";
+
+"Forgot username" = "He olvidado mi nombre de usuario";
+
+"Forgot password" = "He olvidado mi contraseña";
+
+"Other sign-in issues" = "Otras cuestiones relacionadas con el registro";
+
+"Customer support" = "Atención al cliente";
+
+"Still need help? Contact us directly." = "¿Aún necesitas ayuda? Contáctanos directamente.";
+
+"Please enter your Proton Account email or username." = "Introduce tu correo electrónico de Proton o nombre de usuario.";
+
+"Complete Setup" = "Completar configuración";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Tu cuenta no tiene claves. Acceda a tu cuenta en la web para generar automáticamente las claves requeridas. Una vez que hayas iniciado sesión en la web, vuelve a la aplicación e inicia sesión.";
+
+"Account setup required" = "Configuración de cuenta requerida";
+
+"Incorrect mailbox password" = "Contraseña de buzón incorrecta";
+
+"Your session has expired. Please log in again." = "Tu sesión ha expirado. Conéctate de nuevo.";
+
+"Proton address required" = "Es necesaria una dirección Proton.";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Necesitas una dirección de correo electrónico de Proton para utilizar Proton Mail y Proton Calendar.\nPodrás seguir usando %@ para iniciar sesión y recuperar tu cuenta.";
+
+"Username" = "Nombre de usuario";
+
+"Please enter a username." = "Introduce un nombre de usuario.";
+
+"Unlock your mailbox" = "Desbloquea tu buzón de correo";
+
+"Mailbox password" = "Contraseña del buzón";
+
+"Unlock" = "Desbloquear";
+
+"Forgot password" = "He olvidado mi contraseña";
+
+"Two-factor authentication" = "Autenticación de doble factor";
+
+"Authenticate" = "Autenticar";
+
+"Two-factor code" = "Código de doble factor";
+
+"Recovery code" = "Código de recuperación";
+
+"Use recovery code" = "Utilizar código de recuperación";
+
+"Use two-factor code" = "Utilizar código de doble factor";
+
+"Enter the 6-digit code." = "Introduce el código de 6 dígitos.";
+
+"Enter an 8-character recovery code." = "Introduce un código de recuperación de 8 caracteres.";
+
+"Learn more" = "Más información";
+
+"Change your password" = "Cambia tu contraseña";
+
+"Change password" = "Cambiar contraseña";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Para utilizar la aplicación Proton como miembro de una organización, primero necesitas cambiar tu contraseña iniciando sesión en Proton a través de un navegador.";
+
+"Error occured" = "Se ha producido un error";
+
+"Create your Proton Account" = "Crea tu cuenta Proton";
+
+"One account for all Proton services." = "Una cuenta para todos los servicios de Proton.";
+
+"Next" = "Siguiente";
+
+"Use your current email instead" = "Use tu correo electrónico actual en su lugar";
+
+"Create a secure Proton Mail address instead" = "Crea una dirección segura de Proton Mail en su lugar";
+
+"Email" = "Correo electrónico";
+
+"Create your password" = "Crea tu contraseña";
+
+"Password must contain at least 8 characters" = "La contraseña debe tener al menos 8 caracteres";
+
+"Repeat password" = "Repetir contraseña";
+
+"Domain" = "Dominio";
+
+"Set recovery method" = "Establecer un método de recuperación";
+
+"Set recovery method (optional)" = "Establecer un método de recuperación (opcional)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Enviaremos instrucciones de recuperación a este correo electrónico o número de teléfono si no puedes entrar en tu cuenta.";
+
+"Email" = "Correo electrónico";
+
+"Phone" = "Teléfono";
+
+"Recovery email" = "Correo electrónico de recuperación";
+
+"Recovery phone number" = "Número de teléfono de recuperación";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Al hacer clic en Siguiente, aceptas los Términos y Condiciones de Proton";
+
+"Terms and Conditions" = "Términos y condiciones";
+
+"Skip" = "Omitir";
+
+"Skip recovery method?" = "¿Omitir método de recuperación?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Un método de recuperación te ayudará a acceder a tu cuenta en caso de que olvides tu contraseña o no puedas entrar en tu cuenta.";
+
+"Set recovery method" = "Establecer un método de recuperación";
+
+"Your account is being created" = "Se está creando tu cuenta";
+
+"This should take no more than a minute." = "Esto no debería de tardar más de un minuto.";
+
+"Creating your account" = "Creando tu cuenta";
+
+"Generating your address" = "Generando tu dirección";
+
+"Securing your account" = "Protegiendo tu cuenta";
+
+"Verifying your payment" = "Verificando tu pago";
+
+"Account verification" = "Verificación de la cuenta";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Por tu seguridad, debemos verificar que la dirección que has introducido te pertenece. Hemos enviado un código de verificación a %@. Introduce dicho código a continuación:";
+
+"Verification code" = "Código de verificación";
+
+"Enter the 6-digit code." = "Introduce el código de 6 dígitos.";
+
+"Did not receive a code?" = "¿No has recibido el código?";
+
+"Terms and Conditions" = "Términos y condiciones";
+
+"Invalid token request" = "Solicitud de token no válida";
+
+"Invalid token error" = "Error de token inválido";
+
+"Create user failed" = "Error al crear el usuario";
+
+"Invalid hashed password" = "Hash de la contraseña inválido";
+
+"Password can not be empty.\nPlease try again." = "El campo de la contraseña no puede estar vacío.\nInténtalo de nuevo.";
+
+"Password must contain at least %@ characters." = "La contraseña debe tener al menos %@ caracteres.";
+
+"Passwords do not match.\nPlease try again." = "Las contraseñas no coinciden.\nInténtalo de nuevo.";
+
+"Email address already used." = "La dirección de correo electrónico ya está en uso.";
+
+"Please ask your admin to configure your sub-user." = "Pregunta a tu administrador para configurar tu subusuario.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "¿Quieres recibir un nuevo código de verificación o utilizar una dirección de correo alternativa?";
+
+"Change email address" = "Cambiar dirección de correo electrónico";
+
+"Congratulations" = "Enhorabuena";
+
+"Your Proton Free account was successfully created." = "Tu cuenta gratuita de Proton ha sido creada.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Tu pago ha sido confirmado y tu cuenta %@ se ha creado.";
+
+"Your Proton account was successfully created." = "Tu cuenta Proton ha sido creada correctamente.";
+
+"Enjoy the world of privacy." = "Disfruta del mundo de la privacidad.";
+
+"Cancel" = "Cancelar";
+
+"Sign in" = "Iniciar sesión";
+
+"Troubleshoot" = "Señala un problema";

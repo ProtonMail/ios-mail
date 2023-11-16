@@ -26,7 +26,7 @@ import ProtonCoreUtilities
 private class Handler {}
 
 public enum NWTranslation: TranslationsExposing {
-    
+
     public static var bundle: Bundle {
         #if SPM
         return Bundle.module
@@ -34,12 +34,12 @@ public enum NWTranslation: TranslationsExposing {
         return Bundle(path: Bundle(for: Handler.self).path(forResource: "Translations-Networking", ofType: "bundle")!)!
         #endif
     }
-    
+
     public static var prefixForMissingValue: String = ""
-    
+
     case connection_error
     case insecure_connection_error
-    
+
     public var l10n: String {
         switch self {
         case .connection_error:

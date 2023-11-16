@@ -25,7 +25,7 @@ import UIKit
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
 import ProtonCoreObservability
-import ProtonCoreFeatureSwitch
+import ProtonCoreFeatureFlags
 import ProtonCoreUtilities
 
 protocol PaymentsUIViewControllerDelegate: AnyObject {
@@ -38,20 +38,20 @@ protocol PaymentsUIViewControllerDelegate: AnyObject {
 }
 
 public final class PaymentsUIViewController: UIViewController, AccessibleView {
-    
+
     private lazy var selectedCycle = viewModel?.defaultCycle
-    
+
     private var isDynamicPlansEnabled: Bool {
-        FeatureFactory.shared.isEnabled(.dynamicPlans)
+        FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan)
     }
-    
+
     // MARK: - Constants
-    
+
     private let sectionHeaderView = "PlanSectionHeaderView"
     private let sectionHeaderHeight: CGFloat = 91.0
-    
+
     // MARK: - Outlets
-    
+
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var tableHeaderTitleLabel: UILabel! {
         didSet {
@@ -108,9 +108,9 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             extendSubscriptionButton.setTitle(PUITranslations._extend_subscription_button.l10n, for: .normal)
         }
     }
-    
+
     // MARK: - Properties
-    
+
     weak var delegate: PaymentsUIViewControllerDelegate?
     var viewModel: PaymentsUIViewModel?
     var mode: PaymentsUIMode = .signup
@@ -120,11 +120,11 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     public var onDohTroubleshooting: () -> Void = {}
 
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
-    
+
     override public var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     private var controllerDidAlreadyAppear = false
-    
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         if #unavailable(iOS 13.0) {
@@ -132,6 +132,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
                 tableView.indicatorStyle = .white
             }
         }
+
         view.backgroundColor = ColorProvider.BackgroundNorm
         tableView.backgroundColor = ColorProvider.BackgroundNorm
         tableView.tableHeaderView?.backgroundColor = ColorProvider.BackgroundNorm
@@ -199,7 +200,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     }
 
     var banner: PMBanner?
-    
+
     @objc private func informAboutIAPInProgress() {
         if viewModel?.iapInProgress == true {
             let banner = PMBanner(message: PUITranslations.iap_in_progress_banner.l10n,
@@ -210,7 +211,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         } else {
             self.banner?.dismiss(animated: true)
         }
-        
+
     }
 
     @objc
@@ -223,7 +224,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         navigationBarAdjuster.setUp(for: tableView, parent: parent)
         tableView.delegate = self
     }
-    
+
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         delegate?.userDidDismissViewController()
@@ -235,18 +236,22 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         delegate?.viewControllerWillAppear(isFirstAppearance: !controllerDidAlreadyAppear)
         controllerDidAlreadyAppear = true
     }
-    
+
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateHeaderFooterViewHeight()
     }
-    
+
     override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         showExpandButton()
     }
-    
+
     @IBAction func onExtendSubscriptionButtonTap(_ sender: ProtonButton) {
+        guard !FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) else {
+            assertionFailure("Auto-renewing subscriptions (but governed with the Dynamic Plans FF) are not extensible")
+            return
+        }
         extendSubscriptionButton.isSelected = true
         guard case .withExtendSubscriptionButton(let plan) = viewModel?.footerType else {
             extendSubscriptionButton.isSelected = false
@@ -258,9 +263,9 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             self?.extendSubscriptionButton.isSelected = false
         }
     }
-    
+
     // MARK: - Internal methods
-    
+
     func reloadData() {
         isData = true
         if isViewLoaded {
@@ -275,7 +280,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
                               dismissDuration: 4.0)
         showBanner(banner: banner, position: .top)
     }
-    
+
     func extendSubscriptionSelection() {
         extendSubscriptionButton.isSelected = true
         extendSubscriptionButton.isUserInteractionEnabled = false
@@ -288,7 +293,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         PMBanner.dismissAll(on: self)
         banner.show(at: position, on: self)
     }
-    
+
     func showOverlayConnectionError() {
         guard !view.subviews.contains(planConnectionErrorView) else { return }
         planConnectionErrorView.translatesAutoresizingMaskIntoConstraints = false
@@ -300,7 +305,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             view.trailingAnchor.constraint(equalTo: planConnectionErrorView.trailingAnchor)
         ])
     }
-    
+
     public func planPurchaseError() {
         delegate?.planPurchaseError()
     }
@@ -314,9 +319,9 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     @objc func onCloseButtonTap(_ sender: UIButton) {
         delegate?.userDidCloseViewController()
     }
-    
+
     // MARK: Private interface
-    
+
     private func updateHeaderFooterViewHeight() {
         guard isDataLoaded, let headerView = tableView.tableFooterView, let footerView = tableView.tableFooterView else {
             return
@@ -327,7 +332,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             tableView.tableHeaderView?.isHidden = false
         }
         tableView.tableFooterView?.isHidden = hideFooter
-        
+
         let width = tableView.bounds.size.width
         let headerSize = headerView.systemLayoutSizeFitting(CGSize(width: width, height: UIView.layoutFittingCompressedSize.height))
         if headerView.frame.size.height != headerSize.height {
@@ -352,7 +357,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             tableFooterTextLabel.text = PUITranslations.plan_footer_desc_purchased.l10n
         case .withExtendSubscriptionButton:
             tableFooterTextLabel.text = PUITranslations.plan_footer_desc_purchased.l10n
-            hasExtendSubscriptionButton = true
+            hasExtendSubscriptionButton = !FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan)
         case .none:
             tableFooterTextLabel.text = PUITranslations.plan_footer_desc_purchased.l10n
         case .disabled:
@@ -391,13 +396,13 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         }
         navigationItem.assignNavItemIndentifiers()
     }
-    
+
     private(set) var isData = false
-    
+
     private var isDataLoaded: Bool {
         return isData || mode == .signup
     }
-    
+
     private func setupHeaderView() {
         let appIcons: [UIImage] = [
             IconProvider.mailMainTransparent,
@@ -409,7 +414,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             element.image = appIcons[index]
         }
     }
-    
+
     private func showExpandButton() {
         if isDynamicPlansEnabled {
             showExpandButtonForDynamicPlans()
@@ -417,7 +422,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             showExpandButtonForStaticPlans()
         }
     }
-    
+
     private func showExpandButtonForStaticPlans() {
         guard let viewModel = viewModel else { return }
         for section in viewModel.plans.indices {
@@ -430,7 +435,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             }
         }
     }
-    
+
     private func showExpandButtonForDynamicPlans() {
         guard let viewModel = viewModel else { return }
         for section in viewModel.dynamicPlans.indices {
@@ -448,7 +453,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
 // MARK: - UITableViewDataSource
 
 extension PaymentsUIViewController: UITableViewDataSource {
-    
+
     public func numberOfSections(in tableView: UITableView) -> Int {
         if isDynamicPlansEnabled {
             return viewModel?.dynamicPlans.count ?? 0
@@ -456,7 +461,7 @@ extension PaymentsUIViewController: UITableViewDataSource {
             return viewModel?.plans.count ?? 0
         }
     }
-    
+
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isDynamicPlansEnabled {
             return filteredCycles(at: section)?.count ?? 0
@@ -472,7 +477,7 @@ extension PaymentsUIViewController: UITableViewDataSource {
             return cellForStaticConfig(tableView, cellForRowAt: indexPath)
         }
     }
-    
+
     private func cellForStaticConfig(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = UITableViewCell()
         guard let plan = viewModel?.plans[safeIndex: indexPath.section]?[safeIndex: indexPath.row] else { return cell }
@@ -493,7 +498,7 @@ extension PaymentsUIViewController: UITableViewDataSource {
         }
         return cell
     }
-    
+
     private func cellForDynamicConfig(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = UITableViewCell()
         guard let plan = filteredCycles(at: indexPath.section)?[safeIndex: indexPath.row] else { return cell }
@@ -512,10 +517,10 @@ extension PaymentsUIViewController: UITableViewDataSource {
             }
             cell.selectionStyle = .none
         }
-        
+
         return cell
     }
-    
+
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard mode == .current && section == 1 else { return nil }
         let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: sectionHeaderView)
@@ -531,16 +536,16 @@ extension PaymentsUIViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension PaymentsUIViewController: UITableViewDelegate {
-    
+
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard mode == .current && section == 1 else { return 0 }
         return UITableView.automaticDimension
     }
-    
+
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return CGFloat.leastNormalMagnitude
     }
-    
+
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isDynamicPlansEnabled {
             guard let plan = filteredCycles(at: indexPath.section)?[safeIndex: indexPath.row] else { return }
@@ -566,7 +571,7 @@ extension PaymentsUIViewController: CycleSelectorDelegate {
         selectedCycle = cycle
         reloadData()
     }
-    
+
     private func filteredCycles(at section: Int) -> [Either<CurrentPlanPresentation, AvailablePlansPresentation>]? {
         if selectedCycle != nil {
             return viewModel?.dynamicPlans[safeIndex: section]?.filter {
@@ -581,7 +586,7 @@ extension PaymentsUIViewController: CycleSelectorDelegate {
             return viewModel?.dynamicPlans[safeIndex: section]
         }
     }
-    
+
     private func cycles(at section: Int) -> Set<Int> {
         Set(viewModel?.dynamicPlans[safeIndex: section]?.compactMap {
             switch $0 {
@@ -602,7 +607,7 @@ extension PaymentsUIViewController: PlanCellDelegate {
         tableView.endUpdates()
         tableView.scrollToRow(at: indexPath, at: .none, animated: true)
     }
-    
+
     func userPressedSelectPlanButton(plan: PlanPresentation, completionHandler: @escaping () -> Void) {
         lockUI()
         delegate?.userDidSelectPlan(plan: plan, addCredits: false) { [weak self] in

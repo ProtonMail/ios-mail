@@ -26,7 +26,7 @@ import Foundation
 ///  the user is currently subscribed to.
 public struct CurrentPlan: Decodable, Equatable {
     public var subscriptions: [Subscription]
-    
+
     public struct Subscription: Decodable, Equatable {
         public var title: String
         public var description: String
@@ -35,21 +35,22 @@ public struct CurrentPlan: Decodable, Equatable {
         public var currency: String?
         public var amount: Int?
         public var periodEnd: Int?
+        /// whether this subscription is auto-renewable
         public var renew: Int?
         public var external: PaymentMethod?
         public var entitlements: [Entitlement]
-        
+
         public enum PaymentMethod: Int, Decodable {
             case web = 0
             case apple = 1
             case google = 2
         }
-        
+
         public enum Entitlement: Equatable {
             case progress(ProgressEntitlement)
             case description(DescriptionEntitlement)
         }
-        
+
         public struct ProgressEntitlement: Decodable, Equatable {
             var type: String
             public var text: String
@@ -57,7 +58,7 @@ public struct CurrentPlan: Decodable, Equatable {
             public var max: Int
             public var current: Int
         }
-        
+
         public struct DescriptionEntitlement: Decodable, Equatable {
             var type: String
             public var text: String
@@ -89,16 +90,16 @@ extension CurrentPlan.Subscription.Entitlement: Decodable {
         case progress
         case description
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case type
     }
-    
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         let type = try container.decode(EntitlementType.self, forKey: .type)
-        
+
         switch type {
         case .progress:
             self = .progress(try .init(from: decoder))

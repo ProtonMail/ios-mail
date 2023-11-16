@@ -41,52 +41,52 @@ private let resendDialogCancelButtonAccessibility = "cancelButton"
 public class EmailVerificationRobot: CoreElements {
 
     public let verify = Verify()
-    
+
     public class Verify: CoreElements {
         @discardableResult
         public func emailVerificationScreenIsShown() -> EmailVerificationRobot {
             staticText(titleId).waitUntilExists().checkExists()
             return EmailVerificationRobot()
         }
-        
+
         @discardableResult
         public func resendEmailMessage(email: String) -> EmailVerificationRobot {
             let msg = String(format: bannerSendMessage, email)
             textView(msg).waitUntilExists().checkExists()
             return EmailVerificationRobot()
         }
-        
+
         @discardableResult
         public func verifyVerificationCode(code: String) -> EmailVerificationRobot {
             textField(verificationCodeTextField).tap().checkHasValue(code)
             return EmailVerificationRobot()
         }
     }
-    
+
     public func insertCode(code: String) -> EmailVerificationRobot {
         textField(verificationCodeTextField).tap().typeText(code)
         return self
     }
-    
+
     public func nextButtonTap<T: CoreElements>(robot _: T.Type) -> T {
         button(nextButtonId).tap()
         return T()
     }
-    
+
     public func waitDisapper() -> SignupRobot {
         button(nextButtonId).waitUntilGone()
         return SignupRobot()
     }
-    
+
     public func resendCodeButton() -> ResendDialogRobot {
         button(resendCodeButtonId).tap()
         return ResendDialogRobot()
     }
-    
+
     public final class EmailVerificationDialogRobot: CoreElements {
-        
+
         public let verify = Verify()
-        
+
         public final class Verify: CoreElements {
             @discardableResult
             public func verificationDialogDisplay() -> EmailVerificationDialogRobot {
@@ -101,14 +101,14 @@ public class EmailVerificationRobot: CoreElements {
             button(verificationDialogChangeEmailButtonAccessibility).tap()
             return EmailVerificationRobot()
         }
-        
+
         @discardableResult
         public func resendButtonTap() -> EmailVerificationRobot {
             button(verificationDialogResendButtonAccessibility).tap()
             return EmailVerificationRobot()
         }
     }
-    
+
     public final class ResendDialogRobot: CoreElements {
         public let verify = Verify()
 
@@ -121,13 +121,13 @@ public class EmailVerificationRobot: CoreElements {
                 return ResendDialogRobot()
             }
         }
-        
+
         @discardableResult
         public func newCodeButtonTap() -> EmailVerificationRobot {
             button(resendDialogNewCodeButtonAccessibility).tap()
             return EmailVerificationRobot()
         }
-        
+
         @discardableResult
         public func cancelButtonTap() -> EmailVerificationRobot {
             button(resendDialogCancelButtonAccessibility).tap()

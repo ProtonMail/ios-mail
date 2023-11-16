@@ -25,11 +25,11 @@ import ProtonCorePayments
 
 class CurrentPlanPresentation {
     let details: CurrentPlanDetailsV5
-    
+
     init(details: CurrentPlanDetailsV5) {
         self.details = details
     }
-    
+
     static func createCurrentPlan(from currentPlanSubscription: CurrentPlan.Subscription, plansDataSource: PlansDataSourceProtocol?) async throws -> CurrentPlanPresentation? {
         try await .init(details: CurrentPlanDetailsV5.createPlan(from: currentPlanSubscription, plansDataSource: plansDataSource))
     }

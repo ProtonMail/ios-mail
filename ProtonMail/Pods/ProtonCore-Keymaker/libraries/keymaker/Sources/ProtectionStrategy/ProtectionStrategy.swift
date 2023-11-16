@@ -44,7 +44,7 @@ public extension ProtectionStrategy {
     func getCypherBits() -> Data? {
         return self.keychain.data(forKey: Self.keychainLabel)
     }
-    
+
     static func generateRandomValue(length: Int) -> MainKey {
         var newKey = [UInt8](repeating: 0, count: length)
         let status = SecRandomCopyBytes(kSecRandomDefault, newKey.count, &newKey)

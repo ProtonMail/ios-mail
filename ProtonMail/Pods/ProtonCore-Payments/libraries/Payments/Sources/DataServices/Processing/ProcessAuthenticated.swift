@@ -21,6 +21,7 @@
 
 import Foundation
 import StoreKit
+import ProtonCoreFeatureFlags
 import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreServices
@@ -50,7 +51,7 @@ final class ProcessAuthenticated: ProcessProtocol {
     }
 
     let queue = DispatchQueue(label: "ProcessAuthenticated async queue", qos: .userInitiated)
-    
+
     func process(transaction: SKPaymentTransaction,
                  plan: PlanToBeProcessed,
                  completion: @escaping ProcessCompletionCallback) throws {
@@ -59,14 +60,14 @@ final class ProcessAuthenticated: ProcessProtocol {
             assertionFailure("This is a blocking network request, should never be called from main thread")
             throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
         }
-        
+
         #if DEBUG_CORE_INTERNALS
         guard TemporaryHacks.simulateBackendPlanPurchaseFailure == false else {
             TemporaryHacks.simulateBackendPlanPurchaseFailure = false
             throw StoreKitManager.Errors.invalidPurchase
         }
         #endif
-        
+
         // Step 3. Get the payment token
         try tokenHandler?.getToken(transaction: transaction, plan: plan, completion: completion, finishCompletion: { [weak self] result in
             self?.finish(transaction: transaction, result: result, completion: completion)
@@ -85,17 +86,17 @@ final class ProcessAuthenticated: ProcessProtocol {
             )
             _ = try serverUpdateApi.awaitResponse(responseObject: CreditResponse())
             finish(transaction: transaction, result: .finished(.resolvingIAPToCreditsCausedByError), completion: completion)
-            
+
         } catch let error where error.isApplePaymentAlreadyRegisteredError {
             PMLog.debug("StoreKit: apple payment already registered")
             finish(transaction: transaction, result: .finished(.withPurchaseAlreadyProcessed), completion: completion)
-            
+
         } catch {
             completion(.erroredWithUnspecifiedError(error))
-            
+
         }
     }
-    
+
     private func buySubscription(transaction: SKPaymentTransaction,
                                  plan: PlanToBeProcessed,
                                  token: PaymentToken,
@@ -114,34 +115,40 @@ final class ProcessAuthenticated: ProcessProtocol {
             if let newSubscription = receiptRes.newSubscription {
                 dependencies.updateCurrentSubscription { [weak self] in
                     self?.finish(transaction: transaction, result: .finished(.resolvingIAPToSubscription), completion: completion)
-                    
+
                 } failure: { [weak self] _ in
                     // if updateCurrentSubscription is failed for some reason, update subscription with newSubscription data
                     do {
                         try self?.dependencies.updateSubscription(newSubscription)
                         self?.finish(transaction: transaction, result: .finished(.resolvingIAPToSubscription), completion: completion)
                     } catch {
-                        self?.finish(transaction: transaction, result: .errored(.noNewSubscriptionInSuccessfullResponse), completion: completion)
+                        self?.finish(transaction: transaction, result: .errored(.noNewSubscriptionInSuccessfulResponse), completion: completion)
                     }
 
-                    
                 }
             } else {
-                throw StoreKitManager.Errors.noNewSubscriptionInSuccessfullResponse
+                throw StoreKitManager.Errors.noNewSubscriptionInSuccessfulResponse
             }
 
-        } catch let error where error.isPaymentAmmountMismatchOrUnavailablePlanError {
+        } catch let error where error.isPaymentAmountMismatchOrUnavailablePlanError {
             PMLog.debug("StoreKit: amount mismatch")
-            recoverByToppingUpCredits(plan: plan, token: token, transaction: transaction, completion: completion)
+            if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan){
+                // we no longer credit the account for this kind of mismatch.
+                finish(transaction: transaction, result: .errored(.noNewSubscriptionInSuccessfulResponse), completion: completion)
+            } else {
+                recoverByToppingUpCredits(plan: plan, token: token, transaction: transaction, completion: completion)
+            }
 
         } catch let error as ResponseError where error.toRequestErrors == RequestErrors.subscriptionDecode {
-            throw StoreKitManager.Errors.noNewSubscriptionInSuccessfullResponse
+            throw StoreKitManager.Errors.noNewSubscriptionInSuccessfulResponse
 
         } catch {
-            completion(.erroredWithUnspecifiedError(error))
+            finish(transaction: transaction,
+                   result: .erroredWithUnspecifiedError(error),
+                   completion: completion)
         }
     }
-    
+
     private func finish(transaction: SKPaymentTransaction, result: ProcessCompletionResult, completion: @escaping ProcessCompletionCallback) {
         // Step 6. Finish the IAP transaction
         dependencies.finishTransaction(transaction) { [weak self] in

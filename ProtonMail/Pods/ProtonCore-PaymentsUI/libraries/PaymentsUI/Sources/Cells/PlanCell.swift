@@ -24,7 +24,7 @@
 import UIKit
 import ProtonCoreUIFoundations
 import ProtonCoreFoundations
-import ProtonCoreFeatureSwitch
+import ProtonCoreFeatureFlags
 
 protocol PlanCellDelegate: AnyObject {
     func userPressedSelectPlanButton(plan: PlanPresentation, completionHandler: @escaping () -> Void)
@@ -35,12 +35,12 @@ protocol PlanCellDelegate: AnyObject {
 final class PlanCell: UITableViewCell, AccessibleCell {
 
     private var isDynamicPlansEnabled: Bool {
-        FeatureFactory.shared.isEnabled(.dynamicPlans)
+        FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan)
     }
-    
+
     static let reuseIdentifier = "PlanCell"
     static let nib = UINib(nibName: "PlanCell", bundle: PaymentsUI.bundle)
-    
+
     weak var delegate: PlanCellDelegate?
     var plan: PlanPresentation?
     var dynamicPlan: AvailablePlansPresentation?
@@ -48,7 +48,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
     var isSignup = false
 
     // MARK: - Outlets
-    
+
     @IBOutlet weak var mainView: UIView! {
         didSet {
             mainView.layer.cornerRadius = 12.0
@@ -82,7 +82,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         }
     }
     @IBOutlet weak var preferredImageView: UIImageView!
-    
+
     @IBOutlet weak var planDescriptionLabel: UILabel! {
         didSet {
             planDescriptionLabel.textColor = ColorProvider.TextWeak
@@ -115,7 +115,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
 
         }
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         planNameLabel.font = .adjustedFont(forTextStyle: .headline, weight: .semibold)
@@ -126,7 +126,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         priceDescriptionLabel.font = .adjustedFont(forTextStyle: .footnote)
     }
     // MARK: - Properties
-    
+
     func configurePlan(plan: PlanPresentation, indexPath: IndexPath, isSignup: Bool, isExpandButtonHidden: Bool) {
         planDetailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         guard case PlanPresentationType.plan(let planDetails) = plan.planPresentationType else { return }
@@ -139,7 +139,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         }
         handleProcessedPlanWhenIsNeeded(plan: plan)
         generateCellAccessibilityIdentifiers(planDetails.name)
-        
+
         planNameLabel.text = planDetails.name
         switch planDetails.highlight {
         case .no:
@@ -168,7 +168,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         } else {
             planDescriptionLabel.isHidden = true
         }
-        
+
         if let price = planDetails.price {
             priceLabel.isHidden = false
             priceDescriptionLabel.isHidden = false
@@ -187,16 +187,16 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         drawAlphas()
         self.accessibilityElements = [expandButton as Any, selectPlanButton as Any]
     }
-    
+
     func selectCell() {
         guard !expandButton.isHidden else { return }
         expandCollapseCell()
     }
-    
+
     func showExpandButton() {
         expandButton.isHidden = false
     }
-    
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if isDynamicPlansEnabled {
             guard let dynamicPlan = dynamicPlan else { return }
@@ -206,9 +206,9 @@ final class PlanCell: UITableViewCell, AccessibleCell {
             configureMainViewForStaticPlans(isSelectable: planDetails.isSelectable)
         }
     }
-    
+
     // MARK: - Actions
-    
+
     @IBAction func onSelectPlanButtonTap(_ sender: ProtonButton) {
         if let plan {
             selectPlanButton.isSelected = true
@@ -226,13 +226,13 @@ final class PlanCell: UITableViewCell, AccessibleCell {
             }
         }
     }
-    
+
     @IBAction func onExpandButtonTap(_ sender: UIButton) {
         expandCollapseCell()
     }
-    
+
     // MARK: Private interface
-    
+
     private func drawView() {
         if isDynamicPlansEnabled {
             drawViewForDynamicPlan()
@@ -240,7 +240,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
             drawViewForStaticPlan()
         }
     }
-    
+
     private func drawViewForStaticPlan() {
         guard let plan = plan, case PlanPresentationType.plan(let planDetails) = plan.planPresentationType else { return }
         detailsSpacerView.isHidden = !planDetails.isSelectable || !plan.isExpanded
@@ -261,7 +261,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         }
         configureMainViewForStaticPlans(isSelectable: planDetails.isSelectable)
     }
-    
+
     private func drawViewForDynamicPlan() {
         guard let dynamicPlan = dynamicPlan else { return }
         detailsSpacerView.isHidden = !dynamicPlan.canBePurchasedNow || !dynamicPlan.isExpanded
@@ -282,7 +282,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         }
         configureMainViewForDynamicPlans(isSelectable: dynamicPlan.canBePurchasedNow)
     }
-    
+
     private func configureMainViewForStaticPlans(isSelectable: Bool) {
         guard let plan = plan else { return }
         if isSelectable {
@@ -298,7 +298,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
             mainView.layer.borderColor = ColorProvider.SeparatorNorm
         }
     }
-    
+
     private func configureMainViewForDynamicPlans(isSelectable: Bool) {
         guard let dynamicPlan = dynamicPlan else { return }
         if isSelectable {
@@ -314,7 +314,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
             mainView.layer.borderColor = ColorProvider.SeparatorNorm
         }
     }
-    
+
     func drawAlphas() {
         if isDynamicPlansEnabled {
             guard let dynamicPlan = dynamicPlan else { return }
@@ -326,7 +326,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
             planDetailsStackView.alpha = plan.isExpanded ? 1 : 0
         }
     }
-    
+
     private func expandCollapseCell() {
         if isDynamicPlansEnabled {
             dynamicPlan?.isExpanded.toggle()
@@ -352,7 +352,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
             delegate?.cellDidChange(indexPath: indexPath)
         }
     }
-    
+
     private func handleProcessedPlanWhenIsNeeded(plan: PlanPresentation) {
         guard plan.isCurrentlyProcessed else { return }
         // already processing plan
@@ -383,13 +383,13 @@ extension PlanCell {
         }
         handleProcessedPlanWhenIsNeeded(availablePlan: availablePlan)
         generateCellAccessibilityIdentifiers(availablePlan.details.title)
-        
+
         planNameLabel.text = availablePlan.details.title
-        
+
         preferredImageView.isHidden = true
         offerPercentageView.isHidden = true
         offerDescriptionView.isHidden = true
-        
+
         for decoration in availablePlan.details.decorations {
             switch decoration {
             case .border:
@@ -406,14 +406,14 @@ extension PlanCell {
                 offerDescriptionView.isHidden = false
             }
         }
-        
+
         planDescriptionLabel.text = availablePlan.details.description
-        
+
         priceLabel.isHidden = false
         priceDescriptionLabel.isHidden = false
         priceLabel.text = availablePlan.details.price
         priceDescriptionLabel.text = availablePlan.details.cycleDescription
-        
+
         availablePlan.details.entitlements.forEach {
             let detailView = PlanDetailView()
             detailView.configure(iconUrl: $0.iconUrl, text: $0.text)
@@ -423,7 +423,7 @@ extension PlanCell {
         drawAlphas()
         self.accessibilityElements = [expandButton as Any, selectPlanButton as Any]
     }
-    
+
     private func handleProcessedPlanWhenIsNeeded(availablePlan: AvailablePlansPresentation) {
         guard availablePlan.isCurrentlyProcessed else { return }
         // already processing plan

@@ -92,7 +92,7 @@ public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
         self.name.text = name
         self.shortName.text = self.name.text?.initials()
         self.mailAddress.text = data.mail
-        
+
         if data.isSignin {
             self.signInBtn.isHidden = true
             self.unreadView.isHidden = data.unread == 0

@@ -27,7 +27,7 @@ import ProtonCoreServices
 
 public final class PlanIconsRequest: BaseApiRequest<PlanIconsResponse> {
     let iconName: String
-    
+
     public init(api: APIService, iconName: String) {
         self.iconName = iconName
         super.init(api: api)

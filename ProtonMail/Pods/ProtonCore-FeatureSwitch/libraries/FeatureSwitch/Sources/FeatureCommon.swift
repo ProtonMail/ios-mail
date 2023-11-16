@@ -26,7 +26,7 @@ public final class FeatureCommon {
     public static var bundle: Bundle {
         #if SPM
         return Bundle.module
-        #else        
+        #else
         return Bundle(path: Bundle(for: FeatureCommon.self).path(forResource: "Resources-FeatureSwitch", ofType: "bundle")!)!
         #endif
     }

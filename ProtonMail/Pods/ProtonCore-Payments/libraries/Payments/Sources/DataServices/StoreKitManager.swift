@@ -22,7 +22,7 @@
 import Foundation
 import StoreKit
 import Reachability
-import ProtonCoreFeatureSwitch
+import ProtonCoreFeatureFlags
 import ProtonCoreLog
 import ProtonCoreHash
 import ProtonCoreServices
@@ -163,7 +163,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     private func callErrorCompletion(for cache: UserInitiatedPurchaseCache, with error: Error) {
         threadSafeCache.removeValue(for: cache, in: \.errorCompletion, defaultValue: defaultErrorCallback) { $0?(error) }
     }
-    
+
     private func getSuccessCompletion(for cache: UserInitiatedPurchaseCache, completion: @escaping (SuccessCallback?) -> Void) {
         threadSafeCache.removeValue(for: cache, in: \.successCompletion, completion: completion)
     }
@@ -171,7 +171,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     private func getErrorCompletion(for cache: UserInitiatedPurchaseCache, completion: @escaping (ErrorCallback?) -> Void) {
         threadSafeCache.removeValue(for: cache, in: \.errorCompletion, defaultValue: defaultErrorCallback, completion: completion)
     }
-    
+
     private lazy var defaultSuccessCallback: SuccessCallback = { [weak self] result in
         guard let self = self else { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + self.alertViewDelay) { [weak self] in
@@ -196,27 +196,25 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
             self?.confirmUserValidationAlertView(error: error, userName: currentUsername, completion: completion)
         }
     }
-    
+
     private var processingType: ProcessingType {
         guard applicationUserId() == nil else {
-            // TODO: test purchase process with PlansDataSource object
             switch planService {
             case .left(let planService):
                 if planService.currentSubscription?.endDate?.isFuture ?? false {
                     return .existingUserAddCredits
                 }
-            case .right(let planDataSource):
-                if planDataSource.currentPlan?.endDate?.isFuture ?? false {
-                    return .existingUserAddCredits
-                }
+            case .right:
+                // Dynamic plans don't allow for extension
+                break
             }
             return .existingUserNewSubscription
         }
         return .registration
     }
-    
+
     private var removedTransactions: (([SKPaymentTransaction]) -> Void)?
-    
+
     private func finishTransaction(transaction: SKPaymentTransaction, finishCallback: (() -> Void)?) {
         paymentQueue.finishTransaction(transaction)
         removedTransactions = { transactions in
@@ -243,7 +241,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
         self.storeKitDataSource = storeKitDataSource
         self.paymentsApi = paymentsApi
         self.apiService = apiService
-        self.canExtendSubscription = canExtendSubscription
+        self.canExtendSubscription = canExtendSubscription && !FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan)
         self.paymentsAlertManager = paymentsAlertManager
         self.reportBugAlertHandler = reportBugAlertHandler
         self.refreshHandler = refreshHandler
@@ -262,14 +260,14 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
         unsubscribeFromPaymentQueue()
         paymentQueue.add(self)
     }
-    
+
     public func unsubscribeFromPaymentQueue() {
         paymentQueue.remove(self)
     }
 
     public func updateAvailableProductsList(completion: @escaping (Error?) -> Void) {
         // This is just for early detection of programmers errors and to indicate what can be removed when we remove the feature flag
-        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             assertionFailure("This method should never be called with dynamic plans. The StoreKitDataSource object fetches the SKProducts")
         }
         updateAvailableProductsListCompletionBlock = { error in DispatchQueue.main.async { completion(error) } }
@@ -284,6 +282,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
         return (product.price, product.priceLocale)
     }
 
+    /// first pending transaction which is .purchased or .restored
     public func currentTransaction() -> SKPaymentTransaction? {
         return paymentQueue.transactions.filter {
             $0.transactionState != .failed && $0.transactionState != .purchasing && $0.transactionState != .deferred
@@ -291,7 +290,6 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     }
 
     public func isValidPurchase(storeKitProductId: String, completion: @escaping (Bool) -> Void) {
-        // TODO: test purchase process with PlansDataSource object
         switch planService {
         case .left(let planService):
             planService.updateServicePlans(callBlocksOnParticularQueue: nil) { [weak self] in
@@ -335,7 +333,6 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
               let product = availableProducts.first(where: { $0.productIdentifier == storeKitProductId })
         else { return errorCompletion(Errors.unavailableProduct) }
 
-        // TODO: test purchase process with PlansDataSource object
         switch planService {
         case .left(let planService):
             planService.updateServicePlans(callBlocksOnParticularQueue: nil) { [weak self] in
@@ -424,7 +421,6 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
                                            deferredCompletion: deferredCompletion)
     }
 
-    // swiftlint:disable function_parameter_count
     private func purchaseProductBeingAuthorized(plan: InAppPurchasePlan,
                                                 storeKitProduct: SKProduct,
                                                 amountDue: Int,
@@ -436,10 +432,9 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
         let hashedUserId = hash(userId: userId)
 
         let amountDueCacheKey = UserInitiatedPurchaseCache(storeKitProductId: storeKitProduct.productIdentifier, hashedUserId: hashedUserId)
-        
+
         threadSafeCache.set(value: amountDue, for: amountDueCacheKey, in: \.amountDue)
 
-        // TODO: test purchase process with PlansDataSource object
         switch planService {
         case .left(let planService):
             planService.updateCurrentSubscription(callBlocksOnParticularQueue: nil) { [weak self] in
@@ -525,7 +520,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     public func hasUnfinishedPurchase() -> Bool {
         return !paymentQueue.transactions.filter { $0.transactionState != .failed }.isEmpty
     }
-    
+
     public func hasIAPInProgress() -> Bool {
         return paymentQueue.transactions.filter {
             $0.transactionState == .purchasing || $0.transactionState == .deferred
@@ -554,7 +549,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
 extension StoreKitManager: SKProductsRequestDelegate {
     public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         // This is just for early detection of programmers errors and to indicate what can be removed when we remove the feature flag
-        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             assertionFailure("This method should never be called with dynamic plans. The StoreKitDataSource object fetches the SKProducts")
         }
         if !response.invalidProductIdentifiers.isEmpty {
@@ -570,7 +565,7 @@ extension StoreKitManager: SKProductsRequestDelegate {
 
     func request(_: SKRequest, didFailWithError error: Error) {
         // This is just for early detection of programmers errors and to indicate what can be removed when we remove the feature flag
-        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             assertionFailure("This method should never be called with dynamic plans. The StoreKitDataSource object fetches the SKProducts")
         }
         #if targetEnvironment(simulator)
@@ -597,7 +592,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
     func paymentQueue(_ queue: SKPaymentQueue, removedTransactions transactions: [SKPaymentTransaction]) {
         removedTransactions?(transactions)
     }
-    
+
     private func processAllStoreKitTransactionsCurrentlyFoundInThePaymentQueue(finishHandler: FinishCallback?) {
         self.transactionsQueue.cancelAllOperations()
 
@@ -718,8 +713,8 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             finishTransaction(transaction, nil)
             group.leave()
 
-        } catch Errors.noNewSubscriptionInSuccessfullResponse { // error on BE
-            callErrorCompletion(for: cacheKey, with: Errors.noNewSubscriptionInSuccessfullResponse)
+        } catch Errors.noNewSubscriptionInSuccessfulResponse { // error on BE
+            callErrorCompletion(for: cacheKey, with: Errors.noNewSubscriptionInSuccessfulResponse)
             finishTransaction(transaction, nil)
             group.leave()
 
@@ -738,7 +733,6 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         guard let plan = InAppPurchasePlan(storeKitProductId: transaction.payment.productIdentifier)
         else { throw Errors.alreadyPurchasedPlanDoesNotMatchBackend }
 
-        // TODO: test purchase process with PlansDataSource object
         let planName: String
         let planAmount: Int
         let planIdentifier: String
@@ -807,6 +801,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                     )
                 }
             case .existingUserAddCredits:
+                // only for static
                 try processAddCredits.process(transaction: transaction, plan: planToBeProcessed, completion: customCompletion)
             case .registration:
                 try processUnathenticated.process(
@@ -851,7 +846,7 @@ extension StoreKitManager {
             throw Errors.haveTransactionOfAnotherUser
         }
     }
-    
+
     private func successCompletionAlertView(result: PaymentSucceeded) {
         guard case .resolvingIAPToCreditsCausedByError = result else { return }
         paymentsAlertManager.creditsAppliedAlert { [weak self] in
@@ -891,13 +886,13 @@ extension StoreKitManager: ProcessDependencies {
     var alertManager: PaymentsAlertManager { return paymentsAlertManager }
 
     var updateSubscription: (Subscription) throws -> Void { { [weak self] in
-        // TODO: test purchase process with PlansDataSource object
-        guard !FeatureFactory.shared.isEnabled(.dynamicPlans), case .left(let planService) = self?.planService else {
-            throw StoreKitManagerErrors.noNewSubscriptionInSuccessfullResponse
+        guard !FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan), case .left(let planService) = self?.planService else {
+            throw StoreKitManagerErrors.noNewSubscriptionInSuccessfulResponse
         }
         planService.currentSubscription = $0
     } }
 
+    /// Refreshes the current subscription details from BE
     func updateCurrentSubscription(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         // TODO: test purchase process with PlansDataSource object
         switch planService {
@@ -914,11 +909,11 @@ extension StoreKitManager: ProcessDependencies {
             }
         }
     }
-    
+
     var finishTransaction: (SKPaymentTransaction, (() -> Void)?) -> Void { {
         self.finishTransaction(transaction: $0, finishCallback: $1)
     } }
-    
+
     func addTransactionsBeforeSignup(transaction: SKPaymentTransaction) {
         // TODO: should it be thread safe?
         transactionsMadeBeforeSignup.append(transaction)

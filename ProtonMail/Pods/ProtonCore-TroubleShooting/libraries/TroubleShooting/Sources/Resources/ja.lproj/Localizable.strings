@@ -1,0 +1,50 @@
+
+"support form" = "サポートフォーム";
+
+"email" = "メール";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "トラブルシューティング";
+
+"Allow alternative routing" = "代替ルーティングを許可";
+
+"No internet connection" = "インターネット接続がありません";
+
+"Internet Service Provider (ISP) problem" = "インターネット サービス プロバイダー (ISP) の問題";
+
+"Government block" = "政府による検閲";
+
+"Antivirus interference" = "ウイルス対策ソフトウェアの干渉";
+
+"Proxy/Firewall interference" = "プロキシまたはファイアウォールの干渉";
+
+"Proton is down" = "Proton は現在利用できません";
+
+"Still can't find a solution" = "それでも問題が解決しない場合";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Proton への接続がブロックされている場合、アプリは別のネットワーク経由で Proton へ接続を試みます。この設定は、ファイアウォールやネットワーク上の問題を回避するのに役立ちます。信頼性向上の観点から、この設定を有効にしておくことをおすすめします。%1$@";
+
+"Learn more" = "詳細";
+
+"Please make sure that your internet connection is working." = "インターネットに接続されていることを確認してください。";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "別のネットワークから Proton への接続を試してください (または %1$@ や %2$@ をお試しください)";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "あなたの国の政府が、Proton への接続をブロックしている可能性があります。Proton にアクセスするには %1$@ (または他社のVPN) もしくは %2$@ を使用してください。";
+
+"Temporarily disable or remove your antivirus software." = "ウイルス対策ソフトウェアを一時的に無効化または削除してください。";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "プロキシやファイアウォールを無効にするか、ネットワーク管理者にお問い合わせください。";
+
+"Check Proton Status for our system status." = "Proton Status でシステム状況を確認してください。";
+
+"Proton Status" = "Proton ステータス";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "サポートフォーム、メール (support@protonmail.zendesk.com)、または Twitter から直接、お問い合わせください。";
+
+"Subject..." = "件名...";
+
+"Please share your problem." = "問題をシェアしてください。";
+
+"Back" = "戻る";

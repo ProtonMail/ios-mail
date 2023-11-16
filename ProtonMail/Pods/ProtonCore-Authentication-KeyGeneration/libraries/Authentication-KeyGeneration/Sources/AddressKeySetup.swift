@@ -27,19 +27,19 @@ import ProtonCoreHash
 import ProtonCoreDataModel
 
 final class AddressKeySetup {
-    
+
     static let signedKeyListSignatureContext = SignatureContext(value: "key-transparency.key-list", isCritical: false)
-    
+
     struct GeneratedAddressKey {
         /// armored key
         let armoredKey: ArmoredKey
-        
+
         /// on phase 2. token used to encrypt address key
         let token: ArmoredMessage
-        
+
         /// detached signaute.
         let signature: ArmoredSignature
-        
+
         /// signed key matedata
         ///     simple:
         ///     let keylist: [[String: Any]] = [[
@@ -55,7 +55,7 @@ final class AddressKeySetup {
         ///     ]
         let signedKeyList: [String: Any]
     }
-    
+
     /// use this funcetion to generate address key. secret is hex string of 32 bytes random data.
     func generateAddressKey(keyName: String, email: String, armoredUserKey: String,
                             password: String, salt: Data, addrType: Address.AddressType = .protonDomain) throws -> GeneratedAddressKey {
@@ -64,21 +64,21 @@ final class AddressKeySetup {
         }
         let userPrivateKey = ArmoredKey.init(value: armoredUserKey)
         let userKeyPassphrase = PasswordHash.passphrase(password, salt: salt)
-        
+
         // Generate a 32 byte random secret and encode it in a 64 byte hex string
         let addrKeyPassphrase = try PasswordHash.genAddrPassphrase()
-        
+
         /// generate a new key.  id: address email.  passphrase: hexed secret (should be 64 bytes) with default key type
         let armoredAddrKey = try Generator.generateECCKey(email: email, passphase: addrKeyPassphrase)
-        
+
         /// generate token.   token is hexed secret encrypted by `UserKey.publicKey`. Note: we don't need to inline sign
         let token = try addrKeyPassphrase.encrypt(publicKey: userPrivateKey)
-        
+
         /// gnerenate a detached signature.  sign the hexed secret by
         let userSignerKey = SigningKey.init(privateKey: userPrivateKey,
                                             passphrase: userKeyPassphrase)
         let tokenSignature = try addrKeyPassphrase.signDetached(signer: userSignerKey)
-        
+
         let keyFlags: KeyFlags
         if addrType == .externalAddress {
             keyFlags = .signupExternalKeyFlags
@@ -92,15 +92,15 @@ final class AddressKeySetup {
             "Primary": 1,
             "Flags": keyFlags.rawValue
         ]]
-        
+
         /// encode to json format
         let jsonKeylist = keylist.json()
-        
+
         /// sign detached. keylist.json signed by primary address key. on signup situation this is the address key we are going to submit.
         let addrSignerKey = SigningKey.init(privateKey: armoredAddrKey,
                                             passphrase: addrKeyPassphrase)
         let signed = try Sign.signDetached(signingKey: addrSignerKey, plainText: jsonKeylist, signatureContext: AddressKeySetup.signedKeyListSignatureContext)
-        
+
         let signedKeyList: [String: Any] = [
             "Data": jsonKeylist,
             "Signature": signed.value
@@ -110,15 +110,15 @@ final class AddressKeySetup {
                                    signature: tokenSignature,
                                    signedKeyList: signedKeyList)
     }
-    
+
     func generateRandomSecret() throws -> String {
         let secret = try PasswordHash.random(bits: PasswordSaltSize.addressKey.int32Bits) // generate random 32 bytes
         return HMAC.hexStringFromData(secret)
     }
-    
+
     func setupCreateAddressKeyRoute(key: GeneratedAddressKey,
                                     addressId: String, isPrimary: Bool) throws -> AuthService.CreateAddressKeyEndpoint {
-        
+
         return AuthService.CreateAddressKeyEndpoint(addressID: addressId,
                                                     privateKey: key.armoredKey,
                                                     signedKeyList: key.signedKeyList,

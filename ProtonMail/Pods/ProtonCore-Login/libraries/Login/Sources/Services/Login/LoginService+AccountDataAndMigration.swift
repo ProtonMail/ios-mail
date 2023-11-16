@@ -79,7 +79,7 @@ extension LoginService {
             }
         }
     }
-    
+
     private func fetchEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
         addresses: [Address], user: User, mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
     ) {
@@ -107,10 +107,10 @@ extension LoginService {
             }
             return
         }
-        
+
         // when external user has no key. external address is not empty. try to create keys only. other logic stays the same
         if hasNoKeys, user.isExternal, hasExternalAddressAndNoInternalOnes {
-            
+
             self.createAccountKeysIfNeeded(user: user,
                                            addresses: addresses,
                                            mailboxPassword: mailboxPassword) { [weak self] result in
@@ -461,7 +461,7 @@ extension LoginService {
 }
 
 extension NSError {
-    
+
     class func asProtonAddrRequiredError() -> Error {
         return NSError.init(domain: "protoncore-login",
                             code: -100,

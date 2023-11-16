@@ -1,0 +1,50 @@
+
+"support form" = "támogatási űrlap";
+
+"email" = "e-mail";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "Hibaelhárítás";
+
+"Allow alternative routing" = "Alternatív útválasztó engedélyezése";
+
+"No internet connection" = "Nincs internet kapcsolat";
+
+"Internet Service Provider (ISP) problem" = "Internet szolgáltató (ISP) probléma";
+
+"Government block" = "Kormányzati blokk";
+
+"Antivirus interference" = "Antivírus interferencia";
+
+"Proxy/Firewall interference" = "Proxy/tűzfal interferencia";
+
+"Proton is down" = "A Proton nem működik";
+
+"Still can't find a solution" = "Még mindig nem sikerült megoldást találni";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Ha a Proton szolgáltatásai le vannak tiltva, ezzel a beállítással az alkalmazás alternatív hálózati útvonalakat próbál meg használni, ami hasznos lehet tűzfalak megkerüléséhez vagy hálózati problémák megoldásához. Javasoljuk, hogy tartsa ezt a beállítást bekapcsolva a nagyobb megbízhatóság érdekében. %1$@";
+
+"Learn more" = "További információk";
+
+"Please make sure that your internet connection is working." = "Ellenőrizze, hogy az internet kapcsolat működik-e.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Csatlakozzon a Prontonhoz egy másik hálózaton keresztül (vagy használjon %1$@-t vagy %2$@-t).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Az ön országában a Proton elérése korlátozott lehet. Használjon %1$@-t (vagy bármely más VPN-t) vagy %2$@-t a Proton eléréshez.";
+
+"Temporarily disable or remove your antivirus software." = "Ideiglenesen kapcsolja ki vagy távolítsa el az antivírus programot.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "Kapcsolja ki a proxy-t vagy a tűzfalat, vagy vegye fel a kapcsolatot a hálózati rendszergazdával.";
+
+"Check Proton Status for our system status." = "Ellenőrizze a Proton állapotát a rendszer jelentésekben.";
+
+"Proton Status" = "Proton Állapot";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Vegye fel velünk a kapcsolatot a támogatási űrlapon, e-mailben (support@protonmail.zendesk.com), vagy a Twitter segítségével.";
+
+"Subject..." = "Tárgy...";
+
+"Please share your problem." = "Kérjük, ossza meg problémáját.";
+
+"Back" = "Vissza";

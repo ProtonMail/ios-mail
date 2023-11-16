@@ -60,33 +60,33 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
             }
         }
     }
-    
+
     public let verify = Verify()
-    
+
     public func resendDialogDisplay(email: String) -> SignupHumanVerificationV3Robot {
         return verify.resendEmailDialogShown(email: email)
     }
-    
+
     public final class Verify: CoreElements {
         @discardableResult
         public func humanVerificationScreenIsShown() -> SignupHumanVerificationV3Robot {
             otherElement(humanVerificationScreenIdentifier).wait(time: 15).checkExists()
             return SignupHumanVerificationV3Robot()
         }
-        
+
         public func isHumanVerificationRequired(wait: TimeInterval = 10.0) -> HV3OrCompletionRobot {
             let humanVerificationScreen = XCUIApplication().otherElements[humanVerificationScreenIdentifier]
             Wait(time: wait).forElement(humanVerificationScreen)
             return humanVerificationScreen.exists ? .humanVerification(SignupHumanVerificationV3Robot()) : .complete(CompleteRobot())
         }
-        
+
         public func resendEmailDialogShown(email: String) -> SignupHumanVerificationV3Robot {
             let messageName = String(format: resendCodeLabel, email)
             staticText(messageName).waitUntilExists().checkExists()
             return SignupHumanVerificationV3Robot()
         }
     }
-    
+
     public func switchToEmailHVMethod() -> SignupHumanVerificationV3Robot {
         button(emailSelectedControlLabel).waitForHittable()
         button(emailSelectedControlLabel).tap()
@@ -117,27 +117,27 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
         button(verifyCodeButtonLabel).wait(time: 30).tap()
         return Robot()
     }
-    
+
     public func verifyEmailButton<Robot: CoreElements>(to: Robot.Type) -> Robot {
         button(verifyEmailButtonLabel).wait(time: 30).tap()
         return Robot()
     }
-    
+
     public func didntReceiveCodeButton() -> SignupHumanVerificationV3Robot {
         button(didntReceiveCodeButtonLabel).wait(time: 30).tap()
         return SignupHumanVerificationV3Robot()
     }
-    
+
     public func editEmailAddressButton<Robot: CoreElements>(to: Robot.Type) -> Robot {
         button(editEmailAddressButtonLabel).wait(time: 30).tap()
         return Robot()
     }
-    
+
     public func requestNewCodeButton<Robot: CoreElements>(to: Robot.Type) -> Robot {
         button(requestNewCodeButtonLabel).wait(time: 30).tap()
         return Robot()
     }
-    
+
     public func performEmailVerificationV3<Robot: CoreElements>(
         email: String, code: String, to: Robot.Type
     ) -> Robot {
@@ -149,7 +149,7 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
             .fillInTextField(code)
             .tapOnVerifyCodeButton(to: Robot.self)
     }
-    
+
     public func performOwnershipEmailVerificationV3<Robot: CoreElements>(code: String, to: Robot.Type
     ) -> Robot {
         self
@@ -163,7 +163,7 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
         element.tap()
         return Robot()
     }
-    
+
     public func closeButton() -> RecoveryRobot {
         button(closeButtonAccessibilityId).tap()
         return RecoveryRobot()

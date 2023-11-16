@@ -1,0 +1,4 @@
+
+"Network connection error" = "Памылка падключэння да сеткі";
+
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Не ўдалося праверыць сертыфікат TLS падчас падключэння да Proton API. Ваша бягучае падключэнне да інтэрнэту можа адсочвацца. Для таго, каб захаваць вашы даныя ў бяспецы, мы прадухілілі доступ праграмы да Proton API.\nДля ўваходу ў праграму або доступу да вашага ўліковага запісу, пераключыцеся на новую сетку і паспрабуйце падключыцца яшчэ раз.";

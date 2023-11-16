@@ -30,22 +30,22 @@ private let buttonCreateAddressId = "CreateAddressViewController.createButton"
 private let createPMAddressTitle = "Proton address required"
 
 public final class CreateProtonmailRobot: CoreElements {
-    
+
     public func fillPMUsername(username: String) -> CreateProtonmailRobot {
         textField(usernameFieldId).waitUntilExists().tap().typeText(username)
         return self
     }
-    
+
     public func pressNextButton() -> CreateProtonmailRobot {
         button(buttonNextId).tap()
         return self
     }
-    
+
     public func pressCreateAddress<Robot: CoreElements>(to: Robot.Type) -> Robot {
         button(buttonCreateAddressId).waitUntilExists().tap()
         return Robot()
     }
-    
+
     public func createPMAddressIsShown() {
             staticText(createPMAddressTitle).waitUntilExists().checkExists()
     }

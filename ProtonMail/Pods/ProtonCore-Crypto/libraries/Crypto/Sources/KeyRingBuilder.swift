@@ -28,7 +28,7 @@ public final class KeyRingBuilder {
 
     public init() {
     }
-    
+
     /// internal function to build up go crypto key ring. will auto convert private to public key
     /// - Parameter armoredKeys: armored key list
     /// - Returns: crypto key ring
@@ -54,16 +54,16 @@ public final class KeyRingBuilder {
         }
         return keyRing
     }
-    
+
     public func buildPrivateKeyRingUnlock(privateKeys: [DecryptionKey]) throws -> CryptoKeyRing {
         let newKeyRing = try throwing { error in CryptoGo.CryptoNewKeyRing(nil, &error) }
-        
+
         guard let keyRing = newKeyRing else {
             throw CryptoError.couldNotCreateKeyRing
         }
-        
+
         var unlockKeyErrors = [Error]()
-        
+
         for key in privateKeys {
             let passSlice = key.passphrase.data
             do {

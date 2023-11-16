@@ -1,0 +1,48 @@
+
+"Contact customer support" = "Neem contact op met de klantondersteuning";
+
+"Failed to get list of available products from App Store." = "Fout bij het ophalen van lijst met beschikbare producten uit de App Store.";
+
+"Purchase is not possible." = "Aankoop is niet mogelijk.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple heeft ons geïnformeerd dat u het serviceplan geüpgraded heeft maar er missen technische gegevens. Dien een bugrapport in en ons ondersteuningsteam neemt contact op met u.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple heeft ons geïnformeerd dat u het serviceplan geüpgraded heeft, maar wij hebben geconstateerd dat u sindsdien uitgelogd bent.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Het was niet mogelijk om het het aangekochte AppStore-product op onze server te vinden. Rapporteer deze fout en onze klantensupportteam zal contact met u opnemen.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Log in op het Proton Mail-account dat u het serviceplan aan het upgraden bent, zodat we de aankoop van het serviceplan kunnen voltooien.";
+
+"Apple informed us they could not process the purchase." = "Apple heeft ons geïnformeerd dat ze de aankoop niet konden verwerken.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "We hebben uw abonnement succesvol geactiveerd. Start de app opnieuw om gebruik te maken van uw nieuwe abonnement.";
+
+"Please unlock the app to proceed with your service plan activation" = "Gelieve de app te ontgrendelen om verder te gaan met de activering van uw service plan";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Log in op het Proton Mail-account dat u het serviceplan aan het upgraden bent, zodat we de activering van het serviceplan kunnen voltooien.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Verkeerde betalingstoken status. Herstart de app. Als de fout zich blijft voordoen, neem contact op met support.";
+
+"Do you want to activate the purchase for %@ address?" = "Wilt u de aankoop activeren voor het adres %@?";
+
+"Yes, activate it for " = "Ja, activeer het voor ";
+
+"No, for another Proton Mail account" = "Nee, voor een ander Proton Mail-account";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We konden uw account niet upgraden naar het geselecteerde abonnement. De betaling werd toegevoegd als tegoed aan uw account. Neem contact op met ondersteuning voor meer informatie en om uw upgrade te voltooien.";
+
+"Contact Support" = "Neem contact op met ondersteuning";
+
+"Dismiss" = "Negeren";
+
+"Payment failed" = "Betaling mislukt";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "U heeft succesvol geregistreerd maar uw betaling is niet verwerkt. Om de betalingsinformatie opnieuw te verzenden, klikt u op Opnieuw. Het bedrag wordt slechts één keer in rekening gebracht. 
+
+Als dit probleem zich blijft voortdoen kunt u contact opnemen met onze klantenondersteuning.";
+
+"Retry" = "Opnieuw proberen";
+
+"OK" = "OK";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "De Proton servers zijn onbereikbaar. Mogelijks door een verkeerde netwerkconfiguratie of Proton servers die buiten gebruik zijn of worden geblokkeerd";

@@ -26,7 +26,7 @@ import enum ProtonCoreDataModel.ClientApp
 import ProtonCoreUIFoundations
 import ProtonCorePayments
 import ProtonCoreUtilities
-import ProtonCoreFeatureSwitch
+import ProtonCoreFeatureFlags
 
 enum FooterType: Equatable {
     static func == (lhs: FooterType, rhs: FooterType) -> Bool {
@@ -38,7 +38,7 @@ enum FooterType: Equatable {
         default: return false
         }
     }
-    
+
     case withPlansToBuy
     case withoutPlansToBuy
     case withExtendSubscriptionButton(PlanPresentation)
@@ -47,20 +47,20 @@ enum FooterType: Equatable {
 
 class PaymentsUIViewModel {
     private var isDynamicPlansEnabled: Bool {
-        FeatureFactory.shared.isEnabled(.dynamicPlans)
+        FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan)
     }
     private var planService: Either<ServicePlanDataServiceProtocol, PlansDataSourceProtocol>
 
     private var servicePlan: ServicePlanDataServiceProtocol? {
-        guard !FeatureFactory.shared.isEnabled(.dynamicPlans), case .left(let servicePlan) = planService else {
-            assertionFailure("Non dynamic plans must use the ServicePlanDataServiceProtocol object")
+        guard !isDynamicPlansEnabled, case .left(let servicePlan) = planService else {
+            assertionFailure("Dynamic plans can't use the ServicePlanDataServiceProtocol object")
             return nil
         }
         return servicePlan
     }
 
     private var plansDataSource: PlansDataSourceProtocol? {
-        guard FeatureFactory.shared.isEnabled(.dynamicPlans), case .right(let plansDataSource) = planService else {
+        guard FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan), case .right(let plansDataSource) = planService else {
             assertionFailure("Dynamic plans must use the PlansDataSourceProtocol object")
             return nil
         }
@@ -96,7 +96,7 @@ class PaymentsUIViewModel {
     }
     private (set) var availablePlans: [AvailablePlansPresentation]?
     private (set) var currentPlan: CurrentPlanPresentation?
-    
+
     var defaultCycle: Int? {
         switch planService {
         case .left:
@@ -105,7 +105,7 @@ class PaymentsUIViewModel {
             return dataSource.availablePlans?.defaultCycle
         }
     }
-    
+
     var isExpandButtonHidden: Bool {
         if UIDevice.current.isIpad, UIDevice.current.orientation.isPortrait {
             return true
@@ -113,11 +113,11 @@ class PaymentsUIViewModel {
             return isExpandButtonHiddenByNumberOfPlans
         }
     }
-    
+
     var shouldShowExpandButton: Bool {
         return UIDevice.current.isIpad && UIDevice.current.orientation.isLandscape && !isExpandButtonHiddenByNumberOfPlans
     }
-    
+
     private var isExpandButtonHiddenByNumberOfPlans: Bool {
         if isDynamicPlansEnabled {
             return isExpandButtonHiddenByNumberOfDynamicPlans
@@ -125,7 +125,7 @@ class PaymentsUIViewModel {
             return isExpandButtonHiddenByNumberOfStaticPlans
         }
     }
-    
+
     private var isExpandButtonHiddenByNumberOfDynamicPlans: Bool {
         dynamicPlans
             .flatMap { $0 }
@@ -139,25 +139,25 @@ class PaymentsUIViewModel {
             }
             .count < 2
     }
-    
+
     private var isExpandButtonHiddenByNumberOfStaticPlans: Bool {
         return plans
             .flatMap { $0 }
             .filter { !$0.accountPlan.isFreePlan }
             .count < 2
     }
-    
+
     var iapInProgress: Bool { storeKitManager.hasIAPInProgress() }
-    
+
     var unfinishedPurchasePlan: InAppPurchasePlan? {
         didSet {
             guard let unfinishedPurchasePlan = unfinishedPurchasePlan else { return }
             processUnfinishedPurchasePlan(unfinishedPurchasePlan: unfinishedPurchasePlan)
         }
     }
-    
+
     // MARK: Public interface
-    
+
     init(mode: PaymentsUIMode,
          storeKitManager: StoreKitManagerProtocol,
          planService: Either<ServicePlanDataServiceProtocol, PlansDataSourceProtocol>,
@@ -176,14 +176,14 @@ class PaymentsUIViewModel {
         self.extendSubscriptionHandler = extendSubscriptionHandler
         registerRefreshHandler()
     }
-    
+
     private var getCurrentPlan: CurrentPlanDetails? {
         if case .current(let currentPlanPresentationType) = plans.first?.first?.planPresentationType, case .details(let planDetails) = currentPlanPresentationType {
             return planDetails
         }
         return nil
     }
-    
+
     func fetchPlans() async throws {
         try await fetchIAPAvailability()
         switch mode {
@@ -200,7 +200,7 @@ class PaymentsUIViewModel {
         }
         setFooterType()
     }
-    
+
     private func setFooterType() {
         if !(availablePlans?.isEmpty ?? true) {
             footerType = .withPlansToBuy
@@ -208,7 +208,7 @@ class PaymentsUIViewModel {
             footerType = .withoutPlansToBuy
         }
     }
-    
+
     func fetchPlans(backendFetch: Bool, completionHandler: ((Result<([[PlanPresentation]], FooterType), Error>) -> Void)? = nil) {
         footerType = .withoutPlansToBuy
         switch mode {
@@ -220,7 +220,7 @@ class PaymentsUIViewModel {
             fetchPlansToPresent(withCurrentPlan: false, backendFetch: backendFetch, completionHandler: completionHandler)
         }
     }
-    
+
     // MARK: Private methods - All plans (signup mode)
 
     private func fetchAllPlans(backendFetch: Bool, completionHandler: ((Result<([[PlanPresentation]], FooterType), Error>) -> Void)? = nil) {
@@ -242,7 +242,7 @@ class PaymentsUIViewModel {
             }
         }
     }
-    
+
     private func processAllPlans(completionHandler: ((Result<([[PlanPresentation]], FooterType), Error>) -> Void)? = nil) {
         guard let servicePlan else {
             completionHandler?(.failure(StoreKitManagerErrors.transactionFailedByUnknownReason))
@@ -267,7 +267,7 @@ class PaymentsUIViewModel {
         footerType = .withPlansToBuy
         completionHandler?(.success((self.plans, footerType)))
     }
-    
+
     private func getLocaleFromIAP(plansPresentation: [PlanPresentation]) -> Locale {
         for plan in plansPresentation {
             if let locale = PlanPresentation.getLocale(from: plan.accountPlan, storeKitManager: storeKitManager) {
@@ -276,7 +276,7 @@ class PaymentsUIViewModel {
         }
         return Locale.autoupdatingCurrent
     }
-    
+
     private func updatedFreePlanPrice(plansPresentation: [PlanPresentation]) -> PlanPresentation? {
         var updatedFreePlan: PlanPresentation?
         plansPresentation.forEach {
@@ -303,7 +303,8 @@ class PaymentsUIViewModel {
     }
 
     // MARK: Private methods - Update plans (current, update mode)
-    
+
+    // static plans only
     private func fetchPlansToPresent(withCurrentPlan: Bool, backendFetch: Bool, completionHandler: ((Result<([[PlanPresentation]], FooterType), Error>) -> Void)? = nil) {
         if backendFetch {
             updateServicePlanDataService { result in
@@ -318,7 +319,8 @@ class PaymentsUIViewModel {
             self.createPlanPresentations(withCurrentPlan: withCurrentPlan, completionHandler: completionHandler)
         }
     }
-    
+
+    // static
     private func createPlanPresentations(withCurrentPlan: Bool, completionHandler: ((Result<([[PlanPresentation]], FooterType), Error>) -> Void)? = nil) {
         guard let servicePlan else {
             completionHandler?(.failure(StoreKitManagerErrors.transactionFailedByUnknownReason))
@@ -350,7 +352,7 @@ class PaymentsUIViewModel {
                                price: nil,
                                cycle: $0.cycle)
                 }
-            
+
             if let freePlan = freePlan {
                 if withCurrentPlan {
                     plans.append([updatedFreePlanPrice(plansPresentation: plansToShow + [freePlan]) ?? freePlan])
@@ -385,10 +387,10 @@ class PaymentsUIViewModel {
                                           price: subscription.price,
                                           cycle: subscription.cycle) {
                 plans.append([plan])
-                
+
                 // check if current plan is still available
                 let isExtensionPlanAvailable = servicePlan.availablePlansDetails.first { $0.name == accountPlan.protonName } != nil
-                
+
                 self.plans = plans
                 if storeKitManager.canExtendSubscription, !servicePlan.hasPaymentMethods, isExtensionPlanAvailable, !servicePlan.willRenewAutomatically(plan: accountPlan) {
                     footerType = .withExtendSubscriptionButton(plan)
@@ -406,17 +408,17 @@ class PaymentsUIViewModel {
             }
         }
     }
-    
+
     // MARK: Private methods - support methods
-    
+
     private var plansTotalCount: Int {
         return plans.flatMap { $0 }.count
     }
-    
+
     private var plansSectionCount: Int {
         return plans.count
     }
-    
+
     private func updateServicePlanDataService(completion: @escaping (Result<(), Error>) -> Void) {
         updateServicePlans {
             guard let servicePlan = self.servicePlan else {
@@ -437,7 +439,6 @@ class PaymentsUIViewModel {
         }
     }
 
-    // swiftlint:disable function_parameter_count
     private func createPlan(details baseDetails: Plan,
                             isSelectable: Bool,
                             isCurrent: Bool,
@@ -446,7 +447,7 @@ class PaymentsUIViewModel {
                             endDate: NSAttributedString?,
                             price: String?,
                             cycle: Int?) -> PlanPresentation? {
-        
+
         // we need to remove all other plans not defined in the shownPlanNames
         guard shownPlanNames.contains(where: { baseDetails.name == $0 }) || InAppPurchasePlan.isThisAFreePlan(protonName: baseDetails.name) else {
             return nil
@@ -473,7 +474,8 @@ class PaymentsUIViewModel {
                                            endDate: endDate,
                                            price: price)
     }
-    
+
+    // static
     private func updateServicePlans(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         guard let servicePlan else {
             failure(StoreKitManagerErrors.transactionFailedByUnknownReason)
@@ -490,9 +492,9 @@ class PaymentsUIViewModel {
             servicePlan.updateServicePlans(success: success, failure: failure)
         }
     }
-    
+
     // MARK: Private methods - Refresh data
-    
+
     private func processUnfinishedPurchasePlan(unfinishedPurchasePlan: InAppPurchasePlan) {
         if isDynamicPlansEnabled {
              processUnfinishedPurchaseDynamicPlan(unfinishedPurchasePlan: unfinishedPurchasePlan)
@@ -500,7 +502,7 @@ class PaymentsUIViewModel {
              processUnfinishedPurchaseStaticPlan(unfinishedPurchasePlan: unfinishedPurchasePlan)
          }
      }
-     
+
      private func processUnfinishedPurchaseDynamicPlan(unfinishedPurchasePlan: InAppPurchasePlan) {
          self.dynamicPlans.forEach {
              $0.forEach {
@@ -518,7 +520,7 @@ class PaymentsUIViewModel {
          }
          planRefreshHandler(nil)
      }
-     
+
      private func processUnfinishedPurchaseStaticPlan(unfinishedPurchasePlan: InAppPurchasePlan) {
         self.plans.forEach {
             $0.forEach {
@@ -542,13 +544,12 @@ class PaymentsUIViewModel {
         }
         planRefreshHandler(nil)
     }
-    
+
     private func registerRefreshHandler() {
         storeKitManager.refreshHandler = { [weak self] result in
             switch result {
             case .finished(let paymentSucceeded):
                 guard paymentSucceeded == .resolvingIAPToCredits ||
-                        paymentSucceeded == .resolvingIAPToCreditsCausedByError ||
                         paymentSucceeded == .resolvingIAPToSubscription else { return }
                 // refresh plans
                 if self?.isDynamicPlansEnabled == true {
@@ -574,7 +575,7 @@ class PaymentsUIViewModel {
             }
         }
     }
-    
+
     private func updateCredits(completionHandler: (() -> Void)?) {
         guard let servicePlan else {
             completionHandler?()
@@ -601,21 +602,21 @@ extension PaymentsUIViewModel {
         guard let currentPlanSubscription = plansDataSource.currentPlan?.subscriptions.first else {
             return
         }
-        
+
         currentPlan = try await CurrentPlanPresentation.createCurrentPlan(from: currentPlanSubscription, plansDataSource: plansDataSource)
     }
-    
+
     func fetchAvailablePlans() async throws {
         guard let plansDataSource else {
             throw StoreKitManagerErrors.transactionFailedByUnknownReason
         }
 
         try await plansDataSource.fetchAvailablePlans()
-        
+
         guard let availablePlansDataSource = plansDataSource.availablePlans?.plans else {
             return
         }
-        
+
         self.availablePlans = []
         for plan in availablePlansDataSource {
             if plan.instances.isEmpty {
@@ -640,7 +641,7 @@ extension PaymentsUIViewModel {
             }
         }
     }
-    
+
     func fetchPaymentMethods() async throws {
         guard let plansDataSource else {
             throw StoreKitManagerErrors.transactionFailedByUnknownReason
@@ -648,7 +649,7 @@ extension PaymentsUIViewModel {
 
         try await plansDataSource.fetchPaymentMethods()
     }
-    
+
     func fetchIAPAvailability() async throws {
         guard let plansDataSource else {
             throw StoreKitManagerErrors.transactionFailedByUnknownReason

@@ -36,20 +36,20 @@ extension PMAPIService {
             )
         }
     }
-    
+
     private func missingPasswordScopesUIHandler<T>(username: String,
                                                    responseHandlerData: PMResponseHandlerData,
                                                    completion: APIResponseCompletion<T>) where T: Decodable {
         self.isPasswordVerifyUIPresented.mutate { $0 = true }
 
         missingScopesDelegate?.onMissingScopesHandling(username: username, responseHandlerData: responseHandlerData) { [weak self] reason in
-            
+
             guard let self else { return }
-            
+
             if self.isPasswordVerifyUIPresented.transform({ $0 }) {
                 self.isPasswordVerifyUIPresented.mutate { $0 = false }
             }
-            
+
             switch reason {
             case .unlocked:
                 self.repeatRequest(
@@ -64,7 +64,7 @@ extension PMAPIService {
             }
         }
     }
-    
+
     private func repeatRequest<T>(responseHandlerData: PMResponseHandlerData,
                                   completion: APIResponseCompletion<T>) where T: Decodable {
         startRequest(

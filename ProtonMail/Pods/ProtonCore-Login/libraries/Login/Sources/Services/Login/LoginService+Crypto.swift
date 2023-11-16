@@ -34,16 +34,16 @@ extension LoginService {
             $0.keySalt != nil
         }.map { salt -> (String, String) in
             let keySalt = salt.keySalt!
-            
+
             let passSlice = mailboxPassword.data(using: .utf8)
 
             let saltPackage = Data(base64Encoded: keySalt, options: NSData.Base64DecodingOptions(rawValue: 0))
             let passphraseSlice = CryptoGo.SrpMailboxPassword(passSlice, saltPackage, &error)
-            
+
             let passphraseUncut = String.init(data: passphraseSlice!, encoding: .utf8)
             // by some internal reason of go-srp, output will be 60 characters but we need only last 31 of them
             let passphrase = passphraseUncut!.suffix(31)
-            
+
             return (salt.ID, String(passphrase))
         }
 
@@ -56,7 +56,7 @@ extension LoginService {
 
     func validateMailboxPassword(passphrases: ([String: String]), userKeys: [Key]) -> Bool {
         var isValid = false
-  
+
         // new keys - user keys
         passphrases.forEach { keyID, passphrase in
             userKeys.filter { $0.keyID == keyID && $0.primary == 1 }

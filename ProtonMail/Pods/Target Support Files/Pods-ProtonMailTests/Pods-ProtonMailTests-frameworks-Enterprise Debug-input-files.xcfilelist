@@ -17,6 +17,7 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-CryptoGoInterface/ProtonCoreCryptoGoInterface.f
 ${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCoreDataModel.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCoreDoh.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Environment/ProtonCoreEnvironment.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-FeatureFlags/ProtonCoreFeatureFlags.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-FeatureSwitch/ProtonCoreFeatureSwitch.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade/ProtonCoreForceUpgrade.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCoreFoundations.framework

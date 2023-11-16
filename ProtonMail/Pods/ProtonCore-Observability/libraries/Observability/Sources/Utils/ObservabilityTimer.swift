@@ -40,7 +40,7 @@ class ObservabilityTimerImpl: ObservabilityTimer {
     init(interval: TimeInterval = 15) {
         self.interval = interval
     }
-    
+
     func register(_ ticker: @escaping Ticker) {
         self.ticker = ticker
     }

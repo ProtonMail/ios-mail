@@ -32,9 +32,9 @@ private let smsButton = HVTranslation.sms_method_name.l10n
 private let captchaButton = HVTranslation.captha_method_name.l10n
 
 public final class HumanVerificationRobot: CoreElements {
-    
+
     public let verify = Verify()
-    
+
     public final class Verify: CoreElements {
         @discardableResult
         public func humanVerificationScreenIsShown() -> HumanVerificationRobot {
@@ -42,32 +42,32 @@ public final class HumanVerificationRobot: CoreElements {
             return HumanVerificationRobot()
         }
     }
-    
+
     public func emailTab() -> HumanVerificationRobot {
         button(emailButton).waitUntilExists().tap()
         return HumanVerificationRobot()
     }
-    
+
     public func smsTab() -> HumanVerificationRobot {
         button(smsButton).waitUntilExists().tap()
         return HumanVerificationRobot()
     }
-    
+
     public func captchaTab() -> HumanVerificationRobot {
         button(captchaButton).waitUntilExists().tap()
         return HumanVerificationRobot()
     }
-    
+
     public enum CaptchaType: String {
         case recaptcha = "Recaptcha requires verification. I'm not a robot"
         case hCaptcha = "hCaptcha checkbox. Select in order to trigger the challenge, or to bypass it if you have an accessibility cookie."
     }
-    
+
     @discardableResult
     public func captchaTap() -> HumanVerificationRobot {
         captchaTap(captcha: .recaptcha, to: HumanVerificationRobot.self)
     }
-    
+
     @discardableResult
     public func captchaTap<Robot: CoreElements>(captcha: CaptchaType, to: Robot.Type) -> Robot {
         let element = XCUIApplication().webViews.webViews.switches[captcha.rawValue]
@@ -75,7 +75,7 @@ public final class HumanVerificationRobot: CoreElements {
         element.tap()
         return Robot()
     }
-    
+
     @discardableResult
     public func close<Robot: CoreElements>(to _: Robot.Type) -> Robot {
         button(closeButtonAccessibilityId).waitUntilExists().tap()

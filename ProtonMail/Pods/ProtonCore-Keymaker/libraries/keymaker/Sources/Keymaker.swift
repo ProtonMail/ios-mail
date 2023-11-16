@@ -42,13 +42,13 @@ public typealias MainKey = [UInt8]
 
 public class Keymaker: NSObject {
     public typealias Const = Constants
-        
+
     private var autolocker: Autolocker?
     private let keychain: Keychain
     public init(autolocker: Autolocker?, keychain: Keychain) {
         self.autolocker = autolocker
         self.keychain = keychain
-        
+
         super.init()
         #if canImport(UIKit)
         NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
@@ -57,11 +57,11 @@ public class Keymaker: NSObject {
                                                name: UIApplication.willEnterForegroundNotification, object: nil)
         #endif
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     // stored in-memory value
     private var _mainKey: MainKey? {
         didSet {
@@ -73,7 +73,7 @@ public class Keymaker: NSObject {
             }
         }
     }
-    
+
     private var _key: MainKey? {
         didSet {
             if _key != nil {
@@ -87,9 +87,9 @@ public class Keymaker: NSObject {
     public var isMainKeyInMemory: Bool {
         _mainKey != nil
     }
-    
+
     // accessor for stored value; if stored value is nill - calls provokeMainKeyObtention() method
-    
+
     @available(*, deprecated, message: "this shouldn't be used after the migration and this will be private.")
     public var mainKey: MainKey? {
         privatelyAccessibleMainKey
@@ -104,32 +104,32 @@ public class Keymaker: NSObject {
         }
         return self._mainKey
     }
-    
+
     public func mainKey(by protection: RandomPinProtection?) -> MainKey? {
         if self._mainKey != nil {
             return _mainKey
         }
-        
+
         guard let protectionStrategy = protection else {
             return self.privatelyAccessibleMainKey
         }
         if self._key == nil, let newKey = self.obtainMainKeyBackground(with: protectionStrategy) {
             self._key = newKey
         }
-        
+
         return self._key
     }
-    
+
     // try to get mainkey from background, this will not always on main thread.
     public func obtainMainKeyBackground(with protector: RandomPinProtection) -> MainKey? {
         guard self._key == nil else {
             return self._key
         }
-        
+
         guard let cypherBits = protector.getCypherBits() else {
             return nil
         }
-        
+
         do {
             let mainKeyBytes = try protector.unlock(cypherBits: cypherBits)
             self._key = mainKeyBytes
@@ -138,11 +138,11 @@ public class Keymaker: NSObject {
         }
         return self._key
     }
-    
+
     public func resetAutolock() {
         self.autolocker?.releaseCountdown()
     }
-    
+
     // Try to get main key from storage if it exists, otherwise create one.
     // if there is any significant Protection active - post message that obtainMainKey(_:_:) is needed
     private func getMainKeyByRandomPin() -> MainKey? {
@@ -150,7 +150,7 @@ public class Keymaker: NSObject {
         guard !self.isProtectorActive(RandomPinProtection.self) else {
             return nil
         }
-        
+
         // if we have NoneProtection active - get the key right ahead
         if let cypherText = NoneProtection.getCypherBits(from: self.keychain) {
             do {
@@ -159,12 +159,12 @@ public class Keymaker: NSObject {
                 fatalError(error.localizedDescription)
             }
         }
-        
+
         // otherwise there is no saved mainKey at all, so we should generate a new one with default protection
         let newKey = self.generateNewMainKeyWithDefaultProtection()
         return newKey
     }
-    
+
     // Try to get main key from storage if it exists, otherwise create one.
     // if there is any significant Protection active - post message that obtainMainKey(_:_:) is needed
     private func provokeMainKeyObtention() -> MainKey? {
@@ -176,7 +176,7 @@ public class Keymaker: NSObject {
             NotificationCenter.default.post(.init(name: Const.requestMainKey))
             return nil
         }
-        
+
         // if we have NoneProtection active - get the key right ahead
         if let cypherText = NoneProtection.getCypherBits(from: self.keychain) {
             do {
@@ -185,28 +185,28 @@ public class Keymaker: NSObject {
                 fatalError(error.localizedDescription)
             }
         }
-        
+
         // otherwise there is no saved mainKey at all, so we should generate a new one with default protection
         let newKey = self.generateNewMainKeyWithDefaultProtection()
         return newKey
     }
-    
+
     private let controlThread: OperationQueue = {
         let operation = OperationQueue()
         operation.maxConcurrentOperationCount = 1
         return operation
     }()
-    
+
     public func wipeMainKey() {
         NoneProtection.removeCyphertext(from: self.keychain)
         BioProtection.removeCyphertext(from: self.keychain)
         PinProtection.removeCyphertext(from: self.keychain)
-        
+
         self._mainKey = nil
         self._key = nil
         self.setupCryptoTransformers(key: nil)
     }
-    
+
     @discardableResult @objc
     public func mainKeyExists() -> Bool { // cuz another process can wipe main key from memory while the app is in background
         if !self.isProtectorActive(BioProtection.self),
@@ -222,11 +222,11 @@ public class Keymaker: NSObject {
         }
         return true
     }
-    
+
     public func lockTheApp() {
         self._mainKey = nil
     }
-    
+
     /// Assigns in-memory decrypted MainKey value, typically obtained externally, skipping all obtaination flows.
     /// Does not check correctness of MainKey, does not send any notifications or messages.
     /// **Important: use only for cross-process transfers of MainKey.**
@@ -239,7 +239,7 @@ public class Keymaker: NSObject {
     public func forceInjectMainKey(_ potentialMainKey: MainKey) {
         self._mainKey = potentialMainKey
     }
-    
+
     public func obtainMainKey(with protector: ProtectionStrategy,
                               handler: @escaping (MainKey?) -> Void)
     {
@@ -247,29 +247,41 @@ public class Keymaker: NSObject {
         // so for ease of use (and since most of callbacks turned out to work with UI)
         // we'll return to main thread explicitly here
         let isMainThread = Thread.current.isMainThread
-        
+
         self.controlThread.addOperation {
             guard self._mainKey == nil else {
-                isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)
+                if isMainThread {
+                    DispatchQueue.main.async { handler(self._mainKey) }
+                } else {
+                    handler(self._mainKey)
+                }
                 return
             }
-            
+
             guard let cypherBits = protector.getCypherBits() else {
-                isMainThread ? DispatchQueue.main.async { handler(nil) } : handler(nil)
+                if isMainThread  {
+                    DispatchQueue.main.async { handler(nil) }
+                } else {
+                    handler(nil)
+                }
                 return
             }
-            
+
             do {
                 let mainKeyBytes = try protector.unlock(cypherBits: cypherBits)
                 self._mainKey = mainKeyBytes
                 NotificationCenter.default.post(name: Const.obtainedMainKey, object: self)
             } catch let error {
                 NotificationCenter.default.post(name: Const.errorObtainingMainKey, object: self, userInfo: ["error": error])
-                
+
                 self._mainKey = nil
             }
-            
-            isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)
+
+            if isMainThread {
+                DispatchQueue.main.async { handler(self._mainKey) }
+            } else {
+                handler(self._mainKey)
+            }
         }
     }
 
@@ -292,7 +304,7 @@ public class Keymaker: NSObject {
             }
         })
     }
-    
+
     // completion says whether protector was activated or not
     public func activate(_ protector: ProtectionStrategy,
                          completion: @escaping (Bool) -> Void)
@@ -302,30 +314,38 @@ public class Keymaker: NSObject {
             guard let mainKey = self.privatelyAccessibleMainKey,
                   (try? protector.lock(value: mainKey)) != nil else
             {
-                isMainThread ? DispatchQueue.main.async { completion(false) } : completion(false)
+                if isMainThread {
+                    DispatchQueue.main.async { completion(false) }
+                } else {
+                    completion(false)
+                }
                 return
             }
-            
+
             // we want to remove unprotected value from storage if the new Protector is significant
             if !(protector is NoneProtection) {
                 self.deactivate(NoneProtection(keychain: self.keychain))
             }
-            
-            isMainThread ? DispatchQueue.main.async { completion(true) } : completion(true)
+
+            if isMainThread {
+                DispatchQueue.main.async { completion(true) }
+            } else {
+                completion(true)
+            }
         }
     }
-    
+
     public func isProtectorActive<T: ProtectionStrategy>(_ protectionType: T.Type) -> Bool {
         return protectionType.getCypherBits(from: self.keychain) != nil
     }
-    
+
     @discardableResult public func deactivate(_ protector: ProtectionStrategy) -> Bool {
         protector.removeCyphertextFromKeychain()
-        
+
         if protector is RandomPinProtection {
             self._key = nil
         }
-        
+
         // need to keep mainKey in keychain in case user switches off all the significant Protectors
         if !self.isProtectorActive(BioProtection.self),
             !self.isProtectorActive(PinProtection.self)
@@ -333,10 +353,10 @@ public class Keymaker: NSObject {
             self._key = nil
             self.activate(NoneProtection(keychain: self.keychain), completion: { _ in })
         }
-        
+
         return true
     }
-    
+
     private func generateNewMainKeyWithDefaultProtection() -> MainKey {
         self.wipeMainKey() // get rid of all old protected mainKeys
         let newMainKey = NoneProtection.generateRandomValue(length: 32)
@@ -347,7 +367,7 @@ public class Keymaker: NSObject {
         }
         return newMainKey
     }
-    
+
     private func setupCryptoTransformers(key: MainKey?) {
         guard let key = key else {
             ValueTransformer.setValueTransformer(nil, forName: .init(rawValue: "StringCryptoTransformer"))
@@ -356,7 +376,7 @@ public class Keymaker: NSObject {
         ValueTransformer.setValueTransformer(StringCryptoTransformer(key: key),
                                              forName: .init(rawValue: "StringCryptoTransformer"))
     }
-    
+
     public func updateAutolockCountdownStart() {
         self.autolocker?.startCountdown()
         _ = self.privatelyAccessibleMainKey

@@ -42,7 +42,7 @@ public final class LoginNavigationViewController: DarkModeAwareNavigationViewCon
         setNavigationBarHidden(navigationBarHidden, animated: false)
         generateAccessibilityIdentifiers()
     }
-    
+
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }

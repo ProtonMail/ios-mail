@@ -1,0 +1,134 @@
+
+"OK" = "OK";
+
+"Cancel" = "Annuler";
+
+"Warning" = "Attention";
+
+"Select a plan" = "Choisir un abonnement";
+
+"Current plan" = "Abonnement actuel";
+
+"Subscription" = "Abonnement";
+
+"Upgrade your plan" = "Passez à un abonnement supérieur";
+
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Seuls les abonnements annuels sans renouvellement automatique sont disponibles dans l'application mobile.";
+
+"You cannot manage subscriptions inside the mobile application." = "Vous ne pouvez pas gérer les abonnements dans l'application mobile.";
+
+"Your plan will automatically renew on %@" = "Votre abonnement sera automatiquement renouvelé le %@.";
+
+"Current plan will expire on %@" = "L’abonnement actuel expirera le %@.";
+
+"Contact an administrator to make changes to your Proton subscription." = "Contactez un administrateur pour modifier votre abonnement Proton.";
+
+"%@ storage" = "%@ d'espace de stockage";
+
+"%@ storage / user" = "%@ d'espace de stockage par utilisateur";
+
+"for %@" = "pour %@";
+
+"Custom email addresses" = "Adresses e-mail personnalisées";
+
+"Priority customer support" = "Service client prioritaire";
+
+"Adblocker (NetShield)" = "Bloqueur de publicités (NetShield)";
+
+"Streaming service support" = "Prise en charge des services de streaming";
+
+"High speed" = "Vitesse élevée";
+
+"Highest speed" = "Vitesse maximale";
+
+"Multi-user support" = "Prise en charge du multi-utilisateur";
+
+"The basic for private and secure communications." = "Le point de départ des communications privées et sécurisées.";
+
+"Full-featured mailbox with advanced protection." = "Messagerie complète avec une protection avancée.";
+
+"Limited time offer" = "Offre à durée limitée";
+
+"Complete payment?" = "Finaliser le paiement ?";
+
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "L'achat d'un abonnement Proton Bundle a déjà été effectué. Appuyez sur Continuer pour finaliser le traitement du paiement et créer votre compte.";
+
+"Complete payment" = "Finaliser le paiement";
+
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "Le processus de configuration du compte n'a pas pu être finalisé en raison d'une erreur inattendue.\nNous vous invitons à réessayer.";
+
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Le processus d'achat dans l’application a commencé. Suivez les instructions d'Apple pour terminer ou annuler l'achat.";
+
+"One plan for all Proton services" = "Un seul abonnement pour tous les services Proton";
+
+"The no-cost starter account designed to empower everyone with privacy by default." = "Le compte de démarrage gratuit conçu pour que tout le monde puisse bénéficier du respect de la vie privée.";
+
+"The privacy-first email and calendar solution for your everyday communication needs." = "La messagerie et le calendrier qui privilégient la confidentialité et la vie privée, pour vos besoins quotidiens de communication.";
+
+"Your privacy and security are our priority." = "Votre vie privée et votre sécurité sont notre priorité.";
+
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "L'abonnement idéal pour le stockage avec 200 Go de stockage cloud permettant de garder vos fichiers privés.";
+
+"The ultimate privacy pack with access to all premium Proton services." = "L'ensemble des services premium de Proton : la solution ultime pour protéger sa vie privée.";
+
+"Only non-renewing annual subscriptions are available via this app" = "Seuls les abonnements annuels non renouvelables sont disponibles depuis cette application.";
+
+"Unlimited folders, labels, and filters" = "Nombre illimité de dossiers, de labels et de filtres";
+
+"Up to %@ storage" = "Jusqu'à %@ d'espace de stockage";
+
+"Free VPN on a single device" = "VPN gratuit sur un seul appareil";
+
+"Highest VPN speed" = "Vitesse VPN maximale";
+
+"Built-in ad-blocker (NetShield)" = "Bloqueur de publicités intégré (NetShield)";
+
+"Access to streaming services globally" = "Accédez aux services de streaming partout dans le monde";
+
+"Secure Core servers" = "Serveurs Secure Core";
+
+"TOR over VPN" = "Tor via VPN";
+
+"P2P/BitTorrent" = "P2P/BitTorrent";
+
+"Get %@" = "Obtenir %@";
+
+"Get Proton for free" = "Obtenir Proton gratuitement";
+
+"Extend subscription" = "Prolonger l'abonnement";
+
+"%@ of %@" = "%@ sur %@";
+
+"Connection issues" = "Problèmes de connexion";
+
+"Check your internet connection" = "Vérifiez votre connexion internet.";
+
+"Strict no-logs policy" = "Politique stricte de non-journalisation (no log)";
+
+"Plan successfully upgraded" = "Votre abonnement a été mis à niveau.";
+
+"Integrated 2FA authenticator" = "Authentification à deux facteurs (A2F) intégrée";
+
+"Priority support" = "Assistance prioritaire";
+
+"Unlimited devices" = "Nombre illimité d'appareils";
+
+"%@ email aliases" = "%@ alias d'adresse e-mail";
+
+"Unlimited email aliases" = "Nombre illimité d'alias";
+
+"Unlimited logins and notes" = "Nombre illimité de connexions et de notes";
+
+"Up to %@ forwarding mailboxes" = "Jusqu'à %@ messageries de transfert";
+
+"Custom fields" = "Champs personnalisés";
+
+"For next-level password management and identity protection." = "Passez au niveau supérieur pour gérer vos mots de passe et protéger votre identité.";
+
+"Pay monthly" = "Paiement mensuel";
+
+"Pay annually" = "Paiement annuel";
+
+"Pay every two years" = "Paiement tous les deux ans";
+
+"Free" = "Gratuit";

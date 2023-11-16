@@ -23,7 +23,7 @@
 import Foundation
 
 public struct Organization: Codable, Equatable, CustomDebugStringConvertible {
-    
+
     public var debugDescription: String {
         "maxDomains: \(maxDomains), maxAddresses: \(maxAddresses), maxSpace: \(maxSpace), maxMembers: \(maxMembers), maxVPN: \(maxVPN), maxCalendars: \(maxCalendars ?? 0), usedDomains: \(usedDomains), usedAddresses: \(usedAddresses), usedSpace: \(usedSpace), usedMembers: \(usedMembers), usedCalendars: \(usedCalendars)"
     }

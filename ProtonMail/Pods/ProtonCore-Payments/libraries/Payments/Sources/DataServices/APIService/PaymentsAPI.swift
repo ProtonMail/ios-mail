@@ -28,13 +28,13 @@ import ProtonCoreServices
 import ProtonCoreUtilities
 
 struct ResponseWrapper<T: Response> {
-    
+
     private let t: T
-    
+
     init(_ t: T) {
         self.t = t
     }
-    
+
     func throwIfError() throws -> T {
         guard let responseError = t.error else { return t }
         throw responseError
@@ -55,15 +55,15 @@ public class BaseApiRequest<T: Response>: Request {
     init(api: APIService) {
         self.api = api
     }
-    
+
     func response(responseObject: T) async throws -> T {
-        
+
         let (_, response): (URLSessionDataTask?, T) = await self.api.perform(
             request: self,
             response: responseObject,
             callCompletionBlockUsing: .asyncExecutor(dispatchQueue: awaitQueue)
         )
-        
+
         if let responseError = response.error {
             if responseError.isApiIsBlockedError {
                 throw StoreKitManagerErrors.apiMightBeBlocked(
@@ -77,22 +77,22 @@ public class BaseApiRequest<T: Response>: Request {
             return response
         }
     }
-    
+
     func awaitResponse(responseObject: T) throws -> T {
-        
+
         guard Thread.isMainThread == false else {
             assertionFailure("This is a blocking network request, should never be called from main thread")
             throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
         }
-        
+
         var result: Swift.Result<T, Error> = .failure(AwaitInternalError.shouldNeverHappen)
 
         let semaphore = DispatchSemaphore(value: 0)
-        
+
         awaitQueue.async {
             self.api.perform(request: self, response: responseObject,
                                     callCompletionBlockUsing: .asyncExecutor(dispatchQueue: awaitQueue)) { (_, response: T) in
-                
+
                 if let responseError = response.error {
                     if responseError.isApiIsBlockedError {
                         result = .failure(StoreKitManagerErrors.apiMightBeBlocked(message: responseError.localizedDescription,
@@ -106,9 +106,9 @@ public class BaseApiRequest<T: Response>: Request {
                 semaphore.signal()
             }
         }
-        
+
         _ = semaphore.wait(timeout: .distantFuture)
-        
+
         return try result.get()
     }
 
@@ -194,7 +194,7 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
     func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest {
         CreditRequest(api: api, amount: amount, paymentAction: paymentAction)
     }
-    
+
     func methodsRequest(api: APIService) -> MethodRequest {
         MethodRequest(api: api)
     }
@@ -216,22 +216,22 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
                                     protonPlanName: protonPlanName,
                                     isAuthenticated: isAuthenticated)
     }
-    
+
     func countriesCountRequest(api: APIService) -> CountriesCountRequest {
         CountriesCountRequest(api: api)
     }
 
     func getUser(api: APIService) throws -> User {
-        
+
         guard Thread.isMainThread == false else {
             assertionFailure("This is a blocking network request, should never be called from main thread")
             throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
         }
-        
+
         var result: Swift.Result<User, Error> = .failure(AwaitInternalError.shouldNeverHappen)
 
         let semaphore = DispatchSemaphore(value: 0)
-        
+
         awaitQueue.async {
             let authenticator = Authenticator(api: api)
             authenticator.getUserInfo { callResult in
@@ -247,7 +247,7 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
         }
 
         _ = semaphore.wait(timeout: .distantFuture)
-        
+
         return try result.get()
     }
 }

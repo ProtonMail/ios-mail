@@ -1,0 +1,16 @@
+
+"Delete account" = "حذف حساب کاربری";
+
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "این گزینه به طور دائم حساب کاربری شما و تمام داده‌های آن را حذف می‌کند. شما قادر به فعال‌سازی دوبارهٔ این حساب کاربری نخواهید بود.";
+
+"Account deleted.\nLogging out..." = "Account deleted.\nSigning out...";
+
+"Close" = "بستن";
+
+"OK" = "تایید";
+
+"A networking error has occured" = "خطایی در شبکه رخ داد";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked";
+
+"Troubleshoot" = "عیب یابی";

@@ -19,8 +19,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-// swiftlint:disable function_parameter_count
-
 import Foundation
 import ProtonCoreDoh
 import ProtonCoreLog
@@ -30,20 +28,20 @@ import ProtonCoreUtilities
 // MARK: - Handling human verification
 
 extension PMAPIService {
-    
+
     var hvSynchronizingQueue: DispatchQueue { .global(qos: .userInitiated) }
     var hvCompletionQueue: DispatchQueue { .main }
-    
+
     func humanVerificationHandler<T>(responseHandlerData: PMResponseHandlerData, completion: PMAPIService.APIResponseCompletion<T>, response: JSONDictionary) where T: APIDecodableResponse {
-        
+
         let customAuthCredential = responseHandlerData.customAuthCredential.map(AuthCredential.init(copying:))
-        
+
         // return completion if humanDelegate in not present
         guard self.humanDelegate != nil else {
             completion.call(task: responseHandlerData.task, error: self.getResponseError(task: responseHandlerData.task, response: response, error: nil) as NSError)
             return
         }
-        
+
         // human verification required
         if self.isHumanVerifyUIPresented.transform({ $0 }) {
             // wait until ongoing human verification is finished
@@ -82,7 +80,8 @@ extension PMAPIService {
                                             completion: completion)
         }
     }
-    
+
+    // swiftlint:disable:next function_body_length
     private func humanVerificationUIHandler<T>(method: HTTPMethod,
                                                path: String,
                                                parameters: Any?,
@@ -97,18 +96,18 @@ extension PMAPIService {
                                                response: JSONDictionary,
                                                onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                                                completion: APIResponseCompletion<T>) where T: APIDecodableResponse {
-        
+
         // process response to extract the human verification methods
         let responseDict = response.serialized
-        
+
         let (hvResponse, _) = Response.parseNetworkCallResults(
             responseObject: HumanVerificationResponse(), originalResponse: task?.response,
             responseDict: responseDict, error: nil
         )
         _ = hvResponse.ParseResponse(responseDict)
-        
+
         self.isHumanVerifyUIPresented.mutate { $0 = true }
-        
+
         // human verification required delegate
         hvSynchronizingQueue.async {
             self.hvDispatchGroup.enter()
@@ -119,7 +118,7 @@ extension PMAPIService {
                     currentURL = url.url
                 }
                 self.humanDelegate?.onHumanVerify(parameters: hvResponse.parameters, currentURL: currentURL) { finishReason in
-                    
+
                     switch finishReason {
                     case .close:
                         // finish request with existing completion block
@@ -128,7 +127,7 @@ extension PMAPIService {
                             self.isHumanVerifyUIPresented.mutate({ $0 = false })
                             self.hvDispatchGroup.leave()
                         }
-                        
+
                     case .closeWithError(let code, let description):
                         // finish request with existing completion block
                         var newResponse = response
@@ -139,22 +138,22 @@ extension PMAPIService {
                             self.isHumanVerifyUIPresented.mutate({ $0 = false })
                             self.hvDispatchGroup.leave()
                         }
-                        
+
                     case .verification(let header, let verificationCodeBlock):
                         verificationHandler(header: header, verificationCodeBlock: verificationCodeBlock)
                     }
                 }
             }
         }
-        
+
         func verificationHandler(header: HumanVerifyFinishReason.HumanVerifyHeader, verificationCodeBlock: SendVerificationCodeBlock?) {
             // human verification completion
-            
+
             // TODO: deduplicate
-            
+
             switch completion {
             case .left(let jsonCompletion):
-                
+
                 let hvCompletion: JSONCompletion = { task, jsonResult in
                     // check if error code is one of the HV codes
                     switch jsonResult {
@@ -197,11 +196,11 @@ extension PMAPIService {
                         }
                     }
                 }
-                
+
                 // merge headers
                 var newHeaders = headers ?? [:]
                 newHeaders.merge(header) { (_, new) in new }
-                
+
                 // retry request
                 self.startRequest(method: method,
                                   path: path,
@@ -215,9 +214,9 @@ extension PMAPIService {
                                   retryPolicy: retryPolicy,
                                   onDataTaskCreated: onDataTaskCreated,
                                   completion: Either<JSONCompletion, DecodableCompletion<T>>.left(hvCompletion))
-                
+
             case .right(let decodableCompletion):
-                
+
                 let hvCompletion: DecodableCompletion<T> = { task, decodableResult in
                     // check if error code is one of the HV codes
                     switch decodableResult {
@@ -246,11 +245,11 @@ extension PMAPIService {
                         }
                     }
                 }
-                
+
                 // merge headers
                 var newHeaders = headers ?? [:]
                 newHeaders.merge(header) { (_, new) in new }
-                
+
                 // retry request
                 self.startRequest(method: method,
                                   path: path,
@@ -264,11 +263,11 @@ extension PMAPIService {
                                   retryPolicy: retryPolicy,
                                   onDataTaskCreated: onDataTaskCreated,
                                   completion: Either<JSONCompletion, DecodableCompletion<T>>.right(hvCompletion))
-                
+
             }
         }
     }
-    
+
     private var invalidHVCodes: [Int] {
         // set of HV related codes which should be shown in HV UI
         return [APIErrorCode.invalidVerificationCode,

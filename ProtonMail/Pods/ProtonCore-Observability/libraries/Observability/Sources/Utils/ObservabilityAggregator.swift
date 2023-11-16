@@ -31,7 +31,7 @@ protocol ObservabilityAggregator {
 class ObservabilityAggregatorImpl: ObservabilityAggregator {
 
     var aggregatedEvents = Atomic<[AggregableObservabilityEvent]>([])
-    
+
     func aggregate<Labels: Encodable & Equatable>(event: ObservabilityEvent<PayloadWithLabels<Labels>>) {
         guard let index = aggregatedEvents.value.firstIndex(where: { $0.isSameAs(event: event) }) else {
             aggregatedEvents.mutate { events in
@@ -43,7 +43,7 @@ class ObservabilityAggregatorImpl: ObservabilityAggregator {
             events[index].increment()
         }
     }
-    
+
     func clear() {
         aggregatedEvents.mutate { events in
             events.removeAll()

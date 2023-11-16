@@ -29,7 +29,7 @@ extension Address: NSCoding {
         // For now keep the warning in favor of refactoring this method.
         return NSKeyedArchiver.archivedData(withRootObject: self)
     }
-    
+
     public static func unarchive(_ data: Data?) -> Address? {
         guard let data = data else { return nil }
         // Unarchive method that suppress this warning doesn't work when using old archive method (see above). Solution for this is to switch to
@@ -38,7 +38,7 @@ extension Address: NSCoding {
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "ProtonCoreDataModel.Address")
         return NSKeyedUnarchiver.unarchiveObject(with: data) as? Address
     }
-    
+
     // the keys all messed up but it works ( don't copy paste there looks really bad)
     fileprivate struct CoderKey {
         static let addressID    = "displayName"
@@ -49,15 +49,15 @@ extension Address: NSCoding {
         static let displayName = "signature"
         static let signature    = "usedSpace"
         static let keys         = "userKeys"
-        
+
         static let addressStatus = "addressStatus"
         static let addressType   = "addressType"
         static let addressSend   = "addressSendStatus"
-        
+
         static let domainID = "Address.DomainID"
         static let hasKeys  = "Address.HasKeys"
     }
-    
+
     public convenience init(coder aDecoder: NSCoder) {
         self.init(addressID: aDecoder.string(forKey: CoderKey.addressID) ?? "",
                   domainID: aDecoder.string(forKey: CoderKey.domainID) ?? "",
@@ -72,7 +72,7 @@ extension Address: NSCoding {
                   hasKeys: aDecoder.decodeInteger(forKey: CoderKey.hasKeys),
                   keys: aDecoder.decodeObject(forKey: CoderKey.keys) as? [Key] ?? [])
     }
-    
+
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(addressID, forKey: CoderKey.addressID)
         aCoder.encode(email, forKey: CoderKey.email)

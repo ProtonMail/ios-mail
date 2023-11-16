@@ -32,12 +32,12 @@ public struct Version {
 
     /// patch version
     public let patch: Int
-    
+
     public init(major: Int, minor: Int, patch: Int) {
         self.major = major
         self.minor = minor
         self.patch = patch
     }
-    
+
     static let `default` = Version.init(major: 0, minor: 0, patch: 0)
 }

@@ -1,0 +1,16 @@
+
+"Delete account" = "Hesabı sil";
+
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Bu işlem, hesabınızı ve tüm verilerini kalıcı olarak siler. Bu hesabı yeniden kullanıma alamazsınız.";
+
+"Account deleted.\nLogging out..." = "Hesap silindi.\nOturum kapatılıyor...";
+
+"Close" = "Kapat";
+
+"OK" = "Tamam";
+
+"A networking error has occured" = "Bir ağ sorunu çıktı";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton sunucularına erişilemiyor. Bu durum hatalı bir ağ yapılandırmasından, Proton sunucularının çalışmıyor olmasından ya da Proton sunucularına erişimin engelleniyor olmasından kaynaklanabilir";
+
+"Troubleshoot" = "Sorun gider";

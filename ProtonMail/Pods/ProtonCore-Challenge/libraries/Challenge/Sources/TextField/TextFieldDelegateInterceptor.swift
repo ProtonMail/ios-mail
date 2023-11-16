@@ -135,3 +135,5 @@ extension TextFieldDelegateInterceptor: UITextFieldDelegate {
     }
 }
 #endif
+
+// swiftlint:enable force_try

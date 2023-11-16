@@ -1,0 +1,28 @@
+
+"switch to" = "გადართვა";
+
+"Manage accounts" = "ანგარიშების მართვა";
+
+"Signed in to Proton Mail" = "შეხვედით Proton Mail-ში";
+
+"Signed out of Proton Mail" = "გამოხვედით Proton Mal-დან";
+
+"Sign out" = "გასვლა";
+
+"Remove account from this device" = "ამ მოწყობილობიდან ანგარიშის წაშლა";
+
+"Remove account" = "ანგარიშის წაშლა";
+
+"You will be signed out and all the data associated with this account will be removed from this device." = "ახლა გახვალთ და ამ ანგარიშთან ასოცირებული მონაცემები სამუდამოდ წაიშლება ამ მოწყობილობიდან.";
+
+"Remove" = "წაშლა";
+
+"Are you sure you want to sign out %@?" = "დარწმუნებული ბრძანდებით, რომ გნებავთ, გახვიდეთ %@-დან?";
+
+"Dismiss account switcher" = "ანგარიშის გადამრთველის მოცილება";
+
+"Sign in to another account" = "სხვა ანგარიშში შესვლა";
+
+"Cancel" = "გაუქმება";
+
+"Sign in" = "შესვლა";

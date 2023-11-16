@@ -47,7 +47,7 @@ extension ColorProviderBase {
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> UIColor {
         ProtonColorPaletteiOS.instance[keyPath: keypath].uiColor
     }
-    
+
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> CGColor {
         ProtonColorPaletteiOS.instance[keyPath: keypath].uiColor.cgColor
     }
@@ -59,14 +59,14 @@ extension ProtonColor {
             vpnFallbackRgb.map { UIColor(rgb: $0) } ?? color(name: name)
         }
     }
-    
+
     private func color(name: String) -> UIColor {
         UIColor(named: name, in: PMUIFoundations.bundle, compatibleWith: nil)!
     }
 }
 
 public extension UIColor {
-    
+
     internal var hsba: HSBA {
         var hue: CGFloat = 0
         var saturation: CGFloat = 0
@@ -75,12 +75,12 @@ public extension UIColor {
         getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
         return HSBA(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
     }
-    
+
     var computedStrongVariant: UIColor {
         let hsbaStrong = computeStrongVariant(from: hsba)
         return UIColor(hue: hsbaStrong.hue, saturation: hsbaStrong.saturation, brightness: hsbaStrong.brightness, alpha: hsbaStrong.alpha)
     }
-    
+
     var computedIntenseVariant: UIColor {
         let hsbaIntense = computeIntenseVariant(from: hsba)
         return UIColor(hue: hsbaIntense.hue, saturation: hsbaIntense.saturation, brightness: hsbaIntense.brightness, alpha: hsbaIntense.alpha)
@@ -88,12 +88,12 @@ public extension UIColor {
 }
 
 public extension CGColor {
-    
+
     var computedStrongVariant: CGColor {
         let uiColor = UIColor(cgColor: self)
         return uiColor.computedStrongVariant.cgColor
     }
-    
+
     var computedIntenseVariant: CGColor {
         let uiColor = UIColor(cgColor: self)
         return uiColor.computedIntenseVariant.cgColor
@@ -109,23 +109,23 @@ import ProtonCoreUtilities
 public struct AppearanceAwareColor {
 
     private let keypath: Either<KeyPath<ProtonColorPaletteiOS, ProtonColor>, KeyPath<ProtonColorPalettemacOS, ProtonColor>>
-    
+
     init(keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) {
         self.keypath = .left(keypath)
     }
-    
+
     init(keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) {
         self.keypath = .right(keypath)
     }
-    
+
     public func using(appearance: NSAppearance) -> NSColor {
         color(for: keypath, using: appearance)
     }
-    
+
     public func using(appearance: NSAppearance) -> CGColor {
         cgColor(for: keypath, using: appearance)
     }
-    
+
     #if canImport(SwiftUI)
     @available(macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     public func using(appearance: NSAppearance) -> Color {
@@ -183,11 +183,11 @@ private func fetchColor(keypath: Either<KeyPath<ProtonColorPaletteiOS, ProtonCol
 }
 
 extension ColorProviderBase {
-    
+
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) -> AppearanceAwareColor {
         AppearanceAwareColor(keypath: keypath)
     }
-    
+
     /// By default, the fetched color appearance matches NSApp.effectiveAppearance.
     /// Use .using(appearance: NSAppearance) to customize that.
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) -> NSColor {
@@ -197,7 +197,7 @@ extension ColorProviderBase {
             return color(for: .right(keypath), using: NSAppearance.current)
         }
     }
-    
+
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) -> CGColor {
         if #available(macOS 10.14, *) {
             return cgColor(for: .right(keypath), using: NSApp.effectiveAppearance)
@@ -213,14 +213,14 @@ extension ProtonColor {
             vpnFallbackRgb.map { NSColor(rgb: $0) } ?? color(name: name)
         }
     }
-    
+
     private func color(name: String) -> NSColor {
         NSColor(named: name, bundle: PMUIFoundations.bundle)!
     }
 }
 
 public extension NSColor {
-    
+
     private var hsba: HSBA? {
         var hue: CGFloat = 0
         var saturation: CGFloat = 0
@@ -230,7 +230,7 @@ public extension NSColor {
         srgbColor.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
         return HSBA(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
     }
-    
+
     var computedStrongVariant: NSColor {
         guard let hsba = hsba else {
             assertionFailure("This color cannot be interpreted in right color space. It breaks the assumptions related to variant computation")
@@ -239,7 +239,7 @@ public extension NSColor {
         let hsbaStrong = computeStrongVariant(from: hsba)
         return NSColor(colorSpace: .sRGB, hue: hsbaStrong.hue, saturation: hsbaStrong.saturation, brightness: hsbaStrong.brightness, alpha: hsbaStrong.alpha)
     }
-    
+
     var computedIntenseVariant: NSColor {
         guard let hsba = hsba else {
             assertionFailure("This color cannot be interpreted in right color space. It breaks the assumptions related to variant computation")
@@ -251,12 +251,12 @@ public extension NSColor {
 }
 
 public extension CGColor {
-    
+
     var computedStrongVariant: CGColor {
         let nsColor = NSColor(cgColor: self)
         return nsColor!.computedStrongVariant.cgColor
     }
-    
+
     var computedIntenseVariant: CGColor {
         let nsColor = NSColor(cgColor: self)
         return nsColor!.computedIntenseVariant.cgColor
@@ -270,21 +270,21 @@ import SwiftUI
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 extension ColorProviderBase {
-    
+
     #if canImport(UIKit)
-    
+
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> Color {
         ProtonColorPaletteiOS.instance[keyPath: keypath].color
     }
-    
+
     #endif
-    
+
     #if canImport(AppKit)
-    
+
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) -> Color {
         ProtonColorPalettemacOS.instance[keyPath: keypath].color
     }
-    
+
     #endif
 
 }

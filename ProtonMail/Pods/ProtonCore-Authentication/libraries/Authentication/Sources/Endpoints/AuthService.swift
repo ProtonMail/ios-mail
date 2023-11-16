@@ -34,7 +34,7 @@ public class AuthService: Client {
     public init(api: APIService) {
         self.apiService = api
     }
-    
+
     func ssoAuthentication(ssoResponseToken: SSOResponseToken, complete: @escaping(_ response: Result<AuthService.AuthRouteResponse, ResponseError>) -> Void) {
         let endpoint = SSOEndpoint(ssoResponseToken: ssoResponseToken)
         apiService.perform(request: endpoint) { (_, result: Result<AuthService.AuthRouteResponse, ResponseError>) in
@@ -48,10 +48,10 @@ public class AuthService: Client {
             }
         }
     }
-    
+
     public func info(username: String, intent: Intent?, complete: @escaping(_ response: Result<Either<AuthInfoResponse, SSOChallengeResponse>, ResponseError>) -> Void) {
         var endpoint: InfoEndpoint
-        
+
         if FeatureFactory.shared.isEnabled(.ssoSignIn), let intent = intent {
             switch intent {
             case .sso:
@@ -110,8 +110,7 @@ public class AuthService: Client {
             }
         }
     }
-    
-    // swiftlint:disable function_parameter_count
+
     func auth(username: String,
               ephemeral: Data,
               proof: Data,
@@ -119,13 +118,13 @@ public class AuthService: Client {
               challenge: ChallengeProperties?,
               complete: @escaping(_ response: Result<AuthService.AuthRouteResponse, ResponseError>) -> Void) {
         var route = AuthEndpoint(data: .left(.init(username: username, ephemeral: ephemeral, proof: proof, srpSession: srpSession, challenge: challenge)))
-        
+
         let service = self.apiService
         service.fetchAuthCredentials { result in
             switch result {
             case .found(let credential):
                 route.authCredential = credential
-                
+
                 // We are authenticating the user. If the current credentials are not for unauth session,
                 // this authentication is done in the session of already authenticated user.
                 // If this already authenticated user is the same as the one we authenticate now, we basically do re-login.

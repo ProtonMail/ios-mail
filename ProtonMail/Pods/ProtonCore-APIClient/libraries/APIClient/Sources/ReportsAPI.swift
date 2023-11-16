@@ -23,7 +23,7 @@ import Foundation
 import ProtonCoreNetworking
 
 public struct ReportBug {
-    
+
     public let os: String // iOS, MacOS
     public let osVersion: String
     public let client: String
@@ -37,7 +37,7 @@ public struct ReportBug {
     public var ISP: String
     public var plan: String
     public var files = [URL]() // Param names: File0, File1, File2...
-    
+
     public init(os: String, osVersion: String, client: String, clientVersion: String, clientType: Int, title: String, description: String, username: String, email: String, country: String, ISP: String, plan: String) {
         self.os = os
         self.osVersion = osVersion
@@ -52,7 +52,7 @@ public struct ReportBug {
         self.ISP = ISP
         self.plan = plan
     }
-    
+
     public var canBeSent: Bool {
         return !description.isEmpty && !email.isEmpty
     }
@@ -65,7 +65,7 @@ public struct ReportsBugsResponse: APIDecodableResponse {
 public final class ReportsBugs: Request {
 
     public let bug: ReportBug
-    
+
     public init( _ bug: ReportBug) {
         self.bug = bug
     }
@@ -94,7 +94,7 @@ public final class ReportsBugs: Request {
             "Plan": bug.plan
         ]
     }
-    
+
     var auth: AuthCredential?
     public var authCredential: AuthCredential? {
         return self.auth

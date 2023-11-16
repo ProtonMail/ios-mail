@@ -39,9 +39,9 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable {
     var customErrorPresenter: LoginErrorPresenter?
     var signupAccountType: SignupAccountType!
     var signupPasswordRestrictions: SignupPasswordRestrictions!
-    
+
     var onDohTroubleshooting: () -> Void = { }
-    
+
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     // MARK: Outlets
@@ -97,7 +97,7 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable {
         delegate?.passwordIsShown()
         ObservabilityEnv.report(.screenLoadCountTotal(screenName: .passwordCreation))
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         focusOnce(view: passwordTextField)

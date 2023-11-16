@@ -25,7 +25,7 @@ import ProtonCoreUtilities
 private class Handler {}
 
 public enum FUTranslation: TranslationsExposing {
-    
+
     public static var bundle: Bundle {
         #if SPM
         return Bundle.module
@@ -33,14 +33,14 @@ public enum FUTranslation: TranslationsExposing {
         return Bundle(path: Bundle(for: Handler.self).path(forResource: "Translations-ForceUpgrade", ofType: "bundle")!)!
         #endif
     }
-    
+
     public static var prefixForMissingValue: String = ""
-    
+
     case alert_title
     case alert_learn_more_button
     case alert_update_button
     case alert_quit_button
-    
+
     public var l10n: String {
         switch self {
         case .alert_title:

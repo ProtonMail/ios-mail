@@ -1,0 +1,28 @@
+
+"switch to" = "切り替え: ";
+
+"Manage accounts" = "アカウント管理";
+
+"Signed in to Proton Mail" = "Proton Mail にサインイン中";
+
+"Signed out of Proton Mail" = "Proton Mail からサインアウト済み";
+
+"Sign out" = "サインアウト";
+
+"Remove account from this device" = "この端末からアカウントを削除";
+
+"Remove account" = "アカウントを削除";
+
+"You will be signed out and all the data associated with this account will be removed from this device." = "サインアウトされこのアカウントに関連付けられているすべてのデータがこのデバイスから削除されます。";
+
+"Remove" = "削除";
+
+"Are you sure you want to sign out %@?" = "%@ からサインアウトしますか?";
+
+"Dismiss account switcher" = "アカウント変更を隠す";
+
+"Sign in to another account" = "ほかのアカウントでサインイン";
+
+"Cancel" = "キャンセル";
+
+"Sign in" = "サインイン";

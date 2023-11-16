@@ -25,7 +25,7 @@ import ProtonCoreUtilities
 private class Handler {}
 
 public enum ADTranslation: TranslationsExposing {
-    
+
     public static var bundle: Bundle {
         #if SPM
         return Bundle.module
@@ -33,9 +33,9 @@ public enum ADTranslation: TranslationsExposing {
         return Bundle(path: Bundle(for: Handler.self).path(forResource: "Translations-AccountDeletion", ofType: "bundle")!)!
         #endif
     }
-    
+
     public static var prefixForMissingValue: String = ""
-    
+
     case general_ok_action
     case delete_account_title
     case delete_account_button
@@ -46,7 +46,6 @@ public enum ADTranslation: TranslationsExposing {
     case api_might_be_blocked_button
     case api_might_be_blocked_message
 
-    
     public var l10n: String {
         switch self {
         case .delete_account_title:

@@ -31,9 +31,9 @@ import ProtonCoreFoundations
 
 final class WeaklyProxingScriptHandler<OtherHandler: WKScriptMessageHandler>: NSObject, WKScriptMessageHandler {
     private weak var otherHandler: OtherHandler?
-    
+
     init(_ otherHandler: OtherHandler) { self.otherHandler = otherHandler }
-    
+
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard let otherHandler = otherHandler else { return }
         otherHandler.userContentController(userContentController, didReceive: message)
@@ -50,11 +50,11 @@ class HumanVerifyViewModel {
     let apiService: APIService
     let clientApp: ClientApp
     let scriptName = "iOS"
-    
+
     var startToken: String?
     var methods: [VerifyMethod]?
     var onVerificationCodeBlock: ((@escaping SendVerificationCodeBlock) -> Void)?
-    
+
     // the order matters, methods below assume it's kept
     let schemeMapping = [("coreioss", "https"), ("coreios", "http")]
 
@@ -82,12 +82,12 @@ class HumanVerifyViewModel {
         PMLog.info("\(request)")
         return request
     }
-    
+
     func shouldRetryFailedLoading(host: String, error: Error, shouldReloadWebView: @escaping (Bool) -> Void) {
         let requestHeaders = apiService.dohInterface.getHumanVerificationV3Headers()
         apiService.dohInterface.handleErrorResolvingProxyDomainIfNeeded(host: host, requestHeaders: requestHeaders, sessionId: apiService.sessionUID, error: error, callCompletionBlockUsing: .asyncMainExecutor, completion: shouldReloadWebView)
     }
-    
+
     func setup(webViewConfiguration: WKWebViewConfiguration) {
         let requestInterceptor = AlternativeRoutingRequestInterceptor(
             headersGetter: apiService.dohInterface.getHumanVerificationV3Headers,
@@ -103,7 +103,7 @@ class HumanVerifyViewModel {
         }
         requestInterceptor.setup(webViewConfiguration: webViewConfiguration)
     }
-    
+
     func finalToken(method: VerifyMethod, token: String, complete: @escaping SendVerificationCodeBlock) {
         self.token = token
         self.tokenMethod = method
@@ -111,11 +111,11 @@ class HumanVerifyViewModel {
             complete(res, error, finish)
         })
     }
-    
+
     func getToken() -> TokenType {
         return TokenType(verifyMethod: tokenMethod, token: token)
     }
-    
+
     func interpretMessage(message: WKScriptMessage,
                           notificationMessage: ((NotificationType, String) -> Void)? = nil,
                           loadedMessage: (() -> Void)? = nil,
@@ -126,7 +126,7 @@ class HumanVerifyViewModel {
               let json = try? JSONSerialization.jsonObject(with: Data(string.utf8), options: []) as? [String: Any]
         else { return }
         guard let type = json["type"] as? String, let messageType = MessageType(rawValue: type) else { return }
-        
+
         processMessage(type: messageType,
                        json: json,
                        notificationMessage: notificationMessage,
@@ -134,8 +134,7 @@ class HumanVerifyViewModel {
                        errorHandler: errorHandler,
                        completeHandler: completeHandler)
     }
-    
-    // swiftlint:disable function_parameter_count
+
     private func processMessage(type: MessageType,
                                 json: [String: Any],
                                 notificationMessage: ((NotificationType, String) -> Void)?,
@@ -157,10 +156,10 @@ class HumanVerifyViewModel {
             }
             // messageSuccess is emitted by the Web core with validated verification code, then it's possible to send completeHandler to close HV UI
             completeHandler(method)
-            
+
         case .notification:
             guard let messageNotification: MessageNotification = decode(json: json),
-                  (messageNotification.payload.type == .success || messageNotification.payload.type == .error)
+                  messageNotification.payload.type == .success || messageNotification.payload.type == .error
             else { return }
             notificationMessage?(messageNotification.payload.type, messageNotification.payload.text)
         case .loaded:
@@ -177,16 +176,16 @@ class HumanVerifyViewModel {
             break
         }
     }
-    
+
     private func decode<T: Decodable>(json: [String: Any]) -> T? {
         guard let data = try? JSONSerialization.data(withJSONObject: json) else { return nil }
         return try? JSONDecoder().decode(T.self, from: data)
     }
-    
+
     private var getLocale: String {
         return Locale.current.identifier
     }
-    
+
     private var getCountry: String {
         return Locale.current.regionCode ?? ""
     }
@@ -195,12 +194,12 @@ class HumanVerifyViewModel {
 #if canImport(AppKit)
 import AppKit
 extension HumanVerifyViewModel {
-    
+
     public var isInDarkMode: Bool {
         guard #available(macOS 10.14, *) else { return false }
         return NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
     }
-    
+
     private var getTheme: Int {
         if #available(macOS 10.14, *) {
             if isInDarkMode {

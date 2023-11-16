@@ -25,7 +25,7 @@ import Foundation
 import ProtonCorePayments
 
 extension Plan {
-    
+
     /**
      Function name shortcuts:
      X = MaxSpace, converted from bytes to GB
@@ -41,90 +41,90 @@ extension Plan {
      S = AssignedSpace, converted from bytes to GB / MaxSpace on the /users API call
      T = UsedMembers
      **/
-    
+
     public var titleDescription: String {
         return title
     }
-    
+
     var storageformatter: StorageFormatter {
         return StorageFormatter()
     }
-    
+
     var XGBStorageDescription: String {
         String(format: PUITranslations.plan_details_storage.l10n,
                storageformatter.format(value: maxSpace))
     }
-    
+
     var XGBStoragePerUserDescription: String {
         return String(format: PUITranslations.plan_details_storage_per_user.l10n,
                       storageformatter.format(value: maxSpace))
     }
-    
+
     var YAddressesDescription: String {
         String(format: PUITranslations.plan_details_n_addresses.l10n, maxAddresses)
     }
-    
+
     var YAddressesPerUserDescription: String {
         String(format: PUITranslations.plan_details_n_addresses_per_user.l10n, maxAddresses)
     }
-    
+
     var ZCalendarsDescription: String? {
         guard let maxCalendars = maxCalendars else { return nil }
         return String(format: PUITranslations.plan_details_n_calendars.l10n, maxCalendars)
     }
-    
+
     var UConnectionsDescription: String {
         String(format: PUITranslations.plan_details_n_connections.l10n, maxVPN)
     }
-    
+
     var UVPNConnectionsDescription: String {
         String(format: PUITranslations.plan_details_n_vpn_connections.l10n, maxVPN)
     }
-    
+
     var UHighSpeedVPNConnectionsDescription: String {
         String(format: PUITranslations.plan_details_n_high_speed_connections.l10n, maxVPN)
     }
-    
+
     var VCustomDomainDescription: String {
         String(format: PUITranslations.plan_details_n_custom_domains.l10n, maxDomains)
     }
-    
+
     var WUsersDescription: String {
         String(format: PUITranslations.plan_details_n_users.l10n, maxMembers)
     }
-    
+
     var plusLabelsDescription: String {
         return String(format: PUITranslations.plan_details_n_folders.l10n, 200)
     }
-    
+
     var customEmailDescription: String {
         return PUITranslations.plan_details_custom_email.l10n
     }
-    
+
     var priorityCustomerSupportDescription: String {
         return PUITranslations.plan_details_priority_support.l10n
     }
-    
+
     var highSpeedDescription: String {
         PUITranslations.plan_details_high_speed.l10n
     }
-    
+
     var highestSpeedDescription: String {
         PUITranslations.plan_details_highest_speed.l10n
     }
-    
+
     var multiUserSupportDescription: String {
         PUITranslations.plan_details_multi_user_support.l10n
     }
-    
+
     var adblockerDescription: String {
         PUITranslations.plan_details_adblocker.l10n
     }
-    
+
     var streamingServiceDescription: String {
         PUITranslations.plan_details_streaming_service.l10n
     }
-    
+
     var cycleDescription: String? {
         guard let cycle = cycle, cycle > 0 else { return nil }
         let dateComponents = DateComponents(month: cycle)
@@ -137,7 +137,7 @@ extension Plan {
         guard let cycleString = cycleString else { return nil }
         return String(format: PUITranslations.plan_details_price_time_period_no_unit.l10n, cycleString)
     }
-    
+
     var upToXGBStorageDescription: String {
         String(format: PUITranslations._details_up_to_storage.l10n,
                       storageformatter.format(value: maxRewardsSpace ?? maxSpace))
@@ -146,57 +146,57 @@ extension Plan {
     var VCustomEmailDomainDescription: String {
         String(format: PUITranslations._details_n_custom_email_domains.l10n, maxDomains)
     }
-    
+
     var unlimitedFoldersLabelsFiltersDescription: String {
         PUITranslations._details_unlimited_folders_labels_filters.l10n
     }
-    
+
     var freeFoldersLabelsDescription: String {
         String(format: PUITranslations._details_n_folders_labels.l10n, 3)
     }
-    
+
     var VPNFreeDescription: String {
         PUITranslations._details_vpn_on_single_device.l10n
     }
-    
+
     var VPNUDevicesDescription: String {
         String(format: PUITranslations._details_vpn_on_n_devices.l10n, maxVPN)
     }
-    
+
     var VPNHighestSpeedDescription: String {
         PUITranslations._details_highest_VPN_speed.l10n
     }
-    
+
     func VPNServersDescription(countries: Int?) -> String {
         let countries = countries ?? 63
         return String(format: PUITranslations._details_vpn_servers.l10n, 1500, countries)
     }
-    
+
     func VPNFreeServersDescription(countries: Int?) -> String {
         let countries = countries ?? 3
         return String(format: PUITranslations._details_vpn_free_servers.l10n, 24, countries)
     }
-    
+
     var VPNFreeSpeedDescription: String {
         String(format: PUITranslations._details_vpn_free_speed_n_connections.l10n, maxVPN)
     }
-    
+
     var VPNNoLogsPolicy: String {
         PUITranslations._details_no_logs_policy.l10n
     }
-    
+
     var adBlockerDescription: String {
         PUITranslations._detailsblocker.l10n
     }
-    
+
     var accessStreamingServicesDescription: String {
         PUITranslations._details_access_streaming_services.l10n
     }
-    
+
     var secureCoreServersDescription: String {
         PUITranslations._details_secure_core_servers.l10n
     }
-    
+
     var torOverVPNDescription: String {
         PUITranslations._details_tor_over_vpn.l10n
     }
@@ -216,7 +216,7 @@ extension Plan {
         }
         return String(format: PUITranslations._details_n_of_m_users.l10n, usedMembers, maxMembers)
     }
-    
+
     func PYAddressesDescription(usedAddresses: Int?) -> String {
         guard let usedAddresses = usedAddresses, maxAddresses > 1 else {
             return YAddressesDescription
@@ -225,7 +225,7 @@ extension Plan {
         let usedAddr = usedAddresses > 0 ? usedAddresses : 1
         return String(format: PUITranslations._details_n_of_m_addresses.l10n, usedAddr, maxAddresses)
     }
-    
+
     func QZCalendarsDescription(usedCalendars: Int?) -> String? {
         let maxCalendars = maxCalendars ?? 0
         guard let usedCalendars = usedCalendars, maxCalendars > 1 else {
@@ -233,20 +233,20 @@ extension Plan {
         }
         return String(format: PUITranslations._details_n_of_m_calendars.l10n, usedCalendars, maxCalendars)
     }
-    
+
     var YAddressesPerUserDescriptionV5: String {
         return String(format: PUITranslations._details_n_addresses_per_user.l10n, maxMembers > 0 ? maxAddresses / maxMembers : maxAddresses)
     }
-    
+
     var ZCalendarsPerUserDescription: String {
         let maxCalendars = maxCalendars ?? 0
         return String(format: PUITranslations._details_n_calendars_per_user.l10n, maxCalendars)
     }
-    
+
     var UConnectionsPerUserDescription: String {
         String(format: PUITranslations._details_n_connections_per_user.l10n, maxMembers > 0 ? maxVPN / maxMembers : maxVPN)
     }
-    
+
     func vpnPaidCountriesDescription(countries: Int?) -> String {
         let countries = countries ?? 63
         return String(format: PUITranslations.plan_details_countries.l10n, countries)
@@ -273,9 +273,9 @@ extension Plan {
     }
 
     func forwardingMailboxesDescription(number: Int) -> String {
-        String(format: PUITranslations._plan_details_forwarding_mailboxes.l10n, "\(number)")
+        String(format: PUITranslations._plan_details_forwarding_mailboxes.l10n, number)
     }
-    
+
     var customFieldsDescription: String {
         PUITranslations._plan_details_custom_fields.l10n
     }
@@ -285,7 +285,7 @@ extension Plan {
     }
 
     func numberOfEmailAliasesDescription(number: Int) -> String {
-        String(format: PUITranslations._plan_details_email_aliases_number.l10n, "\(number)")
+        String(format: PUITranslations._plan_details_email_aliases_number.l10n, number)
     }
 
 }

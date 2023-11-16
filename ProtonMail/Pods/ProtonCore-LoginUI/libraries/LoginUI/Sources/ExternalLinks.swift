@@ -25,13 +25,13 @@ import Foundation
 import ProtonCoreDataModel
 
 final class ExternalLinks {
-    
+
     let clientApp: ClientApp
-    
+
     init(clientApp: ClientApp) {
         self.clientApp = clientApp
     }
- 
+
     var passwordReset: URL {
         switch clientApp {
         case .vpn:
@@ -40,7 +40,7 @@ final class ExternalLinks {
             return URL(string: "https://account.proton.me/reset-password")!
         }
     }
-    
+
     var accountSetup: URL {
         switch clientApp {
         case .vpn:
@@ -49,7 +49,7 @@ final class ExternalLinks {
             return URL(string: "https://account.proton.me/")!
         }
     }
-    
+
     var termsAndConditions: URL {
         switch clientApp {
         case .vpn:
@@ -58,7 +58,7 @@ final class ExternalLinks {
             return URL(string: "https://proton.me/legal/terms-ios")!
         }
     }
-    
+
     var support: URL {
         switch clientApp {
         case .vpn:
@@ -67,7 +67,7 @@ final class ExternalLinks {
             return URL(string: "https://proton.me/support/contact")!
         }
     }
-    
+
     var commonLoginProblems: URL {
         switch clientApp {
         case .vpn:
@@ -76,7 +76,7 @@ final class ExternalLinks {
             return URL(string: "https://proton.me/support/common-login-problems")!
         }
     }
-    
+
     var forgottenUsername: URL {
         switch clientApp {
         case .vpn:
@@ -85,7 +85,7 @@ final class ExternalLinks {
             return URL(string: "https://account.proton.me/forgot-username")!
         }
     }
-    
+
     var learnMoreAboutExternalAccountsNotSupported: URL {
         URL(string: "https://proton.me/support/external-accounts")!
     }

@@ -21,20 +21,20 @@
 //
 
 public struct DeviceVerificationDetails: Codable, Equatable {
-    
+
     let type: Int
     let payload: String
-    
+
     enum CodingKeys: String, CodingKey {
         case type = "challengeType"
         case payload = "challengePayload"
-        
+
         // we provide the uppercase variants for when we work with JSON dictionary and not with Codable objects
         var uppercased: String {
             "\(rawValue.prefix(1).uppercased())\(rawValue.dropFirst())"
         }
     }
-    
+
     var serialized: [String: Any] {
         var responseDict: [String: Any] = [:]
         responseDict[CodingKeys.type.uppercased] = type

@@ -1,0 +1,220 @@
+
+"Privacy by default" = "常にプライバシーを重視";
+
+"Proton address required" = "Proton アドレスが必要です";
+
+"Update required" = "アップデートが必要です。";
+
+"Please enter your Proton Account password." = "Proton アカウントのパスワードを入力してください。";
+
+"OK" = "OK";
+
+"Help" = "ヘルプ";
+
+"Continue" = "続行";
+
+"Password" = "パスワード";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton のサーバーに到達できません。原因として、誤ったネットワーク設定や Proton サーバーが稼働していない、あるいはブロックされているなどが考えられます";
+
+"Search country" = "国を検索";
+
+"Code sent to %@" = "コードを %@ に送信しました";
+
+"Request new code?" = "新しいコードをリクエスト?";
+
+"Resend" = "再送信";
+
+"Get a replacement code sent to %@." = "代わりのコードを %@ に送信しました。";
+
+"Request new code" = "新しいコードをリクエスト";
+
+"Enter your Proton Account details." = "Proton アカウントの詳細を入力してください。";
+
+"Email or username" = "メールアドレスまたはユーザー名";
+
+"Sign in" = "サインイン";
+
+"Sign in with password" = "パスワードでログイン";
+
+"Sign in with SSO" = "SSOでサインインする";
+
+"Sign in to your organization" = "組織にサインインする";
+
+"Create an account" = "アカウントを作成";
+
+"How can we help?" = "お困りですか?";
+
+"Forgot username" = "ユーザー名をお忘れですか？";
+
+"Forgot password" = "パスワードを忘れた";
+
+"Other sign-in issues" = "その他のサインインに関する問題";
+
+"Customer support" = "カスタマーサポート";
+
+"Still need help? Contact us directly." = "問題が解決しませんか? 直接お問い合わせる.";
+
+"Please enter your Proton Account email or username." = "Proton アカウントのメールアドレスまたはユーザー名を入力してください。";
+
+"Complete Setup" = "セットアップが完了しました";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "アカウントのキーが見つからないため、ウェブでサインインして必要なキーを自動生成してください。ウェブでサインインした後、アプリに戻ってサインインします。";
+
+"Account setup required" = "アカウントのセットアップが必要です";
+
+"Incorrect mailbox password" = "無効なメールボックスのパスワードです";
+
+"Your session has expired. Please log in again." = "セッションの有効期限が切れました。再度ログインしてください。";
+
+"Proton address required" = "Proton アドレスが必要です";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Proton Mail および Proton Calendar を使用するには Proton メールアドレスが必要です。\n%@ を使用してログインし、アカウントを回復することが可能です。";
+
+"Username" = "ユーザー名";
+
+"Please enter a username." = "名前を入力してください。";
+
+"Unlock your mailbox" = "メールボックスのロック解除";
+
+"Mailbox password" = "メールボックスのパスワード";
+
+"Unlock" = "ロック解除";
+
+"Forgot password" = "パスワードを忘れた";
+
+"Two-factor authentication" = "2 要素認証";
+
+"Authenticate" = "認証";
+
+"Two-factor code" = "2 要素認証コード";
+
+"Recovery code" = "回復用コード";
+
+"Use recovery code" = "回復用コードを使用";
+
+"Use two-factor code" = "2 要素認証コードを使用";
+
+"Enter the 6-digit code." = "6 桁のコードを入力します。";
+
+"Enter an 8-character recovery code." = "8 文字の回復コードを入力してください。";
+
+"Learn more" = "詳細";
+
+"Change your password" = "パスワードを変更";
+
+"Change password" = "パスワードの変更";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "組織のメンバーとして Proton アプリを使うと、初めにブラウザーから Proton にサインインしてパスワードを変更する必要があります。";
+
+"Error occured" = "エラーが発生しました";
+
+"Create your Proton Account" = "Proton アカウントを作成";
+
+"One account for all Proton services." = "1つのアカウントで全 Proton サービスを利用可能.";
+
+"Next" = "次へ";
+
+"Use your current email instead" = "代わりに現在のメールアドレスを使用";
+
+"Create a secure Proton Mail address instead" = "代わりに安全な Proton Mail アドレスを作成";
+
+"Email" = "メールアドレス";
+
+"Create your password" = "パスワードを作成";
+
+"Password must contain at least 8 characters" = "パスワードは 8 文字以上必要です";
+
+"Repeat password" = "パスワードを再度入力";
+
+"Domain" = "ドメイン";
+
+"Set recovery method" = "回復手段を設定";
+
+"Set recovery method (optional)" = "回復手段を設定 (任意)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "アカウントにアクセスできなくなった場合に、回復手順をメールまたは電話に送信します。";
+
+"Email" = "メールアドレス";
+
+"Phone" = "電話番号";
+
+"Recovery email" = "回復用メールアドレス";
+
+"Recovery phone number" = "回復用の電話番号";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "次へをクリックすると、Proton の利用規約に同意したことになります。";
+
+"Terms and Conditions" = "利用規約";
+
+"Skip" = "スキップ";
+
+"Skip recovery method?" = "回復手段の設定をスキップしますか?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "パスワードを忘れたり、アカウントにアクセスできなくなった場合に、回復手段を使ってアカウントにアクセスできるようにします。";
+
+"Set recovery method" = "回復手段を設定";
+
+"Your account is being created" = "アカウント作成中";
+
+"This should take no more than a minute." = "これにはそんなに時間はかかりません。";
+
+"Creating your account" = "アカウントの作成中";
+
+"Generating your address" = "アドレスを生成しています";
+
+"Securing your account" = "アカウントを安全にしています";
+
+"Verifying your payment" = "支払いを検証中";
+
+"Account verification" = "アカウント認証";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "セキュリティのため、入力したアドレスがあなたのアドレスであるか確認する必要があります。検証コードを %@ に送信しました。下記にコードを入力してください:";
+
+"Verification code" = "検証コード";
+
+"Enter the 6-digit code." = "6 桁のコードを入力します。";
+
+"Did not receive a code?" = "コードを受取っていませんか?";
+
+"Terms and Conditions" = "利用規約";
+
+"Invalid token request" = "無効なトークンリクエストです";
+
+"Invalid token error" = "無効なトークンです";
+
+"Create user failed" = "ユーザーの作成に失敗しました";
+
+"Invalid hashed password" = "無効なハッシュ化されたパスワードです";
+
+"Password can not be empty.\nPlease try again." = "パスワードを空にすることはできません。\n再度お試しください。";
+
+"Password must contain at least %@ characters." = "パスワードは %@ 文字以上必要です。";
+
+"Passwords do not match.\nPlease try again." = "パスワードが一致しません。\n再度お試しください。";
+
+"Email address already used." = "メールアドレスはすでに使用されています.";
+
+"Please ask your admin to configure your sub-user." = "管理者にサブユーザーの設定を依頼してください。";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "新しい検証コードを受け取るか、別のメールアドレスを使用しますか?";
+
+"Change email address" = "メールアドレスを変更";
+
+"Congratulations" = "おめでとう";
+
+"Your Proton Free account was successfully created." = "Proton Free アカウントは正常に作成されました。";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "支払いが承認され %@ アカウントが正常に作成されました。";
+
+"Your Proton account was successfully created." = "Proton アカウントは正常に作成されました。";
+
+"Enjoy the world of privacy." = "プライバシーの世界を楽しもう。";
+
+"Cancel" = "キャンセル";
+
+"Sign in" = "サインイン";
+
+"Troubleshoot" = "トラブルシューティング";

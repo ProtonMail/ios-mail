@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Alapértelmezett adatvédelem";
+
+"Proton address required" = "Proton e-mail cím szükséges";
+
+"Update required" = "Frissítés szükséges";
+
+"Please enter your Proton Account password." = "Adja meg a Proton fiókja jelszavát.";
+
+"OK" = "OK";
+
+"Help" = "Segítség";
+
+"Continue" = "Tovább";
+
+"Password" = "Jelszó";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "A Proton szerverek nem érhetők el. Ezt hibás hálózati beállítások is okozhatják. A Proton szerverei nem működnek vagy le vannak tiltva.";
+
+"Search country" = "Ország keresése";
+
+"Code sent to %@" = "Kód elküldve ide: %@";
+
+"Request new code?" = "Új kód kérése?";
+
+"Resend" = "Újraküldés";
+
+"Get a replacement code sent to %@." = "Cserekód küldése a %@ címre.";
+
+"Request new code" = "Új kód kérése";
+
+"Enter your Proton Account details." = "Írja be a Proton fiókja adatait.";
+
+"Email or username" = "E-mail cím vagy felhasználónév";
+
+"Sign in" = "Bejelentkezés";
+
+"Sign in with password" = "Bejelentkezés jelszó használatával";
+
+"Sign in with SSO" = "Bejelentkezés SSO használatával";
+
+"Sign in to your organization" = "Jelentkezzen be a szervezetébe";
+
+"Create an account" = "Fiók létrehozása";
+
+"How can we help?" = "Miben segíthetünk?";
+
+"Forgot username" = "Elfelejtett felhasználónév";
+
+"Forgot password" = "Elfelejtette a jelszavát";
+
+"Other sign-in issues" = "Egyéb bejelentkezési problémák";
+
+"Customer support" = "Vevőszolgálat";
+
+"Still need help? Contact us directly." = "További segítségre van szüksége? Lépjen velünk kapcsolatba.";
+
+"Please enter your Proton Account email or username." = "Adja meg a Proton fiókja email címét vagy a felhasználónevét.";
+
+"Complete Setup" = "Beállítás befejezése";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "A fiókjában kulcsok hiányoznak. Lépjen be a webböngészőből a kulcsok automatikus létrehozásához. A weben való bejelentkezés után térjen vissza az alkalmazásba és lépjen be.";
+
+"Account setup required" = "Fiók beállítás szükséges";
+
+"Incorrect mailbox password" = "Érvénytelen postafiók jelszó";
+
+"Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
+
+"Proton address required" = "Proton e-mail cím szükséges";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "A Proton Mail és a Proton Calendar használatához egy Proton e-mail cím szükséges.\nTovábbra is használhatja a(z) %@ címet bekeletkezéshez, vagy a fiók helyreállításához.";
+
+"Username" = "Felhasználónév";
+
+"Please enter a username." = "Adja meg a felhasználónevét.";
+
+"Unlock your mailbox" = "E-mail fiók feloldása";
+
+"Mailbox password" = "E-mail jelszó";
+
+"Unlock" = "Feloldás";
+
+"Forgot password" = "Elfelejtette a jelszavát";
+
+"Two-factor authentication" = "Kétlépcsős hitelesítés";
+
+"Authenticate" = "Azonosítás";
+
+"Two-factor code" = "Kétlépcsős kód";
+
+"Recovery code" = "Helyreállítási kód";
+
+"Use recovery code" = "Helyreállító kód használata";
+
+"Use two-factor code" = "Kétlépcsős kód használata";
+
+"Enter the 6-digit code." = "Írja be a hatjegyű kódot.";
+
+"Enter an 8-character recovery code." = "Írjon be egy 8 karakteres helyreállítási kódot.";
+
+"Learn more" = "További információk";
+
+"Change your password" = "Jelszó megváltoztatása";
+
+"Change password" = "Jelszó módosítása";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "A Proton alkalmazás szervezeti tagként való használatához, először be kell jelentkeznie a Protonba a web böngészőből és megváltoztatnia a jelszavát.";
+
+"Error occured" = "Hiba történt";
+
+"Create your Proton Account" = "Proton fiók létrehozása";
+
+"One account for all Proton services." = "Egy fiók minden Proton szolgáltatáshoz.";
+
+"Next" = "Következő";
+
+"Use your current email instead" = "Inkább a jelenlegi e-mail címem használata";
+
+"Create a secure Proton Mail address instead" = "Inkább egy biztonságos Proton Mail cím létrehozása";
+
+"Email" = "E-mail";
+
+"Create your password" = "Hozzon létre egy jelszót";
+
+"Password must contain at least 8 characters" = "A jelszónak legalább 8 karakterből kell állnia";
+
+"Repeat password" = "Jelszó ismét";
+
+"Domain" = "Domain név";
+
+"Set recovery method" = "Helyreállítási módszer hozzáadása";
+
+"Set recovery method (optional)" = "Helyreállítási módszer hozzáadása (opcionális)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Erre a címre vagy telefonszámra fogjuk elküldeni a helyreállításhoz szükséges tudnivalókat, ha kizáródna a fiókjából.";
+
+"Email" = "E-mail";
+
+"Phone" = "Telefonszám";
+
+"Recovery email" = "Helyreállító e-mail";
+
+"Recovery phone number" = "Helyreállítási telefonszám";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "A Tovább gombra kattintva elfogadja a Proton felhasználási feltételeit";
+
+"Terms and Conditions" = "Szerződési feltételeket";
+
+"Skip" = "Kihagyás";
+
+"Skip recovery method?" = "Helyreállítási módszer kihagyása?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A helyreállítási módszerekkel visszaszerezheti a fiókja elérést, a jelszava elvesztése esetén vagy ha kizáródna a fiókjából.";
+
+"Set recovery method" = "Helyreállítási módszer hozzáadása";
+
+"Your account is being created" = "Your account is being created";
+
+"This should take no more than a minute." = "Az egész várhatóan nem fog egy percnél több időt igénybe venni.";
+
+"Creating your account" = "Fiók létrehozása";
+
+"Generating your address" = "A cím létrehozása";
+
+"Securing your account" = "Fiók biztosítása";
+
+"Verifying your payment" = "Fizetés ellenőrzése";
+
+"Account verification" = "Fiók ellenőrzése";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Biztonságtechnikai okokból szükségünk van egy megerősítésre, hogy a beírt cím öné. Elküldtünk egy megerősítő kódot %@ címre. Írja be ide a kódot:";
+
+"Verification code" = "Ellenőrző kód";
+
+"Enter the 6-digit code." = "Írja be a hatjegyű kódot.";
+
+"Did not receive a code?" = "Nem kapta meg a kódot?";
+
+"Terms and Conditions" = "Szerződési feltételeket";
+
+"Invalid token request" = "Érvénytelen token kérés";
+
+"Invalid token error" = "Érvénytelen token azonosító";
+
+"Create user failed" = "Create user failed";
+
+"Invalid hashed password" = "Érvénytelen hash-elt jelszó";
+
+"Password can not be empty.\nPlease try again." = "A jelszó nem lehet üres.\nPróbálja meg újra.";
+
+"Password must contain at least %@ characters." = "A jelszónak legalább %@ karakterből kell állnia.";
+
+"Passwords do not match.\nPlease try again." = "A jelszavak nem egyeznek.\nPróbálja meg újra.";
+
+"Email address already used." = "Ez az e-mail cím már használatban van.";
+
+"Please ask your admin to configure your sub-user." = "Kérje meg az adminisztrátort az al-felhasználója beállításához.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Szerente egy új ellenőrző kódot kérni, vagy megpróbál egy másik e-mail címet?";
+
+"Change email address" = "E-mail cím módosítása";
+
+"Congratulations" = "Congratulations";
+
+"Your Proton Free account was successfully created." = "Az ingyenes Proton fiókja elkészült.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "A fizetése megerősítésre került és a %@ fiókja elkészült.";
+
+"Your Proton account was successfully created." = "A Proton fiókja sikeresen elkészült.";
+
+"Enjoy the world of privacy." = "Élvezze a magánélet világát.";
+
+"Cancel" = "Mégsem";
+
+"Sign in" = "Bejelentkezés";
+
+"Troubleshoot" = "Hibaelhárítás";

@@ -21,11 +21,11 @@
 //
 
 public struct HumanVerificationDetails: Codable, Equatable {
-    
+
     let token: String
     let title: String
     let methods: [String]
-    
+
     enum CodingKeys: String, CodingKey {
         // even though the server response JSON use uppercase keys, we specify the lowercase keys here
         // because we handle the uppercase keys globally by using the JSONDecoder
@@ -33,13 +33,13 @@ public struct HumanVerificationDetails: Codable, Equatable {
         case token = "humanVerificationToken"
         case title = "title"
         case methods = "humanVerificationMethods"
-        
+
         // we provide the uppercase variants for when we work with JSON dictionary and not with Codable objects
         var uppercased: String {
             "\(rawValue.prefix(1).uppercased())\(rawValue.dropFirst())"
         }
     }
-    
+
     var serialized: [String: Any] {
         var responseDict: [String: Any] = [:]
         responseDict[CodingKeys.token.uppercased] = token

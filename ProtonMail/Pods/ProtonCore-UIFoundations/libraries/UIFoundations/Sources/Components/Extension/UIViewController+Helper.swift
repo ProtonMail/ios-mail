@@ -57,7 +57,7 @@ public extension UIViewController {
         navigationItem.setLeftBarButton(backButton, animated: true)
         navigationItem.assignNavItemIndentifiers()
     }
-    
+
     func updateTitleAttributes() {
         let foregroundColor: UIColor = ColorProvider.TextNorm
         let textAttributes = [NSAttributedString.Key.foregroundColor: foregroundColor]
@@ -76,7 +76,7 @@ public extension UIViewController {
             }
             topViewController = top
         }
-        
+
         return topViewController
     }
 }

@@ -57,7 +57,7 @@ public protocol Request: Package {
     var authCredential: AuthCredential? { get }
     var authRetry: Bool { get }
     var retryPolicy: ProtonRetryPolicy.RetryMode { get }
-    
+
     /// initially using for sending the fingerprint
     var challengeProperties: ChallengeProperties? { get }
 }
@@ -86,7 +86,7 @@ extension Request {
     public var parameters: [String: Any]? {
         return nil
     }
-    
+
     public var nonDefaultTimeout: TimeInterval? {
         return nil
     }
@@ -94,11 +94,11 @@ extension Request {
     public var retryPolicy: ProtonRetryPolicy.RetryMode {
         return .userInitiated
     }
-    
+
     public var challengeProperties: ChallengeProperties? {
         return nil
     }
-    
+
     /// This function should be used in networking layer or when you are trying to get the full request parameters from endpoints.
     ///     this function will combine the challenges properties with parameter properties
     /// - Returns: [String: Any] dictionary
@@ -108,34 +108,34 @@ extension Request {
             // if the challengeProperty doesn't exist. it just return parameters. and the parameters are possibly nil
             return parameters
         }
-        
+
         // if a challengeProperty is found, then build up the payload, which shall be returned even if parameters is empty
         var payload: [String: Any] = [:]
         for (index, data) in challengeProperty.challenges.enumerated() {
             payload["\(challengeProperty.productPrefix)-ios-v4-challenge-\(index)"] = data
         }
-        
+
         // after built the payload. and check if the payload contains any challenges.
         //   If payload doesnt contain cchallenges. it just return parameters. and the parameters are possibly nil
         guard payload.count > 0 else {
             return parameters
         }
-        
+
         // check if parameters exist
         guard var parameters = parameters else {
             // if there are no parameters. it just return the "Payload"
             // if the payload has a key but the value is empty that is fine. we will still send the [key: nil] to the backend
             return ["Payload": payload]
         }
-        
+
         // when goes here. both parameters and payload must be not empty. insert Payload to parameters and return it.
         parameters["Payload"] = payload
-        
+
         return parameters
     }
-    
+
     public func test() {
-        
+
     }
 }
 
@@ -159,3 +159,5 @@ public extension RequestPerforming {
                             jsonCompletion: jsonCompletion)
     }
 }
+
+// swiftlint:enable identifier_name

@@ -35,7 +35,7 @@ import ProtonCoreTestingToolkitUnitTestsCore
 
 public class LoginMock: Login {
     public init() {}
-    
+
     @FuncStub(Login.processResponseToken) public var processResponseTokenStub
     public func processResponseToken(idpEmail: String, responseToken: SSOResponseToken, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         processResponseTokenStub(idpEmail, responseToken, completion)
@@ -44,29 +44,29 @@ public class LoginMock: Login {
     public func getSSORequest(challenge ssoChallengeResponse: SSOChallengeResponse) async -> (request: URLRequest?, error: String?) {
         fatalError("not implemented because it's async")
     }
-    
+
     @FuncStub(Login.isProtonPage, initialReturn: false) public var isProtonPageStub
     public func isProtonPage(url: URL?) -> Bool { isProtonPageStub(url) }
-    
+
     @PropertyStub(\LoginMock.currentlyChosenSignUpDomain, initialGet: .empty) public var currentlyChosenSignUpDomainStub
     public var currentlyChosenSignUpDomain: String {
         get { currentlyChosenSignUpDomainStub() }
         set { currentlyChosenSignUpDomainStub(newValue) }
     }
-    
+
     @PropertyStub(\LoginMock.allSignUpDomains, initialGet: .empty) public var allSignUpDomainsStub
     public var allSignUpDomains: [String] { allSignUpDomainsStub() }
-    
+
     @FuncStub(Login.checkAvailabilityForUsernameAccount) public var checkAvailabilityForUsernameAccountStub
     public func checkAvailabilityForUsernameAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
         checkAvailabilityForUsernameAccountStub(username, completion)
     }
-    
+
     @FuncStub(Login.checkAvailabilityForInternalAccount) public var checkAvailabilityForInternalAccountStub
     public func checkAvailabilityForInternalAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
         checkAvailabilityForInternalAccountStub(username, completion)
     }
-    
+
     @FuncStub(Login.checkAvailabilityForExternalAccount) public var checkAvailabilityForExternalAccountStub
     public func checkAvailabilityForExternalAccount(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
         checkAvailabilityForExternalAccountStub(email, completion)
@@ -111,7 +111,7 @@ public class LoginMock: Login {
     public func createAddressKeys(user: User, address: Address, mailboxPassword: String, completion: @escaping (Result<Key, CreateAddressKeysError>) -> Void) {
         createAddressKeysStub(user, address, mailboxPassword, completion)
     }
-    
+
     public var minimumAccountType: AccountType {
         return .username
     }
@@ -125,31 +125,31 @@ public class LoginMock: Login {
     public func updateAllAvailableDomains(type: AvailableDomainsType, result: @escaping ([String]?) -> Void) {
         updateAvailableDomainStub(type, result)
     }
-    
+
     @FuncStub(Login.refreshCredentials) public var refreshCredentialsStub
     public func refreshCredentials(completion: @escaping (Result<Credential, LoginError>) -> Void) {
         refreshCredentialsStub(completion)
     }
-    
+
     @FuncStub(Login.refreshUserInfo) public var refreshUserInfoStub
     public func refreshUserInfo(completion: @escaping (Result<User, LoginError>) -> Void) {
         refreshUserInfoStub(completion)
     }
-    
+
     @FuncStub(Login.availableUsernameForExternalAccountEmail) public var availableUsernameForExternalAccountEmailStub
     public func availableUsernameForExternalAccountEmail(email: String, completion: @escaping (String?) -> Void) {
         availableUsernameForExternalAccountEmailStub(email, completion)
     }
-    
+
     public var startGeneratingAddress: (() -> Void)?
-    
+
     public var startGeneratingKeys: (() -> Void)?
 }
 
 public class AnonymousServiceManager: APIServiceDelegate {
-    
+
     public init() {}
-    
+
     public var locale: String { return "en_US" }
     public var appVersion: String = "iOSMail_2.7.0"
     public var additionalHeaders: [String: String]?
@@ -159,7 +159,7 @@ public class AnonymousServiceManager: APIServiceDelegate {
     }
     public func isReachable() -> Bool { return true }
     public func onDohTroubleshot() {
-        // swiftlint:disable no_print
+        // swiftlint:disable:next no_print
         PMLog.info("\(#file): \(#function)")
     }
 }

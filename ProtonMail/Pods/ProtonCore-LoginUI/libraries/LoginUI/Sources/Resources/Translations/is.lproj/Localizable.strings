@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Privacy by default";
+
+"Proton address required" = "Proton address required";
+
+"Update required" = "Uppfærsla nauðsynleg";
+
+"Please enter your Proton Account password." = "Please enter your Proton Account password.";
+
+"OK" = "Í lagi";
+
+"Help" = "Hjálp";
+
+"Continue" = "Halda áfram";
+
+"Password" = "Lykilorð";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked";
+
+"Search country" = "Leita að landi";
+
+"Code sent to %@" = "Kóði var sendur á %@";
+
+"Request new code?" = "Biðja um nýjan kóða?";
+
+"Resend" = "Endursenda";
+
+"Get a replacement code sent to %@." = "Get a replacement code sent to %@.";
+
+"Request new code" = "Biðja um nýjan kóða";
+
+"Enter your Proton Account details." = "Sláðu inn þínum Proton reikningsupplýsingum.";
+
+"Email or username" = "Tölvupóstfang eða notandanafn";
+
+"Sign in" = "Skrá inn";
+
+"Sign in with password" = "Sign in with password";
+
+"Sign in with SSO" = "Sign in with SSO";
+
+"Sign in to your organization" = "Sign in to your organization";
+
+"Create an account" = "Stofna notandaaðgang";
+
+"How can we help?" = "Hvernig getum við aðstoðað?";
+
+"Forgot username" = "Gleymt notandanafn";
+
+"Forgot password" = "Gleymt lykilorð";
+
+"Other sign-in issues" = "Other sign-in issues";
+
+"Customer support" = "Aðstoð við viðskiptavini";
+
+"Still need help? Contact us directly." = "Still need help? Contact us directly.";
+
+"Please enter your Proton Account email or username." = "Please enter your Proton Account email or username.";
+
+"Complete Setup" = "Ljúka uppsetningu";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
+
+"Account setup required" = "Account setup required";
+
+"Incorrect mailbox password" = "Incorrect mailbox password";
+
+"Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
+
+"Proton address required" = "Proton address required";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account.";
+
+"Username" = "Notandanafn";
+
+"Please enter a username." = "Please enter a username.";
+
+"Unlock your mailbox" = "Aflæstu pósthólfinu þínu";
+
+"Mailbox password" = "Lykilorð á pósthólfi";
+
+"Unlock" = "Aflæsa";
+
+"Forgot password" = "Gleymt lykilorð";
+
+"Two-factor authentication" = "Tveggja-þátta auðkenning";
+
+"Authenticate" = "Auðkenna";
+
+"Two-factor code" = "Tveggja-þátta kóði";
+
+"Recovery code" = "Endurheimtukóði";
+
+"Use recovery code" = "Nota endurheimtukóða";
+
+"Use two-factor code" = "Nota tveggja-þátta kóða";
+
+"Enter the 6-digit code." = "Settu inn 6-stafa kóðann.";
+
+"Enter an 8-character recovery code." = "Enter an 8-character recovery code.";
+
+"Learn more" = "Kanna nánar";
+
+"Change your password" = "Breyta lykilorðinu þínu";
+
+"Change password" = "Breyta lykilorði";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser.";
+
+"Error occured" = "Villa kom upp";
+
+"Create your Proton Account" = "Búa til Proton-notandaaðgang fyrir þig";
+
+"One account for all Proton services." = "Einn aðgangur fyrir allar Proton-þjónustur.";
+
+"Next" = "Næsta";
+
+"Use your current email instead" = "Nota núverandi netfang þitt í staðinn";
+
+"Create a secure Proton Mail address instead" = "Búðu frekar til öruggt Proton Mail tölvupóstnetfang";
+
+"Email" = "Tölvupóstfang";
+
+"Create your password" = "Create your password";
+
+"Password must contain at least 8 characters" = "Lykilorð verður að innihalda að lágmarki 8 stafi";
+
+"Repeat password" = "Endurtaka lykilorð";
+
+"Domain" = "Lén";
+
+"Set recovery method" = "Stilltu endurheimtuaðferð";
+
+"Set recovery method (optional)" = "Stilltu endurheimtuaðferð (valfrjálst)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "We will send recovery instructions to this email or phone number if you get locked out of your account.";
+
+"Email" = "Tölvupóstfang";
+
+"Phone" = "Sími";
+
+"Recovery email" = "Endurheimtupóstur";
+
+"Recovery phone number" = "Endurheimtusímanúmer";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "By clicking Next, you agree with Proton's Terms and Conditions";
+
+"Terms and Conditions" = "Skilmálar og kvaðir";
+
+"Skip" = "Sleppa";
+
+"Skip recovery method?" = "Skip recovery method?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A recovery method will help you access your account in case you forget your password or get locked out of your account.";
+
+"Set recovery method" = "Stilltu endurheimtuaðferð";
+
+"Your account is being created" = "Your account is being created";
+
+"This should take no more than a minute." = "This should take no more than a minute.";
+
+"Creating your account" = "Bý til þinn reikning";
+
+"Generating your address" = "Generating your address";
+
+"Securing your account" = "Tryggi reikninginn þinn";
+
+"Verifying your payment" = "Staðfestir greiðsluna þína";
+
+"Account verification" = "Sannvottun notandaaðgangs";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
+
+"Verification code" = "Sannvottunarkóði";
+
+"Enter the 6-digit code." = "Settu inn 6-stafa kóðann.";
+
+"Did not receive a code?" = "Fékkstu ekki kóða?";
+
+"Terms and Conditions" = "Skilmálar og kvaðir";
+
+"Invalid token request" = "Invalid token request";
+
+"Invalid token error" = "Invalid token error";
+
+"Create user failed" = "Create user failed";
+
+"Invalid hashed password" = "Ógilt tætigildislykilorð";
+
+"Password can not be empty.\nPlease try again." = "Password can not be empty.\nPlease try again.";
+
+"Password must contain at least %@ characters." = "Lykilorð verður að innihalda að lágmarki %@ stafi.";
+
+"Passwords do not match.\nPlease try again." = "Passwords do not match.\nPlease try again.";
+
+"Email address already used." = "Email address already used.";
+
+"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
+
+"Change email address" = "Change email address";
+
+"Congratulations" = "Congratulations";
+
+"Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
+
+"Your Proton account was successfully created." = "Your Proton account was successfully created.";
+
+"Enjoy the world of privacy." = "Enjoy the world of privacy.";
+
+"Cancel" = "Hætta við";
+
+"Sign in" = "Skrá inn";
+
+"Troubleshoot" = "Leysa vandamál";

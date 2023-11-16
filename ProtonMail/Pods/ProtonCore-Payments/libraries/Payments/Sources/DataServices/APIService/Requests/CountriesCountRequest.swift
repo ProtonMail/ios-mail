@@ -29,7 +29,7 @@ public final class CountriesCountRequest: BaseApiRequest<CountriesCountResponse>
     override public init(api: APIService) {
         super.init(api: api)
     }
-    
+
     override public var path: String { "/vpn/countries/count" }
 
     override public var isAuth: Bool { false }

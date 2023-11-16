@@ -24,7 +24,7 @@ import Foundation
 import ProtonCoreDoh
 import TrustKit
 
-public enum TrustKitError: Error {
+@frozen public enum TrustKitError: Error {
     case failed
     case hardfailed
 }

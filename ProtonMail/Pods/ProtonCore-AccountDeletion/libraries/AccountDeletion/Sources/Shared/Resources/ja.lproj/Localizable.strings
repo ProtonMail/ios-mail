@@ -1,0 +1,16 @@
+
+"Delete account" = "アカウントを削除";
+
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "この操作により、アカウントとすべてのデータが完全に削除されます。削除後に、このアカウントを再度有効化することはできません。";
+
+"Account deleted.\nLogging out..." = "アカウントが削除されました。\nサインアウトしています...";
+
+"Close" = "閉じる";
+
+"OK" = "OK";
+
+"A networking error has occured" = "ネットワークエラーが発生しました";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton のサーバーに到達できません。原因として、誤ったネットワーク設定や Proton サーバーが稼働していない、あるいはブロックされているなどが考えられます";
+
+"Troubleshoot" = "トラブルシューティング";

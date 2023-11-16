@@ -27,7 +27,7 @@ import ProtonCoreDataModel
 
 @available(*, deprecated, renamed: "AddressKeySetupV2", message: "keep this until AddressKeySetupV2 is fully tested")
 final class AddressKeySetupV1 {
-    
+
     struct GeneratedAddressKeyV1 {
         let password: String
         let armoredKey: String
@@ -37,9 +37,9 @@ final class AddressKeySetupV1 {
         guard !salt.isEmpty else {
             throw KeySetupError.invalidSalt
         }
-        
+
         let hashedPassword = PasswordHash.hashPassword(password, salt: salt)
-        
+
         var error: NSError?
         let armoredKey = CryptoGo.HelperGenerateKey(keyName, email, hashedPassword.data(using: .utf8),
                                            PublicKeyAlgorithms.x25519.raw, 0, &error)
@@ -51,19 +51,19 @@ final class AddressKeySetupV1 {
 
     func setupCreateAddressKeyRoute(key: GeneratedAddressKeyV1, modulus: String, modulusId: String,
                                     addressId: String, isPrimary: Bool) throws -> AuthService.CreateAddressKeyEndpointV1 {
-        
+
         var error: NSError?
-        
+
         let keyData = CryptoGo.ArmorUnarmor(key.armoredKey, nil)!
-    
+
         guard let cryptoKey = CryptoGo.CryptoNewKey(keyData, &error) else {
             throw KeySetupError.keyReadFailed
         }
-        
+
         let fingerprint = cryptoKey.getFingerprint()
 
         let unlockedKey = try cryptoKey.unlock(key.password.data(using: .utf8))
-        
+
         guard let keyRing = CryptoGo.CryptoKeyRing(unlockedKey) else {
             throw KeySetupError.keyRingGenerationFailed
         }
@@ -79,7 +79,7 @@ final class AddressKeySetupV1 {
 
         let message = CryptoGo.CryptoNewPlainMessageFromString(jsonKeylist)
         let signature = try keyRing.signDetached(message)
-        
+
         let signed = signature.getArmored(&error)
         let signedKeyList: [String: Any] = [
             "Data": jsonKeylist,
@@ -88,5 +88,5 @@ final class AddressKeySetupV1 {
 
         return AuthService.CreateAddressKeyEndpointV1(addressID: addressId, privateKey: key.armoredKey,
                                                       signedKeyList: signedKeyList, isPrimary: isPrimary)
-    }    
+    }
 }

@@ -26,25 +26,25 @@ extension AuthService {
     public struct EndSessionResponse: APIDecodableResponse, Encodable, Equatable {
         let code: Int
     }
-    
+
     struct EndSessionEndpoint: Request {
 
         var path: String {
             "/auth/v4"
         }
-        
+
         var method: HTTPMethod {
             .delete
         }
-        
+
         var parameters: [String: Any]?
-      
+
         var isAuth: Bool {
             true
         }
-        
+
         var auth: AuthCredential?
-        
+
         var authCredential: AuthCredential? {
             auth
         }

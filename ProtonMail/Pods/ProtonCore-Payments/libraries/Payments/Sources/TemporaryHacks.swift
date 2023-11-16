@@ -34,7 +34,7 @@ public enum TemporaryHacks {
 public enum TemporaryHacks {
     // Can be used only for core example app internal tests
     public static let testCardForPayments: [String: String]? = nil
-    
+
     public static let simulateBackendPlanPurchaseFailure: Bool = false
 }
 

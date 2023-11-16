@@ -31,7 +31,7 @@ final class StorageProgressView: UIView, AccessibleCell {
     static let nib = UINib(nibName: "StorageProgressView", bundle: PaymentsUI.bundle)
 
     // MARK: - Outlets
-    
+
     @IBOutlet var mainView: UIView! {
         didSet {
             mainView.frame = bounds
@@ -52,7 +52,7 @@ final class StorageProgressView: UIView, AccessibleCell {
         }
     }
     var progressView: UIView?
-    
+
     // MARK: - Properties
 
     override init(frame: CGRect) {
@@ -80,7 +80,7 @@ final class StorageProgressView: UIView, AccessibleCell {
         self.progressView = progressView
         storageLabel.font = .adjustedFont(forTextStyle: .footnote, fontSize: 14)
     }
-    
+
     func configure(usedSpaceDescription: String, usedSpace: Int64, maxSpace: Int64) {
         storageLabel.text = usedSpaceDescription
         let factor = CGFloat(usedSpace) / CGFloat(maxSpace)
@@ -90,7 +90,7 @@ final class StorageProgressView: UIView, AccessibleCell {
         progressView?.widthAnchor.constraint(equalTo: backgroundProgressView.widthAnchor, multiplier: multiplier).isActive = true
         progressView?.backgroundColor = getColor(multiplier: multiplier)
     }
-    
+
     private func getColor(multiplier: CGFloat) -> UIColor {
         if multiplier <= 0.5 {
             return ColorProvider.NotificationSuccess

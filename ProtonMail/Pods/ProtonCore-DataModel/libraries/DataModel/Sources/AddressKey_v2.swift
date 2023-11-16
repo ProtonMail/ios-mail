@@ -38,7 +38,7 @@ public struct AddressKey_v2: Decodable, Equatable {
         case active = "Active"
         case flags = "Flags"
     }
-    
+
     public init(
         id: String,
         version: Int,
@@ -58,7 +58,7 @@ public struct AddressKey_v2: Decodable, Equatable {
         self.active = active
         self.flags = flags
     }
-    
+
     // MARK: - Decodable
 
     public init(from decoder: Decoder) throws {

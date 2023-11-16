@@ -28,7 +28,7 @@ import ProtonCoreUtilities
 // MARK: - Handling force upgrade
 
 extension PMAPIService {
-    
+
     func forceUpgradeHandler(errorMessage: String?) {
         if let delegate = forceUpgradeDelegate, isForceUpgradeUIPresented.transform({ $0 == false }) {
             isForceUpgradeUIPresented.mutate({ $0 = true })

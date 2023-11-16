@@ -23,14 +23,14 @@ import Foundation
 import ProtonCoreDoh
 
 final class ProductionDrive: DoH, VerificationModifiable {
-    
+
     let defaultHost: String = ProductionHosts.driveAPI.urlString
     let captchaHost: String = ProductionHosts.driveAPI.urlString
-    
+
     let accountHost: String = ProductionHosts.accountApp.urlString
     var _humanVerificationV3Host: String = ProductionHosts.verifyApp.urlString
     var humanVerificationV3Host: String { _humanVerificationV3Host }
-    
+
     let apiHost: String = ProductionHosts.driveAPI.dohHost
     let defaultPath: String = ""
     let signupDomain: String = "proton.me"

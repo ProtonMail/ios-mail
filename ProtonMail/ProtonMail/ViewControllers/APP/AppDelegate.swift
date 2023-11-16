@@ -27,7 +27,7 @@ import ProtonCoreCrypto
 import ProtonCoreCryptoGoImplementation
 import ProtonCoreDataModel
 import ProtonCoreDoh
-import ProtonCoreFeatureSwitch
+import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 import ProtonCoreLog
 import ProtonCoreNetworking
@@ -120,8 +120,6 @@ extension AppDelegate: UIApplicationDelegate {
             )
             LifetimeTracker.setup(onUpdate: lifetimeTrackerIntegration.refreshUI)
         }
-        
-        FeatureFactory.shared.enable(&.dynamicPlans)
 #endif
 
         SecureTemporaryFile.cleanUpResidualFiles()
@@ -141,6 +139,7 @@ extension AppDelegate: UIApplicationDelegate {
         configureCoreObservability()
         configureAnalytics()
         configureAppearance()
+        fetchUnauthFeatureFlags()
         DFSSetting.enableDFS = true
         DFSSetting.limitToXXXLarge = true
         self.configureLanguage()
@@ -368,6 +367,18 @@ extension AppDelegate {
                 userDefaults: dependencies.userDefaults
             )
         )
+    }
+
+    private func fetchUnauthFeatureFlags() {
+        FeatureFlagsRepository.shared.setApiService(
+            with: PMAPIService.unauthorized(
+                keyMaker: dependencies.keyMaker,
+                userDefaults: dependencies.userDefaults
+            )
+        )
+        Task {
+            try await FeatureFlagsRepository.shared.fetchFlags()
+        }
     }
 
     private func configureLanguage() {

@@ -36,7 +36,7 @@ public struct TroubleShootingViewModel {
     public init(doh: DohStatusProtocol) {
         self.doh = doh
     }
-    
+
     var dohStatus: DoHStatus {
         get {
             return doh.status
@@ -45,7 +45,7 @@ public struct TroubleShootingViewModel {
             doh.status = newValue
         }
     }
-    
+
     enum Item: Int {
         case allowSwitch = 0
         case noInternetNotes = 1
@@ -55,7 +55,7 @@ public struct TroubleShootingViewModel {
         case firewallNotes = 5
         case downtimeNotes = 6
         case otherNotes = 7
-        
+
         var top: String {
             switch self {
             case .allowSwitch:
@@ -76,7 +76,7 @@ public struct TroubleShootingViewModel {
                 return TSTranslation._no_solution.l10n
             }
         }
-        
+
         var attributedString: NSMutableAttributedString {
             let caption1 = UIFont.preferredFont(forTextStyle: .caption1)
             switch self {
@@ -87,53 +87,53 @@ public struct TroubleShootingViewModel {
                 let attributedString = full.buildAttributedString(font: caption1, color: ColorProvider.TextWeak)
                 attributedString.addHyperLink(subString: learnMore, link: ExternalLink.alternativeRouting)
                 return attributedString
-                
+
             case .noInternetNotes:
                 let full = TSTranslation._no_internet_connection_description.l10n
                 let attributedString = full.buildAttributedString(font: UIFont.preferredFont(forTextStyle: .caption1), color: ColorProvider.TextWeak)
                 return attributedString
-                
+
             case .ispNotes:
                 let holder = TSTranslation._isp_problem_description.l10n
                 let field1 = "ProtonVPN"
                 let field2 = "Tor"
                 let full = String.localizedStringWithFormat(holder, field1, field2)
-                
+
                 let attributedString = full.buildAttributedString(font: caption1, color: ColorProvider.TextWeak)
                 attributedString.addHyperLinks(hyperlinks: [field1: ExternalLink.protonvpn,
                                                             field2: ExternalLink.tor])
                 return attributedString
-                
+
             case .blockNotes:
                 let holder = TSTranslation._gov_block_description.l10n
                 let field1 = "ProtonVPN"
                 let field2 = "Tor"
                 let full = String.localizedStringWithFormat(holder, field1, field2)
-                
+
                 let attributedString = full.buildAttributedString(font: caption1, color: ColorProvider.TextWeak)
                 attributedString.addHyperLinks(hyperlinks: [field1: ExternalLink.protonvpn,
                                                             field2: ExternalLink.tor])
                 return attributedString
-                
+
             case .antivirusNotes:
                 let full = TSTranslation._antivirus_interference_description.l10n
                 let attributedString = full.buildAttributedString(font: caption1, color: ColorProvider.TextWeak)
                 return attributedString
-                
+
             case .firewallNotes:
                 let full = TSTranslation._firewall_interference_description.l10n
                 let attributedString = full.buildAttributedString(font: caption1, color: ColorProvider.TextWeak)
                 return attributedString
-                
+
             case .downtimeNotes:
                 let holder = TSTranslation._proton_is_down_description.l10n
                 let field1 = TSTranslation._proton_is_down_action_title.l10n
                 let full = String.localizedStringWithFormat(holder, field1)
-                
+
                 let attributedString = full.buildAttributedString(font: caption1, color: ColorProvider.TextWeak)
                 attributedString.addHyperLink(subString: field1, link: ExternalLink.protonStatus)
                 return attributedString
-                
+
             case .otherNotes:
                 let holder = TSTranslation._no_solution_description.l10n
                 let field1 = TSTranslation._troubleshooting_support_from.l10n
@@ -141,7 +141,7 @@ public struct TroubleShootingViewModel {
                 let field3 = TSTranslation._troubleshooting_twitter_title.l10n
                 let full = String.localizedStringWithFormat(holder, field1, field2, field3)
                 let attributedString = full.buildAttributedString(font: caption1, color: ColorProvider.TextWeak)
-                
+
                 attributedString.addHyperLinks(hyperlinks: [field1: ExternalLink.supprotForm,
                                                             field2: ExternalLink.protonSupportMailTo,
                                                             field3: ExternalLink.protonTwitter])
@@ -149,7 +149,7 @@ public struct TroubleShootingViewModel {
             }
         }
     }
-    
+
     let items: [Item] = [
         .allowSwitch,
         .noInternetNotes,
@@ -160,7 +160,7 @@ public struct TroubleShootingViewModel {
         .downtimeNotes,
         .otherNotes
     ]
-    
+
     let title = TSTranslation._troubleshooting_title.l10n
 }
 

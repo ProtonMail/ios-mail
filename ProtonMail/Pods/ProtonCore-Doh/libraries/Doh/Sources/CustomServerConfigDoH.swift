@@ -27,7 +27,7 @@ public final class CustomServerConfigDoH: DoH, ServerConfig {
     public let defaultHost: String
     public let apiHost: String
     public let defaultPath: String
-    
+
     public init(signupDomain: String,
                 captchaHost: String,
                 humanVerificationV3Host: String,
@@ -44,9 +44,9 @@ public final class CustomServerConfigDoH: DoH, ServerConfig {
         self.defaultPath = defaultPath
         super.init()
     }
-    
+
     static var `default`: CustomServerConfigDoH!
-    // swiftlint:disable function_parameter_count
+
     public static func build(signupDomain: String,
                              captchaHost: String,
                              humanVerificationV3Host: String,

@@ -33,7 +33,7 @@ extension ObservabilityEvent where Payload == PayloadWithLabels<SSOAuthWithToken
     public static func ssoAuthWithTokenTotalEvent(status: HTTPResponseCodeStatus) -> Self {
         .init(name: "ios_core_login_sso_auth_total", labels: .init(status: status))
     }
-    
+
     public static func ssoAuthWithTokenTotalEvent(error: ResponseError) -> Self {
         let name = "ios_core_login_sso_auth_total"
         if let httpCode = error.httpCode {
@@ -46,7 +46,7 @@ extension ObservabilityEvent where Payload == PayloadWithLabels<SSOAuthWithToken
                 break
             }
         }
-        
+
         return .init(name: name, labels: .init(status: .unknown))
     }
 }

@@ -49,7 +49,6 @@ class ValidationManager {
             return .failure(StoreKitManager.Errors.unavailableProduct)
         }
 
-        // TODO: test purchase process with PlansDataSource object
         switch dependencies.planService {
         case .left(let planService):
             guard planService.currentSubscription?.hasExistingProtonSubscription == false else {

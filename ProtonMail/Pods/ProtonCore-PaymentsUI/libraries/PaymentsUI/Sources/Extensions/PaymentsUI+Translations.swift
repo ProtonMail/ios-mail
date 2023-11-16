@@ -25,7 +25,7 @@ import ProtonCoreUtilities
 private class Handler {}
 
 public enum PUITranslations: TranslationsExposing {
-    
+
     public static var bundle: Bundle {
         #if SPM
         return Bundle.module
@@ -33,9 +33,9 @@ public enum PUITranslations: TranslationsExposing {
         return Bundle(path: Bundle(for: Handler.self).path(forResource: "Translations-PaymentsUI", ofType: "bundle")!)!
         #endif
     }
-    
+
     public static var prefixForMissingValue: String = ""
-    
+
     case _core_ok_button
     case _core_cancel_button
     case _payments_warning
@@ -128,7 +128,7 @@ public enum PUITranslations: TranslationsExposing {
     case _plan_details_forwarding_mailboxes
     case _plan_details_custom_fields
     case _plan_pass_description
-    
+
     public var l10n: String {
         switch self {
         case ._core_ok_button:
@@ -160,7 +160,7 @@ public enum PUITranslations: TranslationsExposing {
         case .plan_details_storage_per_user:
             return localized(key: "%@ storage / user", comment: "Plan details storage per user")
         case .plan_details_price_time_period_no_unit:
-            return localized(key: "for %@", comment: "Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months")
+            return localized(key: "for %@", comment: "Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months.  Shown as a standalone sentence fragment below the plan name.")
         case .plan_details_custom_email:
             return localized(key: "Custom email addresses", comment: "Plan details custom email addresses")
         case .plan_details_priority_support:
@@ -194,25 +194,25 @@ public enum PUITranslations: TranslationsExposing {
         case .iap_in_progress_banner:
             return localized(key: "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase.", comment: "IAP in progress banner message")
         case .plan_details_n_users:
-            return localized(key: "%d users", comment: "Plan details n users")
+            return localized(key: "<n> users", comment: "Plan details n users")
         case .plan_details_n_addresses:
-            return localized(key: "%d email addresses", comment: "Plan details n addresses")
+            return localized(key: "<n> email addresses", comment: "Plan details n addresses")
         case .plan_details_n_addresses_per_user:
-            return localized(key: "%d email addresses / user", comment: "Plan details n address per user")
+            return localized(key: "<n> email addresses / user", comment: "Plan details n address per user")
         case .plan_details_n_calendars:
-            return localized(key: "%d calendars", comment: "Plan details n calendar")
+            return localized(key: "<n> calendars", comment: "Plan details n calendar")
         case .plan_details_n_folders:
-            return localized(key: "%d folders / labels", comment: "Plan details n folders / labels")
+            return localized(key: "<n> folders / labels", comment: "Plan details n folders / labels")
         case .plan_details_countries:
-            return localized(key: "%d countries", comment: "Plan details n countries")
+            return localized(key: "<n> countries", comment: "Plan details n countries")
         case .plan_details_n_connections:
-            return localized(key: "%d connections", comment: "Plan details n connections")
+            return localized(key: "<n> connections", comment: "Plan details n connections")
         case .plan_details_n_vpn_connections:
-            return localized(key: "%d VPN connections", comment: "Plan details n VPN connections")
+            return localized(key: "<n> VPN connections", comment: "Plan details n VPN connections")
         case .plan_details_n_high_speed_connections:
-            return localized(key: "%d high-speed VPN connections", comment: "Plan details n high-speed connections")
+            return localized(key: "<n> high-speed VPN connections", comment: "Plan details n high-speed connections")
         case .plan_details_n_custom_domains:
-            return localized(key: "%d custom domains", comment: "Plan details n custom domains")
+            return localized(key: "<n> custom domains", comment: "Plan details n custom domains")
         case .plan_cycle_one_month:
             return localized(key: "Pay monthly", comment: "Selecting a one month recurring payment cycle")
         case .plan_cycle_one_year:
@@ -220,35 +220,35 @@ public enum PUITranslations: TranslationsExposing {
         case .plan_cycle_two_years:
             return localized(key: "Pay every two years", comment: "Selecting a two years recurring payment cycle")
         case .plan_cycle_x_months:
-            return localized(key: "Pay for %d months", comment: "Selecting a X months recurring payment cycle")
+            return localized(key: "Pay for <n> months", comment: "Selecting a X months recurring payment cycle")
         case ._details_n_custom_email_domains:
-            return localized(key: "Support for %d custom email domains", comment: "details n custom email domains")
+            return localized(key: "Support for <n> custom email domains", comment: "details n custom email domains")
         case ._details_n_folders_labels:
-            return localized(key: "%d folders and labels", comment: "Plan details n folders and labels")
+            return localized(key: "<n> folders and labels", comment: "Plan details n folders and labels")
         case ._details_n_calendars:
-            return localized(key: "%d calendars", comment: "Plan details n calendars")
+            return localized(key: "<n> calendars", comment: "Plan details n calendars")
         case ._details_vpn_on_n_devices:
-            return localized(key: "High-speed VPN on %d devices", comment: "Plan details VPN on n devices")
+            return localized(key: "High-speed VPN on <n> devices", comment: "Plan details VPN on n devices")
         case ._details_vpn_servers:
-            return localized(key: "%d+ servers in %d countries", comment: "Plan details n servers in m countries")
+            return localized(key: "<n>+ servers in <m> countries", comment: "Plan details n servers in m countries")
         case ._details_vpn_free_servers:
-            return localized(key: "%d servers in %d countries (US, NL, JP)", comment: "Plan details free n servers in m countries")
+            return localized(key: "<n> servers in <m> countries (US, NL, JP)", comment: "Plan details free n servers in m countries")
         case ._details_vpn_free_speed_n_connections:
-            return localized(key: "Medium VPN speed %d VPN connections", comment: "Plan details free speed n VPN connections")
+            return localized(key: "Medium VPN speed <n> VPN connections", comment: "Plan details free speed n VPN connections")
         case ._details_n_of_m_users:
-            return localized(key: "%d of %d users", comment: "Plan details n of m users")
+            return localized(key: "<n> of <m> users", comment: "Plan details n of m users")
         case ._details_n_of_m_addresses:
-            return localized(key: "%d of %d email addresses", comment: "Plan details n addresses")
+            return localized(key: "<n> of <m> email addresses", comment: "Plan details n addresses")
         case ._details_n_of_m_calendars:
-            return localized(key: "%d of %d calendars", comment: "Plan details n of m calendars")
+            return localized(key: "<n> of <m> calendars", comment: "Plan details n of m calendars")
         case ._details_n_addresses_per_user:
-            return localized(key: "%d addresses per user", comment: "Plan details n addresses per user")
+            return localized(key: "<n> addresses per user", comment: "Plan details n addresses per user")
         case ._details_n_calendars_per_user:
-            return localized(key: "%d calendars per user", comment: "Plan details n calendars per user")
+            return localized(key: "<n> calendars per user", comment: "Plan details n calendars per user")
         case ._details_n_connections_per_user:
-            return localized(key: "%d VPN connections per user", comment: "Plan details n connections per user")
+            return localized(key: "<n> VPN connections per user", comment: "Plan details n connections per user")
         case ._plan_details_n_vaults:
-            return localized(key: "%d vaults", comment: "Plan details n vaults")
+            return localized(key: "<n> vaults", comment: "Plan details n vaults")
         case ._select_plan_description:
             return localized(key: "One plan for all Proton services", comment: "Plan selection title")
         case ._plan_details_free_description:
@@ -288,7 +288,7 @@ public enum PUITranslations: TranslationsExposing {
         case ._extend_subscription_button:
             return localized(key: "Extend subscription", comment: "Extend subscription button")
         case ._details_used_storage_space:
-            return localized(key: "%@ of %@", comment: "Plan details used storage space")
+            return localized(key: "%1$@ of %2$@", comment: "Plan details used storage space")
         case ._connection_error_title:
             return localized(key: "Connection issues", comment: "Plan connection error title")
         case ._connection_error_description:
@@ -304,13 +304,13 @@ public enum PUITranslations: TranslationsExposing {
         case ._plan_details_devices_unlimited:
             return localized(key: "Unlimited devices", comment: "Plan details `Unlimited devices` message")
         case ._plan_details_email_aliases_number:
-            return localized(key: "%@ email aliases", comment: "Plan details number of email aliases message")
+            return localized(key: "<n> email aliases", comment: "Plan details number of email aliases message")
         case ._plan_details_email_aliases_unlimited:
             return localized(key: "Unlimited email aliases", comment: "Plan details `Unlimited email aliases` message")
         case ._plan_details_logins_and_notes_unlimited:
             return localized(key: "Unlimited logins and notes", comment: "Plan details `Unlimited logins and notes` message")
         case ._plan_details_forwarding_mailboxes:
-            return localized(key: "Up to %@ forwarding mailboxes", comment: "Plan details `Up to %@ forwarding mailboxes` message")
+            return localized(key: "Up to <n> forwarding mailboxes", comment: "Plan details `Up to <n> forwarding mailboxes` message")
         case ._plan_details_custom_fields:
             return localized(key: "Custom fields", comment: "Plan details `Custom fields` message")
         case ._plan_pass_description:

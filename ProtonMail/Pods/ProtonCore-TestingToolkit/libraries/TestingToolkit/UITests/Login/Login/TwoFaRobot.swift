@@ -31,21 +31,21 @@ private let twoFATitleLabel = "TwoFactorViewController.codeTextField.titleLabel"
 private let invalidCredentialStaticText = "Incorrect login credentials. Please try again"
 
 public final class TwoFaRobot: CoreElements {
-    
+
     public func fillTwoFACode(code: String) -> TwoFaRobot {
         textField(twoFAFieldId).tap().typeText(code)
         return self
     }
-    
+
     public func confirm2FA<T: CoreElements>(robot _: T.Type) -> T {
         button(authenticateButtonId).tap()
         return T()
     }
-    
+
     public let verify = Verify()
-    
+
     public final class Verify: CoreElements {
-        
+
         public func incorrectCredentialsErrorDialog() {
             textView(invalidCredentialStaticText).waitUntilExists().checkExists()
         }

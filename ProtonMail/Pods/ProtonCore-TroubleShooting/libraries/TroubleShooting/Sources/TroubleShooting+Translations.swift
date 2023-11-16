@@ -25,7 +25,7 @@ import ProtonCoreUtilities
 private class Handler {}
 
 public enum TSTranslation: TranslationsExposing {
-    
+
     public static var bundle: Bundle {
         #if SPM
         return Bundle.module
@@ -33,9 +33,9 @@ public enum TSTranslation: TranslationsExposing {
         return Bundle(path: Bundle(for: Handler.self).path(forResource: "Translations-TroubleShooting", ofType: "bundle")!)!
         #endif
     }
-    
+
     public static var prefixForMissingValue: String = ""
-    
+
     case _troubleshooting_support_from
     case _troubleshooting_email_title
     case _troubleshooting_twitter_title
@@ -61,7 +61,7 @@ public enum TSTranslation: TranslationsExposing {
     case _troubleshoot_support_subject
     case _troubleshoot_support_body
     case _general_back_action
-    
+
     public var l10n: String {
         switch self {
         case ._troubleshooting_support_from:
@@ -116,5 +116,5 @@ public enum TSTranslation: TranslationsExposing {
             return localized(key: "Back", comment: "top left back button")
         }
     }
-    
+
 }
