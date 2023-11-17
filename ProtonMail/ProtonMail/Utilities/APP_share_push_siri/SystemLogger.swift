@@ -20,7 +20,6 @@ import ProtonCoreLog
 
 final class SystemLogger {
     private static let shared = SystemLogger()
-    private(set) static var isLoggingEnabled: Bool = true
     private let serialQueue = DispatchQueue(label: "ch.protonmail.protonmail.SystemLogger")
 
     private var loggers = [String: Any]()
@@ -31,8 +30,6 @@ final class SystemLogger {
     // MARK: Private methods
 
     static private func log(message: String, category: Category?, isError: Bool, isDebug: Bool, caller: Caller) {
-        guard isLoggingEnabled else { return }
-
         // log the message in the unified logging system
         if #available(iOS 15, *) {
             let osLog = shared.osLog(for: category)
@@ -68,16 +65,6 @@ final class SystemLogger {
     }
 
     // MARK: Public methods
-
-    static func enableLogging() {
-        isLoggingEnabled = true
-    }
-
-    static func disableLogging() {
-        isLoggingEnabled = false
-        guard let logFile = PMLog.logFile else { return }
-        try? FileManager.default.removeItem(at: logFile)
-    }
 
     /// Logs a message into the unified logging system and the log file
     ///
