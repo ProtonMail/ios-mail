@@ -618,7 +618,7 @@ class MockLabelProviderProtocol: LabelProviderProtocol {
     }
 
     @FuncStub(MockLabelProviderProtocol.fetchV4Labels) var fetchV4LabelsStub
-    func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)?) {
+    func fetchV4Labels(completion: ((Swift.Result<Void, Error>) -> Void)?) {
         fetchV4LabelsStub(completion)
     }
 
