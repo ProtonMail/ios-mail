@@ -29,7 +29,7 @@ protocol CacheServiceProtocol {
     func addNewLabel(serverResponse: [String: Any], objectID: String?, completion: (() -> Void)?)
     func updateLabel(serverReponse: [String: Any], completion: (() -> Void)?)
     func deleteLabels(objectIDs: [NSManagedObjectID], completion: (() -> Void)?)
-    func updateContactDetail(serverResponse: [String: Any], completion: ((ContactEntity?, NSError?) -> Void)?)
+    func updateContactDetail(serverResponse: [String: Any]) throws -> ContactEntity
     func parseMessagesResponse(
         labelID: LabelID,
         isUnread: Bool,
@@ -648,22 +648,14 @@ extension CacheService {
         }
     }
 
-    func updateContactDetail(serverResponse: [String: Any], completion: ((ContactEntity?, NSError?) -> Void)?) {
-        coreDataService.performOnRootSavingContext { context in
-            do {
-                if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: serverResponse, in: context) as? Contact {
-                    contact.isDownloaded = true
-                    _ = contact.fixName(force: true)
-                    if let error = context.saveUpstreamIfNeeded() {
-                        completion?(nil, error)
-                    } else {
-                        completion?(ContactEntity(contact: contact), nil)
-                    }
-                } else {
-                    completion?(nil, NSError.unableToParseResponse(serverResponse))
-                }
-            } catch {
-                completion?(nil, error as NSError)
+    func updateContactDetail(serverResponse: [String: Any]) throws -> ContactEntity {
+        try coreDataService.write { context in
+            if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: serverResponse, in: context) as? Contact {
+                contact.isDownloaded = true
+                _ = contact.fixName(force: true)
+                return ContactEntity(contact: contact)
+            } else {
+                throw NSError.unableToParseResponse(serverResponse)
             }
         }
     }

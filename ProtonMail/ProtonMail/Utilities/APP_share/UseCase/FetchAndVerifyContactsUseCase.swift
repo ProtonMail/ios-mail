@@ -44,7 +44,7 @@ final class FetchAndVerifyContacts: FetchAndVerifyContactsUseCase {
     override func executionBlock(params: Parameters, callback: @escaping Callback) {
         let emails = dependencies.contactProvider.getEmailsByAddress(params.emailAddresses)
         let emailsMissingSendingPreferences = emails.filter { !$0.isContactDownloaded && $0.hasSendingPreferences }
-        fetchContactDetailsAndUpdateCache(for: emailsMissingSendingPreferences) { [weak self] _ in
+        fetchContactDetailsAndUpdateCache(for: emailsMissingSendingPreferences) { [weak self] in
             let preContacts = self?.verifiedContacts(for: emails) ?? []
             callback(.success(preContacts))
         }
@@ -74,42 +74,29 @@ extension FetchAndVerifyContacts {
 
     /// For all given emails it makes a request to fetch the contact details. If the request is successful it updates
     /// the local storage. Returns an array of ContactEntities corresponding to the array of EmailEntities passed.
-    private func fetchContactDetailsAndUpdateCache(
-        for emails: [EmailEntity],
-        callback: @escaping ([ContactEntity]) -> Void
-    ) {
-        let serialQueue = DispatchQueue(label: "com.protonmail.FetchAndVerifyContacts")
+    private func fetchContactDetailsAndUpdateCache(for emails: [EmailEntity], callback: @escaping () -> Void) {
         let uniqueContactIds = Array(Set(emails.map(\.contactID.rawValue)))
         let group = DispatchGroup()
-        var contactEntities = [ContactEntity]()
 
         guard !emails.isEmpty else {
-            callback([])
+            callback()
             return
         }
 
         uniqueContactIds.forEach { [weak self] contactId in
             guard let self = self else { return }
             group.enter()
-            self.fetchAndUpdate(contactId: contactId) { result in
-                serialQueue.sync {
-                    switch result {
-                    case .success(let contactEntity):
-                        contactEntities.append(contactEntity)
-                    case .failure:
-                        break
-                    }
-                }
+            self.fetchAndUpdate(contactId: contactId) {
                 group.leave()
             }
         }
         group.notify(queue: executionQueue) {
-            callback(contactEntities)
+            callback()
         }
     }
 
     /// Makes a request to fetch the contact details. If the request is successful it updates the local cache
-    private func fetchAndUpdate(contactId: String, callback: @escaping (Result<ContactEntity, NSError>) -> Void) {
+    private func fetchAndUpdate(contactId: String, callback: @escaping () -> Void) {
         let request = ContactDetailRequest(cid: contactId)
         dependencies
             .apiService
@@ -117,17 +104,15 @@ extension FetchAndVerifyContacts {
                 guard let self = self else { return }
                 switch self.mapResponseToResult(response) {
                 case .success(let contactDictionary):
-                    self.updateContact(response: contactDictionary) { result in
-                        switch result {
-                        case .success(let contactEntity):
-                            callback(.success(contactEntity))
-                        case .failure(let error):
-                            callback(.failure(error))
-                        }
+                    do {
+                        try self.updateContact(response: contactDictionary)
+                    } catch {
+                        SystemLogger.log(error: error, category: .contacts)
                     }
                 case .failure(let error):
-                    callback(.failure(error))
+                    SystemLogger.log(error: error, category: .contacts)
                 }
+                callback()
             }
     }
 
@@ -141,16 +126,8 @@ extension FetchAndVerifyContacts {
         }
     }
 
-    private func updateContact(response: [String: Any], callback: @escaping (Result<ContactEntity, NSError>) -> Void) {
-        dependencies.cacheService.updateContactDetail(serverResponse: response) { contact, error in
-            if let contact = contact {
-                callback(.success(contact))
-            } else if let error = error {
-                callback(.failure(error))
-            } else {
-                fatalError("updateContactDetail result inconsistent state")
-            }
-        }
+    private func updateContact(response: [String: Any]) throws {
+        _ = try dependencies.cacheService.updateContactDetail(serverResponse: response)
     }
 }
 

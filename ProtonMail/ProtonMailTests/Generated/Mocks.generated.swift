@@ -160,9 +160,9 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
         deleteLabelsStub(objectIDs, completion)
     }
 
-    @FuncStub(MockCacheServiceProtocol.updateContactDetail) var updateContactDetailStub
-    func updateContactDetail(serverResponse: [String: Any], completion: ((ContactEntity?, NSError?) -> Void)?) {
-        updateContactDetailStub(serverResponse, completion)
+    @ThrowingFuncStub(MockCacheServiceProtocol.updateContactDetail, initialReturn: .crash) var updateContactDetailStub
+    func updateContactDetail(serverResponse: [String: Any]) throws -> ContactEntity {
+        try updateContactDetailStub(serverResponse)
     }
 
     @ThrowingFuncStub(MockCacheServiceProtocol.parseMessagesResponse) var parseMessagesResponseStub
