@@ -33,13 +33,11 @@ import ProtonCoreKeymaker
 /// Stores information related to the user
 class UserDataService {
     private let apiService: APIService
-    private let coreKeyMaker: KeyMakerProtocol
     private let userDataServiceQueue = DispatchQueue.init(label: "UserDataServiceQueue", qos: .utility)
 
     // MARK: - methods
-    init(apiService: APIService, coreKeyMaker: KeyMakerProtocol) {
+    init(apiService: APIService) {
         self.apiService = apiService
-        self.coreKeyMaker = coreKeyMaker
     }
 
     func fetchUserInfo(auth: AuthCredential? = nil) async -> (UserInfo?, MailSettings) {
@@ -148,11 +146,6 @@ class UserDataService {
                        displayName: String,
                        signature: String,
                        completion: @escaping (NSError?) -> Void) {
-        guard let _ = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(NSError.lockError())
-            return
-        }
-
         let new_displayName = displayName.trim()
         let new_signature = signature.trim()
         let api = UpdateAddressRequest(id: addressId, displayName: new_displayName, signature: new_signature, authCredential: authCredential)
@@ -175,11 +168,6 @@ class UserDataService {
         setting: UpdateImageAutoloadSetting.Setting,
         completion: @escaping (NSError?) -> Void
     ) {
-        guard coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
-            completion(NSError.lockError())
-            return
-        }
-
         let api = UpdateImageAutoloadSetting(imageType: imageType, setting: setting, authCredential: currentAuth)
         self.apiService.perform(request: api, response: VoidResponse()) { _, response in
             if response.error == nil {
@@ -195,11 +183,6 @@ class UserDataService {
         action: UpdateImageProxy.Action,
         completion: @escaping (NSError?) -> Void
     ) {
-        guard coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
-            completion(NSError.lockError())
-            return
-        }
-
         // currently Image Incorporator is not yet supported by any Proton product
         let flag: ProtonCoreDataModel.ImageProxy = .imageProxy
 
@@ -224,11 +207,6 @@ class UserDataService {
                             delaySeconds: Int,
                             completion: @escaping (Error?) -> Void) {
         let userInfo = userInfo
-        guard let _ = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(NSError.lockError())
-            return
-        }
-
         let request = UpdateDelaySecondsRequest(delaySeconds: delaySeconds)
         self.apiService.perform(request: request, response: Response()) { _, response in
             if response.error == nil {
@@ -244,10 +222,6 @@ class UserDataService {
                                 _ status: LinkOpeningMode, completion: @escaping (NSError?) -> Void) {
         let authCredential = currentAuth
         let userInfo = user
-        guard let _ = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(NSError.lockError())
-            return
-        }
         let api = UpdateLinkConfirmation(status: status, authCredential: authCredential)
         self.apiService.perform(request: api, response: VoidResponse()) { _, response in
             if response.error == nil {
@@ -369,10 +343,6 @@ class UserDataService {
             if let addr = userInfo.userAddresses.defaultAddress() {
                 _username = addr.email
             }
-        }
-        guard coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
-            completion(NSError.lockError())
-            return
         }
 
         userDataServiceQueue.async {
@@ -537,11 +507,6 @@ class UserDataService {
         let authCredential = currentAuth
         let userInfo = user
 
-        guard let _ = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(NSError.lockError())
-            return
-        }
-
         let addressOrder = UpdateAddressOrder(adds: newOrder, authCredential: authCredential)
         self.apiService.perform(request: addressOrder, response: VoidResponse()) { _, response in
             if response.error == nil {
@@ -563,11 +528,6 @@ class UserDataService {
             if let addr = userInfo.userAddresses.defaultAddress() {
                 _username = addr.email
             }
-        }
-
-        guard let _ = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(NSError.lockError())
-            return
         }
 
         {// asyn
@@ -640,10 +600,6 @@ class UserDataService {
         let oldAuthCredential = currentAuth
         let userInfo = user
 
-        guard let _ = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(NSError.lockError())
-            return
-        }
         let notifySetting = UpdateNotify(notify: isOn ? 1 : 0, authCredential: oldAuthCredential)
         self.apiService.perform(request: notifySetting, response: VoidResponse()) { _, response in
             if response.error == nil {
@@ -655,11 +611,6 @@ class UserDataService {
 
     func updateSignature(auth currentAuth: AuthCredential,
                          _ signature: String, completion: @escaping (NSError?) -> Void) {
-        guard let _ = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(NSError.lockError())
-            return
-        }
-
         let signatureSetting = UpdateSignature(signature: signature, authCredential: currentAuth)
         self.apiService.perform(request: signatureSetting, response: VoidResponse()) { _, response in
             completion(response.error?.toNSError)
