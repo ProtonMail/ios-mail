@@ -39,7 +39,7 @@ enum LabelFetchType: Int {
 protocol LabelProviderProtocol: AnyObject {
     func makePublisher() -> LabelPublisherProtocol
     func getCustomFolders() -> [LabelEntity]
-    func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)?)
+    func fetchV4Labels(completion: (@Sendable (Swift.Result<Void, Error>) -> Void)?)
 }
 
 extension LabelsDataService {
@@ -121,20 +121,8 @@ class LabelsDataService {
     }
 
     @available(*, deprecated, message: "Prefer the async variant")
-    func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)? = nil) {
-        Task {
-            let result: Swift.Result<Void, NSError>
-            do {
-                try await fetchV4Labels()
-                result = .success(())
-            } catch {
-                result = .failure(error as NSError)
-            }
-
-            DispatchQueue.main.async {
-                completion?(result)
-            }
-        }
+    func fetchV4Labels(completion: (@Sendable (Swift.Result<Void, Error>) -> Void)? = nil) {
+        ConcurrencyUtils.runWithCompletion(block: fetchV4Labels, completion: completion)
     }
 
     /// Get label and folder through v4 api

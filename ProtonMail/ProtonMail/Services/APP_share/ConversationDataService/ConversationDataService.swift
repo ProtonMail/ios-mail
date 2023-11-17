@@ -37,7 +37,7 @@ protocol ConversationProvider: AnyObject {
                             before timestamp: Int,
                             unreadOnly: Bool,
                             shouldReset: Bool,
-                            completion: ((Result<Void, Error>) -> Void)?)
+                            completion: (@Sendable (Result<Void, Error>) -> Void)?)
     // MARK: - Single item fetching
     func fetchConversation(with conversationID: ConversationID,
                            includeBodyOf messageID: MessageID?,
