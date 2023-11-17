@@ -1083,7 +1083,8 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     private func setupNavigationTitle(showSelected: Bool) {
         if showSelected {
             let count = self.viewModel.selectedIDs.count
-            self.setNavigationTitleText("\(count) " + LocalString._selected_navogationTitle)
+            let title = String(format: LocalString._selected_navogationTitle, count)
+            self.setNavigationTitleText(title)
         } else {
             self.setNavigationTitleText(viewModel.localizedNavigationTitle)
         }
