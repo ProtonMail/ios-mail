@@ -91,9 +91,9 @@ final class KeysResponse: Response {
         return true
     }
 
-    var allPublicKeys: [ArmoredKey] {
+    var nonObsoletePublicKeys: [ArmoredKey] {
         keys
-            .filter { $0.flags.contains(.encryptionEnabled) }
+            .filter { $0.flags.contains(.notObsolete) }
             .compactMap { $0.publicKey }
             .map { ArmoredKey(value: $0)}
     }

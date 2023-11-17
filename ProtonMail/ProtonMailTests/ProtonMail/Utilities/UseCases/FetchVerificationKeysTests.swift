@@ -47,7 +47,7 @@ class FetchVerificationKeysTests: XCTestCase {
 
         let validKeyPair = try MailCrypto.generateRandomKeyPair()
         validKey = Key(keyID: "good", privateKey: validKeyPair.privateKey)
-        validKey.flags.insert(.verificationEnabled)
+        validKey.flags.insert(.notCompromised)
 
         let invalidKeyPair = try MailCrypto.generateRandomKeyPair()
         invalidKey = Key(keyID: "bad", privateKey: invalidKeyPair.privateKey)
@@ -158,8 +158,8 @@ class FetchVerificationKeysTests: XCTestCase {
 
         let keysResponse = KeysResponse()
         keysResponse.keys = [
-            KeyResponse(flags: [.verificationEnabled], publicKey: malformedKey.base64EncodedString()),
-            KeyResponse(flags: [.verificationEnabled], publicKey: validKey.publicKey)
+            KeyResponse(flags: [.notCompromised], publicKey: malformedKey.base64EncodedString()),
+            KeyResponse(flags: [.notCompromised], publicKey: validKey.publicKey)
         ]
         mockFetchEmailAddressesPublicKey.result = .success([contactEmail: KeysResponse()])
 

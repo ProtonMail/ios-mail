@@ -58,7 +58,7 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
 
     private func nonCompromisedUserAddressKeys(belongingTo address: Address) -> [ArmoredKey] {
         address.keys
-            .filter { $0.flags.contains(.verificationEnabled) }
+            .filter { $0.flags.contains(.notCompromised) }
             .map { ArmoredKey(value: $0.publicKey) }
     }
 
@@ -106,8 +106,8 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
         let pinnedKeys = contact.pgpKeys
         let apiKeys = keysResponse.keys
 
-        let bannedFingerprints = apiKeys
-            .filter { !$0.flags.contains(.verificationEnabled) }
+        let compromisedKeyFingerprints = apiKeys
+            .filter { !$0.flags.contains(.notCompromised) }
             .compactMap { $0.publicKey?.fingerprint }
 
         let validKeys: [ArmoredKey] = pinnedKeys
@@ -121,7 +121,7 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
                 }
 
                 let pinnedKeyFingerprint = pinnedCryptoKey.getFingerprint()
-                return !bannedFingerprints.contains(pinnedKeyFingerprint)
+                return !compromisedKeyFingerprints.contains(pinnedKeyFingerprint)
             }
             .compactMap { UnArmoredKey(value: $0) }
             .compactMap { try? $0.armor() }
