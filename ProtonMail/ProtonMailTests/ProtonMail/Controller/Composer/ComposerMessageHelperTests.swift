@@ -34,7 +34,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     override func setUp() {
         super.setUp()
         contextProviderMock = MockCoreDataContextProvider()
-        fakeUser = UserManager(api: APIServiceMock())
+        fakeUser = UserManager(api: APIServiceMock(), globalContainer: TestContainer())
         messageDataServiceMock = MockMessageDataService()
         testMessage = createTestMessage()
         cacheServiceMock = .init()

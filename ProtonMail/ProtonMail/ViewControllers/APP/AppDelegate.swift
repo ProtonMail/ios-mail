@@ -362,21 +362,15 @@ extension AppDelegate {
     }
 
     private func configureCoreObservability() {
-        ObservabilityEnv.current.setupWorld(
-            requestPerformer: PMAPIService.unauthorized(
-                keyMaker: dependencies.keyMaker,
-                userDefaults: dependencies.userDefaults
-            )
-        )
+        ObservabilityEnv.current.setupWorld(requestPerformer: PMAPIService.unauthorized(dependencies: dependencies))
     }
 
     private func fetchUnauthFeatureFlags() {
-        FeatureFlagsRepository.shared.setApiService(
-            with: PMAPIService.unauthorized(
-                keyMaker: dependencies.keyMaker,
-                userDefaults: dependencies.userDefaults
-            )
-        )
+        FeatureFlagsRepository.shared.setApiService(with: PMAPIService.unauthorized(dependencies: dependencies))
+
+        // TODO: This is a wayward fetch that will complete at an arbitrary point in time during app launch,
+        // possibly resulting in an inconsistent behavior.
+        // Consider placing it in LaunchService once it's ready.
         Task {
             try await FeatureFlagsRepository.shared.fetchFlags()
         }

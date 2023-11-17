@@ -23,6 +23,8 @@ protocol PinCodeSetupRouterProtocol {
 }
 
 final class PinCodeSetupRouter: PinCodeSetupRouterProtocol {
+    typealias Dependencies = PinCodeSetupViewModel.Dependencies
+
     enum PinCodeSetUpStep {
         case enterNewPinCode, repeatPinCode, confirmBeforeChanging, confirmBeforeDisabling
     }
@@ -30,7 +32,7 @@ final class PinCodeSetupRouter: PinCodeSetupRouterProtocol {
     private weak var navigationController: UINavigationController?
     private let dependencies: PinCodeSetupViewModel.Dependencies
 
-    init(navigationController: UINavigationController, dependencies: PinCodeSetupViewModel.Dependencies) {
+    init(navigationController: UINavigationController, dependencies: Dependencies) {
         self.navigationController = navigationController
         self.dependencies = dependencies
     }

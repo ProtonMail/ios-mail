@@ -57,7 +57,7 @@ extension GlobalContainer {
 
     var imageProxyCacheFactory: Factory<ImageProxyCacheProtocol> {
         self {
-            ImageProxyCache(coreKeyMaker: self.keyMaker)
+            ImageProxyCache(dependencies: self)
         }
     }
 
@@ -92,7 +92,7 @@ extension GlobalContainer {
 
     var senderImageCacheFactory: Factory<SenderImageCache> {
         self {
-            SenderImageCache(coreKeyMaker: self.keyMaker)
+            SenderImageCache(dependencies: self)
         }
     }
 
