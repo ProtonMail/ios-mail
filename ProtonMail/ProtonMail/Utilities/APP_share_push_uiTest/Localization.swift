@@ -985,7 +985,7 @@ class LocalizedString {
 
     lazy var _unread_action = NSLocalizedString("unread", comment: "The unread title of unread action button in mailbox view")
 
-    lazy var _selected_navogationTitle = NSLocalizedString("Selected", comment: "The title of navigation bar title of mailbox view while selecting the message")
+    lazy var _selected_navogationTitle = NSLocalizedString("%d selected", comment: "The title of navigation bar of mailbox view when selecting messages, singular and plural possible")
 
     lazy var _mailblox_last_update_time_more_than_1_hour = NSLocalizedString("Updated >1 hour ago", comment: "The title of last update status of more than 1 hour")
     lazy var _mailblox_last_update_time_just_now = NSLocalizedString("Updated just now", comment: "The title of last update status of updated just now")
