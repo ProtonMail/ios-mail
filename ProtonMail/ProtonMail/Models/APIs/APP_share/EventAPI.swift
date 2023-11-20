@@ -75,8 +75,11 @@ struct RefreshStatus: OptionSet {
 
 final class EventCheckResponse: Response {
     var eventID: String = ""
-    var refresh: RefreshStatus = .ok
+    var refresh: Int = 0
     var more: Int = 0
+    var refreshStatus: RefreshStatus {
+        .init(rawValue: self.refresh)
+    }
 
     var messages: [[String: Any]]?
     var contacts: [[String: Any]]?
@@ -110,7 +113,7 @@ final class EventCheckResponse: Response {
 
     override func ParseResponse(_ response: [String: Any]) -> Bool {
         self.eventID = response["EventID"] as? String ?? ""
-        self.refresh = RefreshStatus(rawValue: response["Refresh"] as? Int ?? 0)
+        self.refresh = response["Refresh"] as? Int ?? 0
         self.more    = response["More"] as? Int ?? 0
 
         self.messages      = response["Messages"] as? [[String: Any]]

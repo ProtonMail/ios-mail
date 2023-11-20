@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,30 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreDataModel
+import ProtonCoreEventsLoop
 
-extension UserInfo {
-    // Highlight body without encrypted search will give a wrong impression to user that we can search body without ES
-    static var isBodySearchKeywordHighlightEnabled: Bool {
-        false
+final class EmptyCoreLoop: CoreLoop {
+    var delegate: CoreLoopDelegate?
+    
+    var loopID: String = .empty
+
+    var latestEventID: String?
+
+    typealias Response = EventCheckResponse
+
+    func poll(sinceLatestEventID eventID: String, completion: @escaping (Result<EventCheckResponse, Error>) -> Void) {
+        fatalError("Should not be used")
     }
 
-    static var enableSelectAll: Bool {
-        ProcessInfo.isRunningUnitTests
+    func process(response: EventCheckResponse, completion: @escaping (Result<Void, Error>) -> Void) {
+        fatalError("Should not be used")
     }
 
-    static var isAppAccessResolverEnabled: Bool {
-        false // UIApplication.isDebugOrEnterprise
-    }
-
-    static var isNewEventsLoopEnabled: Bool {
-        #if DEBUG
-        if ProcessInfo.isRunningUnitTests {
-            return true
-        }
-        return false
-        #else
-        return false
-        #endif
+    func onError(error: ProtonCoreEventsLoop.EventsLoopError) {
+        fatalError("Should not be used")
     }
 }

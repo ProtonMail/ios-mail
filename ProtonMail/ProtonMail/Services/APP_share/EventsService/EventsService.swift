@@ -78,8 +78,6 @@ final class EventsService: EventsFetching {
     & HasNotificationCenter
     & HasUserDefaults
 
-    private static let defaultPollingInterval: TimeInterval = 30
-
     // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
     private let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
 
@@ -99,7 +97,7 @@ final class EventsService: EventsFetching {
         stop()
         status = .started
         resume()
-        timer = Timer.scheduledTimer(withTimeInterval: Self.defaultPollingInterval, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: Constants.App.eventsPollingInterval, repeats: true) { [weak self] _ in
             self?.timerDidFire()
         }
     }
@@ -178,12 +176,12 @@ extension EventsService {
                     return
                 }
 
-                if eventsRes.refresh.contains(.all) {
+                if eventsRes.refreshStatus.contains(.all) {
                     self.cleanCacheAndRefetchData(userManager: userManager, labelID: labelID, completion: completion)
                     return
                 }
 
-                if eventsRes.refresh.contains(.contacts) {
+                if eventsRes.refreshStatus.contains(.contacts) {
                     userManager.contactService.cleanUp()
                     // Although this flag is triggered when all of contacts are deleted
                     // But if user create a new contact right after deletion

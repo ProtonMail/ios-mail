@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Factory
+import ProtonCoreEventsLoop
 import ProtonCoreKeymaker
 
 class GlobalContainer: ManagedContainer {
@@ -99,6 +100,17 @@ class GlobalContainer: ManagedContainer {
     var launchServiceFactory: Factory<LaunchService> {
         self {
             Launch(dependencies: self)
+		}
+	}
+
+    var mailEventsPeriodicSchedulerFactory: Factory<MailEventsPeriodicScheduler> {
+        self {
+            MailEventsPeriodicScheduler(
+                refillPeriod: Constants.App.eventsPollingInterval,
+                currentDate: Date(),
+                coreLoopFactory: AnyCoreLoopFactory(EmptyCoreLoopFactory()),
+                specialLoopFactory: AnySpecialLoopFactory(MailEventsSpecialLoopFactory(dependencies: self))
+            )
         }
     }
 
