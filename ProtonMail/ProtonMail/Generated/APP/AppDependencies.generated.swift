@@ -66,19 +66,19 @@ extension UserContainer: HasCleanCache {
     }
 }
 
-protocol HasDarkModeCacheProtocol {
-    var darkModeCache: DarkModeCacheProtocol { get }
+protocol HasDeviceContactsProvider {
+    var deviceContacts: DeviceContactsProvider { get }
 }
 
-extension GlobalContainer: HasDarkModeCacheProtocol {
-    var darkModeCache: DarkModeCacheProtocol {
-        darkModeCacheFactory()
+extension GlobalContainer: HasDeviceContactsProvider {
+    var deviceContacts: DeviceContactsProvider {
+        deviceContactsFactory()
     }
 }
 
-extension UserContainer: HasDarkModeCacheProtocol {
-    var darkModeCache: DarkModeCacheProtocol {
-        globalContainer.darkModeCache
+extension UserContainer: HasDeviceContactsProvider {
+    var deviceContacts: DeviceContactsProvider {
+        globalContainer.deviceContacts
     }
 }
 
@@ -191,22 +191,6 @@ extension GlobalContainer: HasSwipeActionCacheProtocol {
 extension UserContainer: HasSwipeActionCacheProtocol {
     var swipeActionCache: SwipeActionCacheProtocol {
         globalContainer.swipeActionCache
-    }
-}
-
-protocol HasToolbarCustomizationInfoBubbleViewStatusProvider {
-    var toolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider { get }
-}
-
-extension GlobalContainer: HasToolbarCustomizationInfoBubbleViewStatusProvider {
-    var toolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider {
-        toolbarCustomizationInfoBubbleViewStatusProviderFactory()
-    }
-}
-
-extension UserContainer: HasToolbarCustomizationInfoBubbleViewStatusProvider {
-    var toolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider {
-        globalContainer.toolbarCustomizationInfoBubbleViewStatusProvider
     }
 }
 

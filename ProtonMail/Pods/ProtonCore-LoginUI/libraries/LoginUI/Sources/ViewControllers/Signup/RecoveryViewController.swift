@@ -46,7 +46,7 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
     var minimumAccountType: AccountType?
     private var countryCode: String = ""
     var onDohTroubleshooting: () -> Void = {}
-    
+
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     // MARK: Outlets
@@ -161,12 +161,12 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
         navigationBarAdjuster.setUp(for: scrollView, parent: parent)
         scrollView.adjust(forKeyboardVisibilityNotification: nil)
     }
-    
+
     func updateCountryCode(_ responseCode: Int) {
         countryCode = "+\(responseCode)"
         recoveryPhoneTextField.buttonTitleText = countryCode
     }
-    
+
     func countryPickerDissmised() {
         recoveryPhoneTextField.pickerButton(isActive: false)
     }
@@ -212,7 +212,7 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
         default: break
         }
     }
-    
+
     private func validateEmailServerSide() {
         let email = recoveryEmailTextField.value
         guard !email.isEmpty else { return }
@@ -227,7 +227,7 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
             }
         }
     }
-    
+
     private func validatePhoneNumberServerSide() {
         let phoneNumber = countryCode + recoveryPhoneTextField.value
         guard !phoneNumber.isEmpty else { return }
@@ -242,7 +242,7 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
             }
         }
     }
-    
+
     private func pressNextButton(email: String?, phoneNumber: String?) {
         self.delegate?.recoveryFinish(email: email, phoneNumber: phoneNumber) {
             self.unlockUI()

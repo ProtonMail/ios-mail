@@ -443,6 +443,9 @@
 /* Alert title */
 "Notice" = "Oznámení";
 
+/* Title of alert in share extension. */
+"Error" = "Chyba";
+
 /* Action */
 "Don't remind me again" = "Znovu nepřípomínat";
 
@@ -961,9 +964,6 @@
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Selhalo načtení obsahu!\nProsíme, zkuste to znovu.";
-
-/* Title of alert in share extension. */
-"Error" = "Chyba";
 
 /* Error message */
 "Failed to determine type of file" = "Selhalo určení typu souboru";
@@ -1936,6 +1936,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "Přesunutím zprávy (např. do archivu) přejdete na další zprávu.";
+
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "Došlo k neočekávané chybě, kontaktujte prosím podporu.\nChyba: %@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "Nedostatek místa na disku";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Aplikaci nelze otevřít z důvodu nedostatku místa na disku. Smažte prosím některá data a zkuste to znovu";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Zprávu se nepodařilo otevřít, zkuste to znovu.";

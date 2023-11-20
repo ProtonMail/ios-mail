@@ -15,7 +15,7 @@
 "Signature" = "Firma";
 
 /* Title */
-"Enable signature" = "Habilitar firma";
+"Enable signature" = "Activar firma";
 
 /* No comment provided by engineer. */
 "Enter your signature here" = "Ingrese su firma aquí";
@@ -27,7 +27,7 @@
 "Recovery email" = "Correo de recuperación";
 
 /* Title */
-"Enable email notices" = "Habilitar avisos de correo electrónico";
+"Enable email notices" = "Activar avisos de correo electrónico";
 
 /* place holder */
 "Input Notification Email…" = "Ingresar correo electrónico de notificación…";
@@ -384,7 +384,7 @@
 "Label Name" = "Nombre de la etiqueta";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "El acceso a esta cuenta está deshabilitado por falta de pago. Inicie sesión a través de proton.me para pagar su factura pendiente.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "El acceso a esta cuenta está desactivado por falta de pago. Inicie sesión a través de proton.me para pagar su factura pendiente.";
 
 /* Title */
 "Alert" = "Alerta";
@@ -442,6 +442,9 @@
 
 /* Alert title */
 "Notice" = "Aviso";
+
+/* Title of alert in share extension. */
+"Error" = "Error";
 
 /* Action */
 "Don't remind me again" = "No volver a recordarme";
@@ -537,7 +540,7 @@
 "Reading device contacts data…" = "Leyendo datos de contactos del dispositivo…";
 
 /* Description */
-"Do you want to cancel the process?" = "¿Desea cancelar el proceso?";
+"Do you want to cancel the process?" = "¿Quiere cancelar el proceso?";
 
 /* Hint when users create / edit contact offline  */
 "Contact saved, will be synced when connection is available" = "Contacto guardado, se sincronizará cuando la conexión esté disponible";
@@ -564,7 +567,7 @@
 "Later" = "Después";
 
 /* Action */
-"Disabled" = "Deshabilitado";
+"Disabled" = "Desactivado";
 
 /* contact placeholder */
 "Email address" = "Dirección de correo";
@@ -591,7 +594,7 @@
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "Esta preferencia se revertirá a Safari si el navegador elegido es desinstalado.";
 
 /* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "La URL a la que intenta acceder no es estándar y es posible que no se cargue correctamente. ¿Desea abrirla usando el navegador predeterminado de su dispositivo?";
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "La URL a la que intenta acceder no es estándar y es posible que no se cargue correctamente. ¿Quiere abrirla usando el navegador predeterminado de su dispositivo?";
 
 /* Title */
 "Auto Lock Time" = "Tiempo de bloqueo automático";
@@ -744,7 +747,7 @@
 "Unlock required" = "Desbloqueo requerido";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Ha deshabilitado %1$@ en los ajustes del sistema. Se ha usado %2$@ para proteger información importante de la cuenta. Para acceder a su cuenta, vaya a los ajustes y active %3$@, o vuelva a iniciar sesión.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Ha desactivado %1$@ en los ajustes del sistema. Se ha usado %2$@ para proteger información importante de la cuenta. Para acceder a su cuenta, vaya a los ajustes y active %3$@, o vuelva a iniciar sesión.";
 
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon signing out of the app." = "Todos los ajustes de protección se restablecerán y se borrarán al cerrar la sesión de la aplicación.";
@@ -759,7 +762,7 @@
 "Go to sign in" = "Ir al inicio de sesión";
 
 /* Confirmation message */
-"You have unsaved changes. Do you want to save it?" = "Tiene cambios sin guardar. ¿Desea guardarlos?";
+"You have unsaved changes. Do you want to save it?" = "Tiene cambios sin guardar. ¿Quiere guardarlos?";
 
 /* title */
 "Save Changes" = "Guardar cambios";
@@ -962,9 +965,6 @@
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "¡Error al cargar el contenido!\nIntente de nuevo.";
 
-/* Title of alert in share extension. */
-"Error" = "Error";
-
 /* Error message */
 "Failed to determine type of file" = "Error al determinar el tipo de archivo";
 
@@ -1002,7 +1002,7 @@
 "We recommend setting up a password instead for the following recipients:" = "Recomendamos definir una contraseña para los siguientes destinatarios:";
 
 /* alert body before list of addresses */
-"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Recomendamos definir una contraseña en su lugar, o deshabilitar PGP para los siguientes destinatarios:";
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Recomendamos definir una contraseña en su lugar, o desactivar PGP para los siguientes destinatarios:";
 
 /* A option title that enable/disable notification feature */
 "Notifications" = "Notificaciones";
@@ -1119,7 +1119,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "La validación del certificado TLS no funcionó. Su conexión puede ser monitoreada y la aplicación está bloqueada temporalmente por su seguridad.";
 
 /* Cert pinning failed alert message */
-"Disable Validation" = "Deshabilitar validación";
+"Disable Validation" = "Desactivar validación";
 
 /* Account manager title */
 "Account" = "Cuenta";
@@ -1317,7 +1317,7 @@
 "Current Recovery Email" = "Correo de recuperación actual";
 
 /* No comment provided by engineer. */
-"Recovery enabled" = "Recuperación habilitada";
+"Recovery enabled" = "Recuperación activada";
 
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Establezca un correo de recuperación/notificación";
@@ -1407,7 +1407,7 @@
 "You are not connected. We cannot display the content of your message." = "No está conectado. No podemos mostrar el contenido del mensaje.";
 
 /* No comment provided by engineer. */
-"Do you really want to remove this file from attachments?" = "¿Realmente desea eliminar este archivo de los archivos adjuntos?";
+"Do you really want to remove this file from attachments?" = "¿Realmente quiere eliminar este archivo de los archivos adjuntos?";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Cargar imágenes incrustadas";
@@ -1449,7 +1449,7 @@
 "Move to" = "Mover a";
 
 /* No comment provided by engineer. */
-"Do you want to discard your changes?" = "¿Desea descartar sus cambios?";
+"Do you want to discard your changes?" = "¿Quiere descartar sus cambios?";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Sus cambios serán descartados";
@@ -1476,7 +1476,7 @@
 "This message was automatically generated" = "Este mensaje fue generado automáticamente";
 
 /* Warning message */
-"Do you want to discard the changes?" = "¿Desea descartar los cambios?";
+"Do you want to discard the changes?" = "¿Quiere descartar los cambios?";
 
 /* No comment provided by engineer. */
 "Group emails from the same conversation together." = "Agrupar los correos de la misma conversación.";
@@ -1608,7 +1608,7 @@
 "No attachment found" = "No se encontró un archivo adjunto";
 
 /* Alert body for no attachment found */
-"Do you want to send your message anyway?" = "¿Desea enviar el mensaje de todos modos?";
+"Do you want to send your message anyway?" = "¿Quiere enviar el mensaje de todos modos?";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
 "Add CC and BCC" = "Añadir CC y CCO";
@@ -1659,7 +1659,7 @@
 "Send immediately?" = "¿Enviar de inmediato?";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
-"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Este mensaje ya no está programado para enviarse después. Si aún desea enviarlo después, puede pulsar en \"Programar envío\".";
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Este mensaje ya no está programado para enviarse después. Si aún quiere enviarlo después, puede pulsar en &quot;Programar envío&quot;.";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
 "Send immediately" = "Enviar de inmediato";
@@ -1722,7 +1722,7 @@
 "PGP-signed" = "PGP-firmado";
 
 /* The error message while calculating the encryption preferences */
-"Email address disabled" = "Dirección de correo deshabilitada";
+"Email address disabled" = "Dirección de correo desactivada";
 
 /* The error message while calculating the encryption preferences */
 "No keys retrieved for internal user" = "No se recuperaron claves para el usuario interno";
@@ -1936,6 +1936,15 @@
 /* The footer title of the setting row of the next msg after move functions. */
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "Al mover un mensaje (por ejemplo, archivar), pasará al siguiente mensaje.";
 
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "Ocurrió un error inesperado. Contacte con soporte.\nError: %@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "Espacio en disco insuficiente";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "La aplicación no puede abrirse por espacio insuficiente en el disco. Elimine algunos datos e intente de nuevo.";
+
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "No se pudo abrir el mensaje, intente de nuevo.";
 
@@ -1985,7 +1994,7 @@
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Esto eliminará todos los mensajes que están en la papelera o spam de más de 30 días, incluyendo mensajes actualmente en esas carpetas.";
 
 /* Button to enable encrypted search */
-"Enable" = "Habilitar";
+"Enable" = "Activar";
 
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Actualice su plan para eliminar automáticamente los mensajes que hayan estado en la papelera y en spam por más de 30 días.";
@@ -2048,7 +2057,7 @@
 "Select all" = "Seleccionar todo";
 
 /* The title of PIN code disable view  */
-"Disable PIN code" = "Deshabilitar código PIN";
+"Disable PIN code" = "Desactivar código PIN";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Definir código PIN";

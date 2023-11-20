@@ -25,7 +25,7 @@ import ProtonCoreUtilities
 private class Handler {}
 
 public enum SRTranslations: TranslationsExposing {
-    
+
     public static var bundle: Bundle {
         #if SPM
         return Bundle.module
@@ -33,13 +33,13 @@ public enum SRTranslations: TranslationsExposing {
         return Bundle(path: Bundle(for: Handler.self).path(forResource: "Translations-Services", ofType: "bundle")!)!
         #endif
     }
-    
+
     public static var prefixForMissingValue: String = ""
-    
+
     case _core_external_accounts_address_required_popup_title
     case _core_external_accounts_update_required_popup_title
     case _core_api_might_be_blocked_message
-    
+
     public var l10n: String {
         switch self {
         case ._core_external_accounts_address_required_popup_title:

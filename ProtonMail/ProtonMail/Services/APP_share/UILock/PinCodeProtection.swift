@@ -27,7 +27,6 @@ final class DefaultPinCodeProtection: PinCodeProtection {
     typealias Dependencies = AnyObject &
     HasKeyMakerProtocol &
     HasKeychain &
-    HasUserCachedStatus &
     HasNotificationCenter
 
     private unowned let dependencies: Dependencies
@@ -54,7 +53,7 @@ final class DefaultPinCodeProtection: PinCodeProtection {
     }
 
     private func disableAppKey(completion: @escaping (() -> Void)) {
-        dependencies.userCachedStatus.keymakerRandomkey = String.randomString(32)
+        KeychainWrapper.keychain[.keymakerRandomKey] = String.randomString(32)
         if let randomProtection = RandomPinProtection.randomPin {
             dependencies.keyMaker.activate(randomProtection) { [unowned self] activated in
                 guard activated else {
@@ -77,7 +76,7 @@ final class DefaultPinCodeProtection: PinCodeProtection {
                 dependencies.keyMaker.deactivate(randomProtection)
             }
         }
-        dependencies.userCachedStatus.keymakerRandomkey = nil
+        KeychainWrapper.keychain[.keymakerRandomKey] = nil
         dependencies.notificationCenter.post(name: .appLockProtectionDisabled, object: nil, userInfo: nil)
     }
 }

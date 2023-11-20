@@ -1,6 +1,6 @@
 //
 //  DoHRecordTypeFeatureFlag.swift
-//  ProtonCore-FeatureSwitch - Created on 19.01.23.
+//  ProtonCore-FeatureSwitch - Created on 19/01/2023.
 //  
 //  Copyright (c) 2023 Proton Technologies AG
 //

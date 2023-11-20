@@ -443,6 +443,9 @@
 /* Alert title */
 "Notice" = "공지";
 
+/* Title of alert in share extension. */
+"Error" = "오류";
+
 /* Action */
 "Don't remind me again" = "다시 보지 않기";
 
@@ -962,9 +965,6 @@
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "컨텐츠 로드 실패!\n다시 시도해 주세요.";
 
-/* Title of alert in share extension. */
-"Error" = "오류";
-
 /* Error message */
 "Failed to determine type of file" = "파일 형식을 확인하지 못했습니다";
 
@@ -1008,7 +1008,7 @@
 "Notifications" = "알림";
 
 /* VoiceOver: email belongs to folders */
-"Folders" = "폴더함";
+"Folders" = "폴더";
 
 /* VoiceOver: email has lables */
 "Labels" = "라벨";
@@ -1937,6 +1937,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "메시지(예: 아카이브)에 대한 이동 작업을 수행하면 다음 메시지로 이동합니다.";
+
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "예기치 못한 오류 발생, 지원 팀에 문의하십시오.\n오류: %@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "디스크 공간 부족";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "디스크 공간 부족으로 인하여 애플리케이션을 열 수 없습니다. 몇 몇 데이터를 삭제한 뒤에 다시 시도해 보세요.";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "이 메시지를 열 수 없음. 다시 시도하세요.";

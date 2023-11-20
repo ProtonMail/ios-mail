@@ -24,35 +24,35 @@ import Foundation
 
 public class FeatureFactory {
     internal init() { }
-    
+
     public static let shared: FeatureFactory = {
         let instance = FeatureFactory()
         // Setup code
         return instance
     }()
-    
+
     /// this list will override the static features
     internal var currentFeatures: [Feature] = []
-    
+
     /// run once check for load env
     internal var envLoaded = false
-    
+
     public func getCurrentFeatures() -> [Feature] {
         return self.currentFeatures
     }
-    
+
     public func setCurrentFeatures(features: [Feature]) {
         self.currentFeatures = features
     }
-    
+
     public func clear() {
         currentFeatures.removeAll()
     }
-    
+
     public func loadEnv() {
         guard !envLoaded else { return }
         envLoaded = true
-        
+
         if let featureJson = ProcessInfo.processInfo.environment["FeatureSwitch"] {
             if let data = featureJson.data(using: String.Encoding.utf8) {
                 do {
@@ -64,25 +64,25 @@ public class FeatureFactory {
                         }
                     }
                 } catch {
-                    //ignore
+                    // ignore
                 }
             }
-        } 
+        }
     }
-    
+
     /// pass in the environment
     public func setup(env: String) {
-        
+
     }
-    
+
     public func fetchFeature(local: FeatureProvider) {
-        
+
     }
-    
+
     public func fetchFeature(remote: FeatureProvider) {
-        
+
     }
-    
+
     public func isEnabled(_ feature: Feature) -> Bool {
         var isEnabled: Bool = feature.isEnable
         if feature.featureFlags.contains(.availableCoreInternal) {
@@ -92,7 +92,7 @@ public class FeatureFactory {
                 return false
             }
         } else if feature.featureFlags.contains(.availableInternal) {
-            if isInternal () {
+            if isInternal() {
                 isEnabled = feature.isEnable
             } else {
                 return false
@@ -100,21 +100,21 @@ public class FeatureFactory {
         } else {
             // check if need overried by local config
             if feature.featureFlags.contains(.localOverride) {
-                
+
             }
             // check if need overried by remote config
             if feature.featureFlags.contains(.remoteOverride) {
-                
+
             }
         }
-        
+
         if self.currentFeatures.contains(where: { item in item.name == feature.name }) {
             return true
         }
-        
+
         return isEnabled
     }
-    
+
     public func setEnabled(_ feature: inout Feature, isEnable: Bool) {
         if isEnable {
             enable(&feature)
@@ -126,7 +126,7 @@ public class FeatureFactory {
             }
         }
     }
-    
+
     ///
     public func enable(_ feature: inout Feature) {
         if feature.featureFlags.contains(.availableCoreInternal) {
@@ -134,7 +134,7 @@ public class FeatureFactory {
                 feature.isEnable = true
             }
         } else if feature.featureFlags.contains(.availableInternal) {
-            if isInternal () {
+            if isInternal() {
                 feature.isEnable = true
             }
         } else {
@@ -157,7 +157,7 @@ public class FeatureFactory {
                 feature.isEnable = false
             }
         } else if feature.featureFlags.contains(.availableInternal) {
-            if isInternal () {
+            if isInternal() {
                 feature.isEnable = false
             }
         } else {
@@ -172,7 +172,7 @@ public class FeatureFactory {
             }
         }
     }
-    
+
     /// macro environment check
     func isCoreInternal() -> Bool {
         #if DEBUG_CORE_INTERNALS
@@ -181,7 +181,7 @@ public class FeatureFactory {
         return false
         #endif
     }
-    
+
     /// macro environment check
     func isInternal() -> Bool {
         #if DEBUG_INTERNALS
@@ -197,11 +197,11 @@ extension Feature {
     var isEnabled: Bool {
         FeatureFactory.shared.isEnabled(self)
     }
-    
+
     mutating func enable() {
         FeatureFactory.shared.enable(&self)
     }
-    
+
     mutating func disable() {
         FeatureFactory.shared.disable(&self)
     }

@@ -26,7 +26,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public final class CurrentPlanRequest: BaseApiRequest<CurrentPlanResponse> {
-    
+
     override public init(api: APIService) {
         super.init(api: api)
     }

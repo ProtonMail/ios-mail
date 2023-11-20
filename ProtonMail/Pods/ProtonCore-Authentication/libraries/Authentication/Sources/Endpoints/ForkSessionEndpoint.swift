@@ -26,13 +26,13 @@ extension AuthService {
     public struct ForkSessionResponse: APIDecodableResponse, Encodable, Equatable {
         public let selector: String
     }
-    
+
     struct ForkSessionEndpoint: Request {
 
         var path: String {
             return "/auth/v4/sessions/forks"
         }
-        
+
         var method: HTTPMethod {
             return .post
         }
@@ -40,11 +40,11 @@ extension AuthService {
             "ChildClientID": "WebAccountLite",
             "Independent": 1,
         ] }
-      
+
         var isAuth: Bool {
             return true
         }
-        
+
         var auth: AuthCredential?
         var authCredential: AuthCredential? {
             return self.auth

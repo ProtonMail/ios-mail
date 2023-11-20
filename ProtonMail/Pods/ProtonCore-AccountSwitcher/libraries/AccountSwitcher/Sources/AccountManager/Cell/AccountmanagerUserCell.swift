@@ -38,15 +38,15 @@ protocol AccountmanagerUserCellDelegate: AnyObject {
 }
 
 final class MoreButton: UIButton {
-    
+
     override var isHighlighted: Bool {
         didSet { refreshBackgroundColor() }
     }
-    
+
     override var isSelected: Bool {
         didSet { refreshBackgroundColor() }
     }
-    
+
     func refreshBackgroundColor() {
         if isSelected || isHighlighted {
             backgroundColor = ColorProvider.InteractionWeakPressed
@@ -54,7 +54,7 @@ final class MoreButton: UIButton {
             backgroundColor = nil
         }
     }
-    
+
     override func layoutSubviews() {
         let circleLayer = CAShapeLayer()
         circleLayer.path = UIBezierPath(ovalIn: bounds).cgPath
@@ -121,7 +121,7 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
             self.name.textColor = ColorProvider.TextWeak
         }
         self.mail.text = mail
-        
+
         self.isLogin = isLogin
         // This will override IBAction
         self.configMoreButton(isSignin: isLogin)

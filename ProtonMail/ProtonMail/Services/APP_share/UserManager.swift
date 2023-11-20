@@ -26,7 +26,6 @@ import ProtonCoreAuthentication
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreNetworking
-import ProtonCoreFeatureSwitch
 #if !APP_EXTENSION
 import ProtonCorePayments
 #endif
@@ -51,7 +50,7 @@ protocol UserManagerSaveAction: AnyObject {
     func save()
 }
 
-class UserManager: Service, ObservableObject {
+class UserManager: ObservableObject {
     private let authCredentialAccessQueue = DispatchQueue(label: "com.protonmail.user_manager.auth_access_queue", qos: .userInitiated)
 
     var userID: UserID {
@@ -87,16 +86,6 @@ class UserManager: Service, ObservableObject {
                     seal.fulfill_()
                 }
         }
-    }
-
-    static func cleanUpAll() async {
-        IncomingDefaultService.cleanUpAll()
-        LocalNotificationService.cleanUpAll()
-        await MessageDataService.cleanUpAll()
-        LabelsDataService.cleanUpAll()
-        ContactDataService.cleanUpAll()
-        ContactGroupsDataService.cleanUpAll()
-        LastUpdatedStore.cleanUpAll()
     }
 
     var delegate: UserManagerSave?
@@ -170,18 +159,20 @@ class UserManager: Service, ObservableObject {
         container.appRatingService
     }
 
+    var blockedSenderCacheUpdater: BlockedSenderCacheUpdater {
+        container.blockedSenderCacheUpdater
+    }
+
+    var payments: Payments {
+        container.payments
+    }
+
     var reportService: BugReportService {
         container.reportService
     }
 #endif
 
     // end of wrappers
-
-#if !APP_EXTENSION
-    // these are stateful dependencies and as such must be kept in memory for the lifetime of UserManager
-    private(set) var blockedSenderCacheUpdater: BlockedSenderCacheUpdater!
-    private(set) var payments: Payments!
-#endif
 
     weak var parentManager: UsersManager?
 
@@ -229,11 +220,6 @@ class UserManager: Service, ObservableObject {
         let queueManager = globalContainer.queueManager
         queueManager.registerHandler(handler)
         self.messageService.signin()
-
-#if !APP_EXTENSION
-        blockedSenderCacheUpdater = container.blockedSenderCacheUpdater
-        payments = container.payments
-#endif
     }
 
     private func acquireSessionIfNeeded() {
@@ -290,22 +276,13 @@ class UserManager: Service, ObservableObject {
 
     func activatePayments() {
         #if !APP_EXTENSION
-        self.payments.storeKitManager.delegate = container.storeKitManager
-        self.payments.storeKitManager.subscribeToPaymentQueue()
-
-        if !FeatureFactory.shared.isEnabled(.dynamicPlans) {
-            self.payments.storeKitManager.updateAvailableProductsList { _ in }
-        }
+        payments.activate(delegate: container.storeKitManager)
         #endif
     }
 
     func deactivatePayments() {
         #if !APP_EXTENSION
-        self.payments.storeKitManager.unsubscribeFromPaymentQueue()
-        // this will ensure no unnecessary screen refresh happens, which was the source of crash previously
-        self.payments.storeKitManager.refreshHandler = { _ in }
-        // this will ensure no unnecessary communication with proton backend happens
-        self.payments.storeKitManager.delegate = nil
+        payments.deactivate()
         #endif
     }
 
@@ -370,6 +347,14 @@ extension UserManager: UserDataSource {
             userInfo.parse(userSettings: settings)
             self.save()
         }
+    }
+
+    func updateFromEvents(userSettings: UserSettingsResponse?) {
+        guard let userSettings = userSettings else {
+            return
+        }
+        userInfo.update(from: userSettings)
+        save()
     }
 
     func updateFromEvents(mailSettingsRes: [String: Any]?) {
@@ -444,7 +429,9 @@ extension UserManager {
             if let status = container.userCachedStatus.getDefaultSignaureSwitchStatus(uid: userID.rawValue) {
                 return status
             } else {
-                let oldStatus = userService.defaultSignatureStauts
+                let oldStatus = container.userCachedStatus.userDefaults.bool(
+                    forKey: UserCachedStatus.LegacyKey.defaultSignatureStatus
+                )
                 container.userCachedStatus.setDefaultSignatureSwitchStatus(uid: userID.rawValue, value: oldStatus)
                 return oldStatus
             }

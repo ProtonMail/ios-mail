@@ -49,9 +49,9 @@ extension GlobalContainer {
         }
     }
 
-    var darkModeCacheFactory: Factory<DarkModeCacheProtocol> {
+    var deviceContactsFactory: Factory<DeviceContactsProvider> {
         self {
-            self.userCachedStatus
+            DeviceContacts()
         }
     }
 
@@ -101,9 +101,9 @@ extension GlobalContainer {
             let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: self)
             return SignInManager(
                 usersManager: self.usersManager,
-                contactCacheStatus: self.userCachedStatus,
                 queueHandlerRegister: self.queueManager,
-                updateSwipeActionUseCase: updateSwipeActionUseCase
+                updateSwipeActionUseCase: updateSwipeActionUseCase,
+                dependencies: .init(notificationCenter: self.notificationCenter, userDefaults: self.userDefaults)
             )
         }
     }
@@ -115,12 +115,6 @@ extension GlobalContainer {
     }
 
     var swipeActionCacheFactory: Factory<SwipeActionCacheProtocol> {
-        self {
-            self.userCachedStatus
-        }
-    }
-
-    var toolbarCustomizationInfoBubbleViewStatusProviderFactory: Factory<ToolbarCustomizationInfoBubbleViewStatusProvider> {
         self {
             self.userCachedStatus
         }

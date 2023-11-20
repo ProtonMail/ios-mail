@@ -32,19 +32,16 @@ import ProtonCoreServices
 class SignInManager {
     let usersManager: UsersManager
     let queueHandlerRegister: QueueHandlerRegister
-    private var contactCacheStatus: ContactCacheStatusProtocol
     private let updateSwipeAction: UpdateSwipeActionDuringLoginUseCase
     private let dependencies: Dependencies
 
     init(
         usersManager: UsersManager,
-        contactCacheStatus: ContactCacheStatusProtocol,
         queueHandlerRegister: QueueHandlerRegister,
         updateSwipeActionUseCase: UpdateSwipeActionDuringLoginUseCase,
-        dependencies: Dependencies = .init()
+        dependencies: Dependencies
     ) {
         self.usersManager = usersManager
-        self.contactCacheStatus = contactCacheStatus
         self.queueHandlerRegister = queueHandlerRegister
         self.updateSwipeAction = updateSwipeActionUseCase
         self.dependencies = dependencies
@@ -91,7 +88,7 @@ class SignInManager {
         self.usersManager.firstUser?.appRatingService.preconditionEventDidOccur(.userSignIn)
 
         self.usersManager.loggedIn()
-        self.contactCacheStatus.contactsCached = 0
+        dependencies.userDefaults[.areContactsCached] = 0
 
         dependencies.notificationCenter.post(name: .didSignIn, object: nil)
 
@@ -165,10 +162,7 @@ extension SignInManager {
 extension SignInManager {
     struct Dependencies {
         let notificationCenter: NotificationCenter
-
-        init(notificationCenter: NotificationCenter = .default) {
-            self.notificationCenter = notificationCenter
-        }
+        let userDefaults: UserDefaults
     }
 }
 
@@ -184,7 +178,7 @@ private extension SpotlightableFeatureKey {
         case .scheduledSend, .toolbarCustomization:
             return true
         case .messageSwipeNavigation:
-            return UserInfo.isConversationSwipeEnabled
+            return false
         }
     }
 }

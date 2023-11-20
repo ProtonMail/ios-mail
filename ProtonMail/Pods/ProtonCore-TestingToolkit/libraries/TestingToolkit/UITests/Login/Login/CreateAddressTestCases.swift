@@ -30,7 +30,7 @@ public class CreateAddressTestCases {
     private let quarkCommands: QuarkCommands
     private let loginRobot = LoginRobot()
     private var random: Email!
-      
+
     public init(doh: DoHInterface) {
         self.quarkCommands = QuarkCommands(doh: doh)
         self.random = generateEmail()
@@ -46,11 +46,11 @@ public class CreateAddressTestCases {
                                               loginRobot: loginRobot,
                                               retRobot: T.self)
     }
-    
+
     public func testShowCreateAddressNewNameSuccessfulCreation<T: CoreElements>(robot _: T.Type) -> T {
         quarkCommands.createUser(externalEmail: random.email, password: random.password)
         let newUsername = generateName()
-        
+
         return SigninExternalAccountsCapability()
             .convertExternalAccountToInternal(email: random.email,
                                               password: random.password,
@@ -58,10 +58,10 @@ public class CreateAddressTestCases {
                                               loginRobot: loginRobot,
                                               retRobot: T.self)
     }
-    
+
     public func testShowCreateAddressCancelButton() {
         quarkCommands.createUser(externalEmail: random.email, password: random.password)
-        
+
         loginRobot
             .fillUsername(username: random.email)
             .fillpassword(password: random.password)
@@ -70,10 +70,10 @@ public class CreateAddressTestCases {
             .tapCancelButton()
             .verify.loginScreenIsShown()
     }
-    
+
     public func testShowCreateAddressBackButton() {
         quarkCommands.createUser(externalEmail: random.email, password: random.password)
-        
+
         loginRobot
             .fillUsername(username: random.email)
             .fillpassword(password: random.password)
@@ -82,10 +82,10 @@ public class CreateAddressTestCases {
             .tapBackButton()
             .verify.loginScreenIsShown()
     }
-    
+
     public func testShowCreateAddressInvalidCharacter() {
         quarkCommands.createUser(externalEmail: random.email, password: random.password)
-        
+
         loginRobot
             .fillUsername(username: random.email)
             .fillpassword(password: random.password)
@@ -95,18 +95,18 @@ public class CreateAddressTestCases {
             .tapContinueButton()
             .verify.invalidCharactersBanner()
     }
-    
+
     struct Email {
         let email: String
         let password: String
     }
-    
+
     private func generateEmail() -> Email {
         let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@\(StringUtils.randomAlphanumericString(length: 8)).com"
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
         return Email(email: randomEmail, password: randomPassword)
     }
-    
+
     private func generateName() -> String {
         return "\(StringUtils.randomAlphanumericString(length: 8))\(StringUtils.randomAlphanumericString(length: 8))"
     }

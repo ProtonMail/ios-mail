@@ -190,7 +190,7 @@ public struct PMActionBarItem {
         self.type = .separator
         self.userInfo = ["width": width, "verticalPadding": verticalPadding]
     }
-    
+
     /// Set should spin as true, there'd be an activity indicator spinning shen selecting the button.
     /// But it won't work on those already selected.
     public func setShouldSpin(pressedBackgroundColor: UIColor = ColorProvider.FloatyPressed) -> Self {
@@ -200,7 +200,7 @@ public struct PMActionBarItem {
         }
         item.shouldSpin = true
         item.pressedBackgroundColor = pressedBackgroundColor
-        
+
         item.activityIndicator = .init(style: .medium)
         item.activityIndicator?.hidesWhenStopped = true
         item.activityIndicator?.isHidden = true

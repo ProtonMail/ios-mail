@@ -30,9 +30,9 @@ private let backtButtonId = "UINavigationItem.leftBarButtonItem"
 private let webViewId = "TCViewController.webView"
 
 public final class TCRobot: CoreElements {
-    
+
     public let verify = Verify()
-    
+
     public final class Verify: CoreElements {
         @discardableResult
         public func tcScreenIsShown() -> TCRobot {
@@ -40,17 +40,17 @@ public final class TCRobot: CoreElements {
             return TCRobot()
         }
     }
-    
+
     public func swipeUpWebView() -> TCRobot {
         webView(webViewId).swipeUp()
         return self
     }
-    
+
     public func backButton() -> RecoveryRobot {
         button(backtButtonId).hasLabel("ic Cross small").tap()
         return RecoveryRobot()
     }
-    
+
 }
 
 #endif

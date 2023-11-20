@@ -30,7 +30,7 @@ class AvailablePlansPresentation {
     var isCurrentlyProcessed: Bool = false
     var isExpanded: Bool = false
     var canBePurchasedNow: Bool = true
-    
+
     init(availablePlan: InAppPurchasePlan?,
          details: AvailablePlansDetails,
          isCurrentlyProcessed: Bool = false,
@@ -40,7 +40,7 @@ class AvailablePlansPresentation {
         self.isCurrentlyProcessed = isCurrentlyProcessed
         self.isExpanded = isExpanded
     }
-    
+
     static func createAvailablePlans(from plan: AvailablePlans.AvailablePlan,
                                      for instance: AvailablePlans.AvailablePlan.Instance? = nil,
                                      defaultCycle: Int? = nil,
@@ -52,7 +52,7 @@ class AvailablePlansPresentation {
             return try await createAvailablePlansWithoutInstance(from: plan, defaultCycle: defaultCycle, plansDataSource: plansDataSource)
         }
     }
-    
+
     static func createAvailablePlansWithInstance(from plan: AvailablePlans.AvailablePlan,
                                                  for instance: AvailablePlans.AvailablePlan.Instance,
                                                  defaultCycle: Int? = nil,
@@ -61,7 +61,7 @@ class AvailablePlansPresentation {
         guard let inAppPurchasePlan = InAppPurchasePlan(availablePlanInstance: instance) else {
             return nil
         }
-        
+
         guard let details = try await AvailablePlansDetails.createPlan(
             from: plan,
             for: instance,
@@ -70,10 +70,10 @@ class AvailablePlansPresentation {
             plansDataSource: plansDataSource,
             storeKitManager: storeKitManager
         ) else { return nil }
-        
+
         return .init(availablePlan: inAppPurchasePlan, details: details)
     }
-    
+
     static func createAvailablePlansWithoutInstance(from plan: AvailablePlans.AvailablePlan,
                                                     defaultCycle: Int? = nil,
                                                     plansDataSource: PlansDataSourceProtocol?) async throws -> AvailablePlansPresentation? {

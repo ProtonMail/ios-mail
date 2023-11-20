@@ -26,7 +26,7 @@ extension UserContainer {
                     featureFlagService: self.featureFlagsDownloadService,
                     appRating: AppRatingManager(),
                     internetStatus: self.internetConnectionStatusProvider,
-                    appRatingPrompt: self.userCachedStatus
+                    appRatingStatusProvider: self.appRatingStatusProvider
                 )
             )
         }
@@ -52,7 +52,6 @@ extension UserContainer {
     var cleanUserLocalMessagesFactory: Factory<CleanUserLocalMessages> {
         self {
             CleanUserLocalMessages(
-                contactCacheStatus: self.userCachedStatus,
                 fetchInboxMessages: FetchMessages(
                     dependencies: .init(
                         messageDataService: self.messageService,
@@ -85,7 +84,7 @@ extension UserContainer {
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: self.user.apiService,
-                            internetStatusProvider: self.internetConnectionStatusProvider, 
+                            internetStatusProvider: self.internetConnectionStatusProvider,
                             imageCache: self.senderImageCache
                         )
                     ),
@@ -116,6 +115,7 @@ extension UserContainer {
         self {
             self.user
         }
+        .scope(.shared)
     }
 
     var paymentsFactory: Factory<Payments> {
@@ -123,7 +123,7 @@ extension UserContainer {
             Payments(
                 inAppPurchaseIdentifiers: Constants.mailPlanIDs,
                 apiService: self.apiService,
-                localStorage: self.userCachedStatus,
+                localStorage: ServicePlanDataStorageImpl(userDefaults: self.userDefaults),
                 canExtendSubscription: true,
                 reportBugAlertHandler: { _ in
                     let link = DeepLink("toBugPop", sender: nil)
@@ -164,6 +164,7 @@ extension UserContainer {
         self {
             self.user
         }
+        .scope(.shared)
     }
 
     var toolbarSettingViewFactoryFactory: Factory<ToolbarSettingViewFactory> {

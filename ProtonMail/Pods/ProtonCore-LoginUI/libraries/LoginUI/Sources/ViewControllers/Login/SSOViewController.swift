@@ -31,7 +31,7 @@ final class SSOViewController: UIViewController, AccessibleView {
     var activityIndicator: UIActivityIndicatorView?
 
     weak var webViewDelegate: WKNavigationDelegate?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupWebView()
@@ -40,7 +40,7 @@ final class SSOViewController: UIViewController, AccessibleView {
         view.accessibilityIdentifier = "SSOViewController"
         activityIndicator?.startAnimating()
     }
-    
+
     private func configureUI() {
         let activityIndicator = UIActivityIndicatorView(frame: .zero)
         activityIndicator.color = .gray
@@ -60,12 +60,12 @@ final class SSOViewController: UIViewController, AccessibleView {
         view.backgroundColor = ColorProvider.BackgroundNorm
         view.bringSubviewToFront(activityIndicator)
     }
-    
+
     @objc private func closeWebView() {
         ObservabilityEnv.report(.ssoIdentityProviderLoginResult(status: .canceled))
         dismiss(animated: true)
     }
-    
+
     private func setupWebView() {
         let webViewConfiguration = WKWebViewConfiguration()
         webViewConfiguration.websiteDataStore = .nonPersistent()
@@ -81,7 +81,7 @@ final class SSOViewController: UIViewController, AccessibleView {
         webView.topAnchor.constraint(equalTo: layoutGuide.topAnchor).isActive = true
         self.webView = webView
     }
-    
+
     func loadRequest(request: URLRequest) {
         activityIndicator?.stopAnimating()
         webView?.load(request)

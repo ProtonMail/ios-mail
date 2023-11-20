@@ -37,6 +37,7 @@ class NewMailboxMessageCellPresenter {
                                weight: .regular)
         view.initialsLabel.textAlignment = .center
         presentContent(viewModel: viewModel, in: view.messageContentView, highlightedKeywords: highlightedKeywords)
+        presentAttachmentsPreview(viewModel: viewModel, in: view.messageContentView)
         presentTags(tags: viewModel.tags, in: view.messageContentView)
         presentSelectionStyle(style: viewModel.style, in: view)
     }
@@ -161,6 +162,50 @@ class NewMailboxMessageCellPresenter {
             addOriginalImage(image, isRead: viewModel.isRead, in: view)
         }
         view.originalImagesStackView.isHidden = false
+    }
+
+    private func presentAttachmentsPreview(
+        viewModel: NewMailboxMessageViewModel,
+        in view: NewMailboxMessageContentView
+    ) {
+        let maxNumberOfPreviews: Int
+        if UIDevice.current.userInterfaceIdiom == .pad ||
+           UIDevice.current.orientation == .landscapeLeft ||
+           UIDevice.current.orientation == .landscapeRight {
+            maxNumberOfPreviews = 3
+        } else {
+            maxNumberOfPreviews = 2
+        }
+
+        let attachmentsVMs = viewModel.attachmentsPreviewViewModels.prefix(maxNumberOfPreviews)
+
+        guard !attachmentsVMs.isEmpty else {
+            return
+        }
+
+        view.attachmentImageView.isHidden = true
+        let remainder = viewModel.numberOfAttachments - attachmentsVMs.count
+
+        for (index, attachmentToPreview) in attachmentsVMs.enumerated() {
+            let attachmentPreviewView = AttachmentPreviewView(attachmentPreview: attachmentToPreview)
+            attachmentPreviewView.attachmentSelected = { [weak view] in
+                view?.selectAttachmentAction?(index)
+            }
+            view.attachmentsPreviewStackView.addArrangedSubview(attachmentPreviewView)
+        }
+
+        view.attachmentsPreviewStackView.addArrangedSubview(UIView())
+
+        if remainder > 0 {
+            let style = FontManager.Caption.foregroundColor(ColorProvider.TextWeak)
+            view.remainingAttachmentsLabel.attributedText = "+\(remainder)".apply(style: style)
+        }
+
+        if attachmentsVMs.count > 1 {
+            view.attachmentsPreviewStackView.distribution = .fillEqually
+        } else {
+            view.attachmentsPreviewStackView.distribution = .equalSpacing
+        }
     }
 
     private func addOriginalImage(_ image: UIImage, isRead: Bool, in view: NewMailboxMessageContentView) {

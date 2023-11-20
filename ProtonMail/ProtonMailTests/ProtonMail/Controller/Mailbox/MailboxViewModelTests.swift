@@ -38,7 +38,6 @@ final class MailboxViewModelTests: XCTestCase {
     var internetConnectionProvider: MockInternetConnectionStatusProviderProtocol!
     var eventsServiceMock: EventsServiceMock!
     var mockFetchLatestEventId: MockFetchLatestEventId!
-    var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
     var toolbarActionProviderMock: MockToolbarActionProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
     var imageTempUrl: URL!
@@ -46,6 +45,7 @@ final class MailboxViewModelTests: XCTestCase {
     var mockLoadedMessage: Message!
     var fakeTableView: UITableView!
     var delegateMock: MockCoreDataDelegateObject!
+    private let selectionLimitation = 5
 
     private var globalContainer: GlobalContainer!
 
@@ -57,7 +57,6 @@ final class MailboxViewModelTests: XCTestCase {
         try super.setUpWithError()
 
         coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        sharedServices.add(CoreDataService.self, for: coreDataService)
 
         globalContainer = .init()
         globalContainer.contextProviderFactory.register { self.coreDataService }
@@ -94,6 +93,11 @@ final class MailboxViewModelTests: XCTestCase {
                                       parent: nil,
                                       globalContainer: globalContainer)
         featureFlagCache = .init()
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [
+                FeatureFlagKey.mailboxSelectionLimitation.rawValue: self.selectionLimitation
+            ])
+        }
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()
@@ -102,7 +106,6 @@ final class MailboxViewModelTests: XCTestCase {
         conversationProviderMock = MockConversationProvider()
         eventsServiceMock = EventsServiceMock()
         mockFetchLatestEventId = MockFetchLatestEventId()
-        welcomeCarrouselCache = WelcomeCarrouselCacheMock()
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         mockLoadedMessage = try loadTestMessage() // one message
@@ -184,15 +187,26 @@ final class MailboxViewModelTests: XCTestCase {
         XCTAssertNil(sut.item(index:IndexPath(row: 0, section: 1)))
     }
 
-    func testSelectByID() {
+    func testSelectByID_withSelectionLimitation() {
         XCTAssertTrue(sut.selectedIDs.isEmpty)
-        sut.select(id: "1")
-        XCTAssertTrue(sut.selectedIDs.contains("1"))
+        let ids = Array(0...selectionLimitation).map { "\($0)"}
+        for (index, id) in ids.enumerated() {
+            let isAllowed = sut.select(id: id)
+            if index < selectionLimitation {
+                XCTAssertTrue(isAllowed)
+            } else {
+                XCTAssertFalse(isAllowed)
+            }
+        }
+        for id in ids.prefix(selectionLimitation) {
+            XCTAssertTrue(sut.selectedIDs.contains(id))
+        }
+        XCTAssertEqual(sut.selectedIDs.count, selectionLimitation)
     }
 
     func testRemoveSelectByID() {
-        sut.select(id: "1")
-        sut.select(id: "2")
+        _ = sut.select(id: "1")
+        _ = sut.select(id: "2")
         XCTAssertTrue(sut.selectedIDs.contains("1"))
         XCTAssertTrue(sut.selectedIDs.contains("2"))
         XCTAssertEqual(sut.selectedIDs.count, 2)
@@ -204,8 +218,8 @@ final class MailboxViewModelTests: XCTestCase {
 
     func testRemoveAllSelectID() {
         XCTAssertTrue(sut.selectedIDs.isEmpty)
-        sut.select(id: "1")
-        sut.select(id: "2")
+        _ = sut.select(id: "1")
+        _ = sut.select(id: "2")
         XCTAssertEqual(sut.selectedIDs.count, 2)
         sut.removeAllSelectedIDs()
         XCTAssertTrue(sut.selectedIDs.isEmpty)
@@ -213,7 +227,7 @@ final class MailboxViewModelTests: XCTestCase {
 
     func testSelectionContains() {
         XCTAssertTrue(sut.selectedIDs.isEmpty)
-        sut.select(id: "1")
+        _ = sut.select(id: "1")
         XCTAssertTrue(sut.selectionContains(id: "1"))
         XCTAssertFalse(sut.selectionContains(id: "2"))
         XCTAssertFalse(sut.selectionContains(id: "3"))
@@ -484,7 +498,7 @@ final class MailboxViewModelTests: XCTestCase {
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
-        sut.select(id: "id")
+        _ = sut.select(id: "id")
         XCTAssertEqual(sut.selectedIDs.count, 1)
         let model2 = sut.actionSheetViewModel
         XCTAssertEqual(model2.title, .localizedStringWithFormat(LocalString._general_conversation, 1))
@@ -547,7 +561,7 @@ final class MailboxViewModelTests: XCTestCase {
         wait(self.sut.diffableDataSource?.snapshot().numberOfItems == 3)
 
         for id in conversationIDs {
-            sut.select(id: id)
+            _ = sut.select(id: id)
         }
 
         sut.handleActionSheetAction(.trash)
@@ -600,8 +614,8 @@ final class MailboxViewModelTests: XCTestCase {
 
         let expectation1 = expectation(description: "Closure called")
         let ids = Set<String>(["1", "2"])
-        sut.select(id: "1")
-        sut.select(id: "2")
+        _ = sut.select(id: "1")
+        _ = sut.select(id: "2")
         sut.mark(IDs: ids, unread: false) {
             XCTAssertTrue(self.conversationProviderMock.markAsReadStub.wasCalledExactlyOnce)
             let argument = self.conversationProviderMock.markAsReadStub.lastArguments
@@ -610,8 +624,6 @@ final class MailboxViewModelTests: XCTestCase {
             XCTAssertTrue(argument?.first.contains("2") ?? false)
             XCTAssertEqual(argument?.a2, "0")
 
-            XCTAssertEqual(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments?.value, self.sut.labelID)
-            XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)
@@ -657,8 +669,8 @@ final class MailboxViewModelTests: XCTestCase {
 
         let expectation1 = expectation(description: "Closure called")
         let ids = Set<String>(["1", "2"])
-        sut.select(id: "1")
-        sut.select(id: "2")
+        _ = sut.select(id: "1")
+        _ = sut.select(id: "2")
         sut.mark(IDs: ids, unread: true) {
             XCTAssertTrue(self.conversationProviderMock.markAsUnreadStub.wasCalledExactlyOnce)
             let argument = self.conversationProviderMock.markAsUnreadStub.lastArguments
@@ -667,8 +679,6 @@ final class MailboxViewModelTests: XCTestCase {
             XCTAssertFalse(argument?.first.contains("2") ?? false)
             XCTAssertEqual(argument?.a2, "0")
 
-            XCTAssertEqual(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments?.value, self.sut.labelID)
-            XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)
@@ -736,7 +746,7 @@ final class MailboxViewModelTests: XCTestCase {
         wait(self.sut.diffableDataSource?.snapshot().numberOfItems == 3)
 
         for id in conversationIDs {
-            sut.select(id: id)
+            _ = sut.select(id: id)
         }
 
         sut.deleteSelectedIDs()
@@ -947,18 +957,18 @@ final class MailboxViewModelTests: XCTestCase {
 
     func testGetOnboardingDestination() {
         // Fresh install
-        self.welcomeCarrouselCache.lastTourVersion = nil
+        globalContainer.userDefaults[.lastTourVersion] = nil
         var destination = self.sut.getOnboardingDestination()
         XCTAssertEqual(destination, .onboardingForNew)
 
         // The last tour version is the same as defined TOUR_VERSION
         // Shouldn't show welcome carrousel
-        self.welcomeCarrouselCache.lastTourVersion = Constants.App.TourVersion
+        globalContainer.userDefaults[.lastTourVersion] = Constants.App.TourVersion
         destination = self.sut.getOnboardingDestination()
         XCTAssertNil(destination)
 
         // Update the app
-        self.welcomeCarrouselCache.lastTourVersion = 1
+        globalContainer.userDefaults[.lastTourVersion] = 1
         destination = self.sut.getOnboardingDestination()
         XCTAssertEqual(destination, .onboardingForUpdate)
     }
@@ -1087,7 +1097,7 @@ final class MailboxViewModelTests: XCTestCase {
         let selectedConversationIDs = ["foo", "bar"]
 
         for conversationID in selectedConversationIDs {
-            sut.select(id: conversationID)
+            _ = sut.select(id: conversationID)
         }
 
         sut.handleSwipeAction(.trash, on: .conversation(.make(conversationID: ConversationID("xyz"))))
@@ -1253,8 +1263,8 @@ final class MailboxViewModelTests: XCTestCase {
                   labelName: nil)
         wait(self.sut.diffableDataSource?.snapshot().numberOfItems == 3)
 
-        sut.select(id: readMsgIds)
-        sut.select(id: unreadMsgIds)
+        _ = sut.select(id: readMsgIds)
+        _ = sut.select(id: unreadMsgIds)
         let e = expectation(description: "Closure is called")
 
 
@@ -1283,7 +1293,7 @@ final class MailboxViewModelTests: XCTestCase {
     }
 
     func testListEditing_setItToFalse_theSelectedIDsWillBeRemoved() {
-        sut.select(id: String.randomString(20))
+        _ = sut.select(id: String.randomString(20))
         XCTAssertFalse(sut.selectedIDs.isEmpty)
 
         sut.listEditing = false
@@ -1292,7 +1302,7 @@ final class MailboxViewModelTests: XCTestCase {
     }
 
     func testListEditing_setItToTrue_theSelectedIDsWillNotBeRemoved() {
-        sut.select(id: String.randomString(20))
+        _ = sut.select(id: String.randomString(20))
         XCTAssertFalse(sut.selectedIDs.isEmpty)
 
         sut.listEditing = true
@@ -1430,7 +1440,8 @@ extension MailboxViewModelTests {
             fetchMessageWithReset: MockFetchMessagesWithReset(),
             fetchMessage: fetchMessage,
             fetchLatestEventID: mockFetchLatestEventId,
-            internetConnectionStatusProvider: MockInternetConnectionStatusProviderProtocol()
+            internetConnectionStatusProvider: MockInternetConnectionStatusProviderProtocol(),
+            userDefaults: globalContainer.userDefaults
         ))
         self.mockFetchMessageDetail = MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
 
@@ -1451,7 +1462,10 @@ extension MailboxViewModelTests {
                     mailSettings: userManagerMock.mailSettings
                 )
             ),
-            featureFlagCache: featureFlagCache
+            featureFlagCache: featureFlagCache,
+            userDefaults: globalContainer.userDefaults,
+            fetchAttachmentUseCase: MockFetchAttachment(),
+            fetchAttachmentMetadataUseCase: MockFetchAttachmentMetadata()
         )
         let label = LabelInfo(name: labelName ?? "")
         sut = MailboxViewModel(labelID: LabelID(labelID),
@@ -1467,7 +1481,6 @@ extension MailboxViewModelTests {
                                conversationProvider: conversationProviderMock,
                                eventsService: eventsServiceMock,
                                dependencies: dependencies,
-                               welcomeCarrouselCache: welcomeCarrouselCache,
                                toolbarActionProvider: toolbarActionProviderMock,
                                saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                totalUserCountClosure: {

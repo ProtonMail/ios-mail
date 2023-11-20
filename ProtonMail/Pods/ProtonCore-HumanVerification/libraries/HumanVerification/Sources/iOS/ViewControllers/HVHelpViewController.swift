@@ -39,7 +39,7 @@ public class HVHelpViewController: UIViewController, AccessibleView {
 
     weak var delegate: HVHelpViewControllerDelegate?
     var viewModel: HelpViewModel!
-    
+
     override public var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     // MARK: - View controller life cycle

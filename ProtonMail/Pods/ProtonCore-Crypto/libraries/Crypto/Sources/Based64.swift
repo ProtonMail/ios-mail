@@ -23,18 +23,18 @@
 import Foundation
 
 public enum Based64 {
-    
+
     public static func encode(raw: Data) -> String {
         let base64Encoded = raw.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
         return base64Encoded
     }
-    
+
     public static func encode(value: String) -> String {
         // this equals to value.data(using: String.Encoding.utf8). on swift 5.1 but it will every fail
         let utf8raw = Data(value.utf8)
         return self.encode(raw: utf8raw)
     }
-    
+
     public static func decode(based64: String) -> Data {
         let decodedData = Data(base64Encoded: based64, options: NSData.Base64DecodingOptions(rawValue: 0))
         return decodedData!

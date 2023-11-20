@@ -15,7 +15,7 @@
 "Signature" = "Firma";
 
 /* Title */
-"Enable signature" = "Habilitar firma";
+"Enable signature" = "Activar firma";
 
 /* No comment provided by engineer. */
 "Enter your signature here" = "Introduce tu firma aquí.";
@@ -27,7 +27,7 @@
 "Recovery email" = "Correo electrónico de recuperación";
 
 /* Title */
-"Enable email notices" = "Habilitar avisos de correo electrónico";
+"Enable email notices" = "Activar avisos de correo electrónico";
 
 /* place holder */
 "Input Notification Email…" = "Introduce el correo electrónico de notificación…";
@@ -384,7 +384,7 @@
 "Label Name" = "Nombre de la etiqueta";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "El acceso a esta cuenta está deshabilitado por falta de pago. Inicia sesión a través de proton.me para pagar tu factura pendiente.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "El acceso a esta cuenta está desactivado por falta de pago. Inicia sesión a través de proton.me para pagar tu factura pendiente.";
 
 /* Title */
 "Alert" = "Alerta";
@@ -442,6 +442,9 @@
 
 /* Alert title */
 "Notice" = "Aviso";
+
+/* Title of alert in share extension. */
+"Error" = "Error";
 
 /* Action */
 "Don't remind me again" = "No volver a recordarme";
@@ -564,7 +567,7 @@
 "Later" = "Más tarde";
 
 /* Action */
-"Disabled" = "Deshabilitado";
+"Disabled" = "Desactivado";
 
 /* contact placeholder */
 "Email address" = "Dirección de correo electrónico";
@@ -962,9 +965,6 @@
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Error al cargar el contenido\nInténtalo de nuevo.";
 
-/* Title of alert in share extension. */
-"Error" = "Error";
-
 /* Error message */
 "Failed to determine type of file" = "Error al determinar el tipo de archivo";
 
@@ -1317,7 +1317,7 @@
 "Current Recovery Email" = "Correo de recuperación actual";
 
 /* No comment provided by engineer. */
-"Recovery enabled" = "Recuperación habilitada";
+"Recovery enabled" = "Recuperación activada";
 
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Establece un correo electrónico de recuperación/notificación.";
@@ -1722,7 +1722,7 @@
 "PGP-signed" = "Firmado con PGP";
 
 /* The error message while calculating the encryption preferences */
-"Email address disabled" = "Dirección de correo electrónico deshabilitada";
+"Email address disabled" = "Dirección de correo electrónico desactivada";
 
 /* The error message while calculating the encryption preferences */
 "No keys retrieved for internal user" = "No se ha recuperado ninguna clave para el usuario interno.";
@@ -1936,6 +1936,15 @@
 /* The footer title of the setting row of the next msg after move functions. */
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "Al mover un mensaje (por ejemplo, archivar), pasarás al siguiente mensaje.";
 
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "Se ha producido un error inesperado. Contacta con soporte.\nError: %@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "Espacio en disco insuficiente";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "La aplicación no puede abrirse por espacio insuficiente en el disco. Elimina algunos datos e intenta de nuevo.";
+
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "No se ha podido abrir el mensaje. Inténtalo de nuevo.";
 
@@ -1985,7 +1994,7 @@
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Esto eliminará todos los mensajes que están en la carpeta Papelera o Spam de más de 30 días. incluye también mensajes actualmente en esas carpetas.";
 
 /* Button to enable encrypted search */
-"Enable" = "Habilitar";
+"Enable" = "Activar";
 
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Actualice su plan para eliminar automáticamente los mensajes que hayan estado en las carpetas Papelera o Spam durante más de 30 días.";
@@ -2048,7 +2057,7 @@
 "Select all" = "Seleccionar todo";
 
 /* The title of PIN code disable view  */
-"Disable PIN code" = "Deshabilitar el código PIN";
+"Disable PIN code" = "Desactivar el código PIN";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Establecer código PIN";

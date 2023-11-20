@@ -53,9 +53,9 @@ final class PlanConnectionErrorView: UIView {
             descriptionLabel.text = PUITranslations._connection_error_description.l10n
         }
     }
-    
+
     // MARK: - Properties
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         load()

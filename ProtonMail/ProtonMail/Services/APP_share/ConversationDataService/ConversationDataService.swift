@@ -37,7 +37,7 @@ protocol ConversationProvider: AnyObject {
                             before timestamp: Int,
                             unreadOnly: Bool,
                             shouldReset: Bool,
-                            completion: ((Result<Void, Error>) -> Void)?)
+                            completion: (@Sendable (Result<Void, Error>) -> Void)?)
     // MARK: - Single item fetching
     func fetchConversation(with conversationID: ConversationID,
                            includeBodyOf messageID: MessageID?,
@@ -65,7 +65,7 @@ protocol ConversationProvider: AnyObject {
                                                    labelID: LabelID) -> [ConversationID]
 }
 
-final class ConversationDataService: Service, ConversationProvider {
+final class ConversationDataService: ConversationProvider {
     let apiService: APIService
     let userID: UserID
     let contextProvider: CoreDataContextProviderProtocol
@@ -74,7 +74,7 @@ final class ConversationDataService: Service, ConversationProvider {
     private(set) weak var eventsService: EventsServiceProtocol?
     let undoActionManager: UndoActionManagerProtocol
     let serialQueue = DispatchQueue(label: "com.protonmail.ConversationDataService")
-    let contactCacheStatus: ContactCacheStatusProtocol
+    let userDefaults: UserDefaults
 
     init(api: APIService,
          userID: UserID,
@@ -83,7 +83,7 @@ final class ConversationDataService: Service, ConversationProvider {
          messageDataService: MessageDataServiceProtocol,
          eventsService: EventsServiceProtocol,
          undoActionManager: UndoActionManagerProtocol,
-         contactCacheStatus: ContactCacheStatusProtocol) {
+         userDefaults: UserDefaults) {
         self.apiService = api
         self.userID = userID
         self.contextProvider = contextProvider
@@ -91,7 +91,7 @@ final class ConversationDataService: Service, ConversationProvider {
         self.messageDataService = messageDataService
         self.eventsService = eventsService
         self.undoActionManager = undoActionManager
-        self.contactCacheStatus = contactCacheStatus
+        self.userDefaults = userDefaults
     }
 }
 
@@ -117,7 +117,13 @@ extension ConversationDataService {
 extension ConversationDataService {
     func fetchLocalConversations(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Conversation] {
         let fetchRequest = NSFetchRequest<Conversation>(entityName: Conversation.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K in %@", Conversation.Attributes.conversationID.rawValue, selected)
+        fetchRequest.predicate = NSPredicate(
+            format: "%K in %@ AND %K == %@",
+            Conversation.Attributes.conversationID.rawValue,
+            selected,
+            Conversation.Attributes.userID.rawValue,
+            userID.rawValue
+        )
         do {
             return try context.fetch(fetchRequest)
         } catch {

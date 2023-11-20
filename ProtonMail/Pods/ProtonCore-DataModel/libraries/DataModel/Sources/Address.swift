@@ -23,7 +23,7 @@ import Foundation
 
 @available(*, message: "This class will be replaced by Address_v2 in the future, please consider switching to Address_v2 already now")
 @objc public final class Address: NSObject, Codable {
-    
+
     @available(*, deprecated, renamed: "String")
     public typealias AddressID = String
     public enum AddressType: Int, Codable {
@@ -41,7 +41,7 @@ import Foundation
         case disabled = 0   // disabled
         case enabled = 1    // enabled, can be set by user
     }
-    
+
     public let addressID: String
     public let domainID: String?
     // email address name
@@ -56,7 +56,7 @@ import Foundation
     public let signature: String
     public let hasKeys: Int
     public let keys: [Key]
-    
+
     public init(addressID: String, domainID: String?, email: String,
                 send: AddressSendReceive, receive: AddressSendReceive, status: AddressStatus, type: AddressType, order: Int, displayName: String, signature: String, hasKeys: Int, keys: [Key]) {
         self.addressID = addressID
@@ -72,7 +72,7 @@ import Foundation
         self.hasKeys = hasKeys
         self.keys = keys
     }
-    
+
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         addressID = try values.decode(String.self, forKey: .addressID)
@@ -85,13 +85,13 @@ import Foundation
         order = try values.decode(Int.self, forKey: .order)
         displayName = try values.decodeIfPresent(String.self, forKey: .displayName) ?? ""
         signature = try values.decodeIfPresent(String.self, forKey: .signature) ?? ""
-        
+
         if let _hasKeys = try values.decodeIfPresent(Int.self, forKey: .hasKeys) {
             hasKeys = _hasKeys
         } else {
             hasKeys = 0
         }
-        
+
         if let _keys = try values.decodeIfPresent([Key].self, forKey: .keys) {
             keys = _keys
         } else {
@@ -138,7 +138,7 @@ extension Address {
 
 // FIXME: - MS: Remove when switch fully to Address_v2 and AddressKey_v2
 extension Address {
-    
+
     public var toAddress_v2: Address_v2 {
         .init(
             id: addressID,
@@ -154,11 +154,11 @@ extension Address {
             keys: keys.map(\.toAddressKey_v2)
         )
     }
-    
+
 }
 
 extension Key {
-    
+
     public var toAddressKey_v2: AddressKey_v2 {
         .init(
             id: keyID,
@@ -171,5 +171,5 @@ extension Key {
             flags: .init(rawValue: UInt8(keyFlags))
         )
     }
-    
+
 }

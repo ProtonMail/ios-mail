@@ -25,7 +25,7 @@ import Groot
 import ProtonCoreDataModel
 
 // sourcery: mock
-protocol CacheServiceProtocol: Service {
+protocol CacheServiceProtocol {
     func addNewLabel(serverResponse: [String: Any], objectID: String?, completion: (() -> Void)?)
     func updateLabel(serverReponse: [String: Any], completion: (() -> Void)?)
     func deleteLabels(objectIDs: [NSManagedObjectID], completion: (() -> Void)?)
@@ -44,14 +44,15 @@ protocol CacheServiceProtocol: Service {
 }
 
 class CacheService: CacheServiceProtocol {
-    typealias Dependencies = HasCoreDataContextProviderProtocol
+    typealias Dependencies = AnyObject
+    & HasCoreDataContextProviderProtocol
     & HasLastUpdatedStoreProtocol
     & HasPushUpdater
 
     let userID: UserID
 
-    private let dependencies: Dependencies
-    
+    private unowned let dependencies: Dependencies
+
     private var lastUpdatedStore: LastUpdatedStoreProtocol {
         dependencies.lastUpdatedStore
     }

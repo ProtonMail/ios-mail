@@ -28,14 +28,14 @@ public class SplitPacket {
         self.dataPacket = dataPacket
         self.keyPacket = keyPacket
     }
-    
+
     public let dataPacket: Data
     public let keyPacket: Data
-    
+
     var based64DataPacket: Based64String {
         return Based64String.init(raw: dataPacket)
     }
-    
+
     var based64KeyPacket: Based64String {
         return Based64String.init(raw: keyPacket)
     }

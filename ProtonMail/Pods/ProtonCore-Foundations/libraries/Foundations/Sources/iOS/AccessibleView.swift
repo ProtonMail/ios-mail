@@ -55,7 +55,7 @@ public extension AccessibleView {
     func generateAccessibilityIdentifiers() {
         generateAccessibilityIdentifiers(rootType: Self.self)
     }
-    
+
     /**
      Assign identifier to the object with the given prefix & identifier.
      It will be *SelfType.(prefix.)identifier*
@@ -74,20 +74,20 @@ public extension AccessibleView {
         object.accessibilityIdentifier = "\(type(of: self)).\(prefixIdentifier)"
         #endif
     }
-    
+
     #if DEBUG
     /**
         The inner one of the public assignIdentifiers in order to have recursive call on the super mirror.
      */
     private func assignIdentifiers(mirror: Mirror, rootType: Any.Type? ) {
         assignIdentifiers(mirror: mirror, deepnessLevel: 0)
-        
+
         if mirror.subjectType != rootType,
            let superMirror = mirror.superclassMirror {
             assignIdentifiers(mirror: superMirror, rootType: rootType)
         }
     }
-    
+
     /**
      Assign the identifiers to each child under the mirror once they're the following types.
       Recursively call this func once there're children under that child.
@@ -103,12 +103,12 @@ public extension AccessibleView {
       * **Lazy var** should be init beforehand, o.w. the value will be nil
      */
     private func assignIdentifiers(mirror: Mirror, prefix: String? = nil, deepnessLevel: Int) {
-        
+
         if deepnessLevel > maxDeepness { return }
 
         for child in mirror.children {
             var object: UIAccessibilityIdentification?
-            
+
             switch child.value {
             case let view as UIView:
                 object = view
@@ -117,10 +117,10 @@ public extension AccessibleView {
             default:
                 break
             }
-            
+
             if let object = object, let identifier = cleanLabel(child.label) {
                 let viewMirror = Mirror(reflecting: object)
-                
+
                 if viewMirror.children.count > 0 {
                     var prefixIdentifier = identifier
                     if let prefix = prefix {
@@ -133,7 +133,7 @@ public extension AccessibleView {
             }
         }
     }
-    
+
     /// Clean the label, esp. for lazy var.
     private func cleanLabel(_ label: String?) -> String? {
         label?.replacingOccurrences(of: ".storage", with: "")
@@ -143,7 +143,7 @@ public extension AccessibleView {
 }
 
 public extension UINavigationItem {
-    
+
     func assignNavItemIndentifiers() {
         let leftIdentifier = "\(type(of: self)).leftBarButtonItem"
         self.leftBarButtonItem?.accessibilityIdentifier = leftIdentifier

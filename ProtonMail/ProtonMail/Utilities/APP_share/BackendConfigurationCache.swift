@@ -26,7 +26,7 @@ protocol BackendConfigurationCacheProtocol {
 struct BackendConfigurationCache: BackendConfigurationCacheProtocol {
     private let userDefaults: UserDefaults
 
-    private enum Key: String {
+    enum Key: String {
         case environment
         case environmentCustomDomain
     }

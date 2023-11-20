@@ -42,7 +42,7 @@ final class HelpViewController: UIViewController, AccessibleView {
 
     weak var delegate: HelpViewControllerDelegate?
     var viewModel: HelpViewModel!
-    
+
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     // MARK: - Setup
@@ -86,7 +86,7 @@ final class HelpViewController: UIViewController, AccessibleView {
 // MARK: - Table view delegates
 
 extension HelpViewController: UITableViewDataSource {
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         viewModel.helpSections.count
     }
@@ -94,9 +94,9 @@ extension HelpViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.helpSections[section].count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         let helpItem = viewModel.helpSections[indexPath.section][indexPath.row]
         switch helpItem {
         case .staticText(let text):

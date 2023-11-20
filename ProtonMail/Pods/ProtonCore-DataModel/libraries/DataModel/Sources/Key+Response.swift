@@ -22,7 +22,7 @@
 import Foundation
 
 extension Key {
-    
+
     /// Initializes the Key with the response data [String:Any]
     public convenience init(response: [String: Any]) {
         self.init(keyID: response["ID"] as? String ?? "",

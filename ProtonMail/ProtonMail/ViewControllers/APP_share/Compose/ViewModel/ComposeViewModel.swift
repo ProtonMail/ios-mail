@@ -347,7 +347,7 @@ class ComposeViewModel: NSObject {
         let document = CSSMagic.parse(htmlString: html)
         if CSSMagic.darkStyleSupportLevel(
             document: document,
-            darkModeCache: dependencies.darkModeCache
+            darkModeStatus: dependencies.userDefaults[.darkModeStatus]
         ) == .protonSupport {
             supplementCSS = CSSMagic.generateCSSForDarkMode(document: document)
         }
@@ -696,34 +696,35 @@ extension ComposeViewModel {
     }
 
     private func getAddressFromPlusAlias(userAddress: [Address], originalAddress: String) -> Address? {
-        guard let _ = originalAddress.firstIndex(of: "+"),
-              let _ = originalAddress.firstIndex(of: "@") else { return nil }
+        guard let plusIndex = originalAddress.firstIndex(of: "+"),
+              let atIndex = originalAddress.firstIndex(of: "@") else { return nil }
         let normalizedAddress = originalAddress.canonicalizeEmail(scheme: .proton)
         guard let address = userAddress
             .first(where: {
                 $0.email.canonicalizeEmail(scheme: .proton) == normalizedAddress &&
                 $0.status == .enabled &&
                 $0.receive == .active
-            })
+            }),
+              address.email != originalAddress
         else { return nil }
-        if address.email == originalAddress {
-            return nil
-        } else {
-            return Address(
-                addressID: address.addressID,
-                domainID: address.domainID,
-                email: originalAddress,
-                send: address.send,
-                receive: address.receive,
-                status: address.status,
-                type: address.type,
-                order: address.order,
-                displayName: address.displayName,
-                signature: address.signature,
-                hasKeys: address.hasKeys,
-                keys: address.keys
-            )
-        }
+        let alias = originalAddress[plusIndex..<atIndex]
+        guard let atIndexInAddress = address.email.firstIndex(of: "@") else { return nil }
+        var email = address.email
+        email.insert(contentsOf: alias, at: atIndexInAddress)
+        return Address(
+            addressID: address.addressID,
+            domainID: address.domainID,
+            email: email,
+            send: address.send,
+            receive: address.receive,
+            status: address.status,
+            type: address.type,
+            order: address.order,
+            displayName: address.displayName,
+            signature: address.signature,
+            hasKeys: address.hasKeys,
+            keys: address.keys
+        )
     }
 }
 
@@ -1124,7 +1125,7 @@ extension ComposeViewModel {
     func fetchContacts() {
         emailPublisher = .init(
             userID: user.userID,
-            isContactCombine: dependencies.userCachedStatusProvider.isCombineContactOn,
+            isContactCombine: dependencies.userDefaults[.isCombineContactOn],
             contextProvider: dependencies.coreDataContextProvider
         )
         cancellable = emailPublisher?.contentDidChange.map { $0.map { email in
@@ -1178,9 +1179,8 @@ extension ComposeViewModel {
         let contactProvider: ContactProviderProtocol
         let helperDependencies: ComposerMessageHelper.Dependencies
         let fetchMobileSignatureUseCase: FetchMobileSignatureUseCase
-        let darkModeCache: DarkModeCacheProtocol
         let attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol
-        let userCachedStatusProvider: UserCachedStatusProvider
+        let userDefaults: UserDefaults
         let notificationCenter: NotificationCenter
     }
 

@@ -34,10 +34,10 @@ extension UsersManager: Migrate {
 
     var initalRun: Bool {
         return currentVersion == 0 &&
-            KeychainWrapper.keychain.data(forKey: CoderKey.keychainStore) == nil &&
-            KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) == nil &&
-            KeychainWrapper.keychain.data(forKey: CoderKey.userInfo) == nil &&
-            KeychainWrapper.keychain.data(forKey: CoderKey.usersInfo) == nil
+            keychain.data(forKey: CoderKey.keychainStore) == nil &&
+            keychain.data(forKey: CoderKey.authKeychainStore) == nil &&
+            keychain.data(forKey: CoderKey.userInfo) == nil &&
+            keychain.data(forKey: CoderKey.usersInfo) == nil
     }
 
     func rebuild(reason: RebuildReason) {

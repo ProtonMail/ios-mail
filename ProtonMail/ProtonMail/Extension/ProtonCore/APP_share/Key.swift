@@ -50,7 +50,6 @@ extension Key {
 
     var shortFingerprint: String {
         var capitalized = fingerprint.uppercased()
-        
         if capitalized.count > 8 {
             capitalized = String(capitalized.prefix(8))
         }

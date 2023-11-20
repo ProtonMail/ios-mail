@@ -40,6 +40,7 @@ protocol MailboxViewModelUIProtocol: AnyObject {
     func updateTitle()
     func updateUnreadButton(count: Int)
     func updateTheUpdateTimeLabel()
+    func selectionDidChange()
 }
 
 class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
@@ -76,7 +77,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     let labelProvider: LabelProviderProtocol
     private let contactProvider: ContactProviderProtocol
     let conversationProvider: ConversationProvider
-    private let welcomeCarrouselCache: WelcomeCarrouselCacheProtocol
 
     var viewModeIsChanged: (() -> Void)?
     var sendHapticFeedback:(() -> Void)?
@@ -136,7 +136,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
          conversationProvider: ConversationProvider,
          eventsService: EventsFetching,
          dependencies: Dependencies,
-         welcomeCarrouselCache: WelcomeCarrouselCacheProtocol,
          toolbarActionProvider: ToolbarActionProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
          totalUserCountClosure: @escaping () -> Int
@@ -156,7 +155,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         self.labelProvider = labelProvider
         self.conversationProvider = conversationProvider
         self.dependencies = dependencies
-        self.welcomeCarrouselCache = welcomeCarrouselCache
         self.toolbarActionProvider = toolbarActionProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
         super.init()
@@ -273,6 +271,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
 
     func fetchContacts() {
         contactProvider.fetchContacts(completion: nil)
+    }
+
+    func resetTourValue() {
+        dependencies.userDefaults[.lastTourVersion] = Constants.App.TourVersion
     }
 
     func tagUIModels(for conversation: ConversationEntity) -> [TagUIModel] {
@@ -433,6 +435,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     /// - Parameter section: section index
     /// - Returns: row count
     func rowCount(section: Int) -> Int {
+        guard diffableDataSource?.snapshot().indexOfSection(section) != nil else { return 0 }
         return diffableDataSource?.snapshot().numberOfItems(inSection: section) ?? 0
     }
 
@@ -658,7 +661,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     }
 
     func getOnboardingDestination() -> MailboxCoordinator.Destination? {
-        guard let tourVersion = self.welcomeCarrouselCache.lastTourVersion else {
+        guard let tourVersion = dependencies.userDefaults[.lastTourVersion] else {
             return .onboardingForNew
         }
         if tourVersion == Constants.App.TourVersion {
@@ -938,27 +941,15 @@ extension MailboxViewModel {
                 conversationProvider.markAsUnread(
                     conversationIDs: filteredConversationIDs,
                     labelID: labelID
-                ) { [weak self] result in
-                    defer {
-                        completion?()
-                    }
-                    guard let self = self else { return }
-                    if let _ = try? result.get() {
-                        self.eventsService.fetchEvents(labelID: self.labelId)
-                    }
+                ) { _ in
+                    completion?()
                 }
             } else {
                 conversationProvider.markAsRead(
                     conversationIDs: filteredConversationIDs,
                     labelID: labelId
-                ) { [weak self] result in
-                    defer {
-                        completion?()
-                    }
-                    guard let self = self else { return }
-                    if let _ = try? result.get() {
-                        self.eventsService.fetchEvents(labelID: self.labelId)
-                    }
+                ) { _ in
+                    completion?()
                 }
             }
         }
@@ -1003,16 +994,41 @@ extension MailboxViewModel {
 
 // Message Selection
 extension MailboxViewModel {
-    func select(id: String) {
-        self.selectedIDs.insert(id)
+
+    func canSelectMore() -> Bool {
+        if UserInfo.enableSelectAll {
+            let maximum = dependencies.featureFlagCache.featureFlags(for: user.userID)[.mailboxSelectionLimitation]
+            return selectedIDs.count < maximum
+        } else {
+            return true
+        }
+    }
+
+    /// - Returns: Does id allow to be added?
+    func select(id: String) -> Bool {
+        if UserInfo.enableSelectAll {
+            let maximum = dependencies.featureFlagCache.featureFlags(for: user.userID)[.mailboxSelectionLimitation]
+            guard selectedIDs.count < maximum else {
+                uiDelegate?.selectionDidChange()
+                return false
+            }
+            self.selectedIDs.insert(id)
+            uiDelegate?.selectionDidChange()
+            return true
+        } else {
+            selectedIDs.insert(id)
+            return true
+        }
     }
 
     func removeSelected(id: String) {
         self.selectedIDs.remove(id)
+        uiDelegate?.selectionDidChange()
     }
 
     func removeAllSelectedIDs() {
         self.selectedIDs.removeAll()
+        uiDelegate?.selectionDidChange()
     }
 
     func selectionContains(id: String) -> Bool {
@@ -1130,6 +1146,9 @@ extension MailboxViewModel {
         let fetchSenderImage: FetchSenderImageUseCase
         let checkProtonServerStatus: CheckProtonServerStatusUseCase
         let featureFlagCache: FeatureFlagCache
+        let userDefaults: UserDefaults
+        let fetchAttachmentUseCase: FetchAttachmentUseCase
+        let fetchAttachmentMetadataUseCase: FetchAttachmentMetadataUseCase
 
         init(
             fetchMessages: FetchMessagesUseCase,
@@ -1137,7 +1156,10 @@ extension MailboxViewModel {
             fetchMessageDetail: FetchMessageDetailUseCase,
             fetchSenderImage: FetchSenderImageUseCase,
             checkProtonServerStatus: CheckProtonServerStatusUseCase = CheckProtonServerStatus(),
-            featureFlagCache: FeatureFlagCache
+            featureFlagCache: FeatureFlagCache,
+            userDefaults: UserDefaults,
+            fetchAttachmentUseCase: FetchAttachmentUseCase,
+            fetchAttachmentMetadataUseCase: FetchAttachmentMetadataUseCase
         ) {
             self.fetchMessages = fetchMessages
             self.updateMailbox = updateMailbox
@@ -1145,6 +1167,9 @@ extension MailboxViewModel {
             self.fetchSenderImage = fetchSenderImage
             self.checkProtonServerStatus = checkProtonServerStatus
             self.featureFlagCache = featureFlagCache
+            self.userDefaults = userDefaults
+            self.fetchAttachmentUseCase = fetchAttachmentUseCase
+            self.fetchAttachmentMetadataUseCase = fetchAttachmentMetadataUseCase
         }
     }
 }
@@ -1217,7 +1242,6 @@ extension MailboxViewModel {
 }
 
 // MARK: - Prefetch
-
 extension MailboxViewModel {
     func itemsToPrefetch() -> [MailboxItem] {
         switch self.locationViewMode {
@@ -1289,21 +1313,77 @@ extension MailboxViewModel {
             }
         }
     }
+}
 
-    func isPreviewable(for indexPath: IndexPath) -> Bool {
-        guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID),
-              let mailboxItem = mailboxItem(at: indexPath) else {
-            return false
+// MARK: - Attachment Preview
+extension MailboxViewModel {
+    func previewableAttachments(for mailboxItem: MailboxItem) -> [AttachmentsMetadata] {
+        let isSpam = switch mailboxItem {
+            case .message(let message):
+                message.isSpam
+            case .conversation(let conversation):
+                conversation.contextLabelRelations.contains(where: { $0.labelID == Message.Location.spam.labelID })
         }
-        return mailboxItem.isPreviewable
-    }
-
-    func previewableAttachments(for indexPath: IndexPath) -> [AttachmentsMetadata] {
         guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID),
-              let mailboxItem = mailboxItem(at: indexPath) else {
+              !isSpam else {
             return []
         }
         return mailboxItem.previewableAttachments
+    }
+
+    func requestPreviewOfAttachment(
+        at indexPath: IndexPath,
+        index: Int,
+        completion: @escaping ((Result<URL, Error>) -> Void)
+    ) {
+        guard let mailboxItem = mailboxItem(at: indexPath),
+              let attachmentMetadata = mailboxItem.attachmentsMetadata[safe: index] else {
+            PMAssertionFailure("IndexPath should match MailboxItem")
+            completion(.failure(AttachmentPreviewError.indexPathDidNotMatch))
+            return
+        }
+
+        let attId = AttachmentID(attachmentMetadata.id)
+        let userKeys = user.toUserKeys()
+
+        Task  {
+            do {
+                let metadata = try await dependencies.fetchAttachmentMetadataUseCase.execution(
+                    params: .init(attachmentID: attId)
+                )
+                self.dependencies.fetchAttachmentUseCase
+                    .execute(params: .init(
+                        attachmentID: attId,
+                        attachmentKeyPacket: nil,
+                        purpose: .onlyDownload,
+                        userKeys: userKeys
+                    )) { result in
+                    switch result {
+                    case .success(let attFile):
+                        do {
+                            let fileData = try AttachmentDecrypter.decrypt(
+                                fileUrl: attFile.fileUrl,
+                                attachmentKeyPacket: metadata.keyPacket,
+                                userKeys: userKeys
+                            )
+                            let fileName = attachmentMetadata.name.cleaningFilename()
+                            let secureTempFile = SecureTemporaryFile(data: fileData, name: fileName)
+                            completion(.success(secureTempFile.url))
+                        } catch {
+                            completion(.failure(error))
+                        }
+                        
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
+            } catch {
+                await MainActor.run {
+                    completion(.failure(error))
+                }
+                SystemLogger.log(error: error)
+            }
+        }
     }
 }
 

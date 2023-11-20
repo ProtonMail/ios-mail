@@ -29,25 +29,25 @@ extension AuthService {
         struct Key {
             static let ssoResponseToken = "SSOResponseToken"
         }
-        
+
         let ssoResponseToken: SSOResponseToken
-        
+
         init(ssoResponseToken: SSOResponseToken) {
             self.ssoResponseToken = ssoResponseToken
         }
-        
+
         var path: String {
             "/auth/v4"
         }
-        
+
         var method: HTTPMethod {
             .post
         }
-        
+
         var parameters: [String: Any]? {
             [Key.ssoResponseToken: ssoResponseToken.token]
         }
-        
+
         var isAuth: Bool {
             false
         }

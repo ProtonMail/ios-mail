@@ -31,9 +31,6 @@ typealias EmailID = Phantom<EmailIDTag, String>
 enum LabelIDTag {}
 typealias LabelID = Phantom<LabelIDTag, String>
 
-enum UserIDTag {}
-typealias UserID = Phantom<UserIDTag, String>
-
 enum ConversationIDTag {}
 typealias ConversationID = Phantom<ConversationIDTag, String>
 

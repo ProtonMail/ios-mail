@@ -32,7 +32,7 @@ public struct UserParameters {
     public let challenge: [[String: Any]]
     public let productPrefix: String
     public let domain: String?
-    
+
     public init(userName: String, email: String?, phone: String?, modulusID: String, salt: String, verifer: String, challenge: [[String: Any]] = [], productPrefix: String, domain: String?) {
         self.userName = userName
         self.email = email
@@ -49,12 +49,12 @@ public struct UserParameters {
 extension AuthService {
     struct CreateUserEndpoint: Request {
         let userParameters: UserParameters
-        
+
         var challengeProperties: ChallengeProperties? {
             return ChallengeProperties.init(challenges: userParameters.challenge,
                                             productPrefix: userParameters.productPrefix)
         }
-        
+
         var parameters: [String: Any]? {
             let auth: [String: Any] = [
                 "Version": 4,

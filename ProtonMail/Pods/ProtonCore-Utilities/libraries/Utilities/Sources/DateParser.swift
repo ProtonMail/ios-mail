@@ -22,17 +22,17 @@
 import Foundation
 
 public enum DateParser {
-    
+
     /// locale code
     enum LocaleCode: String {
         case en_us = "en_US_POSIX"
     }
-    
+
     /// date format
     enum LocaleFormat: String {
         case en_us = "EEE, dd MMM yyyy HH:mm:ss zzz"
     }
-    
+
     /// convert a string datetime to a Date object
     ///   notes::if seeing more failure, we can try to use ISO8601DateFormatter() as a fallback
     /// - Parameter serverDate: server response header Date field

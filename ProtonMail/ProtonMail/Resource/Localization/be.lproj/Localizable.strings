@@ -443,6 +443,9 @@
 /* Alert title */
 "Notice" = "Заўвага";
 
+/* Title of alert in share extension. */
+"Error" = "Памылка";
+
 /* Action */
 "Don't remind me again" = "Больш не нагадваць";
 
@@ -579,7 +582,7 @@
 "Every time enter app" = "Падчас кожнага ўваходу ў праграму";
 
 /* Title */
-"Default" = "Прадвызначана";
+"Default" = "Прадвызначаны";
 
 /* Title */
 "Set" = "Задаць";
@@ -961,9 +964,6 @@
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Не ўдалося загрузіць змесціва!\nПаспрабуйце яшчэ раз.";
-
-/* Title of alert in share extension. */
-"Error" = "Памылка";
 
 /* Error message */
 "Failed to determine type of file" = "Не ўдалося вызначыць тып файла";
@@ -1935,6 +1935,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "Дзеянне па перамяшчэнні паведамлення (напрыклад, у архіў) прывядзе да пераходу да наступнага паведамлення.";
+
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "Адбылася нечаканая памылка. Звяжыцеся са службай падтрымкі.\nПамылка: %@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "Недастаткова месца на дыску";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Немагчыма адкрыць праграму, бо на дыску недастаткова месца. Выдаліце даныя, якія больш не выкарыстоўваеце і паўтарыце спробу.";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Немагчыма адкрыць паведамленне. Паспрабуйце яшчэ раз.";

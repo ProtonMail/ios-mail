@@ -33,7 +33,6 @@ final class ConversationDataServiceTests: XCTestCase {
         mockContextProvider = MockCoreDataContextProvider()
         mockEventsService = MockEventsService()
 
-        let mockContactCacheStatus = MockContactCacheStatusProtocol()
         sut = ConversationDataService(api: mockApiService,
                                       userID: userID,
                                       contextProvider: mockContextProvider,
@@ -41,7 +40,7 @@ final class ConversationDataServiceTests: XCTestCase {
                                       messageDataService: MockMessageDataService(),
                                       eventsService: mockEventsService,
                                       undoActionManager: MockUndoActionManager(),
-                                      contactCacheStatus: mockContactCacheStatus)
+                                      userDefaults: TestContainer().userDefaults)
     }
 
     override func tearDown() {

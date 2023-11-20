@@ -35,8 +35,13 @@ class NewMailboxMessageCellContentView: UIView {
     let scheduledContainer = SubviewsFactory.scheduledContainer
     let separatorView = UIView()
 
+    var selectAttachmentAction: ((Int) -> Void)?
+
     init() {
         super.init(frame: .zero)
+        messageContentView.selectAttachmentAction = { [weak self] index in
+            self?.selectAttachmentAction?(index)
+        }
         backgroundColor = ColorProvider.BackgroundNorm
         separatorView.backgroundColor = ColorProvider.InteractionWeak
         addSubviews()

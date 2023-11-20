@@ -40,14 +40,19 @@ class MailboxRobotInterface: CoreElements {
     required init() {
         super.init()
         if XCUIApplication().exists {
-            activityIndicator().waitUntilGone()
             table(id.mailboxTableViewIdentifier).firstMatch().waitUntilExists(time: 20)
+            activityIndicator().waitUntilGone()
+
+            // the spinner might still be visible (and blocking the UI) when a cell that we want to tap appears
+            // TODO: find if there's a better way to wait until the cell can be tapped
+            sleep(3)
         }
     }
     
     @discardableResult
     func clickMessageBySubject(_ subject: String) -> MessageRobot {
-        clickMessageBySubject(subject, retriesLeft: 3)
+        activityIndicator().waitUntilGone()
+        return clickMessageBySubject(subject, retriesLeft: 3)
     }
 
     private func clickMessageBySubject(_ subject: String, retriesLeft: Int) -> MessageRobot {

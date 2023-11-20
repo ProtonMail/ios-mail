@@ -221,7 +221,7 @@ final class ContactEditViewControllerTests: XCTestCase {
     func testEditContact_ChangeAllField_vCardDatasAreCorrect() throws {
         let vCardData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nITEM1.CATEGORIES:\r\nEND:VCARD\r\n"
         let vCardSignedData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nFN:DisplayName\r\nItem1.EMAIL;TYPE=:test@pm.me\r\nEND:VCARD\r\n"
-        let vCardSignedAndEncryptedData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nN:LastName;FirstName\r\nURL:www.proton.me\r\nBDAY;VALUE=text:1990-10-22\r\nGENDER:Gender\r\nTITLE:Title\r\nNICKNAME:NickName\r\nADR;TYPE=:;;Street;City;State;000;Country\r\nORG:Organization\r\nTEL:090000000\r\nORG:Organization2\r\nTITLE:Title2\r\nNICKNAME:NickName2\r\nEND:VCARD\r\n"
+        let vCardSignedAndEncryptedData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nN:LastName;FirstName\r\nURL:www.proton.me\r\nBDAY;VALUE=text:1990-10-22\r\nGENDER:Gender\r\nTITLE:Title\r\nNICKNAME:NickName\r\nADR;TYPE=:;;Street;City;State;000;Country\r\nORG:Organization\r\nTEL:090000000\r\nORG:Organization2\r\nTITLE:Title2\r\nNICKNAME:NickName2\r\nANNIVERSARY:20231022\r\nEND:VCARD\r\n"
 
         let data = try XCTUnwrap(
             try TestDataCreator.generateVCardTestData(
@@ -255,6 +255,7 @@ final class ContactEditViewControllerTests: XCTestCase {
         let birthday = "2023-01-01"
         let organization = String.randomString(20)
         let note = String.randomString(200)
+        let anniversary = "20231122"
 
         sut.customView.displayNameField.simulateType(text: displayName)
         sut.customView.firstNameField.simulateType(text: firstName)
@@ -299,13 +300,18 @@ final class ContactEditViewControllerTests: XCTestCase {
         )
         urlCell.valueField.simulateType(text: url)
 
-        let genderCell = try XCTUnwrap(
+        let anniversaryCell = try XCTUnwrap(
             sut.tableView(sut.customView.tableView, cellForRowAt: .init(row: 0, section: 9)) as? ContactEditInformationCell
+        )
+        anniversaryCell.valueField.simulateType(text: anniversary)
+
+        let genderCell = try XCTUnwrap(
+            sut.tableView(sut.customView.tableView, cellForRowAt: .init(row: 0, section: 10)) as? ContactEditInformationCell
         )
         genderCell.valueField.simulateType(text: gender)
 
         let noteCell = try XCTUnwrap(
-            sut.tableView(sut.customView.tableView, cellForRowAt: .init(row: 0, section: 11)) as? ContactEditTextViewCell
+            sut.tableView(sut.customView.tableView, cellForRowAt: .init(row: 0, section: 12)) as? ContactEditTextViewCell
         )
         noteCell.textView.simulate(textInput: note)
 
@@ -348,10 +354,50 @@ final class ContactEditViewControllerTests: XCTestCase {
         let rawNickNames = signedAndEncryptedVCard.getNicknames()
         XCTAssertEqual(rawNickNames[0].getNickname(), nickName)
         XCTAssertEqual(rawNickNames[1].getNickname(), "NickName2")
+        let rawAnniversary = signedAndEncryptedVCard.getAnniversary()
+        XCTAssertEqual(rawAnniversary?.getDate(), anniversary)
         let notes = signedAndEncryptedVCard.getNotes()
         XCTAssertEqual(notes.first?.getNote(), note)
     }
 
+    func testEditContact_removeAllNoteText_removeTheNoteField() throws {
+        let note = String.randomString(20)
+        let vCardSignedAndEncryptedData = "BEGIN:VCARD\nVERSION:4.0\nN:lastName;firstName\nNOTE:\(note)\nEND:VCARD"
+        let vCardSignedData = "BEGIN:VCARD\nVERSION:4.0\nFN:Name\nEND:VCARD"
+        let data = try XCTUnwrap(
+            try TestDataCreator.generateVCardTestData(
+                vCardSignAndEncrypt: vCardSignedAndEncryptedData,
+                vCardSign: vCardSignedData,
+                vCard: ""
+            )
+        )
+        viewModel = .init(
+            contactEntity: .make(name: "Name", cardData: data),
+            dependencies: .init(
+                user: mockUser,
+                contextProvider: fakeCoreDataService,
+                contactService: mockContactService
+            )
+        )
+        sut = .init(viewModel: viewModel, dependencies: userContainer)
+        sut.loadViewIfNeeded()
+
+        let noteCell = try XCTUnwrap(
+            sut.tableView(sut.customView.tableView, cellForRowAt: .init(row: 0, section: 6)) as? ContactEditTextViewCell
+        )
+        noteCell.textView.simulate(textInput: "")
+
+        clickDone()
+
+        wait(self.mockContactService.queueUpdateStub.wasCalled)
+
+        let parameters = try XCTUnwrap(mockContactService.queueUpdateStub.lastArguments)
+
+        let cardDatas = parameters.a2
+        let signedAndEncryptedVCardData = cardDatas[2]
+        let signedAndEncryptedVCard = try parseAndVerify(cardData: signedAndEncryptedVCardData)
+        XCTAssertNil(signedAndEncryptedVCard?.getNote())
+    }
 }
 
 extension ContactEditViewControllerTests {

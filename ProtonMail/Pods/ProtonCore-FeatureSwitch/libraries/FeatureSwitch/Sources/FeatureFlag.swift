@@ -22,22 +22,22 @@
 
 public struct FeatureFlag: OptionSet, Codable {
     public let rawValue: Int
-    
+
     public init(rawValue: Int) {
         self.rawValue = rawValue
     }
 
     /// default. feature will simplely return isEnable.
     public static let `default`: FeatureFlag = []
-    
+
     /// only avaliable for internal. if this is on. isenable will awasy false for none internal builds
     /// will check if DEBUG_CORE_INTERNALS defined . this will overried DEBUG_INTERNALS
-    public static let availableCoreInternal = FeatureFlag(rawValue: 1 << 0) //1
+    public static let availableCoreInternal = FeatureFlag(rawValue: 1 << 0) // 1
     /// will check if DEBUG_INTERNALS defined. client side can add this to different core internal.
-    public static let availableInternal = FeatureFlag(rawValue: 1 << 1) //2
-    
+    public static let availableInternal = FeatureFlag(rawValue: 1 << 1) // 2
+
     /// overried by local config. this works only when availableInternal  off
-    public static let localOverride = FeatureFlag(rawValue: 1 << 2) //4
+    public static let localOverride = FeatureFlag(rawValue: 1 << 2) // 4
     /// overried by remote config. this works only when availableInternal off
-    public static let remoteOverride = FeatureFlag(rawValue: 1 << 3) //8
+    public static let remoteOverride = FeatureFlag(rawValue: 1 << 3) // 8
 }

@@ -31,6 +31,7 @@ import ProtonCoreKeymaker
 import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonMailAnalytics
+import ProtonCoreFeatureFlags
 
 // sourcery: mock
 protocol UsersManagerProtocol: AnyObject {
@@ -54,7 +55,7 @@ extension UsersManagerProtocol {
 }
 
 /// manager all the users and there services
-class UsersManager: Service, UsersManagerProtocol {
+class UsersManager: UsersManagerProtocol {
     enum Version: Int {
         static let version: Int = 1 // this is app cache version
 
@@ -103,7 +104,7 @@ class UsersManager: Service, UsersManagerProtocol {
 
     private(set) var users: [UserManager] = [] {
         didSet {
-            dependencies.userCachedStatus.primaryUserSessionId = users.first?.authCredential.sessionID
+            dependencies.userDefaults[.primaryUserSessionId] = users.first?.authCredential.sessionID
         }
     }
 
@@ -113,12 +114,12 @@ class UsersManager: Service, UsersManagerProtocol {
 
     // Used to check if the account is already being deleted.
     private(set) var loggingOutUserIDs: Set<UserID> = Set()
-    private let keychain: Keychain
+    let keychain: Keychain
     private let coreKeyMaker: KeyMakerProtocol
     private unowned let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
-        self.doh.status = dependencies.userCachedStatus.isDohOn ? .on : .off
+        self.doh.status = dependencies.userDefaults[.isDohOn] ? .on : .off
         /// for migrate
         self.latestVersion = Version.version
         self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version, store: dependencies.userDefaults)
@@ -269,7 +270,15 @@ class UsersManager: Service, UsersManagerProtocol {
         Breadcrumbs.shared.add(message: "restored \(self.users.count) users", to: .randomLogout)
 
         if !ProcessInfo.isRunningUnitTests {
-            users.forEach { user in Task { await user.fetchUserInfo() } }
+            users.forEach { user in
+                Task {
+                    try await FeatureFlagsRepository.shared.fetchFlags(
+                        for: user.userID.rawValue,
+                        with: user.apiService
+                    )
+                    await user.fetchUserInfo()
+                }
+            }
         }
 
         self.users.first?.cacheService.cleanSoftDeletedMessagesAndConversation()
@@ -303,8 +312,10 @@ class UsersManager: Service, UsersManagerProtocol {
         }
         if !mailSettingsList.isEmpty,
            let lockedMailSettings = try? Locked<[String: MailSettings]>(clearValue: mailSettingsList, with: mainKey) {
-            dependencies.userDefaults.set(lockedMailSettings.encryptedValue,
-                                          forKey: CoderKey.mailSettingsStore)
+            dependencies.userDefaults.set(
+                lockedMailSettings.encryptedValue,
+                forKey: CoderKey.mailSettingsStore
+            )
         } else {
             dependencies.userDefaults.remove(forKey: CoderKey.mailSettingsStore)
         }
@@ -328,6 +339,7 @@ extension UsersManager {
         var isPrimaryAccountLogout = false
         loggingOutUserIDs.insert(user.userID)
         user.cleanUp().ensure {
+            FeatureFlagsRepository.shared.resetFlags(for: user.userID.rawValue)
             defer {
                 self.loggingOutUserIDs.remove(user.userID)
             }
@@ -409,14 +421,16 @@ extension UsersManager {
     }
 
     func clean() -> Promise<Void> {
-        Promise { seal in
+        LocalNotificationService.cleanUpAll()
+
+        return Promise { seal in
             Task {
                 SystemLogger.log(message: "UsersManager clean")
-                await UserManager.cleanUpAll()
+                await self.dependencies.queueManager.clearAll()
+                await self.dependencies.contextProvider.deleteAllData()
                 seal.fulfill_()
             }
         }.ensure {
-            sharedServices.get(by: CoreDataService.self).resetMainContextIfNeeded()
 
             self.users = []
             self.save()
@@ -857,7 +871,7 @@ extension UsersManager {
             if let randomProtection = RandomPinProtection.randomPin {
                 coreKeyMaker.deactivate(randomProtection)
             }
-            dependencies.userCachedStatus.keymakerRandomkey = nil
+            KeychainWrapper.keychain[.keymakerRandomKey] = nil
             RandomPinProtection.removeCyphertext(from: keychain)
             return
         }

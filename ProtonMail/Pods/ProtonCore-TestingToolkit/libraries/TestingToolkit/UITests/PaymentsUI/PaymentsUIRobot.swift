@@ -176,9 +176,9 @@ public enum PaymentsPlan: String {
 }
 
 public final class PaymentsUIRobot: CoreElements {
-    
+
     public let verify = Verify()
-    
+
     public final class Verify: CoreElements {
         @discardableResult
         public func paymentsUIScreenIsShown() -> PaymentsUIRobot {
@@ -186,40 +186,40 @@ public final class PaymentsUIRobot: CoreElements {
             return PaymentsUIRobot()
         }
     }
-    
+
     public func selectPlanCell(plan: PaymentsPlan) -> PaymentsUIRobot {
         cell(planCellIdentifier(name: plan.rawValue)).waitUntilExists().tap()
         return self
     }
-    
+
     public func selectCurrentPlanCell(plan: PaymentsPlan) -> PaymentsUIRobot {
         cell(currentPlanCellIdentifier(name: plan.rawValue)).waitUntilExists().tap()
         return self
     }
-    
+
     public func planButtonDoesNotExist(plan: PaymentsPlan) -> PaymentsUIRobot {
         button(selectPlanButtonIdentifier(name: plan.rawValue)).checkDoesNotExist()
         return self
     }
-    
+
     public func planButtonSelected(plan: PaymentsPlan) -> PaymentsUIRobot {
         button(selectPlanButtonIdentifier(name: plan.rawValue)).checkExists().checkSelected()
         return self
     }
-    
+
     @discardableResult
     public func verifyNumberOfCells(number: Int) -> PaymentsUIRobot {
         let count = XCUIApplication().tables.count
         XCTAssertEqual(count, number)
         return self
     }
-    
+
     @discardableResult
     func verifyStaticText(_ name: String) -> Self {
         staticText(name).waitUntilExists().checkExists()
         return self
     }
-    
+
     @discardableResult
     public func verifyNumberOfPlansToPurchase(number: Int) -> PaymentsUIRobot {
         table("PaymentsUIViewController.tableView").waitUntilExists().checkExists()
@@ -227,7 +227,7 @@ public final class PaymentsUIRobot: CoreElements {
         XCTAssertEqual(count, number)
         return self
     }
-    
+
     @discardableResult
     public func verifyTableCellStaticText(cellName: String, name: String) -> PaymentsUIRobot {
         table("PaymentsUIViewController.tableView").waitUntilExists().checkExists()
@@ -235,7 +235,7 @@ public final class PaymentsUIRobot: CoreElements {
         XCTAssertTrue(staticTexts[name].exists)
         return self
     }
-    
+
     @discardableResult
     public func verifyPlan(plan: PaymentsPlan) -> PaymentsUIRobot {
         plan.getDescription.forEach {
@@ -257,41 +257,41 @@ public final class PaymentsUIRobot: CoreElements {
         }
         return self
     }
-    
+
     public func expandPlan(plan: PaymentsPlan) -> PaymentsUIRobot {
         button(expandPlanButtonIdentifier(name: plan.rawValue)).waitUntilExists().tap()
         return self
     }
-    
+
     @discardableResult
     public func verifyExpirationTime() -> PaymentsUIRobot {
         let expirationString = String(format: PUITranslations.plan_details_renew_expired.l10n, getEndDateString)
         staticText(expirationString).checkExists()
         return self
     }
-    
+
     @discardableResult
     public func verifyRenewTime() -> PaymentsUIRobot {
         let expirationString = String(format: PUITranslations.plan_details_renew_auto_expired.l10n, getEndDateString)
         staticText(expirationString).checkExists()
         return self
     }
-    
+
     public func wait(timeInterval: TimeInterval) -> PaymentsUIRobot {
         Wait().wait(timeInterval: timeInterval)
         return self
     }
-    
+
     public func planButtonTap(plan: PaymentsPlan) -> PaymentsUISystemRobot {
         button(selectPlanButtonIdentifier(name: plan.rawValue)).tap()
         return PaymentsUISystemRobot()
     }
-    
+
     public func extendSubscriptionTap() -> PaymentsUISystemRobot {
         button(extendSubscriptionText).waitUntilExists().tap()
         return PaymentsUISystemRobot()
     }
-    
+
     public func extendSubscriptionSelected() -> PaymentsUIRobot {
         button(extendSubscriptionText).checkExists().checkSelected()
         return PaymentsUIRobot()
@@ -310,7 +310,7 @@ public final class PaymentsUIRobot: CoreElements {
     }
 
     public final class PaymentsUISystemRobot: CoreElements {
-        
+
         public func verifyPayment<T: CoreElements>(robot _: T.Type, password: String?) -> T {
             Wait().wait(timeInterval: 3)
             confirmation(password: password)
@@ -329,35 +329,35 @@ public final class PaymentsUIRobot: CoreElements {
             #endif
             systemButtonTap(name: okButtonName)
         }
-        
+
         private func isButtonExist(name: String) -> Bool {
             let button = XCUIApplication().buttons[name]
             Wait(time: 2).forElement(button)
             return button.exists
         }
-        
+
         private func systemButtonTap(name: String) {
             let button = springboard.buttons[name]
             Wait(time: 4).forElement(button)
             button.tap()
         }
-        
+
         private func systemEditField(name: String, text: String) {
             let textField = springboard.secureTextFields[name]
             Wait().forElement(textField)
             textField.typeText(text)
         }
-        
+
         private var springboard: XCUIApplication {
             return XCUIApplication(bundleIdentifier: "com.apple.springboard")
         }
     }
-    
+
     public func activateApp<T: CoreElements>(app: XCUIApplication, robot _: T.Type) -> T {
         app.activate()
         return T()
     }
-    
+
     public func terminateApp<T: CoreElements>(app: XCUIApplication, robot _: T.Type) -> T {
         app.terminate()
         return T()

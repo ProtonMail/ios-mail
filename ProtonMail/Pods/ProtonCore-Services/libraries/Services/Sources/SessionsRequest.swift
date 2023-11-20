@@ -36,7 +36,7 @@ public final class SessionsRequest: Request {
     public let method: HTTPMethod = .post
     public let isAuth = false
     public let challenge: ChallengeProperties?
-    
+
     public var challengeProperties: ChallengeProperties? {
         return challenge
     }

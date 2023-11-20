@@ -19,6 +19,22 @@ extension UserContainer: HasAppAccessResolver {
     }
 }
 
+protocol HasAppRatingStatusProvider {
+    var appRatingStatusProvider: AppRatingStatusProvider { get }
+}
+
+extension GlobalContainer: HasAppRatingStatusProvider {
+    var appRatingStatusProvider: AppRatingStatusProvider {
+        appRatingStatusProviderFactory()
+    }
+}
+
+extension UserContainer: HasAppRatingStatusProvider {
+    var appRatingStatusProvider: AppRatingStatusProvider {
+        globalContainer.appRatingStatusProvider
+    }
+}
+
 protocol HasAttachmentMetadataStrippingProtocol {
     var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol { get }
 }
@@ -179,6 +195,38 @@ extension UserContainer: HasLockPreventor {
     }
 }
 
+protocol HasLaunchService {
+    var launchService: LaunchService { get }
+}
+
+extension GlobalContainer: HasLaunchService {
+    var launchService: LaunchService {
+        launchServiceFactory()
+    }
+}
+
+extension UserContainer: HasLaunchService {
+    var launchService: LaunchService {
+        globalContainer.launchService
+    }
+}
+
+protocol HasMailEventsPeriodicScheduler {
+    var mailEventsPeriodicScheduler: MailEventsPeriodicScheduler { get }
+}
+
+extension GlobalContainer: HasMailEventsPeriodicScheduler {
+    var mailEventsPeriodicScheduler: MailEventsPeriodicScheduler {
+        mailEventsPeriodicSchedulerFactory()
+    }
+}
+
+extension UserContainer: HasMailEventsPeriodicScheduler {
+    var mailEventsPeriodicScheduler: MailEventsPeriodicScheduler {
+        globalContainer.mailEventsPeriodicScheduler
+    }
+}
+
 protocol HasNotificationCenter {
     var notificationCenter: NotificationCenter { get }
 }
@@ -227,22 +275,6 @@ extension UserContainer: HasPinCodeVerifier {
     }
 }
 
-protocol HasPinFailedCountCache {
-    var pinFailedCountCache: PinFailedCountCache { get }
-}
-
-extension GlobalContainer: HasPinFailedCountCache {
-    var pinFailedCountCache: PinFailedCountCache {
-        pinFailedCountCacheFactory()
-    }
-}
-
-extension UserContainer: HasPinFailedCountCache {
-    var pinFailedCountCache: PinFailedCountCache {
-        globalContainer.pinFailedCountCache
-    }
-}
-
 protocol HasPushUpdater {
     var pushUpdater: PushUpdater { get }
 }
@@ -272,6 +304,22 @@ extension GlobalContainer: HasQueueManager {
 extension UserContainer: HasQueueManager {
     var queueManager: QueueManager {
         globalContainer.queueManager
+    }
+}
+
+protocol HasSetupCoreDataService {
+    var setupCoreDataService: SetupCoreDataService { get }
+}
+
+extension GlobalContainer: HasSetupCoreDataService {
+    var setupCoreDataService: SetupCoreDataService {
+        setupCoreDataServiceFactory()
+    }
+}
+
+extension UserContainer: HasSetupCoreDataService {
+    var setupCoreDataService: SetupCoreDataService {
+        globalContainer.setupCoreDataService
     }
 }
 
@@ -425,6 +473,16 @@ extension UserContainer: HasConversationStateService {
     }
 }
 
+protocol HasEventProcessor {
+    var eventProcessor: EventProcessor { get }
+}
+
+extension UserContainer: HasEventProcessor {
+    var eventProcessor: EventProcessor {
+        eventProcessorFactory()
+    }
+}
+
 protocol HasEventsFetching {
     var eventsService: EventsFetching { get }
 }
@@ -462,6 +520,16 @@ protocol HasFetchAttachment {
 extension UserContainer: HasFetchAttachment {
     var fetchAttachment: FetchAttachment {
         fetchAttachmentFactory()
+    }
+}
+
+protocol HasFetchAttachmentMetadataUseCase {
+    var fetchAttachmentMetadata: FetchAttachmentMetadataUseCase { get }
+}
+
+extension UserContainer: HasFetchAttachmentMetadataUseCase {
+    var fetchAttachmentMetadata: FetchAttachmentMetadataUseCase {
+        fetchAttachmentMetadataFactory()
     }
 }
 

@@ -119,13 +119,13 @@ extension AppRatingService {
             featureFlagService: FeatureFlagsDownloadServiceProtocol,
             appRating: AppRatingWrapper,
             internetStatus: InternetConnectionStatusProviderProtocol = InternetConnectionStatusProvider.shared,
-            appRatingPrompt: AppRatingStatusProvider,
+            appRatingStatusProvider: AppRatingStatusProvider,
             notificationCenter: NotificationCenter = .default
         ) {
             self.internetStatus = internetStatus
             self.appRating = appRating
             self.featureFlagService = featureFlagService
-            self.appRatingStatusProvider = appRatingPrompt
+            self.appRatingStatusProvider = appRatingStatusProvider
             self.notificationCenter = notificationCenter
         }
     }

@@ -46,6 +46,8 @@ struct Constants {
                 return "ios-mail@\(Bundle.main.bundleShortVersion)-dev"
             }
         }
+
+        static let eventsPollingInterval: TimeInterval = 30
     }
 
     enum FreePlan {

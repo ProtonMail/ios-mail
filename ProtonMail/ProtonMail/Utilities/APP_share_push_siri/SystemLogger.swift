@@ -148,6 +148,7 @@ extension SystemLogger {
         case artificialSlowdown = "Artificial slowdown"
         case assertionFailure = "AssertionFailure"
         case connectionStatus = "ConnectionStatus"
+        case contacts = "Contacts"
         case sendMessage = "SendMessage"
         case pushNotification = "PushNotification"
         case encryption = "Encryption"
@@ -158,6 +159,7 @@ extension SystemLogger {
         case blockSender = "BlockSender"
         case backgroundTask = "BackgroundTask"
         case loginUnlockFailed = "loginUnlockFailed"
+        case eventLoop = "EventLoop"
         case restoreUserData = "RestoreUserData"
         case unauthorizedSession = "UnauthorizedSession"
     }

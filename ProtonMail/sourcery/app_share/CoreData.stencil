@@ -16,14 +16,6 @@ protocol DeletableManagedObject: NSManagedObject {
 
 extension DeletableManagedObject {
     static func delete(in context: NSManagedObjectContext, basedOn predicate: NSPredicate) {
-        deleteWithOptionalPredicate(in: context, predicate: predicate)
-    }
-
-    static func deleteAll(in context: NSManagedObjectContext) {
-        deleteWithOptionalPredicate(in: context, predicate: nil)
-    }
-
-    private static func deleteWithOptionalPredicate(in context: NSManagedObjectContext, predicate: NSPredicate?) {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
         fetchRequest.predicate = predicate
 

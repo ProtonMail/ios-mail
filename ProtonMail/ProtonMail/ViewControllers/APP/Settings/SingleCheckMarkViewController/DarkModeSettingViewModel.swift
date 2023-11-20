@@ -25,16 +25,12 @@ final class DarkModeSettingViewModel: SettingsSingleCheckMarkVMProtocol {
     let headerHeight: CGFloat = UITableView.automaticDimension
     let headerTopPadding: CGFloat = 24
     let footerTopPadding: CGFloat = 0
-    let options = [
-        DarkModeStatus.followSystem,
-        DarkModeStatus.forceOn,
-        DarkModeStatus.forceOff
-    ]
+    let options = DarkModeStatus.allCases
 
-    private(set) var darkModeCache: DarkModeCacheProtocol
+    private let userDefaults: UserDefaults
 
-    init(darkModeCache: DarkModeCacheProtocol) {
-        self.darkModeCache = darkModeCache
+    init(userDefaults: UserDefaults) {
+        self.userDefaults = userDefaults
     }
 
     func sectionHeader() -> NSAttributedString? {
@@ -54,7 +50,7 @@ final class DarkModeSettingViewModel: SettingsSingleCheckMarkVMProtocol {
 
     func cellShouldShowSelection(of indexPath: IndexPath) -> Bool {
         guard indexPath.section == 0 else { return false }
-        switch darkModeCache.darkModeStatus {
+        switch userDefaults[.darkModeStatus] {
         case .followSystem:
             return indexPath.row == 0
         case .forceOn:
@@ -66,8 +62,8 @@ final class DarkModeSettingViewModel: SettingsSingleCheckMarkVMProtocol {
 
     func selectItem(indexPath: IndexPath) {
         guard let newStatus = options[safe: indexPath.row],
-              newStatus != darkModeCache.darkModeStatus else { return }
-        darkModeCache.darkModeStatus = newStatus
+              newStatus != userDefaults[.darkModeStatus] else { return }
+        userDefaults[.darkModeStatus] = newStatus
             NotificationCenter.default.post(name: .shouldUpdateUserInterfaceStyle, object: nil)
     }
 }

@@ -119,11 +119,14 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
         if let targetID = self.viewModel.targetID {
             self.cellTapped(messageId: targetID)
         }
-        if !UserInfo.isConversationSwipeEnabled {
+        if !viewModel.isMessageSwipeNavigationEnabled {
             showToolbarCustomizeSpotlightIfNeeded()
         }
 
-        conversationIsReadyToBeDisplayedTimer = .scheduledTimer(withTimeInterval: 0.25, repeats: false) { [weak self] _ in
+        conversationIsReadyToBeDisplayedTimer = .scheduledTimer(
+            withTimeInterval: 0.25,
+            repeats: false
+        ) { [weak self] _ in
             self?.displayConversation()
         }
 
@@ -734,7 +737,7 @@ private extension ConversationViewController {
     }
 
     private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {
-        guard UserInfo.isConversationSwipeEnabled,
+        guard viewModel.isMessageSwipeNavigationEnabled,
               !viewModel.user.shouldMoveToNextMessageAfterMove else {
             return
         }
@@ -834,6 +837,7 @@ extension ConversationViewController {
 
     @objc
     private func unreadReadAction() {
+        guard viewModel.messagesAreLoaded else { return }
         viewModel.handleToolBarAction(.markUnread)
         navigationController?.popViewController(animated: true)
     }

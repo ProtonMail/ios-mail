@@ -31,11 +31,11 @@ public struct RandomPinProtection: ProtectionStrategy {
     public static var keychainLabel: String {
         return "RandomPinProtection"
     }
-    
+
     public let keychain: Keychain
     private let pin: String
     private var version: Version = .v1
-    
+
     enum Version: String {
         case lagcy = "0"
         case v1 = "1"
@@ -49,25 +49,25 @@ public struct RandomPinProtection: ProtectionStrategy {
             }
         }
     }
-    
+
     public init(pin: String, keychain: Keychain) {
         self.pin = pin
         self.keychain = keychain
     }
-    
+
     internal init(pin: String, keychain: Keychain, version: Version) {
         self.pin = pin
         self.keychain = keychain
         self.version = version
     }
-    
+
     private typealias Const = RandomPinProtectionConstants
-    
+
     enum Errors: Error {
         case saltNotFound
         case failedToDeriveKey
     }
-    
+
     public func lock(value: MainKey) throws {
         let salt = RandomPinProtection.generateRandomValue(length: 8)
         var error: NSError?
@@ -79,7 +79,7 @@ public struct RandomPinProtection: ProtectionStrategy {
         self.keychain.set(Data(salt), forKey: Const.saltKeychainKey)
         self.keychain.set(self.version.rawValue, forKey: Const.versionKey)
     }
-    
+
     public func unlock(cypherBits: Data) throws -> MainKey {
         guard let salt = self.keychain.data(forKey: Const.saltKeychainKey) else {
             throw Errors.saltNotFound
@@ -88,7 +88,7 @@ public struct RandomPinProtection: ProtectionStrategy {
         guard let ethemeralKey = CryptoSubtle.DeriveKey(pin, salt, Const.numberOfIterations, &error) else {
             throw error ?? Errors.failedToDeriveKey
         }
-        
+
         let curVer: Version = Version.init(raw: self.keychain.string(forKey: Const.versionKey))
         do {
             switch curVer {
@@ -105,7 +105,7 @@ public struct RandomPinProtection: ProtectionStrategy {
             throw error
         }
     }
-    
+
     public static func removeCyphertext(from keychain: Keychain) {
         (self as ProtectionStrategy.Type).removeCyphertext(from: keychain)
         keychain.remove(forKey: Const.saltKeychainKey)

@@ -32,7 +32,7 @@ final class PMInternalTextField: UITextField {
 
     // MARK: - Properties
     weak var internalDelegate: PMInternalTextFieldDelegate?
-    
+
     var isError: Bool = false {
         didSet {
             setBorder()
@@ -62,7 +62,7 @@ final class PMInternalTextField: UITextField {
         button.addTarget(self, action: #selector(self.togglePasswordVisibility), for: .touchUpInside)
         return button
     }()
-    
+
     private lazy var clearButton: UIButton = {
         let button = UIButton(type: .custom)
         button.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
@@ -88,7 +88,7 @@ final class PMInternalTextField: UITextField {
         layer.borderWidth = 1
         layer.borderColor = ColorProvider.InteractionWeakDisabled
     }
-    
+
     var isUmnaskButton: Bool {
         return unmaskButton.image(for: .normal) != nil
     }
@@ -166,7 +166,7 @@ final class PMInternalTextField: UITextField {
             selectedTextRange = existingSelectedTextRange
         }
     }
-    
+
     @objc private func clearContent() {
         text = ""
         internalDelegate?.didClearEditing()

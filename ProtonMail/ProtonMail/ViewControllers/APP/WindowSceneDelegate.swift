@@ -98,13 +98,16 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         self.coordinator.scene = scene
-        self.coordinator.start(launchedByNotification: notificationInfo != nil)
+        self.coordinator.start(launchedByNotification: notificationInfo != nil) {
 
-        // For default mail function
-        _ = connectionOptions.urlContexts.first { context in
-            self.handleUrlOpen(context.url)
+            DispatchQueue.main.async {
+                // For default mail function
+                _ = connectionOptions.urlContexts.first { context in
+                    self.handleUrlOpen(context.url)
+                }
+                self.onlyKeepOneActivateSession(session: session)
+            }
         }
-        onlyKeepOneActivateSession(session: session)
     }
 
     // handle the shorcut item in scene(_:willConnectTo:options:)

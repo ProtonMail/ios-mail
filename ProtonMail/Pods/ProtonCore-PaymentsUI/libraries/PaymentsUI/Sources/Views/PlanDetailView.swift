@@ -48,7 +48,7 @@ final class PlanDetailView: UIView {
     }
 
     // MARK: - Properties
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         load()
@@ -75,22 +75,22 @@ final class PlanDetailView: UIView {
         detailLabel.backgroundColor = .clear
         detailLabel.font = .adjustedFont(forTextStyle: .subheadline)
     }
-    
+
     func configure(icon: UIImage? = nil, text: String) {
         iconImageView.image = icon ?? IconProvider.checkmark
         detailLabel.text = text
     }
-    
+
     func configure(iconUrl: URL? = nil, text: String) {
         iconImageView.sd_setImage(with: iconUrl) { [weak self] image, error, cacheType, url in
             guard error == nil else {
                 self?.iconImageView.image = IconProvider.checkmark
                 return
             }
-            
+
             self?.iconImageView.image = self?.iconImageView.image?.withRenderingMode(.alwaysTemplate)
         }
-        
+
         detailLabel.text = text
     }
 }

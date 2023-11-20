@@ -37,7 +37,7 @@ public protocol HumanVerifyDelegate: AnyObject {
 
 public enum HumanVerifyFinishReason {
     public typealias HumanVerifyHeader = [String: Any]
-    
+
     case verification(header: HumanVerifyHeader, verificationCodeBlock: SendVerificationCodeBlock?)
     case close
     case closeWithError(code: Int, description: String)

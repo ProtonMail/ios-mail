@@ -21,6 +21,7 @@ final class BackgroundTimer {
     private static let lastForegroundDateKey = "lastForegroundDateKey"
     private let userDefaults: UserDefaults
     static let shared = BackgroundTimer()
+
     init(userDefaults: UserDefaults = .standard) {
         self.userDefaults = userDefaults
     }

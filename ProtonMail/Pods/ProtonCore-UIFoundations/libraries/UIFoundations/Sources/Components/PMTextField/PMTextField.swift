@@ -105,7 +105,7 @@ public class PMTextField: UIView, AccessibleView {
             textField.keyboardType = allowOnlyNumbers ? .numberPad : keyboardType
         }
     }
-    
+
     /**
      Whether text input should be converted to the uppercase text
      */
@@ -179,7 +179,7 @@ public class PMTextField: UIView, AccessibleView {
                 textField.attributedPlaceholder = nil
                 return
             }
-            
+
             let foregroundColor: UIColor = ColorProvider.TextHint
             textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
                 NSAttributedString.Key.foregroundColor: foregroundColor,
@@ -302,10 +302,10 @@ public class PMTextField: UIView, AccessibleView {
             textField.spellCheckingType = newValue
         }
     }
-    
+
     public var textFieldTopAnchor: NSLayoutYAxisAnchor { textField.topAnchor }
     public var textFieldBottomAnchor: NSLayoutYAxisAnchor { textField.bottomAnchor }
-    
+
     /**
      textField isEnabled property
      */
@@ -317,7 +317,7 @@ public class PMTextField: UIView, AccessibleView {
             textField.isEnabled = newValue
         }
     }
-    
+
     /**
      textField isUserInteractionEnabled property
      */
@@ -329,7 +329,7 @@ public class PMTextField: UIView, AccessibleView {
             textField.isUserInteractionEnabled = newValue
         }
     }
-    
+
     /**
      textField textAlignment property
      */
@@ -404,7 +404,7 @@ public class PMTextField: UIView, AccessibleView {
         suffixLabel.font = .adjustedFont(forTextStyle: .body)
         assistiveTextLabel.font = .adjustedFont(forTextStyle: .footnote)
     }
-    
+
     private func updateClearMode() {
         if let text = textField.text, !self.textField.isUmnaskButton, suffix == nil {
             if text.isEmpty {

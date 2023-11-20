@@ -29,7 +29,7 @@ public final class DefaultPlanRequest: BaseApiRequest<DefaultPlanResponse> {
     override public init(api: APIService) {
         super.init(api: api)
     }
-    
+
     override public var path: String { super.path + "/v4/plans/default" }
 
     override public var isAuth: Bool { false }

@@ -30,7 +30,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonMailAnalytics
 
-protocol MessageDataServiceProtocol: Service {
+protocol MessageDataServiceProtocol: AnyObject {
     var pushNotificationMessageID: String? { get set }
     var messageDecrypter: MessageDecrypter { get }
 
@@ -87,7 +87,7 @@ protocol MessageDataServiceProtocol: Service {
 }
 
 // sourcery: mock
-protocol LocalMessageDataServiceProtocol: Service {
+protocol LocalMessageDataServiceProtocol {
     func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool)
 }
 
@@ -326,9 +326,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     private func cachePropertiesForBackground(in message: Message) {
         // these cached objects will allow us to update the draft, upload attachment and send the message after the mainKey will be locked
         // they are transient and will not be persisted in the db, only in managed object context
-        message.cachedPassphrase = userDataSource!.mailboxPassword
-        message.cachedAuthCredential = userDataSource!.authCredential
-        message.cachedUser = userDataSource!.userInfo
+        message.cachedPassphrase = userDataSource?.mailboxPassword
+        message.cachedAuthCredential = userDataSource?.authCredential
+        message.cachedUser = userDataSource?.userInfo
         if let addressID = message.addressID {
             message.cachedAddress = defaultUserAddress(of: AddressID(addressID)) // computed property depending on current user settings
         }
@@ -668,19 +668,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     private func signout() {
         self.queue(.signout)
-    }
-
-    static func cleanUpAll() async {
-        let coreDataService = sharedServices.get(by: CoreDataService.self)
-        let queueManager = sharedServices.get(by: QueueManager.self)
-
-        await queueManager.clearAll()
-
-        coreDataService.performAndWaitOnRootSavingContext { context in
-            Message.deleteAll(in: context)
-            Conversation.deleteAll(in: context)
-            _ = context.saveUpstreamIfNeeded()
-        }
     }
 
     func cleanMessage(removeAllDraft: Bool = true, cleanBadgeAndNotifications: Bool) {

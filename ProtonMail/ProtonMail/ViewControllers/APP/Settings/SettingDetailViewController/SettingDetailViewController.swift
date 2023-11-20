@@ -100,6 +100,7 @@ class SettingDetailViewController: UIViewController, AccessibleView {
         if viewModel.isDisplaySwitch() {
             switchLabel.set(text: viewModel.getSwitchText(),
                             preferredFont: .body)
+            switchLabel.adjustsFontSizeToFitWidth = true
             switcher.isOn = viewModel.getSwitchStatus()
             switchView.isHidden = false
         } else {

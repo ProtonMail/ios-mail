@@ -20,28 +20,24 @@ import XCTest
 
 final class ToolbarCustomizeViewModelTests: XCTestCase {
     var sut: ToolbarCustomizeViewModel<MessageViewActionSheetAction>!
-    var toolbarCustomizationInfoBubbleViewStatusProviderMock: MockToolbarCustomizationInfoBubbleViewStatusProvider!
+    private var testContainer: TestContainer!
 
     override func setUp() {
         super.setUp()
-        toolbarCustomizationInfoBubbleViewStatusProviderMock = MockToolbarCustomizationInfoBubbleViewStatusProvider()
 
-        let globalContainer = GlobalContainer()
-        globalContainer.toolbarCustomizationInfoBubbleViewStatusProviderFactory.register {
-            self.toolbarCustomizationInfoBubbleViewStatusProviderMock
-        }
+        testContainer = .init()
 
         sut = ToolbarCustomizeViewModel<MessageViewActionSheetAction>(
             currentActions: [],
             allActions: MessageViewActionSheetAction.allCases,
-            dependencies: globalContainer
+            dependencies: testContainer
         )
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
-        toolbarCustomizationInfoBubbleViewStatusProviderMock = nil
+        testContainer = nil
     }
 
     func testFetchNumberOfSections_return2() {
@@ -240,12 +236,12 @@ final class ToolbarCustomizeViewModelTests: XCTestCase {
     }
 
     func testHideInfoBubbleView() {
-        toolbarCustomizationInfoBubbleViewStatusProviderMock.shouldHideToolbarCustomizeInfoBubbleViewStub.fixture = false
+        testContainer.userDefaults[.toolbarCustomizationInfoBubbleViewIsShown] = false
         XCTAssertTrue(sut.shouldShowInfoBubbleView)
 
         sut.hideInfoBubbleView()
 
-        XCTAssertTrue(toolbarCustomizationInfoBubbleViewStatusProviderMock.shouldHideToolbarCustomizeInfoBubbleViewStub.getWasCalled)
+        XCTAssertTrue(testContainer.userDefaults[.toolbarCustomizationInfoBubbleViewIsShown])
     }
 
     func testMoveAction_toInvalidSection_noChangeIsApplied() {

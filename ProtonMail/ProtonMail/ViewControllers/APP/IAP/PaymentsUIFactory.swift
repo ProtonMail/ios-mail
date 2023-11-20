@@ -19,9 +19,9 @@ import LifetimeTracker
 import ProtonCorePaymentsUI
 
 final class PaymentsUIFactory {
-    typealias Dependencies = HasUserManager
+    typealias Dependencies = AnyObject & HasUserManager
 
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies

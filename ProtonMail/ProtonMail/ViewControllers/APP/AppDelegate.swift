@@ -27,7 +27,7 @@ import ProtonCoreCrypto
 import ProtonCoreCryptoGoImplementation
 import ProtonCoreDataModel
 import ProtonCoreDoh
-import ProtonCoreFeatureSwitch
+import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 import ProtonCoreLog
 import ProtonCoreNetworking
@@ -43,9 +43,7 @@ import UserNotifications
 @UIApplicationMain
 class AppDelegate: UIResponder {
     lazy var coordinator: WindowsCoordinator = {
-        let coordinator = WindowsCoordinator(dependencies: dependencies)
-        coordinator.delegate = self
-        return coordinator
+        WindowsCoordinator(dependencies: dependencies)
     }()
     private var currentState: UIApplication.State = .active
 
@@ -94,14 +92,11 @@ extension AppDelegate: UIApplicationDelegate {
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable) | \(appVersion)"
         SystemLogger.log(message: message, category: .appLifeCycle)
 
+        cleanKeychainInCaseOfAppReinstall()
         let appCache = AppCacheService(dependencies: dependencies)
         appCache.restoreCacheWhenAppStart()
 
-        sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
-
         let coreKeyMaker = dependencies.keyMaker
-        sharedServices.add(Keymaker.self, for: coreKeyMaker)
-        sharedServices.add(KeyMakerProtocol.self, for: coreKeyMaker)
 
         if ProcessInfo.isRunningUnitTests {
             // swiftlint:disable:next force_try
@@ -112,31 +107,19 @@ extension AppDelegate: UIApplicationDelegate {
         }
 
         let usersManager = dependencies.usersManager
-        let queueManager = dependencies.queueManager
-        sharedServices.add(QueueManager.self, for: queueManager)
-
         let unlockManager = dependencies.unlockManager
         unlockManager.delegate = self
 
         springboardShortcutsService = .init(dependencies: dependencies)
 
-        sharedServices.add(UsersManager.self, for: usersManager)
-        sharedServices.add(PushNotificationService.self, for: dependencies.pushService)
-        sharedServices.add(NotificationCenter.self, for: NotificationCenter.default)
-
 #if DEBUG
-        if ProcessInfo.isRunningUnitTests {
-            sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
-            sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
-        } else {
+        if !ProcessInfo.isRunningUnitTests {
             let lifetimeTrackerIntegration = LifetimeTrackerDashboardIntegration(
                 visibility: .visibleWithIssuesDetected,
                 style: .circular
             )
             LifetimeTracker.setup(onUpdate: lifetimeTrackerIntegration.refreshUI)
         }
-        
-        FeatureFactory.shared.disable(&.dynamicPlans)
 #endif
 
         SecureTemporaryFile.cleanUpResidualFiles()
@@ -156,6 +139,7 @@ extension AppDelegate: UIApplicationDelegate {
         configureCoreObservability()
         configureAnalytics()
         configureAppearance()
+        fetchUnauthFeatureFlags()
         DFSSetting.enableDFS = true
         DFSSetting.limitToXXXLarge = true
         self.configureLanguage()
@@ -292,7 +276,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
 }
 
-extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
+extension AppDelegate: UnlockManagerDelegate {
     func isUserStored() -> Bool {
         let users = dependencies.usersManager
         if users.hasUserName() || users.hasUsers() {
@@ -310,10 +294,6 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
     }
 
     func cleanAll(completion: @escaping () -> Void) {
-        guard dependencies.usersManager.hasUsers() else {
-            completion()
-            return
-        }
         Breadcrumbs.shared.add(message: "AppDelegate.cleanAll called", to: .randomLogout)
         dependencies.usersManager.clean().ensure {
             completion()
@@ -322,28 +302,10 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
 
     func setupCoreData() throws {
         try CoreDataStore.shared.initialize()
-
-        sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
-        sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
-        let lastUpdatedStore = dependencies.lastUpdatedStore
-        sharedServices.add(LastUpdatedStore.self, for: lastUpdatedStore)
-        sharedServices.add(LastUpdatedStoreProtocol.self, for: lastUpdatedStore)
     }
 
     func loadUserDataAfterUnlock() {
-        let usersManager = dependencies.usersManager
-        usersManager.run()
-        usersManager.tryRestore()
-
-        DispatchQueue.global().async {
-            usersManager.users.forEach {
-                $0.messageService.injectTransientValuesIntoMessages()
-            }
-        }
-
-        if let primaryUser = usersManager.firstUser {
-            primaryUser.payments.storeKitManager.retryProcessingAllPendingTransactions(finishHandler: nil)
-        }
+        dependencies.launchService.loadUserDataAfterUnlock()
     }
 }
 
@@ -408,6 +370,18 @@ extension AppDelegate {
         )
     }
 
+    private func fetchUnauthFeatureFlags() {
+        FeatureFlagsRepository.shared.setApiService(
+            with: PMAPIService.unauthorized(
+                keyMaker: dependencies.keyMaker,
+                userDefaults: dependencies.userDefaults
+            )
+        )
+        Task {
+            try await FeatureFlagsRepository.shared.fetchFlags()
+        }
+    }
+
     private func configureLanguage() {
         LanguageManager().storePreferredLanguageToBeUsedByExtensions()
     }
@@ -448,6 +422,14 @@ extension AppDelegate {
                     self.dependencies.keyMaker.updateAutolockCountdownStart()
                 }
             }
+    }
+
+    /// If this is the first app launch, we clean the keychain to avoid state inconsistencies from a previous installation
+    private func cleanKeychainInCaseOfAppReinstall() {
+        let isFirstLaunch = dependencies.userCachedStatus.initialUserLoggedInVersion == nil
+        if isFirstLaunch {
+            dependencies.keychain.removeEverything()
+        }
     }
 }
 

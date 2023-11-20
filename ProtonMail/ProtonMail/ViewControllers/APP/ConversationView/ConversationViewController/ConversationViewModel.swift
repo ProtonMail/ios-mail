@@ -12,10 +12,12 @@ enum MessageDisplayRule {
 // swiftlint:disable type_body_length
 class ConversationViewModel {
     typealias Dependencies = ConversationMessageViewModel.Dependencies
+    & HasFeatureFlagCache
     & HasFetchSenderImage
     & HasFetchMessageDetail
     & HasNextMessageAfterMoveStatusProvider
     & HasNotificationCenter
+    & HasUserDefaults
     & HasUserIntroductionProgressProvider
 
     var headerSectionDataSource: [ConversationViewItemType] = []
@@ -61,6 +63,10 @@ class ConversationViewModel {
             subject: subject,
             numberOfMessages: messagesTitle.apply(style: FontManager.OverlineRegularTextWeak)
         )
+    }
+
+    var isMessageSwipeNavigationEnabled: Bool {
+        dependencies.featureFlagCache.valueOfFeatureFlag(.messageNavigation, for: user.userID)
     }
 
     private(set) var conversation: ConversationEntity
@@ -143,11 +149,12 @@ class ConversationViewModel {
     let labelProvider: LabelProviderProtocol
     private let toolbarActionProvider: ToolbarActionProvider
     private let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
-    private let toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider
     let highlightedKeywords: [String]
     private let dependencies: Dependencies
     private var isApplicationActive: (() -> Bool)?
     private var reloadWhenAppIsActive: (() -> Void)?
+    private var blockMarkReadIfNeeded = false
+    private(set) var messagesAreLoaded = false
 
     init(labelId: LabelID,
          conversation: ConversationEntity,
@@ -157,7 +164,6 @@ class ConversationViewModel {
          targetID: MessageID?,
          toolbarActionProvider: ToolbarActionProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
-         toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
          highlightedKeywords: [String],
          goToDraft: @escaping (MessageID, Date?) -> Void,
          dependencies: Dependencies) {
@@ -189,7 +195,6 @@ class ConversationViewModel {
         recordNumOfMessages = conversation.messageCount
         self.toolbarActionProvider = toolbarActionProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
-        self.toolbarCustomizeSpotlightStatusProvider = toolbarCustomizeSpotlightStatusProvider
         self.coordinator = coordinator
         self.displayRule = self.isTrashFolder ? .showTrashedOnly : .showNonTrashedOnly
         self.conversationStateProvider.add(delegate: self)
@@ -264,6 +269,7 @@ class ConversationViewModel {
             self?.markMessagesReadIfNeeded()
             self?.checkTrashedHintBanner()
             self?.reloadTableView?()
+            self?.messagesAreLoaded = true
         }
     }
 
@@ -362,8 +368,8 @@ class ConversationViewModel {
         //  If 1 of the logged accounts has a non-standard set of actions, Accounts with
         //  standard actions will see the feature spotlight once when
         //  first opening message details.
-        let ifCurrentUserAlreadySeenTheSpotlight = toolbarCustomizeSpotlightStatusProvider
-            .toolbarCustomizeSpotlightShownUserIds.contains(user.userID.rawValue)
+        let toolbarCustomizeSpotlightShownUserIds = dependencies.userDefaults[.toolbarCustomizeSpotlightShownUserIds]
+        let ifCurrentUserAlreadySeenTheSpotlight = toolbarCustomizeSpotlightShownUserIds.contains(user.userID.rawValue)
         if user.hasAtLeastOneNonStandardToolbarAction,
            user.toolbarActionsIsStandard,
            !ifCurrentUserAlreadySeenTheSpotlight {
@@ -378,9 +384,7 @@ class ConversationViewModel {
             asSeen: true,
             byUserWith: user.userID
         )
-        var ids = toolbarCustomizeSpotlightStatusProvider.toolbarCustomizeSpotlightShownUserIds
-        ids.append(user.userID.rawValue)
-        toolbarCustomizeSpotlightStatusProvider.toolbarCustomizeSpotlightShownUserIds = ids
+        dependencies.userDefaults[.toolbarCustomizeSpotlightShownUserIds].append(user.userID.rawValue)
     }
 
     func headerCellVisibility(at index: Int) -> CellVisibility {
@@ -481,7 +485,9 @@ class ConversationViewModel {
                 if model.message.unRead {
                     messageIDsOfMarkedAsRead.append(model.message.messageID)
                 }
-                model.markReadIfNeeded()
+                if !blockMarkReadIfNeeded {
+                    model.markReadIfNeeded()
+                }
             }
     }
 
@@ -706,6 +712,7 @@ class ConversationViewModel {
     }
 
     func handleToolBarAction(_ action: MessageViewActionSheetAction) {
+        guard messagesAreLoaded else { return }
         switch action {
         case .delete:
             conversationService.deleteConversations(with: [conversation.conversationID],
@@ -726,6 +733,7 @@ class ConversationViewModel {
                 }
             }
         case .markUnread:
+            blockMarkReadIfNeeded = true
             conversationService.markAsUnread(conversationIDs: [conversation.conversationID],
                                              labelID: labelId) { [weak self] result in
                 guard let self = self else { return }
@@ -840,14 +848,14 @@ class ConversationViewModel {
 extension ConversationViewModel: ToolbarCustomizationActionHandler {
 
     func toolbarActionTypes() -> [MessageViewActionSheetAction] {
-        let locationIsInSpam = labelId == Message.Location.spam.labelID || areAllMessagesInThreadInSpam
+        let locationIsInSpam = labelId == Message.Location.spam.labelID
         let locationIsInTrash = labelId == Message.Location.trash.labelID
         let locationIsInArchive = labelId == Message.Location.archive.labelID
         let isConversationRead = !conversation.isUnread(labelID: labelId)
         let isConversationStarred = conversation.starred
         let isInArchive = areAllMessagesInThreadInTheArchive
         let isInTrash = areAllMessagesInThreadInTheTrash
-        let isInSpam = conversation.contains(of: .spam)
+        let isInSpam = areAllMessagesInThreadInSpam
 
         var actions = toolbarActionProvider.messageToolbarActions
             .addMoreActionToTheLastLocation()

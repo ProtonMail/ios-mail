@@ -67,7 +67,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             targetID: targetID,
             toolbarActionProvider: user,
             saveToolbarActionUseCase: dependencies.saveToolbarActionSettings,
-            toolbarCustomizeSpotlightStatusProvider: userCachedStatus,
             highlightedKeywords: highlightedKeywords,
             goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.navigationController?.popViewController(animated: false)

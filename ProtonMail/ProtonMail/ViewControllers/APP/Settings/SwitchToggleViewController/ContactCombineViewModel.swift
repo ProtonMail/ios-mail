@@ -23,16 +23,16 @@ final class ContactCombineViewModel: SwitchToggleVMProtocol {
     var input: SwitchToggleVMInput { self }
     var output: SwitchToggleVMOutput { self }
 
-    private var combineContactCache: ContactCombinedCacheProtocol
+    private let userDefaults: UserDefaults
 
-    init(combineContactCache: ContactCombinedCacheProtocol) {
-        self.combineContactCache = combineContactCache
+    init(userDefaults: UserDefaults) {
+        self.userDefaults = userDefaults
     }
 }
 
 extension ContactCombineViewModel: SwitchToggleVMInput {
     func toggle(for indexPath: IndexPath, to newStatus: Bool, completion: @escaping ToggleCompletion) {
-        combineContactCache.isCombineContactOn = newStatus
+        userDefaults[.isCombineContactOn] = newStatus
         completion(nil)
     }
 }
@@ -45,7 +45,7 @@ extension ContactCombineViewModel: SwitchToggleVMOutput {
     var footerTopPadding: CGFloat { 8 }
 
     func cellData(for indexPath: IndexPath) -> (title: String, status: Bool)? {
-        (LocalString._settings_title_of_combined_contact, combineContactCache.isCombineContactOn)
+        (LocalString._settings_title_of_combined_contact, userDefaults[.isCombineContactOn])
     }
 
     func sectionHeader() -> String? {

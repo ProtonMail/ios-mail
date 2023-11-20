@@ -46,3 +46,5 @@ extension UILabel {
 }
 
 #endif
+
+// swiftlint:enable legacy_constructor

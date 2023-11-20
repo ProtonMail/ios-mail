@@ -34,10 +34,6 @@ extension UserDefaults: KeyValueStoreProvider {
         return self.object(forKey: key) as? Data
     }
 
-    func set(_ data: Int, forKey key: String) {
-        self.setValue(data, forKey: key)
-    }
-
     func set(_ data: Data, forKey key: String) {
         self.setValue(data, forKey: key)
     }

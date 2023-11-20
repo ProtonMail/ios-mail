@@ -25,7 +25,7 @@ public enum APIResponseDetails {
     case deviceVerification(DeviceVerificationDetails)
     case missingScopes(MissingScopesDetails)
     case empty
-    
+
     var serializedDetails: [String: Any] {
         switch self {
         case .humanVerification(let humanVerificationDetails):

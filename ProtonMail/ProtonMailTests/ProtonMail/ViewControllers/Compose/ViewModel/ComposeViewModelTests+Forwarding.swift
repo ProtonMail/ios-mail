@@ -36,12 +36,11 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
         try super.setUpWithError()
 
         mockCoreDataService = .init()
-        user = UserManager(api: APIServiceMock(), role: .member)
 
         let globalContainer = GlobalContainer()
         globalContainer.contextProviderFactory.register { self.mockCoreDataService }
-        let userContainer = UserContainer(userManager: user, globalContainer: globalContainer)
-        composerViewFactory = userContainer.composerViewFactory
+        user = UserManager(api: APIServiceMock(), globalContainer: globalContainer)
+        composerViewFactory = user.container.composerViewFactory
 
         let keyPair = try MailCrypto.generateRandomKeyPair()
         let key = Key(keyID: "1", privateKey: keyPair.privateKey)
@@ -93,17 +92,9 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
 
         try testContext.save()
 
-        let attachmentsAreProcessed = expectation(description: "attachments are processed")
-
         let sut = makeSUT(message: .init(message))
-
-        // TODO: remove this delay, either by making SUT init synchronous or by removing async operations from it
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            attachmentsAreProcessed.fulfill()
-        }
-
-        wait(for: [attachmentsAreProcessed], timeout: 0.2)
-
+        
+        wait(sut.getAttachments().count == 2)
         XCTAssertEqual(sut.getAttachments().map(\.id), ["0", "0"])
     }
 

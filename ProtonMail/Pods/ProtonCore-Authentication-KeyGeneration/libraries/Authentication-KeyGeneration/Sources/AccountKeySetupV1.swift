@@ -28,31 +28,31 @@ import ProtonCoreUtilities
 
 @available(*, deprecated, renamed: "AccountKeySetupV2", message: "keep this until AccountKeySetupV2 is fully tested")
 final class AccountKeySetupV1 {
-    
+
     struct AddressKeyV1 {
-        
+
         ///
         let armoredKey: ArmoredKey
-        
+
         ///
         let addressId: String
     }
 
     struct GeneratedAccountKeyV1 {
-        
+
         let addressKeys: [AddressKeyV1]
         let passwordSalt: Data
         let password: Passphrase
     }
 
     func generateAccountKey(addresses: [Address], password: String) throws -> GeneratedAccountKeyV1 {
-        
+
         /// generate key salt 128 bits
         let newPasswordSalt: Data = try PasswordHash.random(bits: PasswordSaltSize.accountKey.int32Bits)
-        
+
         /// generate key hashed password.
         let newPassphrase = PasswordHash.passphrase(password, salt: newPasswordSalt)
-        
+
         let addressKeys = try addresses.filter { $0.type != .externalAddress }.map { address -> AddressKeyV1 in
             let armoredKey = try Generator.generateECCKey(email: address.email, passphase: newPassphrase)
             return AddressKeyV1(armoredKey: armoredKey, addressId: address.addressID)
@@ -98,7 +98,7 @@ final class AccountKeySetupV1 {
             }
 
             let fingerprint = cryptoKey.getFingerprint()
-            
+
             let keylist: [[String: Any]] = [[
                 "Fingerprint": fingerprint,
                 "Primary": 1,
@@ -126,10 +126,10 @@ final class AccountKeySetupV1 {
         guard let firstaddressKey = key.addressKeys.first else {
             throw KeySetupError.keyGenerationFailed
         }
-        
+
         return AuthService.SetupKeysEndpoint(addresses: addressData,
                                              privateKey: firstaddressKey.armoredKey,
                                              keySalt: key.passwordSalt.encodeBase64(),
                                              passwordAuth: passwordAuth)
-    }    
+    }
 }

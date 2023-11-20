@@ -443,6 +443,9 @@
 /* Alert title */
 "Notice" = "Pemberitahuan";
 
+/* Title of alert in share extension. */
+"Error" = "Kesalahan";
+
 /* Action */
 "Don't remind me again" = "Jangan ingatkan saya lagi";
 
@@ -961,9 +964,6 @@
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Konten gagal dimuat!\nSilakan coba lagi.";
-
-/* Title of alert in share extension. */
-"Error" = "Kesalahan";
 
 /* Error message */
 "Failed to determine type of file" = "Gagal menentukan tipe berkas";
@@ -1935,6 +1935,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "Memindahkan pesan ke tempat lain (mis. arsip) akan mengalihkan pilihan ke pesan berikutnya yang tersedia.";
+
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "Terjadi kesalahan yang tidak diduga, silakan menghubungi bantuan.\nKesalahan: %@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "Ruang penyimpanan tidak cukup";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Aplikasi tidak dapat dibuka karena kurangnya ruang penyimpanan. Silakan menghapus beberapa data dan coba lagi";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Pesan tidak dapat dibuka. Silakan coba lagi.";

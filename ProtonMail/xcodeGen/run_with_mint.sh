@@ -22,12 +22,12 @@ if ! command -v mint >/dev/null; then
   exit 127
 fi
 
-REPOSITORY_ROOT=$(git rev-parse --show-toplevel)
+REPOSITORY_ROOT="$(git rev-parse --show-toplevel)"
 PATH_TO_MINTFILE="$REPOSITORY_ROOT/Mintfile"
 
-if ! mint which "$1" --mintfile $PATH_TO_MINTFILE > /dev/null; then
+if ! mint which "$1" --mintfile "$PATH_TO_MINTFILE" > /dev/null; then
   echo "error: Expected version of $1 not found. Install it by executing \"mint bootstrap\" in project root directory."
   exit 127
 fi
 
-mint run --mintfile $PATH_TO_MINTFILE "$@"
+mint run --mintfile "$PATH_TO_MINTFILE" "$@"

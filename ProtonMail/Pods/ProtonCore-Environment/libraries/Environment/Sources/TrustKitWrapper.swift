@@ -25,8 +25,8 @@ import TrustKit
 import ProtonCoreDoh
 
 public final class TrustKitWrapper {
-    public static private(set) weak var delegate: TrustKitDelegate?
-    public static internal(set) var current: TrustKit?
+    public private(set) static weak var delegate: TrustKitDelegate?
+    public internal(set) static var current: TrustKit?
 
     public static func updateDoHPinningConfiguration(_ trustKitConfiguration: [String: Any]) {
         guard let pinnedDomains = trustKitConfiguration[kTSKPinnedDomains] as? [String: Any] else {
@@ -48,13 +48,13 @@ public final class TrustKitWrapper {
         }))
     }
 
-    public static func setUp(delegate: TrustKitDelegate? = nil, 
+    public static func setUp(delegate: TrustKitDelegate? = nil,
                              customConfiguration: Configuration? = nil,
                              sharedContainerIdentifier: String? = nil) {
         let config = customConfiguration ?? configuration(hardfail: true)
-        
+
         let instance = TrustKit(configuration: config, sharedContainerIdentifier: sharedContainerIdentifier)
-        
+
         instance.pinningValidatorCallback = { [weak delegate] validatorResult, hostName, policy in
             if validatorResult.evaluationResult != .success,
                 validatorResult.finalTrustDecision != .shouldAllowConnection {

@@ -41,7 +41,7 @@ extension UserCachedStatus: FeatureFlagCache {
     func storeFeatureFlags(_ flags: SupportedFeatureFlags, for userID: UserID) {
         var featureFlagsPerUser = loadFeatureFlagsPerUser()
         featureFlagsPerUser[userID.rawValue] = flags.rawValues
-        getShared().setValue(featureFlagsPerUser, forKey: featureFlagsPerUserKey)
+        userDefaults.setValue(featureFlagsPerUser, forKey: featureFlagsPerUserKey)
     }
 
     func featureFlags(for userID: UserID) -> SupportedFeatureFlags {
@@ -50,6 +50,6 @@ extension UserCachedStatus: FeatureFlagCache {
     }
 
     private func loadFeatureFlagsPerUser() -> [String: [String: Any]] {
-        getShared().dictionary(forKey: featureFlagsPerUserKey)?.compactMapValues { $0 as? [String: Any] } ?? [:]
+        userDefaults.dictionary(forKey: featureFlagsPerUserKey)?.compactMapValues { $0 as? [String: Any] } ?? [:]
     }
 }

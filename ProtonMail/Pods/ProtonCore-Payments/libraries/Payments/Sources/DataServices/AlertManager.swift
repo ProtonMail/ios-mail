@@ -73,7 +73,7 @@ struct PaymentsAlertManager {
         alertManager.cancelButtonStyle = .default
         alertManager.showAlert(confirmAction: nil, cancelAction: nil)
     }
-    
+
     func creditsAppliedAlert(confirmAction: ActionCallback, cancelAction: ActionCallback) {
         alertManager.title = nil
         alertManager.message = PSTranslation.popup_credits_applied_message.l10n

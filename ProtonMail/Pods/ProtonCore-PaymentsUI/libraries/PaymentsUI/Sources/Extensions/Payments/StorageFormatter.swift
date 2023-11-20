@@ -24,7 +24,7 @@
 import Foundation
 
 class StorageFormatter {
-    
+
     private lazy var formatter: ByteCountFormatter = {
         let formatter = ByteCountFormatter()
         formatter.countStyle = .binary
@@ -32,7 +32,7 @@ class StorageFormatter {
         formatter.formattingContext = .beginningOfSentence
         return formatter
     }()
-    
+
     func format(value: Int64) -> String {
         return formatter.string(fromByteCount: value)
     }

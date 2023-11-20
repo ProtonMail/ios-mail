@@ -30,9 +30,9 @@ public enum InAppTheme {
     case light
     case dark
     case matchSystem
-    
+
     public static let `default`: InAppTheme = .matchSystem
-    
+
     #if canImport(UIKit)
     public var userInterfaceStyle: UIUserInterfaceStyle {
         switch self {

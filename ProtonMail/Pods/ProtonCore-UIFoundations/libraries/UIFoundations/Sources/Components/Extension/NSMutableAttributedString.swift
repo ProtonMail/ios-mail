@@ -33,7 +33,7 @@ public extension NSMutableAttributedString {
         }
         return false
     }
-    
+
     func addHyperLink(subString: String, link: String, font: UIFont? = nil) {
         if let subStrRange = self.string.range(of: subString) {
             let nsRange = NSRange(subStrRange, in: self.string)
@@ -43,7 +43,7 @@ public extension NSMutableAttributedString {
             }
         }
     }
-    
+
     func addHyperLinks(hyperlinks: [String: String]) {
         for (key, value) in hyperlinks {
             self.addHyperLink(subString: key, link: value)

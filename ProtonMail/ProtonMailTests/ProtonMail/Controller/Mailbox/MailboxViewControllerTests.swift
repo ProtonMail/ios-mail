@@ -40,7 +40,6 @@ final class MailboxViewControllerTests: XCTestCase {
     var conversationProviderMock: MockConversationProvider!
     var eventsServiceMock: EventsServiceMock!
     var mockFetchLatestEventId: MockFetchLatestEventId!
-    var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
     var toolbarActionProviderMock: MockToolbarActionProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
     var mockFetchMessageDetail: MockFetchMessageDetail!
@@ -57,7 +56,6 @@ final class MailboxViewControllerTests: XCTestCase {
 
         userID = .init(String.randomString(20))
         coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        sharedServices.add(CoreDataService.self, for: coreDataService)
 
         globalContainer = .init()
         globalContainer.contextProviderFactory.register { self.coreDataService }
@@ -99,7 +97,6 @@ final class MailboxViewControllerTests: XCTestCase {
         conversationProviderMock = MockConversationProvider()
         eventsServiceMock = EventsServiceMock()
         mockFetchLatestEventId = MockFetchLatestEventId()
-        welcomeCarrouselCache = WelcomeCarrouselCacheMock()
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         try loadTestMessage() // one message
@@ -422,7 +419,8 @@ extension MailboxViewControllerTests {
             fetchMessageWithReset: MockFetchMessagesWithReset(),
             fetchMessage: fetchMessage,
             fetchLatestEventID: mockFetchLatestEventId,
-            internetConnectionStatusProvider: MockInternetConnectionStatusProviderProtocol()
+            internetConnectionStatusProvider: MockInternetConnectionStatusProviderProtocol(),
+            userDefaults: globalContainer.userDefaults
         ))
         self.mockFetchMessageDetail = MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
 
@@ -433,7 +431,10 @@ extension MailboxViewControllerTests {
             updateMailbox: updateMailbox,
             fetchMessageDetail: mockFetchMessageDetail,
             fetchSenderImage: userContainer.fetchSenderImage,
-            featureFlagCache: featureFlagCache
+            featureFlagCache: featureFlagCache,
+            userDefaults: globalContainer.userDefaults,
+            fetchAttachmentUseCase: MockFetchAttachment(),
+            fetchAttachmentMetadataUseCase: MockFetchAttachmentMetadata()
         )
         let label = LabelInfo(name: labelName ?? "")
         viewModel = MailboxViewModel(
@@ -450,7 +451,6 @@ extension MailboxViewControllerTests {
             conversationProvider: conversationProviderMock,
             eventsService: eventsServiceMock,
             dependencies: dependencies,
-            welcomeCarrouselCache: welcomeCarrouselCache,
             toolbarActionProvider: toolbarActionProviderMock,
             saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
             totalUserCountClosure: {

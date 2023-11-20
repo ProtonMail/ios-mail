@@ -30,16 +30,16 @@ extension AuthService {
 
     /// This is a LOCKED endpoint, appropriate scope is set for the following call when you either login or call `/users/lock`, otherwise this call will fail with 403 Forbidden
     struct KeySaltsEndpoint: Request {
-        
+
         var path: String {
             return "/keys/salts"
         }
         var method: HTTPMethod {
             return .get
         }
-        
+
         var parameters: [String: Any]?
-        
+
         var isAuth: Bool {
             return true
         }

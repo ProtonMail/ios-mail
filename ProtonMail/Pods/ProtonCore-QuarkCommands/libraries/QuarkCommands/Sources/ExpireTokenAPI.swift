@@ -24,11 +24,11 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct ExpireTokenDetails {
-    
+
 }
 
 public enum ExpireTokenError: Error {
-    
+
     public var userFacingMessageInQuarkCommands: String {
         switch self {
         }

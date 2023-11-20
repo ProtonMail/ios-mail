@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCoreFeatureSwitch
+import ProtonCoreFeatureFlags
 import ProtonCoreServices
 import ProtonCoreUtilities
 
@@ -55,7 +55,7 @@ public final class Payments {
     }
 
     public internal(set) lazy var planService: Either<ServicePlanDataServiceProtocol, PlansDataSourceProtocol> = {
-        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             return .right(PlansDataSource(
                 apiService: apiService,
                 storeKitDataSource: storeKitDataSource,
@@ -77,7 +77,7 @@ public final class Payments {
 
     public internal(set) lazy var storeKitManager: StoreKitManagerProtocol = {
         let dataSource: StoreKitDataSource?
-        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             dataSource = storeKitDataSource
         } else {
             dataSource = nil
@@ -106,7 +106,7 @@ public final class Payments {
         self.reportBugAlertHandler = reportBugAlertHandler
         self.apiService = apiService
         self.localStorage = localStorage
-        self.canExtendSubscription = canExtendSubscription
+        self.canExtendSubscription = canExtendSubscription && !FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan)
         paymentsAlertManager = PaymentsAlertManager(alertManager: alertManager ?? AlertManager())
         paymentsApi = PaymentsApiImplementation()
     }
@@ -121,7 +121,7 @@ public final class Payments {
         // Part of the processing will be fetching the available plans from the BE
         storeKitManager.subscribeToPaymentQueue()
 
-        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             // No-op by design
             // In the dynamic plans, fetching available IAPs from StoreKit is not a prerequisite.
             // It is done alongside fetching available plans
@@ -141,7 +141,7 @@ public final class Payments {
 
         storeKitManager.delegate = nil
     }
-    
+
     public func updateService(completion: @escaping (Result<(), Error>) -> Void) {
         switch planService {
         case .left(let planService):

@@ -30,5 +30,5 @@ public func inject(cryptoImplementation: CryptoGoMethods) {
         return
     }
     CryptoGo = cryptoImplementation
-    
+
 }

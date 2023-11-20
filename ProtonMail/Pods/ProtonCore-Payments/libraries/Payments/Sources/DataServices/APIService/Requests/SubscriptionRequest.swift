@@ -89,7 +89,7 @@ final class GetSubscriptionRequest: BaseApiRequest<GetSubscriptionResponse> {
     override init(api: APIService) {
         super.init(api: api)
     }
-    
+
     override var path: String { super.path + "/v4/subscription" }
 }
 

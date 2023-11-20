@@ -244,19 +244,6 @@ class MockConnectionStatusReceiver: ConnectionStatusReceiver {
 
 }
 
-class MockContactCacheStatusProtocol: ContactCacheStatusProtocol {
-    @PropertyStub(\MockContactCacheStatusProtocol.contactsCached, initialGet: Int()) var contactsCachedStub
-    var contactsCached: Int {
-        get {
-            contactsCachedStub()
-        }
-        set {
-            contactsCachedStub(newValue)
-        }
-    }
-
-}
-
 class MockContactDataServiceProtocol: ContactDataServiceProtocol {
     @FuncStub(MockContactDataServiceProtocol.queueUpdate) var queueUpdateStub
     func queueUpdate(objectID: NSManagedObjectID, cardDatas: [CardData], newName: String, emails: [ContactEditEmail], completion: ContactUpdateComplete?) {
@@ -390,15 +377,20 @@ class MockCopyMessageUseCase: CopyMessageUseCase {
 
 }
 
-class MockDarkModeCacheProtocol: DarkModeCacheProtocol {
-    @PropertyStub(\MockDarkModeCacheProtocol.darkModeStatus, initialGet: .followSystem) var darkModeStatusStub
-    var darkModeStatus: DarkModeStatus {
-        get {
-            darkModeStatusStub()
-        }
-        set {
-            darkModeStatusStub(newValue)
-        }
+class MockDeviceContactsProvider: DeviceContactsProvider {
+    @ThrowingFuncStub(MockDeviceContactsProvider.fetchAllContactIdentifiers, initialReturn: [String]()) var fetchAllContactIdentifiersStub
+    func fetchAllContactIdentifiers() throws -> [String] {
+        try fetchAllContactIdentifiersStub()
+    }
+
+    @ThrowingFuncStub(MockDeviceContactsProvider.fetchContactBatch, initialReturn: [DeviceContact]()) var fetchContactBatchStub
+    func fetchContactBatch(with identifiers: [String]) throws -> [DeviceContact] {
+        try fetchContactBatchStub(identifiers)
+    }
+
+    @ThrowingFuncStub(MockDeviceContactsProvider.fetchHistoryEvents, initialReturn: .crash) var fetchHistoryEventsStub
+    func fetchHistoryEvents(historyToken: Data?) throws -> (historyToken: Data, events: [DeviceContactEvent]) {
+        try fetchHistoryEventsStub(historyToken)
     }
 
 }
@@ -626,7 +618,7 @@ class MockLabelProviderProtocol: LabelProviderProtocol {
     }
 
     @FuncStub(MockLabelProviderProtocol.fetchV4Labels) var fetchV4LabelsStub
-    func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)?) {
+    func fetchV4Labels(completion: ((Swift.Result<Void, Error>) -> Void)?) {
         fetchV4LabelsStub(completion)
     }
 
@@ -686,6 +678,11 @@ class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
         updateUnreadCountStub(labelID, userID, unread, total, type, shouldSave)
     }
 
+    @ThrowingFuncStub(MockLastUpdatedStoreProtocol.batchUpdateUnreadCounts) var batchUpdateUnreadCountsStub
+    func batchUpdateUnreadCounts(counts: [CountData], userID: UserID, type: ViewMode) throws {
+        try batchUpdateUnreadCountsStub(counts, userID, type)
+    }
+
     @FuncStub(MockLastUpdatedStoreProtocol.removeUpdateTime) var removeUpdateTimeStub
     func removeUpdateTime(by userID: UserID) {
         removeUpdateTimeStub(userID)
@@ -709,6 +706,19 @@ class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
     @FuncStub(MockLastUpdatedStoreProtocol.updateLastUpdatedTime) var updateLastUpdatedTimeStub
     func updateLastUpdatedTime(labelID: LabelID, isUnread: Bool, startTime: Date, endTime: Date?, msgCount: Int, userID: UserID, type: ViewMode) {
         updateLastUpdatedTimeStub(labelID, isUnread, startTime, endTime, msgCount, userID, type)
+    }
+
+}
+
+class MockLaunchService: LaunchService {
+    @ThrowingFuncStub(MockLaunchService.start) var startStub
+    func start() throws {
+        try startStub()
+    }
+
+    @FuncStub(MockLaunchService.loadUserDataAfterUnlock) var loadUserDataAfterUnlockStub
+    func loadUserDataAfterUnlock() {
+        loadUserDataAfterUnlockStub()
     }
 
 }
@@ -750,11 +760,6 @@ class MockLockCacheStatus: LockCacheStatus {
 }
 
 class MockLockPreferences: LockPreferences {
-    @FuncStub(MockLockPreferences.setKeymakerRandomkey) var setKeymakerRandomkeyStub
-    func setKeymakerRandomkey(key: String?) {
-        setKeymakerRandomkeyStub(key)
-    }
-
     @FuncStub(MockLockPreferences.setLockTime) var setLockTimeStub
     func setLockTime(value: AutolockTimeout) {
         setLockTimeStub(value)
@@ -1001,19 +1006,6 @@ class MockPinCodeSetupRouterProtocol: PinCodeSetupRouterProtocol {
 
 }
 
-class MockPinFailedCountCache: PinFailedCountCache {
-    @PropertyStub(\MockPinFailedCountCache.pinFailedCount, initialGet: Int()) var pinFailedCountStub
-    var pinFailedCount: Int {
-        get {
-            pinFailedCountStub()
-        }
-        set {
-            pinFailedCountStub(newValue)
-        }
-    }
-
-}
-
 class MockPushDecryptionKeysProvider: PushDecryptionKeysProvider {
     @PropertyStub(\MockPushDecryptionKeysProvider.pushNotificationsDecryptionKeys, initialGet: [DecryptionKey]()) var pushNotificationsDecryptionKeysStub
     var pushNotificationsDecryptionKeys: [DecryptionKey] {
@@ -1144,6 +1136,14 @@ class MockSettingsLockUIProtocol: SettingsLockUIProtocol {
 
 }
 
+class MockSetupCoreDataService: SetupCoreDataService {
+    @ThrowingFuncStub(MockSetupCoreDataService.setup) var setupStub
+    func setup() throws {
+        try setupStub()
+    }
+
+}
+
 class MockSideMenuProtocol: SideMenuProtocol {
     @PropertyStub(\MockSideMenuProtocol.menuViewController, initialGet: nil) var menuViewControllerStub
     var menuViewController: UIViewController! {
@@ -1181,19 +1181,6 @@ class MockSwipeActionInfo: SwipeActionInfo {
     @PropertyStub(\MockSwipeActionInfo.swipeRight, initialGet: Int()) var swipeRightStub
     var swipeRight: Int {
         swipeRightStub()
-    }
-
-}
-
-class MockToolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider {
-    @PropertyStub(\MockToolbarCustomizationInfoBubbleViewStatusProvider.shouldHideToolbarCustomizeInfoBubbleView, initialGet: Bool()) var shouldHideToolbarCustomizeInfoBubbleViewStub
-    var shouldHideToolbarCustomizeInfoBubbleView: Bool {
-        get {
-            shouldHideToolbarCustomizeInfoBubbleViewStub()
-        }
-        set {
-            shouldHideToolbarCustomizeInfoBubbleViewStub(newValue)
-        }
     }
 
 }
@@ -1269,46 +1256,6 @@ class MockUnsubscribeActionHandler: UnsubscribeActionHandler {
 }
 
 class MockUserCachedStatusProvider: UserCachedStatusProvider {
-    @PropertyStub(\MockUserCachedStatusProvider.keymakerRandomkey, initialGet: nil) var keymakerRandomkeyStub
-    var keymakerRandomkey: String? {
-        get {
-            keymakerRandomkeyStub()
-        }
-        set {
-            keymakerRandomkeyStub(newValue)
-        }
-    }
-
-    @PropertyStub(\MockUserCachedStatusProvider.primaryUserSessionId, initialGet: nil) var primaryUserSessionIdStub
-    var primaryUserSessionId: String? {
-        get {
-            primaryUserSessionIdStub()
-        }
-        set {
-            primaryUserSessionIdStub(newValue)
-        }
-    }
-
-    @PropertyStub(\MockUserCachedStatusProvider.isDohOn, initialGet: Bool()) var isDohOnStub
-    var isDohOn: Bool {
-        get {
-            isDohOnStub()
-        }
-        set {
-            isDohOnStub(newValue)
-        }
-    }
-
-    @PropertyStub(\MockUserCachedStatusProvider.isCombineContactOn, initialGet: Bool()) var isCombineContactOnStub
-    var isCombineContactOn: Bool {
-        get {
-            isCombineContactOnStub()
-        }
-        set {
-            isCombineContactOnStub(newValue)
-        }
-    }
-
     @PropertyStub(\MockUserCachedStatusProvider.lastDraftMessageID, initialGet: nil) var lastDraftMessageIDStub
     var lastDraftMessageID: String? {
         get {
@@ -1316,36 +1263,6 @@ class MockUserCachedStatusProvider: UserCachedStatusProvider {
         }
         set {
             lastDraftMessageIDStub(newValue)
-        }
-    }
-
-    @PropertyStub(\MockUserCachedStatusProvider.isPMMEWarningDisabled, initialGet: Bool()) var isPMMEWarningDisabledStub
-    var isPMMEWarningDisabled: Bool {
-        get {
-            isPMMEWarningDisabledStub()
-        }
-        set {
-            isPMMEWarningDisabledStub(newValue)
-        }
-    }
-
-    @PropertyStub(\MockUserCachedStatusProvider.serverNotices, initialGet: [String]()) var serverNoticesStub
-    var serverNotices: [String] {
-        get {
-            serverNoticesStub()
-        }
-        set {
-            serverNoticesStub(newValue)
-        }
-    }
-
-    @PropertyStub(\MockUserCachedStatusProvider.serverNoticesNextTime, initialGet: String()) var serverNoticesNextTimeStub
-    var serverNoticesNextTime: String {
-        get {
-            serverNoticesNextTimeStub()
-        }
-        set {
-            serverNoticesNextTimeStub(newValue)
         }
     }
 
@@ -1419,19 +1336,6 @@ class MockViewModeUpdater: ViewModeUpdater {
     @FuncStub(MockViewModeUpdater.update) var updateStub
     func update(viewMode: ViewMode, completion: ((Swift.Result<ViewMode?, Error>) -> Void)?) {
         updateStub(viewMode, completion)
-    }
-
-}
-
-class MockWindowsCoordinatorDelegate: WindowsCoordinatorDelegate {
-    @ThrowingFuncStub(MockWindowsCoordinatorDelegate.setupCoreData) var setupCoreDataStub
-    func setupCoreData() throws {
-        try setupCoreDataStub()
-    }
-
-    @FuncStub(MockWindowsCoordinatorDelegate.loadUserDataAfterUnlock) var loadUserDataAfterUnlockStub
-    func loadUserDataAfterUnlock() {
-        loadUserDataAfterUnlockStub()
     }
 
 }

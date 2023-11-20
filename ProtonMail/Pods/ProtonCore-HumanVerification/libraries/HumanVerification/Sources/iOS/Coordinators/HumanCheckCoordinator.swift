@@ -60,13 +60,13 @@ class HumanCheckCoordinator {
         self.clientApp = clientApp
         self.title = parameters.title
         self.inAppTheme = inAppTheme
-        
+
         self.humanVerifyViewModel = HumanVerifyViewModel(api: apiService, startToken: parameters.startToken, methods: parameters.methods, clientApp: clientApp)
         self.humanVerifyViewModel.onVerificationCodeBlock = { [weak self] verificationCodeBlock in
             guard let self = self else { return }
             self.delegate?.verificationCode(tokenType: self.humanVerifyViewModel.getToken(), verificationCodeBlock: verificationCodeBlock)
         }
-        
+
         if NSClassFromString("XCTest") == nil {
             if parameters.methods.count == 0 {
                 self.initialHelpViewController = getHelpViewController
@@ -81,7 +81,7 @@ class HumanCheckCoordinator {
     }
 
     // MARK: - Private methods
-    
+
     private func instantiateViewController() {
         initialViewController = instantiateVC(method: HumanVerifyViewController.self, identifier: "HumanVerifyViewController", inAppTheme: inAppTheme)
         initialViewController?.viewModel = humanVerifyViewModel
@@ -124,11 +124,11 @@ class HumanCheckCoordinator {
             }
         }
     }
-    
+
     private func showHelp() {
         initialViewController?.navigationController?.pushViewController(getHelpViewController, animated: true)
     }
-    
+
     private var getHelpViewController: HVHelpViewController {
         let helpViewController = instantiateVC(method: HVHelpViewController.self, identifier: "HumanCheckHelpViewController", inAppTheme: inAppTheme)
         helpViewController.delegate = self
@@ -145,31 +145,31 @@ extension HumanCheckCoordinator: HumanVerifyViewControllerDelegate {
             initialViewController?.navigationController?.dismiss(animated: true)
         }
     }
-    
+
     func willReopenViewController() {
         close()
         instantiateViewController()
         showHumanVerification()
     }
-    
+
     func didDismissViewController() {
         close()
         delegate?.close()
     }
-    
+
     func didDismissWithError(code: Int, description: String) {
         close()
         delegate?.closeWithError(code: code, description: description)
     }
-    
+
     func emailAddressAlreadyTakenWithError(code: Int, description: String) {
         delegate?.closeWithError(code: code, description: description)
     }
-    
+
     func didShowHelpViewController() {
         showHelp()
     }
-    
+
     private func close() {
         if isModalPresentation {
             initialViewController?.navigationController?.dismiss(animated: true)

@@ -154,7 +154,7 @@ final class ContactParserTest: XCTestCase {
                                         userKeys: [key])
         XCTAssertEqual(self.resultMock.addresses.count, 4)
         XCTAssertEqual(self.resultMock.telephones.count, 8)
-        XCTAssertEqual(self.resultMock.informations.count, 4)
+        XCTAssertEqual(self.resultMock.informations.count, 5)
         XCTAssertEqual(self.resultMock.notes.count, 1)
         XCTAssertEqual(self.resultMock.urls.count, 1)
     }
@@ -223,7 +223,7 @@ final class ContactParserTest: XCTestCase {
         XCTAssertFalse(self.resultMock.verifyType3)
         XCTAssertEqual(self.resultMock.addresses.count, 4)
         XCTAssertEqual(self.resultMock.telephones.count, 8)
-        XCTAssertEqual(self.resultMock.informations.count, 4)
+        XCTAssertEqual(self.resultMock.informations.count, 5)
         XCTAssertEqual(self.resultMock.notes.count, 1)
         XCTAssertEqual(self.resultMock.urls.count, 1)
     }

@@ -25,22 +25,22 @@ import ProtonCoreTestingToolkitUnitTestsCore
 #endif
 
 public final class APIServiceLoggingDelegateMock: APIServiceLoggingDelegate {
-    
+
     public init() {}
-    
+
     @FuncStub(APIServiceLoggingDelegateMock.accessTokenRefreshDidStart) public var accessTokenRefreshDidStartStub
     public func accessTokenRefreshDidStart(for sessionID: String,
                                            sessionType: APISessionTypeForLogging) {
         accessTokenRefreshDidStartStub(sessionID, sessionType)
     }
-    
+
     @FuncStub(APIServiceLoggingDelegateMock.accessTokenRefreshDidSucceed) public var accessTokenRefreshDidSucceedStub
     public func accessTokenRefreshDidSucceed(for sessionID: String,
                                              sessionType: APISessionTypeForLogging,
                                              reason: APIServiceAccessTokenRefreshSuccessReasonForLogging) {
         accessTokenRefreshDidSucceedStub(sessionID, sessionType, reason)
     }
-    
+
     @FuncStub(APIServiceLoggingDelegateMock.accessTokenRefreshDidFail) public var accessTokenRefreshDidFailStub
     public func accessTokenRefreshDidFail(for sessionID: String,
                                           sessionType: APISessionTypeForLogging,

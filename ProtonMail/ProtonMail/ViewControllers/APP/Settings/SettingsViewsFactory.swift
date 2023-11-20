@@ -18,9 +18,12 @@
 import UIKit
 
 final class SettingsViewsFactory {
-    typealias Dependencies = SettingsDeviceViewModel.Dependencies & SettingsSwipeActionSelectViewModelImpl.Dependencies
+    typealias Dependencies = AnyObject
+    & SettingsDeviceViewModel.Dependencies
+    & SettingsSwipeActionSelectViewModelImpl.Dependencies
+    & HasUserCachedStatus
 
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
@@ -32,13 +35,13 @@ final class SettingsViewsFactory {
     }
 
     func makeContactCombineView() -> SwitchToggleViewController {
-        let viewModel = ContactCombineViewModel(combineContactCache: dependencies.userCachedStatus)
+        let viewModel = ContactCombineViewModel(userDefaults: dependencies.userDefaults)
         return SwitchToggleViewController(viewModel: viewModel)
     }
 
     func makeNetworkSettingView() -> SwitchToggleViewController {
         let viewModel = NetworkSettingViewModel(
-            userCache: dependencies.userCachedStatus,
+            userDefaults: dependencies.userDefaults,
             dohSetting: BackendConfiguration.shared.doh
         )
         return SwitchToggleViewController(viewModel: viewModel)
@@ -61,7 +64,7 @@ final class SettingsViewsFactory {
     }
 
     func makeDarkModeSettingView() -> SettingsSingleCheckMarkViewController {
-        let viewModel = DarkModeSettingViewModel(darkModeCache: dependencies.userCachedStatus)
+        let viewModel = DarkModeSettingViewModel(userDefaults: dependencies.userDefaults)
         return SettingsSingleCheckMarkViewController(viewModel: viewModel)
     }
 

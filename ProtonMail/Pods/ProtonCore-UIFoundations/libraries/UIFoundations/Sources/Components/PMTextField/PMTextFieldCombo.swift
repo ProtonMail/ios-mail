@@ -224,7 +224,7 @@ public class PMTextFieldCombo: UIView, AccessibleView {
             textField.spellCheckingType = newValue
         }
     }
-    
+
     /**
      Picker button active method
      */
@@ -279,7 +279,7 @@ public class PMTextFieldCombo: UIView, AccessibleView {
             }
         }
     }
-    
+
     @objc private func textFieldDidChange(textField: UITextField) {
         updateClearMode()
         delegate?.didChangeValue(self, value: value)

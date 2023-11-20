@@ -32,9 +32,13 @@ final class ComposerViewControllerTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        let apiMock = APIServiceMock()
-        user = try UserManager.prepareUser(apiMock: apiMock)
+
         let contextProviderMock = MockCoreDataContextProvider()
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { contextProviderMock }
+
+        let apiMock = APIServiceMock()
+        user = try UserManager.prepareUser(apiMock: apiMock, globalContainer: globalContainer)
 
         draft = try prepareEncryptedMessage(
             plaintextBody: MessageDecrypterTestData.decryptedHTMLMimeBody(),
@@ -43,11 +47,7 @@ final class ComposerViewControllerTests: XCTestCase {
             contextProvider: contextProviderMock
         )
 
-        let globalContainer = GlobalContainer()
-        globalContainer.contextProviderFactory.register { contextProviderMock }
-        let userContainer = UserContainer(userManager: user, globalContainer: globalContainer)
-
-        composerViewFactory = userContainer.composerViewFactory
+        composerViewFactory = user.container.composerViewFactory
     }
 
     override func tearDown() {

@@ -23,7 +23,7 @@
 import Foundation
 
 extension KeyedDecodingContainer {
-    
+
     /// Decodes a boolean from an integer for the given key.
     ///
     /// - parameter key: The key that the decoded value is associated with.
@@ -48,8 +48,8 @@ extension KeyedDecodingContainer {
             let errorDescription = "Expected to receive `0` or `1` but found `\(integer)` instead."
             throw DecodingError.dataCorruptedError(forKey: key, in: self, debugDescription: errorDescription)
         }
-        
+
         return boolValue
     }
-    
+
 }

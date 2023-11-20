@@ -48,9 +48,9 @@ final class UserContainer: ManagedContainer {
                 labelDataService: self.labelService,
                 userInfo: self.user.userInfo,
                 coreDataService: self.contextProvider,
-                contactCacheStatus: self.userCachedStatus,
                 cacheService: self.cacheService,
-                queueManager: self.queueManager
+                queueManager: self.queueManager,
+                userDefaults: self.userDefaults
             )
         }
     }
@@ -77,8 +77,8 @@ final class UserContainer: ManagedContainer {
                 messageDataService: self.messageService,
                 eventsService: self.eventsService,
                 undoActionManager: self.undoActionManager,
-                queueManager: self.queueManager,
-                contactCacheStatus: self.userCachedStatus,
+                queueManager: self.queueManager, 
+                userDefaults: self.userDefaults,
                 localConversationUpdater: .init(userID: self.user.userID.rawValue, dependencies: self)
             )
         }
@@ -87,6 +87,12 @@ final class UserContainer: ManagedContainer {
     var conversationStateServiceFactory: Factory<ConversationStateService> {
         self {
             ConversationStateService(viewMode: self.user.userInfo.viewMode)
+        }
+    }
+
+    var eventProcessorFactory: Factory<EventProcessor> {
+        self {
+            EventProcessor(dependencies: self)
         }
     }
 
@@ -102,7 +108,7 @@ final class UserContainer: ManagedContainer {
                 cache: self.userCachedStatus,
                 userID: self.user.userID,
                 apiService: self.apiService,
-                appRatingStatusProvider: self.userCachedStatus
+                appRatingStatusProvider: self.appRatingStatusProvider
             )
         }
     }
@@ -116,6 +122,12 @@ final class UserContainer: ManagedContainer {
     var fetchAttachmentFactory: Factory<FetchAttachment> {
         self {
             FetchAttachment(dependencies: .init(apiService: self.user.apiService))
+        }
+    }
+
+    var fetchAttachmentMetadataFactory: Factory<FetchAttachmentMetadataUseCase> {
+        self {
+            FetchAttachmentMetadataUseCase(dependencies: .init(apiService: self.user.apiService))
         }
     }
 
@@ -225,21 +237,13 @@ final class UserContainer: ManagedContainer {
 
     var undoActionManagerFactory: Factory<UndoActionManagerProtocol> {
         self {
-            UndoActionManager(
-                dependencies: .init(contextProvider: self.contextProvider, apiService: self.apiService),
-                getEventFetching: { [weak self] in
-                    self?.eventsService
-                },
-                getUserManager: { [weak self] in
-                    self?.user
-                }
-            )
+            UndoActionManager(dependencies: self)
         }
     }
 
     var userServiceFactory: Factory<UserDataService> {
         self {
-            UserDataService(apiService: self.apiService, coreKeyMaker: self.keyMaker)
+            UserDataService(apiService: self.apiService)
         }
     }
 
@@ -247,12 +251,13 @@ final class UserContainer: ManagedContainer {
         self {
             self.userManager
         }
+        .scope(.shared)
     }
 
     init(userManager: UserManager, globalContainer: GlobalContainer) {
         self.userManager = userManager
         self.globalContainer = globalContainer
 
-        manager.defaultScope = .shared
+        manager.defaultScope = .cached
     }
 }

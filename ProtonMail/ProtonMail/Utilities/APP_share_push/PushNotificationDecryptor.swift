@@ -28,7 +28,7 @@ import Foundation
 final class PushNotificationDecryptor {
 
     enum Key {
-        static let encryptionKit     = "pushNotificationEncryptionKit"
+        static let encryptionKit = "pushNotificationEncryptionKit"
     }
 
     @available(*, deprecated, message: "Old aproach to store encryption kits. Check `PushEncryptionKitSaver` instead.")

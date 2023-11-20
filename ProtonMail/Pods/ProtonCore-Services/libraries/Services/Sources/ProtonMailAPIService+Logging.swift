@@ -38,11 +38,11 @@ public protocol APIServiceLoggingDelegate: AnyObject {
 public enum APISessionTypeForLogging: String, Equatable {
     case authenticated
     case unauthenticated
-    
+
     static func from(_ credential: Credential) -> Self {
         credential.isForUnauthenticatedSession ? .unauthenticated : .authenticated
     }
-    
+
     static func from(_ authCredential: AuthCredential) -> Self {
         authCredential.isForUnauthenticatedSession ? .unauthenticated : .authenticated
     }
@@ -62,7 +62,7 @@ public enum APIServiceAccessTokenRefreshErrorForLogging: Error, LocalizedError {
     case refreshFailedWithAuthError(AuthErrors)
     case unauthSessionInvalidatedAndRefetched
     case refreshFailedWithLogout
-    
+
     public var errorDescription: String? {
         switch self {
         case .noAuthDelegate: return ".noAuthDelegate"

@@ -38,7 +38,7 @@ extension LoginService {
         }
         authenticateWithSSO(idpEmail: idpEmail, responseToken: responseToken, completion: completion)
     }
-    
+
     public func getSSORequest(challenge ssoChallengeResponse: SSOChallengeResponse) async -> (request: URLRequest?, error: String?) {
         let accessToken: (token: String?, error: String?) = await withCheckedContinuation { continuation in
             apiService.fetchAuthCredentials { result in
@@ -52,22 +52,22 @@ extension LoginService {
                 }
             }
         }
-        
+
         if let error = accessToken.error, accessToken.token == nil {
             return (nil, error)
         }
-        
+
         let host = apiService.dohInterface.getCurrentlyUsedHostUrl()
         let sessionUID = apiService.sessionUID
-        
+
         let url = URL(string: "\((host))/auth/sso/\(ssoChallengeResponse.ssoChallengeToken)")!
         var request = URLRequest(url: url)
         request.setValue(sessionUID, forHTTPHeaderField: "x-pm-uid")
         request.setValue(accessToken.token, forHTTPHeaderField: "Authorization")
-        
+
         return (request, nil)
     }
-    
+
     public func isProtonPage(url: URL?) -> Bool {
         guard let url else { return false }
         let hosts = [
@@ -78,7 +78,7 @@ extension LoginService {
         ]
         return hosts.contains(where: url.absoluteString.contains)
     }
-    
+
     private func authenticateWithSSO(idpEmail: String, responseToken: SSOResponseToken, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         withAuthDelegateAvailable(completion) { authManager in
             manager.authenticate(idpEmail: idpEmail, responseToken: responseToken) { result in
@@ -98,11 +98,11 @@ extension LoginService {
             }
         }
     }
-    
+
     public func login(username: String, password: String, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         login(username: username, password: password, intent: nil, challenge: challenge, completion: completion)
     }
-    
+
     public func login(username: String, password: String, intent: Intent?, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         withAuthDelegateAvailable(completion) { authManager in
             self.username = username
@@ -223,15 +223,15 @@ extension LoginService {
             completion(result.mapError { $0.asAvailabilityError() })
         }
     }
-    
+
     public func checkAvailabilityForInternalAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
         PMLog.debug(#function)
-        
+
         manager.checkAvailableUsernameWithinDomain(username, domain: currentlyChosenSignUpDomain) { result in
             completion(result.mapError { $0.asAvailabilityError() })
         }
     }
-    
+
     public func checkAvailabilityForExternalAccount(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
         PMLog.debug(#function)
 
@@ -301,7 +301,7 @@ extension LoginService {
             completion(.success(user))
             return
         }
-        
+
         PMLog.debug("Creating account keys")
         let manager = self.manager
         manager.setupAccountKeys(addresses: addresses, password: mailboxPassword) { result in
@@ -400,7 +400,7 @@ extension LoginService {
             }
         }
     }
-    
+
     public func availableUsernameForExternalAccountEmail(email: String, completion: @escaping (String?) -> Void) {
         guard let username = email.components(separatedBy: "@").first else {
             completion(nil)

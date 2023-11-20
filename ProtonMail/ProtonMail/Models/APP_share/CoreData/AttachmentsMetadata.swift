@@ -40,6 +40,9 @@ struct AttachmentsMetadata: Codable, Equatable {
 
 extension AttachmentsMetadata {
     static func decodeListOfDictionaries(jsonString: String) throws -> [AttachmentsMetadata] {
+        guard !jsonString.isEmpty else {
+            return []
+        }
         let decoded = try JSONDecoder().decode([AttachmentsMetadata].self, from: Data(jsonString.utf8))
         return decoded
     }

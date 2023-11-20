@@ -32,7 +32,7 @@ public struct Address_v2: Decodable, Equatable {
     public let order: Int
     public let displayName, signature: String
     public let keys: [AddressKey_v2]
-    
+
     public enum Status: UInt8, Decodable {
         /// 0: disabled
         case disabled
@@ -41,7 +41,7 @@ public struct Address_v2: Decodable, Equatable {
         /// 2: deleting
         case deleting
     }
-    
+
     public enum `Type`: UInt8, Decodable {
         /**
          * 1: The address a user registered with.
@@ -73,7 +73,7 @@ public struct Address_v2: Decodable, Equatable {
          */
         case externalDomain = 5
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case id = "ID"
         case domainID = "DomainID"
@@ -87,7 +87,7 @@ public struct Address_v2: Decodable, Equatable {
         case signature = "Signature"
         case keys = "Keys"
     }
-    
+
     public init(
         id: String,
         domainID: String?,
@@ -113,9 +113,9 @@ public struct Address_v2: Decodable, Equatable {
         self.signature = signature
         self.keys = keys
     }
-    
+
     // MARK: - Decodable
-    
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(String.self, forKey: .id)

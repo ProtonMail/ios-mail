@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22225" systemVersion="22G120" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.11.0">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22225" systemVersion="22G74" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.11.0">
     <entity name="Attachment" representedClassName=".Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" valueTransformerName="StringCryptoTransformer">
             <userInfo>
@@ -49,6 +49,10 @@
             </userInfo>
         </attribute>
         <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="attachments" inverseEntity="Message"/>
+        <fetchIndex name="byAttachmentIDAndUserID">
+            <fetchIndexElement property="userID" type="Binary" order="ascending"/>
+            <fetchIndexElement property="attachmentID" type="Binary" order="ascending"/>
+        </fetchIndex>
         <userInfo>
             <entry key="identityAttribute" value="attachmentID"/>
         </userInfo>
@@ -162,6 +166,10 @@
             </userInfo>
         </attribute>
         <relationship name="conversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Conversation" inverseName="labels" inverseEntity="Conversation"/>
+        <fetchIndex name="byLabelIDAndUserIDIndex">
+            <fetchIndexElement property="userID" type="Binary" order="ascending"/>
+            <fetchIndexElement property="labelID" type="Binary" order="ascending"/>
+        </fetchIndex>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="labelID"/>
@@ -179,7 +187,7 @@
                 <entry key="JSONKeyPath" value="AddressID"/>
             </userInfo>
         </attribute>
-        <attribute name="attachmentsMetadata" optional="YES" attributeType="Transformable">
+        <attribute name="attachmentsMetadata" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData">
             <userInfo>
                 <entry key="JSONKeyPath" value="AttachmentsMetadata"/>
                 <entry key="JSONTransformerName" value="JsonArrayToStringTransformer"/>
@@ -244,6 +252,9 @@
                 <entry key="JSONKeyPath" value="Labels"/>
             </userInfo>
         </relationship>
+        <fetchIndex name="byConversationIDIndex">
+            <fetchIndexElement property="conversationID" type="Binary" order="ascending"/>
+        </fetchIndex>
         <uniquenessConstraints>
             <uniquenessConstraint/>
         </uniquenessConstraints>
@@ -264,6 +275,10 @@
         <attribute name="unreadUpdate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="update" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="userID" attributeType="String"/>
+        <fetchIndex name="byLabelIDAndUserID">
+            <fetchIndexElement property="userID" type="Binary" order="ascending"/>
+            <fetchIndexElement property="labelID" type="Binary" order="ascending"/>
+        </fetchIndex>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="labelID"/>
@@ -431,6 +446,10 @@
         <attribute name="unreadUpdate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="update" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="userID" optional="YES" attributeType="String"/>
+        <fetchIndex name="byLabelIDAndUserID">
+            <fetchIndexElement property="userID" type="Binary" order="ascending"/>
+            <fetchIndexElement property="labelID" type="Binary" order="ascending"/>
+        </fetchIndex>
     </entity>
     <entity name="Message" representedClassName=".Message" syncable="YES">
         <attribute name="action" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
@@ -439,7 +458,7 @@
                 <entry key="JSONKeyPath" value="AddressID"/>
             </userInfo>
         </attribute>
-        <attribute name="attachmentsMetadata" optional="YES" attributeType="Transformable">
+        <attribute name="attachmentsMetadata" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData">
             <userInfo>
                 <entry key="JSONKeyPath" value="AttachmentsMetadata"/>
                 <entry key="JSONTransformerName" value="JsonArrayToStringTransformer"/>
@@ -626,6 +645,9 @@
         <attribute name="eventID" optional="YES" attributeType="String"/>
         <attribute name="updateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="userID" optional="YES" attributeType="String"/>
+        <fetchIndex name="byUserIDIndex">
+            <fetchIndexElement property="userID" type="Binary" order="ascending"/>
+        </fetchIndex>
     </entity>
     <fetchRequest name="FetchRequest" entity="Message" predicateString="messageType == 1"/>
 </model>

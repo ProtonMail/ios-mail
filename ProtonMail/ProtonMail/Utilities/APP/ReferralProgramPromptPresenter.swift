@@ -18,38 +18,9 @@
 import Foundation
 import ProtonCoreDataModel
 
-protocol ReferralProgramPromptStatus {
-    var referralProgramPromptWasShown: Bool { get set }
-    var firstRunDate: Date? { get set }
-}
-
-extension UserCachedStatus: ReferralProgramPromptStatus {
-    private enum DefaultKeys: String {
-        case referralProgramPromptWasShown
-        case firstRunDate
-    }
-
-    var referralProgramPromptWasShown: Bool {
-        get {
-            getShared().bool(forKey: DefaultKeys.referralProgramPromptWasShown.rawValue)
-        }
-        set {
-            getShared().set(newValue, forKey: DefaultKeys.referralProgramPromptWasShown.rawValue)
-        }
-    }
-
-    var firstRunDate: Date? {
-        get {
-            getShared().object(forKey: DefaultKeys.firstRunDate.rawValue) as? Date
-        }
-        set {
-            getShared().set(newValue, forKey: DefaultKeys.firstRunDate.rawValue)
-        }
-    }
-
-}
-
 final class ReferralProgramPromptPresenter {
+    typealias Dependencies = HasUserDefaults
+
     private enum Threshold {
         static let inboxNavigation = 3
     }
@@ -57,9 +28,8 @@ final class ReferralProgramPromptPresenter {
     private let userID: UserID
     private let referralProgram: ReferralProgram
     private let featureFlagCache: FeatureFlagCache
-    private var referralProgramPromptStatus: ReferralProgramPromptStatus
     private let featureFlagService: FeatureFlagsDownloadServiceProtocol
-    private let notificationCenter: NotificationCenter
+    private let dependencies: Dependencies
     private var inboxNavigationCounter = 0
     private var isInboxNavigationConditionMet: Bool {
         return inboxNavigationCounter >= Threshold.inboxNavigation
@@ -68,20 +38,19 @@ final class ReferralProgramPromptPresenter {
     init(userID: UserID,
          referralProgram: ReferralProgram,
          featureFlagCache: FeatureFlagCache,
-         referralProgramPromptStatus: ReferralProgramPromptStatus = userCachedStatus,
          featureFlagService: FeatureFlagsDownloadServiceProtocol,
          notificationCenter: NotificationCenter = .default,
+         dependencies: Dependencies,
          firstRunDate: Date = Date()) {
         self.userID = userID
         self.referralProgram = referralProgram
         self.featureFlagCache = featureFlagCache
-        self.referralProgramPromptStatus = referralProgramPromptStatus
         self.featureFlagService = featureFlagService
-        self.notificationCenter = notificationCenter
-        if referralProgramPromptStatus.firstRunDate == nil {
-            self.referralProgramPromptStatus.firstRunDate = firstRunDate
+        self.dependencies = dependencies
+        if dependencies.userDefaults[.firstRunDate] == nil {
+            dependencies.userDefaults[.firstRunDate] = firstRunDate
         }
-        self.notificationCenter.addObserver(
+        notificationCenter.addObserver(
             self,
             selector: #selector(appLostFocus),
             name: UIApplication.willResignActiveNotification,
@@ -100,15 +69,15 @@ final class ReferralProgramPromptPresenter {
     }
 
     func shouldShowReferralProgramPrompt() -> Bool {
-        referralProgramPromptStatus.referralProgramPromptWasShown == false &&
+        !dependencies.userDefaults[.referralProgramPromptWasShown] &&
         isInboxNavigationConditionMet &&
         referralProgram.eligible &&
         featureFlagCache.isFeatureFlag(.referralPrompt, enabledForUserWithID: userID) &&
-        isDateMoreThan30DaysInThePast(referralProgramPromptStatus.firstRunDate)
+        isDateMoreThan30DaysInThePast(dependencies.userDefaults[.firstRunDate])
     }
 
     func promptWasShown() {
-        self.referralProgramPromptStatus.referralProgramPromptWasShown = true
+        dependencies.userDefaults[.referralProgramPromptWasShown] = true
         updateFeatureState()
     }
 

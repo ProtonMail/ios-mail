@@ -18,15 +18,17 @@
 import UIKit
 
 final class ComposerViewFactory {
-    typealias Dependencies = ComposeContainerViewModel.Dependencies
+    typealias Dependencies = AnyObject
+    & ComposeContainerViewModel.Dependencies
     & ComposeContainerViewController.Dependencies
     & HasUserManager
     & HasInternetConnectionStatusProviderProtocol
     & HasKeyMakerProtocol
     & HasUserCachedStatus
     & HasFetchAttachment
+    & HasUserDefaults
 
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
@@ -127,9 +129,8 @@ final class ComposerViewFactory {
                     cache: dependencies.userCachedStatus
                 )
             ),
-            darkModeCache: dependencies.userCachedStatus,
             attachmentMetadataStrippingCache: dependencies.attachmentMetadataStripStatusProvider,
-            userCachedStatusProvider: dependencies.userCachedStatus,
+            userDefaults: dependencies.userDefaults,
             notificationCenter: NotificationCenter.default
         )
     }

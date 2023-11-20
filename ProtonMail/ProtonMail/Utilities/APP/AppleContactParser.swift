@@ -45,7 +45,7 @@ protocol AppleContactParserProtocol {
 final class AppleContactParser: AppleContactParserProtocol {
     private let contactImportQueue = OperationQueue()
     private var contactImportTask: BlockOperation?
-    private weak var coreDataService: CoreDataContextProviderProtocol?
+    private let coreDataService: CoreDataContextProviderProtocol
     private weak var delegate: AppleContactParserDelegate?
 
     init(delegate: AppleContactParserDelegate,
@@ -82,12 +82,6 @@ final class AppleContactParser: AppleContactParserProtocol {
             guard !parsedResults.isEmpty else {
                 self.delegate?.dismissImportPopup()
                 return
-            }
-            if !CoreDataService.useNewApproach {
-                CoreDataService.shouldIgnoreContactUpdateInMainContext = true
-            }
-            defer {
-                CoreDataService.shouldIgnoreContactUpdateInMainContext = false
             }
             self.delegate?.disableCancel()
             self.upload(parsedResults: parsedResults)
@@ -263,7 +257,6 @@ extension AppleContactParser {
     }
 
     func createEditEmail(order: Int, type: ContactFieldType, address: String) -> ContactEditEmail? {
-        guard let service = self.coreDataService else { return nil }
         return ContactEditEmail(order: order,
                                 type: type,
                                 email: address,
@@ -275,7 +268,7 @@ extension AppleContactParser {
                                 scheme: nil,
                                 mimeType: nil,
                                 delegate: nil,
-                                contextProvider: service)
+                                contextProvider: coreDataService)
     }
 
     /// Transfer EItem prefix to item prefix

@@ -32,7 +32,7 @@ enum DetailType {
     case user
     case infinity, lock, vault, alias, at, forward, eye, penSquare
     case custom(UIImage)
-    
+
     var icon: UIImage {
         switch self {
         case .checkmark: return IconProvider.checkmark
@@ -80,7 +80,7 @@ class PlanPresentation {
     var storeKitProductId: String? { accountPlan.storeKitProductId }
     var isCurrentlyProcessed: Bool = false
     var isExpanded: Bool = false
-    
+
     init(accountPlan: InAppPurchasePlan, planPresentationType: PlanPresentationType, isCurrentlyProcessed: Bool = false, isExpanded: Bool = false) {
         self.accountPlan = accountPlan
         self.planPresentationType = planPresentationType
@@ -90,7 +90,6 @@ class PlanPresentation {
 }
 
 extension PlanPresentation {
-    // swiftlint:disable function_parameter_count
     static func createPlan(from details: Plan,
                            servicePlan: ServicePlanDataServiceProtocol,
                            clientApp: ClientApp,
@@ -114,11 +113,11 @@ extension PlanPresentation {
         }
         return PlanPresentation(accountPlan: plan, planPresentationType: planPresentationType)
     }
-    
+
     static var unavailableBecauseUserHasNoAccessToPlanDetails: PlanPresentation {
         PlanPresentation(accountPlan: InAppPurchasePlan.freePlan, planPresentationType: .current(.unavailable))
     }
-    
+
     static func getLocale(from plan: InAppPurchasePlan, storeKitManager: StoreKitManagerProtocol) -> Locale? {
         return plan.planLocale(from: storeKitManager)
     }

@@ -39,6 +39,7 @@ final class ContactDetailsViewModel: NSObject {
     private(set) var nickNames: [ContactEditInformation] = []
     private(set) var titles: [ContactEditInformation] = []
     private(set) var gender: ContactEditInformation?
+    private(set) var anniversary: ContactEditInformation?
 
     private(set) var fields: [ContactEditField] = []
     private(set) var notes: [ContactEditNote] = []
@@ -65,6 +66,7 @@ final class ContactDetailsViewModel: NSObject {
         .nickName,
         .title,
         .gender,
+        .anniversary,
         .custom_field,
         .notes
     ]
@@ -132,6 +134,7 @@ final class ContactDetailsViewModel: NSObject {
         nickNames = []
         titles = []
         gender = nil
+        anniversary = nil
 
         verifyType2 = true
         verifyType3 = true
@@ -331,7 +334,9 @@ extension ContactDetailsViewModel: ContactParserResultDelegate {
                 organizations.append(info)
             case .nickname:
                 nickNames.append(info)
-            case .anniversary, .url:
+            case .anniversary:
+                anniversary = info
+            case .url:
                 fatalError("Should not reach here")
             }
         }

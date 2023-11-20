@@ -24,4 +24,3 @@ public typealias FeatureFetchCallback = ([Feature]) -> Void
 public protocol FeatureProvider {
     func fetchFeature(_ completion: @escaping FeatureFetchCallback)
 }
-

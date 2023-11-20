@@ -28,7 +28,7 @@ import func AVFoundation.AVMakeRect
 
 public struct WelcomeScreenTexts {
     let body: String
-    
+
     public init(body: String) {
         self.body = body
     }
@@ -39,7 +39,7 @@ public struct WelcomeScreenCustomData {
     let wordmarkWithLogo: UIImage
     let body: String
     let brand: Brand
-    
+
     public init(topImage: UIImage, wordmarkWithLogo: UIImage, body: String, brand: Brand) {
         self.topImage = topImage
         self.wordmarkWithLogo = wordmarkWithLogo
@@ -106,13 +106,13 @@ final class WelcomeView: UIView {
             $0.translatesAutoresizingMaskIntoConstraints = false
             addSubview($0)
         }
-        
+
         topImage.translatesAutoresizingMaskIntoConstraints = false
         top.addSubview(topImage)
         top.clipsToBounds = true
         topImage.clipsToBounds = true
         wordmarkWithLogo.contentMode = .scaleAspectFill
-        
+
         let primaryButton: ProtonButton
         let secondaryButton: ProtonButton
         if signupAvailable {
@@ -159,7 +159,7 @@ final class WelcomeView: UIView {
             primaryButton.topAnchor.constraint(equalTo: body.bottomAnchor, constant: buttonOffset),
             secondaryButton.topAnchor.constraint(equalTo: primaryButton.bottomAnchor, constant: secondaryButtonOffset)
         ])
-        
+
         switch layout {
         case .small:
             topImage.contentMode = .scaleAspectFit
@@ -186,7 +186,7 @@ final class WelcomeView: UIView {
                 footerBrand.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
             ])
         }
-        
+
         NSLayoutConstraint.activate([wordmarkWithLogo, body, loginButton, signupButton].flatMap { view -> [NSLayoutConstraint] in
             let readableContentIfPossible = NSLayoutConstraint(item: view, attribute: .leading, relatedBy: .equal,
                                                                  toItem: readableContentGuide, attribute: .leading, multiplier: 1.0, constant: 0.0)
@@ -223,7 +223,7 @@ final class WelcomeView: UIView {
         case .custom: return IconProvider.mailTopImage
         }
     }
-    
+
     private func wordmarkWithLogo(for variant: WelcomeScreenVariant) -> UIImageView {
         let wordmark: UIImage
         switch variant {
@@ -268,7 +268,7 @@ final class WelcomeView: UIView {
         loginButton.setTitle(LUITranslation.sign_in_button.l10n, for: .normal)
         signupButton.setMode(mode: .solid)
         signupButton.setTitle(LUITranslation.create_account_button.l10n, for: .normal)
-        
+
         guard signupAvailable else {
             signupButton.isHidden = true
             return

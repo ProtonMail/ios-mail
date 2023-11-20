@@ -31,7 +31,7 @@ public enum Algorithm: String {
     case AES128    = "aes128"
     case AES192    = "aes192"
     case AES256    = "aes256"
-    
+
     public var value: String {
         return self.rawValue
     }
@@ -43,7 +43,7 @@ public class SessionKey {
         self.sessionKey = sessionKey
         self.algo = algo
     }
-    
+
     public let sessionKey: Data
     public let algo: Algorithm
 }

@@ -33,7 +33,8 @@ class MailboxCoordinatorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         dummyAPIService = APIServiceMock()
-        let dummyUser = UserManager(api: dummyAPIService)
+        let testContainer = TestContainer()
+        let dummyUser = UserManager(api: dummyAPIService, globalContainer: testContainer)
 
         conversationStateProviderMock = .init()
         let lastUpdatedStoreMock = MockLastUpdatedStoreProtocol()
@@ -55,7 +56,10 @@ class MailboxCoordinatorTests: XCTestCase {
             updateMailbox: MockUpdateMailbox(),
             fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
             fetchSenderImage: dummyUser.container.fetchSenderImage,
-            featureFlagCache: featureFlagCache
+            featureFlagCache: featureFlagCache,
+            userDefaults: testContainer.userDefaults,
+            fetchAttachmentUseCase: MockFetchAttachment(),
+            fetchAttachmentMetadataUseCase: MockFetchAttachmentMetadata()
         )
         viewModelMock = MockMailBoxViewModel(labelID: "",
                                              label: nil,
@@ -70,7 +74,6 @@ class MailboxCoordinatorTests: XCTestCase {
                                              conversationProvider: conversationProviderMock,
                                              eventsService: eventServiceMock,
                                              dependencies: dependencies,
-                                             welcomeCarrouselCache: WelcomeCarrouselCacheMock(),
                                              toolbarActionProvider: toolbarActionProviderMock,
                                              saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                              totalUserCountClosure: {

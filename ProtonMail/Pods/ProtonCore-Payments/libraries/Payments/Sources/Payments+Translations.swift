@@ -25,7 +25,7 @@ import ProtonCoreUtilities
 private class Handler {}
 
 public enum PSTranslation: TranslationsExposing {
-    
+
     public static var bundle: Bundle {
         #if SPM
         return Bundle.module
@@ -33,9 +33,9 @@ public enum PSTranslation: TranslationsExposing {
         return Bundle(path: Bundle(for: Handler.self).path(forResource: "Translations-Payments", ofType: "bundle")!)!
         #endif
     }
-    
+
     public static var prefixForMissingValue: String = ""
-    
+
     case _core_general_ok_action
     case _core_retry
     case _core_api_might_be_blocked_message
@@ -59,7 +59,7 @@ public enum PSTranslation: TranslationsExposing {
     case popup_credits_applied_cancellation
     case error_apply_payment_on_registration_title
     case error_apply_payment_on_registration_message
-    
+
     public var l10n: String {
         switch self {
         case ._core_general_ok_action:

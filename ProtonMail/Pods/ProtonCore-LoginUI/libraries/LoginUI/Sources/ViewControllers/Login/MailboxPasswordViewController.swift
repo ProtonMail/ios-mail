@@ -54,7 +54,7 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
     var viewModel: MailboxPasswordViewModel!
     var customErrorPresenter: LoginErrorPresenter?
     var onDohTroubleshooting: () -> Void = {}
-    
+
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     var focusNoMore: Bool = false
@@ -189,7 +189,7 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
 // MARK: - Additional errors handling
 
 extension MailboxPasswordViewController: LoginErrorCapable {
-    
+
     func onFirstPasswordChangeNeeded() {
         delegate?.firstPasswordChangeNeeded()
     }
@@ -197,7 +197,7 @@ extension MailboxPasswordViewController: LoginErrorCapable {
     func onUserAccountSetupNeeded() {
         delegate?.userAccountSetupNeeded()
     }
-    
+
     func onLearnMoreAboutExternalAccountsNotSupported() {
         delegate?.learnMoreAboutExternalAccountsNotSupported()
     }

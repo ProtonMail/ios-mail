@@ -42,7 +42,7 @@ final class CountMessagesForLabel: CountMessagesForLabelUseCase {
                 return
             }
             do {
-                let result = try JSONDecoder().decode(type: [MessageCount].self, from: count)
+                let result = try JSONDecoder().decode(type: [CountData].self, from: count)
                 guard let target = result.first(where: { $0.labelID == params.labelID }) else {
                     callback(.failure(NSError.unableToParseResponse("Doesn't include target labelID")))
                     return
@@ -72,18 +72,6 @@ extension CountMessagesForLabel {
 
     struct Dependencies {
         let apiService: APIService
-    }
-}
-
-private struct MessageCount: Codable {
-    let total: Int
-    let labelID: LabelID
-    let unread: Int
-
-    enum CodingKeys: String, CodingKey {
-        case total = "Total"
-        case labelID = "LabelID"
-        case unread = "Unread"
     }
 }
 

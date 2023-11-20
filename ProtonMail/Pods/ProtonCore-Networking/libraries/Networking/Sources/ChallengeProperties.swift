@@ -28,7 +28,7 @@ public struct ChallengeProperties {
     public init(challenge: [String: Any], productPrefix: String) {
         self.init(challenges: [challenge], productPrefix: productPrefix)
     }
-    
+
     public init(challenges: [[String: Any]], productPrefix: String) {
         self.challenges = challenges
         self.productPrefix = productPrefix

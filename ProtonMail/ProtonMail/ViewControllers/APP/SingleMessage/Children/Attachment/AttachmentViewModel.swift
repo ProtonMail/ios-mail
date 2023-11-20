@@ -31,14 +31,8 @@ final class AttachmentViewModel {
     var reloadView: (() -> Void)?
 
     var numberOfAttachments: Int {
-        if isInlineAttachmentNoLoaded {
-            return attachmentCount
-        } else {
-            return attachments.isEmpty ? attachmentCount : attachments.count
-        }
+        attachments.count
     }
-    private var attachmentCount: Int = 0
-    private var isInlineAttachmentNoLoaded = true
 
     var totalSizeOfAllAttachments: Int {
         let attachmentSizes = attachments.map({ $0.size })
@@ -48,14 +42,7 @@ final class AttachmentViewModel {
         return totalSize
     }
 
-    func attachmentHasChanged(
-        attachmentCount: Int,
-        nonInlineAttachments: [AttachmentInfo],
-        inlineAttachments: [AttachmentEntity]?,
-        mimeAttachments: [MimeAttachment]
-    ) {
-        self.attachmentCount = attachmentCount
-        isInlineAttachmentNoLoaded = inlineAttachments == nil
+    func attachmentHasChanged(nonInlineAttachments: [AttachmentInfo], mimeAttachments: [MimeAttachment]) {
         var files: [AttachmentInfo] = nonInlineAttachments
         files.append(contentsOf: mimeAttachments)
         self.attachments = Set(files)

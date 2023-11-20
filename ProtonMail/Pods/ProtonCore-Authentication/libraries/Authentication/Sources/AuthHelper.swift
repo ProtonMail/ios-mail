@@ -33,27 +33,27 @@ public protocol AuthHelperDelegate: AuthSessionInvalidatedDelegate {
 }
 
 public final class AuthHelper: AuthDelegate {
-    
+
     private let currentCredentials: Atomic<(AuthCredential, Credential)?>
 
     public private(set) weak var delegate: AuthHelperDelegate?
     public weak var authSessionInvalidatedDelegateForLoginAndSignup: AuthSessionInvalidatedDelegate?
     private var delegateExecutor: CompletionBlockExecutor?
-    
+
     public init(authCredential: AuthCredential) {
         let credential = Credential(authCredential)
         self.currentCredentials = .init((authCredential, credential))
     }
-    
+
     public init(credential: Credential) {
         let authCredential = AuthCredential(credential)
         self.currentCredentials = .init((authCredential, credential))
     }
-    
+
     public init() {
         self.currentCredentials = .init(nil)
     }
-    
+
     public init?(initialBothCredentials: (AuthCredential, Credential)) {
         let authCredential = initialBothCredentials.0
         let credential = initialBothCredentials.1
@@ -66,7 +66,7 @@ public final class AuthHelper: AuthDelegate {
         }
         self.currentCredentials = .init(initialBothCredentials)
     }
-    
+
     public func setUpDelegate(_ delegate: AuthHelperDelegate, callingItOn executor: CompletionBlockExecutor? = nil) {
         if let executor = executor {
             self.delegateExecutor = executor
@@ -80,11 +80,11 @@ public final class AuthHelper: AuthDelegate {
     public func credential(sessionUID: String) -> Credential? {
         fetchCredentials(for: sessionUID, path: \.1)
     }
-    
+
     public func authCredential(sessionUID: String) -> AuthCredential? {
         fetchCredentials(for: sessionUID, path: \.0)
     }
-    
+
     private func fetchCredentials<T>(for sessionUID: String, path: KeyPath<(AuthCredential, Credential), T>) -> T? {
         currentCredentials.transform { authCredentials in
             guard let existingCredentials = authCredentials else { return nil }
@@ -98,50 +98,50 @@ public final class AuthHelper: AuthDelegate {
 
     public func onUpdate(credential: Credential, sessionUID: String) {
         currentCredentials.mutate { credentialsToBeUpdated in
-            
+
             guard let existingCredentials = credentialsToBeUpdated else {
                 credentialsToBeUpdated = (AuthCredential(credential), credential)
                 return
             }
-            
+
             guard existingCredentials.0.sessionID == sessionUID else {
                 PMLog.error("Asked for updating credentials of a wrong session. It's a programmers error and should be investigated")
                 return
             }
-            
+
             // we don't nil out the key and password to avoid loosing this information unintentionaly
             let updatedAuth = existingCredentials.0.updatedKeepingKeyAndPasswordDataIntact(credential: credential)
             var updatedCredentials = credential
-            
+
             // if there's no update in scopes, assume the same scope as previously
             if updatedCredentials.scopes.isEmpty {
                 updatedCredentials.scopes = existingCredentials.1.scopes
             }
 
             credentialsToBeUpdated = (updatedAuth, updatedCredentials)
-            
+
             guard let delegate, let delegateExecutor else { return }
             delegateExecutor.execute {
                 delegate.credentialsWereUpdated(authCredential: updatedAuth, credential: updatedCredentials, for: sessionUID)
             }
         }
     }
-    
+
     public func onSessionObtaining(credential: Credential) {
         currentCredentials.mutate { authCredentials in
-            
+
             let sessionUID = credential.UID
             let newCredentials = (AuthCredential(credential), credential)
 
             authCredentials = newCredentials
-            
+
             guard let delegate, let delegateExecutor else { return }
             delegateExecutor.execute {
                 delegate.credentialsWereUpdated(authCredential: newCredentials.0, credential: newCredentials.1, for: sessionUID)
             }
         }
     }
-    
+
     public func onAdditionalCredentialsInfoObtained(sessionUID: String, password: String?, salt: String?, privateKey: String?) {
         currentCredentials.mutate { authCredentials in
             guard authCredentials != nil else { return }
@@ -156,14 +156,14 @@ public final class AuthHelper: AuthDelegate {
             let saltToUpdate = salt ?? authCredentials?.0.passwordKeySalt
             let privateKeyToUpdate = privateKey ?? authCredentials?.0.privateKey
             authCredentials?.0.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
-            
+
             guard let delegate, let delegateExecutor, let existingCredentials = authCredentials else { return }
             delegateExecutor.execute {
                 delegate.credentialsWereUpdated(authCredential: existingCredentials.0, credential: existingCredentials.1, for: sessionUID)
             }
         }
     }
-    
+
     public func onAuthenticatedSessionInvalidated(sessionUID: String) {
         currentCredentials.mutate { authCredentials in
             guard let existingCredentials = authCredentials else { return }

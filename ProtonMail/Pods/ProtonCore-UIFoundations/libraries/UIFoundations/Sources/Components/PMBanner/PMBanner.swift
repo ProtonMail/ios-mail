@@ -179,7 +179,7 @@ extension PMBanner {
         self.linkAttributed = linkAttributed
         self.linkHandler = linkHandler
     }
-    
+
     /// Add handler for links
     /// - Parameter linkHandler: A block to execute when the user clicks the link.
     public func addLinkHandler(linkHandler: @escaping ((PMBanner, URL) -> Void)) {
@@ -304,13 +304,13 @@ extension PMBanner {
         let imageView = createPaddingImageView(image: icon)
         imageView.tintColor = self.style.assistTextColor
         btn.setImage(imageView.asImage(), for: .normal)
-        
+
         // highlighted button image
         let highlightedImageView = createPaddingImageView(image: icon)
         highlightedImageView.tintColor = self.style.assistTextColor
         highlightedImageView.backgroundColor = self.style.assistHighBgColor
         btn.setImage(highlightedImageView.asImage(), for: .highlighted)
-        
+
         btn.tintColor = self.style.assistTextColor
         btn.roundCorner(ICON_SIZE / 2)
         btn.setSizeContraint(height: ICON_SIZE, width: ICON_SIZE)
@@ -333,7 +333,7 @@ extension PMBanner {
         btn.addTarget(self, action: #selector(self.clickActionButton), for: .touchUpInside)
         return btn
     }
-    
+
     private func createPaddingImageView(image: UIImage) -> UIImageView {
         let padding = HIGHLIGHTED_BUTTON_IMAGE_PADDING
         let img = image.imageWithInsets(insets: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding))
@@ -389,7 +389,7 @@ extension PMBanner {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickBanner))
         self.addGestureRecognizer(tap)
     }
-    
+
     /// Add pan gesture of `PMBanner`
     private func setupPanGesture() {
         let pan = UIPanGestureRecognizer(target: self, action: #selector(self.bannerPan))

@@ -32,7 +32,7 @@ extension Error {
         return responseCode == 22916
     }
 
-    var isPaymentAmmountMismatchOrUnavailablePlanError: Bool {
+    var isPaymentAmountMismatchOrUnavailablePlanError: Bool {
        // 2001 "Unsupported plan selection, please select a plan that is currently available"
         return responseCode == 22101 || responseCode == 2001
     }

@@ -25,16 +25,18 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
     var secondUserAPI: APIServiceMock!
     var swipeActionCacheStub: SwipeActionCacheStub!
 
+    private var globalContainer: GlobalContainer!
+
     override func setUp() {
         super.setUp()
         firstUserAPI = APIServiceMock()
         secondUserAPI = APIServiceMock()
         swipeActionCacheStub = SwipeActionCacheStub()
 
-        let globalContainer = GlobalContainer()
+        globalContainer = .init()
 
         for apiService: APIServiceMock in [firstUserAPI, secondUserAPI] {
-            let user = UserManager(api: apiService)
+            let user = UserManager(api: apiService, globalContainer: globalContainer)
             globalContainer.usersManager.add(newUser: user)
         }
 
@@ -49,6 +51,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
         firstUserAPI = nil
         secondUserAPI = nil
         swipeActionCacheStub = nil
+        globalContainer = nil
     }
 
     func testUpdateSwipeLeft_withValidAction_success() {

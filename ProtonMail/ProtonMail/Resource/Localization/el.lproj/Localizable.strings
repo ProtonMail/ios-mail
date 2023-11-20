@@ -443,6 +443,9 @@
 /* Alert title */
 "Notice" = "Ειδοποίηση";
 
+/* Title of alert in share extension. */
+"Error" = "Σφάλμα";
+
 /* Action */
 "Don't remind me again" = "Μην μου υπενθυμίσεις ξανά";
 
@@ -961,9 +964,6 @@
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Αποτυχία φόρτωσης περιεχομένου!\nΠαρακαλούμε δοκιμάστε ξανά.";
-
-/* Title of alert in share extension. */
-"Error" = "Σφάλμα";
 
 /* Error message */
 "Failed to determine type of file" = "Αποτυχία προσδιορισμού του τύπου αρχείου";
@@ -1935,6 +1935,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "Εκτελώντας μια ενέργεια μετακίνησης σε ένα μήνυμα (π.χ. αρχειοθέτηση) θα μεταβείτε στο επόμενο μήνυμα.";
+
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "Παρουσιάστηκε μην αναμενόμενο σφάλμα, παρακαλούμε επικοινωνήστε με την υποστήριξη.\nΣφάλμα: %@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "Ανεπαρκής χώρος στον δίσκο";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Δεν είναι δυνατό το άνοιγμα της εφαρμογής λόγω ανεπαρκούς χώρου στο δίσκο. Διαγράψτε ορισμένα δεδομένα και προσπαθήστε ξανά";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Αδυναμία ανοίγματος μηνύματος, δοκιμάστε ξανά.";

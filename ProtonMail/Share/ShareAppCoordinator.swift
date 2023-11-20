@@ -32,17 +32,9 @@ final class ShareAppCoordinator {
     private let dependencies = GlobalContainer()
 
     func start() {
-        sharedServices.add(UserCachedStatus.self, for: dependencies.userCachedStatus)
-        sharedServices.add(QueueManager.self, for: dependencies.queueManager)
-
-        let keyMaker = dependencies.keyMaker
-        sharedServices.add(Keymaker.self, for: keyMaker)
-        sharedServices.add(KeyMakerProtocol.self, for: keyMaker)
-
         let unlockManager = dependencies.unlockManager
         unlockManager.delegate = self
 
-        sharedServices.add(UsersManager.self, for: dependencies.usersManager)
         self.loadUnlockCheckView()
     }
 
@@ -62,13 +54,7 @@ final class ShareAppCoordinator {
 
 extension ShareAppCoordinator: UnlockManagerDelegate {
     func setupCoreData() throws {
-        try CoreDataStore.shared.initialize()
-
-        sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
-        sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
-        let lastUpdatedStore = dependencies.lastUpdatedStore
-        sharedServices.add(LastUpdatedStore.self, for: lastUpdatedStore)
-        sharedServices.add(LastUpdatedStoreProtocol.self, for: lastUpdatedStore)
+        // this is done in LaunchService
     }
 
     func isUserStored() -> Bool {
@@ -99,8 +85,6 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
     }
 
     func loadUserDataAfterUnlock() {
-        let usersManager = dependencies.usersManager
-        usersManager.run()
-        usersManager.tryRestore()
+        dependencies.launchService.loadUserDataAfterUnlock()
     }
 }

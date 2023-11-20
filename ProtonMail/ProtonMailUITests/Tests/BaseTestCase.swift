@@ -16,9 +16,6 @@ import ProtonCoreTestingToolkit
 import Yams
 
 let apiDomainKey = "MAIL_APP_API_DOMAIN"
-var environmentFileName = "environment"
-var credentialsFileName = "credentials"
-let credentialsBlackFileName = "credentials_black"
 let testData = TestData()
 var users: [String: User] = [:]
 var wasJailDisabled = false
@@ -31,7 +28,7 @@ var dynamicDomain: String {
  Parent class for all the test classes.
  */
 class BaseTestCase: CoreTestCase {
-    
+
     var launchArguments = ["-clear_all_preference", "YES"]
     var humanVerificationStubs = false
     var forceUpgradeStubs = false
@@ -104,36 +101,11 @@ class BaseTestCase: CoreTestCase {
         /// Adds UI interruption monitor that queries all buttons and clicks if identifier is in the labels array. It is triggered when system alert interrupts the test execution.
         addUIMonitor(elementQueryToTap: XCUIApplication(bundleIdentifier: "com.apple.springboard").buttons, identifiers: labels)
     }
-    
+
     fileprivate func login(user: User) {
         loginRobot.loginUser(user)
     }
 
-    private func loadUser(userKey: String) -> String {
-        if let user = ProcessInfo.processInfo.environment[userKey] {
-            return user
-        } else {
-            return getValueForKey(key: userKey, filename: credentialsFileName)!
-        }
-    }
-
-    private func getValueForKey(key: String, filename: String) -> String? {
-        var data = Data()
-        var params = Dictionary<String, String>()
-
-        /// Load files from "pm.ProtonMailUITests" bundle.
-        guard let fileURL = Bundle(identifier: "pm.ProtonMailUITests")!.url(forResource: filename, withExtension: "plist") else {
-            fatalError("Users credentials.plist file not found.")
-        }
-        do {
-            data = try Data(contentsOf: fileURL)
-            params = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as! Dictionary<String, String>
-        } catch {
-            fatalError("Unable to parse credentials.plist file while running UI tests.")
-        }
-        return params[key]
-    }
-    
     private static func getYamlFiles(in folderURL: URL) -> [URL] {
         var files: [URL] = []
 
@@ -148,7 +120,7 @@ class BaseTestCase: CoreTestCase {
 
         return files
     }
-    
+
     private static func getTestUsersFromYamlFiles() {
         var userYamlFiles: [URL]
 
@@ -157,7 +129,7 @@ class BaseTestCase: CoreTestCase {
             return
         }
         userYamlFiles = getYamlFiles(in: testDataURL)
-        
+
         assert(!userYamlFiles.isEmpty, "Attempted to parse user.yml files from TestData repository but was not able to find any.")
 
         for file in userYamlFiles {
@@ -263,7 +235,7 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
         user = createUser(scenarioName: scenario.name, plan: plan, isEnableEarlyAccess: true)
         login(user: user)
     }
-    
+
     @discardableResult
     func createUser() -> User {
         return createUser(scenarioName: scenario.name, plan: plan, isEnableEarlyAccess: true)

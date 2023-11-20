@@ -62,7 +62,6 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
     & HasFeatureFlagCache
     & HasLastUpdatedStoreProtocol
     & HasPushNotificationService
-    & HasUserCachedStatus
 
     private(set) var viewController: MenuViewController?
     private let viewModel: MenuVMProtocol
@@ -376,14 +375,21 @@ extension MenuCoordinator {
                                 fetchMessageWithReset: fetchMessagesWithReset,
                                 fetchMessage: fetchMessages,
                                 fetchLatestEventID: fetchLatestEvent,
-                                internetConnectionStatusProvider: InternetConnectionStatusProvider.shared)
+                                internetConnectionStatusProvider: InternetConnectionStatusProvider.shared,
+                                userDefaults: dependencies.userDefaults)
         )
+
+        let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
+        let fetchAttachmentMetadata = FetchAttachmentMetadataUseCase(dependencies: .init(apiService: user.apiService))
         let mailboxVMDependencies = MailboxViewModel.Dependencies(
             fetchMessages: fetchMessages,
             updateMailbox: updateMailbox,
             fetchMessageDetail: user.container.fetchMessageDetail,
             fetchSenderImage: user.container.fetchSenderImage,
-            featureFlagCache: dependencies.featureFlagCache
+            featureFlagCache: dependencies.featureFlagCache,
+            userDefaults: dependencies.userDefaults,
+            fetchAttachmentUseCase: fetchAttachment,
+            fetchAttachmentMetadataUseCase: fetchAttachmentMetadata
         )
         return mailboxVMDependencies
     }
@@ -408,7 +414,6 @@ extension MenuCoordinator {
             conversationProvider: userManager.conversationService,
             eventsService: userManager.eventsService,
             dependencies: mailboxVMDependencies,
-            welcomeCarrouselCache: dependencies.userCachedStatus,
             toolbarActionProvider: userManager,
             saveToolbarActionUseCase: SaveToolbarActionSettings(
                 dependencies: .init(user: userManager)

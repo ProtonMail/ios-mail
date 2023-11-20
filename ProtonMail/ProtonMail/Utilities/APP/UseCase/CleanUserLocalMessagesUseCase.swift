@@ -19,22 +19,21 @@ import Foundation
 
 typealias CleanUserLocalMessagesUseCase = UseCase<Void, CleanUserLocalMessages.Params>
 final class CleanUserLocalMessages: CleanUserLocalMessagesUseCase {
-    typealias Dependencies = HasAPIService
+    typealias Dependencies = AnyObject
+    & HasAPIService
     & HasMessageDataService
     & HasLabelsDataService
     & HasContactDataService
     & HasLastUpdatedStoreProtocol
+    & HasUserDefaults
 
-    private let contactCacheStatus: ContactCacheStatusProtocol
     private let fetchMessages: FetchMessagesUseCase
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(
-        contactCacheStatus: ContactCacheStatusProtocol,
         fetchInboxMessages: FetchMessagesUseCase,
         dependencies: Dependencies
     ) {
-        self.contactCacheStatus = contactCacheStatus
         self.fetchMessages = fetchInboxMessages
         self.dependencies = dependencies
     }
@@ -46,7 +45,7 @@ final class CleanUserLocalMessages: CleanUserLocalMessagesUseCase {
                 callback(.failure(response.error ?? Error.eventIdEmpty))
                 return
             }
-            self.contactCacheStatus.contactsCached = 0
+            self.dependencies.userDefaults[.areContactsCached] = 0
 
             self.fetchMessages.execute(
                 params: .init(

@@ -41,7 +41,7 @@ final class ConversationDataServiceProxy: ConversationProvider {
          eventsService: EventsFetching,
          undoActionManager: UndoActionManagerProtocol,
          queueManager: QueueManager?,
-         contactCacheStatus: ContactCacheStatusProtocol,
+         userDefaults: UserDefaults,
          localConversationUpdater: LocalConversationUpdater) {
         self.apiService = api
         self.userID = userID
@@ -54,29 +54,31 @@ final class ConversationDataServiceProxy: ConversationProvider {
                                                                messageDataService: messageDataService,
                                                                eventsService: eventsService,
                                                                undoActionManager: undoActionManager,
-                                                               contactCacheStatus: contactCacheStatus)
+                                                               userDefaults: userDefaults)
         self.localConversationUpdater = localConversationUpdater
     }
 }
 
 private extension ConversationDataServiceProxy {
     // this is a workaround for the fact that just updating the ContextLabel won't trigger MailboxViewController's controllerDidChangeContent
-    func updateContextLabelsInViewContext(for conversationIDs: [ConversationID], completion: @escaping () -> Void) {
-        contextProvider.performAndWaitOnRootSavingContext { context in
-            let conversations = self.fetchLocalConversations(
-                withIDs: NSMutableSet(array: conversationIDs.map(\.rawValue)),
-                in: context
-            )
+    func refreshContextLabels(for conversationIDs: [ConversationID]) {
+        do {
+            try contextProvider.write { context in
+                let conversations = self.fetchLocalConversations(
+                    withIDs: NSMutableSet(array: conversationIDs.map(\.rawValue)),
+                    in: context
+                )
 
-            conversations.forEach { conversation in
-                (conversation.labels as? Set<ContextLabel>)?
-                    .forEach {
-                        context.refresh($0, mergeChanges: true)
-                    }
-                context.refresh(conversation, mergeChanges: true)
+                conversations.forEach { conversation in
+                    (conversation.labels as? Set<ContextLabel>)?
+                        .forEach {
+                            context.refresh($0, mergeChanges: true)
+                        }
+                    context.refresh(conversation, mergeChanges: true)
+                }
             }
-
-            completion()
+        } catch {
+            PMAssertionFailure(error)
         }
     }
 }
@@ -127,9 +129,8 @@ extension ConversationDataServiceProxy {
                    isConversation: true)
         localConversationUpdater.delete(conversationIDs: conversationIDs) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabelsInViewContext(for: conversationIDs) {
-                completion?(result)
-            }
+            self.refreshContextLabels(for: conversationIDs)
+            completion?(result)
         }
     }
 
@@ -143,9 +144,8 @@ extension ConversationDataServiceProxy {
                                       asUnread: false,
                                       labelID: labelID) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabelsInViewContext(for: conversationIDs) {
-                completion?(result)
-            }
+            self.refreshContextLabels(for: conversationIDs)
+            completion?(result)
         }
     }
 
@@ -162,54 +162,81 @@ extension ConversationDataServiceProxy {
                                       asUnread: true,
                                       labelID: labelID) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabelsInViewContext(for: conversationIDs) {
-                completion?(result)
-            }
+            self.refreshContextLabels(for: conversationIDs)
+            completion?(result)
         }
     }
 
     func label(conversationIDs: [ConversationID],
                as labelID: LabelID,
-               completion: ((Result<Void, Error>) -> Void)?) {
-        guard !conversationIDs.isEmpty else {
-            completion?(.failure(ConversationError.emptyConversationIDS))
-            return
-        }
-        self.queue(.label(currentLabelID: labelID.rawValue,
-                          shouldFetch: nil,
-                          itemIDs: conversationIDs.map(\.rawValue),
-                          objectIDs: []),
-                   isConversation: true)
-        localConversationUpdater.editLabels(conversationIDs: conversationIDs,
-                                            labelToRemove: nil,
-                                            labelToAdd: labelID,
-                                            isFolder: false) { [weak self] result in
-            guard let self = self else { return }
-            self.updateContextLabelsInViewContext(for: conversationIDs) {
-                completion?(result)
-            }
-        }
+               completion: (@Sendable (Result<Void, Error>) -> Void)?) {
+        editLabels(
+            conversationIDs: conversationIDs,
+            actionToQueue: .label(
+                currentLabelID: labelID.rawValue,
+                shouldFetch: nil,
+                itemIDs: conversationIDs.map(\.rawValue),
+                objectIDs: []
+            ),
+            labelToRemove: nil,
+            labelToAdd: labelID,
+            isFolder: false,
+            completion: completion
+        )
     }
 
     func unlabel(conversationIDs: [ConversationID],
                  as labelID: LabelID,
-                 completion: ((Result<Void, Error>) -> Void)?) {
+                 completion: (@Sendable (Result<Void, Error>) -> Void)?) {
+        editLabels(
+            conversationIDs: conversationIDs,
+            actionToQueue: .unlabel(
+                currentLabelID: labelID.rawValue,
+                shouldFetch: nil,
+                itemIDs: conversationIDs.map(\.rawValue),
+                objectIDs: []
+            ),
+            labelToRemove: labelID,
+            labelToAdd: nil,
+            isFolder: false,
+            completion: completion
+        )
+    }
+
+    private func editLabels(
+        conversationIDs: [ConversationID],
+        actionToQueue: MessageAction,
+        labelToRemove: LabelID?,
+        labelToAdd: LabelID?,
+        isFolder: Bool,
+        completion: (@Sendable (Result<Void, Error>) -> Void)?
+    ) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
-        self.queue(.unlabel(currentLabelID: labelID.rawValue,
-                            shouldFetch: nil,
-                            itemIDs: conversationIDs.map(\.rawValue),
-                            objectIDs: []),
-                   isConversation: true)
-        localConversationUpdater.editLabels(conversationIDs: conversationIDs,
-                                            labelToRemove: labelID,
-                                            labelToAdd: nil,
-                                            isFolder: false) { [weak self] result in
-            guard let self = self else { return }
-            self.updateContextLabelsInViewContext(for: conversationIDs) {
-                completion?(result)
+        self.queue(actionToQueue, isConversation: true)
+
+        Task.detached {
+            let result: Swift.Result<Void, Error>
+            do {
+                try self.localConversationUpdater.editLabels(
+                    conversationIDs: conversationIDs,
+                    labelToRemove: labelToRemove,
+                    labelToAdd: labelToAdd,
+                    isFolder: isFolder
+                )
+                self.refreshContextLabels(for: conversationIDs)
+
+                result = .success(())
+            } catch {
+                result = .failure(error)
+            }
+
+            if let completion {
+                DispatchQueue.main.async {
+                    completion(result)
+                }
             }
         }
     }
@@ -218,7 +245,7 @@ extension ConversationDataServiceProxy {
               from previousFolderLabel: LabelID,
               to nextFolderLabel: LabelID,
               callOrigin: String?,
-              completion: ((Result<Void, Error>) -> Void)?) {
+              completion: (@Sendable (Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
@@ -232,20 +259,19 @@ extension ConversationDataServiceProxy {
             return
         }
 
-        self.queue(.folder(nextLabelID: nextFolderLabel.rawValue,
-                           shouldFetch: true,
-                           itemIDs: filteredConversationIDs.map(\.rawValue),
-                           objectIDs: []),
-                   isConversation: true)
-        localConversationUpdater.editLabels(conversationIDs: filteredConversationIDs,
-                                            labelToRemove: previousFolderLabel,
-                                            labelToAdd: nextFolderLabel,
-                                            isFolder: true) { [weak self] result in
-            guard let self = self else { return }
-            self.updateContextLabelsInViewContext(for: conversationIDs) {
-                completion?(result)
-            }
-        }
+        editLabels(
+            conversationIDs: filteredConversationIDs,
+            actionToQueue: .folder(
+                nextLabelID: nextFolderLabel.rawValue,
+                shouldFetch: true,
+                itemIDs: filteredConversationIDs.map(\.rawValue),
+                objectIDs: []
+            ),
+            labelToRemove: previousFolderLabel,
+            labelToAdd: nextFolderLabel,
+            isFolder: true,
+            completion: completion
+        )
     }
 
     func cleanAll() {

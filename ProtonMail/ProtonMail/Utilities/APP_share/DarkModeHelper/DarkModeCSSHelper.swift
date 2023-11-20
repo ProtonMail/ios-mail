@@ -241,9 +241,8 @@ struct CSSMagic {
         return false
     }
 
-    static func darkStyleSupportLevel(document: Document?,
-                                      darkModeCache: DarkModeCacheProtocol) -> DarkStyleSupportLevel {
-        if darkModeCache.darkModeStatus == .forceOff {
+    static func darkStyleSupportLevel(document: Document?, darkModeStatus: DarkModeStatus) -> DarkStyleSupportLevel {
+        if darkModeStatus == .forceOff {
             return .notSupport
         }
 
@@ -453,7 +452,7 @@ extension CSSMagic {
         ]
         for attribute in attributes {
             guard keywords.contains(attribute.key.lowercased()) else { continue }
-            let color = attribute.value
+            let color = attribute.value.preg_replace("!important", replaceto: "")
             guard color != CSSKeys.transparent.rawValue else { continue }
             let isForeground = attribute.key.lowercased() == CSSKeys.color.rawValue
             guard let hsla = CSSMagic.getDarkModeColor(from: color, isForeground: isForeground) else {
@@ -863,7 +862,7 @@ extension CSSMagic {
             ]
             let values = value
                 .components(separatedBy: ";")
-                .filter { !$0.isEmpty }
+                .filter { !$0.trim().isEmpty }
                 .filter { styleValue in
                     !ignoreStyleKey.reduce(false) { partialResult, ignoreKey in
                         styleValue.contains(check: ignoreKey) || partialResult

@@ -18,7 +18,7 @@
 import CoreData
 import Foundation
 
-protocol CoreDataContextProviderProtocol: Service {
+protocol CoreDataContextProviderProtocol {
     var mainContext: NSManagedObjectContext { get }
 
     func enqueueOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)
@@ -39,4 +39,6 @@ protocol CoreDataContextProviderProtocol: Service {
         sectionNameKeyPath: String?,
         onMainContext: Bool
     ) -> NSFetchedResultsController<T>
+
+    func deleteAllData() async
 }

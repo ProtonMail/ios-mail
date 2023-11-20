@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Factory
+import ProtonCoreEventsLoop
 import ProtonCoreKeymaker
 
 class GlobalContainer: ManagedContainer {
@@ -24,6 +25,12 @@ class GlobalContainer: ManagedContainer {
     var appAccessResolverFactory: Factory<AppAccessResolver> {
         self {
             AppAccessResolver(dependencies: self)
+        }
+    }
+
+    var appRatingStatusProviderFactory: Factory<AppRatingStatusProvider> {
+        self {
+            UserDefaultsAppRatingStatusProvider(userDefaults: self.userDefaults)
         }
     }
 
@@ -90,6 +97,23 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
+    var launchServiceFactory: Factory<LaunchService> {
+        self {
+            Launch(dependencies: self)
+		}
+	}
+
+    var mailEventsPeriodicSchedulerFactory: Factory<MailEventsPeriodicScheduler> {
+        self {
+            MailEventsPeriodicScheduler(
+                refillPeriod: Constants.App.eventsPollingInterval,
+                currentDate: Date(),
+                coreLoopFactory: AnyCoreLoopFactory(EmptyCoreLoopFactory()),
+                specialLoopFactory: AnySpecialLoopFactory(MailEventsSpecialLoopFactory(dependencies: self))
+            )
+        }
+    }
+
     var notificationCenterFactory: Factory<NotificationCenter> {
         self {
             .default
@@ -108,15 +132,9 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
-    var pinFailedCountCacheFactory: Factory<PinFailedCountCache> {
-        self {
-            self.userCachedStatus
-        }
-    }
-
     var pushUpdaterFactory: Factory<PushUpdater> {
         self {
-            PushUpdater(userStatus: self.userCachedStatus)
+            PushUpdater(userDefaults: self.userDefaults)
         }
     }
 
@@ -128,12 +146,18 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
+    var setupCoreDataServiceFactory: Factory<SetupCoreDataService> {
+        self {
+            SetupCoreData(dependencies: self)
+        }
+    }
+
     var unlockManagerFactory: Factory<UnlockManager> {
         self {
             UnlockManager(
                 cacheStatus: self.lockCacheStatus,
                 keyMaker: self.keyMaker,
-                pinFailedCountCache: self.userCachedStatus,
+                userDefaults: self.userDefaults,
                 notificationCenter: self.notificationCenter
             )
         }
@@ -153,7 +177,7 @@ class GlobalContainer: ManagedContainer {
 
     var userCachedStatusFactory: Factory<UserCachedStatus> {
         self {
-            UserCachedStatus(userDefaults: self.userDefaults)
+            UserCachedStatus(userDefaults: self.userDefaults, keychain: self.keychain)
         }
     }
 

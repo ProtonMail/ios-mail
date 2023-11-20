@@ -78,7 +78,7 @@
                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AWC-bd-FMN" userLabel="SelectAllButton">
                                     <rect key="frame" x="16" y="8" width="110.5" height="38"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="bPQ-mK-Cdh">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-checkmark-square" translatesAutoresizingMaskIntoConstraints="NO" id="bPQ-mK-Cdh">
                                             <rect key="frame" x="8" y="9" width="20" height="20"/>
                                             <color key="tintColor" name="MobileIconAccent"/>
                                             <constraints>
@@ -174,7 +174,7 @@
         </view>
     </objects>
     <resources>
-        <image name="ic-checkmark" width="24" height="24"/>
+        <image name="ic-checkmark-square" width="16" height="16"/>
         <image name="mail_no_result_icon" width="374" height="140"/>
         <namedColor name="CornflowerBlue">
             <color red="0.32899999618530273" green="0.32400000095367432" blue="0.4779999852180481" alpha="0.33000001311302185" colorSpace="custom" customColorSpace="sRGB"/>

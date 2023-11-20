@@ -336,6 +336,8 @@ class LocalizedString {
     lazy var _general_search_placeholder = NSLocalizedString("Search", comment: "Title")
     /// "Notice"
     lazy var _general_notice_alert_title = NSLocalizedString("Notice", comment: "Alert title")
+    /// "Error"
+    lazy var _general_error_alert_title = NSLocalizedString("Error", comment: "Alert title")
     /// "Don't remind me again"
     lazy var _general_dont_remind_action = NSLocalizedString("Don't remind me again", comment: "Action")
     /// "Send"
@@ -787,9 +789,6 @@ class LocalizedString {
     /// "Can't load share content!"
     lazy var _cant_load_share_content = NSLocalizedString("Failed to load content!\nPlease try again.", comment: "This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly")
 
-    /// "Share Alert"
-    lazy var _share_alert = NSLocalizedString("Error", comment: "Title of alert in share extension.")
-
     /// "Failed to determine type of file"
     lazy var _failed_to_determine_file_type = NSLocalizedString("Failed to determine type of file", comment: "Error message")
 
@@ -986,7 +985,7 @@ class LocalizedString {
 
     lazy var _unread_action = NSLocalizedString("unread", comment: "The unread title of unread action button in mailbox view")
 
-    lazy var _selected_navogationTitle = NSLocalizedString("Selected", comment: "The title of navigation bar title of mailbox view while selecting the message")
+    lazy var _selected_navogationTitle = NSLocalizedString("%d selected", comment: "The title of navigation bar of mailbox view when selecting messages, singular and plural possible")
 
     lazy var _mailblox_last_update_time_more_than_1_hour = NSLocalizedString("Updated >1 hour ago", comment: "The title of last update status of more than 1 hour")
     lazy var _mailblox_last_update_time_just_now = NSLocalizedString("Updated just now", comment: "The title of last update status of updated just now")
@@ -1380,6 +1379,9 @@ enum L11n {
 	}
 
     struct Error {
+        static let core_data_setup_generic_messsage = NSLocalizedString("An unexpected error occurred, please contact support.\nError: %@", comment: "Message for error when app set up at launch fails")
+        static let core_data_setup_insufficient_disk_title = NSLocalizedString("Insufficient disk space", comment: "Title for error when app set up at launch fails")
+        static let core_data_setup_insufficient_disk_messsage = NSLocalizedString("The application cannot open due to insufficient disk space. Please delete some data and try again", comment: "Message for error when app set up at launch fails")
         static let cant_open_message = NSLocalizedString("Couldn't open the message, try again.", comment: "Error message when open message failed")
         static let sign_in_message = NSLocalizedString("Please sign in to the Proton Mail app.", comment: "Error message when user open the share extension without account logged in.")
     }
@@ -1464,6 +1466,7 @@ enum L11n {
 
     struct MailBox {
         static let selectAll = NSLocalizedString("Select all", comment: "The title of select all button for select all messages feature")
+        static let maximumSelectionReached = NSLocalizedString("Maximum selection reached", comment: "Warning message will be shown to user when user try to select more than acceptable message")
     }
 
     struct PinCodeSetup {
@@ -1483,5 +1486,9 @@ enum L11n {
         static let bannerMessage = NSLocalizedString("Unsubscribe from mailing list", comment: "The title of unsubscribe banner")
         static let confirmationTitle = NSLocalizedString("Unsubscribe?", comment: "The title of unsubscribe confirmation")
         static let confirmationMessage = NSLocalizedString("This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.", comment: "Unsubscribe confirmation message")
+    }
+
+    struct AttachmentPreview {
+        static let cannotPreviewMessage = NSLocalizedString("Unable to preview this attachment", comment: "Alert telling the user that we are unable to preview this attachment")
     }
 }

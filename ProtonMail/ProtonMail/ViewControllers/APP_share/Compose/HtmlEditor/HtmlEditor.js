@@ -31,16 +31,8 @@ var mutationObserver = new MutationObserver(function (events) {
         for (var k = 0; k < event.addedNodes.length; k++) {
             var element = event.addedNodes[k];
             if (element.nodeType === Node.ELEMENT_NODE && element.tagName != 'CARET') {
-                var spotImg = function (img) {
-                    insertedImages = true;
-                    img.onload = function () {
-                        var contentsHeight = html_editor.getContentsHeight();
-                        window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
-                    };
-                };
-
                 if (element.tagName == 'IMG') {
-                    spotImg(element);
+                    insertedImages = true;
                     continue;
                 }
 
@@ -53,10 +45,6 @@ var mutationObserver = new MutationObserver(function (events) {
     }
 
     if (insertedImages) {
-        // update height if some cached img were inserted which will never have onload called
-        var contentsHeight = html_editor.getContentsHeight();
-        window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
-
         // process new inline images
         html_editor.acquireEmbeddedImages();
     }
@@ -186,10 +174,6 @@ html_editor.editor.addEventListener("paste", function (event) {
     html_editor.absorbContactGroupPaste(event);
     html_editor.absorbImage(event, items, window.getSelection().getRangeAt(0).commonAncestorContainer);
     html_editor.handlePastedData(event);
-
-    // Update height
-    var contentsHeight = html_editor.getContentsHeight();
-    window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
 });
 
 html_editor.absorbContactGroupPaste = function (event) {
@@ -303,19 +287,22 @@ html_editor.editor.addEventListener("keydown", function (key) {
     quote_breaker.breakQuoteIfNeeded(key);
 });
 
+let observer = new ResizeObserver((elements) => {
+    let height = elements[0].contentRect.height;
+    window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": height });
+})
+observer.observe(document.body)
+
 html_editor.caret = document.createElement('caret'); // something happening here preventing selection of elements
 html_editor.getCaretYPosition = function () {
-    var range = window.getSelection().getRangeAt(0).cloneRange();
-    range.collapse(false);
-    range.insertNode(html_editor.caret);
-
-    // relative to the viewport, while offsetTop is relative to parent, which differs when editing the quoted message text
-    var rect = html_editor.caret.getBoundingClientRect();
-    var leftPosition = rect.left + window.scrollX;
-    var topPosition = rect.top + window.scrollY;
-    var contentsHeight = html_editor.getContentsHeight();
-
-    window.webkit.messageHandlers.moveCaret.postMessage({ "messageHandler": "moveCaret", "cursorX": leftPosition, "cursorY": topPosition, "height": contentsHeight });
+    const range = window.getSelection().getRangeAt(0).cloneRange();
+    range.collapse(false)
+    const rangeRect = range.getClientRects()[0];
+    if (rangeRect) {
+        x = rangeRect.left; // since the caret is only 1px wide, left == right
+        y = rangeRect.top; // top edge of the caret
+        window.webkit.messageHandlers.moveCaret.postMessage({ "messageHandler": "moveCaret", "cursorX": x, "cursorY": y });
+    }
 }
 
 //this is for update protonmail email signature
@@ -477,8 +464,6 @@ html_editor.removeStyleFromSelection = function () {
 html_editor.update_font_size = function (size) {
     let pixelSize = size + "px";
     document.documentElement.style.setProperty("font-size", pixelSize);
-    var contentsHeight = html_editor.getContentsHeight();
-    window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
 };
 
 const toMap = function (list) {

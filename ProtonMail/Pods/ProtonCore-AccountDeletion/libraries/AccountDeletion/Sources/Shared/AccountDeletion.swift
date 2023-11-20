@@ -58,7 +58,7 @@ public enum AccountDeletionError: Error {
     case closedByUser
     case deletionFailure(message: String)
     case apiMightBeBlocked(message: String, originalError: Error)
-    
+
     public var userFacingMessageInAccountDeletion: String {
         switch self {
         case .cannotDeleteYourself(let error): return error.localizedDescription
@@ -72,7 +72,7 @@ public enum AccountDeletionError: Error {
 
 public protocol AccountDeletion {
     associatedtype ViewController
-    
+
     func initiateAccountDeletionProcess(
         over viewController: ViewController,
         inAppTheme: @escaping () -> InAppTheme,
@@ -102,7 +102,7 @@ public extension AccountDeletion {
     static var defaultButtonName: String {
         ADTranslation.delete_account_button.l10n
     }
-    
+
     static var defaultExplanationMessage: String {
         ADTranslation.delete_account_message.l10n
     }
@@ -118,7 +118,7 @@ final class CanDeleteRequest: Request {
 final class CanDeleteResponse: Response {}
 
 public final class AccountDeletionService {
-    
+
     private let api: APIService
     private let doh: DoHInterface
     private let authenticator: Authenticator
@@ -129,7 +129,7 @@ public final class AccountDeletionService {
         self.init(api: api, doh: api.dohInterface, preferredLanguage: preferredLanguage)
     }
     #endif
-    
+
     @available(*, deprecated, message: "this will be removed. use initializer with doh: DoHInterface type")
     init(api: APIService, doh: DoHInterface & ServerConfig, preferredLanguage: String = NSLocale.autoupdatingCurrent.identifier) {
         self.api = api
@@ -137,7 +137,7 @@ public final class AccountDeletionService {
         self.preferredLanguage = preferredLanguage
         self.authenticator = Authenticator(api: api)
     }
-    
+
     init(api: APIService, doh: DoHInterface, preferredLanguage: String = NSLocale.autoupdatingCurrent.identifier) {
         self.api = api
         self.doh = doh
@@ -168,7 +168,7 @@ public final class AccountDeletionService {
             }
         }
     }
-    
+
     private func forkSession(viewController: AccountDeletionViewControllerPresenter,
                              inAppTheme: @escaping () -> InAppTheme,
                              performAfterShowingAccountDeletionScreen: @escaping () -> Void,
@@ -192,8 +192,7 @@ public final class AccountDeletionService {
             }
         }
     }
-    
-    // swiftlint:disable:next function_parameter_count
+
     private func handleSuccessfullyForkedSession(
         selector: String,
         over: AccountDeletionViewControllerPresenter,

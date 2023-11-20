@@ -33,7 +33,7 @@ class Contact: NSManagedObject {
     @NSManaged var size: NSNumber
     @NSManaged var uuid: String
     @NSManaged var createTime: Date?
-    @NSManaged var modifyTIme: Data?
+    @NSManaged var modifyTIme: Date?
 
     // local ver 
     @NSManaged var isDownloaded: Bool

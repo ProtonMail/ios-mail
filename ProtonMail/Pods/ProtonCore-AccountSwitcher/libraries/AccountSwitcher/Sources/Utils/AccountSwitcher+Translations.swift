@@ -25,7 +25,7 @@ import ProtonCoreUtilities
 private class Handler {}
 
 public enum ASTranslation: TranslationsExposing {
-    
+
     public static var bundle: Bundle {
         #if SPM
         return Bundle.module
@@ -33,9 +33,9 @@ public enum ASTranslation: TranslationsExposing {
         return Bundle(path: Bundle(for: Handler.self).path(forResource: "Translations-AccountSwitcher", ofType: "bundle")!)!
         #endif
     }
-    
+
     public static var prefixForMissingValue: String = ""
-    
+
     case switch_to_title
     case manage_accounts
     case signed_in_to_protonmail
@@ -50,7 +50,7 @@ public enum ASTranslation: TranslationsExposing {
     case sign_in_button
     case cancel_button
     case sign_in_screen_title
-    
+
     public var l10n: String {
         switch self {
         case .switch_to_title:

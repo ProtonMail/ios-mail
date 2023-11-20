@@ -36,7 +36,7 @@ public final class AccountManagerVC: UIViewController, AccessibleView {
     @IBOutlet private var titleLabel: UILabel!
     private var viewModel: AccountManagerVMProtocl!
     private let CELLID = "AccountManagerUserCell"
-    
+
     override public var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     public class func instance(withNavigationController: Bool = true) -> AccountManagerVC {
@@ -255,7 +255,7 @@ extension AccountManagerVC {
         addBtn.tintColor = ColorProvider.TextNorm
         addBtn.accessibilityLabel = ASTranslation.sign_in_button.l10n
         self.navigationItem.rightBarButtonItem = addBtn
-        
+
         self.navigationItem.assignNavItemIndentifiers()
     }
 

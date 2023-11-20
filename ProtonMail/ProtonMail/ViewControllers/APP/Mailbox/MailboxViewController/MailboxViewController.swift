@@ -29,12 +29,13 @@ import ProtonCorePaymentsUI
 import ProtonCoreServices
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
+import QuickLook
 import SkeletonView
 import SwipyCell
 import UIKit
 
 class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol, ScheduledAlertPresenter, LifetimeTrackable {
-    typealias Dependencies = HasPaymentsUIFactory
+    typealias Dependencies = HasPaymentsUIFactory & ReferralProgramPromptPresenter.Dependencies
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -148,6 +149,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     let connectionStatusProvider = InternetConnectionStatusProvider.shared
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+    private var attachmentPreviewPresenter: QuickLookPresenter?
 
     init(viewModel: MailboxViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
@@ -243,11 +245,11 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
         #if DEBUG
         if CommandLine.arguments.contains("-skipTour") {
-            userCachedStatus.resetTourValue()
+            viewModel.resetTourValue()
         }
         #endif
         if let destination = self.viewModel.getOnboardingDestination() {
-            userCachedStatus.resetTourValue()
+            viewModel.resetTourValue()
             self.coordinator?.go(to: destination, sender: nil)
         }
 
@@ -353,7 +355,6 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             showFeedbackViewIfNeeded()
         }
 
-        showDropVersionsAlertIfNeeded()
         updateReferralPresenterAndShowPromptIfNeeded()
 
         DispatchQueue.global().async { [weak self] in
@@ -503,19 +504,6 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
                                       noResultSecondaryLabel as Any]
     }
 
-    private func showDropVersionsAlertIfNeeded() {
-        let deviceVersion = (UIDevice.current.systemVersion as NSString).floatValue
-        let alertTitle = "Last update compatible with your iOS version"
-        let alertMessage = "\nThis update will be the last one compatible with iOS 13 and below.\nYou can continue using your Proton Mail app but you will no longer receive updates with new features and security patches.\n\nPlease update your device to iOS 14 or above to receive the latest updates.\n\nStay secure,\nThe Proton Team"
-        if !userCachedStatus.didShowDropVersionAlert && deviceVersion < 14 {
-            let alertController = alertMessage.alertController(alertTitle)
-            alertController.addOKAction()
-            self.present(alertController, animated: true) {
-                userCachedStatus.didShowDropVersionAlert = true
-            }
-        }
-    }
-
     private func updateReferralPresenterAndShowPromptIfNeeded() {
         #if DEBUG
         if ProcessInfo.hasLaunchArgument(.showReferralPromptView) {
@@ -534,7 +522,8 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
                 userID: self.viewModel.user.userID,
                 referralProgram: referralProgram,
                 featureFlagCache: userCachedStatus,
-                featureFlagService: viewModel.user.featureFlagsDownloadService
+                featureFlagService: viewModel.user.featureFlagsDownloadService, 
+                dependencies: dependencies
             )
         }
         self.referralProgramPresenter?.didShowMailbox()
@@ -1094,7 +1083,8 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     private func setupNavigationTitle(showSelected: Bool) {
         if showSelected {
             let count = self.viewModel.selectedIDs.count
-            self.setNavigationTitleText("\(count) " + LocalString._selected_navogationTitle)
+            let title = String(format: LocalString._selected_navogationTitle, count)
+            self.setNavigationTitleText(title)
         } else {
             self.setNavigationTitleText(viewModel.localizedNavigationTitle)
         }
@@ -1245,6 +1235,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 extension MailboxViewController {
     private func enterListEditingMode(indexPath: IndexPath) {
         self.viewModel.listEditing = true
+        updateSelectAllButton()
         updateTopBarItemDisplay()
 
         guard let visibleRowsIndexPaths = self.tableView.indexPathsForVisibleRows else { return }
@@ -1292,37 +1283,39 @@ extension MailboxViewController {
     @objc
     private func tapSelectAllButton(gesture: UITapGestureRecognizer) {
         let state = gesture.state
-        switch state {
-        case .began, .changed:
-            selectAllButton.backgroundColor = ColorProvider.BackgroundSecondary
-        case .ended:
-            selectAllButton.backgroundColor = .clear
-            selectAllMessages()
-        default:
-            break
+        selectAllButton.backgroundColor = ColorProvider.BackgroundSecondary
+        UIView.animate(withDuration: 0.25) {
+            self.selectAllButton.backgroundColor = .clear
         }
+        selectAllMessages()
     }
 
     private func selectAllMessages() {
         let indexPaths = Array(0..<viewModel.rowCount(section: 0))
             .map { IndexPath(row: $0, section: 0) }
         let loadedIDs = indexPaths
-            .compactMap { index -> String? in
+            .compactMap { index -> (String, IndexPath)? in
                 switch viewModel.locationViewMode {
                 case .singleMessage:
                     guard let item = viewModel.item(index: index) else { return nil }
-                    return item.messageID.rawValue
+                    return (item.messageID.rawValue, index)
                 case .conversation:
                     guard let item = viewModel.itemOfConversation(index: index) else { return nil }
-                    return item.conversationID.rawValue
+                    return (item.conversationID.rawValue, index)
                 }
             }
-        loadedIDs.forEach(viewModel.select(id:))
+        var pathsShouldBeUpdated: [IndexPath] = []
+        for dataSet in loadedIDs {
+            guard viewModel.select(id: dataSet.0) else { break }
+            pathsShouldBeUpdated.append(dataSet.1)
+            guard viewModel.canSelectMore() else { break }
+        }
 
+        updateSelectAllButton()
         hapticFeedbackGenerator.impactOccurred()
 
         // update checkbox state
-        for indexPath in indexPaths {
+        for indexPath in pathsShouldBeUpdated {
             guard let cell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell else { continue }
             messageCellPresenter.presentSelectionStyle(
                 style: .selection(isSelected: true),
@@ -1334,6 +1327,31 @@ extension MailboxViewController {
         PMBanner.dismissAll(on: self)
         refreshActionBarItems()
         showActionBar()
+    }
+
+    private func updateSelectAllButton() {
+        updateSelectAllButtonAvailability()
+        updateSelectAllIcon()
+    }
+
+    private func updateSelectAllButtonAvailability() {
+        if viewModel.canSelectMore() {
+            selectAllIcon.tintColor = ColorProvider.IconAccent
+            selectAllLabel.textColor = ColorProvider.TextAccent
+            selectAllButton.isUserInteractionEnabled = true
+        } else {
+            selectAllIcon.tintColor = ColorProvider.IconDisabled
+            selectAllLabel.textColor = ColorProvider.TextDisabled
+            selectAllButton.isUserInteractionEnabled = false
+        }
+    }
+
+    /// Update icon depends on if all loaded messages are selected
+    private func updateSelectAllIcon() {
+        let isAllLoadedMessagesSelected = viewModel.selectedItems.count == viewModel.rowCount(section: 0)
+        // TODO use ImageProvider when core library contains these 2 images
+        let image: UIImage = isAllLoadedMessagesSelected ? Asset.icSquareChecked.image : Asset.icSquare.image
+        selectAllIcon.image = image
     }
 }
 
@@ -2189,13 +2207,16 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             contentChangeOccurredDuringLastSwipeGesture = true
             return
         }
+
         reloadTableViewDataSource(
             snapshot: remappedSnapshot
-        )
-        DispatchQueue.main.async {
-            self.refreshActionBarItems()
-            self.showNewMessageCount(self.newMessageCount)
-            self.showNoResultLabelIfNeeded()
+        ) {
+            DispatchQueue.main.async {
+                self.updateSelectAllButton()
+                self.refreshActionBarItems()
+                self.showNewMessageCount(self.newMessageCount)
+                self.showNoResultLabelIfNeeded()
+            }
         }
     }
 
@@ -2352,8 +2373,12 @@ extension MailboxViewController: UITableViewDelegate {
 
     private func handleEditingDataSelection(of id: String, indexPath: IndexPath) {
         let itemAlreadySelected = viewModel.selectionContains(id: id)
-        let selectionAction = itemAlreadySelected ? viewModel.removeSelected : viewModel.select
-        selectionAction(id)
+        if itemAlreadySelected {
+            viewModel.removeSelected(id: id)
+        } else {
+            let isAllowed = viewModel.select(id: id)
+            guard isAllowed else { return }
+        }
 
         hapticFeedbackGenerator.impactOccurred()
 
@@ -2390,6 +2415,44 @@ extension MailboxViewController: NewMailboxMessageCellDelegate {
             tableView(self.tableView, didSelectRowAt: indexPath)
         }
     }
+
+    func didSelectAttachment(cell: NewMailboxMessageCell, index: Int) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            PMAssertionFailure("IndexPath should match MailboxItem")
+            return
+        }
+        showProgressHud()
+        viewModel.requestPreviewOfAttachment(at: indexPath, index: index) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.hideProgressHud()
+                guard let self else { return }
+                switch result {
+                case .success(let att):
+                    self.showAttachment(at: att)
+                case .failure(let error):
+                    error.alert(at: self.view)
+                }
+            }
+        }
+    }
+}
+
+extension MailboxViewController {
+    func showAttachment(at url: URL) {
+        guard QuickLookPresenter.canPreviewItem(at: url), let navigationController else {
+            L11n.AttachmentPreview.cannotPreviewMessage.alertToastBottom()
+            return
+        }
+
+        attachmentPreviewPresenter = QuickLookPresenter(url: url, delegate: self)
+        attachmentPreviewPresenter?.present(from: navigationController)
+    }
+}
+
+extension MailboxViewController: QuickLookPresenterDelegate {
+    func previewControllerDidDismiss(_ presenter: QuickLookPresenter, itemURL: URL) {
+        try? FileManager.default.removeItem(at: itemURL)
+    }
 }
 
 extension MailboxViewController {
@@ -2421,7 +2484,8 @@ extension MailboxViewController {
 
     private func configureSelectAllButton() {
         selectAllIcon.tintColor = ColorProvider.IconAccent
-        selectAllIcon.image = IconProvider.checkmark
+        // TODO use ImageProvider when core library contains this image
+        selectAllIcon.image = Asset.icSquare.image
         selectAllLabel.set(text: L11n.MailBox.selectAll, preferredFont: .subheadline, textColor: ColorProvider.TextAccent)
 
         selectAllButton.roundCorner(12)
@@ -2735,6 +2799,14 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
         let width = titleWidth + 16 + (isInUnreadFilter ? 16 : 0)
         unreadFilterButtonWidth.constant = width
         self.unreadFilterButton.layer.cornerRadius = self.unreadFilterButton.frame.height / 2
+    }
+
+    func selectionDidChange() {
+        updateSelectAllButton()
+
+        if !viewModel.canSelectMore() {
+            L11n.MailBox.maximumSelectionReached.alertToastBottom()
+        }
     }
 }
 

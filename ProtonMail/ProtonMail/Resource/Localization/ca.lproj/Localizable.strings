@@ -443,6 +443,9 @@
 /* Alert title */
 "Notice" = "Avís";
 
+/* Title of alert in share extension. */
+"Error" = "Error";
+
 /* Action */
 "Don't remind me again" = "No em tornis a recordar";
 
@@ -961,9 +964,6 @@
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "No s'ha pogut carregar el contingut!\nTorneu-ho a provar.";
-
-/* Title of alert in share extension. */
-"Error" = "Error";
 
 /* Error message */
 "Failed to determine type of file" = "No s'ha pogut determinar el tipus de fitxer";
@@ -1935,6 +1935,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "En moure un missatge (per exemple, arxivar), passareu al missatge següent.";
+
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "Espai de disc insuficient";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "The application cannot open due to insufficient disk space. Please delete some data and try again";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "No es pot obrir el missatge. Proveu de nou.";

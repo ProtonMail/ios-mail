@@ -36,7 +36,7 @@ extension String {
         }
         return trimmedLines.joined(separator: "\n")
     }
-    
+
     public var utf8: Data? {
         return self.data(using: .utf8)
     }
@@ -62,7 +62,7 @@ extension String {
 }
 
 extension String {
-    
+
     subscript(value: Int) -> Character {
         self[index(at: value)]
     }

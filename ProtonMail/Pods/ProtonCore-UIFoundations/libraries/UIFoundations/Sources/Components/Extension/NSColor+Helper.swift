@@ -26,11 +26,11 @@ extension NSColor {
     convenience init?(named name: String, in bundle: Bundle?, compatibleWith: Any?) {
         self.init(named: name, bundle: bundle)
     }
-    
+
     public class func dynamic(lightRGB: Int, lightAlpha: CGFloat, darkRGB: Int, darkAlpha: CGFloat) -> NSColor {
         dynamic(light: NSColor(rgb: lightRGB, alpha: lightAlpha), dark: NSColor(rgb: darkRGB, alpha: darkAlpha))
     }
-    
+
     public class func dynamic(light: NSColor, dark: NSColor) -> NSColor {
         if #available(OSX 10.15, *) {
             return NSColor(name: nil) {
@@ -53,10 +53,10 @@ public extension NSColor {
         assert(green >= 0 && green <= 255, "Invalid green component")
         assert(blue >= 0 && blue <= 255, "Invalid blue component")
         assert(alpha >= 0.0 && alpha <= 1.0, "Invalid alpha component")
-        
+
         self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: alpha)
     }
-    
+
     convenience init(rgb: Int, alpha: CGFloat = 1.0) {
         self.init(
             red: (rgb >> 16) & 0xFF,

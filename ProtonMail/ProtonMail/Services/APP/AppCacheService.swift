@@ -22,7 +22,7 @@
 
 import ProtonCoreKeymaker
 
-class AppCacheService: Service {
+class AppCacheService {
     typealias Dependencies = HasKeychain & HasUserDefaults
 
     enum Constants {
@@ -37,7 +37,7 @@ class AppCacheService: Service {
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
-        self.coreDataCache = CoreDataCache(userDefaults: dependencies.userDefaults)
+        self.coreDataCache = CoreDataCache(dependencies: dependencies)
         self.dependencies = dependencies
     }
 

@@ -45,7 +45,7 @@ class CompleteViewController: UIViewController, AccessibleView {
     var verifyToken: String?
     var tokenType: String?
     private let margin: CGFloat = 8
-    
+
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     // MARK: Outlets
@@ -75,7 +75,7 @@ class CompleteViewController: UIViewController, AccessibleView {
         }
     }
     @IBOutlet weak var tableWidthConstraint: NSLayoutConstraint!
-    
+
     // MARK: View controller life cycle
 
     override func viewDidLoad() {
@@ -91,7 +91,7 @@ class CompleteViewController: UIViewController, AccessibleView {
     }
 
     // MARK: Private methods
-    
+
     private func setupUI() {
         view.backgroundColor = ColorProvider.BackgroundNorm
         navigationItem.setHidesBackButton(true, animated: false)
@@ -103,7 +103,7 @@ class CompleteViewController: UIViewController, AccessibleView {
         tableWidthConstraint.constant = view.bounds.size.width - (margin * 2)
         viewModel?.initProgressWidth()
     }
-    
+
     private func createAccount() {
         guard let userName = name, let password = password else {
             assertionFailure("Create internal account input data missing")
@@ -145,7 +145,7 @@ extension CompleteViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.displayProgress.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SummaryProgressCell.reuseIdentifier, for: indexPath)
         if let cell = cell as? SummaryProgressCell {

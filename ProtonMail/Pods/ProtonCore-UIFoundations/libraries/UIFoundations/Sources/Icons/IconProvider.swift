@@ -52,7 +52,7 @@ extension IconProviderBase {
         }
         return image
     }
-    
+
     public func flag(forCountryCode countryCode: String) -> UIImage? {
         ProtonIconSet.instance.flag(forCountryCode: countryCode).uiImage
     }
@@ -68,7 +68,7 @@ extension ProtonIcon {
             image(name: vpnFallbackName ?? name)
         }
     }
-    
+
     private func image(name: String) -> UIImage? {
         UIImage(named: name, in: PMUIFoundations.bundle, compatibleWith: nil)
     }
@@ -80,11 +80,11 @@ import AppKit
 
 public struct DarkModePreferingIcon {
     private let keypath: KeyPath<ProtonIconSet, ProtonIcon>
-    
+
     init(keypath: KeyPath<ProtonIconSet, ProtonIcon>) {
         self.keypath = keypath
     }
-    
+
     public func darkModePrefering() -> NSImage {
         guard let image = ProtonIconSet.instance[keyPath: keypath].darkModePreferingNSImage else {
             assertionFailure("lack of image in assets catalogue indicates the images misconfiguration")
@@ -92,7 +92,7 @@ public struct DarkModePreferingIcon {
         }
         return image
     }
-    
+
     #if canImport(SwiftUI)
     @available(macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     public func darkModePrefering() -> Image {
@@ -103,11 +103,11 @@ public struct DarkModePreferingIcon {
 }
 
 extension IconProviderBase {
-    
+
     public subscript(dynamicMember keypath: KeyPath<ProtonIconSet, ProtonIcon>) -> DarkModePreferingIcon {
         DarkModePreferingIcon(keypath: keypath)
     }
-    
+
     /// By default, the fetched color appearance matches NSApp.effectiveAppearance.
     /// Use .using(appearance: NSAppearance) to customize that.
     public subscript(dynamicMember keypath: KeyPath<ProtonIconSet, ProtonIcon>) -> NSImage {
@@ -117,7 +117,7 @@ extension IconProviderBase {
         }
         return image
     }
-    
+
     public func flag(forCountryCode countryCode: String) -> NSImage? {
         ProtonIconSet.instance.flag(forCountryCode: countryCode).nsImage
     }
@@ -133,11 +133,11 @@ extension ProtonIcon {
             image(name: vpnFallbackName ?? name)
         }
     }
-    
+
     var darkModePreferingNSImage: NSImage? {
         image(name: vpnFallbackName ?? name)
     }
-    
+
     private func image(name: String) -> NSImage? {
         PMUIFoundations.bundle.image(forResource: name)
     }
@@ -153,7 +153,7 @@ extension IconProviderBase {
     public subscript(dynamicMember keypath: KeyPath<ProtonIconSet, ProtonIcon>) -> Image {
         ProtonIconSet.instance[keyPath: keypath].image
     }
-    
+
     public func flag(forCountryCode countryCode: String) -> Image? {
         #if canImport(UIKit)
         let uiImage: UIImage? = flag(forCountryCode: countryCode)

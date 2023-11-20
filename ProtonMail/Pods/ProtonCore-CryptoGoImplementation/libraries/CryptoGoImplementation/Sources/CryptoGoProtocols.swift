@@ -59,11 +59,11 @@ extension ProtonCoreCryptoGoInterface.CryptoMIMECallbacksProtocol {
 
 final class AnyGoLibsCryptoMIMECallbacks: NSObject, GoLibs.CryptoMIMECallbacksProtocol {
 
-    private let onAttachmentClosure: (String?, Data?) -> ()
-    private let onBodyClosure: (String?, String?) -> ()
-    private let onEncryptedHeadersClosure: (String?) -> ()
-    private let onErrorClosure: (Error?) -> ()
-    private let onVerifiedClosure: (Int) -> ()
+    private let onAttachmentClosure: (String?, Data?) -> Void
+    private let onBodyClosure: (String?, String?) -> Void
+    private let onEncryptedHeadersClosure: (String?) -> Void
+    private let onErrorClosure: (Error?) -> Void
+    private let onVerifiedClosure: (Int) -> Void
 
     init<T>(cryptoCallbacks: T) where T: ProtonCoreCryptoGoInterface.CryptoMIMECallbacksProtocol {
         self.onAttachmentClosure = { headers, data in cryptoCallbacks.onAttachment(headers, data: data)
@@ -137,8 +137,8 @@ extension GoLibs.CryptoWriteCloserProtocol {
 }
 
 final class AnyCryptoGoWriteCloser: NSObject, ProtonCoreCryptoGoInterface.CryptoWriteCloserProtocol {
-    private let closeClosure: () throws -> ()
-    private let writeClosure: (Data?, UnsafeMutablePointer<Int>?) throws -> ()
+    private let closeClosure: () throws -> Void
+    private let writeClosure: (Data?, UnsafeMutablePointer<Int>?) throws -> Void
 
     init<T>(cryptoWriteCloser: T) where T: GoLibs.CryptoWriteCloserProtocol {
         self.closeClosure = { try cryptoWriteCloser.close() }
@@ -165,8 +165,8 @@ extension ProtonCoreCryptoGoInterface.CryptoWriteCloserProtocol {
 }
 
 final class AnyGoLibsWriteCloser: NSObject, GoLibs.CryptoWriteCloserProtocol {
-    private let closeClosure: () throws -> ()
-    private let writeClosure: (Data?, UnsafeMutablePointer<Int>?) throws -> ()
+    private let closeClosure: () throws -> Void
+    private let writeClosure: (Data?, UnsafeMutablePointer<Int>?) throws -> Void
 
     init<T>(cryptoWriteCloser: T) where T: ProtonCoreCryptoGoInterface.CryptoWriteCloserProtocol {
         self.closeClosure = { try cryptoWriteCloser.close() }
@@ -203,5 +203,3 @@ final class AnyGoLibsHelperMobileReader: NSObject, GoLibs.HelperMobileReaderProt
         try readClosure(max)
     }
 }
-
-

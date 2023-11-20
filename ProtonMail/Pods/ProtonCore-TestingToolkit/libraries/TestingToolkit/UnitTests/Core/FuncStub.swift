@@ -46,7 +46,7 @@ public final class StubbedFunction<Input, Output, A1, A2, A3, A4, A5, A6, A7, A8
     public var capturedArguments: [CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>] {
         capturedArgumentsAndCounterStorage.value.1
     }
-    
+
     private var capturedArgumentsAndCounterStorage: Atomic<(UInt, [CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>])> = .init((.zero, .empty))
 
     public var description: String

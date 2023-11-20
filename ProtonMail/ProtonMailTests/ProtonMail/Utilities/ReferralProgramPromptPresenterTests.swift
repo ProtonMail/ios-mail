@@ -23,6 +23,7 @@ class ReferralProgramPromptPresenterTests: XCTestCase {
     private var mockFeatureFlagCache: MockFeatureFlagCache!
     private var mockFeatureFlagsService: MockFeatureFlagsDownloadServiceProtocol!
     private var mockNotificationCenter: NotificationCenter!
+    private var testContainer: TestContainer!
 
     private let mockUserID: UserID = "foo"
 
@@ -35,6 +36,8 @@ class ReferralProgramPromptPresenterTests: XCTestCase {
         mockFeatureFlagCache.featureFlagsStub.bodyIs { [unowned self] _, userID in
             SupportedFeatureFlags(rawValues: [FeatureFlagKey.referralPrompt.rawValue: userID == self.mockUserID])
         }
+
+        testContainer = .init()
     }
 
     override func tearDown() {
@@ -42,57 +45,41 @@ class ReferralProgramPromptPresenterTests: XCTestCase {
         mockFeatureFlagCache = nil
         mockFeatureFlagsService = nil
         mockNotificationCenter = nil
+        testContainer = nil
     }
 
     func testGivenNoDateIsSavedInTheStatus_WhenInitializingPresenterWithACustomDate_ThenTheDateShouldBeSaved() {
         // Test when initializing ReferralProgramPromptPresenter with a custom date
-        // It should be saved when the firstRunDate in ReferralProgramPromptStatus is nil
+        // It should be saved when the firstRunDate is nil
         let expectedDate = Date()
-        let mockStatus = MockReferralProgramPromptStatus(referralProgramPromptWasShown: true,
-                                                         firstRunDate: nil)
+        testContainer.userDefaults[.referralProgramPromptWasShown] = true
+        testContainer.userDefaults[.firstRunDate] = nil
         let mockReferralProgram = ReferralProgram(link: "foo", eligible: true)
 
-        _ = ReferralProgramPromptPresenter(userID: mockUserID,
-                                           referralProgram: mockReferralProgram,
-                                           featureFlagCache: mockFeatureFlagCache,
-                                           referralProgramPromptStatus: mockStatus,
-                                           featureFlagService: mockFeatureFlagsService,
-                                           notificationCenter: mockNotificationCenter,
-                                           firstRunDate: expectedDate)
-        XCTAssertEqual(mockStatus.firstRunDate, expectedDate)
+        _ = makeSUT(referralProgram: mockReferralProgram, firstRunDate: expectedDate)
+        XCTAssertEqual(testContainer.userDefaults[.firstRunDate], expectedDate)
     }
 
     func testGivenADateIsSavedInTheStatus_WhenInitializingPresenterWithACustomDate_ThenTheDateShouldNotBeSaved() {
         // Test when initializing ReferralProgramPromptPresenter with a custom date
-        // It should NOT be saved when the firstRunDate in ReferralProgramPromptStatus is not nil
+        // It should NOT be saved when the firstRunDate is not nil
         let savedRandomDate = Date().add(.day, value: -Int.random(in: 1...100))
-        let mockStatus = MockReferralProgramPromptStatus(referralProgramPromptWasShown: true,
-                                                         firstRunDate: savedRandomDate)
+        testContainer.userDefaults[.referralProgramPromptWasShown] = true
+        testContainer.userDefaults[.firstRunDate] = savedRandomDate
         let mockReferralProgram = ReferralProgram(link: "foo", eligible: true)
 
         let otherRandomDate = Date().add(.day, value: Int.random(in: 1...100))!
-        _ = ReferralProgramPromptPresenter(userID: mockUserID,
-                                           referralProgram: mockReferralProgram,
-                                           featureFlagCache: mockFeatureFlagCache,
-                                           referralProgramPromptStatus: mockStatus,
-                                           featureFlagService: mockFeatureFlagsService,
-                                           notificationCenter: mockNotificationCenter,
-                                           firstRunDate: otherRandomDate)
-        XCTAssertEqual(mockStatus.firstRunDate, savedRandomDate)
+        _ = makeSUT(referralProgram: mockReferralProgram, firstRunDate: otherRandomDate)
+        XCTAssertEqual(testContainer.userDefaults[.firstRunDate], savedRandomDate)
     }
 
     func testGivenPromptShown_WhenCheckingToShowPrompt_ThenReturnsFalse() {
         // Test when referral program prompt was already shown
         // Expect: shouldShowReferralProgramPrompt() returns false
         let mockReferralProgram = ReferralProgram(link: "foo", eligible: true)
-        let mockStatus = MockReferralProgramPromptStatus(referralProgramPromptWasShown: true,
-                                                         firstRunDate: Date().add(.day, value: -31))
-        let sut = ReferralProgramPromptPresenter(userID: mockUserID,
-                                                 referralProgram: mockReferralProgram,
-                                                 featureFlagCache: mockFeatureFlagCache,
-                                                 referralProgramPromptStatus: mockStatus,
-                                                 featureFlagService: mockFeatureFlagsService,
-                                                 notificationCenter: mockNotificationCenter)
+        testContainer.userDefaults[.referralProgramPromptWasShown] = true
+        testContainer.userDefaults[.firstRunDate] = Date().add(.day, value: -31)
+        let sut = makeSUT(referralProgram: mockReferralProgram)
         sut.didShowMailbox()
         sut.didShowMailbox()
         sut.didShowMailbox()
@@ -104,14 +91,9 @@ class ReferralProgramPromptPresenterTests: XCTestCase {
         // Test when referral program is not eligible
         // Expect: shouldShowReferralProgramPrompt() returns false
         let mockReferralProgram = ReferralProgram(link: "foo", eligible: false)
-        let mockStatus = MockReferralProgramPromptStatus(referralProgramPromptWasShown: false,
-                                                         firstRunDate: Date().add(.day, value: -31))
-        let sut = ReferralProgramPromptPresenter(userID: mockUserID,
-                                                 referralProgram: mockReferralProgram,
-                                                 featureFlagCache: mockFeatureFlagCache,
-                                                 referralProgramPromptStatus: mockStatus,
-                                                 featureFlagService: mockFeatureFlagsService,
-                                                 notificationCenter: mockNotificationCenter)
+        testContainer.userDefaults[.referralProgramPromptWasShown] = false
+        testContainer.userDefaults[.firstRunDate] = Date().add(.day, value: -31)
+        let sut = makeSUT(referralProgram: mockReferralProgram)
         sut.didShowMailbox()
         sut.didShowMailbox()
         sut.didShowMailbox()
@@ -126,14 +108,9 @@ class ReferralProgramPromptPresenterTests: XCTestCase {
         mockFeatureFlagCache.featureFlagsStub.bodyIs { _, _ in
             SupportedFeatureFlags(rawValues: [FeatureFlagKey.referralPrompt.rawValue: false])
         }
-        let mockStatus = MockReferralProgramPromptStatus(referralProgramPromptWasShown: false,
-                                                         firstRunDate: Date().add(.day, value: -31))
-        let sut = ReferralProgramPromptPresenter(userID: mockUserID,
-                                                 referralProgram: mockReferralProgram,
-                                                 featureFlagCache: mockFeatureFlagCache,
-                                                 referralProgramPromptStatus: mockStatus,
-                                                 featureFlagService: mockFeatureFlagsService,
-                                                 notificationCenter: mockNotificationCenter)
+        testContainer.userDefaults[.referralProgramPromptWasShown] = false
+        testContainer.userDefaults[.firstRunDate] = Date().add(.day, value: -31)
+        let sut = makeSUT(referralProgram: mockReferralProgram)
         sut.didShowMailbox()
         sut.didShowMailbox()
         sut.didShowMailbox()
@@ -145,14 +122,9 @@ class ReferralProgramPromptPresenterTests: XCTestCase {
         // Test when first run date is less than 30 days ago
         // Expect: shouldShowReferralProgramPrompt() returns false
         let mockReferralProgram = ReferralProgram(link: "foo", eligible: true)
-        let mockStatus = MockReferralProgramPromptStatus(referralProgramPromptWasShown: false,
-                                                         firstRunDate: Date().add(.day, value: -29))
-        let sut = ReferralProgramPromptPresenter(userID: mockUserID,
-                                                 referralProgram: mockReferralProgram,
-                                                 featureFlagCache: mockFeatureFlagCache,
-                                                 referralProgramPromptStatus: mockStatus,
-                                                 featureFlagService: mockFeatureFlagsService,
-                                                 notificationCenter: mockNotificationCenter)
+        testContainer.userDefaults[.referralProgramPromptWasShown] = false
+        testContainer.userDefaults[.firstRunDate] = Date().add(.day, value: -29)
+        let sut = makeSUT(referralProgram: mockReferralProgram)
         sut.didShowMailbox()
         sut.didShowMailbox()
         sut.didShowMailbox()
@@ -164,14 +136,9 @@ class ReferralProgramPromptPresenterTests: XCTestCase {
         // Test when all conditions are met for showing referral program prompt
         // Expect: shouldShowReferralProgramPrompt() returns true
         let mockReferralProgram = ReferralProgram(link: "foo", eligible: true)
-        let mockStatus = MockReferralProgramPromptStatus(referralProgramPromptWasShown: false,
-                                                         firstRunDate: Date().add(.day, value: -31))
-        let sut = ReferralProgramPromptPresenter(userID: mockUserID,
-                                                 referralProgram: mockReferralProgram,
-                                                 featureFlagCache: mockFeatureFlagCache,
-                                                 referralProgramPromptStatus: mockStatus,
-                                                 featureFlagService: mockFeatureFlagsService,
-                                                 notificationCenter: mockNotificationCenter)
+        testContainer.userDefaults[.referralProgramPromptWasShown] = false
+        testContainer.userDefaults[.firstRunDate] = Date().add(.day, value: -31)
+        let sut = makeSUT(referralProgram: mockReferralProgram)
         sut.didShowMailbox()
         sut.didShowMailbox()
         sut.didShowMailbox()
@@ -183,14 +150,9 @@ class ReferralProgramPromptPresenterTests: XCTestCase {
         // Test when all conditions are met for showing referral program prompt
         // Expect: shouldShowReferralProgramPrompt() returns true
         let mockReferralProgram = ReferralProgram(link: "foo", eligible: true)
-        let mockStatus = MockReferralProgramPromptStatus(referralProgramPromptWasShown: false,
-                                                         firstRunDate: Date().add(.day, value: -31))
-        let sut = ReferralProgramPromptPresenter(userID: mockUserID,
-                                                 referralProgram: mockReferralProgram,
-                                                 featureFlagCache: mockFeatureFlagCache,
-                                                 referralProgramPromptStatus: mockStatus,
-                                                 featureFlagService: mockFeatureFlagsService,
-                                                 notificationCenter: mockNotificationCenter)
+        testContainer.userDefaults[.referralProgramPromptWasShown] = false
+        testContainer.userDefaults[.firstRunDate] = Date().add(.day, value: -31)
+        let sut = makeSUT(referralProgram: mockReferralProgram)
         sut.didShowMailbox()
         sut.didShowMailbox()
         sut.didShowMailbox()
@@ -203,14 +165,9 @@ class ReferralProgramPromptPresenterTests: XCTestCase {
         // Test when all conditions are met for showing referral program prompt
         // Expect: shouldShowReferralProgramPrompt() returns true
         let mockReferralProgram = ReferralProgram(link: "foo", eligible: true)
-        let mockStatus = MockReferralProgramPromptStatus(referralProgramPromptWasShown: false,
-                                                         firstRunDate: Date().add(.day, value: -31))
-        let sut = ReferralProgramPromptPresenter(userID: mockUserID,
-                                                 referralProgram: mockReferralProgram,
-                                                 featureFlagCache: mockFeatureFlagCache,
-                                                 referralProgramPromptStatus: mockStatus,
-                                                 featureFlagService: mockFeatureFlagsService,
-                                                 notificationCenter: mockNotificationCenter)
+        testContainer.userDefaults[.referralProgramPromptWasShown] = false
+        testContainer.userDefaults[.firstRunDate] = Date().add(.day, value: -31)
+        let sut = makeSUT(referralProgram: mockReferralProgram)
         sut.didShowMailbox()
         sut.didShowMailbox()
         sut.didShowMailbox()
@@ -225,14 +182,9 @@ class ReferralProgramPromptPresenterTests: XCTestCase {
         // But we call didShowMailbox only once
         // Expect: shouldShowReferralProgramPrompt() returns false
         let mockReferralProgram = ReferralProgram(link: "foo", eligible: true)
-        let mockStatus = MockReferralProgramPromptStatus(referralProgramPromptWasShown: false,
-                                                         firstRunDate: Date().add(.day, value: -31))
-        let sut = ReferralProgramPromptPresenter(userID: mockUserID,
-                                                 referralProgram: mockReferralProgram,
-                                                 featureFlagCache: mockFeatureFlagCache,
-                                                 referralProgramPromptStatus: mockStatus,
-                                                 featureFlagService: mockFeatureFlagsService,
-                                                 notificationCenter: mockNotificationCenter)
+        testContainer.userDefaults[.referralProgramPromptWasShown] = false
+        testContainer.userDefaults[.firstRunDate] = Date().add(.day, value: -31)
+        let sut = makeSUT(referralProgram: mockReferralProgram)
         sut.didShowMailbox()
 
         XCTAssertFalse(sut.shouldShowReferralProgramPrompt())
@@ -243,14 +195,8 @@ class ReferralProgramPromptPresenterTests: XCTestCase {
         // But the app goes to the background
         // Expect: shouldShowReferralProgramPrompt() returns false
         let mockReferralProgram = ReferralProgram(link: "foo", eligible: true)
-        let mockStatus = MockReferralProgramPromptStatus(referralProgramPromptWasShown: false,
-                                                         firstRunDate: Date().add(.day, value: -31))
-        let sut = ReferralProgramPromptPresenter(userID: mockUserID,
-                                                 referralProgram: mockReferralProgram,
-                                                 featureFlagCache: mockFeatureFlagCache,
-                                                 referralProgramPromptStatus: mockStatus,
-                                                 featureFlagService: mockFeatureFlagsService,
-                                                 notificationCenter: mockNotificationCenter)
+        testContainer.userDefaults[.firstRunDate] = Date().add(.day, value: -31)
+        let sut = makeSUT(referralProgram: mockReferralProgram)
         sut.didShowMailbox()
         sut.didShowMailbox()
         sut.didShowMailbox()
@@ -258,33 +204,16 @@ class ReferralProgramPromptPresenterTests: XCTestCase {
         mockNotificationCenter.post(name: UIApplication.willResignActiveNotification, object: nil)
         XCTAssertFalse(sut.shouldShowReferralProgramPrompt())
     }
-}
 
-final class MockReferralProgramPromptStatus: ReferralProgramPromptStatus {
-    private var _referralProgramPromptWasShown: Bool
-    private var _firstRunDate: Date?
-
-    init(referralProgramPromptWasShown: Bool, firstRunDate: Date?) {
-        self._referralProgramPromptWasShown = referralProgramPromptWasShown
-        self._firstRunDate = firstRunDate
-    }
-    
-    var referralProgramPromptWasShown: Bool {
-        get {
-            _referralProgramPromptWasShown
-        }
-        set {
-            _referralProgramPromptWasShown = newValue
-        }
-    }
-
-    var firstRunDate: Date? {
-        get {
-            _firstRunDate
-        }
-        
-        set {
-            _firstRunDate = newValue
-        }
+    private func makeSUT(referralProgram: ReferralProgram, firstRunDate: Date = Date()) -> ReferralProgramPromptPresenter {
+        .init(
+            userID: mockUserID,
+            referralProgram: referralProgram,
+            featureFlagCache: mockFeatureFlagCache,
+            featureFlagService: mockFeatureFlagsService,
+            notificationCenter: mockNotificationCenter,
+            dependencies: testContainer,
+            firstRunDate: firstRunDate
+        )
     }
 }

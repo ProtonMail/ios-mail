@@ -3,6 +3,7 @@
 
 #import <Foundation/Foundation.h>
 @class PMNIAddress;
+@class PMNIAnniversary;
 @class PMNIBirthday;
 @class PMNICategories;
 @class PMNIEmail;
@@ -117,6 +118,14 @@
 - (void)setBirthdays:(nonnull NSArray<PMNIBirthday *> *)birthdays;
 
 - (void)clearBirthdays;
+
+- (nonnull NSArray<PMNIAnniversary *> *)getAnniversaries;
+
+- (nullable PMNIAnniversary *)getAnniversary;
+
+- (void)addAnniversary:(nullable PMNIAnniversary *)anniversary;
+
+- (void)clearAnniversaries;
 
 - (nonnull NSArray<PMNIPMCustom *> *)getCustoms;
 

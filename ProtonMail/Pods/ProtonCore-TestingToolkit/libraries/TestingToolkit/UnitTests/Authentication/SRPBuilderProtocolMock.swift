@@ -33,6 +33,6 @@ public struct SRPBuilderProtocolMock: SRPBuilderProtocol {
     public func buildSRP(username: String, password: String, authInfo: AuthInfoResponse, srpAuth: SrpAuth?) throws -> Result<SRPClientInfo, AuthErrors> {
         try buildSRPStub(username, password, authInfo, srpAuth)
     }
-    
+
     public init() {}
 }

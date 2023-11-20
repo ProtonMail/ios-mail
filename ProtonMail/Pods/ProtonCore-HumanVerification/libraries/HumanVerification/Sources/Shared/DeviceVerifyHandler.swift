@@ -26,7 +26,7 @@ import ProtonCoreServices
 import ProtonCoreCrypto
 
 public extension HumanVerifyDelegate {
-    
+
     // This function calculate a device challenge using different challenge types and returns the solved hash in Base64 format.
     func onDeviceVerify(parameters: DeviceVerifyParameters) -> String? {
         do {
@@ -48,11 +48,11 @@ public extension HumanVerifyDelegate {
             // we don't need to send the hash errors but we should log it.
             // need to add observability here
         }
-        
+
         // Return nil if the hash operation was not successful.
         return nil
     }
-    
+
     func getEndTime(startTime: CFAbsoluteTime) -> Double {
         let endTime = CFAbsoluteTimeGetCurrent()
         let duration = endTime - startTime

@@ -24,6 +24,15 @@
                   "**/APP_share_siri",
                   "Generated/APP_share",
                   "Resource/Localization"
+               ],
+               "excludes": [
+                  "Resource/APP_share/DOMPurify"
+               ]
+            },
+            {
+               "path": "ProtonMail/Resource/APP_share/DOMPurify/dist",
+               "includes": [
+                  "purify.min.js"
                ]
             }
          ],
@@ -36,6 +45,9 @@
             },
             {
                "package": "Factory"
+            },
+            {
+               "package": "ProtonCoreEventsLoop"
             }
          ],
          "preBuildScripts": [

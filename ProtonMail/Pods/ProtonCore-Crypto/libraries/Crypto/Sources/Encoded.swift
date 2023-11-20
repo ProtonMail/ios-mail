@@ -29,7 +29,7 @@ public enum EncodedType {
 
 public struct Encoded<Type> {
     public let value: String
-    
+
     public init(based64: String) {
         self.value = based64
     }
@@ -41,7 +41,7 @@ extension Encoded where Type == EncodedType.Based64 {
     public init(raw: Data) {
         self.value = Based64.encode(raw: raw)
     }
-    
+
     public var decode: Data {
         return Based64.decode(based64: value)
     }

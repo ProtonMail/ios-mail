@@ -38,7 +38,7 @@ private let backtButtonName = "Back"
 public final class PasswordRobot: CoreElements {
 
     public let verify = Verify()
-    
+
     public final class Verify: CoreElements {
         @discardableResult
         public func passwordScreenIsShown() -> PasswordRobot {
@@ -59,7 +59,7 @@ public final class PasswordRobot: CoreElements {
             button(errorBannerButton).tap()
             return PasswordRobot()
         }
-        
+
         @discardableResult
         public func passwordNotEqual() -> PasswordRobot {
             textView(errorBannerPassNotEqual).waitUntilExists().checkExists()
@@ -67,12 +67,12 @@ public final class PasswordRobot: CoreElements {
             return PasswordRobot()
         }
     }
-    
+
     public func insertPassword(password: String) -> PasswordRobot {
         secureTextField(passwordNameTextFieldId).waitUntilExists().tap().typeText(password)
         return self
     }
-    
+
     public func clearPassword() -> PasswordRobot {
         _ = secureTextField(passwordNameTextFieldId).tap().clearText()
         return self
@@ -82,7 +82,7 @@ public final class PasswordRobot: CoreElements {
         secureTextField(repeatPasswordNameTextFieldId).tap().typeText(password)
         return self
     }
-    
+
     public func nextButtonTap<T: CoreElements>(robot _: T.Type) -> T {
         button(nextButtonId).tap()
         return T()

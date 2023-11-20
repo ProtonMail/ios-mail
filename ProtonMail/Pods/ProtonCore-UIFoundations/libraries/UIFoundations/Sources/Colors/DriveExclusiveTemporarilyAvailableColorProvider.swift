@@ -46,11 +46,11 @@ extension DriveExclusiveTemporarilyAvailableColorProviderDesktopBase {
 
 #if canImport(AppKit)
 extension DriveExclusiveTemporarilyAvailableColorProviderMobileBase {
-    
+
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> AppearanceAwareColor {
         AppearanceAwareColor(keypath: keypath)
     }
-    
+
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> NSColor {
         if #available(macOS 10.14, *) {
             return color(for: .left(keypath), using: NSApp.effectiveAppearance)
@@ -65,7 +65,7 @@ extension DriveExclusiveTemporarilyAvailableColorProviderDesktopBase {
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) -> AppearanceAwareColor {
         AppearanceAwareColor(keypath: keypath)
     }
-    
+
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) -> NSColor {
         if #available(macOS 10.14, *) {
             return color(for: .right(keypath), using: NSApp.effectiveAppearance)
@@ -81,7 +81,7 @@ import SwiftUI
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 extension DriveExclusiveTemporarilyAvailableColorProviderMobileBase {
-    
+
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> Color {
         ProtonColorPaletteiOS.instance[keyPath: keypath].color
     }
@@ -89,7 +89,7 @@ extension DriveExclusiveTemporarilyAvailableColorProviderMobileBase {
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 extension DriveExclusiveTemporarilyAvailableColorProviderDesktopBase {
-    
+
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) -> Color {
         ProtonColorPalettemacOS.instance[keyPath: keypath].color
     }

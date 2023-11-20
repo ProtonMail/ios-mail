@@ -135,7 +135,7 @@ extension TroubleShootingViewController: TroubleShootingCellDelegate, MFMailComp
     func mailto(email: String) {
         self.openMFMail(email: email)
     }
-    
+
     func openMFMail(email: String) {
         let mailComposer = MFMailComposeViewController()
         mailComposer.setToRecipients([email])

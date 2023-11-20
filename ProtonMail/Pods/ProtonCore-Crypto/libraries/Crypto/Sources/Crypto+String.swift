@@ -23,7 +23,7 @@ import Foundation
 import ProtonCoreCryptoGoInterface
 
 extension String {
-    
+
     /// get the public key from the armored private key.
     public var publicKey: String {
         do {
@@ -33,7 +33,7 @@ extension String {
             return ""
         }
     }
-    
+
     /// get the fingerprint value from armored pub/priv key
     public var fingerprint: String {
         do {
@@ -43,7 +43,7 @@ extension String {
             return ""
         }
     }
-    
+
     // get sha256 fingerprint
     public var sha256Fingerprint: [String] {
         do {
@@ -58,23 +58,23 @@ extension String {
             return []
         }
     }
-    
+
     //
     public var unArmor: Data? {
         return CryptoGo.ArmorUnarmor(self, nil)
     }
-    
+
     public func getSignature() throws -> String? {
         let clearTextMessage = try throwing { error in CryptoGo.CryptoNewClearTextMessageFromArmored(self, &error) }
         let dec_out_att: String? = clearTextMessage?.getString()
         return dec_out_att
     }
-    
+
     public func split() throws -> SplitMessage? {
         let out = try throwing { error in CryptoGo.CryptoNewPGPSplitMessageFromArmored(self, &error) }
         return out
     }
-    
+
     // self is private key
     public func check(passphrase: String) -> Bool {
         do {
@@ -89,14 +89,14 @@ extension String {
             return false
         }
     }
-    
+
     public func check(passphrase: Passphrase) -> Bool {
         return self.check(passphrase: passphrase.value)
     }
 }
 
 extension String {
-    
+
     @available(*, deprecated, message: "Please use the non-optional variant")
     public func decryptMessage(binKeys: [Data], passphrase: String) throws -> String? {
         return try Crypto().decrypt(encrytped: self, privateKey: binKeys, passphrase: passphrase)
@@ -106,12 +106,12 @@ extension String {
     public func decryptMessageNonOptional(binKeys: [Data], passphrase: String) throws -> String {
         return try Crypto().decrypt(encrypted: self, privateKeys: binKeys, passphrase: passphrase)
     }
-    
+
     @available(*, deprecated, message: "Please use the non-optional variant")
     public func decryptMessageWithSinglKey(_ privateKey: String, passphrase: String) throws -> String? {
         return try Crypto().decrypt(encrytped: self, privateKey: privateKey, passphrase: passphrase)
     }
-    
+
     @available(*, deprecated, message: "Please use the non-optional variant")
     public func encrypt(withPrivKey key: String, mailbox_pwd: String) throws -> String? {
         return try Crypto().encrypt(plainText: self, privateKey: key, passphrase: mailbox_pwd)
@@ -120,18 +120,18 @@ extension String {
     public func encrypt(withPubKey publicKey: String, privateKey: String, passphrase: String) throws -> String? {
         return try Crypto().encrypt(plainText: self, publicKey: publicKey, privateKey: privateKey, passphrase: passphrase)
     }
-    
+
     public func decryptMessageWithSingleKeyNonOptional(_ privateKey: ArmoredKey, passphrase: Passphrase) throws -> String {
         let decryptionKey = DecryptionKey.init(privateKey: privateKey,
                                                passphrase: passphrase)
         return try Decryptor.decrypt(decryptionKeys: [decryptionKey], encrypted: ArmoredMessage.init(value: self))
     }
-    
+
     public func encryptNonOptional(withPrivKey key: String, mailbox_pwd: String) throws -> String {
         let publicKey = key.publicKey
         return try self.encryptNonOptional(withPubKey: publicKey, privateKey: key, passphrase: mailbox_pwd)
     }
-    
+
     /// encrypt message with public key only. no sign
     /// - Parameter publicKey: armored public key for encryption
     /// - Returns: encrypted message
@@ -140,7 +140,7 @@ extension String {
                                                               cleartext: self)
         return encrypted.value
     }
-    
+
     /// encrypt message with public key. signer - privkey & passphrase
     /// - Parameters:
     ///   - publicKey: armored public for encryption
@@ -151,17 +151,17 @@ extension String {
     public func encryptNonOptional(withPubKey publicKey: String, privateKey: String, passphrase: String) throws -> String {
         let signer = SigningKey.init(privateKey: ArmoredKey.init(value: privateKey),
                                      passphrase: Passphrase.init(value: passphrase))
-        
+
         let encrypted: ArmoredMessage = try Encryptor.encrypt(publicKey: ArmoredKey.init(value: publicKey),
                                                               cleartext: self, signerKey: signer)
         return encrypted.value
     }
-    
+
     @available(*, deprecated, message: "Please use the non-optional variant")
     public func encrypt(withPwd passphrase: String) throws -> String? {
         return try Crypto().encrypt(plainText: self, token: passphrase)
     }
-    
+
     /// decrypt armored encrypted message
     /// - Parameter passphrase: passphrase
     /// - Throws: exception
@@ -169,12 +169,12 @@ extension String {
     public func encryptNonOptional(password passphrase: String) throws -> String {
         return try Encryptor.encrypt(clearText: self, token: TokenPassword.init(value: passphrase)).value
     }
-    
+
     @available(*, deprecated, message: "Please use the non-optional variant")
     func decrypt(withPwd passphrase: String) throws -> String? {
         return try Crypto().decrypt(encrypted: self, token: passphrase)
     }
-    
+
     /// encrypt clear text with your own passphrase
     /// - Parameter passphrase: passphrase
     /// - Throws: exception

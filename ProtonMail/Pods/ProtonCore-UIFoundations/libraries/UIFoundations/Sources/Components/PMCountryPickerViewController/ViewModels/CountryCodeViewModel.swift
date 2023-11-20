@@ -32,7 +32,7 @@ public class CountryCodeViewModel {
     private var searchBarPlaceholderText: String = ""
 
     // MARK: Public interface
-    
+
     public init() {
         countryCodes = getCountryCodes()
         prepareData()

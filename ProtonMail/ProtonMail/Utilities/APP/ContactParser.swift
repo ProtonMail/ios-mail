@@ -279,8 +279,6 @@ extension ContactParser {
                     vCard.getNicknames().forEach { self.parse(nickName: $0) }
                 case .birthday:
                     self.parse(birthdays: vCard.getBirthdays())
-                case .anniversary:
-                    break
                 case .gender:
                     self.parse(gender: vCard.getGender())
                 case .url:
@@ -289,6 +287,8 @@ extension ContactParser {
                     self.parse(photo: vCard.getPhoto())
                 case .structuredName:
                     self.parse(structuredName: vCard.getStructuredName())
+                case .anniversary:
+                    self.parse(anniversary: vCard.getAnniversary())
                 }
             }
     }
@@ -393,6 +393,16 @@ extension ContactParser {
             isNew: false
         )
         self.resultDelegate?.append(informations: [contactEditInformation])
+    }
+
+    private func parse(anniversary: PMNIAnniversary?) {
+        guard let anniversary = anniversary else { return }
+        let contactEditInformation = ContactEditInformation(
+            type: .anniversary,
+            value: anniversary.getDate(),
+            isNew: false
+        )
+        resultDelegate?.append(informations: [contactEditInformation])
     }
 
     private func parse(urls: [PMNIUrl]) {
