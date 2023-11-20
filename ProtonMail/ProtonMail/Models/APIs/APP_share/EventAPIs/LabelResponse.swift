@@ -39,6 +39,7 @@ struct LabelResponse: Decodable {
         let expanded: Int
         let sticky: Int
         let display: Int
+        let parentId: String?
 
         // swiftlint:disable:next nesting
         enum CodingKeys: String, CodingKey {
@@ -52,6 +53,7 @@ struct LabelResponse: Decodable {
             case expanded = "Expanded"
             case sticky = "Sticky"
             case display = "Display"
+            case parentId = "ParentID"
         }
     }
 }

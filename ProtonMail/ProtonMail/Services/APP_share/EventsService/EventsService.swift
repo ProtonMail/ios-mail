@@ -634,7 +634,7 @@ extension EventsService {
                     switch emailObj.action {
                     case .delete:
                         if let emailID = emailObj.ID {
-                            if let tempEmail = Email.EmailForID(emailID, inManagedObjectContext: context) {
+                            if let tempEmail = Email.emailForID(emailID, inManagedObjectContext: context) {
                                 context.delete(tempEmail)
                             }
                         }

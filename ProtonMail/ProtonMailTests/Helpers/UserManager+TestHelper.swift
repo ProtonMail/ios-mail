@@ -59,7 +59,7 @@ extension UserManager {
         let key = Key(keyID: "1", privateKey: keyPair.privateKey)
         key.signature = "signature is needed to make this a V2 key"
         let address = Address(
-            addressID: "",
+            addressID: "1",
             domainID: nil,
             email: "",
             send: .active,

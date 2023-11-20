@@ -148,7 +148,7 @@ class ContactGroupsDataService: ContactGroupsProviderProtocol {
                 var mails: [EmailEntity] = []
                 self.coreDataService.performAndWaitOnRootSavingContext { context in
                     mails = emailIDs
-                        .compactMap { Email.EmailForID($0, inManagedObjectContext: context)}.map(EmailEntity.init)
+                        .compactMap { Email.emailForID($0, inManagedObjectContext: context)}.map(EmailEntity.init)
                 }
                 emailList += mails
             }
@@ -213,7 +213,7 @@ class ContactGroupsDataService: ContactGroupsProviderProtocol {
             var mails: [EmailEntity] = []
             self.coreDataService.performAndWaitOnRootSavingContext { context in
                 mails = emailIDs
-                    .compactMap { Email.EmailForID($0, inManagedObjectContext: context) }.map(EmailEntity.init)
+                    .compactMap { Email.emailForID($0, inManagedObjectContext: context) }.map(EmailEntity.init)
             }
             emailList += mails
 
@@ -313,7 +313,7 @@ extension ContactGroupsDataService {
                 if var mails = label.emails.allObjects as? [Email] {
                     for id in addedEmailIDs {
                         if let _ = mails.first(where: { $0.emailID == id }) { continue }
-                        guard let mail = Email.EmailForID(id, inManagedObjectContext: context) else { continue }
+                        guard let mail = Email.emailForID(id, inManagedObjectContext: context) else { continue }
                         mails.append(mail)
                     }
                     for id in removedEmailIDs {

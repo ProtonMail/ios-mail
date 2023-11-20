@@ -53,6 +53,16 @@ extension Label {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.labelID, matchingValue: labelID) as? Label
     }
 
+    class func labelFor(labelID: String, userID: UserID, in context: NSManagedObjectContext) -> Label? {
+        return context.managedObjectWithEntityName(
+            Attributes.entityName,
+            matching: [
+                Attributes.labelID: labelID,
+                Attributes.userID: userID.rawValue
+            ]
+        )
+    }
+
     class func labelForLabelName(_ name: String,
                                  inManagedObjectContext context: NSManagedObjectContext) -> Label? {
         return context.managedObjectWithEntityName(Attributes.entityName,
@@ -77,7 +87,7 @@ extension Label {
         label.order = NSNumber(value: 20)
 
         let mails = emailIDs
-            .compactMap { Email.EmailForID($0, inManagedObjectContext: context) }
+            .compactMap { Email.emailForID($0, inManagedObjectContext: context) }
         label.emails = Set(mails) as NSSet
         return label
     }

@@ -67,6 +67,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.contactGroupService
         _ = strongRefToContainer?.conversationService
         _ = strongRefToContainer?.conversationStateService
+        _ = strongRefToContainer?.eventProcessor
         _ = strongRefToContainer?.eventsService
         _ = strongRefToContainer?.featureFlagsDownloadService
         _ = strongRefToContainer?.fetchAndVerifyContacts

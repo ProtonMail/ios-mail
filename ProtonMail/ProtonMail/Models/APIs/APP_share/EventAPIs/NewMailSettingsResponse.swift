@@ -38,6 +38,7 @@ struct NewMailSettingsResponse: Decodable {
     let showMoved: Int
     let autoDeleteSpamAndTrashDays: Int?
     let almostAllMail: Int
+    let mobileSettings: MobileSettings
 
     enum CodingKeys: String, CodingKey {
         case displayName = "DisplayName"
@@ -60,5 +61,30 @@ struct NewMailSettingsResponse: Decodable {
         case showMoved = "ShowMoved"
         case autoDeleteSpamAndTrashDays = "AutoDeleteSpamAndTrashDays"
         case almostAllMail = "AlmostAllMail"
+        case mobileSettings = "MobileSettings"
+    }
+
+    struct MobileSettings: Decodable {
+        let listToolbar: ToolbarActions
+        let messageToolbar: ToolbarActions
+        let conversationToolbar: ToolbarActions
+
+        // swiftlint:disable:next nesting
+        enum CodingKeys: String, CodingKey {
+            case listToolbar = "ListToolbar"
+            case messageToolbar = "MessageToolbar"
+            case conversationToolbar = "ConversationToolbar"
+        }
+    }
+
+    struct ToolbarActions: Decodable {
+        let isCustom: Bool
+        let actions: [String]
+
+        // swiftlint:disable:next nesting
+        enum CodingKeys: String, CodingKey {
+            case isCustom = "IsCustom"
+            case actions = "Actions"
+        }
     }
 }
