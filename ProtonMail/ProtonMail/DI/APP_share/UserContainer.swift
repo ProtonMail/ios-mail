@@ -243,7 +243,7 @@ final class UserContainer: ManagedContainer {
 
     var userServiceFactory: Factory<UserDataService> {
         self {
-            UserDataService(apiService: self.apiService, coreKeyMaker: self.keyMaker)
+            UserDataService(apiService: self.apiService)
         }
     }
 

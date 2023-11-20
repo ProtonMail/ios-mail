@@ -84,13 +84,6 @@ extension NSError {
             localizedFailureReason: LocalString._error_cant_parse_response_body)
     }
 
-    class func lockError() -> NSError {
-        return apiServiceError(
-            code: APIErrorCode.badParameter,
-            localizedDescription: "App was locked",
-            localizedFailureReason: "You had locked the app before it managed to finish its task. Please try again")
-    }
-
     class func unableToParseResponse(_ response: Any?) -> NSError {
         let noObject = LocalString._error_no_object
         return apiServiceError(
