@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,30 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreDataModel
+import ProtonCoreEventsLoop
 
-extension UserInfo {
-    // Highlight body without encrypted search will give a wrong impression to user that we can search body without ES
-    static var isBodySearchKeywordHighlightEnabled: Bool {
-        false
-    }
+struct MailEventsSpecialLoopFactory: SpecialLoopFactory {
+    typealias Dependencies = GlobalContainer
+    typealias Loop = MailEventsLoop
 
-    static var enableSelectAll: Bool {
-        ProcessInfo.isRunningUnitTests
-    }
+    unowned let dependencies: Dependencies
 
-    static var isAppAccessResolverEnabled: Bool {
-        false // UIApplication.isDebugOrEnterprise
-    }
-
-    static var isNewEventsLoopEnabled: Bool {
-        #if DEBUG
-        if ProcessInfo.isRunningUnitTests {
-            return true
+    func makeSpecialLoop(forSpecialLoopID specialLoopID: String) -> MailEventsLoop {
+        guard let user = dependencies.usersManager.users.first(where: { $0.userID.rawValue == specialLoopID }) else {
+            fatalError("Users not found in the UsersManager")
         }
-        return false
-        #else
-        return false
-        #endif
+        return MailEventsLoop(
+            userID: .init(specialLoopID),
+            dependencies: user.container
+        )
     }
 }

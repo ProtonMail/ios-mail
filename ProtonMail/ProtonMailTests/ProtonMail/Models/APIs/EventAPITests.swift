@@ -32,7 +32,7 @@ class EventAPITests: XCTestCase {
         XCTAssertTrue(sut.ParseResponse(responseDictionary))
 
         XCTAssertEqual(sut.eventID, "YavOMCsY_G_OM2ti21cBlKbY-wVO-LaxvvLwGFM5duj3RpswhVBMFkepPg==")
-        XCTAssertEqual(sut.refresh, RefreshStatus(rawValue: 0))
+        XCTAssertEqual(RefreshStatus(rawValue: sut.refresh), .ok)
         XCTAssertEqual(sut.more, 0)
         XCTAssertEqual(sut.messages?.count, 3)
 

@@ -211,6 +211,22 @@ extension UserContainer: HasLaunchService {
     }
 }
 
+protocol HasMailEventsPeriodicScheduler {
+    var mailEventsPeriodicScheduler: MailEventsPeriodicScheduler { get }
+}
+
+extension GlobalContainer: HasMailEventsPeriodicScheduler {
+    var mailEventsPeriodicScheduler: MailEventsPeriodicScheduler {
+        mailEventsPeriodicSchedulerFactory()
+    }
+}
+
+extension UserContainer: HasMailEventsPeriodicScheduler {
+    var mailEventsPeriodicScheduler: MailEventsPeriodicScheduler {
+        globalContainer.mailEventsPeriodicScheduler
+    }
+}
+
 protocol HasNotificationCenter {
     var notificationCenter: NotificationCenter { get }
 }
