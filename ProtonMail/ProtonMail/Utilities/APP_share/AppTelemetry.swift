@@ -27,12 +27,10 @@ protocol AppTelemetry {
 struct MailAppTelemetry: AppTelemetry {
     func enable() {
         Analytics.shared.enableAnalytics()
-        SystemLogger.enableLogging()
     }
 
     func disable() {
         Analytics.shared.disableAnalytics()
-        SystemLogger.disableLogging()
     }
 
     func assignUser(userID: UserID?) {
