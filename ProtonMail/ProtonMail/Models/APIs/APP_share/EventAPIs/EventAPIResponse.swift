@@ -29,8 +29,8 @@ struct EventAPIResponse: Decodable, EventPage {
     let incomingDefaults: [IncomingDefaultResponse]?
     let user: UserResponse?
     let addresses: [AddressResponse]?
-    let messageCounts: [LabelCountsResponse]?
-    let conversationCounts: [LabelCountsResponse]?
+    let messageCounts: [CountData]?
+    let conversationCounts: [CountData]?
     let labels: [LabelResponse]?
     let contacts: [ContactResponse]?
     let contactEmails: [NewContactEmailsResponse]?

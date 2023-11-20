@@ -21,7 +21,7 @@ import ProtonCoreServices
 
 class MailEventsLoop: EventsLoop {
     typealias Response = EventAPIResponse
-    typealias Dependencies = HasLastUpdatedStoreProtocol & HasAPIService
+    typealias Dependencies = HasLastUpdatedStoreProtocol & HasAPIService & HasEventProcessor
 
     weak var delegate: CoreLoopDelegate?
     private let dependencies: Dependencies
@@ -66,11 +66,17 @@ class MailEventsLoop: EventsLoop {
     }
 
     func process(response: Response, completion: @escaping (Result<Void, Error>) -> Void) {
-        // TODO: process event api response
-        if !response.eventID.isEmpty {
-            self.latestEventID = response.eventID
+        dependencies.eventProcessor.process(response: response) { result in
+            switch result {
+            case .success:
+                if !response.eventID.isEmpty {
+                    self.latestEventID = response.eventID
+                }
+                completion(result)
+            case .failure:
+                completion(result)
+            }
         }
-        completion(.success(()))
     }
 
     func onError(error: EventsLoopError) {

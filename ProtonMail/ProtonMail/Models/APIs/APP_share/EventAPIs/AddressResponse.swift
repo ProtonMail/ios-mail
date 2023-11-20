@@ -16,11 +16,12 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCoreDataModel
 
 struct AddressResponse: Decodable {
     let id: String
     let action: Int
-    let address: Address
+    let address: Address?
 
     enum CodingKeys: String, CodingKey {
         case id = "ID"
@@ -59,6 +60,36 @@ struct AddressResponse: Decodable {
             case flags = "Flags"
             case keys = "Keys"
             case signedKeyList = "SignedKeyList"
+        }
+
+        func convertToProtonAddressModel() -> ProtonCoreDataModel.Address {
+            return ProtonCoreDataModel.Address(
+                addressID: id,
+                domainID: domainID,
+                email: email,
+                send: .init(rawValue: send) ?? .inactive,
+                receive: .init(rawValue: receive) ?? .inactive,
+                status: .init(rawValue: status) ?? .disabled,
+                type: .init(rawValue: type) ?? .protonDomain,
+                order: order,
+                displayName: displayName,
+                signature: signature,
+                hasKeys: hasKeys,
+                keys: keys.map { keyResponse in
+                    ProtonCoreDataModel.Key(
+                        keyID: keyResponse.id,
+                        privateKey: keyResponse.privateKey,
+                        keyFlags: keyResponse.flags,
+                        token: keyResponse.token,
+                        signature: keyResponse.signature,
+                        activation: keyResponse.activation,
+                        active: keyResponse.active,
+                        version: keyResponse.version,
+                        primary: keyResponse.primary,
+                        isUpdated: false
+                    )
+                }
+            )
         }
     }
 

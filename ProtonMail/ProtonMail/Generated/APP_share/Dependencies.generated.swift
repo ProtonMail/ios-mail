@@ -473,6 +473,16 @@ extension UserContainer: HasConversationStateService {
     }
 }
 
+protocol HasEventProcessor {
+    var eventProcessor: EventProcessor { get }
+}
+
+extension UserContainer: HasEventProcessor {
+    var eventProcessor: EventProcessor {
+        eventProcessorFactory()
+    }
+}
+
 protocol HasEventsFetching {
     var eventsService: EventsFetching { get }
 }

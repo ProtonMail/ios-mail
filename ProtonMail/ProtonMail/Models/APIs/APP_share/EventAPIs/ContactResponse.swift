@@ -53,7 +53,7 @@ struct ContactResponse: Decodable {
         }
 
         // swiftlint:disable:next nesting
-        struct VCardData: Decodable {
+        struct VCardData: Codable {
             let type: Int
             let data: String
             let signature: String

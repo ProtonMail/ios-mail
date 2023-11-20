@@ -49,6 +49,17 @@ extension Contact {
     class func contactForContactID(_ contactID: String, inManagedObjectContext context: NSManagedObjectContext) -> Contact? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.contactID, matchingValue: contactID) as? Contact
     }
+
+    class func contactFor(contactID: String, userID: UserID, in context: NSManagedObjectContext) -> Contact? {
+        return context.managedObjectWithEntityName(
+            Attributes.entityName,
+            matching: [
+                Attributes.contactID : contactID,
+                Attributes.userID  : userID.rawValue
+            ]
+        )
+    }
+
     // notes: if this function call `getEmails` app crashes because it seems override the accessor CoreData creates?
     //http://stackoverflow.com/questions/36878192/inverse-relationship-with-core-data-causes-crash-when-adding-object-to-nsset
     func getEmailsArray() -> [Email]? {

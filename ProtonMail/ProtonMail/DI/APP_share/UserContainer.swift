@@ -90,6 +90,12 @@ final class UserContainer: ManagedContainer {
         }
     }
 
+    var eventProcessorFactory: Factory<EventProcessor> {
+        self {
+            EventProcessor(dependencies: self)
+        }
+    }
+
     var eventsServiceFactory: Factory<EventsFetching> {
         self {
             EventsService(userManager: self.user, dependencies: self)

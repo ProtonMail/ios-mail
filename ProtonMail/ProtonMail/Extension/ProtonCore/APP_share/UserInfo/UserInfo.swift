@@ -32,4 +32,64 @@ extension UserInfo {
     var isAutoLoadEmbeddedImagesEnabled: Bool {
         hideEmbeddedImages == 0
     }
+
+    func update(from userSettings: UserSettingsResponse) {
+        self.notificationEmail = userSettings.email.value
+        self.notify = userSettings.email.notify
+        self.passwordMode = userSettings.password.mode
+        self.twoFactor = userSettings.twoFactorVerify.enabled
+        self.weekStart = userSettings.weekStart
+        self.telemetry = userSettings.telemetry
+        self.crashReports = userSettings.crashReport
+        self.referralProgram = .init(link: userSettings.referral.link, eligible: userSettings.referral.eligible)
+    }
+
+    func update(from mailSettings: NewMailSettingsResponse) {
+        self.displayName = mailSettings.displayName
+        self.defaultSignature = mailSettings.signature
+        self.hideEmbeddedImages = mailSettings.hideEmbeddedImages
+        self.hideRemoteImages = mailSettings.hideRemoteImages
+        self.imageProxy = .init(rawValue: mailSettings.imageProxy)
+        self.autoSaveContact = mailSettings.autoSaveContacts
+        self.swipeLeft = mailSettings.swipeLeft
+        self.swipeRight = mailSettings.swipeRight
+        self.linkConfirmation = mailSettings.confirmLink == 0 ? .openAtWill : .confirmationAlert
+        self.attachPublicKey = mailSettings.attachPublicKey
+        self.sign = mailSettings.sign
+        self.enableFolderColor = mailSettings.enableFolderColor
+        self.inheritParentFolderColor = mailSettings.inheritParentFolderColor
+        self.groupingMode = mailSettings.viewMode
+        self.delaySendSeconds = mailSettings.delaySendSeconds
+        self.conversationToolbarActions = .init(
+            isCustom: mailSettings.mobileSettings.conversationToolbar.isCustom,
+            actions: mailSettings.mobileSettings.conversationToolbar.actions
+        )
+        self.messageToolbarActions = .init(
+            isCustom: mailSettings.mobileSettings.messageToolbar.isCustom,
+            actions: mailSettings.mobileSettings.messageToolbar.actions
+        )
+        self.listToolbarActions = .init(
+            isCustom: mailSettings.mobileSettings.listToolbar.isCustom,
+            actions: mailSettings.mobileSettings.listToolbar.actions
+        )
+    }
+
+    func update(from user: UserResponse) {
+        self.delinquent = user.delinquent
+        self.maxSpace = Int64(user.maxSpace)
+        self.maxUpload = Int64(user.maxUpload)
+        self.role = user.role
+        self.subscribed = User.Subscribed(rawValue: UInt8(user.subscribed))
+        self.usedSpace = Int64(user.usedSpace)
+        self.userId = user.id
+        self.userKeys = user.keys.map({ keyResponse in
+            Key(
+                keyID: keyResponse.id,
+                privateKey: keyResponse.privateKey,
+                active: keyResponse.active,
+                version: keyResponse.version,
+                primary: keyResponse.primary
+            )
+        })
+    }
 }

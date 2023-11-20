@@ -19,6 +19,7 @@
 import Foundation
 
 struct UserSettingsResponse: Decodable {
+    let email: Email
     let crashReport: Int
     let password: Password
     let passwordMode: Int
@@ -28,6 +29,7 @@ struct UserSettingsResponse: Decodable {
     let weekStart: Int
 
     enum CodingKeys: String, CodingKey {
+        case email = "Email"
         case crashReport = "CrashReports"
         case passwordMode = "PasswordMode"
         case password = "Password"
