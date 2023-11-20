@@ -51,7 +51,7 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
         sut.start()
 
         waitForExpectations(timeout: 1)
-        wait(self.apiMocks[self.testUsers[0].userID]?.requestJSONStub.wasCalledExactlyOnce == true)
+        wait(self.apiMocks[self.testUsers[0].userID]?.requestDecodableStub.wasCalledExactlyOnce == true)
     }
 
     func testEnableSpecialLoop_withMultipleUser_eventApisWillBeTriggered() throws {
@@ -66,7 +66,7 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
 
         waitForExpectations(timeout: 1)
         for item in apiMocks {
-            XCTAssertTrue(item.value.requestJSONStub.wasCalledExactlyOnce)
+            XCTAssertTrue(item.value.requestDecodableStub.wasCalledExactlyOnce)
         }
 
         for item in newEventIDMap {
@@ -89,10 +89,29 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
         let newEventID = String.randomString(20)
         newEventIDMap[user.userID] = newEventID
         let e = expectation(description: "Closure is called")
-        api.requestJSONStub.bodyIs { _, method, path, _, _, _, _, _, _, _, _, completion in
+        api.requestDecodableStub.bodyIs { _, method, path, _, _, _, _, _, _, _, _, completion in
             XCTAssertEqual(path, "/core/v4/events/\(eventID)?ConversationCounts=1&MessageCounts=1")
             XCTAssertEqual(method, .get)
-            completion(nil, .success(["EventID": newEventID]))
+            let response = EventAPIResponse(
+                code: 2000,
+                eventID: newEventID,
+                refresh: 0,
+                more: 0,
+                userSettings: nil,
+                mailSettings: nil,
+                usedSpace: nil,
+                incomingDefaults: nil,
+                user: nil,
+                addresses: nil,
+                messageCounts: nil,
+                conversationCounts: nil,
+                labels: nil,
+                contacts: nil,
+                contactEmails: nil,
+                conversations: nil,
+                messages: nil
+            )
+            completion(nil, .success(response))
             e.fulfill()
         }
     }

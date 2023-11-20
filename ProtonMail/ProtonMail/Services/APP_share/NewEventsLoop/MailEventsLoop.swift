@@ -16,10 +16,11 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreEventsLoop
+import ProtonCoreNetworking
 import ProtonCoreServices
 
 class MailEventsLoop: EventsLoop {
-    typealias Response = EventCheckResponse
+    typealias Response = EventAPIResponse
     typealias Dependencies = HasLastUpdatedStoreProtocol & HasAPIService
 
     weak var delegate: CoreLoopDelegate?
@@ -52,15 +53,14 @@ class MailEventsLoop: EventsLoop {
         Task {
             SystemLogger.log(message: "Event loop triggered. \neventID: \(eventID) \nuserID: \(userID.rawValue)", category: .eventLoop)
             let request = EventCheckRequest(eventID: eventID)
-            let result = await dependencies.apiService.perform(
-                request: request,
-                response: Response(),
-                callCompletionBlockUsing: .immediateExecutor
-            )
-            if let error = result.1.error {
-                completion(.failure(error))
-            } else {
+            do {
+                let result: (URLSessionDataTask?, EventAPIResponse) = try await dependencies.apiService.perform(
+                    request: request,
+                    callCompletionBlockUsing: .immediateExecutor
+                )
                 completion(.success(result.1))
+            } catch {
+                completion(.failure(error))
             }
         }
     }
