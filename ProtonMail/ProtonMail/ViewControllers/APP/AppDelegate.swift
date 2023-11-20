@@ -160,6 +160,7 @@ extension AppDelegate: UIApplicationDelegate {
         #if DEBUG
         setupUITestsMocks()
         #endif
+        UserObjectsPersistence.shared.cleanAll()
         return true
     }
 

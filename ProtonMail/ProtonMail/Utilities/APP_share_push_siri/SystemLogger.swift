@@ -160,6 +160,8 @@ extension SystemLogger {
         case backgroundTask = "BackgroundTask"
         case loginUnlockFailed = "loginUnlockFailed"
         case eventLoop = "EventLoop"
+        case restoreUserData = "RestoreUserData"
+        case unauthorizedSession = "UnauthorizedSession"
     }
 
     struct Caller {

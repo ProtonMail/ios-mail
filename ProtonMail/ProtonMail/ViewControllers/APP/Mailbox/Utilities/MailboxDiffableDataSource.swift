@@ -40,7 +40,7 @@ final class MailboxDiffableDataSource {
         dataSnapshot = diffableDataSource.snapshot()
         let newSnapshot = reloadSkeletonData()
         queue.async {
-            self.diffableDataSource.apply(newSnapshot)
+            self.diffableDataSource.apply(newSnapshot, animatingDifferences: false)
         }
     }
 
@@ -50,7 +50,6 @@ final class MailboxDiffableDataSource {
 
     func reloadSnapshot(
         snapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>?,
-        animate: Bool,
         completion: (() -> Void)?
     ) {
         reloadSnapshotHasBeenCalled = true
@@ -67,7 +66,7 @@ final class MailboxDiffableDataSource {
         queue.async {
             self.diffableDataSource.apply(
                 snapshotToLoad,
-                animatingDifferences: animate,
+                animatingDifferences: false,
                 completion: completion
             )
         }

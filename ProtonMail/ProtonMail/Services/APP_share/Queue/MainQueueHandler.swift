@@ -427,6 +427,7 @@ extension MainQueueHandler {
                     message.nextAddressID = nil
                 }
                 let mailboxPassword = user.mailboxPassword
+                message.mimeType = Message.MimeType.textHTML.rawValue
                 message.body = try self.messageDataService.encryptBody(
                     .init(addressID),
                     clearBody: decryptedBody,

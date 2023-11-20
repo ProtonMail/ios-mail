@@ -514,7 +514,6 @@ extension UserManager: AuthHelperDelegate {
             let credentialsForDifferentSessions = self.authCredential.sessionID != authCredential.sessionID
             let data = "credentialsForDifferentSessions=\(credentialsForDifferentSessions) | receivedCredentialsSession = \(authCredential.sessionID.redacted)"
             Breadcrumbs.shared.add(message: "ERROR: UserManager.credentialsWereUpdated for unauthenticated session: \(data)", to: .randomLogout)
-            Analytics.shared.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
 
             assertionFailure("This should never happen — the UserManager should always operate within the authenticated session. Please investigate!")
         }

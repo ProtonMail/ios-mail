@@ -226,6 +226,7 @@ GEM
     jwt (2.7.1)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.5)
     minitest (5.20.0)
     molinillo (0.8.0)
     multi_json (1.15.0)
@@ -295,6 +296,7 @@ GEM
       xcpretty (~> 0.2, >= 0.0.7)
 
 PLATFORMS
+  arm64-darwin-23
   universal-darwin-22
   universal-darwin-23
 

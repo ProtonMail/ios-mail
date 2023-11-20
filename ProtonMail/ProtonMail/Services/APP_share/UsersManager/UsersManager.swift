@@ -297,24 +297,7 @@ class UsersManager: UsersManagerProtocol {
         }
         dependencies.userDefaults.setValue(lockedAuth.encryptedValue, forKey: CoderKey.authKeychainStore)
 
-        do {
-            try UserObjectsPersistence.shared.write(authList, key: mainKey)
-        } catch {
-            Analytics.shared.sendError(
-                .userObjectsCouldNotBeSavedError(
-                    error,
-                    Mirror(reflecting: authList.self).description
-                )
-            )
-        }
-
         let userList = self.users.compactMap { $0.userInfo }
-        do {
-            try UserObjectsPersistence.shared.write(userList, key: mainKey)
-        } catch {
-            Analytics.shared.sendError(.userObjectsCouldNotBeSavedError(error,
-                                                                        Mirror(reflecting: userList.self).description))
-        }
         guard let lockedUsers = try? Locked<[UserInfo]>(clearValue: userList, with: mainKey) else {
             return
         }
@@ -352,6 +335,7 @@ extension UsersManager {
     func logout(user: UserManager,
                 shouldShowAccountSwitchAlert: Bool = false,
                 completion: (() -> Void)?) {
+        SystemLogger.log(message: "logout user:\(user.userID.rawValue.redacted)")
         var isPrimaryAccountLogout = false
         loggingOutUserIDs.insert(user.userID)
         user.cleanUp().ensure {
@@ -441,6 +425,7 @@ extension UsersManager {
 
         return Promise { seal in
             Task {
+                SystemLogger.log(message: "UsersManager clean")
                 await self.dependencies.queueManager.clearAll()
                 await self.dependencies.contextProvider.deleteAllData()
                 seal.fulfill_()
@@ -526,33 +511,40 @@ extension UsersManager {
 
     private func loadUserDataFromCache() -> [CachedUserData]? {
         guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
+            SystemLogger.log(message: "Can not found mainkey", category: .restoreUserData, isError: true)
             return nil
         }
         let authDataInUserDefault = dependencies.userDefaults.data(forKey: CoderKey.authKeychainStore)
         let authDataInKeyChain = keychain.data(forKey: CoderKey.authKeychainStore)
         guard let encryptedAuthData = authDataInUserDefault ?? authDataInKeyChain else {
+            SystemLogger.log(message: "Can not found encryptedAuthData", category: .restoreUserData, isError: true)
             return nil
         }
         let lockedAuthData = Locked<[AuthCredential]>(encryptedValue: encryptedAuthData)
 
-        let authCredentialsFromCodable = try? UserObjectsPersistence.shared.read([AuthCredential].self, key: mainKey)
         let authCredentialsFromNSCoding = try? lockedAuthData.unlock(with: mainKey)
 
-        guard let authCredentials: [AuthCredential] = authCredentialsFromCodable ?? authCredentialsFromNSCoding else {
+        guard let authCredentials: [AuthCredential] = authCredentialsFromNSCoding else {
             dependencies.userDefaults.remove(forKey: CoderKey.authKeychainStore)
             keychain.remove(forKey: CoderKey.authKeychainStore)
+            SystemLogger.log(message: "Can not found authCredentials", category: .restoreUserData, isError: true)
             return nil
         }
 
         guard let encryptedUserData = dependencies.userDefaults.data(forKey: CoderKey.usersInfo) else {
+            SystemLogger.log(message: "Can not found encryptedUserData", category: .restoreUserData, isError: true)
             return nil
         }
-        let userInfoFromCodable = try? UserObjectsPersistence.shared.read([UserInfo].self, key: mainKey)
         let userInfoFromNSCoding = try? Locked<[UserInfo]>(encryptedValue: encryptedUserData).unlock(with: mainKey)
-        guard let userInfos = userInfoFromCodable ?? userInfoFromNSCoding  else {
+
+        guard let userInfos = userInfoFromNSCoding  else {
+            SystemLogger.log(message: "Can not found userInfos", category: .restoreUserData, isError: true)
             return nil
         }
         guard userInfos.count == authCredentials.count else {
+            SystemLogger.log(message: "Data count is not match between userInfos and authCredentials",
+                             category: .restoreUserData,
+                             isError: true)
             return nil
         }
 
@@ -569,6 +561,7 @@ extension UsersManager {
            existingUserIDs.count == userIDs.count,
            !existingUserIDs.map({ userIDs.contains($0) }).contains(false) {
                // restore is not needed.
+            SystemLogger.log(message: "Existing user contains restored userInfos.", category: .restoreUserData)
                return nil
            }
 

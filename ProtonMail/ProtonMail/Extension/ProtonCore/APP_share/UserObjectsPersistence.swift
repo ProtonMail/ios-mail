@@ -75,4 +75,17 @@ struct UserObjectsPersistence {
             throw error
         }
     }
+
+    func cleanAll() {
+        let pathComponents = [
+            AuthCredential.pathComponent,
+            UserInfo.pathComponent,
+            [AuthCredential].pathComponent,
+            [UserInfo].pathComponent
+        ]
+        let urls = pathComponents.map { directoryURL.appendingPathComponent($0) }
+        for url in urls {
+            try? FileManager.default.removeItem(at: url)
+        }
+    }
 }

@@ -47,12 +47,10 @@ class AppCacheService {
     }
 
     private func checkSettingsBundle() {
-        if dependencies.userDefaults.bool(forKey: Constants.SettingsBundleKeys.clearAll) {
-            // core data
+        if UserDefaults.standard.bool(forKey: Constants.SettingsBundleKeys.clearAll) {
             CoreDataStore.deleteDataStore()
 
-            let names = [PMPersistentQueue.Constant.name,
-                        PMPersistentQueue.Constant.miscName]
+            let names = [PMPersistentQueue.Constant.name, PMPersistentQueue.Constant.miscName]
             for name in names {
                 let path = FileManager.default
                     .applicationSupportDirectoryURL
@@ -61,12 +59,13 @@ class AppCacheService {
             }
 
             if let domain = Bundle.main.bundleIdentifier {
+                UserDefaults.standard.removePersistentDomain(forName: domain)
                 dependencies.userDefaults.removePersistentDomain(forName: domain)
             }
 
             dependencies.keychain.removeEverything()
         }
 
-        dependencies.userDefaults.setValue(Bundle.main.appVersion, forKey: Constants.SettingsBundleKeys.appVersion)
+        UserDefaults.standard.setValue(Bundle.main.appVersion, forKey: Constants.SettingsBundleKeys.appVersion)
     }
 }

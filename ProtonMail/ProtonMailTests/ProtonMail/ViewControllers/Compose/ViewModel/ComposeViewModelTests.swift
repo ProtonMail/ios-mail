@@ -38,7 +38,6 @@ final class ComposeViewModelTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-
         testContainer = .init()
         LocaleEnvironment.locale = { .enGB }
 
