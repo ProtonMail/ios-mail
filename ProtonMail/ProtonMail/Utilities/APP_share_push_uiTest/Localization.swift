@@ -109,8 +109,6 @@ class LocalizedString {
 
     /// "Message sent"
     lazy var _message_sent_ok_desc          = NSLocalizedString("Message sent", comment: "Description after message have been sent")
-    /// "Sent Failed"
-    lazy var _message_sent_failed_desc      = NSLocalizedString("Sent Failed", comment: "Description")
 
     lazy var _folder_no_message = NSLocalizedString("Nothing to see here", comment: "The title will be shown when foler doesnt have emails")
     lazy var _folder_is_empty = NSLocalizedString("This folder is empty", comment: "The subtitle will be shown when folder doesnt have emails")

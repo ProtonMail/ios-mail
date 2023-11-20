@@ -198,16 +198,8 @@ extension SendMessageTask {
         return hasErrorBeenProcessed ? nil : error
     }
 
-    private func notifySendMessageError(_ error: Error?, message: MessageEntity, suggestSendMessageAgain: Bool = true) {
-        let messagePrefix = suggestSendMessageAgain
-        ? LocalString._messages_sending_failed_try_again
-        : LocalString._message_sent_failed_desc
-        let errorMessage: String
-        if let error = error {
-            errorMessage = messagePrefix + "\n" + error.localizedDescription
-        } else {
-            errorMessage = messagePrefix
-        }
+    private func notifySendMessageError(_ error: Error, message: MessageEntity) {
+        let errorMessage = "\(LocalString._messages_sending_failed_try_again)\n\(error.localizedDescription)"
         let userInfo = [Notification.UserInfoKey.errorMessage: errorMessage]
         dependencies.notificationCenter.post(name: .sendMessageTaskFail, object: nil, userInfo: userInfo)
 
