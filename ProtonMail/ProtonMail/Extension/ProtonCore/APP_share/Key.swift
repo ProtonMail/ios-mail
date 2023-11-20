@@ -24,11 +24,14 @@ import Foundation
 import ProtonCoreDataModel
 
 extension Key {
-    struct Flags: OptionSet {
+    struct Flags: OptionSet, Decodable {
         let rawValue: Int
 
-        static let verificationEnabled = Self(rawValue: 1 << 0)
-        static let encryptionEnabled = Self(rawValue: 2 << 0)
+        /// 2^0 = 1 means the key is not compromised (i.e. if we can trust signatures coming from it)
+        static let notCompromised = Self(rawValue: 1 << 0)
+
+        /// 2^1 = 2 means the key is still in use (i.e. not obsolete, we can encrypt messages to it)
+        static let notObsolete = Self(rawValue: 2 << 0)
     }
 
     var flags: Flags {

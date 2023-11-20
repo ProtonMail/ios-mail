@@ -301,7 +301,7 @@ enum EncryptionPreferencesHelper {
         // TODO: can `CryptoKey` be made `Equatable` again?
         if let index = apiKeysConfig.publicKeys.firstIndex(where: { $0.getFingerprint() == key.getFingerprint() }),
            let keyResponse = apiKeysConfig.keys[safe: index] {
-            return !keyResponse.flags.contains(.encryptionEnabled)
+            return !keyResponse.flags.contains(.notObsolete)
         }
         return false
     }

@@ -121,8 +121,8 @@ final class MessageSenderPGPChecker {
                     completion(.success((senderVerified: true, keys: pinnedKeys)))
                 } else {
                     if let keysResponse = keysResponse,
-                       keysResponse.recipientType == .external && !keysResponse.allPublicKeys.isEmpty {
-                        completion(.success((senderVerified: false, keys: keysResponse.allPublicKeys)))
+                       keysResponse.recipientType == .external && !keysResponse.nonObsoletePublicKeys.isEmpty {
+                        completion(.success((senderVerified: false, keys: keysResponse.nonObsoletePublicKeys)))
                     } else {
                         self.fetchPublicKeysFromAttachments(self.message.attachmentsContainingPublicKey()) { datas in
                             completion(.success((senderVerified: false, keys: datas)))
