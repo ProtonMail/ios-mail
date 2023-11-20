@@ -26,12 +26,12 @@ class EncryptedCacheTests: XCTestCase {
     private var mainKey: MainKey!
     private var sut: EncryptedCache!
     private let cacheFolderName = "EncryptedCacheTests"
+    private var testContainer: TestContainer!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        let globalContainer = GlobalContainer()
-        let keyMaker = globalContainer.keyMaker
+        testContainer = .init()
 
         let config = SDImageCacheConfig()
         config.diskCacheWritingOptions = [.atomic, .completeFileProtection]
@@ -41,15 +41,16 @@ class EncryptedCacheTests: XCTestCase {
             .appendingPathComponent(cacheFolderName, isDirectory: true)
         internalCache = SDDiskCache(cachePath: cacheDir.path, config: config)
 
-        mainKey = try XCTUnwrap(keyMaker.mainKey(by: RandomPinProtection.randomPin))
+        mainKey = try XCTUnwrap(testContainer.keyMaker.mainKey(by: RandomPinProtection.randomPin))
 
-        sut = EncryptedCache(internalCache: internalCache, coreKeyMaker: keyMaker)
+        sut = EncryptedCache(internalCache: internalCache, dependencies: testContainer)
         sut.purge()
     }
 
     override func tearDownWithError() throws {
         sut.purge()
         sut = nil
+        testContainer = nil
         mainKey = nil
 
         try super.tearDownWithError()

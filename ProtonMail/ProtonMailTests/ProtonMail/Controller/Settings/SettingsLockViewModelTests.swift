@@ -29,11 +29,11 @@ class SettingsLockViewModelTests: XCTestCase {
     var mockRouter: MockSettingsLockRouterProtocol!
     var biometricStub: BioMetricStatusStub!
     var mockKeymaker: MockKeyMakerProtocol!
-    var mockLockPreferences: MockLockPreferences!
-    var mockNotificationCenter: NotificationCenter!
     var isAppKeyEnabled: Bool = false
     var mockUI: MockSettingsLockUIProtocol!
     let waitTimeout = 2.0
+
+    private var testContainer: TestContainer!
 
     override func setUpWithError() throws {
         mockRouter = MockSettingsLockRouterProtocol()
@@ -42,29 +42,30 @@ class SettingsLockViewModelTests: XCTestCase {
         mockKeymaker = MockKeyMakerProtocol()
         mockKeymaker.activateStub.bodyIs { _, _, completion in completion(true) }
         mockKeymaker.deactivateStub.bodyIs { _, _ in return true }
-        mockLockPreferences = MockLockPreferences()
-        mockNotificationCenter = NotificationCenter()
         mockUI = MockSettingsLockUIProtocol()
+
+        testContainer = .init()
+        testContainer.biometricStatusProviderFactory.register {
+            self.biometricStub
+        }
+        testContainer.keyMakerFactory.register {
+            self.mockKeymaker
+        }
+
         sut = SettingsLockViewModel(
             router: mockRouter,
-            dependencies: .init(
-                biometricStatus: biometricStub,
-                userPreferences: mockLockPreferences,
-                coreKeyMaker: mockKeymaker,
-                notificationCenter: mockNotificationCenter,
-                enableAppKeyFeature: isAppKeyFeatureEnabled
-            )
+            dependencies: testContainer,
+            isAppKeyFeatureEnabled: { self.isAppKeyEnabled }
         )
         sut.setUIDelegate(mockUI)
     }
 
     override func tearDownWithError() throws {
         sut = nil
+        testContainer = nil
         mockRouter = nil
         biometricStub = nil
         mockKeymaker = nil
-        mockLockPreferences = nil
-        mockNotificationCenter = nil
         mockUI = nil
     }
 
@@ -79,43 +80,43 @@ class SettingsLockViewModelTests: XCTestCase {
 
     func testViewWillAppear_whenEnteringForTheFirstTime_sectionsAreCorrect() {
         sut.viewWillAppear()
-        XCTAssert(sut.sections == [.protection])
+        XCTAssertEqual(sut.sections, [.protection])
     }
 
     func testViewWillAppear_whenEnteringForTheFirstTime_protectionItemsAreCorrect() {
         sut.viewWillAppear()
-        XCTAssert(sut.protectionItems == [.none, .pinCode, .biometric])
+        XCTAssertEqual(sut.protectionItems, [.none, .pinCode, .biometric])
     }
 
     func testViewWillAppear_whenPinEnabledAndAppKeyDisabled() {
         mockKeymaker.isPinCodeEnabledStub.fixture = true
         sut.viewWillAppear()
-        XCTAssert(sut.sections == [.protection, .changePin, .autoLockTime])
+        XCTAssertEqual(sut.sections, [.protection, .changePin, .autoLockTime])
     }
 
     func testViewWillAppear_whenPinEnabledAndAppKeyEnabled() {
         isAppKeyEnabled = true
         mockKeymaker.isPinCodeEnabledStub.fixture = true
         sut.viewWillAppear()
-        XCTAssert(sut.sections == [.protection, .changePin, .appKeyProtection, .autoLockTime])
+        XCTAssertEqual(sut.sections, [.protection, .changePin, .appKeyProtection, .autoLockTime])
     }
 
     func testViewWillAppear_whenBiometricLockEnabledAndAppKeyDisabled() {
         mockKeymaker.isTouchIDEnabledStub.fixture = true
         sut.viewWillAppear()
-        XCTAssert(sut.sections == [.protection, .autoLockTime])
+        XCTAssertEqual(sut.sections, [.protection, .autoLockTime])
     }
 
     func testViewWillAppear_whenBiometricLockEnabledAndAppKeyEnabled() {
         isAppKeyEnabled = true
         mockKeymaker.isTouchIDEnabledStub.fixture = true
         sut.viewWillAppear()
-        XCTAssert(sut.sections == [.protection, .appKeyProtection, .autoLockTime])
+        XCTAssertEqual(sut.sections, [.protection, .appKeyProtection, .autoLockTime])
     }
 
     func testDidTapNoProtection_notifiesAppLockProtectionDisabled() {
         let expect = expectation(description: "")
-        mockNotificationCenter.addObserver(forName: .appLockProtectionDisabled, object: nil, queue: nil) { _ in
+        testContainer.notificationCenter.addObserver(forName: .appLockProtectionDisabled, object: nil, queue: nil) { _ in
             expect.fulfill()
         }
         sut.input.didTapNoProtection()
@@ -135,7 +136,7 @@ class SettingsLockViewModelTests: XCTestCase {
 
     func testDidTapBiometricProtection_callsKeymakerAndNotifiesAppLockProtectionEnabled() {
         let expect = expectation(description: "")
-        mockNotificationCenter.addObserver(forName: .appLockProtectionEnabled, object: nil, queue: nil) { _ in
+        testContainer.notificationCenter.addObserver(forName: .appLockProtectionEnabled, object: nil, queue: nil) { _ in
             expect.fulfill()
         }
         sut.didTapBiometricProtection()
@@ -148,6 +149,6 @@ class SettingsLockViewModelTests: XCTestCase {
 
     func testDidPickAutoLockTime_savesValue() {
         sut.input.didPickAutoLockTime(value: 37)
-        XCTAssert(mockLockPreferences.setLockTimeStub.capturedArguments.first!.value == .minutes(37))
+        XCTAssert(testContainer.userCachedStatus.lockTime == .minutes(37))
     }
 }

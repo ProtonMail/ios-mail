@@ -22,13 +22,15 @@ class ImageProxyCache: ImageProxyCacheProtocol {
         let rawValue: String
     }
 
+    typealias Dependencies = EncryptedCache.Dependencies
+
     private let encryptedCache: EncryptedCache
 
-    init(coreKeyMaker: KeyMakerProtocol) {
+    init(dependencies: Dependencies) {
         encryptedCache = EncryptedCache(
             maxDiskSize: Constants.ImageProxy.cacheDiskSizeLimitInBytes,
             subdirectory: "me.proton.imageproxy",
-            coreKeyMaker: coreKeyMaker
+            dependencies: dependencies
         )
     }
 

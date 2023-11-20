@@ -34,22 +34,18 @@ protocol SettingsLockRouterProtocol {
 }
 
 final class SettingsLockRouter: SettingsLockRouterProtocol {
-    private weak var navigationController: UINavigationController?
-    private let coreKeyMaker: KeyMakerProtocol
+    typealias Dependencies = SettingsLockViewModel.Dependencies & PinCodeSetupRouter.Dependencies
 
-    init(navigationController: UINavigationController?, coreKeyMaker: KeyMakerProtocol) {
-        self.coreKeyMaker = coreKeyMaker
+    private weak var navigationController: UINavigationController?
+    private let dependencies: Dependencies
+
+    init(navigationController: UINavigationController?, dependencies: Dependencies) {
+        self.dependencies = dependencies
         self.navigationController = navigationController
     }
 
     func start() {
-        let viewModel = SettingsLockViewModel(
-            router: self,
-            dependencies: .init(
-                biometricStatus: UIDevice.current,
-                coreKeyMaker: coreKeyMaker
-            )
-        )
+        let viewModel = SettingsLockViewModel(router: self, dependencies: dependencies)
         let viewController = SettingsLockViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -67,11 +63,8 @@ final class SettingsLockRouter: SettingsLockRouterProtocol {
 
         let nav = UINavigationController()
         nav.modalPresentationStyle = .fullScreen
-        // swiftlint:disable:next force_cast
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let globalContainer = appDelegate.dependencies
 
-        let router = PinCodeSetupRouter(navigationController: nav, dependencies: globalContainer)
+        let router = PinCodeSetupRouter(navigationController: nav, dependencies: dependencies)
         router.start(step: step)
         navigationController?.present(nav, animated: true, completion: nil)
     }
