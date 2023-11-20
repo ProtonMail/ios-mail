@@ -27,7 +27,6 @@ struct EncryptionPreferences {
     let pinnedKeys: [CryptoKey]
     let hasApiKeys: Bool
     let hasPinnedKeys: Bool
-    let isContact: Bool
     let sendKey: CryptoKey?
     let isSendKeyPinned: Bool
     let error: EncryptionPreferencesError?

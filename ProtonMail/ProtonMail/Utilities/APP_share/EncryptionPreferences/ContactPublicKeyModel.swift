@@ -27,12 +27,8 @@ struct ContactPublicKeyModel {
     let trustedFingerprints: Set<String>
     let encryptionCapableFingerprints: Set<String>
     let verifyOnlyFingerprints: Set<String>
-    let isPGPExternal: Bool
     let isPGPInternal: Bool
     let isPGPExternalWithWDKKeys: Bool
-    let isPGPExternalWithoutWDKKeys: Bool
-    let pgpAddressDisabled: Bool
-    let isContact: Bool
 }
 
 extension ContactPublicKeyModel {
