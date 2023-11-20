@@ -35,7 +35,7 @@ class Mock{{ type.name }}: {{ type.name }} {
 
     {% endfor %}
     {% for method in type.methods|!definedInExtension %}
-    @{% if method.throws %}Throwing{% endif %}FuncStub(Mock{{ type.name }}.{{ method.callName }}{% if method.returnTypeName.name != "Void" %}, initialReturn: {% if method.returnTypeName.isOptional %}nil{% elif method.returnType.kind == "protocol" or method.returnTypeName.isTuple %}.crash{% else %}{{ method.returnTypeName }}(){% endif %}{% endif %}) var {{ method.callName }}Stub
+    @{% if method.throws %}Throwing{% endif %}FuncStub(Mock{{ type.name }}.{{ method.callName }}{% if method.returnTypeName.name != "Void" %}, initialReturn: {% if method.returnTypeName.isOptional %}nil{% elif method.returnType.kind == "protocol" or method.returnTypeName.isTuple or (method.returnType.initializers.count == 1 and  method.returnType.initializers[0].parameters.count > 0) %}.crash{% else %}{{ method.returnTypeName }}(){% endif %}{% endif %}) var {{ method.callName }}Stub
     func {{ method.name }}{% if method.throws %} throws{% endif %}{% if method.returnTypeName.name != "Void" %} -> {{ method.returnTypeName }}{% endif %} {
         {% if method.throws %}try {% endif %}{{ method.callName }}Stub({% for parameter in method.parameters %}{{ parameter.name }}{{ ', ' if not forloop.last }}{% endfor %})
     }

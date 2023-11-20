@@ -390,17 +390,7 @@ class ContactDataService {
         if let error = result.1.error {
             throw error
         } else if let contactDict = result.1.contact {
-            return try await withCheckedThrowingContinuation { continuation in
-                cacheService.updateContactDetail(serverResponse: contactDict) { contact, error in
-                    if let error = error {
-                        continuation.resume(throwing: error)
-                    } else if let contact = contact {
-                        continuation.resume(returning: contact)
-                    } else {
-                        fatalError()
-                    }
-                }
-            }
+            return try cacheService.updateContactDetail(serverResponse: contactDict)
         } else {
             throw NSError.unableToParseResponse(result.1)
         }
