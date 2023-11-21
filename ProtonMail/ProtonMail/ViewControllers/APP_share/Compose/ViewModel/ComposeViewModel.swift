@@ -146,9 +146,6 @@ class ComposeViewModel: NSObject {
         messageService = dependencies.user.messageService
         self.isEditingScheduleMsg = isEditingScheduleMsg
         self.originalScheduledTime = originalScheduledTime
-
-        // We have dependencies as an optional input parameter to avoid making
-        // a huge refactor but allowing the dependencies injection open for testing.
         self.dependencies = dependencies
 
         composerMessageHelper = ComposerMessageHelper(dependencies: self.dependencies.helperDependencies, user: user)
@@ -165,7 +162,6 @@ class ComposeViewModel: NSObject {
             if let msg = msg {
                 self.composerMessageHelper.setNewMessage(objectID: msg.objectID.rawValue)
             }
-            self.subject = self.composerMessageHelper.draft?.title ?? ""
         } else {
             guard let msg = msg else {
                 fatalError("This should not happened.")
