@@ -24,6 +24,10 @@ private enum CSSKeys: String {
     case bgColor = "bgcolor"
     case backgroundColor = "background-color"
     case borderColor = "border-color"
+    case borderBottom = "border-bottom"
+    case borderTop = "border-top"
+    case borderLeft = "border-left"
+    case borderRight = "border-right"
 
     case target, id, `class`
     
@@ -232,7 +236,11 @@ struct CSSMagic {
             CSSKeys.style.rawValue,
             CSSKeys.bgColor.rawValue,
             CSSKeys.color.rawValue,
-            CSSKeys.border.rawValue
+            CSSKeys.border.rawValue,
+            CSSKeys.borderTop.rawValue,
+            CSSKeys.borderLeft.rawValue,
+            CSSKeys.borderRight.rawValue,
+            CSSKeys.borderBottom.rawValue
         ]
         for keyword in keywords {
             guard node.hasAttr(keyword) else { continue }
@@ -248,6 +256,9 @@ struct CSSMagic {
 
         guard let document = document else {
             return .notSupport
+        }
+        if containsUnsupportedAttributeKey(document: document) {
+            return .protonSupport
         }
         // If the meta tag color-scheme is present, we assume that the email supports dark mode
         if let meta = try? document.select(#"meta[name="color-scheme"]"#),
@@ -268,6 +279,22 @@ struct CSSMagic {
             return .nativeSupport
         }
         return .protonSupport
+    }
+
+    /**
+        Function that returns true for attributes that DOMPurify would remove
+        because they are not standard attributes.
+    */
+    static func containsUnsupportedAttributeKey(document: Document) -> Bool {
+        /// custom dark mode attribute found in newsletter emails from https://julialang.org
+        if let element = try? document.select(#"[dm='body']"#),
+           let outerHTML = try? element.outerHtml(),
+           !outerHTML.isEmpty {
+            // SwiftSoup seems like has bug, sometimes it returns element without HTML
+            // The element doesn't exist
+            return true
+        }
+        return false
     }
 
     /// Generate css for dark mode
@@ -448,11 +475,15 @@ extension CSSMagic {
                         CSSKeys.bgColor.rawValue,
                         CSSKeys.background.rawValue,
                         CSSKeys.border.rawValue,
-                        CSSKeys.borderColor.rawValue
+                        CSSKeys.borderColor.rawValue,
+                        CSSKeys.borderTop.rawValue,
+                        CSSKeys.borderLeft.rawValue,
+                        CSSKeys.borderRight.rawValue,
+                        CSSKeys.borderBottom.rawValue
         ]
         for attribute in attributes {
             guard keywords.contains(attribute.key.lowercased()) else { continue }
-            let color = attribute.value.preg_replace("!important", replaceto: "")
+            let color = attribute.value.preg_replace("!important", replaceto: "").lowercased()
             guard color != CSSKeys.transparent.rawValue else { continue }
             let isForeground = attribute.key.lowercased() == CSSKeys.color.rawValue
             guard let hsla = CSSMagic.getDarkModeColor(from: color, isForeground: isForeground) else {
@@ -481,7 +512,7 @@ extension CSSMagic {
         var isOriginalForegroundHasGoodDarkModeContrast = false
         if let originalForegroundStyle = attributes.first(where: { $0.key == CSSKeys.color.rawValue })?.value {
             isOriginalForegroundHasGoodDarkModeContrast = hasGoodContrast(
-                attributes: darkAttributes + [(CSSKeys.color.rawValue, originalForegroundStyle)]
+                attributes: darkAttributes + [(CSSKeys.color.rawValue, originalForegroundStyle.lowercased())]
             )
         }
         var result = darkAttributes.map { "\($0.key): \($0.value) !important" }
@@ -892,7 +923,6 @@ extension CSSMagic {
 
     static func isColor(attribute: String) -> Bool {
         let countWithHash = [4, 5, 7, 9]
-        let countWithoutHash = [3, 4, 6, 8]
         if attribute.hasPrefix("rgb") || attribute.hasPrefix("rgba") {
             return attribute.preg_match("rgba?(.*,.*,.*)")
         } else if attribute.hasPrefix("hsl") || attribute.hasPrefix("hsla") {
@@ -901,7 +931,7 @@ extension CSSMagic {
             return true
         } else if attribute.hasPrefix("#") && countWithHash.firstIndex(of: attribute.count) != nil {
             return true
-        } else if !attribute.hasPrefix("#") && countWithoutHash.firstIndex(of: attribute.count) != nil {
+        } else if attribute.isHex {
             return true
         }
         return false

@@ -205,7 +205,7 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
                     document.head.querySelectorAll('style')[i].textContent = css;
                 }
 
-                let targetDOMs = document.querySelectorAll('*:not(html):not(head):not(body):not(script):not(meta):not(title)')
+                let targetDOMs = document.querySelectorAll('*:not(html):not(head):not(script):not(meta):not(title)')
                 for (var i = 0, max = targetDOMs.length; i < max; i++) {
                     let dom = targetDOMs[i]
                     if (!dom.style.cssText.includes('!important')) { continue }
