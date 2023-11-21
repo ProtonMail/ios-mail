@@ -27,7 +27,6 @@ final class ChangePasswordViewModelTests: XCTestCase {
     private var sut: ChangePasswordViewModel!
     private var user: UserManager!
     private var apiService: APIServiceMock!
-    private var keyChain: KeychainWrapper!
     private let modulesResponse: [String: Any] = [
         "Code": 1000,
         "Modulus": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA256\n\nu5O8KKH2VYWS0O7JWCYdjGKvO3hTNq1IxJRoExdv2gOdV1x6rp+9PLYetZkc60YmI1A4M6FOaCqpCtdfUrt+diuZGfaWSG8AnbPVQ7ZDsLb2Hp351QTfHqZjGrmrN/u9XMgI/2SSqa6Jrd8hLA0bjqAa4LX9FFlLJABN1h4leeTq5R0cSJSg0F+PsWgKAkMBoIrunDWZFCrByEj2mmieMGYdl11+YZOrRjT7kJbr4xYiSsQUehhI4/JLjVeCNGJ5Z96KuKELuWk5smapKakZ5+2i9NKovzKujJJvmNK6hFku7amWTbiMc+UaoAVjmoWDmquc7lhTrrSrz6+5ZIY28A==\n-----BEGIN PGP SIGNATURE-----\nVersion: ProtonMail\nComment: https://protonmail.com\n\nwl4EARYIABAFAlwB1j0JEDUFhcTpUY8mAAC2+wD9EmUDnJ7gH5ygqwkyQGqL\nTFioFwZDLb7sEW3/bzZXgR0A/0nEhySjl5C0TgpAFuaucGgv//XjstJM8eEa\nNxMJG6cF\n=RP0d\n-----END PGP SIGNATURE-----\n",

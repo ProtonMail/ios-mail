@@ -72,7 +72,7 @@ class EncryptedCache {
     }
 
     private func prepareMainKey() throws -> MainKey {
-        guard let mainKey = dependencies.keyMaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let mainKey = dependencies.keyMaker.mainKey(by: dependencies.keychain.randomPinProtection) else {
             throw EncryptedCacheError.cannotObtainMainKey
         }
 

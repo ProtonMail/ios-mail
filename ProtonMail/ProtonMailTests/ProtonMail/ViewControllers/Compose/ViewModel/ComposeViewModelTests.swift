@@ -74,7 +74,8 @@ final class ComposeViewModelTests: XCTestCase {
             helperDependencies: helperDependencies,
             fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(
                 coreKeyMaker: MockKeyMakerProtocol(),
-                cache: MockMobileSignatureCacheProtocol()
+                cache: MockMobileSignatureCacheProtocol(),
+                keychain: testContainer.keychain
             )),
             attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
             userDefaults: testContainer.userDefaults,

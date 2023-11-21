@@ -390,7 +390,7 @@ class UsersManagerTests: XCTestCase {
     }
 
     private func prepareUserDataInCacheWithDifferentOrder(userIDs: [String]) throws {
-        let mainKey = keyMaker.mainKey(by: RandomPinProtection.randomPin)!
+        let mainKey = keyMaker.mainKey(by: globalContainer.keychain.randomPinProtection)!
         var userInfos: [UserInfo] = []
         var auths: [AuthCredential] = []
         for userID in userIDs {
@@ -407,7 +407,7 @@ class UsersManagerTests: XCTestCase {
     }
 
     private func prepareUserDataInCache(userID: String, hasMailSetting: Bool) throws {
-        let mainKey = keyMaker.mainKey(by: RandomPinProtection.randomPin)!
+        let mainKey = keyMaker.mainKey(by: globalContainer.keychain.randomPinProtection)!
         let auth = createAuth(userID: userID)
         let userInfo = createUserInfo(userID: userID)
 
@@ -424,7 +424,7 @@ class UsersManagerTests: XCTestCase {
     }
 
     private func prepareLegacyUserData(userID: String) throws {
-        let mainKey = keyMaker.mainKey(by: RandomPinProtection.randomPin)!
+        let mainKey = keyMaker.mainKey(by: globalContainer.keychain.randomPinProtection)!
         let auth = createAuth(userID: userID)
         let userInfo = createUserInfo(userID: userID)
         let archived = auth.archive()

@@ -28,7 +28,7 @@ final class UpdateMobileSignature: UpdateMobileSignatureUseCase {
     }
 
     override func executionBlock(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
-        guard let mainKey = dependencies.coreKeyMaker.mainKey(by: .randomPin) else {
+        guard let mainKey = dependencies.coreKeyMaker.mainKey(by: dependencies.keychain.randomPinProtection) else {
             callback(.failure(UpdateMobileSignatureError.failedToGetMainKey))
             return
         }
@@ -53,6 +53,7 @@ extension UpdateMobileSignature {
     struct Dependencies {
         let coreKeyMaker: KeyMakerProtocol
         let cache: MobileSignatureCacheProtocol
+        let keychain: Keychain
     }
 
     struct Parameters {

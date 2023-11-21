@@ -137,27 +137,27 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
             if dependencies.keyMaker.isTouchIDEnabled {
                 dependencies.keyMaker.deactivate(BioProtection())
             }
-            if let randomProtection = RandomPinProtection.randomPin {
+            if let randomProtection = dependencies.keychain.randomPinProtection {
                 dependencies.keyMaker.deactivate(randomProtection)
             }
-            KeychainWrapper.keychain[.keymakerRandomKey] = nil
+            dependencies.keychain[.keymakerRandomKey] = nil
             dependencies.notificationCenter.post(name: .appLockProtectionDisabled, object: nil, userInfo: nil)
         }
     }
 
     private func enableAppKey() {
-        if let randomProtection = RandomPinProtection.randomPin {
+        if let randomProtection = dependencies.keychain.randomPinProtection {
             LockPreventor.shared.performWhileSuppressingLock {
                 dependencies.keyMaker.deactivate(randomProtection)
             }
             dependencies.notificationCenter.post(name: .appKeyEnabled, object: nil, userInfo: nil)
         }
-        KeychainWrapper.keychain[.keymakerRandomKey] = nil
+        dependencies.keychain[.keymakerRandomKey] = nil
     }
 
     private func disableAppKey(completion: (() -> Void)? = nil) {
-        KeychainWrapper.keychain[.keymakerRandomKey] = String.randomString(32)
-        if let randomProtection = RandomPinProtection.randomPin {
+        dependencies.keychain[.keymakerRandomKey] = String.randomString(32)
+        if let randomProtection = dependencies.keychain.randomPinProtection {
             dependencies.keyMaker.activate(randomProtection) { [unowned self] success in
                 guard success else { return }
                 dependencies.notificationCenter.post(name: .appKeyDisabled, object: nil, userInfo: nil)

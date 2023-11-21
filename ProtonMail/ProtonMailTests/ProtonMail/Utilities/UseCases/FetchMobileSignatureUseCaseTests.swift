@@ -22,19 +22,23 @@ import XCTest
 final class FetchMobileSignatureUseCaseTests: XCTestCase {
     private var sut: FetchMobileSignature!
     private var cacheMock: MockMobileSignatureCacheProtocol!
-    private var coreKeyMaker: KeyMakerProtocol!
+    private var testContainer: TestContainer!
+
+    private var coreKeyMaker: KeyMakerProtocol {
+        testContainer.keyMaker
+    }
 
     override func setUp() {
         super.setUp()
 
         cacheMock = MockMobileSignatureCacheProtocol()
 
-        let globalContainer = GlobalContainer()
-        coreKeyMaker = globalContainer.keyMaker
+        testContainer = .init()
 
         sut = .init(dependencies: .init(
             coreKeyMaker: coreKeyMaker,
-            cache: cacheMock
+            cache: cacheMock,
+            keychain: testContainer.keychain
         ))
     }
 
@@ -42,7 +46,7 @@ final class FetchMobileSignatureUseCaseTests: XCTestCase {
         super.tearDown()
         sut = nil
         cacheMock = nil
-        coreKeyMaker = nil
+        testContainer = nil
     }
 
     func testExecute_whenNoDataStoreInCache_withPaidUser_returnDefaultSignature() {
@@ -70,7 +74,7 @@ final class FetchMobileSignatureUseCaseTests: XCTestCase {
 
     func testExecute_withDataStoreInCache_withPaidUser_returnStoredSignature() throws {
         let signature = String.randomString(20)
-        let mainKey = try XCTUnwrap(coreKeyMaker.mainKey(by: .randomPin))
+        let mainKey = try XCTUnwrap(coreKeyMaker.mainKey(by: testContainer.keychain.randomPinProtection))
         let encryptedData = try Locked<String>(clearValue: signature, with: mainKey).encryptedValue
         cacheMock.getEncryptedMobileSignatureStub.bodyIs { _, _ in
             return encryptedData
@@ -84,7 +88,7 @@ final class FetchMobileSignatureUseCaseTests: XCTestCase {
 
     func testExecute_withDataStoreInCache_withNoPaidUser_returnDefaultSignature() throws {
         let signature = String.randomString(20)
-        let mainKey = try XCTUnwrap(coreKeyMaker.mainKey(by: .randomPin))
+        let mainKey = try XCTUnwrap(coreKeyMaker.mainKey(by: testContainer.keychain.randomPinProtection))
         let encryptedData = try Locked<String>(clearValue: signature, with: mainKey).encryptedValue
         cacheMock.getEncryptedMobileSignatureStub.bodyIs { _, _ in
             return encryptedData
