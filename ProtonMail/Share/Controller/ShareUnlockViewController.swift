@@ -74,8 +74,6 @@ final class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // TODO: Refactor the view to pass the dependency from init
-        LanguageManager().translateBundleToPreferredLanguageOfTheMainApp()
         configureNavigationBar()
 
         let bioView = BioCodeView(frame: .zero)
