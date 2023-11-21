@@ -44,5 +44,6 @@ class ContextLabel: NSManagedObject {
         static let labelID = "labelID"
         static let unreadCount = "unreadCount"
         static let isSoftDeleted = "isSoftDeleted"
+        static let conversationID = "conversationID"
     }
 }

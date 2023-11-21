@@ -35,6 +35,7 @@ final class SaveEventResponseInCacheUseCase {
             self.processContact(response: response, context: context)
             self.processEmail(response: response, context: context)
             self.processLabel(response: response, context: context)
+            self.processConversation(response: response, context: context)
         }
     }
 
@@ -140,6 +141,71 @@ final class SaveEventResponseInCacheUseCase {
                 labelObject.notify = NSNumber(value: label.notify)
                 labelObject.sticky = NSNumber(value: label.sticky)
                 labelObject.parentID = label.parentId ?? .empty
+            default:
+                break
+            }
+        }
+    }
+
+    // swiftlint:disable:next function_body_length
+    private func processConversation(response: EventAPIResponse, context: NSManagedObjectContext) {
+        guard let conversationResponses = response.conversations else {
+            return
+        }
+        for conversationResponse in conversationResponses {
+            guard let eventAction = EventAction(rawValue: conversationResponse.action) else {
+                continue
+            }
+            switch eventAction {
+            case .delete:
+                if let conversationObject = Conversation.conversationFor(conversationResponse.id, userID: userID, in: context) {
+                    context.delete(conversationObject)
+                }
+            case .create, .update, .updateFlags:
+                guard let conversation = conversationResponse.conversation else {
+                    continue
+                }
+                let conversationObject = Conversation.conversationFor(conversationResponse.id, userID: userID, in: context)
+                    ?? Conversation(context: context)
+                conversationObject.userID = userID.rawValue
+                conversationObject.conversationID = conversation.id
+                conversationObject.order = NSNumber(value: conversation.order)
+                conversationObject.subject = conversation.subject
+
+                if let encodedSenders = try? encoder.encode(conversation.senders) {
+                    conversationObject.senders = String(data: encodedSenders, encoding: .utf8) ?? ""
+                }
+                if let encodedRecipients = try? encoder.encode(conversation.recipients) {
+                    conversationObject.recipients = String(data: encodedRecipients, encoding: .utf8) ?? ""
+                }
+                if let encodedAttachmentsMetaData = try? encoder.encode(conversation.attachmentsMetadata) {
+                    conversationObject.attachmentsMetadata =
+                        String(data: encodedAttachmentsMetaData, encoding: .utf8) ?? ""
+                }
+
+                conversationObject.numMessages = NSNumber(value: conversation.numMessages)
+                conversationObject.numAttachments = NSNumber(value: conversation.numAttachments)
+                conversationObject.expirationTime =
+                    Date(timeIntervalSince1970: TimeInterval(conversation.expirationTime))
+                conversationObject.size = NSNumber(value: conversation.size)
+
+                let labels = conversationObject.mutableSetValue(forKey: "labels")
+                labels.removeAllObjects()
+                for label in conversation.labels {
+                    let labelObject = ContextLabel(context: context)
+                    labelObject.labelID = label.id
+                    labelObject.userID = userID.rawValue
+                    labelObject.conversationID = conversationObject.conversationID
+                    labelObject.messageCount = NSNumber(value: label.contextNumMessages)
+                    labelObject.unreadCount = NSNumber(value: label.contextNumUnread)
+                    labelObject.time = Date(timeIntervalSince1970: TimeInterval(label.contextTime))
+                    labelObject.expirationTime = Date(timeIntervalSince1970: TimeInterval(label.contextExpirationTime))
+                    labelObject.size = NSNumber(value: label.contextSize)
+                    labelObject.attachmentCount = NSNumber(value: label.contextNumAttachments)
+                    labelObject.order = conversationObject.order
+
+                    labelObject.conversation = conversationObject
+                }
             default:
                 break
             }

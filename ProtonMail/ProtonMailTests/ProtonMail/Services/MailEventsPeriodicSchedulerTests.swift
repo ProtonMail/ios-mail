@@ -132,9 +132,9 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
             }
         }
 
-        let results = try testContainer.contextProvider.performAndWaitOnRootSavingContext() { context in
+        let results = try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
             let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
-            return (try context.fetch(fetchRequest).map(IncomingDefaultEntity.init)) ?? []
+            return try (context.fetch(fetchRequest).map(IncomingDefaultEntity.init)) ?? []
         }
 
         XCTAssertEqual(results.count, 2)
@@ -396,7 +396,7 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
 
     func testSpecialLoop_withContactDeleteResponse_dataWillBeDeletedInCache() throws {
         _ = try prepareEventAPIResponse(from: EventTestData.deleteContact) {
-            try? self.testContainer.contextProvider.write(block: { context in
+            try self.testContainer.contextProvider.write(block: { context in
                 let contact = Contact(context: context)
                 contact.contactID = "XVoMXk6t55XPh-OFw9lM3yLQKYxsuaA5-bN8RzyZKe3ym85iwwVVqZXyQ=="
                 contact.userID = self.testUsers.first?.userID.rawValue ?? ""
@@ -421,7 +421,7 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
 
     func testSpecialLoop_withContactEditResponse_dataWillBeUpdatedInCache() throws {
         let user = try prepareEventAPIResponse(from: EventTestData.modifyContact) {
-            try? self.testContainer.contextProvider.write { context in
+            try self.testContainer.contextProvider.write { context in
                 let emailToBeDeleted = Email(context: context)
                 emailToBeDeleted.emailID = "saPUe0mny7kXL44_x8cbJZhBtUtEprh0Qvzb4kO28Ey-vM-R2gwxQ9KbGeLbIPMT2JQxQ=="
                 emailToBeDeleted.userID = self.testUsers.first?.userID.rawValue ?? ""
@@ -431,30 +431,28 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
             }
         }
 
-        let contact = try XCTUnwrap(
-            testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
-                Contact.contactForContactID("upBasrP-iFNnomTyeuXVw3n9-4uKoiATZbPPWaQ6F5D70oXIA==", inManagedObjectContext: context)
-            }
-        )
-        XCTAssertEqual(contact.contactID, "upBasrP-iFNnomTyeuXVw3n9-4uKoiATZbPPWaQ6F5D70oXIA==")
-        XCTAssertEqual(contact.name, "TestName")
-        XCTAssertEqual(contact.uuid, "F57C8277-585D-4327-88A6-B5689FF69DFE")
-        XCTAssertEqual(contact.size.intValue, 541)
-        XCTAssertEqual(contact.createTime?.timeIntervalSince1970, 1696573579)
-        XCTAssertEqual(contact.modifyTIme?.timeIntervalSince1970, 1699593228)
-        XCTAssertFalse(contact.cardData.isEmpty)
-        XCTAssertEqual(contact.emails.count, 1)
+        try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+            let contact = try XCTUnwrap(Contact.contactForContactID("upBasrP-iFNnomTyeuXVw3n9-4uKoiATZbPPWaQ6F5D70oXIA==", inManagedObjectContext: context))
+            XCTAssertEqual(contact.contactID, "upBasrP-iFNnomTyeuXVw3n9-4uKoiATZbPPWaQ6F5D70oXIA==")
+            XCTAssertEqual(contact.name, "TestName")
+            XCTAssertEqual(contact.uuid, "F57C8277-585D-4327-88A6-B5689FF69DFE")
+            XCTAssertEqual(contact.size.intValue, 541)
+            XCTAssertEqual(contact.createTime?.timeIntervalSince1970, 1696573579)
+            XCTAssertEqual(contact.modifyTIme?.timeIntervalSince1970, 1699593228)
+            XCTAssertFalse(contact.cardData.isEmpty)
+            XCTAssertEqual(contact.emails.count, 1)
 
-        let email = try XCTUnwrap(Array(contact.emails).first as? Email)
-        XCTAssertEqual(email.emailID, "QfgmzQv9W8FyoeCKBaJXpWbUF0BTvKCm56eKQ==")
-        XCTAssertEqual(email.name, "Anna Haro")
-        XCTAssertEqual(email.email, "anna-haro@mac.com")
-        XCTAssertEqual(email.type, "[\"internet\",\"home\",\"pref\"]")
-        XCTAssertEqual(email.defaults.intValue, 1)
-        XCTAssertEqual(email.order.intValue, 1)
-        XCTAssertEqual(email.lastUsedTime?.timeIntervalSince1970, 0)
-        XCTAssertEqual(email.contactID, "upBasrP-iFNnomTyeuXVw3n9-4uKoiATZbPPWaQ6F5D70oXIA==")
-        XCTAssertEqual(email.labels.count, 0)
+            let email = try XCTUnwrap(Array(contact.emails).first as? Email)
+            XCTAssertEqual(email.emailID, "QfgmzQv9W8FyoeCKBaJXpWbUF0BTvKCm56eKQ==")
+            XCTAssertEqual(email.name, "Anna Haro")
+            XCTAssertEqual(email.email, "anna-haro@mac.com")
+            XCTAssertEqual(email.type, "[\"internet\",\"home\",\"pref\"]")
+            XCTAssertEqual(email.defaults.intValue, 1)
+            XCTAssertEqual(email.order.intValue, 1)
+            XCTAssertEqual(email.lastUsedTime?.timeIntervalSince1970, 0)
+            XCTAssertEqual(email.contactID, "upBasrP-iFNnomTyeuXVw3n9-4uKoiATZbPPWaQ6F5D70oXIA==")
+            XCTAssertEqual(email.labels.count, 0)
+        }
 
         XCTAssertNil(
             try? testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
@@ -488,7 +486,7 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
 
     func testSpecialLoop_withLabelDeleteResponse_dataWillBeDeletedInCache() throws {
         let user = try prepareEventAPIResponse(from: EventTestData.deleteLabel) {
-            try? self.testContainer.contextProvider.write { context in
+            try self.testContainer.contextProvider.write { context in
                 let labelToBeDeleted = Label(context: context)
                 labelToBeDeleted.labelID = "e7vaVmdmUi4dVUPEGeEoC65PXv-qQw9VzWcO1p_M0P57R8LmS4py95OBT_xKPoPA=="
                 labelToBeDeleted.userID = self.testUsers.first?.userID.rawValue ?? ""
@@ -503,7 +501,7 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
 
     func testSpecialLoop_withLabelUpdateResponse_dataWillBeUpdatedInCache() throws {
         let user = try prepareEventAPIResponse(from: EventTestData.newLabel) {
-            try? self.testContainer.contextProvider.write { context in
+            try self.testContainer.contextProvider.write { context in
                 let labelToBeDeleted = Label(context: context)
                 labelToBeDeleted.labelID = "qQw9VzWcO1p_M0P57R8LmS4py95OBT_xKPoPA=="
                 labelToBeDeleted.userID = self.testUsers.first?.userID.rawValue ?? ""
@@ -525,7 +523,6 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
         XCTAssertEqual(labelToBeAdded.sticky.intValue, 0)
         XCTAssertEqual(labelToBeAdded.parentID, "Y8EYHAHBmPvcYYoZ-goDI5bn8Ot")
 
-
         let labelToBeUpdated = try XCTUnwrap(
             testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
                 Label.labelFor(labelID: "qQw9VzWcO1p_M0P57R8LmS4py95OBT_xKPoPA==", userID: user.userID, in: context)
@@ -540,6 +537,115 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
         XCTAssertEqual(labelToBeUpdated.notify.intValue, 1)
         XCTAssertEqual(labelToBeUpdated.sticky.intValue, 1)
         XCTAssertEqual(labelToBeUpdated.parentID, "")
+    }
+
+    func testSpecialLoop_withConversationDeleteResponse_dataWillBeDeletedInCache() throws {
+        let user = try prepareEventAPIResponse(from: EventTestData.conversationUpdate) {
+            try self.testContainer.contextProvider.write(block: { context in
+                let conversation = Conversation(context: context)
+                conversation.conversationID = "ssd9ifpwenrpwjosdjfpwerq"
+                conversation.userID = self.testUsers.first?.userID.rawValue ?? ""
+                conversation.applyLabelChanges(labelID: "0", apply: true)
+                conversation.applyLabelChanges(labelID: "5", apply: true)
+            })
+        }
+
+        let conversationToBeDeleted = try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+            Conversation.conversationFor("ssd9ifpwenrpwjosdjfpwerq", userID: user.userID, in: context)
+        }
+        XCTAssertNil(conversationToBeDeleted)
+
+        // Context label should also be deleted
+        testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+            let request = ContextLabel.makeFetchRequest()
+            request.predicate = NSPredicate(
+                format: "%K == %@",
+                ContextLabel.Attributes.conversationID,
+                "ssd9ifpwenrpwjosdjfpwerq"
+            )
+            let results = try? context.fetch(request)
+            XCTAssertEqual(results?.isEmpty, true)
+        }
+    }
+
+    func testSpecialLoop_withConversationUpdateResponse_dataWillBeUpdatedInCache() throws {
+        let user = try prepareEventAPIResponse(from: EventTestData.conversationUpdate) {
+            try self.testContainer.contextProvider.write(block: { context in
+                let conversation = Conversation(context: context)
+                conversation.conversationID = "mjHxuuw06vSloSQwa4GLoQqwcyT4GJ4Bda2qtOWyQ=="
+                conversation.userID = self.testUsers.first?.userID.rawValue ?? ""
+                conversation.subject = String.randomString(20)
+                conversation.applyLabelChanges(labelID: "2", apply: true)
+            })
+        }
+
+        let conversationToBeUpdated = try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+            Conversation.conversationFor("mjHxuuw06vSloSQwa4GLoQqwcyT4GJ4Bda2qtOWyQ==", userID: user.userID, in: context)
+        }
+        let conversation = try XCTUnwrap(conversationToBeUpdated)
+
+        XCTAssertEqual(conversation.conversationID, "mjHxuuw06vSloSQwa4GLoQqwcyT4GJ4Bda2qtOWyQ==")
+        XCTAssertEqual(conversation.order.intValue, 402171434036)
+        XCTAssertEqual(conversation.subject, "Email Test 325878")
+        XCTAssertEqual(conversation.numMessages.intValue, 1)
+        XCTAssertEqual(conversation.numAttachments.intValue, 2)
+        XCTAssertEqual(conversation.expirationTime?.timeIntervalSince1970, 0)
+        XCTAssertEqual(conversation.size?.intValue, 54679)
+
+        XCTAssertEqual(conversation.labels.count, 3)
+        let labels = try XCTUnwrap(conversation.labels.allObjects as? [ContextLabel])
+
+        let labelWithID0 = try XCTUnwrap(labels.first(where: { $0.labelID == "0" }))
+        XCTAssertEqual(labelWithID0.messageCount.intValue, 1)
+        XCTAssertEqual(labelWithID0.unreadCount.intValue, 1)
+        XCTAssertEqual(labelWithID0.time?.timeIntervalSince1970, 1688439582)
+        XCTAssertEqual(labelWithID0.expirationTime?.timeIntervalSince1970, 0)
+        XCTAssertEqual(labelWithID0.size.intValue, 54679)
+        XCTAssertEqual(labelWithID0.attachmentCount.intValue, 2)
+
+        let labelWithID5 = try XCTUnwrap(labels.first(where: { $0.labelID == "5" }))
+        XCTAssertEqual(labelWithID5.messageCount.intValue, 1)
+        XCTAssertEqual(labelWithID5.unreadCount.intValue, 1)
+        XCTAssertEqual(labelWithID5.time?.timeIntervalSince1970, 1688439582)
+        XCTAssertEqual(labelWithID5.expirationTime?.timeIntervalSince1970, 0)
+        XCTAssertEqual(labelWithID5.size.intValue, 54679)
+        XCTAssertEqual(labelWithID5.attachmentCount.intValue, 2)
+
+        let labelWithID15 = try XCTUnwrap(labels.first(where: { $0.labelID == "15" }))
+        XCTAssertEqual(labelWithID15.messageCount.intValue, 1)
+        XCTAssertEqual(labelWithID15.unreadCount.intValue, 1)
+        XCTAssertEqual(labelWithID15.time?.timeIntervalSince1970, 1688439582)
+        XCTAssertEqual(labelWithID15.expirationTime?.timeIntervalSince1970, 0)
+        XCTAssertEqual(labelWithID15.size.intValue, 54679)
+        XCTAssertEqual(labelWithID15.attachmentCount.intValue, 2)
+
+        let entity = ConversationEntity(conversation)
+
+        XCTAssertEqual(entity.attachmentsMetadata.count, 2)
+        let attachment1 = try XCTUnwrap(
+            entity.attachmentsMetadata.first(where: { $0.id == "V4WrbdOshmKMZnLJJyfqCWsuol9bV_NpSgNNMWjOE361FFec4aHkvX1Q==" })
+        )
+        XCTAssertEqual(attachment1.name, "moon.png")
+        XCTAssertEqual(attachment1.mimeType, "image/png")
+        XCTAssertEqual(attachment1.disposition, .attachment)
+        XCTAssertEqual(attachment1.size, 24437)
+        let attachment2 = try XCTUnwrap(
+            entity.attachmentsMetadata.first(where: { $0.id == "PttIO0lOXJDjVHumLu_zmYraomvXYDnbUuadmakHef9Vd58Inqg==" })
+        )
+        XCTAssertEqual(attachment2.name, "moon.png")
+        XCTAssertEqual(attachment2.mimeType, "image/png")
+        XCTAssertEqual(attachment2.disposition, .attachment)
+        XCTAssertEqual(attachment2.size, 18364)
+
+        XCTAssertEqual(try? entity.parseSenders().count, 1)
+        let sender = try XCTUnwrap(entity.parseSenders().first)
+        XCTAssertEqual(sender.address, "sender@proton.me")
+        XCTAssertEqual(sender.name, "name")
+        XCTAssertEqual(sender.isFromProton, false)
+        XCTAssertEqual(sender.shouldDisplaySenderImage, false)
+        XCTAssertEqual(sender.isFromSimpleLogin, false)
+
+        XCTAssertTrue(entity.recipients.contains("testMail@pm.me"))
     }
 }
 

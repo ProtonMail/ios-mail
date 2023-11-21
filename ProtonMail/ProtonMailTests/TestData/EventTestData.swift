@@ -1046,16 +1046,20 @@ enum EventTestData {
     "More": 0,
     "Conversations": [
         {
+            "ID": "ssd9ifpwenrpwjosdjfpwerq",
+            "Action": 0
+        },
+        {
             "ID": "mjHxuuw06vSloSQwa4GLoQqwcyT4GJ4Bda2qtOWyQ==",
             "Action": 3,
             "Conversation": {
                 "ID": "mjHxuuw06vSloSQwa4GLoQqwcyT4GJ4Bda2qtOWyQ==",
                 "Order": 402171434036,
-                "Subject": "Dark Mode Email Test 325878",
+                "Subject": "Email Test 325878",
                 "Senders": [
                     {
                         "Name": "name",
-                        "Address": "0911324@gmail.com",
+                        "Address": "sender@proton.me",
                         "IsProton": 0,
                         "DisplaySenderImage": 0,
                         "BimiSelector": null,
@@ -1064,8 +1068,8 @@ enum EventTestData {
                 ],
                 "Recipients": [
                     {
-                        "Name": "linquas",
-                        "Address": "linquas@pm.me",
+                        "Name": "testMail",
+                        "Address": "testMail@pm.me",
                         "IsProton": 0
                     }
                 ],
