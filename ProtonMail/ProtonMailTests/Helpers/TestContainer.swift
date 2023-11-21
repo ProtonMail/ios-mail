@@ -27,7 +27,7 @@ class TestContainer: GlobalContainer {
         super.init()
 
         contextProviderFactory.register {
-            MockCoreDataContextProvider().coreDataService
+            MockCoreDataContextProvider()
         }
 
         keychainFactory.register {
