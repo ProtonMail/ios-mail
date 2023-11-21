@@ -65,7 +65,7 @@ struct ConversationResponse: Decodable {
         }
     }
 
-    struct Sender: Decodable {
+    struct Sender: Codable {
         let name: String
         let address: String
         let isProton: Int
@@ -83,7 +83,7 @@ struct ConversationResponse: Decodable {
         }
     }
 
-    struct Recipient: Decodable {
+    struct Recipient: Codable {
         let name: String
         let address: String
         let isProton: Int
@@ -119,7 +119,7 @@ struct ConversationResponse: Decodable {
         }
     }
 
-    struct AttachmentMetadata: Decodable {
+    struct AttachmentMetadata: Codable {
         let id: String
         let name: String
         let size: Int
