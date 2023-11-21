@@ -142,7 +142,6 @@ extension AppDelegate: UIApplicationDelegate {
         fetchUnauthFeatureFlags()
         DFSSetting.enableDFS = true
         DFSSetting.limitToXXXLarge = true
-        self.configureLanguage()
         /// configurePushService needs to be called in didFinishLaunchingWithOptions to make push
         /// notification actions work. This is because the app could be inactive when an action is triggered
         /// and `didFinishLaunchingWithOptions` will be called, but other functions
@@ -374,10 +373,6 @@ extension AppDelegate {
         Task {
             try await FeatureFlagsRepository.shared.fetchFlags()
         }
-    }
-
-    private func configureLanguage() {
-        LanguageManager().storePreferredLanguageToBeUsedByExtensions()
     }
 
     private func configurePushService(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {

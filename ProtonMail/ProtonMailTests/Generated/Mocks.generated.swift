@@ -137,11 +137,6 @@ class MockBundleType: BundleType {
         preferredLocalizationsStub()
     }
 
-    @FuncStub(MockBundleType.setLanguage) var setLanguageStub
-    func setLanguage(with code: String, isLanguageRTL: Bool) {
-        setLanguageStub(code, isLanguageRTL)
-    }
-
 }
 
 class MockCacheServiceProtocol: CacheServiceProtocol {

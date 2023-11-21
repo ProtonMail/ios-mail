@@ -151,7 +151,7 @@ extension PMAPIService {
         }
 
         var locale: String {
-            LanguageManager().currentLanguageCode()
+            Locale.autoupdatingCurrent.identifier
         }
 
         var additionalHeaders: [String : String]? {
