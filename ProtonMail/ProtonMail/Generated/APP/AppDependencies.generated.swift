@@ -66,6 +66,22 @@ extension UserContainer: HasCleanCache {
     }
 }
 
+protocol HasContactPickerModelHelper {
+    var contactPickerModelHelper: ContactPickerModelHelper { get }
+}
+
+extension GlobalContainer: HasContactPickerModelHelper {
+    var contactPickerModelHelper: ContactPickerModelHelper {
+        contactPickerModelHelperFactory()
+    }
+}
+
+extension UserContainer: HasContactPickerModelHelper {
+    var contactPickerModelHelper: ContactPickerModelHelper {
+        globalContainer.contactPickerModelHelper
+    }
+}
+
 protocol HasDeviceContactsProvider {
     var deviceContacts: DeviceContactsProvider { get }
 }
@@ -95,6 +111,22 @@ extension GlobalContainer: HasImageProxyCacheProtocol {
 extension UserContainer: HasImageProxyCacheProtocol {
     var imageProxyCache: ImageProxyCacheProtocol {
         globalContainer.imageProxyCache
+    }
+}
+
+protocol HasMailboxMessageCellHelper {
+    var mailboxMessageCellHelper: MailboxMessageCellHelper { get }
+}
+
+extension GlobalContainer: HasMailboxMessageCellHelper {
+    var mailboxMessageCellHelper: MailboxMessageCellHelper {
+        mailboxMessageCellHelperFactory()
+    }
+}
+
+extension UserContainer: HasMailboxMessageCellHelper {
+    var mailboxMessageCellHelper: MailboxMessageCellHelper {
+        globalContainer.mailboxMessageCellHelper
     }
 }
 

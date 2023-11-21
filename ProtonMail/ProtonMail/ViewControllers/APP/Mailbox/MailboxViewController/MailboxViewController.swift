@@ -35,7 +35,9 @@ import SwipyCell
 import UIKit
 
 class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol, ScheduledAlertPresenter, LifetimeTrackable {
-    typealias Dependencies = HasPaymentsUIFactory & ReferralProgramPromptPresenter.Dependencies
+    typealias Dependencies = HasPaymentsUIFactory 
+    & ReferralProgramPromptPresenter.Dependencies
+    & HasMailboxMessageCellHelper
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -54,6 +56,10 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     lazy var replacingEmailsMap: [String: EmailEntity] = {
         return generateEmailsMap()
     }()
+
+    var mailboxMessageCellHelper: MailboxMessageCellHelper {
+        dependencies.mailboxMessageCellHelper
+    }
 
     // MARK: - View Outlets
     @IBOutlet weak var tableView: UITableView!

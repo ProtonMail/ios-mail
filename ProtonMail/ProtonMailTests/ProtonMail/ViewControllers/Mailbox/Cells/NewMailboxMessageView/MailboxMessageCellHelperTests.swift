@@ -15,24 +15,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Groot
 import XCTest
 
 @testable import ProtonMail
 
 final class MailboxMessageCellHelperTests: XCTestCase {
+    private var testContainer: TestContainer!
     private var sut: MailboxMessageCellHelper!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        sut = MailboxMessageCellHelper()
+        testContainer = .init()
+        sut = MailboxMessageCellHelper(contactPickerModelHelper: testContainer.contactPickerModelHelper)
     }
 
     override func tearDownWithError() throws {
         sut = nil
+        testContainer = nil
 
         try super.tearDownWithError()
     }
+
+    // MARK: senderRowComponents
 
     func testConcatenatesSenderNamesAndInsertsBadgesWhereApplicable() throws {
         let protonSender = TestPerson(name: "Proton", isOfficial: true)
@@ -125,6 +131,75 @@ final class MailboxMessageCellHelperTests: XCTestCase {
     private func serialize(testInput: [TestPerson]) throws -> String {
         let data = try JSONEncoder().encode(testInput)
         return try XCTUnwrap(String(data: data, encoding: .utf8))
+    }
+
+    // MARK: allEmailAddresses
+
+    func testRecipientsNameWithGroup() {
+        let fakeMessageData = testSentMessageWithGroupToAndCC.parseObjectAny()!
+        let fakeMsgEntity = prepareMessage(with: fakeMessageData)
+
+        let fakeEmailData = testEmailData_aaa.parseObjectAny()!
+        let fakeEmailEntity = prepareEmail(with: fakeEmailData)
+        let vo = ContactGroupVO(
+            ID: "id",
+            name: "groupA",
+            groupSize: 6,
+            color: "#000000",
+            contextProvider: testContainer.contextProvider
+        )
+        let name = sut.allEmailAddresses(
+            message: fakeMsgEntity,
+            replacingEmails: [fakeEmailEntity.email: fakeEmailEntity],
+            allGroupContacts: [vo]
+        )
+        XCTAssertEqual("groupA (5/6), test5", name)
+    }
+
+    func testRecipientsNameWithoutGroup_localContactWithoutTheAddress() {
+        let fakeMessageData = testSentMessageWithToAndCC.parseObjectAny()!
+        let fakeMsgEntity = prepareMessage(with: fakeMessageData)
+
+        let fakeEmailData = testEmailData_aaa.parseObjectAny()!
+        let fakeEmailEntity = prepareEmail(with: fakeEmailData)
+        let name = sut.allEmailAddresses(
+            message: fakeMsgEntity,
+            replacingEmails: [fakeEmailEntity.email: fakeEmailEntity],
+            allGroupContacts: []
+        )
+        XCTAssertEqual("test0, test1, test2, test3, test4, test5", name)
+    }
+
+    func testRecipientsNameWithoutGroup_localContactHasTheAddress() {
+        let fakeMessageData = testSentMessageWithToAndCC.parseObjectAny()!
+        let fakeMsgEntity = prepareMessage(with: fakeMessageData)
+
+        let fakeEmailData = testEmailData_bbb.parseObjectAny()!
+        let fakeEmailEntity = prepareEmail(with: fakeEmailData)
+        let name = sut.allEmailAddresses(
+            message: fakeMsgEntity,
+            replacingEmails: [fakeEmailEntity.email: fakeEmailEntity],
+            allGroupContacts: []
+        )
+        XCTAssertEqual("test0, test1, test2, test3, test4, test000", name)
+    }
+
+    private func prepareMessage(with data: [String: Any]) -> MessageEntity {
+        try! testContainer.contextProvider.write { context in
+            guard let fakeMsg = try GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: data, in: context) as? Message else {
+                fatalError("The fake data initialize failed")
+            }
+            return MessageEntity(fakeMsg)
+        }
+    }
+
+    private func prepareEmail(with data: [String: Any]) -> EmailEntity {
+        try! testContainer.contextProvider.write { context in
+            guard let fakeEmail = try GRTJSONSerialization.object(withEntityName: "Email", fromJSONDictionary: data, in: context) as? Email else {
+                fatalError("The fake data initialize failed")
+            }
+            return EmailEntity(email: fakeEmail)
+        }
     }
 }
 

@@ -41,6 +41,7 @@ private enum EmbeddedDownloadStatus {
 // swiftlint:disable:next type_body_length
 final class MessageInfoProvider {
     typealias Dependencies = MessageSenderPGPChecker.Dependencies
+    & HasContactPickerModelHelper
     & HasFetchSenderImage
     & HasImageProxy
     & HasUserDefaults
@@ -230,19 +231,20 @@ final class MessageInfoProvider {
     }
 
     var simpleRecipient: NSAttributedString? {
-        let lists = ContactPickerModelHelper.contacts(from: message.rawCCList)
-        + ContactPickerModelHelper.contacts(from: message.rawBCCList)
-        + ContactPickerModelHelper.contacts(from: message.rawTOList)
-        let groupNames = groupNames(from: lists)
+        let lists = dependencies.contactPickerModelHelper.contacts(from: message.rawCCList)
+        + dependencies.contactPickerModelHelper.contacts(from: message.rawBCCList)
+        + dependencies.contactPickerModelHelper.contacts(from: message.rawTOList)
+        let groups = lists.compactMap { $0 as? ContactGroupVO }
+        let groupNames = groups.names(allGroupContacts: groupContacts)
         let receiver = recipientNames(from: lists)
         let result = groupNames + receiver
-        let name = result.isEmpty ? "" : result.asCommaSeparatedList(trailingSpace: true)
+        let name = result.asCommaSeparatedList(trailingSpace: true)
         let recipients = name.isEmpty ? LocalString._undisclosed_recipients : name
         return recipients.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
     }
 
     lazy var toData: ExpandedHeaderRecipientsRowViewModel? = {
-        let toList = ContactPickerModelHelper.contacts(from: message.rawTOList)
+        let toList = dependencies.contactPickerModelHelper.contacts(from: message.rawTOList)
         var list: [ContactVO] = toList.compactMap({ $0 as? ContactVO })
         toList
             .compactMap({ $0 as? ContactGroupVO })
@@ -258,7 +260,7 @@ final class MessageInfoProvider {
     }()
 
     lazy var ccData: ExpandedHeaderRecipientsRowViewModel? = {
-        let list = ContactPickerModelHelper.contacts(from: message.rawCCList).compactMap({ $0 as? ContactVO })
+        let list = ContactPickerModelHelper.nonGroupContacts(from: message.rawCCList)
         return createRecipientRowViewModel(from: list, title: "\(LocalString._general_cc_label):")
     }()
 
@@ -437,19 +439,6 @@ extension MessageInfoProvider {
 
 // MARK: Contact related
 extension MessageInfoProvider {
-    private func groupNames(from recipients: [ContactPickerModelProtocol]) -> [String] {
-        recipients
-            .compactMap { $0 as? ContactGroupVO }
-            .map { recipient -> String in
-                let groupName = recipient.contactTitle
-                let group = groupContacts.first(where: { $0.contactTitle == groupName })
-                let total = group?.contactCount ?? 0
-                let count = recipient.getSelectedEmailAddresses().count
-                let name = "\(groupName) (\(count)/\(total))"
-                return name
-            }
-    }
-
     private func recipientNames(from recipients: [ContactPickerModelProtocol]) -> [String] {
         recipients
             .compactMap { item -> String? in
