@@ -41,7 +41,7 @@ extension MailboxViewController {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: message.messageID.rawValue)
         let contactGroups = viewModel.contactGroups()
-        let senderRowComponents = MailboxMessageCellHelper().senderRowComponents(
+        let senderRowComponents = mailboxMessageCellHelper.senderRowComponents(
             for: message,
             basedOn: replacingEmailsMap,
             groupContacts: contactGroups,
@@ -86,7 +86,7 @@ extension MailboxViewController {
     ) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: conversation.conversationID.rawValue)
-        let senderRowComponents = MailboxMessageCellHelper().senderRowComponents(
+        let senderRowComponents = mailboxMessageCellHelper.senderRowComponents(
             for: conversation,
             basedOn: replacingEmailsMap
         )

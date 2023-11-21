@@ -18,13 +18,25 @@
 import ProtonCoreDataModel
 
 final class MailboxMessageCellHelper {
+    private let contactPickerModelHelper: ContactPickerModelHelper
+
+    init(contactPickerModelHelper: ContactPickerModelHelper) {
+        self.contactPickerModelHelper = contactPickerModelHelper
+    }
+
     func senderRowComponents(
         for message: MessageEntity,
         basedOn emailReplacements: [String: EmailEntity],
         groupContacts: [ContactGroupVO],
         shouldReplaceSenderWithRecipients: Bool) -> [SenderRowComponent] {
         if shouldReplaceSenderWithRecipients && (message.isSent || message.isDraft || message.isScheduledSend) {
-            return [.string(message.allEmailAddresses(emailReplacements, allGroupContacts: groupContacts))]
+            return [
+                .string(
+                    allEmailAddresses(
+                        message: message, replacingEmails: emailReplacements, allGroupContacts: groupContacts
+                    )
+                )
+            ]
         } else {
             return senderRowComponents(for: .message(message), basedOn: emailReplacements)
         }
@@ -81,6 +93,44 @@ final class MailboxMessageCellHelper {
             if sender.isFromProton {
                 acc.append(.officialBadge)
             }
+        }
+    }
+
+    func allEmailAddresses(
+        message: MessageEntity,
+        replacingEmails: [String: EmailEntity],
+        allGroupContacts: [ContactGroupVO]
+    ) -> String {
+        var recipientLists = contactPickerModelHelper.contacts(from: message.rawTOList)
+        + contactPickerModelHelper.contacts(from: message.rawCCList)
+        + contactPickerModelHelper.contacts(from: message.rawBCCList)
+
+        let groups = recipientLists.compactMap { $0 as? ContactGroupVO }
+        let groupList = groups.names(allGroupContacts: allGroupContacts)
+        recipientLists = recipientLists.filter { ($0 as? ContactGroupVO) == nil }
+
+        let lists: [String] = recipientLists.map { recipient in
+            let address = recipient.displayEmail ?? ""
+            let name = recipient.displayName ?? ""
+            let email = replacingEmails[address]
+            let emailName = email?.name ?? ""
+            let displayName = emailName.isEmpty ? name : emailName
+            return displayName.isEmpty ? address : displayName
+        }
+        let result = groupList + lists
+        return result.asCommaSeparatedList(trailingSpace: true)
+    }
+}
+
+extension Array where Element: ContactGroupVO {
+    func names(allGroupContacts: [ContactGroupVO]) -> [String] {
+        map { recipient in
+            let groupName = recipient.contactTitle
+            let group = allGroupContacts.first { $0.contactTitle == groupName }
+            let totalCount = group?.contactCount ?? 0
+            let selectedCount = recipient.getSelectedEmailAddresses().count
+            let name = "\(groupName) (\(selectedCount)/\(totalCount))"
+            return name
         }
     }
 }

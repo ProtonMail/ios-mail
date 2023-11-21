@@ -49,6 +49,12 @@ extension GlobalContainer {
         }
     }
 
+    var contactPickerModelHelperFactory: Factory<ContactPickerModelHelper> {
+        self {
+            ContactPickerModelHelper(contextProvider: self.contextProvider)
+        }
+    }
+
     var deviceContactsFactory: Factory<DeviceContactsProvider> {
         self {
             DeviceContacts()
@@ -58,6 +64,12 @@ extension GlobalContainer {
     var imageProxyCacheFactory: Factory<ImageProxyCacheProtocol> {
         self {
             ImageProxyCache(dependencies: self)
+        }
+    }
+
+    var mailboxMessageCellHelperFactory: Factory<MailboxMessageCellHelper> {
+        self {
+            MailboxMessageCellHelper(contactPickerModelHelper: self.contactPickerModelHelper)
         }
     }
 

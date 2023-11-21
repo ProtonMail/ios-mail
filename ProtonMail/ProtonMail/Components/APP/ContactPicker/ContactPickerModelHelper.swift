@@ -18,7 +18,13 @@
 import Foundation
 
 struct ContactPickerModelHelper {
-    static func contacts(from jsonContact: String) -> [ContactPickerModelProtocol] {
+    private let contextProvider: CoreDataContextProviderProtocol
+
+    init(contextProvider: CoreDataContextProviderProtocol) {
+        self.contextProvider = contextProvider
+    }
+
+    func contacts(from jsonContact: String) -> [ContactPickerModelProtocol] {
         guard let recipients = jsonContact.parseJson() else { return [] }
         var results: [ContactPickerModelProtocol] = []
         // [groupName: [DraftEmailData]]
@@ -44,9 +50,24 @@ struct ContactPickerModelHelper {
         }
 
         for group in groups {
-            let contactGroup = ContactGroupVO(ID: "", name: group.key, contextProvider: CoreDataService.shared)
+            let contactGroup = ContactGroupVO(ID: "", name: group.key, contextProvider: contextProvider)
             contactGroup.overwriteSelectedEmails(with: group.value)
             results.append(contactGroup)
+        }
+        return results
+    }
+
+    static func nonGroupContacts(from jsonContact: String) -> [ContactVO] {
+        guard let recipients = jsonContact.parseJson() else { return [] }
+        var results: [ContactVO] = []
+        for dict in recipients {
+            let group = dict["Group"] as? String ?? ""
+            let name = dict["Name"] as? String ?? ""
+            let address = dict["Address"] as? String ?? ""
+
+            if group.isEmpty {
+                results.append(ContactVO(name: name, email: address))
+            }
         }
         return results
     }

@@ -44,9 +44,9 @@ class HeaderData: NSObject {
             assertionFailure("\(error)")
             self.sender = ContactVO(name: "Unknown", email: "Unknown")
         }
-        self.to = ContactPickerModelHelper.contacts(from: message.rawTOList).compactMap { $0 as? ContactVO }
-        self.cc = ContactPickerModelHelper.contacts(from: message.rawCCList).compactMap { $0 as? ContactVO }
-        self.bcc = ContactPickerModelHelper.contacts(from: message.rawBCCList).compactMap { $0 as? ContactVO }
+        self.to = ContactPickerModelHelper.nonGroupContacts(from: message.rawTOList)
+        self.cc = ContactPickerModelHelper.nonGroupContacts(from: message.rawCCList)
+        self.bcc = ContactPickerModelHelper.nonGroupContacts(from: message.rawBCCList)
         self.isStarred = message.isStarred
         self.time = message.time
         self.labels = message.labels

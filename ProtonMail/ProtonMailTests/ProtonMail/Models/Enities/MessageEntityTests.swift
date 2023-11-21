@@ -20,11 +20,15 @@ import CoreData
 import XCTest
 
 final class MessageEntityTests: XCTestCase {
+    private var contactPickerModelHelper: ContactPickerModelHelper!
     private var testContext: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
-        testContext = MockCoreDataStore.testPersistentContainer.viewContext
+
+        let testContainer = TestContainer()
+        contactPickerModelHelper = .init(contextProvider: testContainer.contextProvider)
+        testContext = testContainer.contextProvider.mainContext
     }
 
     override func tearDown() {
@@ -149,7 +153,7 @@ final class MessageEntityTests: XCTestCase {
         entity = MessageEntity(message)
         XCTAssertEqual(entity.recipientsCc.count, 2)
 
-        let ccList = ContactPickerModelHelper.contacts(from: entity.rawCCList)
+        let ccList = contactPickerModelHelper.contacts(from: entity.rawCCList)
         XCTAssertEqual(ccList.count, 1)
         let contact = try XCTUnwrap(ccList.first as? ContactGroupVO)
         XCTAssertEqual(contact.contactTitle, "testGroup")

@@ -64,6 +64,7 @@ final class SearchViewModel: NSObject {
     typealias Dependencies = HasSearchUseCase
     & HasFetchMessageDetail
     & HasFetchSenderImage
+    & HasMailboxMessageCellHelper
     & HasUserManager
     & HasCoreDataContextProviderProtocol
     & HasFeatureFlagCache
@@ -207,7 +208,7 @@ extension SearchViewModel: SearchVMProtocol {
 
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel {
         let contactGroups = user.contactGroupService.getAllContactGroupVOs()
-        let senderRowComponents = MailboxMessageCellHelper().senderRowComponents(
+        let senderRowComponents = dependencies.mailboxMessageCellHelper.senderRowComponents(
             for: message,
             basedOn: sharedReplacingEmailsMap,
             groupContacts: contactGroups,

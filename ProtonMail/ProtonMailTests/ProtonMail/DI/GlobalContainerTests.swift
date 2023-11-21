@@ -63,8 +63,10 @@ final class GlobalContainerTests: XCTestCase {
         _ = strongRefToContainer?.backgroundTaskHelper
         _ = strongRefToContainer?.biometricStatusProvider
         _ = strongRefToContainer?.cleanCache
+        _ = strongRefToContainer?.contactPickerModelHelper
         _ = strongRefToContainer?.deviceContacts
         _ = strongRefToContainer?.imageProxyCache
+        _ = strongRefToContainer?.mailboxMessageCellHelper
         _ = strongRefToContainer?.pushService
         _ = strongRefToContainer?.saveSwipeActionSetting
         _ = strongRefToContainer?.senderImageCache
