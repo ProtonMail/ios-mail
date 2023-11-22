@@ -99,6 +99,7 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
         super.viewWillAppear(animated)
         self.viewModel.user.undoActionManager.register(handler: self)
         setUpToolBarIfNeeded()
+        viewModel.contentViewModel.viewHasAppeared = true
     }
 
     override func viewDidAppear(_ animated: Bool) {
