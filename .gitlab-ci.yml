@@ -9,7 +9,7 @@ include:
 
 variables:
   LANG: "en_US.UTF-8"
-  GEM_HOME: "$CI_PROJECT_DIR/gem"
+  MINT_PATH: "$CI_PROJECT_DIR/ci-cache/mint"
   ATLAS_DEPLOY_LIST: ""
   ATLAS_LINK_APP: mail
   ATLAS_DEPLOY_ENV: "true"
@@ -28,7 +28,6 @@ stages:
   - bot
 
 .setup_project: &setup_project
-  - brew bundle --force
   - mint bootstrap
   - cd ProtonMail
   - bundle install
@@ -36,10 +35,30 @@ stages:
   - cd ..
 
 .macos_job:
+  image: team-mail:1
   cache:
-    key: "$CI_PROJECT_NAME"
-    paths:
-      - bundler-cache/
+    - key:
+        files:
+          - Mintfile
+      paths:
+        - ci-cache/mint
+      when: always
+    - key:
+        files:
+          - ProtonMail/Gemfile.lock
+      paths:
+        - bundler-cache
+      when: always
+    - key:
+        files:
+          - ProtonMail/ProtonMail.xcworkspace/xcshareddata/swiftpm/Package.resolve
+      paths:
+        - ci-cache/spm
+      when: always
+  before_script:
+    - *setup_project
+  tags:
+    - mail-tart
 
 workflow:
   rules:
@@ -71,15 +90,11 @@ build:debug:for-testing:
       - test_output/Build/Products/Debug-iphonesimulator/ProtonMailUITests-Runner.app
       - build_job_pwd.txt
     expire_in: 1 day
-  before_script:
-    - *setup_project
   script:
     - cd ProtonMail
     - bundle exec fastlane build_for_testing
     # record the current directory so that it can be used by the test jobs to calculate code coverage if they run on a different runner
-    - echo $PWD >> ../build_job_pwd.txt
-  tags:
-    - iOS_GENERAL
+    - echo ${PWD#/private} >> ../build_job_pwd.txt
 
 test:unit:
   extends: .macos_job
@@ -100,9 +115,8 @@ test:unit:
         path: test_output/slatherOutput/cobertura.xml
     paths:
       - test_output/slatherOutput/
-  before_script:
-    - *setup_project
   script:
+    - brew bundle --force
     - cd ProtonMail
     - bundle exec fastlane unit_test
     - ../Scripts/generate_code_coverage_report.sh
@@ -126,6 +140,7 @@ test:unit:
         - test_output/TestResults/report.xml
   before_script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
+    - brew bundle --force
     - *setup_project
   tags:
     - iOS_UITEST
@@ -285,8 +300,6 @@ report:testmo:sanity:
     paths:
       - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
     expire_in: 90 days
-  before_script:
-    - *setup_project
 
 # --- Build app and send to testflight
 testflight:alpha:
@@ -297,6 +310,7 @@ testflight:alpha:
   artifacts:
     name: "iOS mail app builds"
   script:
+    - brew bundle --force
     - cd ProtonMail
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
     - bundle exec fastlane ios build
@@ -317,5 +331,3 @@ firebase:qa:
     - base64 -D -o PushService.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_PUSHSERVICE_PROVISIONPROFILE
     - base64 -D -o Share.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SHARE_PROVISIONPROFILE
     - bundle exec fastlane ios enterprise usingTimeStamp:true
-  tags:
-    - iOS_GENERAL

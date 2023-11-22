@@ -201,8 +201,6 @@ platform :ios do
 
   desc "Build debug apps for testing"
   lane :build_for_testing do |options|
-    select_xcode
-
     run_tests(
       build_for_testing: true,
       scheme: UI_TEST_SCHEME,
@@ -216,7 +214,6 @@ platform :ios do
 
   desc "Build enterprise app"
   lane :enterprise do |options|
-    select_xcode
     set_up_keychain(true)
 
     # Set build version by git log numbers
