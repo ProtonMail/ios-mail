@@ -103,63 +103,12 @@ final class LaunchTests: XCTestCase {
 extension LaunchTests {
 
     private func setUpAppAccessGranted_and_userInUserDefaults() {
-        addNewUserInUserDefaults(userID: "7")
+        testContainer.addNewUserInUserDefaults(userID: "7")
         mockKeyMaker.isMainKeyInMemory = true
     }
 
     private func setUpAppAccessDeniedReasonAppLock_and_userInUserDefaults() {
-        addNewUserInUserDefaults(userID: "4")
+        testContainer.addNewUserInUserDefaults(userID: "4")
         mockKeyMaker.isMainKeyInMemory = false
-    }
-
-    private func addNewUserInUserDefaults(userID: String = UUID().uuidString) {
-        let auth = AuthCredential(
-            sessionID: userID,
-            accessToken: "",
-            refreshToken: "",
-            userName: userID,
-            userID: userID,
-            privateKey: nil,
-            passwordKeySalt: nil
-        )
-        let userInfo = UserInfo(
-            maxSpace: nil,
-            usedSpace: nil,
-            language: nil,
-            maxUpload: nil,
-            role: 1,
-            delinquent: nil,
-            keys: [],
-            userId: userID,
-            linkConfirmation: nil,
-            credit: nil,
-            currency: nil,
-            createTime: nil,
-            subscribed: nil
-        )
-
-        setupUserDefaultsWithUser(auth: auth, userInfo: userInfo)
-    }
-
-    private func setupUserDefaultsWithUser(auth: AuthCredential, userInfo: UserInfo) {
-        XCTAssertTrue(testContainer.usersManager.users.isEmpty)
-
-        // Add and remove user to UsersManager copying stored data in the middle
-        testContainer.usersManager.add(auth: auth, user: userInfo, mailSettings: .init())
-        let authCredentials = testContainer.userDefaults.value(forKey: UsersManager.CoderKey.authKeychainStore)
-        let usersInfo = testContainer.userDefaults.value(forKey: UsersManager.CoderKey.usersInfo)
-        let mailSettings = testContainer.userDefaults.value(forKey: UsersManager.CoderKey.mailSettingsStore)
-        testContainer.usersManager.users.forEach(testContainer.usersManager.remove(user:))
-
-        // Deleting data stored by UserObjectsPersistence
-        try? FileManager.default.removeItem(at: FileManager.default.documentDirectoryURL.appendingPathComponent([AuthCredential].pathComponent))
-        try? FileManager.default.removeItem(at: FileManager.default.documentDirectoryURL.appendingPathComponent([UserInfo].pathComponent))
-
-        // Set copied stored data again in testContainer.userDefaults
-        testContainer.userDefaults.setValue(authCredentials, forKey: UsersManager.CoderKey.authKeychainStore)
-        testContainer.userDefaults.setValue(usersInfo, forKey: UsersManager.CoderKey.usersInfo)
-        testContainer.userDefaults.setValue(mailSettings, forKey: UsersManager.CoderKey.mailSettingsStore)
-
-        XCTAssertTrue(testContainer.usersManager.users.isEmpty)
     }
 }

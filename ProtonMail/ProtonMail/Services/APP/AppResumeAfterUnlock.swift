@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -16,10 +16,17 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-@testable import ProtonMail
 
-class MockPushNotificationService: PushNotificationServiceProtocol {
-    func resumePendingTasks() {}
+final class AppResumeAfterUnlock: ResumeAfterUnlock {
+    typealias Dependencies = AnyObject & HasPushNotificationService
 
-    func processCachedLaunchOptions() {}
+    private unowned let dependencies: Dependencies
+
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
+    }
+
+    func resume() {
+        dependencies.pushService.resumePendingTasks()
+    }
 }

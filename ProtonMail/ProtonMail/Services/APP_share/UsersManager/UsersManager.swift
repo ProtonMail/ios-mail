@@ -420,6 +420,14 @@ extension UsersManager {
         })
     }
 
+    func clean() async {
+        await withCheckedContinuation { continuation in
+            clean().ensure {
+                continuation.resume()
+            }.cauterize()
+        }
+    }
+
     func clean() -> Promise<Void> {
         LocalNotificationService.cleanUpAll()
 

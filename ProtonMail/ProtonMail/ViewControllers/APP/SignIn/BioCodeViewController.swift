@@ -152,10 +152,10 @@ extension BioCodeViewController: BioAuthenticating {
 
         self.unlockManager.biometricAuthentication(afterBioAuthPassed: {
             if Thread.isMainThread {
-                self.delegate?.next()
+                self.delegate?.onUnlockChallengeSuccess()
             } else {
                 DispatchQueue.main.async {
-                    self.delegate?.next()
+                    self.delegate?.onUnlockChallengeSuccess()
                 }
             }
         })

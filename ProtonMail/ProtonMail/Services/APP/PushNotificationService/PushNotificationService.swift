@@ -128,6 +128,18 @@ final class PushNotificationService: NSObject, PushNotificationServiceProtocol {
     func hasCachedNotificationOptions() -> Bool {
         notificationOptions != nil
     }
+
+    func resumePendingTasks() {
+        if let deviceToken = deviceTokenRegistrationPendingUnlock {
+            deviceTokenRegistrationPendingUnlock = nil
+            dependencies.pushEncryptionManager.registerDeviceForNotifications(deviceToken: deviceToken)
+        }
+
+        if let notificationAction = notificationActionPendingUnlock {
+            notificationActionPendingUnlock = nil
+            handleNotificationActionTask(notificationAction: notificationAction)
+        }
+    }
 }
 
 // MARK: - NotificationCenter observation
@@ -149,15 +161,7 @@ extension PushNotificationService {
     }
 
     private func didUnlockApp() {
-        if let deviceToken = deviceTokenRegistrationPendingUnlock {
-            deviceTokenRegistrationPendingUnlock = nil
-            dependencies.pushEncryptionManager.registerDeviceForNotifications(deviceToken: deviceToken)
-        }
-
-        if let notificationAction = notificationActionPendingUnlock {
-            notificationActionPendingUnlock = nil
-            handleNotificationActionTask(notificationAction: notificationAction)
-        }
+        resumePendingTasks()
     }
 
     private func didSignInAccount() {

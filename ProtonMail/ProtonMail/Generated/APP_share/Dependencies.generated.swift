@@ -323,6 +323,22 @@ extension UserContainer: HasQueueManager {
     }
 }
 
+protocol HasResumeAfterUnlock {
+    var resumeAfterUnlock: ResumeAfterUnlock { get }
+}
+
+extension GlobalContainer: HasResumeAfterUnlock {
+    var resumeAfterUnlock: ResumeAfterUnlock {
+        resumeAfterUnlockFactory()
+    }
+}
+
+extension UserContainer: HasResumeAfterUnlock {
+    var resumeAfterUnlock: ResumeAfterUnlock {
+        globalContainer.resumeAfterUnlock
+    }
+}
+
 protocol HasSetupCoreDataService {
     var setupCoreDataService: SetupCoreDataService { get }
 }
@@ -352,6 +368,22 @@ extension GlobalContainer: HasUnlockManager {
 extension UserContainer: HasUnlockManager {
     var unlockManager: UnlockManager {
         globalContainer.unlockManager
+    }
+}
+
+protocol HasUnlockService {
+    var unlockService: UnlockService { get }
+}
+
+extension GlobalContainer: HasUnlockService {
+    var unlockService: UnlockService {
+        unlockServiceFactory()
+    }
+}
+
+extension UserContainer: HasUnlockService {
+    var unlockService: UnlockService {
+        globalContainer.unlockService
     }
 }
 

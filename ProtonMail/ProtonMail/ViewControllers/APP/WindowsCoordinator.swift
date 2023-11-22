@@ -191,7 +191,7 @@ final class WindowsCoordinator {
             .appAccessResolver
             .deniedAccessPublisher
             .sink { reason in
-                SystemLogger.log(message: "Denied access: \(reason)", category: .appLock)
+                SystemLogger.log(message: "Denied access event: \(reason)", category: .appLock)
                 self.handleAppAccessDenied(deniedAccess: reason)
             }
             .store(in: &cancellables)

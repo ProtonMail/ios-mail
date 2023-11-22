@@ -1087,6 +1087,14 @@ class MockRefetchAllBlockedSendersUseCase: RefetchAllBlockedSendersUseCase {
 
 }
 
+class MockResumeAfterUnlock: ResumeAfterUnlock {
+    @FuncStub(MockResumeAfterUnlock.resume) var resumeStub
+    func resume() {
+        resumeStub()
+    }
+
+}
+
 class MockScheduledSendHelperDelegate: ScheduledSendHelperDelegate {
     @FuncStub(MockScheduledSendHelperDelegate.actionSheetWillAppear) var actionSheetWillAppearStub
     func actionSheetWillAppear() {
@@ -1246,6 +1254,14 @@ class MockUnlockProvider: UnlockProvider {
     @FuncStub(MockUnlockProvider.isUnlocked, initialReturn: Bool()) var isUnlockedStub
     func isUnlocked() -> Bool {
         isUnlockedStub()
+    }
+
+}
+
+class MockUnlockService: UnlockService {
+    @FuncStub(MockUnlockService.start, initialReturn: AppAccess()) var startStub
+    func start() -> AppAccess {
+        startStub()
     }
 
 }
