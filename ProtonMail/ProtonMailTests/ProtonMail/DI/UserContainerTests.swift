@@ -90,6 +90,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.reportService
         _ = strongRefToContainer?.contactViewsFactory
         _ = strongRefToContainer?.fetchSenderImage
+        _ = strongRefToContainer?.importDeviceContacts
         _ = strongRefToContainer?.messageSearch
         _ = strongRefToContainer?.nextMessageAfterMoveStatusProvider
         _ = strongRefToContainer?.payments

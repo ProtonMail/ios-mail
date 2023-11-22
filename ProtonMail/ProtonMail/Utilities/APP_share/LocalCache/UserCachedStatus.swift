@@ -53,6 +53,9 @@ final class UserCachedStatus: UserCachedStatusProvider {
         // Snooze Notifications
         static let snoozeConfiguration = "snoozeConfiguration"
 
+        // Contacts Sync
+        static let contactsHistoryToken = "contactsHistoryToken"
+
         // FIX ME: double check if the value belongs to user. move it into user object. 2.0
 
         static let metadataStripping = "metadataStripping"

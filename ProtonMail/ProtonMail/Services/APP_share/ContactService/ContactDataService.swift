@@ -35,8 +35,10 @@ typealias ContactDeleteComplete = (NSError?) -> Void
 typealias ContactUpdateComplete = (NSError?) -> Void
 
 protocol ContactProviderProtocol: AnyObject {
-    /// Returns the Contacts for a given list of contact ids from the local storage
+    /// Returns the Contacts from the local storage for a given list of contact ids
     func getContactsByIds(_ ids: [String]) -> [ContactEntity]
+    /// Returns the Contacts from the local storage for a given list of contact uuids
+    func getContactsByUUID(_ uuids: [String]) -> [ContactEntity]
     /// Given a user and a list of email addresses, returns all the contacts that exist in the local storage
     func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity]
 
@@ -365,6 +367,28 @@ class ContactDataService {
         coreDataService.read { context in
             let contacts: [Contact] = cacheService.selectByIds(context: context, ids: ids)
             return contacts.map(ContactEntity.init)
+        }
+    }
+
+    /// Returns the contacts in CoreData that match any of the UUID values passed. The UUID is not
+    /// the ObjectId but the identifier used when a contact has been imported.
+    func getContactsByUUID(_ uuids: [String]) -> [ContactEntity] {
+        coreDataService.read { context in
+            let request = NSFetchRequest<Contact>(entityName: Contact.Attributes.entityName)
+            request.predicate = NSPredicate(
+                format: "%K == %@ AND %K == 0 AND uuid IN %@",
+                Contact.Attributes.userID,
+                userID.rawValue,
+                Contact.Attributes.isSoftDeleted,
+                uuids
+            )
+            do {
+                let result: [Contact] = try context.fetch(request)
+                return result.map(ContactEntity.init)
+            } catch {
+                PMAssertionFailure(error)
+                return []
+            }
         }
     }
 

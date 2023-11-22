@@ -286,6 +286,16 @@ extension UserContainer: HasFetchSenderImage {
     }
 }
 
+protocol HasImportDeviceContacts {
+    var importDeviceContacts: ImportDeviceContacts { get }
+}
+
+extension UserContainer: HasImportDeviceContacts {
+    var importDeviceContacts: ImportDeviceContacts {
+        importDeviceContactsFactory()
+    }
+}
+
 protocol HasSearchUseCase {
     var messageSearch: SearchUseCase { get }
 }
