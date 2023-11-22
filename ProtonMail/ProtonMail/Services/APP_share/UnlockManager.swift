@@ -60,6 +60,7 @@ final class UnlockManager {
     weak var delegate: UnlockManagerDelegate?
 
     private(set) var cacheStatus: LockCacheStatus
+    private let keychain: Keychain
     private let keyMaker: KeyMakerProtocol
     private let localAuthenticationContext: LAContextProtocol
     private let notificationCenter: NotificationCenter
@@ -67,12 +68,14 @@ final class UnlockManager {
 
     init(
         cacheStatus: LockCacheStatus,
+        keychain: Keychain,
         keyMaker: KeyMakerProtocol,
         localAuthenticationContext: LAContextProtocol = LAContext(),
         userDefaults: UserDefaults,
         notificationCenter: NotificationCenter = .default
     ) {
         self.cacheStatus = cacheStatus
+        self.keychain = keychain
         self.keyMaker = keyMaker
 
         self.localAuthenticationContext = localAuthenticationContext
@@ -147,7 +150,7 @@ final class UnlockManager {
 
         guard !isRequestingBiometricAuthentication else { return }
         isRequestingBiometricAuthentication = true
-        keyMaker.obtainMainKey(with: BioProtection()) { key in
+        keyMaker.obtainMainKey(with: BioProtection(keychain: keychain)) { key in
             defer {
                 self.isRequestingBiometricAuthentication = false
             }

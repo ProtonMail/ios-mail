@@ -38,7 +38,7 @@ final class DefaultPinCodeProtection: PinCodeProtection {
     func activate(with newPinCode: String) async -> Bool {
         await withCheckedContinuation({ continuation in
             LockPreventor.shared.performWhileSuppressingLock {
-                _ = dependencies.keyMaker.deactivate(BioProtection())
+                _ = dependencies.keyMaker.deactivate(BioProtection(keychain: dependencies.keychain))
             }
             let protection = PinProtection(pin: newPinCode, keychain: dependencies.keychain)
             dependencies.keyMaker.activate(protection) { [unowned self] activated in

@@ -172,6 +172,7 @@ class GlobalContainer: ManagedContainer {
         self {
             UnlockManager(
                 cacheStatus: self.lockCacheStatus,
+                keychain: self.keychain,
                 keyMaker: self.keyMaker,
                 userDefaults: self.userDefaults,
                 notificationCenter: self.notificationCenter
