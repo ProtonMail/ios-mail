@@ -28,8 +28,8 @@ protocol ComposeContainerUIProtocol: AnyObject {
 }
 
 class ComposeContainerViewModel: TableContainerViewModel {
-    typealias Dependencies = HasAttachmentMetadataStrippingProtocol
-    & HasFeatureFlagCache
+    typealias Dependencies = HasFeatureFlagCache
+    & HasKeychain
     & HasLastUpdatedStoreProtocol
     & HasUserIntroductionProgressProvider
     & HasUsersManager
@@ -58,7 +58,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
     }
 
     var shouldStripAttachmentMetadata: Bool {
-        dependencies.attachmentMetadataStripStatusProvider.metadataStripping == .stripMetadata
+        dependencies.keychain[.metadataStripping] == .stripMetadata
     }
 
     init(

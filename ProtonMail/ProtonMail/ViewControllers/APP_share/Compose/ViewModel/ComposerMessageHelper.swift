@@ -19,6 +19,7 @@ import CoreData
 import Foundation
 import ProtonCoreCrypto
 import ProtonCoreDataModel
+import ProtonCoreKeymaker
 
 final class ComposerMessageHelper {
     private(set) var draft: Draft?
@@ -144,7 +145,7 @@ final class ComposerMessageHelper {
         if action == ComposeMessageAction.forward {
             /// add mime attachments if forward
             if let mimeAtts = mimeAttachments {
-                let stripMetadata = dependencies.attachmentMetadataStripStatusProvider.metadataStripping == .stripMetadata
+                let stripMetadata = dependencies.keychain[.metadataStripping] == .stripMetadata
                 for mimeAtt in mimeAtts {
                     addMimeAttachments(
                         attachment: mimeAtt,
@@ -525,6 +526,6 @@ extension ComposerMessageHelper {
         let cacheService: CacheServiceProtocol
         let contextProvider: CoreDataContextProviderProtocol
         let copyMessage: CopyMessageUseCase
-        let attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol
+        let keychain: Keychain
     }
 }

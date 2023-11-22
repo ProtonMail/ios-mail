@@ -34,6 +34,7 @@ protocol SettingsAccountCoordinatorProtocol: AnyObject {
 class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     typealias Dependencies = BlockedSendersViewModel.Dependencies
     & HasFeatureFlagCache
+    & HasKeychain
     & HasKeyMakerProtocol
     & HasPaymentsUIFactory
     & HasUsersManager
@@ -158,7 +159,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     }
 
     private func openPrivacy() {
-        let viewModel = PrivacySettingViewModel(user: user, metaStrippingProvider: userCachedStatus)
+        let viewModel = PrivacySettingViewModel(user: user, keychain: dependencies.keychain)
         let viewController = SwitchToggleViewController(viewModel: viewModel)
         navigationController?.pushViewController(viewController, animated: true)
     }

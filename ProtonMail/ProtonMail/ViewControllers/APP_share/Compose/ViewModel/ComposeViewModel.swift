@@ -25,6 +25,7 @@ import CoreData
 import Foundation
 import PromiseKit
 import ProtonCoreDataModel
+import ProtonCoreKeymaker
 import ProtonCoreNetworking
 import ProtonMailAnalytics
 import SwiftSoup
@@ -84,7 +85,7 @@ class ComposeViewModel: NSObject {
     }
 
     var shouldStripMetaData: Bool {
-        return dependencies.attachmentMetadataStrippingCache.metadataStripping == .stripMetadata
+        dependencies.keychain[.metadataStripping] == .stripMetadata
     }
 
     init(
@@ -1171,11 +1172,11 @@ extension ComposeViewModel {
         let coreDataContextProvider: CoreDataContextProviderProtocol
         let fetchAndVerifyContacts: FetchAndVerifyContactsUseCase
         let internetStatusProvider: InternetConnectionStatusProviderProtocol
+        let keychain: Keychain
         let fetchAttachment: FetchAttachmentUseCase
         let contactProvider: ContactProviderProtocol
         let helperDependencies: ComposerMessageHelper.Dependencies
         let fetchMobileSignatureUseCase: FetchMobileSignatureUseCase
-        let attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol
         let userDefaults: UserDefaults
         let notificationCenter: NotificationCenter
     }

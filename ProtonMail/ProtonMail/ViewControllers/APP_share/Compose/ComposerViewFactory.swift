@@ -109,6 +109,7 @@ final class ComposerViewFactory {
                 user: dependencies.user
             ),
             internetStatusProvider: dependencies.internetConnectionStatusProvider,
+            keychain: dependencies.keychain,
             fetchAttachment: dependencies.fetchAttachment,
             contactProvider: dependencies.user.contactService,
             helperDependencies: .init(
@@ -122,7 +123,7 @@ final class ComposerViewFactory {
                     ),
                     userDataSource: dependencies.user
                 ),
-                attachmentMetadataStripStatusProvider: dependencies.attachmentMetadataStripStatusProvider
+                keychain: dependencies.keychain
             ),
             fetchMobileSignatureUseCase: FetchMobileSignature(
                 dependencies: .init(
@@ -131,7 +132,6 @@ final class ComposerViewFactory {
                     keychain: dependencies.keychain
                 )
             ),
-            attachmentMetadataStrippingCache: dependencies.attachmentMetadataStripStatusProvider,
             userDefaults: dependencies.userDefaults,
             notificationCenter: NotificationCenter.default
         )

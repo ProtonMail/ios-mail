@@ -35,22 +35,6 @@ extension UserContainer: HasAppRatingStatusProvider {
     }
 }
 
-protocol HasAttachmentMetadataStrippingProtocol {
-    var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol { get }
-}
-
-extension GlobalContainer: HasAttachmentMetadataStrippingProtocol {
-    var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol {
-        attachmentMetadataStripStatusProviderFactory()
-    }
-}
-
-extension UserContainer: HasAttachmentMetadataStrippingProtocol {
-    var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol {
-        globalContainer.attachmentMetadataStripStatusProvider
-    }
-}
-
 protocol HasCachedUserDataProvider {
     var cachedUserDataProvider: CachedUserDataProvider { get }
 }

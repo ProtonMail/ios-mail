@@ -36,7 +36,6 @@ final class GlobalContainerTests: XCTestCase {
         // sourcery:inline:GlobalContainerTests.InitializeAllDependencies
         _ = strongRefToContainer?.appAccessResolver
         _ = strongRefToContainer?.appRatingStatusProvider
-        _ = strongRefToContainer?.attachmentMetadataStripStatusProvider
         _ = strongRefToContainer?.cachedUserDataProvider
         _ = strongRefToContainer?.contextProvider
         _ = strongRefToContainer?.featureFlagCache

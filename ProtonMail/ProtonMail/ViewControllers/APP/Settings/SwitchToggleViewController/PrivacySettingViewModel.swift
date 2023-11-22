@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreDataModel
+import ProtonCoreKeymaker
 import struct UIKit.CGFloat
 import enum ProtonCoreUtilities.Either
 
@@ -59,11 +60,11 @@ final class PrivacySettingViewModel: SwitchToggleVMProtocol {
     }
 
     let user: UserManager
-    private(set) var metaStrippingProvider: AttachmentMetadataStrippingProtocol
+    private let keychain: Keychain
 
-    init(user: UserManager, metaStrippingProvider: AttachmentMetadataStrippingProtocol) {
+    init(user: UserManager, keychain: Keychain) {
         self.user = user
-        self.metaStrippingProvider = metaStrippingProvider
+        self.keychain = keychain
     }
 }
 
@@ -86,7 +87,7 @@ extension PrivacySettingViewModel: SwitchToggleVMInput {
         case .linkOpeningMode:
             updateLinkConfirmation(to: newStatus, completion: completion)
         case .metadataStripping:
-            metaStrippingProvider.metadataStripping = newStatus ? .stripMetadata : .sendAsIs
+            keychain[.metadataStripping] = newStatus ? .stripMetadata : .sendAsIs
             completion(nil)
         }
     }
@@ -129,7 +130,7 @@ extension PrivacySettingViewModel {
         case .linkOpeningMode:
             return user.userInfo.linkConfirmation == .confirmationAlert
         case .metadataStripping:
-            return metaStrippingProvider.metadataStripping == .stripMetadata
+            return keychain[.metadataStripping] == .stripMetadata
         }
     }
 

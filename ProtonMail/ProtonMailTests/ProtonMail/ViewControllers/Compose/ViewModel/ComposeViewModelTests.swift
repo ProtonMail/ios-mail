@@ -30,7 +30,6 @@ final class ComposeViewModelTests: XCTestCase {
     private var sut: ComposeViewModel!
     private var contactProvider: MockContactProvider!
     private var dependencies: ComposeViewModel.Dependencies!
-    private var attachmentMetadataStrippingCache: AttachmentMetadataStrippingMock!
     private var notificationCenter: NotificationCenter!
     private var testContainer: TestContainer!
     private let userID: UserID = .init(String.randomString(20))
@@ -56,19 +55,19 @@ final class ComposeViewModelTests: XCTestCase {
             (message, nil)
         }
 
-        attachmentMetadataStrippingCache = .init()
         let helperDependencies = ComposerMessageHelper.Dependencies(
             messageDataService: fakeUserManager.messageService,
             cacheService: fakeUserManager.cacheService,
             contextProvider: mockCoreDataService,
             copyMessage: copyMessage,
-            attachmentMetadataStripStatusProvider: attachmentMetadataStrippingCache
+            keychain: testContainer.keychain
         )
         dependencies = ComposeViewModel.Dependencies(
             user: fakeUserManager,
             coreDataContextProvider: mockCoreDataService,
             fetchAndVerifyContacts: .init(),
             internetStatusProvider: MockInternetConnectionStatusProviderProtocol(),
+            keychain: testContainer.keychain,
             fetchAttachment: .init(),
             contactProvider: contactProvider,
             helperDependencies: helperDependencies,
@@ -77,7 +76,6 @@ final class ComposeViewModelTests: XCTestCase {
                 cache: MockMobileSignatureCacheProtocol(),
                 keychain: testContainer.keychain
             )),
-            attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
             userDefaults: testContainer.userDefaults,
             notificationCenter: notificationCenter
         )
@@ -359,7 +357,7 @@ final class ComposeViewModelTests: XCTestCase {
 
     func testInit_withFileData_stripMetaDataIsOn_attachmentHasNoGPSData() throws {
         let fileData = try loadImage(fileName: "IMG_0001")
-        attachmentMetadataStrippingCache.metadataStripping = .stripMetadata
+        testContainer.keychain[.metadataStripping] = .stripMetadata
         let e = expectation(description: "Closure is called")
 
         sut = .init(
