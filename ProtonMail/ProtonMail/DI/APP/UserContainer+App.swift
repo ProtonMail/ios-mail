@@ -94,6 +94,12 @@ extension UserContainer {
         }
     }
 
+    var importDeviceContactsFactory: Factory<ImportDeviceContacts> {
+        self {
+            ImportDeviceContacts(userID: self.user.userID, dependencies: self)
+        }
+    }
+
     var messageSearchFactory: Factory<SearchUseCase> {
         self {
             MessageSearch(

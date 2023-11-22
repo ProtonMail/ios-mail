@@ -19,7 +19,13 @@ import Foundation
 
 /// Abstraction of the device's CNContact
 struct DeviceContact {
-    let identifier: String
+    let identifier: DeviceContactIdentifier
     let fullName: String
     let vCard: String
+}
+
+/// Attributes used to identify a contact when trying to match Proton contacts
+struct DeviceContactIdentifier {
+    let uuid: String
+    let emails: [String]
 }

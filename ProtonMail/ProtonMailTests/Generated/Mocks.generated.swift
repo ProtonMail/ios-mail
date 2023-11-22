@@ -265,6 +265,19 @@ class MockContactGroupsProviderProtocol: ContactGroupsProviderProtocol {
 
 }
 
+class MockContactsSyncCache: ContactsSyncCache {
+    @FuncStub(MockContactsSyncCache.setHistoryToken) var setHistoryTokenStub
+    func setHistoryToken(_ token: Data, for userID: UserID) {
+        setHistoryTokenStub(token, userID)
+    }
+
+    @FuncStub(MockContactsSyncCache.historyToken, initialReturn: nil) var historyTokenStub
+    func historyToken(for userID: UserID) -> Data? {
+        historyTokenStub(userID)
+    }
+
+}
+
 class MockConversationCoordinatorProtocol: ConversationCoordinatorProtocol {
     @PropertyStub(\MockConversationCoordinatorProtocol.pendingActionAfterDismissal, initialGet: nil) var pendingActionAfterDismissalStub
     var pendingActionAfterDismissal: (() -> Void)? {
@@ -373,19 +386,19 @@ class MockCopyMessageUseCase: CopyMessageUseCase {
 }
 
 class MockDeviceContactsProvider: DeviceContactsProvider {
-    @ThrowingFuncStub(MockDeviceContactsProvider.fetchAllContactIdentifiers, initialReturn: [String]()) var fetchAllContactIdentifiersStub
-    func fetchAllContactIdentifiers() throws -> [String] {
+    @ThrowingFuncStub(MockDeviceContactsProvider.fetchAllContactIdentifiers, initialReturn: .crash) var fetchAllContactIdentifiersStub
+    func fetchAllContactIdentifiers() throws -> (historyToken: Data, identifiers: [DeviceContactIdentifier]) {
         try fetchAllContactIdentifiersStub()
+    }
+
+    @ThrowingFuncStub(MockDeviceContactsProvider.fetchEventsContactIdentifiers, initialReturn: .crash) var fetchEventsContactIdentifiersStub
+    func fetchEventsContactIdentifiers(historyToken: Data) throws -> (historyToken: Data, identifiers: [DeviceContactIdentifier]) {
+        try fetchEventsContactIdentifiersStub(historyToken)
     }
 
     @ThrowingFuncStub(MockDeviceContactsProvider.fetchContactBatch, initialReturn: [DeviceContact]()) var fetchContactBatchStub
     func fetchContactBatch(with identifiers: [String]) throws -> [DeviceContact] {
         try fetchContactBatchStub(identifiers)
-    }
-
-    @ThrowingFuncStub(MockDeviceContactsProvider.fetchHistoryEvents, initialReturn: .crash) var fetchHistoryEventsStub
-    func fetchHistoryEvents(historyToken: Data?) throws -> (historyToken: Data, events: [DeviceContactEvent]) {
-        try fetchHistoryEventsStub(historyToken)
     }
 
 }

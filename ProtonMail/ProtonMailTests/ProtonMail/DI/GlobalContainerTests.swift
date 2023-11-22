@@ -38,6 +38,7 @@ final class GlobalContainerTests: XCTestCase {
         _ = strongRefToContainer?.appRatingStatusProvider
         _ = strongRefToContainer?.attachmentMetadataStripStatusProvider
         _ = strongRefToContainer?.cachedUserDataProvider
+        _ = strongRefToContainer?.contactsSyncCache
         _ = strongRefToContainer?.contextProvider
         _ = strongRefToContainer?.featureFlagCache
         _ = strongRefToContainer?.internetConnectionStatusProvider

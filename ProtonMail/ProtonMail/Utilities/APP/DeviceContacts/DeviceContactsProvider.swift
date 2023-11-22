@@ -21,14 +21,19 @@ import Contacts
 /// Protocol to abstract any reference to `Contacts`
 protocol DeviceContactsProvider {
 
-    /// Returns the identifier for every existing contact
-    func fetchAllContactIdentifiers() throws -> [String]
+    /// Function to get the identifiers of all existing contacts in the device
+    /// - Returns: the history token to use in future requests and the identifiers for every existing contact
+    func fetchAllContactIdentifiers() throws -> (historyToken: Data, identifiers: [DeviceContactIdentifier])
+
+    /// Function to get the identifiers of the contacts that have been modified
+    /// - Parameter historyToken: token to get changed events from a point in time
+    /// - Returns: the new historyToken and the identifiers of the Contacts
+    func fetchEventsContactIdentifiers(
+        historyToken: Data
+    ) throws -> (historyToken: Data, identifiers: [DeviceContactIdentifier])
 
     /// Returns a `DeviceContact` for every identifier passed if it exists
     func fetchContactBatch(with identifiers: [String]) throws -> [DeviceContact]
-
-    /// Returns all `DeviceContactEvent` after a point in history marked by `historyToken`
-    func fetchHistoryEvents(historyToken: Data?) throws -> (historyToken: Data, events: [DeviceContactEvent])
 }
 
 final class DeviceContacts: DeviceContactsProvider {
@@ -38,14 +43,15 @@ final class DeviceContacts: DeviceContactsProvider {
     }()
     private let contactStore: CNContactStore
 
-    private var contactKeys: [CNKeyDescriptor] {
+    private let identifierContactKeys = [CNContactIdentifierKey, CNContactEmailAddressesKey] as [CNKeyDescriptor]
+    private var fullContactKeys: [CNKeyDescriptor] {
         [
+            CNContactIdentifierKey,
             CNContactEmailAddressesKey,
             CNContactPhoneNumbersKey,
             CNContactImageDataAvailableKey,
             CNContactImageDataKey,
-            CNContactThumbnailImageDataKey,
-            CNContactIdentifierKey
+            CNContactThumbnailImageDataKey
         ] as [CNKeyDescriptor]
         +
         [
@@ -58,52 +64,93 @@ final class DeviceContacts: DeviceContactsProvider {
         self.contactStore = CNContactStore()
     }
 
-    func fetchAllContactIdentifiers() throws -> [String] {
-        let keysToFetch = [CNContactIdentifierKey] as [CNKeyDescriptor]
-        let contacts = try contactStore.unifiedContacts(matching: NSPredicate(value: true), keysToFetch: keysToFetch)
-        return contacts.map(\.identifier)
+    func fetchAllContactIdentifiers() throws -> (historyToken: Data, identifiers: [DeviceContactIdentifier]) {
+        let result = try changeHistoryResult(historyToken: nil, keys: identifierContactKeys)
+        let identifiers: [DeviceContactIdentifier] = result
+            .value
+            .compactMap { $0 as? CNChangeHistoryEvent }
+            .compactMap(\.deviceContactIdentifier)
+        return (result.currentHistoryToken, identifiers)
+    }
+
+    func fetchEventsContactIdentifiers(
+        historyToken: Data
+    ) throws -> (historyToken: Data, identifiers: [DeviceContactIdentifier]) {
+        let result = try changeHistoryResult(historyToken: historyToken, keys: identifierContactKeys)
+        let identifiers: [DeviceContactIdentifier] = result
+            .value
+            .compactMap { $0 as? CNChangeHistoryEvent }
+            .compactMap(\.deviceContactIdentifier)
+        return (result.currentHistoryToken, identifiers)
     }
 
     func fetchContactBatch(with identifiers: [String]) throws -> [DeviceContact] {
         let predicate = CNContact.predicateForContacts(withIdentifiers: identifiers)
-        let contacts = try contactStore.unifiedContacts(matching: predicate, keysToFetch: contactKeys)
+        let contacts = try contactStore.unifiedContacts(matching: predicate, keysToFetch: fullContactKeys)
         return contacts.compactMap(\.deviceContact)
     }
 
-    func fetchHistoryEvents(historyToken: Data?) throws -> (historyToken: Data, events: [DeviceContactEvent]) {
+    private func changeHistoryResult(historyToken: Data?, keys: [CNKeyDescriptor]) throws -> ChangeHistoryResult {
         let request = CNChangeHistoryFetchRequest()
         request.shouldUnifyResults = true
         request.includeGroupChanges = false
         request.startingToken = historyToken
-        request.additionalContactKeyDescriptors = contactKeys
+        request.additionalContactKeyDescriptors = keys
         request.excludedTransactionAuthors = [protonAuthorIdentifier]
 
         var error: NSError?
-        let results = contactStore.eventsEnumerator(for: request, error: &error)
+        let result = contactStore.eventsEnumerator(for: request, error: &error)
         if let error { throw error }
-
-        let events = results.value.compactMap { ($0 as? CNChangeHistoryEvent)?.toDeviceContactEvent }
-        return (results.currentHistoryToken, events)
+        return result
     }
 }
 
 extension CNChangeHistoryEvent {
 
-    var toDeviceContactEvent: DeviceContactEvent? {
+    var deviceContactIdentifier: DeviceContactIdentifier? {
+        guard let id = identifier else { return nil }
+        return DeviceContactIdentifier(uuid: id, emails: emails)
+    }
+
+    var identifier: String? {
         switch self {
         case let event as CNChangeHistoryAddContactEvent:
-            guard let contact = event.contact.deviceContact else { return nil }
-            return DeviceContactEvent(contactIdentifier: event.contact.identifier, type: .addContact(contact: contact))
+            return event.contact.identifier
         case let event as CNChangeHistoryUpdateContactEvent:
-            guard let contact = event.contact.deviceContact else { return nil }
-            let identifier = event.contact.identifier
-            return DeviceContactEvent(contactIdentifier: identifier, type: .updateContact(contact: contact))
+            return event.contact.identifier
         case let event as CNChangeHistoryDeleteContactEvent:
-            return DeviceContactEvent(contactIdentifier: event.contactIdentifier, type: .deleteContact)
+            return event.contactIdentifier
         default:
             return nil
         }
     }
+
+    var emails: [String] {
+        switch self {
+        case let event as CNChangeHistoryAddContactEvent:
+            return event.contact.emailAddressesAsString
+        case let event as CNChangeHistoryUpdateContactEvent:
+            return event.contact.emailAddressesAsString
+        default:
+            return []
+        }
+    }
+
+//    var toDeviceContactEvent: DeviceContactEvent? {
+//        switch self {
+//        case let event as CNChangeHistoryAddContactEvent:
+//            guard let contact = event.contact.deviceContact else { return nil }
+//            return DeviceContactEvent(contactIdentifier: event.contact.identifier, type: .addContact(contact: contact))
+//        case let event as CNChangeHistoryUpdateContactEvent:
+//            guard let contact = event.contact.deviceContact else { return nil }
+//            let identifier = event.contact.identifier
+//            return DeviceContactEvent(contactIdentifier: identifier, type: .updateContact(contact: contact))
+//        case let event as CNChangeHistoryDeleteContactEvent:
+//            return DeviceContactEvent(contactIdentifier: event.contactIdentifier, type: .deleteContact)
+//        default:
+//            return nil
+//        }
+//    }
 }
 
 extension CNContact {
@@ -112,9 +159,17 @@ extension CNContact {
         CNContactFormatter.string(from: self, style: .fullName) ?? "Unknown"
     }
 
+    var emailAddressesAsString: [String] {
+        emailAddresses.map { $0.value as String }
+    }
+
     var deviceContact: DeviceContact? {
         guard let vCard = try? vCard() else { return nil }
-        return DeviceContact(identifier: identifier, fullName: fullName, vCard: vCard)
+        return DeviceContact(
+            identifier: .init(uuid: identifier, emails: emailAddressesAsString),
+            fullName: fullName,
+            vCard: vCard
+        )
     }
 
     func vCard() throws -> String? {
