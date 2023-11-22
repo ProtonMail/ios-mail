@@ -22,18 +22,22 @@ import XCTest
 final class UpdateMobileSignatureUseCaseTests: XCTestCase {
     private var sut: UpdateMobileSignature!
     private var cacheMock: MockMobileSignatureCacheProtocol!
-    private var coreKeyMaker: KeyMakerProtocol!
+    private var testContainer: TestContainer!
+
+    private var coreKeyMaker: KeyMakerProtocol {
+        testContainer.keyMaker
+    }
 
     override func setUp() {
         super.setUp()
         cacheMock = MockMobileSignatureCacheProtocol()
 
-        let globalContainer = TestContainer()
-        coreKeyMaker = globalContainer.keyMaker
+        testContainer = .init()
 
         sut = .init(dependencies: .init(
             coreKeyMaker: coreKeyMaker,
-            cache: cacheMock
+            cache: cacheMock,
+            keychain: testContainer.keychain
         ))
     }
 
@@ -41,14 +45,14 @@ final class UpdateMobileSignatureUseCaseTests: XCTestCase {
         super.tearDown()
         sut = nil
         cacheMock = nil
-        coreKeyMaker = nil
+        testContainer = nil
     }
 
     func testExecute_signatureIsSavedToCache() throws {
         let signature = String.randomString(20)
         let userID = String.randomString(10)
         let e = expectation(description: "Closure is called.")
-        let mainKey = try XCTUnwrap(coreKeyMaker.mainKey(by: .randomPin))
+        let mainKey = try XCTUnwrap(coreKeyMaker.mainKey(by: testContainer.keychain.randomPinProtection))
 
         sut.execute(
             params: .init(signature: signature, userID: .init(userID))) { result in

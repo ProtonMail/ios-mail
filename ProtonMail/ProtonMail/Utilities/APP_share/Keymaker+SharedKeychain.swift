@@ -43,16 +43,11 @@ extension BioProtection {
     }
 }
 
-extension RandomPinProtection {
-
-    init(pin: String) {
-        self.init(pin: pin, keychain: KeychainWrapper.keychain)
-    }
-
-    static var randomPin: RandomPinProtection? {
-        guard let keymakerRandomkey = KeychainWrapper.keychain[.keymakerRandomKey] else {
+extension Keychain {
+    var randomPinProtection: RandomPinProtection? {
+        guard let keymakerRandomkey = self[.keymakerRandomKey] else {
             return nil
         }
-        return RandomPinProtection.init(pin: keymakerRandomkey)
+        return RandomPinProtection(pin: keymakerRandomkey, keychain: self)
     }
 }

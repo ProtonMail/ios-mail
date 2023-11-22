@@ -23,6 +23,7 @@ final class ComposerViewFactory {
     & ComposeContainerViewController.Dependencies
     & HasUserManager
     & HasInternetConnectionStatusProviderProtocol
+    & HasKeychain
     & HasKeyMakerProtocol
     & HasUserCachedStatus
     & HasFetchAttachment
@@ -126,7 +127,8 @@ final class ComposerViewFactory {
             fetchMobileSignatureUseCase: FetchMobileSignature(
                 dependencies: .init(
                     coreKeyMaker: dependencies.keyMaker,
-                    cache: dependencies.userCachedStatus
+                    cache: dependencies.userCachedStatus, 
+                    keychain: dependencies.keychain
                 )
             ),
             attachmentMetadataStrippingCache: dependencies.attachmentMetadataStripStatusProvider,

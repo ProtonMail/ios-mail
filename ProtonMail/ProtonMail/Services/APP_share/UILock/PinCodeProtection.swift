@@ -53,8 +53,8 @@ final class DefaultPinCodeProtection: PinCodeProtection {
     }
 
     private func disableAppKey(completion: @escaping (() -> Void)) {
-        KeychainWrapper.keychain[.keymakerRandomKey] = String.randomString(32)
-        if let randomProtection = RandomPinProtection.randomPin {
+        dependencies.keychain[.keymakerRandomKey] = String.randomString(32)
+        if let randomProtection = dependencies.keychain.randomPinProtection {
             dependencies.keyMaker.activate(randomProtection) { [unowned self] activated in
                 guard activated else {
                     completion()
@@ -72,11 +72,11 @@ final class DefaultPinCodeProtection: PinCodeProtection {
         let protection = PinProtection(pin: "doesnotmatter", keychain: dependencies.keychain)
         LockPreventor.shared.performWhileSuppressingLock {
             dependencies.keyMaker.deactivate(protection)
-            if let randomProtection = RandomPinProtection.randomPin {
+            if let randomProtection = dependencies.keychain.randomPinProtection {
                 dependencies.keyMaker.deactivate(randomProtection)
             }
         }
-        KeychainWrapper.keychain[.keymakerRandomKey] = nil
+        dependencies.keychain[.keymakerRandomKey] = nil
         dependencies.notificationCenter.post(name: .appLockProtectionDisabled, object: nil, userInfo: nil)
     }
 }

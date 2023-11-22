@@ -41,7 +41,7 @@ class EncryptedCacheTests: XCTestCase {
             .appendingPathComponent(cacheFolderName, isDirectory: true)
         internalCache = SDDiskCache(cachePath: cacheDir.path, config: config)
 
-        mainKey = try XCTUnwrap(testContainer.keyMaker.mainKey(by: RandomPinProtection.randomPin))
+        mainKey = try XCTUnwrap(testContainer.keyMaker.mainKey(by: testContainer.keychain.randomPinProtection))
 
         sut = EncryptedCache(internalCache: internalCache, dependencies: testContainer)
         sut.purge()

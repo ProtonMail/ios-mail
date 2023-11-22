@@ -226,10 +226,12 @@ class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
 
     required init(user: UserManager, coreKeyMaker: KeyMakerProtocol) {
         self.userManager = user
+        // TODO: better way of passing dependencies other than this or yet another init parameter
+        let keychain = user.container.keychain
         self.dependencies = .init(
             userManager: user,
-            updateMobileSignatureUseCase: UpdateMobileSignature(dependencies: .init(coreKeyMaker: coreKeyMaker, cache: userCachedStatus)),
-            fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: coreKeyMaker, cache: userCachedStatus))
+            updateMobileSignatureUseCase: UpdateMobileSignature(dependencies: .init(coreKeyMaker: coreKeyMaker, cache: userCachedStatus, keychain: keychain)),
+            fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: coreKeyMaker, cache: userCachedStatus, keychain: keychain))
         )
         originalSignature = dependencies.fetchMobileSignatureUseCase.execute(
             params: .init(userID: userManager.userID, isPaidUser: userManager.isPaid)

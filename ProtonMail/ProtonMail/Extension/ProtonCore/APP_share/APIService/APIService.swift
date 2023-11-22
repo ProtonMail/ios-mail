@@ -105,7 +105,7 @@ final class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
             authDelegateForUnauthorized.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: dispatchQueue))
         }
 
-        guard let mainKey = dependencies.keyMaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = dependencies.keyMaker.mainKey(by: dependencies.keychain.randomPinProtection),
               let data = dependencies.userDefaults.data(forKey: key) else {
             self.authDelegateForUnauthorized = AuthHelper()
             self.initialSessionUID = nil
@@ -126,7 +126,7 @@ final class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
     }
 
     func credentialsWereUpdated(authCredential: AuthCredential, credential _: Credential, for _: String) {
-        guard let mainKey = dependencies.keyMaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = dependencies.keyMaker.mainKey(by: dependencies.keychain.randomPinProtection),
               let lockedAuth = try? Locked<[AuthCredential]>(clearValue: [authCredential], with: mainKey) else { return }
         dependencies.userDefaults.setValue(lockedAuth.encryptedValue, forKey: key)
         SystemLogger.log(message: "unauthorized session was updated.", category: .unauthorizedSession)

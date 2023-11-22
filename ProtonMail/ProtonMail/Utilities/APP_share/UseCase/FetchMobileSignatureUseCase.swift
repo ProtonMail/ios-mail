@@ -32,7 +32,7 @@ final class FetchMobileSignature: FetchMobileSignatureUseCase {
     func execute(params: Parameters) -> String {
         guard params.isPaidUser,
               let rawSignature = dependencies.cache.getEncryptedMobileSignature(userID: params.userID.rawValue),
-              let mainKey = dependencies.coreKeyMaker.mainKey(by: .randomPin),
+              let mainKey = dependencies.coreKeyMaker.mainKey(by: dependencies.keychain.randomPinProtection),
               case let locked = Locked<String>(encryptedValue: rawSignature),
               let signature = try? locked.unlock(with: mainKey)
         else {
@@ -47,6 +47,7 @@ extension FetchMobileSignature {
     struct Dependencies {
         let coreKeyMaker: KeyMakerProtocol
         let cache: MobileSignatureCacheProtocol
+        let keychain: Keychain
     }
 
     struct Parameters {

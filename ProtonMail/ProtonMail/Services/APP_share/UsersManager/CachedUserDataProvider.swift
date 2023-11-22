@@ -41,7 +41,7 @@ class UserDataCache: CachedUserDataProvider {
     }
 
     func set(disconnectedUsers: [UsersManager.DisconnectedUserHandle]) {
-        guard let mainKey = keyMaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = keyMaker.mainKey(by: keychain.randomPinProtection),
               let data = try? JSONEncoder().encode(disconnectedUsers),
               let locked = try? Locked(clearValue: data, with: mainKey) else {
             return
@@ -50,7 +50,7 @@ class UserDataCache: CachedUserDataProvider {
     }
 
     func fetchDisconnectedUsers() -> [UsersManager.DisconnectedUserHandle] {
-        guard let mainKey = keyMaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = keyMaker.mainKey(by: keychain.randomPinProtection),
               let encryptedData = keychain.data(forKey: Constant.disconnectedUsers),
               case let locked = Locked<Data>(encryptedValue: encryptedData),
               let data = try? locked.unlock(with: mainKey),
