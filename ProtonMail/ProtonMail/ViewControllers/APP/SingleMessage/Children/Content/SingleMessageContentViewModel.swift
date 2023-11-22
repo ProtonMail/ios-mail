@@ -52,6 +52,14 @@ class SingleMessageContentViewModel {
     var isEmbedInConversationView: Bool {
         context.viewMode == .conversation
     }
+    // Is view has shown to user 
+    var viewHasAppeared = false {
+        didSet {
+            if !isEmbedInConversationView && message.isDetailDownloaded {
+                markReadIfNeeded()
+            }
+        }
+    }
 
     let context: SingleMessageContentViewContext
     let user: UserManager
@@ -186,7 +194,7 @@ class SingleMessageContentViewModel {
         // have to call api again to fetch it
         let isDetailedDownloaded = !shouldLoadBody && !message.parsedHeaders.isEmpty
         guard !isDetailedDownloaded else {
-            if !isEmbedInConversationView {
+            if !isEmbedInConversationView && viewHasAppeared {
                 markReadIfNeeded()
             }
             return
@@ -203,7 +211,9 @@ class SingleMessageContentViewModel {
                 guard let self = self else { return }
                 switch result {
                 case .success:
-                    if !self.isEmbedInConversationView {
+                    if !self.isEmbedInConversationView && viewHasAppeared {
+                        // To prevent detail response override the unread status
+                        // markRead must be done after getting response
                         self.markReadIfNeeded()
                     }
                     self.updateErrorBanner?(nil)
