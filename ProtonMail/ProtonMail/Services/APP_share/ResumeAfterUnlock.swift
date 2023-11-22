@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -16,10 +16,17 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-@testable import ProtonMail
 
-class MockPushNotificationService: PushNotificationServiceProtocol {
-    func resumePendingTasks() {}
+/**
+ This protocol is conformed to resume tasks that could not be finished before the user 
+ successfully passes the lock protection
+ */
+// sourcery: mock
+protocol ResumeAfterUnlock {
 
-    func processCachedLaunchOptions() {}
+    func resume()
+}
+
+final class EmptyResumeAfterUnlock: ResumeAfterUnlock {
+    func resume() {}
 }

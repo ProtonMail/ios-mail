@@ -152,6 +152,16 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
+    var resumeAfterUnlockFactory: Factory<ResumeAfterUnlock> {
+        self {
+            #if !APP_EXTENSION
+            AppResumeAfterUnlock(dependencies: self)
+            #else
+            EmptyResumeAfterUnlock()
+            #endif
+        }
+    }
+
     var setupCoreDataServiceFactory: Factory<SetupCoreDataService> {
         self {
             SetupCoreData(dependencies: self)
@@ -166,6 +176,12 @@ class GlobalContainer: ManagedContainer {
                 userDefaults: self.userDefaults,
                 notificationCenter: self.notificationCenter
             )
+        }
+    }
+
+    var unlockServiceFactory: Factory<UnlockService> {
+        self {
+            Unlock(dependencies: self)
         }
     }
 

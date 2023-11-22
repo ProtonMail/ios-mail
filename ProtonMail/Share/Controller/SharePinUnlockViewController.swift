@@ -24,8 +24,8 @@ import ProtonCoreUIFoundations
 import UIKit
 
 protocol SharePinUnlockViewControllerDelegate: AnyObject {
+    func onUnlockChallengeSuccess()
     func cancel()
-    func next()
 }
 
 class SharePinUnlockViewController: UIViewController {
@@ -119,7 +119,7 @@ extension SharePinUnlockViewController: PinCodeViewDelegate {
             pinCodeView.hideAttemptError(true)
             viewModel.done { [unowned self] _ in
                 self.dismiss(animated: true, completion: {
-                    self.delegate?.next()
+                    self.delegate?.onUnlockChallengeSuccess()
                 })
             }
         } else {

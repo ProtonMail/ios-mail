@@ -26,8 +26,8 @@ import ProtonCoreUIFoundations
 import UIKit
 
 protocol PinCodeViewControllerDelegate: AnyObject {
+    func onUnlockChallengeSuccess()
     func cancel(completion: @escaping () -> Void)
-    func next()
 }
 
 final class PinCodeViewController: UIViewController, AccessibleView, LifetimeTrackable {
@@ -131,7 +131,7 @@ extension PinCodeViewController: BioAuthenticating {
     func authenticateUser() {
         unlockManager.biometricAuthentication(afterBioAuthPassed: {
             self.viewModel.done { shouldPop in
-                self.delegate?.next()
+                self.delegate?.onUnlockChallengeSuccess()
                 if shouldPop {
                     _ = self.navigationController?.popViewController(animated: true)
                 }
@@ -197,7 +197,7 @@ extension PinCodeViewController: PinCodeViewDelegate {
         if isPinCodeValid {
             pinCodeView.hideAttemptError(true)
             viewModel.done { [unowned self] shouldPop in
-                self.delegate?.next()
+                self.delegate?.onUnlockChallengeSuccess()
                 if shouldPop {
                     self.navigationController?.popViewController(animated: true)
                 }
