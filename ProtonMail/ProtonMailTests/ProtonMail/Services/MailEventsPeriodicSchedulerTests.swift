@@ -134,7 +134,7 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
 
         let results = try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
             let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
-            return try (context.fetch(fetchRequest).map(IncomingDefaultEntity.init)) ?? []
+            return try (context.fetch(fetchRequest).map(IncomingDefaultEntity.init))
         }
 
         XCTAssertEqual(results.count, 2)

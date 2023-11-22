@@ -553,7 +553,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     func fetchedResults(
         by labelID: LabelID,
         viewMode: ViewMode,
-        onMainContext: Bool,
         isUnread: Bool = false,
         isAscending: Bool = false
     ) -> NSFetchedResultsController<NSFetchRequestResult>? {
@@ -578,8 +577,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 predicate: predicate,
                 sortDescriptors: sortDescriptors,
                 fetchBatchSize: 30,
-                sectionNameKeyPath: nil,
-                onMainContext: onMainContext
+                sectionNameKeyPath: nil
             )
         case .conversation:
             let predicate = predicatesForConversationMode(labelID: labelID, isUnread: isUnread)
@@ -592,8 +590,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 predicate: predicate,
                 sortDescriptors: sortDescriptors,
                 fetchBatchSize: 30,
-                sectionNameKeyPath: nil,
-                onMainContext: onMainContext
+                sectionNameKeyPath: nil
             )
         }
     }

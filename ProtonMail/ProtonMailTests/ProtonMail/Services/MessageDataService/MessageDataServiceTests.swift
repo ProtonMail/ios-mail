@@ -127,8 +127,7 @@ class MessageDataServiceTests: XCTestCase {
 
         let fetchedController = try XCTUnwrap(sut.fetchedResults(
             by: LabelLocation.inbox.labelID,
-            viewMode: .singleMessage,
-            onMainContext: true
+            viewMode: .singleMessage
         ))
         try fetchedController.performFetch()
         let objects = try XCTUnwrap(fetchedController.fetchedObjects)
@@ -146,7 +145,6 @@ class MessageDataServiceTests: XCTestCase {
         let fetchedController = try XCTUnwrap(sut.fetchedResults(
             by: LabelLocation.inbox.labelID,
             viewMode: .singleMessage,
-            onMainContext: true,
             isUnread: true
         ))
         try fetchedController.performFetch()
@@ -164,8 +162,7 @@ class MessageDataServiceTests: XCTestCase {
 
         let fetchedController = try XCTUnwrap(sut.fetchedResults(
             by: LabelLocation.draft.labelID,
-            viewMode: .singleMessage,
-            onMainContext: true
+            viewMode: .singleMessage
         ))
         try fetchedController.performFetch()
         let objects = try XCTUnwrap(fetchedController.fetchedObjects)
@@ -182,8 +179,7 @@ class MessageDataServiceTests: XCTestCase {
 
         let fetchedController = try XCTUnwrap(sut.fetchedResults(
             by: LabelLocation.draft.labelID,
-            viewMode: .singleMessage,
-            onMainContext: true
+            viewMode: .singleMessage
         ))
         try fetchedController.performFetch()
         let objects = try XCTUnwrap(fetchedController.fetchedObjects)
@@ -200,8 +196,7 @@ class MessageDataServiceTests: XCTestCase {
 
         let fetchedController = try XCTUnwrap(sut.fetchedResults(
             by: LabelLocation.draft.labelID,
-            viewMode: .singleMessage,
-            onMainContext: true
+            viewMode: .singleMessage
         ))
         try fetchedController.performFetch()
         let objects = try XCTUnwrap(fetchedController.fetchedObjects)
@@ -218,8 +213,7 @@ class MessageDataServiceTests: XCTestCase {
 
         let fetchedController = try XCTUnwrap(sut.fetchedResults(
             by: LabelLocation.sent.labelID,
-            viewMode: .singleMessage,
-            onMainContext: true
+            viewMode: .singleMessage
         ))
         try fetchedController.performFetch()
         let objects = try XCTUnwrap(fetchedController.fetchedObjects)
@@ -236,8 +230,7 @@ class MessageDataServiceTests: XCTestCase {
 
         let fetchedController = try XCTUnwrap(sut.fetchedResults(
             by: LabelLocation.sent.labelID,
-            viewMode: .singleMessage,
-            onMainContext: true
+            viewMode: .singleMessage
         ))
         try fetchedController.performFetch()
         let objects = try XCTUnwrap(fetchedController.fetchedObjects)
@@ -254,8 +247,7 @@ class MessageDataServiceTests: XCTestCase {
 
         let fetchedController = try XCTUnwrap(sut.fetchedResults(
             by: LabelLocation.sent.labelID,
-            viewMode: .singleMessage,
-            onMainContext: true
+            viewMode: .singleMessage
         ))
         try fetchedController.performFetch()
         let objects = try XCTUnwrap(fetchedController.fetchedObjects)
@@ -276,8 +268,7 @@ class MessageDataServiceTests: XCTestCase {
 
         let sentFetched = try XCTUnwrap(sut.fetchedResults(
             by: LabelLocation.sent.labelID,
-            viewMode: .singleMessage,
-            onMainContext: true
+            viewMode: .singleMessage
         ))
         try sentFetched.performFetch()
         let sentMessages = try XCTUnwrap(sentFetched.fetchedObjects)
@@ -285,8 +276,7 @@ class MessageDataServiceTests: XCTestCase {
 
         let draftFetched = try XCTUnwrap(sut.fetchedResults(
             by: LabelLocation.draft.labelID,
-            viewMode: .singleMessage,
-            onMainContext: true
+            viewMode: .singleMessage
         ))
         try draftFetched.performFetch()
         let draftMessages = try XCTUnwrap(draftFetched.fetchedObjects)
@@ -303,8 +293,7 @@ class MessageDataServiceTests: XCTestCase {
 
         let fetchedController = try XCTUnwrap(sut.fetchedResults(
             by: LabelLocation.inbox.labelID,
-            viewMode: .conversation,
-            onMainContext: true
+            viewMode: .conversation
         ))
         try fetchedController.performFetch()
         let objects = try XCTUnwrap(fetchedController.fetchedObjects)
@@ -322,7 +311,6 @@ class MessageDataServiceTests: XCTestCase {
         let fetchedController = try XCTUnwrap(sut.fetchedResults(
             by: LabelLocation.inbox.labelID,
             viewMode: .conversation,
-            onMainContext: true,
             isUnread: true
         ))
         try fetchedController.performFetch()

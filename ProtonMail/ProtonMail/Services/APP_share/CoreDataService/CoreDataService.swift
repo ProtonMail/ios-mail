@@ -218,8 +218,7 @@ class CoreDataService: CoreDataContextProviderProtocol {
         predicate: NSPredicate,
         sortDescriptors: [NSSortDescriptor],
         fetchBatchSize: Int,
-        sectionNameKeyPath: String? = nil,
-        onMainContext: Bool
+        sectionNameKeyPath: String? = nil
     ) -> NSFetchedResultsController<T> {
         let fetchRequest: NSFetchRequest<T> = NSFetchRequest(entityName: entityName)
         fetchRequest.predicate = predicate

@@ -345,7 +345,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         let fetchedResultsController = messageService.fetchedResults(
             by: self.labelID,
             viewMode: self.locationViewMode,
-            onMainContext: false,
             isUnread: isUnread,
             isAscending: isAscending
         )

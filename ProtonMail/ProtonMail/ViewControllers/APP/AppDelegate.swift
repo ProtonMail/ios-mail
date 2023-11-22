@@ -106,7 +106,6 @@ extension AppDelegate: UIApplicationDelegate {
             coreKeyMaker.activate(NoneProtection()) { _ in }
         }
 
-        let usersManager = dependencies.usersManager
         let unlockManager = dependencies.unlockManager
         unlockManager.delegate = self
 

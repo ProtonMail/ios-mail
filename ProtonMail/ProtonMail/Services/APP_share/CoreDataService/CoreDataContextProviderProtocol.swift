@@ -36,8 +36,7 @@ protocol CoreDataContextProviderProtocol {
         predicate: NSPredicate,
         sortDescriptors: [NSSortDescriptor],
         fetchBatchSize: Int,
-        sectionNameKeyPath: String?,
-        onMainContext: Bool
+        sectionNameKeyPath: String?
     ) -> NSFetchedResultsController<T>
 
     func deleteAllData() async

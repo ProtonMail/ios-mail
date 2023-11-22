@@ -100,11 +100,6 @@ extension Message {
         }
     }
 
-    /// check if message contains a draft label
-    var draft: Bool {
-        contains(label: Location.draft) || contains(label: HiddenLocation.draft.rawValue)
-    }
-
     /// get messsage label ids
     ///
     /// - Returns: array
@@ -161,13 +156,6 @@ extension Message {
                 flag.remove(.repliedAll)
             }
             self.flag = flag
-        }
-    }
-
-    /// this will check two type of sent folder
-    var sentHardCheck: Bool {
-        get {
-            return self.contains(label: Message.Location.sent) || self.contains(label: "2")
         }
     }
 
