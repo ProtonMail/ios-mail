@@ -54,7 +54,7 @@ class GlobalContainer: ManagedContainer {
 
     var contextProviderFactory: Factory<CoreDataContextProviderProtocol> {
         self {
-            CoreDataService.shared
+            CoreDataService(container: CoreDataStore.shared.container)
         }
     }
 

@@ -28,8 +28,6 @@ import LifetimeTracker
 #endif
 
 class CoreDataService: CoreDataContextProviderProtocol {
-    static let shared = CoreDataService(container: CoreDataStore.shared.container)
-
     private let container: NSPersistentContainer
     private let backgroundContext: NSManagedObjectContext
     private static let queueNamePrefix = "ch.protonmail.CoreDataService"
