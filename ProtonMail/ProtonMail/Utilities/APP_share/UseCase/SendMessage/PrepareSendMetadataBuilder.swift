@@ -19,37 +19,20 @@ import Foundation
 import ProtonCoreServices
 
 enum PrepareSendMetadataBuilder {
+    typealias Dependencies = HasFetchAndVerifyContacts & HasFetchAttachment & HasFetchEmailAddressesPublicKey
 
-    static func make(
-        userData: UserDataSource,
-        apiService: APIService,
-        cacheService: CacheServiceProtocol,
-        contactProvider: ContactProviderProtocol
-    ) -> PrepareSendMetadata {
-        // ResolveSendPreferencesUseCase
-        let fetchContactsDependencies: FetchAndVerifyContacts.Dependencies = .init(
-            apiService: apiService,
-            cacheService: cacheService,
-            contactProvider: contactProvider
-        )
-        let fetchPublicKeyDependencies: FetchEmailAddressesPublicKey.Dependencies = .init(apiService: apiService)
+    static func make(userData: UserDataSource, dependencies: Dependencies) -> PrepareSendMetadata {
         let sendPreferencesDependencies: ResolveSendPreferences.Dependencies = .init(
-            fetchVerifiedContacts: FetchAndVerifyContacts(
-                currentUserKeys: userData.userInfo.userPrivateKeys,
-                dependencies: fetchContactsDependencies
-            ),
-            fetchAddressesPublicKeys: FetchEmailAddressesPublicKey(dependencies: fetchPublicKeyDependencies)
+            fetchVerifiedContacts: dependencies.fetchAndVerifyContacts,
+            fetchAddressesPublicKeys: dependencies.fetchEmailAddressesPublicKey
         )
         let resolveSendPreferences = ResolveSendPreferences(dependencies: sendPreferencesDependencies)
-
-        // FetchAttachmentUseCase
-        let fetchAttachmentDependencies: FetchAttachment.Dependencies = .init(apiService: apiService)
 
         // PrepareSendMetadataUseCase
         let sendMetadatDependencies: PrepareSendMetadata.Dependencies = .init(
             userDataSource: userData,
             resolveSendPreferences: resolveSendPreferences,
-            fetchAttachment: FetchAttachment(dependencies: fetchAttachmentDependencies)
+            fetchAttachment: dependencies.fetchAttachment
         )
         return PrepareSendMetadata(dependencies: sendMetadatDependencies)
     }

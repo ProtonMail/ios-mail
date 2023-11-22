@@ -131,6 +131,12 @@ final class UserContainer: ManagedContainer {
         }
     }
 
+    var fetchEmailAddressesPublicKeyFactory: Factory<FetchEmailAddressesPublicKey> {
+        self {
+            FetchEmailAddressesPublicKey(dependencies: .init(apiService: self.user.apiService))
+        }
+    }
+
     var fetchMessageDetailFactory: Factory<FetchMessageDetail> {
         self {
             FetchMessageDetail(
