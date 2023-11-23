@@ -21,10 +21,16 @@ import ProtonCoreServices
 
 class MailEventsLoop: EventsLoop {
     typealias Response = EventAPIResponse
-    typealias Dependencies = HasLastUpdatedStoreProtocol & HasAPIService & HasEventProcessor
+    typealias Dependencies = AnyObject
+        & HasAPIService
+        & HasEventProcessor
+        & HasLastUpdatedStoreProtocol
+        & HasUserManager
+        & HasUserDefaults
 
     weak var delegate: CoreLoopDelegate?
     private let dependencies: Dependencies
+    private let cacheResetUseCase: CacheResetUseCase
 
     let userID: UserID
     var loopID: String {
@@ -47,6 +53,7 @@ class MailEventsLoop: EventsLoop {
     ) {
         self.userID = userID
         self.dependencies = dependencies
+        self.cacheResetUseCase = .init(dependencies: dependencies)
     }
 
     func poll(sinceLatestEventID eventID: String, completion: @escaping (Result<Response, Error>) -> Void) {
@@ -80,13 +87,18 @@ class MailEventsLoop: EventsLoop {
     }
 
     func onError(error: EventsLoopError) {
-        SystemLogger.log(error: error, category: .eventLoop)
         switch error {
         case .cacheIsOutdated:
-            // TODO: clear the cache and refetch latest eventID.
-            break
+            SystemLogger.log(message: "Cache is outdated.", category: .eventLoop)
+            Task {
+                do {
+                    try await self.cacheResetUseCase.execute(type: .all)
+                } catch {
+                    SystemLogger.log(error: error, category: .eventLoop)
+                }
+            }
         default:
-            break
+            SystemLogger.log(error: error, category: .eventLoop)
         }
     }
 }
