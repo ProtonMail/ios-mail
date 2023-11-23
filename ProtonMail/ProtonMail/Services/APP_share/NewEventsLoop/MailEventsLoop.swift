@@ -81,6 +81,13 @@ class MailEventsLoop: EventsLoop {
 
     func onError(error: EventsLoopError) {
         SystemLogger.log(error: error, category: .eventLoop)
+        switch error {
+        case .cacheIsOutdated:
+            // TODO: clear the cache and refetch latest eventID.
+            break
+        default:
+            break
+        }
     }
 }
 

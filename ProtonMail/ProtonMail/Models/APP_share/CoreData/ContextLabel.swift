@@ -47,3 +47,16 @@ class ContextLabel: NSManagedObject {
         static let conversationID = "conversationID"
     }
 }
+
+extension ContextLabel {
+    static func labelFor(labelID: String, conversationID: String, userID: UserID, in context: NSManagedObjectContext) -> ContextLabel? {
+        return context.managedObjectWithEntityName(
+            Attributes.entityName,
+            matching: [
+                Attributes.labelID: labelID,
+                Attributes.conversationID: conversationID,
+                Attributes.userID: userID.rawValue
+            ]
+        )
+    }
+}

@@ -54,8 +54,10 @@ struct MessageResponse: Decodable {
         let numAttachments: Int
         let expirationTime: Int
         let addressID: String
-        let externalID: String
+        let externalID: String?
         let labelIDs: [String]
+        let labelIDsAdded: [String]?
+        let labelIDsRemoved: [String]?
         let attachmentsMetadata: [ConversationResponse.AttachmentMetadata]
 
         // swiftlint:disable:next nesting
@@ -87,6 +89,8 @@ struct MessageResponse: Decodable {
             case addressID = "AddressID"
             case externalID = "ExternalID"
             case labelIDs = "LabelIDs"
+            case labelIDsAdded = "LabelIDsAdded"
+            case labelIDsRemoved = "LabelIDsRemoved"
             case attachmentsMetadata = "AttachmentsMetadata"
         }
     }
