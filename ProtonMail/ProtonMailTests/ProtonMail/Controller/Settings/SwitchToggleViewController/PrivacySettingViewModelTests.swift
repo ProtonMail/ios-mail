@@ -25,7 +25,7 @@ final class PrivacySettingViewModelTests: XCTestCase {
     var sut: PrivacySettingViewModel!
     var user: UserManager!
     var apiMock: APIServiceMock!
-    var metadataStrippingProvider: AttachmentMetadataStrippingMock!
+    private var testContainer: TestContainer!
 
     var expected: [PrivacySettingViewModel.SettingPrivacyItem] {
         [
@@ -40,17 +40,21 @@ final class PrivacySettingViewModelTests: XCTestCase {
     let errorTemplate = APIServiceMock.APIError(domain: "test.com", code: -999)
 
     override func setUpWithError() throws {
+        try super.setUpWithError()
+
+        testContainer = .init()
         self.apiMock = APIServiceMock()
         self.user = UserManager(api: apiMock, role: .member)
-        self.metadataStrippingProvider = AttachmentMetadataStrippingMock()
-        self.sut = PrivacySettingViewModel(user: user, metaStrippingProvider: metadataStrippingProvider)
+        self.sut = PrivacySettingViewModel(user: user, keychain: testContainer.keychain)
     }
 
     override func tearDownWithError() throws {
         sut = nil
+        testContainer = nil
         user = nil
         apiMock = nil
-        metadataStrippingProvider = nil
+
+        try super.tearDownWithError()
     }
 
     func testConstant() throws {
@@ -69,10 +73,10 @@ final class PrivacySettingViewModelTests: XCTestCase {
     }
 
     func testPrivacyItemStatus_metadataStrip() throws {
-        metadataStrippingProvider.metadataStripping = .stripMetadata
+        testContainer.keychain[.metadataStripping] = .stripMetadata
         try testPrivacyItem(.metadataStripping, expectedResult: true)
 
-        metadataStrippingProvider.metadataStripping = .sendAsIs
+        testContainer.keychain[.metadataStripping] = .sendAsIs
         try testPrivacyItem(.metadataStripping, expectedResult: false)
     }
 
@@ -111,19 +115,19 @@ final class PrivacySettingViewModelTests: XCTestCase {
         let index = try XCTUnwrap(expected.firstIndex(of: .metadataStripping))
         let indexPath = IndexPath(row: index, section: 0)
 
-        metadataStrippingProvider.metadataStripping = .sendAsIs
+        testContainer.keychain[.metadataStripping] = .sendAsIs
         sut.toggle(for: indexPath, to: true) { [self] error in
             XCTAssertNil(error)
-            XCTAssertEqual(metadataStrippingProvider.metadataStripping, .stripMetadata)
+            XCTAssertEqual(testContainer.keychain[.metadataStripping], .stripMetadata)
             expectation1.fulfill()
         }
         wait(for: [expectation1], timeout: 1)
 
         let expectation2 = expectation(description: "Get callback")
-        metadataStrippingProvider.metadataStripping = .stripMetadata
+        testContainer.keychain[.metadataStripping] = .stripMetadata
         sut.toggle(for: indexPath, to: false) { [self] error in
             XCTAssertNil(error)
-            XCTAssertEqual(metadataStrippingProvider.metadataStripping, .sendAsIs)
+            XCTAssertEqual(testContainer.keychain[.metadataStripping], .sendAsIs)
             expectation2.fulfill()
         }
         wait(for: [expectation2], timeout: 1)

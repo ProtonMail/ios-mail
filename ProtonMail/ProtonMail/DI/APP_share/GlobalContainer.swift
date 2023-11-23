@@ -34,12 +34,6 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
-    var attachmentMetadataStripStatusProviderFactory: Factory<AttachmentMetadataStrippingProtocol> {
-        self {
-            self.userCachedStatus
-        }
-    }
-
     var cachedUserDataProviderFactory: Factory<CachedUserDataProvider> {
         self {
             UserDataCache(keyMaker: self.keyMaker, keychain: self.keychain)

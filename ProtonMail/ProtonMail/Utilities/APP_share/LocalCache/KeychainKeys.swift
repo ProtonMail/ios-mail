@@ -19,6 +19,11 @@ import ProtonCoreKeymaker
 
 class KeychainKeys {
     static let keymakerRandomKey = StringKeychainKey(name: "randomPinForProtection")
+
+    static let metadataStripping = RawRepresentableKeychainKey<AttachmentMetadataStripping>(
+        name: "metadataStripping",
+        defaultValue: .sendAsIs
+    )
 }
 
 final class StringKeychainKey: KeychainKeys {
@@ -26,6 +31,16 @@ final class StringKeychainKey: KeychainKeys {
 
     init(name: String) {
         self.name = name
+    }
+}
+
+final class RawRepresentableKeychainKey<T: RawRepresentable>: KeychainKeys where T.RawValue: LosslessStringConvertible {
+    let rawValueKey: StringKeychainKey
+    let defaultValue: T
+
+    init(name: String, defaultValue: T) {
+        rawValueKey = StringKeychainKey(name: name)
+        self.defaultValue = defaultValue
     }
 }
 
@@ -40,6 +55,24 @@ extension Keychain {
             } else {
                 remove(forKey: key.name)
             }
+        }
+    }
+
+    subscript<T>(_ key: RawRepresentableKeychainKey<T>) -> T {
+        get {
+            guard let stringValue = self[key.rawValueKey] else {
+                return key.defaultValue
+            }
+
+            guard let rawValue = T.RawValue(stringValue), let parsedValue = T(rawValue: rawValue) else {
+                self[key.rawValueKey] = nil
+                return key.defaultValue
+            }
+
+            return parsedValue
+        }
+        set {
+            self[key.rawValueKey] = newValue.rawValue.description
         }
     }
 }

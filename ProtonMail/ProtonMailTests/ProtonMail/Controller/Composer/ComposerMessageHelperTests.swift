@@ -22,7 +22,7 @@ import ProtonCoreTestingToolkit
 import XCTest
 
 final class ComposerMessageHelperTests: XCTestCase {
-    var contextProviderMock: MockCoreDataContextProvider!
+    private var testContainer: TestContainer!
     var fakeUser: UserManager!
     var messageDataServiceMock: MockMessageDataService!
     var sut: ComposerMessageHelper!
@@ -31,9 +31,14 @@ final class ComposerMessageHelperTests: XCTestCase {
 
     private var copyMessage: MockCopyMessageUseCase!
 
+    private var contextProviderMock: CoreDataContextProviderProtocol {
+        testContainer.contextProvider
+    }
+
     override func setUp() {
         super.setUp()
-        contextProviderMock = MockCoreDataContextProvider()
+
+        testContainer = .init()
         fakeUser = UserManager(api: APIServiceMock(), globalContainer: TestContainer())
         messageDataServiceMock = MockMessageDataService()
         testMessage = createTestMessage()
@@ -44,7 +49,7 @@ final class ComposerMessageHelperTests: XCTestCase {
                                 cacheService: cacheServiceMock,
                                 contextProvider: contextProviderMock,
                                 copyMessage: copyMessage,
-                                attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingMock()),
+                                keychain: testContainer.keychain),
             user: fakeUser)
 
         copyMessage.executeStub.bodyIs { [unowned self] _, _ in
@@ -58,7 +63,6 @@ final class ComposerMessageHelperTests: XCTestCase {
         copyMessage = nil
         messageDataServiceMock = nil
         fakeUser = nil
-        contextProviderMock = nil
         testMessage = nil
         cacheServiceMock = nil
 

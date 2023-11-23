@@ -58,7 +58,6 @@ final class UserCachedStatus: UserCachedStatusProvider {
 
         // FIX ME: double check if the value belongs to user. move it into user object. 2.0
 
-        static let metadataStripping = "metadataStripping"
         static let browser = "browser"
 
         static let leftToRightSwipeAction = "leftToRightSwipeAction"
@@ -188,21 +187,6 @@ extension UserCachedStatus {
         }
         set {
             keychain.set("\(newValue.rawValue)", forKey: Key.autoLockTime)
-        }
-    }
-}
-
-extension UserCachedStatus: AttachmentMetadataStrippingProtocol {
-    var metadataStripping: AttachmentMetadataStripping {
-        get {
-            guard let string = keychain.string(forKey: Key.metadataStripping),
-                let mode = AttachmentMetadataStripping(rawValue: string) else {
-                return .sendAsIs
-            }
-            return mode
-        }
-        set {
-            keychain.set(newValue.rawValue, forKey: Key.metadataStripping)
         }
     }
 }
