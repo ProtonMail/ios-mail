@@ -24,15 +24,12 @@ enum SendMessageBuilder {
     static func make(
         userData: UserDataSource,
         apiService: APIService,
-        cacheService: CacheServiceProtocol,
-        contactProvider: ContactProviderProtocol,
-        messageDataService: MessageDataServiceProtocol
+        messageDataService: MessageDataServiceProtocol,
+        prepareSendMetadataBuilderDependencies: PrepareSendMetadataBuilder.Dependencies
     ) -> SendMessage {
         let prepareSendMetadata = PrepareSendMetadataBuilder.make(
             userData: userData,
-            apiService: apiService,
-            cacheService: cacheService,
-            contactProvider: contactProvider
+            dependencies: prepareSendMetadataBuilderDependencies
         )
         let sendMessageDependencies: SendMessage.Dependencies = .init(
             prepareSendMetadata: prepareSendMetadata,

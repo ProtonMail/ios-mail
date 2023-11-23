@@ -26,7 +26,10 @@ struct CheckedSenderContact {
 
 final class MessageSenderPGPChecker {
     typealias Complete = (CheckedSenderContact?) -> Void
-    typealias Dependencies = HasUserManager & HasFetchAttachment & HasFetchAndVerifyContacts
+    typealias Dependencies = HasFetchAndVerifyContacts
+    & HasFetchAttachment
+    & HasFetchEmailAddressesPublicKey
+    & HasUserManager
 
     private let message: MessageEntity
     private var messageService: MessageDataService { dependencies.user.messageService }
@@ -38,9 +41,7 @@ final class MessageSenderPGPChecker {
         self.fetchVerificationKeys = FetchVerificationKeys(
             dependencies: .init(
                 fetchAndVerifyContacts: dependencies.fetchAndVerifyContacts,
-                fetchEmailsPublicKeys: FetchEmailAddressesPublicKey(
-                    dependencies: .init(apiService: dependencies.user.apiService)
-                )
+                fetchEmailsPublicKeys: dependencies.fetchEmailAddressesPublicKey
             ),
             userAddresses: []
         )

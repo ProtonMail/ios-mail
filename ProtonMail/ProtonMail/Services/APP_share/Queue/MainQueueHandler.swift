@@ -69,9 +69,8 @@ final class MainQueueHandler: QueueHandler {
         let sendUseCase = SendMessageBuilder.make(
             userData: user,
             apiService: apiService,
-            cacheService: user.cacheService,
-            contactProvider: contactService,
-            messageDataService: messageDataService
+            messageDataService: messageDataService,
+            prepareSendMetadataBuilderDependencies: user.container
         )
         let isUserAuthenticated: (UserID) -> Bool = { [weak user] userID in
             guard let userManager = user else {

@@ -565,6 +565,16 @@ extension UserContainer: HasFetchAttachmentMetadataUseCase {
     }
 }
 
+protocol HasFetchEmailAddressesPublicKey {
+    var fetchEmailAddressesPublicKey: FetchEmailAddressesPublicKey { get }
+}
+
+extension UserContainer: HasFetchEmailAddressesPublicKey {
+    var fetchEmailAddressesPublicKey: FetchEmailAddressesPublicKey {
+        fetchEmailAddressesPublicKeyFactory()
+    }
+}
+
 protocol HasFetchMessageDetail {
     var fetchMessageDetail: FetchMessageDetail { get }
 }
