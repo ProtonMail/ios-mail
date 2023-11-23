@@ -464,24 +464,24 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
             }
         )
 
-        let emailToBeUpdated = try XCTUnwrap(
-            testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+        try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+            let emailToBeUpdated = try XCTUnwrap(
                 Email.emailFor(
                     emailID: "JXpWbUF0BTvKCm56eKQ==",
                     userID: user.userID,
                     in: context
                 )
-            }
-        )
-        XCTAssertEqual(emailToBeUpdated.emailID, "JXpWbUF0BTvKCm56eKQ==")
-        XCTAssertEqual(emailToBeUpdated.name, "TestName")
-        XCTAssertEqual(emailToBeUpdated.email, "testName@proton.me")
-        XCTAssertEqual(emailToBeUpdated.type, "[\"internet\",\"home\",\"pref\"]")
-        XCTAssertEqual(emailToBeUpdated.defaults.intValue, 0)
-        XCTAssertEqual(emailToBeUpdated.order.intValue, 2)
-        XCTAssertEqual(emailToBeUpdated.lastUsedTime?.timeIntervalSince1970, 0)
-        XCTAssertEqual(emailToBeUpdated.contactID, "iFNnomTyeuXVw3n9")
-        XCTAssertEqual(emailToBeUpdated.labels.count, 0)
+            )
+            XCTAssertEqual(emailToBeUpdated.emailID, "JXpWbUF0BTvKCm56eKQ==")
+            XCTAssertEqual(emailToBeUpdated.name, "TestName")
+            XCTAssertEqual(emailToBeUpdated.email, "testName@proton.me")
+            XCTAssertEqual(emailToBeUpdated.type, "[\"internet\",\"home\",\"pref\"]")
+            XCTAssertEqual(emailToBeUpdated.defaults.intValue, 0)
+            XCTAssertEqual(emailToBeUpdated.order.intValue, 2)
+            XCTAssertEqual(emailToBeUpdated.lastUsedTime?.timeIntervalSince1970, 0)
+            XCTAssertEqual(emailToBeUpdated.contactID, "iFNnomTyeuXVw3n9")
+            XCTAssertEqual(emailToBeUpdated.labels.count, 0)
+        }
     }
 
     func testSpecialLoop_withLabelDeleteResponse_dataWillBeDeletedInCache() throws {
@@ -508,35 +508,35 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
             }
         }
 
-        let labelToBeAdded = try XCTUnwrap(
-            testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+        try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+            let labelToBeAdded = try XCTUnwrap(
                 Label.labelFor(labelID: "e7vaVmdmUi4dVUP5PXv-qQw9VzWcO1p_M0P57R8LmS4py95OBT_xKPoPA==", userID: user.userID, in: context)
-            }
-        )
-        XCTAssertEqual(labelToBeAdded.labelID, "e7vaVmdmUi4dVUP5PXv-qQw9VzWcO1p_M0P57R8LmS4py95OBT_xKPoPA==")
-        XCTAssertEqual(labelToBeAdded.name, "testLabel")
-        XCTAssertEqual(labelToBeAdded.path, "testLabel")
-        XCTAssertEqual(labelToBeAdded.type.intValue, 1)
-        XCTAssertEqual(labelToBeAdded.color, "#c44800")
-        XCTAssertEqual(labelToBeAdded.order.intValue, 14)
-        XCTAssertEqual(labelToBeAdded.notify.intValue, 0)
-        XCTAssertEqual(labelToBeAdded.sticky.intValue, 0)
-        XCTAssertEqual(labelToBeAdded.parentID, "Y8EYHAHBmPvcYYoZ-goDI5bn8Ot")
+            )
+            XCTAssertEqual(labelToBeAdded.labelID, "e7vaVmdmUi4dVUP5PXv-qQw9VzWcO1p_M0P57R8LmS4py95OBT_xKPoPA==")
+            XCTAssertEqual(labelToBeAdded.name, "testLabel")
+            XCTAssertEqual(labelToBeAdded.path, "testLabel")
+            XCTAssertEqual(labelToBeAdded.type.intValue, 1)
+            XCTAssertEqual(labelToBeAdded.color, "#c44800")
+            XCTAssertEqual(labelToBeAdded.order.intValue, 14)
+            XCTAssertEqual(labelToBeAdded.notify.intValue, 0)
+            XCTAssertEqual(labelToBeAdded.sticky.intValue, 0)
+            XCTAssertEqual(labelToBeAdded.parentID, "Y8EYHAHBmPvcYYoZ-goDI5bn8Ot")
+        }
 
-        let labelToBeUpdated = try XCTUnwrap(
-            testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+        try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+            let labelToBeUpdated = try XCTUnwrap(
                 Label.labelFor(labelID: "qQw9VzWcO1p_M0P57R8LmS4py95OBT_xKPoPA==", userID: user.userID, in: context)
-            }
-        )
-        XCTAssertEqual(labelToBeUpdated.labelID, "qQw9VzWcO1p_M0P57R8LmS4py95OBT_xKPoPA==")
-        XCTAssertEqual(labelToBeUpdated.name, "testLabel2")
-        XCTAssertEqual(labelToBeUpdated.path, "testLabel2")
-        XCTAssertEqual(labelToBeUpdated.type.intValue, 1)
-        XCTAssertEqual(labelToBeUpdated.color, "#c44800")
-        XCTAssertEqual(labelToBeUpdated.order.intValue, 15)
-        XCTAssertEqual(labelToBeUpdated.notify.intValue, 1)
-        XCTAssertEqual(labelToBeUpdated.sticky.intValue, 1)
-        XCTAssertEqual(labelToBeUpdated.parentID, "")
+            )
+            XCTAssertEqual(labelToBeUpdated.labelID, "qQw9VzWcO1p_M0P57R8LmS4py95OBT_xKPoPA==")
+            XCTAssertEqual(labelToBeUpdated.name, "testLabel2")
+            XCTAssertEqual(labelToBeUpdated.path, "testLabel2")
+            XCTAssertEqual(labelToBeUpdated.type.intValue, 1)
+            XCTAssertEqual(labelToBeUpdated.color, "#c44800")
+            XCTAssertEqual(labelToBeUpdated.order.intValue, 15)
+            XCTAssertEqual(labelToBeUpdated.notify.intValue, 1)
+            XCTAssertEqual(labelToBeUpdated.sticky.intValue, 1)
+            XCTAssertEqual(labelToBeUpdated.parentID, "")
+        }
     }
 
     func testSpecialLoop_withConversationDeleteResponse_dataWillBeDeletedInCache() throws {
@@ -579,73 +579,265 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
             })
         }
 
-        let conversationToBeUpdated = try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
-            Conversation.conversationFor("mjHxuuw06vSloSQwa4GLoQqwcyT4GJ4Bda2qtOWyQ==", userID: user.userID, in: context)
+        try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+            let conversationToBeUpdated = Conversation.conversationFor(
+                "mjHxuuw06vSloSQwa4GLoQqwcyT4GJ4Bda2qtOWyQ==",
+                userID: user.userID,
+                in: context
+            )
+            let conversation = try XCTUnwrap(conversationToBeUpdated)
+
+            XCTAssertEqual(conversation.conversationID, "mjHxuuw06vSloSQwa4GLoQqwcyT4GJ4Bda2qtOWyQ==")
+            XCTAssertEqual(conversation.order.intValue, 402171434036)
+            XCTAssertEqual(conversation.subject, "Email Test 325878")
+            XCTAssertEqual(conversation.numMessages.intValue, 1)
+            XCTAssertEqual(conversation.numAttachments.intValue, 2)
+            XCTAssertNil(conversation.expirationTime)
+            XCTAssertEqual(conversation.size?.intValue, 54679)
+
+            XCTAssertEqual(conversation.labels.count, 3)
+            let labels = try XCTUnwrap(conversation.labels.allObjects as? [ContextLabel])
+
+            let labelWithID0 = try XCTUnwrap(labels.first(where: { $0.labelID == "0" }))
+            XCTAssertEqual(labelWithID0.messageCount.intValue, 1)
+            XCTAssertEqual(labelWithID0.unreadCount.intValue, 1)
+            XCTAssertEqual(labelWithID0.time?.timeIntervalSince1970, 1688439582)
+            XCTAssertNil(labelWithID0.expirationTime)
+            XCTAssertEqual(labelWithID0.size.intValue, 54679)
+            XCTAssertEqual(labelWithID0.attachmentCount.intValue, 2)
+
+            let labelWithID5 = try XCTUnwrap(labels.first(where: { $0.labelID == "5" }))
+            XCTAssertEqual(labelWithID5.messageCount.intValue, 1)
+            XCTAssertEqual(labelWithID5.unreadCount.intValue, 1)
+            XCTAssertEqual(labelWithID5.time?.timeIntervalSince1970, 1688439582)
+            XCTAssertNil(labelWithID5.expirationTime)
+            XCTAssertEqual(labelWithID5.size.intValue, 54679)
+            XCTAssertEqual(labelWithID5.attachmentCount.intValue, 2)
+
+            let labelWithID15 = try XCTUnwrap(labels.first(where: { $0.labelID == "15" }))
+            XCTAssertEqual(labelWithID15.messageCount.intValue, 1)
+            XCTAssertEqual(labelWithID15.unreadCount.intValue, 1)
+            XCTAssertEqual(labelWithID15.time?.timeIntervalSince1970, 1688439582)
+            XCTAssertNil(labelWithID15.expirationTime)
+            XCTAssertEqual(labelWithID15.size.intValue, 54679)
+            XCTAssertEqual(labelWithID15.attachmentCount.intValue, 2)
+
+            let entity = ConversationEntity(conversation)
+
+            XCTAssertEqual(entity.attachmentsMetadata.count, 2)
+            let attachment1 = try XCTUnwrap(
+                entity.attachmentsMetadata.first(where: { $0.id == "V4WrbdOshmKMZnLJJyfqCWsuol9bV_NpSgNNMWjOE361FFec4aHkvX1Q==" })
+            )
+            XCTAssertEqual(attachment1.name, "moon.png")
+            XCTAssertEqual(attachment1.mimeType, "image/png")
+            XCTAssertEqual(attachment1.disposition, .attachment)
+            XCTAssertEqual(attachment1.size, 24437)
+            let attachment2 = try XCTUnwrap(
+                entity.attachmentsMetadata.first(where: { $0.id == "PttIO0lOXJDjVHumLu_zmYraomvXYDnbUuadmakHef9Vd58Inqg==" })
+            )
+            XCTAssertEqual(attachment2.name, "moon.png")
+            XCTAssertEqual(attachment2.mimeType, "image/png")
+            XCTAssertEqual(attachment2.disposition, .attachment)
+            XCTAssertEqual(attachment2.size, 18364)
+
+            XCTAssertEqual(try? entity.parseSenders().count, 1)
+            let sender = try XCTUnwrap(entity.parseSenders().first)
+            XCTAssertEqual(sender.address, "sender@proton.me")
+            XCTAssertEqual(sender.name, "name")
+            XCTAssertEqual(sender.isFromProton, false)
+            XCTAssertEqual(sender.shouldDisplaySenderImage, false)
+            XCTAssertEqual(sender.isFromSimpleLogin, false)
+
+            XCTAssertTrue(entity.recipients.contains("testMail@pm.me"))
         }
-        let conversation = try XCTUnwrap(conversationToBeUpdated)
+    }
 
-        XCTAssertEqual(conversation.conversationID, "mjHxuuw06vSloSQwa4GLoQqwcyT4GJ4Bda2qtOWyQ==")
-        XCTAssertEqual(conversation.order.intValue, 402171434036)
-        XCTAssertEqual(conversation.subject, "Email Test 325878")
-        XCTAssertEqual(conversation.numMessages.intValue, 1)
-        XCTAssertEqual(conversation.numAttachments.intValue, 2)
-        XCTAssertEqual(conversation.expirationTime?.timeIntervalSince1970, 0)
-        XCTAssertEqual(conversation.size?.intValue, 54679)
+    func testSpecialLoop_withMessageDeleteResponse_dataWillBeDeletedInCache() throws {
+        let user = try prepareEventAPIResponse(from: EventTestData.messageDelete) {
+            try self.testContainer.contextProvider.write(block: { context in
+                let userID = self.testUsers.first?.userID.rawValue ?? ""
+                let messageToBeDeleted = Message(context: context)
+                messageToBeDeleted.messageID = "c1B3MfMAxkUfKfkwv9gE1qaWFG7p_4fBxF2XLefqwTYF1ejviu_KSfUvdg=="
+                messageToBeDeleted.userID = userID
+                messageToBeDeleted.bccList = ""
+                messageToBeDeleted.ccList = ""
+                messageToBeDeleted.toList = ""
+                messageToBeDeleted.body = ""
+                messageToBeDeleted.passwordEncryptedBody = ""
+                messageToBeDeleted.passwordHint = ""
+                messageToBeDeleted.title = ""
+                let labels = messageToBeDeleted.mutableSetValue(forKey: "labels")
 
-        XCTAssertEqual(conversation.labels.count, 3)
-        let labels = try XCTUnwrap(conversation.labels.allObjects as? [ContextLabel])
+                let label = Label(context: context)
+                label.labelID = "0"
+                label.userID = userID
+                labels.add(label)
+            })
+        }
 
-        let labelWithID0 = try XCTUnwrap(labels.first(where: { $0.labelID == "0" }))
-        XCTAssertEqual(labelWithID0.messageCount.intValue, 1)
-        XCTAssertEqual(labelWithID0.unreadCount.intValue, 1)
-        XCTAssertEqual(labelWithID0.time?.timeIntervalSince1970, 1688439582)
-        XCTAssertEqual(labelWithID0.expirationTime?.timeIntervalSince1970, 0)
-        XCTAssertEqual(labelWithID0.size.intValue, 54679)
-        XCTAssertEqual(labelWithID0.attachmentCount.intValue, 2)
+        let messageToBeDeleted = try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+            Message.messageFor(messageID: "c1B3MfMAxkUfKfkwv9gE1qaWFG7p_4fBxF2XLefqwTYF1ejviu_KSfUvdg==", userID: user.userID, in: context)
+        }
+        XCTAssertNil(messageToBeDeleted)
 
-        let labelWithID5 = try XCTUnwrap(labels.first(where: { $0.labelID == "5" }))
-        XCTAssertEqual(labelWithID5.messageCount.intValue, 1)
-        XCTAssertEqual(labelWithID5.unreadCount.intValue, 1)
-        XCTAssertEqual(labelWithID5.time?.timeIntervalSince1970, 1688439582)
-        XCTAssertEqual(labelWithID5.expirationTime?.timeIntervalSince1970, 0)
-        XCTAssertEqual(labelWithID5.size.intValue, 54679)
-        XCTAssertEqual(labelWithID5.attachmentCount.intValue, 2)
+        // label should not be deleted once the message is deleted.
+        let label = try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+            Label.labelFor(labelID: "0", userID: user.userID, in: context)
+        }
+        XCTAssertNotNil(label)
+    }
 
-        let labelWithID15 = try XCTUnwrap(labels.first(where: { $0.labelID == "15" }))
-        XCTAssertEqual(labelWithID15.messageCount.intValue, 1)
-        XCTAssertEqual(labelWithID15.unreadCount.intValue, 1)
-        XCTAssertEqual(labelWithID15.time?.timeIntervalSince1970, 1688439582)
-        XCTAssertEqual(labelWithID15.expirationTime?.timeIntervalSince1970, 0)
-        XCTAssertEqual(labelWithID15.size.intValue, 54679)
-        XCTAssertEqual(labelWithID15.attachmentCount.intValue, 2)
+    func testSpecialLoop_withMessageUpdateFlagsResponse_dataWillBeUpdatedInCache() throws {
+        let user = try prepareEventAPIResponse(from: EventTestData.messageUpdate) {
+            try self.testContainer.contextProvider.write(block: { context in
+                let userID = self.testUsers.first?.userID.rawValue ?? ""
+                let messageToBeUpdated = Message(context: context)
+                messageToBeUpdated.messageID = "c1B3MfMAxkUfKfkwv9gE1qaWFG7p_4fBxF2XLefqwTYF1ejviu_KSfUvdg=="
+                messageToBeUpdated.userID = userID
+                let labels = messageToBeUpdated.mutableSetValue(forKey: "labels")
 
-        let entity = ConversationEntity(conversation)
+                let labelToBeRemoved = Label(context: context)
+                labelToBeRemoved.labelID = "Z0a2De-4IF7mOLzqcSDqdhiPWnBKbwJkaTowYWD78jH"
+                labelToBeRemoved.userID = userID
+                labels.add(labelToBeRemoved)
 
-        XCTAssertEqual(entity.attachmentsMetadata.count, 2)
-        let attachment1 = try XCTUnwrap(
-            entity.attachmentsMetadata.first(where: { $0.id == "V4WrbdOshmKMZnLJJyfqCWsuol9bV_NpSgNNMWjOE361FFec4aHkvX1Q==" })
-        )
-        XCTAssertEqual(attachment1.name, "moon.png")
-        XCTAssertEqual(attachment1.mimeType, "image/png")
-        XCTAssertEqual(attachment1.disposition, .attachment)
-        XCTAssertEqual(attachment1.size, 24437)
-        let attachment2 = try XCTUnwrap(
-            entity.attachmentsMetadata.first(where: { $0.id == "PttIO0lOXJDjVHumLu_zmYraomvXYDnbUuadmakHef9Vd58Inqg==" })
-        )
-        XCTAssertEqual(attachment2.name, "moon.png")
-        XCTAssertEqual(attachment2.mimeType, "image/png")
-        XCTAssertEqual(attachment2.disposition, .attachment)
-        XCTAssertEqual(attachment2.size, 18364)
+                let labelToBeAdded = Label(context: context)
+                labelToBeAdded.labelID = "_CnYJz7oOv1GTZ0a2De-4IF7mOLzqcSDqdhiPWnBKbwJkaTowYWD78jH84pvqQ6g86W-0Qd5o1Vk0x8WTOKq6g=="
+                labelToBeAdded.userID = userID
+            })
+        }
 
-        XCTAssertEqual(try? entity.parseSenders().count, 1)
-        let sender = try XCTUnwrap(entity.parseSenders().first)
-        XCTAssertEqual(sender.address, "sender@proton.me")
-        XCTAssertEqual(sender.name, "name")
-        XCTAssertEqual(sender.isFromProton, false)
-        XCTAssertEqual(sender.shouldDisplaySenderImage, false)
-        XCTAssertEqual(sender.isFromSimpleLogin, false)
+        try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+            let messageToBeUpdated = Message.messageFor(messageID: "c1B3MfMAxkUfKfkwv9gE1qaWFG7p_4fBxF2XLefqwTYF1ejviu_KSfUvdg==", userID: user.userID, in: context)
+            let message = try XCTUnwrap(messageToBeUpdated)
 
-        XCTAssertTrue(entity.recipients.contains("testMail@pm.me"))
+            XCTAssertEqual(message.messageID, "c1B3MfMAxkUfKfkwv9gE1qaWFG7p_4fBxF2XLefqwTYF1ejviu_KSfUvdg==")
+            XCTAssertEqual(message.order.intValue, 403238854175)
+            XCTAssertEqual(message.conversationID, "mjHxuuw06vSloSQwCBdLUyuzy9CrPrcpoQqwcyT4GJ4Bda2qtOWyQ==")
+            XCTAssertEqual(message.subject, "TestEmail")
+            XCTAssertEqual(message.unRead, false)
+            XCTAssertEqual(message.flags.intValue, 8397825)
+            XCTAssertEqual(message.messageType.intValue, 0)
+            XCTAssertEqual(message.replied, false)
+            XCTAssertEqual(message.repliedAll, false)
+            XCTAssertEqual(message.forwarded, false)
+            XCTAssertEqual(message.time?.timeIntervalSince1970, 1688439582)
+            XCTAssertEqual(message.size.intValue, 54679)
+            XCTAssertEqual(message.numAttachments.intValue, 2)
+            XCTAssertNil(message.expirationTime)
+            XCTAssertEqual(message.addressID, "bHFOZeFQEQdJf862nqkDwMw1dzGWiyiM_rvkIMkZQJbHfzCX7n5j0w==")
+
+            let entity = MessageEntity(message)
+            let sender = try entity.parseSender()
+            XCTAssertEqual(sender.name, "name")
+            XCTAssertEqual(sender.address, "sender@mail.me")
+            XCTAssertEqual(sender.isFromProton, false)
+            XCTAssertEqual(sender.isFromSimpleLogin, false)
+            XCTAssertEqual(sender.shouldDisplaySenderImage, false)
+            XCTAssertEqual(sender.bimiSelector, nil)
+
+            let toList = entity.recipientsTo
+            XCTAssertEqual(toList.isEmpty, false)
+            XCTAssertEqual(toList.first?.contains("test@pm.me"), true)
+
+            XCTAssertTrue(entity.recipientsCc.isEmpty)
+            XCTAssertTrue(entity.recipientsBcc.isEmpty)
+
+            let attachmentsMetaData = entity.attachmentsMetadata
+            let attachment1 = try XCTUnwrap(attachmentsMetaData.first(where: { $0.id == "V4WrbdOshmKMt9CRYCWsuol9bV_NpSgNNMWjOE361FFec4aHkvX1Q==" }))
+            XCTAssertEqual(attachment1.name, "moon.png")
+            XCTAssertEqual(attachment1.size, 24437)
+            XCTAssertEqual(attachment1.mimeType, "image/png")
+            XCTAssertEqual(attachment1.disposition, .attachment)
+
+            let attachment2 = try XCTUnwrap(attachmentsMetaData.first(where: { $0.id == "PttIO0lOd4Z0oMAnVjVHumLu_zmYraomvXYDnbUuadmakHef9Vd58Inqg==" }))
+            XCTAssertEqual(attachment2.name, "moon.png")
+            XCTAssertEqual(attachment2.size, 18364)
+            XCTAssertEqual(attachment2.mimeType, "image/png")
+            XCTAssertEqual(attachment2.disposition, .attachment)
+
+            XCTAssertTrue(entity.contains(labelID: "_CnYJz7oOv1GTZ0a2De-4IF7mOLzqcSDqdhiPWnBKbwJkaTowYWD78jH84pvqQ6g86W-0Qd5o1Vk0x8WTOKq6g=="))
+            XCTAssertFalse(entity.contains(labelID: "Z0a2De-4IF7mOLzqcSDqdhiPWnBKbwJkaTowYWD78jH"))
+        }
+    }
+
+    func testSpecialLoop_withDraftInsertResponse_draftWillBeAddedInCache() throws {
+        let user = try prepareEventAPIResponse(from: EventTestData.draftInsert) {
+            try self.testContainer.contextProvider.write(block: { context in
+                let userID = self.testUsers.first?.userID ?? .init("")
+                self.loadBasicLabels(context: context, userID: userID)
+            })
+        }
+
+        try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+            let draftObject = Message.messageFor(messageID: "w3Xjn6rCOyTM2EFMWhgRpfeNujozP6u6PEYEpH2PW0M4qymA6OENDjRI1ymKA==", userID: user.userID, in: context)
+            let draft = try XCTUnwrap(draftObject)
+
+            XCTAssertEqual(draft.messageID, "w3Xjn6rCOyTM2EFMWhgRpfeNujozP6u6PEYEpH2PW0M4qymA6OENDjRI1ymKA==")
+            XCTAssertEqual(draft.order.intValue, 403343586214)
+            XCTAssertEqual(draft.conversationID, "RZX1jyBAYBRGzYOPRZ3B6rqg8N7r1sjuseJPml0H4p_LL9mhgFnHiClT7TNi_JA==")
+            XCTAssertEqual(draft.subject, "(No Subject)")
+            XCTAssertEqual(draft.unRead, false)
+            XCTAssertEqual(draft.flags.intValue, 12)
+            XCTAssertEqual(draft.messageType.intValue, 0)
+            XCTAssertEqual(draft.replied, false)
+            XCTAssertEqual(draft.repliedAll, false)
+            XCTAssertEqual(draft.forwarded, false)
+            XCTAssertEqual(draft.time?.timeIntervalSince1970, 1700191020)
+            XCTAssertEqual(draft.size.intValue, 231)
+            XCTAssertEqual(draft.numAttachments.intValue, 0)
+            XCTAssertNil(draft.expirationTime)
+            XCTAssertEqual(draft.addressID, "JwUa_eV8uqbTqVNeYNEo5psVgBnB_u4pCO-01Yy1QAp3stedgACzpoI9d0f9K9AXpwLU4I6D0YIz9Z_97hCySg==")
+
+            let entity = MessageEntity(draft)
+            let sender = try entity.parseSender()
+            XCTAssertEqual(sender.name, "L")
+            XCTAssertEqual(sender.address, "ccList")
+            XCTAssertEqual(sender.isFromProton, false)
+            XCTAssertEqual(sender.isFromSimpleLogin, false)
+            XCTAssertEqual(sender.shouldDisplaySenderImage, false)
+            XCTAssertEqual(sender.bimiSelector, nil)
+
+            XCTAssertTrue(entity.recipientsTo.isEmpty)
+            XCTAssertTrue(entity.recipientsCc.isEmpty)
+            let bccList = entity.recipientsBcc
+            XCTAssertEqual(bccList.isEmpty, false)
+            XCTAssertEqual(bccList.first?.contains("test@pm.me"), true)
+
+            XCTAssertEqual(entity.labels.count, 4)
+        }
+    }
+
+    func testSpecialLoop_withDraftInsertResponse_withLocalCachedDraft_onlySomeFieldsWillBeUpdated() throws {
+        let user = try prepareEventAPIResponse(from: EventTestData.draftInsert) {
+            try self.testContainer.contextProvider.write(block: { context in
+                let userID = self.testUsers.first?.userID ?? .init("")
+                self.loadBasicLabels(context: context, userID: userID)
+                let message = Message(context: context)
+                message.messageID = "w3Xjn6rCOyTM2EFMWhgRpfeNujozP6u6PEYEpH2PW0M4qymA6OENDjRI1ymKA=="
+                message.userID = userID.rawValue
+            })
+        }
+
+        try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+            let draftObject = Message.messageFor(messageID: "w3Xjn6rCOyTM2EFMWhgRpfeNujozP6u6PEYEpH2PW0M4qymA6OENDjRI1ymKA==", userID: user.userID, in: context)
+            let draft = try XCTUnwrap(draftObject)
+
+            XCTAssertEqual(draft.messageID, "w3Xjn6rCOyTM2EFMWhgRpfeNujozP6u6PEYEpH2PW0M4qymA6OENDjRI1ymKA==")
+            XCTAssertEqual(draft.conversationID, "RZX1jyBAYBRGzYOPRZ3B6rqg8N7r1sjuseJPml0H4p_LL9mhgFnHiClT7TNi_JA==")
+            XCTAssertEqual(draft.subject, "(No Subject)")
+            XCTAssertEqual(draft.time?.timeIntervalSince1970, 1700191020)
+
+            let entity = MessageEntity(draft)
+
+            XCTAssertTrue(entity.recipientsTo.isEmpty)
+            XCTAssertTrue(entity.recipientsCc.isEmpty)
+            let bccList = entity.recipientsBcc
+            XCTAssertEqual(bccList.isEmpty, false)
+            XCTAssertEqual(bccList.first?.contains("test@pm.me"), true)
+
+            XCTAssertEqual(entity.labels.count, 4)
+        }
     }
 }
 
@@ -713,6 +905,19 @@ private extension MailEventsPeriodicSchedulerTests {
             )
             completion(nil, .success(response))
             e.fulfill()
+        }
+    }
+
+    private func loadBasicLabels(context: NSManagedObjectContext, userID: UserID) {
+        for location in Message.Location.allCases {
+            let label = Label(context: context)
+            label.labelID = location.rawValue
+            label.userID = userID.rawValue
+        }
+        for hiddenLocation in Message.HiddenLocation.allCases {
+            let label = Label(context: context)
+            label.labelID = hiddenLocation.rawValue
+            label.userID = userID.rawValue
         }
     }
 }

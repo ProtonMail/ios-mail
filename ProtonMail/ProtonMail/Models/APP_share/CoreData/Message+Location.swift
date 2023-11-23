@@ -24,7 +24,7 @@ import Foundation
 
 extension Message {
     
-    enum HiddenLocation: String {
+    enum HiddenLocation: String, CaseIterable {
         case draft = "1" //1 can't be removed
         case sent  = "2" //2 can't be removed
         case outbox = "9"
