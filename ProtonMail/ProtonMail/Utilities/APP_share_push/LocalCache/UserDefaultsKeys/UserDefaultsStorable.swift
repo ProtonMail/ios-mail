@@ -40,3 +40,6 @@ extension String: UserDefaultsStorable {
 
 extension Array: UserDefaultsStorable where Element: UserDefaultsStorable {
 }
+
+extension Dictionary: UserDefaultsStorable where Key: UserDefaultsStorable, Value: UserDefaultsStorable {
+}

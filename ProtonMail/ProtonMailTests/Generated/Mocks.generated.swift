@@ -265,19 +265,6 @@ class MockContactGroupsProviderProtocol: ContactGroupsProviderProtocol {
 
 }
 
-class MockContactsSyncCache: ContactsSyncCache {
-    @FuncStub(MockContactsSyncCache.setHistoryToken) var setHistoryTokenStub
-    func setHistoryToken(_ token: Data, for userID: UserID) {
-        setHistoryTokenStub(token, userID)
-    }
-
-    @FuncStub(MockContactsSyncCache.historyToken, initialReturn: nil) var historyTokenStub
-    func historyToken(for userID: UserID) -> Data? {
-        historyTokenStub(userID)
-    }
-
-}
-
 class MockConversationCoordinatorProtocol: ConversationCoordinatorProtocol {
     @PropertyStub(\MockConversationCoordinatorProtocol.pendingActionAfterDismissal, initialGet: nil) var pendingActionAfterDismissalStub
     var pendingActionAfterDismissal: (() -> Void)? {

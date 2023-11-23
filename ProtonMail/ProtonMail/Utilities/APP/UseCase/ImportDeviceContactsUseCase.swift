@@ -28,12 +28,24 @@ protocol ImportDeviceContactsDelegate: AnyObject {
 }
 
 final class ImportDeviceContacts: ImportDeviceContactsUseCase {
-    typealias Dependencies = AnyObject & HasContactsSyncCache & HasDeviceContactsProvider & HasContactDataService
+    typealias Dependencies = AnyObject & HasUserDefaults & HasDeviceContactsProvider & HasContactDataService
 
     // Suggested batch size for creating contacts in backend
     private let contactBatchSize = 10
     private var backgroundTask: Task<Void, Never>?
     private let userID: UserID
+    private var contactsHistoryToken: Data? {
+        get {
+            let historyTokens = dependencies.userDefaults[.contactsHistoryTokenPerUser]
+            return historyTokens[userID.rawValue]
+        }
+        set {
+            var historyTokens = dependencies.userDefaults[.contactsHistoryTokenPerUser]
+            historyTokens[userID.rawValue] = newValue
+            dependencies.userDefaults[.contactsHistoryTokenPerUser] = historyTokens
+        }
+    }
+
     private unowned let dependencies: Dependencies
 
     weak var delegate: ImportDeviceContactsDelegate?
@@ -83,8 +95,8 @@ extension ImportDeviceContacts {
     /// Returns the identifiers of the contacts that have to be imported
     private func fetchDeviceContactIdentifiersToImport() -> [DeviceContactIdentifier] {
         do {
-            if let token = dependencies.contactsSyncCache.historyToken(for: userID) {
-                return try fetchChangedContactsIdentifiers(historyToken: token)
+            if let contactsHistoryToken {
+                return try fetchChangedContactsIdentifiers(historyToken: contactsHistoryToken)
             } else {
                 return try fetchAllContactsIdentifiers()
             }
@@ -96,7 +108,7 @@ extension ImportDeviceContacts {
 
     private func fetchAllContactsIdentifiers() throws -> [DeviceContactIdentifier] {
         let (newToken, contactIDs) = try dependencies.deviceContacts.fetchAllContactIdentifiers()
-        dependencies.contactsSyncCache.setHistoryToken(newToken, for: userID)
+        contactsHistoryToken = newToken
         SystemLogger.log(message: "fetch all device contacts: found \(contactIDs.count)", category: .contacts)
         return contactIDs
     }
@@ -105,7 +117,7 @@ extension ImportDeviceContacts {
         let (newToken, contactIDs) = try dependencies
             .deviceContacts
             .fetchEventsContactIdentifiers(historyToken: historyToken)
-        dependencies.contactsSyncCache.setHistoryToken(newToken, for: userID)
+        contactsHistoryToken = newToken
         SystemLogger.log(message: "fetch device changed contacts: found \(contactIDs.count)", category: .contacts)
         return contactIDs
     }
