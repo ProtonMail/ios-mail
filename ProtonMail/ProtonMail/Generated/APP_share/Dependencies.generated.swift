@@ -67,22 +67,6 @@ extension UserContainer: HasCachedUserDataProvider {
     }
 }
 
-protocol HasContactsSyncCache {
-    var contactsSyncCache: ContactsSyncCache { get }
-}
-
-extension GlobalContainer: HasContactsSyncCache {
-    var contactsSyncCache: ContactsSyncCache {
-        contactsSyncCacheFactory()
-    }
-}
-
-extension UserContainer: HasContactsSyncCache {
-    var contactsSyncCache: ContactsSyncCache {
-        globalContainer.contactsSyncCache
-    }
-}
-
 protocol HasCoreDataContextProviderProtocol {
     var contextProvider: CoreDataContextProviderProtocol { get }
 }

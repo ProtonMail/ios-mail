@@ -46,12 +46,6 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
-    var contactsSyncCacheFactory: Factory<ContactsSyncCache> {
-        self {
-            ContactsSyncDefaults()
-        }
-    }
-
     var contextProviderFactory: Factory<CoreDataContextProviderProtocol> {
         self {
             CoreDataService(container: CoreDataStore.shared.container)
