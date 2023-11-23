@@ -37,12 +37,6 @@ extension NoneProtection {
     }
 }
 
-extension BioProtection {
-    init() {
-        self.init(keychain: KeychainWrapper.keychain)
-    }
-}
-
 extension Keychain {
     var randomPinProtection: RandomPinProtection? {
         guard let keymakerRandomkey = self[.keymakerRandomKey] else {

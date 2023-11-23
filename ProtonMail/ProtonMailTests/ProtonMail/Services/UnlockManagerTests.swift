@@ -39,6 +39,7 @@ final class UnlockManagerTests: XCTestCase {
         notificationCenter = .init()
         sut = .init(
             cacheStatus: cacheMock,
+            keychain: testContainer.keychain,
             keyMaker: keyMakerMock,
             localAuthenticationContext: LAContextMock,
             userDefaults: testContainer.userDefaults,

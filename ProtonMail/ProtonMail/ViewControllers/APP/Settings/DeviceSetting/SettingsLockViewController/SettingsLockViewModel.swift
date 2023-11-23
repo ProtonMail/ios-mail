@@ -53,6 +53,10 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
     private(set) var protectionItems: [ProtectionType] = [.none, .pinCode]
     private(set) var sections: [SettingLockSection] = [.protection, .changePin, .autoLockTime]
 
+    private var bioProtection: BioProtection {
+        BioProtection(keychain: dependencies.keychain)
+    }
+
     init(
         router: SettingsLockRouterProtocol,
         dependencies: Dependencies,
@@ -87,7 +91,7 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
             } else if isPinCodeEnabled {
                 sections.append(.changePin)
                 LockPreventor.shared.performWhileSuppressingLock {
-                    dependencies.keyMaker.deactivate(BioProtection())
+                    dependencies.keyMaker.deactivate(bioProtection)
                 }
 
                 if !oldStatus.contains(.changePin) {
@@ -110,7 +114,7 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
             }
             if dependencies.keyMaker.isTouchIDEnabled {
                 LockPreventor.shared.performWhileSuppressingLock {
-                    dependencies.keyMaker.deactivate(BioProtection())
+                    dependencies.keyMaker.deactivate(bioProtection)
                 }
             }
         }
@@ -121,7 +125,7 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
         LockPreventor.shared.performWhileSuppressingLock {
             dependencies.keyMaker.deactivate(PinProtection(pin: "doesnotmatter"))
         }
-        dependencies.keyMaker.activate(BioProtection()) { [unowned self] activated in
+        dependencies.keyMaker.activate(bioProtection) { [unowned self] activated in
             if activated {
                 dependencies.notificationCenter.post(name: .appLockProtectionEnabled, object: nil, userInfo: nil)
             }
@@ -135,7 +139,7 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
                 dependencies.keyMaker.deactivate(PinProtection(pin: "doesnotmatter"))
             }
             if dependencies.keyMaker.isTouchIDEnabled {
-                dependencies.keyMaker.deactivate(BioProtection())
+                dependencies.keyMaker.deactivate(bioProtection)
             }
             if let randomProtection = dependencies.keychain.randomPinProtection {
                 dependencies.keyMaker.deactivate(randomProtection)
