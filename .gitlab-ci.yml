@@ -1,4 +1,11 @@
-# See https://confluence.protontech.ch/pages/viewpage.action?pageId=121918293
+include:
+  - local: ".gitlab-ci.d/i18n.yml"
+
+  - project: 'proton/devops/atlas-deploy'
+    file: '/scenarios/pipeline-env.yml'
+
+  - project: "tpe/testmo-reporter"
+    file: '/scenarios/testmo-script.yml'
 
 variables:
   LANG: "en_US.UTF-8"
@@ -9,6 +16,7 @@ variables:
   TEST_DATA_URL: "https://$GIT_CI_USERNAME:$PRIVATE_TOKEN_GITLAB_API_PROTON_CI@$GITLAB_HTTPS"
   GIT_SUBMODULE_STRATEGY: recursive
 
+# See https://confluence.protontech.ch/pages/viewpage.action?pageId=121918293
 stages:
   - i18n
   - linting
@@ -63,16 +71,6 @@ stages:
   - base64 -D -o Enterprise.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_APP_PROVISIONPROFILE
   - base64 -D -o PushService.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_PUSHSERVICE_PROVISIONPROFILE
   - base64 -D -o Share.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SHARE_PROVISIONPROFILE
-
-# --- includes ---
-include:
-  - local: ".gitlab-ci.d/i18n.yml"
-
-  - project: 'proton/devops/atlas-deploy'
-    file: '/scenarios/pipeline-env.yml'
-
-  - project: "tpe/testmo-reporter"
-    file: '/scenarios/testmo-script.yml'
 
 workflow:
   rules:
@@ -364,47 +362,6 @@ report:testmo:sanity:
   tags:
     - shared-small
 
-appetize:start:
-  dependencies: [build:debug:for-testing]
-  stage: distribute
-  environment:
-    name: review/$CI_COMMIT_REF_NAME
-    on_stop: appetize:stop
-    url: $APPETIZE_APP_URL?osVersion=16.2&device=iphone14
-  rules:
-    - if: $CI_MERGE_REQUEST_ID
-      when: manual
-      allow_failure: true
-  before_script:
-    - *setup_ruby
-  script:
-    - cd ProtonMail
-    - bundle exec fastlane upload_to_appetize
-  artifacts:
-    paths:
-      - appetize_public_key.txt
-    reports:
-      dotenv: deploy.env
-  tags:
-    - iOS_GENERAL
-
-appetize:stop:
-  stage: distribute
-  environment:
-    name: review/$CI_COMMIT_REF_NAME
-    action: stop
-  rules:
-    - if: $CI_MERGE_REQUEST_ID
-      when: manual
-      allow_failure: true
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - curl -X DELETE --fail "https://$APPETIZE_API_TOKEN@api.appetize.io/v1/apps/$APPETIZE_PUBLIC_KEY"
-  tags:
-    # anything that has `curl` basically, apparently without this tag, it's possible to get a runner that doesn't have it
-    - iOS_GENERAL
-
 # --- Build app and send to testflight
 testflight:alpha:
   dependencies: []
@@ -427,27 +384,6 @@ testflight:alpha:
   script:
     - *build_for_testflight
     - ./fastlane/add_git_tag.sh
-  tags:
-    - iOS_RELEASE_BUILD
-
-# TODO: this is almost identical to testflight:build:upload:, perhaps we can combine them
-nightly-build-and-upload:
-  dependencies: []
-  stage: distribute
-  only:
-    refs:
-      - schedules
-    variables:
-      - $SCHEDULE_TYPE == "nightly_build"
-  artifacts:
-    name: "iOS mail app nightly build on develop branch"
-    paths:
-      - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
-    expire_in: 90 days
-  before_script:
-    - *setup_project
-  script:
-    - *build_for_testflight
   tags:
     - iOS_RELEASE_BUILD
 
