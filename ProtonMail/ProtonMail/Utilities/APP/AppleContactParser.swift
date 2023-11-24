@@ -164,11 +164,11 @@ extension AppleContactParser {
         vCard2.setEmails(vCard2Emails)
 
         let uuid = PMNIUid.createInstance(identifier)
-        guard let card2 = self.createCard2(by: vCard2,
+        guard let card2 = Self.createCard2(by: vCard2,
                                            uuid: uuid,
                                            userKey: userKey,
                                            passphrase: passphrase),
-              let card3 = self.createCard3(by: vCard3,
+              let card3 = Self.createCard3(by: vCard3,
                                            userKey: userKey,
                                            passphrase: passphrase,
                                            uuid: uuid) else {
@@ -277,7 +277,7 @@ extension AppleContactParser {
     /// We need to transfer the prefix to Item with the correct item order
     /// - Parameter vCard2Data: Original vCard2 string data
     /// - Returns: Transferred vCard2 string data
-    func removeEItem(vCard2Data: String) -> String {
+    static func removeEItem(vCard2Data: String) -> String {
         var splits = vCard2Data.split(separator: "\r\n").map { String($0) }
         let eItemIndex = splits.indices
             .filter { splits[$0].hasPrefix("EItem") }
@@ -308,16 +308,18 @@ extension AppleContactParser {
         return newData + "\r\n"
     }
 
-    func createCard2(by vCard2: PMNIVCard,
-                     uuid: PMNIUid?,
-                     userKey: Key,
-                     passphrase: Passphrase) -> CardData? {
+    static func createCard2(
+        by vCard2: PMNIVCard,
+        uuid: PMNIUid?,
+        userKey: Key,
+        passphrase: Passphrase
+    ) -> CardData? {
         vCard2.setUid(uuid)
         vCard2.purifyGroups()
         guard var vCardString = try? vCard2.write() else {
             return nil
         }
-        vCardString = self.removeEItem(vCard2Data: vCardString)
+        vCardString = removeEItem(vCard2Data: vCardString)
         let signingKey = SigningKey(privateKey: ArmoredKey(value: userKey.privateKey), passphrase: passphrase)
         guard let signature = try? Sign.signDetached(signingKey: signingKey, plainText: vCardString) else {
             return nil
@@ -326,11 +328,13 @@ extension AppleContactParser {
         return card
     }
 
-    func createCard3(by vCard3: PMNIVCard,
-                     userKey: Key,
-                     passphrase: Passphrase,
-                     uuid: PMNIUid?,
-                     version: PMNIVCardVersion? = PMNIVCardVersion.vCard40()) -> CardData? {
+    static func createCard3(
+        by vCard3: PMNIVCard,
+        userKey: Key,
+        passphrase: Passphrase,
+        uuid: PMNIUid?,
+        version: PMNIVCardVersion? = PMNIVCardVersion.vCard40()
+    ) -> CardData? {
         vCard3.setUid(uuid)
         vCard3.setVersion(version)
         vCard3.purifyGroups()

@@ -41,6 +41,13 @@ protocol ContactProviderProtocol: AnyObject {
     func getContactsByUUID(_ uuids: [String]) -> [ContactEntity]
     /// Given a user and a list of email addresses, returns all the contacts that exist in the local storage
     func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity]
+    /// Call this function to store a Contact that has been created locally. This function will also create the associated Email objects
+    /// - Returns: The CoreData objectID
+    func createLocalContact(
+        name: String,
+        emails: [(address: String, type: ContactFieldType)],
+        cards: [CardData]
+    ) throws -> String
 
     func getAllEmails() -> [EmailEntity]
     func fetchContacts(completion: ContactFetchComplete?)
@@ -406,6 +413,38 @@ class ContactDataService {
             let result = (try? newContext.fetch(request)) ?? []
             return result.map(EmailEntity.init)
         }
+    }
+
+    func createLocalContact(
+        name: String,
+        emails: [(address: String, type: ContactFieldType)],
+        cards: [CardData]
+    ) throws -> String {
+        let userID = userID
+        let contact = try coreDataService.write { context in
+            let contact = Contact(context: context)
+            contact.userID = userID.rawValue
+            contact.contactID = UUID().uuidString
+            contact.name = name
+            contact.cardData = try cards.toJSONString()
+            contact.size = NSNumber(value: 0)
+            contact.uuid = UUID().uuidString
+            contact.createTime = Date()
+
+            emails.forEach { email in
+                let mail = Email(context: context)
+                mail.userID = contact.userID
+                mail.contactID = contact.contactID
+                mail.name = contact.name
+                mail.contact = contact
+                mail.emailID = UUID().uuidString
+                mail.email = email.address
+                mail.type = email.type.rawString
+                mail.defaults = NSNumber(value: 1)
+            }
+            return contact
+        }
+        return contact.objectID.uriRepresentation().absoluteString
     }
 
     func fetchContact(contactID: ContactID) async throws -> ContactEntity {

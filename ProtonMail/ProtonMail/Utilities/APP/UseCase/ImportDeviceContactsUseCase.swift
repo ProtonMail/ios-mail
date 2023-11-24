@@ -16,9 +16,11 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import class ProtonCoreDataModel.Key
+import typealias ProtonCoreCrypto.Passphrase
 
 protocol ImportDeviceContactsUseCase {
-    func execute() async
+    func execute(params: ImportDeviceContacts.Params) async
     func cancel()
 }
 
@@ -28,7 +30,11 @@ protocol ImportDeviceContactsDelegate: AnyObject {
 }
 
 final class ImportDeviceContacts: ImportDeviceContactsUseCase {
-    typealias Dependencies = AnyObject & HasUserDefaults & HasDeviceContactsProvider & HasContactDataService
+    typealias Dependencies = AnyObject
+    & HasUserDefaults
+    & HasDeviceContactsProvider
+    & HasContactDataService
+    & HasQueueManager
 
     // Suggested batch size for creating contacts in backend
     private let contactBatchSize = 10
@@ -55,7 +61,7 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
         self.dependencies = dependencies
     }
 
-    func execute() async {
+    func execute(params: Params) async {
         SystemLogger.log(message: "ImportDeviceContacts execute", category: .contacts)
         guard backgroundTask == nil else { return }
 
@@ -68,16 +74,11 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
             delegate?.onProgressUpdate(count: 0, total: contactIDsToImport.count)
 
             let (contactsToCreate, contactsToUpdate) = triageContacts(identifiers: contactIDsToImport)
-
-            // PENDING:
-            // 1. Addition strategy for contactsToUpdate
-            // 2. Encrypt resulting merged contact
-            // 3. Save / Update all contacts to import
-            // 4. Sync contacts with backend
-
+            createProtonContacts(from: contactsToCreate, params: params)
+            updateProtonContacts(from: contactsToUpdate)
         }
     }
-    
+
     func cancel() {
         SystemLogger.log(message: "ImportDeviceContacts cancelled", category: .contacts)
         backgroundTask?.cancel()
@@ -137,5 +138,80 @@ extension ImportDeviceContacts {
         SystemLogger.log(message: message, category: .contacts)
 
         return (toCreate, toUpdate)
+    }
+
+}
+
+// MARK: create new contacts
+
+extension ImportDeviceContacts {
+
+    private func createProtonContacts(from identifiers: [DeviceContactIdentifier], params: Params) {
+        let batches = identifiers.chunked(into: contactBatchSize)
+        for batch in batches {
+            guard !Task.isCancelled else { break }
+            autoreleasepool {
+                do {
+                    let deviceContacts = try dependencies.deviceContacts.fetchContactBatch(with: batch.map(\.uuid))
+                    createProtonContacts(from: deviceContacts, params: params)
+                } catch {
+                    SystemLogger
+                        .log(message: "createProtonContacts error: \(error)", category: .contacts, isError: true)
+                }
+            }
+        }
+    }
+
+    private func createProtonContacts(from deviceContacts: [DeviceContact], params: Params) {
+        for deviceContact in deviceContacts {
+            do {
+                let parsedData = try DeviceContactParser.parseDeviceContact(
+                    deviceContact,
+                    userKey: params.userKey,
+                    userPassphrase: params.mailboxPassphrase
+                )
+                let objectID = try dependencies.contactService.createLocalContact(
+                    name: parsedData.name,
+                    emails: parsedData.emails,
+                    cards: parsedData.cards
+                )
+                enqueueAddContactAction(for: objectID, cards: parsedData.cards)
+
+            } catch {
+                let msg = "createProtonContacts error: \(error) for contact: \(deviceContact.fullName?.redacted ?? "-")"
+                SystemLogger.log(message: msg, category: .contacts, isError: true)
+            }
+        }
+    }
+    
+    // TODO: create a queue to run tasks in parallel
+    private func enqueueAddContactAction(for objectID: String, cards: [CardData]) {
+        let action = MessageAction.addContact(objectID: objectID, cardDatas: cards, importFromDevice: true)
+        let task = QueueManager
+            .Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
+        dependencies.queueManager.addTask(task)
+    }
+}
+
+// MARK: update contacts
+
+extension ImportDeviceContacts {
+
+    private func updateProtonContacts(from identifiers: [DeviceContactIdentifier]) {
+
+        // TODO: coming
+
+        // PENDING:
+        // 1. Addition strategy for contactsToUpdate
+        // 2. Update contacts to import
+        // 3. Sync modified contacts with backend
+
+    }
+}
+
+extension ImportDeviceContacts {
+    struct Params {
+        let userKey: Key
+        let mailboxPassphrase: Passphrase
     }
 }
