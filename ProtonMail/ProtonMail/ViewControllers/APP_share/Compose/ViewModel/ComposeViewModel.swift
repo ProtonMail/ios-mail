@@ -1124,6 +1124,7 @@ extension ComposeViewModel {
                 }
             }
             self?.contacts = filteredResult
+            self?.addContactWithPhoneContact()
         })
         emailPublisher?.start()
     }
@@ -1136,7 +1137,7 @@ extension ComposeViewModel {
         }
     }
 
-    func addContactWithPhoneContact() {
+    private func addContactWithPhoneContact() {
         var contactsWithoutLastTimeUsed: [ContactPickerModelProtocol] = phoneContacts
 
         if user.hasPaidMailPlan {

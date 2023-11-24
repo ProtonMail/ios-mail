@@ -113,8 +113,6 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         }.done { [weak self] in
             guard let self = self else { return }
 
-            self.viewModel.addContactWithPhoneContact()
-
             self.headerView?.toContactPicker?.reloadData()
             self.headerView?.ccContactPicker?.reloadData()
             self.headerView?.bccContactPicker?.reloadData()
