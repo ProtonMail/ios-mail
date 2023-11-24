@@ -345,11 +345,12 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         }
         self.viewModel.fetchLatestContactGroup { [weak self] error in
             guard let self = self else { return }
-
-            if let error = error {
-                error.alert(at: self.view)
-            } else {
-                self.refreshControl?.endRefreshing()
+            DispatchQueue.main.async {
+                if let error = error {
+                    error.alert(at: self.view)
+                } else {
+                    self.refreshControl?.endRefreshing()
+                }
             }
         }
     }
