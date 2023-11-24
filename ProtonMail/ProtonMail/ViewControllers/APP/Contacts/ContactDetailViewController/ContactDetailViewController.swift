@@ -21,7 +21,7 @@ import ProtonCoreFoundations
 import ProtonCoreUIFoundations
 import UIKit
 
-final class ContactDetailViewController: UIViewController, AccessibleView {
+final class ContactDetailViewController: UIViewController, AccessibleView, ComposeSaveHintProtocol {
     typealias Dependencies = HasComposerViewFactory & HasContactViewsFactory
 
     let viewModel: ContactDetailsViewModel
