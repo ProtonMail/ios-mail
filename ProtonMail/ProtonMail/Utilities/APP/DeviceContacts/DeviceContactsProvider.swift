@@ -155,8 +155,8 @@ extension CNChangeHistoryEvent {
 
 extension CNContact {
 
-    var fullName: String {
-        CNContactFormatter.string(from: self, style: .fullName) ?? "Unknown"
+    var fullName: String? {
+        CNContactFormatter.string(from: self, style: .fullName)
     }
 
     var emailAddressesAsString: [String] {

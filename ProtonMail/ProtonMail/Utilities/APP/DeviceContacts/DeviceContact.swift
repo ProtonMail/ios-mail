@@ -20,7 +20,7 @@ import Foundation
 /// Abstraction of the device's CNContact
 struct DeviceContact {
     let identifier: DeviceContactIdentifier
-    let fullName: String
+    let fullName: String?
     let vCard: String
 }
 
