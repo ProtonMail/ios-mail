@@ -13,7 +13,6 @@ variables:
   ATLAS_DEPLOY_LIST: ""
   ATLAS_LINK_APP: mail
   ATLAS_DEPLOY_ENV: "true"
-  TEST_DATA_URL: "https://$GIT_CI_USERNAME:$PRIVATE_TOKEN_GITLAB_API_PROTON_CI@$GITLAB_HTTPS"
   GIT_SUBMODULE_STRATEGY: recursive
 
 # See https://confluence.protontech.ch/pages/viewpage.action?pageId=121918293
@@ -43,18 +42,6 @@ stages:
   - ./ProtonMail/xcodeGenHelper.sh
 
 .setup_project_for_ui_tests: &setup_project_for_ui_tests
-  # Clean up TestData folder and git module information to always fetch latest TestData state
-  - rm -rf .git/modules/ProtonMail/ProtonMailUITests/TestData
-  - rm -rf ProtonMail/ProtonMailUITests/TestData
-
-  # TEST_DATA_URL keeps the link to TestData https url
-  - git config --global url."$TEST_DATA_URL".insteadOf "testdata-repo:"
-
-  # Use --force option to override previously added TestData path
-  - git submodule add --force testdata-repo:tpe/TestData.git ProtonMail/ProtonMailUITests/TestData
-  - git submodule init
-  - git submodule update --init --recursive --force
-
   - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
 
   - *setup_project
