@@ -43,6 +43,12 @@ extension GlobalContainer {
         }
     }
 
+    var checkProtonServerStatusFactory: Factory<CheckProtonServerStatus> {
+        self {
+            CheckProtonServerStatus()
+        }
+    }
+
     var cleanCacheFactory: Factory<CleanCache> {
         self {
             CleanCache(dependencies: .init(usersManager: self.usersManager, imageProxyCache: self.imageProxyCache))

@@ -50,6 +50,22 @@ extension UserContainer: HasBiometricStatusProvider {
     }
 }
 
+protocol HasCheckProtonServerStatus {
+    var checkProtonServerStatus: CheckProtonServerStatus { get }
+}
+
+extension GlobalContainer: HasCheckProtonServerStatus {
+    var checkProtonServerStatus: CheckProtonServerStatus {
+        checkProtonServerStatusFactory()
+    }
+}
+
+extension UserContainer: HasCheckProtonServerStatus {
+    var checkProtonServerStatus: CheckProtonServerStatus {
+        globalContainer.checkProtonServerStatus
+    }
+}
+
 protocol HasCleanCache {
     var cleanCache: CleanCache { get }
 }
@@ -276,6 +292,16 @@ extension UserContainer: HasContactViewsFactory {
     }
 }
 
+protocol HasFetchMessages {
+    var fetchMessages: FetchMessages { get }
+}
+
+extension UserContainer: HasFetchMessages {
+    var fetchMessages: FetchMessages {
+        fetchMessagesFactory()
+    }
+}
+
 protocol HasFetchSenderImage {
     var fetchSenderImage: FetchSenderImage { get }
 }
@@ -393,6 +419,16 @@ protocol HasUnblockSender {
 extension UserContainer: HasUnblockSender {
     var unblockSender: UnblockSender {
         unblockSenderFactory()
+    }
+}
+
+protocol HasUpdateMailbox {
+    var updateMailbox: UpdateMailbox { get }
+}
+
+extension UserContainer: HasUpdateMailbox {
+    var updateMailbox: UpdateMailbox {
+        updateMailboxFactory()
     }
 }
 

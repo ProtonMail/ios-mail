@@ -35,7 +35,6 @@ final class MailboxViewModelTests: XCTestCase {
     var labelProviderMock: MockLabelProviderProtocol!
     var contactProviderMock: MockContactProvider!
     var conversationProviderMock: MockConversationProvider!
-    var internetConnectionProvider: MockInternetConnectionStatusProviderProtocol!
     var eventsServiceMock: EventsServiceMock!
     var mockFetchLatestEventId: MockFetchLatestEventId!
     var toolbarActionProviderMock: MockToolbarActionProvider!
@@ -64,8 +63,6 @@ final class MailboxViewModelTests: XCTestCase {
         apiServiceMock = APIServiceMock()
         apiServiceMock.sessionUIDStub.fixture = String.randomString(10)
         apiServiceMock.dohInterfaceStub.fixture = DohMock()
-        internetConnectionProvider = MockInternetConnectionStatusProviderProtocol()
-        internetConnectionProvider.statusStub.fixture = .connectedViaWiFi
         let fakeAuth = AuthCredential(sessionID: "",
                                       accessToken: "",
                                       refreshToken: "",
@@ -99,6 +96,7 @@ final class MailboxViewModelTests: XCTestCase {
             ])
         }
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
+        globalContainer.featureFlagCacheFactory.register { self.featureFlagCache }
         conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()
         labelProviderMock = MockLabelProviderProtocol()
@@ -166,7 +164,6 @@ final class MailboxViewModelTests: XCTestCase {
         mockFetchLatestEventId = nil
         toolbarActionProviderMock = nil
         saveToolbarActionUseCaseMock = nil
-        internetConnectionProvider = nil
         apiServiceMock = nil
         globalContainer = nil
         fakeTableView = nil
@@ -1444,30 +1441,10 @@ extension MailboxViewModelTests {
             userDefaults: globalContainer.userDefaults
         ))
         self.mockFetchMessageDetail = MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
+        userManagerMock.container.updateMailboxFactory.register { updateMailbox }
+        userManagerMock.container.fetchMessageDetailFactory.reset()
+        userManagerMock.container.fetchMessageDetailFactory.register { self.mockFetchMessageDetail }
 
-        let dependencies = MailboxViewModel.Dependencies(
-            fetchMessages: MockFetchMessages(),
-            updateMailbox: updateMailbox,
-            fetchMessageDetail: mockFetchMessageDetail,
-            fetchSenderImage: FetchSenderImage(
-                dependencies: .init(
-                    featureFlagCache: featureFlagCache,
-                    senderImageService: .init(
-                        dependencies: .init(
-                            apiService: userManagerMock.apiService,
-                            internetStatusProvider: internetConnectionProvider,
-                            imageCache: userManagerMock.container.senderImageCache
-                        )
-                    ),
-                    mailSettings: userManagerMock.mailSettings
-                )
-            ),
-            featureFlagCache: featureFlagCache,
-            userDefaults: globalContainer.userDefaults,
-            fetchAttachmentUseCase: MockFetchAttachment(),
-            fetchAttachmentMetadataUseCase: MockFetchAttachmentMetadata(),
-            mailEventsPeriodicScheduler: globalContainer.mailEventsPeriodicScheduler
-        )
         let label = LabelInfo(name: labelName ?? "")
         sut = MailboxViewModel(labelID: LabelID(labelID),
                                label: isCustom ? label : nil,
@@ -1481,7 +1458,7 @@ extension MailboxViewModelTests {
                                contactProvider: contactProviderMock,
                                conversationProvider: conversationProviderMock,
                                eventsService: eventsServiceMock,
-                               dependencies: dependencies,
+                               dependencies: userManagerMock.container,
                                toolbarActionProvider: toolbarActionProviderMock,
                                saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                totalUserCountClosure: {

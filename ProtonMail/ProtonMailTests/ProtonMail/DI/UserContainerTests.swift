@@ -90,6 +90,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.cleanUserLocalMessages
         _ = strongRefToContainer?.reportService
         _ = strongRefToContainer?.contactViewsFactory
+        _ = strongRefToContainer?.fetchMessages
         _ = strongRefToContainer?.fetchSenderImage
         _ = strongRefToContainer?.importDeviceContacts
         _ = strongRefToContainer?.messageSearch
@@ -102,6 +103,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.toolbarActionProvider
         _ = strongRefToContainer?.toolbarSettingViewFactory
         _ = strongRefToContainer?.unblockSender
+        _ = strongRefToContainer?.updateMailbox
         // sourcery:end
 
         strongRefToUser = nil

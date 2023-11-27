@@ -14,7 +14,7 @@ class ConversationViewModel {
     typealias Dependencies = ConversationMessageViewModel.Dependencies
     & HasFeatureFlagCache
     & HasFetchSenderImage
-    & HasFetchMessageDetail
+    & HasFetchMessageDetailUseCase
     & HasNextMessageAfterMoveStatusProvider
     & HasNotificationCenter
     & HasUserDefaults

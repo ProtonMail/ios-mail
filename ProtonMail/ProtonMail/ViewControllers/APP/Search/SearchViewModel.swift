@@ -62,7 +62,7 @@ protocol SearchVMProtocol: AnyObject {
 
 final class SearchViewModel: NSObject {
     typealias Dependencies = HasSearchUseCase
-    & HasFetchMessageDetail
+    & HasFetchMessageDetailUseCase
     & HasFetchSenderImage
     & HasMailboxMessageCellHelper
     & HasUserManager

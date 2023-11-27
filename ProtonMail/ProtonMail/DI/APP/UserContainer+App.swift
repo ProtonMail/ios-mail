@@ -51,16 +51,7 @@ extension UserContainer {
 
     var cleanUserLocalMessagesFactory: Factory<CleanUserLocalMessages> {
         self {
-            CleanUserLocalMessages(
-                fetchInboxMessages: FetchMessages(
-                    dependencies: .init(
-                        messageDataService: self.messageService,
-                        cacheService: self.cacheService,
-                        eventsService: self.eventsService
-                    )
-                ),
-                dependencies: self
-            )
+            CleanUserLocalMessages(dependencies: self)
         }
     }
 
@@ -73,6 +64,18 @@ extension UserContainer {
     var contactViewsFactoryFactory: Factory<ContactViewsFactory> {
         self {
             ContactViewsFactory(dependencies: self)
+        }
+    }
+
+    var fetchMessagesFactory: Factory<FetchMessages> {
+        self {
+            FetchMessages(
+                dependencies: .init(
+                    messageDataService: self.messageService,
+                    cacheService: self.cacheService,
+                    eventsService: self.eventsService
+                )
+            )
         }
     }
 
@@ -186,6 +189,43 @@ extension UserContainer {
                     incomingDefaultService: self.user.incomingDefaultService,
                     queueManager: self.queueManager,
                     userInfo: self.user.userInfo
+                )
+            )
+        }
+    }
+
+    var updateMailboxFactory: Factory<UpdateMailbox> {
+        self {
+            let purgeOldMessages = PurgeOldMessages(user: self.user, coreDataService: self.contextProvider)
+
+            let fetchLatestEventID = FetchLatestEventId(
+                userId: self.user.userID,
+                dependencies: .init(apiService: self.apiService, lastUpdatedStore: self.lastUpdatedStore)
+            )
+
+            let fetchMessagesWithReset = FetchMessagesWithReset(
+                userID: self.user.userID,
+                dependencies: FetchMessagesWithReset.Dependencies(
+                    fetchLatestEventId: fetchLatestEventID,
+                    fetchMessages: self.fetchMessages,
+                    localMessageDataService: self.messageService,
+                    lastUpdatedStore: self.lastUpdatedStore,
+                    contactProvider: self.contactService,
+                    labelProvider: self.labelService
+                )
+            )
+
+            return UpdateMailbox(
+                dependencies: .init(
+                    eventService: self.eventsService,
+                    messageDataService: self.messageService,
+                    conversationProvider: self.conversationService,
+                    purgeOldMessages: purgeOldMessages,
+                    fetchMessageWithReset: fetchMessagesWithReset,
+                    fetchMessage: self.fetchMessages,
+                    fetchLatestEventID: fetchLatestEventID,
+                    internetConnectionStatusProvider: self.internetConnectionStatusProvider,
+                    userDefaults: self.userDefaults
                 )
             )
         }

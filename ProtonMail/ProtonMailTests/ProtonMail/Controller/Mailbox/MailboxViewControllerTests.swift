@@ -42,7 +42,6 @@ final class MailboxViewControllerTests: XCTestCase {
     var mockFetchLatestEventId: MockFetchLatestEventId!
     var toolbarActionProviderMock: MockToolbarActionProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
-    var mockFetchMessageDetail: MockFetchMessageDetail!
     var fakeCoordinator: MockMailboxCoordinatorProtocol!
 
     private var globalContainer: GlobalContainer!
@@ -410,35 +409,8 @@ extension MailboxViewControllerTests {
     ) {
         let globalContainer = GlobalContainer()
         let userContainer = UserContainer(userManager: userManagerMock, globalContainer: globalContainer)
-
-        let fetchMessage = MockFetchMessages()
-        let updateMailbox = UpdateMailbox(dependencies: .init(
-            eventService: eventsServiceMock,
-            messageDataService: userManagerMock.messageService,
-            conversationProvider: conversationProviderMock,
-            purgeOldMessages: MockPurgeOldMessages(),
-            fetchMessageWithReset: MockFetchMessagesWithReset(),
-            fetchMessage: fetchMessage,
-            fetchLatestEventID: mockFetchLatestEventId,
-            internetConnectionStatusProvider: MockInternetConnectionStatusProviderProtocol(),
-            userDefaults: globalContainer.userDefaults
-        ))
-        self.mockFetchMessageDetail = MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
         globalContainer.usersManager.add(newUser: userManagerMock)
 
-        let featureFlagCache = MockFeatureFlagCache()
-
-        let dependencies = MailboxViewModel.Dependencies(
-            fetchMessages: MockFetchMessages(),
-            updateMailbox: updateMailbox,
-            fetchMessageDetail: mockFetchMessageDetail,
-            fetchSenderImage: userContainer.fetchSenderImage,
-            featureFlagCache: featureFlagCache,
-            userDefaults: globalContainer.userDefaults,
-            fetchAttachmentUseCase: MockFetchAttachment(),
-            fetchAttachmentMetadataUseCase: MockFetchAttachmentMetadata(),
-            mailEventsPeriodicScheduler: globalContainer.mailEventsPeriodicScheduler
-        )
         let label = LabelInfo(name: labelName ?? "")
         viewModel = MailboxViewModel(
             labelID: labelID,
@@ -453,7 +425,7 @@ extension MailboxViewControllerTests {
             contactProvider: contactProviderMock,
             conversationProvider: conversationProviderMock,
             eventsService: eventsServiceMock,
-            dependencies: dependencies,
+            dependencies: userContainer,
             toolbarActionProvider: toolbarActionProviderMock,
             saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
             totalUserCountClosure: {

@@ -77,7 +77,7 @@ final class UserContainer: ManagedContainer {
                 messageDataService: self.messageService,
                 eventsService: self.eventsService,
                 undoActionManager: self.undoActionManager,
-                queueManager: self.queueManager, 
+                queueManager: self.queueManager,
                 userDefaults: self.userDefaults,
                 localConversationUpdater: .init(userID: self.user.userID.rawValue, dependencies: self)
             )
@@ -137,7 +137,7 @@ final class UserContainer: ManagedContainer {
         }
     }
 
-    var fetchMessageDetailFactory: Factory<FetchMessageDetail> {
+    var fetchMessageDetailFactory: Factory<FetchMessageDetailUseCase> {
         self {
             FetchMessageDetail(
                 dependencies: .init(

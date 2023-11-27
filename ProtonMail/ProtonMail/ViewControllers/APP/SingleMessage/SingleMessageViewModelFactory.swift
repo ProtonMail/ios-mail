@@ -109,7 +109,7 @@ class SingleMessageComponentsFactory {
     typealias Dependencies = MessageInfoProvider.Dependencies
     & HasCoreDataContextProviderProtocol
     & HasFeatureFlagCache
-    & HasFetchMessageDetail
+    & HasFetchMessageDetailUseCase
     & HasQueueManager
     & HasUnblockSender
     & HasUserCachedStatus

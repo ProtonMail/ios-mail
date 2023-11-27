@@ -64,6 +64,7 @@ final class GlobalContainerTests: XCTestCase {
         _ = strongRefToContainer?.addressBookService
         _ = strongRefToContainer?.backgroundTaskHelper
         _ = strongRefToContainer?.biometricStatusProvider
+        _ = strongRefToContainer?.checkProtonServerStatus
         _ = strongRefToContainer?.cleanCache
         _ = strongRefToContainer?.contactPickerModelHelper
         _ = strongRefToContainer?.deviceContacts
