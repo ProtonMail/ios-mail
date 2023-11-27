@@ -128,11 +128,27 @@ test:unit:
   tags:
     - iOS_GENERAL
 
-test:ui:smoke:
+.test:ui:
   dependencies:
     - deploy:review
     - build:debug:for-testing
   stage: test
+  artifacts:
+    when: always
+    name: "test-report"
+    paths:
+      - test_output/TestResults
+    expire_in: 10 days
+    reports:
+      junit:
+        - test_output/TestResults/report.xml
+  before_script:
+    - *setup_project_for_ui_tests
+  tags:
+    - iOS_UITEST
+
+test:ui:smoke:
+  extends: .test:ui
   except:
     - schedules
   only:
@@ -143,19 +159,10 @@ test:ui:smoke:
       - /^release\/.*$/
       - merge_requests
   artifacts:
-    when: always
-    name: "test-report"
-    paths:
-      - test_output/TestResults
-    expire_in: 10 days
     reports:
       coverage_report:
         coverage_format: cobertura
         path: test_output/slatherOutput/cobertura.xml
-      junit:
-        - test_output/TestResults/report.xml
-  before_script:
-    - *setup_project_for_ui_tests
   script:
     - echo DYNAMIC_DOMAIN="${DYNAMIC_DOMAIN}"
     - cd ProtonMail
@@ -165,117 +172,67 @@ test:ui:smoke:
     - iOS_GENERAL
 
 test:ui:sanity:
-  dependencies:
-    - deploy:review
-    - build:debug:for-testing
-  stage: test
+  extends: .test:ui
   rules:
       # Allow job to run automatically on each scheduled job with sanity test type
     - if: '$CI_PIPELINE_SOURCE == "schedule" && $TEST_TYPE == "sanity"'
       when: always
     - when: manual
-  before_script:
-    - *setup_project_for_ui_tests
-    - echo DYNAMIC_DOMAIN="${DYNAMIC_DOMAIN}"
   script:
+    - echo DYNAMIC_DOMAIN="${DYNAMIC_DOMAIN}"
     - cd ProtonMail
     - bundle exec fastlane ui_test testplan:"SanityTests" concurrent_workers:"4"
   artifacts:
-    when: always
-    name: "test-report"
-    paths:
-      - test_output/TestResults
-    expire_in: 10 days
     reports:
       coverage_report:
         coverage_format: cobertura
         path: test_output/slatherOutput/cobertura.xml
-      junit: test_output/TestResults/report.xml
   allow_failure: true
-  tags:
-    - iOS_UITEST
 
 test:ui:feature:
-  dependencies:
-    - deploy:review
-    - build:debug:for-testing
-  stage: test
+  extends: .test:ui
   rules:
     - if: '$TEST_TYPE == "feature"'
       when: always
-  artifacts:
-    when: always
-    name: "test-report"
-    paths:
-      - test_output/TestResults
-    expire_in: 10 days
-    reports:
-      junit: test_output/TestResults/report.xml
-  before_script:
-    - *setup_project_for_ui_tests
   script:
     - cd ProtonMail
     - bundle exec fastlane ui_test testplan:$TEST_PLAN concurrent_workers:$NUMBER_OF_DEVICES
-  tags:
-    - iOS_UITEST
 
 test:ui:regression:
-  dependencies:
-    - deploy:review
-    - build:debug:for-testing
-  stage: test
+  extends: .test:ui
   rules:
       # Allow job to run automatically on each scheduled job with regression test type
     - if: '$CI_PIPELINE_SOURCE == "schedule" && $TEST_TYPE == "regression"'
       when: always
     - when: manual
-  artifacts:
-    when: always
-    name: "test-report"
-    paths:
-      - test_output/TestResults
-    expire_in: 10 days
-    reports:
-      junit: test_output/TestResults/report.xml
-  before_script:
-    - *setup_project_for_ui_tests
   script:
     - cd ProtonMail
     - bundle exec fastlane ui_test testplan:RegressionTests concurrent_workers:$NUMBER_OF_DEVICES
   allow_failure: true
-  tags:
-    - iOS_UITEST
 
 test:ui:monkey:
-  dependencies:
-    - deploy:review
-    - build:debug:for-testing
+  extends: .test:ui
   timeout: 2 hours
-  stage: test
   rules:
     - if: '$TEST_TYPE == "monkey"'
   artifacts:
-    when: always
     name: "monkey-report"
-    paths:
-      - test_output/TestResults
-    expire_in: 10 days
-    reports:
-      junit: test_output/TestResults/report.xml
-  before_script:
-    - *setup_project_for_ui_tests
   script:
     - cd ProtonMail
     - bundle exec fastlane ui_test testplan:MonkeyTests concurrent_workers:1
+
+.report:slack:
+  stage: report
+  image: $CI_REGISTRY/tpe/test-scripts
+  allow_failure: true
   tags:
-    - iOS_UITEST
+    - shared-small
 
 report:slack:feature:
   dependencies:
     - test:ui:feature
     - test:ui:regression
-  image: $CI_REGISTRY/tpe/test-scripts
-  stage: report
+  extends: .report:slack
   rules:
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
       when: always
@@ -285,15 +242,10 @@ report:slack:feature:
       --platform ios
       --job-name $TEST_PLAN
       --slack-channel "$SLACK_CHANNEL"
-  allow_failure: true
-  tags:
-    - shared-small
 
 report:slack:monkey:
   dependencies:
     - test:ui:monkey
-  image: $CI_REGISTRY/tpe/test-scripts
-  stage: report
   rules:
     - if: '$TEST_TYPE == "monkey"'
       when: always
@@ -303,15 +255,17 @@ report:slack:monkey:
       --platform ios
       --job-name Mail-iOS-Monkey-tests
       --slack-channel mail-ios-uitests
-  allow_failure: true
-  tags:
-    - shared-small
 
 report:testmo:regression:
   dependencies:
     - test:ui:regression
-  stage: report
+  extends: .report:testmo
+  variables:
+    NAME: "$TEST_PLAN"
+
+.report:testmo:
   extends: .testmo-upload
+  stage: report
   rules:
     - when: manual
   before_script:
@@ -319,7 +273,6 @@ report:testmo:regression:
     - 'if [ -z $MILESTONE ]; then echo "Testmo MILESTONE is not provided. Failing the job."; exit 1; fi'
   variables:
     PROJECT_ID: "7"
-    NAME: "$TEST_PLAN"
     MILESTONE: "$MILESTONE"
     TAGS: "$CI_COMMIT_REF_SLUG"
     SOURCE: "ios"
@@ -331,43 +284,30 @@ report:testmo:regression:
 report:testmo:sanity:
   needs:
     - test:ui:sanity
-  stage: report
-  extends: .testmo-upload
-  rules:
-    - when: manual
-  before_script:
-    - echo "$MILESTONE"
-    - 'if [ -z $MILESTONE ]; then echo "Testmo MILESTONE is not provided. Failing the job."; exit 1; fi'
+  extends: .report:testmo
   variables:
-    PROJECT_ID: "7"
     NAME: "SanityTests"
-    MILESTONE: "$MILESTONE"
-    TAGS: "$CI_COMMIT_REF_SLUG"
-    SOURCE: "ios"
-    RESULT_FOLDER: "./test_output/TestResults/*.xml"
-  allow_failure: true
-  tags:
-    - shared-small
 
-# --- Build app and send to testflight
-testflight:alpha:
+.distribute:
   dependencies: []
   needs: []
   stage: distribute
-  variables:
-    GIT_STRATEGY: clone
-    GIT_DEPTH: "0"
   rules:
     - if: '$CI_PIPELINE_SOURCE != "schedule"'
       when: manual
       allow_failure: true
   artifacts:
-    name: "iOS mail app builds"
     paths:
       - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
     expire_in: 90 days
   before_script:
     - *setup_project
+
+# --- Build app and send to testflight
+testflight:alpha:
+  extends: .distribute
+  artifacts:
+    name: "iOS mail app builds"
   script:
     - *build_for_testflight
     - ./fastlane/add_git_tag.sh
@@ -376,20 +316,9 @@ testflight:alpha:
 
 # --- Build enterprise app for test and upload
 firebase:qa:
-  dependencies: []
-  needs: []
-  stage: distribute
-  rules:
-    - if: '$CI_PIPELINE_SOURCE != "schedule"'
-      when: manual
-      allow_failure: true
+  extends: .distribute
   artifacts:
     name: "iOS mail app test enterprise build"
-    paths:
-      - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
-    expire_in: 90 days
-  before_script:
-    - *setup_project
   script:
     - *enterprise_config_setting
     - bundle exec fastlane ios enterprise usingTimeStamp:true
