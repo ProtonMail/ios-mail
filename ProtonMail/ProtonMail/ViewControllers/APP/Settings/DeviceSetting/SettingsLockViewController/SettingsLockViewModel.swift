@@ -60,7 +60,7 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
     init(
         router: SettingsLockRouterProtocol,
         dependencies: Dependencies,
-        isAppKeyFeatureEnabled: @escaping () -> Bool =  { true }
+        isAppKeyFeatureEnabled: @escaping () -> Bool = { true }
     ) {
         self.router = router
         self.dependencies = dependencies
@@ -85,7 +85,7 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
                     break
                 case .touchID, .faceID:
                     LockPreventor.shared.performWhileSuppressingLock {
-                        dependencies.keyMaker.deactivate(PinProtection(pin: "doesnotmatter"))
+                        deactivatePinProtection()
                     }
                 }
             } else if isPinCodeEnabled {
@@ -109,7 +109,7 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
         } else {
             if dependencies.keyMaker.isPinCodeEnabled {
                 LockPreventor.shared.performWhileSuppressingLock {
-                    dependencies.keyMaker.deactivate(PinProtection(pin: "doesnotmatter"))
+                    deactivatePinProtection()
                 }
             }
             if dependencies.keyMaker.isTouchIDEnabled {
@@ -123,7 +123,7 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
 
     private func enableBioProtection( completion: @escaping () -> Void) {
         LockPreventor.shared.performWhileSuppressingLock {
-            dependencies.keyMaker.deactivate(PinProtection(pin: "doesnotmatter"))
+            deactivatePinProtection()
         }
         dependencies.keyMaker.activate(bioProtection) { [unowned self] activated in
             if activated {
@@ -136,7 +136,7 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
     private func disableProtection() {
         LockPreventor.shared.performWhileSuppressingLock {
             if dependencies.keyMaker.isPinCodeEnabled {
-                dependencies.keyMaker.deactivate(PinProtection(pin: "doesnotmatter"))
+                deactivatePinProtection()
             }
             if dependencies.keyMaker.isTouchIDEnabled {
                 dependencies.keyMaker.deactivate(bioProtection)
@@ -168,6 +168,10 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
                 completion?()
             }
         }
+    }
+
+    private func deactivatePinProtection() {
+        dependencies.keyMaker.deactivate(PinProtection(pin: "doesnotmatter", keychain: dependencies.keychain))
     }
 }
 

@@ -103,7 +103,7 @@ extension AppDelegate: UIApplicationDelegate {
             try! CoreDataStore.shared.initialize()
 
             coreKeyMaker.wipeMainKey()
-            coreKeyMaker.activate(NoneProtection()) { _ in }
+            coreKeyMaker.activate(NoneProtection(keychain: dependencies.keychain)) { _ in }
         }
 
         let unlockManager = dependencies.unlockManager
