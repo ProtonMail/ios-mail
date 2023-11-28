@@ -1108,7 +1108,7 @@ class LocalizedString {
     lazy var _action_sheet_action_title_view_html = NSLocalizedString("View HTML", comment: "")
     lazy var _action_sheet_action_title_phishing = NSLocalizedString("Report phishing", comment: "")
     lazy var _action_sheet_action_title_inbox = NSLocalizedString("Move to inbox", comment: "")
-    lazy var _action_sheet_action_title_spam_to_inbox = NSLocalizedString("Not a spam (move to inbox)", comment: "")
+    lazy var _action_sheet_action_title_spam_to_inbox = NSLocalizedString("Not spam (move to inbox)", comment: "")
 
     lazy var _move_to_done_button_title = NSLocalizedString("Done", comment: "")
     lazy var _move_to_title = NSLocalizedString("Move to", comment: "")
