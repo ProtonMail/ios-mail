@@ -17,7 +17,7 @@
 
 import Foundation
 
-enum InformationType: Int {
+enum InformationType: Int, CaseIterable {
     case organization
     case nickname
     case title
