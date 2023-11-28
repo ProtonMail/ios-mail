@@ -27,37 +27,13 @@ stages:
   - distribute
   - bot
 
-.setup_basic_tools: &setup_basic_tools
+.setup_project: &setup_project
   - brew bundle --file="$CI_PROJECT_DIR/ProtonMail/Brewfile" --force
   - mint bootstrap
-
-.setup_ruby: &setup_ruby
   - cd ProtonMail
   - bundle install
   - cd ..
-
-.setup_project: &setup_project
-  - *setup_basic_tools
-  - *setup_ruby
   - ./ProtonMail/xcodeGenHelper.sh
-
-.setup_project_for_ui_tests: &setup_project_for_ui_tests
-  - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
-
-  - *setup_project
-
-.build_for_testflight: &build_for_testflight
-  - cd ProtonMail
-  - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
-  - bundle exec fastlane ios build
-
-.enterprise_config_setting: &enterprise_config_setting
-  - cd ProtonMail
-  - base64 -D -o Certificates.p12 <<< $ENTERPRISE_DISTRIBUTION_CERTIFICATE
-  - base64 -D -o Siri.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SIRI_PROVISIONPROFILE
-  - base64 -D -o Enterprise.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_APP_PROVISIONPROFILE
-  - base64 -D -o PushService.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_PUSHSERVICE_PROVISIONPROFILE
-  - base64 -D -o Share.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SHARE_PROVISIONPROFILE
 
 workflow:
   rules:
@@ -143,7 +119,8 @@ test:unit:
       junit:
         - test_output/TestResults/report.xml
   before_script:
-    - *setup_project_for_ui_tests
+    - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
+    - *setup_project
   tags:
     - iOS_UITEST
 
@@ -309,7 +286,9 @@ testflight:alpha:
   artifacts:
     name: "iOS mail app builds"
   script:
-    - *build_for_testflight
+    - cd ProtonMail
+    - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
+    - bundle exec fastlane ios build
     - ./fastlane/add_git_tag.sh
   tags:
     - iOS_RELEASE_BUILD
@@ -320,7 +299,12 @@ firebase:qa:
   artifacts:
     name: "iOS mail app test enterprise build"
   script:
-    - *enterprise_config_setting
+    - cd ProtonMail
+    - base64 -D -o Certificates.p12 <<< $ENTERPRISE_DISTRIBUTION_CERTIFICATE
+    - base64 -D -o Siri.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SIRI_PROVISIONPROFILE
+    - base64 -D -o Enterprise.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_APP_PROVISIONPROFILE
+    - base64 -D -o PushService.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_PUSHSERVICE_PROVISIONPROFILE
+    - base64 -D -o Share.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SHARE_PROVISIONPROFILE
     - bundle exec fastlane ios enterprise usingTimeStamp:true
   tags:
     - iOS_GENERAL
