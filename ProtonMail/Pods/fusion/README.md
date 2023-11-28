@@ -1,294 +1,215 @@
 ## fusion
 
-**fusion** is the lightweight and easy to use UI testing framework built on top of Apple [**xctest**](https://developer.apple.com/documentation/xctest). Developed with readability and reliability in mind it brings the following features:    
+**fusion** is a lightweight and easy-to-use UI testing framework built on top of Apple XCTest. Developed with readability and reliability in mind, it brings the following features:
 
-- Builder like syntax reduces the test code boilerplate.
-- Multiple `XCUIElement` matchers can be applied in a single line of code to locate desired element. 
-- Built in explicit waits will ensure that the `XCUIElement` is in desired state before doing an action or performing an assertion on it.
-- Already implemented functions like `swipeDownUntilVisible()`, `swipeUpUntilVisible()` and `waitUntilGone()` eliminate the need to implement them on your own.
-- Easy to use `onChild()` and `onDescendant()` functions allow you to point your actions or assertions to the desired `XCUIElement` that belongs to the located ancestor.
-- Simplified UI interruption mechanism makes it easier to add UI interruptions monitor for a single element or group of elements of the same type.
+- Builder-like syntax reduces test code boilerplate.
+- Multiple XCUIElement matchers can be applied in a single line of code to locate the desired element.
+- Built-in explicit waits ensure that the XCUIElement is in the desired state before performing an action or assertion on it.
+- Pre-implemented functions like `swipeDownUntilVisible()`, `swipeUpUntilVisible()`, and `waitUntilGone()` eliminate the need to implement them on your own.
+- Easy-to-use `onChild()` and `onDescendant()` functions allow you to target actions or assertions to desired XCUIElement(s) that belong to the located ancestor.
+- A simplified UI interruption mechanism makes it easier to add UI interruption monitors for a single element or a group of elements of the same type.
 
-### Implement new features in fusion 
- - It's a swift package so you can open the Package.swift file instead of the project file. 
+## Contributing
+If you would like to contribute, please keep in mind the following rules:
+- Try to stick to the project's existing code style and naming conventions
 
-### Table of contents
-1. [Installation](#installation)
-2. [Usage](#usage)
-    - [Getting started](#getting_started)
-    - [Getting started Mac](#getting_started_mac)
-    - [Locating the element](#locate)
-    - [Performing actions on element](#act)
-    - [Checking element states](#check)
-    - [Waiting for element states](#wait)
-    - [Working with UI interruption monitor](#monitor)
+By making a contribution to this project you agree to the following:
+- [x] I assign any and all copyright related to the contribution to Proton Technologies AG;
+- [x] I certify that the contribution was created in whole by me;
+- [x] I understand and agree that this project and the contribution are public and that a record of the contribution (including all personal information I submit with it) is maintained indefinitely and may be redistributed with this project or the open source license(s) involved.
+
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Getting Started](#getting-started)
+  - [Getting Started on macOS](#getting-started-on-macos)
+  - [Locating the Element](#locating-the-element)
+  - [Performing Actions on Element](#performing-actions-on-element)
+  - [Checking Element States](#checking-element-states)
+  - [Waiting for Element States](#waiting-for-element-states)
+  - [Working with UI Interruption Monitor](#working-with-ui-interruption-monitor)
 
 ### Installation <a name="installation"></a>
 #### CocoaPods
-**fusion** is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
+
+1) `fusion` is available through CocoaPods. To install it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'fusion'
+   pod 'fusion'
 ```
 Then run `pod install` in the project directory to install.
 
+#### Swift Package Manager
+
+2) `fusion` is available through SPM. To install it, simply add this github url to your project under the package dependencies. 
+
 ### Usage <a name="usage"></a>
 
-#### Getting started <a name="getting_started"></a>
+#### Getting started <a name="getting-started"></a>
 
-To start using the `fusion` you should select one of the below options:
-1. Extend your test class with `CoreTestCase` class which extends XCTestCase class and then access any element by its type.
-   ```swift
-   import fusion
-   
-   class SampleTestCase: CoreTestCase {
-   
-      func testLoginSample() {
-         /// Type text into TextField.
-         textField(usernameTextFieldlocator).typeText("username")
-   
-         /// Tap, clear text and then type text into SecureTextField.
-         secureTextField(passwordSecureTextFieldidentifier).tap().clearText().typeText("password")
-   
-         /// Tap login button and wait until it is gone.
-         button(loginButtonidentifier).tap().waitUntilGone()
-   
-         /// Check that login successful Static text exists.
-         staticText(loggedInStaticTextidentifier).checkExists()
-      }
-   }
-   ```
-   
-2. If you follow a page object test design pattern extend your page class with `CoreElements`. Afterwards you will have direct access to all element types:
+To start using `fusion`, you have two options:
 
-   ```swift
-   class LoginRobot: CoreElements {
-
-      func typePassword(_ password: String) -> LoginRobot {
-         secureTextField(passwordTextFieldIdentifier).tap().typeText(password)
-         return self
-      }
-    
-      func typeUsername(_ username: String) -> LoginRobot {
-         textField(loginTextFieldIdentifier).tap().typeText(username)
-         return self
-      }
-    
-      func signIn() -> MainRobot() {
-         button(signInButtonIdentifier).tap()
-         return MainRobot()
-      }
-   }
-   ```
-#### Getting started Mac <a name="getting_started_mac"></a>
-
-To start using the `fusion` you should select one of the below options:
-1. Extend your test class with `MacCoreTestCase` class which extends XCTestCase class and then access any element by its type.
-   ```swift
-   import fusion
-
-   class SampleTestCase: MacCoreTestCase {
-   
-      func testLoginSample() {
-         /// same as normal iOS locators 
-      }
-   }
-   ```
-#### Locating the element <a name="locate"></a>
-
-Different strategies can be applied in order to locate the UI element depending on layout hierarchy complexity:
-
-1. Locating element **by index**:
-
-   ```swift
-   button().byIndex(1).tap()
-   ```
-   
-2. Locating element by **`label`**, **`accessibilityIdentifier`** or **`predicate`** may be used in case of simple layout. Here it is enough to call the function that represents the element type, providing `label`, `accessibilityIdentifier` or `predicate` as a parameter:     
-   
-   ```swift
-   button(signInButtonLabel).tap()
-   ```
-   ```swift
-   textField(loginTextFieldAccessibilityIdentifier).typeText(username)
-   ```
-   
-3. In more complex layout case when many UI elements may share the same identifiers multiple matchers can be applied to locate the element:
-
-   ```swift
-   button("nonUniqueButtonIdentifier").isEnabled().hasLabel("buttonLabel").tap()
-   ```
-   
-   Here each additional matcher narrows down the search applying different matchers to the same element type.
-   When this is not enough, you can use the `.byIndex(n)` matcher narrowing down the search query to the single element.
-
-   ```swift
-   button("nonUniqueButtonIdentifier").hasLabel("buttonLabel").byIndex(2).tap()
-   ```
-
-> NOTE: Ideally each actionable UI element should have the accessibility identifier assigned. Having it in place makes test automation more robust, easy to maintain and provides multi-language support.    
-
-4. Locating the **child** element:
-   - Identify parent element and then provide a child `UiElement` instance as a parameter to `onChild()` function:
-
-     ```swift
-     cell(cellIdentifier).onChild(button(childButtonIdentifier)).tap()
-     ```
-     
-   - Other examples:
-     ```swift
-     cell().byIndex(0).onChild(button(childButtonIdentifier)).tap()
-     ```
-     ```swift
-     cell(cellIdentifier).onChild(button(childButtonIdentifier).isEnabled()).tap()
-     ```
-     ```swift
-     cell(cellIdentifier).onChild(button().byIndex(0)).tap()
-     ```
-   
-5. Locating **descendant** element:
-   - Similar to `onChild()` function you can locate the ancestor descendant using the `onDescendant()` function:
-     ```swift
-     cell(cellIdentifier).onDescendant(button(childButtonIdentifier)).tap()
-     ```
-     ```swift
-     cell(cellIdentifier).onDescendant(button(childButtonIdentifier).isEnabled()).tap()
-     ```
-
-List of all available matchers:
-- `byIndex(_ index: Int)` - matches element by index.
-- `isEnabled()` - matches enabled element.
-- `isDisabled()` - matches disabled element.
-- `isHittable()` - matches hittable element.
-- `inTable(_ table: UiElement)` - specifies in which table to perform an action. Used in combination with ***swipe*** actions.
-- `matchesPredicate(_ matchedPredicate: NSPredicate)` - matches an element matched by `NSPredicate`.
-- `hasLabel(_ label: String)` - matches an element that has given **label**.
-- `hasLabel(_ labelPredicate: NSPredicate)` - matches an element that has **label** matched by `NSPredicate`.
-- `hasTitle(_ title: String)` - matches an element that has given **title**.
-- `hasTitle(_ titlePredicate: NSPredicate)` - matches an element that has **title** matched by `NSPredicate`.
-- `hasValue(_ value: String)` - matches an element that has given **value**.
-- `hasValue(_ valuePredicate: NSPredicate)` - matches an element that has **value** matched by `NSPredicate`.
-
-#### Performing actions on element <a name="act"></a>
-
-**fusion** supports the majority of actions available in **xctest** framework. Actions should follow the element locator and can be bundled one after another. For example:
+Extend your test class with `CoreTestCase`, which extends XCTestCase. This allows you to access any element by its type.
 
 ```swift
-secureTextField(passwordSecureTextFieldidentifier).tap().clearText().typeText("password")
+import fusion
+
+class SampleTestCase: CoreTestCase {
+
+   func testLoginSample() {
+      // Type text into TextField.
+      textField(usernameTextFieldLocator).typeText("username")
+
+      // Tap, clear text, and then type text into SecureTextField.
+      secureTextField(passwordSecureTextFieldIdentifier).tap().clearText().typeText("password")
+
+      // Tap the login button and wait until it is gone.
+      button(loginButtonidentifier).tap().waitUntilGone()
+
+      // Check that the login successful Static text exists.
+      staticText(loggedInStaticTextidentifier).checkExists()
+   }
+}
+
+```
+Follow the page object test design pattern
+2) If you follow the page object test design pattern, extend your page class with `CoreElements`. Afterward, you will have direct access to all element types.
+
+
+```swift
+import fusion
+
+class LoginRobot: CoreElements {
+
+   func typePassword(_ password: String) -> LoginRobot {
+      secureTextField(passwordTextFieldIdentifier).tap().typeText(password)
+      return self
+   }
+ 
+   func typeUsername(_ username: String) -> LoginRobot {
+      textField(loginTextFieldIdentifier).tap().typeText(username)
+      return self
+   }
+ 
+   func signIn() -> MainRobot {
+      button(signInButtonIdentifier).tap()
+      return MainRobot()
+   }
+}
+
+```
+#### Getting Started on macOS <a name="getting-started-on-macos"></a>
+
+
+To start using `fusion` on macOS, follow the same options as for iOS.
+
+##### Locating the element <a name="locating-the-element"></a>
+Different strategies can be applied to locate the UI element depending on the layout hierarchy complexity.
+
+Locating element by index:
+```swift
+button().byIndex(1).tap()
+```
+Locating element by label, accessibilityIdentifier, or predicate:
+```swift
+button(signInButtonLabel).tap()
+
+textField(loginTextFieldAccessibilityIdentifier).typeText(username)
+```
+Applying multiple matchers to locate the element:
+
+```swift
+button("nonUniqueButtonIdentifier").isEnabled().hasLabel("buttonLabel").tap()
+```
+Locating the child element:
+Identify the parent element and then provide a child UiElement instance as a parameter to onChild() function:
+
+```swift
+cell(cellIdentifier).onChild(button(childButtonIdentifier)).tap()
+```
+Locating the descendant element:
+Similar to onChild() function, you can locate the ancestor's descendant using the onDescendant() function:
+
+```swift
+cell(cellIdentifier).onDescendant(button(childButtonIdentifier)).tap()
 ```
 
-Actions will be executed in the same order as they are applied to the element.
+#### Performing Actions on Element <a name="performing-actions-on-element"></a>
 
-Before each action **fusion** framework explicitly waits for element existence up to 10 seconds timeout (adjustable). If element does not exist when timeout is reached an attempt to click non-existing element will be made and test will fail.
-In case element exists - test will immediately proceed.
+`fusion` supports the majority of actions available in XCTest framework. Actions should follow the element locator and can be bundled one after another. For example:
 
-List of available actions:
-- `adjust(to value: String)` - adjusts picker wheel to provided value. 
-
-- `clearText()` - deletes text from text field.
-
-- `doubleTap()` - double tap the element.
-
-- `multiTap(_ count: Int)` - tap the element multiple times.
-
-- `forceTap()` - gets the element coordinates and triggers tap action on them. 
-
-- `longPress(_ timeInterval: TimeInterval = 2)` - long press the element with provided time interval. Default value is 2 seconds.
-
-- `swipeDown()` - swipes element down.
-
-- `swipeLeft()` - swipes element left.
-
-- `swipeRight()` - swipes element right.
-
-- `swipeUp()` - swipes element up.
-
-- `tap()` - taps element.
-
-- `typeText(_ text: String)` - types text into the element.
-
-- `swipeUpUntilVisible(maxAttempts: Int = 5)` - swipes up inside the table view until element is visible on the screen. Default max attempts amount = 5. If there is more than one table view in layout hierarchy, `inTable()` matcher should be applied to specify in which table to swipe.
-
-    ```swift
-    cell(cellIdentifier).swipeUpUntilVisible()
-   ```
-
-    ```swift
-    cell(cellIdentifier).inTable(table(tableIdentifier)).swipeUpUntilVisible()
-   ```
-
-    ```swift
-    cell(cellIdentifier).inTable(table().byIndex(1)).swipeUpUntilVisible(10)
-   ```
-
-- `swipeDownUntilVisible(maxAttempts: Int = 5)` - swipes down inside the table view until element is visible on the screen. Default max attempts amount = 5. If there is more than one table view in layout hierarchy, `inTable()` matcher should be applied to specify in which table to swipe.
-
-#### Checking element states <a name="check"></a>
-
-List of available check functions:
-- `checkExists()` - checks that element exists.
-- `checkIsHittable()` - checks that element is hittable - i.e. a hit point can be computed for the element for the purpose of synthesizing events.
 ```swift
+secureTextField(passwordSecureTextFieldIdentifier).tap().clearText().typeText("password")
+```
+Actions will be executed in the same order as they are applied to the element. Before each action, fusion framework explicitly waits for element existence with a timeout of 10 seconds (adjustable). If the element does not exist when the timeout is reached, an attempt to interact with the non-existing element will be made, and the test will fail. If the element exists, the test will proceed immediately.
+
+#### Checking Element States <a name="checking-element-states"></a>
+
+`fusion` provides various check functions to validate the state of an element.
+
+```swift
+cell(cellIdentifier).checkExists()
+
 cell(cellIdentifier).checkIsHittable()
-```
-- `checkDoesNotExist()` - checks that element does not exist.
-```swift
+
 cell(cellIdentifier).checkDoesNotExist()
-```
-- `checkHasChild(_ childElement: UiElement)` - checks that element has a direct child specified by `UiElement` parameter.
-```swift
+
 cell(cellIdentifier).checkHasChild(button(buttonIdentifier))
+
+cell(cellIdentifier).checkHasDescendant(button(childButtonIdentifier))
 ```
-- `checkHasDescendant(_ descendantElement: UiElement)` - checks that element has a descendant specified by `UiElement` parameter.
-- `checkHasLabel(_ label: String)` - checks that element has label equal to the one provided.
-- `checkHasValue(_ value: String)` - checks that element has value equal to the one provided.
-- `checkHasTitle(_ title: String)` -  checks that element has title equal to the one provided.
 
-> NOTE: All checks are executed immediately without waiting for element states. You have to use one of the wait functions when you expect specific element state.
-
-#### Waiting for element states <a name="wait"></a>
-Waits can be used for validation purposes or when specific element state is needed before performing an action, or when checking that element does not exist.
-List of available wait functions:
-- `wait(time: TimeInterval = 10.0)` - explicitly waits for element existence. Default timeout 10 seconds. Immediately returns `UiElement` instance when element exists.
-- `waitForHittable(time: TimeInterval = 10.0)` - explicitly waits for element to be hittable. Default timeout 10 seconds. Immediately returns `UiElement` instance when element exists.
-- `waitForEnabled(time: TimeInterval = 10.0)` - explicitly waits for element to be enabled. Default timeout 10 seconds. Immediately returns `UiElement` instance when element exists.
-- `waitForDisabled(time: TimeInterval = 10.0)` - explicitly waits for element to be disabled. Default timeout 10 seconds. Immediately returns `UiElement` instance when element exists.
-- `waitUntilGone(time: TimeInterval = 10.0` - explicitly waits for element to disappear. Default timeout 10 seconds.
+#### Waiting for Element States <a name="waiting-for-element-states"></a>
+Waits can be used for validation purposes or when waiting for a specific element state before performing an action or checking the non-existence of an element.
 
 ```swift
 button(buttonIdentifier).waitForHittable().tap()
-```
 
-```swift
 cell(cellIdentifier).waitUntilGone(5)
+
+staticText(staticTextIdentifier).waitUntilExists().checkExists()
 ```
 
-#### Working with UI interruption monitor <a name="monitor"></a>
-From Apple [**xctest**](https://developer.apple.com/documentation/xctest) documentation:
->A "UI interruption" is any element which unexpectedly blocks access to an element with which a UI test is trying to interact. Interrupting elements are most commonly alerts, dialogs, or other windows, but can be of other types as well. Interruptions are unexpected or at least not deterministic: the appearance of an alert in direct response to a test action such as clicking a button is not an interruption and should not be handled using a UI interruption monitor. Instead, it's simply part of the UI and should be found using standard queries and interacted with using standard event methods. Note that some interruptions are part of the app's own UI, others are presented on behalf of system apps and services, so queries for these elements must be constructed with the right process at their root.
+#### Working with UI Interruption Monitor <a name="working-with-ui-interruption-monitor"></a>
 
-**fusion** simplifies a way to register UI interruption monitor. You can add it in two ways:
-1. `addUIMonitor(elementToTap: XCUIElement)` - register a single element to monitor for and tap on it when it blocks other element.
-2. `addUIMonitor(elementsQuery: XCUIElementQuery, identifiers: [String])` - register the type of the elements to monitor for together with an array of their locators (labels, accessibility identifiers) and tap on monitored element when it blocks test code execution.
+`fusion` simplifies the process of registering a UI interruption monitor, which allows you to handle elements that unexpectedly block access to other elements during UI testing.
+
+You can register a UI interruption monitor in two ways:
+
+Registering a single element to monitor:
+```swift
+addUIMonitor(elementToTap: XCUIApplication().buttons["OK"])
+```
+This registers a single element to monitor and taps on it when it blocks other elements.
+
+Registering a group of elements to monitor:
+```swift
+addUIMonitor(elementsQuery: XCUIApplication().buttons, identifiers: ["OK", "Allow"])
+```
+This registers the type of elements to monitor (e.g., buttons) together with an array of their locators (labels, accessibility identifiers) and taps on the monitored element when it blocks the test code execution.
+
+Remember to remove the UI interruption monitors in the tearDown() method of your test class to clean up after the test.
 
 ```swift
-import XCTest
+removeUIInterruptionMonitor(okButtonMonitor!)
 
-class SampleTestCase: XCTestCase {
-    
-    var okButtonMonitor: NSObjectProtocol? = nil
-    var buttonsToMonitor: NSObjectProtocol? = nil
-    
-    open override func setUp() {
-        super.setUp()
-        okButtonMonitor = addUIMonitor(elementToTap: XCUIApplication().buttons["OK"])
-        buttonsToMonitor = addUIMonitor(elementsQuery: XCUIApplication().buttons, identifiers: ["OK", "Allow"])
-    }
-
-    open override func tearDown() {
-        if okButtonMonitor != nil { removeUIInterruptionMonitor(okButtonMonitor!) }
-        if buttonsToMonitor != nil { removeUIInterruptionMonitor(buttonsToMonitor!) }
-        super.tearDown()
-    }
-}
+removeUIInterruptionMonitor(buttonsToMonitor!)
 ```
+
+
+```swift
+
+    override func setUp() {
+       ... setup multiple things
+       handleInterruption()
+    }
+    
+    func handleInterruption() {
+        let labels = ["Allow", "Don’t Allow"]
+        /// Adds UI interruption monitor that queries all buttons and clicks if identifier is in the labels array. It is triggered when system alert interrupts the test execution.
+        addUIMonitor(elementQueryToTap: XCUIApplication(bundleIdentifier: "com.apple.springboard").buttons, identifiers: labels)
+    }
+```
+These examples provide an overview of how to use fusion for UI testing.

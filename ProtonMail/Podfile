@@ -9,7 +9,7 @@ def proton_test_path
 end
 
 def proton_test_commit
-  "9b250a7f"
+  "0e0b1903"
 end
 
 def monkey_path
@@ -17,7 +17,7 @@ def monkey_path
 end
 
 def monkey_commit
-  "fa348f33"
+  "d11605f4"
 end
 
 

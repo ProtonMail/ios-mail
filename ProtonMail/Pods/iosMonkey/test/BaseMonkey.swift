@@ -37,26 +37,11 @@ class RandomAction {
     }
 
     func perform() {
+        let excludedElements = [app.buttons["Crash"], app.cells.containing(.staticText, identifier: "Acknowledgments").firstMatch].compactMap { $0 }
         switch type {
         case .tap:
-            let randomCoordinate = app.coordinate(withNormalizedOffset: generateRandomVector())
-
-            if app.buttons["Crash"].exists {
-
-                let button = app.buttons["Crash"]
-
-                // Get the starting and ending screen points for the element
-                let startingScreenPoint = button.coordinate(withNormalizedOffset: CGVector(dx: 0.0, dy: 0.0)).screenPoint
-                let endingScreenPoint = button.coordinate(withNormalizedOffset: CGVector(dx: 1.0, dy: 1.0)).screenPoint
-
-                let randomCoordinateScreenPoint = randomCoordinate.screenPoint
-
-                if startingScreenPoint.x <= randomCoordinateScreenPoint.x && randomCoordinateScreenPoint.x <= endingScreenPoint.x && startingScreenPoint.y <= randomCoordinateScreenPoint.y && randomCoordinateScreenPoint.y <= endingScreenPoint.y {
-                    // Random coordinate is within the horizontal and vertical range of the button element
-                    break // should not click
-                }
-            }
-
+            let randomVector = generateRandomVector(excludingElements: excludedElements)
+            let randomCoordinate = app.coordinate(withNormalizedOffset: randomVector)
             randomCoordinate.tap()
 
         case .burgermenu:
@@ -64,13 +49,34 @@ class RandomAction {
             burgerMenu.tap()
 
         case .swipe:
-            let rightEdge = app.coordinate(withNormalizedOffset: CGVector(dx: 1, dy: 0.5))
-            let toCoordinate = app.coordinate(withNormalizedOffset: CGVector(dx: 0.4, dy: 0.5))
-            rightEdge.press(forDuration: 0, thenDragTo: toCoordinate)
+            // Generate a random vector that does not intersect with the excluded elements.
+            let startVector = generateRandomVector(excludingElements: excludedElements)
+            let startCoordinate = app.coordinate(withNormalizedOffset: startVector)
+
+            // Generate a second vector for the end coordinate, also checking against excluded elements.
+            var endVector: CGVector
+            var attempt = 0
+            let maxAttempts = 100
+
+            repeat {
+                endVector = generateRandomVector(excludingElements: excludedElements)
+                attempt += 1
+                if attempt >= maxAttempts {
+                    XCTFail("Reached maximum attempts to find a non-excluded coordinate. Using last generated vector.")
+                    break
+                }
+            } while endVector == startVector // Prevent same start and end point.
+
+            let endCoordinate = app.coordinate(withNormalizedOffset: endVector)
+
+            // Perform the swipe action with the validated coordinates.
+            startCoordinate.press(forDuration: 0, thenDragTo: endCoordinate)
 
         case .contextMenu:
-            let fromCoordinate = app.coordinate(withNormalizedOffset: generateRandomVector())
-            fromCoordinate.press(forDuration: 1.5)
+            // Generate a random vector that does not intersect with the excluded elements.
+            let randomVector = generateRandomVector(excludingElements: excludedElements)
+            let randomCoordinate = app.coordinate(withNormalizedOffset: randomVector)
+            randomCoordinate.press(forDuration: 1.5)
             if app.exists && app.menuItems.element.exists && app.menuItems.element.isHittable {
                 UIPasteboard.general.string = "[_)(*&%!@]"
                 if app.menuItems["Paste"].isHittable {
@@ -86,10 +92,32 @@ class RandomAction {
         }
     }
 
-    private func generateRandomVector() -> CGVector {
-        let x = CGFloat(arc4random()) / CGFloat(UINT32_MAX)
-        let y = CGFloat(arc4random()) / CGFloat(UINT32_MAX)
-        return CGVector(dx: x, dy: y)
+    private func isCoordinateWithinElement(_ coordinate: XCUICoordinate, element: XCUIElement) -> Bool {
+        let startingScreenPoint = element.coordinate(withNormalizedOffset: CGVector(dx: 0.0, dy: 0.0)).screenPoint
+        let endingScreenPoint = element.coordinate(withNormalizedOffset: CGVector(dx: 1.0, dy: 1.0)).screenPoint
+        let coordinateScreenPoint = coordinate.screenPoint
+
+        return (startingScreenPoint.x <= coordinateScreenPoint.x && coordinateScreenPoint.x <= endingScreenPoint.x &&
+                startingScreenPoint.y <= coordinateScreenPoint.y && coordinateScreenPoint.y <= endingScreenPoint.y)
+    }
+
+    private func generateRandomVector(excludingElements elements: [XCUIElement], maxAttempts: Int = 100) -> CGVector {
+        var randomVector: CGVector
+        var attempt = 0
+        var isExcluded: Bool
+        repeat {
+            randomVector = CGVector(dx: Double.random(in: 0...1), dy: Double.random(in: 0...1))
+            isExcluded = elements.contains { element in
+                element.exists && isCoordinateWithinElement(app.coordinate(withNormalizedOffset: randomVector), element: element)
+            }
+            attempt += 1
+            if attempt >= maxAttempts {
+                XCTFail("Reached maximum attempts to find a non-excluded coordinate. Using last generated vector.")
+                break
+            }
+        } while isExcluded
+
+        return randomVector
     }
 }
 
@@ -207,4 +235,3 @@ open class BaseMonkey : XCTestCase{
         }
     }
 }
-
