@@ -65,12 +65,16 @@ final class ComposerViewFactory {
         composerDelegate: ComposeContainerViewControllerDelegate? = nil
     ) -> UINavigationController {
         let childViewModel = ComposeViewModel(
-            msg: msg,
-            action: action,
             isEditingScheduleMsg: isEditingScheduleMsg,
             originalScheduledTime: originalScheduledTime,
             dependencies: composeViewModelDependencies
         )
+
+        do {
+            try childViewModel.initialize(message: msg, action: action)
+        } catch {
+            PMAssertionFailure(error)
+        }
 
         if let url = mailToUrl {
             childViewModel.parse(mailToURL: url)

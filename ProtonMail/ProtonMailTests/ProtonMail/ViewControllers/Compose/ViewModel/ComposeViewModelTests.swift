@@ -35,8 +35,8 @@ final class ComposeViewModelTests: XCTestCase {
     private let userID: UserID = .init(String.randomString(20))
     private var mockUIDelegate: MockComposeUIProtocol!
 
-    override func setUp() {
-        super.setUp()
+    override func setUpWithError() throws {
+        try super.setUpWithError()
         testContainer = .init()
         LocaleEnvironment.locale = { .enGB }
 
@@ -84,11 +84,8 @@ final class ComposeViewModelTests: XCTestCase {
             Message(context: testContext)
         }
 
-        sut = ComposeViewModel(
-            msg: .init(message),
-            action: .openDraft,
-            dependencies: dependencies
-        )
+        sut = ComposeViewModel(dependencies: dependencies)
+        try sut.initialize(message: .init(message), action: .openDraft)
     }
 
     override func tearDown() {
@@ -172,7 +169,7 @@ final class ComposeViewModelTests: XCTestCase {
         XCTAssertEqual(lists, addresses)
     }
     
-    func testInitializeAddress_whenReply_theOriginalToAddressIsInvalid_shouldUseDefaultAddress() {
+    func testInitializeAddress_whenReply_theOriginalToAddressIsInvalid_shouldUseDefaultAddress() throws {
         var addresses = generateAddress(number: 2)
         let invalidAddress = updateAddressStatus(address: addresses[0], status: .disabled)
         addresses[0] = invalidAddress
@@ -189,15 +186,11 @@ final class ComposeViewModelTests: XCTestCase {
             return repliedMessage
         }
 
-        sut = ComposeViewModel(
-            msg: MessageEntity(message),
-            action: .reply,
-            dependencies: dependencies
-        )
+        try sut.initialize(message: .init(message), action: .reply)
         XCTAssertEqual(sut.currentSenderAddress(), fakeUserManager.addresses.defaultAddress())
     }
     
-    func testInitializeAddress_whenReply_theOriginalToAddressIsValid_shouldUseIt() {
+    func testInitializeAddress_whenReply_theOriginalToAddressIsValid_shouldUseIt() throws {
         let addresses = generateAddress(number: 2)
         fakeUserManager.userInfo.set(addresses: addresses)
         let aliasAddress = aliasAddress(from: addresses[0])
@@ -212,15 +205,11 @@ final class ComposeViewModelTests: XCTestCase {
             return repliedMessage
         }
 
-        sut = ComposeViewModel(
-            msg: MessageEntity(message),
-            action: .reply,
-            dependencies: dependencies
-        )
+        try sut.initialize(message: .init(message), action: .reply)
         wait(self.sut.currentSenderAddress() == aliasAddress, timeout: 5)
     }
     
-    func testAddressesStatusChanged_theCurrentAddressIsInvalid_shouldChangeToDefaultOne() {
+    func testAddressesStatusChanged_theCurrentAddressIsInvalid_shouldChangeToDefaultOne() throws {
         var addresses = generateAddress(number: 2)
         fakeUserManager.userInfo.set(addresses: addresses)
         let aliasAddress = aliasAddress(from: addresses[0])
@@ -235,11 +224,8 @@ final class ComposeViewModelTests: XCTestCase {
             return repliedMessage
         }
 
-        sut = ComposeViewModel(
-            msg: MessageEntity(message),
-            action: .reply,
-            dependencies: dependencies
-        )
+        sut = ComposeViewModel(dependencies: dependencies)
+        try sut.initialize(message: .init(message), action: .reply)
         sut.uiDelegate = mockUIDelegate
         wait(self.sut.currentSenderAddress() == aliasAddress, timeout: 5)
         
@@ -258,13 +244,13 @@ final class ComposeViewModelTests: XCTestCase {
     // MARK: isEmptyDraft tests
 
     func testIsEmptyDraft_messageInit() throws {
-        sut.initialize(message: .init(message), action: .openDraft)
+        try sut.initialize(message: .init(message), action: .openDraft)
         XCTAssertTrue(sut.isEmptyDraft())
     }
 
     func testIsEmptyDraft_subjectField() throws {
         message.title = "abc"
-        sut.initialize(message: .init(message), action: .openDraft)
+        try sut.initialize(message: .init(message), action: .openDraft)
         XCTAssertFalse(sut.isEmptyDraft())
     }
 
@@ -272,19 +258,19 @@ final class ComposeViewModelTests: XCTestCase {
         message.toList = "[]"
         message.ccList = "[]"
         message.bccList = "[]"
-        sut.initialize(message: .init(message), action: .openDraft)
+        try sut.initialize(message: .init(message), action: .openDraft)
 
         XCTAssertTrue(sut.isEmptyDraft())
     }
 
-    func testIsEmptyDraft_whenBodyHasNoTextOrImages_itShouldReturnTrue() {
+    func testIsEmptyDraft_whenBodyHasNoTextOrImages_itShouldReturnTrue() throws {
         message.body = "<div><br></div><div><br></div></body>"
-        sut.initialize(message: .init(message), action: .openDraft)
+        try sut.initialize(message: .init(message), action: .openDraft)
 
         XCTAssertTrue(sut.isEmptyDraft())
     }
 
-    func testIsEmptyDraft_whenBodyOnlyHasText_itShouldReturnFalse() {
+    func testIsEmptyDraft_whenBodyOnlyHasText_itShouldReturnFalse() throws {
         message.body =
         """
         <body>
@@ -296,12 +282,12 @@ final class ComposeViewModelTests: XCTestCase {
         </div>
         </body>
         """
-        sut.initialize(message: .init(message), action: .openDraft)
+        try sut.initialize(message: .init(message), action: .openDraft)
 
         XCTAssertFalse(sut.isEmptyDraft())
     }
 
-    func testIsEmptyDraft_whenBodyOnlyHasImages_itShouldReturnFalse() {
+    func testIsEmptyDraft_whenBodyOnlyHasImages_itShouldReturnFalse() throws {
         message.body =
         """
         <body>
@@ -314,7 +300,7 @@ final class ComposeViewModelTests: XCTestCase {
         </div>
         </body>
         """
-        sut.initialize(message: .init(message), action: .openDraft)
+        try sut.initialize(message: .init(message), action: .openDraft)
 
         XCTAssertFalse(sut.isEmptyDraft())
     }
@@ -419,11 +405,7 @@ final class ComposeViewModelTests: XCTestCase {
             return message
         }
 
-        sut = ComposeViewModel(
-            msg: .init(message),
-            action: .replyAll,
-            dependencies: dependencies
-        )
+        try sut.initialize(message: .init(message), action: .replyAll)
         sut.collectDraft("", body: "", expir: 0, pwd: "", pwdHit: "")
         let draft = try XCTUnwrap(sut.composerMessageHelper.draft)
         
@@ -470,11 +452,6 @@ final class ComposeViewModelTests: XCTestCase {
 
     func testFetchContacts_newEmailAdded_withContactCombine_contactsWillHaveAllNewlyAddedEmail() throws {
         testContainer.userDefaults[.isCombineContactOn] = true
-        sut = ComposeViewModel(
-            msg: .init(message),
-            action: .openDraft,
-            dependencies: dependencies
-        )
         sut.fetchContacts()
         XCTAssertTrue(sut.contacts.isEmpty)
         let name = String.randomString(20)

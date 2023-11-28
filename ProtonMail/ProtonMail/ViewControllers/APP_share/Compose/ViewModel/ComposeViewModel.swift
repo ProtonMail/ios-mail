@@ -137,8 +137,6 @@ class ComposeViewModel: NSObject {
     }
 
     init(
-        msg: MessageEntity?,
-        action: ComposeMessageAction,
         isEditingScheduleMsg: Bool = false,
         originalScheduledTime: Date? = nil,
         dependencies: Dependencies
@@ -152,26 +150,14 @@ class ComposeViewModel: NSObject {
         composerMessageHelper = ComposerMessageHelper(dependencies: self.dependencies.helperDependencies, user: user)
 
         super.init()
-
-        // TODO: This method has side effects and as such should not be called in `init`.
-        // However, first we need to reduce the number of `ComposeViewModel.init` calls scattered across the code.
-        initialize(message: msg, action: action)
     }
 
-    func initialize(message msg: MessageEntity?, action: ComposeMessageAction) {
-        if msg == nil || msg?.isDraft == true {
-            if let msg = msg {
+    func initialize(message msg: MessageEntity?, action: ComposeMessageAction) throws {
+        if let msg {
+            if msg.isDraft {
                 self.composerMessageHelper.setNewMessage(objectID: msg.objectID.rawValue)
-            }
-        } else {
-            guard let msg = msg else {
-                fatalError("This should not happened.")
-            }
-
-            do {
+            } else {
                 try composerMessageHelper.copyAndCreateDraft(from: msg.messageID, action: action)
-            } catch {
-                PMAssertionFailure(error)
             }
         }
 

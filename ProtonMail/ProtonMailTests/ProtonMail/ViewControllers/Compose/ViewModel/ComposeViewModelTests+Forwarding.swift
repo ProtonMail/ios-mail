@@ -24,48 +24,26 @@ import XCTest
 @testable import ProtonMail
 
 final class ComposeViewModelTests_Forwarding: XCTestCase {
-    private var mockCoreDataService: MockCoreDataContextProvider!
-    private var composerViewFactory: ComposerViewFactory!
+    private var sut: ComposeViewModel!
+    private var testContainer: TestContainer!
     private var user: UserManager!
 
     private var testContext: NSManagedObjectContext {
-        mockCoreDataService.viewContext
+        testContainer.contextProvider.mainContext
     }
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        mockCoreDataService = .init()
-
-        let globalContainer = GlobalContainer()
-        globalContainer.contextProviderFactory.register { self.mockCoreDataService }
-        user = UserManager(api: APIServiceMock(), globalContainer: globalContainer)
-        composerViewFactory = user.container.composerViewFactory
-
-        let keyPair = try MailCrypto.generateRandomKeyPair()
-        let key = Key(keyID: "1", privateKey: keyPair.privateKey)
-        key.signature = "signature is needed to make this a V2 key"
-        let address = Address(
-            addressID: "",
-            domainID: nil,
-            email: "",
-            send: .active,
-            receive: .active,
-            status: .enabled,
-            type: .externalAddress,
-            order: 1,
-            displayName: "",
-            signature: "a",
-            hasKeys: 1,
-            keys: [key]
-        )
-        user.userInfo.userAddresses = [address]
-        user.authCredential.mailboxpassword = keyPair.passphrase
+        testContainer = .init()
+        user = try UserManager.prepareUser(apiMock: APIServiceMock(), globalContainer: testContainer)
+        let composerViewFactory = user.container.composerViewFactory
+        sut = ComposeViewModel(dependencies: composerViewFactory.composeViewModelDependencies)
     }
 
     override func tearDownWithError() throws {
-        mockCoreDataService = nil
-        composerViewFactory = nil
+        sut = nil
+        testContainer = nil
         user = nil
 
         try super.tearDownWithError()
@@ -81,9 +59,9 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
 
         try testContext.save()
 
-        let sut = makeSUT(message: .init(message))
+        try sut.initialize(message: .init(message), action: .forward)
 
-        XCTAssertEqual(sut.getAttachments().map(\.id), [attachmentID])
+        XCTAssertEqual(self.sut.getAttachments().map(\.id), [attachmentID])
     }
 
     func testGivenMIMEMessageWithAttachments_whenForwarding_thenPreservesAttachments() throws {
@@ -92,18 +70,10 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
 
         try testContext.save()
 
-        let sut = makeSUT(message: .init(message))
-        
-        wait(sut.getAttachments().count == 2)
-        XCTAssertEqual(sut.getAttachments().map(\.id), ["0", "0"])
-    }
+        try sut.initialize(message: .init(message), action: .forward)
 
-    private func makeSUT(message: MessageEntity) -> ComposeViewModel {
-        ComposeViewModel(
-            msg: message,
-            action: .forward,
-            dependencies: composerViewFactory.composeViewModelDependencies
-        )
+        wait(self.sut.getAttachments().count == 2)
+        XCTAssertEqual(sut.getAttachments().map(\.id), ["0", "0"])
     }
 
     private func prepareEncryptedMessage(body: String, mimeType: Message.MimeType) throws -> Message {
