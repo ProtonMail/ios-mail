@@ -190,7 +190,7 @@ class UsersManager: UsersManagerProtocol {
     }
 
     func isAllowedNewUser(userInfo: UserInfo) -> Bool {
-        if numberOfFreeAccounts > 0, !userInfo.isPaid {
+        if numberOfFreeAccounts > 0, !userInfo.hasPaidMailPlan {
             return false
         }
         return true
@@ -618,7 +618,7 @@ extension UsersManager {
     }
 
     var numberOfFreeAccounts: Int {
-        self.users.filter { !$0.isPaid }.count
+        self.users.filter { !$0.hasPaidMailPlan }.count
     }
 }
 

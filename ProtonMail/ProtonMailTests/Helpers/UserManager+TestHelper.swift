@@ -29,6 +29,7 @@ extension UserManager {
         userID: String? = nil,
         appTelemetry: AppTelemetry = MailAppTelemetry(),
         authCredential: AuthCredential = .none,
+        subscribed: User.Subscribed = .mail,
         globalContainer: GlobalContainer? = nil
     ) {
         if let role {
@@ -38,6 +39,8 @@ extension UserManager {
         if let userID {
             userInfo.userId = userID
         }
+
+        userInfo.subscribed = subscribed
 
         self.init(
             api: api,

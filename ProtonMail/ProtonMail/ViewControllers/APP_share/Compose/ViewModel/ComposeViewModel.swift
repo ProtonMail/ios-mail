@@ -743,7 +743,7 @@ extension ComposeViewModel {
     func mobileSignature() -> String {
         guard user.showMobileSignature else { return .empty }
         var userMobileSignature = dependencies.fetchMobileSignatureUseCase.execute(
-            params: .init(userID: user.userID, isPaidUser: user.isPaid)
+            params: .init(userID: user.userID, isPaidUser: user.hasPaidMailPlan)
         )
         userMobileSignature = userMobileSignature.preg_replace(
             "Proton Mail",

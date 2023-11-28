@@ -33,6 +33,14 @@ extension UserInfo {
         hideEmbeddedImages == 0
     }
 
+    var hasPaidMailPlan: Bool {
+        guard
+            let organizationRole = UserInfo.OrganizationRole(rawValue: role),
+            organizationRole != .none
+        else { return false }
+        return subscribed.contains(.mail)
+    }
+    
     func update(from userSettings: UserSettingsResponse) {
         self.notificationEmail = userSettings.email.value
         self.notify = userSettings.email.notify

@@ -123,7 +123,7 @@ class UsersManagerTests: XCTestCase {
                                     credit: nil,
                                     currency: nil,
                                     createTime: nil,
-                                    subscribed: nil)
+                                    subscribed: .mail)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: paidUserInfo))
 
         let freeUserInfo = UserInfo(maxSpace: nil,
@@ -175,7 +175,7 @@ class UsersManagerTests: XCTestCase {
         let userID = "1"
         let user1 = createUserManagerMock(userID: userID, isPaid: false)
         sut.add(newUser: user1)
-        XCTAssertFalse(sut.users[0].isPaid)
+        XCTAssertFalse(sut.users[0].hasPaidMailPlan)
 
         let newAuth = AuthCredential(sessionID: "SessionID_\(userID)",
                                      accessToken: "new",
@@ -196,9 +196,9 @@ class UsersManagerTests: XCTestCase {
                                    credit: nil,
                                    currency: nil,
                                    createTime: nil,
-                                   subscribed: nil)
+                                   subscribed: .mail)
         sut.update(userInfo: newUserInfo, for: newAuth.sessionID)
-        XCTAssertTrue(sut.users[0].isPaid)
+        XCTAssertTrue(sut.users[0].hasPaidMailPlan)
         XCTAssertEqual(sut.users[0].userInfo.maxSpace, 999)
     }
 
@@ -474,7 +474,7 @@ class UsersManagerTests: XCTestCase {
                                 credit: nil,
                                 currency: nil,
                                 createTime: nil,
-                                subscribed: nil)
+                                subscribed: .mail)
         let auth = createAuth(userID: userID)
         return UserManager(api: apiMock,
                            userInfo: userInfo,
