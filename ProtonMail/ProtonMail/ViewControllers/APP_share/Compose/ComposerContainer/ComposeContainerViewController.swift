@@ -765,7 +765,7 @@ extension ComposeContainerViewController: ScheduledSendHelperDelegate {
     }
 
     func isItAPaidUser() -> Bool {
-        return viewModel.user.isPaid
+        return viewModel.user.hasPaidMailPlan
     }
 
 #if !APP_EXTENSION

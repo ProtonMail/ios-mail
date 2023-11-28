@@ -122,7 +122,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         case .nextMsgAfterMove:
             openNextMessageAfterMove()
         case .autoDeleteSpamTrash:
-            if user.isPaid {
+            if user.hasPaidMailPlan {
                 openAutoDeleteSettings()
             } else {
                 presentAutoDeleteUpsellView()

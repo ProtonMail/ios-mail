@@ -315,7 +315,7 @@ extension UserManager: UserManagerSaveAction {
 extension UserManager: UserDataSource {
 
     var hasPaidMailPlan: Bool {
-        userInfo.role > 0 && userInfo.subscribed.contains(.mail)
+        userInfo.hasPaidMailPlan
     }
 
     var mailboxPassword: Passphrase {
@@ -328,10 +328,6 @@ extension UserManager: UserDataSource {
 
     var notify: Bool {
         return userInfo.notify == 1
-    }
-
-    var isPaid: Bool {
-        return self.userInfo.role > 0 ? true : false
     }
 
     func updateFromEvents(userInfoRes: [String: Any]?) {
@@ -443,13 +439,8 @@ extension UserManager {
 
     var showMobileSignature: Bool {
         get {
-            let role = userInfo.role
-            if role > 0 {
-                if let status = container.userCachedStatus.getMobileSignatureSwitchStatus(by: userID.rawValue) {
-                    return status
-                } else {
-                    return false
-                }
+            if userInfo.hasPaidMailPlan {
+                return container.userCachedStatus.getMobileSignatureSwitchStatus(by: userID.rawValue) ?? false
             } else {
                 container.userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: true)
                 return true

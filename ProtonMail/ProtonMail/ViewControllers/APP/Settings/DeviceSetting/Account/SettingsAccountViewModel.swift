@@ -246,7 +246,7 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
     }
 
     var isPaidUser: Bool {
-        userManager.isPaid
+        userManager.hasPaidMailPlan
     }
 
     func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?) {

@@ -1197,7 +1197,7 @@ extension MailboxViewModel {
             return nil
         }
 
-        if !user.isPaid {
+        if !user.hasPaidMailPlan {
             return .upsellBanner
         } else if user.isAutoDeleteImplicitlyDisabled {
             return .promptBanner

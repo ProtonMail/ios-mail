@@ -234,7 +234,7 @@ class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
             fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: coreKeyMaker, cache: userCachedStatus, keychain: keychain))
         )
         originalSignature = dependencies.fetchMobileSignatureUseCase.execute(
-            params: .init(userID: userManager.userID, isPaidUser: userManager.isPaid)
+            params: .init(userID: userManager.userID, isPaidUser: userManager.hasPaidMailPlan)
         )
     }
 
@@ -303,16 +303,11 @@ class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
     }
 
     func isSwitchEnabled() -> Bool {
-        return getRole()
+        return userManager.hasPaidMailPlan
     }
 
     func getNotes() -> String {
         return ""
-    }
-
-    internal func getRole() -> Bool {
-        let role = userManager.userInfo.role
-        return role > 0
     }
 
     func needAsk2FA() -> Bool {
