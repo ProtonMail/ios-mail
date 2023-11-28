@@ -262,9 +262,9 @@ PODS:
   - Yams (5.0.6)
 
 DEPENDENCIES:
-  - "fusion (from `git@gitlab.protontech.ch:tpe/apple-fusion.git`, commit `9b250a7f`)"
+  - "fusion (from `git@gitlab.protontech.ch:tpe/apple-fusion.git`, commit `0e0b1903`)"
   - Groot (= 3.0.1)
-  - "iosMonkey (from `git@gitlab.protontech.ch:tpe/ios-monkey.git`, commit `fa348f33`)"
+  - "iosMonkey (from `git@gitlab.protontech.ch:tpe/ios-monkey.git`, commit `d11605f4`)"
   - MBProgressHUD (= 1.1.0)
   - OHHTTPStubs/Swift
   - PromiseKit (= 6.13.1)
@@ -341,10 +341,10 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   fusion:
-    :commit: 9b250a7f
+    :commit: 0e0b1903
     :git: "git@gitlab.protontech.ch:tpe/apple-fusion.git"
   iosMonkey:
-    :commit: fa348f33
+    :commit: d11605f4
     :git: "git@gitlab.protontech.ch:tpe/ios-monkey.git"
   ProtonCore-AccountDeletion:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
@@ -466,10 +466,10 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   fusion:
-    :commit: 9b250a7f
+    :commit: 0e0b1903
     :git: "git@gitlab.protontech.ch:tpe/apple-fusion.git"
   iosMonkey:
-    :commit: fa348f33
+    :commit: d11605f4
     :git: "git@gitlab.protontech.ch:tpe/ios-monkey.git"
   ProtonCore-AccountDeletion:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
@@ -645,6 +645,6 @@ SPEC CHECKSUMS:
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
   Yams: e10dae147f517ed57ecae37c5e8681bdf8fcab65
 
-PODFILE CHECKSUM: 8cab7365fde205fb8b120408eb55253bdea7a20e
+PODFILE CHECKSUM: 0742aea1ba3527c1f565b158f3aad660598aa1f7
 
 COCOAPODS: 1.14.3

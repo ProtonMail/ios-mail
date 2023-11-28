@@ -10,9 +10,9 @@ import fusion
 import ProtonMail
 
 fileprivate struct id {
-    static let saveNavBarButtonIdentifier = "ContactEditViewController.doneItem"
-    static let cancelNavBarButtonIdentifier = "UINavigationItem.cancelAction"
-    static let nameTextFieldIdentifier = "ContactEditViewController.displayNameField"
+    static let saveNavBarButtonIdentifier = "ContactEditViewController.doneButton"
+    static let cancelNavBarButtonIdentifier = "ContactEditViewController.cancelButton'"
+    static let nameTextFieldIdentifier = "ContactEditViewController.customView.displayNameField"
     static let addNewEmailCellIdentifier = "ContactEditAddCell.Add_new_email"
     static let emailTextFieldIdentifier = "Email_address.valueField"
     static let deleteCellIdentifier = "ContactEditAddCell.Delete_contact"
