@@ -20,15 +20,29 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import Combine
 import UIKit
 
 protocol AttachmentViewControllerDelegate: AnyObject {
     func openAttachmentList(with attachments: [AttachmentInfo])
+    func invitationViewWasChanged()
 }
 
 class AttachmentViewController: UIViewController {
     private let viewModel: AttachmentViewModel
-    private(set) lazy var customView = AttachmentView()
+    private let rsvp = EventRSVPFake()
+    private var subscriptions = Set<AnyCancellable>()
+
+    private let invitationProcessingView = InCellActivityIndicatorView(style: .medium)
+    private let invitationView = InvitationView()
+    private let attachmentView = AttachmentView()
+
+    private lazy var customView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [invitationProcessingView, invitationView, attachmentView])
+        view.axis = .vertical
+        view.distribution = .equalSpacing
+        return view
+    }()
 
     weak var delegate: AttachmentViewControllerDelegate?
 
@@ -50,11 +64,12 @@ class AttachmentViewController: UIViewController {
 
         viewModel.reloadView = { [weak self] in
             guard let self = self else { return }
-            self.setup(view: self.customView, with: self.viewModel)
+            self.setup(view: self.attachmentView, with: self.viewModel)
         }
 
-        setup(view: customView, with: viewModel)
+        setup(view: attachmentView, with: viewModel)
         setUpTapGesture()
+        setUpBindings()
     }
 
     private func setup(view: AttachmentView, with data: AttachmentViewModel) {
@@ -65,12 +80,37 @@ class AttachmentViewController: UIViewController {
 
         text += sizeString
         view.titleLabel.set(text: text,
-                            preferredFont: .subheadline)
+                            preferredFont: .footnote)
     }
 
     private func setUpTapGesture() {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap))
-        customView.addGestureRecognizer(gesture)
+        attachmentView.addGestureRecognizer(gesture)
+    }
+
+    private func setUpBindings() {
+        viewModel.invitationViewState
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] invitationViewState in
+                guard let self else { return }
+
+                switch invitationViewState {
+                case .noInvitationFound:
+                    self.invitationProcessingView.customStopAnimating()
+                    self.invitationView.isHidden = true
+                case .invitationFoundAndProcessing:
+                    self.invitationProcessingView.startAnimating()
+                    self.invitationView.isHidden = true
+                case .invitationProcessed(let eventDetails):
+                    self.invitationProcessingView.customStopAnimating()
+                    self.invitationView.populate(with: eventDetails)
+                    self.invitationView.isHidden = false
+                }
+
+                self.delegate?.invitationViewWasChanged()
+            }
+            .store(in: &subscriptions)
     }
 
     @objc
@@ -95,5 +135,20 @@ extension AttachmentViewController: CustomViewPrintable {
         newView.layoutIfNeeded()
 
         renderer.updateImage(in: newView.frame)
+    }
+}
+
+private class InCellActivityIndicatorView: UIActivityIndicatorView {
+    @available(*, unavailable, message: "This method does nothing, use `customStopAnimating` instead.")
+    override func stopAnimating() {
+        /*
+         This method is called by the OS as a part of `prepareForReuse`.
+         However, the animation is never restarted.
+         The result is that the spinner is gone too soon, before the processing is complete.
+         */
+    }
+
+    func customStopAnimating() {
+        super.stopAnimating()
     }
 }

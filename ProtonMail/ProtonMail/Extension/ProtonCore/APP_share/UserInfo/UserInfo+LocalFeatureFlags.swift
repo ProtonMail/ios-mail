@@ -44,7 +44,6 @@ extension UserInfo {
     }
 
     static var isEventRSVPEnabled: Bool {
-        // there is no UI yet, so no purpose in activating the functionality
         ProcessInfo.isRunningUnitTests
     }
 }

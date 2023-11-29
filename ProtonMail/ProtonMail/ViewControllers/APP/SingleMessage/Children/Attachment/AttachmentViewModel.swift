@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import Combine
 import ProtonCoreDataModel
 
 final class AttachmentViewModel {
@@ -42,6 +43,10 @@ final class AttachmentViewModel {
         attachments.count
     }
 
+    var invitationViewState: AnyPublisher<InvitationViewState, Never> {
+        invitationViewSubject.eraseToAnyPublisher()
+    }
+
     var totalSizeOfAllAttachments: Int {
         let attachmentSizes = attachments.map({ $0.size })
         let totalSize = attachmentSizes.reduce(0) { result, value -> Int in
@@ -49,6 +54,8 @@ final class AttachmentViewModel {
         }
         return totalSize
     }
+
+    private let invitationViewSubject = CurrentValueSubject<InvitationViewState, Never>(.noInvitationFound)
 
     private var invitationProcessingTask: Task<Void, Never>? {
         didSet {
@@ -77,13 +84,16 @@ final class AttachmentViewModel {
             return
         }
 
+        invitationViewSubject.send(.invitationFoundAndProcessing)
+
         invitationProcessingTask = Task {
             do {
                 let icsData = try await fetchAndDecrypt(ics: ics)
-                // propagate this data to the UI once it's implemented
-                _ = try await dependencies.eventRSVP.parseData(icsData: icsData)
+                let eventDetails = try await dependencies.eventRSVP.parseData(icsData: icsData)
+                invitationViewSubject.send(.invitationProcessed(eventDetails))
             } catch {
                 PMAssertionFailure(error)
+                invitationViewSubject.send(.noInvitationFound)
             }
         }
     }
@@ -102,5 +112,13 @@ final class AttachmentViewModel {
         )
 
         return attachment.data
+    }
+}
+
+extension AttachmentViewModel {
+    enum InvitationViewState: Equatable {
+        case noInvitationFound
+        case invitationFoundAndProcessing
+        case invitationProcessed(EventDetails)
     }
 }

@@ -557,6 +557,10 @@ extension SingleMessageContentViewController: AttachmentViewControllerDelegate {
         let body = viewModel.messageInfoProvider.bodyParts?.originalBody
         navigationAction(.attachmentList(messageId: messageID, decryptedBody: body, attachments: attachments))
     }
+
+    func invitationViewWasChanged() {
+        viewModel.recalculateCellHeight?(true)
+    }
 }
 
 extension SingleMessageContentViewController: BannerViewControllerDelegate {

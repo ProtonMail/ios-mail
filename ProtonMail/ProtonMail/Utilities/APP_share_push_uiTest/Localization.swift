@@ -1315,6 +1315,10 @@ enum L11n {
         static let load = NSLocalizedString("Load", comment: "Button inside the banner")
     }
 
+    struct Event {
+        static let organizer = NSLocalizedString("Organizer", comment: "As in: event organizer")
+    }
+
     struct OfficialBadge {
         static let title = NSLocalizedString("Official", comment: "Official badge next to sender's name")
     }

@@ -11,7 +11,6 @@ class SingleMessageContentView: UIView {
     lazy var messageHeaderContainer = HeaderContainerView(replyState: replyState)
     let attachmentContainer = UIView()
     let stackView = UIStackView.stackView(axis: .vertical)
-    let separator = SubviewsFactory.smallSeparatorView
     let footerButtons = SingleMessageFooterButtons()
 
     init(replyState: HeaderContainerView.ReplyState) {
@@ -42,7 +41,6 @@ class SingleMessageContentView: UIView {
 
         footerButtons.setContentHuggingPriority(.defaultLow, for: .horizontal)
         footerButtons.setContentHuggingPriority(.required, for: .vertical)
-        messageHeaderContainer.addSubview(separator)
     }
 
     private func setUpLayout() {
@@ -56,13 +54,6 @@ class SingleMessageContentView: UIView {
         [
             attachmentContainer.heightAnchor.constraint(equalToConstant: 0).setPriority(as: .defaultLow),
             bannerContainer.heightAnchor.constraint(equalToConstant: 0).setPriority(as: .defaultLow)
-        ].activate() 
-
-        [
-            separator.leadingAnchor.constraint(equalTo: messageHeaderContainer.leadingAnchor),
-            separator.trailingAnchor.constraint(equalTo: messageHeaderContainer.trailingAnchor),
-            separator.bottomAnchor.constraint(equalTo: messageHeaderContainer.bottomAnchor),
-            separator.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
     }
 
@@ -76,12 +67,4 @@ class SingleMessageContentView: UIView {
         nil
     }
 
-}
-
-private enum SubviewsFactory {
-    static var smallSeparatorView: UIView {
-        let view = UIView(frame: .zero)
-        view.backgroundColor = ColorProvider.Shade20
-        return view
-    }
 }

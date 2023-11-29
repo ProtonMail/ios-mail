@@ -23,14 +23,36 @@ import XCTest
 class AttachmentViewModelTests: XCTestCase {
     private var user: UserManager!
     private var eventRSVP: MockEventRSVP!
+    private var subscriptions: Set<AnyCancellable>!
 
     var sut: AttachmentViewModel!
     var testAttachments: [AttachmentInfo] = []
 
     private let icsMimeType = "text/calendar"
 
+    private let stubbedEventDetails = EventDetails(
+        title: "Team Collaboration Workshop",
+        startDate: .distantPast,
+        endDate: .distantFuture,
+        calendar: .init(
+            id: "foo",
+            name: "General",
+            iconColor: "#FF0000"
+        ),
+        location: .init(
+            name: "Zoom call",
+            url: URL(string: "https://zoom-call")!
+        ),
+        participants: [
+            .init(email: "aubrey.thompson@proton.me", isOrganizer: true, status: .attending),
+            .init(email: "eric.norbert@proton.me", isOrganizer: false, status: .attending)
+        ]
+    )
+
     override func setUp() {
         super.setUp()
+
+        subscriptions = []
 
         let testContainer = TestContainer()
 
@@ -53,7 +75,7 @@ class AttachmentViewModelTests: XCTestCase {
 
         eventRSVP = .init()
         eventRSVP.parseDataStub.bodyIs { _, _ in
-            EventDetails()
+            self.stubbedEventDetails
         }
 
         user.container.reset()
@@ -67,6 +89,7 @@ class AttachmentViewModelTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
 
+        subscriptions = nil
         testAttachments.removeAll()
 
         sut = nil
@@ -167,6 +190,24 @@ class AttachmentViewModelTests: XCTestCase {
         wait(self.eventRSVP.parseDataStub.callCounter == 1)
     }
 
+    func testWhenICSIsFound_notifiesAboutProcessingProgress() {
+        let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
+        var receivedStates: [AttachmentViewModel.InvitationViewState] = []
+
+        sut.invitationViewState
+            .sink { value in
+                receivedStates.append(value)
+            }
+            .store(in: &subscriptions)
+
+        sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
+
+        let expectedStates: [AttachmentViewModel.InvitationViewState] = [
+            .noInvitationFound, .invitationFoundAndProcessing, .invitationProcessed(stubbedEventDetails)
+        ]
+        wait(receivedStates == expectedStates)
+    }
+
     private func makeAttachment(isInline: Bool, mimeType: String = "text/plain") -> AttachmentInfo {
         return AttachmentInfo(
             fileName: String.randomString(50),
@@ -180,9 +221,5 @@ class AttachmentViewModelTests: XCTestCase {
             contentID: nil,
             order: -1
         )
-    }
-
-    private func waitForTaskToStartExecuting() async {
-        await sleep(milliseconds: 250)
     }
 }
