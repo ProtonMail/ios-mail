@@ -108,7 +108,7 @@ final class UnlockManager {
             completion(false)
             return
         }
-        keyMaker.obtainMainKey(with: PinProtection(pin: userInputPin)) { key in
+        keyMaker.obtainMainKey(with: PinProtection(pin: userInputPin, keychain: keychain)) { key in
             guard self.validate(mainKey: key) else {
                 self.userDefaults[.pinFailedCount] += 1
                 completion(false)
@@ -121,7 +121,7 @@ final class UnlockManager {
 
     private func migrateProtectionSetting() {
         if cacheStatus.isPinCodeEnabled && cacheStatus.isTouchIDEnabled {
-            _ = keyMaker.deactivate(PinProtection(pin: "doesnotmatter"))
+            _ = keyMaker.deactivate(PinProtection(pin: "doesnotmatter", keychain: keychain))
         }
     }
 
