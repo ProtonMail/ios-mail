@@ -22,6 +22,7 @@ struct EventAPIResponse: Decodable, EventPage {
     let code: Int
     let eventID: String
     let refresh, more: Int
+    let notices: [String]
 
     let userSettings: UserSettingsResponse?
     let mailSettings: NewMailSettingsResponse?
@@ -55,5 +56,6 @@ struct EventAPIResponse: Decodable, EventPage {
         case contactEmails = "ContactEmails"
         case conversations = "Conversations"
         case messages = "Messages"
+        case notices = "Notices"
     }
 }

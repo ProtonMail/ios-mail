@@ -31,4 +31,8 @@ extension UserDefaultsKeys {
     static let lastTourVersion = plainKey(named: "last_tour_viersion", ofType: Int.self)
 
     static let pinFailedCount = plainKey(named: "lastPinFailedTimes", defaultValue: 0)
+
+    static let showServerNoticesNextTime = plainKey(named: "showServerNoticesNextTime", defaultValue: "0")
+
+    static let cachedServerNotices = plainKey(named: "cachedServerNotices", defaultValue: [String]())
 }

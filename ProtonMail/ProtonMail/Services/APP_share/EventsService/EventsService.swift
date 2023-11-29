@@ -56,6 +56,7 @@ protocol EventsConsumer: AnyObject {
 
 enum EventError: Error {
     case notRunning
+    case noUser
 }
 
 /// This is the protocol being worked on during the refactor. It will end up being the only one for EventsService.
@@ -77,6 +78,7 @@ final class EventsService: EventsFetching {
     & HasUsersManager
     & HasNotificationCenter
     & HasUserDefaults
+    & HasMailEventsPeriodicScheduler
 
     // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
     private let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
@@ -151,7 +153,19 @@ extension EventsService {
     ///   - labelID: Label/location/folder
     ///   - notificationMessageID: the notification message
     ///   - completion: async complete handler
-    func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, completion: ((Swift.Result<[String: Any], Error>) -> Void)?) {
+    func fetchEvents(
+        byLabel labelID: LabelID,
+        notificationMessageID: MessageID?,
+        completion: ((Swift.Result<[String: Any], Error>) -> Void)?
+    ) {
+        if UserInfo.isNewEventsLoopEnabled {
+            fetchEventsWithNewApproach(
+                byLabel: labelID,
+                notificationMessageID: notificationMessageID,
+                completion: completion
+            )
+            return
+        }
         dependencies.queueManager.queue {
             guard self.status == .running, let userManager = self.userManager else {
                 completion?(.failure(EventError.notRunning))
@@ -226,7 +240,65 @@ extension EventsService {
         }
     }
 
+    private func fetchEventsWithNewApproach(
+        byLabel labelID: LabelID,
+        notificationMessageID: MessageID?,
+        completion: ((Swift.Result<[String: Any], Error>) -> Void)?
+    ) {
+        guard let user = userManager else {
+            completion?(.failure(EventError.noUser))
+            return
+        }
+        if isOverTimeThreshold(userID: user.userID) {
+            cleanCacheAndRefetchData(userManager: user, labelID: labelID, completion: completion)
+            return
+        }
+        let eventID = dependencies.lastUpdatedStore.lastEventID(userID: user.userID)
+        Task {
+            do {
+                let response = try await MailEventsLoop.fetchEvent(eventID: eventID, apiService: user.apiService, jsonDecoder: .init())
+
+                let refreshStatus = RefreshStatus(rawValue: response.refresh)
+                if refreshStatus == .all {
+                    cleanCacheAndRefetchData(userManager: user, labelID: labelID, completion: completion)
+                    return
+                }
+
+                if refreshStatus == .contacts {
+                    user.contactService.cleanUp()
+                    // Although this flag is triggered when all of contacts are deleted
+                    // But if user create a new contact right after deletion
+                    // The new contact won't be sent, client needs to call API to get it
+                    // Call contacts API just in case
+                    user.contactService.fetchContacts(completion: nil)
+                }
+
+                let eventProcessor = EventProcessor(dependencies: user.container)
+                eventProcessor.process(response: response) { result in
+                    switch result {
+                    case .success:
+                        completion?(.success([
+                            "Notices": response.notices,
+                            "More": response.more,
+                            "Refresh": response.refresh
+                        ]))
+                    case .failure(let error):
+                        completion?(.failure(error))
+                    }
+                }
+            } catch {
+                completion?(.failure(error))
+            }
+        }
+    }
+
     func fetchEvents(labelID: LabelID) {
+        guard !UserInfo.isNewEventsLoopEnabled else {
+            if let userID = userManager?.userID {
+                dependencies.mailEventsPeriodicScheduler.triggerSpecialLoop(forSpecialLoopID: userID.rawValue)
+            }
+            return
+        }
         fetchEvents(
             byLabel: labelID,
             notificationMessageID: nil,

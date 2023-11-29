@@ -48,7 +48,7 @@ extension UserInfo {
         self.twoFactor = userSettings.twoFactorVerify.enabled
         self.weekStart = userSettings.weekStart
         self.telemetry = userSettings.telemetry
-        self.crashReports = userSettings.crashReport
+        self.crashReports = userSettings.crashReports
         self.referralProgram = .init(link: userSettings.referral.link, eligible: userSettings.referral.eligible)
     }
 

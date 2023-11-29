@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import PromiseKit
+import ProtonCoreServices
 
 typealias FetchLatestEventIdUseCase = UseCase<EventLatestIDResponse, Void>
 
@@ -30,12 +30,16 @@ class FetchLatestEventId: FetchLatestEventIdUseCase {
     }
 
     override func executionBlock(params: Void, callback: @escaping Callback) {
-        dependencies.eventsService.fetchLatestEventID { [weak self] latestEvent in
-            if latestEvent.eventID.isEmpty {
-                callback(.success(latestEvent))
+        let request = EventLatestIDRequest()
+        dependencies.apiService.perform(
+            request: request,
+            response: EventLatestIDResponse()
+        ) { (_: URLSessionDataTask?, response: EventLatestIDResponse) in
+            if response.eventID.isEmpty {
+                callback(.success(response))
             } else {
-                self?.persistLastEventId(latestEvent: latestEvent)
-                callback(.success(latestEvent))
+                self.persistLastEventId(latestEvent: response)
+                callback(.success(response))
             }
         }
     }
@@ -53,7 +57,7 @@ extension FetchLatestEventId {
 extension FetchLatestEventId {
 
     struct Dependencies {
-        let eventsService: EventsServiceProtocol
+        let apiService: APIService
         let lastUpdatedStore: LastUpdatedStoreProtocol
     }
 }

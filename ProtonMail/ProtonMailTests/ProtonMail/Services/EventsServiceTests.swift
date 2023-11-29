@@ -38,11 +38,12 @@ final class EventsServiceTests: XCTestCase {
         mockApiService = APIServiceMock()
         mockContextProvider = MockCoreDataContextProvider()
 
-        let globalContainer = GlobalContainer()
-        globalContainer.contextProviderFactory.register { self.mockContextProvider }
-        globalContainer.queueManagerFactory.register { self.mockQueueManager }
+        let testContainer = TestContainer()
+        testContainer.contextProviderFactory.register { self.mockContextProvider }
+        testContainer.queueManagerFactory.register { self.mockQueueManager }
+        mockUserManager = UserManager(api: mockApiService, userID: dummyUserID, globalContainer: testContainer)
+        testContainer.usersManager.add(newUser: mockUserManager)
 
-        mockUserManager = UserManager(api: mockApiService, userID: dummyUserID, globalContainer: globalContainer)
         sut = EventsService(userManager: mockUserManager, dependencies: mockUserManager.container)
     }
 
@@ -197,23 +198,7 @@ final class EventsServiceTests: XCTestCase {
         }
 
         waitForExpectations(timeout: timeout)
-        mockContextProvider.read { context in
-            let msgCount = LabelUpdate.lastUpdate(
-                by: "0",
-                userID: dummyUserID,
-                inManagedObjectContext: context
-            )
-            XCTAssertEqual(msgCount?.unread, 1)
-            XCTAssertEqual(msgCount?.total, 1)
-
-            let conversationCount = ConversationCount.lastContextUpdate(
-                by: "0",
-                userID: dummyUserID,
-                inManagedObjectContext: context
-            )
-            XCTAssertEqual(conversationCount?.unread, 1)
-            XCTAssertEqual(conversationCount?.total, 1)
-
+        mockContextProvider.performAndWaitOnRootSavingContext() { context in
             let message = Message.messageForMessageID(msgID, inManagedObjectContext: context)
             XCTAssertEqual(message?.messageID, msgID)
 

@@ -15,24 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import XCTest
 
 class FetchLatestEventIdTests: XCTestCase {
     var sut: FetchLatestEventId!
 
-    var mockEventsService: MockEventsService!
     var mockLastUpdatedStore: MockLastUpdatedStoreProtocol!
+    var mockApiService: APIServiceMock!
 
     override func setUp() {
         super.setUp()
-        mockEventsService = MockEventsService()
         mockLastUpdatedStore = MockLastUpdatedStoreProtocol()
+        mockApiService = .init()
 
         sut = FetchLatestEventId(
             userId: "dummy_user_id",
             dependencies: makeDependencies(
-                mockEventsService: mockEventsService,
+                mockApiService: mockApiService,
                 mockLastUpdatedStore: mockLastUpdatedStore
             )
         )
@@ -40,13 +41,14 @@ class FetchLatestEventIdTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        mockEventsService = nil
         mockLastUpdatedStore = nil
     }
 
     func testExecute_whenEventsService_returnsAnEvent() {
         let eventId = "dummy_event_id"
-        mockEventsService.fetchLatestEventIDResult.eventID = eventId
+        mockApiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+            completion(nil, .success(["EventID": eventId]))
+        }
 
         let expectation = expectation(description: "callback is called")
         sut.execute(params: ()) { result in
@@ -55,11 +57,13 @@ class FetchLatestEventIdTests: XCTestCase {
         }
         waitForExpectations(timeout: 2.0)
 
-        XCTAssert(mockEventsService.wasFetchLatestEventIDCalled == true)
         XCTAssert(mockLastUpdatedStore.updateEventIDStub.wasCalledExactlyOnce == true)
     }
 
     func testExecute_whenEventsService_doesNotReturnAnEvent() {
+        mockApiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+            completion(nil, .success([:]))
+        }
         let expectation = expectation(description: "callback is called")
         sut.execute(params: ()) { result in
             XCTAssert(try! result.get().eventID.isEmpty == true)
@@ -67,19 +71,18 @@ class FetchLatestEventIdTests: XCTestCase {
         }
         waitForExpectations(timeout: 2.0)
 
-        XCTAssert(mockEventsService.wasFetchLatestEventIDCalled == true)
         XCTAssert(mockLastUpdatedStore.updateEventIDStub.wasCalled == false)
     }
 
 }
 
 private func makeDependencies(
-    mockEventsService: EventsServiceProtocol,
+    mockApiService: APIServiceMock,
     mockLastUpdatedStore: MockLastUpdatedStoreProtocol
 ) -> FetchLatestEventId.Dependencies {
 
     FetchLatestEventId.Dependencies(
-        eventsService: mockEventsService,
+        apiService: mockApiService,
         lastUpdatedStore: mockLastUpdatedStore
     )
 }

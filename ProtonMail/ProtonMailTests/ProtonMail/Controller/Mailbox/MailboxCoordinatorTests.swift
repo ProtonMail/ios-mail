@@ -59,7 +59,8 @@ class MailboxCoordinatorTests: XCTestCase {
             featureFlagCache: featureFlagCache,
             userDefaults: testContainer.userDefaults,
             fetchAttachmentUseCase: MockFetchAttachment(),
-            fetchAttachmentMetadataUseCase: MockFetchAttachmentMetadata()
+            fetchAttachmentMetadataUseCase: MockFetchAttachmentMetadata(),
+            mailEventsPeriodicScheduler: testContainer.mailEventsPeriodicScheduler
         )
         viewModelMock = MockMailBoxViewModel(labelID: "",
                                              label: nil,

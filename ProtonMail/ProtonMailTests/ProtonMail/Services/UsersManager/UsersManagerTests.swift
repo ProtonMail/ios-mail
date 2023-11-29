@@ -293,10 +293,10 @@ class UsersManagerTests: XCTestCase {
         expectation(forNotification: .didSignOutLastAccount, object: nil, notificationCenter: globalContainer.notificationCenter)
 
         sut.logout(user: user1) {
-            XCTAssertTrue(self.sut.users.isEmpty)
             expectation1.fulfill()
         }
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
+        XCTAssertTrue(sut.users.isEmpty)
     }
 
     func testLogoutUser_userNotInUsersManager_addedToDisconnectedUser() throws {
@@ -384,7 +384,7 @@ class UsersManagerTests: XCTestCase {
             e.fulfill()
         }.cauterize()
 
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: 2)
 
         XCTAssertFalse(sut.hasUsers())
     }

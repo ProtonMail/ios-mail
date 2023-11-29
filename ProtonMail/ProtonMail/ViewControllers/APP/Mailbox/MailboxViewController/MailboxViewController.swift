@@ -277,6 +277,10 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
         refetchAllIfNeeded()
 
+        if UserInfo.isNewEventsLoopEnabled {
+            getLatestMessages()
+        }
+
         setupScreenEdgeGesture()
         setupAccessibility()
 
@@ -333,14 +337,16 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             viewModel.user.appRatingService.preconditionEventDidOccur(.inboxNavigation)
         }
 
-        if viewModel.eventsService.status != .started {
-            self.startAutoFetch()
-        } else {
-            viewModel.eventsService.resume()
-            viewModel.eventsService.call()
+        if !UserInfo.isNewEventsLoopEnabled {
+            if viewModel.eventsService.status != .started {
+                self.startAutoFetch()
+            } else {
+                viewModel.eventsService.resume()
+                viewModel.eventsService.call()
+            }
         }
 
-            self.view.window?.windowScene?.title = self.title ?? LocalString._menu_inbox_title
+        self.view.window?.windowScene?.title = self.title ?? LocalString._menu_inbox_title
 
         guard viewModel.isHavingUser else {
             return
@@ -634,8 +640,13 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     @objc internal func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         self.showCheckOptions(longPressGestureRecognizer)
         updateNavigationController(viewModel.listEditing)
+
         // invalidate tiemr in multi-selected mode to prevent ui refresh issue
-        self.viewModel.eventsService.pause()
+        if UserInfo.isNewEventsLoopEnabled {
+            self.viewModel.stopNewEventLoop()
+        } else {
+            self.viewModel.eventsService.pause()
+        }
     }
 
     @IBAction func unreadMessageFilterButtonTapped(_ sender: Any) {
@@ -698,15 +709,23 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
     // MARK: Auto refresh methods
     private func startAutoFetch(_ run: Bool = true) {
-        viewModel.eventsService.start()
-        viewModel.eventsService.begin(subscriber: self)
-        if run {
-            self.viewModel.eventsService.call()
+        if UserInfo.isNewEventsLoopEnabled {
+            viewModel.startNewEventLoop()
+        } else {
+            viewModel.eventsService.start()
+            viewModel.eventsService.begin(subscriber: self)
+            if run {
+                self.viewModel.eventsService.call()
+            }
         }
     }
 
     private func stopAutoFetch() {
-        viewModel.eventsService.pause()
+        if UserInfo.isNewEventsLoopEnabled {
+            viewModel.stopNewEventLoop()
+        } else {
+            viewModel.eventsService.pause()
+        }
     }
 
     private func checkContact() {
@@ -1217,7 +1236,11 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             guard let self = self else {
                 return
             }
-            self.viewModel.eventsService.fetchEvents(labelID: self.viewModel.labelId)
+            if UserInfo.isNewEventsLoopEnabled {
+                self.viewModel.fetchEventsWithNewEventLoop()
+            } else {
+                self.viewModel.eventsService.fetchEvents(labelID: self.viewModel.labelId)
+            }
         }
     }
 
@@ -1257,9 +1280,15 @@ extension MailboxViewController {
     private func hideSelectionMode() {
         self.hideCheckOptions()
         self.updateNavigationController(false)
-        if viewModel.eventsService.status != .running {
-            self.startAutoFetch(false)
+
+        if UserInfo.isNewEventsLoopEnabled {
+            viewModel.startNewEventLoop()
+        } else {
+            if viewModel.eventsService.status != .running {
+                self.startAutoFetch(false)
+            }
         }
+
         self.hideActionBar()
         self.dismissActionSheet()
     }
