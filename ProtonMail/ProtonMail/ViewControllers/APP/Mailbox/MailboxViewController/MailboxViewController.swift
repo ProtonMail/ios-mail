@@ -35,9 +35,10 @@ import SwipyCell
 import UIKit
 
 class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol, ScheduledAlertPresenter, LifetimeTrackable {
-    typealias Dependencies = HasPaymentsUIFactory 
-    & ReferralProgramPromptPresenter.Dependencies
-    & HasMailboxMessageCellHelper
+    typealias Dependencies = HasPaymentsUIFactory
+        & ReferralProgramPromptPresenter.Dependencies
+        & HasMailboxMessageCellHelper
+        & HasFeatureFlagsRepository
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -277,7 +278,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
         refetchAllIfNeeded()
 
-        if UserInfo.isNewEventsLoopEnabled {
+        if viewModel.isNewEventLoopEnabled {
             getLatestMessages()
         }
 
@@ -337,7 +338,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             viewModel.user.appRatingService.preconditionEventDidOccur(.inboxNavigation)
         }
 
-        if !UserInfo.isNewEventsLoopEnabled {
+        if !viewModel.isNewEventLoopEnabled {
             if viewModel.eventsService.status != .started {
                 self.startAutoFetch()
             } else {
@@ -642,7 +643,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         updateNavigationController(viewModel.listEditing)
 
         // invalidate tiemr in multi-selected mode to prevent ui refresh issue
-        if UserInfo.isNewEventsLoopEnabled {
+        if viewModel.isNewEventLoopEnabled {
             self.viewModel.stopNewEventLoop()
         } else {
             self.viewModel.eventsService.pause()
@@ -709,7 +710,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
     // MARK: Auto refresh methods
     private func startAutoFetch(_ run: Bool = true) {
-        if UserInfo.isNewEventsLoopEnabled {
+        if viewModel.isNewEventLoopEnabled {
             viewModel.startNewEventLoop()
         } else {
             viewModel.eventsService.start()
@@ -721,7 +722,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     }
 
     private func stopAutoFetch() {
-        if UserInfo.isNewEventsLoopEnabled {
+        if viewModel.isNewEventLoopEnabled {
             viewModel.stopNewEventLoop()
         } else {
             viewModel.eventsService.pause()
@@ -1236,7 +1237,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             guard let self = self else {
                 return
             }
-            if UserInfo.isNewEventsLoopEnabled {
+            if viewModel.isNewEventLoopEnabled {
                 self.viewModel.fetchEventsWithNewEventLoop()
             } else {
                 self.viewModel.eventsService.fetchEvents(labelID: self.viewModel.labelId)
@@ -1281,7 +1282,7 @@ extension MailboxViewController {
         self.hideCheckOptions()
         self.updateNavigationController(false)
 
-        if UserInfo.isNewEventsLoopEnabled {
+        if viewModel.isNewEventLoopEnabled {
             viewModel.startNewEventLoop()
         } else {
             if viewModel.eventsService.status != .running {

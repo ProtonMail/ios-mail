@@ -38,6 +38,7 @@ final class MenuViewModel: NSObject {
     & HasUnlockManager
     & HasUsersManager
     & HasMailEventsPeriodicScheduler
+    & HasFeatureFlagsRepository
 
     private let dependencies: Dependencies
     private var scheduleSendLocationStatusObserver: ScheduleSendLocationStatusObserver?
@@ -140,10 +141,9 @@ extension MenuViewModel: MenuVMProtocol {
     }
 
     func setupEventsLoop() {
-        guard UserInfo.isNewEventsLoopEnabled else { return }
         let scheduler = dependencies.mailEventsPeriodicScheduler
         scheduler.reset()
-        for user in dependencies.usersManager.users {
+        for user in dependencies.usersManager.users where user.isNewEventLoopEnabled {
             scheduler.enableSpecialLoop(forSpecialLoopID: user.userID.rawValue)
         }
         scheduler.start()
