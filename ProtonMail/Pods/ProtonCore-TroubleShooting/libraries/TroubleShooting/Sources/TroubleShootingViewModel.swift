@@ -20,10 +20,11 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_Doh
-import ProtonCore_UIFoundations
-import ProtonCore_CoreTranslation
+import ProtonCoreDoh
+import ProtonCoreUIFoundations
 
 /// use to read&update doh instance
 public protocol DohStatusProtocol {
@@ -58,21 +59,21 @@ public struct TroubleShootingViewModel {
         var top: String {
             switch self {
             case .allowSwitch:
-                return CoreString._allow_alternative_routing
+                return TSTranslation._allow_alternative_routing.l10n
             case .noInternetNotes:
-                return CoreString._no_internet_connection
+                return TSTranslation._no_internet_connection.l10n
             case .ispNotes:
-                return CoreString._isp_problem
+                return TSTranslation._isp_problem.l10n
             case .blockNotes:
-                return CoreString._gov_block
+                return TSTranslation._gov_block.l10n
             case .antivirusNotes:
-                return CoreString._antivirus_interference
+                return TSTranslation._antivirus_interference.l10n
             case .firewallNotes:
-                return CoreString._firewall_interference
+                return TSTranslation._firewall_interference.l10n
             case .downtimeNotes:
-                return CoreString._proton_is_down
+                return TSTranslation._proton_is_down.l10n
             case .otherNotes:
-                return CoreString._no_solution
+                return TSTranslation._no_solution.l10n
             }
         }
         
@@ -80,20 +81,20 @@ public struct TroubleShootingViewModel {
             let caption1 = UIFont.preferredFont(forTextStyle: .caption1)
             switch self {
             case .allowSwitch:
-                let holder = CoreString._allow_alternative_routing_description
-                let learnMore = CoreString._allow_alternative_routing_action_title
+                let holder = TSTranslation._allow_alternative_routing_description.l10n
+                let learnMore = TSTranslation._allow_alternative_routing_action_title.l10n
                 let full = String.localizedStringWithFormat(holder, learnMore)
                 let attributedString = full.buildAttributedString(font: caption1, color: ColorProvider.TextWeak)
                 attributedString.addHyperLink(subString: learnMore, link: ExternalLink.alternativeRouting)
                 return attributedString
                 
             case .noInternetNotes:
-                let full = CoreString._no_internet_connection_description
+                let full = TSTranslation._no_internet_connection_description.l10n
                 let attributedString = full.buildAttributedString(font: UIFont.preferredFont(forTextStyle: .caption1), color: ColorProvider.TextWeak)
                 return attributedString
                 
             case .ispNotes:
-                let holder = CoreString._isp_problem_description
+                let holder = TSTranslation._isp_problem_description.l10n
                 let field1 = "ProtonVPN"
                 let field2 = "Tor"
                 let full = String.localizedStringWithFormat(holder, field1, field2)
@@ -104,7 +105,7 @@ public struct TroubleShootingViewModel {
                 return attributedString
                 
             case .blockNotes:
-                let holder = CoreString._gov_block_description
+                let holder = TSTranslation._gov_block_description.l10n
                 let field1 = "ProtonVPN"
                 let field2 = "Tor"
                 let full = String.localizedStringWithFormat(holder, field1, field2)
@@ -115,18 +116,18 @@ public struct TroubleShootingViewModel {
                 return attributedString
                 
             case .antivirusNotes:
-                let full = CoreString._antivirus_interference_description
+                let full = TSTranslation._antivirus_interference_description.l10n
                 let attributedString = full.buildAttributedString(font: caption1, color: ColorProvider.TextWeak)
                 return attributedString
                 
             case .firewallNotes:
-                let full = CoreString._firewall_interference_description
+                let full = TSTranslation._firewall_interference_description.l10n
                 let attributedString = full.buildAttributedString(font: caption1, color: ColorProvider.TextWeak)
                 return attributedString
                 
             case .downtimeNotes:
-                let holder = CoreString._proton_is_down_description
-                let field1 = CoreString._proton_is_down_action_title
+                let holder = TSTranslation._proton_is_down_description.l10n
+                let field1 = TSTranslation._proton_is_down_action_title.l10n
                 let full = String.localizedStringWithFormat(holder, field1)
                 
                 let attributedString = full.buildAttributedString(font: caption1, color: ColorProvider.TextWeak)
@@ -134,10 +135,10 @@ public struct TroubleShootingViewModel {
                 return attributedString
                 
             case .otherNotes:
-                let holder = CoreString._no_solution_description
-                let field1 = CoreString._troubleshooting_support_from
-                let field2 = CoreString._troubleshooting_email_title
-                let field3 = CoreString._troubleshooting_twitter_title
+                let holder = TSTranslation._no_solution_description.l10n
+                let field1 = TSTranslation._troubleshooting_support_from.l10n
+                let field2 = TSTranslation._troubleshooting_email_title.l10n
+                let field3 = TSTranslation._troubleshooting_twitter_title.l10n
                 let full = String.localizedStringWithFormat(holder, field1, field2, field3)
                 let attributedString = full.buildAttributedString(font: caption1, color: ColorProvider.TextWeak)
                 
@@ -160,5 +161,7 @@ public struct TroubleShootingViewModel {
         .otherNotes
     ]
     
-    let title = CoreString._troubleshooting_title
+    let title = TSTranslation._troubleshooting_title.l10n
 }
+
+#endif

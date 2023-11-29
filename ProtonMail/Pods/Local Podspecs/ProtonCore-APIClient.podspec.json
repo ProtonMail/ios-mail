@@ -1,6 +1,7 @@
 {
   "name": "ProtonCore-APIClient",
-  "version": "9.3.0",
+  "module_name": "ProtonCoreAPIClient",
+  "version": "14.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "9.3.0"
+    "tag": "14.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -30,13 +31,13 @@
   },
   "dependencies": {
     "ProtonCore-DataModel": [
-      "9.3.0"
+      "14.0.0"
     ],
     "ProtonCore-Networking": [
-      "9.3.0"
+      "14.0.0"
     ],
     "ProtonCore-Services": [
-      "9.3.0"
+      "14.0.0"
     ]
   },
   "source_files": "libraries/APIClient/Sources/**/*.swift",
@@ -55,19 +56,19 @@
       "resources": "libraries/APIClient/Tests/TestData/*",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-Go": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-Authentication": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication": [
-          "9.3.0"
+          "14.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -88,19 +89,19 @@
       "resources": "libraries/APIClient/Tests/TestData/*",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-Authentication": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication": [
-          "9.3.0"
+          "14.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -121,19 +122,19 @@
       "resources": "libraries/APIClient/Tests/TestData/*",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-Authentication": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication": [
-          "9.3.0"
+          "14.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -154,19 +155,19 @@
       "resources": "libraries/APIClient/Tests/TestData/*",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-Authentication": [
-          "9.3.0"
+          "14.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication": [
-          "9.3.0"
+          "14.0.0"
         ],
         "OHHTTPStubs/Swift": [
 

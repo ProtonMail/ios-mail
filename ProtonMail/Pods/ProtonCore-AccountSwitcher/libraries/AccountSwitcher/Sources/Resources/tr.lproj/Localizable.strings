@@ -1,0 +1,28 @@
+
+"switch to" = "şuna geç";
+
+"Manage accounts" = "Hesap yönetimi";
+
+"Signed in to Proton Mail" = "Proton Mail oturumu açıldı";
+
+"Signed out of Proton Mail" = "Proton Mail oturumu kapatıldı";
+
+"Sign out" = "Oturumu kapat";
+
+"Remove account from this device" = "Hesabı bu aygıttan kaldır";
+
+"Remove account" = "Hesabı kaldır";
+
+"You will be signed out and all the data associated with this account will be removed from this device." = "Oturumunuz kapatılacak ve bu aygıttan bu hesapla ilişkili tüm veriler kaldırılacak.";
+
+"Remove" = "Kaldır";
+
+"Are you sure you want to sign out %@?" = "%@ oturumunu kapatmak istediğinize emin misiniz?";
+
+"Dismiss account switcher" = "Hesap değiştiriciyi kapat";
+
+"Sign in to another account" = "Başka bir hesap oturumu aç";
+
+"Cancel" = "İptal";
+
+"Sign in" = "Oturum aç";

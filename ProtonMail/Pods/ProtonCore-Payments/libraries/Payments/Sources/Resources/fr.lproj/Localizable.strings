@@ -1,0 +1,46 @@
+
+"Contact customer support" = "Contacter le service client";
+
+"Failed to get list of available products from App Store." = "La liste des produits disponibles sur l'App Store n'a pas pu être obtenue.";
+
+"Purchase is not possible." = "L'achat n'est pas possible.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nous a informés que vous avez souscrit à un abonnement, mais il manque quelques données techniques. Nous vous invitons à compléter le rapport de bug et notre service client vous contactera.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple nous a informés que vous avez changé d'abonnement, mais nous constatons que vous vous êtes déconnecté du compte depuis ce changement.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Il n'a pas été possible de faire correspondre votre produit acheté sur l'App Store aux produits présents sur notre serveur. Nous vous invitons à compléter le rapport de bug et notre service client vous contactera.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Connectez-vous au compte Proton Mail dont vous voulez changer l'abonnement pour que nous puissions finaliser l'achat.";
+
+"Apple informed us they could not process the purchase." = "Apple nous a informés que l'achat n'avait pas pu être traité.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Nous avons activé votre abonnement. Relancez l'application pour commencer à utiliser les nouvelles fonctionnalités de votre abonnement.";
+
+"Please unlock the app to proceed with your service plan activation" = "Déverrouillez l'application pour procéder à l'activation de votre offre.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Connectez-vous au compte Proton Mail dont vous voulez changer l'abonnement pour que nous terminions l'activation.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Le statut du jeton de paiement n'est pas correct, relancez l'application. Si l'erreur persiste, nous vous invitons à contacter le support.";
+
+"Do you want to activate the purchase for %@ address?" = "Voulez-vous activer l'achat pour l'adresse %@ ?";
+
+"Yes, activate it for " = "Oui, l'activer pour ";
+
+"No, for another Proton Mail account" = "Non, pour un autre compte Proton Mail";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Nous n'avons pas pu mettre votre compte à jour avec l'abonnement que vous avez choisi, nous avons donc ajouté votre paiement sous forme de crédits à votre compte. Pour plus d'informations et pour terminer votre passage à l'abonnement supérieur, nous vous invitons à contacter le support.";
+
+"Contact Support" = "Contacter le support";
+
+"Dismiss" = "Ignorer";
+
+"Payment failed" = "Le paiement n'a pas abouti.";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Vous vous êtes inscrit, mais votre paiement n'a pas été traité. Pour renvoyer vos informations de paiement, cliquez sur Réessayer. Vous ne serez facturé qu'une seule fois. Si le problème persiste, nous vous invitons à contacter le service client.";
+
+"Retry" = "Réessayer";
+
+"OK" = "OK";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Les serveurs Proton sont inaccessibles. Cela peut être dû à une mauvaise configuration du réseau, à des serveurs Proton qui ne fonctionnent pas ou qui sont bloqués.";

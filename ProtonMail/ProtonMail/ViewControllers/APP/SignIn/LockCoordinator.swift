@@ -12,12 +12,12 @@ import ProtonMailAnalytics
 
 final class LockCoordinator: LifetimeTrackable {
     enum FlowResult {
-        case signIn(reason: String)
+        case signIn
         case mailboxPassword
         case mailbox
     }
 
-    typealias Dependencies = UnlockPinCodeModelImpl.Dependencies & HasUsersManager
+    typealias Dependencies = UnlockPinCodeModelImpl.Dependencies & HasUsersManager & HasUnlockManager
     typealias VC = CoordinatorKeepingViewController<LockCoordinator>
 
     class var lifetimeConfiguration: LifetimeConfiguration {
@@ -55,7 +55,6 @@ final class LockCoordinator: LifetimeTrackable {
     }
 
     func start() {
-        Breadcrumbs.shared.add(message: "LockCoordinator.start", to: .randomLogout)
         startedOrScheduledForAStart = true
         self.actualViewController.presentedViewController?.dismiss(animated: true)
         let unlockFlow = dependencies.unlockManager.getUnlockFlow()
@@ -65,7 +64,7 @@ final class LockCoordinator: LifetimeTrackable {
         case .requireTouchID:
             goToTouchId()
         case .restore:
-            finishLockFlow(.signIn(reason: "unlockFlow: \(unlockFlow)"))
+            finishLockFlow(.signIn)
         }
     }
 
@@ -98,7 +97,7 @@ extension LockCoordinator: PinCodeViewControllerDelegate {
         dependencies.unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: { [weak self] in
             self?.finishLockFlow(.mailboxPassword)
         }, unlockFailed: { [weak self] in
-            self?.finishLockFlow(.signIn(reason: "unlock failed"))
+            self?.finishLockFlow(.signIn)
         }, unlocked: { [weak self] in
             self?.finishLockFlow(.mailbox)
             self?.actualViewController.presentedViewController?.dismiss(animated: true)
@@ -121,7 +120,7 @@ extension LockCoordinator: PinCodeViewControllerDelegate {
 
         _ = dependencies.usersManager.clean().done { [weak self] in
             completion()
-            self?.finishLockFlow(.signIn(reason: "PinCodeViewControllerDelegate.cancel"))
+            self?.finishLockFlow(.signIn)
         }
     }
 }

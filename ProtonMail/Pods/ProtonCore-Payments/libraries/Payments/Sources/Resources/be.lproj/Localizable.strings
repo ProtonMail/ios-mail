@@ -1,0 +1,46 @@
+
+"Contact customer support" = "Звязацца са службай падтрымкі";
+
+"Failed to get list of available products from App Store." = "Не ўдалося атрымаць спіс даступных прадуктаў з App Store.";
+
+"Purchase is not possible." = "Купля немагчыма.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "З кампаніі Apple нам паведамілі, што вы палепшылі тарыфны план абслугоўвання, але нам не хапае некаторых тэхнічных даных. Запоўніце справаздачу пра памылкі, і наша каманда падтрымкі кліентаў звяжацца з вамі.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "З кампаніі Apple нам паведамілі, што вы палепшылі тарыфны план абслугоўвання, але мы выявілі, што з таго моманту вы выйшлі з уліковага запісу.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Адсутнічае магчымасць супаставіць куплены вамі прадукт у App Sotre з ніводным прадуктам на нашым серверы. Запоўніце справаздачу пра памылкі і наша каманда падтрымкі кліентаў звяжацца з вамі.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Увайдзіце ва ўліковы запіс Proton Mail для якога вы хочаце палепшыць тарыфны план абслугоўвання, каб мы маглі завяршыць куплю.";
+
+"Apple informed us they could not process the purchase." = "З кампаніі Apple нам паведамілі, што не змаглі апрацаваць пакупку.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Мы паспяхова актывавалі вашу падпіску. Перазапусціце праграму, каб пачаць карыстацца новым тарыфным планам абслугоўвання.";
+
+"Please unlock the app to proceed with your service plan activation" = "Разблакіруйце праграму, каб працягнуць актывацыю сэрвіснага тарыфнага плана";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Увайдзіце ва ўліковы запіс Proton Mail для якога вы хочаце палепшыць тарыфны план абслугоўвання, каб мы маглі завяршыць актывацыю тарыфнага плана абслугоўвання.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Няправільны статус плацежнага токена. Перазапусціце праграму. У выпадку, калі праблема будзе паўтарацца, звярніцеся ў службу падтрымкі.";
+
+"Do you want to activate the purchase for %@ address?" = "Вы хочаце актываваць пакупку для адраса %@?";
+
+"Yes, activate it for " = "Так, актываваць для ";
+
+"No, for another Proton Mail account" = "Не, для іншага ўліковага запісу Proton Mail";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Мы не змаглі палепшыць ваш уліковы запіс да выбранага вамі тарыфнага плана і таму, мы вярнулі плацеж у выглядзе крэдытаў на ваш уліковы запіс. За больш падрабязнай інфармацыяй, як завяршыць пераход на іншы тарыфны план, звярніцеся ў службу падтрымкі.";
+
+"Contact Support" = "Звязацца са службай падтрымкі";
+
+"Dismiss" = "Ігнараваць";
+
+"Payment failed" = "Збой плацяжу";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Вы паспяхова зарэгістраваны, але ваш плацеж не апрацаваны. Для паўторнай адпраўкі плацежнай інфармацыі, націсніце \"Паўтарыць\". Плацеж будзе спагнаны толькі адзін раз. Калі праблема будзе паўтарацца, звярніцеся ў нашу службу падтрымкі кліентаў.";
+
+"Retry" = "Паўтарыць";
+
+"OK" = "Добра";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Серверы Proton зараз недаступны. Гэта можа здарыцца па прычыне няправільнай канфігурацыі сеткі. Таксама магчыма, што зараз яны не працуюць або былі заблакіраваны";

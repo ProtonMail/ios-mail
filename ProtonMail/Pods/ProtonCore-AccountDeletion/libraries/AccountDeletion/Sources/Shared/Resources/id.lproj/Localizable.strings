@@ -1,0 +1,16 @@
+
+"Delete account" = "Hapus akun";
+
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Ini akan menghapus akun Anda secara permanen beserta seluruh datanya. Anda tidak akan bisa mengaktifkan ulang akun ini.";
+
+"Account deleted.\nLogging out..." = "Akun dihapus.\nMengeluarkan Anda dari akun...";
+
+"Close" = "Tutup";
+
+"OK" = "OK";
+
+"A networking error has occured" = "Terjadi kesalahan jaringan";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Server Proton tidak dapat dijangkau. Hal ini dapat disebabkan antara lain oleh pengaturan jaringan yang tidak tepat, server Proton yang sedang offline, atau pemblokiran terhadap server Proton";
+
+"Troubleshoot" = "Penyelesaian Masalah";

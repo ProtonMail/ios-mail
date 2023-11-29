@@ -19,10 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import Foundation
 import XCTest
 import fusion
-import ProtonCore_CoreTranslation
 
 public class SignupUITestCases {
     public init() {}
@@ -63,40 +64,12 @@ public class SignupUITestCases {
             .verify.otherAccountButtonIsNotShown()
     }
     
-    public func testAccountExtExternalSignupFeatureOff(signupRobot: SignupRobot) {
-        signupRobot
-            .verify.signupScreenIsShown()
-            .verify.otherAccountButtonIsNotShown()
-            .verify.otherAccountExtButtonIsNotShown()
-    }
-    
-    public func testBothAccountExtExternalSignupFeatureOff(signupRobot: SignupRobot) {
-        signupRobot
-            .verify.signupScreenIsShown()
-            .verify.otherAccountButtonIsNotShown()
-            .verify.otherAccountExtButtonIsNotShown()
-    }
-    
     public func testBothAccountExtExternalSignupFeatureOn(signupRobot: SignupRobot) {
         signupRobot
             .verify.signupScreenIsShown()
             .verify.otherAccountExtButtonIsShown()
             .otherAccountButtonTap()
             .verify.otherAccountIntButtonIsShown()
-    }
-    
-    public func testIntAccountOnlyExternalSignupFeatureOff(signupRobot: SignupRobot) {
-        signupRobot
-            .verify.signupScreenIsShown()
-            .verify.otherAccountButtonIsNotShown()
-            .verify.otherAccountExtButtonIsNotShown()
-    }
-    
-    public func testExtAccountOnlyExternalSignupFeatureOff(signupRobot: SignupRobot) {
-        signupRobot
-            .verify.signupScreenIsShown()
-            .verify.otherAccountButtonIsNotShown()
-            .verify.otherAccountExtButtonIsNotShown()
     }
     
     public func testSwitchIntToLogin(signupRobot: SignupRobot) {
@@ -454,10 +427,12 @@ public class SignupUITestCases {
             .verify.passwordScreenIsShown()
             .insertPassword(password: password)
             .insertRepeatPassword(password: password)
-            .nextButtonTap(robot: PaymentsUIRobot.self)
+            .nextButtonTap(robot: SignupPaymentsRobot.self)
             .verify.paymentsUIScreenIsShown()
             .selectPlanCell(plan: .free)
             .freePlanButtonTap()
             .proceed(email: randomEmail, code: emailVerificationCode, to: AccountSummaryRobot.self)
     }
 }
+
+#endif

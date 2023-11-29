@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Services
+import ProtonCoreServices
 import SDWebImage
 
 final class SenderImageService {
@@ -167,7 +167,7 @@ final class SenderImageService {
         init(
             apiService: APIService,
             internetStatusProvider: InternetConnectionStatusProviderProtocol,
-            imageCache: SenderImageCache = .shared
+            imageCache: SenderImageCache
         ) {
             self.apiService = apiService
             self.internetStatusProvider = internetStatusProvider

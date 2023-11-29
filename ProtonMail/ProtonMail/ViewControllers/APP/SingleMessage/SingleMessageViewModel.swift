@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreUIFoundations
 
 class SingleMessageViewModel {
 
@@ -71,6 +71,7 @@ class SingleMessageViewModel {
          coordinator: SingleMessageCoordinator,
          nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider,
          contentViewModel: SingleMessageContentViewModel,
+         contextProvider: CoreDataContextProviderProtocol,
          highlightedKeywords: [String],
          notificationCenter: NotificationCenter = .default
     ) {
@@ -78,7 +79,7 @@ class SingleMessageViewModel {
         self.message = message
         self.messageService = user.messageService
         self.user = user
-        self.messageObserver = MessageObserver(messageId: message.messageID, messageService: messageService)
+        self.messageObserver = MessageObserver(messageID: message.messageID, contextProvider: contextProvider)
         self.highlightedKeywords = highlightedKeywords
         self.contentViewModel = contentViewModel
         self.coordinator = coordinator
@@ -218,7 +219,7 @@ class SingleMessageViewModel {
     }
 
     func shouldShowToolbarCustomizeSpotlight() -> Bool {
-        guard UserInfo.isToolbarCustomizationEnable else {
+        guard !ProcessInfo.hasLaunchArgument(.disableToolbarSpotlight) else {
             return false
         }
 

@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 final class AuthDeleteRequest: Request {
 
@@ -36,9 +36,5 @@ final class AuthDeleteRequest: Request {
 
     var isAuth: Bool {
         return true
-    }
-
-    var autoRetry: Bool {
-        return false
     }
 }

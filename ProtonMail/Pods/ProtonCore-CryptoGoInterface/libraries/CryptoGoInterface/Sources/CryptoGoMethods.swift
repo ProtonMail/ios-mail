@@ -23,6 +23,8 @@
 import Foundation
 
 public protocol CryptoGoMethods {
+    var ConstantsAES256: String { get }
+    
     // initializers
     func CryptoKey(_ binKeys: Data?) -> CryptoKey?
     func CryptoKey(fromArmored armored: String?) -> CryptoKey?
@@ -33,7 +35,7 @@ public protocol CryptoGoMethods {
     func CryptoPlainMessage(from text: String?) -> CryptoPlainMessage?
     func CryptoKeyRing(_ key: CryptoKey?) -> CryptoKeyRing?
     func CryptoPGPSignature(fromArmored armored: String?) -> CryptoPGPSignature?
-
+    func CryptoPGPSignature(_ data: Data?) -> CryptoPGPSignature?
     func HelperGo2IOSReader(_ reader: CryptoReaderProtocol?) -> HelperGo2IOSReader?
     func HelperMobileReadResult(_ n: Int, eof: Bool, data: Data?) -> HelperMobileReadResult?
     func HelperMobile2GoReader(_ reader: HelperMobileReaderProtocol?) -> HelperMobile2GoReader?
@@ -62,10 +64,10 @@ public protocol CryptoGoMethods {
     func ArmorArmorKey(_ input: Data?, _ error: NSErrorPointer) -> String
     func ArmorArmorWithType(_ input: Data?, _ armorType: String?, _ error: NSErrorPointer) -> String
 
+    func CryptoGenerateKey(_ name: String?, _ email: String?, _ keyType: String?, _ bits: Int, _ error: NSErrorPointer) -> CryptoKey?
+
     func CryptoNewKey(_ binKeys: Data?, _ error: NSErrorPointer) -> CryptoKey?
     func CryptoNewKeyFromArmored(_ armored: String?, _ error: NSErrorPointer) -> CryptoKey?
-
-    func CryptoGenerateKey(_ name: String?, _ email: String?, _ keyType: String?, _ bits: Int, _ error: NSErrorPointer) -> CryptoKey?
 
     func CryptoGenerateSessionKey(_ error: NSErrorPointer) -> CryptoSessionKey?
     func CryptoGenerateSessionKeyAlgo(_ algo: String?, _ error: NSErrorPointer) -> CryptoSessionKey?
@@ -78,6 +80,7 @@ public protocol CryptoGoMethods {
     func HelperGenerateKey(_ name: String?, _ email: String?, _ passphrase: Data?, _ keyType: String?, _ bits: Int, _ error: NSErrorPointer) -> String
     func HelperDecryptMessageArmored(_ privateKey: String?, _ passphrase: Data?, _ ciphertext: String?, _ error: NSErrorPointer) -> String
     func HelperDecryptSessionKey(_ privateKey: String?, _ passphrase: Data?, _ encryptedSessionKey: Data?, _ error: NSErrorPointer) -> CryptoSessionKey?
+    func HelperDecryptSessionKeyExplicitVerify(_ dataPacket: Data?, _ sessionKey: CryptoSessionKey?, _ publicKeyRing: CryptoKeyRing?, _ verifyTime: Int64, _ error: NSErrorPointer) -> HelperExplicitVerifyMessage?
     func HelperDecryptAttachment(_ keyPacket: Data?, _ dataPacket: Data?, _ keyRing: CryptoKeyRing?, _ error: NSErrorPointer) -> CryptoPlainMessage?
 
     func HelperDecryptExplicitVerify(_ pgpMessage: CryptoPGPMessage?, _ privateKeyRing: CryptoKeyRing?, _ publicKeyRing: CryptoKeyRing?, _ verifyTime: Int64, _ error: NSErrorPointer) -> HelperExplicitVerifyMessage?

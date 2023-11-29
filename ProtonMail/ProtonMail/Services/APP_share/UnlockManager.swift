@@ -22,11 +22,11 @@
 
 import Foundation
 import LocalAuthentication
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 import ProtonMailAnalytics
 #if !APP_EXTENSION
 import LifetimeTracker
-import ProtonCore_Payments
+import ProtonCorePayments
 #endif
 
 enum SignInUIFlow: Int {
@@ -209,13 +209,15 @@ final class UnlockManager {
         unlockFailed: (() -> Void)? = nil,
         unlocked: (() -> Void)? = nil
     ) {
-        Breadcrumbs.shared.add(message: "UnlockManager.unlockIfRememberedCredentials called", to: .randomLogout)
         guard let delegate else {
+            SystemLogger.log(message: "UnlockManager delegate is nil", category: .loginUnlockFailed, isError: true)
             unlockFailed?()
             return
         }
 
         guard keyMaker.mainKeyExists(), delegate.isUserStored() else {
+            let message = "UnlockManager mainKeyExists: \(keyMaker.mainKeyExists()), userStored: \(delegate.isUserStored())"
+            SystemLogger.log(message: message, category: .loginUnlockFailed, isError: true)
 
             do {
                 try delegate.setupCoreData()

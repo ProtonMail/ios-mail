@@ -1,6 +1,6 @@
 //
 //  ServicePlanDataService+Extensions.swift
-//  ProtonCore_PaymentsUI - Created on 01/06/2021.
+//  ProtonCorePaymentsUI - Created on 01/06/2021.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,9 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_UIFoundations
-import ProtonCore_Payments
-import ProtonCore_CoreTranslation
+#if os(iOS)
+
+import Foundation
+import ProtonCoreUIFoundations
+import ProtonCorePayments
 
 extension ServicePlanDataServiceProtocol {
     
@@ -33,10 +35,12 @@ extension ServicePlanDataServiceProtocol {
         let endDateString = dateFormatter.string(from: endDate)
         var string: String
         if willRenewAutomatically(plan: plan) {
-            string = String(format: CoreString._pu_plan_details_renew_auto_expired, endDateString)
+            string = String(format: PUITranslations.plan_details_renew_auto_expired.l10n, endDateString)
         } else {
-            string = String(format: CoreString._pu_plan_details_renew_expired, endDateString)
+            string = String(format: PUITranslations.plan_details_renew_expired.l10n, endDateString)
         }
         return string.getAttributedString(replacement: endDateString, attrFont: .systemFont(ofSize: 13, weight: .bold))
     }
 }
+
+#endif

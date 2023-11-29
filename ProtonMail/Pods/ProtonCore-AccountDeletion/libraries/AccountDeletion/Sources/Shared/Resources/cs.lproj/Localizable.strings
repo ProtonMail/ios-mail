@@ -1,0 +1,16 @@
+
+"Delete account" = "Smazat účet";
+
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Tímto trvale smažete váš účet a všechna jeho data. Tento účet neubude možné znovu aktivovat.";
+
+"Account deleted.\nLogging out..." = "Účet byl smazán.\nOdhlašování...";
+
+"Close" = "Zavřít";
+
+"OK" = "OK";
+
+"A networking error has occured" = "Došlo k chybě sítě";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Servery Proton jsou nedostupné. Může to být způsobeno špatnou konfigurací sítě, nefunkčností serverů Proton nebo zablokováním serverů Proton";
+
+"Troubleshoot" = "Poradce při potížích";

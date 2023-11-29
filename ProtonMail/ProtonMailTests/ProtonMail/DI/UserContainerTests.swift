@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 import XCTest
 @testable import ProtonMail
 
@@ -27,8 +27,12 @@ final class UserContainerTests: XCTestCase {
         var strongRefToContainer: UserContainer? = strongRefToUser?.container
         var strongRefToDependency: AnyObject? = strongRefToContainer?.settingsViewsFactory
 
+        let unregisterEX = expectation(description: "Unregister user")
         // undo a side-effect of UserManager.init
-        globalContainer.queueManager.unregisterHandler(for: "foo")
+        globalContainer.queueManager.unregisterHandler(for: "foo") {
+            unregisterEX.fulfill()
+        }
+        wait(for: [unregisterEX], timeout: 5)
 
         weak var weakRefToUser: UserManager? = strongRefToUser
         weak var weakRefToContainer: UserContainer? = strongRefToContainer

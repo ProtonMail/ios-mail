@@ -1,0 +1,16 @@
+
+"Delete account" = "Ukloni račun";
+
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Ovim će te trajno izbrisati vaš račun i sve podatke povezane s njim. Nećete moći ponovno aktivirati ovaj račun.";
+
+"Account deleted.\nLogging out..." = "Account deleted.\nSigning out...";
+
+"Close" = "Zatvori";
+
+"OK" = "U redu";
+
+"A networking error has occured" = "A networking error has occured";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked";
+
+"Troubleshoot" = "Rješavanje problema";

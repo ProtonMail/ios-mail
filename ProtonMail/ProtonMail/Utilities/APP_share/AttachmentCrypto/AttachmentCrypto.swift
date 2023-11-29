@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
-import class ProtonCore_DataModel.Key
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
+import class ProtonCoreDataModel.Key
 
 enum AttachmentCrypto {
 

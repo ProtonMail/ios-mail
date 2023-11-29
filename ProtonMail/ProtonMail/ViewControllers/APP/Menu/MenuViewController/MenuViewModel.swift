@@ -24,9 +24,9 @@ import Combine
 import CoreData
 import Foundation
 import PromiseKit
-import ProtonCore_AccountSwitcher
-import ProtonCore_DataModel
-import ProtonCore_UIFoundations
+import ProtonCoreAccountSwitcher
+import ProtonCoreDataModel
+import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import UIKit
 
@@ -48,11 +48,13 @@ final class MenuViewModel: NSObject {
 
         return labelService
     }
-    private var fetchedLabels: NSFetchedResultsController<Label>?
+    private var labelPublisher: LabelPublisher?
     /// To observe the unread number change for message mode label
-    private var labelUpdateFetcher: NSFetchedResultsController<LabelUpdate>?
+    private var labelUpdatePublisher: LabelUpdatePublisher?
+    private var labelUpdatePublisherCancellable: AnyCancellable?
     /// To observe the unread number change for conversation mode label
-    private var conversationCountFetcher: NSFetchedResultsController<ConversationCount>?
+    private var conversationCountPublisher: ConversationCountPublisher?
+    private var conversationCountPublisherCancellable: AnyCancellable?
     private weak var delegate: MenuUIProtocol?
     var currentUser: UserManager? {
         dependencies.usersManager.firstUser
@@ -376,85 +378,63 @@ extension MenuViewModel: MenuVMProtocol {
     }
 }
 
-extension MenuViewModel: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if controller == self.labelUpdateFetcher || controller == self.conversationCountFetcher {
-            updateUnread()
-            delegate?.updateMenu(section: nil)
-            return
-        }
-
-        let dbItems = (controller.fetchedObjects as? [Label]) ?? []
-        self.handle(dbLabels: dbItems.compactMap(LabelEntity.init))
+extension MenuViewModel: LabelListenerProtocol {
+    func receivedLabels(labels: [LabelEntity]) {
+        handle(dbLabels: labels)
     }
 }
 
 // MARK: Data source
 extension MenuViewModel {
     private func fetchLabels() {
-        guard let service = self.labelDataService else {
+        guard let userID = dependencies.usersManager.firstUser?.userID, let service = labelDataService else {
             return
         }
 
         // The response of api will write into CoreData
-        // And the change will trigger controllerDidChangeContent(_ :)
+        // And the change will trigger the label publiser
         defer {
             service.fetchV4Labels()
         }
 
-        self.fetchedLabels = service.fetchedResultsController(.all)
-        self.fetchedLabels?.delegate = self
-        guard let result = self.fetchedLabels else {return}
-        do {
-            try result.performFetch()
-            guard let labels = result.fetchedObjects else {
-                return
-            }
-            self.handle(dbLabels: labels.compactMap(LabelEntity.init))
-        } catch {
-        }
+        labelPublisher = .init(
+            parameters: .init(userID: userID),
+            dependencies: dependencies
+        )
+        labelPublisher?.delegate = self
+        labelPublisher?.fetchLabels(labelType: .all)
     }
 
     private func observeLabelUnreadUpdate() {
         guard let user = self.currentUser else {return}
-        let moc = dependencies.contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<LabelUpdate>(entityName: LabelUpdate.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "(%K == %@)",
-                                             LabelUpdate.Attributes.userID,
-                                             user.userInfo.userId)
-        let strComp = NSSortDescriptor(key: LabelUpdate.Attributes.labelID,
-                                       ascending: true,
-                                       selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
-        fetchRequest.sortDescriptors = [strComp]
-        self.labelUpdateFetcher = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-        self.labelUpdateFetcher?.delegate = self
 
-        guard let fetcher = self.labelUpdateFetcher else {return}
-        do {
-            try fetcher.performFetch()
-        } catch {
-        }
+        labelUpdatePublisher = .init(
+            userID: user.userID,
+            contextProvider: dependencies.contextProvider
+        )
+        labelUpdatePublisherCancellable = labelUpdatePublisher?.contentDidChange
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] _ in
+                self?.updateUnread()
+                self?.delegate?.updateMenu(section: nil)
+            })
+        labelUpdatePublisher?.start()
     }
 
     private func observeContextLabelUnreadUpdate() {
-        guard let user = self.currentUser else {return}
-        let moc = dependencies.contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<ConversationCount>(entityName: ConversationCount.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "(%K == %@)",
-                                             ConversationCount.Attributes.userID,
-                                             user.userInfo.userId)
-        let strComp = NSSortDescriptor(key: ConversationCount.Attributes.labelID,
-                                       ascending: true,
-                                       selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
-        fetchRequest.sortDescriptors = [strComp]
-        self.conversationCountFetcher = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-        self.conversationCountFetcher?.delegate = self
-
-        guard let fetcher = self.conversationCountFetcher else {return}
-        do {
-            try fetcher.performFetch()
-        } catch {
-        }
+        guard let user = self.currentUser else { return }
+        conversationCountPublisher = .init(
+            userID: user.userID,
+            contextProvider: dependencies.contextProvider
+        )
+        conversationCountPublisherCancellable = conversationCountPublisher?.contentDidChange
+            .sink(receiveValue: { [weak self] _ in
+                DispatchQueue.main.async {
+                    self?.updateUnread()
+                    self?.delegate?.updateMenu(section: nil)
+                }
+            })
+        conversationCountPublisher?.start()
     }
 
     private func observeScheduleSendLocationStatus() {

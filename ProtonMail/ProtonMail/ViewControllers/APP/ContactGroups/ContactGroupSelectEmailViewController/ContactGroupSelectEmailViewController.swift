@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 class ContactGroupSelectEmailViewController: UIViewController {
@@ -64,7 +64,7 @@ class ContactGroupSelectEmailViewController: UIViewController {
         self.doneButton.setTitleTextAttributes(attributes, for: .normal)
         self.navigationItem.rightBarButtonItem = self.doneButton
 
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.didTapCancelButton(_:)))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.didTapCancelButton))
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -112,7 +112,7 @@ class ContactGroupSelectEmailViewController: UIViewController {
     }
 
     @objc
-    private func didTapCancelButton(_ sender: UIBarButtonItem) {
+    private func didTapCancelButton() {
         if viewModel.havingUnsavedChanges == true {
             let alertController = UIAlertController(title: LocalString._warning,
                                                     message: LocalString._changes_will_discarded, preferredStyle: .alert)

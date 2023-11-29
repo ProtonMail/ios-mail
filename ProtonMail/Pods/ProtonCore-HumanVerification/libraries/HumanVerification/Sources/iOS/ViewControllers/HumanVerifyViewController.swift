@@ -19,15 +19,17 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import WebKit
+#if os(iOS)
 
-import ProtonCore_CoreTranslation
-import ProtonCore_Foundations
-import ProtonCore_Networking
-import ProtonCore_Observability
-import ProtonCore_Services
-import ProtonCore_UIFoundations
-import ProtonCore_Utilities
+import WebKit
+import UIKit
+
+import ProtonCoreFoundations
+import ProtonCoreNetworking
+import ProtonCoreObservability
+import ProtonCoreServices
+import ProtonCoreUIFoundations
+import ProtonCoreUtilities
 
 protocol HumanVerifyViewControllerDelegate: AnyObject {
     func didDismissViewController()
@@ -45,7 +47,7 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
     var webView: WKWebView!
     @IBOutlet weak var helpBarButtonItem: UIBarButtonItem! {
         didSet {
-            helpBarButtonItem.title = CoreString._hv_help_button
+            helpBarButtonItem.title = HVTranslation.help_button.l10n
             helpBarButtonItem.tintColor = ColorProvider.BrandNorm
         }
     }
@@ -111,7 +113,7 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
     // MARK: Private interface
     
     private func configureUI() {
-        title = viewTitle ?? CoreString._hv_title
+        title = viewTitle ?? HVTranslation.title.l10n
         closeBarButtonItem.tintColor = ColorProvider.IconNorm
         closeBarButtonItem.accessibilityLabel = "closeButton"
         updateTitleAttributes()
@@ -178,7 +180,7 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
     private func presentErrorOverWebView(message: String) {
         self.banner?.dismiss()
         self.banner = PMBanner(message: message, style: PMBannerNewStyle.error, dismissDuration: Double.infinity)
-        self.banner?.addButton(text: CoreString._hv_ok_button) { [weak self] _ in
+        self.banner?.addButton(text: HVTranslation.ok_button.l10n) { [weak self] _ in
             self?.banner?.dismiss()
         }
         self.banner?.show(at: .top, on: self)
@@ -295,8 +297,10 @@ extension HumanVerifyViewController: WKScriptMessageHandler {
                     if let code = error.responseCode {
                         switch code {
                         case APIErrorCode.humanVerificationAddressAlreadyTaken:
+                            ObservabilityEnv.report(.humanVerificationOutcomeTotal(status: .addressAlreadyTaken))
                             self?.delegate?.emailAddressAlreadyTakenWithError(code: code, description: error.localizedDescription)
                         case APIErrorCode.invalidVerificationCode:
+                            ObservabilityEnv.report(.humanVerificationOutcomeTotal(status: .invalidVerificationCode))
                             self?.delegate?.willReopenViewController()
                         default:
                             ObservabilityEnv.report(.humanVerificationOutcomeTotal(status: .failed))
@@ -317,3 +321,5 @@ extension HumanVerifyViewController: WKScriptMessageHandler {
         })
     }
 }
+
+#endif

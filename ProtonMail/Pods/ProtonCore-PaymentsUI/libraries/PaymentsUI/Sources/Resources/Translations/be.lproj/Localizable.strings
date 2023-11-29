@@ -1,0 +1,134 @@
+
+"OK" = "Добра";
+
+"Cancel" = "Скасаваць";
+
+"Warning" = "Папярэджанне";
+
+"Select a plan" = "Выберыце тарыфны план";
+
+"Current plan" = "Бягучы тарыфны план";
+
+"Subscription" = "Падпіска";
+
+"Upgrade your plan" = "Палепшыце свой тарыфны план";
+
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "У мабільнай праграме даступны толькі гадавыя падпіскі без аўтаматычнага падаўжэння.";
+
+"You cannot manage subscriptions inside the mobile application." = "Вы не можаце кіраваць падпіскамі праз мабільную праграму.";
+
+"Your plan will automatically renew on %@" = "Ваш тарыфны план будзе аўтаматычна падоўжаны %@";
+
+"Current plan will expire on %@" = "Бягучы тарыфны план міне праз %@";
+
+"Contact an administrator to make changes to your Proton subscription." = "Звяжыцеся з адміністратарам для таго, каб унесці змены ў вашу падпіску Proton.";
+
+"%@ storage" = "%@ сховішча";
+
+"%@ storage / user" = "%@ сховішча на карыстальніка";
+
+"for %@" = "за %@";
+
+"Custom email addresses" = "Карыстальніцкія адрасы электроннай пошты";
+
+"Priority customer support" = "Прыярытэтная падтрымка кліентаў";
+
+"Adblocker (NetShield)" = "Блакіроўшчык рэкламы (NetShield)";
+
+"Streaming service support" = "Падтрымка сэрвісу трансляцыі";
+
+"High speed" = "Высокая хуткасць";
+
+"Highest speed" = "Найвышэйшая хуткасць";
+
+"Multi-user support" = "Падтрымка шматкарыстальніцкага рэжыму";
+
+"The basic for private and secure communications." = "Аснова для прыватных і бяспечных зносін.";
+
+"Full-featured mailbox with advanced protection." = "Паўнафункцыянальная паштовая скрыня з дадатковай абаронай.";
+
+"Limited time offer" = "Абмежаваная прапанова";
+
+"Complete payment?" = "Завяршыць аплату?";
+
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Купля тарыфнага плана Proton Bundle ужо распачата. Націсніце \"Працягнуць\" для завяршэння апрацоўкі плацяжу і стварэння вашага ўліковага запісу";
+
+"Complete payment" = "Завяршыць аплату";
+
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "Працэс наладжвання ўліковага запісу не можа быць завершаны па прычыне нечаканай памылкі.\nПаспрабуйце яшчэ раз.";
+
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Пачаты працэс куплі IAP. Прытрымлівайцеся інструкцый ад кампаніі Apple для таго, каб завяршыць або скасаваць куплю.";
+
+"One plan for all Proton services" = "Адзін тарыфны план для ўсіх сэрвісаў Proton";
+
+"The no-cost starter account designed to empower everyone with privacy by default." = "Бясплатны стартавы ўліковы запіс распрацаваны для кожнага хто лічыць, што прыватнасць неад'емная частка жыцця.";
+
+"The privacy-first email and calendar solution for your everyday communication needs." = "Электронная пошта з акцэнтам на прыватнасць і каляндар для вашых штодзённых зносін.";
+
+"Your privacy and security are our priority." = "Ваша прыватнасць і бяспека — наш прыярытэт.";
+
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Тарыфны план, арыентаваны на сховішча аб'ёмам 200 ГБ воблачнай прасторы для бяспечнага захоўвання вашых файлаў.";
+
+"The ultimate privacy pack with access to all premium Proton services." = "Максімальны пакет прыватнасці з доступам да ўсіх прэміяльных сэрвісаў Proton.";
+
+"Only non-renewing annual subscriptions are available via this app" = "Праз гэту праграму даступны толькі гадавыя падпіскі без падаўжэння";
+
+"Unlimited folders, labels, and filters" = "Неабмежаваная колькасць папак, метак і фільтраў";
+
+"Up to %@ storage" = "Да %@ сховішча";
+
+"Free VPN on a single device" = "Бясплатны VPN на адной прыладзе";
+
+"Highest VPN speed" = "Найвышэйшая хуткасць VPN";
+
+"Built-in ad-blocker (NetShield)" = "Убудаваная блакіроўка рэкламы (NetShield)";
+
+"Access to streaming services globally" = "Доступ да сэрвісаў з трансляцыямі па ўсім свеце";
+
+"Secure Core servers" = "Серверы Secure Core";
+
+"TOR over VPN" = "Tor праз VPN";
+
+"P2P/BitTorrent" = "P2P/BitTorrent";
+
+"Get %@" = "Атрымаць %@";
+
+"Get Proton for free" = "Атрымаць Proton бясплатна";
+
+"Extend subscription" = "Падоўжыць падпіску";
+
+"%@ of %@" = "%@ з %@";
+
+"Connection issues" = "Праблемы з падключэннем";
+
+"Check your internet connection" = "Праверце сваё падключэнне да інтэрнэту";
+
+"Strict no-logs policy" = "Палітыка строгай адсутнасці журналаў актыўнасці";
+
+"Plan successfully upgraded" = "Тарыфны план паспяхова палепшаны";
+
+"Integrated 2FA authenticator" = "Інтэграваная аўтэнтыфікацыя 2ФА";
+
+"Priority support" = "Прыярытэтная падтрымка";
+
+"Unlimited devices" = "Неабмежаваная колькасць прылад";
+
+"%@ email aliases" = "%@ псеўданімаў электроннай пошты";
+
+"Unlimited email aliases" = "Неабмежаваная колькасць псеўданімаў электроннай пошты";
+
+"Unlimited logins and notes" = "Неабмежаваная колькасць запісаў уваходу і нататак";
+
+"Up to %@ forwarding mailboxes" = "Да %@ паштовых скрынь для пераадрасацыі";
+
+"Custom fields" = "Карыстальніцкія палі";
+
+"For next-level password management and identity protection." = "Для больш высокага ўзроўню кіравання паролямі і абароны асабістых даных.";
+
+"Pay monthly" = "Штомесячная аплата";
+
+"Pay annually" = "Штогадовая аплата";
+
+"Pay every two years" = "Аплата кожныя два гады";
+
+"Free" = "Бясплатна";

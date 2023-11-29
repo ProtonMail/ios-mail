@@ -1,4 +1,4 @@
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 import SafariServices
 
 // sourcery: mock

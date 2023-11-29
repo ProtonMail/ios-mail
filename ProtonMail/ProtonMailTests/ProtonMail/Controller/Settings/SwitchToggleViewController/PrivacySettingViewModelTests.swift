@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_DataModel
-import ProtonCore_Keymaker
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreKeymaker
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import XCTest
 
@@ -25,8 +25,6 @@ final class PrivacySettingViewModelTests: XCTestCase {
     var sut: PrivacySettingViewModel!
     var user: UserManager!
     var apiMock: APIServiceMock!
-    private var keyMaker: Keymaker!
-    private var keyChain: KeychainWrapper!
     var metadataStrippingProvider: AttachmentMetadataStrippingMock!
 
     var expected: [PrivacySettingViewModel.SettingPrivacyItem] {
@@ -43,7 +41,6 @@ final class PrivacySettingViewModelTests: XCTestCase {
 
     override func setUpWithError() throws {
         self.apiMock = APIServiceMock()
-        self.keyMaker = sharedServices.get(by: Keymaker.self)
         self.user = UserManager(api: apiMock, role: .member)
         self.metadataStrippingProvider = AttachmentMetadataStrippingMock()
         self.sut = PrivacySettingViewModel(user: user, metaStrippingProvider: metadataStrippingProvider)
@@ -54,7 +51,6 @@ final class PrivacySettingViewModelTests: XCTestCase {
         user = nil
         apiMock = nil
         metadataStrippingProvider = nil
-        keyMaker = nil
     }
 
     func testConstant() throws {
@@ -63,10 +59,8 @@ final class PrivacySettingViewModelTests: XCTestCase {
         XCTAssertEqual(sut.rowNumber, expected.count)
         XCTAssertEqual(sut.headerTopPadding, 8)
         XCTAssertEqual(sut.footerTopPadding, 0)
-        for i in 0...5 {
-            XCTAssertNil(sut.sectionHeader(of: i))
-            XCTAssertNil(sut.sectionFooter(of: i))
-        }
+        XCTAssertNil(sut.sectionHeader())
+        XCTAssertNil(sut.sectionFooter())
 
         for i in 0...3 {
             let item = sut.privacySections[i]

@@ -22,9 +22,9 @@
 
 import CoreData
 import PromiseKit
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
 
 // TODO::fixme import header
 extension Attachment {
@@ -119,21 +119,6 @@ extension Attachment {
         let headerObject = headerInfo.parseObject()
         guard let inlineCheckString = headerObject["content-id"] else {
             return nil
-        }
-
-        let outString = inlineCheckString.preg_replace("[<>]", replaceto: "")
-
-        return outString
-    }
-
-    func disposition() -> String {
-        guard let headerInfo = self.headerInfo else {
-            return "attachment"
-        }
-
-        let headerObject = headerInfo.parseObject()
-        guard let inlineCheckString = headerObject["content-disposition"] else {
-            return "attachment"
         }
 
         let outString = inlineCheckString.preg_replace("[<>]", replaceto: "")

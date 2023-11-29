@@ -19,19 +19,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-#if canImport(ProtonCore_CoreTranslation)
-import ProtonCore_CoreTranslation
-#else
-import PMCoreTranslation
-#endif
-#if canImport(ProtonCore_UIFoundations)
-import ProtonCore_UIFoundations
+#if canImport(ProtonCoreUIFoundations)
+import ProtonCoreUIFoundations
 #else
 import PMUIFoundations
 #endif
 
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 public typealias AccountDeletionViewController = UIViewController
 
@@ -68,7 +65,7 @@ extension AccountDeletionWebView {
     }
     
     func styleUI() {
-        #if canImport(ProtonCore_UIFoundations)
+        #if canImport(ProtonCoreUIFoundations)
         let backgroundColor: UIColor = ColorProvider.BackgroundNorm
         #else
         let backgroundColor: UIColor = UIColorManager.BackgroundNorm
@@ -100,7 +97,7 @@ extension AccountDeletionWebView {
             self?.webView?.isHidden = true
         }
         self.banner?.dismiss()
-        self.banner = PMBanner(message: CoreString._ad_delete_account_success,
+        self.banner = PMBanner(message: ADTranslation.delete_account_success.l10n,
                                style: PMBannerNewStyle.success,
                                dismissDuration: Double.infinity)
         self.banner?.show(at: .top, on: self)
@@ -116,14 +113,14 @@ extension AccountDeletionWebView {
         case .success: style = .success
         }
         self.banner = PMBanner(message: message, style: style, dismissDuration: Double.infinity)
-        self.banner?.addButton(text: CoreString._general_ok_action) { [weak self] _ in
+        self.banner?.addButton(text: ADTranslation.general_ok_action.l10n) { [weak self] _ in
             self?.banner?.dismiss()
         }
         self.banner?.show(at: .top, on: self)
     }
     
     func openUrl(_ url: URL) {
-        #if canImport(ProtonCore_Foundations)
+        #if canImport(ProtonCoreFoundations)
         UIApplication.openURLIfPossible(url)
         #else
         UIApplication.shared.openURL(url)
@@ -145,7 +142,7 @@ extension AccountDeletionService: AccountDeletionWebViewDelegate {
         vc.overrideUserInterfaceStyle = theme
         let navigationVC = DarkModeAwareNavigationViewController(rootViewController: vc)
         navigationVC.overrideUserInterfaceStyle = theme
-        vc.title = CoreString._ad_delete_account_title
+        vc.title = ADTranslation.delete_account_title.l10n
         let leftBarButtonItem = UIBarButtonItem(
             image: IconProvider.arrowLeft,
             style: .done,
@@ -154,7 +151,7 @@ extension AccountDeletionService: AccountDeletionWebViewDelegate {
         )
         vc.navigationItem.leftBarButtonItem = leftBarButtonItem
         leftBarButtonItem.accessibilityIdentifier = "AccountDeletionWebViewController.leftBarButtonItem"
-        #if canImport(ProtonCore_UIFoundations)
+        #if canImport(ProtonCoreUIFoundations)
         let tintColor: UIColor = ColorProvider.IconNorm
         #else
         let tintColor: UIColor = UIColorManager.IconNorm
@@ -165,3 +162,5 @@ extension AccountDeletionService: AccountDeletionWebViewDelegate {
         over.present(navigationVC, animated: true, completion: completion)
     }
 }
+
+#endif

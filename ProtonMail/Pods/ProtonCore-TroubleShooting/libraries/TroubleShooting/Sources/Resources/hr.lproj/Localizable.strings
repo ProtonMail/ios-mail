@@ -1,0 +1,50 @@
+
+"support form" = "obrazac za podršku";
+
+"email" = "e-pošta";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "Otklanjanje pogreške";
+
+"Allow alternative routing" = "Omogući alternativno usmjeravanje";
+
+"No internet connection" = "Nema internetske veze";
+
+"Internet Service Provider (ISP) problem" = "Problem s pružateljem internetskih usluga (ISP)";
+
+"Government block" = "Državna cenzura";
+
+"Antivirus interference" = "Smetnje s antivirusom";
+
+"Proxy/Firewall interference" = "Poteškoće s proxy/vatrozidom";
+
+"Proton is down" = "Proton je van mreže";
+
+"Still can't find a solution" = "Još uvijek ne mogu pronaći rješenje";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "U slučaju da su Protonove stranice blokirane, ova postavka omogućuje aplikaciji da isproba alternativno mrežno usmjeravanje do Protona, što može biti korisno u zaobilaženju vatrozida ili problema s mrežom. Preporučujemo da ovu postavku zadržite omogućenom radi veće pouzdanosti. %1$@";
+
+"Learn more" = "Saznajte više";
+
+"Please make sure that your internet connection is working." = "Provjerite da li vaša internetska veza radi.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Pokušajte se povezati na Proton s druge mreže (ili upotrijebite %1$@ ili %2$@).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Vaša država možda blokira pristup Protonu. Pokušajte koristiti %1$@ (ili bilo koji drugi VPN) ili %2$@ za pristup Protonu.";
+
+"Temporarily disable or remove your antivirus software." = "Privremeno onemogućite ili uklonite svoj antivirusni program.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "Onemogućite sve proxye ili vatrozide ili se obratite mrežnom administratoru.";
+
+"Check Proton Status for our system status." = "Provjerite Proton Status za uvid u status našeg sustava.";
+
+"Proton Status" = "Proton Status";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontaktirajte nas izravno putem obrasca za podršku, e-poštom (support@protonmail.zendesk.com) ili na Twitteru.";
+
+"Subject..." = "Predmet...";
+
+"Please share your problem." = "Please share your problem.";
+
+"Back" = "Natrag";

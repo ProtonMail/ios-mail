@@ -1,0 +1,46 @@
+
+"Contact customer support" = "Hubungi bantuan pelanggan";
+
+"Failed to get list of available products from App Store." = "Gagal mendapatkan daftar ketersediaan produk dari App Store.";
+
+"Purchase is not possible." = "Tidak dapat melakukan pembelian.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple menginformasikan, Anda sudah meningkatkan paket layanan, tapi beberapa data teknis hilang. Mohon isi laporan bug dan tim dukungan pelanggan kami akan menghubungi Anda.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple menginformasikan kami bahwa paket langganan Anda telah ditingkatkan, tetapi sistem kami mendeteksi bahwa Anda telah keluar dari akun.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Tidak mungkin mencocokkan produk App Store yang Anda beli dengan produk apapun di server kami. Silakan isi laporan bug dan tim dukungan pelanggan akan menghubungi Anda.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Silakan masuk ke akun Proton Mail yang ingin Anda tingkatkan agar kami dapat menyelesaikan proses pembayaran.";
+
+"Apple informed us they could not process the purchase." = "Apple menginformasikan, mereka tidak dapat memproses pembayaran.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Kami berhasil mengaktifkan langganan Anda. Silakan luncurkan ulang aplikasi untuk menggunakan paket layanan baru.";
+
+"Please unlock the app to proceed with your service plan activation" = "Mohon buka kunci aplikasi untuk melanjutkan aktivasi paket layanan Anda";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Silakan masuk ke akun Proton Mail yang ingin Anda tingkatkan agar kami dapat menyelesaikan proses aktivasi paket layanan.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Status token pembayaran tidak sesuai. Silakan buka ulang aplikasi. Apabila masalah ini terus berlanjut, hubungi layanan dukungan.";
+
+"Do you want to activate the purchase for %@ address?" = "Anda ingin mengaktifkan pembayaran untuk alamat %@?";
+
+"Yes, activate it for " = "Ya, aktifkan untuk ";
+
+"No, for another Proton Mail account" = "Bukan, untuk akun Proton Mail lain";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Kami tidak dapat meningkatkan akun Anda ke paket yang Anda pilih, sehingga pembayaran Anda telah kami alihkan dalam bentuk saldo pada akun Anda. Untuk dapat menyelesaikan proses peningkatan akun Anda dan memperoleh informasi lebih lanjut, harap hubungi Layanan Dukungan.";
+
+"Contact Support" = "Hubungi Layanan Dukungan";
+
+"Dismiss" = "Abaikan";
+
+"Payment failed" = "Pembayaran gagal";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Anda telah berhasil terdaftar namun pembayaran tidak diproses. Untuk mengirim ulang informasi pembayaran Anda, klik Coba Lagi. Anda hanya akan ditagih sekali. Jika masalah berlanjut, silakan hubungi bantuan pelanggan.";
+
+"Retry" = "Coba lagi";
+
+"OK" = "OK";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Server Proton tidak dapat dijangkau. Hal ini dapat disebabkan antara lain oleh pengaturan jaringan yang tidak tepat, server Proton yang sedang offline, atau pemblokiran terhadap server Proton";

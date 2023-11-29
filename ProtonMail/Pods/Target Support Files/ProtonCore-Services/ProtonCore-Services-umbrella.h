@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ProtonCore_ServicesVersionNumber;
-FOUNDATION_EXPORT const unsigned char ProtonCore_ServicesVersionString[];
+FOUNDATION_EXPORT double ProtonCoreServicesVersionNumber;
+FOUNDATION_EXPORT const unsigned char ProtonCoreServicesVersionString[];
 

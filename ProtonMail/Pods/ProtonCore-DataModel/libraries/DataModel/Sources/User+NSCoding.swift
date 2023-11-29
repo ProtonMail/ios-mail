@@ -58,6 +58,7 @@ extension UserInfo: NSCoding {
 
         static let credit = "credit"
         static let currency = "currency"
+        static let createTime = "createTime"
         static let subscribed = "subscribed"
 
         static let pwdMode = "passwordMode"
@@ -112,6 +113,7 @@ extension UserInfo: NSCoding {
 
             credit: aDecoder.decodeInteger(forKey: CoderKey.credit),
             currency: aDecoder.string(forKey: CoderKey.currency),
+            createTime: aDecoder.decodeInt64IfPresent(forKey: CoderKey.createTime),
 
             pwdMode: aDecoder.decodeInteger(forKey: CoderKey.pwdMode),
             twoFA: aDecoder.decodeInteger(forKey: CoderKey.twoFA),
@@ -184,11 +186,20 @@ extension UserInfo: NSCoding {
 
 extension UserInfo {
     public func archive() -> Data {
+        // This can be replaced with `NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false)` to suppress this warning.
+        // But new `NSKeyedArchiver.archivedData` method throws. And `archive() -> Data` method doesn't have any mechanism how to return error.
+        // For now keep the warning in favor of refactoring this method.
         return NSKeyedArchiver.archivedData(withRootObject: self)
     }
 
     public static func unarchive(_ data: Data?) -> UserInfo? {
         guard let data = data else { return nil }
+        // Unarchive method that suppress this warning doesn't work when using old archive method (see above). Solution for this is to switch to
+        // Codable.
+        NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ProtonCore_DataModel.UserInfo")
+        NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ProtonCoreDataModel.UserInfo")
+        NSKeyedUnarchiver.setClass(ToolbarActions.classForKeyedUnarchiver(), forClassName: "ProtonCore_DataModel.ToolbarActions")
+        NSKeyedUnarchiver.setClass(ReferralProgram.classForKeyedUnarchiver(), forClassName: "ProtonCore_DataModel.ReferralProgram")
         return NSKeyedUnarchiver.unarchiveObject(with: data) as? UserInfo
     }
 }

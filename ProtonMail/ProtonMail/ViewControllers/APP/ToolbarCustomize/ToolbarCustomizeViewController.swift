@@ -17,7 +17,7 @@
 
 import Foundation
 import LifetimeTracker
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 final class ToolbarCustomizeViewController<T: ToolbarAction>: UIViewController, UITableViewDataSource,

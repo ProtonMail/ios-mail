@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import XCTest
 
@@ -243,7 +243,7 @@ final class SingleMessageViewModelTests: XCTestCase {
 
     private func makeSUT(labelID: LabelID, message: MessageEntity? = nil) {
         let apiMock = APIServiceMock()
-        let fakeUser = UserManager(api: apiMock, role: .none)
+        let fakeUser = UserManager(api: apiMock)
         let messageObject = Message(context: contextProviderMock.viewContext)
         messageObject.unRead = false
         let message = message ?? MessageEntity(messageObject)
@@ -274,6 +274,7 @@ final class SingleMessageViewModelTests: XCTestCase {
                 highlightedKeywords: [],
                 goToDraft: { _, _ in }
             ),
+            contextProvider: contextProviderMock,
             highlightedKeywords: [],
             notificationCenter: notificationCenterMock
         )

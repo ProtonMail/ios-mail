@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 extension Error {
 
@@ -58,8 +58,7 @@ extension Error {
              NSURLErrorCannotFindHost,
              310,
              -1200,
-             8 // No internet
-             :
+             8: // No internet
             return true
         default:
             return false

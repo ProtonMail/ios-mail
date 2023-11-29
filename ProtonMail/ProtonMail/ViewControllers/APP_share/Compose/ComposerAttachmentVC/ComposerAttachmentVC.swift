@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
-import ProtonCore_Services
-import ProtonCore_UIFoundations
+import ProtonCoreServices
+import ProtonCoreUIFoundations
 import UIKit
 
 protocol ComposerAttachmentVCDelegate: AnyObject {

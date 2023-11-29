@@ -1,6 +1,7 @@
 {
   "name": "ProtonCore-AccountSwitcher",
-  "version": "9.3.0",
+  "module_name": "ProtonCoreAccountSwitcher",
+  "version": "14.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "9.3.0"
+    "tag": "14.0.0"
   },
   "platforms": {
     "ios": "14.0"
@@ -30,16 +31,13 @@
   "frameworks": "UIKit",
   "dependencies": {
     "ProtonCore-Log": [
-      "9.3.0"
-    ],
-    "ProtonCore-CoreTranslation": [
-      "9.3.0"
+      "14.0.0"
     ],
     "ProtonCore-UIFoundations": [
-      "9.3.0"
+      "14.0.0"
     ],
     "ProtonCore-Utilities": [
-      "9.3.0"
+      "14.0.0"
     ]
   },
   "default_subspecs": [
@@ -49,6 +47,9 @@
   "resource_bundles": {
     "Resources-AccountSwitcher": [
       "libraries/AccountSwitcher/Resources-iOS/Resources/*.xib"
+    ],
+    "Translations-AccountSwitcher": [
+      "libraries/AccountSwitcher/Sources/Resources/*"
     ]
   },
   "testspecs": [
@@ -57,10 +58,10 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "9.3.0"
+          "14.0.0"
         ]
       },
-      "source_files": "libraries/AccountSwitcher/Tests/**/*"
+      "source_files": "libraries/AccountSwitcher/Tests/UnitTests/**/*"
     }
   ],
   "swift_version": "5.6"

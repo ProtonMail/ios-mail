@@ -1,6 +1,6 @@
 //
 //  UIStoryboard+Extensions.swift
-//  ProtonCore_PaymentsUI - Created on 01/06/2021.
+//  ProtonCorePaymentsUI - Created on 01/06/2021.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,9 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
 import UIKit
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 extension UIStoryboard {
     static func instantiate<T: UIViewController>(
@@ -34,3 +36,5 @@ extension UIStoryboard {
         return viewController
     }
 }
+
+#endif

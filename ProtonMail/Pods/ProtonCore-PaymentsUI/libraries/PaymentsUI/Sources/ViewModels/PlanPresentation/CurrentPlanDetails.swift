@@ -1,6 +1,6 @@
 //
 //  CurrentPlanDetails.swift
-//  ProtonCore_PaymentsUI - Created on 01/06/2021.
+//  ProtonCorePaymentsUI - Created on 01/06/2021.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,10 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Payments
-import typealias ProtonCore_DataModel.ClientApp
-import ProtonCore_CoreTranslation
-import ProtonCore_UIFoundations
+#if os(iOS)
+
+import ProtonCorePayments
+import typealias ProtonCoreDataModel.ClientApp
+import ProtonCoreUIFoundations
 import UIKit
 
 public struct CurrentPlanDescription {
@@ -348,3 +349,5 @@ extension CurrentPlanDetails {
     }
 
 }
+
+#endif

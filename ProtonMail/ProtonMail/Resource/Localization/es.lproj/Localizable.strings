@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Error con el envió";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Error al enviar el correo. Mensaje guardado como borrador.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Nada que ver aquí";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Necesitas al menos un destinatario para enviar";
-
-/* Title */
-"Change sender address to…" = "Cambiar la dirección del remitente a…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Mejora a un plan de pago para enviar desde tu dirección %@.";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Confirmar nueva contraseña del buzón";
 
-/* error when sending the message */
-"Unable to send the email" = "No se ha podido enviar el mensaje.";
-
 /* Title */
 "Star/unstar" = "Destacar/no destacar";
 
@@ -996,9 +987,6 @@
 "Cut" = "Cortar";
 
 /* Title */
-"Compose to" = "Redactar a";
-
-/* Title */
 "Add to contacts" = "Añadir a contactos";
 
 /* encryption lock description */
@@ -1244,9 +1232,6 @@
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Enviando mensaje…";
 
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "No se ha podido enviar el mensaje. Al menos una dirección de correo electrónico o un dominio del destinatario no existe o tiene un formato incorrecto.";
-
 /* The unread title of unread action button in mailbox view */
 "unread" = "no leído";
 
@@ -1295,27 +1280,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Activa esta función para completar automáticamente las direcciones utilizando los contactos de todas tus cuentas conectadas.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Establecer código PIN";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Introduce el código PIN nuevo";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Introduce un código PIN entre 4 y 21 caracteres.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "El PIN es demasiado corto.";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "El PIN es demasiado largo.";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Repetir código PIN";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "Los códigos PIN deben coincidir.";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "En caso de que los sitios de Proton estén bloqueados, esta configuración permite a la aplicación intentar un enrutamiento de red alternativo para llegar a Proton, lo que puede ser útil para evitar los cortafuegos o los problemas de red. Recomendamos mantener esta configuración activada para una mayor fiabilidad.%1$@";
 
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "Desactivado";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Cambiar código PIN";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Volver a autenticar";
@@ -1362,7 +1323,7 @@
 "Please set a recovery / notification email" = "Establece un correo electrónico de recuperación/notificación.";
 
 /* No comment provided by engineer. */
-"Unread" = "No leído";
+"Unread" = "No leídos";
 
 /* No comment provided by engineer. */
 "Read" = "Leídos";
@@ -1821,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "Ahora puedes elegir y reordenar las acciones en esta barra.";
 
 /* Button to block a sender */
-"Block sender" = "Bloquear el remitente";
+"Block messages from this sender" = "Bloquear mensajes de este remitente";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Bloquear";
@@ -1895,10 +1856,10 @@
 "Terms & conditions" = "Términos y condiciones";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "He estado utilizando Proton Mail y creo que puede gustarte. Es un servicio de correo electrónico seguro que protege tu privacidad. Regístrate a través de este enlace para obtener 1 mes de funciones prémium gratis:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "He estado utilizando Proton Mail y creo que puede gustarte. Es un servicio de correo electrónico seguro que protege tu privacidad. Regístrate a través de este enlace para obtener 1 mes de funciones premium gratis:";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Su privacidad estará mejor protegida si sus contactos también utilizan Proton Mail. Invite a sus amigos a Proton y ambos obtendrán beneficios prémium gratis.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Su privacidad estará mejor protegida si sus contactos también utilizan Proton Mail. Invite a sus amigos a Proton y ambos obtendrán beneficios premium gratis.";
 
 /* The title of the maybe later button in referral prompt view. */
 "Maybe later" = "Quizás más tarde";
@@ -1990,6 +1951,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Responder a todos (al último mensaje)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Nuevo mensaje";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personalizar";
 
@@ -2023,15 +1987,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Habilitar";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "¿Deshabilitar la eliminación automática?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Los correos programados para eliminarse permanecerán en las carpetas de papelera y spam.";
-
-/* Button to disable auto delete */
-"Disable" = "Deshabilitar";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Actualice su plan para eliminar automáticamente los mensajes que hayan estado en las carpetas Papelera o Spam durante más de 30 días.";
 
@@ -2062,6 +2017,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Dominios de correo personalizados";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "El remitente ha cambiado.";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "El remitente original de este mensaje ya no es válido. Tu mensaje se enviará desde tu dirección por defecto %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nombre a mostrar";
 
@@ -2075,7 +2036,7 @@
 "Display name field cannot be empty" = "El campo del nombre a mostrar no puede estar vacío.";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "El nombre del contacto es demasiado largo.";
 
 /* The button text for add profile picture */
 "Add photo" = "Añadir foto";
@@ -2083,11 +2044,44 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Editar foto";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "Seleccionar todo";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Deshabilitar el código PIN";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Establecer código PIN";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Repetir código PIN";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Introduce el código PIN nuevo";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Introduce un código PIN entre 4 y 21 caracteres.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "El PIN es demasiado corto.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "El PIN es demasiado largo.";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "Los códigos PIN deben coincidir.";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Introduce el código PIN antiguo ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Cambiar código PIN";
+
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Cancelar la suscripción de la lista de correo";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "¿Cancelar la suscripción?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Esto cancelará tu suscripción de la lista de correo. El remitente será notificado para que no envíe correos a esta dirección.";

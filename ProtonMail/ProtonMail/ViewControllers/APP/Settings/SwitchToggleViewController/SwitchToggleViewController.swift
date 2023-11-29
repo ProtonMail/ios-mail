@@ -16,10 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import MBProgressHUD
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
-import enum ProtonCore_Utilities.Either
-import protocol ProtonCore_Foundations.AccessibleView
+import enum ProtonCoreUtilities.Either
+import protocol ProtonCoreFoundations.AccessibleView
 
 final class SwitchToggleViewController: UITableViewController, AccessibleView {
 
@@ -105,12 +105,12 @@ final class SwitchToggleViewController: UITableViewController, AccessibleView {
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let title = viewModel.output.sectionHeader(of: section)
+        let title = viewModel.output.sectionHeader()
         return title == nil ? 36 : UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let text = viewModel.output.sectionHeader(of: section) else {
+        guard let text = viewModel.output.sectionHeader() else {
             return nil
         }
         let padding = viewModel.output.headerTopPadding
@@ -118,12 +118,12 @@ final class SwitchToggleViewController: UITableViewController, AccessibleView {
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let desc = viewModel.output.sectionFooter(of: section)
+        let desc = viewModel.output.sectionFooter()
         return desc == nil ? 36 : UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let footer = viewModel.output.sectionFooter(of: section) else {
+        guard let footer = viewModel.output.sectionFooter() else {
             return nil
         }
         let padding = viewModel.output.footerTopPadding
@@ -131,7 +131,7 @@ final class SwitchToggleViewController: UITableViewController, AccessibleView {
         case .left(let text):
             return headerFooterView(text: text, titleTopPadding: padding)
         case .right(let attributedString):
-            return attributedView(attributedString: attributedString, titleTopPadding: padding)
+            return attributedView(attributedString: attributedString)
         }
     }
 }
@@ -181,10 +181,7 @@ extension SwitchToggleViewController {
         return hfView
     }
 
-    private func attributedView(
-        attributedString: NSAttributedString,
-        titleTopPadding: CGFloat
-    ) -> UIView? {
+    private func attributedView(attributedString: NSAttributedString) -> UIView? {
         let id = UITableViewHeaderFooterView.reuseIdentifier
         guard let footerView = tableView
             .dequeueReusableHeaderFooterView(withIdentifier: id) else {

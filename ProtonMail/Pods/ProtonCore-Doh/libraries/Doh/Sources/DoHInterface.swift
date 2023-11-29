@@ -20,8 +20,8 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Log
-import ProtonCore_Utilities
+import ProtonCoreLog
+import ProtonCoreUtilities
 
 struct RuntimeError: Error {
     let message: String
@@ -98,6 +98,49 @@ public extension ServerConfig {
     }
 }
 
+extension DoH {
+    public struct PinningConfigurationEntry {
+        static let catchAllHost = "*"
+
+        let allowSubdomains: Bool
+        let allowIPs: Bool
+
+        public init(allowSubdomains: Bool, allowIPs: Bool) {
+            self.allowIPs = allowIPs
+            self.allowSubdomains = allowSubdomains
+        }
+
+        func allowsHost(_ host: String, for configuredHost: String) -> Bool {
+            let host = host.lowercased()
+            let configuredHost = configuredHost.lowercased().trimmingCharacters(in: .init(charactersIn: "."))
+
+            if host == configuredHost {
+                return true
+            } else if allowSubdomains && host.hasSuffix(".\(configuredHost)") {
+                return true
+            } else if configuredHost == Self.catchAllHost && allowIPs && host.isIp {
+                return true
+            }
+            return false
+        }
+    }
+
+    internal static var pinningConfiguration: [String: PinningConfigurationEntry] = [:]
+
+    public class func setPinningConfiguration(_ configuration: [String: PinningConfigurationEntry]) {
+        pinningConfiguration = configuration
+    }
+
+    public class func hostIsPinned(_ host: String) -> Bool {
+        for (pinnedHost, entry) in pinningConfiguration {
+            if entry.allowsHost(host, for: pinnedHost) {
+                return true
+            }
+        }
+        return false
+    }
+}
+
 public extension ServerConfig {
     @available(*, deprecated, message: "No longer needed not used, can be deleted")
     var apiHost: String { "" }
@@ -138,7 +181,7 @@ public protocol DoHInterface {
     
     var currentlyUsedCookiesStorage: HTTPCookieStorage? { get }
     func setUpCookieSynchronization(storage: HTTPCookieStorage?)
-    func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String])
+    func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String]) async
 
     // swiftlint:disable function_parameter_count
     func handleErrorResolvingProxyDomainIfNeeded(
@@ -222,5 +265,23 @@ public extension DoHInterface {
                                                                         callCompletionBlockUsing: CompletionBlockExecutor, completion: @escaping (Bool) -> Void) {
         handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(host: host, requestHeaders: [:], sessionId: sessionId, response: response,
                                                                        error: error, callCompletionBlockUsing: .asyncMainExecutor, completion: completion)
+    }
+
+    @available(*, deprecated, message: "Please use the async variant of this function instead.")
+    func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String], completion: @escaping () -> Void) {
+        Task {
+            await synchronizeCookies(with: response, requestHeaders: requestHeaders)
+            completion()
+        }
+    }
+}
+
+fileprivate extension String {
+    var isIp: Bool {
+        return withCString { cStringPtr in
+            var addr = in6_addr()
+            return inet_pton(AF_INET, cStringPtr, &addr) == 1 ||
+                   inet_pton(AF_INET6, cStringPtr, &addr) == 1
+        }
     }
 }

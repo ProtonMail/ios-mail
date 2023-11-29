@@ -1,6 +1,6 @@
 //
 //  CurrentPlanCell.swift
-//  ProtonCore_PaymentsUI - Created on 01/06/2021.
+//  ProtonCorePaymentsUI - Created on 01/06/2021.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,17 +19,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_UIFoundations
-import ProtonCore_Foundations
-import ProtonCore_CoreTranslation
+import ProtonCoreUIFoundations
+import ProtonCoreFoundations
 
 final class CurrentPlanCell: UITableViewCell, AccessibleCell {
 
     static let reuseIdentifier = "CurrentPlanCell"
     static let nib = UINib(nibName: "CurrentPlanCell", bundle: PaymentsUI.bundle)
-
-    var plan: PlanPresentation?
 
     // MARK: - Outlets
     
@@ -94,11 +93,10 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
     }
     
     private func configureCurrentPlan(plan: PlanPresentation, currentPlanDetails: CurrentPlanDetails) {
-        self.plan = plan
         generateCellAccessibilityIdentifiers(currentPlanDetails.name)
         
         planNameLabel.text = currentPlanDetails.name
-        planDescriptionLabel.text = CoreString._pu_current_plan_title
+        planDescriptionLabel.text = PUITranslations.current_plan_title.l10n
         
         if let price = currentPlanDetails.price {
             priceLabel.isHidden = false
@@ -135,7 +133,7 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
         priceLabel.text = ""
         priceDescriptionLabel.text = ""
         planDescriptionLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
-        planDescriptionLabel.text = CoreString._pu_plan_details_plan_details_unavailable_contact_administrator
+        planDescriptionLabel.text = PUITranslations.plan_details_plan_details_unavailable_contact_administrator.l10n
         planDescriptionLabel.textColor = ColorProvider.TextNorm
         enableProgressView(enabled: false)
         enableTimeView(enabled: false)
@@ -155,3 +153,51 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
         progressBarView.isHidden = !enabled
     }
 }
+
+// TODO: write snapshot tests: CP-6481
+// MARK: - Dynamic plans
+
+extension CurrentPlanCell {
+    func configurePlan(currentPlan: CurrentPlanPresentation) {
+        planDetailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        generateCellAccessibilityIdentifiers(currentPlan.details.title)
+        
+        planNameLabel.text = currentPlan.details.title
+        planDescriptionLabel.text = PUITranslations.current_plan_title.l10n
+        
+        priceLabel.isHidden = currentPlan.details.hidePriceDetails
+        priceDescriptionLabel.isHidden = currentPlan.details.hidePriceDetails
+        priceLabel.text = currentPlan.details.price
+        priceDescriptionLabel.text = currentPlan.details.cycleDescription
+        
+        progressBarSpacerView.isHidden = true
+        progressBarView.isHidden = true
+        
+        for entitlement in currentPlan.details.entitlements {
+            switch entitlement {
+            case .progress(let progressEntitlement):
+                progressBarSpacerView.isHidden = false
+                progressBarView.isHidden = false
+                progressBarView.configure(
+                    usedSpaceDescription: progressEntitlement.text,
+                    usedSpace: Int64(progressEntitlement.current),
+                    maxSpace: Int64(progressEntitlement.max)
+                )
+            case .description(let descriptionEntitlement):
+                let detailView = PlanDetailView()
+                detailView.configure(iconUrl: descriptionEntitlement.iconUrl, text: descriptionEntitlement.text)
+                planDetailsStackView.addArrangedSubview(detailView)
+            }
+        }
+        
+        if let endDate = currentPlan.details.endDate {
+            enableTimeView(enabled: true)
+            planTimeLabel.attributedText = endDate
+            planTimeLabel.font = .adjustedFont(forTextStyle: .footnote)
+        } else {
+            enableTimeView(enabled: false)
+        }
+    }
+}
+
+#endif

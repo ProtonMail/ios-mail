@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_Networking
+import ProtonCoreDataModel
+import ProtonCoreNetworking
 
 /**
  [Settings API Part 1]:

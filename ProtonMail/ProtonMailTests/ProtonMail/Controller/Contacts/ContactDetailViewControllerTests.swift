@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import XCTest
 
@@ -28,6 +28,7 @@ final class ContactDetailViewControllerTests: XCTestCase {
     private var mockUser: UserManager!
     private var mockContextProvider: MockCoreDataContextProvider!
     private var mockContactService: MockContactProvider!
+    private var contactID: ContactID!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -42,6 +43,7 @@ final class ContactDetailViewControllerTests: XCTestCase {
         mockUser.authCredential.mailboxpassword = ContactParserTestData.passphrase.value
         mockContextProvider = .init()
         mockContactService = .init(coreDataContextProvider: mockContextProvider)
+        contactID = .init(rawValue: String.randomString(20))
     }
 
     override func tearDown() {
@@ -56,38 +58,7 @@ final class ContactDetailViewControllerTests: XCTestCase {
 
     func testInit() throws {
         let displayName = String.randomString(20)
-        let vCardData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nITEM1.CATEGORIES:\r\nEND:VCARD\r\n"
-        let vCardSignedData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nFN:\(displayName)\r\nItem1.EMAIL;TYPE=:test@pm.me\r\nEND:VCARD\r\n"
-        let vCardSignedAndEncryptedData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nN:LastName;FirstName\r\nURL:www.proton.me\r\nBDAY;VALUE=text:1990-10-22\r\nGENDER:Gender\r\nTITLE:Title\r\nNICKNAME:NickName\r\nADR;TYPE=:;;Street;City;State;000;Country\r\nORG:Organization\r\nTEL:090000000\r\nORG:Organization2\r\nTITLE:Title2\r\nNICKNAME:NickName2\r\nEND:VCARD\r\n"
-
-        let data = try XCTUnwrap(
-            try TestDataCreator.generateVCardTestData(
-                vCardSignAndEncrypt: vCardSignedAndEncryptedData,
-                vCardSign: vCardSignedData,
-                vCard: vCardData
-            )
-        )
-        let contact = try mockContextProvider.write { context in
-            let contact = Contact(context: context)
-            contact.cardData = data
-            contact.name = displayName
-            try context.save()
-            return contact
-        }
-        let entity = ContactEntity.make(
-            objectID: .init(rawValue: contact.objectID),
-            name: displayName,
-            cardData: data
-        )
-        mockContactService.fetchContactStub = entity
-        viewModel = .init(
-            contact: entity,
-            dependencies: .init(
-                user: mockUser,
-                coreDataService: mockContextProvider,
-                contactService: mockContactService
-            )
-        )
+        try prepareTestData(displayName: displayName)
         let globalContainer = GlobalContainer()
         globalContainer.contextProviderFactory.register { self.mockContextProvider }
         let userContainer = UserContainer(userManager: mockUser, globalContainer: globalContainer)
@@ -159,5 +130,67 @@ final class ContactDetailViewControllerTests: XCTestCase {
             inSection: 13
         ).first)
         XCTAssertEqual(genderCell.cell.value.text, "GENDER")
+    }
+
+    func testContactIsUpdated_viewIsUpdated() throws {
+        let displayName = String.randomString(20)
+        let newDisplayName = String.randomString(20)
+        try prepareTestData(displayName: displayName)
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { self.mockContextProvider }
+        let userContainer = UserContainer(userManager: mockUser, globalContainer: globalContainer)
+        sut = .init(viewModel: viewModel, dependencies: userContainer)
+        sut.loadViewIfNeeded()
+
+        wait(self.sut.loaded)
+
+        XCTAssertEqual(sut.customView.displayNameLabel.text, displayName)
+
+        _ = try mockContextProvider.write { context in
+            let contact = try XCTUnwrap(try context.existingObject(with: self.viewModel.contact.objectID.rawValue) as? Contact)
+            contact.name = newDisplayName
+            try context.save()
+        }
+
+        wait(self.sut.customView.displayNameLabel.text == newDisplayName)
+    }
+}
+
+extension ContactDetailViewControllerTests {
+    private func prepareTestData(displayName: String) throws {
+        let vCardData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nITEM1.CATEGORIES:\r\nEND:VCARD\r\n"
+        let vCardSignedData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nFN:\(displayName)\r\nItem1.EMAIL;TYPE=:test@pm.me\r\nEND:VCARD\r\n"
+        let vCardSignedAndEncryptedData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nN:LastName;FirstName\r\nURL:www.proton.me\r\nBDAY;VALUE=text:1990-10-22\r\nGENDER:Gender\r\nTITLE:Title\r\nNICKNAME:NickName\r\nADR;TYPE=:;;Street;City;State;000;Country\r\nORG:Organization\r\nTEL:090000000\r\nORG:Organization2\r\nTITLE:Title2\r\nNICKNAME:NickName2\r\nEND:VCARD\r\n"
+
+        let data = try XCTUnwrap(
+            try TestDataCreator.generateVCardTestData(
+                vCardSignAndEncrypt: vCardSignedAndEncryptedData,
+                vCardSign: vCardSignedData,
+                vCard: vCardData
+            )
+        )
+        let contact = try mockContextProvider.write { context in
+            let rawContact = Contact(context: context)
+            rawContact.cardData = data
+            rawContact.name = displayName
+            rawContact.contactID = self.contactID.rawValue
+            try context.save()
+            return rawContact
+        }
+        let entity = ContactEntity.make(
+            objectID: .init(rawValue: contact.objectID),
+            contactID: contactID,
+            name: displayName,
+            cardData: data
+        )
+        mockContactService.fetchContactStub = entity
+        viewModel = .init(
+            contact: entity,
+            dependencies: .init(
+                user: mockUser,
+                coreDataService: mockContextProvider,
+                contactService: mockContactService
+            )
+        )
     }
 }

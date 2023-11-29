@@ -20,7 +20,7 @@ import CoreData
 
 class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
     private let container = MockCoreDataStore.testPersistentContainer
-    private let coreDataService: CoreDataService
+    let coreDataService: CoreDataService
 
     var viewContext: NSManagedObjectContext {
         container.viewContext
@@ -109,11 +109,50 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
         }
     }
 
+    func createFetchedResultsController<T>(
+        entityName: String,
+        predicate: NSPredicate,
+        sortDescriptors: [NSSortDescriptor],
+        fetchBatchSize: Int,
+        onMainContext: Bool
+    ) -> NSFetchedResultsController<T> {
+        let fetchRequest: NSFetchRequest<T> = NSFetchRequest(entityName: entityName)
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = sortDescriptors
+        fetchRequest.fetchBatchSize = fetchBatchSize
+        return NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: onMainContext ? mainContext : rootSavingContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+    }
+
     private func rethrowingRead<T>(block: (NSManagedObjectContext) throws -> T) rethrows -> T {
         let context = rootSavingContext
 
         return try context.performAndWait {
             try block(context)
         }
+    }
+
+    func createFetchedResultsController<T>(
+        entityName: String,
+        predicate: NSPredicate,
+        sortDescriptors: [NSSortDescriptor],
+        fetchBatchSize: Int,
+        sectionNameKeyPath: String?,
+        onMainContext: Bool
+    ) -> NSFetchedResultsController<T> {
+        let fetchRequest: NSFetchRequest<T> = NSFetchRequest(entityName: entityName)
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = sortDescriptors
+        fetchRequest.fetchBatchSize = fetchBatchSize
+        return NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: rootSavingContext,
+            sectionNameKeyPath: sectionNameKeyPath,
+            cacheName: nil
+        )
     }
 }

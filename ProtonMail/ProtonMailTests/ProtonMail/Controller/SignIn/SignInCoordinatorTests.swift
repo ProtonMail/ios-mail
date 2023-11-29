@@ -22,13 +22,13 @@
 import XCTest
 import PromiseKit
 
-import ProtonCore_DataModel
-import ProtonCore_Doh
-import ProtonCore_Login
-import ProtonCore_LoginUI
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreDoh
+import ProtonCoreLogin
+import ProtonCoreLoginUI
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreTestingToolkit
 
 @testable import ProtonMail
 

@@ -22,47 +22,28 @@
 
 import Foundation
 import PromiseKit
-import ProtonCore_Keymaker
-import ProtonCore_Services
+import ProtonCoreKeymaker
+import ProtonCoreServices
 
 protocol Service: AnyObject {}
 
 let sharedServices: ServiceFactory = {
     let helper = ServiceFactory()
-    let appCache = AppCacheService()
-    helper.add(AppCacheService.self, for: appCache)
-    appCache.restoreCacheWhenAppStart()
     if ProcessInfo.isRunningUnitTests {
         helper.add(CoreDataService.self, for: CoreDataService.shared)
         helper.add(LastUpdatedStore.self,
                    for: LastUpdatedStore(contextProvider: helper.get(by: CoreDataService.self)))
-        // swiftlint:disable:next force_try
-        try! CoreDataStore.shared.initialize()
     }
-    #if !APP_EXTENSION
-    // from old ServiceFactory.default
-    helper.add(AddressBookService.self, for: AddressBookService())
-    #endif
 
     return helper
 }()
 
 final class ServiceFactory {
-    static let `default`: ServiceFactory = sharedServices
-
     private var servicesDictionary: [String: Service] = [:]
 
     // TODO: init userCachesStatus here instead of a global variable.
     var userCachedStatus: UserCachedStatus {
         return get(by: UserCachedStatus.self)
-    }
-
-    var isEmpty: Bool {
-        servicesDictionary.isEmpty
-    }
-
-    var count: Int {
-        servicesDictionary.count
     }
 
     func add<T>(_ protocolType: T.Type, for instance: Service, with name: String? = nil) {
@@ -79,10 +60,6 @@ final class ServiceFactory {
             fatalError("firstly you have to add the service. Missing: \(name)")
         }
         return service
-    }
-
-    func removeAll() {
-        servicesDictionary.removeAll()
     }
 }
 

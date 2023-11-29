@@ -17,7 +17,7 @@
 
 import Foundation
 import struct UIKit.CGFloat
-import enum ProtonCore_Utilities.Either
+import enum ProtonCoreUtilities.Either
 
 struct SwitchToggleVMActionConfirmation {
     let title: String
@@ -46,8 +46,8 @@ protocol SwitchToggleVMOutput {
     var footerTopPadding: CGFloat { get }
 
     func cellData(for indexPath: IndexPath) -> (title: String, status: Bool)?
-    func sectionHeader(of section: Int) -> String?
-    func sectionFooter(of section: Int) -> Either<String, NSAttributedString>?
+    func sectionHeader() -> String?
+    func sectionFooter() -> Either<String, NSAttributedString>?
 }
 
 extension SwitchToggleVMProtocol {

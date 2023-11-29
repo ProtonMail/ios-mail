@@ -20,8 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
 
 func SrpAuth(_ hashVersion: Int, _ userName: String, _ password: String,
              _ salt: String, _ signedModulus: String, _ serverEphemeral: String) throws -> SrpAuth? {

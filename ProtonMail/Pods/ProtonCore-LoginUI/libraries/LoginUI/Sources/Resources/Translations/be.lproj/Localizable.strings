@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Прадвызначаная прыватнасць";
+
+"Proton address required" = "Патрабуецца адрас Proton";
+
+"Update required" = "Патрабуецца абнаўленне";
+
+"Please enter your Proton Account password." = "Увядзіце пароль уліковага запісу Proton.";
+
+"OK" = "Добра";
+
+"Help" = "Даведка";
+
+"Continue" = "Працягнуць";
+
+"Password" = "Пароль";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Серверы Proton зараз недаступны. Гэта можа здарыцца па прычыне няправільнай канфігурацыі сеткі. Таксама магчыма, што зараз яны не працуюць або былі заблакіраваны";
+
+"Search country" = "Пошук краіны";
+
+"Code sent to %@" = "Код адпраўлены на %@";
+
+"Request new code?" = "Запытаць новы код?";
+
+"Resend" = "Выслаць паўторна";
+
+"Get a replacement code sent to %@." = "Атрымаць код замены, які быў адпраўлены на %@.";
+
+"Request new code" = "Запытаць новы код";
+
+"Enter your Proton Account details." = "Увядзіце звесткі ўліковага запісу Proton.";
+
+"Email or username" = "Электронная пошта або імя карыстальніка";
+
+"Sign in" = "Увайсці";
+
+"Sign in with password" = "Увайсці з паролем";
+
+"Sign in with SSO" = "Увайсці з SSO";
+
+"Sign in to your organization" = "Увайсці ў сваю арганізацыю";
+
+"Create an account" = "Стварыць уліковы запіс";
+
+"How can we help?" = "Як мы можам дапамагчы?";
+
+"Forgot username" = "Забылі сваё імя карыстальніка";
+
+"Forgot password" = "Забылі пароль";
+
+"Other sign-in issues" = "Іншыя праблемы ўваходу";
+
+"Customer support" = "Падтрымка кліентаў";
+
+"Still need help? Contact us directly." = "Усё яшчэ неабходна дапамога? Вы можаце звязацца непасрэдна з намі.";
+
+"Please enter your Proton Account email or username." = "Увядзіце свой уліковы запіс Proton або імя карыстальніка.";
+
+"Complete Setup" = "Завяршыць наладжванне";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "У вашым уліковым запісе адсутнічаюць ключы. Вам неабходна ўвайсці ў сістэму праз браўзер для аўтаматычнага генерацыі ключоў. Пасля паспяховага ўваходу праз браўзер, вярніцеся ў праграму і выканайце ўваход.";
+
+"Account setup required" = "Патрабуецца наладка ўліковага запісу";
+
+"Incorrect mailbox password" = "Няправільны пароль паштовай скрыні";
+
+"Your session has expired. Please log in again." = "Ваш сеанс пратэрмінаваны. Увайдзіце яшчэ раз.";
+
+"Proton address required" = "Патрабуецца адрас Proton";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Вам неабходны адрас электроннай пошты Proton, каб выкарыстоўваць Proton Mail і Proton Calendar.\nУ вас застанецца магчымасць і далей выкарыстоўваць адрас электроннай пошты %@ для ўваходу і аднаўлення вашага ўліковага запісу.";
+
+"Username" = "Імя карыстальніка";
+
+"Please enter a username." = "Увядзіце імя карыстальніка.";
+
+"Unlock your mailbox" = "Разблакіруйце вашу паштовую скрыню";
+
+"Mailbox password" = "Пароль паштовай скрыні";
+
+"Unlock" = "Разблакіраваць";
+
+"Forgot password" = "Забылі пароль";
+
+"Two-factor authentication" = "Двухфактарная аўтэнтыфікацыя";
+
+"Authenticate" = "Аўтэнтыфікацыя";
+
+"Two-factor code" = "Двухфактарны код";
+
+"Recovery code" = "Код аднаўлення";
+
+"Use recovery code" = "Выкарыстоўваць код аднаўлення";
+
+"Use two-factor code" = "Выкарыстоўваць двухфактарны код";
+
+"Enter the 6-digit code." = "Увядзіце код з 6 лічбаў.";
+
+"Enter an 8-character recovery code." = "Увядзіце код аднаўлення з 8 сімвалаў.";
+
+"Learn more" = "Даведацца больш";
+
+"Change your password" = "Змяніць свой пароль";
+
+"Change password" = "Змяніць пароль";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Для выкарыстання праграмы Proton у якасці ўдзельніка арганізацыі, першапачаткова вам неабходна змяніць свой пароль, увайшоўшы ў Proton праз браўзер.";
+
+"Error occured" = "Адбылася памылка";
+
+"Create your Proton Account" = "Стварыць уліковы запіс Proton";
+
+"One account for all Proton services." = "Адзін уліковы запіс для ўсіх сэрвісаў Proton.";
+
+"Next" = "Далей";
+
+"Use your current email instead" = "Выкарыстоўваць бягучы адрас электроннай пошты";
+
+"Create a secure Proton Mail address instead" = "Стварыць бяспечны адрас электроннай пошты Proton";
+
+"Email" = "Электронная пошта";
+
+"Create your password" = "Стварыць пароль";
+
+"Password must contain at least 8 characters" = "Пароль павінен змяшчаць прынамсі 8 сімвалаў";
+
+"Repeat password" = "Паўтарыце пароль";
+
+"Domain" = "Дамен";
+
+"Set recovery method" = "Задаць метад аднаўлення";
+
+"Set recovery method (optional)" = "Задаць метад аднаўлення (неабавязкова)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Мы адправім вам інструкцыі для аднаўлення на гэты адрас электроннай пошты або на нумар тэлефона, калі вы не зможаце атрымаць доступ да свайго ўліковага запісу.";
+
+"Email" = "Электронная пошта";
+
+"Phone" = "Тэлефон";
+
+"Recovery email" = "Электронная пошта для аднаўлення доступу";
+
+"Recovery phone number" = "Нумар тэлефона для аднаўлення доступу";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Націскаючы кнопку \"Далей\", вы пагаджаецеся з Умовамі выкарыстання Proton";
+
+"Terms and Conditions" = "Умовы выкарыстання";
+
+"Skip" = "Прапусціць";
+
+"Skip recovery method?" = "Прапусціць метад аднаўлення?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Метад аднаўлення дапаможа атрымаць доступ да вашага ўліковага запісу ў выпадку, калі вы забудзеце пароль або заблакіруеце ўліковы запіс.";
+
+"Set recovery method" = "Задаць метад аднаўлення";
+
+"Your account is being created" = "Адбываецца стварэнне вашага ўліковага запісу";
+
+"This should take no more than a minute." = "Звычайна гэта патрабуе не больш за хвіліну.";
+
+"Creating your account" = "Стварэнне ўліковага запісу";
+
+"Generating your address" = "Стварэнне вашага адраса";
+
+"Securing your account" = "Абарона вашага ўліковага запісу";
+
+"Verifying your payment" = "Праверка вашага плацяжу";
+
+"Account verification" = "Праверка ўліковага запісу";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Для вашай бяспекі, нам неабходна пераканацца, што ўведзены адрас належыць менавіта вам. Мы адправілі праверачны код на %@. Увядзіце яго ніжэй:";
+
+"Verification code" = "Праверачны код";
+
+"Enter the 6-digit code." = "Увядзіце код з 6 лічбаў.";
+
+"Did not receive a code?" = "Не атрымалі код?";
+
+"Terms and Conditions" = "Умовы выкарыстання";
+
+"Invalid token request" = "Памылковы запыт токена";
+
+"Invalid token error" = "Памылка нядзеючага токена";
+
+"Create user failed" = "Збой стварэння карыстальніка";
+
+"Invalid hashed password" = "Памылковы хэшаваны пароль";
+
+"Password can not be empty.\nPlease try again." = "Пароль не можа быць пусты. \nПаспрабуйце яшчэ раз.";
+
+"Password must contain at least %@ characters." = "Пароль павінен змяшчаць прынамсі %@ сімвалаў.";
+
+"Passwords do not match.\nPlease try again." = "Паролі не супадаюць. \nПаспрабуйце яшчэ раз.";
+
+"Email address already used." = "Электронная пошта ўжо выкарыстоўваецца.";
+
+"Please ask your admin to configure your sub-user." = "Папрасіце свайго адміністратара сканфігураваць падкарыстальніка.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Ці хочаце вы атрымаць новы праверачны код або выкарыстоўваць альтэрнатыўны адрас электроннай пошты?";
+
+"Change email address" = "Змяніць адрас электроннай пошты";
+
+"Congratulations" = "Віншуем";
+
+"Your Proton Free account was successfully created." = "Ваш уліковы запіс Proton Free паспяхова створаны.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Ваш плацеж пацверджаны і ўліковы запіс %@ паспяхова створаны.";
+
+"Your Proton account was successfully created." = "Ваш уліковы запіс Proton паспяхова створаны.";
+
+"Enjoy the world of privacy." = "Атрымлівайце асалоду ад свету прыватнасці.";
+
+"Cancel" = "Скасаваць";
+
+"Sign in" = "Увайсці";
+
+"Troubleshoot" = "Выпраўленне непаладак";

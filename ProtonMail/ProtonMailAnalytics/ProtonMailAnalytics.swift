@@ -20,6 +20,7 @@ import Sentry
 
 public protocol ProtonMailAnalyticsProtocol: AnyObject {
     func setup(environment: String, debug: Bool)
+    func assignUser(userID: String?)
     func track(event: MailAnalyticsEvent, trace: String?)
     func track(error: MailAnalyticsErrorEvent, trace: String?, fingerprint: Bool)
 }
@@ -38,8 +39,18 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
             options.debug = debug
             options.environment = environment
             options.enableAutoPerformanceTracing = false
+            options.enableAppHangTracking = false
         }
         isEnabled = true
+    }
+
+    public func assignUser(userID: String?) {
+        if let userID {
+            let user = User(userId: userID)
+            SentrySDK.setUser(user)
+        } else {
+            SentrySDK.setUser(nil)
+        }
     }
 
     public func track(event: MailAnalyticsEvent, trace: String?) {
@@ -114,7 +125,7 @@ private extension MailAnalyticsEvent {
         let message: String
         switch self {
         case .userKickedOut:
-            message = "User kicked out"
+            message = "User unwanted log out"
         case .protonUnreachableBannerShown:
             message = "Proton unreachable banner shown"
         }
@@ -133,21 +144,12 @@ private extension MailAnalyticsEvent {
 
 public enum UserKickedOutReason {
     case apiAccessTokenInvalid
-    case afterLockScreen(description: String)
-    case noUsersFoundInUsersManager(action: String)
-    case unexpected(description: String)
 
     var description: String {
         let description: String
         switch self {
         case .apiAccessTokenInvalid:
             description = "user access token is not valid anymore"
-        case .afterLockScreen(let message):
-            description = "after lock screen (\(message))"
-        case .noUsersFoundInUsersManager(let action):
-            description = "no users found for action (\(action))"
-        case .unexpected(let message):
-            description = "unexpected (\(message))"
         }
         return description
     }
@@ -173,6 +175,9 @@ public enum MailAnalyticsErrorEvent: Error {
     case sendMessageInvalidSignature
 
     case conversationViewEndUpdatesCrash
+    case userObjectsJsonEncodingError(Error, String)
+    case userObjectsJsonDecodingError(Error, String)
+    case userObjectsCouldNotBeSavedError(Error, String)
 
     case assertionFailure(
         message: String,
@@ -202,6 +207,12 @@ public enum MailAnalyticsErrorEvent: Error {
             return "Conversation view endUpdates() crash"
         case let .assertionFailure(message, _, _, _):
             return "Asssertion failure: \(message)"
+        case .userObjectsJsonDecodingError(_, let type):
+            return "Error while decoding user object: \(type)"
+        case .userObjectsJsonEncodingError(_ , let type):
+            return "Error while encoding user object: \(type)"
+        case .userObjectsCouldNotBeSavedError(_, let type):
+            return "Error while saving user object: \(type)"
         }
     }
 
@@ -236,6 +247,21 @@ public enum MailAnalyticsErrorEvent: Error {
                 "File": file,
                 "Line": line,
                 "Message": message
+            ]
+        case let .userObjectsJsonDecodingError(error, type):
+            info = [
+                "Error": error,
+                "Type": type
+            ]
+        case let .userObjectsJsonEncodingError(error, type):
+            info = [
+                "Error": error,
+                "Type": type
+            ]
+        case let .userObjectsCouldNotBeSavedError(error, type):
+            info = [
+                "Error": error,
+                "Type": type
             ]
         }
         return info

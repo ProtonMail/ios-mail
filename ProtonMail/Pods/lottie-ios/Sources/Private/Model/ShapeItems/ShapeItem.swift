@@ -7,9 +7,32 @@
 
 import Foundation
 
-// MARK: - ShapeType + ClassFamily
+// MARK: - ShapeType
 
-/// Used for mapping a heterogeneous list to classes for parsing.
+enum ShapeType: String, Codable, Sendable {
+  case ellipse = "el"
+  case fill = "fl"
+  case gradientFill = "gf"
+  case group = "gr"
+  case gradientStroke = "gs"
+  case merge = "mm"
+  case rectangle = "rc"
+  case repeater = "rp"
+  case round = "rd"
+  case shape = "sh"
+  case star = "sr"
+  case stroke = "st"
+  case trim = "tm"
+  case transform = "tr"
+  case unknown
+
+  public init(from decoder: Decoder) throws {
+    self = try ShapeType(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
+  }
+}
+
+// MARK: ClassFamily
+
 extension ShapeType: ClassFamily {
 
   static var discriminator: Discriminator = .type
@@ -32,6 +55,8 @@ extension ShapeType: ClassFamily {
       return Rectangle.self
     case .repeater:
       return Repeater.self
+    case .round:
+      return RoundedCorners.self
     case .shape:
       return Shape.self
     case .star:
@@ -45,30 +70,6 @@ extension ShapeType: ClassFamily {
     default:
       return ShapeItem.self
     }
-  }
-}
-
-// MARK: - ShapeType
-
-enum ShapeType: String, Codable {
-  case ellipse = "el"
-  case fill = "fl"
-  case gradientFill = "gf"
-  case group = "gr"
-  case gradientStroke = "gs"
-  case merge = "mm"
-  case rectangle = "rc"
-  case repeater = "rp"
-  case round = "rd"
-  case shape = "sh"
-  case star = "sr"
-  case stroke = "st"
-  case trim = "tm"
-  case transform = "tr"
-  case unknown
-
-  public init(from decoder: Decoder) throws {
-    self = try ShapeType(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
   }
 }
 
@@ -143,6 +144,8 @@ extension Array where Element == ShapeItem {
         return try Rectangle(dictionary: dictionary)
       case .repeater:
         return try Repeater(dictionary: dictionary)
+      case .round:
+        return try RoundedCorners(dictionary: dictionary)
       case .shape:
         return try Shape(dictionary: dictionary)
       case .star:
@@ -161,3 +164,9 @@ extension Array where Element == ShapeItem {
     }
   }
 }
+
+// MARK: - ShapeItem + Sendable
+
+/// Since `ShapeItem` isn't `final`, we have to use `@unchecked Sendable` instead of `Sendable.`
+/// All `ShapeItem` subclasses are immutable `Sendable` values.
+extension ShapeItem: @unchecked Sendable { }

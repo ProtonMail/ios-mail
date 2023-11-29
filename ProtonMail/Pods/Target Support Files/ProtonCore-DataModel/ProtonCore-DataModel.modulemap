@@ -1,4 +1,4 @@
-framework module ProtonCore_DataModel {
+framework module ProtonCoreDataModel {
   umbrella header "ProtonCore-DataModel-umbrella.h"
 
   export *

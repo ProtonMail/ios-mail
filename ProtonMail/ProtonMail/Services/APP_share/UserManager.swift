@@ -22,15 +22,17 @@
 
 import Foundation
 import PromiseKit
-import ProtonCore_Authentication
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Networking
+import ProtonCoreAuthentication
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreFeatureSwitch
 #if !APP_EXTENSION
-import ProtonCore_Payments
+import ProtonCorePayments
 #endif
-import ProtonCore_Services
-import ProtonCore_Keymaker
+import ProtonCoreServices
+import ProtonCoreKeymaker
+import ProtonMailAnalytics
 
 /// TODO:: this is temp
 protocol UserDataSource: AnyObject {
@@ -66,18 +68,22 @@ class UserManager: Service, ObservableObject {
             labelService.cleanUp()
             contactService.cleanUp()
             contactGroupService.cleanUp()
-            lastUpdatedStore.cleanUp(userId: self.userID)
+            container.lastUpdatedStore.cleanUp(userId: userID)
             try incomingDefaultService.cleanUp()
             self.deactivatePayments()
             #if !APP_EXTENSION
-            self.payments.planService.currentSubscription = nil
+            switch self.payments.planService {
+            case .left(let servicePlanDataService):
+                servicePlanDataService.currentSubscription = nil
+            case .right:
+                break
+            }
             #endif
-                userCachedStatus.removeEncryptedMobileSignature(userID: self.userID.rawValue)
-                userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
-                userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userID.rawValue)
-                userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userID.rawValue)
-                self.authCredentialAccessQueue.async { [weak self] in
-                    self?.isLoggedOut = true
+                container.userCachedStatus.removeEncryptedMobileSignature(userID: self.userID.rawValue)
+                container.userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
+                container.userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userID.rawValue)
+                container.userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userID.rawValue)
+                self.authCredentialAccessQueue.async {
                     seal.fulfill_()
                 }
         }
@@ -103,7 +109,6 @@ class UserManager: Service, ObservableObject {
     }
     let authHelper: AuthHelper
     private(set) var authCredential: AuthCredential
-    private(set) var isLoggedOut = false
 
     var isUserSelectedUnreadFilterInInbox = false
 
@@ -182,10 +187,6 @@ class UserManager: Service, ObservableObject {
 
     private let appTelemetry: AppTelemetry
 
-    private var lastUpdatedStore: LastUpdatedStoreProtocol {
-        return sharedServices.get(by: LastUpdatedStore.self)
-    }
-
     var hasTelemetryEnabled: Bool {
         #if DEBUG
         if !ProcessInfo.isRunningUnitTests {
@@ -250,7 +251,7 @@ class UserManager: Service, ObservableObject {
 
     @MainActor
     func fetchUserInfo() async {
-        featureFlagsDownloadService.getFeatureFlags(completion: nil)
+        try? await featureFlagsDownloadService.getFeatureFlags()
         let tuple = await self.userService.fetchUserInfo(auth: self.authCredential)
         guard let info = tuple.0 else { return }
         self.userInfo = info
@@ -260,7 +261,7 @@ class UserManager: Service, ObservableObject {
         guard let firstUser = self.parentManager?.firstUser,
               firstUser.userID == self.userID else { return }
         self.activatePayments()
-        userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeRight, rightToLeft: info.swipeLeft)
+        container.userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeRight, rightToLeft: info.swipeLeft)
         // When app launch, the app will show a skeleton view
         // After getting setting data, show inbox
         NotificationCenter.default.post(name: .didFetchSettingsForPrimaryUser, object: nil)
@@ -269,12 +270,14 @@ class UserManager: Service, ObservableObject {
 
     func resignAsActiveUser() {
         deactivatePayments()
+        appTelemetry.assignUser(userID: nil)
     }
 
     func becomeActiveUser() {
         updateTelemetry()
         refreshFeatureFlags()
         activatePayments()
+        appTelemetry.assignUser(userID: userID)
     }
 
     private func updateTelemetry() {
@@ -287,9 +290,12 @@ class UserManager: Service, ObservableObject {
 
     func activatePayments() {
         #if !APP_EXTENSION
-        self.payments.storeKitManager.delegate = sharedServices.get(by: StoreKitManagerImpl.self)
+        self.payments.storeKitManager.delegate = container.storeKitManager
         self.payments.storeKitManager.subscribeToPaymentQueue()
-        self.payments.storeKitManager.updateAvailableProductsList { _ in }
+
+        if !FeatureFactory.shared.isEnabled(.dynamicPlans) {
+            self.payments.storeKitManager.updateAvailableProductsList { _ in }
+        }
         #endif
     }
 
@@ -435,16 +441,16 @@ extension UserManager {
 
     var defaultSignatureStatus: Bool {
         get {
-            if let status = userCachedStatus.getDefaultSignaureSwitchStatus(uid: userID.rawValue) {
+            if let status = container.userCachedStatus.getDefaultSignaureSwitchStatus(uid: userID.rawValue) {
                 return status
             } else {
                 let oldStatus = userService.defaultSignatureStauts
-                userCachedStatus.setDefaultSignatureSwitchStatus(uid: userID.rawValue, value: oldStatus)
+                container.userCachedStatus.setDefaultSignatureSwitchStatus(uid: userID.rawValue, value: oldStatus)
                 return oldStatus
             }
         }
         set {
-            userCachedStatus.setDefaultSignatureSwitchStatus(uid: userID.rawValue, value: newValue)
+            container.userCachedStatus.setDefaultSignatureSwitchStatus(uid: userID.rawValue, value: newValue)
         }
     }
 
@@ -452,18 +458,18 @@ extension UserManager {
         get {
             let role = userInfo.role
             if role > 0 {
-                if let status = userCachedStatus.getMobileSignatureSwitchStatus(by: userID.rawValue) {
+                if let status = container.userCachedStatus.getMobileSignatureSwitchStatus(by: userID.rawValue) {
                     return status
                 } else {
                     return false
                 }
             } else {
-                userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: true)
+                container.userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: true)
                 return true
             }
         }
         set {
-            userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: newValue)
+            container.userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: newValue)
         }
     }
 
@@ -516,19 +522,24 @@ extension UserManager: UserAddressUpdaterProtocol {
 
 extension UserManager: AuthHelperDelegate {
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
+        Breadcrumbs.shared.add(message: "UserManager.credentialsWereUpdated", to: .randomLogout)
         if authCredential.isForUnauthenticatedSession {
+            let credentialsForDifferentSessions = self.authCredential.sessionID != authCredential.sessionID
+            let data = "credentialsForDifferentSessions=\(credentialsForDifferentSessions) | receivedCredentialsSession = \(authCredential.sessionID.redacted)"
+            Breadcrumbs.shared.add(message: "ERROR: UserManager.credentialsWereUpdated for unauthenticated session: \(data)", to: .randomLogout)
+
             assertionFailure("This should never happen — the UserManager should always operate within the authenticated session. Please investigate!")
         }
         self.authCredential = authCredential
-        isLoggedOut = false
         self.save()
     }
 
     func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
+        Breadcrumbs.shared.add(message: "UserManager.sessionWasInvalidated session=\(sessionUID.redacted)", to: .randomLogout)
         if !isAuthenticatedSession {
+            Breadcrumbs.shared.add(message: "ERROR: UserManager.sessionWasInvalidated for unauthenticated session", to: .randomLogout)
             assertionFailure("This should never happen — the UserManager should always operate within the authenticated session. Please investigate!")
         }
-        isLoggedOut = true
         self.eventsService.stop()
         NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": sessionUID])
     }

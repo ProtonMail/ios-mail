@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 import struct UIKit.CGFloat
-import enum ProtonCore_Utilities.Either
+import enum ProtonCoreUtilities.Either
 
 extension PrivacySettingViewModel {
     enum SettingPrivacyItem: CustomStringConvertible, CaseIterable {
@@ -108,11 +108,11 @@ extension PrivacySettingViewModel: SwitchToggleVMOutput {
         return (item.description, status)
     }
 
-    func sectionHeader(of section: Int) -> String? {
+    func sectionHeader() -> String? {
         nil
     }
 
-    func sectionFooter(of section: Int) -> Either<String, NSAttributedString>? {
+    func sectionFooter() -> Either<String, NSAttributedString>? {
         nil
     }
 }

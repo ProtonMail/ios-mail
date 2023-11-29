@@ -16,14 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Networking
-import class ProtonCore_Services.APIErrorCode
+import ProtonCoreNetworking
+import class ProtonCoreServices.APIErrorCode
 
 struct TaskCompletionHelper {
-    enum Constant {
-        static let networkResponseErrorKey = "com.alamofire.serialization.response.error.response"
-    }
-
     private let internetConnectionStatusProvider: InternetConnectionStatusProviderProtocol
 
     init(
@@ -75,15 +71,9 @@ struct TaskCompletionHelper {
 
     func handleReachabilityChangedNotification(isTimeoutError: Bool, isInternetIssue: Bool) {
         // Show timeout error banner or not reachable banner in mailbox
+        guard isTimeoutError || isInternetIssue else { return }
         let reason: ConnectionFailedReason = isTimeoutError ? .timeout : .internetIssue
         NotificationCenter.default.post(Notification(name: .tempNetworkError, object: reason, userInfo: nil))
-    }
-
-    func parseStatusCodeIfErrorReceivedFromNetworkResponse(errorUserInfo: [String: Any]) -> Int? {
-        if let response = errorUserInfo[Constant.networkResponseErrorKey] as? HTTPURLResponse {
-            return response.statusCode
-        }
-        return nil
     }
 
     func handleResult(queueTask: QueueManager.Task,
@@ -100,19 +90,17 @@ struct TaskCompletionHelper {
         var statusCode = 200
         let errorCode = error.code
         var isInternetIssue = false
-        let errorUserInfo = error.userInfo
 
         // Check if error returns from the network response. Otherwise, check if it is internet issue
-        if let statusCodeFromResponse = parseStatusCodeIfErrorReceivedFromNetworkResponse(errorUserInfo: errorUserInfo) {
+        if let statusCodeFromResponse = error.httpCode {
             statusCode = statusCodeFromResponse
         } else {
             isInternetIssue = calculateIsInternetIssue(
                 error: error,
                 currentNetworkStatus: InternetConnectionStatusProvider.shared.status
             )
-
-            handleReachabilityChangedNotification(isTimeoutError: errorCode == NSURLErrorTimedOut,
-                                                  isInternetIssue: isInternetIssue)
+            let isTimeoutError = errorCode == NSURLErrorTimedOut
+            handleReachabilityChangedNotification(isTimeoutError: isTimeoutError, isInternetIssue: isInternetIssue)
         }
 
         calculateTaskResult(result: &taskResult,

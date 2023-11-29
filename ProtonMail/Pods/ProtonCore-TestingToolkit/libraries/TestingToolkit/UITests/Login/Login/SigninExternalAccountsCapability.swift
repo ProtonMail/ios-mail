@@ -19,10 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import Foundation
 import XCTest
 import fusion
-import ProtonCore_CoreTranslation
 
 public class SigninExternalAccountsCapability {
     public init() {}
@@ -59,3 +60,5 @@ public class SigninExternalAccountsCapability {
         return T()
     }
 }
+
+#endif

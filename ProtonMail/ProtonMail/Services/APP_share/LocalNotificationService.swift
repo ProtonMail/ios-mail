@@ -45,25 +45,25 @@ class LocalNotificationService: Service {
             ]
         }
 
-        func payload(with messageId: String) -> [AnyHashable: Any] {
+        func payload(with messageID: MessageID) -> [AnyHashable: Any] {
             var payload = payload()
-            payload["message_id"] = messageId
+            payload["message_id"] = messageID.rawValue
             return payload
         }
     }
 
     struct MessageSendingDetails {
-        var messageID: String
-        var error: String = LocalString._message_not_sent_message
-        var timeInterval: TimeInterval = 3 * 60
-        var subtitle: String
+        let messageID: MessageID
+        let error: String
+        let timeInterval: TimeInterval
+        let subtitle: String
 
-        init(messageID: String, subtitle: String = "") {
-            self.messageID = messageID
-            self.subtitle = subtitle
-        }
-
-        init(messageID: String, error: String, timeInterval: TimeInterval, subtitle: String) {
+        init(
+            messageID: MessageID,
+            error: String = LocalString._message_not_sent_message,
+            timeInterval: TimeInterval = 3 * 60,
+            subtitle: String = ""
+        ) {
             self.messageID = messageID
             self.error = error
             self.timeInterval = timeInterval
@@ -88,13 +88,13 @@ class LocalNotificationService: Service {
         content.userInfo = Categories.failedToSend.payload(with: details.messageID)
 
         let timeout = UNTimeIntervalNotificationTrigger(timeInterval: details.timeInterval, repeats: false)
-        let request = UNNotificationRequest(identifier: details.messageID, content: content, trigger: timeout)
+        let request = UNNotificationRequest(identifier: details.messageID.rawValue, content: content, trigger: timeout)
 
         notificationHandler.add(request, withCompletionHandler: nil)
     }
 
     func unscheduleMessageSendingFailedNotification(_ details: MessageSendingDetails) {
-        notificationHandler.removePendingNotificationRequests(withIdentifiers: [details.messageID])
+        notificationHandler.removePendingNotificationRequests(withIdentifiers: [details.messageID.rawValue])
     }
 
     func showSessionRevokeNotification(email: String) {

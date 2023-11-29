@@ -44,7 +44,7 @@ extension UIDevice: BiometricStatusProvider {
                 return .touchID
             case .faceID:
                 return .faceID
-            @unknown default:
+            default:
                 return .touchID // TODO: will iPhones have both TouchID and FaceID some day?
             }
         }

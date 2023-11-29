@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>%d email trackers blocked</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@trackers@</string>
+      <key>trackers</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d 개 이메일 트래커 차단됨</string>
+      </dict>
+    </dict>
+    <key>%d email trackers found</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@trackers@</string>
+      <key>trackers</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d 이메일 트래커 발견됨</string>
+      </dict>
+    </dict>
+    <key>Proton found %d trackers on this message.</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@trackers@</string>
+      <key>trackers</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>Proton이 이 메시지에서 %d 개 트래커를 발견 및 차단했습니다.</string>
+      </dict>
+    </dict>
+    <key>+%d others</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@OTHER@</string>
+      <key>OTHER</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>외 %d명</string>
+      </dict>
+    </dict>
+    <key>Updated %d min ago</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@MINUTE@</string>
+      <key>MINUTE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d 분 전에 업데이트 됨</string>
+      </dict>
+    </dict>
+    <key>%u message</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@message@</string>
+      <key>message</key>
+      <dict>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>other</key>
+        <string>%u 메시지</string>
+      </dict>
+    </dict>
+    <key>%u conversation</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@CONVERSATION@</string>
+      <key>CONVERSATION</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%u 대화</string>
+      </dict>
+    </dict>
+    <key>%d attempt remaining</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@ATTEMPT@</string>
+      <key>ATTEMPT</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d회 시도 남음</string>
+      </dict>
+    </dict>
+    <key>%d attempt remaining until secure data wipe!</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@ATTEMPT@</string>
+      <key>ATTEMPT</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>보안 데이터 삭제까지 남은 시도 %d회 남음!</string>
+      </dict>
+    </dict>
+    <key>%1$d message moved to %2$@</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@MSG@</string>
+      <key>MSG</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%1$d 메시지가 %2$@ 으로 이동되었습니다</string>
+      </dict>
+    </dict>
+    <key>%1$d conversation moved to %2$@</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@Conversation@</string>
+      <key>Conversation</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%1$d 대화가 %2$@으로 이동되었습니다</string>
+      </dict>
+    </dict>
+    <key>%d message labeled</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@Message@</string>
+      <key>Message</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d 메시지 라벨됨</string>
+      </dict>
+    </dict>
+    <key>%d conversation labeled</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@Conversation@</string>
+      <key>Conversation</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d 개 대화 라벨됨</string>
+      </dict>
+    </dict>
+    <key>Are you sure you want to permanently delete %d message?</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@message@</string>
+      <key>message</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d 개 메시지를 영구적으로 삭제하시겠습니까?</string>
+      </dict>
+    </dict>
+    <key>Are you sure you want to permanently delete %d conversation?</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@conversation@</string>
+      <key>conversation</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d 개 대화를 영구적으로 삭제하시겠습니까?</string>
+      </dict>
+    </dict>
+    <key>%d member</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@member@</string>
+      <key>member</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d 멤버</string>
+      </dict>
+    </dict>
+    <key>In %d minutes</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@minute@</string>
+      <key>minute</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d분 안에</string>
+      </dict>
+    </dict>
+    <key>These %d messages will move to Drafts and have their schedule removed.</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@alertMessage@</string>
+      <key>alertMessage</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>이 %d 개 메시지가 임시 보관함에 이동되며 해당 메시지 스케쥴이 삭제됩니다.</string>
+      </dict>
+    </dict>
+    <key>%d message moved to Drafts</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@alertMessage@</string>
+      <key>alertMessage</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d 메시지가 임시 보관함에 이동되었습니다</string>
+      </dict>
+    </dict>
+    <key>%d seconds</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@second@</string>
+      <key>second</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d초</string>
+      </dict>
+    </dict>
+    <key>%d Selected</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@selected@</string>
+      <key>selected</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d 선택됨</string>
+      </dict>
+    </dict>
+    <key>%d attachment</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@attachment@</string>
+      <key>attachment</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>첨부 파일 %d개</string>
+      </dict>
+    </dict>
+    <key>%d Minutes</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@minutes@</string>
+      <key>minutes</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d분</string>
+      </dict>
+    </dict>
+    <key>Are you sure you want to delete these %d messages permanently?</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@message@</string>
+      <key>message</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>이 %d개를 메시지를 영구적으로 삭제하시겠습니까?</string>
+      </dict>
+    </dict>
+  </dict>
+</plist>

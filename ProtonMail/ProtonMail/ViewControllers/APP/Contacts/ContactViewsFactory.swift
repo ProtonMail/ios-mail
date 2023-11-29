@@ -15,13 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Utilities
+import ProtonCoreUtilities
 
 final class ContactViewsFactory {
     typealias Dependencies = ContactEditViewController.Dependencies
-    & HasUserManager
-    & HasCoreDataContextProviderProtocol
     & ContactGroupDetailViewController.Dependencies
+    & HasInternetConnectionStatusProviderProtocol
+    & ContactGroupSelectEmailViewModelImpl.Dependencies
+    & ContactImportViewController.Dependencies
 
     private let dependencies: Dependencies
 
@@ -30,10 +31,7 @@ final class ContactViewsFactory {
     }
 
     func makeContactsView() -> ContactsViewController {
-        let contactsViewModel = ContactsViewModelImpl(
-            user: dependencies.user,
-            coreDataService: dependencies.contextProvider
-        )
+        let contactsViewModel = ContactsViewModel(dependencies: dependencies)
         return ContactsViewController(viewModel: contactsViewModel, dependencies: dependencies)
     }
 
@@ -117,14 +115,14 @@ final class ContactViewsFactory {
     ) -> ContactGroupSelectEmailViewController {
         let viewModel = ContactGroupSelectEmailViewModelImpl(
             selectedEmails: selectedEmails,
-            contactService: dependencies.user.contactService,
+            dependencies: dependencies,
             refreshHandler: refreshHandler
         )
         return ContactGroupSelectEmailViewController(viewModel: viewModel)
     }
 
     func makeGroupsView() -> ContactGroupsViewController {
-        let contactGroupViewModel = ContactGroupsViewModelImpl(user: dependencies.user)
+        let contactGroupViewModel = ContactGroupsViewModelImpl(dependencies: dependencies)
         return ContactGroupsViewController(viewModel: contactGroupViewModel, dependencies: dependencies)
     }
 
@@ -143,13 +141,14 @@ final class ContactViewsFactory {
     }
 
     func makeGroupDetailView(label: LabelEntity) -> ContactGroupDetailViewController {
-        let viewModel = ContactGroupDetailViewModel(user: dependencies.user,
-                                                    contactGroup: label,
-                                                    labelsDataService: dependencies.user.labelService)
+        let viewModel = ContactGroupDetailViewModel(
+            contactGroup: label,
+            dependencies: dependencies
+        )
         return ContactGroupDetailViewController(viewModel: viewModel, dependencies: dependencies)
     }
 
     func makeImportView() -> ContactImportViewController {
-        ContactImportViewController(user: dependencies.user)
+        ContactImportViewController(dependencies: dependencies)
     }
 }

@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Verzenden mislukt";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "E-mail kon niet worden verzonden. Bericht bewaard als concept.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Niets te zien hier";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "U moet minstens één ontvanger invoeren om het bericht te verzenden";
-
-/* Title */
-"Change sender address to…" = "Wijzig afzenderadres naar…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Upgrade naar een betaald abonnement om te kunnen verzenden vanaf uw adres %@";
@@ -618,7 +612,7 @@
 "Enter your PIN to unlock your inbox." = "Voer uw pincode in om uw inbox te ontgrendelen.";
 
 /* Error */
-"Incorrect PIN." = "Onjuiste PIN-code.";
+"Incorrect PIN." = "Onjuiste pincode.";
 
 /* Description */
 "Upload iOS contacts to Proton Mail?" = "Contactpersonen in iOS naar Proton Mail uploaden?";
@@ -627,7 +621,7 @@
 "Delete contact" = "Contactpersoon verwijderen";
 
 /* Description */
-"PIN code can't be empty." = "PIN-code mag niet leeg zijn.";
+"PIN code can't be empty." = "Pincode mag niet leeg zijn.";
 
 /* Error */
 "Unknown Error" = "Onbekende fout";
@@ -652,9 +646,6 @@
 
 /* Title */
 "Confirm new mailbox password" = "Bevestig nieuw mailboxwachtwoord";
-
-/* error when sending the message */
-"Unable to send the email" = "E-mail kon niet worden verzonden";
 
 /* Title */
 "Star/unstar" = "Ster/verwijder ster";
@@ -996,9 +987,6 @@
 "Cut" = "Knippen";
 
 /* Title */
-"Compose to" = "Opstellen aan";
-
-/* Title */
 "Add to contacts" = "Toevoegen aan contactpersonen";
 
 /* encryption lock description */
@@ -1155,10 +1143,10 @@
 "General settings" = "Algemene instellingen";
 
 /* security title in settings */
-"App PIN" = "App PIN-code";
+"App PIN" = "App pincode";
 
 /* security title in settings */
-"App PIN & Touch ID" = "App PIN-code en Touch ID";
+"App PIN & Touch ID" = "App pincode en Touch ID";
 
 /* security title in settings */
 "App PIN & Face ID" = "App PIN-code en Face ID";
@@ -1244,9 +1232,6 @@
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Bericht wordt verzonden…";
 
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Het bericht kon niet worden verzonden. Ten minste één e-mailadres/domein van de ontvanger bestaat niet of is slecht opgemaakt.";
-
 /* The unread title of unread action button in mailbox view */
 "unread" = "ongelezen";
 
@@ -1295,27 +1280,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Schakel deze functie in om e-mailadressen automatisch aan te vullen met behulp van contacten van al uw ingelogde accounts.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "PIN-code instellen";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Voer nieuwe PIN-code in";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Voer een PIN-code in met min. 4 tekens en max 21 tekens.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "PIN is te kort";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "PIN is te lang";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Herhaal PIN-code";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "De pincodes moeten overeen komen!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In het geval dat Proton-sites worden geblokkeerd, stelt deze instelling de app in staat om alternatieve netwerkroutering te proberen om Proton te bereiken, wat nuttig kan zijn voor het omzeilen van firewalls of netwerkproblemen. We raden aan deze instelling aan te houden voor een grotere betrouwbaarheid. %1$@";
 
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "Uit";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Wijzig PIN-code";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Opnieuw verifiëren";
@@ -1530,7 +1491,7 @@
 "Undo send" = "Verzenden ongedaan maken";
 
 /* The protection title of PIN code protection */
-"PIN code" = "PIN-code";
+"PIN code" = "Pincode";
 
 /* The protection title of Face ID protection */
 "Face ID" = "Face ID";
@@ -1822,7 +1783,7 @@
 "You can now choose and rearrange the actions in this bar" = "U kan nu acties kiezen en herschikken in deze balk";
 
 /* Button to block a sender */
-"Block sender" = "Blokkeer afzender";
+"Block messages from this sender" = "Blokkeer berichten van deze afzender";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blokkeer";
@@ -1991,6 +1952,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Beantwoord allen (laatste boodschap)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Nieuw bericht";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personaliseer";
 
@@ -2024,15 +1988,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Inschakelen";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Schakel automatisch verwijderen uit";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "E-mails die gepland staan om te worden verwijderen, blijven in de Prullenbak en Spam.";
-
-/* Button to disable auto delete */
-"Disable" = "Uitschakelen";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Upgrade om automatisch berichten te verwijderen die meer dan 30 dagen in de prullenbak of spam zitten.";
 
@@ -2063,6 +2018,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Aangepaste e-maildomeinen";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Afzender gewijzigd";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "De originele afzender van dit bericht is niet langer geldig. Uw bericht zal verstuurd worden vanaf uw standaardmailadres %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Weergavenaam";
 
@@ -2076,7 +2037,7 @@
 "Display name field cannot be empty" = "Weergavenaam veld kan niet leeg zijn";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "Naam van contact is te lang";
 
 /* The button text for add profile picture */
 "Add photo" = "Foto toevoegen";
@@ -2084,11 +2045,44 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Foto bewerken";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "Alles selecteren";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "PIN-code uitschakelen";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Pincode instellen";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Herhaal pincode";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Voer nieuwe pincode in";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Voer een pincode in met min. 4 tekens en max. 21 tekens.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN is te kort";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN is te lang";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "De pincodes moeten overeen komen!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Vul alstublieft uw oude PIN-code in ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Wijzig pincode";
+
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Afmelden van mailinglijst";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Afmelden?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Hierdoor meldt u zich af van de adressenlijst. De afzender wordt op de hoogte gebracht dat er geen e-mails meer naar dit adres mogen gestuurd worden.";

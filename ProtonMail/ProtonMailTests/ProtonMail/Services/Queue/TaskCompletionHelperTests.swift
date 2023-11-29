@@ -139,14 +139,6 @@ class TaskCompletionHelperTests: XCTestCase {
         waitForExpectations(timeout: 0.5, handler: nil)
     }
 
-    func testParseStatusCodeIfErrorReceivedFromNetworkResponse() {
-        let testResponse = HTTPURLResponse(statusCode: 400)
-        let testUserInfo = [TaskCompletionHelper.Constant.networkResponseErrorKey: testResponse]
-        XCTAssertEqual(sut.parseStatusCodeIfErrorReceivedFromNetworkResponse(errorUserInfo: testUserInfo), 400)
-
-        XCTAssertNil(sut.parseStatusCodeIfErrorReceivedFromNetworkResponse(errorUserInfo: [:]))
-    }
-
     func testCalculateTaskResult_withInternetIssue() {
         var taskResult = QueueManager.TaskResult()
         XCTAssertEqual(taskResult.action, .none)

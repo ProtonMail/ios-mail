@@ -54,6 +54,7 @@ struct MessageEntity: Equatable, Hashable {
     let size: Int
     let spamScore: SpamScore
 
+    @available(*, deprecated, message: "use `rawParsedHeaders` instead")
     let rawHeader: String?
     let rawParsedHeaders: String?
 
@@ -127,6 +128,8 @@ struct MessageEntity: Equatable, Hashable {
     let passwordHint: String
 
     let objectID: ObjectID
+
+    let attachmentsMetadata: [AttachmentsMetadata]
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(messageID)
@@ -204,6 +207,15 @@ extension MessageEntity {
         self.password = message.password
         self.passwordHint = message.passwordHint
         self.objectID = .init(rawValue: message.objectID)
+        let parsedAttachments: [AttachmentsMetadata]?
+        do {
+            parsedAttachments = try AttachmentsMetadata
+                .decodeListOfDictionaries(jsonString: message.attachmentsMetadata)
+        } catch {
+            parsedAttachments = nil
+            SystemLogger.log(error: error)
+        }
+        self.attachmentsMetadata = parsedAttachments ?? []
     }
 
     private static func parseUnsubscribeMethods(from jsonString: String?) -> UnsubscribeMethods? {

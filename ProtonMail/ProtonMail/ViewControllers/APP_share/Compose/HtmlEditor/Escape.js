@@ -6,8 +6,11 @@
  * - background:url&lpar;
  * - etc.
  */
-var CSS_URL = '((url|image-set)(\\(|&(#40|#x00028|lpar);))';
+var CSS_URL = '((url|image-set)(&(#40|#x00028|lpar);))';
 var REGEXP_URL_ATTR = new RegExp(CSS_URL, 'gi');
+var CSS_URL_PARENTHESIS = '((url)(\\(\'))';
+var REGEXP_URL_PARENTHESIS_ATTR = new RegExp(CSS_URL_PARENTHESIS, 'gi');
+
 var REGEXP_HEIGHT_PERCENTAGE = /((?:min-|max-|line-)?height)\s*:\s*([\d.,]+%)/gi;
 var REGEXP_POSITION_ABSOLUTE = /position\s*:\s*absolute/gi;
 
@@ -102,13 +105,14 @@ var escapeURLinStyle = function (style) {
     // handle the case where the value is html encoded, e.g.:
     // background:&#117;rl(&quot;https://i.imgur.com/WScAnHr.jpg&quot;)
     var unescapedEncoding = (0, recurringUnescapeCSSEncoding)(style);
-    var escapeFlag = unescapedEncoding !== style;
-    var escapedStyle = unescapedEncoding.replace(/\\r/g, 'r').replace(REGEXP_URL_ATTR, 'proton-$2(');
-    if (escapedStyle === unescapedEncoding) {
+    let escapeFlag = unescapedEncoding !== style;
+    let escapedStyle = unescapedEncoding.replace(/\\r/g, 'r').replace(REGEXP_URL_ATTR, 'proton-$2(');
+    let urlEscapedStyle = escapedStyle.replace(REGEXP_URL_PARENTHESIS_ATTR, '$2(\'proton-');
+    if (urlEscapedStyle === unescapedEncoding) {
         // nothing escaped: just return input
         return style;
     }
-    return escapeFlag ? (0, escape)(escapedStyle) : escapedStyle;
+    return escapeFlag ? (0, escape)(urlEscapedStyle) : urlEscapedStyle;
 };
 
 var escapeForbiddenStyle = function (style) {

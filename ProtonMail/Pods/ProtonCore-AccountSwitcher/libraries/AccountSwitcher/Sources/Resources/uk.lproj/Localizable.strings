@@ -1,0 +1,28 @@
+
+"switch to" = "перейти до";
+
+"Manage accounts" = "Керувати обліковими записами";
+
+"Signed in to Proton Mail" = "Виконано вхід у Proton Mail";
+
+"Signed out of Proton Mail" = "Виконано вихід з Proton Mail";
+
+"Sign out" = "Вийти";
+
+"Remove account from this device" = "Вилучити обліковий запис із цього пристрою";
+
+"Remove account" = "Вилучити обліковий запис";
+
+"You will be signed out and all the data associated with this account will be removed from this device." = "Ви вийдете з системи, а всі дані, пов'язані з цим обліковим записом будуть вилучені з цього пристрою.";
+
+"Remove" = "Вилучити";
+
+"Are you sure you want to sign out %@?" = "Ви дійсно хочете вийти з %@?";
+
+"Dismiss account switcher" = "Відхилити зміну облікового запису";
+
+"Sign in to another account" = "Увійти до іншого облікового запису";
+
+"Cancel" = "Скасувати";
+
+"Sign in" = "Увійти";

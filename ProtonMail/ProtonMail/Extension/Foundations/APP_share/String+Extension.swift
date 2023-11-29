@@ -148,6 +148,21 @@ extension String {
         return false
     }
 
+    func preg_match(
+        resultInGroup group: Int,
+        _ pattern: String,
+        options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
+    ) -> String? {
+        let range = NSRange(location: 0, length: (self as NSString).length)
+        guard
+            let regex = try? RegularExpressionCache.regex(for: pattern, options: options),
+            let match = regex.firstMatch(in: self, range: range),
+            group < match.numberOfRanges
+        else { return nil }
+        let result = self[match.range(at: group)]
+        return result
+    }
+
     func hasRemoteImage() -> Bool {
         let scheme = HTTPRequestSecureLoader.imageCacheScheme
         if self.preg_match("\\ssrc=[',\"](?!(cid:|data:image|\(scheme):))|xlink:href=|poster=|background=|url\\(|url&#40;|url&#x28;|url&lpar;") {

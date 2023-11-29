@@ -20,8 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 protocol ContactPickerDataSource: NSObjectProtocol {
@@ -150,7 +150,7 @@ class ContactPicker: UIView, AccessibleView {
     private func observePreferredContentSizeChanged() {
         NotificationCenter.default
             .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
+                         selector: #selector(preferredContentSizeChanged),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
     }
@@ -207,7 +207,7 @@ class ContactPicker: UIView, AccessibleView {
     }
 
     @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
+    private func preferredContentSizeChanged() {
         // The following elements can't reflect font size changed automatically
         // Reset font when event happened
         promptLabel.font = .preferredFont(forTextStyle: .subheadline)

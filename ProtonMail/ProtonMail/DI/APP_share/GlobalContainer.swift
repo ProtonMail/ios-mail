@@ -16,10 +16,16 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Factory
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 
-final class GlobalContainer: ManagedContainer {
+class GlobalContainer: ManagedContainer {
     let manager = ContainerManager()
+
+    var appAccessResolverFactory: Factory<AppAccessResolver> {
+        self {
+            AppAccessResolver(dependencies: self)
+        }
+    }
 
     var attachmentMetadataStripStatusProviderFactory: Factory<AttachmentMetadataStrippingProtocol> {
         self {
@@ -61,12 +67,12 @@ final class GlobalContainer: ManagedContainer {
         self {
             Keymaker(
                 autolocker: Autolocker(lockTimeProvider: self.userCachedStatus),
-                keychain: KeychainWrapper.keychain
+                keychain: self.keychain
             )
         }
     }
 
-    var lastUpdatedStoreFactory: Factory<LastUpdatedStore> {
+    var lastUpdatedStoreFactory: Factory<LastUpdatedStoreProtocol> {
         self {
             LastUpdatedStore(contextProvider: self.contextProvider)
         }
@@ -78,15 +84,39 @@ final class GlobalContainer: ManagedContainer {
         }
     }
 
+    var lockPreventorFactory: Factory<LockPreventor> {
+        self {
+            LockPreventor.shared
+        }
+    }
+
     var notificationCenterFactory: Factory<NotificationCenter> {
         self {
             .default
         }
     }
 
+    var pinCodeProtectionFactory: Factory<PinCodeProtection> {
+        self {
+            DefaultPinCodeProtection(dependencies: self)
+        }
+    }
+
+    var pinCodeVerifierFactory: Factory<PinCodeVerifier> {
+        self {
+            DefaultPinCodeVerifier(dependencies: self)
+        }
+    }
+
     var pinFailedCountCacheFactory: Factory<PinFailedCountCache> {
         self {
             self.userCachedStatus
+        }
+    }
+
+    var pushUpdaterFactory: Factory<PushUpdater> {
+        self {
+            PushUpdater(userStatus: self.userCachedStatus)
         }
     }
 
@@ -109,6 +139,12 @@ final class GlobalContainer: ManagedContainer {
         }
     }
 
+    var userDefaultsFactory: Factory<UserDefaults> {
+        self {
+            UserDefaults(suiteName: Constants.AppGroup)!
+        }
+    }
+
     var usersManagerFactory: Factory<UsersManager> {
         self {
             UsersManager(dependencies: self)
@@ -117,7 +153,7 @@ final class GlobalContainer: ManagedContainer {
 
     var userCachedStatusFactory: Factory<UserCachedStatus> {
         self {
-            UserCachedStatus()
+            UserCachedStatus(userDefaults: self.userDefaults)
         }
     }
 

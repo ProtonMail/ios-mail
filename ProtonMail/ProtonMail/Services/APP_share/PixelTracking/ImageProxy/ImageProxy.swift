@@ -15,16 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Services
+import ProtonCoreServices
 
 class ImageProxy {
     #if DEBUG
     // needed for tests to be deterministic
     var predefinedUUIDForURL: ((UnsafeRemoteURL) -> UUID)?
-    #endif
-
-    #if !APP_EXTENSION
-    private let imageCache = ImageProxyCache.shared
     #endif
 
     private let dependencies: Dependencies
@@ -110,17 +106,15 @@ class ImageProxy {
                 completion(.failure(ImageProxyError.selfReleased))
                 return
             }
-            #if !APP_EXTENSION
             do {
-                if let cachedRemoteImage = try strongSelf.imageCache.remoteImage(forURL: safeURL) {
+                if let cachedRemoteImage = try strongSelf.dependencies.imageCache?.remoteImage(forURL: safeURL) {
                     completion(.success(cachedRemoteImage))
                     return
                 }
             } catch {
-                strongSelf.imageCache.removeRemoteImage(forURL: safeURL)
+                strongSelf.dependencies.imageCache?.removeRemoteImage(forURL: safeURL)
                 assertionFailure("\(error)")
             }
-            #endif
             let destinationURL = strongSelf.temporaryLocalURL()
             strongSelf.dependencies.apiService.download(
                 byUrl: safeURL.value,
@@ -230,18 +224,17 @@ class ImageProxy {
     }
 
     private func cacheRemoteImage(_ remoteImage: RemoteImage, for safeURL: SafeRemoteURL) {
-        #if !APP_EXTENSION
         do {
-            try imageCache.setRemoteImage(remoteImage, forURL: safeURL)
+            try dependencies.imageCache?.setRemoteImage(remoteImage, forURL: safeURL)
         } catch {
             assertionFailure("\(error)")
         }
-        #endif
     }
 }
 
 extension ImageProxy {
     struct Dependencies {
         let apiService: APIService
+        let imageCache: ImageProxyCacheProtocol?
     }
 }

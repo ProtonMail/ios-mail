@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import XCTest
-import ProtonCore_Doh
-import ProtonCore_TestingToolkit
+import ProtonCoreDoh
+import ProtonCoreTestingToolkit
 
 @testable import ProtonMail
 
@@ -76,8 +76,8 @@ final class NetworkSettingViewModelTests: XCTestCase {
     }
 
     func testNetworkSettingsSection() throws {
-        let header = try XCTUnwrap(sut.output.sectionHeader(of: 0))
-        let footer = try XCTUnwrap(sut.output.sectionFooter(of: 0))
+        let header = try XCTUnwrap(sut.output.sectionHeader())
+        let footer = try XCTUnwrap(sut.output.sectionFooter())
         XCTAssertEqual(header, LocalString._settings_alternative_routing_title)
         switch footer {
         case .left(_):

@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import class ProtonCore_DataModel.Address
-import class ProtonCore_DataModel.Key
-import class ProtonCore_DataModel.UserInfo
-import ProtonCore_Crypto
+import class ProtonCoreDataModel.Address
+import class ProtonCoreDataModel.Key
+import class ProtonCoreDataModel.UserInfo
+import ProtonCoreCrypto
 import ProtonMailAnalytics
 
 typealias PrepareSendMetadataUseCase = UseCase<SendMessageMetadata, PrepareSendMetadata.Params>
@@ -31,7 +31,7 @@ final class PrepareSendMetadata: PrepareSendMetadataUseCase {
     }
 
     override func executionBlock(params: Params, callback: @escaping Callback) {
-        preparePreMetadataInfo(params.messageSendingData, params: params) { [unowned self] result in
+        preparePreMetadataInfo(params.messageSendingData) { [unowned self] result in
             switch result {
             case .failure(let error):
                 callback(.failure(error))
@@ -51,7 +51,6 @@ final class PrepareSendMetadata: PrepareSendMetadataUseCase {
     /// Returns all the necessary data needed to generate the `SendMessageMetadata` object.
     private func preparePreMetadataInfo(
         _ messageSendingData: MessageSendingData,
-        params: Params,
         completion: @escaping (Result<PreMetadataInfo, Error>) -> Void
     ) {
         guard !messageSendingData.message.messageID.rawValue.isEmpty else {
@@ -75,7 +74,7 @@ final class PrepareSendMetadata: PrepareSendMetadataUseCase {
             )
         }
 
-        recipientsSendPreferences(params: params, message: messageSendingData.message) { resultRecipients in
+        recipientsSendPreferences(message: messageSendingData.message) { resultRecipients in
             switch resultRecipients {
             case .failure(let error):
                 completion(.failure(error))
@@ -92,7 +91,6 @@ final class PrepareSendMetadata: PrepareSendMetadataUseCase {
     }
 
     private func recipientsSendPreferences(
-        params: Params,
         message: MessageEntity,
         completion: @escaping (Result<[RecipientSendPreferences], Error>) -> Void
     ) {

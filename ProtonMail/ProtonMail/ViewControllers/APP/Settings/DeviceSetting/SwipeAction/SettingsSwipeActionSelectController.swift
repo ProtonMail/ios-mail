@@ -64,6 +64,7 @@ final class SettingsSwipeActionSelectController: UITableViewController {
             cellToConfig.configure(icon: action.icon,
                                    title: action.description,
                                    isSelected: action == viewModel.currentAction())
+            cellToConfig.accessibilityIdentifier = "SelectableTableViewCell.\(action.description)"
         }
         return cell
     }

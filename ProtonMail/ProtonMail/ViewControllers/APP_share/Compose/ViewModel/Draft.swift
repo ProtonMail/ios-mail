@@ -51,7 +51,9 @@ final class Draft {
         self.recipientList = rawMessage.toList
         self.bccList = rawMessage.bccList
         self.ccList = rawMessage.ccList
-        if let addressID = rawMessage.addressID {
+        if let nextAddressID = rawMessage.nextAddressID, !nextAddressID.isEmpty {
+            self.sendAddressID = .init(nextAddressID)
+        } else if let addressID = rawMessage.addressID {
             self.sendAddressID = .init(addressID)
         } else {
             self.sendAddressID = .init(.empty)

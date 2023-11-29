@@ -18,7 +18,7 @@
 import protocol CoreData.NSFetchRequestResult
 import class CoreData.NSManagedObjectID
 import LifetimeTracker
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 final class PagesViewController<

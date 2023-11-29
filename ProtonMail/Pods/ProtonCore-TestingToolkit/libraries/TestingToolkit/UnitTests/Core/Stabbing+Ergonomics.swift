@@ -39,6 +39,8 @@ public protocol Stabbing {
 
 extension StubbedFunction: Stabbing {}
 extension ThrowingStubbedFunction: Stabbing {}
+extension AsyncStubbedFunction: Stabbing {}
+extension AsyncThrowingStubbedFunction: Stabbing {}
 
 extension Stabbing {
 

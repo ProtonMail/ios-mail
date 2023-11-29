@@ -169,7 +169,8 @@ typedef NS_OPTIONS(NSUInteger, SDWebImageOptions) {
     
     /**
      * By default, we will decode the image in the background during cache query and download from the network. This can help to improve performance because when rendering image on the screen, it need to be firstly decoded. But this happen on the main queue by Core Animation.
-     * However, this process may increase the memory usage as well. If you are experiencing a issue due to excessive memory consumption, This flag can prevent decode the image.
+     * However, this process may increase the memory usage as well. If you are experiencing an issue due to excessive memory consumption, This flag can prevent decode the image.
+     * @note 5.14.0 introduce `SDImageCoderDecodeUseLazyDecoding`, use that for better control from codec, instead of post-processing. Which acts the similar like this option but works for SDAnimatedImage as well (this one does not)
      */
     SDWebImageAvoidDecodeImage = 1 << 18,
     
@@ -207,7 +208,7 @@ typedef NS_OPTIONS(NSUInteger, SDWebImageOptions) {
 };
 
 
-#pragma mark - Context Options
+#pragma mark - Manager Context Options
 
 /**
  A String to be used as the operation key for view category to store the image load operation. This is used for view instance which supports different image loading process. If nil, will use the class name as operation key. (NSString *)
@@ -219,6 +220,15 @@ FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextSetIma
  @deprecated Deprecated in the future. This context options can be replaced by other context option control like `.imageCache`, `.imageLoader`, `.imageTransformer` (See below), which already matches all the properties in SDWebImageManager.
  */
 FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextCustomManager API_DEPRECATED("Use individual context option like .imageCache, .imageLoader and .imageTransformer instead", macos(10.10, API_TO_BE_DEPRECATED), ios(8.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), watchos(2.0, API_TO_BE_DEPRECATED));
+
+/**
+ A `SDCallbackQueue` instance which controls the `Cache`/`Manager`/`Loader`'s callback queue for their completionBlock.
+ This is useful for user who call these 3 components in non-main queue and want to avoid callback in main queue.
+ @note For UI callback (`sd_setImageWithURL`), we will still use main queue to dispatch, means if you specify a global queue, it will enqueue from the global queue to main queue.
+ @note This does not effect the components' working queue (for example, `Cache` still query disk on internal ioQueue, `Loader` still do network on URLSessionConfiguration.delegateQueue), change those config if you need.
+ Defaults to nil. Which means main queue.
+ */
+FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextCallbackQueue;
 
 /**
  A id<SDImageCache> instance which conforms to `SDImageCache` protocol. It's used to override the image manager's cache during the image loading pipeline.
@@ -241,8 +251,19 @@ FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextImageC
 
 /**
  A id<SDImageTransformer> instance which conforms `SDImageTransformer` protocol. It's used for image transform after the image load finished and store the transformed image to cache. If you provide one, it will ignore the `transformer` in manager and use provided one instead. If you pass NSNull, the transformer feature will be disabled. (id<SDImageTransformer>)
+ @note When this value is used, we will trigger image transform after downloaded, and the callback's data **will be nil** (because this time the data saved to disk does not match the image return to you. If you need full size data, query the cache with full size url key)
  */
 FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextImageTransformer;
+
+#pragma mark - Image Decoder Context Options
+
+/**
+ A Dictionary (SDImageCoderOptions) value, which pass the extra decoding options to the SDImageCoder. Introduced in SDWebImage 5.14.0
+ You can pass additional decoding related options to the decoder, extensible and control by you. And pay attention this dictionary may be retained by decoded image via `UIImage.sd_decodeOptions` 
+ This context option replace the deprecated `SDImageCoderWebImageContext`, which may cause retain cycle (cache -> image -> options -> context -> cache)
+ @note There are already individual options below like `.imageScaleFactor`, `.imagePreserveAspectRatio`, each of individual options will override the same filed for this dictionary.
+ */
+FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextImageDecodeOptions;
 
 /**
  A CGFloat raw value which specify the image scale factor. The number should be greater than or equal to 1.0. If not provide or the number is invalid, we will use the cache key to specify the scale factor. (NSNumber)
@@ -259,8 +280,27 @@ FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextImageP
  A CGSize raw value indicating whether or not to generate the thumbnail images (or bitmap images from vector format). When this value is provided, the decoder will generate a thumbnail image which pixel size is smaller than or equal to (depends the `.imagePreserveAspectRatio`) the value size.
  @note When you pass `.preserveAspectRatio == NO`, the thumbnail image is stretched to match each dimension. When `.preserveAspectRatio == YES`, the thumbnail image's width is limited to pixel size's width, the thumbnail image's height is limited to pixel size's height. For common cases, you can just pass a square size to limit both.
  Defaults to CGSizeZero, which means no thumbnail generation at all. (NSValue)
+ @note When this value is used, we will trigger thumbnail decoding for url, and the callback's data **will be nil** (because this time the data saved to disk does not match the image return to you. If you need full size data, query the cache with full size url key)
  */
 FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextImageThumbnailPixelSize;
+
+/**
+ A NSString value (UTI) indicating the source image's file extension. Example: "public.jpeg-2000", "com.nikon.raw-image", "public.tiff"
+ Some image file format share the same data structure but has different tag explanation, like TIFF and NEF/SRW, see https://en.wikipedia.org/wiki/TIFF
+ Changing the file extension cause the different image result. The coder (like ImageIO) may use file extension to choose the correct parser
+ @note If you don't provide this option, we will use the `URL.path` as file extension to calculate the UTI hint
+ @note If you really don't want any hint which effect the image result, pass `NSNull.null` instead
+ */
+FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextImageTypeIdentifierHint;
+
+#pragma mark - Cache Context Options
+
+/**
+ A Dictionary (SDImageCoderOptions) value, which pass the extra encode options to the SDImageCoder. Introduced in SDWebImage 5.15.0
+ You can pass encode options like `compressionQuality`, `maxFileSize`, `maxPixelSize` to control the encoding related thing, this is used inside `SDImageCache` during store logic.
+ @note For developer who use custom cache protocol (not SDImageCache instance), they need to upgrade and use these options for encoding.
+ */
+FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextImageEncodeOptions;
 
 /**
  A SDImageCacheType raw value which specify the source of cache to query. Specify `SDImageCacheTypeDisk` to query from disk cache only; `SDImageCacheTypeMemory` to query from memory only. And `SDImageCacheTypeAll` to query from both memory cache and disk cache. Specify `SDImageCacheTypeNone` is invalid and totally ignore the cache query.
@@ -299,6 +339,8 @@ FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextOrigin
  This can be used to improve animated images rendering performance (especially memory usage on big animated images) with `SDAnimatedImageView` (Class).
  */
 FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextAnimatedImageClass;
+
+#pragma mark - Download Context Options
 
 /**
  A id<SDWebImageDownloaderRequestModifier> instance to modify the image download request. It's used for downloader to modify the original request from URL and options. If you provide one, it will ignore the `requestModifier` in downloader and use provided one instead. (id<SDWebImageDownloaderRequestModifier>)

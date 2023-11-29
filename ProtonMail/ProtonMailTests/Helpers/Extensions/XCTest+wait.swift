@@ -24,6 +24,16 @@ extension XCTestCase {
         timeout: TimeInterval = 3
     )
     {
-        waitUntil(timeout: timeout, condition: condition())
+        XCTAssertTrue(
+            waitUntil(timeout: timeout, condition: condition())
+        )
+    }
+
+    func sleep(milliseconds: UInt) async {
+        do {
+            try await Task.sleep(for: .milliseconds(milliseconds), clock: .suspending)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 }

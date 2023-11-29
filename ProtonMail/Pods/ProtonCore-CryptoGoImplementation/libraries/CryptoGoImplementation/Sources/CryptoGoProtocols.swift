@@ -22,9 +22,9 @@
 
 import Foundation
 import GoLibs
-import ProtonCore_CryptoGoInterface
+import ProtonCoreCryptoGoInterface
 
-extension ProtonCore_CryptoGoInterface.CryptoReaderProtocol {
+extension ProtonCoreCryptoGoInterface.CryptoReaderProtocol {
     var toGoLibsType: GoLibs.CryptoReaderProtocol {
         if let goLibsReader = self as? GoLibs.CryptoReaderProtocol {
             return goLibsReader
@@ -38,7 +38,7 @@ final class AnyGoLibsCryptoReader: NSObject, GoLibs.CryptoReaderProtocol {
 
     let readClosure: (Data?, UnsafeMutablePointer<Int>?) throws -> Void
 
-    init<T>(cryptoReader: T) where T: ProtonCore_CryptoGoInterface.CryptoReaderProtocol {
+    init<T>(cryptoReader: T) where T: ProtonCoreCryptoGoInterface.CryptoReaderProtocol {
         self.readClosure = { b, n in try cryptoReader.read(b, n: n) }
     }
 
@@ -47,7 +47,7 @@ final class AnyGoLibsCryptoReader: NSObject, GoLibs.CryptoReaderProtocol {
     }
 }
 
-extension ProtonCore_CryptoGoInterface.CryptoMIMECallbacksProtocol {
+extension ProtonCoreCryptoGoInterface.CryptoMIMECallbacksProtocol {
     var toGoLibsType: GoLibs.CryptoMIMECallbacksProtocol {
         if let goLibsCallbacks = self as? GoLibs.CryptoMIMECallbacksProtocol {
             return goLibsCallbacks
@@ -65,7 +65,7 @@ final class AnyGoLibsCryptoMIMECallbacks: NSObject, GoLibs.CryptoMIMECallbacksPr
     private let onErrorClosure: (Error?) -> ()
     private let onVerifiedClosure: (Int) -> ()
 
-    init<T>(cryptoCallbacks: T) where T: ProtonCore_CryptoGoInterface.CryptoMIMECallbacksProtocol {
+    init<T>(cryptoCallbacks: T) where T: ProtonCoreCryptoGoInterface.CryptoMIMECallbacksProtocol {
         self.onAttachmentClosure = { headers, data in cryptoCallbacks.onAttachment(headers, data: data)
         }
         self.onBodyClosure = { body, mimetype in
@@ -103,7 +103,7 @@ final class AnyGoLibsCryptoMIMECallbacks: NSObject, GoLibs.CryptoMIMECallbacksPr
     }
 }
 
-extension ProtonCore_CryptoGoInterface.CryptoWriterProtocol {
+extension ProtonCoreCryptoGoInterface.CryptoWriterProtocol {
     var toGoLibsType: GoLibs.CryptoWriterProtocol {
         if let goLibsWriter = self as? GoLibs.CryptoWriterProtocol {
             return goLibsWriter
@@ -117,7 +117,7 @@ final class AnyGoLibsCryptoWriter: NSObject, GoLibs.CryptoWriterProtocol {
 
     private let writeClosure: (Data?, UnsafeMutablePointer<Int>?) throws -> Void
 
-    init<T>(cryptoWriter: T) where T: ProtonCore_CryptoGoInterface.CryptoWriterProtocol {
+    init<T>(cryptoWriter: T) where T: ProtonCoreCryptoGoInterface.CryptoWriterProtocol {
         self.writeClosure = { b, n in try cryptoWriter.write(b, n: n) }
     }
 
@@ -127,8 +127,8 @@ final class AnyGoLibsCryptoWriter: NSObject, GoLibs.CryptoWriterProtocol {
 }
 
 extension GoLibs.CryptoWriteCloserProtocol {
-    var toCryptoGoType: ProtonCore_CryptoGoInterface.CryptoWriteCloserProtocol {
-        if let goLibsWriter = self as? ProtonCore_CryptoGoInterface.CryptoWriteCloserProtocol {
+    var toCryptoGoType: ProtonCoreCryptoGoInterface.CryptoWriteCloserProtocol {
+        if let goLibsWriter = self as? ProtonCoreCryptoGoInterface.CryptoWriteCloserProtocol {
             return goLibsWriter
         } else {
             return AnyCryptoGoWriteCloser(cryptoWriteCloser: self)
@@ -136,7 +136,7 @@ extension GoLibs.CryptoWriteCloserProtocol {
     }
 }
 
-final class AnyCryptoGoWriteCloser: NSObject, ProtonCore_CryptoGoInterface.CryptoWriteCloserProtocol {
+final class AnyCryptoGoWriteCloser: NSObject, ProtonCoreCryptoGoInterface.CryptoWriteCloserProtocol {
     private let closeClosure: () throws -> ()
     private let writeClosure: (Data?, UnsafeMutablePointer<Int>?) throws -> ()
 
@@ -154,7 +154,7 @@ final class AnyCryptoGoWriteCloser: NSObject, ProtonCore_CryptoGoInterface.Crypt
     }
 }
 
-extension ProtonCore_CryptoGoInterface.CryptoWriteCloserProtocol {
+extension ProtonCoreCryptoGoInterface.CryptoWriteCloserProtocol {
     var toGoLibsType: GoLibs.CryptoWriteCloserProtocol {
         if let goLibsWriter = self as? GoLibs.CryptoWriteCloserProtocol {
             return goLibsWriter
@@ -168,7 +168,7 @@ final class AnyGoLibsWriteCloser: NSObject, GoLibs.CryptoWriteCloserProtocol {
     private let closeClosure: () throws -> ()
     private let writeClosure: (Data?, UnsafeMutablePointer<Int>?) throws -> ()
 
-    init<T>(cryptoWriteCloser: T) where T: ProtonCore_CryptoGoInterface.CryptoWriteCloserProtocol {
+    init<T>(cryptoWriteCloser: T) where T: ProtonCoreCryptoGoInterface.CryptoWriteCloserProtocol {
         self.closeClosure = { try cryptoWriteCloser.close() }
         self.writeClosure = { b, n in try cryptoWriteCloser.write(b, n: n) }
     }
@@ -182,7 +182,7 @@ final class AnyGoLibsWriteCloser: NSObject, GoLibs.CryptoWriteCloserProtocol {
     }
 }
 
-extension ProtonCore_CryptoGoInterface.HelperMobileReaderProtocol {
+extension ProtonCoreCryptoGoInterface.HelperMobileReaderProtocol {
     var toGoLibsType: GoLibs.HelperMobileReaderProtocol {
         if let goLibsHelperMobileReader = self as? GoLibs.HelperMobileReaderProtocol {
             return goLibsHelperMobileReader
@@ -195,7 +195,7 @@ extension ProtonCore_CryptoGoInterface.HelperMobileReaderProtocol {
 final class AnyGoLibsHelperMobileReader: NSObject, GoLibs.HelperMobileReaderProtocol {
     private let readClosure: (Int) throws -> GoLibs.HelperMobileReadResult
 
-    init<T>(helperMobileReader: T) where T: ProtonCore_CryptoGoInterface.HelperMobileReaderProtocol {
+    init<T>(helperMobileReader: T) where T: ProtonCoreCryptoGoInterface.HelperMobileReaderProtocol {
         self.readClosure = { max in try helperMobileReader.read(max).toGoLibsType }
     }
 

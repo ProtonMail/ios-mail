@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
-import ProtonCore_Foundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import SDWebImage
 
 final class InAppFeedbackActionSheetView: UIView, AccessibleView {
@@ -79,7 +79,7 @@ final class InAppFeedbackActionSheetView: UIView, AccessibleView {
 
         NotificationCenter.default
             .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
+                         selector: #selector(preferredContentSizeChanged),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
         generateAccessibilityIdentifiers()
@@ -140,7 +140,7 @@ final class InAppFeedbackActionSheetView: UIView, AccessibleView {
     }
 
     @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
+    private func preferredContentSizeChanged() {
         titleLabel.font = .adjustedFont(forTextStyle: .body, weight: .regular)
         promptLabel.font = .adjustedFont(forTextStyle: .body, weight: .regular)
         for view in ratingScaleView.arrangedSubviews {

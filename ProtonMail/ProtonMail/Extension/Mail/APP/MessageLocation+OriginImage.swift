@@ -21,8 +21,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_DataModel
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreUIFoundations
 import UIKit
 
 extension Message.Location {
@@ -38,7 +38,7 @@ extension Message.Location {
         case .spam:
             return IconProvider.fire
         case .trash:
-            if UserInfo.isAutoDeleteEnabled && isAutoDeletingMessage {
+            if isAutoDeletingMessage {
                 return IconProvider.trashClock
             } else {
                 return IconProvider.trash

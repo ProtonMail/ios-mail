@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Crypto
-import ProtonCore_Log
-import ProtonCore_Services
+import ProtonCoreCrypto
+import ProtonCoreLog
+import ProtonCoreServices
 
 struct CheckedSenderContact {
     let sender: Sender
@@ -46,7 +46,7 @@ final class MessageSenderPGPChecker {
     }
 
     func check(complete: @escaping Complete) {
-        guard message.isDetailDownloaded, let sender = try? message.parseSender() else {
+        guard let sender = try? message.parseSender() else {
             complete(nil)
             return
         }

@@ -96,18 +96,6 @@ class MailboxItemTests: XCTestCase {
         XCTAssertEqual(sut.itemID, conversationID.rawValue)
     }
 
-    func testObjectID_message() throws {
-        let entity = MessageEntity.make()
-        let sut = MailboxItem.message(entity)
-        XCTAssertEqual(sut.objectID, entity.objectID)
-    }
-
-    func testObjectID_conversation() throws {
-        let entity = ConversationEntity.make()
-        let sut = MailboxItem.conversation(entity)
-        XCTAssertEqual(sut.objectID, entity.objectID)
-    }
-
     func testIsUnread_message() throws {
         let unreadMessage = MessageEntity.make(unRead: true)
         let unreadSUT = MailboxItem.message(unreadMessage)
@@ -146,120 +134,76 @@ class MailboxItemTests: XCTestCase {
         XCTAssertEqual(sut.time(labelID: inboxLabel), date)
     }
 
-    func testToConversationShouldMatchConversation() {
-        let conversationEntity = ConversationEntity.make()
-
-        let sut = MailboxItem.conversation(conversationEntity)
-
-        XCTAssertEqual(sut.toConversation, conversationEntity)
+    func testInlineAttachmenstDontMakeEntityPreviewable() {
+        let attachmentMetadata = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                     name: String.randomString(Int.random(in: 0..<10)),
+                                                     size: Int.random(in: 0..<10),
+                                                     mimeType: String.randomString(Int.random(in: 0..<10)),
+                                                     disposition: .inline)
+        let entity = ConversationEntity.make(attachmentsMetadata: [attachmentMetadata])
+        let sut = MailboxItem.conversation(entity)
+        XCTAssertFalse(sut.isPreviewable)
     }
 
-    func testToConversationShouldNotMatchMessage() {
-        let messageEntity = MessageEntity.make()
-
-        let sut = MailboxItem.message(messageEntity)
-
-        XCTAssertNil(sut.toConversation)
+    func testNonInlineAttachmenstDoMakeEntityPreviewable() {
+        let attachmentMetadata = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                     name: String.randomString(Int.random(in: 0..<10)),
+                                                     size: Int.random(in: 0..<10),
+                                                     mimeType: String.randomString(Int.random(in: 0..<10)),
+                                                     disposition: .attachment)
+        let entity = ConversationEntity.make(attachmentsMetadata: [attachmentMetadata])
+        let sut = MailboxItem.conversation(entity)
+        XCTAssertTrue(sut.isPreviewable)
     }
 
-    func testToMessageShouldMatchMessage() {
-        let messageEntity = MessageEntity.make()
-
-        let sut = MailboxItem.message(messageEntity)
-
-        XCTAssertEqual(sut.toMessage, messageEntity)
+    func testPreviewableAttachmenstDoNotContainInlineAttachments() {
+        let attachmentMetadataInline = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                           name: String.randomString(Int.random(in: 0..<10)),
+                                                           size: Int.random(in: 0..<10),
+                                                           mimeType: String.randomString(Int.random(in: 0..<10)),
+                                                           disposition: .inline)
+        let attachmentMetadataAttachment = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                               name: String.randomString(Int.random(in: 0..<10)),
+                                                               size: Int.random(in: 0..<10),
+                                                               mimeType: String.randomString(Int.random(in: 0..<10)),
+                                                               disposition: .attachment)
+        let entity = ConversationEntity.make(attachmentsMetadata: [attachmentMetadataAttachment, attachmentMetadataInline])
+        let sut = MailboxItem.conversation(entity)
+        XCTAssertEqual(sut.previewableAttachments.count, 1)
+        XCTAssertEqual(sut.previewableAttachments[0], attachmentMetadataAttachment)
     }
 
-    func testToMessageShouldNotMatchConversation() {
-        let conversationEntity = ConversationEntity.make()
-
-        let sut = MailboxItem.conversation(conversationEntity)
-
-        XCTAssertNil(sut.toMessage)
+    func testPreviewableAttachmenstDoNotContainICSAttachments() {
+        let attachmentMetadataICS = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                               name: String.randomString(Int.random(in: 0..<10)),
+                                                               size: Int.random(in: 0..<10),
+                                                               mimeType: "text/calendar",
+                                                               disposition: .attachment)
+        let attachmentMetadataRandom = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                           name: String.randomString(Int.random(in: 0..<10)),
+                                                           size: Int.random(in: 0..<10),
+                                                           mimeType: String.randomString(Int.random(in: 0..<10)),
+                                                           disposition: .attachment)
+        let entity = ConversationEntity.make(attachmentsMetadata: [attachmentMetadataICS, attachmentMetadataRandom])
+        let sut = MailboxItem.conversation(entity)
+        XCTAssertEqual(sut.previewableAttachments.count, 1)
+        XCTAssertEqual(sut.previewableAttachments[0], attachmentMetadataRandom)
     }
 
-    func testIsConversationShouldMatchConversation() {
-        let conversationEntity = ConversationEntity.make()
-
-        let sut = MailboxItem.conversation(conversationEntity)
-
-        XCTAssertTrue(sut.isConversation)
+    func testPreviewableAttachmenstDoNotContainKeyAttachments() {
+        let attachmentMetadataKey = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                        name: String.randomString(Int.random(in: 0..<10)),
+                                                        size: Int.random(in: 0..<10),
+                                                        mimeType: "application/pgp-keys",
+                                                        disposition: .attachment)
+        let attachmentMetadataRandom = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                           name: String.randomString(Int.random(in: 0..<10)),
+                                                           size: Int.random(in: 0..<10),
+                                                           mimeType: String.randomString(Int.random(in: 0..<10)),
+                                                           disposition: .attachment)
+        let entity = ConversationEntity.make(attachmentsMetadata: [attachmentMetadataKey, attachmentMetadataRandom])
+        let sut = MailboxItem.conversation(entity)
+        XCTAssertEqual(sut.previewableAttachments.count, 1)
+        XCTAssertEqual(sut.previewableAttachments[0], attachmentMetadataRandom)
     }
-
-    func testIsConversationShouldNotMatchMessage() {
-        let messageEntity = MessageEntity.make()
-
-        let sut = MailboxItem.message(messageEntity)
-
-        XCTAssertFalse(sut.isConversation)
-    }
-
-    func testIsMessageShouldMatchMessage() {
-        let messageEntity = MessageEntity.make()
-
-        let sut = MailboxItem.message(messageEntity)
-
-        XCTAssertTrue(sut.isMessage)
-    }
-
-    func testIsMessageShouldNotMatchConversation() {
-        let conversationEntity = ConversationEntity.make()
-
-        let sut = MailboxItem.conversation(conversationEntity)
-
-        XCTAssertFalse(sut.isMessage)
-    }
-
-    func testAreAllConversationsShouldReturnTrueOnlyIfAllItemsAreConversations() {
-        let conversationEntity = ConversationEntity.make()
-
-        let sut = [MailboxItem.conversation(conversationEntity)]
-
-        XCTAssertTrue(sut.areAllConversations)
-    }
-
-    func testAreAllConversationsShouldReturnFalseIfOneElementIsMessage() {
-        let conversationEntity = ConversationEntity.make()
-        let messageEntity = MessageEntity.make()
-
-        let sut: [MailboxItem] = [.conversation(conversationEntity), .message(messageEntity)]
-
-        XCTAssertFalse(sut.areAllConversations)
-    }
-
-    func testAreAllMessagesShouldReturnTrueOnlyIfAllItemsAreMessages() {
-        let messageEntity = MessageEntity.make()
-
-        let sut = [MailboxItem.message(messageEntity)]
-
-        XCTAssertTrue(sut.areAllMessages)
-    }
-
-    func testAreAllMessagesShouldReturnFalseIfOneElementIsConversation() {
-        let conversationEntity = ConversationEntity.make()
-        let messageEntity = MessageEntity.make()
-
-        let sut: [MailboxItem] = [.conversation(conversationEntity), .message(messageEntity)]
-
-        XCTAssertFalse(sut.areAllMessages)
-    }
-
-    func testAllConversationsShouldFilterOutMessages() {
-        let conversationEntity = ConversationEntity.make()
-        let messageEntity = MessageEntity.make()
-
-        let sut: [MailboxItem] = [.conversation(conversationEntity), .message(messageEntity)]
-
-        XCTAssertEqual(sut.allConversations.count, 1)
-    }
-
-    func testAllMessagesShouldFilterOutConversations() {
-        let conversationEntity = ConversationEntity.make()
-        let messageEntity = MessageEntity.make()
-
-        let sut: [MailboxItem] = [.conversation(conversationEntity), .message(messageEntity)]
-
-        XCTAssertEqual(sut.allMessages.count, 1)
-    }
-    
 }

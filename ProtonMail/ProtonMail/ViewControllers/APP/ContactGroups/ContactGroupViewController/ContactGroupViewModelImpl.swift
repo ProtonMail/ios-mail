@@ -20,44 +20,51 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
 import CoreData
+import Foundation
 import PromiseKit
 
 class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
-    private var fetchedResultsController: NSFetchedResultsController<Label>?
+    typealias Dependencies = HasCoreDataContextProviderProtocol & HasUserManager
+    private let dependencies: Dependencies
+
+    private var contactGroupPublisher: LabelPublisher?
     private var isFetching: Bool = false
 
-    private(set) var user: UserManager
-    private let contactGroupService: ContactGroupsDataService
-    private let labelDataService: LabelsDataService
-    private let eventsService: EventsFetching
+    var user: UserManager {
+        dependencies.user
+    }
 
-    private var selectedGroupIDs: Set<String> = Set<String>()
-    
-    
+    private var contactGroupService: ContactGroupsDataService {
+        user.contactGroupService
+    }
+
+    private var eventsService: EventsFetching {
+        user.eventsService
+    }
+
+    private var selectedGroupIDs: Set<String> = .init()
+
     private(set) var isSearching: Bool = false
     private(set) var searchText: String?
     private var filtered: [LabelEntity] = []
     private weak var uiDelegate: ContactGroupsUIProtocol?
     private var labelEntities: [LabelEntity] = []
-    
+
     /**
      Init the view model with state
-     
+
      State "ContactGroupsView" is for showing all contact groups in the contact group tab
      State "ContactSelectGroups" is for showing all contact groups in the contact creation / editing page
      */
-    init(user: UserManager) {
-        self.user = user
-        self.contactGroupService = user.contactGroupService
-        self.labelDataService = user.labelService
-        self.eventsService = user.eventsService
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
     }
 
     func initEditing() -> Bool {
         return false
     }
+
     /**
      - Returns: if the give group is currently selected or not
      */
@@ -68,9 +75,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     /**
      Call this function when we are in "ContactSelectGroups" for returning the selected conatct groups
      */
-    func save() {
-
-    }
+    func save() {}
 
     /**
      Add the group ID to the selected group list
@@ -114,8 +119,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
                 self.isFetching = false
                 completion(result.error)
             })
-            self.user.contactService.fetchContacts { error in
-
+            self.user.contactService.fetchContacts { _ in
             }
         } else {
             completion(nil)
@@ -133,38 +137,34 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     private func fetchContacts() {
         if isFetching == false {
             isFetching = true
-            
+
             self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID, notificationMessageID: nil, completion: { _ in
                 self.isFetching = false
             })
         }
     }
 
-    override internal func fireFetch() {
+    override func fireFetch() {
         self.fetchContacts()
     }
 
     func set(uiDelegate: ContactGroupsUIProtocol) {
         self.uiDelegate = uiDelegate
     }
-    
-    func setFetchResultController() {
-        self.fetchedResultsController = self.labelDataService.fetchedResultsController(.contactGroup)
-        self.fetchedResultsController?.delegate = self
-        guard let fetchController = self.fetchedResultsController else { return }
-        do {
-            try fetchController.performFetch()
-            guard let results = fetchController.fetchedObjects else {
-                return
-            }
-            self.labelEntities = results.compactMap(LabelEntity.init)
-        } catch { }
+
+    func setupDataSource() {
+        contactGroupPublisher = .init(
+            parameters: .init(userID: user.userID),
+            dependencies: dependencies
+        )
+        contactGroupPublisher?.delegate = self
+        contactGroupPublisher?.fetchLabels(labelType: .contactGroup)
     }
 
     func search(text: String?, searchActive: Bool) {
         self.isSearching = searchActive
         self.searchText = text
-        
+
         guard self.isSearching else {
             self.filtered = []
             return
@@ -174,7 +174,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
             self.filtered = self.labelEntities
             return
         }
-        
+
         self.filtered = self.labelEntities.compactMap {
             let name = $0.name
             if name.range(of: query, options: [.caseInsensitive]) != nil {
@@ -223,14 +223,12 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
             let label = filtered[indexPath.row]
             return (label.labelID.rawValue, label.name, label.color, label.emailRelations.count, false, true)
         }
-        guard let object = fetchedResultsController?.object(at: indexPath) as? Label else {
+        guard let label = labelEntities[safe: indexPath.row] else {
             return ("", "", "", 0, false, false)
         }
-        let label = LabelEntity(label: object)
         return (label.labelID.rawValue, label.name, label.color, label.emailRelations.count, false, true)
-        
     }
-    
+
     func labelForRow(at indexPath: IndexPath) -> LabelEntity? {
         if self.isSearching {
             guard self.filtered.count > indexPath.row else {
@@ -239,18 +237,17 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
             let label = filtered[indexPath.row]
             return label
         }
-        guard let object = fetchedResultsController?.object(at: indexPath) as? Label else {
-            return nil
-        }
-        return LabelEntity(label: object)
+        return labelEntities[safe: indexPath.row]
     }
 }
 
-extension ContactGroupsViewModelImpl: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        let objects = self.fetchedResultsController?.fetchedObjects as? [Label] ?? []
-        self.labelEntities = objects.map(LabelEntity.init)
-        self.search(text: self.searchText, searchActive: self.isSearching)
-        self.uiDelegate?.reloadTable()
+extension ContactGroupsViewModelImpl: LabelListenerProtocol {
+    func receivedLabels(labels: [LabelEntity]) {
+        guard labelEntities != labels else {
+            return
+        }
+        self.labelEntities = labels
+        search(text: searchText, searchActive: isSearching)
+        uiDelegate?.reloadTable()
     }
 }

@@ -31,10 +31,12 @@ import Foundation
 import CommonCrypto
 
 public extension String {
+    @available(*, deprecated, message: "This function is cryptographically broken and should not be used in security contexts. Clients should migrate to SHA256 (or stronger).")
     var md5: String {
         return HMAC.hash(self, algo: HMACAlgo.md5)
     }
 
+    @available(*, deprecated, message: "This function is cryptographically broken and should not be used in security contexts. Clients should migrate to SHA256 (or stronger).")
     var md5_byte: Data? {
         return HMAC.hash(self, algo: HMACAlgo.md5)
     }
@@ -152,7 +154,13 @@ extension Data {
 }
 
 enum HMACAlgo {
-    case md5, sha1, sha224, sha256, sha384, sha512
+    @available(*, deprecated, message: "This function is cryptographically broken and should not be used in security contexts. Clients should migrate to SHA256 (or stronger).")
+    case md5
+    case sha1
+    case sha224
+    case sha256
+    case sha384
+    case sha512
 
     func digestLength() -> Int {
         var result: CInt = 0

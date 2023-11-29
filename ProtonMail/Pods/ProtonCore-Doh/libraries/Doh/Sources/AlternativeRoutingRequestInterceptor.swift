@@ -21,7 +21,7 @@
 
 import Foundation
 import WebKit
-import ProtonCore_Log
+import ProtonCoreLog
 
 public final class AlternativeRoutingRequestInterceptor: NSObject, WKURLSchemeHandler, URLSessionDelegate {
     
@@ -33,12 +33,12 @@ public final class AlternativeRoutingRequestInterceptor: NSObject, WKURLSchemeHa
     }
     
     private let headersGetter: () -> [String: String]
-    private let cookiesSynchronization: (URLResponse?, [String: String]) -> Void
+    private let cookiesSynchronization: (URLResponse?, [String: String], @escaping () -> Void) -> Void
     private let cookiesStorage: HTTPCookieStorage?
     private let onAuthenticationChallengeContinuation: (URLAuthenticationChallenge, @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void
     
     public init(headersGetter: @escaping () -> [String: String],
-                cookiesSynchronization: @escaping (URLResponse?, [String: String]) -> Void = { _, _ in },
+                cookiesSynchronization: @escaping (URLResponse?, [String: String], @escaping () -> Void) -> Void = { _, _, completion in completion() },
                 cookiesStorage: HTTPCookieStorage?,
                 onAuthenticationChallengeContinuation: @escaping (URLAuthenticationChallenge, @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void) {
         self.headersGetter = headersGetter
@@ -111,20 +111,30 @@ public final class AlternativeRoutingRequestInterceptor: NSObject, WKURLSchemeHa
         let headers = HTTPCookie.requestHeaderFields(with: cookies)
         PMLog.debug("[COOKIES][REQUEST][INTERCEPTOR] \(headers)")
         #endif
-        let task = session.dataTask(with: request) { [weak self] data, response, error in
-            if let response = response {
-                self?.transformAndProcessResponse(response, request.allHTTPHeaderFields, apiRange, urlSchemeTask)
-            }
-            if let data = data {
-                urlSchemeTask.didReceive(data)
-            }
-            if let error = error {
-                urlSchemeTask.didFailWithError(error)
-            } else {
-                urlSchemeTask.didFinish()
+        let task = session.dataTask(with: request) { data, response, error in
+            Task { [weak self, data, response, error] in
+                if let response = response {
+                    await self?.transformAndProcessResponse(response, request.allHTTPHeaderFields, apiRange, urlSchemeTask)
+                }
+                if let data = data {
+                    urlSchemeTask.didReceive(data)
+                }
+                if let error = error {
+                    urlSchemeTask.didFailWithError(error)
+                } else {
+                    urlSchemeTask.didFinish()
+                }
             }
         }
         task.resume()
+    }
+
+    private func cookiesSynchronization(_ response: URLResponse?, _ requestHeaders: [String: String]) async {
+        await withUnsafeContinuation { c in
+            cookiesSynchronization(response, requestHeaders) {
+                c.resume()
+            }
+        }
     }
     
     // Implements rewriting the response if alternative routing is on. Rewriting response means:
@@ -138,8 +148,8 @@ public final class AlternativeRoutingRequestInterceptor: NSObject, WKURLSchemeHa
     // 3. Adding back (if needed) the the "-api" suffix appended to the first part of url host by captcha JS code.
     //    NOTE: It's applicable only to human verification but it doesn't influence other usecases so we can leave single implemention.
     // 4. Changing the "http" scheme back to the custom one "coreios" in the response url
-    public func transformAndProcessResponse(_ response: URLResponse, _ requestHeaders: [String: String]?, _ apiRange: Range<String.Index>?, _ urlSchemeTask: WKURLSchemeTask) {
-        cookiesSynchronization(response, requestHeaders ?? [:])
+    public func transformAndProcessResponse(_ response: URLResponse, _ requestHeaders: [String: String]?, _ apiRange: Range<String.Index>?, _ urlSchemeTask: WKURLSchemeTask) async {
+        await cookiesSynchronization(response, requestHeaders ?? [:])
         guard let httpResponse = response as? HTTPURLResponse,
               var urlString = httpResponse.url?.absoluteString
         else {

@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Crypto
+import ProtonCoreCrypto
 
 class MessageDecrypter {
     typealias DecryptionOutput = (body: String, attachments: [MimeAttachment]?)
@@ -123,7 +123,7 @@ class MessageDecrypter {
                 )
             }
 
-            guard let filename = attachment.getFilename()?.clear else {
+            guard let filename = attachment.getFilename()?.cleaningFilename() else {
                 continue
             }
             let data = attachment.data

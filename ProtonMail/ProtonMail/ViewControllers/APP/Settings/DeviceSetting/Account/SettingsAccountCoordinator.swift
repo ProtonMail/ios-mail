@@ -20,10 +20,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_AccountDeletion
-import ProtonCore_Log
-import ProtonCore_Networking
-import ProtonCore_PaymentsUI
+import ProtonCoreAccountDeletion
+import ProtonCoreLog
+import ProtonCoreNetworking
+import ProtonCorePaymentsUI
 import UIKit
 
 // sourcery: mock

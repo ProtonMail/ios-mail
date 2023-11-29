@@ -19,28 +19,23 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-#if canImport(ProtonCore_Authentication)
-import ProtonCore_Authentication
+#if canImport(ProtonCoreAuthentication)
+import ProtonCoreAuthentication
 #else
 import PMAuthentication
 #endif
-#if canImport(ProtonCore_Networking)
-import ProtonCore_Networking
+#if canImport(ProtonCoreNetworking)
+import ProtonCoreNetworking
 #else
 import PMCommon
 #endif
-#if canImport(ProtonCore_Doh)
-import ProtonCore_Doh
+#if canImport(ProtonCoreDoh)
+import ProtonCoreDoh
 #endif
-#if canImport(ProtonCore_Services)
-import ProtonCore_Services
+#if canImport(ProtonCoreServices)
+import ProtonCoreServices
 #endif
-#if canImport(ProtonCore_CoreTranslation)
-import ProtonCore_CoreTranslation
-#else
-import PMCoreTranslation
-#endif
-import ProtonCore_Utilities
+import ProtonCoreUtilities
 import WebKit
 
 public enum NotificationType: String, Codable {
@@ -144,7 +139,7 @@ final class AccountDeletionViewModel: AccountDeletionViewModelInterface {
     func setup(webViewConfiguration: WKWebViewConfiguration) {
         let requestInterceptor = AlternativeRoutingRequestInterceptor(
             headersGetter: doh.getAccountHeaders,
-            cookiesSynchronization: doh.synchronizeCookies(with:requestHeaders:),
+            cookiesSynchronization: doh.synchronizeCookies(with:requestHeaders:completion:),
             cookiesStorage: doh.currentlyUsedCookiesStorage
         ) { challenge, completionHandler in
             handleAuthenticationChallenge(
@@ -193,7 +188,7 @@ final class AccountDeletionViewModel: AccountDeletionViewModelInterface {
             }
         case .error:
             state = .finishedWithoutDeletion
-            let errorMessage = message.payload?.message ?? CoreString._ad_delete_network_error
+            let errorMessage = message.payload?.message ?? ADTranslation.delete_network_error.l10n
             let completion = completion
             callCompletionBlockUsing.execute {
                 closeWebView {
@@ -236,7 +231,7 @@ final class AccountDeletionViewModel: AccountDeletionViewModelInterface {
                                                     callCompletionBlockUsing: callCompletionBlockUsing) { [weak self] shouldRetry in
             guard shouldRetry == false else { shouldReloadWebView(.retry); return }
             guard self?.doh.errorIndicatesDoHSolvableProblem(error: error) == true else { shouldReloadWebView(.dontRetry); return }
-            shouldReloadWebView(.apiMightBeBlocked(message: CoreString._net_api_might_be_blocked_message))
+            shouldReloadWebView(.apiMightBeBlocked(message: ADTranslation.api_might_be_blocked_message.l10n))
         }
     }
 }

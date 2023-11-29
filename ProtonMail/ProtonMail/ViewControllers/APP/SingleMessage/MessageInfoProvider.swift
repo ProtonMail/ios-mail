@@ -17,9 +17,9 @@
 
 import Foundation
 import PromiseKit
-import ProtonCore_DataModel
-import ProtonCore_Services
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreServices
+import ProtonCoreUIFoundations
 
 protocol MessageInfoProviderDelegate: AnyObject {
     func providerHasChanged()
@@ -644,11 +644,7 @@ extension MessageInfoProvider {
         if let inlines = inlineAttachments { return inlines }
         let result = attachments.filter { attachment in
             guard let contentID = attachment.getContentID() else { return false }
-            if body.contains(check: "src=\"\(contentID)\"") ||
-                body.contains(check: "src=\"cid:\(contentID)\"") ||
-                body.contains(check: "data-embedded-img=\"\(contentID)\"") ||
-                body.contains(check: "data-src=\"cid:\(contentID)\"") ||
-                body.contains(check: "proton-src=\"cid:\(contentID)\"") {
+            if body.preg_match("((src)|(data-embedded-img)|(data-src)|(proton-src))=['|\"](cid:)?\(contentID)['|\"]") {
                 return true
             }
             return false
@@ -687,7 +683,7 @@ extension MessageInfoProvider {
                     stringsQueue.sync {
                         let scheme = HTTPRequestSecureLoader.imageCacheScheme
                         let value = "src=\"\(scheme)://\(inline.id)\""
-                        self?.inlineContentIDMap["src=\"cid:\(contentID)\""] = value
+                        self?.inlineContentIDMap["\(contentID)"] = value
                     }
                 }
             }
@@ -712,7 +708,11 @@ extension MessageInfoProvider {
 
             var updatedBody = currentlyDisplayedBodyParts.originalBody
             for (cid, cidWithScheme) in self.inlineContentIDMap {
-                updatedBody = updatedBody.replacingOccurrences(of: cid, with: cidWithScheme)
+                // The symbol in the raw html could be `'` or `"`
+                // Needs to use correct one or the replacement will fail
+                guard let symbol = updatedBody.preg_match(resultInGroup: 1, "src=(['|\"])cid:\(cid)") else { continue }
+                updatedBody = updatedBody
+                    .replacingOccurrences(of: "src=\(symbol)cid:\(cid)\(symbol)", with: cidWithScheme)
             }
             self.updateBodyParts(with: updatedBody)
             self.updateWebContents()

@@ -24,19 +24,33 @@
 import LifetimeTracker
 #endif
 import PromiseKit
-import ProtonCore_Challenge
-import ProtonCore_DataModel
-import ProtonCore_Doh
-import ProtonCore_Keymaker
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreChallenge
+import ProtonCoreDataModel
+import ProtonCoreDoh
+import ProtonCoreKeymaker
+import ProtonCoreNetworking
+import ProtonCoreServices
 import ProtonMailAnalytics
 
 // sourcery: mock
 protocol UsersManagerProtocol: AnyObject {
-    var firstUser: UserManager? { get }
+    var users: [UserManager] { get }
 
     func hasUsers() -> Bool
+}
+
+extension UsersManagerProtocol {
+    var firstUser: UserManager? {
+        users.first
+    }
+
+    func getUser(by userID: UserID) -> UserManager? {
+        users.first { $0.userID == userID }
+    }
+
+    func getUser(by sessionID: String) -> UserManager? {
+        users.first { $0.isMatch(sessionID: sessionID) }
+    }
 }
 
 /// manager all the users and there services
@@ -81,23 +95,16 @@ class UsersManager: Service, UsersManagerProtocol {
         static let mailSettingsStore = "mailSettingsKeyProtectedWithMainKey"
     }
 
-    typealias Dependencies = AnyObject
-    & HasCachedUserDataProvider
-    & HasKeychain
-    & HasKeyMakerProtocol
-    & HasNotificationCenter
+    // UsersManager needs GlobalContainer to instantiate UserManagers
+    typealias Dependencies = GlobalContainer
 
     /// Server's config like url port path etc..
     private let doh = BackendConfiguration.shared.doh
 
     private(set) var users: [UserManager] = [] {
         didSet {
-            userCachedStatus.primaryUserSessionId = self.users.first?.authCredential.sessionID
+            dependencies.userCachedStatus.primaryUserSessionId = users.first?.authCredential.sessionID
         }
-    }
-
-    var firstUser: UserManager? {
-        return self.users.first
     }
 
     var count: Int {
@@ -106,17 +113,15 @@ class UsersManager: Service, UsersManagerProtocol {
 
     // Used to check if the account is already being deleted.
     private(set) var loggingOutUserIDs: Set<UserID> = Set()
-    private let userDefaultCache: SharedCacheBase
     private let keychain: Keychain
     private let coreKeyMaker: KeyMakerProtocol
     private unowned let dependencies: Dependencies
 
-    init(userDefaultCache: SharedCacheBase = .init(), dependencies: Dependencies) {
-        self.doh.status = userCachedStatus.isDohOn ? .on : .off
+    init(dependencies: Dependencies) {
+        self.doh.status = dependencies.userCachedStatus.isDohOn ? .on : .off
         /// for migrate
         self.latestVersion = Version.version
-        self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version)
-        self.userDefaultCache = userDefaultCache
+        self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version, store: dependencies.userDefaults)
         keychain = dependencies.keychain
         coreKeyMaker = dependencies.keyMaker
         self.dependencies = dependencies
@@ -163,21 +168,13 @@ class UsersManager: Service, UsersManagerProtocol {
         authCredential: AuthCredential,
         mailSettings: MailSettings?
     ) -> UserManager {
-        let globalContainer: GlobalContainer
-#if APP_EXTENSION
-        globalContainer = GlobalContainer.shared
-#else
-        // swiftlint:disable:next force_cast
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        globalContainer = appDelegate.dependencies
-#endif
         return UserManager(
             api: apiService,
             userInfo: userInfo,
             authCredential: authCredential,
             mailSettings: mailSettings,
             parent: self,
-            globalContainer: globalContainer
+            globalContainer: dependencies
         )
     }
 
@@ -220,33 +217,13 @@ class UsersManager: Service, UsersManagerProtocol {
         firstUser?.becomeActiveUser()
     }
 
-    func getUser(by sessionID: String) -> UserManager? {
-        let found = self.users.filter { user -> Bool in
-            user.isMatch(sessionID: sessionID)
-        }
-        guard let user = found.first else {
-            return nil
-        }
-        return user
-    }
-
-    func getUser(by userId: UserID) -> UserManager? {
-        let found = self.users.filter { user -> Bool in
-            user.userID == userId
-        }
-        guard let user = found.first else {
-            return nil
-        }
-        return user
-    }
-
     func isExist(userID: UserID) -> Bool {
         return getUser(by: userID) != nil
     }
 
     // tempery mirgration. will change this to version check
     func hasUserName() -> Bool {
-        return userDefaultCache.getShared().data(forKey: CoderKey.username) != nil
+        dependencies.userDefaults.data(forKey: CoderKey.username) != nil
     }
 
     func tryRestore() {
@@ -289,8 +266,12 @@ class UsersManager: Service, UsersManagerProtocol {
                 self.users.append(newUser)
             }
         }
+        Breadcrumbs.shared.add(message: "restored \(self.users.count) users", to: .randomLogout)
 
-        self.users.forEach { user in Task { await user.fetchUserInfo() } }
+        if !ProcessInfo.isRunningUnitTests {
+            users.forEach { user in Task { await user.fetchUserInfo() } }
+        }
+
         self.users.first?.cacheService.cleanSoftDeletedMessagesAndConversation()
         self.loggedIn()
     }
@@ -301,20 +282,19 @@ class UsersManager: Service, UsersManagerProtocol {
         }
 
         let authList = self.users.compactMap { $0.authCredential }
-        userCachedStatus.isForcedLogout = false
         guard let lockedAuth = try? Locked<[AuthCredential]>(clearValue: authList, with: mainKey)
         else {
             return
         }
-        userDefaultCache.getShared().setValue(lockedAuth.encryptedValue, forKey: CoderKey.authKeychainStore)
+        dependencies.userDefaults.setValue(lockedAuth.encryptedValue, forKey: CoderKey.authKeychainStore)
 
         let userList = self.users.compactMap { $0.userInfo }
         guard let lockedUsers = try? Locked<[UserInfo]>(clearValue: userList, with: mainKey) else {
             return
         }
         // Check MAILIOS-854, MAILIOS-1208
-        userDefaultCache.getShared().set(lockedUsers.encryptedValue, forKey: CoderKey.usersInfo)
-        userDefaultCache.getShared().synchronize()
+        dependencies.userDefaults.set(lockedUsers.encryptedValue, forKey: CoderKey.usersInfo)
+        dependencies.userDefaults.synchronize()
         keychain.remove(forKey: CoderKey.authKeychainStore)
 
         var mailSettingsList: [String: MailSettings] = [:]
@@ -323,10 +303,10 @@ class UsersManager: Service, UsersManagerProtocol {
         }
         if !mailSettingsList.isEmpty,
            let lockedMailSettings = try? Locked<[String: MailSettings]>(clearValue: mailSettingsList, with: mainKey) {
-            userDefaultCache.getShared().set(lockedMailSettings.encryptedValue,
-                                             forKey: CoderKey.mailSettingsStore)
+            dependencies.userDefaults.set(lockedMailSettings.encryptedValue,
+                                          forKey: CoderKey.mailSettingsStore)
         } else {
-            userDefaultCache.getShared().remove(forKey: CoderKey.mailSettingsStore)
+            dependencies.userDefaults.remove(forKey: CoderKey.mailSettingsStore)
         }
     }
 }
@@ -344,6 +324,7 @@ extension UsersManager {
     func logout(user: UserManager,
                 shouldShowAccountSwitchAlert: Bool = false,
                 completion: (() -> Void)?) {
+        SystemLogger.log(message: "logout user:\(user.userID.rawValue.redacted)")
         var isPrimaryAccountLogout = false
         loggingOutUserIDs.insert(user.userID)
         user.cleanUp().ensure {
@@ -364,9 +345,9 @@ extension UsersManager {
             }
 
 #if !APP_EXTENSION
-            userCachedStatus.markBlockedSendersAsFetched(false, userID: user.userID)
-            ImageProxyCache.shared.purge()
-            SenderImageCache.shared.purge()
+            self.dependencies.userCachedStatus.markBlockedSendersAsFetched(false, userID: user.userID)
+            self.dependencies.imageProxyCache.purge()
+            self.dependencies.senderImageCache.purge()
 #endif
 
             guard !self.users.isEmpty else {
@@ -430,6 +411,7 @@ extension UsersManager {
     func clean() -> Promise<Void> {
         Promise { seal in
             Task {
+                SystemLogger.log(message: "UsersManager clean")
                 await UserManager.cleanUpAll()
                 seal.fulfill_()
             }
@@ -439,8 +421,8 @@ extension UsersManager {
             self.users = []
             self.save()
 
-            self.userDefaultCache.getShared().remove(forKey: CoderKey.usersInfo)
-            self.userDefaultCache.getShared().remove(forKey: CoderKey.authKeychainStore)
+            self.dependencies.userDefaults.remove(forKey: CoderKey.usersInfo)
+            self.dependencies.userDefaults.remove(forKey: CoderKey.authKeychainStore)
             self.keychain.remove(forKey: CoderKey.keychainStore)
             self.keychain.remove(forKey: CoderKey.authKeychainStore)
             self.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
@@ -448,8 +430,7 @@ extension UsersManager {
 
             self.currentVersion = self.latestVersion
 
-            userCachedStatus.signOut()
-            userCachedStatus.cleanGlobal()
+            self.dependencies.userCachedStatus.cleanAllData()
 
             if !ProcessInfo.isRunningUnitTests {
                 self.coreKeyMaker.wipeMainKey()
@@ -473,7 +454,7 @@ extension UsersManager {
 
     func hasUsers() -> Bool {
         // Have this value after 1.12.0
-        let hasUsersInfo = userDefaultCache.getShared().value(forKey: CoderKey.usersInfo) != nil
+        let hasUsersInfo = dependencies.userDefaults.value(forKey: CoderKey.usersInfo) != nil
 
         // Workaround to fix MAILIOS-150
         // Method that checks signin or not before 1.11.17
@@ -481,7 +462,7 @@ extension UsersManager {
         let isSignIn = hasUserName() && isMailboxPasswordStored
 
         let authKeychainStore = keychain.data(forKey: CoderKey.authKeychainStore)
-        let authUserDefaultStore = userDefaultCache.getShared().data(forKey: CoderKey.authKeychainStore)
+        let authUserDefaultStore = dependencies.userDefaults.data(forKey: CoderKey.authKeychainStore)
 
         let hasUsers = (authKeychainStore != nil || authUserDefaultStore != nil) && (hasUsersInfo || isSignIn)
 
@@ -516,33 +497,45 @@ extension UsersManager {
 
     private func loadUserDataFromCache() -> [CachedUserData]? {
         guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
+            SystemLogger.log(message: "Can not found mainkey", category: .restoreUserData, isError: true)
             return nil
         }
-        let authDataInUserDefault = userDefaultCache.getShared().data(forKey: CoderKey.authKeychainStore)
+        let authDataInUserDefault = dependencies.userDefaults.data(forKey: CoderKey.authKeychainStore)
         let authDataInKeyChain = keychain.data(forKey: CoderKey.authKeychainStore)
         guard let encryptedAuthData = authDataInUserDefault ?? authDataInKeyChain else {
+            SystemLogger.log(message: "Can not found encryptedAuthData", category: .restoreUserData, isError: true)
             return nil
         }
         let lockedAuthData = Locked<[AuthCredential]>(encryptedValue: encryptedAuthData)
-        guard let authCredentials: [AuthCredential] = try? lockedAuthData.unlock(with: mainKey) else {
-            userDefaultCache.getShared().remove(forKey: CoderKey.authKeychainStore)
+
+        let authCredentialsFromNSCoding = try? lockedAuthData.unlock(with: mainKey)
+
+        guard let authCredentials: [AuthCredential] = authCredentialsFromNSCoding else {
+            dependencies.userDefaults.remove(forKey: CoderKey.authKeychainStore)
             keychain.remove(forKey: CoderKey.authKeychainStore)
+            SystemLogger.log(message: "Can not found authCredentials", category: .restoreUserData, isError: true)
             return nil
         }
 
-        guard let encryptedUserData = userDefaultCache.getShared().data(forKey: CoderKey.usersInfo) else {
+        guard let encryptedUserData = dependencies.userDefaults.data(forKey: CoderKey.usersInfo) else {
+            SystemLogger.log(message: "Can not found encryptedUserData", category: .restoreUserData, isError: true)
             return nil
         }
-        let lockedUserInfos = Locked<[UserInfo]>(encryptedValue: encryptedUserData)
-        guard let userInfos = try? lockedUserInfos.unlock(with: mainKey) else {
+        let userInfoFromNSCoding = try? Locked<[UserInfo]>(encryptedValue: encryptedUserData).unlock(with: mainKey)
+
+        guard let userInfos = userInfoFromNSCoding  else {
+            SystemLogger.log(message: "Can not found userInfos", category: .restoreUserData, isError: true)
             return nil
         }
         guard userInfos.count == authCredentials.count else {
+            SystemLogger.log(message: "Data count is not match between userInfos and authCredentials",
+                             category: .restoreUserData,
+                             isError: true)
             return nil
         }
 
         var mailSettings: [String: MailSettings] = [:]
-        if let encryptedMailSettings = userDefaultCache.getShared().data(forKey: CoderKey.mailSettingsStore) {
+        if let encryptedMailSettings = dependencies.userDefaults.data(forKey: CoderKey.mailSettingsStore) {
             let lockedMailSettings = Locked<[String: MailSettings]>(encryptedValue: encryptedMailSettings)
             mailSettings = (try? lockedMailSettings.unlock(with: mainKey)) ?? [:]
         }
@@ -554,6 +547,7 @@ extension UsersManager {
            existingUserIDs.count == userIDs.count,
            !existingUserIDs.map({ userIDs.contains($0) }).contains(false) {
                // restore is not needed.
+            SystemLogger.log(message: "Existing user contains restored userInfos.", category: .restoreUserData)
                return nil
            }
 
@@ -623,8 +617,8 @@ extension UsersManager {
         if let oldMailBoxPassword = oldMailboxPassword() {
             auth.update(password: oldMailBoxPassword)
         }
-        userInfo.twoFactor = userDefaultCache.getShared().integer(forKey: CoderKey.twoFAStatus)
-        userInfo.passwordMode = userDefaultCache.getShared().integer(forKey: CoderKey.userPasswordMode)
+        userInfo.twoFactor = dependencies.userDefaults.integer(forKey: CoderKey.twoFAStatus)
+        userInfo.passwordMode = dependencies.userDefaults.integer(forKey: CoderKey.userPasswordMode)
         let user = makeUser(
             api: apiService,
             userInfo: userInfo,
@@ -645,16 +639,16 @@ extension UsersManager {
     }
 
     func clearLegacyData() {
-        userDefaultCache.getShared().remove(forKey: CoderKey.twoFAStatus)
-        userDefaultCache.getShared().remove(forKey: CoderKey.userPasswordMode)
-        userDefaultCache.getShared().remove(forKey: CoderKey.username)
-        userDefaultCache.getShared().remove(forKey: CoderKey.userInfo)
+        dependencies.userDefaults.remove(forKey: CoderKey.twoFAStatus)
+        dependencies.userDefaults.remove(forKey: CoderKey.userPasswordMode)
+        dependencies.userDefaults.remove(forKey: CoderKey.username)
+        dependencies.userDefaults.remove(forKey: CoderKey.userInfo)
         keychain.remove(forKey: CoderKey.keychainStore)
     }
 
     private func oldUserInfo() -> UserInfo? {
         guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
-              let cypherData = userDefaultCache.getShared().data(forKey: CoderKey.userInfo)
+              let cypherData = dependencies.userDefaults.data(forKey: CoderKey.userInfo)
         else {
             return nil
         }
@@ -725,12 +719,12 @@ extension UsersManager {
             if let pwd = oldMailboxPassword() {
                 oldAuth.update(password: pwd)
             }
-            user.twoFactor = userDefaultCache.getShared().integer(forKey: CoderKey.twoFAStatus)
-            user.passwordMode = userDefaultCache.getShared().integer(forKey: CoderKey.userPasswordMode)
+            user.twoFactor = dependencies.userDefaults.integer(forKey: CoderKey.twoFAStatus)
+            user.passwordMode = dependencies.userDefaults.integer(forKey: CoderKey.userPasswordMode)
             self.users.append(newUser)
             self.save()
             // Then clear lagcy
-            userDefaultCache.getShared().remove(forKey: CoderKey.username)
+            dependencies.userDefaults.remove(forKey: CoderKey.username)
             keychain.remove(forKey: CoderKey.keychainStore)
             // save to newer version.
             return true
@@ -743,7 +737,7 @@ extension UsersManager {
                 return false
             }
 
-            guard let encryptedUsersData = userDefaultCache.getShared().data(forKey: CoderKey.usersInfo) else {
+            guard let encryptedUsersData = dependencies.userDefaults.data(forKey: CoderKey.usersInfo) else {
                 return false
             }
 
@@ -808,7 +802,7 @@ extension UsersManager {
 
     private func oldUserInfoLegacy() -> UserInfo? {
         guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
-              let cypherData = userDefaultCache.getShared().data(forKey: CoderKey.userInfo)
+              let cypherData = dependencies.userDefaults.data(forKey: CoderKey.userInfo)
         else {
             return nil
         }
@@ -828,7 +822,7 @@ extension UsersManager {
 
     private func oldUserNameLegacy() -> String? {
         guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
-              let cypherData = userDefaultCache.getShared().data(forKey: CoderKey.username)
+              let cypherData = dependencies.userDefaults.data(forKey: CoderKey.username)
         else {
             return nil
         }
@@ -855,7 +849,7 @@ extension UsersManager {
         // That means if the users delete the app
         // The key chain could keep the old data
         // If there is not user data, remove the random protection
-        let dataInUserDefault = userDefaultCache.getShared().data(forKey: CoderKey.authKeychainStore)
+        let dataInUserDefault = dependencies.userDefaults.data(forKey: CoderKey.authKeychainStore)
         let dataInKeyChain = keychain.data(forKey: CoderKey.authKeychainStore)
         guard dataInUserDefault != nil || dataInKeyChain != nil,
               !self.users.isEmpty
@@ -863,7 +857,7 @@ extension UsersManager {
             if let randomProtection = RandomPinProtection.randomPin {
                 coreKeyMaker.deactivate(randomProtection)
             }
-            userCachedStatus.keymakerRandomkey = nil
+            dependencies.userCachedStatus.keymakerRandomkey = nil
             RandomPinProtection.removeCyphertext(from: keychain)
             return
         }

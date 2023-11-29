@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 class NonExpandedHeaderView: HeaderView {
@@ -33,6 +33,7 @@ class NonExpandedHeaderView: HeaderView {
     let contentStackView = UIStackView.stackView(axis: .vertical, spacing: 8)
     let recipientTitle = SubviewsFactory.recipientTitle
     let recipientLabel = SubviewsFactory.recipientLabel
+    let recipientChevron = SubviewsFactory.recipientChevron
     let tagsView = SingleRowTagsView()
     let trackerProtectionImageView = SubviewsFactory.trackerProtectionImageView
 
@@ -41,8 +42,8 @@ class NonExpandedHeaderView: HeaderView {
     private let senderAddressStack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
     private let recipientStack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
 
-    init() {
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         backgroundColor = ColorProvider.BackgroundNorm
         translatesAutoresizingMaskIntoConstraints = false
         addSubviews()
@@ -103,7 +104,8 @@ class NonExpandedHeaderView: HeaderView {
 
         recipientStack.addArrangedSubview(recipientTitle)
         recipientStack.addArrangedSubview(recipientLabel)
-        recipientStack.setCustomSpacing(80, after: recipientLabel)
+        recipientStack.addArrangedSubview(recipientChevron)
+        recipientStack.setCustomSpacing(80, after: recipientChevron)
         recipientStack.addArrangedSubview(UIView())
         contentStackView.addArrangedSubview(recipientStack)
         contentStackView.setCustomSpacing(4, after: recipientStack)
@@ -166,7 +168,7 @@ class NonExpandedHeaderView: HeaderView {
             senderLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
         ].activate()
 
-        timeLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        timeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         timeLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
     }
 
@@ -221,6 +223,13 @@ extension NonExpandedHeaderView {
             let label = UILabel(frame: .zero)
             label.set(text: nil, preferredFont: .footnote, textColor: ColorProvider.TextWeak)
             return label
+        }
+
+        static var recipientChevron: UIImageView {
+            let imageView = UIImageView(image: IconProvider.chevronDownFilled)
+            imageView.tintColor = ColorProvider.IconWeak
+            imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+            return imageView
         }
 
         static var trackerProtectionImageView: UIImageView {

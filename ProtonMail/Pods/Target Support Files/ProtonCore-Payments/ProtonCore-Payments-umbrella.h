@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ProtonCore_PaymentsVersionNumber;
-FOUNDATION_EXPORT const unsigned char ProtonCore_PaymentsVersionString[];
+FOUNDATION_EXPORT double ProtonCorePaymentsVersionNumber;
+FOUNDATION_EXPORT const unsigned char ProtonCorePaymentsVersionString[];
 

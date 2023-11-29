@@ -129,6 +129,7 @@ final class Message: NSManagedObject {
 
     @NSManaged var order: NSNumber
 
+    @NSManaged var attachmentsMetadata: String
     /// ***Those values api returns them but client skip it
     /// "Order": 367
     /// ConversationID = "wgPpo3deVBrGwP3X8qZ-KSb0TtQ7_qy8TcISzCt2UQ==";

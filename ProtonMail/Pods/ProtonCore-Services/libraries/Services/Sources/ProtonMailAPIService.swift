@@ -20,12 +20,12 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Doh
-import ProtonCore_Log
-import ProtonCore_Foundations
-import ProtonCore_Networking
-import ProtonCore_Utilities
-import ProtonCore_Environment
+import ProtonCoreDoh
+import ProtonCoreLog
+import ProtonCoreFoundations
+import ProtonCoreNetworking
+import ProtonCoreUtilities
+import ProtonCoreEnvironment
 
 #if canImport(TrustKit)
 import TrustKit
@@ -251,7 +251,7 @@ public class PMAPIService: APIService {
      - Parameter trustKitProvider: trustKitProvider parameter conforming to the `TrustKitProvider`. Default parameter creates `PMAPIServiceTrustKitProviderWrapper` instance which allows or not to use the TrustKit
      - Returns:`PMAPIService` instance
      */
-    public static func createAPIService(environment: ProtonCore_Environment.Environment,
+    public static func createAPIService(environment: ProtonCoreEnvironment.Environment,
                                         sessionUID: String,
                                         sessionFactory: SessionFactoryInterface = SessionFactory.instance,
                                         cacheToClear: URLCacheInterface = URLCache.shared,
@@ -275,7 +275,7 @@ public class PMAPIService: APIService {
      - Parameter trustKitProvider: trustKitProvider parameter conforming to the `TrustKitProvider`. Default parameter creates `PMAPIServiceTrustKitProviderWrapper` instance which allows or not to use the TrustKit
      - Returns:`PMAPIService` instance
      */
-    public static func createAPIServiceWithoutSession(environment: ProtonCore_Environment.Environment,
+    public static func createAPIServiceWithoutSession(environment: ProtonCoreEnvironment.Environment,
                                                       sessionFactory: SessionFactoryInterface = SessionFactory.instance,
                                                       cacheToClear: URLCacheInterface = URLCache.shared,
                                                       trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance,
@@ -353,12 +353,14 @@ public class PMAPIService: APIService {
                         error = NSError(
                             domain: ResponseErrorDomains.withResponseCode.rawValue,
                             code: responseCode,
+                            responseDictionary: dict,
                             localizedDescription: dict["Error"] as? String ?? ""
                         )
                     } else {
                         error = NSError(
                             domain: ResponseErrorDomains.withStatusCode.rawValue,
                             code: httpResponse.statusCode,
+                            responseDictionary: dict,
                             localizedDescription: dict["Error"] as? String ?? ""
                         )
                     }
@@ -403,7 +405,7 @@ extension PMAPIService {
     }
 
     @available(*, deprecated, message: "This will be removed, use createAPIService, or createAPIServiceWithoutSession methods instead.")
-    public convenience init(environment: ProtonCore_Environment.Environment,
+    public convenience init(environment: ProtonCoreEnvironment.Environment,
                             sessionUID: String = "",
                             sessionFactory: SessionFactoryInterface = SessionFactory.instance,
                             cacheToClear: URLCacheInterface = URLCache.shared,

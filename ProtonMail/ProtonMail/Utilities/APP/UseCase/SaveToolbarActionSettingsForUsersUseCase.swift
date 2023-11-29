@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 /// This use case updates the toolbar action inside the userInfo of the user passed in.
 /// It sends a request to update the mailSettings of the user. Then, update the

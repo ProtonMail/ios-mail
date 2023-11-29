@@ -19,10 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import func AVFoundation.AVMakeRect
 
 public struct WelcomeScreenTexts {
@@ -264,9 +265,9 @@ final class WelcomeView: UIView {
 
     private func setUpButtons() {
         loginButton.setMode(mode: signupAvailable ? .text : .solid)
-        loginButton.setTitle(CoreString._ls_sign_in_button, for: .normal)
+        loginButton.setTitle(LUITranslation.sign_in_button.l10n, for: .normal)
         signupButton.setMode(mode: .solid)
-        signupButton.setTitle(CoreString._ls_create_account_button, for: .normal)
+        signupButton.setTitle(LUITranslation.create_account_button.l10n, for: .normal)
         
         guard signupAvailable else {
             signupButton.isHidden = true
@@ -286,3 +287,5 @@ extension NSLayoutConstraint {
         return self
     }
 }
+
+#endif

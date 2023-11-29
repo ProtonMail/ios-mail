@@ -91,8 +91,8 @@ class DarkModeSettingViewModelTests: XCTestCase {
     }
 
     func testHeaderFooter() {
-        let header = sut.sectionHeader(of: 0)
+        let header = sut.sectionHeader()
         XCTAssertEqual(header?.string, LocalString._settings_dark_mode_section_title)
-        XCTAssertNil(sut.sectionFooter(of: 0))
+        XCTAssertNil(sut.sectionFooter())
     }
 }

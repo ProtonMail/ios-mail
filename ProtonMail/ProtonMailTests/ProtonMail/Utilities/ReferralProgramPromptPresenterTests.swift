@@ -17,7 +17,7 @@
 
 import XCTest
 @testable import ProtonMail
-@testable import ProtonCore_DataModel
+@testable import ProtonCoreDataModel
 
 class ReferralProgramPromptPresenterTests: XCTestCase {
     private var mockFeatureFlagCache: MockFeatureFlagCache!

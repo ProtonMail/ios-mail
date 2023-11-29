@@ -1,7 +1,7 @@
 import Foundation
 import Network
-import ProtonCore_Doh
-import ProtonCore_Services
+import ProtonCoreDoh
+import ProtonCoreServices
 
 // sourcery: mock
 protocol ConnectionStatusReceiver: AnyObject {
@@ -191,6 +191,7 @@ extension InternetConnectionStatusProvider {
 
     private func invalidateTimer() {
         DispatchQueue.main.async {
+            guard self.doubleCheckTimer != nil else { return }
             self.log(message: "Invalid double check timer")
             self.doubleCheckTimer?.invalidate()
             self.doubleCheckTimer = nil

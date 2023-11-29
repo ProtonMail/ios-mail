@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
 
 // swiftlint:disable:next type_body_length
 enum EncryptionPreferencesHelper {
@@ -37,7 +37,7 @@ enum EncryptionPreferencesHelper {
             // For own addresses, we use the decrypted keys in selfSend and do not fetch any data from the API
             apiKeysConfig = APIKeysConfig(keys: [], publicKeys: [], recipientType: .internal)
             pinnedKeysConfig = PinnedKeysConfig(encrypt: false,
-                                                sign: nil,
+                                                sign: .signingFlagNotFound,
                                                 scheme: nil,
                                                 mimeType: nil,
                                                 pinnedKeys: [],
@@ -62,7 +62,7 @@ enum EncryptionPreferencesHelper {
                 return error != nil ? nil : key
             }
             pinnedKeysConfig = PinnedKeysConfig(encrypt: contact?.encrypt ?? false,
-                                                sign: contact?.sign,
+                                                sign: contact?.sign ?? .signingFlagNotFound,
                                                 scheme: contact?.scheme,
                                                 mimeType: contact?.mimeType,
                                                 pinnedKeys: keys,
@@ -85,8 +85,17 @@ enum EncryptionPreferencesHelper {
                                              selfSend: SelfSendConfig?) -> EncryptionPreferences {
         // Determine encrypt and sign flags, plus PGP scheme and MIME type.
         // Take mail settings into account if they are present
+        var sign = model.sign
+        if sign == .signingFlagNotFound {
+            if defaultSign {
+                sign = .sign
+            } else {
+                sign = .doNotSign
+            }
+        }
+
         let newModel = ContactPublicKeyModel(encrypt: model.encrypt,
-                                             sign: model.sign ?? defaultSign,
+                                             sign: sign,
                                              scheme: model.scheme,
                                              mimeType: model.mimeType,
                                              email: model.email,
@@ -404,18 +413,27 @@ enum EncryptionPreferencesHelper {
         isSendKeyPinned: Bool,
         error: EncryptionPreferencesError?
     ) -> EncryptionPreferences {
-        .init(encrypt: publicKeyModel.encrypt,
-              sign: publicKeyModel.sign ?? false,
-              scheme: publicKeyModel.scheme,
-              mimeType: publicKeyModel.mimeType,
-              isInternal: false,
-              apiKeys: publicKeyModel.apiKeys,
-              pinnedKeys: publicKeyModel.pinnedKeys,
-              hasApiKeys: false,
-              hasPinnedKeys: publicKeyModel.hasPinnedKeys,
-              isContact: publicKeyModel.isContact,
-              sendKey: sendKey,
-              isSendKeyPinned: isSendKeyPinned,
-              error: error)
+        let sign: Bool
+        switch publicKeyModel.sign {
+        case .sign:
+            sign = true
+        case .doNotSign, .signingFlagNotFound:
+            sign = false
+        }
+        return .init(
+            encrypt: publicKeyModel.encrypt,
+            sign: sign,
+            scheme: publicKeyModel.scheme,
+            mimeType: publicKeyModel.mimeType,
+            isInternal: false,
+            apiKeys: publicKeyModel.apiKeys,
+            pinnedKeys: publicKeyModel.pinnedKeys,
+            hasApiKeys: false,
+            hasPinnedKeys: publicKeyModel.hasPinnedKeys,
+            isContact: publicKeyModel.isContact,
+            sendKey: sendKey,
+            isSendKeyPinned: isSendKeyPinned,
+            error: error
+        )
     }
 }

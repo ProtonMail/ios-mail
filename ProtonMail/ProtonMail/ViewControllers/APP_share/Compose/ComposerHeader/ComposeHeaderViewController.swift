@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 final class ComposeHeaderViewController: UIViewController, AccessibleView {
@@ -35,7 +35,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     // MARK: - From field
     @IBOutlet private(set) var fromView: UIView!
     @IBOutlet private var fromAddress: UILabel!
-    @IBOutlet private var fromPickerButton: UIButton!
+    @IBOutlet private(set) var fromPickerButton: UIButton!
     @IBOutlet private var fromLabel: UILabel!
     @IBOutlet private var fromGrayView: UIView!
     @IBOutlet private weak var subjectGrayView: UIView!
@@ -225,10 +225,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         sender.accessibilityLabel = isShowingCcBccView ? LocalString._composer_voiceover_close_cc_bcc : LocalString._composer_voiceover_show_cc_bcc
     }
 
-    @IBAction func fromPickerAction(_ sender: AnyObject) {
-        self.delegate?.composeViewPickFrom(self)
-    }
-
     func updateFromValue (_ email: String, pickerEnabled: Bool) {
         fromAddress.set(text: email,
                         preferredFont: .subheadline,
@@ -257,7 +253,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         UIView.animate(withDuration: animation ? self.kAnimationDuration : 0, delay: 0, options: UIView.AnimationOptions(), animations: {
             self.updateViewSize()
             self.size = CGSize(width: self.view.frame.width, height: self.subject.frame.origin.y + self.subject.frame.height + self.pickerHeight)
-            self.delegate?.composeViewDidSizeChanged(self.size, showPicker: self.pickerHeight > 0.0)
             }, completion: nil)
     }
 
@@ -381,13 +376,13 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     private func observePreferredContentSizeChanged() {
         NotificationCenter.default
             .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
+                         selector: #selector(preferredContentSizeChanged),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
     }
 
     @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
+    private func preferredContentSizeChanged() {
         // The following elements can't reflect font size changed automatically
         // Reset font when event happened
         configSubjectLeftView()

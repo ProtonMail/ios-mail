@@ -49,6 +49,7 @@ final class RecipientCell: UITableViewCell {
         self.lockImage.isHidden = true
 
         self.arrowButton.imageView?.contentMode = .scaleAspectFit
+        self.contentView.backgroundColor = .white
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

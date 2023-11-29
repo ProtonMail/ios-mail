@@ -19,6 +19,6 @@ import Foundation
 
 protocol FileData {
     var name: String { get }
-    var ext: String { get }
+    var mimeType: String { get }
     var contents: AttachmentConvertible { get }
 }

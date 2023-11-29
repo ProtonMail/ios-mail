@@ -21,11 +21,11 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import MBProgressHUD
-import ProtonCore_Crypto
-import ProtonCore_Networking
-import ProtonCore_UIFoundations
+import ProtonCoreCrypto
+import ProtonCoreNetworking
+import ProtonCoreUIFoundations
 import UIKit
-import class ProtonCore_Services.APIErrorCode
+import class ProtonCoreServices.APIErrorCode
 
 class ChangePasswordViewController: UIViewController {
 

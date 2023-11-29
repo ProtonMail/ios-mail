@@ -21,10 +21,10 @@
 //
 
 import Foundation
-import ProtonCore_Doh
+import ProtonCoreDoh
 import TrustKit
 
-public enum TrustKitError: Error {
+@frozen public enum TrustKitError: Error {
     case failed
     case hardfailed
 }

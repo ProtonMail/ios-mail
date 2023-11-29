@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Doh
-import ProtonCore_UIFoundations
-import enum ProtonCore_Utilities.Either
+import ProtonCoreDoh
+import ProtonCoreUIFoundations
+import enum ProtonCoreUtilities.Either
 
 final class NetworkSettingViewModel: SwitchToggleVMProtocol {
     var input: SwitchToggleVMInput { self }
@@ -52,11 +52,11 @@ extension NetworkSettingViewModel: SwitchToggleVMOutput {
         (LocalString._allow_alternative_routing, dohSetting.status == .on)
     }
 
-    func sectionHeader(of section: Int) -> String? {
+    func sectionHeader() -> String? {
         LocalString._settings_alternative_routing_title
     }
 
-    func sectionFooter(of section: Int) -> Either<String, NSAttributedString>? {
+    func sectionFooter() -> Either<String, NSAttributedString>? {
         let footer = LocalString._settings_alternative_routing_footer
         let learnMore = LocalString._settings_alternative_routing_learn
         let full = String.localizedStringWithFormat(footer, learnMore)

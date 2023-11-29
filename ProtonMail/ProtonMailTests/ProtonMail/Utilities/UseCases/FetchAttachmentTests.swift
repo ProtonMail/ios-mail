@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_TestingToolkit
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreTestingToolkit
 import XCTest
 
 final class FetchAttachmentTests: XCTestCase {

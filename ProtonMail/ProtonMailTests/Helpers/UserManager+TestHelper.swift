@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 
 extension UserManager {
@@ -27,6 +27,7 @@ extension UserManager {
         userInfo: UserInfo = UserInfo.getDefault(),
         role: UserInfo.OrganizationRole? = nil,
         userID: String? = nil,
+        appTelemetry: AppTelemetry = MailAppTelemetry(),
         authCredential: AuthCredential = .none,
         globalContainer: GlobalContainer? = nil
     ) {
@@ -44,6 +45,7 @@ extension UserManager {
             authCredential: authCredential,
             mailSettings: nil,
             parent: nil,
+            appTelemetry: appTelemetry,
             globalContainer: globalContainer ?? (UIApplication.shared.delegate as! AppDelegate).dependencies
         )
     }

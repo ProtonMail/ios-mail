@@ -23,6 +23,9 @@ import Foundation
 
 extension Array where Element: Key {
     func archive() -> Data {
+        // This can be replaced with `NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false)` to suppress this warning.
+        // But new `NSKeyedArchiver.archivedData` method throws. And `archive() -> Data` method doesn't have any mechanism how to return error.
+        // For now keep the warning in favor of refactoring this method.
         return NSKeyedArchiver.archivedData(withRootObject: self)
     }
     

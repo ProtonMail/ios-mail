@@ -32,11 +32,16 @@ final class MoveMessageInCacheUseCaseTests: XCTestCase {
         contextProvider = .init()
         lastUpdatedStore = .init(contextProvider: contextProvider)
         userID = .init(String.randomString(20))
+
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { self.contextProvider }
+        globalContainer.lastUpdatedStoreFactory.register { self.lastUpdatedStore }
+
         sut = .init(dependencies: .init(
             contextProvider: contextProvider,
             lastUpdatedStore: lastUpdatedStore,
             userID: userID,
-            pushUpdater: .init()
+            pushUpdater: globalContainer.pushUpdater
         ))
         prepareTestMessage()
     }

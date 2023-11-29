@@ -20,16 +20,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import class ProtonCore_DataModel.UserInfo
-import ProtonCore_TroubleShooting
+import class ProtonCoreDataModel.UserInfo
+import ProtonCoreTroubleShooting
 import ProtonMailAnalytics
 import SideMenuSwift
 
 // sourcery: mock
 protocol MailboxCoordinatorProtocol: AnyObject {
     var pendingActionAfterDismissal: (() -> Void)? { get set }
-    var conversationCoordinator: ConversationCoordinator? { get }
-    var singleMessageCoordinator: SingleMessageCoordinator? { get }
 
     func go(to dest: MailboxCoordinator.Destination, sender: Any?)
     func presentToolbarCustomizationView(
@@ -52,8 +50,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private(set) weak var navigation: UINavigationController?
     private weak var sideMenu: SideMenuController?
     var pendingActionAfterDismissal: (() -> Void)?
-    private(set) var singleMessageCoordinator: SingleMessageCoordinator?
-    private(set) var conversationCoordinator: ConversationCoordinator?
     private let getApplicationState: () -> UIApplication.State
     private var timeOfLastNavigationToMessageDetails: Date?
 
@@ -196,8 +192,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
                   let originalScheduledTime = path.states?["originalScheduledTime"] as? Date else {
                 return
             }
-            let user = self.viewModel.user
-            let msgService = user.messageService
             if let message = fetchMessage(by: .init(messageID)) {
                 navigateToComposer(
                     existingMessage: message,
@@ -452,18 +446,20 @@ extension MailboxCoordinator {
             return
         }
         fetchConversationFromBEIfNeeded(conversationID: conversationID) { [weak self] in
-            guard
-                let context = self?.contextProvider.mainContext,
-                let conversation = Conversation
-                    .conversationForConversationID(
-                        conversationID.rawValue,
-                        inManagedObjectContext: context
-                    )
-            else {
+            guard let conversation = self?.contextProvider.read(block: { context in
+                if let conversation = Conversation.conversationForConversationID(
+                    conversationID.rawValue,
+                    inManagedObjectContext: context
+                ) {
+                    return ConversationEntity(conversation)
+                } else {
+                    return nil
+                }
+            }) else {
                 completion(nil)
                 return
             }
-            completion(ConversationEntity(conversation))
+            completion(conversation)
         }
     }
 
@@ -510,7 +506,6 @@ extension MailboxCoordinator {
         coordinator.goToDraft = { [weak self] msgID, originalScheduleTime in
             self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduleTime)
         }
-        singleMessageCoordinator = coordinator
         coordinator.start()
     }
 
@@ -523,7 +518,6 @@ extension MailboxCoordinator {
             dependencies: dependencies,
             targetID: targetID
         )
-        conversationCoordinator = coordinator
         coordinator.goToDraft = { [weak self] msgID, originalScheduledTime in
             self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
         }

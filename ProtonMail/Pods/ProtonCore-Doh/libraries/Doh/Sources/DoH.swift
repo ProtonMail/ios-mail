@@ -20,14 +20,13 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Log
-import ProtonCore_Utilities
+import ProtonCoreLog
+import ProtonCoreUtilities
 
 // constant. tests can reach this value
 let dohLifeTime: Double = 90 * 60 // 90 mins
 
 open class DoH: DoHInterface {
-
     open var status: DoHStatus = .off
     private var proxyDomainsAreCurrentlyResolved = false
     
@@ -70,7 +69,7 @@ open class DoH: DoHInterface {
     
     open var currentlyUsedCookiesStorage: HTTPCookieStorage? { cookiesSynchronizer?.cookieStorage }
     
-    open func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String]) {
+    open func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String]) async {
         guard let synchronizer = cookiesSynchronizer else { return }
         guard let response = response, let httpResponse = response as? HTTPURLResponse else { return }
         guard let headers = httpResponse.allHeaderFields as? [String: String] else { return }
@@ -82,7 +81,7 @@ open class DoH: DoHInterface {
             return
         }
             
-        synchronizer.synchronizeCookies(for: host, with: headers)
+        await synchronizer.synchronizeCookies(for: host, with: headers)
     }
     
     // MARK: - Accessing host url
@@ -244,6 +243,8 @@ open class DoH: DoHInterface {
     
     private func populateCache(for host: ProductionHosts, with dnsList: [DNS]) {
         let fetchTime = currentTimeProvider().timeIntervalSince1970
+        let dnsList = dnsList.filter { Self.hostIsPinned($0.host) }
+
         cacheQueue.sync {
             var dnsCaches: [DNSCache] = []
             for dns in dnsList.shuffled() {
@@ -312,9 +313,11 @@ open class DoH: DoHInterface {
         completion: @escaping (Bool) -> Void
     ) {
         handleErrorResolvingProxyDomainIfNeeded(host: host, requestHeaders: requestHeaders, sessionId: sessionId, error: error,
-                                                callCompletionBlockUsing: callCompletionBlockUsing) { [weak self] in
-            self?.synchronizeCookies(with: response, requestHeaders: requestHeaders)
-            completion($0)
+                                                callCompletionBlockUsing: callCompletionBlockUsing) { shouldRetry in
+            Task { [weak self] in
+                await self?.synchronizeCookies(with: response, requestHeaders: requestHeaders)
+                completion(shouldRetry)
+            }
         }
     }
     

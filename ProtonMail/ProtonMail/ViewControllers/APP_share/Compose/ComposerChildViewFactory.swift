@@ -46,10 +46,11 @@ struct ComposerChildViewFactory {
         parentView: ComposeContainerViewController,
         headerView: ComposeHeaderViewController,
         viewModel: ComposeViewModel,
+        dependencies: ContainableComposeViewController.Dependencies,
         openScheduleSendActionSheet: @escaping () -> Void,
         delegate: ComposeContentViewControllerDelegate
     ) -> ContainableComposeViewController {
-        let editor = ContainableComposeViewController(viewModel: viewModel)
+        let editor = ContainableComposeViewController(viewModel: viewModel, dependencies: dependencies)
         editor.openScheduleSendActionSheet = openScheduleSendActionSheet
         editor.injectHeader(headerView)
         editor.enclosingScroller = parentView

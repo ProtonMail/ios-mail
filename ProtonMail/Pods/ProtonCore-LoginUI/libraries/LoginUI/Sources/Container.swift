@@ -19,26 +19,28 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
 import TrustKit
-import ProtonCore_APIClient
-import ProtonCore_Authentication
-import ProtonCore_Challenge
-import ProtonCore_DataModel
-import ProtonCore_Doh
-import ProtonCore_HumanVerification
-import ProtonCore_Foundations
-import ProtonCore_Login
-import ProtonCore_Log
-import ProtonCore_Networking
-import ProtonCore_Services
-import typealias ProtonCore_Payments.ListOfIAPIdentifiers
-import typealias ProtonCore_Payments.ListOfShownPlanNames
-import typealias ProtonCore_Payments.BugAlertHandler
-import ProtonCore_PaymentsUI
-import ProtonCore_TroubleShooting
-import ProtonCore_Environment
-import ProtonCore_FeatureSwitch
+import ProtonCoreAPIClient
+import ProtonCoreAuthentication
+import ProtonCoreChallenge
+import ProtonCoreDataModel
+import ProtonCoreDoh
+import ProtonCoreHumanVerification
+import ProtonCoreFoundations
+import ProtonCoreLogin
+import ProtonCoreLog
+import ProtonCoreNetworking
+import ProtonCoreServices
+import typealias ProtonCorePayments.ListOfIAPIdentifiers
+import typealias ProtonCorePayments.ListOfShownPlanNames
+import typealias ProtonCorePayments.BugAlertHandler
+import ProtonCorePaymentsUI
+import ProtonCoreTroubleShooting
+import ProtonCoreEnvironment
+import ProtonCoreFeatureSwitch
 
 final class Container {
     let login: Login
@@ -65,9 +67,7 @@ final class Container {
         self.externalLinks = ExternalLinks(clientApp: clientApp)
         self.troubleShootingHelper = TroubleShootingHelper(doh: apiService.dohInterface)
         self.api = apiService
-        if FeatureFactory.shared.isEnabled(.unauthSession) {
-            self.api.acquireSessionIfNeeded { result in PMLog.debug("\(result)") }
-        }
+        self.api.acquireSessionIfNeeded { result in PMLog.debug("\(result)") }
         self.login = LoginService(api: apiService, clientApp: clientApp, minimumAccountType: minimumAccountType)
         self.signupService = SignupService(api: apiService, clientApp: clientApp)
 
@@ -181,3 +181,5 @@ extension Container {
         api.serviceDelegate?.onDohTroubleshot()
     }
 }
+
+#endif

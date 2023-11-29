@@ -1,6 +1,6 @@
 //
 //  PaymentsUIViewController.swift
-//  ProtonCore_PaymentsUI - Created on 01/06/2021.
+//  ProtonCorePaymentsUI - Created on 01/06/2021.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,20 +19,31 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
-import ProtonCore_Observability
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
+import ProtonCoreObservability
+import ProtonCoreFeatureSwitch
+import ProtonCoreUtilities
 
 protocol PaymentsUIViewControllerDelegate: AnyObject {
+    func viewControllerWillAppear(isFirstAppearance: Bool)
     func userDidCloseViewController()
     func userDidDismissViewController()
     func userDidSelectPlan(plan: PlanPresentation, addCredits: Bool, completionHandler: @escaping () -> Void)
+    func userDidSelectPlan(plan: AvailablePlansPresentation, completionHandler: @escaping () -> Void)
     func planPurchaseError()
 }
 
 public final class PaymentsUIViewController: UIViewController, AccessibleView {
+    
+    private lazy var selectedCycle = viewModel?.defaultCycle
+    
+    private var isDynamicPlansEnabled: Bool {
+        FeatureFactory.shared.isEnabled(.dynamicPlans)
+    }
     
     // MARK: - Constants
     
@@ -94,14 +105,14 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             extendSubscriptionButton.isHidden = true
             extendSubscriptionButton.isAccessibilityElement = true
             extendSubscriptionButton.setMode(mode: .solid)
-            extendSubscriptionButton.setTitle(CoreString._extend_subscription_button, for: .normal)
+            extendSubscriptionButton.setTitle(PUITranslations._extend_subscription_button.l10n, for: .normal)
         }
     }
     
     // MARK: - Properties
     
     weak var delegate: PaymentsUIViewControllerDelegate?
-    var model: PaymentsUIViewModel?
+    var viewModel: PaymentsUIViewModel?
     var mode: PaymentsUIMode = .signup
     var modalPresentation = false
     var hideFooter = false
@@ -111,6 +122,8 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
     
     override public var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
+
+    private var controllerDidAlreadyAppear = false
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -156,16 +169,40 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
                          selector: #selector(preferredContentSizeChanged(_:)),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
-        if mode == .signup {
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applicationWillEnterForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
+
+        sendObservabilityEvents()
+    }
+
+    private func sendObservabilityEvents() {
+        switch mode {
+        case .signup:
             ObservabilityEnv.report(.screenLoadCountTotal(screenName: .planSelection))
+            if isDynamicPlansEnabled {
+                ObservabilityEnv.report(.paymentScreenView(screenID: .dynamicPlanSelection))
+            }
+        case .current:
+            if isDynamicPlansEnabled {
+                ObservabilityEnv.report(.paymentScreenView(screenID: .dynamicPlansCurrentSubscription))
+            }
+        case .update:
+            if isDynamicPlansEnabled {
+                ObservabilityEnv.report(.paymentScreenView(screenID: .dynamicPlansUpgrade))
+            }
         }
     }
-    
+
     var banner: PMBanner?
     
     @objc private func informAboutIAPInProgress() {
-        if model?.iapInProgress == true {
-            let banner = PMBanner(message: CoreString._pu_iap_in_progress_banner,
+        if viewModel?.iapInProgress == true {
+            let banner = PMBanner(message: PUITranslations.iap_in_progress_banner.l10n,
                                   style: PMBannerNewStyle.error,
                                   dismissDuration: .infinity)
             showBanner(banner: banner, position: .top)
@@ -191,6 +228,13 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         super.viewWillDisappear(animated)
         delegate?.userDidDismissViewController()
     }
+
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        ObservabilityEnv.report(.paymentScreenView(screenID: .planSelection))
+        delegate?.viewControllerWillAppear(isFirstAppearance: !controllerDidAlreadyAppear)
+        controllerDidAlreadyAppear = true
+    }
     
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -204,7 +248,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     
     @IBAction func onExtendSubscriptionButtonTap(_ sender: ProtonButton) {
         extendSubscriptionButton.isSelected = true
-        guard case .withExtendSubscriptionButton(let plan) = model?.footerType else {
+        guard case .withExtendSubscriptionButton(let plan) = viewModel?.footerType else {
             extendSubscriptionButton.isSelected = false
             return
         }
@@ -226,7 +270,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     }
 
     func showPurchaseSuccessBanner() {
-        let banner = PMBanner(message: CoreString._plan_successfully_upgraded,
+        let banner = PMBanner(message: PUITranslations._plan_successfully_upgraded.l10n,
                               style: PMBannerNewStyle.info,
                               dismissDuration: 4.0)
         showBanner(banner: banner, position: .top)
@@ -259,6 +303,10 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     
     public func planPurchaseError() {
         delegate?.planPurchaseError()
+    }
+
+    @objc func applicationWillEnterForeground() {
+        delegate?.viewControllerWillAppear(isFirstAppearance: false)
     }
 
     // MARK: - Actions
@@ -297,16 +345,16 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     private func reloadUI() {
         guard isDataLoaded else { return }
         var hasExtendSubscriptionButton = false
-        switch model?.footerType {
+        switch viewModel?.footerType {
         case .withPlansToBuy:
-            tableFooterTextLabel.text = CoreString._plan_footer_desc
+            tableFooterTextLabel.text = PUITranslations._plan_footer_desc.l10n
         case .withoutPlansToBuy:
-            tableFooterTextLabel.text = CoreString._pu_plan_footer_desc_purchased
+            tableFooterTextLabel.text = PUITranslations.plan_footer_desc_purchased.l10n
         case .withExtendSubscriptionButton:
-            tableFooterTextLabel.text = CoreString._pu_plan_footer_desc_purchased
+            tableFooterTextLabel.text = PUITranslations.plan_footer_desc_purchased.l10n
             hasExtendSubscriptionButton = true
         case .none:
-            tableFooterTextLabel.text = CoreString._pu_plan_footer_desc_purchased
+            tableFooterTextLabel.text = PUITranslations.plan_footer_desc_purchased.l10n
         case .disabled:
             hideFooter = true
         }
@@ -315,22 +363,22 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         activityIndicator.isHidden = true
         updateHeaderFooterViewHeight()
         if mode == .signup {
-            tableHeaderTitleLabel.text = CoreString._pu_select_plan_title
-            tableHeaderDescriptionLabel.text = CoreString._select_plan_description
+            tableHeaderTitleLabel.text = PUITranslations.select_plan_title.l10n
+            tableHeaderDescriptionLabel.text = PUITranslations._select_plan_description.l10n
             navigationItem.title = ""
             setupHeaderView()
         } else {
             if modalPresentation {
                 switch mode {
                 case .current:
-                    navigationItem.title = CoreString._pu_subscription_title
+                    navigationItem.title = PUITranslations.subscription_title.l10n
                     updateTitleAttributes()
                 case .update:
-                    switch model?.footerType {
+                    switch viewModel?.footerType {
                     case .withPlansToBuy:
-                        navigationItem.title = CoreString._pu_upgrade_plan_title
+                        navigationItem.title = PUITranslations.upgrade_plan_title.l10n
                     case .withoutPlansToBuy, .withExtendSubscriptionButton, .disabled, .none:
-                        navigationItem.title = CoreString._pu_current_plan_title
+                        navigationItem.title = PUITranslations.current_plan_title.l10n
                     }
                     updateTitleAttributes()
                 default:
@@ -344,7 +392,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         navigationItem.assignNavItemIndentifiers()
     }
     
-    private var isData = false
+    private(set) var isData = false
     
     private var isDataLoaded: Bool {
         return isData || mode == .signup
@@ -363,12 +411,33 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     }
     
     private func showExpandButton() {
-        guard let model = model else { return }
-        for section in model.plans.indices {
-            guard model.plans.indices.contains(section) else { continue }
-            for row in model.plans[section].indices {
+        if isDynamicPlansEnabled {
+            showExpandButtonForDynamicPlans()
+        } else {
+            showExpandButtonForStaticPlans()
+        }
+    }
+    
+    private func showExpandButtonForStaticPlans() {
+        guard let viewModel = viewModel else { return }
+        for section in viewModel.plans.indices {
+            guard viewModel.plans.indices.contains(section) else { continue }
+            for row in viewModel.plans[section].indices {
                 let indexPath = IndexPath(row: row, section: section)
-                if let cell = tableView.cellForRow(at: indexPath) as? PlanCell, model.shouldShowExpandButton {
+                if let cell = tableView.cellForRow(at: indexPath) as? PlanCell, viewModel.shouldShowExpandButton {
+                    cell.showExpandButton()
+                }
+            }
+        }
+    }
+    
+    private func showExpandButtonForDynamicPlans() {
+        guard let viewModel = viewModel else { return }
+        for section in viewModel.dynamicPlans.indices {
+            guard viewModel.dynamicPlans.indices.contains(section) else { continue }
+            for row in viewModel.dynamicPlans[section].indices {
+                let indexPath = IndexPath(row: row, section: section)
+                if let cell = tableView.cellForRow(at: indexPath) as? PlanCell, viewModel.shouldShowExpandButton {
                     cell.showExpandButton()
                 }
             }
@@ -376,25 +445,43 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     }
 }
 
+// MARK: - UITableViewDataSource
+
 extension PaymentsUIViewController: UITableViewDataSource {
     
     public func numberOfSections(in tableView: UITableView) -> Int {
-        return model?.plans.count ?? 0
+        if isDynamicPlansEnabled {
+            return viewModel?.dynamicPlans.count ?? 0
+        } else {
+            return viewModel?.plans.count ?? 0
+        }
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return model?.plans[safeIndex: section]?.count ?? 0
+        if isDynamicPlansEnabled {
+            return filteredCycles(at: section)?.count ?? 0
+        } else {
+            return viewModel?.plans[safeIndex: section]?.count ?? 0
+        }
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if isDynamicPlansEnabled {
+            return cellForDynamicConfig(tableView, cellForRowAt: indexPath)
+        } else {
+            return cellForStaticConfig(tableView, cellForRowAt: indexPath)
+        }
+    }
+    
+    private func cellForStaticConfig(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = UITableViewCell()
-        guard let plan = model?.plans[safeIndex: indexPath.section]?[safeIndex: indexPath.row] else { return cell }
+        guard let plan = viewModel?.plans[safeIndex: indexPath.section]?[safeIndex: indexPath.row] else { return cell }
         switch plan.planPresentationType {
         case .plan:
             cell = tableView.dequeueReusableCell(withIdentifier: PlanCell.reuseIdentifier, for: indexPath)
             if let cell = cell as? PlanCell {
                 cell.delegate = self
-                cell.configurePlan(plan: plan, indexPath: indexPath, isSignup: mode == .signup, isExpandButtonHidden: model?.isExpandButtonHidden ?? true)
+                cell.configurePlan(plan: plan, indexPath: indexPath, isSignup: mode == .signup, isExpandButtonHidden: viewModel?.isExpandButtonHidden ?? true)
             }
             cell.selectionStyle = .none
         case .current:
@@ -407,15 +494,41 @@ extension PaymentsUIViewController: UITableViewDataSource {
         return cell
     }
     
+    private func cellForDynamicConfig(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = UITableViewCell()
+        guard let plan = filteredCycles(at: indexPath.section)?[safeIndex: indexPath.row] else { return cell }
+        switch plan {
+        case .left(let currentPlan):
+            cell = tableView.dequeueReusableCell(withIdentifier: CurrentPlanCell.reuseIdentifier, for: indexPath)
+            if let cell = cell as? CurrentPlanCell {
+                cell.configurePlan(currentPlan: currentPlan)
+            }
+            cell.isUserInteractionEnabled = false
+        case .right(let availablePlan):
+            cell = tableView.dequeueReusableCell(withIdentifier: PlanCell.reuseIdentifier, for: indexPath)
+            if let cell = cell as? PlanCell {
+                cell.delegate = self
+                cell.configurePlan(availablePlan: availablePlan, indexPath: indexPath, isSignup: mode == .signup, isExpandButtonHidden: viewModel?.isExpandButtonHidden ?? true)
+            }
+            cell.selectionStyle = .none
+        }
+        
+        return cell
+    }
+    
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard mode == .current && section == 1 else { return nil }
         let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: sectionHeaderView)
         if let header = view as? PlanSectionHeaderView {
-            header.titleLabel.text = CoreString._pu_upgrade_plan_title
+            header.titleLabel.text = PUITranslations.upgrade_plan_title.l10n
+            header.cycleSelectorDelegate = self
+            header.configureCycleSelector(cycles: cycles(at: section), selectedCycle: selectedCycle)
         }
         return view
     }
 }
+
+// MARK: - UITableViewDelegate
 
 extension PaymentsUIViewController: UITableViewDelegate {
     
@@ -429,14 +542,59 @@ extension PaymentsUIViewController: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let plan = model?.plans[safeIndex: indexPath.section]?[safeIndex: indexPath.row] else { return }
-        if case .plan = plan.planPresentationType {
-            if let cell = tableView.cellForRow(at: indexPath) as? PlanCell {
+        if isDynamicPlansEnabled {
+            guard let plan = filteredCycles(at: indexPath.section)?[safeIndex: indexPath.row] else { return }
+            if case .right = plan,
+               let cell = tableView.cellForRow(at: indexPath) as? PlanCell {
                 cell.selectCell()
+            }
+        } else {
+            guard let plan = viewModel?.plans[safeIndex: indexPath.section]?[safeIndex: indexPath.row] else { return }
+            if case .plan = plan.planPresentationType {
+                if let cell = tableView.cellForRow(at: indexPath) as? PlanCell {
+                    cell.selectCell()
+                }
             }
         }
     }
 }
+
+// MARK: - CycleSelectorDelegate
+
+extension PaymentsUIViewController: CycleSelectorDelegate {
+    func didSelectCycle(cycle: Int?) {
+        selectedCycle = cycle
+        reloadData()
+    }
+    
+    private func filteredCycles(at section: Int) -> [Either<CurrentPlanPresentation, AvailablePlansPresentation>]? {
+        if selectedCycle != nil {
+            return viewModel?.dynamicPlans[safeIndex: section]?.filter {
+                switch $0 {
+                case .left:
+                    return true
+                case .right(let availablePlansPresentation):
+                    return availablePlansPresentation.details.cycle == selectedCycle || availablePlansPresentation.details.isFreePlan
+                }
+            }
+        } else {
+            return viewModel?.dynamicPlans[safeIndex: section]
+        }
+    }
+    
+    private func cycles(at section: Int) -> Set<Int> {
+        Set(viewModel?.dynamicPlans[safeIndex: section]?.compactMap {
+            switch $0 {
+            case .left:
+                return nil
+            case .right(let availablePlansPresentation):
+                return availablePlansPresentation.details.cycle
+            }
+        } ?? [])
+    }
+}
+
+// MARK: - PlanCellDelegate
 
 extension PaymentsUIViewController: PlanCellDelegate {
     func cellDidChange(indexPath: IndexPath) {
@@ -452,4 +610,14 @@ extension PaymentsUIViewController: PlanCellDelegate {
             completionHandler()
         }
     }
+
+    func userPressedSelectPlanButton(plan: AvailablePlansPresentation, completionHandler: @escaping () -> Void) {
+        lockUI()
+        delegate?.userDidSelectPlan(plan: plan) { [weak self] in
+            self?.unlockUI()
+            completionHandler()
+        }
+    }
 }
+
+#endif

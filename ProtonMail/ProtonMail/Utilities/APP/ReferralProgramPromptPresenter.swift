@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 protocol ReferralProgramPromptStatus {
     var referralProgramPromptWasShown: Bool { get set }
@@ -52,10 +52,6 @@ extension UserCachedStatus: ReferralProgramPromptStatus {
 final class ReferralProgramPromptPresenter {
     private enum Threshold {
         static let inboxNavigation = 3
-    }
-
-    enum ReferralPromptPreConditionEvent {
-        case inboxNavigation
     }
 
     private let userID: UserID

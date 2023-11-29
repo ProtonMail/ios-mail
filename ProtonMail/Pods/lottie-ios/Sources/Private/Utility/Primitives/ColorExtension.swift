@@ -1,5 +1,5 @@
 //
-//  Color.swift
+//  LottieColor.swift
 //  lottie-swift
 //
 //  Created by Brandon Withrow on 1/14/19.
@@ -8,9 +8,9 @@
 import CoreGraphics
 import Foundation
 
-// MARK: - Color + Codable
+// MARK: - LottieColor + Codable
 
-extension Color: Codable {
+extension LottieColor: Codable {
 
   // MARK: Lifecycle
 
@@ -38,22 +38,18 @@ extension Color: Codable {
       b1 = 0
     }
 
-    var a1: Double
-    if !container.isAtEnd {
-      a1 = try container.decode(Double.self)
-    } else {
-      a1 = 1
-    }
-    if r1 > 1, g1 > 1, b1 > 1, a1 > 1 {
+    if r1 > 1, g1 > 1, b1 > 1 {
       r1 = r1 / 255
       g1 = g1 / 255
       b1 = b1 / 255
-      a1 = a1 / 255
     }
     r = r1
     g = g1
     b = b1
-    a = a1
+
+    // The Lottie JSON schema supports alpha values in theory, as the fourth value in this array.
+    // We intentionally do not support this, though, for consistency with Lottie on other platforms.
+    a = 1
   }
 
   // MARK: Public
@@ -68,9 +64,9 @@ extension Color: Codable {
 
 }
 
-// MARK: - Color + AnyInitializable
+// MARK: - LottieColor + AnyInitializable
 
-extension Color: AnyInitializable {
+extension LottieColor: AnyInitializable {
 
   init(value: Any) throws {
     guard var array = value as? [Double] else {
@@ -79,30 +75,28 @@ extension Color: AnyInitializable {
     var r: Double = array.count > 0 ? array.removeFirst() : 0
     var g: Double = array.count > 0 ? array.removeFirst() : 0
     var b: Double = array.count > 0 ? array.removeFirst() : 0
-    var a: Double = array.count > 0 ? array.removeFirst() : 1
-    if r > 1, g > 1, b > 1, a > 1 {
+    if r > 1, g > 1, b > 1 {
       r /= 255
       g /= 255
       b /= 255
-      a /= 255
     }
     self.r = r
     self.g = g
     self.b = b
-    self.a = a
+
+    // The Lottie JSON schema supports alpha values in theory, as the fourth value in this array.
+    // We intentionally do not support this, though, for consistency with Lottie on other platforms.
+    a = 1
   }
 
 }
 
-extension Color {
-
+extension LottieColor {
   static var clearColor: CGColor {
-    CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [0, 0, 0, 0])!
+    .rgba(0, 0, 0, 0)
   }
 
   var cgColorValue: CGColor {
-    // TODO: Fix color spaces
-    let colorspace = CGColorSpaceCreateDeviceRGB()
-    return CGColor(colorSpace: colorspace, components: [CGFloat(r), CGFloat(g), CGFloat(b), CGFloat(a)]) ?? Color.clearColor
+    .rgba(CGFloat(r), CGFloat(g), CGFloat(b), CGFloat(a))
   }
 }

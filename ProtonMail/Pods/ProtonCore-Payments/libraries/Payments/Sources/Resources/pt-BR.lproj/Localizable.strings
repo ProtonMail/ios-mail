@@ -1,0 +1,46 @@
+
+"Contact customer support" = "Contate nossa equipe de suporte";
+
+"Failed to get list of available products from App Store." = "Erro na obtenção da lista de produtos disponíveis na App Store.";
+
+"Purchase is not possible." = "Não é possível fazer a compra.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "A Apple nos informou que você atualizou o plano de serviço, mas faltaram alguns dados técnicos. Preencha o relatório de erros e nossa equipe de suporte ao cliente entrará em contato com você.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "A Apple nos informou que você atualizou o plano de serviço, mas detectamos que você encerrou a sessão da conta desde então.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Não foi possível combinar seu produto da App Store com produtos do nosso servidor. Preencha o relatório de erros e nossa equipe de suporte ao cliente entrará em contato com você.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Inicie sessão na conta do Proton Mail para a qual você está atualizando o plano de serviço para que possamos concluir a compra.";
+
+"Apple informed us they could not process the purchase." = "A Apple nos informou que não foi possível processar a compra.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Ativamos sua assinatura. Reinicie o aplicativo para começar a usar seu novo plano.";
+
+"Please unlock the app to proceed with your service plan activation" = "Desbloqueie o aplicativo para prosseguir com a ativação do seu plano.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Inicie sessão na conta do Proton Mail para a qual você está atualizando o plano de serviço para podermos concluir a ativação do plano de serviço.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Status do token de pagamento incorreto. Reinicie o aplicativo. Se o erro persistir, entre em contato com o suporte.";
+
+"Do you want to activate the purchase for %@ address?" = "Deseja ativar a compra para o endereço %@?";
+
+"Yes, activate it for " = "Sim, ativar para ";
+
+"No, for another Proton Mail account" = "Não, para outra conta do Proton Mail";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Como não foi possível fazer o upgrade da sua conta para o plano que você selecionou, adicionamos o valor do seu pagamento como créditos para sua conta. Para obter mais informações e concluir seu upgrade, entre em contato com o Suporte.";
+
+"Contact Support" = "Entre em contato com o Suporte";
+
+"Dismiss" = "Ignorar";
+
+"Payment failed" = "Erro no pagamento";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Registro efetuado, mas seu pagamento ainda não foi processado. Para reenviar suas informações de pagamento, clique em Tentar novamente. Você só será cobrado uma única vez. Se o problema persistir, entre em contato com a nossa equipe de suporte.";
+
+"Retry" = "Tentar novamente";
+
+"OK" = "OK";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Os servidores Proton estão inacessíveis. Pode ser causado por configuração de rede incorreta, servidores Proton não funcionando ou servidores Proton bloqueados";

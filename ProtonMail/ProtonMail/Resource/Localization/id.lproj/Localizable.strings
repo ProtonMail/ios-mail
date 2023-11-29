@@ -24,13 +24,13 @@
 "Mobile Signature" = "Tanda Tangan Mobile";
 
 /* Title */
-"Recovery email" = "Email pemulihan";
+"Recovery email" = "Surel pemulihan";
 
 /* Title */
-"Enable email notices" = "Aktifkan notifikasi email";
+"Enable email notices" = "Aktifkan notifikasi surel";
 
 /* place holder */
-"Input Notification Email…" = "Masukkan Email Notifikasi…";
+"Input Notification Email…" = "Masukkan Surel Notifikasi…";
 
 /* Placeholder */
 "Current password" = "Kata sandi saat ini";
@@ -45,7 +45,7 @@
 "Remove image metadata" = "Hapus metadata gambar";
 
 /* Settings row */
-"Block email tracking" = "Blokir pelacak email";
+"Block email tracking" = "Blokir pelacak surel";
 
 /* Settings row */
 "Default browser" = "Browser default";
@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Pengiriman Gagal";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Email gagal dikirim. Pesan disimpan sebagai draf.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Tidak ada apa-apa di sini";
 
@@ -144,10 +141,10 @@
 "You're going to delete the message irreversibly. Are you sure?" = "Anda akan menghapus pesan ini secara permanen. Apakah Anda yakin?";
 
 /* Title */
-"You have a new email!" = "Anda memiliki email baru!";
+"You have a new email!" = "Anda memiliki surel baru!";
 
 /* Message */
-"You have %d new emails!" = "Anda memiliki %d email baru!";
+"You have %d new emails!" = "Anda memiliki %d surel baru!";
 
 /* abbreviation of reply: */
 "Re:" = "Ttg:";
@@ -224,9 +221,6 @@
 /* Description */
 "You need at least one recipient to send" = "Anda harus memasukkan setidaknya satu nama penerima untuk dapat mengirim pesan";
 
-/* Title */
-"Change sender address to…" = "Ubah alamat pengirim ke…";
-
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Tingkatkan jenis akun Anda ke akun berbayar untuk dapat mengirim dari alamat %@ Anda";
 
@@ -279,7 +273,7 @@
 "Add new custom field" = "Tambah kolom khusus baru";
 
 /* new email action */
-"Add new email" = "Tambah email baru";
+"Add new email" = "Tambah surel baru";
 
 /* new phone action */
 "Add new phone number" = "Tambah nomor telepon baru";
@@ -294,7 +288,7 @@
 "Work" = "Kantor";
 
 /* default vcard types */
-"Email" = "Email";
+"Email" = "Surel";
 
 /* default vcard types */
 "Other" = "Lainnya";
@@ -354,13 +348,13 @@
 "Gender" = "Jenis kelamin";
 
 /* Send an email to the current contact (button title text) */
-"Email contact" = "Email kontak";
+"Email contact" = "Surel kontak";
 
 /* Call the contact (button title text) */
 "Call contact" = "Hubungi kontak";
 
 /* contact detail view, email addresses section title */
-"Email addresses" = "Alamat email";
+"Email addresses" = "Alamat surel";
 
 /* contact section title */
 "Encrypted contact details" = "Rincian kontak yang terenkripsi";
@@ -519,10 +513,10 @@
 "Unable to parse the response object:\n%@" = "Objek respon berikut tidak dapat diurai:\n%@";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Walaupun email ini sekilas terlihat seperti dikirim dari alamat Proton Mail, email ini sepertinya berasal dari luar sistem kami dan tidak memenuhi persyaratan autentikasi yang kami miliki. Email ini mungkin palsu atau tidak diteruskan dengan benar!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Walaupun surel ini sekilas terlihat seperti dikirim dari alamat Proton Mail, surel ini sepertinya berasal dari luar sistem kami dan tidak memenuhi persyaratan autentikasi yang kami miliki. Surel ini mungkin palsu atau tidak diteruskan dengan benar!";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Email ini telah gagal memenuhi syarat autentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar.";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Surel ini telah gagal memenuhi syarat autentikasi domainnya. Surel ini mungkin telah dipalsukan atau tidak diteruskan dengan benar.";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Pesan ini mungkin merupakan bentuk upaya phishing. Mohon periksa pengirim dan isi pesan untuk memastikan keabsahannya.";
@@ -573,7 +567,7 @@
 "Disabled" = "Dinonaktifkan";
 
 /* contact placeholder */
-"Email address" = "Alamat email";
+"Email address" = "Alamat surel";
 
 /* top left back button */
 "Back" = "Kembali";
@@ -612,7 +606,7 @@
 "Continue" = "Lanjut";
 
 /* error message */
-"Please input a valid email address." = "Silakan masukkan alamat email yang valid.";
+"Please input a valid email address." = "Silakan masukkan alamat surel yang valid.";
 
 /* Title */
 "Enter your PIN to unlock your inbox." = "Masukkan kode PIN Anda untuk membuka kunci kotak masuk.";
@@ -652,9 +646,6 @@
 
 /* Title */
 "Confirm new mailbox password" = "Konfirmasi kata sandi kotak surat baru";
-
-/* error when sending the message */
-"Unable to send the email" = "Email tidak dapat dikirim";
 
 /* Title */
 "Star/unstar" = "Bintangi/Hapus Bintang";
@@ -789,7 +780,7 @@
 "Storage Warning" = "Peringatan Ruang Penyimpanan";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Anda telah menggunakan seluruh kuota penyimpanan Anda (%@). Harap tingkatkan jenis akun Anda untuk tetap dapat mengirim dan menerima email.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Anda telah menggunakan seluruh kuota penyimpanan Anda (%@). Harap tingkatkan jenis akun Anda untuk tetap dapat mengirim dan menerima surel.";
 
 /* Content of space warning */
 "You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Anda telah menggunakan %1$d%% dari ruang penyimpanan Anda (%2$@). Silakan tingkatkan paket Anda untuk melanjutkan mengirim dan menerima surel.";
@@ -804,7 +795,7 @@
 "Please upgrade your plan" = "Harap tingkatkan jenis akun Anda";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Harap tingkatkan jenis akun Anda untuk tetap dapat mengirim dan menerima email.";
+"Please upgrade your plan to continue to send and receive emails." = "Harap tingkatkan jenis akun Anda untuk tetap dapat mengirim dan menerima surel.";
 
 /* Title */
 "Warning" = "Peringatan";
@@ -852,7 +843,7 @@
 "Password update failed" = "Pembaruan kata sandi gagal";
 
 /* update notification email error title */
-"Update Notification Email" = "Perbarui Email Notifikasi";
+"Update Notification Email" = "Perbarui Surel Notifikasi";
 
 /* Title */
 "Apply Labels" = "Terapkan Label";
@@ -996,9 +987,6 @@
 "Cut" = "Potong";
 
 /* Title */
-"Compose to" = "Tulis untuk";
-
-/* Title */
 "Add to contacts" = "Tambah ke kontak";
 
 /* encryption lock description */
@@ -1059,7 +1047,7 @@
 "Delete contact group" = "Hapus grup kontak";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
-"Please select at least one email for the contact group" = "Silakan pilih minimal satu email untuk dimasukkan ke dalam grup kontak";
+"Please select at least one email for the contact group" = "Silakan pilih minimal satu surel untuk dimasukkan ke dalam grup kontak";
 
 /* The message will show up when the user attempts to create a contact group without any name specified */
 "Please provide a group name" = "Silakan tentukan nama grup";
@@ -1113,7 +1101,7 @@
 "There are unsent messages that will be lost if you sign out" = "Terdapat pesan tidak terkirim yang akan hilang apabila Anda keluar";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
-"Please select at least one email" = "Silakan pilih setidaknya satu email";
+"Please select at least one email" = "Silakan pilih setidaknya satu surel";
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Keluar dari %1$@ dan masuk sebagai %2$@";
@@ -1209,28 +1197,28 @@
 "Recipient not found" = "Penerima tidak ditemukan";
 
 /* The error message is shown in composer */
-"Invalid email address" = "Alamat email tidak valid";
+"Invalid email address" = "Alamat surel tidak valid";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "Setidaknya satu alamat email penerima tidak terformat dengan benar. Mohon periksa kembali.";
+"At least one recipient email address is improperly formatted, please double check them." = "Setidaknya satu alamat surel penerima tidak terformat dengan benar. Mohon periksa kembali.";
 
 /* incorrect email format error in composer */
 "Error sending" = "Kesalahan dalam pengiriman";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "Setidaknya satu alamat email yang terdapat di grup tidak dapat ditemukan";
+"At least one email address in the group could not be found" = "Setidaknya satu alamat surel yang terdapat di grup tidak dapat ditemukan";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Setidaknya satu domain/alamat email penerima yang hendak dituju tidak ada atau tidak terformat dengan benar. Pesan dipindahkan ke draf.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Setidaknya satu domain/alamat surel penerima yang hendak dituju tidak ada atau tidak terformat dengan benar. Pesan dipindahkan ke draf.";
 
 /* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "Setidaknya satu alamat email yang hendak Anda tuju tidak valid. Mohon periksa kembali alamat email tujuan Anda.";
+"You have entered at least one invalid email address. Please verify your recipients." = "Setidaknya satu alamat surel yang hendak Anda tuju tidak valid. Mohon periksa kembali alamat surel tujuan Anda.";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found." = "Setidaknya satu alamat email yang terdapat di grup tidak dapat ditemukan.";
+"At least one email address in the group could not be found." = "Setidaknya satu alamat surel yang terdapat di grup tidak dapat ditemukan.";
 
 /* incorrect email format error while sending */
-"You have entered at least one unknown recipient. Please verify your recipients." = "Setidaknya satu alamat email yang hendak Anda tuju tidak dikenal. Mohon periksa kembali alamat email tujuan Anda.";
+"You have entered at least one unknown recipient. Please verify your recipients." = "Setidaknya satu alamat surel yang hendak Anda tuju tidak dikenal. Mohon periksa kembali alamat surel tujuan Anda.";
 
 /* title of incorrect email format error while sending */
 "Sending failed" = "Pengiriman gagal";
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Mengirim pesan…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Pesan tidak dapat dikirim. Setidaknya satu domain/alamat email penerima yang dituju tidak ada atau tidak tertulis dengan benar.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "belum dibaca";
@@ -1293,28 +1278,7 @@
 "View message in Dark mode" = "Tampilkan pesan dalam mode Gelap";
 
 /* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Aktifkan fitur ini agar alamat email yang Anda ketik dapat dilengkapi secara otomatis dengan data kontak dari seluruh akun yang terhubung masuk.";
-
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Tentukan kode PIN";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Masukkan kode PIN baru";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Masukkan kode PIN dengan panjang antara 4 hingga 21 karakter.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "Kode PIN terlalu pendek";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "Kode PIN terlalu panjang";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Ulangi kode PIN";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "Kode PIN harus sesuai!";
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Aktifkan fitur ini agar alamat surel yang Anda ketik dapat dilengkapi secara otomatis dengan data kontak dari seluruh akun yang terhubung masuk.";
 
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Apabila situs Proton diblokir, pengaturan ini akan memungkinkan aplikasi kami untuk dapat terhubung dengan Proton melalui lalu lintas jaringan alternatif, yang dapat berguna untuk melewati hadangan firewall atau masalah jaringan. Kami sarankan agar pengaturan ini selalu aktif untuk koneksi yang lebih andal. %1$@";
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "Nonaktif";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Ubah kode PIN";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Autentikasi ulang";
@@ -1353,13 +1314,13 @@
 "Delete %d Messages" = "Hapus %d Pesan";
 
 /* No comment provided by engineer. */
-"Current Recovery Email" = "Email Pemulihan Saat Ini";
+"Current Recovery Email" = "Surel Pemulihan Saat Ini";
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Pemulihan diaktifkan";
 
 /* No comment provided by engineer. */
-"Please set a recovery / notification email" = "Harap tentukan alamat email pemulihan / notifikasi";
+"Please set a recovery / notification email" = "Harap tentukan alamat surel pemulihan / notifikasi";
 
 /* No comment provided by engineer. */
 "Unread" = "Belum dibaca";
@@ -1407,7 +1368,7 @@
 "Parent folder" = "Folder induk";
 
 /* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Tindakan ini tidak dapat diurungkan. Seluruh email yang tersimpan pada folder ini tidak akan dihapus dan dapat ditemukan di folder Semua Surat.";
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Tindakan ini tidak dapat diurungkan. Seluruh surel yang tersimpan pada folder ini tidak akan dihapus dan dapat ditemukan di folder Semua Surat.";
 
 /* Alert message when user tries to delete label */
 "This action cannot be undone." = "Tindakan ini tidak dapat diurungkan.";
@@ -1518,7 +1479,7 @@
 "Do you want to discard the changes?" = "Apakah Anda ingin membatalkan perubahan?";
 
 /* No comment provided by engineer. */
-"Group emails from the same conversation together." = "Kelompokkan email yang tergabung dalam percakapan yang sama.";
+"Group emails from the same conversation together." = "Kelompokkan surel yang tergabung dalam percakapan yang sama.";
 
 /* No comment provided by engineer. */
 "Conversation grouping" = "Pengelompokan percakapan";
@@ -1680,7 +1641,7 @@
 "Go back (recommended)" = "Kembali (disarankan)";
 
 /* Description for undo send */
-"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Fitur ini akan menunda pengiriman email Anda, yang memberikan Anda kesempatan untuk dapat membatalkan pengiriman dalam rentang waktu yang dipilih.";
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Fitur ini akan menunda pengiriman surel Anda, yang memberikan Anda kesempatan untuk dapat membatalkan pengiriman dalam rentang waktu yang dipilih.";
 
 /* The title of the scheduled message banner. */
 "This message will be sent on %@ at %@" = "Pesan ini akan terkirim pada %1$@ pukul %2$@";
@@ -1761,7 +1722,7 @@
 "PGP-signed" = "Ditandatangani PGP";
 
 /* The error message while calculating the encryption preferences */
-"Email address disabled" = "Alamat email dinonaktifkan";
+"Email address disabled" = "Alamat surel dinonaktifkan";
 
 /* The error message while calculating the encryption preferences */
 "No keys retrieved for internal user" = "Tidak ada kunci untuk pengguna internal yang diterima";
@@ -1821,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "Anda kini dapat menentukan dan mengatur ulang daftar tindakan pada bar ini";
 
 /* Button to block a sender */
-"Block sender" = "Blokir pengirim";
+"Block messages from this sender" = "Blokir pesan dari pengirim ini";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blokir";
@@ -1838,7 +1799,7 @@
 /* Placeholder for empty sender list */
 "No blocked senders" = "Tidak ada pengirim yang diblokir";
 
-"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Email baru dari %@ tidak akan disampaikan kepada Anda dan akan dihapus secara permanen. Kelola daftar alamat email yang diblokir pada menu pengaturan.";
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Surel baru dari %@ tidak akan disampaikan kepada Anda dan akan dihapus secara permanen. Kelola daftar alamat surel yang diblokir pada menu pengaturan.";
 
 /* Banner in the message view */
 "Sender has been blocked" = "Pengirim telah diblokir";
@@ -1856,13 +1817,13 @@
 "Unblock" = "Buka Blokir";
 
 /* Name of the feature */
-"Email tracking protection" = "Perlindungan pelacak email";
+"Email tracking protection" = "Perlindungan pelacak surel";
 
 /* Short hint in the header view */
-"No email trackers found" = "Tidak ada pelacak email yang ditemukan";
+"No email trackers found" = "Tidak ada pelacak surel yang ditemukan";
 
 /* Tracker protection feature explanation */
-"Email trackers can violate your privacy." = "Pelacak email dapat mengusik privasi Anda.";
+"Email trackers can violate your privacy." = "Pelacak surel dapat mengusik privasi Anda.";
 
 /* The banner shown in case of proxy failure */
 "Some images could not be loaded with tracking protection." = "Sebagian gambar tidak dapat dimuat dengan perlindungan pelacak yang aktif.";
@@ -1895,7 +1856,7 @@
 "Terms & conditions" = "Syarat & ketentuan";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Saya telah menggunakan Proton Mail dan saya pikir layanan ini cocok untuk Anda. Layanan ini merupakan layanan email aman yang melindungi privasi Anda. Daftar sekarang juga melalui tautan berikut dan nikmati berbagai fitur premium selama 1 bulan secara gratis:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Saya telah menggunakan Proton Mail dan saya pikir layanan ini cocok untuk Anda. Layanan ini merupakan layanan surel aman yang melindungi privasi Anda. Daftar sekarang juga melalui tautan berikut dan nikmati berbagai fitur premium selama 1 bulan secara gratis:";
 
 /* The content of the referral prompt view. */
 "Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Privasi Anda terlindungi dengan baik jika kontak Anda juga menggunakan Proton Mail. Undang teman-teman Anda ke Proton, dan Anda akan menerima manfaat premium secara gratis.";
@@ -1946,10 +1907,10 @@
 "Up to 500 GB of storage" = "Kuota penyimpanan hingga 500 GB";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Hingga 15 alamat email";
+"Up to 15 email addresses" = "Hingga 15 alamat surel";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Hingga 3 domain email khusus";
+"Up to 3 custom email domains" = "Hingga 3 domain surel khusus";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Hide My Email aliases" = "Alias Hide My Email";
@@ -1990,6 +1951,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Balas semua (ke pesan terakhir)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Pesan baru";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Atur";
 
@@ -2023,15 +1987,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Aktifkan";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Nonaktifkan penghapusan otomatis?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Email yang terjadwal untuk dihapus akan tetap berada pada folder sampah dan spam.";
-
-/* Button to disable auto delete */
-"Disable" = "Nonaktifkan";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Tingkatkan untuk menghapus pesan yang telah berada di sampah dan spam selama lebih dari 30 hari secara otomatis.";
 
@@ -2060,7 +2015,13 @@
 "Up to 3 TB of storage" = "Kuota penyimpanan hingga 3 TB";
 
 /* Text to advertise what upgrading will provide */
-"Custom email domains" = "Domain email khusus";
+"Custom email domains" = "Domain surel khusus";
+
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Pengirim diubah";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Pengirim pesan ini sudah tidak lagi valid. Pesan Anda akan dikirim dari alamat %@ bawaan milik Anda.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nama tampilan";
@@ -2075,7 +2036,7 @@
 "Display name field cannot be empty" = "Nama tampilan tidak boleh kosong";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "Nama kontak terlalu panjang";
 
 /* The button text for add profile picture */
 "Add photo" = "Tambah foto";
@@ -2083,11 +2044,44 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Sunting foto";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "Pilih semua";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Nonaktifkan kode PIN";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Tentukan kode PIN";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Ulangi kode PIN";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Masukkan kode PIN baru";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Masukkan kode PIN dengan panjang antara 4 hingga 21 karakter.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "Kode PIN terlalu pendek";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "Kode PIN terlalu panjang";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "Kode PIN harus sesuai!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Silakan masukkan kode PIN yang lama ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Ubah kode PIN";
+
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Berhenti berlangganan milis";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Berhenti berlangganan?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Ini akan menghentikan langganan Anda dari milis. Pengirim akan diberi tahu untuk berhenti mengirimkan surel ke alamat ini.";

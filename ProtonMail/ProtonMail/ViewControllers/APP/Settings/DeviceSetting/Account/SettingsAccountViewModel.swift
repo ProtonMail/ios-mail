@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_AccountDeletion
+import ProtonCoreDataModel
+import ProtonCoreAccountDeletion
 
 enum SettingAccountSection: Int, CustomStringConvertible {
     case account
@@ -179,14 +179,8 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
             mailboxItems.append(.nextMsgAfterMove)
         }
 
-        if UserInfo.isBlockSenderEnabled {
-            mailboxItems.append(.blockList)
-        }
+        mailboxItems.append(contentsOf: [.blockList, .autoDeleteSpamTrash])
 
-        if UserInfo.isAutoDeleteEnabled {
-            mailboxItems.append(.autoDeleteSpamTrash)
-        }
- 
         self.mailboxItems = mailboxItems
     }
 

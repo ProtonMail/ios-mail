@@ -1,4 +1,4 @@
-framework module ProtonCore_Log {
+framework module ProtonCoreLog {
   umbrella header "ProtonCore-Log-umbrella.h"
 
   export *

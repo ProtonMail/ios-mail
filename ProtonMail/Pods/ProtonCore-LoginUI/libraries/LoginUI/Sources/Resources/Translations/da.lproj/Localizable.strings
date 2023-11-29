@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Privatlivsbeskyttelse som standard";
+
+"Proton address required" = "Proton-adresse påkrævet";
+
+"Update required" = "Opdatering nødvendig";
+
+"Please enter your Proton Account password." = "Indtast venligst din Proton-kontos adgangskode.";
+
+"OK" = "Ok";
+
+"Help" = "Hjælp";
+
+"Continue" = "Fortsæt";
+
+"Password" = "Adgangskode";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton-serverne kan ikke nås. Det kan skyldes forkert netværkskonfiguration, at Proton-servere ikke fungerer eller at Proton-servere er blokeret";
+
+"Search country" = "Søg land";
+
+"Code sent to %@" = "Kode sendt til %@";
+
+"Request new code?" = "Anmod om ny kode?";
+
+"Resend" = "Gensend";
+
+"Get a replacement code sent to %@." = "Få en erstatningskode sendt til %@.";
+
+"Request new code" = "Anmod om ny kode";
+
+"Enter your Proton Account details." = "Indtast dine Proton-kontooplysninger.";
+
+"Email or username" = "E-mail eller brugernavn";
+
+"Sign in" = "Log ind";
+
+"Sign in with password" = "Log ind med en adgangskode";
+
+"Sign in with SSO" = "Log ind med SSO";
+
+"Sign in to your organization" = "Log ind med din organisation";
+
+"Create an account" = "Opret en konto";
+
+"How can we help?" = "Hvordan kan vi hjælpe?";
+
+"Forgot username" = "Glemt brugernavn";
+
+"Forgot password" = "Glemt adgangskode";
+
+"Other sign-in issues" = "Andre login-problemer";
+
+"Customer support" = "Kundeservice";
+
+"Still need help? Contact us directly." = "Har du stadig brug for hjælp? Kontakt os direkte.";
+
+"Please enter your Proton Account email or username." = "Indtast venligst din Proton-kontos e-mail eller brugernavn.";
+
+"Complete Setup" = "Gennemfør opsætning";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Din konto mangler nøgler, log venligst ind på nettet for automatisk at generere de nødvendige nøgler. Når du er logget ind på nettet, bedes du vende tilbage til appen og logge ind.";
+
+"Account setup required" = "Kontoopsætning påkrævet";
+
+"Incorrect mailbox password" = "Forkert postkasseadgangskode";
+
+"Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
+
+"Proton address required" = "Proton-adresse påkrævet";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Du skal have en Proton-e-mailadresse for at bruge Proton Mail og Proton Calendar.\nDu vil stadig kunne bruge %@ til at logge ind og til at gendanne din konto.";
+
+"Username" = "Brugernavn";
+
+"Please enter a username." = "Indtast et brugernavn.";
+
+"Unlock your mailbox" = "Lås din postkasse op";
+
+"Mailbox password" = "Postkasseadgangskode";
+
+"Unlock" = "Lås op";
+
+"Forgot password" = "Glemt adgangskode";
+
+"Two-factor authentication" = "To-faktor-godkendelse";
+
+"Authenticate" = "Godkend";
+
+"Two-factor code" = "To-faktor-kode";
+
+"Recovery code" = "Gendannelseskode";
+
+"Use recovery code" = "Brug gendannelseskode";
+
+"Use two-factor code" = "Brug to-faktor-kode";
+
+"Enter the 6-digit code." = "Indtast den 6-cifrede kode.";
+
+"Enter an 8-character recovery code." = "Indtast en gendannelseskode på 8-tegn.";
+
+"Learn more" = "Få mere at vide";
+
+"Change your password" = "Skift din adgangskode";
+
+"Change password" = "Skift adgangskode";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "For at bruge Proton-appen som medlem af en organisation, skal du først ændre din adgangskode ved at logge på Proton via en browser.";
+
+"Error occured" = "Fejl opstod";
+
+"Create your Proton Account" = "Opret din Proton-konto";
+
+"One account for all Proton services." = "Én konto til alle Proton-tjenester.";
+
+"Next" = "Næste";
+
+"Use your current email instead" = "Brug din nuværende e-mail i stedet";
+
+"Create a secure Proton Mail address instead" = "Opret en sikker Proton Mail-adresse i stedet";
+
+"Email" = "E-mail";
+
+"Create your password" = "Opret din adgangskode";
+
+"Password must contain at least 8 characters" = "Adgangskode skal indeholde mindst 8 tegn";
+
+"Repeat password" = "Gentag kodeord";
+
+"Domain" = "Domæne";
+
+"Set recovery method" = "Indstil gendannelsesmetode";
+
+"Set recovery method (optional)" = "Indstil gendannelsesmetode (valgfrit)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Vi vil sende gendannelsesinstruktioner til denne e-mail eller telefonnummer, hvis du bliver låst ude af din konto.";
+
+"Email" = "E-mail";
+
+"Phone" = "Telefon";
+
+"Recovery email" = "E-mail til gendanelse";
+
+"Recovery phone number" = "Telefonnummer til gendannelse";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Ved at klikke på Næste accepterer du Proton's Vilkår og Betingelser";
+
+"Terms and Conditions" = "Vilkår og Betingelser";
+
+"Skip" = "Spring over";
+
+"Skip recovery method?" = "Spring over gendannelsesmetode?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "En gendannelsesmetode vil hjælpe dig med at få adgang til din konto, hvis du glemmer din adgangskode eller bliver låst ude af din konto.";
+
+"Set recovery method" = "Indstil gendannelsesmetode";
+
+"Your account is being created" = "Your account is being created";
+
+"This should take no more than a minute." = "Det tager normalt ikke mere end et minut.";
+
+"Creating your account" = "Opretter din konto";
+
+"Generating your address" = "Opretter din adresse";
+
+"Securing your account" = "Sikrer din konto";
+
+"Verifying your payment" = "Verificerer din betaling";
+
+"Account verification" = "Kontobekræftelse";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Af hensyn til din sikkerhed skal vi kontrollere, at den indtastede adresse tilhører dig. Vi har sendt en bekræftelseskode til %@. Indtast koden nedenfor:";
+
+"Verification code" = "Bekræftelseskode";
+
+"Enter the 6-digit code." = "Indtast den 6-cifrede kode.";
+
+"Did not receive a code?" = "Ikke modtaget en kode?";
+
+"Terms and Conditions" = "Vilkår og Betingelser";
+
+"Invalid token request" = "Ugyldig token forespørgsel";
+
+"Invalid token error" = "Ugyldigt token fejl";
+
+"Create user failed" = "Create user failed";
+
+"Invalid hashed password" = "Ugyldig hashet adgangskode";
+
+"Password can not be empty.\nPlease try again." = "Adgangskode kan ikke være tom.\nPrøv venligst igen.";
+
+"Password must contain at least %@ characters." = "Adgangskode skal indeholde mindst %@ tegn.";
+
+"Passwords do not match.\nPlease try again." = "Adgangskoder er ikke ens.\nPrøv venligst igen.";
+
+"Email address already used." = "E-mailadressen er allerede i brug.";
+
+"Please ask your admin to configure your sub-user." = "Bed din administrator om at konfigurere din underbruger.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Vil du gerne modtage en ny bekræftelseskode eller bruge en alternativ e-mailadresse?";
+
+"Change email address" = "Skift e-mailadresse";
+
+"Congratulations" = "Tillykke";
+
+"Your Proton Free account was successfully created." = "Din Proton Free-konto blev oprettet.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Din betaling blev bekræftet, og din %@-konto blev oprettet.";
+
+"Your Proton account was successfully created." = "Din Proton-konto blev oprettet.";
+
+"Enjoy the world of privacy." = "Nyd en verden med privatliv.";
+
+"Cancel" = "Annullér";
+
+"Sign in" = "Log ind";
+
+"Troubleshoot" = "Fejlfind";

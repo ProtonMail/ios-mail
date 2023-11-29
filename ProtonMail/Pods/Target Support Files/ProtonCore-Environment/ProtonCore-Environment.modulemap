@@ -1,4 +1,4 @@
-framework module ProtonCore_Environment {
+framework module ProtonCoreEnvironment {
   umbrella header "ProtonCore-Environment-umbrella.h"
 
   export *

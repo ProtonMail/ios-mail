@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 extension ContactVO {
 
@@ -36,7 +36,7 @@ extension ContactVO {
     /**
      Checks if the current ContactVO is in the address list
     */
-    func isDuplicatedWithContacts(_ addresses: [ContactPickerModelProtocol]) -> Bool {
+    func exists(in addresses: [ContactPickerModelProtocol]) -> Bool {
         return addresses.contains(where: { ($0 as? ContactVO)?.email.lowercased() == self.email.lowercased() })
     }
 

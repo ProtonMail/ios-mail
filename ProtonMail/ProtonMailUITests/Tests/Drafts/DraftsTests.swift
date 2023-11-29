@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 
 class DraftsTests: FixtureAuthenticatedTestCase {
@@ -182,9 +182,9 @@ class DraftsTests: FixtureAuthenticatedTestCase {
     }
 
     /// TestId: 34640
-    func testMinimiseAppWhileComposingDraft() {
-        runTestWithScenario(.qaMail001) {
-            InboxRobot()
+    func testMinimiseAppWhileComposingDraft() async {
+        await runTestWithScenario(.qaMail001) {
+            await InboxRobot()
                 .compose()
                 .draftToSubjectBody(to, subject, body)
                 .backgroundApp()
@@ -197,11 +197,11 @@ class DraftsTests: FixtureAuthenticatedTestCase {
     }
 
     /// TestId: 35877
-    func testEditDraftMinimiseAppAndSend() {
+    func testEditDraftMinimiseAppAndSend() async {
         let newRecipient = createUser()
         let newSubject = testData.newMessageSubject
-        runTestWithScenario(.qaMail001) {
-            InboxRobot()
+        await runTestWithScenario(.qaMail001) {
+            await InboxRobot()
                 .compose()
                 .draftToSubjectBody(to, subject, body)
                 .backgroundApp()

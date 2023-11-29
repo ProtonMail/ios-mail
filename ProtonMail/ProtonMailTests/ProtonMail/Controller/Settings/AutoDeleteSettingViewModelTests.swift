@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import XCTest
 
@@ -47,7 +47,7 @@ final class AutoDeleteSettingViewModelTests: XCTestCase {
     }
 
     func testGetSectionFooterAndHeader() throws {
-        let result = try XCTUnwrap(sut.sectionFooter(of: 0))
+        let result = try XCTUnwrap(sut.sectionFooter())
         switch result {
         case .left(let text):
             XCTAssertEqual(text, L11n.AutoDeleteSettings.rowFooterTitle)
@@ -55,7 +55,7 @@ final class AutoDeleteSettingViewModelTests: XCTestCase {
             XCTFail("Shouldn't be an attributedString")
         }
 
-        XCTAssertNil(sut.sectionHeader(of: 0))
+        XCTAssertNil(sut.sectionHeader())
     }
 
     func testCallToggleToTrueWithNewStatus_statusWillBeChangedToTrue() throws {

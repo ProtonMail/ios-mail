@@ -16,14 +16,11 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 extension UserManager: ToolbarActionProvider {
     var messageToolbarActions: [MessageViewActionSheetAction] {
         get {
-            guard UserInfo.isToolbarCustomizationEnable else {
-                return Constants.defaultToolbarActions
-            }
             let serverActions = userInfo.messageToolbarActions.actions.compactMap({ ServerToolbarAction(rawValue: $0) })
             let convertedActions = MessageViewActionSheetAction.convert(from: serverActions)
             return convertedActions.isEmpty ? MessageViewActionSheetAction.defaultActions : convertedActions
@@ -36,9 +33,6 @@ extension UserManager: ToolbarActionProvider {
 
     var listViewToolbarActions: [MessageViewActionSheetAction] {
         get {
-            guard UserInfo.isToolbarCustomizationEnable else {
-                return Constants.defaultToolbarActions
-            }
             let serverActions = userInfo.listToolbarActions.actions.compactMap({ ServerToolbarAction(rawValue: $0) })
             let convertedActions = MessageViewActionSheetAction.convert(from: serverActions)
             return convertedActions.isEmpty ? MessageViewActionSheetAction.defaultActions : convertedActions

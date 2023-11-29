@@ -57,15 +57,6 @@ enum MailboxItem: Hashable {
         }
     }
 
-    var objectID: ObjectID {
-        switch self {
-        case .message(let message):
-            return message.objectID
-        case .conversation(let conversation):
-            return conversation.objectID
-        }
-    }
-
     func isUnread(labelID: LabelID) -> Bool {
         switch self {
         case .message(let message):
@@ -83,48 +74,31 @@ enum MailboxItem: Hashable {
             return conversation.getTime(labelID: labelID)
         }
     }
-
-    var toConversation: ConversationEntity? {
-        switch self {
-        case .conversation(let entity):
-            return entity
-        case .message:
-            return nil
-        }
-    }
-
-    var toMessage: MessageEntity? {
-        switch self {
-        case .conversation:
-            return nil
-        case .message(let entity):
-            return entity
-        }
-    }
-
-    var isConversation: Bool {
-        toConversation != nil
-    }
-
-    var isMessage: Bool {
-        toMessage != nil
-    }
 }
 
-extension Collection where Element == MailboxItem {
-    var areAllConversations: Bool {
-        reduce(true) { $0 && $1.isConversation }
+// MARK: Attachments Metadata for preview
+extension MailboxItem {
+
+    var attachmentsMetadata: [AttachmentsMetadata] {
+        switch self {
+        case .message(let message):
+            return message.attachmentsMetadata
+        case .conversation(let conversation):
+            return conversation.attachmentsMetadata
+        }
     }
 
-    var areAllMessages: Bool {
-        reduce(true) { $0 && $1.isMessage }
+    var isPreviewable: Bool {
+        attachmentsMetadata
+            .contains(where: { $0.disposition == .attachment })
     }
 
-    var allConversations: [ConversationEntity] {
-        compactMap { $0.toConversation }
-    }
-
-    var allMessages: [MessageEntity] {
-        compactMap { $0.toMessage }
+    var previewableAttachments: [AttachmentsMetadata] {
+        attachmentsMetadata
+            .filter {
+                $0.disposition == .attachment &&
+                $0.mimeType != MIMEType.icsMIMEType &&
+                $0.mimeType != MIMEType.keyMIMEType
+            }
     }
 }

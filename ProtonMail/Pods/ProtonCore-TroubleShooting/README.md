@@ -163,6 +163,17 @@ Variants:
 * `ProtonCore-Features/UsingCrypto`
 * `ProtonCore-Features/UsingCryptoVPN`
 
+### Feature Flags
+
+Common cross-app unleash feature flags. 
+It is exposed only as a swift package
+
+README: [Doc](libraries/FeatureFlags/README.md)
+
+Sources: [libraries/FeatureFlags](libraries/FeatureFlags/)
+
+Platforms supported: iOS, macOS
+
 
 ### ForceUpgrade
 
@@ -301,19 +312,6 @@ Podspec: [ProtonCore-ObfuscatedConstants.podspec](ProtonCore-ObfuscatedConstants
 Sources: [libraries/ObfuscatedConstants](libraries/ObfuscatedConstants)
 
 Platforms supported: iOS, macOS
-
-
-### OpenPGP
-
-Delivery mechanism for the OpenPGP library, built into `vendor/OpenPGP/OpenPGP.xcframework`. 
-No actual Swift sources here.
-
-Podspec: [ProtonCore-OpenPGP.podspec](ProtonCore-OpenPGP.podspec)
-
-Uses and deliveres framework: [OpenPGP.xcframework](vendor/OpenPGP/OpenPGP.xcframework)
-
-Platforms supported: iOS, macOS
-
 
 ### Payments
 

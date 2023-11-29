@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 class ExpandedHeaderView: HeaderView {
@@ -29,8 +29,8 @@ class ExpandedHeaderView: HeaderView {
     let senderEmailControl = TextControl()
     let hideDetailButton = SubviewsFactory.hideDetailButton
 
-    init() {
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         addSubviews()
         setUpLayout()
     }

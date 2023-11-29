@@ -66,10 +66,8 @@
          ],
          "preBuildScripts": [
             {
+               "basedOnDependencyAnalysis": false,
                "name": "LicensePlist",
-               "outputFiles": [
-                  "${SRCROOT}/ProtonMail/Supporting Files/Settings.bundle"
-               ],
                "path": "xcodeGen/licensePlist.sh"
             }
          ],

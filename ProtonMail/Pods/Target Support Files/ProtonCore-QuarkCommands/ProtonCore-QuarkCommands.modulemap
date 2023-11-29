@@ -1,4 +1,4 @@
-framework module ProtonCore_QuarkCommands {
+framework module ProtonCoreQuarkCommands {
   umbrella header "ProtonCore-QuarkCommands-umbrella.h"
 
   export *

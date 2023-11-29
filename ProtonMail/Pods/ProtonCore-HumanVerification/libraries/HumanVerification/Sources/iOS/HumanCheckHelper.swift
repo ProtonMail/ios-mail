@@ -19,12 +19,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_APIClient
-import ProtonCore_Networking
-import ProtonCore_Services
-import enum ProtonCore_DataModel.ClientApp
-import ProtonCore_UIFoundations
+import ProtonCoreAPIClient
+import ProtonCoreNetworking
+import ProtonCoreServices
+import enum ProtonCoreDataModel.ClientApp
+import ProtonCoreUIFoundations
 
 public class HumanCheckHelper: HumanVerifyDelegate {
     private let rootViewController: UIViewController?
@@ -139,3 +141,5 @@ extension HumanCheckHelper: HumanCheckMenuCoordinatorDelegate {
         self.responseDelegateForLoginAndSignup?.onHumanVerifyEnd(result: .cancel)
     }
 }
+
+#endif

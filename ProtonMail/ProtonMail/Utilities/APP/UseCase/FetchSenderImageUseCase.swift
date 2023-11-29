@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 import UIKit
 
 typealias FetchSenderImageUseCase = UseCase<UIImage?, FetchSenderImage.Params>
@@ -30,7 +30,6 @@ final class FetchSenderImage: FetchSenderImageUseCase {
 
     override func executionBlock(params: Params, callback: @escaping Callback) {
         guard
-            dependencies.localFeatureFlag,
             dependencies.featureFlagCache.isFeatureFlag(.senderImage, enabledForUserWithID: params.userID),
             !dependencies.mailSettings.hideSenderImages
         else {
@@ -79,7 +78,6 @@ extension FetchSenderImage {
         let featureFlagCache: FeatureFlagCache
         let senderImageService: SenderImageService
         let mailSettings: MailSettings
-        let localFeatureFlag: Bool = UserInfo.isSenderImageEnabled
 
         init(
             featureFlagCache: FeatureFlagCache,

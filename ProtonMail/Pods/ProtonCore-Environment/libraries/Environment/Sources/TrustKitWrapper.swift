@@ -22,17 +22,38 @@
 import Foundation
 import Network
 import TrustKit
-import ProtonCore_Doh
+import ProtonCoreDoh
 
 public final class TrustKitWrapper {
-    
     public static private(set) weak var delegate: TrustKitDelegate?
-    public static private(set) var current: TrustKit?
+    public static internal(set) var current: TrustKit?
 
-    public static func setUp(delegate: TrustKitDelegate, customConfiguration: Configuration? = nil) {
+    public static func updateDoHPinningConfiguration(_ trustKitConfiguration: [String: Any]) {
+        guard let pinnedDomains = trustKitConfiguration[kTSKPinnedDomains] as? [String: Any] else {
+            return
+        }
+
+        DoH.setPinningConfiguration(pinnedDomains.reduce(into: [:], { partialResult, keyPair in
+            let (key, value) = keyPair
+            let entryDict = value as? [String: Any]
+
+            let entry = DoH.PinningConfigurationEntry(
+                allowSubdomains: entryDict?[kTSKIncludeSubdomains] as? Bool ?? false,
+                allowIPs: entryDict?[kTSKAllowIPsOnly] as? Bool ?? false
+            )
+
+            let host = key == kTSKCatchallPolicy ? "*" : key
+
+            partialResult[host] = entry
+        }))
+    }
+
+    public static func setUp(delegate: TrustKitDelegate? = nil, 
+                             customConfiguration: Configuration? = nil,
+                             sharedContainerIdentifier: String? = nil) {
         let config = customConfiguration ?? configuration(hardfail: true)
         
-        let instance = TrustKit(configuration: config)
+        let instance = TrustKit(configuration: config, sharedContainerIdentifier: sharedContainerIdentifier)
         
         instance.pinningValidatorCallback = { [weak delegate] validatorResult, hostName, policy in
             if validatorResult.evaluationResult != .success,
@@ -40,7 +61,7 @@ public final class TrustKitWrapper {
                 guard validatorResult.evaluationResult != .success,
                       validatorResult.finalTrustDecision != .shouldAllowConnection else { return }
 
-                if hostName.contains(check: ".compute.amazonaws.com") || isIp(hostName) {
+                if hostName.contains(caseInsensitive: ".compute.amazonaws.com") || isIp(hostName) {
                     // hard fail
                     delegate?.onTrustKitValidationError(.hardfailed)
                 } else {
@@ -51,6 +72,7 @@ public final class TrustKitWrapper {
         }
         self.delegate = delegate
         self.current = instance
+        updateDoHPinningConfiguration(config)
     }
 
     private static func isIp(_ hostname: String) -> Bool {
@@ -63,7 +85,7 @@ public final class TrustKitWrapper {
 }
 
 extension String {
-    fileprivate func contains(check s: String) -> Bool {
-        self.range(of: s, options: NSString.CompareOptions.caseInsensitive) != nil ? true : false
+    fileprivate func contains(caseInsensitive string: String) -> Bool {
+        range(of: string, options: .caseInsensitive) != nil
     }
 }

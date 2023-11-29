@@ -20,7 +20,8 @@ class ConversationMessageCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         customView.initialsLabel.isHidden = false
-
+        customView.senderImageView.image = nil
+        customView.attachmentImageView.isHidden = true
         cellReuse?()
     }
 

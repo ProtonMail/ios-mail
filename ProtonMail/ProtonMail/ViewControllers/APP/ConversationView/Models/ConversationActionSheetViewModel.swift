@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 struct ConversationActionSheetViewModel: ActionSheetViewModel {
     let title: String
@@ -55,13 +55,13 @@ struct ConversationActionSheetViewModel: ActionSheetViewModel {
             items.append(contentsOf: [.trash, .archive, .spam, .moveTo])
         }
 
-        items.append(.saveAsPDF)
-        items.append(.print)
-        if UserInfo.isToolbarCustomizationEnable {
-            items.append(.toolbarCustomization)
-        }
-        items.append(.viewHeaders)
-        items.append(.viewHTML)
-        items.append(.reportPhishing)
+        items.append(contentsOf: [
+            .saveAsPDF,
+            .print,
+            .toolbarCustomization,
+            .viewHeaders,
+            .viewHTML,
+            .reportPhishing
+        ])
     }
 }

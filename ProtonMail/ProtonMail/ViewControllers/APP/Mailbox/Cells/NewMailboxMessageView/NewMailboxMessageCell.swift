@@ -20,8 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import SwipyCell
 import UIKit
 
@@ -123,11 +123,11 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
     }
 
     private func setUpAvatarTapHandling() {
-        customView.leftContainer.addTarget(self, action: #selector(avatarTapped(_:)), for: .touchUpInside)
+        customView.leftContainer.addTarget(self, action: #selector(avatarTapped), for: .touchUpInside)
     }
 
     @objc
-    private func avatarTapped(_ sender: UIControl) {
+    private func avatarTapped() {
         cellDelegate?.didSelectButtonStatusChange(cell: self)
     }
 

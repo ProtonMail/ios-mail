@@ -23,18 +23,18 @@
 import BackgroundTasks
 import Intents
 import LifetimeTracker
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoImplementation
-import ProtonCore_DataModel
-import ProtonCore_Doh
-import ProtonCore_FeatureSwitch
-import ProtonCore_Keymaker
-import ProtonCore_Log
-import ProtonCore_Networking
-import ProtonCore_Observability
-import ProtonCore_Payments
-import ProtonCore_Services
-import ProtonCore_UIFoundations
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoImplementation
+import ProtonCoreDataModel
+import ProtonCoreDoh
+import ProtonCoreFeatureSwitch
+import ProtonCoreKeymaker
+import ProtonCoreLog
+import ProtonCoreNetworking
+import ProtonCoreObservability
+import ProtonCorePayments
+import ProtonCoreServices
+import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import SideMenuSwift
 import UIKit
@@ -42,9 +42,12 @@ import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
-    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(dependencies: dependencies)
+    lazy var coordinator: WindowsCoordinator = {
+        let coordinator = WindowsCoordinator(dependencies: dependencies)
+        coordinator.delegate = self
+        return coordinator
+    }()
     private var currentState: UIApplication.State = .active
-    private var purgeOldMessages: PurgeOldMessagesUseCase?
 
     // TODO: make private
     let dependencies = GlobalContainer()
@@ -90,6 +93,10 @@ extension AppDelegate: UIApplicationDelegate {
         let appVersion = Bundle.main.appVersion
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable) | \(appVersion)"
         SystemLogger.log(message: message, category: .appLifeCycle)
+
+        let appCache = AppCacheService(dependencies: dependencies)
+        appCache.restoreCacheWhenAppStart()
+
         sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
 
         let coreKeyMaker = dependencies.keyMaker
@@ -97,6 +104,9 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(KeyMakerProtocol.self, for: coreKeyMaker)
 
         if ProcessInfo.isRunningUnitTests {
+            // swiftlint:disable:next force_try
+            try! CoreDataStore.shared.initialize()
+
             coreKeyMaker.wipeMainKey()
             coreKeyMaker.activate(NoneProtection()) { _ in }
         }
@@ -112,12 +122,12 @@ extension AppDelegate: UIApplicationDelegate {
 
         sharedServices.add(UsersManager.self, for: usersManager)
         sharedServices.add(PushNotificationService.self, for: dependencies.pushService)
-        sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl(dependencies: self.dependencies))
         sharedServices.add(NotificationCenter.self, for: NotificationCenter.default)
 
 #if DEBUG
         if ProcessInfo.isRunningUnitTests {
             sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
+            sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
         } else {
             let lifetimeTrackerIntegration = LifetimeTrackerDashboardIntegration(
                 visibility: .visibleWithIssuesDetected,
@@ -125,6 +135,8 @@ extension AppDelegate: UIApplicationDelegate {
             )
             LifetimeTracker.setup(onUpdate: lifetimeTrackerIntegration.refreshUI)
         }
+        
+        FeatureFactory.shared.disable(&.dynamicPlans)
 #endif
 
         SecureTemporaryFile.cleanUpResidualFiles()
@@ -139,8 +151,8 @@ extension AppDelegate: UIApplicationDelegate {
             UIView.setAnimationsEnabled(false)
         }
         #endif
+        PMAPIService.setupTrustIfNeeded()
         configureCrypto()
-        configureCoreFeatureFlags(launchArguments: ProcessInfo.launchArguments)
         configureCoreObservability()
         configureAnalytics()
         configureAppearance()
@@ -154,10 +166,9 @@ extension AppDelegate: UIApplicationDelegate {
         self.configurePushService(launchOptions: launchOptions)
         self.registerKeyMakerNotification()
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(didSignOutNotification(_:)),
+                                               selector: #selector(didSignOutNotification),
                                                name: .didSignOutLastAccount,
                                                object: nil)
-        coordinator.delegate = self
         
         dependencies.backgroundTaskHelper.registerBackgroundTask(task: .eventLoop)
 
@@ -165,10 +176,11 @@ extension AppDelegate: UIApplicationDelegate {
         #if DEBUG
         setupUITestsMocks()
         #endif
+        UserObjectsPersistence.shared.cleanAll()
         return true
     }
 
-    @objc fileprivate func didSignOutNotification(_: Notification) {
+    @objc fileprivate func didSignOutNotification() {
         self.onLogout()
     }
 
@@ -202,13 +214,6 @@ extension AppDelegate: UIApplicationDelegate {
         }
 
         if let user = dependencies.usersManager.firstUser {
-            self.purgeOldMessages = PurgeOldMessages(user: user, coreDataService: dependencies.contextProvider)
-            self.purgeOldMessages?.execute(
-                params: (),
-                callback: { [weak self] _ in
-                    self?.purgeOldMessages = nil
-                }
-            )
             user.cacheService.cleanOldAttachment()
 
             dependencies.queueManager.backgroundFetch(remainingTime: {
@@ -236,10 +241,7 @@ extension AppDelegate: UIApplicationDelegate {
         if let user = dependencies.usersManager.firstUser {
             dependencies.queueManager.enterForeground()
             user.refreshFeatureFlags()
-
-            if UserInfo.isBlockSenderEnabled {
-                user.blockedSenderCacheUpdater.requestUpdate()
-            }
+            user.blockedSenderCacheUpdater.requestUpdate()
         }
     }
 
@@ -254,7 +256,7 @@ extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        PushUpdater().update(with: userInfo)
+        dependencies.pushUpdater.update(with: userInfo)
         completionHandler(.newData)
     }
 
@@ -291,10 +293,6 @@ extension AppDelegate: UIApplicationDelegate {
 }
 
 extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
-    func currentApplicationState() -> UIApplication.State {
-        UIApplication.shared.applicationState
-    }
-
     func isUserStored() -> Bool {
         let users = dependencies.usersManager
         if users.hasUserName() || users.hasUsers() {
@@ -312,11 +310,12 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
     }
 
     func cleanAll(completion: @escaping () -> Void) {
+        guard dependencies.usersManager.hasUsers() else {
+            completion()
+            return
+        }
         Breadcrumbs.shared.add(message: "AppDelegate.cleanAll called", to: .randomLogout)
         dependencies.usersManager.clean().ensure {
-            let coreKeyMaker = self.dependencies.keyMaker
-            coreKeyMaker.wipeMainKey()
-            _ = coreKeyMaker.mainKeyExists()
             completion()
         }.cauterize()
     }
@@ -336,7 +335,6 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
         usersManager.run()
         usersManager.tryRestore()
 
-        #if !APP_EXTENSION
         DispatchQueue.global().async {
             usersManager.users.forEach {
                 $0.messageService.injectTransientValuesIntoMessages()
@@ -346,7 +344,6 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
         if let primaryUser = usersManager.firstUser {
             primaryUser.payments.storeKitManager.retryProcessingAllPendingTransactions(finishHandler: nil)
         }
-        #endif
     }
 }
 
@@ -396,39 +393,19 @@ extension AppDelegate {
         Analytics.shared.setup(isInDebug: false, environment: .production)
     #endif
 #endif
-
-        if !PMLog.isEnabled {
-            /**
-             We disable logs for builds that are distributed through the AppStore
-             to avoid high number of disk write operations.
-             */
-            PMLog.logsDirectory = nil
-        }
     }
 
     private func configureCrypto() {
         Crypto().initializeGoCryptoWithDefaultConfiguration()
     }
 
-    private func configureCoreFeatureFlags(launchArguments: [String]) {
-        FeatureFactory.shared.enable(&.observability)
-
-        FeatureFactory.shared.enable(&.externalSignup)
-        FeatureFactory.shared.enable(&.externalAccountConversion)
-
-        guard !launchArguments.contains("-testNoUnauthSessions") else { return }
-
-        FeatureFactory.shared.enable(&.unauthSession)
-
-        #if DEBUG
-        guard launchArguments.contains("-testUnauthSessionsWithHeader") else { return }
-        // this is only a test flag used before backend whitelists the app version
-        FeatureFactory.shared.enable(&.enforceUnauthSessionStrictVerificationOnBackend)
-        #endif
-    }
-
     private func configureCoreObservability() {
-        ObservabilityEnv.current.setupWorld(requestPerformer: PMAPIService.unauthorized)
+        ObservabilityEnv.current.setupWorld(
+            requestPerformer: PMAPIService.unauthorized(
+                keyMaker: dependencies.keyMaker,
+                userDefaults: dependencies.userDefaults
+            )
+        )
     }
 
     private func configureLanguage() {

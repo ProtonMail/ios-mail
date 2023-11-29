@@ -18,7 +18,7 @@
 import XCTest
 @testable import ProtonMail
 import CoreMedia
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 class BannerViewModelTests: XCTestCase {
     var sut: BannerViewModel!
@@ -28,7 +28,6 @@ class BannerViewModelTests: XCTestCase {
     var userManagerMock: UserManager!
     var apiServiceMock: APIServiceMock!
     var systemUpTimeMock: SystemUpTimeMock!
-    var mockFetchAttachment: MockFetchAttachment!
 
     override func setUp() {
         super.setUp()
@@ -37,7 +36,7 @@ class BannerViewModelTests: XCTestCase {
         markLegitimateHandlerMock = MockMarkLegitimateActionHandler()
         receiptHandlerMock = MockReceiptActionHandler()
         apiServiceMock = APIServiceMock()
-        userManagerMock = UserManager(api: apiServiceMock, role: .none)
+        userManagerMock = UserManager(api: apiServiceMock)
         systemUpTimeMock = SystemUpTimeMock(localServerTime: 0, localSystemUpTime: 0, systemUpTime: 0)
     }
 
@@ -177,7 +176,6 @@ class BannerViewModelTests: XCTestCase {
     }
 
     private func createSUT(mockMessage: MessageEntity) {
-        mockFetchAttachment = MockFetchAttachment()
         sut = BannerViewModel(shouldAutoLoadRemoteContent: false,
                               expirationTime: nil,
                               shouldAutoLoadEmbeddedImage: false,

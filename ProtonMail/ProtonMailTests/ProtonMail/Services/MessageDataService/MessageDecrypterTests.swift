@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_TestingToolkit
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreTestingToolkit
 import XCTest
 
 @testable import ProtonMail
@@ -155,7 +155,7 @@ final class MessageDecrypterTests: XCTestCase {
         let encryptedBody = try body.encrypt(
             withKey: mockUserData.userInfo.addressKeys[0],
             userKeys: mockUserData.userInfo.userPrivateKeys,
-            mailbox_pwd: mockUserData.mailboxPassword
+            mailboxPassphrase: mockUserData.mailboxPassword
         )
 
         return MessageEntity.make(mimeType: mimeType.rawValue, body: encryptedBody)

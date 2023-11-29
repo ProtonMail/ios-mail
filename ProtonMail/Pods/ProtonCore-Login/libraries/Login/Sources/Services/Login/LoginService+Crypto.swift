@@ -20,9 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
-import ProtonCore_Utilities
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
+import ProtonCoreUtilities
 
 extension LoginService {
     // Code take from Drive
@@ -66,7 +66,7 @@ extension LoginService {
                 let armored = CryptoGo.CryptoNewKeyFromArmored(privateKey, &error)
 
                 do {
-                    try armored?.unlock(passphrase.utf8)
+                    _ = try armored?.unlock(passphrase.utf8)
                     isValid = true
                 } catch {
                     // do nothing

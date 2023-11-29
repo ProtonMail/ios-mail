@@ -22,7 +22,7 @@
 
 import CoreData
 import Foundation
-import ProtonCore_Services
+import ProtonCoreServices
 import ProtonMailAnalytics
 
 final class ConversationDataServiceProxy: ConversationProvider {
@@ -41,7 +41,8 @@ final class ConversationDataServiceProxy: ConversationProvider {
          eventsService: EventsFetching,
          undoActionManager: UndoActionManagerProtocol,
          queueManager: QueueManager?,
-         contactCacheStatus: ContactCacheStatusProtocol) {
+         contactCacheStatus: ContactCacheStatusProtocol,
+         localConversationUpdater: LocalConversationUpdater) {
         self.apiService = api
         self.userID = userID
         self.contextProvider = contextProvider
@@ -54,17 +55,14 @@ final class ConversationDataServiceProxy: ConversationProvider {
                                                                eventsService: eventsService,
                                                                undoActionManager: undoActionManager,
                                                                contactCacheStatus: contactCacheStatus)
-
-        localConversationUpdater = LocalConversationUpdater(contextProvider: contextProvider, userID: userID.rawValue)
+        self.localConversationUpdater = localConversationUpdater
     }
 }
 
 private extension ConversationDataServiceProxy {
     // this is a workaround for the fact that just updating the ContextLabel won't trigger MailboxViewController's controllerDidChangeContent
     func updateContextLabelsInViewContext(for conversationIDs: [ConversationID], completion: @escaping () -> Void) {
-        let context = contextProvider.mainContext
-
-        context.perform {
+        contextProvider.performAndWaitOnRootSavingContext { context in
             let conversations = self.fetchLocalConversations(
                 withIDs: NSMutableSet(array: conversationIDs.map(\.rawValue)),
                 in: context

@@ -17,7 +17,7 @@
 
 import CoreData
 import Groot
-import ProtonCore_Crypto
+import ProtonCoreCrypto
 @testable import ProtonMail
 
 enum TestDataCreator {
@@ -174,6 +174,26 @@ enum TestDataCreator {
             "Signature": ""
         ]
         return [jsonDict, signedAndEncryptedJsonDict, signedJsonDict].toJSONString()
+    }
+
+    static func generateContactGroupTestData(
+        userID: UserID,
+        context: NSManagedObjectContext
+    ) -> Label {
+        let label = Label(context: context)
+        label.userID = userID.rawValue
+        label.name = String.randomString(20)
+        label.labelID = String.randomString(20)
+        label.color = "#007DC3"
+        label.isSoftDeleted = false
+        label.type = 2
+        label.sticky = 0
+        let email = Email(context: context)
+        let labelsOfEmail = email.mutableSetValue(forKey: "labels")
+        labelsOfEmail.add(label)
+        email.userID = userID.rawValue
+        email.email = "\(String.randomString(20))@pm.me"
+        return label
     }
 }
 

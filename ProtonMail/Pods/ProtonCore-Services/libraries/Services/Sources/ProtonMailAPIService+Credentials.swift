@@ -20,11 +20,11 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Doh
-import ProtonCore_Log
-import ProtonCore_Networking
-import ProtonCore_Observability
-import ProtonCore_Utilities
+import ProtonCoreDoh
+import ProtonCoreLog
+import ProtonCoreNetworking
+import ProtonCoreObservability
+import ProtonCoreUtilities
 
 // swiftlint:disable function_parameter_count
 

@@ -15,19 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Services
+import ProtonCoreServices
 
 enum FeatureFlagKey: String, CaseIterable {
     case appRating = "RatingIOSMail"
-    case sendRefactor = "SendMessageRefactor"
-    case protonUnreachableBanner = "ProtonUnreachableBanner"
+    case attachmentsPreview = "iOSAttachmentsPreviewIsEnabled"
+    case mailboxPrefetchSize = "iOSMailboxPrefetchSize"
     case modernizedCoreData = "ModernizedCoreData"
-    case scheduleSend = "ScheduledSendFreemium"
-    case senderImage = "ShowSenderImages"
+    case protonUnreachableBanner = "ProtonUnreachableBanner"
     case referralPrompt = "ReferralActionSheetShouldBePresentedIOS"
     case refetchEventsByTime = "iOSRefetchEventsByTime"
     case refetchEventsHourThreshold = "iOSRefetchEventsHourThreshold"
-    case mailboxPrefetchSize = "iOSMailboxPrefetchSize"
+    case scheduleSend = "ScheduledSendFreemium"
+    case senderImage = "ShowSenderImages"
+    case sendRefactor = "SendMessageRefactor"
 }
 
 // sourcery: mock
@@ -58,6 +59,18 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     enum FeatureFlagFetchingError: Error {
         case fetchingTooOften
         case selfIsReleased
+    }
+
+    func getFeatureFlags() async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            self.getFeatureFlags { error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume()
+                }
+            }
+        }
     }
 
     func getFeatureFlags(completion: ((Error?) -> Void)?) {

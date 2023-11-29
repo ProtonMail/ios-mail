@@ -1,4 +1,4 @@
-framework module ProtonCore_Hash {
+framework module ProtonCoreHash {
   umbrella header "ProtonCore-Hash-umbrella.h"
 
   export *

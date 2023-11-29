@@ -26,7 +26,6 @@ protocol ComposeViewDelegate: AnyObject {
     func composeViewWillPresentSubview()
     func composeViewWillDismissSubview()
 
-    func composeViewDidSizeChanged(_ size: CGSize, showPicker: Bool)
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeHeaderViewController,
                                                    contactGroup: ContactGroupVO,
                                                    callback: @escaping (([DraftEmailData]) -> Void))
@@ -35,7 +34,6 @@ protocol ComposeViewDelegate: AnyObject {
     func composeView(_ composeView: ComposeHeaderViewController, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker)
 
     func setupComposeFromMenu(for button: UIButton)
-    func composeViewPickFrom(_ composeView: ComposeHeaderViewController)
 
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
     func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?)

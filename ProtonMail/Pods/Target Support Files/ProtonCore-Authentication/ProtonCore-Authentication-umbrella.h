@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ProtonCore_AuthenticationVersionNumber;
-FOUNDATION_EXPORT const unsigned char ProtonCore_AuthenticationVersionString[];
+FOUNDATION_EXPORT double ProtonCoreAuthenticationVersionNumber;
+FOUNDATION_EXPORT const unsigned char ProtonCoreAuthenticationVersionString[];
 

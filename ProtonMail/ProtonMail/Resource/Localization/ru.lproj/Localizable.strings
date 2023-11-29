@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Ошибка отправки";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Письмо не удалось отправить. Письмо сохранено как черновик.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Тут ничего нет";
 
@@ -126,7 +123,7 @@
 "This folder is empty" = "Эта папка пуста";
 
 /* The title of empty inbox */
-"You are all caught up!" = "Ви в курсі всіх подій!";
+"You are all caught up!" = "Вы со всем разобрались!";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Время отдохнуть";
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Для отправки необходим хотя бы один получатель";
-
-/* Title */
-"Change sender address to…" = "Изменить адрес отправителя на...";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Перейдите на платный тариф для отправки с вашего адреса %@";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Подтвердить новый пароль почтового ящика";
 
-/* error when sending the message */
-"Unable to send the email" = "Невозможно отправить письмо";
-
 /* Title */
 "Star/unstar" = "Отметить как важное/неважное";
 
@@ -996,9 +987,6 @@
 "Cut" = "Вырезать";
 
 /* Title */
-"Compose to" = "Написать письмо";
-
-/* Title */
 "Add to contacts" = "Добавить в контакты";
 
 /* encryption lock description */
@@ -1244,9 +1232,6 @@
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Отправка сообщения…";
 
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Сообщение не может быть отправлено. По крайней мере один адрес электронной почты/домен получателя не существует или неправильно отформатирован.";
-
 /* The unread title of unread action button in mailbox view */
 "unread" = "непрочитанное";
 
@@ -1295,27 +1280,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Включите эту функцию для автозаполнения адресов электронной почты из контактов всех ваших авторизованных аккаунтов.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Установите PIN-код";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Введите новый PIN-код";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Введите PIN-код длиной не менее 4 символов и не более 21 символа.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "PIN-код слишком короткий";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "PIN-код слишком длинный";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Повторите PIN-код";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "PIN-коды должны совпадать!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "В случае блокировки сайтов Proton эта настройка позволяет приложению попробовать альтернативную сетевую маршрутизацию, чтобы достигнуть Proton, что может быть полезно для обхода брандмауэров или сетевых проблем. Для большей надёжности мы рекомендуем оставить эту настройку включённой. %1$@";
 
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "Выкл";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Изменить PIN-код";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Выполните повторную аутентификацию";
@@ -1821,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "Теперь вы можете выбирать и изменять действия на этой панели";
 
 /* Button to block a sender */
-"Block sender" = "Заблокировать отправителя";
+"Block messages from this sender" = "Block messages from this sender";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Заблокировать";
@@ -1990,6 +1951,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Ответить всем (на последнее сообщение)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "New message";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Настроить";
 
@@ -2023,15 +1987,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Включить";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Отключить автоматическое удаление?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Электронные письма, запланированные к удалению, останутся в папках Корзина и Спам.";
-
-/* Button to disable auto delete */
-"Disable" = "Отключить";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Улучшите тариф для автоматического удаления сообщений, находящихся в Корзине или Спаме более 30 дней.";
 
@@ -2062,6 +2017,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Custom email domains";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Sender changed";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Display name";
 
@@ -2082,6 +2043,39 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Изменить фото";
+
+/* The title of select all button for select all messages feature */
+"Select all" = "Select all";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Установите PIN-код";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Повторите PIN-код";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Введите новый PIN-код";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Введите PIN-код длиной не менее 4 символов и не более 21 символа.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN-код слишком короткий";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN-код слишком длинный";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN-коды должны совпадать!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Введите старый PIN-код ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Изменить PIN-код";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Отписаться от списка рассылки";

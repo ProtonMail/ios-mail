@@ -1,6 +1,7 @@
 {
   "name": "ProtonCore-ForceUpgrade",
-  "version": "9.3.0",
+  "module_name": "ProtonCoreForceUpgrade",
+  "version": "14.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "9.3.0"
+    "tag": "14.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -29,19 +30,21 @@
     "APPLICATION_EXTENSION_API_ONLY": "NO"
   },
   "dependencies": {
-    "ProtonCore-CoreTranslation": [
-      "9.3.0"
-    ],
     "ProtonCore-UIFoundations": [
-      "9.3.0"
+      "14.0.0"
     ],
     "ProtonCore-Networking": [
-      "9.3.0"
+      "14.0.0"
     ]
   },
   "default_subspecs": [
 
   ],
+  "resource_bundles": {
+    "Translations-ForceUpgrade": [
+      "libraries/ForceUpgrade/Sources/Shared/Resources/*"
+    ]
+  },
   "ios": {
     "source_files": [
       "libraries/ForceUpgrade/Sources/iOS/*.{h,m,swift}",
@@ -51,12 +54,5 @@
   "osx": {
     "source_files": "libraries/ForceUpgrade/Sources/Shared/*.{h,m,swift}"
   },
-  "testspecs": [
-    {
-      "name": "Tests",
-      "test_type": "unit",
-      "source_files": "libraries/ForceUpgrade/Tests/**/*"
-    }
-  ],
   "swift_version": "5.6"
 }

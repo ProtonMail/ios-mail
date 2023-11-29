@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 protocol BannerViewControllerDelegate: AnyObject {
@@ -44,7 +44,6 @@ final class BannerViewController: UIViewController {
     private(set) var expirationBanner: CompactBannerView?
     private(set) lazy var spamBanner = SpamBannerView()
     private(set) var receiptBanner: CompactBannerView?
-    private(set) var scheduledSendBanner: EditScheduledBanner?
 
     private(set) var displayedBanners: [BannerType: UIView] = [:] {
         didSet {
@@ -101,7 +100,7 @@ final class BannerViewController: UIViewController {
         }
         NotificationCenter.default
             .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
+                         selector: #selector(preferredContentSizeChanged),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
     }
@@ -304,7 +303,6 @@ final class BannerViewController: UIViewController {
         banner.configure(date: timeTuple.0, time: timeTuple.1) { [weak self] in
             self?.viewModel.editScheduledMessage?()
         }
-        scheduledSendBanner = banner
         addBannerView(type: .scheduledSend, shouldAddContainer: true, bannerView: banner)
     }
 
@@ -344,7 +342,7 @@ final class BannerViewController: UIViewController {
     }
 
     @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
+    private func preferredContentSizeChanged() {
         displayedBanners.forEach { key, view in
             switch key {
             case .imageProxyFailure:

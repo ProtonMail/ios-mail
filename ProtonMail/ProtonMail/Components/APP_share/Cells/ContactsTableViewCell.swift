@@ -22,8 +22,8 @@
 
 import Foundation
 import UIKit
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 
 /// Custom cell for Contact list, Group list and composer autocomplete
 final class ContactsTableViewCell: UITableViewCell, AccessibleCell {
@@ -47,6 +47,7 @@ final class ContactsTableViewCell: UITableViewCell, AccessibleCell {
         super.awakeFromNib()
         // 20 because the width is 40 hard coded
         shortName.layer.cornerRadius = 20
+        shortName.clipsToBounds = true
         shortName.backgroundColor = ColorProvider.InteractionWeak
         shortName.textAlignment = .center
         shortName.set(text: nil, preferredFont: .footnote)

@@ -27,8 +27,25 @@ class MessageObserver: NSObject, NSFetchedResultsControllerDelegate {
     private let singleMessageFetchedController: NSFetchedResultsController<Message>
     private var messageHasChanged: ((Message) -> Void)?
 
-    init(messageId: MessageID, messageService: MessageDataService) {
-        singleMessageFetchedController = messageService.fetchedMessageControllerForID(messageId)
+    init(messageID: MessageID, contextProvider: CoreDataContextProviderProtocol) {
+        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID.rawValue)
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(
+                key: Message.Attributes.time,
+                ascending: false
+            ),
+            NSSortDescriptor(
+                key: #keyPath(Message.order),
+                ascending: false
+            )
+        ]
+        singleMessageFetchedController = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: contextProvider.mainContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
     }
 
     func observe(messageHasChanged: @escaping (Message) -> Void) {

@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreUIFoundations
 import UIKit
 
 // MARK: Extended variable only for host app
@@ -48,14 +48,9 @@ extension MessageEntity {
 // MARK: Helper functions only for host app
 extension MessageEntity {
     var isAutoDeleting: Bool {
-        if UserInfo.isAutoDeleteEnabled
-            && (self.contains(location: .trash) || self.contains(location: .spam))
+        (self.contains(location: .trash) || self.contains(location: .spam))
             && expirationTime != nil
-            && flag.contains(.isExpirationTimeFrozen) == false {
-            return true
-        } else {
-            return false
-        }
+            && !flag.contains(.isExpirationTimeFrozen)
     }
 
     func getLocationImage(in labelID: LabelID,

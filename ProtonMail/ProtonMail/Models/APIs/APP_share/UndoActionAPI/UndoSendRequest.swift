@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 struct UndoSendRequest: Request {
     let messageID: MessageID
@@ -35,7 +35,4 @@ struct UndoSendRequest: Request {
 }
 
 struct UndoSendResponse: APIDecodableResponse {
-    var code: Int?
-    var error: String?
-    var details: HumanVerificationDetails?
 }

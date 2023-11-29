@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import Foundation
 import fusion
 
@@ -34,7 +36,7 @@ public final class CountrySelectorRobot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func countrySelectorScreenIsShown() -> CountrySelectorRobot {
-            otherElement(searchId).wait().checkExists()
+            otherElement(searchId).waitUntilExists().checkExists()
             return CountrySelectorRobot()
         }
     }
@@ -49,3 +51,5 @@ public final class CountrySelectorRobot: CoreElements {
         return RecoveryRobot()
     }
 }
+
+#endif

@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "发送失败";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "邮件发送失败，已存为草稿。";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "暂无内容";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "需要至少一位收件人";
-
-/* Title */
-"Change sender address to…" = "将发件人地址改为…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "开通付费账户方可从 %@ 地址发送邮件";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "确认新邮箱密码";
 
-/* error when sending the message */
-"Unable to send the email" = "无法发送电子邮件";
-
 /* Title */
 "Star/unstar" = "星标/取消星标";
 
@@ -996,9 +987,6 @@
 "Cut" = "剪切";
 
 /* Title */
-"Compose to" = "写信给";
-
-/* Title */
 "Add to contacts" = "添加到联系人";
 
 /* encryption lock description */
@@ -1244,9 +1232,6 @@
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "正在发送邮件…";
 
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "部分收件人的邮箱地址/域名不存在或格式不正确，因此无法发送邮件。";
-
 /* The unread title of unread action button in mailbox view */
 "unread" = "未读";
 
@@ -1295,27 +1280,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "开启后您登录的所有账户通讯录中的邮箱地址都可自动补全。";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "设置口令";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "输入新口令";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "请输入 4 至 21 个字符的口令，用于打开应用时验证身份。";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "口令太短";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "口令太长";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "确认口令";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "两次输入的口令必须一致！";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "当 Proton 网站遭到封禁时，此选项允许程序改用其他线路连接 Proton 以绕过防火墙或规避网络故障。推荐开启以增强连接稳定性。%1$@";
 
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "关";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "更改口令";
 
 /* The title of re auth alert */
 "Re-authenticate" = "重新验证";
@@ -1821,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "现已支持选择并排列此栏中的操作";
 
 /* Button to block a sender */
-"Block sender" = "屏蔽发件人";
+"Block messages from this sender" = "阻止来自该发件人的邮件";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "屏蔽";
@@ -1990,6 +1951,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "回复所有人（最后一封邮件）";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "撰写邮件";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "定制";
 
@@ -2023,15 +1987,6 @@
 /* Button to enable encrypted search */
 "Enable" = "启用";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "关闭自动删除？";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "计划删除的邮件将会保留在废件箱和垃圾邮件文件夹内。";
-
-/* Button to disable auto delete */
-"Disable" = "关闭";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "升级账户即可自动删除归入垃圾邮件或废件箱超过 30 天的邮件。";
 
@@ -2062,20 +2017,26 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "自有域名";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "发件地址已更改";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "此邮件原先的发件地址已不再有效，邮件将由您的默认地址 %@ 发送。";
+
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Display name";
+"Display name" = "显示名称";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "名";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "Last name";
+"Last name" = "姓";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Display name field cannot be empty";
+"Display name field cannot be empty" = "显示名称字段不能为空";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "联系人姓名太长";
 
 /* The button text for add profile picture */
 "Add photo" = "添加照片";
@@ -2083,11 +2044,44 @@
 /* The button text for edit profile picture */
 "Edit photo" = "编辑照片";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "Select all";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "禁用 PIN 码";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "设置口令";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "确认口令";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "输入新口令";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "请输入 4 至 21 个字符的口令，用于打开应用时验证身份。";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "口令太短";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "口令太长";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "两次输入的口令必须一致！";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "请输入旧PIN码 ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "更改口令";
+
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "取消订阅";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "取消订阅？";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "这将使您从邮件列表中取消订阅。发件人将收到通知，不再向该地址发送电子邮件。";

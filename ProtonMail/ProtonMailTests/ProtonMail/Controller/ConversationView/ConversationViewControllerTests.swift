@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_TestingToolkit
-import ProtonCore_UIFoundations
+import ProtonCoreTestingToolkit
+import ProtonCoreUIFoundations
 @testable import ProtonMail
 import XCTest
 
@@ -36,7 +36,7 @@ class ConversationViewControllerTests: XCTestCase {
         let fakeConversation = ConversationEntity(Conversation(context: contextProvider.viewContext))
         let coordinatorMock = MockConversationCoordinator(conversation: fakeConversation)
         let apiMock = APIServiceMock()
-        let fakeUser = UserManager(api: apiMock, role: .none)
+        let fakeUser = UserManager(api: apiMock)
         let connectionMonitor = MockConnectionMonitor()
         notificationCenterMock = NotificationCenter()
         internetStatusProviderMock = InternetConnectionStatusProvider(connectionMonitor: connectionMonitor)

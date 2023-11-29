@@ -15,11 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 final class ToolbarCustomizeSpotlightView: UIView {
-    private var dismissGesture: UITapGestureRecognizer?
     private let shadowView = SubviewsFactory.shadowView
     private let arrowView = SubviewsFactory.arrowView
     private let infoView = SubviewsFactory.infoView
@@ -84,7 +83,6 @@ final class ToolbarCustomizeSpotlightView: UIView {
     private func setupGesture() {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(dismiss))
         addGestureRecognizer(gesture)
-        self.dismissGesture = gesture
 
         customizeButton.addTarget(self, action: #selector(self.handleTap), for: .touchUpInside)
     }

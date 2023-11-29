@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Crypto
-import ProtonCore_Services
+import ProtonCoreCrypto
+import ProtonCoreServices
 
 enum SendMessageBuilder {
 

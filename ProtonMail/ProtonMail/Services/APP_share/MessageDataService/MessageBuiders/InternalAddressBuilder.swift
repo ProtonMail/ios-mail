@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import PromiseKit
-import ProtonCore_Crypto
+import ProtonCoreCrypto
 
 /// Internal Address Builder for building the packages
 class InternalAddressBuilder: PackageBuilder {

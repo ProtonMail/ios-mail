@@ -20,9 +20,10 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 // Users API
+@available(*, deprecated)
 public class HumanVerifyAPI: APIClient {
 
     static let route: String = "/users"

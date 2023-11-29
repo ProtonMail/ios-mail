@@ -1,6 +1,6 @@
 import UIKit
 import MBProgressHUD
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 class SingleMessageContentViewController: UIViewController {
 
@@ -307,7 +307,7 @@ class SingleMessageContentViewController: UIViewController {
                              object: nil)
         NotificationCenter.default
             .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
+                         selector: #selector(preferredContentSizeChanged),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
     }
@@ -362,6 +362,9 @@ class SingleMessageContentViewController: UIViewController {
 
         viewModel.embedNonExpandedHeader = { [weak self] viewModel in
             let header = NonExpandedHeaderViewController(viewModel: viewModel)
+            header.contactTapped = {
+                self?.presentActionSheet(context: $0)
+            }
             header.observeShowDetails {
                 self?.expandButton()
             }
@@ -469,7 +472,7 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     @objc
-    private func willBecomeActive(_ notification: Notification) {
+    private func willBecomeActive() {
         if shouldReloadWhenAppIsActive {
             viewModel.downloadDetails()
             shouldReloadWhenAppIsActive = false
@@ -477,7 +480,7 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
+    private func preferredContentSizeChanged() {
         customView.preferredContentSizeChanged()
         if let expandedVC = headerViewController as? ExpandedHeaderViewController {
             expandedVC.preferredContentSizeChanged()

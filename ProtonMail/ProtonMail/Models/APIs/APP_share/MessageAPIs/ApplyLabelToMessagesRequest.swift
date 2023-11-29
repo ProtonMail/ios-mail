@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 struct ApplyLabelToMessagesRequest: Request {
     var labelID: LabelID
@@ -43,8 +43,5 @@ struct ApplyLabelToMessagesRequest: Request {
 }
 
 struct ApplyLabelToMessagesResponse: APIDecodableResponse {
-    var code: Int?
-    var error: String?
-    var details: HumanVerificationDetails?
     let undoToken: UndoTokenData?
 }

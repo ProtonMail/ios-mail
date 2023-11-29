@@ -33,7 +33,7 @@ protocol QueueHandler {
 // sourcery: mock
 protocol QueueHandlerRegister {
     func registerHandler(_ handler: QueueHandler)
-    func unregisterHandler(for userID: UserID)
+    func unregisterHandler(for userID: UserID, completion: (() -> Void)?)
 }
 
 /// This manager is used to handle the queue operations of all users.
@@ -145,9 +145,10 @@ final class QueueManager: Service, QueueHandlerRegister {
         }
     }
 
-    func unregisterHandler(for userID: UserID) {
+    func unregisterHandler(for userID: UserID, completion: (() -> Void)?) {
         self.queue.async {
             _ = self.handlers.removeValue(forKey: userID)
+            completion?()
         }
     }
 

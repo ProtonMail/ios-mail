@@ -60,33 +60,6 @@ extension NSError {
         hud.hide(animated: true, afterDelay: delay)
     }
 
-    class func alertMessageSentErrorToast() {
-        guard let window = UIApplication.shared.topMostWindow else {
-            return
-        }
-        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.detailsLabel.text = LocalString._messages_sending_failed_try_again
-        hud.removeFromSuperViewOnHide = true
-        hud.margin = 10
-        hud.offset.y = 250.0
-        hud.hide(animated: true, afterDelay: 2)
-    }
-
-    class func alertMessageSentError(details: String) {
-        guard let window = UIApplication.shared.topMostWindow else {
-            return
-        }
-        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.detailsLabel.text = LocalString._messages_sending_failed_try_again + " " + details
-        hud.removeFromSuperViewOnHide = true
-        hud.margin = 10
-        hud.offset.y = 250.0
-        let delay = UIApplication.isTestingBuild ? 10.0 : 3.0
-        hud.hide(animated: true, afterDelay: delay)
-    }
-
     @MainActor
     class func alertSavingDraftError(details: String) {
         details.alertToast()

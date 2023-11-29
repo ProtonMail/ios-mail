@@ -1,0 +1,16 @@
+
+"Delete account" = "Account verwijderen";
+
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Dit zal uw account en alle bijbehorende gegevens permanent verwijderen. U zult dit account niet kunnen heractiveren.";
+
+"Account deleted.\nLogging out..." = "Account verwijderd.\nU wordt uitgelogd...";
+
+"Close" = "Sluiten";
+
+"OK" = "OK";
+
+"A networking error has occured" = "Een netwerkfout deed zich voor";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "De Proton servers zijn onbereikbaar. Mogelijks door een verkeerde netwerkconfiguratie of Proton servers die buiten gebruik zijn of worden geblokkeerd";
+
+"Troubleshoot" = "Los probleem op";

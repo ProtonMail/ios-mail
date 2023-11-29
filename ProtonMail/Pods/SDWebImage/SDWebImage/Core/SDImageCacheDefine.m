@@ -13,6 +13,8 @@
 #import "UIImage+Metadata.h"
 #import "SDInternalMacros.h"
 
+#import <CoreServices/CoreServices.h>
+
 SDImageCoderOptions * _Nonnull SDGetDecodeOptionsFromContext(SDWebImageContext * _Nullable context, SDWebImageOptions options, NSString * _Nonnull cacheKey) {
     BOOL decodeFirstFrame = SD_OPTIONS_CONTAINS(options, SDWebImageDecodeFirstFrameOnly);
     NSNumber *scaleValue = context[SDWebImageContextImageScaleFactor];
@@ -28,16 +30,59 @@ SDImageCoderOptions * _Nonnull SDGetDecodeOptionsFromContext(SDWebImageContext *
     if (context[SDWebImageContextImageThumbnailPixelSize]) {
         thumbnailSizeValue = context[SDWebImageContextImageThumbnailPixelSize];
     }
+    NSString *typeIdentifierHint = context[SDWebImageContextImageTypeIdentifierHint];
+    NSString *fileExtensionHint;
+    if (!typeIdentifierHint) {
+        // UTI has high priority
+        fileExtensionHint = cacheKey.pathExtension; // without dot
+        if (fileExtensionHint.length == 0) {
+            // Ignore file extension which is empty
+            fileExtensionHint = nil;
+        }
+    }
     
-    SDImageCoderMutableOptions *mutableCoderOptions = [NSMutableDictionary dictionaryWithCapacity:2];
+    // First check if user provided decode options
+    SDImageCoderMutableOptions *mutableCoderOptions;
+    if (context[SDWebImageContextImageDecodeOptions] != nil) {
+        mutableCoderOptions = [NSMutableDictionary dictionaryWithDictionary:context[SDWebImageContextImageDecodeOptions]];
+    } else {
+        mutableCoderOptions = [NSMutableDictionary dictionaryWithCapacity:6];
+    }
+    
+    // Override individual options
     mutableCoderOptions[SDImageCoderDecodeFirstFrameOnly] = @(decodeFirstFrame);
     mutableCoderOptions[SDImageCoderDecodeScaleFactor] = @(scale);
     mutableCoderOptions[SDImageCoderDecodePreserveAspectRatio] = preserveAspectRatioValue;
     mutableCoderOptions[SDImageCoderDecodeThumbnailPixelSize] = thumbnailSizeValue;
-    mutableCoderOptions[SDImageCoderWebImageContext] = context;
-    SDImageCoderOptions *coderOptions = [mutableCoderOptions copy];
+    mutableCoderOptions[SDImageCoderDecodeTypeIdentifierHint] = typeIdentifierHint;
+    mutableCoderOptions[SDImageCoderDecodeFileExtensionHint] = fileExtensionHint;
     
-    return coderOptions;
+    return [mutableCoderOptions copy];
+}
+
+void SDSetDecodeOptionsToContext(SDWebImageMutableContext * _Nonnull mutableContext, SDWebImageOptions * _Nonnull mutableOptions, SDImageCoderOptions * _Nonnull decodeOptions) {
+    if ([decodeOptions[SDImageCoderDecodeFirstFrameOnly] boolValue]) {
+        *mutableOptions |= SDWebImageDecodeFirstFrameOnly;
+    } else {
+        *mutableOptions &= ~SDWebImageDecodeFirstFrameOnly;
+    }
+    
+    mutableContext[SDWebImageContextImageScaleFactor] = decodeOptions[SDImageCoderDecodeScaleFactor];
+    mutableContext[SDWebImageContextImagePreserveAspectRatio] = decodeOptions[SDImageCoderDecodePreserveAspectRatio];
+    mutableContext[SDWebImageContextImageThumbnailPixelSize] = decodeOptions[SDImageCoderDecodeThumbnailPixelSize];
+    
+    NSString *typeIdentifierHint = decodeOptions[SDImageCoderDecodeTypeIdentifierHint];
+    if (!typeIdentifierHint) {
+        NSString *fileExtensionHint = decodeOptions[SDImageCoderDecodeFileExtensionHint];
+        if (fileExtensionHint) {
+            typeIdentifierHint = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)fileExtensionHint, kUTTypeImage);
+            // Ignore dynamic UTI
+            if (UTTypeIsDynamic((__bridge CFStringRef)typeIdentifierHint)) {
+                typeIdentifierHint = nil;
+            }
+        }
+    }
+    mutableContext[SDWebImageContextImageTypeIdentifierHint] = typeIdentifierHint;
 }
 
 UIImage * _Nullable SDImageCacheDecodeImageData(NSData * _Nonnull imageData, NSString * _Nonnull cacheKey, SDWebImageOptions options, SDWebImageContext * _Nullable context) {
@@ -49,10 +94,8 @@ UIImage * _Nullable SDImageCacheDecodeImageData(NSData * _Nonnull imageData, NSS
     CGFloat scale = [coderOptions[SDImageCoderDecodeScaleFactor] doubleValue];
     
     // Grab the image coder
-    id<SDImageCoder> imageCoder;
-    if ([context[SDWebImageContextImageCoder] conformsToProtocol:@protocol(SDImageCoder)]) {
-        imageCoder = context[SDWebImageContextImageCoder];
-    } else {
+    id<SDImageCoder> imageCoder = context[SDWebImageContextImageCoder];
+    if (!imageCoder) {
         imageCoder = [SDImageCodersManager sharedManager];
     }
     
@@ -79,11 +122,9 @@ UIImage * _Nullable SDImageCacheDecodeImageData(NSData * _Nonnull imageData, NSS
     }
     if (image) {
         BOOL shouldDecode = !SD_OPTIONS_CONTAINS(options, SDWebImageAvoidDecodeImage);
-        if ([image.class conformsToProtocol:@protocol(SDAnimatedImage)]) {
-            // `SDAnimatedImage` do not decode
-            shouldDecode = NO;
-        } else if (image.sd_isAnimated) {
-            // animated image do not decode
+        BOOL lazyDecode = [coderOptions[SDImageCoderDecodeUseLazyDecoding] boolValue];
+        if (lazyDecode) {
+            // lazyDecode = NO means we should not forceDecode, highest priority
             shouldDecode = NO;
         }
         if (shouldDecode) {

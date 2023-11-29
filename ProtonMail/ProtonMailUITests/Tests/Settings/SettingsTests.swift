@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 class SettingsTests : FixtureAuthenticatedTestCase {
     
@@ -21,8 +21,8 @@ class SettingsTests : FixtureAuthenticatedTestCase {
         }
     }
 
-    func testEditAutoLockTime() {
-        MenuRobot()
+    func testEditAutoLockTime() async {
+        await MenuRobot()
             .settings()
             .pin()
             .enablePin()
@@ -47,10 +47,10 @@ class SettingsTests : FixtureAuthenticatedTestCase {
     }
 
     @MainActor
-    func testEnableAndDisablePinForMultipleAccounts() throws {
+    func testEnableAndDisablePinForMultipleAccounts() async throws {
         let secondAccount = createUser(scenarioName: scenario.name, plan: UserPlan.mailpro2022, isEnableEarlyAccess: false)
 
-        MenuRobot()
+        await MenuRobot()
             .accountsList()
             .manageAccounts()
             .addAccount()
@@ -76,6 +76,8 @@ class SettingsTests : FixtureAuthenticatedTestCase {
             .settings()
             .pin()
             .disablePin()
+            .enterPin(correctPin)
+            .continueWithCorrectPin()
             .navigateUpToSettings()
             .close()
             .backgroundAppWithoutPin()
@@ -112,4 +114,29 @@ class SettingsTests : FixtureAuthenticatedTestCase {
             .expectedTitleIsShown()
             .emptyListPlaceholderIsShown()
     }
+    
+    func testDefaultSwipeActions() {
+        MenuRobot()
+            .settings()
+            .openSwipeActions()
+            .selectLeftToRight()
+            .verify.leftToRightIsMoveToTrash()
+            .backButton()
+            .selectRightToLeft()
+            .verify.rightToLeftIsMoveToArchive()
+    }
+        
+    func testCustomSwipeActions() {
+        MenuRobot()
+            .settings()
+            .openSwipeActions()
+            .selectLeftToRight()
+            .selectMoveToSpam()
+            .verify.leftToRightIsMoveToSpam()
+            .backButton()
+            .selectRightToLeft()
+            .selectLabelAs()
+            .verify.rightToLeftIsLabelAs()
+    }
 }
+

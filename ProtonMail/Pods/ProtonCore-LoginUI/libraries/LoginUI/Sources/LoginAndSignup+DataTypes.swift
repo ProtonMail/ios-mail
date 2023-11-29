@@ -19,12 +19,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
-import ProtonCore_Login
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Payments
-import ProtonCore_PaymentsUI
+import ProtonCoreLogin
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCorePayments
+import ProtonCorePaymentsUI
 
 @available(*, deprecated, message: "SignupMode is deprecated")
 public enum SignupMode: Equatable {
@@ -106,3 +108,5 @@ public struct PaymentsParameters {
         self.reportBugAlertHandler = reportBugAlertHandler
     }
 }
+
+#endif

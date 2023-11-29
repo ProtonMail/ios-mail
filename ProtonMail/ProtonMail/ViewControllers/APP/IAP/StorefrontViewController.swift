@@ -21,8 +21,8 @@
 //  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
 import LifetimeTracker
-import ProtonCore_PaymentsUI
-import ProtonCore_UIFoundations
+import ProtonCorePaymentsUI
+import ProtonCoreUIFoundations
 import UIKit
 
 class StorefrontViewController: UIViewController, LifetimeTrackable {

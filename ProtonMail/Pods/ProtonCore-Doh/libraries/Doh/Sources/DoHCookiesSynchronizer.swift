@@ -23,7 +23,7 @@ import Foundation
 
 final class DoHCookieSynchronizer {
     
-    weak var cookieStorage: HTTPCookieStorage?
+    let cookieStorage: HTTPCookieStorage
     weak var doh: DoH?
 
     init(cookieStorage: HTTPCookieStorage, doh: DoH) {
@@ -31,7 +31,10 @@ final class DoHCookieSynchronizer {
         self.doh = doh
     }
     
-    func synchronizeCookies(for host: ProductionHosts, with headers: [String: String]) {
+    func synchronizeCookies(
+        for host: ProductionHosts,
+        with headers: [String: String]
+    ) async {
         
         // The feature works as follows:
         // 1. Get the cookies for default host from the response headers
@@ -39,33 +42,42 @@ final class DoHCookieSynchronizer {
         // 3. Set cookies with the same properties for proxy domains
         // It works because backend always sets the cookies for the default host, never for proxy domain
         
-        guard let doh = doh, let cookieStorage = cookieStorage else { return }
+        guard let doh = doh else {
+            return
+        }
         
         let domains = doh.fetchAllProxyDomainUrls(for: host)
         // this ensures we don't do any unnecessary work if no proxy domain is in use
-        guard !domains.isEmpty else { return }
+        guard !domains.isEmpty else {
+            return
+        }
         
         let url = host.url
-        
-        let newCookies = HTTPCookie.cookies(withResponseHeaderFields: headers, for: url)
-        cookieStorage.setCookies(newCookies, for: url, mainDocumentURL: url)
-        
-        guard let cookies = cookieStorage.cookies(for: url) else { return }
-        
-        for domain in domains {
-            let domainCookies = cookies.compactMap { cookie -> HTTPCookie? in
-                guard var properties = cookie.properties else { return nil }
-                if properties[.domain] != nil {
-                    properties[.domain] = domain
-                }
-                if properties[.originURL] != nil {
-                    properties[.originURL] = domain
-                }
-                guard let newCookie = HTTPCookie(properties: properties) else { return nil }
-                return newCookie
+
+        await MainActor.run { [weak self] in
+            let newCookies = HTTPCookie.cookies(withResponseHeaderFields: headers, for: url)
+            self?.cookieStorage.setCookies(newCookies, for: url, mainDocumentURL: url)
+
+            guard let cookieDicts = self?.cookieStorage.cookies(for: url)?.map(\.properties) else {
+                return
             }
-            guard let domainUrl = URL(string: doh.hostUrl(for: domain, proxying: host)) else { continue }
-            cookieStorage.setCookies(domainCookies, for: domainUrl, mainDocumentURL: nil)
+
+            for domain in domains {
+                let domainCookies = cookieDicts.compactMap { properties -> HTTPCookie? in
+                    guard var properties else { return nil }
+
+                    if properties[.domain] != nil {
+                        properties[.domain] = domain as NSString
+                    }
+                    if properties[.originURL] != nil {
+                        properties[.originURL] = domain as NSString
+                    }
+                    guard let newCookie = HTTPCookie(properties: properties) else { return nil }
+                    return newCookie
+                }
+                guard let domainUrl = URL(string: doh.hostUrl(for: domain, proxying: host)) else { continue }
+                self?.cookieStorage.setCookies(domainCookies, for: domainUrl, mainDocumentURL: nil)
+            }
         }
     }
 }

@@ -20,9 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Services
+import ProtonCoreServices
 import SkeletonView
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 class SkeletonViewController: ProtonMailTableViewController {
@@ -57,7 +57,7 @@ class SkeletonViewController: ProtonMailTableViewController {
         self.tableView.isScrollEnabled = false
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.separatorColor = ColorProvider.InteractionWeak
-        self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
+        self.tableView.registerCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         self.tableView.backgroundColor = ColorProvider.BackgroundNorm
 
         guard

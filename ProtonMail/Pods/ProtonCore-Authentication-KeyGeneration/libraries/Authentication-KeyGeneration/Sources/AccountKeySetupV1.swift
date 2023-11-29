@@ -19,13 +19,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
-import OpenPGP
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
 import Foundation
-import ProtonCore_Authentication
-import ProtonCore_DataModel
-import ProtonCore_Utilities
+import ProtonCoreAuthentication
+import ProtonCoreDataModel
+import ProtonCoreUtilities
 
 @available(*, deprecated, renamed: "AccountKeySetupV2", message: "keep this until AccountKeySetupV2 is fully tested")
 final class AccountKeySetupV1 {
@@ -49,7 +48,7 @@ final class AccountKeySetupV1 {
     func generateAccountKey(addresses: [Address], password: String) throws -> GeneratedAccountKeyV1 {
         
         /// generate key salt 128 bits
-        let newPasswordSalt: Data = PMNOpenPgp.randomBits(PasswordSaltSize.accountKey.int32Bits)
+        let newPasswordSalt: Data = try PasswordHash.random(bits: PasswordSaltSize.accountKey.int32Bits)
         
         /// generate key hashed password.
         let newPassphrase = PasswordHash.passphrase(password, salt: newPasswordSalt)
@@ -69,7 +68,7 @@ final class AccountKeySetupV1 {
 
         // for the login password needs to set 80 bits
         // accept the size in bytes for some reason so alwas divide by 8
-        let newSaltForKey: Data = PMNOpenPgp.randomBits(PasswordSaltSize.login.int32Bits)
+        let newSaltForKey: Data = try PasswordHash.random(bits: PasswordSaltSize.login.int32Bits)
 
         // generate new verifier
         guard let authForKey = try SrpAuthForVerifier(password, modulus, newSaltForKey) else {

@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 import WebKit
 
@@ -94,7 +94,7 @@ class HtmlEditorBehaviour: NSObject {
         updateFontSize()
         NotificationCenter.default
             .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
+                         selector: #selector(preferredContentSizeChanged),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
 
@@ -121,7 +121,7 @@ class HtmlEditorBehaviour: NSObject {
     }
 
     @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
+    private func preferredContentSizeChanged() {
         updateFontSize()
     }
 

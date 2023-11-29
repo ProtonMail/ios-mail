@@ -7,6 +7,9 @@
 
 import CoreGraphics
 import Foundation
+
+// MARK: - PointValueProvider
+
 /// A `ValueProvider` that returns a CGPoint Value
 public final class PointValueProvider: ValueProvider {
 
@@ -16,6 +19,7 @@ public final class PointValueProvider: ValueProvider {
   public init(block: @escaping PointValueBlock) {
     self.block = block
     point = .zero
+    identity = UUID()
   }
 
   /// Initializes with a single point.
@@ -23,6 +27,7 @@ public final class PointValueProvider: ValueProvider {
     self.point = point
     block = nil
     hasUpdate = true
+    identity = [point.x, point.y]
   }
 
   // MARK: Public
@@ -39,10 +44,10 @@ public final class PointValueProvider: ValueProvider {
   // MARK: ValueProvider Protocol
 
   public var valueType: Any.Type {
-    Vector3D.self
+    LottieVector3D.self
   }
 
-  public var storage: ValueProviderStorage<Vector3D> {
+  public var storage: ValueProviderStorage<LottieVector3D> {
     if let block = block {
       return .closure { frame in
         self.hasUpdate = false
@@ -66,4 +71,13 @@ public final class PointValueProvider: ValueProvider {
   private var hasUpdate = true
 
   private var block: PointValueBlock?
+  private let identity: AnyHashable
+}
+
+// MARK: Equatable
+
+extension PointValueProvider: Equatable {
+  public static func ==(_ lhs: PointValueProvider, _ rhs: PointValueProvider) -> Bool {
+    lhs.identity == rhs.identity
+  }
 }

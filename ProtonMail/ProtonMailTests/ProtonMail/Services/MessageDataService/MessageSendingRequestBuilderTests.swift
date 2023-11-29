@@ -16,21 +16,19 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
-import ProtonCore_TestingToolkit
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import XCTest
 
 class MessageSendingRequestBuilderTests: XCTestCase {
 
     var sut: MessageSendingRequestBuilder!
-    private var mockFetchAttachment: MockFetchAttachment!
     private var context: NSManagedObjectContext!
     private var mockApi: APIServiceMock!
 
-    let testBody = "body".data(using: .utf8)!
     let testSession = "session".data(using: .utf8)!
     let algo: Algorithm = .AES256
     var testPublicKey: CryptoKey!
@@ -38,9 +36,8 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        mockFetchAttachment = MockFetchAttachment()
         mockApi = .init()
-        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment, apiService: mockApi))
+        sut = MessageSendingRequestBuilder(dependencies: .init(apiService: mockApi))
         testPublicKey = try XCTUnwrap(CryptoGo.CryptoKey(fromArmored: OpenPGPDefines.publicKey))
     }
 
@@ -53,18 +50,13 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
-        mockFetchAttachment = nil
         context = nil
     }
 
-    func testUpdateBodyData_bodySessionAndBodyAlgorithm() {
-        let testData = "Body".data(using: .utf8)!
+    func testUpdate_bodySessionAndBodyAlgorithm() {
         let testSession = "Key".data(using: .utf8)!
         let testAlgo = Algorithm.TripleDES
-        sut.update(bodyData: testData,
-                   bodySession: testSession,
-                   algo: testAlgo)
-        XCTAssertEqual(sut.bodyDataPacket, testData)
+        sut.update(bodySession: testSession, algo: testAlgo)
         XCTAssertEqual(sut.bodySessionKey, testSession)
         XCTAssertEqual(sut.bodySessionAlgo, testAlgo)
     }
@@ -114,7 +106,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     func testContains() throws {
-        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment, apiService: mockApi))
         XCTAssertTrue(sut.addressSendPreferences.isEmpty)
         XCTAssertFalse(sut.contains(type: .pgpMIME))
         let testPreferences = SendPreferences(encrypt: true,
@@ -165,16 +156,12 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         XCTAssertTrue(sut.hasPlainText)
     }
 
-    func testEncodedBody() {
-        let testBody = "Body".data(using: .utf8)!
+    func testEncodedSession() {
         let testSessionKey = "Key".data(using: .utf8)!
         let testEncodedSession = testSessionKey.base64EncodedString(options: .init(rawValue: 0))
 
-        sut.update(bodyData: testBody,
-                   bodySession: testSessionKey,
-                   algo: .AES256)
+        sut.update(bodySession: testSessionKey, algo: .AES256)
 
-        XCTAssertEqual(sut.bodyDataPacket, testBody)
         XCTAssertEqual(sut.bodySessionKey, testSessionKey)
         XCTAssertEqual(sut.encodedSessionKey, testEncodedSession)
     }
@@ -221,35 +208,13 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     func testPreparePackages() throws {
         let key = Key(keyID: "1",
                       privateKey: OpenPGPDefines.privateKey)
-        let encrypted = try "test".encrypt(withKey: key, userKeys: [], mailbox_pwd: OpenPGPDefines.passphrase)
+        let encrypted = try "test".encrypt(withKey: key, userKeys: [], mailboxPassphrase: OpenPGPDefines.passphrase)
 
         let (keyPacket, dataPacket) = try sut.preparePackages(encrypted: encrypted)
 
         let splitMsg = CryptoGo.CryptoNewPGPSplitMessageFromArmored(encrypted, nil)
         XCTAssertEqual(keyPacket, splitMsg?.keyPacket)
         XCTAssertEqual(dataPacket, splitMsg?.dataPacket)
-    }
-
-    func testClearBodyPackage() throws {
-        XCTAssertNil(sut.clearBodyPackage)
-        let plainTextPreference = SendPreferences(encrypt: false,
-                                                  sign: false,
-                                                  pgpScheme: .cleartextInline,
-                                                  mimeType: .plainText,
-                                                  publicKeys: nil,
-                                                  isPublicKeyPinned: false,
-                                                  hasApiKeys: false,
-                                                  hasPinnedKeys: false,
-                                                  error: nil)
-        sut.add(email: testEmail, sendPreferences: plainTextPreference)
-        XCTAssertNil(sut.clearBodyPackage)
-
-        setupTestBody()
-
-        XCTAssertNotNil(sut.clearBodyPackage)
-        let result = try XCTUnwrap(sut.clearBodyPackage)
-        XCTAssertEqual(result.algo, algo)
-        XCTAssertEqual(result.key, testSession.base64EncodedString())
     }
 
     func testGeneratePackageBuilder_noAddress_emptyBuilder() throws {
@@ -297,53 +262,8 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         XCTAssertThrowsError(try sut.generatePackageBuilder())
     }
 
-    func testGeneratePackageBuilder_addressWithPlainText() throws {
-        let internalPreference = SendPreferences(encrypt: false,
-                                                 sign: false,
-                                                 pgpScheme: .proton,
-                                                 mimeType: .plainText,
-                                                 publicKeys: nil,
-                                                 isPublicKeyPinned: false,
-                                                 hasApiKeys: false,
-                                                 hasPinnedKeys: false,
-                                                 error: nil)
-        sut.add(email: testEmail, sendPreferences: internalPreference)
-        setupTestBody()
-
-        let testPassphrase = OpenPGPDefines.passphrase
-        let testKey = Key(keyID: "1",
-                          privateKey: OpenPGPDefines.privateKey)
-
-        let expectation1 = expectation(description: "closure called")
-        sut.buildPlainText(senderKey: testKey,
-                           passphrase: testPassphrase,
-                           userKeys: [],
-                           keys: [testKey]).done { _ in
-            XCTAssertNotNil(self.sut.plainTextSessionAlgo)
-            XCTAssertNotNil(self.sut.plainTextSessionKey)
-            XCTAssertNotNil(self.sut.plainTextDataPackage)
-
-            let result = try self.sut.generatePackageBuilder()
-
-            XCTAssertFalse(result.isEmpty)
-            XCTAssertEqual(result.count, 1)
-            let builder = try XCTUnwrap(result.first as? InternalAddressBuilder)
-            XCTAssertEqual(builder.sendPreferences, internalPreference)
-            XCTAssertEqual(builder.email, self.testEmail)
-            XCTAssertEqual(builder.sendType, .proton)
-            XCTAssertEqual(builder.session, self.sut.plainTextSessionKey)
-            XCTAssertEqual(builder.algo, self.sut.plainTextSessionAlgo)
-
-            expectation1.fulfill()
-        }.catch { error in
-            XCTFail("\(error)")
-        }
-        waitForExpectations(timeout: 2, handler: nil)
-    }
-
     func testGeneratePackageBuilder_EOAddress() throws {
         let testEOPassword = Passphrase(value: "EO PWD")
-        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment, apiService: mockApi))
         sut.set(password: testEOPassword, hint: nil)
 
         let eoPreference = SendPreferences(encrypt: false,
@@ -371,8 +291,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     func testGeneratePackageBuilder_ClearAddress() throws {
-        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment, apiService: mockApi))
-
         let clearPreference = SendPreferences(encrypt: false,
                                               sign: false,
                                               pgpScheme: .cleartextInline,
@@ -417,90 +335,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         XCTAssertEqual(builder.algo, sut.bodySessionAlgo)
     }
 
-    func testGeneratePackageBuilder_PGPMIMEaddress() throws {
-        let pgpMIMEPreference = SendPreferences(encrypt: true,
-                                                sign: true,
-                                                pgpScheme: .pgpMIME,
-                                                mimeType: .mime,
-                                                publicKeys: testPublicKey,
-                                                isPublicKeyPinned: false,
-                                                hasApiKeys: false,
-                                                hasPinnedKeys: false,
-                                                error: nil)
-        sut.add(email: testEmail, sendPreferences: pgpMIMEPreference)
-        setupTestBody()
-
-        let testPassphrase = OpenPGPDefines.passphrase
-        let testKey = Key(keyID: "1",
-                          privateKey: OpenPGPDefines.privateKey)
-
-        let expectation1 = expectation(description: "closure called")
-
-        sut.buildMime(senderKey: testKey,
-                      passphrase: testPassphrase,
-                      userKeys: [],
-                      keys: [testKey],
-                      in: context).done { _ in
-            XCTAssertNotNil(self.sut.mimeDataPackage)
-            XCTAssertNotNil(self.sut.mimeSessionAlgo)
-            XCTAssertNotNil(self.sut.mimeSessionKey)
-
-            let result = try self.sut.generatePackageBuilder()
-
-            XCTAssertFalse(result.isEmpty)
-            XCTAssertEqual(result.count, 1)
-            let builder = try XCTUnwrap(result.first as? PGPMimeAddressBuilder)
-            XCTAssertEqual(builder.sendPreferences, pgpMIMEPreference)
-            XCTAssertEqual(builder.sendType, .pgpMIME)
-            XCTAssertEqual(builder.session, self.sut.mimeSessionKey)
-            XCTAssertEqual(builder.algo, self.sut.mimeSessionAlgo)
-
-            expectation1.fulfill()
-        }.catch { _ in
-            XCTFail("Should not throw error")
-        }
-        waitForExpectations(timeout: 2, handler: nil)
-    }
-
-    func testGeneratePackageBuilder_clearMIMEaddress() throws {
-        let clearMIMEPreference = SendPreferences(encrypt: false,
-                                                  sign: false,
-                                                  pgpScheme: .cleartextMIME,
-                                                  mimeType: .mime,
-                                                  publicKeys: nil,
-                                                  isPublicKeyPinned: false,
-                                                  hasApiKeys: false,
-                                                  hasPinnedKeys: false,
-                                                  error: nil)
-        sut.add(email: testEmail, sendPreferences: clearMIMEPreference)
-        setupTestBody()
-
-        let testPassphrase = OpenPGPDefines.passphrase
-        let testKey = Key(keyID: "1",
-                          privateKey: OpenPGPDefines.privateKey)
-
-        let expectation1 = expectation(description: "closure called")
-
-        sut.buildMime(senderKey: testKey,
-                      passphrase: testPassphrase,
-                      userKeys: [],
-                      keys: [testKey],
-                      in: context).done { _ in
-            let result = try self.sut.generatePackageBuilder()
-
-            XCTAssertFalse(result.isEmpty)
-            XCTAssertEqual(result.count, 1)
-            let builder = try XCTUnwrap(result.first as? ClearMimeAddressBuilder)
-            XCTAssertEqual(builder.sendPreferences, clearMIMEPreference)
-            XCTAssertEqual(builder.sendType, .cleartextMIME)
-
-            expectation1.fulfill()
-        }.catch { _ in
-            XCTFail("Should not throw error")
-        }
-        waitForExpectations(timeout: 2, handler: nil)
-    }
-
     func testGeneratePackageBuilder_inlinePGPAddress_withoutKey() throws {
         let inlinePGPPreference = SendPreferences(encrypt: false,
                                                   sign: true,
@@ -522,59 +356,64 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         XCTAssertEqual(builder.sendType, .cleartextInline)
     }
 
-    func testGeneratePackageBuilder_PGPMIMEaddress_withoutKey() throws {
-        let pgpMIMEPreference = SendPreferences(encrypt: false,
-                                                sign: false,
-                                                pgpScheme: .pgpMIME,
-                                                mimeType: .mime,
-                                                publicKeys: nil,
-                                                isPublicKeyPinned: false,
-                                                hasApiKeys: false,
-                                                hasPinnedKeys: false,
-                                                error: nil)
-        sut.add(email: testEmail, sendPreferences: pgpMIMEPreference)
+    func testGeneratePackageBuilder_inlinePGPAddress_withPublicKey_SignButNoEncrypt() throws {
+        let sendPreference = SendPreferences(
+            encrypt: false,
+            sign: true,
+            pgpScheme: .pgpInline,
+            mimeType: .html,
+            publicKeys: CryptoGo.CryptoKey(fromArmored: OpenPGPDefines.publicKey),
+            isPublicKeyPinned: false,
+            hasApiKeys: false,
+            hasPinnedKeys: false,
+            error: nil
+        )
+        sut.add(email: testEmail, sendPreferences: sendPreference)
         setupTestBody()
 
-        let testPassphrase = OpenPGPDefines.passphrase
-        let testKey = Key(keyID: "1",
-                          privateKey: OpenPGPDefines.privateKey)
-
-        let expectation1 = expectation(description: "closure called")
-
-        sut.buildMime(senderKey: testKey,
-                      passphrase: testPassphrase,
-                      userKeys: [],
-                      keys: [testKey],
-                      in: context).done { _ in
-            XCTAssertNotNil(self.sut.mimeDataPackage)
-            XCTAssertNotNil(self.sut.mimeSessionAlgo)
-            XCTAssertNotNil(self.sut.mimeSessionKey)
-
-            let result = try self.sut.generatePackageBuilder()
-
-            XCTAssertFalse(result.isEmpty)
-            XCTAssertEqual(result.count, 1)
-            let builder = try XCTUnwrap(result.first as? ClearMimeAddressBuilder)
-            XCTAssertEqual(builder.sendPreferences, pgpMIMEPreference)
-            XCTAssertEqual(builder.sendType, .cleartextMIME)
-
-            expectation1.fulfill()
-        }.catch { _ in
-            XCTFail("Should not throw error")
-        }
-        waitForExpectations(timeout: 2, handler: nil)
+        let result = try sut.generatePackageBuilder()
+        XCTAssertFalse(result.isEmpty)
+        XCTAssertEqual(result.count, 1)
+        let builder = try XCTUnwrap(result.first as? ClearAddressBuilder)
+        XCTAssertEqual(builder.sendPreferences, sendPreference)
+        XCTAssertEqual(builder.sendType, .cleartextInline)
     }
 
-    func testGeneratePackageBuilder_clearMIMEaddress_notCallBuildFunction() throws {
-        let clearMIMEPreference = SendPreferences(encrypt: true,
-                                                  sign: true,
-                                                  pgpScheme: .pgpMIME,
-                                                  mimeType: .mime,
-                                                  publicKeys: testPublicKey,
-                                                  isPublicKeyPinned: false,
-                                                  hasApiKeys: false,
-                                                  hasPinnedKeys: false,
-                                                  error: nil)
+    func testGeneratePackageBuilder_inlinePGPAddress_withPublicKey_SignAndEncrypt() throws {
+        let sendPreference = SendPreferences(
+            encrypt: true,
+            sign: true,
+            pgpScheme: .pgpInline,
+            mimeType: .html,
+            publicKeys: testPublicKey,
+            isPublicKeyPinned: false,
+            hasApiKeys: false,
+            hasPinnedKeys: false,
+            error: nil
+        )
+        sut.add(email: testEmail, sendPreferences: sendPreference)
+        setupTestBody()
+
+        let result = try sut.generatePackageBuilder()
+        XCTAssertFalse(result.isEmpty)
+        XCTAssertEqual(result.count, 1)
+        let builder = try XCTUnwrap(result.first as? PGPAddressBuilder)
+        XCTAssertEqual(builder.sendPreferences, sendPreference)
+        XCTAssertEqual(builder.sendType, .pgpInline)
+    }
+
+    func testGeneratePackageBuilder_clearMIMEAddress_notCallBuildFunction_willThrowError() throws {
+        let clearMIMEPreference = SendPreferences(
+            encrypt: true,
+            sign: true,
+            pgpScheme: .pgpMIME,
+            mimeType: .mime,
+            publicKeys: testPublicKey,
+            isPublicKeyPinned: false,
+            hasApiKeys: false,
+            hasPinnedKeys: false,
+            error: nil
+        )
         sut.add(email: testEmail, sendPreferences: clearMIMEPreference)
         setupTestBody()
 
@@ -606,8 +445,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     private func setupTestBody() {
-        sut.update(bodyData: testBody,
-                   bodySession: testSession,
-                   algo: algo)
+        sut.update(bodySession: testSession, algo: algo)
     }
 }

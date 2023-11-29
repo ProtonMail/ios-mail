@@ -22,10 +22,9 @@
 #if os(iOS)
 
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
-import ProtonCore_Utilities
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
+import ProtonCoreUtilities
 
 public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
 
@@ -55,7 +54,6 @@ public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
         self.signInBtn.roundCorner(8)
         self.avatar.roundCorner(2)
         self.shortNameView.roundCorner(8)
-        self.shortName.adjustsFontSizeToFitWidth = true
         self.contentView.backgroundColor = ColorProvider.BackgroundNorm
         self.name.textColor = ColorProvider.TextNorm
         self.mailAddress.textColor = ColorProvider.TextWeak
@@ -77,7 +75,12 @@ public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
         shortName.font = .adjustedFont(forTextStyle: .footnote, fontSize: 14)
         signInBtn.titleLabel?.font = .adjustedFont(forTextStyle: .subheadline)
         unread.font = .adjustedFont(forTextStyle: .footnote)
-        shortName.adjustsFontSizeToFitWidth = true
+
+        [shortName, name, mailAddress, signInBtn.titleLabel, unread].forEach { label in
+            label?.adjustsFontForContentSizeCategory = true
+            label?.adjustsFontSizeToFitWidth = true
+        }
+
     }
 
     public func config(data: AccountSwitcher.AccountData, delegate: AccountSwitchCellProtocol) {

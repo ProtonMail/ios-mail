@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 @testable import ProtonMail
 
 class LinkOpenValidator: LinkOpeningValidator {
@@ -86,8 +86,7 @@ class LinkOpeningValidatorTests: XCTestCase {
     func testFeneratePhishingAlertContent_withLongUrl_notFromSpam() {
         let urlString = "https://www.\(String.randomString(32)).ch\(String.randomString(200))"
         let url = URL(string: urlString)!
-        let expectedMsg = String(url.absoluteString.prefix(60) +
-        "\n...\n" + url.absoluteString.suffix(40))
+        let expectedMsg = "\(url.absoluteString.prefix(60))\n...\n\(url.absoluteString.suffix(40))"
 
         let result = sut.generatePhishingAlertContent(url, isFromPhishingMsg: false)
         XCTAssertEqual(result.0, LocalString._about_to_open_link)
@@ -97,13 +96,10 @@ class LinkOpeningValidatorTests: XCTestCase {
     func testFeneratePhishingAlertContent_withLongUrl_fromSpam() {
         let urlString = "https://www.\(String.randomString(32)).ch\(String.randomString(200))"
         let url = URL(string: urlString)!
-        let expectedMsg = String(url.absoluteString.prefix(60) +
-        "\n...\n" + url.absoluteString.suffix(40))
+        let expectedMsg = "\(url.absoluteString.prefix(60))\n...\n\(url.absoluteString.suffix(40))"
 
         let result = sut.generatePhishingAlertContent(url, isFromPhishingMsg: true)
-        XCTAssertEqual(result.0,
-                       LocalString._spam_open_link_title)
-        XCTAssertEqual(result.1,
-                       String(format: LocalString._spam_open_link_content, expectedMsg))
+        XCTAssertEqual(result.0, LocalString._spam_open_link_title)
+        XCTAssertEqual(result.1, String(format: LocalString._spam_open_link_content, expectedMsg))
     }
 }

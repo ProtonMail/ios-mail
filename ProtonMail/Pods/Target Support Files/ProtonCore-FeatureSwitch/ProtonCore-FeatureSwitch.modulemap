@@ -1,4 +1,4 @@
-framework module ProtonCore_FeatureSwitch {
+framework module ProtonCoreFeatureSwitch {
   umbrella header "ProtonCore-FeatureSwitch-umbrella.h"
 
   export *

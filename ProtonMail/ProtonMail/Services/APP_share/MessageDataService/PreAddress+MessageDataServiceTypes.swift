@@ -21,10 +21,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Hash
-import ProtonCore_Services
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreHash
+import ProtonCoreServices
 
 extension Data {
     var html2AttributedString: NSAttributedString? {
@@ -50,16 +50,22 @@ extension String {
 }
 
 final class PreContact {
+    enum SignStatus {
+        case sign
+        case doNotSign
+        case signingFlagNotFound
+    }
+
     let email: String
     let pgpKeys: [Data]
-    let sign: Bool
+    let sign: SignStatus
     let encrypt: Bool
     let scheme: String?
     let mimeType: String?
 
     init(email: String,
          pubKeys: [Data],
-         sign: Bool,
+         sign: SignStatus,
          encrypt: Bool,
          scheme: String?,
          mimeType: String?

@@ -19,17 +19,18 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Login
-import ProtonCore_UIFoundations
+import ProtonCoreLogin
+import ProtonCoreUIFoundations
 
 extension UIViewController {
     func showBanner(message: String, style: PMBannerNewStyle = .error, button: String? = nil, action: (() -> Void)? = nil, position: PMBannerPosition) {
         unlockUI()
         let banner = PMBanner(message: message, style: style, dismissDuration: Double.infinity)
-        banner.addButton(text: button ?? CoreString._hv_ok_button) { _ in
+        banner.addButton(text: button ?? LUITranslation._core_ok_button.l10n) { _ in
             action?()
             banner.dismiss()
         }
@@ -91,38 +92,38 @@ extension LoginErrorCapable {
         case let .generic(message: message, _, _):
             showBanner(message: message)
         case let .apiMightBeBlocked(message, _):
-            showBanner(message: message, button: CoreString._net_api_might_be_blocked_button) { [weak self] in
+            showBanner(message: message, button: LUITranslation._core_api_might_be_blocked_button.l10n) { [weak self] in
                 self?.onDohTroubleshooting()
             }
         case .externalAccountsNotSupported(let message, let title, _):
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: CoreString._ls_external_accounts_not_supported_popup_action_button, style: .default) { [weak self] _ in
+            alert.addAction(UIAlertAction(title: LUITranslation.external_accounts_not_supported_popup_action_button.l10n, style: .default) { [weak self] _ in
                 self?.onLearnMoreAboutExternalAccountsNotSupported()
             })
-            alert.addAction(UIAlertAction(title: CoreString._hv_cancel_button, style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: LUITranslation._core_cancel_button.l10n, style: .default, handler: nil))
             present(alert, animated: true)
         case .invalidSecondPassword:
-            showBanner(message: CoreString._ls_error_invalid_mailbox_password)
+            showBanner(message: LUITranslation.error_invalid_mailbox_password.l10n)
         case .invalidState:
-            showBanner(message: CoreString._ls_error_generic)
+            showBanner(message: LSTranslation._loginservice_error_generic.l10n)
         case .missingKeys:
-            let alert = UIAlertController(title: CoreString._ls_error_missing_keys_title, message: CoreString._ls_error_missing_keys_text, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: CoreString._ls_error_missing_keys_text_button, style: .default) { [weak self] _ in
+            let alert = UIAlertController(title: LUITranslation.error_missing_keys_title.l10n, message: LUITranslation.error_missing_keys_text.l10n, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: LUITranslation.error_missing_keys_text_button.l10n, style: .default) { [weak self] _ in
                 self?.onUserAccountSetupNeeded()
             })
-            alert.addAction(UIAlertAction(title: CoreString._hv_cancel_button, style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: LUITranslation._core_cancel_button.l10n, style: .cancel, handler: nil))
             present(alert, animated: true)
         case .needsFirstTimePasswordChange:
-            let alert = UIAlertController(title: CoreString._login_username_org_dialog_title, message: CoreString._login_username_org_dialog_message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: CoreString._login_username_org_dialog_action_button, style: .default) { [weak self] _ in
+            let alert = UIAlertController(title: LUITranslation.username_org_dialog_title.l10n, message: LUITranslation.username_org_dialog_message.l10n, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: LUITranslation.username_org_dialog_action_button.l10n, style: .default) { [weak self] _ in
                 self?.onFirstPasswordChangeNeeded()
             })
-            alert.addAction(UIAlertAction(title: CoreString._hv_cancel_button, style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: LUITranslation._core_cancel_button.l10n, style: .cancel, handler: nil))
             present(alert, animated: true)
         case .emailAddressAlreadyUsed:
-            showBanner(message: CoreString._su_error_email_already_used)
+            showBanner(message: LUITranslation.error_email_already_used.l10n)
         case .missingSubUserConfiguration:
-            showBanner(message: CoreString._su_error_missing_sub_user_configuration)
+            showBanner(message: LUITranslation.error_missing_sub_user_configuration.l10n)
         }
     }
     
@@ -169,48 +170,48 @@ extension SignUpErrorCapable {
         case .emailAddressAlreadyUsed:
             self.emailAddressAlreadyUsed()
         case .validationTokenRequest:
-            showBanner(message: CoreString._su_error_invalid_token_request)
+            showBanner(message: LUITranslation.error_invalid_token_request.l10n)
         case .invalidVerificationCode(let message):
             invalidVerificationCodeAlert(title: message)
         case .validationToken:
-            showBanner(message: CoreString._su_error_invalid_token)
+            showBanner(message: LUITranslation.error_invalid_token.l10n)
         case .randomBits:
-            showBanner(message: CoreString._su_error_create_user_failed)
+            showBanner(message: LUITranslation.error_create_user_failed.l10n)
         case .cantHashPassword:
-            showBanner(message: CoreString._su_error_invalid_hashed_password)
+            showBanner(message: LUITranslation.error_invalid_hashed_password.l10n)
         case .passwordEmpty:
-            showBanner(message: CoreString._su_error_password_empty)
+            showBanner(message: LUITranslation.error_password_empty.l10n)
             self.invalidPassword(reason: .notFulfilling(.notEmpty))
         case .passwordShouldHaveAtLeastEightCharacters:
-            showBanner(message: String(format: CoreString._su_error_password_too_short, NSNumber(8)))
+            showBanner(message: String(format: LUITranslation.error_password_too_short.l10n, NSNumber(8)))
             self.invalidPassword(reason: .notFulfilling(.atLeastEightCharactersLong))
         case .passwordNotEqual:
-            showBanner(message: CoreString._su_error_password_not_equal)
+            showBanner(message: LUITranslation.error_password_not_equal.l10n)
             self.invalidPassword(reason: .notEqual)
         case let .generic(message: message, _, _):
             showBanner(message: message)
         case let .apiMightBeBlocked(message, _):
-            showBanner(message: message, button: CoreString._net_api_might_be_blocked_button) { [weak self] in
+            showBanner(message: message, button: LUITranslation._core_api_might_be_blocked_button.l10n) { [weak self] in
                 self?.onDohTroubleshooting()
             }
         case .generateVerifier:
-            showBanner(message: CoreString._su_error_create_user_failed)
+            showBanner(message: LUITranslation.error_create_user_failed.l10n)
         case .unknown:
-            showBanner(message: CoreString._error_occured)
+            showBanner(message: LUITranslation.error_occured.l10n)
         }
     }
 
     private func invalidVerificationCodeAlert(title: String) {
         self.invalidVerificationCode(reason: .enter)
-        let message = CoreString._su_invalid_verification_alert_message
+        let message = LUITranslation.invalid_verification_alert_message.l10n
 
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let resendAction = UIAlertAction(title: CoreString._hv_verification_error_alert_resend, style: .default, handler: { _ in
+        let resendAction = UIAlertAction(title: LUITranslation.verification_error_alert_resend.l10n, style: .default, handler: { _ in
             self.invalidVerificationCode(reason: .resend)
         })
         resendAction.accessibilityLabel = "resendButton"
         alert.addAction(resendAction)
-        let changeEmailAction = UIAlertAction(title: CoreString._su_invalid_verification_change_email_button, style: .default, handler: { _ in
+        let changeEmailAction = UIAlertAction(title: LUITranslation.invalid_verification_change_email_button.l10n, style: .default, handler: { _ in
             self.invalidVerificationCode(reason: .changeEmail)
         })
         changeEmailAction.accessibilityLabel = "changeEmailButton"
@@ -257,3 +258,5 @@ extension Focusable {
         self.focusNoMore = true
     }
 }
+
+#endif

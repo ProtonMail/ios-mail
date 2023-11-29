@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ProtonCore_AccountSwitcherVersionNumber;
-FOUNDATION_EXPORT const unsigned char ProtonCore_AccountSwitcherVersionString[];
+FOUNDATION_EXPORT double ProtonCoreAccountSwitcherVersionNumber;
+FOUNDATION_EXPORT const unsigned char ProtonCoreAccountSwitcherVersionString[];
 

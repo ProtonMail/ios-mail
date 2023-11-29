@@ -46,8 +46,8 @@ final class ContactCombineViewModelTests: XCTestCase {
             XCTAssertEqual(item.status, cache.isCombineContactOn)
         }
 
-        XCTAssertNil(sut.output.sectionHeader(of: 0))
-        let footer = try XCTUnwrap(sut.output.sectionFooter(of: 0))
+        XCTAssertNil(sut.output.sectionHeader())
+        let footer = try XCTUnwrap(sut.output.sectionFooter())
         switch footer {
         case .left(let text):
             XCTAssertEqual(text, LocalString._settings_footer_of_combined_contact)

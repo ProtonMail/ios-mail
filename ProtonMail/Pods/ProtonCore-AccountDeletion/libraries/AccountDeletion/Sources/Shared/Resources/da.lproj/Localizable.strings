@@ -1,0 +1,16 @@
+
+"Delete account" = "Slet konto";
+
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Dette vil permanent slette din konto og alle data, der er knyttet til den. Du vil ikke kunne genaktivere denne konto.";
+
+"Account deleted.\nLogging out..." = "Konto slettet.\nLogger ud...";
+
+"Close" = "Luk";
+
+"OK" = "Ok";
+
+"A networking error has occured" = "Der er opstået en netværksfejl";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton-serverne kan ikke nås. Det kan skyldes forkert netværkskonfiguration, at Proton-servere ikke fungerer eller at Proton-servere er blokeret";
+
+"Troubleshoot" = "Fejlfind";

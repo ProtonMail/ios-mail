@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 final class UndoSendSettingViewModel: SettingsSingleCheckMarkVMProtocol {
 
@@ -47,11 +47,11 @@ final class UndoSendSettingViewModel: SettingsSingleCheckMarkVMProtocol {
         self.uiDelegate = uiDelegate
     }
 
-    func sectionHeader(of section: Int) -> NSAttributedString? {
+    func sectionHeader() -> NSAttributedString? {
         nil
     }
 
-    func sectionFooter(of section: Int) -> NSAttributedString? {
+    func sectionFooter() -> NSAttributedString? {
         let style = FontManager.CaptionWeak
         return LocalString._undo_send_description.apply(style: style)
     }

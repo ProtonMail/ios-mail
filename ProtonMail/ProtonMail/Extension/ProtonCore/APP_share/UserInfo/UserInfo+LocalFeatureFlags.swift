@@ -15,19 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 extension UserInfo {
-    static var isToolbarCustomizationEnable: Bool {
-        if ProcessInfo.isRunningUnitTests {
-            return true
-        }
-        if ProcessInfo.hasLaunchArgument(.disableToolbarSpotlight) {
-            return false
-        }
-        return true
-    }
-
     /// Swipe to show previous / next conversation or messages
     static var isConversationSwipeEnabled: Bool {
         #if DEBUG_ENTERPRISE
@@ -42,19 +32,12 @@ extension UserInfo {
         false
     }
 
-    static var isSenderImageEnabled: Bool {
-        return true
+
+    static var enableSelectAll: Bool {
+        UIApplication.isDebugOrEnterprise
     }
 
-    static var isBlockSenderEnabled: Bool {
-        true
-    }
-
-    static var isAutoDeleteEnabled: Bool {
-        #if DEBUG_ENTERPRISE
-        true
-        #else
-        true
-        #endif
+    static var isAppAccessResolverEnabled: Bool {
+        UIApplication.isDebugOrEnterprise
     }
 }

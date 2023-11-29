@@ -114,8 +114,7 @@ final class CoreDataStore {
                     message: "Error loading persistent store: \(err)",
                     dataProtectionStatus: dataProtectionStatus
                 )
-                userCachedStatus.signOut()
-                userCachedStatus.cleanGlobal()
+                userCachedStatus.cleanAllData()
                 throw error
             }
         }

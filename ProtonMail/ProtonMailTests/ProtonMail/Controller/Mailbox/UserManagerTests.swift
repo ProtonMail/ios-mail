@@ -17,39 +17,31 @@
 
 import XCTest
 @testable import ProtonMail
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreTestingToolkit
 
 class UserManagerTests: XCTestCase {
-    var apiServiceMock: APIServiceMock!
-    var sut: UserManager!
-    var defaultUserID: UserID = "1"
+    private var mockAppTelemetry: MockAppTelemetry!
+    private var userID: UserID!
+    private var sut: UserManager!
 
     override func setUp() {
         super.setUp()
-        apiServiceMock = APIServiceMock()
-        makeSUT(userID: defaultUserID)
+
+        mockAppTelemetry = .init()
+        userID = UserID(String.randomString(100))
+        sut = UserManager(api: APIServiceMock(), userID: userID.rawValue, appTelemetry: mockAppTelemetry)
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
-        apiServiceMock = nil
+        mockAppTelemetry = nil
+        userID = nil
     }
 
     func testGetUserID() {
-        let userID = UserID(String.randomString(100))
-        let fakeAuth = makeAuthCredential(userId: userID)
-        let userInfo = makeUserInfo(userId: userID)
-        let sut = UserManager(
-            api: apiServiceMock,
-            userInfo: userInfo,
-            authCredential: fakeAuth,
-            mailSettings: nil,
-            parent: nil,
-            globalContainer: .init()
-        )
         XCTAssertEqual(sut.userID, userID)
     }
 
@@ -62,49 +54,37 @@ class UserManagerTests: XCTestCase {
     }
 
     func testBecomeActiveUser_whenTelemetryForUserIsDisabled_disablesTelemetry() {
-        let userID = UserID(String.randomString(100))
-        let fakeAuth = makeAuthCredential(userId: userID)
-        let userInfo = makeUserInfo(userId: userID)
-        let mockAppTelemetry = MockAppTelemetry()
-
-        userInfo.telemetry = 0
-
-        let sut = UserManager(
-            api: apiServiceMock,
-            userInfo: userInfo,
-            authCredential: fakeAuth,
-            mailSettings: nil,
-            parent: nil,
-            appTelemetry: mockAppTelemetry,
-            globalContainer: .init()
-        )
+        sut.userInfo.telemetry = 0
 
         sut.becomeActiveUser()
-        XCTAssertFalse(mockAppTelemetry.enableWasCalled)
-        XCTAssertTrue(mockAppTelemetry.disableWasCalled)
+        XCTAssertFalse(mockAppTelemetry.enableStub.wasCalled)
+        XCTAssertTrue(mockAppTelemetry.disableStub.wasCalled)
     }
 
     func testBecomeActiveUser_whenTelemetryForUserIsEnabled_enablesTelemetry() {
-        let userID = UserID(String.randomString(100))
-        let fakeAuth = makeAuthCredential(userId: userID)
-        let userInfo = makeUserInfo(userId: userID)
-        let mockAppTelemetry = MockAppTelemetry()
-
-        userInfo.telemetry = 1
-
-        let sut = UserManager(
-            api: apiServiceMock,
-            userInfo: userInfo,
-            authCredential: fakeAuth,
-            mailSettings: nil,
-            parent: nil,
-            appTelemetry: mockAppTelemetry,
-            globalContainer: .init()
-        )
+        sut.userInfo.telemetry = 1
 
         sut.becomeActiveUser()
-        XCTAssertTrue(mockAppTelemetry.enableWasCalled)
-        XCTAssertFalse(mockAppTelemetry.disableWasCalled)
+        XCTAssertTrue(mockAppTelemetry.enableStub.wasCalled)
+        XCTAssertFalse(mockAppTelemetry.disableStub.wasCalled)
+    }
+
+    func testBecomeActiveUser_regardlessOfTelemerySetting_assignsTheUserToAnalytics() {
+        sut.userInfo.telemetry = Int.random(in: 0...1)
+
+        sut.becomeActiveUser()
+
+        XCTAssertEqual(mockAppTelemetry.assignUserStub.callCounter, 1)
+        XCTAssertEqual(mockAppTelemetry.assignUserStub.lastArguments?.a1, sut.userID)
+    }
+
+    func testResignAsActiveUser_regardlessOfTelemerySetting_clearsTheUserIDAssignedToAnalytics() {
+        sut.userInfo.telemetry = Int.random(in: 0...1)
+
+        sut.resignAsActiveUser()
+
+        XCTAssertEqual(mockAppTelemetry.assignUserStub.callCounter, 1)
+        XCTAssertNil(mockAppTelemetry.assignUserStub.lastArguments?.a1)
     }
 
     func testGetMessageToolbarActions() {
@@ -129,62 +109,5 @@ class UserManagerTests: XCTestCase {
         sut.listViewToolbarActions = [.labelAs, .print]
 
         XCTAssertEqual(sut.userInfo.listToolbarActions.actions, ["label", "print"])
-    }
-}
-
-private extension UserManagerTests {
-    func makeSUT(userID: UserID) {
-        let fakeAuth = makeAuthCredential(userId: userID)
-        let userInfo = makeUserInfo(userId: userID)
-        sut = UserManager(
-            api: apiServiceMock,
-            userInfo: userInfo,
-            authCredential: fakeAuth,
-            mailSettings: nil,
-            parent: nil,
-            globalContainer: .init()
-        )
-    }
-
-    func makeAuthCredential(userId: UserID) -> AuthCredential {
-        AuthCredential(
-            sessionID: "",
-            accessToken: "",
-            refreshToken: "",
-            userName: "",
-            userID: userId.rawValue,
-            privateKey: nil,
-            passwordKeySalt: nil
-        )
-    }
-
-    func makeUserInfo(userId: UserID) -> UserInfo {
-        UserInfo(
-            maxSpace: nil,
-            usedSpace: nil,
-            language: nil,
-            maxUpload: nil,
-            role: nil,
-            delinquent: nil,
-            keys: nil,
-            userId: userId.rawValue,
-            linkConfirmation: nil,
-            credit: nil,
-            currency: nil,
-            subscribed: nil
-        )
-    }
-}
-
-class MockAppTelemetry: AppTelemetry {
-    private(set) var enableWasCalled: Bool = false
-    private(set) var disableWasCalled: Bool = false
-
-    func enable() {
-        enableWasCalled = true
-    }
-
-    func disable() {
-        disableWasCalled = true
     }
 }

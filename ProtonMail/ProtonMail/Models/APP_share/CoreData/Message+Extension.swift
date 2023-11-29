@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
-import ProtonCore_Crypto
-import ProtonCore_DataModel
+import ProtonCoreCrypto
+import ProtonCoreDataModel
 
 extension Message {
     enum Attributes {
@@ -49,35 +49,6 @@ extension Message {
         // 2.0.0
         static let conversationID = "conversationID"
         static let isSoftDeleted = "isSoftDeleted"
-    }
-
-    // MARK: - variables
-
-    var allEmails: [String] {
-        var lists: [String] = []
-
-        if !toList.isEmpty {
-            let contactsInToList = Message.contactsToAddressesArray(toList)
-            if !contactsInToList.isEmpty {
-                lists.append(contentsOf: contactsInToList)
-            }
-        }
-
-        if !ccList.isEmpty {
-            let contactsInCCList = Message.contactsToAddressesArray(ccList)
-            if !contactsInCCList.isEmpty {
-                lists.append(contentsOf: contactsInCCList)
-            }
-        }
-
-        if !bccList.isEmpty {
-            let contactsInBCCList = Message.contactsToAddressesArray(bccList)
-            if !contactsInBCCList.isEmpty {
-                lists.append(contentsOf: contactsInBCCList)
-            }
-        }
-
-        return lists
     }
 
     @discardableResult
@@ -303,29 +274,6 @@ extension Message {
 
     // MARK: methods
 
-    func decryptBody(keys: [Key], userKeys: [ArmoredKey], passphrase: Passphrase) throws -> String? {
-        var firstError: Error?
-        var errorMessages: [String] = []
-        for key in keys {
-            do {
-                let addressKeyPassphrase = try key.passphrase(userPrivateKeys: userKeys, mailboxPassphrase: passphrase)
-                let decryptedBody = try body.decryptMessageWithSingleKeyNonOptional(ArmoredKey(value: key.privateKey),
-                                                                                    passphrase: addressKeyPassphrase)
-                return decryptedBody
-            } catch {
-                if firstError == nil {
-                    firstError = error
-                    errorMessages.append(error.localizedDescription)
-                }
-            }
-        }
-        return nil
-    }
-
-    func split() throws -> SplitMessage? {
-        return try body.split()
-    }
-
     func bodyToHtml() -> String {
         if isPlainText {
             return "<div>" + body.ln2br() + "</div>"
@@ -337,16 +285,6 @@ extension Message {
 
     var isPlainText: Bool {
         mimeType?.lowercased() == MimeType.textPlain.rawValue
-    }
-
-    var senderContactVO: ContactVO! {
-        var sender: Sender?
-        if let senderRaw = self.sender?.data(using: .utf8),
-           let decoded = try? JSONDecoder().decode(Sender.self, from: senderRaw) {
-            sender = decoded
-        }
-
-        return ContactVO(name: sender?.name ?? "", email: sender?.address ?? "")
     }
 
     var hasMetaData: Bool {

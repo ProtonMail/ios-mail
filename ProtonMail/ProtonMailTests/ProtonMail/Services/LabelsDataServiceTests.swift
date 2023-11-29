@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import XCTest
 
@@ -30,14 +30,12 @@ final class LabelsDataServiceTests: XCTestCase {
         super.setUp()
         mockApiService = APIServiceMock()
         mockContextProvider = MockCoreDataContextProvider()
-        let mockCacheService = MockCacheServiceProtocol()
 
-        sut = LabelsDataService(api: mockApiService,
-                                userID: UserID(userID),
-                                contextProvider: mockContextProvider,
-                                lastUpdatedStore: MockLastUpdatedStoreProtocol(),
-                                cacheService: mockCacheService,
-                                viewModeDataSource: ConversationStateService(viewMode: .singleMessage))
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { self.mockContextProvider }
+        let user = UserManager(api: mockApiService, globalContainer: globalContainer)
+
+        sut = LabelsDataService(userID: UserID(userID), dependencies: user.container)
     }
 
     override func tearDown() {

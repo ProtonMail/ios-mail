@@ -1,0 +1,16 @@
+
+"Delete account" = "Odstrániť účet";
+
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Týmto sa natrvalo vymaže váš účet a všetky jeho dáta. Tento účet už nebude možné znovu aktivovať.";
+
+"Account deleted.\nLogging out..." = "Účet bol odstránený.\nPrebieha odhlasovanie...";
+
+"Close" = "Zatvoriť";
+
+"OK" = "OK";
+
+"A networking error has occured" = "Vyskytla sa chyba siete";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Servery Proton sú nedostupné. Môže to byť spôsobené nesprávnou konfiguráciou siete, nefungovaním serverov Proton alebo blokovaním Proton serverov";
+
+"Troubleshoot" = "Riešenie problémov";

@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 extension UITextView {
@@ -52,17 +52,5 @@ extension UITextView {
         self.font = .preferredFont(for: textStyle, weight: weight)
         self.adjustsFontForContentSizeCategory = true
         self.textColor = textColor
-    }
-
-    func setStyledTextWithLink(text: String, textLink: String, linkUrl: String) {
-        let fullText = String.localizedStringWithFormat(text, textLink)
-        let attr = FontManager.CaptionWeak.lineBreakMode(.byWordWrapping)
-        let attributedString = NSMutableAttributedString(string: fullText, attributes: attr)
-        if let subrange = fullText.range(of: textLink) {
-            let nsRange = NSRange(subrange, in: fullText)
-            attributedString.addAttribute(.link, value: linkUrl, range: nsRange)
-            linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm as UIColor]
-        }
-        attributedText = attributedString
     }
 }

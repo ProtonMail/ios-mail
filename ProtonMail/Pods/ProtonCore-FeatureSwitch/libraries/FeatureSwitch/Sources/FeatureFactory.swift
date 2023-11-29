@@ -177,16 +177,18 @@ public class FeatureFactory {
     func isCoreInternal() -> Bool {
         #if DEBUG_CORE_INTERNALS
         return true
-        #endif
+        #else
         return false
+        #endif
     }
     
     /// macro environment check
     func isInternal() -> Bool {
         #if DEBUG_INTERNALS
         return true
-        #endif
+        #else
         return false
+        #endif
     }
 }
 

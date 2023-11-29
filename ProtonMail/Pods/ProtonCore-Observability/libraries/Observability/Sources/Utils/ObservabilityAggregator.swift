@@ -20,7 +20,7 @@
 //  along with ProtonCore. If not, see https://www.gnu.org/licenses/.
 //
 
-import ProtonCore_Utilities
+import ProtonCoreUtilities
 
 protocol ObservabilityAggregator {
     var aggregatedEvents: Atomic<[AggregableObservabilityEvent]> { get }

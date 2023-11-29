@@ -16,10 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import VCard
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
-import ProtonCore_Log
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
+import ProtonCoreLog
 
 #if !APP_EXTENSION
 import LifetimeTracker
@@ -50,12 +50,20 @@ class CardDataParser {
                     for vcardEmail in emails where email == vcardEmail.getValue() {
                         let group = vcardEmail.getGroup()
                         let encrypt = vcard.getPMEncrypt(group)
-                        let sign = vcard.getPMSign(group)
-                        let isSign = sign?.getValue() ?? "false" == "true" ? true : false
                         let keys = vcard.getKeys(group)
                         let isEncrypt = encrypt?.getValue() ?? "false" == "true" ? true : false
                         let schemeType = vcard.getPMScheme(group)
                         let mimeType = vcard.getPMMimeType(group)?.getValue()
+
+                        let sign = vcard.getPMSign(group)
+                        let signStatus: PreContact.SignStatus
+                        if sign?.getValue() == "true" {
+                            signStatus = .sign
+                        } else if sign?.getValue() == "false" {
+                            signStatus = .doNotSign
+                        } else {
+                            signStatus = .signingFlagNotFound
+                        }
 
                         var pubKeys: [Data] = []
                         for key in keys {
@@ -70,7 +78,7 @@ class CardDataParser {
                         let preContact = PreContact(
                             email: email,
                             pubKeys: pubKeys,
-                            sign: isSign,
+                            sign: signStatus,
                             encrypt: isEncrypt,
                             scheme: schemeType?.getValue(),
                             mimeType: mimeType

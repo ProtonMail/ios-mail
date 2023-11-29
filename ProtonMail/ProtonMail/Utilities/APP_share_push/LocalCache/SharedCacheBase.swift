@@ -23,7 +23,7 @@
 import Foundation
 
 class SharedCacheBase {
-    private let userDefaults: UserDefaults
+    let userDefaults: UserDefaults
 
     init(userDefaults: UserDefaults = UserDefaults(suiteName: Constants.AppGroup)!) {
         self.userDefaults = userDefaults

@@ -1,0 +1,4 @@
+
+"Network connection error" = "Kapcsolati hiba";
+
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "A Proton API-hoz való csatlakozás közben a TLS tanúsítvány ellenőrzése nem sikerült. Az internetkapcsolatát megfigyelhetik. Az adatai védelme érdekében, megakadályoztuk a Proton API-hoz való kapcsolódást.\nA bejelentkezéshez vagy a fiókja eléréshez váltson egy másik hálózati kapcsolatra majd próbálja meg újra.";

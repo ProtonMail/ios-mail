@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Poruka nije poslana";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Email failed to send. Message saved as draft.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Ovdje se nema što vidjeti";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Potreban je barem jedan primatelj za slanje";
-
-/* Title */
-"Change sender address to…" = "Promijeni adresu pošiljatelja u…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Nadogradite na plaćeni plan kako biste mogli slati s vaše %@ adrese";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Potvrdi novu lozinku sandučića e-pošte";
 
-/* error when sending the message */
-"Unable to send the email" = "Neuspješno slanje poruke e-pošte";
-
 /* Title */
 "Star/unstar" = "Postavi/ukloni zvjezdicu";
 
@@ -996,9 +987,6 @@
 "Cut" = "Cut";
 
 /* Title */
-"Compose to" = "Nova poruka za";
-
-/* Title */
 "Add to contacts" = "Dodaj u kontakte";
 
 /* encryption lock description */
@@ -1244,9 +1232,6 @@
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Slanje poruke…";
 
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Poruku nije moguće poslati. Najmanje jedna od adresa ili domena primatelja ne postoji ili je loše oblikovana.";
-
 /* The unread title of unread action button in mailbox view */
 "unread" = "nepročitano";
 
@@ -1295,27 +1280,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Postavite PIN kôd";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Enter new PIN code";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Unesite PIN kôd s najmanje 4 znaka i najviše 21 znak.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "PIN is too short";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "PIN is too long";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Ponovite PIN kôd";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "PIN kôdovi se moraju podudarati!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "U slučaju da su Protonove stranice blokirane, ova postavka omogućuje aplikaciji da isproba alternativno mrežno usmjeravanje do Protona, što može biti korisno u zaobilaženju vatrozida ili problema s mrežom. Preporučujemo da ovu postavku zadržite omogućenom radi veće pouzdanosti. %1$@";
 
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "Isklj";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Promijenite PIN kôd";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Ponovno autenticiraj";
@@ -1821,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "You can now choose and rearrange the actions in this bar";
 
 /* Button to block a sender */
-"Block sender" = "Block sender";
+"Block messages from this sender" = "Block messages from this sender";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Block";
@@ -1990,6 +1951,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Reply all (to last message)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "New message";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Prilagodi";
 
@@ -2023,15 +1987,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Omogući";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Disable auto-delete?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Emails scheduled for deletion will remain in the trash and spam folders.";
-
-/* Button to disable auto delete */
-"Disable" = "Onemogući";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days.";
 
@@ -2062,6 +2017,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Custom email domains";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Sender changed";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Display name";
 
@@ -2082,6 +2043,39 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Uredi sliku";
+
+/* The title of select all button for select all messages feature */
+"Select all" = "Select all";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Postavite PIN kôd";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Ponovite PIN kôd";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Enter new PIN code";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Unesite PIN kôd s najmanje 4 znaka i najviše 21 znak.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN is too short";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN is too long";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN kôdovi se moraju podudarati!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Please enter old pin code ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Promijenite PIN kôd";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Otkazati pretplatu s mailing liste";

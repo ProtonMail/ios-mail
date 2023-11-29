@@ -22,8 +22,8 @@
 // swiftlint:disable empty_string
 
 import Foundation
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 // Test API
 
@@ -99,3 +99,5 @@ class TestApi: Request {
     var method: HTTPMethod = .get
     var parameters: [String: Any]?
 }
+
+// swiftlint:enable empty_string

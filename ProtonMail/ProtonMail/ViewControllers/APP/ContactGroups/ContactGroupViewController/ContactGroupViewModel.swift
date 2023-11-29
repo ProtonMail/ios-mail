@@ -47,7 +47,7 @@ protocol ContactGroupsViewModel {
     func removeSelectedGroup(ID: String)
     func removeAllSelectedGroups()
     
-    func setFetchResultController()
+    func setupDataSource()
     // search
     func search(text: String?, searchActive: Bool)
 

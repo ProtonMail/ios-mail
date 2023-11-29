@@ -23,7 +23,7 @@
 import CoreServices
 import Foundation
 import PromiseKit
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UniformTypeIdentifiers
 
 protocol FileCoordinationProvider {
@@ -80,14 +80,14 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
             do {
 #if APP_EXTENSION
                 let newUrl = try self.copyItemToTempDirectory(from: url)
-                let ext = url.mimeType()
+                let mimeType = url.mimeType()
                 let fileName = url.lastPathComponent
-                fileData = ConcreteFileData(name: fileName, ext: ext, contents: newUrl)
+                fileData = ConcreteFileData(name: fileName, mimeType: mimeType, contents: newUrl)
 #else
                 _ = url.startAccessingSecurityScopedResource()
                 let data = try Data(contentsOf: url)
                 url.stopAccessingSecurityScopedResource()
-                fileData = ConcreteFileData(name: url.lastPathComponent, ext: url.mimeType(), contents: data)
+                fileData = ConcreteFileData(name: url.lastPathComponent, mimeType: url.mimeType(), contents: data)
 #endif
             } catch {
                 presentError()

@@ -20,17 +20,22 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Doh
-import ProtonCore_Login
-import ProtonCore_LoginUI
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreDoh
+import ProtonCoreLogin
+import ProtonCoreLoginUI
+import ProtonCoreNetworking
+import ProtonCoreServices
 import UIKit
 
 struct SignInCoordinatorEnvironment {
-    typealias Dependencies = HasSignInManager & HasUnlockManager & HasUsersManager
+    typealias Dependencies = HasKeyMakerProtocol
+    & HasSignInManager
+    & HasUnlockManager
+    & HasUserDefaults
+    & HasUsersManager
+
     typealias LoginCreationClosure =
         (String, AccountType, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface
 
@@ -69,7 +74,10 @@ struct SignInCoordinatorEnvironment {
 extension SignInCoordinatorEnvironment {
     // swiftlint:disable function_body_length
     static func live(dependencies: Dependencies) -> SignInCoordinatorEnvironment {
-        let apiService = PMAPIService.unauthorized
+        let apiService = PMAPIService.unauthorized(
+            keyMaker: dependencies.keyMaker,
+            userDefaults: dependencies.userDefaults
+        )
         return .init(apiService: apiService,
                      mailboxPassword: dependencies.signInManager
                          .mailboxPassword(from:auth:),

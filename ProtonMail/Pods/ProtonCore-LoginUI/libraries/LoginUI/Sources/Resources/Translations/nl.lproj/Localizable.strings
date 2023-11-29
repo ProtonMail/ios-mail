@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Privacy als standaard";
+
+"Proton address required" = "Proton-adres vereist";
+
+"Update required" = "Update vereist";
+
+"Please enter your Proton Account password." = "Gelieve uw Proton Account wachtwoord in te geven.";
+
+"OK" = "OK";
+
+"Help" = "Hulp";
+
+"Continue" = "Doorgaan";
+
+"Password" = "Wachtwoord";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "De Proton servers zijn onbereikbaar. Mogelijks door een verkeerde netwerkconfiguratie of Proton servers die buiten gebruik zijn of worden geblokkeerd";
+
+"Search country" = "Zoek land";
+
+"Code sent to %@" = "Code verzonden naar %@";
+
+"Request new code?" = "Nieuwe code aanvragen?";
+
+"Resend" = "Opnieuw versturen";
+
+"Get a replacement code sent to %@." = "Laat een vervangende code sturen naar %@.";
+
+"Request new code" = "Nieuwe code aanvragen";
+
+"Enter your Proton Account details." = "Vul uw Proton Account gegevens in.";
+
+"Email or username" = "E-mailadres of gebruikersnaam";
+
+"Sign in" = "Inloggen";
+
+"Sign in with password" = "Aanmelden met wachtwoord";
+
+"Sign in with SSO" = "Inloggen met SSO";
+
+"Sign in to your organization" = "Aanmelden bij uw organisatie";
+
+"Create an account" = "Een account aanmaken";
+
+"How can we help?" = "Hoe kunnen we helpen?";
+
+"Forgot username" = "Gebruikersnaam vergeten";
+
+"Forgot password" = "Wachtwoord vergeten";
+
+"Other sign-in issues" = "Andere inlogproblemen";
+
+"Customer support" = "Klantenondersteuning";
+
+"Still need help? Contact us directly." = "Meer hulp nodig? Neem dan rechtstreeks contact met ons op.";
+
+"Please enter your Proton Account email or username." = "Gelieve uw Proton Account e-mail of gebruikersnaam in te geven.";
+
+"Complete Setup" = "Voltooi installatie";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Uw account mist sleutels, meld u aan op het web om automatisch de vereiste sleutels te genereren. Zodra u zich hebt aangemeld op het web, gaat u terug naar de app en meldt u zich aan.";
+
+"Account setup required" = "Account setup vereist";
+
+"Incorrect mailbox password" = "Onjuist mailbox wachtwoord";
+
+"Your session has expired. Please log in again." = "De sessie is verlopen. Log opnieuw in.";
+
+"Proton address required" = "Proton-adres vereist";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "U hebt een Proton-e-mailadres nodig om Proton Mail en Proton Calendar te gebruiken.\nU zult nog steeds in staat zijn om %@ te gebruiken om in te loggen en uw account te herstellen.";
+
+"Username" = "Gebruikersnaam";
+
+"Please enter a username." = "Voer een gebruikersnaam in.";
+
+"Unlock your mailbox" = "Ontgrendel uw mailbox";
+
+"Mailbox password" = "Mailbox-wachtwoord";
+
+"Unlock" = "Ontgrendelen";
+
+"Forgot password" = "Wachtwoord vergeten";
+
+"Two-factor authentication" = "Tweestapsverificatie";
+
+"Authenticate" = "Authenticeren";
+
+"Two-factor code" = "Tweestapsverificatiecode";
+
+"Recovery code" = "Herstelcode";
+
+"Use recovery code" = "Herstelcode gebruiken";
+
+"Use two-factor code" = "Tweestapsverificatiecode gebruiken";
+
+"Enter the 6-digit code." = "Voer de 6-cijferige code in.";
+
+"Enter an 8-character recovery code." = "Voer een herstelcode van 8 tekens in.";
+
+"Learn more" = "Meer informatie";
+
+"Change your password" = "Wijzig uw wachtwoord";
+
+"Change password" = "Wachtwoord wijzigen";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Om de Proton-app als lid van een organisatie te gebruiken, moet u eerst uw wachtwoord wijzigen door u via een browser bij Proton aan te melden.";
+
+"Error occured" = "Er is iets fout gegaan";
+
+"Create your Proton Account" = "Maak uw Proton Account aan";
+
+"One account for all Proton services." = "Één account voor alle Proton diensten.";
+
+"Next" = "Volgende";
+
+"Use your current email instead" = "Gebruik in plaats daarvan uw huidige e-mail";
+
+"Create a secure Proton Mail address instead" = "Maak in plaats daarvan een veilig Proton Mail e-mailadres";
+
+"Email" = "E-mailadres";
+
+"Create your password" = "Maak uw wachtwoord";
+
+"Password must contain at least 8 characters" = "Wachtwoord moet ten minste 8 tekens bevatten";
+
+"Repeat password" = "Wachtwoord herhalen";
+
+"Domain" = "Domein";
+
+"Set recovery method" = "Herstelmethode instellen";
+
+"Set recovery method (optional)" = "Herstelmethode instellen (optioneel)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Wij sturen herstelinstructies naar dit e-mailadres of telefoonnummer als u van uw account wordt afgesloten.";
+
+"Email" = "E-mailadres";
+
+"Phone" = "Telefoonnummer";
+
+"Recovery email" = "Herstel-e-mailadres";
+
+"Recovery phone number" = "Herstel-telefoonnummer";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Door op Volgende te klikken gaat u akkoord met de algemene voorwaarden van Proton";
+
+"Terms and Conditions" = "Algemene voorwaarden";
+
+"Skip" = "Overslaan";
+
+"Skip recovery method?" = "Herstelmethode overslaan?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Een herstelmethode zal u helpen om toegang te krijgen tot uw account in het geval u uw wachtwoord vergeet of van uw account wordt afgesloten.";
+
+"Set recovery method" = "Herstelmethode instellen";
+
+"Your account is being created" = "Uw account wordt aangemaakt";
+
+"This should take no more than a minute." = "Dit zou niet meer dan een minuut moeten duren.";
+
+"Creating your account" = "Account aan het aanmaken";
+
+"Generating your address" = "Uw adres genereren";
+
+"Securing your account" = "Beveiliging van uw account";
+
+"Verifying your payment" = "Verifiëren van uw betaling";
+
+"Account verification" = "Accountverificatie";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Voor uw veiligheid moeten wij verifiëren dat het door u ingevoerde adres aan u toebehoort. Wij hebben een verificatiecode gestuurd naar %@. Voer de code hieronder in:";
+
+"Verification code" = "Verificatiecode";
+
+"Enter the 6-digit code." = "Voer de 6-cijferige code in.";
+
+"Did not receive a code?" = "Heeft u geen code ontvangen?";
+
+"Terms and Conditions" = "Algemene voorwaarden";
+
+"Invalid token request" = "Ongeldig token verzoek";
+
+"Invalid token error" = "Ongeldige token fout";
+
+"Create user failed" = "Gebruiker aanmaken mislukt";
+
+"Invalid hashed password" = "Wachtwoordhash ongeldig";
+
+"Password can not be empty.\nPlease try again." = "Wachtwoord kan niet leeg zijn.\nProbeer opnieuw.";
+
+"Password must contain at least %@ characters." = "Wachtwoord moet ten minste %@ tekens bevatten.";
+
+"Passwords do not match.\nPlease try again." = "De wachtwoorden komen niet overeen.\nProbeer opnieuw.";
+
+"Email address already used." = "E-mailadres al in gebruik.";
+
+"Please ask your admin to configure your sub-user." = "Vraag uw beheerder om de sub-gebruiker te configureren.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Wilt u een nieuwe verificatiecode ontvangen of een ander e-mailadres gebruiken?";
+
+"Change email address" = "Wijzig e-mailadres";
+
+"Congratulations" = "Gefeliciteerd";
+
+"Your Proton Free account was successfully created." = "Uw Proton Free account is succesvol aangemaakt.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Uw betaling is bevestigd en uw %@ account is succesvol aangemaakt.";
+
+"Your Proton account was successfully created." = "Uw Proton-account is aangemaakt.";
+
+"Enjoy the world of privacy." = "Geniet van de wereld van privacy.";
+
+"Cancel" = "Annuleren";
+
+"Sign in" = "Inloggen";
+
+"Troubleshoot" = "Los probleem op";

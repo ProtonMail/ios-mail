@@ -1,0 +1,134 @@
+
+"OK" = "OK";
+
+"Cancel" = "Mégsem";
+
+"Warning" = "Figyelem";
+
+"Select a plan" = "Csomag kiválasztása";
+
+"Current plan" = "Jelenlegi csomag";
+
+"Subscription" = "Előfizetés";
+
+"Upgrade your plan" = "Váltás nagyobb csomagra";
+
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "A mobil alkalmazásban csak éves, nem automatikusan frissülő előfizetés érhető el.";
+
+"You cannot manage subscriptions inside the mobile application." = "Az előfizetés nem kezelhető a mobil alkalmazásban.";
+
+"Your plan will automatically renew on %@" = "Csomagja automatikusan megújításra kerül: %@";
+
+"Current plan will expire on %@" = "A jelenlegi csomag lejár: %@";
+
+"Contact an administrator to make changes to your Proton subscription." = "Lépjen kapcsolatba egy adminisztrátorral, ha szeretne módosítani a Proton előfizetésén.";
+
+"%@ storage" = "%@ tárhely";
+
+"%@ storage / user" = "%@ tárhely / felhasználó";
+
+"for %@" = "neki: %@";
+
+"Custom email addresses" = "Egyéni e-mail címek";
+
+"Priority customer support" = "Elsőbbségi felhasználói támogatás";
+
+"Adblocker (NetShield)" = "Reklámblokkoló (NetShield)";
+
+"Streaming service support" = "Közvetítési szolgáltatások támogatása";
+
+"High speed" = "Nagy sebesség";
+
+"Highest speed" = "Legnagyobb sebesség";
+
+"Multi-user support" = "Többfelhasználós lehetőség";
+
+"The basic for private and secure communications." = "Alapvető adatvédelem és biztonságos kommunikáció.";
+
+"Full-featured mailbox with advanced protection." = "Teljes e-mail fiók, fejlett védelemmel.";
+
+"Limited time offer" = "Korlátozott idejű ajánlat";
+
+"Complete payment?" = "Fizetés befejezése?";
+
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Egy Proton Kombinált csomag vásárlása már megkezdődött. Kattintson a tovább gombra, hogy befejezhesse a fizetés folyamatát és létrehozhassa a fiókját";
+
+"Complete payment" = "Fizetés befejezése";
+
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "A fiókja beállítása nem fejezhető be egy váratlan hiba miatt.\nKérjük próbálja újra.";
+
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Egy IAP vásárlási folyamat elindult. Kérjük kövesse az Apple utasításait vásárlása befejezéséhez vagy pedig visszavonásához.";
+
+"One plan for all Proton services" = "Egy csomag minden Proton szolgáltatáshoz";
+
+"The no-cost starter account designed to empower everyone with privacy by default." = "Az ingyenes induló fiók célja, hogy mindenkinek elérhetővé tegye az alapértelmezett adatvédelmet.";
+
+"The privacy-first email and calendar solution for your everyday communication needs." = "A magánszférát előtérben tartó e-mail és naptár megoldás, a mindennapi kommunikációjához.";
+
+"Your privacy and security are our priority." = "Magánszférája és biztonsága az elődleges szempontunk.";
+
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "A tárhely igényt előtérben tartó csomag, 200 GB felhőtárhellyel, a fájljai biztonságához.";
+
+"The ultimate privacy pack with access to all premium Proton services." = "A legnagyobb adatvédelmi csomag, a Proton összes prémium szolgáltatásával.";
+
+"Only non-renewing annual subscriptions are available via this app" = "Az alkalmazásból csak éves, nem automatikusan megújuló előfizetés érhető el";
+
+"Unlimited folders, labels, and filters" = "Korlátlan számú mappa, címke és szűrő";
+
+"Up to %@ storage" = "Akár %@ tárhely";
+
+"Free VPN on a single device" = "Ingyenes VPN, egy eszközön";
+
+"Highest VPN speed" = "Legnagyobb VPN sebesség";
+
+"Built-in ad-blocker (NetShield)" = "Beépített reklámblokkoló (NetShield)";
+
+"Access to streaming services globally" = "Videós szolgáltatásokhoz való globális elérés";
+
+"Secure Core servers" = "Secure Core szerverek";
+
+"TOR over VPN" = "Tor VPN-en";
+
+"P2P/BitTorrent" = "P2P/BitTorrent";
+
+"Get %@" = "%@ beszerzése";
+
+"Get Proton for free" = "Szerezze be a Protont ingyen";
+
+"Extend subscription" = "Előfizetés kibővítése";
+
+"%@ of %@" = "%@ / %@";
+
+"Connection issues" = "Kapcsolódási problémák";
+
+"Check your internet connection" = "Ellenőrizze az internetkapcsolatát";
+
+"Strict no-logs policy" = "Szigorú nincs-naplózás irányelv";
+
+"Plan successfully upgraded" = "A csomag sikeresen frissítve";
+
+"Integrated 2FA authenticator" = "Beépített kétlépcsős hitelesítés";
+
+"Priority support" = "Elsőbbségi támogatás";
+
+"Unlimited devices" = "Korlátlan számú eszköz";
+
+"%@ email aliases" = "%@ e-mail álnév";
+
+"Unlimited email aliases" = "Korlátlan számú e-mail álnév";
+
+"Unlimited logins and notes" = "Korlátlan számú bejelentkezés és jegyzet";
+
+"Up to %@ forwarding mailboxes" = "Akár %@ továbbító e-mail cím";
+
+"Custom fields" = "Egyéni mezők";
+
+"For next-level password management and identity protection." = "Új szint a jelszókezelésben és a személyi adatok védelmében.";
+
+"Pay monthly" = "Pay monthly";
+
+"Pay annually" = "Pay annually";
+
+"Pay every two years" = "Pay every two years";
+
+"Free" = "Free";

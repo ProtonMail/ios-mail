@@ -20,21 +20,28 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import Combine
 import LifetimeTracker
-import MBProgressHUD
-import ProtonCore_DataModel
-import ProtonCore_Keymaker
-import ProtonCore_Networking
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreKeymaker
+import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import SafariServices
 
+// sourcery: mock
 protocol WindowsCoordinatorDelegate: AnyObject {
-    func currentApplicationState() -> UIApplication.State
+    func setupCoreData() throws
+    func loadUserDataAfterUnlock()
 }
 
 final class WindowsCoordinator {
     typealias Dependencies = MenuCoordinator.Dependencies
+    & LockCoordinator.Dependencies
+    & HasAppAccessResolver
+    & HasDarkModeCacheProtocol
+    & HasNotificationCenter
+
+    weak var delegate: WindowsCoordinatorDelegate?
 
     private lazy var snapshot = Snapshot()
     private var launchedByNotification = false
@@ -83,12 +90,18 @@ final class WindowsCoordinator {
                 assert(scene is UIWindowScene, "Scene should be of type UIWindowScene")
         }
     }
-    weak var delegate: WindowsCoordinatorDelegate?
     private let dependencies: Dependencies
     private let showPlaceHolderViewOnly: Bool
+    private let isAppAccessResolverEnabled: Bool
+    private var cancellables = Set<AnyCancellable>()
 
-    init(dependencies: Dependencies, showPlaceHolderViewOnly: Bool = ProcessInfo.isRunningUnitTests) {
+    init(
+        dependencies: Dependencies,
+        showPlaceHolderViewOnly: Bool = ProcessInfo.isRunningUnitTests,
+        isAppAccessResolverEnabled: Bool = UserInfo.isAppAccessResolverEnabled
+    ) {
         self.showPlaceHolderViewOnly = showPlaceHolderViewOnly
+        self.isAppAccessResolverEnabled = isAppAccessResolverEnabled
         self.dependencies = dependencies
         setupNotifications()
         trackLifetime()
@@ -105,26 +118,78 @@ final class WindowsCoordinator {
             return
         }
 
+        SystemLogger.log(message: "isAppAccessResolverEnabled: \(isAppAccessResolverEnabled)", category: .appLock)
+        if isAppAccessResolverEnabled {
+
+            loadAppMainKeyAndSetupCoreData()
+            evaluateAccessAtLaunch()
+            subscribeToDeniedAccess()
+
+        } else {
+            legacyStart()
+        }
+    }
+
+    private func legacyStart() {
         // We should not trigger the touch id here. because it is also done in the sign in vc. If we need to check lock, we just go to lock screen first.
         // clean this up later.
 
         let flow = dependencies.unlockManager.getUnlockFlow()
-        Breadcrumbs.shared.add(message: "WindowsCoordinator.start unlockFlow = \(flow)", to: .randomLogout)
         if dependencies.lockCacheStatus.isAppLockedAndAppKeyEnabled {
             self.lock()
         } else {
             DispatchQueue.main.async {
                 // initiate unlock process which will send .didUnlock or .requestMainKey eventually
                 self.dependencies.unlockManager.initiateUnlock(flow: flow,
-                                             requestPin: self.lock,
-                                             requestMailboxPassword: self.lock)
+                                                               requestPin: self.lock,
+                                                               requestMailboxPassword: self.lock)
             }
         }
     }
 
-    private func navigateToSignInFormAndReport(reason: UserKickedOutReason) {
-        Analytics.shared.sendEvent(.userKickedOut(reason: reason), trace: Breadcrumbs.shared.trace(for: .randomLogout))
-        go(dest: .signInWindow(.form))
+    private func loadAppMainKeyAndSetupCoreData() {
+        _ = dependencies.keyMaker.mainKeyExists()
+        do {
+            try delegate?.setupCoreData()
+        } catch {
+            PMAssertionFailure(error)
+        }
+    }
+
+    private func evaluateAccessAtLaunch() {
+        let appAccessAtLaunch = dependencies.appAccessResolver.evaluateAppAccessAtLaunch()
+        SystemLogger.log(message: "App access at launch: \(appAccessAtLaunch)", category: .appLock)
+        switch appAccessAtLaunch {
+        case .accessGranted:
+            handleAppAccessGrantedAtLaunch()
+        case .accessDenied(let reason):
+            handleAppAccessDenied(deniedAccess: reason)
+        }
+    }
+
+    private func subscribeToDeniedAccess() {
+        dependencies
+            .appAccessResolver
+            .deniedAccessPublisher
+            .sink { reason in
+                SystemLogger.log(message: "Denied access: \(reason)", category: .appLock)
+                self.handleAppAccessDenied(deniedAccess: reason)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func handleAppAccessGrantedAtLaunch() {
+        delegate?.loadUserDataAfterUnlock()
+        go(dest: .appWindow)
+    }
+
+    private func handleAppAccessDenied(deniedAccess: DeniedAccessReason) {
+        switch deniedAccess {
+        case .lockProtectionRequired:
+            lock()
+        case .noAuthenticatedAccountFound:
+            go(dest: .signInWindow(.form))
+        }
     }
 
     func go(dest: Destination) {
@@ -164,10 +229,10 @@ final class WindowsCoordinator {
                         )
                     case .alreadyLoggedIn, .loggedInFreeAccountsLimitReached, .errored:
                         // not sure what else I can do here instead of restarting the process
-                        self?.navigateToSignInFormAndReport(reason: .unexpected(description: "\(flowResult)"))
+                        self?.go(dest: .signInWindow(.form))
                     case .dismissed:
                         assertionFailure("this should never happen as the loginFlowForFirstAccount is not dismissable")
-                        self?.navigateToSignInFormAndReport(reason: .unexpected(description: "\(flowResult)"))
+                        self?.go(dest: .signInWindow(.form))
                     }
                 }
                 let newWindow = UIWindow(root: coordinator.actualViewController, scene: self.scene)
@@ -198,8 +263,8 @@ final class WindowsCoordinator {
                             self?.go(dest: .appWindow)
                         case .mailboxPassword:
                             self?.go(dest: .signInWindow(.mailboxPassword))
-                        case .signIn(let reason):
-                            self?.navigateToSignInFormAndReport(reason: .afterLockScreen(description: reason))
+                        case .signIn:
+                            self?.go(dest: .signInWindow(.form))
                         }
                     }
                 )
@@ -353,21 +418,23 @@ final class WindowsCoordinator {
             object: nil
         )
 
-        // This will be triggered when the keymaker clear the mainkey from the memory.
-        // We will lock the app at this moment.
-        dependencies.notificationCenter.addObserver(
-            forName: Keymaker.Const.removedMainKeyFromMemory,
-            object: nil,
-            queue: .main) { _ in
-                self.lock()
-            }
-
+        if !isAppAccessResolverEnabled {
+            // This will be triggered when the keymaker clear the mainkey from the memory.
+            // We will lock the app at this moment.
             dependencies.notificationCenter.addObserver(
-                self,
-                selector: #selector(updateUserInterfaceStyle),
-                name: .shouldUpdateUserInterfaceStyle,
-                object: nil
-            )
+                forName: Keymaker.Const.removedMainKeyFromMemory,
+                object: nil,
+                queue: .main) { _ in
+                    self.lock()
+                }
+        }
+
+        dependencies.notificationCenter.addObserver(
+            self,
+            selector: #selector(updateUserInterfaceStyle),
+            name: .shouldUpdateUserInterfaceStyle,
+            object: nil
+        )
     }
 }
 
@@ -480,10 +547,8 @@ extension WindowsCoordinator {
 
     @objc
     private func lock() {
-        Breadcrumbs.shared.add(message: "WindowsCoordinator.lock called", to: .randomLogout)
         guard dependencies.usersManager.hasUsers() else {
-            Breadcrumbs.shared.add(message: "WindowsCoordinator.lock no users found", to: .randomLogout)
-            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: #function))
+            go(dest: .signInWindow(.form))
             return
         }
         // The mainkey could be removed while changing the protection of the app. We should check
@@ -503,12 +568,12 @@ extension WindowsCoordinator {
         self.lockWindow = nil
 
         guard dependencies.usersManager.hasUsers() else {
-            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: "\(#function) \(#line)"))
+            go(dest: .signInWindow(.form))
             return
         }
         if dependencies.usersManager.count <= 0 {
             _ = dependencies.usersManager.clean()
-            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: "\(#function) \(#line)"))
+            go(dest: .signInWindow(.form))
         } else {
             // To register again in case the registration on app launch didn't go through because the app was locked
             UNUserNotificationCenter.current().delegate = dependencies.pushService
@@ -523,9 +588,13 @@ extension WindowsCoordinator {
            !dependencies.usersManager.loggingOutUserIDs.contains(user.userID) {
             let shouldShowBadTokenAlert = dependencies.usersManager.count == 1
 
-            Analytics.shared.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
+            Analytics.shared.sendEvent(
+                .userKickedOut(reason: .apiAccessTokenInvalid),
+                trace: Breadcrumbs.shared.trace(for: .randomLogout)
+            )
+            SystemLogger.log(message: "apiAccessTokenInvalid for uid:\(uid.redacted)", isError: true)
 
-            dependencies.queueManager.unregisterHandler(for: user.userID)
+            dependencies.queueManager.unregisterHandler(for: user.userID, completion: nil)
             dependencies.usersManager.logout(user: user, shouldShowAccountSwitchAlert: true) { [weak self] in
                 guard let self = self else { return }
                 guard let appWindow = self.appWindow else {return}

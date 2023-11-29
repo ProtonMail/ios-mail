@@ -20,6 +20,12 @@ import LifetimeTracker
 import UIKit
 
 extension GlobalContainer {
+    var addressBookServiceFactory: Factory<AddressBookService> {
+        self {
+            AddressBookService()
+        }
+    }
+
     var backgroundTaskHelperFactory: Factory<BackgroundTaskHelper> {
         self {
             BackgroundTaskHelper(
@@ -39,7 +45,7 @@ extension GlobalContainer {
 
     var cleanCacheFactory: Factory<CleanCache> {
         self {
-            CleanCache(dependencies: .init(usersManager: self.usersManager))
+            CleanCache(dependencies: .init(usersManager: self.usersManager, imageProxyCache: self.imageProxyCache))
         }
     }
 
@@ -49,12 +55,30 @@ extension GlobalContainer {
         }
     }
 
+    var imageProxyCacheFactory: Factory<ImageProxyCacheProtocol> {
+        self {
+            ImageProxyCache(coreKeyMaker: self.keyMaker)
+        }
+    }
+
     var pushServiceFactory: Factory<PushNotificationService> {
         self {
             let dependencies = PushNotificationService.Dependencies(
+                actionsHandler: PushNotificationActionsHandler(
+                    dependencies: .init(
+                        queue: self.queueManager,
+                        lockCacheStatus: self.lockCacheStatus,
+                        usersManager: self.usersManager
+                    )
+                ),
                 usersManager: self.usersManager,
                 unlockProvider: self.unlockManager,
-                lockCacheStatus: self.keyMaker
+                pushEncryptionManager: PushEncryptionManager(
+                    dependencies: .init(
+                        usersManager: self.usersManager,
+                        deviceRegistration: DeviceRegistration(dependencies: .init(usersManager: self.usersManager))
+                    )
+                )
             )
             return PushNotificationService(dependencies: dependencies)
         }
@@ -63,6 +87,12 @@ extension GlobalContainer {
     var saveSwipeActionSettingFactory: Factory<SaveSwipeActionSettingForUsersUseCase> {
         self {
             SaveSwipeActionSetting(dependencies: self)
+        }
+    }
+
+    var senderImageCacheFactory: Factory<SenderImageCache> {
+        self {
+            SenderImageCache(coreKeyMaker: self.keyMaker)
         }
     }
 
@@ -75,6 +105,12 @@ extension GlobalContainer {
                 queueHandlerRegister: self.queueManager,
                 updateSwipeActionUseCase: updateSwipeActionUseCase
             )
+        }
+    }
+
+    var storeKitManagerFactory: Factory<StoreKitManagerImpl> {
+        self {
+            StoreKitManagerImpl(dependencies: self)
         }
     }
 

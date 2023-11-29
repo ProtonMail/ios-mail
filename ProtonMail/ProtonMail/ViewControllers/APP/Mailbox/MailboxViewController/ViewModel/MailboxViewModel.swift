@@ -22,10 +22,10 @@
 
 import Foundation
 import CoreData
-import ProtonCore_DataModel
-import ProtonCore_Utilities
-import ProtonCore_Services
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreUtilities
+import ProtonCoreServices
+import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 
 struct LabelInfo {
@@ -44,7 +44,6 @@ protocol MailboxViewModelUIProtocol: AnyObject {
 
 class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     let labelID: LabelID
-    let labelType: PMLabelType
     /// This field saves the label object of custom folder/label
     private(set) var label: LabelInfo?
     /// This field stores the latest update time of the user event.
@@ -122,9 +121,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     private var prefetchedItemsCount: Atomic<Int> = .init(0)
     private var isPrefetching: Atomic<Bool> = .init(false)
 
+    private(set) var diffableDataSource: MailboxDiffableDataSource?
+
     init(labelID: LabelID,
          label: LabelInfo?,
-         labelType: PMLabelType,
          userManager: UserManager,
          pushService: PushNotificationServiceProtocol,
          coreDataContextProvider: CoreDataContextProviderProtocol,
@@ -143,7 +143,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     ) {
         self.labelID = labelID
         self.label = label
-        self.labelType = labelType
         self.user = userManager
         self.messageService = userManager.messageService
         self.eventsService = eventsService
@@ -216,22 +215,31 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     }
 
     var countOfFetchedObjects: Int {
-        return fetchedResultsController?.fetchedObjects?.count ?? 0
+        diffableDataSource?.snapshot().numberOfItems ?? 0
     }
 
     var selectedMessages: [MessageEntity] {
-        fetchedResultsController?.fetchedObjects?
-            .compactMap { $0 as? Message }
-            .filter { selectedIDs.contains($0.messageID) }
-            .map(MessageEntity.init) ?? []
+        let msgs = diffableDataSource?.snapshot().itemIdentifiers
+            .compactMap { row in
+                if case .real(let item) = row, case .message(let msg) = item {
+                    return msg
+                } else {
+                    return nil
+                }
+            }.filter { selectedIDs.contains($0.messageID.rawValue) }
+        return msgs ?? []
     }
 
     var selectedConversations: [ConversationEntity] {
-        fetchedResultsController?.fetchedObjects?
-            .compactMap { $0 as? ContextLabel }
-            .compactMap(\.conversation)
-            .filter { selectedIDs.contains($0.conversationID) }
-            .map(ConversationEntity.init) ?? []
+        let conversations = diffableDataSource?.snapshot().itemIdentifiers
+            .compactMap { row in
+                if case .real(let item) = row, case .conversation(let conversation) = item {
+                    return conversation
+                } else {
+                    return nil
+                }
+            }.filter { selectedIDs.contains($0.conversationID.rawValue) }
+        return conversations ?? []
     }
 
     var selectedItems: [MailboxItem] {
@@ -250,6 +258,13 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
 
     var allEmails: [EmailEntity] {
         return contactProvider.getAllEmails()
+    }
+
+    func setupDiffableDataSource(
+        tableView: UITableView,
+        cellConfigurator: @escaping (UITableView, IndexPath, MailboxRow) -> UITableViewCell
+    ) {
+        diffableDataSource = .init(tableView: tableView, cellProvider: cellConfigurator)
     }
 
     func contactGroups() -> [ContactGroupVO] {
@@ -325,15 +340,13 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     /// - Returns: fetched result controller
     private func makeFetchController(isUnread: Bool) -> NSFetchedResultsController<NSFetchRequestResult>? {
         let isAscending = self.labelID == Message.Location.scheduled.labelID ? true : false
-        let fetchedResultsController = messageService.fetchedResults(by: self.labelID,
-                                                                     viewMode: self.locationViewMode,
-                                                                     isUnread: isUnread,
-                                                                     isAscending: isAscending)
-        if let fetchedResultsController = fetchedResultsController {
-            do {
-                try fetchedResultsController.performFetch()
-            } catch { }
-        }
+        let fetchedResultsController = messageService.fetchedResults(
+            by: self.labelID,
+            viewMode: self.locationViewMode,
+            onMainContext: false,
+            isUnread: isUnread,
+            isAscending: isAscending
+        )
         return fetchedResultsController
     }
 
@@ -383,8 +396,15 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     /// - Parameter delegate: delegate from viewcontroller
     /// - Parameter isUnread: the flag used to filter the unread message or not
     func setupFetchController(_ delegate: NSFetchedResultsControllerDelegate?, isUnread: Bool = false) {
-        self.fetchedResultsController = self.makeFetchController(isUnread: isUnread)
-        self.fetchedResultsController?.delegate = delegate
+        fetchedResultsController = self.makeFetchController(isUnread: isUnread)
+        fetchedResultsController?.delegate = delegate
+        fetchedResultsController?.managedObjectContext.perform {
+            do {
+                try self.fetchedResultsController?.performFetch()
+            } catch {
+                PMAssertionFailure(error)
+            }
+        }
 
         makeLabelPublisherIfNeeded()
         makeEventPublisher()
@@ -405,7 +425,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     ///
     /// - Returns:
     func sectionCount() -> Int {
-        return fetchedResultsController?.numberOfSections() ?? 0
+        return diffableDataSource?.snapshot().numberOfSections ?? 0
     }
 
     /// get row count of a section
@@ -413,7 +433,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     /// - Parameter section: section index
     /// - Returns: row count
     func rowCount(section: Int) -> Int {
-        return fetchedResultsController?.numberOfRows(in: section) ?? 0
+        return diffableDataSource?.snapshot().numberOfItems(inSection: section) ?? 0
     }
 
     /// get message item from a indexpath
@@ -421,33 +441,23 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     /// - Parameter index: table cell indexpath
     /// - Returns: message (nil)
     func item(index: IndexPath) -> MessageEntity? {
-        guard !index.isEmpty, let sections = self.fetchedResultsController?.numberOfSections() else {
+        if let item = diffableDataSource?.item(of: index),
+           case .real(let mailboxItem) = item,
+           case .message(let messageEntity) = mailboxItem {
+            return messageEntity
+        } else {
             return nil
         }
-        guard sections > index.section else {
-            return nil
-        }
-
-        guard let rows = self.fetchedResultsController?.numberOfRows(in: index.section) else {
-            return nil
-        }
-
-        guard rows > index.row else {
-            return nil
-        }
-
-        guard let msg = fetchedResultsController?.object(at: index) as? Message else {
-            return nil
-        }
-
-        return MessageEntity(msg)
     }
 
     func itemOfConversation(index: IndexPath) -> ConversationEntity? {
-        guard let conversation = itemOfRawConversation(indexPath: index) else {
+        if let item = diffableDataSource?.item(of: index),
+           case .real(let mailboxItem) = item,
+           case .conversation(let conversationEntity) = mailboxItem {
+            return conversationEntity
+        } else {
             return nil
         }
-        return ConversationEntity(conversation)
     }
 
     func mailboxItem(at indexPath: IndexPath) -> MailboxItem? {
@@ -458,27 +468,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         } else {
             return nil
         }
-    }
-
-    private func itemOfRawConversation(indexPath: IndexPath) -> Conversation? {
-        guard !indexPath.isEmpty else { return nil }
-
-        guard let frc = fetchedResultsController else { return nil }
-
-
-        let sections = frc.numberOfSections()
-
-        guard sections > indexPath.section else { return nil }
-
-        let rows = frc.numberOfRows(in: indexPath.section)
-
-        guard rows > indexPath.row else { return nil }
-
-        let managedObject = frc.object(at: indexPath)
-
-        guard let contextLabel = managedObject as? ContextLabel else { return nil }
-
-        return contextLabel.conversation
     }
 
     // MARK: - operations
@@ -493,13 +482,14 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     /// - Parameter index: the current table index
     /// - Returns: yes or no
     func loadMore(index: IndexPath) -> Bool {
-        guard let number = self.fetchedResultsController?.numberOfSections() else {
+        let snapshot = diffableDataSource?.snapshot()
+        guard let number = snapshot?.numberOfSections else {
             return false
         }
         guard number > index.section else {
             return false
         }
-        guard let total = self.fetchedResultsController?.numberOfRows(in: index.section) else {
+        guard let total = snapshot?.numberOfItems(inSection: index.section) else {
             return false
         }
         if total - index.row <= 2 {
@@ -585,13 +575,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     /// process push
     func processCachedPush() {
         self.pushService.processCachedLaunchOptions()
-    }
-
-    func object(by object: NSManagedObjectID) -> Message? {
-        if let obj = self.fetchedResultsController?.managedObjectContext.object(with: object) as? Message {
-            return obj
-        }
-        return nil
     }
 
     func fetchConversationDetail(conversationID: ConversationID, completion: @escaping () -> Void) {
@@ -819,6 +802,7 @@ extension MailboxViewModel {
                 .callbackOn(.main)
                 .execute(
                     params: .init(
+                        labelID: labelID,
                         endTime: time,
                         isUnread: isUnread,
                         onMessagesRequestSuccess: nil
@@ -846,12 +830,14 @@ extension MailboxViewModel {
         errorHandler: @escaping (Error) -> Void,
         completion: @escaping () -> Void
     ) {
-        let isCurrentLocationEmpty = fetchedResultsController?.fetchedObjects?.isEmpty ?? true
+        guard diffableDataSource?.reloadSnapshotHasBeenCalled == true else { return }
+        let isCurrentLocationEmpty = diffableDataSource?.snapshot().numberOfItems == 0
         let fetchMessagesAtTheEnd = isCurrentLocationEmpty || isFirstFetch
         isFirstFetch = false
 
         dependencies.updateMailbox.execute(
             params: .init(
+                labelID: labelID,
                 showUnreadOnly: showUnreadOnly,
                 isCleanFetch: isCleanFetch,
                 time: time,
@@ -878,28 +864,18 @@ extension MailboxViewModel {
 // MARK: Message Actions
 extension MailboxViewModel {
     func containsStarMessages(messageIDs: Set<String>) -> Bool {
-        var starCount = 0
         switch self.locationViewMode {
         case .conversation:
-            let conversations = self.conversationProvider.fetchLocalConversations(withIDs: NSMutableSet(set: messageIDs), in: coreDataContextProvider.mainContext)
-            starCount = conversations.reduce(0) { (result, next) -> Int in
-                if next.contains(of: Message.Location.starred.labelID.rawValue) {
-                    return result + 1
-                } else {
-                    return result
-                }
+            return coreDataContextProvider.read { context in
+                let conversations = self.conversationProvider.fetchLocalConversations(withIDs: NSMutableSet(set: messageIDs), in: context)
+                return conversations.contains { $0.contains(of: Message.Location.starred.labelID.rawValue) }
             }
         case .singleMessage:
-            let messages = self.messageService.fetchMessages(withIDs: NSMutableSet(set: messageIDs), in: coreDataContextProvider.mainContext)
-            starCount = messages.reduce(0) { (result, next) -> Int in
-                if next.contains(label: .starred) {
-                    return result + 1
-                } else {
-                    return result
-                }
+            return coreDataContextProvider.read { context in
+                let messages = self.messageService.fetchMessages(withIDs: NSMutableSet(set: messageIDs), in: context)
+                return messages.contains { $0.contains(label: .starred) }
             }
         }
-        return starCount > 0
     }
 
     func selectionContainsReadItems() -> Bool {
@@ -1161,7 +1137,7 @@ extension MailboxViewModel {
             fetchMessageDetail: FetchMessageDetailUseCase,
             fetchSenderImage: FetchSenderImageUseCase,
             checkProtonServerStatus: CheckProtonServerStatusUseCase = CheckProtonServerStatus(),
-            featureFlagCache: FeatureFlagCache = sharedServices.get(by: UserCachedStatus.self)
+            featureFlagCache: FeatureFlagCache
         ) {
             self.fetchMessages = fetchMessages
             self.updateMailbox = updateMailbox
@@ -1188,10 +1164,6 @@ extension MailboxViewModel {
     }
 
     var headerBanner: BannerToDisplay? {
-        guard UserInfo.isAutoDeleteEnabled else {
-            return nil
-        }
-
         let infoBannerType: InfoBannerType
         if self.labelID == LabelLocation.spam.labelID {
             infoBannerType = .spam
@@ -1250,20 +1222,31 @@ extension MailboxViewModel {
     func itemsToPrefetch() -> [MailboxItem] {
         switch self.locationViewMode {
         case .conversation:
-            let allConversations = fetchedResultsController?
-                .fetchedObjects?
-                .compactMap { $0 as? ContextLabel }
-                .compactMap(\.conversation)
-                .map(ConversationEntity.init) ?? []
+            let allConversations: [ConversationEntity] = diffableDataSource?.snapshot()
+                .itemIdentifiers
+                .compactMap { row in
+                    if case .real(let item) = row,
+                       case .conversation(let conversation) = item {
+                        return conversation
+                    } else {
+                        return nil
+                    }
+                } ?? []
             let unreadConversations = allConversations.filter { $0.isUnread(labelID: labelID) == true }
             let readConversations = allConversations.filter { $0.isUnread(labelID: labelID) == false }
             let orderedConversations = unreadConversations.appending(readConversations)
             return orderedConversations.map { MailboxItem.conversation($0) }
         case .singleMessage:
-            let allMessages = fetchedResultsController?
-                .fetchedObjects?
-                .compactMap { $0 as? Message }
-                .map(MessageEntity.init) ?? []
+            let allMessages: [MessageEntity] = diffableDataSource?.snapshot()
+                .itemIdentifiers
+                .compactMap { row in
+                    if case .real(let item) = row,
+                       case .message(let message) = item {
+                        return message
+                    } else {
+                        return nil
+                    }
+                } ?? []
             let unreadMessages = allMessages.filter { $0.unRead == true }
             let readMessages = allMessages.filter { $0.unRead == false }
             let orderedMessages = unreadMessages.appending(readMessages)
@@ -1305,6 +1288,22 @@ extension MailboxViewModel {
                 }
             }
         }
+    }
+
+    func isPreviewable(for indexPath: IndexPath) -> Bool {
+        guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID),
+              let mailboxItem = mailboxItem(at: indexPath) else {
+            return false
+        }
+        return mailboxItem.isPreviewable
+    }
+
+    func previewableAttachments(for indexPath: IndexPath) -> [AttachmentsMetadata] {
+        guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID),
+              let mailboxItem = mailboxItem(at: indexPath) else {
+            return []
+        }
+        return mailboxItem.previewableAttachments
     }
 }
 

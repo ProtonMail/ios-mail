@@ -15,11 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 class SpotlightView: UIView {
-    private var dismissGesture: UITapGestureRecognizer?
     private let shadowView = UIView()
     private let infoView = UIView()
     private let iconImageView = SubViewFactory.iconImageView
@@ -82,7 +81,6 @@ class SpotlightView: UIView {
     private func setupGesture() {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(self.dismiss))
         addGestureRecognizer(gesture)
-        self.dismissGesture = gesture
     }
 
     @objc

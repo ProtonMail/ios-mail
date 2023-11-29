@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 struct ConversationEntity: Equatable, Hashable {
     let objectID: ObjectID
@@ -31,6 +31,7 @@ struct ConversationEntity: Equatable, Hashable {
     let subject: String
     let userID: UserID
     let contextLabelRelations: [ContextLabelEntity]
+    let attachmentsMetadata: [AttachmentsMetadata]
 
     /// Local use flag to mark this conversation is deleted
     /// (usually caused by empty trash/ spam action)
@@ -59,6 +60,15 @@ extension ConversationEntity {
         self.contextLabelRelations = ContextLabelEntity.convert(from: conversation)
 
         self.isSoftDeleted = conversation.isSoftDeleted
+        let parsedAttachments: [AttachmentsMetadata]?
+        do {
+            parsedAttachments = try AttachmentsMetadata
+                .decodeListOfDictionaries(jsonString: conversation.attachmentsMetadata)
+        } catch {
+            parsedAttachments = nil
+            SystemLogger.log(error: error)
+        }
+        self.attachmentsMetadata = parsedAttachments ?? []
     }
 
     var starred: Bool {

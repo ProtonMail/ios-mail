@@ -21,10 +21,10 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 // Keys API
 struct KeysAPI {
@@ -55,16 +55,6 @@ final class UserEmailPubKeys: Request {
         get {
             return self.auth
         }
-    }
-}
-
-extension Array where Element: UserEmailPubKeys {
-    func getPromises(api: APIService) -> [Promise<KeysResponse>] {
-        var out: [Promise<KeysResponse>] = [Promise<KeysResponse>]()
-        for it in self {
-            out.append(api.run(route: it))
-        }
-        return out
     }
 }
 

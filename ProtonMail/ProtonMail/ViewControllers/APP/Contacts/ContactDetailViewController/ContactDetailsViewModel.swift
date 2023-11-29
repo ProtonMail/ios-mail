@@ -20,10 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import Combine
 import CoreData
 import Foundation
-import ProtonCore_Crypto
-import ProtonCore_DataModel
+import ProtonCoreCrypto
+import ProtonCoreDataModel
 import VCard
 
 final class ContactDetailsViewModel: NSObject {
@@ -70,7 +71,8 @@ final class ContactDetailsViewModel: NSObject {
 
     var reloadView: (() -> Void)?
 
-    private let contactFetchedController: NSFetchedResultsController<Contact>
+    private let dataPublisher: ContactPublisher
+    private var cancellable: AnyCancellable?
     let dependencies: Dependencies
     private(set) var contact: ContactEntity
 
@@ -80,12 +82,23 @@ final class ContactDetailsViewModel: NSObject {
     ) {
         self.contact = contact
         self.dependencies = dependencies
-        contactFetchedController = dependencies.contactService
-            .contactFetchedController(by: contact.contactID)
+        dataPublisher = .init(
+            contextProvider: dependencies.coreDataService,
+            contactID: contact.contactID
+        )
         super.init()
         self.contactParser = ContactParser(resultDelegate: self)
-        contactFetchedController.delegate = self
-        try? contactFetchedController.performFetch()
+        cancellable = dataPublisher.contentDidChange
+            .map{ $0.map { ContactEntity(contact: $0) }}
+            .sink(receiveValue: { [weak self] contacts in
+                guard let contact = contacts.first else { return }
+                DispatchQueue.main.async {
+                    self?.setContact(contact)
+                    self?.rebuildData()
+                    self?.reloadView?()
+                }
+            })
+        dataPublisher.start()
     }
 
     func sections() -> [ContactEditSectionType] {
@@ -94,53 +107,6 @@ final class ContactDetailsViewModel: NSObject {
 
     func type3Error() -> Bool {
         return self.decryptError
-    }
-
-    func hasEncryptedContacts() -> Bool {
-        if self.type3Error() {
-            return true
-        }
-
-        if !verifyType3 {
-            return true
-        }
-
-        if phones.count > 0 {
-            return true
-        }
-        if addresses.count > 0 {
-            return true
-        }
-        if fields.count > 0 {
-            return true
-        }
-        if notes.count > 0 {
-            return true
-        }
-        if urls.count > 0 {
-            return true
-        }
-        if birthday != nil {
-            return true
-        }
-        if !organizations.isEmpty {
-            return true
-        }
-        if !nickNames.isEmpty {
-            return true
-        }
-        if !titles.isEmpty {
-            return true
-        }
-        if gender != nil {
-            return true
-        }
-
-        if !paidUser() {
-            return true
-        }
-
-        return false
     }
 
     @discardableResult
@@ -316,17 +282,7 @@ final class ContactDetailsViewModel: NSObject {
     }
 }
 
-// MARK: CoreData related
-
-extension ContactDetailsViewModel: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if let object = self.getContactObject() {
-            self.setContact(ContactEntity(contact: object))
-        }
-        rebuildData()
-        reloadView?()
-    }
-
+extension ContactDetailsViewModel{
     private func updateRebuildFlag() {
         let objectID = self.contact.objectID.rawValue
         dependencies.coreDataService.performAndWaitOnRootSavingContext { context in
@@ -342,14 +298,6 @@ extension ContactDetailsViewModel: NSFetchedResultsControllerDelegate {
         let contact = try await dependencies.contactService.fetchContact(contactID: contact.contactID)
         setContact(contact)
         try setupEmails()
-    }
-
-    private func getContactObject() -> Contact? {
-        self.contactFetchedController.fetchedObjects?.first
-    }
-
-    func paidUser() -> Bool {
-        return dependencies.user.hasPaidMailPlan
     }
 }
 

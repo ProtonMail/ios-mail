@@ -285,9 +285,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d messaggio verrà spostato nelle Bozze e la sua programmazione sarà rimossa.</string>
+        <string>Questo %d messaggio verrà spostato nelle bozze e la sua programmazione verrà rimossa.</string>
         <key>other</key>
-        <string>Questi %d messaggi verranno spostati nelle Bozze e la loro programmazione verrà rimossa.</string>
+        <string>Questi %d messaggi verranno spostati nelle bozze e la loro programmazione verrà rimossa.</string>
       </dict>
     </dict>
     <key>%d message moved to Drafts</key>
@@ -381,9 +381,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Sei sicuro di voler eliminare permanentemente questo messaggio?</string>
+        <string>Sei sicuro di voler eliminare definitivamente questo messaggio?</string>
         <key>other</key>
-        <string>Sei sicuro di voler eliminare permanentemente questi %d messaggi?</string>
+        <string>Sei sicuro di voler eliminare definitivamente questi %d messaggi?</string>
       </dict>
     </dict>
   </dict>

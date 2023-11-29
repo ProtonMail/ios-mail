@@ -1,0 +1,16 @@
+
+"Delete account" = "Excluir conta";
+
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Isso irá excluir permanentemente sua conta e todas as suas informações. Você não será capaz de reativar esta conta.";
+
+"Account deleted.\nLogging out..." = "Conta excluída.\nEncerrando sessão...";
+
+"Close" = "Fechar";
+
+"OK" = "OK";
+
+"A networking error has occured" = "Ocorreu um erro de rede";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Os servidores Proton estão inacessíveis. Pode ser causado por configuração de rede incorreta, servidores Proton não funcionando ou servidores Proton bloqueados";
+
+"Troubleshoot" = "Solução de problemas";

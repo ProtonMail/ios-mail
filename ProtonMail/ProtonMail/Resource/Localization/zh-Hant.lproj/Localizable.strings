@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "傳送失敗";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "電郵寄送失敗。訊息儲存為草稿。";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "這裡空空如也";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "至少需有一位收件人";
-
-/* Title */
-"Change sender address to…" = "變更寄件人電郵位址為...";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "升級至付款方案後，您將能夠從 %@ 傳送郵件";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "確認新郵箱密碼";
 
-/* error when sending the message */
-"Unable to send the email" = "無法寄送信件";
-
 /* Title */
 "Star/unstar" = "加上星號/移除星號";
 
@@ -996,9 +987,6 @@
 "Cut" = "剪下";
 
 /* Title */
-"Compose to" = "撰寫到";
-
-/* Title */
 "Add to contacts" = "加入至通訊錄";
 
 /* encryption lock description */
@@ -1244,9 +1232,6 @@
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "正在傳送郵件…";
 
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "無法傳送郵件。至少一個收件人的電郵位址/網域不存在或格式不正確。";
-
 /* The unread title of unread action button in mailbox view */
 "unread" = "未讀";
 
@@ -1295,27 +1280,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "啟用此功能，以使用已登入帳號中的聯絡人，自動填入電子郵件位址。";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "設定 PIN 碼";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "輸入新的 PIN 碼";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "請輸入一個 PIN 碼，長度為 4 - 21 個字元。";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "PIN碼太短";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "PIN碼過長";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "重複輸入 PIN 碼";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "PIN 碼必須相符！";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "若 Proton 網站遭到封鎖，該設定可讓應用程式嘗試使用替代路由來連線至 Proton，適用於繞過防火牆或網路問題。我們建議保持開啟本設定以獲得最佳可用性。%1$@";
 
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "關閉";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "變更 PIN 碼";
 
 /* The title of re auth alert */
 "Re-authenticate" = "重新認證";
@@ -1823,7 +1784,7 @@
 "You can now choose and rearrange the actions in this bar" = "您可自由選擇或重新安排工具列的動作。";
 
 /* Button to block a sender */
-"Block sender" = "攔截寄件者";
+"Block messages from this sender" = "封鎖來自此寄件者的訊息";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "攔截";
@@ -1992,6 +1953,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "回覆全部 (最新交談訊息裡相關人等)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "新訊息";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "自訂";
 
@@ -2025,15 +1989,6 @@
 /* Button to enable encrypted search */
 "Enable" = "啟用";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "停用自動刪除";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "電子郵件計畫刪除時將刪除於垃圾桶及垃圾郵件資料夾的全部訊息";
-
-/* Button to disable auto delete */
-"Disable" = "關閉";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "升級以自動刪除在垃圾桶和垃圾郵件中超過30天的訊息。";
 
@@ -2064,6 +2019,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "自訂電子郵件網域";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "寄件者已變更";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "此郵件的原寄件者已無效，您的訊息將會從預設電子郵件 %@ 寄出。";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "顯示名稱";
 
@@ -2085,11 +2046,44 @@
 /* The button text for edit profile picture */
 "Edit photo" = "編輯相片";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "全選";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "停用 PIN 碼";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "設定 PIN 碼";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "重複輸入 PIN 碼";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "輸入新的 PIN 碼";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "請輸入一個 PIN 碼，長度為 4 - 21 個字元。";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN碼太短";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN碼過長";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN 碼必須相符！";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "請輸入舊的個人識別數字代碼 ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "變更 PIN 碼";
+
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "取消訂閱接收郵件";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "確定要退訂？";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "此動作會使您退訂郵件清單。寄件者會收到通知，從此不再傳送郵件到此位址。";

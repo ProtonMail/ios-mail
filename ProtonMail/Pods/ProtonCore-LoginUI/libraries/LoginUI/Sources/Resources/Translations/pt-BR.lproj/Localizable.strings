@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Privacidade padrão";
+
+"Proton address required" = "Endereço Proton obrigatório";
+
+"Update required" = "Atualização necessária";
+
+"Please enter your Proton Account password." = "Digite a senha de sua conta da Proton.";
+
+"OK" = "OK";
+
+"Help" = "Ajuda";
+
+"Continue" = "Continuar";
+
+"Password" = "Senha";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Os servidores Proton estão inacessíveis. Pode ser causado por configuração de rede incorreta, servidores Proton não funcionando ou servidores Proton bloqueados";
+
+"Search country" = "Procurar país";
+
+"Code sent to %@" = "Código enviado para %@";
+
+"Request new code?" = "Solicitar novo código?";
+
+"Resend" = "Reenviar";
+
+"Get a replacement code sent to %@." = "Obtenha um código substituto enviado para %@.";
+
+"Request new code" = "Solicitar um novo código";
+
+"Enter your Proton Account details." = "Insira os detalhes da sua conta Proton.";
+
+"Email or username" = "E-mail ou nome de usuário";
+
+"Sign in" = "Iniciar sessão";
+
+"Sign in with password" = "Iniciar sessão com sua senha";
+
+"Sign in with SSO" = "Iniciar sessão com SSO";
+
+"Sign in to your organization" = "Inicie sessão pela sua organização";
+
+"Create an account" = "Criar uma conta";
+
+"How can we help?" = "Como podemos ajudar?";
+
+"Forgot username" = "Esqueci meu nome de usuário";
+
+"Forgot password" = "Esqueceu sua senha";
+
+"Other sign-in issues" = "Outros problemas de acesso";
+
+"Customer support" = "Suporte ao cliente";
+
+"Still need help? Contact us directly." = "Ainda precisa de ajuda? Entre em contato diretamente conosco.";
+
+"Please enter your Proton Account email or username." = "Digite seu e-mail ou nome de usuário da Proton.";
+
+"Complete Setup" = "Configuração completa";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Sua conta não tem as chaves necessárias. Inicie sessão na web para gerar essas chaves. Depois de iniciar sessão na web, retorne ao app e inicie sessão nele.";
+
+"Account setup required" = "Configuração de conta necessária";
+
+"Incorrect mailbox password" = "Senha da caixa de correio incorreta";
+
+"Your session has expired. Please log in again." = "A sessão expirou. Inicie a sessão novamente.";
+
+"Proton address required" = "Endereço Proton obrigatório";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Você precisa de um endereço de e-mail da Proton para usar o Proton Mail e o Proton Calendar.\nVocê ainda poderá usar %@ para entrar e recuperar sua conta.";
+
+"Username" = "Nome de usuário";
+
+"Please enter a username." = "Digite um nome de usuário.";
+
+"Unlock your mailbox" = "Desbloqueie sua caixa de correio";
+
+"Mailbox password" = "Senha da caixa de correio";
+
+"Unlock" = "Desbloquear";
+
+"Forgot password" = "Esqueceu sua senha";
+
+"Two-factor authentication" = "Autenticação de dois fatores";
+
+"Authenticate" = "Autenticar";
+
+"Two-factor code" = "Código de autenticação em dois fatores";
+
+"Recovery code" = "Código de recuperação";
+
+"Use recovery code" = "Usar código de recuperação";
+
+"Use two-factor code" = "Usar código de autenticação de dois fatores";
+
+"Enter the 6-digit code." = "Insira o código de 6 dígitos.";
+
+"Enter an 8-character recovery code." = "Insira um código de recuperação de 8 caracteres.";
+
+"Learn more" = "Saiba mais";
+
+"Change your password" = "Alterar sua senha";
+
+"Change password" = "Alterar senha";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Para usar o app Proton como membro de uma organização, antes você precisa alterar sua senha iniciando sessão na Proton em um navegador.";
+
+"Error occured" = "Ocorreu um erro";
+
+"Create your Proton Account" = "Crie sua conta Proton";
+
+"One account for all Proton services." = "Uma conta para todos os serviços da Proton.";
+
+"Next" = "Próximo";
+
+"Use your current email instead" = "Usar seu endereço de e-mail atual";
+
+"Create a secure Proton Mail address instead" = "Em vez disso, crie um endereço Proton Mail seguro";
+
+"Email" = "E-mail";
+
+"Create your password" = "Crie sua senha";
+
+"Password must contain at least 8 characters" = "A senha deve conter ao menos 8 caracteres";
+
+"Repeat password" = "Repita a senha";
+
+"Domain" = "Domínio";
+
+"Set recovery method" = "Definir o método de recuperação";
+
+"Set recovery method (optional)" = "Definir método de recuperação (opcional)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Enviaremos instruções de recuperação para este e-mail ou telefone se o acesso a sua conta estiver bloqueado.";
+
+"Email" = "E-mail";
+
+"Phone" = "Telefone";
+
+"Recovery email" = "E-mail de recuperação";
+
+"Recovery phone number" = "Telefone de recuperação";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Ao clicar em Próximo, você concorda com os termos e condições da Proton";
+
+"Terms and Conditions" = "Termos e condições";
+
+"Skip" = "Ignorar";
+
+"Skip recovery method?" = "Pular o método de recuperação?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Um método de recuperação te ajudará a acessar sua conta caso você esqueça sua senha ou tenha seu acesso a sua conta bloqueado.";
+
+"Set recovery method" = "Definir o método de recuperação";
+
+"Your account is being created" = "Sua conta está sendo criada.";
+
+"This should take no more than a minute." = "Isto não deve levar mais de um minuto.";
+
+"Creating your account" = "Criando sua conta";
+
+"Generating your address" = "Gerando seus endereços";
+
+"Securing your account" = "Protegendo sua conta";
+
+"Verifying your payment" = "Verificando seu pagamento";
+
+"Account verification" = "Verificação da conta";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Para sua segurança, precisamos verificar que o endereço fornecido pertence a você. Enviamos um código de verificação para %@. Insira o código abaixo:";
+
+"Verification code" = "Código de verificação";
+
+"Enter the 6-digit code." = "Insira o código de 6 dígitos.";
+
+"Did not receive a code?" = "Não recebeu nenhum código?";
+
+"Terms and Conditions" = "Termos e condições";
+
+"Invalid token request" = "O pedido de token não é valido.";
+
+"Invalid token error" = "Erro de token incorreto";
+
+"Create user failed" = "Erro ao criar o usuário";
+
+"Invalid hashed password" = "A senha de hash não é valida.";
+
+"Password can not be empty.\nPlease try again." = "A senha não pode ser vazia.\nTente novamente.";
+
+"Password must contain at least %@ characters." = "A senha deve conter ao menos %@ caracteres.";
+
+"Passwords do not match.\nPlease try again." = "As senhas não correspondem.\nTente novamente.";
+
+"Email address already used." = "Endereço de e-mail já usado.";
+
+"Please ask your admin to configure your sub-user." = "Peça ao administrador que configure seu subusuário.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Você deseja receber um novo código de verificação ou usar um endereço de e-mail diferente?";
+
+"Change email address" = "Alterar endereço de e-mail";
+
+"Congratulations" = "Parabéns";
+
+"Your Proton Free account was successfully created." = "Sua conta Proton Free foi criada.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Seu pagamento foi confirmado, e sua conta %@ foi criada.";
+
+"Your Proton account was successfully created." = "Sua conta da Proton foi criada.";
+
+"Enjoy the world of privacy." = "Aproveite o mundo da privacidade.";
+
+"Cancel" = "Cancelar";
+
+"Sign in" = "Iniciar sessão";
+
+"Troubleshoot" = "Solução de problemas";

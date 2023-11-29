@@ -13,7 +13,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d pelacak email diblokir</string>
+        <string>%d pelacak surel diblokir</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>
@@ -27,7 +27,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d pelacak email ditemukan</string>
+        <string>%d pelacak surel ditemukan</string>
       </dict>
     </dict>
     <key>Proton found %d trackers on this message.</key>

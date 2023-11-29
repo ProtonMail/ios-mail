@@ -18,8 +18,8 @@
 import LifetimeTracker
 import MBProgressHUD
 import PhotosUI
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 protocol ContactEditViewControllerDelegate: AnyObject {
@@ -451,7 +451,7 @@ extension ContactEditViewController: UITableViewDataSource {
             break
         case .addNewField:
             let sender = tableView.cellForRow(at: indexPath)
-            showAddNewFieldAlert(at: indexPath, sender: sender)
+            showAddNewFieldAlert(sender: sender)
         }
     }
 }
@@ -480,7 +480,7 @@ extension ContactEditViewController {
         }
     }
 
-    private func showAddNewFieldAlert(at indexPath: IndexPath, sender: UIView?) {
+    private func showAddNewFieldAlert(sender: UIView?) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(
             UIAlertAction(
@@ -752,7 +752,7 @@ extension ContactEditViewController: UITableViewDelegate {
                 customView.tableView.insertRows(at: [indexPath], with: .automatic)
             case .addNewField:
                 let sender = tableView.cellForRow(at: indexPath)
-                showAddNewFieldAlert(at: indexPath, sender: sender)
+                showAddNewFieldAlert(sender: sender)
             case .custom_field:
                 _ = viewModel.newField()
                 newIndexPath = indexPath

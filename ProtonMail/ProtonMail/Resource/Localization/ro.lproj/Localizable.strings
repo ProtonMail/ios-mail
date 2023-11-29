@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Trimitere eșuată";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Mesajul nu s-a putut trimite. Mesajul a fost salvat în ciorne.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Nimic de văzut aici";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Trebuie cel puțin un destinatar pentru a trimite mesajul.";
-
-/* Title */
-"Change sender address to…" = "Schimbare adresă expeditor cu…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Treceți la un plan cu plată pentru a trimite de la adresa %@";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Confirmare parolă nouă mesaje";
 
-/* error when sending the message */
-"Unable to send the email" = "Mesajul nu poate fi trimis";
-
 /* Title */
 "Star/unstar" = "Cu stea/Fără stea";
 
@@ -996,9 +987,6 @@
 "Cut" = "Decupare";
 
 /* Title */
-"Compose to" = "Scrie lui";
-
-/* Title */
 "Add to contacts" = "Adăugare la contacte";
 
 /* encryption lock description */
@@ -1161,7 +1149,7 @@
 "App PIN & Touch ID" = "PIN aplicație și Touch ID";
 
 /* security title in settings */
-"App PIN & Face ID" = "PIN aplicație și Face ID";
+"App PIN & Face ID" = "PIN aplicație și ID facial";
 
 /* cell title in device settings */
 "Language" = "Limba";
@@ -1244,9 +1232,6 @@
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Se trimite mesajul…";
 
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Mesajul nu a putut fi trimis. Cel puțin o adresă a unui destinatar/domeniu nu există sau nu este în format corespunzător.";
-
 /* The unread title of unread action button in mailbox view */
 "unread" = "necitit";
 
@@ -1295,27 +1280,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Activați această funcție pentru autocompletarea adreselor de e-mail folosind contactele din toate conturile conectate.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Setare cod PIN";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Introduceți noul cod PIN";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Introduceți un cod PIN de minim 4 și maxim 21 de caractere.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "Codul PIN este prea scurt.";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "Codul PIN este prea lung.";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Repere cod PIN";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "Codurile PIN trebuie să corespundă!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "În cazul în care serverele Proton sunt blocate, această setare permite aplicației să încerce accesarea printr-o rețea alternativă pentru a ajunge la Proton, ceea ce poate fi util pentru ocolirea paravanelor de protecție sau a problemelor de rețea. Se recomandă păstrarea acestei setări pentru o fiabilitate mai mare. %1$@";
 
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "Dezactivat";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Schimbare cod PIN";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Reautentificare";
@@ -1821,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "Puteți alege și rearanja acțiunile din această bară";
 
 /* Button to block a sender */
-"Block sender" = "Blocare expeditor";
+"Block messages from this sender" = "Blocare mesaje de la acest expeditor";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blocare";
@@ -1990,6 +1951,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Răspuns tuturor (ultimului mesaj)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Mesaj nou";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personalizare";
 
@@ -2023,15 +1987,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Activare";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Dezactivare autoștergere?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Mesajele programate pentru ștergere vor rămâne în folderele «Gunoi» și «Nedorite».";
-
-/* Button to disable auto delete */
-"Disable" = "Dezactivare";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Modificați-vă planul pentru a putea șterge automat mesajele care au stat în folderul «Gunoi» și «Nedorite» mai mult de 30 de zile.";
 
@@ -2062,6 +2017,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Domenii personale e-mail";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Expeditor schimbat";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Expeditorul original al acestui mesaj nu mai este valid. Mesajul va fi trimis de la adresa implicită %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nume afișat";
 
@@ -2075,7 +2036,7 @@
 "Display name field cannot be empty" = "Câmpul pentru numele afișat nu poate fi gol.";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "Numele de contact este prea lung.";
 
 /* The button text for add profile picture */
 "Add photo" = "Adăugare fotografie";
@@ -2083,11 +2044,44 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Editare imagine";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "Selectare toate";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Dezactivare cod PIN";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Setare cod PIN";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Repere cod PIN";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Introduceți noul cod PIN";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Introduceți un cod PIN de minim 4 și maxim 21 de caractere.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "Codul PIN este prea scurt.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "Codul PIN este prea lung.";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "Codurile PIN trebuie să corespundă!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Introduceți vechiul cod PIN";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Schimbare cod PIN";
+
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Dezabonare de la lista de discuții";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Dezabonare?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Acest lucru vă va dezabona din lista de corespondență. Expeditorul va fi notificat să nu mai trimită mesaje la această adresă.";

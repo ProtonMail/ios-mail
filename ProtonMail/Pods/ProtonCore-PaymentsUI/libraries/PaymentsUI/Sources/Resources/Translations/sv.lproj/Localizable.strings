@@ -1,0 +1,134 @@
+
+"OK" = "OK";
+
+"Cancel" = "Avbryt";
+
+"Warning" = "Varning";
+
+"Select a plan" = "Välj ett paket";
+
+"Current plan" = "Nuvarande paket";
+
+"Subscription" = "Prenumeration";
+
+"Upgrade your plan" = "Uppgradera ditt paket";
+
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Endast årliga prenumerationer utan automatisk förnyelse är tillgängliga inuti mobilappen.";
+
+"You cannot manage subscriptions inside the mobile application." = "Du kan inte hantera prenumerationer i mobilapplikationen.";
+
+"Your plan will automatically renew on %@" = "Ditt paket kommer att förnyas automatiskt den %@";
+
+"Current plan will expire on %@" = "Nuvarande paket kommer löpa ut den %@";
+
+"Contact an administrator to make changes to your Proton subscription." = "Kontakta en administratör för att göra ändringar i din Proton-prenumeration.";
+
+"%@ storage" = "%@ lagringsutrymme";
+
+"%@ storage / user" = "%@ lagringsutrymme/användare";
+
+"for %@" = "för %@";
+
+"Custom email addresses" = "Anpassade e-postadresser";
+
+"Priority customer support" = "Prioriterad kundsupport";
+
+"Adblocker (NetShield)" = "Annonsblockerare (NetShield)";
+
+"Streaming service support" = "Stöd för streamingtjänster";
+
+"High speed" = "Hög hastighet";
+
+"Highest speed" = "Högsta hastighet";
+
+"Multi-user support" = "Stöd för flera användare";
+
+"The basic for private and secure communications." = "Det grundläggande för privat och säker kommunikation.";
+
+"Full-featured mailbox with advanced protection." = "Fullfjädrad brevlåda med avancerat skydd.";
+
+"Limited time offer" = "Tidsbegränsat erbjudande";
+
+"Complete payment?" = "Slutför betalning?";
+
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Ett köp för ett Proton-paket har redan påbörjats. Tryck fortsätt för att slutföra betalningshanteringen och skapa ditt konto";
+
+"Complete payment" = "Slutför betalning";
+
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "Kontoinställningsprocessen kunde inte slutföras på grund av ett oväntat fel.\nFörsök igen.";
+
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "IAP-köpprocessen har startat. Följ Apples instruktioner för att antingen slutföra eller avbryta köpet.";
+
+"One plan for all Proton services" = "Ett paket för alla Proton-tjänster";
+
+"The no-cost starter account designed to empower everyone with privacy by default." = "Gratiskontot designat för att ge alla integritet som standard.";
+
+"The privacy-first email and calendar solution for your everyday communication needs." = "Den integritetsbaserade e-post- och kalenderlösningen för dina dagliga kommunikationsbehov.";
+
+"Your privacy and security are our priority." = "Din integritet och säkerhet är vår prioritet.";
+
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Det lagringsfokuserade paketet med 200 GB molnlagring för att hålla dina filer privata.";
+
+"The ultimate privacy pack with access to all premium Proton services." = "Det ultimata integritetspaketet med åtkomst till alla premium Proton-tjänster.";
+
+"Only non-renewing annual subscriptions are available via this app" = "Endast icke-förnyande årsprenumerationer är tillgängliga via denna app";
+
+"Unlimited folders, labels, and filters" = "Obegränsade mappar, etiketter och filter";
+
+"Up to %@ storage" = "Upp till %@ lagringsutrymme";
+
+"Free VPN on a single device" = "Gratis VPN på en enhet";
+
+"Highest VPN speed" = "Högsta VPN-hastighet";
+
+"Built-in ad-blocker (NetShield)" = "Inbyggd annonsblockerare (NetShield)";
+
+"Access to streaming services globally" = "Åtkomst till streamingtjänster globalt";
+
+"Secure Core servers" = "Secure Core-servrar";
+
+"TOR over VPN" = "Tor över VPN";
+
+"P2P/BitTorrent" = "P2P/BitTorrent";
+
+"Get %@" = "Skaffa %@";
+
+"Get Proton for free" = "Skaffa Proton gratis";
+
+"Extend subscription" = "Förläng prenumeration";
+
+"%@ of %@" = "%@ av %@";
+
+"Connection issues" = "Anslutningsproblem";
+
+"Check your internet connection" = "Kontrollera din Internetanslutning";
+
+"Strict no-logs policy" = "Strikt policy att inte logga";
+
+"Plan successfully upgraded" = "Paket uppgraderat";
+
+"Integrated 2FA authenticator" = "Integrerad 2FA-autentisering";
+
+"Priority support" = "Prioriterad support";
+
+"Unlimited devices" = "Obegränsat antal enheter";
+
+"%@ email aliases" = "%@ e-postalias";
+
+"Unlimited email aliases" = "Obegränsat antal e-postalias";
+
+"Unlimited logins and notes" = "Obegränsat antal inloggningar och anteckningar";
+
+"Up to %@ forwarding mailboxes" = "Upp till %@ vidarebefordrade brevlådor";
+
+"Custom fields" = "Anpassade fält";
+
+"For next-level password management and identity protection." = "För nästa nivå av lösenordshantering och identitetsskydd.";
+
+"Pay monthly" = "Betala månadsvis";
+
+"Pay annually" = "Betala årligen";
+
+"Pay every two years" = "Betala vartannat år";
+
+"Free" = "Gratis";

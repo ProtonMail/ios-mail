@@ -365,8 +365,7 @@ class QueueManagerTests: XCTestCase {
         self.miscTaskUUIDs.append(task.uuid)
         self.handlerMock.setResult(to: .connectionIssue)
         XCTAssertTrue(addTaskToSUT(task: task, autoExecute: true))
-        
-        sleep(1)
+
         XCTAssertEqual(self.handlerMock.handleCount, self.miscTaskUUIDs.count)
         checkExcuteSequence()
         XCTAssertEqual(self.miscQueue.count, 1)
@@ -377,11 +376,10 @@ class QueueManagerTests: XCTestCase {
         self.miscTaskUUIDs.append(task.uuid)
         self.handlerMock.setResult(to: .connectionIssue)
         XCTAssertTrue(addTaskToSUT(task: task, autoExecute: true))
-        
-        sleep(1)
+
         XCTAssertEqual(self.handlerMock.handleCount, self.miscTaskUUIDs.count)
         checkExcuteSequence()
-        XCTAssertEqual(self.miscQueue.count, 0)
+        wait(self.miscQueue.count == 0)
     }
     
     func testRemoveRelated() {

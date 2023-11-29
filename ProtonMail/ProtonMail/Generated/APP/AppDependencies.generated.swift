@@ -1,6 +1,22 @@
 // Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
-import ProtonCore_Payments
+import ProtonCorePayments
+
+protocol HasAddressBookService {
+    var addressBookService: AddressBookService { get }
+}
+
+extension GlobalContainer: HasAddressBookService {
+    var addressBookService: AddressBookService {
+        addressBookServiceFactory()
+    }
+}
+
+extension UserContainer: HasAddressBookService {
+    var addressBookService: AddressBookService {
+        globalContainer.addressBookService
+    }
+}
 
 protocol HasBackgroundTaskHelper {
     var backgroundTaskHelper: BackgroundTaskHelper { get }
@@ -66,6 +82,22 @@ extension UserContainer: HasDarkModeCacheProtocol {
     }
 }
 
+protocol HasImageProxyCacheProtocol {
+    var imageProxyCache: ImageProxyCacheProtocol { get }
+}
+
+extension GlobalContainer: HasImageProxyCacheProtocol {
+    var imageProxyCache: ImageProxyCacheProtocol {
+        imageProxyCacheFactory()
+    }
+}
+
+extension UserContainer: HasImageProxyCacheProtocol {
+    var imageProxyCache: ImageProxyCacheProtocol {
+        globalContainer.imageProxyCache
+    }
+}
+
 protocol HasPushNotificationService {
     var pushService: PushNotificationService { get }
 }
@@ -98,6 +130,22 @@ extension UserContainer: HasSaveSwipeActionSettingForUsersUseCase {
     }
 }
 
+protocol HasSenderImageCache {
+    var senderImageCache: SenderImageCache { get }
+}
+
+extension GlobalContainer: HasSenderImageCache {
+    var senderImageCache: SenderImageCache {
+        senderImageCacheFactory()
+    }
+}
+
+extension UserContainer: HasSenderImageCache {
+    var senderImageCache: SenderImageCache {
+        globalContainer.senderImageCache
+    }
+}
+
 protocol HasSignInManager {
     var signInManager: SignInManager { get }
 }
@@ -111,6 +159,22 @@ extension GlobalContainer: HasSignInManager {
 extension UserContainer: HasSignInManager {
     var signInManager: SignInManager {
         globalContainer.signInManager
+    }
+}
+
+protocol HasStoreKitManagerImpl {
+    var storeKitManager: StoreKitManagerImpl { get }
+}
+
+extension GlobalContainer: HasStoreKitManagerImpl {
+    var storeKitManager: StoreKitManagerImpl {
+        storeKitManagerFactory()
+    }
+}
+
+extension UserContainer: HasStoreKitManagerImpl {
+    var storeKitManager: StoreKitManagerImpl {
+        globalContainer.storeKitManager
     }
 }
 
@@ -166,6 +230,16 @@ extension UserContainer: HasBlockedSenderCacheUpdater {
     }
 }
 
+protocol HasCleanUserLocalMessages {
+    var cleanUserLocalMessages: CleanUserLocalMessages { get }
+}
+
+extension UserContainer: HasCleanUserLocalMessages {
+    var cleanUserLocalMessages: CleanUserLocalMessages {
+        cleanUserLocalMessagesFactory()
+    }
+}
+
 protocol HasBugReportService {
     var reportService: BugReportService { get }
 }
@@ -193,26 +267,6 @@ protocol HasFetchSenderImage {
 extension UserContainer: HasFetchSenderImage {
     var fetchSenderImage: FetchSenderImage {
         fetchSenderImageFactory()
-    }
-}
-
-protocol HasFetchMessageDetail {
-    var fetchMessageDetail: FetchMessageDetail { get }
-}
-
-extension UserContainer: HasFetchMessageDetail {
-    var fetchMessageDetail: FetchMessageDetail {
-        fetchMessageDetailFactory()
-    }
-}
-
-protocol HasImageProxy {
-    var imageProxy: ImageProxy { get }
-}
-
-extension UserContainer: HasImageProxy {
-    var imageProxy: ImageProxy {
-        imageProxyFactory()
     }
 }
 

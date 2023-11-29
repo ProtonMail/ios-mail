@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Не ўдалося адправіць";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Не ўдалося адправіць. Паведамленне захавана ў чарнавіках.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Тут нічога няма";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Для адпраўкі вам неабходны прынамсі адзін атрымальнік";
-
-/* Title */
-"Change sender address to…" = "Змяніць адрас адпраўніка на…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Перайдзіце на платны тарыфны план, каб мець магчымасць адпраўляць з вашага адраса %@";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Пацвердзіць новы пароль паштовай скрыні";
 
-/* error when sending the message */
-"Unable to send the email" = "Немагчыма адправіць ліст";
-
 /* Title */
 "Star/unstar" = "Паставіць/прыбраць зорачку";
 
@@ -996,9 +987,6 @@
 "Cut" = "Выразаць";
 
 /* Title */
-"Compose to" = "Напісаць";
-
-/* Title */
 "Add to contacts" = "Дадаць у кантакты";
 
 /* encryption lock description */
@@ -1244,9 +1232,6 @@
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Адпраўка паведамлення…";
 
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Не атрымалася адправіць паведамленне. Прынамсі адзін адрас электроннай пошты/дамен атрымальніка не існуе або ён дрэнна адфарматаваны.";
-
 /* The unread title of unread action button in mailbox view */
 "unread" = "непрачытаныя";
 
@@ -1295,27 +1280,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Уключыце гэту функцыю для аўтаматычнага запаўнення адрасоў электроннай пошты выкарыстоўваючы кантакты з усіх уліковых запісаў у якія вы ўвайшлі.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Задаць PIN-код";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Увядзіце новы PIN-код";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Увядзіце PIN-код ад 4 да 21 сімвала.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "Занадта кароткі PIN";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "Занадта доўгі PIN";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Паўтарыце PIN-код";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "PIN-коды павінны супадаць!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "У выпадку блакіроўкі сайтаў Proton гэта налада дазваляе праграме скарыстацца альтэрнатыўнай сеткавай маршрутызацыяй, каб атрымаць доступ да Proton, што можа быць карысным для абыходу міжсеткавых экранаў або праблем з сеткай. Для большай надзейнасці мы рэкамендуем пакінуць гэту наладу актыўнай. %1$@";
 
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "Выключана";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Змяніць PIN-код";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Паўторная аўтэнтыфікацыя";
@@ -1593,7 +1554,7 @@
 "Collapse message" = "Згарнуць паведамленне";
 
 /* The title of section inside the dark mode setting page */
-"Appearance" = "Знешні выгляд";
+"Appearance" = "Вонкавы выгляд";
 
 /* The title of follow system option in dark mode setting */
 "Follow device setting" = "Згодна з наладамі прылады";
@@ -1821,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "Цяпер вы можаце выбраць і змяніць парадак паказу дзеянняў на гэтай панэлі";
 
 /* Button to block a sender */
-"Block sender" = "Заблакіраваць адпраўніка";
+"Block messages from this sender" = "Блакіраваць паведамленні ад гэтага адпраўніка";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Заблакіраваць";
@@ -1990,6 +1951,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Адказаць усім (на апошняе паведамленне)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Новае паведамленне";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Наладзіць";
 
@@ -2023,15 +1987,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Уключыць";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Адключыць аўтаматычнае выдаленне?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Лісты, запланаваныя для выдалення, застануцца ў сметніцы і папках са спамам.";
-
-/* Button to disable auto delete */
-"Disable" = "Адключыць";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Палепшыце тарыфны план, каб аўтаматычна выдаляць паведамленні, якія былі ў папках сметніца або спам больш за 30 дзён.";
 
@@ -2062,6 +2017,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Карыстальніцкія дамены электроннай пошты";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Адпраўнік зменены";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Пачатковы адпраўнік гэтага паведамлення больш не з'яўляецца сапраўдным. Ваша паведамленне будзе адпраўлена з прадвызначанага адраса %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Бачнае імя";
 
@@ -2083,11 +2044,44 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Рэдагаваць фатаграфію";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "Выбраць усе";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Адключэнне PIN-кода";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Задаць PIN-код";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Паўтарыце PIN-код";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Увядзіце новы PIN-код";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Увядзіце PIN-код ад 4 да 21 сімвала.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "Занадта кароткі PIN";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "Занадта доўгі PIN";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN-коды павінны супадаць!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Увядзіце стары PIN-код ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Змяніць PIN-код";
+
 /* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Адпісацца ад спіса рассылкі";
+"Unsubscribe from mailing list" = "Скасаваць падпіску на спіс рассылкі";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Скасаваць падпіску?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Гэта прывядзе да скасавання вашай падпіскі на спіс рассылкі. Адпраўніку будзе паведамлена пра неабходнасць спыніць адпраўку лістоў на гэты адрас.";

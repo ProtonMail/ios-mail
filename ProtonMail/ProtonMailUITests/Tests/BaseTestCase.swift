@@ -10,9 +10,9 @@ import Foundation
 import XCTest
 import fusion
 @testable import ProtonMail
-import ProtonCore_Environment
-import ProtonCore_QuarkCommands
-import ProtonCore_TestingToolkit
+import ProtonCoreEnvironment
+import ProtonCoreQuarkCommands
+import ProtonCoreTestingToolkit
 import Yams
 
 let apiDomainKey = "MAIL_APP_API_DOMAIN"
@@ -195,13 +195,19 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
     override func setUp() {
         super.setUp()
     }
-    
+
     func runTestWithScenario(_ actualScenario: MailScenario, testBlock: () -> Void) {
         scenario = actualScenario
         createUserAndLogin()
         testBlock()
     }
-    
+
+    func runTestWithScenario(_ actualScenario: MailScenario, testBlock: () async -> Void) async {
+        scenario = actualScenario
+        createUserAndLogin()
+        await testBlock()
+    }
+
     func runTestWithScenarioDoNotLogin(_ actualScenario: MailScenario, testBlock: () -> Void) {
         scenario = actualScenario
         user = createUser()

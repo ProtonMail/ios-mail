@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 import XCTest
 
 final class DownloadServiceTests: XCTestCase {
@@ -75,7 +75,7 @@ final class DownloadServiceTests: XCTestCase {
         waitForExpectations(timeout: 2.0)
     }
 
-    func testDownload_whenDownloadAlreadyInProgressButRetryThresholdPassed_makesAnotherRequest() {
+    func testDownload_whenDownloadAlreadyInProgressButRetryThresholdPassed_makesAnotherRequest() async {
         let dependencies = DownloadService.Dependencies(fileManager: mockFileManager, retryThresholdInSeconds: 1.0)
         sut = DownloadService(dependencies: dependencies)
         mockApiServiceResponseDelay = dependencies.retryThresholdInSeconds + 0.5
@@ -84,13 +84,13 @@ final class DownloadServiceTests: XCTestCase {
         sut.download(url: resourceUrl1, to: destinationFile1, apiService: mockApiServer) { result in
             XCTFail("this response is not expected after the download request is triggered again")
         }
-        sleep(UInt32(dependencies.retryThresholdInSeconds))
+        await sleep(milliseconds: UInt(dependencies.retryThresholdInSeconds) * 1000)
         sut.download(url: resourceUrl1, to: destinationFile1, apiService: mockApiServer) { [unowned self] result in
             XCTAssert(mockApiServer.downloadStub.callCounter == 2)
             XCTAssert(try! result.get() == destinationFile1)
             expectation1.fulfill()
         }
-        waitForExpectations(timeout: 2.0)
+        await fulfillment(of: [expectation1], timeout: 2.0)
     }
 
     func testDownload_whenMultipleDownloads_sameNumberOfRequestsAreMade() {

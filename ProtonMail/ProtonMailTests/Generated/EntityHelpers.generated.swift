@@ -17,7 +17,6 @@ extension AttachmentEntity {
         fileData: Data? = nil,
         fileSize: NSNumber = .init(),
         localURL: URL? = nil,
-        isTemp: Bool = .init(),
         keyChanged: Bool = .init(),
         objectID: ObjectID = .init(rawValue: .init()),
         order: Int = .init(),
@@ -36,7 +35,6 @@ extension AttachmentEntity {
             fileData: fileData,
             fileSize: fileSize,
             localURL: localURL,
-            isTemp: isTemp,
             keyChanged: keyChanged,
             objectID: objectID,
             order: order,
@@ -118,6 +116,7 @@ extension ConversationEntity {
         subject: String = .init(),
         userID: UserID = .init(rawValue: .init()),
         contextLabelRelations: [ContextLabelEntity] = .init(),
+        attachmentsMetadata: [AttachmentsMetadata] = .init(),
         isSoftDeleted: Bool = .init()
     ) -> Self {
         ConversationEntity(
@@ -133,6 +132,7 @@ extension ConversationEntity {
             subject: subject,
             userID: userID,
             contextLabelRelations: contextLabelRelations,
+            attachmentsMetadata: attachmentsMetadata,
             isSoftDeleted: isSoftDeleted
         )
     }
@@ -286,7 +286,8 @@ extension MessageEntity {
         passwordEncryptedBody: String = .init(),
         password: String = .init(),
         passwordHint: String = .init(),
-        objectID: ObjectID = .init(rawValue: .init())
+        objectID: ObjectID = .init(rawValue: .init()),
+        attachmentsMetadata: [AttachmentsMetadata] = .init()
     ) -> Self {
         MessageEntity(
             messageID: messageID,
@@ -330,7 +331,8 @@ extension MessageEntity {
             passwordEncryptedBody: passwordEncryptedBody,
             password: password,
             passwordHint: passwordHint,
-            objectID: objectID
+            objectID: objectID,
+            attachmentsMetadata: attachmentsMetadata
         )
     }
 }

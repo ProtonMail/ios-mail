@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 import XCTest
 
 @testable import ProtonMail
@@ -63,21 +63,22 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
 
     func testRequestingTheUpdate_whileOnline_triggersUpdate() {
         sut.requestUpdate()
-        waitForSideEffectsToOccur()
+        wait(self.refetchAllBlockedSenders.executeStub.callCounter == 1)
 
         XCTAssertEqual(sut.state, .updateInProgress)
         XCTAssertEqual(refetchAllBlockedSenders.executeStub.callCounter, 1)
     }
 
-    func testRequestingTheUpdate_whileNotIdle_doesNothing() {
+    @MainActor
+    func testRequestingTheUpdate_whileNotIdle_doesNothing() async {
         sut.requestUpdate()
-        waitForSideEffectsToOccur()
+        wait(self.refetchAllBlockedSenders.executeStub.callCounter == 1)
 
         XCTAssertNotEqual(sut.state, .idle)
         XCTAssertEqual(refetchAllBlockedSenders.executeStub.callCounter, 1)
 
         sut.requestUpdate()
-        waitForSideEffectsToOccur()
+        await waitForSideEffectsToOccur()
 
         XCTAssertEqual(refetchAllBlockedSenders.executeStub.callCounter, 1)
     }
@@ -91,14 +92,14 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
         }
 
         sut.requestUpdate()
-        waitForSideEffectsToOccur()
+        wait(self.internetStatusProvider.registerStub.callCounter == 1)
 
         XCTAssertEqual(sut.state, .waitingToBecomeOnline)
         XCTAssertEqual(refetchAllBlockedSenders.executeStub.callCounter, 0)
         XCTAssertEqual(internetStatusProvider.registerStub.callCounter, 1)
 
         statusReceiver?.connectionStatusHasChanged(newStatus: .connected)
-        waitForSideEffectsToOccur()
+        wait(self.internetStatusProvider.unRegisterStub.callCounter == 1)
 
         XCTAssertEqual(sut.state, .updateInProgress)
         XCTAssertEqual(internetStatusProvider.unRegisterStub.callCounter, 1)
@@ -111,7 +112,7 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
         }
 
         sut.requestUpdate()
-        waitForSideEffectsToOccur()
+        wait(self.sut.state == .idle)
 
         XCTAssertEqual(sut.state, .idle)
     }
@@ -122,7 +123,7 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
         }
 
         sut.requestUpdate()
-        waitForSideEffectsToOccur()
+        wait(self.sut.state == .waitingToRetryAfterError)
 
         XCTAssertEqual(sut.state, .waitingToRetryAfterError)
         XCTAssertEqual(refetchAllBlockedSenders.executeStub.callCounter, 1)
@@ -140,12 +141,8 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
         }
 
         sut.requestUpdate()
-        waitForSideEffectsToOccur()
-
-        XCTAssertEqual(
-            delegate.blockedSenderCacheUpdaterStub.capturedArguments.map(\.second),
-            [.updateRequested, .updateInProgress, .idle]
-        )
+        let expected: [BlockedSenderCacheUpdater.State] = [.updateRequested, .updateInProgress, .idle]
+        wait(delegate.blockedSenderCacheUpdaterStub.capturedArguments.map(\.second) == expected)
     }
 
     // MARK: fetch status flag
@@ -156,7 +153,7 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
         }
 
         sut.requestUpdate()
-        waitForSideEffectsToOccur()
+        wait(self.fetchStatusProvider.markBlockedSendersAsFetchedStub.callCounter == 1)
 
         XCTAssertEqual(fetchStatusProvider.markBlockedSendersAsFetchedStub.callCounter, 1)
 
@@ -171,7 +168,7 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
         }
 
         sut.requestUpdate()
-        waitForSideEffectsToOccur()
+        wait(self.sut.state == .waitingToRetryAfterError)
 
         XCTAssertEqual(fetchStatusProvider.markBlockedSendersAsFetchedStub.callCounter, 0)
     }
@@ -183,7 +180,7 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
         }
 
         sut.requestUpdate()
-        waitForSideEffectsToOccur()
+        wait(self.sut.state == .idle)
 
         XCTAssertEqual(sut.state, .idle)
         XCTAssertEqual(refetchAllBlockedSenders.executeStub.callCounter, 0)
@@ -192,7 +189,7 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
     // MARK: helpers
 
     /// This method is needed because side effects happen on a background queue
-    private func waitForSideEffectsToOccur() {
-        Thread.sleep(forTimeInterval: 0.1)
+    private func waitForSideEffectsToOccur() async {
+        await sleep(milliseconds: 100)
     }
 }

@@ -8,6 +8,8 @@
 import CoreGraphics
 import Foundation
 
+// MARK: - GradientValueProvider
+
 /// A `ValueProvider` that returns a Gradient Color Value.
 public final class GradientValueProvider: ValueProvider {
 
@@ -22,28 +24,30 @@ public final class GradientValueProvider: ValueProvider {
     locationsBlock = locations
     colors = []
     self.locations = []
+    identity = UUID()
   }
 
   /// Initializes with an array of colors.
   public init(
-    _ colors: [Color],
+    _ colors: [LottieColor],
     locations: [Double] = [])
   {
     self.colors = colors
     self.locations = locations
+    identity = [AnyHashable(colors), AnyHashable(locations)]
     updateValueArray()
     hasUpdate = true
   }
 
   // MARK: Public
 
-  /// Returns a [Color] for a CGFloat(Frame Time).
-  public typealias ColorsValueBlock = (CGFloat) -> [Color]
+  /// Returns a [LottieColor] for a CGFloat(Frame Time).
+  public typealias ColorsValueBlock = (CGFloat) -> [LottieColor]
   /// Returns a [Double](Color locations) for a CGFloat(Frame Time).
   public typealias ColorLocationsBlock = (CGFloat) -> [Double]
 
   /// The colors values of the provider.
-  public var colors: [Color] {
+  public var colors: [LottieColor] {
     didSet {
       updateValueArray()
       hasUpdate = true
@@ -65,16 +69,18 @@ public final class GradientValueProvider: ValueProvider {
   }
 
   public var storage: ValueProviderStorage<[Double]> {
-    .closure { [self] frame in
-      hasUpdate = false
+    if let block = block {
+      return .closure { [self] frame in
+        hasUpdate = false
 
-      if let block = block {
         let newColors = block(frame)
         let newLocations = locationsBlock?(frame) ?? []
         value = value(from: newColors, locations: newLocations)
-      }
 
-      return value
+        return value
+      }
+    } else {
+      return .singleValue(value)
     }
   }
 
@@ -93,7 +99,9 @@ public final class GradientValueProvider: ValueProvider {
   private var locationsBlock: ColorLocationsBlock?
   private var value: [Double] = []
 
-  private func value(from colors: [Color], locations: [Double]) -> [Double] {
+  private let identity: AnyHashable
+
+  private func value(from colors: [LottieColor], locations: [Double]) -> [Double] {
     var colorValues = [Double]()
     var alphaValues = [Double]()
     var shouldAddAlphaValues = false
@@ -119,5 +127,14 @@ public final class GradientValueProvider: ValueProvider {
 
   private func updateValueArray() {
     value = value(from: colors, locations: locations)
+  }
+
+}
+
+// MARK: Equatable
+
+extension GradientValueProvider: Equatable {
+  public static func ==(_ lhs: GradientValueProvider, _ rhs: GradientValueProvider) -> Bool {
+    lhs.identity == rhs.identity
   }
 }

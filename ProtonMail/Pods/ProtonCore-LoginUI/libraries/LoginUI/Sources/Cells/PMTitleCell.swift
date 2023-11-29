@@ -19,8 +19,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 final class PMTitleCell: UITableViewCell {
 
@@ -49,3 +51,5 @@ final class PMTitleCell: UITableViewCell {
         separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
     }
 }
+
+#endif

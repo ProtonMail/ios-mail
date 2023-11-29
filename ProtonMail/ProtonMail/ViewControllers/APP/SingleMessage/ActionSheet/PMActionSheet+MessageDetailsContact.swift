@@ -20,8 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_DataModel
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreUIFoundations
 
 extension PMActionSheet {
     enum SenderBlockStatus {
@@ -68,15 +68,13 @@ extension PMActionSheet {
             addToContacts(action: action)
         ]
 
-        if UserInfo.isBlockSenderEnabled {
-            switch senderBlockStatus {
-            case .blocked:
-                items.append(unblockSender(action: action))
-            case .notBlocked:
-                items.append(blockSender(action: action))
-            case .notApplicable:
-                break
-            }
+        switch senderBlockStatus {
+        case .blocked:
+            items.append(unblockSender(action: action))
+        case .notBlocked:
+            items.append(blockSender(action: action))
+        case .notApplicable:
+            break
         }
 
         return PMActionSheet(headerView: header, itemGroups: [.init(items: items, style: .clickable)])
@@ -101,7 +99,7 @@ extension PMActionSheet {
     private static func composeTo(
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheetItem {
-        PMActionSheetItem(style: .default(IconProvider.envelope, LocalString._compose_to)) { _ in
+        PMActionSheetItem(style: .default(IconProvider.penSquare, L11n.ActionSheetActionTitle.newMessage)) { _ in
             action(.composeTo)
         }
     }

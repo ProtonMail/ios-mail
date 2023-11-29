@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 import XCTest
 
 @testable import ProtonMail
@@ -136,7 +136,7 @@ class CoreDataServiceTests: XCTestCase {
 
         try sut.modifyMessage(with: fetchedMessage.objectID)
 
-        try await waitUntilChangesAreMergedIntoMainContext()
+        await waitUntilChangesAreMergedIntoMainContext()
 
         mainContext.performAndWait {
             XCTAssertEqual(fetchedMessage.body, "updated body")
@@ -168,7 +168,7 @@ class CoreDataServiceTests: XCTestCase {
             message.body = "updated foo body"
         }
 
-        try await waitUntilChangesAreMergedIntoMainContext()
+        await waitUntilChangesAreMergedIntoMainContext()
 
         XCTAssertEqual(fooDelegate.controllerDidChangeContentStub.callCounter, 1)
         XCTAssertEqual(barDelegate.controllerDidChangeContentStub.callCounter, 0)
@@ -178,7 +178,7 @@ class CoreDataServiceTests: XCTestCase {
             message.body = "updated bar body"
         }
 
-        try await waitUntilChangesAreMergedIntoMainContext()
+        await waitUntilChangesAreMergedIntoMainContext()
 
         XCTAssertEqual(fooDelegate.controllerDidChangeContentStub.callCounter, 1)
         XCTAssertEqual(barDelegate.controllerDidChangeContentStub.callCounter, 1)
@@ -192,7 +192,7 @@ class CoreDataServiceTests: XCTestCase {
             }
         }
 
-        try await waitUntilChangesAreMergedIntoMainContext()
+        await waitUntilChangesAreMergedIntoMainContext()
 
         XCTAssertEqual(fooDelegate.controllerDidChangeContentStub.callCounter, 2)
         XCTAssertEqual(barDelegate.controllerDidChangeContentStub.callCounter, 2)
@@ -278,8 +278,8 @@ class CoreDataServiceTests: XCTestCase {
         XCTAssertEqual(messageIDAfterAllWrites, "1234")
     }
 
-    private func waitUntilChangesAreMergedIntoMainContext() async throws {
-        try await Task.sleep(nanoseconds: 5_000_000)
+    private func waitUntilChangesAreMergedIntoMainContext() async {
+        await sleep(milliseconds: 50)
     }
 
     private func makeFetchedResultsControllerAndDelegate(messageID: String) throws -> (

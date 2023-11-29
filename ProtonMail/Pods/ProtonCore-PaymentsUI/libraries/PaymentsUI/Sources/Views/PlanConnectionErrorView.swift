@@ -1,6 +1,6 @@
 //
 //  PlanConnectionErrorView.swift
-//  ProtonCore_PaymentsUI - Created on 01/06/2021.
+//  ProtonCorePaymentsUI - Created on 01/06/2021.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,9 +19,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_UIFoundations
-import ProtonCore_CoreTranslation
+import ProtonCoreUIFoundations
 
 final class PlanConnectionErrorView: UIView {
 
@@ -43,13 +44,13 @@ final class PlanConnectionErrorView: UIView {
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.textColor = ColorProvider.TextNorm
-            titleLabel.text = CoreString._connection_error_title
+            titleLabel.text = PUITranslations._connection_error_title.l10n
         }
     }
     @IBOutlet weak var descriptionLabel: UILabel! {
         didSet {
             descriptionLabel.textColor = ColorProvider.TextWeak
-            descriptionLabel.text = CoreString._connection_error_description
+            descriptionLabel.text = PUITranslations._connection_error_description.l10n
         }
     }
     
@@ -73,3 +74,5 @@ final class PlanConnectionErrorView: UIView {
         backgroundColor = ColorProvider.BackgroundNorm
     }
 }
+
+#endif

@@ -20,8 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 protocol ComposePasswordDelegate: AnyObject {
@@ -72,7 +72,7 @@ final class ComposePasswordVC: UIViewController, AccessibleView {
         initializeHideKeyboard()
         NotificationCenter.default
             .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
+                         selector: #selector(preferredContentSizeChanged),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
     }
@@ -109,7 +109,7 @@ final class ComposePasswordVC: UIViewController, AccessibleView {
     }
 
     @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
+    private func preferredContentSizeChanged() {
         setupInfoView()
         passwordHintLabel.font = .adjustedFont(forTextStyle: .footnote, weight: .semibold)
         passwordHintPlaceholder.font = .adjustedFont(forTextStyle: .body)

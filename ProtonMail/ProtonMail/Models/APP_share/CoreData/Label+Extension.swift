@@ -49,17 +49,6 @@ extension Label {
         replaceNilStringAttributesWithEmptyString()
     }
 
-    class func labelFetchController(for labelID: String, inManagedObjectContext context: NSManagedObjectContext) -> NSFetchedResultsController<Label> {
-        let fetchRequest = NSFetchRequest<Label>(entityName: Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == 0", Attributes.labelID, labelID, Attributes.isSoftDeleted)
-        let strComp = NSSortDescriptor(key: Label.Attributes.name,
-                                       ascending: true,
-                                       selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
-        fetchRequest.sortDescriptors = [strComp]
-        let fetchedController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-        return fetchedController
-    }
-
     class func labelForLabelID(_ labelID: String, inManagedObjectContext context: NSManagedObjectContext) -> Label? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.labelID, matchingValue: labelID) as? Label
     }

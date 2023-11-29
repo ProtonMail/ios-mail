@@ -17,7 +17,7 @@
 
 import Foundation
 import struct UIKit.CGFloat
-import enum ProtonCore_Utilities.Either
+import enum ProtonCoreUtilities.Either
 
 final class ContactCombineViewModel: SwitchToggleVMProtocol {
     var input: SwitchToggleVMInput { self }
@@ -48,11 +48,11 @@ extension ContactCombineViewModel: SwitchToggleVMOutput {
         (LocalString._settings_title_of_combined_contact, combineContactCache.isCombineContactOn)
     }
 
-    func sectionHeader(of section: Int) -> String? {
+    func sectionHeader() -> String? {
         nil
     }
 
-    func sectionFooter(of section: Int) -> Either<String, NSAttributedString>? {
+    func sectionFooter() -> Either<String, NSAttributedString>? {
         Either.left(LocalString._settings_footer_of_combined_contact)
     }
 }

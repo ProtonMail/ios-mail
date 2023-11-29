@@ -16,10 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import PromiseKit
-import enum ProtonCore_Crypto.Based64
-import struct ProtonCore_Crypto.Password
-import class ProtonCore_Networking.AuthCredential
-import ProtonCore_Services
+import enum ProtonCoreCrypto.Based64
+import struct ProtonCoreCrypto.Password
+import class ProtonCoreNetworking.AuthCredential
+import ProtonCoreServices
 import ProtonMailAnalytics
 
 typealias PrepareSendRequestUseCase = UseCase<SendMessageRequest, PrepareSendRequest.Params>
@@ -28,12 +28,7 @@ final class PrepareSendRequest: PrepareSendRequestUseCase {
 
     override func executionBlock(params: Params, callback: @escaping Callback) {
         do {
-            // Using an empty UseCase for fetchAttachment because it is not needed here
-            // since we already have the attachments at this point in `params.metadata.attachments`.
-            let emptyUseCase: FetchAttachmentUseCase = UseCase()
-            let sendBuilder = MessageSendingRequestBuilder(
-                dependencies: .init(fetchAttachment: emptyUseCase, apiService: params.apiService)
-            )
+            let sendBuilder = MessageSendingRequestBuilder(dependencies: .init(apiService: params.apiService))
             sendBuilder.update(with: params.sendMetadata)
 
             try prepareMimeFormatIfNeeded(sendBuilder: sendBuilder, params: params)
@@ -122,8 +117,8 @@ final class PrepareSendRequest: PrepareSendRequestUseCase {
             delaySeconds: params.undoSendDelay,
             messagePackage: addressesPackageBase,
             body: Based64.encode(raw: params.sendMetadata.encryptedBody),
-            clearBody: sendBuilder.clearBodyPackage,
-            clearAtts: sendBuilder.clearAtts,
+            clearBody: sendBuilder.getClearBodyPackageIfNeeded(addressesPackageBase),
+            clearAtts: sendBuilder.getClearAttachmentPackagesIfNeeded(addressesPackageBase),
             mimeDataPacket: sendBuilder.mimeBody,
             clearMimeBody: sendBuilder.clearMimeBodyPackage,
             plainTextDataPacket: sendBuilder.plainBody,
@@ -160,7 +155,7 @@ private enum SendMessageRequestStep: String {
 private extension MessageSendingRequestBuilder {
 
     func update(with data: SendMessageMetadata) {
-        update(bodyData: data.encryptedBody, bodySession: data.bodySessionKey, algo: data.bodySessionAlgorithm)
+        update(bodySession: data.bodySessionKey, algo: data.bodySessionAlgorithm)
         if let decryptedBody = data.decryptedBody {
             set(clearBody: decryptedBody)
         }

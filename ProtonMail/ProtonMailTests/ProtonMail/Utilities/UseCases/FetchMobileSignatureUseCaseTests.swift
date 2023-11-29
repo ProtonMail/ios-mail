@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 @testable import ProtonMail
 import XCTest
 
@@ -28,7 +28,10 @@ final class FetchMobileSignatureUseCaseTests: XCTestCase {
         super.setUp()
 
         cacheMock = MockMobileSignatureCacheProtocol()
-        coreKeyMaker = sharedServices.get(by: KeyMakerProtocol.self)
+
+        let globalContainer = GlobalContainer()
+        coreKeyMaker = globalContainer.keyMaker
+
         sut = .init(dependencies: .init(
             coreKeyMaker: coreKeyMaker,
             cache: cacheMock

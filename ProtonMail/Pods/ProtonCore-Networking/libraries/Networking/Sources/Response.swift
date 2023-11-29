@@ -22,8 +22,7 @@
 // swiftlint:disable identifier_name todo
 
 import Foundation
-import ProtonCore_CoreTranslation
-import ProtonCore_Log
+import ProtonCoreLog
 
 public enum ResponseErrorDomains: String {
     case withResponseCode = "ProtonCore-Networking-ResponseCode"
@@ -31,6 +30,8 @@ public enum ResponseErrorDomains: String {
 }
 
 public struct ResponseError: Error, Equatable {
+    
+    public static let responseDictionaryUserInfoKey = "responseDictionaryUserInfoKey"
 
     /// This is the http status code, like 200, 404, 500 etc. It will be nil if there was no http response,
     /// for example in case of timeout
@@ -45,20 +46,48 @@ public struct ResponseError: Error, Equatable {
 
     public let userFacingMessage: String?
     public let underlyingError: NSError?
+    
+    public let responseDictionary: [String: Any]?
 
     public var bestShotAtReasonableErrorCode: Int {
         responseCode ?? httpCode ?? underlyingError?.code ?? (self as NSError).code
     }
 
     public init(httpCode: Int?, responseCode: Int?, userFacingMessage: String?, underlyingError: NSError?) {
+        if let responseDictionary = underlyingError?.responseDictionary {
+            let strippedUnderlyingError = underlyingError.map {
+                var userInfo = $0.userInfo
+                userInfo.removeValue(forKey: ResponseError.responseDictionaryUserInfoKey)
+                return NSError(domain: $0.domain, code: $0.code, userInfo: userInfo)
+            }
+            self.init(httpCode: httpCode,
+                      responseCode: responseCode,
+                      userFacingMessage: userFacingMessage,
+                      responseDictionary: responseDictionary,
+                      underlyingError: strippedUnderlyingError)
+        } else {
+            self.init(httpCode: httpCode,
+                      responseCode: responseCode,
+                      userFacingMessage: userFacingMessage,
+                      responseDictionary: nil,
+                      underlyingError: underlyingError)
+        }
+    }
+    
+    private init(httpCode: Int?, responseCode: Int?, userFacingMessage: String?, responseDictionary: JSONDictionary?, underlyingError: NSError?) {
         self.httpCode = httpCode
         self.responseCode = responseCode
         self.userFacingMessage = userFacingMessage
+        self.responseDictionary = responseDictionary
         self.underlyingError = underlyingError
     }
 
     public func withUpdated(userFacingMessage: String) -> ResponseError {
-        ResponseError(httpCode: httpCode, responseCode: responseCode, userFacingMessage: userFacingMessage, underlyingError: underlyingError)
+        ResponseError(httpCode: httpCode,
+                      responseCode: responseCode,
+                      userFacingMessage: userFacingMessage,
+                      responseDictionary: responseDictionary,
+                      underlyingError: underlyingError)
     }
 
     public func withUpdated(underlyingError: LocalizedError) -> ResponseError {
@@ -66,6 +95,23 @@ public struct ResponseError: Error, Equatable {
                       responseCode: responseCode,
                       userFacingMessage: underlyingError.localizedDescription,
                       underlyingError: underlyingError as NSError)
+    }
+    
+    public static func == (lhs: ResponseError, rhs: ResponseError) -> Bool {
+        // the response dictionaries are ignored
+        lhs.httpCode == rhs.httpCode &&
+        lhs.responseCode == rhs.responseCode &&
+        lhs.userFacingMessage == rhs.userFacingMessage &&
+        lhs.underlyingError == rhs.underlyingError
+    }
+}
+
+extension ResponseError: CustomStringConvertible, CustomDebugStringConvertible {
+    public var description: String {
+        errorDescription ?? ""
+    }
+    public var debugDescription: String {
+        errorDescription ?? ""
     }
 }
 
@@ -81,7 +127,7 @@ extension ResponseError: LocalizedError {
         } else if let underlyingError = underlyingError {
             return "\(underlyingError.localizedDescription)\(httpCodeMessage)"
         } else if isNetworkIssueError {
-            return CoreString._net_connection_error
+            return NWTranslation.connection_error.l10n
         } else {
             return "Network error\(httpCodeMessage)"
         }
@@ -260,11 +306,12 @@ public extension Error {
              NSURLErrorCannotFindHost,
              310,
              -1200,
-             8 // No internet
-             :
+             8: // no internet
             return true
         default:
             return false
         }
     }
 }
+
+// swiftlint:enable identifier_name todo

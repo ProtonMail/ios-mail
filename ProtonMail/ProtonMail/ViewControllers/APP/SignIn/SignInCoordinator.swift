@@ -20,12 +20,12 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Login
-import ProtonCore_LoginUI
-import ProtonCore_Networking
-import class ProtonCore_Services.APIErrorCode
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreLogin
+import ProtonCoreLoginUI
+import ProtonCoreNetworking
+import class ProtonCoreServices.APIErrorCode
 
 // swiftlint:disable type_body_length
 final class SignInCoordinator {
@@ -189,9 +189,19 @@ final class SignInCoordinator {
 
     private func processMailboxPasswordInCleartext(_ password: Passphrase) {
         if environment.currentAuth() == nil {
+            SystemLogger.log(
+                message: "Current auth is nil, will try restore",
+                category: .loginUnlockFailed,
+                isError: true
+            )
             environment.tryRestoringPersistedUser()
         }
         guard let auth = environment.currentAuth() else {
+            SystemLogger.log(
+                message: "Current auth still nil",
+                category: .loginUnlockFailed,
+                isError: true
+            )
             onFinish(.errored(.unlockFailed))
             return
         }
@@ -304,8 +314,10 @@ final class SignInCoordinator {
                 assertionFailure("should never happen: the password should be provided by login module")
                 let error: FlowError
                 if failOnMailboxPassword {
+                    SystemLogger.log(message: "Fail on mailbox password", category: .loginUnlockFailed, isError: true)
                     error = .unlockFailed
                 } else {
+                    SystemLogger.log(message: "Require mailbox password", category: .loginUnlockFailed, isError: true)
                     error = .mailboxPasswordRetrievalRequired
                 }
                 self?.handleRequestError(error, wrapIn: { _ in error })

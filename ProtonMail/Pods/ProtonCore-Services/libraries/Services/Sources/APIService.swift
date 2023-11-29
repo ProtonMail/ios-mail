@@ -22,11 +22,11 @@
 // swiftlint:disable identifier_name todo function_parameter_count
 
 import Foundation
-import ProtonCore_Doh
-import ProtonCore_Log
-import ProtonCore_Foundations
-import ProtonCore_Utilities
-import ProtonCore_Networking
+import ProtonCoreDoh
+import ProtonCoreLog
+import ProtonCoreFoundations
+import ProtonCoreUtilities
+import ProtonCoreNetworking
 
 extension Bundle {
     /// Returns the app version in a nice to read format
@@ -83,7 +83,7 @@ public protocol API {
                  parameters: Any?,
                  headers: [String: Any]?,
                  authenticated: Bool,
-                 autoRetry: Bool,
+                 authRetry: Bool,
                  customAuthCredential: AuthCredential?,
                  nonDefaultTimeout: TimeInterval?,
                  retryPolicy: ProtonRetryPolicy.RetryMode,
@@ -95,7 +95,7 @@ public protocol API {
                     parameters: Any?,
                     headers: [String: Any]?,
                     authenticated: Bool,
-                    autoRetry: Bool,
+                    authRetry: Bool,
                     customAuthCredential: AuthCredential?,
                     nonDefaultTimeout: TimeInterval?,
                     retryPolicy: ProtonRetryPolicy.RetryMode,
@@ -194,7 +194,7 @@ public extension API {
                  parameters: Any?,
                  headers: [String: Any]?,
                  authenticated: Bool,
-                 autoRetry: Bool,
+                 authRetry: Bool,
                  customAuthCredential: AuthCredential?,
                  nonDefaultTimeout: TimeInterval?,
                  retryPolicy: ProtonRetryPolicy.RetryMode,
@@ -204,7 +204,7 @@ public extension API {
                      parameters: parameters,
                      headers: headers,
                      authenticated: authenticated,
-                     autoRetry: autoRetry,
+                     authRetry: authRetry,
                      customAuthCredential: customAuthCredential,
                      nonDefaultTimeout: nonDefaultTimeout,
                      retryPolicy: retryPolicy,
@@ -217,7 +217,7 @@ public extension API {
                     parameters: Any?,
                     headers: [String: Any]?,
                     authenticated: Bool,
-                    autoRetry: Bool,
+                    authRetry: Bool,
                     customAuthCredential: AuthCredential?,
                     nonDefaultTimeout: TimeInterval?,
                     retryPolicy: ProtonRetryPolicy.RetryMode,
@@ -227,7 +227,7 @@ public extension API {
                      parameters: parameters,
                      headers: headers,
                      authenticated: authenticated,
-                     autoRetry: autoRetry,
+                     authRetry: authRetry,
                      customAuthCredential: customAuthCredential,
                      nonDefaultTimeout: nonDefaultTimeout,
                      retryPolicy: retryPolicy,
@@ -244,12 +244,12 @@ public extension API {
                  parameters: Any?,
                  headers: [String: Any]?,
                  authenticated: Bool,
-                 autoRetry: Bool,
+                 authRetry: Bool,
                  customAuthCredential: AuthCredential?,
                  nonDefaultTimeout: TimeInterval?,
                  retryPolicy: ProtonRetryPolicy.RetryMode = .userInitiated,
                  completion: CompletionBlock?) {
-        request(method: method, path: path, parameters: parameters, headers: headers, authenticated: authenticated, autoRetry: autoRetry,
+        request(method: method, path: path, parameters: parameters, headers: headers, authenticated: authenticated, authRetry: authRetry,
                 customAuthCredential: customAuthCredential, nonDefaultTimeout: nonDefaultTimeout, retryPolicy: retryPolicy) { task, result in
             switch result {
             case .success(let dict): completion?(task, dict, nil)
@@ -264,12 +264,12 @@ public extension API {
                  parameters: Any?,
                  headers: [String: Any]?,
                  authenticated: Bool,
-                 autoRetry: Bool,
+                 authRetry: Bool,
                  customAuthCredential: AuthCredential?,
                  retryPolicy: ProtonRetryPolicy.RetryMode = .userInitiated,
                  completion: CompletionBlock?) {
         self.request(method: method, path: path, parameters: parameters, headers: headers,
-                     authenticated: authenticated, autoRetry: autoRetry, customAuthCredential: customAuthCredential,
+                     authenticated: authenticated, authRetry: authRetry, customAuthCredential: customAuthCredential,
                      nonDefaultTimeout: nil, retryPolicy: retryPolicy, completion: completion)
     }
     
@@ -432,7 +432,7 @@ public extension APIService {
                 parameters: route.calculatedParameters,
                 headers: route.header,
                 authenticated: route.isAuth,
-                autoRetry: route.autoRetry,
+                authRetry: route.authRetry,
                 customAuthCredential: route.authCredential,
                 nonDefaultTimeout: route.nonDefaultTimeout,
                 retryPolicy: route.retryPolicy,
@@ -494,7 +494,7 @@ public extension APIService {
                 parameters: route.calculatedParameters,
                 headers: route.header,
                 authenticated: route.isAuth,
-                autoRetry: route.autoRetry,
+                authRetry: route.authRetry,
                 customAuthCredential: route.authCredential,
                 nonDefaultTimeout: route.nonDefaultTimeout,
                 retryPolicy: route.retryPolicy,
@@ -561,7 +561,7 @@ public extension APIService {
                 parameters: route.calculatedParameters,
                 headers: route.header,
                 authenticated: route.isAuth,
-                autoRetry: route.autoRetry,
+                authRetry: route.authRetry,
                 customAuthCredential: route.authCredential,
                 nonDefaultTimeout: route.nonDefaultTimeout,
                 retryPolicy: route.retryPolicy,
@@ -711,7 +711,7 @@ public extension APIService {
                      parameters: route.calculatedParameters,
                      headers: route.header,
                      authenticated: route.isAuth,
-                     autoRetry: route.autoRetry,
+                     authRetry: route.authRetry,
                      customAuthCredential: route.authCredential,
                      nonDefaultTimeout: route.nonDefaultTimeout,
                      retryPolicy: route.retryPolicy,
@@ -759,7 +759,7 @@ public extension APIService {
                      parameters: route.calculatedParameters,
                      headers: route.header,
                      authenticated: route.isAuth,
-                     autoRetry: route.autoRetry,
+                     authRetry: route.authRetry,
                      customAuthCredential: route.authCredential,
                      nonDefaultTimeout: route.nonDefaultTimeout,
                      retryPolicy: route.retryPolicy,
@@ -827,7 +827,7 @@ public extension APIService {
                      parameters: route.calculatedParameters,
                      headers: route.header,
                      authenticated: route.isAuth,
-                     autoRetry: route.autoRetry,
+                     authRetry: route.authRetry,
                      customAuthCredential: route.authCredential,
                      nonDefaultTimeout: route.nonDefaultTimeout,
                      retryPolicy: route.retryPolicy,
@@ -894,7 +894,7 @@ public extension APIService {
                      parameters: route.calculatedParameters,
                      headers: route.header,
                      authenticated: route.isAuth,
-                     autoRetry: route.autoRetry,
+                     authRetry: route.authRetry,
                      customAuthCredential: route.authCredential,
                      nonDefaultTimeout: route.nonDefaultTimeout,
                      retryPolicy: route.retryPolicy,
@@ -1000,7 +1000,7 @@ extension APIService {
             parameters: parameters,
             headers: headers,
             authenticated: request.isAuth,
-            autoRetry: request.autoRetry,
+            authRetry: request.authRetry,
             customAuthCredential: request.authCredential,
             nonDefaultTimeout: request.nonDefaultTimeout,
             retryPolicy: request.retryPolicy,
@@ -1011,3 +1011,5 @@ extension APIService {
         )
     }
 }
+
+// swiftlint:enable identifier_name todo

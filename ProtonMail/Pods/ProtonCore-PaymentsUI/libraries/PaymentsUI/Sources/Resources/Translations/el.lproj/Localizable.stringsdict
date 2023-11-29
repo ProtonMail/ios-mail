@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>%d users</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d χρήστης</string>
+        <key>other</key>
+        <string>%d χρήστες</string>
+      </dict>
+    </dict>
+    <key>%d email addresses</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d διεύθυνση email</string>
+        <key>other</key>
+        <string>%d διευθύνσεις email</string>
+      </dict>
+    </dict>
+    <key>%d email addresses / user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d διεύθυνση ηλεκτρονικού ταχυδρομείου / χρήστη</string>
+        <key>other</key>
+        <string>%d διευθύνσεις ηλεκτρονικού ταχυδρομείου / χρήστη</string>
+      </dict>
+    </dict>
+    <key>%d calendars</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d ημερολόγιο</string>
+        <key>other</key>
+        <string>%d ημερολόγια</string>
+      </dict>
+    </dict>
+    <key>%d folders / labels</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d φάκελος / ετικέτα</string>
+        <key>other</key>
+        <string>%d φάκελοι / ετικέτες</string>
+      </dict>
+    </dict>
+    <key>%d countries</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d χώρα</string>
+        <key>other</key>
+        <string>%d χώρες</string>
+      </dict>
+    </dict>
+    <key>%d connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d σύνδεση</string>
+        <key>other</key>
+        <string>%d συνδέσεις</string>
+      </dict>
+    </dict>
+    <key>%d VPN connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d σύνδεση VPN</string>
+        <key>other</key>
+        <string>%d συνδέσεις VPN</string>
+      </dict>
+    </dict>
+    <key>%d high-speed VPN connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d σύνδεση VPN υψηλής ταχύτητας</string>
+        <key>other</key>
+        <string>%d συνδέσεις VPN υψηλής ταχύτητας</string>
+      </dict>
+    </dict>
+    <key>%d custom domains</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d προσαρμοσμένος τομέας</string>
+        <key>other</key>
+        <string>%d προσαρμοσμένοι τομείς</string>
+      </dict>
+    </dict>
+    <key>%d vaults</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d κρύπτη</string>
+        <key>other</key>
+        <string>%d κρύπτες</string>
+      </dict>
+    </dict>
+    <key>Support for %d custom email domains</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Υποστήριξη για %d παραμετροποιημένο τομέα email</string>
+        <key>other</key>
+        <string>Υποστήριξη για %d παραμετροποιημένους τομείς email</string>
+      </dict>
+    </dict>
+    <key>%d folders and labels</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d φάκελος και ετικέτα</string>
+        <key>other</key>
+        <string>%d φάκελοι και ετικέτες</string>
+      </dict>
+    </dict>
+    <key>%d calendars</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d ημερολόγιο</string>
+        <key>other</key>
+        <string>%d ημερολόγια</string>
+      </dict>
+    </dict>
+    <key>High-speed VPN on %d devices</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>VPN υψηλής ταχύτητας σε %d συσκευή</string>
+        <key>other</key>
+        <string>VPN υψηλής ταχύτητας σε %d συσκευές</string>
+      </dict>
+    </dict>
+    <key>%d+ servers in %d countries</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@SERVERS@ σε %#@COUNTRIES@</string>
+      <key>SERVERS</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d+ διακομιστής</string>
+        <key>other</key>
+        <string>%d+ διακομιστές</string>
+      </dict>
+      <key>COUNTRIES</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d χώρα</string>
+        <key>other</key>
+        <string>%d χώρες</string>
+      </dict>
+    </dict>
+    <key>%d servers in %d countries (US, NL, JP)</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@SERVERS@ σε %#@COUNTRIES@</string>
+      <key>SERVERS</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d διακομιστής</string>
+        <key>other</key>
+        <string>%d διακομιστές</string>
+      </dict>
+      <key>COUNTRIES</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d χώρα (US, NL, JP)</string>
+        <key>other</key>
+        <string>%d χώρες (US, NL, JP)</string>
+      </dict>
+    </dict>
+    <key>%d of %d users</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE1@ από %#@VARIABLE2@</string>
+      <key>VARIABLE1</key>
+      <dict>
+        <key>one</key>
+        <string>%d</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d</string>
+      </dict>
+      <key>VARIABLE2</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d χρήστης</string>
+        <key>other</key>
+        <string>%d χρήστες</string>
+      </dict>
+    </dict>
+    <key>%d of %d email addresses</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE1@ από %#@VARIABLE2@</string>
+      <key>VARIABLE1</key>
+      <dict>
+        <key>one</key>
+        <string>%d</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d</string>
+      </dict>
+      <key>VARIABLE2</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d διεύθυνση email</string>
+        <key>other</key>
+        <string>%d διευθύνσεις email</string>
+      </dict>
+    </dict>
+    <key>%d of %d calendars</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE1@ από %#@VARIABLE2@</string>
+      <key>VARIABLE1</key>
+      <dict>
+        <key>one</key>
+        <string>%d</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d</string>
+      </dict>
+      <key>VARIABLE2</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d ημερολόγιο</string>
+        <key>other</key>
+        <string>%d ημερολόγια</string>
+      </dict>
+    </dict>
+    <key>%d addresses per user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d διεύθυνση ανά χρήστη</string>
+        <key>other</key>
+        <string>%d διευθύνσεις ανά χρήστη</string>
+      </dict>
+    </dict>
+    <key>%d calendars per user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d ημερολόγιο ανά χρήστη</string>
+        <key>other</key>
+        <string>%d ημερολόγια ανά χρήστη</string>
+      </dict>
+    </dict>
+    <key>%d VPN connections per user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d σύνδεση VPN ανά χρήστη</string>
+        <key>other</key>
+        <string>%d συνδέσεις VPN ανά χρήστη</string>
+      </dict>
+    </dict>
+    <key>Pay for %d months</key>
+    <dict>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Πληρωμή για %d μήνα</string>
+        <key>other</key>
+        <string>Πληρωμή για %d μήνες</string>
+      </dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+    </dict>
+    <key>Medium VPN speed %d VPN connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Μέτρια ταχύτητα VPN %d σύνδεση VPN</string>
+        <key>other</key>
+        <string>Μέτρια ταχύτητα VPN %d συνδέσεις VPN</string>
+      </dict>
+    </dict>
+  </dict>
+</plist>

@@ -17,8 +17,8 @@
 
 import CoreData
 import Foundation
-import ProtonCore_Crypto
-import ProtonCore_DataModel
+import ProtonCoreCrypto
+import ProtonCoreDataModel
 
 final class ComposerMessageHelper {
     private(set) var draft: Draft?
@@ -112,7 +112,11 @@ final class ComposerMessageHelper {
     }
 
     func uploadDraft() {
-        dependencies.messageDataService.saveDraft(self.rawMessage)
+        guard let message = getMessageEntity() else {
+            return
+        }
+
+        dependencies.messageDataService.saveDraft(message)
     }
 
     func markAsRead() {
@@ -152,20 +156,26 @@ final class ComposerMessageHelper {
         }
     }
 
-    func updateAddressID(addressID: String, emailAddress: String, completion: @escaping () -> Void) {
+    func updateAddress(to address: Address, uploadDraft: Bool = true, completion: @escaping () -> Void) {
         dependencies.contextProvider.performOnRootSavingContext { context in
             defer {
                 self.updateDraft()
-                self.uploadDraft()
+                if uploadDraft {
+                    self.uploadDraft()
+                }
                 completion()
             }
             guard let msg = self.rawMessage else { return }
-            msg.nextAddressID = addressID
+            msg.nextAddressID = address.addressID
             var sender: [String: Any] = msg.sender?.parseJSON() ?? [:]
-            sender["Address"] = emailAddress
+            sender["Address"] = address.email
+            sender["Name"] = address.displayName
             msg.sender = sender.toString()
             _ = context.saveUpstreamIfNeeded()
-            self.dependencies.messageDataService.updateAttKeyPacket(message: MessageEntity(msg), addressID: addressID)
+            self.dependencies.messageDataService.updateAttKeyPacket(
+                message: MessageEntity(msg),
+                addressID: address.addressID
+            )
         }
     }
 
@@ -239,11 +249,12 @@ final class ComposerMessageHelper {
     }
 
     func getMessageEntity() -> MessageEntity? {
-        guard let rawMessage = self.rawMessage else {
+        guard let rawMessage, let context = rawMessage.managedObjectContext else {
             return nil
         }
+
         var message: MessageEntity?
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+        context.performAndWait {
             message = MessageEntity(rawMessage)
         }
         return message
@@ -403,7 +414,7 @@ extension ComposerMessageHelper {
         dependencies.contextProvider.performOnRootSavingContext { context in
             file.contents.toAttachment(context,
                                        fileName: file.name,
-                                       type: file.ext,
+                                       type: file.mimeType,
                                        stripMetadata: shouldStripMetaData,
                                        isInline: false).done { attachment in
                 defer {

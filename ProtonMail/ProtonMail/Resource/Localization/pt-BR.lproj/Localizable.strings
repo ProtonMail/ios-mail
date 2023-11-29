@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Erro ao enviar";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Erro ao enviar. Mensagem salva como rascunho.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Nada para ver aqui";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Você precisa de pelo menos um destinatário para enviar";
-
-/* Title */
-"Change sender address to…" = "Altere o endereço do remetente para…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Faça o upgrade para um plano pago para enviar do seu endereço %@";
@@ -480,7 +474,7 @@
 "The request timed out." = "Solicitação excedeu o tempo limite.";
 
 /* Message */
-"Proton servers are unreachable.\nVisit our status page for details." = "Os servidores Proton estão indisponíveis. Visite nossa página de status para obter detalhes.";
+"Proton servers are unreachable.\nVisit our status page for details." = "Os servidores da Proton estão indisponíveis.\nVisite nossa página de status para obter detalhes.";
 
 /* Title */
 "No connectivity detected…" = "Nenhuma conexão detectada…";
@@ -652,9 +646,6 @@
 
 /* Title */
 "Confirm new mailbox password" = "Confirmar a nova senha da caixa de correio";
-
-/* error when sending the message */
-"Unable to send the email" = "Não foi possível enviar o e-mail";
 
 /* Title */
 "Star/unstar" = "Atribuir/retirar estrela";
@@ -996,9 +987,6 @@
 "Cut" = "Recortar";
 
 /* Title */
-"Compose to" = "Escrever para";
-
-/* Title */
 "Add to contacts" = "Adicionar aos contatos";
 
 /* encryption lock description */
@@ -1244,9 +1232,6 @@
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Enviando mensagem…";
 
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Não foi possível enviar a mensagem. Pelo menos um endereço de e-mail/domínio do destinatário não existe ou está formatado incorretamente.";
-
 /* The unread title of unread action button in mailbox view */
 "unread" = "não lidos";
 
@@ -1295,29 +1280,8 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Ative esse recurso para preencher automaticamente endereços de e-mail usando contatos de todas as suas contas conectadas.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Definir o código PIN";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Digite o novo código PIN";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Insira um código PIN com no mínimo 4 caracteres e no máximo 21 caracteres.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "O código PIN é muito curto.";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "O código PIN é muito longo.";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Repetir o código PIN";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "Os códigos PIN devem corresponder.";
-
 /* alternative routing description */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "No caso dos sites do Proton estarem bloqueados, esta configuração permite que o aplicativo tente um roteamento de rede alternativo para alcançar o Proton, o que pode ser útil para contornar firewalls ou problemas de rede. Recomendamos manter esta configuração ativa para uma maior confiabilidade. %1$@";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "No caso dos sites da Proton estarem bloqueados, esta configuração permite que o aplicativo tente um roteamento de rede alternativo para alcançar o Proton, o que pode ser útil para contornar firewalls ou problemas de rede. Recomendamos manter esta configuração ativa para uma maior confiabilidade. %1$@";
 
 /* The title of alternative routing settings */
 "Networking" = "Rede";
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "Desligado";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Alterar o código PIN";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Reautenticar";
@@ -1779,7 +1740,7 @@
 "The sending key is not valid" = "A chave de envio não é válida";
 
 /* The time label for message is about to be sent less in 1 minute in the list view. */
-"<1m" = "Menos de um minuto";
+"<1m" = "<1min";
 
 /* The time label for message is about to be sent less in 1 minute not in the list view. */
 "less than 1 minute" = "menos que 1 minuto";
@@ -1821,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "Você agora pode escolher e reorganizar as ações nesse barra de ferramentas.";
 
 /* Button to block a sender */
-"Block sender" = "Bloquear remetente";
+"Block messages from this sender" = "Bloquear mensagens deste remetente";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Bloquear";
@@ -1877,10 +1838,10 @@
 "Link copied." = "Link copiado.";
 
 /* The article title of the referral share view. */
-"Invite friends to Proton,\n get up to $90 in credits!" = "Convide amigos para o Proton,\nganhe até $ 90 em créditos!";
+"Invite friends to Proton,\n get up to $90 in credits!" = "Convide amigos para a Proton,\nganhe até $ 90 em créditos!";
 
 /* The article content of the referral share view. */
-"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Convide seus amigos para o Proton: eles experimentam o Mail Plus gratuitamente e você ganha créditos quando eles assinam um plano pago.";
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Convide seus amigos para a Proton: eles experimentam o Mail Plus gratuitamente e você ganha créditos quando eles assinam um plano pago.";
 
 /* The title link of the textfield of the referral link in referral share view. */
 "Your invite link" = "Seu link de convite";
@@ -1892,7 +1853,7 @@
 "Track your rewards" = "Acompanhe suas recompensas";
 
 /* The title of the terms and conditions button in referral share view. */
-"Terms & conditions" = "Termos & Condições";
+"Terms & conditions" = "Termos e condições";
 
 /* The content that is shared through the action: `Share the link` */
 "I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Estou usando o Proton Mail e pensei que você poderia gostar. É um serviço de e-mail seguro que protege sua privacidade. Inscreva-se com este link para obter 1 mês de recursos premium de graça:";
@@ -1990,6 +1951,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Responder a todos (última mensagem)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Nova mensagem";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personalizar";
 
@@ -2023,15 +1987,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Ativar";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Desativar exclusão automática?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "E-mails agendados para exclusão permanecerão na lixeira e na pasta de spam.";
-
-/* Button to disable auto delete */
-"Disable" = "Desativar";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Faça upgrade para eliminar automaticamente as mensagens que se encontram na lixeira ou no spam há mais de 30 dias.";
 
@@ -2062,6 +2017,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Domínios personalizados de e-mail";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Remetente alterado";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "O remetente original desta mensagem não é mais válido. Sua mensagem será enviada do seu endereço padrão %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nome de exibição";
 
@@ -2082,6 +2043,39 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Editar foto";
+
+/* The title of select all button for select all messages feature */
+"Select all" = "Selecionar tudo";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Desativar código PIN";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Definir o código PIN";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Repetir o código PIN";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Digite o novo código PIN";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Insira um código PIN com no mínimo 4 caracteres e no máximo 21 caracteres.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "O PIN é muito curto.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "O PIN é muito longo.";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "Os códigos PIN devem corresponder.";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Insira o código PIN antigo";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Alterar o código PIN";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Cancelar a inscrição na lista de distribuição de e-mails";

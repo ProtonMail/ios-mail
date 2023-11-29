@@ -22,7 +22,7 @@
 
 import Foundation
 import XCTest
-import ProtonCore_FeatureSwitch
+import ProtonCoreFeatureSwitch
 
 /// Performs the included closure in a separate environment in which only the specified switches are enabled
 extension XCTestCase {

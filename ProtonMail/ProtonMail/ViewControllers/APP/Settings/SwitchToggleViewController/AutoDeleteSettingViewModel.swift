@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Services
-import enum ProtonCore_Utilities.Either
+import ProtonCoreServices
+import enum ProtonCoreUtilities.Either
 import struct UIKit.CGFloat
 
 final class AutoDeleteSettingViewModel: SwitchToggleVMProtocol {
@@ -27,9 +27,7 @@ final class AutoDeleteSettingViewModel: SwitchToggleVMProtocol {
                                          confirmationButton: L11n.AutoDeleteSettings.enableAlertButton)
     }
     var confirmationOnDisable: SwitchToggleVMActionConfirmation? {
-        SwitchToggleVMActionConfirmation(title: L11n.AutoDeleteSettings.disableAlertTitle,
-                                         message: L11n.AutoDeleteSettings.disableAlertMessage,
-                                         confirmationButton: L11n.AutoDeleteSettings.disableAlertButton)
+        nil
     }
     var input: SwitchToggleVMInput { self }
     var output: SwitchToggleVMOutput { self }
@@ -78,11 +76,11 @@ extension AutoDeleteSettingViewModel: SwitchToggleVMOutput {
         (L11n.AutoDeleteSettings.rowTitle, autoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabled)
     }
 
-    func sectionHeader(of section: Int) -> String? {
+    func sectionHeader() -> String? {
         nil
     }
 
-    func sectionFooter(of section: Int) -> Either<String, NSAttributedString>? {
+    func sectionFooter() -> Either<String, NSAttributedString>? {
         Either.left(L11n.AutoDeleteSettings.rowFooterTitle)
     }
 }

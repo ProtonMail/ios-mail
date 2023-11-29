@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 
 enum SettingLockSection: Int {
     case protection = 0
@@ -191,12 +191,20 @@ extension SettingsLockViewModel: SettingsLockViewModelInput {
     }
 
     func didTapNoProtection() {
-        disableProtection()
-        updateProtectionItems()
+        if dependencies.coreKeyMaker.isPinCodeEnabled {
+            router.go(to: .pinCodeDisable)
+        } else {
+            disableProtection()
+            updateProtectionItems()
+        }
     }
 
     func didTapPinProtection() {
-        router.go(to: .pinCodeSetup)
+        if dependencies.coreKeyMaker.isPinCodeEnabled {
+            router.go(to: .changePinCode)
+        } else {
+            router.go(to: .pinCodeSetup)
+        }
     }
 
     func didTapBiometricProtection() {
@@ -206,7 +214,7 @@ extension SettingsLockViewModel: SettingsLockViewModelInput {
     }
 
     func didTapChangePinCode() {
-        router.go(to: .pinCodeSetup)
+        router.go(to: .changePinCode)
     }
 
     func didChangeAppKeyValue(isNewStatusEnabled: Bool) {
@@ -253,7 +261,7 @@ extension UserCachedStatus: LockPreferences {
         keymakerRandomkey = key
     }
 
-    func setLockTime(value: ProtonCore_Keymaker.AutolockTimeout) {
+    func setLockTime(value: ProtonCoreKeymaker.AutolockTimeout) {
         lockTime = value
     }
 }

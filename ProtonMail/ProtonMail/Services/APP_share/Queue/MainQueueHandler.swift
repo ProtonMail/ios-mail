@@ -23,10 +23,10 @@
 import Foundation
 import Groot
 import PromiseKit
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 final class MainQueueHandler: QueueHandler {
     typealias Completion = (Error?) -> Void
@@ -46,14 +46,14 @@ final class MainQueueHandler: QueueHandler {
     private let dependencies: Dependencies
 
     init(coreDataService: CoreDataContextProviderProtocol,
+         fetchMessageDetail: FetchMessageDetail,
          apiService: APIService,
          messageDataService: MessageDataService,
          conversationDataService: ConversationProvider,
          labelDataService: LabelsDataService,
          localNotificationService: LocalNotificationService,
          undoActionManager: UndoActionManagerProtocol,
-         user: UserManager,
-         featureFlagCache: FeatureFlagCache
+         user: UserManager
     ) {
         self.userID = user.userID
         self.coreDataService = coreDataService
@@ -66,14 +66,6 @@ final class MainQueueHandler: QueueHandler {
         self.undoActionManager = undoActionManager
         self.user = user
 
-        let fetchMessageDetail = FetchMessageDetail(
-            dependencies: .init(
-                queueManager: ServiceFactory.default.get(by: QueueManager.self),
-                apiService: apiService,
-                contextProvider: coreDataService,
-                cacheService: user.cacheService
-            )
-        )
         let sendUseCase = SendMessageBuilder.make(
             userData: user,
             apiService: apiService,
@@ -115,7 +107,6 @@ final class MainQueueHandler: QueueHandler {
         )
 
         self.dependencies = Dependencies(
-            featureFlagCache: featureFlagCache,
             incomingDefaultService: user.incomingDefaultService,
             uploadDraft: uploadDraftUseCase,
             uploadAttachment: uploadAttachment
@@ -169,7 +160,7 @@ final class MainQueueHandler: QueueHandler {
             case .saveDraft(let messageObjectID):
                 self.draft(save: messageObjectID, completion: completeHandler)
             case .uploadAtt(let attachmentObjectID), .uploadPubkey(let attachmentObjectID):
-                self.uploadAttachment(with: attachmentObjectID, UID: UID, completion: completeHandler)
+                self.uploadAttachment(with: attachmentObjectID, completion: completeHandler)
             case .deleteAtt(let attachmentObjectID, let attachmentID):
                 self.deleteAttachmentWithAttachmentID(
                     attachmentObjectID,
@@ -184,20 +175,13 @@ final class MainQueueHandler: QueueHandler {
                 // Some how the value of deliveryTime in switch case .send(...) is wrong
                 // But correct in if case let
                 if case let .send(messageObjectID, deliveryTime) = action {
-                    let useSendRefactor = UIApplication.isDebugOrEnterprise ||
-                    dependencies.featureFlagCache.isFeatureFlag(.sendRefactor, enabledForUserWithID: userID)
-
-                    if useSendRefactor {
-                        let params = SendMessageTask.Params(
-                            messageURI: messageObjectID,
-                            deliveryTime: deliveryTime,
-                            undoSendDelay: user?.userInfo.delaySendSeconds ?? 0,
-                            userID: UserID(rawValue: UID)
-                        )
-                        sendMessageTask.run(params: params, completion: completeHandler)
-                    } else {
-                        messageDataService.send(byID: messageObjectID, deliveryTime: deliveryTime, UID: UID, completion: completeHandler)
-                    }
+                    let params = SendMessageTask.Params(
+                        messageURI: messageObjectID,
+                        deliveryTime: deliveryTime,
+                        undoSendDelay: user?.userInfo.delaySendSeconds ?? 0,
+                        userID: UserID(rawValue: UID)
+                    )
+                    sendMessageTask.run(params: params, completion: completeHandler)
                 }
             case .emptyTrash:   // keep this as legacy option for 2-3 releases after 1.11.12
                 self.empty(at: .trash, UID: UID, completion: completeHandler)
@@ -336,7 +320,7 @@ extension MainQueueHandler {
         }
     }
 
-    private func uploadAttachment(with attachmentURI: String, UID: String, completion: @escaping Completion) {
+    private func uploadAttachment(with attachmentURI: String, completion: @escaping Completion) {
         Task {
             do {
                 try await dependencies.uploadAttachment.execute(attachmentURI: attachmentURI)
@@ -443,6 +427,7 @@ extension MainQueueHandler {
                     message.nextAddressID = nil
                 }
                 let mailboxPassword = user.mailboxPassword
+                message.mimeType = Message.MimeType.textHTML.rawValue
                 message.body = try self.messageDataService.encryptBody(
                     .init(addressID),
                     clearBody: decryptedBody,
@@ -832,20 +817,17 @@ extension MainQueueHandler {
 extension MainQueueHandler {
     struct Dependencies {
         let actionRequest: ExecuteNotificationActionUseCase
-        let featureFlagCache: FeatureFlagCache
         let incomingDefaultService: IncomingDefaultServiceProtocol
         let uploadDraft: UploadDraftUseCase
         let uploadAttachment: UploadAttachmentUseCase
 
         init(
             actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction(),
-            featureFlagCache: FeatureFlagCache,
             incomingDefaultService: IncomingDefaultServiceProtocol,
             uploadDraft: UploadDraftUseCase,
             uploadAttachment: UploadAttachmentUseCase
         ) {
             self.actionRequest = actionRequest
-            self.featureFlagCache = featureFlagCache
             self.incomingDefaultService = incomingDefaultService
             self.uploadDraft = uploadDraft
             self.uploadAttachment = uploadAttachment

@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "送信に失敗しました。";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "メールの送信に失敗しました。メッセージは下書きに保存されました。";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "何もありません";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "送信するには少なくとも 1 人の宛先が必要です";
-
-/* Title */
-"Change sender address to…" = "送信アドレスを…に変更";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "%@ アドレスから送信するには有料プランへのアップグレードが必要です";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "メールボックスの新しいパスワードの確認";
 
-/* error when sending the message */
-"Unable to send the email" = "メールを送信できません";
-
 /* Title */
 "Star/unstar" = "星印を切り替える";
 
@@ -996,9 +987,6 @@
 "Cut" = "カット";
 
 /* Title */
-"Compose to" = "新規作成";
-
-/* Title */
 "Add to contacts" = "連絡先に追加";
 
 /* encryption lock description */
@@ -1244,9 +1232,6 @@
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "メッセージを送信中…";
 
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "メッセージを送信できませんでした。メールアドレスやドメインが存在しないか、フォーマットが正しくない宛先があります。";
-
 /* The unread title of unread action button in mailbox view */
 "unread" = "未読";
 
@@ -1295,27 +1280,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "この機能を有効にすると、ログイン済みアカウントの連絡先のメールアドレスの自動補完を利用することができます。";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "PIN コードの設定";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "新しいPIN コードの入力";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "4 ~ 21 文字の PIN コードを入力してください。";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "PIN コードが短すぎます";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "PIN コードが長すぎます";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "PIN コードの確認";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "PIN コードが一致しません！";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Proton への接続がブロックされている場合、アプリは別のネットワーク経由で Proton へ接続を試みます。この設定は、ファイアウォールやネットワーク上の問題を回避するのに役立ちます。信頼性向上の観点から、この設定を有効にしておくことをおすすめします。%1$@";
 
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "無効";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "PIN コードの変更";
 
 /* The title of re auth alert */
 "Re-authenticate" = "再認証";
@@ -1821,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "このバーのアクションを変更できます";
 
 /* Button to block a sender */
-"Block sender" = "差出人をブロック";
+"Block messages from this sender" = "この送信者からのメッセージをブロックする";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "ブロック";
@@ -1990,6 +1951,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "全員に返信 (最後のメッセージに)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "新規メッセージ";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "カスタマイズ";
 
@@ -2023,15 +1987,6 @@
 /* Button to enable encrypted search */
 "Enable" = "有効化";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "自動削除を無効にしますか？";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "削除予定のメールはゴミ箱や迷惑メールフォルダに残ります。";
-
-/* Button to disable auto delete */
-"Disable" = "無効化";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "30日以上ゴミ箱や迷惑メールに入っているメッセージを自動的に削除するようにアップグレードできます。";
 
@@ -2062,6 +2017,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "カスタムメールドメイン";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "送信者変更";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "このメッセージの元の送信者はもう無効です。メッセージは既定のアドレス %@ から送信されます。";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "表示名";
 
@@ -2075,7 +2036,7 @@
 "Display name field cannot be empty" = "表示名フィールドを空にすることはできません";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "連絡先名が長すぎます";
 
 /* The button text for add profile picture */
 "Add photo" = "写真を追加";
@@ -2083,11 +2044,44 @@
 /* The button text for edit profile picture */
 "Edit photo" = "写真を編集";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "Select all";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "PINコードを無効にする";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "PIN コードの設定";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "PIN コードの確認";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "新しいPIN コードの入力";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "4 ~ 21 文字の PIN コードを入力してください。";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN コードが短すぎます";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN コードが長すぎます";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN コードが一致しません！";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "古いPINコードを入力してください。 ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "PIN コードの変更";
+
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "メーリングリストの登録を解除";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "登録解除?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "これでメーリングリストからの登録が解除されます。送信者には、今後このアドレスにメールを送信しないよう通知されます。";

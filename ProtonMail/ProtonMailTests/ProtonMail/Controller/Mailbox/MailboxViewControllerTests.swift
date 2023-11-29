@@ -17,10 +17,10 @@
 
 import CoreData
 import Groot
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_TestingToolkit
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreTestingToolkit
+import ProtonCoreUIFoundations
 @testable import ProtonMail
 import XCTest
 
@@ -83,6 +83,7 @@ final class MailboxViewControllerTests: XCTestCase {
                                     linkConfirmation: nil,
                                     credit: nil,
                                     currency: nil,
+                                    createTime: nil,
                                     subscribed: nil)
         userManagerMock = UserManager(api: apiServiceMock,
                                       userInfo: stubUserInfo,
@@ -262,7 +263,7 @@ final class MailboxViewControllerTests: XCTestCase {
         )
         sut.loadViewIfNeeded()
 
-        wait(self.sut.tableView.visibleCells.isEmpty == false)
+        wait(!self.sut.tableView.visibleCells.isEmpty)
 
         // Select cell
         let cell = sut.tableView.visibleCells.first as? NewMailboxMessageCell
@@ -414,7 +415,6 @@ extension MailboxViewControllerTests {
 
         let fetchMessage = MockFetchMessages()
         let updateMailbox = UpdateMailbox(dependencies: .init(
-            labelID: labelID,
             eventService: eventsServiceMock,
             messageDataService: userManagerMock.messageService,
             conversationProvider: conversationProviderMock,
@@ -426,28 +426,19 @@ extension MailboxViewControllerTests {
         ))
         self.mockFetchMessageDetail = MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
 
+        let featureFlagCache = MockFeatureFlagCache()
+
         let dependencies = MailboxViewModel.Dependencies(
             fetchMessages: MockFetchMessages(),
             updateMailbox: updateMailbox,
             fetchMessageDetail: mockFetchMessageDetail,
-            fetchSenderImage: FetchSenderImage(
-                dependencies: .init(
-                    featureFlagCache: MockFeatureFlagCache(),
-                    senderImageService: .init(
-                        dependencies: .init(
-                            apiService: userManagerMock.apiService,
-                            internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
-                        )
-                    ),
-                    mailSettings: userManagerMock.mailSettings
-                )
-            )
+            fetchSenderImage: userContainer.fetchSenderImage,
+            featureFlagCache: featureFlagCache
         )
         let label = LabelInfo(name: labelName ?? "")
         viewModel = MailboxViewModel(
             labelID: labelID,
             label: isCustom ? label : nil,
-            labelType: labelType,
             userManager: userManagerMock,
             pushService: MockPushNotificationService(),
             coreDataContextProvider: coreDataService,

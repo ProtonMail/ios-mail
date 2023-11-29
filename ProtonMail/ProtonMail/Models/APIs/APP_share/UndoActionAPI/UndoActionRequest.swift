@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 struct UndoActionRequest: Request {
     var auth: AuthCredential?
@@ -51,7 +51,4 @@ struct UndoActionRequest: Request {
 }
 
 struct UndoActionResponse: APIDecodableResponse {
-    var code: Int?
-    var error: String?
-    var details: HumanVerificationDetails?
 }

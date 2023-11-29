@@ -21,7 +21,7 @@
 
 import Foundation
 
-public final class ReferralProgram: NSObject, NSCoding {
+public final class ReferralProgram: NSObject, NSCoding, Codable {
     /// referral link of the user
     public let link: String
     /// is the user eligible of the referral program

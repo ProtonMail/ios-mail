@@ -22,7 +22,7 @@
 #if os(iOS)
 
 import UIKit
-import ProtonCore_Foundations
+import ProtonCoreFoundations
 
 protocol PMActionSheetPlainCellDelegate: AnyObject {
     func toggleTriggeredAt(indexPath: IndexPath)

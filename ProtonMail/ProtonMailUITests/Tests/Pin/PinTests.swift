@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 class PinTests: FixtureAuthenticatedTestCase {
 
@@ -29,13 +29,38 @@ class PinTests: FixtureAuthenticatedTestCase {
     }
 
     func testTurnOnAndOffPin() {
+        let wrongPin = "6789"
         pinRobot
             .disablePin()
+            .enterPin(wrongPin)
+            .continueWithWrongPin()
+            .verify.canSeeIncorrectPinError()
+            .enterPin(correctPin)
+            .continueWithCorrectPin()
             .verify.isPinEnabled(false)
     }
 
-    func testEnterCorrectPinCanUnlock() {
+    func testChangePinCode_inputWrongPinCode_shouldSeeError() {
+        let wrongPin = "6789"
         pinRobot
+            .changePin()
+            .enterPin(wrongPin)
+            .continueWithWrongPin()
+            .verify.canSeeIncorrectPinError()
+    }
+
+    func testChangePinCode_ableToUpdatePin_withCorrectPinCode() {
+        let newPin = "6789"
+        pinRobot
+            .changePin()
+            .enterPin(correctPin)
+            .continueSettingPin()
+            .setPin(newPin)
+            .verify.isPinEnabled(true)
+    }
+
+    func testEnterCorrectPinCanUnlock() async {
+        await pinRobot
             .openPinTimerSelection()
             .selectAutolockEveryTime()
             .navigateUpToSettings()
@@ -83,8 +108,8 @@ class PinTests: FixtureAuthenticatedTestCase {
             .verify.loginScreenIsShown()
     }
 
-    func testIncorrectPinBeforeThirtySec() {
-        pinRobot
+    func testIncorrectPinBeforeThirtySec() async {
+        await pinRobot
             .openPinTimerSelection()
             .selectAutolockEveryTime()
             .navigateUpToSettings()
@@ -98,8 +123,8 @@ class PinTests: FixtureAuthenticatedTestCase {
             .verify.pinErrorMessageShows(1)
     }
 
-    func testErrorMessageOnThreeRmainingPinTries() {
-        pinRobot
+    func testErrorMessageOnThreeRemainingPinTries() async {
+        await pinRobot
             .openPinTimerSelection()
             .selectAutolockEveryTime()
             .navigateUpToSettings()

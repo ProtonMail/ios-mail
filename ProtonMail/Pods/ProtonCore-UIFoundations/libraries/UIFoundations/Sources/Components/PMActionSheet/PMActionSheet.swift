@@ -22,7 +22,7 @@
 #if os(iOS)
 
 import UIKit
-import ProtonCore_Foundations
+import ProtonCoreFoundations
 
 private struct Constants {
     static let PLAIN_CELL_NAME = "PMActionSheetPlainCell"

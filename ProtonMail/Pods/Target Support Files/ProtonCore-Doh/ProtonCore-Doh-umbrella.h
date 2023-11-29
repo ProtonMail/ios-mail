@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ProtonCore_DohVersionNumber;
-FOUNDATION_EXPORT const unsigned char ProtonCore_DohVersionString[];
+FOUNDATION_EXPORT double ProtonCoreDohVersionNumber;
+FOUNDATION_EXPORT const unsigned char ProtonCoreDohVersionString[];
 

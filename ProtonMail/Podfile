@@ -34,7 +34,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '9.3.0'
+  '14.0.5'
 end
 
 def crypto_variant
@@ -72,7 +72,6 @@ def app_share_pods
   pod 'ProtonCore-Networking', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Services', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-VCard', :git => proton_core_path, :tag => proton_core_version
-  pod 'ReachabilitySwift'
   pod 'ProtonCore-UIFoundations', :git => proton_core_path, :tag => proton_core_version
   pod 'SwiftSoup', '~> 2.3'
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'release/1.0.3'
@@ -80,18 +79,16 @@ end
 
 def app_pods
   app_share_pods
-  pod 'SDWebImage', '5.13.3'
+  pod 'SDWebImage', '~> 5.15'
   pod 'OHHTTPStubs/Swift', :configurations => ['Debug', 'Enterprise Debug']
   pod "ProtonCore-AccountDeletion", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-HumanVerification", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Login", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-LoginUI", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Observability', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-OpenPGP', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Payments", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-PaymentsUI", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
@@ -133,6 +130,8 @@ target 'ProtonMailUITests' do
   pod 'ProtonCore-TestingToolkit/UITests/Login', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/AccountDeletion', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/PaymentsUI', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-QuarkCommands', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Environment', :git => proton_core_path, :tag => proton_core_version
   pod 'Yams'
@@ -162,4 +161,9 @@ post_install do | installer |
       end
     end
   end
+  
+  installer.pods_project.build_configurations.each do |config|
+     # -warn-long-function-bodies refers to compilation time, not actual length in lines
+     config.build_settings['OTHER_SWIFT_FLAGS'] = "#{config.build_settings['OTHER_SWIFT_FLAGS']} -Xfrontend -warn-long-function-bodies=100 -Xfrontend -warn-long-expression-type-checking=100"
+   end
 end

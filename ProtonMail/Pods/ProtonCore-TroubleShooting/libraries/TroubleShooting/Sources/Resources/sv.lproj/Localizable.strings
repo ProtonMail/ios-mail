@@ -1,0 +1,50 @@
+
+"support form" = "supportformulär";
+
+"email" = "e-post";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "Felsökning";
+
+"Allow alternative routing" = "Tillåt alternativ routing";
+
+"No internet connection" = "Ingen Internetanslutning";
+
+"Internet Service Provider (ISP) problem" = "Problem med Internetleverantör (ISP)";
+
+"Government block" = "Statlig blockering";
+
+"Antivirus interference" = "Antivirusstörningar";
+
+"Proxy/Firewall interference" = "Proxy-/brandväggstörningar";
+
+"Proton is down" = "Proton är nere";
+
+"Still can't find a solution" = "Kan fortfarande inte hitta en lösning";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Om Proton-webbplatser är blockerade kan denna inställning göra det möjligt för appen att prova alternativ nätverksroutning för att nå Proton, vilket kan vara användbart för att kringgå brandväggar eller nätverksproblem. Vi rekommenderar att du behåller den här inställningen aktiverad för bättre tillförlitlighet. %1$@";
+
+"Learn more" = "Lär dig mer";
+
+"Please make sure that your internet connection is working." = "Se till att din Internetanslutning fungerar.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Försök att ansluta till Proton från ett annat nätverk (eller använd %1$@ eller %2$@).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ditt land kanske blockerar åtkomst till Proton. Prova att använda %1$@ (eller någon annan VPN) eller %2$@ för att komma åt Proton.";
+
+"Temporarily disable or remove your antivirus software." = "Inaktivera eller ta bort ditt antivirusprogram tillfälligt.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "Inaktivera eventuella proxies eller brandväggar eller kontakta din nätverksadministratör.";
+
+"Check Proton Status for our system status." = "Kontrollera Proton Status för vår systemstatus.";
+
+"Proton Status" = "Proton-status";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontakta oss direkt via vårt supportformulär, e-post (support@protonmail.zendesk.com) eller Twitter.";
+
+"Subject..." = "Ämne...";
+
+"Please share your problem." = "Dela ditt problem.";
+
+"Back" = "Tillbaka";

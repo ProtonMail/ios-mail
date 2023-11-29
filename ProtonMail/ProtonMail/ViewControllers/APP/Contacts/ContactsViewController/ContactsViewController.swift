@@ -24,15 +24,14 @@ import Contacts
 import CoreData
 import LifetimeTracker
 import MBProgressHUD
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
-protocol ContactsVCUIProtocol: AnyObject {
-    func reloadTable()
-}
-
 final class ContactsViewController: ContactsAndGroupsSharedCode {
-    typealias Dependencies = HasContactViewsFactory & ContactsAndGroupsSharedCode.Dependencies
+    typealias Dependencies =
+        ContactsAndGroupsSharedCode.Dependencies &
+        HasContactViewsFactory &
+        HasInternetConnectionStatusProviderProtocol
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -47,12 +46,9 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     private let dependencies: Dependencies
     private var searchString: String = ""
     private var refreshControl: UIRefreshControl?
-    private var searchController: UISearchController?
-    private let internetConnectionStatusProvider = InternetConnectionStatusProvider.shared
+    private(set) var searchController: UISearchController?
 
-    deinit {
-        self.viewModel.resetFetchedController()
-    }
+    private var diffableDataSource: SectionTitleUITableViewDiffableDataSource<String, ContactEntity>?
 
     init(viewModel: ContactsViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
@@ -66,8 +62,6 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - View Controller Lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -78,12 +72,11 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         let refreshControl = UIRefreshControl()
         self.refreshControl = refreshControl
         self.refreshControl?.addTarget(self,
-                                      action: #selector(self.fireFetch),
-                                      for: UIControl.Event.valueChanged)
+                                       action: #selector(self.fireFetch),
+                                       for: UIControl.Event.valueChanged)
 
         self.tableView.estimatedRowHeight = 60.0
         self.tableView.addSubview(refreshControl)
-        self.tableView.dataSource = self
         self.tableView.delegate = self
 
         self.refreshControl?.tintColor = ColorProvider.BrandNorm
@@ -96,9 +89,15 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         self.tableView.sectionIndexColor = ColorProvider.BrandNorm
         self.tableView.backgroundColor = ColorProvider.BackgroundNorm
 
-        //get all contacts
+        setupDataSource()
+        tableView.dataSource = diffableDataSource
+        viewModel.contentDidChange = { [weak self] snapshot in
+            DispatchQueue.main.async {
+                self?.diffableDataSource?.apply(snapshot, animatingDifferences: false)
+            }
+        }
+
         self.viewModel.setupFetchedResults()
-        self.viewModel.setup(uiDelegate: self)
         self.prepareSearchBar()
 
         emptyBackButtonTitleForNextView()
@@ -142,7 +141,6 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         super.viewDidLayoutSubviews()
     }
 
-    // run once
     private func prepareSearchBar() {
         self.searchController = UISearchController(searchResultsController: nil)
         self.searchController?.searchBar.placeholder = LocalString._general_search_placeholder
@@ -168,7 +166,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     }
 
     override func addContactGroupTapped() {
-        if viewModel.user.hasPaidMailPlan {
+        if viewModel.dependencies.user.hasPaidMailPlan {
             let newView = dependencies.contactViewsFactory.makeGroupEditView(
                 state: .create,
                 groupID: nil,
@@ -199,11 +197,11 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         self.show(newView, sender: nil)
         isOnMainView = false
 
-            // detect view dismiss above iOS 13
-            if let nav = self.navigationController {
-                nav.children[0].presentationController?.delegate = self
-            }
-            newView.presentationController?.delegate = self
+        // detect view dismiss above iOS 13
+        if let nav = self.navigationController {
+            nav.children[0].presentationController?.delegate = self
+        }
+        newView.presentationController?.delegate = self
     }
 
     override func addContactTapped() {
@@ -211,13 +209,14 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         let nav = UINavigationController(rootViewController: newView)
         self.present(nav, animated: true)
 
-            // detect view dismiss above iOS 13
-            nav.children[0].presentationController?.delegate = self
-            nav.presentationController?.delegate = self
+        // detect view dismiss above iOS 13
+        nav.children[0].presentationController?.delegate = self
+        nav.presentationController?.delegate = self
     }
 
-    @objc internal func fireFetch() {
-        guard internetConnectionStatusProvider.status.isConnected else {
+    @objc
+    private func fireFetch() {
+        guard dependencies.internetConnectionStatusProvider.status.isConnected else {
             DispatchQueue.main.async {
                 self.refreshControl?.endRefreshing()
             }
@@ -264,9 +263,27 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         alertController.assignActionsAccessibilityIdentifiers()
         present(alertController, animated: true, completion: nil)
     }
+
+    private func setupDataSource() {
+        diffableDataSource = SectionTitleUITableViewDiffableDataSource(tableView: self.tableView, cellProvider: { [weak self] tableView, indexPath, contact in
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ContactsTableViewCell.cellID,
+                for: indexPath
+            ) as? ContactsTableViewCell
+            cell?.config(
+                name: contact.name,
+                email: contact.displayEmails,
+                highlight: self?.searchString ?? .empty
+            )
+            return cell
+        })
+        diffableDataSource?.sectionTitleProvider = { _, section in
+            section
+        }
+        diffableDataSource?.useSectionIndex = true
+    }
 }
 
-// Search part
 extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         self.searchString = searchController.searchBar.text ?? ""
@@ -277,48 +294,21 @@ extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         self.refreshControl?.endRefreshing()
         self.refreshControl?.removeFromSuperview()
-        self.viewModel.set(searching: true)
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         if let refreshControl = self.refreshControl {
             self.tableView.addSubview(refreshControl)
         }
-        self.viewModel.set(searching: false)
-    }
-}
-
-// MARK: - UITableViewDataSource
-extension ContactsViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return self.viewModel.sectionCount()
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewModel.rowCount(section: section)
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ContactsTableViewCell.cellID,
-                                                 for: indexPath)
-        if let contactCell = cell as? ContactsTableViewCell {
-            if let contact = self.viewModel.item(index: indexPath) {
-                contactCell.config(name: contact.name,
-                                   email: contact.displayEmails,
-                                   highlight: self.searchString)
-            }
-        }
-        return cell
     }
 }
 
 // MARK: - UITableViewDelegate
+
 extension ContactsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {}
 
     func tableView(
         _ tableView: UITableView,
@@ -327,9 +317,9 @@ extension ContactsViewController: UITableViewDelegate {
         let contextItem = UIContextualAction(
             style: .destructive,
             title: LocalString._general_delete_action
-        ) { [weak self] action, view, completion in
+        ) { [weak self] _, _, completion in
             guard let self,
-                  let contact = self.viewModel.item(index: indexPath) else {
+                  let contact = self.diffableDataSource?.itemIdentifier(for: indexPath) else {
                 completion(false)
                 return
             }
@@ -339,23 +329,15 @@ extension ContactsViewController: UITableViewDelegate {
         return UISwipeActionsConfiguration(actions: [contextItem])
     }
 
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if let contact = self.viewModel.item(index: indexPath) {
+        if let contact = diffableDataSource?.itemIdentifier(for: indexPath) {
             self.showContactDetailView(contact: contact)
         }
-    }
-
-    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        return self.viewModel.sectionForSectionIndexTitle(title: title, at: index)
-    }
-
-    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return self.viewModel.sectionIndexTitle()
     }
 }
 
@@ -392,11 +374,5 @@ extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
 extension ContactsViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         self.isOnMainView = true
-    }
-}
-
-extension ContactsViewController: ContactsVCUIProtocol {
-    func reloadTable() {
-        self.tableView.reloadData()
     }
 }

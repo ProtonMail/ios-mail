@@ -19,10 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
-import ProtonCore_CoreTranslation
-import ProtonCore_Login
-import ProtonCore_Services
+import ProtonCoreLogin
+import ProtonCoreServices
 
 class EmailVerificationViewModel {
 
@@ -48,6 +49,8 @@ class EmailVerificationViewModel {
 
     func getResendMessage() -> String? {
         guard let email = email else { return nil }
-        return String(format: CoreString._hv_verification_sent_banner, email)
+        return String(format: LUITranslation.verification_sent_banner.l10n, email)
     }
 }
+
+#endif

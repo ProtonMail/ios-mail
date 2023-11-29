@@ -21,9 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
-import ProtonCore_AccountSwitcher
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreAccountSwitcher
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 
 final class MenuViewController: UIViewController, AccessibleView {
 
@@ -69,7 +69,7 @@ final class MenuViewController: UIViewController, AccessibleView {
                                                object: nil)
         NotificationCenter.default
             .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
+                         selector: #selector(preferredContentSizeChanged),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
     }
@@ -283,7 +283,7 @@ extension MenuViewController {
     }
 
     @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
+    private func preferredContentSizeChanged() {
         displayName.font = .adjustedFont(forTextStyle: .subheadline, weight: .regular)
         addressLabel.font = .adjustedFont(forTextStyle: .footnote, weight: .regular)
         avatarLabel.font = .adjustedFont(forTextStyle: .footnote, weight: .regular)

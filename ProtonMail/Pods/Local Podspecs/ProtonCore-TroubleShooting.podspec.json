@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-TroubleShooting",
-  "module_name": "ProtonCore_TroubleShooting",
-  "version": "9.3.0",
+  "module_name": "ProtonCoreTroubleShooting",
+  "version": "14.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,10 +17,11 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "9.3.0"
+    "tag": "14.0.0"
   },
   "platforms": {
-    "ios": "14.0"
+    "ios": "14.0",
+    "osx": "11.0"
   },
   "swift_versions": [
     "5.6"
@@ -29,32 +30,39 @@
     "APPLICATION_EXTENSION_API_ONLY": "NO"
   },
   "ios": {
-    "frameworks": "UIKit"
+    "frameworks": "UIKit",
+    "resource_bundles": {
+      "Resources-TroubleShooting": [
+        "libraries/TroubleShooting/Resources/**/*.{xib,storyboard,geojson}"
+      ],
+      "Translations-TroubleShooting": [
+        "libraries/TroubleShooting/Sources/Resources/*"
+      ]
+    }
+  },
+  "osx": {
+    "frameworks": "AppKit",
+    "resource_bundles": {
+      "Translations-TroubleShooting": [
+        "libraries/TroubleShooting/Sources/Resources/*"
+      ]
+    }
   },
   "dependencies": {
     "ProtonCore-Foundations": [
-      "9.3.0"
+      "14.0.0"
     ],
     "ProtonCore-UIFoundations": [
-      "9.3.0"
+      "14.0.0"
     ],
     "ProtonCore-Utilities": [
-      "9.3.0"
+      "14.0.0"
     ],
     "ProtonCore-Doh": [
-      "9.3.0"
-    ],
-    "ProtonCore-CoreTranslation": [
-      "9.3.0"
+      "14.0.0"
     ]
   },
   "source_files": "libraries/TroubleShooting/Sources/**/*.{h,m,swift}",
-  "resource_bundles": {
-    "Resources-TroubleShooting": [
-      "libraries/TroubleShooting/Resources/**/*.{xib,storyboard,geojson}",
-      "libraries/TroubleShooting/Sources/**/*.{xib,storyboard,geojson}"
-    ]
-  },
   "default_subspecs": [
 
   ],
@@ -64,10 +72,10 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Doh": [
-          "9.3.0"
+          "14.0.0"
         ]
       },
-      "source_files": "libraries/TroubleShooting/Tests/**/*"
+      "source_files": "libraries/TroubleShooting/Tests/UnitTests/**/*"
     }
   ],
   "swift_version": "5.6"

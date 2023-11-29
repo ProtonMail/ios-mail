@@ -23,10 +23,10 @@
 import Foundation
 import LifetimeTracker
 import MBProgressHUD
-import ProtonCore_HumanVerification
-import ProtonCore_Log
-import ProtonCore_TroubleShooting
-import ProtonCore_UIFoundations
+import ProtonCoreHumanVerification
+import ProtonCoreLog
+import ProtonCoreTroubleShooting
+import ProtonCoreUIFoundations
 import SideMenuSwift
 
 final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
@@ -106,7 +106,7 @@ final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackabl
         setupLayout()
         NotificationCenter.default
             .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
+                         selector: #selector(preferredContentSizeChanged),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
     }
@@ -234,7 +234,7 @@ final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackabl
     }
 
     @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
+    private func preferredContentSizeChanged() {
         textView.font = .adjustedFont(forTextStyle: .body, weight: .regular)
         setUpSendButtonAttribute()
     }

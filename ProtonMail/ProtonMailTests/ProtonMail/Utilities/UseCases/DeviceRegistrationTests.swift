@@ -16,10 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_Networking
+import ProtonCoreDataModel
+import ProtonCoreNetworking
 @testable import ProtonMail
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 import XCTest
 
 final class DeviceRegistrationTests: XCTestCase {
@@ -129,6 +129,7 @@ private extension DeviceRegistrationTests {
             linkConfirmation: nil,
             credit: nil,
             currency: nil,
+            createTime: nil,
             subscribed: nil
         )
         let auth = AuthCredential(

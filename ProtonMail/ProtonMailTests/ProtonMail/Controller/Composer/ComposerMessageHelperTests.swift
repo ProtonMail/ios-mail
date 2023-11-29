@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import PromiseKit
-import ProtonCore_DataModel
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import XCTest
 
@@ -34,7 +34,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     override func setUp() {
         super.setUp()
         contextProviderMock = MockCoreDataContextProvider()
-        fakeUser = UserManager(api: APIServiceMock(), role: .none)
+        fakeUser = UserManager(api: APIServiceMock())
         messageDataServiceMock = MockMessageDataService()
         testMessage = createTestMessage()
         cacheServiceMock = .init()
@@ -162,7 +162,7 @@ final class ComposerMessageHelperTests: XCTestCase {
 
         XCTAssertTrue(messageDataServiceMock.callSaveDraft.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(messageDataServiceMock.callSaveDraft.lastArguments)
-        XCTAssertEqual(argument.a1, testMessage)
+        XCTAssertEqual(argument.a1, MessageEntity(testMessage))
     }
 
     func testMarkAsRead_withReadMsg_markIsNotCalled() {
@@ -212,7 +212,8 @@ final class ComposerMessageHelperTests: XCTestCase {
         let newAddress = String.randomString(20)
         sut.setNewMessage(objectID: testMessage.objectID)
 
-        sut.updateAddressID(addressID: newAddressID, emailAddress: newAddress) {
+        let address = Address(addressID: newAddressID, domainID: nil, email: newAddress, send: .active, receive: .active, status: .enabled, type: .protonDomain, order: 1, displayName: "", signature: "", hasKeys: 0, keys: [])
+        sut.updateAddress(to: address) {
             e.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -340,7 +341,7 @@ final class ComposerMessageHelperTests: XCTestCase {
         XCTAssertEqual(sut.draft?.numAttachments, 1)
         let attachment = try XCTUnwrap(sut.draft?.attachments.first)
         XCTAssertEqual(attachment.name, fileName)
-        XCTAssertEqual(attachment.attachmentType, .general)
+        XCTAssertEqual(attachment.attachmentType, .key)
         XCTAssertEqual(attachment.rawMimeType, "application/pgp-keys")
 
         // Add same attachment twice
@@ -405,7 +406,7 @@ final class ComposerMessageHelperTests: XCTestCase {
         sut.setNewMessage(objectID: testMessage.objectID)
         let data = String.randomString(50).data(using: .utf8)
         let name = String.randomString(10)
-        let file = ConcreteFileData(name: name, ext: "", contents: data!)
+        let file = ConcreteFileData(name: name, mimeType: "", contents: data!)
         let e = expectation(description: "Closure is called")
 
         sut.addAttachment(file,

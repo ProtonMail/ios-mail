@@ -22,9 +22,9 @@
 
 import LifetimeTracker
 import MBProgressHUD
-import ProtonCore_AccountDeletion
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreAccountDeletion
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 class SettingsAccountViewController: UITableViewController, AccessibleView, LifetimeTrackable {
@@ -137,7 +137,7 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
         case .mailbox:
             return configureAndReturnCellInMailboxSection(at: indexPath) ?? UITableViewCell()
         case .deleteAccount:
-            configureCellInDeleteAccountSection(cell, row)
+            configureCellInDeleteAccountSection(cell)
         }
 
         return cell
@@ -192,7 +192,7 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
         case .mailbox:
             handleMailboxSectionAction(row)
         case .deleteAccount:
-            handleDeleteAccountSectionAction(tableView, row)
+            handleDeleteAccountSectionAction()
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -328,7 +328,7 @@ extension SettingsAccountViewController {
         return imageCell
     }
 
-    private func configureCellInDeleteAccountSection(_ cell: UITableViewCell, _ row: Int) {
+    private func configureCellInDeleteAccountSection(_ cell: UITableViewCell) {
         guard let cellToUpdate = cell as? SettingsGeneralCell else { return }
         cellToUpdate.configureCell(left: AccountDeletionService.defaultButtonName,
                                    right: nil,
@@ -429,7 +429,7 @@ extension SettingsAccountViewController {
         }
     }
 
-    private func handleDeleteAccountSectionAction(_ tableView: UITableView, _ row: Int) {
+    private func handleDeleteAccountSectionAction() {
         guard isAccountDeletionPending == false else { return }
         self.coordinator.go(to: .deleteAccount)
     }

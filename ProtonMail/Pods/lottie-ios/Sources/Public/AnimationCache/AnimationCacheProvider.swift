@@ -6,16 +6,17 @@
 //
 
 import Foundation
+
 /// `AnimationCacheProvider` is a protocol that describes an Animation Cache.
-/// Animation Cache is used when loading `Animation` models. Using an Animation Cache
+/// Animation Cache is used when loading `LottieAnimation` models. Using an Animation Cache
 /// can increase performance when loading an animation multiple times.
 ///
 /// Lottie comes with a prebuilt LRU Animation Cache.
-public protocol AnimationCacheProvider {
+public protocol AnimationCacheProvider: AnyObject, Sendable {
 
-  func animation(forKey: String) -> Animation?
+  func animation(forKey: String) -> LottieAnimation?
 
-  func setAnimation(_ animation: Animation, forKey: String)
+  func setAnimation(_ animation: LottieAnimation, forKey: String)
 
   func clearCache()
 

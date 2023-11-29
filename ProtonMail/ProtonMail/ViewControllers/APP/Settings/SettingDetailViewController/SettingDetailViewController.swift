@@ -22,10 +22,10 @@
 
 import UIKit
 import MBProgressHUD
-import ProtonCore_Networking
-import ProtonCore_UIFoundations
-import ProtonCore_PaymentsUI
-import ProtonCore_Foundations
+import ProtonCoreNetworking
+import ProtonCoreUIFoundations
+import ProtonCorePaymentsUI
+import ProtonCoreFoundations
 
 class SettingDetailViewController: UIViewController, AccessibleView {
     typealias Dependencies = HasPaymentsUIFactory
@@ -154,7 +154,7 @@ class SettingDetailViewController: UIViewController, AccessibleView {
 
         NotificationCenter.default
             .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
+                         selector: #selector(preferredContentSizeChanged),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
     }
@@ -315,7 +315,7 @@ class SettingDetailViewController: UIViewController, AccessibleView {
     }
 
     @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
+    private func preferredContentSizeChanged() {
         switchLabel.font = .adjustedFont(forTextStyle: .body, weight: .regular)
         inputTextView.font = .adjustedFont(forTextStyle: .body, weight: .regular)
         inputTextField.font = .adjustedFont(forTextStyle: .body, weight: .regular)

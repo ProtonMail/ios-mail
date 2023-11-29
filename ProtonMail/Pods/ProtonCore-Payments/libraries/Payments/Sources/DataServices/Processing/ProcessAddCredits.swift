@@ -21,7 +21,7 @@
 
 import Foundation
 import StoreKit
-import ProtonCore_Log
+import ProtonCoreLog
 
 /*
 

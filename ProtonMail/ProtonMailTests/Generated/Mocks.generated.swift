@@ -4,15 +4,16 @@ import BackgroundTasks
 import CoreData
 import LocalAuthentication
 import Network
-import ProtonCore_Crypto
-import ProtonCore_Environment
-import ProtonCore_Keymaker
-import ProtonCore_PaymentsUI
-import ProtonCore_Services
-import ProtonCore_TestingToolkit
+import ProtonCoreCrypto
+import ProtonCoreEnvironment
+import ProtonCoreKeymaker
+import ProtonCorePaymentsUI
+import ProtonCoreServices
+import ProtonCoreTestingToolkit
 
+import class ProtonCoreDataModel.Address
 import class PromiseKit.Promise
-import class ProtonCore_DataModel.UserInfo
+import class ProtonCoreDataModel.UserInfo
 
 @testable import ProtonMail
 
@@ -43,6 +44,24 @@ class MockAppRatingWrapper: AppRatingWrapper {
     @FuncStub(MockAppRatingWrapper.requestAppRating) var requestAppRatingStub
     func requestAppRating() {
         requestAppRatingStub()
+    }
+
+}
+
+class MockAppTelemetry: AppTelemetry {
+    @FuncStub(MockAppTelemetry.enable) var enableStub
+    func enable() {
+        enableStub()
+    }
+
+    @FuncStub(MockAppTelemetry.disable) var disableStub
+    func disable() {
+        disableStub()
+    }
+
+    @FuncStub(MockAppTelemetry.assignUser) var assignUserStub
+    func assignUser(userID: UserID?) {
+        assignUserStub(userID)
     }
 
 }
@@ -167,6 +186,24 @@ class MockCachedUserDataProvider: CachedUserDataProvider {
     @FuncStub(MockCachedUserDataProvider.fetchDisconnectedUsers, initialReturn: [UsersManager.DisconnectedUserHandle]()) var fetchDisconnectedUsersStub
     func fetchDisconnectedUsers() -> [UsersManager.DisconnectedUserHandle] {
         fetchDisconnectedUsersStub()
+    }
+
+}
+
+class MockComposeUIProtocol: ComposeUIProtocol {
+    @FuncStub(MockComposeUIProtocol.changeInvalidSenderAddress) var changeInvalidSenderAddressStub
+    func changeInvalidSenderAddress(to newAddress: Address) {
+        changeInvalidSenderAddressStub(newAddress)
+    }
+
+    @FuncStub(MockComposeUIProtocol.updateSenderAddressesList) var updateSenderAddressesListStub
+    func updateSenderAddressesList() {
+        updateSenderAddressesListStub()
+    }
+
+    @FuncStub(MockComposeUIProtocol.show) var showStub
+    func show(error: String) {
+        showStub(error)
     }
 
 }
@@ -416,6 +453,29 @@ class MockFeatureFlagsDownloadServiceProtocol: FeatureFlagsDownloadServiceProtoc
 
 }
 
+class MockImageProxyCacheProtocol: ImageProxyCacheProtocol {
+    @ThrowingFuncStub(MockImageProxyCacheProtocol.remoteImage, initialReturn: nil) var remoteImageStub
+    func remoteImage(forURL remoteURL: SafeRemoteURL) throws -> RemoteImage? {
+        try remoteImageStub(remoteURL)
+    }
+
+    @ThrowingFuncStub(MockImageProxyCacheProtocol.setRemoteImage) var setRemoteImageStub
+    func setRemoteImage(_ remoteImage: RemoteImage, forURL remoteURL: SafeRemoteURL) throws {
+        try setRemoteImageStub(remoteImage, remoteURL)
+    }
+
+    @FuncStub(MockImageProxyCacheProtocol.removeRemoteImage) var removeRemoteImageStub
+    func removeRemoteImage(forURL remoteURL: SafeRemoteURL) {
+        removeRemoteImageStub(remoteURL)
+    }
+
+    @FuncStub(MockImageProxyCacheProtocol.purge) var purgeStub
+    func purge() {
+        purgeStub()
+    }
+
+}
+
 class MockImageProxyDelegate: ImageProxyDelegate {
     @FuncStub(MockImageProxyDelegate.imageProxy) var imageProxyStub
     func imageProxy(_ imageProxy: ImageProxy, output: ImageProxyOutput) {
@@ -659,11 +719,6 @@ class MockLocalMessageDataServiceProtocol: LocalMessageDataServiceProtocol {
         cleanMessageStub(removeAllDraft, cleanBadgeAndNotifications)
     }
 
-    @FuncStub(MockLocalMessageDataServiceProtocol.fetchMessages, initialReturn: [Message]()) var fetchMessagesStub
-    func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Message] {
-        fetchMessagesStub(selected, context)
-    }
-
 }
 
 class MockLockCacheStatus: LockCacheStatus {
@@ -734,16 +789,6 @@ class MockMailboxCoordinatorProtocol: MailboxCoordinatorProtocol {
         set {
             pendingActionAfterDismissalStub(newValue)
         }
-    }
-
-    @PropertyStub(\MockMailboxCoordinatorProtocol.conversationCoordinator, initialGet: nil) var conversationCoordinatorStub
-    var conversationCoordinator: ConversationCoordinator? {
-        conversationCoordinatorStub()
-    }
-
-    @PropertyStub(\MockMailboxCoordinatorProtocol.singleMessageCoordinator, initialGet: nil) var singleMessageCoordinatorStub
-    var singleMessageCoordinator: SingleMessageCoordinator? {
-        singleMessageCoordinatorStub()
     }
 
     @FuncStub(MockMailboxCoordinatorProtocol.go) var goStub
@@ -935,6 +980,27 @@ class MockPaymentsUIProtocol: PaymentsUIProtocol {
 
 }
 
+class MockPinCodeProtection: PinCodeProtection {
+    @FuncStub(MockPinCodeProtection.activate, initialReturn: Bool()) var activateStub
+    func activate(with newPinCode: String) -> Bool {
+        activateStub(newPinCode)
+    }
+
+    @FuncStub(MockPinCodeProtection.deactivate) var deactivateStub
+    func deactivate() {
+        deactivateStub()
+    }
+
+}
+
+class MockPinCodeSetupRouterProtocol: PinCodeSetupRouterProtocol {
+    @FuncStub(MockPinCodeSetupRouterProtocol.go) var goStub
+    func go(to step: PinCodeSetupRouter.PinCodeSetUpStep, existingVM: PinCodeSetupViewModel) {
+        goStub(step, existingVM)
+    }
+
+}
+
 class MockPinFailedCountCache: PinFailedCountCache {
     @PropertyStub(\MockPinFailedCountCache.pinFailedCount, initialGet: Int()) var pinFailedCountStub
     var pinFailedCount: Int {
@@ -981,8 +1047,8 @@ class MockQueueHandlerRegister: QueueHandlerRegister {
     }
 
     @FuncStub(MockQueueHandlerRegister.unregisterHandler) var unregisterHandlerStub
-    func unregisterHandler(for userID: UserID) {
-        unregisterHandlerStub(userID)
+    func unregisterHandler(for userID: UserID, completion: (() -> Void)?) {
+        unregisterHandlerStub(userID, completion)
     }
 
 }
@@ -1337,9 +1403,9 @@ class MockUserIntroductionProgressProvider: UserIntroductionProgressProvider {
 }
 
 class MockUsersManagerProtocol: UsersManagerProtocol {
-    @PropertyStub(\MockUsersManagerProtocol.firstUser, initialGet: nil) var firstUserStub
-    var firstUser: UserManager? {
-        firstUserStub()
+    @PropertyStub(\MockUsersManagerProtocol.users, initialGet: [UserManager]()) var usersStub
+    var users: [UserManager] {
+        usersStub()
     }
 
     @FuncStub(MockUsersManagerProtocol.hasUsers, initialReturn: Bool()) var hasUsersStub
@@ -1353,6 +1419,19 @@ class MockViewModeUpdater: ViewModeUpdater {
     @FuncStub(MockViewModeUpdater.update) var updateStub
     func update(viewMode: ViewMode, completion: ((Swift.Result<ViewMode?, Error>) -> Void)?) {
         updateStub(viewMode, completion)
+    }
+
+}
+
+class MockWindowsCoordinatorDelegate: WindowsCoordinatorDelegate {
+    @ThrowingFuncStub(MockWindowsCoordinatorDelegate.setupCoreData) var setupCoreDataStub
+    func setupCoreData() throws {
+        try setupCoreDataStub()
+    }
+
+    @FuncStub(MockWindowsCoordinatorDelegate.loadUserDataAfterUnlock) var loadUserDataAfterUnlockStub
+    func loadUserDataAfterUnlock() {
+        loadUserDataAfterUnlockStub()
     }
 
 }

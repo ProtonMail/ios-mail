@@ -18,7 +18,7 @@
 import Foundation
 @testable import ProtonMail
 import UserNotifications
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 class MockNotificationHandler: NotificationHandler {
 

@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Utilities
+import ProtonCoreUtilities
 
 // This NSCoding is used for archive the object to data then encrypt it before save to keychain.
 //   will need to redesign to save this to core data
@@ -47,6 +47,10 @@ extension Key: NSCoding {
     
     static func unarchive(_ data: Data?) -> [Key]? {
         guard let data = data else { return nil }
+        // Unarchive method that suppress this warning doesn't work when using old archive method. Solution for this is to switch to
+        // Codable.
+        NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "ProtonCore_DataModel.Key")
+        NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "ProtonCoreDataModel.Key")
         return NSKeyedUnarchiver.unarchiveObject(with: data) as? [Key]
     }
     

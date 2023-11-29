@@ -21,15 +21,17 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Networking
-import ProtonCore_Services
-import class ProtonCore_Services.APIErrorCode
+import ProtonCoreNetworking
+import ProtonCoreServices
+import class ProtonCoreServices.APIErrorCode
 
 extension APIErrorCode {
     static let forcePasswordChange = 2011
     /// The error means "Message has already been sent"
     static let alreadyExist = 2500
     static let resourceDoesNotExist = 2501
+    /// The model exists but its current state doesn't allow to execute the action
+    static let incompatible = 2511
     static let invalidRequirements = 2000
 
     static let deviceHavingLowConnectivity = 111222333

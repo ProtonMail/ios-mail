@@ -33,11 +33,10 @@ class FetchMessagesTests: XCTestCase {
         mockEventsService = MockEventsService()
 
         sut = FetchMessages(
-            dependencies: makeDependencies(
-                mockMessageDataService: mockMessagesService,
-                mockCacheService: mockCacheService,
-                mockEventsService: mockEventsService,
-                labelID: labelID
+            dependencies: .init(
+                messageDataService: mockMessagesService,
+                cacheService: mockCacheService,
+                eventsService: mockEventsService
             )
         )
     }
@@ -54,9 +53,7 @@ class FetchMessagesTests: XCTestCase {
         expectation.expectedFulfillmentCount = 2
 
         sut.execute(
-            params: .init(
-                endTime: Int(Date().timeIntervalSince1970),
-                isUnread: false,
+            params: makeParams(
                 onMessagesRequestSuccess: {
                     expectation.fulfill()
                 }
@@ -79,9 +76,7 @@ class FetchMessagesTests: XCTestCase {
         expectation.expectedFulfillmentCount = 1
 
         sut.execute(
-            params: .init(
-                endTime: Int(Date().timeIntervalSince1970),
-                isUnread: false,
+            params: makeParams(
                 onMessagesRequestSuccess: {
                     XCTFail("Should not call this closure since the fetch is set to be failed.")
                 }
@@ -102,21 +97,11 @@ class FetchMessagesTests: XCTestCase {
             throw NSError.badParameter(nil)
         }
 
-        sut = FetchMessages(
-            dependencies: makeDependencies(
-                mockCacheService: mockCacheService,
-                mockEventsService: mockEventsService,
-                labelID: labelID
-            )
-        )
-
         let expectation = expectation(description: "callbacks are correct")
         expectation.expectedFulfillmentCount = 2
 
         sut.execute(
-            params: .init(
-                endTime: Int(Date().timeIntervalSince1970),
-                isUnread: false,
+            params: makeParams(
                 onMessagesRequestSuccess: {
                     expectation.fulfill()
                 }
@@ -139,9 +124,7 @@ class FetchMessagesTests: XCTestCase {
         expectation.expectedFulfillmentCount = 2
 
         sut.execute(
-            params: .init(
-                endTime: Int(Date().timeIntervalSince1970),
-                isUnread: false,
+            params: makeParams(
                 onMessagesRequestSuccess: {
                     expectation.fulfill()
                 }
@@ -156,18 +139,13 @@ class FetchMessagesTests: XCTestCase {
         XCTAssert(mockMessagesService.wasFetchMessagesCountCalled == true)
         XCTAssert(mockEventsService.wasProcessEventsCalled == false)
     }
-}
 
-private func makeDependencies(
-    mockMessageDataService: MessageDataServiceProtocol = MockMessageDataService(),
-    mockCacheService: CacheServiceProtocol = MockCacheServiceProtocol(),
-    mockEventsService: EventsServiceProtocol = MockEventsService(),
-    labelID: LabelID
-) -> FetchMessages.Dependencies {
-    FetchMessages.Dependencies(
-        messageDataService: mockMessageDataService,
-        cacheService: mockCacheService,
-        eventsService: mockEventsService,
-        labelID: labelID
-    )
+    private func makeParams(onMessagesRequestSuccess: @escaping () -> Void) -> FetchMessages.Parameters {
+        .init(
+            labelID: labelID,
+            endTime: Int(Date().timeIntervalSince1970),
+            isUnread: false,
+            onMessagesRequestSuccess: onMessagesRequestSuccess
+        )
+    }
 }

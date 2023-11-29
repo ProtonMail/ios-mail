@@ -22,7 +22,7 @@
 #if os(iOS)
 
 import Foundation
-import enum ProtonCore_Utilities.Either
+import enum ProtonCoreUtilities.Either
 import UIKit
 
 public protocol PMActionSheetComponent {

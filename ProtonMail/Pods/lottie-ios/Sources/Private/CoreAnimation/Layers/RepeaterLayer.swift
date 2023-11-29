@@ -55,12 +55,20 @@ private struct RepeaterTransform {
     anchorPoint = repeater.anchorPoint
     scale = repeater.scale
 
-    rotation = repeater.rotation.map { rotation in
-      Vector1D(rotation.value * Double(index))
+    rotationX = repeater.rotationX.map { rotation in
+      LottieVector1D(rotation.value * Double(index))
+    }
+
+    rotationY = repeater.rotationY.map { rotation in
+      LottieVector1D(rotation.value * Double(index))
+    }
+
+    rotationZ = repeater.rotationZ.map { rotation in
+      LottieVector1D(rotation.value * Double(index))
     }
 
     position = repeater.position.map { position in
-      Vector3D(
+      LottieVector3D(
         x: position.x * Double(index),
         y: position.y * Double(index),
         z: position.z * Double(index))
@@ -69,17 +77,22 @@ private struct RepeaterTransform {
 
   // MARK: Internal
 
-  let anchorPoint: KeyframeGroup<Vector3D>
-  let position: KeyframeGroup<Vector3D>
-  let rotation: KeyframeGroup<Vector1D>
-  let scale: KeyframeGroup<Vector3D>
+  let anchorPoint: KeyframeGroup<LottieVector3D>
+  let position: KeyframeGroup<LottieVector3D>
+  let rotationX: KeyframeGroup<LottieVector1D>
+  let rotationY: KeyframeGroup<LottieVector1D>
+  let rotationZ: KeyframeGroup<LottieVector1D>
+
+  let scale: KeyframeGroup<LottieVector3D>
 
 }
 
 // MARK: TransformModel
 
 extension RepeaterTransform: TransformModel {
-  var _position: KeyframeGroup<Vector3D>? { position }
-  var _positionX: KeyframeGroup<Vector1D>? { nil }
-  var _positionY: KeyframeGroup<Vector1D>? { nil }
+  var _position: KeyframeGroup<LottieVector3D>? { position }
+  var _positionX: KeyframeGroup<LottieVector1D>? { nil }
+  var _positionY: KeyframeGroup<LottieVector1D>? { nil }
+  var _skew: KeyframeGroup<LottieVector1D>? { nil }
+  var _skewAxis: KeyframeGroup<LottieVector1D>? { nil }
 }

@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import OSLog
-import ProtonCore_Log
+import ProtonCoreLog
 
 final class SystemLogger {
     private static let shared = SystemLogger()
@@ -145,6 +145,7 @@ extension SystemLogger {
     enum Category: String {
         case appLifeCycle = "AppLifeCycle"
         case appLock = "AppLock"
+        case artificialSlowdown = "Artificial slowdown"
         case assertionFailure = "AssertionFailure"
         case connectionStatus = "ConnectionStatus"
         case sendMessage = "SendMessage"
@@ -156,6 +157,9 @@ extension SystemLogger {
         case encryptedSearch = "EncryptedSearch"
         case blockSender = "BlockSender"
         case backgroundTask = "BackgroundTask"
+        case loginUnlockFailed = "loginUnlockFailed"
+        case restoreUserData = "RestoreUserData"
+        case unauthorizedSession = "UnauthorizedSession"
     }
 
     struct Caller {

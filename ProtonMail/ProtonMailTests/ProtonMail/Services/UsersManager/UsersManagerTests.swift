@@ -15,11 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_DataModel
-import ProtonCore_Keymaker
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreKeymaker
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import XCTest
 
@@ -27,33 +27,25 @@ class UsersManagerTests: XCTestCase {
     var apiMock: APIService!
     var sut: UsersManager!
     var cachedUserDataProviderMock: MockCachedUserDataProvider!
-    let suiteName = String.randomString(10)
-    var customCache: SharedCacheBase!
-    var customKeyChain: Keychain!
-    var notificationCenter: NotificationCenter!
-    var keyMaker: KeyMakerProtocol!
-    private var globalContainer: GlobalContainer!
+    private var globalContainer: TestContainer!
+
+    private var customKeyChain: Keychain {
+        globalContainer.keychain
+    }
+
+    private var keyMaker: KeyMakerProtocol {
+        globalContainer.keyMaker
+    }
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         self.cachedUserDataProviderMock = .init()
         self.apiMock = APIServiceMock()
-        self.customCache = .init(userDefaults: .init(suiteName: suiteName)!)
-        self.customKeyChain = .init(service: String.randomString(10),
-                                    accessGroup: "2SB5Z68H26.ch.protonmail.protonmail")
-        self.notificationCenter = NotificationCenter()
-        self.keyMaker = Keymaker(autolocker: nil, keychain: customKeyChain)
 
         globalContainer = .init()
         globalContainer.cachedUserDataProviderFactory.register { self.cachedUserDataProviderMock }
-        globalContainer.keychainFactory.register { self.customKeyChain }
-        globalContainer.keyMakerFactory.register { Keymaker(autolocker: nil, keychain: self.customKeyChain) }
-        globalContainer.notificationCenterFactory.register { self.notificationCenter }
 
-        sut = UsersManager(
-            userDefaultCache: customCache,
-            dependencies: globalContainer
-        )
+        sut = UsersManager(dependencies: globalContainer)
     }
 
     override func tearDown() {
@@ -62,15 +54,11 @@ class UsersManagerTests: XCTestCase {
         apiMock = nil
         cachedUserDataProviderMock = nil
 
-        customCache.getShared().remove(forKey: UsersManager.CoderKey.authKeychainStore)
-        customCache.getShared().remove(forKey: UsersManager.CoderKey.userInfo)
-        customCache.getShared().remove(forKey: UsersManager.CoderKey.authKeychainStore)
-        customCache.getShared().remove(forKey: UsersManager.CoderKey.usersInfo)
-        self.customCache = nil
+        globalContainer.userDefaults.remove(forKey: UsersManager.CoderKey.authKeychainStore)
+        globalContainer.userDefaults.remove(forKey: UsersManager.CoderKey.userInfo)
+        globalContainer.userDefaults.remove(forKey: UsersManager.CoderKey.authKeychainStore)
+        globalContainer.userDefaults.remove(forKey: UsersManager.CoderKey.usersInfo)
         self.customKeyChain.removeEverything()
-        self.customKeyChain = nil
-        notificationCenter = nil
-        keyMaker = nil
         globalContainer = nil
     }
 
@@ -99,6 +87,7 @@ class UsersManagerTests: XCTestCase {
                                     linkConfirmation: nil,
                                     credit: nil,
                                     currency: nil,
+                                    createTime: nil,
                                     subscribed: nil)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: paidUserInfo))
 
@@ -113,6 +102,7 @@ class UsersManagerTests: XCTestCase {
                                     linkConfirmation: nil,
                                     credit: nil,
                                     currency: nil,
+                                    createTime: nil,
                                     subscribed: nil)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: freeUserInfo))
     }
@@ -132,6 +122,7 @@ class UsersManagerTests: XCTestCase {
                                     linkConfirmation: nil,
                                     credit: nil,
                                     currency: nil,
+                                    createTime: nil,
                                     subscribed: nil)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: paidUserInfo))
 
@@ -146,6 +137,7 @@ class UsersManagerTests: XCTestCase {
                                     linkConfirmation: nil,
                                     credit: nil,
                                     currency: nil,
+                                    createTime: nil,
                                     subscribed: nil)
         XCTAssertFalse(sut.isAllowedNewUser(userInfo: freeUserInfo))
     }
@@ -170,6 +162,7 @@ class UsersManagerTests: XCTestCase {
                                 linkConfirmation: nil,
                                 credit: nil,
                                 currency: nil,
+                                createTime: nil,
                                 subscribed: nil)
         XCTAssertTrue(sut.users.isEmpty)
         sut.add(auth: auth, user: userInfo, mailSettings: .init())
@@ -202,6 +195,7 @@ class UsersManagerTests: XCTestCase {
                                    linkConfirmation: nil,
                                    credit: nil,
                                    currency: nil,
+                                   createTime: nil,
                                    subscribed: nil)
         sut.update(userInfo: newUserInfo, for: newAuth.sessionID)
         XCTAssertTrue(sut.users[0].isPaid)
@@ -296,7 +290,7 @@ class UsersManagerTests: XCTestCase {
         sut.add(newUser: user1)
         XCTAssertEqual(sut.users.count, 1)
         let expectation1 = expectation(description: "Closure is called")
-        expectation(forNotification: .didSignOutLastAccount, object: nil, notificationCenter: notificationCenter)
+        expectation(forNotification: .didSignOutLastAccount, object: nil, notificationCenter: globalContainer.notificationCenter)
 
         sut.logout(user: user1) {
             XCTAssertTrue(self.sut.users.isEmpty)
@@ -336,11 +330,11 @@ class UsersManagerTests: XCTestCase {
         XCTAssertEqual(sut.firstUser?.userID.rawValue, userID)
 
         XCTAssertNil(customKeyChain.data(forKey: UsersManager.CoderKey.keychainStore))
-        let userInfoData = customCache.getShared().object(forKey: UsersManager.CoderKey.userInfo) as? Data
+        let userInfoData = globalContainer.userDefaults.object(forKey: UsersManager.CoderKey.userInfo) as? Data
         XCTAssertNil(userInfoData)
 
-        XCTAssertNotNil(customCache.getShared().object(forKey: UsersManager.CoderKey.authKeychainStore))
-        XCTAssertNotNil(customCache.getShared().object(forKey: UsersManager.CoderKey.usersInfo))
+        XCTAssertNotNil(globalContainer.userDefaults.object(forKey: UsersManager.CoderKey.authKeychainStore))
+        XCTAssertNotNil(globalContainer.userDefaults.object(forKey: UsersManager.CoderKey.usersInfo))
     }
 
     func testTryRestore_withNoMailSettingInCache_userHasDefaultMailSetting() throws {
@@ -407,9 +401,9 @@ class UsersManagerTests: XCTestCase {
         }
 
         let lockedAuth = try Locked<[AuthCredential]>(clearValue: auths, with: mainKey)
-        customCache.getShared().set(lockedAuth.encryptedValue, forKey: UsersManager.CoderKey.authKeychainStore)
+        globalContainer.userDefaults.set(lockedAuth.encryptedValue, forKey: UsersManager.CoderKey.authKeychainStore)
         let lockedUserInfo = try Locked<[UserInfo]>(clearValue: userInfos, with: mainKey)
-        customCache.getShared().set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.usersInfo)
+        globalContainer.userDefaults.set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.usersInfo)
     }
 
     private func prepareUserDataInCache(userID: String, hasMailSetting: Bool) throws {
@@ -418,14 +412,14 @@ class UsersManagerTests: XCTestCase {
         let userInfo = createUserInfo(userID: userID)
 
         let lockedAuth = try Locked<[AuthCredential]>(clearValue: [auth], with: mainKey)
-        customCache.getShared().set(lockedAuth.encryptedValue, forKey: UsersManager.CoderKey.authKeychainStore)
+        globalContainer.userDefaults.set(lockedAuth.encryptedValue, forKey: UsersManager.CoderKey.authKeychainStore)
         let lockedUserInfo = try Locked<[UserInfo]>(clearValue: [userInfo], with: mainKey)
-        customCache.getShared().set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.usersInfo)
+        globalContainer.userDefaults.set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.usersInfo)
         if hasMailSetting {
             let mailSetting = MailSettings(nextMessageOnMove: .explicitlyEnabled)
             let value: [String: MailSettings] = [userID: mailSetting]
             let lockedMailSetting = try Locked<[String: MailSettings]>(clearValue: value, with: mainKey)
-            customCache.getShared().set(lockedMailSetting.encryptedValue, forKey: UsersManager.CoderKey.mailSettingsStore)
+            globalContainer.userDefaults.set(lockedMailSetting.encryptedValue, forKey: UsersManager.CoderKey.mailSettingsStore)
         }
     }
 
@@ -438,7 +432,7 @@ class UsersManagerTests: XCTestCase {
         customKeyChain.set(lockedAuth.encryptedValue, forKey: UsersManager.CoderKey.keychainStore)
 
         let lockedUserInfo = try Locked<UserInfo>(clearValue: userInfo, with: mainKey)
-        customCache.getShared().set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.userInfo)
+        globalContainer.userDefaults.set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.userInfo)
     }
 
     private func createAuth(userID: String) -> AuthCredential {
@@ -463,6 +457,7 @@ class UsersManagerTests: XCTestCase {
                         linkConfirmation: nil,
                         credit: nil,
                         currency: nil,
+                        createTime: nil,
                         subscribed: nil)
     }
 
@@ -478,6 +473,7 @@ class UsersManagerTests: XCTestCase {
                                 linkConfirmation: nil,
                                 credit: nil,
                                 currency: nil,
+                                createTime: nil,
                                 subscribed: nil)
         let auth = createAuth(userID: userID)
         return UserManager(api: apiMock,
@@ -485,6 +481,6 @@ class UsersManagerTests: XCTestCase {
                            authCredential: auth,
                            mailSettings: .init(),
                            parent: sut,
-                           globalContainer: .init())
+                           globalContainer: globalContainer)
     }
 }
