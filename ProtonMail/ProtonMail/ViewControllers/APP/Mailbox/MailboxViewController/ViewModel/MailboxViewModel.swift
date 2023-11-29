@@ -118,6 +118,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         !ProcessInfo.hasLaunchArgument(.disableInAppFeedbackPromptAutoShow)
     }
 
+    var isNewEventLoopEnabled: Bool {
+        user.isNewEventLoopEnabled
+    }
+
     private var prefetchedItemsCount: Atomic<Int> = .init(0)
     private var isPrefetching: Atomic<Bool> = .init(false)
 
@@ -1388,7 +1392,7 @@ extension MailboxViewModel {
         }
     }
 
-    func isNewEventLoopEnabled() -> Bool {
+    private func isSpecialLoopEnabledInNewEventLoop() -> Bool {
         dependencies.mailEventsPeriodicScheduler.currentlyEnabled().specialLoopIDs.contains(user.userID.rawValue)
     }
 
@@ -1401,7 +1405,7 @@ extension MailboxViewModel {
     }
 
     func startNewEventLoop() {
-        guard !isNewEventLoopEnabled() else {
+        guard !isSpecialLoopEnabledInNewEventLoop() else {
             fetchEventsWithNewEventLoop()
             return
         }

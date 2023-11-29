@@ -60,6 +60,7 @@ final class GlobalContainerTests: XCTestCase {
         _ = strongRefToContainer?.usersManager
         _ = strongRefToContainer?.userCachedStatus
         _ = strongRefToContainer?.userIntroductionProgressProvider
+        _ = strongRefToContainer?.featureFlagsRepository
         _ = strongRefToContainer?.addressBookService
         _ = strongRefToContainer?.backgroundTaskHelper
         _ = strongRefToContainer?.biometricStatusProvider

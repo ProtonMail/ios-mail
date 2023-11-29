@@ -79,6 +79,7 @@ final class EventsService: EventsFetching {
     & HasNotificationCenter
     & HasUserDefaults
     & HasMailEventsPeriodicScheduler
+    & HasFeatureFlagsRepository
 
     // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
     private let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
@@ -158,7 +159,7 @@ extension EventsService {
         notificationMessageID: MessageID?,
         completion: ((Swift.Result<[String: Any], Error>) -> Void)?
     ) {
-        if UserInfo.isNewEventsLoopEnabled {
+        if userManager?.isNewEventLoopEnabled == true {
             fetchEventsWithNewApproach(
                 byLabel: labelID,
                 notificationMessageID: notificationMessageID,
@@ -293,7 +294,7 @@ extension EventsService {
     }
 
     func fetchEvents(labelID: LabelID) {
-        guard !UserInfo.isNewEventsLoopEnabled else {
+        guard let user = userManager, !user.isNewEventLoopEnabled else {
             if let userID = userManager?.userID {
                 dependencies.mailEventsPeriodicScheduler.triggerSpecialLoop(forSpecialLoopID: userID.rawValue)
             }

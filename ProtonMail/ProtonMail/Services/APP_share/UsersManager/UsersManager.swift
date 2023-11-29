@@ -445,6 +445,7 @@ extension UsersManager {
 
             self.dependencies.userDefaults.remove(forKey: CoderKey.usersInfo)
             self.dependencies.userDefaults.remove(forKey: CoderKey.authKeychainStore)
+            self.dependencies.featureFlagsRepository.resetFlags()
             self.keychain.remove(forKey: CoderKey.keychainStore)
             self.keychain.remove(forKey: CoderKey.authKeychainStore)
             self.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)

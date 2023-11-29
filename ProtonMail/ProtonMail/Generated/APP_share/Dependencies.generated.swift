@@ -1,5 +1,6 @@
 // Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
+import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 import ProtonCoreServices
 
@@ -416,6 +417,22 @@ extension GlobalContainer: HasUserIntroductionProgressProvider {
 extension UserContainer: HasUserIntroductionProgressProvider {
     var userIntroductionProgressProvider: UserIntroductionProgressProvider {
         globalContainer.userIntroductionProgressProvider
+    }
+}
+
+protocol HasFeatureFlagsRepository {
+    var featureFlagsRepository: FeatureFlagsRepository { get }
+}
+
+extension GlobalContainer: HasFeatureFlagsRepository {
+    var featureFlagsRepository: FeatureFlagsRepository {
+        featureFlagsRepositoryFactory()
+    }
+}
+
+extension UserContainer: HasFeatureFlagsRepository {
+    var featureFlagsRepository: FeatureFlagsRepository {
+        globalContainer.featureFlagsRepository
     }
 }
 

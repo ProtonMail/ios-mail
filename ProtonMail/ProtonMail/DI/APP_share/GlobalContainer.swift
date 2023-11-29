@@ -17,6 +17,7 @@
 
 import Factory
 import ProtonCoreEventsLoop
+import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 
 class GlobalContainer: ManagedContainer {
@@ -195,6 +196,12 @@ class GlobalContainer: ManagedContainer {
     var userIntroductionProgressProviderFactory: Factory<UserIntroductionProgressProvider> {
         self {
             self.userCachedStatus
+        }
+    }
+
+    var featureFlagsRepositoryFactory: Factory<FeatureFlagsRepository> {
+        self {
+            FeatureFlagsRepository.shared
         }
     }
 

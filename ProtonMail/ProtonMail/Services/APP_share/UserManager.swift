@@ -68,6 +68,7 @@ class UserManager: ObservableObject {
             contactService.cleanUp()
             contactGroupService.cleanUp()
             container.lastUpdatedStore.cleanUp(userId: userID)
+            container.featureFlagsRepository.resetFlags(for: userID.rawValue)
             try incomingDefaultService.cleanUp()
             self.deactivatePayments()
             #if !APP_EXTENSION
@@ -272,6 +273,10 @@ class UserManager: ObservableObject {
 
     func refreshFeatureFlags() {
         featureFlagsDownloadService.getFeatureFlags(completion: nil)
+        Task {
+            try? await self.container.featureFlagsRepository
+                .fetchFlags(for: userID.rawValue, with: apiService)
+        }
     }
 
     func activatePayments() {
