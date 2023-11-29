@@ -31,6 +31,8 @@ class MailEventsLoop: EventsLoop {
     weak var delegate: CoreLoopDelegate?
     private let dependencies: Dependencies
     private let cacheResetUseCase: CacheResetUseCase
+    private let fetchLatestEventUseCase: FetchLatestEventIdUseCase
+    private let jsonDecoder: JSONDecoder
 
     let userID: UserID
     var loopID: String {
@@ -38,7 +40,8 @@ class MailEventsLoop: EventsLoop {
     }
     var latestEventID: String? {
         get {
-            dependencies.lastUpdatedStore.lastEventID(userID: userID)
+            let eventID = dependencies.lastUpdatedStore.lastEventID(userID: userID)
+            return eventID.isEmpty ? nil : eventID
         }
         set {
             if let value = newValue {
@@ -54,19 +57,37 @@ class MailEventsLoop: EventsLoop {
         self.userID = userID
         self.dependencies = dependencies
         self.cacheResetUseCase = .init(dependencies: dependencies)
+        self.fetchLatestEventUseCase = FetchLatestEventId(
+            userId: userID,
+            dependencies: .init(
+                apiService: dependencies.apiService,
+                lastUpdatedStore: dependencies.lastUpdatedStore
+            )
+        )
+        self.jsonDecoder = JSONDecoder()
+        jsonDecoder.dateDecodingStrategy = .secondsSince1970
     }
 
     func poll(sinceLatestEventID eventID: String, completion: @escaping (Result<Response, Error>) -> Void) {
         Task {
-            SystemLogger.log(message: "Event loop triggered. \neventID: \(eventID) \nuserID: \(userID.rawValue)", category: .eventLoop)
-            let request = EventCheckRequest(eventID: eventID)
+            SystemLogger.log(
+                message: """
+                Event loop triggered.
+                eventID: \(eventID)
+                userID: \(userID.rawValue)
+                """,
+                category: .eventLoop
+            )
+
             do {
-                let result: (URLSessionDataTask?, EventAPIResponse) = try await dependencies.apiService.perform(
-                    request: request,
-                    callCompletionBlockUsing: .immediateExecutor
+                let decodedResponse = try await Self.fetchEvent(
+                    eventID: eventID,
+                    apiService: self.dependencies.apiService,
+                    jsonDecoder: self.jsonDecoder
                 )
-                completion(.success(result.1))
+                completion(.success(decodedResponse))
             } catch {
+                SystemLogger.log(error: error, category: .eventLoop)
                 completion(.failure(error))
             }
         }
@@ -97,9 +118,30 @@ class MailEventsLoop: EventsLoop {
                     SystemLogger.log(error: error, category: .eventLoop)
                 }
             }
+        case .missingLatestEventID:
+            fetchLatestEventUseCase.execute(params: ()) { result in
+                if case let .failure(error) = result {
+                    SystemLogger.log(error: error, category: .eventLoop)
+                }
+            }
         default:
             SystemLogger.log(error: error, category: .eventLoop)
         }
+    }
+
+    static func fetchEvent(
+        eventID: String,
+        apiService: APIService,
+        jsonDecoder: JSONDecoder
+    ) async throws -> EventAPIResponse {
+        let request = EventCheckRequest(eventID: eventID)
+        let result = try await apiService.perform(
+            request: request,
+            callCompletionBlockUsing: .immediateExecutor
+        )
+        let jsonDict = result.1
+        let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
+        return try jsonDecoder.decode(EventAPIResponse.self, from: jsonData)
     }
 }
 

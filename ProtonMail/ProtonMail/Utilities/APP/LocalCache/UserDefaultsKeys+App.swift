@@ -18,15 +18,11 @@
 import ProtonCorePayments
 
 extension UserDefaultsKeys {
-    static let cachedServerNotices = plainKey(named: "cachedServerNotices", defaultValue: [String]())
-
     static let firstRunDate = plainKey(named: "firstRunDate", ofType: Date.self)
 
     static let lastBugReport = plainKey(named: "BugReportCache_LastBugReport", defaultValue: "")
 
     static let referralProgramPromptWasShown = plainKey(named: "referralProgramPromptWasShown", defaultValue: false)
-
-    static let showServerNoticesNextTime = plainKey(named: "showServerNoticesNextTime", defaultValue: "0")
 
     /// It is used to check if the spotlight view should be shown for the user that has a
     /// standard toolbar action setting.

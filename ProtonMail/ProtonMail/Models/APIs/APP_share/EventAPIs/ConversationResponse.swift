@@ -44,7 +44,7 @@ struct ConversationResponse: Decodable {
         let displaySenderImage: Int
         let bimiSelector: String?
         let labels: [ContextLabel]
-        let attachmentsMetadata: [AttachmentMetadata]
+        let attachmentsMetadata: [AttachmentMetadata]?
 
         enum CodingKeys: String, CodingKey {
             case id = "ID"
@@ -102,10 +102,10 @@ struct ConversationResponse: Decodable {
         let contextNumMessages: Int
         let contextNumUnread: Int
         let contextTime: Int
-        let contextExpirationTime: Int
+        let contextExpirationTime: Int?
         let contextSize: Int
         let contextNumAttachments: Int
-        let contextSnoozeTime: Int
+        let contextSnoozeTime: Int?
 
         enum CodingKeys: String, CodingKey {
             case id = "ID"

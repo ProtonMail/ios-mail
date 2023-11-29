@@ -1148,6 +1148,7 @@ extension MailboxViewModel {
         let userDefaults: UserDefaults
         let fetchAttachmentUseCase: FetchAttachmentUseCase
         let fetchAttachmentMetadataUseCase: FetchAttachmentMetadataUseCase
+        let mailEventsPeriodicScheduler: MailEventsPeriodicScheduler
 
         init(
             fetchMessages: FetchMessagesUseCase,
@@ -1158,7 +1159,8 @@ extension MailboxViewModel {
             featureFlagCache: FeatureFlagCache,
             userDefaults: UserDefaults,
             fetchAttachmentUseCase: FetchAttachmentUseCase,
-            fetchAttachmentMetadataUseCase: FetchAttachmentMetadataUseCase
+            fetchAttachmentMetadataUseCase: FetchAttachmentMetadataUseCase,
+            mailEventsPeriodicScheduler: MailEventsPeriodicScheduler
         ) {
             self.fetchMessages = fetchMessages
             self.updateMailbox = updateMailbox
@@ -1169,6 +1171,7 @@ extension MailboxViewModel {
             self.userDefaults = userDefaults
             self.fetchAttachmentUseCase = fetchAttachmentUseCase
             self.fetchAttachmentMetadataUseCase = fetchAttachmentMetadataUseCase
+            self.mailEventsPeriodicScheduler = mailEventsPeriodicScheduler
         }
     }
 }
@@ -1383,6 +1386,26 @@ extension MailboxViewModel {
                 SystemLogger.log(error: error)
             }
         }
+    }
+
+    func isNewEventLoopEnabled() -> Bool {
+        dependencies.mailEventsPeriodicScheduler.currentlyEnabled().specialLoopIDs.contains(user.userID.rawValue)
+    }
+
+    func fetchEventsWithNewEventLoop() {
+        dependencies.mailEventsPeriodicScheduler.triggerSpecialLoop(forSpecialLoopID: user.userID.rawValue)
+    }
+
+    func stopNewEventLoop() {
+        dependencies.mailEventsPeriodicScheduler.didStopSpecialLoop(withSpecialLoopID: user.userID.rawValue)
+    }
+
+    func startNewEventLoop() {
+        guard !isNewEventLoopEnabled() else {
+            fetchEventsWithNewEventLoop()
+            return
+        }
+        dependencies.mailEventsPeriodicScheduler.enableSpecialLoop(forSpecialLoopID: user.userID.rawValue)
     }
 }
 

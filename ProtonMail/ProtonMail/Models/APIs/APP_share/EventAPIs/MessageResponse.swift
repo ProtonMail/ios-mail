@@ -58,7 +58,7 @@ struct MessageResponse: Decodable {
         let labelIDs: [String]
         let labelIDsAdded: [String]?
         let labelIDsRemoved: [String]?
-        let attachmentsMetadata: [ConversationResponse.AttachmentMetadata]
+        let attachmentsMetadata: [ConversationResponse.AttachmentMetadata]?
 
         // swiftlint:disable:next nesting
         enum CodingKeys: String, CodingKey {

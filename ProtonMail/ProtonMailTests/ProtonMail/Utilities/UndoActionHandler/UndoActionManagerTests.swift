@@ -159,6 +159,14 @@ class UndoActionManagerTests: XCTestCase {
         apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/messages/\(messageID)/cancel_send") {
                 completion(nil, .success(["Code": 1001]))
+            } else if path.contains("/core/v4/events/") {
+                completion(nil, .success([
+                    "Code": 1000,
+                    "EventID": "",
+                    "Refresh": 0,
+                    "More": 0,
+                    "Notices": []
+                ]))
             } else {
                 XCTFail("Unexpected path")
                 completion(nil, .failure(.badResponse()))
@@ -182,8 +190,18 @@ class UndoActionManagerTests: XCTestCase {
 
         let undoSendRequest = UndoSendRequest(messageID: messageID)
         apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            assert(path == undoSendRequest.path)
-            completion(nil, .success([:]))
+            if path.contains("/core/v4/events/") {
+                completion(nil, .success([
+                    "Code": 1000,
+                    "EventID": "",
+                    "Refresh": 0,
+                    "More": 0,
+                    "Notices": []
+                ]))
+            } else {
+                assert(path == undoSendRequest.path)
+                completion(nil, .success([:]))
+            }
         }
 
         handlerMock.delaySendSeconds = 3

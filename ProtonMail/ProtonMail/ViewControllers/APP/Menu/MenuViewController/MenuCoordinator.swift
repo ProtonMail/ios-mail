@@ -342,7 +342,7 @@ extension MenuCoordinator {
 
         let fetchLatestEvent = FetchLatestEventId(
             userId: userID,
-            dependencies: .init(eventsService: user.eventsService, lastUpdatedStore: dependencies.lastUpdatedStore)
+            dependencies: .init(apiService: user.apiService, lastUpdatedStore: dependencies.lastUpdatedStore)
         )
 
         let fetchMessages = FetchMessages(
@@ -389,7 +389,8 @@ extension MenuCoordinator {
             featureFlagCache: dependencies.featureFlagCache,
             userDefaults: dependencies.userDefaults,
             fetchAttachmentUseCase: fetchAttachment,
-            fetchAttachmentMetadataUseCase: fetchAttachmentMetadata
+            fetchAttachmentMetadataUseCase: fetchAttachmentMetadata,
+            mailEventsPeriodicScheduler: dependencies.mailEventsPeriodicScheduler
         )
         return mailboxVMDependencies
     }

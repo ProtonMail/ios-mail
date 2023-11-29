@@ -26,6 +26,7 @@ final class EventProcessor {
         & HasLastUpdatedStoreProtocol
         & HasNotificationCenter
         & HasUserManager
+        & HasUserDefaults
 
     private unowned let dependencies: Dependencies
     private lazy var saveEventResponseInCache: SaveEventResponseInCacheUseCase = {
@@ -34,9 +35,11 @@ final class EventProcessor {
     private var userID: UserID {
         dependencies.user.userID
     }
+    private let serverNotice: ServerNotice
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
+        self.serverNotice = .init(userDefaults: dependencies.userDefaults)
     }
 
     func process(response: EventAPIResponse, completion: @escaping (Result<Void, Error>) -> Void) {
@@ -46,6 +49,7 @@ final class EventProcessor {
             processMailSettings(response)
             processUser(response)
             await processAddresses(response)
+            processServerNotice(response)
 
             processIncomingDefaults(response)
             processMessageCount(response)
@@ -189,6 +193,10 @@ final class EventProcessor {
         } catch {
             PMAssertionFailure(error)
         }
+    }
+
+    private func processServerNotice(_ response: EventAPIResponse) {
+        serverNotice.check(response.notices)
     }
 
     #if DEBUG

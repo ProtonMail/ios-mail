@@ -94,9 +94,11 @@ struct ConversationEventProcessor {
             labelObject.messageCount = NSNumber(value: label.contextNumMessages)
             labelObject.unreadCount = NSNumber(value: label.contextNumUnread)
             labelObject.time = Date(timeIntervalSince1970: TimeInterval(label.contextTime))
-            let expirationTime = label.contextExpirationTime != 0
-                ? Date(timeIntervalSince1970: TimeInterval(label.contextExpirationTime)) : nil
-            labelObject.expirationTime = expirationTime
+            if let contextExpirationTime = label.contextExpirationTime {
+                let expirationTime = contextExpirationTime != 0
+                ? Date(timeIntervalSince1970: TimeInterval(contextExpirationTime)) : nil
+                labelObject.expirationTime = expirationTime
+            }
             labelObject.size = NSNumber(value: label.contextSize)
             labelObject.attachmentCount = NSNumber(value: label.contextNumAttachments)
             labelObject.order = conversationObject.order

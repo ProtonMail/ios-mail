@@ -20,7 +20,7 @@ import Foundation
 
 struct UserSettingsResponse: Decodable {
     let email: Email
-    let crashReport: Int
+    let crashReports: Int
     let password: Password
     let passwordMode: Int
     let referral: Referral
@@ -30,7 +30,7 @@ struct UserSettingsResponse: Decodable {
 
     enum CodingKeys: String, CodingKey {
         case email = "Email"
-        case crashReport = "CrashReports"
+        case crashReports = "CrashReports"
         case passwordMode = "PasswordMode"
         case password = "Password"
         case referral = "Referral"

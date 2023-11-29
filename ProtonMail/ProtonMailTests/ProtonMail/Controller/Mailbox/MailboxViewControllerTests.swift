@@ -89,6 +89,7 @@ final class MailboxViewControllerTests: XCTestCase {
                                       mailSettings: nil,
                                       parent: nil,
                                       globalContainer: globalContainer)
+        globalContainer.usersManager.add(newUser: userManagerMock)
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()
@@ -423,6 +424,7 @@ extension MailboxViewControllerTests {
             userDefaults: globalContainer.userDefaults
         ))
         self.mockFetchMessageDetail = MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
+        globalContainer.usersManager.add(newUser: userManagerMock)
 
         let featureFlagCache = MockFeatureFlagCache()
 
@@ -434,7 +436,8 @@ extension MailboxViewControllerTests {
             featureFlagCache: featureFlagCache,
             userDefaults: globalContainer.userDefaults,
             fetchAttachmentUseCase: MockFetchAttachment(),
-            fetchAttachmentMetadataUseCase: MockFetchAttachmentMetadata()
+            fetchAttachmentMetadataUseCase: MockFetchAttachmentMetadata(),
+            mailEventsPeriodicScheduler: globalContainer.mailEventsPeriodicScheduler
         )
         let label = LabelInfo(name: labelName ?? "")
         viewModel = MailboxViewModel(

@@ -53,7 +53,7 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
         sut.start()
 
         waitForExpectations(timeout: 1)
-        wait(self.apiMocks[self.testUsers[0].userID]?.requestDecodableStub.wasCalledExactlyOnce == true)
+        wait(self.apiMocks[self.testUsers[0].userID]?.requestJSONStub.wasCalledExactlyOnce == true)
     }
 
     func testEnableSpecialLoop_withMultipleUser_eventApisWillBeTriggered() throws {
@@ -68,7 +68,7 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
 
         waitForExpectations(timeout: 1)
         for item in apiMocks {
-            XCTAssertTrue(item.value.requestDecodableStub.wasCalledExactlyOnce)
+            XCTAssertTrue(item.value.requestJSONStub.wasCalledExactlyOnce)
         }
 
         for item in newEventIDMap {
@@ -848,8 +848,8 @@ private extension MailEventsPeriodicSchedulerTests {
         insertTestData: (() throws -> Void)? = nil
     ) throws -> UserManager {
         let data = try XCTUnwrap(data.data(using: .utf8))
-        let response = try JSONDecoder().decode(EventAPIResponse.self, from: data)
-        try createTestUser(response: response, userID: userID)
+        let responseDict = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+        try createTestUser(response: responseDict, userID: userID)
         let user = try XCTUnwrap(testUsers.first)
 
         try insertTestData?()
@@ -857,12 +857,12 @@ private extension MailEventsPeriodicSchedulerTests {
         sut.enableSpecialLoop(forSpecialLoopID: user.userID.rawValue)
         sut.start()
         waitForExpectations(timeout: 1)
-        wait(self.apiMocks[user.userID]?.requestDecodableStub.wasCalledExactlyOnce == true)
+        wait(self.apiMocks[user.userID]?.requestJSONStub.wasCalledExactlyOnce == true)
         wait(user.container.eventProcessor.completeClosureCalledCount == 1)
         return user
     }
 
-    private func createTestUser(response: EventAPIResponse? = nil, userID: UserID? = nil) throws {
+    private func createTestUser(response: [String: Any]? = nil, userID: UserID? = nil) throws {
         let api = APIServiceMock()
         let user = try UserManager.prepareUser(
             apiMock: api,
@@ -881,28 +881,16 @@ private extension MailEventsPeriodicSchedulerTests {
         let newEventID = String.randomString(20)
         newEventIDMap[user.userID] = newEventID
         let e = expectation(description: "Closure is called")
-        api.requestDecodableStub.bodyIs { _, method, path, _, _, _, _, _, _, _, _, completion in
+        api.requestJSONStub.bodyIs { _, method, path, _, _, _, _, _, _, _, _, completion in
             XCTAssertEqual(path, "/core/v4/events/\(eventID)?ConversationCounts=1&MessageCounts=1")
             XCTAssertEqual(method, .get)
-            let response = response ?? EventAPIResponse(
-                code: 2000,
-                eventID: newEventID,
-                refresh: 0,
-                more: 0,
-                userSettings: nil,
-                mailSettings: nil,
-                usedSpace: nil,
-                incomingDefaults: nil,
-                user: nil,
-                addresses: nil,
-                messageCounts: nil,
-                conversationCounts: nil,
-                labels: nil,
-                contacts: nil,
-                contactEmails: nil,
-                conversations: nil,
-                messages: nil
-            )
+            let response = response ?? [
+                "Code": 1000,
+                "EventID": newEventID,
+                "Refresh": 0,
+                "More": 0,
+                "Notices": []
+            ]
             completion(nil, .success(response))
             e.fulfill()
         }
