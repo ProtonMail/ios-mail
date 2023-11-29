@@ -337,70 +337,11 @@ extension MenuCoordinator {
         }
     }
 
-    private func mailBoxVMDependencies(user: UserManager, labelID: LabelID) -> MailboxViewModel.Dependencies {
-        let userID = user.userID
-
-        let fetchLatestEvent = FetchLatestEventId(
-            userId: userID,
-            dependencies: .init(apiService: user.apiService, lastUpdatedStore: dependencies.lastUpdatedStore)
-        )
-
-        let fetchMessages = FetchMessages(
-            dependencies: .init(
-                messageDataService: user.messageService,
-                cacheService: user.cacheService,
-                eventsService: user.eventsService
-            )
-        )
-
-        let fetchMessagesWithReset = FetchMessagesWithReset(
-            userID: userID,
-            dependencies: FetchMessagesWithReset.Dependencies(
-                fetchLatestEventId: fetchLatestEvent,
-                fetchMessages: fetchMessages,
-                localMessageDataService: user.messageService,
-                lastUpdatedStore: dependencies.lastUpdatedStore,
-                contactProvider: user.contactService,
-                labelProvider: user.labelService
-            )
-        )
-
-        let purgeOldMessages = PurgeOldMessages(user: user, coreDataService: dependencies.contextProvider)
-
-        let updateMailbox = UpdateMailbox(
-            dependencies: .init(eventService: user.eventsService,
-                                messageDataService: user.messageService,
-                                conversationProvider: user.conversationService,
-                                purgeOldMessages: purgeOldMessages,
-                                fetchMessageWithReset: fetchMessagesWithReset,
-                                fetchMessage: fetchMessages,
-                                fetchLatestEventID: fetchLatestEvent,
-                                internetConnectionStatusProvider: InternetConnectionStatusProvider.shared,
-                                userDefaults: dependencies.userDefaults)
-        )
-
-        let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
-        let fetchAttachmentMetadata = FetchAttachmentMetadataUseCase(dependencies: .init(apiService: user.apiService))
-        let mailboxVMDependencies = MailboxViewModel.Dependencies(
-            fetchMessages: fetchMessages,
-            updateMailbox: updateMailbox,
-            fetchMessageDetail: user.container.fetchMessageDetail,
-            fetchSenderImage: user.container.fetchSenderImage,
-            featureFlagCache: dependencies.featureFlagCache,
-            userDefaults: dependencies.userDefaults,
-            fetchAttachmentUseCase: fetchAttachment,
-            fetchAttachmentMetadataUseCase: fetchAttachmentMetadata,
-            mailEventsPeriodicScheduler: dependencies.mailEventsPeriodicScheduler
-        )
-        return mailboxVMDependencies
-    }
-
     private func createMailboxViewModel(
         userManager: UserManager,
         labelID: LabelID,
         labelInfo: LabelInfo?
     ) -> MailboxViewModel {
-        let mailboxVMDependencies = self.mailBoxVMDependencies(user: userManager, labelID: labelID)
         return MailboxViewModel(
             labelID: labelID,
             label: labelInfo,
@@ -414,7 +355,7 @@ extension MenuCoordinator {
             contactProvider: userManager.contactService,
             conversationProvider: userManager.conversationService,
             eventsService: userManager.eventsService,
-            dependencies: mailboxVMDependencies,
+            dependencies: userManager.container,
             toolbarActionProvider: userManager,
             saveToolbarActionUseCase: SaveToolbarActionSettings(
                 dependencies: .init(user: userManager)

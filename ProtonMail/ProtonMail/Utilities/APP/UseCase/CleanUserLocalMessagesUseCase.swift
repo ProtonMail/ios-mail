@@ -21,20 +21,16 @@ typealias CleanUserLocalMessagesUseCase = UseCase<Void, CleanUserLocalMessages.P
 final class CleanUserLocalMessages: CleanUserLocalMessagesUseCase {
     typealias Dependencies = AnyObject
     & HasAPIService
+    & HasFetchMessages
     & HasMessageDataService
     & HasLabelsDataService
     & HasContactDataService
     & HasLastUpdatedStoreProtocol
     & HasUserDefaults
 
-    private let fetchMessages: FetchMessagesUseCase
     private unowned let dependencies: Dependencies
 
-    init(
-        fetchInboxMessages: FetchMessagesUseCase,
-        dependencies: Dependencies
-    ) {
-        self.fetchMessages = fetchInboxMessages
+    init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
@@ -47,7 +43,7 @@ final class CleanUserLocalMessages: CleanUserLocalMessagesUseCase {
             }
             self.dependencies.userDefaults[.areContactsCached] = 0
 
-            self.fetchMessages.execute(
+            self.dependencies.fetchMessages.execute(
                 params: .init(
                     labelID: Message.Location.inbox.labelID,
                     endTime: 0,

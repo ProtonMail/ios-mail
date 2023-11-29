@@ -576,12 +576,12 @@ extension UserContainer: HasFetchEmailAddressesPublicKey {
     }
 }
 
-protocol HasFetchMessageDetail {
-    var fetchMessageDetail: FetchMessageDetail { get }
+protocol HasFetchMessageDetailUseCase {
+    var fetchMessageDetail: FetchMessageDetailUseCase { get }
 }
 
-extension UserContainer: HasFetchMessageDetail {
-    var fetchMessageDetail: FetchMessageDetail {
+extension UserContainer: HasFetchMessageDetailUseCase {
+    var fetchMessageDetail: FetchMessageDetailUseCase {
         fetchMessageDetailFactory()
     }
 }

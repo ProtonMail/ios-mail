@@ -44,6 +44,17 @@ protocol MailboxViewModelUIProtocol: AnyObject {
 }
 
 class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
+    typealias Dependencies = HasCheckProtonServerStatus
+    & HasFeatureFlagCache
+    & HasFetchAttachment
+    & HasFetchAttachmentMetadataUseCase
+    & HasFetchMessageDetailUseCase
+    & HasFetchMessages
+    & HasFetchSenderImage
+    & HasMailEventsPeriodicScheduler
+    & HasUpdateMailbox
+    & HasUserDefaults
+
     let labelID: LabelID
     /// This field saves the label object of custom folder/label
     private(set) var label: LabelInfo?
@@ -85,7 +96,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         return totalUserCountClosure() > 0
     }
     var isFetchingMessage: Bool {
-        (dependencies.updateMailbox as? UpdateMailbox)?.isFetching ?? false
+        dependencies.updateMailbox.isFetching
     }
     private(set) var isFirstFetch: Bool = true
 
@@ -163,7 +174,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
         super.init()
         self.conversationStateProvider.add(delegate: self)
-        (self.dependencies.updateMailbox as? UpdateMailbox)?.setup(source: self)
+        dependencies.updateMailbox.setup(source: self)
     }
 
     /// localized navigation title. override it or return label name
@@ -1140,46 +1151,6 @@ extension MailboxViewModel: ConversationStateServiceDelegate {
     }
 }
 
-extension MailboxViewModel {
-
-    struct Dependencies {
-        let fetchMessages: FetchMessagesUseCase
-        let updateMailbox: UpdateMailboxUseCase
-        let fetchMessageDetail: FetchMessageDetailUseCase
-        let fetchSenderImage: FetchSenderImageUseCase
-        let checkProtonServerStatus: CheckProtonServerStatusUseCase
-        let featureFlagCache: FeatureFlagCache
-        let userDefaults: UserDefaults
-        let fetchAttachmentUseCase: FetchAttachmentUseCase
-        let fetchAttachmentMetadataUseCase: FetchAttachmentMetadataUseCase
-        let mailEventsPeriodicScheduler: MailEventsPeriodicScheduler
-
-        init(
-            fetchMessages: FetchMessagesUseCase,
-            updateMailbox: UpdateMailboxUseCase,
-            fetchMessageDetail: FetchMessageDetailUseCase,
-            fetchSenderImage: FetchSenderImageUseCase,
-            checkProtonServerStatus: CheckProtonServerStatusUseCase = CheckProtonServerStatus(),
-            featureFlagCache: FeatureFlagCache,
-            userDefaults: UserDefaults,
-            fetchAttachmentUseCase: FetchAttachmentUseCase,
-            fetchAttachmentMetadataUseCase: FetchAttachmentMetadataUseCase,
-            mailEventsPeriodicScheduler: MailEventsPeriodicScheduler
-        ) {
-            self.fetchMessages = fetchMessages
-            self.updateMailbox = updateMailbox
-            self.fetchMessageDetail = fetchMessageDetail
-            self.fetchSenderImage = fetchSenderImage
-            self.checkProtonServerStatus = checkProtonServerStatus
-            self.featureFlagCache = featureFlagCache
-            self.userDefaults = userDefaults
-            self.fetchAttachmentUseCase = fetchAttachmentUseCase
-            self.fetchAttachmentMetadataUseCase = fetchAttachmentMetadataUseCase
-            self.mailEventsPeriodicScheduler = mailEventsPeriodicScheduler
-        }
-    }
-}
-
 // MARK: - Auto-Delete Spam & Trash Banners
 
 extension MailboxViewModel {
@@ -1354,10 +1325,10 @@ extension MailboxViewModel {
 
         Task  {
             do {
-                let metadata = try await dependencies.fetchAttachmentMetadataUseCase.execution(
+                let metadata = try await dependencies.fetchAttachmentMetadata.execution(
                     params: .init(attachmentID: attId)
                 )
-                self.dependencies.fetchAttachmentUseCase
+                self.dependencies.fetchAttachment
                     .execute(params: .init(
                         attachmentID: attId,
                         attachmentKeyPacket: nil,

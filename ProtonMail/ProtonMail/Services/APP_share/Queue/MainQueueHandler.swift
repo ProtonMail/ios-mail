@@ -46,7 +46,7 @@ final class MainQueueHandler: QueueHandler {
     private let dependencies: Dependencies
 
     init(coreDataService: CoreDataContextProviderProtocol,
-         fetchMessageDetail: FetchMessageDetail,
+         fetchMessageDetail: FetchMessageDetailUseCase,
          apiService: APIService,
          messageDataService: MessageDataService,
          conversationDataService: ConversationProvider,
