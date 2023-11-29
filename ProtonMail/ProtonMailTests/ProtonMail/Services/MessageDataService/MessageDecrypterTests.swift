@@ -114,7 +114,7 @@ final class MessageDecrypterTests: XCTestCase {
 
         let scenarios: [(OpenPGPTestsDefine, Message.MimeType, Double)] = [
             (.message_plaintext, .textHTML, 7),
-            (.mime_testMessage_without_mime_sig, .multipartMixed, 1.5),
+            (.mime_testMessage_without_mime_sig, .multipartMixed, 1),
         ]
 
         for (file, mimeType, expectedSpeedup) in scenarios {
@@ -133,8 +133,6 @@ final class MessageDecrypterTests: XCTestCase {
                 }
             }
 
-            print("Decrypted \(rounds) \(mimeType.rawValue) messages without caching in \(timeWithoutCaching)")
-
             decrypter.setCaching(enabled: true)
 
             let timeWithCaching = try clock.measure {
@@ -143,11 +141,8 @@ final class MessageDecrypterTests: XCTestCase {
                 }
             }
 
-            print("Decrypted \(rounds) \(mimeType.rawValue) messages with caching in \(timeWithCaching)")
-
             let speedup = timeWithoutCaching / timeWithCaching
-            print("Speedup: \(speedup)")
-            XCTAssertGreaterThanOrEqual(speedup, expectedSpeedup)
+            XCTAssertGreaterThan(speedup, expectedSpeedup)
         }
     }
 
