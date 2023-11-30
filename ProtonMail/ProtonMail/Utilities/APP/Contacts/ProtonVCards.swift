@@ -20,10 +20,10 @@ import ProtonCoreCryptoGoInterface
 import ProtonCoreDataModel
 import VCard
 
-final class VCardReader {
+final class ProtonVCards {
     private struct CardObject {
-        let card: CardData
-        let object: PMNIVCard
+        let type: CardDataType
+        let object: VCardObject
     }
 
     private let cards: [CardData]
@@ -31,13 +31,17 @@ final class VCardReader {
     private let userKeys: [ArmoredKey]
     private let mailboxPassphrase: Passphrase
 
+    /// - Parameters:
+    ///   - cards: In Proton contact data is stored in multiple vCards. `cards` is the collection of vCards that represent a single contact
+    ///   - userKeys: User keys that will be used to try to decrypt and verify vCards depending on `CardDataType`
+    ///   - mailboxPassphrase: User's mailbox pasphrase used to decrypt and verify vCards  depending on `CardDataType`
     init(cards: [CardData], userKeys: [ArmoredKey], mailboxPassphrase: Passphrase) {
         self.cards = cards
         self.userKeys = userKeys
         self.mailboxPassphrase = mailboxPassphrase
     }
 
-    /// Call this function before trying to access the vCard's fields
+    /// Call this function before trying to access the vCard fields
     func read() throws {
         cardObjects = try cards.map { card in
             let pmniCard: PMNIVCard
@@ -51,119 +55,92 @@ final class VCardReader {
             case .SignAndEncrypt:
                 pmniCard = try decryptVerifyAndParse(encryptedAndSignedCard: card)
             }
-            return CardObject(card: card, object: pmniCard)
+            return CardObject(type: card.type, object: VCardObject(object: pmniCard))
         }
     }
 }
 
-// MARK: contact fields
+// MARK: read contact fields
 
-extension VCardReader {
+extension ProtonVCards {
 
     func name(fromCardOfType type: CardDataType = .PlainText) -> ContactField.Name {
-        guard
-            let card = cardObjects.first(where: { $0.card.type == type }),
-            let name = card.object.getStructuredName()
-        else {
+        guard let card = cardObjects.first(where: { $0.type == type }) else {
             return ContactField.Name(firstName: "", lastName: "")
         }
-        return ContactField.Name(firstName: name.getGiven(), lastName: name.getFamily())
+        return card.object.name()
     }
 
     func formattedName(fromCardOfType type: CardDataType = .PlainText) -> String {
-        guard let card = cardObjects.first(where: { $0.card.type == type }) else { return "" }
-        return card.object.getFormattedName()?.getValue() ?? ""
+        guard let card = cardObjects.first(where: { $0.type == type }) else { return "" }
+        return card.object.formattedName()
     }
 
-    func emails() -> [ContactField.Email] {
-        return cardObjects.map(\.object).flatMap {
-            $0.getEmails()
-                .map { email in
-                    ContactField.Email(
-                        type: email.getTypes().mapToContactFieldType(),
-                        emailAddress: email.getValue()
-                    )
-                }
-        }
+    func emails(fromCardTypes cardTypes: [CardDataType] = [.SignedOnly]) -> [ContactField.Email] {
+        cardObjects
+            .filter { cardTypes.contains($0.type) }
+            .map(\.object)
+            .flatMap {
+                $0.emails()
+            }
     }
 
-    func addresses() -> [ContactField.Address] {
-        return cardObjects.map(\.object).flatMap {
-            $0.getAddresses()
-                .map { address in
-                    ContactField.Address(
-                        type: address.getTypes().mapToContactFieldType(),
-                        street: address.getStreetAddress(),
-                        streetTwo: address.getExtendedAddress(),
-                        locality: address.getLocality(),
-                        region: address.getRegion(),
-                        postalCode: address.getPostalCode(),
-                        country: address.getCountry(),
-                        poBox: address.getPoBoxes().asCommaSeparatedList(trailingSpace: false)
-                    )
-                }
-        }
+    func addresses(fromCardTypes cardTypes: [CardDataType] = [.SignAndEncrypt]) -> [ContactField.Address] {
+        cardObjects
+            .filter { cardTypes.contains($0.type) }
+            .map(\.object)
+            .flatMap {
+                $0.addresses()
+            }
     }
 
-    func phoneNumbers() -> [ContactField.PhoneNumber] {
-        return cardObjects.map(\.object).flatMap {
-            $0.getTelephoneNumbers()
-                .map { number in
-                    ContactField.PhoneNumber(
-                        type: number.getTypes().mapToContactFieldType(),
-                        number: number.getText()
-                    )
-                }
-        }
+    func phoneNumbers(fromCardTypes cardTypes: [CardDataType] = [.SignAndEncrypt]) -> [ContactField.PhoneNumber] {
+        cardObjects
+            .filter { cardTypes.contains($0.type) }
+            .map(\.object)
+            .flatMap {
+                $0.phoneNumbers()
+            }
     }
 
-    func urls() -> [ContactField.Url] {
-        return cardObjects.map(\.object).flatMap {
-            $0.getUrls()
-                .map { url in
-                    ContactField.Url(
-                        type: ContactFieldType.get(raw: url.getType()),
-                        url: url.getValue()
-                    )
-                }
-        }
+    func urls(fromCardTypes cardTypes: [CardDataType] = [.SignAndEncrypt]) -> [ContactField.Url] {
+        cardObjects
+            .filter { cardTypes.contains($0.type) }
+            .map(\.object)
+            .flatMap {
+                $0.urls()
+            }
     }
 
-    func otherInfo(infoType: InformationType) -> [ContactField.OtherInfo] {
-        return cardObjects.map(\.object).flatMap { object -> [ContactField.OtherInfo] in
-
-            info(from: object, ofType: infoType)
-                .map { value -> ContactField.OtherInfo in
-                    ContactField.OtherInfo(type: infoType, value: value)
-                }
-        }
+    func otherInfo(
+        infoType: InformationType,
+        fromCardTypes cardTypes: [CardDataType] = [.SignAndEncrypt]
+    ) -> [ContactField.OtherInfo] {
+        cardObjects
+            .filter { cardTypes.contains($0.type) }
+            .map(\.object)
+            .flatMap {
+                $0.otherInfo(infoType: infoType)
+            }
     }
+}
 
-    private func info(from object: PMNIVCard, ofType info: InformationType) -> [String] {
-        var result: [String] = []
-        switch info {
-        case .birthday:
-            result = object.getBirthdays().map(\.formattedBirthday)
-        case .anniversary:
-            result = object.getBirthdays().map { $0.getDate() }
-        case .nickname:
-            result = object.getNicknames().map { $0.getNickname() }
-        case .title:
-            result = object.getTitles().map { $0.getTitle() }
-        case .organization:
-            result = object.getOrganizations().map { $0.getValue() }
-        case .gender:
-            if let gender = object.getGender()?.getGender() { result = [gender] }
-        default:
-            PMAssertionFailure("VCard reader: \(info) not implemented")
-        }
-        return result
+// MARK: read contact fields
+
+extension ProtonVCards {
+    
+    /// Replaces the emails of the signed card which is where emails should be according to Proton specs
+    func replaceEmails(with emails: [ContactField.Email]) throws {
+        cardObjects
+            .first(where: { $0.type == .SignedOnly })?
+            .object
+            .replaceEmails(with: emails)
     }
 }
 
 // MARK: methods to obtain a PMNIVCard object
 
-extension VCardReader {
+extension ProtonVCards {
 
     private func parseVCard(_ card: String) throws -> PMNIVCard {
         guard let parsedObject = PMNIEzvcard.parseFirst(card) else { throw VCardReaderError.failedParsingVCardString }
@@ -193,7 +170,7 @@ extension VCardReader {
 
 // MARK: methods to verify and decrypt
 
-extension VCardReader {
+extension ProtonVCards {
 
     private func verify(text: String, signature: ArmoredSignature) throws {
         var isVerified: Bool = false
@@ -239,11 +216,5 @@ enum VCardReaderError: Error {
     case failedParsingVCardString
     case failedDecryptingVCard
     case failedVerifyingCard
-}
-
-private extension Array where Element == String {
-
-    func mapToContactFieldType() -> ContactFieldType {
-        first.map(ContactFieldType.init(raw:)) ?? .custom("")
-    }
+    case expectedVCardNotFound
 }
