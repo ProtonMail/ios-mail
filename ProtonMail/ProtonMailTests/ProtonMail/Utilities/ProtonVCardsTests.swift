@@ -21,8 +21,8 @@ import ProtonCoreDataModel
 import ProtonCoreCrypto
 @testable import ProtonMail
 
-final class VCardReaderTests: XCTestCase {
-    private var sut: VCardReader!
+final class ProtonVCardsTests: XCTestCase {
+    private var sut: ProtonVCards!
 
     override func tearDown() {
         super.tearDown()
@@ -32,7 +32,7 @@ final class VCardReaderTests: XCTestCase {
     // MARK: read succeeds
 
     func testRead_whenCardIsSigned_andCorrectKeyIsPassed_itShouldNotThrow() throws {
-        sut = VCardReader(
+        sut = ProtonVCards(
             cards: [testSignedCardData],
             userKeys: [testCorrectArmoredKey],
             mailboxPassphrase: testCorrectPassphrase1
@@ -41,7 +41,7 @@ final class VCardReaderTests: XCTestCase {
     }
 
     func testRead_whenCardIsSignedAndEncrypted_andCorrectKeyIsPassed_itShouldNotThrow() throws {
-        sut = VCardReader(
+        sut = ProtonVCards(
             cards: [testSignedAndEncryptedCardData],
             userKeys: [testCorrectArmoredKey],
             mailboxPassphrase: testCorrectPassphrase1
@@ -52,7 +52,7 @@ final class VCardReaderTests: XCTestCase {
     // MARK: read throws
 
     func testRead_whenCardIsSigned_andInorrectKeyIsPassed_itShouldThrow() throws {
-        sut = VCardReader(
+        sut = ProtonVCards(
             cards: [testSignedCardData],
             userKeys: [testIncorrectArmoredKey],
             mailboxPassphrase: testCorrectPassphrase1
@@ -61,7 +61,7 @@ final class VCardReaderTests: XCTestCase {
     }
 
     func testRead_whenCardIsSigned_andInorrectPassphraseIsPassed_itShouldThrow() throws {
-        sut = VCardReader(
+        sut = ProtonVCards(
             cards: [testSignedCardData],
             userKeys: [testCorrectArmoredKey],
             mailboxPassphrase: testIncorrectPassphrase
@@ -70,7 +70,7 @@ final class VCardReaderTests: XCTestCase {
     }
 
     func testRead_whenCardIsSignedAndEncrypted_andIncorrectKeyIsPassed_itShouldThrow() throws {
-        sut = VCardReader(
+        sut = ProtonVCards(
             cards: [testSignedAndEncryptedCardData],
             userKeys: [testIncorrectArmoredKey],
             mailboxPassphrase: testCorrectPassphrase1
@@ -79,7 +79,7 @@ final class VCardReaderTests: XCTestCase {
     }
 
     func testRead_whenCardIsSignedAndEncrypted_andIncorrectPassphraseIsPassed_itShouldThrow() throws {
-        sut = VCardReader(
+        sut = ProtonVCards(
             cards: [testSignedAndEncryptedCardData],
             userKeys: [testCorrectArmoredKey],
             mailboxPassphrase: testIncorrectPassphrase
@@ -109,7 +109,7 @@ final class VCardReaderTests: XCTestCase {
         sut = makeReaderWithMultipleCards()
         try sut.read()
 
-        let emails = sut.emails()
+        let emails = sut.emails(fromCardTypes: [.PlainText, .SignedOnly])
         XCTAssertEqual(emails.count, 4)
         XCTAssertEqual(emails[0].emailAddress, "fracle@example.com")
         XCTAssertEqual(emails[0].type, .home)
@@ -125,7 +125,7 @@ final class VCardReaderTests: XCTestCase {
         sut = makeReaderWithOnlyPlainVCard()
         try sut.read()
 
-        let numbers = sut.phoneNumbers()
+        let numbers = sut.phoneNumbers(fromCardTypes: [.PlainText])
         XCTAssertEqual(numbers.count, 2)
         XCTAssertEqual(numbers[0].number, "(349) 495-511")
         XCTAssertEqual(numbers[0].type, .custom("CELL"))
@@ -137,7 +137,7 @@ final class VCardReaderTests: XCTestCase {
         sut = makeReaderWithOnlyPlainVCard()
         try sut.read()
 
-        let addresses = sut.addresses()
+        let addresses = sut.addresses(fromCardTypes: [.PlainText])
         XCTAssertEqual(addresses.count, 1)
         XCTAssertEqual(addresses[0].street, "1600 Pennsylania Avenue")
         XCTAssertEqual(addresses[0].streetTwo, "")
@@ -152,7 +152,7 @@ final class VCardReaderTests: XCTestCase {
         sut = makeReaderWithOnlyPlainVCard()
         try sut.read()
 
-        let urls = sut.urls()
+        let urls = sut.urls(fromCardTypes: [.PlainText])
         XCTAssertEqual(urls.count, 1)
         XCTAssertEqual(urls[0].url, "www.myhome.net")
         XCTAssertEqual(urls[0].type, .home)
@@ -162,7 +162,7 @@ final class VCardReaderTests: XCTestCase {
         sut = makeReaderWithOnlyPlainVCard()
         try sut.read()
 
-        let orgs = sut.otherInfo(infoType: .organization)
+        let orgs = sut.otherInfo(infoType: .organization, fromCardTypes: [.PlainText])
         XCTAssertEqual(orgs.count, 1)
         XCTAssertEqual(orgs[0].value, "Proton A.G.")
         XCTAssertEqual(orgs[0].type, .organization)
@@ -172,23 +172,23 @@ final class VCardReaderTests: XCTestCase {
         sut = makeReaderWithOnlyPlainVCard()
         try sut.read()
 
-        let birthdays = sut.otherInfo(infoType: .birthday)
+        let birthdays = sut.otherInfo(infoType: .birthday, fromCardTypes: [.PlainText])
         XCTAssertEqual(birthdays.count, 1)
         XCTAssertEqual(birthdays[0].value, "2020-01-01")
         XCTAssertEqual(birthdays[0].type, .birthday)
     }
 }
 
-private extension VCardReaderTests {
+private extension ProtonVCardsTests {
 
-    func makeReaderWithOnlyPlainVCard() -> VCardReader {
+    func makeReaderWithOnlyPlainVCard() -> ProtonVCards {
         let cards = [CardData(type: .PlainText, data: testVCard, signature: "")]
-        return VCardReader(cards: cards, userKeys: [], mailboxPassphrase: Passphrase(value: ""))
+        return ProtonVCards(cards: cards, userKeys: [], mailboxPassphrase: Passphrase(value: ""))
     }
 
-    func makeReaderWithMultipleCards() -> VCardReader {
+    func makeReaderWithMultipleCards() -> ProtonVCards {
         let cards = [CardData(type: .PlainText, data: testVCard, signature: ""), testSignedCardData]
-        return VCardReader(cards: cards, userKeys: [testCorrectArmoredKey], mailboxPassphrase: testCorrectPassphrase1)
+        return ProtonVCards(cards: cards, userKeys: [testCorrectArmoredKey], mailboxPassphrase: testCorrectPassphrase1)
     }
 
     var testSignedCardData: CardData {
@@ -200,8 +200,8 @@ private extension VCardReaderTests {
     }
 }
 
-private extension VCardReaderTests {
-    
+private extension ProtonVCardsTests {
+
     var testCardSigned1: String {
     """
     BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nitem0.EMAIL;TYPE=INTERNET,WORK,pref:John-Appleseed@mac.com\r\nitem1.EMAIL;TYPE=INTERNET,HOME:john.as@example.com\r\nUID:410FE041-5C4E-48DA-B4DE-04C15EA3DBAC\r\nFN:John Appleseed\r\nEND:VCARD\r\n
@@ -251,7 +251,7 @@ private extension VCardReaderTests {
     }
 }
 
-private extension VCardReaderTests {
+private extension ProtonVCardsTests {
 
     var testVCard: String {
         """

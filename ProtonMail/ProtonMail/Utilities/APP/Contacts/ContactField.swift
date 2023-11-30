@@ -21,7 +21,7 @@ enum ContactField {}
 
 extension ContactField {
 
-    struct Name {
+    struct Name: Equatable {
         let firstName: String
         let lastName: String
     }
@@ -29,15 +29,16 @@ extension ContactField {
 
 extension ContactField {
 
-    struct Email {
+    struct Email: Equatable {
         let type: ContactFieldType
         let emailAddress: String
+        let vCardGroup: String
     }
 }
 
 extension ContactField {
 
-    struct Address {
+    struct Address: Equatable {
         let type: ContactFieldType
         let street: String
         let streetTwo: String
@@ -51,7 +52,7 @@ extension ContactField {
 
 extension ContactField {
 
-    struct PhoneNumber {
+    struct PhoneNumber: Equatable {
         let type: ContactFieldType
         let number: String
     }
@@ -59,7 +60,7 @@ extension ContactField {
 
 extension ContactField {
 
-    struct Url {
+    struct Url: Equatable {
         let type: ContactFieldType
         let url: String
     }
@@ -67,7 +68,7 @@ extension ContactField {
 
 extension ContactField {
 
-    struct OtherInfo {
+    struct OtherInfo: Equatable {
         let type: InformationType
         let value: String
     }
