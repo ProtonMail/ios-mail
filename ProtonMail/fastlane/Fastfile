@@ -149,34 +149,6 @@ def build_enterprise_app
   )
 end
 
-def copy_archive_to_builds
-  ENV["XCODEBUILD_ARCHIVE"] = lane_context[SharedValues::XCODEBUILD_ARCHIVE]
-  sh("./copy_archive_to_builds.sh")
-end
-
-def http_get_json(path)
-  response = http_get_raw(path)
-  return JSON.parse(response)
-end
-
-def http_get_raw(path)
-  ci_api_v4_url = ENV['CI_API_V4_URL']
-  uri = URI("#{ci_api_v4_url}/#{path}")
-  puts("GET #{uri}")
-  http = Net::HTTP.new(uri.host, uri.port)
-  http.use_ssl = true
-  req = Net::HTTP::Get.new(uri)
-  req['PRIVATE-TOKEN'] = ENV['PRIVATE_TOKEN_GITLAB_API_PROTON_CI']
-  response = http.request(req)
-  if response.is_a?(Net::HTTPSuccess)
-    return response.body
-  else
-    puts("Invalid response: #{response.inspect()}")
-    puts(response.body)
-    exit(1)
-  end
-end
-
 def send_to_slack(success, changelog, exception, bundle_version)
   version = get_version_number(xcodeproj: "ProtonMail.xcodeproj", target: "ProtonMail", configuration: "Debug")
 
@@ -202,60 +174,6 @@ def send_to_slack(success, changelog, exception, bundle_version)
 end
 
 platform :ios do
-  desc "Upload the debug app to Appetize"
-  lane :upload_to_appetize do |options|
-    ci_commit_ref_name = ENV['CI_COMMIT_REF_NAME']
-    ci_project_dir = ENV["CI_PROJECT_DIR"]
-    ci_project_id = ENV['CI_PROJECT_ID']
-
-    # .app artifact from previous stages that will be uploaded
-    app_artifact_path = "#{ci_project_dir}/test_output/Build/Products/Debug-iphonesimulator/ProtonMail.app"
-
-    # Name of the artifact that stores the Appetize public key
-    # The point of storing it is to update the existing app in a given MR instead of uploading new copies when new commits are pushed.
-    appetize_public_key_file = "appetize_public_key.txt"
-
-    # This file will be used by the dynamic environment
-    deploy_env_path = "#{ci_project_dir}/deploy.env"
-
-    # The .app artifact will be zipped here
-    zipped_app_file = "ProtonMail.app.zip"
-
-    existing_environment = http_get_json("projects/#{ci_project_id}/environments?states=available&name=review/#{ci_commit_ref_name}").first
-
-    if existing_environment
-      existing_environment_id = existing_environment["id"]
-      existing_environment_details = http_get_json("projects/#{ci_project_id}/environments/#{existing_environment_id}")
-      last_deployment_job_id = existing_environment_details.dig("last_deployment", "deployable", "id")
-
-      if last_deployment_job_id
-        existing_appetize_public_key = http_get_raw("projects/#{ci_project_id}/jobs/#{last_deployment_job_id}/artifacts/#{appetize_public_key_file}").chomp
-      end
-    end
-
-    puts("Existing public key: #{existing_appetize_public_key}")
-
-    sh("zip -qr #{zipped_app_file} #{app_artifact_path}")
-
-    appetize(
-      api_token: ENV["APPETIZE_API_KEY"],
-      path: "fastlane/#{zipped_app_file}",
-      public_key: existing_appetize_public_key
-    )
-
-    appetize_app_url = lane_context[SharedValues::APPETIZE_APP_URL]
-    appetize_public_key = lane_context[SharedValues::APPETIZE_PUBLIC_KEY]
-
-    # This is to point the dynamic environment to the uploaded app
-    sh("echo APPETIZE_APP_URL=#{appetize_app_url} > #{deploy_env_path}")
-
-    # This is to pass the public key to the environment stop job, so that it can delete the uploaded app without performing the HTTP requests again
-    sh("echo APPETIZE_PUBLIC_KEY=#{appetize_public_key} >> #{deploy_env_path}")
-
-    # This is to expose the public key as an artifact to subsequent deployments
-    sh("echo #{appetize_public_key} > #{ci_project_dir}/#{appetize_public_key_file}")
-  end
-
   desc "Build the app and upload to testflight"
   lane :build do |options|
     select_xcode
@@ -292,8 +210,6 @@ platform :ios do
       changelog: changelog
     )
 
-    # Disable this since archive is too large.
-    # copy_archive_to_builds
     tear_down_keychain
 
     send_to_slack(true, changelog, "", bundle_version.strip)
