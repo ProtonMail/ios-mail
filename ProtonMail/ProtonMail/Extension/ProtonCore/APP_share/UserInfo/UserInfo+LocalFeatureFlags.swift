@@ -41,4 +41,12 @@ extension UserInfo {
         return false
         #endif
     }
+
+    static var isSnoozeEnable: Bool {
+        #if DEBUG
+        return true
+        #else
+        return false
+        #endif
+    }
 }

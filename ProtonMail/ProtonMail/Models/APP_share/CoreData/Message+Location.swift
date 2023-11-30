@@ -43,6 +43,7 @@ extension Message {
         case scheduled = "12"
         case blocked = "14"
         case almostAllMail = "15"
+        case snooze = "16"
 
         var localizedTitle: String {
             switch self {
@@ -68,6 +69,8 @@ extension Message {
                 return L11n.BlockSender.blockListScreenTitle
             case .almostAllMail:
                 return LocalString._menu_allmail_title
+            case .snooze:
+                return L11n.Snooze.title
             }
         }
 
