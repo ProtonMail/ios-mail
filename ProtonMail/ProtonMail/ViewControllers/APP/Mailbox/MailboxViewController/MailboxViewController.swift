@@ -381,6 +381,16 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         inAppFeedbackScheduler?.cancelScheduledPrompt()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        for i in 0..<10 {
+            // Update skeleton color earlier to fix wrong color issue when user update theme
+            let index = IndexPath(row: i, section: 0)
+            let cell = tableView.dequeueReusableCell(withIdentifier: MailBoxSkeletonLoadingCell.Constant.identifier, for: index)
+            cell.updateAnimatedGradientSkeleton()
+        }
+    }
+
     @objc
     private func tempNetworkError(_ notification: Notification) {
         DispatchQueue.main.async {
