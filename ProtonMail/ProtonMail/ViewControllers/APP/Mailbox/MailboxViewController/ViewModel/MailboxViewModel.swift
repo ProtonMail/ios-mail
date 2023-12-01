@@ -264,6 +264,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         }
     }
 
+    var isAllLoadedMessagesSelected: Bool {
+        selectedItems.count == rowCount(section: 0)
+    }
+
     // Fetched by each cell in the view, use lazy to avoid fetching too much times
     lazy private(set) var customFolders: [LabelEntity] = {
         labelProvider.getCustomFolders()
@@ -984,7 +988,7 @@ extension MailboxViewModel {
 
             for msg in messages {
                 // the label that is not draft, sent, starred, allmail
-                fLabels.append(msg.firstValidFolder() ?? fLabel)
+                fLabels.append(msg.getFirstValidFolder() ?? fLabel)
             }
 
             messageService.move(messages: messages, from: fLabels, to: tLabel)
@@ -1049,6 +1053,10 @@ extension MailboxViewModel {
         return self.selectedIDs.contains(id)
     }
 
+    func removeDeletedIDFromSelectedItem(existingIDs: Set<String>) {
+        let intersection = selectedIDs.intersection(existingIDs)
+        selectedIDs = intersection
+    }
 }
 
 // MARK: - Swipe actions
