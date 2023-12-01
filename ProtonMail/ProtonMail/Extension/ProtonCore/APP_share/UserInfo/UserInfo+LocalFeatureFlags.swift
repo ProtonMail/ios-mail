@@ -24,7 +24,7 @@ extension UserInfo {
     }
 
     static var enableSelectAll: Bool {
-        ProcessInfo.isRunningUnitTests
+        true
     }
 
     static var isAppAccessResolverEnabled: Bool {

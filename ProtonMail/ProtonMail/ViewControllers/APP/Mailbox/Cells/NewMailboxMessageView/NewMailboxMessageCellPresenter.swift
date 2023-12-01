@@ -50,23 +50,27 @@ class NewMailboxMessageCellPresenter {
             view.scheduledIconView.isHidden = true
             view.scheduledContainer.isHidden = true
 
-        case .selection(let isSelected):
+        case let .selection(isSelected, isAbleToBeSelected):
             view.initialsContainer.isHidden = false
             view.checkBoxView.isHidden = false
             view.scheduledIconView.isHidden = true
             view.scheduledContainer.isHidden = true
 
             let backgroundColor: UIColor
+            let borderColor: UIColor
             if isSelected {
                 backgroundColor = ColorProvider.InteractionNorm
                 view.checkBoxView.tickImageView.image = IconProvider.checkmark
+                borderColor = ColorProvider.InteractionNorm
             } else {
-                backgroundColor = ColorProvider.BackgroundSecondary
+                backgroundColor = isAbleToBeSelected ? ColorProvider.BackgroundSecondary : ColorProvider.BackgroundNorm
                 view.checkBoxView.tickImageView.image = nil
+                borderColor = isAbleToBeSelected ? ColorProvider.InteractionNorm : ColorProvider.SeparatorNorm
             }
             view.checkBoxView.backgroundColor = backgroundColor
-                view.checkBoxView.tickImageView.tintColor = ColorProvider.IconInverted
-                    .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
+            view.checkBoxView.tickImageView.tintColor = ColorProvider.IconInverted
+                .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
+            view.checkBoxView.layer.borderColor = borderColor.cgColor
         case .scheduled:
             view.scheduledIconView.isHidden = false
             view.scheduledContainer.isHidden = false

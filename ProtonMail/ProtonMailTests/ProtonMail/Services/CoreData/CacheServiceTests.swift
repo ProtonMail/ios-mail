@@ -72,12 +72,12 @@ class CacheServiceTest: XCTestCase {
     func testDeleteMessage() {
         self.testMessage.unRead = true
         loadTestDataOfUnreadCount(defaultUnreadCount: 1, labelID: Message.Location.inbox.labelID)
-        
+
         let msgID = self.testMessage.messageID
         XCTAssertNotNil(Message.messageForMessageID(msgID, inManagedObjectContext: self.testContext))
-        
-        XCTAssertTrue(sut.delete(message: MessageEntity(self.testMessage), label: Message.Location.inbox.labelID))
-        
+
+        XCTAssertTrue(sut.delete(messages: [MessageEntity(self.testMessage)], label: Message.Location.inbox.labelID))
+
         XCTAssertNil(Message.messageForMessageID(msgID, inManagedObjectContext: self.testContext))
 
         let unreadCountOfInboxAfterDelete: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: sut.userID, type: .singleMessage)

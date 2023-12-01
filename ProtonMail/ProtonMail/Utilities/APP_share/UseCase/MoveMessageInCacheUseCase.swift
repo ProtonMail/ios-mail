@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import class CoreData.NSManagedObjectContext
 
 protocol MoveMessageInCacheUseCase {
     func execute(params: MoveMessageInCache.Parameters) throws
@@ -30,28 +31,44 @@ final class MoveMessageInCache: MoveMessageInCacheUseCase {
 
     func execute(params: Parameters) throws {
         try dependencies.contextProvider.write(block: { context in
-            guard let message = try context.existingObject(
-                with: params.messageToBeMoved.objectID.rawValue
-            ) as? Message else {
-                throw MoveMessageInCacheError.canNotFindMessageInCache
-            }
-
-            self.updateUnreadCounterForRemovedLabelIfNeeded(message: message, params: params)
-            self.addNewLabel(to: message, params: params)
-
-            if let error = context.saveUpstreamIfNeeded() {
-                throw error
+            for (index, message) in params.messagesToBeMoved.enumerated() {
+                if message.contains(location: .scheduled) && params.targetLocation == LabelLocation.trash.labelID {
+                    // Trash schedule message, should move to draft
+                    let target = LabelLocation.draft.labelID
+                    let scheduled = LabelLocation.scheduled.labelID
+                    let sent = LabelLocation.sent.labelID
+                    let labelsToMoveFrom = [scheduled, sent]
+                    for fromLabel in labelsToMoveFrom {
+                        try self.move(entity: message, from: fromLabel, to: target, in: context)
+                    }
+                } else {
+                    try self.move(entity: message, from: params.from[index], to: params.targetLocation, in: context)
+                }
             }
         })
     }
 
-    private func addNewLabel(to message: Message, params: Parameters) {
-        if let addedLabelID = message.add(labelID: params.targetLocation.rawValue) {
+    private func move(
+        entity: MessageEntity,
+        from location: LabelID,
+        to targetLocation: LabelID,
+        in context: NSManagedObjectContext
+    ) throws {
+        guard let message = try context.existingObject(with: entity.objectID.rawValue) as? Message else {
+            throw MoveMessageInCacheError.canNotFindMessageInCache
+        }
+
+        self.updateUnreadCounterForRemovedLabelIfNeeded(message: message, previousLocation: location)
+        self.addNewLabel(to: message, from: location, to: targetLocation)
+    }
+
+    private func addNewLabel(to message: Message, from location: LabelID, to targetLocation: LabelID) {
+        if let addedLabelID = message.add(labelID: targetLocation.rawValue) {
             switch addedLabelID {
             case Message.Location.trash.rawValue:
-                handleMessageBeingMovedToTrash(message: message, params: params)
+                handleMessageBeingMovedToTrash(message: message, fromLocation: location)
             case Message.Location.spam.rawValue:
-                handleMessageBeingMovedToSpam(message: message, params: params)
+                handleMessageBeingMovedToSpam(message: message, fromLocation: location)
             default:
                 message.add(labelID: Message.Location.almostAllMail.rawValue)
             }
@@ -64,8 +81,8 @@ final class MoveMessageInCache: MoveMessageInCacheUseCase {
         }
     }
 
-    private func handleMessageBeingMovedToTrash(message: Message, params: Parameters) {
-        let labelsToBeRemoved = findLabelsToBeRemovedInSpamAndTrash(message: message, params: params)
+    private func handleMessageBeingMovedToTrash(message: Message, fromLocation: LabelID) {
+        let labelsToBeRemoved = findLabelsToBeRemovedInSpamAndTrash(message: message, fromLocation: fromLocation)
         labelsToBeRemoved.forEach { label in
             if let removedLabelID = message.remove(labelID: label), message.unRead {
                 updateUnreadCounter(plus: false, labelID: .init(removedLabelID))
@@ -81,21 +98,21 @@ final class MoveMessageInCache: MoveMessageInCacheUseCase {
         message.remove(labelID: Message.Location.almostAllMail.rawValue)
     }
 
-    private func handleMessageBeingMovedToSpam(message: Message, params: Parameters) {
-        let labelsToBeRemoved = findLabelsToBeRemovedInSpamAndTrash(message: message, params: params)
+    private func handleMessageBeingMovedToSpam(message: Message, fromLocation: LabelID) {
+        let labelsToBeRemoved = findLabelsToBeRemovedInSpamAndTrash(message: message, fromLocation: fromLocation)
         labelsToBeRemoved.forEach { label in
             message.remove(labelID: label)
         }
         message.remove(labelID: Message.Location.almostAllMail.rawValue)
     }
 
-    private func findLabelsToBeRemovedInSpamAndTrash(message: Message, params: Parameters) -> [String] {
+    private func findLabelsToBeRemovedInSpamAndTrash(message: Message, fromLocation: LabelID) -> [String] {
         // find labels to be removed
         var labelsToBeRemoved = message.getNormalLabelIDs()
         labelsToBeRemoved.append(Message.Location.starred.rawValue)
 
         // If the action is performed in allmail folder, do not remove the allmail label since all the message should has this.
-        if params.from != Message.Location.allmail.labelID {
+        if fromLocation != Message.Location.allmail.labelID {
             labelsToBeRemoved.append(Message.Location.allmail.rawValue)
         }
         return labelsToBeRemoved
@@ -115,11 +132,11 @@ final class MoveMessageInCache: MoveMessageInCacheUseCase {
 
     private func updateUnreadCounterForRemovedLabelIfNeeded(
         message: Message,
-        params: Parameters
+        previousLocation: LabelID
     ) {
-        if let removedLabelID = message.remove(labelID: params.from.rawValue) {
+        if let removedLabelID = message.remove(labelID: previousLocation.rawValue) {
             updateUnreadCounter(plus: false, labelID: .init(removedLabelID))
-            if let labelID = message.selfSent(labelID: params.from.rawValue) {
+            if let labelID = message.selfSent(labelID: previousLocation.rawValue) {
                 updateUnreadCounter(plus: false, labelID: .init(labelID))
             }
         }
@@ -149,8 +166,8 @@ final class MoveMessageInCache: MoveMessageInCacheUseCase {
 
 extension MoveMessageInCache {
     struct Parameters {
-        let messageToBeMoved: MessageEntity
-        let from: LabelID
+        let messagesToBeMoved: [MessageEntity]
+        let from: [LabelID]
         let targetLocation: LabelID
     }
 

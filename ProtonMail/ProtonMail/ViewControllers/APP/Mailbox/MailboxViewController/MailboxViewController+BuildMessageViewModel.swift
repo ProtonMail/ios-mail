@@ -36,7 +36,8 @@ extension MailboxViewController {
     func buildNewMailboxMessageViewModel(
         message: MessageEntity,
         customFolderLabels: [LabelEntity],
-        weekStart: WeekStart
+        weekStart: WeekStart,
+        canSelectMore: Bool
     ) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: message.messageID.rawValue)
@@ -53,7 +54,7 @@ extension MailboxViewController {
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
             isLabelLocation: message.isLabelLocation(labelId: labelId),
-            style: viewModel.listEditing ? .selection(isSelected: isSelected) : style,
+            style: viewModel.listEditing ? .selection(isSelected: isSelected, isAbleToBeSelected: canSelectMore) : style,
             initial: senderRowComponents.initials(),
             isRead: !message.unRead,
             sender: senderRowComponents,
@@ -82,7 +83,8 @@ extension MailboxViewController {
         conversation: ConversationEntity,
         conversationTagUIModels: [TagUIModel],
         customFolderLabels: [LabelEntity],
-        weekStart: WeekStart
+        weekStart: WeekStart,
+        canSelectMore: Bool
     ) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: conversation.conversationID.rawValue)
@@ -97,7 +99,7 @@ extension MailboxViewController {
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
             isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder,
-            style: viewModel.listEditing ? .selection(isSelected: isSelected) : .normal,
+            style: viewModel.listEditing ? .selection(isSelected: isSelected, isAbleToBeSelected: canSelectMore) : .normal,
             initial: senderRowComponents.initials(),
             isRead: conversation.getNumUnread(labelID: labelId) <= 0,
             sender: senderRowComponents,

@@ -68,8 +68,8 @@ final class MoveMessageInCacheUseCaseTests: XCTestCase {
         )
 
         try sut.execute(params: .init(
-            messageToBeMoved: testEntity,
-            from: Message.Location.inbox.labelID,
+            messagesToBeMoved: [testEntity],
+            from: [Message.Location.inbox.labelID],
             targetLocation: Message.Location.archive.labelID
         ))
 
@@ -128,8 +128,8 @@ final class MoveMessageInCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(unreadOfArchive, 0)
 
         try sut.execute(params: .init(
-            messageToBeMoved: testEntity,
-            from: Message.Location.inbox.labelID,
+            messagesToBeMoved: [testEntity],
+            from: [Message.Location.inbox.labelID],
             targetLocation: Message.Location.archive.labelID
         ))
 
@@ -189,8 +189,8 @@ final class MoveMessageInCacheUseCaseTests: XCTestCase {
         XCTAssertTrue(testMessage.contains(label: .starred))
 
         try sut.execute(params: .init(
-            messageToBeMoved: testEntity,
-            from: Message.Location.inbox.labelID,
+            messagesToBeMoved: [testEntity],
+            from: [Message.Location.inbox.labelID],
             targetLocation: Message.Location.trash.labelID
         ))
 
@@ -255,8 +255,8 @@ final class MoveMessageInCacheUseCaseTests: XCTestCase {
         XCTAssertTrue(testMessage.contains(label: .starred))
 
         try sut.execute(params: .init(
-            messageToBeMoved: testEntity,
-            from: Message.Location.inbox.labelID,
+            messagesToBeMoved: [testEntity],
+            from: [Message.Location.inbox.labelID],
             targetLocation: Message.Location.spam.labelID
         ))
 
@@ -296,8 +296,8 @@ final class MoveMessageInCacheUseCaseTests: XCTestCase {
 
             // move to inbox
             try sut.execute(params: .init(
-                messageToBeMoved: testEntity,
-                from: labelFrom,
+                messagesToBeMoved: [testEntity],
+                from: [labelFrom],
                 targetLocation: Message.Location.inbox.labelID
             ))
 
@@ -314,8 +314,8 @@ final class MoveMessageInCacheUseCaseTests: XCTestCase {
         }
         do {
             try sut.execute(params: .init(
-                messageToBeMoved: .make(objectID: .init(rawValue: objectID)),
-                from: Message.Location.inbox.labelID,
+                messagesToBeMoved: [.make(objectID: .init(rawValue: objectID))],
+                from: [Message.Location.inbox.labelID],
                 targetLocation: Message.Location.trash.labelID
             ))
             XCTFail("Error needs to be thrown")

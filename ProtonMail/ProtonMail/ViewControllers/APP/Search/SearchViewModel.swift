@@ -222,7 +222,7 @@ extension SearchViewModel: SearchVMProtocol {
         return .init(
             location: nil,
             isLabelLocation: true, // to show origin location icons
-            style: isEditing ? .selection(isSelected: isSelected) : style,
+            style: isEditing ? .selection(isSelected: isSelected, isAbleToBeSelected: true) : style,
             initial: senderRowComponents.initials(),
             isRead: !message.unRead,
             sender: senderRowComponents,

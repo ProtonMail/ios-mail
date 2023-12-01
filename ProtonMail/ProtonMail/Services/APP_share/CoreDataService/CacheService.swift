@@ -89,40 +89,39 @@ class CacheService: CacheServiceProtocol {
 
     // MARK: - Message related functions
 
-    func delete(message: MessageEntity, label: LabelID) -> Bool {
+    func delete(messages: [MessageEntity], label: LabelID) -> Bool {
         var hasError = false
-        coreDataService.performAndWaitOnRootSavingContext { contextToUse in
-            guard let msgToUpdate = try? contextToUse.existingObject(with: message.objectID.rawValue) as? Message else {
-                hasError = true
-                return
-            }
+        try? coreDataService.write { contextToUse in
+            for message in messages {
+                guard
+                    let msgToUpdate = try? contextToUse.existingObject(with: message.objectID.rawValue) as? Message
+                else {
+                    hasError = true
+                    continue
+                }
 
-            if let lid = msgToUpdate.remove(labelID: label.rawValue), msgToUpdate.unRead {
-                self.updateCounterSync(plus: false, with: LabelID(lid))
-                if let id = msgToUpdate.selfSent(labelID: lid) {
-                    self.updateCounterSync(plus: false, with: LabelID(id))
+                if let lid = msgToUpdate.remove(labelID: label.rawValue), msgToUpdate.unRead {
+                    self.updateCounterSync(plus: false, with: LabelID(lid))
+                    if let id = msgToUpdate.selfSent(labelID: lid) {
+                        self.updateCounterSync(plus: false, with: LabelID(id))
+                    }
+                }
+                var labelsFound = msgToUpdate.getNormalLabelIDs()
+                labelsFound.append(Message.Location.starred.rawValue)
+                labelsFound.append(Message.Location.allmail.rawValue)
+                self.removeLabel(on: msgToUpdate, labels: labelsFound, cleanUnread: true)
+                let labelObjs = msgToUpdate.mutableSetValue(forKey: "labels")
+                labelObjs.removeAllObjects()
+                msgToUpdate.setValue(labelObjs, forKey: "labels")
+                contextToUse.delete(msgToUpdate)
+
+                let error = contextToUse.saveUpstreamIfNeeded()
+                if error != nil {
+                    hasError = true
                 }
             }
-            var labelsFound = msgToUpdate.getNormalLabelIDs()
-            labelsFound.append(Message.Location.starred.rawValue)
-            labelsFound.append(Message.Location.allmail.rawValue)
-            self.removeLabel(on: msgToUpdate, labels: labelsFound, cleanUnread: true)
-            let labelObjs = msgToUpdate.mutableSetValue(forKey: "labels")
-            labelObjs.removeAllObjects()
-            msgToUpdate.setValue(labelObjs, forKey: "labels")
-            contextToUse.delete(msgToUpdate)
-
-            let error = contextToUse.saveUpstreamIfNeeded()
-            if error != nil {
-                hasError = true
-            }
         }
-
-        if hasError {
-            return false
-        }
-
-        return true
+        return hasError ? false : true
     }
 
     func mark(

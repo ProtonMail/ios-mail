@@ -114,7 +114,8 @@ extension MessageEntity {
             Message.HiddenLocation.sent.rawValue,
             Message.HiddenLocation.draft.rawValue,
             Message.Location.starred.rawValue,
-            Message.Location.allmail.rawValue
+            Message.Location.allmail.rawValue,
+            Message.Location.almostAllMail.rawValue
         ]
         for label in labels {
             if label.type == .folder {

@@ -91,6 +91,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
     private var needToShowNewMessage: Bool = false
     private var newMessageCount = 0
+    private var previousMessageCount: Int?
     private var hasNetworking = true
     private var configuredActions: [SwipyCellDirection: SwipeActionSettingType] = [:]
 
@@ -759,7 +760,8 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
                 let viewModel = buildNewMailboxMessageViewModel(
                     message: message,
                     customFolderLabels: self.viewModel.customFolders,
-                    weekStart: viewModel.user.userInfo.weekStartValue
+                    weekStart: viewModel.user.userInfo.weekStartValue, 
+                    canSelectMore: viewModel.canSelectMore()
                 )
                 messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
 
@@ -772,7 +774,8 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
                     conversation: conversation,
                     conversationTagUIModels: viewModel.tagUIModels(for: conversation),
                     customFolderLabels: self.viewModel.customFolders,
-                    weekStart: viewModel.user.userInfo.weekStartValue
+                    weekStart: viewModel.user.userInfo.weekStartValue, 
+                    canSelectMore: viewModel.canSelectMore()
                 )
                 messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
             }
@@ -1272,7 +1275,10 @@ extension MailboxViewController {
         visibleRowsIndexPaths.forEach { visibleRowIndexPath in
             let visibleCell = self.tableView.cellForRow(at: visibleRowIndexPath)
             guard let messageCell = visibleCell as? NewMailboxMessageCell else { return }
-            messageCellPresenter.presentSelectionStyle(style: .selection(isSelected: false), in: messageCell.customView)
+            messageCellPresenter.presentSelectionStyle(
+                style: .selection(isSelected: false, isAbleToBeSelected: viewModel.canSelectMore()),
+                in: messageCell.customView
+            )
             guard indexPath == visibleRowIndexPath else { return }
             tableView(tableView, didSelectRowAt: indexPath)
         }
@@ -1322,41 +1328,17 @@ extension MailboxViewController {
         UIView.animate(withDuration: 0.25) {
             self.selectAllButton.backgroundColor = .clear
         }
-        selectAllMessages()
-    }
-
-    private func selectAllMessages() {
-        let indexPaths = Array(0..<viewModel.rowCount(section: 0))
-            .map { IndexPath(row: $0, section: 0) }
-        let loadedIDs = indexPaths
-            .compactMap { index -> (String, IndexPath)? in
-                switch viewModel.locationViewMode {
-                case .singleMessage:
-                    guard let item = viewModel.item(index: index) else { return nil }
-                    return (item.messageID.rawValue, index)
-                case .conversation:
-                    guard let item = viewModel.itemOfConversation(index: index) else { return nil }
-                    return (item.conversationID.rawValue, index)
-                }
-            }
-        var pathsShouldBeUpdated: [IndexPath] = []
-        for dataSet in loadedIDs {
-            guard viewModel.select(id: dataSet.0) else { break }
-            pathsShouldBeUpdated.append(dataSet.1)
-            guard viewModel.canSelectMore() else { break }
+        if selectAllLabel.text == L11n.MailBox.selectAll {
+            selectAllMessages()
+        } else {
+            viewModel.removeAllSelectedIDs()
         }
 
         updateSelectAllButton()
         hapticFeedbackGenerator.impactOccurred()
 
         // update checkbox state
-        for indexPath in pathsShouldBeUpdated {
-            guard let cell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell else { continue }
-            messageCellPresenter.presentSelectionStyle(
-                style: .selection(isSelected: true),
-                in: cell.customView
-            )
-        }
+        updateCellBasedOnSelectionStatus()
 
         setupNavigationTitle(showSelected: true)
         PMBanner.dismissAll(on: self)
@@ -1364,29 +1346,63 @@ extension MailboxViewController {
         showActionBar()
     }
 
-    private func updateSelectAllButton() {
-        updateSelectAllButtonAvailability()
-        updateSelectAllIcon()
+    private func selectAllMessages() {
+        let indexPaths = Array(0..<viewModel.rowCount(section: 0))
+            .map { IndexPath(row: $0, section: 0) }
+        let loadedIDs = indexPaths
+            .compactMap { index -> (String, IndexPath)? in
+                guard let item = viewModel.mailboxItem(at: index) else { return nil }
+                return (item.itemID, index)
+            }
+        var pathsShouldBeUpdated: [IndexPath] = []
+        for dataSet in loadedIDs {
+            guard viewModel.select(id: dataSet.0) else { break }
+            pathsShouldBeUpdated.append(dataSet.1)
+            guard viewModel.canSelectMore() else { break }
+        }
     }
 
-    private func updateSelectAllButtonAvailability() {
-        if viewModel.canSelectMore() {
+    private func updateSelectAllButton() {
+        switch (viewModel.canSelectMore(), viewModel.isAllLoadedMessagesSelected) {
+        case (true, true):
             selectAllIcon.tintColor = ColorProvider.IconAccent
+            selectAllIcon.image = Asset.icSquareChecked.image
             selectAllLabel.textColor = ColorProvider.TextAccent
+            selectAllLabel.text = L11n.MailBox.unselectAll
             selectAllButton.isUserInteractionEnabled = true
-        } else {
+        case (true, false):
+            selectAllIcon.tintColor = ColorProvider.IconAccent
+            selectAllIcon.image = Asset.icSquare.image
+            selectAllLabel.textColor = ColorProvider.TextAccent
+            selectAllLabel.text = L11n.MailBox.selectAll
+            selectAllButton.isUserInteractionEnabled = true
+        case (false, _):
             selectAllIcon.tintColor = ColorProvider.IconDisabled
+            selectAllIcon.image = Asset.icSquare.image
             selectAllLabel.textColor = ColorProvider.TextDisabled
+            selectAllLabel.text = L11n.MailBox.selectAll
             selectAllButton.isUserInteractionEnabled = false
         }
     }
 
-    /// Update icon depends on if all loaded messages are selected
-    private func updateSelectAllIcon() {
-        let isAllLoadedMessagesSelected = viewModel.selectedItems.count == viewModel.rowCount(section: 0)
-        // TODO use ImageProvider when core library contains these 2 images
-        let image: UIImage = isAllLoadedMessagesSelected ? Asset.icSquareChecked.image : Asset.icSquare.image
-        selectAllIcon.image = image
+    private func updateCellBasedOnSelectionStatus() {
+        let indexPaths = Array(0..<viewModel.rowCount(section: 0))
+            .map { IndexPath(row: $0, section: 0) }
+
+        let loadedIDs = indexPaths
+            .compactMap { index -> (Bool, IndexPath)? in
+                guard let item = viewModel.mailboxItem(at: index) else { return nil }
+                let isSelected = viewModel.selectionContains(id: item.itemID)
+                return (isSelected, index)
+            }
+
+        for dataSet in loadedIDs {
+            guard let cell = tableView.cellForRow(at: dataSet.1) as? NewMailboxMessageCell else { continue }
+            messageCellPresenter.presentSelectionStyle(
+                style: .selection(isSelected: dataSet.0, isAbleToBeSelected: viewModel.canSelectMore()),
+                in: cell.customView
+            )
+        }
     }
 }
 
@@ -2233,6 +2249,7 @@ extension MailboxViewController: UITableViewDataSource {
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
         let remappedSnapshot = remapToNewSnapshot(controller: controller, snapshot: snapshot)
+        removeDeletedIDFromSelectedItem(snapshot: remappedSnapshot)
         if shouldKeepSkeletonUntilManualDismissal {
             viewModel.diffableDataSource?.cacheSnapshot(remappedSnapshot)
             return
@@ -2243,14 +2260,16 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             return
         }
 
+        fetchOlderMessageWhenNeeded(remappedSnapshot: remappedSnapshot)
+
         reloadTableViewDataSource(
             snapshot: remappedSnapshot
         ) {
             DispatchQueue.main.async {
+                self.updateTitle()
                 self.updateSelectAllButton()
                 self.refreshActionBarItems()
                 self.showNewMessageCount(self.newMessageCount)
-                self.showNoResultLabelIfNeeded()
             }
         }
     }
@@ -2281,6 +2300,45 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             newSnapshot.appendItems(mailboxRows, toSection: index)
         }
         return newSnapshot
+    }
+
+    private func removeDeletedIDFromSelectedItem(snapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>) {
+        let existingIDs = Set(snapshot.itemIdentifiers(inSection: 0).compactMap { row -> String? in
+            guard case .real(let mailboxItem) = row else { return nil }
+            return mailboxItem.itemID
+        })
+        viewModel.removeDeletedIDFromSelectedItem(existingIDs: existingIDs)
+    }
+
+    // When current messages/ conversations are moved or deleted, need to fetch older data
+    private func fetchOlderMessageWhenNeeded(remappedSnapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>) {
+        DispatchQueue.main.async {
+            defer { self.previousMessageCount = remappedSnapshot.numberOfItems }
+            let indexPath = IndexPath(row: self.viewModel.rowCount(section: 0) - 1, section: 0)
+            guard
+                let previousMessageCount = self.previousMessageCount,
+                previousMessageCount != 0,
+                remappedSnapshot.numberOfItems == 0,
+                let item = self.viewModel.mailboxItem(at: indexPath),
+                let date = item.time(labelID: self.viewModel.labelID)
+            else { return }
+            self.tableView.showLoadingFooter()
+            self.viewModel.fetchMessages(
+                time: Int(date.timeIntervalSince1970),
+                forceClean: false,
+                isUnread: self.isShowingUnreadMessageOnly
+            ) { error in
+                DispatchQueue.main.async {
+                    self.tableView.hideLoadingFooter()
+                    if let error = error {
+                        self.handleRequestError(error as NSError)
+                    }
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.showNoResultLabelIfNeeded()
+                }
+            }
+        }
     }
 }
 
@@ -2420,7 +2478,7 @@ extension MailboxViewController: UITableViewDelegate {
         // update checkbox state
         if let mailboxCell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell {
             messageCellPresenter.presentSelectionStyle(
-                style: .selection(isSelected: !itemAlreadySelected),
+                style: .selection(isSelected: !itemAlreadySelected, isAbleToBeSelected: viewModel.canSelectMore()),
                 in: mailboxCell.customView
             )
         }
@@ -2838,6 +2896,7 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
 
     func selectionDidChange() {
         updateSelectAllButton()
+        updateCellBasedOnSelectionStatus()
 
         if !viewModel.canSelectMore() {
             L11n.MailBox.maximumSelectionReached.alertToastBottom()
