@@ -642,7 +642,15 @@ extension NewMessageBodyViewController: HTTPRequestSecureLoaderDelegate {
             label.leadingAnchor.constraint(equalTo: webView.leadingAnchor, constant: 16),
             label.trailingAnchor.constraint(equalTo: webView.trailingAnchor, constant: -16)
         ].activate()
-        label.showAnimatedGradientSkeleton()
+        if let coordinator = (UIApplication.shared.delegate as? AppDelegate)?.coordinator,
+           let currentWindow = coordinator.currentWindow {
+
+            let color: UIColor = ColorProvider.BackgroundSecondary
+            let resolvedColor = color.resolvedColor(with: currentWindow.traitCollection)
+            label.showAnimatedGradientSkeleton(usingGradient: SkeletonGradient(baseColor: resolvedColor))
+        } else {
+            label.showAnimatedGradientSkeleton()
+        }
     }
 
     func hideSkeletonView() {
