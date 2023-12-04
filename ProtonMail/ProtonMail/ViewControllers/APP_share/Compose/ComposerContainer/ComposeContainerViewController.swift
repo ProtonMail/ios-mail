@@ -128,6 +128,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.dependencies = dependencies
         super.init(viewModel: viewModel)
         viewModel.uiDelegate = self
+        viewModel.delegate = self
         #if !APP_EXTENSION
         trackLifetime()
         #endif
@@ -612,7 +613,9 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
 
 // MARK: - AttachmentController protocol
 
-extension ComposeContainerViewController: AttachmentController {
+extension ComposeContainerViewController: AttachmentController, ComposeContainerViewModelDelegate {
+    func getAttachmentController() -> AttachmentController { self }
+
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
         return Promise { [weak self] seal in
             guard let self = self else {
