@@ -151,13 +151,16 @@ enum AttachmentType: CaseIterable, Equatable {
             "application/pgp-keys"
         ],
         .keynote: [
-            "application/vnd.apple.keynote"
+            "application/vnd.apple.keynote",
+            "application/x-iwork-keynote-sffkey"
         ],
         .numbers: [
-            "application/vnd.apple.numbers"
+            "application/vnd.apple.numbers",
+            "application/x-iwork-numbers-sffnumbers"
         ],
         .pages: [
-            "application/vnd.apple.pages"
+            "application/vnd.apple.pages",
+            "application/x-iwork-pages-sffpages"
         ],
         .pdf: [
             "application/pdf"

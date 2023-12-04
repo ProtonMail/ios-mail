@@ -205,11 +205,7 @@ class NewMailboxMessageCellPresenter {
             view.remainingAttachmentsLabel.attributedText = "+\(remainder)".apply(style: style)
         }
 
-        if attachmentsVMs.count > 1 {
-            view.attachmentsPreviewStackView.distribution = .fillEqually
-        } else {
-            view.attachmentsPreviewStackView.distribution = .equalSpacing
-        }
+        view.attachmentsPreviewStackView.distribution = .fillProportionally
     }
 
     private func addOriginalImage(_ image: UIImage, isRead: Bool, in view: NewMailboxMessageContentView) {

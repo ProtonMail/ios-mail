@@ -158,6 +158,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
     private var attachmentPreviewPresenter: QuickLookPresenter?
+    private var attachmentPreviewWasCancelled = false
 
     init(viewModel: MailboxViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
@@ -2520,20 +2521,32 @@ extension MailboxViewController: NewMailboxMessageCellDelegate {
     }
 
     func didSelectAttachment(cell: NewMailboxMessageCell, index: Int) {
+        guard !viewModel.listEditing else { return }
         guard let indexPath = tableView.indexPath(for: cell) else {
             PMAssertionFailure("IndexPath should match MailboxItem")
             return
         }
-        showProgressHud()
+        let downloadBanner = PMBanner(message: L11n.AttachmentPreview.downloadingAttachment, 
+                                      style: PMBannerNewStyle.info)
+        downloadBanner.addButton(text: LocalString._general_cancel_button) { [weak self, weak downloadBanner] _ in
+            self?.attachmentPreviewWasCancelled = true
+            downloadBanner?.dismiss()
+        }
+        downloadBanner.show(at: .bottom, on: self)
         viewModel.requestPreviewOfAttachment(at: indexPath, index: index) { [weak self] result in
+            guard self?.attachmentPreviewWasCancelled == false else {
+                self?.attachmentPreviewWasCancelled = false
+                return
+            }
             DispatchQueue.main.async {
-                self?.hideProgressHud()
                 guard let self else { return }
                 switch result {
-                case .success(let att):
-                    self.showAttachment(at: att)
+                case .success(let file):
+                    self.showAttachment(from: file)
                 case .failure(let error):
-                    error.alert(at: self.view)
+                    let banner = PMBanner(message: error.localizedDescription, 
+                                          style: PMBannerNewStyle.error)
+                    banner.show(at: .bottom, on: self)
                 }
             }
         }
@@ -2541,20 +2554,16 @@ extension MailboxViewController: NewMailboxMessageCellDelegate {
 }
 
 extension MailboxViewController {
-    func showAttachment(at url: URL) {
-        guard QuickLookPresenter.canPreviewItem(at: url), let navigationController else {
-            L11n.AttachmentPreview.cannotPreviewMessage.alertToastBottom()
+    func showAttachment(from file: SecureTemporaryFile) {
+        guard QuickLookPresenter.canPreviewItem(at: file.url), let navigationController else {
+            let banner = PMBanner(message: L11n.AttachmentPreview.cannotPreviewMessage,
+                                  style: PMBannerNewStyle.info)
+            banner.show(at: .bottom, on: self)
             return
         }
 
-        attachmentPreviewPresenter = QuickLookPresenter(url: url, delegate: self)
+        attachmentPreviewPresenter = QuickLookPresenter(file: file)
         attachmentPreviewPresenter?.present(from: navigationController)
-    }
-}
-
-extension MailboxViewController: QuickLookPresenterDelegate {
-    func previewControllerDidDismiss(_ presenter: QuickLookPresenter, itemURL: URL) {
-        try? FileManager.default.removeItem(at: itemURL)
     }
 }
 

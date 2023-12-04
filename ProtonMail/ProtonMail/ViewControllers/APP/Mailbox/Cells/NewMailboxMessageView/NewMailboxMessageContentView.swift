@@ -29,7 +29,7 @@ class NewMailboxMessageContentView: BaseMessageView {
     let firstLineStackView = SubviewsFactory.horizontalStackView
     let draftImageView = SubviewsFactory.draftImageView
     let secondLineStackView = SubviewsFactory.horizontalStackView
-    let attachmentsPreviewLine = SubviewsFactory.horizontalStackView
+    let attachmentsPreviewLine = SubviewsFactory.horizontalEqualSpacingStackView
     let remainingAttachmentsLabel = SubviewsFactory.remainderAttachmentsLabel
     let attachmentsPreviewStackView = SubviewsFactory.horizontalCenterDistributedStackView
     let titleLabel = UILabel(frame: .zero)
@@ -76,6 +76,7 @@ class NewMailboxMessageContentView: BaseMessageView {
         secondLineStackView.addArrangedSubview(attachmentImageView)
         secondLineStackView.addArrangedSubview(starImageView)
 
+        remainingAttachmentsLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         attachmentsPreviewLine.addArrangedSubview(attachmentsPreviewStackView)
         attachmentsPreviewLine.addArrangedSubview(remainingAttachmentsLabel)
         contentStackView.addArrangedSubview(attachmentsPreviewLine)
@@ -145,6 +146,10 @@ private extension NewMailboxMessageContentView {
     private class SubviewsFactory: BaseMessageView.SubviewsFactory {
         static var horizontalStackView: UIStackView {
             .stackView(alignment: .center, spacing: 4)
+        }
+
+        static var horizontalEqualSpacingStackView: UIStackView {
+            .stackView(distribution: .equalSpacing, alignment: .fill, spacing: 4)
         }
 
         static var horizontalCenterDistributedStackView: UIStackView {

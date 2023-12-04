@@ -42,10 +42,18 @@ final class AttachmentPreviewView: UIView {
         fatalError("Use init(attachmentPreview: AttachmentPreview) please")
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            layer.borderColor = ColorProvider.InteractionWeak
+        }
+    }
+
     private func configureBorder() {
         layer.borderColor = ColorProvider.SeparatorNorm
         layer.borderWidth = 1
-        roundCorner(4)
+        roundCorner(6)
     }
 
     private func configureViews() {

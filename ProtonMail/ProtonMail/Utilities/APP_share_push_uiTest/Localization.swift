@@ -1489,6 +1489,7 @@ enum L11n {
 
     struct AttachmentPreview {
         static let cannotPreviewMessage = NSLocalizedString("Unable to preview this attachment", comment: "Alert telling the user that we are unable to preview this attachment")
+        static let downloadingAttachment = NSLocalizedString("Downloading attachment", comment: "Title for banner saying that we are currently downloading the attachment to preview it")
     }
 
     struct Snooze {
