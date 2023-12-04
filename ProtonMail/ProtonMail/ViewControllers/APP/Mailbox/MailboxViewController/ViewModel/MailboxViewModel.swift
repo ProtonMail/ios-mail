@@ -1319,7 +1319,7 @@ extension MailboxViewModel {
     func requestPreviewOfAttachment(
         at indexPath: IndexPath,
         index: Int,
-        completion: @escaping ((Result<URL, Error>) -> Void)
+        completion: @escaping ((Result<SecureTemporaryFile, Error>) -> Void)
     ) {
         guard let mailboxItem = mailboxItem(at: indexPath),
               let attachmentMetadata = mailboxItem.attachmentsMetadata[safe: index] else {
@@ -1353,7 +1353,7 @@ extension MailboxViewModel {
                             )
                             let fileName = attachmentMetadata.name.cleaningFilename()
                             let secureTempFile = SecureTemporaryFile(data: fileData, name: fileName)
-                            completion(.success(secureTempFile.url))
+                            completion(.success(secureTempFile))
                         } catch {
                             completion(.failure(error))
                         }

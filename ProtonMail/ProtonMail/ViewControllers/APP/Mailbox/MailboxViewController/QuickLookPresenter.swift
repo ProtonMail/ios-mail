@@ -18,24 +18,17 @@
 import Foundation
 import QuickLook
 
-protocol QuickLookPresenterDelegate: AnyObject {
-    func previewControllerDidDismiss(_ presenter: QuickLookPresenter, itemURL: URL)
-}
-
 final class QuickLookPresenter: NSObject {
     static func canPreviewItem(at url: URL) -> Bool {
         QuickViewViewController.canPreview(url as QLPreviewItem)
     }
 
-    private let previewItem: URL
+    private let previewItemFile: SecureTemporaryFile
     let viewController = QuickViewViewController()
-    weak var delegate: QuickLookPresenterDelegate?
 
-    init(url: URL, delegate: QuickLookPresenterDelegate) {
-        self.previewItem = url
-        self.delegate = delegate
+    init(file: SecureTemporaryFile) {
+        self.previewItemFile = file
         super.init()
-        viewController.delegate = self
         viewController.dataSource = self
     }
 
@@ -50,12 +43,6 @@ extension QuickLookPresenter: QLPreviewControllerDataSource {
     }
 
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        previewItem as QLPreviewItem
-    }
-}
-
-extension QuickLookPresenter: QLPreviewControllerDelegate {
-    func previewControllerDidDismiss(_ controller: QLPreviewController) {
-        delegate?.previewControllerDidDismiss(self, itemURL: previewItem)
+        previewItemFile.url as QLPreviewItem
     }
 }

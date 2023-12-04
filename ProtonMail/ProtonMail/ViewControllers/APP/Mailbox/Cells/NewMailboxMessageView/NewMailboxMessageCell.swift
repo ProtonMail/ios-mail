@@ -86,6 +86,7 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
         customView.messageContentView.removeOriginImages()
         customView.messageContentView.messageCountLabel.isHidden = false
         customView.messageContentView.attachmentsPreviewStackView.clearAllViews()
+        customView.messageContentView.remainingAttachmentsLabel.text = nil
     }
 
     func startUpdateExpiration() {
