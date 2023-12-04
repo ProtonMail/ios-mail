@@ -169,7 +169,7 @@ final class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
             if let attachments = item.attachments {
                 for att in attachments {
                     let itemProvider = att
-                    if let type = itemProvider.hasItem(types: self.filetypes) {
+                    if let type = itemProvider.hasItem(types: FileImporterConstants.fileTypes) {
                         group.enter() // #1
                         self.importFile(itemProvider, type: type, errorHandler: self.error) {
                             group.leave() // #1

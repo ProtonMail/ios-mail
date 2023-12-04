@@ -22,6 +22,15 @@
 
 import CoreServices
 import PromiseKit
+import UniformTypeIdentifiers
+
+enum FileImporterConstants {
+    static var fileTypes: [String] {
+        // list from Share extension NSExtensionActivationRule, except text and URLs. Full list here:
+        // https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html
+        return ["public.file-url", "public.xml", "com.adobe.pdf", "public.image", "public.playlist", "public.archive", "public.spreadsheet", "public.presentation", "public.calendar-event", "public.vcard", "public.executable", "public.audiovisual-​content", "public.font", "com.microsoft.word.doc", "com.microsoft.excel.xls", "com.microsoft.powerpoint.​ppt", "public.audio", "public.movie"]
+    }
+}
 
 protocol FileImporter {
     func importFile(_ itemProvider: NSItemProvider, type: String, errorHandler: @escaping (String) -> Void, handler: @escaping () -> Void)
@@ -32,59 +41,83 @@ protocol FileImporter {
 }
 
 extension FileImporter {
-    var filetypes: [String] {
-        // list from Share extension NSExtensionActivationRule, except text and URLs. Full list here:
-        // https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html
-        return ["public.file-url", "public.xml", "com.adobe.pdf", "public.image", "public.playlist", "public.archive", "public.spreadsheet", "public.presentation", "public.calendar-event", "public.vcard", "public.executable", "public.audiovisual-​content", "public.font", "com.microsoft.word.doc", "com.microsoft.excel.xls", "com.microsoft.powerpoint.​ppt", "public.audio", "public.movie"]
-    }
 
     func importFile(_ itemProvider: NSItemProvider,
                     type: String,
                     errorHandler: @escaping (String) -> Void,
                     handler: @escaping () -> Void) {
-        itemProvider.loadItem(forTypeIdentifier: type, options: nil) { item, error in // async            
-            guard error == nil else {
+        if type == UTType.image.identifier {
+            handleImageItem(itemProvider, errorHandler: errorHandler, handler: handler)
+        } else {
+            itemProvider.loadItem(forTypeIdentifier: type, options: nil) { item, error in
+                guard error == nil else {
+                    errorHandler(error?.localizedDescription ?? "")
+                    handler()
+                    return
+                }
+
+                if let url = item as? URL {
+                    documentAttachmentProvider.process(fileAt: url) {
+                        handler()
+                    }
+                } else if let img = item as? UIImage {
+                    self.imageAttachmentProvider.process(original: img).ensure {
+                        handler()
+                    }.cauterize()
+                } else if (type as CFString == kUTTypeVCard), let data = item as? Data {
+                    var fileName = "\(NSUUID().uuidString).vcf"
+                    if let name = itemProvider.suggestedName {
+                        fileName = name
+                    }
+                    let fileData = ConcreteFileData(name: fileName, mimeType: "text/vcard", contents: data)
+                    self.fileSuccessfullyImported(as: fileData).ensure {
+                        handler()
+                    }.cauterize()
+                } else if let data = item as? Data {
+                    var fileName = NSUUID().uuidString
+                    if let name = itemProvider.suggestedName {
+                        fileName = name
+                    }
+
+                    let type = (itemProvider.registeredTypeIdentifiers.first ?? type) as CFString
+                    // this method does not work correctly with "text/vcard" mime by some reson, so VCards have separate `else if`
+                    guard let filetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassFilenameExtension)?.takeRetainedValue() as String?,
+                          let mimetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType)?.takeRetainedValue() as String? else {
+                        errorHandler(LocalString._failed_to_determine_file_type)
+                        handler()
+                        return
+                    }
+                    let fileData = ConcreteFileData(name: fileName + "." + filetype, mimeType: mimetype, contents: data)
+                    self.fileSuccessfullyImported(as: fileData).ensure {
+                        handler()
+                    }.cauterize()
+                } else {
+                    errorHandler(LocalString._unsupported_file)
+                    handler()
+                }
+            }
+        }
+    }
+
+    private func handleImageItem(
+        _ itemProvider: NSItemProvider,
+        errorHandler: @escaping (String) -> Void,
+        handler: @escaping () -> Void
+    ) {
+        itemProvider.loadDataRepresentation(forTypeIdentifier: UTType.image.identifier) { data, error in
+            guard let data = data else {
                 errorHandler(error?.localizedDescription ?? "")
                 handler()
                 return
             }
-
-            // TODO:: the process(XXX:) functions below. they could be abstracted out. all type of process in the same place.
-            if let url = item as? URL {
-                documentAttachmentProvider.process(fileAt: url) {
+            if let image = UIImage(data: data) {
+                self.imageAttachmentProvider.process(original: image).ensure {
                     handler()
-                }
-            } else if let img = item as? UIImage {
-                self.imageAttachmentProvider.process(original: img).ensure {
-                    handler()
-                }.cauterize()
-            } else if (type as CFString == kUTTypeVCard), let data = item as? Data {
-                var fileName = "\(NSUUID().uuidString).vcf"
-                if let name = itemProvider.suggestedName {
-                    fileName = name
-                }
-                let fileData = ConcreteFileData(name: fileName, mimeType: "text/vcard", contents: data)
-                self.fileSuccessfullyImported(as: fileData).ensure {
-                    handler()
-                }.cauterize()
-            } else if let data = item as? Data {
-                var fileName = NSUUID().uuidString
-                if let name = itemProvider.suggestedName {
-                    fileName = name
-                }
-
-                let type = (itemProvider.registeredTypeIdentifiers.first ?? type) as CFString
-                // this method does not work correctly with "text/vcard" mime by some reson, so VCards have separate `else if`
-                guard let filetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassFilenameExtension)?.takeRetainedValue() as String?,
-                    let mimetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType)?.takeRetainedValue() as String? else {
-                    errorHandler(LocalString._failed_to_determine_file_type)
+                }.catch { error in
+                    errorHandler(error.localizedDescription)
                     handler()
                     return
                 }
-                let fileData = ConcreteFileData(name: fileName + "." + filetype, mimeType: mimetype, contents: data)
-                self.fileSuccessfullyImported(as: fileData).ensure {
-                    handler()
-                }.cauterize()
             } else {
                 errorHandler(LocalString._unsupported_file)
                 handler()
