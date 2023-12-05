@@ -73,8 +73,20 @@ extension MailboxViewController {
             attachmentsPreviewViewModels: attachmentsPreviews(for: .message(message)),
             numberOfAttachments: message.numAttachments
         )
-        if mailboxViewModel.displayOriginIcon {
+        let displayOriginIcon = [
+            Message.Location.allmail,
+            Message.Location.starred,
+            Message.Location.almostAllMail
+        ].contains(Message.Location(viewModel.labelID))
+        if displayOriginIcon || mailboxViewModel.isLabelLocation {
             mailboxViewModel.folderIcons = message.getFolderIcons(customFolderLabels: customFolderLabels)
+        }
+
+        let isTrashed = message.contains(labelID: Message.Location.trash.labelID)
+
+        if (message.isDraft || message.isSent) && isTrashed,
+           let icon = Message.Location.trash.originImage() {
+            mailboxViewModel.folderIcons.append(icon)
         }
         return mailboxViewModel
     }
@@ -118,7 +130,12 @@ extension MailboxViewController {
             attachmentsPreviewViewModels: attachmentsPreviews(for: .conversation(conversation)),
             numberOfAttachments: conversation.attachmentCount
         )
-        if mailboxViewModel.displayOriginIcon {
+        let displayOriginIcon = [
+            Message.Location.allmail,
+            Message.Location.starred,
+            Message.Location.almostAllMail
+        ].contains(Message.Location(viewModel.labelID))
+        if displayOriginIcon || mailboxViewModel.isLabelLocation {
             mailboxViewModel.folderIcons = conversation.getFolderIcons(customFolderLabels: customFolderLabels)
         }
         return mailboxViewModel

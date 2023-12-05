@@ -28,6 +28,10 @@ extension Message {
         case draft = "1" //1 can't be removed
         case sent  = "2" //2 can't be removed
         case outbox = "9"
+
+        var labelID: LabelID {
+            return LabelID(rawValue)
+        }
     }
     
     /// Predefined location. matches with exclusive label id

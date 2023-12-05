@@ -855,10 +855,29 @@ extension MailboxViewModel {
         let isCurrentLocationEmpty = diffableDataSource?.snapshot().numberOfItems == 0
         let fetchMessagesAtTheEnd = isCurrentLocationEmpty || isFirstFetch
         isFirstFetch = false
+        var queryLabel = labelID
+        switch user.mailSettings.showMoved {
+        case .doNotKeep:
+            break
+        case .keepDraft:
+            if queryLabel == LabelLocation.draft.labelID {
+                queryLabel = LabelLocation.hiddenDraft.labelID
+            }
+        case .keepSent:
+            if queryLabel == LabelLocation.sent.labelID {
+                queryLabel = LabelLocation.hiddenSent.labelID
+            }
+        case .keepBoth:
+            if queryLabel == LabelLocation.draft.labelID {
+                queryLabel = LabelLocation.hiddenDraft.labelID
+            } else if queryLabel == LabelLocation.sent.labelID {
+                queryLabel = LabelLocation.hiddenSent.labelID
+            }
+        }
 
         dependencies.updateMailbox.execute(
             params: .init(
-                labelID: labelID,
+                labelID: queryLabel,
                 showUnreadOnly: showUnreadOnly,
                 isCleanFetch: isCleanFetch,
                 time: time,

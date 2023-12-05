@@ -31,6 +31,7 @@ final class MailboxViewModelTests: XCTestCase {
     var featureFlagCache: MockFeatureFlagCache!
     var userManagerMock: UserManager!
     var conversationStateProviderMock: MockConversationStateProviderProtocol!
+    var fetchMessageWithReset: MockFetchMessagesWithReset!
     var contactGroupProviderMock: MockContactGroupsProviderProtocol!
     var labelProviderMock: MockLabelProviderProtocol!
     var contactProviderMock: MockContactProvider!
@@ -98,6 +99,7 @@ final class MailboxViewModelTests: XCTestCase {
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         globalContainer.featureFlagCacheFactory.register { self.featureFlagCache }
         conversationStateProviderMock = MockConversationStateProviderProtocol()
+        fetchMessageWithReset = MockFetchMessagesWithReset()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()
         labelProviderMock = MockLabelProviderProtocol()
         contactProviderMock = MockContactProvider(coreDataContextProvider: coreDataService)
@@ -167,6 +169,7 @@ final class MailboxViewModelTests: XCTestCase {
         apiServiceMock = nil
         globalContainer = nil
         fakeTableView = nil
+        fetchMessageWithReset = nil
 
         try FileManager.default.removeItem(at: imageTempUrl)
     }
@@ -1434,7 +1437,7 @@ extension MailboxViewModelTests {
             messageDataService: userManagerMock.messageService,
             conversationProvider: conversationProviderMock,
             purgeOldMessages: MockPurgeOldMessages(),
-            fetchMessageWithReset: MockFetchMessagesWithReset(),
+            fetchMessageWithReset: fetchMessageWithReset,
             fetchMessage: fetchMessage,
             fetchLatestEventID: mockFetchLatestEventId,
             internetConnectionStatusProvider: MockInternetConnectionStatusProviderProtocol(),
