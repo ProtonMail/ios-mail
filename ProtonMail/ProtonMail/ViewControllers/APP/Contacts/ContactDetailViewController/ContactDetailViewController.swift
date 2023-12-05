@@ -80,6 +80,11 @@ final class ContactDetailViewController: UIViewController, AccessibleView, Compo
         navigationItem.assignNavItemIndentifiers()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.dependencies.user.undoActionManager.register(handler: self)
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         customView.tableView.sizeHeaderToFit()
@@ -644,4 +649,20 @@ extension ContactDetailViewController {
         static let contactDetailsDisplayCell = "ContactDetailsDisplayCell"
         static let contactDetailHeaderView = "ContactSectionHeadView"
     }
+}
+
+extension ContactDetailViewController: UndoActionHandlerBase {
+    var undoActionManager: UndoActionManagerProtocol? {
+        nil
+    }
+
+    var delaySendSeconds: Int {
+        viewModel.dependencies.user.userInfo.delaySendSeconds
+    }
+
+    var composerPresentingVC: UIViewController? {
+        self
+    }
+
+    func showUndoAction(undoTokens: [String], title: String) { }
 }

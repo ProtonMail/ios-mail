@@ -1,45 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="60" id="bwS-JS-53w" customClass="ContactGroupsViewCell" customModule="ProtonMail" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="61" id="bwS-JS-53w" customClass="ContactGroupsViewCell" customModule="ProtonMail" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bwS-JS-53w" id="De5-a9-SVK">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ProtonMail Group" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vde-5V-24G">
-                        <rect key="frame" x="62" y="12" width="210" height="16"/>
+                        <rect key="frame" x="62" y="12" width="210" height="19.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="64 Members" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FGF-UH-owS">
-                        <rect key="frame" x="62" y="32" width="210" height="16"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="16" id="Lks-iQ-6nq"/>
-                        </constraints>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="64 Members" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FGF-UH-owS">
+                        <rect key="frame" x="62" y="35.5" width="210" height="13.5"/>
                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-users" translatesAutoresizingMaskIntoConstraints="NO" id="LvN-FM-L9L">
-                        <rect key="frame" x="14" y="10" width="40" height="40"/>
+                        <rect key="frame" x="14" y="10.5" width="40" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="6L2-gF-laJ"/>
                             <constraint firstAttribute="width" constant="40" id="eT6-jS-DUg"/>
                         </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2PA-mM-WQa">
-                        <rect key="frame" x="240" y="10" width="80" height="40"/>
+                        <rect key="frame" x="240" y="10.5" width="80" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="gdM-L9-DkN"/>
                             <constraint firstAttribute="width" constant="80" id="zVu-bQ-t6I"/>
@@ -49,7 +46,7 @@
                         </connections>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="N8m-7c-dnS">
-                        <rect key="frame" x="280" y="18" width="24" height="24"/>
+                        <rect key="frame" x="280" y="18.5" width="24" height="24"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="24" id="ISC-ts-EU3"/>
                             <constraint firstAttribute="height" constant="24" id="XWN-o8-kjM"/>
@@ -79,7 +76,7 @@
                 <outlet property="sendButton" destination="2PA-mM-WQa" id="w7Y-VW-L3K"/>
                 <outlet property="sendButtonImage" destination="N8m-7c-dnS" id="WtG-8U-bmB"/>
             </connections>
-            <point key="canvasLocation" x="36.799999999999997" y="125.93703148425789"/>
+            <point key="canvasLocation" x="36.799999999999997" y="126.38680659670166"/>
         </tableViewCell>
     </objects>
     <resources>

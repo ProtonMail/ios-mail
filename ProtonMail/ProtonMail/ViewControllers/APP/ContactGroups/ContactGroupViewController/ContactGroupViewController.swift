@@ -154,6 +154,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
 
         tableView.noSeparatorsBelowFooter()
         tableView.estimatedRowHeight = 60.0
+        tableView.rowHeight = UITableView.automaticDimension
     }
 
     private func prepareLongPressGesture() {

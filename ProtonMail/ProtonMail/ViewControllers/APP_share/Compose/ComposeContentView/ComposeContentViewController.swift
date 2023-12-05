@@ -52,7 +52,6 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
     var encryptionConfirmPassword: String = ""
     var encryptionPasswordHint: String = ""
     private var dismissBySending = false
-    private var dfsWasEnabled = DFSSetting.enableDFS
 
     private let queue = DispatchQueue(label: "UpdateAddressIdQueue")
 
@@ -68,7 +67,6 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
     init(viewModel: ComposeViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
         self.dependencies = dependencies
-        DFSSetting.enableDFS = true
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -157,9 +155,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             self.handleHintBanner(presentingVC: presentingVC)
         }
         delegate?.willDismiss()
-        self.dismiss(animated: true) {
-            DFSSetting.enableDFS = self.dfsWasEnabled
-        }
+        self.dismiss(animated: true)
     }
 
     private func findPreviousVC(presentingVC: UIViewController?) -> UIViewController? {

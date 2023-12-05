@@ -135,7 +135,6 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
 
     // swiftlint:disable:next function_body_length
     func go(to labelInfo: MenuLabel, deepLink: DeepLink? = nil) {
-        DFSSetting.enableDFS = true
         // in some cases we should highlight a different row in the side menu, or none at all
         var labelToHighlight: MenuLabel? = labelInfo
 
@@ -156,7 +155,6 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
             self.navigateToSettings(deepLink: deepLink)
             labelToHighlight = nil
         case .contacts:
-            DFSSetting.enableDFS = false
             self.navigateToContact()
         case .bugs:
             self.navigateToBugReport()
