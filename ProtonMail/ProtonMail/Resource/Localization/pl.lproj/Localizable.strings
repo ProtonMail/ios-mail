@@ -1,6 +1,5 @@
 /* link opeining confirmation */
-
-"You are about to launch the web browser and navigate to" = "Masz zamiar uruchomić przeglądarkę i przejść do";
+"You are about to launch the web browser and navigate to" = "Uruchomisz przeglądarkę i przejdziesz do";
 
 /* link opeining confirmation */
 "Request link confirmation" = "Potwierdź otwieranie linków";
@@ -225,7 +224,7 @@
 "Upgrade to a paid plan to send from your %@ address" = "Ulepsz do płatnego planu, aby wysyłać wiadomości z adresu %@";
 
 /* pm.me upgrade warning in composer */
-"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Wysyłanie wiadomości z adresu %1$@ jest funkcją płatną. Twoja wiadomość zostanie wysłana z Twojego domyślnego adresu %2$@";
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Wysyłanie wiadomości z adresu %1$@ jest płatną funkcją. Twoja wiadomość zostanie wysłana z Twojego domyślnego adresu %2$@";
 
 /* Title */
 "From" = "Od";
@@ -603,7 +602,7 @@
 "Change default address to…" = "Zmień domyślny adres na…";
 
 /* pm.me upgrade warning in composer */
-"You can't set %@ address as default because it is a paid feature." = "Nie możesz ustawić adresu %@ jako domyślnego, ponieważ jest to funkcja płatna.";
+"You can't set %@ address as default because it is a paid feature." = "Nie możesz ustawić adresu %@ jako domyślnego, ponieważ jest to płatna funkcja.";
 
 /* Action */
 "Continue" = "Kontynuuj";

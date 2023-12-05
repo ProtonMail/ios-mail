@@ -285,9 +285,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d mensaje se moverá a la carpeta Borradores y se eliminará su programación.</string>
+        <string>%d mensaje se moverá a la carpeta Borradores y se borrará su programación.</string>
         <key>other</key>
-        <string>Estos %d mensajes se moverán a la carpeta Borradores y se eliminarán sus programaciones.</string>
+        <string>Estos %d mensajes se moverán a la carpeta Borradores y se borrarán sus programaciones.</string>
       </dict>
     </dict>
     <key>%d message moved to Drafts</key>

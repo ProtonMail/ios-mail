@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Webböngészőt fog megnyitni a következő címmel:";
 
 /* link opeining confirmation */
@@ -477,7 +476,7 @@
 "The request timed out." = "A kérés túllépte az időkorlátot.";
 
 /* Message */
-"Proton servers are unreachable.\nVisit our status page for details." = "Proton servers are unreachable.\nVisit our status page for details.";
+"Proton servers are unreachable.\nVisit our status page for details." = "A Proton szerverek nem érhetők el.\nA részletekért látogasson el a státusz oldalunkra.";
 
 /* Title */
 "No connectivity detected…" = "Nincs kapcsolat…";
@@ -1146,10 +1145,10 @@
 "App PIN" = "Alkalmazás PIN-kód";
 
 /* security title in settings */
-"App PIN & Touch ID" = "App PIN & Touch ID";
+"App PIN & Touch ID" = "Alkalmazás PIN-kód és Touch ID";
 
 /* security title in settings */
-"App PIN & Face ID" = "App PIN & Face ID";
+"App PIN & Face ID" = "Alkalmazás PIN-kód és Face ID";
 
 /* cell title in device settings */
 "Language" = "Nyelv";
@@ -1401,7 +1400,7 @@
 "Inherit color from parent folder" = "Szín öröklése a tartalmazó mappáról";
 
 /* section title */
-"Select color" = "Select color";
+"Select color" = "Szín kiválasztása";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "Nincs kapcsolódva. Nem lehetséges megjeleníteni az üzenet tartalmát.";
@@ -1632,7 +1631,7 @@
 "Warning: suspected fake website" = "Figyelem: gyanítottan hamis weboldal";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Ez a hivatkozás egy olyan weboldalhoz vezet, amely ellophatja személyes adatait, mint például a jelszavait vagy a bankkártyája adatait.\n%@\n\nA biztonsága érdekében, ne folytassa.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Figyelmeztetés figyelmen kívül hagyása és folytatás";
@@ -1782,7 +1781,7 @@
 "You can now choose and rearrange the actions in this bar" = "Most már kiválaszthatja és újrarendezheti a műveleteket ezen az eszköztáron";
 
 /* Button to block a sender */
-"Block messages from this sender" = "Block messages from this sender";
+"Block messages from this sender" = "Üzenetek tiltása ettől a feladótól";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Letiltás";
@@ -1853,7 +1852,7 @@
 "Track your rewards" = "Jutalmak megtekintése";
 
 /* The title of the terms and conditions button in referral share view. */
-"Terms & conditions" = "Terms & conditions";
+"Terms & conditions" = "Szerződési feltételeket";
 
 /* The content that is shared through the action: `Share the link` */
 "I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "A Proton Mailt használom és gondoltam, hogy neked is tetszeni fog. Ez egy biztonságos e-mail szolgáltatás, amely védi a magánéleted. Regisztrálj ezen a hivatkozáson, hogy 1 hónapig ingyen használhasd a prémium funkciókat is:";
@@ -1961,7 +1960,7 @@
 "Reply all (to last message)" = "Válasz mindenkinek (a legutóbbi üzenetre)";
 
 /* The action title in the action sheet of the composing new message */
-"New message" = "New message";
+"New message" = "Új üzenet";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Testreszabás";
@@ -2015,37 +2014,37 @@
 "Empty trash" = "Lomtár kiürítése";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Clear out the junk";
+"Clear out the junk" = "Szabaduljon meg a szeméttől";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Törölje automatikusan a 30 napnál régebben a lomtárba vagy a levélszemét mappába került leveleket. Ehhez a lehetőséghez és további előnyökhöz, váltson nagyobb csomagra.";
 
 /* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Up to 3 TB of storage";
+"Up to 3 TB of storage" = "Akár 3 TB tárhely";
 
 /* Text to advertise what upgrading will provide */
-"Custom email domains" = "Custom email domains";
+"Custom email domains" = "Saját domain nevek";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "Sender changed";
+"Sender changed" = "Feladó megváltoztatva";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
-"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Az üzenet eredeti feladója már érvénytelen. Az üzenet a jelenlegi alapértelmezett címével kerül elküldésre: %@.";
 
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Display name";
+"Display name" = "Megjelenített név";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "Keresztnév";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "Last name";
+"Last name" = "Vezetéknév";
 
 /* The error message that is shown when no display name provided in contact edit view */
 "Display name field cannot be empty" = "Display name field cannot be empty";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "A névjegynél megadott név túl hosszú";
 
 /* The button text for add profile picture */
 "Add photo" = "Fénykép hozzáadása";
@@ -2054,7 +2053,7 @@
 "Edit photo" = "Fénykép szerkesztése";
 
 /* The title of select all button for select all messages feature */
-"Select all" = "Select all";
+"Select all" = "Összes kijelölése";
 
 /* The title of PIN code disable view  */
 "Disable PIN code" = "Disable PIN code";
@@ -2090,7 +2089,7 @@
 "Unsubscribe from mailing list" = "Leiratkozás levelezési listáról";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Leiratkozás?";
 
 /* Unsubscribe confirmation message */
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";

@@ -1,0 +1,2095 @@
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "Du er i ferd med å starte nettleseren og navigere til";
+
+/* link opeining confirmation */
+"Request link confirmation" = "Be om bekreftelse av kobling";
+
+/* Title in settings */
+"Display Name" = "Visningsnavn";
+
+/* place holder */
+"Input Display Name…" = "Navn på inndatavisning…";
+
+/* Title in signature settings */
+"Signature" = "Signatur";
+
+/* Title */
+"Enable signature" = "Aktiver signatur";
+
+/* No comment provided by engineer. */
+"Enter your signature here" = "Skriv din signatur her";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Mobil signatur";
+
+/* Title */
+"Recovery email" = "E-post for gjenoppretting";
+
+/* Title */
+"Enable email notices" = "Aktiver e-postvarsler";
+
+/* place holder */
+"Input Notification Email…" = "E-post med inndatavarsel ...";
+
+/* Placeholder */
+"Current password" = "Nåværende passord";
+
+/* Placeholder */
+"New password" = "Nytt passord";
+
+/* Placeholder */
+"Confirm new password" = "Bekreft nytt passord";
+
+/* Settings row */
+"Remove image metadata" = "Fjern bildemetadata";
+
+/* Settings row */
+"Block email tracking" = "Blokkér e-postsporing";
+
+/* Settings row */
+"Default browser" = "Standard nettleser";
+
+/* menu title */
+"Menu" = "Meny";
+
+/* menu title */
+"Report a problem" = "Rapporter et problem";
+
+/* menu title */
+"Inbox" = "Innboks";
+
+/* menu title */
+"Starred" = "Stjernemerket";
+
+/* menu title */
+"Archive" = "Arkiv";
+
+/* menu title */
+"Drafts" = "Utkast";
+
+/* mail location title */
+"All Mail" = "All e-post";
+
+/* menu title */
+"Sent" = "Sendt";
+
+/* mail location desc */
+"Trash" = "Papirkurv";
+
+/* menu title */
+"Spam" = "Søppelpost";
+
+/* Action and title */
+"Contacts" = "Kontakter";
+
+/* menu title (contact groups) */
+"Groups" = "Grupper";
+
+/* menu title */
+"Settings" = "Innstillinger";
+
+/* Alert title to confirm signout */
+"Sign out" = "Logg av";
+
+/* menu title */
+"Lock The App" = "Lås appen";
+
+/* menu title */
+"Subscription" = "Abonnement";
+
+/* menu title */
+"Manage accounts" = "Administrer kontoer";
+
+/* menu title */
+"Add attachment" = "Legg til vedlegg";
+
+/* menu title */
+"Refer a friend" = "Verv en venn";
+
+/* mail location title */
+"Scheduled" = "Planlagt";
+
+/* Description after message have been sent */
+"Message sent" = "Melding sendt";
+
+/* Description */
+"Sent Failed" = "Sendt mislyktes";
+
+/* The title will be shown when foler doesnt have emails */
+"Nothing to see here" = "Ingenting å se her";
+
+/* The subtitle will be shown when folder doesnt have emails */
+"This folder is empty" = "Denne mappen er tom";
+
+/* The title of empty inbox */
+"You are all caught up!" = "Du er à jour!";
+
+/* The subtitle of empty inbox */
+"Time to relax" = "På tide å slappe av";
+
+/* Action */
+"Undo" = "Angre";
+
+/* Title */
+"Message has been deleted." = "Melding er slettet";
+
+/* Title */
+"Message has been moved." = "Melding er flyttet";
+
+/* Confirmation message before deleting a message */
+"You're going to delete the message irreversibly. Are you sure?" = "Du kommer til å slette meldingen irreversibelt. Er du sikker?";
+
+/* Title */
+"You have a new email!" = "Du har en ny e-post!";
+
+/* Message */
+"You have %d new emails!" = "Du har %d nye e-poster!";
+
+/* abbreviation of reply: */
+"Re:" = "Sv:";
+
+/* abbreviation of forward: */
+"Fw:" = "Vs:";
+
+/* Title */
+"wrote:" = "skrev:";
+
+/* At {time}, e.g.: At 19:00 */
+"At %@" = "Klokken %@";
+
+/* On {date}, e.g.: On Aug 14 */
+"On %@" = "På %@";
+
+/* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
+"On %@ at %@" = "På %1$@ kl. %2$@";
+
+/* message Date: text */
+"Date:" = "Dato:";
+
+/* subject: text when forward */
+"Subject:" = "Emne:";
+
+/* forwarded message title */
+"Forwarded message" = "Videresendt melding";
+
+/* Title */
+"Set Password" = "Angi passord";
+
+/* Description */
+"Set a password to encrypt this message for non-Proton Mail users." = "Angi et passord for å kryptere denne meldingen for ikke-Proton Mail-brukere.";
+
+/* Placeholder */
+"Message Password" = "Meldingspassord";
+
+/* Placeholder */
+"8 to 21 characters long" = "8 til 21 tegn lang";
+
+/* Error message */
+"The password must be between 8 and 21 characters long" = "Passordet må bestå av mellom 8 og 21 tegn";
+
+/* textview title */
+"Repeat password" = "Gjenta passord";
+
+/* Placeholder */
+"Passwords must match" = "Passordene må samsvare";
+
+/* Error message */
+"The 2 passwords are not matching" = "De 2 passordene samsvarer ikke";
+
+/* action title */
+"Remove password" = "Fjern passord";
+
+/* title */
+"Password Hint" = "Passordhint";
+
+/* button title */
+"Apply Password" = "Anvend passord";
+
+/* Action */
+"Compose" = "Skriv";
+
+/* Composer expiration page title */
+"Message expiration" = "Utløpstid for melding";
+
+/* contacts default label type */
+"Custom" = "Tilpasset";
+
+/* Description */
+"Send message without subject?" = "Sende melding uten emne?";
+
+/* Description */
+"You need at least one recipient to send" = "Du trenger minst én mottaker for å sende";
+
+/* Error */
+"Upgrade to a paid plan to send from your %@ address" = "Oppgrader til en betalt plan for å sende fra din %@-adresse";
+
+/* pm.me upgrade warning in composer */
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Sending av meldinger fra %1$@-adresse er en betalt funksjon. Meldingen din vil bli sendt fra standardadressen din %2$@.";
+
+/* Title */
+"From" = "Fra";
+
+/* Title */
+"Bcc" = "Blindkopi";
+
+/* Placeholder */
+"Subject" = "Emne";
+
+/* hint message */
+"Draft saved" = "Utkast lagret";
+
+/* Placeholder */
+"Define Hint (Optional)" = "Definer hint (valgfritt)";
+
+/* Menu action to remove text formatting */
+"Clear Style" = "Fjern stil";
+
+/* new contacts add Organization  */
+"Add organization" = "Legg til organisasjon";
+
+/* new contacts add Nickname */
+"Add nickname" = "Legg til kallenavn";
+
+/* new contacts add Title */
+"Add title" = "Legg til tittel";
+
+/* new contacts add Birthday */
+"Add birthday" = "Legg til bursdag";
+
+/* new contacts add Anniversary */
+"Add anniversary" = "Legg til jubileum";
+
+/* new contacts add Gender */
+"Add gender" = "Legg til kjønn";
+
+/* Contacts add new contact */
+"New contact" = "Ny kontakt";
+
+/* add new address action */
+"Add new address" = "Legg til ny adresse";
+
+/* new custom field action */
+"Add new custom field" = "Legg til nytt tilpasset felt";
+
+/* new email action */
+"Add new email" = "Legg til ny e-post";
+
+/* new phone action */
+"Add new phone number" = "Legg til nytt telefonnummer";
+
+/* new field action */
+"Add new field" = "Legg til nytt felt";
+
+/* default vcard types */
+"Personal" = "Personlig";
+
+/* default vcard types */
+"Work" = "Arbeid";
+
+/* default vcard types */
+"Email" = "E-post";
+
+/* default vcard types */
+"Other" = "Annet";
+
+/* default vcard types */
+"Phone" = "Telefon";
+
+/* default vcard types */
+"Mobile" = "Mobil";
+
+/* default vcard types */
+"Fax" = "Faks";
+
+/* default vcard types */
+"Address" = "Adresse";
+
+/* default vcard types */
+"URL" = "Nettadresse";
+
+/* default vcard types */
+"Internet" = "Internett";
+
+/* Title */
+"All contacts are imported" = "Alle kontakter er importert";
+
+/* contact placeholder */
+"Street" = "Gate";
+
+/* contact placeholder */
+"City" = "Poststed";
+
+/* contact placeholder */
+"State" = "Stat";
+
+/* contact placeholder */
+"ZIP" = "Postnummer";
+
+/* contact placeholder */
+"Country" = "Land";
+
+/* contacts talbe cell Organization title */
+"Organization" = "Organisasjon";
+
+/* contacts talbe cell Nickname title */
+"Nickname" = "Kallenavn";
+
+/* contacts talbe cell Title title */
+"Title" = "Tittel";
+
+/* contacts talbe cell Birthday title */
+"Birthday" = "Bursdag";
+
+/* contacts talbe cell Anniversary title */
+"Anniversary" = "Jubileum";
+
+/* contacts talbe cell gender title */
+"Gender" = "Kjønn";
+
+/* Send an email to the current contact (button title text) */
+"Email contact" = "Send e-post til kontakt";
+
+/* Call the contact (button title text) */
+"Call contact" = "Ring kontakt";
+
+/* contact detail view, email addresses section title */
+"Email addresses" = "E-postadresser";
+
+/* contact section title */
+"Encrypted contact details" = "Kryptert kontaktinformasjon";
+
+/* action */
+"Share contact" = "Del kontakt";
+
+/* title */
+"Notes" = "Notater";
+
+/* Action */
+"Upload device contacts" = "Last opp enhetskontakter";
+
+/* top right action text */
+"Create" = "Opprett";
+
+/* add label action */
+"Add Label" = "Legg til etikett";
+
+/* Action */
+"Add Folder" = "Legg til mappe";
+
+/* place holder */
+"Folder Name" = "Mappenavn";
+
+/* createing lable input place holder */
+"Label Name" = "Etikettnavn";
+
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Tilgang til denne konten er deaktivert grunnet manglende betaling. Vennligst logg på via proton.me for å betale den utestående fakturaen.";
+
+/* Title */
+"Alert" = "Varsel";
+
+/* Done action */
+"Done" = "Ferdig";
+
+/* Button to cancel encrypted search */
+"Cancel" = "Avbryt";
+
+/* Got it action */
+"Got it" = "Forstått";
+
+/* Open action */
+"Open" = "Åpne";
+
+/* remove action */
+"Remove" = "Fjern";
+
+/* Apply action */
+"Apply" = "Anvend";
+
+/* reply action */
+"Reply" = "Svar";
+
+/* reply all action */
+"Reply all" = "Svar alle";
+
+/* forward action */
+"Forward" = "Videresend";
+
+/* message From: field text */
+"From:" = "Fra:";
+
+/* message To: feild */
+"To" = "Til";
+
+/* message Cc: feild */
+"Cc" = "Kopi";
+
+/* message Bcc: feild */
+"Bcc:" = "Blindkopi:";
+
+/* general delete action */
+"Delete" = "Slett";
+
+/* general close action */
+"Close" = "Lukk";
+
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Økten din er utløpt fordi du har vært inaktiv en stund eller fordi den har blitt opphevet. Vennligst logg på igjen.";
+
+/* Springboard (3D Touch) shortcuts action */
+"Search" = "Søk";
+
+/* Alert title */
+"Notice" = "Bemerk";
+
+/* Title of alert in share extension. */
+"Error" = "Feil";
+
+/* Action */
+"Don't remind me again" = "Ikke påminn meg igjen";
+
+/* Action */
+"Send" = "Send";
+
+/* Action */
+"Schedule send" = "Planlegg sending";
+
+/* Alert title */
+"Message saved to Drafts" = "Melding lagret som utkast";
+
+/* Alert message */
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "For mange meldinger venter på å bli sendt.\nVent til en annen melding er sendt før du planlegger denne.";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "Sendetiden må være minst 5 minutter i fremtiden.";
+
+/* Action */
+"Send anyway" = "Send uansett";
+
+/* Title */
+"Confirmation" = "Bekreftelse";
+
+/* Action */
+"Draft" = "Utkast";
+
+/* Title */
+"The request timed out." = "Forespørselen ble tidsavbrutt.";
+
+/* Message */
+"Proton servers are unreachable.\nVisit our status page for details." = "Proton-tjenerne kan ikke nås.\nBesøk vår statusside for detaljer.";
+
+/* Title */
+"No connectivity detected…" = "Ingen forbindelse oppdaget ...";
+
+/* Title */
+"Proton Mail is currently offline…" = "Proton Mail er frakoblet for øyeblikket...";
+
+/* Title */
+"Save" = "Lagre";
+
+/* Action */
+"Edit" = "Rediger";
+
+/* Error message */
+"Invalid username!" = "Ugyldig brukernavn";
+
+/* Error title */
+"Bad parameter" = "Dårlig parameter";
+
+/* Error Description */
+"Bad parameter: %@" = "Dårlig parameter: %@";
+
+/* Error Description */
+"Bad response" = "Dårlig respons";
+
+/* Description */
+"Can't find the value from the response body" = "Finner ikke verdien fra innholdet til responsen";
+
+/* no object error, local only , this could be not translated! */
+"no object" = "ingen objekt";
+
+/* Description */
+"Unable to parse response" = "Kan ikke dele opp respons";
+
+/* Description */
+"Unable to parse the response object:\n%@" = "Kan ikke dele opp responsobjektet:\n%@";
+
+/* spam score warning */
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-posten ser ut til å være fra en Proton Mail-adresse, men kom fra utsiden av systemet vårt og mislyktes våre autentiseringskrav. Den kan være forfalsket eller feilaktig videresendt.";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Denne e-posten har ikke oppfylt domenets autentiseringskrav. Den kan være forfalsket eller feilaktig videresendt.";
+
+/* spam score warning */
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Denne meldingen kan være et nettfiskings-forsøk. Kontroller avsenderen og innholdet for å sikre at de er legitime.";
+
+/* Description */
+"Sending Message" = "Sender melding";
+
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "Frakoblet modus, melding satt i sendekø";
+
+/* Description */
+"Message sending failed. Please try again." = "Sending av melding mislyktes. Vennligst forsøk igjen.";
+
+/* import contact title */
+"Importing Contacts" = "Importerer kontakter";
+
+/* Title */
+"Reading device contacts data…" = "Leser enhetskontaktdata…";
+
+/* Description */
+"Do you want to cancel the process?" = "Vil du avbryte prosessen?";
+
+/* Hint when users create / edit contact offline  */
+"Contact saved, will be synced when connection is available" = "Kontakt lagret, synkroniseres når tilkobling er tilgjengelig";
+
+/* Hint when users delete contact offline  */
+"Contact deleted, will be synced when connection is available" = "Kontakt slettet, synkroniseres når tilkobling er tilgjengelig";
+
+/* Action */
+"Confirm" = "Bekreft";
+
+/* Title */
+"Canceling" = "Avbryter";
+
+/* title, default display name */
+"Unknown" = "Ukjent";
+
+/* Action */
+"Import Error" = "Feil ved import";
+
+/* Action */
+"OK" = "OK";
+
+/* Action */
+"Later" = "Senere";
+
+/* Action */
+"Disabled" = "Deaktivert";
+
+/* contact placeholder */
+"Email address" = "E-postadresse";
+
+/* top left back button */
+"Back" = "Tilbake";
+
+/* A *short* description saying that there is no contact group associated with this contact email */
+"None" = "Ingen";
+
+/* lock app option */
+"Every time enter app" = "Gå hver gang inn i appen";
+
+/* Title */
+"Default" = "Standard";
+
+/* Title */
+"Set" = "Angi";
+
+/* Title */
+"Resetting message cache…" = "Tilbakestiller meldingsbuffer…";
+
+/* Title */
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Denne innstillingen vil falle tilbake til Safari hvis den valgte nettleseren avinstalleres.";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Nettadressen du prøver å få tilgang til, er ikke standard og lastes kanskje ikke inn riktig. Vil du åpne den ved å bruke enhetens standard nettleser?";
+
+/* Title */
+"Auto Lock Time" = "Automatisk låsetid";
+
+/* Title */
+"Change default address to…" = "Endre standardadresse til…";
+
+/* pm.me upgrade warning in composer */
+"You can't set %@ address as default because it is a paid feature." = "Du kan ikke angi %@ adresse som standard fordi det er en betalt funksjon.";
+
+/* Action */
+"Continue" = "Fortsett";
+
+/* error message */
+"Please input a valid email address." = "Vennligst angi en gyldig e-postadresse.";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Angi PIN-koden for å låse opp innboksen.";
+
+/* Error */
+"Incorrect PIN." = "Feil PIN-kode.";
+
+/* Description */
+"Upload iOS contacts to Proton Mail?" = "Laste opp iOS-kontakter til Proton Mail?";
+
+/* Title-Contacts */
+"Delete contact" = "Slett kontakt";
+
+/* Description */
+"PIN code can't be empty." = "PIN-koden kan ikke være tom.";
+
+/* Error */
+"Unknown Error" = "Ukjent feil";
+
+/* Action */
+"Load remote content" = "Last eksternt innhold";
+
+/* settings general section title */
+"Change password" = "Endre passord";
+
+/* Title */
+"Current sign-in password" = "Gjeldende påloggingspassord";
+
+/* Title */
+"New sign-in password" = "Nytt påloggingspassord";
+
+/* Title */
+"Confirm new sign-in password" = "Bekreft nytt påloggingspassord";
+
+/* Title */
+"New mailbox password" = "Nytt postbokspassord";
+
+/* Title */
+"Confirm new mailbox password" = "Bekreft nytt postbokspassord";
+
+/* Title */
+"Star/unstar" = "Stjernemerk/fjern stjernemerking";
+
+/* Title */
+"Proton Mail" = "Proton Mail";
+
+/* Title */
+"Remind Me Later" = "Påminn meg senere";
+
+/* Title */
+"Don't Show Again" = "Ikke vis igjen";
+
+/* Onboarding title */
+"Easily up-to-date" = "Lett oppdatert";
+
+/* Onboarding title */
+"Privacy for all" = "Personvern for alle";
+
+/* Onboarding title */
+"Neat and tidy" = "Pent og ryddig";
+
+/* Welcome to rebranding title */
+"Updated Proton, unified protection" = "Oppdaterte Proton, enhetlig beskyttelse";
+
+/* Onboarding content */
+"Breeze through threaded messages in conversation mode." = "Lek deg gjennom trådmeldinger i samtalemodus.";
+
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Inviter kontaktene dine til Proton Mail for å nyte sømløs ende-til-ende kryptering, eller legg til passordbeskyttelse til meldinger du sender dem.";
+
+/* Onboarding content */
+"File, label, and color code messages to create your perfect, custom inbox." = "Lagre, sett merkelapper og sett fargekoder på meldingene for å lage din egen perfekt tilpassede innboks.";
+
+/* Welcome to rebranding content */
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Vi presenterer Protons oppdaterte utseende.\nMange tjenester, ett oppdrag. Velkommen til et internett hvor personvern er standarden.";
+
+/* skip button title in onboarding page */
+"Skip" = "Hopp over";
+
+/* title of the next button */
+"Next" = "Neste";
+
+/* title of the next button */
+"Get Started" = "Kom i gang";
+
+/* Description */
+"Unable to edit this message offline" = "Ikke i stand til å redigere denne meldingen i frakoblet modus.";
+
+/* like Date: 2017-10-10 */
+"Date: %@" = "Dato: %@";
+
+/* Title */
+"Details" = "Detaljer";
+
+/* Title */
+"Hide details" = "Skjul detaljer";
+
+/* contact placeholder */
+"Phone number" = "Telefonnummer";
+
+/* Contacts Edit contact */
+"Edit Contact" = "Rediger kontakt";
+
+/* Action */
+"Discard changes" = "Forkast endringer";
+
+/* Action */
+"Discard" = "Forkast";
+
+/* Message shown to user after discarding action is done */
+"Discarded" = "Forkastet";
+
+/* action */
+"Add new URL" = "Legg til ny nettadresse";
+
+/* settings general section title */
+"Change account password" = "Endre kontopassord";
+
+/* settings general section title */
+"Change mailbox password" = "Endre postbokspassord";
+
+/* settings general section title */
+"Auto-load remote content" = "Last automatisk eksternt innhold";
+
+/* settings general section title */
+"Auto-load embedded images" = "Last automatisk innebygde bilder";
+
+/* settings swipe actions section title */
+"Left to Right" = "Venstre til høyre";
+
+/* settings swipe actions section title */
+"Right to Left" = "Høyre til venstre";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Unlock required" = "Opplåsing kreves";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Du har deaktivert %1$@ i systeminnstillingene. %2$@ har blitt brukt til å beskytte viktig kontoinformasjon. For å få tilgang til kontoen din, gå til innstillinger og aktiver %3$@ på nytt, eller logg på igjen.";
+
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Alle beskyttede innstillinger vil bli nullstilt og slettet når du logger av appen.";
+
+/* A section title for timing section to set auto lock timing */
+"Timing" = "Timing";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to settings" = "Gå til innstillinger";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Gå til pålogging";
+
+/* Confirmation message */
+"You have unsaved changes. Do you want to save it?" = "Du har ulagrede endringer. Ønsker du å lagre de?";
+
+/* title */
+"Save Changes" = "Lagre endringer";
+
+/* Title */
+"Recovery Code" = "Gjenopprettingskode";
+
+/* Placeholder */
+"Two Factor Code" = "Tofaktorkode";
+
+/* Title */
+"Authentication" = "Autentisering";
+
+/* Action in 2fa popup view */
+"Enter" = "Enter";
+
+/* Title */
+"Storage Warning" = "Advarsel om lagringsplass";
+
+/* Content of space warning */
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Du har brukt opp all lagringsplassen din (%@). Vennligst oppgrader planen din for å fortsette å sende og motta e-post.";
+
+/* Content of space warning */
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Du har brukt %1$d%% av lagringsplassen din (%2$@). Vennligst oppgrader planen din for å fortsette å sende og motta e-post.";
+
+/* Alert title */
+"Storage full" = "Lagringsplassen er full";
+
+/* Storage warning */
+"Storage quota exceeded" = "Overskredet lagringskvote";
+
+/* Content of storage full alert */
+"Please upgrade your plan" = "Vennligst oppgrader planen din";
+
+/* Content of storage full alert */
+"Please upgrade your plan to continue to send and receive emails." = "Vennligst oppgrader planen din for å fortsette å sende og motta e-post.";
+
+/* Title */
+"Warning" = "Advarsel";
+
+/* Action */
+"Hide" = "Skjul";
+
+/* Action */
+"Show" = "Vis";
+
+/* update password error title */
+"Change Password" = "Endre passord";
+
+/* update password error = typo:Modulus */
+"Can't get a Modulus ID!" = "Kan ikke få en Modulus-ID!";
+
+/* update password error = typo:Modulus */
+"Can't get a Modulus!" = "Kan ikke få en Modulus!";
+
+/* update password error */
+"Invalid hashed password!" = "Ugyldig hash-passord!";
+
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Det nye passordet må være minst 8 tegn langt";
+
+/* update password error */
+"Can't create a SRP verifier!" = "Kan ikke opprette en SRP-verifikator!";
+
+/* update password error */
+"Can't create a SRP Client" = "Kan ikke opprette en SRP-klient";
+
+/* update password error */
+"The password is wrong." = "Passordet er feil.";
+
+/* update password error */
+"The new password does not match." = "Det nye passordet samsvarer ikke";
+
+/* update password error */
+"The new password can't be empty." = "Det nye passordet kan ikke være tomt.";
+
+/* update password error */
+"The private key update failed." = "Oppdateringen av privatnøkkelen mislyktes.";
+
+/* update password error */
+"Password update failed" = "Passordoppdatering mislyktes";
+
+/* update notification email error title */
+"Update Notification Email" = "Oppdater e-post for varsling";
+
+/* Title */
+"Apply Labels" = "Anvend etiketter";
+
+/* Title of the view showing the message header */
+"Message headers" = "Meldingstitler";
+
+/* Title of the view showing the message HTML source */
+"HTML" = "HTML";
+
+/* Title of the view showing the message body */
+"Message body" = "Meldingstekst";
+
+/* alert title */
+"Confirm phishing report" = "Bekreft rapporten om nettfisking";
+
+/* alert message */
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Hvis du rapporterer en melding som et forsøk på nettfisking, sendes meldingen til oss, slik at vi kan analysere den og forbedre filtrene våre. Dette betyr at vi vil kunne se innholdet i meldingen i sin helhet.";
+
+/* error title */
+"Verification error" = "Verifiseringsfeil";
+
+/* error details */
+"Verification of this content’s signature failed" = "Bekreftelsen av signaturen til dette innholdet mislyktes";
+
+/* error title */
+"Decryption error" = "Krypteringsfeil";
+
+/* error details */
+"Decryption of this content failed" = "Dekryptering av dette innholdet mislyktes";
+
+/* error details */
+"Decryption of this message's encrypted content failed." = "Dekryptering av denne meldingens krypterte innhold mislyktes.";
+
+/* error title */
+"Logs" = "Logger";
+
+/* Title */
+"normal attachments" = "normale vedlegg";
+
+/* Title */
+"inline attachments" = "innebygde vedlegg";
+
+/* Title */
+"From your photo library" = "Fra bildebiblioteket ditt";
+
+/* Title */
+"Take new photo" = "Ta nytt bilde";
+
+/* Title */
+"Import from…" = "Import fra…";
+
+/* Alert title */
+"Attachment limit" = "Vedleggsgrense";
+
+/* Description */
+"The size limit for attachments is 25 MB." = "Størrelsesgrensen for vedlegg er 25 MB.";
+
+/* Error */
+"Can't load the file" = "Kan ikke laste filen";
+
+/* Error */
+"Can't open the file" = "Kan ikke åpne filen";
+
+/* Action */
+"Learn more" = "Lær mer";
+
+/* Action */
+"Retry" = "Prøv på nytt";
+
+/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
+"'On' E, MMM d, yyyy 'at' %@" = "'På' E, d MMM, yyyy 'kl.' %@";
+
+/* No comment provided by engineer. */
+"Message expired" = "Melding utløpt";
+
+/* expiration time count down */
+"This message will expire in %dD %dH %dM" = "Denne meldingen utløper om %1$dD %2$dT %3$dM";
+
+/* Action */
+"Sign Out" = "Logg av";
+
+/* Alert title */
+"Sending in progress" = "Sending pågår";
+
+/* the message will show when closing a draft from the share extension */
+"Closing" = "Lukker";
+
+/* Alert message */
+"Please keep Proton Mail open until the operation is done." = "Vennligst hold Proton Mail åpen til operasjonen er fullført.";
+
+/* Title */
+"Bug Report Received" = "Feilrapport er mottatt";
+
+/* No comment provided by engineer. */
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Takk for at du sender inn en feilrapport. Vi har lagt til rapporten din i feilsporingssystemet vårt.";
+
+/* Title of the alert when the device is offline */
+"Offline" = "Frakoblet";
+
+/* Title */
+"Label as…" = "Merk som...";
+
+/* Title */
+"Move to…" = "Flytt til…";
+
+/* Action */
+"Mark as read/unread" = "Marker som lest/ulest";
+
+/* Action title of move to archive */
+"Move to archive" = "Flytt til arkiv";
+
+/* Action title of move to spam */
+"Move to spam" = "Flytt til søppelpost";
+
+/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
+"Failed to load content!\nPlease try again." = "Innlasting av innhold mislyktes!\nVennligst forsøk igjen.";
+
+/* Error message */
+"Failed to determine type of file" = "Kunne ikke fastslå filtype";
+
+/* Error message */
+"Unsupported file type" = "Filtypen støttes ikke";
+
+/* Error */
+"Can't copy the file" = "Kan ikke kopiere filen";
+
+/* Title */
+"Copy address" = "Kopier adresse";
+
+/* Title */
+"Copy name" = "Kopier navn";
+
+/* Title */
+"Copy" = "Kopier";
+
+/* Title */
+"Cut" = "Klipp ut";
+
+/* Title */
+"Add to contacts" = "Legg til i kontakter";
+
+/* encryption lock description */
+"Sender Verification Failed" = "Bekreftelse av avsender mislyktes";
+
+/* encryption lock description */
+"End-to-end encrypted message" = "Ende-til-ende kryptert melding";
+
+/* alert title */
+"Expiration not supported" = "Utløpstid er ikke støttet";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead for the following recipients:" = "Vi anbefaler at du i stedet konfigurerer et passord for følgende mottakere:";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Vi anbefaler at du i stedet konfigurerer et passord, eller deaktiverer PGP for følgende mottakere:";
+
+/* A option title that enable/disable notification feature */
+"Notifications" = "Varsler";
+
+/* VoiceOver: email belongs to folders */
+"Folders" = "Mapper";
+
+/* VoiceOver: email has lables */
+"Labels" = "Etiketter";
+
+/* Error message */
+"Is this bug report about an in-app purchase?" = "Gjelder feilrapporten et kjøp-i-app-tilfelle?";
+
+/* Error message */
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Vårt kundestøtteteam vil prøve å aktivere serviceplanen din manuelt hvis du godtar å legge ved tekniske data som App Store ga til appen i kjøpsøyeblikket. Disse dataene inkluderer ingen detaljer om iTunes-kontoen din, Apple-ID, koblede betalingskort eller annen brukerinformasjon. Tekniske data hjelper oss bare med å kontrollere og verifisere at transaksjonen ble fullført på App Stores tjenere.";
+
+/* Error message */
+"Yes, attach details of payment" = "Ja, legg ved betalingsopplysninger";
+
+/* Error message */
+"No, not related to in-app purchase" = "Nei, ikke relatert til kjøp i appen";
+
+/* The instruction label for the group name textfield */
+"Group name" = "Gruppenavn";
+
+/* The title for the contact group creation view */
+"New group" = "Ny gruppe";
+
+/* The title for the contact group editing view */
+"Edit group" = "Rediger gruppe";
+
+/* The title for the view where user can manage emails in the contact group */
+"Manage addresses" = "Administrer adresser";
+
+/* The title for the view where user can manage emails in the contact group */
+"Add contacts" = "Legg til kontakter";
+
+/* The title for the view where user can select the color for the group */
+"Edit avatar" = "Rediger avatar";
+
+/* The description of the button for deleting the contact group */
+"Delete contact group" = "Slett kontaktgruppe";
+
+/* The message will show up when the user attempts to create a contact group without any email selected */
+"Please select at least one email for the contact group" = "Vennligst velg minst én e-postadresse for kontaktgruppen";
+
+/* The message will show up when the user attempts to create a contact group without any name specified */
+"Please provide a group name" = "Vennligst angi et gruppenavn";
+
+/* The error message will be shown when the update of the contact group through API failed */
+"Can't update contact group through the API" = "Kan ikke oppdatere kontaktgruppen via API-en";
+
+/* The error message will be shown when the deletionn of the contact group through API failed */
+"Can't delete contact group through API" = "Kan ikke slette kontaktgruppen via API-en";
+
+/* Internal type casting error */
+"Type casting error" = "Feil ved kringkasting av type";
+
+/* The preconditions are not met */
+"Internal Error" = "Intern feil";
+
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Slipp her for å legge til som vedlegg";
+
+/* Downloading attachments from cloud */
+"Importing" = "Importerer";
+
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Importerer vedlegg, det kan ta litt tid";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Vedlegg importert";
+
+/* Invalid URL error when click a url in contact */
+"Invalid URL" = "Ugyldig nettadresse";
+
+/* More actions button */
+"More" = "Mer";
+
+/* Local notification title */
+"Problem sending message" = "Problem med å sende melding";
+
+/* Local notification text */
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Vi kunne ikke sende meldingen din, muligens på grunn av en dårlig nettverkstilkobling. Meldingen din ble lagret i Utkast og sendes automatisk neste gang du åpner appen.";
+
+/* Alert to confirm signout */
+"You will be switched to %@" = "Du vil bli byttet til %@";
+
+/* Alert to confirm sign out */
+"Are you sure you want to sign out?" = "Er du sikker på at du vil logge av?";
+
+/* Alert to confirm sign out when only one account signed in */
+"Are you sure you want to sign out %@?" = "Er du sikker på at du vil logge av %@?";
+
+/* Alert to confirm signout with pending message in the queue */
+"There are unsent messages that will be lost if you sign out" = "Det er usendte meldinger som vil gå tapt hvis du logger av";
+
+/* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
+"Please select at least one email" = "Vennligst velg minst en e-post";
+
+/* Alert when auth token is revoked and switch to another */
+"Signed out from %@ and signed in with %@" = "Logget av fra %1$@ og logget på med %2$@";
+
+/* Alert when switched account by clicking notification of another account */
+"Switched to account '%@'" = "Byttet til konto '%@'";
+
+/* Cert pinning failed alert title */
+"Insecure connection" = "Usikker forbindelse";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Bekreftelse av TLS-sertifikat mislyktes. Tilkoblingen din overvåkes kanskje, og appen er midlertidig blokkert for din sikkerhet.\n\nBytt umiddelbart nettverk.";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Bekreftelse av TLS-sertifikat mislyktes. Tilkoblingen din overvåkes kanskje, og appen er midlertidig blokkert for din sikkerhet.";
+
+/* Cert pinning failed alert message */
+"Disable Validation" = "Deaktiver validering";
+
+/* Account manager title */
+"Account" = "Konto";
+
+/* Alert when the account is already logged in */
+"The user is already signed in" = "Brukeren er allerede logget på";
+
+/* Title of alert when the free account limit is reached */
+"Limit reached" = "Grense nådd";
+
+/* Alert when the free account limit is reached */
+"Only one free account can be added" = "Bare én gratis konto kan legges til";
+
+/* section title in settings */
+"Account settings" = "Kontoinnstillinger";
+
+/* section title in settings */
+"App settings" = "App-innstillinger";
+
+/* section title in settings */
+"General settings" = "Generelle innstillinger";
+
+/* security title in settings */
+"App PIN" = "App-PIN";
+
+/* security title in settings */
+"App PIN & Touch ID" = "App-PIN og Touch ID";
+
+/* security title in settings */
+"App PIN & Face ID" = "App-PIN og Face ID";
+
+/* cell title in device settings */
+"Language" = "Språk";
+
+/* cell title in device settings */
+"Combined contacts" = "Kombinerte kontakter";
+
+/* cell title in app settings */
+"Swipe actions" = "Sveipehandlinger";
+
+/* cell title in app settings */
+"Alternative routing" = "Alternativ ruting";
+
+/* cell title in device settings */
+"Storage" = "Lagring";
+
+/* cell title in device settings */
+"Addresses" = "Adresser";
+
+/* Cell title in device settings - mute notification until a later time. */
+"Snooze" = "Slumre";
+
+/* cell title in device settings */
+"Mailbox" = "Postboks";
+
+/* cell title in device settings */
+"Privacy" = "Personvern";
+
+/* cell title in device settings */
+"Local storage limit" = "Lokal lagringsgrense";
+
+/* cell title in device setting */
+"Clear local cache" = "Tøm lokal hurtigbuffer";
+
+/* cell title in app setting */
+"Dark mode" = "Mørk modus";
+
+/* network troubleshot cell title */
+"Allow alternative routing" = "Tillat alternativ ruting";
+
+/* network troubleshot cell title */
+"No internet connection" = "Ingen internettforbindelse";
+
+/* The error message is shown in composer */
+"Recipient not found" = "Mottaker ikke funnet";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Ugyldig e-postadresse";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "Minst én mottakers e-postadresse er feil formatert, vennligst dobbeltsjekk dem.";
+
+/* incorrect email format error in composer */
+"Error sending" = "Feil ved sending";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "Minst én av e-postadressene i gruppen kunne ikke bli funnet";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Minst én mottakers e-postadresse/domene finnes ikke eller er dårlig formatert. Meldingen er flyttet til utkast.";
+
+/* incorrect email format error while sending */
+"You have entered at least one invalid email address. Please verify your recipients." = "Du har skrevet inn minst én ugyldig e-postadresse. Vennligst bekreft mottakerne.";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found." = "Minst én av e-postadressene i gruppen kunne ikke bli funnet.";
+
+/* incorrect email format error while sending */
+"You have entered at least one unknown recipient. Please verify your recipients." = "Du har skrevet inn minst én ugyldig mottaker. Vennligst bekreft mottakerne.";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "Sending mislyktes";
+
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Gå til utkast";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading…" = "Utkast lastes fremdeles opp…";
+
+/* content of the sending mesage that will display this text on the date label */
+"Sending message…" = "Sender melding…";
+
+/* The unread title of unread action button in mailbox view */
+"unread" = "ulest";
+
+/* The title of navigation bar title of mailbox view while selecting the message */
+"Selected" = "Valgt";
+
+/* The title of last update status of more than 1 hour */
+"Updated >1 hour ago" = "Oppdatert > 1 time siden";
+
+/* The title of last update status of updated just now */
+"Updated just now" = "Oppdatert akkurat nå";
+
+/* The text shown on the mailbox when the device is in offline mode */
+"You are offline" = "Du er frakoblet";
+
+/* The footer shown when there is not result in the inbox */
+"Encrypted by Proton" = "Kryptert av Proton";
+
+/* The text shown on the mailbox when the primary user changed */
+"Signed in as %@" = "Logget på som %@";
+
+/* The title of the star action in action sheet */
+"Star" = "Stjernemerket";
+
+/* The title of the star action in action sheet */
+"Unstar" = "Fjern stjernemerking";
+
+/* The title of the unread action in action sheet */
+"Mark as unread" = "Marker som ulest";
+
+/* Push notification action mark as read */
+"Mark as read" = "Marker som lest";
+
+/* Push notification action move to trash */
+"Move to trash" = "Flytt til papirkurven";
+
+/* The title of the remove action in action sheet */
+"Move to inbox" = "Flytt til innboks";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "Vis melding i lys modus";
+
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "Vis melding i mørk modus";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Aktiver denne funksjonen for å autofullføre e-postadresser ved hjelp av kontakter fra alle påloggede kontoer.";
+
+/* alternative routing description */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Denne innstillingen tillater appen å forsøke alternative nettverksruter for å nå Proton dersom Proton-nettsteder er blokkert. Det kan være nyttig for å komme rundt brannmurer og nettverksproblemer. Vi anbefaler å ha denne innstillingen på for mest pålitelighet. %1$@";
+
+/* The title of alternative routing settings */
+"Networking" = "Nettverk";
+
+/* The title of On setting options */
+"On" = "På";
+
+/* The title of Off setting options */
+"Off" = "Av";
+
+/* The title of re auth alert */
+"Re-authenticate" = "Godkjenn på nytt";
+
+/* The content of the re auth alert */
+"Enter your password to make changes" = "Skriv inn passordet for å gjøre endringer";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Send lesebekreftelse";
+
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "Kvittering sendt";
+
+/* Message of a banner which is displayed on the messages list when offline */
+"We have trouble connecting to the servers. Please reconnect." = "Vi har problemer med å koble til tjenerne. Vennligst koble til igjen.";
+
+/* Title of message permanent deletion alert, singular */
+"Delete message" = "Slett melding";
+
+/* Title of message permanent deletion alert, plural */
+"Delete %d Messages" = "Slett %d meldinger";
+
+/* No comment provided by engineer. */
+"Current Recovery Email" = "Gjeldende gjennopprettings-e-post";
+
+/* No comment provided by engineer. */
+"Recovery enabled" = "Gjenoppretting aktivert";
+
+/* No comment provided by engineer. */
+"Please set a recovery / notification email" = "Vennligst angi en gjenopprettings-/varslings-e-post";
+
+/* No comment provided by engineer. */
+"Unread" = "Uleste";
+
+/* No comment provided by engineer. */
+"Read" = "Lest";
+
+/* No comment provided by engineer. */
+"Set up swipe gestures to access most used actions." = "Konfigurer sveipebevegelser for å få tilgang til de mest brukte handlingene.";
+
+/* No comment provided by engineer. */
+"Tap here to set" = "Trykk her for å angi";
+
+/* No comment provided by engineer. */
+"Not set" = "Ikke angitt";
+
+/* The section title of folder manager table */
+"Your folders" = "Dine mapper";
+
+/* The title of create folder page */
+"New folder" = "Ny mappe";
+
+/* The title of edit folder page */
+"Edit folder" = "Rediger mappe";
+
+/* The title of delete folder button */
+"Delete folder" = "Slett mappe";
+
+/* The section title of label manager table */
+"Your labels" = "Dine etiketter";
+
+/* The title of create label page */
+"New label" = "Ny etikett";
+
+/* The title of edit label page */
+"Edit label" = "Rediger etikett";
+
+/* The title of delete label button */
+"Delete label" = "Slett etikett";
+
+/* The button to enable label list reorder */
+"Reorder" = "Endre rekkefølge";
+
+/* Setting option title of folder setting page */
+"Parent folder" = "Overordnet mappe";
+
+/* Alert message when user tries to delete folder */
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Denne handlingen kan ikke angres. E-postmeldinger som er lagret i denne mappen, blir ikke slettet og finnes i mappen All e-post.";
+
+/* Alert message when user tries to delete label */
+"This action cannot be undone." = "Denne handlingen kan ikke angres.";
+
+/* Alert message when user tries to discard unsaved changes */
+"Any unsaved changes will be lost." = "Eventuelle ulagrede endringer vil gå tapt.";
+
+/* A label message */
+"Inherited from parent folder" = "Arvet fra overordnet mappe";
+
+/* Alert title */
+"Creating folder not allowed" = "Oppretting av mappe ikke tillatt";
+
+/* Alert title */
+"Creating label not allowed" = "Oppretting av etikett ikke tillatt";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "For å bruke mer enn 3 mapper vennligst oppgrader til en betalt plan";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "For å bruke mer enn 3 etiketter vennligst oppgrader til en betalt plan";
+
+/* Alert message is shown when the device doesn't have network connection */
+"Please connect and retry" = "Vennligst koble til og prøv på nytt";
+
+/* Option title */
+"Use folder colors" = "Bruk mappefarger";
+
+/* Option title */
+"Inherit color from parent folder" = "Arv farge fra overordnet mappe";
+
+/* section title */
+"Select color" = "Velg farge";
+
+/* No comment provided by engineer. */
+"You are not connected. We cannot display the content of your message." = "Du er ikke tilkoblet. Vi kan ikke vise innholdet i meldingen din.";
+
+/* No comment provided by engineer. */
+"Do you really want to remove this file from attachments?" = "Ønsker du virkelig å fjerne denne filen fra vedleggene?";
+
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Last innebygde bilder";
+
+/* No comment provided by engineer. */
+"This conversation contains trashed messages" = "Denne samtalen inneholder meldinger i papirkurven.";
+
+/* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "Denne samtalen inneholder ikke meldinger i papirkurven.";
+
+/* No comment provided by engineer. */
+"Message actions" = "Meldingshandlinger";
+
+/* No comment provided by engineer. */
+"Manage" = "Administrer";
+
+/* No comment provided by engineer. */
+"Move message" = "Flytt melding";
+
+/* No comment provided by engineer. */
+"Print" = "Skriv ut";
+
+/* No comment provided by engineer. */
+"Save as PDF" = "Lagre som PDF";
+
+/* No comment provided by engineer. */
+"View headers" = "Vis topptekst";
+
+/* No comment provided by engineer. */
+"View HTML" = "Vis HTML";
+
+/* No comment provided by engineer. */
+"Report phishing" = "Rapportér nettfisking";
+
+/* No comment provided by engineer. */
+"Not a spam (move to inbox)" = "Ikke en søppelpost (flytt til innboks)";
+
+/* No comment provided by engineer. */
+"Move to" = "Flytt til";
+
+/* No comment provided by engineer. */
+"Do you want to discard your changes?" = "Vil du forkaste endringene dine?";
+
+/* No comment provided by engineer. */
+"Your changes will be discarded" = "Endringene dine blir forkastet";
+
+/* No comment provided by engineer. */
+"Label as" = "Merk som";
+
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "Også arkivere?";
+
+/* No comment provided by engineer. */
+"New Label" = "Ny etikett";
+
+/* No comment provided by engineer. */
+"Undisclosed Recipients" = "Ikke avslørte mottakere";
+
+/* No comment provided by engineer. */
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Systemet vårt flagget denne meldingen som et forsøk på nettfisking. Vennligst kontroller at den er legitim.";
+
+/* No comment provided by engineer. */
+"Mark as legitimate" = "Marker som legitim";
+
+/* The title of auto reply banner */
+"This message was automatically generated" = "Denne meldingen ble generert automatisk";
+
+/* Warning message */
+"Do you want to discard the changes?" = "Vil du forkaste endringene?";
+
+/* No comment provided by engineer. */
+"Group emails from the same conversation together." = "Grupper sammen e-poster fra samme samtalen.";
+
+/* No comment provided by engineer. */
+"Conversation grouping" = "Samtalegruppering";
+
+/* No comment provided by engineer. */
+"Conversation mode" = "Samtalemodus";
+
+/* No comment provided by engineer. */
+"Undo send" = "Angre sending";
+
+/* The protection title of PIN code protection */
+"PIN code" = "PIN-kode";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
+
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
+
+/* The title of the button that shows in the conversation view when there is new message coming. */
+"New Message" = "Ny melding";
+
+/* The string that will be read by VoiceOver if the user wants to switch selection mode. */
+"Switch selection mode" = "Bytte valgmodus";
+
+/* No comment provided by engineer. */
+"Yesterday" = "I går";
+
+/* VoiceOver title of account switcher button in the menu */
+"Open account switcher" = "Åpne kontobytter";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Sending vil være tilgjengelig\nnår vedlegg er lastet opp";
+
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Feil ved vedlegg";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "Følgende filer kan ikke legges ved:";
+
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Utvid mappe";
+
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Skjul mappe";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Bytt filter for ulest";
+
+/* Title of user feedback view */
+"Your feedback" = "Din tilbakemelding";
+
+/* Prompt of user feedback view */
+"How would you describe your experience with the new Proton Mail?" = "Hvordan vil du beskrive din opplevelse med det nye Proton Mail?";
+
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Fortell oss om din opplevelse (valgfritt).";
+
+/* Title of button to send feedback */
+"Send feedback" = "Send tilbakemelding";
+
+/* Example feedback */
+"Awful" = "Forferdelig";
+
+/* Example feedback */
+"Wonderful" = "Fantastisk";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Takk for din tilbakemelding!";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Skjul melding";
+
+/* The title of section inside the dark mode setting page */
+"Appearance" = "Utseende";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Følg enhetsinnstillingen";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Alltid på";
+
+/* The title of always off option in dark mode setting */
+"Always off" = "Alltid av";
+
+/* The title of banner that is shown after using swipe action to trash a message */
+"Message moved to trash" = "Melding flyttet til papirkurven";
+
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 message moved to archive" = "1 melding flyttet til arkiv";
+
+/* The title of banner that is shown after using swipe action to spam a message */
+"1 Message moved to spam" = "1 melding flyttet til søppelpost";
+
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "Handling tilbakestilt";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Skriv melding";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Tøm papirkurven";
+
+/* Alert title */
+"Empty trash folder" = "Tøm papirkurvmappen";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Tøm søppelpost";
+
+/* Alert title */
+"Empty spam folder" = "Tøm søppelpostmappen";
+
+/* Warning message */
+"Cannot empty folder right now." = "Kan ikke tømme mappen akkurat nå.";
+
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[Vis hele meldingen]";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Logget av fra %@";
+
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Logg på igjen for å fortsette å motta oppdateringer";
+
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Ingen vedlegg funnet";
+
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Ønsker du uansett å sende meldingen?";
+
+/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
+"Add CC and BCC" = "Legg til kopi og blindkopi";
+
+/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
+"Close CC and BCC" = "Lukk kopi og blindkopi";
+
+/* The title of the button in the composer that can select different sender address. */
+"Choose different sender address" = "Velg en annen avsenderadresse";
+
+/* The voiceiver title of the add password button in the tool bar of composer. */
+"Set mail password" = "Angi passord for e-post";
+
+/* The voiceiver title of the add expiration button in the tool bar of composer */
+"Set mail expiration" = "Angi utløpstid for e-post";
+
+/* The voiceover title of the dismiss keyboard action */
+"Dismiss keyboard" = "Lukk tastaturet";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Advarsel: mistenkt falskt nettsted";
+
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Denne koblingen fører til et nettsted som kanskje prøver å stjele informasjonen din, for eksempel passord og kredittkortdetaljer.\n%@\n\nFor din egen sikkerhet bør du ikke fortsette.";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Ignorer advarsel og fortsett";
+
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Gå tilbake (anbefalt)";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Denne funksjonen forsinker utsending av e-postene dine. På denne måte kan du angre sending av e-posten i den valgte tidsrammen.";
+
+/* The title of the scheduled message banner. */
+"This message will be sent on %@ at %@" = "Denne meldingen vil bli sendt den %1$@ kl. %2$@.";
+
+/* The title of the time label of the scheduled message that is about to be sent today. */
+"Today, %@" = "I dag, %@";
+
+/* The title of the time label of the scheduled message that is about to be sent tomorrow. */
+"Tomorrow, %@" = "I morgen, %@";
+
+/* The title of the alert that will be shown when user tries to delete a scheduled message. */
+"Schedule will be removed" = "Tidsplanen vil bli fjernet";
+
+/* The alert title of the user trying to send a message that was schedule-send. */
+"Send immediately?" = "Sende umiddelbart?";
+
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Denne meldingen er ikke lenger planlagt å bli sendt senere. Hvis du fortsatt vil sende den senere, kan du trykke på \"planlegg sending\"";
+
+/* The action title of the alert of the user trying to send a message that was schedule-send. */
+"Send immediately" = "Send umiddelbart";
+
+/* The content of the introducation view of the schedule send */
+"You can now schedule your messages to be sent later" = "Du kan nå planlegge at meldingene skal sendes senere";
+
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Planlegger melding...";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "Sendt av deg med ende-til-ende kryptering til bekreftet mottaker.";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Sendt av Proton Mail med nulltilgangskryptering til bekreftet mottaker.";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption" = "Sendt av deg med ende-til-ende kryptering";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Sendt av Proton Mail med nulltilgangskryptering";
+
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Lagret med nulltilgangskryptering";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Ende-til-ende kryptert melding fra verifisert avsender";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted and signed message" = "Ende-til-ende kryptert og signert melding";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "PGP-kryptert melding fra bekreftet avsender";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted and signed message" = "PGP-kryptert og signert melding";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "PGP-signert melding fra bekreftet avsender";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP-kryptert melding";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "PGP-signert melding. Bekreftelse av avsender mislyktes";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Ende-til-ende kryptert til bekreftet mottaker";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Ende-til-ende kryptert";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "PGP-kryptert til verifisert mottaker";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "PGP-kryptert";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "PGP-signert";
+
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "E-postadresse deaktivert";
+
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Ingen nøkler kunne hentes for intern bruker";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "Ingen gyldige nøkler hentet for intern bruker";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Klarerte nøkler er ikke gyldige for sending.";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Ingen WKD-nøkkel hentet for brukeren er gyldig for sending.";
+
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Avsendernøkkelen er ikke gyldig.";
+
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "<1m";
+
+/* The time label for message is about to be sent less in 1 minute not in the list view. */
+"less than 1 minute" = "mindre enn 1 minutt";
+
+/* The alert title of user trying to open a scheduled-send message after its time is up. */
+"The message is being sent and will move to the Sent folder once sending is complete." = "Meldingen sendes og flyttes til sendt-mappen når sendingen er fullført.";
+
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "Verktøylinjehandlinger (velg opptil 5)";
+
+/* The title of the section header in the toolbar customize view. */
+"Available actions" = "Tilgjengelige handlinger";
+
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "Du kan velge og omorganisere handlingene på verktøylinjen";
+
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "Tilbakestill til standard?";
+
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "Handlingene på verktøylinjen tilbakestilles til standard";
+
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "Tilbakestill til standard";
+
+/* The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "Tilpass verktøylinjen";
+
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "Melding";
+
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "Denne verktøylinjen er synlig når du leser en melding.";
+
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "Denne verktøylinjen vises når du velger flere meldinger i innboksen.";
+
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "Du kan nå velge og omorganisere handlingene i denne linjen.";
+
+/* Button to block a sender */
+"Block messages from this sender" = "Blokkér meldinger fra denne avsenderen";
+
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Blokkér";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Blokkeringsliste";
+
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Blokkerte avsendere";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Oppdatering i kø, venter på tilkobling...";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Ingen blokkerte avsendere";
+
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Nye e-poster fra %@ vil ikke bli levert og vil bli slettet permanent. Administrer blokkerte e-postadresser i innstillingene.";
+
+/* Banner in the message view */
+"Sender has been blocked" = "Avsender er blokkert";
+
+/* Toast confirming the block */
+"Sender %@ blocked" = "Avsender %@ blokkert";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Avsender %@ ikke blokkert";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Opphev blokkering av avsender";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Opphev blokkering";
+
+/* Name of the feature */
+"Email tracking protection" = "Sporingsbeskyttelse for e-post";
+
+/* Short hint in the header view */
+"No email trackers found" = "Ingen e-postsporere funnet";
+
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "E-postsporere kan krenke personvernet ditt.";
+
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "Noen bilder kunne ikke lastes med sporingsbeskyttelse.";
+
+/* Button inside the banner */
+"Load" = "Last";
+
+/* Official badge next to sender's name */
+"Official" = "Offisiell";
+
+/* The banner title after tapping link copy button in referral share view. */
+"Link copied." = "Kobling kopiert";
+
+/* The article title of the referral share view. */
+"Invite friends to Proton,\n get up to $90 in credits!" = "Inviter venner til Proton,\n få opptil $90 i kreditter!";
+
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Inviter vennene dine til Proton: de prøver Mail Plus gratis, og du tjener kreditter når de abonnerer på en betalt plan.";
+
+/* The title link of the textfield of the referral link in referral share view. */
+"Your invite link" = "Invitasjonskoblingen din";
+
+/* The title of the share button in referral share view. */
+"Share" = "Del";
+
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "Spor dine belønninger";
+
+/* The title of the terms and conditions button in referral share view. */
+"Terms & conditions" = "Vilkår og betingelser";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Jeg har brukt Proton Mail og tenkte du ville like det. Det er en sikker e-posttjeneste som verner om ditt personvern. Registrer deg med min vervelenke for å få gratis 1 måned med premium-funksjoner:";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Personvernet ditt er bedre beskyttet hvis kontaktene dine også bruker Proton Mail. Inviter vennene dine til Proton, og dere vil hver få premiumfordeler gratis.";
+
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Kanskje senere";
+
+/* Settings lock protection section */
+"Protection" = "Beskyttelse";
+
+/* Settings lock advanced settings section */
+"Advanced settings" = "Avanserte innstillinger";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "AppKey-beskyttelse";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey beskytter Proton-informasjonen din ytterligere i tilfelle forseggjorte angrep, for eksempel en angriper som kloner innholdet på enheten din. %1$@";
+
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Ansvarsfraskrivelse";
+
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Varslingshandlinger og andre bakgrunnsprosesser blir utilgjengelige";
+
+/* One of schedule time options */
+"Tomorrow" = "I morgen";
+
+/* One of the schedule time options */
+"As scheduled" = "Som planlagt";
+
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Lag din egen timeplan";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Lås opp tilpasset meldingsplanlegging og andre fordeler når du oppgraderer planen din.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Oppgrader nå";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Planlegg meldinger når som helst";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Ubegrenset antall mapper og etiketter";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Opptil 500 GB med lagringsplass";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Opptil 15 e-postadresser";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Opptil 3 egendefinerte e-postdomener";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide-my-email-aliaser";
+
+/* One of schedule time options */
+"In the morning" = "Om morgenen";
+
+/* Push notification action archive */
+"Archive (verb)" = "Arkiver";
+
+/* Message to show to user after updating password. */
+"Password updated" = "Passord oppdatert";
+
+/* Title for application logs settings option */
+"Application logs" = "Applikasjonslogger";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Neste melding etter flytting";
+
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Naviger til neste melding etter flytting";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Hvis du utfører en flyttehandling på en melding (f.eks. arkiv), navigerer du til neste melding.";
+
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "Det oppstod en uventet feil, vennligst kontakt brukerstøtte.\nFeil: %@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "Utilstrekkelig diskplass";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Programmet kan ikke åpnes på grunn av utilstrekkelig diskplass. Vennligst slett noen data, og prøv på nytt.";
+
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Klarte ikke å åpne meldingen, prøv igjen.";
+
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Vennligst logg på Proton Mail-appen.";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Svar (til siste melding)";
+
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "Videresend (siste melding)";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Svar alle (til siste melding)";
+
+/* The action title in the action sheet of the composing new message */
+"New message" = "Ny melding";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Tilpass";
+
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---For å hjelpe oss med å hjelpe deg, vennligst oppgi så mange detaljer som mulig---\n\nSammendrag:\n\nHar problemet skjedd mer enn en gang: ja/nei\nTrinn for å gjenskape problemet:\nForventet resultat:\nFaktisk resultat:\nKommentarer:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Inkluder logger";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Prøv et annet søkeord.";
+
+/* zero messages matching search query */
+"No results found" = "Ingen resultater funnet";
+
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Auto-slett";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Auto-slett uønskede meldinger";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Meldinger i papirkurven eller søppelposten lenger enn 30 dager, slettes automatisk.";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Slett meldinger?";
+
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Dette sletter alle meldinger som er i papirkurven eller søppelposten, i mer enn 30 dager, inkludert meldinger som for øyeblikket er i disse mappene.";
+
+/* Button to enable encrypted search */
+"Enable" = "Aktiver";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Oppgrader for å få automatisk sletting av meldinger som har ligget i papirkurven eller søppelposten i mer enn 30 dager.";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Automatisk sletting av meldinger som har ligget i papirkurven i mer enn 30 dager.";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Nei, takk";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Meldinger i papirkurven eller søppelposten som har vært der lenger enn 30 dager, slettes automatisk.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Tøm søppelpost";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Tøm papirkurven";
+
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Fjern søppelet";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Fjern automatisk meldinger som er eldre enn 30 dager, fra papirkurv og søppelpost. Nyt dette og andre fordeler når du oppgraderer.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Opptil 3 TB med lagringsplass";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Egendefinerte e-postdomener";
+
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Avsender endret";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Den opprinnelige avsenderen av denne meldingen er ikke lenger gyldig. Meldingen sendes fra standardadressen %@.";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Visningsnavn";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Fornavn";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Etternavn";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Visningsnavnfeltet kan ikke være tomt";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Kontaktnavnet er for langt";
+
+/* The button text for add profile picture */
+"Add photo" = "Legg til bilde";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Rediger bilde";
+
+/* The title of select all button for select all messages feature */
+"Select all" = "Velg alle";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Deaktiver PIN-kode";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Angi PIN-kode";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Gjenta PIN-kode";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Angi ny PIN-kode";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Angi en PIN-kode med min 4 tegn og maks 21 tegn.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN er for kort";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN er for lang";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN-kodene samsvarer ikke!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Vennligst skriv inn gammel PIN-kode ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Endre PIN-koden";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Avslutt abonnementet på e-postlisten";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Avslutt abonnement?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Dette vil melde deg ut av e-postlisten. Avsenderen vil bli varslet om å ikke lenger sende e-post til denne adressen.";

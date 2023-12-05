@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Estás a punto de abrir el navegador web y navegar hacia";
 
 /* link opeining confirmation */
@@ -9,7 +8,7 @@
 "Display Name" = "Nombre a mostrar";
 
 /* place holder */
-"Input Display Name…" = "Introduce el nombre para mostrar…";
+"Input Display Name…" = "Introduce el Nombre a mostrar…";
 
 /* Title in signature settings */
 "Signature" = "Firma";
@@ -42,7 +41,7 @@
 "Confirm new password" = "Confirmar nueva contraseña";
 
 /* Settings row */
-"Remove image metadata" = "Eliminar metadatos de la imagen";
+"Remove image metadata" = "Borrar los metadatos de la imagen";
 
 /* Settings row */
 "Block email tracking" = "Bloquear el rastreo de correo electrónico";
@@ -198,7 +197,7 @@
 "The 2 passwords are not matching" = "Las dos contraseñas no coinciden.";
 
 /* action title */
-"Remove password" = "Eliminar contraseña";
+"Remove password" = "Borrar la contraseña";
 
 /* title */
 "Password Hint" = "Pista de contraseña";
@@ -402,7 +401,7 @@
 "Open" = "Abrir";
 
 /* remove action */
-"Remove" = "Eliminar";
+"Remove" = "Borrar";
 
 /* Apply action */
 "Apply" = "Aplicar";
@@ -1407,7 +1406,7 @@
 "You are not connected. We cannot display the content of your message." = "No estás conectado. No podemos mostrar el contenido de tu mensaje.";
 
 /* No comment provided by engineer. */
-"Do you really want to remove this file from attachments?" = "¿Estás seguro de que quieres eliminar este archivo de los archivos adjuntos?";
+"Do you really want to remove this file from attachments?" = "¿Estás seguro de que quieres borrar este archivo de los archivos adjuntos?";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Cargar imágenes incrustadas";
@@ -1557,7 +1556,7 @@
 "Appearance" = "Apariencia";
 
 /* The title of follow system option in dark mode setting */
-"Follow device setting" = "Usar ajustes del dispositivo";
+"Follow device setting" = "Aplicar los ajustes del dispositivo";
 
 /* The title of always on option in dark mode setting */
 "Always on" = "Siempre encendido";
@@ -1653,7 +1652,7 @@
 "Tomorrow, %@" = "Mañana, %@";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
-"Schedule will be removed" = "Se eliminará su programación.";
+"Schedule will be removed" = "Se borrará su programación.";
 
 /* The alert title of the user trying to send a message that was schedule-send. */
 "Send immediately?" = "¿Enviar inmediatamente?";

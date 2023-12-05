@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Vous êtes sur le point de lancer le navigateur web et de visiter";
 
 /* link opeining confirmation */
@@ -39,10 +38,10 @@
 "New password" = "Nouveau mot de passe";
 
 /* Placeholder */
-"Confirm new password" = "Confirmer le nouveau mot de passe";
+"Confirm new password" = "Confirmez le nouveau mot de passe.";
 
 /* Settings row */
-"Remove image metadata" = "Supprimer les métadonnées de l'image";
+"Remove image metadata" = "Retirer les métadonnées de l'image";
 
 /* Settings row */
 "Block email tracking" = "Bloquer le suivi des e-mails";
@@ -198,7 +197,7 @@
 "The 2 passwords are not matching" = "Les 2 mots de passe ne sont pas identiques.";
 
 /* action title */
-"Remove password" = "Supprimer le mot de passe";
+"Remove password" = "Retirer le mot de passe";
 
 /* title */
 "Password Hint" = "Indice de mot de passe";
@@ -240,7 +239,7 @@
 "Draft saved" = "Le brouillon a été enregistré.";
 
 /* Placeholder */
-"Define Hint (Optional)" = "Définir un indice (facultatif)";
+"Define Hint (Optional)" = "Définissez un indice (facultatif).";
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Effacer le style";
@@ -402,7 +401,7 @@
 "Open" = "Ouvrir";
 
 /* remove action */
-"Remove" = "Supprimer";
+"Remove" = "Retirer";
 
 /* Apply action */
 "Apply" = "Appliquer";
@@ -1170,7 +1169,7 @@
 "Addresses" = "Adresses";
 
 /* Cell title in device settings - mute notification until a later time. */
-"Snooze" = "Mettre en pause";
+"Snooze" = "Mise en attente";
 
 /* cell title in device settings */
 "Mailbox" = "Messagerie";
@@ -1182,7 +1181,7 @@
 "Local storage limit" = "Limite de stockage local";
 
 /* cell title in device setting */
-"Clear local cache" = "Effacer le cache local";
+"Clear local cache" = "Vider le cache local";
 
 /* cell title in app setting */
 "Dark mode" = "Thème sombre";
@@ -1407,7 +1406,7 @@
 "You are not connected. We cannot display the content of your message." = "Vous n'êtes pas connecté. Nous ne pouvons pas afficher le contenu de votre message.";
 
 /* No comment provided by engineer. */
-"Do you really want to remove this file from attachments?" = "Voulez-vous vraiment supprimer ce fichier des pièces jointes ?";
+"Do you really want to remove this file from attachments?" = "Voulez-vous vraiment retirer ce fichier des pièces jointes ?";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Charger les images intégrées";
@@ -1653,7 +1652,7 @@
 "Tomorrow, %@" = "Demain, %@";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
-"Schedule will be removed" = "La programmation sera supprimée.";
+"Schedule will be removed" = "La programmation sera retirée.";
 
 /* The alert title of the user trying to send a message that was schedule-send. */
 "Send immediately?" = "Envoyer maintenant ?";

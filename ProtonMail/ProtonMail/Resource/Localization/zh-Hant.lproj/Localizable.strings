@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "您將開啟網頁瀏覽器並導覽到";
 
 /* link opeining confirmation */
@@ -645,7 +644,7 @@
 "Confirm new sign-in password" = "確認新登入密碼";
 
 /* Title */
-"New mailbox password" = "新的郵箱密碼";
+"New mailbox password" = "新的信箱密碼";
 
 /* Title */
 "Confirm new mailbox password" = "確認新郵箱密碼";
@@ -1539,7 +1538,7 @@
 "Tell us about your experience. (Optional)" = "與我們分享您的使用體驗。（選填）";
 
 /* Title of button to send feedback */
-"Send feedback" = "傳送意見反饋";
+"Send feedback" = "傳送意見回饋";
 
 /* Example feedback */
 "Awful" = "糟透了";
@@ -1632,9 +1631,7 @@
 "Warning: suspected fake website" = "警告：疑似假冒網站";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "此連結指向的網站可能試圖竊取您的資訊，如密碼、信用卡詳細資訊等。\n
-%@\n\n
-出於安全考慮，切勿打開此連結。";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "此連結指向的網站可能試圖竊取您的資訊，如密碼、信用卡詳細資訊等。\n%@\n\n出於安全考慮，切勿打開此連結。";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "忽略警告並繼續";

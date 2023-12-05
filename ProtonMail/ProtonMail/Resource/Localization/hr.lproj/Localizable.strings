@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Upravo će te pokrenuti web preglednik i ići na";
 
 /* link opeining confirmation */
@@ -30,7 +29,7 @@
 "Enable email notices" = "Omogući obavijesti putem e-pošte";
 
 /* place holder */
-"Input Notification Email…" = "Input Notification Email…";
+"Input Notification Email…" = "Unesi adresu e-pošte za obavijesti…";
 
 /* Placeholder */
 "Current password" = "Trenutna lozinka";
@@ -45,7 +44,7 @@
 "Remove image metadata" = "Ukloni meta podatke slika";
 
 /* Settings row */
-"Block email tracking" = "Block email tracking";
+"Block email tracking" = "Blokiraj praćenje e-pošte";
 
 /* Settings row */
 "Default browser" = "Zadani preglednik";
@@ -147,10 +146,10 @@
 "You have %d new emails!" = "Imate %d novih poruka e-pošte!";
 
 /* abbreviation of reply: */
-"Re:" = "Re:";
+"Re:" = "Odg:";
 
 /* abbreviation of forward: */
-"Fw:" = "Fw:";
+"Fw:" = "FW:";
 
 /* Title */
 "wrote:" = "je napisao/la:";
@@ -231,7 +230,7 @@
 "From" = "Od";
 
 /* Title */
-"Bcc" = "Bcc";
+"Bcc" = "Skrivena kopija";
 
 /* Placeholder */
 "Subject" = "Predmet";
@@ -423,10 +422,10 @@
 "To" = "Za";
 
 /* message Cc: feild */
-"Cc" = "Cc";
+"Cc" = "Kopija";
 
 /* message Bcc: feild */
-"Bcc:" = "Bcc:";
+"Bcc:" = "Skrivena kopija:";
 
 /* general delete action */
 "Delete" = "Izbriši";
@@ -525,7 +524,7 @@
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ova poruka može biti pokušaj krađe identiteta. Provjerite pošiljatelja i sadržaj kako biste bili sigurni da su legitimni.";
 
 /* Description */
-"Sending Message" = "Sending Message";
+"Sending Message" = "Slanje poruke";
 
 /* Sending message when device doesn't have netowrk connection description */
 "Offline, message queued for sending" = "Offline, message queued for sending";
@@ -564,7 +563,7 @@
 "OK" = "U redu";
 
 /* Action */
-"Later" = "Later";
+"Later" = "Kasnije";
 
 /* Action */
 "Disabled" = "Onemogućeno";
@@ -678,13 +677,13 @@
 "Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Pozovite svoje kontakte u Proton Mail kako biste uživali u besprijekornoj end-to-end enkripciji ili dodajte zaštitu lozinkom porukama koje im šaljete.";
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Poruke s datotekama, oznakama i bojama za stvaranje savršenog, prilagođenog pretinca.";
 
 /* Welcome to rebranding content */
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default.";
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Predstavljamo Protonov osvježeni izgled.\nMnogo usluga, jedna misija. Dobrodošli na internet gdje je privatnost zadana vrijednost.";
 
 /* skip button title in onboarding page */
 "Skip" = "Preskoči";
@@ -720,7 +719,7 @@
 "Discard" = "Odbaci";
 
 /* Message shown to user after discarding action is done */
-"Discarded" = "Discarded";
+"Discarded" = "Odbačeno";
 
 /* action */
 "Add new URL" = "Dodaj novi URL";
@@ -747,7 +746,7 @@
 "Unlock required" = "Potrebno je otključati";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Onemogućili ste %1$@ u postavkama sustava. %2$@ je bio korišten za zaštitu važnih podataka računa. Da biste pristupili svom računu, idite u postavke i ponovno aktivirajte %3$@ ili se ponovno prijavite.";
 
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
@@ -984,7 +983,7 @@
 "Copy" = "Kopiraj";
 
 /* Title */
-"Cut" = "Cut";
+"Cut" = "Izreži";
 
 /* Title */
 "Add to contacts" = "Dodaj u kontakte";
@@ -1278,7 +1277,7 @@
 "View message in Dark mode" = "View message in Dark mode";
 
 /* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Uključite ovu značajku za automatsko dovršavanje adresa e-pošte pomoću kontakata sa svih vaših prijavljenih računa.";
 
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "U slučaju da su Protonove stranice blokirane, ova postavka omogućuje aplikaciji da isproba alternativno mrežno usmjeravanje do Protona, što može biti korisno u zaobilaženju vatrozida ili problema s mrežom. Preporučujemo da ovu postavku zadržite omogućenom radi veće pouzdanosti. %1$@";
@@ -1287,10 +1286,10 @@
 "Networking" = "Mreža";
 
 /* The title of On setting options */
-"On" = "Uklj";
+"On" = "Oključeno";
 
 /* The title of Off setting options */
-"Off" = "Isklj";
+"Off" = "Isključeno";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Ponovno autenticiraj";
@@ -1401,7 +1400,7 @@
 "Inherit color from parent folder" = "Naslijedi boju iz roditeljske mape";
 
 /* section title */
-"Select color" = "Select color";
+"Select color" = "Odaberite boju";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "Niste povezani. Ne možemo prikazati sadržaj vaše poruke.";
@@ -1530,7 +1529,7 @@
 "Switch unread filter" = "Switch unread filter";
 
 /* Title of user feedback view */
-"Your feedback" = "Your feedback";
+"Your feedback" = "Vaša povratna informacija";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "How would you describe your experience with the new Proton Mail?";
@@ -1542,10 +1541,10 @@
 "Send feedback" = "Pošalji povratne informacije";
 
 /* Example feedback */
-"Awful" = "Awful";
+"Awful" = "Užasno";
 
 /* Example feedback */
-"Wonderful" = "Wonderful";
+"Wonderful" = "Izvanredno";
 
 /* Comment in banner thanking user for providing feedback */
 "Thank you for your feedback!" = "Thank you for your feedback!";
@@ -1632,7 +1631,7 @@
 "Warning: suspected fake website" = "Upozorenje: sumnja na lažnu web-stranicu";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Ova poveznica vodi do web-mjesta koje možda pokušava ukrasti vaše podatke, kao što su lozinke i podaci o kreditnoj kartici.\n%@\n\nZbog vaše sigurnosti nemojte nastaviti.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Zanemarite upozorenje i nastavite";
@@ -1647,10 +1646,10 @@
 "This message will be sent on %@ at %@" = "This message will be sent on %1$@ at %2$@";
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
-"Today, %@" = "Today, %@";
+"Today, %@" = "Danas, %@";
 
 /* The title of the time label of the scheduled message that is about to be sent tomorrow. */
-"Tomorrow, %@" = "Tomorrow, %@";
+"Tomorrow, %@" = "Sutra, %@";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Schedule will be removed";
@@ -1785,7 +1784,7 @@
 "Block messages from this sender" = "Block messages from this sender";
 
 /* Button to block a sender, keep it short to fit in the UI */
-"Block" = "Block";
+"Block" = "Blokiraj";
 
 /* Settings item to open blocked sender list */
 "Block list" = "Block list";
@@ -1814,7 +1813,7 @@
 "Unblock sender" = "Unblock sender";
 
 /* Button to unblock a sender, keep it short to fit in the UI */
-"Unblock" = "Unblock";
+"Unblock" = "Odblokiraj";
 
 /* Name of the feature */
 "Email tracking protection" = "Email tracking protection";
@@ -1832,7 +1831,7 @@
 "Load" = "Učitaj";
 
 /* Official badge next to sender's name */
-"Official" = "Official";
+"Official" = "Službeno";
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Link copied.";
@@ -1862,10 +1861,10 @@
 "Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free.";
 
 /* The title of the maybe later button in referral prompt view. */
-"Maybe later" = "Maybe later";
+"Maybe later" = "Možda kasnije";
 
 /* Settings lock protection section */
-"Protection" = "Protection";
+"Protection" = "Zaštita";
 
 /* Settings lock advanced settings section */
 "Advanced settings" = "Advanced settings";
@@ -1940,7 +1939,7 @@
 "An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
 
 /* Title for error when app set up at launch fails */
-"Insufficient disk space" = "Insufficient disk space";
+"Insufficient disk space" = "Nedovoljno prostora na disku";
 
 /* Message for error when app set up at launch fails */
 "The application cannot open due to insufficient disk space. Please delete some data and try again" = "The application cannot open due to insufficient disk space. Please delete some data and try again";
@@ -1961,7 +1960,7 @@
 "Reply all (to last message)" = "Reply all (to last message)";
 
 /* The action title in the action sheet of the composing new message */
-"New message" = "New message";
+"New message" = "Nova poruka";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Prilagodi";
@@ -1982,7 +1981,7 @@
 "Auto-delete" = "Auto-delete";
 
 /* The title of the row inside the setting page of auto delete option */
-"Auto-delete unwanted messages" = "Auto-delete unwanted messages";
+"Auto-delete unwanted messages" = "Automatsko brisanje neželjenih poruka";
 
 /* The footer title of the setting row of the auto delete option */
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "Messages in trash or spam longer than 30 days will be automatically deleted.";
@@ -2003,13 +2002,13 @@
 "Automatically delete messages that have been in trash for more than 30 days." = "Automatically delete messages that have been in trash for more than 30 days.";
 
 /* Title of button to discard auto delete option */
-"No, thanks" = "No, thanks";
+"No, thanks" = "Ne, hvala";
 
 /* Text to inform users they have the auto delete feature enabled */
 "Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Messages that have been in trash and spam more than 30 days will be automatically deleted.";
 
 /* Title of button to empty spam folder */
-"Empty spam" = "Empty spam";
+"Empty spam" = "Izbriši svu neželjenu poštu";
 
 /* Title of button to empty trash folder */
 "Empty trash" = "Isprazni otpad";
@@ -2024,7 +2023,7 @@
 "Up to 3 TB of storage" = "Up to 3 TB of storage";
 
 /* Text to advertise what upgrading will provide */
-"Custom email domains" = "Custom email domains";
+"Custom email domains" = "Prilagođene domene";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Sender changed";
@@ -2033,13 +2032,13 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
 
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Display name";
+"Display name" = "Zaslonski naziv";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "Ime";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "Last name";
+"Last name" = "Prezime";
 
 /* The error message that is shown when no display name provided in contact edit view */
 "Display name field cannot be empty" = "Display name field cannot be empty";
@@ -2054,7 +2053,7 @@
 "Edit photo" = "Uredi sliku";
 
 /* The title of select all button for select all messages feature */
-"Select all" = "Select all";
+"Select all" = "Odaberi sve";
 
 /* The title of PIN code disable view  */
 "Disable PIN code" = "Disable PIN code";
@@ -2090,7 +2089,7 @@
 "Unsubscribe from mailing list" = "Otkazati pretplatu s mailing liste";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Otkaži pretplatu?";
 
 /* Unsubscribe confirmation message */
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";

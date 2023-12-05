@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Esteu a punt de llançar el navegador web i navegar fins a";
 
 /* link opeining confirmation */
@@ -198,7 +197,7 @@
 "The 2 passwords are not matching" = "Les 2 contrasenyes no coincideixen";
 
 /* action title */
-"Remove password" = "Suprimir contrasenya";
+"Remove password" = "Esborra la contrasenya";
 
 /* title */
 "Password Hint" = "Pista per a la contrasenya";
@@ -402,7 +401,7 @@
 "Open" = "Obrir";
 
 /* remove action */
-"Remove" = "Suprimeix";
+"Remove" = "Esborra";
 
 /* Apply action */
 "Apply" = "Aplica";
@@ -723,7 +722,7 @@
 "Discarded" = "Descartat";
 
 /* action */
-"Add new URL" = "Afegir una nova URL";
+"Add new URL" = "Afegir un URL nou";
 
 /* settings general section title */
 "Change account password" = "Canviar contrasenya del compte";
@@ -1077,7 +1076,7 @@
 "Attachment imported" = "Fitxer adjunt importat";
 
 /* Invalid URL error when click a url in contact */
-"Invalid URL" = "URL no vàlida";
+"Invalid URL" = "L'URL no és vàlid.";
 
 /* More actions button */
 "More" = "Més";
@@ -1407,7 +1406,7 @@
 "You are not connected. We cannot display the content of your message." = "No esteu connectat. No podem mostrar el contingut del vostre missatge.";
 
 /* No comment provided by engineer. */
-"Do you really want to remove this file from attachments?" = "N'esteu segur, de voler eliminar aquest arxiu dels arxius adjunts?";
+"Do you really want to remove this file from attachments?" = "N'esteu segur, de voler esborrar aquest arxiu dels arxius adjunts?";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Carrega les imatges incrustades";
@@ -1653,7 +1652,7 @@
 "Tomorrow, %@" = "Demà, %@";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
-"Schedule will be removed" = "S'eliminarà la programació";
+"Schedule will be removed" = "S'esborrarà la programació";
 
 /* The alert title of the user trying to send a message that was schedule-send. */
 "Send immediately?" = "Voleu enviar-ho immediatament?";
@@ -1937,7 +1936,7 @@
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "En moure un missatge (per exemple, arxivar), passareu al missatge següent.";
 
 /* Message for error when app set up at launch fails */
-"An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
+"An unexpected error occurred, please contact support.\nError: %@" = "S'ha produït un error inesperat.\nError: %@";
 
 /* Title for error when app set up at launch fails */
 "Insufficient disk space" = "Espai de disc insuficient";

@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Chystáte se otevřít webový prohlížeč a přejít na";
 
 /* link opeining confirmation */
@@ -1874,8 +1873,7 @@
 "AppKey protection" = "Ochrana AppKey";
 
 /* Settings lock AppKey description */
-"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey dále chrání Proton údaje v případě komplikovaných útoků, například když útočník klonuje obsah vašeho zařízení. 
-%1$@";
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey dále chrání Proton údaje v případě komplikovaných útoků, například když útočník klonuje obsah vašeho zařízení. %1$@";
 
 /* AppKey disclaimer title when turning on */
 "Disclaimer" = "Zřeknutí se odpovědnosti";

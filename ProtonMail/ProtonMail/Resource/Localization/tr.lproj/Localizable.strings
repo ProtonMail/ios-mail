@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Tarayıcıyı açmak ve şuraya gitmek üzeresiniz";
 
 /* link opeining confirmation */
@@ -222,7 +221,7 @@
 "You need at least one recipient to send" = "Göndermek için en az bir alıcı gereklidir";
 
 /* Error */
-"Upgrade to a paid plan to send from your %@ address" = "%@ adresinden ileti gönderebilmek için ücretli bir tarifeye yükseltin";
+"Upgrade to a paid plan to send from your %@ address" = "%@ adresinden ileti gönderebilmek için ücretli bir tarifeye geçin";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "%1$@ adresinden ileti göndermek ücretli bir özelliktir. İletiniz %2$@ varsayılan adresinizden gönderilecek";
@@ -1386,10 +1385,10 @@
 "Creating label not allowed" = "Etiket oluşturmaya izin verilmiyor";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Lütfen 3 klasörden fazlasını kullanmak için ücretli bir tarifeye yükseltin";
+"Please upgrade to a paid plan to use more than 3 folders" = "Lütfen 3 klasörden fazlasını kullanabilmek için ücretli bir tarifeye geçin";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Lütfen 3 etiketten fazlasını kullanmak için ücretli bir tarifeye yükseltin";
+"Please upgrade to a paid plan to use more than 3 labels" = "Lütfen 3 etiketten fazlasını kullanabilmek için ücretli bir tarifeye geçin";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Lütfen bağlantı kurup yeniden deneyin";
@@ -1722,7 +1721,7 @@
 "PGP-signed" = "PGP ile imzalanmış";
 
 /* The error message while calculating the encryption preferences */
-"Email address disabled" = "E-posta adresi kullanımdan kaldırıldı";
+"Email address disabled" = "E-posta adresi kullanım dışı";
 
 /* The error message while calculating the encryption preferences */
 "No keys retrieved for internal user" = "İç kullanıcı için herhangi bir anahtar alınamadı";

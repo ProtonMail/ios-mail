@@ -285,9 +285,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d message sera déplacé dans le dossier Brouillons et sa programmation sera supprimée.</string>
+        <string>%d message sera déplacé dans le dossier Brouillons et sa programmation sera retirée.</string>
         <key>other</key>
-        <string>Ces %d messages seront déplacés dans le dossier Brouillons et leur programmation sera supprimée.</string>
+        <string>Ces %d messages seront déplacés dans le dossier Brouillons et leur programmation sera retirée.</string>
       </dict>
     </dict>
     <key>%d message moved to Drafts</key>
