@@ -20,12 +20,20 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import ProtonCoreDataModel
 
 final class AttachmentViewModel {
+    typealias Dependencies = HasEventRSVP
+    & HasFetchAttachmentUseCase
+    & HasFetchAttachmentMetadataUseCase
+    & HasUserManager
+
     private(set) var attachments: Set<AttachmentInfo> = [] {
         didSet {
             reloadView?()
+            if oldValue != attachments {
+                checkAttachmentsForInvitations()
+            }
         }
     }
     var reloadView: (() -> Void)?
@@ -42,9 +50,57 @@ final class AttachmentViewModel {
         return totalSize
     }
 
+    private var invitationProcessingTask: Task<Void, Never>? {
+        didSet {
+            oldValue?.cancel()
+        }
+    }
+
+    private let dependencies: Dependencies
+
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
+    }
+
     func attachmentHasChanged(nonInlineAttachments: [AttachmentInfo], mimeAttachments: [MimeAttachment]) {
         var files: [AttachmentInfo] = nonInlineAttachments
         files.append(contentsOf: mimeAttachments)
         self.attachments = Set(files)
+    }
+
+    private func checkAttachmentsForInvitations() {
+        guard UserInfo.isEventRSVPEnabled else {
+            return
+        }
+
+        guard let ics = attachments.first(where: { $0.type == .calendar }) else {
+            return
+        }
+
+        invitationProcessingTask = Task {
+            do {
+                let icsData = try await fetchAndDecrypt(ics: ics)
+                // propagate this data to the UI once it's implemented
+                _ = try await dependencies.eventRSVP.parseData(icsData: icsData)
+            } catch {
+                PMAssertionFailure(error)
+            }
+        }
+    }
+
+    private func fetchAndDecrypt(ics: AttachmentInfo) async throws -> Data {
+        let attachmentMetadata = try await dependencies.fetchAttachmentMetadata.execution(
+            params: .init(attachmentID: ics.id)
+        )
+
+        let attachment = try await dependencies.fetchAttachment.execute(
+            params: .init(
+                attachmentID: ics.id,
+                attachmentKeyPacket: attachmentMetadata.keyPacket,
+                userKeys: dependencies.user.toUserKeys()
+            )
+        )
+
+        return attachment.data
     }
 }

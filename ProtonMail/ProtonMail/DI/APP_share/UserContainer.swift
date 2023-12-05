@@ -119,7 +119,7 @@ final class UserContainer: ManagedContainer {
         }
     }
 
-    var fetchAttachmentFactory: Factory<FetchAttachment> {
+    var fetchAttachmentFactory: Factory<FetchAttachmentUseCase> {
         self {
             FetchAttachment(dependencies: .init(apiService: self.user.apiService))
         }
@@ -127,7 +127,7 @@ final class UserContainer: ManagedContainer {
 
     var fetchAttachmentMetadataFactory: Factory<FetchAttachmentMetadataUseCase> {
         self {
-            FetchAttachmentMetadataUseCase(dependencies: .init(apiService: self.user.apiService))
+            FetchAttachmentMetadata(dependencies: .init(apiService: self.user.apiService))
         }
     }
 

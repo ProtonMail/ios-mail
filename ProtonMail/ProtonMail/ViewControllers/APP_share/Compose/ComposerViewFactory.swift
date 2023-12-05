@@ -26,7 +26,7 @@ final class ComposerViewFactory {
     & HasKeychain
     & HasKeyMakerProtocol
     & HasUserCachedStatus
-    & HasFetchAttachment
+    & HasFetchAttachmentUseCase
     & HasUserDefaults
 
     private unowned let dependencies: Dependencies

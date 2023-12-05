@@ -546,12 +546,12 @@ extension UserContainer: HasFetchAndVerifyContacts {
     }
 }
 
-protocol HasFetchAttachment {
-    var fetchAttachment: FetchAttachment { get }
+protocol HasFetchAttachmentUseCase {
+    var fetchAttachment: FetchAttachmentUseCase { get }
 }
 
-extension UserContainer: HasFetchAttachment {
-    var fetchAttachment: FetchAttachment {
+extension UserContainer: HasFetchAttachmentUseCase {
+    var fetchAttachment: FetchAttachmentUseCase {
         fetchAttachmentFactory()
     }
 }

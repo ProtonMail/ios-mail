@@ -398,6 +398,14 @@ class MockDeviceRegistrationUseCase: DeviceRegistrationUseCase {
 
 }
 
+class MockEventRSVP: EventRSVP {
+    @ThrowingFuncStub(MockEventRSVP.parseData, initialReturn: .crash) var parseDataStub
+    func parseData(icsData: Data) throws -> EventDetails {
+        try parseDataStub(icsData)
+    }
+
+}
+
 class MockFailedPushDecryptionMarker: FailedPushDecryptionMarker {
     @FuncStub(MockFailedPushDecryptionMarker.markPushNotificationDecryptionFailure) var markPushNotificationDecryptionFailureStub
     func markPushNotificationDecryptionFailure() {
@@ -425,7 +433,7 @@ class MockFeatureFlagCache: FeatureFlagCache {
         storeFeatureFlagsStub(flags, userID)
     }
 
-    @FuncStub(MockFeatureFlagCache.featureFlags, initialReturn: SupportedFeatureFlags()) var featureFlagsStub
+    @FuncStub(MockFeatureFlagCache.featureFlags, initialReturn: .crash) var featureFlagsStub
     func featureFlags(for userID: UserID) -> SupportedFeatureFlags {
         featureFlagsStub(userID)
     }
@@ -436,6 +444,14 @@ class MockFeatureFlagsDownloadServiceProtocol: FeatureFlagsDownloadServiceProtoc
     @FuncStub(MockFeatureFlagsDownloadServiceProtocol.updateFeatureFlag) var updateFeatureFlagStub
     func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping (Error?) -> Void) {
         updateFeatureFlagStub(key, value, completion)
+    }
+
+}
+
+class MockFetchAttachmentMetadataUseCase: FetchAttachmentMetadataUseCase {
+    @ThrowingFuncStub(MockFetchAttachmentMetadataUseCase.execution, initialReturn: .crash) var executionStub
+    func execution(params: FetchAttachmentMetadata.Params) throws -> AttachmentMetadata {
+        try executionStub(params)
     }
 
 }
@@ -1246,7 +1262,7 @@ class MockUnlockProvider: UnlockProvider {
 }
 
 class MockUnlockService: UnlockService {
-    @FuncStub(MockUnlockService.start, initialReturn: AppAccess()) var startStub
+    @FuncStub(MockUnlockService.start, initialReturn: .crash) var startStub
     func start() -> AppAccess {
         startStub()
     }

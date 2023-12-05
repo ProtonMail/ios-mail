@@ -23,7 +23,9 @@
 import UIKit
 
 class SingleMessageContentViewModelFactory {
-    typealias Dependencies = SingleMessageComponentsFactory.Dependencies & HasInternetConnectionStatusProviderProtocol
+    typealias Dependencies = SingleMessageComponentsFactory.Dependencies
+    & AttachmentViewModel.Dependencies
+    & HasInternetConnectionStatusProviderProtocol
 
     private let components: SingleMessageComponentsFactory
     private let dependencies: Dependencies
@@ -45,7 +47,7 @@ class SingleMessageContentViewModelFactory {
                 imageProxy: dependencies.imageProxy
             ),
             bannerViewModel: components.banner(labelId: context.labelId, message: context.message),
-            attachments: .init()
+            attachments: .init(dependencies: dependencies)
         )
         return .init(context: context,
                      childViewModels: childViewModels,
