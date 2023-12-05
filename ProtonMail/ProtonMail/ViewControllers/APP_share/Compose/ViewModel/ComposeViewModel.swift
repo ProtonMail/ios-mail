@@ -511,11 +511,10 @@ extension ComposeViewModel {
                 params: .init(
                     attachmentID: att.id,
                     attachmentKeyPacket: att.keyPacket,
-                    purpose: .decryptAndEncodeAttachment,
                     userKeys: userKeys
                 )
             ) { result in
-                guard let base64Att = try? result.get().encoded, !base64Att.isEmpty else {
+                guard let base64Att = try? result.get().data.base64EncodedString(), !base64Att.isEmpty else {
                     return
                 }
                 htmlEditor.update(embedImage: "cid:\(contentId)", encoded:"data:\(att.rawMimeType);base64,\(base64Att)")
@@ -581,16 +580,9 @@ extension ComposeViewModel {
         dependencies.fetchAttachment.callbackOn(.main).execute(params: .init(
             attachmentID: inlineAttachment.id,
             attachmentKeyPacket: inlineAttachment.keyPacket,
-            purpose: .decryptAndEncodeAttachment,
             userKeys: user.toUserKeys()
         )) { result in
-            guard let base64Attachment = try? result.get().encoded,
-                  !base64Attachment.isEmpty
-            else {
-                completion?(false)
-                return
-            }
-            guard let data = Data(base64Encoded: base64Attachment, options: .ignoreUnknownCharacters) else {
+            guard let data = try? result.get().data, !data.isEmpty else {
                 completion?(false)
                 return
             }

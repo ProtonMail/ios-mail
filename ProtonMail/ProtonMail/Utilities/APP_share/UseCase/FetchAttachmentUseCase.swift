@@ -43,11 +43,15 @@ final class FetchAttachment: FetchAttachmentUseCase {
                     switch result {
                     case .success:
                         do {
-                            let encodedAttachment = try self.decrypt(fileUrl: localUrl, params: params)
+                            let plaintext = try AttachmentDecrypter.decrypt(
+                                fileUrl: localUrl,
+                                attachmentKeyPacket: params.attachmentKeyPacket,
+                                userKeys: params.userKeys
+                            )
                             let attachmentFile = AttachmentFile(
                                 attachmentId: params.attachmentID,
                                 fileUrl: localUrl,
-                                encoded: encodedAttachment
+                                data: plaintext
                             )
                             callback(.success(attachmentFile))
                         } catch {
@@ -69,43 +73,12 @@ final class FetchAttachment: FetchAttachmentUseCase {
         // swiftlint:disable:next force_unwrapping
         return URL(string: url)!
     }
-
-    private func decrypt(fileUrl: URL, params: Params) throws -> String {
-        switch params.purpose {
-        case .decryptAndEncodeAttachment:
-            return try AttachmentDecrypter.decryptAndEncode(
-                fileUrl: fileUrl,
-                attachmentKeyPacket: params.attachmentKeyPacket,
-                userKeys: params.userKeys
-            )
-        case .decryptAndEncodePublicKey:
-            return try AttachmentDecrypter.decryptAndEncodePublicKey(
-                fileUrl: fileUrl,
-                attachmentKeyPacket: params.attachmentKeyPacket,
-                userKeys: params.userKeys
-            )
-        case .onlyDownload:
-            return ""
-        }
-    }
-}
-
-extension FetchAttachment.Params {
-    enum Purpose {
-        /// The UseCase will return the file decrypted and encoded to base64
-        case decryptAndEncodeAttachment
-        /// The UseCase will return the file decrypted and encoded to utf8
-        case decryptAndEncodePublicKey
-        /// The UseCase won't decrypt the downloaded file.
-        case onlyDownload
-    }
 }
 
 extension FetchAttachment {
     struct Params {
         let attachmentID: AttachmentID
         let attachmentKeyPacket: String?
-        let purpose: Purpose
         let userKeys: UserKeys
     }
 
@@ -133,8 +106,7 @@ struct AttachmentFile {
     let attachmentId: AttachmentID
     /// Path to the local file where the attachment can be found
     let fileUrl: URL
-    /// Content of the attachment encoded for the specified `Purpose`
-    let encoded: String
+    let data: Data
 }
 
 struct FetchAttachmentError: LocalizedError {

@@ -1375,18 +1375,13 @@ extension MailboxViewModel {
                 self.dependencies.fetchAttachment
                     .execute(params: .init(
                         attachmentID: attId,
-                        attachmentKeyPacket: nil,
-                        purpose: .onlyDownload,
+                        attachmentKeyPacket:  metadata.keyPacket,
                         userKeys: userKeys
                     )) { result in
                     switch result {
                     case .success(let attFile):
                         do {
-                            let fileData = try AttachmentDecrypter.decrypt(
-                                fileUrl: attFile.fileUrl,
-                                attachmentKeyPacket: metadata.keyPacket,
-                                userKeys: userKeys
-                            )
+                            let fileData = attFile.data
                             let fileName = attachmentMetadata.name.cleaningFilename()
                             let secureTempFile = SecureTemporaryFile(data: fileData, name: fileName)
                             completion(.success(secureTempFile))
