@@ -25,7 +25,7 @@ import ProtonCoreDataModel
 import ProtonCoreUIFoundations
 
 class SingleMessageViewModel {
-    typealias Dependencies = HasUserDefaults & HasFeatureFlagCache
+    typealias Dependencies = HasUserDefaults
 
     var message: MessageEntity {
         didSet {
@@ -42,7 +42,7 @@ class SingleMessageViewModel {
     private let messageObserver: MessageObserver
 
     var isMessageSwipeNavigationEnabled: Bool {
-        dependencies.featureFlagCache.valueOfFeatureFlag(.messageNavigation, for: user.userID)
+        false
     }
     var refreshView: (() -> Void)?
 

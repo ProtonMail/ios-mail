@@ -37,8 +37,7 @@ protocol MailboxCoordinatorProtocol: AnyObject {
 }
 
 class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserver {
-    typealias Dependencies = HasFeatureFlagCache
-    & HasInternetConnectionStatusProviderProtocol
+    typealias Dependencies = HasInternetConnectionStatusProviderProtocol
     & SearchViewController.Dependencies
     & SearchViewModel.Dependencies
     & SingleMessageCoordinator.Dependencies
@@ -50,7 +49,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private(set) weak var navigation: UINavigationController?
     private weak var sideMenu: SideMenuController?
     private var isMessageSwipeNavigationEnabled: Bool {
-        dependencies.featureFlagCache.valueOfFeatureFlag(.messageNavigation, for: viewModel.user.userID)
+        false
     }
     var pendingActionAfterDismissal: (() -> Void)?
     private let getApplicationState: () -> UIApplication.State
