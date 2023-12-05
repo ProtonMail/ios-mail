@@ -21,7 +21,7 @@ var mutationObserver = new MutationObserver(function (events) {
             if (removedNode.nodeType === Node.ELEMENT_NODE && removedNode.tagName != 'CARET') {
                 if (removedNode.getAttribute('src-original-pm-cid')) {
                     var cidWithPrefix = removedNode.getAttribute('src-original-pm-cid');
-                    var cid = cidWithPrefix.replace("cid:", "");
+                    var cid = cidWithPrefix.replace(/^(cid:|proton-cid:)/,"");
                     window.webkit.messageHandlers.removeImage.postMessage({ "messageHandler": "removeImage", "cid": cid });
                 }
             }
@@ -176,6 +176,15 @@ html_editor.editor.addEventListener("paste", function (event) {
     html_editor.handlePastedData(event);
 });
 
+html_editor.editor.addEventListener("click", function (event) {
+    if (event.target && event.target.tagName === "IMG" && event.target.hasAttribute('src-original-pm-cid')) {
+        let cid = event.target.getAttribute('src-original-pm-cid');
+        window.webkit.messageHandlers.selectInlineImage.postMessage({"messageHandler": "selectInlineImage", "cid": cid});
+    } else {
+        html_editor.getCaretYPosition();
+    }
+});
+
 html_editor.absorbContactGroupPaste = function (event) {
     const paste = (event.clipboardData || window.clipboardData).getData("text");
     let parsed;
@@ -238,7 +247,6 @@ html_editor.absorbImage = function (event, items, target) {
             continue;
         }
         event.preventDefault(); // prevent default only if a file is pasted
-
         html_editor.getBase64FromFile(file, function (base64) {
             var name = html_editor.createUUID() + "_" + file.name;
             var bits = "data:" + file.type + ";base64," + base64;
@@ -324,6 +332,33 @@ html_editor.updateEncodedEmbedImage = function (cid, blobdata) {
     }
 }
 
+html_editor.insertEmbedImage = function (cid, base64) {
+    var locationToInsertTheImage;
+    if (window.getSelection) {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0).cloneRange();
+            var endContainer = range.endContainer;
+            if (endContainer.parentElement === document.body) {
+                endContainer = null;
+            }
+            locationToInsertTheImage = endContainer ? endContainer : html_editor.editor.querySelector('div');
+        } else {
+            locationToInsertTheImage = html_editor.editor.querySelector('div');
+        }
+    } else {
+        locationToInsertTheImage = html_editor.editor.querySelector('div');
+    }
+
+    let embed = document.createElement('img');
+    embed.src = base64;
+    embed.setAttribute('src-original-pm-cid', `${cid}`);
+    html_editor.cachedCIDs[cid] = base64;
+
+    let parent = locationToInsertTheImage.parentNode;
+    parent.insertBefore(embed, locationToInsertTheImage);
+}
+
 // for calls from JS
 html_editor.updateEmbedImage = function (cid, blobdata) {
     var found = document.querySelectorAll('img[src="' + cid + '"]');
@@ -391,6 +426,9 @@ html_editor.removeEmbedImage = function (cid) {
     for (var i = 0; i < found.length; i++) {
         found[i].remove();
     }
+
+    let contentsHeight = html_editor.getContentsHeight();
+    window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
 }
 
 html_editor.getContentsHeight = function () {

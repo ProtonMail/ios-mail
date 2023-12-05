@@ -392,7 +392,7 @@ final class ComposerMessageHelperTests: XCTestCase {
         XCTAssertEqual(draftBeforeDeleting.numAttachments, 1)
         XCTAssertNotEqual(sut.attachments, [])
 
-        sut.removeAttachment(fileName: fineName, isRealAttachment: true) {
+        sut.removeAttachment(attachment: .init(testAttachment), isRealAttachment: true) {
             e.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -413,8 +413,7 @@ final class ComposerMessageHelperTests: XCTestCase {
         let file = ConcreteFileData(name: name, mimeType: "", contents: data!)
         let e = expectation(description: "Closure is called")
 
-        sut.addAttachment(file,
-                          shouldStripMetaData: false) { attachment in
+        sut.addAttachment(file, shouldStripMetaData: false,  isInline: false) { attachment in
             e.fulfill()
         }
         waitForExpectations(timeout: 1)

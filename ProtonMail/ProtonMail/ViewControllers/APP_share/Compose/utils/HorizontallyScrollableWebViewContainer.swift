@@ -75,6 +75,11 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
 
         // oh, WKWebView is available in IB since iOS 11 only
         self.webView = PMWebView(frame: .zero, configuration: config)
+        #if DEBUG
+        if #available(iOS 16.4, *) {
+            self.webView?.isInspectable = true
+        }
+        #endif
         self.webView.translatesAutoresizingMaskIntoConstraints = false
         self.webView.navigationDelegate = self
         self.webView.uiDelegate = self

@@ -1495,4 +1495,8 @@ enum L11n {
     struct Snooze {
         static let title = NSLocalizedString("Snooze", comment: "The title of the snooze location in the menu")
     }
+
+	struct InlineAttachment {
+        static let addAsAttachment = NSLocalizedString("Add it as attachment", comment: "The title of the action option that will make the inline attachment as normal attachment.")
+	}
 }

@@ -87,9 +87,86 @@ final class ComposerViewControllerTests: XCTestCase {
         let actionSheet = nav.view.subviews.compactMap { $0 as? PMActionSheet }.first
         XCTAssertEqual(actionSheet?.itemGroups.first?.items.count, 3)
     }
+    func testAddImage_imageIsAddedAsInlineImage() throws {
+        makeSUTWithNewDraft()
+        user.userInfo.maxSpace = Int64.max
+        user.userInfo.usedSpace = 0
+        loadEditorView()
+
+        // Import image
+        let fileName = "\(String.randomString(10)).jpeg"
+        let fileURL = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "IMG_0001", withExtension: "JPG"))
+        let image = try XCTUnwrap(UIImage(data: try Data(contentsOf: fileURL)))
+        let e = expectation(description: "import done")
+        sut.fileSuccessfullyImported(as: ConcreteFileData(name: fileName, mimeType: fileName.mimeType(), contents: image)).done { _ in
+            e.fulfill()
+        }.catch { error in
+            XCTFail(error.localizedDescription)
+        }
+        wait(for: [e])
+
+        wait(
+            self.sut.viewModel.childViewModel.composerMessageHelper.draft?.attachments.isEmpty == false
+        )
+        
+        let attachment = try XCTUnwrap(
+            sut.viewModel.childViewModel.composerMessageHelper.draft?.attachments.first
+        )
+        XCTAssertTrue(attachment.isInline)
+        XCTAssertEqual(attachment.name, fileName)
+
+        checkInline(shouldExist: true)
+    }
+
+    func testAddNoneImageAttachment_addItAsNormalAttachment() throws {
+        makeSUTWithNewDraft()
+        user.userInfo.maxSpace = Int64.max
+        user.userInfo.usedSpace = 0
+        loadEditorView()
+
+        // Import image
+        let fileName = "\(String.randomString(10)).pdf"
+        let fileURL = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "sample", withExtension: "pdf"))
+        let data = try Data(contentsOf: fileURL)
+        let e = expectation(description: "import done")
+        sut.fileSuccessfullyImported(as: ConcreteFileData(name: fileName, mimeType: fileName.mimeType(), contents: data)).done { _ in
+            e.fulfill()
+        }.catch { error in
+            XCTFail(error.localizedDescription)
+        }
+        wait(for: [e])
+
+        wait(
+            self.sut.viewModel.childViewModel.composerMessageHelper.draft?.attachments.isEmpty == false
+        )
+
+        let attachment = try XCTUnwrap(
+            sut.viewModel.childViewModel.composerMessageHelper.draft?.attachments.first
+        )
+        XCTAssertFalse(attachment.isInline)
+        XCTAssertEqual(attachment.name, fileName)
+
+        checkInline(shouldExist: false, cid: attachment.contentId)
+    }
 }
 
 extension ComposerViewControllerTests {
+    private func loadEditorView() {
+        nav.loadViewIfNeeded()
+        sut.loadViewIfNeeded()
+        sut.header.loadViewIfNeeded()
+        sut.editor.loadViewIfNeeded()
+        wait(self.sut.editor.htmlEditor.isEditorLoaded == true)
+    }
+
+    private func makeSUTWithNewDraft() {
+        nav = composerViewFactory.makeComposer(
+            msg: nil,
+            action: .newDraft
+        )
+        sut = nav.topViewController as? ComposeContainerViewController
+    }
+
     private func makeSUT(originalScheduledTime: Date?) {
         nav = composerViewFactory.makeComposer(
             msg: draft,
@@ -98,6 +175,30 @@ extension ComposerViewControllerTests {
             originalScheduledTime: originalScheduledTime
         )
         sut = nav.topViewController as? ComposeContainerViewController
+    }
+
+    private func checkInline(shouldExist: Bool, cid: String? = nil) {
+        let e2 = expectation(description: "Get html body")
+        sut.editor.collectDraftData().done { result in
+            let hasInline = result?.1.contains(check: "src-original-pm-cid") == true
+            if shouldExist {
+                XCTAssertTrue(hasInline)
+            } else {
+                XCTAssertFalse(hasInline)
+            }
+            if let cid = cid {
+                let hasCid = result?.1.contains(check: cid) == true
+                if shouldExist {
+                    XCTAssertTrue(hasCid)
+                } else {
+                    XCTAssertFalse(hasCid)
+                }
+            }
+            e2.fulfill()
+        }.catch { error in
+            XCTFail(error.localizedDescription)
+        }
+        wait(for: [e2])
     }
 
     private func prepareEncryptedMessage(
