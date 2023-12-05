@@ -12,7 +12,6 @@ enum MessageDisplayRule {
 // swiftlint:disable type_body_length
 class ConversationViewModel {
     typealias Dependencies = ConversationMessageViewModel.Dependencies
-    & HasFeatureFlagCache
     & HasFetchSenderImage
     & HasFetchMessageDetailUseCase
     & HasNextMessageAfterMoveStatusProvider
@@ -66,7 +65,7 @@ class ConversationViewModel {
     }
 
     var isMessageSwipeNavigationEnabled: Bool {
-        dependencies.featureFlagCache.valueOfFeatureFlag(.messageNavigation, for: user.userID)
+        false
     }
 
     private(set) var conversation: ConversationEntity

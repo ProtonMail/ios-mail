@@ -33,7 +33,6 @@ protocol SettingsAccountCoordinatorProtocol: AnyObject {
 
 class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     typealias Dependencies = BlockedSendersViewModel.Dependencies
-    & HasFeatureFlagCache
     & HasKeychain
     & HasKeyMakerProtocol
     & HasPaymentsUIFactory
@@ -74,10 +73,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         self.dependencies = dependencies
         users = dependencies.usersManager
         let firstUser = users.firstUser!
-        let isMessageSwipeNavigationEnabled = dependencies.featureFlagCache.valueOfFeatureFlag(
-            .messageNavigation,
-            for: firstUser.userID
-        )
+        let isMessageSwipeNavigationEnabled = false
         viewModel = SettingsAccountViewModelImpl(
             user: firstUser,
             isMessageSwipeNavigationEnabled: isMessageSwipeNavigationEnabled
