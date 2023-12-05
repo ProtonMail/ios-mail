@@ -41,7 +41,13 @@ class BaseMessageView: UIView {
             case .string(let string):
                 let label = UILabel()
                 label.lineBreakMode = .byTruncatingTail
-                let text = string.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
+                let text: NSMutableAttributedString
+                if string.isEmpty {
+                    text = "(\(L11n.MailBox.noRecipient))"
+                        .keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
+                } else {
+                    text = string.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
+                }
                 label.set(text: text, preferredFont: preferredFont, weight: weight, textColor: textColor)
                 return label
             case .officialBadge:

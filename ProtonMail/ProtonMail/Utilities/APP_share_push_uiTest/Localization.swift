@@ -1466,6 +1466,7 @@ enum L11n {
         static let selectAll = NSLocalizedString("Select all", comment: "The title of select all button for select all messages feature")
         static let unselectAll = NSLocalizedString("Unselect all", comment: "The title of unselect all button for select all messages feature")
         static let maximumSelectionReached = NSLocalizedString("Maximum selection reached", comment: "Warning message will be shown to user when user try to select more than acceptable message")
+        static let noRecipient = NSLocalizedString("No Recipient", comment: "A strings shows on a draft when recipient is empty")
     }
 
     struct PinCodeSetup {

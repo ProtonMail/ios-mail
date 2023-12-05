@@ -81,27 +81,57 @@ extension MailboxViewModelTests {
                 expectation1.fulfill()
             }
         }
+        waitForExpectations(timeout: 5, handler: nil)
+    }
 
-//        sut.fetchDataWithReset(time: 999,
-//                               cleanContact: false,
-//                               unreadOnly: false) { _, _, _ in
-//            XCTAssertTrue(self.conversationProviderMock.fetchConversationsStub.wasCalledExactlyOnce)
-//            XCTAssertTrue(self.conversationProviderMock.callFetchConversationCounts.wasCalledExactlyOnce)
-//            XCTAssertTrue(self.mockFetchLatestEventId.executeWasCalled)
-//            do {
-//                let argument = try XCTUnwrap(self.conversationProviderMock.fetchConversationsStub.lastArguments)
-//                XCTAssertEqual(argument.first, self.sut.labelID)
-//                XCTAssertEqual(argument.a2, 999)
-//                XCTAssertFalse(argument.a3)
-//                XCTAssertTrue(argument.a4)
-//
-//                let argument2 = try XCTUnwrap(self.conversationProviderMock.callFetchConversationCounts.lastArguments)
-//                XCTAssertNil(argument2.first)
-//            } catch {
-//                XCTFail("Should not reach here")
-//            }
-//            expectation1.fulfill()
-//        }
+    func testUpdateMailbox_whenKeepMessageIsKeepBoth_shouldUseHiddenDraftForDraftFolder() {
+        userManagerMock.mailSettings = .init(showMoved: .keepBoth)
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
+        createSut(labelID: Message.Location.draft.rawValue, labelType: .folder, isCustom: false, labelName: nil)
+
+        self.fetchMessageWithReset.callExecutionBlock.bodyIs { _, params, callback in
+            XCTAssertEqual(params.labelID.rawValue, Message.HiddenLocation.draft.rawValue)
+        }
+        let expectation1 = expectation(description: "Closure is called")
+        sut.updateMailbox(showUnreadOnly: false, isCleanFetch: true, time: 999) { error in
+            XCTFail("Shouldn't have error")
+        } completion: {
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    func testUpdateMailbox_whenKeepMessageIsKeepSent_shouldUseHiddenSentForSentFolder() {
+        userManagerMock.mailSettings = .init(showMoved: .keepSent)
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
+        createSut(labelID: Message.Location.sent.rawValue, labelType: .folder, isCustom: false, labelName: nil)
+
+        self.fetchMessageWithReset.callExecutionBlock.bodyIs { _, params, callback in
+            XCTAssertEqual(params.labelID.rawValue, Message.HiddenLocation.sent.rawValue)
+        }
+        let expectation1 = expectation(description: "Closure is called")
+        sut.updateMailbox(showUnreadOnly: false, isCleanFetch: true, time: 999) { error in
+            XCTFail("Shouldn't have error")
+        } completion: {
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    func testUpdateMailbox_whenKeepMessageIsDontKeep_shouldUseSentForSentFolder() {
+        userManagerMock.mailSettings = .init(showMoved: .doNotKeep)
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
+        createSut(labelID: Message.Location.sent.rawValue, labelType: .folder, isCustom: false, labelName: nil)
+
+        self.fetchMessageWithReset.callExecutionBlock.bodyIs { _, params, callback in
+            XCTAssertEqual(params.labelID.rawValue, Message.Location.sent.rawValue)
+        }
+        let expectation1 = expectation(description: "Closure is called")
+        sut.updateMailbox(showUnreadOnly: false, isCleanFetch: true, time: 999) { error in
+            XCTFail("Shouldn't have error")
+        } completion: {
+            expectation1.fulfill()
+        }
         waitForExpectations(timeout: 5, handler: nil)
     }
 

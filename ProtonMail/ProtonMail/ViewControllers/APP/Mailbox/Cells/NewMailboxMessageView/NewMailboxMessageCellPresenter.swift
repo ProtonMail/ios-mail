@@ -155,8 +155,7 @@ class NewMailboxMessageCellPresenter {
         view.messageCountLabel.layer.borderColor = viewModel.isRead ?
             ColorProvider.TextWeak.cgColor : ColorProvider.TextNorm
 
-        guard viewModel.displayOriginIcon,
-              !viewModel.folderIcons.isEmpty else {
+        guard !viewModel.folderIcons.isEmpty else {
             view.originalImagesStackView.isHidden = true
             view.removeOriginImages()
             return
@@ -224,11 +223,4 @@ class NewMailboxMessageCellPresenter {
         imageView.tintColor = isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         return imageView
     }
-}
-
-extension NewMailboxMessageViewModel {
-    var displayOriginIcon: Bool {
-        location == .allmail || location == .starred || isLabelLocation || location == .almostAllMail
-    }
-
 }
