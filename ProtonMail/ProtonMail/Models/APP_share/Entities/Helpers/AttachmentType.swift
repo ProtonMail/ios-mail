@@ -23,6 +23,7 @@
 import UIKit
 
 // The purpose of this type is to map incoming MIME types to icons
+// swiftlint:disable:next type_body_length
 enum AttachmentType: CaseIterable, Equatable {
     case audio
     case calendar

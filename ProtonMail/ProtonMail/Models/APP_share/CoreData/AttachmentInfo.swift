@@ -98,8 +98,7 @@ final class MimeAttachment: AttachmentInfo {
                    order: -1)
     }
 
-    func toAttachment(context: NSManagedObjectContext,
-                      stripMetadata: Bool) -> Guarantee<AttachmentEntity?> {
+    func toAttachment(context: NSManagedObjectContext, stripMetadata: Bool) -> AttachmentEntity? {
         if let url = localUrl, let data = try? Data(contentsOf: url) {
             let mimeType = url.mimeType()
             let fileData = ConcreteFileData(name: fileName, mimeType: mimeType, contents: data)
@@ -108,10 +107,11 @@ final class MimeAttachment: AttachmentInfo {
                 fileName: fileData.name,
                 type: fileData.mimeType,
                 stripMetadata: stripMetadata,
+                cid: nil,
                 isInline: false
             )
         }
-        return Guarantee.value(nil)
+        return nil
     }
 }
 

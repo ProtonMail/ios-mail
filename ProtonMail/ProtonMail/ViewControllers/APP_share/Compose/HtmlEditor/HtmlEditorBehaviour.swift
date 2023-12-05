@@ -33,8 +33,9 @@ private final class InputAccessoryHackHelper: NSObject {
 protocol HtmlEditorBehaviourDelegate: AnyObject {
     func htmlEditorDidFinishLoadingContent()
     func caretMovedTo(_ offset: CGPoint)
-    func addInlineAttachment(_ sid: String, data: Data, completion: (() -> Void)?)
-    func removeInlineAttachment(_ sid: String, completion: (() -> Void)?)
+    func addInlineAttachment(cid: String, name: String, data: Data, completion: (() -> Void)?)
+    func removeInlineAttachment(_ cid: String, completion: (() -> Void)?)
+    func selectedInlineAttachment(_ cid: String)
 }
 
 class HtmlEditorBehaviour: NSObject {
@@ -47,8 +48,8 @@ class HtmlEditorBehaviour: NSObject {
         case jsError(Error)
     }
 
-    private enum MessageTopics: String {
-        case addImage, removeImage, moveCaret, heightUpdated
+    private enum MessageTopics: String, CaseIterable {
+        case addImage, removeImage, moveCaret, heightUpdated, selectInlineImage
     }
 
     private(set) var isEditorLoaded: Bool = false
@@ -70,20 +71,22 @@ class HtmlEditorBehaviour: NSObject {
 
     // fixes retain cycle: userContentController retains his message handlers
     func eject() {
-        self.webView?.configuration.userContentController.remove(MessageTopics.addImage)
-        self.webView?.configuration.userContentController.remove(MessageTopics.removeImage)
-        self.webView?.configuration.userContentController.remove(MessageTopics.moveCaret)
-        self.webView?.configuration.userContentController.remove(MessageTopics.heightUpdated)
+        MessageTopics.allCases.forEach { topic in
+            self.webView?.configuration.userContentController.remove(topic)
+        }
     }
 
     func setup(webView: WKWebView) {
         self.webView = webView
         webView.scrollView.keyboardDismissMode = .interactive
         webView.configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
-        webView.configuration.userContentController.add(self, topic: MessageTopics.addImage)
-        webView.configuration.userContentController.add(self, topic: MessageTopics.removeImage)
-        webView.configuration.userContentController.add(self, topic: MessageTopics.moveCaret)
-        webView.configuration.userContentController.add(self, topic: MessageTopics.heightUpdated)
+        MessageTopics.allCases.forEach { topic in
+            webView.configuration.userContentController.add(self, topic: topic)
+        }
+        #if DEBUG
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "logger")
+        webView.configuration.userContentController.add(self, name: "logger")
+        #endif
 
         ///
         self.hidesInputAccessoryView() // after called this. you can't find subview `WKContent`
@@ -91,7 +94,6 @@ class HtmlEditorBehaviour: NSObject {
         guard let editor = htmlToInject() else { return }
         self.webView?.loadHTMLString(editor, baseURL: URL(string: "about:blank"))
 
-        updateFontSize()
         NotificationCenter.default
             .addObserver(self,
                          selector: #selector(preferredContentSizeChanged),
@@ -111,7 +113,16 @@ class HtmlEditorBehaviour: NSObject {
             let jsQuotes = Bundle.loadResource(named: "QuoteBreaker", ofType: "js")
             let escape = Bundle.loadResource(named: "Escape", ofType: "js")
 
-            let fullScript = [jsQuotes, script, purifier, escape].joined(separator: "\n")
+            var scripts = [jsQuotes, script, purifier, escape]
+            #if DEBUG
+            let loggerCode = """
+                // Print log on console
+                var console = {};
+                console.log = function(message){window.webkit.messageHandlers['logger'].postMessage(message)};
+            """
+            scripts.insert(loggerCode, at: 0)
+            #endif
+            let fullScript = scripts.joined(separator: "\n")
             let editor = html.preg_replace_none_regex("<!--ReplaceToSytle-->", replaceto: css)
                 .preg_replace_none_regex("<!--ReplaceToScript-->", replaceto: fullScript)
             return editor
@@ -192,6 +203,7 @@ class HtmlEditorBehaviour: NSObject {
 
                 webView.evaluateJavaScript(jsCommand) { res, error in
                     if let err = error {
+                        print(jsCommand)
                         seal.reject(Exception.jsError(err))
                     } else {
                         seal.fulfill(res)
@@ -273,14 +285,28 @@ class HtmlEditorBehaviour: NSObject {
         let cid = isImageProxyEnabled ? "proton-\(cid)" : cid
 
         // add proton prefix to cid since the DOMPurify will add the prefix to the link.
-        self.run(with: "html_editor.updateEncodedEmbedImage(\"\(cid)\", \"\(escapedBlob)\");").catch { _ in
-        }
+        self.run(with: "html_editor.updateEncodedEmbedImage(\"\(cid)\", \"\(escapedBlob)\");").cauterize()
+    }
+
+    /// Insert base64 image to the location of caret
+    /// - Parameters:
+    ///   - cid: ContentID of the embed image
+    ///   - encodedData: encoded data of the embed image
+    func insertEmbedImage(cid: String, encodedData: String, completion: (() -> Void)? = nil) {
+        // Use batch process to add the percent encoding to solve the memory issue
+        let cid = isImageProxyEnabled ? "proton-\(cid)" : cid
+        self.run(with: "html_editor.insertEmbedImage(\"\(cid)\", \"\(encodedData)\");")
+            .ensure {
+                completion?()
+            }
+            .cauterize()
     }
 
     /// remove exsiting embed by cid
     ///
     /// - Parameter cid: the embed image content id
     func remove(embedImage cid: String) {
+        let cid = isImageProxyEnabled ? "proton-\(cid)" : cid
         self.run(with: "html_editor.removeEmbedImage('\(cid)');").catch { _ in
         }
     }
@@ -315,10 +341,18 @@ class HtmlEditorBehaviour: NSObject {
 }
 
 extension HtmlEditorBehaviour: WKScriptMessageHandler {
+    private func handleConsoleLogFromJS(message: WKScriptMessage) {
+        guard let body = message.body as? String, message.name == "logger" else {
+            assertionFailure("Unexpected message sent from JS")
+            return
+        }
+        SystemLogger.log(message: "WebView log: \(body)")
+    }
+
     func userContentController(_ userContentController: WKUserContentController,
                                didReceive message: WKScriptMessage) {
         guard let userInfo = message.body as? [String: Any] else {
-            assert(false, "Broken message: not a dictionary")
+            handleConsoleLogFromJS(message: message)
             return
         }
 
@@ -330,13 +364,13 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
 
         switch messageTopic {
         case .addImage:
-            guard let path = userInfo["cid"] as? String,
+            guard let cid = userInfo["cid"] as? String,
                 let base64DataString = userInfo["data"] as? String,
                 let base64Data = Data(base64Encoded: base64DataString) else {
                 assert(false, "Broken message: lack important data")
                 return
             }
-            self.delegate?.addInlineAttachment(path, data: base64Data, completion: nil)
+            self.delegate?.addInlineAttachment(cid: cid, name: cid, data: base64Data, completion: nil)
 
         case .heightUpdated:
             guard let newHeight = userInfo["height"] as? Double else {
@@ -359,6 +393,13 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
                 return
             }
             self.delegate?.removeInlineAttachment(path, completion: nil)
+        case .selectInlineImage:
+            guard let cid = userInfo["cid"] as? String else {
+                assert(false, "Broken message: lack important data")
+                return
+            }
+            let cidWithoutPrefix = cid.preg_replace("^(cid:|proton-cid:)", replaceto: "")
+            self.delegate?.selectedInlineAttachment(cidWithoutPrefix)
         }
     }
 }

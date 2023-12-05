@@ -33,6 +33,7 @@ protocol ComposeContentViewControllerDelegate: AnyObject {
     func displayExpirationWarning()
     func displayContactGroupSubSelectionView()
     func willDismiss()
+    func updateAttachmentView()
 }
 
 // swiftlint:disable:next line_length type_body_length
@@ -504,44 +505,78 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
     // MARK: - HtmlEditorBehaviourDelegate
 
-    func addInlineAttachment(_ sid: String, data: Data, completion: (() -> Void)?) {
+    func addInlineAttachment(cid: String, name: String, data: Data, completion: (() -> Void)?) {
         // Data.toAttachment will automatically increment number of attachments in the message
         viewModel.composerMessageHelper.addAttachment(
             data: data,
-            fileName: sid,
+            fileName: name,
             shouldStripMetaData: viewModel.shouldStripMetaData,
             type: "image/png",
-            isInline: true
+            isInline: true,
+            cid: cid
         ) { _ in
             self.viewModel.updateDraft()
             completion?()
         }
     }
 
-    func removeInlineAttachment(_ sid: String, completion: (() -> Void)?) {
-        // find attachment to remove
-        guard let attachment = self.viewModel.getAttachments()
-            .first(where: { $0.name.hasPrefix(sid) }) else {
-            completion?()
-            return
-        }
-
-        viewModel.composerMessageHelper.removeAttachment(fileName: sid, isRealAttachment: true) { [weak self] in
+    func removeInlineAttachment(_ cid: String, completion: (() -> Void)?) {
+        viewModel.composerMessageHelper.removeAttachment(
+            cid: cid,
+            isRealAttachment: true
+        ) { [weak self] in
             self?.viewModel.updateDraft()
-        }
-
-        self.viewModel.deleteAttachment(attachment).done {
             completion?()
-        }.cauterize()
+        }
     }
 
     func htmlEditorDidFinishLoadingContent() {
         viewModel.embedInlineAttachments(in: htmlEditor)
+        viewModel.insertImportedFiles(in: htmlEditor)
     }
 
     @objc
     func caretMovedTo(_ offset: CGPoint) {
         fatalError("should be overridden")
+    }
+
+    func selectedInlineAttachment(_ cid: String) {
+        guard let targetView = parent?.navigationController else {
+            return
+        }
+        // do not show the action sheet while uploading
+        guard let attachment = viewModel.getAttachments()
+            .first(where: { $0.getContentID() == cid && $0.id.rawValue != "0" }) else {
+            return
+        }
+        dismissKeyboard()
+
+        let items: [PMActionSheetItem] = [
+            PMActionSheetItem(
+                title: LocalString._general_remove_button,
+                icon: nil,
+                textColor: ColorProvider.NotificationError
+            ) { [weak self] _ in
+                self?.htmlEditor.remove(embedImage: "cid:\(cid)")
+            },
+            PMActionSheetItem(title: L11n.InlineAttachment.addAsAttachment, icon: nil) { [weak self] _ in
+                MBProgressHUD.showAdded(to: targetView.view, animated: true)
+                self?.viewModel.attachInlineAttachment(
+                    inlineAttachment: attachment
+                ) { shouldRemoveInline in
+                    if shouldRemoveInline {
+                        self?.delegate?.updateAttachmentView()
+                        self?.htmlEditor.remove(embedImage: "cid:\(cid)")
+                    }
+                    MBProgressHUD.hide(for: targetView.view, animated: true)
+                }
+            }
+        ]
+
+        let headerView = PMActionSheetHeaderView(title: attachment.name)
+        let itemGroup = PMActionSheetItemGroup(items: items, style: .clickable)
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [itemGroup])
+        actionSheet.presentAt(targetView, animated: true)
     }
 }
 

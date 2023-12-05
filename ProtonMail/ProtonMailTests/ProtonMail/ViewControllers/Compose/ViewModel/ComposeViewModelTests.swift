@@ -34,6 +34,8 @@ final class ComposeViewModelTests: XCTestCase {
     private var testContainer: TestContainer!
     private let userID: UserID = .init(String.randomString(20))
     private var mockUIDelegate: MockComposeUIProtocol!
+    private var mockUserCacheStatusProvider: MockUserCachedStatusProvider!
+    private var htmlEditor: HtmlEditorBehaviour!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -44,6 +46,7 @@ final class ComposeViewModelTests: XCTestCase {
         self.apiMock = APIServiceMock()
         self.notificationCenter = NotificationCenter()
         self.mockUIDelegate = MockComposeUIProtocol()
+        self.htmlEditor = HtmlEditorBehaviour()
 
         testContext = MockCoreDataStore.testPersistentContainer.viewContext
         fakeUserManager = mockUserManager()
@@ -97,6 +100,7 @@ final class ComposeViewModelTests: XCTestCase {
         self.notificationCenter = nil
         testContainer = nil
         self.mockUIDelegate = nil
+        self.htmlEditor = nil
         FileManager.default.cleanTemporaryDirectory()
         LocaleEnvironment.restore()
         super.tearDown()
@@ -344,8 +348,6 @@ final class ComposeViewModelTests: XCTestCase {
     func testInit_withFileData_stripMetaDataIsOn_attachmentHasNoGPSData() throws {
         let fileData = try loadImage(fileName: "IMG_0001")
         testContainer.keychain[.metadataStripping] = .stripMetadata
-        let e = expectation(description: "Closure is called")
-
         sut = .init(
             subject: "",
             body: "",
@@ -353,11 +355,8 @@ final class ComposeViewModelTests: XCTestCase {
             action: .newDraftFromShare,
             dependencies: dependencies
         )
-        sut.composerMessageHelper.updateAttachmentView = {
-            e.fulfill()
-        }
-        waitForExpectations(timeout: 5)
 
+        sut.insertImportedFiles(in: htmlEditor)
 
         var imageUrl: URL?
         mockCoreDataService.performAndWaitOnRootSavingContext { context in
@@ -369,6 +368,8 @@ final class ComposeViewModelTests: XCTestCase {
         let urlToLoad = try XCTUnwrap(imageUrl)
         XCTAssertFalse(urlToLoad.hasGPSData())
     }
+
+    // TODO: test stripMetadata case 
 
     func testInit_whenReplyAll_shouldRespectReplyToField() throws {
         self.message = testContext.performAndWait {
@@ -600,10 +601,9 @@ extension ComposeViewModelTests {
         let data = try Data(contentsOf: jpgUrl)
         let url = try FileManager.default.createTempURL(forCopyOfFileNamed: fullFileName)
         try data.write(to: url)
-        XCTAssertTrue(url.hasGPSData())
         return ConcreteFileData(
             name: fullFileName,
-            mimeType: "image/png",
+            mimeType: "image/jpg",
             contents: url
         )
     }

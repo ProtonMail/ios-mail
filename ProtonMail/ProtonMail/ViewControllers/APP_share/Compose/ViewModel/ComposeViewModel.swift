@@ -65,6 +65,7 @@ class ComposeViewModel: NSObject {
     private(set) var subject: String = .empty
     var body: String = .empty
     var deliveryTime: Date?
+    private var importedFiles: [FileData] = []
     weak var uiDelegate: ComposeUIProtocol?
     private var originalSender: ContactVO?
 
@@ -88,6 +89,7 @@ class ComposeViewModel: NSObject {
         dependencies.keychain[.metadataStripping] == .stripMetadata
     }
 
+    // For share extension
     init(
         subject: String,
         body: String,
@@ -110,6 +112,7 @@ class ComposeViewModel: NSObject {
         self.body = body
         self.messageAction = action
         self.originalScheduledTime = originalScheduledTime
+        self.importedFiles = files
 
         super.init()
 
@@ -119,21 +122,7 @@ class ComposeViewModel: NSObject {
                           pwd: "",
                           pwdHit: "")
         self.updateDraft()
-
-        var currentAttachmentSize = 0
-        for file in files {
-            let size = file.contents.dataSize
-            guard size < (Constants.kDefaultAttachmentFileSize - currentAttachmentSize) else {
-                self.shareOverLimitationAttachment = true
-                break
-            }
-            currentAttachmentSize += size
-            composerMessageHelper.addAttachment(file,
-                                                shouldStripMetaData: shouldStripMetaData) { _ in
-                self.updateDraft()
-                self.composerMessageHelper.updateAttachmentView?()
-            }
-        }
+        checkImportedFilesSize()
     }
 
     init(
@@ -530,6 +519,90 @@ extension ComposeViewModel {
                     return
                 }
                 htmlEditor.update(embedImage: "cid:\(contentId)", encoded:"data:\(att.rawMimeType);base64,\(base64Att)")
+            }
+        }
+    }
+
+    // Check if the shared files over size limitation
+    func checkImportedFilesSize() {
+        var currentAttachmentSize = 0
+        for file in importedFiles {
+            let size = file.contents.dataSize
+            guard size < (Constants.kDefaultAttachmentFileSize - currentAttachmentSize) else {
+                self.shareOverLimitationAttachment = true
+                break
+            }
+            currentAttachmentSize += size
+        }
+    }
+
+    // Insert shared files
+    // For images, insert as inlines
+    // For others, insert as normal attachment
+    func insertImportedFiles(in htmlEditor: HtmlEditorBehaviour) {
+        for file in importedFiles {
+            if (AttachmentType.mimeTypeMap[.image] ?? []).contains(file.mimeType.lowercased()) &&
+                UserInfo.shareImagesAsInlineByDefault {
+                insertImportedImage(file: file, in: htmlEditor)
+            } else {
+                attachImported(file: file)
+            }
+        }
+    }
+
+    private func insertImportedImage(file: FileData, in htmlEditor: HtmlEditorBehaviour) {
+        guard let url = file.contents as? URL, let base64String = url.toBase64() else {
+            PMAssertionFailure("can't get base64")
+            return
+        }
+        composerMessageHelper.addAttachment(
+            file,
+            shouldStripMetaData: shouldStripMetaData,
+            isInline: true
+        ) { attachment in
+            guard let attachment = attachment, let contentID = attachment.contentId else { return }
+            let encodedData = "data:\(file.mimeType);base64, \(base64String)"
+            htmlEditor.insertEmbedImage(cid: "cid:\(contentID)", encodedData: encodedData)
+        }
+    }
+
+    private func attachImported(file: FileData) {
+        composerMessageHelper.addAttachment(
+            file,
+            shouldStripMetaData: shouldStripMetaData,
+            isInline: false
+        ) { _ in
+            self.updateDraft()
+            self.composerMessageHelper.updateAttachmentView?()
+        }
+    }
+
+    func attachInlineAttachment(inlineAttachment: AttachmentEntity, completion: ((Bool) -> Void)?) {
+        dependencies.fetchAttachment.callbackOn(.main).execute(params: .init(
+            attachmentID: inlineAttachment.id,
+            attachmentKeyPacket: inlineAttachment.keyPacket,
+            purpose: .decryptAndEncodeAttachment,
+            userKeys: user.toUserKeys()
+        )) { result in
+            guard let base64Attachment = try? result.get().encoded,
+                  !base64Attachment.isEmpty
+            else {
+                completion?(false)
+                return
+            }
+            guard let data = Data(base64Encoded: base64Attachment, options: .ignoreUnknownCharacters) else {
+                completion?(false)
+                return
+            }
+
+            self.composerMessageHelper.addAttachment(
+                data: data,
+                fileName: inlineAttachment.name,
+                shouldStripMetaData: self.shouldStripMetaData,
+                type: inlineAttachment.rawMimeType,
+                isInline: false
+            ) { newAttachment in
+                completion?(newAttachment != nil)
             }
         }
     }

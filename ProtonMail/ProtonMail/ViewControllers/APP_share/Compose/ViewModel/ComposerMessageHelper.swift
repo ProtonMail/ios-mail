@@ -29,7 +29,7 @@ final class ComposerMessageHelper {
     private let dependencies: Dependencies
 
     var attachments: [AttachmentEntity] {
-        return draft?.attachments ?? []
+        return getMessageEntity()?.attachments ?? []
     }
 
     var attachmentSize: Int {
@@ -339,20 +339,23 @@ extension ComposerMessageHelper {
                        shouldStripMetaData: Bool,
                        type: String,
                        isInline: Bool,
+                       cid: String? = nil,
                        completion: @escaping (AttachmentEntity?) -> Void) {
-        dependencies.contextProvider.performOnRootSavingContext { context in
-            data.toAttachment(context,
-                              fileName: fileName,
-                              type: type,
-                              stripMetadata: shouldStripMetaData,
-                              isInline: isInline).done { attachment in
-                if let attachment = attachment {
-                    self.addAttachment(attachment.objectID)
-                }
-                self.updateDraft()
-                completion(attachment)
-            }.cauterize()
+        let attachment: AttachmentEntity? = try? dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            return data.toAttachment(
+                context,
+                fileName: fileName,
+                type: type,
+                stripMetadata: shouldStripMetaData,
+                cid: cid,
+                isInline: isInline
+            )
         }
+        if let attachment = attachment {
+            addAttachment(attachment.objectID)
+            updateDraft()
+        }
+        completion(attachment)
     }
 
     func addAttachment(_ attachmentObjectID: ObjectID) {
@@ -378,13 +381,38 @@ extension ComposerMessageHelper {
         }.cauterize()
     }
 
-    func removeAttachment(fileName: String,
-                          isRealAttachment: Bool,
-                          completion: (() -> Void)?) {
+    func removeAttachment(
+        attachment: AttachmentEntity,
+        isRealAttachment: Bool,
+        completion: (() -> Void)?
+    ) {
         // find attachment to remove
-        guard let attachment = self.attachments.first(where: { $0.name.hasPrefix(fileName)
-        }) else { return }
+        guard let attachment = attachments.first(where: { $0.id == attachment.id }) else {
+            completion?()
+            return
+        }
+        removeAttachmentAndAttachmentCount(attachment, isRealAttachment: isRealAttachment, completion: completion)
+    }
 
+    func removeAttachment(
+        cid: String,
+        isRealAttachment: Bool,
+        completion: (() -> Void)?
+    ) {
+        // find attachment to remove
+        guard let attachment = attachments.first(where: { $0.getContentID() == cid }) else {
+            completion?()
+            return
+        }
+
+        removeAttachmentAndAttachmentCount(attachment, isRealAttachment: isRealAttachment, completion: completion)
+    }
+
+    private func removeAttachmentAndAttachmentCount(
+        _ attachment: AttachmentEntity,
+        isRealAttachment: Bool,
+        completion: (() -> Void)?
+    ) {
         // decrement number of attachments in message manually
         let number = self.attachments.filter { attach in
             if attach.isSoftDeleted {
@@ -410,35 +438,36 @@ extension ComposerMessageHelper {
     func addAttachment(
         _ file: FileData,
         shouldStripMetaData: Bool,
+        isInline: Bool,
         completion: ((AttachmentEntity?) -> Void)?
     ) {
-        dependencies.contextProvider.performOnRootSavingContext { context in
-            file.contents.toAttachment(context,
-                                       fileName: file.name,
-                                       type: file.mimeType,
-                                       stripMetadata: shouldStripMetaData,
-                                       isInline: false).done { attachment in
-                defer {
-                    self.updateDraft()
-                    completion?(attachment)
-                }
-                guard let att = attachment else { return }
-                self.addAttachment(att.objectID)
-            }.cauterize()
+        let attachment: AttachmentEntity? = try? dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            file.contents.toAttachment(
+                context,
+                fileName: file.name,
+                type: file.mimeType,
+                stripMetadata: shouldStripMetaData,
+                cid: nil,
+                isInline: isInline
+            )
         }
+        if let attachment = attachment {
+            addAttachment(attachment.objectID)
+            updateDraft()
+        }
+        completion?(attachment)
     }
 
     func addMimeAttachments(attachment: MimeAttachment, shouldStripMetaData: Bool, completion: @escaping (AttachmentEntity?) -> Void) {
-        dependencies.contextProvider.performOnRootSavingContext { context in
-            attachment.toAttachment(context: context, stripMetadata: shouldStripMetaData).done { attachment in
-                if let attachment = attachment {
-                    self.addAttachment(attachment.objectID)
-                    self.updateAttachmentView?()
-                    self.updateDraft()
-                }
-                completion(attachment)
-            }.cauterize()
+        let attachment: AttachmentEntity? = try? dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            return attachment.toAttachment(context: context, stripMetadata: shouldStripMetaData)
         }
+        if let attachment = attachment {
+            addAttachment(attachment.objectID)
+            updateAttachmentView?()
+            updateDraft()
+        }
+        completion(attachment)
     }
 
     func updateAttachmentCount(isRealAttachment: Bool) {
@@ -515,6 +544,7 @@ extension ComposerMessageHelper {
         msg.numAttachments = NSNumber(value: attachments.count)
 
         attachment.order = msg.numAttachments.int32Value
+        attachment.userID = msg.userID
         _ = context.saveUpstreamIfNeeded()
         updateDraft()
     }

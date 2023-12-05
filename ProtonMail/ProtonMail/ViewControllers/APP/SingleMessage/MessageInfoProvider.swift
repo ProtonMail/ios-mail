@@ -650,33 +650,32 @@ extension MessageInfoProvider {
         }
         self.embeddedStatus = .downloading
         let group = DispatchGroup()
-        let queue = DispatchQueue(label: "AttachmentQueue", qos: .userInitiated)
         let stringsQueue = DispatchQueue(label: "StringsQueue")
         let userKeys = user.toUserKeys()
 
         for inline in inlines {
+            guard let contentID = inline.getContentID() else { return }
             group.enter()
-            let work = DispatchWorkItem { [weak self] in
-                guard let contentID = inline.getContentID() else { return }
-                self?.dependencies.fetchAttachment.execute(
-                    params: .init(
-                        attachmentID: inline.id,
-                        attachmentKeyPacket: inline.keyPacket,
-                        purpose: .decryptAndEncodeAttachment,
-                        userKeys: userKeys
-                    )
-                ) { result in
-                    defer { group.leave() }
-                    guard let base64Attachment = try? result.get().encoded,
-                          !base64Attachment.isEmpty else { return }
-                    stringsQueue.sync {
-                        let scheme = HTTPRequestSecureLoader.imageCacheScheme
-                        let value = "src=\"\(scheme)://\(inline.id)\""
-                        self?.inlineContentIDMap["\(contentID)"] = value
-                    }
+            dependencies.fetchAttachment.execute(
+                params: .init(
+                    attachmentID: inline.id,
+                    attachmentKeyPacket: inline.keyPacket,
+                    purpose: .decryptAndEncodeAttachment,
+                    userKeys: userKeys
+                )
+            ) { [weak self] result in
+                guard let base64Attachment = try? result.get().encoded,
+                      !base64Attachment.isEmpty else {
+                    group.leave()
+                    return
                 }
+                stringsQueue.sync {
+                    let scheme = HTTPRequestSecureLoader.imageCacheScheme
+                    let value = "src=\"\(scheme)://\(inline.id)\""
+                    self?.inlineContentIDMap["\(contentID)"] = value
+                }
+                group.leave()
             }
-            queue.async(group: group, execute: work)
         }
 
         group.notify(queue: .global()) {

@@ -40,6 +40,10 @@ extension UserInfo {
         #else
         return false
         #endif
+	}
+
+    static var shareImagesAsInlineByDefault: Bool {
+        UIApplication.isDebugOrEnterprise
     }
 
     static var isSnoozeEnable: Bool {
