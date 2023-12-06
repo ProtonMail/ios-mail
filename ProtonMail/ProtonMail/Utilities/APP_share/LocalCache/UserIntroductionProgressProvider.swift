@@ -21,6 +21,7 @@ enum SpotlightableFeatureKey: String, CaseIterable {
     case scheduledSend
     case toolbarCustomization
     case messageSwipeNavigation
+    case snooze
 }
 
 // sourcery: mock

@@ -962,7 +962,7 @@ extension ConversationViewController {
         case .saveAsPDF:
             handleExportPDFOnToolbar()
         case .snooze:
-            // TODO: MAILIOS-3996
+            // TODO: snooze:action MAILIOS-3996
             break
         }
     }

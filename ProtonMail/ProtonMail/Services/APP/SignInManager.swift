@@ -177,7 +177,7 @@ private extension SpotlightableFeatureKey {
         switch self {
         case .scheduledSend, .toolbarCustomization:
             return true
-        case .messageSwipeNavigation:
+        case .messageSwipeNavigation, .snooze:
             return false
         }
     }

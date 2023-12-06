@@ -54,6 +54,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     & HasMailEventsPeriodicScheduler
     & HasUpdateMailbox
     & HasUserDefaults
+    & HasUserIntroductionProgressProvider
 
     let labelID: LabelID
     /// This field saves the label object of custom folder/label
@@ -297,6 +298,16 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
 
     func resetTourValue() {
         dependencies.userDefaults[.lastTourVersion] = Constants.App.TourVersion
+    }
+
+    func shouldShowShowSnoozeSpotlight() -> Bool {
+        guard UserInfo.isSnoozeEnable, !ProcessInfo.isRunningUITests else { return false }
+        return dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .snooze, toUserWith: user.userID)
+    }
+
+    func hasSeenSnoozeSpotlight() {
+        guard UserInfo.isSnoozeEnable else { return }
+        dependencies.userIntroductionProgressProvider.markSpotlight(for: .snooze, asSeen: true, byUserWith: user.userID)
     }
 
     func tagUIModels(for conversation: ConversationEntity) -> [TagUIModel] {
@@ -671,7 +682,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
             // TODO: add action
             break
         case .snooze:
-            // TODO: MAILIOS-3996
+            // TODO: snooze:action MAILIOS-3996
             break
         case .inbox:
             handleMoveToInboxAction(on: selectedItems)

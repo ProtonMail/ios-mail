@@ -795,7 +795,7 @@ class ConversationViewModel {
              .more, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
         case .snooze:
-            // TODO: MAILIOS-3996
+            // TODO: snooze:action MAILIOS-3996
             break
         }
         completion()
