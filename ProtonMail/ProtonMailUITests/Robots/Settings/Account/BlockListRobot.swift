@@ -18,11 +18,12 @@
 import fusion
 
 class BlockListRobot: CoreElements {
-    private enum ID: String {
-        case title = "Blocked Senders"
-        case placeholder = "No blocked senders"
-        case editButtonLabel = "Edit"
-        case doneButtonLabel = "Done"
+    private struct ID {
+        static let title = "Blocked Senders"
+        static let placeholder = "No blocked senders"
+        static let editButtonLabel = "Edit"
+        static let doneButtonLabel = "Done"
+        static let deleteButtonLabel = "Delete"
     }
 
     let verify = Verify()
@@ -33,26 +34,32 @@ class BlockListRobot: CoreElements {
     }
 
     func beginEditing() -> Self {
-        button(ID.editButtonLabel.rawValue).tap()
+        button(ID.editButtonLabel).tap()
         return self
     }
 
     func endEditing() -> Self {
-        button(ID.doneButtonLabel.rawValue).tap()
+        button(ID.doneButtonLabel).tap()
+        return self
+    }
+
+    func unblockFirstSender() -> Self {
+        cell().swipeLeft()
+        button(ID.deleteButtonLabel).tap()
         return self
     }
 
     class Verify: CoreElements {
         @discardableResult
-        func expectedTitleIsShown() -> Self {
-            navigationBar(ID.title.rawValue).waitUntilExists().checkExists()
-            return self
+        func expectedTitleIsShown() -> BlockListRobot {
+            navigationBar(ID.title).waitUntilExists().checkExists()
+            return BlockListRobot()
         }
 
         @discardableResult
-        func emptyListPlaceholderIsShown() -> Self {
-            staticText(ID.placeholder.rawValue).waitUntilExists().checkExists()
-            return self
+        func emptyListPlaceholderIsShown() -> BlockListRobot {
+            staticText(ID.placeholder).waitUntilExists().checkExists()
+            return BlockListRobot()
         }
     }
 }
