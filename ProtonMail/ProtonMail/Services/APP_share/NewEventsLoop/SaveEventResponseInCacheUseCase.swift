@@ -42,9 +42,9 @@ final class SaveEventResponseInCacheUseCase {
 
     func execute(response: EventAPIResponse) throws {
         try dependencies.contextProvider.write { context in
+            self.labelEventProcessor.process(response: response, context: context)
             self.contactEventProcessor.process(response: response, context: context)
             self.emailEventProcessor.process(response: response, context: context)
-            self.labelEventProcessor.process(response: response, context: context)
             self.conversationProcessor.process(response: response, context: context)
             self.messageProcessor.process(response: response, context: context)
         }

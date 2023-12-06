@@ -31,17 +31,6 @@ extension UserInfo {
         false // UIApplication.isDebugOrEnterprise
     }
 
-    static var isNewEventsLoopEnabled: Bool {
-        #if DEBUG
-        if ProcessInfo.isRunningUnitTests {
-            return true
-        }
-        return false
-        #else
-        return false
-        #endif
-	}
-
     static var shareImagesAsInlineByDefault: Bool {
         UIApplication.isDebugOrEnterprise
     }
