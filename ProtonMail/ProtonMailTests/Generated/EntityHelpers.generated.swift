@@ -84,6 +84,7 @@ extension ContextLabelEntity {
         order: Int = .init(),
         objectID: ObjectID = .init(rawValue: .init()),
         expirationTime: Date? = nil,
+        snoozeTime: Date? = nil,
         isSoftDeleted: Bool = .init()
     ) -> Self {
         ContextLabelEntity(
@@ -98,6 +99,7 @@ extension ContextLabelEntity {
             order: order,
             objectID: objectID,
             expirationTime: expirationTime,
+            snoozeTime: snoozeTime,
             isSoftDeleted: isSoftDeleted
         )
     }
@@ -287,6 +289,7 @@ extension MessageEntity {
         password: String = .init(),
         passwordHint: String = .init(),
         objectID: ObjectID = .init(rawValue: .init()),
+        snoozeTime: Date? = nil,
         attachmentsMetadata: [AttachmentsMetadata] = .init()
     ) -> Self {
         MessageEntity(
@@ -332,6 +335,7 @@ extension MessageEntity {
             password: password,
             passwordHint: passwordHint,
             objectID: objectID,
+            snoozeTime: snoozeTime,
             attachmentsMetadata: attachmentsMetadata
         )
     }

@@ -1194,6 +1194,7 @@ enum EventTestData {
                 "IsProton": 0,
                 "DisplaySenderImage": 0,
                 "BimiSelector": null,
+                "SnoozeTime": 0,
                 "ToList": [
                     {
                         "Name": "test",
@@ -1286,6 +1287,7 @@ enum EventTestData {
                 "IsProton": 0,
                 "DisplaySenderImage": 0,
                 "BimiSelector": null,
+                "SnoozeTime": 0,
                 "ToList": [],
                 "CCList": [],
                 "BCCList": [

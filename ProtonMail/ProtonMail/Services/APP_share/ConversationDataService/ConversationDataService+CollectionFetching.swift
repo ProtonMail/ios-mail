@@ -68,8 +68,12 @@ extension ConversationDataService {
             para.unread = 1
         }
         para.limit = 50
-        para.sort = "Time"
-        para.desc = 1
+        para.sort = labelID == Message.Location.snooze.labelID ? "SnoozeTime" : "Time"
+        if labelID == Message.Location.snooze.labelID || labelID == Message.Location.scheduled.labelID {
+            para.desc = 0
+        } else {
+            para.desc = 1
+        }
         para.labelID = labelID.rawValue
 
         let request = ConversationsRequest(para)

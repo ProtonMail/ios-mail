@@ -76,10 +76,13 @@ extension UserManager {
             keys: [key]
         )
 
-        let user = UserManager(api: apiMock, globalContainer: globalContainer)
+        let user = UserManager(
+            api: apiMock,
+            userID: userID.rawValue,
+            globalContainer: globalContainer
+        )
         user.userInfo.userAddresses = [address]
         user.userInfo.userKeys = [key]
-        user.userInfo.userId = userID.rawValue
         user.authCredential.mailboxpassword = keyPair.passphrase
         return user
     }

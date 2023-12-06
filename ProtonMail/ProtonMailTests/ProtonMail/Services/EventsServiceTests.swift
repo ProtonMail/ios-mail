@@ -316,6 +316,7 @@ extension EventsServiceTests {
         "IsForwarded": 0,
         "IsProton": 0,
         "DisplaySenderImage": 0,
+        "SnoozeTime": 0,
         "BimiSelector": null,
         "ToList": [
           {

@@ -87,6 +87,7 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
         customView.messageContentView.messageCountLabel.isHidden = false
         customView.messageContentView.attachmentsPreviewStackView.clearAllViews()
         customView.messageContentView.remainingAttachmentsLabel.text = nil
+        customView.messageContentView.snoozeTimeStackView.isHidden = true
     }
 
     func startUpdateExpiration() {

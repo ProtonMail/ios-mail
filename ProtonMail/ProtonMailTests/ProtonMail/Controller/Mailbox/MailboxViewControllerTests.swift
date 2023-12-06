@@ -31,7 +31,6 @@ final class MailboxViewControllerTests: XCTestCase {
 
     var userID: UserID!
     var apiServiceMock: APIServiceMock!
-    var coreDataService: CoreDataService!
     var userManagerMock: UserManager!
     var conversationStateProviderMock: MockConversationStateProviderProtocol!
     var contactGroupProviderMock: MockContactGroupsProviderProtocol!
@@ -44,56 +43,29 @@ final class MailboxViewControllerTests: XCTestCase {
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
     var fakeCoordinator: MockMailboxCoordinatorProtocol!
 
-    private var globalContainer: GlobalContainer!
-
-    var testContext: NSManagedObjectContext {
-        coreDataService.mainContext
-    }
+    private var testContainer: TestContainer!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
         userID = .init(String.randomString(20))
-        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
 
-        globalContainer = .init()
-        globalContainer.contextProviderFactory.register { self.coreDataService }
+        testContainer = .init()
 
         apiServiceMock = APIServiceMock()
         apiServiceMock.sessionUIDStub.fixture = String.randomString(10)
         apiServiceMock.dohInterfaceStub.fixture = DohMock()
-        let fakeAuth = AuthCredential(sessionID: "",
-                                      accessToken: "",
-                                      refreshToken: "",
-                                      userName: "",
-                                      userID: userID.rawValue,
-                                      privateKey: nil,
-                                      passwordKeySalt: nil)
-        let stubUserInfo = UserInfo(maxSpace: nil,
-                                    usedSpace: nil,
-                                    language: nil,
-                                    maxUpload: nil,
-                                    role: nil,
-                                    delinquent: nil,
-                                    keys: nil,
-                                    userId: userID.rawValue,
-                                    linkConfirmation: nil,
-                                    credit: nil,
-                                    currency: nil,
-                                    createTime: nil,
-                                    subscribed: nil)
-        userManagerMock = UserManager(api: apiServiceMock,
-                                      userInfo: stubUserInfo,
-                                      authCredential: fakeAuth,
-                                      mailSettings: nil,
-                                      parent: nil,
-                                      globalContainer: globalContainer)
-        globalContainer.usersManager.add(newUser: userManagerMock)
+        userManagerMock = try UserManager.prepareUser(
+            apiMock: apiServiceMock,
+            userID: userID,
+            globalContainer: testContainer
+        )
+        testContainer.usersManager.add(newUser: userManagerMock)
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()
         labelProviderMock = MockLabelProviderProtocol()
-        contactProviderMock = MockContactProvider(coreDataContextProvider: coreDataService)
+        contactProviderMock = MockContactProvider(coreDataContextProvider: testContainer.contextProvider)
         conversationProviderMock = MockConversationProvider()
         eventsServiceMock = EventsServiceMock()
         mockFetchLatestEventId = MockFetchLatestEventId()
@@ -102,7 +74,9 @@ final class MailboxViewControllerTests: XCTestCase {
         try loadTestMessage() // one message
 
         conversationProviderMock.fetchConversationStub.bodyIs { [unowned self] _, _, _, _, completion in
-            completion(.success(Conversation(context: self.testContext)))
+            self.testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+                completion(.success(Conversation(context: context)))
+            }
         }
 
         conversationProviderMock.fetchConversationCountsStub.bodyIs { _, _, completion in
@@ -133,6 +107,8 @@ final class MailboxViewControllerTests: XCTestCase {
             completion?(.success(()))
         }
         fakeCoordinator = .init()
+        LocaleEnvironment.locale = { .enUS }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
     }
 
     override func tearDownWithError() throws {
@@ -141,21 +117,21 @@ final class MailboxViewControllerTests: XCTestCase {
         viewModel = nil
         contactGroupProviderMock = nil
         contactProviderMock = nil
-        coreDataService = nil
         eventsServiceMock = nil
         userManagerMock = nil
         mockFetchLatestEventId = nil
         toolbarActionProviderMock = nil
         saveToolbarActionUseCaseMock = nil
         apiServiceMock = nil
-        globalContainer = nil
+        testContainer = nil
+        LocaleEnvironment.restore()
     }
 
     func testTitle_whenChangeCustomLabelName_titleWillBeUpdatedAccordingly() {
         let labelID = LabelID(String.randomString(20))
         let labelName = String.randomString(20)
         let labelNewName = String.randomString(20)
-        coreDataService.performAndWaitOnRootSavingContext { context in
+        testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
             let label = Label(context: context)
             label.labelID = labelID.rawValue
             label.name = labelName
@@ -172,7 +148,7 @@ final class MailboxViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.title, labelName)
 
         // Change the label name
-        coreDataService.performAndWaitOnRootSavingContext { context in
+        testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
             let label = Label.labelForLabelID(labelID.rawValue, inManagedObjectContext: context)
             XCTAssertNotNil(label)
             label?.name = labelNewName
@@ -184,7 +160,7 @@ final class MailboxViewControllerTests: XCTestCase {
 
     func testLastUpdateLabel_eventUpdateTimeIsNow_titleIsUpdateJustNow() {
         let labelID = Message.Location.inbox.labelID
-        coreDataService.performAndWaitOnRootSavingContext { context in
+        testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
             let event = UserEvent(context: context)
             event.userID = self.userManagerMock.userID.rawValue
             event.updateTime = Date()
@@ -206,7 +182,7 @@ final class MailboxViewControllerTests: XCTestCase {
 
     func testLastUpdateLabel_eventUpdateTimeIs30MinsBefore_titleIsLastUpdateIn30Mins() {
         let labelID = Message.Location.inbox.labelID
-        coreDataService.performAndWaitOnRootSavingContext { context in
+        testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
             let event = UserEvent(context: context)
             event.userID = self.userManagerMock.userID.rawValue
             let date = Date().add(.minute, value: -30)
@@ -229,7 +205,7 @@ final class MailboxViewControllerTests: XCTestCase {
 
     func testLastUpdateLabel_eventUpdateTimeIs1HourBefore_titleIsUpdateMoreThan1Hour() {
         let labelID = Message.Location.inbox.labelID
-        coreDataService.performAndWaitOnRootSavingContext { context in
+        testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
             let event = UserEvent(context: context)
             event.userID = self.userManagerMock.userID.rawValue
             let date = Date().add(.hour, value: -1)
@@ -280,7 +256,7 @@ final class MailboxViewControllerTests: XCTestCase {
 
     func testUnreadButton_whenUnreadCountIsZeroAtFirst_inConversationMode_unreadIsSetToBe1_unreadButtonShouldBeShown() {
         let labelID = LabelID(String.randomString(20))
-        coreDataService.performAndWaitOnRootSavingContext { context in
+        testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
             let count = ConversationCount(context: context)
             count.userID = self.userID.rawValue
             count.labelID = labelID.rawValue
@@ -297,7 +273,7 @@ final class MailboxViewControllerTests: XCTestCase {
 
         XCTAssertTrue(sut.unreadFilterButton.isHidden)
 
-        coreDataService.performAndWaitOnRootSavingContext { context in
+        testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
             let count = ConversationCount.fetchConversationCounts(
                 by: [labelID.rawValue],
                 userID: self.userID.rawValue,
@@ -314,7 +290,7 @@ final class MailboxViewControllerTests: XCTestCase {
     func testUnreadButton_whenUnreadCountIsZeroAtFirst_inMessageMode_unreadIsSetToBe1_unreadButtonShouldBeShown() {
         let labelID = LabelID(String.randomString(20))
         conversationStateProviderMock.viewModeStub.fixture = .singleMessage
-        coreDataService.performAndWaitOnRootSavingContext { context in
+        testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
             let count = LabelUpdate(context: context)
             count.userID = self.userID.rawValue
             count.labelID = labelID.rawValue
@@ -331,7 +307,7 @@ final class MailboxViewControllerTests: XCTestCase {
 
         XCTAssertTrue(sut.unreadFilterButton.isHidden)
 
-        coreDataService.performAndWaitOnRootSavingContext { context in
+        testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
             let count = LabelUpdate.fetchLastUpdates(
                 by: [labelID.rawValue],
                 userID: self.userID.rawValue,
@@ -348,7 +324,7 @@ final class MailboxViewControllerTests: XCTestCase {
     func testUnreadButton_whenUnreadCountIsMoreThan9999_uneradButtonTitleIsSetToBePlus9999() {
         let labelID = LabelID(String.randomString(20))
         conversationStateProviderMock.viewModeStub.fixture = .singleMessage
-        coreDataService.performAndWaitOnRootSavingContext { context in
+        testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
             let count = LabelUpdate(context: context)
             count.userID = self.userID.rawValue
             count.labelID = labelID.rawValue
@@ -386,18 +362,138 @@ final class MailboxViewControllerTests: XCTestCase {
         XCTAssertFalse(viewModel.listEditing)
         XCTAssertEqual(viewModel.selectedIDs, [])
     }
+
+    func testMessagesOrdering_inSnoozeFolder_snoozeMessagesAreSortedCorrectly() throws {
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+        makeSUT(labelID: Message.Location.snooze.labelID, labelType: .folder, isCustom: false, labelName: nil)
+        try testContainer.contextProvider.write { context in
+            let label = Label(context: context)
+            label.labelID = Message.Location.snooze.rawValue
+            let message1 = Message(context: context)
+            message1.userID = self.userID.rawValue
+            message1.messageStatus = .init(value: 1)
+            message1.add(labelID: Message.Location.snooze.rawValue)
+            message1.snoozeTime = Date(timeIntervalSince1970: 5000)
+            message1.sender = """
+            {
+                "Name": "name",
+                "Address": "test@pm.me"
+            }
+            """
+
+            let message2 = Message(context: context)
+            message2.userID = self.userID.rawValue
+            message2.messageStatus = .init(value: 1)
+            message2.add(labelID: Message.Location.snooze.rawValue)
+            message2.snoozeTime = Date(timeIntervalSince1970: 7000)
+            message2.sender = """
+            {
+                "Name": "name",
+                "Address": "test@pm.me"
+            }
+            """
+        }
+        sut.loadViewIfNeeded()
+
+        wait(self.sut.tableView.visibleCells.count == 2)
+
+        let cells = try XCTUnwrap(sut.tableView.visibleCells as? [NewMailboxMessageCell])
+        let firstCell = try XCTUnwrap(cells.first)
+        XCTAssertEqual(
+            firstCell.mailboxItem?.snoozeTime(labelID: Message.Location.snooze.labelID),
+            Date(timeIntervalSince1970: 5000)
+        )
+        XCTAssertEqual(
+            firstCell.customView.messageContentView.snoozeTimeLabel.text,
+            "Thu, Jan 01 at 01:23"
+        )
+
+        let secondCell = try XCTUnwrap(cells[safe: 1])
+        XCTAssertEqual(
+            secondCell.mailboxItem?.snoozeTime(labelID: Message.Location.snooze.labelID),
+            Date(timeIntervalSince1970: 7000)
+        )
+        XCTAssertEqual(
+            secondCell.customView.messageContentView.snoozeTimeLabel.text,
+            "Thu, Jan 01 at 01:56"
+        )
+    }
+
+    func testConversationsOrdering_inSnoozeFolder_snoozeConversationsAreSortedCorrectly() throws {
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
+        makeSUT(labelID: Message.Location.snooze.labelID, labelType: .folder, isCustom: false, labelName: nil)
+        try testContainer.contextProvider.write { context in
+            let conversation1 = Conversation(context: context)
+            conversation1.userID = self.userID.rawValue
+            conversation1.conversationID = String.randomString(20)
+            conversation1.senders = """
+                [{
+                    "Name": "name",
+                    "Address": "test@pm.me"
+                }]
+            """
+            let contextLabel1 = ContextLabel(context: context)
+            contextLabel1.userID = self.userID.rawValue
+            contextLabel1.conversation = conversation1
+            contextLabel1.labelID = Message.Location.snooze.rawValue
+            contextLabel1.conversationID = conversation1.conversationID
+            contextLabel1.snoozeTime = Date(timeIntervalSince1970: 5000)
+
+            let conversation2 = Conversation(context: context)
+            conversation2.userID = self.userID.rawValue
+            conversation2.conversationID = String.randomString(20)
+            conversation2.senders = """
+                [{
+                    "Name": "name",
+                    "Address": "test@pm.me"
+                }]
+            """
+            let contextLabel2 = ContextLabel(context: context)
+            contextLabel2.userID = self.userID.rawValue
+            contextLabel2.conversation = conversation2
+            contextLabel2.labelID = Message.Location.snooze.rawValue
+            contextLabel2.conversationID = conversation2.conversationID
+            contextLabel2.snoozeTime = Date(timeIntervalSince1970: 7000)
+        }
+        sut.loadViewIfNeeded()
+
+        wait(self.sut.tableView.visibleCells.count == 2)
+
+        let cells = try XCTUnwrap(sut.tableView.visibleCells as? [NewMailboxMessageCell])
+        let firstCell = try XCTUnwrap(cells.first)
+        XCTAssertEqual(
+            firstCell.mailboxItem?.snoozeTime(labelID: Message.Location.snooze.labelID),
+            Date(timeIntervalSince1970: 5000)
+        )
+        XCTAssertEqual(
+            firstCell.customView.messageContentView.snoozeTimeLabel.text,
+            "Thu, Jan 01 at 01:23"
+        )
+
+        let secondCell = try XCTUnwrap(cells[safe: 1])
+        XCTAssertEqual(
+            secondCell.mailboxItem?.snoozeTime(labelID: Message.Location.snooze.labelID),
+            Date(timeIntervalSince1970: 7000)
+        )
+        XCTAssertEqual(
+            secondCell.customView.messageContentView.snoozeTimeLabel.text,
+            "Thu, Jan 01 at 01:56"
+        )
+    }
 }
 
 extension MailboxViewControllerTests {
     private func loadTestMessage() throws {
-        let parsedObject = testMessageMetaData.parseObjectAny()!
-        let testMessage = try GRTJSONSerialization
-            .object(withEntityName: "Message",
-                    fromJSONDictionary: parsedObject,
-                    in: testContext) as? Message
-        testMessage?.userID = userID.rawValue
-        testMessage?.messageStatus = 1
-        try testContext.save()
+        try testContainer.contextProvider.write { context in
+            let parsedObject = testMessageMetaData.parseObjectAny()!
+            let testMessage = try GRTJSONSerialization.object(
+                withEntityName: "Message",
+                fromJSONDictionary: parsedObject,
+                in: context
+            ) as? Message
+            testMessage?.userID = self.userID.rawValue
+            testMessage?.messageStatus = 1
+        }
     }
 
     private func makeSUT(
@@ -407,9 +503,8 @@ extension MailboxViewControllerTests {
         labelName: String?,
         totalUserCount: Int = 1
     ) {
-        let globalContainer = GlobalContainer()
-        let userContainer = UserContainer(userManager: userManagerMock, globalContainer: globalContainer)
-        globalContainer.usersManager.add(newUser: userManagerMock)
+        let userContainer = UserContainer(userManager: userManagerMock, globalContainer: testContainer)
+        testContainer.usersManager.add(newUser: userManagerMock)
 
         let label = LabelInfo(name: labelName ?? "")
         viewModel = MailboxViewModel(
@@ -417,7 +512,7 @@ extension MailboxViewControllerTests {
             label: isCustom ? label : nil,
             userManager: userManagerMock,
             pushService: MockPushNotificationService(),
-            coreDataContextProvider: coreDataService,
+            coreDataContextProvider: testContainer.contextProvider,
             lastUpdatedStore: MockLastUpdatedStoreProtocol(),
             conversationStateProvider: conversationStateProviderMock,
             contactGroupProvider: contactGroupProviderMock,

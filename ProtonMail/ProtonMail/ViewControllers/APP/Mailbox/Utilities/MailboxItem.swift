@@ -57,6 +57,15 @@ enum MailboxItem: Hashable {
         }
     }
 
+    func snoozeTime(labelID: LabelID) -> Date? {
+        switch self {
+        case .message(let message):
+            return message.snoozeTime
+        case .conversation(let conversation):
+            return conversation.getSnoozeTime(labelID: labelID)
+        }
+    }
+
     func isUnread(labelID: LabelID) -> Bool {
         switch self {
         case .message(let message):

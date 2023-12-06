@@ -104,6 +104,13 @@ final class FetchMessagesByLabelRequest: Request {
     let endID: String?
     let page: Int?
     let priority: APIPriority?
+    let sort: Sort
+    let descending: Bool
+
+    enum Sort: String {
+        case time = "Time"
+        case snoozeTime = "SnoozeTime"
+    }
 
     // For endTime and endID, they are used to filter response messages
     // The filter function considers endTime firstly, if time is equal compare endID
@@ -111,12 +118,14 @@ final class FetchMessagesByLabelRequest: Request {
     init(
         labelID: String,
         endTime: Int?,
+        sort: Sort = .time,
         beginTime: Int? = nil,
         isUnread: Bool? = nil,
         pageSize: Int? = 50,
         endID: String? = nil,
         page: Int? = nil,
-        priority: APIPriority? = nil
+        priority: APIPriority? = nil,
+        descending: Bool = true
     ) {
         self.labelID = labelID
         self.endTime = endTime
@@ -126,12 +135,15 @@ final class FetchMessagesByLabelRequest: Request {
         self.endID = endID
         self.page = page
         self.priority = priority
+        self.sort = sort
+        self.descending = descending
     }
 
     var parameters: [String: Any]? {
-        let desc = LabelLocation.scheduled.rawLabelID == labelID ? 0 : 1
-        var out: [String: Any] = ["Sort": "Time",
-                                  "Desc": desc]
+        var out: [String: Any] = [
+            "Sort": sort.rawValue,
+            "Desc": descending ? 1 : 0
+        ]
         out["LabelID"] = self.labelID
         if let endTime, endTime > 0 {
             let newTime = endTime - 1

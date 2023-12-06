@@ -43,6 +43,7 @@ class PMDateFormatter {
     }()
     private lazy var dateFormatter = formatterFactory(localizedDateFormatFromTemplate: "EEEE, MMMM dd")
     private lazy var timeFormatter = formatterFactory(localizedDateFormatFromTemplate: "jj mm")
+    private lazy var snoozeTimeFormatter = formatterFactory(localizedDateFormatFromTemplate: "EEE, MMM dd, HH:mm")
 
     private var calendar: Calendar {
         var calendar = LocaleEnvironment.calendar
@@ -98,6 +99,10 @@ class PMDateFormatter {
         } else {
             return monthDateFormatter.string(from: date)
         }
+    }
+
+    func stringForSnoozeTime(from date: Date) -> String {
+        return snoozeTimeFormatter.string(from: date)
     }
 
     func titleForScheduledBanner(from date: Date) -> (String, String) {

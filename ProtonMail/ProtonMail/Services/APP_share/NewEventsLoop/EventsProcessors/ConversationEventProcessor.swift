@@ -102,6 +102,11 @@ struct ConversationEventProcessor {
             labelObject.size = NSNumber(value: label.contextSize)
             labelObject.attachmentCount = NSNumber(value: label.contextNumAttachments)
             labelObject.order = conversationObject.order
+            if let snoozeTime = label.contextSnoozeTime {
+                labelObject.snoozeTime = Date(timeIntervalSince1970: TimeInterval(snoozeTime))
+            } else {
+                labelObject.snoozeTime = nil
+            }
 
             labelObject.conversation = conversationObject
         }

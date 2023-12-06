@@ -129,6 +129,8 @@ struct MessageEntity: Equatable, Hashable {
 
     let objectID: ObjectID
 
+    let snoozeTime: Date?
+
     let attachmentsMetadata: [AttachmentsMetadata]
 
     func hash(into hasher: inout Hasher) {
@@ -205,8 +207,10 @@ extension MessageEntity {
         self.originalTime = message.orginalTime
         self.passwordEncryptedBody = message.passwordEncryptedBody
         self.password = message.password
+        
         self.passwordHint = message.passwordHint
         self.objectID = .init(rawValue: message.objectID)
+        self.snoozeTime = message.snoozeTime
         let parsedAttachments: [AttachmentsMetadata]?
         do {
             parsedAttachments = try AttachmentsMetadata
