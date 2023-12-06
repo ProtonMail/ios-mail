@@ -1197,8 +1197,10 @@ extension ComposeViewModel {
     func fetchPhoneContacts(completion: (() -> Void)?) {
         let service = user.contactService
         service.getContactVOsFromPhone { contacts, error in
-            self.phoneContacts = contacts
-            completion?()
+            DispatchQueue.main.async {
+                self.phoneContacts = contacts
+                completion?()
+            }
         }
     }
 

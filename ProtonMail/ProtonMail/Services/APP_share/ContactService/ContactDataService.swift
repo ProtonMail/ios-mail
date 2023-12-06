@@ -677,14 +677,18 @@ extension ContactDataService {
         guard addressBookService.hasAccessToAddressBook() else {
             addressBookService.requestAuthorizationWithCompletion { granted, error in
                 if granted {
-                    completion(self.addressBookService.contacts(), nil)
+                    self.addressBookService.fetchDeviceContactsInContactVO { contactVOs in
+                        completion(contactVOs, nil)
+                    }
                 } else {
                     completion([], error)
                 }
             }
             return
         }
-        completion(addressBookService.contacts(), nil)
+        addressBookService.fetchDeviceContactsInContactVO { contactVOs in
+            completion(contactVOs, nil)
+        }
     }
 }
 
