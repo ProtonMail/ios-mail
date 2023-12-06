@@ -217,8 +217,11 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     }
 
     var actionSheetViewModel: MailListActionSheetViewModel {
-        return .init(labelId: labelId.rawValue,
-                     title: .actionSheetTitle(selectedCount: selectedIDs.count, viewMode: locationViewMode))
+        return .init(
+            labelId: labelId.rawValue,
+            title: .actionSheetTitle(selectedCount: selectedIDs.count, viewMode: locationViewMode),
+            locationViewMode: locationViewMode
+        )
     }
 
     // Needs refactor to test
@@ -666,6 +669,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
             handleMoveToSpamAction(on: selectedItems)
         case .labelAs, .moveTo:
             // TODO: add action
+            break
+        case .snooze:
+            // TODO: MAILIOS-3996
             break
         case .inbox:
             handleMoveToInboxAction(on: selectedItems)

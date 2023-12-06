@@ -269,9 +269,11 @@ extension SearchViewModel: SearchVMProtocol {
     }
 
     func getActionSheetViewModel() -> MailListActionSheetViewModel {
-        return .init(labelId: labelID.rawValue,
-                     title: .actionSheetTitle(selectedCount: selectedIDs.count,
-                                              viewMode: .singleMessage))
+        return .init(
+            labelId: labelID.rawValue,
+            title: .actionSheetTitle(selectedCount: selectedIDs.count, viewMode: .singleMessage),
+            locationViewMode: .singleMessage
+        )
     }
 
     func handleBarActions(_ action: MessageViewActionSheetAction) {
@@ -312,7 +314,9 @@ extension SearchViewModel: SearchVMProtocol {
         case .toolbarCustomization:
             // TODO: Add implementation
             break
-        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
+        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox,
+                .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation,
+                .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation, .snooze:
             break
         }
     }

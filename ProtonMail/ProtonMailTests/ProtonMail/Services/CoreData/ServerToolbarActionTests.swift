@@ -29,6 +29,7 @@ class ServerToolbarActionTests: XCTestCase {
             .labelAs,
             .markAsReadOrUnread,
             .markAsReadOrUnread,
+            .snooze,
             .moveTo,
             .print,
             .replyOrReplyAll,
