@@ -35,7 +35,7 @@ final class MenuViewController: UIViewController, AccessibleView {
     @IBOutlet private var displayName: UILabel!
     @IBOutlet private var arrowBtn: UIButton!
     @IBOutlet private var addressLabel: UILabel!
-    @IBOutlet private var tableView: UITableView!
+    @IBOutlet private(set) var tableView: UITableView!
 
     let viewModel: MenuVMProtocol
 

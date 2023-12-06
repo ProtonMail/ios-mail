@@ -41,7 +41,8 @@ final class MenuViewModel: NSObject {
     & HasFeatureFlagsRepository
 
     private let dependencies: Dependencies
-    private var scheduleSendLocationStatusObserver: ScheduleSendLocationStatusObserver?
+    private var scheduleSendLocationStatusObserver: MessagesAssignedToLabelIDObserver?
+    private var snoozeLocationStatusObserver: MessagesAssignedToLabelIDObserver?
 
     private var labelDataService: LabelsDataService? {
         guard let labelService = self.currentUser?.labelService else {
@@ -135,6 +136,7 @@ extension MenuViewModel: MenuVMProtocol {
         self.observeLabelUnreadUpdate()
         self.observeContextLabelUnreadUpdate()
         self.observeScheduleSendLocationStatus()
+        self.observeSnoozeLocationStatus()
         self.observeAlmostAllMailSettingChange()
         self.highlight(label: MenuLabel(location: .inbox))
         self.setupEventsLoop()
@@ -453,16 +455,43 @@ extension MenuViewModel {
     private func observeScheduleSendLocationStatus() {
         guard let user = self.currentUser else { return }
         let observer =
-            ScheduleSendLocationStatusObserver(
-                contextProvider: dependencies.contextProvider,
-                userID: user.userID
+        MessagesAssignedToLabelIDObserver(
+                labelIDToObserve: Message.Location.scheduled.labelID,
+                userID: user.userID,
+                contextProvider: dependencies.contextProvider
             )
 
-        let status = observer.observe { [weak self] currentStatus in
-            self?.updateInboxItems(hasScheduledMessage: currentStatus)
+        do {
+            let status = try observer.observe { [weak self] currentStatus in
+                DispatchQueue.main.async {
+                    self?.updateInboxItems(hasScheduledMessage: currentStatus)
+                }
+            }
+            updateInboxItems(hasScheduledMessage: status)
+            self.scheduleSendLocationStatusObserver = observer
+        } catch {
+            PMAssertionFailure(error.localizedDescription)
         }
-        updateInboxItems(hasScheduledMessage: status)
-        self.scheduleSendLocationStatusObserver = observer
+    }
+
+    private func observeSnoozeLocationStatus() {
+        guard let user = self.currentUser else { return }
+        let observer = MessagesAssignedToLabelIDObserver(
+            labelIDToObserve: Message.Location.snooze.labelID,
+            userID: user.userID,
+            contextProvider: dependencies.contextProvider
+        )
+        do {
+            let status = try observer.observe { [weak self] currentStatus in
+                DispatchQueue.main.async {
+                    self?.updateInboxItems(hasSnoozedMessage: currentStatus)
+                }
+            }
+            updateInboxItems(hasSnoozedMessage: status)
+            self.snoozeLocationStatusObserver = observer
+        } catch {
+            PMAssertionFailure(error.localizedDescription)
+        }
     }
 
     private func observeAlmostAllMailSettingChange() {
@@ -470,19 +499,28 @@ extension MenuViewModel {
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] mailSettings in
                 guard let weakSelf = self else { return }
-                let hasScheduledMessage = weakSelf.inboxItems.contains(where: { $0.location == .scheduled })
                 let shouldUpdate = weakSelf.inboxItems.contains(where: { $0.location == .almostAllMail }) != mailSettings.almostAllMail
                 if shouldUpdate {
-                    weakSelf.updateInboxItems(hasScheduledMessage: hasScheduledMessage)
+                    weakSelf.updateInboxItems(isAlmostAllMailOn: mailSettings.almostAllMail)
                 }
             })
     }
 
-    func updateInboxItems(hasScheduledMessage: Bool) {
-        self.inboxItems = Self.inboxItems(
-            almostAllMailIsOn: currentUser?.mailSettings.almostAllMail ?? false
-        )
+    func updateInboxItems(isAlmostAllMailOn: Bool) {
+        if isAlmostAllMailOn && !inboxItems.contains(where: { $0.location == .almostAllMail }) {
+            if let insertIndex = inboxItems.firstIndex(where: { $0.location == .allmail }) {
+                inboxItems.remove(at: insertIndex)
+                inboxItems.insert(MenuLabel(location: .almostAllMail), at: insertIndex)
+            }
+        } else {
+            if let insertIndex = inboxItems.firstIndex(where: { $0.location == .almostAllMail  }) {
+                inboxItems.remove(at: insertIndex)
+                inboxItems.insert(MenuLabel(location: .allmail), at: insertIndex)
+            }
+        }
+    }
 
+    func updateInboxItems(hasScheduledMessage: Bool) {
         if hasScheduledMessage && !inboxItems.contains(where: { $0.location == .scheduled }) {
             if let insertIndex = inboxItems.firstIndex(where: { $0.location == .sent }) {
                 inboxItems.insert(MenuLabel(location: .scheduled), at: insertIndex)
@@ -490,6 +528,18 @@ extension MenuViewModel {
             }
         } else if hasScheduledMessage == false {
             inboxItems.removeAll(where: { $0.location == .scheduled })
+            reloadClosure?()
+        }
+    }
+
+    func updateInboxItems(hasSnoozedMessage: Bool) {
+        if hasSnoozedMessage && !inboxItems.contains(where: { $0.location == .snooze }) {
+            if let insertIndex = inboxItems.firstIndex(where: { $0.location == .sent }) {
+                inboxItems.insert(MenuLabel(location: .snooze), at: insertIndex)
+                reloadClosure?()
+            }
+        } else if hasSnoozedMessage == false {
+            inboxItems.removeAll(where: { $0.location == .snooze })
             reloadClosure?()
         }
     }

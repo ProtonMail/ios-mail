@@ -120,6 +120,8 @@ final class Message: NSManagedObject {
 
     @NSManaged var unsubscribeMethods: String?
 
+    @NSManaged var snoozeTime: Date?
+
     /// Mark -- relationship
 
     // "Attachments":[ { }, {} ]

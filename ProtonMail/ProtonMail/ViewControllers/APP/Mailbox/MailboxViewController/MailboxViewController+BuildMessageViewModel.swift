@@ -71,7 +71,9 @@ extension MailboxViewController {
             scheduledTime: message.contains(location: .scheduled) ? dateForScheduled(of: message) : nil,
             isScheduledTimeInNext10Mins: checkIsDateWillHappenInTheNext10Mins(of: message),
             attachmentsPreviewViewModels: attachmentsPreviews(for: .message(message)),
-            numberOfAttachments: message.numAttachments
+            numberOfAttachments: message.numAttachments,
+            hasSnoozeLabel: message.contains(location: .snooze),
+            snoozeTime: dateForSnoozeTime(of: message)
         )
         let displayOriginIcon = [
             Message.Location.allmail,
@@ -128,7 +130,9 @@ extension MailboxViewController {
             scheduledTime: isHavingScheduled ? dateForScheduled(of: conversation) : nil,
             isScheduledTimeInNext10Mins: checkIsDateWillHappenInTheNext10Mins(of: conversation),
             attachmentsPreviewViewModels: attachmentsPreviews(for: .conversation(conversation)),
-            numberOfAttachments: conversation.attachmentCount
+            numberOfAttachments: conversation.attachmentCount,
+            hasSnoozeLabel: conversation.contains(of: Message.Location.snooze.labelID),
+            snoozeTime: dateForSnoozeTime(of: conversation)
         )
         let displayOriginIcon = [
             Message.Location.allmail,
@@ -171,5 +175,19 @@ extension MailboxViewController {
         guard message.contains(location: .scheduled),
               let date = message.time else { return false }
         return PMDateFormatter.shared.checkIsDateWillHappenInTheNext10Mins(date)
+    }
+
+    private func dateForSnoozeTime(of message: MessageEntity) -> String? {
+        guard message.contains(location: .snooze), let date = message.snoozeTime else {
+            return nil
+        }
+        return PMDateFormatter.shared.stringForSnoozeTime(from: date)
+    }
+
+    private func dateForSnoozeTime(of conversation: ConversationEntity) -> String? {
+        guard let date = conversation.getSnoozeTime(labelID: Message.Location.snooze.labelID) else {
+            return nil
+        }
+        return PMDateFormatter.shared.stringForSnoozeTime(from: date)
     }
 }

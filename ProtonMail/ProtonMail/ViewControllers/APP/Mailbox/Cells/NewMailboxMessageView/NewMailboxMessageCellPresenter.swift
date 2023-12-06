@@ -155,6 +155,18 @@ class NewMailboxMessageCellPresenter {
         view.messageCountLabel.layer.borderColor = viewModel.isRead ?
             ColorProvider.TextWeak.cgColor : ColorProvider.TextNorm
 
+        if viewModel.hasSnoozeLabel, let snoozeTime = viewModel.snoozeTime {
+            view.snoozeTimeLabel.set(
+                text: snoozeTime,
+                preferredFont: .footnote,
+                weight: .bold,
+                textColor: ColorProvider.NotificationWarning
+            )
+            view.snoozeTimeStackView.isHidden = false
+        } else {
+            view.snoozeTimeStackView.isHidden = true
+        }
+
         guard !viewModel.folderIcons.isEmpty else {
             view.originalImagesStackView.isHidden = true
             view.removeOriginImages()

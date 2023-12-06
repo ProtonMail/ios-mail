@@ -111,6 +111,8 @@ struct MessageEventProcessor {
             messageObject.attachmentsMetadata =
             String(data: encodedAttachmentsMetadata, encoding: .utf8) ?? ""
         }
+        messageObject.snoozeTime = message.snoozeTime != 0 ? Date(timeIntervalSince1970: TimeInterval(message.snoozeTime)) : nil
+
         applyLabelAddition(message, on: messageObject, context: context)
         applyLabelDeletion(message, on: messageObject, context: context)
 

@@ -37,7 +37,7 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
     @IBOutlet private var arrowBGWdith: NSLayoutConstraint!
     @IBOutlet private var iconLeftConstraint: NSLayoutConstraint!
     private weak var delegate: MenuItemTableViewCellDelegate?
-    private var labelID: LabelID = ""
+    private(set) var labelID: LabelID = ""
     private var originalTextColor: UIColor = .clear
     private var isUsedInSideBar = false
     private var originalBackgroundColor: UIColor = .clear

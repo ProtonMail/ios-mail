@@ -64,6 +64,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     case almostAllMail
     case customize(String, String?)
     case scheduled
+    case snooze
 
     case bugs
     case contacts
@@ -108,6 +109,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case "Add Account": self = .addAccount
         case Message.Location.scheduled.rawValue: self = .scheduled
         case "Refer a friend": self = .referAFriend
+        case Message.Location.snooze.rawValue: self = .snooze
         default:
             if let name = name {
                 self = .customize(id, name)
@@ -146,6 +148,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .accountManger: return "Account Manager"
         case .addAccount: return "Add Account"
         case .scheduled: return Message.Location.scheduled.rawValue
+        case .snooze: return Message.Location.snooze.rawValue
         }
     }
 
@@ -181,6 +184,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .accountManger: return LocalString._menu_manage_accounts
         case .addAccount: return ""
         case .scheduled: return LocalString._locations_scheduled_title
+        case .snooze: return L11n.Snooze.title
         }
     }
 
@@ -225,6 +229,8 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
             return IconProvider.clock
         case .referAFriend:
             return IconProvider.heart
+        case .snooze:
+            return IconProvider.clock
         default:
             return nil
         }

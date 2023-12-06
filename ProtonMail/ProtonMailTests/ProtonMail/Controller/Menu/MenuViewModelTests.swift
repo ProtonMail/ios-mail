@@ -247,7 +247,7 @@ class MenuViewModelTests: XCTestCase {
 
     func testUpdateInboxItem_almostAllMailIsTrue_inboxItemHasAlmostAllMailLocation() {
         testUser.mailSettings.update(key: .almostAllMail, to: true)
-        sut.updateInboxItems(hasScheduledMessage: false)
+        sut.updateInboxItems(isAlmostAllMailOn: true)
 
         let expected = [
             MenuLabel(location: .inbox),

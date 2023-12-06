@@ -32,6 +32,9 @@ class NewMailboxMessageContentView: BaseMessageView {
     let attachmentsPreviewLine = SubviewsFactory.horizontalEqualSpacingStackView
     let remainingAttachmentsLabel = SubviewsFactory.remainderAttachmentsLabel
     let attachmentsPreviewStackView = SubviewsFactory.horizontalCenterDistributedStackView
+    let snoozeTimeStackView = SubviewsFactory.horizontalStackView
+    let snoozeTimeIcon = SubviewsFactory.snoozeTimeIcon
+    let snoozeTimeLabel = UILabel(frame: .zero)
     let titleLabel = UILabel(frame: .zero)
     let messageCountLabel = SubviewsFactory.messageCountLabel
     let originalImagesStackView = SubviewsFactory.horizontalStackView
@@ -81,6 +84,10 @@ class NewMailboxMessageContentView: BaseMessageView {
         attachmentsPreviewLine.addArrangedSubview(remainingAttachmentsLabel)
         contentStackView.addArrangedSubview(attachmentsPreviewLine)
         contentStackView.addArrangedSubview(tagsView)
+
+        snoozeTimeStackView.addArrangedSubview(snoozeTimeIcon)
+        snoozeTimeStackView.addArrangedSubview(snoozeTimeLabel)
+        contentStackView.addArrangedSubview(snoozeTimeStackView)
     }
 
     private func setUpLayout() {
@@ -134,7 +141,13 @@ class NewMailboxMessageContentView: BaseMessageView {
         contentStackView.setCustomSpacing(2, after: firstLineStackView)
         contentStackView.setCustomSpacing(12, after: secondLineStackView)
         contentStackView.setCustomSpacing(4, after: attachmentsPreviewLine)
+        contentStackView.setCustomSpacing(4, after: tagsView)
         secondLineStackView.setCustomSpacing(8, after: sendersStackView)
+
+        [
+            snoozeTimeIcon.widthAnchor.constraint(equalTo: snoozeTimeIcon.heightAnchor),
+            snoozeTimeIcon.heightAnchor.constraint(equalToConstant: 16)
+        ].activate()
     }
 
     required init?(coder: NSCoder) {
@@ -172,6 +185,12 @@ private extension NewMailboxMessageContentView {
             let label = UILabel(frame: .zero)
             label.textAlignment = .right
             return label
+        }
+
+        static var snoozeTimeIcon: UIImageView {
+            let imageView = UIImageView(image: IconProvider.clock.withRenderingMode(.alwaysTemplate))
+            imageView.tintColor = ColorProvider.NotificationWarning
+            return imageView
         }
     }
 }

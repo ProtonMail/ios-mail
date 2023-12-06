@@ -110,6 +110,14 @@ extension ConversationEntity {
         return matchedLabel.time
     }
 
+    func getSnoozeTime(labelID: LabelID) -> Date? {
+        guard let matchedLabel = contextLabelRelations
+            .first(where: { $0.labelID == labelID }) else {
+            return nil
+        }
+        return matchedLabel.snoozeTime
+    }
+
     func getFirstValidFolder() -> LabelID? {
         let foldersToFilter = [
             Message.HiddenLocation.sent.rawValue,
