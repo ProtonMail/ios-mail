@@ -33,6 +33,7 @@ import QuickLook
 import SkeletonView
 import SwipyCell
 import UIKit
+import SwiftUI
 
 class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol, ScheduledAlertPresenter, LifetimeTrackable {
     typealias Dependencies = HasPaymentsUIFactory
@@ -322,6 +323,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         viewModel.user.undoActionManager.register(handler: self)
         reloadIfSwipeActionsDidChange()
         fetchEventInScheduledSend()
+        showSnoozeSpotlight()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -1273,6 +1275,25 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         }
         tableView.reloadData()
     }
+
+    private func showSnoozeSpotlight() {
+        guard viewModel.shouldShowShowSnoozeSpotlight() else { return }
+        // TODO: snooze:action MAILIOS-3995 Text are not defined yet.
+        let sheetSpotView = SheetLikeSpotlightView(
+            buttonTitle: "Got it",
+            closeAction: { [weak self] hostingVC in
+                hostingVC?.dismiss(animated: false)
+                self?.viewModel.hasSeenSnoozeSpotlight()
+            },
+            message: "You can now set reminders for crucial emails.",
+            spotlightImage: Asset.snoozeSpotlight.image,
+            title: L11n.Snooze.title
+        )
+
+        let hosting = SheetLikeSpotlightViewController(rootView: sheetSpotView)
+        sheetSpotView.config.hostingController = hosting
+        navigationController?.present(hosting, animated: false)
+    }
 }
 
 // MARK: - Selection mode
@@ -2098,7 +2119,7 @@ extension MailboxViewController {
         case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
         case .snooze:
-            // TODO: MAILIOS-3996
+            // TODO: snooze:action MAILIOS-3996
             break
         }
     }
