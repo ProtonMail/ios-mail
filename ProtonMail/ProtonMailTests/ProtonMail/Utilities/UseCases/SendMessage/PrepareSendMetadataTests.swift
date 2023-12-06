@@ -274,7 +274,7 @@ extension PrepareSendMetadataTests {
         return AttachmentFile(
             attachmentId: AttachmentID(rawValue: dummyAttachmentId),
             fileUrl: URL(fileURLWithPath: "localfile"),
-            encoded: Based64.encode(value: "dummy_attachment")
+            data: Data("dummy_attachment".utf8)
         )
     }
 

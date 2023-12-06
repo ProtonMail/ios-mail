@@ -73,17 +73,12 @@ final class AttachmentListViewModel {
         let userKeys = dependencies.user.toUserKeys()
         dependencies.fetchAttachment.execute(params: .init(
             attachmentID: attachment.id,
-            attachmentKeyPacket: nil,
-            purpose: .onlyDownload,
+            attachmentKeyPacket: attachment.keyPacket,
             userKeys: userKeys
         )) { result in
             do {
                 let attachmentFile = try result.get()
-                let fileData = try AttachmentDecrypter.decrypt(
-                    fileUrl: attachmentFile.fileUrl,
-                    attachmentKeyPacket: attachment.keyPacket,
-                    userKeys: userKeys
-                )
+                let fileData = attachmentFile.data
                 let fileName = attachment.name.cleaningFilename()
                 let unencryptedFileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
 

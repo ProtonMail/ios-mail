@@ -660,11 +660,10 @@ extension MessageInfoProvider {
                 params: .init(
                     attachmentID: inline.id,
                     attachmentKeyPacket: inline.keyPacket,
-                    purpose: .decryptAndEncodeAttachment,
                     userKeys: userKeys
                 )
             ) { [weak self] result in
-                guard let base64Attachment = try? result.get().encoded,
+                guard let base64Attachment = try? result.get().data.base64EncodedString(),
                       !base64Attachment.isEmpty else {
                     group.leave()
                     return
