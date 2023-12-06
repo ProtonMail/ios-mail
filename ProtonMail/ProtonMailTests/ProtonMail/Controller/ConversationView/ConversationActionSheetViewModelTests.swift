@@ -64,8 +64,8 @@ class ConversationActionSheetViewModelTests: XCTestCase {
                 .replyAll,
                 .forward,
                 .markRead,
-                .unstar,
-                .labelAs
+                .snooze,
+                .unstar
             ]
         )
     }
@@ -89,8 +89,8 @@ class ConversationActionSheetViewModelTests: XCTestCase {
                 .replyAll,
                 .forward,
                 .markUnread,
-                .unstar,
-                .labelAs
+                .snooze,
+                .unstar
             ]
         )
     }
@@ -114,8 +114,8 @@ class ConversationActionSheetViewModelTests: XCTestCase {
                 .replyAll,
                 .forward,
                 .markRead,
-                .star,
-                .labelAs
+                .snooze,
+                .star
             ]
         )
     }
@@ -139,8 +139,8 @@ class ConversationActionSheetViewModelTests: XCTestCase {
                 .replyAll,
                 .forward,
                 .markUnread,
-                .star,
-                .labelAs
+                .snooze,
+                .star
             ]
         )
     }

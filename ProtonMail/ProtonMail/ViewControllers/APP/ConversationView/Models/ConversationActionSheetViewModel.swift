@@ -42,6 +42,7 @@ struct ConversationActionSheetViewModel: ActionSheetViewModel {
         }
 
         items.append(isUnread ? .markRead : .markUnread)
+        items.append(.snooze)
         items.append(isStarred ? .unstar : .star)
         items.append(.labelAs)
 

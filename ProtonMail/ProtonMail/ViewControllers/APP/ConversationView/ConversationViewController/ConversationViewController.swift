@@ -961,6 +961,9 @@ extension ConversationViewController {
             handlePrintActionOnToolbar()
         case .saveAsPDF:
             handleExportPDFOnToolbar()
+        case .snooze:
+            // TODO: MAILIOS-3996
+            break
         }
     }
 

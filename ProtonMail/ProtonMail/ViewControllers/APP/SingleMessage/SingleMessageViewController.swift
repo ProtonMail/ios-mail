@@ -441,6 +441,9 @@ private extension SingleMessageViewController {
             } else {
                 handleOpenComposerAction(.reply)
             }
+        case .snooze:
+            // Snooze doesn't support single message 
+            break
         }
     }
 

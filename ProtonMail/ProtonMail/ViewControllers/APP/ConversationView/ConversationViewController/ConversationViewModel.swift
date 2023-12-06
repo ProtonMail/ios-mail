@@ -794,6 +794,9 @@ class ConversationViewModel {
              .labelAs, .moveTo, .reply, .replyAll, .star, .unstar, .toolbarCustomization,
              .more, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
+        case .snooze:
+            // TODO: MAILIOS-3996
+            break
         }
         completion()
     }

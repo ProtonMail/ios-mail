@@ -2097,6 +2097,9 @@ extension MailboxViewController {
             )
         case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
+        case .snooze:
+            // TODO: MAILIOS-3996
+            break
         }
     }
 }
