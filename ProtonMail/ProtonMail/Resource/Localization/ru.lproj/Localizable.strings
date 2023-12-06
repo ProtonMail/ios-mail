@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Вы собираетесь запустить браузер и перейти по адресу";
 
 /* link opeining confirmation */
@@ -1782,7 +1781,7 @@
 "You can now choose and rearrange the actions in this bar" = "Теперь вы можете выбирать и изменять действия на этой панели";
 
 /* Button to block a sender */
-"Block messages from this sender" = "Block messages from this sender";
+"Block messages from this sender" = "Заблокировать сообщения от этого отправителя";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Заблокировать";
@@ -1961,7 +1960,7 @@
 "Reply all (to last message)" = "Ответить всем (на последнее сообщение)";
 
 /* The action title in the action sheet of the composing new message */
-"New message" = "New message";
+"New message" = "Новое сообщение";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Настроить";
@@ -2015,37 +2014,37 @@
 "Empty trash" = "Очистить Корзину";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Clear out the junk";
+"Clear out the junk" = "Очистить от спама";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Автоматически удалять сообщения старше 30 дней из Корзины и Спама. Воспользуйтесь этими и другими функциями после обновления.";
 
 /* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Up to 3 TB of storage";
+"Up to 3 TB of storage" = "До 3 ТБ хранилища";
 
 /* Text to advertise what upgrading will provide */
-"Custom email domains" = "Custom email domains";
+"Custom email domains" = "Пользовательские домены электронной почты";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Sender changed";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
-"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Первоначальный отправитель этого сообщения больше не действителен. Ваше сообщение будет отправлено с адреса по умолчанию %@.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Display name";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "Имя";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "Last name";
+"Last name" = "Фамилия";
 
 /* The error message that is shown when no display name provided in contact edit view */
 "Display name field cannot be empty" = "Display name field cannot be empty";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "Имя контакта слишком длинное";
 
 /* The button text for add profile picture */
 "Add photo" = "Добавить фото";
@@ -2054,7 +2053,7 @@
 "Edit photo" = "Изменить фото";
 
 /* The title of select all button for select all messages feature */
-"Select all" = "Select all";
+"Select all" = "Выделить все";
 
 /* The title of PIN code disable view  */
 "Disable PIN code" = "Disable PIN code";

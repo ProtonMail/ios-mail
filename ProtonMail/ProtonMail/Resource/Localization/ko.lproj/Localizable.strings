@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "브라우저에서 다음 URL을 열려고 하고 있습니다";
 
 /* link opeining confirmation */
@@ -177,7 +176,7 @@
 "Set Password" = "비밀번호 설정";
 
 /* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "비 Proton Mail 사용자를 위해 암호화 비밀번호를 설정";
+"Set a password to encrypt this message for non-Proton Mail users." = "비 Proton Mail 사용자를 위해 암호화 비밀번호 설정할 수 있습니다.";
 
 /* Placeholder */
 "Message Password" = "메시지 비밀번호";
@@ -1362,7 +1361,7 @@
 "Delete label" = "라벨 삭제";
 
 /* The button to enable label list reorder */
-"Reorder" = "재주문";
+"Reorder" = "재정렬";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "상위 폴더";
@@ -1632,8 +1631,7 @@
 "Warning: suspected fake website" = "경고: 가짜 웹 사이트일 수 있음";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "이 링크는 비밀번호 및 신용카드 세부정보와 같은 정보를 도용하려는 웹사이트로 연결됩니다.\n
-%@\n\n보안을 위해 계속하지 마십시오.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "이 링크는 비밀번호 및 신용카드 세부정보와 같은 정보를 도용하려는 웹사이트로 연결됩니다.\n%@\n\n보안을 위해 계속하지 마십시오.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "경고를 무시하고 계속하기";
@@ -1875,8 +1873,7 @@
 "AppKey protection" = "AppKey 보호";
 
 /* Settings lock AppKey description */
-"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey는 공격자가 장치의 내용을 복제하는 것과 같은 정교한 공격을 하는 경우 Proton 정보를 더욱 보호합니다.
- %1$@";
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey는 공격자가 장치의 내용을 복제하는 것과 같은 정교한 공격을 하는 경우 Proton 정보를 더욱 보호합니다. %1$@";
 
 /* AppKey disclaimer title when turning on */
 "Disclaimer" = "면책 조항";
@@ -1990,7 +1987,7 @@
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "휴지통 및 스팸함의 메시지가 30일 이후에 자동으로 삭제됩니다.";
 
 /* Title of the alert to confirm enabling of the auto delete option */
-"Delete messages?" = "메시지 삭제?";
+"Delete messages?" = "메시지를 삭제할까요?";
 
 /* Message of the alert to confirm enabling of the auto delete option */
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "이 작업은 이 폴더의 현재 메시지를 포함한 휴지통 및 스팸함의 메시지를 30일 이후에 모두 삭제합니다.";

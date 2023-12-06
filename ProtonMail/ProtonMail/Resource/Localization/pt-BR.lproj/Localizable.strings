@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Você está prestes a ser redirecionado para";
 
 /* link opeining confirmation */
@@ -1967,7 +1966,7 @@
 "Customize (verb)" = "Personalizar";
 
 /* The place holder text in the bug report view. */
-"Bug Report Place Holder" = "---Para nos ajudar a lhe ajudar, forneça o máximo de detalhes possível---\n\nResumo:\n\nO problema aconteceu mais de uma vez: sim/não\nPassos para reproduzir o problema:\nResultado esperado:\nResultado observado:\nComentários:";
+"Bug Report Place Holder" = "Para nos ajudar a ajudá-lo, forneça o máximo de detalhes possível---\n\nResumo:\n\nO problema ocorreu mais de uma vez: sim/não\nEtapas para reproduzir o problema:\nResultado esperado:\nResultado real: \nComentários:";
 
 /* Checkbox to attach local application logs to the bug report. */
 "Include logs" = "Incluir registros";

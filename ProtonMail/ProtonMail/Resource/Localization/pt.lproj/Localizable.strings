@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Está prestes a iniciar o navegador web e navegar até";
 
 /* link opeining confirmation */
@@ -2027,10 +2026,10 @@
 "Custom email domains" = "Domínios de e-mail personalizados";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "Sender changed";
+"Sender changed" = "O remetente foi alterado.";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
-"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "O remetente original desta mensagem já não é válido. A sua mensagem será enviada do seu endereço padrão %@.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nome exibido";

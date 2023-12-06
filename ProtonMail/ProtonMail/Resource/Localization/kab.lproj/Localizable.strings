@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Aqli-k ad tsekreḍ iminig web akken ad tinigeḍ ɣer";
 
 /* link opeining confirmation */
@@ -1665,7 +1664,7 @@
 "Send immediately" = "Azen imir";
 
 /* The content of the introducation view of the schedule send */
-"You can now schedule your messages to be sent later" = "You can now schedule your messages to be sent later";
+"You can now schedule your messages to be sent later" = "Tzemreḍ tura ad tedɣawseḍ iznan-ik ad ttwaznen ticki";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Asɣiwes n yizen...";
@@ -1782,7 +1781,7 @@
 "You can now choose and rearrange the actions in this bar" = "You can now choose and rearrange the actions in this bar";
 
 /* Button to block a sender */
-"Block messages from this sender" = "Block messages from this sender";
+"Block messages from this sender" = "Sewḥel iznan seg umazan-a";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Sewḥel";
@@ -2027,7 +2026,7 @@
 "Custom email domains" = "Tiɣula n yimayl tudmawanin";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "Sender changed";
+"Sender changed" = "Amazan yettwabeddel";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
@@ -2054,7 +2053,7 @@
 "Edit photo" = "Ẓreg tawlaft";
 
 /* The title of select all button for select all messages feature */
-"Select all" = "Select all";
+"Select all" = "Fren akk";
 
 /* The title of PIN code disable view  */
 "Disable PIN code" = "Disable PIN code";

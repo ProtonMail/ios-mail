@@ -285,9 +285,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d missatge es mourà a Esborranys i se n'eliminarà la programació.</string>
+        <string>%d missatge es mourà a Esborranys i se n'esborrarà la programació.</string>
         <key>other</key>
-        <string>Aquests %d missatges es mouran a Esborranys i se n'eliminarà la programació.</string>
+        <string>Aquests %d missatges es mouran a Esborranys i se n'esborrarà la programació.</string>
       </dict>
     </dict>
     <key>%d message moved to Drafts</key>

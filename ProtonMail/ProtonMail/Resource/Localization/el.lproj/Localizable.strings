@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Πρόκειται να εκκινήσετε το πρόγραμμα περιήγησης και να πλοηγηθείτε στο";
 
 /* link opeining confirmation */
@@ -786,7 +785,7 @@
 "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Έχετε χρησιμοποιήσει το σύνολο του αποθηκευτικού σας χώρου (%@). Για συνέχιση αποστολής και παραλαβής μηνυμάτων, παρακαλούμε αναβαθμίστε το πρόγραμμά σας.";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Έχετε χρησιμοποιήσει %1$d%% του χώρου αποθήκευσης (%2$@). Παρακαλώ αναβαθμίστε το πλάνο σας για να συνεχίσετε να στέλνετε και να λαμβάνετε ηλεκτρονικά μηνύματα.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Έχετε χρησιμοποιήσει %1$d%% του χώρου αποθήκευσης (%2$@). Παρακαλούμε αναβαθμίστε το πλάνο σας για να συνεχίσετε να στέλνετε και να λαμβάνετε ηλεκτρονικά μηνύματα.";
 
 /* Alert title */
 "Storage full" = "Αποθηκευτικός χώρος πλήρης";
@@ -927,7 +926,7 @@
 "This message will expire in %dD %dH %dM" = "Αυτό το μήνυμα θα λήξει σε %1$dΜ %2$dΩ %3$dΛ";
 
 /* Action */
-"Sign Out" = "Έξοδος";
+"Sign Out" = "Αποσύνδεση";
 
 /* Alert title */
 "Sending in progress" = "Αποστολή σε εξέλιξη";

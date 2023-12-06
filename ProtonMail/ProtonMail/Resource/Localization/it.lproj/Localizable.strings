@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Stai per avviare il browser web e navigare in";
 
 /* link opeining confirmation */
@@ -60,7 +59,7 @@
 "Inbox" = "Posta in arrivo";
 
 /* menu title */
-"Starred" = "Preferita";
+"Starred" = "Importante";
 
 /* menu title */
 "Archive" = "Archivio";
@@ -141,22 +140,22 @@
 "You're going to delete the message irreversibly. Are you sure?" = "Stai per eliminare il messaggio in modo irreversibile. Sei sicuro?";
 
 /* Title */
-"You have a new email!" = "Ha un nuovo messaggio!";
+"You have a new email!" = "Hai un nuovo messaggio!";
 
 /* Message */
-"You have %d new emails!" = "Ha %d nuovi messaggi!";
+"You have %d new emails!" = "Hai %d nuovi messaggi!";
 
 /* abbreviation of reply: */
 "Re:" = "Ri:";
 
 /* abbreviation of forward: */
-"Fw:" = "I:";
+"Fw:" = "In:";
 
 /* Title */
 "wrote:" = "ha scritto:";
 
 /* At {time}, e.g.: At 19:00 */
-"At %@" = "A %@";
+"At %@" = "Alle %@";
 
 /* On {date}, e.g.: On Aug 14 */
 "On %@" = "Il %@";
@@ -189,7 +188,7 @@
 "The password must be between 8 and 21 characters long" = "La password dev'essere lunga tra 8 e 21 caratteri";
 
 /* textview title */
-"Repeat password" = "Ripeti la password";
+"Repeat password" = "Conferma la password";
 
 /* Placeholder */
 "Passwords must match" = "Le password devono corrispondere";
@@ -423,7 +422,7 @@
 "To" = "A";
 
 /* message Cc: feild */
-"Cc" = "CC";
+"Cc" = "Cc";
 
 /* message Bcc: feild */
 "Bcc:" = "Ccn:";
@@ -651,7 +650,7 @@
 "Confirm new mailbox password" = "Conferma la nuova password della casella di posta";
 
 /* Title */
-"Star/unstar" = "Aggiungi/rimuovi preferenza";
+"Star/unstar" = "Segna come importante/non importante";
 
 /* Title */
 "Proton Mail" = "Proton Mail";
@@ -771,7 +770,7 @@
 "Recovery Code" = "Codice di recupero";
 
 /* Placeholder */
-"Two Factor Code" = "Codice a due fattori";
+"Two Factor Code" = "Codice del secondo fattore";
 
 /* Title */
 "Authentication" = "Autenticazione";
@@ -873,13 +872,13 @@
 "Verification of this content’s signature failed" = "Verifica della firma di questo contenuto non riuscita";
 
 /* error title */
-"Decryption error" = "Errore di decriptazione";
+"Decryption error" = "Errore di decrittografia";
 
 /* error details */
-"Decryption of this content failed" = "Decriptazione di questo contenuto non riuscita";
+"Decryption of this content failed" = "Decrittografia di questo contenuto non riuscita";
 
 /* error details */
-"Decryption of this message's encrypted content failed." = "La decriptazione del contenuto crittografato nel messaggio non è riuscita.";
+"Decryption of this message's encrypted content failed." = "Decrittografia del contenuto crittografato di questo messaggio non riuscita.";
 
 /* error title */
 "Logs" = "Log";
@@ -1230,10 +1229,10 @@
 "Draft is still uploading…" = "La bozza sta ancora caricando…";
 
 /* content of the sending mesage that will display this text on the date label */
-"Sending message…" = "Inviando il messaggio…";
+"Sending message…" = "Invio del messaggio in corso";
 
 /* The unread title of unread action button in mailbox view */
-"unread" = "non letto";
+"unread" = "non letta";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Selezionato";
@@ -1254,16 +1253,16 @@
 "Signed in as %@" = "Accesso effettuato come %@";
 
 /* The title of the star action in action sheet */
-"Star" = "Aggiungi alla posta preferita";
+"Star" = "Segna come importante";
 
 /* The title of the star action in action sheet */
-"Unstar" = "Rimuovi dalla posta preferita";
+"Unstar" = "Segna come non importante";
 
 /* The title of the unread action in action sheet */
-"Mark as unread" = "Segna come non letto";
+"Mark as unread" = "Segna come non letta";
 
 /* Push notification action mark as read */
-"Mark as read" = "Segna come letto";
+"Mark as read" = "Segna come letta";
 
 /* Push notification action move to trash */
 "Move to trash" = "Sposta nel cestino";
@@ -1326,7 +1325,7 @@
 "Unread" = "Da leggere";
 
 /* No comment provided by engineer. */
-"Read" = "Letto";
+"Read" = "Letta";
 
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Configura i gesti di scorrimento per accedere alle azioni più usate.";
@@ -1458,7 +1457,7 @@
 "Label as" = "Etichetta come";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
-"Also archive?" = "Vuoi anche archiviare?";
+"Also archive?" = "Spostare in archivio?";
 
 /* No comment provided by engineer. */
 "New Label" = "Nuova Etichetta";
@@ -1527,7 +1526,7 @@
 "Collapse folder" = "Comprimi cartella";
 
 /* The title of voice over action that switches the unread filter status in the inbox */
-"Switch unread filter" = "Cambia filtro non letto";
+"Switch unread filter" = "Cambia filtro non letta";
 
 /* Title of user feedback view */
 "Your feedback" = "Il tuo feedback";
@@ -1614,10 +1613,10 @@
 "Add CC and BCC" = "Aggiungi CC e CCN";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close CC and BCC" = "Chiudere CC e CCN";
+"Close CC and BCC" = "Chiudi CC e CCN";
 
 /* The title of the button in the composer that can select different sender address. */
-"Choose different sender address" = "Scegli un indirizzo mittente diverso";
+"Choose different sender address" = "Scegli un indirizzo mittente differente";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
 "Set mail password" = "Imposta la password della email";
@@ -2063,7 +2062,7 @@
 "Set PIN code" = "Imposta codice PIN";
 
 /* The title of PIN code setup2 view */
-"Repeat PIN code" = "Ripeti il codice PIN";
+"Repeat PIN code" = "Conferma il codice PIN";
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Inserisci il nuovo codice PIN";

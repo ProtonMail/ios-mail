@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Вы збіраецеся запусціць браўзер і перайсці па спасылцы";
 
 /* link opeining confirmation */
@@ -435,7 +434,7 @@
 "Close" = "Закрыць";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Ваш сеанс пратэрмінаваны, бо вы былі неактыўныя некаторы час або ён быў адкліканы. Увайдзіце ў праграму паўторна.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Ваш сеанс пратэрмінаваны, бо вы былі неактыўныя некаторы час або ён быў адкліканы. Увайдзіце ў сістэму паўторна.";
 
 /* Springboard (3D Touch) shortcuts action */
 "Search" = "Пошук";
@@ -747,7 +746,7 @@
 "Unlock required" = "Патрабуецца разблакіроўка";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Вы адключылі %1$@ у наладах сістэмы. %2$@ выкарыстоўваўся для абароны важных даных уліковага запісу. Каб атрымаць доступ да вашага ўліковага запісу, перайдзіце ў налады і паўторна актывуйце %3$@ або яшчэ раз увайдзіце ва ўліковы запіс.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Вы адключылі %1$@ у наладах сістэмы. %2$@ выкарыстоўваўся для абароны важных даных уліковага запісу. Каб атрымаць доступ да вашага ўліковага запісу, перайдзіце ў налады і паўторна актывуйце %3$@ або ўвайдзіце ў сістэму паўторна.";
 
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon signing out of the app." = "Усе налады абароны скінуцца і сатруцца адразу пасля выхаду з праграмы.";
@@ -1826,7 +1825,7 @@
 "Email trackers can violate your privacy." = "Праграмы сачэння электроннай пошты могуць парушыць вашу прыватнасць.";
 
 /* The banner shown in case of proxy failure */
-"Some images could not be loaded with tracking protection." = "Немагчыма загрузіць некаторыя відарысы з уключанай абаронай ад адсочвання.";
+"Some images could not be loaded with tracking protection." = "Не атрымалася загрузіць некаторыя відарысы з уключанай абаронай ад адсочвання.";
 
 /* Button inside the banner */
 "Load" = "Загрузіць";

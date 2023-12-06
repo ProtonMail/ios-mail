@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Du är på väg att öppna webbläsaren och navigera till";
 
 /* link opeining confirmation */
@@ -1674,7 +1673,7 @@
 "Sent by you with end-to-end encryption to verified recipient" = "Skickat av dig med end-to-end-kryptering till verifierad mottagare";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption to verified recipient" = "Skickat av Proton Mail med nollåtkomst-kryptering till bekräftade mottagare";
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Skickat med Proton Mail med kryptering med noll åtkomst till verifierad mottagare";
 
 /* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Skickat av dig med end-to-end-kryptering";
