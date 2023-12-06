@@ -30,4 +30,9 @@ extension UserManager {
             )
         #endif
     }
+
+    var isSnoozeEnabled: Bool {
+        return UserInfo.isSnoozeEnable
+            || container.featureFlagsRepository.isEnabled(MailFeatureFlag.snooze, for: userID.rawValue)
+    }
 }

@@ -19,4 +19,5 @@ import ProtonCoreFeatureFlags
 
 enum MailFeatureFlag: String, FeatureFlagTypeProtocol {
     case newEventLoop = "MailiosNewEventsLoop"
+    case snooze = "MailiosSnooze"
 }
