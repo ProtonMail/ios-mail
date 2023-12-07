@@ -613,26 +613,28 @@ extension ComposeViewModel {
     
     @objc
     private func addressesStatusChanged() {
-        defer {
-            uiDelegate?.updateSenderAddressesList()
-        }
-        switch messageAction {
-        case .forward, .reply, .replyAll, .openDraft:
-            guard
-                let senderAddress = currentSenderAddress(),
-                senderAddress.status == .disabled,
-                let validAddress = validSenderAddressFromMessage(),
-                validAddress.addressID != senderAddress.addressID,
-                validAddress.email != senderAddress.addressID
-            else { return }
-            uiDelegate?.changeInvalidSenderAddress(to: validAddress)
-        case .newDraft, .newDraftFromShare:
-            guard
-                let senderAddress = currentSenderAddress(),
-                senderAddress.status == .disabled,
-                let defaultAddress = user.addresses.defaultSendAddress()
-            else { return }
-            uiDelegate?.changeInvalidSenderAddress(to: defaultAddress)
+        DispatchQueue.main.async {
+            defer {
+                self.uiDelegate?.updateSenderAddressesList()
+            }
+            switch self.messageAction {
+            case .forward, .reply, .replyAll, .openDraft:
+                guard
+                    let senderAddress = self.currentSenderAddress(),
+                    senderAddress.status == .disabled,
+                    let validAddress = self.validSenderAddressFromMessage(),
+                    validAddress.addressID != senderAddress.addressID,
+                    validAddress.email != senderAddress.addressID
+                else { return }
+                self.uiDelegate?.changeInvalidSenderAddress(to: validAddress)
+            case .newDraft, .newDraftFromShare:
+                guard
+                    let senderAddress = self.currentSenderAddress(),
+                    senderAddress.status == .disabled,
+                    let defaultAddress = self.user.addresses.defaultSendAddress()
+                else { return }
+                self.uiDelegate?.changeInvalidSenderAddress(to: defaultAddress)
+            }
         }
     }
 
