@@ -36,12 +36,12 @@ extension ImageProcessor where Self: AttachmentProvider {
     }
 
     internal func process(original originalImage: UIImage) -> Promise<Void> {
-        let fileName = "\(NSUUID().uuidString).PNG"
-        let ext = "image/png"
+        let fileName = "\(NSUUID().uuidString).jpg"
+        let ext = "image/jpeg"
         var fileData: FileData!
 
 #if APP_EXTENSION
-        guard let data = originalImage.pngData(),
+        guard let data = originalImage.jpegData(compressionQuality: 0.8),
               let newUrl = try? self.writeItemToTempDirectory(data, filename: fileName) else {
             self.controller?.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
             return Promise()
