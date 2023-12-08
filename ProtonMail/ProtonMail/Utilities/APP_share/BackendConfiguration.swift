@@ -39,7 +39,7 @@ struct BackendConfiguration {
         isDebugOrEnterprise: () -> Bool = { UIApplication.isDebugOrEnterprise },
         configurationCache: BackendConfigurationCacheProtocol = BackendConfigurationCache()
     ) {
-        self.environment = .blackPayment
+        self.environment = .black
     }
 }
 
