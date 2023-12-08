@@ -1,4 +1,3 @@
-
 "OK" = "OK";
 
 "Cancel" = "Zrušiť";
@@ -22,6 +21,8 @@
 "Current plan will expire on %@" = "Váš plán vyprší dňa %@";
 
 "Contact an administrator to make changes to your Proton subscription." = "Ak chcete vykonať zmeny vo vašom predplatnom Proton, kontaktujte správcu.";
+
+"%1$@ of %2$@" = "%1$@ z %2$@";
 
 "%@ storage" = "%@ úložisko";
 
@@ -73,6 +74,8 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "Prostredníctvom tejto aplikácie je k dispozícii iba neobnovujúce sa ročné predplatné";
 
+"Your subscription cannot be managed inside the mobile app." = "Vaše predplatné nie je možné spravovať v mobilnej aplikácii.";
+
 "Unlimited folders, labels, and filters" = "Neobmedzený počet priečinkov, štítkov a filtrov";
 
 "Up to %@ storage" = "Až do %@ úložtného priestoru";
@@ -113,13 +116,9 @@
 
 "Unlimited devices" = "Neobmedzený počet zariadení";
 
-"%@ email aliases" = "%@ emailové aliasy";
-
 "Unlimited email aliases" = "Neobmedzený počet emailových aliasov";
 
 "Unlimited logins and notes" = "Neobmedzený počet prihlásení a poznámok";
-
-"Up to %@ forwarding mailboxes" = "Až %@ presmerovaných poštových schránok";
 
 "Custom fields" = "Vlastné polia";
 

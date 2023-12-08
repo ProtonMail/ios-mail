@@ -1,4 +1,3 @@
-
 "OK" = "OK";
 
 "Cancel" = "Mégsem";
@@ -22,6 +21,8 @@
 "Current plan will expire on %@" = "A jelenlegi csomag lejár: %@";
 
 "Contact an administrator to make changes to your Proton subscription." = "Lépjen kapcsolatba egy adminisztrátorral, ha szeretne módosítani a Proton előfizetésén.";
+
+"%1$@ of %2$@" = "%1$@ / %2$@";
 
 "%@ storage" = "%@ tárhely";
 
@@ -73,6 +74,8 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "Az alkalmazásból csak éves, nem automatikusan megújuló előfizetés érhető el";
 
+"Your subscription cannot be managed inside the mobile app." = "Your subscription cannot be managed inside the mobile app.";
+
 "Unlimited folders, labels, and filters" = "Korlátlan számú mappa, címke és szűrő";
 
 "Up to %@ storage" = "Akár %@ tárhely";
@@ -113,22 +116,18 @@
 
 "Unlimited devices" = "Korlátlan számú eszköz";
 
-"%@ email aliases" = "%@ e-mail álnév";
-
 "Unlimited email aliases" = "Korlátlan számú e-mail álnév";
 
 "Unlimited logins and notes" = "Korlátlan számú bejelentkezés és jegyzet";
-
-"Up to %@ forwarding mailboxes" = "Akár %@ továbbító e-mail cím";
 
 "Custom fields" = "Egyéni mezők";
 
 "For next-level password management and identity protection." = "Új szint a jelszókezelésben és a személyi adatok védelmében.";
 
-"Pay monthly" = "Pay monthly";
+"Pay monthly" = "Fizetés havonta";
 
-"Pay annually" = "Pay annually";
+"Pay annually" = "Fizetés évente";
 
 "Pay every two years" = "Pay every two years";
 
-"Free" = "Free";
+"Free" = "Ingyenes";

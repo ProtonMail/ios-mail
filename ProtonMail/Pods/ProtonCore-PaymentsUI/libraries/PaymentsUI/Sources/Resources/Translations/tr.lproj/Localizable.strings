@@ -1,4 +1,3 @@
-
 "OK" = "Tamam";
 
 "Cancel" = "İptal";
@@ -22,6 +21,8 @@
 "Current plan will expire on %@" = "Geçerli tarifenin süresi %@ tarihinde dolacak";
 
 "Contact an administrator to make changes to your Proton subscription." = "Proton aboneliğinizde değişiklik yapmak için bir yönetici ile görüşün.";
+
+"%1$@ of %2$@" = "%1$@ / %2$@";
 
 "%@ storage" = "%@ depolama alanı";
 
@@ -73,6 +74,8 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "Bu uygulamada yalnızca yenilenmeyen yıllık abonelikler bulunur";
 
+"Your subscription cannot be managed inside the mobile app." = "Aboneliğiniz mobil uygulama içinden yönetilemez.";
+
 "Unlimited folders, labels, and filters" = "Sınırsız sayıda klasör, etiket ve süzgeç";
 
 "Up to %@ storage" = "%@ boyutuna kadar depolama alanı";
@@ -113,13 +116,9 @@
 
 "Unlimited devices" = "Sınırsız sayıda aygıt";
 
-"%@ email aliases" = "%@ e-posta takma adı";
-
 "Unlimited email aliases" = "Sınırsız sayıda e-posta takma adı";
 
 "Unlimited logins and notes" = "Sınırsız sayıda oturum açma bilgisi ve not";
-
-"Up to %@ forwarding mailboxes" = "%@ taneye kadar iletme e-posta kutusu";
 
 "Custom fields" = "Özel alanlar";
 
