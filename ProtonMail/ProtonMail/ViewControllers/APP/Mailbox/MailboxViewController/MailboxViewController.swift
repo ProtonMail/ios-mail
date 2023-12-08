@@ -270,7 +270,6 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         self.updateUnreadButton(count: viewModel.unreadCount)
         self.updateTheUpdateTimeLabel()
 
-        self.viewModel.cleanReviewItems()
         generateAccessibilityIdentifiers()
         configureBannerContainer()
 

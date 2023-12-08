@@ -151,19 +151,6 @@ class CacheServiceTest: XCTestCase {
         let newLabels: [String] = self.testMessage.getLabelIDs()
         XCTAssertFalse(newLabels.contains(labelIDToAdd.rawValue))
     }
-
-    func testCleanReviewItems() {
-        let msgID = self.testMessage.messageID
-        self.testMessage.messageType = NSNumber(value: 1)
-
-        let expect = expectation(description: "CleanReviewItems")
-        sut.cleanReviewItems(completion: {
-            expect.fulfill()
-        })
-        wait(for: [expect], timeout: 1)
-
-        XCTAssertNil(Message.messageForMessageID(msgID, inManagedObjectContext: testContext))
-    }
 }
 
 extension CacheServiceTest {
