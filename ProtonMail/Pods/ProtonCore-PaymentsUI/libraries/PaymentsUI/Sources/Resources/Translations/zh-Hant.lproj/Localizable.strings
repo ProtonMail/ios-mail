@@ -1,4 +1,3 @@
-
 "OK" = "好";
 
 "Cancel" = "取消";
@@ -22,6 +21,8 @@
 "Current plan will expire on %@" = "您的方案到期日為 %@";
 
 "Contact an administrator to make changes to your Proton subscription." = "聯絡管理員以進行 Proton 訂購授權變更。";
+
+"%1$@ of %2$@" = "%2$@ 中的 %1$@";
 
 "%@ storage" = "%@ 雲端儲存";
 
@@ -73,6 +74,8 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "此應用程式僅提供非續購型年約授權";
 
+"Your subscription cannot be managed inside the mobile app." = "Your subscription cannot be managed inside the mobile app.";
+
 "Unlimited folders, labels, and filters" = "資料夾、標籤和篩選器無上限";
 
 "Up to %@ storage" = "多至 %@ 儲存空間";
@@ -113,13 +116,9 @@
 
 "Unlimited devices" = "無限裝置數";
 
-"%@ email aliases" = "%@電子信箱別名";
-
 "Unlimited email aliases" = "無限電子郵件別名";
 
 "Unlimited logins and notes" = "無限登入資訊與筆記";
-
-"Up to %@ forwarding mailboxes" = "最多%@個轉寄電子郵件信箱";
 
 "Custom fields" = "自訂欄位";
 
