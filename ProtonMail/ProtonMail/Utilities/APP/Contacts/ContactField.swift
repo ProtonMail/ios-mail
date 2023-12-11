@@ -33,6 +33,10 @@ extension ContactField {
         let type: ContactFieldType
         let emailAddress: String
         let vCardGroup: String
+
+        func copy(changingTypeTo type: ContactFieldType) -> Email {
+            Email(type: type, emailAddress: self.emailAddress, vCardGroup: self.vCardGroup)
+        }
     }
 }
 
@@ -55,6 +59,10 @@ extension ContactField {
     struct PhoneNumber: Equatable {
         let type: ContactFieldType
         let number: String
+
+        func copy(changingTypeTo type: ContactFieldType) -> ContactField.PhoneNumber {
+            PhoneNumber(type: type, number: self.number)
+        }
     }
 }
 
@@ -63,6 +71,10 @@ extension ContactField {
     struct Url: Equatable {
         let type: ContactFieldType
         let url: String
+
+        func copy(changingTypeTo type: ContactFieldType) -> ContactField.Url {
+            Url(type: type, url: self.url)
+        }
     }
 }
 

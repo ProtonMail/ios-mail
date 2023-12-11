@@ -51,7 +51,16 @@ final class ProtonVCardsTests: XCTestCase {
 
     // MARK: read throws
 
-    func testRead_whenCardIsSigned_andInorrectKeyIsPassed_itShouldThrow() throws {
+    func testRead_whenThereAreDuplicatedCardDataTypes_itShouldThrow() throws {
+        sut = ProtonVCards(
+            cards: [testSignedCardData, testSignedCardData],
+            userKeys: [testCorrectArmoredKey],
+            mailboxPassphrase: testCorrectPassphrase1
+        )
+        XCTAssertThrowsError(try sut.read())
+    }
+
+    func testRead_whenCardIsSigned_andIncorrectKeyIsPassed_itShouldThrow() throws {
         sut = ProtonVCards(
             cards: [testSignedCardData],
             userKeys: [testIncorrectArmoredKey],
@@ -60,7 +69,7 @@ final class ProtonVCardsTests: XCTestCase {
         XCTAssertThrowsError(try sut.read())
     }
 
-    func testRead_whenCardIsSigned_andInorrectPassphraseIsPassed_itShouldThrow() throws {
+    func testRead_whenCardIsSigned_andIncorrectPassphraseIsPassed_itShouldThrow() throws {
         sut = ProtonVCards(
             cards: [testSignedCardData],
             userKeys: [testCorrectArmoredKey],
