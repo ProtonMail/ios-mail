@@ -24,6 +24,9 @@ final class InvitationView: UIView {
     private let titleLabel = SubviewFactory.titleLabel
     private let timeLabel = SubviewFactory.timeLabel
     private let detailsContainer = SubviewFactory.detailsContainer
+    private let participantsRow = SubviewFactory.participantsRow
+
+    var onIntrinsicHeightChanged: (() -> Void)?
 
     private static let eventDurationFormatter: DateIntervalFormatter = {
         let dateFormatter = DateIntervalFormatter()
@@ -31,6 +34,12 @@ final class InvitationView: UIView {
         dateFormatter.timeStyle = .short
         return dateFormatter
     }()
+
+    private var participantListState = ParticipantListState(isExpanded: false, values: []) {
+        didSet {
+            updateParticipantsList()
+        }
+    }
 
     init() {
         super.init(frame: .zero)
@@ -77,7 +86,76 @@ final class InvitationView: UIView {
         detailsContainer.arrangedSubviews.forEach(detailsContainer.removeArrangedSubview)
         detailsContainer.addArrangedSubview(SubviewFactory.calendarRow(calendar: eventDetails.calendar))
         detailsContainer.addArrangedSubview(SubviewFactory.locationRow(location: eventDetails.location))
-        detailsContainer.addArrangedSubview(SubviewFactory.participantsRow(participants: eventDetails.participants))
+        detailsContainer.addArrangedSubview(participantsRow)
+
+        participantListState.values = eventDetails.participants
+    }
+
+    private func updateParticipantsList() {
+        participantsRow.contentStackView.clearAllViews()
+
+        let visibleParticipants: [EventDetails.Participant]
+        let expansionButtonTitle: String?
+
+        if participantListState.values.count <= 2 {
+            visibleParticipants = participantListState.values
+            expansionButtonTitle = nil
+        } else if participantListState.isExpanded {
+            visibleParticipants = participantListState.values
+            expansionButtonTitle = L11n.Event.showLess
+        } else {
+            visibleParticipants = Array(participantListState.values.prefix(1))
+            expansionButtonTitle = String(format: L11n.Event.participantCount, participantListState.values.count)
+        }
+
+        for participant in visibleParticipants {
+            let participantStackView = SubviewFactory.participantStackView
+            let label = SubviewFactory.detailsLabel(text: participant.email)
+            participantStackView.addArrangedSubview(label)
+
+            if participant.isOrganizer {
+                let organizerLabel = SubviewFactory.detailsLabel(
+                    text: L11n.Event.organizer,
+                    textColor: ColorProvider.TextWeak
+                )
+                participantStackView.addArrangedSubview(organizerLabel)
+            }
+
+            let tapGR = UITapGestureRecognizer(target: self, action: #selector(didTapParticipant))
+            label.isUserInteractionEnabled = true
+            label.addGestureRecognizer(tapGR)
+
+            participantsRow.contentStackView.addArrangedSubview(participantStackView)
+        }
+
+        if let expansionButtonTitle {
+            let action = UIAction { [weak self] _ in
+                self?.toggleParticipantListExpansion()
+            }
+
+            let button = SubviewFactory.participantListExpansionButton(primaryAction: action)
+            button.setTitle(expansionButtonTitle, for: .normal)
+            participantsRow.contentStackView.addArrangedSubview(button)
+        }
+
+        onIntrinsicHeightChanged?()
+    }
+
+    @objc
+    private func didTapParticipant(sender: UITapGestureRecognizer) {
+        guard
+            let participantAddressLabel = sender.view as? UILabel,
+            let participantAddress = participantAddressLabel.text,
+            let url = URL(string: "mailto://\(participantAddress)")
+        else {
+            return
+        }
+
+        UIApplication.shared.open(url)
+    }
+
+    private func toggleParticipantListExpansion() {
+        participantListState.isExpanded.toggle()
     }
 }
 
@@ -136,23 +214,20 @@ private struct SubviewFactory {
         return row
     }
 
-    static func participantsRow(participants: [EventDetails.Participant]) -> UIView {
-        let row = row(icon: \.users)
+    static var participantsRow: ExpandedHeaderRowView {
+        row(icon: \.users)
+    }
 
-        for participant in participants {
-            let participantStackView = genericStackView
-            let label = detailsLabel(text: participant.email)
-            participantStackView.addArrangedSubview(label)
+    static var participantStackView: UIStackView {
+        genericStackView
+    }
 
-            if participant.isOrganizer {
-                let organizerLabel = detailsLabel(text: L11n.Event.organizer, textColor: ColorProvider.TextWeak)
-                participantStackView.addArrangedSubview(organizerLabel)
-            }
-
-            row.contentStackView.addArrangedSubview(participantStackView)
-        }
-
-        return row
+    static func participantListExpansionButton(primaryAction: UIAction) -> UIButton {
+        let view = UIButton(primaryAction: primaryAction)
+        view.contentHorizontalAlignment = .leading
+        view.setTitleColor(ColorProvider.TextAccent, for: .normal)
+        view.titleLabel?.font = .adjustedFont(forTextStyle: .footnote)
+        return view
     }
 
     private static var genericStackView: UIStackView {
@@ -170,9 +245,14 @@ private struct SubviewFactory {
         return row
     }
 
-    private static func detailsLabel(text: String, textColor: UIColor = ColorProvider.TextNorm) -> UILabel {
+    static func detailsLabel(text: String, textColor: UIColor = ColorProvider.TextNorm) -> UILabel {
         let view = UILabel()
         view.set(text: text, preferredFont: .footnote, textColor: textColor)
         return view
     }
+}
+
+private struct ParticipantListState {
+    var isExpanded: Bool
+    var values: [EventDetails.Participant]
 }
