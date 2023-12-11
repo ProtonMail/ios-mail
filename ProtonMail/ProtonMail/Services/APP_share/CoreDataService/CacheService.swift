@@ -290,22 +290,6 @@ class CacheService: CacheServiceProtocol {
         }
     }
 
-    func cleanReviewItems(completion: (() -> Void)? = nil) {
-        coreDataService.performOnRootSavingContext { context in
-            let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "(%K == 1) AND (%K == %@)", Message.Attributes.messageType, Message.Attributes.userID, self.userID.rawValue)
-            do {
-                let messages = try context.fetch(fetchRequest)
-                for msg in messages {
-                    context.delete(msg)
-                }
-                _ = context.saveUpstreamIfNeeded()
-            } catch {
-            }
-            completion?()
-        }
-    }
-
     func updateExpirationOffset(of messageObjectID: NSManagedObjectID,
                                 expirationTime: TimeInterval,
                                 pwd: String,
