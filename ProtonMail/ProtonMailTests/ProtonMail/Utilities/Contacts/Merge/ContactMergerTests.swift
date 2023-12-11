@@ -48,8 +48,7 @@ final class ContactMergerTests: XCTestCase {
         let signedVCard: String! = result?.cardDatas.filter({ $0.type == .SignedOnly }).first?.data
         let pmniCard1 = PMNIEzvcard.parseFirst(signedVCard)
 
-        XCTAssertEqual(pmniCard1?.getStructuredName()?.getGiven(), "Kathy")
-        XCTAssertEqual(pmniCard1?.getStructuredName()?.getFamily(), "Bell")
+        XCTAssertEqual(pmniCard1?.getFormattedName()?.getValue(), "Kathy Bell")
 
         let emails = pmniCard1?.getEmails().map { $0.getValue() }
         XCTAssertEqual(emails, ["kate-bell@mac.com", "kate-bell@proton.me"])
@@ -63,6 +62,10 @@ final class ContactMergerTests: XCTestCase {
             passphrase: passphrase
         )
         let pmniCard2 = PMNIEzvcard.parseFirst(decryptedVCard)
+
+        XCTAssertEqual(pmniCard2?.getStructuredName()?.getGiven(), "Kathy")
+        XCTAssertEqual(pmniCard2?.getStructuredName()?.getFamily(), "Bell")
+
         let phoneNumbers = pmniCard2?.getTelephoneNumbers().map { $0.getText() }
         XCTAssertEqual(phoneNumbers, ["(555) 564-8583", "(415) 555-3695", "555-478-7672"])
 

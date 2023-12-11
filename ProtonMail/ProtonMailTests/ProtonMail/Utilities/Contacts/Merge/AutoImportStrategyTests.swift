@@ -46,6 +46,21 @@ final class AutoImportStrategyTests: XCTestCase {
         XCTAssertEqual(result.value, deviceName)
     }
 
+    // MARK: Formatted Name
+
+    func testMergeFormattedName_whenEqual_itShouldReturnNoChanges() {
+        let testName = "Frank Smith"
+        let result = sut.mergeFormattedName(device: testName, proton: testName)
+        XCTAssertTrue(result.isNoChange)
+    }
+
+    func testMergeFormattedName_whenDifferent_itShouldReturnTheDeviceName() {
+        let deviceName = "Michael Higgins"
+        let protonName = "Mike Higgins"
+        let result = sut.mergeFormattedName(device: deviceName, proton: protonName)
+        XCTAssertEqual(result.value, deviceName)
+    }
+
     // MARK: Emails
 
     func testMergeEmails_whenEqual_itShouldReturnNoChanges() {

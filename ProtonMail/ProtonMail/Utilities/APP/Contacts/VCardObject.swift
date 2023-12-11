@@ -128,6 +128,12 @@ struct VCardObject {
         object.setStructuredName(structuredName)
     }
 
+    func replaceFormattedName(with name: String) {
+        let formattedName = PMNIFormattedName.createInstance(name)
+        object.clearFormattedName()
+        object.setFormattedName(formattedName)
+    }
+
     func replaceEmails(with emails: [ContactField.Email]) {
         let newEmails = emails.compactMap { email in
             PMNIEmail.createInstance(email.type.rawString, email: email.emailAddress, group: email.vCardGroup)

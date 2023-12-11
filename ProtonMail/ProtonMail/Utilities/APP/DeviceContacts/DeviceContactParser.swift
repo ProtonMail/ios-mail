@@ -31,41 +31,44 @@ struct DeviceContactParser {
         case errorInstantiatingVCard
         case errorParsingVCard
     }
-
+    
+    /// Parses a `DeviceContact` object to prepare the information to store it locally. Information
+    /// will be distributed in two vCards. One card will be signed and the other signed and encrypted,
+    /// according to Proton contact specs.
     static func parseDeviceContact(
         _ deviceContact: DeviceContact,
         userKey: Key,
         userPassphrase: Passphrase
     ) throws -> DeviceContactParsedData {
-        guard let vCardType2 = PMNIVCard.createInstance(),
-              let vCardType3 = PMNIEzvcard.parseFirst(deviceContact.vCard)
+        guard let vCardToSign = PMNIVCard.createInstance(),
+              let vCardToEncrypt = PMNIEzvcard.parseFirst(deviceContact.vCard)
         else {
             throw DeviceContactParserError.errorInstantiatingVCard
         }
 
-        // name
+        // formatted name
         let fullName = deviceContact.fullName ?? LocalString._general_unknown_title
         let name = PMNIFormattedName.createInstance(fullName)
-        vCardType2.setFormattedName(name)
-        vCardType3.clearFormattedName()
+        vCardToSign.setFormattedName(name)
+        vCardToEncrypt.clearFormattedName()
 
         // emails
-        let (vCardObjects, plainTextEmails) = extractEmails(from: vCardType3)
-        vCardType2.setEmails(vCardObjects)
-        vCardType3.clearEmails()
+        let (vCardObjects, plainTextEmails) = extractEmails(from: vCardToEncrypt)
+        vCardToSign.setEmails(vCardObjects)
+        vCardToEncrypt.clearEmails()
 
         // cards
         let uuid = PMNIUid.createInstance(deviceContact.identifier.uuid)
-        let cardType2 = AppleContactParser
-            .createCard2(by: vCardType2, uuid: uuid, userKey: userKey, passphrase: userPassphrase)
-        let cardType3 = AppleContactParser
-            .createCard3(by: vCardType3, userKey: userKey, passphrase: userPassphrase, uuid: uuid)
+        let signedCard = AppleContactParser
+            .createCard2(by: vCardToSign, uuid: uuid, userKey: userKey, passphrase: userPassphrase)
+        let encryptedCard = AppleContactParser
+            .createCard3(by: vCardToEncrypt, userKey: userKey, passphrase: userPassphrase, uuid: uuid)
 
-        guard let cardType2, let cardType3 else {
+        guard let signedCard, let encryptedCard else {
             throw DeviceContactParserError.errorParsingVCard
         }
 
-        return DeviceContactParsedData(name: fullName, emails: plainTextEmails, cards: [cardType2, cardType3])
+        return DeviceContactParsedData(name: fullName, emails: plainTextEmails, cards: [signedCard, encryptedCard])
     }
 
     static private func extractEmails(
