@@ -1376,7 +1376,7 @@
 "Any unsaved changes will be lost." = "Qualsiasi modifica non salvata andrà persa.";
 
 /* A label message */
-"Inherited from parent folder" = "Ereditato dalla cartella principale";
+"Inherited from parent folder" = "Preso dalla cartella principale";
 
 /* Alert title */
 "Creating folder not allowed" = "La creazione della cartella non è consentita";
