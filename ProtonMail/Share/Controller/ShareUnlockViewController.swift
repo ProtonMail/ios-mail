@@ -273,7 +273,9 @@ extension ShareUnlockViewController: AttachmentController, FileImporter {
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
         return Promise { seal in
             guard fileData.contents.dataSize < (Constants.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
-                self.error(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
+                DispatchQueue.main.async {
+                    self.showErrorAndQuit(errorMsg: LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
+                }
                 seal.fulfill_()
                 return
             }
