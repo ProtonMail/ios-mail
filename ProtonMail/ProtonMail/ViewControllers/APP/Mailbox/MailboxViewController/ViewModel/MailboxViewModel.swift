@@ -493,11 +493,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
 
     // MARK: - operations
 
-    /// clean up the rate/review items
-    func cleanReviewItems() {
-        self.user.cacheService.cleanReviewItems()
-    }
-
     /// check if need to load more older messages
     ///
     /// - Parameter index: the current table index
