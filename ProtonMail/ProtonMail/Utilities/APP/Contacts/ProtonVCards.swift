@@ -177,9 +177,16 @@ extension ProtonVCards {
 
     func replaceName(with name: ContactField.Name) {
         cardObjects
-            .first(where: { $0.type == .SignedOnly })?
+            .first(where: { $0.type == .SignAndEncrypt })?
             .object
             .replaceName(with: name)
+    }
+
+    func replaceFormattedName(with name: String) {
+        cardObjects
+            .first(where: { $0.type == .SignedOnly })?
+            .object
+            .replaceFormattedName(with: name)
     }
 
     /// Replaces the emails of the signed card which is where they should be according to Proton specs

@@ -39,6 +39,13 @@ struct AutoImportStrategy: ContactMergeStrategy {
             protonContact.replaceName(with: result)
         }
 
+        if case let .merge(result) = mergeFormattedName(
+            device: deviceContact.formattedName(),
+            proton: protonContact.formattedName()
+        ) {
+            protonContact.replaceFormattedName(with: result)
+        }
+
         if case let .merge(result) = mergeEmails(device: deviceContact.emails(), proton: protonContact.emails()) {
             protonContact.replaceEmails(with: result)
         }
@@ -85,6 +92,10 @@ extension AutoImportStrategy {
         device: ContactField.Name,
         proton: ContactField.Name
     ) -> FieldMergeResult<ContactField.Name> {
+        device == proton ? .noChange : .merge(result: device)
+    }
+
+    func mergeFormattedName(device: String, proton: String) -> FieldMergeResult<String> {
         device == proton ? .noChange : .merge(result: device)
     }
 
