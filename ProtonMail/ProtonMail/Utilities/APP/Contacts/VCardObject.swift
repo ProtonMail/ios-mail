@@ -18,13 +18,16 @@
 import VCard
 
 struct VCardObject {
-    private let object: PMNIVCard
-
-    init(object: PMNIVCard) {
-        self.object = object
-    }
+    let object: PMNIVCard
 
     // MARK: read methods
+
+    func vCard() throws -> String {
+        guard let result = try object.write() else {
+            throw VCardObjectError.failedToGenerateVCardString
+        }
+        return result
+    }
 
     func name() -> ContactField.Name {
         guard let name = object.getStructuredName() else {
@@ -97,16 +100,16 @@ struct VCardObject {
     private func info(from object: PMNIVCard, ofType info: InformationType) -> [String] {
         var result: [String] = []
         switch info {
+        case .nickname:
+            result = object.getNicknames().map { $0.getNickname() }
+        case .organization:
+            result = object.getOrganizations().map { $0.getValue() }
+        case .title:
+            result = object.getTitles().map { $0.getTitle() }
         case .birthday:
             result = object.getBirthdays().map(\.formattedBirthday)
         case .anniversary:
             result = object.getBirthdays().map { $0.getDate() }
-        case .nickname:
-            result = object.getNicknames().map { $0.getNickname() }
-        case .title:
-            result = object.getTitles().map { $0.getTitle() }
-        case .organization:
-            result = object.getOrganizations().map { $0.getValue() }
         case .gender:
             if let gender = object.getGender()?.getGender() { result = [gender] }
         default:
@@ -117,6 +120,14 @@ struct VCardObject {
 
     // MARK: write methods
 
+    func replaceName(with name: ContactField.Name) {
+        let structuredName = PMNIStructuredName.createInstance()
+        structuredName?.setGiven(name.firstName)
+        structuredName?.setFamily(name.lastName)
+        object.clearStructuredName()
+        object.setStructuredName(structuredName)
+    }
+
     func replaceEmails(with emails: [ContactField.Email]) {
         let newEmails = emails.compactMap { email in
             PMNIEmail.createInstance(email.type.rawString, email: email.emailAddress, group: email.vCardGroup)
@@ -124,6 +135,95 @@ struct VCardObject {
         object.clearEmails()
         object.setEmails(newEmails)
     }
+
+    func replaceAddresses(with addresses: [ContactField.Address]) {
+        let newAddresses = addresses.compactMap { address in
+            PMNIAddress.createInstance(
+                address.type.rawString,
+                street: address.street,
+                extendstreet: address.streetTwo,
+                locality: address.locality,
+                region: address.region,
+                zip: address.postalCode,
+                country: address.country,
+                pobox: address.poBox
+            )
+        }
+        object.clearAddresses()
+        object.setAddresses(newAddresses)
+    }
+
+    func replacePhoneNumbers(with phoneNumbers: [ContactField.PhoneNumber]) {
+        let newPhoneNumbers = phoneNumbers.compactMap { phoneNumber in
+            PMNITelephone.createInstance(
+                phoneNumber.type.rawString,
+                number: phoneNumber.number
+            )
+        }
+        object.clearTelephones()
+        object.setTelephones(newPhoneNumbers)
+    }
+
+    func replaceUrls(with urls: [ContactField.Url]) {
+        let newUrls = urls.compactMap { url in
+            PMNIUrl.createInstance(url.type.rawString, value: url.url)
+        }
+        object.clearUrls()
+        object.setUrls(newUrls)
+    }
+
+    func replaceOtherInfo(infoType: InformationType, with info: [ContactField.OtherInfo]) {
+        switch infoType {
+        case .birthday:
+            let newBirthdays = info.compactMap { birthday in
+                PMNIBirthday.createInstance("", date: birthday.value)
+            }
+            object.clearBirthdays()
+            object.setBirthdays(newBirthdays)
+
+        case .anniversary:
+            let newAnniversary = info.compactMap { anniversary in
+                PMNIAnniversary.createInstance("", date: anniversary.value)
+            }
+            object.clearAnniversaries()
+            newAnniversary.forEach(object.add)
+
+        case .nickname:
+            let newNicknames = info.compactMap { nickname in
+                PMNINickname.createInstance("", value: nickname.value)
+            }
+            object.clearNickname()
+            newNicknames.forEach(object.add)
+
+        case .title:
+            let newTitles = info.compactMap { title in
+                PMNITitle.createInstance("", value: title.value)
+            }
+            object.clearTitle()
+            newTitles.forEach(object.add)
+
+        case .organization:
+            let newOrganizations = info.compactMap { organization in
+                PMNIOrganization.createInstance("", value: organization.value)
+            }
+            object.clearOrganizations()
+            object.setOrganizations(newOrganizations)
+
+        case .gender:
+            guard let gender = info.compactMap({ PMNIGender.createInstance("", text: $0.value) }).first else {
+                return
+            }
+            object.clearGender()
+            object.setGender(gender)
+
+        default:
+            PMAssertionFailure("VCardObject writer: \(info) not implemented")
+        }
+    }
+}
+
+enum VCardObjectError: Error {
+    case failedToGenerateVCardString
 }
 
 private extension Array where Element == String {
