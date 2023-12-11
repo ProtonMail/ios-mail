@@ -46,7 +46,7 @@ protocol MailboxViewModelUIProtocol: AnyObject {
 class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     typealias Dependencies = HasCheckProtonServerStatus
     & HasFeatureFlagCache
-    & HasFetchAttachment
+    & HasFetchAttachmentUseCase
     & HasFetchAttachmentMetadataUseCase
     & HasFetchMessageDetailUseCase
     & HasFetchMessages

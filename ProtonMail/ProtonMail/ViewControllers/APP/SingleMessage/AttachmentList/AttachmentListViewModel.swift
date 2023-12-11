@@ -23,7 +23,7 @@
 import Foundation
 
 final class AttachmentListViewModel {
-    typealias Dependencies = HasUserManager & HasCoreDataContextProviderProtocol & HasFetchAttachment
+    typealias Dependencies = HasUserManager & HasCoreDataContextProviderProtocol & HasFetchAttachmentUseCase
 
     enum AttachmentSection: Int {
         case normal = 1, inline

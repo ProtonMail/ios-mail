@@ -67,6 +67,13 @@ extension UserContainer {
         }
     }
 
+    var eventRSVPFactory: Factory<EventRSVP> {
+        self {
+            // replace with the framework provided by Calendar once it's ready
+            EventRSVPFake()
+        }
+    }
+
     var fetchMessagesFactory: Factory<FetchMessages> {
         self {
             FetchMessages(

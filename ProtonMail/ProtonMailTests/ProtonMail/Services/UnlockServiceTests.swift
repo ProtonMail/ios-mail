@@ -139,10 +139,3 @@ extension UnlockTests {
         mockKeyMaker.isMainKeyInMemory = false
     }
 }
-
-// Needed by MockUnlockService
-extension AppAccess {
-    init() {
-        self = .accessGranted
-    }
-}

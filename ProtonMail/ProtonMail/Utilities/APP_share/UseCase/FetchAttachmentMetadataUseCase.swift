@@ -20,7 +20,12 @@ import protocol ProtonCoreDoh.DoHInterface
 import protocol ProtonCoreServices.APIService
 import ProtonCoreNetworking
 
-class FetchAttachmentMetadataUseCase {
+// sourcery: mock
+protocol FetchAttachmentMetadataUseCase {
+    func execution(params: FetchAttachmentMetadata.Params) async throws -> AttachmentMetadata
+}
+
+final class FetchAttachmentMetadata: FetchAttachmentMetadataUseCase {
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
@@ -38,7 +43,7 @@ class FetchAttachmentMetadataUseCase {
     }
 }
 
-extension FetchAttachmentMetadataUseCase {
+extension FetchAttachmentMetadata {
     struct Params {
         let attachmentID: AttachmentID
     }

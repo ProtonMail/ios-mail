@@ -292,6 +292,16 @@ extension UserContainer: HasContactViewsFactory {
     }
 }
 
+protocol HasEventRSVP {
+    var eventRSVP: EventRSVP { get }
+}
+
+extension UserContainer: HasEventRSVP {
+    var eventRSVP: EventRSVP {
+        eventRSVPFactory()
+    }
+}
+
 protocol HasFetchMessages {
     var fetchMessages: FetchMessages { get }
 }

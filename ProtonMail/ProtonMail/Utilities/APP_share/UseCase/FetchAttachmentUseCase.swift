@@ -21,6 +21,14 @@ import protocol ProtonCoreServices.APIService
 
 typealias FetchAttachmentUseCase = UseCase<AttachmentFile, FetchAttachment.Params>
 
+extension FetchAttachmentUseCase {
+    func execute(params: Params) async throws -> AttachmentFile {
+        try await withCheckedThrowingContinuation { continuation in
+            execute(params: params, callback: continuation.resume)
+        }
+    }
+}
+
 final class FetchAttachment: FetchAttachmentUseCase {
     private let dependencies: Dependencies
 
