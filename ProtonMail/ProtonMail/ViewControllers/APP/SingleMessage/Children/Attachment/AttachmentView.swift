@@ -54,13 +54,13 @@ class AttachmentView: UIView {
         [
             iconView.heightAnchor.constraint(equalToConstant: 20),
             iconView.widthAnchor.constraint(equalToConstant: 20),
-            iconView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            iconView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             iconView.topAnchor.constraint(equalTo: self.topAnchor, constant: 14),
             iconView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -14)
         ].activate()
 
         [
-            titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 14),
             titleLabel.centerYAnchor.constraint(equalTo: iconView.centerYAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: arrowIconView.leadingAnchor, constant: -8)
         ].activate()
@@ -86,7 +86,7 @@ private enum SubViewsFactory {
     static var iconView: UIImageView {
         let view = UIImageView(image: IconProvider.paperClip.withRenderingMode(.alwaysTemplate))
         view.contentMode = .scaleAspectFit
-        view.tintColor = ColorProvider.TextNorm
+        view.tintColor = ColorProvider.IconWeak
         return view
     }
 
