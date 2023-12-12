@@ -182,7 +182,8 @@ class BannerViewModelTests: XCTestCase {
                               unsubscribeActionHandler: unsubscribeHandlerMock,
                               markLegitimateActionHandler: markLegitimateHandlerMock,
                               receiptActionHandler: receiptHandlerMock,
-                              urlOpener: UIApplication.shared)
+                              urlOpener: UIApplication.shared,
+                              viewMode: .singleMessage)
 
         let globalContainer = GlobalContainer()
         let userContainer = UserContainer(userManager: userManagerMock, globalContainer: globalContainer)

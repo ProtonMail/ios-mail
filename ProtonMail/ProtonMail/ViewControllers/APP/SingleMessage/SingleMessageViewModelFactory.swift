@@ -189,12 +189,15 @@ class SingleMessageComponentsFactory {
         let receiptService = ReceiptService(labelID: labelId,
                                             apiService: user.apiService,
                                             eventsService: user.eventsService)
-        return .init(shouldAutoLoadRemoteContent: user.userInfo.isAutoLoadRemoteContentEnabled,
-                     expirationTime: message.expirationTime,
-                     shouldAutoLoadEmbeddedImage: user.userInfo.isAutoLoadEmbeddedImagesEnabled,
-                     unsubscribeActionHandler: unsubscribeService,
-                     markLegitimateActionHandler: markLegitimateService,
-                     receiptActionHandler: receiptService,
-                     urlOpener: UIApplication.shared)
+        return .init(
+            shouldAutoLoadRemoteContent: user.userInfo.isAutoLoadRemoteContentEnabled,
+            expirationTime: message.expirationTime,
+            shouldAutoLoadEmbeddedImage: user.userInfo.isAutoLoadEmbeddedImagesEnabled,
+            unsubscribeActionHandler: unsubscribeService,
+            markLegitimateActionHandler: markLegitimateService,
+            receiptActionHandler: receiptService,
+            urlOpener: UIApplication.shared,
+            viewMode: user.userInfo.viewMode
+        )
     }
 }
