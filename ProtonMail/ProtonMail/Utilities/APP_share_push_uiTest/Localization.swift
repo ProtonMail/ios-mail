@@ -1499,6 +1499,8 @@ enum L11n {
 
     struct Snooze {
         static let title = NSLocalizedString("Snooze", comment: "The title of the snooze location in the menu")
+        static let bannerTitle = NSLocalizedString("Snoozed until %@", comment: "The banner title that is shown in the message detail view.")
+        static let buttonTitle = NSLocalizedString("Unsnooze", comment: "The title of the button in the banner that is shown in the message detail view.")
     }
 
 	struct InlineAttachment {

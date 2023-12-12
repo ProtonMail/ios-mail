@@ -90,6 +90,7 @@ final class BannerViewController: UIViewController {
             handleAutoReplyBanner()
             setUpMessageObservation()
             handleReceiptBanner()
+            showSnoozeBannerIfNeeded()
         }
 
         guard bannersBeforeUpdate.sortedBanners != displayedBanners.sortedBanners else { return }
@@ -304,6 +305,16 @@ final class BannerViewController: UIViewController {
             self?.viewModel.editScheduledMessage?()
         }
         addBannerView(type: .scheduledSend, shouldAddContainer: true, bannerView: banner)
+    }
+
+    private func showSnoozeBannerIfNeeded() {
+        guard let snoozeTime = viewModel.snoozeTime else { return }
+        let dateString = PMDateFormatter.shared.stringForSnoozeTime(from: snoozeTime)
+        let banner = UnsnoozeBanner()
+        banner.configure(date: dateString, viewMode: viewModel.viewMode) { [weak self] in
+            self?.viewModel.unsnoozeMessage()
+        }
+        addBannerView(type: .snooze, shouldAddContainer: false, bannerView: banner)
     }
 
     private func addBannerView(type: BannerType, shouldAddContainer: Bool, bannerView: UIView) {

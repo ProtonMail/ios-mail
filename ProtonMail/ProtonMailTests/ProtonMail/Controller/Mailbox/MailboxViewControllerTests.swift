@@ -364,6 +364,8 @@ final class MailboxViewControllerTests: XCTestCase {
     }
 
     func testMessagesOrdering_inSnoozeFolder_snoozeMessagesAreSortedCorrectly() throws {
+        LocaleEnvironment.locale = { .enUS }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
         conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         makeSUT(labelID: Message.Location.snooze.labelID, labelType: .folder, isCustom: false, labelName: nil)
         try testContainer.contextProvider.write { context in
@@ -405,7 +407,7 @@ final class MailboxViewControllerTests: XCTestCase {
         )
         XCTAssertEqual(
             firstCell.customView.messageContentView.snoozeTimeLabel.text,
-            "Thu, Jan 01 at 01:23"
+            PMDateFormatter.shared.stringForSnoozeTime(from: Date(timeIntervalSince1970: 5000))
         )
 
         let secondCell = try XCTUnwrap(cells[safe: 1])
@@ -415,7 +417,7 @@ final class MailboxViewControllerTests: XCTestCase {
         )
         XCTAssertEqual(
             secondCell.customView.messageContentView.snoozeTimeLabel.text,
-            "Thu, Jan 01 at 01:56"
+            PMDateFormatter.shared.stringForSnoozeTime(from: Date(timeIntervalSince1970: 7000))
         )
     }
 
@@ -467,7 +469,7 @@ final class MailboxViewControllerTests: XCTestCase {
         )
         XCTAssertEqual(
             firstCell.customView.messageContentView.snoozeTimeLabel.text,
-            "Thu, Jan 01 at 01:23"
+            PMDateFormatter.shared.stringForSnoozeTime(from: Date(timeIntervalSince1970: 5000))
         )
 
         let secondCell = try XCTUnwrap(cells[safe: 1])
@@ -477,7 +479,7 @@ final class MailboxViewControllerTests: XCTestCase {
         )
         XCTAssertEqual(
             secondCell.customView.messageContentView.snoozeTimeLabel.text,
-            "Thu, Jan 01 at 01:56"
+            PMDateFormatter.shared.stringForSnoozeTime(from: Date(timeIntervalSince1970: 7000))
         )
     }
 }
