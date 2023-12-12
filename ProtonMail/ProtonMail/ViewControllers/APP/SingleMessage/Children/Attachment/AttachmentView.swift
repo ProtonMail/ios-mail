@@ -48,15 +48,14 @@ class AttachmentView: UIView {
 
     private func setupLayout() {
         [
-            self.heightAnchor.constraint(equalToConstant: 48)
+            self.heightAnchor.constraint(equalToConstant: 48).setPriority(as: .defaultHigh)
         ].activate()
 
         [
             iconView.heightAnchor.constraint(equalToConstant: 20),
             iconView.widthAnchor.constraint(equalToConstant: 20),
             iconView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            iconView.topAnchor.constraint(equalTo: self.topAnchor, constant: 14),
-            iconView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -14)
+            iconView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ].activate()
 
         [

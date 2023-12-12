@@ -62,6 +62,8 @@ final class InvitationView: UIView {
         widgetContainer.addArrangedSubview(titleLabel)
         widgetContainer.addArrangedSubview(timeLabel)
 
+        // needed to avoid autolayout warnings raised by adding an empty UIStackView
+        detailsContainer.isHidden = true
         container.addArrangedSubview(detailsContainer)
     }
 
@@ -83,10 +85,11 @@ final class InvitationView: UIView {
         let durationString = Self.eventDurationFormatter.string(from: eventDetails.startDate, to: eventDetails.endDate)
         timeLabel.set(text: durationString, preferredFont: .subheadline, textColor: ColorProvider.TextNorm)
 
-        detailsContainer.arrangedSubviews.forEach(detailsContainer.removeArrangedSubview)
+        detailsContainer.clearAllViews()
         detailsContainer.addArrangedSubview(SubviewFactory.calendarRow(calendar: eventDetails.calendar))
         detailsContainer.addArrangedSubview(SubviewFactory.locationRow(location: eventDetails.location))
         detailsContainer.addArrangedSubview(participantsRow)
+        detailsContainer.isHidden = false
 
         participantListState.values = eventDetails.participants
     }
