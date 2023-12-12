@@ -378,6 +378,7 @@ extension EventsServiceTests {
         "Size": 54679,
         "IsProton": 0,
         "DisplaySenderImage": 0,
+        "DisplaySnoozedReminder": false,
         "BimiSelector": null,
         "Labels": [
           {

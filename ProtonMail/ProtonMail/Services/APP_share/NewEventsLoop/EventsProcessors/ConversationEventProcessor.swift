@@ -63,6 +63,7 @@ struct ConversationEventProcessor {
                 Date(timeIntervalSince1970: TimeInterval(conversation.expirationTime)) : nil
 
                 conversationObject.size = NSNumber(value: conversation.size)
+                conversationObject.displaySnoozedReminder = conversation.displaySnoozedReminder
 
                 handleContextLabel(
                     conversationObject: conversationObject,

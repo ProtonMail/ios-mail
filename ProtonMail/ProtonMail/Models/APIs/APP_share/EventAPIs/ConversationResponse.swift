@@ -45,6 +45,7 @@ struct ConversationResponse: Decodable {
         let bimiSelector: String?
         let labels: [ContextLabel]
         let attachmentsMetadata: [AttachmentMetadata]?
+        let displaySnoozedReminder: Bool
 
         enum CodingKeys: String, CodingKey {
             case id = "ID"
@@ -62,6 +63,7 @@ struct ConversationResponse: Decodable {
             case bimiSelector = "BimiSelector"
             case labels = "Labels"
             case attachmentsMetadata = "AttachmentsMetadata"
+            case displaySnoozedReminder = "DisplaySnoozedReminder"
         }
     }
 

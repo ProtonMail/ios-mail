@@ -52,7 +52,7 @@ let testMessageMetaData = """
 "5",
 "10"
 ],
-"Time" : 1525279399,
+"Time" : 5000,
 "NumAttachments" : 0,
 "SenderAddress" : "contact@protonmail.ch",
 "MIMEType" : "texthtml",

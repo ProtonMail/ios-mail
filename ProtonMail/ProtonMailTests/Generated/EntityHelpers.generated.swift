@@ -119,6 +119,7 @@ extension ConversationEntity {
         userID: UserID = .init(rawValue: .init()),
         contextLabelRelations: [ContextLabelEntity] = .init(),
         attachmentsMetadata: [AttachmentsMetadata] = .init(),
+        displaySnoozedReminder: Bool = .init(),
         isSoftDeleted: Bool = .init()
     ) -> Self {
         ConversationEntity(
@@ -135,6 +136,7 @@ extension ConversationEntity {
             userID: userID,
             contextLabelRelations: contextLabelRelations,
             attachmentsMetadata: attachmentsMetadata,
+            displaySnoozedReminder: displaySnoozedReminder,
             isSoftDeleted: isSoftDeleted
         )
     }

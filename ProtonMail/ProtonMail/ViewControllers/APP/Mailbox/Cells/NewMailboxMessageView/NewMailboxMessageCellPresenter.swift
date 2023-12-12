@@ -130,6 +130,13 @@ class NewMailboxMessageCellPresenter {
                                preferredFont: .footnote,
                                weight: weight,
                                textColor: scheduledColor)
+        } else if viewModel.hasShowReminderFlag, let reminderTime = viewModel.reminderTime {
+            view.timeLabel.set(
+                text: reminderTime,
+                preferredFont: .footnote,
+                weight: weight,
+                textColor: ColorProvider.NotificationWarning
+            )
         } else {
             view.timeLabel.set(text: viewModel.time,
                                preferredFont: .footnote,

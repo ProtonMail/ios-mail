@@ -599,6 +599,18 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     ),
                     NSSortDescriptor(key: #keyPath(Message.order), ascending: isAscending)
                 ]
+            } else if labelID == Message.Location.inbox.labelID {
+                sortDescriptors = [
+                    NSSortDescriptor(
+                        key: #keyPath(Message.snoozeTime),
+                        ascending: isAscending
+                    ),
+                    NSSortDescriptor(
+                        key: #keyPath(Message.time),
+                        ascending: isAscending
+                    ),
+                    NSSortDescriptor(key: #keyPath(Message.order), ascending: isAscending)
+                ]
             } else {
                 sortDescriptors = [
                     NSSortDescriptor(
@@ -623,7 +635,14 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     NSSortDescriptor(keyPath: \ContextLabel.snoozeTime, ascending: true),
                     NSSortDescriptor(keyPath: \ContextLabel.order, ascending: isAscending)
                 ]
-            } else {
+            } else if labelID == Message.Location.inbox.labelID {
+                sortDescriptors = [
+                    NSSortDescriptor(keyPath: \ContextLabel.snoozeTime, ascending: isAscending),
+                    NSSortDescriptor(keyPath: \ContextLabel.time, ascending: isAscending),
+                    NSSortDescriptor(keyPath: \ContextLabel.order, ascending: isAscending)
+                ]
+            }
+            else {
                 sortDescriptors = [
                     NSSortDescriptor(keyPath: \ContextLabel.time, ascending: isAscending),
                     NSSortDescriptor(keyPath: \ContextLabel.order, ascending: isAscending)
