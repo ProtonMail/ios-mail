@@ -18,7 +18,7 @@
 import Foundation
 
 /**
- This protocol is conformed to resume tasks that could not be finished before the user 
+ This protocol is conformed to resume tasks that could not be finished before the user
  successfully passes the lock protection
  */
 // sourcery: mock

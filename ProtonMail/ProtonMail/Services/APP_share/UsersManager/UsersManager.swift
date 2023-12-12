@@ -27,11 +27,11 @@ import PromiseKit
 import ProtonCoreChallenge
 import ProtonCoreDataModel
 import ProtonCoreDoh
+import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonMailAnalytics
-import ProtonCoreFeatureFlags
 
 // sourcery: mock
 protocol UsersManagerProtocol: AnyObject {

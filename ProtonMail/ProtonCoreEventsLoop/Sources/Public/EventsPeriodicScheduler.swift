@@ -84,7 +84,7 @@ public class EventsPeriodicScheduler<GeneralEventsLoop: CoreLoop, SpecialEventsL
 
     private func scheduleOperations() {
         coreLoopScheduler?.addOperation(to: queue)
-        sortedSpecialLoopsSchedulers.forEach { (_, scheduler) in
+        sortedSpecialLoopsSchedulers.forEach { _, scheduler in
             scheduler.addOperation(to: queue)
         }
     }

@@ -282,7 +282,12 @@ extension ComposerAttachmentVC {
         DispatchQueue.main.async {
             let names = uploadingData.map { $0.name }.joined(separator: "\n")
             let message = "\(LocalString._attachment_upload_failed_body) (\(errorCode)\n \(names) \n"
-            let title = errorCode == APIErrorCode.tooManyAttachments ? LocalString._storage_exceeded : LocalString._attachment_upload_failed_title
+            let title: String
+            if errorCode == APIErrorCode.tooManyAttachments {
+                title = LocalString._storage_exceeded
+            } else {
+                title = LocalString._attachment_upload_failed_title
+            }
             let alert = UIAlertController(title: title,
                                           message: message,
                                           preferredStyle: .alert)

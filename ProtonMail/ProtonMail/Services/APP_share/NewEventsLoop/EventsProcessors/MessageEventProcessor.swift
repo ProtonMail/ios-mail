@@ -105,13 +105,21 @@ struct MessageEventProcessor {
         messageObject.time = Date(timeIntervalSince1970: TimeInterval(message.time))
         messageObject.size = NSNumber(value: message.size)
         messageObject.numAttachments = NSNumber(value: message.numAttachments)
-        messageObject.expirationTime = message.expirationTime != 0 ? Date(timeIntervalSince1970: TimeInterval(message.expirationTime)) : nil
+        if message.expirationTime != 0 {
+            messageObject.expirationTime = Date(timeIntervalSince1970: TimeInterval(message.expirationTime))
+        } else {
+            messageObject.expirationTime = nil
+        }
         messageObject.addressID = message.addressID
         if let encodedAttachmentsMetadata = try? encoder.encode(message.attachmentsMetadata) {
             messageObject.attachmentsMetadata =
             String(data: encodedAttachmentsMetadata, encoding: .utf8) ?? ""
         }
-        messageObject.snoozeTime = message.snoozeTime != 0 ? Date(timeIntervalSince1970: TimeInterval(message.snoozeTime)) : nil
+        if message.snoozeTime != 0 {
+            messageObject.snoozeTime = Date(timeIntervalSince1970: TimeInterval(message.snoozeTime))
+        } else {
+            messageObject.snoozeTime = nil
+        }
 
         applyLabelAddition(message, on: messageObject, context: context)
         applyLabelDeletion(message, on: messageObject, context: context)
