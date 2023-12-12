@@ -178,34 +178,34 @@ class EmailHeaderView: UIView, AccessibleView {
         }
     }
 
-    fileprivate var toSinglelineAttr: NSMutableAttributedString! {
-        get {
-            var strTo: String = ""
-            var count = (toList?.count ?? 0)
-            if count > 0 {
-                count += (ccList?.count ?? 0) + (bccList?.count ?? 0)
-                if let contact = toList?[0] {
-                    let n = contact.name
-                    let e = contact.email
-                    strTo = n.isEmpty ? e : n
-                }
+    private var toSinglelineAttr: NSMutableAttributedString! {
+        var strTo = ""
+        var count: Int = (toList?.count ?? 0)
+        let ccListCount = ccList?.count ?? 0
+        let bccListCount = bccList?.count ?? 0
+        if count > 0 {
+            count += (ccListCount + bccListCount)
+            if let contact = toList?[0] {
+                let n = contact.name
+                let e = contact.email
+                strTo = n.isEmpty ? e : n
             }
-
-            if count > 1 {
-                strTo += " +\(count - 1)"
-            }
-
-            let t = LocalString._general_to_label
-            let to = "\(t): \(strTo)"
-            let formRange = NSRange(location: 0, length: to.count)
-            let attributedString = NSMutableAttributedString(string: to,
-                                                             attributes: [NSAttributedString.Key.font: Fonts.h6.medium,
-                                                                          NSAttributedString.Key.foregroundColor: UIColor(hexColorCode: "#838897")])
-            attributedString.setAttributes([NSAttributedString.Key.font: Fonts.h6.medium,
-                                            NSAttributedString.Key.foregroundColor: UIColor(hexColorCode: "#C0C4CE")],
-                                           range: formRange)
-            return attributedString
         }
+
+        if count > 1 {
+            strTo += " +\(count - 1)"
+        }
+
+        let t = LocalString._general_to_label
+        let to = "\(t): \(strTo)"
+        let formRange = NSRange(location: 0, length: to.count)
+        let attributedString = NSMutableAttributedString(string: to,
+                                                         attributes: [NSAttributedString.Key.font: Fonts.h6.medium,
+                                                                      NSAttributedString.Key.foregroundColor: UIColor(hexColorCode: "#838897")])
+        attributedString.setAttributes([NSAttributedString.Key.font: Fonts.h6.medium,
+                                        NSAttributedString.Key.foregroundColor: UIColor(hexColorCode: "#C0C4CE")],
+                                       range: formRange)
+        return attributedString
     }
 
     fileprivate var toShortAttr: NSMutableAttributedString! {
