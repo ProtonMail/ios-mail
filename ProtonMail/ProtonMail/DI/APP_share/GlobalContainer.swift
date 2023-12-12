@@ -95,7 +95,7 @@ class GlobalContainer: ManagedContainer {
     var launchServiceFactory: Factory<LaunchService> {
         self {
             Launch(dependencies: self)
-		}
+        }
 	}
 
     var mailEventsPeriodicSchedulerFactory: Factory<MailEventsPeriodicScheduler> {

@@ -19,7 +19,7 @@ import ProtonCoreEventsLoop
 
 final class EmptyCoreLoop: CoreLoop {
     var delegate: CoreLoopDelegate?
-    
+
     var loopID: String = .empty
 
     var latestEventID: String?

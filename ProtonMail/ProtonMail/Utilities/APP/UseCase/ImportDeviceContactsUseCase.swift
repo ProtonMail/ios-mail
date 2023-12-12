@@ -183,7 +183,7 @@ extension ImportDeviceContacts {
             }
         }
     }
-    
+
     // TODO: create a queue to run tasks in parallel
     private func enqueueAddContactAction(for objectID: String, cards: [CardData]) {
         let action = MessageAction.addContact(objectID: objectID, cardDatas: cards, importFromDevice: true)

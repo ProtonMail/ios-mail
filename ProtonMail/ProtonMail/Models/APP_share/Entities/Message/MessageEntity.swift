@@ -207,7 +207,7 @@ extension MessageEntity {
         self.originalTime = message.orginalTime
         self.passwordEncryptedBody = message.passwordEncryptedBody
         self.password = message.password
-        
+
         self.passwordHint = message.passwordHint
         self.objectID = .init(rawValue: message.objectID)
         self.snoozeTime = message.snoozeTime

@@ -20,7 +20,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 final class HostingProvider {
-    weak var hostingController: UIViewController?  
+    weak var hostingController: UIViewController?
 }
 
 final class SheetLikeSpotlightViewController<Content>: UIHostingController<Content> where Content: View {
@@ -32,7 +32,7 @@ final class SheetLikeSpotlightViewController<Content>: UIHostingController<Conte
         modalPresentationStyle = .overCurrentContext
     }
 
-    @MainActor 
+    @MainActor
     required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
