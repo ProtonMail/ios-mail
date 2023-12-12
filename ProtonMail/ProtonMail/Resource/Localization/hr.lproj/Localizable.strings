@@ -113,7 +113,7 @@
 "Message sent" = "Poruka je poslana";
 
 /* Description */
-"Sent Failed" = "Poruka nije poslana";
+"Sent Failed" = "Neuspješno slanje";
 
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Ovdje se nema što vidjeti";
@@ -752,7 +752,7 @@
 "All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
 
 /* A section title for timing section to set auto lock timing */
-"Timing" = "Timing";
+"Timing" = "Postavke vremena";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Idi na postavke";
@@ -1112,7 +1112,7 @@
 "Insecure connection" = "Nesigurna veza";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Provjera TLS certifikata nije uspjela. Vaša veza može biti nadzirana te je aplikacija je privremeno blokirana zbog vaše sigurnosti.\n\nOdmah promijenite mrežu";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Provjera TLS certifikata nije uspjela. Vaša veza može biti nadzirana te je aplikacija je privremeno blokirana zbog vaše sigurnosti.";
@@ -1142,7 +1142,7 @@
 "General settings" = "Opće postavke";
 
 /* security title in settings */
-"App PIN" = "App PIN";
+"App PIN" = "PIN kod aplikacije";
 
 /* security title in settings */
 "App PIN & Touch ID" = "App PIN & Touch ID";
@@ -1220,7 +1220,7 @@
 "You have entered at least one unknown recipient. Please verify your recipients." = "Upisali ste barem jednog nepoznatog primatelja. Potvrdite vaše primatelje.";
 
 /* title of incorrect email format error while sending */
-"Sending failed" = "Slanje nije uspjelo";
+"Sending failed" = "Neuspješno slanje";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Idi u skice";
@@ -1655,13 +1655,13 @@
 "Schedule will be removed" = "Schedule will be removed";
 
 /* The alert title of the user trying to send a message that was schedule-send. */
-"Send immediately?" = "Send immediately?";
+"Send immediately?" = "Pošalji odmah?";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
-"Send immediately" = "Send immediately";
+"Send immediately" = "Pošalji odmah";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "You can now schedule your messages to be sent later";
@@ -1852,7 +1852,7 @@
 "Track your rewards" = "Track your rewards";
 
 /* The title of the terms and conditions button in referral share view. */
-"Terms & conditions" = "Terms & conditions";
+"Terms & conditions" = "Uvjeti i odredbe";
 
 /* The content that is shared through the action: `Share the link` */
 "I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:";
@@ -1924,7 +1924,7 @@
 "Password updated" = "Lozinka je ažurirana";
 
 /* Title for application logs settings option */
-"Application logs" = "Application logs";
+"Application logs" = "Zapisnici aplikacije";
 
 /* The title of the setting of the next msg after move */
 "Next message after move" = "Next message after move";
@@ -1978,7 +1978,7 @@
 "No results found" = "Nema rezultata";
 
 /* The title of the setting of the auto-delete option */
-"Auto-delete" = "Auto-delete";
+"Auto-delete" = "Automatsko brisanje";
 
 /* The title of the row inside the setting page of auto delete option */
 "Auto-delete unwanted messages" = "Automatsko brisanje neželjenih poruka";

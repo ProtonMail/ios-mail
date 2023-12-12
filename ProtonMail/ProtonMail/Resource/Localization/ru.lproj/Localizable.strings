@@ -1936,13 +1936,13 @@
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "Перемещение сообщения (например, в архив) приведёт к переходу к следующему сообщению.";
 
 /* Message for error when app set up at launch fails */
-"An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
+"An unexpected error occurred, please contact support.\nError: %@" = "Произошла непредвиденная ошибка, обратитесь в службу поддержки.\nОшибка: %@";
 
 /* Title for error when app set up at launch fails */
-"Insufficient disk space" = "Insufficient disk space";
+"Insufficient disk space" = "Недостаточно места на диске";
 
 /* Message for error when app set up at launch fails */
-"The application cannot open due to insufficient disk space. Please delete some data and try again" = "The application cannot open due to insufficient disk space. Please delete some data and try again";
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Приложение не открывается из-за недостатка места на диске. Пожалуйста, удалите некоторые данные и попробуйте снова";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Не удалось открыть сообщение, попробуйте ещё раз.";
