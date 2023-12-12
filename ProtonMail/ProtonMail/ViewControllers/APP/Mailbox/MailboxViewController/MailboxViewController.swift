@@ -2913,6 +2913,7 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
     }
 
     func selectionDidChange() {
+        guard viewModel.listEditing else { return }
         updateSelectAllButton()
         updateCellBasedOnSelectionStatus()
 
