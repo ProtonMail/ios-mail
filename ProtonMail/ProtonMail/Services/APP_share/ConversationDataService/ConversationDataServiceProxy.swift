@@ -71,8 +71,10 @@ private extension ConversationDataServiceProxy {
 
                 conversations.forEach { conversation in
                     (conversation.labels as? Set<ContextLabel>)?
-                        .forEach {
-                            context.refresh($0, mergeChanges: true)
+                        .forEach { label in
+                            label.willChangeValue(forKey: ContextLabel.Attributes.unreadCount)
+                            label.didChangeValue(forKey: ContextLabel.Attributes.unreadCount)
+                            context.refresh(label, mergeChanges: true)
                         }
                     context.refresh(conversation, mergeChanges: true)
                 }
