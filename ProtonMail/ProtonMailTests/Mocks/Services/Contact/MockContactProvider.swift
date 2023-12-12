@@ -43,6 +43,11 @@ class MockContactProvider: ContactProviderProtocol {
         getContactsByUUIDStub(uuids)
     }
 
+    @FuncStub(MockContactProvider.getContactsByEmailAddress, initialReturn: []) var getContactsByEmailAddressStub
+    func getContactsByEmailAddress(_ emailAddresses: [String]) -> [ProtonMail.ContactEntity] {
+        getContactsByEmailAddressStub(emailAddresses)
+    }
+
     @FuncStub(MockContactProvider.getEmailsByAddress, initialReturn: []) var getEmailsByAddressStub
     func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity] {
         getEmailsByAddressStub(emailAddresses)

@@ -39,7 +39,9 @@ protocol ContactProviderProtocol: AnyObject {
     func getContactsByIds(_ ids: [String]) -> [ContactEntity]
     /// Returns the Contacts from the local storage for a given list of contact uuids
     func getContactsByUUID(_ uuids: [String]) -> [ContactEntity]
-    /// Given a user and a list of email addresses, returns all the contacts that exist in the local storage
+    /// Given a list of email addresses, returns all the contacts that exist in the local storage
+    func getContactsByEmailAddress(_ emailAddresses: [String]) -> [ContactEntity]
+    /// Given a list of email addresses, returns all the Email objects that exist in the local storage
     func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity]
     /// Call this function to store a Contact that has been created locally. This function will also create the associated Email objects
     /// - Returns: The CoreData objectID
@@ -397,6 +399,11 @@ class ContactDataService {
                 return []
             }
         }
+    }
+
+    func getContactsByEmailAddress(_ emailAddresses: [String]) -> [ContactEntity] {
+        let emailEntities = getEmailsByAddress(emailAddresses)
+        return getContactsByIds(emailEntities.map(\.contactID.rawValue))
     }
 
     func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity] {
