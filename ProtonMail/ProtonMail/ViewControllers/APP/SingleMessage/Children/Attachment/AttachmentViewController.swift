@@ -89,6 +89,10 @@ class AttachmentViewController: UIViewController {
     }
 
     private func setUpBindings() {
+        invitationView.onIntrinsicHeightChanged = { [weak self] in
+            self?.delegate?.invitationViewWasChanged()
+        }
+
         viewModel.invitationViewState
             .removeDuplicates()
             .receive(on: DispatchQueue.main)

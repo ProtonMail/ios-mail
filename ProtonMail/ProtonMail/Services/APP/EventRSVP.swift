@@ -92,9 +92,10 @@ private extension EventDetails {
                 url: URL(string: "https://zoom-call")!
             ),
             participants: [
-                .init(email: "aubrey.thompson@proton.me", isOrganizer: true, status: .attending),
-                .init(email: "eric.norbert@proton.me", isOrganizer: false, status: .attending)
-            ]
+                .init(email: "aubrey.thompson@proton.me", isOrganizer: true, status: .attending)
+            ].appending(
+                (1...3).map { .init(email: "participant.\($0)@proton.me", isOrganizer: false, status: .attending) }
+            )
         )
     }
 }
