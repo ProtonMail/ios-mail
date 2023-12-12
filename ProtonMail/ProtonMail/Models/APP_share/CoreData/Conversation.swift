@@ -65,6 +65,8 @@ final class Conversation: NSManagedObject {
     @NSManaged var userID: String
 
     @NSManaged var attachmentsMetadata: String
+
+    @NSManaged var displaySnoozedReminder: Bool
 }
 
 extension Conversation {
@@ -138,6 +140,9 @@ extension Conversation {
         for label in labelsToUpdate {
             let newUnreadCount = max(label.unreadCount.intValue + offset, 0)
             label.unreadCount = NSNumber(value: newUnreadCount)
+        }
+        if !unRead {
+            displaySnoozedReminder = false
         }
         didChangeValue(forKey: Conversation.Attributes.labels)
     }

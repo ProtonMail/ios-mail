@@ -241,7 +241,9 @@ extension SearchViewModel: SearchVMProtocol {
             attachmentsPreviewViewModels: attachmentsPreviews(for: .message(message)),
             numberOfAttachments: message.numAttachments,
             hasSnoozeLabel: message.contains(location: .snooze),
-            snoozeTime: snoozeTime(of: message)
+            snoozeTime: snoozeTime(of: message),
+            hasShowReminderFlag: message.showReminder,
+            reminderTime: dateOfReminder(of: message, weekStart: weekStart)
         )
     }
 
@@ -625,6 +627,11 @@ extension SearchViewModel {
             return nil
         }
         return PMDateFormatter.shared.stringForSnoozeTime(from: date)
+    }
+
+    private func dateOfReminder(of message: MessageEntity, weekStart: WeekStart) -> String? {
+        guard let date = message.snoozeTime else { return nil }
+        return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
     }
 
     private func isPreviewable(_ mailboxItem: MailboxItem) -> Bool {

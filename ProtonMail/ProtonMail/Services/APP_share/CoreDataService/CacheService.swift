@@ -162,6 +162,13 @@ class CacheService: CacheServiceProtocol {
 
         msgToUpdate.unRead = unRead
 
+        // Remove the reminder flag when the message is read.
+        if !unRead {
+            var flag = msgToUpdate.flag
+            flag.remove(.showReminder)
+            msgToUpdate.flags = .init(value: flag.rawValue)
+        }
+
         if unRead == false {
             dependencies.pushUpdater.remove(notificationIdentifiers: [msgToUpdate.notificationId])
         }

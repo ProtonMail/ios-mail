@@ -45,4 +45,6 @@ struct NewMailboxMessageViewModel {
     let numberOfAttachments: Int
     let hasSnoozeLabel: Bool
     let snoozeTime: String?
+    let hasShowReminderFlag: Bool
+    let reminderTime: String?
 }

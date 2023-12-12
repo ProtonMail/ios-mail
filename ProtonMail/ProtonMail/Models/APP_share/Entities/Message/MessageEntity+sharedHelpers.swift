@@ -101,6 +101,10 @@ extension MessageEntity {
         self.flag.contains(.scheduledSend)
     }
 
+    var showReminder: Bool {
+        self.flag.contains(.showReminder)
+    }
+
     func isLabelLocation(labelId: LabelID) -> Bool {
         self.labels
             .filter { $0.type == .messageLabel }

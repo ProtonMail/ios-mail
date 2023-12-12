@@ -73,7 +73,9 @@ extension MailboxViewController {
             attachmentsPreviewViewModels: attachmentsPreviews(for: .message(message)),
             numberOfAttachments: message.numAttachments,
             hasSnoozeLabel: message.contains(location: .snooze),
-            snoozeTime: dateForSnoozeTime(of: message)
+            snoozeTime: dateForSnoozeTime(of: message),
+            hasShowReminderFlag: message.showReminder,
+            reminderTime: dateForReminder(of: message, weekStart: weekStart)
         )
         let displayOriginIcon = [
             Message.Location.allmail,
@@ -132,7 +134,9 @@ extension MailboxViewController {
             attachmentsPreviewViewModels: attachmentsPreviews(for: .conversation(conversation)),
             numberOfAttachments: conversation.attachmentCount,
             hasSnoozeLabel: conversation.contains(of: Message.Location.snooze.labelID),
-            snoozeTime: dateForSnoozeTime(of: conversation)
+            snoozeTime: dateForSnoozeTime(of: conversation),
+            hasShowReminderFlag: conversation.displaySnoozedReminder,
+            reminderTime: dateForReminder(of: conversation, labelId: labelId, weekStart: weekStart)
         )
         let displayOriginIcon = [
             Message.Location.allmail,
@@ -189,5 +193,19 @@ extension MailboxViewController {
             return nil
         }
         return PMDateFormatter.shared.stringForSnoozeTime(from: date)
+    }
+
+    private func dateForReminder(of message: MessageEntity, weekStart: WeekStart) -> String? {
+        guard let date = message.snoozeTime else { return nil }
+        return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
+    }
+
+    private func dateForReminder(
+        of conversation: ConversationEntity,
+        labelId: LabelID,
+        weekStart: WeekStart
+    ) -> String? {
+        guard let date = conversation.getSnoozeTime(labelID: labelId) else { return nil }
+        return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
     }
 }
