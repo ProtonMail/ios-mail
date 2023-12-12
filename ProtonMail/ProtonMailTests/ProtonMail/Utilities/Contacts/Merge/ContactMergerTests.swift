@@ -80,15 +80,6 @@ final class ContactMergerTests: XCTestCase {
     }
 }
 
-private extension Either<DeviceContact, ContactEntity> {
-    var contactEntity: ContactEntity? {
-        switch self {
-        case .right(let result): return result
-        case .left: return nil
-        }
-    }
-}
-
 extension ContactMergerTests {
 
     var deviceContact: DeviceContact {

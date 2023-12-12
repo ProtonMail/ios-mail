@@ -18,6 +18,7 @@
 import Foundation
 import class ProtonCoreDataModel.Key
 import typealias ProtonCoreCrypto.Passphrase
+import ProtonCoreUtilities
 
 protocol ImportDeviceContactsUseCase {
     func execute(params: ImportDeviceContacts.Params) async
@@ -51,7 +52,7 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
             dependencies.userDefaults[.contactsHistoryTokenPerUser] = historyTokens
         }
     }
-
+    private let mergeStrategy = AutoImportStrategy()
     private unowned let dependencies: Dependencies
 
     weak var delegate: ImportDeviceContactsDelegate?
@@ -73,9 +74,13 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
             guard !contactIDsToImport.isEmpty else { return }
             delegate?.onProgressUpdate(count: 0, total: contactIDsToImport.count)
 
-            let (contactsToCreate, contactsToUpdate) = triageContacts(identifiers: contactIDsToImport)
-            createProtonContacts(from: contactsToCreate, params: params)
-            updateProtonContacts(from: contactsToUpdate)
+            let triagedContacts = triageContacts(identifiers: contactIDsToImport)
+            saveProtonContacts(from: triagedContacts.toCreate, params: params)
+            updateProtonContacts(
+                fromUuidMatch: triagedContacts.toUpdateByUuidMatch,
+                fromEmailMatch: triagedContacts.toUpdateByEmailMatch,
+                params: params
+            )
         }
     }
 
@@ -123,37 +128,37 @@ extension ImportDeviceContacts {
         return contactIDs
     }
 
-    /// Returns which contacts have to be created and which ones have to be updated
-    private func triageContacts(
-        identifiers: [DeviceContactIdentifier]
-    ) -> (toCreate: [DeviceContactIdentifier], toUpdate: [DeviceContactIdentifier]) {
-
+    /// Returns which contacts have to be created and which have to be updated by uuid match and which have to updated by email match.
+    private func triageContacts(identifiers: [DeviceContactIdentifier]) -> DeviceContactsToImport {
         let matcher = ProtonContactMatcher(contactProvider: dependencies.contactService)
-        let toUpdate = matcher.matchProtonContacts(with: identifiers)
+        let (matchByUuid, matchByEmail) = matcher.matchProtonContacts(with: identifiers)
+        let allDeviceContactsToUpdate = matchByUuid + matchByEmail
         let toCreate = identifiers.filter { deviceContact in
-            !toUpdate.map(\.uuid).contains(deviceContact.uuid)
+            !allDeviceContactsToUpdate.map(\.uuid).contains(deviceContact.uuid)
         }
 
-        let message = "Proton contacts to create: \(toCreate.count), to update: \(toUpdate.count)"
-        SystemLogger.log(message: message, category: .contacts)
-
-        return (toCreate, toUpdate)
+        let deviceContactsToImport = DeviceContactsToImport(
+            toCreate: toCreate,
+            toUpdateByUuidMatch: matchByUuid,
+            toUpdateByEmailMatch: matchByEmail
+        )
+        SystemLogger.log(message: deviceContactsToImport.description, category: .contacts)
+        return deviceContactsToImport
     }
-
 }
 
 // MARK: create new contacts
 
 extension ImportDeviceContacts {
 
-    private func createProtonContacts(from identifiers: [DeviceContactIdentifier], params: Params) {
+    private func saveProtonContacts(from identifiers: [DeviceContactIdentifier], params: Params) {
         let batches = identifiers.chunked(into: contactBatchSize)
         for batch in batches {
             guard !Task.isCancelled else { break }
             autoreleasepool {
                 do {
                     let deviceContacts = try dependencies.deviceContacts.fetchContactBatch(with: batch.map(\.uuid))
-                    createProtonContacts(from: deviceContacts, params: params)
+                    saveProtonContacts(from: deviceContacts, params: params)
                 } catch {
                     SystemLogger
                         .log(message: "createProtonContacts error: \(error)", category: .contacts, isError: true)
@@ -162,12 +167,16 @@ extension ImportDeviceContacts {
         }
     }
 
-    private func createProtonContacts(from deviceContacts: [DeviceContact], params: Params) {
+    private func saveProtonContacts(from deviceContacts: [DeviceContact], params: Params) {
+        guard let key = params.userKeys.first else {
+            SystemLogger.log(message: "createProtonContacts no user key found", category: .contacts, isError: true)
+            return
+        }
         for deviceContact in deviceContacts {
             do {
                 let parsedData = try DeviceContactParser.parseDeviceContact(
                     deviceContact,
-                    userKey: params.userKey,
+                    userKey: key,
                     userPassphrase: params.mailboxPassphrase
                 )
                 let objectID = try dependencies.contactService.createLocalContact(
@@ -197,21 +206,137 @@ extension ImportDeviceContacts {
 
 extension ImportDeviceContacts {
 
-    private func updateProtonContacts(from identifiers: [DeviceContactIdentifier]) {
-
-        // TODO: coming
-
-        // PENDING:
-        // 1. Addition strategy for contactsToUpdate
-        // 2. Update contacts to import
-        // 3. Sync modified contacts with backend
-
+    private func updateProtonContacts(
+        fromUuidMatch uuidMatch: [DeviceContactIdentifier],
+        fromEmailMatch emailMatch: [DeviceContactIdentifier],
+        params: Params
+    ) {
+        let mergedContactsByUuid = mergeContactsMatchByUuid(identifiers: uuidMatch, params: params)
+        let mergedContactsByEmail = mergeContactsMatchByEmail(identifiers: emailMatch, params: params)
+        let mergedContacts = mergedContactsByUuid + mergedContactsByEmail
+        for contact in mergedContacts {
+            let contactId = contact.objectID.rawValue.uriRepresentation().absoluteString
+            enqueueUpdateContactAction(for: contactId, cards: contact.cardDatas)
+        }
     }
+
+    private func mergeContactsMatchByUuid(identifiers: [DeviceContactIdentifier], params: Params) -> [ContactEntity] {
+        let deviceIdentifiers = identifiers.map(\.uuid)
+        let uuidMatchContacts = dependencies.contactService.getContactsByUUID(deviceIdentifiers)
+        let deviceContacts: [DeviceContact]
+        do {
+            deviceContacts = try dependencies.deviceContacts.fetchContactBatch(with: deviceIdentifiers)
+        } catch {
+            SystemLogger.log(message: "mergeContactsMatchedByUuid error: \(error)", category: .contacts, isError: true)
+            return []
+        }
+
+        var resultingMergedContacts = [ContactEntity]()
+        for deviceContact in deviceContacts {
+            let deviceContactUuid = deviceContact.identifier.uuid
+            do {
+                guard let protonContact = uuidMatchContacts.first(where: { $0.uuid == deviceContactUuid }) else {
+                    throw ImportDeviceContactsError.protonContactNotFoundByUuid
+                }
+
+                let merger = try ContactMerger(
+                    deviceContact: deviceContact,
+                    protonContact: protonContact,
+                    userKeys: params.userKeys,
+                    mailboxPassphrase: params.mailboxPassphrase
+                )
+                guard let mergedContactEntity = try merger.merge(strategy: mergeStrategy).contactEntity else {
+                    throw ImportDeviceContactsError.mergedContactEntityIsNil
+                }
+                resultingMergedContacts.append(mergedContactEntity)
+
+            } catch {
+                let message = "mergeContactsMatchedByUuid uuid \(deviceContactUuid.redacted) error: \(error)"
+                SystemLogger.log(message: message, category: .contacts, isError: true)
+                continue
+            }
+        }
+        return resultingMergedContacts
+    }
+
+    private func mergeContactsMatchByEmail(identifiers: [DeviceContactIdentifier], params: Params) -> [ContactEntity] {
+        let deviceIdentifiers = identifiers.map(\.uuid)
+        let deviceEmails = identifiers.flatMap(\.emails)
+        let emailMatchContacts = dependencies.contactService.getContactsByEmailAddress(deviceEmails)
+        let deviceContacts: [DeviceContact]
+        do {
+            deviceContacts = try dependencies.deviceContacts.fetchContactBatch(with: deviceIdentifiers)
+        } catch {
+            SystemLogger.log(message: "mergeContactsMatchedByEmail error: \(error)", category: .contacts, isError: true)
+            return []
+        }
+
+        var resultingMergedContacts = [ContactEntity]()
+        for deviceContact in deviceContacts {
+            let deviceContactUuid = deviceContact.identifier.uuid
+            do {
+                let matcher = ProtonContactMatcher(contactProvider: dependencies.contactService)
+                let protonContact = matcher.findContactToMergeMatchingEmail(with: deviceContact, in: emailMatchContacts)
+
+                guard let protonContact else { continue }
+                let merger = try ContactMerger(
+                    deviceContact: deviceContact,
+                    protonContact: protonContact,
+                    userKeys: params.userKeys,
+                    mailboxPassphrase: params.mailboxPassphrase
+                )
+                guard let mergedContactEntity = try merger.merge(strategy: mergeStrategy).contactEntity else {
+                    throw ImportDeviceContactsError.mergedContactEntityIsNil
+                }
+                resultingMergedContacts.append(mergedContactEntity)
+            } catch {
+                let message = "mergeContactsMatchByEmail uuid \(deviceContactUuid.redacted) error: \(error)"
+                SystemLogger.log(message: message, category: .contacts, isError: true)
+                continue
+            }
+        }
+        return resultingMergedContacts
+    }
+
+    // TODO: create a queue to run tasks in parallel
+    private func enqueueUpdateContactAction(for objectID: String, cards: [CardData]) {
+        let action: MessageAction = .updateContact(objectID: objectID, cardDatas: cards)
+        let task = QueueManager
+            .Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
+        dependencies.queueManager.addTask(task)
+    }
+}
+
+enum ImportDeviceContactsError: Error {
+    case protonContactNotFoundByUuid
+    case mergedContactEntityIsNil
 }
 
 extension ImportDeviceContacts {
     struct Params {
-        let userKey: Key
+        let userKeys: [Key]
         let mailboxPassphrase: Passphrase
+    }
+
+    private struct DeviceContactsToImport {
+        let toCreate: [DeviceContactIdentifier]
+        let toUpdateByUuidMatch: [DeviceContactIdentifier]
+        let toUpdateByEmailMatch: [DeviceContactIdentifier]
+
+        var description: String {
+            let msgCreate = "Proton contacts to create: \(toCreate.count)"
+            let msgUpdateUuid = "to update (uuid match): \(toUpdateByUuidMatch.count)"
+            let msgUpdateEmail = "to update (email match): \(toUpdateByEmailMatch.count)"
+            return "\(msgCreate) \(msgUpdateUuid) \(msgUpdateEmail)"
+        }
+    }
+}
+
+extension Either<DeviceContact, ContactEntity> {
+    var contactEntity: ContactEntity? {
+        switch self {
+        case .right(let result): return result
+        case .left: return nil
+        }
     }
 }
