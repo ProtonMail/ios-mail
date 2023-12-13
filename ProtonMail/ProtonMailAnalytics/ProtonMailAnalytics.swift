@@ -40,7 +40,7 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
             options.environment = environment
             options.enableAutoPerformanceTracing = false
             options.enableAppHangTracking = false
-            options.enableNetworkTracking = false
+            options.enableCaptureFailedRequests = false
         }
         isEnabled = true
     }
