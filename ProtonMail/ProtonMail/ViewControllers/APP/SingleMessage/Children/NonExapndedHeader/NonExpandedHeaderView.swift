@@ -146,8 +146,8 @@ class NonExpandedHeaderView: HeaderView {
             contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            // 56 = 20 (1st line) + 16 (2st) + 20 (3st)
-            contentStackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 56)
+            // 60 = 20 (1st line) + 16 (2nd) + 24 (3rd)
+            contentStackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 60)
         ].activate()
 
         lockImageView.fillSuperview()
