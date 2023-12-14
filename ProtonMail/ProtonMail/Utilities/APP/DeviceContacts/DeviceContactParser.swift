@@ -31,7 +31,7 @@ struct DeviceContactParser {
         case errorInstantiatingVCard
         case errorParsingVCard
     }
-    
+
     /// Parses a `DeviceContact` object to prepare the information to store it locally. Information
     /// will be distributed in two vCards. One card will be signed and the other signed and encrypted,
     /// according to Proton contact specs.
