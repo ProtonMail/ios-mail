@@ -130,7 +130,7 @@ extension ExpandedHeaderView {
         [
             contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
+            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ].activate()
     }
 }
