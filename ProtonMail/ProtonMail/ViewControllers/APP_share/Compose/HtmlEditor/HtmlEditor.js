@@ -350,13 +350,17 @@ html_editor.insertEmbedImage = function (cid, base64) {
         locationToInsertTheImage = html_editor.editor.querySelector('div');
     }
 
+    let upperBr = document.createElement('br');
+    let lowerBr = document.createElement('br');
     let embed = document.createElement('img');
     embed.src = base64;
     embed.setAttribute('src-original-pm-cid', `${cid}`);
     html_editor.cachedCIDs[cid] = base64;
 
     let parent = locationToInsertTheImage.parentNode;
+    parent.insertBefore(lowerBr, locationToInsertTheImage);
     parent.insertBefore(embed, locationToInsertTheImage);
+    parent.insertBefore(upperBr, locationToInsertTheImage);
 }
 
 // for calls from JS
@@ -423,10 +427,21 @@ html_editor.getBase64FromImageUrl = function (oldImage, callback) {
 
 html_editor.removeEmbedImage = function (cid) {
     var found = document.querySelectorAll('img[src-original-pm-cid="' + cid + '"]');
-    for (var i = 0; i < found.length; i++) {
-        found[i].remove();
+    if (found.length != 0) {
+        for (var i = 0; i < found.length; i++) {
+            found[i].remove();
+        }
+    } else {
+        let prefixToRemove = 'proton-'
+        var cidWithoutPrefix = cid;
+        if (cid.startsWith(prefixToRemove)) {
+            cidWithoutPrefix = cid.substring(prefixToRemove.length);
+        }
+        var founded = document.querySelectorAll('img[src-original-pm-cid="' + cidWithoutPrefix + '"]');
+        for (var i = 0; i < founded.length; i++) {
+            founded[i].remove();
+        }
     }
-
     let contentsHeight = html_editor.getContentsHeight();
     window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
 }
