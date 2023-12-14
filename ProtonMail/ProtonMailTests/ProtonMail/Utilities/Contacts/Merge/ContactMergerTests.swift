@@ -32,14 +32,13 @@ final class ContactMergerTests: XCTestCase {
 
     func testMerge_withAutoImport_itReturnsContactEntityWithMergedData() throws {
         sut = try ContactMerger(
-            deviceContact: deviceContact,
-            protonContact: contactEntity,
+            strategy: AutoImportStrategy(),
             userKeys: userKeys,
             mailboxPassphrase: SyncContactTestUtils.passphrase
         )
 
-        let result = try sut.merge(strategy: AutoImportStrategy()).contactEntity
-        
+        let result = try sut.merge(deviceContact: deviceContact, protonContact: contactEntity).contactEntity
+
         XCTAssertTrue(result != nil)
         XCTAssertEqual(result?.cardDatas.count, 2)
 

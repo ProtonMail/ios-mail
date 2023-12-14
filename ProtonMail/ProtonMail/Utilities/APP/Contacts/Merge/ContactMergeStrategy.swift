@@ -18,12 +18,13 @@
 import Foundation
 
 protocol ContactMergeStrategy {
-    var mergeResult: ContactMergeResultType { get }
-    
+    /// Indicates if the result of the merge function updates the device or the proton contact object that was passed as parameter
+    var mergeDestination: ContactMergeDestination { get }
+
     func merge(deviceContact: VCardObject, protonContact: ProtonVCards) throws
 }
 
-enum ContactMergeResultType {
+enum ContactMergeDestination {
     case deviceContact
     case protonContact
 }
