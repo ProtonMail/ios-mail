@@ -21,44 +21,39 @@ import ProtonCoreUtilities
 import VCard
 
 struct ContactMerger {
-    private let deviceContact: DeviceContact
-    private let protonContact: ContactEntity
+    private let strategy: ContactMergeStrategy
     private let encryptionKey: Key
     private let userKeys: [Key]
     private let mailboxPassphrase: Passphrase
 
-    init(
-        deviceContact: DeviceContact,
-        protonContact: ContactEntity,
-        userKeys: [Key],
-        mailboxPassphrase: Passphrase
-    ) throws {
+    init(strategy: ContactMergeStrategy, userKeys: [Key], mailboxPassphrase: Passphrase) throws {
+        self.strategy = strategy
         guard let firstKey = userKeys.first else { throw ContactMergerError.encryptionKeyNotFound }
         self.encryptionKey = firstKey
         self.userKeys = userKeys
         self.mailboxPassphrase = mailboxPassphrase
-        self.deviceContact = deviceContact
-        self.protonContact = protonContact
     }
 
     /// Compares `deviceContact`and `protonContact` and merges the changes into one single contact.
-    /// - Parameter strategy: determines the logic applied when merging the contacts
     /// - Returns: will return the resulting object of the merge. The object type will depend on the `strategy`
-    func merge(strategy: any ContactMergeStrategy) throws -> Either<DeviceContact, ContactEntity> {
+    func merge(
+        deviceContact: DeviceContact,
+        protonContact: ContactEntity
+    ) throws -> Either<DeviceContact, ContactEntity> {
         let deviceContactVCard = try vCardObject(for: deviceContact)
         let protonVCards = protonVCards(for: protonContact)
 
         try strategy.merge(deviceContact: deviceContactVCard, protonContact: protonVCards)
 
-        switch strategy.mergeResult {
+        switch strategy.mergeDestination {
         case .deviceContact:
-            return .left(makeDeviceContact(withVCard: try deviceContactVCard.vCard()))
+            return .left(makeDeviceContact(from: deviceContact, updating: try deviceContactVCard.vCard()))
 
         case .protonContact:
             let cards = try protonVCards
                 .write(userKey: encryptionKey, mailboxPassphrase: mailboxPassphrase)
                 .toJSONString()
-            return .right(makeContactEntity(withCardsData: cards))
+            return .right(makeContactEntity(from: protonContact, updating: cards))
         }
     }
 
@@ -74,7 +69,7 @@ struct ContactMerger {
         return ProtonVCards(cards: contactEntity.cardDatas, userKeys: armoredKeys, mailboxPassphrase: mailboxPassphrase)
     }
 
-    private func makeDeviceContact(withVCard vCard: String) -> DeviceContact {
+    private func makeDeviceContact(from deviceContact: DeviceContact, updating vCard: String) -> DeviceContact {
         DeviceContact(
             identifier: deviceContact.identifier,
             fullName: deviceContact.fullName,
@@ -82,19 +77,19 @@ struct ContactMerger {
         )
     }
 
-    private func makeContactEntity(withCardsData cards: String) -> ContactEntity {
+    private func makeContactEntity(from contact: ContactEntity, updating cards: String) -> ContactEntity {
         ContactEntity(
-            objectID: protonContact.objectID,
-            contactID: protonContact.contactID,
-            name: protonContact.name,
+            objectID: contact.objectID,
+            contactID: contact.contactID,
+            name: contact.name,
             cardData: cards,
-            uuid: protonContact.uuid,
-            createTime: protonContact.createTime,
-            isDownloaded: protonContact.isDownloaded,
-            isCorrected: protonContact.isCorrected,
-            needsRebuild: protonContact.needsRebuild,
-            isSoftDeleted: protonContact.isSoftDeleted,
-            emailRelations: protonContact.emailRelations
+            uuid: contact.uuid,
+            createTime: contact.createTime,
+            isDownloaded: contact.isDownloaded,
+            isCorrected: contact.isCorrected,
+            needsRebuild: contact.needsRebuild,
+            isSoftDeleted: contact.isSoftDeleted,
+            emailRelations: contact.emailRelations
         )
     }
 }

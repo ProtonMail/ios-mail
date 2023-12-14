@@ -214,11 +214,17 @@ extension ImportDeviceContacts {
         fromEmailMatch emailMatch: [DeviceContactIdentifier],
         params: Params
     ) throws {
+        let contactMerger = try ContactMerger(
+            strategy: mergeStrategy,
+            userKeys: params.userKeys,
+            mailboxPassphrase: params.mailboxPassphrase
+        )
+
         let uuidMatchBatches = uuidMatch.chunked(into: contactBatchSize)
         for batch in uuidMatchBatches {
             try Task.checkCancellation()
             autoreleasepool {
-                let mergedContactsByUuid = mergeContactsMatchByUuid(identifiers: batch, params: params)
+                let mergedContactsByUuid = mergeContactsMatchByUuid(identifiers: batch, merger: contactMerger)
                 for contact in mergedContactsByUuid {
                     enqueueUpdateContactAction(for: contact, cards: contact.cardDatas)
                 }
@@ -229,7 +235,7 @@ extension ImportDeviceContacts {
         for batch in emailMatchBatches {
             try Task.checkCancellation()
             autoreleasepool {
-                let mergedContactsByEmail = mergeContactsMatchByEmail(identifiers: batch, params: params)
+                let mergedContactsByEmail = mergeContactsMatchByEmail(identifiers: batch, merger: contactMerger)
                 for contact in mergedContactsByEmail {
                     enqueueUpdateContactAction(for: contact, cards: contact.cardDatas)
                 }
@@ -237,7 +243,10 @@ extension ImportDeviceContacts {
         }
     }
 
-    private func mergeContactsMatchByUuid(identifiers: [DeviceContactIdentifier], params: Params) -> [ContactEntity] {
+    private func mergeContactsMatchByUuid(
+        identifiers: [DeviceContactIdentifier],
+        merger: ContactMerger
+    ) -> [ContactEntity] {
         let deviceIdentifiers = identifiers.map(\.uuid)
         let uuidMatchContacts = dependencies.contactService.getContactsByUUID(deviceIdentifiers)
         let deviceContacts: [DeviceContact]
@@ -256,13 +265,10 @@ extension ImportDeviceContacts {
                     throw ImportDeviceContactsError.protonContactNotFoundByUuid
                 }
 
-                let merger = try ContactMerger(
+                guard let mergedContactEntity = try merger.merge(
                     deviceContact: deviceContact,
-                    protonContact: protonContact,
-                    userKeys: params.userKeys,
-                    mailboxPassphrase: params.mailboxPassphrase
-                )
-                guard let mergedContactEntity = try merger.merge(strategy: mergeStrategy).contactEntity else {
+                    protonContact: protonContact
+                ).contactEntity else {
                     throw ImportDeviceContactsError.mergedContactEntityIsNil
                 }
                 resultingMergedContacts.append(mergedContactEntity)
@@ -276,7 +282,10 @@ extension ImportDeviceContacts {
         return resultingMergedContacts
     }
 
-    private func mergeContactsMatchByEmail(identifiers: [DeviceContactIdentifier], params: Params) -> [ContactEntity] {
+    private func mergeContactsMatchByEmail(
+        identifiers: [DeviceContactIdentifier],
+        merger: ContactMerger
+    ) -> [ContactEntity] {
         let deviceIdentifiers = identifiers.map(\.uuid)
         let deviceEmails = identifiers.flatMap(\.emails)
         let emailMatchContacts = dependencies.contactService.getContactsByEmailAddress(deviceEmails)
@@ -296,13 +305,10 @@ extension ImportDeviceContacts {
                 let protonContact = matcher.findContactToMergeMatchingEmail(with: deviceContact, in: emailMatchContacts)
 
                 guard let protonContact else { continue }
-                let merger = try ContactMerger(
+                guard let mergedContactEntity = try merger.merge(
                     deviceContact: deviceContact,
-                    protonContact: protonContact,
-                    userKeys: params.userKeys,
-                    mailboxPassphrase: params.mailboxPassphrase
-                )
-                guard let mergedContactEntity = try merger.merge(strategy: mergeStrategy).contactEntity else {
+                    protonContact: protonContact
+                ).contactEntity else {
                     throw ImportDeviceContactsError.mergedContactEntityIsNil
                 }
                 resultingMergedContacts.append(mergedContactEntity)

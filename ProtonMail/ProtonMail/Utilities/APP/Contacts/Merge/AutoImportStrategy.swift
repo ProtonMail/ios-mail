@@ -30,7 +30,7 @@ import Foundation
  Contact field types are not considered when comparing fields in this strategy. The type of `deviceContact` will always prevail.
  */
 struct AutoImportStrategy: ContactMergeStrategy {
-    let mergeResult: ContactMergeResultType = .protonContact
+    let mergeDestination: ContactMergeDestination = .protonContact
 
     func merge(deviceContact: VCardObject, protonContact: ProtonVCards) throws {
         try protonContact.read()
