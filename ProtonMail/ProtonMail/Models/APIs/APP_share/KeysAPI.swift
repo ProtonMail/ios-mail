@@ -26,12 +26,10 @@ import ProtonCoreDataModel
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-// Keys API
 struct KeysAPI {
     static let path: String = "/keys"
 }
 
-/// KeysResponse
 final class UserEmailPubKeys: Request {
     let email: String
 
@@ -58,14 +56,9 @@ final class UserEmailPubKeys: Request {
     }
 }
 
-final class KeyResponse {
+struct KeyResponse {
     let flags: Key.Flags
-    let publicKey: String?
-
-    init(flags: Key.Flags, publicKey: String?) {
-        self.flags = flags
-        self.publicKey = publicKey
-    }
+    let publicKey: String
 }
 
 final class KeysResponse: Response {
@@ -84,7 +77,11 @@ final class KeysResponse: Response {
             for keyDict in keyRes {
                 let rawFlags = keyDict["Flags"] as? Int ?? 0
                 let flags = Key.Flags(rawValue: rawFlags)
-                let publicKey = keyDict["PublicKey"] as? String
+
+                guard let publicKey = keyDict["PublicKey"] as? String else {
+                    continue
+                }
+
                 self.keys.append(KeyResponse(flags: flags, publicKey: publicKey))
             }
         }
@@ -94,8 +91,7 @@ final class KeysResponse: Response {
     var nonObsoletePublicKeys: [ArmoredKey] {
         keys
             .filter { $0.flags.contains(.notObsolete) }
-            .compactMap { $0.publicKey }
-            .map { ArmoredKey(value: $0)}
+            .map { ArmoredKey(value: $0.publicKey)}
     }
 }
 

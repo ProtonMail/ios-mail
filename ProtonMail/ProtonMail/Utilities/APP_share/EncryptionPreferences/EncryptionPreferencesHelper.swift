@@ -44,7 +44,7 @@ enum EncryptionPreferencesHelper {
         } else {
             let apiKeys: [(KeyResponse, CryptoKey)] = keysResponse.keys.compactMap { keyResponse in
                 var error: NSError?
-                if let key = CryptoGo.CryptoNewKey(keyResponse.publicKey?.unArmor, &error) {
+                if let key = CryptoGo.CryptoNewKey(keyResponse.publicKey.unArmor, &error) {
                     return error != nil ? nil : (keyResponse, key)
                 }
                 return nil
