@@ -137,7 +137,7 @@ class FetchVerificationKeysTests: XCTestCase {
             switch result {
             case .success(let (keys, keysResponse)):
                 XCTAssert(keys.isEmpty)
-                XCTAssertNil(keysResponse)
+                XCTAssert(keysResponse?.keys.isEmpty == true)
                 expectation.fulfill()
             case .failure(let error):
                 XCTFail("\(error)")
