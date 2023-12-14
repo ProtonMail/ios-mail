@@ -21,7 +21,7 @@ import typealias ProtonCoreCrypto.Passphrase
 import ProtonCoreUtilities
 
 protocol ImportDeviceContactsUseCase {
-    func execute(params: ImportDeviceContacts.Params) async
+    func execute(params: ImportDeviceContacts.Params)
     func cancel()
 }
 
@@ -62,7 +62,7 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
         self.dependencies = dependencies
     }
 
-    func execute(params: Params) async {
+    func execute(params: Params) {
         SystemLogger.log(message: "ImportDeviceContacts execute", category: .contacts)
         guard backgroundTask == nil else { return }
 
@@ -75,19 +75,22 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
             delegate?.onProgressUpdate(count: 0, total: contactIDsToImport.count)
 
             let triagedContacts = triageContacts(identifiers: contactIDsToImport)
-            saveProtonContacts(from: triagedContacts.toCreate, params: params)
-            updateProtonContacts(
-                fromUuidMatch: triagedContacts.toUpdateByUuidMatch,
-                fromEmailMatch: triagedContacts.toUpdateByEmailMatch,
-                params: params
-            )
+            do {
+                try saveProtonContacts(from: triagedContacts.toCreate, params: params)
+                try updateProtonContacts(
+                    fromUuidMatch: triagedContacts.toUpdateByUuidMatch,
+                    fromEmailMatch: triagedContacts.toUpdateByEmailMatch,
+                    params: params
+                )
+            } catch {
+                SystemLogger.log(message: "ImportDeviceContacts catch \(error)", category: .contacts, isError: true)
+            }
         }
     }
 
     func cancel() {
         SystemLogger.log(message: "ImportDeviceContacts cancelled", category: .contacts)
         backgroundTask?.cancel()
-        taskFinished()
     }
 }
 
@@ -151,10 +154,10 @@ extension ImportDeviceContacts {
 
 extension ImportDeviceContacts {
 
-    private func saveProtonContacts(from identifiers: [DeviceContactIdentifier], params: Params) {
+    private func saveProtonContacts(from identifiers: [DeviceContactIdentifier], params: Params) throws {
         let batches = identifiers.chunked(into: contactBatchSize)
         for batch in batches {
-            guard !Task.isCancelled else { break }
+            try Task.checkCancellation()
             autoreleasepool {
                 do {
                     let deviceContacts = try dependencies.deviceContacts.fetchContactBatch(with: batch.map(\.uuid))
@@ -210,13 +213,27 @@ extension ImportDeviceContacts {
         fromUuidMatch uuidMatch: [DeviceContactIdentifier],
         fromEmailMatch emailMatch: [DeviceContactIdentifier],
         params: Params
-    ) {
-        let mergedContactsByUuid = mergeContactsMatchByUuid(identifiers: uuidMatch, params: params)
-        let mergedContactsByEmail = mergeContactsMatchByEmail(identifiers: emailMatch, params: params)
-        let mergedContacts = mergedContactsByUuid + mergedContactsByEmail
-        for contact in mergedContacts {
-            let contactId = contact.objectID.rawValue.uriRepresentation().absoluteString
-            enqueueUpdateContactAction(for: contactId, cards: contact.cardDatas)
+    ) throws {
+        let uuidMatchBatches = uuidMatch.chunked(into: contactBatchSize)
+        for batch in uuidMatchBatches {
+            try Task.checkCancellation()
+            autoreleasepool {
+                let mergedContactsByUuid = mergeContactsMatchByUuid(identifiers: batch, params: params)
+                for contact in mergedContactsByUuid {
+                    enqueueUpdateContactAction(for: contact, cards: contact.cardDatas)
+                }
+            }
+        }
+
+        let emailMatchBatches = emailMatch.chunked(into: contactBatchSize)
+        for batch in emailMatchBatches {
+            try Task.checkCancellation()
+            autoreleasepool {
+                let mergedContactsByEmail = mergeContactsMatchByEmail(identifiers: batch, params: params)
+                for contact in mergedContactsByEmail {
+                    enqueueUpdateContactAction(for: contact, cards: contact.cardDatas)
+                }
+            }
         }
     }
 
@@ -299,8 +316,9 @@ extension ImportDeviceContacts {
     }
 
     // TODO: create a queue to run tasks in parallel
-    private func enqueueUpdateContactAction(for objectID: String, cards: [CardData]) {
-        let action: MessageAction = .updateContact(objectID: objectID, cardDatas: cards)
+    private func enqueueUpdateContactAction(for contact: ContactEntity, cards: [CardData]) {
+        let contactId = contact.objectID.rawValue.uriRepresentation().absoluteString
+        let action: MessageAction = .updateContact(objectID: contactId, cardDatas: cards)
         let task = QueueManager
             .Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
         dependencies.queueManager.addTask(task)
@@ -335,8 +353,10 @@ extension ImportDeviceContacts {
 extension Either<DeviceContact, ContactEntity> {
     var contactEntity: ContactEntity? {
         switch self {
-        case .right(let result): return result
-        case .left: return nil
+        case .right(let result):
+            return result
+        case .left:
+            return nil
         }
     }
 }
