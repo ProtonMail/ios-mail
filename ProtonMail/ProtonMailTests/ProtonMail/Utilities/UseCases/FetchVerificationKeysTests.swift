@@ -26,7 +26,7 @@ import XCTest
 class FetchVerificationKeysTests: XCTestCase {
     private var sut: FetchVerificationKeys!
     private var mockFetchAndVerifyContacts: MockFetchAndVerifyContacts!
-    private var mockFetchEmailAddressesPublicKey: MockFetchEmailAddressesPublicKey!
+    private var mockFetchEmailAddressesPublicKey: MockFetchEmailAddressesPublicKeyUseCase!
     private var validKey: Key!
     private var invalidKey: Key!
 
@@ -43,7 +43,7 @@ class FetchVerificationKeysTests: XCTestCase {
         try super.setUpWithError()
 
         mockFetchAndVerifyContacts = MockFetchAndVerifyContacts()
-        mockFetchEmailAddressesPublicKey = MockFetchEmailAddressesPublicKey()
+        mockFetchEmailAddressesPublicKey = .init()
 
         let validKeyPair = try MailCrypto.generateRandomKeyPair()
         validKey = Key(keyID: "good", privateKey: validKeyPair.privateKey)
@@ -109,7 +109,9 @@ class FetchVerificationKeysTests: XCTestCase {
         keysResponse.keys = keys.map {
             KeyResponse(flags: $0.flags, publicKey: $0.publicKey)
         }
-        mockFetchEmailAddressesPublicKey.result = .success([contactEmail: keysResponse])
+        mockFetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            keysResponse
+        }
 
         let validKeyData = try XCTUnwrap(validKey.publicKey.unArmor)
 
@@ -131,7 +133,9 @@ class FetchVerificationKeysTests: XCTestCase {
 
     func testReturnsEmptyListIfNoContactsAreFound() {
         let expectation = XCTestExpectation()
-        mockFetchEmailAddressesPublicKey.result = .success([contactEmail : KeysResponse()])
+        mockFetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            KeysResponse()
+        }
 
         sut.execute(params: .init(email: contactEmail)) { result in
             switch result {
@@ -156,12 +160,9 @@ class FetchVerificationKeysTests: XCTestCase {
 
         stubContact(with: publicKeys)
 
-        let keysResponse = KeysResponse()
-        keysResponse.keys = [
-            KeyResponse(flags: [.notCompromised], publicKey: malformedKey.base64EncodedString()),
-            KeyResponse(flags: [.notCompromised], publicKey: validKey.publicKey)
-        ]
-        mockFetchEmailAddressesPublicKey.result = .success([contactEmail: KeysResponse()])
+        mockFetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            KeysResponse()
+        }
 
         let validKeyData = try XCTUnwrap(validKey.publicKey.unArmor)
 

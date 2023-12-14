@@ -1060,7 +1060,7 @@ extension ComposeViewModel {
     private func makeContactPGPTypeHelper(localContacts: [PreContact]) -> ContactPGPTypeHelper {
         return ContactPGPTypeHelper(
             internetConnectionStatusProvider: dependencies.internetStatusProvider,
-            apiService: user.apiService,
+            fetchEmailAddressesPublicKey: user.container.fetchEmailAddressesPublicKey,
             userSign: user.userInfo.sign,
             localContacts: localContacts,
             userAddresses: user.addresses

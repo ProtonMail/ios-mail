@@ -89,17 +89,12 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
     }
 
     private func fetchPublicKeys(email: String, completion: @escaping (Result<KeysResponse, Error>) -> Void) {
-        dependencies.fetchEmailsPublicKeys.execute(params: .init(emails: [email])) { result in
-            switch result {
-            case .success(let keysResponseDict):
-                guard let keyResponse = keysResponseDict[email] else {
-                    fatalError("Inconsistent state: a KeysResponse should exist if no error is returned")
-                }
-                completion(.success(keyResponse))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        ConcurrencyUtils.runWithCompletion(
+            block: dependencies.fetchEmailsPublicKeys.execute,
+            argument: email,
+            callCompletionOn: executionQueue,
+            completion: completion
+        )
     }
 
     private func getPinnedKeys(contact: PreContact, keysResponse: KeysResponse) -> Output {
