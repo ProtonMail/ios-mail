@@ -27,6 +27,15 @@
           "revision": "9dcdd75511e82c59977466960833a6478a2de278",
           "version": "1.8.1"
         }
+      },
+      {
+        "package": "swift-css-parser",
+        "repositoryURL": "https://github.com/stackotter/swift-css-parser.git",
+        "state": {
+          "branch": null,
+          "revision": "6cf16c6696def00a313daef0e29eb27f5c39ece4",
+          "version": "0.1.2"
+        }
       }
     ]
   },
