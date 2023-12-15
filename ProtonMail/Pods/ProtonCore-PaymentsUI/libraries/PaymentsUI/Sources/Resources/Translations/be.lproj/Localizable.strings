@@ -1,4 +1,3 @@
-
 "OK" = "Добра";
 
 "Cancel" = "Скасаваць";
@@ -22,6 +21,8 @@
 "Current plan will expire on %@" = "Бягучы тарыфны план міне праз %@";
 
 "Contact an administrator to make changes to your Proton subscription." = "Звяжыцеся з адміністратарам для таго, каб унесці змены ў вашу падпіску Proton.";
+
+"%1$@ of %2$@" = "%1$@ з %2$@";
 
 "%@ storage" = "%@ сховішча";
 
@@ -73,6 +74,8 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "Праз гэту праграму даступны толькі гадавыя падпіскі без падаўжэння";
 
+"Your subscription cannot be managed inside the mobile app." = "Вашай падпіска нельга кіраваць унутры мабільнай праграмы.";
+
 "Unlimited folders, labels, and filters" = "Неабмежаваная колькасць папак, метак і фільтраў";
 
 "Up to %@ storage" = "Да %@ сховішча";
@@ -113,13 +116,9 @@
 
 "Unlimited devices" = "Неабмежаваная колькасць прылад";
 
-"%@ email aliases" = "%@ псеўданімаў электроннай пошты";
-
 "Unlimited email aliases" = "Неабмежаваная колькасць псеўданімаў электроннай пошты";
 
 "Unlimited logins and notes" = "Неабмежаваная колькасць запісаў уваходу і нататак";
-
-"Up to %@ forwarding mailboxes" = "Да %@ паштовых скрынь для пераадрасацыі";
 
 "Custom fields" = "Карыстальніцкія палі";
 

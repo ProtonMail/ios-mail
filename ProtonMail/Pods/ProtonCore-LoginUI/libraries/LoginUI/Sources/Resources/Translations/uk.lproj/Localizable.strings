@@ -1,4 +1,3 @@
-
 "Privacy by default" = "Усталена приватність";
 
 "Proton address required" = "Адреса Proton обов'язкова";
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "Неправильний хешований пароль";
 
 "Password can not be empty.\nPlease try again." = "Потрібно ввести пароль.\nБудь ласка, спробуйте знову.";
-
-"Password must contain at least %@ characters." = "Пароль повинен містити принаймні %@ символів.";
 
 "Passwords do not match.\nPlease try again." = "Паролі відрізняються.\nПовторіть спробу.";
 

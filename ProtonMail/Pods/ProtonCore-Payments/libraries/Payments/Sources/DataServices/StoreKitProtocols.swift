@@ -134,6 +134,7 @@ protocol PaymentQueueProtocol {
     func add(_ observer: SKPaymentTransactionObserver)
     func remove(_ observer: SKPaymentTransactionObserver)
     var transactions: [SKPaymentTransaction] { get }
+    var transactionObservers: [SKPaymentTransactionObserver] { get }
 }
 
 enum ProcessingType {

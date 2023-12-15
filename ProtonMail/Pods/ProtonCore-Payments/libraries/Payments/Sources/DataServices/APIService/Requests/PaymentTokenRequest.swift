@@ -23,12 +23,19 @@ import Foundation
 import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreServices
+import ProtonCoreFeatureFlags
 
 final class PaymentTokenOldRequest: BaseApiRequest<TokenResponse> {
     private let amount: Int
     private let receipt: String
 
-    init (api: APIService, amount: Int, receipt: String) {
+    init (api: APIService,
+          amount: Int,
+          receipt: String,
+          featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared) {
+        if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
+            assertionFailure("When using Dynamic Plans/Subscriptions, you should be using PaymentTokenRequest")
+        }
         self.amount = amount
         self.receipt = receipt
         super.init(api: api)
@@ -64,7 +71,16 @@ final class PaymentTokenRequest: BaseApiRequest<TokenResponse> {
     private let bundleId: String
     private let productId: String
 
-    init (api: APIService, amount: Int, receipt: String, transactionId: String, bundleId: String, productId: String) {
+    init(api: APIService,
+         amount: Int,
+         receipt: String,
+         transactionId: String,
+         bundleId: String,
+         productId: String,
+         featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared) {
+        if !featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
+            assertionFailure("When not using Dynamic Plans/Subscriptions, you should be using PaymentTokenOldRequest")
+        }
         self.amount = amount
         self.receipt = receipt
         self.transactionId = transactionId
@@ -88,7 +104,7 @@ final class PaymentTokenRequest: BaseApiRequest<TokenResponse> {
             ]
         } else {
             paymentDict = [
-                "Type": "apple",
+                "Type": "apple-recurring",
                 "Details": ["Receipt": receipt,
                             "TransactionID": transactionId,
                             "BundleID": bundleId,
@@ -100,7 +116,8 @@ final class PaymentTokenRequest: BaseApiRequest<TokenResponse> {
     }
 }
 
-final class TokenResponse: Response {
+final class
+TokenResponse: Response {
     var paymentToken: PaymentToken?
 
     override public func ParseResponse(_ response: [String: Any]!) -> Bool {

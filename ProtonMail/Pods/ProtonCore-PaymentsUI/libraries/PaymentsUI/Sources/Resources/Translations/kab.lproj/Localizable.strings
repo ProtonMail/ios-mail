@@ -1,4 +1,3 @@
-
 "OK" = "Ih";
 
 "Cancel" = "Sefsex";
@@ -22,6 +21,8 @@
 "Current plan will expire on %@" = "Aɣawas amiran ad yemmet deg %@";
 
 "Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
+
+"%1$@ of %2$@" = "%1$@ of %2$@";
 
 "%@ storage" = "%@ n uḥraz";
 
@@ -73,6 +74,8 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "Only non-renewing annual subscriptions are available via this app";
 
+"Your subscription cannot be managed inside the mobile app." = "Your subscription cannot be managed inside the mobile app.";
+
 "Unlimited folders, labels, and filters" = "Ikaramen, tibzimin, d yimsizedgen war tilas";
 
 "Up to %@ storage" = "Alamma d %@ n uḥraz";
@@ -113,13 +116,9 @@
 
 "Unlimited devices" = "Ibenkan war talast";
 
-"%@ email aliases" = "%@ aliases n yimaylen";
-
 "Unlimited email aliases" = "Aliases n yimayl war tilas";
 
 "Unlimited logins and notes" = "Inekcam d tezmilin war tilas";
-
-"Up to %@ forwarding mailboxes" = "Alamma d %@ n uwelleh n tnakiwin n urmas";
 
 "Custom fields" = "Urtiyen udmawanen";
 

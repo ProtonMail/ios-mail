@@ -1,4 +1,3 @@
-
 "OK" = "确定";
 
 "Cancel" = "取消";
@@ -22,6 +21,8 @@
 "Current plan will expire on %@" = "账户等级将于 %@ 失效";
 
 "Contact an administrator to make changes to your Proton subscription." = "请联系机构管理员调整 Proton 账户等级。";
+
+"%1$@ of %2$@" = "%1$@ of %2$@";
 
 "%@ storage" = "%@ 存储空间";
 
@@ -73,6 +74,8 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "此应用内仅支持开通年费账户";
 
+"Your subscription cannot be managed inside the mobile app." = "您的订阅无法在移动应用中管理。";
+
 "Unlimited folders, labels, and filters" = "不限量文件夹、标签和筛选规则";
 
 "Up to %@ storage" = "最大容量达到%@";
@@ -113,13 +116,9 @@
 
 "Unlimited devices" = "无设备数量限制";
 
-"%@ email aliases" = "%@ 个邮箱别名";
-
 "Unlimited email aliases" = "邮箱别名无限量";
 
 "Unlimited logins and notes" = "无限登录和注释";
-
-"Up to %@ forwarding mailboxes" = "多达 %@ 个转发邮箱";
 
 "Custom fields" = "自定义字段";
 

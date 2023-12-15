@@ -1,4 +1,3 @@
-
 "Privacy by default" = "حریم شخصی به صورت پیشفرص";
 
 "Proton address required" = "آدرس Proton نیاز است";
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "گذرواژه هش شده نامعتبر است";
 
 "Password can not be empty.\nPlease try again." = "گذرواژه نمیتواند خالی باشد. \nلطفا دوباره تلاش کنید.";
-
-"Password must contain at least %@ characters." = "گذرواژه باید حداقل %@ نویسه داشته باشد.";
 
 "Passwords do not match.\nPlease try again." = "گذرواژه ها یکسان نیستند. \nلطفا دوباره تلاش کنید.";
 

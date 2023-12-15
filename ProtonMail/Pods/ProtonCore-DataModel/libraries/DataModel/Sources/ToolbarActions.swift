@@ -33,7 +33,7 @@ public final class ToolbarActions: NSObject, NSCoding, Codable {
         self.actions = actions
     }
 
-    public init(rawValue: [String: Any]?) {
+    init(rawValue: [String: Any]?) {
         self.isCustom = (rawValue?["IsCustom"] as? Bool) ?? false
         self.actions = (rawValue?["Actions"] as? [String]) ?? []
     }

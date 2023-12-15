@@ -24,6 +24,7 @@ import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreServices
 
+/// Get payment methods in priority order
 public class MethodRequest: BaseApiRequest<MethodResponse> {
 
     override public init(api: APIService) {

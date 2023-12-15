@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-AccountDeletion",
   "module_name": "ProtonCoreAccountDeletion",
-  "version": "14.0.0",
+  "version": "16.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "14.0.0"
+    "tag": "16.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -31,28 +31,28 @@
   },
   "dependencies": {
     "ProtonCore-Doh": [
-      "14.0.0"
+      "16.0.0"
     ],
     "ProtonCore-Foundations": [
-      "14.0.0"
+      "16.0.0"
     ],
     "ProtonCore-Log": [
-      "14.0.0"
+      "16.0.0"
     ],
     "ProtonCore-Utilities": [
-      "14.0.0"
+      "16.0.0"
     ],
     "ProtonCore-UIFoundations": [
-      "14.0.0"
+      "16.0.0"
     ],
     "ProtonCore-Authentication": [
-      "14.0.0"
+      "16.0.0"
     ],
     "ProtonCore-Networking": [
-      "14.0.0"
+      "16.0.0"
     ],
     "ProtonCore-Services": [
-      "14.0.0"
+      "16.0.0"
     ]
   },
   "ios": {
@@ -81,16 +81,16 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/AccountDeletion": [
-          "14.0.0"
+          "16.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Doh": [
-          "14.0.0"
+          "16.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Networking": [
-          "14.0.0"
+          "16.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Services": [
-          "14.0.0"
+          "16.0.0"
         ]
       },
       "source_files": "libraries/AccountDeletion/Tests/UnitTests/**/*.swift"

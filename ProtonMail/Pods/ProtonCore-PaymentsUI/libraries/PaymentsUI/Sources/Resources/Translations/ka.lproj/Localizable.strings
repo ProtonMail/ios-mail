@@ -1,4 +1,3 @@
-
 "OK" = "დიახ";
 
 "Cancel" = "გაუქმება";
@@ -22,6 +21,8 @@
 "Current plan will expire on %@" = "მიმდინარე ტარიფის ამოწურვის ვადაა %@";
 
 "Contact an administrator to make changes to your Proton subscription." = "Proton-ის გამოწერის შესაცვლელად დაუკავშირდით ადმინისტრატორს.";
+
+"%1$@ of %2$@" = "%1$@ %2$@-დან";
 
 "%@ storage" = "%@ საცავი";
 
@@ -73,6 +74,8 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "ამ აპიდან, მხოლოდ, არაგანმეორებადი წლიური გამოწერებია ხელმისაწვდომი";
 
+"Your subscription cannot be managed inside the mobile app." = "გამოწერის მართვა მობილური აპიდან შეუძლებელია.";
+
 "Unlimited folders, labels, and filters" = "ულიმიტო საქაღალდეები, ჭდეები და ფილტრები";
 
 "Up to %@ storage" = "%@-მდე საცავი";
@@ -113,13 +116,9 @@
 
 "Unlimited devices" = "მოწყობილობების უსაზღვრო რაოდენობა";
 
-"%@ email aliases" = "%@ ელფოსტის მისამართი";
-
 "Unlimited email aliases" = "განუსაზღვრელი რაოდენობის ელფოსტის მეტსახელები";
 
 "Unlimited logins and notes" = "მომხმარებლების და შენიშვნების უსაზღვრო რაოდენობა";
-
-"Up to %@ forwarding mailboxes" = "%@-მდე გადაგზავნადი საფოსტო ყუთი";
 
 "Custom fields" = "მორგებადი ველები";
 

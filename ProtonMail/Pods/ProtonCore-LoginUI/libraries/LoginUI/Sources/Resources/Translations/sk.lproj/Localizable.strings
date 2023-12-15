@@ -1,4 +1,3 @@
-
 "Privacy by default" = "Súkromie je prvoradé";
 
 "Proton address required" = "Vyžaduje sa adresa protonu";
@@ -65,7 +64,7 @@
 
 "Incorrect mailbox password" = "Nesprávne heslo k poštovej schránke";
 
-"Your session has expired. Please log in again." = "Platnosť vašej relácie vypršala. Znovu sa prihláste.";
+"Your session has expired. Please log in again." = "Platnosť Vašej relácie uplynula. Prihláste sa znova.";
 
 "Proton address required" = "Vyžaduje sa adresa protonu";
 
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "Neplatný hash hesla";
 
 "Password can not be empty.\nPlease try again." = "Heslo nemôže byť prázdne.\nSkúste to znova, prosím.";
-
-"Password must contain at least %@ characters." = "Heslo musí obsahovať aspoň %@ znakov.";
 
 "Passwords do not match.\nPlease try again." = "Heslá sa nezhodujú.\nSkúste to znova, prosím.";
 

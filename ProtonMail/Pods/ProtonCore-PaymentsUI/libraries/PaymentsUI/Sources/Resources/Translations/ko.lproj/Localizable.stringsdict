@@ -2,7 +2,21 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
-    <key>%d users</key>
+    <key>&lt;n&gt; email aliases</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d개 이메일 별명</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; users</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -16,7 +30,7 @@
         <string>%d명</string>
       </dict>
     </dict>
-    <key>%d email addresses</key>
+    <key>&lt;n&gt; email addresses</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -30,7 +44,7 @@
         <string>%d 이메일 주소</string>
       </dict>
     </dict>
-    <key>%d email addresses / user</key>
+    <key>&lt;n&gt; email addresses / user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -44,7 +58,7 @@
         <string>%d개 이메일 주소 / 사용자당</string>
       </dict>
     </dict>
-    <key>%d calendars</key>
+    <key>&lt;n&gt; calendars</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -58,7 +72,7 @@
         <string>%d개 캘린더</string>
       </dict>
     </dict>
-    <key>%d folders / labels</key>
+    <key>&lt;n&gt; folders / labels</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -72,7 +86,7 @@
         <string>%d개의 폴더 / 라벨</string>
       </dict>
     </dict>
-    <key>%d countries</key>
+    <key>&lt;n&gt; countries</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -86,7 +100,7 @@
         <string>%d개 국가</string>
       </dict>
     </dict>
-    <key>%d connections</key>
+    <key>&lt;n&gt; connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -100,7 +114,7 @@
         <string>%d개 연결</string>
       </dict>
     </dict>
-    <key>%d VPN connections</key>
+    <key>&lt;n&gt; VPN connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -114,7 +128,7 @@
         <string>%d개 VPN 연결</string>
       </dict>
     </dict>
-    <key>%d high-speed VPN connections</key>
+    <key>&lt;n&gt; high-speed VPN connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -128,7 +142,7 @@
         <string>%d 빠른 속도의 VPN 연결</string>
       </dict>
     </dict>
-    <key>%d custom domains</key>
+    <key>&lt;n&gt; custom domains</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -142,7 +156,7 @@
         <string>%d 커스텀 도메인</string>
       </dict>
     </dict>
-    <key>%d vaults</key>
+    <key>&lt;n&gt; vaults</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -156,7 +170,7 @@
         <string>%d개 금고</string>
       </dict>
     </dict>
-    <key>Support for %d custom email domains</key>
+    <key>Support for &lt;n&gt; custom email domains</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -170,7 +184,7 @@
         <string>%d개의 지정 이메일 도메인 지원</string>
       </dict>
     </dict>
-    <key>%d folders and labels</key>
+    <key>&lt;n&gt; folders and labels</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -184,21 +198,7 @@
         <string>%d개 폴더와 라벨</string>
       </dict>
     </dict>
-    <key>%d calendars</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE@</string>
-      <key>VARIABLE</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>d</string>
-        <key>other</key>
-        <string>%d개 캘린더</string>
-      </dict>
-    </dict>
-    <key>High-speed VPN on %d devices</key>
+    <key>High-speed VPN on &lt;n&gt; devices</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -212,7 +212,7 @@
         <string>%d개 기기에서의 고속 VPN</string>
       </dict>
     </dict>
-    <key>%d+ servers in %d countries</key>
+    <key>&lt;n&gt;+ servers in &lt;m&gt; countries</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@COUNTRIES@ 국가에서 %#@SERVERS@</string>
@@ -235,7 +235,7 @@
         <string>%d개 국가</string>
       </dict>
     </dict>
-    <key>%d servers in %d countries (US, NL, JP)</key>
+    <key>&lt;n&gt; servers in &lt;m&gt; countries (US, NL, JP)</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@COUNTRIES@ 국가에서 %#@SERVERS@</string>
@@ -258,10 +258,10 @@
         <string>%d개 국가 (미국, 네덜란드, 일본)</string>
       </dict>
     </dict>
-    <key>%d of %d users</key>
+    <key>&lt;n&gt; of &lt;m&gt; users</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ 의 %#@VARIABLE2@</string>
+      <string>%#@VARIABLE2@ 중 %#@VARIABLE1@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -281,10 +281,10 @@
         <string>%d명</string>
       </dict>
     </dict>
-    <key>%d of %d email addresses</key>
+    <key>&lt;n&gt; of &lt;m&gt; email addresses</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ 의 %#@VARIABLE2@</string>
+      <string>%#@VARIABLE2@ 중 %#@VARIABLE1@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -304,10 +304,10 @@
         <string>%d 이메일 주소</string>
       </dict>
     </dict>
-    <key>%d of %d calendars</key>
+    <key>&lt;n&gt; of &lt;m&gt; calendars</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ 의 %#@VARIABLE2@</string>
+      <string>%#@VARIABLE2@ 중 %#@VARIABLE1@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -327,7 +327,7 @@
         <string>%d개 캘린더</string>
       </dict>
     </dict>
-    <key>%d addresses per user</key>
+    <key>&lt;n&gt; addresses per user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -341,7 +341,7 @@
         <string>사용자 당 주소 %d개</string>
       </dict>
     </dict>
-    <key>%d calendars per user</key>
+    <key>&lt;n&gt; calendars per user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -355,7 +355,7 @@
         <string>사용자 당 %d개 캘린더</string>
       </dict>
     </dict>
-    <key>%d VPN connections per user</key>
+    <key>&lt;n&gt; VPN connections per user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -369,7 +369,7 @@
         <string>사용자 당 %d개 VPN 연결</string>
       </dict>
     </dict>
-    <key>Pay for %d months</key>
+    <key>Pay for &lt;n&gt; months</key>
     <dict>
       <key>VARIABLE</key>
       <dict>
@@ -383,7 +383,7 @@
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
     </dict>
-    <key>Medium VPN speed %d VPN connections</key>
+    <key>Medium VPN speed &lt;n&gt; VPN connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -395,6 +395,20 @@
         <string>d</string>
         <key>other</key>
         <string>중간 VPN 속도 %d개의 VPN 연결</string>
+      </dict>
+    </dict>
+    <key>Up to &lt;n&gt; forwarding mailboxes</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>최대 %d개 포워딩 메일함</string>
       </dict>
     </dict>
   </dict>

@@ -26,6 +26,7 @@ import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreObservability
+import ProtonCoreFeatureFlags
 
 /*
 
@@ -39,10 +40,11 @@ import ProtonCoreObservability
 final class TokenHandler {
 
     unowned let dependencies: ProcessDependencies
-    let areSubscriptionsEnabled = FeatureFactory.shared.isEnabled(.subscriptions)
+    let areSubscriptionsEnabled: Bool
 
-    init(dependencies: ProcessDependencies) {
+    init(dependencies: ProcessDependencies, featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared) {
         self.dependencies = dependencies
+        self.areSubscriptionsEnabled = featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)
     }
 
     let queue = DispatchQueue(label: "TokenHandler async queue", qos: .userInitiated)

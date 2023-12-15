@@ -1,4 +1,3 @@
-
 "Privacy by default" = "Конфиденциальность по умолчанию";
 
 "Proton address required" = "Требуется адрес Proton";
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "Неверный хешированный пароль";
 
 "Password can not be empty.\nPlease try again." = "Пароль не может быть пустым.\nПожалуйста, попробуйте еще раз.";
-
-"Password must contain at least %@ characters." = "Пароль должен содержать хотя бы $%@ символов.";
 
 "Passwords do not match.\nPlease try again." = "Пароль и подтверждение не совпадают.\nПожалуйста, попробуйте еще раз.";
 

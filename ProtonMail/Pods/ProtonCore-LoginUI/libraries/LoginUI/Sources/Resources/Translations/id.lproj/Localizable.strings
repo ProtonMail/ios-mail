@@ -1,4 +1,3 @@
-
 "Privacy by default" = "Privasi sebagai hal yang baku";
 
 "Proton address required" = "Alamat Proton dibutuhkan";
@@ -143,7 +142,7 @@
 
 "Recovery phone number" = "Nomor telepon pemulihan";
 
-"By clicking Next, you agree with Proton's Terms and Conditions" = "Dengan mengklik Selanjutnya, Anda setuju dengan Syarat dan Ketentuan Proton";
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Dengan mengeklik Selanjutnya, Anda setuju dengan Syarat dan Ketentuan Proton";
 
 "Terms and Conditions" = "Syarat dan Ketentuan";
 
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "Kata sandi hashed tidak valid";
 
 "Password can not be empty.\nPlease try again." = "Kata sandi tidak boleh kosong.\nSilakan coba lagi.";
-
-"Password must contain at least %@ characters." = "Kata sandi minimal %@ karakter.";
 
 "Passwords do not match.\nPlease try again." = "Kata sandi tidak cocok. \nSilakan coba lagi.";
 

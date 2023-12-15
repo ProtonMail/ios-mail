@@ -1,4 +1,3 @@
-
 "Privacy by default" = "隐私优先";
 
 "Proton address required" = "需要使用 Proton 地址";
@@ -65,7 +64,7 @@
 
 "Incorrect mailbox password" = "邮箱密码错误";
 
-"Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
+"Your session has expired. Please log in again." = "您的会话已过期。请重新登录。";
 
 "Proton address required" = "需要使用 Proton 地址";
 
@@ -131,7 +130,7 @@
 
 "Set recovery method" = "设置恢复方法";
 
-"Set recovery method (optional)" = "设置恢复方式（非必需）";
+"Set recovery method (optional)" = "设置恢复方式 (可选)";
 
 "We will send recovery instructions to this email or phone number if you get locked out of your account." = "假如以后您忘记用户名或密码无法登录，我们将通过这个邮箱或电话号码帮助您恢复账户。";
 
@@ -155,7 +154,7 @@
 
 "Set recovery method" = "设置恢复方法";
 
-"Your account is being created" = "Your account is being created";
+"Your account is being created" = "正在创建您的账户";
 
 "This should take no more than a minute." = "应该不会超过一分钟。";
 
@@ -183,13 +182,11 @@
 
 "Invalid token error" = "无效令牌错误";
 
-"Create user failed" = "Create user failed";
+"Create user failed" = "创建用户失败";
 
 "Invalid hashed password" = "无效的哈希密码";
 
 "Password can not be empty.\nPlease try again." = "密码不能为空\n请重新输入";
-
-"Password must contain at least %@ characters." = "密码必须至少包含 %@ 个字符";
 
 "Passwords do not match.\nPlease try again." = "密码不匹配\n请重新输入";
 
@@ -201,7 +198,7 @@
 
 "Change email address" = "更改邮箱地址";
 
-"Congratulations" = "Congratulations";
+"Congratulations" = "恭喜";
 
 "Your Proton Free account was successfully created." = "您已经成功创建Proton免费账号。";
 

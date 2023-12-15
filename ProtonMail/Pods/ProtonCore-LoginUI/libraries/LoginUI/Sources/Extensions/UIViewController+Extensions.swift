@@ -183,7 +183,7 @@ extension SignUpErrorCapable {
             showBanner(message: LUITranslation.error_password_empty.l10n)
             self.invalidPassword(reason: .notFulfilling(.notEmpty))
         case .passwordShouldHaveAtLeastEightCharacters:
-            showBanner(message: String(format: LUITranslation.error_password_too_short.l10n, NSNumber(8)))
+            showBanner(message: LUITranslation.password_field_minimum_length_hint.l10n)
             self.invalidPassword(reason: .notFulfilling(.atLeastEightCharactersLong))
         case .passwordNotEqual:
             showBanner(message: LUITranslation.error_password_not_equal.l10n)

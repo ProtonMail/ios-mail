@@ -2,7 +2,21 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
-    <key>%d users</key>
+    <key>&lt;n&gt; email aliases</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d 個の電子メール エイリアス</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; users</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -16,7 +30,7 @@
         <string>%d ユーザー</string>
       </dict>
     </dict>
-    <key>%d email addresses</key>
+    <key>&lt;n&gt; email addresses</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -27,10 +41,10 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 件のメールアドレス</string>
+        <string>%d メールアドレス</string>
       </dict>
     </dict>
-    <key>%d email addresses / user</key>
+    <key>&lt;n&gt; email addresses / user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -41,10 +55,10 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 件のメールアドレス / ユーザー</string>
+        <string>%d メールアドレス / ユーザー</string>
       </dict>
     </dict>
-    <key>%d calendars</key>
+    <key>&lt;n&gt; calendars</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -55,10 +69,10 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 件のカレンダー</string>
+        <string>%d カレンダー</string>
       </dict>
     </dict>
-    <key>%d folders / labels</key>
+    <key>&lt;n&gt; folders / labels</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -69,10 +83,10 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 件のフォルダーとラベル</string>
+        <string>%d フォルダー / ラベル</string>
       </dict>
     </dict>
-    <key>%d countries</key>
+    <key>&lt;n&gt; countries</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -83,10 +97,10 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d か国</string>
+        <string>%d カ国</string>
       </dict>
     </dict>
-    <key>%d connections</key>
+    <key>&lt;n&gt; connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -100,7 +114,7 @@
         <string>%d 件の接続</string>
       </dict>
     </dict>
-    <key>%d VPN connections</key>
+    <key>&lt;n&gt; VPN connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -111,10 +125,10 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 件の VPN 接続</string>
+        <string>%d 件のVPN接続</string>
       </dict>
     </dict>
-    <key>%d high-speed VPN connections</key>
+    <key>&lt;n&gt; high-speed VPN connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -125,10 +139,10 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 件の高速 VPN 接続</string>
+        <string>%d 件の高速VPN接続</string>
       </dict>
     </dict>
-    <key>%d custom domains</key>
+    <key>&lt;n&gt; custom domains</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -139,10 +153,10 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 件の独自ドメイン</string>
+        <string>%d 個のカスタムドメイン</string>
       </dict>
     </dict>
-    <key>%d vaults</key>
+    <key>&lt;n&gt; vaults</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -156,7 +170,7 @@
         <string>%d 個の保管庫</string>
       </dict>
     </dict>
-    <key>Support for %d custom email domains</key>
+    <key>Support for &lt;n&gt; custom email domains</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -167,10 +181,10 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 件の独自メールドメインに対応</string>
+        <string>%d 個のカスタムドメインメールアドレスのサポート</string>
       </dict>
     </dict>
-    <key>%d folders and labels</key>
+    <key>&lt;n&gt; folders and labels</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -181,10 +195,10 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 件のフォルダーおよびラベル</string>
+        <string>%d 個のフォルダーとラベル</string>
       </dict>
     </dict>
-    <key>%d calendars</key>
+    <key>High-speed VPN on &lt;n&gt; devices</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -195,27 +209,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 件のカレンダー</string>
+        <string>%d 台のデバイス上の高速 VPN</string>
       </dict>
     </dict>
-    <key>High-speed VPN on %d devices</key>
+    <key>&lt;n&gt;+ servers in &lt;m&gt; countries</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE@</string>
-      <key>VARIABLE</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>d</string>
-        <key>other</key>
-        <string>%d 台のデバイスで高速 VPN</string>
-      </dict>
-    </dict>
-    <key>%d+ servers in %d countries</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@COUNTRIES@ か国にある %#@SERVERS@ 台のサーバー</string>
+      <string>%#@COUNTRIES@ の %#@SERVERS@</string>
       <key>SERVERS</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -223,7 +223,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d サーバー</string>
+        <string>%d 台以上のサーバー</string>
       </dict>
       <key>COUNTRIES</key>
       <dict>
@@ -232,13 +232,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d か国</string>
+        <string>%d カ国</string>
       </dict>
     </dict>
-    <key>%d servers in %d countries (US, NL, JP)</key>
+    <key>&lt;n&gt; servers in &lt;m&gt; countries (US, NL, JP)</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@COUNTRIES@ か国にある %#@SERVERS@ 台のサーバー</string>
+      <string>%#@COUNTRIES@ の %#@SERVERS@</string>
       <key>SERVERS</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -255,13 +255,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d か国 (アメリカ、オランダ、日本)</string>
+        <string>%d カ国 (アメリカ・オランダ・日本)</string>
       </dict>
     </dict>
-    <key>%d of %d users</key>
+    <key>&lt;n&gt; of &lt;m&gt; users</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@/%#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -281,10 +281,10 @@
         <string>%d ユーザー</string>
       </dict>
     </dict>
-    <key>%d of %d email addresses</key>
+    <key>&lt;n&gt; of &lt;m&gt; email addresses</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@/%#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -301,13 +301,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 件のメールアドレス</string>
+        <string>%d メールアドレス</string>
       </dict>
     </dict>
-    <key>%d of %d calendars</key>
+    <key>&lt;n&gt; of &lt;m&gt; calendars</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@/%#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -324,10 +324,10 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 件のカレンダー</string>
+        <string>%d カレンダー</string>
       </dict>
     </dict>
-    <key>%d addresses per user</key>
+    <key>&lt;n&gt; addresses per user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -338,10 +338,10 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>ユーザー毎に %d 件のアドレス</string>
+        <string>ユーザーごとに %d アドレス</string>
       </dict>
     </dict>
-    <key>%d calendars per user</key>
+    <key>&lt;n&gt; calendars per user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -352,10 +352,10 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>1 ユーザーあたり %d 件のカレンダー</string>
+        <string>ユーザーあたり %d 個のカレンダー</string>
       </dict>
     </dict>
-    <key>%d VPN connections per user</key>
+    <key>&lt;n&gt; VPN connections per user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -366,10 +366,10 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>1 ユーザーあたり %d 件の VPN 接続</string>
+        <string>ユーザーあたり %d 件のVPN 接続</string>
       </dict>
     </dict>
-    <key>Pay for %d months</key>
+    <key>Pay for &lt;n&gt; months</key>
     <dict>
       <key>VARIABLE</key>
       <dict>
@@ -378,12 +378,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%dか月分の支払い</string>
+        <string>%d か月分の支払い</string>
       </dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
     </dict>
-    <key>Medium VPN speed %d VPN connections</key>
+    <key>Medium VPN speed &lt;n&gt; VPN connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -394,7 +394,21 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 件の中速 VPN 接続</string>
+        <string>%d 件の中速VPN接続</string>
+      </dict>
+    </dict>
+    <key>Up to &lt;n&gt; forwarding mailboxes</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>最大 %d 個の転送メールボックス</string>
       </dict>
     </dict>
   </dict>

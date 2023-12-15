@@ -112,20 +112,21 @@ extension PMAPIService {
     private func fetchAuthCredentialsWithoutSynchronization(continuation: @escaping () -> Void,
                                                             completion: @escaping (AuthCredentialFetchingResult) -> Void) {
 
-        guard let authDelegate = authDelegate else {
+        guard let authDelegate else {
             finalize(result: .wrongConfigurationNoDelegate, continuation: continuation, completion: completion)
             return
         }
+        Task { [sessionUID, weak self] in
+            guard let credential = await authDelegate.authCredential(sessionUID: sessionUID) else {
+                self?.finalize(result: .notFound, continuation: continuation, completion: completion)
+                return
+            }
 
-        guard let credential = authDelegate.authCredential(sessionUID: sessionUID) else {
-            finalize(result: .notFound, continuation: continuation, completion: completion)
-            return
+            // we copy credentials to ensure updating the instance in authDelegate doesn't influence the refresh logic
+            self?.finalize(result: .found(credentials: AuthCredential(copying: credential)),
+                           continuation: continuation,
+                           completion: completion)
         }
-
-        // we copy credentials to ensure updating the instance in authDelegate doesn't influence the refresh logic
-        finalize(result: .found(credentials: AuthCredential(copying: credential)),
-                 continuation: continuation,
-                 completion: completion)
     }
 
     private func refreshAuthCredentialWithoutSynchronization(credentialsCausing401: AuthCredential,
@@ -145,40 +146,41 @@ extension PMAPIService {
             finalize(result: .wrongConfigurationNoDelegate, continuation: continuation, completion: completion)
             return
         }
+        Task { [sessionUID, weak self, weak loggingDelegate] in
+            guard let currentCredentials = await authDelegate.authCredential(sessionUID: sessionUID) else {
+                loggingDelegate?.accessTokenRefreshDidFail(for: sessionUID,
+                                                           sessionType: .from(credentialsCausing401),
+                                                           error: .noAccessTokenToBeRefreshed)
+                self?.finalize(result: .noCredentialsToBeRefreshed, continuation: continuation, completion: completion)
+                return
+            }
 
-        guard let currentCredentials = authDelegate.authCredential(sessionUID: sessionUID) else {
-            loggingDelegate?.accessTokenRefreshDidFail(for: sessionUID,
-                                                       sessionType: .from(credentialsCausing401),
-                                                       error: .noAccessTokenToBeRefreshed)
-            finalize(result: .noCredentialsToBeRefreshed, continuation: continuation, completion: completion)
-            return
-        }
+            guard currentCredentials.accessToken == credentialsCausing401.accessToken else {
+                loggingDelegate?.accessTokenRefreshDidSucceed(for: sessionUID,
+                                                              sessionType: .from(currentCredentials),
+                                                              reason: .freshAccessTokenAlreadyAvailable)
+                // we copy credentials to ensure updating the instance in authDelegate doesn't influence the refresh logic
+                self?.finalize(result: .refreshed(credentials: AuthCredential(copying: currentCredentials)),
+                               continuation: continuation,
+                               completion: completion)
+                return
+            }
 
-        guard currentCredentials.accessToken == credentialsCausing401.accessToken else {
-            loggingDelegate?.accessTokenRefreshDidSucceed(for: sessionUID,
-                                                          sessionType: .from(currentCredentials),
-                                                          reason: .freshAccessTokenAlreadyAvailable)
-            // we copy credentials to ensure updating the instance in authDelegate doesn't influence the refresh logic
-            finalize(result: .refreshed(credentials: AuthCredential(copying: currentCredentials)),
-                     continuation: continuation,
-                     completion: completion)
-            return
-        }
+            guard refreshCounter > 0 else {
+                loggingDelegate?.accessTokenRefreshDidFail(for: sessionUID,
+                                                           sessionType: .from(credentialsCausing401),
+                                                           error: .tooManyRefreshingAttempts)
+                self?.finalize(result: .tooManyRefreshingAttempts, continuation: continuation, completion: completion)
+                return
+            }
 
-        guard refreshCounter > 0 else {
-            loggingDelegate?.accessTokenRefreshDidFail(for: sessionUID,
-                                                       sessionType: .from(credentialsCausing401),
-                                                       error: .tooManyRefreshingAttempts)
-            finalize(result: .tooManyRefreshingAttempts, continuation: continuation, completion: completion)
-            return
-        }
-
-        onRefreshCredential(credential: currentCredentials) { result in
-            self.fetchAuthCredentialCompletionBlockBackgroundQueue.async {
-                if withoutSupportForUnauthenticatedSessions {
-                    self.handleRefreshingResultsWithUnsupportedUnauthenticatedSessions(result, credentialsCausing401, refreshCounter, deviceFingerprints, continuation, completion)
-                } else {
-                    self.handleRefreshingResults(result, credentialsCausing401, refreshCounter, deviceFingerprints, continuation, completion)
+            self?.onRefreshCredential(credential: currentCredentials) { result in
+                self?.fetchAuthCredentialCompletionBlockBackgroundQueue.async { [weak self] in
+                    if withoutSupportForUnauthenticatedSessions {
+                        self?.handleRefreshingResultsWithUnsupportedUnauthenticatedSessions(result, credentialsCausing401, refreshCounter, deviceFingerprints, continuation, completion)
+                    } else {
+                        self?.handleRefreshingResults(result, credentialsCausing401, refreshCounter, deviceFingerprints, continuation, completion)
+                    }
                 }
             }
         }

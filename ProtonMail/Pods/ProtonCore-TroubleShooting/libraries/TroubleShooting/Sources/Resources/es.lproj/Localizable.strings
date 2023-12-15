@@ -1,11 +1,10 @@
-
 "support form" = "formulario de soporte";
 
 "email" = "correo electrónico";
 
 "Twitter" = "Twitter";
 
-"TroubleShooting" = "Resolución de problemas";
+"Troubleshooting" = "Resolución de problemas";
 
 "Allow alternative routing" = "Permitir el enrutamiento alternativo";
 
@@ -33,7 +32,7 @@
 
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Tu país puede estar bloqueando el acceso a Proton. Intenta de nuevo utilizando %1$@ (o cualquier otra VPN) o %2$@ para acceder a Proton.";
 
-"Temporarily disable or remove your antivirus software." = "Desactiva temporalmente o elimine tu software antivirus.";
+"Temporarily disable or remove your antivirus software." = "Desactiva temporalmente o borra tu software antivirus.";
 
 "Disable any proxies or firewalls, or contact your network administrator." = "Desactiva cualquier proxy o cortafuegos, o contacta con el administrador de tu red.";
 

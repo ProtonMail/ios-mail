@@ -1,4 +1,3 @@
-
 "Privacy by default" = "Privacy by default";
 
 "Proton address required" = "Proton 주소 필요";
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "잘못 해시된 비밀번호";
 
 "Password can not be empty.\nPlease try again." = "비밀번호는 비울 수 없습니다.\n다시 시도해 주세요.";
-
-"Password must contain at least %@ characters." = "비밀번호는 최소 %@자 이상이어야 합니다.";
 
 "Passwords do not match.\nPlease try again." = "비밀번호가 일치하지 않습니다.\n다시 시도해주세요.";
 

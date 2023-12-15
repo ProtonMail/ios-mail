@@ -1,4 +1,3 @@
-
 "Network connection error" = "Chyba sieťového pripojenia";
 
 "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Overenie certifikátu TLS zlyhalo pri pokuse o pripojenie k Proton API. Vaše aktuálne internetové pripojenie môže byť monitorované. Aby boli vaše údaje v bezpečí, bránime aplikácii v prístupe k Proton API.\nAk sa chcete prihlásiť alebo získať prístup k svojmu účtu, prepnite na novú sieť a skúste sa znova pripojiť.";

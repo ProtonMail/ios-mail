@@ -329,9 +329,10 @@ public protocol AuthSessionInvalidatedDelegate: AnyObject {
 public protocol AuthDelegate: AnyObject {
 
     /// Accessors for the credentials. They are used by APIService to fill in
-    /// the authentication header in the requests
-    func authCredential(sessionUID: String) -> AuthCredential?
-    func credential(sessionUID: String) -> Credential?
+    /// the authentication header in the requests.
+    /// These typically require a trip to the keychain, so it's advantageous to make them async.
+    func authCredential(sessionUID: String) async -> AuthCredential?
+    func credential(sessionUID: String) async -> Credential?
 
     /// This method is called when the credentials are updated — after the credentials refresh call made:
     /// * due to 401 from the server

@@ -209,6 +209,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-QuarkCommands/ProtonCoreQuarkCommands.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Yams/Yams.framework"
 fi
@@ -246,6 +247,7 @@ if [[ "$CONFIGURATION" == "Enterprise Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-QuarkCommands/ProtonCoreQuarkCommands.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Yams/Yams.framework"
 fi
@@ -283,6 +285,7 @@ if [[ "$CONFIGURATION" == "Enterprise Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-QuarkCommands/ProtonCoreQuarkCommands.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Yams/Yams.framework"
 fi
@@ -320,6 +323,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-QuarkCommands/ProtonCoreQuarkCommands.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Yams/Yams.framework"
 fi
