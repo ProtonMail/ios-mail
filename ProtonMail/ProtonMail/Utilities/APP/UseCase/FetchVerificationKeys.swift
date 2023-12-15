@@ -43,7 +43,7 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
                 switch result {
                 case .success(let tuple):
                     guard let preContact = tuple.preContact else {
-                        callback(.success(([], tuple.keysResponse.keys.isEmpty ? nil : tuple.keysResponse)))
+                        callback(.success(([], tuple.keysResponse)))
                         return
                     }
                     let output = self.getPinnedKeys(contact: preContact, keysResponse: tuple.keysResponse)

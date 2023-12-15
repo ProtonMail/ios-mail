@@ -121,7 +121,7 @@ final class MessageSenderPGPChecker {
                 if !pinnedKeys.isEmpty {
                     completion(.success((senderVerified: true, keys: pinnedKeys)))
                 } else {
-                    if let keysResponse = keysResponse,
+                    if let keysResponse,
                        keysResponse.recipientType == .external && !keysResponse.nonObsoletePublicKeys.isEmpty {
                         completion(.success((senderVerified: false, keys: keysResponse.nonObsoletePublicKeys)))
                     } else {
