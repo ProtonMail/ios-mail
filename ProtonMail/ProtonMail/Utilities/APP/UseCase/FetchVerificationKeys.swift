@@ -108,7 +108,7 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
 
         let compromisedKeyFingerprints = apiKeys
             .filter { !$0.flags.contains(.notCompromised) }
-            .compactMap { $0.publicKey?.fingerprint }
+            .map(\.publicKey.fingerprint)
 
         let validKeys: [ArmoredKey] = pinnedKeys
             .filter { pinnedKey in
