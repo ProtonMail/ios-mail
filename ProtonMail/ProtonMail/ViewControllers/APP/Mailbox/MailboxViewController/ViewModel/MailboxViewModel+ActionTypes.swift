@@ -127,8 +127,7 @@ extension MailboxViewModel: ToolbarCustomizationActionHandler {
              .viewInLightMode, .viewInDarkMode, .toolbarCustomization, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             assertionFailure("should not reach here")
         case .snooze:
-            // TODO: snooze:action MAILIOS-3999
-            break
+            uiDelegate?.clickSnoozeActionButton()
         }
     }
 }

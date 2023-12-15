@@ -26,6 +26,7 @@ import ProtonCoreDataModel
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import UIKit
+import protocol ProtonCoreServices.APIService
 
 // swiftlint:disable:next type_body_length
 final class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
@@ -48,6 +49,7 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
     private let storedSizeHelper = ConversationStoredSizeHelper()
     private var cachedViewControllers: [IndexPath: ConversationExpandedMessageViewController] = [:]
     private(set) var shouldReloadWhenAppIsActive = false
+    private var _snoozeDateConfigReceiver: SnoozeDateConfigReceiver?
 
     // the purpose of this timer is to uncover the conversation even if the viewModel does not call `conversationIsReadyToBeDisplayed` for whatever reason
     // this is to avoid making the view unusable
@@ -962,8 +964,7 @@ extension ConversationViewController {
         case .saveAsPDF:
             handleExportPDFOnToolbar()
         case .snooze:
-            // TODO: snooze:action MAILIOS-3996
-            break
+            presentSnoozeConfigSheet(on: self, current: Date())
         }
     }
 
@@ -1477,5 +1478,56 @@ private extension UITableView {
                 completion()
             }
         )
+    }
+}
+
+extension ConversationViewController: SnoozeSupport {
+    var apiService: APIService { viewModel.user.apiService }
+
+    var calendar: Calendar { LocaleEnvironment.calendar }
+
+    var isPaidUser: Bool { viewModel.user.hasPaidMailPlan }
+
+    var presentingView: UIView { navigationController?.view ?? self.view }
+
+    var snoozeConversations: [ConversationID] { [viewModel.conversation.conversationID] }
+
+    var snoozeDateConfigReceiver: SnoozeDateConfigReceiver {
+        let receiver = _snoozeDateConfigReceiver ?? SnoozeDateConfigReceiver(
+            saveDate: { [weak self] date in
+                self?.snooze(on: date)
+                self?._snoozeDateConfigReceiver = nil
+            }, cancelHandler: { [weak self] in
+                self?._snoozeDateConfigReceiver = nil
+            }, showSendInTheFutureAlertHandler: {
+                L11n.Snooze.selectTimeInFuture.alertToastBottom()
+            }
+        )
+        _snoozeDateConfigReceiver = receiver
+        return receiver
+    }
+
+    var weekStart: WeekStart { viewModel.user.userInfo.weekStartValue }
+
+    @MainActor
+    func showSnoozeSuccessBanner(on date: Date) {
+        let dateStr = PMDateFormatter.shared.stringForSnoozeTime(from: date)
+
+        let title = String(format: L11n.Snooze.bannerTitle, dateStr)
+        let banner = PMBanner(message: title, style: PMBannerNewStyle.info)
+        if viewModel.isMessageSwipeNavigationEnabled && viewModel.shouldMoveToNextMessageAfterMove {
+            // PageVC
+            guard let viewController = parent else { return }
+            // TODO: snooze:action update position to onTopOfTheBottomToolBar when have MAILIOS-3899
+            // doesn't need to update else case, there is no toolbar in mailbox
+            banner.show(at: .bottom, on: viewController)
+            viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
+        } else {
+            // MailboxVC
+            guard let viewController = navigationController?.viewControllers.first else { return }
+            navigationController?.popViewController(animated: true)
+            banner.show(at: .bottom, on: viewController)
+        }
+
     }
 }

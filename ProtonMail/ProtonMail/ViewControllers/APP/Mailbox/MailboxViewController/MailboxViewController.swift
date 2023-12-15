@@ -48,9 +48,9 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     let viewModel: MailboxViewModel
     private let dependencies: Dependencies
 
-    private weak var coordinator: MailboxCoordinatorProtocol?
+    private weak var coordinator: (MailboxCoordinatorProtocol & SnoozeSupport)?
 
-    func set(coordinator: MailboxCoordinatorProtocol) {
+    func set(coordinator: MailboxCoordinatorProtocol & SnoozeSupport) {
         self.coordinator = coordinator
     }
 
@@ -160,6 +160,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
     private var attachmentPreviewPresenter: QuickLookPresenter?
     private var attachmentPreviewWasCancelled = false
+    private var _snoozeDateConfigReceiver: SnoozeDateConfigReceiver?
 
     init(viewModel: MailboxViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
@@ -1629,7 +1630,7 @@ extension MailboxViewController {
                         )
                     default:
                         self.viewModel.handleBarActions(action)
-                        if ![.markRead, .markUnread, .star, .unstar].contains(action) {
+                        if ![.markRead, .markUnread, .star, .unstar, .snooze].contains(action) {
                             self.showMessageMoved(title: LocalString._messages_has_been_moved)
                             self.hideSelectionMode()
                         }
@@ -2118,8 +2119,7 @@ extension MailboxViewController {
         case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
         case .snooze:
-            // TODO: snooze:action MAILIOS-3996
-            break
+            clickSnoozeActionButton()
         }
     }
 }
@@ -2943,6 +2943,10 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
         if !viewModel.canSelectMore() {
             L11n.MailBox.maximumSelectionReached.alertToastBottom()
         }
+    }
+
+    func clickSnoozeActionButton() {
+        coordinator?.presentSnoozeConfigSheet(on: self, current: Date())
     }
 }
 

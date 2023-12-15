@@ -67,6 +67,9 @@ class ConversationViewModel {
     var isMessageSwipeNavigationEnabled: Bool {
         false
     }
+    var shouldMoveToNextMessageAfterMove: Bool {
+        dependencies.nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove
+    }
 
     private(set) var conversation: ConversationEntity
     let labelId: LabelID
@@ -795,7 +798,7 @@ class ConversationViewModel {
              .more, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
         case .snooze:
-            // TODO: snooze:action MAILIOS-3996
+            PMAssertionFailure("Shouldn't be triggered")
             break
         }
         completion()

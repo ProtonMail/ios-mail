@@ -22,6 +22,7 @@ import ProtonCoreNetworking
 import ProtonCoreTestingToolkit
 import ProtonCoreUIFoundations
 @testable import ProtonMail
+import protocol ProtonCoreServices.APIService
 import XCTest
 
 final class MailboxViewControllerTests: XCTestCase {
@@ -665,4 +666,30 @@ extension MailboxViewControllerTests {
         sut = .init(viewModel: viewModel, dependencies: userContainer)
         sut.set(coordinator: fakeCoordinator)
     }
+}
+
+extension MockMailboxCoordinatorProtocol: SnoozeSupport {
+    var apiService: APIService { APIServiceMock() }
+
+    var calendar: Calendar { LocaleEnvironment.calendar }
+
+    var isPaidUser: Bool { false }
+
+    var presentingView: UIView { UIView() }
+
+    var snoozeConversations: [ProtonMail.ConversationID] { [] }
+
+    var snoozeDateConfigReceiver: ProtonMail.SnoozeDateConfigReceiver {
+        SnoozeDateConfigReceiver { _ in
+
+        } cancelHandler: {
+
+        } showSendInTheFutureAlertHandler: {
+
+        }
+    }
+    
+    var weekStart: ProtonMail.WeekStart { .monday }
+
+    func showSnoozeSuccessBanner(on date: Date) { }
 }

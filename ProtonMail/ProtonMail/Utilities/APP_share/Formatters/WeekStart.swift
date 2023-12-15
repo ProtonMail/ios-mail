@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
-enum WeekStart: Int {
+enum WeekStart: Int, CaseIterable {
     case automatic = 0
     case monday = 1
     case sunday = 7
