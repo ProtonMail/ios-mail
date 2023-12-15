@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,15 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCoreNetworking
+
 @testable import ProtonMail
 
-final class MockFetchEmailAddressesPublicKey: UseCase<[String: KeysResponse], FetchEmailAddressesPublicKey.Params> {
-    private(set) var executeWasCalled: Bool = false
-    var result: Result<[String: KeysResponse], Error> = .failure(NSError.badResponse())
+extension ResponseError {
+    init(responseCode: Int) {
+        self.init(
+            httpCode: 400,
+            responseCode: responseCode,
+            userFacingMessage: nil,
+            underlyingError: nil
+        )
+    }
 
-    override func executionBlock(params: FetchEmailAddressesPublicKey.Params, callback: @escaping Callback) {
-        executeWasCalled = true
-        callback(result)
+    init(responseCode: PGPTypeErrorCode) {
+        self.init(responseCode: responseCode.rawValue)
     }
 }

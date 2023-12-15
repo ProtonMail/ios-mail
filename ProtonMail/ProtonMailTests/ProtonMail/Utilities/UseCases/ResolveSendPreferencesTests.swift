@@ -24,7 +24,7 @@ import XCTest
 final class ResolveSendPreferencesTests: XCTestCase {
     var sut: ResolveSendPreferences!
     private var mockFetchContacts: MockFetchAndVerifyContacts!
-    private var mockFetchPublicKeys: MockFetchEmailAddressesPublicKey!
+    private var mockFetchPublicKeys: MockFetchEmailAddressesPublicKeyUseCase!
 
     private let email = "someone@example.com"
     private let fullKey1 = makeKey(flags: [.notCompromised, .notObsolete])
@@ -48,7 +48,7 @@ final class ResolveSendPreferencesTests: XCTestCase {
 
     override func setUp() {
         mockFetchContacts = MockFetchAndVerifyContacts()
-        mockFetchPublicKeys = MockFetchEmailAddressesPublicKey()
+        mockFetchPublicKeys = .init()
         let dependencies = ResolveSendPreferences.Dependencies(
             fetchVerifiedContacts: mockFetchContacts,
             fetchAddressesPublicKeys: mockFetchPublicKeys
@@ -68,7 +68,9 @@ final class ResolveSendPreferencesTests: XCTestCase {
 
     func testExecute_whenProtonAccount_andContactAndAPIKeysMatch_thenUniqueKeyIsUsed() {
         mockFetchContacts.result = .success([makeContact(recipientEmail: email, key: fullKey1)])
-        mockFetchPublicKeys.result = .success(makeKeysResponse(for: email, key: fullKey1, type: .internal))
+        mockFetchPublicKeys.executeStub.bodyIs { _, _ in
+            self.makeKeysResponse(key: self.fullKey1, type: .internal)
+        }
         let params = makeParams(recipientEmail: email, isSignEnabled: signSettingHasNoEffect)
 
         let expectation = expectation(description: "")
@@ -92,7 +94,9 @@ final class ResolveSendPreferencesTests: XCTestCase {
 
     func testExecute_whenProtonAccount_andContactAndAPIKeysDoNotMatch_thenAPIKeyIsUsed() {
         mockFetchContacts.result = .success([makeContact(recipientEmail: email, key: fullKey1)])
-        mockFetchPublicKeys.result = .success(makeKeysResponse(for: email, key: fullKey2, type: .internal))
+        mockFetchPublicKeys.executeStub.bodyIs { _, _ in
+            self.makeKeysResponse(key: self.fullKey2, type: .internal)
+        }
         let params = makeParams(recipientEmail: email, isSignEnabled: signSettingHasNoEffect)
 
         let expectation = expectation(description: "")
@@ -115,7 +119,9 @@ final class ResolveSendPreferencesTests: XCTestCase {
     }
 
     func testExecute_whenProtonAccount_andThereIsNoContact_thenAPIKeyIsUsed() {
-        mockFetchPublicKeys.result = .success(makeKeysResponse(for: email, key: fullKey2, type: .internal))
+        mockFetchPublicKeys.executeStub.bodyIs { _, _ in
+            self.makeKeysResponse(key: self.fullKey2, type: .internal)
+        }
         let params = makeParams(recipientEmail: email, isSignEnabled: signSettingHasNoEffect)
 
         let expectation = expectation(description: "")
@@ -138,7 +144,9 @@ final class ResolveSendPreferencesTests: XCTestCase {
     }
 
     func testExecute_whenProtonAccount_andKeyIsNotForEncryption_thenNoKeyExistsForSending() {
-        mockFetchPublicKeys.result = .success(makeKeysResponse(for: email, key: onlyVerificationKey, type: .internal))
+        mockFetchPublicKeys.executeStub.bodyIs { _, _ in
+            self.makeKeysResponse(key: self.onlyVerificationKey, type: .internal)
+        }
         let params = makeParams(recipientEmail: email, isSignEnabled: signSettingHasNoEffect)
 
         let expectation = expectation(description: "")
@@ -152,7 +160,7 @@ final class ResolveSendPreferencesTests: XCTestCase {
             XCTAssertFalse(sendPreferences.isPublicKeyPinned)
             XCTAssertTrue(sendPreferences.hasApiKeys)
 
-            XCTAssert(sendPreferences.error == .internalUserNoValidApiKey)
+            XCTAssertEqual(sendPreferences.error, .internalUserNoValidApiKey)
             XCTAssertNil(recipientPreferences.sendPreferences.publicKeys)
 
             expectation.fulfill()
@@ -161,7 +169,9 @@ final class ResolveSendPreferencesTests: XCTestCase {
     }
 
     func testExecute_whenProtonAccount_andThereIsNoAPIKey_thenNoKeyExistsForSending() {
-        mockFetchPublicKeys.result = .success([email: emptyKeysResponseForProtonAccount])
+        mockFetchPublicKeys.executeStub.bodyIs { _, _ in
+            self.emptyKeysResponseForProtonAccount
+        }
         let params = makeParams(recipientEmail: email, isSignEnabled: signSettingHasNoEffect)
 
         let expectation = expectation(description: "")
@@ -175,7 +185,7 @@ final class ResolveSendPreferencesTests: XCTestCase {
             XCTAssertFalse(sendPreferences.isPublicKeyPinned)
             XCTAssertFalse(sendPreferences.hasApiKeys)
 
-            XCTAssert(sendPreferences.error == .internalUserNoApiKey)
+            XCTAssertEqual(sendPreferences.error, .internalUserNoApiKey)
             XCTAssertNil(recipientPreferences.sendPreferences.publicKeys)
 
             expectation.fulfill()
@@ -191,8 +201,8 @@ final class ResolveSendPreferencesTests: XCTestCase {
         XCTAssertTrue(recipientPreferences.emailAddress == email, file: file, line: line)
         let sendPreferences = recipientPreferences.sendPreferences
         XCTAssertTrue(sendPreferences.encrypt, file: file, line: line)
-        XCTAssertTrue(sendPreferences.pgpScheme == .proton, file: file, line: line)
-        XCTAssertTrue(sendPreferences.mimeType == .mime, file: file, line: line)
+        XCTAssertEqual(sendPreferences.pgpScheme, .proton, file: file, line: line)
+        XCTAssertEqual(sendPreferences.mimeType, .mime, file: file, line: line)
         XCTAssertTrue(sendPreferences.sign, file: file, line: line)
     }
 
@@ -201,7 +211,9 @@ final class ResolveSendPreferencesTests: XCTestCase {
 
     func testExecute_whenExternalAccount_andHasNoKeys() {
         mockFetchContacts.result = .success([makeContact(recipientEmail: email)])
-        mockFetchPublicKeys.result = .success([email: emptyKeysResponseForExternalAccount])
+        mockFetchPublicKeys.executeStub.bodyIs { _, _ in
+            self.emptyKeysResponseForExternalAccount
+        }
         let params = makeParams(recipientEmail: email, isSignEnabled: signSettingHasNoEffect)
 
         let expectation = expectation(description: "")
@@ -229,7 +241,9 @@ final class ResolveSendPreferencesTests: XCTestCase {
 
     func testExecute_whenExternalAccount_andHasNoKeys_andEmailIsPasswordProtected() {
         mockFetchContacts.result = .success([makeContact(recipientEmail: email)])
-        mockFetchPublicKeys.result = .success([email: emptyKeysResponseForExternalAccount])
+        mockFetchPublicKeys.executeStub.bodyIs { _, _ in
+            self.emptyKeysResponseForExternalAccount
+        }
         let params = makeParams(recipientEmail: email, isPasswordProtected: true, isSignEnabled: signSettingHasNoEffect)
 
         let expectation = expectation(description: "")
@@ -257,7 +271,9 @@ final class ResolveSendPreferencesTests: XCTestCase {
 
     func testExecute_whenExternalAccount_andContactAndAPIKeysMatch_thenUniqueKeyIsUsed() {
         mockFetchContacts.result = .success([makeContact(recipientEmail: email, key: fullKey1)])
-        mockFetchPublicKeys.result = .success(makeKeysResponse(for: email, key: fullKey1, type: .external))
+        mockFetchPublicKeys.executeStub.bodyIs { _, _ in
+            self.makeKeysResponse(key: self.fullKey1, type: .external)
+        }
         let params = makeParams(recipientEmail: email, isSignEnabled: signSettingHasNoEffect)
 
         let expectation = expectation(description: "")
@@ -281,7 +297,9 @@ final class ResolveSendPreferencesTests: XCTestCase {
 
     func testExecute_whenExternalAccount_andContactAndAPIKeysDoNotMatch_thenAPIKeyIsUsed() {
         mockFetchContacts.result = .success([makeContact(recipientEmail: email, key: fullKey1)])
-        mockFetchPublicKeys.result = .success(makeKeysResponse(for: email, key: fullKey2, type: .external))
+        mockFetchPublicKeys.executeStub.bodyIs { _, _ in
+            self.makeKeysResponse(key: self.fullKey2, type: .external)
+        }
         let params = makeParams(recipientEmail: email, isSignEnabled: signSettingHasNoEffect)
 
         let expectation = expectation(description: "")
@@ -304,7 +322,9 @@ final class ResolveSendPreferencesTests: XCTestCase {
     }
 
     func testExecute_whenExternalAccount_andHasOnlyAPIKey() {
-        mockFetchPublicKeys.result = .success(makeKeysResponse(for: email, key: fullKey1, type: .external))
+        mockFetchPublicKeys.executeStub.bodyIs { _, _ in
+            self.makeKeysResponse(key: self.fullKey1, type: .external)
+        }
         let params = makeParams(recipientEmail: email, isSignEnabled: signSettingHasNoEffect)
 
         let expectation = expectation(description: "")
@@ -328,7 +348,9 @@ final class ResolveSendPreferencesTests: XCTestCase {
 
     func testExecute_whenExternalAccount_hasContactAndAPIKeys_andContactKeyIsNotForEncryption_thenNoKeyForSending() {
         mockFetchContacts.result = .success([makeContact(recipientEmail: email, key: onlyVerificationKey)])
-        mockFetchPublicKeys.result = .success(makeKeysResponse(for: email, key: fullKey1, type: .external))
+        mockFetchPublicKeys.executeStub.bodyIs { _, _ in
+            self.makeKeysResponse(key: self.fullKey1, type: .external)
+        }
         let params = makeParams(recipientEmail: email, isSignEnabled: signSettingHasNoEffect)
 
         let expectation = expectation(description: "")
@@ -369,7 +391,9 @@ final class ResolveSendPreferencesTests: XCTestCase {
 
     func testExecute_whenSelfAccount() {
         mockFetchContacts.result = .success([makeContact(recipientEmail: email)])
-        mockFetchPublicKeys.result = .success([email: emptyKeysResponseForExternalAccount])
+        mockFetchPublicKeys.executeStub.bodyIs { _, _ in
+            self.emptyKeysResponseForExternalAccount
+        }
         let params = makeParams(recipientEmail: email, isSignEnabled: signSettingHasNoEffect, isEmailToSelf: true)
 
         let expectation = expectation(description: "")
@@ -395,7 +419,9 @@ final class ResolveSendPreferencesTests: XCTestCase {
 
     func testExecute_whenFetchContactFails_thenDoesNotReturnError() {
         mockFetchContacts.result = .failure(NSError.badResponse())
-        mockFetchPublicKeys.result = .success([email: emptyKeysResponseForExternalAccount])
+        mockFetchPublicKeys.executeStub.bodyIs { _, _ in
+            self.emptyKeysResponseForExternalAccount
+        }
         let params = makeParams(recipientEmail: email)
 
         let expectation = expectation(description: "")
@@ -413,7 +439,9 @@ final class ResolveSendPreferencesTests: XCTestCase {
 
     func testExecute_whenFetchPublicKeysFails_thenReturnsError() {
         mockFetchContacts.result = .success([makeContact(recipientEmail: email)])
-        mockFetchPublicKeys.result = .failure(NSError.badResponse())
+        mockFetchPublicKeys.executeStub.bodyIs { _, _ in
+            throw NSError.badResponse()
+        }
         let params = makeParams(recipientEmail: email)
 
         let expectation = expectation(description: "")
@@ -484,11 +512,11 @@ private extension ResolveSendPreferencesTests {
         )
     }
 
-    func makeKeysResponse(for email: String, key: Key, type: KeysResponse.RecipientType) -> [String: KeysResponse] {
+    func makeKeysResponse(key: Key, type: KeysResponse.RecipientType) -> KeysResponse {
         let keysResponse = KeysResponse()
         keysResponse.keys = [KeyResponse(flags: key.flags, publicKey: key.publicKey)]
         keysResponse.recipientType = type
-        return [email: keysResponse]
+        return keysResponse
     }
 
     static func makeKey(flags: [Key.Flags]) -> Key {

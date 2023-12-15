@@ -39,9 +39,7 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
         mockApiServer = nil
     }
 
-    func testExecute_whenOneEmailIsPassed_andRequestSucceeds() {
-        let expectation = expectation(description: "returns the correct dictionary")
-
+    func testExecute_whenOneEmailIsPassed_andRequestSucceeds() async throws {
         let dummyEmail = "dummy@email"
         let flagsValue = 3
         let response = PublicKeysResponseTestData.successTestResponse(flags: flagsValue, publicKey: dummyPublicKey)
@@ -54,53 +52,40 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
                 completion(nil, .failure(.badResponse()))
             }
         }
-        sut.execute(params: .init(emails:[dummyEmail])) { [unowned self] result in
-            let publicKeysDict: [String: KeysResponse] = try! result.get()
+        let publicKeysDict = try await sut.execute(emails: [dummyEmail])
             XCTAssert(Array(publicKeysDict.keys) == [dummyEmail])
             XCTAssert(publicKeysDict[dummyEmail]!.keys[0].flags.rawValue == flagsValue)
             XCTAssert(publicKeysDict[dummyEmail]!.keys[0].publicKey == self.dummyPublicKey)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 2.0)
     }
 
-    func testExecute_whenOneEmailIsPassed_andRequestFails() {
-        let expectation = expectation(description: "returns the request error")
-
+    func testExecute_whenOneEmailIsPassed_andRequestFails() async throws {
         mockApiServer.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             completion(nil, .failure(self.nsError))
         }
-        sut.execute(params: .init(emails:[""])) { [unowned self] result in
-            switch result {
-            case .failure(let error as ResponseError):
-                XCTAssert(error.underlyingError?.code == self.nsError.code)
-            default:
-                XCTFail("expected a ResponseError as the result")
-            }
-            expectation.fulfill()
+
+        do {
+            _ = try await sut.execute(emails: [""])
+            XCTFail("expected an error")
+        } catch let error as ResponseError {
+            XCTAssert(error.underlyingError?.code == self.nsError.code)
+        } catch {
+            XCTFail("expected a ResponseError as the result")
         }
-        waitForExpectations(timeout: 2.0)
     }
 
-    func testExecute_whenThereAreDuplicatedEmails_requestsForDuplicatedEmailsAreOnlySentOnce() {
-        let expectation = expectation(description: "duplicated emails requests are only sent once")
-
+    func testExecute_whenThereAreDuplicatedEmails_requestsForDuplicatedEmailsAreOnlySentOnce() async throws {
         let dummyEmails = ["dummy@email", "different@email", "dummy@email"]
         let response = PublicKeysResponseTestData.successTestResponse(flags: 3, publicKey: dummyPublicKey)
 
         mockApiServer.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(response))
         }
-        sut.execute(params: .init(emails:dummyEmails)) { [unowned self]  _ in
-            XCTAssertTrue(self.mockApiServer.requestJSONStub.callCounter == 2)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 2.0)
+        
+        _ = try await sut.execute(emails: dummyEmails)
+        XCTAssertEqual(self.mockApiServer.requestJSONStub.callCounter, 2)
     }
 
-    func testExecute_whenMultipleEmailsArePassed_andAllRequestSucceed() {
-        let expectation = expectation(description: "returns the correct dictionary")
-
+    func testExecute_whenMultipleEmailsArePassed_andAllRequestSucceed() async throws {
         let dummyEmails = ["email+1", "email+2", "email+3"]
         let responses = [1, 2, 3].map {
             PublicKeysResponseTestData.successTestResponse(flags: $0, publicKey: dummyPublicKey)
@@ -120,19 +105,14 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
                 completion(nil, .failure(.badResponse()))
             }
         }
-        sut.execute(params: .init(emails:dummyEmails)) { result in
-            let publicKeysDict: [String: KeysResponse] = try! result.get()
-            [1, 2, 3].forEach { value in
-                XCTAssert(publicKeysDict["email+\(value)"]!.keys[0].flags.rawValue == value)
-            }
-            expectation.fulfill()
+
+        let publicKeysDict = try await sut.execute(emails: dummyEmails)
+        [1, 2, 3].forEach { value in
+            XCTAssert(publicKeysDict["email+\(value)"]!.keys[0].flags.rawValue == value)
         }
-        waitForExpectations(timeout: 2.0)
     }
 
-    func testExecute_whenMultipleEmailsArePassed_andOneFails() {
-        let expectation = expectation(description: "returns the request error")
-
+    func testExecute_whenMultipleEmailsArePassed_andOneFails()  async throws {
         let dummyEmails = ["email+1", "email+2", "email+3"]
         let responses = [1, 2, 3].map {
             PublicKeysResponseTestData.successTestResponse(flags: $0, publicKey: dummyPublicKey)
@@ -156,15 +136,14 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
                 completion(nil, .failure(.badResponse()))
             }
         }
-        sut.execute(params: .init(emails:dummyEmails)) { [unowned self] result in
-            switch result {
-            case .failure(let error as ResponseError):
-                XCTAssert(error.underlyingError?.code == self.nsError.code)
-            default:
-                XCTFail("expected a ResponseError as the result")
-            }
-            expectation.fulfill()
+
+        do {
+            _ = try await sut.execute(emails: dummyEmails)
+            XCTFail("expected an error")
+        } catch let error as ResponseError {
+            XCTAssert(error.underlyingError?.code == self.nsError.code)
+        } catch {
+            XCTFail("expected a ResponseError as the result")
         }
-        waitForExpectations(timeout: 2.0)
     }
 }

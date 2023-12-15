@@ -456,6 +456,14 @@ class MockFetchAttachmentMetadataUseCase: FetchAttachmentMetadataUseCase {
 
 }
 
+class MockFetchEmailAddressesPublicKeyUseCase: FetchEmailAddressesPublicKeyUseCase {
+    @ThrowingFuncStub(MockFetchEmailAddressesPublicKeyUseCase.execute, initialReturn: .crash) var executeStub
+    func execute(email: String) throws -> KeysResponse {
+        try executeStub(email)
+    }
+
+}
+
 class MockImageProxyCacheProtocol: ImageProxyCacheProtocol {
     @ThrowingFuncStub(MockImageProxyCacheProtocol.remoteImage, initialReturn: nil) var remoteImageStub
     func remoteImage(forURL remoteURL: SafeRemoteURL) throws -> RemoteImage? {
