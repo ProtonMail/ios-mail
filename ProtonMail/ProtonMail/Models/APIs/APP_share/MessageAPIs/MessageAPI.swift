@@ -267,27 +267,18 @@ final class UpdateDraftRequest: CreateDraftRequest {
 
 // MARK: Message actions part
 
-/// mesaage action request PUT method   --- Response
+/// message action request PUT method   --- Response
 final class MessageActionRequest: Request {
     let action: String
     var ids: [String] = [String]()
-    private var currentLabelID: Int?
 
-    init(action: String, ids: [String], labelID: String? = nil) {
+    init(action: String, ids: [String]) {
         self.action = action
         self.ids = ids
-
-        if let num = Int(labelID ?? "") {
-            self.currentLabelID = num
-        }
     }
 
     var parameters: [String: Any]? {
-        var out: [String: Any] = ["IDs": self.ids]
-        if let id = self.currentLabelID {
-            out["CurrentLabelID"] = id
-        }
-        return out
+        ["IDs": self.ids]
     }
 
     var path: String {
@@ -296,6 +287,31 @@ final class MessageActionRequest: Request {
 
     var method: HTTPMethod {
         return .put
+    }
+}
+
+struct MessageActionResponse: Decodable {
+    let responses: [Responses]
+
+    struct Responses: Decodable {
+        let id: String
+        let response: Response
+
+        enum CodingKeys: String, CodingKey {
+            case id = "ID"
+            case response = "response"
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            id = try container.decode(String.self, forKey: .id)
+            response = try container.decode(Response.self, forKey: .response)
+        }
+    }
+
+    struct Response: Decodable {
+        let code: Int
+        let error: String?
     }
 }
 
