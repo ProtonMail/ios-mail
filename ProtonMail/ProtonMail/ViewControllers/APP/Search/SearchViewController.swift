@@ -207,7 +207,7 @@ extension SearchViewController {
                             self?.showMessageMoved(title: title)
                         }
                     case .snooze:
-                        // Search view display as single message mode, doesn't support snooze
+                        PMAssertionFailure("Search view display as single message mode, doesn't support snooze")
                         break
                     case .more:
                         assertionFailure("handled above")
@@ -312,7 +312,7 @@ extension SearchViewController {
         case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
         case .snooze:
-            // Search view display as single message mode, doesn't support snooze
+            PMAssertionFailure("Search view display as single message mode, doesn't support snooze")
             break
         }
     }

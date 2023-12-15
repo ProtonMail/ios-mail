@@ -41,6 +41,7 @@ protocol MailboxViewModelUIProtocol: AnyObject {
     func updateUnreadButton(count: Int)
     func updateTheUpdateTimeLabel()
     func selectionDidChange()
+    func clickSnoozeActionButton()
 }
 
 class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
@@ -677,7 +678,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
             // TODO: add action
             break
         case .snooze:
-            // TODO: snooze:action MAILIOS-3996
+            PMAssertionFailure("Shouldn't be triggered")
             break
         case .inbox:
             handleMoveToInboxAction(on: selectedItems)

@@ -34,6 +34,12 @@ extension PMDatePickerDelegate {
     func datePickerDidDisappear() {}
 }
 
+extension PMDatePicker {
+    enum PickerType {
+        case scheduleSend, snooze
+    }
+}
+
 final class PMDatePicker: UIView {
     private var backgroundView: UIView
     private var container: UIView!
@@ -43,16 +49,21 @@ final class PMDatePicker: UIView {
     private let hiddenConstant: CGFloat = 450
     private let cancelTitle: String
     private let saveTitle: String
+    private let pickerType: PickerType
     private weak var delegate: PMDatePickerDelegate?
 
-    init(delegate: PMDatePickerDelegate,
-         cancelTitle: String,
-         saveTitle: String) {
+    init(
+        delegate: PMDatePickerDelegate,
+        cancelTitle: String,
+        saveTitle: String,
+        pickerType: PickerType = .scheduleSend
+    ) {
         self.delegate = delegate
         self.backgroundView = UIView(frame: .zero)
         self.datePicker = UIDatePicker(frame: .zero)
         self.cancelTitle = cancelTitle
         self.saveTitle = saveTitle
+        self.pickerType = pickerType
         super.init(frame: .zero)
         self.setUpView()
     }
@@ -190,12 +201,27 @@ extension PMDatePicker {
     private func setUpDatePicker(in container: UIScrollView) {
         self.delegate?.datePickerWillAppear()
         self.datePicker.datePickerMode = .dateAndTime
-        self.datePicker.minuteInterval = Constants.ScheduleSend.minNumberOfMinutes
-        let baseDate = PMDatePicker.referenceDate()
+
+        let minMinutes = pickerType == .scheduleSend ?
+        Constants.ScheduleSend.minNumberOfMinutes : Constants.Snooze.minNumberOfMinutes
+        self.datePicker.minuteInterval = minMinutes
+
+        let baseDate = PMDatePicker.referenceDate(pickerType: pickerType)
+
+        let minSeconds = pickerType == .scheduleSend ?
+        Constants.ScheduleSend.minNumberOfSeconds : Constants.Snooze.minNumberOfSeconds
         let minimumDate = Date(timeInterval: Constants.ScheduleSend.minNumberOfSeconds, since: baseDate)
         self.datePicker.date = minimumDate
         self.datePicker.minimumDate = minimumDate
-        self.datePicker.maximumDate = Date(timeInterval: Constants.ScheduleSend.maxNumberOfSeconds, since: Date())
+
+        let maxDate: TimeInterval
+        if pickerType == .scheduleSend {
+            maxDate = Constants.ScheduleSend.maxNumberOfSeconds
+        } else {
+            maxDate = Constants.Snooze.maxNumberOfSeconds
+        }
+        self.datePicker.maximumDate = Date(timeInterval: maxDate, since: Date())
+
         self.datePicker.tintColor = ColorProvider.BrandNorm
         datePicker.addTarget(self, action: #selector(self.pickerDateIsChanged), for: .valueChanged)
 
@@ -212,8 +238,10 @@ extension PMDatePicker {
         ].activate()
     }
 
-    static func referenceDate(from date: Date = Date()) -> Date {
-        let seconds = (date.timeIntervalSince1970 / 300.0).rounded(.up) * 300.0
+    static func referenceDate(from date: Date = Date(), pickerType: PickerType) -> Date {
+        let minNumberOfSeconds = pickerType == .scheduleSend ?
+        Constants.ScheduleSend.minNumberOfSeconds : Constants.Snooze.minNumberOfSeconds
+        let seconds = (date.timeIntervalSince1970 / minNumberOfSeconds).rounded(.up) * minNumberOfSeconds
         let date = Date(timeIntervalSince1970: seconds)
         return date
     }
