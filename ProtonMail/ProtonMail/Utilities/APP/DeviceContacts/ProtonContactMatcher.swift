@@ -27,16 +27,17 @@ struct ProtonContactMatcher {
         var pendingIdentifiers = identifiers
 
         // Compare passed DeviceContactIdentifier with Proton contacts by uuid
-        let deviceContactUuids = pendingIdentifiers.map(\.uuid)
-        let contactEntitiesMatchById = contactProvider.getContactsByUUID(deviceContactUuids)
-        pendingIdentifiers.removeAll(where: { contactEntitiesMatchById.map(\.uuid).contains($0.uuid) })
+        let normalisedDeviceContactUuids = pendingIdentifiers.map(\.uuidNormalisedForAutoImport)
+        let contactEntitiesMatchById = contactProvider.getContactsByUUID(normalisedDeviceContactUuids)
+        let uuidsContactEntitiesMatchById = contactEntitiesMatchById.map(\.uuid)
+        pendingIdentifiers.removeAll(where: { uuidsContactEntitiesMatchById.contains($0.uuidNormalisedForAutoImport) })
 
         // Compare remaining DeviceContactIdentifier with Proton contacts by email
         let deviceContactEmails = pendingIdentifiers.flatMap(\.emails)
         let emailEntitiesMatchByAddress = contactProvider.getEmailsByAddress(deviceContactEmails)
 
         let deviceContactIdentifiersMatchByUuid = identifiers.filter { deviceContact in
-            return contactEntitiesMatchById.map(\.uuid).contains(deviceContact.uuid)
+            return contactEntitiesMatchById.map(\.uuid).contains(deviceContact.uuidNormalisedForAutoImport)
         }
         let deviceContactIdentifiersMatchByEmail = identifiers.filter { deviceContact in
             let matchedEmails = deviceContact.emails.filter { email in

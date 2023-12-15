@@ -62,14 +62,14 @@ extension DeviceContactParserTests {
     }
     private var deviceContactWithEmails: DeviceContact {
         DeviceContact(
-            identifier: .init(uuid: "uuid-1", emails: ["irrelevant"]),
+            identifier: .init(uuidInDevice: "uuid-1", emails: ["irrelevant"]),
             fullName: "irrelevant",
             vCard: testCardWithEmails
         )
     }
     private var deviceContactWithoutEmails: DeviceContact {
         DeviceContact(
-            identifier: .init(uuid: "uuid-1", emails: ["irrelevant"]),
+            identifier: .init(uuidInDevice: "uuid-1", emails: ["irrelevant"]),
             fullName: "irrelevant",
             vCard: testCardWithoutEmails
         )

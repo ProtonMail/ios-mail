@@ -58,7 +58,7 @@ struct DeviceContactParser {
         vCardToEncrypt.clearEmails()
 
         // cards
-        let uuid = PMNIUid.createInstance(deviceContact.identifier.uuid)
+        let uuid = PMNIUid.createInstance(deviceContact.identifier.uuidNormalisedForAutoImport)
         let signedCard = AppleContactParser
             .createCard2(by: vCardToSign, uuid: uuid, userKey: userKey, passphrase: userPassphrase)
         let encryptedCard = AppleContactParser

@@ -17,7 +17,7 @@
 
 import Foundation
 
-/// Abstraction of the device's CNContact
+/// Abstraction of the native `CNContact`
 struct DeviceContact {
     let identifier: DeviceContactIdentifier
     let fullName: String?
@@ -26,6 +26,29 @@ struct DeviceContact {
 
 /// Attributes used to identify a contact when trying to match Proton contacts
 struct DeviceContactIdentifier {
-    let uuid: String
+    /**
+     Identifier used by a contact in the Contacts app. Use this value for queries in
+     the native `Contacts` framework.
+
+     This value comes from the `CNContact` object. As per when writing this code, there is no
+     globally unique identifier (`CNContact.id` is documented as globally unique but
+     it's not cross device and actually has the same value as `CNContact.identifier`) .
+     */
+    let uuidInDevice: String
     let emails: [String]
+
+    /**
+     Identifier computed to get the uuid used for Proton contacts. Use this
+     value to query Proton contacts.
+
+     The value looks like: "protonmail-ios-autoimport-0323ACF3-22EA-4167-9A25-2BFA1CBC3764"
+     */
+    var uuidNormalisedForAutoImport: String {
+        // this prefix documents where the contact was originated from
+        let autoImportContactPrefix = "protonmail-ios-autoimport-"
+        // It's not clear when ":ABPerson" appears as a suffix in the UUID value of a device contact. However
+        // we remove it to sanitise the UUID to remove any unexpected value.
+        let sanitisedUUID: String = uuidInDevice.replacingOccurrences(of: ":ABPerson", with: "")
+        return autoImportContactPrefix.appending(sanitisedUUID)
+    }
 }

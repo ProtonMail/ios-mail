@@ -59,11 +59,12 @@ class MockContactProvider: ContactProviderProtocol {
 
     @ThrowingFuncStub(MockContactProvider.createLocalContact, initialReturn: "") var createLocalContactStub
     func createLocalContact(
+        uuid: String,
         name: String,
         emails: [(address: String, type: ProtonMail.ContactFieldType)],
         cards: [ProtonMail.CardData]
     ) throws -> String {
-        try createLocalContactStub(name, emails, cards)
+        try createLocalContactStub(uuid, name, emails, cards)
     }
 
     func fetchContacts(completion: ContactFetchComplete?) {
