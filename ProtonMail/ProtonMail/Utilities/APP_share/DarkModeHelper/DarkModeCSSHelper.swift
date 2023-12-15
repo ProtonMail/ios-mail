@@ -18,6 +18,7 @@
 import Foundation
 import ProtonCoreUIFoundations
 import SwiftSoup
+import SwiftCSSParser
 
 private enum CSSKeys: String {
     case style, color, transparent, background, border
@@ -30,7 +31,7 @@ private enum CSSKeys: String {
     case borderRight = "border-right"
 
     case target, id, `class`
-    
+
     case fontFamily = "font-family"
     case width = "width"
     case height = "height"
@@ -306,10 +307,7 @@ struct CSSMagic {
             return ""
         }
         let styleCSS = CSSMagic.getStyleCSS(from: document)
-        guard let styleDict = CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS) else {
-            return ""
-        }
-        let newStyleCSS = CSSMagic.assemble(cssDict: styleDict)
+        let newStyleCSS = CSSMagic.getDarkModeCSSFrom(styleCSS: styleCSS)
 
         let colorNodes = CSSMagic.getColorNodes(from: document)
         guard let cssDict = CSSMagic.getDarkModeCSSDict(for: colorNodes, startTime: startTime) else {
@@ -364,33 +362,80 @@ extension CSSMagic {
 
     /// Get dark mode style css from <style> contents
     /// - Parameter styleCSS: <style> contents
-    /// - Returns: dark mode style css or `nil` if it doesn't have good contrast
-    static func getDarkModeCSSDictFrom(styleCSS: [String]) -> [String: [String]]? {
-        var result: [String: [String]] = [:]
-        for css in styleCSS {
-            do {
-                let regex = try RegularExpressionCache.regex(for: #"(((?!(;|\)|\{\n.|\})).)*?)\{(.*?)\}"#, options: [.allowCommentsAndWhitespace, .dotMatchesLineSeparators])
-                let length = (css as NSString).length
-                let matches = regex.matches(in: css, range: NSRange(location: 0, length: length))
-                for match in matches where match.numberOfRanges == 5 {
-                    let keyRange = match.range(at: 1)
-                    let attributeRange = match.range(at: 4)
-                    // e.g. html, .textBlock
-                    let selectorKey = (css as NSString).substring(with: keyRange).trim()
-                    // e.g. background: black; width: 100px;
-                    let selectorValue = (css as NSString).substring(with: attributeRange).trim()
+    /// - Returns: dark mode style css
+    static func getDarkModeCSSFrom(styleCSS: [String]) -> String {
+        var darkModeCSS: [String] = []
+        for style in styleCSS {
+            guard let stylesheet = try? Stylesheet.parse(from: style) else { continue }
+            let result = getDarkModeCSSFrom(parsedCSS: stylesheet)
+            darkModeCSS.append(result)
+        }
+        return darkModeCSS.joined()
+    }
 
-                    let attributes = CSSMagic.splitInline(attributes: selectorValue)
-                    let newAttributes = CSSMagic.switchToDarkModeStyle(attributes: attributes)
-                    if newAttributes.isEmpty { continue }
-                    let previousResult = result[selectorKey] ?? []
-                    result[selectorKey] = previousResult + newAttributes
-                }
-            } catch {
-                PMAssertionFailure(error)
+    static func getDarkModeCSSFrom(parsedCSS: Stylesheet) -> String {
+        var darkModeCSS: [String] = []
+        for statement in parsedCSS.statements {
+            let value: String
+            switch statement {
+            case .charsetRule(let string):
+                value = string
+            case .importRule(let string):
+                value = string
+            case .namespaceRule(let string):
+                value = string
+            case .atBlock(let atBlock):
+                value = getDarkModeCSSFrom(atBlock: atBlock)
+            case .ruleSet(let ruleSet):
+                value = getDarkModeCSSFrom(ruleSet: ruleSet)
+            }
+            if !value.isEmpty {
+                darkModeCSS.append(value)
             }
         }
-        return result
+        return darkModeCSS.joined()
+    }
+
+    static func getDarkModeCSSFrom(ruleSet: RuleSet) -> String {
+        let selector = ruleSet.selector
+        var css: [String] = ["\(selector) {"]
+
+        for declaration in ruleSet.declarations {
+            let property = declaration.property
+            let value = declaration.value
+
+        }
+        let attributes: [CSSAttribute] = ruleSet.declarations.compactMap { ($0.property, $0.value) }
+        let newAttributes = CSSMagic.switchToDarkModeStyle(attributes: attributes)
+        if newAttributes.isEmpty { return .empty }
+        css.append(contentsOf: newAttributes.map { "\($0);" })
+        css.append("}")
+        return css.joined()
+    }
+
+    static func getDarkModeCSSFrom(atBlock: AtBlock) -> String {
+        let identifier = atBlock.identifier
+        var css = ["@\(identifier) {"]
+        for statement in atBlock.statements {
+            let value: String
+            switch statement {
+            case .charsetRule(let string):
+                value = string
+            case .importRule(let string):
+                value = string
+            case .namespaceRule(let string):
+                value = string
+            case .atBlock(let atBlock):
+                value = getDarkModeCSSFrom(atBlock: atBlock)
+            case .ruleSet(let ruleSet):
+                value = getDarkModeCSSFrom(ruleSet: ruleSet)
+            }
+            if !value.isEmpty {
+                css.append(value)
+            }
+        }
+        css.append("}")
+        return css.count == 2 ? .empty : css.joined()
     }
 
     /// Get dark mode style css for each html nodes
@@ -402,7 +447,7 @@ extension CSSMagic {
             let tolerationTime: TimeInterval = 7
             guard Date().timeIntervalSinceReferenceDate - startTime <= tolerationTime else {
                 // If dark mode takes more than 7 seconds, stop calculating anymore
-                // It feels like doesn't load for forever   
+                // It feels like doesn't load for forever
                 return darkModeCSS
             }
             guard let styleCSS = CSSMagic.getDarkModeCSS(from: node),
@@ -415,7 +460,7 @@ extension CSSMagic {
         }
         return darkModeCSS
     }
-    
+
     /// Get dark mode css for the given html node
     /// - Parameter node: html node
     /// - Returns: dark mode css style or `nil` if it doesn't have good contrast
@@ -605,19 +650,19 @@ extension CSSMagic {
 
     /**
      Get CGFloat value of rgba from rgb() or rgba()
-     
+
      The possible input are
-     
+
      r: [0, 255] or [0%, 100%]
-    
+
      g: [0, 255] or [0%, 100%]
-    
+
      b: [0, 255] or [0%, 100%]
-    
+
      a: [0.0, 1.0] or [0%, 100%] or [0, 255]
-     
+
      For r/ g/ b, they need to follow the same format, all int or all percentage
-     
+
      For a, can be float or percentage
      - Parameter rgb: rgb(128, 128, 128), rgb(50%, 50%, 50%), rgba(50%, 50%, 50%, 0.5)
      - Returns: (r, g, b, a), range: [0.0, 1.0]
@@ -694,17 +739,17 @@ extension CSSMagic {
 
     /**
      Parse HSLA from hsl() or hsla()
-     
+
      The possible input are
-     
+
      h: [0, 360]
-    
+
      s: [0%, 100%]
-    
+
      l: [0%, 100%]
-    
+
      a: [0.0, 1.0] or [0%, 100%]
-     
+
      - Parameter hsl: hsl(128, 100%, 100%), hsla(128, 100%, 100%, 0.5)
      - Returns: HSLA
      */
@@ -844,8 +889,10 @@ extension CSSMagic {
         }
         var anchor = node.tagNameNormal()
         if let classSet = try? node.classNames() {
+            // Reason for the filter is some providers use improper class name
+            // e.g. class="${!isSplitPayment ? transaction__total-amount-title : '' }"
             let className = Array(classSet)
-                .filter { !$0.contains(check: "[") && !$0.contains(check: "[") }
+                .filter { !$0.contains(check: "[") && !$0.contains(check: "{") }
                 .joined(separator: ".")
             if className.isEmpty == false {
                 anchor = "\(anchor).\(className)"
@@ -969,7 +1016,7 @@ extension SwiftSoup.Node {
         }
         return result.compactMap({ $0 as? Element })
     }
-    
+
     private func hasBackgroundImage(node: SwiftSoup.Node) -> Bool {
         do {
             let background = try node.attr(CSSKeys.background.rawValue)
