@@ -83,7 +83,7 @@ extension ContactMergerTests {
 
     var deviceContact: DeviceContact {
         DeviceContact(
-            identifier: .init(uuid: "", emails: []),
+            identifier: .init(uuidInDevice: "", emails: []),
             fullName: nil,
             vCard:
             """

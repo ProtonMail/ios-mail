@@ -46,6 +46,7 @@ protocol ContactProviderProtocol: AnyObject {
     /// Call this function to store a Contact that has been created locally. This function will also create the associated Email objects
     /// - Returns: The CoreData objectID
     func createLocalContact(
+        uuid: String,
         name: String,
         emails: [(address: String, type: ContactFieldType)],
         cards: [CardData]
@@ -423,6 +424,7 @@ class ContactDataService {
     }
 
     func createLocalContact(
+        uuid: String,
         name: String,
         emails: [(address: String, type: ContactFieldType)],
         cards: [CardData]
@@ -435,7 +437,7 @@ class ContactDataService {
             contact.name = name
             contact.cardData = try cards.toJSONString()
             contact.size = NSNumber(value: 0)
-            contact.uuid = UUID().uuidString
+            contact.uuid = uuid
             contact.createTime = Date()
 
             emails.forEach { email in

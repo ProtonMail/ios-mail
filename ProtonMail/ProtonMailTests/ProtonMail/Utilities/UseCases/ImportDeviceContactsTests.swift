@@ -102,6 +102,23 @@ final class ImportDeviceContactsTests: XCTestCase {
         XCTAssertEqual(Set(storedEmails.map(\.email)), Set(dummyIdentifiers_toCreateAndUpdate.flatMap(\.emails)))
     }
 
+    func testExecute_whenImportsContacts_normalisesTheirUuid() throws {
+        // when no history token and all device contacts are new contacts
+        testContainer.userDefaults[.contactsHistoryTokenPerUser] = [:]
+        prepareDeviceContacts(dummyIdentifiers_toCreateAndUpdate)
+
+        sut.execute(params: sutParams)
+        wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
+
+        let expectedUuidPrefix = "protonmail-ios-autoimport-"
+        let storedContacts = try readStoredContacts()
+        XCTAssertEqual(storedContacts.count, 3)
+        for contact in storedContacts {
+            let contactPrefix = String(contact.uuid.prefix(expectedUuidPrefix.count))
+            XCTAssertEqual(contactPrefix, expectedUuidPrefix)
+        }
+    }
+
     func testExecute_whenHistoryToken_andUuidMatch_itImportsModifiedContacts() throws {
         // when history token and all device contacts are to update an existing one matching by uuid
         testContainer.userDefaults[.contactsHistoryTokenPerUser] = [dummyUserID.rawValue: Data("someToken".utf8)]
@@ -218,7 +235,7 @@ extension ImportDeviceContactsTests {
         }
         mockDeviceContacts.fetchContactBatchStub.bodyIs { _, param in
             deviceContactIdentifiers.map { identifier in
-                DeviceContact(identifier: identifier, fullName: "", vCard: self.dummyDeviceContactVCards[identifier.uuid]!)
+                DeviceContact(identifier: identifier, fullName: "", vCard: self.dummyDeviceContactVCards[identifier.uuidInDevice]!)
             }
         }
         mockDeviceContacts.fetchEventsContactIdentifiersStub.bodyIs { _, token in
@@ -251,19 +268,19 @@ extension ImportDeviceContactsTests {
 
     // returns identifiers that matches the UUID of `dummyContactStoredInCoreData`
     private var dummyIdentifiers_toUpdateExistingContacts_uuidMatch: [DeviceContactIdentifier] {
-        [DeviceContactIdentifier(uuid: "uuid-1", emails: ["kathy@pm.me"])]
+        [DeviceContactIdentifier(uuidInDevice: "uuid-1", emails: ["kathy@pm.me"])]
     }
 
     // returns identifiers that matches an EMAIL of `dummyContactStoredInCoreData`
     private var dummyIdentifiers_toUpdateExistingContacts_emailMatch: [DeviceContactIdentifier] {
-        [DeviceContactIdentifier(uuid: "uuid-no-match", emails: ["kathy@pm.me", "kate-bell@mac.com"])]
+        [DeviceContactIdentifier(uuidInDevice: "uuid-no-match", emails: ["kathy@pm.me", "kate-bell@mac.com"])]
     }
 
     // returns identifiers that do not match stored contacts
     private var dummyIdentifiers_toCreateNewContacts: [DeviceContactIdentifier] {
         [
-            DeviceContactIdentifier(uuid: "uuid-2", emails: ["d-higgins@mac.com", "higgs@pm.me"]),
-            DeviceContactIdentifier(uuid: "uuid-3", emails: ["John-Appleseed@mac.com"])
+            DeviceContactIdentifier(uuidInDevice: "uuid-2", emails: ["d-higgins@mac.com", "higgs@pm.me"]),
+            DeviceContactIdentifier(uuidInDevice: "uuid-3", emails: ["John-Appleseed@mac.com"])
         ]
     }
 

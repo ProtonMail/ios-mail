@@ -76,7 +76,7 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
 
             let triagedContacts = triageContacts(identifiers: contactIDsToImport)
             do {
-                try saveProtonContacts(from: triagedContacts.toCreate, params: params)
+                try saveNewProtonContacts(from: triagedContacts.toCreate, params: params)
                 try updateProtonContacts(
                     fromUuidMatch: triagedContacts.toUpdateByUuidMatch,
                     fromEmailMatch: triagedContacts.toUpdateByEmailMatch,
@@ -137,7 +137,9 @@ extension ImportDeviceContacts {
         let (matchByUuid, matchByEmail) = matcher.matchProtonContacts(with: identifiers)
         let allDeviceContactsToUpdate = matchByUuid + matchByEmail
         let toCreate = identifiers.filter { deviceContact in
-            !allDeviceContactsToUpdate.map(\.uuid).contains(deviceContact.uuid)
+            !allDeviceContactsToUpdate
+                .map(\.uuidNormalisedForAutoImport)
+                .contains(deviceContact.uuidNormalisedForAutoImport)
         }
 
         let deviceContactsToImport = DeviceContactsToImport(
@@ -154,13 +156,14 @@ extension ImportDeviceContacts {
 
 extension ImportDeviceContacts {
 
-    private func saveProtonContacts(from identifiers: [DeviceContactIdentifier], params: Params) throws {
+    private func saveNewProtonContacts(from identifiers: [DeviceContactIdentifier], params: Params) throws {
         let batches = identifiers.chunked(into: contactBatchSize)
         for batch in batches {
             try Task.checkCancellation()
             autoreleasepool {
                 do {
-                    let deviceContacts = try dependencies.deviceContacts.fetchContactBatch(with: batch.map(\.uuid))
+                    let uuids = batch.map(\.uuidInDevice)
+                    let deviceContacts = try dependencies.deviceContacts.fetchContactBatch(with: uuids)
                     saveProtonContacts(from: deviceContacts, params: params)
                 } catch {
                     SystemLogger
@@ -183,6 +186,7 @@ extension ImportDeviceContacts {
                     userPassphrase: params.mailboxPassphrase
                 )
                 let objectID = try dependencies.contactService.createLocalContact(
+                    uuid: deviceContact.identifier.uuidNormalisedForAutoImport,
                     name: parsedData.name,
                     emails: parsedData.emails,
                     cards: parsedData.cards
@@ -247,11 +251,12 @@ extension ImportDeviceContacts {
         identifiers: [DeviceContactIdentifier],
         merger: ContactMerger
     ) -> [ContactEntity] {
-        let deviceIdentifiers = identifiers.map(\.uuid)
-        let uuidMatchContacts = dependencies.contactService.getContactsByUUID(deviceIdentifiers)
+        let deviceUuidIdentifiers = identifiers.map(\.uuidInDevice)
+        let normalisedIdentifiers = identifiers.map(\.uuidNormalisedForAutoImport)
+        let uuidMatchContacts = dependencies.contactService.getContactsByUUID(normalisedIdentifiers)
         let deviceContacts: [DeviceContact]
         do {
-            deviceContacts = try dependencies.deviceContacts.fetchContactBatch(with: deviceIdentifiers)
+            deviceContacts = try dependencies.deviceContacts.fetchContactBatch(with: deviceUuidIdentifiers)
         } catch {
             SystemLogger.log(message: "mergeContactsMatchedByUuid error: \(error)", category: .contacts, isError: true)
             return []
@@ -259,9 +264,9 @@ extension ImportDeviceContacts {
 
         var resultingMergedContacts = [ContactEntity]()
         for deviceContact in deviceContacts {
-            let deviceContactUuid = deviceContact.identifier.uuid
+            let normalisedContactUuid = deviceContact.identifier.uuidNormalisedForAutoImport
             do {
-                guard let protonContact = uuidMatchContacts.first(where: { $0.uuid == deviceContactUuid }) else {
+                guard let protonContact = uuidMatchContacts.first(where: { $0.uuid == normalisedContactUuid }) else {
                     throw ImportDeviceContactsError.protonContactNotFoundByUuid
                 }
 
@@ -274,7 +279,7 @@ extension ImportDeviceContacts {
                 resultingMergedContacts.append(mergedContactEntity)
 
             } catch {
-                let message = "mergeContactsMatchedByUuid uuid \(deviceContactUuid.redacted) error: \(error)"
+                let message = "mergeContactsMatchedByUuid uuid \(normalisedContactUuid.redacted) error: \(error)"
                 SystemLogger.log(message: message, category: .contacts, isError: true)
                 continue
             }
@@ -286,7 +291,7 @@ extension ImportDeviceContacts {
         identifiers: [DeviceContactIdentifier],
         merger: ContactMerger
     ) -> [ContactEntity] {
-        let deviceIdentifiers = identifiers.map(\.uuid)
+        let deviceIdentifiers = identifiers.map(\.uuidInDevice)
         let deviceEmails = identifiers.flatMap(\.emails)
         let emailMatchContacts = dependencies.contactService.getContactsByEmailAddress(deviceEmails)
         let deviceContacts: [DeviceContact]
@@ -299,7 +304,7 @@ extension ImportDeviceContacts {
 
         var resultingMergedContacts = [ContactEntity]()
         for deviceContact in deviceContacts {
-            let deviceContactUuid = deviceContact.identifier.uuid
+            let deviceContactUuid = deviceContact.identifier.uuidInDevice
             do {
                 let matcher = ProtonContactMatcher(contactProvider: dependencies.contactService)
                 let protonContact = matcher.findContactToMergeMatchingEmail(with: deviceContact, in: emailMatchContacts)
