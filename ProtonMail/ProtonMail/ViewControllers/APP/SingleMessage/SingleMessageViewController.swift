@@ -577,7 +577,7 @@ extension SingleMessageViewController {
             viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
         }
         let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
-        banner.show(at: .bottom, on: self)
+        banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: self)
     }
 }
 

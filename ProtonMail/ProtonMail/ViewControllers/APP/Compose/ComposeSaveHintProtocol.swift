@@ -22,6 +22,7 @@
 
 import Foundation
 import ProtonCoreUIFoundations
+import CoreData
 
 protocol ComposeSaveHintProtocol: UIViewController {
     func removeDraftSaveHintBanner()
@@ -130,7 +131,9 @@ extension ComposeSaveHintProtocol {
 
     private func getPosition() -> PMBannerPosition {
         let position: PMBannerPosition
-        if self is ConversationViewController {
+        if self is ConversationViewController ||
+            self is SingleMessageViewController ||
+            String(describing: self).contains(check: "PagesViewController") {
             position = .bottomCustom(.init(top: .infinity, left: 8, bottom: 64, right: 8))
         } else {
             position = .bottom

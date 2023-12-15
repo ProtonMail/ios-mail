@@ -468,7 +468,7 @@ class SingleMessageContentViewController: UIViewController {
             toastPresenter = parent ?? self
         }
 
-        banner.show(at: .bottom, on: toastPresenter)
+        banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: toastPresenter)
     }
 
     @objc

@@ -28,6 +28,7 @@ final class PagesViewController<
 >: UIPageViewController,
    UIPageViewControllerDelegate,
    UIPageViewControllerDataSource,
+   ComposeSaveHintProtocol,
    LifetimeTrackable {
     typealias Dependencies = SingleMessageCoordinator.Dependencies & ConversationCoordinator.Dependencies
 
