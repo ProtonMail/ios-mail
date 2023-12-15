@@ -757,7 +757,7 @@ private extension ConversationViewController {
             viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
         }
         let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
-        banner.show(at: .bottom, on: self.navigationController ?? self)
+        banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: self.navigationController ?? self)
     }
 
     private func showSenderImageIfNeeded(in cell: ConversationMessageCell, message: MessageEntity) {

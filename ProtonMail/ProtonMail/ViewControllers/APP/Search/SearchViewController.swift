@@ -366,7 +366,7 @@ extension SearchViewController {
             dismissDuration: 3,
             bannerHandler: PMBanner.dismiss
         )
-        banner.show(at: .bottom, on: self)
+        banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: self)
     }
 
     private var moveToActionHandler: MoveToActionSheetProtocol? {

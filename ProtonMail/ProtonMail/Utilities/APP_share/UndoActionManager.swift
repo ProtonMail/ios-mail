@@ -116,7 +116,16 @@ final class UndoActionManager: UndoActionManagerProtocol {
                     }
                 }
             }
-            banner.show(at: .bottom, on: targetVC)
+            #if APP_EXTENSION
+                banner.show(at: .bottom, on: targetVC)
+            #else
+                let isConversationVC = targetVC is ConversationViewController
+                if targetVC.view.subviews.contains(where: { $0 is PMToolBarView }) || isConversationVC {
+                    banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: targetVC)
+                } else {
+                    banner.show(at: .bottom, on: targetVC)
+                }
+            #endif
         }
     }
 
