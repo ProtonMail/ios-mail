@@ -101,7 +101,7 @@ public enum LUITranslation: TranslationsExposing {
     case username_field_title
     case email_field_title
     case password_view_title
-    case password_field_hint
+    case password_field_minimum_length_hint
     case repeat_password_field_title
     case domains_sheet_title
     case recovery_view_title
@@ -134,7 +134,6 @@ public enum LUITranslation: TranslationsExposing {
     case error_create_user_failed
     case error_invalid_hashed_password
     case error_password_empty
-    case error_password_too_short
     case error_password_not_equal
     case error_email_already_used
     case error_missing_sub_user_configuration
@@ -282,7 +281,7 @@ public enum LUITranslation: TranslationsExposing {
             return localized(key: "Email", comment: "Email field title")
         case .password_view_title:
             return localized(key: "Create your password", comment: "Signup password view title")
-        case .password_field_hint:
+        case .password_field_minimum_length_hint:
             return localized(key: "Password must contain at least 8 characters", comment: "Password field hint about minimum length")
         case .repeat_password_field_title:
             return localized(key: "Repeat password", comment: "Repeat password field title")
@@ -348,8 +347,6 @@ public enum LUITranslation: TranslationsExposing {
             return localized(key: "Invalid hashed password", comment: "Invalid hashed password error")
         case .error_password_empty:
             return localized(key: "Password can not be empty.\nPlease try again.", comment: "Password empty error")
-        case .error_password_too_short:
-            return localized(key: "Password must contain at least %@ characters.", comment: "Password too short error")
         case .error_password_not_equal:
             return localized(key: "Passwords do not match.\nPlease try again.", comment: "Password not equal error")
         case .error_email_already_used:

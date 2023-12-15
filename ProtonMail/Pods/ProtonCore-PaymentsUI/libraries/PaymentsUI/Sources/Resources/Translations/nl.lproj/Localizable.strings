@@ -1,4 +1,3 @@
-
 "OK" = "OK";
 
 "Cancel" = "Annuleren";
@@ -22,6 +21,8 @@
 "Current plan will expire on %@" = "Huidige abonnement verloopt op %@";
 
 "Contact an administrator to make changes to your Proton subscription." = "Neem contact op met een beheerder om wijzigingen aan uw Proton-abonnement aan te brengen.";
+
+"%1$@ of %2$@" = "%1$@ van %2$@";
 
 "%@ storage" = "%@ opslagruimte";
 
@@ -73,6 +74,8 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "Via deze app zijn alleen jaarabonnementen zonder automatische verlenging beschikbaar";
 
+"Your subscription cannot be managed inside the mobile app." = "Your subscription cannot be managed inside the mobile app.";
+
 "Unlimited folders, labels, and filters" = "Onbeperkt aantal mappen, labels en filters";
 
 "Up to %@ storage" = "Tot %@ opslag";
@@ -113,13 +116,9 @@
 
 "Unlimited devices" = "Onbeperkt aantal apparaten";
 
-"%@ email aliases" = "%@ e-mailadres";
-
 "Unlimited email aliases" = "Onbeperkt aantal Hide-my-email-alliassen";
 
 "Unlimited logins and notes" = "Onbeperkt aantal wachtwoorden en notities";
-
-"Up to %@ forwarding mailboxes" = "Tot %@ doorstuurpostvakken";
 
 "Custom fields" = "Aangepaste velden";
 

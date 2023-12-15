@@ -30,7 +30,7 @@ final class PaymentStatusRequest: BaseApiRequest<PaymentStatusResponse> {
         super.init(api: api)
     }
 
-    override var path: String { super.path + "/v4/status" }
+    override var path: String { super.path + "/v4/status/apple" }
 
     override var isAuth: Bool { false }
 }
@@ -40,7 +40,7 @@ final class PaymentStatusResponse: Response {
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
-        self.isAvailable = response["Apple"] as? Bool
+        self.isAvailable = response["InApp"].map { $0 as? Int == 1 }
         return true
     }
 }

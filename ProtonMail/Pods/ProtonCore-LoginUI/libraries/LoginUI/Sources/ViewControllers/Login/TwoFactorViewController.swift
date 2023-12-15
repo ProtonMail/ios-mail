@@ -200,7 +200,9 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
     // MARK: - Actions
 
     @objc private func goBack(_ sender: Any) {
-        delegate?.userDidGoBack()
+        Task { [weak delegate] in
+            await delegate?.userDidGoBack()
+        }
     }
 
     @IBAction private func recoveryPressed(_ sender: Any) {

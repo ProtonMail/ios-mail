@@ -1,4 +1,3 @@
-
 "Contact customer support" = "連絡客服支援團隊";
 
 "Failed to get list of available products from App Store." = "無法從 App Store 取得可使用的產品清單。";
@@ -37,10 +36,7 @@
 
 "Payment failed" = "付款失敗";
 
-"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "您已成功註冊，但您的付款未被處理。
-欲重新傳送付款資訊，請按重試。
-您只會被收取一次款項。
-如果問題持續，請聯絡客服支援。";
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "您已成功註冊，但您的付款未被處理。欲重新傳送付款資訊，請按重試。您只會被收取一次款項。如果問題持續，請聯絡客服支援。";
 
 "Retry" = "重試";
 

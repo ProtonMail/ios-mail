@@ -74,6 +74,8 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "Only non-renewing annual subscriptions are available via this app";
 
+"Your subscription cannot be managed inside the mobile app." = "Your subscription cannot be managed inside the mobile app.";
+
 "Unlimited folders, labels, and filters" = "Unlimited folders, labels, and filters";
 
 "Up to %@ storage" = "Up to %@ storage";

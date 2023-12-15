@@ -1,4 +1,3 @@
-
 "Privacy by default" = "Privadesa per defecte";
 
 "Proton address required" = "Es requereix l'adreça del Proton";
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "Contrasenya resumida invàlida";
 
 "Password can not be empty.\nPlease try again." = "La contrasenya no es pot deixar buida.\nTorneu-ho a provar.";
-
-"Password must contain at least %@ characters." = "La contrasenya ha de tenir com a mínim %@ caràcters.";
 
 "Passwords do not match.\nPlease try again." = "Les contrasenyes no coincideixen.\nTorneu-ho a provar.";
 

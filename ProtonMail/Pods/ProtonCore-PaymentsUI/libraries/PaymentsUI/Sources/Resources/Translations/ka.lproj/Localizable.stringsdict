@@ -2,7 +2,23 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
-    <key>%d users</key>
+    <key>&lt;n&gt; email aliases</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d ელფოსტის ფსევდონიმი</string>
+        <key>other</key>
+        <string>%d ელფოსტის მისამართი</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; users</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -18,7 +34,7 @@
         <string>%d მომხმარებელი</string>
       </dict>
     </dict>
-    <key>%d email addresses</key>
+    <key>&lt;n&gt; email addresses</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -34,7 +50,7 @@
         <string>%d ელფოსტის მისამართი</string>
       </dict>
     </dict>
-    <key>%d email addresses / user</key>
+    <key>&lt;n&gt; email addresses / user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -50,7 +66,7 @@
         <string>%d ელფოსტის მისამართი / მომხმარებელზე</string>
       </dict>
     </dict>
-    <key>%d calendars</key>
+    <key>&lt;n&gt; calendars</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -66,7 +82,7 @@
         <string>%d კალენდარი</string>
       </dict>
     </dict>
-    <key>%d folders / labels</key>
+    <key>&lt;n&gt; folders / labels</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -82,7 +98,7 @@
         <string>%d საქაღალდე / ჭდე</string>
       </dict>
     </dict>
-    <key>%d countries</key>
+    <key>&lt;n&gt; countries</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -98,7 +114,7 @@
         <string>%d ქვეყანა</string>
       </dict>
     </dict>
-    <key>%d connections</key>
+    <key>&lt;n&gt; connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -114,7 +130,7 @@
         <string>%d მიერთება</string>
       </dict>
     </dict>
-    <key>%d VPN connections</key>
+    <key>&lt;n&gt; VPN connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -130,7 +146,7 @@
         <string>%d VPN კავშირი</string>
       </dict>
     </dict>
-    <key>%d high-speed VPN connections</key>
+    <key>&lt;n&gt; high-speed VPN connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -146,7 +162,7 @@
         <string>%d ჩქაროსნული VPN შეერთება</string>
       </dict>
     </dict>
-    <key>%d custom domains</key>
+    <key>&lt;n&gt; custom domains</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -157,12 +173,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d ხელით მითითებული დომენი</string>
+        <string>%d მომხმარებლის დომენი</string>
         <key>other</key>
-        <string>%d ხელით მითითებული დომენი</string>
+        <string>%d მომხმარებლის დომენი</string>
       </dict>
     </dict>
-    <key>%d vaults</key>
+    <key>&lt;n&gt; vaults</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -178,7 +194,7 @@
         <string>%d საცავი</string>
       </dict>
     </dict>
-    <key>Support for %d custom email domains</key>
+    <key>Support for &lt;n&gt; custom email domains</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -194,7 +210,7 @@
         <string>%d მომხმარებლის დომენის მხარდაჭერა</string>
       </dict>
     </dict>
-    <key>%d folders and labels</key>
+    <key>&lt;n&gt; folders and labels</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -210,7 +226,7 @@
         <string>%d საქაღალდე და ჭდე</string>
       </dict>
     </dict>
-    <key>%d calendars</key>
+    <key>High-speed VPN on &lt;n&gt; devices</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -221,28 +237,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d კალენდარი</string>
+        <string>ჩქაროსნული VPN %d მოწყობილობაზე</string>
         <key>other</key>
-        <string>%d კალენდარი</string>
+        <string>ჩქაროსნული VPN %d მოწყობილობაზე</string>
       </dict>
     </dict>
-    <key>High-speed VPN on %d devices</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE@</string>
-      <key>VARIABLE</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>d</string>
-        <key>one</key>
-        <string>სწრაფი VPN-ი %d მოწყობილობაზე</string>
-        <key>other</key>
-        <string>სწრაფი VPN-ი %d მოწყობილობაზე</string>
-      </dict>
-    </dict>
-    <key>%d+ servers in %d countries</key>
+    <key>&lt;n&gt;+ servers in &lt;m&gt; countries</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@SERVERS@ %#@COUNTRIES@ -ში</string>
@@ -269,7 +269,7 @@
         <string>%d ქვეყანა</string>
       </dict>
     </dict>
-    <key>%d servers in %d countries (US, NL, JP)</key>
+    <key>&lt;n&gt; servers in &lt;m&gt; countries (US, NL, JP)</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@SERVERS@ %#@COUNTRIES@ -ში</string>
@@ -296,7 +296,7 @@
         <string>%d ქვეყანა (აშშ, ნიდერლანდები, იაპონია)</string>
       </dict>
     </dict>
-    <key>%d of %d users</key>
+    <key>&lt;n&gt; of &lt;m&gt; users</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE1@ %#@VARIABLE2@-დან</string>
@@ -323,7 +323,7 @@
         <string>%d მომხმარებელი</string>
       </dict>
     </dict>
-    <key>%d of %d email addresses</key>
+    <key>&lt;n&gt; of &lt;m&gt; email addresses</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE1@ %#@VARIABLE2@-დან</string>
@@ -350,7 +350,7 @@
         <string>%d ელფოსტის მისამართი</string>
       </dict>
     </dict>
-    <key>%d of %d calendars</key>
+    <key>&lt;n&gt; of &lt;m&gt; calendars</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE1@ %#@VARIABLE2@-დან</string>
@@ -377,7 +377,7 @@
         <string>%d კალენდარი</string>
       </dict>
     </dict>
-    <key>%d addresses per user</key>
+    <key>&lt;n&gt; addresses per user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -393,7 +393,7 @@
         <string>%d მისამართი თითოეული მომხმარებლისთვის</string>
       </dict>
     </dict>
-    <key>%d calendars per user</key>
+    <key>&lt;n&gt; calendars per user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -409,7 +409,7 @@
         <string>%d კალენდარი თითოეული მომხმარებლისათვის</string>
       </dict>
     </dict>
-    <key>%d VPN connections per user</key>
+    <key>&lt;n&gt; VPN connections per user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -425,7 +425,7 @@
         <string>%d VPN კავშირი თითოეული მომხმარებლისთვის</string>
       </dict>
     </dict>
-    <key>Pay for %d months</key>
+    <key>Pay for &lt;n&gt; months</key>
     <dict>
       <key>VARIABLE</key>
       <dict>
@@ -441,7 +441,7 @@
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
     </dict>
-    <key>Medium VPN speed %d VPN connections</key>
+    <key>Medium VPN speed &lt;n&gt; VPN connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -455,6 +455,22 @@
         <string>VPN-ის საშუალო სიჩქარე, %d შეერთება</string>
         <key>other</key>
         <string>VPN-ის საშუალო სიჩქარე, %d შეერთება</string>
+      </dict>
+    </dict>
+    <key>Up to &lt;n&gt; forwarding mailboxes</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d-მდე გადაგზავნადი საფოსტო ყუთი</string>
+        <key>other</key>
+        <string>%d-მდე გადაგზავნადი საფოსტო ყუთი</string>
       </dict>
     </dict>
   </dict>

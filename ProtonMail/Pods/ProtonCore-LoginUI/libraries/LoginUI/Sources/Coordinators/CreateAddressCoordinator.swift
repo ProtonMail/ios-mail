@@ -28,7 +28,8 @@ import ProtonCoreLogin
 import ProtonCoreFeatureSwitch
 
 protocol CreateAddressCoordinatorDelegate: AnyObject {
-    func userDidGoBack()
+    @MainActor
+    func userDidGoBack() async
     func createAddressCoordinatorDidFinish(endLoading: @escaping () -> Void, createAddressCoordinator: CreateAddressCoordinator, data: LoginData)
 }
 
@@ -86,7 +87,9 @@ final class CreateAddressCoordinator {
 
 extension CreateAddressCoordinator: NavigationDelegate {
     func userDidGoBack() {
-        delegate?.userDidGoBack()
+        Task {
+            await delegate?.userDidGoBack()
+        }
     }
 }
 

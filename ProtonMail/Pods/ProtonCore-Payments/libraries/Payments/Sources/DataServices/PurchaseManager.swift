@@ -58,6 +58,7 @@ final class PurchaseManager: PurchaseManagerProtocol {
     private let storeKitManager: StoreKitManagerProtocol
     private var paymentsApi: PaymentsApiProtocol
     private let apiService: APIService
+    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
 
     private let queue = DispatchQueue(label: "PurchaseManager dispatch queue", qos: .userInitiated)
 
@@ -69,11 +70,13 @@ final class PurchaseManager: PurchaseManagerProtocol {
     init(planService: Either<ServicePlanDataServiceProtocol, PlansDataSourceProtocol>,
          storeKitManager: StoreKitManagerProtocol,
          paymentsApi: PaymentsApiProtocol,
-         apiService: APIService) {
+         apiService: APIService,
+         featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared) {
         self.planService = planService
         self.storeKitManager = storeKitManager
         self.paymentsApi = paymentsApi
         self.apiService = apiService
+        self.featureFlagsRepository = featureFlagsRepository
     }
 
     func buyPlan(plan: InAppPurchasePlan,
@@ -215,14 +218,18 @@ final class PurchaseManager: PurchaseManagerProtocol {
         plan: InAppPurchasePlan, amountDue: Int, finishCallback: @escaping (PurchaseResult) -> Void
     ) {
         ObservabilityEnv.report(.paymentScreenView(screenID: .aiapBilling))
-        self.storeKitManager.purchaseProduct(plan: plan, amountDue: amountDue) { result in
+        self.storeKitManager.purchaseProduct(plan: plan, amountDue: amountDue) { [weak self] result in
+            guard let self else {
+                finishCallback(.purchaseCancelled)
+                return
+            }
             if case .cancelled = result {
                 finishCallback(.purchaseCancelled)
             } else if case .resolvingIAPToCredits = result,
-                      !FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
+                      !self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
                 finishCallback(.toppedUpCredits)
             } else if case .resolvingIAPToCreditsCausedByError = result,
-                      !FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
+                      !self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
                 finishCallback(.toppedUpCredits)
             } else {
                 finishCallback(.purchasedPlan(accountPlan: plan))

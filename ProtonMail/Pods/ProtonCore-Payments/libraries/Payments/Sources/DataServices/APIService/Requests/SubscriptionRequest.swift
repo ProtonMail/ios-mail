@@ -84,6 +84,7 @@ final class SubscriptionResponse: Response {
     }
 }
 
+/// Get current subscription
 final class GetSubscriptionRequest: BaseApiRequest<GetSubscriptionResponse> {
 
     override init(api: APIService) {

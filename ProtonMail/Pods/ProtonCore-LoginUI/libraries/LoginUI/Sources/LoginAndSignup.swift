@@ -29,7 +29,6 @@ import ProtonCoreServices
 import enum ProtonCorePayments.StoreKitManagerErrors
 import ProtonCoreUIFoundations
 import ProtonCoreFeatureSwitch
-import ProtonCoreFeatureFlags
 
 public enum ScreenVariant<SpecificScreenData, CustomScreenData> {
     case mail(SpecificScreenData)
@@ -208,17 +207,6 @@ public final class LoginAndSignup {
         }
     }
 
-    private func fetchFlags(for result: LoginAndSignupResult) {
-        switch result {
-        case .loginStateChanged(.dataIsAvailable(let data)), .signupStateChanged(.dataIsAvailable(let data)):
-            FeatureFlagsRepository.shared.setUserId(with: data.user.ID)
-            Task {
-                try await FeatureFlagsRepository.shared.fetchFlags()
-            }
-        default: break
-        }
-    }
-
     @discardableResult
     private func presentLogin(over viewController: UIViewController?,
                               welcomeScreen: WelcomeScreenVariant?,
@@ -229,7 +217,6 @@ public final class LoginAndSignup {
 
         container.registerHumanVerificationDelegates()
         self.loginAndSignupCompletion = { [weak self] result in
-            self?.fetchFlags(for: result)
             self?.container.unregisterHumanVerificationDelegates()
             completion(result)
         }

@@ -1,4 +1,3 @@
-
 "Network connection error" = "Ошибка подключения к сети";
 
 "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Сбой проверки TLS-сертификата при попытке подключения к API Proton VPN. Возможно, ваше подключение к Интернету отслеживается. Чтобы сохранить ваши данные в безопасности, мы предотвратили доступ приложения к Proton API.\nДля входа в приложение или доступа к аккаунту подключитесь к другой сети и попробуйте снова.";

@@ -1,4 +1,3 @@
-
 "OK" = "확인";
 
 "Cancel" = "취소";
@@ -22,6 +21,8 @@
 "Current plan will expire on %@" = "현재 요금제가 %@ 에 만료됩니다";
 
 "Contact an administrator to make changes to your Proton subscription." = "Proton 구독을 변경하기 위해선 관리자에게 연락하십시오.";
+
+"%1$@ of %2$@" = "%1$@ 중 %2$@";
 
 "%@ storage" = "%@ 저장공간";
 
@@ -55,8 +56,7 @@
 
 "Complete payment" = "결제 완료";
 
-"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "예상치 못한 오류로 인해 계정 설정 프로세스를 완료할 수 없습니다.\n
-다시 시도해 주세요.";
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "예상치 못한 오류로 인해 계정 설정 프로세스를 완료할 수 없습니다.\n다시 시도해 주세요.";
 
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "IAP 결제 절차가 시작되었습니다. Apple의 지침에 따라 구매를 완료하거나 취소하십시오.";
 
@@ -73,6 +73,8 @@
 "The ultimate privacy pack with access to all premium Proton services." = "모든 Proton 프리미엄 서비스를 사용하기 위한 무제한 프라이버시팩";
 
 "Only non-renewing annual subscriptions are available via this app" = "이 앱을 통해 갱신되지 않는 연간 구독만 사용할 수 있습니다.";
+
+"Your subscription cannot be managed inside the mobile app." = "모바일 앱에서 구독을 관리할 수 없습니다.";
 
 "Unlimited folders, labels, and filters" = "무제한 폴더, 라벨, 필터";
 
@@ -114,13 +116,9 @@
 
 "Unlimited devices" = "기기 개수 무제한";
 
-"%@ email aliases" = "%@개 이메일 별명";
-
 "Unlimited email aliases" = "무제한 나의 이메일 별명";
 
 "Unlimited logins and notes" = "무제한 로그인 및 메모";
-
-"Up to %@ forwarding mailboxes" = "최대 %@개 포워딩 메일함";
 
 "Custom fields" = "사용자 지정 필드";
 

@@ -216,6 +216,7 @@ class UsersManager: UsersManagerProtocol {
         users.insert(user, at: 0)
         save()
         firstUser?.becomeActiveUser()
+        FeatureFlagsRepository.shared.setUserId(user.userID.rawValue)
     }
 
     func isExist(userID: UserID) -> Bool {
@@ -274,11 +275,15 @@ class UsersManager: UsersManagerProtocol {
                 Task {
                     try await FeatureFlagsRepository.shared.fetchFlags(
                         for: user.userID.rawValue,
-                        with: user.apiService
+                        using: user.apiService
                     )
                     await user.fetchUserInfo()
                 }
             }
+        }
+
+        if let userId = self.users.first?.userID.rawValue, !userId.isEmpty {
+            FeatureFlagsRepository.shared.setUserId(userId)
         }
 
         self.users.first?.cacheService.cleanSoftDeletedMessagesAndConversation()
@@ -340,6 +345,7 @@ extension UsersManager {
         loggingOutUserIDs.insert(user.userID)
         user.cleanUp().ensure {
             FeatureFlagsRepository.shared.resetFlags(for: user.userID.rawValue)
+            FeatureFlagsRepository.shared.clearUserId(user.userID.rawValue)
             defer {
                 self.loggingOutUserIDs.remove(user.userID)
             }

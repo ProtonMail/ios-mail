@@ -22,4 +22,5 @@
 
 public enum CoreFeatureFlagType: String, FeatureFlagTypeProtocol {
     case dynamicPlan = "DynamicPlan"
+    case externalSSO = "ExternalSSO"
 }

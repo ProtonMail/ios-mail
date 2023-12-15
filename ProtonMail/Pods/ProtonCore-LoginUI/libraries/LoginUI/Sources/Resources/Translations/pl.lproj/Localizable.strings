@@ -1,4 +1,3 @@
-
 "Privacy by default" = "Prywatność to nasz standard";
 
 "Proton address required" = "Adres Proton jest wymagany";
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "Kryptograficzny skrót hasła jest nieprawidłowy";
 
 "Password can not be empty.\nPlease try again." = "Hasło nie może być puste.\nSpróbuj ponownie.";
-
-"Password must contain at least %@ characters." = "Password must contain at least %@ characters.";
 
 "Passwords do not match.\nPlease try again." = "Hasła nie pasują do siebie.\nSpróbuj ponownie.";
 

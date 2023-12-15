@@ -275,7 +275,7 @@ class UserManager: ObservableObject {
         featureFlagsDownloadService.getFeatureFlags(completion: nil)
         Task {
             try? await self.container.featureFlagsRepository
-                .fetchFlags(for: userID.rawValue, with: apiService)
+                .fetchFlags(for: userID.rawValue, using: apiService)
         }
     }
 

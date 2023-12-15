@@ -130,16 +130,20 @@ public class BaseApiRequest<T: Response>: Request {
 let decodeError = NSError(domain: "Payment decode error", code: 0, userInfo: nil)
 
 protocol PaymentsApiProtocol {
+    /// Get the status of any vendor
     func paymentStatusRequest(api: APIService) -> PaymentStatusRequest
     func buySubscriptionRequest(
         api: APIService, planId: String, amount: Int, amountDue: Int, paymentAction: PaymentAction
     ) throws -> SubscriptionRequest
     func buySubscriptionForZeroRequest(api: APIService, planId: String) -> SubscriptionRequest
+    /// Get current subscription
     func getSubscriptionRequest(api: APIService) -> GetSubscriptionRequest
+    /// Get information about current organization
     func organizationsRequest(api: APIService) -> OrganizationsRequest
     func defaultPlanRequest(api: APIService) -> DefaultPlanRequest
     func plansRequest(api: APIService) -> PlansRequest
     func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest
+    /// Get payment methods in priority order
     func methodsRequest(api: APIService) -> MethodRequest
     func paymentTokenOldRequest(api: APIService, amount: Int, receipt: String) -> PaymentTokenOldRequest
     func paymentTokenRequest(api: APIService, amount: Int, receipt: String, transactionId: String, bundleId: String, productId: String) -> PaymentTokenRequest

@@ -1,4 +1,3 @@
-
 "Contact customer support" = "Kontakta kundsupport";
 
 "Failed to get list of available products from App Store." = "Misslyckades att hämta lista med tillgängliga produkter från App Store.";
@@ -7,7 +6,7 @@
 
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informerade oss att du har uppgraderat paketet för tjänster, men vissa tekniska data saknades. Fyll i felrapporten så kommer vårt kundtjänstteam att kontakta dig.";
 
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple meddelade oss att du har uppgraderat serviceplanen, men vi upptäckte att du har loggat ut från kontot sedan dess.";
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple informerade oss om att du har uppgraderat paketets tjänster men vi upptäckte att du har loggat ut från kontot sedan dess.";
 
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Det gick inte att matcha din köpta App Store-produkt med några produkter på vår server. Fyll i felrapporten så kontaktar vårt kundsupportteam dig.";
 

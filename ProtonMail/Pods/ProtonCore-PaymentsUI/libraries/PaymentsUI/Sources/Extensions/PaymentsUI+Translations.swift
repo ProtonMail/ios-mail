@@ -44,6 +44,7 @@ public enum PUITranslations: TranslationsExposing {
     case subscription_title
     case upgrade_plan_title
     case plan_footer_desc
+    case plan_footer_desc_dynamic
     case plan_footer_desc_purchased
     case plan_details_renew_auto_expired
     case plan_details_renew_expired
@@ -147,6 +148,8 @@ public enum PUITranslations: TranslationsExposing {
             return localized(key: "Upgrade your plan", comment: "Plan selection title")
         case .plan_footer_desc:
             return localized(key: "Only annual subscriptions without auto-renewal are available inside the mobile app.", comment: "Plan footer description")
+        case .plan_footer_desc_dynamic:
+            return localized(key: "Your subscription cannot be managed inside the mobile app.", comment: "Plan footer description")
         case .plan_footer_desc_purchased:
             return localized(key: "You cannot manage subscriptions inside the mobile application.", comment: "Plan footer purchased description")
         case .plan_details_renew_auto_expired:
