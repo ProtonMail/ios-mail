@@ -113,6 +113,12 @@ final class UserContainer: ManagedContainer {
         }
     }
 
+    var featureFlagProviderFactory: Factory<FeatureFlagProvider> {
+        self {
+            FeatureFlagProvider(featureFlagsRepository: self.featureFlagsRepository, userID: self.user.userID)
+        }
+    }
+
     var fetchAndVerifyContactsFactory: Factory<FetchAndVerifyContacts> {
         self {
             FetchAndVerifyContacts(user: self.user)
