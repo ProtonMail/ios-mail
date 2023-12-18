@@ -285,9 +285,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d melding vil flyttes til Utkast og få tidsplanen fjernet.</string>
+        <string>%d melding vil flyttes til utkast og få tidsplanen fjernet.</string>
         <key>other</key>
-        <string>Disse %d meldinger vil flyttes til Utkast og få tidsplanene fjernet.</string>
+        <string>Disse %d meldingene vil flyttes til utkast og få tidsplanene fjernet.</string>
       </dict>
     </dict>
     <key>%d message moved to Drafts</key>
@@ -301,9 +301,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d melding flyttet til Utkast</string>
+        <string>%d melding flyttet til utkast</string>
         <key>other</key>
-        <string>%d meldinger flyttet til Utkast</string>
+        <string>%d meldinger flyttet til utkast</string>
       </dict>
     </dict>
     <key>%d seconds</key>
@@ -333,9 +333,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d Valgt</string>
+        <string>%d valgt</string>
         <key>other</key>
-        <string>%d Valgt</string>
+        <string>%d valgt</string>
       </dict>
     </dict>
     <key>%d attachment</key>
