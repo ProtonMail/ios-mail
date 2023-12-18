@@ -61,8 +61,11 @@ function splitImageMoveEvents(events) {
     for (var i = 0; i < events.length; i++) {
         const event = events[i]
         if (event.addedNodes.length == 1 && event.addedNodes[0].tagName == 'IMG') {
+            // Sometimes there are multiple added element but they are point to the same img element 
             moveEvents['add'] = event
-        } else if (event.removedNodes.length == 1 && event.removedNodes[0].tagName == 'IMG') {
+        } else if (event.removedNodes.length == 1 &&
+                   event.removedNodes[0].tagName == 'IMG' &&
+                   event.removedNodes[0].src.startsWith('data')) {
             moveEvents['remove'] = event
         } else {
             otherEvents.push(event)
@@ -158,7 +161,7 @@ html_editor.getRawHtml = function () {
     }
 
     var emptyHtml = html_editor.editor.innerHTML;
-    
+
     // Add embedded images back
     for (var cid in html_editor.cachedCIDs) {
         html_editor.updateEmbedImage(cid, html_editor.cachedCIDs[cid]);
@@ -292,7 +295,7 @@ html_editor.absorbImage = function (event, items, target) {
 html_editor.handlePastedData = function (event) {
     // Safari doesn't support regular expression lookahead
     // To remove style has prefix `font-` except `font-style` and `font-weight`
-    // Use this workaround 
+    // Use this workaround
     const item = event.clipboardData
         .getData('text/html')
         .replace(/<meta (.*?)>/g, '')
