@@ -615,7 +615,7 @@ private extension ConversationViewController {
         )
 
         let viewController = ConversationExpandedMessageViewController(
-            viewModel: .init(message: viewModel.message, messageContent: contentViewModel),
+            viewModel: viewModel,
             singleMessageContentViewController: singleMessageContentViewController
         )
 
