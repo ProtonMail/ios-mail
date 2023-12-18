@@ -11,9 +11,10 @@ html_editor.editor_header = document.getElementById('editor_header');
 /// track changes in DOM tree
 var mutationObserver = new MutationObserver(function (events) {
     var insertedImages = false;
-
-    for (var i = 0; i < events.length; i++) {
-        var event = events[i];
+    var {moveEvents, otherEvents} = splitImageMoveEvents(events);
+    postProcessImageMoveEvents(moveEvents);
+    for (var i = 0; i < otherEvents.length; i++) {
+        var event = otherEvents[i];
         event.target.setAttribute("dir", "auto");
         // check if removed image was our inline embedded attachment
         for (var j = 0; j < event.removedNodes.length; j++) {
@@ -50,6 +51,39 @@ var mutationObserver = new MutationObserver(function (events) {
     }
 });
 mutationObserver.observe(html_editor.editor, { childList: true, subtree: true });
+
+// Split move events from MutationRecords
+// When move action happens
+// There are 2 important MutationRecords, one to add new element the other to remove old element
+function splitImageMoveEvents(events) {
+    var moveEvents = {'add': null, 'remove': null}
+    var otherEvents = []
+    for (var i = 0; i < events.length; i++) {
+        const event = events[i]
+        if (event.addedNodes.length == 1 && event.addedNodes[0].tagName == 'IMG') {
+            moveEvents['add'] = event
+        } else if (event.removedNodes.length == 1 && event.removedNodes[0].tagName == 'IMG') {
+            moveEvents['remove'] = event
+        } else {
+            otherEvents.push(event)
+        }
+    }
+    return {moveEvents, otherEvents}
+}
+
+// Update attributes from old element to new element
+function postProcessImageMoveEvents(events) {
+    const added = events['add']
+    const removed = events['remove']
+    if (added == null || removed == null) { return }
+
+    const src = removed.removedNodes[0].src
+    const pmCID = removed.removedNodes[0].getAttribute('src-original-pm-cid')
+
+    const addedImg = added.addedNodes[0]
+    addedImg.src = src
+    addedImg.setAttribute('src-original-pm-cid', pmCID)
+}
 
 /// cached embed image cids
 html_editor.cachedCIDs = {};
@@ -162,11 +196,6 @@ html_editor.setPlaceholderText = function (text) {
 /// transmits caret position to the app
 html_editor.editor.addEventListener("input", function () { // input and not keydown/keyup/keypress cuz need to move caret when inserting text via autocomplete too
     html_editor.getCaretYPosition();
-});
-
-html_editor.editor.addEventListener("drop", function (event) {
-    var items = event.dataTransfer.items;
-    html_editor.absorbImage(event, items, event.target);
 });
 
 html_editor.editor.addEventListener("paste", function (event) {
