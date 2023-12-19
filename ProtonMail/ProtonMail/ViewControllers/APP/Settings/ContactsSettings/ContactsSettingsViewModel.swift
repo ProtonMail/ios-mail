@@ -33,7 +33,7 @@ protocol ContactsSettingsViewModelOutput {
 }
 
 final class ContactsSettingsViewModel: ContactsSettingsViewModelProtocol {
-    typealias Dependencies = HasUserDefaults
+    typealias Dependencies = HasUserDefaults & HasImportDeviceContacts & HasUserManager
 
     let settings: [Setting] = [.combineContacts, .autoImportContacts]
 
@@ -72,6 +72,13 @@ extension ContactsSettingsViewModel: ContactsSettingsViewModelInput {
             dependencies.userDefaults[.isCombineContactOn] = isEnabled
         case .autoImportContacts:
             dependencies.userDefaults[.isAutoImportContactsOn] = isEnabled
+            if isEnabled {
+                let params = ImportDeviceContacts.Params(
+                    userKeys: dependencies.user.userInfo.userKeys,
+                    mailboxPassphrase: dependencies.user.mailboxPassword
+                )
+                dependencies.importDeviceContacts.execute(params: params)
+            }
         }
     }
 }

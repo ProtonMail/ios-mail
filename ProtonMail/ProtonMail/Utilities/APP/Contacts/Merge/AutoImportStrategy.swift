@@ -105,7 +105,32 @@ extension AutoImportStrategy {
     ) -> FieldMergeResult<[ContactField.Email]> {
         let emailMerger = FieldTypeMerger<ContactField.Email>()
         emailMerger.merge(device: device, proton: proton)
-        return emailMerger.resultHasChanges ? .merge(result: emailMerger.result) : .noChange
+
+        guard emailMerger.resultHasChanges else {
+            return .noChange
+        }
+        // we have to provide a vCardGroup for those emails missing one
+        let result = emailMerger.result
+        let vCardGroupPrefix = "item"
+        var highestExistingItemIndex: Int = result
+            .compactMap { Int($0.vCardGroup.trim().dropFirst(vCardGroupPrefix.count)) }
+            .max() ?? 0
+
+        let finalResult = result.map { emailField in
+            let vCardGroup: String
+            if emailField.vCardGroup.trim().isEmpty {
+                highestExistingItemIndex += 1
+                vCardGroup = "\(vCardGroupPrefix)\(highestExistingItemIndex)"
+            } else {
+                vCardGroup = emailField.vCardGroup
+            }
+            return ContactField.Email(
+                type: emailField.type,
+                emailAddress: emailField.emailAddress,
+                vCardGroup: vCardGroup
+            )
+        }
+        return .merge(result: finalResult)
     }
 
     func mergeAddresses(

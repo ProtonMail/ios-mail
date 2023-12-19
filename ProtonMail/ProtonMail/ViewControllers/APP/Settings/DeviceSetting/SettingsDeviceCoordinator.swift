@@ -38,7 +38,7 @@ class SettingsDeviceCoordinator {
     & HasToolbarSettingViewFactory
     & SettingsAccountCoordinator.Dependencies
     & SettingsLockRouter.Dependencies
-    & HasUserDefaults
+    & ContactsSettingsViewModel.Dependencies
 
     private let dependencies: Dependencies
 

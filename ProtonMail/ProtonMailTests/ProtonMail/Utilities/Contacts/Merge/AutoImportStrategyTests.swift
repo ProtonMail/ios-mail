@@ -86,7 +86,7 @@ final class AutoImportStrategyTests: XCTestCase {
     }
 
     func testMergeEmails_whenAddressDoesNotMatch_itAddsTheDeviceEmailAfterAnyProtonDeviceEmail() {
-        let deviceEmails = [ContactField.Email(type: .work, emailAddress: "a@example.com", vCardGroup: "")]
+        let deviceEmails = [ContactField.Email(type: .work, emailAddress: "a@example.com", vCardGroup: "ITEM2")]
         let protonEmails = [ContactField.Email(type: .home, emailAddress: "b@example.com", vCardGroup: "ITEM1")]
         let result = sut.mergeEmails(device: deviceEmails, proton: protonEmails)
         XCTAssertEqual(result.value, [protonEmails, deviceEmails].flatMap { $0 })
@@ -97,6 +97,18 @@ final class AutoImportStrategyTests: XCTestCase {
         let protonEmails = [ContactField.Email(type: .home, emailAddress: "a@example.com", vCardGroup: "ITEM9")]
         let result = sut.mergeEmails(device: deviceEmails, proton: protonEmails)
         XCTAssertTrue(result.isNoChange)
+    }
+
+    func testMergeEmails_whenEmailsIsAdded_andVCardGroupIsMissing_itAddsTheVCardGroup() {
+        let deviceEmails = [ContactField.Email(type: .work, emailAddress: "a@example.com", vCardGroup: "")]
+        let protonEmails = [
+            ContactField.Email(type: .home, emailAddress: "b@example.com", vCardGroup: "ITEM1"),
+            ContactField.Email(type: .home, emailAddress: "c@example.com", vCardGroup: "ITEM0")
+        ]
+        let result = sut.mergeEmails(device: deviceEmails, proton: protonEmails)
+
+        let allGroups = Set(result.value!.map { $0.vCardGroup.lowercased() })
+        XCTAssertEqual(allGroups, Set(["item0", "item1", "item2"]))
     }
 
     // MARK: Addresses
