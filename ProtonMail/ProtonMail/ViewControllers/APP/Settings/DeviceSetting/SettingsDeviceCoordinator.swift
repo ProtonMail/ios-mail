@@ -29,6 +29,7 @@ class SettingsDeviceCoordinator {
         case autoLock = "settings_auto_lock"
         case combineContact = "settings_combine_contact"
         case alternativeRouting = "settings_alternative_routing"
+        case contactsSettings = "settings_contacts"
         case swipeAction = "settings_swipe_action"
         case darkMode = "settings_dark_mode"
     }
@@ -37,6 +38,7 @@ class SettingsDeviceCoordinator {
     & HasToolbarSettingViewFactory
     & SettingsAccountCoordinator.Dependencies
     & SettingsLockRouter.Dependencies
+    & HasUserDefaults
 
     private let dependencies: Dependencies
 
@@ -63,6 +65,8 @@ class SettingsDeviceCoordinator {
             openCombineContacts()
         case .alternativeRouting:
             openAlternativeRouting()
+        case .contactsSettings:
+            openContactsSettings()
         case .swipeAction:
             openGesture()
         case .darkMode:
@@ -102,6 +106,12 @@ class SettingsDeviceCoordinator {
     private func openAlternativeRouting() {
         let controller = dependencies.settingsViewsFactory.makeNetworkSettingView()
         navigationController?.show(controller, sender: nil)
+    }
+
+    private func openContactsSettings() {
+        let viewModel = ContactsSettingsViewModel(dependencies: dependencies)
+        let viewController = ContactsSettingsViewController(viewModel: viewModel)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     private func openGesture() {
