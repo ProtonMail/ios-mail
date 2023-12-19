@@ -378,7 +378,7 @@ extension MessageSendingRequestBuilder {
                     email: email,
                     sendPreferences: sendPreferences
                 ))
-            case .pgpInline where sendPreferences.publicKeys != nil &&
+            case .pgpInline where sendPreferences.publicKey != nil &&
                 sendPreferences.encrypt:
                 out.append(PGPAddressBuilder(
                     type: .pgpInline,
@@ -395,7 +395,7 @@ extension MessageSendingRequestBuilder {
                     sendPreferences: sendPreferences
                 ))
             // TODO: Fix the issue about PGP/MIME signed only message.
-            case .pgpMIME where sendPreferences.publicKeys != nil: // && sendPreferences.encrypt:
+            case .pgpMIME where sendPreferences.publicKey != nil: // && sendPreferences.encrypt:
                 guard let sessionData = mimeSessionKey,
                       let algorithm = mimeSessionAlgo else {
                     throw BuilderError.MIMEDataNotPrepared

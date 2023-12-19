@@ -284,10 +284,9 @@ extension PrepareSendMetadataTests {
             sign: true,
             pgpScheme: .pgpMIME,
             mimeType: .mime,
-            publicKeys: nil,
+            publicKey: nil,
             isPublicKeyPinned: false,
             hasApiKeys: false,
-            hasPinnedKeys: false,
             error: nil
         )
         return RecipientSendPreferences(emailAddress: dummyRecipientEmailAddress, sendPreferences: preferences)

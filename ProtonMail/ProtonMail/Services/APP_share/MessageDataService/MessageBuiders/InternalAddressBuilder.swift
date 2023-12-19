@@ -43,7 +43,7 @@ class InternalAddressBuilder: PackageBuilder {
         return async {
             var attPackages = [AttachmentPackage]()
             for attachment in self.preAttachments {
-                if let publicKey = self.sendPreferences.publicKeys {
+                if let publicKey = self.sendPreferences.publicKey {
                     let newKeyPack = try attachment
                         .session
                         .getKeyPackage(publicKey: publicKey.getPublicKey(), algo: attachment.algo.rawValue)?
@@ -53,7 +53,7 @@ class InternalAddressBuilder: PackageBuilder {
                 }
             }
 
-            if let publicKey = self.sendPreferences.publicKeys {
+            if let publicKey = self.sendPreferences.publicKey {
                 let newKeypacket = try self.session
                     .getKeyPackage(publicKey: publicKey.getPublicKey(), algo: self.algo.rawValue)
                 let newEncodedKey = newKeypacket?

@@ -79,13 +79,12 @@ final class ResolveSendPreferencesTests: XCTestCase {
             let sendPreferences = recipientPreferences.sendPreferences
             assertCommonExpectationsForProtonAccount(recipientPreferences)
 
-            XCTAssertNotNil(sendPreferences.publicKeys)
-            XCTAssertTrue(sendPreferences.hasPinnedKeys)
+            XCTAssertNotNil(sendPreferences.publicKey)
             XCTAssertTrue(sendPreferences.isPublicKeyPinned)
             XCTAssertTrue(sendPreferences.hasApiKeys)
 
             XCTAssertNil(sendPreferences.error)
-            XCTAssert(recipientPreferences.sendPreferences.publicKeys?.getFingerprint() == fullKey1.fingerprint)
+            XCTAssert(recipientPreferences.sendPreferences.publicKey?.getFingerprint() == fullKey1.fingerprint)
 
             expectation.fulfill()
         }
@@ -105,13 +104,12 @@ final class ResolveSendPreferencesTests: XCTestCase {
             let sendPreferences = recipientPreferences.sendPreferences
             assertCommonExpectationsForProtonAccount(recipientPreferences)
 
-            XCTAssertNotNil(sendPreferences.publicKeys)
-            XCTAssertTrue(sendPreferences.hasPinnedKeys)
+            XCTAssertNotNil(sendPreferences.publicKey)
             XCTAssertFalse(sendPreferences.isPublicKeyPinned)
             XCTAssertTrue(sendPreferences.hasApiKeys)
 
             XCTAssert(sendPreferences.error == .primaryNotPinned)
-            XCTAssert(recipientPreferences.sendPreferences.publicKeys?.getFingerprint() == fullKey2.fingerprint)
+            XCTAssert(recipientPreferences.sendPreferences.publicKey?.getFingerprint() == fullKey2.fingerprint)
 
             expectation.fulfill()
         }
@@ -130,13 +128,12 @@ final class ResolveSendPreferencesTests: XCTestCase {
             let sendPreferences = recipientPreferences.sendPreferences
             assertCommonExpectationsForProtonAccount(recipientPreferences)
 
-            XCTAssertNotNil(sendPreferences.publicKeys)
-            XCTAssertFalse(sendPreferences.hasPinnedKeys)
+            XCTAssertNotNil(sendPreferences.publicKey)
             XCTAssertFalse(sendPreferences.isPublicKeyPinned)
             XCTAssertTrue(sendPreferences.hasApiKeys)
 
             XCTAssertNil(sendPreferences.error)
-            XCTAssert(recipientPreferences.sendPreferences.publicKeys?.getFingerprint() == fullKey2.fingerprint)
+            XCTAssert(recipientPreferences.sendPreferences.publicKey?.getFingerprint() == fullKey2.fingerprint)
 
             expectation.fulfill()
         }
@@ -155,13 +152,12 @@ final class ResolveSendPreferencesTests: XCTestCase {
             let sendPreferences = recipientPreferences.sendPreferences
             assertCommonExpectationsForProtonAccount(recipientPreferences)
 
-            XCTAssertNil(sendPreferences.publicKeys)
-            XCTAssertFalse(sendPreferences.hasPinnedKeys)
+            XCTAssertNil(sendPreferences.publicKey)
             XCTAssertFalse(sendPreferences.isPublicKeyPinned)
             XCTAssertTrue(sendPreferences.hasApiKeys)
 
             XCTAssertEqual(sendPreferences.error, .internalUserNoValidApiKey)
-            XCTAssertNil(recipientPreferences.sendPreferences.publicKeys)
+            XCTAssertNil(recipientPreferences.sendPreferences.publicKey)
 
             expectation.fulfill()
         }
@@ -180,13 +176,12 @@ final class ResolveSendPreferencesTests: XCTestCase {
             let sendPreferences = recipientPreferences.sendPreferences
             assertCommonExpectationsForProtonAccount(recipientPreferences)
 
-            XCTAssertNil(sendPreferences.publicKeys)
-            XCTAssertFalse(sendPreferences.hasPinnedKeys)
+            XCTAssertNil(sendPreferences.publicKey)
             XCTAssertFalse(sendPreferences.isPublicKeyPinned)
             XCTAssertFalse(sendPreferences.hasApiKeys)
 
             XCTAssertEqual(sendPreferences.error, .internalUserNoApiKey)
-            XCTAssertNil(recipientPreferences.sendPreferences.publicKeys)
+            XCTAssertNil(recipientPreferences.sendPreferences.publicKey)
 
             expectation.fulfill()
         }
@@ -227,8 +222,7 @@ final class ResolveSendPreferencesTests: XCTestCase {
             XCTAssertTrue(sendPreferences.mimeType == .mime)
             XCTAssertFalse(sendPreferences.sign)
 
-            XCTAssertNil(sendPreferences.publicKeys)
-            XCTAssertFalse(sendPreferences.hasPinnedKeys)
+            XCTAssertNil(sendPreferences.publicKey)
             XCTAssertFalse(sendPreferences.isPublicKeyPinned)
             XCTAssertFalse(sendPreferences.hasApiKeys)
 
@@ -257,8 +251,7 @@ final class ResolveSendPreferencesTests: XCTestCase {
             XCTAssertTrue(sendPreferences.mimeType == .mime)
             XCTAssertFalse(sendPreferences.sign)
 
-            XCTAssertNil(sendPreferences.publicKeys)
-            XCTAssertFalse(sendPreferences.hasPinnedKeys)
+            XCTAssertNil(sendPreferences.publicKey)
             XCTAssertFalse(sendPreferences.isPublicKeyPinned)
             XCTAssertFalse(sendPreferences.hasApiKeys)
 
@@ -282,13 +275,12 @@ final class ResolveSendPreferencesTests: XCTestCase {
             let sendPreferences = recipientPreferences.sendPreferences
             assertCommonExpectationsForExternalWhenEncrypted(recipientPreferences)
 
-            XCTAssertNotNil(sendPreferences.publicKeys)
-            XCTAssertTrue(sendPreferences.hasPinnedKeys)
+            XCTAssertNotNil(sendPreferences.publicKey)
             XCTAssertTrue(sendPreferences.isPublicKeyPinned)
             XCTAssertTrue(sendPreferences.hasApiKeys)
 
             XCTAssertNil(sendPreferences.error)
-            XCTAssert(sendPreferences.publicKeys?.getFingerprint() == fullKey1.fingerprint)
+            XCTAssert(sendPreferences.publicKey?.getFingerprint() == fullKey1.fingerprint)
 
             expectation.fulfill()
         }
@@ -308,13 +300,12 @@ final class ResolveSendPreferencesTests: XCTestCase {
             let sendPreferences = recipientPreferences.sendPreferences
             assertCommonExpectationsForExternalWhenEncrypted(recipientPreferences)
 
-            XCTAssertNotNil(sendPreferences.publicKeys)
-            XCTAssertTrue(sendPreferences.hasPinnedKeys)
+            XCTAssertNotNil(sendPreferences.publicKey)
             XCTAssertFalse(sendPreferences.isPublicKeyPinned)
             XCTAssertTrue(sendPreferences.hasApiKeys)
 
             XCTAssert(sendPreferences.error == .primaryNotPinned)
-            XCTAssert(sendPreferences.publicKeys?.getFingerprint() == fullKey2.fingerprint)
+            XCTAssert(sendPreferences.publicKey?.getFingerprint() == fullKey2.fingerprint)
 
             expectation.fulfill()
         }
@@ -333,13 +324,12 @@ final class ResolveSendPreferencesTests: XCTestCase {
             let sendPreferences = recipientPreferences.sendPreferences
             assertCommonExpectationsForExternalWhenEncrypted(recipientPreferences)
 
-            XCTAssertNotNil(sendPreferences.publicKeys)
-            XCTAssertFalse(sendPreferences.hasPinnedKeys)
+            XCTAssertNotNil(sendPreferences.publicKey)
             XCTAssertFalse(sendPreferences.isPublicKeyPinned)
             XCTAssertTrue(sendPreferences.hasApiKeys)
 
             XCTAssertNil(sendPreferences.error)
-            XCTAssert(sendPreferences.publicKeys?.getFingerprint() == fullKey1.fingerprint)
+            XCTAssert(sendPreferences.publicKey?.getFingerprint() == fullKey1.fingerprint)
 
             expectation.fulfill()
         }
@@ -360,13 +350,12 @@ final class ResolveSendPreferencesTests: XCTestCase {
 
             assertCommonExpectationsForExternalWhenEncrypted(recipientPreferences)
 
-            XCTAssertNotNil(sendPreferences.publicKeys)
-            XCTAssertTrue(sendPreferences.hasPinnedKeys)
+            XCTAssertNotNil(sendPreferences.publicKey)
             XCTAssertFalse(sendPreferences.isPublicKeyPinned)
             XCTAssertTrue(sendPreferences.hasApiKeys)
 
             XCTAssert(sendPreferences.error == .primaryNotPinned)
-            XCTAssert(sendPreferences.publicKeys?.getFingerprint() == fullKey1.fingerprint)
+            XCTAssert(sendPreferences.publicKey?.getFingerprint() == fullKey1.fingerprint)
 
             expectation.fulfill()
         }
@@ -402,13 +391,12 @@ final class ResolveSendPreferencesTests: XCTestCase {
             let sendPreferences = recipientPreferences.sendPreferences
             assertCommonExpectationsForProtonAccount(recipientPreferences)
 
-            XCTAssertNotNil(sendPreferences.publicKeys)
-            XCTAssertFalse(sendPreferences.hasPinnedKeys)
+            XCTAssertNotNil(sendPreferences.publicKey)
             XCTAssertFalse(sendPreferences.isPublicKeyPinned)
             XCTAssertFalse(sendPreferences.hasApiKeys)
 
             XCTAssertNil(sendPreferences.error)
-            XCTAssert(sendPreferences.publicKeys?.getFingerprint() == keyInAddress.fingerprint)
+            XCTAssert(sendPreferences.publicKey?.getFingerprint() == keyInAddress.fingerprint)
 
             expectation.fulfill()
         }
