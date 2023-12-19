@@ -155,13 +155,13 @@
 "wrote:" = "skrev:";
 
 /* At {time}, e.g.: At 19:00 */
-"At %@" = "Klokken %@";
+"At %@" = "Kl. %@";
 
 /* On {date}, e.g.: On Aug 14 */
-"On %@" = "På %@";
+"On %@" = "Den %@";
 
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
-"On %@ at %@" = "På %1$@ kl. %2$@";
+"On %@ at %@" = "Den %1$@ kl. %2$@";
 
 /* message Date: text */
 "Date:" = "Dato:";
@@ -224,7 +224,7 @@
 "Upgrade to a paid plan to send from your %@ address" = "Oppgrader til en betalt plan for å sende fra din %@-adresse";
 
 /* pm.me upgrade warning in composer */
-"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Sending av meldinger fra %1$@-adresse er en betalt funksjon. Meldingen din vil bli sendt fra standardadressen din %2$@.";
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Sending av meldinger fra en %1$@-adresse er en betalt funksjon. Meldingen din vil bli sendt fra standardadressen din %2$@ .";
 
 /* Title */
 "From" = "Fra";
@@ -851,7 +851,7 @@
 "Apply Labels" = "Anvend etiketter";
 
 /* Title of the view showing the message header */
-"Message headers" = "Meldingstitler";
+"Message headers" = "Meldingoverskrifter";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -917,7 +917,7 @@
 "Retry" = "Prøv på nytt";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "'På' E, d MMM, yyyy 'kl.' %@";
+"'On' E, MMM d, yyyy 'at' %@" = "'Den' E, d MMM, yyyy 'kl.' %@";
 
 /* No comment provided by engineer. */
 "Message expired" = "Melding utløpt";
@@ -1253,7 +1253,7 @@
 "Signed in as %@" = "Logget på som %@";
 
 /* The title of the star action in action sheet */
-"Star" = "Stjernemerket";
+"Star" = "Stjernemerk";
 
 /* The title of the star action in action sheet */
 "Unstar" = "Fjern stjernemerking";
@@ -1322,7 +1322,7 @@
 "Please set a recovery / notification email" = "Vennligst angi en gjenopprettings-/varslings-e-post";
 
 /* No comment provided by engineer. */
-"Unread" = "Uleste";
+"Unread" = "Ulest";
 
 /* No comment provided by engineer. */
 "Read" = "Lest";
@@ -1433,7 +1433,7 @@
 "Save as PDF" = "Lagre som PDF";
 
 /* No comment provided by engineer. */
-"View headers" = "Vis topptekst";
+"View headers" = "Vis overskrifter";
 
 /* No comment provided by engineer. */
 "View HTML" = "Vis HTML";
@@ -1625,7 +1625,7 @@
 "Set mail expiration" = "Angi utløpstid for e-post";
 
 /* The voiceover title of the dismiss keyboard action */
-"Dismiss keyboard" = "Lukk tastaturet";
+"Dismiss keyboard" = "Avvis tastaturet";
 
 /* The title of the link confirmation alert of spam email. */
 "Warning: suspected fake website" = "Advarsel: mistenkt falskt nettsted";
@@ -1933,7 +1933,7 @@
 "Navigate to next message after move" = "Naviger til neste melding etter flytting";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Hvis du utfører en flyttehandling på en melding (f.eks. arkiv), navigerer du til neste melding.";
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Hvis du utfører en flyttehandling på en melding (f.eks. arkiver), navigerer du til neste melding.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Det oppstod en uventet feil, vennligst kontakt brukerstøtte.\nFeil: %@";

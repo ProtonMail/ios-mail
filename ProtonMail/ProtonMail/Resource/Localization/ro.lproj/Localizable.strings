@@ -992,7 +992,7 @@
 "Sender Verification Failed" = "Verificare eșuată expeditor";
 
 /* encryption lock description */
-"End-to-end encrypted message" = "Mesaj criptat în ambele părți";
+"End-to-end encrypted message" = "Mesaj criptat bilateral";
 
 /* alert title */
 "Expiration not supported" = "Expirare nesuportată";
@@ -1670,13 +1670,13 @@
 "Scheduling message..." = "Se programează mesajul...";
 
 /* The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption to verified recipient" = "Trimis de către dvs. cu criptare în ambele părți către destinatar verificat.";
+"Sent by you with end-to-end encryption to verified recipient" = "Trimis de către dvs. cu criptare bilaterală către destinatar verificat.";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption to verified recipient" = "Trimis cu Proton Mail cu criptare cu acces zero la destinatar verificat.";
 
 /* The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption" = "Trimis de către dvs. cu criptare în ambele părți.";
+"Sent by you with end-to-end encryption" = "Trimis de către dvs. cu criptare bilaterală.";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Trimis cu Proton Mail cu criptare cu acces zero.";
@@ -1685,10 +1685,10 @@
 "Stored with zero-access encryption" = "Stocat criptat cu acces exclusiv personal";
 
 /* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted message from verified sender" = "Mesaj criptat în ambele părți de la expeditor verificat";
+"End-to-end encrypted message from verified sender" = "Mesaj criptat bilateral de la expeditor verificat";
 
 /* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted and signed message" = "Mesaj criptat în ambele părți și semnat";
+"End-to-end encrypted and signed message" = "Mesaj criptat bilateral și semnat";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message from verified sender" = "Mesaj criptat cu PGP de la utilizator verificat";
@@ -1706,10 +1706,10 @@
 "PGP-signed message. Sender verification failed" = "Mesaj semnat cu PGP. Verificarea expeditorului a eșuat.";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted to verified recipient" = "Criptat în ambele părți spre destinatar verificat";
+"End-to-end encrypted to verified recipient" = "Criptat bilateral spre destinatar verificat";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted" = "Criptat în ambele părți";
+"End-to-end encrypted" = "Criptat bilateral";
 
 /* The message after tapping the encryption icon of recipient in composer. */
 "PGP-encrypted to verified recipient" = "Criptat cu PGP spre destinatar verificat";

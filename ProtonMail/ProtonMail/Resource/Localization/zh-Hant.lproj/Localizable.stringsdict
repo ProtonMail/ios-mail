@@ -97,7 +97,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%u 個交談</string>
+        <string>%u 則往來對話</string>
       </dict>
     </dict>
     <key>%d attempt remaining</key>
@@ -153,7 +153,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%1$d 對話已移至 %2$@</string>
+        <string>%1$d 往來對話已移至 %2$@</string>
       </dict>
     </dict>
     <key>%d message labeled</key>
@@ -181,7 +181,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d 則對話已上標籤</string>
+        <string>%d 則往來對話已上標籤</string>
       </dict>
     </dict>
     <key>Are you sure you want to permanently delete %d message?</key>
@@ -209,7 +209,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>您確定要永久刪除 %d 個交談嗎？</string>
+        <string>您確定要永久刪除 %d 則往來對話嗎？</string>
       </dict>
     </dict>
     <key>%d member</key>

@@ -1631,7 +1631,7 @@
 "Warning: suspected fake website" = "Peringatan: situs web ini terindikasi palsu";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tautan ini merujuk ke sebuah situs web yang mungkin sedang mencuri informasi Anda, seperti kata sandi dan detail kartu kredit.\n%@\n\nUntuk keamanan Anda, jangan melanjutkan.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tautan ini tertuju kepada situs web yang dapat mencuri informasi Anda, seperti kata sandi dan rincian kartu kredit Anda.\n%@\n\nDemi keamanan Anda, jangan lanjutkan tindakan ini.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Abaikan peringatan dan lanjut";

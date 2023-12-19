@@ -2,7 +2,7 @@
 "You are about to launch the web browser and navigate to" = "您將開啟網頁瀏覽器並導覽到";
 
 /* link opeining confirmation */
-"Request link confirmation" = "請求外部連結確認";
+"Request link confirmation" = "需求外部連結確認";
 
 /* Title in settings */
 "Display Name" = "顯示名稱";
@@ -368,7 +368,7 @@
 "Upload device contacts" = "上載裝置通訊錄";
 
 /* top right action text */
-"Create" = "建立";
+"Create" = "創建";
 
 /* add label action */
 "Add Label" = "加入標籤";
@@ -434,7 +434,7 @@
 "Close" = "關閉";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "由於您長時間沒有進行任何操作，您的交談已過期或是被撤銷。請重新登入。";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "由於您長時間沒有進行任何操作，您的往來對話已過期或是被撤銷。請重新登入。";
 
 /* Springboard (3D Touch) shortcuts action */
 "Search" = "搜尋";
@@ -674,7 +674,7 @@
 "Updated Proton, unified protection" = "改版更新的 Proton，全方面防護";
 
 /* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "交談模式將說明您輕鬆瀏覽，並管理郵件往來。";
+"Breeze through threaded messages in conversation mode." = "往來對話模式將說明您輕鬆瀏覽，並管理郵件往來。";
 
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "邀請您的親朋好友一同加入 Proton Mail，享有無縫接軌的端對端加密，也可以在您傳送給他們的郵件裡，加入密碼防護功能。";
@@ -824,10 +824,10 @@
 "The new password needs to be at least 8 characters long" = "新密碼長度至少為八個字元";
 
 /* update password error */
-"Can't create a SRP verifier!" = "無法建立一個 SRP 驗證程式！";
+"Can't create a SRP verifier!" = "無法創建一個 SRP 驗證程式！";
 
 /* update password error */
-"Can't create a SRP Client" = "無法建立一個 SRP 用戶端";
+"Can't create a SRP Client" = "無法創建一個 SRP 用戶端";
 
 /* update password error */
 "The password is wrong." = "密碼錯誤。";
@@ -1379,10 +1379,10 @@
 "Inherited from parent folder" = "繼承自上層資料夾";
 
 /* Alert title */
-"Creating folder not allowed" = "不允許建立資料夾";
+"Creating folder not allowed" = "不允許創建資料夾";
 
 /* Alert title */
-"Creating label not allowed" = "不允許建立標籤";
+"Creating label not allowed" = "不允許創建標籤";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "請升級至付費方案以使用超過 3 個資料夾";
@@ -1412,10 +1412,10 @@
 "Load embedded images" = "載入內崁圖像";
 
 /* No comment provided by engineer. */
-"This conversation contains trashed messages" = "此交談群組包含已移至「垃圾桶」的郵件";
+"This conversation contains trashed messages" = "此往來對話群組包含已移至「垃圾桶」的郵件";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "此交談包含非垃圾訊息。";
+"This conversation contains non-trashed messages." = "此往來對話包含非垃圾訊息。";
 
 /* No comment provided by engineer. */
 "Message actions" = "訊息的動作";
@@ -1478,13 +1478,13 @@
 "Do you want to discard the changes?" = "您要捨棄所作的變更嗎？";
 
 /* No comment provided by engineer. */
-"Group emails from the same conversation together." = "將相同的交談電郵進行歸納。";
+"Group emails from the same conversation together." = "將相同的往來對話電郵進行歸納。";
 
 /* No comment provided by engineer. */
-"Conversation grouping" = "對話群組";
+"Conversation grouping" = "往來對話群組";
 
 /* No comment provided by engineer. */
-"Conversation mode" = "交談群组模式";
+"Conversation mode" = "往來對話群组模式";
 
 /* No comment provided by engineer. */
 "Undo send" = "取消傳送";
@@ -1951,13 +1951,13 @@
 "Please sign in to the Proton Mail app." = "請登入 Proton Mail";
 
 /* The action title in the action sheet of the reply action in conversation view. */
-"Reply (to last message)" = "回覆 (傳送至最新交談訊息)";
+"Reply (to last message)" = "回覆 (傳送至最新往來對話訊息)";
 
 /* The action title in the action sheet of the forward action in conversation view. */
-"Forward (last message)" = "轉寄 (最新交談訊息相關人等)";
+"Forward (last message)" = "轉寄 (最新往來對話訊息相關人等)";
 
 /* The action title in the action sheet of the reply action in conversation view. */
-"Reply all (to last message)" = "回覆全部 (最新交談訊息裡相關人等)";
+"Reply all (to last message)" = "回覆全部 (最新往來對話訊息裡相關人等)";
 
 /* The action title in the action sheet of the composing new message */
 "New message" = "新訊息";
