@@ -270,19 +270,53 @@ html_editor.handlePastedData = function (event) {
         .replace(/thgiew-tnof/g, 'font-weight')
     if (item == undefined || item.length === 0) { return }
     event.preventDefault();
+    
+    const processedData = uploadImageIfPastedDataHasImage(item)
 
     let selection = window.getSelection()
     if (selection.rangeCount === 0) { return }
     let range = selection.getRangeAt(0);
     range.deleteContents();
     let div = document.createElement('div');
-    div.innerHTML = item;
+    div.innerHTML = processedData;
     let fragment = document.createDocumentFragment();
     let child;
     while ((child = div.firstChild)) {
         fragment.appendChild(child);
     }
     range.insertNode(fragment);
+}
+
+function uploadImageIfPastedDataHasImage(pastedDataText) {
+    const parsedDOM = new DOMParser().parseFromString(pastedDataText, "text/html");
+    const imageElements = parsedDOM.querySelectorAll('img')
+    for (var i = 0; i < imageElements.length; i++) {
+        const element = imageElements[i]
+
+        // bits = 'data:image.....'
+        const bits = element.src
+        const base64 = bits.replace(/data:image\/[a-z]+;base64,/, '').trim();
+        const fileType = getFileTypeFromBase64String(bits)
+        const cid = html_editor.createUUID()
+        const protonCID = `proton-cid:${cid}`
+        const name = `${cid}_.${fileType}`
+
+        element.removeAttribute('style')
+        element.setAttribute('draggable', 'false')
+        element.setAttribute('src-original-pm-cid', protonCID)
+        html_editor.cachedCIDs[protonCID] = bits;
+        window.webkit.messageHandlers.addImage.postMessage({ "messageHandler": "addImage", "cid": cid, "data": base64 });
+    }
+    return parsedDOM.body.innerHTML
+}
+
+function getFileTypeFromBase64String(base64) {
+    const match = base64.match(/data:.*\/(.*);/)
+    if (match.length == 2) {
+        return match[1]
+    } else {
+        return ''
+    }
 }
 
 /// breaks the block quote into two if possible
