@@ -1016,9 +1016,6 @@ class LocalizedString {
     lazy var _title_of_viewInLightMode_action_in_action_sheet = NSLocalizedString("View message in Light mode", comment: "The title of the view message in light mode action in action sheet")
     lazy var _title_of_viewInDarkMode_action_in_action_sheet = NSLocalizedString("View message in Dark mode", comment: "The title of the view message in dark mode action in action sheet")
 
-    lazy var _settings_footer_of_combined_contact = NSLocalizedString("Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.", comment: "The footer of combined contact in settings")
-    lazy var _settings_title_of_combined_contact = NSLocalizedString("Combined contacts", comment: "The title of combined contact in settings")
-
     lazy var _settings_alternative_routing_footer = NSLocalizedString("In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@", comment: "The footer of alternative routing setting")
     lazy var _settings_alternative_routing_title = NSLocalizedString("Networking", comment: "The title of alternative routing settings")
     lazy var _settings_alternative_routing_learn = NSLocalizedString("Learn more", comment: "The title of learn more link")
@@ -1339,6 +1336,15 @@ enum L11n {
         static let referAFriend = NSLocalizedString("Refer a friend", comment: "The title of the refer button in referral prompt view.")
         static let maybeLater = NSLocalizedString("Maybe later", comment: "The title of the maybe later button in referral prompt view.")
 	}
+
+    struct SettingsContacts {
+        static let combinedContacts = NSLocalizedString("Combined contacts", comment: "The title of combined contact in settings")
+        static let combinedContactsFooter = NSLocalizedString("Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.", comment: "The footer of combined contact in settings")
+        static let autoImportContacts = NSLocalizedString("Auto-import device contacts", comment: "contacts auto import title in settings")
+        static let autoImportContactsFooter = NSLocalizedString("Turn this feature on to automatically add new contacts from your device to the Proton Mail app.", comment: "contacts auto import footer in settings")
+        static let autoImportAlertTitle = NSLocalizedString("Auto-import enabled", comment: "Auto import alert title")
+        static let autoImportAlertMessage = NSLocalizedString("The initial import may take some time and will only occur when the app is in the foreground.", comment: "Auto import alert message")
+    }
 
     struct SettingsLockScreen {
         static let protectionTitle = NSLocalizedString("Protection", comment: "Settings lock protection section")

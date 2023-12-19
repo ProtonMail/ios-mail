@@ -31,6 +31,10 @@ extension UserInfo {
         false // UIApplication.isDebugOrEnterprise
     }
 
+    static var isAutoImportContactsEnabled: Bool {
+        false
+    }
+
     static var shareImagesAsInlineByDefault: Bool {
         UIApplication.isDebugOrEnterprise
     }

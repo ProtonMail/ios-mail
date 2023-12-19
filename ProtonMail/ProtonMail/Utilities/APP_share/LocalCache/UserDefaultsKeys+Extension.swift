@@ -24,6 +24,8 @@ extension UserDefaultsKeys {
 
     static let isCombineContactOn = plainKey<Bool>(named: "combine_contact_flag", defaultValue: false)
 
+    static let isAutoImportContactsOn = plainKey<Bool>(named: "auto_import_contacts_flag", defaultValue: false)
+
     static let isDohOn = plainKey(named: "doh_flag", defaultValue: true)
 
     static let isPMMEWarningDisabled = plainKey(named: "isPM_MEWarningDisabledKey", defaultValue: false)

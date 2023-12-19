@@ -203,6 +203,8 @@ extension SettingsDeviceViewController {
                     settingsGeneralCell.configure(left: item.description)
                     let status = self.viewModel.isDohOn ? LocalString._settings_On_title : LocalString._settings_Off_title
                     settingsGeneralCell.configure(right: status)
+                case .contacts:
+                    settingsGeneralCell.configure(left: item.description)
                 case .toolbar:
                     settingsGeneralCell.configure(left: item.description)
                 case .applicationLogs:
@@ -333,6 +335,8 @@ extension SettingsDeviceViewController {
                 present(alert, animated: true, completion: nil)
             case .alternativeRouting:
                 coordinator?.go(to: .alternativeRouting)
+            case .contacts:
+                coordinator?.go(to: .contactsSettings)
             case .swipeAction:
                 coordinator?.go(to: .swipeAction)
             case .toolbar:
