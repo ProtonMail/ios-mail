@@ -224,6 +224,7 @@ extension AppDelegate: UIApplicationDelegate {
             dependencies.queueManager.enterForeground()
             user.refreshFeatureFlags()
             user.blockedSenderCacheUpdater.requestUpdate()
+            importDeviceContactsIfNeeded(user: user)
         }
     }
 
@@ -271,6 +272,16 @@ extension AppDelegate: UIApplicationDelegate {
             return
         }
         coreKeyMaker.updateAutolockCountdownStart()
+    }
+
+    private func importDeviceContactsIfNeeded(user: UserManager) {
+        if UserInfo.isAutoImportContactsEnabled && user.container.userDefaults[.isAutoImportContactsOn] {
+            let params = ImportDeviceContacts.Params(
+                userKeys: user.userInfo.userKeys,
+                mailboxPassphrase: user.mailboxPassword
+            )
+            user.container.importDeviceContacts.execute(params: params)
+        }
     }
 }
 
