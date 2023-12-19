@@ -11,10 +11,9 @@ html_editor.editor_header = document.getElementById('editor_header');
 /// track changes in DOM tree
 var mutationObserver = new MutationObserver(function (events) {
     var insertedImages = false;
-    var {moveEvents, otherEvents} = splitImageMoveEvents(events);
-    postProcessImageMoveEvents(moveEvents);
-    for (var i = 0; i < otherEvents.length; i++) {
-        var event = otherEvents[i];
+
+    for (var i = 0; i < events.length; i++) {
+        var event = events[i];
         event.target.setAttribute("dir", "auto");
         // check if removed image was our inline embedded attachment
         for (var j = 0; j < event.removedNodes.length; j++) {
@@ -51,42 +50,6 @@ var mutationObserver = new MutationObserver(function (events) {
     }
 });
 mutationObserver.observe(html_editor.editor, { childList: true, subtree: true });
-
-// Split move events from MutationRecords
-// When move action happens
-// There are 2 important MutationRecords, one to add new element the other to remove old element
-function splitImageMoveEvents(events) {
-    var moveEvents = {'add': null, 'remove': null}
-    var otherEvents = []
-    for (var i = 0; i < events.length; i++) {
-        const event = events[i]
-        if (event.addedNodes.length == 1 && event.addedNodes[0].tagName == 'IMG') {
-            // Sometimes there are multiple added element but they are point to the same img element 
-            moveEvents['add'] = event
-        } else if (event.removedNodes.length == 1 &&
-                   event.removedNodes[0].tagName == 'IMG' &&
-                   event.removedNodes[0].src.startsWith('data')) {
-            moveEvents['remove'] = event
-        } else {
-            otherEvents.push(event)
-        }
-    }
-    return {moveEvents, otherEvents}
-}
-
-// Update attributes from old element to new element
-function postProcessImageMoveEvents(events) {
-    const added = events['add']
-    const removed = events['remove']
-    if (added == null || removed == null) { return }
-
-    const src = removed.removedNodes[0].src
-    const pmCID = removed.removedNodes[0].getAttribute('src-original-pm-cid')
-
-    const addedImg = added.addedNodes[0]
-    addedImg.src = src
-    addedImg.setAttribute('src-original-pm-cid', pmCID)
-}
 
 /// cached embed image cids
 html_editor.cachedCIDs = {};
@@ -386,6 +349,7 @@ html_editor.insertEmbedImage = function (cid, base64) {
     let lowerBr = document.createElement('br');
     let embed = document.createElement('img');
     embed.src = base64;
+    embed.setAttribute('draggable', 'false')
     embed.setAttribute('src-original-pm-cid', `${cid}`);
     html_editor.cachedCIDs[cid] = base64;
 
