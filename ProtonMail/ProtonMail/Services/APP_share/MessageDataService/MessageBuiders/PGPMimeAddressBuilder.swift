@@ -38,7 +38,7 @@ class PGPMimeAddressBuilder: PackageBuilder {
 
     override func build() -> Promise<AddressPackageBase> {
         return async {
-            guard let publicKey = self.sendPreferences.publicKeys else {
+            guard let publicKey = self.sendPreferences.publicKey else {
                 fatalError("Missing PGP key")
             }
             let newKeypacket = try self.session

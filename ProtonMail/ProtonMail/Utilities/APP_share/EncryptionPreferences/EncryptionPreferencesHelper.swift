@@ -132,10 +132,7 @@ enum EncryptionPreferencesHelper {
                      scheme: publicKeyModel.scheme,
                      mimeType: publicKeyModel.mimeType,
                      isInternal: true,
-                     apiKeys: publicKeyModel.apiKeys,
-                     pinnedKeys: [],
                      hasApiKeys: publicKeyModel.hasApiKeys,
-                     hasPinnedKeys: false,
                      sendKey: error == nil ? selfSendConfig.publicKey : nil,
                      isSendKeyPinned: false,
                      error: error)
@@ -349,10 +346,7 @@ enum EncryptionPreferencesHelper {
             scheme: publicKeyModel.scheme,
             mimeType: publicKeyModel.mimeType,
             isInternal: true,
-            apiKeys: publicKeyModel.publicKeys.apiKeys,
-            pinnedKeys: publicKeyModel.publicKeys.pinnedKeys,
             hasApiKeys: !publicKeyModel.publicKeys.apiKeys.isEmpty,
-            hasPinnedKeys: !publicKeyModel.publicKeys.pinnedKeys.isEmpty,
             sendKey: sendKey,
             isSendKeyPinned: isSendKeyPinned,
             error: error
@@ -370,10 +364,7 @@ enum EncryptionPreferencesHelper {
                      scheme: publicKeyModel.scheme,
                      mimeType: publicKeyModel.mimeType,
                      isInternal: false,
-                     apiKeys: publicKeyModel.apiKeys,
-                     pinnedKeys: publicKeyModel.pinnedKeys,
                      hasApiKeys: true,
-                     hasPinnedKeys: publicKeyModel.hasPinnedKeys,
                      sendKey: sendKey,
                      isSendKeyPinned: isSendKeyPinned,
                      error: error)
@@ -398,10 +389,7 @@ enum EncryptionPreferencesHelper {
             scheme: publicKeyModel.scheme,
             mimeType: publicKeyModel.mimeType,
             isInternal: false,
-            apiKeys: publicKeyModel.apiKeys,
-            pinnedKeys: publicKeyModel.pinnedKeys,
             hasApiKeys: false,
-            hasPinnedKeys: publicKeyModel.hasPinnedKeys,
             sendKey: sendKey,
             isSendKeyPinned: isSendKeyPinned,
             error: error
