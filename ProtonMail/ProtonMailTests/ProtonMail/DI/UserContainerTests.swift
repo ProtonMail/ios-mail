@@ -70,6 +70,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.eventProcessor
         _ = strongRefToContainer?.eventsService
         _ = strongRefToContainer?.featureFlagsDownloadService
+        _ = strongRefToContainer?.featureFlagProvider
         _ = strongRefToContainer?.fetchAndVerifyContacts
         _ = strongRefToContainer?.fetchAttachment
         _ = strongRefToContainer?.fetchAttachmentMetadata

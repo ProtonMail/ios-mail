@@ -21,10 +21,10 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Combine
-import ProtonCoreDataModel
 
 final class AttachmentViewModel {
     typealias Dependencies = HasEventRSVP
+    & HasFeatureFlagProvider
     & HasFetchAttachmentUseCase
     & HasFetchAttachmentMetadataUseCase
     & HasUserManager
@@ -76,11 +76,10 @@ final class AttachmentViewModel {
     }
 
     private func checkAttachmentsForInvitations() {
-        guard UserInfo.isEventRSVPEnabled else {
-            return
-        }
-
-        guard let ics = attachments.first(where: { $0.type == .calendar }) else {
+        guard
+            dependencies.featureFlagProvider.isEnabled(.rsvpWidget),
+            let ics = attachments.first(where: { $0.type == .calendar })
+        else {
             return
         }
 

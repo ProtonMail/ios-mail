@@ -46,8 +46,4 @@ extension UserInfo {
         return false
         #endif
     }
-
-    static var isEventRSVPEnabled: Bool {
-        ProcessInfo.isRunningUnitTests
-    }
 }

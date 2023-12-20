@@ -536,6 +536,16 @@ extension UserContainer: HasFeatureFlagsDownloadService {
     }
 }
 
+protocol HasFeatureFlagProvider {
+    var featureFlagProvider: FeatureFlagProvider { get }
+}
+
+extension UserContainer: HasFeatureFlagProvider {
+    var featureFlagProvider: FeatureFlagProvider {
+        featureFlagProviderFactory()
+    }
+}
+
 protocol HasFetchAndVerifyContacts {
     var fetchAndVerifyContacts: FetchAndVerifyContacts { get }
 }

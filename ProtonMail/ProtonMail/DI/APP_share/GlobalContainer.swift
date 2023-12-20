@@ -199,6 +199,7 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
+    @available(*, deprecated, message: "Prefer `FeatureFlagProvider`")
     var featureFlagsRepositoryFactory: Factory<FeatureFlagsRepository> {
         self {
             FeatureFlagsRepository.shared
