@@ -30,7 +30,6 @@ protocol AttachmentViewControllerDelegate: AnyObject {
 
 class AttachmentViewController: UIViewController {
     private let viewModel: AttachmentViewModel
-    private let rsvp = EventRSVPFake()
     private var subscriptions = Set<AnyCancellable>()
 
     private let invitationProcessingView = InCellActivityIndicatorView(style: .medium)
