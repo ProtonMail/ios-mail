@@ -361,6 +361,29 @@ final class MessageInfoProviderTest: XCTestCase {
 
         wait(self.delegateObject.attachmentsUpdate.wasCalledExactlyOnce == true)
     }
+
+    func testInit_withSentMessageWithBody_isDetailDownloadedIsUpdated_contentWillBeUpdated() throws {
+        let body = try Encryptor.encrypt(
+            publicKey: user.userInfo.addressKeys.toArmoredPrivateKeys[0],
+            cleartext: "Test"
+        ).value
+        let message = MessageEntity.make(body: body, labels: [.make(labelID: Message.Location.sent.labelID)], isDetailDownloaded: false)
+
+        sut.update(message: message)
+
+        wait(self.delegateObject.attachmentsUpdate.callCounter == 2)
+        XCTAssertNotNil(sut.bodyParts)
+        XCTAssertEqual(sut.bodyParts?.originalBody, "Test")
+
+        let updatedMessage = MessageEntity.make(body: body, labels: [.make(labelID: Message.Location.sent.labelID)], isDetailDownloaded: true)
+
+        sut.update(message: updatedMessage)
+
+        // When the isDetailDownloaded flag is updated, the delegate will still be triggered even the body is still the same.
+        wait(self.delegateObject.attachmentsUpdate.callCounter == 3)
+        XCTAssertNotNil(sut.bodyParts)
+        XCTAssertEqual(sut.bodyParts?.originalBody, "Test")
+    }
 }
 
 extension MessageInfoProviderTest {

@@ -57,7 +57,8 @@ final class MessageInfoProvider {
         }
         didSet {
             let bodyHasChanged = message.body != oldValue.body
-            if bodyHasChanged || bodyParts == nil {
+            let isDetailDownloadedHasChanged = message.isDetailDownloaded != oldValue.isDetailDownloaded
+            if bodyHasChanged || bodyParts == nil || isDetailDownloadedHasChanged {
                 pgpChecker = MessageSenderPGPChecker(message: message, dependencies: dependencies)
                 prepareDisplayBody()
                 checkSenderPGP()
