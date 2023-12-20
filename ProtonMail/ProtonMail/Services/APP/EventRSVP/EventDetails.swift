@@ -17,14 +17,8 @@
 
 import Foundation
 
-// sourcery: mock
-protocol EventRSVP {
-    func parseData(icsData: Data) async throws -> EventDetails
-}
-
 struct EventDetails: Equatable {
     struct Calendar: Equatable {
-        let id: String
         let name: String
         let iconColor: String
     }
@@ -58,44 +52,4 @@ struct EventDetails: Equatable {
     let calendar: Calendar
     let location: Location
     let participants: [Participant]
-}
-
-struct EventRSVPFake: EventRSVP {
-    func parseData(icsData: Data) async throws -> EventDetails {
-        sleep(3)
-
-        try Task.checkCancellation()
-
-        return .figmaMock
-    }
-}
-
-private extension EventDetails {
-    static var figmaMock: Self {
-        let calendar = Foundation.Calendar.autoupdatingCurrent
-        var eventDateComponents = DateComponents(year: 2_023, month: 11, day: 16, hour: 14, minute: 30)
-        let startDate = calendar.date(from: eventDateComponents)!
-        eventDateComponents.hour = 15
-        let endDate = calendar.date(from: eventDateComponents)!
-
-        return .init(
-            title: "Team Collaboration Workshop",
-            startDate: startDate,
-            endDate: endDate,
-            calendar: .init(
-                id: "foo",
-                name: "General",
-                iconColor: "#FF0000"
-            ),
-            location: .init(
-                name: "Zoom call",
-                url: URL(string: "https://zoom-call")!
-            ),
-            participants: [
-                .init(email: "aubrey.thompson@proton.me", isOrganizer: true, status: .attending)
-            ].appending(
-                (1...3).map { .init(email: "participant.\($0)@proton.me", isOrganizer: false, status: .attending) }
-            )
-        )
-    }
 }

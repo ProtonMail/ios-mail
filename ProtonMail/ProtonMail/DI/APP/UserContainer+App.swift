@@ -69,8 +69,7 @@ extension UserContainer {
 
     var eventRSVPFactory: Factory<EventRSVP> {
         self {
-            // replace with the framework provided by Calendar once it's ready
-            EventRSVPFake()
+            LocalEventRSVP(apiService: self.apiService)
         }
     }
 
