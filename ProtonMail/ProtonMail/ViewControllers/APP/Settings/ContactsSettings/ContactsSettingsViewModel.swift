@@ -59,7 +59,8 @@ extension ContactsSettingsViewModel: ContactsSettingsViewModelOutput {
         case .combineContacts:
             return dependencies.userDefaults[.isCombineContactOn]
         case .autoImportContacts:
-            return dependencies.userDefaults[.isAutoImportContactsOn]
+            let autoImportFlags = dependencies.userDefaults[.isAutoImportContactsOn]
+            return autoImportFlags[dependencies.user.userID.rawValue] ?? false
         }
     }
 }
@@ -71,15 +72,27 @@ extension ContactsSettingsViewModel: ContactsSettingsViewModelInput {
         case .combineContacts:
             dependencies.userDefaults[.isCombineContactOn] = isEnabled
         case .autoImportContacts:
-            dependencies.userDefaults[.isAutoImportContactsOn] = isEnabled
-            if isEnabled {
-                let params = ImportDeviceContacts.Params(
-                    userKeys: dependencies.user.userInfo.userKeys,
-                    mailboxPassphrase: dependencies.user.mailboxPassword
-                )
-                dependencies.importDeviceContacts.execute(params: params)
-            }
+            didTapAutoImportContacts(isEnabled: isEnabled)
         }
+    }
+
+    private func didTapAutoImportContacts(isEnabled: Bool) {
+        var autoImportFlags = dependencies.userDefaults[.isAutoImportContactsOn]
+        autoImportFlags[dependencies.user.userID.rawValue] = isEnabled
+        dependencies.userDefaults[.isAutoImportContactsOn] = autoImportFlags
+        if isEnabled {
+            let params = ImportDeviceContacts.Params(
+                userKeys: dependencies.user.userInfo.userKeys,
+                mailboxPassphrase: dependencies.user.mailboxPassword
+            )
+            dependencies.importDeviceContacts.execute(params: params)
+        } else {
+            var historyTokens = dependencies.userDefaults[.contactsHistoryTokenPerUser]
+            historyTokens[dependencies.user.userID.rawValue] = nil
+            dependencies.userDefaults[.contactsHistoryTokenPerUser] = historyTokens
+        }
+        let msg = "Auto import contacts changed to: \(isEnabled) for user \(dependencies.user.userID.rawValue.redacted)"
+        SystemLogger.log(message: msg, category: .contacts)
     }
 }
 

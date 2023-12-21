@@ -275,7 +275,10 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     private func importDeviceContactsIfNeeded(user: UserManager) {
-        if UserInfo.isAutoImportContactsEnabled && user.container.userDefaults[.isAutoImportContactsOn] {
+        let autoImportFlags = user.container.userDefaults[.isAutoImportContactsOn]
+        let isAutoImportEnabledForUser = autoImportFlags[user.userID.rawValue] ?? false
+
+        if UserInfo.isAutoImportContactsEnabled && isAutoImportEnabledForUser {
             let params = ImportDeviceContacts.Params(
                 userKeys: user.userInfo.userKeys,
                 mailboxPassphrase: user.mailboxPassword

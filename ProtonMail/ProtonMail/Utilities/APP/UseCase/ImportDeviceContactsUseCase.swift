@@ -63,7 +63,7 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
     }
 
     func execute(params: Params) {
-        SystemLogger.log(message: "ImportDeviceContacts execute", category: .contacts)
+        SystemLogger.log(message: "ImportDeviceContacts call for user \(userID.rawValue.redacted)", category: .contacts)
         guard backgroundTask == nil else { return }
 
         backgroundTask = Task.detached(priority: .userInitiated) { [weak self] in
@@ -356,7 +356,7 @@ extension ImportDeviceContacts {
             let msgCreate = "Proton contacts to create: \(toCreate.count)"
             let msgUpdateUuid = "to update (uuid match): \(toUpdateByUuidMatch.count)"
             let msgUpdateEmail = "to update (email match): \(toUpdateByEmailMatch.count)"
-            return "\(msgCreate) \(msgUpdateUuid) \(msgUpdateEmail)"
+            return "\(msgCreate), \(msgUpdateUuid), \(msgUpdateEmail)"
         }
     }
 }
