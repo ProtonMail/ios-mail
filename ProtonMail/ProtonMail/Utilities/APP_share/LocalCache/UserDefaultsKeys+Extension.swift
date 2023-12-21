@@ -20,11 +20,16 @@ import Foundation
 extension UserDefaultsKeys {
     static let areContactsCached = plainKey<Int>(named: "isContactsCached", defaultValue: 0)
 
+    static let contactsHistoryTokenPerUser = plainKey(
+        named: "contacts_history_token_per_user",
+        defaultValue: [String: Data]()
+    )
+
     static let darkModeStatus = rawRepresentableKey(named: "dark_mode_flag", defaultValue: DarkModeStatus.followSystem)
 
     static let isCombineContactOn = plainKey<Bool>(named: "combine_contact_flag", defaultValue: false)
 
-    static let isAutoImportContactsOn = plainKey<Bool>(named: "auto_import_contacts_flag", defaultValue: false)
+    static let isAutoImportContactsOn = plainKey(named: "auto_import_contacts_flag", defaultValue: [String: Bool]())
 
     static let isDohOn = plainKey(named: "doh_flag", defaultValue: true)
 
