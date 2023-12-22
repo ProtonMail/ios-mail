@@ -443,11 +443,10 @@ extension MenuViewModel {
             contextProvider: dependencies.contextProvider
         )
         conversationCountPublisherCancellable = conversationCountPublisher?.contentDidChange
+            .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] _ in
-                DispatchQueue.main.async {
-                    self?.updateUnread()
-                    self?.delegate?.updateMenu(section: nil)
-                }
+                self?.updateUnread()
+                self?.delegate?.updateMenu(section: nil)
             })
         conversationCountPublisher?.start()
     }

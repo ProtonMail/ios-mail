@@ -92,13 +92,12 @@ final class ContactDetailsViewModel: NSObject {
         self.contactParser = ContactParser(resultDelegate: self)
         cancellable = dataPublisher.contentDidChange
             .map{ $0.map { ContactEntity(contact: $0) }}
+            .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] contacts in
                 guard let contact = contacts.first else { return }
-                DispatchQueue.main.async {
-                    self?.setContact(contact)
-                    self?.rebuildData()
-                    self?.reloadView?()
-                }
+                self?.setContact(contact)
+                self?.rebuildData()
+                self?.reloadView?()
             })
         dataPublisher.start()
     }

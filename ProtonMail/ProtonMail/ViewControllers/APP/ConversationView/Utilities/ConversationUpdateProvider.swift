@@ -23,21 +23,20 @@ class ConversationUpdateProvider: NSObject, NSFetchedResultsControllerDelegate {
     private var conversationDidUpdate: ((ConversationEntity?) -> Void)?
 
     private lazy var fetchedController: NSFetchedResultsController<Conversation> = {
-        let context = contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<Conversation>(entityName: Conversation.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(
+        let predicate = NSPredicate(
             format: "%K == %@",
             Conversation.Attributes.conversationID.rawValue,
             self.conversationID.rawValue
         )
-        fetchRequest.sortDescriptors = [
+        let sortDescriptors = [
             NSSortDescriptor(key: #keyPath(Conversation.order), ascending: true)
         ]
-        return NSFetchedResultsController(
-            fetchRequest: fetchRequest,
-            managedObjectContext: context,
-            sectionNameKeyPath: nil,
-            cacheName: nil
+        return contextProvider.createFetchedResultsController(
+            entityName: Conversation.Attributes.entityName,
+            predicate: predicate,
+            sortDescriptors: sortDescriptors,
+            fetchBatchSize: 0,
+            sectionNameKeyPath: nil
         )
     }()
 
@@ -50,7 +49,9 @@ class ConversationUpdateProvider: NSObject, NSFetchedResultsControllerDelegate {
     func observe(conversationDidUpdate: @escaping (ConversationEntity?) -> Void) {
         self.conversationDidUpdate = conversationDidUpdate
         fetchedController.delegate = self
-        try? fetchedController.performFetch()
+        fetchedController.managedObjectContext.perform {
+            try? self.fetchedController.performFetch()
+        }
     }
 
     func stopObserve() {

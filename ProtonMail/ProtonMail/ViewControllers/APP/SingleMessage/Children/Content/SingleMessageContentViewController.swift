@@ -104,8 +104,10 @@ class SingleMessageContentViewController: UIViewController {
         customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !viewModel.messageInfoProvider.hasStrippedVersion
         customView.showHideHistoryButtonContainer.showHideHistoryButton.addTarget(self, action: #selector(showHide), for: .touchUpInside)
         viewModel.messageHadChanged = { [weak self] in
-            guard let self = self else { return }
-            self.embedAttachmentViewIfNeeded()
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.embedAttachmentViewIfNeeded()
+            }
         }
 
         viewModel.startMonitorConnectionStatus { [weak self] in

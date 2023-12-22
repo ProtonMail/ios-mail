@@ -47,33 +47,30 @@ final class LabelPublisher: NSObject, LabelPublisherProtocol {
         if fetchResultsController == nil {
             setUpResultsController(labelType: labelType)
         }
-
-        do {
-            try fetchResultsController?.performFetch()
-            handleFetchResult(objects: fetchResultsController?.fetchedObjects)
-        } catch {
-            let message = "LabelPublisher error: \(String(describing: error))"
-            SystemLogger.log(message: message, category: .coreData, isError: true)
-        }
+        fetchAndPublishTheData()
     }
 
     func fetchLabel(_ labelID: LabelID) {
         setUpResultsController(labelID: labelID)
+        fetchAndPublishTheData()
+    }
 
-        do {
-            try fetchResultsController?.performFetch()
-            handleFetchResult(objects: fetchResultsController?.fetchedObjects)
-        } catch {
-            let message = "LabelPublisher error: \(String(describing: error))"
-            SystemLogger.log(message: message, category: .coreData, isError: true)
+    private func fetchAndPublishTheData() {
+        fetchResultsController?.managedObjectContext.perform {
+            do {
+                try self.fetchResultsController?.performFetch()
+                self.handleFetchResult(objects: self.fetchResultsController?.fetchedObjects)
+            } catch {
+                let message = "LabelPublisher error: \(String(describing: error))"
+                SystemLogger.log(message: message, category: .coreData, isError: true)
+            }
         }
     }
 
     // MARK: Private methods
 
     private func setUpResultsController(labelID: LabelID) {
-        let fetchRequest = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(
+        let predicate = NSPredicate(
             format: "%K == %@ AND %K == 0",
             Label.Attributes.labelID,
             labelID.rawValue,
@@ -84,26 +81,23 @@ final class LabelPublisher: NSObject, LabelPublisherProtocol {
             ascending: true,
             selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
         )
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        fetchResultsController = .init(
-            fetchRequest: fetchRequest,
-            managedObjectContext: dependencies.contextProvider.mainContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil
+        fetchResultsController = dependencies.contextProvider.createFetchedResultsController(
+            entityName: Label.Attributes.entityName,
+            predicate: predicate,
+            sortDescriptors: [sortDescriptor],
+            fetchBatchSize: 0,
+            sectionNameKeyPath: nil
         )
         fetchResultsController?.delegate = self
     }
 
     private func setUpResultsController(labelType: LabelFetchType) {
-        let fetchRequest = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
-        fetchRequest.predicate = fetchRequestPredicate(for: labelType)
-        fetchRequest.sortDescriptors = fetchRequestDescriptors(for: labelType)
-
-        fetchResultsController = NSFetchedResultsController(
-            fetchRequest: fetchRequest,
-            managedObjectContext: dependencies.contextProvider.mainContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil
+        fetchResultsController = dependencies.contextProvider.createFetchedResultsController(
+            entityName: Label.Attributes.entityName,
+            predicate: fetchRequestPredicate(for: labelType),
+            sortDescriptors: fetchRequestDescriptors(for: labelType),
+            fetchBatchSize: 0,
+            sectionNameKeyPath: nil
         )
         fetchResultsController?.delegate = self
     }

@@ -175,10 +175,7 @@ final class MailboxViewControllerTests: XCTestCase {
         )
         sut.loadViewIfNeeded()
 
-        XCTAssertEqual(
-            sut.updateTimeLabel.text,
-            LocalString._mailblox_last_update_time_just_now
-        )
+        wait(self.sut.updateTimeLabel.text == LocalString._mailblox_last_update_time_just_now)
     }
 
     func testLastUpdateLabel_eventUpdateTimeIs30MinsBefore_titleIsLastUpdateIn30Mins() {
@@ -198,8 +195,8 @@ final class MailboxViewControllerTests: XCTestCase {
         )
         sut.loadViewIfNeeded()
 
-        XCTAssertEqual(
-            sut.updateTimeLabel.text,
+        wait(
+            self.sut.updateTimeLabel.text ==
             String.localizedStringWithFormat(LocalString._mailblox_last_update_time, 30)
         )
     }
@@ -340,7 +337,7 @@ final class MailboxViewControllerTests: XCTestCase {
         )
         sut.loadViewIfNeeded()
 
-        XCTAssertFalse(sut.unreadFilterButton.isHidden)
+        wait(self.sut.unreadFilterButton.isHidden == false)
         XCTAssertEqual(sut.unreadFilterButton.titleLabel?.text, " +9999 \(LocalString._unread_action) ")
     }
 

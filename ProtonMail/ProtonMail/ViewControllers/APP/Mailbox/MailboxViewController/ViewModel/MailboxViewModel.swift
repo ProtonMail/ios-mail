@@ -421,8 +421,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         eventUpdatePublisher?.startObserve(
             userID: user.userID,
             onContentChanged: { [weak self] events in
-                self?.latestEventUpdateTime = events.first?.updateTime
-                self?.uiDelegate?.updateTheUpdateTimeLabel()
+                DispatchQueue.main.async {
+                    self?.latestEventUpdateTime = events.first?.updateTime
+                    self?.uiDelegate?.updateTheUpdateTimeLabel()
+                }
             })
 	}
 

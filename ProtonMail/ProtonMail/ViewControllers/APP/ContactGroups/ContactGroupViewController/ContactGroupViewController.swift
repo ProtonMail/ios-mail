@@ -617,7 +617,9 @@ extension ContactGroupsViewController: UIAdaptivePresentationControllerDelegate 
 
 extension ContactGroupsViewController: ContactGroupsUIProtocol {
     func reloadTable() {
-        self.tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
 }
 

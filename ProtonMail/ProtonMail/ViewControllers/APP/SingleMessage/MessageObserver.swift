@@ -28,9 +28,8 @@ class MessageObserver: NSObject, NSFetchedResultsControllerDelegate {
     private var messageHasChanged: ((Message) -> Void)?
 
     init(messageID: MessageID, contextProvider: CoreDataContextProviderProtocol) {
-        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID.rawValue)
-        fetchRequest.sortDescriptors = [
+        let predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID.rawValue)
+        let sortDescriptors = [
             NSSortDescriptor(
                 key: Message.Attributes.time,
                 ascending: false
@@ -40,11 +39,12 @@ class MessageObserver: NSObject, NSFetchedResultsControllerDelegate {
                 ascending: false
             )
         ]
-        singleMessageFetchedController = NSFetchedResultsController(
-            fetchRequest: fetchRequest,
-            managedObjectContext: contextProvider.mainContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil
+        singleMessageFetchedController = contextProvider.createFetchedResultsController(
+            entityName: Message.Attributes.entityName,
+            predicate: predicate,
+            sortDescriptors: sortDescriptors,
+            fetchBatchSize: 0,
+            sectionNameKeyPath: nil
         )
     }
 
