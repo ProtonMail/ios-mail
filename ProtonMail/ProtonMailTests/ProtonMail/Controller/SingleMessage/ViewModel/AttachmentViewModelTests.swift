@@ -39,8 +39,7 @@ class AttachmentViewModelTests: XCTestCase {
             iconColor: "#FF0000"
         ),
         location: .init(
-            name: "Zoom call",
-            url: URL(string: "https://zoom-call")!
+            name: "Zoom call"
         ),
         participants: [
             .init(email: "aubrey.thompson@proton.me", isOrganizer: true, status: .attending),

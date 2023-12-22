@@ -25,7 +25,6 @@ struct EventDetails: Equatable {
 
     struct Location: Equatable {
         let name: String
-        let url: URL
     }
 
     struct Participant: Equatable {
@@ -50,6 +49,6 @@ struct EventDetails: Equatable {
     let startDate: Date
     let endDate: Date
     let calendar: Calendar
-    let location: Location
+    let location: Location?
     let participants: [Participant]
 }

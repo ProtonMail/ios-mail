@@ -91,7 +91,12 @@ final class AttachmentViewModel {
                 let eventDetails = try await dependencies.eventRSVP.parseData(icsData: icsData)
                 invitationViewSubject.send(.invitationProcessed(eventDetails))
             } catch {
-                PMAssertionFailure(error)
+                if error is EventRSVPError {
+                    PMAssertionFailure(error)
+                } else {
+                    SystemLogger.log(error: error)
+                }
+
                 invitationViewSubject.send(.noInvitationFound)
             }
         }

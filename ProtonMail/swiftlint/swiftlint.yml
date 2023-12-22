@@ -443,8 +443,10 @@ identifier_name:
     warning: 40
   excluded:
     - id
+    - ID
     - x
     - y
+    - no
     - to  # as in "from, to"
     - cc
 

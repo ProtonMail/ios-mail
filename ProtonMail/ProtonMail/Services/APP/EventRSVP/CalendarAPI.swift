@@ -48,19 +48,79 @@ struct CalendarBootstrapRequest: Request {
 }
 
 struct CalendarBootstrapResponse: Decodable {
+    let keys: [KeyTransformer]
     let members: [MemberTransformer]
+    let passphrase: PassphraseTransformer
 }
 
 // MARK: models
 
+struct AttendeeTransformer: Decodable {
+    enum Status: Int, Decodable {
+        case unanswered
+        case maybe
+        case no
+        case yes
+    }
+
+    let status: Status?
+}
+
+struct EventElement: Decodable {
+    let author: String
+    let data: String
+    let type: SecurityFlags
+}
+
 struct FullEventTransformer: Decodable {
+    let addressID: String?
+    let addressKeyPacket: String?
+    let attendees: [AttendeeTransformer]
+    let attendeesEvents: [EventElement]
     let calendarID: String
     let startTime: TimeInterval
     let endTime: TimeInterval
     let fullDay: Int
+    let sharedKeyPacket: String?
+    let sharedEvents: [EventElement]
+}
+
+struct KeyTransformer: Decodable {
+    enum Flags: UInt8, Decodable {
+        case inactive = 0
+        case active = 1
+        case activeAndPrimary = 3
+    }
+
+    let flags: Flags
+    let passphraseID: String
+    let privateKey: String
+}
+
+struct MemberPassphraseTransformer: Decodable {
+    let memberID: String
+    let passphrase: String
 }
 
 struct MemberTransformer: Decodable {
+    let ID: String
     let color: String
     let name: String
+}
+
+struct PassphraseTransformer: Decodable {
+    let ID: String
+    let memberPassphrases: [MemberPassphraseTransformer]
+}
+
+public struct SecurityFlags: OptionSet, Codable, Equatable {
+    public let rawValue: UInt
+
+    public init(rawValue: UInt) {
+        self.rawValue = rawValue
+    }
+
+    public static let encrypted = SecurityFlags(rawValue: 1 << 0)
+    public static let signed = SecurityFlags(rawValue: 1 << 1)
+    public static let encryptedAndSigned: SecurityFlags = [.encrypted, .signed]
 }
