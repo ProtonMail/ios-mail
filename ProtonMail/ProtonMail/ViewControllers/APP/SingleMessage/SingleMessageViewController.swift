@@ -81,8 +81,10 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
         super.viewDidLoad()
         viewModel.viewDidLoad()
         viewModel.refreshView = { [weak self] in
-            self?.reloadMessageRelatedData()
-            self?.setUpToolBarIfNeeded()
+            DispatchQueue.main.async {
+                self?.reloadMessageRelatedData()
+                self?.setUpToolBarIfNeeded()
+            }
         }
         setUpSelf()
         embedChildren()

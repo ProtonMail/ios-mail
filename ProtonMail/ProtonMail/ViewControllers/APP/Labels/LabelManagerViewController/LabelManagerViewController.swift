@@ -101,8 +101,10 @@ final class LabelManagerViewController: UITableViewController {
 
 extension LabelManagerViewController: LabelManagerUIProtocol {
     func reloadData() {
-        hideLoadingHUD()
-        reloadDataWithoutScroll()
+        DispatchQueue.main.async { [weak self] in
+            self?.hideLoadingHUD()
+            self?.reloadDataWithoutScroll()
+        }
     }
 
     func viewModeDidChange(mode: LabelManagerViewModel.ViewMode) {

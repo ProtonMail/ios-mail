@@ -309,16 +309,17 @@ extension MenuViewController: MenuUIProtocol {
     }
 
     func updateMenu(section: Int?) {
-        guard let _section = section else {
-            tableView?.reloadData()
-            return
+        DispatchQueue.main.async { [weak self] in
+            guard let _section = section else {
+                self?.tableView.reloadData()
+                return
+            }
+
+            self?.tableView.beginUpdates()
+            self?.tableView.reloadSections(IndexSet(integer: _section),
+                                          with: .fade)
+            self?.tableView.endUpdates()
         }
-
-        self.tableView.beginUpdates()
-        self.tableView.reloadSections(IndexSet(integer: _section),
-                                      with: .fade)
-        self.tableView.endUpdates()
-
     }
 
     func update(rows: [IndexPath], insertRows: [IndexPath], deleteRows: [IndexPath]) {

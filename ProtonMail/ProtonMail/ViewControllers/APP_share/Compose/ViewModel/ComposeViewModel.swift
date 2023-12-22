@@ -1178,21 +1178,24 @@ extension ComposeViewModel {
             isContactCombine: dependencies.userDefaults[.isCombineContactOn],
             contextProvider: dependencies.coreDataContextProvider
         )
-        cancellable = emailPublisher?.contentDidChange.map { $0.map { email in
-            ContactVO(name: email.name, email: email.email, isProtonMailContact: true)
-        }}.sink(receiveValue: { [weak self] contactVOs in
-            // Remove the duplicated items
-            var set = Set<ContactVO>()
-            var filteredResult = [ContactVO]()
-            for contact in contactVOs {
-                if !set.contains(contact) {
-                    set.insert(contact)
-                    filteredResult.append(contact)
+        cancellable = emailPublisher?.contentDidChange
+            .map { $0.map { email in
+                ContactVO(name: email.name, email: email.email, isProtonMailContact: true)
+            }}
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] contactVOs in
+                // Remove the duplicated items
+                var set = Set<ContactVO>()
+                var filteredResult = [ContactVO]()
+                for contact in contactVOs {
+                    if !set.contains(contact) {
+                        set.insert(contact)
+                        filteredResult.append(contact)
+                    }
                 }
-            }
-            self?.contacts = filteredResult
-            self?.addContactWithPhoneContact()
-        })
+                self?.contacts = filteredResult
+                self?.addContactWithPhoneContact()
+            })
         emailPublisher?.start()
     }
 

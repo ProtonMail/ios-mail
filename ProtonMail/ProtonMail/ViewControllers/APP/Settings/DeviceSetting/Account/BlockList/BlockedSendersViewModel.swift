@@ -54,10 +54,10 @@ final class BlockedSendersViewModel {
 
     private func setupBinding() {
         blockedSendersPublisher.contentDidChange
-            .sink { [weak self] incomingDefaults in
-                self?.cellModels = incomingDefaults.map { incomingDefault in
-                    BlockedSenderCellModel(title: incomingDefault.email)
-                }
+            .map { $0.map { BlockedSenderCellModel(title: $0.email) } }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] cellModels in
+                self?.cellModels = cellModels
             }
             .store(in: &cancellables)
 

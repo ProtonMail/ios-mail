@@ -286,16 +286,18 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
         }
 
         viewModel.refreshView = { [weak self] in
-            guard let self = self else { return }
-            self.refreshNavigationViewIfNeeded()
-            self.starButtonSetUp(starred: self.viewModel.conversation.starred)
-            let isNewMessageFloatyPresented = self.customView.subviews
-                .contains(where: { $0 is ConversationNewMessageFloatyView })
-            guard !isNewMessageFloatyPresented else { return }
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.refreshNavigationViewIfNeeded()
+                self.starButtonSetUp(starred: self.viewModel.conversation.starred)
+                let isNewMessageFloatyPresented = self.customView.subviews
+                    .contains(where: { $0 is ConversationNewMessageFloatyView })
+                guard !isNewMessageFloatyPresented else { return }
 
-            self.setUpToolBarIfNeeded()
-            // Prevent the banner being covered by the action bar
-            self.view.subviews.compactMap { $0 as? PMBanner }.forEach { self.view.bringSubviewToFront($0) }
+                self.setUpToolBarIfNeeded()
+                // Prevent the banner being covered by the action bar
+                self.view.subviews.compactMap { $0 as? PMBanner }.forEach { self.view.bringSubviewToFront($0) }
+            }
         }
 
         viewModel.dismissView = { [weak self] in

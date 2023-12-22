@@ -342,3 +342,16 @@ extension MessageEntity {
         )
     }
 }
+extension UserEventEntity {
+    static func make(
+        userID: UserID = .init(rawValue: .init()),
+        eventID: String = .init(),
+        updateTime: Date? = nil
+    ) -> Self {
+        UserEventEntity(
+            userID: userID,
+            eventID: eventID,
+            updateTime: updateTime
+        )
+    }
+}
