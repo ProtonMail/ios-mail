@@ -127,8 +127,8 @@ struct AddressResponse: Decodable {
     }
 
     struct SignedKeyList: Decodable {
-        let minEpochID: Int
-        let maxEpochID: Int
+        let minEpochID: Int?
+        let maxEpochID: Int?
         let expectedMinEpochID: Int?
         let data: String
         let obsolescenceToken: String?

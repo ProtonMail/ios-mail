@@ -42,7 +42,7 @@ extension UserInfo {
     }
     
     func update(from userSettings: UserSettingsResponse) {
-        self.notificationEmail = userSettings.email.value
+        self.notificationEmail = userSettings.email.value ?? ""
         self.notify = userSettings.email.notify
         self.passwordMode = userSettings.password.mode
         self.twoFactor = userSettings.twoFactorVerify.enabled
