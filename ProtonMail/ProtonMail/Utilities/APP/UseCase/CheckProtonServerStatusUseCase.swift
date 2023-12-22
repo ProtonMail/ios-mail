@@ -30,11 +30,6 @@ enum ServerStatus {
 }
 
 final class CheckProtonServerStatus: CheckProtonServerStatusUseCase {
-    private var protonPingRoute: URL {
-        // swiftlint:disable:next force_unwrapping
-        URL(string: "\(dependencies.doh.getCurrentlyUsedHostUrl())/core/v4/tests/ping")!
-    }
-
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies = Dependencies()) {
@@ -42,7 +37,7 @@ final class CheckProtonServerStatus: CheckProtonServerStatusUseCase {
     }
 
     func execute() async -> ServerStatus {
-        let isProtonPingSuccessful = await isPingSuccessful(url: protonPingRoute)
+        let isProtonPingSuccessful = await isPingSuccessful()
         let isInternetAvailable = dependencies.internetConnectionStatus.status.isConnected
 
         switch (isProtonPingSuccessful, isInternetAvailable) {
@@ -55,10 +50,8 @@ final class CheckProtonServerStatus: CheckProtonServerStatusUseCase {
         }
     }
 
-    private func isPingSuccessful(url: URL) async -> Bool {
-        var request = URLRequest(url: url, timeoutInterval: 3)
-        request.httpMethod = "HEAD"
-
+    private func isPingSuccessful() async -> Bool {
+        let request = PingRequestHelper.protonServer.urlRequest(doh: dependencies.doh)
         do {
             let response: URLResponse = try await dependencies.session.data(for: request).1
             return (response as? HTTPURLResponse)?.statusCode == 200
