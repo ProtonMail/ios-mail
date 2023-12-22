@@ -752,11 +752,19 @@ name: Yams, nameSpecified:
 body: The MIT License (MIT…
 version: 5.0.6
 
+name: CwlCatchException, nameSpecified: CwlCatchException, owner: mattgallagher, version: 2.1.2, source: https://github.com/mattgallagher/CwlCatchException
+
+name: CwlPreconditionTesting, nameSpecified: CwlPreconditionTesting, owner: mattgallagher, version: 2.2.0, source: https://github.com/mattgallagher/CwlPreconditionTesting
+
 name: Difference, nameSpecified: Difference, owner: krzysztofzablocki, version: 1.0.2, source: https://github.com/krzysztofzablocki/Difference
 
 name: Factory, nameSpecified: Factory, owner: hmlongco, version: 2.2.0, source: https://github.com/hmlongco/Factory
 
 name: LifetimeTracker, nameSpecified: LifetimeTracker, owner: krzysztofzablocki, version: 1.8.1, source: https://github.com/krzysztofzablocki/LifetimeTracker
+
+name: Nimble, nameSpecified: Nimble, owner: Quick, version: 10.0.0, source: https://github.com/Quick/Nimble
+
+name: Quick, nameSpecified: Quick, owner: Quick, version: 5.0.1, source: https://github.com/Quick/Quick
 
 name: swift-css-parser, nameSpecified: swift-css-parser, owner: stackotter, version: 0.1.2, source: https://github.com/stackotter/swift-css-parser
 

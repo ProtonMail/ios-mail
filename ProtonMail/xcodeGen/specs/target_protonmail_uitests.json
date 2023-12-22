@@ -6,10 +6,10 @@
          "dependencies": [
             {
                "target": "ProtonMail"
-            },      
+            },
             {
                "target": "ProtonMailTests"
-            },       
+            },
             {
                "package": "Difference"
             },
@@ -23,7 +23,7 @@
                "excludes": [
                   "Info.plist",
                   "**/*.md",
-                  "TestData",
+                  "TestData"
                ]
             },
             "ProtonMail/Utilities/APP_share_push_uiTest",
@@ -44,7 +44,6 @@
                },
                "type": "folder"
             }
-
          ],
          "configFiles": {
             "Debug": "xcodeGen/xcconfig/ProtonMailUITests-Debug.xcconfig",
