@@ -561,7 +561,7 @@ extension SingleMessageContentViewController: AttachmentViewControllerDelegate {
     }
 
     func invitationViewWasChanged() {
-        viewModel.recalculateCellHeight?(true)
+        viewModel.recalculateCellHeight?(false)
     }
 }
 

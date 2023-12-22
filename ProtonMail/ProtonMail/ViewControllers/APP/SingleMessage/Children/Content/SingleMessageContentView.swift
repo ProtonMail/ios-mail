@@ -17,6 +17,7 @@ class SingleMessageContentView: UIView {
         self.replyState = replyState
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
+        clipsToBounds = true
         addSubviews()
         setUpLayout()
         accessibilityElements = [
@@ -48,7 +49,7 @@ class SingleMessageContentView: UIView {
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: 18),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor).setPriority(as: .defaultHigh)
         ].activate()
 
         [
