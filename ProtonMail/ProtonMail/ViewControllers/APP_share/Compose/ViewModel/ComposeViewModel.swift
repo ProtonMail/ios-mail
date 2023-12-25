@@ -666,7 +666,7 @@ extension ComposeViewModel {
         if let address = userAddresses.first(where: {
             $0.email == referenceAddress &&
             $0.status == .enabled &&
-            $0.receive == .active
+            $0.send == .active
         }) {
             validAddress = address
         } else if let aliasAddress = getAddressFromPlusAlias(
@@ -733,13 +733,13 @@ extension ComposeViewModel {
             addresses = getFromAddressList(originalTo: referenceAddress)
         }
         return addresses
-            .filter { $0.status == .enabled && $0.receive == .active }
+            .filter { $0.status == .enabled && $0.send == .active }
             .sorted(by: { $0.order < $1.order })
     }
 
     private func getFromAddressList(originalTo: String?) -> [Address] {
         var validUserAddress = user.addresses
-            .filter { $0.status == .enabled && $0.receive == .active }
+            .filter { $0.status == .enabled && $0.send == .active }
             .sorted(by: { $0.order >= $1.order })
 
         if let aliasAddress = getAddressFromPlusAlias(
@@ -759,7 +759,7 @@ extension ComposeViewModel {
             .first(where: {
                 $0.email.canonicalizeEmail(scheme: .proton) == normalizedAddress &&
                 $0.status == .enabled &&
-                $0.receive == .active
+                $0.send == .active
             }),
               address.email != originalAddress
         else { return nil }
