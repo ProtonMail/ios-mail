@@ -476,7 +476,7 @@
 "The request timed out." = "Истекло время ожидания запроса.";
 
 /* Message */
-"Proton servers are unreachable.\nVisit our status page for details." = "Proton servers are unreachable.\nVisit our status page for details.";
+"Proton servers are unreachable.\nVisit our status page for details." = "Серверы Proton недоступны.\nПосмотрите нашу страницу состояния для получения подробной информации.";
 
 /* Title */
 "No connectivity detected…" = "Подключение не обнаружено…";
@@ -1400,7 +1400,7 @@
 "Inherit color from parent folder" = "Наследовать цвет от родительской папки";
 
 /* section title */
-"Select color" = "Select color";
+"Select color" = "Выберите цвет";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "Вы не подключены к сети. Мы не можем показать содержимое вашего сообщения.";
@@ -1969,7 +1969,7 @@
 "Bug Report Place Holder" = "---Чтобы мы могли вам помочь, сообщите как можно больше подробностей---\n\nКраткое описание:\n\nВозникала ли проблема чаще одного раза: да/нет\nШаги для воспроизведения проблемы:\nОжидаемый результат:\nФактический результат:\nКомментарии:";
 
 /* Checkbox to attach local application logs to the bug report. */
-"Include logs" = "Include logs";
+"Include logs" = "Добавить журналы";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Попробуйте другой поисковый запрос.";
@@ -2026,13 +2026,13 @@
 "Custom email domains" = "Пользовательские домены электронной почты";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "Sender changed";
+"Sender changed" = "Отправитель изменен";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Первоначальный отправитель этого сообщения больше не действителен. Ваше сообщение будет отправлено с адреса по умолчанию %@.";
 
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Display name";
+"Display name" = "Отображаемое имя";
 
 /* The placeholder for the first name text field in contact edit view. */
 "First name" = "Имя";
@@ -2041,7 +2041,7 @@
 "Last name" = "Фамилия";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Display name field cannot be empty";
+"Display name field cannot be empty" = "Поле отображаемого имени не может быть пустым.";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
 "Contact name is too long" = "Имя контакта слишком длинное";
@@ -2056,7 +2056,7 @@
 "Select all" = "Выделить все";
 
 /* The title of PIN code disable view  */
-"Disable PIN code" = "Disable PIN code";
+"Disable PIN code" = "Отключить PIN";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Установите PIN-код";
@@ -2089,7 +2089,7 @@
 "Unsubscribe from mailing list" = "Отписаться от списка рассылки";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Отписаться?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Это отменит вашу подписку на рассылку. Отправитель будет уведомлен о том, чтобы больше не отправлять электронные письма на этот адрес.";

@@ -146,7 +146,7 @@
 "You have %d new emails!" = "Hai %d nuovi messaggi!";
 
 /* abbreviation of reply: */
-"Re:" = "Ri:";
+"Re:" = "R:";
 
 /* abbreviation of forward: */
 "Fw:" = "In:";

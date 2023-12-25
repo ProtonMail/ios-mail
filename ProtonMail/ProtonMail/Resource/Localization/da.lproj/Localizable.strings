@@ -188,7 +188,7 @@
 "The password must be between 8 and 21 characters long" = "Din adgangskode skal være mellem 8 og 21 tegn lang";
 
 /* textview title */
-"Repeat password" = "Gentag kodeord";
+"Repeat password" = "Gentag adgangskode";
 
 /* Placeholder */
 "Passwords must match" = "Adgangskoder skal være ens";
@@ -836,7 +836,7 @@
 "The new password does not match." = "Den nye adgangskode matcher ikke.";
 
 /* update password error */
-"The new password can't be empty." = "Det nye kodeord kan ikke være tomt.";
+"The new password can't be empty." = "Den nye adgangskode kan ikke være tom.";
 
 /* update password error */
 "The private key update failed." = "Privatnøgleopdateringen mislykkedes.";
