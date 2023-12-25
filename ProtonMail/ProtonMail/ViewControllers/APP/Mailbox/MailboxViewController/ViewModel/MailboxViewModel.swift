@@ -44,7 +44,7 @@ protocol MailboxViewModelUIProtocol: AnyObject {
     func clickSnoozeActionButton()
 }
 
-class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
+class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, AttachmentPreviewViewModelProtocol {
     typealias Dependencies = HasCheckProtonServerStatus
     & HasFeatureFlagCache
     & HasFetchAttachmentUseCase
@@ -1352,52 +1352,30 @@ extension MailboxViewModel {
 
     func requestPreviewOfAttachment(
         at indexPath: IndexPath,
-        index: Int,
-        completion: @escaping ((Result<SecureTemporaryFile, Error>) -> Void)
-    ) {
+        index: Int
+    ) async throws -> SecureTemporaryFile {
         guard let mailboxItem = mailboxItem(at: indexPath),
               let attachmentMetadata = mailboxItem.attachmentsMetadata[safe: index] else {
             PMAssertionFailure("IndexPath should match MailboxItem")
-            completion(.failure(AttachmentPreviewError.indexPathDidNotMatch))
-            return
+            throw AttachmentPreviewError.indexPathDidNotMatch
         }
 
-        let attId = AttachmentID(attachmentMetadata.id)
         let userKeys = user.toUserKeys()
 
-        Task  {
-            do {
-                let metadata = try await dependencies.fetchAttachmentMetadata.execution(
-                    params: .init(attachmentID: attId)
-                )
-                self.dependencies.fetchAttachment
-                    .execute(params: .init(
-                        attachmentID: attId,
-                        attachmentKeyPacket:  metadata.keyPacket,
-                        userKeys: userKeys
-                    )) { result in
-                    switch result {
-                    case .success(let attFile):
-                        do {
-                            let fileData = attFile.data
-                            let fileName = attachmentMetadata.name.cleaningFilename()
-                            let secureTempFile = SecureTemporaryFile(data: fileData, name: fileName)
-                            completion(.success(secureTempFile))
-                        } catch {
-                            completion(.failure(error))
-                        }
-                        
-                    case .failure(let error):
-                        completion(.failure(error))
-                    }
-                }
-            } catch {
-                await MainActor.run {
-                    completion(.failure(error))
-                }
-                SystemLogger.log(error: error)
-            }
-        }
+        let metadata = try await dependencies.fetchAttachmentMetadata.execution(
+            params: .init(attachmentID: .init(attachmentMetadata.id))
+        )
+        let attachmentFile = try await dependencies.fetchAttachment.execute(
+            params: .init(
+                attachmentID: .init(attachmentMetadata.id),
+                attachmentKeyPacket: metadata.keyPacket,
+                userKeys: userKeys
+            )
+        )
+        let fileData = attachmentFile.data
+        let fileName = attachmentMetadata.name.cleaningFilename()
+        let secureTempFile = SecureTemporaryFile(data: fileData, name: fileName)
+        return secureTempFile
     }
 
     private func isSpecialLoopEnabledInNewEventLoop() -> Bool {
