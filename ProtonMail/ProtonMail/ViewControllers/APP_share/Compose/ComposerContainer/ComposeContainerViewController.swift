@@ -888,6 +888,12 @@ extension ComposeContainerViewController: ComposerAttachmentVCDelegate {
             self?.updateCurrentAttachmentSize(completion: nil)
         }
     }
+
+    func uploadAttachmentFailed(composerVC: ComposerAttachmentVC) {
+        let number = composerVC.attachmentCount
+        updateAttachmentCount(number: number)
+        updateCurrentAttachmentSize(completion: nil)
+    }
 }
 
 // MARK: - ComposePasswordDelegate

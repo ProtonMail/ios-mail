@@ -34,12 +34,14 @@ final class UploadAttachment: UploadAttachmentUseCase {
 
     func execute(attachmentURI: String) async throws {
         guard let attachment = try dependencies.messageDataService.getAttachmentEntity(for: attachmentURI) else {
+            postNotification(error: UploadAttachmentError.resourceDoesNotExist, attachmentURI: attachmentURI)
             throw UploadAttachmentError.resourceDoesNotExist
         }
 
         let messageEntity = try dependencies.messageDataService.getMessageEntity(for: attachment.messageID)
         if isUploadingAttachment(attachment, duplicatedIn: messageEntity) {
             removeDuplicated(attachment: attachment, in: messageEntity)
+            postNotification(error: UploadAttachmentError.duplicatedUploading, attachmentURI: attachmentURI)
             throw UploadAttachmentError.duplicatedUploading
         }
 
@@ -52,18 +54,9 @@ final class UploadAttachment: UploadAttachmentUseCase {
             // Upload public key right before sending
             // Ignore any error from uploading public key
             if isPublicKey(name: attachment.name) { return }
-            let error = error as NSError
-            let uploadingErrors = [
-                APIErrorCode.tooManyAttachments,
-                APIErrorCode.accountStorageQuotaExceeded
-            ]
-            if !uploadingErrors.contains(error.code) {
-                PMAssertionFailure(error)
-            }
-            NotificationCenter.default.post(
-                name: .attachmentUploadFailed,
-                object: nil,
-                userInfo: ["code": error.code]
+            postNotification(
+                error: error,
+                attachmentURI: attachment.objectID.rawValue.uriRepresentation().absoluteString
             )
             throw error
         }
@@ -141,6 +134,11 @@ final class UploadAttachment: UploadAttachmentUseCase {
                         userKeys: params.userKeys,
                         passphrase: params.passphrase
                     )
+                    // In extremely slow connection, could take more than default timeout to upload a file
+                    // When uploading over the default timeout, app receive timeout error
+                    // But the request doesn't be cancelled
+                    // The result is, it shows upload error locally but backend receive the attachment
+                    let timeout: TimeInterval = 3_600
                     dependencies.user?.apiService.uploadFromFile(
                         byPath: AttachmentAPI.path,
                         parameters: params.params,
@@ -150,7 +148,7 @@ final class UploadAttachment: UploadAttachmentUseCase {
                         headers: .empty,
                         authenticated: true,
                         customAuthCredential: params.cachedAuthCredential,
-                        nonDefaultTimeout: nil,
+                        nonDefaultTimeout: timeout,
                         retryPolicy: .background,
                         uploadProgress: nil,
                         jsonCompletion: { _, result in
@@ -173,6 +171,17 @@ final class UploadAttachment: UploadAttachmentUseCase {
         // publicKey - \(email) - \(fingerprint).asc
         name.hasPrefix("publicKey") && name.hasSuffix(".asc")
     }
+
+    private func postNotification(error: Error, attachmentURI: String) {
+        NotificationCenter.default.post(
+            name: .attachmentUploadFailed,
+            object: nil,
+            userInfo: [
+                "error": error,
+                "attachmentURI": attachmentURI
+            ]
+        )
+    }
 }
 
 extension UploadAttachment {
@@ -193,9 +202,20 @@ extension UploadAttachment {
 
     typealias UploadingResponse = (response: JSONDictionary, keyPacket: Data)
 
-    enum UploadAttachmentError: Error {
+    enum UploadAttachmentError: LocalizedError {
         case resourceDoesNotExist
         case duplicatedUploading
         case encryptionError
+
+        var errorDescription: String? {
+            switch self {
+            case .resourceDoesNotExist:
+                return "resource doesn't exist"
+            case .duplicatedUploading:
+                return "duplicated uploading"
+            case .encryptionError:
+                return "encryption error"
+            }
+        }
     }
 }

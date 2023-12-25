@@ -100,13 +100,13 @@ final class QueueManager: QueueHandlerRegister {
             }
             let action = task.action
             switch action {
-            case .saveDraft,
-                    .uploadAtt, .uploadPubkey, .deleteAtt, .updateAttKeyPacket,
-                    .send:
+            case .saveDraft, .send:
                 let dependencies = self.getMessageTasks(of: task.userID)
                     .filter { $0.messageID == task.messageID }
                     .map(\.uuid)
                 task.dependencyIDs = dependencies
+                _ = self.messageQueue.add(task.uuid, object: task)
+            case .uploadAtt, .deleteAtt, .uploadPubkey, .updateAttKeyPacket:
                 _ = self.messageQueue.add(task.uuid, object: task)
             case .read, .unread,
                  .delete,
@@ -339,7 +339,7 @@ extension QueueManager {
     }
 
     private func dequeueIfNeeded() {
-        guard internetStatusProvider.status != .notConnected,
+        guard internetStatusProvider.status.isConnected,
               self.checkQueueStatus() == .running,
               self.allowedToDequeue() else {return}
         if !self.hasDequeued {
@@ -493,7 +493,7 @@ extension QueueManager {
             let removed = queue.queueArray().tasks
                 .filter { $0.dependencyIDs.contains(task.uuid) }
             SystemLogger.log(
-                message: "Removing: \(removed.map(\.action))",
+                message: "\(task.action) done, result: checkReadQueue, removing: \(removed.map(\.action))",
                 category: .queue
             )
             removed.forEach { _ = queue.remove($0.uuid) }
@@ -505,19 +505,19 @@ extension QueueManager {
             completeHander(true)
         case .connectionIssue:
             // Forgot the signout task in offline mode
-            if task.action == MessageAction.signout {
-                SystemLogger.log(
-                    message: "Removing: \(task.action)",
-                    category: .queue
-                )
-                _ = queue.remove(task.uuid)
+            switch task.action {
+            case .signout, .uploadAtt:
+                self.remove(task: task, on: queue)
+            default:
+                break
             }
+            SystemLogger.log(message: "\(task.action) done, result: connection issue", category: .queue)
             completeHander(false)
         case .removeRelated:
             let removed = queue.queueArray().tasks
                 .filter { $0.dependencyIDs.contains(task.uuid) }
             SystemLogger.log(
-                message: "Removing: \(removed.map(\.action))",
+                message: "\(task.action) done, result: remove related, removing: \(removed.map(\.action))", 
                 category: .queue
             )
             removed.forEach { _ = queue.remove($0.uuid) }

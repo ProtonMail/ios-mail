@@ -118,7 +118,7 @@ final class InternetConnectionStatusProvider: InternetConnectionStatusProviderPr
     func apiCallIsSucceeded() {
         guard !status.isConnected else { return }
         monitorQueue.async {
-            self.log(message: "API call is succeeded when status is disconnected")
+            self.log(message: "API call is succeeded when status is disconnected \(self.status)")
             self.status = .connected
         }
     }
