@@ -33,7 +33,11 @@ final class QuickLookPresenter: NSObject {
     }
 
     func present(from parent: UIViewController) {
-        parent.present(viewController, animated: true)
+        if let nav = parent as? UINavigationController {
+            nav.pushViewController(viewController, animated: true)
+        } else {
+            parent.present(viewController, animated: true)
+        }
     }
 }
 

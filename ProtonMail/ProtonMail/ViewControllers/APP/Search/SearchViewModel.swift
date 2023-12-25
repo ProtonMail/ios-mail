@@ -21,46 +21,7 @@ import Foundation
 import ProtonCoreDataModel
 import ProtonCoreUIFoundations
 
-protocol SearchVMProtocol: AnyObject {
-    var user: UserManager { get }
-    var messages: [MessageEntity] { get }
-    var selectedIDs: Set<String> { get }
-    var selectedMessages: [MessageEntity] { get }
-    var labelID: LabelID { get }
-    var viewMode: ViewMode { get }
-    var uiDelegate: SearchViewUIProtocol? { get set }
-
-    func viewDidLoad()
-    func cleanLocalIndex()
-    func fetchRemoteData(query: String, fromStart: Bool)
-    func loadMoreDataIfNeeded(currentRow: Int)
-    func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback)
-    func getMessageObject(by msgID: MessageID) -> MessageEntity?
-    func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel
-
-    // Select / action bar / action sheet related
-    func isSelected(messageID: String) -> Bool
-    func addSelected(messageID: String)
-    func removeSelected(messageID: String)
-    func removeAllSelectedIDs()
-    func getActionBarActions() -> [MessageViewActionSheetAction]
-    func getActionSheetViewModel() -> MailListActionSheetViewModel
-    func handleBarActions(_ action: MessageViewActionSheetAction)
-    func deleteSelectedMessages()
-    func handleActionSheetAction(_ action: MessageViewActionSheetAction)
-    func getConversation(conversationID: ConversationID,
-                         messageID: MessageID,
-                         completion: @escaping (Result<ConversationEntity, Error>) -> Void)
-    func scheduledMessagesFromSelected() -> [MessageEntity]
-    func fetchSenderImageIfNeeded(
-        item: MailboxItem,
-        isDarkMode: Bool,
-        scale: CGFloat,
-        completion: @escaping (UIImage?) -> Void
-    )
-}
-
-final class SearchViewModel: NSObject {
+final class SearchViewModel: NSObject, AttachmentPreviewViewModelProtocol {
     typealias Dependencies = HasSearchUseCase
     & HasFetchMessageDetailUseCase
     & HasFetchSenderImage
@@ -68,6 +29,8 @@ final class SearchViewModel: NSObject {
     & HasUserManager
     & HasCoreDataContextProviderProtocol
     & HasFeatureFlagCache
+    & HasFetchAttachmentMetadataUseCase
+    & HasFetchAttachmentUseCase
 
     typealias LocalObjectsIndexRow = [String: Any]
 
@@ -123,7 +86,7 @@ final class SearchViewModel: NSObject {
     }
 }
 
-extension SearchViewModel: SearchVMProtocol {
+extension SearchViewModel {
     func viewDidLoad() {
         indexLocalObjects {}
     }
@@ -397,6 +360,32 @@ extension SearchViewModel: SearchVMProtocol {
                         completion(nil)
                     }
                 }
+    }
+
+    func requestPreviewOfAttachment(
+        at indexPath: IndexPath,
+        index: Int
+    ) async throws -> SecureTemporaryFile {
+        guard let message = messages[safe: indexPath.row],
+              let attachmentMetadata = message.attachmentsMetadata[safe: index] else {
+            throw AttachmentPreviewError.indexPathDidNotMatch
+        }
+        let userKeys = user.toUserKeys()
+
+        let metadata = try await dependencies.fetchAttachmentMetadata.execution(
+            params: .init(attachmentID: .init(attachmentMetadata.id))
+        )
+        let attachmentFile = try await dependencies.fetchAttachment.execute(
+            params: .init(
+                attachmentID: .init(attachmentMetadata.id),
+                attachmentKeyPacket: metadata.keyPacket,
+                userKeys: userKeys
+            )
+        )
+        let fileData = attachmentFile.data
+        let fileName = attachmentMetadata.name.cleaningFilename()
+        let secureTempFile = SecureTemporaryFile(data: fileData, name: fileName)
+        return secureTempFile
     }
 }
 

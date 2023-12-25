@@ -17,12 +17,13 @@
 
 import Foundation
 
-class SecureTemporaryFile {
+final class SecureTemporaryFile: Sendable {
     private static let secureFilesDirectory = FileManager.default.temporaryDirectory.appendingPathComponent("files")
 
     let url: URL
-
-    private let fileManager = FileManager.default
+    var fileManager: FileManager {
+        .default
+    }
 
     /*
      This directory is unique for this file and will only ever contain one element.

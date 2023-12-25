@@ -35,7 +35,7 @@ import SwipyCell
 import UIKit
 import SwiftUI
 
-class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol, ScheduledAlertPresenter, LifetimeTrackable {
+class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol, ScheduledAlertPresenter, LifetimeTrackable {
     typealias Dependencies = HasPaymentsUIFactory
         & ReferralProgramPromptPresenter.Dependencies
         & HasMailboxMessageCellHelper
@@ -158,14 +158,12 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     let connectionStatusProvider = InternetConnectionStatusProvider.shared
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
-    private var attachmentPreviewPresenter: QuickLookPresenter?
-    private var attachmentPreviewWasCancelled = false
     private var _snoozeDateConfigReceiver: SnoozeDateConfigReceiver?
 
     init(viewModel: MailboxViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
         self.dependencies = dependencies
-        super.init(nibName: nil, bundle: nil)
+        super.init(viewModel: viewModel)
         viewModel.uiDelegate = self
         trackLifetime()
     }
@@ -2549,44 +2547,7 @@ extension MailboxViewController: NewMailboxMessageCellDelegate {
             PMAssertionFailure("IndexPath should match MailboxItem")
             return
         }
-        let downloadBanner = PMBanner(message: L11n.AttachmentPreview.downloadingAttachment, 
-                                      style: PMBannerNewStyle.info)
-        downloadBanner.addButton(text: LocalString._general_cancel_button) { [weak self, weak downloadBanner] _ in
-            self?.attachmentPreviewWasCancelled = true
-            downloadBanner?.dismiss()
-        }
-        downloadBanner.show(at: .bottom, on: self)
-        viewModel.requestPreviewOfAttachment(at: indexPath, index: index) { [weak self] result in
-            guard self?.attachmentPreviewWasCancelled == false else {
-                self?.attachmentPreviewWasCancelled = false
-                return
-            }
-            DispatchQueue.main.async {
-                guard let self else { return }
-                switch result {
-                case .success(let file):
-                    self.showAttachment(from: file)
-                case .failure(let error):
-                    let banner = PMBanner(message: error.localizedDescription, 
-                                          style: PMBannerNewStyle.error)
-                    banner.show(at: .bottom, on: self)
-                }
-            }
-        }
-    }
-}
-
-extension MailboxViewController {
-    func showAttachment(from file: SecureTemporaryFile) {
-        guard QuickLookPresenter.canPreviewItem(at: file.url), let navigationController else {
-            let banner = PMBanner(message: L11n.AttachmentPreview.cannotPreviewMessage,
-                                  style: PMBannerNewStyle.info)
-            banner.show(at: .bottom, on: self)
-            return
-        }
-
-        attachmentPreviewPresenter = QuickLookPresenter(file: file)
-        attachmentPreviewPresenter?.present(from: navigationController)
+        showAttachmentPreviewBanner(at: indexPath, index: index)
     }
 }
 
