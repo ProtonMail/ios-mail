@@ -21,7 +21,6 @@ import ProtonCoreDataModel
 
 extension UserManager {
     var isNewEventLoopEnabled: Bool {
-        return UserInfo.isNewEventsLoopEnabled
-            || container.featureFlagsRepository.isEnabled(MailFeatureFlag.newEventLoop, for: userID.rawValue)
+        return false
     }
 }
