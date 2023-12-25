@@ -27,6 +27,7 @@ import UIKit
 
 protocol ComposerAttachmentVCDelegate: AnyObject {
     func composerAttachmentViewController(_ composerVC: ComposerAttachmentVC, didDelete attachment: AttachmentEntity)
+    func uploadAttachmentFailed(composerVC: ComposerAttachmentVC)
 }
 
 private struct AttachInfo {
@@ -252,42 +253,30 @@ extension ComposerAttachmentVC {
 
     @objc
     private func attachmentUploadFailed(noti: Notification) {
-        guard let code = noti.userInfo?["code"] as? Int else { return }
-        let uploadingData = self.datas.filter { !$0.isUploaded }
-        displayErrorAlert(errorCode: code, uploadingData: uploadingData)
+        guard
+            let error = noti.userInfo?["error"] as? Error,
+            let attachmentURI = noti.userInfo?["attachmentURI"] as? String
+        else { return }
+        let uploadingData = self.datas.filter { $0.objectID == attachmentURI }
+        let isTooManyAttachments = error.responseCode == APIErrorCode.tooManyAttachments
+        displayErrorAlert(isTooManyAttachments: isTooManyAttachments, uploadingData: uploadingData)
+        SystemLogger.log(error: error, category: .draft)
 
-        // The message queue is a sequence operation
-        // One of the tasks failed, the rest one will be deleted too
-        // So if one attachment upload failed, the rest of the attachments won't be uploaded
-        let objectIDs = uploadingData.map { $0.objectID }
-        contextProvider.performOnRootSavingContext { [weak self] context in
-            for objectID in objectIDs {
-                guard let self = self,
-                      let managedObjectID = self.contextProvider.managedObjectIDForURIRepresentation(objectID),
-                      let managedObject = try? context.existingObject(with: managedObjectID),
-                      let attachment = managedObject as? Attachment else {
-                    self?.delete(objectID: objectID)
-                    continue
-                }
-                self.delete(objectID: objectID)
-                let entity = AttachmentEntity(attachment)
-                DispatchQueue.main.async {
-                    self.delegate?.composerAttachmentViewController(self, didDelete: entity)
-                }
-            }
+        uploadingData.map { $0.objectID }.forEach(delete(objectID:))
+        DispatchQueue.main.async {
+            self.delegate?.uploadAttachmentFailed(composerVC: self)
         }
     }
 
-    private func displayErrorAlert(errorCode: Int, uploadingData: [AttachInfo]) {
+    private func displayErrorAlert(isTooManyAttachments: Bool, uploadingData: [AttachInfo]) {
         DispatchQueue.main.async {
+            if uploadingData.isEmpty { return }
             let names = uploadingData.map { $0.name }.joined(separator: "\n")
-            let message = "\(LocalString._attachment_upload_failed_body) (\(errorCode)\n \(names) \n"
-            let title: String
-            if errorCode == APIErrorCode.tooManyAttachments {
-                title = LocalString._storage_exceeded
-            } else {
-                title = LocalString._attachment_upload_failed_title
-            }
+
+            let message = "\(LocalString._attachment_upload_failed_body) \(names)"
+            let title = isTooManyAttachments 
+            ? LocalString._storage_exceeded : LocalString._attachment_upload_failed_title
+
             let alert = UIAlertController(title: title,
                                           message: message,
                                           preferredStyle: .alert)

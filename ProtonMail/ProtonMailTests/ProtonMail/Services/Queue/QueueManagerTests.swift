@@ -389,8 +389,10 @@ class QueueManagerTests: XCTestCase {
         XCTAssertTrue(addTaskToSUT(task: task1, autoExecute: false))
         
         let task2 = QueueManager.Task(messageID: "messageID3", action: .uploadAtt(attachmentObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
+        self.loadedTaskUUIDs.append(task2.uuid)
         XCTAssertTrue(addTaskToSUT(task: task2, autoExecute: false))
         
+        // will be removed
         let task3 = QueueManager.Task(messageID: "messageID3", action: .saveDraft(messageObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         XCTAssertTrue(addTaskToSUT(task: task3, autoExecute: false))
         
@@ -402,7 +404,7 @@ class QueueManagerTests: XCTestCase {
         }
         
         wait(for: [finish], timeout: 5.0)
-        XCTAssertEqual(self.handlerMock.handleCount, 1)
+        XCTAssertEqual(self.handlerMock.handleCount, 2)
         checkExcuteSequence()
     }
     
@@ -426,8 +428,7 @@ class QueueManagerTests: XCTestCase {
             finish.fulfill()
         }
         wait(for: [finish], timeout: 5.0)
-        XCTAssert(self.handlerMock.handleCount >= 1)
-        XCTAssert(self.handlerMock.handleCount <= 2)
+        XCTAssert(self.handlerMock.handleCount == 3)
     }
 
     func testMessageIDsOfTasksFetchesMessageTasksOnly() {
