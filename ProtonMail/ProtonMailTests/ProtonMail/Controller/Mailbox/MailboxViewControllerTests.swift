@@ -666,6 +666,8 @@ extension MailboxViewControllerTests {
 }
 
 extension MockMailboxCoordinatorProtocol: SnoozeSupport {
+    func presentPaymentView() { }
+
     var conversationDataService: ConversationDataServiceProxy {
         let fakeUser = UserManager(api: APIServiceMock())
         return fakeUser.container.conversationService

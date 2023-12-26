@@ -2768,7 +2768,7 @@ extension MailboxViewController {
                 guard let self else { return }
                 let upsellSheet = AutoDeleteUpsellSheetView { [weak self] _ in
                     guard let self else { return }
-                    self.presentPayments()
+                    self.presentPayments(paidFeature: .autoDelete)
                 }
                 upsellSheet.present(on: self.navigationController!.view)
             }
@@ -2822,9 +2822,24 @@ extension MailboxViewController {
         }
     }
 
-    private func presentPayments() {
+    func presentPayments(paidFeature: PaidFeature) {
         paymentsUI = dependencies.paymentsUIFactory.makeView()
-        paymentsUI?.presentUpgradePlan()
+        paymentsUI?.showUpgradePlan(
+            presentationType: .modal,
+            backendFetch: true,
+            completionHandler: { [weak self] reason in
+                switch reason {
+                case .purchasedPlan:
+                    if paidFeature == .snooze {
+                        Task {
+                            await self?.viewModel.user.fetchUserInfo()
+                            self?.clickSnoozeActionButton()
+                        }
+                    }
+                default:
+                    break
+                }
+            })
     }
 }
 
@@ -2906,6 +2921,7 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
         }
     }
 
+    @MainActor
     func clickSnoozeActionButton() {
         coordinator?.presentSnoozeConfigSheet(on: self, current: Date())
     }

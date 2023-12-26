@@ -637,4 +637,8 @@ extension MailboxCoordinator: SnoozeSupport {
         let banner = PMBanner(message: title, style: PMBannerNewStyle.info)
         banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: viewController)
     }
+
+    func presentPaymentView() {
+        viewController?.presentPayments(paidFeature: .snooze)
+    }
 }
