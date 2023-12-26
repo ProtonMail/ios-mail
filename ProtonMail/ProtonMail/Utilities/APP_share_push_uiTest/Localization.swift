@@ -1462,6 +1462,7 @@ enum L11n {
     struct Compose {
         static let senderChanged = NSLocalizedString("Sender changed", comment: "Alert title, shows when current sender address in the composer is invalid anymore.")
         static let senderChangedMessage = NSLocalizedString("The original sender of this message is no longer valid. Your message will be sent from your default address %@.", comment: "Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address.")
+        static let blockSenderChangeMessage = NSLocalizedString("Please retry after all attachments are uploaded.", comment: "The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded.")
     }
 
     struct ContactEdit {

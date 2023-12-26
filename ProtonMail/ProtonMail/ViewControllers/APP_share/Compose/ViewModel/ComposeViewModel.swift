@@ -398,26 +398,40 @@ extension ComposeViewModel {
         }
     }
 
-    func updateAddress(to address: Address, uploadDraft: Bool = true) -> Promise<Void> {
-        return Promise { [weak self] seal in
-            guard self?.composerMessageHelper.draft != nil else {
-                let error = NSError(domain: "",
-                                    code: -1,
-                                    localizedDescription: LocalString._error_no_object)
-                seal.reject(error)
-                return
+    func updateAddress(
+        to address: Address,
+        uploadDraft: Bool = true,
+        completion: @escaping (Swift.Result<Void, NSError>) -> Void
+    ) {
+        guard composerMessageHelper.draft != nil else {
+            let error = NSError(
+                domain: "",
+                code: -1,
+                localizedDescription: LocalString._error_no_object
+            )
+            completion(.failure(error))
+            return
+        }
+        guard !composerMessageHelper.attachments.contains(where: { $0.id.rawValue == "0" }) else {
+            let error = NSError(
+                domain: "",
+                code: -1,
+                localizedDescription: L11n.Compose.blockSenderChangeMessage
+            )
+            completion(.failure(error))
+            return
+        }
+        if user.userInfo.userAddresses.contains(where: { $0.addressID == address.addressID }) {
+            composerMessageHelper.updateAddress(to: address, uploadDraft: uploadDraft) {
+                completion(.success(()))
             }
-            if self?.user.userInfo.userAddresses
-                .contains(where: { $0.addressID == address.addressID }) == true {
-                self?.composerMessageHelper.updateAddress(to: address, uploadDraft: uploadDraft, completion: {
-                    seal.fulfill_()
-                })
-            } else {
-                let error = NSError(domain: "",
-                                    code: -1,
-                                    localizedDescription: LocalString._error_no_object)
-                seal.reject(error)
-            }
+        } else {
+            let error = NSError(
+                domain: "",
+                code: -1,
+                localizedDescription: LocalString._error_no_object
+            )
+            completion(.failure(error))
         }
     }
 
@@ -644,11 +658,11 @@ extension ComposeViewModel {
         switch messageAction {
         case .forward, .reply, .replyAll, .openDraft:
             if let address = validSenderAddressFromMessage() {
-                updateAddress(to: address, uploadDraft: false).cauterize()
+                updateAddress(to: address, uploadDraft: false) { _ in }
             }
         case .newDraft, .newDraftFromShare:
             if let address = user.addresses.defaultAddress() {
-                updateAddress(to: address, uploadDraft: false).cauterize()
+                updateAddress(to: address, uploadDraft: false) { _ in }
             }
         }
     }
