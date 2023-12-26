@@ -1169,7 +1169,7 @@
 "Addresses" = "Adressen";
 
 /* Cell title in device settings - mute notification until a later time. */
-"Snooze" = "Uitstellen";
+"Snooze" = "Sluimeren";
 
 /* cell title in device settings */
 "Mailbox" = "Mailbox";
