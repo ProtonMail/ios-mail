@@ -154,7 +154,7 @@ final class MessageActionUpdateTests: XCTestCase {
         return (messageURIs, messageIDs)
     }
 
-    private func mockSuccessResponse() throws -> MessageActionResponse {
+    private func mockSuccessResponse() throws -> GeneralMultipleResponse {
         let json: [String: Any] = [
             "code": 1001,
             "responses": [
@@ -167,11 +167,11 @@ final class MessageActionUpdateTests: XCTestCase {
             ]
         ]
         let data = try json.serializedToData()
-        let res = try JSONDecoder().decode(MessageActionResponse.self, from: data)
+        let res = try JSONDecoder().decode(GeneralMultipleResponse.self, from: data)
         return res
     }
 
-    private func mockFailureResponse(errorCode: Int) throws -> MessageActionResponse {
+    private func mockFailureResponse(errorCode: Int) throws -> GeneralMultipleResponse {
         let json: [String: Any] = [
             "code": 1001,
             "responses": [
@@ -185,7 +185,7 @@ final class MessageActionUpdateTests: XCTestCase {
             ]
         ]
         let data = try json.serializedToData()
-        let res = try JSONDecoder().decode(MessageActionResponse.self, from: data)
+        let res = try JSONDecoder().decode(GeneralMultipleResponse.self, from: data)
         return res
     }
 }

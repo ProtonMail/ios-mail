@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import CoreData
 import ProtonCoreUIFoundations
 import ProtonCoreTestingToolkit
 import XCTest
@@ -25,6 +26,8 @@ final class SnoozeSupportTest: XCTestCase {
     private var sut: SnoozeMockObj!
     private var apiService: APIServiceMock!
     private var dateConfigReceiver: SnoozeDateConfigReceiver!
+    private var user: UserManager!
+    private var testContainer: TestContainer!
     private let snoozeAtDates: [Date] = [
         Date(timeIntervalSince1970: 1701649752), // Mon Dec 04 2023 00:29:12 GMT+0000
         Date(timeIntervalSince1970: 1701737338), // Tue Dec 05 2023 00:48:58 GMT+0000
@@ -35,10 +38,14 @@ final class SnoozeSupportTest: XCTestCase {
         Date(timeIntervalSince1970: 1702169338)  // Sun Dec 10 2023 00:48:58 GMT+0000
     ]
     private let possibleCalendars = SnoozeSupportTest.calendars()
+    private let userID = "tester"
+    private let customFolderID = "customFolder"
 
     override func setUp() {
         super.setUp()
         apiService = APIServiceMock()
+        testContainer = TestContainer()
+        user = UserManager(api: apiService, userID: userID, globalContainer: testContainer)
         dateConfigReceiver = SnoozeDateConfigReceiver(saveDate: { _ in
 
         }, cancelHandler: {
@@ -53,6 +60,8 @@ final class SnoozeSupportTest: XCTestCase {
         sut = nil
         apiService = nil
         dateConfigReceiver = nil
+        user = nil
+        testContainer = nil
     }
 
     func testSetUpTomorrow() {
@@ -271,6 +280,71 @@ final class SnoozeSupportTest: XCTestCase {
             }
         }
     }
+
+    func testSnoozeOnDate_messageNotInInboxShouldNotBeAffected_othersShouldMoveToSnooze() throws {
+        let conversationID = try mockConversationAndMessages()
+        initializeSUT(calendar: possibleCalendars[0], weekStart: .sunday, snoozeConversations: [conversationID])
+
+        let apiMockExpectation = expectation(description: "Interrupt API")
+        let snoozeDate = Date(timeInterval: 3_000, since: Date())
+
+        apiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, completion in
+            XCTAssertEqual(method, .put)
+            XCTAssertEqual(path, "/mail/v4/conversations/snooze")
+
+            guard
+                let dict = body as? [String: Any],
+                let snoozeTime = dict["SnoozeTime"] as? Int,
+                let ids = dict["IDs"] as? [String]
+            else {
+                XCTFail("Should contain a dictionary in body")
+                return
+            }
+            XCTAssertEqual(snoozeTime, Int(snoozeDate.timeIntervalSince1970))
+            XCTAssertEqual(ids, [conversationID.rawValue])
+            completion(nil, .success(self.mockSnoozeSuccessResponse()))
+            apiMockExpectation.fulfill()
+        }
+        let optimisticExpectation = expectation(description: "Local optimistic finish")
+        sut.snooze(on: snoozeDate) {
+            optimisticExpectation.fulfill()
+        }
+        wait(for: [optimisticExpectation])
+        testContainer.contextProvider.read { context in
+            guard let conversation = Conversation.conversationForConversationID(
+                conversationID.rawValue,
+                inManagedObjectContext: context
+            ) else { return }
+            guard let contextLabel = conversation.labels.compactMap({ $0 as? ContextLabel }).first else {
+                XCTFail("Should have context")
+                return
+            }
+            XCTAssertEqual(contextLabel.snoozeTime, snoozeDate)
+            XCTAssertEqual(contextLabel.labelID, Message.Location.snooze.rawValue)
+
+            guard
+                let messages = Message.messagesForConversationID(
+                    conversationID.rawValue,
+                    inManagedObjectContext: context
+                )
+            else {
+                XCTFail("Should have messages")
+                return
+            }
+            for message in messages {
+                guard let label = message.labels.compactMap({ $0 as? Label }).first else {
+                    XCTFail("Should have label")
+                    return
+                }
+                if message.messageID == self.customFolderID {
+                    XCTAssertEqual(label.labelID, "customFolder")
+                } else {
+                    XCTAssertEqual(label.labelID, Message.Location.snooze.labelID.rawValue)
+                }
+            }
+        }
+        wait(for: [apiMockExpectation])
+    }
 }
 
 extension SnoozeSupportTest {
@@ -307,21 +381,97 @@ extension SnoozeSupportTest {
     /// - Parameters:
     ///   - calendar: Calendar will be used when user preferred week start is automatic
     ///   - weekStart: User preferred week start
-    private func initializeSUT(calendar: Calendar, weekStart: WeekStart) {
+    private func initializeSUT(calendar: Calendar, weekStart: WeekStart, snoozeConversations: [ConversationID] = []) {
         sut = .init(
-            apiService: apiService, 
+            conversationDataService: user.conversationService,
             calendar: calendar,
             isPaidUser: false,
             presentingView: UIView(),
-            snoozeConversations: [],
+            snoozeConversations: snoozeConversations,
             snoozeDateConfigReceiver: dateConfigReceiver,
             weekStart: weekStart
         )
     }
+
+    private func mockConversationAndMessages() throws -> ConversationID {
+        var conversationID: ConversationID = ConversationID("")
+        try testContainer.contextProvider.write { context in
+            self.mockLabels(context: context)
+            let conversation = self.mockConversation(context: context)
+            conversationID = ConversationID(conversation.conversationID)
+            let labelIDs = [
+                Message.Location.inbox.rawValue,
+                Message.Location.inbox.rawValue,
+                Message.Location.inbox.rawValue,
+                Message.Location.snooze.rawValue,
+                self.customFolderID
+            ]
+            for id in labelIDs {
+                _ = self.mockMessage(
+                    context: context,
+                    conversationID: conversation.conversationID,
+                    labelID: id
+                )
+            }
+        }
+        return conversationID
+    }
+
+    private func mockConversation(context: NSManagedObjectContext) -> Conversation {
+        let conversation = Conversation(context: context)
+        conversation.conversationID = UUID().uuidString
+        conversation.numMessages = 5
+
+        let contextLabel = ContextLabel(context: context)
+        contextLabel.labelID = Message.Location.inbox.labelID.rawValue
+        contextLabel.conversation = conversation
+        contextLabel.unreadCount = 0
+        contextLabel.userID = userID
+        contextLabel.conversationID = conversation.conversationID
+        return conversation
+    }
+
+    private func mockMessage(context: NSManagedObjectContext, conversationID: String, labelID: String) -> Message {
+        let testMessage = Message(context: context)
+        testMessage.messageID = labelID == customFolderID ? customFolderID : UUID().uuidString
+        testMessage.conversationID = conversationID
+        testMessage.add(labelID: labelID)
+        testMessage.messageStatus = 1
+        testMessage.unRead = false
+        testMessage.userID = userID
+        return testMessage
+    }
+
+    private func mockLabels(context: NSManagedObjectContext) {
+        let labelIDs = [
+            Message.Location.inbox.rawValue,
+            Message.Location.snooze.rawValue,
+            customFolderID
+        ]
+        for id in labelIDs {
+            let label = Label(context: context)
+            label.labelID = id
+            label.type = 3
+        }
+    }
+
+    private func mockSnoozeSuccessResponse() -> [String: Any] {
+        [
+            "Code": 1001,
+            "Responses": [
+                [
+                    "ID": "2SRhxOzFBr9M-g9QdVIN8u42bmxsD_gtbLTUBU70saPS51zPp5FN3jmkYsa4I5NG-Tls4LMGRid88_aM89qdjA==",
+                    "Response": [
+                        "Code": 1000
+                    ]
+                ]
+            ]
+        ]
+    }
 }
 
 final class SnoozeMockObj: SnoozeSupport {
-    var apiService: APIService
+    var conversationDataService: ConversationDataServiceProxy
 
     var calendar: Calendar
 
@@ -329,9 +479,9 @@ final class SnoozeMockObj: SnoozeSupport {
 
     var presentingView: UIView
 
-    var snoozeConversations: [ProtonMail.ConversationID]
+    var snoozeConversations: [ConversationID]
 
-    var snoozeDateConfigReceiver: ProtonMail.SnoozeDateConfigReceiver
+    var snoozeDateConfigReceiver: SnoozeDateConfigReceiver
 
     var weekStart: ProtonMail.WeekStart
 
@@ -340,15 +490,15 @@ final class SnoozeMockObj: SnoozeSupport {
     }
 
     init(
-        apiService: APIService,
+        conversationDataService: ConversationDataServiceProxy,
         calendar: Calendar,
         isPaidUser: Bool,
         presentingView: UIView,
-        snoozeConversations: [ProtonMail.ConversationID],
+        snoozeConversations: [ConversationID],
         snoozeDateConfigReceiver: ProtonMail.SnoozeDateConfigReceiver,
         weekStart: ProtonMail.WeekStart
     ) {
-        self.apiService = apiService
+        self.conversationDataService = conversationDataService
         self.calendar = calendar
         self.isPaidUser = isPaidUser
         self.presentingView = presentingView

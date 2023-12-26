@@ -864,12 +864,18 @@ extension ConversationViewController {
         let isUnread = viewModel.conversation.isUnread(labelID: viewModel.labelId)
         let isStarred = viewModel.conversation.starred
         let isScheduleSend = messageToApplyAction.isScheduledSend
+        let foldersSupportSnooze = [
+            Message.Location.snooze.labelID,
+            Message.Location.inbox.labelID
+        ]
+        let isSupportSnooze = foldersSupportSnooze.contains(viewModel.labelId)
 
         let actionSheetViewModel = ConversationActionSheetViewModel(
             title: viewModel.conversation.subject,
             isUnread: isUnread,
             isStarred: isStarred,
             isScheduleSend: isScheduleSend,
+            isSupportSnooze: isSupportSnooze,
             areAllMessagesIn: { [weak self] location in
                 self?.viewModel.areAllMessagesIn(location: location) ?? false
             }
@@ -1484,7 +1490,7 @@ private extension UITableView {
 }
 
 extension ConversationViewController: SnoozeSupport {
-    var apiService: APIService { viewModel.user.apiService }
+    var conversationDataService: ConversationDataServiceProxy { viewModel.user.conversationService }
 
     var calendar: Calendar { LocaleEnvironment.calendar }
 

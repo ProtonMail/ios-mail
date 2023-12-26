@@ -685,4 +685,15 @@ extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
     func trackerProtectionSummaryChanged() {
         headerViewController?.trackerProtectionSummaryChanged()
     }
+
+    func didUnSnooze() {
+        navigationController?.popViewController(animated: true)
+        guard let mailboxVC = navigationController?.viewControllers.first else { return }
+        let banner = PMBanner(
+            message: L11n.Snooze.unsnoozeSuccessBannerTitle,
+            style: PMBannerNewStyle.info,
+            bannerHandler: PMBanner.dismiss
+        )
+        banner.show(at: .bottom, on: mailboxVC)
+    }
 }

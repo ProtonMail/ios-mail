@@ -601,7 +601,7 @@ extension MailboxCoordinator {
 
 // MARK: - Snooze
 extension MailboxCoordinator: SnoozeSupport {
-    var apiService: APIService { viewModel.user.apiService }
+    var conversationDataService: ConversationDataServiceProxy { viewModel.user.conversationService }
 
     var calendar: Calendar { LocaleEnvironment.calendar }
 
@@ -635,7 +635,6 @@ extension MailboxCoordinator: SnoozeSupport {
 
         let title = String(format: L11n.Snooze.successBannerTitle, dateStr)
         let banner = PMBanner(message: title, style: PMBannerNewStyle.info)
-        // TODO: snooze:action update position to onTopOfTheBottomToolBar when have MAILIOS-3899
-        banner.show(at: .bottom, on: viewController)
+        banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: viewController)
     }
 }

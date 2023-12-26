@@ -203,6 +203,31 @@ extension ConversationDataServiceProxy {
         )
     }
 
+    func snooze(conversationIDs: [ConversationID], on date: Date, completion: (() -> Void)? = nil) {
+        editLabels(
+            conversationIDs: conversationIDs,
+            actionToQueue: .snooze(conversationIDs: conversationIDs.map(\.rawValue), date: date),
+            labelToRemove: Message.Location.inbox.labelID,
+            labelToAdd: Message.Location.snooze.labelID,
+            isFolder: true
+        ) { [weak self] _ in
+            self?.setSnoozeTime(to: date, conversationIDs: conversationIDs)
+            completion?()
+        }
+    }
+
+    func unSnooze(conversationID: ConversationID) {
+        editLabels(
+            conversationIDs: [conversationID],
+            actionToQueue: .unsnooze(conversationID: conversationID.rawValue),
+            labelToRemove: Message.Location.snooze.labelID,
+            labelToAdd: Message.Location.inbox.labelID,
+            isFolder: true
+        ) { [weak self] _ in
+            self?.setSnoozeTime(to: nil, conversationIDs: [conversationID])
+        }
+    }
+
     private func editLabels(
         conversationIDs: [ConversationID],
         actionToQueue: MessageAction,
@@ -308,5 +333,30 @@ extension ConversationDataServiceProxy {
             .abortedConversationRequest,
             trace: Breadcrumbs.shared.trace(for: .malformedConversationLabelRequest)
         )
+    }
+
+    /// - Parameters:
+    ///   - date: new snooze date, nil means unsnooze
+    private func setSnoozeTime(to date: Date?, conversationIDs: [ConversationID]) {
+        try? contextProvider.write { context in
+            for conversationID in conversationIDs {
+                guard let conversation = Conversation.conversationForConversationID(
+                    conversationID.rawValue,
+                    inManagedObjectContext: context
+                ) else { return }
+                let messages = Message.messagesForConversationID(
+                    conversationID.rawValue,
+                    inManagedObjectContext: context
+                )
+                conversation.labels
+                    .compactMap { $0 as? ContextLabel }
+                    .forEach { label in
+                        label.snoozeTime = date ?? label.time
+                    }
+                messages?.forEach({ message in
+                    message.snoozeTime = date ?? message.time
+                })
+            }
+        }
     }
 }

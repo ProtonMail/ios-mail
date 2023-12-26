@@ -666,7 +666,10 @@ extension MailboxViewControllerTests {
 }
 
 extension MockMailboxCoordinatorProtocol: SnoozeSupport {
-    var apiService: APIService { APIServiceMock() }
+    var conversationDataService: ConversationDataServiceProxy {
+        let fakeUser = UserManager(api: APIServiceMock())
+        return fakeUser.container.conversationService
+    }
 
     var calendar: Calendar { LocaleEnvironment.calendar }
 

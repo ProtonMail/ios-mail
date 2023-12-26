@@ -1510,6 +1510,7 @@ enum L11n {
         static let bannerTitle = NSLocalizedString("Snoozed until %@", comment: "The banner title that is shown in the message detail view.")
         static let buttonTitle = NSLocalizedString("Unsnooze", comment: "The title of the button in the banner that is shown in the message detail view.")
         static let successBannerTitle = NSLocalizedString("Snooze until %@", comment: "A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00")
+        static let unsnoozeSuccessBannerTitle = NSLocalizedString("Conversation unsnoozed", comment: "Notification banner when user unsnooze a conversation")
         static let snoozeUntil = NSLocalizedString("Snooze until...", comment: "The title of snooze config in action sheet")
         static let laterThisWeek = NSLocalizedString("Later this week", comment: "One of snooze option shows in action sheet")
         static let thisWeekend = NSLocalizedString("This weekend", comment: "One of snooze option shows in action sheet")

@@ -115,7 +115,8 @@ final class QueueManager: QueueHandlerRegister {
                  .updateLabel, .createLabel, .deleteLabel,
                  .updateContact, .deleteContact, .addContact,
                  .addContactGroup, .updateContactGroup, .deleteContactGroup,
-                 .notificationAction, .blockSender, .unblockSender:
+                 .notificationAction, .blockSender, .unblockSender,
+                 .unsnooze, .snooze:
                 _ = self.miscQueue.add(task.uuid, object: task)
             case .signout:
                 self.handleSignout(signoutTask: task)

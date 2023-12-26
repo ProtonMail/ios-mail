@@ -80,9 +80,6 @@ class MailListActionSheetViewModelTests: XCTestCase {
                 .moveToActionViewModel(),
                 .customizeToolbarActionViewModel()
             ]
-            if viewMode == .conversation {
-                expected.insert(.snooze(), at: 4)
-            }
             XCTAssertEqual(sut.items, expected)
         }
     }
@@ -151,9 +148,6 @@ class MailListActionSheetViewModelTests: XCTestCase {
                 .moveToActionViewModel(),
                 .customizeToolbarActionViewModel()
             ]
-            if viewMode == .conversation {
-                expected.insert(.snooze(), at: 4)
-            }
             XCTAssertEqual(sut.items, expected)
         }
     }
@@ -178,9 +172,6 @@ class MailListActionSheetViewModelTests: XCTestCase {
                 .moveToActionViewModel(),
                 .customizeToolbarActionViewModel()
             ]
-            if viewMode == .conversation {
-                expected.insert(.snooze(), at: 4)
-            }
             XCTAssertEqual(sut.items, expected)
         }
     }
@@ -205,9 +196,6 @@ class MailListActionSheetViewModelTests: XCTestCase {
                 .moveToActionViewModel(),
                 .customizeToolbarActionViewModel()
             ]
-            if viewMode == .conversation {
-                expected.insert(.snooze(), at: 4)
-            }
             XCTAssertEqual(sut.items, expected)
         }
     }
@@ -232,9 +220,6 @@ class MailListActionSheetViewModelTests: XCTestCase {
                 .moveToActionViewModel(),
                 .customizeToolbarActionViewModel()
             ]
-            if viewMode == .conversation {
-                expected.insert(.snooze(), at: 4)
-            }
             XCTAssertEqual(sut.items, expected)
         }
     }
@@ -259,9 +244,6 @@ class MailListActionSheetViewModelTests: XCTestCase {
                 .moveToActionViewModel(),
                 .customizeToolbarActionViewModel()
             ]
-            if viewMode == .conversation {
-                expected.insert(.snooze(), at: 4)
-            }
             XCTAssertEqual(sut.items, expected)
         }
     }
@@ -286,9 +268,6 @@ class MailListActionSheetViewModelTests: XCTestCase {
                 .moveToActionViewModel(),
                 .customizeToolbarActionViewModel()
             ]
-            if viewMode == .conversation {
-                expected.insert(.snooze(), at: 4)
-            }
             XCTAssertEqual(sut.items, expected)
         }
     }

@@ -862,10 +862,19 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
         let isInTrash = areAllMessagesInThreadInTheTrash
         let isInSpam = areAllMessagesInThreadInSpam
 
+        let foldersSupportSnooze = [
+            Message.Location.inbox.labelID,
+            Message.Location.snooze.labelID
+        ]
+        let isSupportSnooze = foldersSupportSnooze.contains(labelId)
+
         var actions = toolbarActionProvider.messageToolbarActions
             .addMoreActionToTheLastLocation()
             .replaceReplyAndReplyAllWithConversationVersion()
             .replaceForwardWithConversationVersion()
+        if !isSupportSnooze {
+            actions.removeAll(where: { $0 == .snooze })
+        }
 
         let messageForAction = findLatestMessageForAction()
         let hasMultipleRecipients = (messageForAction?.allRecipients.count ?? 0) > 1

@@ -19,6 +19,7 @@ protocol SingleMessageContentUIProtocol: AnyObject {
     func update(hasStrippedVersion: Bool)
     func updateAttachmentBannerIfNeeded()
     func trackerProtectionSummaryChanged()
+    func didUnSnooze()
 }
 
 class SingleMessageContentViewModel {
@@ -135,26 +136,7 @@ class SingleMessageContentViewModel {
 
         createNonExpandedHeaderViewModel()
 
-        self.bannerViewModel.editScheduledMessage = { [weak self] in
-            guard let self = self else {
-                return
-            }
-            let msgID = self.message.messageID
-            let originalScheduledTime = self.message.time
-            self.showProgressHub?()
-            self.user.messageService.undoSend(
-                of: msgID) { [weak self] result in
-                    self?.user.eventsService.fetchEvents(byLabel: Message.Location.allmail.labelID,
-                                                         notificationMessageID: nil,
-                                                         completion: { [weak self] _ in
-                        DispatchQueue.main.async {
-                            self?.hideProgressHub?()
-                            self?.goToDraft(msgID, originalScheduledTime)
-                        }
-                    })
-                }
-        }
-
+        bindBannerClosure()
         messageInfoProvider.set(delegate: self)
         messageBodyViewModel.update(content: messageInfoProvider.contents)
         updateAttachments()
@@ -325,6 +307,33 @@ class SingleMessageContentViewModel {
             await MainActor.run {
                 completion(status == .serverDown)
             }
+        }
+    }
+
+    private func bindBannerClosure() {
+        bannerViewModel.editScheduledMessage = { [weak self] in
+            guard let self = self else {
+                return
+            }
+            let msgID = self.message.messageID
+            let originalScheduledTime = self.message.time
+            self.showProgressHub?()
+            self.user.messageService.undoSend(of: msgID) { [weak self] result in
+                self?.user.eventsService.fetchEvents(byLabel: Message.Location.allmail.labelID,
+                                                     notificationMessageID: nil,
+                                                     completion: { [weak self] _ in
+                    DispatchQueue.main.async {
+                        self?.hideProgressHub?()
+                        self?.goToDraft(msgID, originalScheduledTime)
+                    }
+                })
+            }
+        }
+
+        bannerViewModel.unSnoozeMessage = { [weak self] in
+            guard let self = self else { return }
+            self.user.conversationService.unSnooze(conversationID: self.message.conversationID)
+            self.uiDelegate?.didUnSnooze()
         }
     }
 }

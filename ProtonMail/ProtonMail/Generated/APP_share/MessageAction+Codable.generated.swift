@@ -18,6 +18,8 @@ extension MessageAction: Codable {
         case label
         case unlabel
         case folder
+        case unsnooze
+        case snooze
         case updateLabel
         case createLabel
         case deleteLabel
@@ -67,6 +69,10 @@ extension MessageAction: Codable {
             return "unlabel"
         case .folder:
             return "folder"
+        case .unsnooze:
+            return "unsnooze"
+        case .snooze:
+            return "snooze"
         case .updateLabel:
             return "updateLabel"
         case .createLabel:
@@ -196,6 +202,17 @@ extension MessageAction: Codable {
                 shouldFetch: try nestedContainer.decodeIfPresent(Bool.self, forKey: .shouldFetch),
                 itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs),
                 objectIDs: try nestedContainer.decode([String].self, forKey: .objectIDs)
+            )
+        case .unsnooze:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .unsnooze)
+            self = .unsnooze(
+                conversationID: try nestedContainer.decode(String.self, forKey: .conversationID)
+            )
+        case .snooze:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .snooze)
+            self = .snooze(
+                conversationIDs: try nestedContainer.decode([String].self, forKey: .conversationIDs),
+                date: try nestedContainer.decode(Date.self, forKey: .date)
             )
         case .updateLabel:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateLabel)
@@ -343,6 +360,13 @@ extension MessageAction: Codable {
             try nestedContainer.encode(shouldFetch, forKey: .shouldFetch)
             try nestedContainer.encode(itemIDs, forKey: .itemIDs)
             try nestedContainer.encode(objectIDs, forKey: .objectIDs)
+        case let .unsnooze(conversationID):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .unsnooze)
+            try nestedContainer.encode(conversationID, forKey: .conversationID)
+        case let .snooze(conversationIDs, date):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .snooze)
+            try nestedContainer.encode(conversationIDs, forKey: .conversationIDs)
+            try nestedContainer.encode(date, forKey: .date)
         case let .updateLabel(labelID, name, color):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateLabel)
             try nestedContainer.encode(labelID, forKey: .labelID)

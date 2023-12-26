@@ -106,12 +106,14 @@ final class MainQueueHandler: QueueHandler {
             )
         )
         let messageActionUpdate = MessageActionUpdate(dependencies: .init(apiService: apiService, contextProvider: coreDataService))
+        let unSnooze = UnSnooze(dependencies: .init(apiService: apiService))
 
         self.dependencies = Dependencies(
             incomingDefaultService: user.incomingDefaultService,
             uploadDraft: uploadDraftUseCase,
             uploadAttachment: uploadAttachment, 
-            messageActionUpdate: messageActionUpdate
+            messageActionUpdate: messageActionUpdate,
+            unSnooze: unSnooze
         )
     }
 
@@ -154,6 +156,10 @@ final class MainQueueHandler: QueueHandler {
                 self.labelConversations(itemIDs,
                                         labelID: nextLabelID,
                                         completion: completeHandler)
+            case .unsnooze(let conversationID):
+                unSnooze(conversationID: conversationID, completion: completeHandler)
+            case .snooze(let conversationIDs, let date):
+                snooze(conversationIDs: conversationIDs, on: date, completion: completeHandler)
             case let .notificationAction(messageID, action):
                 notificationAction(messageId: messageID, action: action, completion: completeHandler)
             }
@@ -252,6 +258,8 @@ final class MainQueueHandler: QueueHandler {
                 blockSender(emailAddress: emailAddress, completion: completeHandler)
             case .unblockSender(let emailAddress):
                 unblockSender(emailAddress: emailAddress, completion: completeHandler)
+            case .unsnooze, .snooze:
+                fatalError()
             }
         }
     }
@@ -738,6 +746,30 @@ extension MainQueueHandler {
             completion(result.error)
         }
     }
+
+    func unSnooze(conversationID: String, completion: @escaping Completion) {
+        ConcurrencyUtils.runWithCompletion(
+            block: dependencies.unSnooze.execute,
+            argument: ConversationID(conversationID)
+        ) { [weak self] result in
+            self?.user?.eventsService.fetchEvents(labelID: Message.Location.snooze.labelID)
+            completion(result.error)
+        }
+    }
+
+    func snooze(conversationIDs: [String], on date: Date, completion: @escaping Completion) {
+        let request = ConversationSnoozeRequest(
+            conversationIDs: conversationIDs.map { ConversationID($0) },
+            snoozeTime: date.timeIntervalSince1970
+        )
+        ConcurrencyUtils.runWithCompletion(
+            block: apiService.perform(request:onDataTaskCreated:callCompletionBlockUsing:),
+            argument: (request, { _ in }, .asyncMainExecutor)
+        ) { [weak self] result in
+            self?.user?.eventsService.fetchEvents(labelID: Message.Location.snooze.labelID)
+            completion(result.error)
+        }
+    }
 }
 
 // MARK: queue actions for notification actions
@@ -787,19 +819,22 @@ extension MainQueueHandler {
         let uploadDraft: UploadDraftUseCase
         let uploadAttachment: UploadAttachmentUseCase
         let messageActionUpdate: MessageActionUpdateUseCase
+        let unSnooze: UnSnoozeUseCase
 
         init(
             actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction(),
             incomingDefaultService: IncomingDefaultServiceProtocol,
             uploadDraft: UploadDraftUseCase,
             uploadAttachment: UploadAttachmentUseCase,
-            messageActionUpdate: MessageActionUpdateUseCase
+            messageActionUpdate: MessageActionUpdateUseCase,
+            unSnooze: UnSnoozeUseCase
         ) {
             self.actionRequest = actionRequest
             self.incomingDefaultService = incomingDefaultService
             self.uploadDraft = uploadDraft
             self.uploadAttachment = uploadAttachment
             self.messageActionUpdate = messageActionUpdate
+            self.unSnooze = unSnooze
         }
     }
 }
