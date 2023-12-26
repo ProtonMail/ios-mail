@@ -47,6 +47,7 @@ final class BannerViewModel {
     var messageExpired: (() -> Void)?
     var reloadBanners: (() -> Void)?
     var editScheduledMessage: (() -> Void)?
+    var unSnoozeMessage: (() -> Void)?
 
     var canUnsubscribe: Bool {
         guard let message = infoProvider?.message else { return false }
@@ -176,10 +177,5 @@ final class BannerViewModel {
 
     func isAutoDeletingMessage() -> Bool {
         infoProvider?.message.isAutoDeleting == true
-    }
-
-    func unsnoozeMessage() {
-        // TODO: snooze:action
-        // unsnooze the message
     }
 }

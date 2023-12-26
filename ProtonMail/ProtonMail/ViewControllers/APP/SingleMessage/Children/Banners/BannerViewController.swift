@@ -312,7 +312,7 @@ final class BannerViewController: UIViewController {
         let dateString = PMDateFormatter.shared.stringForSnoozeTime(from: snoozeTime)
         let banner = UnsnoozeBanner()
         banner.configure(date: dateString, viewMode: viewModel.viewMode) { [weak self] in
-            self?.viewModel.unsnoozeMessage()
+            self?.viewModel.unSnoozeMessage?()
         }
         addBannerView(type: .snooze, shouldAddContainer: false, bannerView: banner)
     }

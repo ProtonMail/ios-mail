@@ -42,3 +42,25 @@ final class ConversationSnoozeRequest: Request {
         ]
     }
 }
+
+struct ConversationUnSnoozeRequest: Request {
+    private let conversationIDs: [ConversationID]
+
+    init(conversationIDs: [ConversationID]) {
+        self.conversationIDs = conversationIDs
+    }
+
+    var path: String {
+        "\(ConversationsAPI.path)/unsnooze"
+    }
+
+    var method: HTTPMethod {
+        return .put
+    }
+
+    var parameters: [String: Any]? {
+        [
+            "IDs": conversationIDs.map(\.rawValue)
+        ]
+    }
+}

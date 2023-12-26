@@ -20,7 +20,7 @@ import ProtonCoreUIFoundations
 import UIKit
 
 protocol SnoozeSupport: AnyObject {
-    var apiService: APIService { get }
+    var conversationDataService: ConversationDataServiceProxy { get }
     var calendar: Calendar { get }
     var isPaidUser: Bool { get }
     var presentingView: UIView { get }
@@ -73,15 +73,11 @@ extension SnoozeSupport {
         actionSheet.presentAt(presentingVC, hasTopConstant: false, animated: true)
     }
 
-    func snooze(on date: Date) {
+    func snooze(on date: Date, completion: (() -> Void)? = nil) {
+        conversationDataService.snooze(conversationIDs: snoozeConversations, on: date) {
+            completion?()
+        }
         Task {
-            let request = ConversationSnoozeRequest(
-                conversationIDs: snoozeConversations,
-                snoozeTime: date.timeIntervalSince1970
-            )
-            _ = try await apiService.perform(request: request)
-            // TODO: snooze:action optimistic logic to speed up view update
-            // TODO: move api call to Queue to support offline and error banner
             await showSnoozeSuccessBanner(on: date)
         }
     }

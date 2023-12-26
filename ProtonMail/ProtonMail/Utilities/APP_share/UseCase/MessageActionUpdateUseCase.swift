@@ -78,7 +78,7 @@ final class MessageActionUpdate: MessageActionUpdateUseCase {
 
     private func updateMessages(ids: [String], action: Action) async throws {
         let request = MessageActionRequest(action: action.rawValue, ids: ids)
-        let result: MessageActionResponse = try await dependencies.apiService.perform(request: request).1
+        let result: GeneralMultipleResponse = try await dependencies.apiService.perform(request: request).1
         if let errorResponse = result.responses.first(where: { responses in
             let succeedCodes = [APIErrorCode.resourceDoesNotExist, APIErrorCode.responseOK]
             guard !succeedCodes.contains(responses.response.code) else { return false }

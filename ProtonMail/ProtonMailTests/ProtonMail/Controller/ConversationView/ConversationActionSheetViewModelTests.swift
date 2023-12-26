@@ -34,7 +34,8 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: irrelevantForTheTest,
             isStarred: irrelevantForTheTest,
-            isScheduleSend: true,
+            isScheduleSend: true, 
+            isSupportSnooze: false,
             areAllMessagesIn: { _ in irrelevantForTheTest }
         )
 
@@ -52,7 +53,8 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: true,
             isStarred: true,
-            isScheduleSend: false,
+            isScheduleSend: false, 
+            isSupportSnooze: true,
             areAllMessagesIn: { _ in irrelevantForTheTest }
         )
 
@@ -77,7 +79,8 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: false,
             isStarred: true,
-            isScheduleSend: false,
+            isScheduleSend: false, 
+            isSupportSnooze: true,
             areAllMessagesIn: { _ in irrelevantForTheTest }
         )
 
@@ -102,7 +105,8 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: true,
             isStarred: false,
-            isScheduleSend: false,
+            isScheduleSend: false, 
+            isSupportSnooze: true,
             areAllMessagesIn: { _ in irrelevantForTheTest }
         )
 
@@ -127,7 +131,8 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: false,
             isStarred: false,
-            isScheduleSend: false,
+            isScheduleSend: false, 
+            isSupportSnooze: false,
             areAllMessagesIn: { _ in irrelevantForTheTest }
         )
 
@@ -139,8 +144,8 @@ class ConversationActionSheetViewModelTests: XCTestCase {
                 .replyAll,
                 .forward,
                 .markUnread,
-                .snooze,
-                .star
+                .star,
+                .labelAs
             ]
         )
     }
@@ -153,6 +158,7 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             isUnread: irrelevantForTheTest,
             isStarred: irrelevantForTheTest,
             isScheduleSend: false,
+            isSupportSnooze: false,
             areAllMessagesIn: { location in location == .inbox }
         )
 
@@ -168,6 +174,7 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             isUnread: irrelevantForTheTest,
             isStarred: irrelevantForTheTest,
             isScheduleSend: false,
+            isSupportSnooze: false,
             areAllMessagesIn: { location in location == .trash }
         )
 
@@ -182,7 +189,8 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: irrelevantForTheTest,
             isStarred: irrelevantForTheTest,
-            isScheduleSend: false,
+            isScheduleSend: false, 
+            isSupportSnooze: false,
             areAllMessagesIn: { location in location == .draft }
         )
 
@@ -197,7 +205,8 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: irrelevantForTheTest,
             isStarred: irrelevantForTheTest,
-            isScheduleSend: false,
+            isScheduleSend: false, 
+            isSupportSnooze: false,
             areAllMessagesIn: { location in location == .sent }
         )
 
@@ -213,6 +222,7 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             isUnread: irrelevantForTheTest,
             isStarred: irrelevantForTheTest,
             isScheduleSend: false,
+            isSupportSnooze: false,
             areAllMessagesIn: { location in location == .archive }
         )
 
@@ -228,6 +238,7 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             isUnread: irrelevantForTheTest,
             isStarred: irrelevantForTheTest,
             isScheduleSend: false,
+            isSupportSnooze: false,
             areAllMessagesIn: { location in location == .spam }
         )
 

@@ -47,6 +47,9 @@ enum MessageAction: Equatable {
         case deliveryTime
         case messageID
         case emailAddress
+        case conversationID
+        case conversationIDs
+        case date
     }
 
     // Draft
@@ -85,6 +88,8 @@ enum MessageAction: Equatable {
                 shouldFetch: Bool?,
                 itemIDs: [String],
                 objectIDs: [String])
+    case unsnooze(conversationID: String)
+    case snooze(conversationIDs: [String], date: Date)
 
     case updateLabel(labelID: String, name: String, color: String)
     case createLabel(name: String, color: String, isFolder: Bool)
