@@ -273,7 +273,7 @@ class UsersManager: UsersManagerProtocol {
         if !ProcessInfo.isRunningUnitTests {
             users.forEach { user in
                 Task {
-                    try await FeatureFlagsRepository.shared.fetchFlags(
+                    try await user.container.featureFlagsRepository.fetchFlags(
                         for: user.userID.rawValue,
                         using: user.apiService
                     )
