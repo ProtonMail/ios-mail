@@ -471,6 +471,8 @@ extension SnoozeSupportTest {
 }
 
 final class SnoozeMockObj: SnoozeSupport {
+    func presentPaymentView() {}
+    
     var conversationDataService: ConversationDataServiceProxy
 
     var calendar: Calendar

@@ -25,6 +25,7 @@ import MBProgressHUD
 import ProtonCoreDataModel
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
+import ProtonCorePaymentsUI
 import UIKit
 import protocol ProtonCoreServices.APIService
 
@@ -50,6 +51,7 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
     private var cachedViewControllers: [IndexPath: ConversationExpandedMessageViewController] = [:]
     private(set) var shouldReloadWhenAppIsActive = false
     private var _snoozeDateConfigReceiver: SnoozeDateConfigReceiver?
+    private var paymentsUI: PaymentsUI?
 
     // the purpose of this timer is to uncover the conversation even if the viewModel does not call `conversationIsReadyToBeDisplayed` for whatever reason
     // this is to avoid making the view unusable
@@ -1537,5 +1539,31 @@ extension ConversationViewController: SnoozeSupport {
             banner.show(at: .bottom, on: viewController)
         }
 
+    }
+
+    func presentPaymentView() {
+        paymentsUI = PaymentsUI(
+            payments: viewModel.user.payments,
+            clientApp: .mail,
+            shownPlanNames: Constants.shownPlanNames,
+            customization: .empty
+        )
+        paymentsUI?.showUpgradePlan(
+            presentationType: .modal,
+            backendFetch: true
+        ) { [weak self] reason in
+            switch reason {
+            case .purchasedPlan:
+                guard let self else { return }
+                Task {
+                    await self.viewModel.user.fetchUserInfo()
+                    await MainActor.run {
+                        self.presentSnoozeConfigSheet(on: self, current: Date())
+                    }
+                }
+            default:
+                break
+            }
+        }
     }
 }

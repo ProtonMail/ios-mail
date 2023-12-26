@@ -33,6 +33,7 @@ protocol SnoozeSupport: AnyObject {
 
     @MainActor
     func showSnoozeSuccessBanner(on date: Date)
+    func presentPaymentView()
 }
 
 extension SnoozeSupport {
@@ -46,7 +47,7 @@ extension SnoozeSupport {
             )
             picker.present(on: presentingView)
         } else {
-            // TODO: snooze:action upsell view, reuse upsell view for schedule send
+            presentUpsellView()
         }
     }
 
@@ -81,6 +82,15 @@ extension SnoozeSupport {
             await showSnoozeSuccessBanner(on: date)
         }
     }
+
+    private func presentUpsellView() {
+        let promotion = PromotionView()
+        promotion.presentPaymentUpgradeView = { [weak self] in
+            self?.presentPaymentView()
+        }
+        promotion.present(on: presentingView, type: .snooze)
+    }
+
 }
 
 // MARK: - Action sheet setting

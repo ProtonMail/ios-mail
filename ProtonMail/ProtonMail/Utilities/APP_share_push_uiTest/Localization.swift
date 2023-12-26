@@ -1516,6 +1516,11 @@ enum L11n {
         static let thisWeekend = NSLocalizedString("This weekend", comment: "One of snooze option shows in action sheet")
         static let nextWeek = NSLocalizedString("Next week", comment: "One of snooze option shows in action sheet")
         static let selectTimeInFuture = NSLocalizedString("Please select a time in the future", comment: "An error message will be shown to user when user select past snooze time")
+        static let promotionTitle = NSLocalizedString("Want to snooze any time?", comment: "The title of snooze promotion view")
+        static let promotionDesc = NSLocalizedString("Unlock custom snooze times when you upgrade", comment: "The content description of snooze promotion view")
+        static let addressBenefit = NSLocalizedString("Up to 15 email addresses/aliases", comment: "The benefit item for snooze promotion view")
+        static let folderBenefit = NSLocalizedString("Unlimited folders, labels, and filters", comment: "The benefit item for snooze promotion view")
+        static let domainBenefit = NSLocalizedString("Custom email domains", comment: "The benefit item for snooze promotion view")
     }
 
 	struct InlineAttachment {

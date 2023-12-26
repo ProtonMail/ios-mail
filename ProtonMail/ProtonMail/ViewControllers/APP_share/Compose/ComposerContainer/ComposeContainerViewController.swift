@@ -760,7 +760,7 @@ extension ComposeContainerViewController: ScheduledSendHelperDelegate {
             guard let nav = self?.navigationController?.view else {
                 return
             }
-            let promotion = ScheduleSendPromotionView()
+            let promotion = PromotionView()
             promotion.presentPaymentUpgradeView = { [weak self] in
                 #if !APP_EXTENSION
                 self?.presentPaymentView()
@@ -776,7 +776,7 @@ extension ComposeContainerViewController: ScheduledSendHelperDelegate {
             promotion.viewWasDismissed = { [weak self] in
                 self?.showScheduleSendActionSheet()
             }
-            promotion.present(on: nav)
+            promotion.present(on: nav, type: .scheduleSend)
         }.cauterize()
     }
 

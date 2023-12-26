@@ -207,7 +207,6 @@ extension SearchViewController {
                         }
                     case .snooze:
                         PMAssertionFailure("Search view display as single message mode, doesn't support snooze")
-                        break
                     case .more:
                         assertionFailure("handled above")
                     case .reply, .replyAll, .forward, .archive, .spam, .print, .viewHeaders, .viewHTML,
@@ -312,7 +311,6 @@ extension SearchViewController {
             break
         case .snooze:
             PMAssertionFailure("Search view display as single message mode, doesn't support snooze")
-            break
         }
     }
 
