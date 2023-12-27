@@ -823,7 +823,7 @@ extension ComposeContentViewController: ComposeViewDelegate {
         let currentSenderAddress = viewModel.currentSenderAddress()
         var actions: [UIAction] = []
         for address in addresses {
-            guard address.status == .enabled && address.receive == .active else { continue }
+            guard address.status == .enabled && address.send == .active else { continue }
 
             let state: UIMenuElement.State = currentSenderAddress == address ? .on : .off
             let item = UIAction(title: address.email, state: state) { [weak self] action in
