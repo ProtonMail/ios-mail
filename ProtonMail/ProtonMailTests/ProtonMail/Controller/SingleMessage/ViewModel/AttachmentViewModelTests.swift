@@ -35,7 +35,6 @@ class AttachmentViewModelTests: XCTestCase {
         startDate: .distantPast,
         endDate: .distantFuture,
         calendar: .init(
-            id: "foo",
             name: "General",
             iconColor: "#FF0000"
         ),
