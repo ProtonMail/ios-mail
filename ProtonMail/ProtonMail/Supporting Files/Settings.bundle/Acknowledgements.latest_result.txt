@@ -754,6 +754,8 @@ name: Factory, nameSpecified: Factory, owner: hmlongco, version: 2.2.0, source: 
 
 name: LifetimeTracker, nameSpecified: LifetimeTracker, owner: krzysztofzablocki, version: 1.8.1, source: https://github.com/krzysztofzablocki/LifetimeTracker
 
+name: swift-css-parser, nameSpecified: swift-css-parser, owner: stackotter, version: 0.1.2, source: https://github.com/stackotter/swift-css-parser
+
 add-version-numbers: false
 
 LicensePlist Version: 3.24.10

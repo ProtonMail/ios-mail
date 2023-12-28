@@ -76,7 +76,7 @@ final class CSSMagicTest: XCTestCase {
         """
         document = CSSMagic.parse(htmlString: html)
         css = CSSMagic.generateCSSForDarkMode(document: document)
-        expected = "@media (prefers-color-scheme: dark) { span { background-color: hsla(104, 39%, 30%, 1.0) !important }div.a[style*=\"color: black\"] { color: hsla(0, 0%, 100%, 1.0) !important } }"
+        expected = "@media (prefers-color-scheme: dark) { span {background-color: hsla(104, 39%, 30%, 1.0) !important;}div.a[style*=\"color: black\"] { color: hsla(0, 0%, 100%, 1.0) !important } }"
         XCTAssertEqual(css, expected)
     }
 
@@ -128,13 +128,9 @@ extension CSSMagicTest {
                         "span{background-color: rgb(151, 202, 153);}"]
         XCTAssertEqual(styleCSS, expected)
 
-        var newStyleCSS = try XCTUnwrap(CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS), "Should have value")
-        let aSelector = newStyleCSS[".a"]
-        XCTAssertNotNil(aSelector)
-        XCTAssertEqual(aSelector, ["color: hsla(122, 33%, 90%, 1.0) !important"])
-        let spanSelector = newStyleCSS["span"]
-        XCTAssertNotNil("span")
-        XCTAssertEqual(spanSelector, ["background-color: hsla(122, 32%, 30%, 1.0) !important"])
+        var newStyleCSS = CSSMagic.getDarkModeCSSFrom(styleCSS: styleCSS)
+        var expectedCSS = ".a {color: hsla(122, 33%, 90%, 1.0) !important;}span {background-color: hsla(122, 32%, 30%, 1.0) !important;}"
+        XCTAssertEqual(newStyleCSS, expectedCSS)
 
         html = """
         <html><head><style>.email{background-color:#ffffff}</style><style>.email{width:100px}</style></head><body></body></html>
@@ -146,9 +142,9 @@ extension CSSMagicTest {
             ".email{width:100px}"
         ]
         XCTAssertEqual(styleCSS, expected)
-        newStyleCSS = try XCTUnwrap(CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS), "Should have value")
-        let result = try XCTUnwrap(newStyleCSS[".email"])
-        XCTAssertEqual(result, ["background-color: #1C1B24 !important"])
+        newStyleCSS = CSSMagic.getDarkModeCSSFrom(styleCSS: styleCSS)
+        expectedCSS = ".email {background-color: #1C1B24 !important;}"
+        XCTAssertEqual(newStyleCSS, expectedCSS)
 
         html = """
         <html>
@@ -171,17 +167,9 @@ extension CSSMagicTest {
             "#content,\n            .mailbody {\n                background-color: #ffffff;\n            }\n            .a .b {\n                background-color: #336635;\n            }"
         ]
         XCTAssertEqual(styleCSS, expected)
-        newStyleCSS = try XCTUnwrap(CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS), "Should have value")
-        XCTAssertEqual(newStyleCSS.count, 2)
-        for newStyle in newStyleCSS {
-            if newStyle.key == "#content,\n            .mailbody" {
-                XCTAssertEqual(newStyle.value, ["background-color: #1C1B24 !important"])
-            } else if newStyle.key == ".a .b" {
-                XCTAssertEqual(newStyle.value, ["background-color: hsla(122, 33%, 30%, 1.0) !important"])
-            } else {
-                XCTFail("Unknown key")
-            }
-        }
+        newStyleCSS = CSSMagic.getDarkModeCSSFrom(styleCSS: styleCSS)
+        expectedCSS = "#content,.mailbody {background-color: #1C1B24 !important;}.a .b {background-color: hsla(122, 33%, 30%, 1.0) !important;}"
+        XCTAssertEqual(newStyleCSS, expectedCSS)
     }
 
     func testGetStyleNodes_part2() throws {
@@ -205,10 +193,8 @@ extension CSSMagicTest {
             "body,\n        html,\n        td {\n            font-family: \"Helvetica Neue\", Helvetica, Arial, Verdana, sans-serif; \n            color: rgb(31, 31, 31);\n        }"
         ]
         XCTAssertEqual(styleCSS, expected)
-        let newStyleCSS = try XCTUnwrap(CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS), "Should have value")
-        XCTAssertEqual(newStyleCSS.count, 1)
-        let result = try XCTUnwrap(newStyleCSS["body,\n        html,\n        td"])
-        XCTAssertEqual(result, ["color: hsla(0, 0%, 100%, 1.0) !important"])
+        let newStyleCSS = CSSMagic.getDarkModeCSSFrom(styleCSS: styleCSS)
+        XCTAssertEqual(newStyleCSS, "body,html,td {color: hsla(0, 0%, 100%, 1.0) !important;}")
     }
 
     func testGetColorNodes() {

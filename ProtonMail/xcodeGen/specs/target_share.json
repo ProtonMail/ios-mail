@@ -48,6 +48,9 @@
             },
             {
                "package": "ProtonCoreEventsLoop"
+            },
+            {
+               "package": "SwiftCSSParser"
             }
          ],
          "preBuildScripts": [
