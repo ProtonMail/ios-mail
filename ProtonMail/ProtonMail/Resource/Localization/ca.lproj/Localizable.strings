@@ -1942,7 +1942,7 @@
 "Insufficient disk space" = "Espai de disc insuficient";
 
 /* Message for error when app set up at launch fails */
-"The application cannot open due to insufficient disk space. Please delete some data and try again" = "The application cannot open due to insufficient disk space. Please delete some data and try again";
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "L'aplicació no pot obrir-se perquè no hi ha prou espai al disc. Suprimiu algunes dades i torneu-ho a provar.";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "No es pot obrir el missatge. Proveu de nou.";
