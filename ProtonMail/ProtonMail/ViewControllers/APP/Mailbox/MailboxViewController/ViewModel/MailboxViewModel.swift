@@ -914,6 +914,10 @@ extension MailboxViewModel {
             .callbackOn(.main)
             .execute(params: params, callback: callback)
     }
+
+    func isUploadingDraft(messageID: MessageID) -> Bool {
+        messageService.queueManager?.hasTask(for: messageID) ?? false
+    }
 }
 
 // MARK: Message Actions
