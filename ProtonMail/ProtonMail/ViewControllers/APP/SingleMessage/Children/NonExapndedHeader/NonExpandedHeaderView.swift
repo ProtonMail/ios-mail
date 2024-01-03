@@ -157,7 +157,7 @@ class NonExpandedHeaderView: HeaderView {
         // non-expanded and expanded
         // When font large enough
         [
-            senderLabel.heightAnchor.constraint(equalToConstant: 20)
+            senderLabel.heightAnchor.constraint(equalToConstant: 24)
         ].activate()
 
         [

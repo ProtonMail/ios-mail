@@ -70,12 +70,11 @@ final class BannerViewController: UIViewController {
 
     override func loadView() {
         view = customView
+        setupContainerView()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupContainerView()
 
         let bannersBeforeUpdate = displayedBanners
 
@@ -94,7 +93,7 @@ final class BannerViewController: UIViewController {
         }
 
         guard bannersBeforeUpdate.sortedBanners != displayedBanners.sortedBanners else { return }
-        viewModel.recalculateCellHeight?(false)
+        viewModel.recalculateCellHeight?(true)
         view.alpha = 0
         delay(0.5) {
             self.view.alpha = 1
@@ -111,7 +110,6 @@ final class BannerViewController: UIViewController {
             view.removeFromSuperview()
             displayedBanners.removeValue(forKey: type)
         }
-        viewModel.recalculateCellHeight?(false)
     }
 
     private func handleSpamBanner() {
@@ -178,10 +176,8 @@ final class BannerViewController: UIViewController {
         customView.addSubview(stackView)
 
         [
-            stackView.topAnchor.constraint(equalTo: customView.topAnchor, constant: 4.0)
-                .setPriority(as: .defaultHigh),
-            stackView.bottomAnchor.constraint(equalTo: customView.bottomAnchor, constant: -4.0)
-                .setPriority(as: .defaultHigh),
+            stackView.topAnchor.constraint(equalTo: customView.topAnchor, constant: 4.0),
+            stackView.bottomAnchor.constraint(equalTo: customView.bottomAnchor, constant: -4.0),
             stackView.leadingAnchor.constraint(equalTo: customView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: customView.trailingAnchor)
         ].activate()
@@ -400,7 +396,7 @@ extension BannerViewController {
         }
 
         guard bannersBeforeUpdate.sortedBanners != displayedBanners.sortedBanners else { return }
-        viewModel.recalculateCellHeight?(false)
+        viewModel.recalculateCellHeight?(true)
     }
 
     func showErrorBanner(error: NSError) {
