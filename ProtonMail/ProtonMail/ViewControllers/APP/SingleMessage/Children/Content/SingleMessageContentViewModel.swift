@@ -163,7 +163,11 @@ class SingleMessageContentViewModel {
 
     private func setupBinding() {
         dependencies.isSenderBlockedPublisher.isBlocked(senderEmailAddress: messageInfoProvider.senderEmail.string)
-            .sink { [weak self] in self?.isSenderCurrentlyBlocked = $0 }
+            .sink(receiveValue: { [weak self] value in
+                if self?.isSenderCurrentlyBlocked != value {
+                    self?.isSenderCurrentlyBlocked = value
+                }
+            })
             .store(in: &cancellables)
 
         dependencies.isSenderBlockedPublisher.start()

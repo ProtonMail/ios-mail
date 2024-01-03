@@ -659,7 +659,6 @@ extension NewMessageBodyViewController: HTTPRequestSecureLoaderDelegate {
             view.stopSkeletonAnimation()
             view.removeFromSuperview()
         }
-        updateViewHeight(to: webView.scrollView.contentSize.height)
     }
 }
 

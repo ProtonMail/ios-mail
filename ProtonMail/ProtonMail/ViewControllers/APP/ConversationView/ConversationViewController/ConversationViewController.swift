@@ -624,13 +624,12 @@ private extension ConversationViewController {
         )
 
         let messageID = viewModel.message.messageID
-        viewModel.recalculateCellHeight = { [weak self, weak viewModel] isLoaded in
+        viewModel.recalculateCellHeight = { [weak self, weak viewModel] _ in
             let isExpanded = viewModel?.messageContent.isExpanded ?? false
             self?.recalculateHeight(
                 for: cell,
                 messageId: messageID,
-                isHeaderExpanded: isExpanded,
-                isLoaded: isLoaded
+                isHeaderExpanded: isExpanded
             )
         }
 
@@ -644,21 +643,24 @@ private extension ConversationViewController {
     private func recalculateHeight(
         for cell: ConversationExpandedMessageCell,
         messageId: MessageID,
-        isHeaderExpanded: Bool,
-        isLoaded: Bool
+        isHeaderExpanded: Bool
     ) {
         let height = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        let newHeightInfo = HeightStoreInfo(height: height,
-                                            isHeaderExpanded: isHeaderExpanded,
-                                            loaded: isLoaded)
-        if storedSizeHelper
+        let newHeightInfo = HeightStoreInfo(
+            height: height,
+            isHeaderExpanded: isHeaderExpanded,
+            loaded: true
+        )
+        if self.storedSizeHelper
             .updateStoredSizeIfNeeded(newHeightInfo: newHeightInfo, messageID: messageId) {
             cell.setNeedsLayout()
             cell.layoutIfNeeded()
-            UIView.setAnimationsEnabled(false)
-            customView.tableView.beginUpdates()
-            customView.tableView.endUpdates()
-            UIView.setAnimationsEnabled(true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                UIView.setAnimationsEnabled(false)
+                self.customView.tableView.beginUpdates()
+                self.customView.tableView.endUpdates()
+                UIView.setAnimationsEnabled(true)
+            }
         }
     }
 

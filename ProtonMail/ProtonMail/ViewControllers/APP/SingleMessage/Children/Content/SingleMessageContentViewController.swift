@@ -280,7 +280,8 @@ class SingleMessageContentViewController: UIViewController {
         
         oldBottomConstraint?.isActive = false
         bottomConstraint.isActive = true
-        
+        viewModel.recalculateCellHeight?(false)
+
         UIView.animate(withDuration: 0.25) {
             newController.view.alpha = 1
             oldController?.view.alpha = 0
