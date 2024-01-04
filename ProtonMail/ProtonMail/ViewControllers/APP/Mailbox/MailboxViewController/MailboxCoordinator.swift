@@ -170,6 +170,10 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
 
         switch dest {
         case .details:
+            SystemLogger.log(
+                message: "Mailbox start follow: \(path.debugDescription), userID: \(viewModel.user.userID)",
+                category: .notificationDebug
+            )
             handleDetailDirectFromNotification(node: path)
             viewModel.resetNotificationMessage()
         case .composeShow:
@@ -393,9 +397,17 @@ extension MailboxCoordinator {
         timeOfLastNavigationToMessageDetails = Date()
 
         resetNavigationViewControllersIfNeeded()
+        SystemLogger.log(
+            message: "PresentMessagePlaceholderIfNeeded: \(node.debugDescription)",
+            category: .notificationDebug
+        )
         presentMessagePlaceholderIfNeeded()
 
         messageToShow(isNotification: true, node: node) { [weak self] message in
+            SystemLogger.log(
+                message: "Finished fetching msg: message id is: \(message?.messageID.rawValue ?? "Nil")",
+                category: .notificationDebug
+            )
             guard let self = self,
                   let message = message else {
                 self?.viewController?.navigationController?.popViewController(animated: true)
@@ -405,19 +417,35 @@ extension MailboxCoordinator {
             let messageID = message.messageID
             switch self.viewModel.locationViewMode {
             case .singleMessage:
+                SystemLogger.log(
+                    message: "Display notification in single message mode. id: \(messageID)",
+                    category: .notificationDebug
+                )
                 if self.isMessageSwipeNavigationEnabled {
                     self.presentPageViewsFor(message: message)
                 } else {
                     self.present(message: message)
                 }
             case .conversation:
+                SystemLogger.log(
+                    message: "Start fetching conversation for msg id: \(messageID)",
+                    category: .notificationDebug
+                )
                 self.conversationToShow(isNotification: true, message: message) { [weak self] conversation in
+                    SystemLogger.log(
+                        message: "Finished fetching conversation: conv id is: \(conversation?.conversationID.rawValue ?? "Nil")",
+                        category: .notificationDebug
+                    )
                     guard let conversation = conversation else {
                         self?.viewController?.navigationController?.popViewController(animated: true)
                         L11n.Error.cant_open_message.alertToastBottom()
                         return
                     }
 
+                    SystemLogger.log(
+                        message: "Display notification in conversation mode. msg id: \(messageID), conv id: \(conversation.conversationID.rawValue)",
+                        category: .notificationDebug
+                    )
                     if self?.isMessageSwipeNavigationEnabled ?? false {
                         self?.presentPageViewsFor(conversation: conversation, targetID: messageID)
                     } else {
@@ -500,7 +528,13 @@ extension MailboxCoordinator {
     }
 
     private func present(message: MessageEntity) {
-        guard let navigationController = viewController?.navigationController else { return }
+        guard let navigationController = viewController?.navigationController else {
+            SystemLogger.log(
+                message: "Can not find the navigation view to show the message detail view.",
+                category: .notificationDebug
+            )
+            return
+        }
         let coordinator = SingleMessageCoordinator(
             navigationController: navigationController,
             labelId: viewModel.labelID,
@@ -514,7 +548,13 @@ extension MailboxCoordinator {
     }
 
     private func present(conversation: ConversationEntity, targetID: MessageID?) {
-        guard let navigationController = viewController?.navigationController else { return }
+        guard let navigationController = viewController?.navigationController else {
+            SystemLogger.log(
+                message: "Can not find the navigation view to show the conversation view.",
+                category: .notificationDebug
+            )
+            return
+        }
         let coordinator = ConversationCoordinator(
             labelId: viewModel.labelID,
             navigationController: navigationController,
@@ -558,7 +598,13 @@ extension MailboxCoordinator {
     }
 
     private func presentPageViews<T, U, V>(pageVM: PagesViewModel<T, U, V>) {
-        guard let navigationController = viewController?.navigationController else { return }
+        guard let navigationController = viewController?.navigationController else {
+            SystemLogger.log(
+                message: "Can not find the navigation view to show the swiping detail view.",
+                category: .notificationDebug
+            )
+            return
+        }
         var viewControllers = navigationController.viewControllers
         // if a placeholder VC is there, it has been presented with a push animation; avoid doing a 2nd one
         let animated = !(viewControllers.last is MessagePlaceholderVC)

@@ -208,11 +208,23 @@ extension PushNotificationService {
         let userInfo = response.notification.request.content.userInfo
         if dependencies.unlockProvider.isUnlocked() { // unlocked
             do {
+                SystemLogger.log(
+                    message: "HandleRemoteNotification: device isUnlocked, id: \(userInfo["messageId"] as? String ?? "No msgId found")",
+                    category: .notificationDebug
+                )
                 try didReceiveRemoteNotification(userInfo, completionHandler: completionHandler)
             } catch {
+                SystemLogger.log(
+                    message: "HandleRemoteNotification: device isUnlocked, but has error \(error.localizedDescription), id: \(userInfo["messageId"] as? String ?? "No msgId found")",
+                    category: .notificationDebug
+                )
                 setNotification(userInfo, fetchCompletionHandler: completionHandler)
             }
         } else if UIApplication.shared.applicationState == .inactive { // opened by push
+            SystemLogger.log(
+                message: "HandleRemoteNotification: device locked, id: \(userInfo["messageId"] as? String ?? "No msgId found")",
+                category: .notificationDebug
+            )
             setNotification(userInfo, fetchCompletionHandler: completionHandler)
         } else {
             completionHandler()
@@ -231,7 +243,15 @@ extension PushNotificationService {
         }
         notificationOptions = nil
         completionHandler()
+        SystemLogger.log(
+            message: "DidReceiveRemoteNotification: start mapNotificationToDeepLink, id: \(userInfo["messageId"] as? String ?? "No msgId found")",
+            category: .notificationDebug
+        )
         dependencies.navigationResolver.mapNotificationToDeepLink(payload) { [weak self] deeplink in
+            SystemLogger.log(
+                message: "DidReceiveRemoteNotification: post notification to switch view, id: \(userInfo["messageId"] as? String ?? "No msgId found")",
+                category: .notificationDebug
+            )
             self?.dependencies.notificationCenter.post(name: .switchView, object: deeplink)
         }
     }
