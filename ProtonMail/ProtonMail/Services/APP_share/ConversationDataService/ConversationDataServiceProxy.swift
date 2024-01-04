@@ -219,7 +219,7 @@ extension ConversationDataServiceProxy {
         }
         self.queue(actionToQueue, isConversation: true)
 
-        Task.detached {
+        DispatchQueue.global().async {
             let result: Swift.Result<Void, Error>
             do {
                 try self.localConversationUpdater.editLabels(
