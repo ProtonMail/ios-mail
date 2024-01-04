@@ -44,10 +44,23 @@ final class MessagePlaceholderVC: UIViewController {
         navigationItem.rightBarButtonItem = barItem
 
         MBProgressHUD.showAdded(to: self.view, animated: true)
+
+        SystemLogger.log(
+            message: "MessagePlaceholderVC viewDidLoaded",
+            category: .notificationDebug
+        )
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         customView.toolBarHeight.constant = view.safeGuide.bottom + 56.0
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        SystemLogger.log(
+            message: "MessagePlaceholderVC dismissed",
+            category: .notificationDebug
+        )
     }
 }
