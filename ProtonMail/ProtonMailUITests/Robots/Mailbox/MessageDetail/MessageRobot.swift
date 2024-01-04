@@ -155,6 +155,16 @@ class MessageRobot: CoreElements {
         return self
     }
 
+    func clickMarkAsUnreadIcon() -> InboxRobot {
+        button("ic envelope dot").tap()
+        return InboxRobot()
+    }
+    
+    func waitForMessageBodyWithTextToExist(text: String) -> MessageRobot {
+        staticText(text).waitUntilExists()
+        return MessageRobot()
+    }
+        
     class MessageMoreOptions: CoreElements {
 
         func moveToSpam() -> MailboxRobotInterface {

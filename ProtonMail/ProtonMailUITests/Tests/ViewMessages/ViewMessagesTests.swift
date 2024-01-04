@@ -67,5 +67,18 @@ class ViewMessagesTests: FixtureAuthenticatedTestCase {
                 .verify.attachmentWithNameExist("next.svg")
         }
     }
+    
+    func testMarkConversationAsUnreadFromMessageView() {
+        runTestWithScenario(.qaMail002) {
+            InboxRobot()
+                .clickMessageBySubject(scenario.subject)
+                .waitForMessageBodyWithTextToExist(text: "Auto generated email")
+                .navigateBackToInbox()
+                .verify.messageWithSubjectIsRead(scenario.subject)
+                .clickMessageBySubject(scenario.subject)
+                .waitForMessageBodyWithTextToExist(text: "Auto generated email")
+                .clickMarkAsUnreadIcon()
+                .verify.messageWithSubjectIsUnread(scenario.subject)
+        }
+    }
 }
-
