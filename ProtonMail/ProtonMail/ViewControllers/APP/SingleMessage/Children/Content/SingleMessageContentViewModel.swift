@@ -157,7 +157,6 @@ class SingleMessageContentViewModel {
 
         messageInfoProvider.set(delegate: self)
         messageBodyViewModel.update(content: messageInfoProvider.contents)
-        updateAttachments()
     }
 
     func messageHasChanged(message: MessageEntity) {
