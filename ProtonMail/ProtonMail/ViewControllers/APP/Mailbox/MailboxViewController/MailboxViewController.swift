@@ -797,6 +797,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
 #if DEBUG
             mailboxCell.generateCellAccessibilityIdentifiers(mailboxCell.customView.messageContentView.titleLabel.text!)
+            mailboxCell.accessibilityValue = mailboxItem.isUnread(labelID: viewModel.labelID) ? "unread" : "read"
 #endif
         case .skeleton:
             inputCell.showAnimatedGradientSkeleton()

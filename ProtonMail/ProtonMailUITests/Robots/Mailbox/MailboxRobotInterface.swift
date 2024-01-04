@@ -30,6 +30,11 @@ fileprivate struct id {
     static let referralLaterButtonIdentifier = "ReferralPromptView.laterButton"
 }
 
+enum MessageState: String {
+    case read = "read"
+    case unread = "unread"
+}
+
 var subjects = [String]()
 
 /**
@@ -195,5 +200,16 @@ class MailboxRobotVerifyInterface: CoreElements {
 
     func referralPromptIsNotShown() {
         button(id.referralCloseButtonIdentifier).checkDoesNotExist()
+    }
+    
+    func messageWithSubjectIsRead(_ subject: String) -> InboxRobot {
+        XCTAssertEqual(cell(id.mailboxMessageCellIdentifier(subject)).hasValue(MessageState.read.rawValue).waitUntilExists().value() as! String, MessageState.read.rawValue, "Expected message with subject: \"\(subject)\" to be READ but got UNREAD.")
+        return InboxRobot()
+    }
+    
+    @discardableResult
+    func messageWithSubjectIsUnread(_ subject: String) -> InboxRobot {
+        XCTAssertEqual(cell(id.mailboxMessageCellIdentifier(subject)).hasValue(MessageState.unread.rawValue).waitUntilExists().value() as! String, MessageState.unread.rawValue, "Expected message with subject: \"\(subject)\" to be UNREAD but got READ.")
+        return InboxRobot()
     }
 }
