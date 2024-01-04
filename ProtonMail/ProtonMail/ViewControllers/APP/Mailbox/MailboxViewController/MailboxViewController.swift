@@ -1479,7 +1479,8 @@ extension MailboxViewController {
     private func processSwipeActions(_ action: MessageSwipeAction, item: MailboxItem) -> Bool {
         /// UIAccessibility
         UIAccessibility.post(notification: UIAccessibility.Notification.announcement, argument: action.description)
-        viewModel.select(id: item.itemID)
+        viewModel.removeAllSelectedIDs()
+       _ = viewModel.select(id: item.itemID)
         switch action {
         case .none:
             return false
