@@ -24,6 +24,7 @@ final class ContactViewsFactory {
     & HasInternetConnectionStatusProviderProtocol
     & ContactGroupSelectEmailViewModelImpl.Dependencies
     & ContactImportViewController.Dependencies
+    & ContactsViewModel.Dependencies
 
     private unowned let dependencies: Dependencies
 

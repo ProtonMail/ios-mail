@@ -15,8 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonCore. If not, see https://www.gnu.org/licenses/.
 
-public protocol SpecialLoopFactory {
-    associatedtype Loop: EventsLoop
+@testable import ProtonCoreEventsLoop
+import XCTest
 
-    func makeSpecialLoop(forSpecialLoopID specialLoopID: String) -> Loop
+class EnvironmentTests: XCTestCase {
+
+    func testLoopOperationQueueFactory_ReturnsQueueOfTypeOperationQueue() {
+        assertKindOf(Environment.loopOperationQueueFactory(), OperationQueue.self)
+    }
+
+    func testMainSchedulerOperationQueueFactory_ReturnsQueueOfTypeOperationQueue() {
+        assertKindOf(Environment.mainSchedulerOperationQueueFactory(), OperationQueue.self)
+    }
+
+    func testCurrentDate_ReturnsDateAtCurrentTime() {
+        XCTAssertEqual(Environment.currentDate().timeIntervalSince1970, Date().timeIntervalSince1970, accuracy: 0.0001)
+    }
+
 }

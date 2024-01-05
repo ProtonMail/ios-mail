@@ -1,24 +1,24 @@
 // Copyright (c) 2022 Proton Technologies AG
 //
-// This file is part of Proton Technologies AG and Proton Calendar.
+// This file is part of Proton Technologies AG and ProtonCore.
 //
-// Proton Calendar is free software: you can redistribute it and/or modify
+// ProtonCore is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Calendar is distributed in the hope that it will be useful,
+// ProtonCore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Calendar. If not, see https://www.gnu.org/licenses/.
+// along with ProtonCore. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonCoreEventsLoop
 import XCTest
 
-class EventsPeriodicSchedulerTests: XCTestCase {
+class EventsPeriodicSchedulerTests: TestCase {
 
     var sut: EventsPeriodicScheduler<CoreLoopSpy, SpecialLoopSpy>!
     var eventsPeriodicSchedulerQueue: SynchronousOperationQueueFixture!
@@ -30,22 +30,24 @@ class EventsPeriodicSchedulerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+
         operationQueues = []
         coreLoopFactory = .init()
         specialLoopFactory = .init()
-        timerScheduler = .init()
         currentDate = .init()
+        timerScheduler = TimerSchedulerSpy()
         eventsPeriodicSchedulerQueue = .init()
 
+        Environment.currentDate = { self.currentDate }
+        Environment.timerScheduler = timerScheduler
+        Environment.mainSchedulerOperationQueueFactory = { self.eventsPeriodicSchedulerQueue }
+        Environment.loopOperationQueueFactory = {
+            let queue = ImmediateOperationQueue()
+            self.operationQueues.append(queue)
+            return queue
+        }
+
         sut = .init(
-            currentDate: self.currentDate,
-            mainSchedulerOperationQueueFactory: { self.eventsPeriodicSchedulerQueue },
-            loopOperationQueueFactory: {
-                let queue = ImmediateOperationQueue()
-                self.operationQueues.append(queue)
-                return queue
-            },
-            timerScheduler: timerScheduler,
             coreLoopFactory: .init(coreLoopFactory),
             specialLoopFactory: .init(specialLoopFactory)
         )
@@ -111,31 +113,6 @@ class EventsPeriodicSchedulerTests: XCTestCase {
 
         XCTAssertEqual(specialLoopFactory.createdLoops.value.map(\.loopID), ["<test_special_loop_id_1>", "<test_special_loop_id_2>"])
         XCTAssertEqual(specialLoopFactory.createdLoops.value.map(\.latestEventID), ["1st_special_event_id_#0", "2nd_special_event_id_#0"])
-    }
-
-    func testCurrentlyEnabled_WhenStartSuspendAndStartAgain_HasTwoEnabledSpecialLoops() throws {
-        try enableCoreLoopAndTwoSpecialLoops()
-
-        sut.start()
-        sut.suspend()
-        sut.start()
-
-        XCTAssertEqual(sut.currentlyEnabled(), .init(
-            coreLoopIDs: ["<test_user_id_1>"],
-            specialLoopIDs: ["<test_special_loop_id_1>", "<test_special_loop_id_2>"]
-        ))
-    }
-
-    func testCurrentlyEnabled_WhenStartAndReset_HasZeroEnabledSpecialLoops() throws {
-        try enableCoreLoopAndTwoSpecialLoops()
-
-        sut.start()
-        sut.reset()
-
-        XCTAssertEqual(sut.currentlyEnabled(), .init(
-            coreLoopIDs: ["<test_user_id_1>"],
-            specialLoopIDs: []
-        ))
     }
 
     func testStart_DoesNotSchedulesAnyOperations() throws {
@@ -604,7 +581,7 @@ class EventsPeriodicSchedulerTests: XCTestCase {
 
         timerScheduler.simulateTick()
 
-        coreLoop.delegate?.didStopSpecialLoop(withSpecialLoopID: "<test_special_loop_id_33>")
+        coreLoop.delegate?.disableSpecialLoop(withSpecialLoopID: "<test_special_loop_id_33>")
 
         finishAllOperations()
 
@@ -626,7 +603,7 @@ class EventsPeriodicSchedulerTests: XCTestCase {
 
         try configureLatestEventIDs()
 
-        coreLoop.delegate?.didStopSpecialLoop(withSpecialLoopID: "<test_special_loop_id_66>")
+        coreLoop.delegate?.disableSpecialLoop(withSpecialLoopID: "<test_special_loop_id_66>")
 
         simulateTickAndFinish()
         simulateTickAndFinish()
@@ -845,15 +822,6 @@ private extension Array {
             return nil
         }
         return self[index]
-    }
-
-}
-
-private class ImmediateOperationQueue: OperationQueue {
-
-    override func addOperation(_ op: Operation) {
-        guard !isSuspended else { return }
-        op.main()
     }
 
 }

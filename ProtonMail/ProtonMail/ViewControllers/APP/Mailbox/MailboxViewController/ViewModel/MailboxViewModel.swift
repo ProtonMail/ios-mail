@@ -1382,23 +1382,15 @@ extension MailboxViewModel {
         return secureTempFile
     }
 
-    private func isSpecialLoopEnabledInNewEventLoop() -> Bool {
-        dependencies.mailEventsPeriodicScheduler.currentlyEnabled().specialLoopIDs.contains(user.userID.rawValue)
-    }
-
     func fetchEventsWithNewEventLoop() {
         dependencies.mailEventsPeriodicScheduler.triggerSpecialLoop(forSpecialLoopID: user.userID.rawValue)
     }
 
     func stopNewEventLoop() {
-        dependencies.mailEventsPeriodicScheduler.didStopSpecialLoop(withSpecialLoopID: user.userID.rawValue)
+        dependencies.mailEventsPeriodicScheduler.disableSpecialLoop(withSpecialLoopID: user.userID.rawValue)
     }
 
     func startNewEventLoop() {
-        guard !isSpecialLoopEnabledInNewEventLoop() else {
-            fetchEventsWithNewEventLoop()
-            return
-        }
         dependencies.mailEventsPeriodicScheduler.enableSpecialLoop(forSpecialLoopID: user.userID.rawValue)
     }
 }

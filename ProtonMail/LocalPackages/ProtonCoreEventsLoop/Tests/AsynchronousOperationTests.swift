@@ -15,8 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonCore. If not, see https://www.gnu.org/licenses/.
 
-public protocol SpecialLoopFactory {
-    associatedtype Loop: EventsLoop
+@testable import ProtonCoreEventsLoop
+import XCTest
 
-    func makeSpecialLoop(forSpecialLoopID specialLoopID: String) -> Loop
+class AsynchronousOperationTests: TestCase {
+
+    func testAsynchronousOperationLifecycle() {
+        let operation = AsynchronousOperation()
+
+        XCTAssertTrue(operation.isAsynchronous)
+        XCTAssertEqual(operation.state, .ready)
+
+        operation.start()
+        XCTAssertEqual(operation.state, .executing)
+
+        operation.cancel()
+        XCTAssertEqual(operation.state, .finished)
+
+        operation.start()
+        XCTAssertEqual(operation.state, .finished)
+    }
+
 }

@@ -250,7 +250,7 @@ extension MenuViewModel: MenuVMProtocol {
             completion?()
             return
         }
-        dependencies.mailEventsPeriodicScheduler.didStopSpecialLoop(withSpecialLoopID: userID.rawValue)
+        dependencies.mailEventsPeriodicScheduler.disableSpecialLoop(withSpecialLoopID: userID.rawValue)
         dependencies.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false, completion: completion)
     }
 
