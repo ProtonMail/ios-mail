@@ -40,6 +40,7 @@ class NewMailboxMessageCellPresenter {
         presentAttachmentsPreview(viewModel: viewModel, in: view.messageContentView)
         presentTags(tags: viewModel.tags, in: view.messageContentView)
         presentSelectionStyle(style: viewModel.style, in: view)
+        updateCustomSpacing(viewModel: viewModel, in: view.messageContentView)
     }
 
     func presentSelectionStyle(style: NewMailboxMessageViewStyle, in view: NewMailboxMessageCellContentView) {
@@ -241,5 +242,25 @@ class NewMailboxMessageCellPresenter {
         imageView.image = image
         imageView.tintColor = isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         return imageView
+    }
+
+    private func updateCustomSpacing(viewModel: NewMailboxMessageViewModel, in view: NewMailboxMessageContentView) {
+        let hasAttachments = !viewModel.attachmentsPreviewViewModels.isEmpty
+        let hasTags = !viewModel.tags.isEmpty
+
+        switch (hasAttachments, hasTags) {
+        case (true, true):
+            view.contentStackView.setCustomSpacing(8, after: view.secondLineStackView)
+            view.contentStackView.setCustomSpacing(4, after: view.attachmentsPreviewLine)
+        case (true, false):
+            view.contentStackView.setCustomSpacing(8, after: view.secondLineStackView)
+            view.contentStackView.setCustomSpacing(0, after: view.attachmentsPreviewLine)
+        case (false, true):
+            view.contentStackView.setCustomSpacing(8, after: view.secondLineStackView)
+            view.contentStackView.setCustomSpacing(0, after: view.attachmentsPreviewLine)
+        case (false, false):
+            view.contentStackView.setCustomSpacing(0, after: view.secondLineStackView)
+            view.contentStackView.setCustomSpacing(0, after: view.attachmentsPreviewLine)
+        }
     }
 }
