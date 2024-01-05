@@ -25,7 +25,9 @@ import Foundation
 import PromiseKit
 
 class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
-    typealias Dependencies = HasCoreDataContextProviderProtocol & HasUserManager
+    typealias Dependencies = HasCoreDataContextProviderProtocol
+        & HasMailEventsPeriodicScheduler
+        & HasUserManager
     private let dependencies: Dependencies
 
     private var contactGroupPublisher: LabelPublisher?
@@ -115,11 +117,18 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     func fetchLatestContactGroup(completion: @escaping (Error?) -> Void) {
         if self.isFetching == false {
             self.isFetching = true
-            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID, notificationMessageID: nil, completion: { result in
-                self.isFetching = false
-                completion(result.error)
-            })
-            self.user.contactService.fetchContacts { _ in
+            if user.isNewEventLoopEnabled {
+                dependencies.mailEventsPeriodicScheduler.triggerSpecialLoop(forSpecialLoopID: user.userID.rawValue)
+                self.user.contactService.fetchContacts { error in
+                    completion(error)
+                }
+            } else {
+                self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID, notificationMessageID: nil, completion: { result in
+                    self.isFetching = false
+                    completion(result.error)
+                })
+                self.user.contactService.fetchContacts { _ in
+                }
             }
         } else {
             completion(nil)
@@ -138,9 +147,14 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         if isFetching == false {
             isFetching = true
 
-            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID, notificationMessageID: nil, completion: { _ in
-                self.isFetching = false
-            })
+            if user.isNewEventLoopEnabled {
+                dependencies.mailEventsPeriodicScheduler.triggerSpecialLoop(forSpecialLoopID: user.userID.rawValue)
+                isFetching = false
+            } else {
+                self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID, notificationMessageID: nil, completion: { _ in
+                    self.isFetching = false
+                })
+            }
         }
     }
 

@@ -102,7 +102,6 @@ class GlobalContainer: ManagedContainer {
         self {
             MailEventsPeriodicScheduler(
                 refillPeriod: Constants.App.eventsPollingInterval,
-                currentDate: Date(),
                 coreLoopFactory: AnyCoreLoopFactory(EmptyCoreLoopFactory()),
                 specialLoopFactory: AnySpecialLoopFactory(MailEventsSpecialLoopFactory(dependencies: self))
             )

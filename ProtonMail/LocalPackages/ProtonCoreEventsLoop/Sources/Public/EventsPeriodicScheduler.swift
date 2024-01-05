@@ -1,19 +1,19 @@
 // Copyright (c) 2022 Proton Technologies AG
 //
-// This file is part of Proton Technologies AG and Proton Calendar.
+// This file is part of Proton Technologies AG and ProtonCore.
 //
-// Proton Calendar is free software: you can redistribute it and/or modify
+// ProtonCore is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Proton Calendar is distributed in the hope that it will be useful,
+// ProtonCore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Calendar. If not, see https://www.gnu.org/licenses/.
+// along with ProtonCore. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
 
@@ -22,15 +22,21 @@ public class EventsPeriodicScheduler<GeneralEventsLoop: CoreLoop, SpecialEventsL
     public typealias LoopID = String
 
     /// Serial queue for jobs posted by all loops
-    private let queue: OperationQueue
+    private let queue = SerialQueueFactory(
+        createOperationQueue: Environment.mainSchedulerOperationQueueFactory
+    ).makeSerialQueue()
 
     /// Timer re-fills `queue` periodically when it gets empty
     private var timer: Timer?
+
     /// Default `refillPeriod` is set to 60 seconds
     private let refillPeriod: TimeInterval
-    private let currentDate: () -> Date
-    private let serialQueueFactory: () -> OperationQueue
-    private let timerScheduler: TimerScheduler
+
+    private let serialQueueFactory = SerialQueueFactory(
+        createOperationQueue: Environment.loopOperationQueueFactory
+    ).makeSerialQueue
+
+    private let timerScheduler = Environment.timerScheduler
 
     /// Factory for event polling operation for core events
     private var coreLoopScheduler: LoopOperationScheduler<GeneralEventsLoop>?
@@ -42,28 +48,20 @@ public class EventsPeriodicScheduler<GeneralEventsLoop: CoreLoop, SpecialEventsL
 
     public init(
         refillPeriod: TimeInterval = 60,
-        currentDate: @escaping @autoclosure () -> Date,
-        mainSchedulerOperationQueueFactory: @escaping () -> OperationQueue = OperationQueue.init,
-        loopOperationQueueFactory: @escaping () -> OperationQueue = OperationQueue.init,
-        timerScheduler: TimerScheduler = RunLoop.main,
         coreLoopFactory: AnyCoreLoopFactory<GeneralEventsLoop>,
         specialLoopFactory: AnySpecialLoopFactory<SpecialEventsLoop>
     ) {
-        self.queue = SerialQueueFactory(createOperationQueue: mainSchedulerOperationQueueFactory).makeSerialQueue()
-        self.serialQueueFactory = SerialQueueFactory(createOperationQueue: loopOperationQueueFactory).makeSerialQueue
-        self.timerScheduler = timerScheduler
         self.refillPeriod = refillPeriod
-        self.currentDate = currentDate
         self.coreLoopFactory = coreLoopFactory
         self.specialLoopFactory = specialLoopFactory
     }
 
-    /// Starts listening for core and special loops
+    /// Starts timer that pings core and special loops
     public func start() {
         queue.isSuspended = false
 
         let timer = Timer(
-            fireAt: currentDate(),
+            fireAt: Environment.currentDate(),
             interval: refillPeriod,
             target: self,
             selector: #selector(refillQueueIfNeeded),
@@ -73,20 +71,6 @@ public class EventsPeriodicScheduler<GeneralEventsLoop: CoreLoop, SpecialEventsL
 
         self.timer = timer
         timerScheduler.add(timer, forMode: .common)
-    }
-
-    @objc
-    private func refillQueueIfNeeded() {
-        if queue.isEmpty {
-            scheduleOperations()
-        }
-    }
-
-    private func scheduleOperations() {
-        coreLoopScheduler?.addOperation(to: queue)
-        sortedSpecialLoopsSchedulers.forEach { _, scheduler in
-            scheduler.addOperation(to: queue)
-        }
     }
 
     /// Suspends the queue and cancels all pending operations
@@ -133,13 +117,13 @@ public class EventsPeriodicScheduler<GeneralEventsLoop: CoreLoop, SpecialEventsL
         }
     }
 
-    /// Cancel current operations and triggers a core loop.
+    /// Removes all operations from the queue to execute a core loop as a first operation.
     public func triggerCoreLoop() {
         queue.cancelAllOperations()
         coreLoopScheduler?.addOperation(to: queue)
     }
 
-    /// Triggers a special loop for a given loop ID
+    /// Triggers a core loop and just then a special loop with a given loop ID
     /// - Parameter specialLoopID: specify `specialLoopID` for which you want to enable a specific loop.
     /// e.g. for calendar app `specialLoopID` is `calendarID`
     public func triggerSpecialLoop(forSpecialLoopID specialLoopID: LoopID) {
@@ -148,37 +132,44 @@ public class EventsPeriodicScheduler<GeneralEventsLoop: CoreLoop, SpecialEventsL
         specialLoop?.addOperation(to: queue)
     }
 
-    private func disableSpecialLoop(forSpecialLoopID specialLoopID: LoopID) {
+    // MARK: - CoreLoopDelegate
+
+    /// Disables a special loop with a given loop ID
+    /// - Parameter specialLoopID: specify `specialLoopID` for which you want to disable a specific loop.
+    /// e.g. for calendar app `specialLoopID` is `calendarID`
+    public func disableSpecialLoop(withSpecialLoopID specialLoopID: LoopID) {
         queue
             .operations
             .compactMap { $0 as? LoopOperation<SpecialEventsLoop> }
-            .filter { $0.loopID == specialLoopID }
-            .forEach { $0.cancel() }
+            .filter { loopOperation in loopOperation.loopID == specialLoopID }
+            .forEach { loopOperation in loopOperation.cancel() }
 
         specialLoopsSchedulers.mutate { value in
             value[specialLoopID] = nil
         }
     }
 
-    /// Returns information which loops are currently enabled
-    public func currentlyEnabled() -> EnabledLoops {
-        let coreLoopIDs = [coreLoopScheduler?.loop.loopID].compactMap { $0 }
-        let specialLoopIDs = sortedSpecialLoopsSchedulers.map(\.id)
+    // MARK: - Private
 
-        return .init(coreLoopIDs: coreLoopIDs, specialLoopIDs: specialLoopIDs)
+    @objc
+    private func refillQueueIfNeeded() {
+        if queue.isEmpty {
+            scheduleOperations()
+        }
+    }
+
+    private func scheduleOperations() {
+        coreLoopScheduler?.addOperation(to: queue)
+        sortedSpecialLoopsSchedulers.forEach { (_, scheduler) in
+            scheduler.addOperation(to: queue)
+        }
     }
 
     private var sortedSpecialLoopsSchedulers: [(id: LoopID, scheduler: LoopOperationScheduler<SpecialEventsLoop>)] {
         specialLoopsSchedulers
             .value
-            .map { (id: $0.key, scheduler: $0.value) }
+            .map { specialLoop in (id: specialLoop.key, scheduler: specialLoop.value) }
             .sorted(by: \.scheduler.order, <)
-    }
-
-    // MARK: - CoreLoopDelegate
-
-    public func didStopSpecialLoop(withSpecialLoopID specialLoopID: LoopID) {
-        disableSpecialLoop(forSpecialLoopID: specialLoopID)
     }
 
 }

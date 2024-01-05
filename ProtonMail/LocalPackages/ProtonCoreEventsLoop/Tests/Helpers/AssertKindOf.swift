@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -15,8 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonCore. If not, see https://www.gnu.org/licenses/.
 
-public protocol SpecialLoopFactory {
-    associatedtype Loop: EventsLoop
+import XCTest
 
-    func makeSpecialLoop(forSpecialLoopID specialLoopID: String) -> Loop
+func assertKindOf<T>(
+    _ object: @autoclosure () throws -> Any?,
+    _ type: T.Type,
+    _ message: @autoclosure () -> String = "",
+    file: StaticString = #filePath,
+    line: UInt = #line
+) {
+    let message = message().isEmpty ? "Given object is not kind of \(T.self)" : message()
+    XCTAssertNotNil(try object() as? T, message, file: file, line: line)
 }

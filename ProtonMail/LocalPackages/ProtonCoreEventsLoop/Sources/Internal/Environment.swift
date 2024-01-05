@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -15,8 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonCore. If not, see https://www.gnu.org/licenses/.
 
-public protocol SpecialLoopFactory {
-    associatedtype Loop: EventsLoop
+import Foundation
 
-    func makeSpecialLoop(forSpecialLoopID specialLoopID: String) -> Loop
+enum Environment {
+    static var currentDate: () -> Date = Date.init
+    static var mainSchedulerOperationQueueFactory: () -> OperationQueue = OperationQueue.init
+    static var loopOperationQueueFactory: () -> OperationQueue = OperationQueue.init
+    static var timerScheduler: TimerScheduler = RunLoop.main
 }
