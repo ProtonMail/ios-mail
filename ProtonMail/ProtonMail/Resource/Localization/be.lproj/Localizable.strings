@@ -58,28 +58,45 @@
 /* menu title */
 "Inbox" = "Уваходныя";
 
-/* menu title */
+/*
+ menu title
+ Springboard (3D Touch) shortcuts action
+ VoiceOver: email is starred
+*/
 "Starred" = "З зорачкай";
 
-/* menu title */
+/*
+ menu title
+ Push notification action to archive
+ The title of the archive action in action sheet
+*/
 "Archive" = "Архіў";
 
 /* menu title */
 "Drafts" = "Чарнавікі";
 
-/* mail location title */
+/*
+ mail location title
+ menu title
+*/
 "All Mail" = "Уся пошта";
 
 /* menu title */
 "Sent" = "Адпраўленыя";
 
-/* mail location desc */
+/*
+ mail location desc
+ menu title
+*/
 "Trash" = "Сметніца";
 
 /* menu title */
 "Spam" = "Спам";
 
-/* Action and title */
+/*
+ Action and title
+ menu title
+*/
 "Contacts" = "Кантакты";
 
 /* menu title (contact groups) */
@@ -88,19 +105,28 @@
 /* menu title */
 "Settings" = "Налады";
 
-/* Alert title to confirm signout */
+/*
+ Alert title to confirm signout
+ menu title
+*/
 "Sign out" = "Выйсці";
 
 /* menu title */
 "Lock The App" = "Заблакіраваць праграму";
 
-/* menu title */
+/*
+ menu title
+ The title of a subscription plans screen
+*/
 "Subscription" = "Падпіска";
 
 /* menu title */
 "Manage accounts" = "Кіраванне ўліковымі запісамі";
 
-/* menu title */
+/*
+ menu title
+ The voiceiver title of the add attachment button in the tool bar of composer
+*/
 "Add attachment" = "Дадаць далучэнне";
 
 /* menu title */
@@ -111,9 +137,6 @@
 
 /* Description after message have been sent */
 "Message sent" = "Паведамленне адпраўлена";
-
-/* Description */
-"Sent Failed" = "Не ўдалося адправіць";
 
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Тут нічога няма";
@@ -141,9 +164,6 @@
 
 /* Title */
 "You have a new email!" = "Вы атрымалі новы ліст!";
-
-/* Message */
-"You have %d new emails!" = "У вашай скрыні ёсць новыя лісты (колькасць: %d)!";
 
 /* abbreviation of reply: */
 "Re:" = "Адказаць:";
@@ -205,13 +225,19 @@
 /* button title */
 "Apply Password" = "Ужыць пароль";
 
-/* Action */
+/*
+ Action
+ Springboard (3D Touch) shortcuts action
+*/
 "Compose" = "Напісаць";
 
 /* Composer expiration page title */
 "Message expiration" = "Тэрмін дзеяння паведамлення";
 
-/* contacts default label type */
+/*
+ contacts default label type
+ Custom option for time config picker
+*/
 "Custom" = "Карыстальніцкі";
 
 /* Description */
@@ -391,7 +417,13 @@
 /* Done action */
 "Done" = "Гатова";
 
-/* Button to cancel encrypted search */
+/*
+ Button to cancel encrypted search
+ Cancel action
+ general cancel action
+ Title for the alert button to cancel delete all downloaded messages.
+ Title for the alert button to cancel disable content search.
+*/
 "Cancel" = "Скасаваць";
 
 /* Got it action */
@@ -418,16 +450,26 @@
 /* message From: field text */
 "From:" = "Ад:";
 
-/* message To: feild */
+/*
+ message To: feild
+ Title
+*/
 "To" = "Каму";
 
-/* message Cc: feild */
+/*
+ message Cc: feild
+ Title
+*/
 "Cc" = "Копія";
 
 /* message Bcc: feild */
 "Bcc:" = "Схаваная копія:";
 
-/* general delete action */
+/*
+ general delete action
+ The title of the delete action in action sheet
+ Title for the alert button to delete all downloaded messages.
+*/
 "Delete" = "Выдаліць";
 
 /* general close action */
@@ -436,7 +478,10 @@
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Ваш сеанс пратэрмінаваны, бо вы былі неактыўныя некаторы час або ён быў адкліканы. Увайдзіце ў сістэму паўторна.";
 
-/* Springboard (3D Touch) shortcuts action */
+/*
+ Springboard (3D Touch) shortcuts action
+ Title
+*/
 "Search" = "Пошук";
 
 /* Alert title */
@@ -451,7 +496,10 @@
 /* Action */
 "Send" = "Адправіць";
 
-/* Action */
+/*
+ Action
+ The action title of the alert of the user trying to send a message that was schedule-send.
+*/
 "Schedule send" = "Запланаваць адпраўку";
 
 /* Alert title */
@@ -487,7 +535,10 @@
 /* Title */
 "Save" = "Захаваць";
 
-/* Action */
+/*
+ Action
+ The button title of the scheduled message banner.
+*/
 "Edit" = "Рэдагаваць";
 
 /* Error message */
@@ -547,7 +598,10 @@
 /* Hint when users delete contact offline  */
 "Contact deleted, will be synced when connection is available" = "Кантакт выдалены і будзе сінхранізаваны, калі падключэнне стане даступным";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup2
+*/
 "Confirm" = "Пацвердзіць";
 
 /* Title */
@@ -565,7 +619,10 @@
 /* Action */
 "Later" = "Пазней";
 
-/* Action */
+/*
+ Action
+ The text for downloaded messages in local storage when encrypted search is disabled.
+*/
 "Disabled" = "Адключана";
 
 /* contact placeholder */
@@ -574,7 +631,12 @@
 /* top left back button */
 "Back" = "Назад";
 
-/* A *short* description saying that there is no contact group associated with this contact email */
+/*
+ A *short* description saying that there is no contact group associated with this contact email
+ Action title of none
+ The protection title of None protection
+ Title
+*/
 "None" = "Няма";
 
 /* lock app option */
@@ -604,7 +666,10 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Вы не можаце задаць адрас %@ у якасці прадвызначанага, бо гэта функцыя з'яўляецца платнай.";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup1
+*/
 "Continue" = "Працягнуць";
 
 /* error message */
@@ -628,10 +693,16 @@
 /* Error */
 "Unknown Error" = "Невядомая памылка";
 
-/* Action */
+/*
+ Action
+ The title of loading remote content banner.
+*/
 "Load remote content" = "Загрузіць аддаленае змесціва";
 
-/* settings general section title */
+/*
+ settings general section title
+ title
+*/
 "Change password" = "Змяніць пароль";
 
 /* Title */
@@ -910,7 +981,11 @@
 /* Error */
 "Can't open the file" = "Немагчыма адкрыць файл";
 
-/* Action */
+/*
+ Action
+ alternative routing link name in description
+ The title of learn more link
+*/
 "Learn more" = "Даведацца больш";
 
 /* Action */
@@ -958,7 +1033,10 @@
 /* Action title of move to archive */
 "Move to archive" = "Перамясціць у архіў";
 
-/* Action title of move to spam */
+/*
+ Action title of move to spam
+ The title of the spam action in action sheet
+*/
 "Move to spam" = "Перамясціць у спам";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
@@ -1003,7 +1081,10 @@
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Замест гэтага мы рэкамендуем наладзіць пароль або адключыць PGP для наступных атрымальнікаў:";
 
-/* A option title that enable/disable notification feature */
+/*
+ A option title that enable/disable notification feature
+ cell title in device settings
+*/
 "Notifications" = "Апавяшчэнні";
 
 /* VoiceOver: email belongs to folders */
@@ -1044,6 +1125,9 @@
 
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Выдаліць групу кантактаў";
+
+/* The string that describes how many contact groups are currently selected */
+"%d Selected" = "Выбрана: %d";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Выберыце прынамсі адзін адрас электроннай пошты для групы кантактаў";
@@ -1090,7 +1174,10 @@
 /* Alert to confirm signout */
 "You will be switched to %@" = "Вы будзеце пераключаны на %@";
 
-/* Alert to confirm sign out */
+/*
+ Alert to confirm sign out
+ Alert when sign out non-primary account from account manager
+*/
 "Are you sure you want to sign out?" = "Вы сапраўды хочаце выйсці?";
 
 /* Alert to confirm sign out when only one account signed in */
@@ -1153,7 +1240,10 @@
 /* cell title in device settings */
 "Language" = "Мова";
 
-/* cell title in device settings */
+/*
+ cell title in device settings
+ The title of combined contact in settings
+*/
 "Combined contacts" = "Камбінаваныя кантакты";
 
 /* cell title in app settings */
@@ -1234,9 +1324,6 @@
 /* The unread title of unread action button in mailbox view */
 "unread" = "непрачытаныя";
 
-/* The title of navigation bar title of mailbox view while selecting the message */
-"Selected" = "Выбрана";
-
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Абноўлена > 1 гадзіну таму";
 
@@ -1252,7 +1339,10 @@
 /* The text shown on the mailbox when the primary user changed */
 "Signed in as %@" = "Увайшлі як %@";
 
-/* The title of the star action in action sheet */
+/*
+ The title of the star action in action sheet
+ VoiceOver title of star button in the message view
+*/
 "Star" = "Зорачка";
 
 /* The title of the star action in action sheet */
@@ -1261,10 +1351,16 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Пазначыць як непрачытанае";
 
-/* Push notification action mark as read */
+/*
+ Push notification action mark as read
+ The title of the read action in action sheet
+*/
 "Mark as read" = "Пазначыць як прачытанае";
 
-/* Push notification action move to trash */
+/*
+ Push notification action move to trash
+ The title of the remove action in action sheet
+*/
 "Move to trash" = "Перамясціць у сметніцу";
 
 /* The title of the remove action in action sheet */
@@ -1276,10 +1372,10 @@
 /* The title of the view message in dark mode action in action sheet */
 "View message in Dark mode" = "Паглядзець паведамленні ў цёмным рэжыме";
 
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Уключыце гэту функцыю для аўтаматычнага запаўнення адрасоў электроннай пошты выкарыстоўваючы кантакты з усіх уліковых запісаў у якія вы ўвайшлі.";
-
-/* alternative routing description */
+/*
+ alternative routing description
+ The footer of alternative routing setting
+*/
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "У выпадку блакіроўкі сайтаў Proton гэта налада дазваляе праграме скарыстацца альтэрнатыўнай сеткавай маршрутызацыяй, каб атрымаць доступ да Proton, што можа быць карысным для абыходу міжсеткавых экранаў або праблем з сеткай. Для большай надзейнасці мы рэкамендуем пакінуць гэту наладу актыўнай. %1$@";
 
 /* The title of alternative routing settings */
@@ -1441,8 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Паведаміць пра фішынг";
 
-/* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "Не спам (перамясціць ва ўваходныя)";
+"Not spam (move to inbox)" = "Не спам (перамясціць ва ўваходныя)";
 
 /* No comment provided by engineer. */
 "Move to" = "Перамясціць у";
@@ -1830,6 +1925,12 @@
 /* Button inside the banner */
 "Load" = "Загрузіць";
 
+/* As in: event organizer */
+"Organizer" = "Арганізатар";
+
+/* Button to hide some items in the list to conserve screen estate */
+"Show less" = "Паказаць менш";
+
 /* Official badge next to sender's name */
 "Official" = "Афіцыйны";
 
@@ -1862,6 +1963,21 @@
 
 /* The title of the maybe later button in referral prompt view. */
 "Maybe later" = "Магчыма пазней";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Уключыце гэту функцыю для аўтаматычнага запаўнення адрасоў электроннай пошты выкарыстоўваючы кантакты з усіх уліковых запісаў у якія вы ўвайшлі.";
+
+/* contacts auto import title in settings */
+"Auto-import device contacts" = "Аўтаматычнае імпартаванне кантактаў прылады";
+
+/* contacts auto import footer in settings */
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Уключыце гэту функцыю, каб аўтаматычна дадаваць новыя кантакты з вашай прылады ў праграму Proton Mail.";
+
+/* Auto import alert title */
+"Auto-import enabled" = "Аўтаматычнае імпартаванне ўключана";
+
+/* Auto import alert message */
+"The initial import may take some time and will only occur when the app is in the foreground." = "Першапачатковае імпартаванне можа заняць некаторы час і будзе адбывацца пры ўмове, што праграма працуе не ў фоне.";
 
 /* Settings lock protection section */
 "Protection" = "Абарона";
@@ -1927,13 +2043,10 @@
 "Application logs" = "Журнал праграмы";
 
 /* The title of the setting of the next msg after move */
-"Next message after move" = "Наступнае паведамленне пасля перамяшчэння";
-
-/* The title of the row inside the setting page of next msg after move function. */
-"Navigate to next message after move" = "Перайсці да наступнага паведамлення пасля перамяшчэння";
+"Jump to next message" = "Перайсці да наступнага паведамлення";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Дзеянне па перамяшчэнні паведамлення (напрыклад, у архіў) прывядзе да пераходу да наступнага паведамлення.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "Аўтаматычна паказваць наступнае паведамленне, калі бягучае паведамленне выдалена, пераведзена ў архіў або перамешчана.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Адбылася нечаканая памылка. Звяжыцеся са службай падтрымкі.\nПамылка: %@";
@@ -1992,7 +2105,10 @@
 /* Message of the alert to confirm enabling of the auto delete option */
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Гэта прывядзе да выдалення ўсіх паведамленняў, якія знаходзяцца ў папках сметніца або спам больш за 30 дзён. Уключаючы паведамленні, якія зараз знаходзяцца ў гэтых папках.";
 
-/* Button to enable encrypted search */
+/*
+ Button to enable encrypted search
+ The title of the button to move to settings and enable encrypted search.
+*/
 "Enable" = "Уключыць";
 
 /* Text to advertise the auto delete feature to free users */
@@ -2031,6 +2147,9 @@
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Пачатковы адпраўнік гэтага паведамлення больш не з'яўляецца сапраўдным. Ваша паведамленне будзе адпраўлена з прадвызначанага адраса %@.";
 
+/* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
+"Please retry after all attachments are uploaded." = "Паўтарыце спробу, калі ўсе далучэнні будуць запампаваны.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Бачнае імя";
 
@@ -2055,13 +2174,25 @@
 /* The title of select all button for select all messages feature */
 "Select all" = "Выбраць усе";
 
-/* The title of PIN code disable view  */
+/* The title of unselect all button for select all messages feature */
+"Unselect all" = "Зняць выбар з усіх";
+
+/* Warning message will be shown to user when user try to select more than acceptable message */
+"Maximum selection reached" = "Дасягнуты максімум выбраных паведамленняў.";
+
+/* Placeholder if message sender is empty */
+"No Recipient" = "Няма атрымальніка";
+
+/* The title of PIN code disable view */
 "Disable PIN code" = "Адключэнне PIN-кода";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Задаць PIN-код";
 
-/* The title of PIN code setup2 view */
+/*
+ The title of PIN code setup2 view
+ The title of textfield of PIN code setup2
+*/
 "Repeat PIN code" = "Паўтарыце PIN-код";
 
 /* The title of textfield of PIN code setup1 */
@@ -2093,3 +2224,51 @@
 
 /* Unsubscribe confirmation message */
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Гэта прывядзе да скасавання вашай падпіскі на спіс рассылкі. Адпраўніку будзе паведамлена пра неабходнасць спыніць адпраўку лістоў на гэты адрас.";
+
+/* Alert telling the user that we are unable to preview this attachment */
+"Unable to preview this attachment" = "Немагчыма папярэдне прагледзець гэта далучэнне";
+
+/* Title for banner saying that we are currently downloading the attachment to preview it */
+"Downloading attachment" = "Спампоўванне далучэння";
+
+/* The banner title that is shown in the message detail view. */
+"Snoozed until %@" = "Адкладзена да %@";
+
+/* The title of the button in the banner that is shown in the message detail view. */
+"Unsnooze" = "Скасаваць адкладанне";
+
+/* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
+"Snooze until %@" = "Адкладзена да %@";
+
+/* Notification banner when user unsnooze a conversation */
+"Conversation unsnoozed" = "Скасаваць адкладанне размовы";
+
+/* The title of snooze config in action sheet */
+"Snooze until..." = "Адкласці да...";
+
+/* One of snooze option shows in action sheet */
+"Later this week" = "Пазней на гэтым тыдні";
+
+/* One of snooze option shows in action sheet */
+"This weekend" = "На выхадных";
+
+/* One of snooze option shows in action sheet */
+"Next week" = "Наступны тыдзень";
+
+/* An error message will be shown to user when user select past snooze time */
+"Please select a time in the future" = "Выберыце час у будучыні";
+
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Хочаце адкладаць у любы час?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Разблакіруйце карыстальніцкі час адкладання пасля паляпшэння";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Да 15 адрасоў электроннай пошты/псеўданімаў";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Неабмежаваная колькасць папак, метак і фільтраў";
+
+/* The title of the action option that will make the inline attachment as normal attachment. */
+"Add it as attachment" = "Дадаць як далучэнне";

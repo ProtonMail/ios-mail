@@ -2,6 +2,46 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>%u participants</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@participants@</string>
+      <key>participants</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%u удзельнікаў</string>
+        <key>one</key>
+        <string>%u удзельнік</string>
+        <key>few</key>
+        <string>%u удзельнікі</string>
+        <key>many</key>
+        <string>%u удзельнікаў</string>
+      </dict>
+    </dict>
+    <key>You have %d new emails!</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@newemails@</string>
+      <key>newemails</key>
+      <dict>
+        <key>one</key>
+        <string>У вашай скрыні %d новы ліст!</string>
+        <key>few</key>
+        <string>У вашай скрыні %d новыя лісты!</string>
+        <key>many</key>
+        <string>У вашай скрыні %d новых лістоў!</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>У вашай скрыні %d новых лістоў!</string>
+      </dict>
+    </dict>
     <key>%d email trackers blocked</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
@@ -20,6 +60,26 @@
         <string>Заблакіраваны %d праграм сачэння электроннай пошты</string>
         <key>other</key>
         <string>Заблакіраваны %d праграмы сачэння электроннай пошты</string>
+      </dict>
+    </dict>
+    <key>%d selected</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@selected@</string>
+      <key>selected</key>
+      <dict>
+        <key>one</key>
+        <string>%d выбраны</string>
+        <key>few</key>
+        <string>%d выбрана</string>
+        <key>many</key>
+        <string>%d выбрана</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d выбрана</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>
@@ -400,26 +460,6 @@
         <string>%d секунд</string>
         <key>other</key>
         <string>%d секунд</string>
-      </dict>
-    </dict>
-    <key>%d Selected</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@selected@</string>
-      <key>selected</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d выбраны</string>
-        <key>few</key>
-        <string>%d выбрана</string>
-        <key>many</key>
-        <string>%d выбрана</string>
-        <key>other</key>
-        <string>%d выбрана</string>
       </dict>
     </dict>
     <key>%d attachment</key>

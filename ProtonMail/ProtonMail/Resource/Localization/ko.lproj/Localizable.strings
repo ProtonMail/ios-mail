@@ -58,28 +58,45 @@
 /* menu title */
 "Inbox" = "받은편지함";
 
-/* menu title */
+/*
+ menu title
+ Springboard (3D Touch) shortcuts action
+ VoiceOver: email is starred
+*/
 "Starred" = "별표 표시됨";
 
-/* menu title */
+/*
+ menu title
+ Push notification action to archive
+ The title of the archive action in action sheet
+*/
 "Archive" = "보관";
 
 /* menu title */
 "Drafts" = "임시보관함";
 
-/* mail location title */
+/*
+ mail location title
+ menu title
+*/
 "All Mail" = "전체 메일함";
 
 /* menu title */
 "Sent" = "보낸 편지함";
 
-/* mail location desc */
+/*
+ mail location desc
+ menu title
+*/
 "Trash" = "휴지통";
 
 /* menu title */
 "Spam" = "스팸";
 
-/* Action and title */
+/*
+ Action and title
+ menu title
+*/
 "Contacts" = "연락처";
 
 /* menu title (contact groups) */
@@ -88,19 +105,28 @@
 /* menu title */
 "Settings" = "설정";
 
-/* Alert title to confirm signout */
+/*
+ Alert title to confirm signout
+ menu title
+*/
 "Sign out" = "로그아웃";
 
 /* menu title */
 "Lock The App" = "앱 잠그기";
 
-/* menu title */
+/*
+ menu title
+ The title of a subscription plans screen
+*/
 "Subscription" = "구독";
 
 /* menu title */
 "Manage accounts" = "계정 관리";
 
-/* menu title */
+/*
+ menu title
+ The voiceiver title of the add attachment button in the tool bar of composer
+*/
 "Add attachment" = "첨부파일 추가";
 
 /* menu title */
@@ -111,9 +137,6 @@
 
 /* Description after message have been sent */
 "Message sent" = "메시지 전송 완료";
-
-/* Description */
-"Sent Failed" = "전송 실패";
 
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "여기는 아무것도 없습니다";
@@ -141,9 +164,6 @@
 
 /* Title */
 "You have a new email!" = "새 이메일이 도착했습니다!";
-
-/* Message */
-"You have %d new emails!" = "%d건의 새로운 이메일이 도착했습니다!";
 
 /* abbreviation of reply: */
 "Re:" = "회신:";
@@ -205,13 +225,19 @@
 /* button title */
 "Apply Password" = "비밀번호 변경";
 
-/* Action */
+/*
+ Action
+ Springboard (3D Touch) shortcuts action
+*/
 "Compose" = "메일 쓰기";
 
 /* Composer expiration page title */
 "Message expiration" = "메시지 유효기간";
 
-/* contacts default label type */
+/*
+ contacts default label type
+ Custom option for time config picker
+*/
 "Custom" = "사용자 정의";
 
 /* Description */
@@ -391,7 +417,13 @@
 /* Done action */
 "Done" = "완료";
 
-/* Button to cancel encrypted search */
+/*
+ Button to cancel encrypted search
+ Cancel action
+ general cancel action
+ Title for the alert button to cancel delete all downloaded messages.
+ Title for the alert button to cancel disable content search.
+*/
 "Cancel" = "취소";
 
 /* Got it action */
@@ -418,16 +450,26 @@
 /* message From: field text */
 "From:" = "보낸사람:";
 
-/* message To: feild */
+/*
+ message To: feild
+ Title
+*/
 "To" = "받는사람";
 
-/* message Cc: feild */
+/*
+ message Cc: feild
+ Title
+*/
 "Cc" = "참조";
 
 /* message Bcc: feild */
 "Bcc:" = "숨은 참조:";
 
-/* general delete action */
+/*
+ general delete action
+ The title of the delete action in action sheet
+ Title for the alert button to delete all downloaded messages.
+*/
 "Delete" = "삭제";
 
 /* general close action */
@@ -436,7 +478,10 @@
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "오랫동안 사용되지 않았거나, 세션을 취소시켰기 때문에 세션이 만료되었습니다. 다시 로그인해 주세요.";
 
-/* Springboard (3D Touch) shortcuts action */
+/*
+ Springboard (3D Touch) shortcuts action
+ Title
+*/
 "Search" = "검색";
 
 /* Alert title */
@@ -451,7 +496,10 @@
 /* Action */
 "Send" = "보내기";
 
-/* Action */
+/*
+ Action
+ The action title of the alert of the user trying to send a message that was schedule-send.
+*/
 "Schedule send" = "예약 전송";
 
 /* Alert title */
@@ -487,7 +535,10 @@
 /* Title */
 "Save" = "저장";
 
-/* Action */
+/*
+ Action
+ The button title of the scheduled message banner.
+*/
 "Edit" = "편집";
 
 /* Error message */
@@ -547,7 +598,10 @@
 /* Hint when users delete contact offline  */
 "Contact deleted, will be synced when connection is available" = "연락처가 삭제되었습니다. 연결이 가능하면 동기화됩니다.";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup2
+*/
 "Confirm" = "확인";
 
 /* Title */
@@ -565,7 +619,10 @@
 /* Action */
 "Later" = "나중에";
 
-/* Action */
+/*
+ Action
+ The text for downloaded messages in local storage when encrypted search is disabled.
+*/
 "Disabled" = "비활성화됨";
 
 /* contact placeholder */
@@ -574,7 +631,12 @@
 /* top left back button */
 "Back" = "이전";
 
-/* A *short* description saying that there is no contact group associated with this contact email */
+/*
+ A *short* description saying that there is no contact group associated with this contact email
+ Action title of none
+ The protection title of None protection
+ Title
+*/
 "None" = "없음";
 
 /* lock app option */
@@ -604,7 +666,10 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "유료 기능이므로 %@ 주소를 기본값으로 설정할 수 없습니다.";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup1
+*/
 "Continue" = "계속";
 
 /* error message */
@@ -628,10 +693,16 @@
 /* Error */
 "Unknown Error" = "알 수 없는 오류";
 
-/* Action */
+/*
+ Action
+ The title of loading remote content banner.
+*/
 "Load remote content" = "외부 콘텐츠 로드";
 
-/* settings general section title */
+/*
+ settings general section title
+ title
+*/
 "Change password" = "비밀번호 변경";
 
 /* Title */
@@ -910,7 +981,11 @@
 /* Error */
 "Can't open the file" = "파일을 열 수 없습니다";
 
-/* Action */
+/*
+ Action
+ alternative routing link name in description
+ The title of learn more link
+*/
 "Learn more" = "더 알아보기";
 
 /* Action */
@@ -958,7 +1033,10 @@
 /* Action title of move to archive */
 "Move to archive" = "보관함으로 이동";
 
-/* Action title of move to spam */
+/*
+ Action title of move to spam
+ The title of the spam action in action sheet
+*/
 "Move to spam" = "스팸으로 이동";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
@@ -1003,7 +1081,10 @@
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "대신 비밀번호를 설정하거나 다음 수신자에 대해 PGP를 비활성화하는 것이 권장됩니다:";
 
-/* A option title that enable/disable notification feature */
+/*
+ A option title that enable/disable notification feature
+ cell title in device settings
+*/
 "Notifications" = "알림";
 
 /* VoiceOver: email belongs to folders */
@@ -1044,6 +1125,9 @@
 
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "그룹 삭제";
+
+/* The string that describes how many contact groups are currently selected */
+"%d Selected" = "%d개 선택됨";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "연락처 그룹에서 하나 이상의 이메일을 선택해주세요";
@@ -1090,7 +1174,10 @@
 /* Alert to confirm signout */
 "You will be switched to %@" = "%@ 로 전환됩니다";
 
-/* Alert to confirm sign out */
+/*
+ Alert to confirm sign out
+ Alert when sign out non-primary account from account manager
+*/
 "Are you sure you want to sign out?" = "정말로 로그아웃하시겠습니까?";
 
 /* Alert to confirm sign out when only one account signed in */
@@ -1153,7 +1240,10 @@
 /* cell title in device settings */
 "Language" = "언어";
 
-/* cell title in device settings */
+/*
+ cell title in device settings
+ The title of combined contact in settings
+*/
 "Combined contacts" = "병합된 연락처";
 
 /* cell title in app settings */
@@ -1234,9 +1324,6 @@
 /* The unread title of unread action button in mailbox view */
 "unread" = "읽지 않음";
 
-/* The title of navigation bar title of mailbox view while selecting the message */
-"Selected" = "선택됨";
-
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "1시간 이전에 업데이트됨";
 
@@ -1252,7 +1339,10 @@
 /* The text shown on the mailbox when the primary user changed */
 "Signed in as %@" = "%@ 계정으로 로그인함";
 
-/* The title of the star action in action sheet */
+/*
+ The title of the star action in action sheet
+ VoiceOver title of star button in the message view
+*/
 "Star" = "별표";
 
 /* The title of the star action in action sheet */
@@ -1261,10 +1351,16 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "읽지 않음으로 표시";
 
-/* Push notification action mark as read */
+/*
+ Push notification action mark as read
+ The title of the read action in action sheet
+*/
 "Mark as read" = "읽음으로 표시";
 
-/* Push notification action move to trash */
+/*
+ Push notification action move to trash
+ The title of the remove action in action sheet
+*/
 "Move to trash" = "휴지통으로 이동";
 
 /* The title of the remove action in action sheet */
@@ -1276,10 +1372,10 @@
 /* The title of the view message in dark mode action in action sheet */
 "View message in Dark mode" = "다크 모드에서 메시지 보기";
 
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "로그인된 모든 계정의 연락처를 사용하여 이메일 주소를 자동 완성하려면 이 기능을 켜십시오.";
-
-/* alternative routing description */
+/*
+ alternative routing description
+ The footer of alternative routing setting
+*/
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Proton이 차단되었을 때 방화벽을 우회하거나 네트워크에 문제가 발생한 경우 대체 네트워크 라우팅을 이용해 접속을 시도합니다. 이 설정을 계속 켜두는게 좋습니다. %1$@";
 
 /* The title of alternative routing settings */
@@ -1441,8 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "피싱 신고";
 
-/* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "스팸이 아님 (받은 편지함으로 이동)";
+"Not spam (move to inbox)" = "Not spam (move to inbox)";
 
 /* No comment provided by engineer. */
 "Move to" = "이동";
@@ -1830,6 +1925,12 @@
 /* Button inside the banner */
 "Load" = "불러오기";
 
+/* As in: event organizer */
+"Organizer" = "Organizer";
+
+/* Button to hide some items in the list to conserve screen estate */
+"Show less" = "Show less";
+
 /* Official badge next to sender's name */
 "Official" = "공식";
 
@@ -1862,6 +1963,21 @@
 
 /* The title of the maybe later button in referral prompt view. */
 "Maybe later" = "나중에";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "로그인된 모든 계정의 연락처를 사용하여 이메일 주소를 자동 완성하려면 이 기능을 켜십시오.";
+
+/* contacts auto import title in settings */
+"Auto-import device contacts" = "Auto-import device contacts";
+
+/* contacts auto import footer in settings */
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+
+/* Auto import alert title */
+"Auto-import enabled" = "Auto-import enabled";
+
+/* Auto import alert message */
+"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
 
 /* Settings lock protection section */
 "Protection" = "보호";
@@ -1927,13 +2043,10 @@
 "Application logs" = "어플리케이션 로그";
 
 /* The title of the setting of the next msg after move */
-"Next message after move" = "이동 후 다음 메시지";
-
-/* The title of the row inside the setting page of next msg after move function. */
-"Navigate to next message after move" = "이동 후 다음 메시지로 이동";
+"Jump to next message" = "Jump to next message";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Performing a move action on a message (e.g. archive) will navigate to the next message." = "메시지(예: 아카이브)에 대한 이동 작업을 수행하면 다음 메시지로 이동합니다.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "예기치 못한 오류 발생, 지원 팀에 문의하십시오.\n오류: %@";
@@ -1992,7 +2105,10 @@
 /* Message of the alert to confirm enabling of the auto delete option */
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "이 작업은 이 폴더의 현재 메시지를 포함한 휴지통 및 스팸함의 메시지를 30일 이후에 모두 삭제합니다.";
 
-/* Button to enable encrypted search */
+/*
+ Button to enable encrypted search
+ The title of the button to move to settings and enable encrypted search.
+*/
 "Enable" = "활성화";
 
 /* Text to advertise the auto delete feature to free users */
@@ -2031,6 +2147,9 @@
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "원전송자의 메세지가 더 이상 유효하지 않습니다. 사용자의 메시지가 곧 일반 %@ 로 전송됩니다.";
 
+/* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
+"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "표시되는 이름";
 
@@ -2055,13 +2174,25 @@
 /* The title of select all button for select all messages feature */
 "Select all" = "전체 선택";
 
-/* The title of PIN code disable view  */
+/* The title of unselect all button for select all messages feature */
+"Unselect all" = "Unselect all";
+
+/* Warning message will be shown to user when user try to select more than acceptable message */
+"Maximum selection reached" = "Maximum selection reached";
+
+/* Placeholder if message sender is empty */
+"No Recipient" = "No Recipient";
+
+/* The title of PIN code disable view */
 "Disable PIN code" = "PIN 코드로 액세스를 비활성화";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "PIN 코드 설정";
 
-/* The title of PIN code setup2 view */
+/*
+ The title of PIN code setup2 view
+ The title of textfield of PIN code setup2
+*/
 "Repeat PIN code" = "PIN 코드 확인";
 
 /* The title of textfield of PIN code setup1 */
@@ -2093,3 +2224,51 @@
 
 /* Unsubscribe confirmation message */
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "메일링 목록의 구독을 해지합니다. 발신자가 더 이상 이 주소로 이메일을 보내지 않도록 요청을 전송합니다.";
+
+/* Alert telling the user that we are unable to preview this attachment */
+"Unable to preview this attachment" = "Unable to preview this attachment";
+
+/* Title for banner saying that we are currently downloading the attachment to preview it */
+"Downloading attachment" = "Downloading attachment";
+
+/* The banner title that is shown in the message detail view. */
+"Snoozed until %@" = "Snoozed until %@";
+
+/* The title of the button in the banner that is shown in the message detail view. */
+"Unsnooze" = "Unsnooze";
+
+/* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
+"Snooze until %@" = "Snooze until %@";
+
+/* Notification banner when user unsnooze a conversation */
+"Conversation unsnoozed" = "Conversation unsnoozed";
+
+/* The title of snooze config in action sheet */
+"Snooze until..." = "Snooze until...";
+
+/* One of snooze option shows in action sheet */
+"Later this week" = "Later this week";
+
+/* One of snooze option shows in action sheet */
+"This weekend" = "This weekend";
+
+/* One of snooze option shows in action sheet */
+"Next week" = "Next week";
+
+/* An error message will be shown to user when user select past snooze time */
+"Please select a time in the future" = "Please select a time in the future";
+
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Want to snooze any time?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "무제한 폴더, 라벨, 필터";
+
+/* The title of the action option that will make the inline attachment as normal attachment. */
+"Add it as attachment" = "Add it as attachment";
