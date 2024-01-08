@@ -22,7 +22,8 @@ import ProtonCoreServices
 
 // sourcery: mock
 protocol EventRSVP {
-    func parseData(icsData: Data) async throws -> EventDetails
+    func extractBasicEventInfo(icsData: Data) throws -> BasicEventInfo
+    func fetchEventDetails(basicEventInfo: BasicEventInfo) async throws -> EventDetails
 }
 
 struct LocalEventRSVP: EventRSVP {
@@ -35,13 +36,22 @@ struct LocalEventRSVP: EventRSVP {
         self.dependencies = dependencies
     }
 
-    func parseData(icsData: Data) async throws -> EventDetails {
+    func extractBasicEventInfo(icsData: Data) throws -> BasicEventInfo {
         guard let icsString = String(data: icsData, encoding: .utf8) else {
             throw EventRSVPError.icsDataIsNotValidUTF8String
         }
 
-        let eventUID = try parseEventUID(from: icsString)
-        let apiEvent = try await fetchEvent(uid: eventUID)
+        let icsEvents = parser.parse(icsString: icsString)
+
+        guard let relevantICSEvent = icsEvents.first else {
+            throw EventRSVPError.noEventsInICS
+        }
+
+        return BasicEventInfo(eventUID: relevantICSEvent.uid, recurrenceID: nil)
+    }
+
+    func fetchEventDetails(basicEventInfo: BasicEventInfo) async throws -> EventDetails {
+        let apiEvent = try await fetchEvent(basicEventInfo: basicEventInfo)
         let calendarBootstrapResponse = try await fetchCalendarBootstrapData(calendarID: apiEvent.calendarID)
 
         guard let member = calendarBootstrapResponse.members.first else {
@@ -56,7 +66,7 @@ struct LocalEventRSVP: EventRSVP {
 
         let relevantEvents = apiEvent.sharedEvents + apiEvent.attendeesEvents
         let decryptedEvents = try decryptIfNeeded(events: relevantEvents, using: sessionKey)
-        let combinedICS = reconstructICS(originalICSString: icsString, icsComponents: decryptedEvents)
+        let combinedICS = String(decryptedEvents.flatMap { $0 })
 
         // temporary until we have a complete ICS parser
 
@@ -88,22 +98,12 @@ struct LocalEventRSVP: EventRSVP {
                 name: "Zoom call"
             ),
             participants: participants,
-            calendarAppDeepLink: .ProtonCalendar.showEvent(eventUID: eventUID)
+            calendarAppDeepLink: .ProtonCalendar.showEvent(eventUID: basicEventInfo.eventUID)
         )
     }
 
-    private func parseEventUID(from icsString: String) throws -> String {
-        let icsEvents = parser.parse(icsString: icsString)
-
-        guard let relevantICSEvent = icsEvents.first else {
-            throw EventRSVPError.noEventsInICS
-        }
-
-        return relevantICSEvent.uid
-    }
-
-    private func fetchEvent(uid: String) async throws -> FullEventTransformer {
-        let calendarEventsRequest = CalendarEventsRequest(uid: uid)
+    private func fetchEvent(basicEventInfo: BasicEventInfo) async throws -> FullEventTransformer {
+        let calendarEventsRequest = CalendarEventsRequest(uid: basicEventInfo.eventUID)
 
         let calendarEventsResponse: CalendarEventsResponse = try await dependencies.apiService.perform(
             request: calendarEventsRequest
@@ -198,10 +198,6 @@ struct LocalEventRSVP: EventRSVP {
                 return event.data
             }
         }
-    }
-
-    private func reconstructICS(originalICSString: String, icsComponents: [String]) -> String {
-        originalICSString + icsComponents.flatMap { $0 }
     }
 }
 

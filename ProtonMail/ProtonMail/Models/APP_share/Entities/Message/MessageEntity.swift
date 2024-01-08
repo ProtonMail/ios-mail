@@ -30,6 +30,8 @@ struct MessageHeaderKey {
     static let listHelp = "List-Help"
     static let listOwner = "List-Owner"
     static let listArchive = "List-Archive"
+    static let pmCalendarEventUID = "X-Pm-Calendar-Eventuid"
+    static let pmCalendarOccurrence = "X-Pm-Calendar-Occurrence"
     static let pmRecipientEncryption = "X-Pm-Recipient-Encryption"
     static let pmRecipientAuthentication = "X-Pm-Recipient-Authentication"
     static let pmOrigin = "X-Pm-Origin"

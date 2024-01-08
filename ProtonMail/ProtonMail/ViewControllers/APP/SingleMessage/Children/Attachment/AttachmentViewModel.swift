@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Combine
-import UIKit
+import ProtonCoreUtilities
 
 final class AttachmentViewModel {
     typealias Dependencies = HasEventRSVP
@@ -57,6 +57,14 @@ final class AttachmentViewModel {
         return totalSize
     }
 
+    var basicEventInfoSourcedFromHeaders: BasicEventInfo? {
+        didSet {
+            if let basicEventInfoSourcedFromHeaders, basicEventInfoSourcedFromHeaders != oldValue {
+                fetchEventDetails(initialInfo: .right(basicEventInfoSourcedFromHeaders))
+            }
+        }
+    }
+
     private let invitationViewSubject = CurrentValueSubject<InvitationViewState, Never>(.noInvitationFound)
 
     private var invitationProcessingTask: Task<Void, Never>? {
@@ -79,9 +87,17 @@ final class AttachmentViewModel {
 
     private func checkAttachmentsForInvitations() {
         guard
-            dependencies.featureFlagProvider.isEnabled(.rsvpWidget),
+            basicEventInfoSourcedFromHeaders == nil,
             let ics = attachments.first(where: { $0.type == .calendar })
         else {
+            return
+        }
+
+        fetchEventDetails(initialInfo: .left(ics))
+    }
+
+    private func fetchEventDetails(initialInfo: Either<AttachmentInfo, BasicEventInfo>) {
+        guard dependencies.featureFlagProvider.isEnabled(.rsvpWidget) else {
             return
         }
 
@@ -89,8 +105,17 @@ final class AttachmentViewModel {
 
         invitationProcessingTask = Task {
             do {
-                let icsData = try await fetchAndDecrypt(ics: ics)
-                let eventDetails = try await dependencies.eventRSVP.parseData(icsData: icsData)
+                let basicEventInfo: BasicEventInfo
+
+                switch initialInfo {
+                case .left(let attachmentInfo):
+                    let icsData = try await fetchAndDecrypt(ics: attachmentInfo)
+                    basicEventInfo = try dependencies.eventRSVP.extractBasicEventInfo(icsData: icsData)
+                case .right(let value):
+                    basicEventInfo = value
+                }
+
+                let eventDetails = try await dependencies.eventRSVP.fetchEventDetails(basicEventInfo: basicEventInfo)
                 invitationViewSubject.send(.invitationProcessed(eventDetails))
             } catch {
                 if error is EventRSVPError {

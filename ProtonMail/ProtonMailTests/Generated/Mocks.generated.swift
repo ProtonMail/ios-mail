@@ -399,9 +399,14 @@ class MockDeviceRegistrationUseCase: DeviceRegistrationUseCase {
 }
 
 class MockEventRSVP: EventRSVP {
-    @ThrowingFuncStub(MockEventRSVP.parseData, initialReturn: .crash) var parseDataStub
-    func parseData(icsData: Data) throws -> EventDetails {
-        try parseDataStub(icsData)
+    @ThrowingFuncStub(MockEventRSVP.extractBasicEventInfo, initialReturn: .crash) var extractBasicEventInfoStub
+    func extractBasicEventInfo(icsData: Data) throws -> BasicEventInfo {
+        try extractBasicEventInfoStub(icsData)
+    }
+
+    @ThrowingFuncStub(MockEventRSVP.fetchEventDetails, initialReturn: .crash) var fetchEventDetailsStub
+    func fetchEventDetails(basicEventInfo: BasicEventInfo) throws -> EventDetails {
+        try fetchEventDetailsStub(basicEventInfo)
     }
 
 }
