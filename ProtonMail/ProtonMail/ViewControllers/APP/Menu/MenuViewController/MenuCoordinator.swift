@@ -232,6 +232,10 @@ extension MenuCoordinator {
             return node
         }
 
+        guard dependencies.usersManager.firstUser?.userID != user.userID else {
+            return nil
+        }
+
         switch dest {
         case .switchUser:
             viewModel.activateUser(id: user.userID)
@@ -247,7 +251,6 @@ extension MenuCoordinator {
         default:
             break
         }
-        self.viewModel.userDataInit()
         return nil
     }
 
