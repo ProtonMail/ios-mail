@@ -104,6 +104,31 @@ extension FileImporter {
         errorHandler: @escaping (String) -> Void,
         handler: @escaping () -> Void
     ) {
+        itemProvider.loadDataRepresentation(forTypeIdentifier: UTType.image.identifier) { data, error in
+            guard let data = data else {
+                errorHandler(error?.localizedDescription ?? "")
+                handler()
+                return
+            }
+            guard let image = UIImage(data: data) else {
+                // Loaded data is not UIImage, try screenshot handler
+                handleScreenshotItem(itemProvider, errorHandler: errorHandler, handler: handler)
+                return
+            }
+            self.imageAttachmentProvider.process(original: image).ensure {
+                handler()
+            }.catch { error in
+                errorHandler(error.localizedDescription)
+                handler()
+            }
+        }
+    }
+
+    private func handleScreenshotItem(
+        _ itemProvider: NSItemProvider,
+        errorHandler: @escaping (String) -> Void,
+        handler: @escaping () -> Void
+    ) {
         let registeredTypeIdentifiers = itemProvider.registeredTypeIdentifiers
         guard let typeIdentifier = registeredTypeIdentifiers.first else {
             errorHandler(LocalString._unsupported_file)
