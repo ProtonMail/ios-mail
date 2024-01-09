@@ -69,7 +69,7 @@ extension UserContainer {
 
     var eventRSVPFactory: Factory<EventRSVP> {
         self {
-            LocalEventRSVP(apiService: self.apiService)
+            LocalEventRSVP(dependencies: self)
         }
     }
 

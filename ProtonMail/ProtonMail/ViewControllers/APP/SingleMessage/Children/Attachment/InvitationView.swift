@@ -87,7 +87,11 @@ final class InvitationView: UIView {
 
         detailsContainer.clearAllViews()
         detailsContainer.addArrangedSubview(SubviewFactory.calendarRow(calendar: eventDetails.calendar))
-        detailsContainer.addArrangedSubview(SubviewFactory.locationRow(location: eventDetails.location))
+
+        if let location = eventDetails.location {
+            detailsContainer.addArrangedSubview(SubviewFactory.locationRow(location: location))
+        }
+
         detailsContainer.addArrangedSubview(participantsRow)
         detailsContainer.isHidden = false
 

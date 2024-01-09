@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
 import ProtonCoreICS
 import ProtonCoreServices
 
@@ -24,27 +26,85 @@ protocol EventRSVP {
 }
 
 struct LocalEventRSVP: EventRSVP {
-    private let apiService: APIService
+    typealias Dependencies = AnyObject & HasAPIService & HasUserManager
+
+    private unowned let dependencies: Dependencies
     private let parser = ICSEventParser()
 
-    init(apiService: APIService) {
-        self.apiService = apiService
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
     }
 
     func parseData(icsData: Data) async throws -> EventDetails {
         guard let icsString = String(data: icsData, encoding: .utf8) else {
-            throw EventRSVPError.dataIsNotValidUTF8String
+            throw EventRSVPError.icsDataIsNotValidUTF8String
         }
 
+        let eventUID = try parseEventUID(from: icsString)
+        let apiEvent = try await fetchEvent(uid: eventUID)
+        let calendarBootstrapResponse = try await fetchCalendarBootstrapData(calendarID: apiEvent.calendarID)
+
+        guard let member = calendarBootstrapResponse.members.first else {
+            throw EventRSVPError.noMembersInBootstrapResponse
+        }
+
+        let sessionKey = try obtainSessionKey(
+            apiEvent: apiEvent,
+            calendarBootstrapResponse: calendarBootstrapResponse,
+            memberID: member.ID
+        )
+
+        let relevantEvents = apiEvent.sharedEvents + apiEvent.attendeesEvents
+        let decryptedEvents = try decryptIfNeeded(events: relevantEvents, using: sessionKey)
+        let combinedICS = reconstructICS(originalICSString: icsString, icsComponents: decryptedEvents)
+
+        // temporary until we have a complete ICS parser
+
+        let summary = combinedICS.preg_match(resultInGroup: 1, #"SUMMARY:([^\n]+)"#) ?? "missing summary"
+
+        var participants: [EventDetails.Participant] = []
+
+        if let organizerEmail = combinedICS.preg_match(resultInGroup: 1, #"ORGANIZER;CN=[^:]+:mailto:([^\n]+)"#) {
+            participants.append(.init(email: organizerEmail, isOrganizer: true, status: .attending))
+        } else if let organizerName = combinedICS.preg_match(resultInGroup: 1, #"ORGANIZER;CN=([^:]+)"#) {
+            participants.append(.init(email: organizerName, isOrganizer: true, status: .attending))
+        } else {
+            participants.append(.init(email: "aubrey.thompson@proton.me", isOrganizer: true, status: .attending))
+        }
+
+        participants += (1...3).map {
+            .init(email: "participant.\($0)@proton.me", isOrganizer: false, status: .attending)
+        }
+
+        return .init(
+            title: summary,
+            startDate: Date(timeIntervalSince1970: apiEvent.startTime),
+            endDate: Date(timeIntervalSince1970: apiEvent.endTime),
+            calendar: .init(
+                name: member.name,
+                iconColor: member.color
+            ),
+            location: .init(
+                name: "Zoom call"
+            ),
+            participants: participants
+        )
+    }
+
+    private func parseEventUID(from icsString: String) throws -> String {
         let icsEvents = parser.parse(icsString: icsString)
 
         guard let relevantICSEvent = icsEvents.first else {
             throw EventRSVPError.noEventsInICS
         }
 
-        let calendarEventsRequest = CalendarEventsRequest(uid: relevantICSEvent.uid)
+        return relevantICSEvent.uid
+    }
 
-        let calendarEventsResponse: CalendarEventsResponse = try await apiService.perform(
+    private func fetchEvent(uid: String) async throws -> FullEventTransformer {
+        let calendarEventsRequest = CalendarEventsRequest(uid: uid)
+
+        let calendarEventsResponse: CalendarEventsResponse = try await dependencies.apiService.perform(
             request: calendarEventsRequest
         ).1
 
@@ -53,38 +113,105 @@ struct LocalEventRSVP: EventRSVP {
             throw EventRSVPError.noEventsReturnedFromAPI
         }
 
-        let calendarBootstrapRequest = CalendarBootstrapRequest(calendarID: apiEvent.calendarID)
+        return apiEvent
+    }
 
-        let calendarBootstrapResponse: CalendarBootstrapResponse = try await apiService.perform(
-            request: calendarBootstrapRequest
-        ).1
+    private func fetchCalendarBootstrapData(calendarID: String) async throws -> CalendarBootstrapResponse {
+        let calendarBootstrapRequest = CalendarBootstrapRequest(calendarID: calendarID)
+        return try await dependencies.apiService.perform(request: calendarBootstrapRequest).1
+    }
 
-        guard let member = calendarBootstrapResponse.members.first else {
-            throw EventRSVPError.noMembersInBootstrapResponse
+    private func obtainSessionKey(
+        apiEvent: FullEventTransformer,
+        calendarBootstrapResponse: CalendarBootstrapResponse,
+        memberID: String
+    ) throws -> SessionKey? {
+        let addressKeys = MailCrypto.decryptionKeys(
+            basedOn: dependencies.user.userInfo.addressKeys,
+            mailboxPassword: dependencies.user.mailboxPassword,
+            userKeys: dependencies.user.userInfo.userPrivateKeys
+        )
+
+        let keyPacket: String
+        let decryptionKeys: [DecryptionKey]
+
+        if let sharedKeyPacket = apiEvent.sharedKeyPacket {
+            keyPacket = sharedKeyPacket
+
+            guard let memberPassphrase = calendarBootstrapResponse.passphrase.memberPassphrases.first(
+                where: { $0.memberID == memberID }
+            ) else {
+                throw EventRSVPError.noPassphraseForGivenMember
+            }
+
+            let encryptedCalendarPassphrase = memberPassphrase.passphrase
+
+            let decryptedCalendarPassphrase: String = try Decryptor.decrypt(
+                decryptionKeys: addressKeys,
+                encrypted: ArmoredMessage(value: encryptedCalendarPassphrase)
+            )
+
+            decryptionKeys = calendarBootstrapResponse.keys
+                .filter { $0.flags != .inactive && $0.passphraseID == calendarBootstrapResponse.passphrase.ID }
+                .map { calendarKey in
+                    DecryptionKey(
+                        privateKey: ArmoredKey(value: calendarKey.privateKey),
+                        passphrase: .init(value: decryptedCalendarPassphrase)
+                    )
+                }
+        } else if let addressKeyPacket = apiEvent.addressKeyPacket {
+            keyPacket = addressKeyPacket
+            decryptionKeys = addressKeys
+        } else {
+            return nil
         }
 
-        return .init(
-            title: "Team Collaboration Workshop",
-            startDate: Date(timeIntervalSince1970: apiEvent.startTime),
-            endDate: Date(timeIntervalSince1970: apiEvent.endTime),
-            calendar: .init(
-                name: member.name,
-                iconColor: member.color
-            ),
-            location: .init(
-                name: "Zoom call",
-                url: URL(string: "https://zoom-call")!
-            ),
-            participants: [
-                .init(email: "aubrey.thompson@proton.me", isOrganizer: true, status: .attending)
-            ] + (1...3).map { .init(email: "participant.\($0)@proton.me", isOrganizer: false, status: .attending) }
-        )
+        guard let keyPacketData = Data(base64Encoded: keyPacket) else {
+            throw EventRSVPError.keyPacketIsNotValidBase64
+        }
+
+        return try Decryptor.decryptSessionKey(decryptionKeys: decryptionKeys, keyPacket: keyPacketData)
+    }
+
+    private func decryptIfNeeded(events: [EventElement], using sessionKey: SessionKey?) throws -> [String] {
+        try events.map { event in
+            if event.type.contains(.encrypted) {
+                guard let sessionKey else {
+                    throw EventRSVPError.encryptedDataFoundButSessionKeyMissing
+                }
+
+                guard let ciphertext = Data(base64Encoded: event.data) else {
+                    throw EventRSVPError.encryptedDataIsNotValidBase64
+                }
+
+                guard let cryptoSessionKey = CryptoGo.CryptoNewSessionKeyFromToken(
+                    sessionKey.sessionKey,
+                    sessionKey.algo.value
+                ) else {
+                    throw EventRSVPError.sessionKeyDecryptionFailed
+                }
+
+                let plaintext = try cryptoSessionKey.decrypt(ciphertext)
+                return plaintext.getString()
+            } else {
+                return event.data
+            }
+        }
+    }
+
+    private func reconstructICS(originalICSString: String, icsComponents: [String]) -> String {
+        originalICSString + icsComponents.flatMap { $0 }
     }
 }
 
 enum EventRSVPError: Error {
-    case dataIsNotValidUTF8String
+    case encryptedDataFoundButSessionKeyMissing
+    case encryptedDataIsNotValidBase64
+    case icsDataIsNotValidUTF8String
+    case keyPacketIsNotValidBase64
     case noEventsInICS
     case noEventsReturnedFromAPI
     case noMembersInBootstrapResponse
+    case noPassphraseForGivenMember
+    case sessionKeyDecryptionFailed
 }
