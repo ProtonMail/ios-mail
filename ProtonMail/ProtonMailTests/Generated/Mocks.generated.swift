@@ -1212,6 +1212,24 @@ class MockSwipeActionInfo: SwipeActionInfo {
 
 }
 
+class MockURLOpener: URLOpener {
+    @FuncStub(MockURLOpener.canOpenURL, initialReturn: Bool()) var canOpenURLStub
+    func canOpenURL(_ url: URL) -> Bool {
+        canOpenURLStub(url)
+    }
+
+    @FuncStub(MockURLOpener.open) var openStub
+    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: ((Bool) -> Void)?) {
+        openStub(url, options, completion)
+    }
+
+    @FuncStub(MockURLOpener.openAsync, initialReturn: Bool()) var openAsyncStub
+    func openAsync(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any]) -> Bool {
+        openAsyncStub(url, options)
+    }
+
+}
+
 class MockURLSessionDataTaskProtocol: URLSessionDataTaskProtocol {
     @FuncStub(MockURLSessionDataTaskProtocol.resume) var resumeStub
     func resume() {

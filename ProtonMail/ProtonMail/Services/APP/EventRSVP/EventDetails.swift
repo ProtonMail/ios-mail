@@ -51,4 +51,5 @@ struct EventDetails: Equatable {
     let calendar: Calendar
     let location: Location?
     let participants: [Participant]
+    let calendarAppDeepLink: URL
 }

@@ -21,12 +21,17 @@ final class InvitationView: UIView {
     private let container = SubviewFactory.container
     private let widgetBackground = SubviewFactory.widgetBackground
     private let widgetContainer = SubviewFactory.widgetContainer
+    private let widgetDetailsBackground = SubviewFactory.widgetDetailsBackground
+    private let widgetDetailsContainer = SubviewFactory.widgetDetailsContainer
     private let titleLabel = SubviewFactory.titleLabel
     private let timeLabel = SubviewFactory.timeLabel
+    private let widgetSeparator = SubviewFactory.widgetSeparator
+    private let openInCalendarButton = SubviewFactory.openInCalendarButton
     private let detailsContainer = SubviewFactory.detailsContainer
     private let participantsRow = SubviewFactory.participantsRow
 
     var onIntrinsicHeightChanged: (() -> Void)?
+    var onOpenInCalendarTapped: ((URL) -> Void)?
 
     private static let eventDurationFormatter: DateIntervalFormatter = {
         let dateFormatter = DateIntervalFormatter()
@@ -59,8 +64,14 @@ final class InvitationView: UIView {
 
         widgetBackground.addSubview(widgetContainer)
 
-        widgetContainer.addArrangedSubview(titleLabel)
-        widgetContainer.addArrangedSubview(timeLabel)
+        widgetContainer.addArrangedSubview(widgetDetailsBackground)
+        widgetContainer.addArrangedSubview(widgetSeparator)
+        widgetContainer.addArrangedSubview(openInCalendarButton)
+
+        widgetDetailsBackground.addSubviews(widgetDetailsContainer)
+
+        widgetDetailsContainer.addArrangedSubview(titleLabel)
+        widgetDetailsContainer.addArrangedSubview(timeLabel)
 
         // needed to avoid autolayout warnings raised by adding an empty UIStackView
         detailsContainer.isHidden = true
@@ -69,18 +80,31 @@ final class InvitationView: UIView {
 
     private func setUpLayout() {
         container.centerInSuperview()
-        widgetContainer.centerInSuperview()
+        widgetContainer.fillSuperview()
+        widgetDetailsContainer.centerInSuperview()
 
         [
             container.topAnchor.constraint(equalTo: topAnchor),
             container.leftAnchor.constraint(equalTo: leftAnchor, constant: 16),
-            widgetContainer.topAnchor.constraint(equalTo: widgetBackground.topAnchor, constant: 20),
-            widgetContainer.leftAnchor.constraint(equalTo: widgetBackground.leftAnchor, constant: 16)
+
+            widgetDetailsContainer.topAnchor.constraint(equalTo: widgetDetailsBackground.topAnchor, constant: 20),
+            widgetDetailsContainer.leftAnchor.constraint(equalTo: widgetDetailsBackground.leftAnchor, constant: 16),
+
+            widgetSeparator.heightAnchor.constraint(equalToConstant: 1),
+
+            openInCalendarButton.heightAnchor.constraint(equalToConstant: 48)
         ].activate()
     }
 
     func populate(with eventDetails: EventDetails) {
         titleLabel.set(text: eventDetails.title, preferredFont: .body, weight: .bold, textColor: ColorProvider.TextNorm)
+
+        openInCalendarButton.addAction(
+            UIAction(identifier: .openInCalendar, handler: { [weak self] _ in
+                self?.onOpenInCalendarTapped?(eventDetails.calendarAppDeepLink)
+            }),
+            for: .touchUpInside
+        )
 
         let durationString = Self.eventDurationFormatter.string(from: eventDetails.startDate, to: eventDetails.endDate)
         timeLabel.set(text: durationString, preferredFont: .subheadline, textColor: ColorProvider.TextNorm)
@@ -175,12 +199,23 @@ private struct SubviewFactory {
 
     static var widgetBackground: UIView {
         let view = UIView()
-        view.backgroundColor = ColorProvider.BackgroundSecondary
         view.setCornerRadius(radius: 24)
+        view.layer.borderColor = ColorProvider.SeparatorNorm
+        view.layer.borderWidth = 1
         return view
     }
 
     static var widgetContainer: UIStackView {
+        genericStackView
+    }
+
+    static var widgetDetailsBackground: UIView {
+        let view = UIView()
+        view.backgroundColor = ColorProvider.BackgroundSecondary
+        return view
+    }
+
+    static var widgetDetailsContainer: UIStackView {
         genericStackView
     }
 
@@ -193,6 +228,20 @@ private struct SubviewFactory {
     static var timeLabel: UILabel {
         let view = UILabel()
         view.adjustsFontSizeToFitWidth = true
+        return view
+    }
+
+    static var widgetSeparator: UIView {
+        let view = UIView()
+        view.backgroundColor = ColorProvider.SeparatorNorm
+        return view
+    }
+
+    static var openInCalendarButton: UIButton {
+        let view = UIButton()
+        view.titleLabel?.set(text: nil, preferredFont: .footnote)
+        view.setTitle(L11n.ProtonCalendarIntegration.openInCalendar, for: .normal)
+        view.setTitleColor(ColorProvider.TextAccent, for: .normal)
         return view
     }
 
@@ -262,4 +311,8 @@ private struct SubviewFactory {
 private struct ParticipantListState {
     var isExpanded: Bool
     var values: [EventDetails.Participant]
+}
+
+private extension UIAction.Identifier {
+    static let openInCalendar = Self(rawValue: "ch.protonmail.protonmail.action.openInCalendar")
 }

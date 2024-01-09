@@ -137,6 +137,12 @@ extension GlobalContainer {
             self.userCachedStatus
         }
     }
+
+    var urlOpenerFactory: Factory<URLOpener> {
+        self {
+            UIApplication.shared
+        }
+    }
 }
 
 extension GlobalContainer: LifetimeTrackable {

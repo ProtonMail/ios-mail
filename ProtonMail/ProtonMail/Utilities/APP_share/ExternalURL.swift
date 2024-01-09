@@ -23,8 +23,26 @@
 import Foundation
 
 extension URL {
-    // proton mail app store url scheme
-    static var protonMailAppStoreUrlScheme: URL {
-        return URL(string: "itms-apps://itunes.apple.com/app/id979659905")!
+    enum AppStore {
+        private static let baseURL = URL(string: "itms-apps://itunes.apple.com/app")!
+
+        static var calendar: URL {
+            baseURL.appendingPathComponent("id1514709943")
+        }
+
+        static var mail: URL {
+            baseURL.appendingPathComponent("id979659905")
+        }
+    }
+
+    enum ProtonCalendar {
+        private static func baseURL(host: String) -> URL {
+            URL(string: "ProtonCalendar://\(host)")!
+        }
+
+        // TODO: this is a fake URL that will open the Calendar app but that's it; update this once Calendar adds deep linking support
+        static func showEvent(eventUID: String) -> URL {
+            baseURL(host: "events").appendingPathComponent(eventUID)
+        }
     }
 }

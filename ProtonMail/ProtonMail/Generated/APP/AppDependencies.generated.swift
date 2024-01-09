@@ -242,6 +242,22 @@ extension UserContainer: HasSwipeActionCacheProtocol {
     }
 }
 
+protocol HasURLOpener {
+    var urlOpener: URLOpener { get }
+}
+
+extension GlobalContainer: HasURLOpener {
+    var urlOpener: URLOpener {
+        urlOpenerFactory()
+    }
+}
+
+extension UserContainer: HasURLOpener {
+    var urlOpener: URLOpener {
+        globalContainer.urlOpener
+    }
+}
+
 protocol HasAppRatingService {
     var appRatingService: AppRatingService { get }
 }
