@@ -138,6 +138,13 @@ class NewMessageBodyViewController: UIViewController {
             }
         }
 
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(doEnterForeground),
+            name: UIWindowScene.willEnterForegroundNotification,
+            object: nil
+        )
+
         setupContentSizeObservation()
     }
 
@@ -326,6 +333,11 @@ class NewMessageBodyViewController: UIViewController {
         }
     }
 
+    @objc
+    private func doEnterForeground() {
+        guard heightConstraint?.constant == 0 else { return }
+        reloadWebView(forceRecreate: false)
+    }
 }
 
 extension NewMessageBodyViewController: NewMessageBodyViewModelDelegate {

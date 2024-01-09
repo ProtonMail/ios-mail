@@ -277,12 +277,6 @@ extension MailboxCoordinator {
             defer {
                 self?.viewController?.hideProgressHud()
             }
-            // Prevent the app tries to push a new view when the app enters
-            // the background due to long network fetching time.
-            // It could cause the app crashed in the background.
-            if self?.getApplicationState() == .background {
-                return
-            }
             goToDetailPage()
         }
     }
