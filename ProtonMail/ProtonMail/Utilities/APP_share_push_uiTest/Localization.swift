@@ -1154,15 +1154,6 @@ class LocalizedString {
     lazy var _menu_collapse_folder = NSLocalizedString("Collapse folder", comment: "The title of voice over action of collapsing the folder")
 
     lazy var _indox_accessibility_switch_unread = NSLocalizedString("Switch unread filter", comment: "The title of voice over action that switches the unread filter status in the inbox")
-    // MARK: - In App Feedback
-    lazy var _your_feedback = NSLocalizedString("Your feedback", comment: "Title of user feedback view")
-    lazy var _feedback_prompt = NSLocalizedString("How would you describe your experience with the new Proton Mail?", comment: "Prompt of user feedback view")
-    lazy var _feedback_placeholder = NSLocalizedString("Tell us about your experience. (Optional)", comment: "Placeholder in text view destined to gather written user feedback")
-    lazy var _send_feedback = NSLocalizedString("Send feedback", comment: "Title of button to send feedback")
-    lazy var _feedback_awful = NSLocalizedString("Awful", comment: "Example feedback")
-    lazy var _feedback_wonderful = NSLocalizedString("Wonderful", comment: "Example feedback")
-    lazy var _provide_feedback = _send_feedback
-    lazy var _thank_you_feedback = NSLocalizedString("Thank you for your feedback!", comment: "Comment in banner thanking user for providing feedback")
     lazy var collalse_message_title_in_converation_view = NSLocalizedString("Collapse message", comment: "The title of button to collapse the expanded message in conversation view for VoiceOver.")
 
     lazy var _settings_dark_mode_section_title = NSLocalizedString("Appearance", comment: "The title of section inside the dark mode setting page")
@@ -1527,4 +1518,10 @@ enum L11n {
 	struct InlineAttachment {
         static let addAsAttachment = NSLocalizedString("Add it as attachment", comment: "The title of the action option that will make the inline attachment as normal attachment.")
 	}
+
+    struct MessageNavigation {
+        static let spotlightMessage = "You can now effortlessly navigate through messages by swiping left or right."
+        static let spotlightTitle = "Swipe to next message"
+        static let spotlightButtonTitle = "Got it"
+    }
 }

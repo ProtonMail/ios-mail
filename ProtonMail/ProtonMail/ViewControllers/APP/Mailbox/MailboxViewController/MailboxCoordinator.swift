@@ -51,7 +51,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private(set) weak var navigation: UINavigationController?
     private weak var sideMenu: SideMenuController?
     private var isMessageSwipeNavigationEnabled: Bool {
-        false
+        true
     }
     var pendingActionAfterDismissal: (() -> Void)?
     private let getApplicationState: () -> UIApplication.State

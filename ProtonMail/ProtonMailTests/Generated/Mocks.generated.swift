@@ -1333,14 +1333,6 @@ class MockUserCachedStatusProvider: UserCachedStatusProvider {
 
 }
 
-class MockUserFeedbackServiceProtocol: UserFeedbackServiceProtocol {
-    @FuncStub(MockUserFeedbackServiceProtocol.send) var sendStub
-    func send(_ feedback: UserFeedback, handler: @escaping (UserFeedbackServiceError?) -> Void) {
-        sendStub(feedback, handler)
-    }
-
-}
-
 class MockUserIntroductionProgressProvider: UserIntroductionProgressProvider {
     @FuncStub(MockUserIntroductionProgressProvider.shouldShowSpotlight, initialReturn: Bool()) var shouldShowSpotlightStub
     func shouldShowSpotlight(for feature: SpotlightableFeatureKey, toUserWith userID: UserID) -> Bool {

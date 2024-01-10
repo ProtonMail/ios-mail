@@ -72,7 +72,6 @@ class MenuViewModelTests: XCTestCase {
     func testDefaultMoreItemsAreTheExpectedOnes() {
         let expectedItems = [MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
-                             MenuLabel(location: .sendFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
@@ -87,7 +86,6 @@ class MenuViewModelTests: XCTestCase {
     func testMoreItemsForMemberUserAreTheExpectedOnes() {
         let expectedItems = [MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
-                             MenuLabel(location: .sendFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
@@ -103,7 +101,6 @@ class MenuViewModelTests: XCTestCase {
         let expectedItems = [MenuLabel(location: .subscription),
                              MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
-                             MenuLabel(location: .sendFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
@@ -118,7 +115,6 @@ class MenuViewModelTests: XCTestCase {
     func testMoreItemsForNonMemberWithUnavailableSubscriptionAreTheExpectedOnes() {
         let expectedItems = [MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
-                             MenuLabel(location: .sendFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
@@ -133,7 +129,6 @@ class MenuViewModelTests: XCTestCase {
     func testMoreItemsWithDisabledPINCodeAreTheExpectedOnes() {
         let expectedItems = [MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
-                             MenuLabel(location: .sendFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
@@ -148,7 +143,6 @@ class MenuViewModelTests: XCTestCase {
     func testMoreItemsWithDisabledTouchIDAreTheExpectedOnes() {
         let expectedItems = [MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
-                             MenuLabel(location: .sendFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
@@ -163,7 +157,6 @@ class MenuViewModelTests: XCTestCase {
     func testMoreItemsWithDisabledPINCodeAndTouchIDAreTheExpectedOnes() {
         let expectedItems = [MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
-                             MenuLabel(location: .sendFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .signout)]
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
@@ -177,7 +170,6 @@ class MenuViewModelTests: XCTestCase {
     func testMoreItems_withReferralEligibleTrue_containsReferAFriend() {
         let expectedItems = [MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
-                             MenuLabel(location: .sendFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .referAFriend),
                              MenuLabel(location: .signout)]

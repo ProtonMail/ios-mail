@@ -23,11 +23,11 @@
 import LifetimeTracker
 import MBProgressHUD
 import ProtonCoreDataModel
+import ProtonCorePaymentsUI
+import protocol ProtonCoreServices.APIService
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
-import ProtonCorePaymentsUI
 import UIKit
-import protocol ProtonCoreServices.APIService
 
 // swiftlint:disable:next type_body_length
 final class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
@@ -118,11 +118,6 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        guard !viewModel.messagesDataSource.isEmpty else { return }
-
-        if let targetID = self.viewModel.targetID {
-            self.cellTapped(messageId: targetID)
-        }
         if !viewModel.isMessageSwipeNavigationEnabled {
             showToolbarCustomizeSpotlightIfNeeded()
         }
@@ -132,11 +127,6 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
             repeats: false
         ) { [weak self] _ in
             self?.displayConversation()
-        }
-
-        if let draftID = viewModel.draftID {
-            cellTapped(messageId: draftID)
-            viewModel.draftID = nil
         }
     }
 
@@ -299,6 +289,10 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
                 self.setUpToolBarIfNeeded()
                 // Prevent the banner being covered by the action bar
                 self.view.subviews.compactMap { $0 as? PMBanner }.forEach { self.view.bringSubviewToFront($0) }
+
+            	if !self.viewModel.messagesDataSource.isEmpty {
+                	self.openSpecificMessageIfNeeded()
+				}
             }
         }
 
@@ -356,6 +350,18 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
         viewModel.reloadTableView = { [weak self] in
             guard let self = self else { return }
             self.customView.tableView.reloadData()
+        }
+    }
+
+    private func openSpecificMessageIfNeeded() {
+        if let targetID = viewModel.targetID {
+            cellTapped(messageId: targetID)
+            viewModel.targetID = nil
+        }
+
+        if let draftID = viewModel.draftID {
+            cellTapped(messageId: draftID)
+            viewModel.draftID = nil
         }
     }
 

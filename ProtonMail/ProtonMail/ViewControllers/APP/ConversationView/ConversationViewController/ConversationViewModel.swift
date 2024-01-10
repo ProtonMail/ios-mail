@@ -65,7 +65,7 @@ class ConversationViewModel {
     }
 
     var isMessageSwipeNavigationEnabled: Bool {
-        false
+        true
     }
     var shouldMoveToNextMessageAfterMove: Bool {
         dependencies.nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove
@@ -76,7 +76,7 @@ class ConversationViewModel {
     let user: UserManager
     let messageService: MessageDataService
     /// MessageID that want to expand at the beginning
-    private(set) var targetID: MessageID?
+    var targetID: MessageID?
     /// The messageID of a draft that should be opened at the beginning
     var draftID: MessageID?
     private let conversationMessagesProvider: ConversationMessagesProvider
@@ -478,6 +478,18 @@ class ConversationViewModel {
                     }
             }
     }
+
+    func hasSeenMessageNavigationSpotlight() {
+        guard isMessageSwipeNavigationEnabled else { return }
+        user.parentManager?.users.forEach({ user in
+            dependencies.userIntroductionProgressProvider.markSpotlight(
+                for: .messageSwipeNavigation,
+                asSeen: true,
+                byUserWith: user.userID
+            )
+        })
+    }
+
 
     private func markMessagesReadIfNeeded() {
         messagesDataSource
