@@ -31,6 +31,7 @@ final class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     typealias Dependencies = HasLaunchService
     & HasUnlockManager
     & HasAppAccessResolver
+    & HasUnlockService
 
     private let dependencies: Dependencies
     private weak var coordinator: ShareUnlockCoordinator?
@@ -234,12 +235,21 @@ final class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
 
     func authenticateUser() {
         let unlockManager = dependencies.unlockManager
-        unlockManager.biometricAuthentication(afterBioAuthPassed: {
-            unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: { },
-                                                        unlocked:  {
-                self.navigateToComposer()
-            })
+        unlockManager.biometricAuthentication(afterBioAuthPassed: { [unowned self] in
+            afterBioUnlockSucceeds()
         })
+    }
+
+    private func afterBioUnlockSucceeds() {
+        Task {
+            let appAccess = await dependencies.unlockService.start()
+            guard appAccess == .accessGranted else {
+                let message = "Access denied after successful bio unlock"
+                SystemLogger.log(message: message, category: .appLock, isError: true)
+                return
+            }
+            navigateToComposer()
+        }
     }
 
     func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {
