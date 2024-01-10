@@ -54,7 +54,9 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+    }
 
+    func resetCellContent() {
         shouldUpdateTime = false
         mailboxItem = nil
         swipeActions.removeAll()

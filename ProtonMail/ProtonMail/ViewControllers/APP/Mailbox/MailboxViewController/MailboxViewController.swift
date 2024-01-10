@@ -747,6 +747,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
                 assertionFailure("NewMailboxMessageCell was expected for MailboxRow.real")
                 return
             }
+            mailboxCell.resetCellContent()
 
             mailboxCell.mailboxItem = mailboxItem
             mailboxCell.cellDelegate = self
