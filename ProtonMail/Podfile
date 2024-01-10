@@ -150,6 +150,10 @@ target 'ProtonMailAnalytics' do
   pod 'Sentry', :git => 'git@gitlab.protontech.ch:jchen/sentry-cocoa.git', :tag => '8.9.3.fork'
 end
 
+target 'ProtonMailUI' do
+  pod 'ProtonCore-UIFoundations', :git => proton_core_path, :tag => proton_core_version
+end
+
 post_install do | installer |
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|

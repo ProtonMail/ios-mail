@@ -19,13 +19,13 @@ import Foundation
 import ProtonCoreUIFoundations
 import SwiftUI
 
-final class HostingProvider {
-    weak var hostingController: UIViewController?
+public final class HostingProvider {
+    public weak var hostingController: UIViewController?
 }
 
-final class SheetLikeSpotlightViewController<Content>: UIHostingController<Content> where Content: View {
+public final class SheetLikeSpotlightViewController<Content>: UIHostingController<Content> where Content: View {
 
-    override init(rootView: Content) {
+    public override init(rootView: Content) {
         super.init(rootView: rootView)
         view.backgroundColor = ColorProvider.BlenderNorm
         view.isOpaque = false
@@ -38,7 +38,7 @@ final class SheetLikeSpotlightViewController<Content>: UIHostingController<Conte
     }
 
     // Fix the UI issue after rotation when using overCurrentContext
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate { _ in
             let newFrame = self.presentingViewController?.view.bounds ?? .zero

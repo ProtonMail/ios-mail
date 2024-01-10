@@ -29,13 +29,14 @@ import ProtonCorePaymentsUI
 import ProtonCoreServices
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
+import ProtonMailUI
 import QuickLook
 import SkeletonView
+import SwiftUI
 import SwipyCell
 import UIKit
-import SwiftUI
 
-class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol, ScheduledAlertPresenter, LifetimeTrackable {
+class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintProtocol, ScheduledAlertPresenter, LifetimeTrackable {
     typealias Dependencies = HasPaymentsUIFactory
         & ReferralProgramPromptPresenter.Dependencies
         & HasMailboxMessageCellHelper
@@ -149,11 +150,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     private var notificationsAreScheduled = false
 
-    /// Setting this value to `true` will schedule an user feedback sheet on the next view did appear call
-    var scheduleUserFeedbackCallOnAppear = false
-
-    private var inAppFeedbackScheduler: InAppFeedbackPromptScheduler?
-
     private var customUnreadFilterElement: UIAccessibilityElement?
     let connectionStatusProvider = InternetConnectionStatusProvider.shared
 
@@ -186,8 +182,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
         refetchAllIfNeeded()
         startAutoFetch()
-
-        inAppFeedbackScheduler?.markAsInForeground()
     }
 
     @objc func doEnterBackground() {
@@ -257,10 +251,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             viewModel.resetTourValue()
         }
         #endif
-        if let destination = self.viewModel.getOnboardingDestination() {
-            viewModel.resetTourValue()
-            self.coordinator?.go(to: destination, sender: nil)
-        }
 
         // Setup top actions
         self.topActionsView.backgroundColor = ColorProvider.BackgroundNorm
@@ -285,10 +275,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
         setupScreenEdgeGesture()
         setupAccessibility()
-
-        if viewModel.shouldAutoShowInAppFeedbackPrompt {
-            inAppFeedbackScheduler = makeInAppFeedbackPromptScheduler()
-        }
 
         connectionStatusProvider.register(receiver: self)
 
@@ -321,7 +307,15 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         viewModel.user.undoActionManager.register(handler: self)
         reloadIfSwipeActionsDidChange()
         fetchEventInScheduledSend()
-        showSnoozeSpotlight()
+
+        if let destination = self.viewModel.getOnboardingDestination() {
+            viewModel.resetTourValue()
+            self.coordinator?.go(to: destination, sender: nil)
+        } else {
+            if !ProcessInfo.isRunningUITests {
+                showSpotlightIfNeeded()
+            }
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -366,20 +360,11 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
         FileManager.default.cleanCachedAttsLegacy()
 
-        if viewModel.shouldAutoShowInAppFeedbackPrompt {
-            showFeedbackViewIfNeeded()
-        }
-
         updateReferralPresenterAndShowPromptIfNeeded()
 
         DispatchQueue.global().async { [weak self] in
             self?.viewModel.prefetchIfNeeded()
         }
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        inAppFeedbackScheduler?.cancelScheduledPrompt()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -1276,23 +1261,43 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         tableView.reloadData()
     }
 
-    private func showSnoozeSpotlight() {
-        guard viewModel.shouldShowShowSnoozeSpotlight() else { return }
-        // TODO: snooze:action MAILIOS-3995 Text are not defined yet.
-        let sheetSpotView = SheetLikeSpotlightView(
-            buttonTitle: "Got it",
-            closeAction: { [weak self] hostingVC in
-                hostingVC?.dismiss(animated: false)
-                self?.viewModel.hasSeenSnoozeSpotlight()
-            },
-            message: "You can now set reminders for crucial emails.",
-            spotlightImage: Asset.snoozeSpotlight.image,
-            title: L11n.Snooze.title
-        )
+    private func showSpotlightIfNeeded() {
+        if viewModel.shouldShowMessageNavigationSpotlight {
+            showMessageNavigationSpotlight()
+        }
+        // TODO: Show snooze spotlight in the future.
+//        if viewModel.shouldShowShowSnoozeSpotlight() {
+//            showSnoozeSpotlight()
+//        }
+    }
 
-        let hosting = SheetLikeSpotlightViewController(rootView: sheetSpotView)
-        sheetSpotView.config.hostingController = hosting
+    private func showSnoozeSpotlight() {
+        // TODO: snooze:action MAILIOS-3995 Text are not defined yet.
+        let spotlightView = SnoozeSpotlightView(
+            buttonTitle: "Got it",
+            message: "You can now set reminders for crucial emails.",
+            title: L11n.Snooze.title
+        ) { [weak self] hostingVC in
+            hostingVC?.dismiss(animated: false)
+            self?.viewModel.hasSeenSnoozeSpotlight()
+        }
+        let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
+        spotlightView.config.hostingController = hosting
         navigationController?.present(hosting, animated: false)
+    }
+
+    private func showMessageNavigationSpotlight() {
+        let spotlightView = MessageNavigationSpotlightView(
+            buttonTitle: L11n.MessageNavigation.spotlightButtonTitle,
+            message: L11n.MessageNavigation.spotlightMessage,
+            title: L11n.MessageNavigation.spotlightTitle
+        ) { hostingVC in
+            hostingVC?.dismiss(animated: false)
+        }
+        let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
+        spotlightView.config.hostingController = hosting
+        navigationController?.present(hosting, animated: false)
+        viewModel.hasSeenMessageNavigationSpotlight()
     }
 }
 
@@ -2682,83 +2687,6 @@ extension MailboxViewController {
     }
 }
 
-// MARK: InApp feedback related
-
-extension MailboxViewController {
-    private var inAppFeedbackStorage: InAppFeedbackStorageProtocol {
-        UserDefaults.standard
-    }
-
-    private func makeInAppFeedbackPromptScheduler() -> InAppFeedbackPromptScheduler {
-        let allowedHandler: InAppFeedbackPromptScheduler.PromptAllowedHandler = { [weak self] in
-            guard let self = self else { return false }
-            return self.navigationController?.topViewController == self
-        }
-        let showHandler: InAppFeedbackPromptScheduler.ShowPromptHandler = { [weak self] completionHandler in
-            guard let self = self else { return }
-
-            self.showFeedbackActionSheet { completed in
-                completionHandler?(completed)
-            }
-        }
-        let scheduler = InAppFeedbackPromptScheduler(
-            storage: inAppFeedbackStorage,
-            promptDelayTime: InAppFeedbackPromptScheduler.defaultPromptDelayTime,
-            promptAllowedHandler: allowedHandler,
-            showPromptHandler: showHandler)
-        return scheduler
-    }
-
-    typealias UserFeedbackCompletedHandler = (/* Completed or not */ Bool) -> Void
-
-    private func showFeedbackActionSheet(completedHandler: UserFeedbackCompletedHandler? = nil) {
-        let delayTime = 0.1
-        let viewModel = InAppFeedbackViewModel { [weak self] result in
-            guard let self = self else {
-                return
-            }
-            switch result {
-            case .success(let userFeedback):
-                // Submit the feedback
-                let apiService = self.viewModel.user.apiService
-                let feedbackService = UserFeedbackService(apiService: apiService)
-                self.submit(userFeedback, service: feedbackService, successHandler: { [weak self] in
-                    guard let self = self else { return }
-                    completedHandler?(true)
-                    let banner = PMBanner(
-                        message: LocalString._thank_you_feedback,
-                        style: PMBannerNewStyle.success,
-                        bannerHandler: PMBanner.dismiss
-                    )
-                    banner.show(at: .bottom, on: self, ignoreKeyboard: true)
-                }, failureHandler: {
-                    completedHandler?(false)
-                })
-            default:
-                completedHandler?(false)
-                return
-            }
-        }
-        let viewController = InAppFeedbackViewController(viewModel: viewModel)
-        delay(delayTime) {
-            self.present(viewController, animated: true, completion: nil)
-        }
-    }
-
-    func showFeedbackViewIfNeeded(forceToShow: Bool = false) {
-        if forceToShow {
-            scheduleUserFeedbackCallOnAppear = true
-        }
-        if scheduleUserFeedbackCallOnAppear {
-            scheduleUserFeedbackCallOnAppear = false
-            self.showFeedbackActionSheet { [weak self] _ in
-                guard let self = self else { return }
-                self.inAppFeedbackScheduler?.markAsFeedbackSubmitted()
-            }
-        }
-    }
-}
-
 // MARK: - Auto-Delete Banners
 
 extension MailboxViewController {
@@ -2934,3 +2862,4 @@ extension MailboxViewController: ComposeContainerViewControllerDelegate {
         getLatestMessages()
     }
 }
+

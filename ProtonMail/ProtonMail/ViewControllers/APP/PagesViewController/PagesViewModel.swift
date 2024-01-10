@@ -114,11 +114,11 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
 
     // MARK: - Spotlight
     func hasUserSeenSpotlight() -> Bool {
-        !userIntroduction.shouldShowSpotlight(for: .messageSwipeNavigation, toUserWith: user.userID)
+        !userIntroduction.shouldShowSpotlight(for: .messageSwipeNavigationAnimation, toUserWith: user.userID)
     }
 
     func userHasSeenSpotlight() {
-        userIntroduction.markSpotlight(for: .messageSwipeNavigation, asSeen: true, byUserWith: user.userID)
+        userIntroduction.markSpotlight(for: .messageSwipeNavigationAnimation, asSeen: true, byUserWith: user.userID)
     }
 
     func spotlightPosition() -> SpotlightPosition? {

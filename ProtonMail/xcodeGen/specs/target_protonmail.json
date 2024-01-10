@@ -80,6 +80,9 @@
             },
             {
                "package": "SwiftCSSParser"
+            },
+            {
+               "target": "ProtonMailUI"
             }
          ],
          "preBuildScripts": [

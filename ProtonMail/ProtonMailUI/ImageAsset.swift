@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,28 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import UIKit
 
-extension ProcessInfo {
-    enum LaunchArgument: String {
-        case disableToolbarSpotlight = "-toolbarSpotlightOff"
-        case showReferralPromptView = "-showReferralPromptView"
-        case uiTests = "-uiTests"
+public class ImageAsset {
+    static var snoozeSpotlight: UIImage {
+        UIImage(named: "snooze_spotlight", in: Bundle(for: LocalImage.self), with: nil)!
     }
+    static var messageNavigationSpotlight: UIImage {
+        UIImage(named: "messageNavigation_spotlight", in: Bundle(for: LocalImage.self), with: nil)!
+    }
+}
 
-    static var isRunningUnitTests: Bool {
-        return processInfo.environment["XCTestConfigurationFilePath"] != nil
-    }
-
-    static var isRunningUITests: Bool {
-        hasLaunchArgument(.uiTests)
-    }
-
-    static var launchArguments: [String] {
-        processInfo.arguments
-    }
-
-    static func hasLaunchArgument(_ argument: LaunchArgument) -> Bool {
-        launchArguments.contains(argument.rawValue)
-    }
+private class LocalImage {
+    // only to provide a Bundle reference
 }

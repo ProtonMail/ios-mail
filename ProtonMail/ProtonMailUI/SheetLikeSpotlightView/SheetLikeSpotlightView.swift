@@ -18,8 +18,8 @@
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct SheetLikeSpotlightView: View {
-    let config = HostingProvider()
+public struct SheetLikeSpotlightView: View {
+    public let config: HostingProvider
 
     let buttonTitle: String
     var closeAction: ((UIViewController?) -> Void)?
@@ -29,8 +29,32 @@ struct SheetLikeSpotlightView: View {
     let spotlightImage: UIImage
     let title: String
     @State var isVisible = false
+    private let imageAlignBottom: Bool
+    private let maxHeightOfTheImage: CGFloat?
 
-    var body: some View {
+    public init(
+        config: HostingProvider,
+        buttonTitle: String,
+        closeAction: ((UIViewController?) -> Void)? = nil,
+        message: String,
+        spotlightImage: UIImage,
+        title: String,
+        isVisible: Bool = false,
+        imageAlignBottom: Bool = false,
+        maxHeightOfTheImage: CGFloat? = nil
+    ) {
+        self.config = config
+        self.buttonTitle = buttonTitle
+        self.closeAction = closeAction
+        self.message = message
+        self.spotlightImage = spotlightImage
+        self.title = title
+        self.isVisible = isVisible
+        self.imageAlignBottom = imageAlignBottom
+        self.maxHeightOfTheImage = maxHeightOfTheImage
+    }
+
+    public var body: some View {
         GeometryReader { geometry in
             if isVisible {
                 ZStack {
@@ -50,10 +74,10 @@ struct SheetLikeSpotlightView: View {
                     VStack {
                         Spacer()
                         containerView
-                        .background(ColorProvider.BackgroundNorm)
-                        .padding([.horizontal], 0)
-                        .frame(maxWidth: maxWidthForIPhone)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .background(ColorProvider.BackgroundNorm)
+                            .padding([.horizontal], 0)
+                            .frame(maxWidth: maxWidthForIPhone)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
                     }
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height)
@@ -76,9 +100,17 @@ struct SheetLikeSpotlightView: View {
         VStack(spacing: 0) {
             ZStack {
                 ColorProvider.BackgroundSecondary
-                Image(uiImage: spotlightImage)
-                    .resizable()
-                    .frame(width: 171, height: 97)
+                VStack {
+                    if imageAlignBottom {
+                        Spacer()
+                    }
+                    Image(uiImage: spotlightImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding(.leading, 28)
+                        .padding(.trailing, 28)
+                        .frame(maxHeight: maxHeightOfTheImage)
+                }
                 Button(action: {
                     dismissView()
                 }, label: {
@@ -97,6 +129,8 @@ struct SheetLikeSpotlightView: View {
                 .font(Font(UIFont.adjustedFont(forTextStyle: .title2, weight: .bold)))
             Text(message)
                 .padding(.bottom, 16)
+                .padding(.leading, 16)
+                .padding(.trailing, 16)
                 .foregroundColor(ColorProvider.TextWeak)
                 .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
             Button(action: {
@@ -121,13 +155,4 @@ struct SheetLikeSpotlightView: View {
             self.closeAction?(config.hostingController)
         }
     }
-}
-
-#Preview {
-    SheetLikeSpotlightView(
-        buttonTitle: "Got it",
-        message: "You can now set reminders for crucial emails.",
-        spotlightImage: Asset.snoozeSpotlight.image,
-        title: L11n.Snooze.title
-    )
 }

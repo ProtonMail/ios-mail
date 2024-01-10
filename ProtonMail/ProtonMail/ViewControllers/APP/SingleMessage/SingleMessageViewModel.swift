@@ -42,7 +42,7 @@ class SingleMessageViewModel {
     private let messageObserver: MessageObserver
 
     var isMessageSwipeNavigationEnabled: Bool {
-        false
+        true
     }
     var refreshView: (() -> Void)?
 

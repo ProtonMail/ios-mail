@@ -127,10 +127,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         }
     }
 
-    var shouldAutoShowInAppFeedbackPrompt: Bool {
-        !ProcessInfo.hasLaunchArgument(.disableInAppFeedbackPromptAutoShow)
-    }
-
     var isNewEventLoopEnabled: Bool {
         user.isNewEventLoopEnabled
     }
@@ -139,6 +135,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     private var isPrefetching: Atomic<Bool> = .init(false)
 
     private(set) var diffableDataSource: MailboxDiffableDataSource?
+
+    var shouldShowMessageNavigationSpotlight: Bool {
+        dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .messageSwipeNavigation, toUserWith: user.userID)
+    }
 
     init(labelID: LabelID,
          label: LabelInfo?,
@@ -309,6 +309,16 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     func hasSeenSnoozeSpotlight() {
         guard UserInfo.isSnoozeEnable else { return }
         dependencies.userIntroductionProgressProvider.markSpotlight(for: .snooze, asSeen: true, byUserWith: user.userID)
+    }
+
+    func hasSeenMessageNavigationSpotlight() {
+        user.parentManager?.users.forEach({ user in
+            dependencies.userIntroductionProgressProvider.markSpotlight(
+                for: .messageSwipeNavigation,
+                asSeen: true,
+                byUserWith: user.userID
+            )
+        })
     }
 
     func tagUIModels(for conversation: ConversationEntity) -> [TagUIModel] {

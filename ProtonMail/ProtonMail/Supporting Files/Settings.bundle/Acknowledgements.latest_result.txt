@@ -382,6 +382,10 @@ name: ProtonCore-Foundations, nameSpecified:
 body:                     …
 version: 16.0.0
 
+name: ProtonCore-Foundations, nameSpecified: 
+body:                     …
+version: 16.0.0
+
 name: ProtonCore-GoLibs, nameSpecified: 
 body:                     …
 version: 16.0.0
@@ -443,6 +447,10 @@ body:                     …
 version: 16.0.0
 
 name: ProtonCore-Keymaker, nameSpecified: 
+body:                     …
+version: 16.0.0
+
+name: ProtonCore-Log, nameSpecified: 
 body:                     …
 version: 16.0.0
 
@@ -603,6 +611,14 @@ body:                     …
 version: 16.0.0
 
 name: ProtonCore-UIFoundations, nameSpecified: 
+body:                     …
+version: 16.0.0
+
+name: ProtonCore-UIFoundations, nameSpecified: 
+body:                     …
+version: 16.0.0
+
+name: ProtonCore-Utilities, nameSpecified: 
 body:                     …
 version: 16.0.0
 
