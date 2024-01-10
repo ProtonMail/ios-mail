@@ -38,6 +38,7 @@ class NewMailboxMessageContentView: BaseMessageView {
     let titleLabel = UILabel(frame: .zero)
     let messageCountLabel = SubviewsFactory.messageCountLabel
     let originalImagesStackView = SubviewsFactory.horizontalStackView
+    let firstLineSpacer = UIView()
 
     var selectAttachmentAction: ((Int) -> Void)?
 
@@ -68,7 +69,8 @@ class NewMailboxMessageContentView: BaseMessageView {
         firstLineStackView.addArrangedSubview(forwardImageView)
         firstLineStackView.addArrangedSubview(draftImageView)
         firstLineStackView.addArrangedSubview(sendersStackView)
-        firstLineStackView.addArrangedSubview(UIView())
+        firstLineSpacer.setContentHuggingPriority(.init(rawValue: 200), for: .horizontal)
+        firstLineStackView.addArrangedSubview(firstLineSpacer)
         firstLineStackView.addArrangedSubview(StackViewContainer(view: timeLabel, bottom: -2))
 
         contentStackView.addArrangedSubview(secondLineStackView)
