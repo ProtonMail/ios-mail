@@ -335,8 +335,19 @@ class NewMessageBodyViewController: UIViewController {
 
     @objc
     private func doEnterForeground() {
-        guard heightConstraint?.constant == 0 else { return }
-        reloadWebView(forceRecreate: false)
+        let script = "document.body.scrollHeight"
+        webView?.evaluateJavaScript(script, completionHandler: { [weak self] result, error in
+            // JavaScript seems like won't execute in the background
+            // If message is opened in the background, webView height could not be updated to the correct value
+            // Double check height after back to foreground 
+            guard
+                error == nil,
+                let height = result as? Double,
+                let constraint = self?.heightConstraint?.constant,
+                height > constraint
+            else { return }
+            self?.updateViewHeight(to: height)
+        })
     }
 }
 
