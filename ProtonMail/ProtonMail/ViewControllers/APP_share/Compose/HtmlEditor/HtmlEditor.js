@@ -246,6 +246,7 @@ html_editor.absorbImage = function (event, items, target) {
             var name = html_editor.createUUID() + "_" + file.name;
             var bits = "data:" + file.type + ";base64," + base64;
             var img = new Image();
+            img.setAttribute('draggable', 'false')
             target.appendChild(img);
             html_editor.setImageData(img, "cid:" + name, bits);
 
