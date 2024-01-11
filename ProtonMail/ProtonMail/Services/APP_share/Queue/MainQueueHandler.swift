@@ -130,7 +130,7 @@ final class MainQueueHandler: QueueHandler {
             case .saveDraft, .uploadAtt, .uploadPubkey, .deleteAtt, .send,
                  .updateLabel, .createLabel, .deleteLabel, .signout, .signin,
                  .fetchMessageDetail, .updateAttKeyPacket,
-                 .updateContact, .deleteContact, .addContact,
+                 .updateContact, .deleteContact, .addContact, .addContacts,
                  .addContactGroup, .updateContactGroup, .deleteContactGroup,
                  .blockSender, .unblockSender:
                 fatalError()
@@ -244,8 +244,20 @@ final class MainQueueHandler: QueueHandler {
                 self.updateContact(objectID: objectID, cardDatas: cardDatas, completion: completeHandler)
             case .deleteContact(let objectID):
                 self.deleteContact(objectID: objectID, completion: completeHandler)
-            case .addContact(let objectID, let cardDatas, let importFromDevice):
-                self.addContact(objectID: objectID, cardDatas: cardDatas, importFromDevice: importFromDevice, completion: completeHandler)
+            case .addContact(let objectID, let contactCards, let importFromDevice):
+                self.addContacts(
+                    objectsURIs: [objectID],
+                    contactsCards: [contactCards],
+                    importFromDevice: importFromDevice,
+                    completion: completeHandler
+                )
+            case .addContacts(let contactsLocalURIs, let contactsCards, let importFromDevice):
+                self.addContacts(
+                    objectsURIs: contactsLocalURIs,
+                    contactsCards: contactsCards,
+                    importFromDevice: true,
+                    completion: completeHandler
+                )
             case .addContactGroup(let objectID, let name, let color, let emailIDs):
                 self.createContactGroup(objectID: objectID, name: name, color: color, emailIDs: emailIDs, completion: completeHandler)
             case .updateContactGroup(let objectID, let name, let color, let addedEmailIDs, let removedEmailIDs):
@@ -612,11 +624,16 @@ extension MainQueueHandler {
         }
     }
 
-    private func addContact(objectID: String, cardDatas: [CardData], importFromDevice: Bool, completion: @escaping Completion) {
+    private func addContacts(
+        objectsURIs: [String],
+        contactsCards: [[CardData]],
+        importFromDevice: Bool,
+        completion: @escaping Completion
+    ) {
         let service = self.contactService
         service.add(
-            cards: [cardDatas],
-            objectID: objectID,
+            contactsCards: contactsCards,
+            objectsURIs: objectsURIs,
             importFromDevice: importFromDevice,
             completion: completion
         )

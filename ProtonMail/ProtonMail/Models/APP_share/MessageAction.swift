@@ -43,6 +43,8 @@ enum MessageAction: Equatable {
         case cardDatas
         case emailIDs
         case removedEmailIDs
+        case contactsLocalURIs
+        case contactsCards
         case importFromDevice
         case deliveryTime
         case messageID
@@ -101,7 +103,9 @@ enum MessageAction: Equatable {
     // Contact
     case updateContact(objectID: String, cardDatas: [CardData])
     case deleteContact(objectID: String)
+    @available(*, deprecated, message: "Deprecated in version 4.12.0 and pending to be removed. Use `addContacts` instead")
     case addContact(objectID: String, cardDatas: [CardData], importFromDevice: Bool)
+    case addContacts(objectIDs: [String], contactsCards: [[CardData]], importFromDevice: Bool)
     case addContactGroup(objectID: String, name: String, color: String, emailIDs: [String])
     case updateContactGroup(objectID: String, name: String, color: String, addedEmailIDs: [String], removedEmailIDs: [String])
     case deleteContactGroup(objectID: String)
