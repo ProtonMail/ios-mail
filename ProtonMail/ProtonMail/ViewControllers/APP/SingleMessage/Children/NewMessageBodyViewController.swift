@@ -335,7 +335,16 @@ class NewMessageBodyViewController: UIViewController {
 
     @objc
     private func doEnterForeground() {
-        let script = "document.body.scrollHeight"
+        let script = """
+        const bodyHeight = document.body.scrollHeight;
+        const radio = document
+        .querySelector('meta[name="viewport"]')
+        .attributes['content']
+        .value
+        .match(/initial-scale=(.*?),/)[1];
+        
+        bodyHeight * radio
+        """
         webView?.evaluateJavaScript(script, completionHandler: { [weak self] result, error in
             // JavaScript seems like won't execute in the background
             // If message is opened in the background, webView height could not be updated to the correct value
