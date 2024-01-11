@@ -178,6 +178,8 @@ extension ImportDeviceContacts {
             SystemLogger.log(message: "createProtonContacts no user key found", category: .contacts, isError: true)
             return
         }
+
+        var contactsData = [(objectURI: String, cards: [CardData])]()
         for deviceContact in deviceContacts {
             do {
                 let parsedData = try DeviceContactParser.parseDeviceContact(
@@ -185,24 +187,29 @@ extension ImportDeviceContacts {
                     userKey: key,
                     userPassphrase: params.mailboxPassphrase
                 )
-                let objectID = try dependencies.contactService.createLocalContact(
+                let objectURI = try dependencies.contactService.createLocalContact(
                     uuid: deviceContact.identifier.uuidNormalisedForAutoImport,
                     name: parsedData.name,
                     emails: parsedData.emails,
                     cards: parsedData.cards
                 )
-                enqueueAddContactAction(for: objectID, cards: parsedData.cards)
+                contactsData.append((objectURI, parsedData.cards))
 
             } catch {
                 let msg = "createProtonContacts error: \(error) for contact: \(deviceContact.fullName?.redacted ?? "-")"
                 SystemLogger.log(message: msg, category: .contacts, isError: true)
             }
         }
+        enqueueAddContactsAction(for: contactsData)
     }
 
-    // TODO: create a queue to run tasks in parallel
-    private func enqueueAddContactAction(for objectID: String, cards: [CardData]) {
-        let action = MessageAction.addContact(objectID: objectID, cardDatas: cards, importFromDevice: true)
+    private func enqueueAddContactsAction(for contactsData: [(objectURI: String, cards: [CardData])]) {
+        guard !contactsData.isEmpty else { return }
+        let action = MessageAction.addContacts(
+            objectIDs: contactsData.map(\.objectURI),
+            contactsCards: contactsData.map(\.cards),
+            importFromDevice: true
+        )
         let task = QueueManager
             .Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
         dependencies.queueManager.addTask(task)

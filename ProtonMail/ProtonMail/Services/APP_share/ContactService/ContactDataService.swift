@@ -144,11 +144,13 @@ class ContactDataService {
      - Parameter objectID: CoreData object ID of group label
      - Parameter completion: async add contact complete response
      **/
-    func add(cards: [[CardData]],
-             objectID: String,
-             importFromDevice: Bool,
-             completion: @escaping (Error?) -> Void) {
-        let route = ContactAddRequest(cards: cards, importedFromDevice: importFromDevice)
+    func add(
+        contactsCards: [[CardData]],
+        objectsURIs: [String],
+        importFromDevice: Bool,
+        completion: @escaping (Error?) -> Void
+    ) {
+        let route = ContactAddRequest(cards: contactsCards, importedFromDevice: importFromDevice)
         self.apiService.perform(request: route, response: ContactAddResponse()) { [weak self] _, response in
             guard let self = self else { return }
             var contactsData: [[String: Any]] = []
@@ -156,7 +158,7 @@ class ContactDataService {
 
             let results = response.results
             guard !results.isEmpty,
-                  cards.count == results.count else {
+                  contactsCards.count == results.count else {
                 DispatchQueue.main.async {
                     completion(lastError)
                 }
@@ -167,13 +169,13 @@ class ContactDataService {
                 if let error = res as? NSError {
                     lastError = error
                 } else if var contact = res as? [String: Any] {
-                    contact["Cards"] = cards[i].toDictionary()
+                    contact["Cards"] = contactsCards[i].toDictionary()
                     contactsData.append(contact)
                 }
             }
 
             if !contactsData.isEmpty {
-                self.cacheService.addNewContact(serverResponse: contactsData, localContactObjectID: objectID) { error in
+                self.cacheService.addNewContact(serverResponse: contactsData, localContactsURIs: objectsURIs) { error in
                     DispatchQueue.main.async {
                         completion(error)
                     }
@@ -579,9 +581,11 @@ extension ContactDataService: ContactDataServiceProtocol {
             }
         }
         if let objectID = objectID {
-            let action: MessageAction = .addContact(objectID: objectID,
-                                                    cardDatas: cardDatas,
-                                                    importFromDevice: importedFromDevice)
+            let action: MessageAction = .addContacts(
+                objectIDs: [objectID],
+                contactsCards: [cardDatas],
+                importFromDevice: importedFromDevice
+            )
             let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
             _ = self.queueManager?.addTask(task)
         }

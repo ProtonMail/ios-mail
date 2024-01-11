@@ -113,7 +113,7 @@ final class QueueManager: QueueHandlerRegister {
                  .emptyTrash, .emptySpam, .empty,
                  .label, .unlabel, .folder,
                  .updateLabel, .createLabel, .deleteLabel,
-                 .updateContact, .deleteContact, .addContact,
+                 .updateContact, .deleteContact, .addContact, .addContacts,
                  .addContactGroup, .updateContactGroup, .deleteContactGroup,
                  .notificationAction, .blockSender, .unblockSender,
                  .unsnooze, .snooze:

@@ -25,7 +25,7 @@ import ProtonCoreDataModel
 import ProtonCoreNetworking
 
 struct ContactsAPI {
-    static let path: String = "/contacts"
+    static let path: String = "/contacts/v4/contacts"
 }
 
 // MARK: Get contacts part -- ContactsResponse
