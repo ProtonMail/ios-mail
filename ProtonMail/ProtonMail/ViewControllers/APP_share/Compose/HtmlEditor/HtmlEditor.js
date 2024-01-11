@@ -32,6 +32,7 @@ var mutationObserver = new MutationObserver(function (events) {
             var element = event.addedNodes[k];
             if (element.nodeType === Node.ELEMENT_NODE && element.tagName != 'CARET') {
                 if (element.tagName == 'IMG') {
+                    element.setAttribute('draggable', 'false')
                     insertedImages = true;
                     continue;
                 }
@@ -388,10 +389,21 @@ html_editor.insertEmbedImage = function (cid, base64) {
     embed.setAttribute('src-original-pm-cid', `${cid}`);
     html_editor.cachedCIDs[cid] = base64;
 
-    let parent = locationToInsertTheImage.parentNode;
-    parent.insertBefore(lowerBr, locationToInsertTheImage);
-    parent.insertBefore(embed, locationToInsertTheImage);
-    parent.insertBefore(upperBr, locationToInsertTheImage);
+    if (locationToInsertTheImage === null) {
+        // html_editor.editor doesn't have any div
+        // happens when user keep clicking delete button
+        html_editor.editor.appendChild(upperBr);
+        html_editor.editor.appendChild(embed);
+        let div = document.createElement('div');
+        div.innerHTML = "<br>";
+        html_editor.editor.appendChild(div);
+    } else {
+        let parent = locationToInsertTheImage.parentNode;
+
+        parent.insertBefore(lowerBr, locationToInsertTheImage);
+        parent.insertBefore(embed, locationToInsertTheImage);
+        parent.insertBefore(upperBr, locationToInsertTheImage);
+    }
 }
 
 // for calls from JS
