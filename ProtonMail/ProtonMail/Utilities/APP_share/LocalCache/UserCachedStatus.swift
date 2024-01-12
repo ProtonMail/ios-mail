@@ -39,11 +39,6 @@ protocol UserCachedStatusProvider: AnyObject {
 
 final class UserCachedStatus: UserCachedStatusProvider {
     struct Key {
-
-        // pin code
-
-        static let autoLockTime = "autoLockTime" /// user cache but could restore
-
         // Global Cache
         static let UserWithLocalMobileSignature = "user_with_local_mobile_signature_mainKeyProtected"
         static let UserWithLocalMobileSignatureStatus = "user_with_local_mobile_signature_status"
@@ -171,21 +166,6 @@ final class UserCachedStatus: UserCachedStatusProvider {
 
     func showStorageOverAlert() {
         self.hasShownStorageOverAlert = true
-    }
-}
-
-extension UserCachedStatus {
-    var lockTime: AutolockTimeout { // historically, it was saved as String
-        get {
-            guard let string = keychain.string(forKey: Key.autoLockTime),
-                let number = Int(string) else {
-                return .always
-            }
-            return AutolockTimeout(rawValue: number)
-        }
-        set {
-            keychain.set("\(newValue.rawValue)", forKey: Key.autoLockTime)
-        }
     }
 }
 

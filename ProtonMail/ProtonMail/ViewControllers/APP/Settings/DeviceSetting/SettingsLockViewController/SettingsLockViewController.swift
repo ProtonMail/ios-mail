@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCoreFoundations
+import ProtonCoreKeymaker
 import ProtonCoreUIFoundations
 import UIKit
 
@@ -119,14 +120,15 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
         present(alertController, animated: true, completion: nil)
     }
 
-    private func autoLockTimeValueToString(value: Int) -> String {
+    private func autoLockTimeValueToString(value: AutolockTimeout) -> String {
         let text: String
-        if value == -1 {
+        switch value {
+        case .never:
             text = LocalString._general_none
-        } else if value == 0 {
+        case .always:
             text = LocalString._settings_every_time_enter_app
-        } else {
-            text = String(format: LocalString._settings_auto_lock_minutes, value)
+        case .minutes(let minutes):
+            text = String(format: LocalString._settings_auto_lock_minutes, minutes)
         }
         return text
     }
@@ -197,7 +199,7 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
 
     private func cellForAutoLockTimeSection() -> UITableViewCell {
         let cell = tableView.dequeue(cellType: SettingsGeneralCell.self)
-        let time = autoLockTimeValueToString(value: userCachedStatus.lockTime.rawValue)
+        let time = autoLockTimeValueToString(value: viewModel.output.selectedAutolockTimeout)
         cell.configureCell(left: LocalString._timing, right: time, imageType: .arrow)
         return cell
     }
