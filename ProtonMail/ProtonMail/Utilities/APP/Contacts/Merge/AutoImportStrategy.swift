@@ -140,7 +140,7 @@ extension AutoImportStrategy {
 
         // obtaining the addresses only found in the device
         let newDeviceAddresses = device.filter { deviceAddress in
-            proton.contains { deviceAddress != $0 }
+            !proton.contains(deviceAddress)
         }
         return newDeviceAddresses.isEmpty ? .noChange : .merge(result: proton + newDeviceAddresses)
     }
