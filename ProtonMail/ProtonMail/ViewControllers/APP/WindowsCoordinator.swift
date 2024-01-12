@@ -31,6 +31,7 @@ import SafariServices
 final class WindowsCoordinator {
     typealias Dependencies = MenuCoordinator.Dependencies
     & LockCoordinator.Dependencies
+    & HasKeychain
     & HasLaunchService
     & HasAppAccessResolver
     & HasNotificationCenter
@@ -504,7 +505,7 @@ extension WindowsCoordinator {
     }
 
     private func handleWebUrl(url: URL) {
-        let linkOpener: LinkOpener = userCachedStatus.browser
+        let linkOpener = dependencies.keychain[.browser]
         let url = linkOpener.deeplink(to: url)
 
         if linkOpener == .inAppSafari {

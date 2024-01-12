@@ -58,8 +58,6 @@ final class UserCachedStatus: UserCachedStatusProvider {
 
         // FIX ME: double check if the value belongs to user. move it into user object. 2.0
 
-        static let browser = "browser"
-
         static let leftToRightSwipeAction = "leftToRightSwipeAction"
         static let rightToLeftSwipeAction = "rightToLeftSwipeAction"
 
@@ -192,20 +190,6 @@ extension UserCachedStatus {
 }
 
 #if !APP_EXTENSION
-extension UserCachedStatus {
-    var browser: LinkOpener {
-        get {
-            guard let raw = keychain.string(forKey: Key.browser) ?? userDefaults.string(forKey: Key.browser) else {
-                return .safari
-            }
-            return LinkOpener(rawValue: raw) ?? .safari
-        }
-        set {
-            userDefaults.setValue(newValue.rawValue, forKey: Key.browser)
-            keychain.set(newValue.rawValue, forKey: Key.browser)
-        }
-    }
-}
 
 extension UserCachedStatus: SwipeActionCacheProtocol {
     var leftToRightSwipeActionType: SwipeActionSettingType? {
