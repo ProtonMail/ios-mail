@@ -367,16 +367,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         }
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        for i in 0..<10 {
-            // Update skeleton color earlier to fix wrong color issue when user update theme
-            let index = IndexPath(row: i, section: 0)
-            let cell = tableView.dequeueReusableCell(withIdentifier: MailBoxSkeletonLoadingCell.Constant.identifier, for: index)
-            cell.updateAnimatedGradientSkeleton()
-        }
-    }
-
     @objc
     private func tempNetworkError(_ notification: Notification) {
         DispatchQueue.main.async {
@@ -786,6 +776,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             mailboxCell.accessibilityValue = mailboxItem.isUnread(labelID: viewModel.labelID) ? "unread" : "read"
 #endif
         case .skeleton:
+            inputCell.updateAnimatedGradientSkeleton(animation: nil)
             inputCell.showAnimatedGradientSkeleton()
             inputCell.backgroundColor = ColorProvider.BackgroundNorm
             inputCell.accessibilityIdentifier = "SkeletonCell"
