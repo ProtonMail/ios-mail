@@ -27,13 +27,7 @@ final class EventRSVPTests: XCTestCase {
     private var apiService: APIServiceMock!
     private var user: UserManager!
 
-    private let stubbedICSData = Data(#"""
-BEGIN:VCALENDAR
-BEGIN:VEVENT
-UID:foo
-END:VEVENT
-END:VCALENDAR
-"""#.utf8)
+    private let stubbedBasicEventInfo = BasicEventInfo(eventUID: "foo", recurrenceID: nil)
 
     private let summaryEvent = #"""
 BEGIN:VCALENDAR
@@ -114,13 +108,13 @@ END:VCALENDAR
 
     func testWhenEventIsEncryptedWithCalendarKeys_decryptsSuccessfully() async throws {
         try prepareSharedKeyPacketVariant()
-        let eventDetails = try await sut.parseData(icsData: stubbedICSData)
+        let eventDetails = try await sut.fetchEventDetails(basicEventInfo: stubbedBasicEventInfo)
         XCTAssertEqual(eventDetails, expectedEventDetails)
     }
 
     func testWhenEventIsEncryptedWithAddressKeys_decryptsSuccessfully() async throws {
         try prepareAddressKeyPacketVariant()
-        let eventDetails = try await sut.parseData(icsData: stubbedICSData)
+        let eventDetails = try await sut.fetchEventDetails(basicEventInfo: stubbedBasicEventInfo)
         XCTAssertEqual(eventDetails, expectedEventDetails)
     }
 }

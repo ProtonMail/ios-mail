@@ -31,6 +31,8 @@ class AttachmentViewModelTests: XCTestCase {
 
     private let icsMimeType = "text/calendar"
 
+    private let stubbedBasicEventInfo = BasicEventInfo(eventUID: "foo", recurrenceID: nil)
+
     private let stubbedEventDetails = EventDetails(
         title: "Team Collaboration Workshop",
         startDate: .distantPast,
@@ -78,7 +80,10 @@ class AttachmentViewModelTests: XCTestCase {
         )
 
         eventRSVP = .init()
-        eventRSVP.parseDataStub.bodyIs { _, _ in
+        eventRSVP.extractBasicEventInfoStub.bodyIs { _, _ in
+            self.stubbedBasicEventInfo
+        }
+        eventRSVP.fetchEventDetailsStub.bodyIs { _, _ in
             self.stubbedEventDetails
         }
 
@@ -167,22 +172,22 @@ class AttachmentViewModelTests: XCTestCase {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
         sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
 
-        wait(self.eventRSVP.parseDataStub.callCounter == 1)
+        wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 1)
 
         let inlineICS = makeAttachment(isInline: true, mimeType: icsMimeType)
         sut.attachmentHasChanged(nonInlineAttachments: [inlineICS], mimeAttachments: [])
 
-        wait(self.eventRSVP.parseDataStub.callCounter == 2)
+        wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 2)
 
         let mimeICS = MimeAttachment(filename: "", size: 0, mime: icsMimeType, path: nil, disposition: nil)
         sut.attachmentHasChanged(nonInlineAttachments: [], mimeAttachments: [mimeICS])
 
-        wait(self.eventRSVP.parseDataStub.callCounter == 3)
+        wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 3)
 
         let nonICS = makeAttachment(isInline: false)
         sut.attachmentHasChanged(nonInlineAttachments: [nonICS], mimeAttachments: [])
 
-        wait(self.eventRSVP.parseDataStub.callCounter == 3)
+        wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 3)
     }
 
     func testGivenICSIsAttached_whenCalledMultipleTimesInQuickSuccession_doesntParseMultipleTimes() {
@@ -192,7 +197,7 @@ class AttachmentViewModelTests: XCTestCase {
             sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
         }
 
-        wait(self.eventRSVP.parseDataStub.callCounter == 1)
+        wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 1)
     }
 
     func testWhenICSIsFound_notifiesAboutProcessingProgress() {
@@ -211,6 +216,16 @@ class AttachmentViewModelTests: XCTestCase {
             .noInvitationFound, .invitationFoundAndProcessing, .invitationProcessed(stubbedEventDetails)
         ]
         wait(receivedStates == expectedStates)
+    }
+
+    func testGivenHeadersContainEventInfo_whenAttachmentsContainICS_doesntParseICS() {
+        let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
+
+        sut.basicEventInfoSourcedFromHeaders = stubbedBasicEventInfo
+        sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
+
+        wait(self.eventRSVP.fetchEventDetailsStub.callCounter == 1)
+        XCTAssertEqual(eventRSVP.extractBasicEventInfoStub.callCounter, 0)
     }
 
     func testOpenInCalendar_whenCalendarIsInstalled_opensCalendarInsteadOfAppStore() async {
