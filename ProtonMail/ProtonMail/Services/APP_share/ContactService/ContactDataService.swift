@@ -167,6 +167,7 @@ class ContactDataService {
 
             for (i, res) in results.enumerated() {
                 if let error = res as? NSError {
+                    reportContactCreateError(error: error)
                     lastError = error
                 } else if var contact = res as? [String: Any] {
                     contact["Cards"] = contactsCards[i].toDictionary()
@@ -188,6 +189,11 @@ class ContactDataService {
         }
     }
 
+    private func reportContactCreateError(error: NSError) {
+        SystemLogger.log(error: error, category: .contacts)
+        Analytics.shared.sendError(.contactCreateFailInBatch(error: error))
+    }
+
     /**
      update a exsiting conact
 
@@ -202,6 +208,7 @@ class ContactDataService {
         let api = ContactUpdateRequest(contactid: contactID.rawValue, cards:cards)
         self.apiService.perform(request: api, response: ContactDetailResponse()) { _, response in
             if let error = response.error {
+                self.reportContactUpdateError(error: error)
                 completion(error.toNSError)
             } else if var contactDict = response.contact {
                 // api is not returning the cards data so set it use request cards data
@@ -214,6 +221,13 @@ class ContactDataService {
             } else {
                 completion(NSError.unableToParseResponse(response))
             }
+        }
+    }
+
+    private func reportContactUpdateError(error: ResponseError) {
+        SystemLogger.log(error: error.toNSError, category: .contacts)
+        if let httpCode = error.httpCode, (400...499).contains(httpCode) {
+            Analytics.shared.sendError(.contactUpdateFail(error: error.toNSError))
         }
     }
 
