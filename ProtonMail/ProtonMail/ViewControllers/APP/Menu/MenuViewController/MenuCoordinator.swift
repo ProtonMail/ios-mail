@@ -186,11 +186,6 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
     func closeMenu() {
         sideMenu.hideMenu()
     }
-
-    private func checkIsCurrentViewInInboxView() -> Bool {
-        return ((sideMenu.contentViewController as? UINavigationController)?
-                    .topViewController as? MailboxViewController)?.viewModel.labelID == Message.Location.inbox.labelID
-    }
 }
 
 // MARK: helper function

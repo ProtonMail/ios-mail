@@ -37,11 +37,6 @@ final class ContactsSettingsViewModel: ContactsSettingsViewModelProtocol {
 
     let settings: [Setting] = [.combineContacts, .autoImportContacts]
 
-    enum Cells {
-        case combineContacts
-        case autoImportContacts
-    }
-
     var input: ContactsSettingsViewModelInput { self }
     var output: ContactsSettingsViewModelOutput { self }
 

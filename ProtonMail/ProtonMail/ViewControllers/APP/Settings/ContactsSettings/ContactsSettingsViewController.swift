@@ -15,13 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import ProtonCoreUIFoundations
 import UIKit
 
 final class ContactsSettingsViewController: ProtonMailTableViewController {
     private let viewModel: ContactsSettingsViewModelProtocol
-    private var subscribers: [AnyCancellable] = []
 
     init(viewModel: ContactsSettingsViewModelProtocol) {
         self.viewModel = viewModel

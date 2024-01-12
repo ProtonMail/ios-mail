@@ -50,14 +50,9 @@ extension FetchAttachmentMetadata {
 
     struct Dependencies {
         let apiService: APIService
-        let doh: DoHInterface
 
-        init(
-            apiService: APIService,
-            doh: DoHInterface = BackendConfiguration.shared.doh
-        ) {
+        init(apiService: APIService) {
             self.apiService = apiService
-            self.doh = doh
         }
     }
 }

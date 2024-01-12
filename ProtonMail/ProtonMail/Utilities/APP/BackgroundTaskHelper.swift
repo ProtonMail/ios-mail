@@ -20,12 +20,7 @@ import Foundation
 import ProtonCoreDataModel
 import UIKit
 
-protocol BackgroundTaskHelperProtocol {
-    func registerBackgroundTask(scheduler: BGTaskSchedulerProtocol, task: BackgroundTaskHelper.Task)
-    func scheduleBackgroundRefreshIfNeeded(scheduler: BGTaskSchedulerProtocol, task: BackgroundTaskHelper.Task)
-}
-
-final class BackgroundTaskHelper: BackgroundTaskHelperProtocol {
+final class BackgroundTaskHelper {
     private let dependencies: Dependencies
     private var currentBackgroundTask: BGTask?
 
