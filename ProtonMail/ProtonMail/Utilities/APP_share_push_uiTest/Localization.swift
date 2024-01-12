@@ -1439,6 +1439,10 @@ enum L11n {
         static let emptyTrash = NSLocalizedString("Empty trash", comment: "Title of button to empty trash folder")
     }
 
+    struct ProtonCalendarIntegration {
+        static let openInCalendar = NSLocalizedString("Open in Proton Calendar", comment: "Button to open the Calendar app")
+	}
+
     struct AutoDeleteUpsellSheet {
         static let title = NSLocalizedString("Clear out the junk", comment: "Title of the sheet to advertise the auto delete feature to free users")
         static let description = NSLocalizedString("Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.", comment: "Text content of the sheet to advertise the auto delete feature to free users")

@@ -21,12 +21,14 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Combine
+import UIKit
 
 final class AttachmentViewModel {
     typealias Dependencies = HasEventRSVP
     & HasFeatureFlagProvider
     & HasFetchAttachmentUseCase
     & HasFetchAttachmentMetadataUseCase
+    & HasURLOpener
     & HasUserManager
 
     private(set) var attachments: Set<AttachmentInfo> = [] {
@@ -116,6 +118,22 @@ final class AttachmentViewModel {
         )
 
         return attachment.data
+    }
+
+    @MainActor
+    func onOpenInCalendarTapped(deepLink: URL) async {
+        let urlsInPreferredOrder: [URL] = [
+            deepLink,
+            .AppStore.calendar
+        ]
+
+        for url in urlsInPreferredOrder {
+            let options: [UIApplication.OpenExternalURLOptionsKey: any Sendable] = [:]
+
+            if await dependencies.urlOpener.openAsync(url, options: options) {
+                break
+            }
+        }
     }
 }
 

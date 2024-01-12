@@ -95,7 +95,8 @@ END:VCALENDAR
                 .init(email: "participant.1@proton.me", isOrganizer: false, status: .attending),
                 .init(email: "participant.2@proton.me", isOrganizer: false, status: .attending),
                 .init(email: "participant.3@proton.me", isOrganizer: false, status: .attending)
-            ]
+            ], 
+            calendarAppDeepLink: URL(string: "ProtonCalendar://events/foo")!
         )
     }
 

@@ -92,6 +92,12 @@ class AttachmentViewController: UIViewController {
             self?.delegate?.invitationViewWasChanged()
         }
 
+        invitationView.onOpenInCalendarTapped = { [weak self] deepLink in
+            Task {
+                await self?.viewModel.onOpenInCalendarTapped(deepLink: deepLink)
+            }
+        }
+
         viewModel.invitationViewState
             .removeDuplicates()
             .receive(on: DispatchQueue.main)

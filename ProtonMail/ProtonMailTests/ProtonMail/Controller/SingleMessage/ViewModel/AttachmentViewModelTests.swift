@@ -21,6 +21,7 @@ import XCTest
 @testable import ProtonMail
 
 class AttachmentViewModelTests: XCTestCase {
+    private var urlOpener: MockURLOpener!
     private var user: UserManager!
     private var eventRSVP: MockEventRSVP!
     private var subscriptions: Set<AnyCancellable>!
@@ -44,7 +45,8 @@ class AttachmentViewModelTests: XCTestCase {
         participants: [
             .init(email: "aubrey.thompson@proton.me", isOrganizer: true, status: .attending),
             .init(email: "eric.norbert@proton.me", isOrganizer: false, status: .attending)
-        ]
+        ], 
+        calendarAppDeepLink: URL(string: UUID().uuidString)!
     )
 
     override func setUp() {
@@ -52,7 +54,11 @@ class AttachmentViewModelTests: XCTestCase {
 
         subscriptions = []
 
+        urlOpener = MockURLOpener()
+
         let testContainer = TestContainer()
+
+        testContainer.urlOpenerFactory.register { self.urlOpener }
 
         let apiService = APIServiceMock()
         apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
@@ -91,6 +97,7 @@ class AttachmentViewModelTests: XCTestCase {
         testAttachments.removeAll()
 
         sut = nil
+        urlOpener = nil
         user = nil
         eventRSVP = nil
     }
@@ -204,6 +211,28 @@ class AttachmentViewModelTests: XCTestCase {
             .noInvitationFound, .invitationFoundAndProcessing, .invitationProcessed(stubbedEventDetails)
         ]
         wait(receivedStates == expectedStates)
+    }
+
+    func testOpenInCalendar_whenCalendarIsInstalled_opensCalendarInsteadOfAppStore() async {
+        urlOpener.openAsyncStub.bodyIs { _, url, _ in
+            true
+        }
+
+        await sut.onOpenInCalendarTapped(deepLink: stubbedEventDetails.calendarAppDeepLink)
+
+        XCTAssertEqual(urlOpener.openAsyncStub.lastArguments?.a1, stubbedEventDetails.calendarAppDeepLink)
+        XCTAssertEqual(urlOpener.openAsyncStub.callCounter, 1)
+    }
+
+    func testOpenInCalendar_whenCalendarIsNotInstalled_opensAppStorePage() async {
+        urlOpener.openAsyncStub.bodyIs { _, url, _ in
+            url == .AppStore.calendar
+        }
+
+        await sut.onOpenInCalendarTapped(deepLink: stubbedEventDetails.calendarAppDeepLink)
+
+        XCTAssertEqual(urlOpener.openAsyncStub.lastArguments?.a1, .AppStore.calendar)
+        XCTAssertEqual(urlOpener.openAsyncStub.callCounter, 2)
     }
 
     private func makeAttachment(isInline: Bool, mimeType: String = "text/plain") -> AttachmentInfo {

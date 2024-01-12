@@ -87,7 +87,8 @@ struct LocalEventRSVP: EventRSVP {
             location: .init(
                 name: "Zoom call"
             ),
-            participants: participants
+            participants: participants,
+            calendarAppDeepLink: .ProtonCalendar.showEvent(eventUID: eventUID)
         )
     }
 
