@@ -124,6 +124,16 @@ final class AutoImportStrategyTests: XCTestCase {
                 postalCode: "08080",
                 country: "Spain",
                 poBox: ""
+            ),
+            ContactField.Address(
+                type: .home,
+                street: "Lothian Road 392",
+                streetTwo: "",
+                locality: "Edinburgh",
+                region: "Scotland",
+                postalCode: "E25D3",
+                country: "UK",
+                poBox: ""
             )
         ]
         let result = sut.mergeAddresses(device: testAddresses, proton: testAddresses)
