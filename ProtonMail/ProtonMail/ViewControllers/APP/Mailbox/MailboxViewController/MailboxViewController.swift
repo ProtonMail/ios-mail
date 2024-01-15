@@ -269,10 +269,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
         refetchAllIfNeeded()
 
-        if viewModel.isNewEventLoopEnabled {
-            getLatestMessages()
-        }
-
         setupScreenEdgeGesture()
         setupAccessibility()
 
@@ -333,6 +329,9 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         if Message.Location(viewModel.labelID) == .inbox {
             viewModel.user.appRatingService.preconditionEventDidOccur(.inboxNavigation)
         }
+        if viewModel.isNewEventLoopEnabled && viewModel.isFirstFetch {
+            getLatestMessages()
+        } 
 
         if !viewModel.isNewEventLoopEnabled {
             if viewModel.eventsService.status != .started {
