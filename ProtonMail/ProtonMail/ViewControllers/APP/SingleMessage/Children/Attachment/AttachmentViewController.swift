@@ -79,7 +79,7 @@ class AttachmentViewController: UIViewController {
 
         text += sizeString
         view.titleLabel.set(text: text,
-                            preferredFont: .footnote)
+                            preferredFont: .subheadline)
     }
 
     private func setUpTapGesture() {
