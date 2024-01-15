@@ -58,28 +58,45 @@
 /* menu title */
 "Inbox" = "Indbakke";
 
-/* menu title */
+/*
+ menu title
+ Springboard (3D Touch) shortcuts action
+ VoiceOver: email is starred
+*/
 "Starred" = "Stjernemarkeret";
 
-/* menu title */
+/*
+ menu title
+ Push notification action to archive
+ The title of the archive action in action sheet
+*/
 "Archive" = "Arkivér";
 
 /* menu title */
 "Drafts" = "Kladder";
 
-/* mail location title */
+/*
+ mail location title
+ menu title
+*/
 "All Mail" = "Alle mails";
 
 /* menu title */
 "Sent" = "Sendt";
 
-/* mail location desc */
+/*
+ mail location desc
+ menu title
+*/
 "Trash" = "Papirkurv";
 
 /* menu title */
 "Spam" = "Spam";
 
-/* Action and title */
+/*
+ Action and title
+ menu title
+*/
 "Contacts" = "Kontakter";
 
 /* menu title (contact groups) */
@@ -88,19 +105,28 @@
 /* menu title */
 "Settings" = "Indstillinger";
 
-/* Alert title to confirm signout */
+/*
+ Alert title to confirm signout
+ menu title
+*/
 "Sign out" = "Log ud";
 
 /* menu title */
 "Lock The App" = "Lås app'en";
 
-/* menu title */
+/*
+ menu title
+ The title of a subscription plans screen
+*/
 "Subscription" = "Abonnement";
 
 /* menu title */
 "Manage accounts" = "Administrer konti";
 
-/* menu title */
+/*
+ menu title
+ The voiceiver title of the add attachment button in the tool bar of composer
+*/
 "Add attachment" = "Tilføj vedhæftning";
 
 /* menu title */
@@ -111,9 +137,6 @@
 
 /* Description after message have been sent */
 "Message sent" = "Besked afsendt";
-
-/* Description */
-"Sent Failed" = "Afsendelse mislykkedes";
 
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Intet at se her";
@@ -141,9 +164,6 @@
 
 /* Title */
 "You have a new email!" = "Du har en ny e-mail!";
-
-/* Message */
-"You have %d new emails!" = "Du har %d nye e-mails!";
 
 /* abbreviation of reply: */
 "Re:" = "Sv:";
@@ -205,13 +225,19 @@
 /* button title */
 "Apply Password" = "Anvend adgangskode";
 
-/* Action */
+/*
+ Action
+ Springboard (3D Touch) shortcuts action
+*/
 "Compose" = "Skriv";
 
 /* Composer expiration page title */
 "Message expiration" = "Beskedudløb";
 
-/* contacts default label type */
+/*
+ contacts default label type
+ Custom option for time config picker
+*/
 "Custom" = "Brugerdefineret";
 
 /* Description */
@@ -391,7 +417,13 @@
 /* Done action */
 "Done" = "Udført";
 
-/* Button to cancel encrypted search */
+/*
+ Button to cancel encrypted search
+ Cancel action
+ general cancel action
+ Title for the alert button to cancel delete all downloaded messages.
+ Title for the alert button to cancel disable content search.
+*/
 "Cancel" = "Annullér";
 
 /* Got it action */
@@ -418,16 +450,26 @@
 /* message From: field text */
 "From:" = "Fra:";
 
-/* message To: feild */
+/*
+ message To: feild
+ Title
+*/
 "To" = "Til";
 
-/* message Cc: feild */
+/*
+ message Cc: feild
+ Title
+*/
 "Cc" = "CC";
 
 /* message Bcc: feild */
 "Bcc:" = "BCC:";
 
-/* general delete action */
+/*
+ general delete action
+ The title of the delete action in action sheet
+ Title for the alert button to delete all downloaded messages.
+*/
 "Delete" = "Slet";
 
 /* general close action */
@@ -436,7 +478,10 @@
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Din session er udløbet, fordi du har været inaktiv i et stykke tid, eller fordi den er blevet tilbagekaldt. Log venligst ind igen.";
 
-/* Springboard (3D Touch) shortcuts action */
+/*
+ Springboard (3D Touch) shortcuts action
+ Title
+*/
 "Search" = "Søg";
 
 /* Alert title */
@@ -451,7 +496,10 @@
 /* Action */
 "Send" = "Send";
 
-/* Action */
+/*
+ Action
+ The action title of the alert of the user trying to send a message that was schedule-send.
+*/
 "Schedule send" = "Planlæg afsendelse";
 
 /* Alert title */
@@ -487,7 +535,10 @@
 /* Title */
 "Save" = "Gem";
 
-/* Action */
+/*
+ Action
+ The button title of the scheduled message banner.
+*/
 "Edit" = "Redigér";
 
 /* Error message */
@@ -547,7 +598,10 @@
 /* Hint when users delete contact offline  */
 "Contact deleted, will be synced when connection is available" = "Kontakt slettet. Den synkroniseres, når forbindelse bliver tilgængelig";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup2
+*/
 "Confirm" = "Bekræft";
 
 /* Title */
@@ -565,7 +619,10 @@
 /* Action */
 "Later" = "Senere";
 
-/* Action */
+/*
+ Action
+ The text for downloaded messages in local storage when encrypted search is disabled.
+*/
 "Disabled" = "Deaktiveret";
 
 /* contact placeholder */
@@ -574,7 +631,12 @@
 /* top left back button */
 "Back" = "Tilbage";
 
-/* A *short* description saying that there is no contact group associated with this contact email */
+/*
+ A *short* description saying that there is no contact group associated with this contact email
+ Action title of none
+ The protection title of None protection
+ Title
+*/
 "None" = "Ingen";
 
 /* lock app option */
@@ -604,7 +666,10 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Du kan ikke angive %@-adressen som standard, da dette er en betalingsfunktion.";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup1
+*/
 "Continue" = "Fortsæt";
 
 /* error message */
@@ -628,10 +693,16 @@
 /* Error */
 "Unknown Error" = "Ukendt fejl";
 
-/* Action */
+/*
+ Action
+ The title of loading remote content banner.
+*/
 "Load remote content" = "Indlæs eksternt indhold";
 
-/* settings general section title */
+/*
+ settings general section title
+ title
+*/
 "Change password" = "Skift adgangskode";
 
 /* Title */
@@ -910,7 +981,11 @@
 /* Error */
 "Can't open the file" = "Kan ikke åbne filen";
 
-/* Action */
+/*
+ Action
+ alternative routing link name in description
+ The title of learn more link
+*/
 "Learn more" = "Få mere at vide";
 
 /* Action */
@@ -958,7 +1033,10 @@
 /* Action title of move to archive */
 "Move to archive" = "Flyt til arkiv";
 
-/* Action title of move to spam */
+/*
+ Action title of move to spam
+ The title of the spam action in action sheet
+*/
 "Move to spam" = "Flyt til spam";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
@@ -1003,7 +1081,10 @@
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Vi anbefaler at opsætte en adgangskode i stedet for eller deaktivere PGP for følgende modtagere:";
 
-/* A option title that enable/disable notification feature */
+/*
+ A option title that enable/disable notification feature
+ cell title in device settings
+*/
 "Notifications" = "Notifikationer";
 
 /* VoiceOver: email belongs to folders */
@@ -1044,6 +1125,9 @@
 
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Slet kontaktgruppe";
+
+/* The string that describes how many contact groups are currently selected */
+"%d Selected" = "%d Selected";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Vælg mindst én e-mail til kontaktgruppen";
@@ -1090,7 +1174,10 @@
 /* Alert to confirm signout */
 "You will be switched to %@" = "Du vil blive skiftet til %@";
 
-/* Alert to confirm sign out */
+/*
+ Alert to confirm sign out
+ Alert when sign out non-primary account from account manager
+*/
 "Are you sure you want to sign out?" = "Er du sikker på, at du vil logge ud?";
 
 /* Alert to confirm sign out when only one account signed in */
@@ -1153,7 +1240,10 @@
 /* cell title in device settings */
 "Language" = "Sprog";
 
-/* cell title in device settings */
+/*
+ cell title in device settings
+ The title of combined contact in settings
+*/
 "Combined contacts" = "Kombinerede kontakter";
 
 /* cell title in app settings */
@@ -1234,9 +1324,6 @@
 /* The unread title of unread action button in mailbox view */
 "unread" = "ulæst";
 
-/* The title of navigation bar title of mailbox view while selecting the message */
-"Selected" = "Valgte";
-
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Opdateret >1 time siden";
 
@@ -1252,7 +1339,10 @@
 /* The text shown on the mailbox when the primary user changed */
 "Signed in as %@" = "Logget på som %@";
 
-/* The title of the star action in action sheet */
+/*
+ The title of the star action in action sheet
+ VoiceOver title of star button in the message view
+*/
 "Star" = "Stjerne";
 
 /* The title of the star action in action sheet */
@@ -1261,10 +1351,16 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Markér som ulæst";
 
-/* Push notification action mark as read */
+/*
+ Push notification action mark as read
+ The title of the read action in action sheet
+*/
 "Mark as read" = "Markér som læst";
 
-/* Push notification action move to trash */
+/*
+ Push notification action move to trash
+ The title of the remove action in action sheet
+*/
 "Move to trash" = "Flyt til papirkurv";
 
 /* The title of the remove action in action sheet */
@@ -1276,10 +1372,10 @@
 /* The title of the view message in dark mode action in action sheet */
 "View message in Dark mode" = "Se beskeder i Mørk tilstand";
 
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Slå denne funktion til for at autoudfylde e-mailadresser vha. kontakter fra alle de konti, hvor du er logget ind.";
-
-/* alternative routing description */
+/*
+ alternative routing description
+ The footer of alternative routing setting
+*/
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Hvis Proton-websteder er blokeret, giver denne indstilling appen mulighed for at prøve alternativ netværksrouting for at nå Proton, hvilket kan være nyttige til at omgå firewalls eller netværksproblemer. Vi anbefaler at holde denne indstilling slået til for større pålidelighed. %1$@";
 
 /* The title of alternative routing settings */
@@ -1441,8 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Anmeld phishing";
 
-/* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "Ikke spam (flyt til indbakke)";
+"Not spam (move to inbox)" = "Not spam (move to inbox)";
 
 /* No comment provided by engineer. */
 "Move to" = "Flyt til";
@@ -1830,6 +1925,12 @@
 /* Button inside the banner */
 "Load" = "Indlæs";
 
+/* As in: event organizer */
+"Organizer" = "Organizer";
+
+/* Button to hide some items in the list to conserve screen estate */
+"Show less" = "Show less";
+
 /* Official badge next to sender's name */
 "Official" = "Officiel";
 
@@ -1862,6 +1963,21 @@
 
 /* The title of the maybe later button in referral prompt view. */
 "Maybe later" = "Måske senere";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Slå denne funktion til for at autoudfylde e-mailadresser vha. kontakter fra alle de konti, hvor du er logget ind.";
+
+/* contacts auto import title in settings */
+"Auto-import device contacts" = "Auto-import device contacts";
+
+/* contacts auto import footer in settings */
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+
+/* Auto import alert title */
+"Auto-import enabled" = "Auto-import enabled";
+
+/* Auto import alert message */
+"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
 
 /* Settings lock protection section */
 "Protection" = "Beskyttelse";
@@ -1927,13 +2043,10 @@
 "Application logs" = "Applikationslogs";
 
 /* The title of the setting of the next msg after move */
-"Next message after move" = "Næste besked efter flytning";
-
-/* The title of the row inside the setting page of next msg after move function. */
-"Navigate to next message after move" = "Fortsæt til næste besked efter flytning";
+"Jump to next message" = "Jump to next message";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Hvis du udfører en flyttehandling på en besked (f.eks. arkiverer), fortsættes der til den næste besked.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Der opstod en ukendt fejl. Kontakt supporten.\nError: %@";
@@ -1969,7 +2082,7 @@
 "Bug Report Place Holder" = "---For at hjælpe os med at hjælpe dig, oplys venligst flest mulig detaljer---\n\nOpsummer:\n\nEr problemet opstået flere gange: ja/nej\nHvilke handlinger får problemet til at opstå:\nForventet resultat:\nFaktiske resultat:\nKommentarer:";
 
 /* Checkbox to attach local application logs to the bug report. */
-"Include logs" = "Inkludér logger";
+"Include logs" = "Inkludér logfiler";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Prøv et andet søgeord.";
@@ -1992,7 +2105,10 @@
 /* Message of the alert to confirm enabling of the auto delete option */
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Dette sletter alle beskeder, der har ligget i papirkurven eller spam i mere end 30 dage, inklusive beskeder, der aktuelt ligger i disse mapper.";
 
-/* Button to enable encrypted search */
+/*
+ Button to enable encrypted search
+ The title of the button to move to settings and enable encrypted search.
+*/
 "Enable" = "Aktivér";
 
 /* Text to advertise the auto delete feature to free users */
@@ -2031,6 +2147,9 @@
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Den originale afsender af denne besked er ikke længere gyldig. Din besked vil blive sendt fra din standardadresse %@.";
 
+/* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
+"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Vist navn";
 
@@ -2055,13 +2174,25 @@
 /* The title of select all button for select all messages feature */
 "Select all" = "Vælg alle";
 
-/* The title of PIN code disable view  */
+/* The title of unselect all button for select all messages feature */
+"Unselect all" = "Unselect all";
+
+/* Warning message will be shown to user when user try to select more than acceptable message */
+"Maximum selection reached" = "Maximum selection reached";
+
+/* Placeholder if message sender is empty */
+"No Recipient" = "No Recipient";
+
+/* The title of PIN code disable view */
 "Disable PIN code" = "Deaktivér pinkode";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Angiv pinkode";
 
-/* The title of PIN code setup2 view */
+/*
+ The title of PIN code setup2 view
+ The title of textfield of PIN code setup2
+*/
 "Repeat PIN code" = "Gentag pinkode";
 
 /* The title of textfield of PIN code setup1 */
@@ -2093,3 +2224,51 @@
 
 /* Unsubscribe confirmation message */
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Dette vil afmelde dig fra mailinglisten. Afsenderen vil få besked om ikke længere at sende e-mails til denne adresse.";
+
+/* Alert telling the user that we are unable to preview this attachment */
+"Unable to preview this attachment" = "Unable to preview this attachment";
+
+/* Title for banner saying that we are currently downloading the attachment to preview it */
+"Downloading attachment" = "Downloading attachment";
+
+/* The banner title that is shown in the message detail view. */
+"Snoozed until %@" = "Snoozed until %@";
+
+/* The title of the button in the banner that is shown in the message detail view. */
+"Unsnooze" = "Unsnooze";
+
+/* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
+"Snooze until %@" = "Snooze until %@";
+
+/* Notification banner when user unsnooze a conversation */
+"Conversation unsnoozed" = "Conversation unsnoozed";
+
+/* The title of snooze config in action sheet */
+"Snooze until..." = "Snooze until...";
+
+/* One of snooze option shows in action sheet */
+"Later this week" = "Later this week";
+
+/* One of snooze option shows in action sheet */
+"This weekend" = "This weekend";
+
+/* One of snooze option shows in action sheet */
+"Next week" = "Next week";
+
+/* An error message will be shown to user when user select past snooze time */
+"Please select a time in the future" = "Please select a time in the future";
+
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Want to snooze any time?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Ubegrænsede mapper, etiketter og filtre";
+
+/* The title of the action option that will make the inline attachment as normal attachment. */
+"Add it as attachment" = "Add it as attachment";

@@ -58,28 +58,45 @@
 /* menu title */
 "Inbox" = "Safata d'entrada";
 
-/* menu title */
+/*
+ menu title
+ Springboard (3D Touch) shortcuts action
+ VoiceOver: email is starred
+*/
 "Starred" = "Destacats";
 
-/* menu title */
+/*
+ menu title
+ Push notification action to archive
+ The title of the archive action in action sheet
+*/
 "Archive" = "Arxivar";
 
 /* menu title */
 "Drafts" = "Esborranys";
 
-/* mail location title */
+/*
+ mail location title
+ menu title
+*/
 "All Mail" = "Tot el correu";
 
 /* menu title */
 "Sent" = "Enviats";
 
-/* mail location desc */
+/*
+ mail location desc
+ menu title
+*/
 "Trash" = "Paperera";
 
 /* menu title */
 "Spam" = "Correu brossa";
 
-/* Action and title */
+/*
+ Action and title
+ menu title
+*/
 "Contacts" = "Contactes";
 
 /* menu title (contact groups) */
@@ -88,19 +105,28 @@
 /* menu title */
 "Settings" = "Preferències";
 
-/* Alert title to confirm signout */
+/*
+ Alert title to confirm signout
+ menu title
+*/
 "Sign out" = "Tanca la sessió";
 
 /* menu title */
 "Lock The App" = "Bloqueja l'aplicació";
 
-/* menu title */
+/*
+ menu title
+ The title of a subscription plans screen
+*/
 "Subscription" = "Subscripció";
 
 /* menu title */
 "Manage accounts" = "Gestionar comptes";
 
-/* menu title */
+/*
+ menu title
+ The voiceiver title of the add attachment button in the tool bar of composer
+*/
 "Add attachment" = "Afegir adjunt";
 
 /* menu title */
@@ -111,9 +137,6 @@
 
 /* Description after message have been sent */
 "Message sent" = "Missatge enviat";
-
-/* Description */
-"Sent Failed" = "Enviament fallit";
 
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Aquí no hi ha res";
@@ -141,9 +164,6 @@
 
 /* Title */
 "You have a new email!" = "Teniu un nou correu electrònic!";
-
-/* Message */
-"You have %d new emails!" = "Teniu %d nous correus electrònics!";
 
 /* abbreviation of reply: */
 "Re:" = "Re:";
@@ -205,13 +225,19 @@
 /* button title */
 "Apply Password" = "Aplica la contrasenya";
 
-/* Action */
+/*
+ Action
+ Springboard (3D Touch) shortcuts action
+*/
 "Compose" = "Redactar";
 
 /* Composer expiration page title */
 "Message expiration" = "Caducitat del missatge";
 
-/* contacts default label type */
+/*
+ contacts default label type
+ Custom option for time config picker
+*/
 "Custom" = "Personalitzat";
 
 /* Description */
@@ -391,7 +417,13 @@
 /* Done action */
 "Done" = "Fet";
 
-/* Button to cancel encrypted search */
+/*
+ Button to cancel encrypted search
+ Cancel action
+ general cancel action
+ Title for the alert button to cancel delete all downloaded messages.
+ Title for the alert button to cancel disable content search.
+*/
 "Cancel" = "Cancel·la";
 
 /* Got it action */
@@ -418,16 +450,26 @@
 /* message From: field text */
 "From:" = "De:";
 
-/* message To: feild */
+/*
+ message To: feild
+ Title
+*/
 "To" = "Per a";
 
-/* message Cc: feild */
+/*
+ message Cc: feild
+ Title
+*/
 "Cc" = "Cc";
 
 /* message Bcc: feild */
 "Bcc:" = "Cco:";
 
-/* general delete action */
+/*
+ general delete action
+ The title of the delete action in action sheet
+ Title for the alert button to delete all downloaded messages.
+*/
 "Delete" = "Elimina";
 
 /* general close action */
@@ -436,7 +478,10 @@
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "La vostra sessió ha caducat perquè heu estat inactiva durant un temps o perquè s'ha revocat. Torneu a iniciar la sessió.";
 
-/* Springboard (3D Touch) shortcuts action */
+/*
+ Springboard (3D Touch) shortcuts action
+ Title
+*/
 "Search" = "Cerca";
 
 /* Alert title */
@@ -451,7 +496,10 @@
 /* Action */
 "Send" = "Enviar";
 
-/* Action */
+/*
+ Action
+ The action title of the alert of the user trying to send a message that was schedule-send.
+*/
 "Schedule send" = "Programar enviament";
 
 /* Alert title */
@@ -487,7 +535,10 @@
 /* Title */
 "Save" = "Desa";
 
-/* Action */
+/*
+ Action
+ The button title of the scheduled message banner.
+*/
 "Edit" = "Edita";
 
 /* Error message */
@@ -547,7 +598,10 @@
 /* Hint when users delete contact offline  */
 "Contact deleted, will be synced when connection is available" = "S'ha eliminat el contacte. Es sincronitzarà quan hi hagi una connexió disponible";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup2
+*/
 "Confirm" = "Confirma";
 
 /* Title */
@@ -565,7 +619,10 @@
 /* Action */
 "Later" = "Més tard";
 
-/* Action */
+/*
+ Action
+ The text for downloaded messages in local storage when encrypted search is disabled.
+*/
 "Disabled" = "Desactivat";
 
 /* contact placeholder */
@@ -574,7 +631,12 @@
 /* top left back button */
 "Back" = "Torna";
 
-/* A *short* description saying that there is no contact group associated with this contact email */
+/*
+ A *short* description saying that there is no contact group associated with this contact email
+ Action title of none
+ The protection title of None protection
+ Title
+*/
 "None" = "Cap";
 
 /* lock app option */
@@ -604,7 +666,10 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "No podeu establir l'adreça %@ com a predeterminada perquè això és una característica de pagament.";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup1
+*/
 "Continue" = "Continua";
 
 /* error message */
@@ -628,10 +693,16 @@
 /* Error */
 "Unknown Error" = "Error desconegut";
 
-/* Action */
+/*
+ Action
+ The title of loading remote content banner.
+*/
 "Load remote content" = "Carrega el contingut remot";
 
-/* settings general section title */
+/*
+ settings general section title
+ title
+*/
 "Change password" = "Canvia la contrasenya";
 
 /* Title */
@@ -910,7 +981,11 @@
 /* Error */
 "Can't open the file" = "No es pot obrir el fitxer";
 
-/* Action */
+/*
+ Action
+ alternative routing link name in description
+ The title of learn more link
+*/
 "Learn more" = "Més informació";
 
 /* Action */
@@ -958,7 +1033,10 @@
 /* Action title of move to archive */
 "Move to archive" = "Mou a l'arxiu";
 
-/* Action title of move to spam */
+/*
+ Action title of move to spam
+ The title of the spam action in action sheet
+*/
 "Move to spam" = "Mou al correu brossa";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
@@ -1003,7 +1081,10 @@
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Recomanem configurar una contrasenya o deshabilitar PGP pels destinataris següents:";
 
-/* A option title that enable/disable notification feature */
+/*
+ A option title that enable/disable notification feature
+ cell title in device settings
+*/
 "Notifications" = "Notificacions";
 
 /* VoiceOver: email belongs to folders */
@@ -1044,6 +1125,9 @@
 
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Eliminar grup de contactes";
+
+/* The string that describes how many contact groups are currently selected */
+"%d Selected" = "%d Selected";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Seleccioneu almenys un correu electrònic per al grup de contactes";
@@ -1090,7 +1174,10 @@
 /* Alert to confirm signout */
 "You will be switched to %@" = "Es canviarà a %@";
 
-/* Alert to confirm sign out */
+/*
+ Alert to confirm sign out
+ Alert when sign out non-primary account from account manager
+*/
 "Are you sure you want to sign out?" = "Segur que voleu tancar la sessió?";
 
 /* Alert to confirm sign out when only one account signed in */
@@ -1153,7 +1240,10 @@
 /* cell title in device settings */
 "Language" = "Idioma";
 
-/* cell title in device settings */
+/*
+ cell title in device settings
+ The title of combined contact in settings
+*/
 "Combined contacts" = "Contactes combinats";
 
 /* cell title in app settings */
@@ -1234,9 +1324,6 @@
 /* The unread title of unread action button in mailbox view */
 "unread" = "no llegit";
 
-/* The title of navigation bar title of mailbox view while selecting the message */
-"Selected" = "Seleccionat";
-
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Actualitzat fa més d'1 hora";
 
@@ -1252,7 +1339,10 @@
 /* The text shown on the mailbox when the primary user changed */
 "Signed in as %@" = "Sessió iniciada com a %@";
 
-/* The title of the star action in action sheet */
+/*
+ The title of the star action in action sheet
+ VoiceOver title of star button in the message view
+*/
 "Star" = "Destacat";
 
 /* The title of the star action in action sheet */
@@ -1261,10 +1351,16 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Marca com a no llegit";
 
-/* Push notification action mark as read */
+/*
+ Push notification action mark as read
+ The title of the read action in action sheet
+*/
 "Mark as read" = "Marca com a llegit";
 
-/* Push notification action move to trash */
+/*
+ Push notification action move to trash
+ The title of the remove action in action sheet
+*/
 "Move to trash" = "Mou a la paperera";
 
 /* The title of the remove action in action sheet */
@@ -1276,10 +1372,10 @@
 /* The title of the view message in dark mode action in action sheet */
 "View message in Dark mode" = "Veure missatges en mode Fosc";
 
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Activeu aquesta característica per a completar automàticament les adreces de correu electrònic utilitzant els contactes de tots els vostres comptes amb la sessió iniciada.";
-
-/* alternative routing description */
+/*
+ alternative routing description
+ The footer of alternative routing setting
+*/
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "En cas que es bloquegin els llocs de Proton, aquest paràmetre permet a l'aplicació provar l'encaminament de xarxa alternatiu per arribar a Proton, cosa que pot ser útil per evitar els tallafocs o problemes de xarxa. Recomanem mantenir aquesta configuració per a una major fiabilitat. %1$@";
 
 /* The title of alternative routing settings */
@@ -1441,8 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Notificar suplantació d'identitat";
 
-/* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "No és correu brossa (mou a la safata d'entrada)";
+"Not spam (move to inbox)" = "Not spam (move to inbox)";
 
 /* No comment provided by engineer. */
 "Move to" = "Mou a";
@@ -1830,6 +1925,12 @@
 /* Button inside the banner */
 "Load" = "Carrega";
 
+/* As in: event organizer */
+"Organizer" = "Organizer";
+
+/* Button to hide some items in the list to conserve screen estate */
+"Show less" = "Show less";
+
 /* Official badge next to sender's name */
 "Official" = "Oficial";
 
@@ -1862,6 +1963,21 @@
 
 /* The title of the maybe later button in referral prompt view. */
 "Maybe later" = "Potser després";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Activeu aquesta característica per a completar automàticament les adreces de correu electrònic utilitzant els contactes de tots els vostres comptes amb la sessió iniciada.";
+
+/* contacts auto import title in settings */
+"Auto-import device contacts" = "Auto-import device contacts";
+
+/* contacts auto import footer in settings */
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+
+/* Auto import alert title */
+"Auto-import enabled" = "Auto-import enabled";
+
+/* Auto import alert message */
+"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
 
 /* Settings lock protection section */
 "Protection" = "Protecció";
@@ -1927,13 +2043,10 @@
 "Application logs" = "Registres de l'aplicació";
 
 /* The title of the setting of the next msg after move */
-"Next message after move" = "Passa al missatge següent després de moure";
-
-/* The title of the row inside the setting page of next msg after move function. */
-"Navigate to next message after move" = "Passa al missatge següent després de moure'l";
+"Jump to next message" = "Jump to next message";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Performing a move action on a message (e.g. archive) will navigate to the next message." = "En moure un missatge (per exemple, arxivar), passareu al missatge següent.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "S'ha produït un error inesperat.\nError: %@";
@@ -1992,7 +2105,10 @@
 /* Message of the alert to confirm enabling of the auto delete option */
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Això eliminarà tots els missatges que estiguin a la paperera o al correu brossa durant més de 30 dies, inclosos els missatges que es troben actualment en aquestes carpetes.";
 
-/* Button to enable encrypted search */
+/*
+ Button to enable encrypted search
+ The title of the button to move to settings and enable encrypted search.
+*/
 "Enable" = "Habilitar";
 
 /* Text to advertise the auto delete feature to free users */
@@ -2031,6 +2147,9 @@
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "El remitent original d'aquest missatge ja no és vàlid. El missatge s'enviarà des de la seva adreça per defecte %@.";
 
+/* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
+"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nom a mostrar";
 
@@ -2055,13 +2174,25 @@
 /* The title of select all button for select all messages feature */
 "Select all" = "Seleccionar-ho tot";
 
-/* The title of PIN code disable view  */
+/* The title of unselect all button for select all messages feature */
+"Unselect all" = "Unselect all";
+
+/* Warning message will be shown to user when user try to select more than acceptable message */
+"Maximum selection reached" = "Maximum selection reached";
+
+/* Placeholder if message sender is empty */
+"No Recipient" = "No Recipient";
+
+/* The title of PIN code disable view */
 "Disable PIN code" = "Desactiva el codi PIN";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Establir codi PIN";
 
-/* The title of PIN code setup2 view */
+/*
+ The title of PIN code setup2 view
+ The title of textfield of PIN code setup2
+*/
 "Repeat PIN code" = "Repetir codi PIN";
 
 /* The title of textfield of PIN code setup1 */
@@ -2093,3 +2224,51 @@
 
 /* Unsubscribe confirmation message */
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Això us donarà de baixa de la llista de correu. El remitent serà notificat per deixar d'enviar correus electrònics a aquesta adreça.";
+
+/* Alert telling the user that we are unable to preview this attachment */
+"Unable to preview this attachment" = "Unable to preview this attachment";
+
+/* Title for banner saying that we are currently downloading the attachment to preview it */
+"Downloading attachment" = "Downloading attachment";
+
+/* The banner title that is shown in the message detail view. */
+"Snoozed until %@" = "Snoozed until %@";
+
+/* The title of the button in the banner that is shown in the message detail view. */
+"Unsnooze" = "Unsnooze";
+
+/* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
+"Snooze until %@" = "Snooze until %@";
+
+/* Notification banner when user unsnooze a conversation */
+"Conversation unsnoozed" = "Conversation unsnoozed";
+
+/* The title of snooze config in action sheet */
+"Snooze until..." = "Snooze until...";
+
+/* One of snooze option shows in action sheet */
+"Later this week" = "Later this week";
+
+/* One of snooze option shows in action sheet */
+"This weekend" = "This weekend";
+
+/* One of snooze option shows in action sheet */
+"Next week" = "Next week";
+
+/* An error message will be shown to user when user select past snooze time */
+"Please select a time in the future" = "Please select a time in the future";
+
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Want to snooze any time?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Carpetes, etiquetes i filtres il·limitats";
+
+/* The title of the action option that will make the inline attachment as normal attachment. */
+"Add it as attachment" = "Add it as attachment";
