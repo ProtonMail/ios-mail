@@ -23,10 +23,10 @@ final class CSSMagicTest: XCTestCase {
 
     func testCanSupportDarkStyle() {
         let document = CSSMagic.parse(htmlString: "")
-        var level = CSSMagic.darkStyleSupportLevel(document: document, darkModeStatus: .followSystem)
+        var level = CSSMagic.darkStyleSupportLevel(document: document, sender: "", darkModeStatus: .followSystem)
         XCTAssertEqual(level, DarkStyleSupportLevel.protonSupport)
 
-        level = CSSMagic.darkStyleSupportLevel(document: document, darkModeStatus: .forceOff)
+        level = CSSMagic.darkStyleSupportLevel(document: document, sender: "", darkModeStatus: .forceOff)
         XCTAssertEqual(level, DarkStyleSupportLevel.notSupport)
 
         var htmls = [
@@ -36,7 +36,7 @@ final class CSSMagicTest: XCTestCase {
         ]
         for html in htmls {
             let document = CSSMagic.parse(htmlString: html)
-            let level = CSSMagic.darkStyleSupportLevel(document: document, darkModeStatus: .followSystem)
+            let level = CSSMagic.darkStyleSupportLevel(document: document, sender: "", darkModeStatus: .followSystem)
             XCTAssertEqual(level, DarkStyleSupportLevel.nativeSupport)
         }
         htmls = [
@@ -46,7 +46,16 @@ final class CSSMagicTest: XCTestCase {
         ]
         for html in htmls {
             let document = CSSMagic.parse(htmlString: html)
-            let level = CSSMagic.darkStyleSupportLevel(document: document, darkModeStatus: .followSystem)
+            let level = CSSMagic.darkStyleSupportLevel(document: document, sender: "", darkModeStatus: .followSystem)
+            XCTAssertEqual(level, DarkStyleSupportLevel.protonSupport)
+        }
+
+        htmls = [
+            #"<html><head> <meta name="supported-color-schemes" content="[light? || dark? || <ident>?]* || only?"></head><body></body></html>"#
+        ]
+        for html in htmls {
+            let document = CSSMagic.parse(htmlString: html)
+            let level = CSSMagic.darkStyleSupportLevel(document: document, sender: "test@pm.me", darkModeStatus: .followSystem)
             XCTAssertEqual(level, DarkStyleSupportLevel.protonSupport)
         }
     }
@@ -664,6 +673,17 @@ extension CSSMagicTest {
         XCTAssertEqual(nodes.count, 1)
         anchor = CSSMagic.getCSSAnchor(of: nodes[0])
         XCTAssertEqual(anchor, "#section")
+
+        html = """
+        <html> <head></head> <body> <div id="email header" target="_blank" bgcolor="red" class="a b" env="test" style="font-family: &quot;Google Sans&quot;, Arial, sans-serif" ></div></body></html>
+        """
+        document = CSSMagic.parse(htmlString: html)
+        XCTAssertNotNil(document)
+        nodes = CSSMagic.getColorNodes(from: document!)
+        XCTAssertEqual(nodes.count, 1)
+        anchor = CSSMagic.getCSSAnchor(of: nodes[0])
+        XCTAssertEqual(anchor, "div[id='email header']")
+
 
         html = """
         <html> <head></head> <body> <div style="color: red;font-family: &quot;Google Sans&quot;, Arial, sans-serif" ></div><div>not me</div></body></html>

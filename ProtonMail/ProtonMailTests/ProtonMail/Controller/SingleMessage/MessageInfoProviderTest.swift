@@ -367,7 +367,8 @@ final class MessageInfoProviderTest: XCTestCase {
             publicKey: user.userInfo.addressKeys.toArmoredPrivateKeys[0],
             cleartext: "Test"
         ).value
-        let message = MessageEntity.make(body: body, labels: [.make(labelID: Message.Location.sent.labelID)], isDetailDownloaded: false)
+        let rawSender = "{\"BimiSelector\":null,\"Name\":\"PM tester\",\"DisplaySenderImage\":1,\"Address\":\"tester@pm.test\",\"IsProton\":0,\"IsSimpleLogin\":0}"
+        let message = MessageEntity.make(rawSender: rawSender, body: body, labels: [.make(labelID: Message.Location.sent.labelID)], isDetailDownloaded: false)
 
         sut.update(message: message)
 

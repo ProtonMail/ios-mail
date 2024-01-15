@@ -582,10 +582,11 @@ extension MessageInfoProvider {
     }
 
     private func updateBodyParts(with newBody: String) {
-        guard newBody != bodyParts?.originalBody else {
+        guard newBody != bodyParts?.originalBody,
+              let sender = try? message.parseSender() else {
             return
         }
-        bodyParts = BodyParts(originalBody: newBody)
+        bodyParts = BodyParts(originalBody: newBody, sender: sender.address)
     }
 
     private func updateWebContents() {

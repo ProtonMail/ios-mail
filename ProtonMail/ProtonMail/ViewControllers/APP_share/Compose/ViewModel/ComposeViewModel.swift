@@ -318,7 +318,8 @@ class ComposeViewModel: NSObject {
         var supplementCSS: String?
         let document = CSSMagic.parse(htmlString: html)
         if CSSMagic.darkStyleSupportLevel(
-            document: document,
+            document: document, 
+            sender: "",
             darkModeStatus: dependencies.userDefaults[.darkModeStatus]
         ) == .protonSupport {
             supplementCSS = CSSMagic.generateCSSForDarkMode(document: document)
