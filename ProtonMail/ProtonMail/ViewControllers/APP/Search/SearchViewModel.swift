@@ -623,13 +623,6 @@ extension SearchViewModel {
         return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
     }
 
-    private func isPreviewable(_ mailboxItem: MailboxItem) -> Bool {
-        guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID) else {
-            return false
-        }
-        return mailboxItem.isPreviewable
-    }
-
     private func attachmentsPreviews(for mailboxItem: MailboxItem) -> [AttachmentPreviewViewModel] {
         guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID) else {
             return []

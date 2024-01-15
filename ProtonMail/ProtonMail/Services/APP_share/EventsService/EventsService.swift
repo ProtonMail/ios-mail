@@ -61,7 +61,6 @@ enum EventError: Error {
 
 /// This is the protocol being worked on during the refactor. It will end up being the only one for EventsService.
 protocol EventsServiceProtocol: AnyObject {
-    func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?)
     func processEvents(messageCounts: [[String: Any]]?)
     func processEvents(conversationCounts: [[String: Any]]?)
 }
@@ -305,18 +304,6 @@ extension EventsService {
             notificationMessageID: nil,
             completion: nil
         )
-    }
-
-    func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?) {
-        guard let userManager else {
-            completion?(EventLatestIDResponse())
-            return
-        }
-
-        let request = EventLatestIDRequest()
-        userManager.apiService.perform(request: request, response: EventLatestIDResponse()) { _, response in
-            completion?(response)
-        }
     }
 }
 

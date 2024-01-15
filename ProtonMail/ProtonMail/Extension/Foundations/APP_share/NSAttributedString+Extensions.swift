@@ -25,11 +25,6 @@ import UIKit
 import ProtonCoreUIFoundations
 
 extension NSAttributedString {
-
-    static var empty: NSAttributedString {
-        .init(string: "")
-    }
-
     /**
      - parameters:
      - text: original string

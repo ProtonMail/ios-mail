@@ -67,11 +67,6 @@ class MockAppTelemetry: AppTelemetry {
 }
 
 class MockAutoDeleteSpamAndTrashDaysProvider: AutoDeleteSpamAndTrashDaysProvider {
-    @PropertyStub(\MockAutoDeleteSpamAndTrashDaysProvider.isAutoDeleteImplicitlyDisabled, initialGet: Bool()) var isAutoDeleteImplicitlyDisabledStub
-    var isAutoDeleteImplicitlyDisabled: Bool {
-        isAutoDeleteImplicitlyDisabledStub()
-    }
-
     @PropertyStub(\MockAutoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabled, initialGet: Bool()) var isAutoDeleteEnabledStub
     var isAutoDeleteEnabled: Bool {
         get {
@@ -1235,20 +1230,7 @@ class MockURLOpener: URLOpener {
 
 }
 
-class MockURLSessionDataTaskProtocol: URLSessionDataTaskProtocol {
-    @FuncStub(MockURLSessionDataTaskProtocol.resume) var resumeStub
-    func resume() {
-        resumeStub()
-    }
-
-}
-
 class MockURLSessionProtocol: URLSessionProtocol {
-    @FuncStub(MockURLSessionProtocol.dataTask, initialReturn: .crash) var dataTaskStub
-    func dataTask(withRequest: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol {
-        dataTaskStub(withRequest, completionHandler)
-    }
-
     @ThrowingFuncStub(MockURLSessionProtocol.data, initialReturn: .crash) var dataStub
     func data(for request: URLRequest) throws -> (Data, URLResponse) {
         try dataStub(request)

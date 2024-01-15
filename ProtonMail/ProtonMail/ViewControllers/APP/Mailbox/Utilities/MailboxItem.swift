@@ -97,11 +97,6 @@ extension MailboxItem {
         }
     }
 
-    var isPreviewable: Bool {
-        attachmentsMetadata
-            .contains(where: { $0.disposition == .attachment })
-    }
-
     var previewableAttachments: [AttachmentsMetadata] {
         attachmentsMetadata
             .filter {

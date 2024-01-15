@@ -49,6 +49,3 @@ struct UndoActionRequest: Request {
         return body
     }
 }
-
-struct UndoActionResponse: APIDecodableResponse {
-}
