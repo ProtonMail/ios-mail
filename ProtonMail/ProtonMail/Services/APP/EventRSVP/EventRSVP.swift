@@ -66,9 +66,12 @@ struct LocalEventRSVP: EventRSVP {
 
         let relevantEvents = apiEvent.sharedEvents + apiEvent.attendeesEvents
         let decryptedEvents = try decryptIfNeeded(events: relevantEvents, using: sessionKey)
-        let combinedICS = String(decryptedEvents.flatMap { $0 })
 
         // temporary until we have a complete ICS parser
+
+        let unencryptedCalendarEventsData = apiEvent.calendarEvents.filter { !$0.type.contains(.encrypted) }.map(\.data)
+        let icsComponents: [String] = decryptedEvents + unencryptedCalendarEventsData
+        let combinedICS = String(icsComponents.flatMap { $0 })
 
         let summary = combinedICS.preg_match(resultInGroup: 1, #"SUMMARY:([^\n]+)"#) ?? "missing summary"
 
@@ -86,6 +89,14 @@ struct LocalEventRSVP: EventRSVP {
             .init(email: "participant.\($0)@proton.me", isOrganizer: false, status: .attending)
         }
 
+        let status: EventDetails.EventStatus?
+
+        if let rawStatus = combinedICS.preg_match(resultInGroup: 1, #"STATUS:([^\r\n]+)"#) {
+            status = .init(rawValue: rawStatus.lowercased())
+        } else {
+            status = nil
+        }
+
         return .init(
             title: summary,
             startDate: Date(timeIntervalSince1970: apiEvent.startTime),
@@ -98,6 +109,7 @@ struct LocalEventRSVP: EventRSVP {
                 name: "Zoom call"
             ),
             participants: participants,
+            status: status,
             calendarAppDeepLink: .ProtonCalendar.showEvent(eventUID: basicEventInfo.eventUID)
         )
     }

@@ -1305,6 +1305,8 @@ enum L11n {
         static let organizer = NSLocalizedString("Organizer", comment: "As in: event organizer")
         static let participantCount = NSLocalizedString("%u participants", comment: "Title of the button to expand participant list")
         static let showLess = NSLocalizedString("Show less", comment: "Button to hide some items in the list to conserve screen estate")
+        static let eventAlreadyEnded = NSLocalizedString("This event already ended", comment: "Text shown when opening an invitation for a past event")
+        static let eventCancelled = NSLocalizedString("This event has been cancelled", comment: "Text shown when opening an invitation for a cancelled event")
     }
 
     struct OfficialBadge {
