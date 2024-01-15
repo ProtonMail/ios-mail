@@ -108,8 +108,6 @@ final class MailboxViewControllerTests: XCTestCase {
             completion?(.success(()))
         }
         fakeCoordinator = .init()
-        LocaleEnvironment.locale = { .enUS }
-        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
     }
 
     override func tearDownWithError() throws {
@@ -125,7 +123,6 @@ final class MailboxViewControllerTests: XCTestCase {
         saveToolbarActionUseCaseMock = nil
         apiServiceMock = nil
         testContainer = nil
-        LocaleEnvironment.restore()
     }
 
     func testTitle_whenChangeCustomLabelName_titleWillBeUpdatedAccordingly() {
@@ -362,8 +359,6 @@ final class MailboxViewControllerTests: XCTestCase {
     }
 
     func testMessagesOrdering_inSnoozeFolder_snoozeMessagesAreSortedCorrectly() throws {
-        LocaleEnvironment.locale = { .enUS }
-        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
         conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         makeSUT(labelID: Message.Location.snooze.labelID, labelType: .folder, isCustom: false, labelName: nil)
         try testContainer.contextProvider.write { context in

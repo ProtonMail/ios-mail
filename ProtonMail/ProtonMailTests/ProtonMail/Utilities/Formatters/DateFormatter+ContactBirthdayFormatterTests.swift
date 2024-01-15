@@ -9,14 +9,12 @@ class DateFormatter_ContactBirthdayFormatterTests: XCTestCase {
         super.setUp()
 
         sut = .contactBirthdayFormatter
-        LocaleEnvironment.locale = { .enUS }
     }
 
     override func tearDown() {
         super.tearDown()
 
         sut = nil
-        LocaleEnvironment.restore()
     }
 
     func testContactBirthdayFormatter() {
