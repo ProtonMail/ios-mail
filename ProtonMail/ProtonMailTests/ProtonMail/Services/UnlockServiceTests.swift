@@ -94,7 +94,7 @@ final class UnlockTests: XCTestCase {
     }
 
     func testStart_whenIsAppAccessResolverDisabled_itShouldSetupCoreData() async {
-        sut = .init(dependencies: testContainer)
+        sut = .init(dependencies: testContainer, isAppAccessResolverEnabled: false)
 
         _ = await sut.start()
         XCTAssertEqual(mockSetupCoreData.setupStub.callCounter, 1)

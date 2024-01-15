@@ -44,7 +44,10 @@ final class Unlock: UnlockService {
     }
 
     func start() async -> AppAccess {
-        SystemLogger.log(message: "Unlock start", category: .appLock)
+        SystemLogger.log(
+            message: "Unlock start, isAppAccessResolverEnabled: \(isAppAccessResolverEnabled)",
+            category: .appLock
+        )
 
         /// The main key might no be in memory yet if App Key is enabled
         if !dependencies.keyMaker.isMainKeyInMemory {
