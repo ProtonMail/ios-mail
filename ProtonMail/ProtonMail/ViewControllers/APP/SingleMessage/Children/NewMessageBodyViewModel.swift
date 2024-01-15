@@ -35,10 +35,12 @@ struct BodyParts {
     let originalBody: String
 
     let bodyHasHistory: Bool
+    let sender: String
     private var document: Document?
 
-    init(originalBody: String) {
+    init(originalBody: String, sender: String) {
         self.originalBody = originalBody
+        self.sender = sender
         var bodyHasHistory = false
 
         do {
@@ -64,7 +66,7 @@ struct BodyParts {
         guard let document = self.document else {
             return nil
         }
-        let level = CSSMagic.darkStyleSupportLevel(document: document, darkModeStatus: darkModeStatus)
+        let level = CSSMagic.darkStyleSupportLevel(document: document, sender: sender, darkModeStatus: darkModeStatus)
         let css: String?
         switch level {
         case .protonSupport:
