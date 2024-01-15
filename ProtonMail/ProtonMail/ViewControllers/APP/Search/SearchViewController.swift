@@ -707,6 +707,8 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
 
+        mailboxCell.resetCellContent()
+
         let message = self.viewModel.messages[indexPath.row]
         let viewModel = self.viewModel.getMessageCellViewModel(message: message)
         cellPresenter.present(
