@@ -887,8 +887,7 @@ extension MailboxViewModel {
         errorHandler: @escaping (Error) -> Void,
         completion: @escaping () -> Void
     ) {
-        guard diffableDataSource?.reloadSnapshotHasBeenCalled == true else { return }
-        let isCurrentLocationEmpty = diffableDataSource?.snapshot().numberOfItems == 0
+        let isCurrentLocationEmpty = (fetchedResultsController?.sections?.first?.numberOfObjects ?? 0) == 0
         let fetchMessagesAtTheEnd = isCurrentLocationEmpty || isFirstFetch
         isFirstFetch = false
         var queryLabel = labelID

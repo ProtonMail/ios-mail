@@ -32,6 +32,7 @@ var mutationObserver = new MutationObserver(function (events) {
             var element = event.addedNodes[k];
             if (element.nodeType === Node.ELEMENT_NODE && element.tagName != 'CARET') {
                 if (element.tagName == 'IMG') {
+                    element.setAttribute('draggable', 'false')
                     insertedImages = true;
                     continue;
                 }
@@ -124,7 +125,7 @@ html_editor.getRawHtml = function () {
     }
 
     var emptyHtml = html_editor.editor.innerHTML;
-    
+
     // Add embedded images back
     for (var cid in html_editor.cachedCIDs) {
         html_editor.updateEmbedImage(cid, html_editor.cachedCIDs[cid]);
@@ -162,11 +163,6 @@ html_editor.setPlaceholderText = function (text) {
 /// transmits caret position to the app
 html_editor.editor.addEventListener("input", function () { // input and not keydown/keyup/keypress cuz need to move caret when inserting text via autocomplete too
     html_editor.getCaretYPosition();
-});
-
-html_editor.editor.addEventListener("drop", function (event) {
-    var items = event.dataTransfer.items;
-    html_editor.absorbImage(event, items, event.target);
 });
 
 html_editor.editor.addEventListener("paste", function (event) {
@@ -251,6 +247,7 @@ html_editor.absorbImage = function (event, items, target) {
             var name = html_editor.createUUID() + "_" + file.name;
             var bits = "data:" + file.type + ";base64," + base64;
             var img = new Image();
+            img.setAttribute('draggable', 'false')
             target.appendChild(img);
             html_editor.setImageData(img, "cid:" + name, bits);
 
@@ -263,7 +260,7 @@ html_editor.absorbImage = function (event, items, target) {
 html_editor.handlePastedData = function (event) {
     // Safari doesn't support regular expression lookahead
     // To remove style has prefix `font-` except `font-style` and `font-weight`
-    // Use this workaround 
+    // Use this workaround
     const item = event.clipboardData
         .getData('text/html')
         .replace(/<meta (.*?)>/g, '')
@@ -275,19 +272,53 @@ html_editor.handlePastedData = function (event) {
         .replace(/thgiew-tnof/g, 'font-weight')
     if (item == undefined || item.length === 0) { return }
     event.preventDefault();
+    
+    const processedData = uploadImageIfPastedDataHasImage(item)
 
     let selection = window.getSelection()
     if (selection.rangeCount === 0) { return }
     let range = selection.getRangeAt(0);
     range.deleteContents();
     let div = document.createElement('div');
-    div.innerHTML = item;
+    div.innerHTML = processedData;
     let fragment = document.createDocumentFragment();
     let child;
     while ((child = div.firstChild)) {
         fragment.appendChild(child);
     }
     range.insertNode(fragment);
+}
+
+function uploadImageIfPastedDataHasImage(pastedDataText) {
+    const parsedDOM = new DOMParser().parseFromString(pastedDataText, "text/html");
+    const imageElements = parsedDOM.querySelectorAll('img')
+    for (var i = 0; i < imageElements.length; i++) {
+        const element = imageElements[i]
+
+        // bits = 'data:image.....'
+        const bits = element.src
+        const base64 = bits.replace(/data:image\/[a-z]+;base64,/, '').trim();
+        const fileType = getFileTypeFromBase64String(bits)
+        const cid = html_editor.createUUID()
+        const protonCID = `proton-cid:${cid}`
+        const name = `${cid}_.${fileType}`
+
+        element.removeAttribute('style')
+        element.setAttribute('draggable', 'false')
+        element.setAttribute('src-original-pm-cid', protonCID)
+        html_editor.cachedCIDs[protonCID] = bits;
+        window.webkit.messageHandlers.addImage.postMessage({ "messageHandler": "addImage", "cid": cid, "data": base64 });
+    }
+    return parsedDOM.body.innerHTML
+}
+
+function getFileTypeFromBase64String(base64) {
+    const match = base64.match(/data:.*\/(.*);/)
+    if (match.length == 2) {
+        return match[1]
+    } else {
+        return ''
+    }
 }
 
 /// breaks the block quote into two if possible
@@ -350,13 +381,29 @@ html_editor.insertEmbedImage = function (cid, base64) {
         locationToInsertTheImage = html_editor.editor.querySelector('div');
     }
 
+    let upperBr = document.createElement('br');
+    let lowerBr = document.createElement('br');
     let embed = document.createElement('img');
     embed.src = base64;
+    embed.setAttribute('draggable', 'false')
     embed.setAttribute('src-original-pm-cid', `${cid}`);
     html_editor.cachedCIDs[cid] = base64;
 
-    let parent = locationToInsertTheImage.parentNode;
-    parent.insertBefore(embed, locationToInsertTheImage);
+    if (locationToInsertTheImage === null) {
+        // html_editor.editor doesn't have any div
+        // happens when user keep clicking delete button
+        html_editor.editor.appendChild(upperBr);
+        html_editor.editor.appendChild(embed);
+        let div = document.createElement('div');
+        div.innerHTML = "<br>";
+        html_editor.editor.appendChild(div);
+    } else {
+        let parent = locationToInsertTheImage.parentNode;
+
+        parent.insertBefore(lowerBr, locationToInsertTheImage);
+        parent.insertBefore(embed, locationToInsertTheImage);
+        parent.insertBefore(upperBr, locationToInsertTheImage);
+    }
 }
 
 // for calls from JS
@@ -423,10 +470,21 @@ html_editor.getBase64FromImageUrl = function (oldImage, callback) {
 
 html_editor.removeEmbedImage = function (cid) {
     var found = document.querySelectorAll('img[src-original-pm-cid="' + cid + '"]');
-    for (var i = 0; i < found.length; i++) {
-        found[i].remove();
+    if (found.length != 0) {
+        for (var i = 0; i < found.length; i++) {
+            found[i].remove();
+        }
+    } else {
+        let prefixToRemove = 'proton-'
+        var cidWithoutPrefix = cid;
+        if (cid.startsWith(prefixToRemove)) {
+            cidWithoutPrefix = cid.substring(prefixToRemove.length);
+        }
+        var founded = document.querySelectorAll('img[src-original-pm-cid="' + cidWithoutPrefix + '"]');
+        for (var i = 0; i < founded.length; i++) {
+            founded[i].remove();
+        }
     }
-
     let contentsHeight = html_editor.getContentsHeight();
     window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
 }

@@ -110,17 +110,56 @@ extension FileImporter {
                 handler()
                 return
             }
-            if let image = UIImage(data: data) {
-                self.imageAttachmentProvider.process(original: image).ensure {
-                    handler()
-                }.catch { error in
-                    errorHandler(error.localizedDescription)
-                    handler()
-                    return
-                }
-            } else {
+            guard let image = UIImage(data: data) else {
+                // Loaded data is not UIImage, try screenshot handler
+                handleScreenshotItem(itemProvider, errorHandler: errorHandler, handler: handler)
+                return
+            }
+            self.imageAttachmentProvider.process(original: image).ensure {
+                handler()
+            }.catch { error in
+                errorHandler(error.localizedDescription)
+                handler()
+            }
+        }
+    }
+
+    private func handleScreenshotItem(
+        _ itemProvider: NSItemProvider,
+        errorHandler: @escaping (String) -> Void,
+        handler: @escaping () -> Void
+    ) {
+        let registeredTypeIdentifiers = itemProvider.registeredTypeIdentifiers
+        guard let typeIdentifier = registeredTypeIdentifiers.first else {
+            errorHandler(LocalString._unsupported_file)
+            handler()
+            return
+        }
+        itemProvider.loadItem(forTypeIdentifier: typeIdentifier) { item, error in
+            guard let item = item, error == nil else {
+                errorHandler(error?.localizedDescription ?? "")
+                handler()
+                return
+            }
+            var imageAbleToImport: UIImage?
+            if let screenShotImage = item as? UIImage,
+               let imageData = screenShotImage.jpegData(compressionQuality: 0.8), // Handle the screenshot here
+               let jpegImage = UIImage(data: imageData) {
+                imageAbleToImport = jpegImage
+            } else if let url = item as? URL, let imageData = try? Data(contentsOf: url), let image = UIImage(data: imageData) {
+                imageAbleToImport = image
+            }
+            guard let imageAbleToImport = imageAbleToImport else {
                 errorHandler(LocalString._unsupported_file)
                 handler()
+                return
+            }
+            self.imageAttachmentProvider.process(original: imageAbleToImport).ensure {
+                handler()
+            }.catch { error in
+                errorHandler(error.localizedDescription)
+                handler()
+                return
             }
         }
     }

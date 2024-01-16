@@ -226,7 +226,7 @@ extension UndoActionManager {
     }
 
     private func message(id messageID: MessageID) -> MessageEntity? {
-        return dependencies.contextProvider.read { context in
+        return try? dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
             if let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) {
                 return MessageEntity(msg)
             } else {
@@ -251,7 +251,7 @@ extension UndoActionHandlerBase {
                               style: PMBannerNewStyle.info,
                               dismissDuration: 1,
                               bannerHandler: PMBanner.dismiss)
-        banner.show(at: .bottom, on: self)
+        show(banner: banner)
     }
 
     func showUndoAction(undoTokens: [String], title: String) {
@@ -269,7 +269,7 @@ extension UndoActionHandlerBase {
                 }
                 banner.dismiss(animated: false)
             }
-            banner.show(at: .bottom, on: self)
+            self.show(banner: banner)
             // Dismiss other banner after the undo banner is shown
             delay(0.25) { [weak self] in
                 self?.view.subviews
@@ -278,5 +278,19 @@ extension UndoActionHandlerBase {
                     .forEach { $0.dismiss(animated: false) }
             }
         }
+    }
+
+    private func show(banner: PMBanner) {
+        #if APP_EXTENSION
+            banner.show(at: .bottom, on: self)
+        #else
+            if let mailboxVC = self as? MailboxViewController, mailboxVC.viewModel.listEditing {
+                // TODO: use PMBanner.onTopOfTheBottomToolBar when we have it
+//                banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: self)
+                banner.show(at: .bottom, on: self)
+            } else {
+                banner.show(at: .bottom, on: self)
+            }
+        #endif
     }
 }

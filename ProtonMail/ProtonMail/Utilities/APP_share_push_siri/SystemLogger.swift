@@ -150,6 +150,7 @@ extension SystemLogger {
         case eventLoop = "EventLoop"
         case restoreUserData = "RestoreUserData"
         case unauthorizedSession = "UnauthorizedSession"
+        case notificationDebug = "NotificationDebug"
     }
 
     struct Caller {

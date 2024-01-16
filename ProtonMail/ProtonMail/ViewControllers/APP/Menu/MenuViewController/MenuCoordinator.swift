@@ -117,6 +117,10 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
 
     func follow(_ deepLink: DeepLink) {
         if dependencies.pushService.hasCachedNotificationOptions() {
+            SystemLogger.log(
+                message: "Menu handle cached notification options",
+                category: .notificationDebug
+            )
             dependencies.pushService.processCachedLaunchOptions()
             return
         }
@@ -130,6 +134,10 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
             return
         }
 
+        SystemLogger.log(
+            message: "Menu follow: go to \(label.location.labelID),  \(deepLink.debugDescription)",
+            category: .notificationDebug
+        )
         self.go(to: label, deepLink: deepLink)
     }
 
@@ -145,6 +153,10 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
             if currentLocation?.location == labelInfo.location,
                let deepLink = deepLink,
                mailboxCoordinator?.viewModel.user.userID == viewModel.currentUser?.userID {
+                SystemLogger.log(
+                    message: "Menu go: mailbox coordinator start to follow.\n\(deepLink.debugDescription)",
+                    category: .notificationDebug
+                )
                 mailboxCoordinator?.follow(deepLink)
             } else {
                 self.navigateToMailBox(labelInfo: labelInfo, deepLink: deepLink)
@@ -204,6 +216,10 @@ extension MenuCoordinator {
             return node
         }
 
+        guard dependencies.usersManager.firstUser?.userID != user.userID else {
+            return nil
+        }
+
         switch dest {
         case .switchUser:
             viewModel.activateUser(id: user.userID)
@@ -219,7 +235,6 @@ extension MenuCoordinator {
         default:
             break
         }
-        self.viewModel.userDataInit()
         return nil
     }
 

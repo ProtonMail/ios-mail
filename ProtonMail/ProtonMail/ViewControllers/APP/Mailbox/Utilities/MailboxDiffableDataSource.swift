@@ -27,7 +27,6 @@ final class MailboxDiffableDataSource {
     private let diffableDataSource: UITableViewDiffableDataSource<Int, MailboxRow>
     private var dataSnapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>?
     private let queue = DispatchQueue(label: "ch.protonmail.inbox.dataSource")
-    private(set) var reloadSnapshotHasBeenCalled = false
 
     init(
         tableView: UITableView,
@@ -52,7 +51,6 @@ final class MailboxDiffableDataSource {
         snapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>?,
         completion: (() -> Void)?
     ) {
-        reloadSnapshotHasBeenCalled = true
         var snapshotToLoad: NSDiffableDataSourceSnapshot<Int, MailboxRow>?
         if let snapshot = snapshot {
             dataSnapshot = snapshot

@@ -68,15 +68,17 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
         for (label, markType) in currentOptionsStatus {
             if selectedLabelAsLabels
                 .contains(where: { $0.labelID == label.location.labelID}) {
-                group.enter()
                 // Add to message which does not have this label
                 let conversationsToApply = conversations.filter({ !$0.getLabelIDs().contains(label.location.labelID )})
+                if conversationsToApply.isEmpty { continue }
+                group.enter()
                 conversationProvider.label(conversationIDs: conversationsToApply.map(\.conversationID),
                                           as: label.location.labelID,
                                           completion: fetchEvents)
             } else if markType != .dash { // Ignore the option in dash
-                group.enter()
                 let conversationsToRemove = conversations.filter({ $0.getLabelIDs().contains(label.location.labelID )})
+                if conversationsToRemove.isEmpty { continue }
+                group.enter()
                 conversationProvider.unlabel(conversationIDs: conversationsToRemove.map(\.conversationID),
                                             as: label.location.labelID,
                                             completion: fetchEvents)

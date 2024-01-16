@@ -404,6 +404,10 @@ final class WindowsCoordinator {
             queue: .main
         ) { [weak self] notification in
             self?.arePrimaryUserSettingsFetched = true
+            SystemLogger.log(
+                message: "Notification observer: start handle view switching",
+                category: .notificationDebug
+            )
             // trigger the menu to follow the deeplink or show inbox
             self?.handleSwitchViewDeepLinkIfNeeded(notification.object as? DeepLink)
         }
@@ -537,6 +541,10 @@ extension WindowsCoordinator {
         guard arePrimaryUserSettingsFetched && appWindow != nil else {
             return
         }
+        SystemLogger.log(
+            message: "HandleSwitchViewDeepLinkIfNeeded: \(deepLink.debugDescription ?? "no deep link")",
+            category: .notificationDebug
+        )
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in
             if let _ = controller as? MenuViewController,
                let coordinator = self.menuCoordinator {

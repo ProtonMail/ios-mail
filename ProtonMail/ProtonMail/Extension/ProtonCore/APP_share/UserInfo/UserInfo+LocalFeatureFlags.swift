@@ -49,6 +49,6 @@ extension UserInfo {
     }
 
     static var shareImagesAsInlineByDefault: Bool {
-        UIApplication.isDebugOrEnterprise
+        return true
     }
 }

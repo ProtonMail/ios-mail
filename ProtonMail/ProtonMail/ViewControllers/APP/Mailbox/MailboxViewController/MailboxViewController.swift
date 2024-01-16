@@ -1346,8 +1346,12 @@ extension MailboxViewController {
     private func updateTopBarItemDisplay() {
         guard UserInfo.enableSelectAll else { return }
         updateTimeLabel.isHidden = viewModel.listEditing
-        unreadFilterButton.isHidden = viewModel.listEditing
         selectAllButton.isHidden = !viewModel.listEditing
+        if viewModel.listEditing {
+            unreadFilterButton.isHidden = true
+        } else {
+            unreadFilterButton.isHidden = viewModel.unreadCount == 0
+        }
     }
 
     @objc
@@ -1503,7 +1507,8 @@ extension MailboxViewController {
     private func processSwipeActions(_ action: MessageSwipeAction, item: MailboxItem) -> Bool {
         /// UIAccessibility
         UIAccessibility.post(notification: UIAccessibility.Notification.announcement, argument: action.description)
-        viewModel.select(id: item.itemID)
+        viewModel.removeAllSelectedIDs()
+       _ = viewModel.select(id: item.itemID)
         switch action {
         case .none:
             return false
@@ -2834,6 +2839,7 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
     }
 
     func selectionDidChange() {
+        guard viewModel.listEditing else { return }
         updateSelectAllButton()
         updateCellBasedOnSelectionStatus()
 

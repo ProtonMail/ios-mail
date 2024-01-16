@@ -138,6 +138,13 @@ class NewMessageBodyViewController: UIViewController {
             }
         }
 
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(doEnterForeground),
+            name: UIWindowScene.willEnterForegroundNotification,
+            object: nil
+        )
+
         setupContentSizeObservation()
     }
 
@@ -326,6 +333,31 @@ class NewMessageBodyViewController: UIViewController {
         }
     }
 
+    @objc
+    private func doEnterForeground() {
+        let script = """
+        const bodyHeight = document.body.scrollHeight;
+        const radio = document
+        .querySelector('meta[name="viewport"]')
+        .attributes['content']
+        .value
+        .match(/initial-scale=(.*?),/)[1];
+        
+        bodyHeight * radio
+        """
+        webView?.evaluateJavaScript(script, completionHandler: { [weak self] result, error in
+            // JavaScript seems like won't execute in the background
+            // If message is opened in the background, webView height could not be updated to the correct value
+            // Double check height after back to foreground 
+            guard
+                error == nil,
+                let height = result as? Double,
+                let constraint = self?.heightConstraint?.constant,
+                height > constraint
+            else { return }
+            self?.updateViewHeight(to: height)
+        })
+    }
 }
 
 extension NewMessageBodyViewController: NewMessageBodyViewModelDelegate {
@@ -642,15 +674,7 @@ extension NewMessageBodyViewController: HTTPRequestSecureLoaderDelegate {
             label.leadingAnchor.constraint(equalTo: webView.leadingAnchor, constant: 16),
             label.trailingAnchor.constraint(equalTo: webView.trailingAnchor, constant: -16)
         ].activate()
-        if let coordinator = (UIApplication.shared.delegate as? AppDelegate)?.coordinator,
-           let currentWindow = coordinator.currentWindow {
-
-            let color: UIColor = ColorProvider.BackgroundSecondary
-            let resolvedColor = color.resolvedColor(with: currentWindow.traitCollection)
-            label.showAnimatedGradientSkeleton(usingGradient: SkeletonGradient(baseColor: resolvedColor))
-        } else {
-            label.showAnimatedGradientSkeleton()
-        }
+        label.showAnimatedGradientSkeleton()
     }
 
     func hideSkeletonView() {

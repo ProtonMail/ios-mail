@@ -437,6 +437,14 @@ extension UsersManager {
     func clean() -> Promise<Void> {
         LocalNotificationService.cleanUpAll()
 
+        // For logout from lock screen
+        // Have to call auth delete to revoke push notification token 
+        for user in users {
+            let authDelete = AuthDeleteRequest()
+            user.apiService.perform(request: authDelete) { _, _ in }
+            user.eventsService.stop()
+        }
+
         return Promise { seal in
             Task {
                 SystemLogger.log(message: "UsersManager clean")

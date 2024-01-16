@@ -484,8 +484,20 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     }
 
     func fetchNotificationMessageDetail(_ messageID: MessageID, completion: @escaping (Swift.Result<MessageEntity, Error>) -> Void) {
+        SystemLogger.log(
+            message: "fetchNotificationMessageDetail queue enqueue",
+            category: .notificationDebug
+        )
         self.queueManager?.queue {
+            SystemLogger.log(
+                message: "fetchNotificationMessageDetail queue start",
+                category: .notificationDebug
+            )
             let completionWrapper: (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void = { task, result in
+                SystemLogger.log(
+                    message: "fetchNotificationMessageDetail request end",
+                    category: .notificationDebug
+                )
                 self.contextProvider.performOnRootSavingContext { context in
                     switch result {
                     case .success(let response):
@@ -551,6 +563,10 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     message.isDetailDownloaded
                 else {
                     let request = MessageDetailRequest(messageID: messageID)
+                    SystemLogger.log(
+                        message: "fetchNotificationMessageDetail request start",
+                        category: .notificationDebug
+                    )
                     self.apiService.perform(request: request, jsonDictionaryCompletion: completionWrapper)
                     return
                 }

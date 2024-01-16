@@ -25,7 +25,7 @@ enum EncryptionPreferencesHelper {
                                          userDefaultSign: Bool,
                                          userAddresses: [Address],
                                          contact: PreContact?) -> EncryptionPreferences {
-        let selfAddress = userAddresses.first(where: { $0.email == email && $0.receive == .active })
+        let selfAddress = userAddresses.first(where: { $0.email == email && $0.send == .active })
 
         var selfSendConfig: SelfSendConfig?
         let apiKeysConfig: APIKeysConfig
@@ -116,10 +116,10 @@ enum EncryptionPreferencesHelper {
     static func generateEncryptionPrefFromOwnAddress(selfSendConfig: SelfSendConfig,
                                                      publicKeyModel: ContactPublicKeyModel) -> EncryptionPreferences {
         let hasApiKeys = !selfSendConfig.address.keys.isEmpty
-        let canAddressReceive = selfSendConfig.address.receive == .active
+        let canAddressSend = selfSendConfig.address.send == .active
         var error: EncryptionPreferencesError?
 
-        if !canAddressReceive {
+        if !canAddressSend {
             error = .internalUserDisable
         } else if !hasApiKeys {
             error = .internalUserNoApiKey
