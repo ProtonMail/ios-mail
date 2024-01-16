@@ -1263,11 +1263,10 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     private func showSnoozeSpotlight() {
-        // TODO: snooze:action MAILIOS-3995 Text are not defined yet.
         let spotlightView = SnoozeSpotlightView(
-            buttonTitle: "Got it",
-            message: "You can now set reminders for crucial emails.",
-            title: L11n.Snooze.title
+            buttonTitle: LocalString._general_gotIt_button,
+            message: L11n.Snooze.spotlightDesc,
+            title: L11n.Snooze.spotlightTitle
         ) { [weak self] hostingVC in
             hostingVC?.dismiss(animated: false)
             self?.viewModel.hasSeenSnoozeSpotlight()
@@ -1275,11 +1274,12 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
         spotlightView.config.hostingController = hosting
         navigationController?.present(hosting, animated: false)
+        viewModel.hasSeenSnoozeSpotlight()
     }
 
     private func showMessageNavigationSpotlight() {
         let spotlightView = MessageNavigationSpotlightView(
-            buttonTitle: L11n.MessageNavigation.spotlightButtonTitle,
+            buttonTitle: LocalString._general_gotIt_button,
             message: L11n.MessageNavigation.spotlightMessage,
             title: L11n.MessageNavigation.spotlightTitle
         ) { hostingVC in

@@ -121,18 +121,20 @@ public struct SheetLikeSpotlightView: View {
                         .position(CGPoint(x: 28, y: 28))
                 })
             }
-            .frame(height: 169)
+            .frame(maxHeight: 169)
             .padding(.bottom, 24)
             Text(title)
                 .padding(.bottom, 8)
+                .padding(.horizontal, 8)
                 .foregroundColor(ColorProvider.TextNorm)
                 .font(Font(UIFont.adjustedFont(forTextStyle: .title2, weight: .bold)))
             Text(message)
                 .padding(.bottom, 16)
-                .padding(.leading, 16)
-                .padding(.trailing, 16)
+                .padding(.horizontal, 8)
                 .foregroundColor(ColorProvider.TextWeak)
                 .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
+                .minimumScaleFactor(0.8)
+                .multilineTextAlignment(.center)
             Button(action: {
                 dismissView()
             }, label: {
@@ -155,4 +157,14 @@ public struct SheetLikeSpotlightView: View {
             self.closeAction?(config.hostingController)
         }
     }
+}
+
+#Preview {
+    SheetLikeSpotlightView(
+        config: HostingProvider(),
+        buttonTitle: "Got it",
+        message: "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.",
+        spotlightImage: ImageAsset.snoozeSpotlight,
+        title: "Snooze it for later"
+    )
 }

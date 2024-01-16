@@ -43,7 +43,7 @@ extension MailboxViewModel: ToolbarCustomizationActionHandler {
 
         var actions = toolbarActionProvider.listViewToolbarActions
             .addMoreActionToTheLastLocation()
-        if !isSupportSnooze {
+        if !isSupportSnooze || locationViewMode == .singleMessage {
             actions.removeAll(where: { $0 == .snooze} )
         }
         return replaceActionsLocally(actions: actions,

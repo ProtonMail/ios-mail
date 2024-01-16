@@ -239,7 +239,8 @@ extension SearchViewModel {
         return .init(
             labelId: labelID.rawValue,
             title: .actionSheetTitle(selectedCount: selectedIDs.count, viewMode: .singleMessage),
-            locationViewMode: .singleMessage
+            locationViewMode: .singleMessage,
+            isSnoozeEnabled: user.isSnoozeEnabled
         )
     }
 

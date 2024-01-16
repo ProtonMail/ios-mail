@@ -878,7 +878,7 @@ extension ConversationViewController {
             Message.Location.snooze.labelID,
             Message.Location.inbox.labelID
         ]
-        let isSupportSnooze = foldersSupportSnooze.contains(viewModel.labelId)
+        let isSupportSnooze = foldersSupportSnooze.contains(viewModel.labelId) && viewModel.user.isSnoozeEnabled
 
         let actionSheetViewModel = ConversationActionSheetViewModel(
             title: viewModel.conversation.subject,
@@ -1536,9 +1536,7 @@ extension ConversationViewController: SnoozeSupport {
         if viewModel.isMessageSwipeNavigationEnabled && viewModel.shouldMoveToNextMessageAfterMove {
             // PageVC
             guard let viewController = parent else { return }
-            // TODO: snooze:action update position to onTopOfTheBottomToolBar when have MAILIOS-3899
-            // doesn't need to update else case, there is no toolbar in mailbox
-            banner.show(at: .bottom, on: viewController)
+            banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: viewController)
             viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
         } else {
             // MailboxVC

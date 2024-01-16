@@ -26,7 +26,7 @@ struct MailListActionSheetViewModel {
     let title: String
     private(set) var items: [MailListActionSheetItemViewModel] = []
 
-    init(labelId: String, title: String, locationViewMode: ViewMode) {
+    init(labelId: String, title: String, locationViewMode: ViewMode, isSnoozeEnabled: Bool) {
         self.title = title
 
         items += [
@@ -41,7 +41,8 @@ struct MailListActionSheetViewModel {
             Message.Location.snooze.labelID.rawValue
         ]
         if locationViewMode == .conversation,
-           foldersSupportSnooze.contains(labelId) {
+           foldersSupportSnooze.contains(labelId),
+           isSnoozeEnabled {
             items.append(.snooze())
         }
         items.append(.labelAsActionViewModel())

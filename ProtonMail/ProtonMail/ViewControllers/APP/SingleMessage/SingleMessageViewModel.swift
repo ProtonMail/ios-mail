@@ -310,6 +310,7 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
         let isScheduledSend = message.isScheduledSend
 
         var actions = toolbarActionProvider.messageToolbarActions.addMoreActionToTheLastLocation()
+        actions.removeAll(where: { $0 == .snooze })
 
         if isScheduledSend {
             let forbidActions: [MessageViewActionSheetAction] = [

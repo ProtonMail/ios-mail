@@ -779,12 +779,9 @@ extension MainQueueHandler {
             conversationIDs: conversationIDs.map { ConversationID($0) },
             snoozeTime: date.timeIntervalSince1970
         )
-        ConcurrencyUtils.runWithCompletion(
-            block: apiService.perform(request:onDataTaskCreated:callCompletionBlockUsing:),
-            argument: (request, { _ in }, .asyncMainExecutor)
-        ) { [weak self] result in
-            self?.user?.eventsService.fetchEvents(labelID: Message.Location.snooze.labelID)
+        apiService.perform(request: request) { [weak self] _, result in
             completion(result.error)
+            self?.user?.eventsService.fetchEvents(labelID: Message.Location.snooze.labelID)
         }
     }
 }
