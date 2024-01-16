@@ -1,9 +1,8 @@
-
 "Delete account" = "Eyða notandaaðgangi";
 
 "This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Þetta mun eyða reikningnum þínum og öllum gögnum hans varanlega. Þú getur ekki endurvirkjað þennan notandareikning.";
 
-"Account deleted.\nLogging out..." = "Account deleted.\nSigning out...";
+"Account deleted.\nLogging out..." = "Reikningi eytt.\nÚtskráning...";
 
 "Close" = "Loka";
 

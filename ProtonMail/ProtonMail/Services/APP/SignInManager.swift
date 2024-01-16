@@ -84,6 +84,14 @@ class SignInManager {
             userCachedStatus.markSpotlight(for: feature, asSeen: true, byUserWith: UserID(userInfo.userId))
         }
 
+        for feature in SpotlightableFeatureKey.allCases where feature.isFeatureShouldBeSeenByOnce {
+            if usersManager.users.contains(where: { user in
+                !userCachedStatus.shouldShowSpotlight(for: feature, toUserWith: user.userID)
+            }) {
+                userCachedStatus.markSpotlight(for: feature, asSeen: true, byUserWith: UserID(userInfo.userId))
+            }
+        }
+
         self.usersManager.add(auth: auth, user: userInfo, mailSettings: .init())
         self.usersManager.firstUser?.appRatingService.preconditionEventDidOccur(.userSignIn)
 
@@ -177,7 +185,18 @@ private extension SpotlightableFeatureKey {
         switch self {
         case .scheduledSend, .toolbarCustomization:
             return true
+        case .messageSwipeNavigation, .snooze:
+            return false
+        case .messageSwipeNavigationAnimation:
+            return false
+        }
+    }
+
+    var isFeatureShouldBeSeenByOnce: Bool {
+        switch self {
         case .messageSwipeNavigation:
+            return true
+        case .scheduledSend, .toolbarCustomization, .snooze, .messageSwipeNavigationAnimation:
             return false
         }
     }

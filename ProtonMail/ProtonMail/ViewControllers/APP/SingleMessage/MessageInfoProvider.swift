@@ -57,7 +57,8 @@ final class MessageInfoProvider {
         }
         didSet {
             let bodyHasChanged = message.body != oldValue.body
-            if bodyHasChanged || bodyParts == nil {
+            let isDetailDownloadedHasChanged = message.isDetailDownloaded != oldValue.isDetailDownloaded
+            if bodyHasChanged || bodyParts == nil || isDetailDownloadedHasChanged {
                 pgpChecker = MessageSenderPGPChecker(message: message, dependencies: dependencies)
                 prepareDisplayBody()
                 checkSenderPGP()
@@ -581,10 +582,11 @@ extension MessageInfoProvider {
     }
 
     private func updateBodyParts(with newBody: String) {
-        guard newBody != bodyParts?.originalBody else {
+        guard newBody != bodyParts?.originalBody,
+              let sender = try? message.parseSender() else {
             return
         }
-        bodyParts = BodyParts(originalBody: newBody)
+        bodyParts = BodyParts(originalBody: newBody, sender: sender.address)
     }
 
     private func updateWebContents() {
@@ -660,11 +662,10 @@ extension MessageInfoProvider {
                 params: .init(
                     attachmentID: inline.id,
                     attachmentKeyPacket: inline.keyPacket,
-                    purpose: .decryptAndEncodeAttachment,
                     userKeys: userKeys
                 )
             ) { [weak self] result in
-                guard let base64Attachment = try? result.get().encoded,
+                guard let base64Attachment = try? result.get().data.base64EncodedString(),
                       !base64Attachment.isEmpty else {
                     group.leave()
                     return

@@ -81,10 +81,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                              sign: Bool.random(),
                                              pgpScheme: .proton,
                                              mimeType: .mime,
-                                             publicKeys: nil,
+                                             publicKey: nil,
                                              isPublicKeyPinned: Bool.random(),
                                              hasApiKeys: Bool.random(),
-                                             hasPinnedKeys: Bool.random(),
                                              error: nil)
 
         sut.add(email: testEmail, sendPreferences: testPreference)
@@ -112,10 +111,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                               sign: true,
                                               pgpScheme: .pgpMIME,
                                               mimeType: .mime,
-                                              publicKeys: testPublicKey,
+                                              publicKey: testPublicKey,
                                               isPublicKeyPinned: true,
                                               hasApiKeys: false,
-                                              hasPinnedKeys: true,
                                               error: nil)
 
         sut.add(email: testEmail, sendPreferences: testPreferences)
@@ -129,10 +127,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                                  sign: true,
                                                  pgpScheme: .pgpMIME,
                                                  mimeType: .mime,
-                                                 publicKeys: testPublicKey,
+                                                 publicKey: testPublicKey,
                                                  isPublicKeyPinned: false,
                                                  hasApiKeys: false,
-                                                 hasPinnedKeys: false,
                                                  error: nil)
         sut.add(email: testEmail, sendPreferences: pgpMIMEPreferences)
 
@@ -146,10 +143,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                                    sign: false,
                                                    pgpScheme: .cleartextInline,
                                                    mimeType: .plainText,
-                                                   publicKeys: nil,
+                                                   publicKey: nil,
                                                    isPublicKeyPinned: false,
                                                    hasApiKeys: false,
-                                                   hasPinnedKeys: false,
                                                    error: nil)
         sut.add(email: testEmail, sendPreferences: plainTextPreferences)
 
@@ -227,10 +223,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                                  sign: true,
                                                  pgpScheme: .proton,
                                                  mimeType: .mime,
-                                                 publicKeys: testPublicKey,
+                                                 publicKey: testPublicKey,
                                                  isPublicKeyPinned: true,
                                                  hasApiKeys: false,
-                                                 hasPinnedKeys: true,
                                                  error: nil)
         sut.add(email: testEmail, sendPreferences: internalPreference)
         setupTestBody()
@@ -251,10 +246,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                                  sign: false,
                                                  pgpScheme: .proton,
                                                  mimeType: .plainText,
-                                                 publicKeys: nil,
+                                                 publicKey: nil,
                                                  isPublicKeyPinned: false,
                                                  hasApiKeys: false,
-                                                 hasPinnedKeys: false,
                                                  error: nil)
         sut.add(email: testEmail, sendPreferences: internalPreference)
         setupTestBody()
@@ -270,10 +264,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                            sign: false,
                                            pgpScheme: .encryptedToOutside,
                                            mimeType: .mime,
-                                           publicKeys: nil,
+                                           publicKey: nil,
                                            isPublicKeyPinned: false,
                                            hasApiKeys: false,
-                                           hasPinnedKeys: false,
                                            error: nil)
         sut.add(email: testEmail, sendPreferences: eoPreference)
         setupTestBody()
@@ -295,10 +288,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                               sign: false,
                                               pgpScheme: .cleartextInline,
                                               mimeType: .html,
-                                              publicKeys: nil,
+                                              publicKey: nil,
                                               isPublicKeyPinned: false,
                                               hasApiKeys: false,
-                                              hasPinnedKeys: false,
                                               error: nil)
         sut.add(email: "test@test.com", sendPreferences: clearPreference)
         setupTestBody()
@@ -317,10 +309,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                                   sign: false,
                                                   pgpScheme: .pgpInline,
                                                   mimeType: .html,
-                                                  publicKeys: testPublicKey,
+                                                  publicKey: testPublicKey,
                                                   isPublicKeyPinned: false,
                                                   hasApiKeys: false,
-                                                  hasPinnedKeys: false,
                                                   error: nil)
         sut.add(email: testEmail, sendPreferences: inlinePGPPreference)
         setupTestBody()
@@ -340,10 +331,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                                   sign: true,
                                                   pgpScheme: .pgpInline,
                                                   mimeType: .html,
-                                                  publicKeys: nil,
+                                                  publicKey: nil,
                                                   isPublicKeyPinned: false,
                                                   hasApiKeys: false,
-                                                  hasPinnedKeys: false,
                                                   error: nil)
         sut.add(email: testEmail, sendPreferences: inlinePGPPreference)
         setupTestBody()
@@ -362,10 +352,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
             sign: true,
             pgpScheme: .pgpInline,
             mimeType: .html,
-            publicKeys: CryptoGo.CryptoKey(fromArmored: OpenPGPDefines.publicKey),
+            publicKey: CryptoGo.CryptoKey(fromArmored: OpenPGPDefines.publicKey),
             isPublicKeyPinned: false,
             hasApiKeys: false,
-            hasPinnedKeys: false,
             error: nil
         )
         sut.add(email: testEmail, sendPreferences: sendPreference)
@@ -385,10 +374,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
             sign: true,
             pgpScheme: .pgpInline,
             mimeType: .html,
-            publicKeys: testPublicKey,
+            publicKey: testPublicKey,
             isPublicKeyPinned: false,
             hasApiKeys: false,
-            hasPinnedKeys: false,
             error: nil
         )
         sut.add(email: testEmail, sendPreferences: sendPreference)
@@ -408,10 +396,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
             sign: true,
             pgpScheme: .pgpMIME,
             mimeType: .mime,
-            publicKeys: testPublicKey,
+            publicKey: testPublicKey,
             isPublicKeyPinned: false,
             hasApiKeys: false,
-            hasPinnedKeys: false,
             error: nil
         )
         sut.add(email: testEmail, sendPreferences: clearMIMEPreference)

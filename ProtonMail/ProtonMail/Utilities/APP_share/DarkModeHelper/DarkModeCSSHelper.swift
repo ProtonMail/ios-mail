@@ -75,7 +75,7 @@ struct HSLA {
 }
 
 struct CSSMagic {
-    typealias CSSAttribute = (key: String, value: String)
+    typealias CSSAttribute = (key: String, value: String, spaceAfterColon: Bool)
 
     /// https://developer.mozilla.org/en-US/docs/Web/CSS/color_value
     private static let definedColors = [
@@ -250,7 +250,7 @@ struct CSSMagic {
         return false
     }
 
-    static func darkStyleSupportLevel(document: Document?, darkModeStatus: DarkModeStatus) -> DarkStyleSupportLevel {
+    static func darkStyleSupportLevel(document: Document?, sender: String, darkModeStatus: DarkModeStatus) -> DarkStyleSupportLevel {
         if darkModeStatus == .forceOff {
             return .notSupport
         }
@@ -258,7 +258,8 @@ struct CSSMagic {
         guard let document = document else {
             return .notSupport
         }
-        if containsUnsupportedAttributeKey(document: document) {
+        if containsUnsupportedAttributeKey(document: document) ||
+            provideDarkModeCSS(for: sender) {
             return .protonSupport
         }
         // If the meta tag color-scheme is present, we assume that the email supports dark mode
@@ -296,6 +297,18 @@ struct CSSMagic {
             return true
         }
         return false
+    }
+
+    static func provideDarkModeCSS(for sender: String) -> Bool {
+        let list = [
+            64516650276,
+            102546378584,
+            337493535936,
+            4756866629 // for test
+        ]
+        // sender.hash or sender.hashValue says the value could change
+        let hash = sender.rollingHash()
+        return list.contains(hash)
     }
 
     /// Generate css for dark mode
@@ -379,11 +392,11 @@ extension CSSMagic {
             let value: String
             switch statement {
             case .charsetRule(let string):
-                value = string
+                value = "\(string)\n"
             case .importRule(let string):
-                value = string
+                value = "@import \(string);"
             case .namespaceRule(let string):
-                value = string
+                value = "\(string)\n"
             case .atBlock(let atBlock):
                 value = getDarkModeCSSFrom(atBlock: atBlock)
             case .ruleSet(let ruleSet):
@@ -400,12 +413,7 @@ extension CSSMagic {
         let selector = ruleSet.selector
         var css: [String] = ["\(selector) {"]
 
-        for declaration in ruleSet.declarations {
-            let property = declaration.property
-            let value = declaration.value
-
-        }
-        let attributes: [CSSAttribute] = ruleSet.declarations.compactMap { ($0.property, $0.value) }
+        let attributes: [CSSAttribute] = ruleSet.declarations.compactMap { ($0.property, $0.value, true) }
         let newAttributes = CSSMagic.switchToDarkModeStyle(attributes: attributes)
         if newAttributes.isEmpty { return .empty }
         css.append(contentsOf: newAttributes.map { "\($0);" })
@@ -471,10 +479,10 @@ extension CSSMagic {
             let style = try node.attr(CSSKeys.style.rawValue)
             var attributes = CSSMagic.splitInline(attributes: style)
             if bgStyle.isEmpty == false {
-                attributes.append((CSSKeys.bgColor.rawValue, bgStyle))
+                attributes.append((CSSKeys.bgColor.rawValue, bgStyle, false))
             }
             if colorStyle.isEmpty == false {
-                attributes.append((CSSKeys.color.rawValue, colorStyle))
+                attributes.append((CSSKeys.color.rawValue, colorStyle, false))
             }
             return CSSMagic.switchToDarkModeStyle(attributes: attributes)
         } catch {
@@ -541,15 +549,15 @@ extension CSSMagic {
                 key = CSSKeys.backgroundColor.rawValue
             }
             if key == CSSKeys.color.rawValue {
-                darkForeground = (key, hsla)
+                darkForeground = (key, hsla, attribute.spaceAfterColon)
             } else {
-                darkAttributes.append((key, hsla))
+                darkAttributes.append((key, hsla, attribute.spaceAfterColon))
             }
             if key == CSSKeys.border.rawValue {
                 attributes
                     .filter { $0.key.hasPrefix("\(CSSKeys.border.rawValue)-")}
                     .forEach { attribute in
-                        darkAttributes.append((attribute.key, attribute.value))
+                        darkAttributes.append((attribute.key, attribute.value, attribute.spaceAfterColon))
                     }
 
             }
@@ -557,10 +565,13 @@ extension CSSMagic {
         var isOriginalForegroundHasGoodDarkModeContrast = false
         if let originalForegroundStyle = attributes.first(where: { $0.key == CSSKeys.color.rawValue })?.value {
             isOriginalForegroundHasGoodDarkModeContrast = hasGoodContrast(
-                attributes: darkAttributes + [(CSSKeys.color.rawValue, originalForegroundStyle.lowercased())]
+                attributes: darkAttributes + [(CSSKeys.color.rawValue, originalForegroundStyle.lowercased(), false)]
             )
         }
-        var result = darkAttributes.map { "\($0.key): \($0.value) !important" }
+        var result = darkAttributes.map { attribute in
+            let value = attribute.spaceAfterColon ? " \(attribute.value)" : attribute.value
+            return "\(attribute.key):\(value) !important"
+        }
         if !isOriginalForegroundHasGoodDarkModeContrast,
            let style = darkForeground {
             result.append("\(style.key): \(style.value) !important")
@@ -869,6 +880,9 @@ extension CSSMagic {
     }
 
     static func splitInline(attributes: String) -> [CSSAttribute] {
+        // To remove comment in the attributes
+        // letter-spacing: 0px; /*padding-bottom: 4px;*/
+        var attributes = attributes.preg_replace(#"\/\*.*\*\/"#, replaceto: "")
         // "font-family: arial; font-size: 14px;"
         return attributes
             .split(separator: ";")
@@ -878,21 +892,30 @@ extension CSSMagic {
                       let value = splits[safe: 1] else {
                           return nil
                       }
-                return (String(key).trim(), String(value).trim())
+                let spaceAfterColon = String(value).hasPrefix(" ")
+                return (String(key).trim(), String(value).trim(), spaceAfterColon)
             })
     }
 
     static func getCSSAnchor(of node: Element) -> String {
         if !node.id().isEmpty && node.id() != "body" {
-            // DomPurify will remove id attribute if the content is `body`
-            return "#\(node.id())"
+            let nodeID = node.id()
+            if nodeID.components(separatedBy: .whitespacesAndNewlines).count == 1 {
+                // DomPurify will remove id attribute if the content is `body`
+                return "#\(node.id())"
+            } else {
+                // <table id="Email Header">
+                let tag = node.tagName()
+                return "\(tag)[id='\(nodeID)']"
+            }
         }
         var anchor = node.tagNameNormal()
         if let classSet = try? node.classNames() {
             // Reason for the filter is some providers use improper class name
             // e.g. class="${!isSplitPayment ? transaction__total-amount-title : '' }"
+            // e.g. class="mobile-txt-left /*show-mv*/"
             let className = Array(classSet)
-                .filter { !$0.contains(check: "[") && !$0.contains(check: "{") }
+                .filter { !$0.contains(check: "[") && !$0.contains(check: "{") && !$0.contains(check: "/*") }
                 .joined(separator: ".")
             if className.isEmpty == false {
                 anchor = "\(anchor).\(className)"

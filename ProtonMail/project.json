@@ -63,6 +63,14 @@
     {
       "path": "./xcodeGen/specs/target_share.json",
       "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/target_protonmail_ui.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/scheme_protonmail_ui.json",
+      "relativePaths": false
     }
   ]
 }

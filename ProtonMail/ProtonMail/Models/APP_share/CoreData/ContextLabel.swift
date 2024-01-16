@@ -37,6 +37,7 @@ class ContextLabel: NSManagedObject {
     @NSManaged var order: NSNumber
     @NSManaged var isSoftDeleted: Bool
     @NSManaged var expirationTime: Date?
+    @NSManaged var snoozeTime: Date?
 
     enum Attributes {
         static let entityName = String(describing: ContextLabel.self)
@@ -45,11 +46,17 @@ class ContextLabel: NSManagedObject {
         static let unreadCount = "unreadCount"
         static let isSoftDeleted = "isSoftDeleted"
         static let conversationID = "conversationID"
+        static let snoozeTime = "snoozeTime"
     }
 }
 
 extension ContextLabel {
-    static func labelFor(labelID: String, conversationID: String, userID: UserID, in context: NSManagedObjectContext) -> ContextLabel? {
+    static func labelFor(
+        labelID: String,
+        conversationID: String,
+        userID: UserID,
+        in context: NSManagedObjectContext
+    ) -> ContextLabel? {
         return context.managedObjectWithEntityName(
             Attributes.entityName,
             matching: [

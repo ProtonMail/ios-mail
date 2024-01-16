@@ -1,0 +1,23 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "Proton Mail";
+
+/* Bundle name */
+"CFBundleName" = "Proton Mail";
+
+/* Privacy - Media Library Usage Description */
+"NSAppleMusicUsageDescription" = "Kreves for å legge ved medier i e-posten.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Kreves for å legge ved bilder i e-posten.";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "Brukes til å få tilgang til e-postadresser for kontakter som er lagret på enheten, slik at de kan brukes når du skriver en melding eller når du laster opp enhetskontaktene manuelt til kontoen din. Kontaktinformasjon lastes ikke opp til tjenerne våre uten at du eksplisitt gjør det.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Lar deg raskt og sikkert låse opp programmet ditt.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Kreves for å lagre bildevedlegg i bildebiblioteket.";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Kreves for å legge ved bilder i e-posten.";

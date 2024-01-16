@@ -254,13 +254,12 @@ final class PrepareSendMetadata: PrepareSendMetadataUseCase {
             dependencies.fetchAttachment.execute(params: .init(
                 attachmentID: attachment.id,
                 attachmentKeyPacket: attachment.keyPacket,
-                purpose: .decryptAndEncodeAttachment,
                 userKeys: userKeys
             )) { [weak self] result in
                 switch result {
                 case .success(let attachmentFile):
                     serialQueue.sync {
-                        encodedAttachments[attachment.id] = attachmentFile.encoded
+                        encodedAttachments[attachment.id] = attachmentFile.data.base64EncodedString()
                     }
                 case .failure(let error):
                     let errorMessage = "attachmentID = \(attachment.id) | error: \(error)"

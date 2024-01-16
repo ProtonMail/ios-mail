@@ -22,11 +22,13 @@
 
 import UIKit
 
+// sourcery: mock
 protocol URLOpener {
     func canOpenURL(_ url: URL) -> Bool
     func open(_ url: URL,
               options: [UIApplication.OpenExternalURLOptionsKey: Any],
               completionHandler completion: ((Bool) -> Void)?)
+    func openAsync(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any]) async -> Bool
 }
 
 extension URLOpener {
@@ -37,4 +39,8 @@ extension URLOpener {
 
 }
 
-extension UIApplication: URLOpener {}
+extension UIApplication: URLOpener {
+    func openAsync(_ url: URL, options: [OpenExternalURLOptionsKey: Any]) async -> Bool {
+        await open(url, options: options)
+    }
+}

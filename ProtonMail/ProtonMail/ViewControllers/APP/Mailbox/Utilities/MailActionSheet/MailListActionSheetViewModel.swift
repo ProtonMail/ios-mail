@@ -26,16 +26,26 @@ struct MailListActionSheetViewModel {
     let title: String
     private(set) var items: [MailListActionSheetItemViewModel] = []
 
-    init(labelId: String, title: String) {
+    init(labelId: String, title: String, locationViewMode: ViewMode, isSnoozeEnabled: Bool) {
         self.title = title
 
         items += [
             .starActionViewModel(),
             .unstarActionViewModel(),
             .markUnreadActionViewModel(),
-            .markReadActionViewModel(),
-            .labelAsActionViewModel()
+            .markReadActionViewModel()
         ]
+
+        let foldersSupportSnooze = [
+            Message.Location.inbox.labelID.rawValue,
+            Message.Location.snooze.labelID.rawValue
+        ]
+        if locationViewMode == .conversation,
+           foldersSupportSnooze.contains(labelId),
+           isSnoozeEnabled {
+            items.append(.snooze())
+        }
+        items.append(.labelAsActionViewModel())
 
         if labelId == Message.Location.trash.rawValue {
             items += [.moveToInboxActionViewModel()]

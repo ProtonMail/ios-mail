@@ -249,6 +249,23 @@ extension String {
     var isHex: Bool {
         filter(\.isHexDigit).count == count
     }
+
+    func rollingHash(base: Int = 7, mod: Int64 = 100000007) -> Int {
+        let base = Int64(base)
+        var ans = 0
+        var coefficient: Int64 = 0
+        for str in self {
+            for code in str.utf8 {
+                if coefficient == 0 {
+                    coefficient = 1
+                } else {
+                    coefficient = coefficient * base % mod
+                }
+                ans += Int(code) * Int(coefficient)
+            }
+        }
+        return ans
+    }
 }
 
 extension Array where Element == String {

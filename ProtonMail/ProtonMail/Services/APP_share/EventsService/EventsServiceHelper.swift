@@ -21,9 +21,13 @@ import CoreData
 extension EventsService {
 
     final class Helper {
-        static func mergeDraft(event: MessageEvent,
-                               existing: Message) {
-            guard let response = event.message else { return }
+        static func mergeDraft(event: MessageEvent, existing: Message) {
+            let localTime = existing.time ?? Date.distantPast
+            guard
+                let response = event.message,
+                let remoteTime = response["Time"] as? TimeInterval,
+                localTime.timeIntervalSince1970 < remoteTime
+            else { return }
             if let subject = response["Subject"] as? String {
                 existing.title = subject
             }

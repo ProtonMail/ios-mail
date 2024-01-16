@@ -132,9 +132,8 @@ extension ConversationDataService {
     }
 
     func findConversationIDsToApplyLabels(conversations: [ConversationEntity], labelID: LabelID) -> [ConversationID] {
-        var conversationIDsToApplyLabel: [ConversationID] = []
-        let context = contextProvider.mainContext
-        context.performAndWait {
+        return contextProvider.read { context in
+            var conversationIDsToApplyLabel: [ConversationID] = []
             conversations.forEach { conversation in
                 let messages = Message
                     .messagesForConversationID(conversation.conversationID.rawValue,
@@ -145,27 +144,27 @@ extension ConversationDataService {
                     conversationIDsToApplyLabel.append(conversation.conversationID)
                 }
             }
+            return conversationIDsToApplyLabel
         }
-
-        return conversationIDsToApplyLabel
     }
 
-    func findConversationIDSToRemoveLabels(conversations: [ConversationEntity],
-                                                   labelID: LabelID) -> [ConversationID] {
-        var conversationIDsToRemove: [ConversationID] = []
-        let context = contextProvider.mainContext
-        context.performAndWait {
+    func findConversationIDSToRemoveLabels(
+        conversations: [ConversationEntity],
+        labelID: LabelID
+    ) -> [ConversationID] {
+        return contextProvider.read { context in
+            var conversationIDsToRemove: [ConversationID] = []
             conversations.forEach { conversation in
                 let messages = Message
                     .messagesForConversationID(conversation.conversationID.rawValue,
                                                inManagedObjectContext: context)
                 let needToUpdate = messages?
-                    .allSatisfy({ !$0.contains(label: labelID.rawValue) }) == false
+                    .allSatisfy { !$0.contains(label: labelID.rawValue) } == false
                 if needToUpdate {
                     conversationIDsToRemove.append(conversation.conversationID)
                 }
             }
+            return conversationIDsToRemove
         }
-        return conversationIDsToRemove
     }
 }

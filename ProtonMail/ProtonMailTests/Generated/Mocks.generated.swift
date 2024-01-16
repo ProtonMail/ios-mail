@@ -67,11 +67,6 @@ class MockAppTelemetry: AppTelemetry {
 }
 
 class MockAutoDeleteSpamAndTrashDaysProvider: AutoDeleteSpamAndTrashDaysProvider {
-    @PropertyStub(\MockAutoDeleteSpamAndTrashDaysProvider.isAutoDeleteImplicitlyDisabled, initialGet: Bool()) var isAutoDeleteImplicitlyDisabledStub
-    var isAutoDeleteImplicitlyDisabled: Bool {
-        isAutoDeleteImplicitlyDisabledStub()
-    }
-
     @PropertyStub(\MockAutoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabled, initialGet: Bool()) var isAutoDeleteEnabledStub
     var isAutoDeleteEnabled: Bool {
         get {
@@ -398,6 +393,19 @@ class MockDeviceRegistrationUseCase: DeviceRegistrationUseCase {
 
 }
 
+class MockEventRSVP: EventRSVP {
+    @ThrowingFuncStub(MockEventRSVP.extractBasicEventInfo, initialReturn: .crash) var extractBasicEventInfoStub
+    func extractBasicEventInfo(icsData: Data) throws -> BasicEventInfo {
+        try extractBasicEventInfoStub(icsData)
+    }
+
+    @ThrowingFuncStub(MockEventRSVP.fetchEventDetails, initialReturn: .crash) var fetchEventDetailsStub
+    func fetchEventDetails(basicEventInfo: BasicEventInfo) throws -> EventDetails {
+        try fetchEventDetailsStub(basicEventInfo)
+    }
+
+}
+
 class MockFailedPushDecryptionMarker: FailedPushDecryptionMarker {
     @FuncStub(MockFailedPushDecryptionMarker.markPushNotificationDecryptionFailure) var markPushNotificationDecryptionFailureStub
     func markPushNotificationDecryptionFailure() {
@@ -425,7 +433,7 @@ class MockFeatureFlagCache: FeatureFlagCache {
         storeFeatureFlagsStub(flags, userID)
     }
 
-    @FuncStub(MockFeatureFlagCache.featureFlags, initialReturn: SupportedFeatureFlags()) var featureFlagsStub
+    @FuncStub(MockFeatureFlagCache.featureFlags, initialReturn: .crash) var featureFlagsStub
     func featureFlags(for userID: UserID) -> SupportedFeatureFlags {
         featureFlagsStub(userID)
     }
@@ -436,6 +444,22 @@ class MockFeatureFlagsDownloadServiceProtocol: FeatureFlagsDownloadServiceProtoc
     @FuncStub(MockFeatureFlagsDownloadServiceProtocol.updateFeatureFlag) var updateFeatureFlagStub
     func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping (Error?) -> Void) {
         updateFeatureFlagStub(key, value, completion)
+    }
+
+}
+
+class MockFetchAttachmentMetadataUseCase: FetchAttachmentMetadataUseCase {
+    @ThrowingFuncStub(MockFetchAttachmentMetadataUseCase.execution, initialReturn: .crash) var executionStub
+    func execution(params: FetchAttachmentMetadata.Params) throws -> AttachmentMetadata {
+        try executionStub(params)
+    }
+
+}
+
+class MockFetchEmailAddressesPublicKeyUseCase: FetchEmailAddressesPublicKeyUseCase {
+    @ThrowingFuncStub(MockFetchEmailAddressesPublicKeyUseCase.execute, initialReturn: .crash) var executeStub
+    func execute(email: String) throws -> KeysResponse {
+        try executeStub(email)
     }
 
 }
@@ -1188,20 +1212,25 @@ class MockSwipeActionInfo: SwipeActionInfo {
 
 }
 
-class MockURLSessionDataTaskProtocol: URLSessionDataTaskProtocol {
-    @FuncStub(MockURLSessionDataTaskProtocol.resume) var resumeStub
-    func resume() {
-        resumeStub()
+class MockURLOpener: URLOpener {
+    @FuncStub(MockURLOpener.canOpenURL, initialReturn: Bool()) var canOpenURLStub
+    func canOpenURL(_ url: URL) -> Bool {
+        canOpenURLStub(url)
+    }
+
+    @FuncStub(MockURLOpener.open) var openStub
+    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: ((Bool) -> Void)?) {
+        openStub(url, options, completion)
+    }
+
+    @FuncStub(MockURLOpener.openAsync, initialReturn: Bool()) var openAsyncStub
+    func openAsync(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any]) -> Bool {
+        openAsyncStub(url, options)
     }
 
 }
 
 class MockURLSessionProtocol: URLSessionProtocol {
-    @FuncStub(MockURLSessionProtocol.dataTask, initialReturn: .crash) var dataTaskStub
-    func dataTask(withRequest: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol {
-        dataTaskStub(withRequest, completionHandler)
-    }
-
     @ThrowingFuncStub(MockURLSessionProtocol.data, initialReturn: .crash) var dataStub
     func data(for request: URLRequest) throws -> (Data, URLResponse) {
         try dataStub(request)
@@ -1246,7 +1275,7 @@ class MockUnlockProvider: UnlockProvider {
 }
 
 class MockUnlockService: UnlockService {
-    @FuncStub(MockUnlockService.start, initialReturn: AppAccess()) var startStub
+    @FuncStub(MockUnlockService.start, initialReturn: .crash) var startStub
     func start() -> AppAccess {
         startStub()
     }
@@ -1305,14 +1334,6 @@ class MockUserCachedStatusProvider: UserCachedStatusProvider {
     @FuncStub(MockUserCachedStatusProvider.removeIsCheckSpaceDisabledStatus) var removeIsCheckSpaceDisabledStatusStub
     func removeIsCheckSpaceDisabledStatus(uid: String) {
         removeIsCheckSpaceDisabledStatusStub(uid)
-    }
-
-}
-
-class MockUserFeedbackServiceProtocol: UserFeedbackServiceProtocol {
-    @FuncStub(MockUserFeedbackServiceProtocol.send) var sendStub
-    func send(_ feedback: UserFeedback, handler: @escaping (UserFeedbackServiceError?) -> Void) {
-        sendStub(feedback, handler)
     }
 
 }

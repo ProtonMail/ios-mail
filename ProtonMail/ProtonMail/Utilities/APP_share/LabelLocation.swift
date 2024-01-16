@@ -25,7 +25,6 @@ import ProtonCoreUIFoundations
 
 enum LabelLocation: Equatable, Hashable, CaseIterable {
     static var allCases: [LabelLocation] = [
-        .sendFeedback,
         .inbox,
         .hiddenDraft,
         .draft,
@@ -49,8 +48,6 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         .addAccount
     ]
 
-    case sendFeedback
-
     case inbox
     case hiddenDraft // 1 can't be removed
     case draft
@@ -64,6 +61,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     case almostAllMail
     case customize(String, String?)
     case scheduled
+    case snooze
 
     case bugs
     case contacts
@@ -84,7 +82,6 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     
     init(id: String, name: String?) {
         switch id {
-        case "Send feedback": self = .sendFeedback
         case Message.Location.inbox.rawValue: self = .inbox
         case Message.HiddenLocation.draft.rawValue: self = .hiddenDraft
         case Message.Location.draft.rawValue: self = .draft
@@ -108,6 +105,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case "Add Account": self = .addAccount
         case Message.Location.scheduled.rawValue: self = .scheduled
         case "Refer a friend": self = .referAFriend
+        case Message.Location.snooze.rawValue: self = .snooze
         default:
             if let name = name {
                 self = .customize(id, name)
@@ -119,7 +117,6 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     
     var rawLabelID: String {
         switch self {
-        case .sendFeedback: return "Send feedback"
         case .inbox: return Message.Location.inbox.rawValue
         case .hiddenDraft: return Message.HiddenLocation.draft.rawValue
         case .draft: return Message.Location.draft.rawValue
@@ -146,6 +143,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .accountManger: return "Account Manager"
         case .addAccount: return "Add Account"
         case .scheduled: return Message.Location.scheduled.rawValue
+        case .snooze: return Message.Location.snooze.rawValue
         }
     }
 
@@ -155,7 +153,6 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     
     var localizedTitle: String {
         switch self {
-        case .sendFeedback: return LocalString._provide_feedback
         case .inbox: return LocalString._menu_inbox_title
         case .hiddenDraft: return ""
         case .draft: return LocalString._menu_drafts_title
@@ -181,14 +178,13 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .accountManger: return LocalString._menu_manage_accounts
         case .addAccount: return ""
         case .scheduled: return LocalString._locations_scheduled_title
+        case .snooze: return L11n.Snooze.title
         }
     }
 
 #if !APP_EXTENSION
     var icon: UIImage? {
         switch self {
-        case .sendFeedback:
-            return IconProvider.speechBubble
         case .inbox:
             return IconProvider.inbox
         case .draft:
@@ -225,6 +221,8 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
             return IconProvider.clock
         case .referAFriend:
             return IconProvider.heart
+        case .snooze:
+            return IconProvider.clock
         default:
             return nil
         }

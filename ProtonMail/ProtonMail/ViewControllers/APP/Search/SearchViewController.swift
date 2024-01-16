@@ -38,7 +38,7 @@ protocol SearchViewUIProtocol: UIViewController {
     func reloadTable()
 }
 
-class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver, ScheduledAlertPresenter, LifetimeTrackable {
+class SearchViewController: AttachmentPreviewViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver, ScheduledAlertPresenter, LifetimeTrackable {
     typealias Dependencies = ConversationCoordinator.Dependencies
 
     class var lifetimeConfiguration: LifetimeConfiguration {
@@ -55,7 +55,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     private var messageTapped = false
     private(set) var listEditing: Bool = false
 
-    private let viewModel: SearchVMProtocol
+    private let viewModel: SearchViewModel
     private var query: String = ""
     private let mailListActionSheetPresenter = MailListActionSheetPresenter()
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
@@ -65,12 +65,11 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     private let dependencies: Dependencies
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
 
-    init(viewModel: SearchVMProtocol, dependencies: Dependencies) {
+    init(viewModel: SearchViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
         self.customView = .init()
         self.dependencies = dependencies
-
-        super.init(nibName: nil, bundle: nil)
+        super.init(viewModel: viewModel)
         self.viewModel.uiDelegate = self
         trackLifetime()
     }
@@ -206,7 +205,8 @@ extension SearchViewController {
                             }
                             self?.showMessageMoved(title: title)
                         }
-
+                    case .snooze:
+                        PMAssertionFailure("Search view display as single message mode, doesn't support snooze")
                     case .more:
                         assertionFailure("handled above")
                     case .reply, .replyAll, .forward, .archive, .spam, .print, .viewHeaders, .viewHTML,
@@ -309,6 +309,8 @@ extension SearchViewController {
             break
         case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
+        case .snooze:
+            PMAssertionFailure("Search view display as single message mode, doesn't support snooze")
         }
     }
 
@@ -361,7 +363,7 @@ extension SearchViewController {
             dismissDuration: 3,
             bannerHandler: PMBanner.dismiss
         )
-        banner.show(at: .bottom, on: self)
+        banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: self)
     }
 
     private var moveToActionHandler: MoveToActionSheetProtocol? {
@@ -705,6 +707,8 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
 
+        mailboxCell.resetCellContent()
+
         let message = self.viewModel.messages[indexPath.row]
         let viewModel = self.viewModel.getMessageCellViewModel(message: message)
         cellPresenter.present(
@@ -764,7 +768,12 @@ extension SearchViewController: NewMailboxMessageCellDelegate {
     }
 
     func didSelectAttachment(cell: NewMailboxMessageCell, index: Int) {
-        
+        guard !listEditing else { return }
+        guard let indexPath = customView.tableView.indexPath(for: cell) else {
+            PMAssertionFailure("IndexPath should match search result.")
+            return
+        }
+        showAttachmentPreviewBanner(at: indexPath, index: index)
     }
 }
 

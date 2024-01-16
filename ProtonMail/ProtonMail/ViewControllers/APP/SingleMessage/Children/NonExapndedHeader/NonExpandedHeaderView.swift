@@ -30,7 +30,7 @@ class NonExpandedHeaderView: HeaderView {
     lazy var originImageContainer = StackViewContainer(view: originImageView)
     let sentImageView = SubviewsFactory.sentImageView
     lazy var sentImageContainer = StackViewContainer(view: sentImageView)
-    let contentStackView = UIStackView.stackView(axis: .vertical, spacing: 8)
+    private let contentStackView = UIStackView.stackView(axis: .vertical, spacing: 4)
     let recipientTitle = SubviewsFactory.recipientTitle
     let recipientLabel = SubviewsFactory.recipientLabel
     let recipientChevron = SubviewsFactory.recipientChevron
@@ -79,7 +79,6 @@ class NonExpandedHeaderView: HeaderView {
         lockImageControl.addSubview(lockImageView)
 
         contentStackView.addArrangedSubview(firstLineStackView)
-        contentStackView.setCustomSpacing(4, after: firstLineStackView)
 
         let firstLineViews: [UIView] = [
             senderLabel,
@@ -94,7 +93,6 @@ class NonExpandedHeaderView: HeaderView {
         firstLineViews.forEach(firstLineStackView.addArrangedSubview(_:))
 
         contentStackView.addArrangedSubview(senderAddressStack)
-        contentStackView.setCustomSpacing(4, after: senderAddressStack)
         senderAddressStack.addArrangedSubview(lockContainer)
         senderAddressStack.addArrangedSubview(senderAddressLabel)
         senderAddressStack.addArrangedSubview(UIView(frame: .zero))
@@ -108,7 +106,6 @@ class NonExpandedHeaderView: HeaderView {
         recipientStack.setCustomSpacing(80, after: recipientChevron)
         recipientStack.addArrangedSubview(UIView())
         contentStackView.addArrangedSubview(recipientStack)
-        contentStackView.setCustomSpacing(4, after: recipientStack)
         contentStackView.addArrangedSubview(tagsView)
     }
 
@@ -145,9 +142,11 @@ class NonExpandedHeaderView: HeaderView {
         [
             contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
-            // 56 = 20 (1st line) + 16 (2st) + 20 (3st)
-            contentStackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 56)
+            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
+        ].activate()
+
+        [
+            recipientStack.heightAnchor.constraint(greaterThanOrEqualToConstant: 24)
         ].activate()
 
         lockImageView.fillSuperview()
@@ -157,7 +156,7 @@ class NonExpandedHeaderView: HeaderView {
         // non-expanded and expanded
         // When font large enough
         [
-            senderLabel.heightAnchor.constraint(equalToConstant: 20)
+            senderLabel.heightAnchor.constraint(equalToConstant: 24)
         ].activate()
 
         [

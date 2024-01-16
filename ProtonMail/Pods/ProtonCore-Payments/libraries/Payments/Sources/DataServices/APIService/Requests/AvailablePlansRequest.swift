@@ -34,6 +34,12 @@ final class AvailablePlansRequest: BaseApiRequest<AvailablePlansResponse> {
     override var path: String { super.path + "/v5/plans" }
 
     override var isAuth: Bool { false }
+
+    override public var parameters: [String: Any]? {
+        [
+            "Vendor": "apple",
+        ]
+    }
 }
 
 final class AvailablePlansResponse: Response {

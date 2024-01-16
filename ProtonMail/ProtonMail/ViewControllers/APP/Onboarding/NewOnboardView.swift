@@ -77,7 +77,7 @@ class NewOnboardView: UIView {
             greyView.topAnchor.constraint(equalTo: topAnchor),
             greyView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             greyView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            greyView.heightAnchor.constraint(equalToConstant: 50)
+            greyView.heightAnchor.constraint(equalToConstant: 100)
         ].activate()
     }
 
@@ -160,13 +160,15 @@ private enum SubviewFactory {
 
     static var greyView: UIView {
         let view = UIView()
-        view.backgroundColor = UIColor.ProtonMail.onboardingImageBackgroundColor
+        let trait = UITraitCollection(userInterfaceStyle: .light)
+        view.backgroundColor = ColorProvider.BackgroundSecondary.resolvedColor(with: trait)
         return view
     }
 
     static var upperSpace: UIView {
         let view = UIView()
-        view.backgroundColor = UIColor.ProtonMail.onboardingImageBackgroundColor
+        let trait = UITraitCollection(userInterfaceStyle: .light)
+        view.backgroundColor = ColorProvider.BackgroundSecondary.resolvedColor(with: trait)
         return view
     }
 

@@ -26,7 +26,7 @@ import WebKit
 import ProtonCoreLogin
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
-import ProtonCoreFeatureSwitch
+import ProtonCoreFeatureFlags
 import ProtonCoreObservability
 
 protocol LoginStepsDelegate: AnyObject {
@@ -75,7 +75,8 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
     private var webView: SSOViewController?
     private var isSSOEnabled: Bool {
-        FeatureFactory.shared.isEnabled(.ssoSignIn) && viewModel.clientApp == .vpn
+        FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.externalSSO) &&
+            viewModel.clientApp == .vpn
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }

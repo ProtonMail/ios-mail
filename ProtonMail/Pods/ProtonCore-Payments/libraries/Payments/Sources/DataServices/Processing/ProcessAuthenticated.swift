@@ -44,10 +44,12 @@ final class ProcessAuthenticated: ProcessProtocol {
 
     unowned let dependencies: ProcessDependencies
     let tokenHandler: TokenHandler?
+    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
 
-    init(dependencies: ProcessDependencies) {
+    init(dependencies: ProcessDependencies, featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared) {
         self.dependencies = dependencies
         self.tokenHandler = TokenHandler(dependencies: dependencies)
+        self.featureFlagsRepository = featureFlagsRepository
     }
 
     let queue = DispatchQueue(label: "ProcessAuthenticated async queue", qos: .userInitiated)
@@ -132,7 +134,7 @@ final class ProcessAuthenticated: ProcessProtocol {
 
         } catch let error where error.isPaymentAmountMismatchOrUnavailablePlanError {
             PMLog.debug("StoreKit: amount mismatch")
-            if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan){
+            if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan){
                 // we no longer credit the account for this kind of mismatch.
                 finish(transaction: transaction, result: .errored(.noNewSubscriptionInSuccessfulResponse), completion: completion)
             } else {

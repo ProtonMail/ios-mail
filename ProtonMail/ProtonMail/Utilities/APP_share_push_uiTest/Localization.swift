@@ -879,8 +879,6 @@ class LocalizedString {
     // Drag and drop
     lazy var _drop_here = NSLocalizedString("+ Drop here to add as attachment", comment: "Drag and drop zone for attachments")
 
-    lazy var _importing = NSLocalizedString("Importing", comment: "Downloading attachments from cloud")
-
     lazy var _importing_drop = NSLocalizedString("Importing attachment, that can take a while", comment: "Drag and drop zone for attachments")
 
     lazy var _drop_finished = NSLocalizedString("Attachment imported", comment: "Drag and drop zone for attachments")
@@ -1015,9 +1013,6 @@ class LocalizedString {
 
     lazy var _title_of_viewInLightMode_action_in_action_sheet = NSLocalizedString("View message in Light mode", comment: "The title of the view message in light mode action in action sheet")
     lazy var _title_of_viewInDarkMode_action_in_action_sheet = NSLocalizedString("View message in Dark mode", comment: "The title of the view message in dark mode action in action sheet")
-
-    lazy var _settings_footer_of_combined_contact = NSLocalizedString("Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.", comment: "The footer of combined contact in settings")
-    lazy var _settings_title_of_combined_contact = NSLocalizedString("Combined contacts", comment: "The title of combined contact in settings")
 
     lazy var _settings_alternative_routing_footer = NSLocalizedString("In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@", comment: "The footer of alternative routing setting")
     lazy var _settings_alternative_routing_title = NSLocalizedString("Networking", comment: "The title of alternative routing settings")
@@ -1157,15 +1152,6 @@ class LocalizedString {
     lazy var _menu_collapse_folder = NSLocalizedString("Collapse folder", comment: "The title of voice over action of collapsing the folder")
 
     lazy var _indox_accessibility_switch_unread = NSLocalizedString("Switch unread filter", comment: "The title of voice over action that switches the unread filter status in the inbox")
-    // MARK: - In App Feedback
-    lazy var _your_feedback = NSLocalizedString("Your feedback", comment: "Title of user feedback view")
-    lazy var _feedback_prompt = NSLocalizedString("How would you describe your experience with the new Proton Mail?", comment: "Prompt of user feedback view")
-    lazy var _feedback_placeholder = NSLocalizedString("Tell us about your experience. (Optional)", comment: "Placeholder in text view destined to gather written user feedback")
-    lazy var _send_feedback = NSLocalizedString("Send feedback", comment: "Title of button to send feedback")
-    lazy var _feedback_awful = NSLocalizedString("Awful", comment: "Example feedback")
-    lazy var _feedback_wonderful = NSLocalizedString("Wonderful", comment: "Example feedback")
-    lazy var _provide_feedback = _send_feedback
-    lazy var _thank_you_feedback = NSLocalizedString("Thank you for your feedback!", comment: "Comment in banner thanking user for providing feedback")
     lazy var collalse_message_title_in_converation_view = NSLocalizedString("Collapse message", comment: "The title of button to collapse the expanded message in conversation view for VoiceOver.")
 
     lazy var _settings_dark_mode_section_title = NSLocalizedString("Appearance", comment: "The title of section inside the dark mode setting page")
@@ -1315,6 +1301,12 @@ enum L11n {
         static let load = NSLocalizedString("Load", comment: "Button inside the banner")
     }
 
+    struct Event {
+        static let organizer = NSLocalizedString("Organizer", comment: "As in: event organizer")
+        static let participantCount = NSLocalizedString("%u participants", comment: "Title of the button to expand participant list")
+        static let showLess = NSLocalizedString("Show less", comment: "Button to hide some items in the list to conserve screen estate")
+    }
+
     struct OfficialBadge {
         static let title = NSLocalizedString("Official", comment: "Official badge next to sender's name")
     }
@@ -1333,6 +1325,15 @@ enum L11n {
         static let referAFriend = NSLocalizedString("Refer a friend", comment: "The title of the refer button in referral prompt view.")
         static let maybeLater = NSLocalizedString("Maybe later", comment: "The title of the maybe later button in referral prompt view.")
 	}
+
+    struct SettingsContacts {
+        static let combinedContacts = NSLocalizedString("Combined contacts", comment: "The title of combined contact in settings")
+        static let combinedContactsFooter = NSLocalizedString("Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.", comment: "The footer of combined contact in settings")
+        static let autoImportContacts = NSLocalizedString("Auto-import device contacts", comment: "contacts auto import title in settings")
+        static let autoImportContactsFooter = NSLocalizedString("Turn this feature on to automatically add new contacts from your device to the Proton Mail app.", comment: "contacts auto import footer in settings")
+        static let autoImportAlertTitle = NSLocalizedString("Auto-import enabled", comment: "Auto import alert title")
+        static let autoImportAlertMessage = NSLocalizedString("The initial import may take some time and will only occur when the app is in the foreground.", comment: "Auto import alert message")
+    }
 
     struct SettingsLockScreen {
         static let protectionTitle = NSLocalizedString("Protection", comment: "Settings lock protection section")
@@ -1371,9 +1372,9 @@ enum L11n {
     }
 
     struct NextMsgAfterMove {
-        static let settingTitle = NSLocalizedString("Next message after move", comment: "The title of the setting of the next msg after move")
-        static let rowTitle = NSLocalizedString("Navigate to next message after move", comment: "The title of the row inside the setting page of next msg after move function.")
-        static let rowFooterTitle = NSLocalizedString("Performing a move action on a message (e.g. archive) will navigate to the next message.", comment: "The footer title of the setting row of the next msg after move functions.")
+        static let settingTitle = NSLocalizedString("Jump to next message", comment: "The title of the setting of the next msg after move")
+        static let rowTitle = NSLocalizedString("Jump to next message", comment: "The title of the row inside the setting page of next msg after move function.")
+        static let rowFooterTitle = NSLocalizedString("Automatically show the next message when the current message is deleted, archived or moved.", comment: "The footer title of the setting row of the next msg after move functions.")
 	}
 
     struct Error {
@@ -1436,6 +1437,10 @@ enum L11n {
         static let emptyTrash = NSLocalizedString("Empty trash", comment: "Title of button to empty trash folder")
     }
 
+    struct ProtonCalendarIntegration {
+        static let openInCalendar = NSLocalizedString("Open in Proton Calendar", comment: "Button to open the Calendar app")
+	}
+
     struct AutoDeleteUpsellSheet {
         static let title = NSLocalizedString("Clear out the junk", comment: "Title of the sheet to advertise the auto delete feature to free users")
         static let description = NSLocalizedString("Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.", comment: "Text content of the sheet to advertise the auto delete feature to free users")
@@ -1450,6 +1455,7 @@ enum L11n {
     struct Compose {
         static let senderChanged = NSLocalizedString("Sender changed", comment: "Alert title, shows when current sender address in the composer is invalid anymore.")
         static let senderChangedMessage = NSLocalizedString("The original sender of this message is no longer valid. Your message will be sent from your default address %@.", comment: "Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address.")
+        static let blockSenderChangeMessage = NSLocalizedString("Please retry after all attachments are uploaded.", comment: "The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded.")
     }
 
     struct ContactEdit {
@@ -1495,9 +1501,30 @@ enum L11n {
 
     struct Snooze {
         static let title = NSLocalizedString("Snooze", comment: "The title of the snooze location in the menu")
+        static let bannerTitle = NSLocalizedString("Snoozed until %@", comment: "The banner title that is shown in the message detail view.")
+        static let buttonTitle = NSLocalizedString("Unsnooze", comment: "The title of the button in the banner that is shown in the message detail view.")
+        static let successBannerTitle = NSLocalizedString("Snooze until %@", comment: "A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00")
+        static let unsnoozeSuccessBannerTitle = NSLocalizedString("Conversation unsnoozed", comment: "Notification banner when user unsnooze a conversation")
+        static let snoozeUntil = NSLocalizedString("Snooze until...", comment: "The title of snooze config in action sheet")
+        static let laterThisWeek = NSLocalizedString("Later this week", comment: "One of snooze option shows in action sheet")
+        static let thisWeekend = NSLocalizedString("This weekend", comment: "One of snooze option shows in action sheet")
+        static let nextWeek = NSLocalizedString("Next week", comment: "One of snooze option shows in action sheet")
+        static let selectTimeInFuture = NSLocalizedString("Please select a time in the future", comment: "An error message will be shown to user when user select past snooze time")
+        static let promotionTitle = NSLocalizedString("Want to snooze any time?", comment: "The title of snooze promotion view")
+        static let promotionDesc = NSLocalizedString("Unlock custom snooze times when you upgrade", comment: "The content description of snooze promotion view")
+        static let addressBenefit = NSLocalizedString("Up to 15 email addresses/aliases", comment: "The benefit item for snooze promotion view")
+        static let folderBenefit = NSLocalizedString("Unlimited folders, labels, and filters", comment: "The benefit item for snooze promotion view")
+        static let domainBenefit = NSLocalizedString("Custom email domains", comment: "The benefit item for snooze promotion view")
+        static let spotlightDesc = NSLocalizedString("Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.", comment: "Description string shows in spotlight view")
+        static let spotlightTitle = NSLocalizedString("Snooze it for later", comment: "Description string shows in spotlight view")
     }
 
 	struct InlineAttachment {
         static let addAsAttachment = NSLocalizedString("Add it as attachment", comment: "The title of the action option that will make the inline attachment as normal attachment.")
 	}
+
+    struct MessageNavigation {
+        static let spotlightMessage = "You can now effortlessly navigate through messages by swiping left or right."
+        static let spotlightTitle = "Swipe to next message"
+    }
 }

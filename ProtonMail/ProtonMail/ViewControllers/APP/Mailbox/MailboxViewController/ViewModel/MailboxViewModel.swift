@@ -41,12 +41,13 @@ protocol MailboxViewModelUIProtocol: AnyObject {
     func updateUnreadButton(count: Int)
     func updateTheUpdateTimeLabel()
     func selectionDidChange()
+    func clickSnoozeActionButton()
 }
 
-class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
+class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, AttachmentPreviewViewModelProtocol {
     typealias Dependencies = HasCheckProtonServerStatus
     & HasFeatureFlagCache
-    & HasFetchAttachment
+    & HasFetchAttachmentUseCase
     & HasFetchAttachmentMetadataUseCase
     & HasFetchMessageDetailUseCase
     & HasFetchMessages
@@ -54,6 +55,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     & HasMailEventsPeriodicScheduler
     & HasUpdateMailbox
     & HasUserDefaults
+    & HasUserIntroductionProgressProvider
+    & HasUsersManager
 
     let labelID: LabelID
     /// This field saves the label object of custom folder/label
@@ -125,10 +128,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         }
     }
 
-    var shouldAutoShowInAppFeedbackPrompt: Bool {
-        !ProcessInfo.hasLaunchArgument(.disableInAppFeedbackPromptAutoShow)
-    }
-
     var isNewEventLoopEnabled: Bool {
         user.isNewEventLoopEnabled
     }
@@ -137,6 +136,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     private var isPrefetching: Atomic<Bool> = .init(false)
 
     private(set) var diffableDataSource: MailboxDiffableDataSource?
+
+    var shouldShowMessageNavigationSpotlight: Bool {
+        dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .messageSwipeNavigation, toUserWith: user.userID)
+    }
 
     init(labelID: LabelID,
          label: LabelInfo?,
@@ -217,8 +220,12 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     }
 
     var actionSheetViewModel: MailListActionSheetViewModel {
-        return .init(labelId: labelId.rawValue,
-                     title: .actionSheetTitle(selectedCount: selectedIDs.count, viewMode: locationViewMode))
+        return .init(
+            labelId: labelId.rawValue,
+            title: .actionSheetTitle(selectedCount: selectedIDs.count, viewMode: locationViewMode),
+            locationViewMode: locationViewMode,
+            isSnoozeEnabled: user.isSnoozeEnabled
+        )
     }
 
     // Needs refactor to test
@@ -294,6 +301,35 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
 
     func resetTourValue() {
         dependencies.userDefaults[.lastTourVersion] = Constants.App.TourVersion
+    }
+
+    func shouldShowShowSnoozeSpotlight() -> Bool {
+        guard user.isSnoozeEnabled, !ProcessInfo.isRunningUITests else { return false }
+        // If one of logged in user has seen spotlight, shouldn't show it again
+        let shouldShow = dependencies.usersManager.users
+            .map {
+                dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .snooze, toUserWith: $0.userID)
+            }
+            .reduce(true) { partialResult, shouldShow in
+                partialResult && shouldShow
+            }
+
+        return shouldShow
+    }
+
+    func hasSeenSnoozeSpotlight() {
+        guard user.isSnoozeEnabled else { return }
+        dependencies.userIntroductionProgressProvider.markSpotlight(for: .snooze, asSeen: true, byUserWith: user.userID)
+    }
+
+    func hasSeenMessageNavigationSpotlight() {
+        user.parentManager?.users.forEach({ user in
+            dependencies.userIntroductionProgressProvider.markSpotlight(
+                for: .messageSwipeNavigation,
+                asSeen: true,
+                byUserWith: user.userID
+            )
+        })
     }
 
     func tagUIModels(for conversation: ConversationEntity) -> [TagUIModel] {
@@ -406,8 +442,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         eventUpdatePublisher?.startObserve(
             userID: user.userID,
             onContentChanged: { [weak self] events in
-                self?.latestEventUpdateTime = events.first?.updateTime
-                self?.uiDelegate?.updateTheUpdateTimeLabel()
+                DispatchQueue.main.async {
+                    self?.latestEventUpdateTime = events.first?.updateTime
+                    self?.uiDelegate?.updateTheUpdateTimeLabel()
+                }
             })
 	}
 
@@ -662,6 +700,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         case .labelAs, .moveTo:
             // TODO: add action
             break
+        case .snooze:
+            PMAssertionFailure("Shouldn't be triggered")
+            break
         case .inbox:
             handleMoveToInboxAction(on: selectedItems)
         case .delete, .dismiss, .toolbarCustomization, .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
@@ -892,6 +933,10 @@ extension MailboxViewModel {
         dependencies.fetchMessageDetail
             .callbackOn(.main)
             .execute(params: params, callback: callback)
+    }
+
+    func isUploadingDraft(messageID: MessageID) -> Bool {
+        messageService.queueManager?.hasTask(for: messageID) ?? false
     }
 }
 
@@ -1331,61 +1376,30 @@ extension MailboxViewModel {
 
     func requestPreviewOfAttachment(
         at indexPath: IndexPath,
-        index: Int,
-        completion: @escaping ((Result<SecureTemporaryFile, Error>) -> Void)
-    ) {
+        index: Int
+    ) async throws -> SecureTemporaryFile {
         guard let mailboxItem = mailboxItem(at: indexPath),
               let attachmentMetadata = mailboxItem.attachmentsMetadata[safe: index] else {
             PMAssertionFailure("IndexPath should match MailboxItem")
-            completion(.failure(AttachmentPreviewError.indexPathDidNotMatch))
-            return
+            throw AttachmentPreviewError.indexPathDidNotMatch
         }
 
-        let attId = AttachmentID(attachmentMetadata.id)
         let userKeys = user.toUserKeys()
 
-        Task  {
-            do {
-                let metadata = try await dependencies.fetchAttachmentMetadata.execution(
-                    params: .init(attachmentID: attId)
-                )
-                self.dependencies.fetchAttachment
-                    .execute(params: .init(
-                        attachmentID: attId,
-                        attachmentKeyPacket: nil,
-                        purpose: .onlyDownload,
-                        userKeys: userKeys
-                    )) { result in
-                    switch result {
-                    case .success(let attFile):
-                        do {
-                            let fileData = try AttachmentDecrypter.decrypt(
-                                fileUrl: attFile.fileUrl,
-                                attachmentKeyPacket: metadata.keyPacket,
-                                userKeys: userKeys
-                            )
-                            let fileName = attachmentMetadata.name.cleaningFilename()
-                            let secureTempFile = SecureTemporaryFile(data: fileData, name: fileName)
-                            completion(.success(secureTempFile))
-                        } catch {
-                            completion(.failure(error))
-                        }
-                        
-                    case .failure(let error):
-                        completion(.failure(error))
-                    }
-                }
-            } catch {
-                await MainActor.run {
-                    completion(.failure(error))
-                }
-                SystemLogger.log(error: error)
-            }
-        }
-    }
-
-    private func isSpecialLoopEnabledInNewEventLoop() -> Bool {
-        dependencies.mailEventsPeriodicScheduler.currentlyEnabled().specialLoopIDs.contains(user.userID.rawValue)
+        let metadata = try await dependencies.fetchAttachmentMetadata.execution(
+            params: .init(attachmentID: .init(attachmentMetadata.id))
+        )
+        let attachmentFile = try await dependencies.fetchAttachment.execute(
+            params: .init(
+                attachmentID: .init(attachmentMetadata.id),
+                attachmentKeyPacket: metadata.keyPacket,
+                userKeys: userKeys
+            )
+        )
+        let fileData = attachmentFile.data
+        let fileName = attachmentMetadata.name.cleaningFilename()
+        let secureTempFile = SecureTemporaryFile(data: fileData, name: fileName)
+        return secureTempFile
     }
 
     func fetchEventsWithNewEventLoop() {
@@ -1393,14 +1407,10 @@ extension MailboxViewModel {
     }
 
     func stopNewEventLoop() {
-        dependencies.mailEventsPeriodicScheduler.didStopSpecialLoop(withSpecialLoopID: user.userID.rawValue)
+        dependencies.mailEventsPeriodicScheduler.disableSpecialLoop(withSpecialLoopID: user.userID.rawValue)
     }
 
     func startNewEventLoop() {
-        guard !isSpecialLoopEnabledInNewEventLoop() else {
-            fetchEventsWithNewEventLoop()
-            return
-        }
         dependencies.mailEventsPeriodicScheduler.enableSpecialLoop(forSpecialLoopID: user.userID.rawValue)
     }
 }

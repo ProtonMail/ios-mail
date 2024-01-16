@@ -27,7 +27,9 @@ final class IsSenderBlockedPublisher {
     func isBlocked(senderEmailAddress: String) -> AnyPublisher<Bool, Never> {
         blockedSendersPublisher.contentDidChange
             .map { [senderEmailAddress] incomingDefaults in
-                incomingDefaults.contains { $0.email == senderEmailAddress }
+                incomingDefaults.contains {
+                    $0.email.localizedCaseInsensitiveCompare(senderEmailAddress) == .orderedSame
+                }
             }
             .eraseToAnyPublisher()
     }

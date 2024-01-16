@@ -22,6 +22,7 @@
 import Foundation
 import ProtonCoreServices
 import Network
+import ProtonCoreFeatureFlags
 import ProtonCoreObservability
 
 public protocol PlansDataSourceProtocol {
@@ -34,6 +35,8 @@ public protocol PlansDataSourceProtocol {
 
     func fetchIAPAvailability() async throws
     func fetchAvailablePlans() async throws
+
+    /// Refreshes from BE the plan the user currently has, if any
     func fetchCurrentPlan() async throws
     func fetchPaymentMethods() async throws
     func createIconURL(iconName: String) -> URL?
@@ -45,7 +48,11 @@ public protocol PlansDataSourceProtocol {
 class PlansDataSource: PlansDataSourceProtocol {
     var isIAPAvailable: Bool {
         guard paymentsBackendStatusAcceptsIAP else { return false }
-        return true
+        guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) else {
+            assertionFailure("You need Dynamic Plans enabled to use PlansDataSource")
+            return true
+        }
+        return localStorage.credits?.credit.isZero ?? true
     }
 
     var paymentsBackendStatusAcceptsIAP: Bool {
@@ -59,13 +66,16 @@ class PlansDataSource: PlansDataSourceProtocol {
     private let apiService: APIService
     private let storeKitDataSource: StoreKitDataSourceProtocol
     private let localStorage: ServicePlanDataStorage
+    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
 
     init(apiService: APIService,
          storeKitDataSource: StoreKitDataSourceProtocol,
-         localStorage: ServicePlanDataStorage) {
+         localStorage: ServicePlanDataStorage,
+         featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared) {
         self.apiService = apiService
         self.storeKitDataSource = storeKitDataSource
         self.localStorage = localStorage
+        self.featureFlagsRepository = featureFlagsRepository
         paymentsBackendStatusAcceptsIAP = localStorage.paymentsBackendStatusAcceptsIAP
     }
 
@@ -129,7 +139,7 @@ class PlansDataSource: PlansDataSourceProtocol {
         guard let identifier = iap.storeKitProductId else { return nil }
         return availablePlans?.plans.first(where: { plan in
             plan.instances.contains { instance in
-                instance.vendors?.apple.productID == identifier && instance.cycle == iap.period.flatMap(Int.init)
+                instance.vendors?.apple.productID == identifier
             }
         })
     }
@@ -137,7 +147,7 @@ class PlansDataSource: PlansDataSourceProtocol {
     func detailsOfAvailablePlanInstanceCorrespondingToIAP(_ iap: InAppPurchasePlan) -> AvailablePlans.AvailablePlan.Instance? {
         guard let identifier = iap.storeKitProductId else { return nil }
         return availablePlans?.plans.flatMap(\.instances).first(where: { instance in
-            instance.vendors?.apple.productID == identifier && instance.cycle == iap.period.flatMap(Int.init)
+            instance.vendors?.apple.productID == identifier
         })
     }
 

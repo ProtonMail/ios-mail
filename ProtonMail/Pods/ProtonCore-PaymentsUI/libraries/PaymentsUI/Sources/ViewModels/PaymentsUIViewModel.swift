@@ -39,15 +39,15 @@ enum FooterType: Equatable {
         }
     }
 
-    case withPlansToBuy
+    case withPlansToBuy // only used pre-Dynamic Plans
     case withoutPlansToBuy
-    case withExtendSubscriptionButton(PlanPresentation)
+    case withExtendSubscriptionButton(PlanPresentation) // only used pre-Dynamic Plans
     case disabled
 }
 
 class PaymentsUIViewModel {
     private var isDynamicPlansEnabled: Bool {
-        FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan)
+        featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)
     }
     private var planService: Either<ServicePlanDataServiceProtocol, PlansDataSourceProtocol>
 
@@ -60,7 +60,7 @@ class PaymentsUIViewModel {
     }
 
     private var plansDataSource: PlansDataSourceProtocol? {
-        guard FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan), case .right(let plansDataSource) = planService else {
+        guard isDynamicPlansEnabled, case .right(let plansDataSource) = planService else {
             assertionFailure("Dynamic plans must use the PlansDataSourceProtocol object")
             return nil
         }
@@ -76,6 +76,7 @@ class PaymentsUIViewModel {
     private let clientApp: ClientApp
     private let shownPlanNames: ListOfShownPlanNames
     private let customPlansDescription: CustomPlansDescription
+    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
 
     // MARK: Public properties
 
@@ -95,7 +96,7 @@ class PaymentsUIViewModel {
          ].filter { !$0.isEmpty }
     }
     private (set) var availablePlans: [AvailablePlansPresentation]?
-    private (set) var currentPlan: CurrentPlanPresentation?
+    var currentPlan: CurrentPlanPresentation?
 
     var defaultCycle: Int? {
         switch planService {
@@ -164,6 +165,7 @@ class PaymentsUIViewModel {
          shownPlanNames: ListOfShownPlanNames = [],
          clientApp: ClientApp,
          customPlansDescription: CustomPlansDescription,
+         featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared,
          planRefreshHandler: @escaping (CurrentPlanDetails?) -> Void,
          extendSubscriptionHandler: @escaping () -> Void) {
         self.mode = mode
@@ -172,6 +174,7 @@ class PaymentsUIViewModel {
         self.shownPlanNames = shownPlanNames
         self.clientApp = clientApp
         self.customPlansDescription = customPlansDescription
+        self.featureFlagsRepository = featureFlagsRepository
         self.planRefreshHandler = planRefreshHandler
         self.extendSubscriptionHandler = extendSubscriptionHandler
         registerRefreshHandler()
@@ -189,23 +192,16 @@ class PaymentsUIViewModel {
         switch mode {
         case .signup:
             try await fetchAvailablePlans()
+            footerType = .disabled
         case .current:
             try await fetchCurrentPlan()
             try await fetchAvailablePlans()
             try await fetchPaymentMethods()
+            footerType = .withoutPlansToBuy
         case .update:
             try await fetchAvailablePlans()
             try await fetchPaymentMethods()
-            footerType = .withPlansToBuy
-        }
-        setFooterType()
-    }
-
-    private func setFooterType() {
-        if !(availablePlans?.isEmpty ?? true) {
-            footerType = .withPlansToBuy
-        } else {
-            footerType = .withoutPlansToBuy
+            footerType = isDynamicPlansEnabled ? .disabled : .withPlansToBuy
         }
     }
 
@@ -264,7 +260,7 @@ class PaymentsUIViewModel {
         if localPlans.count > 0 {
             self.plans.append(localPlans)
         }
-        footerType = .withPlansToBuy
+        footerType = isDynamicPlansEnabled ? .disabled : .withPlansToBuy
         completionHandler?(.success((self.plans, footerType)))
     }
 
@@ -364,7 +360,11 @@ class PaymentsUIViewModel {
             if !plansToShow.isEmpty {
                 plans.append(plansToShow)
             }
-            footerType = plansToShow.isEmpty ? .withoutPlansToBuy : .withPlansToBuy
+            if isDynamicPlansEnabled {
+                footerType = .disabled
+            } else {
+                footerType = plansToShow.isEmpty ? .withoutPlansToBuy : .withPlansToBuy
+            }
             self.plans = plans
             completionHandler?(.success((self.plans, footerType)))
 
@@ -392,9 +392,11 @@ class PaymentsUIViewModel {
                 let isExtensionPlanAvailable = servicePlan.availablePlansDetails.first { $0.name == accountPlan.protonName } != nil
 
                 self.plans = plans
+                // `storeKitManager.canExtendSubscription` is never true with DynamicPlans enabled
                 if storeKitManager.canExtendSubscription, !servicePlan.hasPaymentMethods, isExtensionPlanAvailable, !servicePlan.willRenewAutomatically(plan: accountPlan) {
                     footerType = .withExtendSubscriptionButton(plan)
                 } else {
+                    // this is always the case when DynamicPlans is enabled
                     footerType = .withoutPlansToBuy
                 }
                 completionHandler?(.success((self.plans, footerType)))

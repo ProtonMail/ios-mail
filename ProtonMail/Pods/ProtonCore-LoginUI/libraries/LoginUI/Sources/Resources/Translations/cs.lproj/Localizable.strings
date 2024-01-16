@@ -1,4 +1,3 @@
-
 "Privacy by default" = "Soukromí především";
 
 "Proton address required" = "Vyžadována Proton adresa";
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "Neplatný hash hesla";
 
 "Password can not be empty.\nPlease try again." = "Heslo nemůže být prázdné.\nZkuste to znovu.";
-
-"Password must contain at least %@ characters." = "Heslo musí obsahovat alespoň %@ znaků.";
 
 "Passwords do not match.\nPlease try again." = "Hesla se neshodují.\nProsím zkuste to znovu.";
 

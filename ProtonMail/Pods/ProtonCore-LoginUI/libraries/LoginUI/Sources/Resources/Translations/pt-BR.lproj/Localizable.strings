@@ -1,4 +1,3 @@
-
 "Privacy by default" = "Privacidade padrão";
 
 "Proton address required" = "Endereço Proton obrigatório";
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "A senha de hash não é valida.";
 
 "Password can not be empty.\nPlease try again." = "A senha não pode ser vazia.\nTente novamente.";
-
-"Password must contain at least %@ characters." = "A senha deve conter ao menos %@ caracteres.";
 
 "Passwords do not match.\nPlease try again." = "As senhas não correspondem.\nTente novamente.";
 

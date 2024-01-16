@@ -64,10 +64,9 @@ extension ArrayRecipientSendPreferencesTests {
                 sign: false,
                 pgpScheme: pgpScheme,
                 mimeType: mimeType,
-                publicKeys: nil,
+                publicKey: nil,
                 isPublicKeyPinned: false,
                 hasApiKeys: false,
-                hasPinnedKeys: false,
                 error: nil
             )
         )

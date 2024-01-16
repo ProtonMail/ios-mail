@@ -19,7 +19,7 @@ import Foundation
 import ProtonCoreServices
 
 enum PrepareSendMetadataBuilder {
-    typealias Dependencies = HasFetchAndVerifyContacts & HasFetchAttachment & HasFetchEmailAddressesPublicKey
+    typealias Dependencies = HasFetchAndVerifyContacts & HasFetchAttachmentUseCase & HasFetchEmailAddressesPublicKey
 
     static func make(userData: UserDataSource, dependencies: Dependencies) -> PrepareSendMetadata {
         let sendPreferencesDependencies: ResolveSendPreferences.Dependencies = .init(

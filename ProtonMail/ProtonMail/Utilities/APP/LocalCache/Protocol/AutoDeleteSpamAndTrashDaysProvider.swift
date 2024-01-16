@@ -19,7 +19,6 @@ import Foundation
 
 // sourcery: mock
 protocol AutoDeleteSpamAndTrashDaysProvider {
-    var isAutoDeleteImplicitlyDisabled: Bool { get }
     var isAutoDeleteEnabled: Bool { get set }
 }
 

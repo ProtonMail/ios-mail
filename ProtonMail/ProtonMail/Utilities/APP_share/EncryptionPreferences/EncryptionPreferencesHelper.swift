@@ -35,24 +35,22 @@ enum EncryptionPreferencesHelper {
             let key = convertToCryptoKey(from: publicKey)
             selfSendConfig = SelfSendConfig(address: selfAddress, publicKey: key)
             // For own addresses, we use the decrypted keys in selfSend and do not fetch any data from the API
-            apiKeysConfig = APIKeysConfig(keys: [], publicKeys: [], recipientType: .internal)
+            apiKeysConfig = APIKeysConfig(publicKeys: [], recipientType: .internal)
             pinnedKeysConfig = PinnedKeysConfig(encrypt: false,
                                                 sign: .signingFlagNotFound,
                                                 scheme: nil,
                                                 mimeType: nil,
                                                 pinnedKeys: [])
         } else {
-            let apiKeys: [(KeyResponse, CryptoKey)] = keysResponse.keys.compactMap { keyResponse in
+            let apiKeys: [PublicKeyWithAPIData] = keysResponse.keys.compactMap { keyResponse in
                 var error: NSError?
-                if let key = CryptoGo.CryptoNewKey(keyResponse.publicKey?.unArmor, &error) {
-                    return error != nil ? nil : (keyResponse, key)
+                if let key = CryptoGo.CryptoNewKey(keyResponse.publicKey.unArmor, &error) {
+                    return error != nil ? nil : PublicKeyWithAPIData(apiData: keyResponse, cryptoKey: key)
                 }
                 return nil
             }
 
-            apiKeysConfig = APIKeysConfig(keys: apiKeys.map { $0.0 },
-                                          publicKeys: apiKeys.map { $0.1 },
-                                          recipientType: keysResponse.recipientType)
+            apiKeysConfig = APIKeysConfig(publicKeys: apiKeys, recipientType: keysResponse.recipientType)
 
             let rawContactKeys: [Data] = contact?.pgpKeys ?? []
             let keys: [CryptoKey] = rawContactKeys.compactMap { rawKey in
@@ -134,10 +132,7 @@ enum EncryptionPreferencesHelper {
                      scheme: publicKeyModel.scheme,
                      mimeType: publicKeyModel.mimeType,
                      isInternal: true,
-                     apiKeys: publicKeyModel.apiKeys,
-                     pinnedKeys: [],
                      hasApiKeys: publicKeyModel.hasApiKeys,
-                     hasPinnedKeys: false,
                      sendKey: error == nil ? selfSendConfig.publicKey : nil,
                      isSendKeyPinned: false,
                      error: error)
@@ -263,12 +258,12 @@ enum EncryptionPreferencesHelper {
         var verifyOnlyFingerprints: Set<String> = []
         let apiKeys = apiKeysConfig.publicKeys
         apiKeys.forEach { key in
-            if !key.isExpired() {
-                let fingerprint = key.getFingerprint()
-                if getKeyVerificationOnlyStatus(key: key, apiKeysConfig: apiKeysConfig) {
+            if !key.cryptoKey.isExpired() {
+                let fingerprint = key.cryptoKey.getFingerprint()
+                if getKeyVerificationOnlyStatus(key: key) {
                     verifyOnlyFingerprints.insert(fingerprint)
                 }
-                if key.canEncrypt() {
+                if key.cryptoKey.canEncrypt() {
                     encryptionCapableFingerprints.insert(fingerprint)
                 }
             }
@@ -297,13 +292,8 @@ enum EncryptionPreferencesHelper {
      * and it is thus verification-only.
      * Return false if it's marked valid for encryption. Return undefined otherwise
      */
-    static func getKeyVerificationOnlyStatus(key: CryptoKey, apiKeysConfig: APIKeysConfig) -> Bool {
-        // TODO: can `CryptoKey` be made `Equatable` again?
-        if let index = apiKeysConfig.publicKeys.firstIndex(where: { $0.getFingerprint() == key.getFingerprint() }),
-           let keyResponse = apiKeysConfig.keys[safe: index] {
-            return !keyResponse.flags.contains(.notObsolete)
-        }
-        return false
+    static func getKeyVerificationOnlyStatus(key: PublicKeyWithAPIData) -> Bool {
+        !key.apiData.flags.contains(.notObsolete)
     }
 
     /**
@@ -320,10 +310,10 @@ enum EncryptionPreferencesHelper {
      * Sort list of keys retrieved from the API. Trusted keys take preference.
      * For two keys such that both are either trusted or not, non-verify-only keys take preference
      */
-    static func sortedApiKeys(keys: [CryptoKey],
+    static func sortedApiKeys(keys: [PublicKeyWithAPIData],
                               trustedFingerprints: Set<String>,
                               verifyOnlyFingerprints: Set<String>) -> [CryptoKey] {
-        return keys.sorted { lhs, rhs in
+        keys.map(\.cryptoKey).sorted { lhs, rhs in
             let lhsFingerprint = lhs.getFingerprint()
             let rhsFingerprint = rhs.getFingerprint()
 
@@ -356,10 +346,7 @@ enum EncryptionPreferencesHelper {
             scheme: publicKeyModel.scheme,
             mimeType: publicKeyModel.mimeType,
             isInternal: true,
-            apiKeys: publicKeyModel.publicKeys.apiKeys,
-            pinnedKeys: publicKeyModel.publicKeys.pinnedKeys,
             hasApiKeys: !publicKeyModel.publicKeys.apiKeys.isEmpty,
-            hasPinnedKeys: !publicKeyModel.publicKeys.pinnedKeys.isEmpty,
             sendKey: sendKey,
             isSendKeyPinned: isSendKeyPinned,
             error: error
@@ -377,10 +364,7 @@ enum EncryptionPreferencesHelper {
                      scheme: publicKeyModel.scheme,
                      mimeType: publicKeyModel.mimeType,
                      isInternal: false,
-                     apiKeys: publicKeyModel.apiKeys,
-                     pinnedKeys: publicKeyModel.pinnedKeys,
                      hasApiKeys: true,
-                     hasPinnedKeys: publicKeyModel.hasPinnedKeys,
                      sendKey: sendKey,
                      isSendKeyPinned: isSendKeyPinned,
                      error: error)
@@ -405,10 +389,7 @@ enum EncryptionPreferencesHelper {
             scheme: publicKeyModel.scheme,
             mimeType: publicKeyModel.mimeType,
             isInternal: false,
-            apiKeys: publicKeyModel.apiKeys,
-            pinnedKeys: publicKeyModel.pinnedKeys,
             hasApiKeys: false,
-            hasPinnedKeys: publicKeyModel.hasPinnedKeys,
             sendKey: sendKey,
             isSendKeyPinned: isSendKeyPinned,
             error: error

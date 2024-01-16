@@ -1,4 +1,3 @@
-
 "Network connection error" = "Error de connexió de xarxa";
 
 "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "No s'ha pogut validar el certificat TLS en intentar connectar-se a l'API de Proton. La vostra connexió a internet actual podria estar controlada. Per mantenir les vostres dades segures, estem impedint que l'aplicació accedeixi a l'API de Proton.\nPer iniciar sessió o accedir al vostre compte, canvieu a una nova xarxa i proveu de tornar a connectar.";

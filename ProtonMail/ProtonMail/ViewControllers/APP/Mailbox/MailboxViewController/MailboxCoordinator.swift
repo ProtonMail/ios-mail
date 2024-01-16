@@ -23,7 +23,9 @@
 import class ProtonCoreDataModel.UserInfo
 import ProtonCoreTroubleShooting
 import ProtonMailAnalytics
+import ProtonCoreUIFoundations
 import SideMenuSwift
+import protocol ProtonCoreServices.APIService
 
 // sourcery: mock
 protocol MailboxCoordinatorProtocol: AnyObject {
@@ -49,7 +51,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private(set) weak var navigation: UINavigationController?
     private weak var sideMenu: SideMenuController?
     private var isMessageSwipeNavigationEnabled: Bool {
-        false
+        true
     }
     var pendingActionAfterDismissal: (() -> Void)?
     private let getApplicationState: () -> UIApplication.State
@@ -57,6 +59,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
 
     private let troubleShootingHelper = TroubleShootingHelper(doh: BackendConfiguration.shared.doh)
     private let dependencies: Dependencies
+    private var _snoozeDateConfigReceiver: SnoozeDateConfigReceiver?
 
     init(sideMenu: SideMenuController?,
          nav: UINavigationController?,
@@ -633,5 +636,49 @@ extension MailboxCoordinator {
            let firstVC = viewStack.first {
             viewController?.navigationController?.setViewControllers([firstVC], animated: false)
         }
+    }
+}
+
+// MARK: - Snooze
+extension MailboxCoordinator: SnoozeSupport {
+    var conversationDataService: ConversationDataServiceProxy { viewModel.user.conversationService }
+
+    var calendar: Calendar { LocaleEnvironment.calendar }
+
+    var isPaidUser: Bool { viewModel.user.hasPaidMailPlan }
+
+    var presentingView: UIView { navigation?.view ?? viewController?.view ?? UIView() }
+
+    var snoozeConversations: [ConversationID] { viewModel.selectedConversations.map(\.conversationID) }
+
+    var snoozeDateConfigReceiver: SnoozeDateConfigReceiver {
+        let receiver = _snoozeDateConfigReceiver ?? SnoozeDateConfigReceiver(
+            saveDate: { [weak self] date in
+                self?.snooze(on: date)
+                self?._snoozeDateConfigReceiver = nil
+            }, cancelHandler: { [weak self] in
+                self?._snoozeDateConfigReceiver = nil
+            }, showSendInTheFutureAlertHandler: {
+                L11n.Snooze.selectTimeInFuture.alertToastBottom()
+            }
+        )
+        _snoozeDateConfigReceiver = receiver
+        return receiver
+    }
+
+    var weekStart: WeekStart { viewModel.user.userInfo.weekStartValue }
+
+    @MainActor
+    func showSnoozeSuccessBanner(on date: Date) {
+        guard let viewController = self.viewController else { return }
+        let dateStr = PMDateFormatter.shared.stringForSnoozeTime(from: date)
+
+        let title = String(format: L11n.Snooze.successBannerTitle, dateStr)
+        let banner = PMBanner(message: title, style: PMBannerNewStyle.info)
+        banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: viewController)
+    }
+
+    func presentPaymentView() {
+        viewController?.presentPayments(paidFeature: .snooze)
     }
 }

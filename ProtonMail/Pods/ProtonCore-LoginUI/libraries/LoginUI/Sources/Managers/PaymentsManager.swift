@@ -35,6 +35,7 @@ class PaymentsManager {
     private let api: APIService
     private let payments: Payments
     private var paymentsUI: PaymentsUI?
+    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
     private(set) var selectedPlan: InAppPurchasePlan?
     private var loginData: LoginData?
     private weak var existingDelegate: StoreKitManagerDelegate?
@@ -44,17 +45,24 @@ class PaymentsManager {
          shownPlanNames: ListOfShownPlanNames,
          clientApp: ClientApp,
          customization: PaymentsUICustomizationOptions,
-         reportBugAlertHandler: BugAlertHandler) {
+         reportBugAlertHandler: BugAlertHandler,
+         featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared) {
         self.api = apiService
+        self.featureFlagsRepository = featureFlagsRepository
         self.payments = Payments(inAppPurchaseIdentifiers: iaps,
                                  apiService: api,
                                  localStorage: DataStorageImpl(),
                                  reportBugAlertHandler: reportBugAlertHandler)
         storeExistingDelegate()
         payments.storeKitManager.delegate = self
-        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
+        if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             // In the dynamic plans, fetching available IAPs from StoreKit is done alongside fetching available plans
-            self.payments.storeKitManager.subscribeToPaymentQueue()
+            Task {
+                if case let .right(plansDataSource) = payments.planService {
+                    try await plansDataSource.fetchAvailablePlans()
+                    payments.storeKitManager.subscribeToPaymentQueue()
+                }
+            }
         } else {
             // Before dynamic plans, to be ready to present the available plans, we must fetch the available IAPs from StoreKit
             payments.storeKitManager.updateAvailableProductsList { [weak self] error in
@@ -70,7 +78,7 @@ class PaymentsManager {
                              planShownHandler: (() -> Void)?,
                              completionHandler: @escaping (Result<(), Error>) -> Void) {
 
-        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
+        if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             // In the dynamic plans, fetching available IAPs from StoreKit is done alongside fetching available plans
             continuePaymentProcess(signupViewController: signupViewController,
                                    planShownHandler: planShownHandler,
@@ -145,14 +153,14 @@ class PaymentsManager {
                     do {
                         try await planDataSource.fetchCurrentPlan()
                         self?.payments.storeKitManager.retryProcessingAllPendingTransactions { [weak self] in
-                            var result: InAppPurchasePlan?
+                            var possiblyPurchasedPlan: InAppPurchasePlan?
                             if planDataSource.currentPlan?.hasExistingProtonSubscription ?? false {
-                                result = self?.selectedPlan
+                                possiblyPurchasedPlan = self?.selectedPlan
                             }
 
                             self?.restoreExistingDelegate()
                             self?.payments.storeKitManager.unsubscribeFromPaymentQueue()
-                            completionHandler(.success(result))
+                            completionHandler(.success(possiblyPurchasedPlan))
                         }
                     } catch {
                         completionHandler(.failure(error))

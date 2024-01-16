@@ -55,6 +55,10 @@ struct MessageEventProcessor {
     }
 
     private func handleDraft(_ draft: Message, message: MessageResponse.Message, context: NSManagedObjectContext) {
+        let localTime = draft.time ?? Date.distantPast
+        let remoteTime = Date(timeIntervalSince1970: TimeInterval(message.time))
+        guard localTime < remoteTime else { return }
+
         draft.title = message.subject
         if let encodedToList = try? encoder.encode(message.toList) {
             draft.toList = String(data: encodedToList, encoding: .utf8) ?? ""
@@ -105,12 +109,22 @@ struct MessageEventProcessor {
         messageObject.time = Date(timeIntervalSince1970: TimeInterval(message.time))
         messageObject.size = NSNumber(value: message.size)
         messageObject.numAttachments = NSNumber(value: message.numAttachments)
-        messageObject.expirationTime = message.expirationTime != 0 ? Date(timeIntervalSince1970: TimeInterval(message.expirationTime)) : nil
+        if message.expirationTime != 0 {
+            messageObject.expirationTime = Date(timeIntervalSince1970: TimeInterval(message.expirationTime))
+        } else {
+            messageObject.expirationTime = nil
+        }
         messageObject.addressID = message.addressID
         if let encodedAttachmentsMetadata = try? encoder.encode(message.attachmentsMetadata) {
             messageObject.attachmentsMetadata =
             String(data: encodedAttachmentsMetadata, encoding: .utf8) ?? ""
         }
+        if message.snoozeTime != 0 {
+            messageObject.snoozeTime = Date(timeIntervalSince1970: TimeInterval(message.snoozeTime))
+        } else {
+            messageObject.snoozeTime = nil
+        }
+
         applyLabelAddition(message, on: messageObject, context: context)
         applyLabelDeletion(message, on: messageObject, context: context)
 

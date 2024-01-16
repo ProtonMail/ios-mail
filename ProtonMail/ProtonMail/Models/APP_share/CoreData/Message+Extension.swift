@@ -70,6 +70,16 @@ extension Message {
             addLabelID = sentSelf ? Location.inbox.rawValue : Location.sent.rawValue // "7"
         }
 
+        if labelID == Location.snooze.rawValue {
+            let folders = labels
+                .compactMap { $0 as? Label }
+                .filter { $0.type == 3 }
+            if !folders.isEmpty {
+                // The message is in other folder, shouldn't be moved to snooze
+                return nil
+            }
+        }
+
         if let context = self.managedObjectContext {
             let labelObjects = self.mutableSetValue(forKey: Attributes.labels)
             if let toLabel = Label.labelForLabelID(addLabelID, inManagedObjectContext: context) {

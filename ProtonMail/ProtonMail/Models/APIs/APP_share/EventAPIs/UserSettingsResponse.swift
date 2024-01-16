@@ -40,7 +40,7 @@ struct UserSettingsResponse: Decodable {
     }
 
     struct Email: Decodable {
-        let value: String
+        let value: String?
         let notify: Int
 
         enum CodingKeys: String, CodingKey {

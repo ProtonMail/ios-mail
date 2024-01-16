@@ -84,6 +84,7 @@ extension ContextLabelEntity {
         order: Int = .init(),
         objectID: ObjectID = .init(rawValue: .init()),
         expirationTime: Date? = nil,
+        snoozeTime: Date? = nil,
         isSoftDeleted: Bool = .init()
     ) -> Self {
         ContextLabelEntity(
@@ -98,6 +99,7 @@ extension ContextLabelEntity {
             order: order,
             objectID: objectID,
             expirationTime: expirationTime,
+            snoozeTime: snoozeTime,
             isSoftDeleted: isSoftDeleted
         )
     }
@@ -117,6 +119,7 @@ extension ConversationEntity {
         userID: UserID = .init(rawValue: .init()),
         contextLabelRelations: [ContextLabelEntity] = .init(),
         attachmentsMetadata: [AttachmentsMetadata] = .init(),
+        displaySnoozedReminder: Bool = .init(),
         isSoftDeleted: Bool = .init()
     ) -> Self {
         ConversationEntity(
@@ -133,6 +136,7 @@ extension ConversationEntity {
             userID: userID,
             contextLabelRelations: contextLabelRelations,
             attachmentsMetadata: attachmentsMetadata,
+            displaySnoozedReminder: displaySnoozedReminder,
             isSoftDeleted: isSoftDeleted
         )
     }
@@ -287,6 +291,7 @@ extension MessageEntity {
         password: String = .init(),
         passwordHint: String = .init(),
         objectID: ObjectID = .init(rawValue: .init()),
+        snoozeTime: Date? = nil,
         attachmentsMetadata: [AttachmentsMetadata] = .init()
     ) -> Self {
         MessageEntity(
@@ -332,7 +337,21 @@ extension MessageEntity {
             password: password,
             passwordHint: passwordHint,
             objectID: objectID,
+            snoozeTime: snoozeTime,
             attachmentsMetadata: attachmentsMetadata
+        )
+    }
+}
+extension UserEventEntity {
+    static func make(
+        userID: UserID = .init(rawValue: .init()),
+        eventID: String = .init(),
+        updateTime: Date? = nil
+    ) -> Self {
+        UserEventEntity(
+            userID: userID,
+            eventID: eventID,
+            updateTime: updateTime
         )
     }
 }

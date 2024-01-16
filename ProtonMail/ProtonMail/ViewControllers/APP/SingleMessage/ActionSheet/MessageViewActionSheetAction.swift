@@ -31,6 +31,7 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
     case labelAs
     case markRead
     case markUnread
+    case snooze
     case moveTo
     case print
     case reply
@@ -68,6 +69,8 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
             return LocalString._title_of_unread_action_in_action_sheet
         case .markRead:
             return LocalString._title_of_read_action_in_action_sheet
+        case .snooze:
+            return L11n.Snooze.title
         case .labelAs:
             return LocalString._action_sheet_action_title_labelAs
         case .trash:
@@ -131,6 +134,8 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
             return IconProvider.envelopeDot
         case .markRead:
             return IconProvider.envelope
+        case .snooze:
+            return IconProvider.clock
         case .labelAs:
             return IconProvider.tag
         case .trash:
@@ -181,7 +186,7 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
         case .reply, .replyAll, .forward, .replyOrReplyAll, .replyInConversation, .forwardInConversation,
                 .replyOrReplyAllInConversation, .replyAllInConversation:
             return .messageActions
-        case .markUnread, .markRead, .labelAs, .star, .unstar, .viewInLightMode, .viewInDarkMode:
+        case .markUnread, .markRead, .labelAs, .star, .unstar, .viewInLightMode, .viewInDarkMode, .snooze:
             return .manage
         case .print, .saveAsPDF, .viewHeaders, .viewHTML, .reportPhishing, .toolbarCustomization:
             return .more
@@ -233,6 +238,7 @@ extension MessageViewActionSheetAction {
         return [
             .star,
             .markUnread,
+            .snooze,
             .labelAs,
             .trash,
             .archive,
@@ -246,6 +252,7 @@ extension MessageViewActionSheetAction {
             .replyOrReplyAll,
             .forward,
             .markUnread,
+            .snooze,
             .labelAs,
             .star,
             .viewInLightMode,
@@ -302,6 +309,8 @@ extension MessageViewActionSheetAction {
                 return nil
             case .downloadAttachments:
                 return nil
+            case .snooze:
+                return .snooze
             }
         }
     }

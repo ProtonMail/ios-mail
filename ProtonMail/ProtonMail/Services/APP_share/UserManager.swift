@@ -79,14 +79,25 @@ class UserManager: ObservableObject {
                 break
             }
             #endif
-                container.userCachedStatus.removeEncryptedMobileSignature(userID: self.userID.rawValue)
-                container.userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
-                container.userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userID.rawValue)
-                container.userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userID.rawValue)
-                self.authCredentialAccessQueue.async {
-                    seal.fulfill_()
-                }
+            container.userCachedStatus.removeEncryptedMobileSignature(userID: self.userID.rawValue)
+            container.userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
+            container.userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userID.rawValue)
+            container.userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userID.rawValue)
+            removeAutoImportContactsUserDefaults()
+            self.authCredentialAccessQueue.async {
+                seal.fulfill_()
+            }
         }
+    }
+
+    private func removeAutoImportContactsUserDefaults() {
+        var historyTokens = container.userDefaults[.contactsHistoryTokenPerUser]
+        historyTokens[userID.rawValue] = nil
+        container.userDefaults[.contactsHistoryTokenPerUser] = historyTokens
+
+        var autoImportFlags = container.userDefaults[.isAutoImportContactsOn]
+        autoImportFlags[userID.rawValue] = nil
+        container.userDefaults[.isAutoImportContactsOn] = autoImportFlags
     }
 
     var delegate: UserManagerSave?
@@ -275,7 +286,7 @@ class UserManager: ObservableObject {
         featureFlagsDownloadService.getFeatureFlags(completion: nil)
         Task {
             try? await self.container.featureFlagsRepository
-                .fetchFlags(for: userID.rawValue, with: apiService)
+                .fetchFlags(for: userID.rawValue, using: apiService)
         }
     }
 

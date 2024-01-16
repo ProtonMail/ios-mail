@@ -43,7 +43,7 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
                 switch result {
                 case .success(let tuple):
                     guard let preContact = tuple.preContact else {
-                        callback(.success(([], tuple.keysResponse.keys.isEmpty ? nil : tuple.keysResponse)))
+                        callback(.success(([], tuple.keysResponse)))
                         return
                     }
                     let output = self.getPinnedKeys(contact: preContact, keysResponse: tuple.keysResponse)
@@ -89,17 +89,12 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
     }
 
     private func fetchPublicKeys(email: String, completion: @escaping (Result<KeysResponse, Error>) -> Void) {
-        dependencies.fetchEmailsPublicKeys.execute(params: .init(emails: [email])) { result in
-            switch result {
-            case .success(let keysResponseDict):
-                guard let keyResponse = keysResponseDict[email] else {
-                    fatalError("Inconsistent state: a KeysResponse should exist if no error is returned")
-                }
-                completion(.success(keyResponse))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        ConcurrencyUtils.runWithCompletion(
+            block: dependencies.fetchEmailsPublicKeys.execute,
+            argument: email,
+            callCompletionOn: executionQueue,
+            completion: completion
+        )
     }
 
     private func getPinnedKeys(contact: PreContact, keysResponse: KeysResponse) -> Output {
@@ -108,7 +103,7 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
 
         let compromisedKeyFingerprints = apiKeys
             .filter { !$0.flags.contains(.notCompromised) }
-            .compactMap { $0.publicKey?.fingerprint }
+            .map(\.publicKey.fingerprint)
 
         let validKeys: [ArmoredKey] = pinnedKeys
             .filter { pinnedKey in

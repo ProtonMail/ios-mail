@@ -27,7 +27,8 @@ class AttachmentView: UIView {
     let iconView = SubViewsFactory.iconView
     let titleLabel = UILabel.init(frame: .zero)
     let arrowIconView = SubViewsFactory.arrowIcon
-    private let separator = SubViewsFactory.separator
+    private let topSeparator = SubViewsFactory.separator
+    private let bottomSeparator = SubViewsFactory.separator
 
     init() {
         super.init(frame: .zero)
@@ -43,24 +44,24 @@ class AttachmentView: UIView {
         addSubview(iconView)
         addSubview(titleLabel)
         addSubview(arrowIconView)
-        addSubview(separator)
+        addSubview(topSeparator)
+        addSubview(bottomSeparator)
     }
 
     private func setupLayout() {
         [
-            self.heightAnchor.constraint(equalToConstant: 48)
+            self.heightAnchor.constraint(equalToConstant: 48).setPriority(as: .oneLessThanRequired)
         ].activate()
 
         [
             iconView.heightAnchor.constraint(equalToConstant: 20),
             iconView.widthAnchor.constraint(equalToConstant: 20),
-            iconView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            iconView.topAnchor.constraint(equalTo: self.topAnchor, constant: 14),
-            iconView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -14)
+            iconView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            iconView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ].activate()
 
         [
-            titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 14),
             titleLabel.centerYAnchor.constraint(equalTo: iconView.centerYAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: arrowIconView.leadingAnchor, constant: -8)
         ].activate()
@@ -73,10 +74,17 @@ class AttachmentView: UIView {
         ].activate()
 
         [
-            separator.leadingAnchor.constraint(equalTo: leadingAnchor),
-            separator.trailingAnchor.constraint(equalTo: trailingAnchor),
-            separator.bottomAnchor.constraint(equalTo: bottomAnchor),
-            separator.heightAnchor.constraint(equalToConstant: 1)
+            topSeparator.leadingAnchor.constraint(equalTo: leadingAnchor),
+            topSeparator.trailingAnchor.constraint(equalTo: trailingAnchor),
+            topSeparator.topAnchor.constraint(equalTo: topAnchor),
+            topSeparator.heightAnchor.constraint(equalToConstant: 1)
+        ].activate()
+
+        [
+            bottomSeparator.leadingAnchor.constraint(equalTo: leadingAnchor),
+            bottomSeparator.trailingAnchor.constraint(equalTo: trailingAnchor),
+            bottomSeparator.bottomAnchor.constraint(equalTo: bottomAnchor),
+            bottomSeparator.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
     }
 }
@@ -86,7 +94,7 @@ private enum SubViewsFactory {
     static var iconView: UIImageView {
         let view = UIImageView(image: IconProvider.paperClip.withRenderingMode(.alwaysTemplate))
         view.contentMode = .scaleAspectFit
-        view.tintColor = ColorProvider.TextNorm
+        view.tintColor = ColorProvider.IconWeak
         return view
     }
 

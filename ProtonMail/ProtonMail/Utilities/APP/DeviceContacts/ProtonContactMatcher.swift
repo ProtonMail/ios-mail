@@ -20,28 +20,68 @@ import Foundation
 struct ProtonContactMatcher {
     let contactProvider: ContactProviderProtocol
 
-    /// Returns the DeviceContactIdentifiers that match an existing Proton Contact by uuid or by email
-    func matchProtonContacts(with identifiers: [DeviceContactIdentifier]) -> [DeviceContactIdentifier] {
+    /// Returns the `DeviceContactIdentifiers` that match an existing Proton Contact by uuid or by email
+    func matchProtonContacts(
+        with identifiers: [DeviceContactIdentifier]
+    ) -> (matchByUuid: [DeviceContactIdentifier], matchByEmail: [DeviceContactIdentifier]) {
         var pendingIdentifiers = identifiers
 
         // Compare passed DeviceContactIdentifier with Proton contacts by uuid
-        let deviceContactUuids = pendingIdentifiers.map(\.uuid)
-        let contactEntitiesMatchById = contactProvider.getContactsByUUID(deviceContactUuids)
-        pendingIdentifiers.removeAll(where: { contactEntitiesMatchById.map(\.uuid).contains($0.uuid) })
+        let normalisedDeviceContactUuids = pendingIdentifiers.map(\.uuidNormalisedForAutoImport)
+        let contactEntitiesMatchById = contactProvider.getContactsByUUID(normalisedDeviceContactUuids)
+        let uuidsContactEntitiesMatchById = contactEntitiesMatchById.map(\.uuid)
+        pendingIdentifiers.removeAll(where: { uuidsContactEntitiesMatchById.contains($0.uuidNormalisedForAutoImport) })
 
         // Compare remaining DeviceContactIdentifier with Proton contacts by email
         let deviceContactEmails = pendingIdentifiers.flatMap(\.emails)
-        let emailEntitiesMatch = contactProvider.getEmailsByAddress(deviceContactEmails)
+        let emailEntitiesMatchByAddress = contactProvider.getEmailsByAddress(deviceContactEmails)
 
-        let deviceContactIdentifiersMatchById = identifiers.filter { deviceContact in
-            return contactEntitiesMatchById.map(\.uuid).contains(deviceContact.uuid)
+        let deviceContactIdentifiersMatchByUuid = identifiers.filter { deviceContact in
+            return contactEntitiesMatchById.map(\.uuid).contains(deviceContact.uuidNormalisedForAutoImport)
         }
         let deviceContactIdentifiersMatchByEmail = identifiers.filter { deviceContact in
             let matchedEmails = deviceContact.emails.filter { email in
-                emailEntitiesMatch.map(\.email).contains(email)
+                emailEntitiesMatchByAddress.map(\.email).contains(email)
             }
             return !matchedEmails.isEmpty
         }
-        return deviceContactIdentifiersMatchById + deviceContactIdentifiersMatchByEmail
+        return (deviceContactIdentifiersMatchByUuid, deviceContactIdentifiersMatchByEmail)
+    }
+
+    /// This function is specific to the auto import feature and it looks for a contact
+    /// that has the same email as the `DeviceContact` passed.
+    ///
+    /// If there is one single contact that matches, it returns it.
+    /// If there are multiple contacts with that email, it will compare the name to
+    /// those matches. If only one contact has the same name, it will return that
+    /// contact, otherwise it won't return any contact.
+    func findContactToMergeMatchingEmail(
+        with deviceContact: DeviceContact,
+        in contacts: [ContactEntity]
+    ) -> ContactEntity? {
+        let matchContacts = contacts.filter { entity in
+            !entity
+                .emailRelations
+                .filter { deviceContact.identifier.emails.contains($0.email) }
+                .isEmpty
+        }
+        guard !matchContacts.isEmpty else {
+            let message = "findContactToMergeMatchingEmail no contact match"
+            SystemLogger.log(message: message, category: .contacts, isError: true)
+            return nil
+        }
+        if matchContacts.count == 1, let contact = matchContacts.first {
+            return contact
+        } else {
+            // if multiple contacts match by email, we return one (if only one macthes the name) or none
+            let macthAlsoByName = matchContacts.filter { $0.name == deviceContact.fullName }
+            if macthAlsoByName.count == 1, let matchByName = macthAlsoByName.first {
+                return matchByName
+            } else {
+                let message = "findContactToMergeMatchingEmail inconclusive match"
+                SystemLogger.log(message: message, category: .contacts, isError: true)
+                return nil
+            }
+        }
     }
 }

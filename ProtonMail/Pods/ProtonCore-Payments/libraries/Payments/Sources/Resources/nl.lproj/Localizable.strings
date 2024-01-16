@@ -1,4 +1,3 @@
-
 "Contact customer support" = "Neem contact op met de klantondersteuning";
 
 "Failed to get list of available products from App Store." = "Fout bij het ophalen van lijst met beschikbare producten uit de App Store.";
@@ -37,9 +36,7 @@
 
 "Payment failed" = "Betaling mislukt";
 
-"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "U heeft succesvol geregistreerd maar uw betaling is niet verwerkt. Om de betalingsinformatie opnieuw te verzenden, klikt u op Opnieuw. Het bedrag wordt slechts één keer in rekening gebracht. 
-
-Als dit probleem zich blijft voortdoen kunt u contact opnemen met onze klantenondersteuning.";
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "U heeft succesvol geregistreerd maar uw betaling is niet verwerkt. Om de betalingsinformatie opnieuw te verzenden, klikt u op Opnieuw. Het bedrag wordt slechts één keer in rekening gebracht. Als dit probleem zich blijft voortdoen kunt u contact opnemen met onze klantenondersteuning.";
 
 "Retry" = "Opnieuw proberen";
 

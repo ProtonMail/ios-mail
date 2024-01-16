@@ -135,16 +135,16 @@ public struct TroubleShootingViewModel {
                 return attributedString
 
             case .otherNotes:
-                let holder = TSTranslation._no_solution_description.l10n
-                let field1 = TSTranslation._troubleshooting_support_from.l10n
-                let field2 = TSTranslation._troubleshooting_email_title.l10n
-                let field3 = TSTranslation._troubleshooting_twitter_title.l10n
-                let full = String.localizedStringWithFormat(holder, field1, field2, field3)
+                let noSolutionDescription = TSTranslation._no_solution_description.l10n
+                let supportForm = TSTranslation._troubleshooting_support_from.l10n
+                let email = TSTranslation._troubleshooting_email_title.l10n
+                let twitter = TSTranslation._troubleshooting_twitter_title.l10n
+                let full = String.localizedStringWithFormat(noSolutionDescription, supportForm, email, twitter)
                 let attributedString = full.buildAttributedString(font: caption1, color: ColorProvider.TextWeak)
 
-                attributedString.addHyperLinks(hyperlinks: [field1: ExternalLink.supprotForm,
-                                                            field2: ExternalLink.protonSupportMailTo,
-                                                            field3: ExternalLink.protonTwitter])
+                attributedString.addHyperLinks(hyperlinks: [supportForm: ExternalLink.supportForm,
+                                                            email: ExternalLink.protonSupportMailTo,
+                                                            twitter: ExternalLink.protonTwitter])
                 return attributedString
             }
         }

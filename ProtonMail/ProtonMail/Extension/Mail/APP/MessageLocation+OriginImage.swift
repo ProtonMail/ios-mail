@@ -47,7 +47,9 @@ extension Message.Location {
             return IconProvider.inbox
         case .allmail, .blocked, .starred, .almostAllMail:
             return nil
-        case .scheduled, .snooze:
+        case .scheduled:
+            return Asset.icPaperPlaneClock.image
+        case .snooze:
             return IconProvider.clock
         }
     }

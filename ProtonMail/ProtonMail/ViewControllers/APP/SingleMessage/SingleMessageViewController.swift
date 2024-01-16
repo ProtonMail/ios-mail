@@ -81,8 +81,10 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
         super.viewDidLoad()
         viewModel.viewDidLoad()
         viewModel.refreshView = { [weak self] in
-            self?.reloadMessageRelatedData()
-            self?.setUpToolBarIfNeeded()
+            DispatchQueue.main.async {
+                self?.reloadMessageRelatedData()
+                self?.setUpToolBarIfNeeded()
+            }
         }
         setUpSelf()
         embedChildren()
@@ -441,6 +443,9 @@ private extension SingleMessageViewController {
             } else {
                 handleOpenComposerAction(.reply)
             }
+        case .snooze:
+            PMAssertionFailure("Snooze doesn't support single message")
+            break
         }
     }
 
@@ -574,7 +579,7 @@ extension SingleMessageViewController {
             viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
         }
         let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
-        banner.show(at: .bottom, on: self)
+        banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: self)
     }
 }
 

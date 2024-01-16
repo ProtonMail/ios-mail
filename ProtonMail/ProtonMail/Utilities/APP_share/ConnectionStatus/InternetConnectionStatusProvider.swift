@@ -10,28 +10,10 @@ protocol ConnectionStatusReceiver: AnyObject {
 
 // sourcery: mock
 protocol URLSessionProtocol {
-    func dataTask(
-        withRequest: URLRequest,
-        completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void
-    ) -> URLSessionDataTaskProtocol
-
     func data(for request: URLRequest) async throws -> (Data, URLResponse)
 }
 extension URLSession: URLSessionProtocol {
-    func dataTask(
-        withRequest: URLRequest,
-        completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void
-    ) -> URLSessionDataTaskProtocol {
-        let task = dataTask(with: withRequest, completionHandler: completionHandler)
-        return task
-    }
 }
-
-// sourcery: mock
-protocol URLSessionDataTaskProtocol {
-    func resume()
-}
-extension URLSessionDataTask: URLSessionDataTaskProtocol {}
 
 // sourcery: mock
 protocol InternetConnectionStatusProviderProtocol {
@@ -118,7 +100,7 @@ final class InternetConnectionStatusProvider: InternetConnectionStatusProviderPr
     func apiCallIsSucceeded() {
         guard !status.isConnected else { return }
         monitorQueue.async {
-            self.log(message: "API call is succeeded when status is disconnected")
+            self.log(message: "API call is succeeded when status is disconnected \(self.status)")
             self.status = .connected
         }
     }

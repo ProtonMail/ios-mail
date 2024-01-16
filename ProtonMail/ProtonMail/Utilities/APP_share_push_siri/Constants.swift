@@ -61,6 +61,13 @@ struct Constants {
         static let maxNumberOfSeconds: TimeInterval = 90 * 86_400 // 86400 = 1 day
     }
 
+    enum Snooze {
+        static let snoozeHour = 8
+        static let minNumberOfMinutes = 30
+        static var minNumberOfSeconds: TimeInterval { TimeInterval(self.minNumberOfMinutes * 60) }
+        static let maxNumberOfSeconds: TimeInterval = .infinity
+    }
+
     enum ImageProxy {
         static let cacheDiskSizeLimitInBytes: UInt = 1_024 * 1_024 * 1024   // 1 GiB
     }

@@ -30,6 +30,7 @@ enum BannerType: Int {
     case autoReply
     case sendReceipt
     case decryptionError
+    case snooze
 
     var order: Int { rawValue }
 }

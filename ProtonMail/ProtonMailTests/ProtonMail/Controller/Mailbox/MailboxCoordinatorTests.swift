@@ -36,6 +36,7 @@ class MailboxCoordinatorTests: XCTestCase {
         let testContainer = TestContainer()
         testContainer.internetConnectionStatusProviderFactory.register { self.connectionStatusProviderMock }
         let dummyUser = UserManager(api: dummyAPIService, globalContainer: testContainer)
+        testContainer.usersManager.add(newUser: dummyUser)
 
         conversationStateProviderMock = .init()
         let lastUpdatedStoreMock = MockLastUpdatedStoreProtocol()

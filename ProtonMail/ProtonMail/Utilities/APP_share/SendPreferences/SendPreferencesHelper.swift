@@ -30,10 +30,9 @@ enum SendPreferencesHelper {
                      sign: newSign,
                      pgpScheme: pgpScheme,
                      mimeType: mimeType,
-                     publicKeys: encryptionPreferences.sendKey,
+                     publicKey: encryptionPreferences.sendKey,
                      isPublicKeyPinned: encryptionPreferences.isSendKeyPinned,
                      hasApiKeys: encryptionPreferences.hasApiKeys,
-                     hasPinnedKeys: encryptionPreferences.hasPinnedKeys,
                      error: encryptionPreferences.error)
     }
 

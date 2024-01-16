@@ -44,3 +44,8 @@ extension NSLayoutConstraint {
         return self
     }
 }
+
+extension UILayoutPriority {
+    /// This priority can be used when you need .required but also need to handle compression to 0 height (common with table view cells).
+    static let oneLessThanRequired = UILayoutPriority(rawValue: UILayoutPriority.required.rawValue - 1)
+}

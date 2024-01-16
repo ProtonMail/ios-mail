@@ -94,7 +94,7 @@ final class UnlockTests: XCTestCase {
     }
 
     func testStart_whenIsAppAccessResolverDisabled_itShouldSetupCoreData() async {
-        sut = .init(dependencies: testContainer)
+        sut = .init(dependencies: testContainer, isAppAccessResolverEnabled: false)
 
         _ = await sut.start()
         XCTAssertEqual(mockSetupCoreData.setupStub.callCounter, 1)
@@ -137,12 +137,5 @@ extension UnlockTests {
     private func setUpAppAccessDeniedReasonAppLock_and_userInUserDefaults() {
         testContainer.addNewUserInUserDefaults(userID: "4")
         mockKeyMaker.isMainKeyInMemory = false
-    }
-}
-
-// Needed by MockUnlockService
-extension AppAccess {
-    init() {
-        self = .accessGranted
     }
 }

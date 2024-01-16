@@ -536,6 +536,16 @@ extension UserContainer: HasFeatureFlagsDownloadService {
     }
 }
 
+protocol HasFeatureFlagProvider {
+    var featureFlagProvider: FeatureFlagProvider { get }
+}
+
+extension UserContainer: HasFeatureFlagProvider {
+    var featureFlagProvider: FeatureFlagProvider {
+        featureFlagProviderFactory()
+    }
+}
+
 protocol HasFetchAndVerifyContacts {
     var fetchAndVerifyContacts: FetchAndVerifyContacts { get }
 }
@@ -546,12 +556,12 @@ extension UserContainer: HasFetchAndVerifyContacts {
     }
 }
 
-protocol HasFetchAttachment {
-    var fetchAttachment: FetchAttachment { get }
+protocol HasFetchAttachmentUseCase {
+    var fetchAttachment: FetchAttachmentUseCase { get }
 }
 
-extension UserContainer: HasFetchAttachment {
-    var fetchAttachment: FetchAttachment {
+extension UserContainer: HasFetchAttachmentUseCase {
+    var fetchAttachment: FetchAttachmentUseCase {
         fetchAttachmentFactory()
     }
 }

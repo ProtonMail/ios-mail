@@ -21,8 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Contacts
-import ProtonCoreUIFoundations
+import ProtonCoreDataModel
 import ProtonCorePaymentsUI
+import ProtonCoreUIFoundations
 
 class ContactsAndGroupsSharedCode: ProtonMailViewController {
     typealias Dependencies = HasPaymentsUIFactory
@@ -99,10 +100,13 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         ) { _ in
             self.importButtonTapped()
         }
-        let actionsGroup = PMActionSheetItemGroup(items: [newContactAction,
-                                                          newContactGroupAction,
-                                                          uploadDeviceContactAction],
-                                                  style: .clickable)
+
+        var items: [PMActionSheetItem] = [newContactAction, newContactGroupAction]
+        if !UserInfo.isAutoImportContactsEnabled {
+            items.append(uploadDeviceContactAction)
+        }
+
+        let actionsGroup = PMActionSheetItemGroup(items: items, style: .clickable)
         let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup]) /*, maximumOccupy: 0.7) */
         actionSheet.presentAt(self.tabBarController ?? self, animated: true)
     }

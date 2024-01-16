@@ -660,17 +660,17 @@ extension ComposeContainerViewController: AttachmentController, ComposeContainer
                     return
                 }
                 self.isAddingAttachment = !isInline
+                self.viewModel.addAttachment(newAttachment.objectID)
 
                 let group = DispatchGroup()
                 group.enter()
-                self.editor.collectDraftData().ensure { [weak self] in
-                    self?.viewModel.childViewModel.updateDraft()
-                    self?.addAttachment(newAttachment) {
-                        self?.updateCurrentAttachmentSize(completion: {
-                            group.leave()
-                        })
-                    }
-                }.cauterize()
+                self.addAttachment(newAttachment) { [weak self] in
+                    self?.updateCurrentAttachmentSize(completion: nil)
+                    self?.editor.collectDraftData().ensure {
+                        self?.viewModel.childViewModel.updateDraft()
+                        group.leave()
+                    }.cauterize()
+                }
                 group.wait()
                 seal.fulfill_()
             }
@@ -691,7 +691,6 @@ extension ComposeContainerViewController: AttachmentController, ComposeContainer
     }
 
     private func addAttachment(_ attachment: AttachmentEntity, completion: @escaping () -> Void) {
-        viewModel.addAttachment(attachment.objectID)
         viewModel.user.usedSpace(plus: attachment.fileSize.int64Value)
 
         // Insert inline attachment into the composer
@@ -760,7 +759,7 @@ extension ComposeContainerViewController: ScheduledSendHelperDelegate {
             guard let nav = self?.navigationController?.view else {
                 return
             }
-            let promotion = ScheduleSendPromotionView()
+            let promotion = PromotionView()
             promotion.presentPaymentUpgradeView = { [weak self] in
                 #if !APP_EXTENSION
                 self?.presentPaymentView()
@@ -776,7 +775,7 @@ extension ComposeContainerViewController: ScheduledSendHelperDelegate {
             promotion.viewWasDismissed = { [weak self] in
                 self?.showScheduleSendActionSheet()
             }
-            promotion.present(on: nav)
+            promotion.present(on: nav, type: .scheduleSend)
         }.cauterize()
     }
 
@@ -887,6 +886,12 @@ extension ComposeContainerViewController: ComposerAttachmentVCDelegate {
             self?.updateAttachmentCount(number: number)
             self?.updateCurrentAttachmentSize(completion: nil)
         }
+    }
+
+    func uploadAttachmentFailed(composerVC: ComposerAttachmentVC) {
+        let number = composerVC.attachmentCount
+        updateAttachmentCount(number: number)
+        updateCurrentAttachmentSize(completion: nil)
     }
 }
 

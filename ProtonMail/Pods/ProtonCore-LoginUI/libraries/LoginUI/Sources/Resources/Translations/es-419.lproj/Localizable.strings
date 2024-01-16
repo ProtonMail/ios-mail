@@ -1,4 +1,3 @@
-
 "Privacy by default" = "Privacidad por defecto";
 
 "Proton address required" = "Es necesaria una dirección de Proton";
@@ -189,8 +188,6 @@
 
 "Password can not be empty.\nPlease try again." = "La contraseña no puede estar vacía.\nIntente de nuevo.";
 
-"Password must contain at least %@ characters." = "La contraseña debe tener al menos %@ caracteres.";
-
 "Passwords do not match.\nPlease try again." = "Las contraseñas no coinciden.\nIntente de nuevo.";
 
 "Email address already used." = "La dirección de correo ya está en uso.";
@@ -217,4 +214,4 @@
 
 "Sign in" = "Iniciar sesión";
 
-"Troubleshoot" = "Solución de problemas";
+"Troubleshoot" = "Resolución de problemas";

@@ -54,10 +54,14 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
         self.dependencies = dependencies
         super.init(nibName: "ContactGroupDetailViewController", bundle: nil)
         self.viewModel.reloadView = { [weak self] in
-            self?.refresh()
+            DispatchQueue.main.async {
+                self?.refresh()
+            }
         }
         self.viewModel.dismissView = { [weak self] in
-            self?.navigationController?.popViewController(animated: true)
+            DispatchQueue.main.async {
+                self?.navigationController?.popViewController(animated: true)
+            }
         }
         trackLifetime()
     }

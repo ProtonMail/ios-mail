@@ -59,6 +59,7 @@ struct MessageResponse: Decodable {
         let labelIDsAdded: [String]?
         let labelIDsRemoved: [String]?
         let attachmentsMetadata: [ConversationResponse.AttachmentMetadata]?
+        let snoozeTime: Int
 
         // swiftlint:disable:next nesting
         enum CodingKeys: String, CodingKey {
@@ -92,6 +93,7 @@ struct MessageResponse: Decodable {
             case labelIDsAdded = "LabelIDsAdded"
             case labelIDsRemoved = "LabelIDsRemoved"
             case attachmentsMetadata = "AttachmentsMetadata"
+            case snoozeTime = "SnoozeTime"
         }
     }
 }

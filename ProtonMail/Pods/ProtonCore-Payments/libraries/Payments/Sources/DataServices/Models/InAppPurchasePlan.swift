@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCoreFeatureFlags
 import ProtonCoreUtilities
 
 public typealias ListOfIAPIdentifiers = Set<String>
@@ -39,18 +40,26 @@ public struct InAppPurchasePlan: Equatable, Hashable {
     public let storeKitProductId: ProductId?
     public let protonName: String
     public let offer: String?
-    public let period: String?
+    public var period: String?
     public let currency: String?
 
     public var isFreePlan: Bool { InAppPurchasePlan.isThisAFreePlan(protonName: protonName) }
+
+    // FIXME: check if clients use this, and remove because it's too coupled anyway
     public var isPlusPlan: Bool { InAppPurchasePlan.isThisAPlusPlan(protonName: protonName) }
     public var isUnlimitedPlan: Bool { InAppPurchasePlan.isThisAUnlimitedPlan(protonName: protonName) }
 
     public static let freePlan: InAppPurchasePlan = .init(protonPlanName: "free", offer: nil, listOfIAPIdentifiers: [])
     public static var freePlanName: String { freePlan.protonName }
 
-    public static func isThisAFreePlan(protonName: String) -> Bool {
-        protonName == freePlanName || protonName == "vpnfree" || protonName == "drivefree"
+    // FIXME: these checks are possibly too coupled to plan name, and betray too much knowledge
+    public static func isThisAFreePlan(protonName: String, featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared) -> Bool {
+        if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
+            return protonName == freePlanName || protonName.containsIgnoringCase(check: "vpnfree") || protonName.containsIgnoringCase(check: "drivefree")
+        } else {
+            return protonName == freePlanName || protonName == "vpnfree" || protonName == "drivefree"
+        }
+
     }
 
     public static func isThisAPlusPlan(protonName: String) -> Bool {
@@ -143,6 +152,12 @@ public struct InAppPurchasePlan: Equatable, Hashable {
         return iapPlan.storeKitProductId != nil && iapPlan.period == cycle.map(String.init) && iapPlan.currency?.lowercased() == currency?.lowercased()
     }
 
+    /// Given a Plan and a list of App Store product ids,
+    /// it will create an InAppPurchasePlan whose cycle
+    /// coincides with the one in the Plan if there's a
+    /// product id with the same cycle component, and same
+    /// Proton plan name (i.e. `bundle2022`), and
+    /// offer, period and currency extracted from the product id components
     public init?(protonPlan: Plan, listOfIAPIdentifiers: ListOfIAPIdentifiers) {
         guard !protonPlan.name.isEmpty else { return nil }
         if let vendorIAPs = protonPlan.vendors?.apple.plans {
@@ -162,22 +177,39 @@ public struct InAppPurchasePlan: Equatable, Hashable {
         }
     }
 
-    public init?(storeKitProductId: ProductId) {
-        guard let matchingPlanDetails = InAppPurchasePlan.extractPlanDetails(from: storeKitProductId) else { return nil }
-        self.init(storeKitProductId: matchingPlanDetails.storeKitProductId,
-                  protonName: matchingPlanDetails.protonPlanName,
-                  offer: matchingPlanDetails.offerName,
-                  period: matchingPlanDetails.period,
-                  currency: matchingPlanDetails.currency)
+    /// Creates an InAppPurchasePlan from the corresponding components in the product id:
+    /// plan name, offer, period and currency
+    public init?(storeKitProductId: ProductId,
+                 featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared) {
+        if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)  {
+            self.init(storeKitProductId: storeKitProductId,
+                      protonName: storeKitProductId, // only used for observability to find if it's the free plan
+                      offer: nil,
+                      period: nil,
+                      currency: "USD")
+        } else {
+            guard let matchingPlanDetails = InAppPurchasePlan.extractPlanDetails(from: storeKitProductId) else { return nil }
+            self.init(storeKitProductId: matchingPlanDetails.storeKitProductId,
+                      protonName: matchingPlanDetails.protonPlanName,
+                      offer: matchingPlanDetails.offerName,
+                      period: matchingPlanDetails.period,
+                      currency: matchingPlanDetails.currency)
+        }
     }
 
+    /// Creates an InAppPurchasePlan from an Instance's Product Id corresponding components
     public init?(availablePlanInstance: AvailablePlans.AvailablePlan.Instance) {
         guard let iapIdentifier = availablePlanInstance.vendors?.apple.productID else {
             return nil
         }
         self.init(storeKitProductId: iapIdentifier)
+        self.period = availablePlanInstance.cycle.description
     }
 
+    /// Creates an InAppPurchasePlan with a Proton plan anem, an offer if present,
+    /// and a list of Product Ids, picking the first product id that matches
+    /// the proton plan name (if possible, otherwise the passed one),
+    /// the offer (if possible), the cycle and the currency (if they exist)
     private init(protonPlanName: String, offer: String?, listOfIAPIdentifiers: ListOfIAPIdentifiers) {
         let matchingPlanDetails = listOfIAPIdentifiers
             .compactMap(InAppPurchasePlan.extractPlanDetails(from:))
@@ -187,6 +219,7 @@ public struct InAppPurchasePlan: Equatable, Hashable {
                 } else {
                     return $0.protonPlanName == protonPlanName && $0.offerName == nil
                 }
+
             }
         self.init(storeKitProductId: matchingPlanDetails?.storeKitProductId,
                   protonName: matchingPlanDetails?.protonPlanName ?? protonPlanName,

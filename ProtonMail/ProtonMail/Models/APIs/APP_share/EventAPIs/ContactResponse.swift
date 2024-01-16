@@ -56,7 +56,7 @@ struct ContactResponse: Decodable {
         struct VCardData: Codable {
             let type: Int
             let data: String
-            let signature: String
+            let signature: String?
 
             // swiftlint:disable:next nesting
             enum CodingKeys: String, CodingKey {

@@ -48,6 +48,10 @@ extension MailListActionSheetItemViewModel {
                      icon: IconProvider.envelopeDot)
     }
 
+    static func snooze() -> MailListActionSheetItemViewModel {
+        return .init(type: .snooze, title: L11n.Snooze.title, icon: IconProvider.clock)
+    }
+
     static func moveToArchive() -> MailListActionSheetItemViewModel {
         return .init(type: .archive,
                      title: LocalString._menu_archive_title,

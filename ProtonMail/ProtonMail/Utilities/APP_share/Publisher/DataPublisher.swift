@@ -32,14 +32,12 @@ class DataPublisher<T: NSFetchRequestResult>: NSObject, NSFetchedResultsControll
         sortDescriptors: [NSSortDescriptor],
         contextProvider: CoreDataContextProviderProtocol
     ) {
-        let fetchRequest: NSFetchRequest<T> = NSFetchRequest(entityName: entityName)
-        fetchRequest.predicate = predicate
-        fetchRequest.sortDescriptors = sortDescriptors
-        self.fetchedResultsController = NSFetchedResultsController(
-            fetchRequest: fetchRequest,
-            managedObjectContext: contextProvider.mainContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil
+        fetchedResultsController = contextProvider.createFetchedResultsController(
+            entityName: entityName,
+            predicate: predicate,
+            sortDescriptors: sortDescriptors,
+            fetchBatchSize: 0,
+            sectionNameKeyPath: nil
         )
         super.init()
     }
@@ -47,11 +45,13 @@ class DataPublisher<T: NSFetchRequestResult>: NSObject, NSFetchedResultsControll
     func start() {
         fetchedResultsController.delegate = self
 
-        do {
-            try fetchedResultsController.performFetch()
-            publishFetchedObjects()
-        } catch {
-            PMAssertionFailure(error)
+        fetchedResultsController.managedObjectContext.perform {
+            do {
+                try self.fetchedResultsController.performFetch()
+                self.publishFetchedObjects()
+            } catch {
+                PMAssertionFailure(error)
+            }
         }
     }
 

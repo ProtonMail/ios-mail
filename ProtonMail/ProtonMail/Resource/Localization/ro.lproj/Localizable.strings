@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Sunteți pe cale să lansați navigatorul web și să navigați la";
 
 /* link opeining confirmation */
@@ -59,28 +58,45 @@
 /* menu title */
 "Inbox" = "Primite";
 
-/* menu title */
+/*
+ menu title
+ Springboard (3D Touch) shortcuts action
+ VoiceOver: email is starred
+*/
 "Starred" = "Cu stea";
 
-/* menu title */
+/*
+ menu title
+ Push notification action to archive
+ The title of the archive action in action sheet
+*/
 "Archive" = "Arhivă";
 
 /* menu title */
 "Drafts" = "Ciorne";
 
-/* mail location title */
+/*
+ mail location title
+ menu title
+*/
 "All Mail" = "Toată corespondența";
 
 /* menu title */
 "Sent" = "Trimise";
 
-/* mail location desc */
+/*
+ mail location desc
+ menu title
+*/
 "Trash" = "Șterse";
 
 /* menu title */
 "Spam" = "Nedorite";
 
-/* Action and title */
+/*
+ Action and title
+ menu title
+*/
 "Contacts" = "Contacte";
 
 /* menu title (contact groups) */
@@ -89,19 +105,28 @@
 /* menu title */
 "Settings" = "Setări";
 
-/* Alert title to confirm signout */
+/*
+ Alert title to confirm signout
+ menu title
+*/
 "Sign out" = "Deconectare";
 
 /* menu title */
 "Lock The App" = "Blocare aplicație";
 
-/* menu title */
+/*
+ menu title
+ The title of a subscription plans screen
+*/
 "Subscription" = "Abonament";
 
 /* menu title */
 "Manage accounts" = "Gestionare conturi";
 
-/* menu title */
+/*
+ menu title
+ The voiceiver title of the add attachment button in the tool bar of composer
+*/
 "Add attachment" = "Adăugare atașament";
 
 /* menu title */
@@ -112,9 +137,6 @@
 
 /* Description after message have been sent */
 "Message sent" = "Mesaj trimis";
-
-/* Description */
-"Sent Failed" = "Trimitere eșuată";
 
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Nimic de văzut aici";
@@ -142,9 +164,6 @@
 
 /* Title */
 "You have a new email!" = "Aveți un mesaj nou!";
-
-/* Message */
-"You have %d new emails!" = "Aveți %d mesaje noi!";
 
 /* abbreviation of reply: */
 "Re:" = "Rs:";
@@ -206,13 +225,19 @@
 /* button title */
 "Apply Password" = "Aplicare parolă";
 
-/* Action */
+/*
+ Action
+ Springboard (3D Touch) shortcuts action
+*/
 "Compose" = "Compunere";
 
 /* Composer expiration page title */
 "Message expiration" = "Expirare mesaj";
 
-/* contacts default label type */
+/*
+ contacts default label type
+ Custom option for time config picker
+*/
 "Custom" = "Personalizat";
 
 /* Description */
@@ -392,7 +417,13 @@
 /* Done action */
 "Done" = "Gata";
 
-/* Button to cancel encrypted search */
+/*
+ Button to cancel encrypted search
+ Cancel action
+ general cancel action
+ Title for the alert button to cancel delete all downloaded messages.
+ Title for the alert button to cancel disable content search.
+*/
 "Cancel" = "Anulare";
 
 /* Got it action */
@@ -419,16 +450,26 @@
 /* message From: field text */
 "From:" = "De la:";
 
-/* message To: feild */
+/*
+ message To: feild
+ Title
+*/
 "To" = "Către";
 
-/* message Cc: feild */
+/*
+ message Cc: feild
+ Title
+*/
 "Cc" = "C";
 
 /* message Bcc: feild */
 "Bcc:" = "Ca:";
 
-/* general delete action */
+/*
+ general delete action
+ The title of the delete action in action sheet
+ Title for the alert button to delete all downloaded messages.
+*/
 "Delete" = "Ștergere";
 
 /* general close action */
@@ -437,7 +478,10 @@
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesiunea a expirat deoarece nu s-a identificat vreo activitate de ceva timp sau pentru că a fost anulată. Reautentificați-vă.";
 
-/* Springboard (3D Touch) shortcuts action */
+/*
+ Springboard (3D Touch) shortcuts action
+ Title
+*/
 "Search" = "Căutare";
 
 /* Alert title */
@@ -452,7 +496,10 @@
 /* Action */
 "Send" = "Trimitere";
 
-/* Action */
+/*
+ Action
+ The action title of the alert of the user trying to send a message that was schedule-send.
+*/
 "Schedule send" = "Trimitere programată";
 
 /* Alert title */
@@ -488,7 +535,10 @@
 /* Title */
 "Save" = "Salvare";
 
-/* Action */
+/*
+ Action
+ The button title of the scheduled message banner.
+*/
 "Edit" = "Editare";
 
 /* Error message */
@@ -548,7 +598,10 @@
 /* Hint when users delete contact offline  */
 "Contact deleted, will be synced when connection is available" = "Contact șters. Va fi sincronizat atunci când conexiunea este disponibilă.";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup2
+*/
 "Confirm" = "Confirmare";
 
 /* Title */
@@ -566,7 +619,10 @@
 /* Action */
 "Later" = "Mai târziu";
 
-/* Action */
+/*
+ Action
+ The text for downloaded messages in local storage when encrypted search is disabled.
+*/
 "Disabled" = "Dezactivat";
 
 /* contact placeholder */
@@ -575,7 +631,12 @@
 /* top left back button */
 "Back" = "Înapoi";
 
-/* A *short* description saying that there is no contact group associated with this contact email */
+/*
+ A *short* description saying that there is no contact group associated with this contact email
+ Action title of none
+ The protection title of None protection
+ Title
+*/
 "None" = "Niciunul";
 
 /* lock app option */
@@ -605,7 +666,10 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Nu puteți seta adresa %@ ca fiind implicită. Această este o funcție cu plată.";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup1
+*/
 "Continue" = "Continuare";
 
 /* error message */
@@ -629,10 +693,16 @@
 /* Error */
 "Unknown Error" = "Eroare necunoscută.";
 
-/* Action */
+/*
+ Action
+ The title of loading remote content banner.
+*/
 "Load remote content" = "Încărcare conținut extern";
 
-/* settings general section title */
+/*
+ settings general section title
+ title
+*/
 "Change password" = "Schimbare parolă";
 
 /* Title */
@@ -911,7 +981,11 @@
 /* Error */
 "Can't open the file" = "Fișierul nu poate fi deschis.";
 
-/* Action */
+/*
+ Action
+ alternative routing link name in description
+ The title of learn more link
+*/
 "Learn more" = "Detalii";
 
 /* Action */
@@ -959,7 +1033,10 @@
 /* Action title of move to archive */
 "Move to archive" = "Mutare în «Arhivă»";
 
-/* Action title of move to spam */
+/*
+ Action title of move to spam
+ The title of the spam action in action sheet
+*/
 "Move to spam" = "Mutare în «Nedorite»";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
@@ -993,7 +1070,7 @@
 "Sender Verification Failed" = "Verificare eșuată expeditor";
 
 /* encryption lock description */
-"End-to-end encrypted message" = "Mesaj criptat în ambele părți";
+"End-to-end encrypted message" = "Mesaj criptat bilateral";
 
 /* alert title */
 "Expiration not supported" = "Expirare nesuportată";
@@ -1004,7 +1081,10 @@
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Se recomandă configurarea unei parole sau dezactivarea PGP pentru următorii destinatari:";
 
-/* A option title that enable/disable notification feature */
+/*
+ A option title that enable/disable notification feature
+ cell title in device settings
+*/
 "Notifications" = "Notificări";
 
 /* VoiceOver: email belongs to folders */
@@ -1045,6 +1125,9 @@
 
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Ștergere grup de contacte";
+
+/* The string that describes how many contact groups are currently selected */
+"%d Selected" = "%d selectat";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Selectați cel puțin un membru pentru grupul de contacte.";
@@ -1091,7 +1174,10 @@
 /* Alert to confirm signout */
 "You will be switched to %@" = "Se va comuta la %@";
 
-/* Alert to confirm sign out */
+/*
+ Alert to confirm sign out
+ Alert when sign out non-primary account from account manager
+*/
 "Are you sure you want to sign out?" = "Sigur doriți să vă deconectați?";
 
 /* Alert to confirm sign out when only one account signed in */
@@ -1154,7 +1240,10 @@
 /* cell title in device settings */
 "Language" = "Limba";
 
-/* cell title in device settings */
+/*
+ cell title in device settings
+ The title of combined contact in settings
+*/
 "Combined contacts" = "Contacte combinate";
 
 /* cell title in app settings */
@@ -1235,9 +1324,6 @@
 /* The unread title of unread action button in mailbox view */
 "unread" = "necitit";
 
-/* The title of navigation bar title of mailbox view while selecting the message */
-"Selected" = "Selectat";
-
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Actualizat în urmă cu peste o oră";
 
@@ -1253,7 +1339,10 @@
 /* The text shown on the mailbox when the primary user changed */
 "Signed in as %@" = "Conectat ca %@";
 
-/* The title of the star action in action sheet */
+/*
+ The title of the star action in action sheet
+ VoiceOver title of star button in the message view
+*/
 "Star" = "Marcare cu stea";
 
 /* The title of the star action in action sheet */
@@ -1262,10 +1351,16 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Marcare ca necitit";
 
-/* Push notification action mark as read */
+/*
+ Push notification action mark as read
+ The title of the read action in action sheet
+*/
 "Mark as read" = "Marcare ca citit";
 
-/* Push notification action move to trash */
+/*
+ Push notification action move to trash
+ The title of the remove action in action sheet
+*/
 "Move to trash" = "Mutare în «Gunoi»";
 
 /* The title of the remove action in action sheet */
@@ -1277,10 +1372,10 @@
 /* The title of the view message in dark mode action in action sheet */
 "View message in Dark mode" = "Vizualizare mesaj în mod întunecat";
 
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Activați această funcție pentru autocompletarea adreselor de e-mail folosind contactele din toate conturile conectate.";
-
-/* alternative routing description */
+/*
+ alternative routing description
+ The footer of alternative routing setting
+*/
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "În cazul în care serverele Proton sunt blocate, această setare permite aplicației să încerce accesarea printr-o rețea alternativă pentru a ajunge la Proton, ceea ce poate fi util pentru ocolirea paravanelor de protecție sau a problemelor de rețea. Se recomandă păstrarea acestei setări pentru o fiabilitate mai mare. %1$@";
 
 /* The title of alternative routing settings */
@@ -1442,8 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Raportare înșelăciune";
 
-/* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "Acceptat (mutare în «Primite»)";
+"Not spam (move to inbox)" = "Not spam (move to inbox)";
 
 /* No comment provided by engineer. */
 "Move to" = "Mutare în";
@@ -1671,13 +1765,13 @@
 "Scheduling message..." = "Se programează mesajul...";
 
 /* The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption to verified recipient" = "Trimis de către dvs. cu criptare în ambele părți către destinatar verificat.";
+"Sent by you with end-to-end encryption to verified recipient" = "Trimis de către dvs. cu criptare bilaterală către destinatar verificat.";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption to verified recipient" = "Trimis cu Proton Mail cu criptare cu acces zero la destinatar verificat.";
 
 /* The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption" = "Trimis de către dvs. cu criptare în ambele părți.";
+"Sent by you with end-to-end encryption" = "Trimis de către dvs. cu criptare bilaterală.";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Trimis cu Proton Mail cu criptare cu acces zero.";
@@ -1686,10 +1780,10 @@
 "Stored with zero-access encryption" = "Stocat criptat cu acces exclusiv personal";
 
 /* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted message from verified sender" = "Mesaj criptat în ambele părți de la expeditor verificat";
+"End-to-end encrypted message from verified sender" = "Mesaj criptat bilateral de la expeditor verificat";
 
 /* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted and signed message" = "Mesaj criptat în ambele părți și semnat";
+"End-to-end encrypted and signed message" = "Mesaj criptat bilateral și semnat";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message from verified sender" = "Mesaj criptat cu PGP de la utilizator verificat";
@@ -1707,10 +1801,10 @@
 "PGP-signed message. Sender verification failed" = "Mesaj semnat cu PGP. Verificarea expeditorului a eșuat.";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted to verified recipient" = "Criptat în ambele părți spre destinatar verificat";
+"End-to-end encrypted to verified recipient" = "Criptat bilateral spre destinatar verificat";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted" = "Criptat în ambele părți";
+"End-to-end encrypted" = "Criptat bilateral";
 
 /* The message after tapping the encryption icon of recipient in composer. */
 "PGP-encrypted to verified recipient" = "Criptat cu PGP spre destinatar verificat";
@@ -1831,6 +1925,12 @@
 /* Button inside the banner */
 "Load" = "Încărcare";
 
+/* As in: event organizer */
+"Organizer" = "Organizer";
+
+/* Button to hide some items in the list to conserve screen estate */
+"Show less" = "Show less";
+
 /* Official badge next to sender's name */
 "Official" = "Oficial";
 
@@ -1863,6 +1963,21 @@
 
 /* The title of the maybe later button in referral prompt view. */
 "Maybe later" = "Poate mai târziu";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Activați această funcție pentru autocompletarea adreselor de e-mail folosind contactele din toate conturile conectate.";
+
+/* contacts auto import title in settings */
+"Auto-import device contacts" = "Auto-import device contacts";
+
+/* contacts auto import footer in settings */
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+
+/* Auto import alert title */
+"Auto-import enabled" = "Auto-import enabled";
+
+/* Auto import alert message */
+"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
 
 /* Settings lock protection section */
 "Protection" = "Protecție";
@@ -1928,13 +2043,10 @@
 "Application logs" = "Jurnale aplicație";
 
 /* The title of the setting of the next msg after move */
-"Next message after move" = "Mesaj următor după mutare";
-
-/* The title of the row inside the setting page of next msg after move function. */
-"Navigate to next message after move" = "Navigare la mesajul următor după mutare";
+"Jump to next message" = "Jump to next message";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Performing a move action on a message (e.g. archive) will navigate to the next message." = "După efectuarea unei acțiuni de mutare a unui mesaj (ex. în arhivă) se va trece la următorul mesaj.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "A apărut o eroare neașteptată. Contactați serviciul de asistență.\nEroare: %@";
@@ -1993,7 +2105,10 @@
 /* Message of the alert to confirm enabling of the auto delete option */
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Aceasta va șterge toate mesajele din «Gunoi» și «Nedorite» mai vechi de 30 de zile, inclusiv cele aflate în aceste foldere.";
 
-/* Button to enable encrypted search */
+/*
+ Button to enable encrypted search
+ The title of the button to move to settings and enable encrypted search.
+*/
 "Enable" = "Activare";
 
 /* Text to advertise the auto delete feature to free users */
@@ -2032,6 +2147,9 @@
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Expeditorul original al acestui mesaj nu mai este valid. Mesajul va fi trimis de la adresa implicită %@.";
 
+/* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
+"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nume afișat";
 
@@ -2056,13 +2174,25 @@
 /* The title of select all button for select all messages feature */
 "Select all" = "Selectare toate";
 
-/* The title of PIN code disable view  */
+/* The title of unselect all button for select all messages feature */
+"Unselect all" = "Unselect all";
+
+/* Warning message will be shown to user when user try to select more than acceptable message */
+"Maximum selection reached" = "Maximum selection reached";
+
+/* Placeholder if message sender is empty */
+"No Recipient" = "No Recipient";
+
+/* The title of PIN code disable view */
 "Disable PIN code" = "Dezactivare cod PIN";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Setare cod PIN";
 
-/* The title of PIN code setup2 view */
+/*
+ The title of PIN code setup2 view
+ The title of textfield of PIN code setup2
+*/
 "Repeat PIN code" = "Repere cod PIN";
 
 /* The title of textfield of PIN code setup1 */
@@ -2094,3 +2224,51 @@
 
 /* Unsubscribe confirmation message */
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Acest lucru vă va dezabona din lista de corespondență. Expeditorul va fi notificat să nu mai trimită mesaje la această adresă.";
+
+/* Alert telling the user that we are unable to preview this attachment */
+"Unable to preview this attachment" = "Unable to preview this attachment";
+
+/* Title for banner saying that we are currently downloading the attachment to preview it */
+"Downloading attachment" = "Downloading attachment";
+
+/* The banner title that is shown in the message detail view. */
+"Snoozed until %@" = "Snoozed until %@";
+
+/* The title of the button in the banner that is shown in the message detail view. */
+"Unsnooze" = "Unsnooze";
+
+/* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
+"Snooze until %@" = "Snooze until %@";
+
+/* Notification banner when user unsnooze a conversation */
+"Conversation unsnoozed" = "Conversation unsnoozed";
+
+/* The title of snooze config in action sheet */
+"Snooze until..." = "Snooze until...";
+
+/* One of snooze option shows in action sheet */
+"Later this week" = "Later this week";
+
+/* One of snooze option shows in action sheet */
+"This weekend" = "This weekend";
+
+/* One of snooze option shows in action sheet */
+"Next week" = "Next week";
+
+/* An error message will be shown to user when user select past snooze time */
+"Please select a time in the future" = "Please select a time in the future";
+
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Want to snooze any time?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Foldere, etichete și filtre nelimitate";
+
+/* The title of the action option that will make the inline attachment as normal attachment. */
+"Add it as attachment" = "Add it as attachment";

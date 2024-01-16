@@ -855,21 +855,22 @@ extension ComposeContentViewController: ComposeViewDelegate {
 
     private func updateSenderMail(addr: Address, complete: (() -> Void)?) {
         self.queue.sync { [weak self] in
-            self?.viewModel.updateAddress(to: addr)
-                .done { _ in
-                    self?.headerView.updateFromValue(addr.email, pickerEnabled: true)
-                }
-                .catch { error in
-                    let alertController = error.localizedDescription.alertController()
-                    alertController.addOKAction()
-                    self?.present(alertController, animated: true, completion: nil)
-                    complete?()
-                }.finally {
+            self?.viewModel.updateAddress(to: addr, completion: { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        self?.headerView.updateFromValue(addr.email, pickerEnabled: true)
+                    case .failure(let error):
+                        let alertController = error.localizedDescription.alertController()
+                        alertController.addOKAction()
+                        self?.present(alertController, animated: true, completion: nil)
+                    }
                     if let viewToAddTo = self?.parent?.navigationController?.view {
                         MBProgressHUD.hide(for: viewToAddTo, animated: true)
                     }
                     complete?()
                 }
+            })
         }
     }
 

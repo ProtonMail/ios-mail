@@ -62,19 +62,6 @@ extension MessageEntity {
         return self.parsedHeaders.keys.contains(where: { autoReplyKeys.contains($0) })
     }
 
-    var isNewsLetter: Bool {
-        let newsLetterKeys = [
-            MessageHeaderKey.listID,
-            MessageHeaderKey.listUnsubscribe,
-            MessageHeaderKey.listSubscribe,
-            MessageHeaderKey.listPost,
-            MessageHeaderKey.listHelp,
-            MessageHeaderKey.listOwner,
-            MessageHeaderKey.listArchive
-        ]
-        return self.parsedHeaders.keys.contains(where: { newsLetterKeys.contains($0) })
-    }
-
     var hasReceiptRequest: Bool {
         self.parsedHeaders
             .keys
@@ -99,6 +86,10 @@ extension MessageEntity {
 
     var isScheduledSend: Bool {
         self.flag.contains(.scheduledSend)
+    }
+
+    var showReminder: Bool {
+        self.flag.contains(.showReminder)
     }
 
     func isLabelLocation(labelId: LabelID) -> Bool {

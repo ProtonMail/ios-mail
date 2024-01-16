@@ -18,59 +18,48 @@
 import Foundation
 import ProtonCoreServices
 
-typealias FetchEmailAddressesPublicKeyUseCase = UseCase<[String: KeysResponse], FetchEmailAddressesPublicKey.Params>
+// sourcery: mock
+protocol FetchEmailAddressesPublicKeyUseCase: Sendable {
+    func execute(email: String) async throws -> KeysResponse
+}
 
-final class FetchEmailAddressesPublicKey: FetchEmailAddressesPublicKeyUseCase {
+extension FetchEmailAddressesPublicKeyUseCase {
+    func execute(emails: [String]) async throws -> [String: KeysResponse] {
+        let uniqueEmails = Set(emails)
+        return try await withThrowingTaskGroup(of: (String, KeysResponse).self) { group in
+            for email in uniqueEmails {
+                group.addTask {
+                    let response = try await self.execute(email: email)
+                    return (email, response)
+                }
+            }
+
+            var results: [String: KeysResponse] = [:]
+            for try await (email, response) in group {
+                results[email] = response
+            }
+
+            return results
+        }
+    }
+}
+
+struct FetchEmailAddressesPublicKey: FetchEmailAddressesPublicKeyUseCase {
     private let dependencies: Dependencies
-    private let serialQueue = DispatchQueue(label: "me.proton.mail.FetchEmailAddressesPublicKey")
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
-    override func executionBlock(params: Params, callback: @escaping Callback) {
-        var keysByEmail = [String: KeysResponse]()
-        var requestError = [Error]()
+    func execute(email: String) async throws -> KeysResponse {
+        let request = UserEmailPubKeys(email: email)
+        let response = await dependencies.apiService.perform(request: request, response: KeysResponse()).1
 
-        let uniqueEmails = Array(Set(params.emails))
-        let group = DispatchGroup()
-        uniqueEmails.forEach { email in
-            let request = UserEmailPubKeys(email: email)
-            group.enter()
-            dependencies.apiService.perform(request: request) { [weak self] _, result in
-                guard let self = self else { return }
-                self.serialQueue.sync {
-                    switch result {
-                    case .success(let response):
-                        let keysResponse = self.parseResponse(response: response)
-                        keysByEmail[email] = keysResponse
-                    case .failure(let error):
-                        requestError.append(error)
-                    }
-                }
-                group.leave()
-            }
+        if let error = response.error {
+            throw error
+        } else {
+            return response
         }
-        group.notify(queue: executionQueue) {
-            if let error = requestError.first {
-                callback(.failure(error))
-            } else {
-                callback(.success(keysByEmail))
-            }
-        }
-    }
-
-    private func parseResponse(response: [String: Any]) -> KeysResponse {
-        let keysResponse = KeysResponse()
-        _ = keysResponse.ParseResponse(response)
-        return keysResponse
-    }
-}
-
-extension FetchEmailAddressesPublicKey {
-
-    struct Params {
-        let emails: [String]
     }
 }
 

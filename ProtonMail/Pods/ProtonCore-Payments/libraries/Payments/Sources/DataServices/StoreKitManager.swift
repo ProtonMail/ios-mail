@@ -29,6 +29,8 @@ import ProtonCoreServices
 import ProtonCoreObservability
 import ProtonCoreUtilities
 
+/// Class responsible for initiating purchases on App Store and forwarding
+/// confirmations to Payments backend
 final class StoreKitManager: NSObject, StoreKitManagerProtocol {
 
     typealias Errors = StoreKitManagerErrors
@@ -55,6 +57,8 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     private(set) var request: SKProductsRequest?
     private var updateAvailableProductsListCompletionBlock: ((Error?) -> Void)?
 
+    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
+
     var pendingRetryIn: Double = 30
     var errorRetryIn: Double = 2
     var alertViewDelay: Double = 1.0
@@ -74,7 +78,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     }
     var storedAvailableProducts: [SKProduct] = []
 
-    private let storeKitDataSource: StoreKitDataSource?
+    private let storeKitDataSource: StoreKitDataSourceProtocol?
 
     // MARK: Private properties
     private lazy var processAuthenticated = ProcessAuthenticated(dependencies: self)
@@ -224,28 +228,46 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
         }
     }
 
+    /// Initializer for StoreKitManager
+    /// - Parameters:
+    ///   - inAppPurchaseIdentifiersGet: closure to obtain the preset list of StoreKit product ids to manage (typically depends on the client)
+    ///   - inAppPurchaseIdentifiersSet: closure to call when a new list of StoreKit products is obtained from the App Store
+    ///   - planService: Source of truth for the plans offered. `ServicePlanDataServiceProtocol` refers to the
+    ///   static, one-time purchase plans that will be retired. `PlansDataSourceProtocol` refers to the dynamic,
+    ///    auto-renewing plans that will replace them.
+    ///   - storeKitDataSource: Wrapper around the StoreKit API
+    ///   - paymentsApi: Façade for the Payments API
+    ///   - apiService: Generic Proton API service
+    ///   - canExtendSubscription: _(non-renewing only)_ Whether it is allowed to purchase 1-time plans to
+    ///   append at the end of the current one
+    ///   - reportBugAlertHandler: Handler that allows to report a problem to support
+    ///   - refreshHandler: Handler to update data after a purchase
+    ///   - reachability: A `Reachability` instance to trigger payment queue processing after recovering connectivity
+    ///   - featureFlagsRepository: a DI injection point to obtain feature flags
     init(inAppPurchaseIdentifiersGet: @escaping ListOfIAPIdentifiersGet,
          inAppPurchaseIdentifiersSet: @escaping ListOfIAPIdentifiersSet,
          planService: Either<ServicePlanDataServiceProtocol, PlansDataSourceProtocol>,
-         storeKitDataSource: StoreKitDataSource?,
+         storeKitDataSource: StoreKitDataSourceProtocol?,
          paymentsApi: PaymentsApiProtocol,
          apiService: APIService,
          canExtendSubscription: Bool,
          paymentsAlertManager: PaymentsAlertManager,
          reportBugAlertHandler: BugAlertHandler,
          refreshHandler: @escaping (ProcessCompletionResult) -> Void,
-         reachability: Reachability? = try? Reachability()) {
+         reachability: Reachability? = try? Reachability(),
+         featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared) {
         self.inAppPurchaseIdentifiersGet = inAppPurchaseIdentifiersGet
         self.inAppPurchaseIdentifiersSet = inAppPurchaseIdentifiersSet
         self.planService = planService
         self.storeKitDataSource = storeKitDataSource
         self.paymentsApi = paymentsApi
         self.apiService = apiService
-        self.canExtendSubscription = canExtendSubscription && !FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan)
+        self.canExtendSubscription = canExtendSubscription && !featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)
         self.paymentsAlertManager = paymentsAlertManager
         self.reportBugAlertHandler = reportBugAlertHandler
         self.refreshHandler = refreshHandler
         self.reachability = reachability
+        self.featureFlagsRepository = featureFlagsRepository
         super.init()
         reachability?.whenReachable = { [weak self] _ in self?.networkReachable() }
         try? reachability?.startNotifier()
@@ -257,8 +279,10 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     }
 
     public func subscribeToPaymentQueue() {
-        unsubscribeFromPaymentQueue()
-        paymentQueue.add(self)
+        // Adding a containment check to avoid double additions which may trigger unwanted side effects
+        if !paymentQueue.transactionObservers.contains(where: { $0.isEqual(self) }) {
+            paymentQueue.add(self)
+        }
     }
 
     public func unsubscribeFromPaymentQueue() {
@@ -267,7 +291,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
 
     public func updateAvailableProductsList(completion: @escaping (Error?) -> Void) {
         // This is just for early detection of programmers errors and to indicate what can be removed when we remove the feature flag
-        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
+        if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             assertionFailure("This method should never be called with dynamic plans. The StoreKitDataSource object fetches the SKProducts")
         }
         updateAvailableProductsListCompletionBlock = { error in DispatchQueue.main.async { completion(error) } }
@@ -323,6 +347,13 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
         }
     }
 
+    /// Initiates plan purchase
+    /// - Parameters:
+    ///   - plan: the IAP plan to purchase
+    ///   - amountDue: purchase amount, expressed in cents of normalized currency
+    ///   - successCompletion: success handler
+    ///   - errorCompletion: failure handler
+    ///   - deferredCompletion: optional handler for purchases in progress or deferred to later
     public func purchaseProduct(plan: InAppPurchasePlan,
                                 amountDue: Int,
                                 successCompletion: @escaping SuccessCallback,
@@ -384,7 +415,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
                     }
 
                     guard let userId = self.applicationUserId() else {
-                        self.purchaseProductWithoutAnAuthorizedUser(storeKitProduct: product,
+                       self.purchaseProductWithoutAnAuthorizedUser(storeKitProduct: product,
                                                                     amountDue: amountDue,
                                                                     successCompletion: successCompletion,
                                                                     errorCompletion: errorCompletion,
@@ -436,14 +467,14 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
         threadSafeCache.set(value: amountDue, for: amountDueCacheKey, in: \.amountDue)
 
         switch planService {
-        case .left(let planService):
-            planService.updateCurrentSubscription(callBlocksOnParticularQueue: nil) { [weak self] in
+        case .left(let servicePlanDataService):
+            servicePlanDataService.updateCurrentSubscription(callBlocksOnParticularQueue: nil) { [weak self] in
                 guard let self = self else {
                     errorCompletion(Errors.transactionFailedByUnknownReason)
                     return
                 }
 
-                guard planService.currentSubscription?.hasExistingProtonSubscription == false || (!planService.hasPaymentMethods && planService.currentSubscription?.hasExistingProtonSubscription == true && self.canExtendSubscription && !planService.willRenewAutomatically(plan: plan)) else {
+                guard servicePlanDataService.currentSubscription?.hasExistingProtonSubscription == false || (!servicePlanDataService.hasPaymentMethods && servicePlanDataService.currentSubscription?.hasExistingProtonSubscription == true && self.canExtendSubscription && !servicePlanDataService.willRenewAutomatically(plan: plan)) else {
                     errorCompletion(Errors.invalidPurchase)
                     return
                 }
@@ -466,7 +497,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
                         return
                     }
 
-                    guard planDataSource.currentPlan?.hasExistingProtonSubscription == false || (!planDataSource.hasPaymentMethods && planDataSource.currentPlan?.hasExistingProtonSubscription == true && self.canExtendSubscription && !planDataSource.willRenewAutomatically) else {
+                    guard (planDataSource.currentPlan?.hasExistingProtonSubscription ?? false) == false else {
                         errorCompletion(Errors.invalidPurchase)
                         return
                     }
@@ -541,6 +572,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
         return receipt
     }
 
+    // FIXME: should not be called in main thread
     private func networkReachable() {
         processAllStoreKitTransactionsCurrentlyFoundInThePaymentQueue(finishHandler: transactionsFinishHandler)
     }
@@ -549,7 +581,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
 extension StoreKitManager: SKProductsRequestDelegate {
     public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         // This is just for early detection of programmers errors and to indicate what can be removed when we remove the feature flag
-        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
+        if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             assertionFailure("This method should never be called with dynamic plans. The StoreKitDataSource object fetches the SKProducts")
         }
         if !response.invalidProductIdentifiers.isEmpty {
@@ -565,7 +597,7 @@ extension StoreKitManager: SKProductsRequestDelegate {
 
     func request(_: SKRequest, didFailWithError error: Error) {
         // This is just for early detection of programmers errors and to indicate what can be removed when we remove the feature flag
-        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
+        if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             assertionFailure("This method should never be called with dynamic plans. The StoreKitDataSource object fetches the SKProducts")
         }
         #if targetEnvironment(simulator)
@@ -718,8 +750,20 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             finishTransaction(transaction, nil)
             group.leave()
 
+        } catch Errors.alreadyPurchasedPlanDoesNotMatchBackend {
+            callErrorCompletion(for: cacheKey, with: Errors.alreadyPurchasedPlanDoesNotMatchBackend)
+
+            if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) && 
+                transaction.payment.productIdentifier.hasSuffix("_non_renewing") {
+                // If dynamic plans are enabled, but there is a pending transaction for a non-renewing plan,
+                // finalize the transaction here.
+                finishTransaction(transaction, nil)
+            }
+
+            group.leave()
         } catch let error { // other errors
             callErrorCompletion(for: cacheKey, with: error)
+            // should we call finishTransaction here, to avoid leaving transactions for the next run?
             group.leave()
         }
 
@@ -731,7 +775,9 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                                                               completion: @escaping ProcessCompletionCallback) throws {
 
         guard let plan = InAppPurchasePlan(storeKitProductId: transaction.payment.productIdentifier)
-        else { throw Errors.alreadyPurchasedPlanDoesNotMatchBackend }
+        else {
+            throw Errors.alreadyPurchasedPlanDoesNotMatchBackend
+        }
 
         let planName: String
         let planAmount: Int
@@ -745,7 +791,9 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             guard let details = planService.detailsOfPlanCorrespondingToIAP(plan),
                   let amount = details.pricing(for: plan.period),
                   let protonIdentifier = details.ID
-            else { throw Errors.alreadyPurchasedPlanDoesNotMatchBackend }
+            else {
+                throw Errors.alreadyPurchasedPlanDoesNotMatchBackend
+            }
 
             planName = details.name
             planAmount = amount
@@ -757,7 +805,9 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                   let price = instance.price.first(where: { $0.currency.lowercased() == plan.currency?.lowercased() }),
                   let name = details.name,
                   let id = details.ID
-            else { throw Errors.alreadyPurchasedPlanDoesNotMatchBackend }
+            else {
+                throw Errors.alreadyPurchasedPlanDoesNotMatchBackend
+            }
 
             planName = name
             planAmount = price.current
@@ -886,7 +936,8 @@ extension StoreKitManager: ProcessDependencies {
     var alertManager: PaymentsAlertManager { return paymentsAlertManager }
 
     var updateSubscription: (Subscription) throws -> Void { { [weak self] in
-        guard !FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan), case .left(let planService) = self?.planService else {
+        guard let self else { return }
+        guard !self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan), case .left(let planService) = self.planService else {
             throw StoreKitManagerErrors.noNewSubscriptionInSuccessfulResponse
         }
         planService.currentSubscription = $0

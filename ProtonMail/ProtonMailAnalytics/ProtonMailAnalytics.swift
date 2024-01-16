@@ -175,6 +175,10 @@ public enum MailAnalyticsErrorEvent: Error {
     case sendMessageResponseError(responseCode: Int?)
     case sendMessageInvalidSignature
 
+    // contacts
+    case contactCreateFailInBatch(error: NSError)
+    case contactUpdateFail(error: NSError)
+
     case conversationViewEndUpdatesCrash
     case userObjectsJsonEncodingError(Error, String)
     case userObjectsJsonDecodingError(Error, String)
@@ -206,6 +210,10 @@ public enum MailAnalyticsErrorEvent: Error {
             return "Send response error - responseCode: \(code)"
         case .sendMessageInvalidSignature:
             return "Send invalid signature"
+        case .contactCreateFailInBatch(let error):
+            return "Create contact fail in batch - code: \(error.code)"
+        case .contactUpdateFail(let error):
+            return "Update contact fail - code: \(error.code)"
         case .conversationViewEndUpdatesCrash:
             return "Conversation view endUpdates() crash"
         case let .assertionFailure(message, _, _, _):
@@ -246,6 +254,8 @@ public enum MailAnalyticsErrorEvent: Error {
                 "File": file,
                 "Line": line
             ]
+        case .contactCreateFailInBatch(let error), .contactUpdateFail(let error):
+            info = ["Error": "\(error)"]
         case let .assertionFailure(message, caller, file, line):
             info = [
                 "Caller": caller,

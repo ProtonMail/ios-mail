@@ -29,8 +29,11 @@ extension PMBanner {
         )
         banner.addButton(icon: IconProvider.arrowOutSquare) { _ in
             banner.dismiss()
-            let url = URL(string: Link.protonStatusPage)!
-            UIApplication.shared.open(url)
+            if let url = URL(string: Link.protonStatusPage) {
+                UIApplication.shared.open(url)
+            } else {
+                PMAssertionFailure("Invaild status page link")
+            }
         }
         banner.show(at: .top, on: viewController)
         Analytics.shared.sendEvent(.protonUnreachableBannerShown)

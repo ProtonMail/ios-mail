@@ -23,6 +23,8 @@
 import LifetimeTracker
 import MBProgressHUD
 import ProtonCoreDataModel
+import ProtonCorePaymentsUI
+import protocol ProtonCoreServices.APIService
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import UIKit
@@ -48,6 +50,8 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
     private let storedSizeHelper = ConversationStoredSizeHelper()
     private var cachedViewControllers: [IndexPath: ConversationExpandedMessageViewController] = [:]
     private(set) var shouldReloadWhenAppIsActive = false
+    private var _snoozeDateConfigReceiver: SnoozeDateConfigReceiver?
+    private var paymentsUI: PaymentsUI?
 
     // the purpose of this timer is to uncover the conversation even if the viewModel does not call `conversationIsReadyToBeDisplayed` for whatever reason
     // this is to avoid making the view unusable
@@ -114,11 +118,6 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        guard !viewModel.messagesDataSource.isEmpty else { return }
-
-        if let targetID = self.viewModel.targetID {
-            self.cellTapped(messageId: targetID)
-        }
         if !viewModel.isMessageSwipeNavigationEnabled {
             showToolbarCustomizeSpotlightIfNeeded()
         }
@@ -128,11 +127,6 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
             repeats: false
         ) { [weak self] _ in
             self?.displayConversation()
-        }
-
-        if let draftID = viewModel.draftID {
-            cellTapped(messageId: draftID)
-            viewModel.draftID = nil
         }
     }
 
@@ -284,16 +278,22 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
         }
 
         viewModel.refreshView = { [weak self] in
-            guard let self = self else { return }
-            self.refreshNavigationViewIfNeeded()
-            self.starButtonSetUp(starred: self.viewModel.conversation.starred)
-            let isNewMessageFloatyPresented = self.customView.subviews
-                .contains(where: { $0 is ConversationNewMessageFloatyView })
-            guard !isNewMessageFloatyPresented else { return }
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.refreshNavigationViewIfNeeded()
+                self.starButtonSetUp(starred: self.viewModel.conversation.starred)
+                let isNewMessageFloatyPresented = self.customView.subviews
+                    .contains(where: { $0 is ConversationNewMessageFloatyView })
+                guard !isNewMessageFloatyPresented else { return }
 
-            self.setUpToolBarIfNeeded()
-            // Prevent the banner being covered by the action bar
-            self.view.subviews.compactMap { $0 as? PMBanner }.forEach { self.view.bringSubviewToFront($0) }
+                self.setUpToolBarIfNeeded()
+                // Prevent the banner being covered by the action bar
+                self.view.subviews.compactMap { $0 as? PMBanner }.forEach { self.view.bringSubviewToFront($0) }
+
+            	if !self.viewModel.messagesDataSource.isEmpty {
+                	self.openSpecificMessageIfNeeded()
+				}
+            }
         }
 
         viewModel.dismissView = { [weak self] in
@@ -350,6 +350,18 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
         viewModel.reloadTableView = { [weak self] in
             guard let self = self else { return }
             self.customView.tableView.reloadData()
+        }
+    }
+
+    private func openSpecificMessageIfNeeded() {
+        if let targetID = viewModel.targetID {
+            cellTapped(messageId: targetID)
+            viewModel.targetID = nil
+        }
+
+        if let draftID = viewModel.draftID {
+            cellTapped(messageId: draftID)
+            viewModel.draftID = nil
         }
     }
 
@@ -613,18 +625,17 @@ private extension ConversationViewController {
         )
 
         let viewController = ConversationExpandedMessageViewController(
-            viewModel: .init(message: viewModel.message, messageContent: contentViewModel),
+            viewModel: viewModel,
             singleMessageContentViewController: singleMessageContentViewController
         )
 
         let messageID = viewModel.message.messageID
-        viewModel.recalculateCellHeight = { [weak self, weak viewModel] isLoaded in
+        viewModel.recalculateCellHeight = { [weak self, weak viewModel] _ in
             let isExpanded = viewModel?.messageContent.isExpanded ?? false
             self?.recalculateHeight(
                 for: cell,
                 messageId: messageID,
-                isHeaderExpanded: isExpanded,
-                isLoaded: isLoaded
+                isHeaderExpanded: isExpanded
             )
         }
 
@@ -638,21 +649,24 @@ private extension ConversationViewController {
     private func recalculateHeight(
         for cell: ConversationExpandedMessageCell,
         messageId: MessageID,
-        isHeaderExpanded: Bool,
-        isLoaded: Bool
+        isHeaderExpanded: Bool
     ) {
         let height = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        let newHeightInfo = HeightStoreInfo(height: height,
-                                            isHeaderExpanded: isHeaderExpanded,
-                                            loaded: isLoaded)
-        if storedSizeHelper
+        let newHeightInfo = HeightStoreInfo(
+            height: height,
+            isHeaderExpanded: isHeaderExpanded,
+            loaded: true
+        )
+        if self.storedSizeHelper
             .updateStoredSizeIfNeeded(newHeightInfo: newHeightInfo, messageID: messageId) {
             cell.setNeedsLayout()
             cell.layoutIfNeeded()
-            UIView.setAnimationsEnabled(false)
-            customView.tableView.beginUpdates()
-            customView.tableView.endUpdates()
-            UIView.setAnimationsEnabled(true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                UIView.setAnimationsEnabled(false)
+                self.customView.tableView.beginUpdates()
+                self.customView.tableView.endUpdates()
+                UIView.setAnimationsEnabled(true)
+            }
         }
     }
 
@@ -755,7 +769,7 @@ private extension ConversationViewController {
             viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
         }
         let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
-        banner.show(at: .bottom, on: self.navigationController ?? self)
+        banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: self.navigationController ?? self)
     }
 
     private func showSenderImageIfNeeded(in cell: ConversationMessageCell, message: MessageEntity) {
@@ -860,12 +874,18 @@ extension ConversationViewController {
         let isUnread = viewModel.conversation.isUnread(labelID: viewModel.labelId)
         let isStarred = viewModel.conversation.starred
         let isScheduleSend = messageToApplyAction.isScheduledSend
+        let foldersSupportSnooze = [
+            Message.Location.snooze.labelID,
+            Message.Location.inbox.labelID
+        ]
+        let isSupportSnooze = foldersSupportSnooze.contains(viewModel.labelId) && viewModel.user.isSnoozeEnabled
 
         let actionSheetViewModel = ConversationActionSheetViewModel(
             title: viewModel.conversation.subject,
             isUnread: isUnread,
             isStarred: isStarred,
             isScheduleSend: isScheduleSend,
+            isSupportSnooze: isSupportSnooze,
             areAllMessagesIn: { [weak self] location in
                 self?.viewModel.areAllMessagesIn(location: location) ?? false
             }
@@ -961,6 +981,8 @@ extension ConversationViewController {
             handlePrintActionOnToolbar()
         case .saveAsPDF:
             handleExportPDFOnToolbar()
+        case .snooze:
+            presentSnoozeConfigSheet(on: self, current: Date())
         }
     }
 
@@ -1474,5 +1496,80 @@ private extension UITableView {
                 completion()
             }
         )
+    }
+}
+
+extension ConversationViewController: SnoozeSupport {
+    var conversationDataService: ConversationDataServiceProxy { viewModel.user.conversationService }
+
+    var calendar: Calendar { LocaleEnvironment.calendar }
+
+    var isPaidUser: Bool { viewModel.user.hasPaidMailPlan }
+
+    var presentingView: UIView { navigationController?.view ?? self.view }
+
+    var snoozeConversations: [ConversationID] { [viewModel.conversation.conversationID] }
+
+    var snoozeDateConfigReceiver: SnoozeDateConfigReceiver {
+        let receiver = _snoozeDateConfigReceiver ?? SnoozeDateConfigReceiver(
+            saveDate: { [weak self] date in
+                self?.snooze(on: date)
+                self?._snoozeDateConfigReceiver = nil
+            }, cancelHandler: { [weak self] in
+                self?._snoozeDateConfigReceiver = nil
+            }, showSendInTheFutureAlertHandler: {
+                L11n.Snooze.selectTimeInFuture.alertToastBottom()
+            }
+        )
+        _snoozeDateConfigReceiver = receiver
+        return receiver
+    }
+
+    var weekStart: WeekStart { viewModel.user.userInfo.weekStartValue }
+
+    @MainActor
+    func showSnoozeSuccessBanner(on date: Date) {
+        let dateStr = PMDateFormatter.shared.stringForSnoozeTime(from: date)
+
+        let title = String(format: L11n.Snooze.bannerTitle, dateStr)
+        let banner = PMBanner(message: title, style: PMBannerNewStyle.info)
+        if viewModel.isMessageSwipeNavigationEnabled && viewModel.shouldMoveToNextMessageAfterMove {
+            // PageVC
+            guard let viewController = parent else { return }
+            banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: viewController)
+            viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
+        } else {
+            // MailboxVC
+            guard let viewController = navigationController?.viewControllers.first else { return }
+            navigationController?.popViewController(animated: true)
+            banner.show(at: .bottom, on: viewController)
+        }
+
+    }
+
+    func presentPaymentView() {
+        paymentsUI = PaymentsUI(
+            payments: viewModel.user.payments,
+            clientApp: .mail,
+            shownPlanNames: Constants.shownPlanNames,
+            customization: .empty
+        )
+        paymentsUI?.showUpgradePlan(
+            presentationType: .modal,
+            backendFetch: true
+        ) { [weak self] reason in
+            switch reason {
+            case .purchasedPlan:
+                guard let self else { return }
+                Task {
+                    await self.viewModel.user.fetchUserInfo()
+                    await MainActor.run {
+                        self.presentSnoozeConfigSheet(on: self, current: Date())
+                    }
+                }
+            default:
+                break
+            }
+        }
     }
 }

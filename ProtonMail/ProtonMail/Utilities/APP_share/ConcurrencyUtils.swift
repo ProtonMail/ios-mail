@@ -21,6 +21,7 @@ import Foundation
 enum ConcurrencyUtils {
     static func runWithCompletion<ReturnType: Sendable>(
         block: @escaping () async throws -> ReturnType,
+        callCompletionOn completionQueue: DispatchQueue = .main,
         completion: (@Sendable (Result<ReturnType, Error>) -> Void)?
     ) {
         Task {
@@ -33,7 +34,7 @@ enum ConcurrencyUtils {
                 result = .failure(error)
             }
 
-            await MainActor.run {
+            completionQueue.async {
                 completion?(result)
             }
         }
@@ -41,35 +42,52 @@ enum ConcurrencyUtils {
 
     static func runWithCompletion<A, ReturnType>(
         block: @escaping (A) async throws -> ReturnType,
-        arguments: A,
+        argument: A,
+        callCompletionOn completionQueue: DispatchQueue = .main,
         completion: (@Sendable (Result<ReturnType, Error>) -> Void)?
     ) {
-        runWithCompletion(block: { try await block(arguments) }, completion: completion)
+        runWithCompletion(
+            block: { try await block(argument) },
+            callCompletionOn: completionQueue,
+            completion: completion
+        )
     }
 
     static func runWithCompletion<A, B, ReturnType>(
         block: @escaping (A, B) async throws -> ReturnType,
         arguments: (A, B),
+        callCompletionOn completionQueue: DispatchQueue = .main,
         completion: (@Sendable (Result<ReturnType, Error>) -> Void)?
     ) {
-        runWithCompletion(block: { try await block(arguments.0, arguments.1) }, completion: completion)
+        runWithCompletion(
+            block: { try await block(arguments.0, arguments.1) },
+            callCompletionOn: completionQueue,
+            completion: completion
+        )
     }
 
     static func runWithCompletion<A, B, C, ReturnType>(
         block: @escaping (A, B, C) async throws -> ReturnType,
         arguments: (A, B, C),
+        callCompletionOn completionQueue: DispatchQueue = .main,
         completion: (@Sendable (Result<ReturnType, Error>) -> Void)?
     ) {
-        runWithCompletion(block: { try await block(arguments.0, arguments.1, arguments.2) }, completion: completion)
+        runWithCompletion(
+            block: { try await block(arguments.0, arguments.1, arguments.2) },
+            callCompletionOn: completionQueue,
+            completion: completion
+        )
     }
 
     static func runWithCompletion<A, B, C, D, ReturnType>(
         block: @escaping (A, B, C, D) async throws -> ReturnType,
         arguments: (A, B, C, D),
+        callCompletionOn completionQueue: DispatchQueue = .main,
         completion: (@Sendable (Result<ReturnType, Error>) -> Void)?
     ) {
         runWithCompletion(
             block: { try await block(arguments.0, arguments.1, arguments.2, arguments.3) },
+            callCompletionOn: completionQueue,
             completion: completion
         )
     }

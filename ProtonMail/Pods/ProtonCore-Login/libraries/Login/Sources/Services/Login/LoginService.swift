@@ -44,6 +44,8 @@ public final class LoginService: Login {
     public private(set) var minimumAccountType: AccountType
     var username: String?
 
+    let featureFlagsRepository: FeatureFlagsRepositoryProtocol
+
     var defaultSignUpDomain = "proton.me"
     var updatedSignUpDomains: [String]?
     var chosenSignUpDomain: String?
@@ -63,10 +65,15 @@ public final class LoginService: Login {
     public var startGeneratingAddress: (() -> Void)?
     public var startGeneratingKeys: (() -> Void)?
 
-    public init(api: APIService, clientApp: ClientApp, minimumAccountType: AccountType, authenticator: AuthenticationManager? = nil) {
+    public init(api: APIService, 
+                clientApp: ClientApp,
+                minimumAccountType: AccountType,
+                authenticator: AuthenticationManager? = nil,
+                featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared) {
         self.apiService = api
         self.minimumAccountType = minimumAccountType
         self.clientApp = clientApp
+        self.featureFlagsRepository = featureFlagsRepository
         manager = authenticator ?? Authenticator(api: api)
     }
 
@@ -107,20 +114,22 @@ public final class LoginService: Login {
 
     public func refreshCredentials(completion: @escaping (Result<Credential, LoginError>) -> Void) {
         withAuthDelegateAvailable(completion) { authManager in
-            guard let old = authManager.credential(sessionUID: self.sessionId) else {
-                completion(.failure(.invalidState))
-                return
-            }
-            manager.refreshCredential(old) { result in
-                switch result {
-                case .failure(let error):
-                    completion(.failure(error.asLoginError()))
-                case .success(.ask2FA), .success(.ssoChallenge):
+            Task {
+                guard let old = await authManager.credential(sessionUID: self.sessionId) else {
                     completion(.failure(.invalidState))
-                case .success(.newCredential(let credential, _)), .success(.updatedCredential(let credential)):
-                    authManager.onUpdate(credential: credential, sessionUID: self.sessionId)
-                    self.apiService.setSessionUID(uid: credential.UID)
-                    completion(.success(credential))
+                    return
+                }
+                manager.refreshCredential(old) { result in
+                    switch result {
+                    case .failure(let error):
+                        completion(.failure(error.asLoginError()))
+                    case .success(.ask2FA), .success(.ssoChallenge):
+                        completion(.failure(.invalidState))
+                    case .success(.newCredential(let credential, _)), .success(.updatedCredential(let credential)):
+                        authManager.onUpdate(credential: credential, sessionUID: self.sessionId)
+                        self.apiService.setSessionUID(uid: credential.UID)
+                        completion(.success(credential))
+                    }
                 }
             }
         }
@@ -128,12 +137,14 @@ public final class LoginService: Login {
 
     public func refreshUserInfo(completion: @escaping (Result<User, LoginError>) -> Void) {
         withAuthDelegateAvailable(completion) { authManager in
-            guard let credential = authManager.credential(sessionUID: sessionId) else {
-                completion(.failure(.invalidState))
-                return
-            }
-            manager.getUserInfo(credential) {
-                completion($0.mapError { $0.asLoginError() })
+            Task { [weak self, sessionId] in
+                guard let credential = await authManager.credential(sessionUID: sessionId) else {
+                    completion(.failure(.invalidState))
+                    return
+                }
+                self?.manager.getUserInfo(credential) {
+                    completion($0.mapError { $0.asLoginError() })
+                }
             }
         }
     }
@@ -150,9 +161,17 @@ public final class LoginService: Login {
                 guard let self else { return }
                 switch result {
                 case .success(let user):
+                    self.featureFlagsRepository.setApiService(self.apiService)
+
+                    if !user.ID.isEmpty {
+                        self.featureFlagsRepository.setUserId(user.ID)
+                    }
+
+                    Task {
+                        try await self.featureFlagsRepository.fetchFlags(for: user.ID, using: self.apiService)
+                    }
+
                     if isSSO {
-                        FeatureFlagsRepository.shared.setApiService(with: self.apiService)
-                        FeatureFlagsRepository.shared.setUserId(with: user.ID)
                         var ssoCredential = credential
                         ssoCredential.userName = user.name ?? ""
                         completion(.success(.finished(UserData(credential: .init(ssoCredential), user: user, salts: [], passphrases: [:], addresses: [], scopes: credential.scopes))))

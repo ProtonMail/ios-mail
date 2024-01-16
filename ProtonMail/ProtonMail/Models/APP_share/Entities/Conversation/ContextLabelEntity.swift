@@ -29,6 +29,7 @@ struct ContextLabelEntity: Equatable, Hashable {
     let order: Int
     let objectID: ObjectID
     let expirationTime: Date?
+    let snoozeTime: Date?
 
     let isSoftDeleted: Bool
 }
@@ -47,6 +48,7 @@ extension ContextLabelEntity {
         self.isSoftDeleted = contextLabel.isSoftDeleted
         self.objectID = ObjectID(rawValue: contextLabel.objectID)
         self.expirationTime = contextLabel.expirationTime
+        self.snoozeTime = contextLabel.snoozeTime
     }
 
     static func convert(from conversation: Conversation) -> [ContextLabelEntity] {

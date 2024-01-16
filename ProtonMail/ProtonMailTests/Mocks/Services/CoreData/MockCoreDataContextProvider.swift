@@ -123,7 +123,7 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
 
     func createFetchedResultsController<T>(
         entityName: String,
-        predicate: NSPredicate,
+        predicate: NSPredicate?,
         sortDescriptors: [NSSortDescriptor],
         fetchBatchSize: Int,
         sectionNameKeyPath: String?

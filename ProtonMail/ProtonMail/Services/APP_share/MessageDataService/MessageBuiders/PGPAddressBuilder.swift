@@ -51,7 +51,7 @@ class PGPAddressBuilder: PackageBuilder {
     override func build() -> Promise<AddressPackageBase> {
         return async {
             var attPackages = [AttachmentPackage]()
-            guard let publicKey = self.sendPreferences.publicKeys else {
+            guard let publicKey = self.sendPreferences.publicKey else {
                 fatalError("Missing PGP key")
             }
             for att in self.preAttachments {

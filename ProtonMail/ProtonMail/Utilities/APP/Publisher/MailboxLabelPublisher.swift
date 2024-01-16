@@ -29,7 +29,7 @@ final class MailboxLabelPublisher {
         trackLifetime()
     }
 
-    func startObserve(labelID: LabelID, userID: UserID, onContentChanged: @escaping ([Label]) -> Void) {
+    func startObserve(labelID: LabelID, userID: UserID, onContentChanged: @escaping ([LabelEntity]) -> Void) {
         let predicate = NSPredicate(
             format: "(%K == %@ AND %K == %@)",
             Label.Attributes.labelID,
@@ -50,7 +50,10 @@ final class MailboxLabelPublisher {
             sortDescriptors: sortDescriptors,
             contextProvider: contextProvider
         )
-        cancellable = dataPublisher?.contentDidChange.sink(receiveValue: onContentChanged)
+        cancellable = dataPublisher?.contentDidChange
+            .map { $0.map { LabelEntity(label: $0) } }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: onContentChanged)
         dataPublisher?.start()
     }
 }

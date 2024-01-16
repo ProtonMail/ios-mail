@@ -1,4 +1,3 @@
-
 "Privacy by default" = "Privacy by default";
 
 "Proton address required" = "Proton address required";
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "Nevažeća hashirana lozinka";
 
 "Password can not be empty.\nPlease try again." = "Password can not be empty.\nPlease try again.";
-
-"Password must contain at least %@ characters." = "Lozinka mora sadržavati najmanje %@ znakova.";
 
 "Passwords do not match.\nPlease try again." = "Passwords do not match.\nPlease try again.";
 

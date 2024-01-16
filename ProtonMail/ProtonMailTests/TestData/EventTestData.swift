@@ -1080,6 +1080,7 @@ enum EventTestData {
                 "Size": 54679,
                 "IsProton": 0,
                 "DisplaySenderImage": 0,
+                "DisplaySnoozedReminder": false,
                 "BimiSelector": null,
                 "Labels": [
                     {
@@ -1194,6 +1195,7 @@ enum EventTestData {
                 "IsProton": 0,
                 "DisplaySenderImage": 0,
                 "BimiSelector": null,
+                "SnoozeTime": 0,
                 "ToList": [
                     {
                         "Name": "test",
@@ -1286,6 +1288,7 @@ enum EventTestData {
                 "IsProton": 0,
                 "DisplaySenderImage": 0,
                 "BimiSelector": null,
+                "SnoozeTime": 0,
                 "ToList": [],
                 "CCList": [],
                 "BCCList": [

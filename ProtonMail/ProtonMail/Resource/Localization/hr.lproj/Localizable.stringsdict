@@ -2,6 +2,42 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>%u participants</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@participants@</string>
+      <key>participants</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%u participants</string>
+        <key>one</key>
+        <string>%u participant</string>
+        <key>few</key>
+        <string>%u participants</string>
+      </dict>
+    </dict>
+    <key>You have %d new emails!</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@newemails@</string>
+      <key>newemails</key>
+      <dict>
+        <key>one</key>
+        <string>You have %d new emails!</string>
+        <key>few</key>
+        <string>You have %d new emails!</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>You have %d new emails!</string>
+      </dict>
+    </dict>
     <key>%d email trackers blocked</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
@@ -18,6 +54,24 @@
         <string>%d email trackers blocked</string>
         <key>other</key>
         <string>%d email trackers blocked</string>
+      </dict>
+    </dict>
+    <key>%d selected</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@selected@</string>
+      <key>selected</key>
+      <dict>
+        <key>one</key>
+        <string>%d selected</string>
+        <key>few</key>
+        <string>%d selected</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d selected</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>
@@ -301,11 +355,11 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>In %d minute</string>
+        <string>Za %d minutu</string>
         <key>few</key>
-        <string>In %d minutes</string>
+        <string>Za %d minute</string>
         <key>other</key>
-        <string>In %d minutes</string>
+        <string>Za %d minuta</string>
       </dict>
     </dict>
     <key>These %d messages will move to Drafts and have their schedule removed.</key>
@@ -355,29 +409,11 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d second</string>
+        <string>%d sekunda</string>
         <key>few</key>
-        <string>%d seconds</string>
+        <string>%d sekunde</string>
         <key>other</key>
-        <string>%d seconds</string>
-      </dict>
-    </dict>
-    <key>%d Selected</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@selected@</string>
-      <key>selected</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d Odabrano</string>
-        <key>few</key>
-        <string>%d Odabrano</string>
-        <key>other</key>
-        <string>%d Odabrano</string>
+        <string>%d sekundi</string>
       </dict>
     </dict>
     <key>%d attachment</key>
@@ -409,11 +445,11 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d minute</string>
+        <string>%d minuta</string>
         <key>few</key>
-        <string>%d minutes</string>
+        <string>%d minute</string>
         <key>other</key>
-        <string>%d minutes</string>
+        <string>%d minuta</string>
       </dict>
     </dict>
     <key>Are you sure you want to delete these %d messages permanently?</key>

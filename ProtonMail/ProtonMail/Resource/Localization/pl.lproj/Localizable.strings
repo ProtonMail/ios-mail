@@ -1,6 +1,5 @@
 /* link opeining confirmation */
-
-"You are about to launch the web browser and navigate to" = "Masz zamiar uruchomić przeglądarkę i przejść do";
+"You are about to launch the web browser and navigate to" = "Uruchomisz przeglądarkę i przejdziesz do";
 
 /* link opeining confirmation */
 "Request link confirmation" = "Potwierdź otwieranie linków";
@@ -59,28 +58,45 @@
 /* menu title */
 "Inbox" = "Odebrane";
 
-/* menu title */
+/*
+ menu title
+ Springboard (3D Touch) shortcuts action
+ VoiceOver: email is starred
+*/
 "Starred" = "Wyróżnione";
 
-/* menu title */
+/*
+ menu title
+ Push notification action to archive
+ The title of the archive action in action sheet
+*/
 "Archive" = "Archiwizuj";
 
 /* menu title */
 "Drafts" = "Szkice";
 
-/* mail location title */
+/*
+ mail location title
+ menu title
+*/
 "All Mail" = "Wszystkie wiadomości";
 
 /* menu title */
 "Sent" = "Wysłane";
 
-/* mail location desc */
+/*
+ mail location desc
+ menu title
+*/
 "Trash" = "Kosz";
 
 /* menu title */
 "Spam" = "Spam";
 
-/* Action and title */
+/*
+ Action and title
+ menu title
+*/
 "Contacts" = "Kontakty";
 
 /* menu title (contact groups) */
@@ -89,19 +105,28 @@
 /* menu title */
 "Settings" = "Ustawienia";
 
-/* Alert title to confirm signout */
+/*
+ Alert title to confirm signout
+ menu title
+*/
 "Sign out" = "Wyloguj";
 
 /* menu title */
 "Lock The App" = "Zablokuj aplikację";
 
-/* menu title */
+/*
+ menu title
+ The title of a subscription plans screen
+*/
 "Subscription" = "Subskrypcja";
 
 /* menu title */
 "Manage accounts" = "Zarządzaj kontami";
 
-/* menu title */
+/*
+ menu title
+ The voiceiver title of the add attachment button in the tool bar of composer
+*/
 "Add attachment" = "Dodaj załącznik";
 
 /* menu title */
@@ -112,9 +137,6 @@
 
 /* Description after message have been sent */
 "Message sent" = "Wiadomość została wysłana";
-
-/* Description */
-"Sent Failed" = "Wysyłanie nie powiodło się";
 
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Niczego tutaj nie ma";
@@ -142,9 +164,6 @@
 
 /* Title */
 "You have a new email!" = "Masz nową wiadomość!";
-
-/* Message */
-"You have %d new emails!" = "You have %d new emails!";
 
 /* abbreviation of reply: */
 "Re:" = "Re:";
@@ -206,13 +225,19 @@
 /* button title */
 "Apply Password" = "Zastosuj hasło";
 
-/* Action */
+/*
+ Action
+ Springboard (3D Touch) shortcuts action
+*/
 "Compose" = "Napisz";
 
 /* Composer expiration page title */
 "Message expiration" = "Wygaśniecie wiadomości";
 
-/* contacts default label type */
+/*
+ contacts default label type
+ Custom option for time config picker
+*/
 "Custom" = "Niestandardowe";
 
 /* Description */
@@ -225,7 +250,7 @@
 "Upgrade to a paid plan to send from your %@ address" = "Ulepsz do płatnego planu, aby wysyłać wiadomości z adresu %@";
 
 /* pm.me upgrade warning in composer */
-"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Wysyłanie wiadomości z adresu %1$@ jest funkcją płatną. Twoja wiadomość zostanie wysłana z Twojego domyślnego adresu %2$@";
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Wysyłanie wiadomości z adresu %1$@ jest płatną funkcją. Twoja wiadomość zostanie wysłana z Twojego domyślnego adresu %2$@";
 
 /* Title */
 "From" = "Od";
@@ -392,7 +417,13 @@
 /* Done action */
 "Done" = "Gotowe";
 
-/* Button to cancel encrypted search */
+/*
+ Button to cancel encrypted search
+ Cancel action
+ general cancel action
+ Title for the alert button to cancel delete all downloaded messages.
+ Title for the alert button to cancel disable content search.
+*/
 "Cancel" = "Anuluj";
 
 /* Got it action */
@@ -419,16 +450,26 @@
 /* message From: field text */
 "From:" = "Od:";
 
-/* message To: feild */
+/*
+ message To: feild
+ Title
+*/
 "To" = "Do";
 
-/* message Cc: feild */
+/*
+ message Cc: feild
+ Title
+*/
 "Cc" = "Dw";
 
 /* message Bcc: feild */
 "Bcc:" = "Udw:";
 
-/* general delete action */
+/*
+ general delete action
+ The title of the delete action in action sheet
+ Title for the alert button to delete all downloaded messages.
+*/
 "Delete" = "Usuń";
 
 /* general close action */
@@ -437,7 +478,10 @@
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesja wygasła z powodu braku aktywności lub jej unieważnienia. Zaloguj się ponownie.";
 
-/* Springboard (3D Touch) shortcuts action */
+/*
+ Springboard (3D Touch) shortcuts action
+ Title
+*/
 "Search" = "Szukaj";
 
 /* Alert title */
@@ -452,7 +496,10 @@
 /* Action */
 "Send" = "Wyślij";
 
-/* Action */
+/*
+ Action
+ The action title of the alert of the user trying to send a message that was schedule-send.
+*/
 "Schedule send" = "Zaplanuj wysyłanie";
 
 /* Alert title */
@@ -488,7 +535,10 @@
 /* Title */
 "Save" = "Zapisz";
 
-/* Action */
+/*
+ Action
+ The button title of the scheduled message banner.
+*/
 "Edit" = "Edytuj";
 
 /* Error message */
@@ -548,7 +598,10 @@
 /* Hint when users delete contact offline  */
 "Contact deleted, will be synced when connection is available" = "Kontakt został usunięty. Zostanie zsynchronizowany przy następnym połączeniu z Internetem";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup2
+*/
 "Confirm" = "Potwierdź";
 
 /* Title */
@@ -566,7 +619,10 @@
 /* Action */
 "Later" = "Później";
 
-/* Action */
+/*
+ Action
+ The text for downloaded messages in local storage when encrypted search is disabled.
+*/
 "Disabled" = "Wyłączony";
 
 /* contact placeholder */
@@ -575,7 +631,12 @@
 /* top left back button */
 "Back" = "Wstecz";
 
-/* A *short* description saying that there is no contact group associated with this contact email */
+/*
+ A *short* description saying that there is no contact group associated with this contact email
+ Action title of none
+ The protection title of None protection
+ Title
+*/
 "None" = "Brak";
 
 /* lock app option */
@@ -603,9 +664,12 @@
 "Change default address to…" = "Zmień domyślny adres na…";
 
 /* pm.me upgrade warning in composer */
-"You can't set %@ address as default because it is a paid feature." = "Nie możesz ustawić adresu %@ jako domyślnego, ponieważ jest to funkcja płatna.";
+"You can't set %@ address as default because it is a paid feature." = "Nie możesz ustawić adresu %@ jako domyślnego, ponieważ jest to płatna funkcja.";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup1
+*/
 "Continue" = "Kontynuuj";
 
 /* error message */
@@ -629,10 +693,16 @@
 /* Error */
 "Unknown Error" = "Wystąpił nieznany błąd";
 
-/* Action */
+/*
+ Action
+ The title of loading remote content banner.
+*/
 "Load remote content" = "Załaduj zawartość zdalną";
 
-/* settings general section title */
+/*
+ settings general section title
+ title
+*/
 "Change password" = "Zmień hasło";
 
 /* Title */
@@ -911,7 +981,11 @@
 /* Error */
 "Can't open the file" = "Nie można otworzyć pliku";
 
-/* Action */
+/*
+ Action
+ alternative routing link name in description
+ The title of learn more link
+*/
 "Learn more" = "Dowiedz się więcej";
 
 /* Action */
@@ -959,7 +1033,10 @@
 /* Action title of move to archive */
 "Move to archive" = "Przenieś do Archiwum";
 
-/* Action title of move to spam */
+/*
+ Action title of move to spam
+ The title of the spam action in action sheet
+*/
 "Move to spam" = "Przenieś do Spamu";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
@@ -1004,7 +1081,10 @@
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Zalecamy ustawienie hasła lub wyłączenie wysyłania poprzez PGP dla następujących odbiorców:";
 
-/* A option title that enable/disable notification feature */
+/*
+ A option title that enable/disable notification feature
+ cell title in device settings
+*/
 "Notifications" = "Powiadomienia";
 
 /* VoiceOver: email belongs to folders */
@@ -1045,6 +1125,9 @@
 
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Usuń grupę kontaktów";
+
+/* The string that describes how many contact groups are currently selected */
+"%d Selected" = "%d Selected";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Do grupy kontaktów musisz przydzielić co najmniej jeden adres e-mail";
@@ -1091,7 +1174,10 @@
 /* Alert to confirm signout */
 "You will be switched to %@" = "Zostaniesz przełączony na konto %@";
 
-/* Alert to confirm sign out */
+/*
+ Alert to confirm sign out
+ Alert when sign out non-primary account from account manager
+*/
 "Are you sure you want to sign out?" = "Czy na pewno chcesz się wylogować?";
 
 /* Alert to confirm sign out when only one account signed in */
@@ -1154,7 +1240,10 @@
 /* cell title in device settings */
 "Language" = "Język";
 
-/* cell title in device settings */
+/*
+ cell title in device settings
+ The title of combined contact in settings
+*/
 "Combined contacts" = "Połączone kontakty";
 
 /* cell title in app settings */
@@ -1235,9 +1324,6 @@
 /* The unread title of unread action button in mailbox view */
 "unread" = "nieprzeczytane";
 
-/* The title of navigation bar title of mailbox view while selecting the message */
-"Selected" = "Selected";
-
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Zaktualizowano ponad godzinę temu";
 
@@ -1253,7 +1339,10 @@
 /* The text shown on the mailbox when the primary user changed */
 "Signed in as %@" = "Zalogowano jako %@";
 
-/* The title of the star action in action sheet */
+/*
+ The title of the star action in action sheet
+ VoiceOver title of star button in the message view
+*/
 "Star" = "Oznacz gwiazdką";
 
 /* The title of the star action in action sheet */
@@ -1262,10 +1351,16 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Oznacz jako nieprzeczytane";
 
-/* Push notification action mark as read */
+/*
+ Push notification action mark as read
+ The title of the read action in action sheet
+*/
 "Mark as read" = "Oznacz jako przeczytane";
 
-/* Push notification action move to trash */
+/*
+ Push notification action move to trash
+ The title of the remove action in action sheet
+*/
 "Move to trash" = "Przenieś do Kosza";
 
 /* The title of the remove action in action sheet */
@@ -1277,10 +1372,10 @@
 /* The title of the view message in dark mode action in action sheet */
 "View message in Dark mode" = "Pokaż wiadomość w ciemnym motywie";
 
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Włączenie tej funkcji spowoduje automatyczne uzupełnianie adresów e-mail przy użyciu wszystkich kontaktów na Twoich zalogowanych kontach.";
-
-/* alternative routing description */
+/*
+ alternative routing description
+ The footer of alternative routing setting
+*/
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "W przypadku zablokowania dostępu do stron Proton, ta konfiguracja pozwoli aplikacji wypróbować alternatywne połączenia sieciowe, które mogą przywrócić ten dostęp. Ta funkcja może być przydatna podczas problemów z siecią lub w celu ominięcia zapór. Zalecamy włączenie tego ustawienia dla zapewnienia większej niezawodności. %1$@";
 
 /* The title of alternative routing settings */
@@ -1442,8 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Zgłoś próbę wyłudzenia informacji";
 
-/* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "To nie jest spam (Przenieś do Odebranych)";
+"Not spam (move to inbox)" = "To nie jest spam (Przenieś do Odebranych)";
 
 /* No comment provided by engineer. */
 "Move to" = "Przenieś do";
@@ -1831,6 +1925,12 @@
 /* Button inside the banner */
 "Load" = "Załaduj";
 
+/* As in: event organizer */
+"Organizer" = "Organizator";
+
+/* Button to hide some items in the list to conserve screen estate */
+"Show less" = "Pokaż mniej";
+
 /* Official badge next to sender's name */
 "Official" = "Oficjalna";
 
@@ -1863,6 +1963,21 @@
 
 /* The title of the maybe later button in referral prompt view. */
 "Maybe later" = "Może później";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Włączenie tej funkcji spowoduje automatyczne uzupełnianie adresów e-mail przy użyciu wszystkich kontaktów na Twoich zalogowanych kontach.";
+
+/* contacts auto import title in settings */
+"Auto-import device contacts" = "Auto-import device contacts";
+
+/* contacts auto import footer in settings */
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+
+/* Auto import alert title */
+"Auto-import enabled" = "Auto-import enabled";
+
+/* Auto import alert message */
+"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
 
 /* Settings lock protection section */
 "Protection" = "Ochrona";
@@ -1928,13 +2043,10 @@
 "Application logs" = "Logi aplikacji";
 
 /* The title of the setting of the next msg after move */
-"Next message after move" = "Następna wiadomość po przeniesieniu";
-
-/* The title of the row inside the setting page of next msg after move function. */
-"Navigate to next message after move" = "Po przeniesieniu przejdź do następnej wiadomości";
+"Jump to next message" = "Jump to next message";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Po przeniesieniu wiadomości (np. do Archiwum) przejdziesz do następnej wiadomości.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Wystąpił nieoczekiwany błąd. Skontaktuj się ze wsparciem.\n%@";
@@ -1993,7 +2105,10 @@
 /* Message of the alert to confirm enabling of the auto delete option */
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Wszystkie wiadomości, które znajdują się w Koszu lub w Spamie dłużej niż 30 dni zostaną usunięte.";
 
-/* Button to enable encrypted search */
+/*
+ Button to enable encrypted search
+ The title of the button to move to settings and enable encrypted search.
+*/
 "Enable" = "Włącz";
 
 /* Text to advertise the auto delete feature to free users */
@@ -2032,6 +2147,9 @@
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Nadawca wiadomości nie jest prawidłowy. Wiadomość zostanie wysłana z domyślnego adresu %@.";
 
+/* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
+"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nazwa wyświetlana";
 
@@ -2056,13 +2174,25 @@
 /* The title of select all button for select all messages feature */
 "Select all" = "Zaznacz wszystkie";
 
-/* The title of PIN code disable view  */
+/* The title of unselect all button for select all messages feature */
+"Unselect all" = "Odznacz wszystkie";
+
+/* Warning message will be shown to user when user try to select more than acceptable message */
+"Maximum selection reached" = "Maximum selection reached";
+
+/* Placeholder if message sender is empty */
+"No Recipient" = "Brak odbiorcy";
+
+/* The title of PIN code disable view */
 "Disable PIN code" = "Wyłącz kod PIN";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Ustaw kod PIN";
 
-/* The title of PIN code setup2 view */
+/*
+ The title of PIN code setup2 view
+ The title of textfield of PIN code setup2
+*/
 "Repeat PIN code" = "Powtórz kod PIN";
 
 /* The title of textfield of PIN code setup1 */
@@ -2094,3 +2224,51 @@
 
 /* Unsubscribe confirmation message */
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Spowoduje to anulowanie subskrypcji listy mailingowej. Nadawca zostanie powiadomiony o anulowaniu subskrypcji.";
+
+/* Alert telling the user that we are unable to preview this attachment */
+"Unable to preview this attachment" = "Unable to preview this attachment";
+
+/* Title for banner saying that we are currently downloading the attachment to preview it */
+"Downloading attachment" = "Pobieranie załącznika";
+
+/* The banner title that is shown in the message detail view. */
+"Snoozed until %@" = "Snoozed until %@";
+
+/* The title of the button in the banner that is shown in the message detail view. */
+"Unsnooze" = "Anuluj odłożenie";
+
+/* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
+"Snooze until %@" = "Snooze until %@";
+
+/* Notification banner when user unsnooze a conversation */
+"Conversation unsnoozed" = "Anulowano odłożenie wątku";
+
+/* The title of snooze config in action sheet */
+"Snooze until..." = "Odłóż...";
+
+/* One of snooze option shows in action sheet */
+"Later this week" = "W tym tygodniu";
+
+/* One of snooze option shows in action sheet */
+"This weekend" = "Ten weekend";
+
+/* One of snooze option shows in action sheet */
+"Next week" = "Następny tydzień";
+
+/* An error message will be shown to user when user select past snooze time */
+"Please select a time in the future" = "Please select a time in the future";
+
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Chcesz odłożyć w wybranym czasie?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Ulepsz plan, aby odblokować niestandardowy czas odłożenia";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Do 15 adresów e-mail / aliasów";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Nieograniczona liczba folderów, etykiet i filtrów";
+
+/* The title of the action option that will make the inline attachment as normal attachment. */
+"Add it as attachment" = "Dodaj jako załącznik";

@@ -22,7 +22,6 @@ final class SaveEventResponseInCacheUseCase {
     typealias Dependencies = AnyObject & HasCoreDataContextProviderProtocol
 
     unowned let dependencies: Dependencies
-    let userID: UserID
     private let encoder = JSONEncoder()
     private let contactEventProcessor: ContactEventProcessor
     private let emailEventProcessor: EmailEventProcessor
@@ -32,7 +31,6 @@ final class SaveEventResponseInCacheUseCase {
 
     init(dependencies: Dependencies, userID: UserID) {
         self.dependencies = dependencies
-        self.userID = userID
         self.contactEventProcessor = .init(userID: userID, encoder: encoder)
         self.emailEventProcessor = .init(userID: userID, encoder: encoder)
         self.labelEventProcessor = .init(userID: userID)
@@ -42,9 +40,9 @@ final class SaveEventResponseInCacheUseCase {
 
     func execute(response: EventAPIResponse) throws {
         try dependencies.contextProvider.write { context in
+            self.labelEventProcessor.process(response: response, context: context)
             self.contactEventProcessor.process(response: response, context: context)
             self.emailEventProcessor.process(response: response, context: context)
-            self.labelEventProcessor.process(response: response, context: context)
             self.conversationProcessor.process(response: response, context: context)
             self.messageProcessor.process(response: response, context: context)
         }

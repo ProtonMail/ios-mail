@@ -18,7 +18,11 @@
 import ProtonCoreCryptoGoInterface
 
 struct APIKeysConfig {
-    let keys: [KeyResponse]
-    let publicKeys: [CryptoKey]
+    let publicKeys: [PublicKeyWithAPIData]
     let recipientType: KeysResponse.RecipientType
+}
+
+struct PublicKeyWithAPIData {
+    let apiData: KeyResponse
+    let cryptoKey: CryptoKey
 }

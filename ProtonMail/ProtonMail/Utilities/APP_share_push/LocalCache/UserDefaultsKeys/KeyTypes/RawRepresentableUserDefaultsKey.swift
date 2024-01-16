@@ -17,7 +17,8 @@
 
 import Foundation
 
-final class RawRepresentableUserDefaultsKey<T: RawRepresentable>: UserDefaultsKeys, OptionalUserDefaultsKey where T.RawValue: UserDefaultsStorable {
+final class RawRepresentableUserDefaultsKey<T: RawRepresentable>:
+    UserDefaultsKeys, OptionalUserDefaultsKey where T.RawValue: UserDefaultsStorable {
     private let rawValueKey: PlainUserDefaultsKey<T.RawValue>
 
     init(name: String) {

@@ -24,10 +24,9 @@ struct SendPreferences: Equatable {
         lhs.sign == rhs.sign &&
         lhs.pgpScheme == rhs.pgpScheme &&
         lhs.mimeType == rhs.mimeType &&
-        lhs.publicKeys?.getFingerprint() == rhs.publicKeys?.getFingerprint() &&
+        lhs.publicKey?.getFingerprint() == rhs.publicKey?.getFingerprint() &&
         lhs.isPublicKeyPinned == rhs.isPublicKeyPinned &&
         lhs.hasApiKeys == rhs.hasApiKeys &&
-        lhs.hasPinnedKeys == rhs.hasPinnedKeys &&
         lhs.error == rhs.error
     }
 
@@ -35,9 +34,8 @@ struct SendPreferences: Equatable {
     let sign: Bool
     let pgpScheme: PGPScheme
     let mimeType: SendMIMEType
-    let publicKeys: CryptoKey?
+    let publicKey: CryptoKey?
     let isPublicKeyPinned: Bool
     let hasApiKeys: Bool
-    let hasPinnedKeys: Bool
     let error: EncryptionPreferencesError?
 }

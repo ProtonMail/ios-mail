@@ -149,7 +149,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
         switch labelInfo.location {
         case .customize:
             self.handleCustomLabel(labelInfo: labelInfo, deepLink: deepLink)
-        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled, .almostAllMail:
+        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled, .almostAllMail, .snooze:
             if currentLocation?.location == labelInfo.location,
                let deepLink = deepLink,
                mailboxCoordinator?.viewModel.user.userID == viewModel.currentUser?.userID {
@@ -179,17 +179,6 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
             self.navigateToCreateFolder(type: .label)
         case .addFolder:
             self.navigateToCreateFolder(type: .folder)
-        case .sendFeedback:
-            let inboxLabel = MenuLabel(location: .inbox)
-            labelToHighlight = inboxLabel
-            if checkIsCurrentViewInInboxView() {
-                sideMenu.hideMenu()
-                let inbox = (sideMenu.contentViewController as? UINavigationController)?
-                    .topViewController as? MailboxViewController
-                inbox?.showFeedbackViewIfNeeded(forceToShow: true)
-            } else {
-                self.navigateToMailBox(labelInfo: inboxLabel, deepLink: deepLink, showFeedbackActionSheet: true)
-            }
         case .referAFriend:
             navigateToReferralView()
             labelToHighlight = nil
@@ -208,11 +197,6 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
 
     func closeMenu() {
         sideMenu.hideMenu()
-    }
-
-    private func checkIsCurrentViewInInboxView() -> Bool {
-        return ((sideMenu.contentViewController as? UINavigationController)?
-                    .topViewController as? MailboxViewController)?.viewModel.labelID == Message.Location.inbox.labelID
     }
 }
 
@@ -382,7 +366,6 @@ extension MenuCoordinator {
     private func navigateToMailBox(
         labelInfo: MenuLabel,
         deepLink: DeepLink?,
-        showFeedbackActionSheet: Bool = false,
         isSwitchEvent: Bool = false
     ) {
         guard !self.scrollToLatestMessageInConversationViewIfPossible(deepLink) else {
@@ -405,7 +388,7 @@ extension MenuCoordinator {
                 labelInfo: LabelInfo(name: label.name)
             )
 
-        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled, .almostAllMail:
+        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled, .almostAllMail, .snooze:
             viewModel = createMailboxViewModel(
                 userManager: user,
                 labelID: labelInfo.location.labelID,
@@ -418,7 +401,6 @@ extension MenuCoordinator {
         let userContainer = user.container
 
         let view = MailboxViewController(viewModel: viewModel, dependencies: userContainer)
-        view.scheduleUserFeedbackCallOnAppear = showFeedbackActionSheet
         let navigation: UINavigationController
         if isSwitchEvent,
            let navigationController = self.mailboxCoordinator?.navigation {

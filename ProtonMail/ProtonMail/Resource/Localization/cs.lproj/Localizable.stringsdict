@@ -2,6 +2,46 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>%u participants</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@participants@</string>
+      <key>participants</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%u účastníků</string>
+        <key>one</key>
+        <string>%u účastník</string>
+        <key>few</key>
+        <string>%u účastníci</string>
+        <key>many</key>
+        <string>%u účastníků</string>
+      </dict>
+    </dict>
+    <key>You have %d new emails!</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@newemails@</string>
+      <key>newemails</key>
+      <dict>
+        <key>one</key>
+        <string>Máte %d nový e-mail!</string>
+        <key>few</key>
+        <string>Máte %d nové e-maily!</string>
+        <key>many</key>
+        <string>Máte %d nových e-mailů!</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>Máte %d nových e-mailů!</string>
+      </dict>
+    </dict>
     <key>%d email trackers blocked</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
@@ -20,6 +60,26 @@
         <string>%d sledovacích prvků e-mailu zablokováno</string>
         <key>other</key>
         <string>%d sledovacích prvků e-mailu zablokováno</string>
+      </dict>
+    </dict>
+    <key>%d selected</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@selected@</string>
+      <key>selected</key>
+      <dict>
+        <key>one</key>
+        <string>%d selected</string>
+        <key>few</key>
+        <string>%d selected</string>
+        <key>many</key>
+        <string>%d selected</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d selected</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>
@@ -400,26 +460,6 @@
         <string>%d sekund</string>
         <key>other</key>
         <string>%d sekund</string>
-      </dict>
-    </dict>
-    <key>%d Selected</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@selected@</string>
-      <key>selected</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Vybrán: %d</string>
-        <key>few</key>
-        <string>Vybrány: %d</string>
-        <key>many</key>
-        <string>Vybráno: %d</string>
-        <key>other</key>
-        <string>Vybráno: %d</string>
       </dict>
     </dict>
     <key>%d attachment</key>

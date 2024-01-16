@@ -73,10 +73,9 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         self.dependencies = dependencies
         users = dependencies.usersManager
         let firstUser = users.firstUser!
-        let isMessageSwipeNavigationEnabled = false
         viewModel = SettingsAccountViewModelImpl(
             user: firstUser,
-            isMessageSwipeNavigationEnabled: isMessageSwipeNavigationEnabled
+            isMessageSwipeNavigationEnabled: firstUser.isMessageSwipeNavigationSettingEnabled
         )
     }
 

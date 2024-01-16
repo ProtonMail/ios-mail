@@ -29,11 +29,11 @@ final class ResolveSendPreferences: ResolveSendPreferencesUseCase {
 
     override func executionBlock(params: Params, callback: @escaping Callback) {
         verifiedContacts(for: params.recipientsEmailAddresses) { [unowned self] preContacts in
-            let fetchParams = FetchEmailAddressesPublicKey.Params(emails: params.recipientsEmailAddresses)
-            dependencies
-                .fetchAddressesPublicKeys
-                .callbackOn(executionQueue)
-                .execute(params: fetchParams) { result in
+            ConcurrencyUtils.runWithCompletion(
+                block: dependencies.fetchAddressesPublicKeys.execute,
+                argument: params.recipientsEmailAddresses,
+                callCompletionOn: executionQueue,
+                completion: { result in
                     switch result {
                     case .success(let keysDict):
                         let recipientsSendPreferences = params.recipientsEmailAddresses.map { [unowned self] in
@@ -45,6 +45,7 @@ final class ResolveSendPreferences: ResolveSendPreferencesUseCase {
                         callback(.failure(error))
                     }
                 }
+            )
         }
     }
 

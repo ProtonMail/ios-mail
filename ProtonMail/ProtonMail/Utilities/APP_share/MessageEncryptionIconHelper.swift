@@ -65,37 +65,20 @@ struct MessageEncryptionIconHelper {
         let allEncrypted = hasHeaderInfo && !encryptions.contains(where: { $0 == .none })
         let allExternal = hasHeaderInfo && !encryptions
             .contains(where: { ContentEncryptionType.internalTypes.contains($0) })
-        let isImported = getOrigin(headerValue: message.parsedHeaders) == "import"
 
         if allPinned {
             if contentEncryptionType == .endToEnd {
-                if allExternal {
-                    return .init(
-                        iconColor: .blue,
-                        icon: IconProvider.lockCheckFilled,
-                        text: LocalString._end_to_send_verified_recipient_of_sent
-                    )
-                } else {
-                    return .init(
-                        iconColor: .blue,
-                        icon: IconProvider.lockCheckFilled,
-                        text: LocalString._end_to_send_verified_recipient_of_sent
-                    )
-                }
+                return .init(
+                    iconColor: .blue,
+                    icon: IconProvider.lockCheckFilled,
+                    text: LocalString._end_to_send_verified_recipient_of_sent
+                )
             } else {
-                if allExternal {
-                    return .init(
-                        iconColor: .blue,
-                        icon: IconProvider.lockCheckFilled,
-                        text: LocalString._zero_access_verified_recipient_of_sent
-                    )
-                } else {
-                    return .init(
-                        iconColor: .blue,
-                        icon: IconProvider.lockCheckFilled,
-                        text: LocalString._zero_access_verified_recipient_of_sent
-                    )
-                }
+                return .init(
+                    iconColor: .blue,
+                    icon: IconProvider.lockCheckFilled,
+                    text: LocalString._zero_access_verified_recipient_of_sent
+                )
             }
         }
         if allEncrypted {
@@ -114,35 +97,19 @@ struct MessageEncryptionIconHelper {
                     )
                 }
             } else {
-                if allExternal {
-                    return .init(
-                        iconColor: .blue,
-                        icon: IconProvider.lockFilled,
-                        text: LocalString._zero_access_by_pm_of_sent
-                    )
-                } else {
-                    return .init(
-                        iconColor: .blue,
-                        icon: IconProvider.lockFilled,
-                        text: LocalString._zero_access_by_pm_of_sent
-                    )
-                }
+                return .init(
+                    iconColor: .blue,
+                    icon: IconProvider.lockFilled,
+                    text: LocalString._zero_access_by_pm_of_sent
+                )
             }
         }
 
-        if isImported {
-            return .init(
-                iconColor: .black,
-                icon: IconProvider.lockFilled,
-                text: LocalString._zero_access_of_msg
-            )
-        } else {
-            return .init(
-                iconColor: .black,
-                icon: IconProvider.lockFilled,
-                text: LocalString._zero_access_of_msg
-            )
-        }
+        return .init(
+            iconColor: .black,
+            icon: IconProvider.lockFilled,
+            text: LocalString._zero_access_of_msg
+        )
     }
 
     // swiftlint:disable:next function_body_length

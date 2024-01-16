@@ -1,4 +1,3 @@
-
 "Privacy by default" = "隱私權為根本";
 
 "Proton address required" = "需要 Proton 地址";
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "無效的雜湊密碼";
 
 "Password can not be empty.\nPlease try again." = "密碼不能為空白。\n請再試一次。";
-
-"Password must contain at least %@ characters." = "密碼必須包含至少 %@ 個字元。";
 
 "Passwords do not match.\nPlease try again." = "密碼不同。\n請再試一次。";
 

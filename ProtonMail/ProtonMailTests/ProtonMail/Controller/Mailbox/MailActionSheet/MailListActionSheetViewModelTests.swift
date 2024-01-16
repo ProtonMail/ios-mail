@@ -22,6 +22,7 @@ class MailListActionSheetViewModelTests: XCTestCase {
 
     var sut: MailListActionSheetViewModel!
     var randomTitle = ""
+    private let viewModes: [ViewMode] = [.singleMessage, .conversation]
     override func setUp() {
         super.setUp()
         randomTitle = String.randomString(100)
@@ -34,45 +35,64 @@ class MailListActionSheetViewModelTests: XCTestCase {
     }
 
     func testInit_inbox() {
-        sut = MailListActionSheetViewModel(labelId: Message.Location.inbox.rawValue,
-                                           title: randomTitle)
-        XCTAssertEqual(sut.title, randomTitle)
-        let expected: [MailListActionSheetItemViewModel] = [
-            .starActionViewModel(),
-            .unstarActionViewModel(),
-            .markUnreadActionViewModel(),
-            .markReadActionViewModel(),
-            .labelAsActionViewModel(),
-            .removeActionViewModel(),
-            .moveToArchive(),
-            .moveToSpam(),
-            .moveToActionViewModel(),
-            .customizeToolbarActionViewModel()
-        ]
-        XCTAssertEqual(sut.items, expected)
+        for viewMode in viewModes {
+            sut = MailListActionSheetViewModel(
+                labelId: Message.Location.inbox.rawValue,
+                title: randomTitle,
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
+            )
+            XCTAssertEqual(sut.title, randomTitle)
+            var expected: [MailListActionSheetItemViewModel] = [
+                .starActionViewModel(),
+                .unstarActionViewModel(),
+                .markUnreadActionViewModel(),
+                .markReadActionViewModel(),
+                .labelAsActionViewModel(),
+                .removeActionViewModel(),
+                .moveToArchive(),
+                .moveToSpam(),
+                .moveToActionViewModel(),
+                .customizeToolbarActionViewModel()
+            ]
+            if viewMode == .conversation {
+                expected.insert(.snooze(), at: 4)
+            }
+            XCTAssertEqual(sut.items, expected)
+        }
     }
 
     func testInit_scheduled() {
-        sut = MailListActionSheetViewModel(labelId: Message.Location.scheduled.rawValue,
-                                           title: randomTitle)
-        XCTAssertEqual(sut.title, randomTitle)
-        let expected: [MailListActionSheetItemViewModel] = [
-            .starActionViewModel(),
-            .unstarActionViewModel(),
-            .markUnreadActionViewModel(),
-            .markReadActionViewModel(),
-            .labelAsActionViewModel(),
-            .removeActionViewModel(),
-            .moveToArchive(),
-            .moveToActionViewModel(),
-            .customizeToolbarActionViewModel()
-        ]
-        XCTAssertEqual(sut.items, expected)
+        for viewMode in viewModes {
+            sut = MailListActionSheetViewModel(
+                labelId: Message.Location.scheduled.rawValue,
+                title: randomTitle,
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
+            )
+            XCTAssertEqual(sut.title, randomTitle)
+            var expected: [MailListActionSheetItemViewModel] = [
+                .starActionViewModel(),
+                .unstarActionViewModel(),
+                .markUnreadActionViewModel(),
+                .markReadActionViewModel(),
+                .labelAsActionViewModel(),
+                .removeActionViewModel(),
+                .moveToArchive(),
+                .moveToActionViewModel(),
+                .customizeToolbarActionViewModel()
+            ]
+            XCTAssertEqual(sut.items, expected)
+        }
     }
 
     func testInit_draft() {
-        sut = MailListActionSheetViewModel(labelId: Message.Location.draft.rawValue,
-                                           title: randomTitle)
+        sut = MailListActionSheetViewModel(
+            labelId: Message.Location.draft.rawValue,
+            title: randomTitle,
+            locationViewMode: .singleMessage,
+            isSnoozeEnabled: true
+        )
         XCTAssertEqual(sut.title, randomTitle)
         let expected: [MailListActionSheetItemViewModel] = [
             .starActionViewModel(),
@@ -90,8 +110,12 @@ class MailListActionSheetViewModelTests: XCTestCase {
     }
 
     func testInit_sent() {
-        sut = MailListActionSheetViewModel(labelId: Message.Location.sent.rawValue,
-                                           title: randomTitle)
+        sut = MailListActionSheetViewModel(
+            labelId: Message.Location.sent.rawValue,
+            title: randomTitle,
+            locationViewMode: .singleMessage,
+            isSnoozeEnabled: true
+        )
         XCTAssertEqual(sut.title, randomTitle)
         let expected: [MailListActionSheetItemViewModel] = [
             .starActionViewModel(),
@@ -109,116 +133,152 @@ class MailListActionSheetViewModelTests: XCTestCase {
     }
 
     func testInit_starred() {
-        sut = MailListActionSheetViewModel(labelId: Message.Location.starred.rawValue,
-                                           title: randomTitle)
-        XCTAssertEqual(sut.title, randomTitle)
-        let expected: [MailListActionSheetItemViewModel] = [
-            .starActionViewModel(),
-            .unstarActionViewModel(),
-            .markUnreadActionViewModel(),
-            .markReadActionViewModel(),
-            .labelAsActionViewModel(),
-            .removeActionViewModel(),
-            .moveToArchive(),
-            .moveToSpam(),
-            .moveToActionViewModel(),
-            .customizeToolbarActionViewModel()
-        ]
-        XCTAssertEqual(sut.items, expected)
+        for viewMode in viewModes {
+            sut = MailListActionSheetViewModel(
+                labelId: Message.Location.starred.rawValue,
+                title: randomTitle,
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
+            )
+            XCTAssertEqual(sut.title, randomTitle)
+            var expected: [MailListActionSheetItemViewModel] = [
+                .starActionViewModel(),
+                .unstarActionViewModel(),
+                .markUnreadActionViewModel(),
+                .markReadActionViewModel(),
+                .labelAsActionViewModel(),
+                .removeActionViewModel(),
+                .moveToArchive(),
+                .moveToSpam(),
+                .moveToActionViewModel(),
+                .customizeToolbarActionViewModel()
+            ]
+            XCTAssertEqual(sut.items, expected)
+        }
     }
 
     func testInit_archive() {
-        sut = MailListActionSheetViewModel(labelId: Message.Location.archive.rawValue,
-                                           title: randomTitle)
-        XCTAssertEqual(sut.title, randomTitle)
-        let expected: [MailListActionSheetItemViewModel] = [
-            .starActionViewModel(),
-            .unstarActionViewModel(),
-            .markUnreadActionViewModel(),
-            .markReadActionViewModel(),
-            .labelAsActionViewModel(),
-            .removeActionViewModel(),
-            .moveToInboxActionViewModel(),
-            .moveToSpam(),
-            .moveToActionViewModel(),
-            .customizeToolbarActionViewModel()
-        ]
-        XCTAssertEqual(sut.items, expected)
+        for viewMode in viewModes {
+            sut = MailListActionSheetViewModel(
+                labelId: Message.Location.archive.rawValue,
+                title: randomTitle,
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
+            )
+            XCTAssertEqual(sut.title, randomTitle)
+            var expected: [MailListActionSheetItemViewModel] = [
+                .starActionViewModel(),
+                .unstarActionViewModel(),
+                .markUnreadActionViewModel(),
+                .markReadActionViewModel(),
+                .labelAsActionViewModel(),
+                .removeActionViewModel(),
+                .moveToInboxActionViewModel(),
+                .moveToSpam(),
+                .moveToActionViewModel(),
+                .customizeToolbarActionViewModel()
+            ]
+            XCTAssertEqual(sut.items, expected)
+        }
     }
 
     func testInit_spam() {
-        sut = MailListActionSheetViewModel(labelId: Message.Location.spam.rawValue,
-                                           title: randomTitle)
-        XCTAssertEqual(sut.title, randomTitle)
-        let expected: [MailListActionSheetItemViewModel] = [
-            .starActionViewModel(),
-            .unstarActionViewModel(),
-            .markUnreadActionViewModel(),
-            .markReadActionViewModel(),
-            .labelAsActionViewModel(),
-            .removeActionViewModel(),
-            .notSpamActionViewModel(),
-            .deleteActionViewModel(),
-            .moveToActionViewModel(),
-            .customizeToolbarActionViewModel()
-        ]
-        XCTAssertEqual(sut.items, expected)
+        for viewMode in viewModes {
+            sut = MailListActionSheetViewModel(
+                labelId: Message.Location.spam.rawValue,
+                title: randomTitle,
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
+            )
+            XCTAssertEqual(sut.title, randomTitle)
+            var expected: [MailListActionSheetItemViewModel] = [
+                .starActionViewModel(),
+                .unstarActionViewModel(),
+                .markUnreadActionViewModel(),
+                .markReadActionViewModel(),
+                .labelAsActionViewModel(),
+                .removeActionViewModel(),
+                .notSpamActionViewModel(),
+                .deleteActionViewModel(),
+                .moveToActionViewModel(),
+                .customizeToolbarActionViewModel()
+            ]
+            XCTAssertEqual(sut.items, expected)
+        }
     }
 
     func testInit_trash() {
-        sut = MailListActionSheetViewModel(labelId: Message.Location.trash.rawValue,
-                                           title: randomTitle)
-        XCTAssertEqual(sut.title, randomTitle)
-        let expected: [MailListActionSheetItemViewModel] = [
-            .starActionViewModel(),
-            .unstarActionViewModel(),
-            .markUnreadActionViewModel(),
-            .markReadActionViewModel(),
-            .labelAsActionViewModel(),
-            .moveToInboxActionViewModel(),
-            .moveToArchive(),
-            .deleteActionViewModel(),
-            .moveToActionViewModel(),
-            .customizeToolbarActionViewModel()
-        ]
-        XCTAssertEqual(sut.items, expected)
+        for viewMode in viewModes {
+            sut = MailListActionSheetViewModel(
+                labelId: Message.Location.trash.rawValue,
+                title: randomTitle,
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
+            )
+            XCTAssertEqual(sut.title, randomTitle)
+            var expected: [MailListActionSheetItemViewModel] = [
+                .starActionViewModel(),
+                .unstarActionViewModel(),
+                .markUnreadActionViewModel(),
+                .markReadActionViewModel(),
+                .labelAsActionViewModel(),
+                .moveToInboxActionViewModel(),
+                .moveToArchive(),
+                .deleteActionViewModel(),
+                .moveToActionViewModel(),
+                .customizeToolbarActionViewModel()
+            ]
+            XCTAssertEqual(sut.items, expected)
+        }
     }
 
     func testInit_allMail() {
-        sut = MailListActionSheetViewModel(labelId: Message.Location.allmail.rawValue,
-                                           title: randomTitle)
-        XCTAssertEqual(sut.title, randomTitle)
-        let expected: [MailListActionSheetItemViewModel] = [
-            .starActionViewModel(),
-            .unstarActionViewModel(),
-            .markUnreadActionViewModel(),
-            .markReadActionViewModel(),
-            .labelAsActionViewModel(),
-            .removeActionViewModel(),
-            .moveToArchive(),
-            .moveToSpam(),
-            .moveToActionViewModel(),
-            .customizeToolbarActionViewModel()
-        ]
-        XCTAssertEqual(sut.items, expected)
+        for viewMode in viewModes {
+            sut = MailListActionSheetViewModel(
+                labelId: Message.Location.allmail.rawValue,
+                title: randomTitle,
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
+            )
+            XCTAssertEqual(sut.title, randomTitle)
+            var expected: [MailListActionSheetItemViewModel] = [
+                .starActionViewModel(),
+                .unstarActionViewModel(),
+                .markUnreadActionViewModel(),
+                .markReadActionViewModel(),
+                .labelAsActionViewModel(),
+                .removeActionViewModel(),
+                .moveToArchive(),
+                .moveToSpam(),
+                .moveToActionViewModel(),
+                .customizeToolbarActionViewModel()
+            ]
+            XCTAssertEqual(sut.items, expected)
+        }
     }
 
     func testCustomLabel() {
-        sut = MailListActionSheetViewModel(labelId: String.randomString(100),
-                                           title: randomTitle)
-        XCTAssertEqual(sut.title, randomTitle)
-        let expected: [MailListActionSheetItemViewModel] = [
-            .starActionViewModel(),
-            .unstarActionViewModel(),
-            .markUnreadActionViewModel(),
-            .markReadActionViewModel(),
-            .labelAsActionViewModel(),
-            .removeActionViewModel(),
-            .moveToArchive(),
-            .moveToSpam(),
-            .moveToActionViewModel(),
-            .customizeToolbarActionViewModel()
-        ]
-        XCTAssertEqual(sut.items, expected)
+        for viewMode in viewModes {
+            sut = MailListActionSheetViewModel(
+                labelId: String.randomString(100),
+                title: randomTitle,
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
+            )
+            XCTAssertEqual(sut.title, randomTitle)
+            var expected: [MailListActionSheetItemViewModel] = [
+                .starActionViewModel(),
+                .unstarActionViewModel(),
+                .markUnreadActionViewModel(),
+                .markReadActionViewModel(),
+                .labelAsActionViewModel(),
+                .removeActionViewModel(),
+                .moveToArchive(),
+                .moveToSpam(),
+                .moveToActionViewModel(),
+                .customizeToolbarActionViewModel()
+            ]
+            XCTAssertEqual(sut.items, expected)
+        }
     }
 }

@@ -104,8 +104,10 @@ class SingleMessageContentViewController: UIViewController {
         customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !viewModel.messageInfoProvider.hasStrippedVersion
         customView.showHideHistoryButtonContainer.showHideHistoryButton.addTarget(self, action: #selector(showHide), for: .touchUpInside)
         viewModel.messageHadChanged = { [weak self] in
-            guard let self = self else { return }
-            self.embedAttachmentViewIfNeeded()
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.embedAttachmentViewIfNeeded()
+            }
         }
 
         viewModel.startMonitorConnectionStatus { [weak self] in
@@ -278,7 +280,8 @@ class SingleMessageContentViewController: UIViewController {
         
         oldBottomConstraint?.isActive = false
         bottomConstraint.isActive = true
-        
+        viewModel.recalculateCellHeight?(false)
+
         UIView.animate(withDuration: 0.25) {
             newController.view.alpha = 1
             oldController?.view.alpha = 0
@@ -468,7 +471,7 @@ class SingleMessageContentViewController: UIViewController {
             toastPresenter = parent ?? self
         }
 
-        banner.show(at: .bottom, on: toastPresenter)
+        banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: toastPresenter)
     }
 
     @objc
@@ -556,6 +559,10 @@ extension SingleMessageContentViewController: AttachmentViewControllerDelegate {
         // So needs to use full message body or it could miss inline image in the quote
         let body = viewModel.messageInfoProvider.bodyParts?.originalBody
         navigationAction(.attachmentList(messageId: messageID, decryptedBody: body, attachments: attachments))
+    }
+
+    func invitationViewWasChanged() {
+        viewModel.recalculateCellHeight?(false)
     }
 }
 
@@ -678,5 +685,16 @@ extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
 
     func trackerProtectionSummaryChanged() {
         headerViewController?.trackerProtectionSummaryChanged()
+    }
+
+    func didUnSnooze() {
+        navigationController?.popViewController(animated: true)
+        guard let mailboxVC = navigationController?.viewControllers.first else { return }
+        let banner = PMBanner(
+            message: L11n.Snooze.unsnoozeSuccessBannerTitle,
+            style: PMBannerNewStyle.info,
+            bannerHandler: PMBanner.dismiss
+        )
+        banner.show(at: .bottom, on: mailboxVC)
     }
 }

@@ -54,6 +54,7 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
     case swipeAction
     case combineContacts
     case alternativeRouting
+    case contacts
     case browser
     case toolbar
     case applicationLogs
@@ -72,6 +73,8 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
             return LocalString._swipe_actions
         case .alternativeRouting:
             return LocalString._alternative_routing
+        case .contacts:
+            return LocalString._menu_contacts_title
         case .toolbar:
             return LocalString._toolbar_customize_general_title
         case .applicationLogs:
@@ -109,16 +112,27 @@ final class SettingsDeviceViewModel {
         return standardSections
     }()
 
-    let appSettings: [DeviceSectionItem] = [
-        .darkMode,
-        .appPIN,
-        .combineContacts,
-        .browser,
-        .alternativeRouting,
-        .swipeAction,
-        .toolbar,
-        .applicationLogs
-    ]
+    let appSettings: [DeviceSectionItem] = {
+        var appSettings: [DeviceSectionItem] = [
+            .darkMode,
+            .appPIN,
+            .combineContacts,
+            .browser,
+            .alternativeRouting,
+            .swipeAction,
+            .toolbar,
+            .applicationLogs
+        ]
+        if UserInfo.isAutoImportContactsEnabled {
+            appSettings.removeAll(where: { $0 == .combineContacts })
+            if let index = appSettings.firstIndex(of: .alternativeRouting) {
+                appSettings.insert(.contacts, at: index + 1)
+            } else {
+                PMAssertionFailure("alternative routing menu option not found")
+            }
+        }
+        return appSettings
+    }()
 
     private(set) var generalSettings: [GeneralSectionItem] = [.notification, .language]
 

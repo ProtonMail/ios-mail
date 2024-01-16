@@ -20,14 +20,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
 import Contacts
+import Foundation
 
 class AddressBookService {
-
     typealias AuthorizationCompletionBlock = (_ granted: Bool, _ error: Error?) -> Void
 
-    private lazy var store: CNContactStore = CNContactStore()
+    private lazy var store: CNContactStore = .init()
 
     func hasAccessToAddressBook() -> Bool {
         return CNContactStore.authorizationStatus(for: .contacts) == .authorized
@@ -37,7 +36,13 @@ class AddressBookService {
         store.requestAccess(for: .contacts, completionHandler: completion)
     }
 
-    func getAllContacts() -> [CNContact] {
+    func getAllDeviceContacts(completion: @escaping ([CNContact]) -> Void) {
+        DispatchQueue.global().async {
+            completion(self.getAllContacts())
+        }
+    }
+
+    private func getAllContacts() -> [CNContact] {
         let keysToFetch: [CNKeyDescriptor] = [
             CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
             CNContactEmailAddressesKey as CNKeyDescriptor,
@@ -47,19 +52,19 @@ class AddressBookService {
             CNContactThumbnailImageDataKey as CNKeyDescriptor,
             CNContactIdentifierKey as CNKeyDescriptor,
             /*
-             this key needs special entitlement since iOS 13 SDK, which should be approved by Apple stuff
-             more info: https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_contacts_notes
-             commented out until beaurocracy resolved
-            */
+                 this key needs special entitlement since iOS 13 SDK, which should be approved by Apple stuff
+                 more info: https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_contacts_notes
+                 commented out until beaurocracy resolved
+                */
             // CNContactNoteKey as CNKeyDescriptor,
-            CNContactVCardSerialization.descriptorForRequiredKeys()]
+            CNContactVCardSerialization.descriptorForRequiredKeys()
+        ]
 
         // Get all the containers
         var allContainers: [CNContainer] = []
         do {
             allContainers = try store.containers(matching: nil)
-        } catch {
-        }
+        } catch {}
 
         var results: [CNContact] = []
 
@@ -69,36 +74,38 @@ class AddressBookService {
             do {
                 let containerResults = try store.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch)
                 results.append(contentsOf: containerResults)
-            } catch {
-            }
+            } catch {}
         }
 
         return results
     }
 
-    func contacts() -> [ContactVO] {
-        var contactVOs: [ContactVO] = []
-
-        guard case let contacts = self.getAllContacts(), !contacts.isEmpty else {
-            // TODO:: refactor this later
-            // Analytics.shared.recordError(RuntimeError.cant_get_contacts.error)
-            return []
-        }
-
-        for contact in contacts {
-            var name: String = [contact.givenName, contact.middleName, contact.familyName].filter { !$0.isEmpty }.joined(separator: " ")
-            let emails = contact.emailAddresses
-            for email in emails {
-                let emailAsString = email.value as String
-                if emailAsString.isValidEmail() {
-                    let email = emailAsString
-                    if name.isEmpty {
-                        name = email
+    func fetchDeviceContactsInContactVO(completion: @escaping ([ContactVO]) -> Void) {
+        getAllDeviceContacts { deviceContacts in
+            guard !deviceContacts.isEmpty else {
+                completion([])
+                return
+            }
+            var results: [ContactVO] = []
+            for contact in deviceContacts {
+                var name: String = [
+                    contact.givenName,
+                    contact.middleName,
+                    contact.familyName
+                ].filter { !$0.isEmpty }.joined(separator: " ")
+                let emails = contact.emailAddresses
+                for email in emails {
+                    let emailAsString = email.value as String
+                    if emailAsString.isValidEmail() {
+                        let email = emailAsString
+                        if name.isEmpty {
+                            name = email
+                        }
+                        results.append(ContactVO(name: name, email: email, isProtonMailContact: false))
                     }
-                    contactVOs.append(ContactVO(name: name, email: email, isProtonMailContact: false))
                 }
             }
+            completion(results)
         }
-        return contactVOs
     }
 }

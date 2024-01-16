@@ -1,4 +1,3 @@
-
 "Privacy by default" = "Tabaḍnit s wudem amezwer";
 
 "Proton address required" = "Tettwasra tansa n Proton";
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "Awal uffir n udway mačči d ameɣtu";
 
 "Password can not be empty.\nPlease try again." = "Awal uffir ur ilaq ara ad yili d ilem.\nTtxil-k ɛreḍ tikkelt niḍen.";
-
-"Password must contain at least %@ characters." = "Awal uffir ilaq ad isɛu ma drus %@ n yisekkilen.";
 
 "Passwords do not match.\nPlease try again." = "Awalen uffiren ur mṣadan ara.\nTtxil-k ɛreḍ tikkelt niḍen";
 

@@ -1,4 +1,3 @@
-
 "Privacy by default" = "Alapértelmezett adatvédelem";
 
 "Proton address required" = "Proton e-mail cím szükséges";
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "Érvénytelen hash-elt jelszó";
 
 "Password can not be empty.\nPlease try again." = "A jelszó nem lehet üres.\nPróbálja meg újra.";
-
-"Password must contain at least %@ characters." = "A jelszónak legalább %@ karakterből kell állnia.";
 
 "Passwords do not match.\nPlease try again." = "A jelszavak nem egyeznek.\nPróbálja meg újra.";
 

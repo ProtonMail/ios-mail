@@ -24,6 +24,7 @@ import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreServices
 
+/// Get information about current organization
 public final class OrganizationsRequest: BaseApiRequest<OrganizationsResponse> {
 
     override public init(api: APIService) {
