@@ -51,12 +51,4 @@ extension UserInfo {
     static var shareImagesAsInlineByDefault: Bool {
         UIApplication.isDebugOrEnterprise
     }
-
-    static var isSnoozeEnable: Bool {
-        #if DEBUG
-        return true
-        #else
-        return false
-        #endif
-    }
 }

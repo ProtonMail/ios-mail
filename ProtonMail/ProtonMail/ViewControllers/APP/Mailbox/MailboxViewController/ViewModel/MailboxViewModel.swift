@@ -56,6 +56,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasUpdateMailbox
     & HasUserDefaults
     & HasUserIntroductionProgressProvider
+    & HasUsersManager
 
     let labelID: LabelID
     /// This field saves the label object of custom folder/label
@@ -222,7 +223,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         return .init(
             labelId: labelId.rawValue,
             title: .actionSheetTitle(selectedCount: selectedIDs.count, viewMode: locationViewMode),
-            locationViewMode: locationViewMode
+            locationViewMode: locationViewMode,
+            isSnoozeEnabled: user.isSnoozeEnabled
         )
     }
 
@@ -302,12 +304,21 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     }
 
     func shouldShowShowSnoozeSpotlight() -> Bool {
-        guard UserInfo.isSnoozeEnable, !ProcessInfo.isRunningUITests else { return false }
-        return dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .snooze, toUserWith: user.userID)
+        guard user.isSnoozeEnabled, !ProcessInfo.isRunningUITests else { return false }
+        // If one of logged in user has seen spotlight, shouldn't show it again
+        let shouldShow = dependencies.usersManager.users
+            .map {
+                dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .snooze, toUserWith: $0.userID)
+            }
+            .reduce(true) { partialResult, shouldShow in
+                partialResult && shouldShow
+            }
+
+        return shouldShow
     }
 
     func hasSeenSnoozeSpotlight() {
-        guard UserInfo.isSnoozeEnable else { return }
+        guard user.isSnoozeEnabled else { return }
         dependencies.userIntroductionProgressProvider.markSpotlight(for: .snooze, asSeen: true, byUserWith: user.userID)
     }
 

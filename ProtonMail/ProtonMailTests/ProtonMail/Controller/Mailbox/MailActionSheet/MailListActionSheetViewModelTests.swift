@@ -39,7 +39,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             sut = MailListActionSheetViewModel(
                 labelId: Message.Location.inbox.rawValue,
                 title: randomTitle,
-                locationViewMode: viewMode
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
             )
             XCTAssertEqual(sut.title, randomTitle)
             var expected: [MailListActionSheetItemViewModel] = [
@@ -66,7 +67,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             sut = MailListActionSheetViewModel(
                 labelId: Message.Location.scheduled.rawValue,
                 title: randomTitle,
-                locationViewMode: viewMode
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
             )
             XCTAssertEqual(sut.title, randomTitle)
             var expected: [MailListActionSheetItemViewModel] = [
@@ -88,7 +90,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
         sut = MailListActionSheetViewModel(
             labelId: Message.Location.draft.rawValue,
             title: randomTitle,
-            locationViewMode: .singleMessage
+            locationViewMode: .singleMessage,
+            isSnoozeEnabled: true
         )
         XCTAssertEqual(sut.title, randomTitle)
         let expected: [MailListActionSheetItemViewModel] = [
@@ -110,7 +113,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
         sut = MailListActionSheetViewModel(
             labelId: Message.Location.sent.rawValue,
             title: randomTitle,
-            locationViewMode: .singleMessage
+            locationViewMode: .singleMessage,
+            isSnoozeEnabled: true
         )
         XCTAssertEqual(sut.title, randomTitle)
         let expected: [MailListActionSheetItemViewModel] = [
@@ -133,7 +137,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             sut = MailListActionSheetViewModel(
                 labelId: Message.Location.starred.rawValue,
                 title: randomTitle,
-                locationViewMode: viewMode
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
             )
             XCTAssertEqual(sut.title, randomTitle)
             var expected: [MailListActionSheetItemViewModel] = [
@@ -157,7 +162,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             sut = MailListActionSheetViewModel(
                 labelId: Message.Location.archive.rawValue,
                 title: randomTitle,
-                locationViewMode: viewMode
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
             )
             XCTAssertEqual(sut.title, randomTitle)
             var expected: [MailListActionSheetItemViewModel] = [
@@ -181,7 +187,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             sut = MailListActionSheetViewModel(
                 labelId: Message.Location.spam.rawValue,
                 title: randomTitle,
-                locationViewMode: viewMode
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
             )
             XCTAssertEqual(sut.title, randomTitle)
             var expected: [MailListActionSheetItemViewModel] = [
@@ -205,7 +212,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             sut = MailListActionSheetViewModel(
                 labelId: Message.Location.trash.rawValue,
                 title: randomTitle,
-                locationViewMode: viewMode
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
             )
             XCTAssertEqual(sut.title, randomTitle)
             var expected: [MailListActionSheetItemViewModel] = [
@@ -229,7 +237,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             sut = MailListActionSheetViewModel(
                 labelId: Message.Location.allmail.rawValue,
                 title: randomTitle,
-                locationViewMode: viewMode
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
             )
             XCTAssertEqual(sut.title, randomTitle)
             var expected: [MailListActionSheetItemViewModel] = [
@@ -253,7 +262,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             sut = MailListActionSheetViewModel(
                 labelId: String.randomString(100),
                 title: randomTitle,
-                locationViewMode: viewMode
+                locationViewMode: viewMode,
+                isSnoozeEnabled: true
             )
             XCTAssertEqual(sut.title, randomTitle)
             var expected: [MailListActionSheetItemViewModel] = [

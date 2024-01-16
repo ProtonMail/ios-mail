@@ -32,6 +32,7 @@ final class PromotionView: UIView {
     private let planStackView = SubviewsFactory.planStackView()
 
     private var containerBottomConstraint: NSLayoutConstraint?
+    private var didClickUpgrade: Bool = false
 
     var presentPaymentUpgradeView: (() -> Void)?
     var viewWasDismissed: (() -> Void)?
@@ -207,6 +208,8 @@ extension PromotionView {
 
     @objc
     private func handleUpgrade() {
+        if didClickUpgrade { return }
+        didClickUpgrade = true
         removeFromSuperview()
         presentPaymentUpgradeView?()
     }
@@ -394,7 +397,7 @@ extension PromotionView {
             text.text = plan.title
             text.font = .adjustedFont(forTextStyle: .subheadline)
             text.adjustsFontForContentSizeCategory = true
-            text.adjustsFontSizeToFitWidth = false
+            text.adjustsFontSizeToFitWidth = true
             view.addSubview(icon)
             view.addSubview(text)
 
