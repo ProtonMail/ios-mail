@@ -39,17 +39,7 @@ struct BackendConfiguration {
         isDebugOrEnterprise: () -> Bool = { UIApplication.isDebugOrEnterprise },
         configurationCache: BackendConfigurationCacheProtocol = BackendConfigurationCache()
     ) {
-        if launchArguments.contains(ProcessInfo.LaunchArgument.uiTests.rawValue) {
-            guard let uiTestApiDomain = environmentVariables[EnvironmentVariableKeys.backendApiDomain] else {
-                fatalError("\(EnvironmentVariableKeys.backendApiDomain) environment variable not found")
-            }
-            self.environment = .custom(uiTestApiDomain)
-        } else if isDebugOrEnterprise(), let cachedEnv = configurationCache.readEnvironment() {
-            self.environment = cachedEnv
-        } else {
-            self.environment = .mailProd
-        }
-       SystemLogger.log(message: "Environment: \(environment.doh.defaultHost)", category: .appLifeCycle)
+        self.environment = .black
     }
 }
 
