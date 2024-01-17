@@ -115,7 +115,6 @@ struct DraftTestData {
     private static func dateString(from time: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE, dd MMM yyyy hh:mm:ss Z"
-        formatter.timeZone = LocaleEnvironment.timeZone
         formatter.locale = LocaleEnvironment.locale()
         return formatter.string(from: time)
     }

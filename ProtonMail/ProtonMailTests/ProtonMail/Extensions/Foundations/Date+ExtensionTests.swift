@@ -20,12 +20,6 @@ import XCTest
 
 final class Date_ExtensionTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        LocaleEnvironment.locale = { .enUS }
-        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-    }
-
     override func tearDown() {
         super.tearDown()
         LocaleEnvironment.restore()
