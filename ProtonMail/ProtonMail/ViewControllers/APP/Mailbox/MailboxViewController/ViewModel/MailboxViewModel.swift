@@ -458,7 +458,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         fetchedResultsController?.delegate = delegate
         fetchedResultsController?.managedObjectContext.perform {
             do {
-                try self.fetchedResultsController?.performFetch()
+                try ObjC.catchException {
+                    try? self.fetchedResultsController?.performFetch()
+                }
             } catch {
                 PMAssertionFailure(error)
             }
