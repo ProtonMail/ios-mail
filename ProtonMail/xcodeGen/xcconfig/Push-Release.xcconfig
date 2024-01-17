@@ -9,6 +9,5 @@
 #include "Production-common.xcconfig"
 
 CODE_SIGN_ENTITLEMENTS = Push/Push.entitlements
-INFOPLIST_FILE = Push/Info.plist
 PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.mail.push
 PROVISIONING_PROFILE_SPECIFIER = protonmail push release
