@@ -2628,7 +2628,16 @@ extension MailboxViewController {
         viewModel.diffableDataSource?.reloadSnapshot(
             snapshot: snapshot,
             forceReload: forceReload,
-            completion: completion
+            completion: { [weak self] in
+                DispatchQueue.main.async {
+                    if let view = self?.tableView.subviews
+                        .first(where: { $0 is AutoDeleteInfoHeaderView }) as? AutoDeleteInfoHeaderView {
+                        let count = self?.viewModel.rowCount(section: 0) ?? 0
+                        view.toggleEmptyButton(shouldEnable: count > 0)
+                    }
+                }
+                completion?()
+            }
         )
     }
 }
