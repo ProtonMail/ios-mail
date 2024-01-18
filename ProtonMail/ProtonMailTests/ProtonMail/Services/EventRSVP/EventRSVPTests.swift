@@ -62,6 +62,14 @@ END:VEVENT
 END:VCALENDAR
 """#
 
+    private let calendarEvent = #"""
+BEGIN:VCALENDAR
+BEGIN:VEVENT
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR
+"""#
+
     private var memberID, passphraseID: String!
 
     private var expectedEventDetails: EventDetails!
@@ -78,20 +86,7 @@ END:VCALENDAR
         memberID = UUID().uuidString
         passphraseID = UUID().uuidString
 
-        expectedEventDetails = .init(
-            title: "Team Collaboration Workshop",
-            startDate: Date(timeIntervalSince1970: .random(in: 0...(.greatestFiniteMagnitude))),
-            endDate: Date(timeIntervalSince1970: .random(in: 0...(.greatestFiniteMagnitude))),
-            calendar: .init(name: "My Calendar", iconColor: "#FFEEEE"),
-            location: .init(name: "Zoom call"),
-            participants: [
-                .init(email: "boss@example.com", isOrganizer: true, status: .attending),
-                .init(email: "participant.1@proton.me", isOrganizer: false, status: .attending),
-                .init(email: "participant.2@proton.me", isOrganizer: false, status: .attending),
-                .init(email: "participant.3@proton.me", isOrganizer: false, status: .attending)
-            ], 
-            calendarAppDeepLink: URL(string: "ProtonCalendar://events/foo")!
-        )
+        expectedEventDetails = .make()
     }
 
     override func tearDownWithError() throws {
@@ -178,13 +173,18 @@ extension EventRSVPTests {
             try makeEncryptedEvent(icsString: icsString, cryptoSessionKey: cryptoSessionKey)
         }
 
+        let calendarEvents: [EventElement] = [calendarEvent].map { icsString in
+            EventElement(author: "", data: icsString, type: [])
+        }
+
         let keyPacket = try Encryptor.encryptSession(publicKey: .init(value: publicKey), sessionKey: sessionKey).value
 
         return FullEventTransformer(
             addressID: nil,
             addressKeyPacket: setAddressKeyPacketInsteadOfSharedOne ? keyPacket : nil,
             attendees: [],
-            attendeesEvents: attendeesEvents,
+            attendeesEvents: attendeesEvents, 
+            calendarEvents: calendarEvents,
             calendarID: UUID().uuidString,
             startTime: expectedEventDetails.startDate.timeIntervalSince1970,
             endTime: expectedEventDetails.endDate.timeIntervalSince1970,

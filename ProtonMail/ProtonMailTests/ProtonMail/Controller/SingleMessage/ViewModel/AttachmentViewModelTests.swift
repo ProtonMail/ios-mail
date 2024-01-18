@@ -33,23 +33,7 @@ class AttachmentViewModelTests: XCTestCase {
 
     private let stubbedBasicEventInfo = BasicEventInfo(eventUID: "foo", recurrenceID: nil)
 
-    private let stubbedEventDetails = EventDetails(
-        title: "Team Collaboration Workshop",
-        startDate: .distantPast,
-        endDate: .distantFuture,
-        calendar: .init(
-            name: "General",
-            iconColor: "#FF0000"
-        ),
-        location: .init(
-            name: "Zoom call"
-        ),
-        participants: [
-            .init(email: "aubrey.thompson@proton.me", isOrganizer: true, status: .attending),
-            .init(email: "eric.norbert@proton.me", isOrganizer: false, status: .attending)
-        ], 
-        calendarAppDeepLink: URL(string: UUID().uuidString)!
-    )
+    private let stubbedEventDetails = EventDetails.make()
 
     override func setUp() {
         super.setUp()

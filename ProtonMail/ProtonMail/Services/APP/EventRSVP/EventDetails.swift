@@ -23,6 +23,12 @@ struct EventDetails: Equatable {
         let iconColor: String
     }
 
+    enum EventStatus: String, Equatable {
+        case cancelled
+        case confirmed
+        case tentative
+    }
+
     struct Location: Equatable {
         let name: String
     }
@@ -51,5 +57,6 @@ struct EventDetails: Equatable {
     let calendar: Calendar
     let location: Location?
     let participants: [Participant]
+    let status: EventStatus?
     let calendarAppDeepLink: URL
 }

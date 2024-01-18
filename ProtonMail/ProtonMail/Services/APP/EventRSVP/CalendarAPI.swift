@@ -77,6 +77,7 @@ struct FullEventTransformer: Decodable {
     let addressKeyPacket: String?
     let attendees: [AttendeeTransformer]
     let attendeesEvents: [EventElement]
+    let calendarEvents: [EventElement]
     let calendarID: String
     let startTime: TimeInterval
     let endTime: TimeInterval
