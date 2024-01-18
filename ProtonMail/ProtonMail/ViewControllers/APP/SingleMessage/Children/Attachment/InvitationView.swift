@@ -35,7 +35,7 @@ final class InvitationView: UIView {
     var onIntrinsicHeightChanged: (() -> Void)?
     var onOpenInCalendarTapped: ((URL) -> Void)?
 
-    private var participantListState = ParticipantListState(isExpanded: false, organizer: nil, attendees: []) {
+    private var viewModel: InvitationViewModel? {
         didSet {
             updateParticipantsList()
         }
@@ -123,94 +123,77 @@ final class InvitationView: UIView {
         detailsContainer.addArrangedSubview(participantsRow)
         detailsContainer.isHidden = false
 
-        participantListState = .init(
-            isExpanded: participantListState.isExpanded,
-            organizer: eventDetails.organizer,
-            attendees: eventDetails.attendees
-        )
+        self.viewModel = viewModel
     }
 
     private func updateParticipantsList() {
+        guard let viewModel else {
+            return
+        }
+
         participantsRow.contentStackView.clearAllViews()
 
-        if let organizer = participantListState.organizer {
-            let participantStackView = makeParticipantStackView(participant: organizer)
+        if let organizer = viewModel.organizer {
+            // use UIButton subtitle property once we drop iOS 14
+            let titleColorAttribute: [NSAttributedString.Key: UIColor] = [.foregroundColor: ColorProvider.TextNorm]
+            let subtitleColorAttribute: [NSAttributedString.Key: UIColor] = [.foregroundColor: ColorProvider.TextWeak]
+            let title = NSMutableAttributedString(string: "\(organizer.email)\n", attributes: titleColorAttribute)
+            let subtitle = NSAttributedString(string: L11n.Event.organizer, attributes: subtitleColorAttribute)
+            title.append(subtitle)
 
-            let organizerLabel = SubviewFactory.detailsLabel(
-                text: L11n.Event.organizer,
-                textColor: ColorProvider.TextWeak
-            )
-            participantStackView.addArrangedSubview(organizerLabel)
+            let organizerButton = makeParticipantButton(participant: organizer)
+            organizerButton.titleLabel?.numberOfLines = 0
+            organizerButton.setAttributedTitle(title, for: .normal)
 
-            participantsRow.contentStackView.addArrangedSubview(participantStackView)
+            participantsRow.contentStackView.addArrangedSubview(organizerButton)
         }
 
-        let visibleAttendees: [EventDetails.Participant]
-        let expansionButtonTitle: String?
-
-        if participantListState.attendees.count <= 1 {
-            visibleAttendees = participantListState.attendees
-            expansionButtonTitle = nil
-        } else if participantListState.isExpanded {
-            visibleAttendees = participantListState.attendees
-            expansionButtonTitle = L11n.Event.showLess
-        } else {
-            visibleAttendees = []
-            expansionButtonTitle = String(format: L11n.Event.participantCount, participantListState.attendees.count)
+        for attendee in viewModel.visibleAttendees {
+            let participantButton = makeParticipantButton(participant: attendee)
+            participantButton.setTitle(attendee.email, for: .normal)
+            participantsRow.contentStackView.addArrangedSubview(participantButton)
         }
 
-        for attendee in visibleAttendees {
-            let participantStackView = makeParticipantStackView(participant: attendee)
-            participantsRow.contentStackView.addArrangedSubview(participantStackView)
-        }
-
-        if let expansionButtonTitle {
+        if let expansionButtonTitle = viewModel.expansionButtonTitle {
             let action = UIAction { [weak self] _ in
                 self?.toggleParticipantListExpansion()
             }
 
-            let button = SubviewFactory.participantListExpansionButton(primaryAction: action)
+            let button = SubviewFactory.participantListButton(
+                titleColor: ColorProvider.TextAccent,
+                primaryAction: action
+            )
+
             button.setTitle(expansionButtonTitle, for: .normal)
+
             participantsRow.contentStackView.addArrangedSubview(button)
         }
 
         onIntrinsicHeightChanged?()
     }
 
-    private func makeParticipantStackView(participant: EventDetails.Participant) -> UIStackView {
-        let participantStackView = SubviewFactory.participantStackView
-        let label = SubviewFactory.detailsLabel(text: participant.email)
-        participantStackView.addArrangedSubview(label)
-
-        let tapGR = UITapGestureRecognizer(target: self, action: #selector(didTapParticipant))
-        label.isUserInteractionEnabled = true
-        label.addGestureRecognizer(tapGR)
-
-        return participantStackView
-    }
-
-    @objc
-    private func didTapParticipant(sender: UITapGestureRecognizer) {
-        guard
-            let participantAddressLabel = sender.view as? UILabel,
-            let participantAddress = participantAddressLabel.text,
-            let url = URL(string: "mailto://\(participantAddress)")
-        else {
-            return
+    private func makeParticipantButton(participant: EventDetails.Participant) -> UIButton {
+        let action = UIAction { _ in
+            if let url = URL(string: "mailto:\(participant.email)") {
+                UIApplication.shared.open(url)
+            }
         }
 
-        UIApplication.shared.open(url)
+        return SubviewFactory.participantListButton(
+            titleColor: ColorProvider.TextNorm,
+            primaryAction: action
+        )
     }
 
     private func toggleParticipantListExpansion() {
-        participantListState.isExpanded.toggle()
+        viewModel?.toggleParticipantListExpansion()
     }
 }
 
 private struct SubviewFactory {
     static var container: UIStackView {
         let view = genericStackView
-        view.spacing = 8
+        view.spacing = 16
         return view
     }
 
@@ -305,10 +288,10 @@ private struct SubviewFactory {
         genericStackView
     }
 
-    static func participantListExpansionButton(primaryAction: UIAction) -> UIButton {
+    static func participantListButton(titleColor: UIColor, primaryAction: UIAction) -> UIButton {
         let view = UIButton(primaryAction: primaryAction)
         view.contentHorizontalAlignment = .leading
-        view.setTitleColor(ColorProvider.TextAccent, for: .normal)
+        view.setTitleColor(titleColor, for: .normal)
         view.titleLabel?.font = .adjustedFont(forTextStyle: .footnote)
         return view
     }
@@ -324,7 +307,6 @@ private struct SubviewFactory {
         let row = ExpandedHeaderRowView()
         row.titleLabel.isHidden = true
         row.iconImageView.image = IconProvider[dynamicMember: icon]
-        row.contentStackView.spacing = 8
         return row
     }
 
@@ -333,12 +315,6 @@ private struct SubviewFactory {
         view.set(text: text, preferredFont: .footnote, textColor: textColor)
         return view
     }
-}
-
-private struct ParticipantListState {
-    var isExpanded: Bool
-    var organizer: EventDetails.Participant?
-    var attendees: [EventDetails.Participant]
 }
 
 private extension UIAction.Identifier {
