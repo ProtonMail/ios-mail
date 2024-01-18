@@ -101,6 +101,20 @@ END:VCALENDAR
         try super.tearDownWithError()
     }
 
+    func testBasicInfoExtraction() throws {
+        let basicICS = #"""
+BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:FOO
+END:VEVENT
+END:VCALENDAR
+"""#
+
+        let icsData = Data(basicICS.utf8)
+        let basicEventInfo = try sut.extractBasicEventInfo(icsData: icsData)
+        XCTAssertEqual(basicEventInfo, .init(eventUID: "FOO", recurrenceID: nil))
+    }
+
     func testWhenEventIsEncryptedWithCalendarKeys_decryptsSuccessfully() async throws {
         try prepareSharedKeyPacketVariant()
         let eventDetails = try await sut.fetchEventDetails(basicEventInfo: stubbedBasicEventInfo)

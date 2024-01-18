@@ -37,9 +37,6 @@
       "ProtonCoreEventsLoop": {
          "path": "LocalPackages/ProtonCoreEventsLoop"
       },
-      "ProtonCoreICS": {
-         "path": "LocalPackages/ProtonCoreICS"
-      },
       "SwiftCSSParser": {
          "url": "https://github.com/stackotter/swift-css-parser.git",
          "version": "0.1.2"

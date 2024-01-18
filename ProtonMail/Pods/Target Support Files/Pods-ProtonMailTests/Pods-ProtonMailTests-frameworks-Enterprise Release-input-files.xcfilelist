@@ -35,6 +35,7 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCoreServices.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-TroubleShooting/ProtonCoreTroubleShooting.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations/ProtonCoreUIFoundations.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCoreUtilities.framework
+${BUILT_PRODUCTS_DIR}/ProtonInboxICal/ProtonInboxICal.framework
 ${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework
 ${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework
 ${BUILT_PRODUCTS_DIR}/SideMenuSwift/SideMenuSwift.framework
