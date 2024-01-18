@@ -8,7 +8,6 @@
 #include "Production-common.xcconfig"
 
 BUNDLE_LOADER = $(TEST_HOST)
-INFOPLIST_FILE = ProtonMailTests/Supporting Files/Info.plist
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @loader_path/Frameworks
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS -DDEBUG_ENTERPRISE
 PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.$(PRODUCT_NAME:rfc1034identifier)
@@ -18,7 +17,6 @@ SWIFT_INSTALL_OBJC_HEADER = YES
 SWIFT_OBJC_BRIDGING_HEADER = ${SRCROOT}/ProtonMailTests/Supporting Files/ProtonMailTests-Bridging-Header.h
 SWIFT_PRECOMPILE_BRIDGING_HEADER = YES
 SWIFT_STRICT_CONCURRENCY = targeted
-SWIFT_VERSION = 5.0
 TEST_HOST = $(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail
 
 CODE_SIGN_STYLE = Manual

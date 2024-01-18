@@ -5,25 +5,16 @@
 // https://github.com/dempseyatgithub/BuildSettingExtractor
 //
 
-CLANG_ANALYZER_NONNULL = YES
-CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE
 CLANG_CXX_LANGUAGE_STANDARD = gnu++0x
 CLANG_ENABLE_OBJC_WEAK = YES
-CLANG_WARN_DOCUMENTATION_COMMENTS = YES
-CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE
 GCC_C_LANGUAGE_STANDARD = gnu11
-INFOPLIST_FILE = ProtonMailUITests/Info.plist
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @loader_path/Frameworks
-MTL_FAST_MATH = YES
 PRODUCT_BUNDLE_IDENTIFIER = pm.ProtonMailUITests
 PRODUCT_NAME = $(TARGET_NAME)
 PROVISIONING_PROFILE_SPECIFIER =
 SWIFT_OBJC_BRIDGING_HEADER =
 SWIFT_STRICT_CONCURRENCY = targeted
-SWIFT_VERSION = 5.0
-// do not use 16.4 because of  https://github.com/NativeScript/NativeScript/issues/10267 that's apparently causing the tests to fail
-// 17.0 might be OK though, check it once it's available
-IPHONEOS_DEPLOYMENT_TARGET = 16.2
+IPHONEOS_DEPLOYMENT_TARGET = 17.2
 TARGETED_DEVICE_FAMILY = 1,2
 TEST_TARGET_NAME = ProtonMail
 

@@ -11,6 +11,5 @@
 
 CODE_SIGN_ENTITLEMENTS = ${SRCROOT}/PushService/PushServiceDev.entitlements
 OTHER_SWIFT_FLAGS = $(inherited) -DDEBUG_ENTERPRISE -DEnterprise
-INFOPLIST_FILE = PushService/InfoDev.plist
 PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev
 PROVISIONING_PROFILE_SPECIFIER = protonmail push service Production

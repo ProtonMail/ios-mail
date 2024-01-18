@@ -11,7 +11,6 @@
 
 ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIconDev
 CODE_SIGN_ENTITLEMENTS = ${SRCROOT}/ProtonMail/Supporting Files/ProtonMailDev.entitlements
-INFOPLIST_FILE = ProtonMail/Supporting Files/InfoDev.plist
 OTHER_SWIFT_FLAGS = $(inherited) -DDEBUG_ENTERPRISE -DEnterprise
 PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail
 PROVISIONING_PROFILE_SPECIFIER = ProtonMail Distribution
