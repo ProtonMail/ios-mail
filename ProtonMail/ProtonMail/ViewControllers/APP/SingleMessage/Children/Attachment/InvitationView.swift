@@ -35,7 +35,7 @@ final class InvitationView: UIView {
     var onIntrinsicHeightChanged: (() -> Void)?
     var onOpenInCalendarTapped: ((URL) -> Void)?
 
-    private var participantListState = ParticipantListState(isExpanded: false, values: []) {
+    private var participantListState = ParticipantListState(isExpanded: false, organizer: nil, attendees: []) {
         didSet {
             updateParticipantsList()
         }
@@ -123,43 +123,44 @@ final class InvitationView: UIView {
         detailsContainer.addArrangedSubview(participantsRow)
         detailsContainer.isHidden = false
 
-        participantListState.values = eventDetails.participants
+        participantListState = .init(
+            isExpanded: participantListState.isExpanded,
+            organizer: eventDetails.organizer,
+            attendees: eventDetails.attendees
+        )
     }
 
     private func updateParticipantsList() {
         participantsRow.contentStackView.clearAllViews()
 
-        let visibleParticipants: [EventDetails.Participant]
-        let expansionButtonTitle: String?
+        if let organizer = participantListState.organizer {
+            let participantStackView = makeParticipantStackView(participant: organizer)
 
-        if participantListState.values.count <= 2 {
-            visibleParticipants = participantListState.values
-            expansionButtonTitle = nil
-        } else if participantListState.isExpanded {
-            visibleParticipants = participantListState.values
-            expansionButtonTitle = L11n.Event.showLess
-        } else {
-            visibleParticipants = Array(participantListState.values.prefix(1))
-            expansionButtonTitle = String(format: L11n.Event.participantCount, participantListState.values.count)
+            let organizerLabel = SubviewFactory.detailsLabel(
+                text: L11n.Event.organizer,
+                textColor: ColorProvider.TextWeak
+            )
+            participantStackView.addArrangedSubview(organizerLabel)
+
+            participantsRow.contentStackView.addArrangedSubview(participantStackView)
         }
 
-        for participant in visibleParticipants {
-            let participantStackView = SubviewFactory.participantStackView
-            let label = SubviewFactory.detailsLabel(text: participant.email)
-            participantStackView.addArrangedSubview(label)
+        let visibleAttendees: [EventDetails.Participant]
+        let expansionButtonTitle: String?
 
-            if participant.isOrganizer {
-                let organizerLabel = SubviewFactory.detailsLabel(
-                    text: L11n.Event.organizer,
-                    textColor: ColorProvider.TextWeak
-                )
-                participantStackView.addArrangedSubview(organizerLabel)
-            }
+        if participantListState.attendees.count <= 1 {
+            visibleAttendees = participantListState.attendees
+            expansionButtonTitle = nil
+        } else if participantListState.isExpanded {
+            visibleAttendees = participantListState.attendees
+            expansionButtonTitle = L11n.Event.showLess
+        } else {
+            visibleAttendees = []
+            expansionButtonTitle = String(format: L11n.Event.participantCount, participantListState.attendees.count)
+        }
 
-            let tapGR = UITapGestureRecognizer(target: self, action: #selector(didTapParticipant))
-            label.isUserInteractionEnabled = true
-            label.addGestureRecognizer(tapGR)
-
+        for attendee in visibleAttendees {
+            let participantStackView = makeParticipantStackView(participant: attendee)
             participantsRow.contentStackView.addArrangedSubview(participantStackView)
         }
 
@@ -174,6 +175,18 @@ final class InvitationView: UIView {
         }
 
         onIntrinsicHeightChanged?()
+    }
+
+    private func makeParticipantStackView(participant: EventDetails.Participant) -> UIStackView {
+        let participantStackView = SubviewFactory.participantStackView
+        let label = SubviewFactory.detailsLabel(text: participant.email)
+        participantStackView.addArrangedSubview(label)
+
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(didTapParticipant))
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(tapGR)
+
+        return participantStackView
     }
 
     @objc
@@ -324,7 +337,8 @@ private struct SubviewFactory {
 
 private struct ParticipantListState {
     var isExpanded: Bool
-    var values: [EventDetails.Participant]
+    var organizer: EventDetails.Participant?
+    var attendees: [EventDetails.Participant]
 }
 
 private extension UIAction.Identifier {

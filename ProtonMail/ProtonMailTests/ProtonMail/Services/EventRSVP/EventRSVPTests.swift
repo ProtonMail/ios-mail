@@ -56,8 +56,7 @@ END:VCALENDAR
     private let attendeeEvent = #"""
 BEGIN:VCALENDAR
 BEGIN:VEVENT
-ATTENDEE;CN=employee1;ROLE=REQ-PARTICIPANT;RSVP=TRUE;X-PM-TOKEN=45
- 6566bd0697f7f4539f7dcf1d39427c0582339b:mailto:employee1@example.com
+ATTENDEE;CN=employee1;PARTSTAT=ACCEPTED:mailto:employee1@example.com
 END:VEVENT
 END:VCALENDAR
 """#
