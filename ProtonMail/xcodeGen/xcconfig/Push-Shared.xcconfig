@@ -9,7 +9,6 @@ CLANG_CXX_LANGUAGE_STANDARD = gnu++14
 GCC_C_LANGUAGE_STANDARD = gnu11
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
 OTHER_SWIFT_FLAGS = -DAPP_EXTENSION
-PRODUCT_NAME = $(TARGET_NAME)
 SKIP_INSTALL = YES
 SWIFT_OBJC_BRIDGING_HEADER = ${SRCROOT}/ProtonMail/Supporting Files/ProtonMail-Bridging-Header.h
 TARGETED_DEVICE_FAMILY = 1,2
