@@ -8,7 +8,6 @@
 APPLICATION_EXTENSION_API_ONLY = YES
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
 OTHER_SWIFT_FLAGS = $(inherited) -DAPP_EXTENSION
-PRODUCT_NAME = $(TARGET_NAME)
 SKIP_INSTALL = YES
 SWIFT_OBJC_INTERFACE_HEADER_NAME = ProtonMail-Swift.h
 SWIFT_STRICT_CONCURRENCY = targeted
