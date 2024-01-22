@@ -2178,7 +2178,7 @@
 "Unselect all" = "Зняць выбар з усіх";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
-"Maximum selection reached" = "Дасягнуты максімум выбраных паведамленняў.";
+"Maximum selection reached" = "Дасягнуты максімум выбраных паведамленняў";
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Няма атрымальніка";
@@ -2250,7 +2250,7 @@
 "Later this week" = "Пазней на гэтым тыдні";
 
 /* One of snooze option shows in action sheet */
-"This weekend" = "На выхадных";
+"This weekend" = "На гэтых выхадных";
 
 /* One of snooze option shows in action sheet */
 "Next week" = "Наступны тыдзень";

@@ -73,7 +73,7 @@
 "Archive" = "보관";
 
 /* menu title */
-"Drafts" = "임시보관함";
+"Drafts" = "임시 보관함";
 
 /*
  mail location title
@@ -127,7 +127,7 @@
  menu title
  The voiceiver title of the add attachment button in the tool bar of composer
 */
-"Add attachment" = "첨부파일 추가";
+"Add attachment" = "첨부 파일 추가";
 
 /* menu title */
 "Refer a friend" = "친구에게 추천하기";
@@ -1537,7 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "피싱 신고";
 
-"Not spam (move to inbox)" = "Not spam (move to inbox)";
+"Not spam (move to inbox)" = "스팸이 아님 (받은 편지함으로 이동)";
 
 /* No comment provided by engineer. */
 "Move to" = "이동";
@@ -1699,7 +1699,7 @@
 "Sign in again to keep receiving updates" = "업데이트를 계속 받으려면 다시 로그인하세요";
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
-"No attachment found" = "첨부파일을 찾을 수 없습니다.";
+"No attachment found" = "첨부 파일을 찾을 수 없습니다.";
 
 /* Alert body for no attachment found */
 "Do you want to send your message anyway?" = "메시지를 그대로 전송하시겠습니까?";
@@ -1926,10 +1926,10 @@
 "Load" = "불러오기";
 
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "주최자";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "가리기";
 
 /* Official badge next to sender's name */
 "Official" = "공식";
@@ -1968,16 +1968,16 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "로그인된 모든 계정의 연락처를 사용하여 이메일 주소를 자동 완성하려면 이 기능을 켜십시오.";
 
 /* contacts auto import title in settings */
-"Auto-import device contacts" = "Auto-import device contacts";
+"Auto-import device contacts" = "기기 내 연락처 자동 불러오기";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "장치에서 Proton Mail 앱에 새 연락처를 자동으로 추가하려면 이 기능을 켜세요.";
 
 /* Auto import alert title */
-"Auto-import enabled" = "Auto-import enabled";
+"Auto-import enabled" = "자동 불러오기 켬";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "초기 가져오기는 시간이 좀 걸릴 수 있으며 앱이 배경 상태에 있을 때만 발생합니다.";
 
 /* Settings lock protection section */
 "Protection" = "보호";
@@ -2043,10 +2043,10 @@
 "Application logs" = "어플리케이션 로그";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Jump to next message";
+"Jump to next message" = "다음 메시지로 바로 이동";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "현재 메시지가 삭제, 보관 및 이동되었을 때 다음 메시지로 자동 이동합니다.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "예기치 못한 오류 발생, 지원 팀에 문의하십시오.\n오류: %@";
@@ -2148,7 +2148,7 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "원전송자의 메세지가 더 이상 유효하지 않습니다. 사용자의 메시지가 곧 일반 %@ 로 전송됩니다.";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
-"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+"Please retry after all attachments are uploaded." = "모든 첨부 파일이 업로드되면 다시 시도하세요.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "표시되는 이름";
@@ -2175,13 +2175,13 @@
 "Select all" = "전체 선택";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Unselect all";
+"Unselect all" = "모두 선택 취소";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
-"Maximum selection reached" = "Maximum selection reached";
+"Maximum selection reached" = "최대 선택 개수 도달";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "수신자 없음";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "PIN 코드로 액세스를 비활성화";
@@ -2226,49 +2226,49 @@
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "메일링 목록의 구독을 해지합니다. 발신자가 더 이상 이 주소로 이메일을 보내지 않도록 요청을 전송합니다.";
 
 /* Alert telling the user that we are unable to preview this attachment */
-"Unable to preview this attachment" = "Unable to preview this attachment";
+"Unable to preview this attachment" = "이 첨부 파일을 미리 보기할 수 없습니다.";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
-"Downloading attachment" = "Downloading attachment";
+"Downloading attachment" = "첨부 파일 다운로드 중";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Snoozed until %@";
+"Snoozed until %@" = "%@까지 방해 금지";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Unsnooze";
+"Unsnooze" = "방해 금지 종료";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Snooze until %@";
+"Snooze until %@" = "%@까지 방해 금지";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "Conversation unsnoozed";
+"Conversation unsnoozed" = "대화를 방해 금지 종료했습니다.";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Snooze until...";
+"Snooze until..." = "다음 기간까지 방해 금지...";
 
 /* One of snooze option shows in action sheet */
-"Later this week" = "Later this week";
+"Later this week" = "이번 주 이후";
 
 /* One of snooze option shows in action sheet */
-"This weekend" = "This weekend";
+"This weekend" = "이번 주";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "다음 주";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Please select a time in the future";
+"Please select a time in the future" = "미래의 시간을 선택해주세요.";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "항상 방해 금지 상태로 전환하시겠어요?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "업그레이드로 사용자 지정 방해 금지 모드를 잠금 해제하세요";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "최대 15개 이메일 주소/별명";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "무제한 폴더, 라벨, 필터";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
-"Add it as attachment" = "Add it as attachment";
+"Add it as attachment" = "첨부 파일로 추가";

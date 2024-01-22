@@ -13,7 +13,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%u participants</string>
+        <string>%u人の参加者</string>
       </dict>
     </dict>
     <key>You have %d new emails!</key>
@@ -27,7 +27,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>You have %d new emails!</string>
+        <string>%d 件の新着メールがあります</string>
       </dict>
     </dict>
     <key>%d email trackers blocked</key>
@@ -55,7 +55,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d selected</string>
+        <string>%d個選択済み</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>

@@ -1537,7 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "ფიშინგის შესახებ შეტყობინება";
 
-"Not spam (move to inbox)" = "Not spam (move to inbox)";
+"Not spam (move to inbox)" = "სპამი არაა (შემომავლებში გადატანა)";
 
 /* No comment provided by engineer. */
 "Move to" = "გადატანა";
@@ -1926,10 +1926,10 @@
 "Load" = "ჩატვირთვა";
 
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "ორგანიზატორი";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "ნაკლების ჩვენება";
 
 /* Official badge next to sender's name */
 "Official" = "ოფიციალური";
@@ -1968,16 +1968,16 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "ჩართეთ ეს ფუნქცია თქვენი ყველა შემოსული ანგარიშის კონტაქტების გამოყენებით ელფოსტის მისამართების ავტომატურად შესავსებად.";
 
 /* contacts auto import title in settings */
-"Auto-import device contacts" = "Auto-import device contacts";
+"Auto-import device contacts" = "მოწყობილობის კონტაქტების ავტოშემოტანა";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "ჩართეთ ეს ფუნქცია, რომ თქვენი მოწყობილობიდან ახალი კონტაქტები Proton Mail-ის აპში ავტომატურად ჩაემატოს.";
 
 /* Auto import alert title */
-"Auto-import enabled" = "Auto-import enabled";
+"Auto-import enabled" = "ავტოშემოტანა ჩართულია";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "საწყის შემოტანას საკმაო დრო შეიძლება დასჭირდეს და მხოლოდ მაშინ შეიძლება მოხდეს, როცა აპი წინა პლანზეა.";
 
 /* Settings lock protection section */
 "Protection" = "დაცვა";
@@ -2043,10 +2043,10 @@
 "Application logs" = "აპლიკაციის ჟურნალი";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Jump to next message";
+"Jump to next message" = "შემდეგ შეტყობინებაზე გადასვლა";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "ავტომატურად მაჩვენე შემდეგი შეტყობინება, როცა მიმდინარე წაიშლება, დაარქივდება ან გადატანილი იქნება.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "აღმოჩენილია მოულოდნელი შეცდომა. დაუკავშირდით მხარდაჭერის გუნდს.\nშეცდომა: %@";
@@ -2148,7 +2148,7 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "ამ შეტყობინების საწყისი გამოგზავნი მოქმედი აღარაა. შეტყობინება თქვენი ნაგულისხმები მისამართიდან გაიგზავნება %@.";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
-"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+"Please retry after all attachments are uploaded." = "თავიდან სცადეთ, როცა ყველა მიმაგრებული ფაილი აიტვირთება.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "საჩვენებელი სახელი";
@@ -2175,13 +2175,13 @@
 "Select all" = "ყველაფრის მონიშვნა";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Unselect all";
+"Unselect all" = "ყველა მონიშვნის გაუქმება";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
-"Maximum selection reached" = "Maximum selection reached";
+"Maximum selection reached" = "მიღწეულია მონიშნულების მაქს. რაოდენობა";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "მიმღების გარეშე";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "PIN-კოდის გათიშვა";
@@ -2226,49 +2226,49 @@
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "ეს დაგზავნის სიის გამოწერას გააუქმებს. გამომგზავნს გავაფრთხილებთ, ამ მისამართზე, ელფოსტა აღარ გამოაგზავნოს.";
 
 /* Alert telling the user that we are unable to preview this attachment */
-"Unable to preview this attachment" = "Unable to preview this attachment";
+"Unable to preview this attachment" = "მიმაგრებული ფაილის მინიატურის შექმნა შეუძლებელია";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
-"Downloading attachment" = "Downloading attachment";
+"Downloading attachment" = "მიმაგრებული ფაილის გადმოწერა";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Snoozed until %@";
+"Snoozed until %@" = "%@-მდე დადუმება";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Unsnooze";
+"Unsnooze" = "დროებით დადუმების გაუქმება";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Snooze until %@";
+"Snooze until %@" = "%@-მდე დადუმება";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "Conversation unsnoozed";
+"Conversation unsnoozed" = "საუბრის დადუმება გაუქმდა";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Snooze until...";
+"Snooze until..." = "დადუმება სანამდე...";
 
 /* One of snooze option shows in action sheet */
-"Later this week" = "Later this week";
+"Later this week" = "მოგვიანებით ამ კვირაში";
 
 /* One of snooze option shows in action sheet */
-"This weekend" = "This weekend";
+"This weekend" = "ამ კვირის ბოლოს";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "შემდეგი კვირა";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Please select a time in the future";
+"Please select a time in the future" = "აირჩიეთ დრო მომავალში";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "გნებავთ, დროებით დაადუმოთ ნებისმიერ დროს?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "განბლოკეთ მომხმარებლის დროებით დადუმების დროებით, როცა თქვენს სატარიფო გეგმას ასწევთ";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "15-მდე ელფოსტის მისამართი/ფსევდონიმი";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "ულიმიტო საქაღალდეები, ჭდეები და ფილტრები";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
-"Add it as attachment" = "Add it as attachment";
+"Add it as attachment" = "დამატება მიმაგრებულ ფაილად";
