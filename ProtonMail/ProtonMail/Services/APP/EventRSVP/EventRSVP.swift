@@ -17,8 +17,8 @@
 
 import ProtonCoreCrypto
 import ProtonCoreCryptoGoInterface
-import ProtonCoreICS
 import ProtonCoreServices
+import ProtonInboxICal
 
 // sourcery: mock
 protocol EventRSVP {
@@ -30,7 +30,6 @@ struct LocalEventRSVP: EventRSVP {
     typealias Dependencies = AnyObject & HasAPIService & HasUserManager
 
     private unowned let dependencies: Dependencies
-    private let parser = ICSEventParser()
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
@@ -41,13 +40,18 @@ struct LocalEventRSVP: EventRSVP {
             throw EventRSVPError.icsDataIsNotValidUTF8String
         }
 
-        let icsEvents = parser.parse(icsString: icsString)
+        let component = icalparser_parse_string(icsString)
 
-        guard let relevantICSEvent = icsEvents.first else {
-            throw EventRSVPError.noEventsInICS
+        defer {
+            icalcomponent_free(component)
         }
 
-        return BasicEventInfo(eventUID: relevantICSEvent.uid, recurrenceID: nil)
+        guard let uidComponent = icalcomponent_get_uid(component) else {
+            throw EventRSVPError.icsDataDoesNotContainUID
+        }
+
+        let uid = String(cString: uidComponent)
+        return BasicEventInfo(eventUID: uid, recurrenceID: nil)
     }
 
     func fetchEventDetails(basicEventInfo: BasicEventInfo) async throws -> EventDetails {
@@ -216,9 +220,9 @@ struct LocalEventRSVP: EventRSVP {
 enum EventRSVPError: Error {
     case encryptedDataFoundButSessionKeyMissing
     case encryptedDataIsNotValidBase64
+    case icsDataDoesNotContainUID
     case icsDataIsNotValidUTF8String
     case keyPacketIsNotValidBase64
-    case noEventsInICS
     case noEventsReturnedFromAPI
     case noMembersInBootstrapResponse
     case noPassphraseForGivenMember
