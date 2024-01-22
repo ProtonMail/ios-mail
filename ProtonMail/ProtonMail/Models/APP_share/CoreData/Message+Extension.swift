@@ -202,9 +202,12 @@ extension Message {
         }
 
         // This is the basic labels for draft
-        let basic = [Message.Location.draft.rawValue,
-                     Message.Location.allmail.rawValue,
-                     Message.HiddenLocation.draft.rawValue]
+        let basic = [
+            Message.Location.draft.rawValue,
+            Message.Location.allmail.rawValue,
+            Message.HiddenLocation.draft.rawValue,
+            Message.Location.almostAllMail.rawValue
+        ]
         for label in labels {
             let id = label.labelID
             if basic.contains(id) { continue }
