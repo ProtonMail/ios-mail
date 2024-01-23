@@ -29,6 +29,31 @@ struct InvitationViewModel {
         isStatusViewHidden ? ColorProvider.TextNorm : ColorProvider.TextWeak
     }
 
+    let organizer: EventDetails.Participant?
+
+    var visibleAttendees: [EventDetails.Participant] {
+        switch participantListState {
+        case .collapsed:
+            return []
+        case .expanded, .allAttendeesCanBeShownWithoutCollapsing:
+            return allAttendees
+        }
+    }
+
+    var expansionButtonTitle: String? {
+        switch participantListState {
+        case .collapsed:
+            return String(format: L11n.Event.participantCount, allAttendees.count)
+        case .expanded:
+            return L11n.Event.showLess
+        case .allAttendeesCanBeShownWithoutCollapsing:
+            return nil
+        }
+    }
+
+    private let allAttendees: [EventDetails.Participant]
+    private var participantListState: ParticipantListState
+
     private static let eventDurationFormatter: DateIntervalFormatter = {
         let dateFormatter = DateIntervalFormatter()
         dateFormatter.dateStyle = .medium
@@ -46,5 +71,31 @@ struct InvitationViewModel {
         } else {
             statusString = nil
         }
+
+        organizer = eventDetails.organizer
+        allAttendees = eventDetails.attendees
+
+        if eventDetails.attendees.count <= 1 {
+            participantListState = .allAttendeesCanBeShownWithoutCollapsing
+        } else {
+            participantListState = .collapsed
+        }
     }
+
+    mutating func toggleParticipantListExpansion() {
+        switch participantListState {
+        case .collapsed:
+            participantListState = .expanded
+        case .expanded:
+            participantListState = .collapsed
+        case .allAttendeesCanBeShownWithoutCollapsing:
+            assertionFailure("It shouldn't be possible to call this")
+        }
+    }
+}
+
+private enum ParticipantListState {
+    case collapsed
+    case expanded
+    case allAttendeesCanBeShownWithoutCollapsing
 }

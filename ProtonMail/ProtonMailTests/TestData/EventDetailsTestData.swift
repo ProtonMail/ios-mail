@@ -21,6 +21,11 @@ extension EventDetails {
     static func make(
         startDate: Date = .init(timeIntervalSince1970: .random(in: 0...(.greatestFiniteMagnitude))),
         endDate: Date = .init(timeIntervalSince1970: .random(in: 0...(.greatestFiniteMagnitude))),
+        attendees: [Participant] = [
+            .init(email: "participant.1@proton.me", status: .unknown),
+            .init(email: "participant.2@proton.me", status: .unknown),
+            .init(email: "participant.3@proton.me", status: .unknown),
+        ],
         status: EventStatus = .confirmed
     ) -> Self {
         .init(
@@ -30,11 +35,7 @@ extension EventDetails {
             calendar: .init(name: "My Calendar", iconColor: "#FFEEEE"),
             location: .init(name: "Zoom call"),
             organizer: .init(email: "boss@example.com", status: .unknown),
-            attendees: [
-                .init(email: "participant.1@proton.me", status: .unknown),
-                .init(email: "participant.2@proton.me", status: .unknown),
-                .init(email: "participant.3@proton.me", status: .unknown),
-            ],
+            attendees: attendees,
             status: status,
             calendarAppDeepLink: URL(string: "ProtonCalendar://events/foo")!
         )
