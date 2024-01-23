@@ -88,8 +88,8 @@ final class LocalConversationUpdater {
         labelToRemove: LabelID?,
         labelToAdd: LabelID?,
         isFolder: Bool
-    ) throws {
-        try dependencies.contextProvider.write { context in
+    ) async throws {
+        try await dependencies.contextProvider.writeAsync { context in
             for conversationID in conversationIDs {
                 guard let conversation = Conversation
                     .conversationForConversationID(conversationID.rawValue, inManagedObjectContext: context) else {
