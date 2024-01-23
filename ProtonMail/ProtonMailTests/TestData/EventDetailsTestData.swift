@@ -29,11 +29,11 @@ extension EventDetails {
             endDate: endDate,
             calendar: .init(name: "My Calendar", iconColor: "#FFEEEE"),
             location: .init(name: "Zoom call"),
-            participants: [
-                .init(email: "boss@example.com", isOrganizer: true, status: .attending),
-                .init(email: "participant.1@proton.me", isOrganizer: false, status: .attending),
-                .init(email: "participant.2@proton.me", isOrganizer: false, status: .attending),
-                .init(email: "participant.3@proton.me", isOrganizer: false, status: .attending)
+            organizer: .init(email: "boss@example.com", status: .unknown),
+            attendees: [
+                .init(email: "participant.1@proton.me", status: .unknown),
+                .init(email: "participant.2@proton.me", status: .unknown),
+                .init(email: "participant.3@proton.me", status: .unknown),
             ],
             status: status,
             calendarAppDeepLink: URL(string: "ProtonCalendar://events/foo")!

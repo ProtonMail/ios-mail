@@ -79,18 +79,16 @@ struct LocalEventRSVP: EventRSVP {
 
         let summary = combinedICS.preg_match(resultInGroup: 1, #"SUMMARY:([^\n]+)"#) ?? "missing summary"
 
-        var participants: [EventDetails.Participant] = []
+        let organizer: EventDetails.Participant?
 
         if let organizerEmail = combinedICS.preg_match(resultInGroup: 1, #"ORGANIZER;CN=[^:]+:mailto:([^\n]+)"#) {
-            participants.append(.init(email: organizerEmail, isOrganizer: true, status: .attending))
-        } else if let organizerName = combinedICS.preg_match(resultInGroup: 1, #"ORGANIZER;CN=([^:]+)"#) {
-            participants.append(.init(email: organizerName, isOrganizer: true, status: .attending))
+            organizer = .init(email: organizerEmail, status: .unknown)
         } else {
-            participants.append(.init(email: "aubrey.thompson@proton.me", isOrganizer: true, status: .attending))
+            organizer = nil
         }
 
-        participants += (1...3).map {
-            .init(email: "participant.\($0)@proton.me", isOrganizer: false, status: .attending)
+        let attendees: [EventDetails.Participant] = (1...3).map {
+            .init(email: "participant.\($0)@proton.me", status: .unknown)
         }
 
         let status: EventDetails.EventStatus?
@@ -112,7 +110,8 @@ struct LocalEventRSVP: EventRSVP {
             location: .init(
                 name: "Zoom call"
             ),
-            participants: participants,
+            organizer: organizer,
+            attendees: attendees,
             status: status,
             calendarAppDeepLink: .ProtonCalendar.showEvent(eventUID: basicEventInfo.eventUID)
         )
