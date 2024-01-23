@@ -221,11 +221,7 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
         var style = document.createElement('style');
         style.type = 'text/css';
         style.appendChild(document.createTextNode(`\(css)`));
-
-        let wrapper = document.createElement('div');
-        wrapper.innerHTML = messageHead;
-        wrapper.appendChild(style);
-        Array.from(wrapper.children).forEach(item => document.getElementsByTagName('head')[0].appendChild(item))
+        document.getElementsByTagName('head')[0].appendChild(style);
 
         var metaWidth = document.createElement('meta');
         metaWidth.name = "viewport";
