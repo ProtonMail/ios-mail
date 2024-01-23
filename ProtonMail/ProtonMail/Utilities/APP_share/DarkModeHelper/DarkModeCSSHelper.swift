@@ -304,6 +304,8 @@ struct CSSMagic {
             64516650276,
             102546378584,
             337493535936,
+            150652609999,
+            95736483888,
             4756866629 // for test
         ]
         // sender.hash or sender.hashValue says the value could change
@@ -464,7 +466,9 @@ extension CSSMagic {
             }
             let anchor = CSSMagic.getCSSAnchor(of: node)
             guard anchor.isEmpty == false else { continue }
-            darkModeCSS[anchor] = styleCSS
+            var handledCSS = darkModeCSS[anchor] ?? []
+            handledCSS.append(contentsOf: styleCSS)
+            darkModeCSS[anchor] = handledCSS
         }
         return darkModeCSS
     }
