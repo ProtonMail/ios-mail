@@ -23,7 +23,10 @@
 import UIKit
 
 final class ShareUnlockCoordinator {
-    typealias Dependencies = ShareUnlockViewController.Dependencies & HasPinFailedCountCache  & HasPinCodeVerifier
+    typealias Dependencies = ShareUnlockViewController.Dependencies
+    & ShareUnlockPinCodeModelImpl.Dependencies
+    & HasUsersManager
+    & HasUnlockService
 
     private var viewController: ShareUnlockViewController?
     private var nextCoordinator: SharePinUnlockCoordinator?
@@ -77,6 +80,7 @@ final class ShareUnlockCoordinator {
         navigationController.setViewControllers([composer], animated: true)
     }
 
+    @MainActor
     func go(dest: Destination) {
         switch dest {
         case .pin:
@@ -88,6 +92,18 @@ final class ShareUnlockCoordinator {
 }
 
 extension ShareUnlockCoordinator: SharePinUnlockViewControllerDelegate {
+
+    func onUnlockChallengeSuccess() {
+        Task {
+            let appAccess = await dependencies.unlockService.start()
+            guard appAccess == .accessGranted else {
+                SystemLogger.log(message: "Access denied after successful unlock", category: .appLock, isError: true)
+                return
+            }
+            await go(dest: .composer)
+        }
+    }
+
     func cancel() {
         guard let bundleID = Bundle.main.bundleIdentifier else {
             fatalError("Should have value")
@@ -97,14 +113,5 @@ extension ShareUnlockCoordinator: SharePinUnlockViewControllerDelegate {
             let error = NSError(domain: bundleID, code: 0)
             self?.viewController?.extensionContext?.cancelRequest(withError: error)
         }.cauterize()
-    }
-
-    func next() {
-        dependencies.unlockManager.unlockIfRememberedCredentials(
-            requestMailboxPassword: { },
-            unlocked: {
-                self.go(dest: .composer)
-            }
-        )
     }
 }

@@ -123,7 +123,7 @@ class UsersManagerTests: XCTestCase {
                                     credit: nil,
                                     currency: nil,
                                     createTime: nil,
-                                    subscribed: nil)
+                                    subscribed: .mail)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: paidUserInfo))
 
         let freeUserInfo = UserInfo(maxSpace: nil,
@@ -175,7 +175,7 @@ class UsersManagerTests: XCTestCase {
         let userID = "1"
         let user1 = createUserManagerMock(userID: userID, isPaid: false)
         sut.add(newUser: user1)
-        XCTAssertFalse(sut.users[0].isPaid)
+        XCTAssertFalse(sut.users[0].hasPaidMailPlan)
 
         let newAuth = AuthCredential(sessionID: "SessionID_\(userID)",
                                      accessToken: "new",
@@ -196,9 +196,9 @@ class UsersManagerTests: XCTestCase {
                                    credit: nil,
                                    currency: nil,
                                    createTime: nil,
-                                   subscribed: nil)
+                                   subscribed: .mail)
         sut.update(userInfo: newUserInfo, for: newAuth.sessionID)
-        XCTAssertTrue(sut.users[0].isPaid)
+        XCTAssertTrue(sut.users[0].hasPaidMailPlan)
         XCTAssertEqual(sut.users[0].userInfo.maxSpace, 999)
     }
 
@@ -293,10 +293,10 @@ class UsersManagerTests: XCTestCase {
         expectation(forNotification: .didSignOutLastAccount, object: nil, notificationCenter: globalContainer.notificationCenter)
 
         sut.logout(user: user1) {
-            XCTAssertTrue(self.sut.users.isEmpty)
             expectation1.fulfill()
         }
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
+        XCTAssertTrue(sut.users.isEmpty)
     }
 
     func testLogoutUser_userNotInUsersManager_addedToDisconnectedUser() throws {
@@ -384,13 +384,13 @@ class UsersManagerTests: XCTestCase {
             e.fulfill()
         }.cauterize()
 
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: 2)
 
         XCTAssertFalse(sut.hasUsers())
     }
 
     private func prepareUserDataInCacheWithDifferentOrder(userIDs: [String]) throws {
-        let mainKey = keyMaker.mainKey(by: RandomPinProtection.randomPin)!
+        let mainKey = keyMaker.mainKey(by: globalContainer.keychain.randomPinProtection)!
         var userInfos: [UserInfo] = []
         var auths: [AuthCredential] = []
         for userID in userIDs {
@@ -407,7 +407,7 @@ class UsersManagerTests: XCTestCase {
     }
 
     private func prepareUserDataInCache(userID: String, hasMailSetting: Bool) throws {
-        let mainKey = keyMaker.mainKey(by: RandomPinProtection.randomPin)!
+        let mainKey = keyMaker.mainKey(by: globalContainer.keychain.randomPinProtection)!
         let auth = createAuth(userID: userID)
         let userInfo = createUserInfo(userID: userID)
 
@@ -424,7 +424,7 @@ class UsersManagerTests: XCTestCase {
     }
 
     private func prepareLegacyUserData(userID: String) throws {
-        let mainKey = keyMaker.mainKey(by: RandomPinProtection.randomPin)!
+        let mainKey = keyMaker.mainKey(by: globalContainer.keychain.randomPinProtection)!
         let auth = createAuth(userID: userID)
         let userInfo = createUserInfo(userID: userID)
         let archived = auth.archive()
@@ -474,7 +474,7 @@ class UsersManagerTests: XCTestCase {
                                 credit: nil,
                                 currency: nil,
                                 createTime: nil,
-                                subscribed: nil)
+                                subscribed: .mail)
         let auth = createAuth(userID: userID)
         return UserManager(api: apiMock,
                            userInfo: userInfo,

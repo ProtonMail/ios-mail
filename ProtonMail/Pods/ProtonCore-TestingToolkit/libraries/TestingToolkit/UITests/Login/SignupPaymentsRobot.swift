@@ -63,7 +63,7 @@ public enum SignupPaymentsPlan: String {
     case pass2022 = "Pass_Plus"
     case unlimited = "Proton_Unlimited"
     case none = ""
-    
+
     var getDescription: [String] {
         switch self {
         case .free:
@@ -118,7 +118,7 @@ public enum SignupPaymentsPlan: String {
             "Contact an administrator to make changes to your Proton subscription."]
         }
     }
-    
+
     var getDescriptionV5: [String] {
         switch self {
         case .free:
@@ -176,9 +176,9 @@ public enum SignupPaymentsPlan: String {
 }
 
 public final class SignupPaymentsRobot: CoreElements {
-    
+
     public let verify = Verify()
-    
+
     public final class Verify: CoreElements {
         @discardableResult
         public func paymentsUIScreenIsShown() -> SignupPaymentsRobot {
@@ -186,55 +186,55 @@ public final class SignupPaymentsRobot: CoreElements {
             return SignupPaymentsRobot()
         }
     }
-    
+
     public func selectPlanCell(plan: SignupPaymentsPlan) -> SignupPaymentsRobot {
         cell(planCellIdentifier(name: plan.rawValue)).waitUntilExists().tap()
         return self
     }
-    
+
     public func selectCurrentPlanCell(plan: SignupPaymentsPlan) -> SignupPaymentsRobot {
         cell(currentPlanCellIdentifier(name: plan.rawValue)).waitUntilExists().tap()
         return self
     }
-    
+
     public func freePlanV3ButtonTap(wait: TimeInterval = 10.0) -> SignupHumanVerificationV3Robot.HV3OrCompletionRobot {
         button(selectPlanButtonIdentifier(name: SignupPaymentsPlan.free.rawValue)).tap()
         return SignupHumanVerificationV3Robot().verify.isHumanVerificationRequired(wait: wait)
     }
-    
+
     public func freePlanButtonTap() -> SignupHumanVerificationRobot.HVOrSummaryRobot {
         button(selectPlanButtonIdentifier(name: SignupPaymentsPlan.free.rawValue)).tap()
         return SignupHumanVerificationRobot().verify.isHumanVerificationRequired()
     }
-    
+
     public func mailFreePlanButtonTap() -> SignupHumanVerificationRobot.HVOrSummaryRobot {
         button(selectPlanButtonIdentifier(name: SignupPaymentsPlan.mailFree.rawValue)).tap()
         return SignupHumanVerificationRobot().verify.isHumanVerificationRequired()
     }
-    
+
     public func planButtonDoesNotExist(plan: SignupPaymentsPlan) -> SignupPaymentsRobot {
         button(selectPlanButtonIdentifier(name: plan.rawValue)).checkDoesNotExist()
         return self
     }
-    
+
     public func planButtonSelected(plan: SignupPaymentsPlan) -> SignupPaymentsRobot {
         button(selectPlanButtonIdentifier(name: plan.rawValue)).checkExists().checkSelected()
         return self
     }
-    
+
     @discardableResult
     public func verifyNumberOfCells(number: Int) -> SignupPaymentsRobot {
         let count = XCUIApplication().tables.count
         XCTAssertEqual(count, number)
         return self
     }
-    
+
     @discardableResult
     func verifyStaticText(_ name: String) -> Self {
         staticText(name).waitUntilExists().checkExists()
         return self
     }
-    
+
     @discardableResult
     public func verifyNumberOfPlansToPurchase(number: Int) -> SignupPaymentsRobot {
         table("PaymentsUIViewController.tableView").waitUntilExists().checkExists()
@@ -242,7 +242,7 @@ public final class SignupPaymentsRobot: CoreElements {
         XCTAssertEqual(count, number)
         return self
     }
-    
+
     @discardableResult
     public func verifyTableCellStaticText(cellName: String, name: String) -> SignupPaymentsRobot {
         table("PaymentsUIViewController.tableView").waitUntilExists().checkExists()
@@ -250,7 +250,7 @@ public final class SignupPaymentsRobot: CoreElements {
         XCTAssertTrue(staticTexts[name].exists)
         return self
     }
-    
+
     @discardableResult
     public func verifyPlan(plan: SignupPaymentsPlan) -> SignupPaymentsRobot {
         plan.getDescription.forEach {
@@ -272,41 +272,41 @@ public final class SignupPaymentsRobot: CoreElements {
         }
         return self
     }
-    
+
     public func expandPlan(plan: SignupPaymentsPlan) -> SignupPaymentsRobot {
         button(expandPlanButtonIdentifier(name: plan.rawValue)).waitUntilExists().tap()
         return self
     }
-    
+
     @discardableResult
     public func verifyExpirationTime() -> SignupPaymentsRobot {
         let expirationString = String(format: PUITranslations.plan_details_renew_expired.l10n, getEndDateString)
         staticText(expirationString).checkExists()
         return self
     }
-    
+
     @discardableResult
     public func verifyRenewTime() -> SignupPaymentsRobot {
         let expirationString = String(format: PUITranslations.plan_details_renew_auto_expired.l10n, getEndDateString)
         staticText(expirationString).checkExists()
         return self
     }
-    
+
     public func wait(timeInterval: TimeInterval) -> SignupPaymentsRobot {
         Wait().wait(timeInterval: timeInterval)
         return self
     }
-    
+
     public func planButtonTap(plan: SignupPaymentsPlan) -> PaymentsUISystemRobot {
         button(selectPlanButtonIdentifier(name: plan.rawValue)).tap()
         return PaymentsUISystemRobot()
     }
-    
+
     public func extendSubscriptionTap() -> PaymentsUISystemRobot {
         button(extendSubscriptionText).waitUntilExists().tap()
         return PaymentsUISystemRobot()
     }
-    
+
     public func extendSubscriptionSelected() -> SignupPaymentsRobot {
         button(extendSubscriptionText).checkExists().checkSelected()
         return SignupPaymentsRobot()
@@ -319,11 +319,11 @@ public final class SignupPaymentsRobot: CoreElements {
                 return SignupHumanVerificationRobot().verify.isHumanVerificationRequired()
             }
             // Continue verification only if plan is not purchased yet
-            
+
             confirmation(password: password)
             return SignupHumanVerificationRobot().verify.isHumanVerificationRequired()
         }
-        
+
         public func verifyPayment<T: CoreElements>(robot _: T.Type, password: String?) -> T {
             Wait().wait(timeInterval: 3)
             confirmation(password: password)
@@ -342,35 +342,35 @@ public final class SignupPaymentsRobot: CoreElements {
             #endif
             systemButtonTap(name: okButtonName)
         }
-        
+
         private func isButtonExist(name: String) -> Bool {
             let button = XCUIApplication().buttons[name]
             Wait(time: 10).forElement(button)
             return button.exists
         }
-        
+
         private func systemButtonTap(name: String) {
             let button = springboard.buttons[name]
             Wait(time: 10).forElement(button)
             button.tap()
         }
-        
+
         private func systemEditField(name: String, text: String) {
             let textField = springboard.secureTextFields[name]
             Wait().forElement(textField)
             textField.typeText(text)
         }
-        
+
         private var springboard: XCUIApplication {
             return XCUIApplication(bundleIdentifier: "com.apple.springboard")
         }
     }
-    
+
     public func activateApp<T: CoreElements>(app: XCUIApplication, robot _: T.Type) -> T {
         app.activate()
         return T()
     }
-    
+
     public func terminateApp<T: CoreElements>(app: XCUIApplication, robot _: T.Type) -> T {
         app.terminate()
         return T()

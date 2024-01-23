@@ -22,13 +22,15 @@ final class SenderImageCache {
         let rawValue: String
     }
 
+    typealias Dependencies = EncryptedCache.Dependencies
+
     private let encryptedCache: EncryptedCache
 
-    init(coreKeyMaker: KeyMakerProtocol) {
+    init(dependencies: Dependencies) {
         encryptedCache = .init(
             maxDiskSize: Constants.SenderImage.cacheDiskSizeLimitInBytes,
             subdirectory: "me.proton.senderImage",
-            coreKeyMaker: coreKeyMaker
+            dependencies: dependencies
         )
     }
 

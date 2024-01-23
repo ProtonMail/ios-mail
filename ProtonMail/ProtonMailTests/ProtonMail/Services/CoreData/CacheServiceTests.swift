@@ -24,6 +24,7 @@ import XCTest
 import Groot
 
 class CacheServiceTest: XCTestCase {
+    private var globalContainer: GlobalContainer!
     var testMessage: Message!
     var lastUpdatedStore: LastUpdatedStore!
     var sut: CacheService!
@@ -46,7 +47,7 @@ class CacheServiceTest: XCTestCase {
 
         lastUpdatedStore = LastUpdatedStore(contextProvider: contextProviderMock)
 
-        let globalContainer = GlobalContainer()
+        globalContainer = GlobalContainer()
         globalContainer.contextProviderFactory.register { self.contextProviderMock }
         globalContainer.lastUpdatedStoreFactory.register { self.lastUpdatedStore }
 
@@ -56,6 +57,7 @@ class CacheServiceTest: XCTestCase {
     override func tearDown() {
         testMessage = nil
         sut = nil
+        globalContainer = nil
         testContext = nil
         lastUpdatedStore = nil
         contextProviderMock = nil
@@ -70,12 +72,12 @@ class CacheServiceTest: XCTestCase {
     func testDeleteMessage() {
         self.testMessage.unRead = true
         loadTestDataOfUnreadCount(defaultUnreadCount: 1, labelID: Message.Location.inbox.labelID)
-        
+
         let msgID = self.testMessage.messageID
         XCTAssertNotNil(Message.messageForMessageID(msgID, inManagedObjectContext: self.testContext))
-        
-        XCTAssertTrue(sut.delete(message: MessageEntity(self.testMessage), label: Message.Location.inbox.labelID))
-        
+
+        XCTAssertTrue(sut.delete(messages: [MessageEntity(self.testMessage)], label: Message.Location.inbox.labelID))
+
         XCTAssertNil(Message.messageForMessageID(msgID, inManagedObjectContext: self.testContext))
 
         let unreadCountOfInboxAfterDelete: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: sut.userID, type: .singleMessage)
@@ -148,19 +150,6 @@ class CacheServiceTest: XCTestCase {
         XCTAssertTrue(sut.label(messages: [MessageEntity(self.testMessage)], label: labelIDToAdd, apply: false))
         let newLabels: [String] = self.testMessage.getLabelIDs()
         XCTAssertFalse(newLabels.contains(labelIDToAdd.rawValue))
-    }
-
-    func testCleanReviewItems() {
-        let msgID = self.testMessage.messageID
-        self.testMessage.messageType = NSNumber(value: 1)
-
-        let expect = expectation(description: "CleanReviewItems")
-        sut.cleanReviewItems(completion: {
-            expect.fulfill()
-        })
-        wait(for: [expect], timeout: 1)
-
-        XCTAssertNil(Message.messageForMessageID(msgID, inManagedObjectContext: testContext))
     }
 }
 

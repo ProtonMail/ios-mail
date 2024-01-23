@@ -32,10 +32,11 @@ protocol SettingsAccountCoordinatorProtocol: AnyObject {
 }
 
 class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
-    typealias Dependencies = HasKeyMakerProtocol
+    typealias Dependencies = BlockedSendersViewModel.Dependencies
+    & HasKeychain
+    & HasKeyMakerProtocol
     & HasPaymentsUIFactory
     & HasUsersManager
-    & BlockedSendersViewModel.Dependencies
 
     private let viewModel: SettingsAccountViewModel
     private let users: UsersManager
@@ -71,7 +72,12 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         self.navigationController = navigationController
         self.dependencies = dependencies
         users = dependencies.usersManager
-        viewModel = SettingsAccountViewModelImpl(user: users.firstUser!)
+        let firstUser = users.firstUser!
+        let isMessageSwipeNavigationEnabled = false
+        viewModel = SettingsAccountViewModelImpl(
+            user: firstUser,
+            isMessageSwipeNavigationEnabled: isMessageSwipeNavigationEnabled
+        )
     }
 
     func start(animated: Bool = false) {
@@ -112,7 +118,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         case .nextMsgAfterMove:
             openNextMessageAfterMove()
         case .autoDeleteSpamTrash:
-            if user.isPaid {
+            if user.hasPaidMailPlan {
                 openAutoDeleteSettings()
             } else {
                 presentAutoDeleteUpsellView()
@@ -149,7 +155,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     }
 
     private func openPrivacy() {
-        let viewModel = PrivacySettingViewModel(user: user, metaStrippingProvider: userCachedStatus)
+        let viewModel = PrivacySettingViewModel(user: user, keychain: dependencies.keychain)
         let viewController = SwitchToggleViewController(viewModel: viewModel)
         navigationController?.pushViewController(viewController, animated: true)
     }

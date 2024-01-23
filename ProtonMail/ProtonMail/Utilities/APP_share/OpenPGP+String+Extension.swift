@@ -27,11 +27,19 @@ import ProtonCoreDataModel
 
 extension String {
     func encrypt(withKey key: Key, userKeys: [ArmoredKey], mailboxPassphrase: Passphrase) throws -> String {
-        let armoredMessage: ArmoredMessage = try encrypt(withKey: key, userKeys: userKeys, mailboxPassphrase: mailboxPassphrase)
+        let armoredMessage: ArmoredMessage = try encrypt(
+            withKey: key,
+            userKeys: userKeys,
+            mailboxPassphrase: mailboxPassphrase
+        )
         return armoredMessage.value
     }
 
-    private func encrypt(withKey key: Key, userKeys: [ArmoredKey], mailboxPassphrase: Passphrase) throws -> ArmoredMessage {
+    private func encrypt(
+        withKey key: Key,
+        userKeys: [ArmoredKey],
+        mailboxPassphrase: Passphrase
+    ) throws -> ArmoredMessage {
         let addressKeyPassphrase = try key.passphrase(userPrivateKeys: userKeys, mailboxPassphrase: mailboxPassphrase)
 
         let signerKey = SigningKey(

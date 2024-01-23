@@ -27,15 +27,15 @@ public struct NoneProtection: ProtectionStrategy {
     }
 
     public let keychain: Keychain
-    
+
     public init(keychain: Keychain) {
         self.keychain = keychain
     }
-    
+
     public func lock(value: MainKey) throws {
         NoneProtection.saveCyphertext(Data(value), in: self.keychain)
     }
-    
+
     public func unlock(cypherBits: Data) throws -> MainKey {
         return cypherBits.bytes
     }

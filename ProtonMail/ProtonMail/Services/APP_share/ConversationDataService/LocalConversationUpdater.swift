@@ -24,9 +24,9 @@ import CoreData
 import Foundation
 
 final class LocalConversationUpdater {
-    typealias Dependencies = HasCoreDataContextProviderProtocol & HasPushUpdater
+    typealias Dependencies = AnyObject & HasCoreDataContextProviderProtocol & HasPushUpdater
 
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
     private let userID: String
 
     init(userID: String, dependencies: Dependencies) {
@@ -87,10 +87,9 @@ final class LocalConversationUpdater {
         conversationIDs: [ConversationID],
         labelToRemove: LabelID?,
         labelToAdd: LabelID?,
-        isFolder: Bool,
-        completion: ((Result<Void, Error>) -> Void)?
-    ) {
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+        isFolder: Bool
+    ) throws {
+        try dependencies.contextProvider.write { context in
             for conversationID in conversationIDs {
                 guard let conversation = Conversation
                     .conversationForConversationID(conversationID.rawValue, inManagedObjectContext: context) else {
@@ -146,7 +145,9 @@ final class LocalConversationUpdater {
                     // When we trash the conversation, make all unread messages as read.
                     if added == Message.Location.trash.labelID {
                         messages?.forEach { $0.unRead = false }
-                        self.dependencies.pushUpdater.remove(notificationIdentifiers: messages?.compactMap { $0.notificationId })
+                        self.dependencies.pushUpdater.remove(
+                            notificationIdentifiers: messages?.compactMap(\.notificationId)
+                        )
                         conversation.labels
                             .compactMap { $0 as? ContextLabel }
                             .filter { $0.unreadCount != NSNumber(value: 0) }
@@ -169,7 +170,6 @@ final class LocalConversationUpdater {
                     }
                 }
             }
-            self.save(context: context, completion: completion)
         }
     }
 

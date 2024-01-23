@@ -23,7 +23,7 @@
 
 import UIKit
 import ProtonCoreDataModel
-import ProtonCoreFeatureSwitch
+import ProtonCoreFeatureFlags
 import ProtonCoreServices
 import ProtonCorePayments
 import ProtonCoreLogin
@@ -38,7 +38,7 @@ class PaymentsManager {
     private(set) var selectedPlan: InAppPurchasePlan?
     private var loginData: LoginData?
     private weak var existingDelegate: StoreKitManagerDelegate?
-    
+
     init(apiService: APIService,
          iaps: ListOfIAPIdentifiers,
          shownPlanNames: ListOfShownPlanNames,
@@ -52,7 +52,7 @@ class PaymentsManager {
                                  reportBugAlertHandler: reportBugAlertHandler)
         storeExistingDelegate()
         payments.storeKitManager.delegate = self
-        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             // In the dynamic plans, fetching available IAPs from StoreKit is done alongside fetching available plans
             self.payments.storeKitManager.subscribeToPaymentQueue()
         } else {
@@ -65,12 +65,12 @@ class PaymentsManager {
             payments: payments, clientApp: clientApp, shownPlanNames: shownPlanNames, customization: customization
         )
     }
-    
+
     func startPaymentProcess(signupViewController: SignupViewController,
                              planShownHandler: (() -> Void)?,
                              completionHandler: @escaping (Result<(), Error>) -> Void) {
 
-        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             // In the dynamic plans, fetching available IAPs from StoreKit is done alongside fetching available plans
             continuePaymentProcess(signupViewController: signupViewController,
                                    planShownHandler: planShownHandler,
@@ -112,19 +112,17 @@ class PaymentsManager {
             case .close:
                 break
             case .toppedUpCredits:
-                // TODO: some popup?
                 completionHandler(.success(()))
             case .planPurchaseProcessingInProgress:
                 break
             }
         })
     }
-    
+
     func finishPaymentProcess(loginData: LoginData,
                               completionHandler: @escaping (Result<(InAppPurchasePlan?), Error>) -> Void) {
         self.loginData = loginData
         if selectedPlan != nil {
-            // TODO: test purchase process with PlansDataSource object
             switch payments.planService {
             case .left(let planService):
                 planService.updateCurrentSubscription { [weak self] in
@@ -171,15 +169,14 @@ class PaymentsManager {
     private func storeExistingDelegate() {
         existingDelegate = payments.storeKitManager.delegate
     }
-    
+
     private func restoreExistingDelegate() {
         payments.storeKitManager.delegate = existingDelegate
     }
-    
+
     func planTitle(plan: InAppPurchasePlan?) -> String? {
         guard let plan else { return nil }
 
-        // TODO: test purchase process with PlansDataSource object
         switch self.payments.planService {
         case .left(let planService):
             return planService.detailsOfPlanCorrespondingToIAP(plan)?.titleDescription
@@ -210,20 +207,20 @@ extension PaymentsManager: StoreKitManagerDelegate {
 class TokenStorageImp: PaymentTokenStorage {
     public static var `default` = TokenStorageImp()
     var token: PaymentToken?
-    
+
     func add(_ token: PaymentToken) {
         self.token = token
     }
-    
+
     func get() -> PaymentToken? {
         return token
     }
-    
+
     func clear() {
         self.token = nil
     }
 }
-    
+
 class DataStorageImpl: ServicePlanDataStorage {
     var servicePlansDetails: [Plan]?
     var defaultPlanDetails: Plan?
@@ -249,7 +246,7 @@ extension PaymentErrorCapable {
             showBanner(message: errorDescription)
         }
     }
-    
+
     func showBanner(message: String, button: String? = nil, action: (() -> Void)? = nil) {
         showBanner(message: message, button: button, action: action, position: bannerPosition)
     }

@@ -16,6 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Factory
+import ProtonCoreEventsLoop
+import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 
 class GlobalContainer: ManagedContainer {
@@ -27,9 +29,9 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
-    var attachmentMetadataStripStatusProviderFactory: Factory<AttachmentMetadataStrippingProtocol> {
+    var appRatingStatusProviderFactory: Factory<AppRatingStatusProvider> {
         self {
-            self.userCachedStatus
+            UserDefaultsAppRatingStatusProvider(userDefaults: self.userDefaults)
         }
     }
 
@@ -41,7 +43,7 @@ class GlobalContainer: ManagedContainer {
 
     var contextProviderFactory: Factory<CoreDataContextProviderProtocol> {
         self {
-            CoreDataService.shared
+            CoreDataService(container: CoreDataStore.shared.container)
         }
     }
 
@@ -90,6 +92,23 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
+    var launchServiceFactory: Factory<LaunchService> {
+        self {
+            Launch(dependencies: self)
+		}
+	}
+
+    var mailEventsPeriodicSchedulerFactory: Factory<MailEventsPeriodicScheduler> {
+        self {
+            MailEventsPeriodicScheduler(
+                refillPeriod: Constants.App.eventsPollingInterval,
+                currentDate: Date(),
+                coreLoopFactory: AnyCoreLoopFactory(EmptyCoreLoopFactory()),
+                specialLoopFactory: AnySpecialLoopFactory(MailEventsSpecialLoopFactory(dependencies: self))
+            )
+        }
+    }
+
     var notificationCenterFactory: Factory<NotificationCenter> {
         self {
             .default
@@ -108,15 +127,9 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
-    var pinFailedCountCacheFactory: Factory<PinFailedCountCache> {
-        self {
-            self.userCachedStatus
-        }
-    }
-
     var pushUpdaterFactory: Factory<PushUpdater> {
         self {
-            PushUpdater(userStatus: self.userCachedStatus)
+            PushUpdater(userDefaults: self.userDefaults)
         }
     }
 
@@ -128,14 +141,37 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
+    var resumeAfterUnlockFactory: Factory<ResumeAfterUnlock> {
+        self {
+            #if !APP_EXTENSION
+            AppResumeAfterUnlock(dependencies: self)
+            #else
+            EmptyResumeAfterUnlock()
+            #endif
+        }
+    }
+
+    var setupCoreDataServiceFactory: Factory<SetupCoreDataService> {
+        self {
+            SetupCoreData(dependencies: self)
+        }
+    }
+
     var unlockManagerFactory: Factory<UnlockManager> {
         self {
             UnlockManager(
                 cacheStatus: self.lockCacheStatus,
+                keychain: self.keychain,
                 keyMaker: self.keyMaker,
-                pinFailedCountCache: self.userCachedStatus,
+                userDefaults: self.userDefaults,
                 notificationCenter: self.notificationCenter
             )
+        }
+    }
+
+    var unlockServiceFactory: Factory<UnlockService> {
+        self {
+            Unlock(dependencies: self)
         }
     }
 
@@ -153,13 +189,19 @@ class GlobalContainer: ManagedContainer {
 
     var userCachedStatusFactory: Factory<UserCachedStatus> {
         self {
-            UserCachedStatus(userDefaults: self.userDefaults)
+            UserCachedStatus(userDefaults: self.userDefaults, keychain: self.keychain)
         }
     }
 
     var userIntroductionProgressProviderFactory: Factory<UserIntroductionProgressProvider> {
         self {
             self.userCachedStatus
+        }
+    }
+
+    var featureFlagsRepositoryFactory: Factory<FeatureFlagsRepository> {
+        self {
+            FeatureFlagsRepository.shared
         }
     }
 

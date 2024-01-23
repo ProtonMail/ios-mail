@@ -106,7 +106,7 @@ extension SendMessage {
         let prepareSendMetadata: PrepareSendMetadataUseCase
         let prepareSendRequest: PrepareSendRequestUseCase
         let apiService: APIService
-        let userDataSource: UserDataSource
+        unowned let userDataSource: UserDataSource
         let messageDataService: MessageDataServiceProtocol
     }
 }

@@ -26,18 +26,18 @@ import StoreKit
 public protocol StoreKitDataSourceProtocol {
     var availableProducts: [SKProduct] { get }
     var unavailableProductsIdentifiers: [String] { get }
-    
+
     func fetchAvailableProducts(availablePlans: AvailablePlans) async throws
     func fetchAvailableProducts(productIdentifiers: Set<String>) async throws
-    
+
     func filterAccordingToAvailableProducts(availablePlans: AvailablePlans) -> AvailablePlans
 }
 
 final class StoreKitDataSource: NSObject, StoreKitDataSourceProtocol {
-    
+
     private(set) var availableProducts: [SKProduct] = []
     private(set) var unavailableProductsIdentifiers: [String] = []
-    
+
     private var request: SKProductsRequest?
     private let requestFactory: (Set<String>) -> SKProductsRequest
     var requestContinuation: CheckedContinuation<Void, Error>?
@@ -45,12 +45,12 @@ final class StoreKitDataSource: NSObject, StoreKitDataSourceProtocol {
     init(requestFactory: @escaping (Set<String>) -> SKProductsRequest = { .init(productIdentifiers: $0) }) {
         self.requestFactory = requestFactory
     }
-    
+
     func fetchAvailableProducts(availablePlans: AvailablePlans) async throws {
         let planVendorIdentifiers = availablePlans.plans.flatMap(\.instances).compactMap(\.vendors).map(\.apple.productID)
         try await fetchAvailableProducts(productIdentifiers: Set(planVendorIdentifiers))
     }
-    
+
     func fetchAvailableProducts(productIdentifiers: Set<String>) async throws {
         try await withCheckedThrowingContinuation { continuation in
             requestContinuation = continuation
@@ -59,7 +59,7 @@ final class StoreKitDataSource: NSObject, StoreKitDataSourceProtocol {
             request?.start()
         }
     }
-    
+
     func filterAccordingToAvailableProducts(availablePlans originalPlans: AvailablePlans) -> AvailablePlans {
         let availableProductIdentifiers = availableProducts.map(\.productIdentifier)
         let updatedPlans = originalPlans.plans.map { originalPlan in

@@ -33,6 +33,7 @@ protocol ApplicationLogsViewModelInput {
 protocol ApplicationLogsViewModelOutput {
     var content: CurrentValueSubject<String, Never> { get }
     var fileToShare: PassthroughSubject<URL, Never> { get }
+    var emptyContentReason: PassthroughSubject<String, Never> { get }
 }
 
 final class ApplicationLogsViewModel: ApplicationLogsViewModelProtocol, ApplicationLogsViewModelOutput {
@@ -40,6 +41,7 @@ final class ApplicationLogsViewModel: ApplicationLogsViewModelProtocol, Applicat
     var output: ApplicationLogsViewModelOutput { self }
     let content = CurrentValueSubject<String, Never>(.empty)
     let fileToShare = PassthroughSubject<URL, Never>()
+    let emptyContentReason = PassthroughSubject<String, Never>()
     private let dependencies: Dependencies
 
     private var logsLinkFile: URL {
@@ -61,7 +63,12 @@ final class ApplicationLogsViewModel: ApplicationLogsViewModelProtocol, Applicat
 extension ApplicationLogsViewModel: ApplicationLogsViewModelInput {
     func viewDidAppear() {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            self?.content.value = PMLog.logsContent()
+            let logs = PMLog.logsContent()
+            if logs.isEmpty {
+                self?.findEmptyLogsReason()
+            } else {
+                self?.content.value = logs
+            }
         }
     }
 
@@ -84,6 +91,20 @@ extension ApplicationLogsViewModel: ApplicationLogsViewModelInput {
             try deleteFileIfExists(file: logsLinkFile)
         } catch {
             PMAssertionFailure(error)
+        }
+    }
+
+    private func findEmptyLogsReason() {
+        guard let logFile = PMLog.logFile else {
+            emptyContentReason.send("Log file doesn't exist")
+            return
+        }
+        do {
+            let logs = try String(contentsOf: logFile, encoding: .utf8)
+            // In theory shouldn't have logs but no hurt to try
+            content.value = logs
+        } catch {
+            emptyContentReason.send(error.localizedDescription)
         }
     }
 }

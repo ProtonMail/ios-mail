@@ -21,17 +21,17 @@
 //
 
 public struct MissingScopesDetails: Codable, Equatable {
-    
+
     let missingScopes: [String]
-    
+
     enum CodingKeys: String, CodingKey {
         case missingScopes
-        
+
         var uppercased: String {
             "\(rawValue.prefix(1).uppercased())\(rawValue.dropFirst())"
         }
     }
-    
+
     var serialized: [String: Any] {
         [CodingKeys.missingScopes.uppercased: missingScopes]
     }

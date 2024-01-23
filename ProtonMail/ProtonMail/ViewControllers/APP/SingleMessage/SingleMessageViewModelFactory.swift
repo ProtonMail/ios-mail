@@ -62,7 +62,7 @@ class SingleMessageContentViewModelFactory {
 }
 
 class SingleMessageViewModelFactory {
-    typealias Dependencies = SingleMessageContentViewModelFactory.Dependencies
+    typealias Dependencies = SingleMessageContentViewModelFactory.Dependencies & HasUserDefaults
 
     private let dependencies: Dependencies
 
@@ -90,7 +90,6 @@ class SingleMessageViewModelFactory {
                 dependencies: .init(user: user)
             ),
             toolbarActionProvider: user,
-            toolbarCustomizeSpotlightStatusProvider: userCachedStatus,
             coordinator: coordinator,
             nextMessageAfterMoveStatusProvider: user,
             contentViewModel: SingleMessageContentViewModelFactory(dependencies: dependencies).createViewModel(
@@ -99,7 +98,8 @@ class SingleMessageViewModelFactory {
                 goToDraft: goToDraft
             ),
             contextProvider: dependencies.contextProvider,
-            highlightedKeywords: highlightedKeywords
+            highlightedKeywords: highlightedKeywords,
+            dependencies: dependencies
         )
     }
 
@@ -109,9 +109,10 @@ class SingleMessageComponentsFactory {
     typealias Dependencies = MessageInfoProvider.Dependencies
     & HasCoreDataContextProviderProtocol
     & HasFeatureFlagCache
-    & HasFetchMessageDetail
+    & HasFetchMessageDetailUseCase
     & HasQueueManager
     & HasUnblockSender
+    & HasUserCachedStatus
 
     private let dependencies: Dependencies
 
@@ -140,7 +141,7 @@ class SingleMessageComponentsFactory {
 
         let messageInfoProvider = MessageInfoProvider(
             message: context.message,
-            systemUpTime: sharedServices.userCachedStatus,
+            systemUpTime: dependencies.userCachedStatus,
             labelID: context.labelId,
             dependencies: dependencies,
             highlightedKeywords: highlightedKeywords

@@ -21,7 +21,7 @@ var mutationObserver = new MutationObserver(function (events) {
             if (removedNode.nodeType === Node.ELEMENT_NODE && removedNode.tagName != 'CARET') {
                 if (removedNode.getAttribute('src-original-pm-cid')) {
                     var cidWithPrefix = removedNode.getAttribute('src-original-pm-cid');
-                    var cid = cidWithPrefix.replace("cid:", "");
+                    var cid = cidWithPrefix.replace(/^(cid:|proton-cid:)/,"");
                     window.webkit.messageHandlers.removeImage.postMessage({ "messageHandler": "removeImage", "cid": cid });
                 }
             }
@@ -31,16 +31,9 @@ var mutationObserver = new MutationObserver(function (events) {
         for (var k = 0; k < event.addedNodes.length; k++) {
             var element = event.addedNodes[k];
             if (element.nodeType === Node.ELEMENT_NODE && element.tagName != 'CARET') {
-                var spotImg = function (img) {
-                    insertedImages = true;
-                    img.onload = function () {
-                        var contentsHeight = html_editor.getContentsHeight();
-                        window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
-                    };
-                };
-
                 if (element.tagName == 'IMG') {
-                    spotImg(element);
+                    element.setAttribute('draggable', 'false')
+                    insertedImages = true;
                     continue;
                 }
 
@@ -53,10 +46,6 @@ var mutationObserver = new MutationObserver(function (events) {
     }
 
     if (insertedImages) {
-        // update height if some cached img were inserted which will never have onload called
-        var contentsHeight = html_editor.getContentsHeight();
-        window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
-
         // process new inline images
         html_editor.acquireEmbeddedImages();
     }
@@ -136,7 +125,7 @@ html_editor.getRawHtml = function () {
     }
 
     var emptyHtml = html_editor.editor.innerHTML;
-    
+
     // Add embedded images back
     for (var cid in html_editor.cachedCIDs) {
         html_editor.updateEmbedImage(cid, html_editor.cachedCIDs[cid]);
@@ -176,20 +165,20 @@ html_editor.editor.addEventListener("input", function () { // input and not keyd
     html_editor.getCaretYPosition();
 });
 
-html_editor.editor.addEventListener("drop", function (event) {
-    var items = event.dataTransfer.items;
-    html_editor.absorbImage(event, items, event.target);
-});
-
 html_editor.editor.addEventListener("paste", function (event) {
     var items = event.clipboardData.items;
     html_editor.absorbContactGroupPaste(event);
     html_editor.absorbImage(event, items, window.getSelection().getRangeAt(0).commonAncestorContainer);
     html_editor.handlePastedData(event);
+});
 
-    // Update height
-    var contentsHeight = html_editor.getContentsHeight();
-    window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
+html_editor.editor.addEventListener("click", function (event) {
+    if (event.target && event.target.tagName === "IMG" && event.target.hasAttribute('src-original-pm-cid')) {
+        let cid = event.target.getAttribute('src-original-pm-cid');
+        window.webkit.messageHandlers.selectInlineImage.postMessage({"messageHandler": "selectInlineImage", "cid": cid});
+    } else {
+        html_editor.getCaretYPosition();
+    }
 });
 
 html_editor.absorbContactGroupPaste = function (event) {
@@ -254,11 +243,11 @@ html_editor.absorbImage = function (event, items, target) {
             continue;
         }
         event.preventDefault(); // prevent default only if a file is pasted
-
         html_editor.getBase64FromFile(file, function (base64) {
             var name = html_editor.createUUID() + "_" + file.name;
             var bits = "data:" + file.type + ";base64," + base64;
             var img = new Image();
+            img.setAttribute('draggable', 'false')
             target.appendChild(img);
             html_editor.setImageData(img, "cid:" + name, bits);
 
@@ -271,7 +260,7 @@ html_editor.absorbImage = function (event, items, target) {
 html_editor.handlePastedData = function (event) {
     // Safari doesn't support regular expression lookahead
     // To remove style has prefix `font-` except `font-style` and `font-weight`
-    // Use this workaround 
+    // Use this workaround
     const item = event.clipboardData
         .getData('text/html')
         .replace(/<meta (.*?)>/g, '')
@@ -283,13 +272,15 @@ html_editor.handlePastedData = function (event) {
         .replace(/thgiew-tnof/g, 'font-weight')
     if (item == undefined || item.length === 0) { return }
     event.preventDefault();
+    
+    const processedData = uploadImageIfPastedDataHasImage(item)
 
     let selection = window.getSelection()
     if (selection.rangeCount === 0) { return }
     let range = selection.getRangeAt(0);
     range.deleteContents();
     let div = document.createElement('div');
-    div.innerHTML = item;
+    div.innerHTML = processedData;
     let fragment = document.createDocumentFragment();
     let child;
     while ((child = div.firstChild)) {
@@ -298,24 +289,59 @@ html_editor.handlePastedData = function (event) {
     range.insertNode(fragment);
 }
 
+function uploadImageIfPastedDataHasImage(pastedDataText) {
+    const parsedDOM = new DOMParser().parseFromString(pastedDataText, "text/html");
+    const imageElements = parsedDOM.querySelectorAll('img')
+    for (var i = 0; i < imageElements.length; i++) {
+        const element = imageElements[i]
+
+        // bits = 'data:image.....'
+        const bits = element.src
+        const base64 = bits.replace(/data:image\/[a-z]+;base64,/, '').trim();
+        const fileType = getFileTypeFromBase64String(bits)
+        const cid = html_editor.createUUID()
+        const protonCID = `proton-cid:${cid}`
+        const name = `${cid}_.${fileType}`
+
+        element.removeAttribute('style')
+        element.setAttribute('draggable', 'false')
+        element.setAttribute('src-original-pm-cid', protonCID)
+        html_editor.cachedCIDs[protonCID] = bits;
+        window.webkit.messageHandlers.addImage.postMessage({ "messageHandler": "addImage", "cid": cid, "data": base64 });
+    }
+    return parsedDOM.body.innerHTML
+}
+
+function getFileTypeFromBase64String(base64) {
+    const match = base64.match(/data:.*\/(.*);/)
+    if (match.length == 2) {
+        return match[1]
+    } else {
+        return ''
+    }
+}
+
 /// breaks the block quote into two if possible
 html_editor.editor.addEventListener("keydown", function (key) {
     quote_breaker.breakQuoteIfNeeded(key);
 });
 
+let observer = new ResizeObserver((elements) => {
+    let height = elements[0].contentRect.height;
+    window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": height });
+})
+observer.observe(document.body)
+
 html_editor.caret = document.createElement('caret'); // something happening here preventing selection of elements
 html_editor.getCaretYPosition = function () {
-    var range = window.getSelection().getRangeAt(0).cloneRange();
-    range.collapse(false);
-    range.insertNode(html_editor.caret);
-
-    // relative to the viewport, while offsetTop is relative to parent, which differs when editing the quoted message text
-    var rect = html_editor.caret.getBoundingClientRect();
-    var leftPosition = rect.left + window.scrollX;
-    var topPosition = rect.top + window.scrollY;
-    var contentsHeight = html_editor.getContentsHeight();
-
-    window.webkit.messageHandlers.moveCaret.postMessage({ "messageHandler": "moveCaret", "cursorX": leftPosition, "cursorY": topPosition, "height": contentsHeight });
+    const range = window.getSelection().getRangeAt(0).cloneRange();
+    range.collapse(false)
+    const rangeRect = range.getClientRects()[0];
+    if (rangeRect) {
+        x = rangeRect.left; // since the caret is only 1px wide, left == right
+        y = rangeRect.top; // top edge of the caret
+        window.webkit.messageHandlers.moveCaret.postMessage({ "messageHandler": "moveCaret", "cursorX": x, "cursorY": y });
+    }
 }
 
 //this is for update protonmail email signature
@@ -334,6 +360,49 @@ html_editor.updateEncodedEmbedImage = function (cid, blobdata) {
     for (var i = 0; i < found.length; i++) {
         var originalImageData = decodeURIComponent(blobdata);
         html_editor.setImageData(found[i], cid, originalImageData);
+    }
+}
+
+html_editor.insertEmbedImage = function (cid, base64) {
+    var locationToInsertTheImage;
+    if (window.getSelection) {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0).cloneRange();
+            var endContainer = range.endContainer;
+            if (endContainer.parentElement === document.body) {
+                endContainer = null;
+            }
+            locationToInsertTheImage = endContainer ? endContainer : html_editor.editor.querySelector('div');
+        } else {
+            locationToInsertTheImage = html_editor.editor.querySelector('div');
+        }
+    } else {
+        locationToInsertTheImage = html_editor.editor.querySelector('div');
+    }
+
+    let upperBr = document.createElement('br');
+    let lowerBr = document.createElement('br');
+    let embed = document.createElement('img');
+    embed.src = base64;
+    embed.setAttribute('draggable', 'false')
+    embed.setAttribute('src-original-pm-cid', `${cid}`);
+    html_editor.cachedCIDs[cid] = base64;
+
+    if (locationToInsertTheImage === null) {
+        // html_editor.editor doesn't have any div
+        // happens when user keep clicking delete button
+        html_editor.editor.appendChild(upperBr);
+        html_editor.editor.appendChild(embed);
+        let div = document.createElement('div');
+        div.innerHTML = "<br>";
+        html_editor.editor.appendChild(div);
+    } else {
+        let parent = locationToInsertTheImage.parentNode;
+
+        parent.insertBefore(lowerBr, locationToInsertTheImage);
+        parent.insertBefore(embed, locationToInsertTheImage);
+        parent.insertBefore(upperBr, locationToInsertTheImage);
     }
 }
 
@@ -401,9 +470,23 @@ html_editor.getBase64FromImageUrl = function (oldImage, callback) {
 
 html_editor.removeEmbedImage = function (cid) {
     var found = document.querySelectorAll('img[src-original-pm-cid="' + cid + '"]');
-    for (var i = 0; i < found.length; i++) {
-        found[i].remove();
+    if (found.length != 0) {
+        for (var i = 0; i < found.length; i++) {
+            found[i].remove();
+        }
+    } else {
+        let prefixToRemove = 'proton-'
+        var cidWithoutPrefix = cid;
+        if (cid.startsWith(prefixToRemove)) {
+            cidWithoutPrefix = cid.substring(prefixToRemove.length);
+        }
+        var founded = document.querySelectorAll('img[src-original-pm-cid="' + cidWithoutPrefix + '"]');
+        for (var i = 0; i < founded.length; i++) {
+            founded[i].remove();
+        }
     }
+    let contentsHeight = html_editor.getContentsHeight();
+    window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
 }
 
 html_editor.getContentsHeight = function () {
@@ -477,8 +560,6 @@ html_editor.removeStyleFromSelection = function () {
 html_editor.update_font_size = function (size) {
     let pixelSize = size + "px";
     document.documentElement.style.setProperty("font-size", pixelSize);
-    var contentsHeight = html_editor.getContentsHeight();
-    window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
 };
 
 const toMap = function (list) {

@@ -107,6 +107,16 @@ extension Conversation {
                                                    matchingValue: conversationID) as? Conversation
     }
 
+    class func conversationFor(_ conversationID: String, userID: UserID, in context: NSManagedObjectContext) -> Conversation? {
+        return context.managedObjectWithEntityName(
+            Attributes.entityName,
+            matching: [
+                Attributes.conversationID.rawValue: conversationID,
+                Attributes.userID.rawValue: userID.rawValue
+            ]
+        )
+    }
+
     func getContextLabel(location: LabelLocation) -> ContextLabel? {
         guard self.managedObjectContext != nil else { return nil }
         let contextLabels = self.labels.compactMap { $0 as? ContextLabel }
@@ -228,10 +238,11 @@ extension Conversation {
                     fatalError()
                 }
             } else {
+                let allMailLabel = self.getContextLabel(location: .allmail)
                 let newLabel = ContextLabel(context: self.managedObjectContext!)
                 newLabel.labelID = labelID
                 newLabel.messageCount = self.numMessages
-                newLabel.time = Date()
+                newLabel.time = allMailLabel?.time ?? Date()
                 newLabel.userID = self.userID
                 newLabel.size = self.size ?? NSNumber(value: 0)
                 newLabel.attachmentCount = self.numAttachments

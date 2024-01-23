@@ -17,7 +17,11 @@ final class LockCoordinator: LifetimeTrackable {
         case mailbox
     }
 
-    typealias Dependencies = UnlockPinCodeModelImpl.Dependencies & HasUsersManager & HasUnlockManager
+    typealias Dependencies = UnlockPinCodeModelImpl.Dependencies 
+    & HasUsersManager
+    & HasUnlockManager
+    & HasUnlockService
+
     typealias VC = CoordinatorKeepingViewController<LockCoordinator>
 
     class var lifetimeConfiguration: LifetimeConfiguration {
@@ -93,15 +97,26 @@ final class LockCoordinator: LifetimeTrackable {
 // copied from old implementation of SignInViewController to keep the pin logic untact
 extension LockCoordinator: PinCodeViewControllerDelegate {
 
-    func next() {
-        dependencies.unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: { [weak self] in
-            self?.finishLockFlow(.mailboxPassword)
-        }, unlockFailed: { [weak self] in
-            self?.finishLockFlow(.signIn)
-        }, unlocked: { [weak self] in
-            self?.finishLockFlow(.mailbox)
-            self?.actualViewController.presentedViewController?.dismiss(animated: true)
-        })
+    func onUnlockChallengeSuccess() {
+        Task {
+            let appAccess = await dependencies.unlockService.start()
+            guard appAccess == .accessGranted else {
+                await finishUnlockFlowAppAccessDenied()
+                return
+            }
+            await finishUnlockFlowSuccess()
+        }
+    }
+
+    @MainActor
+    private func finishUnlockFlowSuccess() {
+        finishLockFlow(.mailbox)
+        actualViewController.presentedViewController?.dismiss(animated: true)
+    }
+
+    @MainActor
+    private func finishUnlockFlowAppAccessDenied() {
+        finishLockFlow(.signIn)
     }
 
     func cancel(completion: @escaping () -> Void) {

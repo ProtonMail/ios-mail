@@ -26,7 +26,7 @@ extension UserContainer {
                     featureFlagService: self.featureFlagsDownloadService,
                     appRating: AppRatingManager(),
                     internetStatus: self.internetConnectionStatusProvider,
-                    appRatingPrompt: self.userCachedStatus
+                    appRatingStatusProvider: self.appRatingStatusProvider
                 )
             )
         }
@@ -51,17 +51,7 @@ extension UserContainer {
 
     var cleanUserLocalMessagesFactory: Factory<CleanUserLocalMessages> {
         self {
-            CleanUserLocalMessages(
-                contactCacheStatus: self.userCachedStatus,
-                fetchInboxMessages: FetchMessages(
-                    dependencies: .init(
-                        messageDataService: self.messageService,
-                        cacheService: self.cacheService,
-                        eventsService: self.eventsService
-                    )
-                ),
-                dependencies: self
-            )
+            CleanUserLocalMessages(dependencies: self)
         }
     }
 
@@ -77,6 +67,18 @@ extension UserContainer {
         }
     }
 
+    var fetchMessagesFactory: Factory<FetchMessages> {
+        self {
+            FetchMessages(
+                dependencies: .init(
+                    messageDataService: self.messageService,
+                    cacheService: self.cacheService,
+                    eventsService: self.eventsService
+                )
+            )
+        }
+    }
+
     var fetchSenderImageFactory: Factory<FetchSenderImage> {
         self {
             FetchSenderImage(
@@ -85,13 +87,19 @@ extension UserContainer {
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: self.user.apiService,
-                            internetStatusProvider: self.internetConnectionStatusProvider, 
+                            internetStatusProvider: self.internetConnectionStatusProvider,
                             imageCache: self.senderImageCache
                         )
                     ),
                     mailSettings: self.user.mailSettings
                 )
             )
+        }
+    }
+
+    var importDeviceContactsFactory: Factory<ImportDeviceContacts> {
+        self {
+            ImportDeviceContacts(userID: self.user.userID, dependencies: self)
         }
     }
 
@@ -116,6 +124,7 @@ extension UserContainer {
         self {
             self.user
         }
+        .scope(.shared)
     }
 
     var paymentsFactory: Factory<Payments> {
@@ -123,7 +132,7 @@ extension UserContainer {
             Payments(
                 inAppPurchaseIdentifiers: Constants.mailPlanIDs,
                 apiService: self.apiService,
-                localStorage: self.userCachedStatus,
+                localStorage: ServicePlanDataStorageImpl(userDefaults: self.userDefaults),
                 canExtendSubscription: true,
                 reportBugAlertHandler: { _ in
                     let link = DeepLink("toBugPop", sender: nil)
@@ -164,6 +173,7 @@ extension UserContainer {
         self {
             self.user
         }
+        .scope(.shared)
     }
 
     var toolbarSettingViewFactoryFactory: Factory<ToolbarSettingViewFactory> {
@@ -179,6 +189,43 @@ extension UserContainer {
                     incomingDefaultService: self.user.incomingDefaultService,
                     queueManager: self.queueManager,
                     userInfo: self.user.userInfo
+                )
+            )
+        }
+    }
+
+    var updateMailboxFactory: Factory<UpdateMailbox> {
+        self {
+            let purgeOldMessages = PurgeOldMessages(user: self.user, coreDataService: self.contextProvider)
+
+            let fetchLatestEventID = FetchLatestEventId(
+                userId: self.user.userID,
+                dependencies: .init(apiService: self.apiService, lastUpdatedStore: self.lastUpdatedStore)
+            )
+
+            let fetchMessagesWithReset = FetchMessagesWithReset(
+                userID: self.user.userID,
+                dependencies: FetchMessagesWithReset.Dependencies(
+                    fetchLatestEventId: fetchLatestEventID,
+                    fetchMessages: self.fetchMessages,
+                    localMessageDataService: self.messageService,
+                    lastUpdatedStore: self.lastUpdatedStore,
+                    contactProvider: self.contactService,
+                    labelProvider: self.labelService
+                )
+            )
+
+            return UpdateMailbox(
+                dependencies: .init(
+                    eventService: self.eventsService,
+                    messageDataService: self.messageService,
+                    conversationProvider: self.conversationService,
+                    purgeOldMessages: purgeOldMessages,
+                    fetchMessageWithReset: fetchMessagesWithReset,
+                    fetchMessage: self.fetchMessages,
+                    fetchLatestEventID: fetchLatestEventID,
+                    internetConnectionStatusProvider: self.internetConnectionStatusProvider,
+                    userDefaults: self.userDefaults
                 )
             )
         }

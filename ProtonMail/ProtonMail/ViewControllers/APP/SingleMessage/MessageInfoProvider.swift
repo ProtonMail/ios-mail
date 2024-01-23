@@ -41,9 +41,10 @@ private enum EmbeddedDownloadStatus {
 // swiftlint:disable:next type_body_length
 final class MessageInfoProvider {
     typealias Dependencies = MessageSenderPGPChecker.Dependencies
-    & HasDarkModeCacheProtocol
+    & HasContactPickerModelHelper
     & HasFetchSenderImage
     & HasImageProxy
+    & HasUserDefaults
 
     private(set) var message: MessageEntity {
         willSet {
@@ -230,19 +231,20 @@ final class MessageInfoProvider {
     }
 
     var simpleRecipient: NSAttributedString? {
-        let lists = ContactPickerModelHelper.contacts(from: message.rawCCList)
-        + ContactPickerModelHelper.contacts(from: message.rawBCCList)
-        + ContactPickerModelHelper.contacts(from: message.rawTOList)
-        let groupNames = groupNames(from: lists)
+        let lists = dependencies.contactPickerModelHelper.contacts(from: message.rawCCList)
+        + dependencies.contactPickerModelHelper.contacts(from: message.rawBCCList)
+        + dependencies.contactPickerModelHelper.contacts(from: message.rawTOList)
+        let groups = lists.compactMap { $0 as? ContactGroupVO }
+        let groupNames = groups.names(allGroupContacts: groupContacts)
         let receiver = recipientNames(from: lists)
         let result = groupNames + receiver
-        let name = result.isEmpty ? "" : result.asCommaSeparatedList(trailingSpace: true)
+        let name = result.asCommaSeparatedList(trailingSpace: true)
         let recipients = name.isEmpty ? LocalString._undisclosed_recipients : name
         return recipients.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
     }
 
     lazy var toData: ExpandedHeaderRecipientsRowViewModel? = {
-        let toList = ContactPickerModelHelper.contacts(from: message.rawTOList)
+        let toList = dependencies.contactPickerModelHelper.contacts(from: message.rawTOList)
         var list: [ContactVO] = toList.compactMap({ $0 as? ContactVO })
         toList
             .compactMap({ $0 as? ContactGroupVO })
@@ -258,7 +260,7 @@ final class MessageInfoProvider {
     }()
 
     lazy var ccData: ExpandedHeaderRecipientsRowViewModel? = {
-        let list = ContactPickerModelHelper.contacts(from: message.rawCCList).compactMap({ $0 as? ContactVO })
+        let list = ContactPickerModelHelper.nonGroupContacts(from: message.rawCCList)
         return createRecipientRowViewModel(from: list, title: "\(LocalString._general_cc_label):")
     }()
 
@@ -332,7 +334,7 @@ final class MessageInfoProvider {
     }
 
     var shouldDisplayRenderModeOptions: Bool {
-            if dependencies.darkModeCache.darkModeStatus == .forceOff {
+            if dependencies.userDefaults[.darkModeStatus] == .forceOff {
                 return false
             }
             let keywords = ["color-scheme", "supported-color-schemes", #"color-scheme:\s?\S{0,}\s?dark"#]
@@ -437,19 +439,6 @@ extension MessageInfoProvider {
 
 // MARK: Contact related
 extension MessageInfoProvider {
-    private func groupNames(from recipients: [ContactPickerModelProtocol]) -> [String] {
-        recipients
-            .compactMap { $0 as? ContactGroupVO }
-            .map { recipient -> String in
-                let groupName = recipient.contactTitle
-                let group = groupContacts.first(where: { $0.contactTitle == groupName })
-                let total = group?.contactCount ?? 0
-                let count = recipient.getSelectedEmailAddresses().count
-                let name = "\(groupName) (\(count)/\(total))"
-                return name
-            }
-    }
-
     private func recipientNames(from recipients: [ContactPickerModelProtocol]) -> [String] {
         recipients
             .compactMap { item -> String? in
@@ -622,7 +611,7 @@ extension MessageInfoProvider {
             contentLoadingType = .none
         }
 
-        let css = bodyParts?.darkModeCSS(darkModeCache: dependencies.darkModeCache)
+        let css = bodyParts?.darkModeCSS(darkModeStatus: dependencies.userDefaults[.darkModeStatus])
         contents = WebContents(
             body: body.keywordHighlighting.usingCSS(keywords: highlightedKeywords),
             remoteContentMode: remoteContentPolicy,
@@ -661,33 +650,32 @@ extension MessageInfoProvider {
         }
         self.embeddedStatus = .downloading
         let group = DispatchGroup()
-        let queue = DispatchQueue(label: "AttachmentQueue", qos: .userInitiated)
         let stringsQueue = DispatchQueue(label: "StringsQueue")
         let userKeys = user.toUserKeys()
 
         for inline in inlines {
+            guard let contentID = inline.getContentID() else { return }
             group.enter()
-            let work = DispatchWorkItem { [weak self] in
-                guard let contentID = inline.getContentID() else { return }
-                self?.dependencies.fetchAttachment.execute(
-                    params: .init(
-                        attachmentID: inline.id,
-                        attachmentKeyPacket: inline.keyPacket,
-                        purpose: .decryptAndEncodeAttachment,
-                        userKeys: userKeys
-                    )
-                ) { result in
-                    defer { group.leave() }
-                    guard let base64Attachment = try? result.get().encoded,
-                          !base64Attachment.isEmpty else { return }
-                    stringsQueue.sync {
-                        let scheme = HTTPRequestSecureLoader.imageCacheScheme
-                        let value = "src=\"\(scheme)://\(inline.id)\""
-                        self?.inlineContentIDMap["\(contentID)"] = value
-                    }
+            dependencies.fetchAttachment.execute(
+                params: .init(
+                    attachmentID: inline.id,
+                    attachmentKeyPacket: inline.keyPacket,
+                    purpose: .decryptAndEncodeAttachment,
+                    userKeys: userKeys
+                )
+            ) { [weak self] result in
+                guard let base64Attachment = try? result.get().encoded,
+                      !base64Attachment.isEmpty else {
+                    group.leave()
+                    return
                 }
+                stringsQueue.sync {
+                    let scheme = HTTPRequestSecureLoader.imageCacheScheme
+                    let value = "src=\"\(scheme)://\(inline.id)\""
+                    self?.inlineContentIDMap["\(contentID)"] = value
+                }
+                group.leave()
             }
-            queue.async(group: group, execute: work)
         }
 
         group.notify(queue: .global()) {

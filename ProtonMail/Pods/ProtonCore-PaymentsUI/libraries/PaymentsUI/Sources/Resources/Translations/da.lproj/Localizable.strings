@@ -1,4 +1,3 @@
-
 "OK" = "Ok";
 
 "Cancel" = "Annullér";
@@ -22,6 +21,8 @@
 "Current plan will expire on %@" = "Nuværende abonnement udløber den %@";
 
 "Contact an administrator to make changes to your Proton subscription." = "Kontakt en administrator for at foretage ændringer i dit Proton-abonnement.";
+
+"%1$@ of %2$@" = "%1$@ of %2$@";
 
 "%@ storage" = "%@ lagerplads";
 
@@ -73,6 +74,8 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "Kun årsabonnementer, der ikke forlænges, er tilgængelige via denne app";
 
+"Your subscription cannot be managed inside the mobile app." = "Your subscription cannot be managed inside the mobile app.";
+
 "Unlimited folders, labels, and filters" = "Ubegrænsede mapper, etiketter og filtre";
 
 "Up to %@ storage" = "Op til %@ lagerplads";
@@ -113,13 +116,9 @@
 
 "Unlimited devices" = "Ubegrænset antal enheder";
 
-"%@ email aliases" = "%@ e-mail-aliasser";
-
 "Unlimited email aliases" = "Ubegrænsede e-mail-aliasser";
 
 "Unlimited logins and notes" = "Ubegrænset antal logins og noter";
-
-"Up to %@ forwarding mailboxes" = "Op til %@ postkasser til videresendelse";
 
 "Custom fields" = "Brugerdefinerede felter";
 
@@ -131,4 +130,4 @@
 
 "Pay every two years" = "Betal hvert 2. år";
 
-"Free" = "Free";
+"Free" = "Gratis";

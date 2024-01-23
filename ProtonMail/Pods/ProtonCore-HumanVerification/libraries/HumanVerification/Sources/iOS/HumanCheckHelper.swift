@@ -42,7 +42,7 @@ public class HumanCheckHelper: HumanVerifyDelegate {
     // If set outside the LoginUI module, they will be overwritten there
     public weak var responseDelegateForLoginAndSignup: HumanVerifyResponseDelegate?
     public weak var paymentDelegateForLoginAndSignup: HumanVerifyPaymentDelegate?
-    
+
     public init(apiService: APIService,
                 supportURL: URL? = nil,
                 viewController: UIViewController? = nil,
@@ -56,9 +56,9 @@ public class HumanCheckHelper: HumanVerifyDelegate {
         self.inAppTheme = inAppTheme
         self.clientApp = clientApp
     }
-    
+
     public func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
-        
+
         // check if payment token exists
         if let paymentToken = paymentDelegateForLoginAndSignup?.paymentToken {
             let client = TestApiClient(api: self.apiService)
@@ -79,17 +79,17 @@ public class HumanCheckHelper: HumanVerifyDelegate {
             startMenuCoordinator(parameters: parameters, currentURL: currentURL, completion: completion)
         }
     }
-    
+
     public func getSupportURL() -> URL {
         return supportURL
     }
-    
+
     private func startMenuCoordinator(parameters: HumanVerifyParameters, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
         prepareV3Coordinator(parameters: parameters, currentURL: currentURL)
         responseDelegateForLoginAndSignup?.onHumanVerifyStart()
         verificationCompletion = completion
     }
-    
+
     private func prepareV3Coordinator(parameters: HumanVerifyParameters, currentURL: URL?) {
         var isModalPresentation = true
         if nonModalUrls?.first(where: { $0 == currentURL }) != nil {
@@ -101,7 +101,7 @@ public class HumanCheckHelper: HumanVerifyDelegate {
             self.humanCheckCoordinator?.start()
         }
     }
-    
+
     @discardableResult
     public static func removeHumanVerification(from navigationController: UINavigationController?) -> Bool {
         guard var viewControllers = navigationController?.viewControllers else { return false }
@@ -130,12 +130,12 @@ extension HumanCheckHelper: HumanCheckMenuCoordinatorDelegate {
             }
         }))
     }
-    
+
     func close() {
         verificationCompletion?(.close)
         self.responseDelegateForLoginAndSignup?.onHumanVerifyEnd(result: .cancel)
     }
-    
+
     func closeWithError(code: Int, description: String) {
         verificationCompletion?(.closeWithError(code: code, description: description))
         self.responseDelegateForLoginAndSignup?.onHumanVerifyEnd(result: .cancel)

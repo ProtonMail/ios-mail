@@ -51,7 +51,7 @@ public struct ProtonColorPaletteiOS {
     public let InteractionNormDisabled = ProtonColor(name: "MobileInteractionNormDisabled")
     public let InteractionNormMajor1PassTheme = ProtonColor(name: "MobileInteractionNormMajor1PassTheme")
     public let InteractionNormMajor2PassTheme = ProtonColor(name: "MobileInteractionNormMajor2PassTheme")
-    
+
     // MARK: Shade
     public var Shade100: ProtonColor {
         ProtonColor(name: "MobileShade100", vpnFallbackRgb: shade100Vpn)
@@ -120,7 +120,7 @@ public struct ProtonColorPaletteiOS {
     public var IconAccent: ProtonColor {
         ProtonColor(name: "MobileIconAccent", vpnFallbackRgb: iconAccentVpn)
     }
-    
+
     // MARK: Interaction
     public var InteractionWeak: ProtonColor {
         ProtonColor(name: "MobileInteractionWeak", vpnFallbackRgb: interactionWeakVpn)
@@ -142,7 +142,7 @@ public struct ProtonColorPaletteiOS {
     public let FloatyBackground = ProtonColor(name: "MobileFloatyBackground")
     public let FloatyPressed = ProtonColor(name: "MobileFloatyPressed")
     public let FloatyText = ProtonColor(name: "MobileFloatyText")
-    
+
     // MARK: Background
     public var BackgroundNorm: ProtonColor {
         switch Brand.currentBrand {
@@ -193,7 +193,7 @@ public struct ProtonColorPaletteiOS {
 
     // MARK: Blenders
     public let BlenderNorm = ProtonColor(name: "MobileBlenderNorm")
-    
+
     // MARK: Accent
     public let PurpleBase = ProtonColor(name: "SharedPurpleBase")
     public let EnzianBase = ProtonColor(name: "SharedEnzianBase")
@@ -215,11 +215,11 @@ public struct ProtonColorPaletteiOS {
     public let ForestBase = ProtonColor(name: "SharedForestBase")
     public let OliveBase = ProtonColor(name: "SharedOliveBase")
     public let PickleBase = ProtonColor(name: "SharedPickleBase")
-    
+
     // MARK: Two special colors that consistently occur in designs even though they are not part af the palette
     public let White = ProtonColor(name: "White")
     public let Black = ProtonColor(name: "Black")
-    
+
     // MARK: Special banner colors
     public let Ebb = ProtonColor(name: "Ebb")
     public let Cloud = ProtonColor(name: "Cloud")

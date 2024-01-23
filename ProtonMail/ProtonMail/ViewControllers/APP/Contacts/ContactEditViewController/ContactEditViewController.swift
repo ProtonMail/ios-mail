@@ -74,6 +74,7 @@ final class ContactEditViewController: UIViewController, AccessibleView {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        NotificationCenter.default.addKeyboardObserver(self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -127,6 +128,8 @@ extension ContactEditViewController: UITableViewDataSource {
             return viewModel.contactTitles.count
         case .gender:
             return viewModel.gender == nil ? 0 : 1
+        case .anniversary:
+            return viewModel.anniversary == nil ? 0 : 1
         case .addNewField:
             return 1
         }
@@ -315,9 +318,13 @@ extension ContactEditViewController: UITableViewDataSource {
             outCell = createEditInfoCell(tableView: tableView, at: indexPath, info: viewModel.nickNames[row], firstResponder: firstResponder)
         case .title:
             outCell = createEditInfoCell(tableView: tableView, at: indexPath, info: viewModel.contactTitles[row], firstResponder: firstResponder)
-        case .gender where viewModel.gender != nil:
+        case .gender:
             if let gender = viewModel.gender {
                 outCell = createEditInfoCell(tableView: tableView, at: indexPath, info: gender, firstResponder: firstResponder)
+            }
+        case .anniversary:
+            if let anniversary = viewModel.anniversary {
+                outCell = createEditInfoCell(tableView: tableView, at: indexPath, info: anniversary, firstResponder: firstResponder)
             }
         default:
             let cell = tableView.dequeueReusableCell(
@@ -447,7 +454,7 @@ extension ContactEditViewController: UITableViewDataSource {
             break
         case .title:
             break
-        case .gender:
+        case .gender, .anniversary:
             break
         case .addNewField:
             let sender = tableView.cellForRow(at: indexPath)
@@ -717,6 +724,8 @@ extension ContactEditViewController: UITableViewDelegate {
             return .delete
         case .gender:
             return .delete
+        case .anniversary:
+            return .delete
         case .addNewField:
             return .insert
         }
@@ -790,6 +799,9 @@ extension ContactEditViewController: UITableViewDelegate {
             case .gender:
                 viewModel.gender = nil
                 customView.tableView.deleteRows(at: [indexPath], with: .automatic)
+            case .anniversary:
+                viewModel.anniversary = nil
+                customView.tableView.deleteRows(at: [indexPath], with: .automatic)
             case .organization:
                 viewModel.deleteOrganization(at: row)
                 customView.tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -836,8 +848,7 @@ extension ContactEditViewController: UITableViewDelegate {
             return UITableView.automaticDimension
         default:
             return 0.0
-        }
-    }
+        }    }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let sections = viewModel.getSections()

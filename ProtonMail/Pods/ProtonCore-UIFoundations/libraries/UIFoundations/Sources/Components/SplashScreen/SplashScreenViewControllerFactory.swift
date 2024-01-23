@@ -32,7 +32,7 @@ public enum SplashScreenIBVariant: Int, CaseIterable {
 }
 
 public enum SplashScreenViewControllerFactory {
-    
+
     public static func instantiate(for variant: SplashScreenIBVariant,
                                    bundle: Bundle = .main,
                                    inAppTheme: () -> InAppTheme) -> UIViewController {

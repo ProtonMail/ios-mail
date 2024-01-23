@@ -37,7 +37,7 @@ public struct ErrorResponse: SessionDecodableResponse {
         self.error = error
         self.errorDescription = errorDescription
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case code = "code"
         case error = "error"
@@ -56,18 +56,18 @@ extension ErrorResponse {
 }
 
 public extension NSError {
-    
+
     var responseDictionary: JSONDictionary? {
         userInfo[ResponseError.responseDictionaryUserInfoKey] as? JSONDictionary
     }
-    
+
     convenience init(_ serverError: ErrorResponse) {
         self.init(domain: "ProtonCore-Networking", code: serverError.code,
                   localizedDescription: serverError.error,
                   localizedFailureReason: serverError.errorDescription)
     }
 
-    convenience init(domain: String, 
+    convenience init(domain: String,
                      code: Int,
                      responseDictionary: JSONDictionary? = nil,
                      localizedDescription: String,
@@ -81,10 +81,10 @@ public extension NSError {
         if let localizedRecoverySuggestion = localizedRecoverySuggestion {
             userInfo[NSLocalizedRecoverySuggestionErrorKey] = localizedRecoverySuggestion
         }
-        
+
         if let responseDictionary {
             userInfo[ResponseError.responseDictionaryUserInfoKey] = responseDictionary
-        }   
+        }
 
         self.init(domain: domain, code: code, userInfo: userInfo)
     }

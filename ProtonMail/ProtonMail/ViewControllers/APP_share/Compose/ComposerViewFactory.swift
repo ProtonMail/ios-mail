@@ -18,15 +18,18 @@
 import UIKit
 
 final class ComposerViewFactory {
-    typealias Dependencies = ComposeContainerViewModel.Dependencies
+    typealias Dependencies = AnyObject
+    & ComposeContainerViewModel.Dependencies
     & ComposeContainerViewController.Dependencies
     & HasUserManager
     & HasInternetConnectionStatusProviderProtocol
+    & HasKeychain
     & HasKeyMakerProtocol
     & HasUserCachedStatus
     & HasFetchAttachment
+    & HasUserDefaults
 
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
@@ -62,12 +65,16 @@ final class ComposerViewFactory {
         composerDelegate: ComposeContainerViewControllerDelegate? = nil
     ) -> UINavigationController {
         let childViewModel = ComposeViewModel(
-            msg: msg,
-            action: action,
             isEditingScheduleMsg: isEditingScheduleMsg,
             originalScheduledTime: originalScheduledTime,
             dependencies: composeViewModelDependencies
         )
+
+        do {
+            try childViewModel.initialize(message: msg, action: action)
+        } catch {
+            PMAssertionFailure(error)
+        }
 
         if let url = mailToUrl {
             childViewModel.parse(mailToURL: url)
@@ -106,6 +113,7 @@ final class ComposerViewFactory {
                 user: dependencies.user
             ),
             internetStatusProvider: dependencies.internetConnectionStatusProvider,
+            keychain: dependencies.keychain,
             fetchAttachment: dependencies.fetchAttachment,
             contactProvider: dependencies.user.contactService,
             helperDependencies: .init(
@@ -119,17 +127,16 @@ final class ComposerViewFactory {
                     ),
                     userDataSource: dependencies.user
                 ),
-                attachmentMetadataStripStatusProvider: dependencies.attachmentMetadataStripStatusProvider
+                keychain: dependencies.keychain
             ),
             fetchMobileSignatureUseCase: FetchMobileSignature(
                 dependencies: .init(
                     coreKeyMaker: dependencies.keyMaker,
-                    cache: dependencies.userCachedStatus
+                    cache: dependencies.userCachedStatus, 
+                    keychain: dependencies.keychain
                 )
             ),
-            darkModeCache: dependencies.userCachedStatus,
-            attachmentMetadataStrippingCache: dependencies.attachmentMetadataStripStatusProvider,
-            userCachedStatusProvider: dependencies.userCachedStatus,
+            userDefaults: dependencies.userDefaults,
             notificationCenter: NotificationCenter.default
         )
     }

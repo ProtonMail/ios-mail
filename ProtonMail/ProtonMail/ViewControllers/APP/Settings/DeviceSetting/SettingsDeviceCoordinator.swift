@@ -33,7 +33,10 @@ class SettingsDeviceCoordinator {
         case darkMode = "settings_dark_mode"
     }
 
-    typealias Dependencies = HasSettingsViewsFactory & HasToolbarSettingViewFactory & SettingsAccountCoordinator.Dependencies
+    typealias Dependencies = HasSettingsViewsFactory
+    & HasToolbarSettingViewFactory
+    & SettingsAccountCoordinator.Dependencies
+    & SettingsLockRouter.Dependencies
 
     private let dependencies: Dependencies
 
@@ -87,10 +90,7 @@ class SettingsDeviceCoordinator {
     }
 
     private func openAutoLock() {
-        let lockSetting = SettingsLockRouter(
-            navigationController: navigationController,
-            coreKeyMaker: dependencies.keyMaker
-        )
+        let lockSetting = SettingsLockRouter(navigationController: navigationController, dependencies: dependencies)
         lockSetting.start()
     }
 

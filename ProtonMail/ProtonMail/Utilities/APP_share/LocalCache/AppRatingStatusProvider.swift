@@ -25,28 +25,30 @@ protocol AppRatingStatusProvider: AnyObject {
     func setAppRatingAsShownInCurrentVersion()
 }
 
-extension UserCachedStatus: AppRatingStatusProvider {
+final class UserDefaultsAppRatingStatusProvider: AppRatingStatusProvider {
+    private let userDefaults: UserDefaults
+
+    init(userDefaults: UserDefaults) {
+        self.userDefaults = userDefaults
+    }
 
     private var currentVersion: String {
         Bundle.main.bundleShortVersion
     }
 
     func isAppRatingEnabled() -> Bool {
-        getShared().bool(forKey: Key.isAppRatingEnabled)
+        userDefaults[.isAppRatingEnabled]
     }
 
     func setIsAppRatingEnabled(_ value: Bool) {
-        getShared().set(value, forKey: Key.isAppRatingEnabled)
+        userDefaults[.isAppRatingEnabled] = value
     }
 
     func hasAppRatingBeenShownInCurrentVersion() -> Bool {
-        guard let ratingPromptedAtVersion = getShared().string(forKey: Key.appRatingPromptedInVersion) else {
-            return false
-        }
-        return ratingPromptedAtVersion == currentVersion
+        userDefaults[.appRatingPromptedInVersion] == currentVersion
     }
 
     func setAppRatingAsShownInCurrentVersion() {
-        getShared().setValue(currentVersion, forKey: Key.appRatingPromptedInVersion)
+        userDefaults[.appRatingPromptedInVersion] = currentVersion
     }
 }

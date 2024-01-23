@@ -29,10 +29,12 @@ final class UpdateMailbox: UpdateMailboxUseCase {
 
     private(set) var isFetching = false
     private let dependencies: Dependencies
+    private let serverNotice: ServerNotice
     private weak var sourceDelegate: UpdateMailboxSourceProtocol?
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
+        serverNotice = .init(userDefaults: dependencies.userDefaults)
     }
 
     func setup(source: UpdateMailboxSourceProtocol) {
@@ -289,29 +291,6 @@ extension UpdateMailbox {
         let time: Int
         let fetchMessagesAtTheEnd: Bool
         let errorHandler: ErrorHandler
-
-        init(
-            labelID: LabelID,
-            showUnreadOnly: Bool,
-            isCleanFetch: Bool,
-            time: Int,
-            fetchMessagesAtTheEnd: Bool,
-            errorHandler: @escaping ErrorHandler
-        ) {
-            if labelID == LabelLocation.draft.labelID {
-                self.labelID = LabelLocation.hiddenDraft.labelID
-            } else if labelID == LabelLocation.sent.labelID {
-                self.labelID = LabelLocation.hiddenSent.labelID
-            } else {
-                self.labelID = labelID
-            }
-
-            self.showUnreadOnly = showUnreadOnly
-            self.isCleanFetch = isCleanFetch
-            self.time = time
-            self.fetchMessagesAtTheEnd = fetchMessagesAtTheEnd
-            self.errorHandler = errorHandler
-        }
     }
 
     struct Dependencies {
@@ -323,5 +302,6 @@ extension UpdateMailbox {
         let fetchMessage: FetchMessagesUseCase
         let fetchLatestEventID: FetchLatestEventIdUseCase
         let internetConnectionStatusProvider: InternetConnectionStatusProviderProtocol
+        let userDefaults: UserDefaults
     }
 }

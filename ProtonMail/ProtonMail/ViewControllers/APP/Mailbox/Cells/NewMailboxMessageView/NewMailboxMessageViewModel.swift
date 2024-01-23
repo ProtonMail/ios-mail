@@ -41,4 +41,6 @@ struct NewMailboxMessageViewModel {
     var folderIcons: [UIImage]
     let scheduledTime: String?
     let isScheduledTimeInNext10Mins: Bool
+    let attachmentsPreviewViewModels: [AttachmentPreviewViewModel]
+    let numberOfAttachments: Int
 }

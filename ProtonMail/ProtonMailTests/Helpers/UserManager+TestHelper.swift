@@ -29,6 +29,7 @@ extension UserManager {
         userID: String? = nil,
         appTelemetry: AppTelemetry = MailAppTelemetry(),
         authCredential: AuthCredential = .none,
+        subscribed: User.Subscribed = .mail,
         globalContainer: GlobalContainer? = nil
     ) {
         if let role {
@@ -38,6 +39,8 @@ extension UserManager {
         if let userID {
             userInfo.userId = userID
         }
+
+        userInfo.subscribed = subscribed
 
         self.init(
             api: api,
@@ -52,13 +55,14 @@ extension UserManager {
 
     static func prepareUser(
         apiMock: APIServiceMock,
-        userID: UserID = .init(String.randomString(10))
+        userID: UserID = .init(String.randomString(10)),
+        globalContainer: GlobalContainer? = nil
     ) throws -> UserManager {
         let keyPair = try MailCrypto.generateRandomKeyPair()
         let key = Key(keyID: "1", privateKey: keyPair.privateKey)
         key.signature = "signature is needed to make this a V2 key"
         let address = Address(
-            addressID: "",
+            addressID: "1",
             domainID: nil,
             email: "",
             send: .active,
@@ -72,7 +76,7 @@ extension UserManager {
             keys: [key]
         )
 
-        let user = UserManager(api: apiMock, role: .member)
+        let user = UserManager(api: apiMock, globalContainer: globalContainer)
         user.userInfo.userAddresses = [address]
         user.userInfo.userKeys = [key]
         user.userInfo.userId = userID.rawValue

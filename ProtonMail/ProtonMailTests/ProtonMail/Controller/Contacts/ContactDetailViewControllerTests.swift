@@ -130,6 +130,12 @@ final class ContactDetailViewControllerTests: XCTestCase {
             inSection: 13
         ).first)
         XCTAssertEqual(genderCell.cell.value.text, "GENDER")
+
+        let anniversaryCell = try XCTUnwrap(sut.customView.tableView.allIndexedCells(
+            ofType: ContactDetailsDisplayCell.self,
+            inSection: 14
+        ).first)
+        XCTAssertEqual(anniversaryCell.cell.value.text, "20231022")
     }
 
     func testContactIsUpdated_viewIsUpdated() throws {
@@ -160,7 +166,7 @@ extension ContactDetailViewControllerTests {
     private func prepareTestData(displayName: String) throws {
         let vCardData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nITEM1.CATEGORIES:\r\nEND:VCARD\r\n"
         let vCardSignedData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nFN:\(displayName)\r\nItem1.EMAIL;TYPE=:test@pm.me\r\nEND:VCARD\r\n"
-        let vCardSignedAndEncryptedData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nN:LastName;FirstName\r\nURL:www.proton.me\r\nBDAY;VALUE=text:1990-10-22\r\nGENDER:Gender\r\nTITLE:Title\r\nNICKNAME:NickName\r\nADR;TYPE=:;;Street;City;State;000;Country\r\nORG:Organization\r\nTEL:090000000\r\nORG:Organization2\r\nTITLE:Title2\r\nNICKNAME:NickName2\r\nEND:VCARD\r\n"
+        let vCardSignedAndEncryptedData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nN:LastName;FirstName\r\nURL:www.proton.me\r\nBDAY;VALUE=text:1990-10-22\r\nGENDER:Gender\r\nTITLE:Title\r\nNICKNAME:NickName\r\nADR;TYPE=:;;Street;City;State;000;Country\r\nORG:Organization\r\nTEL:090000000\r\nORG:Organization2\r\nTITLE:Title2\r\nNICKNAME:NickName2\r\nANNIVERSARY:20231022\r\nEND:VCARD\r\n"
 
         let data = try XCTUnwrap(
             try TestDataCreator.generateVCardTestData(

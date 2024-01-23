@@ -24,15 +24,15 @@
 import Foundation
 
 public struct Plan: Codable, Equatable {
-    
+
     public struct Vendors: Codable, Equatable {
         public let apple: Vendor
     }
-    
+
     public struct Vendor: Codable, Equatable {
         public let plans: [String: String]
     }
-    
+
     // amount is ignored
     public let name: String
     public var hashedName: String { name.sha256 }
@@ -40,16 +40,16 @@ public struct Plan: Codable, Equatable {
     public let maxAddresses: Int
     public let maxMembers: Int
     // max tier is ignored
-    
+
     // these three exist only for /plans
     public let pricing: [String: Int]?
     public let defaultPricing: [String: Int]?
     public let vendors: Vendors?
     // offers are ignored for now
-    
+
     // this one exists only for /subscription
     public let offer: String?
-    
+
     public let maxDomains: Int
     public let maxSpace: Int64
     // maxRewardsSpace exists only for plans/default route
@@ -121,9 +121,9 @@ public struct Plan: Codable, Equatable {
 
 public extension Plan {
     func pricing(for period: String?) -> Int? { period.flatMap { pricing?[$0] } }
-    
+
     func defaultPricing(for period: String?) -> Int? { period.flatMap { defaultPricing?[$0] } }
-    
+
     func updating(cycle: Int?) -> Plan {
         Plan(name: name, ID: ID, maxAddresses: maxAddresses, maxMembers: maxMembers,
              pricing: pricing, defaultPricing: defaultPricing, vendors: vendors, offer: offer,
@@ -131,7 +131,7 @@ public extension Plan {
              title: title, maxVPN: maxVPN, maxTier: maxTier,
              features: features, maxCalendars: maxCalendars, state: state, cycle: cycle)
     }
-    
+
     func updating(vendors: Vendors?) -> Plan {
         Plan(name: name, ID: ID, maxAddresses: maxAddresses, maxMembers: maxMembers,
              pricing: pricing, defaultPricing: defaultPricing, vendors: vendors, offer: offer,
@@ -155,7 +155,7 @@ public extension Plan {
     static func combineDetailsDroppingPricing(_ planDetails: Plan...) -> Plan {
         combineDetails(planDetails, droppingPrice: true)
     }
-    
+
     static func combineDetailsKeepingPricing(_ planDetails: Plan...) -> Plan {
         combineDetails(planDetails, droppingPrice: false)
     }
@@ -179,7 +179,7 @@ public extension Plan {
         if plansForNames.isEmpty, let firstPlan = planDetails.first {
             plansForNames.append(firstPlan)
         }
-        
+
         let primaryPlan = planDetails.first { $0.isAPrimaryPlan }
 
         return Plan(
@@ -221,7 +221,7 @@ extension Plan {
         if !isLeftAnOffer, isRightAnOffer { return false }
         return lhs.pricing(for: leftCycle) ?? 0 > rhs.pricing(for: rightCycle) ?? 0
     }
-    
+
     private func hasAnOffer(cycle: String) -> Bool {
         guard let pricing = pricing(for: cycle),
               let defaultPricing = defaultPricing(for: cycle) else {
@@ -230,3 +230,5 @@ extension Plan {
         return pricing != defaultPricing
     }
 }
+
+// swiftlint:enable identifier_name

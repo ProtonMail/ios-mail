@@ -60,7 +60,7 @@ public struct Subscription: Codable { // this doesn't represent backend response
 }
 
 extension Subscription {
-    
+
     public func computedPresentationDetails(shownPlanNames: ListOfShownPlanNames) -> Plan {
         // remove all other plans not defined in the shownPlanNames
         let planDetails = planDetails?.filter { elem in shownPlanNames.contains { elem.name == $0 } }
@@ -104,7 +104,7 @@ extension Subscription {
     public var endDate: Date? {
         return end
     }
-    
+
     public var price: String? {
         guard let amount = amount, let currency = currency else { return nil }
         let value = Double(amount) / 100.0

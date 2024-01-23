@@ -35,10 +35,19 @@ typealias ContactDeleteComplete = (NSError?) -> Void
 typealias ContactUpdateComplete = (NSError?) -> Void
 
 protocol ContactProviderProtocol: AnyObject {
-    /// Returns the Contacts for a given list of contact ids from the local storage
+    /// Returns the Contacts from the local storage for a given list of contact ids
     func getContactsByIds(_ ids: [String]) -> [ContactEntity]
+    /// Returns the Contacts from the local storage for a given list of contact uuids
+    func getContactsByUUID(_ uuids: [String]) -> [ContactEntity]
     /// Given a user and a list of email addresses, returns all the contacts that exist in the local storage
     func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity]
+    /// Call this function to store a Contact that has been created locally. This function will also create the associated Email objects
+    /// - Returns: The CoreData objectID
+    func createLocalContact(
+        name: String,
+        emails: [(address: String, type: ContactFieldType)],
+        cards: [CardData]
+    ) throws -> String
 
     func getAllEmails() -> [EmailEntity]
     func fetchContacts(completion: ContactFetchComplete?)
@@ -55,37 +64,37 @@ protocol ContactDataServiceProtocol: AnyObject {
     #endif
 }
 
-class ContactDataService: Service {
+class ContactDataService {
 
     private let addressBookService: AddressBookService
     private let labelDataService: LabelsDataService
     private let coreDataService: CoreDataContextProviderProtocol
     private let apiService: APIService
     private let userInfo: UserInfo
-    private let contactCacheStatus: ContactCacheStatusProtocol
     private let cacheService: CacheService
     private weak var queueManager: QueueManager?
+    private let userDefaults: UserDefaults
 
     private var userID: UserID {
         UserID(userInfo.userId)
     }
 
-    init(api: APIService, labelDataService: LabelsDataService, userInfo: UserInfo, coreDataService: CoreDataContextProviderProtocol, contactCacheStatus: ContactCacheStatusProtocol, cacheService: CacheService, queueManager: QueueManager) {
+    init(api: APIService, labelDataService: LabelsDataService, userInfo: UserInfo, coreDataService: CoreDataContextProviderProtocol, cacheService: CacheService, queueManager: QueueManager, userDefaults: UserDefaults) {
         self.userInfo = userInfo
         self.apiService = api
         self.addressBookService = AddressBookService()
         self.labelDataService = labelDataService
         self.coreDataService = coreDataService
-        self.contactCacheStatus = contactCacheStatus
         self.cacheService = cacheService
         self.queueManager = queueManager
+        self.userDefaults = userDefaults
     }
 
     /**
      clean contact local cache
      **/
     func cleanUp() {
-            self.contactCacheStatus.contactsCached = 0
+            userDefaults[.areContactsCached] = 0
             let userID = userID.rawValue
 
             self.coreDataService.performAndWaitOnRootSavingContext { context in
@@ -104,14 +113,6 @@ class ContactDataService: Service {
                     basedOn: NSPredicate(format: "%K == %@", LabelUpdate.Attributes.userID, userID)
                 )
         }
-    }
-
-    static func cleanUpAll() {
-            let coreDataService = sharedServices.get(by: CoreDataService.self)
-            coreDataService.performAndWaitOnRootSavingContext { context in
-                Contact.deleteAll(in: context)
-                Email.deleteAll(in: context)
-            }
     }
 
     func fetchUUIDsForAllContact() throws -> [String] {
@@ -261,13 +262,13 @@ class ContactDataService: Service {
     fileprivate var isFetching: Bool = false
     fileprivate var retries: Int = 0
     func fetchContacts(completion: ContactFetchComplete?) {
-        if contactCacheStatus.contactsCached == 1 || isFetching {
+        if userDefaults[.areContactsCached] == 1 || isFetching {
             completion?(nil)
             return
         }
 
         if self.retries > 3 {
-            contactCacheStatus.contactsCached = 0
+            userDefaults[.areContactsCached] = 0
             self.isFetching = false
             self.retries = 0
             completion?(nil)
@@ -354,14 +355,14 @@ class ContactDataService: Service {
                         group.wait()
                     }
                 }
-                self.contactCacheStatus.contactsCached = 1
+                self.userDefaults[.areContactsCached] = 1
                 self.isFetching = false
                 self.retries = 0
 
                 completion?(nil)
 
             } catch let ex as NSError {
-                self.contactCacheStatus.contactsCached = 0
+                self.userDefaults[.areContactsCached] = 0
                 self.isFetching = false; {
                     completion?(ex)
                 } ~> .main
@@ -373,6 +374,28 @@ class ContactDataService: Service {
         coreDataService.read { context in
             let contacts: [Contact] = cacheService.selectByIds(context: context, ids: ids)
             return contacts.map(ContactEntity.init)
+        }
+    }
+
+    /// Returns the contacts in CoreData that match any of the UUID values passed. The UUID is not
+    /// the ObjectId but the identifier used when a contact has been imported.
+    func getContactsByUUID(_ uuids: [String]) -> [ContactEntity] {
+        coreDataService.read { context in
+            let request = NSFetchRequest<Contact>(entityName: Contact.Attributes.entityName)
+            request.predicate = NSPredicate(
+                format: "%K == %@ AND %K == 0 AND uuid IN %@",
+                Contact.Attributes.userID,
+                userID.rawValue,
+                Contact.Attributes.isSoftDeleted,
+                uuids
+            )
+            do {
+                let result: [Contact] = try context.fetch(request)
+                return result.map(ContactEntity.init)
+            } catch {
+                PMAssertionFailure(error)
+                return []
+            }
         }
     }
 
@@ -392,23 +415,45 @@ class ContactDataService: Service {
         }
     }
 
+    func createLocalContact(
+        name: String,
+        emails: [(address: String, type: ContactFieldType)],
+        cards: [CardData]
+    ) throws -> String {
+        let userID = userID
+        let contact = try coreDataService.write { context in
+            let contact = Contact(context: context)
+            contact.userID = userID.rawValue
+            contact.contactID = UUID().uuidString
+            contact.name = name
+            contact.cardData = try cards.toJSONString()
+            contact.size = NSNumber(value: 0)
+            contact.uuid = UUID().uuidString
+            contact.createTime = Date()
+
+            emails.forEach { email in
+                let mail = Email(context: context)
+                mail.userID = contact.userID
+                mail.contactID = contact.contactID
+                mail.name = contact.name
+                mail.contact = contact
+                mail.emailID = UUID().uuidString
+                mail.email = email.address
+                mail.type = email.type.rawString
+                mail.defaults = NSNumber(value: 1)
+            }
+            return contact
+        }
+        return contact.objectID.uriRepresentation().absoluteString
+    }
+
     func fetchContact(contactID: ContactID) async throws -> ContactEntity {
         let request = ContactDetailRequest(cid: contactID.rawValue)
         let result = await apiService.perform(request: request, response: ContactDetailResponse())
         if let error = result.1.error {
             throw error
         } else if let contactDict = result.1.contact {
-            return try await withCheckedThrowingContinuation { continuation in
-                cacheService.updateContactDetail(serverResponse: contactDict) { contact, error in
-                    if let error = error {
-                        continuation.resume(throwing: error)
-                    } else if let contact = contact {
-                        continuation.resume(returning: contact)
-                    } else {
-                        fatalError()
-                    }
-                }
-            }
+            return try cacheService.updateContactDetail(serverResponse: contactDict)
         } else {
             throw NSError.unableToParseResponse(result.1)
         }

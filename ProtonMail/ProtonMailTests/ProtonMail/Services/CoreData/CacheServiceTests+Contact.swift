@@ -121,16 +121,7 @@ extension CacheServiceTest {
         XCTAssertNotNil(Contact.contactForContactID(contactID, inManagedObjectContext: testContext))
 
         let contactDetailObject = testContactDetailData.parseObjectAny()!
-        let updateExpect = expectation(description: "Update Contact Detail")
-        var contactToCheck: ContactEntity?
-        sut.updateContactDetail(serverResponse: contactDetailObject) { contact, error in
-            contactToCheck = contact
-            XCTAssertNil(error)
-            updateExpect.fulfill()
-        }
-        wait(for: [updateExpect], timeout: 1)
-
-        let contact = try XCTUnwrap(contactToCheck)
+        let contact = try sut.updateContactDetail(serverResponse: contactDetailObject)
         XCTAssertTrue(contact.isDownloaded)
         XCTAssertTrue(contact.isCorrected)
     }

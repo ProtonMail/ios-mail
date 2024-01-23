@@ -29,7 +29,7 @@ public typealias ListOfShownPlanNames = Set<String>
 public typealias AccountPlan = InAppPurchasePlan
 
 public struct InAppPurchasePlan: Equatable, Hashable {
-    
+
     public static let defaultCycle = "12"
     public static let defaultOffer = "default"
     public static let defaultCurrency = "usd"
@@ -45,18 +45,18 @@ public struct InAppPurchasePlan: Equatable, Hashable {
     public var isFreePlan: Bool { InAppPurchasePlan.isThisAFreePlan(protonName: protonName) }
     public var isPlusPlan: Bool { InAppPurchasePlan.isThisAPlusPlan(protonName: protonName) }
     public var isUnlimitedPlan: Bool { InAppPurchasePlan.isThisAUnlimitedPlan(protonName: protonName) }
-    
+
     public static let freePlan: InAppPurchasePlan = .init(protonPlanName: "free", offer: nil, listOfIAPIdentifiers: [])
     public static var freePlanName: String { freePlan.protonName }
 
     public static func isThisAFreePlan(protonName: String) -> Bool {
         protonName == freePlanName || protonName == "vpnfree" || protonName == "drivefree"
     }
-    
+
     public static func isThisAPlusPlan(protonName: String) -> Bool {
         protonName.range(of: "plus", options: .caseInsensitive) != nil
     }
-    
+
     public static func isThisAUnlimitedPlan(protonName: String) -> Bool {
         protonName.range(of: "unlimited", options: .caseInsensitive) != nil
     }
@@ -67,10 +67,10 @@ public struct InAppPurchasePlan: Equatable, Hashable {
 
     private static let regex: NSRegularExpression = {
         guard let instance = try? NSRegularExpression(
-            pattern: "^ios[^_]*_([^_]*)_?(.*)_(\\d+)_(\\w+)_non_renewing(?:_v\\d+)?$",
-            //                    ⬆      ⬆     ⬆     ⬆                    ⬆
-            //                   name   offer  cycle currency          version suffix (optional)
-            // range no.          1.      2.     3.     4.            this is not a capture group
+            pattern: "^ios[^_]*_([^_]*)_?(.*)_(\\d+)_(\\w+)_(?:non_|auto_)renewing(?:_v\\d+)?$",
+            //                    ⬆      ⬆     ⬆     ⬆       ⬆           ⬆
+            //                   name   offer  cycle currency  auto?   version suffix (optional)
+            // range no.          1.      2.     3.     4.     ⇖these are not capture groups⇗
             options: [.anchorsMatchLines]
         ) else {
             assertionFailure("The regular expression was not compiled right")
@@ -78,7 +78,7 @@ public struct InAppPurchasePlan: Equatable, Hashable {
         }
         return instance
     }()
-    
+
     public static func protonPlanIsPresentInIAPIdentifierList(protonPlan: Plan, identifiers: ListOfIAPIdentifiers) -> Bool {
         if let iapIdentifiers = protonPlan.vendors?.apple.plans.values {
             for iapIdentifier in iapIdentifiers where identifiers.contains(iapIdentifier) {
@@ -93,7 +93,7 @@ public struct InAppPurchasePlan: Equatable, Hashable {
                                                                         identifiers: identifiers)
         }
     }
-    
+
     struct InAppPurchaseIdentifierParsingResults {
         let storeKitProductId: String
         let protonPlanName: String
@@ -101,7 +101,7 @@ public struct InAppPurchasePlan: Equatable, Hashable {
         let period: String
         let currency: String
     }
-    
+
     private static func extractPlanDetails(from storeKitProductId: String) -> InAppPurchaseIdentifierParsingResults? {
         guard let result = regex.firstMatch(in: storeKitProductId, options: [], range: NSRange(location: 0, length: storeKitProductId.count)),
               // five ranges, because there are 4 capture groups in regex plus the first range is always for the whole string (implicit whole match capture group)
@@ -134,7 +134,7 @@ public struct InAppPurchasePlan: Equatable, Hashable {
                                                      period: period,
                                                      currency: currency)
     }
-    
+
     private static func isPlanWithFollowingDetailsPresentInIAPIdentifierList(
         name: String, offer: String?, cycle: Int?, currency: String?, identifiers: ListOfIAPIdentifiers
     ) -> Bool {
@@ -142,7 +142,7 @@ public struct InAppPurchasePlan: Equatable, Hashable {
         let iapPlan = InAppPurchasePlan(protonPlanName: name, offer: offer, listOfIAPIdentifiers: identifiers)
         return iapPlan.storeKitProductId != nil && iapPlan.period == cycle.map(String.init) && iapPlan.currency?.lowercased() == currency?.lowercased()
     }
-    
+
     public init?(protonPlan: Plan, listOfIAPIdentifiers: ListOfIAPIdentifiers) {
         guard !protonPlan.name.isEmpty else { return nil }
         if let vendorIAPs = protonPlan.vendors?.apple.plans {
@@ -161,7 +161,7 @@ public struct InAppPurchasePlan: Equatable, Hashable {
             self.init(protonPlanName: protonPlan.name, offer: protonPlan.offer, listOfIAPIdentifiers: listOfIAPIdentifiers)
         }
     }
-    
+
     public init?(storeKitProductId: ProductId) {
         guard let matchingPlanDetails = InAppPurchasePlan.extractPlanDetails(from: storeKitProductId) else { return nil }
         self.init(storeKitProductId: matchingPlanDetails.storeKitProductId,
@@ -170,7 +170,7 @@ public struct InAppPurchasePlan: Equatable, Hashable {
                   period: matchingPlanDetails.period,
                   currency: matchingPlanDetails.currency)
     }
-    
+
     public init?(availablePlanInstance: AvailablePlans.AvailablePlan.Instance) {
         guard let iapIdentifier = availablePlanInstance.vendors?.apple.productID else {
             return nil
@@ -194,7 +194,7 @@ public struct InAppPurchasePlan: Equatable, Hashable {
                   period: matchingPlanDetails?.period,
                   currency: matchingPlanDetails?.currency)
     }
-    
+
     private init(storeKitProductId: InAppPurchasePlan.ProductId?,
                  protonName: String,
                  offer: String?,

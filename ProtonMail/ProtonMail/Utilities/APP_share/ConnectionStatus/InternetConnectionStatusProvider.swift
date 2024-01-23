@@ -239,8 +239,8 @@ extension InternetConnectionStatusProvider {
 
             defer {
                 monitorQueue.async {
-                    self.log(message: "Update status according to ping result", isError: false)
                     self.status = hasConnection ? .connected : .notConnected
+                    self.log(message: "Update status to \(self.status) according to ping result", isError: false)
                 }
             }
             let tooManyRedirectionsError = -1_007

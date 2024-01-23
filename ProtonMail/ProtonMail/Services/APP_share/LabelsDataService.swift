@@ -39,18 +39,30 @@ enum LabelFetchType: Int {
 protocol LabelProviderProtocol: AnyObject {
     func makePublisher() -> LabelPublisherProtocol
     func getCustomFolders() -> [LabelEntity]
-    func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)?)
+    func fetchV4Labels(completion: (@Sendable (Swift.Result<Void, Error>) -> Void)?)
 }
 
-class LabelsDataService: Service {
-    typealias Dependencies = LabelPublisher.Dependencies
+extension LabelsDataService {
+    enum LabelUpdateError: LocalizedError {
+        case httpFailure
+
+        var errorDescription: String? {
+            LocalString._general_error_alert_title
+        }
+    }
+}
+
+class LabelsDataService {
+    typealias Dependencies = AnyObject
+    & LabelPublisher.Dependencies
     & HasAPIService
     & HasCacheService
     & HasConversationStateService
     & HasLastUpdatedStoreProtocol
+    & HasUserDefaults
 
     private let userID: UserID
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     static let defaultFolderIDs: [String] = [
         Message.Location.inbox.rawValue,
@@ -108,30 +120,9 @@ class LabelsDataService: Service {
         }
     }
 
-    static func cleanUpAll() {
-            let coreDataService = sharedServices.get(by: CoreDataService.self)
-            coreDataService.performAndWaitOnRootSavingContext { context in
-                Label.deleteAll(in: context)
-                LabelUpdate.deleteAll(in: context)
-                ContextLabel.deleteAll(in: context)
-            }
-    }
-
     @available(*, deprecated, message: "Prefer the async variant")
-    func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)? = nil) {
-        Task {
-            let result: Swift.Result<Void, NSError>
-            do {
-                try await fetchV4Labels()
-                result = .success(())
-            } catch {
-                result = .failure(error as NSError)
-            }
-
-            DispatchQueue.main.async {
-                completion?(result)
-            }
-        }
+    func fetchV4Labels(completion: (@Sendable (Swift.Result<Void, Error>) -> Void)? = nil) {
+        ConcurrencyUtils.runWithCompletion(block: fetchV4Labels, completion: completion)
     }
 
     /// Get label and folder through v4 api
@@ -142,7 +133,12 @@ class LabelsDataService: Service {
         async let labelsResponse = await dependencies.apiService.perform(request: labelReq, response: GetLabelsResponse())
         async let foldersResponse = await dependencies.apiService.perform(request: folderReq, response: GetLabelsResponse())
 
-        let userLabelAndFolders = await [labelsResponse, foldersResponse]
+        let response = await [labelsResponse, foldersResponse]
+        guard response.first(where: { $0.1.responseCode != 1000 }) == nil else {
+            throw LabelUpdateError.httpFailure
+        }
+
+        let userLabelAndFolders = response
             .map(\.1)
             .compactMap(\.labels)
             .joined()
@@ -218,7 +214,7 @@ class LabelsDataService: Service {
     func getAllLabels(of type: LabelFetchType, context: NSManagedObjectContext) -> [Label] {
         let fetchRequest = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
 
-        if type == .contactGroup, userCachedStatus.isCombineContactOn {
+        if type == .contactGroup, dependencies.userDefaults[.isCombineContactOn] {
             // in contact group searching, predicate must be consistent with this one
             fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
         } else {

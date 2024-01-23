@@ -25,34 +25,11 @@ import ProtonCoreKeymaker
 
 extension UserCachedStatus: SettingsProvider {}
 
-extension PinProtection {
-    init(pin: String) {
-        self.init(pin: pin, keychain: KeychainWrapper.keychain)
-    }
-}
-
-extension NoneProtection {
-    init() {
-        self.init(keychain: KeychainWrapper.keychain)
-    }
-}
-
-extension BioProtection {
-    init() {
-        self.init(keychain: KeychainWrapper.keychain)
-    }
-}
-
-extension RandomPinProtection {
-
-    init(pin: String) {
-        self.init(pin: pin, keychain: KeychainWrapper.keychain)
-    }
-
-    static var randomPin: RandomPinProtection? {
-        guard let keymakerRandomkey = userCachedStatus.keymakerRandomkey else {
+extension Keychain {
+    var randomPinProtection: RandomPinProtection? {
+        guard let keymakerRandomkey = self[.keymakerRandomKey] else {
             return nil
         }
-        return RandomPinProtection.init(pin: keymakerRandomkey)
+        return RandomPinProtection(pin: keymakerRandomkey, keychain: self)
     }
 }

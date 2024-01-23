@@ -26,7 +26,6 @@ import ProtonCoreAuthentication
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreNetworking
-import ProtonCoreFeatureSwitch
 #if !APP_EXTENSION
 import ProtonCorePayments
 #endif
@@ -51,7 +50,7 @@ protocol UserManagerSaveAction: AnyObject {
     func save()
 }
 
-class UserManager: Service, ObservableObject {
+class UserManager: ObservableObject {
     private let authCredentialAccessQueue = DispatchQueue(label: "com.protonmail.user_manager.auth_access_queue", qos: .userInitiated)
 
     var userID: UserID {
@@ -69,6 +68,7 @@ class UserManager: Service, ObservableObject {
             contactService.cleanUp()
             contactGroupService.cleanUp()
             container.lastUpdatedStore.cleanUp(userId: userID)
+            container.featureFlagsRepository.resetFlags(for: userID.rawValue)
             try incomingDefaultService.cleanUp()
             self.deactivatePayments()
             #if !APP_EXTENSION
@@ -87,16 +87,6 @@ class UserManager: Service, ObservableObject {
                     seal.fulfill_()
                 }
         }
-    }
-
-    static func cleanUpAll() async {
-        IncomingDefaultService.cleanUpAll()
-        LocalNotificationService.cleanUpAll()
-        await MessageDataService.cleanUpAll()
-        LabelsDataService.cleanUpAll()
-        ContactDataService.cleanUpAll()
-        ContactGroupsDataService.cleanUpAll()
-        LastUpdatedStore.cleanUpAll()
     }
 
     var delegate: UserManagerSave?
@@ -170,18 +160,20 @@ class UserManager: Service, ObservableObject {
         container.appRatingService
     }
 
+    var blockedSenderCacheUpdater: BlockedSenderCacheUpdater {
+        container.blockedSenderCacheUpdater
+    }
+
+    var payments: Payments {
+        container.payments
+    }
+
     var reportService: BugReportService {
         container.reportService
     }
 #endif
 
     // end of wrappers
-
-#if !APP_EXTENSION
-    // these are stateful dependencies and as such must be kept in memory for the lifetime of UserManager
-    private(set) var blockedSenderCacheUpdater: BlockedSenderCacheUpdater!
-    private(set) var payments: Payments!
-#endif
 
     weak var parentManager: UsersManager?
 
@@ -229,11 +221,6 @@ class UserManager: Service, ObservableObject {
         let queueManager = globalContainer.queueManager
         queueManager.registerHandler(handler)
         self.messageService.signin()
-
-#if !APP_EXTENSION
-        blockedSenderCacheUpdater = container.blockedSenderCacheUpdater
-        payments = container.payments
-#endif
     }
 
     private func acquireSessionIfNeeded() {
@@ -286,26 +273,21 @@ class UserManager: Service, ObservableObject {
 
     func refreshFeatureFlags() {
         featureFlagsDownloadService.getFeatureFlags(completion: nil)
+        Task {
+            try? await self.container.featureFlagsRepository
+                .fetchFlags(for: userID.rawValue, with: apiService)
+        }
     }
 
     func activatePayments() {
         #if !APP_EXTENSION
-        self.payments.storeKitManager.delegate = container.storeKitManager
-        self.payments.storeKitManager.subscribeToPaymentQueue()
-
-        if !FeatureFactory.shared.isEnabled(.dynamicPlans) {
-            self.payments.storeKitManager.updateAvailableProductsList { _ in }
-        }
+        payments.activate(delegate: container.storeKitManager)
         #endif
     }
 
     func deactivatePayments() {
         #if !APP_EXTENSION
-        self.payments.storeKitManager.unsubscribeFromPaymentQueue()
-        // this will ensure no unnecessary screen refresh happens, which was the source of crash previously
-        self.payments.storeKitManager.refreshHandler = { _ in }
-        // this will ensure no unnecessary communication with proton backend happens
-        self.payments.storeKitManager.delegate = nil
+        payments.deactivate()
         #endif
     }
 
@@ -338,7 +320,7 @@ extension UserManager: UserManagerSaveAction {
 extension UserManager: UserDataSource {
 
     var hasPaidMailPlan: Bool {
-        userInfo.role > 0 && userInfo.subscribed.contains(.mail)
+        userInfo.hasPaidMailPlan
     }
 
     var mailboxPassword: Passphrase {
@@ -351,10 +333,6 @@ extension UserManager: UserDataSource {
 
     var notify: Bool {
         return userInfo.notify == 1
-    }
-
-    var isPaid: Bool {
-        return self.userInfo.role > 0 ? true : false
     }
 
     func updateFromEvents(userInfoRes: [String: Any]?) {
@@ -370,6 +348,14 @@ extension UserManager: UserDataSource {
             userInfo.parse(userSettings: settings)
             self.save()
         }
+    }
+
+    func updateFromEvents(userSettings: UserSettingsResponse?) {
+        guard let userSettings = userSettings else {
+            return
+        }
+        userInfo.update(from: userSettings)
+        save()
     }
 
     func updateFromEvents(mailSettingsRes: [String: Any]?) {
@@ -444,7 +430,9 @@ extension UserManager {
             if let status = container.userCachedStatus.getDefaultSignaureSwitchStatus(uid: userID.rawValue) {
                 return status
             } else {
-                let oldStatus = userService.defaultSignatureStauts
+                let oldStatus = container.userCachedStatus.userDefaults.bool(
+                    forKey: UserCachedStatus.LegacyKey.defaultSignatureStatus
+                )
                 container.userCachedStatus.setDefaultSignatureSwitchStatus(uid: userID.rawValue, value: oldStatus)
                 return oldStatus
             }
@@ -456,13 +444,8 @@ extension UserManager {
 
     var showMobileSignature: Bool {
         get {
-            let role = userInfo.role
-            if role > 0 {
-                if let status = container.userCachedStatus.getMobileSignatureSwitchStatus(by: userID.rawValue) {
-                    return status
-                } else {
-                    return false
-                }
+            if userInfo.hasPaidMailPlan {
+                return container.userCachedStatus.getMobileSignatureSwitchStatus(by: userID.rawValue) ?? false
             } else {
                 container.userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: true)
                 return true

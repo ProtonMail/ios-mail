@@ -23,7 +23,7 @@
 /// Metrics structure defines the envelope for the list of observability events
 struct Metrics: Encodable {
     let metrics: [AggregableObservabilityEvent]
-    
+
     enum CodingKeys: String, CodingKey {
         case metrics = "Metrics"
     }

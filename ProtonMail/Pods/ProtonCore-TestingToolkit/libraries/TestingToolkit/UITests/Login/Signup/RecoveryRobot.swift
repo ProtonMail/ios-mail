@@ -44,11 +44,11 @@ private let errorBannerInvalidNumber = "Phone number failed validation"
 private let errorBannerButton = LUITranslation._core_ok_button.l10n
 
 public final class RecoveryRobot: CoreElements {
-    
+
     public enum RecoveryMethod {
         case email
         case phone
-        
+
         var getIndex: Int {
             switch self {
             case .email: return 0
@@ -56,9 +56,9 @@ public final class RecoveryRobot: CoreElements {
             }
         }
     }
-    
+
     public let verify = Verify()
-    
+
     public final class Verify: CoreElements {
         @discardableResult
         public func recoveryScreenIsShown() -> RecoveryRobot {
@@ -71,13 +71,13 @@ public final class RecoveryRobot: CoreElements {
             button(nextButtonId).waitForEnabled()
             return RecoveryRobot()
         }
-        
+
         @discardableResult
         public func verifyCountryCode(code: String) -> RecoveryRobot {
             button(phoneButtonId).checkHasLabel(code)
             return RecoveryRobot()
         }
-        
+
         @discardableResult
         public func humanVerificationRequired() -> RecoveryRobot {
             textView(errorBannerHVRequired).waitUntilExists().checkExists()
@@ -92,21 +92,21 @@ public final class RecoveryRobot: CoreElements {
             return SignupRobot()
         }
     }
-    
+
     public func skipButtonTap() -> RecoveryDialogRobot {
         button(skipButtonId).tap()
         return RecoveryDialogRobot()
     }
-    
+
     public func nextButtonTap() -> RecoveryRobot {
         button(nextButtonId).waitUntilExists().tap()
         return self
     }
-    
+
     public final class RecoveryDialogRobot: CoreElements {
-        
+
         public let verify = Verify()
-        
+
         public final class Verify: CoreElements {
             public func recoveryDialogDisplay() -> RecoveryDialogRobot {
                 staticText(recoveryDialogTitleName).waitUntilExists().checkExists()
@@ -120,7 +120,7 @@ public final class RecoveryRobot: CoreElements {
             button(recoveryDialogSkipButtonAccessibilityId).tap()
             return T()
         }
-        
+
         @discardableResult
         public func recoveryMethodTap() -> RecoveryRobot {
             button(recoveryDialogRecoveryButtonAccessibilityId).tap()
@@ -137,17 +137,17 @@ public final class RecoveryRobot: CoreElements {
         textField(emailTextFieldId).tap().typeText(email)
         return self
     }
-    
+
     public func selectRecoveryMethod(method: RecoveryMethod) -> RecoveryRobot {
         segmentedControl(segmenedControlId).byIndex(0).tap()
         return self
     }
-    
+
     public func insertRecoveryNumber(number: String) -> RecoveryRobot {
         textField(phoneTextFieldId).tap().typeText(number)
         return self
     }
-    
+
     public func selectCountrySelector() -> CountrySelectorRobot {
         button(phoneButtonId).tap()
         return CountrySelectorRobot()

@@ -27,8 +27,10 @@ import ProtonCoreServices
 import ProtonCoreUIFoundations
 import UIKit
 
-class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
-    typealias Dependencies = HasUsersManager & HasUnlockManager
+final class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
+    typealias Dependencies = HasLaunchService
+    & HasUnlockManager
+    & HasAppAccessResolver
 
     private let dependencies: Dependencies
     private weak var coordinator: ShareUnlockCoordinator?
@@ -56,7 +58,6 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     private var localized_errors: [String] = []
     private var isUnlock = false
 
-
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
         super.init(nibName: "ShareUnlockViewController", bundle: nil)
@@ -73,8 +74,6 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // TODO: Refactor the view to pass the dependency from init
-        LanguageManager().translateBundleToPreferredLanguageOfTheMainApp()
         configureNavigationBar()
 
         let bioView = BioCodeView(frame: .zero)
@@ -102,18 +101,60 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
         let group = DispatchGroup()
         self.parse(items: inputitems, group: group)
         group.notify(queue: DispatchQueue.global(qos: .userInteractive)) { [unowned self] in
-            DispatchQueue.main.async { [unowned self] in
-                MBProgressHUD.hide(for: self.view, animated: true)
-                // go to composer
-                guard self.localized_errors.isEmpty else {
-                    self.showErrorAndQuit(errorMsg: self.localized_errors.first ?? LocalString._cant_load_share_content)
-                    return
+            start()
+        }
+    }
+
+    private func start() {
+        do {
+            try dependencies.launchService.start()
+
+            let appAccess = dependencies.appAccessResolver.evaluateAppAccessAtLaunch()
+            switch appAccess {
+            case .accessGranted:
+                handleAccessGranted()
+            case .accessDenied(let reason):
+                handleAccessDenied(deniedAccess: reason)
+            }
+        } catch {
+            showErrorAndQuit(errorMsg: L11n.Error.core_data_setup_generic_messsage)
+        }
+    }
+
+    private func handleAccessGranted() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else {
+                PMAssertionFailure("self is nil")
+                return
+            }
+            MBProgressHUD.hide(for: self.view, animated: true)
+            navigateToComposer()
+        }
+    }
+
+    private func handleAccessDenied(deniedAccess: DeniedAccessReason) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else {
+                PMAssertionFailure("self is nil")
+                return
+            }
+            switch deniedAccess {
+            case .lockProtectionRequired:
+                let lockFlow = dependencies.unlockManager.getUnlockFlow()
+                switch lockFlow {
+                case .requirePin:
+                    coordinator?.go(dest: .pin)
+
+                case .requireTouchID:
+                    bioCodeView?.loginCheck(.requireTouchID)
+                    authenticateUser()
+
+                case .restore:
+                    fatalError("Share access denied but there is no lock")
+
                 }
-                guard dependencies.usersManager.hasUsers() else {
-                    self.showErrorAndQuit(errorMsg: L11n.Error.sign_in_message)
-                    return
-                }
-                self.loginCheck()
+            case .noAuthenticatedAccountFound:
+                showErrorAndQuit(errorMsg: L11n.Error.sign_in_message)
             }
         }
     }
@@ -128,7 +169,7 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
             if let attachments = item.attachments {
                 for att in attachments {
                     let itemProvider = att
-                    if let type = itemProvider.hasItem(types: self.filetypes) {
+                    if let type = itemProvider.hasItem(types: FileImporterConstants.fileTypes) {
                         group.enter() // #1
                         self.importFile(itemProvider, type: type, errorHandler: self.error) {
                             group.leave() // #1
@@ -158,30 +199,14 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
         }
     }
 
-    private func loginCheck() {
-        let unlockManager = dependencies.unlockManager
-        switch unlockManager.getUnlockFlow() {
-        case .requirePin:
-            self.coordinator?.go(dest: .pin)
-
-        case .requireTouchID:
-            self.bioCodeView?.loginCheck(.requireTouchID)
-            self.authenticateUser()
-
-        case .restore:
-            unlockManager.unlockIfRememberedCredentials(
-                requestMailboxPassword: { },
-                unlocked: { [weak self] in
-                    self?.navigateToComposer()
-                }
-            )
-        }
-    }
-
     private func showErrorAndQuit(errorMsg: String) {
         self.bioCodeView?.showErrorAndQuit()
 
-        let alertController = UIAlertController(title: LocalString._share_alert, message: errorMsg, preferredStyle: .alert)
+        let alertController = UIAlertController(
+            title: LocalString._general_error_alert_title,
+            message: errorMsg,
+            preferredStyle: .alert
+        )
         let action = UIAlertAction(title: LocalString._general_close_action, style: .default) { action in
             self.hideExtensionWithCompletionHandler { _ in
                 let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
@@ -248,7 +273,9 @@ extension ShareUnlockViewController: AttachmentController, FileImporter {
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
         return Promise { seal in
             guard fileData.contents.dataSize < (Constants.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
-                self.error(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
+                DispatchQueue.main.async {
+                    self.showErrorAndQuit(errorMsg: LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
+                }
                 seal.fulfill_()
                 return
             }

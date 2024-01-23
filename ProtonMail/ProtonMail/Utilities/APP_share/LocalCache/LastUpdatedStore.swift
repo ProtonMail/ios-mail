@@ -25,7 +25,7 @@ import ProtonCoreDataModel
 import UIKit
 
 // sourcery: mock
-protocol LastUpdatedStoreProtocol: Service {
+protocol LastUpdatedStoreProtocol {
     func cleanUp(userId: UserID)
 
     func updateEventID(by userID: UserID, eventID: String)
@@ -40,6 +40,7 @@ protocol LastUpdatedStoreProtocol: Service {
                            total: Int?,
                            type: ViewMode,
                            shouldSave: Bool)
+    func batchUpdateUnreadCounts(counts: [CountData], userID: UserID, type: ViewMode) throws
     func removeUpdateTime(by userID: UserID)
     func resetCounter(labelID: LabelID, userID: UserID)
     func removeUpdateTimeExceptUnread(by userID: UserID)
@@ -53,13 +54,12 @@ protocol LastUpdatedStoreProtocol: Service {
                                type: ViewMode)
 }
 
-final class LastUpdatedStore: SharedCacheBase, LastUpdatedStoreProtocol {
+final class LastUpdatedStore: LastUpdatedStoreProtocol {
 
     let contextProvider: CoreDataContextProviderProtocol
 
     init(contextProvider: CoreDataContextProviderProtocol) {
         self.contextProvider = contextProvider
-        super.init()
     }
 
     func cleanUp(userId: UserID) {
@@ -67,15 +67,6 @@ final class LastUpdatedStore: SharedCacheBase, LastUpdatedStoreProtocol {
                 _ = UserEvent.remove(by: userId.rawValue, inManagedObjectContext: context)
                 _ = LabelUpdate.remove(by: userId.rawValue, inManagedObjectContext: context)
                 _ = ConversationCount.remove(by: userId.rawValue, inManagedObjectContext: context)
-            }
-    }
-
-    static func cleanUpAll() {
-            let coreDataService = sharedServices.get(by: CoreDataService.self)
-            coreDataService.performAndWaitOnRootSavingContext { context in
-                UserEvent.deleteAll(in: context)
-                LabelUpdate.deleteAll(in: context)
-                ConversationCount.deleteAll(in: context)
             }
     }
 }
@@ -172,6 +163,20 @@ extension LastUpdatedStore {
 
             if shouldSave {
                 _ = context.saveUpstreamIfNeeded()
+            }
+        }
+    }
+
+    func batchUpdateUnreadCounts(counts: [CountData], userID: UserID, type: ViewMode) throws {
+        try contextProvider.performAndWaitOnRootSavingContext { context in
+            for count in counts {
+                let update = self.lastUpdateDefault(by: count.labelID, userID: userID, type: type, in: context)
+                update.unread = Int32(count.unread)
+                update.total = Int32(count.total)
+            }
+
+            if let error = context.saveUpstreamIfNeeded() {
+                throw error
             }
         }
     }

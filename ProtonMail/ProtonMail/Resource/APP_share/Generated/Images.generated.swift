@@ -57,6 +57,8 @@ internal enum Asset {
   internal static let icFileTypeWord = ImageAsset(name: "ic-file-type-word")
   internal static let mailAttachment = ImageAsset(name: "mail_attachment")
   internal static let placeholderBoundBox = ImageAsset(name: "placeholder_bound_box")
+  internal static let icSquare = ImageAsset(name: "ic_square")
+  internal static let icSquareChecked = ImageAsset(name: "ic_square_checked")
   internal static let mailFolderNoResultIcon = ImageAsset(name: "mail_folder_no_result_icon")
   internal static let mailLabelCrossIcon = ImageAsset(name: "mail_label_cross_icon")
   internal static let mailNoResultIcon = ImageAsset(name: "mail_no_result_icon")

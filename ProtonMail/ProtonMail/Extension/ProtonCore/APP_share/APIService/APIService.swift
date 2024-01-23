@@ -35,15 +35,12 @@ extension PMAPIService {
     private static var _unauthorized: PMAPIService?
     private static var _authManagerForUnauthorizedAPIService: AuthManagerForUnauthorizedAPIService?
 
-    static func unauthorized(keyMaker: KeyMakerProtocol, userDefaults: UserDefaults) -> PMAPIService {
+    static func unauthorized(dependencies: AuthManagerForUnauthorizedAPIService.Dependencies) -> PMAPIService {
         dispatchQueue.sync {
             if let _unauthorized {
                 return _unauthorized
             }
-            let authManagerForUnauthorizedAPIService = AuthManagerForUnauthorizedAPIService(
-                coreKeyMaker: keyMaker,
-                userDefaults: userDefaults
-            )
+            let authManagerForUnauthorizedAPIService = AuthManagerForUnauthorizedAPIService(dependencies: dependencies)
 
             let unauthorized: PMAPIService
             if let initialSessionUID = authManagerForUnauthorizedAPIService.initialSessionUID {
@@ -89,19 +86,18 @@ extension PMAPIService {
     }
 }
 
-final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
+final class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
+    typealias Dependencies = HasKeychain & HasKeyMakerProtocol & HasUserDefaults
 
     private let key = "Unauthenticated_session"
 
     let initialSessionUID: String?
 
     let authDelegateForUnauthorized: AuthHelper
-    let coreKeyMaker: KeyMakerProtocol
-    private let userDefaults: UserDefaults
+    private let dependencies: Dependencies
 
-    init(coreKeyMaker: KeyMakerProtocol, userDefaults: UserDefaults) {
-        self.coreKeyMaker = coreKeyMaker
-        self.userDefaults = userDefaults
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
         defer {
             let redactedSessionID = initialSessionUID?.redacted ?? ""
             Breadcrumbs.shared.add(message: "AuthManagerForUnauthorizedAPIService sessionID=\(redactedSessionID)", to: .randomLogout)
@@ -109,8 +105,8 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
             authDelegateForUnauthorized.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: dispatchQueue))
         }
 
-        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
-              let data = userDefaults.data(forKey: key) else {
+        guard let mainKey = dependencies.keyMaker.mainKey(by: dependencies.keychain.randomPinProtection),
+              let data = dependencies.userDefaults.data(forKey: key) else {
             self.authDelegateForUnauthorized = AuthHelper()
             self.initialSessionUID = nil
             return
@@ -119,7 +115,7 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
         let authUnlockedNSCoding = try? Locked<[AuthCredential]>(encryptedValue: data).unlock(with: mainKey).first
 
         guard let authCredential = authUnlockedNSCoding else {
-            userDefaults.remove(forKey: key)
+            dependencies.userDefaults.remove(forKey: key)
             self.authDelegateForUnauthorized = AuthHelper()
             self.initialSessionUID = nil
             return
@@ -130,15 +126,15 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
     }
 
     func credentialsWereUpdated(authCredential: AuthCredential, credential _: Credential, for _: String) {
-        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = dependencies.keyMaker.mainKey(by: dependencies.keychain.randomPinProtection),
               let lockedAuth = try? Locked<[AuthCredential]>(clearValue: [authCredential], with: mainKey) else { return }
-        userDefaults.setValue(lockedAuth.encryptedValue, forKey: key)
+        dependencies.userDefaults.setValue(lockedAuth.encryptedValue, forKey: key)
         SystemLogger.log(message: "unauthorized session was updated.", category: .unauthorizedSession)
     }
 
     func sessionWasInvalidated(for _: String, isAuthenticatedSession: Bool) {
         SystemLogger.log(message: "unauthorized session was invalidated.", category: .unauthorizedSession)
-        userDefaults.remove(forKey: key)
+        dependencies.userDefaults.remove(forKey: key)
     }
 }
 
@@ -155,7 +151,7 @@ extension PMAPIService {
         }
 
         var locale: String {
-            LanguageManager().currentLanguageCode()
+            Locale.autoupdatingCurrent.identifier
         }
 
         var additionalHeaders: [String : String]? {

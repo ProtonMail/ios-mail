@@ -52,33 +52,6 @@ class CoreDataServiceTests: XCTestCase {
         XCTAssertEqual(newMessageBody, "initial body")
     }
 
-    // this test can be deleted once/if we remove all access beside `read` and `write` methods
-    func testWrite_changesAreImmediatelyReflectedInOtherBackgroundContextsFromTheSamePersistentContainer() throws {
-        try sut.createNewMessage()
-
-        let backgroundContext = persistentContainer.newBackgroundContext()
-        backgroundContext.automaticallyMergesChangesFromParent = true
-
-        let messageSeenInBackgroundContext = try backgroundContext.performAndWait {
-            try XCTUnwrap(
-                backgroundContext.managedObjectWithEntityName(
-                    Message.Attributes.entityName,
-                    matching: [:]
-                ) as? Message
-            )
-        }
-
-        backgroundContext.performAndWait {
-            XCTAssertEqual(messageSeenInBackgroundContext.body, "initial body")
-        }
-
-        try sut.modifyMessage(with: messageSeenInBackgroundContext.objectID)
-
-        backgroundContext.performAndWait {
-            XCTAssertEqual(messageSeenInBackgroundContext.body, "updated body")
-        }
-    }
-
     // this test can be deleted once/if we remove all NSFetchedResultsControllers
     func testRead_contextCanBeStoredInFetchedResultsControllerAndIsStillUpdated() throws {
         try sut.createNewMessage()
@@ -106,39 +79,6 @@ class CoreDataServiceTests: XCTestCase {
         try sut.modifyMessage(with: fetchedMessage.objectID)
 
         fetchedResultsController.managedObjectContext.performAndWait {
-            XCTAssertEqual(fetchedMessage.body, "updated body")
-        }
-    }
-
-    // delete this test once we remove mainContext completely
-    func testWrite_changesArePropagatedToMainContext() async throws {
-        let mainContext = sut.mainContext
-
-        try sut.createNewMessage()
-
-        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: true)]
-
-        let fetchedResultsController = NSFetchedResultsController(
-            fetchRequest: fetchRequest,
-            managedObjectContext: mainContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil
-        )
-
-        try fetchedResultsController.performFetch()
-
-        let fetchedMessage = fetchedResultsController.object(at: IndexPath(row: 0, section: 0))
-
-        mainContext.performAndWait {
-            XCTAssertEqual(fetchedMessage.body, "initial body")
-        }
-
-        try sut.modifyMessage(with: fetchedMessage.objectID)
-
-        await waitUntilChangesAreMergedIntoMainContext()
-
-        mainContext.performAndWait {
             XCTAssertEqual(fetchedMessage.body, "updated body")
         }
     }
@@ -236,7 +176,7 @@ class CoreDataServiceTests: XCTestCase {
         )
     }
 
-    func testNestedRead_canAccessPenCinghangesBeforeWriteSavesContext() throws {
+    func testNestedRead_canAccessPendingChangesBeforeWriteSavesContext() throws {
         try sut.write { writeContext in
             let messageInWriteContext = Message(context: writeContext)
             messageInWriteContext.messageID = "1"
@@ -305,41 +245,59 @@ class CoreDataServiceTests: XCTestCase {
         return (fetchedResultsController, delegate)
     }
 
-    // delete this test once we remove rootSavingContext completely
-    func testRead_changesSavedToRootSavingContextAreDetected() throws {
-        try sut.createNewMessage()
+    /*
+     The scenario is that if there's a long-running `write` in progress, and then we call `deleteAllData` from
+     somewhere else, the deletion needs to be queued as any other operation to ensure it also removes the data from that
+     `write`.
 
-        let (createdMessage, retainedContext): (Message, NSManagedObjectContext) = try sut.read { context in
-            let message = try XCTUnwrap(
-                context.managedObjectWithEntityName(Message.Attributes.entityName, matching: [:]) as? Message
-            )
-            return (message, context)
+     Otherwise the call to `context.save()` might restore everything that was there before, by dumping the contents of
+     memory (i.e. the context) to the persistent store.
+     */
+    func testDeleteAllData_ifCalledSimultaneouslyWithWrite_ensuresDataDoesntPersist() throws {
+        let sut = CoreDataStore.shared
+        try sut.initialize()
+        let coreDataService = CoreDataService(container: sut.container)
+
+        let deletionExecuted = expectation(description: "Deletion executed")
+        let deletionCompleted = expectation(description: "Deletion completed")
+        let writeHasCompleted = expectation(description: "Write has completed")
+
+        // Schedule a deletion to occur while the block below is in progress
+        Task {
+            try await Task.sleep(for: .milliseconds(150))
+            deletionExecuted.fulfill()
+
+            await coreDataService.deleteAllData()
+            deletionCompleted.fulfill()
         }
 
-        sut.performAndWaitOnRootSavingContext { context in
-            do {
-                let editableMessage = try XCTUnwrap(
-                    context.managedObjectWithEntityName(
-                        Message.Attributes.entityName,
-                        matching: [:]
-                    ) as? Message
-                )
+        /*
+         This block will start immediately, but will be executing over 0.3 seconds, so the deletion started above will
+         hit while this block is in progress.
 
-                editableMessage.body = "updated body"
+         It's important to note that the 2nd Message (bar) is scheduled to be created _after_ the sleep, so technically
+         after the deletion is called.
 
-                if let error = context.saveUpstreamIfNeeded() {
-                    throw error
-                }
-            } catch {
-                XCTFail("\(error)")
-            }
+         However, it will not be saved, as the deletion will be queued as a call to write would.
+         */
+        try coreDataService.write { context in
+            let fooMessage = Message(context: context)
+            fooMessage.messageID = "foo"
+
+            Thread.sleep(forTimeInterval: 0.3)
+
+            let barMessage = Message(context: context)
+            barMessage.messageID = "bar"
+            writeHasCompleted.fulfill()
         }
 
-        let updatedBody = retainedContext.performAndWait {
-            createdMessage.body
+        wait(for: [deletionExecuted, writeHasCompleted, deletionCompleted], timeout: 1, enforceOrder: true)
+
+        let idsOfStoredMessages = try coreDataService.read { _ in
+            try Message.makeFetchRequest().execute().map(\.messageID)
         }
 
-        XCTAssertEqual(updatedBody, "updated body")
+        XCTAssertEqual(idsOfStoredMessages, [])
     }
 }
 

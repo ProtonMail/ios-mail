@@ -23,9 +23,9 @@ Currently the application supports iOS version 14.7 and above.
 
 ## Project setup
 
-1. As a first step, you have to have macOS up to date and install Xcode 14+
+1. As a first step, you have to have macOS up to date and install Xcode 15+
 
-2. The project uses [Mint](https://github.com/yonaskolb/mint) as a package manager. If you don't have it installed, you can do it via [Homebrew](https://brew.sh/) by `brew bundle"`. Once you have it ready, in order to install dependecies run:
+2. The project uses [Mint](https://github.com/yonaskolb/mint) as a package manager. If you don't have it installed, you can do it via [Homebrew](https://brew.sh/) by `brew bundle`. Once you have it ready, in order to install dependecies run:
 
 `mint bootstrap`
 

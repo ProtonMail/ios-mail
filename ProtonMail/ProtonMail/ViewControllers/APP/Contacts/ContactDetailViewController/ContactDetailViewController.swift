@@ -21,7 +21,7 @@ import ProtonCoreFoundations
 import ProtonCoreUIFoundations
 import UIKit
 
-final class ContactDetailViewController: UIViewController, AccessibleView {
+final class ContactDetailViewController: UIViewController, AccessibleView, ComposeSaveHintProtocol {
     typealias Dependencies = HasComposerViewFactory & HasContactViewsFactory
 
     let viewModel: ContactDetailsViewModel
@@ -80,6 +80,11 @@ final class ContactDetailViewController: UIViewController, AccessibleView {
         navigationItem.assignNavItemIndentifiers()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.dependencies.user.undoActionManager.register(handler: self)
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         customView.tableView.sizeHeaderToFit()
@@ -135,6 +140,8 @@ extension ContactDetailViewController: UITableViewDataSource {
             return viewModel.titles.count
         case .gender:
             return viewModel.gender == nil ? 0 : 1
+        case .anniversary:
+            return viewModel.anniversary == nil ? 0 : 1
         case .addNewField, .share:
             return 0
         }
@@ -270,6 +277,12 @@ extension ContactDetailViewController: UITableViewDataSource {
                 value: url.newUrl,
                 titleStyle: titleStyle
             )
+        case .anniversary:
+            cell?.configCell(
+                title: viewModel.anniversary?.infoType.title ?? .empty,
+                value: viewModel.anniversary?.newValue ?? .empty,
+                titleStyle: titleStyle
+            )
         case .email_header, .encrypted_header, .delete, .share,
              .type2_warning, .type3_error, .type3_warning, .debuginfo, .emails, .display_name, .addNewField:
             break
@@ -317,6 +330,8 @@ extension ContactDetailViewController: UITableViewDelegate {
                 copyString = viewModel.titles[row].newValue
             case .birthday:
                 copyString = viewModel.birthday?.newValue ?? .empty
+            case .anniversary:
+                copyString = viewModel.anniversary?.newValue ?? .empty
             default:
                 break
             }
@@ -330,7 +345,7 @@ extension ContactDetailViewController: UITableViewDelegate {
         switch sectionType {
         case .display_name, .emails, .cellphone, .home_address,
              .custom_field, .notes, .url,
-             .type2_warning, .type3_error, .type3_warning, .debuginfo, .birthday, .share:
+             .type2_warning, .type3_error, .type3_warning, .debuginfo, .birthday, .share, .anniversary:
             return UITableView.automaticDimension
         case .email_header, .encrypted_header, .delete:
             return 0.0
@@ -634,4 +649,20 @@ extension ContactDetailViewController {
         static let contactDetailsDisplayCell = "ContactDetailsDisplayCell"
         static let contactDetailHeaderView = "ContactSectionHeadView"
     }
+}
+
+extension ContactDetailViewController: UndoActionHandlerBase {
+    var undoActionManager: UndoActionManagerProtocol? {
+        nil
+    }
+
+    var delaySendSeconds: Int {
+        viewModel.dependencies.user.userInfo.delaySendSeconds
+    }
+
+    var composerPresentingVC: UIViewController? {
+        self
+    }
+
+    func showUndoAction(undoTokens: [String], title: String) { }
 }

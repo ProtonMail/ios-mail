@@ -21,14 +21,13 @@ enum FeatureFlagKey: String, CaseIterable {
     case appRating = "RatingIOSMail"
     case attachmentsPreview = "iOSAttachmentsPreviewIsEnabled"
     case mailboxPrefetchSize = "iOSMailboxPrefetchSize"
-    case modernizedCoreData = "ModernizedCoreData"
+    case mailboxSelectionLimitation = "iOSMailboxSelectionLimitation"
     case protonUnreachableBanner = "ProtonUnreachableBanner"
     case referralPrompt = "ReferralActionSheetShouldBePresentedIOS"
     case refetchEventsByTime = "iOSRefetchEventsByTime"
     case refetchEventsHourThreshold = "iOSRefetchEventsHourThreshold"
     case scheduleSend = "ScheduledSendFreemium"
     case senderImage = "ShowSenderImages"
-    case sendRefactor = "SendMessageRefactor"
 }
 
 // sourcery: mock

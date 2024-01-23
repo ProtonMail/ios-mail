@@ -30,7 +30,7 @@ public enum ResponseErrorDomains: String {
 }
 
 public struct ResponseError: Error, Equatable {
-    
+
     public static let responseDictionaryUserInfoKey = "responseDictionaryUserInfoKey"
 
     /// This is the http status code, like 200, 404, 500 etc. It will be nil if there was no http response,
@@ -46,7 +46,7 @@ public struct ResponseError: Error, Equatable {
 
     public let userFacingMessage: String?
     public let underlyingError: NSError?
-    
+
     public let responseDictionary: [String: Any]?
 
     public var bestShotAtReasonableErrorCode: Int {
@@ -73,7 +73,7 @@ public struct ResponseError: Error, Equatable {
                       underlyingError: underlyingError)
         }
     }
-    
+
     private init(httpCode: Int?, responseCode: Int?, userFacingMessage: String?, responseDictionary: JSONDictionary?, underlyingError: NSError?) {
         self.httpCode = httpCode
         self.responseCode = responseCode
@@ -96,7 +96,7 @@ public struct ResponseError: Error, Equatable {
                       userFacingMessage: underlyingError.localizedDescription,
                       underlyingError: underlyingError as NSError)
     }
-    
+
     public static func == (lhs: ResponseError, rhs: ResponseError) -> Bool {
         // the response dictionaries are ignored
         lhs.httpCode == rhs.httpCode &&
@@ -143,7 +143,7 @@ public protocol ResponseType: AnyObject {
 }
 
 public extension ResponseType {
-    
+
     @available(*, deprecated, renamed: "parseNetworkCallResults(responseObject:originalResponse:responseDict:error:)")
     static func parseNetworkCallResults<T>(
         to: T.Type, responseObject: T = T(), response: URLResponse?, responseDict: [String: Any]?, error: NSError?
@@ -154,7 +154,7 @@ public extension ResponseType {
     static func parseNetworkCallResults<T>(
         responseObject apiRes: T, originalResponse response: URLResponse?, responseDict: [String: Any]?, error originalError: NSError?
     ) -> (T, ResponseError?) where T: ResponseType {
-        
+
         if let error = originalError {
             PMLog.debug("\(error)")
             let networkingError = apiRes.parseTaskError(response: response, taskError: error, responseDict: responseDict)
@@ -188,7 +188,7 @@ public extension ResponseType {
         let responseCodeFromError = taskError.domain == ResponseErrorDomains.withResponseCode.rawValue ? taskError.code : nil
         let obtainedResponseCode = responseCodeFromDict ?? responseCodeFromError
         responseCode = obtainedResponseCode
-        
+
         let userFacingMessage = responseErrorMessage(from: responseDict)
         let networkingError = ResponseError(httpCode: httpCode,
                                             responseCode: responseCode,

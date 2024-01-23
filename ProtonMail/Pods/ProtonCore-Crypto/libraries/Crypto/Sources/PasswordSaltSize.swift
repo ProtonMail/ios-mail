@@ -26,7 +26,7 @@ public enum PasswordSaltSize {
     case login  // login/auth
     case accountKey  // account key/mailboxpassword
     case addressKey  // address key
-    
+
     public var int32Bits: Int32 {
         switch self {
         case .login:
@@ -37,15 +37,15 @@ public enum PasswordSaltSize {
             return 256
         }
     }
-    
+
     public var int32Bytes: Int32 {
         int32Bits / 8
     }
-    
+
     public var IntBits: Int {
         Int(self.int32Bits)
     }
-    
+
     public var IntBytes: Int {
         Int(self.int32Bytes)
     }

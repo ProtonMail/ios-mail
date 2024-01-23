@@ -40,10 +40,8 @@ final class MailboxViewControllerTests: XCTestCase {
     var conversationProviderMock: MockConversationProvider!
     var eventsServiceMock: EventsServiceMock!
     var mockFetchLatestEventId: MockFetchLatestEventId!
-    var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
     var toolbarActionProviderMock: MockToolbarActionProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
-    var mockFetchMessageDetail: MockFetchMessageDetail!
     var fakeCoordinator: MockMailboxCoordinatorProtocol!
 
     private var globalContainer: GlobalContainer!
@@ -57,7 +55,6 @@ final class MailboxViewControllerTests: XCTestCase {
 
         userID = .init(String.randomString(20))
         coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        sharedServices.add(CoreDataService.self, for: coreDataService)
 
         globalContainer = .init()
         globalContainer.contextProviderFactory.register { self.coreDataService }
@@ -91,6 +88,7 @@ final class MailboxViewControllerTests: XCTestCase {
                                       mailSettings: nil,
                                       parent: nil,
                                       globalContainer: globalContainer)
+        globalContainer.usersManager.add(newUser: userManagerMock)
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()
@@ -99,7 +97,6 @@ final class MailboxViewControllerTests: XCTestCase {
         conversationProviderMock = MockConversationProvider()
         eventsServiceMock = EventsServiceMock()
         mockFetchLatestEventId = MockFetchLatestEventId()
-        welcomeCarrouselCache = WelcomeCarrouselCacheMock()
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         try loadTestMessage() // one message
@@ -412,29 +409,8 @@ extension MailboxViewControllerTests {
     ) {
         let globalContainer = GlobalContainer()
         let userContainer = UserContainer(userManager: userManagerMock, globalContainer: globalContainer)
+        globalContainer.usersManager.add(newUser: userManagerMock)
 
-        let fetchMessage = MockFetchMessages()
-        let updateMailbox = UpdateMailbox(dependencies: .init(
-            eventService: eventsServiceMock,
-            messageDataService: userManagerMock.messageService,
-            conversationProvider: conversationProviderMock,
-            purgeOldMessages: MockPurgeOldMessages(),
-            fetchMessageWithReset: MockFetchMessagesWithReset(),
-            fetchMessage: fetchMessage,
-            fetchLatestEventID: mockFetchLatestEventId,
-            internetConnectionStatusProvider: MockInternetConnectionStatusProviderProtocol()
-        ))
-        self.mockFetchMessageDetail = MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
-
-        let featureFlagCache = MockFeatureFlagCache()
-
-        let dependencies = MailboxViewModel.Dependencies(
-            fetchMessages: MockFetchMessages(),
-            updateMailbox: updateMailbox,
-            fetchMessageDetail: mockFetchMessageDetail,
-            fetchSenderImage: userContainer.fetchSenderImage,
-            featureFlagCache: featureFlagCache
-        )
         let label = LabelInfo(name: labelName ?? "")
         viewModel = MailboxViewModel(
             labelID: labelID,
@@ -449,8 +425,7 @@ extension MailboxViewControllerTests {
             contactProvider: contactProviderMock,
             conversationProvider: conversationProviderMock,
             eventsService: eventsServiceMock,
-            dependencies: dependencies,
-            welcomeCarrouselCache: welcomeCarrouselCache,
+            dependencies: userContainer,
             toolbarActionProvider: toolbarActionProviderMock,
             saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
             totalUserCountClosure: {

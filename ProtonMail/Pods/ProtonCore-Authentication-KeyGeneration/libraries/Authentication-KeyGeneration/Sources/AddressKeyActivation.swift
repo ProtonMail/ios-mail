@@ -28,11 +28,11 @@ import ProtonCoreUtilities
 import ProtonCoreHash
 
 final class AddressKeyActivation {
-    
+
     enum KeyActivationError: Error {
         case noUserKey
     }
-    
+
     /// V1 key activation flow
     /// - Parameters:
     ///   - user: user object. we will use the user.keys
@@ -43,16 +43,16 @@ final class AddressKeyActivation {
         for index in address.keys.indices {
             let key = address.keys[index]
             if let activation = key.activation {
-                
+
                 guard let firstUserKey = user.keys.first else {
                     throw KeyActivationError.noUserKey
                 }
-                
+
                 let armoredUserKey = ArmoredKey.init(value: firstUserKey.privateKey)
                 let mailboxPassphrase = Passphrase.init(value: mailboxPassword)
-                
+
                 let token = try activation.decryptMessageWithSingleKeyNonOptional(armoredUserKey, passphrase: mailboxPassphrase)
-                
+
                 let newPrivateKey = try Crypto.updatePassphrase(privateKey: ArmoredKey.init(value: key.privateKey),
                                                                 oldPassphrase: Passphrase.init(value: token),
                                                                 newPassphrase: mailboxPassphrase)
@@ -62,7 +62,7 @@ final class AddressKeyActivation {
                     "Flags": KeyFlags.signupKeyFlags.rawValue
                 ]]
                 let jsonKeylist = keylist.json()
-                
+
                 let signer = SigningKey.init(privateKey: newPrivateKey,
                                              passphrase: mailboxPassphrase)
                 let signed = try Sign.signDetached(signingKey: signer, plainText: jsonKeylist)
@@ -74,10 +74,10 @@ final class AddressKeyActivation {
                 return api
             }
         }
-        
+
         return nil
     }
-    
+
     /// V2 key activation flow
     /// - Parameters:
     ///   - user: User
@@ -88,19 +88,19 @@ final class AddressKeyActivation {
         for index in address.keys.indices {
             let key = address.keys[index]
             if let activation = key.activation {
-                
+
                 guard let firstUserKey = user.keys.first else {
                     throw KeyActivationError.noUserKey
                 }
-                
+
                 let armoredUserKey = ArmoredKey.init(value: firstUserKey.privateKey)
                 let mailboxPassphrase = Passphrase.init(value: mailboxPassword)
-                
+
                 let clearToken = try activation.decryptMessageWithSingleKeyNonOptional(armoredUserKey, passphrase: mailboxPassphrase)
-                                
+
                 // generate random addr passphrase
                 let newPassphrase = try PasswordHash.genAddrPassphrase()
-                
+
                 // use the new hexed secret to update the address private key
                 let updatedPrivateKey = try Crypto.updatePassphrase(privateKey: ArmoredKey.init(value: key.privateKey),
                                                                     oldPassphrase: Passphrase.init(value: clearToken),
@@ -124,7 +124,7 @@ final class AddressKeyActivation {
                     "Flags": keyFlags.rawValue
                 ]]
                 let jsonKeylist = keylist.json()
-                
+
                 let updatedSigner = SigningKey.init(privateKey: updatedPrivateKey,
                                                     passphrase: newPassphrase)
                 let signed = try Sign.signDetached(signingKey: updatedSigner, plainText: jsonKeylist, signatureContext: AddressKeySetup.signedKeyListSignatureContext)
@@ -132,13 +132,13 @@ final class AddressKeyActivation {
                     "Data": jsonKeylist,
                     "Signature": signed.value
                 ]
-                
+
                 let api = AuthService.KeyActivationEndpoint(addrID: key.keyID, privKey: updatedPrivateKey.value, signedKL: signedKeyList,
                                                             token: encToken.value, signature: tokenSignature.value, primary: key.primary)
                 return api
             }
         }
-        
+
         return nil
     }
 }

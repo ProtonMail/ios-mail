@@ -25,7 +25,7 @@ import ProtonCoreUtilities
 private class Handler {}
 
 public enum LSTranslation: TranslationsExposing {
-    
+
     public static var bundle: Bundle {
         #if SPM
         return Bundle.module
@@ -33,14 +33,14 @@ public enum LSTranslation: TranslationsExposing {
         return Bundle(path: Bundle(for: Handler.self).path(forResource: "Translations-Login", ofType: "bundle")!)!
         #endif
     }
-    
+
     public static var prefixForMissingValue: String = ""
-    
+
     case _loginservice_api_might_be_blocked_message
     case _loginservice_error_generic
     case _loginservice_external_accounts_not_supported_popup_local_desc
     case _loginservice_external_accounts_address_required_popup_title
-    
+
     public var l10n: String {
         switch self {
         case ._loginservice_api_might_be_blocked_message:

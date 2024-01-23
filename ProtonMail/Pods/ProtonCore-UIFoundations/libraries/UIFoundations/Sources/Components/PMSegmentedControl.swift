@@ -55,7 +55,7 @@ public final class PMSegmentedControl: UISegmentedControl, AccessibleView {
         let titleTextAttributes = [NSAttributedString.Key.foregroundColor: defaultColor, NSAttributedString.Key.font: defaultFont]
         setTitleTextAttributes(titleTextAttributes, for: .selected)
         setTitleTextAttributes(titleTextAttributes, for: .normal)
-        
+
         backgroundColor = ColorProvider.SeparatorNorm
         selectedSegmentTintColor = ColorProvider.BackgroundNorm
 

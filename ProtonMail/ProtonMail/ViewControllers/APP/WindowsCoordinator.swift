@@ -28,20 +28,12 @@ import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import SafariServices
 
-// sourcery: mock
-protocol WindowsCoordinatorDelegate: AnyObject {
-    func setupCoreData() throws
-    func loadUserDataAfterUnlock()
-}
-
 final class WindowsCoordinator {
     typealias Dependencies = MenuCoordinator.Dependencies
     & LockCoordinator.Dependencies
+    & HasLaunchService
     & HasAppAccessResolver
-    & HasDarkModeCacheProtocol
     & HasNotificationCenter
-
-    weak var delegate: WindowsCoordinatorDelegate?
 
     private lazy var snapshot = Snapshot()
     private var launchedByNotification = false
@@ -64,9 +56,9 @@ final class WindowsCoordinator {
     private(set) var lockWindow: UIWindow?
     private var menuCoordinator: MenuCoordinator?
 
-    private var currentWindow: UIWindow? {
+    private(set) var currentWindow: UIWindow? {
         didSet {
-            switch dependencies.darkModeCache.darkModeStatus {
+            switch dependencies.userDefaults[.darkModeStatus] {
             case .followSystem:
                 self.currentWindow?.overrideUserInterfaceStyle = .unspecified
             case .forceOn:
@@ -107,7 +99,7 @@ final class WindowsCoordinator {
         trackLifetime()
     }
 
-    func start(launchedByNotification: Bool = false) {
+    func start(launchedByNotification: Bool = false, completion: (() -> Void)? = nil) {
         self.launchedByNotification = launchedByNotification
         let placeholder = UIWindow(root: PlaceholderViewController(color: .white), scene: self.scene)
         self.currentWindow = placeholder
@@ -120,13 +112,19 @@ final class WindowsCoordinator {
 
         SystemLogger.log(message: "isAppAccessResolverEnabled: \(isAppAccessResolverEnabled)", category: .appLock)
         if isAppAccessResolverEnabled {
-
-            loadAppMainKeyAndSetupCoreData()
-            evaluateAccessAtLaunch()
-            subscribeToDeniedAccess()
-
+            start(completion: completion)
         } else {
             legacyStart()
+            completion?()
+        }
+    }
+
+    private func start(completion: (() -> Void)?) {
+        Task {
+            await startLaunch()
+            evaluateAccessAtLaunch()
+            subscribeToDeniedAccess()
+            completion?()
         }
     }
 
@@ -147,12 +145,33 @@ final class WindowsCoordinator {
         }
     }
 
-    private func loadAppMainKeyAndSetupCoreData() {
-        _ = dependencies.keyMaker.mainKeyExists()
+    private func startLaunch() async {
         do {
-            try delegate?.setupCoreData()
+            try dependencies.launchService.start()
         } catch {
-            PMAssertionFailure(error)
+            await showCoreDataSetUpFailAlert(error: error)
+            fatalError("Core Data set up failed")
+        }
+    }
+
+    @MainActor
+    private func showCoreDataSetUpFailAlert(error: Error) async {
+        await withCheckedContinuation { continuation in
+            let title: String
+            let message: String
+            if error.isSqlLiteDiskFull {
+                title = L11n.Error.core_data_setup_insufficient_disk_title
+                message = L11n.Error.core_data_setup_insufficient_disk_messsage
+            } else {
+                title = LocalString._general_error_alert_title
+                message = String(format: L11n.Error.core_data_setup_generic_messsage, error.localizedDescription)
+            }
+
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default) { _ in
+                continuation.resume()
+            })
+            currentWindow?.topmostViewController()?.present(alert, animated: true)
         }
     }
 
@@ -172,14 +191,13 @@ final class WindowsCoordinator {
             .appAccessResolver
             .deniedAccessPublisher
             .sink { reason in
-                SystemLogger.log(message: "Denied access: \(reason)", category: .appLock)
+                SystemLogger.log(message: "Denied access event: \(reason)", category: .appLock)
                 self.handleAppAccessDenied(deniedAccess: reason)
             }
             .store(in: &cancellables)
     }
 
     private func handleAppAccessGrantedAtLaunch() {
-        delegate?.loadUserDataAfterUnlock()
         go(dest: .appWindow)
     }
 
@@ -386,6 +404,10 @@ final class WindowsCoordinator {
             queue: .main
         ) { [weak self] notification in
             self?.arePrimaryUserSettingsFetched = true
+            SystemLogger.log(
+                message: "Notification observer: start handle view switching",
+                category: .notificationDebug
+            )
             // trigger the menu to follow the deeplink or show inbox
             self?.handleSwitchViewDeepLinkIfNeeded(notification.object as? DeepLink)
         }
@@ -519,6 +541,10 @@ extension WindowsCoordinator {
         guard arePrimaryUserSettingsFetched && appWindow != nil else {
             return
         }
+        SystemLogger.log(
+            message: "HandleSwitchViewDeepLinkIfNeeded: \(deepLink.debugDescription ?? "no deep link")",
+            category: .notificationDebug
+        )
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in
             if let _ = controller as? MenuViewController,
                let coordinator = self.menuCoordinator {
@@ -620,7 +646,7 @@ extension WindowsCoordinator {
 
     @objc
     private func updateUserInterfaceStyle() {
-        switch dependencies.darkModeCache.darkModeStatus {
+        switch dependencies.userDefaults[.darkModeStatus] {
         case .followSystem:
             currentWindow?.overrideUserInterfaceStyle = .unspecified
         case .forceOff:
@@ -737,5 +763,12 @@ extension WindowsCoordinator: MenuCoordinatorDelegate {
 extension WindowsCoordinator: LifetimeTrackable {
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
+    }
+}
+
+private extension Error {
+
+    var isSqlLiteDiskFull: Bool {
+        (self as NSError).userInfo["NSSQLiteErrorDomain"] as? Int == 13
     }
 }

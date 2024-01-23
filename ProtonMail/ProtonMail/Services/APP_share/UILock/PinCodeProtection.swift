@@ -27,7 +27,6 @@ final class DefaultPinCodeProtection: PinCodeProtection {
     typealias Dependencies = AnyObject &
     HasKeyMakerProtocol &
     HasKeychain &
-    HasUserCachedStatus &
     HasNotificationCenter
 
     private unowned let dependencies: Dependencies
@@ -39,7 +38,7 @@ final class DefaultPinCodeProtection: PinCodeProtection {
     func activate(with newPinCode: String) async -> Bool {
         await withCheckedContinuation({ continuation in
             LockPreventor.shared.performWhileSuppressingLock {
-                _ = dependencies.keyMaker.deactivate(BioProtection())
+                _ = dependencies.keyMaker.deactivate(BioProtection(keychain: dependencies.keychain))
             }
             let protection = PinProtection(pin: newPinCode, keychain: dependencies.keychain)
             dependencies.keyMaker.activate(protection) { [unowned self] activated in
@@ -54,8 +53,8 @@ final class DefaultPinCodeProtection: PinCodeProtection {
     }
 
     private func disableAppKey(completion: @escaping (() -> Void)) {
-        dependencies.userCachedStatus.keymakerRandomkey = String.randomString(32)
-        if let randomProtection = RandomPinProtection.randomPin {
+        dependencies.keychain[.keymakerRandomKey] = String.randomString(32)
+        if let randomProtection = dependencies.keychain.randomPinProtection {
             dependencies.keyMaker.activate(randomProtection) { [unowned self] activated in
                 guard activated else {
                     completion()
@@ -73,11 +72,11 @@ final class DefaultPinCodeProtection: PinCodeProtection {
         let protection = PinProtection(pin: "doesnotmatter", keychain: dependencies.keychain)
         LockPreventor.shared.performWhileSuppressingLock {
             dependencies.keyMaker.deactivate(protection)
-            if let randomProtection = RandomPinProtection.randomPin {
+            if let randomProtection = dependencies.keychain.randomPinProtection {
                 dependencies.keyMaker.deactivate(randomProtection)
             }
         }
-        dependencies.userCachedStatus.keymakerRandomkey = nil
+        dependencies.keychain[.keymakerRandomKey] = nil
         dependencies.notificationCenter.post(name: .appLockProtectionDisabled, object: nil, userInfo: nil)
     }
 }

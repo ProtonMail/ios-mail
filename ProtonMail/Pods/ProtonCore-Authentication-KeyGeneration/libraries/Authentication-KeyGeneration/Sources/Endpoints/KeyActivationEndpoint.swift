@@ -24,7 +24,7 @@ import ProtonCoreAuthentication
 import ProtonCoreNetworking
 
 extension AuthService {
-    
+
     // active a key when Activation is not null --- Response
     struct KeyActivationEndpoint: Request {
         let addressID: String
@@ -51,7 +51,7 @@ extension AuthService {
                 "Signature": tokenSignature, // +  new on phase 2
                 "Primary": primary
             ]
-            
+
             return out
         }
 

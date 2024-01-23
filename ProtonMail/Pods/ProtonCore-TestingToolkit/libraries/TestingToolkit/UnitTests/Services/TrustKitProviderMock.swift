@@ -27,9 +27,9 @@ import TrustKit
 import ProtonCoreServices
 
 public final class TrustKitProviderMock: TrustKitProvider {
-    
+
     public init() {}
-    
+
     @PropertyStub(\TrustKitProvider.noTrustKit, initialGet: true) public var noTrustKitStub
     public var noTrustKit: Bool { noTrustKitStub() }
     @PropertyStub(\TrustKitProvider.trustKit, initialGet: nil) public var trustKitStub

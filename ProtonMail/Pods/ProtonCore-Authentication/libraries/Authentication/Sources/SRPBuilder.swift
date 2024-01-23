@@ -36,7 +36,7 @@ public extension SRPBuilderProtocol {
 
 public struct SRPBuilder: SRPBuilderProtocol {
     public init() {}
-    
+
     /**
      A function that provides SRP (Secure Remote Password) client information to validate the password.
      - Parameter username: The user's username.
@@ -56,7 +56,7 @@ public struct SRPBuilder: SRPBuilderProtocol {
         {
             return .failure(AuthErrors.emptyServerSrpAuth)
         }
-        
+
         // client SRP
         let srpClient = try auth.generateProofs(2048)
         guard let clientEphemeral = srpClient.clientEphemeral,
@@ -65,7 +65,7 @@ public struct SRPBuilder: SRPBuilderProtocol {
         {
             return .failure(AuthErrors.emptyClientSrpAuth)
         }
-        
+
         return .success(SRPClientInfo(
             clientEphemeral: clientEphemeral,
             clientProof: clientProof,

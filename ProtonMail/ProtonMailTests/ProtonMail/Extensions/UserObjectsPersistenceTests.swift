@@ -41,7 +41,7 @@ final class UserObjectsPersistenceTests: XCTestCase {
     func testWriteShouldWriteToThePathComponent() throws {
         /// Given data set with main key
         let testData = TestData(int: Int.random(in: 0...100), bool: Bool.random())
-        let mainKey = keymaker.mainKey(by: .randomPin)!
+        let mainKey = keymaker.mainKey(by: customKeychain.randomPinProtection)!
 
         /// When encrypting and writing to disk
         try sut.write(testData, key: mainKey)
@@ -54,7 +54,7 @@ final class UserObjectsPersistenceTests: XCTestCase {
     func testWriteShouldNotWriteDataInClear() throws {
         /// Given data set with main key
         let testData = TestData(int: Int.random(in: 0...100), bool: Bool.random())
-        let mainKey = keymaker.mainKey(by: .randomPin)!
+        let mainKey = keymaker.mainKey(by: customKeychain.randomPinProtection)!
 
         /// When writing to disk
         try sut.write(testData, key: mainKey)
@@ -71,7 +71,7 @@ final class UserObjectsPersistenceTests: XCTestCase {
     func testWriteShouldWriteDataEncryptedWithMainKey() throws {
         /// Given data set with main key
         let testData = TestData(int: Int.random(in: 0...100), bool: Bool.random())
-        let mainKey = keymaker.mainKey(by: .randomPin)!
+        let mainKey = keymaker.mainKey(by: customKeychain.randomPinProtection)!
 
         /// When writing to disk
         try sut.write(testData, key: mainKey)
@@ -88,7 +88,7 @@ final class UserObjectsPersistenceTests: XCTestCase {
     func testReadShouldDecryptAndDecodeData() throws {
         /// Given data set encoded and written encrypted to the expected URL
         let testData = TestData(int: Int.random(in: 0...100), bool: Bool.random())
-        let mainKey = keymaker.mainKey(by: .randomPin)!
+        let mainKey = keymaker.mainKey(by: customKeychain.randomPinProtection)!
         let encodedData = try JSONEncoder().encode(testData)
         let encryptedData = try Locked<Data>(clearValue: encodedData, with: mainKey)
         let expectedURL = directory.appendingPathComponent(TestData.pathComponent)

@@ -26,7 +26,7 @@ typealias UpdateSwipeActionDuringLoginUseCase = UseCase<Void, UpdateSwipeActionD
 /// as the current active account. If the account is the first account logs into the app, it will update
 /// the cache to stores the actions from the user's setting.
 final class UpdateSwipeActionDuringLogin: UpdateSwipeActionDuringLoginUseCase {
-    typealias Dependencies = HasSwipeActionCacheProtocol & HasSaveSwipeActionSettingForUsersUseCase
+    typealias Dependencies = AnyObject & HasSwipeActionCacheProtocol & HasSaveSwipeActionSettingForUsersUseCase
 
     private struct SwipeInfoHelper {
         let activeUserRightSwipeAction: SwipeActionSettingType?
@@ -35,7 +35,7 @@ final class UpdateSwipeActionDuringLogin: UpdateSwipeActionDuringLoginUseCase {
         let newUserLeftSwipeAction: SwipeActionSettingType?
     }
 
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
@@ -79,7 +79,9 @@ final class UpdateSwipeActionDuringLogin: UpdateSwipeActionDuringLoginUseCase {
     ) {
         if let currentRightSwipeAction = dependencies.swipeActionCache.leftToRightSwipeActionType,
            currentRightSwipeAction != info.newUserRightSwipeAction {
-            dependencies.saveSwipeActionSetting.execute(params: .init(preference: .right(currentRightSwipeAction))) { _ in
+            dependencies.saveSwipeActionSetting.execute(
+                params: .init(preference: .right(currentRightSwipeAction))
+            ) { _ in
                 completion()
             }
         } else {

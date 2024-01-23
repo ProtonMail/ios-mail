@@ -51,7 +51,7 @@ final class CreateAddressViewController: UIViewController, AccessibleView, Error
     var viewModel: CreateAddressViewModel!
     var customErrorPresenter: LoginErrorPresenter?
     var onDohTroubleshooting: () -> Void = { }
-    
+
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     var focusNoMore = false
@@ -69,7 +69,7 @@ final class CreateAddressViewController: UIViewController, AccessibleView, Error
         setupDelegates()
         setupNotifications()
         generateAccessibilityIdentifiers()
-        
+
         configureDomainSuffix()
         ObservabilityEnv.report(.screenLoadCountTotal(screenName: .createProtonAccountWithCurrentEmail))
     }
@@ -93,13 +93,13 @@ final class CreateAddressViewController: UIViewController, AccessibleView, Error
         addressTextField.textContentType = .username
         addressTextField.autocapitalizationType = .none
         addressTextField.autocorrectionType = .no
-        
+
         // domain button
         domainsButton.setMode(mode: .image(type: .textWithImage(image: nil)))
 
         setUpBackArrow(action: #selector(CreateAddressViewController.goBack(_:)))
     }
-    
+
     private func setupBinding() {
         viewModel.isLoading.bind { [weak self] isLoading in
             self?.view.isUserInteractionEnabled = !isLoading
@@ -188,11 +188,11 @@ final class CreateAddressViewController: UIViewController, AccessibleView, Error
         _ = addressTextField.resignFirstResponder()
         viewModel.finish(username: addressTextField.value)
     }
-    
+
     @IBAction private func cancelPressed(_ sender: Any) {
         delegate?.userDidGoBack()
     }
-    
+
     @objc private func goBack(_ sender: Any) {
         delegate?.userDidGoBack()
     }
@@ -215,7 +215,7 @@ final class CreateAddressViewController: UIViewController, AccessibleView, Error
             return true
         }
     }
-    
+
     private func configureDomainSuffix() {
         domainsButton.setTitle("@\(viewModel.currentlyChosenSignUpDomain)", for: .normal)
         if viewModel.allSignUpDomains.count > 1 {
@@ -226,7 +226,7 @@ final class CreateAddressViewController: UIViewController, AccessibleView, Error
             domainsButton.setMode(mode: .image(type: .textWithImage(image: nil)))
         }
     }
-    
+
     @IBAction private func onDomainsButtonTapped() {
         dismissKeyboard()
         var sheet: PMActionSheet?
@@ -256,11 +256,11 @@ final class CreateAddressViewController: UIViewController, AccessibleView, Error
         sheet?.eventsListener = self
         sheet?.presentAt(self, animated: true)
     }
-    
+
     @objc func dismissKeyboard(_ sender: UITapGestureRecognizer) {
         dismissKeyboard()
     }
-    
+
     private func dismissKeyboard() {
         if addressTextField.isFirstResponder {
             _ = addressTextField.resignFirstResponder()
@@ -296,7 +296,7 @@ extension CreateAddressViewController: PMActionSheetEventsListener {
         tapGesture?.cancelsTouchesInView = true
         domainsButton?.isSelected = false
     }
-    
+
     func didDismiss() { }
 }
 

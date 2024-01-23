@@ -26,12 +26,12 @@ import ProtonCoreTestingToolkitUnitTestsCore
 import ProtonCoreNetworking
 
 public final class SessionFactoryMock: SessionFactoryInterface {
-    
+
     public init() {}
-    
+
     @FuncStub(SessionFactoryMock.createSessionInstance, initialReturn: .crash) public var createSessionInstanceStub
     public func createSessionInstance(url apiHostUrl: String) -> Session { createSessionInstanceStub(apiHostUrl) }
-    
+
     @FuncStub(SessionFactoryMock.createSessionRequest, initialReturn: .crash) public var createSessionRequestStub
     public func createSessionRequest(parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval, retryPolicy: ProtonRetryPolicy.RetryMode) -> SessionRequest {
         createSessionRequestStub(parameters, urlString, method, timeout, retryPolicy)

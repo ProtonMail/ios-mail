@@ -1,4 +1,3 @@
-
 "OK" = "OK";
 
 "Cancel" = "Cancelar";
@@ -22,6 +21,8 @@
 "Current plan will expire on %@" = "El plan actual expirará el %@";
 
 "Contact an administrator to make changes to your Proton subscription." = "Contacte con un administrador para realizar cambios a su suscripción de Proton.";
+
+"%1$@ of %2$@" = "%1$@ de %2$@";
 
 "%@ storage" = "%@ de almacenamiento";
 
@@ -73,6 +74,8 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "Solo las suscripciones anuales no renovables están disponibles en esta aplicación";
 
+"Your subscription cannot be managed inside the mobile app." = "Su suscripción no puede gestionarse dentro de la aplicación móvil.";
+
 "Unlimited folders, labels, and filters" = "Carpetas, etiquetas y filtros ilimitados";
 
 "Up to %@ storage" = "Hasta %@ de almacenamiento";
@@ -113,13 +116,9 @@
 
 "Unlimited devices" = "Dispositivos ilimitados";
 
-"%@ email aliases" = "%@ alias de correo";
-
 "Unlimited email aliases" = "Alias de correo electrónico ilimitados";
 
 "Unlimited logins and notes" = "Ilimitados inicios de sesión y notas";
-
-"Up to %@ forwarding mailboxes" = "Hasta %@ buzones de reenvío";
 
 "Custom fields" = "Campos personalizados";
 

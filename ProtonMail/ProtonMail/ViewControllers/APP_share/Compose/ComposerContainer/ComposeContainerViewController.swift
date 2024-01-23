@@ -128,6 +128,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.dependencies = dependencies
         super.init(viewModel: viewModel)
         viewModel.uiDelegate = self
+        viewModel.delegate = self
         #if !APP_EXTENSION
         trackLifetime()
         #endif
@@ -612,7 +613,9 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
 
 // MARK: - AttachmentController protocol
 
-extension ComposeContainerViewController: AttachmentController {
+extension ComposeContainerViewController: AttachmentController, ComposeContainerViewModelDelegate {
+    func getAttachmentController() -> AttachmentController { self }
+
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
         return Promise { [weak self] seal in
             guard let self = self else {
@@ -631,8 +634,8 @@ extension ComposeContainerViewController: AttachmentController {
                     seal.fulfill_()
                     return
                 }
-                let size = fileData.contents.dataSize
 
+                let size = fileData.contents.dataSize
                 let remainingSize = (Constants.kDefaultAttachmentFileSize - self.viewModel.currentAttachmentSize)
                 guard size < remainingSize else {
                     self.sizeError()
@@ -640,33 +643,29 @@ extension ComposeContainerViewController: AttachmentController {
                     return
                 }
 
-                var newAttachment: AttachmentEntity?
-                let attachmentGroup = DispatchGroup()
-                attachmentGroup.enter()
-                self.dependencies.contextProvider.performOnRootSavingContext { context in
-                    fileData.contents.toAttachment(
-                        context, fileName: fileData.name,
+                let isInline = calculateShouldAddedAsInline(mimeType: fileData.mimeType)
+                let newAttachment = try? self.dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+                    return fileData.contents.toAttachment(
+                        context,
+                        fileName: fileData.name,
                         type: fileData.mimeType,
                         stripMetadata: self.viewModel.shouldStripAttachmentMetadata,
-                        isInline: false
-                    ).done { attachment in
-                        newAttachment = attachment
-                        attachmentGroup.leave()
-                    }
+                        cid: nil,
+                        isInline: isInline
+                    )
                 }
-                attachmentGroup.wait()
 
-                guard let att = newAttachment else {
+                guard let newAttachment = newAttachment else {
                     self.error(LocalString._cant_copy_the_file)
                     return
                 }
-                self.isAddingAttachment = true
+                self.isAddingAttachment = !isInline
 
                 let group = DispatchGroup()
                 group.enter()
                 self.editor.collectDraftData().ensure { [weak self] in
                     self?.viewModel.childViewModel.updateDraft()
-                    self?.addAttachment(att) {
+                    self?.addAttachment(newAttachment) {
                         self?.updateCurrentAttachmentSize(completion: {
                             group.leave()
                         })
@@ -676,6 +675,11 @@ extension ComposeContainerViewController: AttachmentController {
                 seal.fulfill_()
             }
         }
+    }
+
+    private func calculateShouldAddedAsInline(mimeType: String) -> Bool {
+        return (AttachmentType.mimeTypeMap[.image] ?? []).contains(mimeType.lowercased()) &&
+            UserInfo.shareImagesAsInlineByDefault
     }
 
     func error(_ description: String) {
@@ -689,7 +693,19 @@ extension ComposeContainerViewController: AttachmentController {
     private func addAttachment(_ attachment: AttachmentEntity, completion: @escaping () -> Void) {
         viewModel.addAttachment(attachment.objectID)
         viewModel.user.usedSpace(plus: attachment.fileSize.int64Value)
-        updateAttachmentView(completion: completion)
+
+        // Insert inline attachment into the composer
+        if attachment.isInline,
+           let base64String = attachment.localURL?.toBase64(),
+           let contentID = attachment.contentId,
+           UserInfo.shareImagesAsInlineByDefault {
+            let encodedData = "data:\(attachment.rawMimeType);base64, \(base64String)"
+            editor.htmlEditor.insertEmbedImage(cid: "cid:\(contentID)", encodedData: encodedData) { [weak self] in
+                self?.updateAttachmentView(completion: completion)
+            }
+        } else {
+            updateAttachmentView(completion: completion)
+        }
     }
 
     private func updateAttachmentView(completion: @escaping () -> Void) {
@@ -765,7 +781,7 @@ extension ComposeContainerViewController: ScheduledSendHelperDelegate {
     }
 
     func isItAPaidUser() -> Bool {
-        return viewModel.user.isPaid
+        return viewModel.user.hasPaidMailPlan
     }
 
 #if !APP_EXTENSION
@@ -914,6 +930,10 @@ extension ComposeContainerViewController: ComposeExpirationDelegate {
 // MARK: - ComposeViewControllerDelegate
 
 extension ComposeContainerViewController: ComposeContentViewControllerDelegate {
+    func updateAttachmentView() {
+        updateAttachmentView(completion: {})
+    }
+    
     func willDismiss() {
         delegate?.composerVillDismiss()
     }

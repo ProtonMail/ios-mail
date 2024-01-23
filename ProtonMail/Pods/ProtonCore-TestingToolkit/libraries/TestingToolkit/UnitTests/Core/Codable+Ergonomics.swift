@@ -52,14 +52,14 @@ public extension Encodable {
         result["Code"] = 1000
         return result
     }
-    
+
     func toErrorResponse(code: Int, error: String) -> [String: Any] {
         var result = try! JSONSerialization.jsonObject(with: JSONEncoder().encode(self)) as! [String: Any]
         result["Code"] = code
         result["Error"] = error
         return result
     }
-    
+
     var encodingStrategyExceptions: [String: String] {
         return ["srpSession": "SRPSession"]
     }
@@ -77,7 +77,7 @@ public extension Decodable {
     static func from(_ dict: [String: Any]?) -> Self {
         try! JSONDecoder.decapitalisingFirstLetter.decode(Self.self, from: JSONSerialization.data(withJSONObject: dict!))
     }
-    
+
     static func fromIfPossible(_ dict: [String: Any]?) -> Self? {
         try? JSONDecoder.decapitalisingFirstLetter.decode(Self.self, from: JSONSerialization.data(withJSONObject: dict!))
     }
@@ -85,7 +85,7 @@ public extension Decodable {
 
 struct CustomCodingKey: CodingKey {
     var stringValue: String
-    
+
     init?(stringValue: String) {
         self.stringValue = stringValue
     }
@@ -93,16 +93,16 @@ struct CustomCodingKey: CodingKey {
     var intValue: Int? {
         return nil
     }
-    
+
     init?(intValue: Int) {
         return nil
     }
 }
 
 extension Dictionary where Key == String, Value == Any {
-    
+
     public func serializedToData() throws -> Data {
         try JSONSerialization.data(withJSONObject: self, options: .sortedKeys)
     }
-    
+
 }

@@ -38,6 +38,11 @@ class MockContactProvider: ContactProviderProtocol {
         return allContactsToReturn
     }
 
+    @FuncStub(MockContactProvider.getContactsByUUID, initialReturn: []) var getContactsByUUIDStub
+    func getContactsByUUID(_ uuids: [String]) -> [ProtonMail.ContactEntity] {
+        getContactsByUUIDStub(uuids)
+    }
+
     @FuncStub(MockContactProvider.getEmailsByAddress, initialReturn: []) var getEmailsByAddressStub
     func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity] {
         getEmailsByAddressStub(emailAddresses)
@@ -45,6 +50,15 @@ class MockContactProvider: ContactProviderProtocol {
 
     func getAllEmails() -> [EmailEntity] {
         return allEmailsToReturn
+    }
+
+    @ThrowingFuncStub(MockContactProvider.createLocalContact, initialReturn: "") var createLocalContactStub
+    func createLocalContact(
+        name: String,
+        emails: [(address: String, type: ProtonMail.ContactFieldType)],
+        cards: [ProtonMail.CardData]
+    ) throws -> String {
+        try createLocalContactStub(name, emails, cards)
     }
 
     func fetchContacts(completion: ContactFetchComplete?) {

@@ -22,7 +22,7 @@
 import Foundation
 
 extension ServicePlanDataServiceProtocol {
-    
+
     public var hasPaymentMethods: Bool {
         guard let paymentMethods = paymentMethods else {
             // if we don't know better, we default to assuming the user has payment methods available

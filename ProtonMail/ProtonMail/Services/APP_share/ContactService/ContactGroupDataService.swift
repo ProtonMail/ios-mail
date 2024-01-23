@@ -31,7 +31,7 @@ protocol ContactGroupsProviderProtocol: AnyObject {
     func getAllContactGroupVOs() -> [ContactGroupVO]
 }
 
-class ContactGroupsDataService: Service, ContactGroupsProviderProtocol {
+class ContactGroupsDataService: ContactGroupsProviderProtocol {
     func cleanUp() {
             coreDataService.performAndWaitOnRootSavingContext { context in
                 let groups = self.labelDataService.getAllLabels(of: .contactGroup, context: context)
@@ -39,11 +39,6 @@ class ContactGroupsDataService: Service, ContactGroupsProviderProtocol {
                     context.delete($0)
                 }
             }
-    }
-
-    static func cleanUpAll()  {
-        // FIXME: this will remove not only contactGroups but all other labels as well
-        return LabelsDataService.cleanUpAll()
     }
 
     private let apiService: APIService
@@ -121,19 +116,16 @@ class ContactGroupsDataService: Service, ContactGroupsProviderProtocol {
                 } else {
                     if response.returnedCode != nil {
                         // successfully deleted on the server
-                        self.coreDataService.enqueueOnRootSavingContext { context in
-                            let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
-                            if let label = label {
-                                context.delete(label)
-                            }
-                            do {
-                                try context.save()
+                        do {
+                            try self.coreDataService.write { context in
+                                let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
+                                if let label = label {
+                                    context.delete(label)
+                                }
                                 seal.fulfill(())
-                                return
-                            } catch {
-                                seal.reject(error)
-                                return
                             }
+                        } catch {
+                            seal.reject(error)
                         }
                     } else {
                         seal.reject(NSError.unableToParseResponse(response))
@@ -156,7 +148,7 @@ class ContactGroupsDataService: Service, ContactGroupsProviderProtocol {
                 var mails: [EmailEntity] = []
                 self.coreDataService.performAndWaitOnRootSavingContext { context in
                     mails = emailIDs
-                        .compactMap { Email.EmailForID($0, inManagedObjectContext: context)}.map(EmailEntity.init)
+                        .compactMap { Email.emailForID($0, inManagedObjectContext: context)}.map(EmailEntity.init)
                 }
                 emailList += mails
             }
@@ -221,7 +213,7 @@ class ContactGroupsDataService: Service, ContactGroupsProviderProtocol {
             var mails: [EmailEntity] = []
             self.coreDataService.performAndWaitOnRootSavingContext { context in
                 mails = emailIDs
-                    .compactMap { Email.EmailForID($0, inManagedObjectContext: context) }.map(EmailEntity.init)
+                    .compactMap { Email.emailForID($0, inManagedObjectContext: context) }.map(EmailEntity.init)
             }
             emailList += mails
 
@@ -321,7 +313,7 @@ extension ContactGroupsDataService {
                 if var mails = label.emails.allObjects as? [Email] {
                     for id in addedEmailIDs {
                         if let _ = mails.first(where: { $0.emailID == id }) { continue }
-                        guard let mail = Email.EmailForID(id, inManagedObjectContext: context) else { continue }
+                        guard let mail = Email.emailForID(id, inManagedObjectContext: context) else { continue }
                         mails.append(mail)
                     }
                     for id in removedEmailIDs {

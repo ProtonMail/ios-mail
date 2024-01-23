@@ -443,6 +443,9 @@
 /* Alert title */
 "Notice" = "Information";
 
+/* Title of alert in share extension. */
+"Error" = "Erreur";
+
 /* Action */
 "Don't remind me again" = "Ne plus me le rappeler";
 
@@ -961,9 +964,6 @@
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Le contenu n'a pas pu être chargé.\nNous vous invitons à réessayer.";
-
-/* Title of alert in share extension. */
-"Error" = "Erreur";
 
 /* Error message */
 "Failed to determine type of file" = "Le type de fichier n'a pas pu être déterminé.";
@@ -1935,6 +1935,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "Quand vous déplacez un message, en l'archivant par exemple, vous passez au message suivant.";
+
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "Une erreur inattendue s'est produite, nous vous invitons à contacter le support.\n%@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "Espace disque insuffisant";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "L'application ne peut pas s'ouvrir en raison d'un espace disque insuffisant. Nous vous invitons à supprimer certaines données et à réessayer.";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Le message n'a pas pu être ouvert, veuillez réessayer.";

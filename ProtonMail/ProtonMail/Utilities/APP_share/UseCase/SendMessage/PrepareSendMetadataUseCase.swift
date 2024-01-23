@@ -295,7 +295,7 @@ extension PrepareSendMetadata {
     }
 
     struct Dependencies {
-        let userDataSource: UserDataSource
+        unowned let userDataSource: UserDataSource
         let resolveSendPreferences: ResolveSendPreferencesUseCase
         let fetchAttachment: FetchAttachmentUseCase
     }

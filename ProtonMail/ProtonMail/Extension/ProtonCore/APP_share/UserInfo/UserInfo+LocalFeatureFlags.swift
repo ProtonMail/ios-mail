@@ -18,26 +18,39 @@
 import ProtonCoreDataModel
 
 extension UserInfo {
-    /// Swipe to show previous / next conversation or messages
-    static var isConversationSwipeEnabled: Bool {
-        #if DEBUG_ENTERPRISE
-        return true
-        #else
-        return false
-        #endif
-    }
-
     // Highlight body without encrypted search will give a wrong impression to user that we can search body without ES
     static var isBodySearchKeywordHighlightEnabled: Bool {
         false
     }
 
-
     static var enableSelectAll: Bool {
-        UIApplication.isDebugOrEnterprise
+        true
     }
 
     static var isAppAccessResolverEnabled: Bool {
-        UIApplication.isDebugOrEnterprise
+        false // UIApplication.isDebugOrEnterprise
+    }
+
+    static var isNewEventsLoopEnabled: Bool {
+        #if DEBUG
+        if ProcessInfo.isRunningUnitTests {
+            return true
+        }
+        return false
+        #else
+        return false
+        #endif
+	}
+
+    static var shareImagesAsInlineByDefault: Bool {
+        return true
+    }
+
+    static var isSnoozeEnable: Bool {
+        #if DEBUG
+        return true
+        #else
+        return false
+        #endif
     }
 }

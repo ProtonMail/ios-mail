@@ -22,7 +22,7 @@
 import Foundation
 
 extension Array where Element: Address {
-    
+
     /// find the default address.  status is enable and receive is active
     /// - Returns: address | nil
     public func defaultAddress() -> Address? {
@@ -33,7 +33,7 @@ extension Array where Element: Address {
         }
         return nil
     }
-    
+
     /// find the default send address. status is enable, receive is acitve, send is active
     /// - Returns: address | nil
     public func defaultSendAddress() -> Address? {
@@ -44,7 +44,7 @@ extension Array where Element: Address {
         }
         return nil
     }
-    
+
     /// lookup the first active address
     /// - Parameter addressID: address id
     /// - Returns: address | nil
@@ -56,19 +56,19 @@ extension Array where Element: Address {
         }
         return nil
     }
-    
+
     public func getAddressOrder() -> [String] {
         let ids = self.map { $0.addressID }
         return ids
     }
-    
+
     /// forgot what is this and when will use this
     /// - Returns: description
     func getAddressNewOrder() -> [Int] {
         let ids = self.map { $0.order }
         return ids
     }
-    
+
     /// collect all keys in all addresses
     /// - Returns: [Key]
     public func toKeys() -> [Key] {

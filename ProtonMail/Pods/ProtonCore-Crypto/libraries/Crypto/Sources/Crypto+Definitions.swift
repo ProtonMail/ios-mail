@@ -77,7 +77,7 @@ public class DecryptionContext {
         self.addrKey = addrKey
         self.passphrase = passphrase
     }
-    
+
     public let userKeys: [Key]
     public let addrKey: Key
     public let passphrase: Passphrase
@@ -89,10 +89,10 @@ public class DecryptionKey {
         self.privateKey = privateKey
         self.passphrase = passphrase
     }
-    
+
     public let privateKey: ArmoredKey
     public let passphrase: Passphrase
-    
+
     public var isEmpty: Bool {
         guard !self.privateKey.isEmpty else {
             return true

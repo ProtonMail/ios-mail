@@ -31,7 +31,7 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
     static let nib = UINib(nibName: "CurrentPlanCell", bundle: PaymentsUI.bundle)
 
     // MARK: - Outlets
-    
+
     @IBOutlet weak var mainView: UIView! {
         didSet {
             mainView.layer.cornerRadius = 12.0
@@ -80,7 +80,7 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
         priceDescriptionLabel.font = .adjustedFont(forTextStyle: .footnote)
     }
     // MARK: - Properties
-    
+
     func configurePlan(plan: PlanPresentation) {
         planDetailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         guard case PlanPresentationType.current(let planDetails) = plan.planPresentationType else { return }
@@ -91,13 +91,13 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
             configureUnavailablePlan()
         }
     }
-    
+
     private func configureCurrentPlan(plan: PlanPresentation, currentPlanDetails: CurrentPlanDetails) {
         generateCellAccessibilityIdentifiers(currentPlanDetails.name)
-        
+
         planNameLabel.text = currentPlanDetails.name
         planDescriptionLabel.text = PUITranslations.current_plan_title.l10n
-        
+
         if let price = currentPlanDetails.price {
             priceLabel.isHidden = false
             priceDescriptionLabel.isHidden = false
@@ -127,7 +127,7 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
             enableTimeView(enabled: false)
         }
     }
-    
+
     private func configureUnavailablePlan() {
         planNameLabel.text = ""
         priceLabel.text = ""
@@ -138,16 +138,16 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
         enableProgressView(enabled: false)
         enableTimeView(enabled: false)
     }
-    
+
     // MARK: Private interface
-    
+
     private func enableTimeView(enabled: Bool) {
         timeSeparator1View.isHidden = !enabled
         separatorLineView.isHidden = !enabled
         timeSeparator2View.isHidden = !enabled
         planTimeLabel.isHidden = !enabled
     }
-    
+
     private func enableProgressView(enabled: Bool) {
         progressBarSpacerView.isHidden = !enabled
         progressBarView.isHidden = !enabled
@@ -161,18 +161,18 @@ extension CurrentPlanCell {
     func configurePlan(currentPlan: CurrentPlanPresentation) {
         planDetailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         generateCellAccessibilityIdentifiers(currentPlan.details.title)
-        
+
         planNameLabel.text = currentPlan.details.title
         planDescriptionLabel.text = PUITranslations.current_plan_title.l10n
-        
+
         priceLabel.isHidden = currentPlan.details.hidePriceDetails
         priceDescriptionLabel.isHidden = currentPlan.details.hidePriceDetails
         priceLabel.text = currentPlan.details.price
         priceDescriptionLabel.text = currentPlan.details.cycleDescription
-        
+
         progressBarSpacerView.isHidden = true
         progressBarView.isHidden = true
-        
+
         for entitlement in currentPlan.details.entitlements {
             switch entitlement {
             case .progress(let progressEntitlement):
@@ -189,7 +189,7 @@ extension CurrentPlanCell {
                 planDetailsStackView.addArrangedSubview(detailView)
             }
         }
-        
+
         if let endDate = currentPlan.details.endDate {
             enableTimeView(enabled: true)
             planTimeLabel.attributedText = endDate

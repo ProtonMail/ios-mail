@@ -255,6 +255,16 @@ extension Message {
         messageForMessageID(messageID, inManagedObjectContext: context)
     }
 
+    class func messageFor(messageID: String, userID: UserID, in context: NSManagedObjectContext) -> Message? {
+        return context.managedObjectWithEntityName(
+            Attributes.entityName,
+            matching: [
+                Attributes.messageID: messageID,
+                Attributes.userID: userID.rawValue
+            ]
+        )
+    }
+
     class func messagesForConversationID(_ conversationID: String,
                                          inManagedObjectContext context: NSManagedObjectContext,
                                          shouldSort: Bool = false) -> [Message]? {

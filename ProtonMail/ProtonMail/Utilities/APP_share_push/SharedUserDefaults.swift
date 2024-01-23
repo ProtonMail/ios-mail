@@ -36,41 +36,42 @@ struct SharedUserDefaults {
     init(dependencies: Dependencies = .init()) {
         self.dependencies = dependencies
     }
-
-    private enum Key: String {
-        case failedPushNotificationDecryption
-    }
 }
 
 extension SharedUserDefaults: FailedPushDecryptionMarker {
     func markPushNotificationDecryptionFailure() {
         SystemLogger.log(message: "marked push notification decryption failure", category: .encryption)
-        dependencies.userDefaults.set(true, forKey: Key.failedPushNotificationDecryption.rawValue)
+        dependencies.userDefaults[.failedPushNotificationDecryption] = true
     }
 }
 
 extension SharedUserDefaults: FailedPushDecryptionProvider {
     var hadPushNotificationDecryptionFailed: Bool {
-        dependencies.userDefaults.bool(forKey: Key.failedPushNotificationDecryption.rawValue)
+        dependencies.userDefaults[.failedPushNotificationDecryption] ?? false
     }
 
     func clearPushNotificationDecryptionFailure() {
-        dependencies.userDefaults.removeObject(forKey: Key.failedPushNotificationDecryption.rawValue)
+        dependencies.userDefaults[.failedPushNotificationDecryption] = nil
+    }
+}
+
+extension SharedUserDefaults: PushCacheStatus {
+    var primaryUserSessionId: String? {
+        get {
+            dependencies.userDefaults[.primaryUserSessionId]
+        }
+        set {
+            dependencies.userDefaults[.primaryUserSessionId] = newValue
+        }
     }
 }
 
 extension SharedUserDefaults {
-#if Enterprise
-    private static let appGroupUserDefaults = UserDefaults(suiteName: "group.com.protonmail.protonmail")
-#else
-    private static let appGroupUserDefaults = UserDefaults(suiteName: "group.ch.protonmail.protonmail")
-#endif
-
     struct Dependencies {
         let userDefaults: UserDefaults
 
         // swiftlint:disable:next force_unwrapping
-        init(userDefaults: UserDefaults = SharedUserDefaults.appGroupUserDefaults!) {
+        init(userDefaults: UserDefaults = UserDefaults(suiteName: Constants.AppGroup)!) {
             self.userDefaults = userDefaults
         }
     }

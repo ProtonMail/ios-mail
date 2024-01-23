@@ -1,3 +1,4 @@
+import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 import ProtonCoreServices
 

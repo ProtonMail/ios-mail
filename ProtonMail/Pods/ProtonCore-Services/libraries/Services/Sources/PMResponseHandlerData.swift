@@ -36,7 +36,7 @@ public struct PMResponseHandlerData {
     public var retryPolicy: ProtonRetryPolicy.RetryMode
     public var task: URLSessionDataTask?
     public var onDataTaskCreated: (URLSessionDataTask) -> Void
-    
+
     public init(method: HTTPMethod,
                 path: String,
                 parameters: Any? = nil,

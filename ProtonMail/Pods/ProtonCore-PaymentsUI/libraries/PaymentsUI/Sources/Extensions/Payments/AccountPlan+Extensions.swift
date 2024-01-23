@@ -31,7 +31,7 @@ extension InAppPurchasePlan {
         else { return nil }
         return PriceFormatter.formatPlanPrice(price: price.0.doubleValue, locale: price.1)
     }
-    
+
     func planLocale(from storeKitManager: StoreKitManagerProtocol) -> Locale? {
         guard let storeKitProductId = storeKitProductId,
               let price = storeKitManager.priceLabelForProduct(storeKitProductId: storeKitProductId)

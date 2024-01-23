@@ -20,6 +20,5 @@ import ProtonCoreKeymaker
 
 // sourcery: mock
 protocol LockPreferences {
-    func setKeymakerRandomkey(key: String?)
     func setLockTime(value: AutolockTimeout)
 }

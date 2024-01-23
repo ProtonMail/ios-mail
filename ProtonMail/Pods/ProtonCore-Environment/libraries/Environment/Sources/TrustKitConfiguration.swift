@@ -29,7 +29,7 @@ extension TrustKitWrapper {
     // The value of `ignoreMacUserDefinedTrustAnchors` is ignored on iOS, it's macOS-only
     // However, to make it easier to share the TrustKit configuration between iOS and macOS,
     // we expose the same API on both platforms
-    static public func configuration(hardfail: Bool, ignoreMacUserDefinedTrustAnchors: Bool = false) -> Configuration {
+    public static func configuration(hardfail: Bool, ignoreMacUserDefinedTrustAnchors: Bool = false) -> Configuration {
         let propertiesForAllPlatforms: Configuration = [
             kTSKSwizzleNetworkDelegates: false,
             kTSKPinnedDomains: pinnedDomains(hardfail: hardfail)
@@ -38,7 +38,9 @@ extension TrustKitWrapper {
         return propertiesForAllPlatforms.merging(platformSpecificConfiguration, uniquingKeysWith: { lhs, rhs in rhs })
     }
 
-    private static func pinnedDomains(hardfail: Bool) -> [String : [String : Any]] {
+    // swiftlint:disable:next function_body_length
+    private static func pinnedDomains(hardfail: Bool) ->
+      [String: [String: Any]] {
         let reportURIs: [String] = [
             "https://reports.proton.me/reports/tls"
         ]

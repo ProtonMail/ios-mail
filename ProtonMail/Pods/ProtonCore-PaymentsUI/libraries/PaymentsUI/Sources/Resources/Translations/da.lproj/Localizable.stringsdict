@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
-    <key>%d users</key>
+    <key>&lt;n&gt; email aliases</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -13,12 +13,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d bruger</string>
+        <string>%d email alias</string>
         <key>other</key>
-        <string>%d brugere</string>
+        <string>%d email aliases</string>
       </dict>
     </dict>
-    <key>%d email addresses</key>
+    <key>&lt;n&gt; users</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -29,12 +29,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d e-mailadresse</string>
+        <string>%d user</string>
         <key>other</key>
-        <string>%d e-mailadresser</string>
+        <string>%d users</string>
       </dict>
     </dict>
-    <key>%d email addresses / user</key>
+    <key>&lt;n&gt; email addresses</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -45,12 +45,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d e-mailadresse / bruger</string>
+        <string>%d email address</string>
         <key>other</key>
-        <string>%d e-mailadresser / bruger</string>
+        <string>%d email addresses</string>
       </dict>
     </dict>
-    <key>%d calendars</key>
+    <key>&lt;n&gt; email addresses / user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -61,12 +61,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d kalender</string>
+        <string>%d email address / user</string>
         <key>other</key>
-        <string>%d kalendere</string>
+        <string>%d email addresses / user</string>
       </dict>
     </dict>
-    <key>%d folders / labels</key>
+    <key>&lt;n&gt; calendars</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -77,12 +77,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d mappe / etikette</string>
+        <string>%d calendar</string>
         <key>other</key>
-        <string>%d mapper / etiketter</string>
+        <string>%d calendars</string>
       </dict>
     </dict>
-    <key>%d countries</key>
+    <key>&lt;n&gt; folders / labels</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -93,12 +93,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d land</string>
+        <string>%d folder / label</string>
         <key>other</key>
-        <string>%d lande</string>
+        <string>%d folders / labels</string>
       </dict>
     </dict>
-    <key>%d connections</key>
+    <key>&lt;n&gt; countries</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -109,12 +109,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d forbindelse</string>
+        <string>%d country</string>
         <key>other</key>
-        <string>%d forbindelser</string>
+        <string>%d countries</string>
       </dict>
     </dict>
-    <key>%d VPN connections</key>
+    <key>&lt;n&gt; connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -125,12 +125,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d VPN-forbindelse</string>
+        <string>%d connection</string>
         <key>other</key>
-        <string>%d VPN-forbindelser</string>
+        <string>%d connections</string>
       </dict>
     </dict>
-    <key>%d high-speed VPN connections</key>
+    <key>&lt;n&gt; VPN connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -141,12 +141,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d højhastigheds VPN-forbindelse</string>
+        <string>%d VPN connection</string>
         <key>other</key>
-        <string>%d højhastigheds VPN-forbindelser</string>
+        <string>%d VPN connections</string>
       </dict>
     </dict>
-    <key>%d custom domains</key>
+    <key>&lt;n&gt; high-speed VPN connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -157,12 +157,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d brugerdomæne</string>
+        <string>%d high-speed VPN connection</string>
         <key>other</key>
-        <string>%d brugerdomæner</string>
+        <string>%d high-speed VPN connections</string>
       </dict>
     </dict>
-    <key>%d vaults</key>
+    <key>&lt;n&gt; custom domains</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -173,12 +173,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d boks</string>
+        <string>%d custom domain</string>
         <key>other</key>
-        <string>%d bokse</string>
+        <string>%d custom domains</string>
       </dict>
     </dict>
-    <key>Support for %d custom email domains</key>
+    <key>&lt;n&gt; vaults</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -189,12 +189,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Mulighed for %d brugerdefineret e-mail-domæne</string>
+        <string>%d vault</string>
         <key>other</key>
-        <string>Mulighed for %d brugerdefinerede e-mail-domæner</string>
+        <string>%d vaults</string>
       </dict>
     </dict>
-    <key>%d folders and labels</key>
+    <key>Support for &lt;n&gt; custom email domains</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -205,12 +205,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d mappe og etiket</string>
+        <string>Support for %d custom email domain</string>
         <key>other</key>
-        <string>%d mapper og etiketter</string>
+        <string>Support for %d custom email domains</string>
       </dict>
     </dict>
-    <key>%d calendars</key>
+    <key>&lt;n&gt; folders and labels</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -221,12 +221,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d kalender</string>
+        <string>%d folder and label</string>
         <key>other</key>
-        <string>%d kalendere</string>
+        <string>%d folders and labels</string>
       </dict>
     </dict>
-    <key>High-speed VPN on %d devices</key>
+    <key>High-speed VPN on &lt;n&gt; devices</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -237,15 +237,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Højhastigheds VPN på %d enhed</string>
+        <string>High-speed VPN on %d device</string>
         <key>other</key>
-        <string>Højhastigheds VPN på %d enheder</string>
+        <string>High-speed VPN on %d devices</string>
       </dict>
     </dict>
-    <key>%d+ servers in %d countries</key>
+    <key>&lt;n&gt;+ servers in &lt;m&gt; countries</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@SERVERS@ i %#@COUNTRIES@</string>
+      <string>%#@SERVERS@ in %#@COUNTRIES@</string>
       <key>SERVERS</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -255,7 +255,7 @@
         <key>one</key>
         <string>%d+ server</string>
         <key>other</key>
-        <string>%d+ servere</string>
+        <string>%d+ servers</string>
       </dict>
       <key>COUNTRIES</key>
       <dict>
@@ -264,15 +264,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d land</string>
+        <string>%d country</string>
         <key>other</key>
-        <string>%d lande</string>
+        <string>%d countries</string>
       </dict>
     </dict>
-    <key>%d servers in %d countries (US, NL, JP)</key>
+    <key>&lt;n&gt; servers in &lt;m&gt; countries (US, NL, JP)</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@SERVERS@ i %#@COUNTRIES@</string>
+      <string>%#@SERVERS@ in %#@COUNTRIES@</string>
       <key>SERVERS</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -282,7 +282,7 @@
         <key>one</key>
         <string>%d server</string>
         <key>other</key>
-        <string>%d server</string>
+        <string>%d servers</string>
       </dict>
       <key>COUNTRIES</key>
       <dict>
@@ -291,15 +291,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d land (US, NL, JP)</string>
+        <string>%d country (US, NL, JP)</string>
         <key>other</key>
-        <string>%d lande (US, NL, JP)</string>
+        <string>%d countries (US, NL, JP)</string>
       </dict>
     </dict>
-    <key>%d of %d users</key>
+    <key>&lt;n&gt; of &lt;m&gt; users</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ af %#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>one</key>
@@ -318,15 +318,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d bruger</string>
+        <string>%d user</string>
         <key>other</key>
-        <string>%d brugere</string>
+        <string>%d users</string>
       </dict>
     </dict>
-    <key>%d of %d email addresses</key>
+    <key>&lt;n&gt; of &lt;m&gt; email addresses</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ af %#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>one</key>
@@ -345,15 +345,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d e-mailadresse</string>
+        <string>%d email address</string>
         <key>other</key>
-        <string>%d e-mailadresser</string>
+        <string>%d email addresses</string>
       </dict>
     </dict>
-    <key>%d of %d calendars</key>
+    <key>&lt;n&gt; of &lt;m&gt; calendars</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ af %#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>one</key>
@@ -372,12 +372,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d kalender</string>
+        <string>%d calendar</string>
         <key>other</key>
-        <string>%d kalendere</string>
+        <string>%d calendars</string>
       </dict>
     </dict>
-    <key>%d addresses per user</key>
+    <key>&lt;n&gt; addresses per user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -388,12 +388,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d adresse pr. bruger</string>
+        <string>%d address per user</string>
         <key>other</key>
-        <string>%d adresser pr. bruger</string>
+        <string>%d addresses per user</string>
       </dict>
     </dict>
-    <key>%d calendars per user</key>
+    <key>&lt;n&gt; calendars per user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -404,12 +404,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d kalender pr. bruger</string>
+        <string>%d calendar per user</string>
         <key>other</key>
-        <string>%d kalendere pr. bruger</string>
+        <string>%d calendars per user</string>
       </dict>
     </dict>
-    <key>%d VPN connections per user</key>
+    <key>&lt;n&gt; VPN connections per user</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -420,12 +420,12 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d VPN-forbindelse pr. bruger</string>
+        <string>%d VPN connection per user</string>
         <key>other</key>
-        <string>%d VPN-forbindelser pr. bruger</string>
+        <string>%d VPN connections per user</string>
       </dict>
     </dict>
-    <key>Pay for %d months</key>
+    <key>Pay for &lt;n&gt; months</key>
     <dict>
       <key>VARIABLE</key>
       <dict>
@@ -434,14 +434,14 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Betal for %d måned</string>
+        <string>Pay for %d month</string>
         <key>other</key>
-        <string>Betal for %d måneder</string>
+        <string>Pay for %d months</string>
       </dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
     </dict>
-    <key>Medium VPN speed %d VPN connections</key>
+    <key>Medium VPN speed &lt;n&gt; VPN connections</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>
@@ -452,9 +452,25 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Medium VPN-hastighed %d VPN-forbindelse</string>
+        <string>Medium VPN speed %d VPN connection</string>
         <key>other</key>
-        <string>Medium VPN-hastighed %d VPN-forbindelser</string>
+        <string>Medium VPN speed %d VPN connections</string>
+      </dict>
+    </dict>
+    <key>Up to &lt;n&gt; forwarding mailboxes</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Up to %d forwarding mailbox</string>
+        <key>other</key>
+        <string>Up to %d forwarding mailboxes</string>
       </dict>
     </dict>
   </dict>

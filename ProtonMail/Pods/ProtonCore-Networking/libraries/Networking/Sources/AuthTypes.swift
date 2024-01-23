@@ -73,7 +73,7 @@ public final class AuthCredential: NSObject, NSCoding, Codable {
     }
 
     public var isForUnauthenticatedSession: Bool { userID.isEmpty }
-    
+
     public init(sessionID: String,
                 accessToken: String,
                 refreshToken: String,
@@ -89,7 +89,7 @@ public final class AuthCredential: NSObject, NSCoding, Codable {
         self.privateKey = privateKey
         self.passwordKeySalt = passwordKeySalt
     }
-    
+
     @available(*, deprecated, message: "Please use the init method without expiration")
     public init(sessionID: String,
                 accessToken: String,
@@ -107,7 +107,7 @@ public final class AuthCredential: NSObject, NSCoding, Codable {
         self.privateKey = privateKey
         self.passwordKeySalt = passwordKeySalt
     }
-    
+
     public init(copying other: AuthCredential) {
         self.sessionID = other.sessionID
         self.accessToken = other.accessToken
@@ -158,7 +158,7 @@ public final class AuthCredential: NSObject, NSCoding, Codable {
         self.accessToken = accessToken
         self.refreshToken = refreshToken
     }
-    
+
     @available(*, deprecated, message: "Please use the update method without expiration")
     public func udpate(sessionID: String,
                        accessToken: String,
@@ -252,7 +252,7 @@ extension AuthCredential {
                   privateKey: nil,
                   passwordKeySalt: nil)
     }
-    
+
     public func updatedKeepingKeyAndPasswordDataIntact(credential: Credential) -> AuthCredential {
         self.sessionID = credential.UID
         self.accessToken = credential.accessToken
@@ -280,7 +280,7 @@ public struct Credential: Equatable {
     @available(*, deprecated, renamed: "scopes")
     public var scope: Scopes { scopes }
     public var scopes: Scopes
-    
+
     public var hasFullScope: Bool { scopes.contains("full") }
 
     public var isForUnauthenticatedSession: Bool { userID.isEmpty }
@@ -293,7 +293,7 @@ public struct Credential: Equatable {
         self.userID = userID
         self.scopes = scopes
     }
-    
+
     @available(*, deprecated, message: "Please use the init method without expiration and with scopes")
     public init(UID: String, accessToken: String, refreshToken: String, expiration: Date, userName: String, userID: String, scope: Scopes) {
         self.UID = UID
@@ -312,7 +312,7 @@ public struct Credential: Equatable {
         self.userID = userID
         self.scopes = res.scopes
     }
-    
+
     @available(*, deprecated, message: "Please update scopes property directly")
     public mutating func updateScope(_ newScope: BackendScope) {
         self.scopes = newScope.components(separatedBy: " ")
@@ -348,7 +348,7 @@ extension Credential {
                   userID: authCredential.userID,
                   scopes: [])
     }
-    
+
     public init(_ authCredential: AuthCredential, scopes: Scopes) {
         self.init(UID: authCredential.sessionID,
                   accessToken: authCredential.accessToken,
@@ -357,7 +357,7 @@ extension Credential {
                   userID: authCredential.userID,
                   scopes: scopes)
     }
-    
+
     @available(*, deprecated, message: "Please use the init method with scopes")
     public init(_ authCredential: AuthCredential, scope: Scopes) {
         self.init(UID: authCredential.sessionID,
@@ -370,9 +370,9 @@ extension Credential {
 }
 
 public struct VerifyMethod: Equatable {
-    
+
     public var method: String
-    
+
     public init(string: String) {
         self.method = string
     }
@@ -387,11 +387,11 @@ extension VerifyMethod {
         case email
         case payment
     }
-    
+
     public init(predefinedMethod: PredefinedMethod) {
         self.method = predefinedMethod.rawValue
     }
-    
+
     public init?(predefinedString: String) {
         switch predefinedString {
         case PredefinedMethod.captcha.rawValue, PredefinedMethod.sms.rawValue,
@@ -400,7 +400,7 @@ extension VerifyMethod {
         default: return nil
         }
     }
-    
+
     public var predefinedMethod: PredefinedMethod? {
         switch method {
         case PredefinedMethod.captcha.rawValue: return .captcha
@@ -436,7 +436,7 @@ public struct HumanVerifyParameters {
     public var methods: [VerifyMethod] = []
     public var startToken: String?
     public var title: String?
-    
+
     public init(methods: [VerifyMethod] = [], startToken: String? = nil, title: String? = nil) {
         self.methods = methods
         self.startToken = startToken
@@ -463,7 +463,7 @@ public enum ChallengeType: Int {
     case WASM = 1
     case Argon2 = 2
     case ECDLP = 3
-    
+
     public init?(rawValue: Int) {
         switch rawValue {
         case 1:
@@ -519,7 +519,7 @@ public enum AuthErrors: Error {
     case wrongPassword
     case switchToSSOError
     case switchToSRPError
-    
+
     // case serverError(NSError) <- This case was removed. Use networkingError instead. If you're logic depends on previously available NSError, use .underlyingError property.
     // In case you wonder why I'm writing a comment and not use @available(*, unavailable): it's because at the time of writing,
     // this bug is still open: https://bugs.swift.org/browse/SR-4079 and it renders availability mark for enum cases useless.
@@ -560,7 +560,7 @@ public enum AuthErrors: Error {
             return message
         }
     }
-    
+
     public var isInvalidAccessToken: Bool {
         if case .networkingError(let responseError) = self, responseError.httpCode == 401 {
             return true

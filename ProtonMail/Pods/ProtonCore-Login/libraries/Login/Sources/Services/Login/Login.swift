@@ -32,7 +32,7 @@ public struct CreateAddressData {
     public let user: User
     public let mailboxPassword: String
     public let passwordMode: PasswordMode
-    
+
     public init(email: String, credential: AuthCredential, user: User, mailboxPassword: String, passwordMode: PasswordMode) {
         self.email = email
         self.credential = credential
@@ -114,7 +114,7 @@ public extension LoginError {
             return localizedDescription
         }
     }
-    
+
     var codeInLogin: Int {
         switch self {
         case .apiMightBeBlocked(_, let originalError): return originalError.bestShotAtReasonableErrorCode
@@ -177,7 +177,7 @@ public extension SignupError {
             return localizedDescription
         }
     }
-    
+
     var codeInLogin: Int {
         switch self {
         case .apiMightBeBlocked(_, let originalError): return originalError.bestShotAtReasonableErrorCode
@@ -255,7 +255,7 @@ public extension SetUsernameError {
         case .alreadySet(let message), .generic(let message, _, _), .apiMightBeBlocked(let message, _): return message
         }
     }
-    
+
     var codeInLogin: Int {
         switch self {
         case .apiMightBeBlocked(_, let originalError): return originalError.bestShotAtReasonableErrorCode
@@ -279,7 +279,7 @@ public extension CreateAddressError {
         default: return localizedDescription
         }
     }
-    
+
     var codeInLogin: Int {
         switch self {
         case .apiMightBeBlocked(_, let originalError): return originalError.bestShotAtReasonableErrorCode
@@ -296,7 +296,7 @@ public enum CreateAddressKeysError: Error {
 }
 
 extension CreateAddressKeysError: Equatable {
-    
+
     public static func == (lhs: CreateAddressKeysError, rhs: CreateAddressKeysError) -> Bool {
         switch (lhs, rhs) {
         case (.alreadySet, .alreadySet): return true
@@ -305,7 +305,7 @@ extension CreateAddressKeysError: Equatable {
         default: return false
         }
     }
-    
+
 }
 
 public extension CreateAddressKeysError {
@@ -315,7 +315,7 @@ public extension CreateAddressKeysError {
         case .alreadySet: return localizedDescription
         }
     }
-    
+
     var codeInLogin: Int {
         switch self {
         case .apiMightBeBlocked(_, let originalError): return originalError.bestShotAtReasonableErrorCode
@@ -329,7 +329,7 @@ public protocol Login {
     func processResponseToken(idpEmail: String, responseToken: SSOResponseToken, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func getSSORequest(challenge ssoChallengeResponse: SSOChallengeResponse) async -> (request: URLRequest?, error: String?)
     func isProtonPage(url: URL?) -> Bool
-    
+
     var currentlyChosenSignUpDomain: String { get set }
     var allSignUpDomains: [String] { get }
     func updateAllAvailableDomains(type: AvailableDomainsType, result: @escaping ([String]?) -> Void)
@@ -342,13 +342,13 @@ public protocol Login {
     func checkAvailabilityForUsernameAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void)
     func checkAvailabilityForInternalAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void)
     func checkAvailabilityForExternalAccount(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void)
-    
+
     func setUsername(username: String, completion: @escaping (Result<(), SetUsernameError>) -> Void)
 
     func createAccountKeysIfNeeded(user: User, addresses: [Address]?, mailboxPassword: String?, completion: @escaping (Result<User, LoginError>) -> Void)
     func createAddress(completion: @escaping (Result<Address, CreateAddressError>) -> Void)
     func createAddressKeys(user: User, address: Address, mailboxPassword: String, completion: @escaping (Result<Key, CreateAddressKeysError>) -> Void)
-    
+
     func refreshCredentials(completion: @escaping (Result<Credential, LoginError>) -> Void)
     func refreshUserInfo(completion: @escaping (Result<User, LoginError>) -> Void)
     func availableUsernameForExternalAccountEmail(email: String, completion: @escaping (String?) -> Void)
@@ -363,32 +363,32 @@ public extension Login {
 
     @available(*, deprecated, renamed: "currentlyChosenSignUpDomain")
     var signUpDomain: String { currentlyChosenSignUpDomain }
-    
+
     @available(*, deprecated, message: "this will be removed. use the function with challenge")
     func login(username: String, password: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         login(username: username, password: password, intent: nil, challenge: nil, completion: completion)
     }
-    
+
     @available(*, deprecated, message: "Please switch to the updateAllAvailableDomains variant that returns all domains instead of just a first one")
     func updateAvailableDomain(type: AvailableDomainsType, result: @escaping (String?) -> Void) {
         updateAllAvailableDomains(type: type) { result($0?.first) }
     }
-    
+
     @available(*, deprecated, renamed: "checkAvailabilityForUsernameAccount")
     func checkAvailability(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
         checkAvailabilityForUsernameAccount(username: username, completion: completion)
     }
-    
+
     @available(*, deprecated, renamed: "checkAvailabilityForInternalAccount")
     func checkAvailabilityWithinDomain(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
         checkAvailabilityForInternalAccount(username: username, completion: completion)
     }
-    
+
     @available(*, deprecated, renamed: "checkAvailabilityForExternalAccount")
     func checkAvailabilityExternal(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
         checkAvailabilityForExternalAccount(email: email, completion: completion)
     }
-    
+
     @available(*, deprecated, message: "This method no longer returns the .failed(error), please switch to availableUsernameForExternalAccountEmail instead")
     func checkUsernameFromEmail(email: String, result: @escaping (Result<(String?), AvailabilityError>) -> Void) {
         availableUsernameForExternalAccountEmail(email: email) { username in

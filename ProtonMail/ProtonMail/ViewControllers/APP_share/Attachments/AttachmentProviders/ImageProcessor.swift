@@ -36,12 +36,12 @@ extension ImageProcessor where Self: AttachmentProvider {
     }
 
     internal func process(original originalImage: UIImage) -> Promise<Void> {
-        let fileName = "\(NSUUID().uuidString).PNG"
-        let ext = "image/png"
+        let fileName = "\(NSUUID().uuidString).jpg"
+        let ext = "image/jpeg"
         var fileData: FileData!
 
 #if APP_EXTENSION
-        guard let data = originalImage.pngData(),
+        guard let data = originalImage.jpegData(compressionQuality: 0.8),
               let newUrl = try? self.writeItemToTempDirectory(data, filename: fileName) else {
             self.controller?.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
             return Promise()
@@ -62,16 +62,7 @@ extension ImageProcessor where Self: AttachmentProvider {
                     self.controller?.error(error.debugDescription)
                     return
                 }
-                do {
-                    let videoData = try Data(contentsOf: url)
-                    let fileName = url.lastPathComponent
-                    let fileData = ConcreteFileData(name: fileName, 
-                                                    mimeType: fileName.mimeType(),
-                                                    contents: videoData)
-                    self.controller?.fileSuccessfullyImported(as: fileData).cauterize()
-                } catch {
-                    self.controller?.error(error.localizedDescription)
-                }
+                addAttachment(from: url)
             }
         } else if provider.canLoadObject(ofClass: UIImage.self) {
             provider.loadObject(ofClass: UIImage.self) { image, error in
@@ -91,8 +82,31 @@ extension ImageProcessor where Self: AttachmentProvider {
                                                 contents: imageDataToSave)
                 self.controller?.fileSuccessfullyImported(as: fileData).cauterize()
             }
+        } else if provider.hasItemConformingToTypeIdentifier(UTType.rawImage.identifier) {
+            provider.loadFileRepresentation(forTypeIdentifier: UTType.rawImage.identifier) { url, error in
+                guard error == nil, let url = url else {
+                    self.controller?.error(error.debugDescription)
+                    return
+                }
+                addAttachment(from: url)
+            }
         } else {
             self.controller?.error(LocalString._cant_open_the_file)
+        }
+    }
+
+    private func addAttachment(from url: URL) {
+        do {
+            let data = try Data(contentsOf: url)
+            let fileName = url.lastPathComponent
+            let fileData = ConcreteFileData(
+                name: fileName,
+                mimeType: fileName.mimeType(),
+                contents: data
+            )
+            self.controller?.fileSuccessfullyImported(as: fileData).cauterize()
+        } catch {
+            self.controller?.error(error.localizedDescription)
         }
     }
 }

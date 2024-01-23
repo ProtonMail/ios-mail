@@ -33,32 +33,20 @@ final class BadgeMock: UIApplicationBadgeProtocol {
     }
 }
 
-final class UserSessionMock: UserSessionProvider {
-    var primaryUserSessionIdValue: String?
-    var primaryUserSessionId: String? {
-        get {
-            primaryUserSessionIdValue
-        }
-        set {
-            primaryUserSessionIdValue = newValue
-        }
-    }
-}
-
 final class PushUpdaterTests: XCTestCase {
     private var sut: PushUpdater!
     private var ncMock: NotificationCenterMock!
     private var badgeMock: BadgeMock!
-    private var userSessionMock: UserSessionMock!
+    private var userDefaults: UserDefaults!
 
     override func setUp() {
         super.setUp()
         ncMock = NotificationCenterMock()
         badgeMock = BadgeMock()
-        userSessionMock = UserSessionMock()
+        userDefaults = TestContainer().userDefaults
         sut = PushUpdater(notificationCenter: ncMock,
                           application: badgeMock,
-                          userStatus: userSessionMock)
+                          userDefaults: userDefaults)
     }
 
     override func tearDown() {
@@ -66,7 +54,7 @@ final class PushUpdaterTests: XCTestCase {
         sut = nil
         ncMock = nil
         badgeMock = nil
-        userSessionMock = nil
+        userDefaults = nil
     }
 
     func testNotProvidingACollapseIdShouldTriggerNothing() {
@@ -92,7 +80,7 @@ final class PushUpdaterTests: XCTestCase {
 
     func testProvidingAUIDWithNoCountShouldUpdateNothing() {
         let expectedUID = String.randomString(Int.random(in: 1..<32))
-        userSessionMock.primaryUserSessionId = expectedUID
+        userDefaults[.primaryUserSessionId] = expectedUID
         sut.update(with: ["UID": expectedUID])
         XCTAssert(self.ncMock.callRemove.wasNotCalled)
         XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
@@ -101,7 +89,7 @@ final class PushUpdaterTests: XCTestCase {
     func testProvidingAUIDWithViewModeConversationAndUnreadConversationsShouldSetBadgeToTheRightValue() {
         let expectedUID = String.randomString(Int.random(in: 1..<32))
         let unreadCount = Int.random(in: 0..<100)
-        userSessionMock.primaryUserSessionId = expectedUID
+        userDefaults[.primaryUserSessionId] = expectedUID
         sut.update(with: ["collapseID": String.randomString(Int.random(in: 1..<32)), "UID": expectedUID, "viewMode": 0, "unreadConversations": unreadCount])
         XCTAssert(self.badgeMock.callSetBadge.wasCalledExactlyOnce)
         XCTAssertEqual(self.badgeMock.callSetBadge.lastArguments?.value, unreadCount)
@@ -110,7 +98,7 @@ final class PushUpdaterTests: XCTestCase {
     func testProvidingAUIDWithViewModeMessagesAndUnreadMessagesShouldSetBadgeToTheRightValue() {
         let expectedUID = String.randomString(Int.random(in: 1..<32))
         let unreadCount = Int.random(in: 0..<100)
-        userSessionMock.primaryUserSessionId = expectedUID
+        userDefaults[.primaryUserSessionId] = expectedUID
         sut.update(with: ["collapseID": String.randomString(Int.random(in: 1..<32)), "UID": expectedUID, "viewMode": 1, "unreadMessages": unreadCount])
         XCTAssert(self.badgeMock.callSetBadge.wasCalledExactlyOnce)
         XCTAssertEqual(self.badgeMock.callSetBadge.lastArguments?.value, unreadCount)
@@ -119,7 +107,7 @@ final class PushUpdaterTests: XCTestCase {
     func testProvidingAUIDWithViewModeConversationAndUnreadMessagesShouldNotUpdateBadge() {
         let expectedUID = String.randomString(Int.random(in: 1..<32))
         let unreadCount = Int.random(in: 0..<100)
-        userSessionMock.primaryUserSessionId = expectedUID
+        userDefaults[.primaryUserSessionId] = expectedUID
         sut.update(with: ["UID": expectedUID, "viewMode": 0, "unreadMessages": unreadCount])
         XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
     }
@@ -127,7 +115,7 @@ final class PushUpdaterTests: XCTestCase {
     func testProvidingAUIDWithViewModeMessagesAndUnreadConversationShouldNotUpdateBadge() {
         let expectedUID = String.randomString(Int.random(in: 1..<32))
         let unreadCount = Int.random(in: 0..<100)
-        userSessionMock.primaryUserSessionId = expectedUID
+        userDefaults[.primaryUserSessionId] = expectedUID
         sut.update(with: ["UID": expectedUID, "viewMode": 1, "unreadConversations": unreadCount])
         XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
     }

@@ -22,27 +22,6 @@
 
 import Foundation
 
-class SharedCacheBase {
-    let userDefaults: UserDefaults
-
-    init(userDefaults: UserDefaults = UserDefaults(suiteName: Constants.AppGroup)!) {
-        self.userDefaults = userDefaults
-    }
-
-    func getShared() -> UserDefaults {
-        return self.userDefaults
-    }
-
-    func setValue(_ value: Any?, forKey key: String) {
-        self.userDefaults.setValue(value, forKey: key)
-        self.userDefaults.synchronize()
-    }
-
-    class func getDefault() -> UserDefaults! {
-        return UserDefaults(suiteName: Constants.AppGroup)
-    }    
-}
-
 extension UserDefaults {
     func decodableValue<T: Decodable>(forKey key: String) -> T? {
         guard let data = data(forKey: key) else {

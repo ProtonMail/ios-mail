@@ -41,11 +41,11 @@ extension APIResponse {
 }
 
 extension Dictionary: APIResponse where Key == String, Value == Any {
-    
+
     public var code: Int? { get { self["Code"] as? Int } set { self["Code"] = newValue } }
-    
+
     public var error: String? { get { self["Error"] as? String } set { self["Error"] = newValue } }
-    
+
     public var details: APIResponseDetails? {
         get {
             guard let details = self["Details"] as? [String: Any],
@@ -56,7 +56,7 @@ extension Dictionary: APIResponse where Key == String, Value == Any {
             self["Details"] = newValue?.serializedDetails
         }
     }
-    
+
     private func detailsFromDictionary(jsonDictionary: [String: Any], code: Int) -> APIResponseDetails {
         if code == APIErrorCode.humanVerificationRequired,
            let token = jsonDictionary[HumanVerificationDetails.CodingKeys.token.uppercased] as? String,
@@ -64,21 +64,21 @@ extension Dictionary: APIResponse where Key == String, Value == Any {
            let methods = jsonDictionary[HumanVerificationDetails.CodingKeys.methods.uppercased] as? [String] {
             return .humanVerification(.init(token: token, title: title, methods: methods))
         }
-        
+
         if code == APIErrorCode.deviceVerificationRequired,
            let type = jsonDictionary[DeviceVerificationDetails.CodingKeys.type.uppercased] as? Int,
            let payload = jsonDictionary[DeviceVerificationDetails.CodingKeys.payload.uppercased] as? String {
             return .deviceVerification(.init(type: type, payload: payload))
         }
-        
+
         if code == APIErrorCode.HTTP403,
            let missingScopes = jsonDictionary[MissingScopesDetails.CodingKeys.missingScopes.uppercased] as? [String] {
             return .missingScopes(.init(missingScopes: missingScopes))
         }
-        
+
         return .empty
     }
-    
+
     private struct APIErrorCode {
         static let humanVerificationRequired = 9001
         static let deviceVerificationRequired = 9002

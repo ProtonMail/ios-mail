@@ -96,9 +96,8 @@ extension MailboxItem {
     var previewableAttachments: [AttachmentsMetadata] {
         attachmentsMetadata
             .filter {
-                $0.disposition == .attachment &&
-                $0.mimeType != MIMEType.icsMIMEType &&
-                $0.mimeType != MIMEType.keyMIMEType
+                $0.mimeType.lowercased() != MIMEType.ics.rawValue.lowercased() &&
+                $0.disposition == .attachment
             }
     }
 }

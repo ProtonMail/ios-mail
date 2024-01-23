@@ -55,48 +55,48 @@ public final class SignupHumanVerificationRobot: CoreElements {
             }
         }
     }
-    
+
     public let verify = Verify()
-    
+
     public final class Verify: CoreElements {
         @discardableResult
         public func humanVerificationScreenIsShown() -> SignupHumanVerificationRobot {
             otherElement(humanVerificationScreenIdentifier).wait(time: 15).checkExists()
             return SignupHumanVerificationRobot()
         }
-        
+
         public func isHumanVerificationRequired() -> HVOrSummaryRobot {
             let humanVerificationScreen = XCUIApplication().otherElements[humanVerificationScreenIdentifier]
             Wait(time: 10.0).forElement(humanVerificationScreen)
             return humanVerificationScreen.exists ? .humanVerification(SignupHumanVerificationRobot()) : .summary(AccountSummaryRobot())
         }
     }
-    
+
     public func switchToEmailHVMethod() -> SignupHumanVerificationRobot {
         button(emailSelectedControlLabel).tap()
         return self
     }
-    
+
     public func insertEmail(_ email: String) -> SignupHumanVerificationRobot {
         textField().firstMatch().tap().typeText(email)
         return self
     }
-    
+
     public func sendCodeButton() -> SignupHumanVerificationRobot {
         button(sendCodeButtonLabel).tap()
         return self
     }
-    
+
     public func fillInCode(_ code: String) -> SignupHumanVerificationRobot {
         textField(verifyCodeTextField).tap().typeText(code)
         return self
     }
-    
+
     public func verifyCodeButton<Robot: CoreElements>(to: Robot.Type) -> Robot {
         button(verifyCodeButtonLabel).tap()
         return Robot()
     }
-    
+
     public func performEmailVerification<Robot: CoreElements>(
         email: String, code: String, to: Robot.Type
     ) -> Robot {
@@ -114,7 +114,7 @@ public final class SignupHumanVerificationRobot: CoreElements {
         element.tap()
         return Robot()
     }
-    
+
     public func closeButton() -> RecoveryRobot {
         button(closeButtonAccessibilityId).tap()
         return RecoveryRobot()

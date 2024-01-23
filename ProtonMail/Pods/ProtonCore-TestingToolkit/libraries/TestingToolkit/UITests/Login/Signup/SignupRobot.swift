@@ -39,9 +39,9 @@ private let otherAccountIntName = LUITranslation.proton_address_button.l10n
 private let closeButton = "UINavigationItem.leftBarButtonItem"
 
 public final class SignupRobot: CoreElements {
-    
+
     public let verify = Verify()
-    
+
     public final class Verify: CoreElements {
 
         @discardableResult
@@ -49,26 +49,26 @@ public final class SignupRobot: CoreElements {
             staticText(titleId).waitUntilExists().checkExists()
             return SignupRobot()
         }
-        
+
         @discardableResult
         public func usernameAlreadyExists() -> SignupRobot {
             textView(errorBannerMessage).waitUntilExists().checkExists()
             button(errorBannerButton).waitUntilExists().checkExists().tap()
             return SignupRobot()
         }
-        
+
         @discardableResult
         public func closeButtonIsShown() -> SignupRobot {
             button(closeButton).waitUntilExists().checkExists()
             return SignupRobot()
         }
-        
+
         @discardableResult
         public func closeButtonIsNotShown() -> SignupRobot {
             button(closeButton).checkDoesNotExist()
             return SignupRobot()
         }
-        
+
         @discardableResult
         public func otherAccountIntButtonIsShown() -> SignupRobot {
             button(otherAccountIntName).waitUntilExists().checkExists()
@@ -80,7 +80,7 @@ public final class SignupRobot: CoreElements {
             button(otherAccountExtName).waitUntilExists().checkExists()
             return SignupRobot()
         }
-        
+
         @discardableResult
         public func otherAccountExtButtonIsNotShown() -> SignupRobot {
             button(otherAccountExtName).waitUntilGone()
@@ -92,13 +92,13 @@ public final class SignupRobot: CoreElements {
             button(otherAccountButton).checkDoesNotExist()
             return SignupRobot()
         }
-        
+
         @discardableResult
         public func domainsButtonIsShown() -> SignupRobot {
             button(domainsButtonId).checkExists()
             return SignupRobot()
         }
-        
+
         @discardableResult
         public func domainsButtonIsNotShown() -> SignupRobot {
             button(domainsButtonId).checkDoesNotExist()
@@ -117,27 +117,27 @@ public final class SignupRobot: CoreElements {
             return SignupRobot()
         }
     }
-    
+
     public func insertName(name: String) -> SignupRobot {
         textField(nameTextFieldId).tap().typeText(name)
         return self
     }
-    
+
     public func insertExternalEmail(name: String) -> SignupRobot {
         textField(externalEmailTextFieldId).tap().typeText(name)
         return self
     }
-    
+
     public func nextButtonTap<T: CoreElements>(robot _: T.Type) -> T {
         button(nextButtonId).tap()
         return T()
     }
-    
+
     public func nextButtonTapToOwnershipHV() -> SignupHumanVerificationV3Robot {
         button(nextButtonId).tap()
         return SignupHumanVerificationV3Robot()
     }
-    
+
     public func signinButtonTap() -> LoginRobot {
         button(signinButtonId).tap()
         return LoginRobot()

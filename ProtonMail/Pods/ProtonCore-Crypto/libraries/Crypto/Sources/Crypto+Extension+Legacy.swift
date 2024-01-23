@@ -25,7 +25,7 @@ import ProtonCoreUtilities
 
 // Helper
 extension Crypto {
-    
+
     @available(*, deprecated, message: "Will not return empty String anymore, please update to variant without typo")
     public func decrypt(encrytped message: String, privateKey: String, passphrase: String) throws -> String {
         do {
@@ -538,7 +538,7 @@ extension Crypto {
             throw error
         }
     }
-    
+
     @available(*, deprecated, message: "Please find the replacement in Encryptor")
     public func encryptNonOptional(plainText: String, publicKey: String, privateKey signerPrivateKey: String = "", passphrase: String = "") throws -> String {
         try encrypt(input: .left(plainText), publicKey: publicKey, privateKey: signerPrivateKey, passphrase: passphrase)
@@ -609,7 +609,7 @@ extension Crypto {
             throw error
         }
     }
-    
+
     @available(*, deprecated, message: "Please find the replacement in Encryptor")
     public func encryptNonOptional(plainText: String, publicKey binKey: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String {
         try encrypt(input: .left(plainText), publicKey: binKey, privateKey: signerPrivateKey, passphrase: passphrase)
@@ -787,7 +787,7 @@ extension Crypto {
             throw error
         }
     }
-    
+
     @available(*, deprecated, message: "Please find the replacement in decryptor")
     public func decryptAttachmentNonOptional(keyPacket: Data, dataPacket: Data, privateKey: String, passphrase: String) throws -> Data {
         let key = try throwing { error in CryptoGo.CryptoNewKeyFromArmored(privateKey, &error) }
@@ -814,7 +814,7 @@ extension Crypto {
             throw error
         }
     }
-    
+
     @available(*, deprecated, message: "Please find the replacement in decryptor")
     public func decryptAttachment1NonOptional(splitMessage: SplitMessage, privateKey: String, passphrase: String) throws -> Data {
         let key = try throwing { error in CryptoGo.CryptoNewKeyFromArmored(privateKey, &error) }
@@ -838,7 +838,7 @@ extension Crypto {
             throw error
         }
     }
-    
+
     @available(*, deprecated, message: "Please find the replacement in decryptor")
     public func decryptAttachmentNonOptional(keyPacket: Data, dataPacket: Data, privateKey binKeys: [Data], passphrase: String) throws -> Data {
         for binKey in binKeys {
@@ -900,7 +900,7 @@ extension Crypto {
             throw error
         }
     }
-    
+
     // MARK: - sign
 
     @available(*, deprecated, message: "Please use non-optional variant")
@@ -1051,7 +1051,7 @@ extension Crypto {
             return nil
         }
     }
-    
+
     @available(*, deprecated, message: "Please use `buildPublicKeyRing`")
     public func buildKeyRingNonOptional(adding keys: [Data]) throws -> CryptoKeyRing {
         let newKeyRing = try throwing { error in CryptoGo.CryptoNewKeyRing(nil, &error) }

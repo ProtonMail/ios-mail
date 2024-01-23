@@ -37,20 +37,36 @@ enum ProtectionType: Int {
 }
 
 final class SettingsLockViewModel: SettingsLockViewModelProtocol {
+    typealias Dependencies = HasBiometricStatusProvider
+    & HasKeychain
+    & HasKeyMakerProtocol
+    & HasNotificationCenter
+    & HasUserCachedStatus
+
     var input: SettingsLockViewModelInput { self }
     var output: SettingsLockViewModelOutput { self }
     private weak var uiDelegate: SettingsLockUIProtocol?
     private let router: SettingsLockRouterProtocol
     private let dependencies: Dependencies
+    private let isAppKeyFeatureEnabled: () -> Bool
 
     private(set) var protectionItems: [ProtectionType] = [.none, .pinCode]
     private(set) var sections: [SettingLockSection] = [.protection, .changePin, .autoLockTime]
 
-    init(router: SettingsLockRouterProtocol, dependencies: Dependencies) {
+    private var bioProtection: BioProtection {
+        BioProtection(keychain: dependencies.keychain)
+    }
+
+    init(
+        router: SettingsLockRouterProtocol,
+        dependencies: Dependencies,
+        isAppKeyFeatureEnabled: @escaping () -> Bool = { true }
+    ) {
         self.router = router
         self.dependencies = dependencies
+        self.isAppKeyFeatureEnabled = isAppKeyFeatureEnabled
 
-        switch dependencies.biometricStatus.biometricType {
+        switch dependencies.biometricStatusProvider.biometricType {
         case .touchID, .faceID:
             protectionItems.append(.biometric)
         case .none:
@@ -64,18 +80,18 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
 
         if isProtectionEnabled {
             if isBiometricEnabled {
-                switch dependencies.biometricStatus.biometricType {
+                switch dependencies.biometricStatusProvider.biometricType {
                 case .none:
                     break
                 case .touchID, .faceID:
                     LockPreventor.shared.performWhileSuppressingLock {
-                        dependencies.coreKeyMaker.deactivate(PinProtection(pin: "doesnotmatter"))
+                        deactivatePinProtection()
                     }
                 }
             } else if isPinCodeEnabled {
                 sections.append(.changePin)
                 LockPreventor.shared.performWhileSuppressingLock {
-                    dependencies.coreKeyMaker.deactivate(BioProtection())
+                    dependencies.keyMaker.deactivate(bioProtection)
                 }
 
                 if !oldStatus.contains(.changePin) {
@@ -84,21 +100,21 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
                 }
             }
 
-            if dependencies.coreKeyMaker.isPinCodeEnabled || dependencies.coreKeyMaker.isTouchIDEnabled {
-                if dependencies.enableAppKeyFeature() {
+            if dependencies.keyMaker.isPinCodeEnabled || dependencies.keyMaker.isTouchIDEnabled {
+                if isAppKeyFeatureEnabled() {
                     sections.append(.appKeyProtection)
                 }
                 sections.append(.autoLockTime)
             }
         } else {
-            if dependencies.coreKeyMaker.isPinCodeEnabled {
+            if dependencies.keyMaker.isPinCodeEnabled {
                 LockPreventor.shared.performWhileSuppressingLock {
-                    dependencies.coreKeyMaker.deactivate(PinProtection(pin: "doesnotmatter"))
+                    deactivatePinProtection()
                 }
             }
-            if dependencies.coreKeyMaker.isTouchIDEnabled {
+            if dependencies.keyMaker.isTouchIDEnabled {
                 LockPreventor.shared.performWhileSuppressingLock {
-                    dependencies.coreKeyMaker.deactivate(BioProtection())
+                    dependencies.keyMaker.deactivate(bioProtection)
                 }
             }
         }
@@ -107,9 +123,9 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
 
     private func enableBioProtection( completion: @escaping () -> Void) {
         LockPreventor.shared.performWhileSuppressingLock {
-            dependencies.coreKeyMaker.deactivate(PinProtection(pin: "doesnotmatter"))
+            deactivatePinProtection()
         }
-        dependencies.coreKeyMaker.activate(BioProtection()) { [unowned self] activated in
+        dependencies.keyMaker.activate(bioProtection) { [unowned self] activated in
             if activated {
                 dependencies.notificationCenter.post(name: .appLockProtectionEnabled, object: nil, userInfo: nil)
             }
@@ -119,39 +135,43 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
 
     private func disableProtection() {
         LockPreventor.shared.performWhileSuppressingLock {
-            if dependencies.coreKeyMaker.isPinCodeEnabled {
-                dependencies.coreKeyMaker.deactivate(PinProtection(pin: "doesnotmatter"))
+            if dependencies.keyMaker.isPinCodeEnabled {
+                deactivatePinProtection()
             }
-            if dependencies.coreKeyMaker.isTouchIDEnabled {
-                dependencies.coreKeyMaker.deactivate(BioProtection())
+            if dependencies.keyMaker.isTouchIDEnabled {
+                dependencies.keyMaker.deactivate(bioProtection)
             }
-            if let randomProtection = RandomPinProtection.randomPin {
-                dependencies.coreKeyMaker.deactivate(randomProtection)
+            if let randomProtection = dependencies.keychain.randomPinProtection {
+                dependencies.keyMaker.deactivate(randomProtection)
             }
-            dependencies.userPreferences.setKeymakerRandomkey(key: nil)
+            dependencies.keychain[.keymakerRandomKey] = nil
             dependencies.notificationCenter.post(name: .appLockProtectionDisabled, object: nil, userInfo: nil)
         }
     }
 
     private func enableAppKey() {
-        if let randomProtection = RandomPinProtection.randomPin {
+        if let randomProtection = dependencies.keychain.randomPinProtection {
             LockPreventor.shared.performWhileSuppressingLock {
-                dependencies.coreKeyMaker.deactivate(randomProtection)
+                dependencies.keyMaker.deactivate(randomProtection)
             }
             dependencies.notificationCenter.post(name: .appKeyEnabled, object: nil, userInfo: nil)
         }
-        dependencies.userPreferences.setKeymakerRandomkey(key: nil)
+        dependencies.keychain[.keymakerRandomKey] = nil
     }
 
     private func disableAppKey(completion: (() -> Void)? = nil) {
-        dependencies.userPreferences.setKeymakerRandomkey(key: String.randomString(32))
-        if let randomProtection = RandomPinProtection.randomPin {
-            dependencies.coreKeyMaker.activate(randomProtection) { [unowned self] success in
+        dependencies.keychain[.keymakerRandomKey] = String.randomString(32)
+        if let randomProtection = dependencies.keychain.randomPinProtection {
+            dependencies.keyMaker.activate(randomProtection) { [unowned self] success in
                 guard success else { return }
                 dependencies.notificationCenter.post(name: .appKeyDisabled, object: nil, userInfo: nil)
                 completion?()
             }
         }
+    }
+
+    private func deactivatePinProtection() {
+        dependencies.keyMaker.deactivate(PinProtection(pin: "doesnotmatter", keychain: dependencies.keychain))
     }
 }
 
@@ -165,7 +185,7 @@ extension SettingsLockViewModel: SettingsLockViewModelOutput {
     }
 
     var biometricType: BiometricType {
-        return dependencies.biometricStatus.biometricType
+        dependencies.biometricStatusProvider.biometricType
     }
 
     var isProtectionEnabled: Bool {
@@ -173,15 +193,15 @@ extension SettingsLockViewModel: SettingsLockViewModelOutput {
     }
 
     var isPinCodeEnabled: Bool {
-        return dependencies.coreKeyMaker.isPinCodeEnabled
+        dependencies.keyMaker.isPinCodeEnabled
     }
 
     var isBiometricEnabled: Bool {
-        return dependencies.coreKeyMaker.isTouchIDEnabled
+        dependencies.keyMaker.isTouchIDEnabled
     }
 
     var isAppKeyEnabled: Bool {
-        return dependencies.coreKeyMaker.isAppKeyEnabled
+        dependencies.keyMaker.isAppKeyEnabled
     }
 }
 
@@ -191,7 +211,7 @@ extension SettingsLockViewModel: SettingsLockViewModelInput {
     }
 
     func didTapNoProtection() {
-        if dependencies.coreKeyMaker.isPinCodeEnabled {
+        if dependencies.keyMaker.isPinCodeEnabled {
             router.go(to: .pinCodeDisable)
         } else {
             disableProtection()
@@ -200,7 +220,7 @@ extension SettingsLockViewModel: SettingsLockViewModelInput {
     }
 
     func didTapPinProtection() {
-        if dependencies.coreKeyMaker.isPinCodeEnabled {
+        if dependencies.keyMaker.isPinCodeEnabled {
             router.go(to: .changePinCode)
         } else {
             router.go(to: .pinCodeSetup)
@@ -226,41 +246,12 @@ extension SettingsLockViewModel: SettingsLockViewModelInput {
     }
 
     func didPickAutoLockTime(value: Int) {
-        dependencies.userPreferences.setLockTime(value: AutolockTimeout(rawValue: value))
-        dependencies.coreKeyMaker.resetAutolock()
-    }
-}
-
-extension SettingsLockViewModel {
-
-    struct Dependencies {
-        let biometricStatus: BiometricStatusProvider
-        let userPreferences: LockPreferences
-        let coreKeyMaker: KeyMakerProtocol
-        let notificationCenter: NotificationCenter
-        let enableAppKeyFeature: () -> Bool
-
-        init(
-            biometricStatus: BiometricStatusProvider,
-            userPreferences: LockPreferences = userCachedStatus,
-            coreKeyMaker: KeyMakerProtocol,
-            notificationCenter: NotificationCenter = NotificationCenter.default,
-            enableAppKeyFeature: @escaping () -> Bool = { true }
-        ) {
-            self.biometricStatus = biometricStatus
-            self.userPreferences = userPreferences
-            self.coreKeyMaker = coreKeyMaker
-            self.notificationCenter = notificationCenter
-            self.enableAppKeyFeature = enableAppKeyFeature
-        }
+        dependencies.userCachedStatus.setLockTime(value: AutolockTimeout(rawValue: value))
+        dependencies.keyMaker.resetAutolock()
     }
 }
 
 extension UserCachedStatus: LockPreferences {
-    func setKeymakerRandomkey(key: String?) {
-        keymakerRandomkey = key
-    }
-
     func setLockTime(value: ProtonCoreKeymaker.AutolockTimeout) {
         lockTime = value
     }

@@ -24,11 +24,11 @@ import ProtonCoreDataModel
 import ProtonCoreNetworking
 
 extension AuthService {
-    
+
     struct UserResponse: APIDecodableResponse, Encodable {
         let user: User
     }
-    
+
     struct UserInfoEndpoint: Request {
         var path: String {
             return "/users"
@@ -37,7 +37,7 @@ extension AuthService {
             return .get
         }
         var parameters: [String: Any]?
-        
+
         var isAuth: Bool {
             return true
         }

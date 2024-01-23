@@ -50,6 +50,22 @@ extension UserContainer: HasBiometricStatusProvider {
     }
 }
 
+protocol HasCheckProtonServerStatus {
+    var checkProtonServerStatus: CheckProtonServerStatus { get }
+}
+
+extension GlobalContainer: HasCheckProtonServerStatus {
+    var checkProtonServerStatus: CheckProtonServerStatus {
+        checkProtonServerStatusFactory()
+    }
+}
+
+extension UserContainer: HasCheckProtonServerStatus {
+    var checkProtonServerStatus: CheckProtonServerStatus {
+        globalContainer.checkProtonServerStatus
+    }
+}
+
 protocol HasCleanCache {
     var cleanCache: CleanCache { get }
 }
@@ -66,19 +82,35 @@ extension UserContainer: HasCleanCache {
     }
 }
 
-protocol HasDarkModeCacheProtocol {
-    var darkModeCache: DarkModeCacheProtocol { get }
+protocol HasContactPickerModelHelper {
+    var contactPickerModelHelper: ContactPickerModelHelper { get }
 }
 
-extension GlobalContainer: HasDarkModeCacheProtocol {
-    var darkModeCache: DarkModeCacheProtocol {
-        darkModeCacheFactory()
+extension GlobalContainer: HasContactPickerModelHelper {
+    var contactPickerModelHelper: ContactPickerModelHelper {
+        contactPickerModelHelperFactory()
     }
 }
 
-extension UserContainer: HasDarkModeCacheProtocol {
-    var darkModeCache: DarkModeCacheProtocol {
-        globalContainer.darkModeCache
+extension UserContainer: HasContactPickerModelHelper {
+    var contactPickerModelHelper: ContactPickerModelHelper {
+        globalContainer.contactPickerModelHelper
+    }
+}
+
+protocol HasDeviceContactsProvider {
+    var deviceContacts: DeviceContactsProvider { get }
+}
+
+extension GlobalContainer: HasDeviceContactsProvider {
+    var deviceContacts: DeviceContactsProvider {
+        deviceContactsFactory()
+    }
+}
+
+extension UserContainer: HasDeviceContactsProvider {
+    var deviceContacts: DeviceContactsProvider {
+        globalContainer.deviceContacts
     }
 }
 
@@ -95,6 +127,22 @@ extension GlobalContainer: HasImageProxyCacheProtocol {
 extension UserContainer: HasImageProxyCacheProtocol {
     var imageProxyCache: ImageProxyCacheProtocol {
         globalContainer.imageProxyCache
+    }
+}
+
+protocol HasMailboxMessageCellHelper {
+    var mailboxMessageCellHelper: MailboxMessageCellHelper { get }
+}
+
+extension GlobalContainer: HasMailboxMessageCellHelper {
+    var mailboxMessageCellHelper: MailboxMessageCellHelper {
+        mailboxMessageCellHelperFactory()
+    }
+}
+
+extension UserContainer: HasMailboxMessageCellHelper {
+    var mailboxMessageCellHelper: MailboxMessageCellHelper {
+        globalContainer.mailboxMessageCellHelper
     }
 }
 
@@ -194,22 +242,6 @@ extension UserContainer: HasSwipeActionCacheProtocol {
     }
 }
 
-protocol HasToolbarCustomizationInfoBubbleViewStatusProvider {
-    var toolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider { get }
-}
-
-extension GlobalContainer: HasToolbarCustomizationInfoBubbleViewStatusProvider {
-    var toolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider {
-        toolbarCustomizationInfoBubbleViewStatusProviderFactory()
-    }
-}
-
-extension UserContainer: HasToolbarCustomizationInfoBubbleViewStatusProvider {
-    var toolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider {
-        globalContainer.toolbarCustomizationInfoBubbleViewStatusProvider
-    }
-}
-
 protocol HasAppRatingService {
     var appRatingService: AppRatingService { get }
 }
@@ -260,6 +292,16 @@ extension UserContainer: HasContactViewsFactory {
     }
 }
 
+protocol HasFetchMessages {
+    var fetchMessages: FetchMessages { get }
+}
+
+extension UserContainer: HasFetchMessages {
+    var fetchMessages: FetchMessages {
+        fetchMessagesFactory()
+    }
+}
+
 protocol HasFetchSenderImage {
     var fetchSenderImage: FetchSenderImage { get }
 }
@@ -267,6 +309,16 @@ protocol HasFetchSenderImage {
 extension UserContainer: HasFetchSenderImage {
     var fetchSenderImage: FetchSenderImage {
         fetchSenderImageFactory()
+    }
+}
+
+protocol HasImportDeviceContacts {
+    var importDeviceContacts: ImportDeviceContacts { get }
+}
+
+extension UserContainer: HasImportDeviceContacts {
+    var importDeviceContacts: ImportDeviceContacts {
+        importDeviceContactsFactory()
     }
 }
 
@@ -367,6 +419,16 @@ protocol HasUnblockSender {
 extension UserContainer: HasUnblockSender {
     var unblockSender: UnblockSender {
         unblockSenderFactory()
+    }
+}
+
+protocol HasUpdateMailbox {
+    var updateMailbox: UpdateMailbox { get }
+}
+
+extension UserContainer: HasUpdateMailbox {
+    var updateMailbox: UpdateMailbox {
+        updateMailboxFactory()
     }
 }
 

@@ -19,6 +19,7 @@ PRODUCT_BUNDLE_IDENTIFIER = pm.ProtonMailUITests
 PRODUCT_NAME = $(TARGET_NAME)
 PROVISIONING_PROFILE_SPECIFIER =
 SWIFT_OBJC_BRIDGING_HEADER =
+SWIFT_STRICT_CONCURRENCY = targeted
 SWIFT_VERSION = 5.0
 // do not use 16.4 because of  https://github.com/NativeScript/NativeScript/issues/10267 that's apparently causing the tests to fail
 // 17.0 might be OK though, check it once it's available

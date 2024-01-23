@@ -83,7 +83,6 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         let fetchedResultsController = messageService.fetchedResults(
             by: labelID,
             viewMode: viewMode,
-            onMainContext: true,
             isUnread: false,
             isAscending: isAscending
         ) as? NSFetchedResultsController<FetchResultType>
@@ -140,7 +139,7 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
     func receiveSwipeExpectation(notification: Notification) {
         guard let userInfo = notification.userInfo,
               let expectation = userInfo["expectation"] as? PagesSwipeAction,
-              let pages = fetchedResultsController?.fetchedObjects?.count,
+              let pages = fetchedResultsController?.sections?.first?.numberOfObjects,
               pages > 1 else { return }
         let shouldReload = userInfo["reload"] as? Bool
         idHasBeenMoved = uiDelegate?.getCurrentObjectID()

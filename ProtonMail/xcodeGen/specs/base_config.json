@@ -33,6 +33,13 @@
       "LifetimeTracker": {
          "url": "https://github.com/krzysztofzablocki/LifetimeTracker.git",
          "version": "1.8.1"
+      },
+      "ProtonCoreEventsLoop": {
+         "path": "ProtonCoreEventsLoop"
+      },
+      "SwiftCSSParser": {
+         "url": "https://github.com/stackotter/swift-css-parser.git",
+         "version": "0.1.2"
       }
    },
    "configFiles": {

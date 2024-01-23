@@ -1,0 +1,8 @@
+{% for type in types.classes where type.name == "GlobalContainer" or type.name == "UserContainer" %}
+// sourcery:inline:{{ type.name }}Tests.InitializeAllDependencies
+{% for variable in type.computedVariables %}
+{% set dependencyVariableName %}{% if variable.name|hasSuffix:"FactoryFactory" %}{{ variable.name|replace:"FactoryFactory","Factory" }}{% else %}{{ variable.name|replace:"Factory","" }}{% endif %}{% endset %}
+_ = strongRefToContainer?.{{ dependencyVariableName }}
+{% endfor %}
+// sourcery:end
+{% endfor %}

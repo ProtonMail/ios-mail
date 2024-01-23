@@ -43,21 +43,39 @@ extension GlobalContainer {
         }
     }
 
+    var checkProtonServerStatusFactory: Factory<CheckProtonServerStatus> {
+        self {
+            CheckProtonServerStatus()
+        }
+    }
+
     var cleanCacheFactory: Factory<CleanCache> {
         self {
             CleanCache(dependencies: .init(usersManager: self.usersManager, imageProxyCache: self.imageProxyCache))
         }
     }
 
-    var darkModeCacheFactory: Factory<DarkModeCacheProtocol> {
+    var contactPickerModelHelperFactory: Factory<ContactPickerModelHelper> {
         self {
-            self.userCachedStatus
+            ContactPickerModelHelper(contextProvider: self.contextProvider)
+        }
+    }
+
+    var deviceContactsFactory: Factory<DeviceContactsProvider> {
+        self {
+            DeviceContacts()
         }
     }
 
     var imageProxyCacheFactory: Factory<ImageProxyCacheProtocol> {
         self {
-            ImageProxyCache(coreKeyMaker: self.keyMaker)
+            ImageProxyCache(dependencies: self)
+        }
+    }
+
+    var mailboxMessageCellHelperFactory: Factory<MailboxMessageCellHelper> {
+        self {
+            MailboxMessageCellHelper(contactPickerModelHelper: self.contactPickerModelHelper)
         }
     }
 
@@ -92,7 +110,7 @@ extension GlobalContainer {
 
     var senderImageCacheFactory: Factory<SenderImageCache> {
         self {
-            SenderImageCache(coreKeyMaker: self.keyMaker)
+            SenderImageCache(dependencies: self)
         }
     }
 
@@ -101,9 +119,9 @@ extension GlobalContainer {
             let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: self)
             return SignInManager(
                 usersManager: self.usersManager,
-                contactCacheStatus: self.userCachedStatus,
                 queueHandlerRegister: self.queueManager,
-                updateSwipeActionUseCase: updateSwipeActionUseCase
+                updateSwipeActionUseCase: updateSwipeActionUseCase,
+                dependencies: .init(notificationCenter: self.notificationCenter, userDefaults: self.userDefaults)
             )
         }
     }
@@ -115,12 +133,6 @@ extension GlobalContainer {
     }
 
     var swipeActionCacheFactory: Factory<SwipeActionCacheProtocol> {
-        self {
-            self.userCachedStatus
-        }
-    }
-
-    var toolbarCustomizationInfoBubbleViewStatusProviderFactory: Factory<ToolbarCustomizationInfoBubbleViewStatusProvider> {
         self {
             self.userCachedStatus
         }

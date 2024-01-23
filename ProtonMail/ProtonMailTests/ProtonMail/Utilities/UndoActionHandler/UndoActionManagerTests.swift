@@ -25,40 +25,25 @@ class UndoActionManagerTests: XCTestCase {
     var sut: UndoActionManager!
     var handlerMock: UndoActionHandlerBaseMock!
     var apiServiceMock: APIServiceMock!
-    var eventService: EventsServiceMock!
-    var contextProviderMock: CoreDataContextProviderProtocol!
     var userManagerMock: UserManager!
+    private var testContainer: TestContainer!
 
     override func setUp() {
         super.setUp()
         handlerMock = UndoActionHandlerBaseMock()
         apiServiceMock = APIServiceMock()
-        eventService = EventsServiceMock()
-        contextProviderMock = CoreDataService.shared
-        userManagerMock = UserManager(api: apiServiceMock, role: .member)
+        testContainer = .init()
+        userManagerMock = UserManager(api: apiServiceMock, globalContainer: testContainer)
 
-        sut = UndoActionManager(
-            dependencies: .init(contextProvider: contextProviderMock, apiService: apiServiceMock),
-            getEventFetching: { [weak self] in
-                self?.eventService
-            },
-            getUserManager: { [weak self] in
-                self?.userManagerMock
-            }
-        )
-
-        CoreDataStore.deleteDataStore()
+        sut = UndoActionManager(dependencies: userManagerMock.container)
     }
 
     override func tearDown() {
-        CoreDataStore.deleteDataStore()
         super.tearDown()
         sut = nil
         handlerMock = nil
         apiServiceMock = nil
-        contextProviderMock = nil
         userManagerMock = nil
-        eventService = nil
     }
 
     func testRegisterHandler() {
@@ -170,13 +155,18 @@ class UndoActionManagerTests: XCTestCase {
     }
 
     func testRequestUndoSendAction() {
-        eventService.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(.success([:]))
-        }
         let messageID = MessageID.generateLocalID().rawValue
         apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/messages/\(messageID)/cancel_send") {
                 completion(nil, .success(["Code": 1001]))
+            } else if path.contains("/core/v4/events/") {
+                completion(nil, .success([
+                    "Code": 1000,
+                    "EventID": "",
+                    "Refresh": 0,
+                    "More": 0,
+                    "Notices": []
+                ]))
             } else {
                 XCTFail("Unexpected path")
                 completion(nil, .failure(.badResponse()))
@@ -193,20 +183,25 @@ class UndoActionManagerTests: XCTestCase {
     func testTappingUndoSendBanner_showsComposer() throws {
         let messageID = MessageID.generateLocalID()
 
-        try contextProviderMock.performAndWaitOnRootSavingContext { context in
+        try testContainer.contextProvider.write { context in
             let message = Message(context: context)
             message.messageID = messageID.rawValue
-            try context.save()
         }
 
         let undoSendRequest = UndoSendRequest(messageID: messageID)
         apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            assert(path == undoSendRequest.path)
-            completion(nil, .success([:]))
-        }
-
-        eventService.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(.success([:]))
+            if path.contains("/core/v4/events/") {
+                completion(nil, .success([
+                    "Code": 1000,
+                    "EventID": "",
+                    "Refresh": 0,
+                    "More": 0,
+                    "Notices": []
+                ]))
+            } else {
+                assert(path == undoSendRequest.path)
+                completion(nil, .success([:]))
+            }
         }
 
         handlerMock.delaySendSeconds = 3

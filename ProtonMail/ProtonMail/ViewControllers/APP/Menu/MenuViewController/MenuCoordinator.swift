@@ -62,7 +62,6 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
     & HasFeatureFlagCache
     & HasLastUpdatedStoreProtocol
     & HasPushNotificationService
-    & HasUserCachedStatus
 
     private(set) var viewController: MenuViewController?
     private let viewModel: MenuVMProtocol
@@ -118,6 +117,10 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
 
     func follow(_ deepLink: DeepLink) {
         if dependencies.pushService.hasCachedNotificationOptions() {
+            SystemLogger.log(
+                message: "Menu handle cached notification options",
+                category: .notificationDebug
+            )
             dependencies.pushService.processCachedLaunchOptions()
             return
         }
@@ -131,12 +134,15 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
             return
         }
 
+        SystemLogger.log(
+            message: "Menu follow: go to \(label.location.labelID),  \(deepLink.debugDescription)",
+            category: .notificationDebug
+        )
         self.go(to: label, deepLink: deepLink)
     }
 
     // swiftlint:disable:next function_body_length
     func go(to labelInfo: MenuLabel, deepLink: DeepLink? = nil) {
-        DFSSetting.enableDFS = true
         // in some cases we should highlight a different row in the side menu, or none at all
         var labelToHighlight: MenuLabel? = labelInfo
 
@@ -147,6 +153,10 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
             if currentLocation?.location == labelInfo.location,
                let deepLink = deepLink,
                mailboxCoordinator?.viewModel.user.userID == viewModel.currentUser?.userID {
+                SystemLogger.log(
+                    message: "Menu go: mailbox coordinator start to follow.\n\(deepLink.debugDescription)",
+                    category: .notificationDebug
+                )
                 mailboxCoordinator?.follow(deepLink)
             } else {
                 self.navigateToMailBox(labelInfo: labelInfo, deepLink: deepLink)
@@ -157,7 +167,6 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
             self.navigateToSettings(deepLink: deepLink)
             labelToHighlight = nil
         case .contacts:
-            DFSSetting.enableDFS = false
             self.navigateToContact()
         case .bugs:
             self.navigateToBugReport()
@@ -223,6 +232,10 @@ extension MenuCoordinator {
             return node
         }
 
+        guard dependencies.usersManager.firstUser?.userID != user.userID else {
+            return nil
+        }
+
         switch dest {
         case .switchUser:
             viewModel.activateUser(id: user.userID)
@@ -238,7 +251,6 @@ extension MenuCoordinator {
         default:
             break
         }
-        self.viewModel.userDataInit()
         return nil
     }
 
@@ -338,62 +350,11 @@ extension MenuCoordinator {
         }
     }
 
-    private func mailBoxVMDependencies(user: UserManager, labelID: LabelID) -> MailboxViewModel.Dependencies {
-        let userID = user.userID
-
-        let fetchLatestEvent = FetchLatestEventId(
-            userId: userID,
-            dependencies: .init(eventsService: user.eventsService, lastUpdatedStore: dependencies.lastUpdatedStore)
-        )
-
-        let fetchMessages = FetchMessages(
-            dependencies: .init(
-                messageDataService: user.messageService,
-                cacheService: user.cacheService,
-                eventsService: user.eventsService
-            )
-        )
-
-        let fetchMessagesWithReset = FetchMessagesWithReset(
-            userID: userID,
-            dependencies: FetchMessagesWithReset.Dependencies(
-                fetchLatestEventId: fetchLatestEvent,
-                fetchMessages: fetchMessages,
-                localMessageDataService: user.messageService,
-                lastUpdatedStore: dependencies.lastUpdatedStore,
-                contactProvider: user.contactService,
-                labelProvider: user.labelService
-            )
-        )
-
-        let purgeOldMessages = PurgeOldMessages(user: user, coreDataService: dependencies.contextProvider)
-
-        let updateMailbox = UpdateMailbox(
-            dependencies: .init(eventService: user.eventsService,
-                                messageDataService: user.messageService,
-                                conversationProvider: user.conversationService,
-                                purgeOldMessages: purgeOldMessages,
-                                fetchMessageWithReset: fetchMessagesWithReset,
-                                fetchMessage: fetchMessages,
-                                fetchLatestEventID: fetchLatestEvent,
-                                internetConnectionStatusProvider: InternetConnectionStatusProvider.shared)
-        )
-        let mailboxVMDependencies = MailboxViewModel.Dependencies(
-            fetchMessages: fetchMessages,
-            updateMailbox: updateMailbox,
-            fetchMessageDetail: user.container.fetchMessageDetail,
-            fetchSenderImage: user.container.fetchSenderImage,
-            featureFlagCache: dependencies.featureFlagCache
-        )
-        return mailboxVMDependencies
-    }
-
     private func createMailboxViewModel(
         userManager: UserManager,
         labelID: LabelID,
         labelInfo: LabelInfo?
     ) -> MailboxViewModel {
-        let mailboxVMDependencies = self.mailBoxVMDependencies(user: userManager, labelID: labelID)
         return MailboxViewModel(
             labelID: labelID,
             label: labelInfo,
@@ -407,8 +368,7 @@ extension MenuCoordinator {
             contactProvider: userManager.contactService,
             conversationProvider: userManager.conversationService,
             eventsService: userManager.eventsService,
-            dependencies: mailboxVMDependencies,
-            welcomeCarrouselCache: dependencies.userCachedStatus,
+            dependencies: userManager.container,
             toolbarActionProvider: userManager,
             saveToolbarActionUseCase: SaveToolbarActionSettings(
                 dependencies: .init(user: userManager)

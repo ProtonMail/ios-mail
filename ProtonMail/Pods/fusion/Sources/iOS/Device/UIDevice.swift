@@ -42,11 +42,24 @@ typealias UiDevice = UIDevice
  */
 open class UIDevice {
 
+    /**
+     Sends the app to the background by simulating a press of the home button.
+
+     - Parameters:
+     - app: The `XCUIApplication` instance to be sent to the background. Defaults to the shared instance.
+     */
     public func backgroundApp(app: XCUIApplication = XCUIApplication()) {
         XCUIDevice.shared.press(.home)
         app.wait(forState: .runningBackground, timeout: 5.0)
     }
 
+    /**
+     Brings the app to the foreground by either activating or launching it.
+
+     - Parameters:
+     - foregroundType: Determines whether to activate or launch the app. Defaults to `.activate`.
+     - app: The `XCUIApplication` instance to be brought to the foreground. Defaults to the shared instance.
+     */
     public func foregroundApp(_ foregroundType: ForegroundType = ForegroundType.activate, app: XCUIApplication = XCUIApplication()) {
         switch foregroundType {
         case .activate:
@@ -57,22 +70,54 @@ open class UIDevice {
         app.wait(forState: .runningForeground, timeout: 5.0)
     }
 
+    /**
+     Brings the app to the foreground using Siri voice recognition.
+
+     - Parameters:
+     - text: The voice recognition text used to activate Siri.
+     - app: The `XCUIApplication` instance to be brought to the foreground. Defaults to the shared instance.
+     */
     public func foregroundAppBySiri(_ text: String, app: XCUIApplication = XCUIApplication()) {
         XCUIDevice.shared.siriService.activate(voiceRecognitionText: text)
         app.wait(forState: .runningForeground, timeout: 5.0)
     }
 
+    /**
+     Changes the device orientation.
+
+     - Parameter orientation: The new `UIDeviceOrientation` to set.
+     */
+    public func changeDeviceOrientation(orientation: UIDeviceOrientation) {
+        XCUIDevice.shared.orientation = orientation
+    }
+
+    /**
+     Saves a text string to the clipboard.
+
+     - Parameter text: The text string to be saved.
+     */
     public func saveTextToClipboard(_ text: String) {
         UIPasteboard.general.string = text
     }
 
+    /**
+     Saves an image to the clipboard.
+
+     - Parameter image: The `UIImage` to be saved.
+     */
     public func saveImageToClipboard(_ image: UIImage) {
         UIPasteboard.general.image = image
     }
 
+    /**
+     Saves a URL to the clipboard.
+
+     - Parameter url: The `URL` to be saved.
+     */
     public func saveUrlToClipboard(_ url: URL) {
         UIPasteboard.general.url = url
     }
+
 }
 
 extension XCUIApplication {

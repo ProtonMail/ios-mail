@@ -49,11 +49,11 @@ extension Password {
 }
 
 extension Password where Type == PasswordType.Key {
-    
+
     public func encrypt(publicKey: ArmoredKey) throws -> ArmoredMessage {
         return try publicKey.encrypt(clearText: self.value)
     }
-    
+
     public func signDetached(signer: SigningKey) throws -> ArmoredSignature {
         return try Sign.signDetached(signingKey: signer, plainText: self.value)
     }

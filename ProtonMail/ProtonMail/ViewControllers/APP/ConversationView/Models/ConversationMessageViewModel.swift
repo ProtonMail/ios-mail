@@ -1,6 +1,7 @@
 class ConversationMessageViewModel {
     typealias Dependencies = SingleMessageContentViewModelFactory.Dependencies
     & HasInternetConnectionStatusProviderProtocol
+    & HasMailboxMessageCellHelper
 
     var isDraft: Bool {
         message.isDraft
@@ -54,7 +55,8 @@ class ConversationMessageViewModel {
             message: message,
             weekStart: dependencies.user.userInfo.weekStartValue,
             replacingEmailsMap: replacingEmailsMap,
-            contactGroups: contactGroups
+            contactGroups: contactGroups,
+            mailboxMessageCellHelper: dependencies.mailboxMessageCellHelper
         )
         self.state = .collapsed(viewModel: collapsedViewModel)
     }
@@ -72,7 +74,8 @@ class ConversationMessageViewModel {
                 message: message,
                 weekStart: weekStart,
                 replacingEmailsMap: replacingEmailsMap,
-                contactGroups: contactGroups
+                contactGroups: contactGroups,
+                mailboxMessageCellHelper: dependencies.mailboxMessageCellHelper
             )) :
             .expanded(viewModel: .init(
                 message: message,

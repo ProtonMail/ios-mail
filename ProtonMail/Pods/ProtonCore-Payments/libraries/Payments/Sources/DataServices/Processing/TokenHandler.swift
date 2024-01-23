@@ -46,13 +46,13 @@ final class TokenHandler {
     }
 
     let queue = DispatchQueue(label: "TokenHandler async queue", qos: .userInitiated)
-    
+
     func getToken(transaction: SKPaymentTransaction,
                   plan: PlanToBeProcessed,
                   completion: @escaping ProcessCompletionCallback,
                   finishCompletion: @escaping (ProcessCompletionResult) -> Void,
                   tokenCompletion: @escaping (PaymentToken) throws -> Void) throws {
-        
+
         // Create token
         guard let token = dependencies.tokenStorage.get() else {
             return try requestToken(transaction: transaction, plan: plan, completion: completion, finishCompletion: finishCompletion, tokenCompletion: tokenCompletion)
@@ -105,7 +105,7 @@ final class TokenHandler {
             // Step 1. Obtain the StoreKit receipt that hopefully confirms the IAP purchase (we don't check this locally)
             let receipt = try dependencies.getReceipt()
             PMLog.debug("StoreKit: No proton token found")
-            
+
             // Step 2. Exchange the receipt for a token that's worth product's Proton price amount of money
             let tokenApi: BaseApiRequest<TokenResponse>
             if areSubscriptionsEnabled {

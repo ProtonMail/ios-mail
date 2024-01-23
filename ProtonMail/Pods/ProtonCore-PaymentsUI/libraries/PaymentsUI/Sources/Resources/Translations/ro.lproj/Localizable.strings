@@ -1,4 +1,3 @@
-
 "OK" = "OK";
 
 "Cancel" = "Anulare";
@@ -22,6 +21,8 @@
 "Current plan will expire on %@" = "Planul actual va expira la %@";
 
 "Contact an administrator to make changes to your Proton subscription." = "Contactați un administrator pentru a face modificări la abonamentul Proton.";
+
+"%1$@ of %2$@" = "%1$@ din %2$@";
 
 "%@ storage" = "%@ spațiu";
 
@@ -73,6 +74,8 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "Prin intermediul acestei aplicații sunt disponibile doar abonamentele anuale care nu sunt reînnoite.";
 
+"Your subscription cannot be managed inside the mobile app." = "Abonamentul nu poate fi gestionat din aplicația mobilă.";
+
 "Unlimited folders, labels, and filters" = "Foldere, etichete și filtre nelimitate";
 
 "Up to %@ storage" = "Până la %@ spațiu";
@@ -113,13 +116,9 @@
 
 "Unlimited devices" = "Dispozitive nelimitate";
 
-"%@ email aliases" = "%@ aliasuri de e-mail";
-
 "Unlimited email aliases" = "Aliasuri de e-mail nelimitate";
 
-"Unlimited logins and notes" = "Autentificări și note nelimitate";
-
-"Up to %@ forwarding mailboxes" = "Până la %@ adrese pentru redirecționare";
+"Unlimited logins and notes" = "Date de autentificare și note nelimitate";
 
 "Custom fields" = "Câmpuri personale";
 

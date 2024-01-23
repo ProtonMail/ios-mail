@@ -27,6 +27,7 @@ import UIKit
 
 protocol NewMailboxMessageCellDelegate: AnyObject {
     func didSelectButtonStatusChange(cell: NewMailboxMessageCell)
+    func didSelectAttachment(cell: NewMailboxMessageCell, index: Int)
 }
 
 class NewMailboxMessageCell: SwipyCell, AccessibleCell {
@@ -43,6 +44,9 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        customView.selectAttachmentAction = { [weak self] index in
+            self?.didSelectAttachment(at: index)
+        }
         addSubviews()
         setUpLayout()
         setUpAvatarTapHandling()
@@ -81,6 +85,8 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
         customView.messageContentView.draftImageView.isHidden = false
         customView.messageContentView.removeOriginImages()
         customView.messageContentView.messageCountLabel.isHidden = false
+        customView.messageContentView.attachmentsPreviewStackView.clearAllViews()
+        customView.messageContentView.remainingAttachmentsLabel.text = nil
     }
 
     func startUpdateExpiration() {
@@ -143,5 +149,9 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
             return false
         }
         return super.gestureRecognizerShouldBegin(gestureRecognizer)
+    }
+
+    private func didSelectAttachment(at index: Int) {
+        cellDelegate?.didSelectAttachment(cell: self, index: index)
     }
 }

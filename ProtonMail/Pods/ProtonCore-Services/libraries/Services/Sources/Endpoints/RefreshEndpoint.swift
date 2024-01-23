@@ -39,20 +39,20 @@ public class RefreshResponse: APIDecodableResponse, CredentialConvertible, Encod
 public final class RefreshEndpoint: Request {
     let refreshToken: String
     var credential: AuthCredential?
-    
+
     public init(authCredential: AuthCredential) {
         self.credential = authCredential
         self.refreshToken = authCredential.refreshToken
     }
-    
+
     public var path: String {
         "/auth/v4/refresh"
     }
-    
+
     public var method: HTTPMethod {
         .post
     }
-    
+
     public var parameters: [String: Any]? {
         let body = [
             "ResponseType": "token",
@@ -62,7 +62,7 @@ public final class RefreshEndpoint: Request {
         ]
         return body
     }
-    
+
     public var isAuth: Bool {
         true
     }

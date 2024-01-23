@@ -36,11 +36,6 @@ enum SignInUIFlow: Int {
 }
 
 // sourcery: mock
-protocol PinFailedCountCache {
-    var pinFailedCount: Int { get set }
-}
-
-// sourcery: mock
 protocol UnlockManagerDelegate: AnyObject {
     func cleanAll(completion: @escaping () -> Void)
     func isUserStored() -> Bool
@@ -65,24 +60,27 @@ final class UnlockManager {
     weak var delegate: UnlockManagerDelegate?
 
     private(set) var cacheStatus: LockCacheStatus
+    private let keychain: Keychain
     private let keyMaker: KeyMakerProtocol
     private let localAuthenticationContext: LAContextProtocol
     private let notificationCenter: NotificationCenter
-    private var pinFailedCountCache: PinFailedCountCache
+    private let userDefaults: UserDefaults
 
     init(
         cacheStatus: LockCacheStatus,
+        keychain: Keychain,
         keyMaker: KeyMakerProtocol,
-        pinFailedCountCache: PinFailedCountCache,
         localAuthenticationContext: LAContextProtocol = LAContext(),
+        userDefaults: UserDefaults,
         notificationCenter: NotificationCenter = .default
     ) {
         self.cacheStatus = cacheStatus
+        self.keychain = keychain
         self.keyMaker = keyMaker
-        self.pinFailedCountCache = pinFailedCountCache
 
         self.localAuthenticationContext = localAuthenticationContext
         self.notificationCenter = notificationCenter
+        self.userDefaults = userDefaults
 
         #if !APP_EXTENSION
         trackLifetime()
@@ -106,24 +104,24 @@ final class UnlockManager {
 
     func match(userInputPin: String, completion: @escaping (Bool) -> Void) {
         guard !userInputPin.isEmpty else {
-            pinFailedCountCache.pinFailedCount += 1
+            userDefaults[.pinFailedCount] += 1
             completion(false)
             return
         }
-        keyMaker.obtainMainKey(with: PinProtection(pin: userInputPin)) { key in
+        keyMaker.obtainMainKey(with: PinProtection(pin: userInputPin, keychain: keychain)) { key in
             guard self.validate(mainKey: key) else {
-                self.pinFailedCountCache.pinFailedCount += 1
+                self.userDefaults[.pinFailedCount] += 1
                 completion(false)
                 return
             }
-            self.pinFailedCountCache.pinFailedCount = 0
+            self.userDefaults[.pinFailedCount] = 0
             completion(true)
         }
     }
 
     private func migrateProtectionSetting() {
         if cacheStatus.isPinCodeEnabled && cacheStatus.isTouchIDEnabled {
-            _ = keyMaker.deactivate(PinProtection(pin: "doesnotmatter"))
+            _ = keyMaker.deactivate(PinProtection(pin: "doesnotmatter", keychain: keychain))
         }
     }
 
@@ -152,7 +150,7 @@ final class UnlockManager {
 
         guard !isRequestingBiometricAuthentication else { return }
         isRequestingBiometricAuthentication = true
-        keyMaker.obtainMainKey(with: BioProtection()) { key in
+        keyMaker.obtainMainKey(with: BioProtection(keychain: keychain)) { key in
             defer {
                 self.isRequestingBiometricAuthentication = false
             }
@@ -248,7 +246,7 @@ final class UnlockManager {
             fatalError("\(error)")
         }
 
-        pinFailedCountCache.pinFailedCount = 0
+        userDefaults[.pinFailedCount] = 0
 
         delegate.loadUserDataAfterUnlock()
 

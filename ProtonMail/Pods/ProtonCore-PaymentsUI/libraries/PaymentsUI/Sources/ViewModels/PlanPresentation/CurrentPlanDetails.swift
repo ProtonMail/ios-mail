@@ -55,7 +55,6 @@ struct CurrentPlanDetails {
 }
 
 extension CurrentPlanDetails {
-    // swiftlint:disable function_parameter_count
     static func createPlan(from details: Plan,
                            plan: InAppPurchasePlan,
                            servicePlan: ServicePlanDataServiceProtocol,
@@ -78,17 +77,17 @@ extension CurrentPlanDetails {
         } else {
             price = plan.planPrice(from: storeKitManager) ?? protonPrice
         }
-        
+
         let space = planDetailsSpace(plan: details, servicePlan: servicePlan)
         return CurrentPlanDetails(name: name, price: price, cycle: details.cycleDescription, details: planDetails.details, endDate: endDate, usedSpace: space.usedSpace, maxSpace: space.maxSpace, usedSpaceDescription: planDetails.shouldShowUsedSpace ? space.description : nil)
     }
-    
+
     struct PlanDetailsSpace {
         let usedSpace: Int64
         let maxSpace: Int64
         let description: String
     }
-    
+
     private static func planDetailsSpace(plan: Plan, servicePlan: ServicePlanDataServiceProtocol) -> PlanDetailsSpace {
         var usedSpace: Int64
         var maxSpace: Int64
@@ -104,7 +103,7 @@ extension CurrentPlanDetails {
     }
 
     typealias PlanDataOptDetails = (name: String?, shouldShowUsedSpace: Bool, optDetails: [(DetailType, String?)])
-    
+
     // swiftlint:disable:next function_body_length cyclomatic_complexity
     private static func planDataDetails(
         from details: Plan, servicePlan: ServicePlanDataServiceProtocol, countriesCount: Int?, clientApp: ClientApp,
@@ -135,7 +134,7 @@ extension CurrentPlanDetails {
                             (.checkmark, details.UConnectionsDescription),
                             (.checkmark, details.highSpeedDescription)
                           ])
-            
+
         case "c277c92ffb58ea9aeef4d621a3cc83991c402db7a0f61b598454e34286061711":
             strDetails = (name: "Plus",
                           shouldShowUsedSpace: true,
@@ -146,7 +145,7 @@ extension CurrentPlanDetails {
                             (.checkmark, details.adblockerDescription),
                             (.checkmark, details.streamingServiceDescription)
                           ])
-            
+
         case "cd340d1a5c4151dea2fb7e52ab3f27aebf9a4135f4506d4d6e03089f066e99d2":
             strDetails = (name: "Professional",
                           shouldShowUsedSpace: true,
@@ -156,7 +155,7 @@ extension CurrentPlanDetails {
                             (.checkmark, details.VCustomDomainDescription),
                             (.checkmark, details.multiUserSupportDescription)
                           ])
-            
+
         case "11d40417959631d3d2420e8cd8709893c11cd7a4db737af63e8d56cfa7866f85":
             strDetails = (name: nil,
                           shouldShowUsedSpace: true,
@@ -178,7 +177,7 @@ extension CurrentPlanDetails {
                             (.checkmark, details.VCustomDomainDescription),
                             (.checkmark, details.WUsersDescription)
                           ])
-            
+
         case "b1fedaf0300a6a79f73918565cc0870abffd391e3e1899ed6d602c3339e1c3bb":
             strDetails = (name: nil,
                           shouldShowUsedSpace: true,
@@ -266,7 +265,7 @@ extension CurrentPlanDetails {
                             (.envelope, details.YAddressesPerUserDescriptionV5),
                             (.calendarCheckmark, details.ZCalendarsPerUserDescription)
                           ])
-            
+
         case "edec477fd23bc034218f4db7932a71540517ebb2247ccaf408d1ffbfe12c4d43":
             strDetails = (name: nil,
                           shouldShowUsedSpace: true,
@@ -276,7 +275,7 @@ extension CurrentPlanDetails {
                             (.calendarCheckmark, details.QZCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
                             (.shield, details.UVPNConnectionsDescription)
                           ])
-            
+
         case "b61a62275e3d7d6d26d239cdd1eaf106a7bd8933cfc4a2f2dd25f1279663b188":
             strDetails = (name: nil,
                           shouldShowUsedSpace: true,
@@ -286,7 +285,7 @@ extension CurrentPlanDetails {
                             (.calendarCheckmark, details.ZCalendarsPerUserDescription),
                             (.shield, details.UConnectionsPerUserDescription)
                           ])
-            
+
         case "65b6f529cb429faa1d8ba151e7ae84c2d16c8eb484e81b28683a3a0862554607":
             strDetails = (name: nil,
                           shouldShowUsedSpace: true,

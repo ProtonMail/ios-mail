@@ -32,3 +32,5 @@ public struct CountryCode: Decodable {
 }
 
 #endif
+
+// swiftlint:enable identifier_name

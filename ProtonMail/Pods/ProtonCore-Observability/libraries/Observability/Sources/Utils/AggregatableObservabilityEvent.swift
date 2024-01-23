@@ -22,7 +22,7 @@
 
 /// This struct is used for type erasure of the ObservabilityEvent
 public struct AggregableObservabilityEvent: Encodable {
-    
+
     private let internalEncode: (Encoder) throws -> Void
     private let internalCompare: (Any) -> Bool
     private let internalIncrement: () -> Void

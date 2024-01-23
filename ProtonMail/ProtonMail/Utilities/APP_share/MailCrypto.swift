@@ -36,11 +36,9 @@ class MailCrypto {
 
     // MARK: - static
 
-    static func updateTime( _ time: Int64, processInfo: SystemUpTimeProtocol? = nil) {
-        if var processInfo = processInfo {
-            processInfo.updateLocalSystemUpTime(time: processInfo.systemUpTime)
-            processInfo.localServerTime = TimeInterval(time)
-        }
+    static func updateTime( _ time: Int64, processInfo: SystemUpTimeProtocol) {
+        processInfo.localSystemUpTime = processInfo.systemUpTime
+        processInfo.localServerTime = TimeInterval(time)
         Crypto.updateTime(time)
     }
 

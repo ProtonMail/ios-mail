@@ -99,7 +99,7 @@ extension SaveToolbarActionSettings {
 
     struct Dependencies {
         let apiService: APIService
-        var mailSettingsHandler: MailSettingsHandler
+        unowned let mailSettingsHandler: MailSettingsHandler
 
         init(user: UserManager) {
             apiService = user.apiService

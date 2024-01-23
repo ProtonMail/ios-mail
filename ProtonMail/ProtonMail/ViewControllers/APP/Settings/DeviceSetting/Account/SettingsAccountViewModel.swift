@@ -171,11 +171,11 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
 
     var reloadTable: (() -> Void)?
 
-    init(user: UserManager) {
+    init(user: UserManager, isMessageSwipeNavigationEnabled: Bool) {
         self.userManager = user
 
         var mailboxItems: [SettingsMailboxItem] = [.privacy, .undoSend, .conversation, .labels, .folders]
-        if UserInfo.isConversationSwipeEnabled {
+        if isMessageSwipeNavigationEnabled {
             mailboxItems.append(.nextMsgAfterMove)
         }
 
@@ -246,7 +246,7 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
     }
 
     var isPaidUser: Bool {
-        userManager.isPaid
+        userManager.hasPaidMailPlan
     }
 
     func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?) {

@@ -1,4 +1,3 @@
-
 "OK" = "ΟΚ";
 
 "Cancel" = "Ακύρωση";
@@ -22,6 +21,8 @@
 "Current plan will expire on %@" = "Το τρέχον πλάνο θα λήξει στις %@";
 
 "Contact an administrator to make changes to your Proton subscription." = "Επικοινωνήστε με έναν διαχειριστή για να κάνετε αλλαγές στη συνδρομή Proton.";
+
+"%1$@ of %2$@" = "%1$@ από %2$@";
 
 "%@ storage" = "%@ αποθηκευτικού χώρου";
 
@@ -73,6 +74,8 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "Μόνο οι ετήσιες συνδρομές μη αυτόματης ανανέωσης είναι διαθέσιμες μέσω αυτής της εφαρμογής";
 
+"Your subscription cannot be managed inside the mobile app." = "Δεν είναι δυνατή η διαχείριση της συνδρομής σας εντός της εφαρμογής για κινητές συσκευές.";
+
 "Unlimited folders, labels, and filters" = "Απεριόριστοι φάκελοι, ετικέτες, και φίλτρα";
 
 "Up to %@ storage" = "Έως και %@ αποθηκευτικού χώρου";
@@ -113,13 +116,9 @@
 
 "Unlimited devices" = "Απεριόριστες συσκευές";
 
-"%@ email aliases" = "%@ ψευδώνυμα email";
-
 "Unlimited email aliases" = "Απεριόριστα ψευδώνυμα email";
 
 "Unlimited logins and notes" = "Απεριόριστες συνδέσεις και σημειώσεις";
-
-"Up to %@ forwarding mailboxes" = "Έως και %@ προωθούμενα γραμματοκιβώτια";
 
 "Custom fields" = "Προσαρμοσμένα πεδία";
 

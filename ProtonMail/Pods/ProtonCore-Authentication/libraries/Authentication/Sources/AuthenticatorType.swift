@@ -28,8 +28,7 @@ import ProtonCoreServices
 
 public protocol AuthenticatorInterface {
     func authenticate(idpEmail: String, responseToken: SSOResponseToken, completion: @escaping Authenticator.Completion)
-    
-    // swiftlint:disable:next function_parameter_count
+
     func authenticate(username: String, password: String, challenge: ChallengeProperties?, intent: Intent?, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion)
 
     func confirm2FA(_ twoFactorCode: String, context: TwoFactorContext, completion: @escaping Authenticator.Completion)
@@ -37,9 +36,9 @@ public protocol AuthenticatorInterface {
     func refreshCredential(_ oldCredential: Credential, completion: @escaping Authenticator.Completion)
 
     func checkAvailableUsernameWithoutSpecifyingDomain(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
-    
+
     func checkAvailableUsernameWithinDomain(_ username: String, domain: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
-    
+
     func checkAvailableExternal(_ email: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
 
     func setUsername(username: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
@@ -59,7 +58,7 @@ public protocol AuthenticatorInterface {
     func getAddresses(_ credential: Credential?, completion: @escaping (Result<[Address], AuthErrors>) -> Void)
 
     func getKeySalts(_ credential: Credential?, completion: @escaping (Result<[KeySalt], AuthErrors>) -> Void)
-    
+
     func forkSession(_ credential: Credential?,
                      completion: @escaping (Result<AuthService.ForkSessionResponse, AuthErrors>) -> Void)
 
@@ -72,12 +71,12 @@ public protocol AuthenticatorInterface {
 // Workaround for the lack of default parameters in protocols
 
 public extension AuthenticatorInterface {
-    
+
     @available(*, deprecated, message: "Please use the function with challenge")
     func authenticate(username: String, password: String, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion) {
         authenticate(username: username, password: password, challenge: nil, intent: nil, srpAuth: srpAuth, completion: completion)
     }
-    
+
     @available(*, deprecated, renamed: "checkAvailableUsernameWithoutSpecifyingDomain")
     func checkAvailable(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
         checkAvailableUsernameWithoutSpecifyingDomain(username, completion: completion)

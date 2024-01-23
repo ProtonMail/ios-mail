@@ -24,15 +24,25 @@ import UIKit
 
 extension MailboxViewController {
 
+    private func attachmentsPreviews(for mailboxItem: MailboxItem) -> [AttachmentPreviewViewModel] {
+        viewModel.previewableAttachments(for: mailboxItem).map {
+            AttachmentPreviewViewModel(
+                name: $0.name,
+                icon: AttachmentType(mimeType: $0.mimeType.lowercased()).icon
+            )
+        }
+    }
+
     func buildNewMailboxMessageViewModel(
         message: MessageEntity,
         customFolderLabels: [LabelEntity],
-        weekStart: WeekStart
+        weekStart: WeekStart,
+        canSelectMore: Bool
     ) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: message.messageID.rawValue)
         let contactGroups = viewModel.contactGroups()
-        let senderRowComponents = MailboxMessageCellHelper().senderRowComponents(
+        let senderRowComponents = mailboxMessageCellHelper.senderRowComponents(
             for: message,
             basedOn: replacingEmailsMap,
             groupContacts: contactGroups,
@@ -44,7 +54,7 @@ extension MailboxViewController {
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
             isLabelLocation: message.isLabelLocation(labelId: labelId),
-            style: viewModel.listEditing ? .selection(isSelected: isSelected) : style,
+            style: viewModel.listEditing ? .selection(isSelected: isSelected, isAbleToBeSelected: canSelectMore) : style,
             initial: senderRowComponents.initials(),
             isRead: !message.unRead,
             sender: senderRowComponents,
@@ -59,10 +69,24 @@ extension MailboxViewController {
             messageCount: 0,
             folderIcons: [],
             scheduledTime: message.contains(location: .scheduled) ? dateForScheduled(of: message) : nil,
-            isScheduledTimeInNext10Mins: checkIsDateWillHappenInTheNext10Mins(of: message)
+            isScheduledTimeInNext10Mins: checkIsDateWillHappenInTheNext10Mins(of: message),
+            attachmentsPreviewViewModels: attachmentsPreviews(for: .message(message)),
+            numberOfAttachments: message.numAttachments
         )
-        if mailboxViewModel.displayOriginIcon {
+        let displayOriginIcon = [
+            Message.Location.allmail,
+            Message.Location.starred,
+            Message.Location.almostAllMail
+        ].contains(Message.Location(viewModel.labelID))
+        if displayOriginIcon || mailboxViewModel.isLabelLocation {
             mailboxViewModel.folderIcons = message.getFolderIcons(customFolderLabels: customFolderLabels)
+        }
+
+        let isTrashed = message.contains(labelID: Message.Location.trash.labelID)
+
+        if (message.isDraft || message.isSent) && isTrashed,
+           let icon = Message.Location.trash.originImage() {
+            mailboxViewModel.folderIcons.append(icon)
         }
         return mailboxViewModel
     }
@@ -71,11 +95,12 @@ extension MailboxViewController {
         conversation: ConversationEntity,
         conversationTagUIModels: [TagUIModel],
         customFolderLabels: [LabelEntity],
-        weekStart: WeekStart
+        weekStart: WeekStart,
+        canSelectMore: Bool
     ) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: conversation.conversationID.rawValue)
-        let senderRowComponents = MailboxMessageCellHelper().senderRowComponents(
+        let senderRowComponents = mailboxMessageCellHelper.senderRowComponents(
             for: conversation,
             basedOn: replacingEmailsMap
         )
@@ -86,7 +111,7 @@ extension MailboxViewController {
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
             isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder,
-            style: viewModel.listEditing ? .selection(isSelected: isSelected) : .normal,
+            style: viewModel.listEditing ? .selection(isSelected: isSelected, isAbleToBeSelected: canSelectMore) : .normal,
             initial: senderRowComponents.initials(),
             isRead: conversation.getNumUnread(labelID: labelId) <= 0,
             sender: senderRowComponents,
@@ -101,8 +126,16 @@ extension MailboxViewController {
             messageCount: messageCount > 0 ? messageCount : 0,
             folderIcons: [],
             scheduledTime: isHavingScheduled ? dateForScheduled(of: conversation) : nil,
-            isScheduledTimeInNext10Mins: checkIsDateWillHappenInTheNext10Mins(of: conversation))
-        if mailboxViewModel.displayOriginIcon {
+            isScheduledTimeInNext10Mins: checkIsDateWillHappenInTheNext10Mins(of: conversation),
+            attachmentsPreviewViewModels: attachmentsPreviews(for: .conversation(conversation)),
+            numberOfAttachments: conversation.attachmentCount
+        )
+        let displayOriginIcon = [
+            Message.Location.allmail,
+            Message.Location.starred,
+            Message.Location.almostAllMail
+        ].contains(Message.Location(viewModel.labelID))
+        if displayOriginIcon || mailboxViewModel.isLabelLocation {
             mailboxViewModel.folderIcons = conversation.getFolderIcons(customFolderLabels: customFolderLabels)
         }
         return mailboxViewModel

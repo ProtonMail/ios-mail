@@ -1,6 +1,6 @@
 //
-//  MissingScopesFeatureFlag.swift
-//  ProtonCore-FeatureSwitch - Created on 21.04.23.
+//  SSOSignInFeatureFlag.swift
+//  ProtonCore-FeatureSwitch - Created on 21/04/2023.
 //  
 //  Copyright (c) 2023 Proton Technologies AG
 //

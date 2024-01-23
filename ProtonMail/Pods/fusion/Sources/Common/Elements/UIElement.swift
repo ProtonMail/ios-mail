@@ -29,11 +29,10 @@ import Foundation
 import XCTest
 
 /**
- * Represents single XCUIElement and provides an interface for performing actions or checks.
- * By default each XCUIElement that is referenced by this class already has a wait functionality in place except check functions or checkDoesNotExist() function.
- * Check functions assume that element was already located before check is called. checkDoesNotExist() function shouldn't wait for the element.
+ Represents single XCUIElement and provides an interface for performing actions or checks.
+ By default each XCUIElement that is referenced by this class already has a wait functionality in place except check functions or checkDoesNotExist() function.
+ Check functions assume that element was already located before check is called. checkDoesNotExist() function shouldn't wait for the element.
  */
-
 @available(*, deprecated, message: "`UiElement` has been renamed to `UIElement`.")
 typealias UiElement = UIElement
 
@@ -57,30 +56,155 @@ open class UIElement {
         self.elementType = elementType
     }
 
-    private var elementType: XCUIElement.ElementType
+    internal var elementType: XCUIElement.ElementType
     internal var uiElementQuery: XCUIElementQuery?
     internal var ancestorElement: XCUIElement?
     internal var parentElement: XCUIElement?
-    private var locatedElement: XCUIElement?
-    private var index: Int?
-    private var identifier: String?
-    private var childElement: UIElement?
-    private var descendantElement: UIElement?
-    private var elementEnabled: Bool?
-    private var elementDisabled: Bool?
-    private var elementHittable: Bool?
-    private var predicate: NSPredicate?
-    private var matchedPredicate: NSPredicate?
-    private var labelPredicate: NSPredicate?
-    private var titlePredicate: NSPredicate?
-    private var valuePredicate: NSPredicate?
-    private var focusedTable: XCUIElement?
-    private var containsType: XCUIElement.ElementType?
-    private var containsIdentifier: String?
-    private var containsPredicate: NSPredicate?
-    private var containLabel: String?
-    private var shouldUseFirstMatch: Bool = false
-    private var shouldWaitForExistance = true
+    internal var locatedElement: XCUIElement?
+    internal var index: Int?
+    internal var identifier: String?
+    internal var childElement: UIElement?
+    internal var descendantElement: UIElement?
+    internal var elementEnabled: Bool?
+    internal var elementDisabled: Bool?
+    internal var elementHittable: Bool?
+    internal var predicate: NSPredicate?
+    internal var matchedPredicate: NSPredicate?
+    internal var labelPredicate: NSPredicate?
+    internal var titlePredicate: NSPredicate?
+    internal var valuePredicate: NSPredicate?
+    internal var focusedTable: XCUIElement?
+    internal var containsType: XCUIElement.ElementType?
+    internal var containsIdentifier: String?
+    internal var containsPredicate: NSPredicate?
+    internal var containLabel: String?
+    internal var shouldUseFirstMatch: Bool = false
+    internal var shouldWaitForExistance = true
+
+    // MARK: - Element Properties
+    /**
+     Returns the label of the located UI element.
+
+     This method retrieves the `label` property of the element found by `uiElement()`.
+     It's typically used to access the textual description of the element, often visible to the user.
+     Returns `nil` if the element is not found or does not have a label.
+     */
+    public func label() -> String? {
+        return uiElement()?.label
+    }
+
+    /**
+     Returns the placeholder value of the located UI element, if available.
+
+     This method retrieves the `placeholderValue` of the element, which is often used in text fields to provide a hint to the user.
+     Returns `nil` if the element is not found or does not have a placeholder value.
+     */
+    public func placeholderValue() -> String? {
+        return uiElement()?.placeholderValue
+    }
+
+    /**
+     Retrieves the title of the located UI element.
+
+     This method is used to access the `title` property of the element, which is typically used in buttons, navigation bars, etc.
+     Returns `nil` if the element is not found or does not have a title.
+     */
+    public func title() -> String? {
+        return uiElement()?.title
+    }
+
+    /**
+     Returns the value of the located UI element.
+
+     This method accesses the `value` property of the element, which can represent different types of data depending on the element's nature (e.g., the text of a text field).
+     Returns `nil` if the element is not found or does not have a value.
+     */
+    public func value() -> Any? {
+        return uiElement()?.value
+    }
+
+    /**
+     Checks whether the located UI element exists in the UI hierarchy.
+
+     This method evaluates if the element identified by `uiElement()` currently exists.
+     Returns `false` if the element does not exist.
+     */
+    public func exists() -> Bool {
+        return uiElement()?.exists ?? false
+    }
+
+    /**
+     Determines if the located UI element is enabled.
+
+     This method checks the `isEnabled` property, which indicates whether the element is currently enabled and can accept user interactions.
+     Returns `false` if the element is not found or is disabled.
+     */
+    public func enabled() -> Bool {
+        return uiElement()?.isEnabled ?? false
+    }
+
+    /**
+     Checks if the located UI element is hittable (i.e., can be tapped).
+
+     This method evaluates the `isHittable` property to determine if the element can be tapped or clicked in the current UI state.
+     Returns `false` if the element is not found or is not hittable.
+     */
+    public func hittable() -> Bool {
+        return uiElement()?.isHittable ?? false
+    }
+
+    /**
+     Determines if the located UI element is selected.
+
+     This method assesses the `isSelected` property, indicating if the element is in a selected state (common in buttons, toggle switches, etc.).
+     Returns `false` if the element is not found or is not selected.
+     */
+    public func selected() -> Bool {
+        return uiElement()?.isSelected ?? false
+    }
+
+    /**
+     Counts the number of child elements of the located UI element.
+
+     This method returns the count of child elements of any type (`ElementType.any`) for the element located by `uiElement()`.
+     Returns `0` if the element is not found or has no children.
+     */
+    public func childrenCount() -> Int {
+        return uiElement()?.children(matching: .any).count ?? 0
+    }
+
+    /**
+     Counts the number of child elements of a specific type for the located UI element.
+
+     This method takes an `XCUIElement.ElementType` and returns the count of child elements of that type.
+     Returns `0` if the element is not found or has no children of the specified type.
+     */
+    public func childrenCountByType(_ type: XCUIElement.ElementType) -> Int {
+        return uiElement()?.children(matching: type).count ?? 0
+    }
+
+    /**
+     Counts the number of child elements that match a given predicate for the located UI element.
+
+     This method accepts an `NSPredicate` and an optional `XCUIElement.ElementType` (defaults to `.any`).
+     It returns the count of child elements that match the predicate and element type.
+     Returns `0` if the element is not found or no children match the criteria.
+     */
+    public func childrenCountByPredicate(_ predicate: NSPredicate, _ type: XCUIElement.ElementType? = nil) -> Int {
+        let elementType = type ?? .any
+        return uiElement()?.children(matching: elementType).matching(predicate).count ?? 0
+    }
+
+    /**
+     Counts the number of descendant elements that match a given predicate for the located UI element.
+
+     Similar to `childrenCountByPredicate`, but evaluates all descendants (not just direct children) matching the provided `NSPredicate` and `XCUIElement.ElementType`.
+     Returns `0` if the element is not found or no descendants match the criteria.
+     */
+    public func descendantsCountByPredicate(_ predicate: NSPredicate, _ type: XCUIElement.ElementType? = nil) -> Int {
+        let elementType = type ?? .any
+        return uiElement()?.descendants(matching: elementType).matching(predicate).count ?? 0
+    }
 
     internal func getType() -> XCUIElement.ElementType {
         return elementType
@@ -103,619 +227,109 @@ open class UIElement {
         return self.index
     }
 
-    /// Element properties
-    public func label() -> String? {
-        guard let element = uiElement() else {
-            return nil
-        }
-        return element.label
-    }
-
-    public func placeholderValue() -> String? {
-        guard let element = uiElement() else {
-            return nil
-        }
-        return element.placeholderValue
-    }
-
-    public func title() -> String? {
-        guard let element = uiElement() else {
-            return nil
-        }
-        return element.title
-    }
-
-    public func value() -> Any? {
-        guard let element = uiElement() else {
-            return nil
-        }
-        return element.value
-    }
-
-    public func exists() -> Bool {
-        guard let element = uiElement() else {
-            return false
-        }
-        return element.exists
-    }
-
-    public func enabled() -> Bool {
-        guard let element = uiElement() else {
-            return false
-        }
-        return element.isEnabled
-    }
-
-    public func hittable() -> Bool {
-        guard let element = uiElement() else {
-            return false
-        }
-        return element.isHittable
-    }
-
-    public func selected() -> Bool {
-        guard let element = uiElement() else {
-            return false
-        }
-        return element.isSelected
-    }
-
-    public func childrenCount() -> Int {
-        return uiElement()!.children(matching: XCUIElement.ElementType.any).count
-    }
-
-    public func childrenCountByType(_ type: XCUIElement.ElementType) -> Int {
-        return uiElement()!.children(matching: type).count
-    }
-
-    /// Matchers
-    public func byIndex(_ index: Int) -> UIElement {
-        self.index = index
-        return self
-    }
-
-    public func hasDescendant(_ element: UIElement) -> UIElement {
-        self.containsType = element.getType()
-        self.containsIdentifier = element.getIdentifier()
-        self.containsPredicate = element.getPredicate()
-        return self
-    }
-
-    public func containsLabel(_ label: String) -> UIElement {
-        self.containLabel = label
-        return self
-    }
-
-    public func isEnabled() -> UIElement {
-        self.elementEnabled = true
-        return self
-    }
-
-    public func isDisabled() -> UIElement {
-        self.elementDisabled = true
-        return self
-    }
-
-    public func isHittable() -> UIElement {
-        self.elementHittable = true
-        return self
-    }
-
-    public func firstMatch() -> UIElement {
-        self.shouldUseFirstMatch = true
+    @discardableResult
+    internal func updateProperty(_ updateBlock: () -> Void) -> UIElement {
+        updateBlock()
         return self
     }
 
     /**
-     * Use it to specify in which table element test should swipe up or down in case of multiple tables in the layout hierarchy:
-     * Example: cell(identifier).inTable(table(identifier)).swipeUpUntilVisible()
+     The core function responsible for locating a specific XCUIElement.
+
+     This function orchestrates the process of finding a user interface element within an iOS application's UI hierarchy. It performs several key actions in a sequence:
+
+     - Initially, it checks if the element has already been located (`locatedElement`). If found, it returns this element immediately, bypassing additional processing.
+
+     - The function then applies a set of filters using `applyFilters()`. These filters narrow down the search based on criteria like identifiers, predicates, element state (enabled/disabled), and other attributes. The filtering process is crucial in identifying the correct element within potentially complex UI structures.
+
+     - It checks for conflicting parameters (such as having both `elementDisabled` and `elementEnabled` set to true) using `checkForConflictingParameters()`. If any conflicts are found, it fails the test to prevent ambiguous or erroneous behavior.
+
+     - The function then attempts to locate the element based on its index in the UI hierarchy using `locateElementByIndex()`. This step involves determining the specific instance of an element when multiple similar elements exist.
+
+     - Finally, the function returns the located element. If `shouldWaitForExistance` is set to true, it waits for the element's existence before returning. This waiting mechanism is useful in scenarios where UI elements might take some time to appear due to network latency, animations, or other asynchronous operations.
+
+     This function is marked as `internal`, meaning it can be accessed within the same module but not from outside it.
      */
-    public func inTable(_ table: UIElement) -> UIElement {
-        focusedTable = table.uiElement()
-        return self
-    }
-
-    public func matchesPredicate(_ matchedPredicate: NSPredicate) -> UIElement {
-        self.matchedPredicate = matchedPredicate
-        return self
-    }
-
-    public func hasLabel(_ label: String) -> UIElement {
-        return hasLabel(Predicate.labelEquals(label))
-    }
-
-    public func hasLabel(_ labelPredicate: NSPredicate) -> UIElement {
-        self.labelPredicate = labelPredicate
-        return self
-    }
-
-    public func hasTitle(_ title: String) -> UIElement {
-        return hasTitle(Predicate.titleEquals(title))
-    }
-
-    public func hasTitle(_ titlePredicate: NSPredicate) -> UIElement {
-        self.titlePredicate = titlePredicate
-        return self
-    }
-
-    public func hasValue(_ value: String) -> UIElement {
-        return hasValue(Predicate.valueEquals(value))
-    }
-
-    public func hasValue(_ valuePredicate: NSPredicate) -> UIElement {
-        self.valuePredicate = valuePredicate
-        return self
-    }
-
-    /// Actions
-    public func clearText() -> UIElement {
-        uiElement()!.clearText()
-        return self
-    }
-
-    @discardableResult
-    public func doubleTap() -> UIElement {
-        uiElement()!.doubleTap()
-        return self
-    }
-
-    @discardableResult
-    public func multiTap(_ count: Int) -> UIElement {
-        let element = uiElement()!
-        for _ in 0...count {
-            element.tap()
-        }
-        return self
-    }
-
-    @discardableResult
-    public func forceTap() -> UIElement {
-        tapOnCoordinate(withOffset: .zero)
-    }
-
-    @discardableResult
-    public func tapOnCoordinate(withOffset offset: CGVector) -> UIElement {
-        let element = uiElement()!
-        element.coordinate(withNormalizedOffset: offset).tap()
-        return self
-    }
-
-    @discardableResult
-    public func longPress(_ timeInterval: TimeInterval = 2) -> UIElement {
-        uiElement()!.press(forDuration: timeInterval)
-        return self
-    }
-
-    @discardableResult
-    public func forcePress(_ timeInterval: TimeInterval = 2) -> UIElement {
-        uiElement()!.coordinate(withNormalizedOffset: .zero).press(forDuration: timeInterval)
-        return self
-    }
-
-    @discardableResult
-    public func swipeDown() -> UIElement {
-        uiElement()!.swipeDown()
-        return self
-    }
-
-    @discardableResult
-    public func swipeLeft() -> UIElement {
-        uiElement()!.swipeLeft()
-        return self
-    }
-
-    @discardableResult
-    public func swipeRight() -> UIElement {
-        uiElement()!.swipeRight()
-        return self
-    }
-
-    @discardableResult
-    public func swipeUp() -> UIElement {
-        uiElement()!.swipeUp()
-        return self
-    }
-
-    @discardableResult
-    public func tapThenSwipeLeft( _ forDuration: TimeInterval, _ speed: XCUIGestureVelocity) -> UIElement {
-        let start = uiElement()!.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5))
-        let finish = uiElement()!.coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.5))
-        start.press(forDuration: forDuration, thenDragTo: finish, withVelocity: speed, thenHoldForDuration: 0.1)
-        return self
-    }
-
-    @discardableResult
-    public func tapThenSwipeRight( _ forDuration: TimeInterval, _ speed: XCUIGestureVelocity) -> UIElement {
-        let start = uiElement()!.coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.5))
-        let finish = uiElement()!.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5))
-        start.press(forDuration: forDuration, thenDragTo: finish, withVelocity: speed, thenHoldForDuration: 0.1)
-        return self
-    }
-
-    @discardableResult
-    public func tapThenSwipeDown( _ forDuration: TimeInterval, _ speed: XCUIGestureVelocity) -> UIElement {
-        let start = uiElement()!.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.1))
-        let finish = uiElement()!.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.9))
-        start.press(forDuration: forDuration, thenDragTo: finish, withVelocity: speed, thenHoldForDuration: 0.1)
-        return self
-    }
-
-    @discardableResult
-    public func tapThenSwipeUp( _ forDuration: TimeInterval, _ speed: XCUIGestureVelocity) -> UIElement {
-        let start = uiElement()!.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.9))
-        let finish = uiElement()!.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.1))
-        start.press(forDuration: forDuration, thenDragTo: finish, withVelocity: speed, thenHoldForDuration: 0.1)
-        return self
-    }
-
-    @discardableResult
-    public func tap() -> UIElement {
-        uiElement()!.tap()
-        return self
-    }
-
-    @discardableResult
-    public func tapIfExists() -> UIElement {
-        let element = uiElement()!
-        if Wait().forElement(element).exists {
-            element.tap()
-        }
-        return self
-    }
-
-    @discardableResult
-    public func forceKeyboardFocus(_ retries: Int = 5) -> UIElement {
-        var count = 0
-        uiElement()!.tap()
-        // Give xctest enough time to evaluate predicate.
-        while !Wait().hasKeyboardFocus(uiElement()!) {
-            if count < retries {
-                uiElement()!.tap()
-                count += 1
-            } else {
-                XCTFail("Unable to set the keyboard focus to element: \(String(describing: uiElement()?.debugDescription))")
-            }
-        }
-        return self
-    }
-
-    @discardableResult
-    public func swipeUpUntilVisible(maxAttempts: Int = 5) -> UIElement {
-        var eventCount = 0
-        var swipeArea: XCUIElement
-
-        if focusedTable != nil {
-            swipeArea = focusedTable!
-        } else {
-            swipeArea = currentApp!
-        }
-
-        while eventCount <= maxAttempts, !isVisible {
-            swipeArea.swipeUp()
-            eventCount += 1
-        }
-        return self
-    }
-
-    @discardableResult
-    public func swipeDownUntilVisible(maxAttempts: Int = 5) -> UIElement {
-        var eventCount = 0
-        var swipeArea: XCUIElement
-
-        if focusedTable != nil {
-            swipeArea = focusedTable!
-        } else {
-            swipeArea = currentApp!
-        }
-
-        while eventCount <= maxAttempts, !isVisible {
-            swipeArea.swipeDown()
-            eventCount += 1
-        }
-        return self
-    }
-
-    /// Allow actions on children / descendants
-    public func onChild(_ childElement: UIElement) -> UIElement {
-        self.childElement = childElement
-        return self
-    }
-
-    @discardableResult
-    public func onDescendant(_ descendantElement: UIElement) -> UIElement {
-        self.descendantElement = descendantElement
-        return self
-    }
-
-    /// Checks
-    @discardableResult
-    public func checkExists(file: StaticString = #filePath, line: UInt = #line) -> UIElement {
-        XCTAssertTrue(
-            uiElement()!.exists,
-            "Expected element \(uiElement().debugDescription) to exist but it doesn't.",
-            file: file,
-            line: line
-        )
-        return self
-    }
-
-    @discardableResult
-    public func checkIsHittable(file: StaticString = #filePath, line: UInt = #line) -> UIElement {
-        XCTAssertTrue(
-            uiElement()!.isHittable,
-            "Expected element \(uiElement().debugDescription) to be hittable but it is not.",
-            file: file,
-            line: line
-        )
-        return self
-    }
-
-    @discardableResult
-    public func checkDoesNotExist(file: StaticString = #filePath, line: UInt = #line) -> UIElement {
-        shouldWaitForExistance = false
-        XCTAssertFalse(
-            uiElement()!.exists,
-            "Expected element \(uiElement().debugDescription) to not exist but it exists.",
-            file: file,
-            line: line
-        )
-        return self
-    }
-
-    @discardableResult
-    public func checkDisabled(file: StaticString = #filePath, line: UInt = #line) -> UIElement {
-        XCTAssertFalse(
-            uiElement()!.isEnabled,
-            "Expected element \(uiElement().debugDescription) to be in disabled state but it is enabled.",
-            file: file,
-            line: line
-        )
-        return self
-    }
-
-    @discardableResult
-    public func checkEnabled(file: StaticString = #filePath, line: UInt = #line) -> UIElement {
-        XCTAssertTrue(
-            uiElement()!.isEnabled,
-            "Expected element \(uiElement().debugDescription) to be in enabled state but it is disabled.",
-            file: file,
-            line: line
-        )
-        return self
-    }
-
-    @discardableResult
-    public func checkHasChild(_ element: UIElement, file: StaticString = #filePath, line: UInt = #line) -> UIElement {
-        let parent = uiElement()!
-        let locatedElement = parent.child(element)
-        XCTAssertTrue(
-            locatedElement.exists,
-            "Expected to find a child element: \"\(element.uiElement().debugDescription)\" but found nothing.",
-            file: file,
-            line: line
-        )
-        return self
-    }
-
-    @discardableResult
-    public func checkHasDescendant(_ element: UIElement, file: StaticString = #filePath, line: UInt = #line) -> UIElement {
-        let ancestor = uiElement()!
-        let locatedElement = ancestor.descendant(element)
-        XCTAssertTrue(
-            locatedElement.exists,
-            "Expected to find descendant element: \"\(element.uiElement().debugDescription)\" but found nothing.",
-            file: file,
-            line: line
-        )
-        return self
-    }
-
-    @discardableResult
-    public func checkHasLabel(_ label: String, file: StaticString = #filePath, line: UInt = #line) -> UIElement {
-        let labelValue = uiElement()!.label
-        XCTAssertTrue(
-            labelValue == label,
-            "Expected Element text label to be: \"\(label)\", but found: \"\(labelValue)\"",
-            file: file,
-            line: line
-        )
-        return self
-    }
-
-    @discardableResult
-    public func checkContainsLabel(_ label: String, file: StaticString = #filePath, line: UInt = #line) -> UIElement {
-        let labelValue = uiElement()!.label
-        XCTAssertTrue(
-            labelValue.contains(label),
-            "Expected Element text label to contain: \"\(label)\", but found: \"\(labelValue)\"",
-            file: file,
-            line: line
-        )
-        return self
-    }
-
-    @discardableResult
-    public func checkHasValue(_ value: String, file: StaticString = #filePath, line: UInt = #line) -> UIElement {
-        guard let stringValue = uiElement()!.value as? String else {
-            XCTFail("Element doesn't have text value.")
-            return self
-        }
-        XCTAssertTrue(
-            stringValue == value,
-            "Expected Element text value to be: \"\(value)\", but found: \"\(stringValue)\"",
-            file: file,
-            line: line
-        )
-        return self
-    }
-
-    @discardableResult
-    public func checkHasTitle(_ title: String, file: StaticString = #filePath, line: UInt = #line) -> UIElement {
-        let stringValue = uiElement()!.title
-        XCTAssertTrue(
-            stringValue == title, "Expected Element title to be: \"\(title)\", but found: \"\(stringValue)\"",
-            file: file,
-            line: line
-        )
-        return self
-    }
-
-    @discardableResult
-    public func checkSelected(file: StaticString = #filePath, line: UInt = #line) -> UIElement {
-        XCTAssertTrue(
-            uiElement()!.isSelected == true,
-            "Expected Element to be selected, but it is not",
-            file: file,
-            line: line
-        )
-        return self
-    }
-
-    @available(*, deprecated, renamed: "waitUntilExists", message: "`wait` has been renamed to `waitUntilExists`.")
-    @discardableResult
-    public func wait(
-        time: TimeInterval = 10.0,
-        file: StaticString = #filePath,
-        line: UInt = #line
-    ) -> UIElement {
-        waitUntilExists(time: time, file: file, line: line)
-    }
-
-    @discardableResult
-    public func waitUntilExists(
-        time: TimeInterval = 10.0,
-        file: StaticString = #filePath,
-        line: UInt = #line
-    ) -> UIElement {
-        shouldWaitForExistance = false
-        Wait(time: time).forElement(uiElement()!, file, line)
-        return self
-    }
-
-    @discardableResult
-    public func waitForDisabled(
-        time: TimeInterval = 10.0,
-        file: StaticString = #filePath,
-        line: UInt = #line
-    ) -> UIElement {
-        Wait(time: time).forElementToBeDisabled(uiElement()!, file, line)
-        return self
-    }
-
-    @discardableResult
-    public func waitForHittable(
-        time: TimeInterval = 10.0,
-        file: StaticString = #filePath,
-        line: UInt = #line
-    ) -> UIElement {
-        Wait(time: time).forElementToBeHittable(uiElement()!, file, line)
-        return self
-    }
-
-    @discardableResult
-    public func waitForNotHittable(
-        time: TimeInterval = 10.0,
-        file: StaticString = #filePath,
-        line: UInt = #line
-    ) -> UIElement {
-        Wait(time: time).forElementToBeNotHittable(uiElement()!, file, line)
-        return self
-    }
-
-    @discardableResult
-    public func waitForEnabled(
-        time: TimeInterval = 10.0,
-        file: StaticString = #filePath,
-        line: UInt = #line
-    ) -> UIElement {
-        Wait(time: time).forElementToBeEnabled(uiElement()!, file, line)
-        return self
-    }
-
-    @discardableResult
-    public func waitForFocused(
-        time: TimeInterval = 10.0,
-        file: StaticString = #filePath,
-        line: UInt = #line
-    ) -> UIElement {
-        Wait(time: time).forHavingKeyboardFocus(uiElement()!, file, line)
-        return self
-    }
-
-    @discardableResult
-    public func waitUntilGone(
-        time: TimeInterval = 10.0,
-        file: StaticString = #filePath,
-        line: UInt = #line
-    ) -> UIElement {
-        shouldWaitForExistance = false
-        Wait(time: time).forElementToDisappear(uiElement()!, file, line)
-        return self
-    }
-
-    /**
-     * The core function responsible for XCUIElement location logic.
-     */
-    // swiftlint:disable cyclomatic_complexity
-    // swiftlint:disable function_body_length
-    func uiElement() -> XCUIElement? {
-        /// Return element instance if it was already located.
-        if locatedElement != nil {
+    internal func uiElement() -> XCUIElement? {
+        // Check if element is already located
+        if let locatedElement = locatedElement {
             shouldWaitForExistance = false
-            return locatedElement!
+            return locatedElement
         }
 
-        /// Filter out XCUIElementQuery based on identifier or predicate value provided.
-        if identifier != nil {
-            if focusedTable != nil {
-                uiElementQuery = currentApp!.tables[focusedTable!.identifier].descendants(matching: self.elementType).matching(identifier: identifier!)
+        // Apply filters based on provided criteria
+        applyFilters()
+
+        // Fail test if conflicting parameters are used
+        checkForConflictingParameters()
+
+        // Locate element by index and return it
+        locatedElement = locateElementByIndex()
+
+        // Handle child element if specified
+        if let child = childElement {
+            locatedElement = locatedElement?.child(child)
+        }
+        // Handle descendant element if specified
+        else if let descendant = descendantElement {
+            locatedElement = locatedElement?.descendant(descendant)
+        }
+
+        return shouldWaitForExistance ? Wait().forElement(locatedElement!) : locatedElement!
+    }
+
+    /**
+     Applies filters to the XCUIElementQuery based on whether elements are enabled or disabled.
+     This function checks the `elementDisabled` and `elementEnabled` properties.
+     - If `elementDisabled` is true, it filters out all elements that are not disabled.
+     - If `elementEnabled` is true, it filters out all elements that are not enabled.
+     */
+    private func applyEnabledDisabledFilter() {
+        if let elementDisabled = elementDisabled {
+            if elementDisabled {
+                uiElementQuery = uiElementQuery?.matching(Predicate.disabled)
             }
-            uiElementQuery = uiElementQuery!.matching(identifier: identifier!)
-        } else if predicate != nil {
-            if focusedTable != nil {
-                uiElementQuery = currentApp!.tables[focusedTable!.identifier].descendants(matching: self.elementType).matching(predicate!)
+        }
+
+        if let elementEnabled = elementEnabled {
+            if elementEnabled {
+                uiElementQuery = uiElementQuery?.matching(Predicate.enabled)
             }
-            uiElementQuery = uiElementQuery!.matching(predicate!)
         }
+    }
 
-        /// Fail test if both disabled and enbaled parameters were used.
-        if elementDisabled == true && elementEnabled == true {
-            XCTFail("Only one isDisabled() or isEnabled() function can be applied to query the element.", file: #file, line: #line)
-        }
-
-        /// Filter out XCUIElementQuery based on isEnabled / isDisabled state.
-        if elementDisabled == true {
-            uiElementQuery = uiElementQuery?.matching(Predicate.disabled)
-        } else if elementEnabled == true {
-            uiElementQuery = uiElementQuery?.matching(Predicate.enabled)
-        }
-
-        /// Filter out XCUIElementQuery based on element label predicate.
+    /**
+     Applies additional filters to the XCUIElementQuery based on label, title, value, and custom predicates.
+     This function uses the `labelPredicate`, `titlePredicate`, `valuePredicate`, and `matchedPredicate`.
+     - Each predicate is applied to the query to narrow down the search based on the specific attributes
+     of the XCUIElements, such as their labels, titles, or values.
+     */
+    private func applyLabelTitleValuePredicates() {
         if labelPredicate != nil {
             uiElementQuery = uiElementQuery?.matching(labelPredicate!)
         }
 
-        /// Filter out XCUIElementQuery based on element title predicate.
         if titlePredicate != nil {
             uiElementQuery = uiElementQuery?.matching(titlePredicate!)
         }
 
-        /// Filter out XCUIElementQuery based on element value predicate.
         if valuePredicate != nil {
             uiElementQuery = uiElementQuery?.matching(valuePredicate!)
         }
 
-        /// Filter out XCUIElementQuery based on provided predicate.
         if matchedPredicate != nil {
             uiElementQuery = uiElementQuery?.matching(matchedPredicate!)
         }
+    }
 
-        /// Filter out XCUIElementQuery based on isHittable state.
-        if elementHittable == true {
-            uiElementQuery = uiElementQuery?.matching(Predicate.hittable)
-        }
-
-        /// Matching elements by the sub-elements it contains
+    /**
+     Applies filters to the XCUIElementQuery based on containment criteria.
+     This function checks for various containment conditions:
+     - If both `containsType` and `containsIdentifier` are set, it filters elements containing a specific type with a specific identifier.
+     - If `containsPredicate` is set, it filters elements that satisfy the given predicate.
+     - If `containLabel` is set, it filters elements whose label contains the specified text.
+     */
+    private func applyContainsFilters() {
         if containsType != nil && containsIdentifier != nil {
             uiElementQuery = uiElementQuery!.containing(containsType!, identifier: containsIdentifier!)
         }
@@ -728,36 +342,100 @@ open class UIElement {
             let predicate = NSPredicate(format: "label CONTAINS[c] %@", containLabel!)
             uiElementQuery = uiElementQuery!.containing(predicate)
         }
+    }
 
-        if index != nil {
-            /// Locate  XCUIElementQuery based on its index.
-            locatedElement = uiElementQuery!.element(boundBy: index!)
+    /**
+     Locates and returns an XCUIElement based on its index within the query.
+     - If `index` is specified, the function returns the element at that specific index.
+     - If `shouldUseFirstMatch` is true and no index is specified, it returns the first matching element.
+     - If neither index is specified nor `shouldUseFirstMatch` is true, it returns the single element expected to be found.
+     */
+    private func locateElementByIndex() -> XCUIElement? {
+        if let index = index {
+            return uiElementQuery!.element(boundBy: index)
+        } else if shouldUseFirstMatch {
+            return uiElementQuery!.element.firstMatch
         } else {
-            /// Return matched element of given type.
-            if shouldUseFirstMatch {
-                locatedElement = uiElementQuery!.element.firstMatch
-            } else {
-                locatedElement = uiElementQuery!.element
-            }
-        }
-
-        if childElement != nil {
-            /// Return child element based on UiElement instance provided.
-            locatedElement = locatedElement?.child(childElement!)
-        } else if descendantElement != nil {
-            /// Return descendant element based on UiElement instance provided.
-            locatedElement = locatedElement?.descendant(descendantElement!)
-        }
-
-        if shouldWaitForExistance {
-            return Wait().forElement(locatedElement!)
-        } else {
-            return locatedElement!
+            return uiElementQuery!.element
         }
     }
 
-    private var isVisible: Bool {
-        guard uiElement()!.exists && !uiElement()!.frame.isEmpty else { return false }
-        return currentApp!.windows.element(boundBy: 0).frame.contains(uiElement()!.frame)
+    enum FilterType {
+        case identifier(String)
+        case predicate(NSPredicate)
+    }
+
+    /**
+     Applies a series of filters to the XCUIElementQuery based on the properties set in the class.
+
+     This function performs the following actions in sequence:
+     - If an `identifier` is set, it applies an identifier-based filter.
+     - If an `identifier` is not set but a `predicate` is, it applies a predicate-based filter.
+     - It applies filters based on the `elementDisabled` and `elementEnabled` states.
+     - Additional filters are applied for `labelPredicate`, `titlePredicate`, `valuePredicate`, and any custom predicates.
+     - It checks if `elementHittable` is set to true and applies a hittability filter if necessary.
+     - Finally, it applies any filters based on containment criteria, such as sub-elements that need to be present in the target element.
+     */
+    private func applyFilters() {
+        // Filter based on identifier, predicate, and isEnabled/isDisabled state
+        if let identifier = identifier {
+            applyFilter(.identifier(identifier))
+        } else if let predicate = predicate {
+            applyFilter(.predicate(predicate))
+        }
+        applyEnabledDisabledFilter()
+
+        // Additional filters for label, title, value, and custom predicates
+        applyLabelTitleValuePredicates()
+
+        // Filters based on hittability and sub-elements
+        if elementHittable ?? false {
+            uiElementQuery = uiElementQuery?.matching(Predicate.hittable)
+        }
+        applyContainsFilters()
+    }
+
+    /**
+     A generic function to apply a specific filter to the XCUIElementQuery.
+
+     This function takes a `FilterType` enumeration which can be either `.identifier` or `.predicate`:
+     - For `.identifier`, it applies a filter that matches elements with the given identifier.
+     - For `.predicate`, it applies a filter based on the provided NSPredicate object.
+
+     If a `focusedTable` is set, the filter is applied within the scope of this table; otherwise, it's applied to the entire `uiElementQuery`.
+     */
+    private func applyFilter(_ filter: FilterType) {
+        switch filter {
+        case .identifier(let identifier):
+            uiElementQuery = focusedTableQuery()?.matching(identifier: identifier) ?? uiElementQuery!.matching(identifier: identifier)
+        case .predicate(let predicate):
+            uiElementQuery = focusedTableQuery()?.matching(predicate) ?? uiElementQuery!.matching(predicate)
+        }
+    }
+
+    /**
+     Verifies if there are any conflicting parameters set and triggers a test failure if found.
+
+     This function checks for the simultaneous presence of `elementDisabled` and `elementEnabled` properties.
+     As these two properties are mutually exclusive (an element cannot be both enabled and disabled at the same time),
+     the function triggers an XCTFail with a message indicating the conflict if both are true.
+     */
+    private func checkForConflictingParameters() {
+        if let elementDisabled = elementDisabled, let elementEnabled = elementEnabled, elementDisabled && elementEnabled {
+            XCTFail("Conflicting isEnabled and isDisabled parameters.", file: #file, line: #line)
+        }
+    }
+
+    /**
+     Constructs and returns a query for a focused table, if it exists.
+
+     This function is used to narrow down the search scope to a specific table when such a focus is necessary.
+     - It checks if a `focusedTable` is set.
+     - If set, it creates and returns a query that targets descendants of the focused table that match the element type set in the class.
+     - If no focused table is specified, the function returns `nil`, indicating that no focused table query is needed.
+     */
+    private func focusedTableQuery() -> XCUIElementQuery? {
+        guard let focusedTable = focusedTable else { return nil }
+        return currentApp!.tables[focusedTable.identifier].descendants(matching: self.elementType)
     }
 }

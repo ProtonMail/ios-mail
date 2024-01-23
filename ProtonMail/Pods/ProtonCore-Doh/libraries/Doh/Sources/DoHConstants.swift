@@ -26,32 +26,32 @@ public enum DoHConstants {
 }
 
 public enum ProductionHosts: String, CaseIterable {
-    
+
     case legacyProtonMailAPI = "api.protonmail.ch"
     case legacyProtonVPNAPI = "api.protonvpn.ch"
-    
+
     case legacyAccountApp = "account.protonmail.com"
     case legacyVerifyMailApp = "verify.protonmail.com"
     case legacyVerifyMailApi = "verify-api.protonmail.com"
     case legacyVerifyVPNApp = "verify.protonvpn.com"
     case legacyVerifyVPNApi = "verify-api.protonvpn.com"
-    
+
     case mailAPI = "mail-api.proton.me"
     case calendarAPI = "calendar-api.proton.me"
     case driveAPI = "drive-api.proton.me"
     case vpnAPI = "vpn-api.proton.me"
     case passAPI = "pass-api.proton.me"
-    
+
     case accountApp = "account.proton.me"
     case accountAPI = "account-api.proton.me"
-    
+
     case verifyApp = "verify.proton.me"
     case verifyAPI = "verify-api.proton.me"
-    
+
     var url: URL { URL(string: "https://\(rawValue)")! }
-    
+
     public var urlString: String { url.absoluteString }
-    
+
     public var dohHost: String {
         let result: String
         switch self {
@@ -69,5 +69,5 @@ public enum ProductionHosts: String, CaseIterable {
         }
         return "d\(result).protonpro.xyz"
     }
-    
+
 }

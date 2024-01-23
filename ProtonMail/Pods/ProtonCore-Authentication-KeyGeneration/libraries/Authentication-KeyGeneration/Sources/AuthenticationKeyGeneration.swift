@@ -25,8 +25,6 @@ import ProtonCoreDataModel
 import ProtonCoreNetworking
 import ProtonCoreFeatureSwitch
 
-// swiftlint:disable function_parameter_count
-
 public protocol AuthenticatorKeyGenerationInterface {
 
   func createAddressKey(_ credential: Credential?,
@@ -112,7 +110,7 @@ extension Authenticator: AuthenticatorKeyGenerationInterface {
                     } catch {
                         completion(.failure(.addressKeySetupError(error)))
                     }
-                    
+
                 }
             case let .failure(error):
                 completion(.failure(error))
@@ -171,7 +169,7 @@ extension Authenticator: AuthenticatorKeyGenerationInterface {
                             completion(.failure(.addressKeySetupError(error)))
                         }
                     }
-                    
+
                 }
             case let .failure(error):
                 completion(.failure(error))

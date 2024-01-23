@@ -454,11 +454,10 @@ extension MessageSendingRequestBuilder {
 
         var data: [String] = []
         for element in inlines {
-            let name = "\(String.randomString(8))"
             let contentID = "\(String.randomString(8))@pm.me"
             guard
                 let src = try? element.attr("src"),
-                let emlData = inlineDataForEML(from: src, name: name, contentID: contentID, boundary: boundary)
+                let emlData = inlineDataForEML(from: src, contentID: contentID, boundary: boundary)
             else { continue }
             data.append(emlData)
             _ = try? element.attr("src", "cid:\(contentID)")
@@ -471,11 +470,10 @@ extension MessageSendingRequestBuilder {
     /// Convert base64 data URI to EML string value
     /// - Parameters:
     ///   - dataURI: "data:image/png;base64,iVBOR.....", the meaning is `data:(mimeType);(encoding), (data)`
-    ///   - name: inline file name
     ///   - contentID: inline content ID
     ///   - boundary: A string for multipart boundary
     /// - Returns: EML string value
-    private func inlineDataForEML(from dataURI: String, name: String, contentID: String, boundary: String) -> String? {
+    private func inlineDataForEML(from dataURI: String, contentID: String, boundary: String) -> String? {
         let pattern = #"^(.*?):(.*?);(.*?),(.*)"#
         guard
             let regex = try? RegularExpressionCache.regex(for: pattern, options: [.allowCommentsAndWhitespace]),

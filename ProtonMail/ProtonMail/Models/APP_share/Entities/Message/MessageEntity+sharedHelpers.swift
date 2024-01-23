@@ -21,22 +21,6 @@ import UIKit
 // MARK: Encrypted related variables
 
 extension MessageEntity {
-    var isInternal: Bool {
-        self.flag.contains(.internal) && self.flag.contains(.received)
-    }
-
-    var isExternal: Bool {
-        !self.flag.contains(.internal) && self.flag.contains(.received)
-    }
-
-    var isE2E: Bool {
-        self.flag.contains(.e2e)
-    }
-
-    var isSignedMime: Bool {
-        isMultipartMixed && isExternal && !isE2E
-    }
-
     var isPlainText: Bool {
         mimeType?.lowercased() == Message.MimeType.textPlain.rawValue
     }
@@ -130,7 +114,8 @@ extension MessageEntity {
             Message.HiddenLocation.sent.rawValue,
             Message.HiddenLocation.draft.rawValue,
             Message.Location.starred.rawValue,
-            Message.Location.allmail.rawValue
+            Message.Location.allmail.rawValue,
+            Message.Location.almostAllMail.rawValue
         ]
         for label in labels {
             if label.type == .folder {
@@ -246,54 +231,3 @@ extension MessageEntity {
         return try Sender.decodeDictionary(jsonString: rawSender)
     }
 }
-
-// MARK: - Sender related
-
-#if !APP_EXTENSION
-extension MessageEntity {
-    // Although the time complexity of high order function is O(N)
-    // But keep in mind that tiny O(n) can add up to bigger blockers if you accumulate them
-    // Do async approach when there is a performance issue
-    func allEmailAddresses(
-        _ replacingEmails: [String: EmailEntity],
-        allGroupContacts: [ContactGroupVO]
-    ) -> String {
-        var recipientLists = ContactPickerModelHelper.contacts(from: rawTOList)
-        + ContactPickerModelHelper.contacts(from: rawCCList)
-        + ContactPickerModelHelper.contacts(from: rawBCCList)
-
-        let groups = recipientLists.compactMap { $0 as? ContactGroupVO }
-        var groupList: [String] = []
-        if !groups.isEmpty {
-            groupList = self.getGroupNameLists(group: groups,
-                                               allGroupContacts: allGroupContacts)
-        }
-        recipientLists = recipientLists.filter { ($0 as? ContactGroupVO) == nil }
-
-        let lists: [String] = recipientLists.map { recipient in
-            let address = recipient.displayEmail ?? ""
-            let name = recipient.displayName ?? ""
-            let email = replacingEmails[address]
-            let emailName = email?.name ?? ""
-            let displayName = emailName.isEmpty ? name : emailName
-            return displayName.isEmpty ? address : displayName
-        }
-        let result = groupList + lists
-        return result.asCommaSeparatedList(trailingSpace: true)
-    }
-
-    private func getGroupNameLists(group: [ContactGroupVO],
-                                   allGroupContacts: [ContactGroupVO]) -> [String] {
-        var nameList: [String] = []
-        group.forEach { group in
-            let groupName = group.contactTitle
-            // Get total count of this ContactGroup
-            let totalContactCount = allGroupContacts
-                .first(where: { $0.contactTitle == group.contactTitle })?.contactCount ?? 0
-            let name = "\(groupName) (\(group.getSelectedEmailAddresses().count)/\(totalContactCount))"
-            nameList.append(name)
-        }
-        return nameList
-    }
-}
-#endif

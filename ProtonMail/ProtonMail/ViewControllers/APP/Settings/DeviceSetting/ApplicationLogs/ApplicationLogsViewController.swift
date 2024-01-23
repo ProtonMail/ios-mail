@@ -77,6 +77,15 @@ final class ApplicationLogsViewController: UIViewController {
                 self?.showShareView(for: file)
             }
             .store(in: &subscribers)
+
+        viewModel
+            .output
+            .emptyContentReason
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] reason in
+                self?.showEmptyContentAlert(reason: reason)
+            }
+            .store(in: &subscribers)
     }
 
     @objc
@@ -91,6 +100,16 @@ final class ApplicationLogsViewController: UIViewController {
             self?.viewModel.input.shareViewDidDismiss()
         }
         navigationController?.present(activityVC, animated: true)
+    }
+
+    private func showEmptyContentAlert(reason: String) {
+        let alert = UIAlertController(
+            title: LocalString._general_error_alert_title,
+            message: reason,
+            preferredStyle: .alert
+        )
+        alert.addOKAction()
+        navigationController?.present(alert, animated: true)
     }
 }
 

@@ -46,7 +46,7 @@ final class MainQueueHandler: QueueHandler {
     private let dependencies: Dependencies
 
     init(coreDataService: CoreDataContextProviderProtocol,
-         fetchMessageDetail: FetchMessageDetail,
+         fetchMessageDetail: FetchMessageDetailUseCase,
          apiService: APIService,
          messageDataService: MessageDataService,
          conversationDataService: ConversationProvider,
@@ -69,9 +69,8 @@ final class MainQueueHandler: QueueHandler {
         let sendUseCase = SendMessageBuilder.make(
             userData: user,
             apiService: apiService,
-            cacheService: user.cacheService,
-            contactProvider: contactService,
-            messageDataService: messageDataService
+            messageDataService: messageDataService,
+            prepareSendMetadataBuilderDependencies: user.container
         )
         let isUserAuthenticated: (UserID) -> Bool = { [weak user] userID in
             guard let userManager = user else {
@@ -169,7 +168,12 @@ final class MainQueueHandler: QueueHandler {
                     completion: completeHandler
                 )
             case .updateAttKeyPacket(let messageObjectID, let addressID):
-                self.updateAttachmentKeyPacket(messageObjectID: messageObjectID, addressID: addressID, completion: completeHandler)
+                do {
+                    try self.updateAttachmentKeyPacket(messageObjectID: messageObjectID, addressID: addressID)
+                    completeHandler(nil)
+                } catch {
+                    completeHandler(error)
+                }
             case .send:
                 // This looks like duplicated but we need it
                 // Some how the value of deliveryTime in switch case .send(...) is wrong
@@ -375,33 +379,28 @@ extension MainQueueHandler {
         }
     }
 
-    private func updateAttachmentKeyPacket(messageObjectID: String, addressID: String, completion: @escaping Completion) {
-        coreDataService.enqueueOnRootSavingContext { [weak self] context in
+    private func updateAttachmentKeyPacket(messageObjectID: String, addressID: String) throws {
+        try coreDataService.write { [weak self] context in
             guard let self = self,
                   let objectID = self.coreDataService
                     .managedObjectIDForURIRepresentation(messageObjectID) else {
-                completion(NSError.badParameter(messageObjectID))
-                return
+                throw NSError.badParameter(messageObjectID)
             }
 
             guard let user = self.user else {
-                completion(NSError.userLoggedOut())
-                return
+                throw NSError.userLoggedOut()
             }
 
-            do {
                 guard let message = try context
                         .existingObject(with: objectID) as? Message,
                       let attachments = message.attachments.allObjects as? [Attachment] else {
                     // error: object is not a Message
-                    completion(NSError.badParameter(messageObjectID))
-                    return
+                    throw NSError.badParameter(messageObjectID)
                 }
 
                 guard let address = user.userInfo.userAddresses.address(byID: addressID),
                       let key = address.keys.first else {
-                    completion(NSError.badParameter("Address ID"))
-                    return
+                    throw NSError.badParameter("Address ID")
                 }
 
                 for attachment in attachments where !attachment.isSoftDeleted && attachment.attachmentID != "0" {
@@ -433,14 +432,6 @@ extension MainQueueHandler {
                     clearBody: decryptedBody,
                     mailbox_pwd: mailboxPassword
                 )
-                if let error = context.saveUpstreamIfNeeded() {
-                    throw error
-                }
-                completion(nil)
-            } catch let ex as NSError {
-                completion(ex)
-                return
-            }
         }
     }
 

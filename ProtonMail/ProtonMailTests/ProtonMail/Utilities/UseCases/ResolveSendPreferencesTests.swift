@@ -27,9 +27,9 @@ final class ResolveSendPreferencesTests: XCTestCase {
     private var mockFetchPublicKeys: MockFetchEmailAddressesPublicKey!
 
     private let email = "someone@example.com"
-    private let fullKey1 = makeKey(flags: [.verificationEnabled, .encryptionEnabled])
-    private let fullKey2 = makeKey(flags: [.verificationEnabled, .encryptionEnabled])
-    private let onlyVerificationKey = makeKey(flags: [.verificationEnabled])
+    private let fullKey1 = makeKey(flags: [.notCompromised, .notObsolete])
+    private let fullKey2 = makeKey(flags: [.notCompromised, .notObsolete])
+    private let onlyVerificationKey = makeKey(flags: [.notCompromised])
     private var keyInAddress: Key { fullKey1 }
 
     private var emptyKeysResponseForProtonAccount: KeysResponse {

@@ -17,7 +17,7 @@
 
 import Foundation
 
-enum DarkModeStatus: Int {
+enum DarkModeStatus: Int, CaseIterable {
     case followSystem
     case forceOn
     case forceOff
@@ -32,10 +32,4 @@ enum DarkModeStatus: Int {
             return LocalString._settings_dark_mode_title_force_off
         }
     }
-}
-
-// sourcery: mock
-protocol DarkModeCacheProtocol {
-
-    var darkModeStatus: DarkModeStatus { get set }
 }

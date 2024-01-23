@@ -37,6 +37,7 @@ class NewMailboxMessageCellPresenter {
                                weight: .regular)
         view.initialsLabel.textAlignment = .center
         presentContent(viewModel: viewModel, in: view.messageContentView, highlightedKeywords: highlightedKeywords)
+        presentAttachmentsPreview(viewModel: viewModel, in: view.messageContentView)
         presentTags(tags: viewModel.tags, in: view.messageContentView)
         presentSelectionStyle(style: viewModel.style, in: view)
     }
@@ -49,23 +50,27 @@ class NewMailboxMessageCellPresenter {
             view.scheduledIconView.isHidden = true
             view.scheduledContainer.isHidden = true
 
-        case .selection(let isSelected):
+        case let .selection(isSelected, isAbleToBeSelected):
             view.initialsContainer.isHidden = false
             view.checkBoxView.isHidden = false
             view.scheduledIconView.isHidden = true
             view.scheduledContainer.isHidden = true
 
             let backgroundColor: UIColor
+            let borderColor: UIColor
             if isSelected {
                 backgroundColor = ColorProvider.InteractionNorm
                 view.checkBoxView.tickImageView.image = IconProvider.checkmark
+                borderColor = ColorProvider.InteractionNorm
             } else {
-                backgroundColor = ColorProvider.BackgroundSecondary
+                backgroundColor = isAbleToBeSelected ? ColorProvider.BackgroundSecondary : ColorProvider.BackgroundNorm
                 view.checkBoxView.tickImageView.image = nil
+                borderColor = isAbleToBeSelected ? ColorProvider.InteractionNorm : ColorProvider.SeparatorNorm
             }
             view.checkBoxView.backgroundColor = backgroundColor
-                view.checkBoxView.tickImageView.tintColor = ColorProvider.IconInverted
-                    .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
+            view.checkBoxView.tickImageView.tintColor = ColorProvider.IconInverted
+                .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
+            view.checkBoxView.layer.borderColor = borderColor.cgColor
         case .scheduled:
             view.scheduledIconView.isHidden = false
             view.scheduledContainer.isHidden = false
@@ -150,8 +155,7 @@ class NewMailboxMessageCellPresenter {
         view.messageCountLabel.layer.borderColor = viewModel.isRead ?
             ColorProvider.TextWeak.cgColor : ColorProvider.TextNorm
 
-        guard viewModel.displayOriginIcon,
-              !viewModel.folderIcons.isEmpty else {
+        guard !viewModel.folderIcons.isEmpty else {
             view.originalImagesStackView.isHidden = true
             view.removeOriginImages()
             return
@@ -161,6 +165,46 @@ class NewMailboxMessageCellPresenter {
             addOriginalImage(image, isRead: viewModel.isRead, in: view)
         }
         view.originalImagesStackView.isHidden = false
+    }
+
+    private func presentAttachmentsPreview(
+        viewModel: NewMailboxMessageViewModel,
+        in view: NewMailboxMessageContentView
+    ) {
+        let maxNumberOfPreviews: Int
+        if UIDevice.current.userInterfaceIdiom == .pad ||
+           UIDevice.current.orientation == .landscapeLeft ||
+           UIDevice.current.orientation == .landscapeRight {
+            maxNumberOfPreviews = 3
+        } else {
+            maxNumberOfPreviews = 2
+        }
+
+        let attachmentsVMs = viewModel.attachmentsPreviewViewModels.prefix(maxNumberOfPreviews)
+
+        guard !attachmentsVMs.isEmpty else {
+            return
+        }
+
+        view.attachmentImageView.isHidden = true
+        let remainder = viewModel.numberOfAttachments - attachmentsVMs.count
+
+        for (index, attachmentToPreview) in attachmentsVMs.enumerated() {
+            let attachmentPreviewView = AttachmentPreviewView(attachmentPreview: attachmentToPreview)
+            attachmentPreviewView.attachmentSelected = { [weak view] in
+                view?.selectAttachmentAction?(index)
+            }
+            view.attachmentsPreviewStackView.addArrangedSubview(attachmentPreviewView)
+        }
+
+        view.attachmentsPreviewStackView.addArrangedSubview(UIView())
+
+        if remainder > 0 {
+            let style = FontManager.Caption.foregroundColor(ColorProvider.TextWeak)
+            view.remainingAttachmentsLabel.attributedText = "+\(remainder)".apply(style: style)
+        }
+
+        view.attachmentsPreviewStackView.distribution = .fillProportionally
     }
 
     private func addOriginalImage(_ image: UIImage, isRead: Bool, in view: NewMailboxMessageContentView) {
@@ -179,11 +223,4 @@ class NewMailboxMessageCellPresenter {
         imageView.tintColor = isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         return imageView
     }
-}
-
-extension NewMailboxMessageViewModel {
-    var displayOriginIcon: Bool {
-        location == .allmail || location == .starred || isLabelLocation || location == .almostAllMail
-    }
-
 }

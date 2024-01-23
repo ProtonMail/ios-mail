@@ -17,13 +17,11 @@
 
 import Foundation
 
-protocol SystemUpTimeProtocol {
+protocol SystemUpTimeProtocol: AnyObject {
     /// Local cached server time
     var localServerTime: TimeInterval { get set }
     /// Local cached system up time
     var localSystemUpTime: TimeInterval { get set }
     /// System up time from ProcessInfo
     var systemUpTime: TimeInterval { get }
-
-    func updateLocalSystemUpTime(time: TimeInterval)
 }

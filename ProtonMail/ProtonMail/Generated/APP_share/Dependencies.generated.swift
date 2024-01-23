@@ -1,5 +1,6 @@
 // Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
+import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 import ProtonCoreServices
 
@@ -19,19 +20,19 @@ extension UserContainer: HasAppAccessResolver {
     }
 }
 
-protocol HasAttachmentMetadataStrippingProtocol {
-    var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol { get }
+protocol HasAppRatingStatusProvider {
+    var appRatingStatusProvider: AppRatingStatusProvider { get }
 }
 
-extension GlobalContainer: HasAttachmentMetadataStrippingProtocol {
-    var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol {
-        attachmentMetadataStripStatusProviderFactory()
+extension GlobalContainer: HasAppRatingStatusProvider {
+    var appRatingStatusProvider: AppRatingStatusProvider {
+        appRatingStatusProviderFactory()
     }
 }
 
-extension UserContainer: HasAttachmentMetadataStrippingProtocol {
-    var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol {
-        globalContainer.attachmentMetadataStripStatusProvider
+extension UserContainer: HasAppRatingStatusProvider {
+    var appRatingStatusProvider: AppRatingStatusProvider {
+        globalContainer.appRatingStatusProvider
     }
 }
 
@@ -179,6 +180,38 @@ extension UserContainer: HasLockPreventor {
     }
 }
 
+protocol HasLaunchService {
+    var launchService: LaunchService { get }
+}
+
+extension GlobalContainer: HasLaunchService {
+    var launchService: LaunchService {
+        launchServiceFactory()
+    }
+}
+
+extension UserContainer: HasLaunchService {
+    var launchService: LaunchService {
+        globalContainer.launchService
+    }
+}
+
+protocol HasMailEventsPeriodicScheduler {
+    var mailEventsPeriodicScheduler: MailEventsPeriodicScheduler { get }
+}
+
+extension GlobalContainer: HasMailEventsPeriodicScheduler {
+    var mailEventsPeriodicScheduler: MailEventsPeriodicScheduler {
+        mailEventsPeriodicSchedulerFactory()
+    }
+}
+
+extension UserContainer: HasMailEventsPeriodicScheduler {
+    var mailEventsPeriodicScheduler: MailEventsPeriodicScheduler {
+        globalContainer.mailEventsPeriodicScheduler
+    }
+}
+
 protocol HasNotificationCenter {
     var notificationCenter: NotificationCenter { get }
 }
@@ -227,22 +260,6 @@ extension UserContainer: HasPinCodeVerifier {
     }
 }
 
-protocol HasPinFailedCountCache {
-    var pinFailedCountCache: PinFailedCountCache { get }
-}
-
-extension GlobalContainer: HasPinFailedCountCache {
-    var pinFailedCountCache: PinFailedCountCache {
-        pinFailedCountCacheFactory()
-    }
-}
-
-extension UserContainer: HasPinFailedCountCache {
-    var pinFailedCountCache: PinFailedCountCache {
-        globalContainer.pinFailedCountCache
-    }
-}
-
 protocol HasPushUpdater {
     var pushUpdater: PushUpdater { get }
 }
@@ -275,6 +292,38 @@ extension UserContainer: HasQueueManager {
     }
 }
 
+protocol HasResumeAfterUnlock {
+    var resumeAfterUnlock: ResumeAfterUnlock { get }
+}
+
+extension GlobalContainer: HasResumeAfterUnlock {
+    var resumeAfterUnlock: ResumeAfterUnlock {
+        resumeAfterUnlockFactory()
+    }
+}
+
+extension UserContainer: HasResumeAfterUnlock {
+    var resumeAfterUnlock: ResumeAfterUnlock {
+        globalContainer.resumeAfterUnlock
+    }
+}
+
+protocol HasSetupCoreDataService {
+    var setupCoreDataService: SetupCoreDataService { get }
+}
+
+extension GlobalContainer: HasSetupCoreDataService {
+    var setupCoreDataService: SetupCoreDataService {
+        setupCoreDataServiceFactory()
+    }
+}
+
+extension UserContainer: HasSetupCoreDataService {
+    var setupCoreDataService: SetupCoreDataService {
+        globalContainer.setupCoreDataService
+    }
+}
+
 protocol HasUnlockManager {
     var unlockManager: UnlockManager { get }
 }
@@ -288,6 +337,22 @@ extension GlobalContainer: HasUnlockManager {
 extension UserContainer: HasUnlockManager {
     var unlockManager: UnlockManager {
         globalContainer.unlockManager
+    }
+}
+
+protocol HasUnlockService {
+    var unlockService: UnlockService { get }
+}
+
+extension GlobalContainer: HasUnlockService {
+    var unlockService: UnlockService {
+        unlockServiceFactory()
+    }
+}
+
+extension UserContainer: HasUnlockService {
+    var unlockService: UnlockService {
+        globalContainer.unlockService
     }
 }
 
@@ -352,6 +417,22 @@ extension GlobalContainer: HasUserIntroductionProgressProvider {
 extension UserContainer: HasUserIntroductionProgressProvider {
     var userIntroductionProgressProvider: UserIntroductionProgressProvider {
         globalContainer.userIntroductionProgressProvider
+    }
+}
+
+protocol HasFeatureFlagsRepository {
+    var featureFlagsRepository: FeatureFlagsRepository { get }
+}
+
+extension GlobalContainer: HasFeatureFlagsRepository {
+    var featureFlagsRepository: FeatureFlagsRepository {
+        featureFlagsRepositoryFactory()
+    }
+}
+
+extension UserContainer: HasFeatureFlagsRepository {
+    var featureFlagsRepository: FeatureFlagsRepository {
+        globalContainer.featureFlagsRepository
     }
 }
 
@@ -425,6 +506,16 @@ extension UserContainer: HasConversationStateService {
     }
 }
 
+protocol HasEventProcessor {
+    var eventProcessor: EventProcessor { get }
+}
+
+extension UserContainer: HasEventProcessor {
+    var eventProcessor: EventProcessor {
+        eventProcessorFactory()
+    }
+}
+
 protocol HasEventsFetching {
     var eventsService: EventsFetching { get }
 }
@@ -465,12 +556,32 @@ extension UserContainer: HasFetchAttachment {
     }
 }
 
-protocol HasFetchMessageDetail {
-    var fetchMessageDetail: FetchMessageDetail { get }
+protocol HasFetchAttachmentMetadataUseCase {
+    var fetchAttachmentMetadata: FetchAttachmentMetadataUseCase { get }
 }
 
-extension UserContainer: HasFetchMessageDetail {
-    var fetchMessageDetail: FetchMessageDetail {
+extension UserContainer: HasFetchAttachmentMetadataUseCase {
+    var fetchAttachmentMetadata: FetchAttachmentMetadataUseCase {
+        fetchAttachmentMetadataFactory()
+    }
+}
+
+protocol HasFetchEmailAddressesPublicKey {
+    var fetchEmailAddressesPublicKey: FetchEmailAddressesPublicKey { get }
+}
+
+extension UserContainer: HasFetchEmailAddressesPublicKey {
+    var fetchEmailAddressesPublicKey: FetchEmailAddressesPublicKey {
+        fetchEmailAddressesPublicKeyFactory()
+    }
+}
+
+protocol HasFetchMessageDetailUseCase {
+    var fetchMessageDetail: FetchMessageDetailUseCase { get }
+}
+
+extension UserContainer: HasFetchMessageDetailUseCase {
+    var fetchMessageDetail: FetchMessageDetailUseCase {
         fetchMessageDetailFactory()
     }
 }

@@ -27,6 +27,6 @@ import ProtonCoreNetworking
 public final class ForceUpgradeDelegateMock: ForceUpgradeDelegate {
 
     public init() {}
-    
+
     public func onForceUpgrade(message: String) {}
 }

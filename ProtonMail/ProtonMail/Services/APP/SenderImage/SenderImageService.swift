@@ -142,7 +142,6 @@ final class SenderImageService {
 
                 do {
                     let data = try Data(contentsOf: tempUrl)
-                    // TODO: Render SVG file. iOS does not have native support to render it.
                     guard UIImage(data: data) != nil else {
                         throw SenderImageServiceError.responseIsNotAnImage
                     }

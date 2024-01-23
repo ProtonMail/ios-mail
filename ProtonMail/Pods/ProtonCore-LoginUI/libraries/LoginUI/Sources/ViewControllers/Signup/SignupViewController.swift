@@ -54,7 +54,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     var showSeparateDomainsButton = true
     var minimumAccountType: AccountType?
     var tapGesture: UITapGestureRecognizer?
-    
+
     // MARK: Outlets
 
     @IBOutlet weak var contentView: UIView!
@@ -146,21 +146,21 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         }
     }
     @IBOutlet weak var scrollView: UIScrollView!
-    
+
     @IBOutlet weak var brandLogo: UIImageView!
 
     var focusNoMore: Bool = false
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
-    
+
     var onDohTroubleshooting: () -> Void = {}
-    
+
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     // MARK: View controller life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ColorProvider.BackgroundNorm
-        
+
         brandLogo.image = IconProvider.masterBrandGlyph
         brandLogo.isHidden = false
         setupDomainsView()
@@ -174,7 +174,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         requestDomain()
         configureAccountType(nil)
         generateAccessibilityIdentifiers()
-        
+
         try? internalNameTextField.setUpChallenge(viewModel.challenge, type: .username)
         try? externalEmailTextField.setUpChallenge(viewModel.challenge, type: .username_email)
     }
@@ -208,7 +208,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         PMBanner.dismissAll(on: self)
         delegate?.signinButtonPressed()
     }
-    
+
     @IBAction private func onDomainsButtonTapped() {
         dismissKeyboard()
         var sheet: PMActionSheet?
@@ -304,7 +304,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             internalNameTextField.suffix = "@\(viewModel.currentlyChosenSignUpDomain)"
             return
         }
-        
+
         domainsView.isHidden = false
         domainsButton.setTitle("@\(viewModel.currentlyChosenSignUpDomain)", for: .normal)
         if viewModel.allSignUpDomains.count > 1 {
@@ -315,7 +315,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             domainsButton.setMode(mode: .image(type: .textWithImage(image: nil)))
         }
     }
-    
+
     private func setupDomainsView() {
         domainsButton.setMode(mode: .image(type: .textWithImage(image: nil)))
         domainsLabel.textColor = ColorProvider.TextNorm
@@ -323,7 +323,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         domainsLabel.font = .adjustedFont(forTextStyle: .caption1, weight: .semibold)
         domainsLabel.adjustsFontForContentSizeCategory = true
     }
-    
+
     private func setupGestures() {
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard(_:)))
         tapGesture?.delaysTouchesBegan = false
@@ -364,7 +364,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             }
         }
     }
-    
+
     private func checkUsernameWithinDomain(userName: String) {
         lockUI()
         viewModel.checkInternalAccount(username: userName) { result in
@@ -379,7 +379,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             }
         }
     }
-    
+
     private func checkEmail(email: String) {
         lockUI()
         viewModel.checkExternalEmailAccount(email: email) { result in
@@ -452,7 +452,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             }
         }
     }
-    
+
     private func showError(message: String, button: String? = nil, action: (() -> Void)? = nil) {
         showBanner(message: message, button: button, action: action, position: PMBannerPosition.top)
     }
@@ -520,7 +520,7 @@ extension SignupViewController: PMActionSheetEventsListener {
         tapGesture?.cancelsTouchesInView = true
         domainsButton?.isSelected = false
     }
-    
+
     func didDismiss() { }
 }
 

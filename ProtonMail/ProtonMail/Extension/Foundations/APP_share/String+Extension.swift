@@ -245,6 +245,10 @@ extension String {
             Array(Array(self)[$0..<min($0 + every, Array(self).count)])
         }.joined(separator: separator))
     }
+
+    var isHex: Bool {
+        filter(\.isHexDigit).count == count
+    }
 }
 
 extension Array where Element == String {

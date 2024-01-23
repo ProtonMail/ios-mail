@@ -33,7 +33,7 @@ public final class AuthInfoResponse: Response, APIDecodableResponse {
     public var salt: String
     public var srpSession: String
     public var _2FA: TwoFA?
-    
+
     public init(modulus: String, serverEphemeral: String, version: Int, salt: String, srpSession: String, _2FA: TwoFA? = nil) {
         self.modulus = modulus
         self.serverEphemeral = serverEphemeral
@@ -42,7 +42,7 @@ public final class AuthInfoResponse: Response, APIDecodableResponse {
         self.srpSession = srpSession
         self._2FA = _2FA
     }
-    
+
     public enum CodingKeys: String, CodingKey {
         case modulus
         case serverEphemeral
@@ -51,7 +51,7 @@ public final class AuthInfoResponse: Response, APIDecodableResponse {
         case srpSession = "SRPSession"
         case _2FA = "2FA"
     }
-    
+
     required init() {
         self.modulus = ""
         self.serverEphemeral = ""
@@ -60,7 +60,7 @@ public final class AuthInfoResponse: Response, APIDecodableResponse {
         self.srpSession = ""
         self._2FA = nil
     }
-    
+
     public convenience init(_ response: [String: Any]!) throws {
         guard
             let modulus = response["Modulus"] as? String,
@@ -79,7 +79,7 @@ public final class AuthInfoResponse: Response, APIDecodableResponse {
             _2FA: response["2FA"] as? TwoFA
         )
     }
-    
+
     override public func ParseResponse(_ response: [String: Any]!) -> Bool {
         guard
             let modulus = response["Modulus"] as? String,

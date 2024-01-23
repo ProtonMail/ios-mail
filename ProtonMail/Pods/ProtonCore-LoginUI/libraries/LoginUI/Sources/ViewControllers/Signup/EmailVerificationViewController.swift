@@ -38,7 +38,7 @@ class EmailVerificationViewController: UIViewController, AccessibleView, Focusab
     var viewModel: EmailVerificationViewModel!
     var customErrorPresenter: LoginErrorPresenter?
     var onDohTroubleshooting: () -> Void = { }
-    
+
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     // MARK: Outlets
@@ -96,12 +96,12 @@ class EmailVerificationViewController: UIViewController, AccessibleView, Focusab
         generateAccessibilityIdentifiers()
         ObservabilityEnv.report(.screenLoadCountTotal(screenName: .emailVerification))
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         focusOnce(view: verificationCodeTextField)
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         navigationBarAdjuster.setUp(for: scrollView, parent: parent)
@@ -167,7 +167,7 @@ class EmailVerificationViewController: UIViewController, AccessibleView, Focusab
             }
         })
     }
-    
+
     private func requestCodeDialog() {
         guard let email = viewModel.email else { return }
         let alert = UIAlertController(title: LUITranslation.verification_new_alert_title.l10n, message: String(format: LUITranslation.verification_new_alert_message.l10n, email), preferredStyle: .alert)
@@ -238,7 +238,7 @@ extension EmailVerificationViewController: PMTextFieldDelegate {
 // MARK: - Additional errors handling
 
 extension EmailVerificationViewController: SignUpErrorCapable {
-    
+
     var bannerPosition: PMBannerPosition { .top }
 
     func emailAddressAlreadyUsed() {

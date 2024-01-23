@@ -26,7 +26,10 @@ struct CheckedSenderContact {
 
 final class MessageSenderPGPChecker {
     typealias Complete = (CheckedSenderContact?) -> Void
-    typealias Dependencies = HasUserManager & HasFetchAttachment & HasFetchAndVerifyContacts
+    typealias Dependencies = HasFetchAndVerifyContacts
+    & HasFetchAttachment
+    & HasFetchEmailAddressesPublicKey
+    & HasUserManager
 
     private let message: MessageEntity
     private var messageService: MessageDataService { dependencies.user.messageService }
@@ -38,7 +41,7 @@ final class MessageSenderPGPChecker {
         self.fetchVerificationKeys = FetchVerificationKeys(
             dependencies: .init(
                 fetchAndVerifyContacts: dependencies.fetchAndVerifyContacts,
-                fetchEmailsPublicKeys: FetchEmailAddressesPublicKey(dependencies: .init(apiService: dependencies.user.apiService))
+                fetchEmailsPublicKeys: dependencies.fetchEmailAddressesPublicKey
             ),
             userAddresses: []
         )
@@ -119,8 +122,8 @@ final class MessageSenderPGPChecker {
                     completion(.success((senderVerified: true, keys: pinnedKeys)))
                 } else {
                     if let keysResponse = keysResponse,
-                       keysResponse.recipientType == .external && !keysResponse.allPublicKeys.isEmpty {
-                        completion(.success((senderVerified: false, keys: keysResponse.allPublicKeys)))
+                       keysResponse.recipientType == .external && !keysResponse.nonObsoletePublicKeys.isEmpty {
+                        completion(.success((senderVerified: false, keys: keysResponse.nonObsoletePublicKeys)))
                     } else {
                         self.fetchPublicKeysFromAttachments(self.message.attachmentsContainingPublicKey()) { datas in
                             completion(.success((senderVerified: false, keys: datas)))

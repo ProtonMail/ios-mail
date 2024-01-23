@@ -443,6 +443,9 @@
 /* Alert title */
 "Notice" = "Notis";
 
+/* Title of alert in share extension. */
+"Error" = "Fel";
+
 /* Action */
 "Don't remind me again" = "Påminn mig inte igen";
 
@@ -961,9 +964,6 @@
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Misslyckades att ladda in innehåll!\nFörsök igen.";
-
-/* Title of alert in share extension. */
-"Error" = "Fel";
 
 /* Error message */
 "Failed to determine type of file" = "Misslyckades att bestämma typ av fil";
@@ -1680,10 +1680,10 @@
 "Sent by you with end-to-end encryption" = "Skickat av dig med end-to-end-kryptering";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption" = "Skickat av Proton Mail med nollåtkomst-kryptering";
+"Sent by Proton Mail with zero-access encryption" = "Skickat med Proton Mail med kryptering med noll åtkomst";
 
 /* The message after tapping the encryption icon. */
-"Stored with zero-access encryption" = "Lagras med nollåtkomst-kryptering";
+"Stored with zero-access encryption" = "Lagrad med kryptering med noll åtkomst";
 
 /* The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message from verified sender" = "End-to-end-krypterat meddelande från verifierad avsändare";
@@ -1935,6 +1935,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "Utföra en flyttåtgärd på ett meddelande (t.ex. arkiv) kommer att navigera till nästa meddelande.";
+
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "Ett oväntat fel uppstod, kontakta supporten.\nFel: %@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "Otillräckligt diskutrymme";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Applikationen kan inte öppnas på grund av otillräckligt diskutrymme. Ta bort lite data och försök igen";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Kunde inte öppna meddelandet, försök igen.";

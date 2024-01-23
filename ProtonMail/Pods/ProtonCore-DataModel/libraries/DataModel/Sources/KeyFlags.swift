@@ -22,7 +22,7 @@
 
 public struct KeyFlags: OptionSet, Decodable {
     public let rawValue: UInt8
-    
+
     public init(rawValue: UInt8) {
         self.rawValue = rawValue
     }
@@ -35,7 +35,7 @@ public struct KeyFlags: OptionSet, Decodable {
     public static let cannotEncryptEmail = KeyFlags(rawValue: 1 << 2)
     /// 8: Emails from this address will not come signed | External address key
     public static let dontExpectSignedEmails = KeyFlags(rawValue: 1 << 3)
-    
+
     /// 3: default value when signup 1 + 2
     public static let signupKeyFlags: KeyFlags = [.verifySignatures, .encryptNewData]
     /// 12: value for checking if the key is external address key 4 + 8

@@ -31,11 +31,11 @@ public struct PinProtection: ProtectionStrategy {
     public static var keychainLabel: String {
         return "PinProtection"
     }
-    
+
     public let keychain: Keychain
     private let pin: String
     private let version: Version = .v1
-    
+
     enum Version: String {
         case lagcy = "0"
         case v1 = "1"
@@ -49,19 +49,19 @@ public struct PinProtection: ProtectionStrategy {
             }
         }
     }
-    
+
     public init(pin: String, keychain: Keychain) {
         self.pin = pin
         self.keychain = keychain
     }
-    
+
     private typealias Const = PinProtectionConstants
-    
+
     enum Errors: Error {
         case saltNotFound
         case failedToDeriveKey
     }
-    
+
     public func lock(value: MainKey) throws {
         let salt = PinProtection.generateRandomValue(length: 8)
         var error: NSError?
@@ -73,7 +73,7 @@ public struct PinProtection: ProtectionStrategy {
         self.keychain.set(Data(salt), forKey: Const.saltKeychainKey)
         self.keychain.set(self.version.rawValue, forKey: Const.versionKey)
     }
-    
+
     public func unlock(cypherBits: Data) throws -> MainKey {
         guard let salt = self.keychain.data(forKey: Const.saltKeychainKey) else {
             throw Errors.saltNotFound
@@ -82,7 +82,7 @@ public struct PinProtection: ProtectionStrategy {
         guard let ethemeralKey = CryptoSubtle.DeriveKey(pin, salt, Const.numberOfIterations, &error) else {
             throw error ?? Errors.failedToDeriveKey
         }
-        
+
         let curVer: Version = Version.init(raw: self.keychain.string(forKey: Const.versionKey))
         do {
             switch curVer {
@@ -99,7 +99,7 @@ public struct PinProtection: ProtectionStrategy {
             throw error
         }
     }
-    
+
     public static func removeCyphertext(from keychain: Keychain) {
         (self as ProtectionStrategy.Type).removeCyphertext(from: keychain)
         keychain.remove(forKey: Const.saltKeychainKey)

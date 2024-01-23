@@ -137,7 +137,7 @@ extension PMActionBar {
         }
         self.removeFromSuperview()
     }
-    
+
     /// End the animation of indicator, restore the previous text/icon, and set the button state as selected if succeed.
     /// If succeed is false and shouldRestore is true, then restore the previous selected barItem.
     public func endSpinning(succeed: Bool, shouldRestore: Bool = false) {
@@ -159,7 +159,7 @@ extension PMActionBar {
 extension PMActionBar {
     @objc private func clickItem(sender: UIButton) {
         guard self.pressedButton == nil else { return }
-        
+
         let idx = sender.tag - TAG_OFFSET
         let item = self.items[idx]
         item.handler?(item)
@@ -346,12 +346,12 @@ extension PMActionBar {
     private func setup(button: UIButton, for state: UIButton.State) {
         let idx = button.tag - TAG_OFFSET
         let item = self.items[idx]
-        
+
         // record the previous selected button
         if item.isSelected, state == .normal {
             self.prevSelectedButton = button
         }
-        
+
         // restore the previous-set image & title
         if item.isPressed, state != .reserved {
             if let image = item.icon {

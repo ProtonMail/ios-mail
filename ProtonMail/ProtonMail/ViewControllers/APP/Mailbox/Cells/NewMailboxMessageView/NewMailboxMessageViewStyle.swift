@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 enum NewMailboxMessageViewStyle {
-    case selection(isSelected: Bool)
+    case selection(isSelected: Bool, isAbleToBeSelected: Bool)
     case normal
     case scheduled
 }

@@ -42,10 +42,10 @@ final class LoginCoordinator {
     enum ChildCoordinators {
         case createAddress
     }
-    
+
     weak var delegate: LoginCoordinatorDelegate?
     var initialError: LoginError?
-    
+
     private let container: Container
     private let isCloseButtonAvailable: Bool
     private let isSignupAvailable: Bool
@@ -91,7 +91,7 @@ final class LoginCoordinator {
         let welcome = createWelcomeViewController(variant: variant, username: username)
         return showInitialViewController(.unmanaged, initialViewController: welcome, navigationBarHidden: true)
     }
-    
+
     func createWelcomeViewController(variant: WelcomeScreenVariant, username: String? = nil) -> WelcomeViewController {
         let welcome = WelcomeViewController(variant: variant, delegate: self, username: username, signupAvailable: isSignupAvailable)
         welcome.overrideUserInterfaceStyle = customization.inAppTheme().userInterfaceStyle
@@ -110,7 +110,7 @@ final class LoginCoordinator {
         loginViewController.onDohTroubleshooting = { [weak self] in
             guard let self = self else { return }
             self.container.executeDohTroubleshootMethodFromApiDelegate()
-            
+
             guard let nav = self.navigationController else { return }
             self.container.troubleShootingHelper.showTroubleShooting(over: nav)
         }
@@ -165,7 +165,7 @@ final class LoginCoordinator {
         twoFactorViewController.onDohTroubleshooting = { [weak self] in
             guard let self = self else { return }
             self.container.executeDohTroubleshootMethodFromApiDelegate()
-            
+
             guard let nav = self.navigationController else { return }
             self.container.troubleShootingHelper.showTroubleShooting(over: nav)
         }
@@ -181,7 +181,7 @@ final class LoginCoordinator {
         mailboxPasswordViewController.onDohTroubleshooting = { [weak self] in
             guard let self = self else { return }
             self.container.executeDohTroubleshootMethodFromApiDelegate()
-            
+
             guard let nav = self.navigationController else { return }
             self.container.troubleShootingHelper.showTroubleShooting(over: nav)
         }
@@ -238,12 +238,12 @@ final class LoginCoordinator {
             if self.customization.customErrorPresenter?.willPresentError(error: error, from: viewController) == true {
                 return
             }
-            
+
             guard let errorCapable = viewController as? LoginErrorCapable else { return }
             errorCapable.showError(error: error)
         }
     }
-    
+
     private func popAndShowInfo(message: String) {
         clearSessionAndPopToRootViewController(animated: true) { navigationController in
             guard let viewController = navigationController.topViewController else { return }
@@ -275,7 +275,7 @@ extension LoginCoordinator: LoginStepsDelegate {
     func userAccountSetupNeeded() {
         UIApplication.openURLIfPossible(externalLinks.accountSetup)
     }
-    
+
     func learnMoreAboutExternalAccountsNotSupported() {
         UIApplication.openURLIfPossible(externalLinks.learnMoreAboutExternalAccountsNotSupported)
     }

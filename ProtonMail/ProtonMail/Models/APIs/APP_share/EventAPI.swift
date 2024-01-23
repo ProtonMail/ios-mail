@@ -25,7 +25,7 @@ import ProtonCoreNetworking
 
 struct EventAPI {
     /// base event api path
-    static let path: String = "/events"
+    static let path: String = "/core/v4/events"
 }
 
 final class EventCheckRequest: Request {
@@ -36,7 +36,7 @@ final class EventCheckRequest: Request {
     }
 
     var path: String {
-        let url = "/core/v4\(EventAPI.path)/\(eventID)"
+        let url = "\(EventAPI.path)/\(eventID)"
         var urlComponents = URLComponents(string: url)
         urlComponents?.queryItems = [
             URLQueryItem(name: "ConversationCounts", value: "1"),
@@ -75,8 +75,11 @@ struct RefreshStatus: OptionSet {
 
 final class EventCheckResponse: Response {
     var eventID: String = ""
-    var refresh: RefreshStatus = .ok
+    var refresh: Int = 0
     var more: Int = 0
+    var refreshStatus: RefreshStatus {
+        .init(rawValue: self.refresh)
+    }
 
     var messages: [[String: Any]]?
     var contacts: [[String: Any]]?
@@ -110,7 +113,7 @@ final class EventCheckResponse: Response {
 
     override func ParseResponse(_ response: [String: Any]) -> Bool {
         self.eventID = response["EventID"] as? String ?? ""
-        self.refresh = RefreshStatus(rawValue: response["Refresh"] as? Int ?? 0)
+        self.refresh = response["Refresh"] as? Int ?? 0
         self.more    = response["More"] as? Int ?? 0
 
         self.messages      = response["Messages"] as? [[String: Any]]

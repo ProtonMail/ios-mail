@@ -34,7 +34,7 @@ enum EventsFetchingStatus {
     case running
 }
 
-protocol EventsFetching: EventsServiceProtocol, Service {
+protocol EventsFetching: EventsServiceProtocol {
     var status: EventsFetchingStatus { get }
     func start()
     func pause()
@@ -56,6 +56,7 @@ protocol EventsConsumer: AnyObject {
 
 enum EventError: Error {
     case notRunning
+    case noUser
 }
 
 /// This is the protocol being worked on during the refactor. It will end up being the only one for EventsService.
@@ -65,19 +66,20 @@ protocol EventsServiceProtocol: AnyObject {
     func processEvents(conversationCounts: [[String: Any]]?)
 }
 
-final class EventsService: Service, EventsFetching {
-    typealias Dependencies = HasCoreDataContextProviderProtocol
+final class EventsService: EventsFetching {
+    typealias Dependencies = AnyObject
+    & HasCoreDataContextProviderProtocol
     & HasFeatureFlagCache
     & HasFetchMessageMetaData
     & HasIncomingDefaultService
     & HasLastUpdatedStoreProtocol
     & HasNotificationCenter
     & HasQueueManager
-    & HasUserCachedStatus
     & HasUsersManager
     & HasNotificationCenter
-
-    private static let defaultPollingInterval: TimeInterval = 30
+    & HasUserDefaults
+    & HasMailEventsPeriodicScheduler
+    & HasFeatureFlagsRepository
 
     // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
     private let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
@@ -87,7 +89,7 @@ final class EventsService: Service, EventsFetching {
     private var subscribers: [EventsObservation] = []
     private var timer: Timer?
     private weak var userManager: UserManager?
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(userManager: UserManager, dependencies: Dependencies) {
         self.userManager = userManager
@@ -98,7 +100,7 @@ final class EventsService: Service, EventsFetching {
         stop()
         status = .started
         resume()
-        timer = Timer.scheduledTimer(withTimeInterval: Self.defaultPollingInterval, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: Constants.App.eventsPollingInterval, repeats: true) { [weak self] _ in
             self?.timerDidFire()
         }
     }
@@ -152,7 +154,19 @@ extension EventsService {
     ///   - labelID: Label/location/folder
     ///   - notificationMessageID: the notification message
     ///   - completion: async complete handler
-    func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, completion: ((Swift.Result<[String: Any], Error>) -> Void)?) {
+    func fetchEvents(
+        byLabel labelID: LabelID,
+        notificationMessageID: MessageID?,
+        completion: ((Swift.Result<[String: Any], Error>) -> Void)?
+    ) {
+        if userManager?.isNewEventLoopEnabled == true {
+            fetchEventsWithNewApproach(
+                byLabel: labelID,
+                notificationMessageID: notificationMessageID,
+                completion: completion
+            )
+            return
+        }
         dependencies.queueManager.queue {
             guard self.status == .running, let userManager = self.userManager else {
                 completion?(.failure(EventError.notRunning))
@@ -177,12 +191,12 @@ extension EventsService {
                     return
                 }
 
-                if eventsRes.refresh.contains(.all) {
+                if eventsRes.refreshStatus.contains(.all) {
                     self.cleanCacheAndRefetchData(userManager: userManager, labelID: labelID, completion: completion)
                     return
                 }
 
-                if eventsRes.refresh.contains(.contacts) {
+                if eventsRes.refreshStatus.contains(.contacts) {
                     userManager.contactService.cleanUp()
                     // Although this flag is triggered when all of contacts are deleted
                     // But if user create a new contact right after deletion
@@ -227,7 +241,65 @@ extension EventsService {
         }
     }
 
+    private func fetchEventsWithNewApproach(
+        byLabel labelID: LabelID,
+        notificationMessageID: MessageID?,
+        completion: ((Swift.Result<[String: Any], Error>) -> Void)?
+    ) {
+        guard let user = userManager else {
+            completion?(.failure(EventError.noUser))
+            return
+        }
+        if isOverTimeThreshold(userID: user.userID) {
+            cleanCacheAndRefetchData(userManager: user, labelID: labelID, completion: completion)
+            return
+        }
+        let eventID = dependencies.lastUpdatedStore.lastEventID(userID: user.userID)
+        Task {
+            do {
+                let response = try await MailEventsLoop.fetchEvent(eventID: eventID, apiService: user.apiService, jsonDecoder: .init())
+
+                let refreshStatus = RefreshStatus(rawValue: response.refresh)
+                if refreshStatus == .all {
+                    cleanCacheAndRefetchData(userManager: user, labelID: labelID, completion: completion)
+                    return
+                }
+
+                if refreshStatus == .contacts {
+                    user.contactService.cleanUp()
+                    // Although this flag is triggered when all of contacts are deleted
+                    // But if user create a new contact right after deletion
+                    // The new contact won't be sent, client needs to call API to get it
+                    // Call contacts API just in case
+                    user.contactService.fetchContacts(completion: nil)
+                }
+
+                let eventProcessor = EventProcessor(dependencies: user.container)
+                eventProcessor.process(response: response) { result in
+                    switch result {
+                    case .success:
+                        completion?(.success([
+                            "Notices": response.notices,
+                            "More": response.more,
+                            "Refresh": response.refresh
+                        ]))
+                    case .failure(let error):
+                        completion?(.failure(error))
+                    }
+                }
+            } catch {
+                completion?(.failure(error))
+            }
+        }
+    }
+
     func fetchEvents(labelID: LabelID) {
+        guard let user = userManager, !user.isNewEventLoopEnabled else {
+            if let userID = userManager?.userID {
+                dependencies.mailEventsPeriodicScheduler.triggerSpecialLoop(forSpecialLoopID: userID.rawValue)
+            }
+            return
+        }
         fetchEvents(
             byLabel: labelID,
             notificationMessageID: nil,
@@ -285,7 +357,7 @@ extension EventsService {
                 case .failure(let error):
                     completion?(.failure(error))
                 case .success(let responseDict):
-                    self.dependencies.userCachedStatus.contactsCached = 0
+                    self.dependencies.userDefaults[.areContactsCached] = 0
                     self.dependencies.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: IDRes.eventID)
                     completion?(.success(responseDict))
                 }
@@ -525,6 +597,7 @@ extension EventsService {
                                 }
 
                                 conversationData["ID"] = conDict["ID"] as? String
+                                conversationData["UserID"] = userManager.userID.rawValue
 
                                 if var labels = conversationData["Labels"] as? [[String: Any]] {
                                     for (index, _) in labels.enumerated() {
@@ -634,7 +707,7 @@ extension EventsService {
                     switch emailObj.action {
                     case .delete:
                         if let emailID = emailObj.ID {
-                            if let tempEmail = Email.EmailForID(emailID, inManagedObjectContext: context) {
+                            if let tempEmail = Email.emailForID(emailID, inManagedObjectContext: context) {
                                 context.delete(tempEmail)
                             }
                         }
@@ -835,23 +908,23 @@ extension EventsService {
             return
         }
 
-        for (index, count) in (counts.enumerated()) {
-            if let labelID = count["LabelID"] as? String {
-                guard let unread = count["Unread"] as? Int else {
-                    continue
-                }
-                let isLast = index == counts.count - 1
-                let total = count["Total"] as? Int
-                dependencies.lastUpdatedStore.updateUnreadCount(
-                    by: LabelID(labelID),
-                    userID: userManager.userID,
-                    unread: unread,
-                    total: total,
-                    type: viewMode,
-                    shouldSave: isLast
-                )
-                self.updateBadgeIfNeeded(unread: unread, labelID: labelID, type: viewMode)
+        // parsing manually here to avoid modifying the rest of the class
+        // once EventCheckResponse is made Decodable, we'll be able to remove this
+        let parsedCounts: [CountData] = counts.compactMap {
+            do {
+                return try CountData.init(dict: $0)
+            } catch {
+                PMAssertionFailure(error)
+                return nil
             }
+        }
+
+        do {
+            try dependencies.lastUpdatedStore.batchUpdateUnreadCounts(
+                counts: parsedCounts, userID: userManager.userID, type: viewMode
+            )
+        } catch {
+            PMAssertionFailure(error)
         }
 
         guard let users = userManager.parentManager,
@@ -896,19 +969,6 @@ extension EventsService {
                 }
             }
         }
-    }
-
-    // TODO: moving this to a better place
-    private func updateBadgeIfNeeded(unread: Int, labelID: String, type: ViewMode) {
-        let users = dependencies.usersManager
-        guard let firstUser = users.firstUser else {
-            return
-        }
-        let isPrimary = firstUser.userID == self.userManager?.userID
-        guard labelID == Message.Location.inbox.rawValue,
-              isPrimary,
-              type == firstUser.conversationStateService.viewMode else { return }
-        UIApplication.setBadge(badge: unread)
     }
 
     private func assertProperExecution() {

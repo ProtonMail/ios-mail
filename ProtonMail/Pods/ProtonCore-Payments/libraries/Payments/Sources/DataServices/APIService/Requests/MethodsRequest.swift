@@ -29,13 +29,13 @@ public class MethodRequest: BaseApiRequest<MethodResponse> {
     override public init(api: APIService) {
         super.init(api: api)
     }
-    
+
     override public var method: HTTPMethod { .get }
 
     override public var path: String { super.path + "/v4/methods" }
-    
+
     override public var parameters: [String: Any]? { nil }
-    
+
     override public var isAuth: Bool { true }
 }
 

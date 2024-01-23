@@ -15,6 +15,7 @@ class ConversationCollapsedMessageViewModel {
     private var cachedCustomFolderLabels: [LabelEntity] = []
 
     private let dateFormatter: PMDateFormatter
+    private let mailboxMessageCellHelper: MailboxMessageCellHelper
     private let contactGroups: [ContactGroupVO]
 
     init(
@@ -22,6 +23,7 @@ class ConversationCollapsedMessageViewModel {
         weekStart: WeekStart,
         replacingEmailsMap: [String: EmailEntity],
         contactGroups: [ContactGroupVO],
+        mailboxMessageCellHelper: MailboxMessageCellHelper,
         dateFormatter: PMDateFormatter = .shared
     ) {
         self.message = message
@@ -29,6 +31,7 @@ class ConversationCollapsedMessageViewModel {
         self.replacingEmailsMap = replacingEmailsMap
         self.dateFormatter = dateFormatter
         self.contactGroups = contactGroups
+        self.mailboxMessageCellHelper = mailboxMessageCellHelper
     }
 
     func model(customFolderLabels: [LabelEntity]) -> ConversationMessageModel {
@@ -43,7 +46,7 @@ class ConversationCollapsedMessageViewModel {
             )
         }
 
-        let senderRowComponents = MailboxMessageCellHelper().senderRowComponents(
+        let senderRowComponents = mailboxMessageCellHelper.senderRowComponents(
             for: message,
             basedOn: replacingEmailsMap,
             groupContacts: contactGroups,

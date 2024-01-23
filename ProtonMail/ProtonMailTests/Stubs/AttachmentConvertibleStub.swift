@@ -32,8 +32,9 @@ final class AttachmentConvertibleStub: AttachmentConvertible {
         fileName: String,
         type: String,
         stripMetadata: Bool,
+        cid: String?,
         isInline: Bool
-    ) -> Guarantee<AttachmentEntity?> {
+    ) -> AttachmentEntity? {
         fatalError()
     }
 }

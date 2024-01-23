@@ -41,7 +41,7 @@ extension ObservabilityEvent where Payload == PayloadWithLabels<SSOObtainChallen
     public static func ssoObtainChallengeToken(status: SSOObtainChallengeTokenStatus) -> Self {
         .init(name: "ios_core_login_sso_obtainChallengeToken_total", labels: .init(status: status))
     }
-    
+
     public static func ssoObtainChallengeToken(error: ResponseError) -> Self {
         let name = "ios_core_login_sso_obtainChallengeToken_total"
         if let httpCode = error.httpCode {
@@ -54,7 +54,7 @@ extension ObservabilityEvent where Payload == PayloadWithLabels<SSOObtainChallen
                 break
             }
         }
-        
+
         return .init(name: name, labels: .init(status: .unknown))
     }
 }

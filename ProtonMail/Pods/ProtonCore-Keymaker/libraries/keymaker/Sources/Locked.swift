@@ -36,11 +36,11 @@ public struct Locked<T> {
     public init(encryptedValue: Data) {
         self.encryptedValue = encryptedValue
     }
-    
+
     public init(clearValue: T, with encryptor: ((T) throws -> Data)) throws  {
         self.encryptedValue = try encryptor(clearValue)
     }
-    
+
     public func unlock(with decryptor: ((Data) throws -> T)) throws -> T {
         return try decryptor(self.encryptedValue)
     }
@@ -50,14 +50,14 @@ extension Locked where T == String {
     public init(clearValue: T, with key: MainKey) throws {
         self.encryptedValue = try Locked<[String]>.init(clearValue: [clearValue], with: key).encryptedValue
     }
-    
+
     public func unlock(with key: MainKey) throws -> T {
         guard let value = try Locked<[String]>.init(encryptedValue: self.encryptedValue).unlock(with: key).first else {
             throw Errors.failedToDecrypt
         }
         return value
     }
-    
+
     public func lagcyUnlock(with key: MainKey) throws -> T {
         guard let value = try Locked<[String]>.init(encryptedValue: self.encryptedValue).lagcyUnlock(with: key).first else {
             throw Errors.failedToDecrypt
@@ -70,14 +70,14 @@ extension Locked where T == Data {
     public init(clearValue: T, with key: MainKey) throws {
         self.encryptedValue = try Locked<[Data]>.init(clearValue: [clearValue], with: key).encryptedValue
     }
-    
+
     public func unlock(with key: MainKey) throws -> T {
         guard let value = try Locked<[Data]>.init(encryptedValue: self.encryptedValue).unlock(with: key).first else {
             throw Errors.failedToDecrypt
         }
         return value
     }
-    
+
     public func lagcyUnlock(with key: MainKey) throws -> T {
         guard let value = try Locked<[Data]>.init(encryptedValue: self.encryptedValue).lagcyUnlock(with: key).first else {
             throw Errors.failedToDecrypt
@@ -90,10 +90,10 @@ extension Locked where T: Codable {
     public init(clearValue: T, with key: MainKey) throws {
         let data = try PropertyListEncoder().encode(clearValue)
         var error: NSError?
-        
+
         let random = CryptoSubtle.Random(IVsize) ?? Data(key.prefix(IVsize))
         let cypherData = CryptoSubtle.EncryptWithoutIntegrity(Data(key), data, random, &error)
-        
+
         if let error = error {
             throw error
         }
@@ -105,7 +105,7 @@ extension Locked where T: Codable {
         enData.append(lockedData)
         self.encryptedValue = enData as Data
     }
-    
+
     public func unlock(with key: MainKey) throws -> T {
         var error: NSError?
         let randomIV = self.encryptedValue.prefix(IVsize)
@@ -125,18 +125,18 @@ extension Locked where T: Codable {
         let value = try PropertyListDecoder().decode(T.self, from: unlockedData)
         return value
     }
-    
+
     public func lagcyUnlock(with key: MainKey) throws -> T {
         var error: NSError?
         let clearData = CryptoSubtle.DecryptWithoutIntegrity(Data(key), self.encryptedValue, Data(key.prefix(IVsize)), &error)
-        
+
         if let error = error {
             throw error
         }
         guard let unlockedData = clearData else {
             throw Errors.failedToDecrypt
         }
-        
+
         let value = try PropertyListDecoder().decode(T.self, from: unlockedData)
         return value
     }

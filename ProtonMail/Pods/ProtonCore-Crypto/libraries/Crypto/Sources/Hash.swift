@@ -75,7 +75,7 @@ extension Hashable where Type == Data {
 
 /// Hash functions
 public enum Hash {
-    
+
     public static func Argon2(challengeData: String) throws -> String {
         var error: NSError?
         let outAuth = CryptoGo.SrpArgon2PreimageChallenge(challengeData, -1, &error)
@@ -84,7 +84,7 @@ public enum Hash {
         }
         return outAuth
     }
-    
+
     public static func ECDLP(challengeData: String) throws -> String {
         var error: NSError?
         let outAuth = CryptoGo.SrpECDLPChallenge(challengeData, -1, &error)

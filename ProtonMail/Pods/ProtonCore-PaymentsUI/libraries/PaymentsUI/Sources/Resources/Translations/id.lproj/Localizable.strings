@@ -1,4 +1,3 @@
-
 "OK" = "OK";
 
 "Cancel" = "Batal";
@@ -22,6 +21,8 @@
 "Current plan will expire on %@" = "Paket saat ini akan kedaluwarsa pada %@";
 
 "Contact an administrator to make changes to your Proton subscription." = "Hubungi administrator untuk membuat perubahan pada langganan Proton Anda.";
+
+"%1$@ of %2$@" = "%1$@ dari %2$@";
 
 "%@ storage" = "%@ penyimpanan";
 
@@ -69,9 +70,11 @@
 
 "The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Paket yang berfokus pada penyimpanan, dengan ruang penyimpanan cloud sebesar 200 GB untuk menjaga privasi berkas Anda.";
 
-"The ultimate privacy pack with access to all premium Proton services." = "Paket privasi yang menyeluruh dengan akses ke seluruh layanan premium Proton.";
+"The ultimate privacy pack with access to all premium Proton services." = "Paket privasi pamungkas dengan akses ke seluruh layanan premium Proton.";
 
 "Only non-renewing annual subscriptions are available via this app" = "Hanya langganan tahunan yang tidak terbarukan yang dapat dibeli via aplikasi ini";
+
+"Your subscription cannot be managed inside the mobile app." = "Langganan Anda tidak dapat dikelola dalam aplikasi ponsel.";
 
 "Unlimited folders, labels, and filters" = "Tanpa batasan jumlah folder, label, dan filter";
 
@@ -87,7 +90,7 @@
 
 "Secure Core servers" = "Server Secure Core";
 
-"TOR over VPN" = "Tor melalui VPN";
+"TOR over VPN" = "Tor via VPN";
 
 "P2P/BitTorrent" = "P2P/BitTorrent";
 
@@ -113,13 +116,9 @@
 
 "Unlimited devices" = "Tanpa batasan jumlah perangkat";
 
-"%@ email aliases" = "%@ alias surel";
-
 "Unlimited email aliases" = "Tanpa batasan alias surel";
 
 "Unlimited logins and notes" = "Tanpa batasan jumlah login dan catatan";
-
-"Up to %@ forwarding mailboxes" = "Hingga %@ kotak surat penerusan";
 
 "Custom fields" = "Kolom khusus";
 

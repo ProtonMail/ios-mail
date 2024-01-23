@@ -46,7 +46,7 @@ public extension User {
              keys: .empty,
              accountRecovery: nil)
     }
-    
+
     func updated(ID: String? = nil,
                  name: String? = nil,
                  usedSpace: Double? = nil,

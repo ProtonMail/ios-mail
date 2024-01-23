@@ -57,15 +57,13 @@ extension MessageDataService {
             .findMessagesWithSourceIds(messages: messages,
                                        customFolderIds: customFolderIDs,
                                        to: tLabel)
-        messagesWithSourceIds.forEach { (msg, sourceId) in
-            try? self.dependencies.moveMessageInCacheUseCase.execute(
-                params: .init(
-                    messageToBeMoved: msg,
-                    from: sourceId,
-                    targetLocation: tLabel
-                )
+        try? self.dependencies.moveMessageInCacheUseCase.execute(
+            params: .init(
+                messagesToBeMoved: messagesWithSourceIds.map { $0.0 },
+                from: messagesWithSourceIds.map { $0.1 },
+                targetLocation: tLabel
             )
-        }
+        )
 
         if queue {
             let msgIds = messagesWithSourceIds.map { $0.0.messageID }
@@ -80,34 +78,13 @@ extension MessageDataService {
               messages.count == fLabels.count else {
             return false
         }
-
-        for (index, message) in messages.enumerated() {
-            if message.contains(location: .scheduled) && tLabel == LabelLocation.trash.labelID {
-                // Trash schedule message, should move to draft
-                let target = LabelLocation.draft.labelID
-                let scheduled = LabelLocation.scheduled.labelID
-                let sent = LabelLocation.sent.labelID
-                let labelsToMoveFrom = [target, scheduled, sent]
-
-                for fromLabel in labelsToMoveFrom {
-                    try? self.dependencies.moveMessageInCacheUseCase.execute(
-                        params: .init(
-                            messageToBeMoved: message,
-                            from: fromLabel,
-                            targetLocation: target
-                        )
-                    )
-                }
-            } else {
-                try? self.dependencies.moveMessageInCacheUseCase.execute(
-                    params: .init(
-                        messageToBeMoved: message,
-                        from: fLabels[index],
-                        targetLocation: tLabel
-                    )
-                )
-            }
-        }
+        try? dependencies.moveMessageInCacheUseCase.execute(
+            params: .init(
+                messagesToBeMoved: messages,
+                from: fLabels,
+                targetLocation: tLabel
+            )
+        )
 
         if queue {
             let ids = messages.map{ $0.messageID.rawValue }
@@ -119,9 +96,7 @@ extension MessageDataService {
     @discardableResult
     func delete(messages: [MessageEntity], label: LabelID) -> Bool {
         guard !messages.isEmpty else { return false }
-        for message in messages {
-            _ = self.cacheService.delete(message: message, label: label)
-        }
+        _ = self.cacheService.delete(messages: messages, label: label)
 
         // If the messageID is UUID, that means the message hasn't gotten response from BE
         let messagesIds = messages

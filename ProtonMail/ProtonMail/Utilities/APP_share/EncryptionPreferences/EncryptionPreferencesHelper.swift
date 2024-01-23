@@ -25,7 +25,7 @@ enum EncryptionPreferencesHelper {
                                          userDefaultSign: Bool,
                                          userAddresses: [Address],
                                          contact: PreContact?) -> EncryptionPreferences {
-        let selfAddress = userAddresses.first(where: { $0.email == email && $0.receive == .active })
+        let selfAddress = userAddresses.first(where: { $0.email == email && $0.send == .active })
 
         var selfSendConfig: SelfSendConfig?
         let apiKeysConfig: APIKeysConfig
@@ -40,8 +40,7 @@ enum EncryptionPreferencesHelper {
                                                 sign: .signingFlagNotFound,
                                                 scheme: nil,
                                                 mimeType: nil,
-                                                pinnedKeys: [],
-                                                isContact: false)
+                                                pinnedKeys: [])
         } else {
             let apiKeys: [(KeyResponse, CryptoKey)] = keysResponse.keys.compactMap { keyResponse in
                 var error: NSError?
@@ -65,8 +64,7 @@ enum EncryptionPreferencesHelper {
                                                 sign: contact?.sign ?? .signingFlagNotFound,
                                                 scheme: contact?.scheme,
                                                 mimeType: contact?.mimeType,
-                                                pinnedKeys: keys,
-                                                isContact: contact != nil)
+                                                pinnedKeys: keys)
         }
 
         let contactPublicKeyModel = getContactPublicKeyModel(email: email,
@@ -103,12 +101,8 @@ enum EncryptionPreferencesHelper {
                                              trustedFingerprints: model.trustedFingerprints,
                                              encryptionCapableFingerprints: model.encryptionCapableFingerprints,
                                              verifyOnlyFingerprints: model.verifyOnlyFingerprints,
-                                             isPGPExternal: model.isPGPExternal,
                                              isPGPInternal: model.isPGPInternal,
-                                             isPGPExternalWithWDKKeys: model.isPGPExternalWithWDKKeys,
-                                             isPGPExternalWithoutWDKKeys: model.isPGPExternalWithoutWDKKeys,
-                                             pgpAddressDisabled: model.pgpAddressDisabled,
-                                             isContact: model.isContact)
+                                             isPGPExternalWithWDKKeys: model.isPGPExternalWithWDKKeys)
 
         if let selfSend = selfSend { // case of own address
             return generateEncryptionPrefFromOwnAddress(selfSendConfig: selfSend, publicKeyModel: newModel)
@@ -124,10 +118,10 @@ enum EncryptionPreferencesHelper {
     static func generateEncryptionPrefFromOwnAddress(selfSendConfig: SelfSendConfig,
                                                      publicKeyModel: ContactPublicKeyModel) -> EncryptionPreferences {
         let hasApiKeys = !selfSendConfig.address.keys.isEmpty
-        let canAddressReceive = selfSendConfig.address.receive == .active
+        let canAddressSend = selfSendConfig.address.send == .active
         var error: EncryptionPreferencesError?
 
-        if !canAddressReceive {
+        if !canAddressSend {
             error = .internalUserDisable
         } else if !hasApiKeys {
             error = .internalUserNoApiKey
@@ -144,7 +138,6 @@ enum EncryptionPreferencesHelper {
                      pinnedKeys: [],
                      hasApiKeys: publicKeyModel.hasApiKeys,
                      hasPinnedKeys: false,
-                     isContact: publicKeyModel.isContact,
                      sendKey: error == nil ? selfSendConfig.publicKey : nil,
                      isSendKeyPinned: false,
                      error: error)
@@ -295,20 +288,8 @@ enum EncryptionPreferencesHelper {
                      trustedFingerprints: trustedFingerprints,
                      encryptionCapableFingerprints: encryptionCapableFingerprints,
                      verifyOnlyFingerprints: verifyOnlyFingerprints,
-                     isPGPExternal: !isInternal,
                      isPGPInternal: isInternal,
-                     isPGPExternalWithWDKKeys: !isInternal && !apiKeys.isEmpty,
-                     isPGPExternalWithoutWDKKeys: !isInternal && apiKeys.isEmpty,
-                     pgpAddressDisabled: isDisableUser(apiKeysConfig: apiKeysConfig),
-                     isContact: pinnedKeysConfig.isContact)
-    }
-
-    /**
-     * Test if no key is enabled
-     */
-    static func isDisableUser(apiKeysConfig: APIKeysConfig) -> Bool {
-        apiKeysConfig.recipientType == .internal &&
-            !apiKeysConfig.keys.contains(where: { $0.flags.contains(.encryptionEnabled) })
+                     isPGPExternalWithWDKKeys: !isInternal && !apiKeys.isEmpty)
     }
 
     /**
@@ -320,7 +301,7 @@ enum EncryptionPreferencesHelper {
         // TODO: can `CryptoKey` be made `Equatable` again?
         if let index = apiKeysConfig.publicKeys.firstIndex(where: { $0.getFingerprint() == key.getFingerprint() }),
            let keyResponse = apiKeysConfig.keys[safe: index] {
-            return !keyResponse.flags.contains(.encryptionEnabled)
+            return !keyResponse.flags.contains(.notObsolete)
         }
         return false
     }
@@ -379,7 +360,6 @@ enum EncryptionPreferencesHelper {
             pinnedKeys: publicKeyModel.publicKeys.pinnedKeys,
             hasApiKeys: !publicKeyModel.publicKeys.apiKeys.isEmpty,
             hasPinnedKeys: !publicKeyModel.publicKeys.pinnedKeys.isEmpty,
-            isContact: publicKeyModel.isContact,
             sendKey: sendKey,
             isSendKeyPinned: isSendKeyPinned,
             error: error
@@ -401,7 +381,6 @@ enum EncryptionPreferencesHelper {
                      pinnedKeys: publicKeyModel.pinnedKeys,
                      hasApiKeys: true,
                      hasPinnedKeys: publicKeyModel.hasPinnedKeys,
-                     isContact: publicKeyModel.isContact,
                      sendKey: sendKey,
                      isSendKeyPinned: isSendKeyPinned,
                      error: error)
@@ -430,7 +409,6 @@ enum EncryptionPreferencesHelper {
             pinnedKeys: publicKeyModel.pinnedKeys,
             hasApiKeys: false,
             hasPinnedKeys: publicKeyModel.hasPinnedKeys,
-            isContact: publicKeyModel.isContact,
             sendKey: sendKey,
             isSendKeyPinned: isSendKeyPinned,
             error: error

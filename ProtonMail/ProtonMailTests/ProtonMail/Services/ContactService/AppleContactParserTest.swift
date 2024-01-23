@@ -265,20 +265,20 @@ extension AppleContactParserTest {
 
     func testRemoveEItem_WithoutEItem() {
         let data = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nitem1.EMAIL;TYPE=INTERNET:school@mail.com\r\nitem2.EMAIL;TYPE=INTERNET:iclould@mail.com\r\nitem3.EMAIL;TYPE=INTERNET:other@mail.com\r\nUID:C803E418-93A5-4816-B2ED-0A169F502BC4:ABPerson\r\nFN:Anc Fake\r\nEND:VCARD\r\n"
-        let transferred = self.parser.removeEItem(vCard2Data: data)
+        let transferred = AppleContactParser.removeEItem(vCard2Data: data)
         XCTAssertEqual(data, transferred)
     }
 
     func testRemoveEItem_Success() {
         let data = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nEItem1.EMAIL;TYPE=INTERNET,HOME,pref:home@mail.com\r\nEItem2.EMAIL;TYPE=INTERNET,WORK:work@mail.com\r\nitem1.EMAIL;TYPE=INTERNET:school@mail.com\r\nitem2.EMAIL;TYPE=INTERNET:iclould@mail.com\r\nitem3.EMAIL;TYPE=INTERNET:other@mail.com\r\nUID:C803E418-93A5-4816-B2ED-0A169F502BC4:ABPerson\r\nFN:Anc Fake\r\nEND:VCARD\r\n"
         let expected = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nitem4.EMAIL;TYPE=INTERNET,HOME,pref:home@mail.com\r\nitem5.EMAIL;TYPE=INTERNET,WORK:work@mail.com\r\nitem1.EMAIL;TYPE=INTERNET:school@mail.com\r\nitem2.EMAIL;TYPE=INTERNET:iclould@mail.com\r\nitem3.EMAIL;TYPE=INTERNET:other@mail.com\r\nUID:C803E418-93A5-4816-B2ED-0A169F502BC4:ABPerson\r\nFN:Anc Fake\r\nEND:VCARD\r\n"
-        let transferred = self.parser.removeEItem(vCard2Data: data)
+        let transferred = AppleContactParser.removeEItem(vCard2Data: data)
         XCTAssertEqual(expected, transferred)
     }
 
     func testRemoveEItem_EmptyInput() {
         let data = ""
-        let transferred = self.parser.removeEItem(vCard2Data: data)
+        let transferred = AppleContactParser.removeEItem(vCard2Data: data)
         XCTAssertEqual(transferred, data)
     }
 }

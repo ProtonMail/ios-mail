@@ -52,6 +52,14 @@ class SingleMessageContentViewModel {
     var isEmbedInConversationView: Bool {
         context.viewMode == .conversation
     }
+    // Is view has shown to user 
+    var viewHasAppeared = false {
+        didSet {
+            if !isEmbedInConversationView && message.isDetailDownloaded {
+                markReadIfNeeded()
+            }
+        }
+    }
 
     let context: SingleMessageContentViewContext
     let user: UserManager
@@ -149,7 +157,6 @@ class SingleMessageContentViewModel {
 
         messageInfoProvider.set(delegate: self)
         messageBodyViewModel.update(content: messageInfoProvider.contents)
-        updateAttachments()
     }
 
     func messageHasChanged(message: MessageEntity) {
@@ -186,7 +193,7 @@ class SingleMessageContentViewModel {
         // have to call api again to fetch it
         let isDetailedDownloaded = !shouldLoadBody && !message.parsedHeaders.isEmpty
         guard !isDetailedDownloaded else {
-            if !isEmbedInConversationView {
+            if !isEmbedInConversationView && viewHasAppeared {
                 markReadIfNeeded()
             }
             return
@@ -203,7 +210,9 @@ class SingleMessageContentViewModel {
                 guard let self = self else { return }
                 switch result {
                 case .success:
-                    if !self.isEmbedInConversationView {
+                    if !self.isEmbedInConversationView && viewHasAppeared {
+                        // To prevent detail response override the unread status
+                        // markRead must be done after getting response
                         self.markReadIfNeeded()
                     }
                     self.updateErrorBanner?(nil)
@@ -373,9 +382,7 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
     func updateAttachments() {
         DispatchQueue.main.async {
             self.attachmentViewModel.attachmentHasChanged(
-                attachmentCount: self.messageInfoProvider.message.numAttachments,
                 nonInlineAttachments: self.messageInfoProvider.nonInlineAttachments.map(AttachmentNormal.init),
-                inlineAttachments: self.messageInfoProvider.inlineAttachments,
                 mimeAttachments: self.messageInfoProvider.mimeAttachments
             )
             self.uiDelegate?.updateAttachmentBannerIfNeeded()

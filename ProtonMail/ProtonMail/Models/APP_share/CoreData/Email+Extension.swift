@@ -34,8 +34,18 @@ extension Email {
         static let lastUsedTime = "lastUsedTime"
     }
 
-    class func EmailForID(_ emailID: String, inManagedObjectContext context: NSManagedObjectContext) -> Email? {
+    class func emailForID(_ emailID: String, inManagedObjectContext context: NSManagedObjectContext) -> Email? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.emailID, matchingValue: emailID) as? Email
+    }
+
+    class func emailFor(emailID: String, userID: UserID, in context: NSManagedObjectContext) -> Email? {
+        return context.managedObjectWithEntityName(
+            Attributes.entityName,
+            matching: [
+                Attributes.emailID: emailID,
+                Attributes.userID: userID.rawValue
+            ]
+        )
     }
 
     class func EmailForAddressWithContact(_ address: String,

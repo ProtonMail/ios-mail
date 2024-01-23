@@ -27,7 +27,7 @@ import Foundation
 public struct AvailablePlans: Decodable, Equatable {
     public var plans: [AvailablePlan]
     public var defaultCycle: Int?
-    
+
     public struct AvailablePlan: Decodable, Equatable {
         public var ID: String?
         public var type: Int?
@@ -76,19 +76,19 @@ public struct AvailablePlans: Decodable, Equatable {
                     self.currency = currency
                 }
             }
-            
+
             public struct Vendors: Decodable, Equatable {
                 public var apple: Vendor
-                
+
                 public struct Vendor: Decodable, Equatable {
                     public var productID: String
                 }
             }
         }
-        
+
         public enum Entitlement: Equatable {
             case description(DescriptionEntitlement)
-            
+
             public struct DescriptionEntitlement: Decodable, Equatable {
                 var type: String
                 public var iconName: String
@@ -96,28 +96,28 @@ public struct AvailablePlans: Decodable, Equatable {
                 public var hint: String?
             }
         }
-        
+
         public enum Decoration: Equatable {
             case border(BorderDecoration)
             case starred(StarDecoration)
             case badge(BadgeDecoration)
-            
+
             public struct BorderDecoration: Decodable, Equatable {
                 var type: String
                 public var color: String
             }
-            
+
             public struct StarDecoration: Decodable, Equatable {
                 var type: String
                 public var iconName: String
             }
-            
+
             public struct BadgeDecoration: Decodable, Equatable {
                 var type: String
                 public var anchor: Anchor
                 public var text: String
                 public var planID: String?
-                
+
                 public enum Anchor: String, Decodable, Equatable {
                     case subtitle
                     case title
@@ -131,16 +131,16 @@ extension AvailablePlans.AvailablePlan.Entitlement: Decodable {
     private enum EntitlementType: String, Decodable {
         case description
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case type
     }
-    
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         let type = try container.decode(EntitlementType.self, forKey: .type)
-        
+
         switch type {
         case .description:
             self = .description(try .init(from: decoder))
@@ -154,16 +154,16 @@ extension AvailablePlans.AvailablePlan.Decoration: Decodable {
         case starred
         case badge
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case type
     }
-    
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         let type = try container.decode(EntitlementType.self, forKey: .type)
-        
+
         switch type {
         case .border:
             self = .border(try .init(from: decoder))

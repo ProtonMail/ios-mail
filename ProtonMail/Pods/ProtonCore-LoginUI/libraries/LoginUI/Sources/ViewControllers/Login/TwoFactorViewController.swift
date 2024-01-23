@@ -53,7 +53,7 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
 
     var focusNoMore: Bool = false
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
-    
+
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     // MARK: - Setup
@@ -165,7 +165,7 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
             }
         }
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if focusNoMore {
@@ -240,7 +240,7 @@ extension TwoFactorViewController: LoginErrorCapable {
     func onFirstPasswordChangeNeeded() {
         delegate?.firstPasswordChangeNeeded()
     }
-    
+
     func onLearnMoreAboutExternalAccountsNotSupported() {
         delegate?.learnMoreAboutExternalAccountsNotSupported()
     }

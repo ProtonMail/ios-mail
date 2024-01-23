@@ -29,9 +29,14 @@ class NewMailboxMessageContentView: BaseMessageView {
     let firstLineStackView = SubviewsFactory.horizontalStackView
     let draftImageView = SubviewsFactory.draftImageView
     let secondLineStackView = SubviewsFactory.horizontalStackView
+    let attachmentsPreviewLine = SubviewsFactory.horizontalEqualSpacingStackView
+    let remainingAttachmentsLabel = SubviewsFactory.remainderAttachmentsLabel
+    let attachmentsPreviewStackView = SubviewsFactory.horizontalCenterDistributedStackView
     let titleLabel = UILabel(frame: .zero)
     let messageCountLabel = SubviewsFactory.messageCountLabel
     let originalImagesStackView = SubviewsFactory.horizontalStackView
+
+    var selectAttachmentAction: ((Int) -> Void)?
 
     init() {
         super.init(frame: .zero)
@@ -71,6 +76,10 @@ class NewMailboxMessageContentView: BaseMessageView {
         secondLineStackView.addArrangedSubview(attachmentImageView)
         secondLineStackView.addArrangedSubview(starImageView)
 
+        remainingAttachmentsLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        attachmentsPreviewLine.addArrangedSubview(attachmentsPreviewStackView)
+        attachmentsPreviewLine.addArrangedSubview(remainingAttachmentsLabel)
+        contentStackView.addArrangedSubview(attachmentsPreviewLine)
         contentStackView.addArrangedSubview(tagsView)
     }
 
@@ -124,6 +133,7 @@ class NewMailboxMessageContentView: BaseMessageView {
 
         contentStackView.setCustomSpacing(2, after: firstLineStackView)
         contentStackView.setCustomSpacing(12, after: secondLineStackView)
+        contentStackView.setCustomSpacing(4, after: attachmentsPreviewLine)
         secondLineStackView.setCustomSpacing(8, after: sendersStackView)
     }
 
@@ -138,6 +148,14 @@ private extension NewMailboxMessageContentView {
             .stackView(alignment: .center, spacing: 4)
         }
 
+        static var horizontalEqualSpacingStackView: UIStackView {
+            .stackView(distribution: .equalSpacing, alignment: .fill, spacing: 4)
+        }
+
+        static var horizontalCenterDistributedStackView: UIStackView {
+            .stackView(distribution: .fillProportionally, alignment: .center, spacing: 4)
+        }
+
         static var verticalStackView: UIStackView {
             .stackView(axis: .vertical)
         }
@@ -147,6 +165,12 @@ private extension NewMailboxMessageContentView {
             label.layer.cornerRadius = 3
             label.layer.borderWidth = 1
             label.layer.borderColor = ColorProvider.TextNorm
+            return label
+        }
+
+        static var remainderAttachmentsLabel: UILabel {
+            let label = UILabel(frame: .zero)
+            label.textAlignment = .right
             return label
         }
     }

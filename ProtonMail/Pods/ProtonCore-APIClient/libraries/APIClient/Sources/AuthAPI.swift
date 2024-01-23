@@ -114,3 +114,5 @@ public struct AuthAPI: APIClient {
         }
     }
 }
+
+// swiftlint:enable identifier_name

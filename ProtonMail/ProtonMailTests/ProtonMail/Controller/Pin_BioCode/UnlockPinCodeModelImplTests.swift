@@ -20,47 +20,44 @@ import XCTest
 
 final class UnlockPinCodeModelImplTests: XCTestCase {
     var sut: UnlockPinCodeModelImpl!
-    var cache: MockPinFailedCountCache!
+    private var testContainer: TestContainer!
 
     override func setUp() {
         super.setUp()
-        cache = .init()
+        testContainer = .init()
 
-        let globalContainer = GlobalContainer()
-        globalContainer.pinFailedCountCacheFactory.register { self.cache }
-
-        sut = .init(dependencies: globalContainer)
+        sut = .init(dependencies: testContainer)
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
-        cache =  nil
+        testContainer =  nil
     }
 
     func testGetPinFailedRemainingCount_failedCountLessThan10_returnPositiveValue() {
         for count in 0..<10 {
-            cache.pinFailedCountStub.fixture = count
+            testContainer.userDefaults[.pinFailedCount] = count
 
             XCTAssertTrue(sut.getPinFailedRemainingCount() > 0)
         }
     }
 
     func testGetPinFailedRemainingCount_failedCountMoreThan10_return0() {
-        cache.pinFailedCountStub.fixture = Int.random(in: 10...Int.max)
+        testContainer.userDefaults[.pinFailedCount] = Int.random(in: 10...Int.max)
 
         XCTAssertEqual(sut.getPinFailedRemainingCount(), 0)
     }
 
     func testGetPinFailedError_remainingFailedCountIsMoreThan4_returnIncorrectPinError() {
-        cache.pinFailedCountStub.fixture = Int.random(in: 0...6)
+        testContainer.userDefaults[.pinFailedCount] = Int.random(in: 0...6)
 
         XCTAssertTrue(sut.getPinFailedError().contains(check: LocalString._incorrect_pin))
     }
 
     func testGetPinFailedError_remaingingFailedCountIsLessThan4_returnIncorrectPinError() {
         let failedCount = Int.random(in: 7...10)
-        cache.pinFailedCountStub.fixture = failedCount
+        testContainer.userDefaults[.pinFailedCount] = failedCount
 
         let expected = String.localizedStringWithFormat(
             LocalString._attempt_remaining_until_secure_data_wipe,

@@ -88,7 +88,7 @@ final class DefaultPinCodeProtectionTests: XCTestCase {
         )
         sut.deactivate()
         wait(for: [appKeyDisabledExpectation], timeout: 5)
-        XCTAssertNil(userCachedStatus.keymakerRandomkey)
+        XCTAssertNil(globalContainer.keychain[.keymakerRandomKey])
         XCTAssertFalse(keyMaker.isPinCodeEnabled)
     }
 }

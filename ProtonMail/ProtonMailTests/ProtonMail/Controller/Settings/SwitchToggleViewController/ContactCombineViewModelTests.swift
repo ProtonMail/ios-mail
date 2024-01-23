@@ -20,16 +20,16 @@ import XCTest
 
 final class ContactCombineViewModelTests: XCTestCase {
     private var sut: ContactCombineViewModel!
-    private var cache: CombineContactSettingStub!
+    private var userDefaults: UserDefaults!
 
     override func setUpWithError() throws {
-        cache = CombineContactSettingStub()
-        sut = ContactCombineViewModel(combineContactCache: cache)
+        userDefaults = TestContainer().userDefaults
+        sut = ContactCombineViewModel(userDefaults: userDefaults)
     }
 
     override func tearDownWithError() throws {
         sut = nil
-        cache = nil
+        userDefaults = nil
     }
 
     func testBasicData() throws {
@@ -43,7 +43,7 @@ final class ContactCombineViewModelTests: XCTestCase {
             let indexPath = IndexPath(row: i, section: 0)
             let item = try XCTUnwrap(sut.output.cellData(for: indexPath))
             XCTAssertEqual(item.title, LocalString._settings_title_of_combined_contact)
-            XCTAssertEqual(item.status, cache.isCombineContactOn)
+            XCTAssertEqual(item.status, userDefaults[.isCombineContactOn])
         }
 
         XCTAssertNil(sut.output.sectionHeader())
@@ -58,7 +58,7 @@ final class ContactCombineViewModelTests: XCTestCase {
     }
 
     func testToggle() throws {
-        cache.isCombineContactOn = false
+        userDefaults[.isCombineContactOn] = false
         let indexPath = IndexPath(row: 0, section: 0)
         let expectation1 = expectation(description: "closure is called")
         sut.input.toggle(for: indexPath, to: true) { error in
@@ -66,7 +66,7 @@ final class ContactCombineViewModelTests: XCTestCase {
             expectation1.fulfill()
         }
         wait(for: [expectation1], timeout: 1)
-        XCTAssertTrue(cache.isCombineContactOn)
+        XCTAssertTrue(userDefaults[.isCombineContactOn])
 
         let expectation2 = expectation(description: "closure is called")
         sut.input.toggle(for: indexPath, to: false) { error in
@@ -74,7 +74,7 @@ final class ContactCombineViewModelTests: XCTestCase {
             expectation2.fulfill()
         }
         wait(for: [expectation2], timeout: 1)
-        XCTAssertFalse(cache.isCombineContactOn)
+        XCTAssertFalse(userDefaults[.isCombineContactOn])
     }
 
 }

@@ -38,7 +38,7 @@ enum DomPurifyConfig {
             ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data|\(valueToAdd)):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
             ADD_TAGS: ['base'],
             ADD_ATTR: ['target'],
-            FORBID_TAGS: ['body', 'style', 'input', 'form', 'video', 'audio'],
+            FORBID_TAGS: ['input', 'form', 'video', 'audio'],
             FORBID_ATTR: ['srcset'],
             WHOLE_DOCUMENT: true,
             RETURN_DOM: true
@@ -56,7 +56,7 @@ enum DomPurifyConfig {
             ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data|\(valueToAdd)):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
             ADD_TAGS: ['base'],
             ADD_ATTR: ['target'],
-            FORBID_TAGS: ['body', 'style', 'input', 'form', 'video', 'audio'],
+            FORBID_TAGS: ['input', 'form', 'video', 'audio'],
             FORBID_ATTR: ['srcset']
             }
             """.replacingOccurrences(of: "\n", with: "")

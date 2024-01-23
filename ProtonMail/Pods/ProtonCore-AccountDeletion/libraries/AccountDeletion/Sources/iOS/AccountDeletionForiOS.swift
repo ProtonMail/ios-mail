@@ -39,7 +39,7 @@ public protocol AccountDeletionViewControllerPresenter {
 extension UIViewController: AccountDeletionViewControllerPresenter {}
 
 extension AccountDeletionService: AccountDeletion {
-    
+
     public func initiateAccountDeletionProcess(
         over viewController: UIViewController,
         inAppTheme: @escaping () -> InAppTheme = { .default },
@@ -56,14 +56,14 @@ extension AccountDeletionService: AccountDeletion {
 }
 
 extension AccountDeletionWebView {
-    
+
     @objc func onBackButtonPressed() {
         let viewModel = self.viewModel
         self.navigationController?.presentingViewController?.dismiss(animated: true) {
             viewModel.deleteAccountWasClosed()
         }
     }
-    
+
     func styleUI() {
         #if canImport(ProtonCoreUIFoundations)
         let backgroundColor: UIColor = ColorProvider.BackgroundNorm
@@ -78,7 +78,7 @@ extension AccountDeletionWebView {
             webView?.underPageBackgroundColor = backgroundColor
         }
     }
-    
+
     func presentSuccessfulLoading() {
         webView?.alpha = 0.0
         webView?.isHidden = false
@@ -88,7 +88,7 @@ extension AccountDeletionWebView {
             self?.webView?.alpha = 1.0
         }
     }
-    
+
     func presentSuccessfulAccountDeletion() {
         navigationItem.leftBarButtonItem = nil
         UIView.animate(withDuration: 1.0) { [weak self] in
@@ -102,7 +102,7 @@ extension AccountDeletionWebView {
                                dismissDuration: Double.infinity)
         self.banner?.show(at: .top, on: self)
     }
-    
+
     func presentNotification(type: NotificationType, message: String) {
         self.banner?.dismiss()
         let style: PMBannerNewStyle
@@ -118,7 +118,7 @@ extension AccountDeletionWebView {
         }
         self.banner?.show(at: .top, on: self)
     }
-    
+
     func openUrl(_ url: URL) {
         #if canImport(ProtonCoreFoundations)
         UIApplication.openURLIfPossible(url)
@@ -129,11 +129,11 @@ extension AccountDeletionWebView {
 }
 
 extension AccountDeletionService: AccountDeletionWebViewDelegate {
-    
+
     public func shouldCloseWebView(_ viewController: AccountDeletionViewController, completion: @escaping () -> Void) {
         viewController.presentingViewController?.dismiss(animated: true, completion: completion)
     }
-    
+
     func present(vc: AccountDeletionWebView,
                  over: AccountDeletionViewControllerPresenter,
                  inAppTheme: () -> InAppTheme,

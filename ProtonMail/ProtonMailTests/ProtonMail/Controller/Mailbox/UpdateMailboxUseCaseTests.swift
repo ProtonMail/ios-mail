@@ -28,6 +28,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
     private var fetchLatestEventID: MockFetchLatestEventId!
     private var mailboxSource: MockUpdateMailboxSource!
     private var internetConnectionStatusProvider: MockInternetConnectionStatusProviderProtocol!
+    private var testContainer: TestContainer!
     private var sut: UpdateMailbox!
 
     override func setUpWithError() throws {
@@ -40,6 +41,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.fetchLatestEventID = MockFetchLatestEventId()
         self.mailboxSource = MockUpdateMailboxSource()
         self.internetConnectionStatusProvider = MockInternetConnectionStatusProviderProtocol()
+        testContainer = .init()
         self.sut = UpdateMailbox(
             dependencies: .init(
                 eventService: self.eventService,
@@ -49,7 +51,8 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
                 fetchMessageWithReset: self.fetchMessageWithReset,
                 fetchMessage: self.fetchMessage,
                 fetchLatestEventID: self.fetchLatestEventID,
-                internetConnectionStatusProvider: internetConnectionStatusProvider
+                internetConnectionStatusProvider: internetConnectionStatusProvider, 
+                userDefaults: testContainer.userDefaults
             )
         )
         self.sut.setup(source: self.mailboxSource)
@@ -69,6 +72,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.fetchLatestEventID = nil
         self.internetConnectionStatusProvider = nil
         self.mailboxSource = nil
+        testContainer = nil
         self.sut = nil
     }
 

@@ -1,4 +1,3 @@
-// !swiftlint:disable file_header
 //
 //  Hash.swift
 //

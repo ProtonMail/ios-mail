@@ -37,6 +37,8 @@ final class MenuViewModel: NSObject {
     & HasQueueManager
     & HasUnlockManager
     & HasUsersManager
+    & HasMailEventsPeriodicScheduler
+    & HasFeatureFlagsRepository
 
     private let dependencies: Dependencies
     private var scheduleSendLocationStatusObserver: ScheduleSendLocationStatusObserver?
@@ -135,6 +137,16 @@ extension MenuViewModel: MenuVMProtocol {
         self.observeScheduleSendLocationStatus()
         self.observeAlmostAllMailSettingChange()
         self.highlight(label: MenuLabel(location: .inbox))
+        self.setupEventsLoop()
+    }
+
+    func setupEventsLoop() {
+        let scheduler = dependencies.mailEventsPeriodicScheduler
+        scheduler.reset()
+        for user in dependencies.usersManager.users where user.isNewEventLoopEnabled {
+            scheduler.enableSpecialLoop(forSpecialLoopID: user.userID.rawValue)
+        }
+        scheduler.start()
     }
 
     var enableFolderColor: Bool {
@@ -236,6 +248,7 @@ extension MenuViewModel: MenuVMProtocol {
             completion?()
             return
         }
+        dependencies.mailEventsPeriodicScheduler.didStopSpecialLoop(withSpecialLoopID: userID.rawValue)
         dependencies.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false, completion: completion)
     }
 

@@ -58,7 +58,7 @@ public class CountryPickerViewController: UIViewController, AccessibleView {
         setupNotifications()
         generateAccessibilityIdentifiers()
     }
-    
+
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         delegate?.didCountryPickerDissmised()
@@ -104,7 +104,7 @@ public class CountryPickerViewController: UIViewController, AccessibleView {
         tableView.tintColor = ColorProvider.BrandNorm
         tableView.separatorColor = ColorProvider.SeparatorNorm
         tableView.tableHeaderView?.backgroundColor = ColorProvider.BackgroundNorm
-        
+
         let nib = UINib(nibName: countryCodeHeader, bundle: PMUIFoundations.bundle)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: countryCodeHeader)
     }

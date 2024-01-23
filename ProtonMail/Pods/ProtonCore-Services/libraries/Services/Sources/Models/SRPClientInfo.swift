@@ -30,7 +30,7 @@ public struct SRPClientInfo {
         self.clientProof = clientProof
         self.expectedServerProof = expectedServerProof
     }
-    
+
     public let clientEphemeral: Data
     public let clientProof: Data
     public let expectedServerProof: Data

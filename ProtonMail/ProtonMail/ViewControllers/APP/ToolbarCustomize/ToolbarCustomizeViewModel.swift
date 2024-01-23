@@ -19,7 +19,7 @@ import Foundation
 import UIKit
 
 final class ToolbarCustomizeViewModel<T: ToolbarAction> {
-    typealias Dependencies = HasToolbarCustomizationInfoBubbleViewStatusProvider
+    typealias Dependencies = HasUserDefaults
 
     private(set) var currentActions: [T]
     private let allActions: [T]
@@ -30,7 +30,7 @@ final class ToolbarCustomizeViewModel<T: ToolbarAction> {
 
     var reloadTableView: (() -> Void)?
     var shouldShowInfoBubbleView: Bool {
-        !dependencies.toolbarCustomizationInfoBubbleViewStatusProvider.shouldHideToolbarCustomizeInfoBubbleView
+        !dependencies.userDefaults[.toolbarCustomizationInfoBubbleViewIsShown]
     }
     let numberOfSections = 2
     private let dependencies: Dependencies
@@ -108,7 +108,7 @@ final class ToolbarCustomizeViewModel<T: ToolbarAction> {
     }
 
     func hideInfoBubbleView() {
-        dependencies.toolbarCustomizationInfoBubbleViewStatusProvider.shouldHideToolbarCustomizeInfoBubbleView = true
+        dependencies.userDefaults[.toolbarCustomizationInfoBubbleViewIsShown] = true
     }
 
     func moveAction(from source: IndexPath, to destination: IndexPath) {

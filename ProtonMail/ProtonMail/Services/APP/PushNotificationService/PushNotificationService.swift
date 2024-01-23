@@ -24,7 +24,7 @@ import Foundation
 import ProtonCoreServices
 import UserNotifications
 
-final class PushNotificationService: NSObject, Service, PushNotificationServiceProtocol {
+final class PushNotificationService: NSObject, PushNotificationServiceProtocol {
     /// Pending actions because the app has been just launched and can't make a request yet
     private var deviceTokenRegistrationPendingUnlock: String?
     private var notificationActionPendingUnlock: PendingNotificationAction?
@@ -128,6 +128,18 @@ final class PushNotificationService: NSObject, Service, PushNotificationServiceP
     func hasCachedNotificationOptions() -> Bool {
         notificationOptions != nil
     }
+
+    func resumePendingTasks() {
+        if let deviceToken = deviceTokenRegistrationPendingUnlock {
+            deviceTokenRegistrationPendingUnlock = nil
+            dependencies.pushEncryptionManager.registerDeviceForNotifications(deviceToken: deviceToken)
+        }
+
+        if let notificationAction = notificationActionPendingUnlock {
+            notificationActionPendingUnlock = nil
+            handleNotificationActionTask(notificationAction: notificationAction)
+        }
+    }
 }
 
 // MARK: - NotificationCenter observation
@@ -149,15 +161,7 @@ extension PushNotificationService {
     }
 
     private func didUnlockApp() {
-        if let deviceToken = deviceTokenRegistrationPendingUnlock {
-            deviceTokenRegistrationPendingUnlock = nil
-            dependencies.pushEncryptionManager.registerDeviceForNotifications(deviceToken: deviceToken)
-        }
-
-        if let notificationAction = notificationActionPendingUnlock {
-            notificationActionPendingUnlock = nil
-            handleNotificationActionTask(notificationAction: notificationAction)
-        }
+        resumePendingTasks()
     }
 
     private func didSignInAccount() {
@@ -204,11 +208,23 @@ extension PushNotificationService {
         let userInfo = response.notification.request.content.userInfo
         if dependencies.unlockProvider.isUnlocked() { // unlocked
             do {
+                SystemLogger.log(
+                    message: "HandleRemoteNotification: device isUnlocked, id: \(userInfo["messageId"] as? String ?? "No msgId found")",
+                    category: .notificationDebug
+                )
                 try didReceiveRemoteNotification(userInfo, completionHandler: completionHandler)
             } catch {
+                SystemLogger.log(
+                    message: "HandleRemoteNotification: device isUnlocked, but has error \(error.localizedDescription), id: \(userInfo["messageId"] as? String ?? "No msgId found")",
+                    category: .notificationDebug
+                )
                 setNotification(userInfo, fetchCompletionHandler: completionHandler)
             }
         } else if UIApplication.shared.applicationState == .inactive { // opened by push
+            SystemLogger.log(
+                message: "HandleRemoteNotification: device locked, id: \(userInfo["messageId"] as? String ?? "No msgId found")",
+                category: .notificationDebug
+            )
             setNotification(userInfo, fetchCompletionHandler: completionHandler)
         } else {
             completionHandler()
@@ -227,7 +243,15 @@ extension PushNotificationService {
         }
         notificationOptions = nil
         completionHandler()
+        SystemLogger.log(
+            message: "DidReceiveRemoteNotification: start mapNotificationToDeepLink, id: \(userInfo["messageId"] as? String ?? "No msgId found")",
+            category: .notificationDebug
+        )
         dependencies.navigationResolver.mapNotificationToDeepLink(payload) { [weak self] deeplink in
+            SystemLogger.log(
+                message: "DidReceiveRemoteNotification: post notification to switch view, id: \(userInfo["messageId"] as? String ?? "No msgId found")",
+                category: .notificationDebug
+            )
             self?.dependencies.notificationCenter.post(name: .switchView, object: deeplink)
         }
     }

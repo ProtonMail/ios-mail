@@ -35,20 +35,20 @@ struct AvailablePlansDetails {
     let price: String // "$71.88"
     let decorations: [Decoration]
     let entitlements: [Entitlement]
-    
+
     enum Decoration {
         case percentage(percentage: String)
         case offer(decription: String)
         case starred(iconName: String)
         case border(color: String)
     }
-    
+
     struct Entitlement: Equatable {
         var text: String
         var iconUrl: URL?
         var hint: String?
     }
-    
+
     static func createPlan(from plan: AvailablePlans.AvailablePlan,
                            for instance: AvailablePlans.AvailablePlan.Instance? = nil,
                            defaultCycle: Int?,
@@ -75,7 +75,7 @@ struct AvailablePlansDetails {
                 }
             }
         }
-        
+
         var entitlements = [Entitlement]()
         for entitlement in plan.entitlements {
             switch entitlement {
@@ -87,14 +87,14 @@ struct AvailablePlansDetails {
                 ))
             }
         }
-        
+
         if let instance {
             guard let storeKitManager = storeKitManager,
                   let price = iapPlan?.planPrice(from: storeKitManager),
                   let iapID = instance.vendors?.apple.productID else {
                 return nil
             }
-            
+
             return .init(
                 iapID: iapID,
                 isFreePlan: plan.isFreePlan,

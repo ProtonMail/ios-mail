@@ -26,7 +26,7 @@ import ProtonCoreLogin
 import ProtonCoreUtilities
 
 final class HelpViewModel {
-    
+
     let helpSections: [[HelpItem]]
 
     init(helpDecorator: ([[HelpItem]]) -> [[HelpItem]]) {

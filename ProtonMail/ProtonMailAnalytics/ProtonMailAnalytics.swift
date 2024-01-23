@@ -40,6 +40,7 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
             options.environment = environment
             options.enableAutoPerformanceTracing = false
             options.enableAppHangTracking = false
+            options.enableCaptureFailedRequests = false
         }
         isEnabled = true
     }
@@ -162,7 +163,7 @@ public enum MailAnalyticsErrorEvent: Error {
     /// An error occurred during Core Data initial set up
     case coreDataInitialisation(error: String, dataProtectionStatus: String)
 
-    /// used to track when the app sends a conversation reqeust without a conversation ID.
+    /// used to track when the app sends a conversation request without a conversation ID.
     case abortedConversationRequest
 
     // called MenuViewModel.menuItem(indexPath:) method with a nonexistent index path
@@ -178,6 +179,8 @@ public enum MailAnalyticsErrorEvent: Error {
     case userObjectsJsonEncodingError(Error, String)
     case userObjectsJsonDecodingError(Error, String)
     case userObjectsCouldNotBeSavedError(Error, String)
+
+    case appLockInconsistency(error: String, isAppAccessResolverEnabled: Bool)
 
     case assertionFailure(
         message: String,
@@ -206,13 +209,15 @@ public enum MailAnalyticsErrorEvent: Error {
         case .conversationViewEndUpdatesCrash:
             return "Conversation view endUpdates() crash"
         case let .assertionFailure(message, _, _, _):
-            return "Asssertion failure: \(message)"
+            return "Assertion failure: \(message)"
         case .userObjectsJsonDecodingError(_, let type):
             return "Error while decoding user object: \(type)"
-        case .userObjectsJsonEncodingError(_ , let type):
+        case .userObjectsJsonEncodingError(_, let type):
             return "Error while encoding user object: \(type)"
         case .userObjectsCouldNotBeSavedError(_, let type):
             return "Error while saving user object: \(type)"
+        case .appLockInconsistency(let error, _):
+            return "Unlock inconsistency: \(error)"
         }
     }
 
@@ -262,6 +267,10 @@ public enum MailAnalyticsErrorEvent: Error {
             info = [
                 "Error": error,
                 "Type": type
+            ]
+        case let .appLockInconsistency(_, isAppAccessResolverEnabled):
+            info = [
+                "isAppAccessResolverEnabled": isAppAccessResolverEnabled
             ]
         }
         return info

@@ -40,6 +40,7 @@ extension AlamofireExtension where ExtendedType: URLSessionConfiguration {
     public static var ephemeral: URLSessionConfiguration {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.headers = .default
+        configuration.httpMaximumConnectionsPerHost = 12
 
         return configuration
     }

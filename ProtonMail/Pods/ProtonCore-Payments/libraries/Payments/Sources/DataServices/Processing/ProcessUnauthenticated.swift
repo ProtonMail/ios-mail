@@ -22,6 +22,7 @@
 import Foundation
 import StoreKit
 import ProtonCoreFeatureSwitch
+import ProtonCoreFeatureFlags
 import ProtonCoreLog
 import ProtonCoreObservability
 import ProtonCoreUtilities
@@ -81,9 +82,9 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
     }
 
     let queue = DispatchQueue(label: "ProcessUnauthenticated async queue", qos: .userInitiated)
-    
+
     // MARK: - This code is performed before the user account has been created and authenticated during signup process
-    
+
     func process(
         transaction: SKPaymentTransaction, plan: PlanToBeProcessed, completion: @escaping ProcessCompletionCallback
     ) throws {
@@ -91,7 +92,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
             assertionFailure("This is a blocking network request, should never be called from main thread")
             throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
         }
-        
+
         #if DEBUG_CORE_INTERNALS
         guard TemporaryHacks.simulateBackendPlanPurchaseFailure == false else {
             TemporaryHacks.simulateBackendPlanPurchaseFailure = false
@@ -101,7 +102,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
         // Step 3. Obtain the StoreKit receipt that hopefully confirms the IAP purchase (we don't check this locally)
         let receipt = try dependencies.getReceipt()
         do {
-            
+
             // Step 4. Exchange the receipt for a token that's worth product's Proton price amount of money
             PMLog.debug("Making TokenRequest")
 
@@ -157,7 +158,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
                                         completion: @escaping ProcessCompletionCallback) {
         do {
             PMLog.debug("Making TokenRequestStatus")
-            
+
             // Step 5. Wait until the token is ready for consumption (status `chargeable`)
             let tokenStatusApi = dependencies.paymentsApiProtocol.paymentTokenStatusRequest(api: dependencies.apiService, token: token)
             let tokenStatusRes = try tokenStatusApi.awaitResponse(responseObject: TokenStatusResponse())
@@ -187,7 +188,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
             finishWhenStillUnauthenticated(transaction: transaction, result: .withoutObtainingToken, completion: completion)
         }
     }
-    
+
     private func finishWhenStillUnauthenticated(transaction: SKPaymentTransaction,
                                                 result: PaymentSucceeded,
                                                 completion: @escaping ProcessCompletionCallback) {
@@ -195,7 +196,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
         dependencies.addTransactionsBeforeSignup(transaction: transaction)
         completion(.finished(result))
     }
-    
+
     // MARK: - This code is performed after the user has been already authenticated during signup process
 
     func processAuthenticatedBeforeSignup(
@@ -336,7 +337,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
             try retryOnError()
         }
     }
-    
+
     private func buySubscription(transaction: SKPaymentTransaction,
                                  plan: PlanToBeProcessed,
                                  token: PaymentToken,
@@ -359,19 +360,23 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
                 // Step 13. Finish the IAP transaction
                 finishWhenAuthenticated(transaction: transaction, result: .resolvingIAPToSubscription, completion: completion)
             } else {
-                throw StoreKitManager.Errors.noNewSubscriptionInSuccessfullResponse
+                throw StoreKitManager.Errors.noNewSubscriptionInSuccessfulResponse
             }
-        } catch let error where error.isPaymentAmmountMismatchOrUnavailablePlanError {
+        } catch let error where error.isPaymentAmountMismatchOrUnavailablePlanError {
             PMLog.debug("StoreKit: amount mismatch")
-            try recoverByToppingUpCredits(
-                plan: plan, token: token, transaction: transaction, retryOnError: retryOnError, completion: completion
-            )
+            if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
+                try retryOnError()
+            } else {
+                try recoverByToppingUpCredits(
+                    plan: plan, token: token, transaction: transaction, retryOnError: retryOnError, completion: completion
+                )
+            }
         } catch {
             PMLog.debug("StoreKit: Buy plan failed: \(error.userFacingMessageInPayments)")
             try retryOnError()
         }
     }
-    
+
     private func recoverByToppingUpCredits(plan: PlanToBeProcessed,
                                            token: PaymentToken,
                                            transaction: SKPaymentTransaction,

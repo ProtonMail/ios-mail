@@ -37,12 +37,6 @@ extension UIApplicationBadgeProtocol {
 struct UIApplicationBadge {}
 extension UIApplicationBadge: UIApplicationBadgeProtocol {}
 
-protocol UserSessionProvider {
-    var primaryUserSessionId: String? { get set }
-}
-
-extension UserCachedStatus: UserSessionProvider {}
-
 struct PushUpdater {
     private let collapseId = "collapseID"
     private let uid = "UID"
@@ -52,7 +46,7 @@ struct PushUpdater {
 
     private let notificationCenter: NotificationCenterProtocol
     private let application: UIApplicationBadgeProtocol
-    private let userStatus: UserSessionProvider
+    private let userDefaults: UserDefaults
 
     private enum ViewMode: Int {
         case conversations = 0
@@ -71,11 +65,11 @@ struct PushUpdater {
     init(
         notificationCenter: NotificationCenterProtocol = UNUserNotificationCenter.current(),
         application: UIApplicationBadgeProtocol = UIApplicationBadge(),
-        userStatus: UserSessionProvider
+        userDefaults: UserDefaults
     ) {
         self.notificationCenter = notificationCenter
         self.application = application
-        self.userStatus = userStatus
+        self.userDefaults = userDefaults
     }
 
     func update(with userInfo: [AnyHashable: Any]) {
@@ -85,7 +79,7 @@ struct PushUpdater {
 
         remove(notificationIdentifiers: [notificationId])
         guard let uid = userInfo[uid] as? String,
-              userStatus.primaryUserSessionId == uid,
+              userDefaults[.primaryUserSessionId] == uid,
               let viewModeValue = userInfo[viewMode] as? Int,
               let viewMode = ViewMode(rawValue: viewModeValue),
               let unread = userInfo[viewMode.userInfoKey] as? Int else {

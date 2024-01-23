@@ -29,7 +29,7 @@ private let titleId = "CompleteViewController.completeTitleLabel"
 public final class CompleteRobot: CoreElements {
 
     public let verify = Verify()
-    
+
     public final class Verify: CoreElements {
         @discardableResult
         public func completeScreenIsShown<T: CoreElements>(robot _: T.Type) -> T {

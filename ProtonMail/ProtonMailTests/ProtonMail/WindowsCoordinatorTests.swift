@@ -161,5 +161,3 @@ private extension WindowsCoordinatorTests {
         }
     }
 }
-
-extension MockCoreDataContextProvider: Service {}

@@ -20,11 +20,15 @@ import CoreData
 import XCTest
 
 final class MessageEntityTests: XCTestCase {
+    private var contactPickerModelHelper: ContactPickerModelHelper!
     private var testContext: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
-        testContext = MockCoreDataStore.testPersistentContainer.viewContext
+
+        let testContainer = TestContainer()
+        contactPickerModelHelper = .init(contextProvider: testContainer.contextProvider)
+        testContext = testContainer.contextProvider.mainContext
     }
 
     override func tearDown() {
@@ -149,7 +153,7 @@ final class MessageEntityTests: XCTestCase {
         entity = MessageEntity(message)
         XCTAssertEqual(entity.recipientsCc.count, 2)
 
-        let ccList = ContactPickerModelHelper.contacts(from: entity.rawCCList)
+        let ccList = contactPickerModelHelper.contacts(from: entity.rawCCList)
         XCTAssertEqual(ccList.count, 1)
         let contact = try XCTUnwrap(ccList.first as? ContactGroupVO)
         XCTAssertEqual(contact.contactTitle, "testGroup")
@@ -276,96 +280,6 @@ final class MessageEntityTests: XCTestCase {
 // MARK: extend variables tests
 
 extension MessageEntityTests {
-    func testIsInternal() {
-        let message = Message(context: testContext)
-        message.messageID = MessageID.generateLocalID().rawValue
-        message.flags = NSNumber(value: 1157)
-        var entity = MessageEntity(message)
-        XCTAssertTrue(entity.isInternal)
-
-        message.flags = NSNumber(value: 255)
-        entity = MessageEntity(message)
-        XCTAssertTrue(entity.isInternal)
-
-        message.flags = NSNumber(value: 254)
-        entity = MessageEntity(message)
-        XCTAssertFalse(entity.isInternal)
-
-        message.flags = NSNumber(value: 251)
-        entity = MessageEntity(message)
-        XCTAssertFalse(entity.isInternal)
-
-        message.flags = NSNumber(value: 251)
-        entity = MessageEntity(message)
-        XCTAssertFalse(entity.isInternal)
-    }
-
-    func testIsExternal() {
-        let message = Message(context: testContext)
-        message.messageID = MessageID.generateLocalID().rawValue
-        message.flags = NSNumber(value: 1)
-        var entity = MessageEntity(message)
-        XCTAssertTrue(entity.isExternal)
-
-        message.flags = NSNumber(value: 16897)
-        entity = MessageEntity(message)
-        XCTAssertTrue(entity.isExternal)
-
-        message.flags = NSNumber(value: 133)
-        entity = MessageEntity(message)
-        XCTAssertFalse(entity.isExternal)
-
-        message.flags = NSNumber(value: 8325)
-        entity = MessageEntity(message)
-        XCTAssertFalse(entity.isExternal)
-
-        message.flags = NSNumber(value: 0)
-        entity = MessageEntity(message)
-        XCTAssertFalse(entity.isExternal)
-    }
-
-    func testIsE2E() {
-        let message = Message(context: testContext)
-        message.messageID = MessageID.generateLocalID().rawValue
-        message.flags = NSNumber(value: 8)
-        var entity = MessageEntity(message)
-        XCTAssertTrue(entity.isE2E)
-
-        message.flags = NSNumber(value: 38408)
-        entity = MessageEntity(message)
-        XCTAssertTrue(entity.isE2E)
-
-        message.flags = NSNumber(value: 38400)
-        entity = MessageEntity(message)
-        XCTAssertFalse(entity.isE2E)
-
-        message.flags = NSNumber(value: 0)
-        entity = MessageEntity(message)
-        XCTAssertFalse(entity.isE2E)
-    }
-
-    func testIsSignedMime() {
-        let message = Message(context: testContext)
-        message.messageID = MessageID.generateLocalID().rawValue
-        message.mimeType = "multipart/mixed"
-        message.flags = NSNumber(value: 3)
-        var entity = MessageEntity(message)
-        XCTAssertTrue(entity.isSignedMime)
-
-        message.flags = NSNumber(value: 129)
-        entity = MessageEntity(message)
-        XCTAssertTrue(entity.isSignedMime)
-
-        message.flags = NSNumber(value: 9)
-        entity = MessageEntity(message)
-        XCTAssertFalse(entity.isSignedMime)
-
-        message.mimeType = "text/html"
-        message.flags = NSNumber(value: 9)
-        entity = MessageEntity(message)
-        XCTAssertFalse(entity.isSignedMime)
-    }
-
     func testIsPlainText() {
         let message = Message(context: testContext)
         message.messageID = MessageID.generateLocalID().rawValue

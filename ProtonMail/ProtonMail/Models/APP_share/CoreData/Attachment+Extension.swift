@@ -21,7 +21,6 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
-import PromiseKit
 import ProtonCoreCrypto
 import ProtonCoreCryptoGoInterface
 import ProtonCoreDataModel
@@ -155,45 +154,60 @@ extension Attachment {
 
 protocol AttachmentConvertible {
     var dataSize: Int { get }
-    func toAttachment (_ context: NSManagedObjectContext, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Guarantee<AttachmentEntity?>
+    func toAttachment (
+        _ context: NSManagedObjectContext,
+        fileName: String,
+        type: String,
+        stripMetadata: Bool,
+        cid: String?,
+        isInline: Bool
+    ) -> AttachmentEntity?
 }
 
 // THIS IS CALLED FOR CAMERA
 extension UIImage: AttachmentConvertible {
     var dataSize: Int {
-        return self.toData().count
+        return self.toData()?.count ?? 0
     }
-    private func toData() -> Data! {
+    private func toData() -> Data? {
         return self.jpegData(compressionQuality: 0)
     }
-    func toAttachment (_ context: NSManagedObjectContext, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Guarantee<AttachmentEntity?> {
-        return Guarantee { fulfill in
-            if let fileData = self.toData() {
-                context.perform {
-                    let attachment = Attachment(context: context)
-                    attachment.attachmentID = "0"
-                    attachment.fileName = fileName
-                    attachment.mimeType = "image/jpg"
-                    attachment.fileData = nil
-                    attachment.fileSize = fileData.count as NSNumber
-                    attachment.isTemp = false
-                    attachment.keyPacket = ""
-                    let dataToWrite: Data
-                    if self.containsExifMetadata(mimeType: attachment.mimeType) && stripMetadata {
-                        dataToWrite = fileData.strippingExif()
-                    } else {
-                        dataToWrite = fileData
-                    }
-                    try? attachment.writeToLocalURL(data: dataToWrite)
-                    if isInline {
-                        attachment.setupHeaderInfo(isInline: true, contentID: fileName)
-                    }
-
-                    _ = context.saveUpstreamIfNeeded()
-                    fulfill(.init(attachment))
-                }
-            }
+    func toAttachment(
+        _ context: NSManagedObjectContext,
+        fileName: String,
+        type: String,
+        stripMetadata: Bool,
+        cid: String?,
+        isInline: Bool
+    ) -> AttachmentEntity? {
+        guard let fileData = toData() else {
+            return nil
         }
+        var result: AttachmentEntity?
+        context.performAndWait {
+            let attachment = Attachment(context: context)
+            attachment.attachmentID = "0"
+            attachment.fileName = fileName
+            attachment.mimeType = "image/jpg"
+            attachment.fileData = nil
+            attachment.fileSize = fileData.count as NSNumber
+            attachment.isTemp = false
+            attachment.keyPacket = ""
+            let dataToWrite: Data
+            if self.containsExifMetadata(mimeType: attachment.mimeType) && stripMetadata {
+                dataToWrite = fileData.strippingExif()
+            } else {
+                dataToWrite = fileData
+            }
+            try? attachment.writeToLocalURL(data: dataToWrite)
+            if isInline {
+                attachment.setupHeaderInfo(isInline: true, contentID: UUID().uuidString)
+            }
+
+            _ = context.saveUpstreamIfNeeded()
+            result = .init(attachment)
+        }
+        return result
     }
 }
 
@@ -203,60 +217,74 @@ extension Data: AttachmentConvertible {
         return self.count
     }
 
-    func toAttachment (_ context: NSManagedObjectContext, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Guarantee<AttachmentEntity?> {
-        return Guarantee { fulfill in
-            context.perform {
-                let attachment = Attachment(context: context)
-                attachment.attachmentID = "0"
-                attachment.fileName = fileName
-                attachment.mimeType = type
-                attachment.fileData = nil
-                attachment.fileSize = self.count as NSNumber
-                attachment.isTemp = false
-                attachment.keyPacket = ""
-                let dataToWrite: Data
-                if containsExifMetadata(mimeType: attachment.mimeType) && stripMetadata {
-                    dataToWrite = self.strippingExif()
-                } else {
-                    dataToWrite = self
-                }
-                try? attachment.writeToLocalURL(data: dataToWrite)
-                if isInline {
-                    attachment.setupHeaderInfo(isInline: true, contentID: fileName)
-                }
-                _ = context.saveUpstreamIfNeeded()
-                fulfill(.init(attachment))
+    func toAttachment(
+        _ context: NSManagedObjectContext,
+        fileName: String,
+        type: String,
+        stripMetadata: Bool,
+        cid: String? = nil,
+        isInline: Bool = false
+    ) -> AttachmentEntity? {
+        var result: AttachmentEntity?
+        context.performAndWait {
+            let attachment = Attachment(context: context)
+            attachment.attachmentID = "0"
+            attachment.fileName = fileName
+            attachment.mimeType = type
+            attachment.fileData = nil
+            attachment.fileSize = self.count as NSNumber
+            attachment.isTemp = false
+            attachment.keyPacket = ""
+            let dataToWrite: Data
+            if containsExifMetadata(mimeType: attachment.mimeType) && stripMetadata {
+                dataToWrite = self.strippingExif()
+            } else {
+                dataToWrite = self
             }
+            try? attachment.writeToLocalURL(data: dataToWrite)
+            if isInline {
+                attachment.setupHeaderInfo(isInline: true, contentID: cid ?? UUID().uuidString)
+            }
+            _ = context.saveUpstreamIfNeeded()
+            result = .init(attachment)
         }
+        return result
     }
 }
 
 // THIS IS CALLED FROM SHARE EXTENSION
 extension URL: AttachmentConvertible {
-    func toAttachment(_ context: NSManagedObjectContext, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Guarantee<AttachmentEntity?> {
-        return Guarantee { fulfill in
-            context.perform {
-                let attachment = Attachment(context: context)
-                attachment.attachmentID = "0"
-                attachment.fileName = fileName
-                attachment.mimeType = type
-                attachment.fileData = nil
-                attachment.fileSize = NSNumber(value: self.dataSize)
-                attachment.isTemp = false
-                attachment.keyPacket = ""
-                if containsExifMetadata(mimeType: attachment.mimeType) && stripMetadata {
-                    attachment.localURL = self.strippingExif()
-                } else {
-                    attachment.localURL = self
-                }
-
-                if isInline {
-                    attachment.setupHeaderInfo(isInline: true, contentID: fileName)
-                }
-                _ = context.saveUpstreamIfNeeded()
-                fulfill(.init(attachment))
+    func toAttachment(
+        _ context: NSManagedObjectContext,
+        fileName: String,
+        type: String,
+        stripMetadata: Bool,
+        cid: String? = nil,
+        isInline: Bool = false
+    ) -> AttachmentEntity? {
+        var result: AttachmentEntity?
+        context.performAndWait {
+            let attachment = Attachment(context: context)
+            attachment.attachmentID = "0"
+            attachment.fileName = fileName
+            attachment.mimeType = type
+            attachment.fileData = nil
+            attachment.fileSize = NSNumber(value: self.dataSize)
+            attachment.isTemp = false
+            attachment.keyPacket = ""
+            if containsExifMetadata(mimeType: attachment.mimeType) && stripMetadata {
+                attachment.localURL = self.strippingExif()
+            } else {
+                attachment.localURL = self
             }
+
+            if isInline {
+                attachment.setupHeaderInfo(isInline: true, contentID: UUID().uuidString)
+            }
+            _ = context.saveUpstreamIfNeeded()
+            result = .init(attachment)
         }
+        return result
     }
 
     var dataSize: Int {
@@ -265,5 +293,10 @@ extension URL: AttachmentConvertible {
             return 0
         }
         return size.intValue
+    }
+
+    func toBase64() -> String? {
+        guard let data = try? Data(contentsOf: self) else { return nil }
+        return data.base64EncodedString()
     }
 }

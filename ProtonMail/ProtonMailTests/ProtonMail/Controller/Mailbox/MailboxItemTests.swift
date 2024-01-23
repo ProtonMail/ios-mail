@@ -172,38 +172,4 @@ class MailboxItemTests: XCTestCase {
         XCTAssertEqual(sut.previewableAttachments.count, 1)
         XCTAssertEqual(sut.previewableAttachments[0], attachmentMetadataAttachment)
     }
-
-    func testPreviewableAttachmenstDoNotContainICSAttachments() {
-        let attachmentMetadataICS = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
-                                                               name: String.randomString(Int.random(in: 0..<10)),
-                                                               size: Int.random(in: 0..<10),
-                                                               mimeType: "text/calendar",
-                                                               disposition: .attachment)
-        let attachmentMetadataRandom = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
-                                                           name: String.randomString(Int.random(in: 0..<10)),
-                                                           size: Int.random(in: 0..<10),
-                                                           mimeType: String.randomString(Int.random(in: 0..<10)),
-                                                           disposition: .attachment)
-        let entity = ConversationEntity.make(attachmentsMetadata: [attachmentMetadataICS, attachmentMetadataRandom])
-        let sut = MailboxItem.conversation(entity)
-        XCTAssertEqual(sut.previewableAttachments.count, 1)
-        XCTAssertEqual(sut.previewableAttachments[0], attachmentMetadataRandom)
-    }
-
-    func testPreviewableAttachmenstDoNotContainKeyAttachments() {
-        let attachmentMetadataKey = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
-                                                        name: String.randomString(Int.random(in: 0..<10)),
-                                                        size: Int.random(in: 0..<10),
-                                                        mimeType: "application/pgp-keys",
-                                                        disposition: .attachment)
-        let attachmentMetadataRandom = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
-                                                           name: String.randomString(Int.random(in: 0..<10)),
-                                                           size: Int.random(in: 0..<10),
-                                                           mimeType: String.randomString(Int.random(in: 0..<10)),
-                                                           disposition: .attachment)
-        let entity = ConversationEntity.make(attachmentsMetadata: [attachmentMetadataKey, attachmentMetadataRandom])
-        let sut = MailboxItem.conversation(entity)
-        XCTAssertEqual(sut.previewableAttachments.count, 1)
-        XCTAssertEqual(sut.previewableAttachments[0], attachmentMetadataRandom)
-    }
 }

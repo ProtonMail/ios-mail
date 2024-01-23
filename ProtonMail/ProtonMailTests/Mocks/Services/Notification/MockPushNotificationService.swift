@@ -19,5 +19,7 @@ import Foundation
 @testable import ProtonMail
 
 class MockPushNotificationService: PushNotificationServiceProtocol {
+    func resumePendingTasks() {}
+
     func processCachedLaunchOptions() {}
 }

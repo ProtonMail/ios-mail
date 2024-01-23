@@ -33,7 +33,9 @@ class MailboxCoordinatorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         dummyAPIService = APIServiceMock()
-        let dummyUser = UserManager(api: dummyAPIService)
+        let testContainer = TestContainer()
+        testContainer.internetConnectionStatusProviderFactory.register { self.connectionStatusProviderMock }
+        let dummyUser = UserManager(api: dummyAPIService, globalContainer: testContainer)
 
         conversationStateProviderMock = .init()
         let lastUpdatedStoreMock = MockLastUpdatedStoreProtocol()
@@ -48,15 +50,6 @@ class MailboxCoordinatorTests: XCTestCase {
         let saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         connectionStatusProviderMock = MockInternetConnectionStatusProviderProtocol()
 
-        let featureFlagCache = MockFeatureFlagCache()
-
-        let dependencies = MailboxViewModel.Dependencies(
-            fetchMessages: MockFetchMessages(),
-            updateMailbox: MockUpdateMailbox(),
-            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
-            fetchSenderImage: dummyUser.container.fetchSenderImage,
-            featureFlagCache: featureFlagCache
-        )
         viewModelMock = MockMailBoxViewModel(labelID: "",
                                              label: nil,
                                              userManager: dummyUser,
@@ -69,18 +62,14 @@ class MailboxCoordinatorTests: XCTestCase {
                                              contactProvider: contactProviderMock,
                                              conversationProvider: conversationProviderMock,
                                              eventsService: eventServiceMock,
-                                             dependencies: dependencies,
-                                             welcomeCarrouselCache: WelcomeCarrouselCacheMock(),
+                                             dependencies: dummyUser.container,
                                              toolbarActionProvider: toolbarActionProviderMock,
                                              saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                              totalUserCountClosure: {
                                                  0
                                              })
 
-        let globalContainer = GlobalContainer()
-        globalContainer.contextProviderFactory.register { contextProviderMock }
-        globalContainer.internetConnectionStatusProviderFactory.register { self.connectionStatusProviderMock }
-        let userContainer = UserContainer(userManager: dummyUser, globalContainer: globalContainer)
+        let userContainer = dummyUser.container
 
         let mailboxViewControllerMock = MailboxViewController(viewModel: viewModelMock, dependencies: userContainer)
         uiNavigationControllerMock = .init(rootViewController: mailboxViewControllerMock)
@@ -108,8 +97,6 @@ class MailboxCoordinatorTests: XCTestCase {
         dummyAPIService = nil
         uiNavigationControllerMock = nil
         connectionStatusProviderMock = nil
-        conversationStateProviderMock = nil
-        dummyAPIService = nil
         uiNavigationControllerMock = nil
         viewModelMock = nil
     }

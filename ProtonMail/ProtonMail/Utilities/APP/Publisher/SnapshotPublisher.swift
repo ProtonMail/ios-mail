@@ -39,8 +39,7 @@ final class SnapshotPublisher<T: NSFetchRequestResult>: NSObject, NSFetchedResul
             predicate: predicate,
             sortDescriptors: sortDescriptors,
             fetchBatchSize: 0,
-            sectionNameKeyPath: sectionNameKeyPath,
-            onMainContext: false
+            sectionNameKeyPath: sectionNameKeyPath
         )
         super.init()
     }

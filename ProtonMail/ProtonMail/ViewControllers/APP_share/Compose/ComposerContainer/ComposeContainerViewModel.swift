@@ -27,9 +27,13 @@ protocol ComposeContainerUIProtocol: AnyObject {
     func updateSendButton()
 }
 
+protocol ComposeContainerViewModelDelegate: AnyObject {
+    func getAttachmentController() -> AttachmentController
+}
+
 class ComposeContainerViewModel: TableContainerViewModel {
-    typealias Dependencies = HasAttachmentMetadataStrippingProtocol
-    & HasFeatureFlagCache
+    typealias Dependencies = HasFeatureFlagCache
+    & HasKeychain
     & HasLastUpdatedStoreProtocol
     & HasUserIntroductionProgressProvider
     & HasUsersManager
@@ -39,10 +43,21 @@ class ComposeContainerViewModel: TableContainerViewModel {
     private let dependencies: Dependencies
 
     // for FileImporter
-    lazy var documentAttachmentProvider = DocumentAttachmentProvider(for: self)
-    lazy var imageAttachmentProvider = PhotoAttachmentProvider(for: self)
+    lazy var documentAttachmentProvider = {
+        guard let delegate = self.delegate else {
+            fatalError("Delegate should be set")
+        }
+        return DocumentAttachmentProvider(for: delegate.getAttachmentController())
+    }()
+    lazy var imageAttachmentProvider = {
+        guard let delegate = self.delegate else {
+            fatalError("Delegate should be set")
+        }
+        return PhotoAttachmentProvider(for: delegate.getAttachmentController())
+    }()
     private var contactChanged: NSKeyValueObservation?
     weak var uiDelegate: ComposeContainerUIProtocol?
+    weak var delegate: ComposeContainerViewModelDelegate?
     var user: UserManager { self.childViewModel.user }
 
     var isScheduleSendIntroViewShown: Bool {
@@ -58,7 +73,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
     }
 
     var shouldStripAttachmentMetadata: Bool {
-        dependencies.attachmentMetadataStripStatusProvider.metadataStripping == .stripMetadata
+        dependencies.keychain[.metadataStripping] == .stripMetadata
     }
 
     init(
@@ -88,7 +103,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
     }
 
     func filesAreSupported(from itemProviders: [NSItemProvider]) -> Bool {
-        return itemProviders.reduce(true) { $0 && $1.hasItem(types: self.filetypes) != nil }
+        return itemProviders.reduce(true) { $0 && $1.hasItem(types: FileImporterConstants.fileTypes) != nil }
     }
 
     func importFiles(
@@ -97,7 +112,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
         successHandler: @escaping () -> Void
     ) {
         for itemProvider in itemProviders {
-            guard let type = itemProvider.hasItem(types: self.filetypes) else { return }
+            guard let type = itemProvider.hasItem(types: FileImporterConstants.fileTypes) else { return }
             self.importFile(itemProvider, type: type, errorHandler: errorHandler, handler: successHandler)
         }
     }
@@ -149,26 +164,9 @@ class ComposeContainerViewModel: TableContainerViewModel {
     }
 }
 
-extension ComposeContainerViewModel: FileImporter, AttachmentController {
-    func present(_ controller: UIViewController, animated: Bool, completion: (() -> Void)?) {
-        fatalError()
-    }
-
-    func error(_ description: String) {
-        self.showErrorBanner(description)
-    }
-
-    func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
-        guard self.childViewModel.currentAttachmentsSize + fileData.contents.dataSize < Constants.kDefaultAttachmentFileSize else {
-            self.showErrorBanner(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
-            return Promise()
-        }
-        return Promise { seal in
-            self.childViewModel.composerMessageHelper.addAttachment(fileData, shouldStripMetaData: shouldStripAttachmentMetadata) { _ in
-                self.childViewModel.updateDraft()
-                seal.fulfill_()
-            }
-        }
+extension ComposeContainerViewModel: FileImporter {
+    func fileSuccessfullyImported(as fileData: FileData) -> PromiseKit.Promise<Void> {
+        fatalError("Should not call this method")
     }
 
     func addAttachment(_ attachmentObjectID: ObjectID) {

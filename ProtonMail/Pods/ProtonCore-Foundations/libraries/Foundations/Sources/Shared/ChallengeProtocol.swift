@@ -52,7 +52,7 @@ extension ChallengeProtocol {
   public func observeTextField(_ textField: UITextField, type: ChallengeTextFieldType) throws {
     try observeTextField(textField, type: type, ignoreDelegate: false)
   }
-  #endif 
+  #endif
 }
 
 public struct ChallengeParametersProvider {

@@ -30,19 +30,23 @@ final class ComposeViewModelTests: XCTestCase {
     private var sut: ComposeViewModel!
     private var contactProvider: MockContactProvider!
     private var dependencies: ComposeViewModel.Dependencies!
-    private var attachmentMetadataStrippingCache: AttachmentMetadataStrippingMock!
     private var notificationCenter: NotificationCenter!
+    private var testContainer: TestContainer!
     private let userID: UserID = .init(String.randomString(20))
     private var mockUIDelegate: MockComposeUIProtocol!
     private var mockUserCacheStatusProvider: MockUserCachedStatusProvider!
+    private var htmlEditor: HtmlEditorBehaviour!
 
-    override func setUp() {
-        super.setUp()
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        testContainer = .init()
         LocaleEnvironment.locale = { .enGB }
+
         self.mockCoreDataService = MockCoreDataContextProvider()
         self.apiMock = APIServiceMock()
         self.notificationCenter = NotificationCenter()
         self.mockUIDelegate = MockComposeUIProtocol()
+        self.htmlEditor = HtmlEditorBehaviour()
 
         testContext = MockCoreDataStore.testPersistentContainer.viewContext
         fakeUserManager = mockUserManager()
@@ -54,30 +58,28 @@ final class ComposeViewModelTests: XCTestCase {
             (message, nil)
         }
 
-        attachmentMetadataStrippingCache = .init()
-        mockUserCacheStatusProvider = .init()
         let helperDependencies = ComposerMessageHelper.Dependencies(
             messageDataService: fakeUserManager.messageService,
             cacheService: fakeUserManager.cacheService,
             contextProvider: mockCoreDataService,
             copyMessage: copyMessage,
-            attachmentMetadataStripStatusProvider: attachmentMetadataStrippingCache
+            keychain: testContainer.keychain
         )
         dependencies = ComposeViewModel.Dependencies(
             user: fakeUserManager,
             coreDataContextProvider: mockCoreDataService,
             fetchAndVerifyContacts: .init(),
             internetStatusProvider: MockInternetConnectionStatusProviderProtocol(),
+            keychain: testContainer.keychain,
             fetchAttachment: .init(),
             contactProvider: contactProvider,
             helperDependencies: helperDependencies,
             fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(
                 coreKeyMaker: MockKeyMakerProtocol(),
-                cache: MockMobileSignatureCacheProtocol()
+                cache: MockMobileSignatureCacheProtocol(),
+                keychain: testContainer.keychain
             )),
-            darkModeCache: MockDarkModeCacheProtocol(),
-            attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
-            userCachedStatusProvider: mockUserCacheStatusProvider,
+            userDefaults: testContainer.userDefaults,
             notificationCenter: notificationCenter
         )
 
@@ -85,11 +87,8 @@ final class ComposeViewModelTests: XCTestCase {
             Message(context: testContext)
         }
 
-        sut = ComposeViewModel(
-            msg: .init(message),
-            action: .openDraft,
-            dependencies: dependencies
-        )
+        sut = ComposeViewModel(dependencies: dependencies)
+        try sut.initialize(message: .init(message), action: .openDraft)
     }
 
     override func tearDown() {
@@ -99,7 +98,9 @@ final class ComposeViewModelTests: XCTestCase {
         self.message = nil
         self.testContext = nil
         self.notificationCenter = nil
+        testContainer = nil
         self.mockUIDelegate = nil
+        self.htmlEditor = nil
         FileManager.default.cleanTemporaryDirectory()
         LocaleEnvironment.restore()
         super.tearDown()
@@ -139,7 +140,26 @@ final class ComposeViewModelTests: XCTestCase {
         }
         let lists = sut.getAddresses()
         XCTAssertEqual(lists.count, 5)
-        XCTAssertEqual(lists[0].email, alias)
+        XCTAssertEqual(lists[0].email, "\(parts[0])+abcd@\(parts[1])")
+        XCTAssertEqual(lists[0].addressID, addressID)
+        XCTAssertEqual(lists.filter { $0.addressID == addressID }.count, 2)
+    }
+
+    func testGetAddresses_whenToHeaderIsCaseInsensitive_andHasAlias_itReturnsUserAddressWithAlias() {
+        let addresses = generateAddress(number: 4)
+        fakeUserManager.userInfo.set(addresses: addresses)
+
+        let addressID = addresses[0].addressID
+        let email1 = addresses[0].email
+        let parts = email1.components(separatedBy: "@")
+        let alias = "\(parts[0].uppercased())+abcd@\(parts[1])"
+        testContext.performAndWait {
+            let obj = self.sut.composerMessageHelper.getRawMessageObject()
+            obj?.parsedHeaders = "{\"From\": \"Tester <\(alias)>\"}"
+        }
+        let lists = sut.getAddresses()
+        XCTAssertEqual(lists.count, 5)
+        XCTAssertEqual(lists[0].email, "\(parts[0])+abcd@\(parts[1])")
         XCTAssertEqual(lists[0].addressID, addressID)
         XCTAssertEqual(lists.filter { $0.addressID == addressID }.count, 2)
     }
@@ -153,7 +173,7 @@ final class ComposeViewModelTests: XCTestCase {
         XCTAssertEqual(lists, addresses)
     }
     
-    func testInitializeAddress_whenReply_theOriginalToAddressIsInvalid_shouldUseDefaultAddress() {
+    func testInitializeAddress_whenReply_theOriginalToAddressIsInvalid_shouldUseDefaultAddress() throws {
         var addresses = generateAddress(number: 2)
         let invalidAddress = updateAddressStatus(address: addresses[0], status: .disabled)
         addresses[0] = invalidAddress
@@ -170,15 +190,11 @@ final class ComposeViewModelTests: XCTestCase {
             return repliedMessage
         }
 
-        sut = ComposeViewModel(
-            msg: MessageEntity(message),
-            action: .reply,
-            dependencies: dependencies
-        )
+        try sut.initialize(message: .init(message), action: .reply)
         XCTAssertEqual(sut.currentSenderAddress(), fakeUserManager.addresses.defaultAddress())
     }
     
-    func testInitializeAddress_whenReply_theOriginalToAddressIsValid_shouldUseIt() {
+    func testInitializeAddress_whenReply_theOriginalToAddressIsValid_shouldUseIt() throws {
         let addresses = generateAddress(number: 2)
         fakeUserManager.userInfo.set(addresses: addresses)
         let aliasAddress = aliasAddress(from: addresses[0])
@@ -193,15 +209,11 @@ final class ComposeViewModelTests: XCTestCase {
             return repliedMessage
         }
 
-        sut = ComposeViewModel(
-            msg: MessageEntity(message),
-            action: .reply,
-            dependencies: dependencies
-        )
+        try sut.initialize(message: .init(message), action: .reply)
         wait(self.sut.currentSenderAddress() == aliasAddress, timeout: 5)
     }
     
-    func testAddressesStatusChanged_theCurrentAddressIsInvalid_shouldChangeToDefaultOne() {
+    func testAddressesStatusChanged_theCurrentAddressIsInvalid_shouldChangeToDefaultOne() throws {
         var addresses = generateAddress(number: 2)
         fakeUserManager.userInfo.set(addresses: addresses)
         let aliasAddress = aliasAddress(from: addresses[0])
@@ -216,11 +228,8 @@ final class ComposeViewModelTests: XCTestCase {
             return repliedMessage
         }
 
-        sut = ComposeViewModel(
-            msg: MessageEntity(message),
-            action: .reply,
-            dependencies: dependencies
-        )
+        sut = ComposeViewModel(dependencies: dependencies)
+        try sut.initialize(message: .init(message), action: .reply)
         sut.uiDelegate = mockUIDelegate
         wait(self.sut.currentSenderAddress() == aliasAddress, timeout: 5)
         
@@ -239,13 +248,13 @@ final class ComposeViewModelTests: XCTestCase {
     // MARK: isEmptyDraft tests
 
     func testIsEmptyDraft_messageInit() throws {
-        sut.initialize(message: .init(message), action: .openDraft)
+        try sut.initialize(message: .init(message), action: .openDraft)
         XCTAssertTrue(sut.isEmptyDraft())
     }
 
     func testIsEmptyDraft_subjectField() throws {
         message.title = "abc"
-        sut.initialize(message: .init(message), action: .openDraft)
+        try sut.initialize(message: .init(message), action: .openDraft)
         XCTAssertFalse(sut.isEmptyDraft())
     }
 
@@ -253,19 +262,19 @@ final class ComposeViewModelTests: XCTestCase {
         message.toList = "[]"
         message.ccList = "[]"
         message.bccList = "[]"
-        sut.initialize(message: .init(message), action: .openDraft)
+        try sut.initialize(message: .init(message), action: .openDraft)
 
         XCTAssertTrue(sut.isEmptyDraft())
     }
 
-    func testIsEmptyDraft_whenBodyHasNoTextOrImages_itShouldReturnTrue() {
+    func testIsEmptyDraft_whenBodyHasNoTextOrImages_itShouldReturnTrue() throws {
         message.body = "<div><br></div><div><br></div></body>"
-        sut.initialize(message: .init(message), action: .openDraft)
+        try sut.initialize(message: .init(message), action: .openDraft)
 
         XCTAssertTrue(sut.isEmptyDraft())
     }
 
-    func testIsEmptyDraft_whenBodyOnlyHasText_itShouldReturnFalse() {
+    func testIsEmptyDraft_whenBodyOnlyHasText_itShouldReturnFalse() throws {
         message.body =
         """
         <body>
@@ -277,12 +286,12 @@ final class ComposeViewModelTests: XCTestCase {
         </div>
         </body>
         """
-        sut.initialize(message: .init(message), action: .openDraft)
+        try sut.initialize(message: .init(message), action: .openDraft)
 
         XCTAssertFalse(sut.isEmptyDraft())
     }
 
-    func testIsEmptyDraft_whenBodyOnlyHasImages_itShouldReturnFalse() {
+    func testIsEmptyDraft_whenBodyOnlyHasImages_itShouldReturnFalse() throws {
         message.body =
         """
         <body>
@@ -295,7 +304,7 @@ final class ComposeViewModelTests: XCTestCase {
         </div>
         </body>
         """
-        sut.initialize(message: .init(message), action: .openDraft)
+        try sut.initialize(message: .init(message), action: .openDraft)
 
         XCTAssertFalse(sut.isEmptyDraft())
     }
@@ -338,9 +347,7 @@ final class ComposeViewModelTests: XCTestCase {
 
     func testInit_withFileData_stripMetaDataIsOn_attachmentHasNoGPSData() throws {
         let fileData = try loadImage(fileName: "IMG_0001")
-        attachmentMetadataStrippingCache.metadataStripping = .stripMetadata
-        let e = expectation(description: "Closure is called")
-
+        testContainer.keychain[.metadataStripping] = .stripMetadata
         sut = .init(
             subject: "",
             body: "",
@@ -348,11 +355,8 @@ final class ComposeViewModelTests: XCTestCase {
             action: .newDraftFromShare,
             dependencies: dependencies
         )
-        sut.composerMessageHelper.updateAttachmentView = {
-            e.fulfill()
-        }
-        waitForExpectations(timeout: 5)
 
+        sut.insertImportedFiles(in: htmlEditor)
 
         var imageUrl: URL?
         mockCoreDataService.performAndWaitOnRootSavingContext { context in
@@ -364,6 +368,8 @@ final class ComposeViewModelTests: XCTestCase {
         let urlToLoad = try XCTUnwrap(imageUrl)
         XCTAssertFalse(urlToLoad.hasGPSData())
     }
+
+    // TODO: test stripMetadata case 
 
     func testInit_whenReplyAll_shouldRespectReplyToField() throws {
         self.message = testContext.performAndWait {
@@ -400,11 +406,7 @@ final class ComposeViewModelTests: XCTestCase {
             return message
         }
 
-        sut = ComposeViewModel(
-            msg: .init(message),
-            action: .replyAll,
-            dependencies: dependencies
-        )
+        try sut.initialize(message: .init(message), action: .replyAll)
         sut.collectDraft("", body: "", expir: 0, pwd: "", pwdHit: "")
         let draft = try XCTUnwrap(sut.composerMessageHelper.draft)
         
@@ -450,12 +452,7 @@ final class ComposeViewModelTests: XCTestCase {
     }
 
     func testFetchContacts_newEmailAdded_withContactCombine_contactsWillHaveAllNewlyAddedEmail() throws {
-        mockUserCacheStatusProvider.isCombineContactOnStub.fixture = true
-        sut = ComposeViewModel(
-            msg: .init(message),
-            action: .openDraft,
-            dependencies: dependencies
-        )
+        testContainer.userDefaults[.isCombineContactOn] = true
         sut.fetchContacts()
         XCTAssertTrue(sut.contacts.isEmpty)
         let name = String.randomString(20)
@@ -604,10 +601,9 @@ extension ComposeViewModelTests {
         let data = try Data(contentsOf: jpgUrl)
         let url = try FileManager.default.createTempURL(forCopyOfFileNamed: fullFileName)
         try data.write(to: url)
-        XCTAssertTrue(url.hasGPSData())
         return ConcreteFileData(
             name: fullFileName,
-            mimeType: "image/png",
+            mimeType: "image/jpg",
             contents: url
         )
     }

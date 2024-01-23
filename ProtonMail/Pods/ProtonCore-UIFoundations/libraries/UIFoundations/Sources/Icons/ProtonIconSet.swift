@@ -23,7 +23,7 @@ public struct ProtonIconSet {
     static let instance = ProtonIconSet()
 
     private init() {}
-    
+
     // Proton icon set
 
     public let alias = ProtonIcon(name: "ic-alias")
@@ -559,79 +559,79 @@ public struct ProtonIconSet {
     public let windowTerminal = ProtonIcon(name: "ic-window-terminal")
 
     public let wrench = ProtonIcon(name: "ic-wrench")
-    
+
     // Proton color icon set
-    
+
     public let verifiedBadge = ProtonIcon(name: "ic-verified-badge")
-    
+
     // Flags
-    
+
     public func flag(forCountryCode countryCode: String) -> ProtonIcon {
         ProtonIcon(name: "flags-\(countryCode)")
     }
-    
+
     // Logos — MasterBrand
-    
+
     // swiftlint:disable inclusive_language
-    
+
     public let masterBrandBrand = ProtonIcon(name: "MasterBrandBrand")
-    
+
     public let masterBrandGlyph = ProtonIcon(name: "MasterBrandGlyph")
-    
+
     public let masterBrandLightDark = ProtonIcon(name: "MasterBrandLightDark", vpnFallbackName: "MasterBrandAlwaysDark")
-    
+
     public let masterBrandWithEffect = ProtonIcon(name: "MasterBrandWithEffect")
 
     // swiftlint:enable inclusive_language
-    
+
     // Logos — SuiteIcons
-    
+
     public let calendarMain = ProtonIcon(name: "CalendarMain")
-    
+
     public let driveMain = ProtonIcon(name: "DriveMain")
-    
+
     public let mailMain = ProtonIcon(name: "MailMain")
-    
+
     public let vpnMain = ProtonIcon(name: "VPNMain")
-    
+
     public let calendarMainTransparent = ProtonIcon(name: "CalendarMainTransparent")
-    
+
     public let driveMainTransparent = ProtonIcon(name: "DriveMainTransparent")
-    
+
     public let mailMainTransparent = ProtonIcon(name: "MailMainTransparent")
 
     public let vpnMainTransparent = ProtonIcon(name: "VPNMainTransparent")
-    
+
     public let calendarStroke = ProtonIcon(name: "CalendarStroke")
-    
+
     public let driveStroke = ProtonIcon(name: "DriveStroke")
-    
+
     public let mailStroke = ProtonIcon(name: "MailStroke")
-    
+
     public let vpnStroke = ProtonIcon(name: "VPNStroke")
-    
+
     // Logos — Wordmarks
-    
+
     public let calendarWordmark = ProtonIcon(name: "CalendarWordmark", vpnFallbackName: "CalendarWordmarkAlwaysDark")
     public let driveWordmark = ProtonIcon(name: "DriveWordmark", vpnFallbackName: "DriveWordmarkAlwaysDark")
     public let mailWordmark = ProtonIcon(name: "MailWordmark", vpnFallbackName: "MailWordmarkAlwaysDark")
     public let vpnWordmark = ProtonIcon(name: "VPNWordmark", vpnFallbackName: "VPNWordmarkAlwaysDark")
-    
+
     public let calendarWordmarkNoBackground = ProtonIcon(name: "CalendarWordmarkNoBackground",
                                                          vpnFallbackName: "CalendarWordmarkNoBackgroundAlwaysDark")
-    
+
     public let driveWordmarkNoBackground = ProtonIcon(name: "DriveWordmarkNoBackground",
                                                       vpnFallbackName: "DriveWordmarkNoBackgroundAlwaysDark")
-    
+
     public let mailWordmarkNoBackground = ProtonIcon(name: "MailWordmarkNoBackground",
                                                      vpnFallbackName: "MailWordmarkNoBackgroundAlwaysDark")
-    
+
     public let vpnWordmarkNoBackground = ProtonIcon(name: "VPNWordmarkNoBackground",
                                                     vpnFallbackName: "VPNWordmarkNoBackgroundAlwaysDark")
 
     public let passWordmarkNoBackground = ProtonIcon(name: "PassWordmarkNoBackground",
                                                      vpnFallbackName: "PassWordmarkNoBackgroundAlwaysDark")
-    
+
     // LoginUI-specific
 
     public let calendarTopImage = ProtonIcon(name: "CalendarTopImage")
@@ -643,26 +643,26 @@ public struct ProtonIconSet {
     public let vpnTopImage = ProtonIcon(name: "VPNTopImage")
 
     public let passTopImage = ProtonIcon(name: "PassTopImage")
-    
+
     public let calendarWordmarkNoIcon = ProtonIcon(name: "CalendarWordmarkNoIcon")
-    
+
     public let driveWordmarkNoIcon = ProtonIcon(name: "DriveWordmarkNoIcon")
-    
+
     public let mailWordmarkNoIcon = ProtonIcon(name: "MailWordmarkNoIcon")
-    
+
     public let vpnWordmarkNoIcon = ProtonIcon(name: "VPNWordmarkNoIcon")
-    
+
     public let footer = ProtonIcon(name: "Footer")
-    
+
     public let summary = ProtonIcon(name: "Summary")
-    
+
     // Payments-specific
-    
+
     public let paymentsConnectivityIssues = ProtonIcon(name: "placeholder_connectivity-issues")
-    
+
     // Apple-specific
-    
+
     public let faceId = ProtonIcon(name: "ic-face-id")
-    
+
     public let touchId = ProtonIcon(name: "ic-touch-id")
 }

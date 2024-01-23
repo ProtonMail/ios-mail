@@ -59,7 +59,7 @@ final class LoginViewModel {
     let passwordTextFieldTitle = LUITranslation.password_title.l10n
     let signInButtonTitle = LUITranslation.sign_in_button.l10n
     let signUpButtonTitle = LUITranslation.create_account_button.l10n
-    
+
     private let login: Login
     private let api: APIService
     let challenge: PMChallenge
@@ -83,7 +83,7 @@ final class LoginViewModel {
             .allFingerprintDict()
             .first(where: { $0["frame"] as? [String: String] == userFrame })
         let intent: Intent = isSsoUIEnabled ? .sso : .auto
-        
+
         login.login(username: username, password: password, intent: intent, challenge: challengeData) { [weak self] result in
             switch result {
             case let .failure(error):
@@ -125,9 +125,9 @@ final class LoginViewModel {
     func updateAvailableDomain(result: (([String]?) -> Void)? = nil) {
         login.updateAllAvailableDomains(type: .login) { res in result?(res) }
     }
-    
+
     // MARK: - SSO
-    
+
     func getSSOTokenFromURL(url: URL?) -> SSOResponseToken? {
         if let url = url,
            url.path == "/sso/login" {
@@ -139,14 +139,14 @@ final class LoginViewModel {
                 return .init(token: token, uid: uid)
             }
         }
-        
+
         return nil
     }
-    
+
     func getSSORequest(challenge ssoChallengeResponse: SSOChallengeResponse) async -> (request: URLRequest?, error: String?) {
         await login.getSSORequest(challenge: ssoChallengeResponse)
     }
-    
+
     func processResponseToken(idpEmail: String, responseToken: SSOResponseToken) {
         isLoading.value = true
         login.processResponseToken(idpEmail: idpEmail, responseToken: responseToken) { [weak self] result in
@@ -164,7 +164,7 @@ final class LoginViewModel {
             }
         }
     }
-    
+
     func isProtonPage(url: URL?) -> Bool {
         login.isProtonPage(url: url)
     }

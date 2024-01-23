@@ -25,13 +25,13 @@ import Foundation
 final class PasswordAuth {
 
     let AuthVersion: Int = 4
-    
+
     /// encrypted id
     let ModulusID: String
-    
+
     /// base64 encoded
     let salt: String
-    
+
     /// base64 encoded
     let verifer: String
 

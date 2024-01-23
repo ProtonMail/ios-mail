@@ -601,7 +601,7 @@ extension SearchViewController {
         visibleRowsIndexPaths.forEach { visibleRowIndexPath in
             let visibleCell = customView.tableView.cellForRow(at: visibleRowIndexPath)
             guard let messageCell = visibleCell as? NewMailboxMessageCell else { return }
-            cellPresenter.presentSelectionStyle(style: .selection(isSelected: false), in: messageCell.customView)
+            cellPresenter.presentSelectionStyle(style: .selection(isSelected: false, isAbleToBeSelected: true), in: messageCell.customView)
             guard indexPath == visibleRowIndexPath else { return }
             tableView(customView.tableView, didSelectRowAt: indexPath)
         }
@@ -622,7 +622,7 @@ extension SearchViewController {
         // update checkbox state
         if let mailboxCell = customView.tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell {
             cellPresenter.presentSelectionStyle(
-                style: .selection(isSelected: !itemAlreadySelected),
+                style: .selection(isSelected: !itemAlreadySelected, isAbleToBeSelected: true),
                 in: mailboxCell.customView
             )
         }
@@ -761,6 +761,10 @@ extension SearchViewController: NewMailboxMessageCellDelegate {
         } else {
             tableView(customView.tableView, didSelectRowAt: indexPath)
         }
+    }
+
+    func didSelectAttachment(cell: NewMailboxMessageCell, index: Int) {
+        
     }
 }
 

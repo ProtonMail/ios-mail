@@ -28,12 +28,12 @@ import ProtonCoreServices
 
 public final class MissingScopesDelegateMock: MissingScopesDelegate {
     public init() {}
-    
+
     @FuncStub(MissingScopesDelegateMock.onMissingScopesHandling) public var onMissingScopesHandlingStub
     public func onMissingScopesHandling(username: String, responseHandlerData: PMResponseHandlerData, completion: @escaping (MissingScopesFinishReason) -> Void) {
         onMissingScopesHandlingStub(username, responseHandlerData, completion)
     }
-    
+
     @FuncStub(MissingScopesDelegateMock.showAlert) public var showAlert
     public func showAlert(title: String, message: String?) {
         showAlert(title, message)

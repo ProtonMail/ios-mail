@@ -25,6 +25,7 @@ import CoreData
 import Foundation
 import PromiseKit
 import ProtonCoreDataModel
+import ProtonCoreKeymaker
 import ProtonCoreNetworking
 import ProtonMailAnalytics
 import SwiftSoup
@@ -64,6 +65,7 @@ class ComposeViewModel: NSObject {
     private(set) var subject: String = .empty
     var body: String = .empty
     var deliveryTime: Date?
+    private var importedFiles: [FileData] = []
     weak var uiDelegate: ComposeUIProtocol?
     private var originalSender: ContactVO?
 
@@ -84,9 +86,10 @@ class ComposeViewModel: NSObject {
     }
 
     var shouldStripMetaData: Bool {
-        return dependencies.attachmentMetadataStrippingCache.metadataStripping == .stripMetadata
+        dependencies.keychain[.metadataStripping] == .stripMetadata
     }
 
+    // For share extension
     init(
         subject: String,
         body: String,
@@ -109,6 +112,7 @@ class ComposeViewModel: NSObject {
         self.body = body
         self.messageAction = action
         self.originalScheduledTime = originalScheduledTime
+        self.importedFiles = files
 
         super.init()
 
@@ -118,26 +122,10 @@ class ComposeViewModel: NSObject {
                           pwd: "",
                           pwdHit: "")
         self.updateDraft()
-
-        var currentAttachmentSize = 0
-        for file in files {
-            let size = file.contents.dataSize
-            guard size < (Constants.kDefaultAttachmentFileSize - currentAttachmentSize) else {
-                self.shareOverLimitationAttachment = true
-                break
-            }
-            currentAttachmentSize += size
-            composerMessageHelper.addAttachment(file,
-                                                shouldStripMetaData: shouldStripMetaData) { _ in
-                self.updateDraft()
-                self.composerMessageHelper.updateAttachmentView?()
-            }
-        }
+        checkImportedFilesSize()
     }
 
     init(
-        msg: MessageEntity?,
-        action: ComposeMessageAction,
         isEditingScheduleMsg: Bool = false,
         originalScheduledTime: Date? = nil,
         dependencies: Dependencies
@@ -146,35 +134,19 @@ class ComposeViewModel: NSObject {
         messageService = dependencies.user.messageService
         self.isEditingScheduleMsg = isEditingScheduleMsg
         self.originalScheduledTime = originalScheduledTime
-
-        // We have dependencies as an optional input parameter to avoid making
-        // a huge refactor but allowing the dependencies injection open for testing.
         self.dependencies = dependencies
 
         composerMessageHelper = ComposerMessageHelper(dependencies: self.dependencies.helperDependencies, user: user)
 
         super.init()
-
-        // TODO: This method has side effects and as such should not be called in `init`.
-        // However, first we need to reduce the number of `ComposeViewModel.init` calls scattered across the code.
-        initialize(message: msg, action: action)
     }
 
-    func initialize(message msg: MessageEntity?, action: ComposeMessageAction) {
-        if msg == nil || msg?.isDraft == true {
-            if let msg = msg {
+    func initialize(message msg: MessageEntity?, action: ComposeMessageAction) throws {
+        if let msg {
+            if msg.isDraft {
                 self.composerMessageHelper.setNewMessage(objectID: msg.objectID.rawValue)
-            }
-            self.subject = self.composerMessageHelper.draft?.title ?? ""
-        } else {
-            guard let msg = msg else {
-                fatalError("This should not happened.")
-            }
-
-            do {
+            } else {
                 try composerMessageHelper.copyAndCreateDraft(from: msg.messageID, action: action)
-            } catch {
-                PMAssertionFailure(error)
             }
         }
 
@@ -347,7 +319,7 @@ class ComposeViewModel: NSObject {
         let document = CSSMagic.parse(htmlString: html)
         if CSSMagic.darkStyleSupportLevel(
             document: document,
-            darkModeCache: dependencies.darkModeCache
+            darkModeStatus: dependencies.userDefaults[.darkModeStatus]
         ) == .protonSupport {
             supplementCSS = CSSMagic.generateCSSForDarkMode(document: document)
         }
@@ -550,6 +522,90 @@ extension ComposeViewModel {
             }
         }
     }
+
+    // Check if the shared files over size limitation
+    func checkImportedFilesSize() {
+        var currentAttachmentSize = 0
+        for file in importedFiles {
+            let size = file.contents.dataSize
+            guard size < (Constants.kDefaultAttachmentFileSize - currentAttachmentSize) else {
+                self.shareOverLimitationAttachment = true
+                break
+            }
+            currentAttachmentSize += size
+        }
+    }
+
+    // Insert shared files
+    // For images, insert as inlines
+    // For others, insert as normal attachment
+    func insertImportedFiles(in htmlEditor: HtmlEditorBehaviour) {
+        for file in importedFiles {
+            if (AttachmentType.mimeTypeMap[.image] ?? []).contains(file.mimeType.lowercased()) &&
+                UserInfo.shareImagesAsInlineByDefault {
+                insertImportedImage(file: file, in: htmlEditor)
+            } else {
+                attachImported(file: file)
+            }
+        }
+    }
+
+    private func insertImportedImage(file: FileData, in htmlEditor: HtmlEditorBehaviour) {
+        guard let url = file.contents as? URL, let base64String = url.toBase64() else {
+            PMAssertionFailure("can't get base64")
+            return
+        }
+        composerMessageHelper.addAttachment(
+            file,
+            shouldStripMetaData: shouldStripMetaData,
+            isInline: true
+        ) { attachment in
+            guard let attachment = attachment, let contentID = attachment.contentId else { return }
+            let encodedData = "data:\(file.mimeType);base64, \(base64String)"
+            htmlEditor.insertEmbedImage(cid: "cid:\(contentID)", encodedData: encodedData)
+        }
+    }
+
+    private func attachImported(file: FileData) {
+        composerMessageHelper.addAttachment(
+            file,
+            shouldStripMetaData: shouldStripMetaData,
+            isInline: false
+        ) { _ in
+            self.updateDraft()
+            self.composerMessageHelper.updateAttachmentView?()
+        }
+    }
+
+    func attachInlineAttachment(inlineAttachment: AttachmentEntity, completion: ((Bool) -> Void)?) {
+        dependencies.fetchAttachment.callbackOn(.main).execute(params: .init(
+            attachmentID: inlineAttachment.id,
+            attachmentKeyPacket: inlineAttachment.keyPacket,
+            purpose: .decryptAndEncodeAttachment,
+            userKeys: user.toUserKeys()
+        )) { result in
+            guard let base64Attachment = try? result.get().encoded,
+                  !base64Attachment.isEmpty
+            else {
+                completion?(false)
+                return
+            }
+            guard let data = Data(base64Encoded: base64Attachment, options: .ignoreUnknownCharacters) else {
+                completion?(false)
+                return
+            }
+
+            self.composerMessageHelper.addAttachment(
+                data: data,
+                fileName: inlineAttachment.name,
+                shouldStripMetaData: self.shouldStripMetaData,
+                type: inlineAttachment.rawMimeType,
+                isInline: false
+            ) { newAttachment in
+                completion?(newAttachment != nil)
+            }
+        }
+    }
 }
 
 // MARK: - Address
@@ -610,7 +666,7 @@ extension ComposeViewModel {
         if let address = userAddresses.first(where: {
             $0.email == referenceAddress &&
             $0.status == .enabled &&
-            $0.receive == .active
+            $0.send == .active
         }) {
             validAddress = address
         } else if let aliasAddress = getAddressFromPlusAlias(
@@ -677,13 +733,13 @@ extension ComposeViewModel {
             addresses = getFromAddressList(originalTo: referenceAddress)
         }
         return addresses
-            .filter { $0.status == .enabled && $0.receive == .active }
+            .filter { $0.status == .enabled && $0.send == .active }
             .sorted(by: { $0.order < $1.order })
     }
 
     private func getFromAddressList(originalTo: String?) -> [Address] {
         var validUserAddress = user.addresses
-            .filter { $0.status == .enabled && $0.receive == .active }
+            .filter { $0.status == .enabled && $0.send == .active }
             .sorted(by: { $0.order >= $1.order })
 
         if let aliasAddress = getAddressFromPlusAlias(
@@ -696,34 +752,35 @@ extension ComposeViewModel {
     }
 
     private func getAddressFromPlusAlias(userAddress: [Address], originalAddress: String) -> Address? {
-        guard let _ = originalAddress.firstIndex(of: "+"),
-              let _ = originalAddress.firstIndex(of: "@") else { return nil }
+        guard let plusIndex = originalAddress.firstIndex(of: "+"),
+              let atIndex = originalAddress.firstIndex(of: "@") else { return nil }
         let normalizedAddress = originalAddress.canonicalizeEmail(scheme: .proton)
         guard let address = userAddress
             .first(where: {
                 $0.email.canonicalizeEmail(scheme: .proton) == normalizedAddress &&
                 $0.status == .enabled &&
-                $0.receive == .active
-            })
+                $0.send == .active
+            }),
+              address.email != originalAddress
         else { return nil }
-        if address.email == originalAddress {
-            return nil
-        } else {
-            return Address(
-                addressID: address.addressID,
-                domainID: address.domainID,
-                email: originalAddress,
-                send: address.send,
-                receive: address.receive,
-                status: address.status,
-                type: address.type,
-                order: address.order,
-                displayName: address.displayName,
-                signature: address.signature,
-                hasKeys: address.hasKeys,
-                keys: address.keys
-            )
-        }
+        let alias = originalAddress[plusIndex..<atIndex]
+        guard let atIndexInAddress = address.email.firstIndex(of: "@") else { return nil }
+        var email = address.email
+        email.insert(contentsOf: alias, at: atIndexInAddress)
+        return Address(
+            addressID: address.addressID,
+            domainID: address.domainID,
+            email: email,
+            send: address.send,
+            receive: address.receive,
+            status: address.status,
+            type: address.type,
+            order: address.order,
+            displayName: address.displayName,
+            signature: address.signature,
+            hasKeys: address.hasKeys,
+            keys: address.keys
+        )
     }
 }
 
@@ -745,7 +802,7 @@ extension ComposeViewModel {
     func mobileSignature() -> String {
         guard user.showMobileSignature else { return .empty }
         var userMobileSignature = dependencies.fetchMobileSignatureUseCase.execute(
-            params: .init(userID: user.userID, isPaidUser: user.isPaid)
+            params: .init(userID: user.userID, isPaidUser: user.hasPaidMailPlan)
         )
         userMobileSignature = userMobileSignature.preg_replace(
             "Proton Mail",
@@ -1124,7 +1181,7 @@ extension ComposeViewModel {
     func fetchContacts() {
         emailPublisher = .init(
             userID: user.userID,
-            isContactCombine: dependencies.userCachedStatusProvider.isCombineContactOn,
+            isContactCombine: dependencies.userDefaults[.isCombineContactOn],
             contextProvider: dependencies.coreDataContextProvider
         )
         cancellable = emailPublisher?.contentDidChange.map { $0.map { email in
@@ -1140,6 +1197,7 @@ extension ComposeViewModel {
                 }
             }
             self?.contacts = filteredResult
+            self?.addContactWithPhoneContact()
         })
         emailPublisher?.start()
     }
@@ -1152,7 +1210,7 @@ extension ComposeViewModel {
         }
     }
 
-    func addContactWithPhoneContact() {
+    private func addContactWithPhoneContact() {
         var contactsWithoutLastTimeUsed: [ContactPickerModelProtocol] = phoneContacts
 
         if user.hasPaidMailPlan {
@@ -1174,13 +1232,12 @@ extension ComposeViewModel {
         let coreDataContextProvider: CoreDataContextProviderProtocol
         let fetchAndVerifyContacts: FetchAndVerifyContactsUseCase
         let internetStatusProvider: InternetConnectionStatusProviderProtocol
+        let keychain: Keychain
         let fetchAttachment: FetchAttachmentUseCase
         let contactProvider: ContactProviderProtocol
         let helperDependencies: ComposerMessageHelper.Dependencies
         let fetchMobileSignatureUseCase: FetchMobileSignatureUseCase
-        let darkModeCache: DarkModeCacheProtocol
-        let attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol
-        let userCachedStatusProvider: UserCachedStatusProvider
+        let userDefaults: UserDefaults
         let notificationCenter: NotificationCenter
     }
 

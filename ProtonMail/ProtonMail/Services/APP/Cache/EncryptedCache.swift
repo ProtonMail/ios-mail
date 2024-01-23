@@ -19,15 +19,17 @@ import ProtonCoreKeymaker
 import SDWebImage
 
 class EncryptedCache {
-    private let internalCache: SDDiskCache
-    private let coreKeyMaker: KeyMakerProtocol
+    typealias Dependencies = AnyObject & HasKeychain & HasKeyMakerProtocol
 
-    init(internalCache: SDDiskCache, coreKeyMaker: KeyMakerProtocol) {
+    private unowned let dependencies: Dependencies
+    private let internalCache: SDDiskCache
+
+    init(internalCache: SDDiskCache, dependencies: Dependencies) {
+        self.dependencies = dependencies
         self.internalCache = internalCache
-        self.coreKeyMaker = coreKeyMaker
     }
 
-    convenience init(maxDiskSize: UInt, subdirectory: String, coreKeyMaker: KeyMakerProtocol) {
+    convenience init(maxDiskSize: UInt, subdirectory: String, dependencies: Dependencies) {
         let config = SDImageCacheConfig()
         config.maxDiskAge = -1
         config.maxDiskSize = maxDiskSize
@@ -39,7 +41,7 @@ class EncryptedCache {
             fatalError("Cannot initialize SDDiskCache")
         }
 
-        self.init(internalCache: internalCache, coreKeyMaker: coreKeyMaker)
+        self.init(internalCache: internalCache, dependencies: dependencies)
     }
 
     func purge() {
@@ -70,7 +72,7 @@ class EncryptedCache {
     }
 
     private func prepareMainKey() throws -> MainKey {
-        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let mainKey = dependencies.keyMaker.mainKey(by: dependencies.keychain.randomPinProtection) else {
             throw EncryptedCacheError.cannotObtainMainKey
         }
 

@@ -25,7 +25,6 @@ import ProtonCoreNetworking
 import ProtonCoreUtilities
 
 class ProtonMailResponseCodeHandler {
-    // swiftlint:disable:next function_parameter_count
     func handleProtonResponseCode<T>(
         responseHandlerData: PMResponseHandlerData,
         response: Either<JSONDictionary, ResponseError>,
@@ -56,16 +55,16 @@ class ProtonMailResponseCodeHandler {
             }
         }
     }
-    
+
     private func isMissingScopeError(response: Either<JSONDictionary, ResponseError>) -> Bool {
         if case let .right(error) = response, case .missingScopes = error.details {
             return true
         }
-       
+
         if case let .left(error) = response, case .missingScopes = error.details {
             return true
         }
-        
+
         return false
     }
 }

@@ -43,9 +43,9 @@ public struct Armored<Type> {
     public init(value: String) {
         self.value = value
     }
-    
+
     public let value: String
-    
+
     public var isEmpty: Bool {
         value.isEmpty
     }
@@ -71,30 +71,30 @@ public typealias ArmoredSignature = Armored<ArmoredType.Signature>
 
 // extra helpers
 extension Armored where Type == ArmoredType.Key {
-    
+
     public func encrypt(clearText: String) throws -> ArmoredMessage {
         return try Encryptor.encrypt(publicKey: self, cleartext: clearText)
     }
-    
+
     public func encrypt(raw: Data) throws -> ArmoredMessage {
         return try Encryptor.encrypt(publicKey: self, clearData: raw)
     }
-    
+
     public func unArmor() throws -> UnArmoredKey {
         let unarmored = try throwingNotNil { error in
             return CryptoGo.ArmorUnarmor(self.value, &error)
         }
         return UnArmoredKey.init(value: unarmored)
     }
-    
+
     public var armoredPublicKey: String {
         return self.value.publicKey
     }
-    
+
     public var fingerprint: String {
         return self.value.fingerprint
     }
-    
+
     public var sha256Fingerprint: [String] {
         return self.value.sha256Fingerprint
     }
@@ -114,7 +114,7 @@ extension Armored where Type == ArmoredType.Message {
         }
         return SplitPacket.init(dataPacket: data, keyPacket: key)
     }
-    
+
     public func unArmor() throws -> UnArmoredMessage {
         let unarmored = try throwingNotNil { error in
             return CryptoGo.ArmorUnarmor(self.value, &error)
@@ -125,7 +125,7 @@ extension Armored where Type == ArmoredType.Message {
 
 // extra helpers
 extension Armored where Type == ArmoredType.Signature {
-    
+
     public func unArmor() throws -> UnArmoredSignature {
         let unarmored = try throwingNotNil { error in
             return CryptoGo.ArmorUnarmor(self.value, &error)

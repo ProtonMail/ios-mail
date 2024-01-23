@@ -23,5 +23,4 @@ struct PinnedKeysConfig {
     let scheme: String?
     let mimeType: String?
     let pinnedKeys: [CryptoKey]
-    let isContact: Bool
 }
