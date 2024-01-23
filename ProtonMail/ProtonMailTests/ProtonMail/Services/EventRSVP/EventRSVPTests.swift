@@ -100,7 +100,22 @@ END:VCALENDAR
         try super.tearDownWithError()
     }
 
-    func testBasicInfoExtraction() throws {
+    func testBasicInfoExtraction_withRecurrenceID() throws {
+        let basicICS = #"""
+BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:FOO
+RECURRENCE-ID;VALUE=DATE:19960401
+END:VEVENT
+END:VCALENDAR
+"""#
+
+        let icsData = Data(basicICS.utf8)
+        let basicEventInfo = try sut.extractBasicEventInfo(icsData: icsData)
+        XCTAssertEqual(basicEventInfo, .init(eventUID: "FOO", recurrenceID: 828316800))
+    }
+
+    func testBasicInfoExtraction_withoutRecurrenceID() throws {
         let basicICS = #"""
 BEGIN:VCALENDAR
 BEGIN:VEVENT

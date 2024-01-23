@@ -118,8 +118,8 @@ final class AttachmentViewModel {
                 let eventDetails = try await dependencies.eventRSVP.fetchEventDetails(basicEventInfo: basicEventInfo)
                 invitationViewSubject.send(.invitationProcessed(eventDetails))
             } catch {
-                if error is EventRSVPError {
-                    PMAssertionFailure(error)
+                if let rsvpError = error as? EventRSVPError, rsvpError != .noEventsReturnedFromAPI {
+                    PMAssertionFailure(rsvpError)
                 } else {
                     SystemLogger.log(error: error)
                 }

@@ -51,7 +51,8 @@ struct LocalEventRSVP: EventRSVP {
         }
 
         let uid = String(cString: uidComponent)
-        return BasicEventInfo(eventUID: uid, recurrenceID: nil)
+        let recurrenceID = icalcomponent_get_recurrenceid(component).toUnixTimestamp()
+        return BasicEventInfo(eventUID: uid, recurrenceID: recurrenceID)
     }
 
     func fetchEventDetails(basicEventInfo: BasicEventInfo) async throws -> EventDetails {
@@ -118,13 +119,15 @@ struct LocalEventRSVP: EventRSVP {
     }
 
     private func fetchEvent(basicEventInfo: BasicEventInfo) async throws -> FullEventTransformer {
-        let calendarEventsRequest = CalendarEventsRequest(uid: basicEventInfo.eventUID)
+        let calendarEventsRequest = CalendarEventsRequest(
+            uid: basicEventInfo.eventUID,
+            recurrenceID: basicEventInfo.recurrenceID
+        )
 
         let calendarEventsResponse: CalendarEventsResponse = try await dependencies.apiService.perform(
             request: calendarEventsRequest
         ).1
 
-        // TODO: instead of `first`, we might need to add filtering by RecurrenceID (not supported by current parser)
         guard let apiEvent = calendarEventsResponse.events.first else {
             throw EventRSVPError.noEventsReturnedFromAPI
         }
@@ -226,4 +229,20 @@ enum EventRSVPError: Error {
     case noMembersInBootstrapResponse
     case noPassphraseForGivenMember
     case sessionKeyDecryptionFailed
+}
+
+extension icaltimetype {
+    func toUnixTimestamp() -> Int? {
+        guard let cString = icaltime_as_ical_string(self) else {
+            return nil
+        }
+
+        let string = String(cString: cString)
+
+        guard let date = Date.getDateFrom(timeString: string)?.date else {
+            return nil
+        }
+
+        return Int(date.timeIntervalSince1970)
+    }
 }
