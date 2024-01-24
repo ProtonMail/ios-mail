@@ -142,11 +142,12 @@ class ComposeViewModel: NSObject {
     }
 
     func initialize(message msg: MessageEntity?, action: ComposeMessageAction) throws {
+        var mimeAttachmentsShouldBeAdded: [MimeAttachment]?
         if let msg {
             if msg.isDraft {
                 self.composerMessageHelper.setNewMessage(objectID: msg.objectID.rawValue)
             } else {
-                try composerMessageHelper.copyAndCreateDraft(from: msg.messageID, action: action)
+                mimeAttachmentsShouldBeAdded = try composerMessageHelper.copyAndCreateDraft(from: msg.messageID, action: action)
             }
         }
 
@@ -159,6 +160,19 @@ class ComposeViewModel: NSObject {
         originalSender = composerMessageHelper.draft?.senderVO
         initializeSenderAddress()
         observeAddressStatusChangedEvent()
+
+        // Create the draft before the attachment upload because we need the messageID ready.
+        composerMessageHelper.uploadDraft()
+
+        if let mimeAttachments = mimeAttachmentsShouldBeAdded {
+            let stripMetaData = dependencies.keychain[.metadataStripping] == .stripMetadata
+            for mimeAttachment in mimeAttachments {
+                composerMessageHelper.addMimeAttachments(
+                    attachment: mimeAttachment,
+                    shouldStripMetaData: stripMetaData,
+                    completion: { _ in })
+            }
+        }
     }
 
     private func showToastIfNeeded(errorCode: Int) {
