@@ -185,9 +185,9 @@ private extension SpotlightableFeatureKey {
         switch self {
         case .scheduledSend, .toolbarCustomization:
             return true
-        case .messageSwipeNavigation, .snooze:
-            return false
-        case .messageSwipeNavigationAnimation:
+        case .messageSwipeNavigation, .messageSwipeNavigationAnimation:
+            return true
+        case .snooze:
             return false
         }
     }
