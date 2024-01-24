@@ -663,7 +663,7 @@ extension ComposeContainerViewController: AttachmentController, ComposeContainer
 
                 let group = DispatchGroup()
                 group.enter()
-                self.editor.collectDraftData().ensure { [weak self] in
+                self.editor.collectDraftDataAndSaveToDB().ensure { [weak self] in
                     self?.viewModel.childViewModel.updateDraft()
                     self?.addAttachment(newAttachment) {
                         self?.updateCurrentAttachmentSize(completion: {
@@ -755,7 +755,7 @@ extension ComposeContainerViewController: LifetimeTrackable {
 
 extension ComposeContainerViewController: ScheduledSendHelperDelegate {
     func showScheduleSendPromotionView() {
-        editor.collectDraftData().ensure { [weak self] in
+        editor.collectDraftDataAndSaveToDB().ensure { [weak self] in
             self?.viewModel.childViewModel.updateDraft()
             guard let nav = self?.navigationController?.view else {
                 return
