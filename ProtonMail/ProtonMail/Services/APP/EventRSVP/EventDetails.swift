@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import EventKit
+import ProtonInboxICal
 
 struct EventDetails: Equatable {
     struct Calendar: Equatable {
@@ -47,4 +48,10 @@ struct EventDetails: Equatable {
     let attendees: [Participant]
     let status: EventStatus?
     let calendarAppDeepLink: URL
+}
+
+extension EventDetails.Participant {
+    init(attendeeModel: ICalAttendee) {
+        self.init(email: attendeeModel.user.email, status: attendeeModel.status)
+    }
 }

@@ -61,14 +61,8 @@ struct CalendarBootstrapResponse: Decodable {
 // MARK: models
 
 struct AttendeeTransformer: Decodable {
-    enum Status: Int, Decodable {
-        case unanswered
-        case maybe
-        case no
-        case yes
-    }
-
-    let status: Status?
+    let status: Int
+    let token: String
 }
 
 struct EventElement: Decodable {
@@ -78,15 +72,22 @@ struct EventElement: Decodable {
 }
 
 struct FullEventTransformer: Decodable {
+    let ID: String
     let addressID: String?
     let addressKeyPacket: String?
     let attendees: [AttendeeTransformer]
     let attendeesEvents: [EventElement]
     let calendarEvents: [EventElement]
     let calendarID: String
+    let calendarKeyPacket: String?
     let startTime: TimeInterval
+    let startTimezone: String
     let endTime: TimeInterval
+    let endTimezone: String
     let fullDay: Int
+    let isOrganizer: Int
+    let isProtonProtonInvite: Int
+    let sharedEventID: String
     let sharedKeyPacket: String?
     let sharedEvents: [EventElement]
 }

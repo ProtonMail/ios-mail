@@ -29,10 +29,21 @@ protocol EventRSVP {
 struct LocalEventRSVP: EventRSVP {
     typealias Dependencies = AnyObject & HasAPIService & HasUserManager
 
+    private let iCalReader: ICalReader
+    private let timeZoneProvider = TimeZoneProvider()
     private unowned let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
+
+        let iCalWriter = ICalWriter(timestamp: Date.init)
+
+        iCalReader = ICalReader(
+            timeZoneProvider: timeZoneProvider,
+            currentDateProvider: Date.init,
+            icsUIDProvider: { "\(UUID().uuidString)@proton.me" },
+            iCalWriter: iCalWriter
+        )
     }
 
     func extractBasicEventInfo(icsData: Data) throws -> BasicEventInfo {
@@ -71,49 +82,24 @@ struct LocalEventRSVP: EventRSVP {
 
         let relevantEvents = apiEvent.sharedEvents + apiEvent.attendeesEvents
         let decryptedEvents = try decryptIfNeeded(events: relevantEvents, using: sessionKey)
-
-        // temporary until we have a complete ICS parser
-
         let unencryptedCalendarEventsData = apiEvent.calendarEvents.filter { !$0.type.contains(.encrypted) }.map(\.data)
         let icsComponents: [String] = decryptedEvents + unencryptedCalendarEventsData
-        let combinedICS = String(icsComponents.flatMap { $0 })
+        let combinedICS = try combineICS(components: icsComponents)
+        let iCalEvent = parseICS(combinedICS, withAuxilliaryInfo: apiEvent)
 
-        let summary = combinedICS.preg_match(resultInGroup: 1, #"SUMMARY:([^\n]+)"#) ?? "missing summary"
-
-        let organizer: EventDetails.Participant?
-
-        if let organizerEmail = combinedICS.preg_match(resultInGroup: 1, #"ORGANIZER;CN=[^:]+:mailto:([^\n]+)"#) {
-            organizer = .init(email: organizerEmail, status: .unknown)
-        } else {
-            organizer = nil
-        }
-
-        let attendees: [EventDetails.Participant] = (1...3).map {
-            .init(email: "participant.\($0)@proton.me", status: .unknown)
-        }
-
-        let status: EventDetails.EventStatus?
-
-        if let rawStatus = combinedICS.preg_match(resultInGroup: 1, #"STATUS:([^\r\n]+)"#) {
-            status = .init(rawValue: rawStatus.lowercased())
-        } else {
-            status = nil
-        }
+        let attendees: [EventDetails.Participant] = iCalEvent.participants
+            .filter { $0.user != iCalEvent.organizer?.user }
+            .map { .init(attendeeModel: $0) }
 
         return .init(
-            title: summary,
+            title: iCalEvent.title,
             startDate: Date(timeIntervalSince1970: apiEvent.startTime),
             endDate: Date(timeIntervalSince1970: apiEvent.endTime),
-            calendar: .init(
-                name: member.name,
-                iconColor: member.color
-            ),
-            location: .init(
-                name: "Zoom call"
-            ),
-            organizer: organizer,
+            calendar: .init(name: member.name, iconColor: member.color),
+            location: (iCalEvent.location?.title).map { .init(name: $0) },
+            organizer: iCalEvent.organizer.map { .init(attendeeModel: $0) },
             attendees: attendees,
-            status: status,
+            status: iCalEvent.status.flatMap { EventDetails.EventStatus(rawValue: $0.lowercased()) },
             calendarAppDeepLink: .ProtonCalendar.showEvent(eventUID: basicEventInfo.eventUID)
         )
     }
@@ -217,6 +203,49 @@ struct LocalEventRSVP: EventRSVP {
             }
         }
     }
+
+    private func combineICS(components: [String]) throws -> String {
+        guard var firstComponent = components.first else {
+            throw EventRSVPError.noICSComponents
+        }
+
+        let remainingComponents = components.dropFirst()
+
+        return remainingComponents.reduce(firstComponent, iCalReader.parse_and_merge_event_ics)
+    }
+
+    private func parseICS(_ ics: String, withAuxilliaryInfo apiEvent: FullEventTransformer) -> ICalEvent {
+        let canonizedUserEmailAddresses = dependencies.user.addresses.map { $0.email.canonicalizeEmail() }
+
+        let dependecies = ICalReaderDependecies(
+            startDate: Date(timeIntervalSince1970: apiEvent.startTime),
+            startDateTimeZone: timeZoneProvider.timeZone(identifier: apiEvent.startTimezone),
+            startDateTimeZoneIdentifier: apiEvent.startTimezone,
+            endDate: Date(timeIntervalSince1970: apiEvent.endTime),
+            endDateTimeZoneIdentifier: apiEvent.endTimezone,
+            endDateTimeZone: timeZoneProvider.timeZone(identifier: apiEvent.endTimezone),
+            calendarID: apiEvent.calendarID,
+            localEventID: "",
+            allEmailsCanonized: canonizedUserEmailAddresses,
+            ics: ics,
+            apiEventID: apiEvent.ID,
+            startDateCalendar: .autoupdatingCurrent,
+            addressKeyPacket: apiEvent.addressKeyPacket,
+            sharedEventID: apiEvent.sharedEventID,
+            sharedKeyPacket: apiEvent.sharedKeyPacket,
+            calendarKeyPacket: apiEvent.calendarKeyPacket,
+            isOrganizer: apiEvent.isOrganizer == 1,
+            isProtonToProtonInvitation: apiEvent.isProtonProtonInvite == 1,
+            notifications: nil,
+            lastModifiedInCoreData: nil
+        )
+
+        let attendeeData: [ICalAttendeeData] = apiEvent.attendees.map {
+            .init(eventID: apiEvent.ID, status: $0.status, token: $0.token)
+        }
+
+        return iCalReader.parse_single_event_ics(dependecies: dependecies, attendeeData: attendeeData)
+    }
 }
 
 enum EventRSVPError: Error {
@@ -226,6 +255,7 @@ enum EventRSVPError: Error {
     case icsDataIsNotValidUTF8String
     case keyPacketIsNotValidBase64
     case noEventsReturnedFromAPI
+    case noICSComponents
     case noMembersInBootstrapResponse
     case noPassphraseForGivenMember
     case sessionKeyDecryptionFailed

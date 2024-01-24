@@ -32,7 +32,17 @@ final class EventRSVPTests: XCTestCase {
     private let summaryEvent = #"""
 BEGIN:VCALENDAR
 BEGIN:VEVENT
+UID:FOO
 SUMMARY:Team Collaboration Workshop
+END:VEVENT
+END:VCALENDAR
+"""#
+
+    private let timeEvent = #"""
+BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:FOO
+DTSTART:20240117T131800Z
 END:VEVENT
 END:VCALENDAR
 """#
@@ -40,6 +50,7 @@ END:VCALENDAR
     private let locationEvent = #"""
 BEGIN:VCALENDAR
 BEGIN:VEVENT
+UID:FOO
 LOCATION:Zoom call
 END:VEVENT
 END:VCALENDAR
@@ -48,6 +59,7 @@ END:VCALENDAR
     private let organizerEvent = #"""
 BEGIN:VCALENDAR
 BEGIN:VEVENT
+UID:FOO
 ORGANIZER;CN=boss:mailto:boss@example.com
 END:VEVENT
 END:VCALENDAR
@@ -56,7 +68,10 @@ END:VCALENDAR
     private let attendeeEvent = #"""
 BEGIN:VCALENDAR
 BEGIN:VEVENT
+UID:FOO
 ATTENDEE;CN=employee1;PARTSTAT=ACCEPTED:mailto:employee1@example.com
+ATTENDEE;CN=employee2;PARTSTAT=ACCEPTED:mailto:employee2@example.com
+ATTENDEE;CN=employee3;PARTSTAT=ACCEPTED:mailto:employee3@example.com
 END:VEVENT
 END:VCALENDAR
 """#
@@ -64,6 +79,7 @@ END:VCALENDAR
     private let calendarEvent = #"""
 BEGIN:VCALENDAR
 BEGIN:VEVENT
+UID:FOO
 STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR
@@ -193,7 +209,7 @@ extension EventRSVPTests {
             sessionKey.algo.value
         ))
 
-        let sharedEvents: [EventElement] = try [summaryEvent, locationEvent].map { icsString in
+        let sharedEvents: [EventElement] = try [summaryEvent, timeEvent, locationEvent].map { icsString in
             try makeEncryptedEvent(icsString: icsString, cryptoSessionKey: cryptoSessionKey)
         }
 
@@ -207,16 +223,25 @@ extension EventRSVPTests {
 
         let keyPacket = try Encryptor.encryptSession(publicKey: .init(value: publicKey), sessionKey: sessionKey).value
 
+        let timeZoneIdentifier = TimeZone.autoupdatingCurrent.identifier
+
         return FullEventTransformer(
+            ID: UUID().uuidString,
             addressID: nil,
             addressKeyPacket: setAddressKeyPacketInsteadOfSharedOne ? keyPacket : nil,
             attendees: [],
-            attendeesEvents: attendeesEvents, 
+            attendeesEvents: attendeesEvents,
             calendarEvents: calendarEvents,
             calendarID: UUID().uuidString,
+            calendarKeyPacket: nil,
             startTime: expectedEventDetails.startDate.timeIntervalSince1970,
+            startTimezone: timeZoneIdentifier,
             endTime: expectedEventDetails.endDate.timeIntervalSince1970,
+            endTimezone: timeZoneIdentifier,
             fullDay: 0,
+            isOrganizer: 0,
+            isProtonProtonInvite: 0,
+            sharedEventID: UUID().uuidString,
             sharedKeyPacket: setAddressKeyPacketInsteadOfSharedOne ? nil : keyPacket,
             sharedEvents: sharedEvents
         )
@@ -246,9 +271,18 @@ extension EventRSVPTests {
     }
 
     private func setupAPIResponses(event: FullEventTransformer, bootstrap: CalendarBootstrapResponse) {
-        apiService.requestDecodableStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiService.requestDecodableStub.bodyIs { _, _, path, anyParams, _, _, _, _, _, _, _, completion in
             switch path {
             case "/calendar/v1/events":
+                guard 
+                    let params = anyParams as? [String: Any],
+                    params["UID"] as? String == "foo"
+                else {
+                    XCTFail("Unexpected parameters")
+                    completion(nil, .failure(.badParameter(anyParams)))
+                    return
+                }
+
                 let response: CalendarEventsResponse = .init(events: [event])
                 completion(nil, .success(response))
             case "/calendar/v1/\(event.calendarID)/bootstrap":

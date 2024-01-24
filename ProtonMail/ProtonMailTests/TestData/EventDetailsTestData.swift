@@ -22,9 +22,9 @@ extension EventDetails {
         startDate: Date = .init(timeIntervalSince1970: .random(in: 0...(.greatestFiniteMagnitude))),
         endDate: Date = .init(timeIntervalSince1970: .random(in: 0...(.greatestFiniteMagnitude))),
         attendees: [Participant] = [
-            .init(email: "participant.1@proton.me", status: .unknown),
-            .init(email: "participant.2@proton.me", status: .unknown),
-            .init(email: "participant.3@proton.me", status: .unknown),
+            .init(email: "employee1@example.com", status: .unknown),
+            .init(email: "employee2@example.com", status: .unknown),
+            .init(email: "employee3@example.com", status: .unknown),
         ],
         status: EventStatus = .confirmed
     ) -> Self {
