@@ -57,6 +57,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasUserDefaults
     & HasUserIntroductionProgressProvider
     & HasUsersManager
+    & HasQueueManager
 
     let labelID: LabelID
     /// This field saves the label object of custom folder/label
@@ -851,6 +852,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
 // MARK: - Data fetching methods
 extension MailboxViewModel {
+
+    func hasMessageEnqueuedTasks(_ messageID: MessageID) -> Bool {
+        dependencies.queueManager.queuedMessageIds().contains(messageID.rawValue)
+    }
 
     func fetchMessages(time: Int, forceClean: Bool, isUnread: Bool, completion: @escaping (Error?) -> Void) {
         switch self.locationViewMode {
