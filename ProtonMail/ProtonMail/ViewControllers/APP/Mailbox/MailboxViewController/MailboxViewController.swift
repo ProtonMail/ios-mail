@@ -659,9 +659,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
                 self?.checkContact()
                 DispatchQueue.main.async {
                     self?.showNoResultLabelIfNeeded()
-                    if self?.refreshControl.isRefreshing ?? false {
-                        self?.refreshControl.endRefreshing()
-                    }
+                    self?.endRefreshSpinner()
                     self?.tableView.isScrollEnabled = false
                     self?.tableView.setContentOffset(.zero, animated: false)
                     self?.tableView.isScrollEnabled = true
@@ -863,7 +861,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             return
         }
         guard self.hasNetworking else {
-            self.refreshControl.endRefreshing()
+            endRefreshSpinner()
             return
         }
         self.replacingEmails = self.viewModel.allEmails
@@ -897,9 +895,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             self?.checkContact()
             DispatchQueue.main.async {
                 self?.showNoResultLabelIfNeeded()
-                if self?.refreshControl.isRefreshing ?? false {
-                    self?.refreshControl.endRefreshing()
-                }
+                self?.endRefreshSpinner()
                 self?.updateLastUpdateTimeLabel()
             }
         }
@@ -922,9 +918,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
                 self?.shouldAnimateSkeletonLoading = false
                 self?.shouldKeepSkeletonUntilManualDismissal = false
 
-                if self?.refreshControl.isRefreshing ?? false {
-                    self?.refreshControl.endRefreshing()
-                }
+                self?.endRefreshSpinner()
                 self?.showNoResultLabelIfNeeded()
                 self?.updateLastUpdateTimeLabel()
             }
@@ -1289,6 +1283,13 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         spotlightView.config.hostingController = hosting
         navigationController?.present(hosting, animated: false)
         viewModel.hasSeenMessageNavigationSpotlight()
+    }
+
+    private func endRefreshSpinner() {
+        if refreshControl.isRefreshing {
+            refreshControl.endRefreshing()
+        }
+        updateUnreadButton(count: viewModel.unreadCount)
     }
 }
 

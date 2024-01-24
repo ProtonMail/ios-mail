@@ -606,8 +606,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
             group.leave()
         }
 
-        group.notify(queue: DispatchQueue.main) {
+        group.notify(queue: DispatchQueue.main) { [weak self] in
             delay(0.2) {
+                guard let self = self else { return }
                 // For operation context sync with main context
                 let count = self.user.labelService.lastUpdate(by: self.labelID, userID: self.user.userID)
                 complete(count)
