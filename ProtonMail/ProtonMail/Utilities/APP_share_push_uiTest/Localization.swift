@@ -1335,6 +1335,7 @@ enum L11n {
         static let autoImportContactsFooter = NSLocalizedString("Turn this feature on to automatically add new contacts from your device to the Proton Mail app.", comment: "contacts auto import footer in settings")
         static let autoImportAlertTitle = NSLocalizedString("Auto-import enabled", comment: "Auto import alert title")
         static let autoImportAlertMessage = NSLocalizedString("The initial import may take some time and will only occur when the app is in the foreground.", comment: "Auto import alert message")
+        static let authoriseContactsInSettingsApp = NSLocalizedString("Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission.", comment: "Alert to ask user to reauthorise access to contacts")
     }
 
     struct SettingsLockScreen {
