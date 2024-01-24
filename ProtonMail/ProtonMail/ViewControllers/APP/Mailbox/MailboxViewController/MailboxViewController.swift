@@ -1025,9 +1025,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
                 return
             }
 
-            let isSending = viewModel.messageService.isMessageBeingSent(id: message.messageID)
-
-            guard !isSending else {
+            guard !viewModel.hasMessageEnqueuedTasks(message.messageID) else {
                 LocalString._mailbox_draft_is_uploading.alertToast()
                 self.tableView.indexPathsForSelectedRows?.forEach {
                     self.tableView.deselectRow(at: $0, animated: true)
