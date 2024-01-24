@@ -55,10 +55,6 @@ struct MessageEventProcessor {
     }
 
     private func handleDraft(_ draft: Message, message: MessageResponse.Message, context: NSManagedObjectContext) {
-        let localTime = draft.time ?? Date.distantPast
-        let remoteTime = Date(timeIntervalSince1970: TimeInterval(message.time))
-        guard localTime < remoteTime else { return }
-
         draft.title = message.subject
         if let encodedToList = try? encoder.encode(message.toList) {
             draft.toList = String(data: encodedToList, encoding: .utf8) ?? ""
