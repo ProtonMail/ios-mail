@@ -90,7 +90,7 @@ class UserManager: ObservableObject {
         }
     }
 
-    private func removeAutoImportContactsUserDefaults() {
+    func removeAutoImportContactsUserDefaults() {
         var historyTokens = container.userDefaults[.contactsHistoryTokenPerUser]
         historyTokens[userID.rawValue] = nil
         container.userDefaults[.contactsHistoryTokenPerUser] = historyTokens

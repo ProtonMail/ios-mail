@@ -65,13 +65,59 @@ extension ContactsSettingsViewController {
             return cell
         }
         cell.configCell(setting.title, isOn: viewModel.output.value(for: setting) ) { [weak self] newStatus, _ in
+            guard let self else { return }
             if setting == .autoImportContacts && newStatus == true {
-                self?.didEnableAutoImport()
+                enableAutoImportContacts(autoImportSwitch: cell.switchView)
             } else {
-                self?.viewModel.input.didTapSetting(setting, isEnabled: newStatus)
+                self.viewModel.input.didTapSetting(setting, isEnabled: newStatus)
             }
         }
         return cell
+    }
+
+    private func enableAutoImportContacts(autoImportSwitch: UISwitch) {
+        requestContactsAccess { [weak self] accessGranted in
+            guard accessGranted else {
+                DispatchQueue.main.async {
+                    autoImportSwitch.setOn(false, animated: true)
+                }
+                return
+            }
+            self?.didEnableAutoImport()
+        }
+    }
+
+    private func requestContactsAccess(completion: @escaping (_ accessGranted: Bool) -> Void) {
+        if viewModel.output.isContactAccessDenied {
+            informContactAccessIsDenied {
+                completion(false)
+            }
+        } else {
+            viewModel.input.requestContactAuthorization { hasAccess, accessError in
+                guard hasAccess else {
+                    let errorMessage = accessError?.localizedDescription ?? "contacts access denied"
+                    SystemLogger.log(message: errorMessage, category: .contacts, isError: true)
+                    completion(false)
+                    return
+                }
+                completion(true)
+
+            }
+        }
+    }
+
+    private func informContactAccessIsDenied(completion: @escaping () -> Void) {
+        let alert = UIAlertController(
+            title: L11n.SettingsContacts.autoImportContacts,
+            message: L11n.SettingsContacts.authoriseContactsInSettingsApp,
+            preferredStyle: .alert
+        )
+        alert.addAction(
+            UIAlertAction(title: LocalString._general_ok_action, style: .default) { _ in
+                completion()
+            }
+        )
+        present(alert, animated: true, completion: nil)
     }
 
     private func didEnableAutoImport() {

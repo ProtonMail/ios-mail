@@ -128,11 +128,11 @@ extension AppDelegate: UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         SystemLogger.log(message: #function, category: .appLifeCycle)
-        #if DEBUG
+#if DEBUG
         if ProcessInfo.isRunningUITests {
             UIView.setAnimationsEnabled(false)
         }
-        #endif
+#endif
         PMAPIService.setupTrustIfNeeded()
         configureCrypto()
         configureCoreObservability()
@@ -151,13 +151,13 @@ extension AppDelegate: UIApplicationDelegate {
                                                selector: #selector(didSignOutNotification),
                                                name: .didSignOutLastAccount,
                                                object: nil)
-        
+
         dependencies.backgroundTaskHelper.registerBackgroundTask(task: .eventLoop)
 
         UIBarButtonItem.enableMenuSwizzle()
-        #if DEBUG
+#if DEBUG
         setupUITestsMocks()
-        #endif
+#endif
         UserObjectsPersistence.shared.cleanAll()
         return true
     }
@@ -167,25 +167,25 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     func application(
-          _ application: UIApplication,
-          supportedInterfaceOrientationsFor window: UIWindow?
-      ) -> UIInterfaceOrientationMask {
-          let viewController = window?.rootViewController
-          if UIDevice.current.userInterfaceIdiom == .pad || viewController == nil {
-              return UIInterfaceOrientationMask.all
-          }
-          if viewController as? CoordinatorKeepingViewController<LockCoordinator> != nil {
-              return .portrait
-          }
-          return .all
-      }
+        _ application: UIApplication,
+        supportedInterfaceOrientationsFor window: UIWindow?
+    ) -> UIInterfaceOrientationMask {
+        let viewController = window?.rootViewController
+        if UIDevice.current.userInterfaceIdiom == .pad || viewController == nil {
+            return UIInterfaceOrientationMask.all
+        }
+        if viewController as? CoordinatorKeepingViewController<LockCoordinator> != nil {
+            return .portrait
+        }
+        return .all
+    }
 
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.sceneDidEnterBackground()" )
     func applicationDidEnterBackground(_ application: UIApplication) {
         self.currentState = .background
 
         startAutoLockCountDownIfNeeded()
-        
+
         dependencies.backgroundTaskHelper.scheduleBackgroundRefreshIfNeeded(task: .eventLoop)
 
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
@@ -279,6 +279,12 @@ extension AppDelegate: UIApplicationDelegate {
         let isAutoImportEnabledForUser = autoImportFlags[user.userID.rawValue] ?? false
 
         if UserInfo.isAutoImportContactsEnabled && isAutoImportEnabledForUser {
+            guard CNContactStore.authorizationStatus(for: .contacts) == .authorized else {
+                SystemLogger.log(message: "disabled auto import contacts setting", category: .contacts)
+                user.removeAutoImportContactsUserDefaults()
+                return
+            }
+
             let params = ImportDeviceContacts.Params(
                 userKeys: user.userInfo.userKeys,
                 mailboxPassphrase: user.mailboxPassword
