@@ -232,14 +232,6 @@ final class QueueManager: QueueHandlerRegister {
                 .map(\.messageID)
         }
     }
-
-    func hasTask(for messageID: MessageID) -> Bool {
-        queue.sync {
-            !self.getMessageTasks(of: nil)
-                .filter { $0.messageID == messageID.rawValue }
-                .isEmpty
-        }
-    }
 }
 
 // MARK: Private functions

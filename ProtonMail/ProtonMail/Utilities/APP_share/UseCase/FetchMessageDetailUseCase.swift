@@ -130,7 +130,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
             .compactMap { $0 as? Attachment }
             .filter { attach in
                 if attach.isUploaded || attach.isSoftDeleted { return false }
-                return true
+                return !attach.inline()
             }
         return localAttachments
     }
