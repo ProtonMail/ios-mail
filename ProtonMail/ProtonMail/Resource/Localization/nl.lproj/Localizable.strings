@@ -1127,7 +1127,7 @@
 "Delete contact group" = "Contactgroep verwijderen";
 
 /* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Selected";
+"%d Selected" = "%d Geselecteerd";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Selecteer ten minste één e-mail voor de contactgroep";
@@ -1537,7 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Phishing rapporteren";
 
-"Not spam (move to inbox)" = "Not spam (move to inbox)";
+"Not spam (move to inbox)" = "Geen spam (verplaats naar inbox)";
 
 /* No comment provided by engineer. */
 "Move to" = "Verplaatsen naar";
@@ -1926,10 +1926,10 @@
 "Load" = "Laden";
 
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "Organisator";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "Minder weergeven";
 
 /* Official badge next to sender's name */
 "Official" = "Officieel";
@@ -1968,16 +1968,16 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Schakel deze functie in om e-mailadressen automatisch aan te vullen met behulp van contacten van al uw ingelogde accounts.";
 
 /* contacts auto import title in settings */
-"Auto-import device contacts" = "Auto-import device contacts";
+"Auto-import device contacts" = "Contacten op device automatisch importeren";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Zet deze optie aan om nieuwe contacten op uw device automatisch aan Proton Mail toe te voegen.";
 
 /* Auto import alert title */
-"Auto-import enabled" = "Auto-import enabled";
+"Auto-import enabled" = "Automatisch importeren ingeschakeld";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "De eerste import zal enige tijd in beslag nemen en zal zich alleen voordoen wanneer het programma op de voorgrond actief is.";
 
 /* Settings lock protection section */
 "Protection" = "Bescherming";
@@ -2043,10 +2043,10 @@
 "Application logs" = "Toepassingslogboek";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Jump to next message";
+"Jump to next message" = "Ga naar het volgende bericht";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "Ga automatisch naar het volgende bericht wanneer het huidige bericht is gewist, gearchiveerd of verplaatst.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Er gebeurde een onverwachte fout, contacteer support.\nFout: %@";
@@ -2148,7 +2148,7 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "De originele afzender van dit bericht is niet langer geldig. Uw bericht zal verstuurd worden vanaf uw standaardmailadres %@.";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
-"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+"Please retry after all attachments are uploaded." = "Probeer opnieuw nadat alle bijlagen zijn geüpload.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Weergavenaam";
@@ -2175,13 +2175,13 @@
 "Select all" = "Alles selecteren";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Unselect all";
+"Unselect all" = "Alles deselecteren";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
-"Maximum selection reached" = "Maximum selection reached";
+"Maximum selection reached" = "Maximum selecteren bereikt";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "Geen ontvanger";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "Pincode uitschakelen";
@@ -2226,49 +2226,49 @@
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Hierdoor meldt u zich af van de adressenlijst. De afzender wordt op de hoogte gebracht dat er geen e-mails meer naar dit adres mogen gestuurd worden.";
 
 /* Alert telling the user that we are unable to preview this attachment */
-"Unable to preview this attachment" = "Unable to preview this attachment";
+"Unable to preview this attachment" = "Niet mogelijk om voorbeeld van deze bijlage te laten zien.";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
-"Downloading attachment" = "Downloading attachment";
+"Downloading attachment" = "Bijlage aan het downloaden";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Snoozed until %@";
+"Snoozed until %@" = "Gesluimerd tot %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Unsnooze";
+"Unsnooze" = "Ontsluimeren";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Snooze until %@";
+"Snooze until %@" = "Gesluimerd tot %@";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "Conversation unsnoozed";
+"Conversation unsnoozed" = "Gesprek ontsluimerd";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Snooze until...";
+"Snooze until..." = "Sluimeren tot...";
 
 /* One of snooze option shows in action sheet */
-"Later this week" = "Later this week";
+"Later this week" = "Later deze week";
 
 /* One of snooze option shows in action sheet */
-"This weekend" = "This weekend";
+"This weekend" = "Dit weekend";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "Volgende week";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Please select a time in the future";
+"Please select a time in the future" = "Selecteer een tijd in de toekomst";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "Voor enige tijd snoozen?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "Krijg toegang tot aanpasbare sluimertijden wanneer u uw abonnement upgradet";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "Tot 15 mail adressen/aliassen";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Onbeperkt aantal mappen, labels en filters";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
-"Add it as attachment" = "Add it as attachment";
+"Add it as attachment" = "Voeg toe als bijlage";

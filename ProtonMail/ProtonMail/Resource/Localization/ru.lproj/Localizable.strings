@@ -1127,7 +1127,7 @@
 "Delete contact group" = "Удалить группу контактов";
 
 /* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Выбрано";
+"%d Selected" = "Выбрано %d";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Пожалуйста, выберите по крайней мере один адрес электронной почты для группы контактов";
@@ -1537,7 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Пожаловаться на фишинг";
 
-"Not spam (move to inbox)" = "Not spam (move to inbox)";
+"Not spam (move to inbox)" = "Не спам (переместить во Входящие)";
 
 /* No comment provided by engineer. */
 "Move to" = "Переместить в";
@@ -1926,10 +1926,10 @@
 "Load" = "Загрузить";
 
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "Организатор";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "Показать меньше";
 
 /* Official badge next to sender's name */
 "Official" = "Официальный";
@@ -1968,16 +1968,16 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Включите эту функцию для автозаполнения адресов электронной почты из контактов всех ваших авторизованных аккаунтов.";
 
 /* contacts auto import title in settings */
-"Auto-import device contacts" = "Auto-import device contacts";
+"Auto-import device contacts" = "Автоимпорт контактов устройства";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Включите эту функцию, чтобы автоматически добавлять новые контакты с вашего устройства в приложение Proton Mail.";
 
 /* Auto import alert title */
-"Auto-import enabled" = "Auto-import enabled";
+"Auto-import enabled" = "Автоимпорт включен";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "Первый импорт может занять какое-то время и будет происходить только тогда, когда окно приложения активно.";
 
 /* Settings lock protection section */
 "Protection" = "Защита";
@@ -2043,10 +2043,10 @@
 "Application logs" = "Журналы приложения";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Jump to next message";
+"Jump to next message" = "Перейти к следующему сообщению";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "Автоматически показывать следующее сообщение, когда текущее сообщение будет удалено, заархивировано или перемещено.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Произошла непредвиденная ошибка, обратитесь в службу поддержки.\nОшибка: %@";
@@ -2148,7 +2148,7 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Первоначальный отправитель этого сообщения больше не действителен. Ваше сообщение будет отправлено с адреса по умолчанию %@.";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
-"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+"Please retry after all attachments are uploaded." = "Повторите попытку, когда все вложения будут загружены.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Отображаемое имя";
@@ -2175,13 +2175,13 @@
 "Select all" = "Выделить все";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Unselect all";
+"Unselect all" = "Снять выбор со всех";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
-"Maximum selection reached" = "Maximum selection reached";
+"Maximum selection reached" = "Достигнут максимум выбранных сообщений";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "Нет получателя";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "Отключить PIN";
@@ -2226,49 +2226,49 @@
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Это отменит вашу подписку на рассылку. Отправитель будет уведомлен о том, чтобы больше не отправлять электронные письма на этот адрес.";
 
 /* Alert telling the user that we are unable to preview this attachment */
-"Unable to preview this attachment" = "Unable to preview this attachment";
+"Unable to preview this attachment" = "Невозможно просмотреть это вложение";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
-"Downloading attachment" = "Downloading attachment";
+"Downloading attachment" = "Скачивание вложения";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Snoozed until %@";
+"Snoozed until %@" = "Отложено до %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Unsnooze";
+"Unsnooze" = "Не откладывать";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Snooze until %@";
+"Snooze until %@" = "Отложить до %@";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "Conversation unsnoozed";
+"Conversation unsnoozed" = "Цепочка писем отложена";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Snooze until...";
+"Snooze until..." = "Отложить до...";
 
 /* One of snooze option shows in action sheet */
-"Later this week" = "Later this week";
+"Later this week" = "Позже на этой неделе";
 
 /* One of snooze option shows in action sheet */
-"This weekend" = "This weekend";
+"This weekend" = "Этих выходных";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "Следующей недели";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Please select a time in the future";
+"Please select a time in the future" = "Выберите время в будущем";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "Хотите отложить в любое время?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "Разблокируйте пользовательское время отложения после улучшения";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "До 15 адесов электронной почты или псевдонимов";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Неограниченное количество папок, ярлыков и фильтров";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
-"Add it as attachment" = "Add it as attachment";
+"Add it as attachment" = "Добавить как вложение";

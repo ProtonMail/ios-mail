@@ -1127,7 +1127,7 @@
 "Delete contact group" = "Excluir grupo de contatos";
 
 /* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Selected";
+"%d Selected" = "%d Selecionado";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Selecione pelo menos um e-mail para o grupo de contatos.";
@@ -1537,7 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Reportar como phishing";
 
-"Not spam (move to inbox)" = "Not spam (move to inbox)";
+"Not spam (move to inbox)" = "Não é spam (mover para a caixa de entrada)";
 
 /* No comment provided by engineer. */
 "Move to" = "Mover para";
@@ -1926,10 +1926,10 @@
 "Load" = "Carregar";
 
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "Organizador";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "Mostrar menos";
 
 /* Official badge next to sender's name */
 "Official" = "Oficial";
@@ -1974,7 +1974,7 @@
 "Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
 
 /* Auto import alert title */
-"Auto-import enabled" = "Auto-import enabled";
+"Auto-import enabled" = "Importação automática ativada";
 
 /* Auto import alert message */
 "The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
@@ -2043,7 +2043,7 @@
 "Application logs" = "Registros do aplicativo";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Jump to next message";
+"Jump to next message" = "Ir para a próxima mensagem";
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
@@ -2181,7 +2181,7 @@
 "Maximum selection reached" = "Maximum selection reached";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "Sem destinatário";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "Desativar código PIN";
@@ -2229,43 +2229,43 @@
 "Unable to preview this attachment" = "Unable to preview this attachment";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
-"Downloading attachment" = "Downloading attachment";
+"Downloading attachment" = "Baixando anexo";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Snoozed until %@";
+"Snoozed until %@" = "Adiado até %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Unsnooze";
+"Unsnooze" = "Retomar";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Snooze until %@";
+"Snooze until %@" = "Adiar até %@";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "Conversation unsnoozed";
+"Conversation unsnoozed" = "Conversa não adiada";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Snooze until...";
+"Snooze until..." = "Adiar até...";
 
 /* One of snooze option shows in action sheet */
-"Later this week" = "Later this week";
+"Later this week" = "Mais tarde nesta semana";
 
 /* One of snooze option shows in action sheet */
-"This weekend" = "This weekend";
+"This weekend" = "Este fim de semana";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "Próxima semana";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Please select a time in the future";
+"Please select a time in the future" = "Selecione um tempo no futuro";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "Quer adiar a qualquer hora?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "Desbloqueie tempos de adiamento personalizados ao fazer upgrade";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "Até 15 endereços de e-mail/aliases";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Pastas, marcadores e filtros ilimitados";

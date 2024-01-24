@@ -13,13 +13,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%u participants</string>
+        <string>%u účastníkov</string>
         <key>one</key>
-        <string>%u participant</string>
+        <string>%u účastník</string>
         <key>few</key>
-        <string>%u participants</string>
+        <string>%u účastníka</string>
         <key>many</key>
-        <string>%u participants</string>
+        <string>%u účastníkov</string>
       </dict>
     </dict>
     <key>You have %d new emails!</key>
@@ -29,17 +29,17 @@
       <key>newemails</key>
       <dict>
         <key>one</key>
-        <string>You have %d new emails!</string>
+        <string>Máte %d nových správ!</string>
         <key>few</key>
-        <string>You have %d new emails!</string>
+        <string>Máte %d nové správy!</string>
         <key>many</key>
-        <string>You have %d new emails!</string>
+        <string>Máte %d nových správ!</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>You have %d new emails!</string>
+        <string>Máte %d nových správ!</string>
       </dict>
     </dict>
     <key>%d email trackers blocked</key>
@@ -69,17 +69,17 @@
       <key>selected</key>
       <dict>
         <key>one</key>
-        <string>%d selected</string>
+        <string>%d vybrané</string>
         <key>few</key>
-        <string>%d selected</string>
+        <string>%d vybraných</string>
         <key>many</key>
-        <string>%d selected</string>
+        <string>%d vybrané</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d selected</string>
+        <string>%d vybraných</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>

@@ -57,13 +57,13 @@
       <key>selected</key>
       <dict>
         <key>one</key>
-        <string>%d selected</string>
+        <string>sélection : %d</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d selected</string>
+        <string>sélection : %d</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>
