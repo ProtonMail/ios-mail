@@ -403,6 +403,37 @@ extension ComposeViewModel {
         }
     }
 
+    // Exact base64 image from body and upload it, if has any
+    func extractAndUploadBase64ImagesFromSendingBody(body: String) -> String {
+        guard
+            let document = try? SwiftSoup.parse(body),
+            let base64Images = try? document.select(#"img[src^="data"]"#)
+        else {
+            return body
+        }
+        for image in base64Images {
+            let cid = "\(String.randomString(8))@pm.me"
+            guard
+                let src = try? image.attr("src"),
+                let (type, _, base64) = MIMEEMLBuilder.extractInformation(from: src),
+                let _ = try? image.attr("src", "cid:\(cid)"),
+                let data = Data(base64Encoded: base64)
+            else { continue }
+
+            composerMessageHelper.addAttachment(
+                data: data,
+                fileName: cid,
+                shouldStripMetaData: true,
+                type: type,
+                isInline: true,
+                cid: cid
+            ) { _ in }
+        }
+        document.outputSettings().prettyPrint(pretty: false)
+        guard let cleanBody = try? document.html() else { return body }
+        return cleanBody
+    }
+
     func deleteAttachment(_ attachment: AttachmentEntity) -> Promise<Void> {
         self.user.usedSpace(minus: attachment.fileSize.int64Value)
         return Promise { seal in
