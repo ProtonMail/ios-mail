@@ -801,7 +801,9 @@ extension ComposeContentViewController {
             preferredStyle: .alert
         )
         let sendAnywayAction = UIAlertAction(title: LocalString._send_anyway, style: .destructive) { [weak self] _ in
-            self?.startSendingMessage()
+            self?.displayDraftNotValidAlertIfNeeded {
+                self?.startSendingMessage()
+            }
         }
         let cancelAction = UIAlertAction(title: LocalString._general_cancel_action, style: .default, handler: nil)
         alertController.addAction(cancelAction)
