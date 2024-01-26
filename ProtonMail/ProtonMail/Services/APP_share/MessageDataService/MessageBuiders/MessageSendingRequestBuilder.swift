@@ -59,7 +59,7 @@ final class MessageSendingRequestBuilder {
     private(set) var plainTextDataPackage: String?
 
     // [AttachmentID: base64 attachment body]
-    private var attachmentBodys: [String: String] = [:]
+    private var attachmentBodys: [String: Base64String] = [:]
 
     private let dependencies: Dependencies
 
@@ -89,7 +89,7 @@ final class MessageSendingRequestBuilder {
         self.preAttachments.append(attachment)
     }
 
-    func add(encodedAttachmentBodies: [AttachmentID: String]) {
+    func add(encodedAttachmentBodies: [AttachmentID: Base64String]) {
         self.attachmentBodys = Dictionary(
             uniqueKeysWithValues: encodedAttachmentBodies.map { ($0.key.rawValue, $0.value) }
         )

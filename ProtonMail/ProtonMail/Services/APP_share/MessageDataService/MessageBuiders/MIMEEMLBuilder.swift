@@ -25,11 +25,11 @@ struct MIMEEMLBuilder {
     let messageBody: String
     let preAttachments: [PreAttachment]
     /// [AttachmentID: base64 attachment body]
-    let attachmentBodys: [String: String]
+    let attachmentBodys: [String: Base64String]
 
     init(
         preAttachments: [PreAttachment],
-        attachmentBodys: [String: String],
+        attachmentBodys: [String: Base64String],
         clearBody: String?
     ) {
         self.preAttachments = preAttachments
@@ -132,7 +132,9 @@ extension MIMEEMLBuilder {
         eml.append("Content-Type: text/html;charset=utf-8")
         eml.append("Content-Transfer-Encoding: base64")
         eml.append("")
-        eml.append(cleanBody.encodeBase64().insert(every: 64, with: "\r\n"))
+        let cleanBodyData = Data(cleanBody.utf8)
+        let cleanBodyEncoded = Base64String(encoding: cleanBodyData)
+        eml.append(cleanBodyEncoded.insert(every: 64, with: "\r\n"))
         return eml.joined(separator: "\r\n")
     }
 
@@ -208,8 +210,8 @@ extension MIMEEMLBuilder {
     }
 
     /// - Parameter dataURI: "data:image/png;base64,iV........"
-    static func extractInformation(from dataURI: String) -> (type: String, encoding: String, base64: String)? {
-        let pattern = #"^(.*?):(.*?);(.*?),(.*)"#
+    static func extractInformation(from dataURI: String) -> (type: String, encoding: String, base64: Base64String)? {
+        let pattern = #"^(.*?):(.*?);(.*?),([A-Za-z0-9+/]+={0,2})"#
         guard
             let regex = try? RegularExpressionCache.regex(for: pattern, options: [.allowCommentsAndWhitespace]),
             let match = regex.firstMatch(in: dataURI, range: .init(location: 0, length: dataURI.count)),
@@ -222,8 +224,9 @@ extension MIMEEMLBuilder {
         let encoding = dataURI[match.range(at: 3)].trimmingCharacters(in: .whitespacesAndNewlines)
         // The maximum length is 64, should insert `\r\n` every 64 characters
         // Otherwise the EML is broken
-        let base64 = dataURI[match.range(at: 4)]
+        let base64RawString = dataURI[match.range(at: 4)]
             .trimmingCharacters(in: .whitespacesAndNewlines)
+        let base64 = Base64String(alreadyEncoded: base64RawString)
         return (mimeType, encoding, base64)
     }
 
