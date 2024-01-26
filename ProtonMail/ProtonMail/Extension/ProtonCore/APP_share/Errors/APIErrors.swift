@@ -29,6 +29,8 @@ extension APIErrorCode {
     static let forcePasswordChange = 2011
     /// The error means "Message has already been sent"
     static let alreadyExist = 2500
+    /// Close the composer where the message has already been sent
+    static let updateDraftHasBeenSent = 15034
     static let resourceDoesNotExist = 2501
     /// The model exists but its current state doesn't allow to execute the action
     static let incompatible = 2511
@@ -41,6 +43,7 @@ extension APIErrorCode {
     static let tooManyAttachments = 2024
     /// For example, trying to upload attachment when account storage usage is 101mb/100mb
     static let accountStorageQuotaExceeded = 11100
+    static let connectionAppearsToBeOffline = -1009
 }
 
 // MARK: - NSError APIService extension

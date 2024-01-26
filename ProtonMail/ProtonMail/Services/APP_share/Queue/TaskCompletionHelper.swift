@@ -59,9 +59,12 @@ struct TaskCompletionHelper {
 
         if let responseError = error as? ResponseError {
             // When device is having low connectivity, the core will return this error.
+            let offlineErrorCodes = [APIErrorCode.deviceHavingLowConnectivity, APIErrorCode.connectionAppearsToBeOffline]
+            let isOfflineError = offlineErrorCodes.contains(responseError.underlyingError?.code ?? -999)
+
             if responseError.httpCode == nil &&
                 responseError.responseCode == nil &&
-                responseError.underlyingError?.code == APIErrorCode.deviceHavingLowConnectivity {
+                isOfflineError {
                 result = true
             }
         }
