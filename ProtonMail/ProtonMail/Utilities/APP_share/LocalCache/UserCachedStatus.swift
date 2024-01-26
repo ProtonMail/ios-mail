@@ -45,18 +45,11 @@ final class UserCachedStatus: UserCachedStatusProvider {
         static let UserWithDefaultSignatureStatus = "user_with_default_signature_status"
         static let UserWithIsCheckSpaceDisabledStatus = "user_with_is_check_space_disabled_status"
 
-        // Snooze Notifications
-        static let snoozeConfiguration = "snoozeConfiguration"
-
-        // Contacts Sync
-        static let contactsHistoryToken = "contactsHistoryToken"
-
         // FIX ME: double check if the value belongs to user. move it into user object. 2.0
 
         static let leftToRightSwipeAction = "leftToRightSwipeAction"
         static let rightToLeftSwipeAction = "rightToLeftSwipeAction"
 
-        static let darkModeFlag = "dark_mode_flag"
         static let localSystemUpTime = "localSystemUpTime"
         static let localServerTime = "localServerTime"
 
