@@ -41,7 +41,7 @@ struct SendMessageMetadata {
     /// Information for the message attachments
     let attachments: [PreAttachment]
     /// Collection formed by the attachments encoded in base64 ready for the Mime format
-    let encodedAttachments: [AttachmentID: String]
+    let encodedAttachments: [AttachmentID: Base64String]
 
     // MARK: Encrypt to outside attributes
 

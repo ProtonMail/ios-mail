@@ -120,7 +120,7 @@ extension MIMEEMLBuilderTest {
     private func validate(
         eml: String,
         preAttachments: [PreAttachment],
-        attachmentBodys: [String: String],
+        attachmentBodys: [String: Base64String],
         numOfInlines: Int,
         uploadedCIDs: [String]
     ) throws {
@@ -158,7 +158,7 @@ extension MIMEEMLBuilderTest {
     private func validate(
         relatedPart: String,
         preAttachments: [PreAttachment],
-        attachmentBodys: [String: String],
+        attachmentBodys: [String: Base64String],
         numOfInlines: Int,
         uploadedCIDs: [String]
     ) throws {
@@ -246,7 +246,7 @@ extension MIMEEMLBuilderTest {
     private func validateAttachment(
         components: [String],
         preAttachment: [PreAttachment],
-        attachmentBodys: [String: String],
+        attachmentBodys: [String: Base64String],
         numOfUploadedCIDs: Int
     ) throws {
         guard components.count == preAttachment.count - numOfUploadedCIDs else {
@@ -284,18 +284,15 @@ extension MIMEEMLBuilderTest {
 }
 
 extension MIMEEMLBuilderTest {
-    private func getBase64StringForAttachment() -> String {
+    private func getBase64StringForAttachment() -> Base64String {
         let icon: UIImage = IconProvider.replyAll
-        guard let base64String = icon.jpegData(compressionQuality: 0.8)?.base64EncodedString() else {
-            XCTFail("Generate attachment data failed")
-            return ""
-        }
-        return base64String
+        let data = icon.jpegData(compressionQuality: 0.8)!
+        return Base64String(encoding: data)
     }
 
-    private func generateAttachment(num: Int, withAdditional inlineCIDs: [String]) -> ([PreAttachment], [String: String]) {
+    private func generateAttachment(num: Int, withAdditional inlineCIDs: [String]) -> ([PreAttachment], [String: Base64String]) {
         var preAttachments: [PreAttachment] = []
-        var attachmentBodys: [String: String] = [:]
+        var attachmentBodys: [String: Base64String] = [:]
 
         for i in 0..<num {
             let attachmentID = String.randomString(8)
@@ -355,13 +352,10 @@ extension MIMEEMLBuilderTest {
         return (preAttachments, attachmentBodys)
     }
 
-    private func getBase64StringForInlineImage() -> String {
+    private func getBase64StringForInlineImage() -> Base64String {
         let icon: UIImage = IconProvider.reply
-        guard let base64String = icon.jpegData(compressionQuality: 0.8)?.base64EncodedString() else {
-            XCTFail("Generate attachment data failed")
-            return ""
-        }
-        return base64String
+        let data = icon.jpegData(compressionQuality: 0.8)!
+        return Base64String(encoding: data)
     }
 
     private func generateMessageBody(numOfInlines: Int, uploadedCIDs: [String]) -> String {
@@ -369,7 +363,7 @@ extension MIMEEMLBuilderTest {
         if numOfInlines == 0 && uploadedCIDs.isEmpty { return body }
         var inlines: [String] = []
         for _ in 0..<numOfInlines {
-            let element = "<img src=\"data:image/jpeg;base64,\(getBase64StringForInlineImage())\">"
+            let element = "<img src=\"data:image/jpeg;base64,\(getBase64StringForInlineImage().encoded)\">"
             inlines.append(element)
         }
         for cid in uploadedCIDs {

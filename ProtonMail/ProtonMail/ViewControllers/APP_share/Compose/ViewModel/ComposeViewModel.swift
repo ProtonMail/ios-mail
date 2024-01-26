@@ -417,7 +417,7 @@ extension ComposeViewModel {
                 let src = try? image.attr("src"),
                 let (type, _, base64) = MIMEEMLBuilder.extractInformation(from: src),
                 let _ = try? image.attr("src", "cid:\(cid)"),
-                let data = Data(base64Encoded: base64)
+                let data = Data(base64Encoded: base64.encoded)
             else { continue }
 
             composerMessageHelper.addAttachment(
