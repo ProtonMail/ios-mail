@@ -1388,7 +1388,7 @@
 "Off" = "Désactivé";
 
 /* The title of re auth alert */
-"Re-authenticate" = "Ré-authentifier";
+"Re-authenticate" = "Authentifier de nouveau";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Saisissez votre mot de passe pour effectuer ces changements.";
@@ -1537,7 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Signaler un phishing/hameçonnage";
 
-"Not spam (move to inbox)" = "Non indésirable (déplacer dans la boîte de réception)";
+"Not spam (move to inbox)" = "Ce n'est pas un indésirable (déplacer dans la boîte de réception)";
 
 /* No comment provided by engineer. */
 "Move to" = "Déplacer";
@@ -1971,13 +1971,13 @@
 "Auto-import device contacts" = "Importation automatique des contacts de l'appareil";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Activez cette fonction pour ajouter automatiquement des contacts depuis votre appareil vers l'application Proton Mail.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Activez cette fonctionnalité pour ajouter automatiquement des contacts depuis votre appareil vers l'application Proton Mail.";
 
 /* Auto import alert title */
 "Auto-import enabled" = "L'importation automatique a été activée.";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "L'importation initiale peut prendre plus de temps et s'effectuera uniquement lorsque l'application est en arrière-plan.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "La première importation peut prendre plus de temps et s'effectuera uniquement lorsque l'application est en arrière-plan.";
 
 /* Settings lock protection section */
 "Protection" = "Protection";

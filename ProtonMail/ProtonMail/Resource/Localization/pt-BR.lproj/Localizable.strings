@@ -1968,16 +1968,16 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Ative esse recurso para preencher automaticamente endereços de e-mail usando contatos de todas as suas contas conectadas.";
 
 /* contacts auto import title in settings */
-"Auto-import device contacts" = "Auto-import device contacts";
+"Auto-import device contacts" = "Importar automaticamente contatos do dispositivo";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Ative este recurso para adicionar automaticamente novos contatos do seu dispositivo ao aplicativo Proton Mail.";
 
 /* Auto import alert title */
 "Auto-import enabled" = "Importação automática ativada";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "A importação inicial pode levar algum tempo e só ocorrerá quando o aplicativo estiver em primeiro plano.";
 
 /* Settings lock protection section */
 "Protection" = "Proteção";
@@ -2046,7 +2046,7 @@
 "Jump to next message" = "Ir para a próxima mensagem";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "Mostrar automaticamente a próxima mensagem quando a mensagem atual for excluída, arquivada ou movida.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Ocorreu um erro inesperado, entre em contato com o suporte.\nErro: %@";
@@ -2148,7 +2148,7 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "O remetente original desta mensagem não é mais válido. Sua mensagem será enviada do seu endereço padrão %@.";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
-"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+"Please retry after all attachments are uploaded." = "Tente novamente depois que todos os anexos forem carregados.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nome de exibição";
@@ -2175,10 +2175,10 @@
 "Select all" = "Selecionar tudo";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Unselect all";
+"Unselect all" = "Desmarque todos";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
-"Maximum selection reached" = "Maximum selection reached";
+"Maximum selection reached" = "Seleção máxima alcançada";
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Sem destinatário";
@@ -2226,7 +2226,7 @@
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Isso cancelará sua inscrição na lista de e-mails. O remetente será notificado para não enviar mais e-mails para este endereço.";
 
 /* Alert telling the user that we are unable to preview this attachment */
-"Unable to preview this attachment" = "Unable to preview this attachment";
+"Unable to preview this attachment" = "Não foi possível visualizar este anexo";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
 "Downloading attachment" = "Baixando anexo";
@@ -2271,4 +2271,4 @@
 "Unlimited folders, labels, and filters" = "Pastas, marcadores e filtros ilimitados";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
-"Add it as attachment" = "Add it as attachment";
+"Add it as attachment" = "Adicione-o como anexo";

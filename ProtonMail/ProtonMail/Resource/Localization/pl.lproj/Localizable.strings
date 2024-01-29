@@ -2046,7 +2046,7 @@
 "Jump to next message" = "Otwórz następną wiadomość";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatycznie wyświetla następną wiadomość, gdy bieżąca wiadomość zostanie usunięta, zarchiwizowana lub przeniesiona.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "Automatycznie pokazuje następną wiadomość po usunięciu, zarchiwizowaniu lub przeniesieniu poprzedniej wiadomości.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Wystąpił nieoczekiwany błąd. Skontaktuj się ze wsparciem.\n%@";
