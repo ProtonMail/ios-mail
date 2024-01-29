@@ -18,6 +18,7 @@ class ConversationViewModel {
     & HasNotificationCenter
     & HasUserDefaults
     & HasUserIntroductionProgressProvider
+    & HasQueueManager
 
     var headerSectionDataSource: [ConversationViewItemType] = []
     var messagesDataSource: [ConversationViewItemType] = [] {
@@ -346,6 +347,10 @@ class ConversationViewModel {
     func areAllMessagesIn(location: LabelLocation) -> Bool {
         let numMessagesInLocation = conversation.getNumMessages(labelID: location.labelID)
         return numMessagesInLocation == conversation.messageCount
+    }
+
+    func hasMessageEnqueuedTasks(_ messageID: MessageID) -> Bool {
+        dependencies.queueManager.queuedMessageIds().contains(messageID.rawValue)
     }
 
     func fetchMessageDetail(message: MessageEntity,
