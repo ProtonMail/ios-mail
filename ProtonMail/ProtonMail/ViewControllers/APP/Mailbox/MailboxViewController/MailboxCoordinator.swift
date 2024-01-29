@@ -443,11 +443,7 @@ extension MailboxCoordinator {
                         message: "Display notification in conversation mode. msg id: \(messageID), conv id: \(conversation.conversationID.rawValue)",
                         category: .notificationDebug
                     )
-                    if self?.isMessageSwipeNavigationEnabled ?? false {
-                        self?.presentPageViewsFor(conversation: conversation, targetID: messageID)
-                    } else {
-                        self?.present(conversation: conversation, targetID: messageID)
-                    }
+                    self?.present(conversation: conversation, targetID: messageID)
                 }
             }
         }
