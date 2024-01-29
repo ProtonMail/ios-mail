@@ -1388,7 +1388,7 @@
 "Off" = "Off";
 
 /* The title of re auth alert */
-"Re-authenticate" = "Volver a autenticar";
+"Re-authenticate" = "Autenticar de nuevo";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Ingrese su contraseña para hacer cambios";
