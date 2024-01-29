@@ -173,54 +173,61 @@ extension SearchViewController {
 
         for action in actions {
             let actionHandler: () -> Void = { [weak self] in
-                guard let self = self else { return }
-                if action == .more {
-                    self.moreButtonTapped()
-                } else {
-                    guard !self.viewModel.selectedIDs.isEmpty else {
-                        self.showNoEmailSelected(title: LocalString._warning)
-                        return
-                    }
-                    switch action {
-                    case .delete:
-                        self.showDeleteAlert { [weak self] in
-                            guard let `self` = self else { return }
-                            self.viewModel.handleBarActions(action)
-                            self.showMessageMoved(title: LocalString._messages_has_been_deleted)
-                        }
-                    case .moveTo:
-                        self.folderButtonTapped()
-                    case .labelAs:
-                        self.labelButtonTapped()
-                    case .markUnread, .markRead:
-                        self.viewModel.handleBarActions(action)
-                    case .trash:
-                        self.showTrashScheduleAlertIfNeeded { [weak self] scheduledNum in
-                            self?.viewModel.handleBarActions(action)
-                            let title: String
-                            if scheduledNum == 0 {
-                                title = LocalString._messages_has_been_moved
-                            } else {
-                                title = String(format: LocalString._message_moved_to_drafts, scheduledNum)
-                            }
-                            self?.showMessageMoved(title: title)
-                        }
-                    case .snooze:
-                        PMAssertionFailure("Search view display as single message mode, doesn't support snooze")
-                    case .more:
-                        assertionFailure("handled above")
-                    case .reply, .replyAll, .forward, .archive, .spam, .print, .viewHeaders, .viewHTML,
-                            .reportPhishing, .dismiss, .inbox, .spamMoveToInbox, .star,. unstar,
-                            .viewInDarkMode, .viewInLightMode, .toolbarCustomization, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
-                        assertionFailure("should not reach here")
-                    }
-                }
+                self?.handle(action: action)
             }
 
             let barItem = PMToolBarView.ActionItem(type: action, handler: actionHandler)
             actionItems.append(barItem)
         }
         customView.toolBar.setUpActions(actionItems)
+    }
+
+    private func handle(action: MessageViewActionSheetAction) {
+        if action != .more && viewModel.selectedIDs.isEmpty {
+            showNoEmailSelected(title: LocalString._warning)
+            return
+        }
+
+        switch action {
+        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML,
+                .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode,
+                .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation,
+                .replyOrReplyAllInConversation, .replyAllInConversation, .toolbarCustomization, .snooze:
+            // Search view display as single message mode, doesn't support snooze
+            PMAssertionFailure("Search view shouldn't have these actions")
+            break
+        case .archive, .spam, .inbox:
+            viewModel.handleActionSheetAction(action)
+            showMessageMoved(title: LocalString._messages_has_been_moved)
+            cancelButtonTapped()
+        case .trash:
+            showTrashScheduleAlertIfNeeded { [weak self] scheduledNum in
+                self?.viewModel.handleActionSheetAction(action)
+                let title: String
+                if scheduledNum == 0 {
+                    title = LocalString._messages_has_been_moved
+                } else {
+                    title = String(format: LocalString._message_moved_to_drafts, scheduledNum)
+                }
+                self?.showMessageMoved(title: title)
+            }
+        case .delete:
+            showDeleteAlert { [weak self] in
+                guard let `self` = self else { return }
+                self.viewModel.handleActionSheetAction(action)
+                self.showMessageMoved(title: LocalString._messages_has_been_deleted)
+            }
+        case .dismiss:
+            dismissActionSheet()
+        case .labelAs:
+            labelButtonTapped()
+        case .markRead, .markUnread, .star, .unstar:
+            viewModel.handleActionSheetAction(action)
+        case .moveTo:
+            folderButtonTapped()
+        case .more:
+            moreButtonTapped()
+        }
     }
 
     private func showActionBar() {
@@ -256,8 +263,7 @@ extension SearchViewController {
             on: navigationController ?? self,
             viewModel: viewModel.getActionSheetViewModel(),
             action: { [weak self] in
-                self?.viewModel.handleActionSheetAction($0)
-                self?.handleActionSheetAction($0)
+                self?.handle(action: $0)
             }
         )
     }
@@ -284,34 +290,6 @@ extension SearchViewController {
             return
         }
         showLabelAsActionSheet(messages: viewModel.selectedMessages)
-    }
-
-    private func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
-        switch action {
-        case .dismiss:
-            dismissActionSheet()
-        case .trash, .archive, .spam, .inbox:
-            showMessageMoved(title: LocalString._messages_has_been_moved)
-            cancelButtonTapped()
-        case .markRead, .markUnread, .star, .unstar:
-            break
-        case .delete:
-            showDeleteAlert { [weak self] in
-                guard let `self` = self else { return }
-                self.viewModel.deleteSelectedMessages()
-            }
-        case .labelAs:
-            labelButtonTapped()
-        case .moveTo:
-            folderButtonTapped()
-        case .toolbarCustomization:
-            // TODO: Add implementation
-            break
-        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
-            break
-        case .snooze:
-            PMAssertionFailure("Search view display as single message mode, doesn't support snooze")
-        }
     }
 
     private func showNoEmailSelected(title: String) {

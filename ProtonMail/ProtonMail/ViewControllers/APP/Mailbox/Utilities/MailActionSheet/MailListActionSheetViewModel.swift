@@ -26,7 +26,7 @@ struct MailListActionSheetViewModel {
     let title: String
     private(set) var items: [MailListActionSheetItemViewModel] = []
 
-    init(labelId: String, title: String, locationViewMode: ViewMode, isSnoozeEnabled: Bool) {
+    init(labelId: String, title: String, locationViewMode: ViewMode, isSnoozeEnabled: Bool, isForSearch: Bool = false) {
         self.title = title
 
         items += [
@@ -68,6 +68,9 @@ struct MailListActionSheetViewModel {
             items += [.moveToSpam()]
         }
 
-        items += [.moveToActionViewModel(), .customizeToolbarActionViewModel()]
+        items.append(.moveToActionViewModel())
+        if !isForSearch {
+            items.append(.customizeToolbarActionViewModel())
+        }
     }
 }

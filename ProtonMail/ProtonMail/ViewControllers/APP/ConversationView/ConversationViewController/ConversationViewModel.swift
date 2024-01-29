@@ -717,52 +717,9 @@ class ConversationViewModel {
         }
     }
 
-    func handleToolBarAction(_ action: MessageViewActionSheetAction) {
-        guard messagesAreLoaded else { return }
-        switch action {
-        case .delete:
-            conversationService.deleteConversations(with: [conversation.conversationID],
-                                                    labelID: labelId) { [weak self] result in
-                guard let self = self else { return }
-                if (try? result.get()) != nil {
-                    self.eventsService.fetchEvents(labelID: self.labelId)
-                }
-            }
-        case .markRead:
-            conversationService.markAsRead(
-                conversationIDs: [conversation.conversationID],
-                labelID: labelId
-            ) { [weak self] result in
-                guard let self = self else { return }
-                if (try? result.get()) != nil {
-                    self.eventsService.fetchEvents(labelID: self.labelId)
-                }
-            }
-        case .markUnread:
-            blockMarkReadIfNeeded = true
-            conversationService.markAsUnread(conversationIDs: [conversation.conversationID],
-                                             labelID: labelId) { [weak self] result in
-                guard let self = self else { return }
-                if (try? result.get()) != nil {
-                    self.eventsService.fetchEvents(labelID: self.labelId)
-                }
-            }
-        case .trash:
-            conversationService.move(conversationIDs: [conversation.conversationID],
-                                     from: labelId,
-                                     to: Message.Location.trash.labelID,
-                                     callOrigin: "ConversationViewModel - toolbar") { [weak self] result in
-                guard let self = self else { return }
-                if (try? result.get()) != nil {
-                    self.eventsService.fetchEvents(labelID: self.labelId)
-                }
-            }
-        default:
-            return
-        }
-    }
-
     func handleActionSheetAction(_ action: MessageViewActionSheetAction, completion: @escaping () -> Void) {
+        guard messagesAreLoaded else { return }
+
         let fetchEvents = { [weak self] (result: Result<Void, Error>) in
             guard let self = self else { return }
             if (try? result.get()) != nil { self.eventsService.fetchEvents(labelID: self.labelId) }
@@ -777,6 +734,7 @@ class ConversationViewModel {
         }
         switch action {
         case .markUnread:
+            blockMarkReadIfNeeded = true
             conversationService.markAsUnread(conversationIDs: [conversation.conversationID],
                                              labelID: labelId,
                                              completion: fetchEvents)

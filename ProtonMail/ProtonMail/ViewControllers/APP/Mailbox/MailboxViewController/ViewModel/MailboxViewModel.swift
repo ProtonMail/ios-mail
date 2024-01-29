@@ -684,35 +684,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
                    userID: user.userInfo.userId)
     }
 
-    func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
-        switch action {
-        case .unstar:
-            handleUnstarAction(on: selectedItems)
-        case .star:
-            handleStarAction(on: selectedItems)
-        case .markRead:
-            handleMarkReadAction(on: selectedItems)
-        case .markUnread:
-            handleMarkUnreadAction(on: selectedItems)
-        case .trash:
-            handleRemoveAction(on: selectedItems)
-        case .archive:
-            handleMoveToArchiveAction(on: selectedItems)
-        case .spam:
-            handleMoveToSpamAction(on: selectedItems)
-        case .labelAs, .moveTo:
-            // TODO: add action
-            break
-        case .snooze:
-            PMAssertionFailure("Shouldn't be triggered")
-            break
-        case .inbox:
-            handleMoveToInboxAction(on: selectedItems)
-        case .delete, .dismiss, .toolbarCustomization, .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
-            break
-        }
-    }
-
     func getTimeOfItem(at indexPath: IndexPath) -> Date? {
         mailboxItem(at: indexPath)?.time(labelID: labelID)
     }

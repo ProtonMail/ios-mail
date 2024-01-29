@@ -838,7 +838,7 @@ extension ConversationViewController {
         showDeleteAlert(
             deleteHandler: { [weak self] _ in
                 self?.viewModel.sendSwipeNotificationIfNeeded(isInPageView: self?.isInPageView ?? false)
-                self?.viewModel.handleToolBarAction(.delete)
+                self?.viewModel.handleActionSheetAction(.delete, completion: {})
                 self?.showMessageMoved(title: LocalString._messages_has_been_deleted)
                 guard self?.isInPageView ?? false else {
                     self?.navigationController?.popViewController(animated: true)
@@ -852,7 +852,7 @@ extension ConversationViewController {
     @objc
     private func unreadReadAction() {
         guard viewModel.messagesAreLoaded else { return }
-        viewModel.handleToolBarAction(.markUnread)
+        viewModel.handleActionSheetAction(.markUnread, completion: {})
         navigationController?.popViewController(animated: true)
     }
 

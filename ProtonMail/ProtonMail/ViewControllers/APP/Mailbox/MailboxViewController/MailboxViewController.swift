@@ -1588,62 +1588,80 @@ extension MailboxViewController {
         for action in actions {
             let actionHandler: () -> Void = { [weak self] in
                 guard let self = self else { return }
-                if action == .more {
-                    self.moreButtonTapped()
-                } else {
-                    guard !self.viewModel.selectedIDs.isEmpty else {
-                        self.showNoEmailSelected(title: LocalString._warning)
-                        return
-                    }
-                    switch action {
-                    case .delete:
-                        self.showDeleteAlert { [weak self] in
-                            guard let `self` = self else { return }
-                            self.viewModel.deleteSelectedIDs()
-                            self.showMessageMoved(title: LocalString._messages_has_been_deleted)
-                        }
-                    case .moveTo:
-                        self.folderButtonTapped()
-                    case .labelAs:
-                        self.labelButtonTapped()
-                    case .trash:
-                        var scheduledSendNum: Int?
-                        let continueAction: () -> Void = { [weak self] in
-                            guard let self = self else { return }
-                            self.viewModel.handleBarActions(action)
-                            if action != .markRead && action != .markUnread {
-                                let message: String
-                                if let num = scheduledSendNum {
-                                    message = String(format: LocalString._message_moved_to_drafts, num)
-                                } else {
-                                    message = LocalString._messages_has_been_moved
-                                }
-                                self.showMessageMoved(title: message)
-                            }
-                            self.hideSelectionMode()
-                        }
-                        self.viewModel.searchForScheduled(
-                            swipeSelectedID: [],
-                            displayAlert: { [weak self] selectedNum in
-                                scheduledSendNum = selectedNum
-                                self?.displayScheduledAlert(scheduledNum: selectedNum, continueAction: continueAction)
-                            },
-                            continueAction: continueAction
-                        )
-                    default:
-                        self.viewModel.handleBarActions(action)
-                        if ![.markRead, .markUnread, .star, .unstar, .snooze].contains(action) {
-                            self.showMessageMoved(title: LocalString._messages_has_been_moved)
-                            self.hideSelectionMode()
-                        }
-                    }
-                }
+                self.handle(action: action)
             }
 
             let barItem = PMToolBarView.ActionItem(type: action, handler: actionHandler)
             actionItems.append(barItem)
         }
         self.toolBar.setUpActions(actionItems)
+    }
+
+    // Actions from action bar or action sheet
+    private func handle(action: MessageViewActionSheetAction) {
+        if action != .more && viewModel.selectedIDs.isEmpty {
+            self.showNoEmailSelected(title: LocalString._warning)
+            return
+        }
+
+        switch action {
+        case .archive, .spam, .inbox, .spamMoveToInbox:
+            viewModel.handleBarActions(action)
+            showMessageMoved(title: LocalString._messages_has_been_moved)
+            hideSelectionMode()
+        case .delete:
+            self.showDeleteAlert { [weak self] in
+                guard let `self` = self else { return }
+                self.viewModel.deleteSelectedIDs()
+                self.showMessageMoved(title: LocalString._messages_has_been_deleted)
+            }
+        case .dismiss:
+            dismissActionSheet()
+        case .labelAs:
+            labelButtonTapped()
+        case .markRead, .markUnread, .star, .unstar:
+            viewModel.handleBarActions(action)
+        case .snooze:
+            clickSnoozeActionButton()
+        case .moveTo:
+            folderButtonTapped()
+        case .trash:
+            var scheduledSendNum: Int?
+            let continueAction: () -> Void = { [weak self] in
+                self?.viewModel.handleBarActions(action)
+                self?.hideSelectionMode()
+                let title: String
+                if let num = scheduledSendNum {
+                    title = String(format: LocalString._message_moved_to_drafts, num)
+                } else {
+                    title = LocalString._messages_has_been_moved
+                }
+                self?.showMessageMoved(title: title)
+            }
+            viewModel.searchForScheduled(
+                swipeSelectedID: [],
+                displayAlert: { [weak self] selectedNum in
+                    scheduledSendNum = selectedNum
+                    self?.displayScheduledAlert(scheduledNum: selectedNum, continueAction: continueAction)
+                },
+                continueAction: continueAction
+            )
+        case .toolbarCustomization:
+            let allActions = viewModel.toolbarCustomizationAllAvailableActions()
+            let currentActions = viewModel.actionsForToolbarCustomizeView().replaceReplyAndReplyAllAction()
+            coordinator?.presentToolbarCustomizationView(
+                allActions: allActions,
+                currentActions: currentActions
+            )
+        case .more:
+            moreButtonTapped()
+        case .reply, .replyAll, .forward, .print, .viewHTML, .reportPhishing,
+                .viewInDarkMode, .viewInLightMode, .replyOrReplyAll, .saveAsPDF,
+                .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation,
+                .replyAllInConversation, .viewHeaders:
+            // These options won't be included in action bar and action sheet
+            break
+        }
     }
 
     private func showActionBar() {
@@ -1713,7 +1731,7 @@ extension MailboxViewController {
             on: navigationController ?? self,
             viewModel: viewModel.actionSheetViewModel,
             action: { [weak self] in
-                self?.handleActionSheetAction($0)
+                self?.handle(action: $0)
             }
         )
     }
@@ -2070,59 +2088,6 @@ extension MailboxViewController {
         let title = LocalString._creating_folder_not_allowed
         let message = LocalString._upgrade_to_create_folder
         showAlert(title: title, message: message)
-    }
-
-    private func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
-        switch action {
-        case .dismiss:
-            dismissActionSheet()
-        case .trash:
-            var scheduledSendNum: Int?
-            let continueAction: () -> Void = { [weak self] in
-                self?.viewModel.handleActionSheetAction(action)
-                self?.hideSelectionMode()
-                let title: String
-                if let num = scheduledSendNum {
-                    title = String(format: LocalString._message_moved_to_drafts, num)
-                } else {
-                    title = LocalString._messages_has_been_moved
-                }
-                self?.showMessageMoved(title: title)
-            }
-            viewModel.searchForScheduled(
-                swipeSelectedID: [],
-                displayAlert: { [weak self] selectedNum in
-                    scheduledSendNum = selectedNum
-                    self?.displayScheduledAlert(scheduledNum: selectedNum, continueAction: continueAction)
-                },
-                continueAction: continueAction)
-        case .archive, .spam, .inbox:
-            viewModel.handleActionSheetAction(action)
-            showMessageMoved(title: LocalString._messages_has_been_moved)
-            hideSelectionMode()
-        case .markRead, .markUnread, .star, .unstar:
-            viewModel.handleActionSheetAction(action)
-        case .delete:
-            showDeleteAlert { [weak self] in
-                guard let `self` = self else { return }
-                self.viewModel.deleteSelectedIDs()
-            }
-        case .labelAs:
-            labelButtonTapped()
-        case .moveTo:
-            folderButtonTapped()
-        case .toolbarCustomization:
-            let allActions = viewModel.toolbarCustomizationAllAvailableActions()
-            let currentActions = viewModel.actionsForToolbarCustomizeView().replaceReplyAndReplyAllAction()
-            coordinator?.presentToolbarCustomizationView(
-                allActions: allActions,
-                currentActions: currentActions
-            )
-        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
-            break
-        case .snooze:
-            clickSnoozeActionButton()
-        }
     }
 }
 

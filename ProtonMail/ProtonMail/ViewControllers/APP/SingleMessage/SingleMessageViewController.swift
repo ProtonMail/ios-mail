@@ -246,7 +246,7 @@ extension SingleMessageViewController {
     @objc
     private func trashAction() {
         let continueAction: () -> Void = { [weak self] in
-            self?.viewModel.handleToolBarAction(.trash)
+            self?.viewModel.handleActionSheetAction(.trash, completion: {})
             self?.viewModel.navigateToNextMessage(
                 isInPageView: self?.isInPageView ?? false,
                 popCurrentView: {
@@ -268,7 +268,7 @@ extension SingleMessageViewController {
 
     @objc
     private func unreadReadAction() {
-        viewModel.handleToolBarAction(.markUnread)
+        viewModel.handleActionSheetAction(.markUnread, completion: {})
         navigationController?.popViewController(animated: true)
     }
 
@@ -285,7 +285,7 @@ extension SingleMessageViewController {
     @objc
     private func deleteAction() {
         showDeleteAlert(deleteHandler: { [weak self] _ in
-            self?.viewModel.handleToolBarAction(.delete)
+            self?.viewModel.handleActionSheetAction(.delete, completion: {})
             self?.viewModel.navigateToNextMessage(
                 isInPageView: self?.isInPageView ?? false,
                 popCurrentView: {

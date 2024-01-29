@@ -564,7 +564,7 @@ final class MailboxViewModelTests: XCTestCase {
             _ = sut.select(id: id)
         }
 
-        sut.handleActionSheetAction(.trash)
+        sut.handleBarActions(.trash)
 
         XCTAssertTrue(self.conversationProviderMock.moveStub.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(self.conversationProviderMock.moveStub.lastArguments)
