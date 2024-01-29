@@ -719,10 +719,7 @@ private extension ConversationViewController {
     private func update(draft: MessageEntity) {
         MBProgressHUD.showAdded(to: self.view, animated: true)
 
-        let messageDataService = viewModel.messageService
-        let isDraftBeingSent = messageDataService.isMessageBeingSent(id: draft.messageID)
-
-        guard !isDraftBeingSent else {
+        guard !viewModel.hasMessageEnqueuedTasks(draft.messageID) else {
             LocalString._mailbox_draft_is_uploading.alertToast()
             MBProgressHUD.hide(for: self.view, animated: true)
             return
