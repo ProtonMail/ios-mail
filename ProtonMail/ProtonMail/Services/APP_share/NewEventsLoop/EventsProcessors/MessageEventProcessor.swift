@@ -21,6 +21,7 @@ import Foundation
 struct MessageEventProcessor {
     let userID: UserID
     let encoder: JSONEncoder
+    let queueManager: QueueManager
 
     func process(response: EventAPIResponse, context: NSManagedObjectContext) {
         guard let messageResponses = response.messages else {
@@ -44,7 +45,9 @@ struct MessageEventProcessor {
 
                 if isDraft(message),
                    let draft = Message.messageFor(messageID: message.id, userID: userID, in: context) {
-                    handleDraft(draft, message: message, context: context)
+                    if !isMessageBeingSent(messageID: .init(message.id)) {
+                        handleDraft(draft, message: message, context: context)
+                    }
                 } else {
                     handleMessage(message: message, context: context)
                 }
@@ -171,5 +174,18 @@ struct MessageEventProcessor {
                 currentLabels.add(label)
             }
         }
+    }
+
+    private func isMessageBeingSent(messageID: MessageID) -> Bool {
+        let tasks = queueManager.messageIDsOfTasks { action in
+            switch action {
+            case .send:
+                return true
+            default:
+                return false
+            }
+        }
+        let result = tasks.contains(where: { $0 == messageID.rawValue })
+        return result
     }
 }

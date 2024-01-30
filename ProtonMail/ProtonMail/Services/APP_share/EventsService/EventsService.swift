@@ -426,10 +426,12 @@ extension EventsService {
                         msg.message?["messageStatus"] = 1
                     }
                     if msg.isDraft,
-                        let existing = Helper.getMessageWithMetaData(for: msg.ID, context: context) {
-                        Helper.mergeDraft(event: msg, existing: existing)
-                        self.applyLabelDeletion(msgEvent: msg, context: context, message: existing)
-                        self.applyLabelAddition(msgEvent: msg, context: context, message: existing)
+                       let existing = Helper.getMessageWithMetaData(for: msg.ID, context: context) {
+                        if !self.isMessageBeingSent(messageID: .init(existing.messageID)) {
+                            Helper.mergeDraft(event: msg, existing: existing)
+                            self.applyLabelDeletion(msgEvent: msg, context: context, message: existing)
+                            self.applyLabelAddition(msgEvent: msg, context: context, message: existing)
+                        }
                         continue
                     }
 
@@ -963,5 +965,16 @@ extension EventsService {
 #if DEBUG_ENTERPRISE
         dispatchPrecondition(condition: .onQueue(incrementalUpdateQueue))
 #endif
+    }
+
+    private func isMessageBeingSent(messageID: MessageID) -> Bool {
+        dependencies.queueManager.messageIDsOfTasks { action in
+            switch action {
+            case .send:
+                return true
+            default:
+                return false
+            }
+        }.contains(where: { $0 == messageID.rawValue })
     }
 }
