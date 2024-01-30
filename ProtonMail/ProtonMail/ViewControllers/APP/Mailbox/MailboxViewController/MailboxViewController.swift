@@ -573,29 +573,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         hideSelectionMode()
     }
 
-    @objc func ellipsisMenuTapped(sender: UIBarButtonItem) {
-        let action = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let composeAction = UIAlertAction(title: LocalString._compose_message,
-                                          style: .default) { [weak self] _ in
-            self?.composeButtonTapped()
-        }
-        let isTrashFolder = self.viewModel.labelID == LabelLocation.trash.labelID
-        let title = isTrashFolder ? LocalString._empty_trash: LocalString._empty_spam
-        let emptyAction = UIAlertAction(title: title,
-                                        style: .default) { [weak self] _ in
-            guard self?.isAllowedEmptyFolder() ?? false else { return }
-            self?.clickEmptyFolderAction()
-        }
-        let cancel = UIAlertAction(title: LocalString._general_cancel_action, style: .cancel, handler: nil)
-        action.addAction(composeAction)
-        action.addAction(emptyAction)
-        action.addAction(cancel)
-        if let popover = action.popoverPresentationController {
-            popover.barButtonItem = sender
-        }
-        self.present(action, animated: true, completion: nil)
-    }
-
     @objc
     private func preferredContentSizeChanged() {
         // Somehow unreadFilterButton can't reflect font size change automatically

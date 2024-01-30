@@ -859,11 +859,6 @@ extension ConversationViewController {
     }
 
     @objc
-    private func labelAsAction() {
-        showLabelAsActionSheet(dataSource: .conversation)
-    }
-
-    @objc
     private func moreButtonTapped() {
         guard let navigationVC = self.navigationController,
               let messageToApplyAction = viewModel.findLatestMessageForAction()

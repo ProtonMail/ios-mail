@@ -244,29 +244,6 @@ extension SingleMessageViewController {
     }
 
     @objc
-    private func trashAction() {
-        let continueAction: () -> Void = { [weak self] in
-            self?.viewModel.handleActionSheetAction(.trash, completion: {})
-            self?.viewModel.navigateToNextMessage(
-                isInPageView: self?.isInPageView ?? false,
-                popCurrentView: {
-                    self?.navigationController?.popViewController(animated: true)
-                }
-            )
-        }
-
-        viewModel.searchForScheduled(displayAlert: {
-            self.displayScheduledAlert(scheduledNum: 1) {
-                self.showMessageMoved(title: LocalString._message_moved_to_drafts)
-                continueAction()
-            }
-        }, continueAction: {
-            self.showMessageMoved(title: LocalString._messages_has_been_moved, undoActionType: .trash)
-            continueAction()
-        })
-    }
-
-    @objc
     private func unreadReadAction() {
         viewModel.handleActionSheetAction(.markUnread, completion: {})
         navigationController?.popViewController(animated: true)
@@ -275,11 +252,6 @@ extension SingleMessageViewController {
     @objc
     private func moveToAction() {
         showMoveToActionSheet()
-    }
-
-    @objc
-    private func labelAsAction() {
-        showLabelAsActionSheet()
     }
 
     @objc
