@@ -49,12 +49,15 @@ default:
 
 linting:
   stage: linting
+  image: harbor.protontech.ch/docker.io/library/rockylinux:9
   except:
     - schedules
+  variables:
+    GIT_SUBMODULE_STRATEGY: none
   script:
     - ./Scripts/check_link_availability.sh
   tags:
-    - iOS_GENERAL
+    - shared-small
 
 build:debug:for-testing:
   stage: build
@@ -223,6 +226,7 @@ report:slack:feature:
 report:slack:monkey:
   dependencies:
     - test:ui:monkey
+  extends: .report:slack
   rules:
     - if: '$TEST_TYPE == "monkey"'
       when: always
@@ -232,13 +236,6 @@ report:slack:monkey:
       --platform ios
       --job-name Mail-iOS-Monkey-tests
       --slack-channel mail-ios-uitests
-
-report:testmo:regression:
-  dependencies:
-    - test:ui:regression
-  extends: .report:testmo
-  variables:
-    NAME: "$TEST_PLAN"
 
 .report:testmo:
   extends: .testmo-upload
@@ -257,6 +254,13 @@ report:testmo:regression:
   allow_failure: true
   tags:
     - shared-small
+
+report:testmo:regression:
+  dependencies:
+    - test:ui:regression
+  extends: .report:testmo
+  variables:
+    NAME: "$TEST_PLAN"
 
 report:testmo:sanity:
   needs:
