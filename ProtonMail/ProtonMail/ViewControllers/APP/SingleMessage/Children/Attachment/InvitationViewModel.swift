@@ -31,27 +31,27 @@ struct InvitationViewModel {
 
     let organizer: EventDetails.Participant?
 
-    var visibleAttendees: [EventDetails.Participant] {
+    var visibleInvitees: [EventDetails.Participant] {
         switch participantListState {
         case .collapsed:
             return []
-        case .expanded, .allAttendeesCanBeShownWithoutCollapsing:
-            return allAttendees
+        case .expanded, .allInviteesCanBeShownWithoutCollapsing:
+            return allInvitees
         }
     }
 
     var expansionButtonTitle: String? {
         switch participantListState {
         case .collapsed:
-            return String(format: L11n.Event.participantCount, allAttendees.count)
+            return String(format: L11n.Event.participantCount, allInvitees.count)
         case .expanded:
             return L11n.Event.showLess
-        case .allAttendeesCanBeShownWithoutCollapsing:
+        case .allInviteesCanBeShownWithoutCollapsing:
             return nil
         }
     }
 
-    private let allAttendees: [EventDetails.Participant]
+    private let allInvitees: [EventDetails.Participant]
     private var participantListState: ParticipantListState
 
     private static let eventDurationFormatter: DateIntervalFormatter = {
@@ -73,10 +73,10 @@ struct InvitationViewModel {
         }
 
         organizer = eventDetails.organizer
-        allAttendees = eventDetails.attendees
+        allInvitees = eventDetails.invitees
 
-        if eventDetails.attendees.count <= 1 {
-            participantListState = .allAttendeesCanBeShownWithoutCollapsing
+        if eventDetails.invitees.count <= 1 {
+            participantListState = .allInviteesCanBeShownWithoutCollapsing
         } else {
             participantListState = .collapsed
         }
@@ -88,7 +88,7 @@ struct InvitationViewModel {
             participantListState = .expanded
         case .expanded:
             participantListState = .collapsed
-        case .allAttendeesCanBeShownWithoutCollapsing:
+        case .allInviteesCanBeShownWithoutCollapsing:
             assertionFailure("It shouldn't be possible to call this")
         }
     }
@@ -97,5 +97,5 @@ struct InvitationViewModel {
 private enum ParticipantListState {
     case collapsed
     case expanded
-    case allAttendeesCanBeShownWithoutCollapsing
+    case allInviteesCanBeShownWithoutCollapsing
 }

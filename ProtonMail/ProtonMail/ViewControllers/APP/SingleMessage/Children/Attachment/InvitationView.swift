@@ -148,9 +148,9 @@ final class InvitationView: UIView {
             participantsRow.contentStackView.addArrangedSubview(organizerButton)
         }
 
-        for attendee in viewModel.visibleAttendees {
-            let participantButton = makeParticipantButton(participant: attendee)
-            participantButton.setTitle(attendee.email, for: .normal)
+        for invitee in viewModel.visibleInvitees {
+            let participantButton = makeParticipantButton(participant: invitee)
+            participantButton.setTitle(invitee.email, for: .normal)
             participantsRow.contentStackView.addArrangedSubview(participantButton)
         }
 
