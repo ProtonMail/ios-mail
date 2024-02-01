@@ -95,8 +95,16 @@ public struct AuthenticatorMock: AuthenticatorInterface {
 
     @FuncStub(Self.forkSession) public var forkSessionStub
     public func forkSession(_ credential: Credential?,
+                            useCase: AuthService.ForkSessionUseCase,
                             completion: @escaping (Result<AuthService.ForkSessionResponse, AuthErrors>) -> Void) {
-        forkSessionStub(credential, completion)
+        forkSessionStub(credential, useCase, completion)
+    }
+
+    @FuncStub(Self.performForkingAndObtainChildSession) public var performForkingAndObtainChildSessionStub
+    public func performForkingAndObtainChildSession(_ credential: Credential,
+                                                    useCase: AuthService.ForkSessionUseCase,
+                                                    completion: @escaping (Result<Credential, AuthErrors>) -> Void) {
+        performForkingAndObtainChildSessionStub(credential, useCase, completion)
     }
 
     @FuncStub(Self.closeSession) public var closeSessionStub

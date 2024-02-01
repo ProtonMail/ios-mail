@@ -77,7 +77,11 @@ class UsersManagerTests: XCTestCase {
 
     func testIsAllowedNewUser_noFreeUser() {
         let paidUserInfo = UserInfo(maxSpace: nil,
+                                    maxBaseSpace: nil,
+                                    maxDriveSpace: nil,
                                     usedSpace: nil,
+                                    usedBaseSpace: nil,
+                                    usedDriveSpace: nil,
                                     language: nil,
                                     maxUpload: nil,
                                     role: 1,
@@ -92,7 +96,11 @@ class UsersManagerTests: XCTestCase {
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: paidUserInfo))
 
         let freeUserInfo = UserInfo(maxSpace: nil,
+                                    maxBaseSpace: nil,
+                                    maxDriveSpace: nil,
                                     usedSpace: nil,
+                                    usedBaseSpace: nil,
+                                    usedDriveSpace: nil,
                                     language: nil,
                                     maxUpload: nil,
                                     role: 0,
@@ -112,7 +120,11 @@ class UsersManagerTests: XCTestCase {
         sut.add(newUser: user1)
 
         let paidUserInfo = UserInfo(maxSpace: nil,
+                                    maxBaseSpace: nil,
+                                    maxDriveSpace: nil,
                                     usedSpace: nil,
+                                    usedBaseSpace: nil,
+                                    usedDriveSpace: nil,
                                     language: nil,
                                     maxUpload: nil,
                                     role: 1,
@@ -127,7 +139,11 @@ class UsersManagerTests: XCTestCase {
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: paidUserInfo))
 
         let freeUserInfo = UserInfo(maxSpace: nil,
+                                    maxBaseSpace: nil,
+                                    maxDriveSpace: nil,
                                     usedSpace: nil,
+                                    usedBaseSpace: nil,
+                                    usedDriveSpace: nil,
                                     language: nil,
                                     maxUpload: nil,
                                     role: 0,
@@ -152,7 +168,11 @@ class UsersManagerTests: XCTestCase {
                                   privateKey: nil,
                                   passwordKeySalt: nil)
         let userInfo = UserInfo(maxSpace: nil,
+                                maxBaseSpace: nil,
+                                maxDriveSpace: nil,
                                 usedSpace: nil,
+                                usedBaseSpace: nil,
+                                usedDriveSpace: nil,
                                 language: nil,
                                 maxUpload: nil,
                                 role: 1,
@@ -185,7 +205,11 @@ class UsersManagerTests: XCTestCase {
                                      privateKey: nil,
                                      passwordKeySalt: nil)
         let newUserInfo = UserInfo(maxSpace: 999,
+                                   maxBaseSpace: nil,
+                                   maxDriveSpace: nil,
                                    usedSpace: nil,
+                                   usedBaseSpace: nil,
+                                   usedDriveSpace: nil,
                                    language: nil,
                                    maxUpload: nil,
                                    role: 1,
@@ -447,7 +471,11 @@ class UsersManagerTests: XCTestCase {
 
     private func createUserInfo(userID: String) -> UserInfo {
         return UserInfo(maxSpace: nil,
+                        maxBaseSpace: nil,
+                        maxDriveSpace: nil,
                         usedSpace: nil,
+                        usedBaseSpace: nil,
+                        usedDriveSpace: nil,
                         language: nil,
                         maxUpload: nil,
                         role: 0,
@@ -463,7 +491,11 @@ class UsersManagerTests: XCTestCase {
 
     private func createUserManagerMock(userID: String, isPaid: Bool) -> UserManager {
         let userInfo = UserInfo(maxSpace: nil,
+                                maxBaseSpace: nil,
+                                maxDriveSpace: nil,
                                 usedSpace: nil,
+                                usedBaseSpace: nil,
+                                usedDriveSpace: nil,
                                 language: nil,
                                 maxUpload: nil,
                                 role: isPaid ? 1 : 0,

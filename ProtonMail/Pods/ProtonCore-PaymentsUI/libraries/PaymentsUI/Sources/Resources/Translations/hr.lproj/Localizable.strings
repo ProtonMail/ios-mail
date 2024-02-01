@@ -22,7 +22,7 @@
 
 "Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
 
-"%1$@ of %2$@" = "%1$@ of %2$@";
+"%1$@ of %2$@" = "%1$@ od %2$@";
 
 "%@ storage" = "%@ storage";
 
@@ -62,7 +62,7 @@
 
 "One plan for all Proton services" = "One plan for all Proton services";
 
-"The no-cost starter account designed to empower everyone with privacy by default." = "The no-cost starter account designed to empower everyone with privacy by default.";
+"The no-cost starter account designed to empower everyone with privacy by default." = "Besplatni početni račun osmišljen kako bi svima osigurao privatnost prema zadanim postavkama.";
 
 "The privacy-first email and calendar solution for your everyday communication needs." = "The privacy-first email and calendar solution for your everyday communication needs.";
 
@@ -76,7 +76,7 @@
 
 "Your subscription cannot be managed inside the mobile app." = "Your subscription cannot be managed inside the mobile app.";
 
-"Unlimited folders, labels, and filters" = "Unlimited folders, labels, and filters";
+"Unlimited folders, labels, and filters" = "Neograničen broj mapa, oznaka i filtara";
 
 "Up to %@ storage" = "Up to %@ storage";
 
@@ -124,10 +124,10 @@
 
 "For next-level password management and identity protection." = "For next-level password management and identity protection.";
 
-"Pay monthly" = "Pay monthly";
+"Pay monthly" = "Plaćajte mjesečno";
 
 "Pay annually" = "Pay annually";
 
 "Pay every two years" = "Pay every two years";
 
-"Free" = "Free";
+"Free" = "Besplatno";

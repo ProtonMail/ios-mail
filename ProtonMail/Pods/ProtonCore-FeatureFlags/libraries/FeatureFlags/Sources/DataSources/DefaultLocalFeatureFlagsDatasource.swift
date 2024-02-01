@@ -23,7 +23,7 @@
 import Foundation
 import ProtonCoreUtilities
 
-public class DefaultLocalFeatureFlagsDatasource: LocalFeatureFlagsProtocol {
+public class DefaultLocalFeatureFlagsDatasource: LocalFeatureFlagsDataSourceProtocol {
     private let serialAccessQueue = DispatchQueue(label: "ch.proton.featureflags_queue")
 
     static let featureFlagsKey = "protoncore.featureflag"
@@ -39,9 +39,9 @@ public class DefaultLocalFeatureFlagsDatasource: LocalFeatureFlagsProtocol {
 
     // MARK: - Get flags
 
-    public func getFeatureFlags(userId: String, reloadFromUserDefaults: Bool) -> FeatureFlags? {
+    public func getFeatureFlags(userId: String, reloadFromLocalDataSource: Bool) -> FeatureFlags? {
         serialAccessQueue.sync {
-            if reloadFromUserDefaults {
+            if reloadFromLocalDataSource {
                 let dynamicFlags: [String: FeatureFlags]? = userDefaults.decodableValue(forKey: Self.featureFlagsKey)
                 return dynamicFlags?[userId]
             } else if let flagsForSession, let userIdForSession {
@@ -90,7 +90,7 @@ public class DefaultLocalFeatureFlagsDatasource: LocalFeatureFlagsProtocol {
         }
     }
 
-    public func clearUserId(_ userId: String) {
+    public func clearUserId() {
         serialAccessQueue.sync {
             userDefaults.removeObject(forKey: Self.userIdKey)
         }

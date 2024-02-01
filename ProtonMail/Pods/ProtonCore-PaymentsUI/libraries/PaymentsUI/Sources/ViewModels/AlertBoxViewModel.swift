@@ -1,6 +1,6 @@
 //
-//  ExpireTokenAPI.swift
-//  ProtonCore-QuarkCommands - Created on 11.12.2021.
+//  AlertBoxViewModel.swift
+//  ProtonCorePaymentsUI - Created on 25.01.24.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,37 +18,11 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
-//
 
-import ProtonCoreNetworking
-import ProtonCoreServices
+import Foundation
 
-public struct ExpireTokenDetails {
-
-}
-
-public enum ExpireTokenError: Error {
-
-    public var userFacingMessageInQuarkCommands: String {
-        switch self {
-        }
-    }
-}
-
-public struct ExpireTokenResponse: Codable {}
-
-public class ExpireToken: Request {
-    let uid: String
-    public init(uid: String) {
-        self.uid = uid
-    }
-    public var path: String {
-        return "/internal/quark/user:expire:access:token?UID=\(self.uid)"
-    }
-    public var method: HTTPMethod = .get
-    public var parameters: [String: Any]?
-
-    public var isAuth: Bool {
-        return false
-    }
+struct AlertBoxViewModel {
+    let title = NSLocalizedString("Your storage is full", comment: "title of a warning informating that the storage is full")
+    let description = NSLocalizedString("Upgrade your plan to continue to use your account without interruptions.", comment: "")
+    let buttonTitle = NSLocalizedString("Get more storage", comment: "Title of a button to get more storage")
 }

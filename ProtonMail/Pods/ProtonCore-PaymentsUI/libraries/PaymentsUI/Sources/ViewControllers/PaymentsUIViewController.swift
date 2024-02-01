@@ -76,6 +76,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         didSet {
             tableView.dataSource = self
             tableView.delegate = self
+            tableView.register(AlertBoxCell.self, forCellReuseIdentifier: AlertBoxCell.reuseIdentifier)
             tableView.register(PlanCell.nib, forCellReuseIdentifier: PlanCell.reuseIdentifier)
             tableView.register(CurrentPlanCell.nib, forCellReuseIdentifier: CurrentPlanCell.reuseIdentifier)
             tableView.separatorStyle = .none
@@ -502,13 +503,18 @@ extension PaymentsUIViewController: UITableViewDataSource {
         var cell = UITableViewCell()
         guard let plan = filteredCycles(at: indexPath.section)?[safeIndex: indexPath.row] else { return cell }
         switch plan {
-        case .left(let currentPlan):
+        case .alert(let alertBoxViewModel):
+            cell = tableView.dequeueReusableCell(withIdentifier: AlertBoxCell.reuseIdentifier, for: indexPath)
+            if let cell = cell as? AlertBoxCell {
+                cell.configure(with: alertBoxViewModel)
+            }
+        case .currentPlan(let currentPlan):
             cell = tableView.dequeueReusableCell(withIdentifier: CurrentPlanCell.reuseIdentifier, for: indexPath)
             if let cell = cell as? CurrentPlanCell {
                 cell.configurePlan(currentPlan: currentPlan)
             }
             cell.isUserInteractionEnabled = false
-        case .right(let availablePlan):
+        case .availablePlan(let availablePlan):
             cell = tableView.dequeueReusableCell(withIdentifier: PlanCell.reuseIdentifier, for: indexPath)
             if let cell = cell as? PlanCell {
                 cell.delegate = self
@@ -548,7 +554,7 @@ extension PaymentsUIViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isDynamicPlansEnabled {
             guard let plan = filteredCycles(at: indexPath.section)?[safeIndex: indexPath.row] else { return }
-            if case .right = plan,
+            if case .availablePlan = plan,
                let cell = tableView.cellForRow(at: indexPath) as? PlanCell {
                 cell.selectCell()
             }
@@ -571,13 +577,13 @@ extension PaymentsUIViewController: CycleSelectorDelegate {
         reloadData()
     }
 
-    private func filteredCycles(at section: Int) -> [Either<CurrentPlanPresentation, AvailablePlansPresentation>]? {
+    private func filteredCycles(at section: Int) -> [PaymentCellType]? {
         if selectedCycle != nil {
             return viewModel?.dynamicPlans[safeIndex: section]?.filter {
                 switch $0 {
-                case .left:
+                case .alert, .currentPlan:
                     return true
-                case .right(let availablePlansPresentation):
+                case .availablePlan(let availablePlansPresentation):
                     return availablePlansPresentation.details.cycle == selectedCycle || availablePlansPresentation.details.isFreePlan
                 }
             }
@@ -589,9 +595,9 @@ extension PaymentsUIViewController: CycleSelectorDelegate {
     private func cycles(at section: Int) -> Set<Int> {
         Set(viewModel?.dynamicPlans[safeIndex: section]?.compactMap {
             switch $0 {
-            case .left:
+            case .alert, .currentPlan:
                 return nil
-            case .right(let availablePlansPresentation):
+            case .availablePlan(let availablePlansPresentation):
                 return availablePlansPresentation.details.cycle
             }
         } ?? [])

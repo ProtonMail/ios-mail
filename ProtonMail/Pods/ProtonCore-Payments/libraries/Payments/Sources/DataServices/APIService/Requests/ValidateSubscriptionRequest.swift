@@ -27,10 +27,12 @@ import ProtonCoreServices
 public final class ValidateSubscriptionRequest: BaseApiRequest<ValidateSubscriptionResponse> {
     private let protonPlanName: String
     private let isAuthenticated: Bool
+    private let cycle: Int
 
-    public init(api: APIService, protonPlanName: String, isAuthenticated: Bool) {
+    public init(api: APIService, protonPlanName: String, isAuthenticated: Bool, cycle: Int) {
         self.protonPlanName = protonPlanName
         self.isAuthenticated = isAuthenticated
+        self.cycle = cycle
         super.init(api: api)
     }
 
@@ -44,7 +46,7 @@ public final class ValidateSubscriptionRequest: BaseApiRequest<ValidateSubscript
         [
             "Currency": "USD",
             "Plans": [protonPlanName: 1],
-            "Cycle": 12
+            "Cycle": cycle
         ]
     }
 }

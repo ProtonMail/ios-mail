@@ -72,7 +72,11 @@ final class MailboxViewModelTests: XCTestCase {
                                       privateKey: nil,
                                       passwordKeySalt: nil)
         let stubUserInfo = UserInfo(maxSpace: nil,
+                                    maxBaseSpace: nil,
+                                    maxDriveSpace: nil,
                                     usedSpace: nil,
+                                    usedBaseSpace: nil,
+                                    usedDriveSpace: nil,
                                     language: nil,
                                     maxUpload: nil,
                                     role: nil,

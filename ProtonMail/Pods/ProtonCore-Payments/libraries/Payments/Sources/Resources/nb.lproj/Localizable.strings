@@ -1,0 +1,45 @@
+"Contact customer support" = "Kontakt kundestøtte";
+
+"Failed to get list of available products from App Store." = "Klarte ikke å få listen over tilgjengelige produkter fra App Store.";
+
+"Purchase is not possible." = "Kjøp er ikke mulig.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informerte oss om den oppgraderte tjenesteplanen, men noe teknisk data manglet. Vennligst fyll ut feilrapporten og vår kundestøtte vil kontakte deg.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple informerte oss om den oppgraderte tjenesteplanen, men vi detekterte at du har logget av kontoen siden da.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Det var ikke mulig å samsvare ditt kjøpte Apple Store produkt til produkter på vår tjener. Vennligst fyll ut feilrapporten og vår kudestøtte vil kontakte deg.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Vennligst logg på Proton Mail-kontoen du oppgraderer tjenesteplanen for slik at vi kan fullføre kjøpet.";
+
+"Apple informed us they could not process the purchase." = "Apple informerte oss de kunne ikke behandle kjøpet.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Vi aktiverte abonnementet ditt. Vennligst avslutt og start appen på nytt for å starte med den nye tjenesteplanen.";
+
+"Please unlock the app to proceed with your service plan activation" = "Vennligst lås opp appen for å fortsette med din tjenesteplan aktivering";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Vennligst logg på Proton Mail-kontoen du oppgraderer tjenesteplanen for slik at vi kan fullføre tjenesteplanaktiveringen.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Feil status på betalingstoken. Vennligst start appen på nytt. Hvis problemet vedvarer, kontakt kundestøtte.";
+
+"Do you want to activate the purchase for %@ address?" = "Ønsker du å aktivere kjøpet for %@-adresse?";
+
+"Yes, activate it for " = "Ja, aktiver det for ";
+
+"No, for another Proton Mail account" = "Nei, for en annen Proton Mail-konto";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Vi var ikke i stand til å oppgradere kontoen din til den planen du valgte, så vi la til din betaling som kreditter til kontoen din. For mer informasjon og for å fullføre din oppgradering, vennligst kontakt kundestøtte.";
+
+"Contact Support" = "Kontakt kundestøtte";
+
+"Dismiss" = "Avvis";
+
+"Payment failed" = "Betaling mislyktes";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Du er registrert, men betalingen din ble ikke behandlet. For å sende inn din betalingsinformasjon på nytt, klikk prøv på nytt. Du blir bare belastet en gang. Hvis problemet vedvarer, vennligst kontakt kundestøtte.";
+
+"Retry" = "Prøv på nytt";
+
+"OK" = "OK";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton-tjenerne er utilgjengelige. Det kan skyldes mangelfull nettverkskonfigurering, Proton-tjenere ikke fungerende eller Proton-tjenere under blokkering.";

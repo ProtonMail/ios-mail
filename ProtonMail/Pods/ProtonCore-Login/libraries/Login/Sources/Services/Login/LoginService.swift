@@ -65,15 +65,19 @@ public final class LoginService: Login {
     public var startGeneratingAddress: (() -> Void)?
     public var startGeneratingKeys: (() -> Void)?
 
-    public init(api: APIService, 
+    public var ssoCallbackScheme: String?
+
+    public init(api: APIService,
                 clientApp: ClientApp,
                 minimumAccountType: AccountType,
                 authenticator: AuthenticationManager? = nil,
-                featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared) {
+                featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared,
+                ssoCallbackScheme: String? = nil) {
         self.apiService = api
         self.minimumAccountType = minimumAccountType
         self.clientApp = clientApp
         self.featureFlagsRepository = featureFlagsRepository
+        self.ssoCallbackScheme = ssoCallbackScheme
         manager = authenticator ?? Authenticator(api: api)
     }
 
@@ -114,22 +118,20 @@ public final class LoginService: Login {
 
     public func refreshCredentials(completion: @escaping (Result<Credential, LoginError>) -> Void) {
         withAuthDelegateAvailable(completion) { authManager in
-            Task {
-                guard let old = await authManager.credential(sessionUID: self.sessionId) else {
+            guard let old = authManager.credential(sessionUID: self.sessionId) else {
+                completion(.failure(.invalidState))
+                return
+            }
+            manager.refreshCredential(old) { result in
+                switch result {
+                case .failure(let error):
+                    completion(.failure(error.asLoginError()))
+                case .success(.ask2FA), .success(.ssoChallenge):
                     completion(.failure(.invalidState))
-                    return
-                }
-                manager.refreshCredential(old) { result in
-                    switch result {
-                    case .failure(let error):
-                        completion(.failure(error.asLoginError()))
-                    case .success(.ask2FA), .success(.ssoChallenge):
-                        completion(.failure(.invalidState))
-                    case .success(.newCredential(let credential, _)), .success(.updatedCredential(let credential)):
-                        authManager.onUpdate(credential: credential, sessionUID: self.sessionId)
-                        self.apiService.setSessionUID(uid: credential.UID)
-                        completion(.success(credential))
-                    }
+                case .success(.newCredential(let credential, _)), .success(.updatedCredential(let credential)):
+                    authManager.onUpdate(credential: credential, sessionUID: self.sessionId)
+                    self.apiService.setSessionUID(uid: credential.UID)
+                    completion(.success(credential))
                 }
             }
         }
@@ -137,14 +139,12 @@ public final class LoginService: Login {
 
     public func refreshUserInfo(completion: @escaping (Result<User, LoginError>) -> Void) {
         withAuthDelegateAvailable(completion) { authManager in
-            Task { [weak self, sessionId] in
-                guard let credential = await authManager.credential(sessionUID: sessionId) else {
-                    completion(.failure(.invalidState))
-                    return
-                }
-                self?.manager.getUserInfo(credential) {
-                    completion($0.mapError { $0.asLoginError() })
-                }
+            guard let credential = authManager.credential(sessionUID: sessionId) else {
+                completion(.failure(.invalidState))
+                return
+            }
+            manager.getUserInfo(credential) {
+                completion($0.mapError { $0.asLoginError() })
             }
         }
     }
@@ -168,7 +168,7 @@ public final class LoginService: Login {
                     }
 
                     Task {
-                        try await self.featureFlagsRepository.fetchFlags(for: user.ID, using: self.apiService)
+                        try await self.featureFlagsRepository.fetchFlags()
                     }
 
                     if isSSO {
@@ -194,7 +194,7 @@ public final class LoginService: Login {
                         user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
                     )
                 case let .failure(error):
-                    PMLog.debug("Getting user info failed with \(error)")
+                    PMLog.error("Getting user info failed with \(error)", sendToExternal: true)
                     completion(.failure(error.asLoginError()))
                 }
             }

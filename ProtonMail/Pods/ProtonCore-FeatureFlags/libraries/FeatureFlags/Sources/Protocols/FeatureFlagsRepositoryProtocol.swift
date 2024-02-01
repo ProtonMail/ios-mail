@@ -24,7 +24,7 @@ import ProtonCoreServices
 import ProtonCoreUtilities
 
 public protocol FeatureFlagsRepositoryProtocol: AnyObject {
-    func updateLocalDataSource(_ localDatasource: Atomic<LocalFeatureFlagsProtocol>)
+    func updateLocalDataSource(_ localDataSource: Atomic<LocalFeatureFlagsDataSourceProtocol>)
     func setUserId(_ userId: String)
     func setApiService(_ apiService: APIService)
     func fetchFlags(for userId: String?, using apiService: APIService?) async throws
@@ -38,10 +38,15 @@ public protocol FeatureFlagsRepositoryProtocol: AnyObject {
     // MARK: - Commons
     func resetFlags()
     func resetFlags(for userId: String)
-    func clearUserId(_ userId: String)
+    func clearUserId()
 }
 
 public extension FeatureFlagsRepositoryProtocol {
+
+    func fetchFlags(for userId: String? = nil,
+                    using apiService: APIService? = nil) async throws {
+        try await self.fetchFlags(for: userId, using: apiService)
+    }
 
     /// For single-user clients
     func isEnabled(_ flag: any FeatureFlagTypeProtocol, reloadValue: Bool = false) -> Bool {

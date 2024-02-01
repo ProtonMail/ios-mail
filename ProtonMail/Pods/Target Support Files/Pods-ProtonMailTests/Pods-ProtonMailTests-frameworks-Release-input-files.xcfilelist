@@ -38,6 +38,8 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCoreUtilities.framework
 ${BUILT_PRODUCTS_DIR}/ProtonInboxICal/ProtonInboxICal.framework
 ${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework
 ${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework
+${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework
+${BUILT_PRODUCTS_DIR}/SentryPrivate/SentryPrivate.framework
 ${BUILT_PRODUCTS_DIR}/SideMenuSwift/SideMenuSwift.framework
 ${BUILT_PRODUCTS_DIR}/SkeletonView/SkeletonView.framework
 ${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework

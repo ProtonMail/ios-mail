@@ -211,7 +211,11 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
         let apiMock = APIServiceMock()
         let userInfo = UserInfo(
             maxSpace: nil,
+            maxBaseSpace: nil,
+            maxDriveSpace: nil,
             usedSpace: nil,
+            usedBaseSpace: nil,
+            usedDriveSpace: nil,
             language: nil,
             maxUpload: nil,
             role: 0,

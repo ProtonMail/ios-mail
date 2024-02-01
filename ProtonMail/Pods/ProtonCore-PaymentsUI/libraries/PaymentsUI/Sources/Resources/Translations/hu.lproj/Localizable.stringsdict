@@ -15,7 +15,7 @@
         <key>one</key>
         <string>%d email alias</string>
         <key>other</key>
-        <string>%d email aliases</string>
+        <string>%d e-mail álnév</string>
       </dict>
     </dict>
     <key>&lt;n&gt; users</key>
@@ -253,9 +253,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d+ server</string>
+        <string>%d+ szerver</string>
         <key>other</key>
-        <string>%d+ servers</string>
+        <string>%d+ szerver</string>
       </dict>
       <key>COUNTRIES</key>
       <dict>
@@ -264,9 +264,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d country</string>
+        <string>%d országban</string>
         <key>other</key>
-        <string>%d countries</string>
+        <string>%d országban</string>
       </dict>
     </dict>
     <key>&lt;n&gt; servers in &lt;m&gt; countries (US, NL, JP)</key>
@@ -434,7 +434,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Pay for %d month</string>
+        <string>Fizetés %d hónapra</string>
         <key>other</key>
         <string>Fizetés %d hónapra</string>
       </dict>
@@ -470,7 +470,7 @@
         <key>one</key>
         <string>Up to %d forwarding mailbox</string>
         <key>other</key>
-        <string>Up to %d forwarding mailboxes</string>
+        <string>Akár %d továbbító e-mail cím</string>
       </dict>
     </dict>
   </dict>

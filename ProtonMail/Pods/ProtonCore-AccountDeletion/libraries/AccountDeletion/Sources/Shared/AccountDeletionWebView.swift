@@ -187,7 +187,7 @@ extension AccountDeletionWebView: WKNavigationDelegate {
     }
 
     private func handleLoadingError(_ webView: WKWebView, error: Error) {
-        PMLog.debug("webview load fail with error \(error)")
+        PMLog.error("webview load fail with error \(error)", sendToExternal: true)
         guard let loadingURL = lastLoadingURL else { return }
         viewModel.shouldRetryFailedLoading(host: loadingURL, error: error) { [weak self] in
             switch $0 {

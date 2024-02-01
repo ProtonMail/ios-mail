@@ -1,5 +1,5 @@
 //
-//  DefaultRemoteDatasource.swift
+//  DefaultRemoteFeatureFlagsDataSource.swift
 //  ProtonCore-FeatureFlags - Created on 29.09.23.
 //
 //  Copyright (c) 2023 Proton Technologies AG
@@ -43,7 +43,7 @@ struct FeatureFlagResponse: Decodable {
     }
 }
 
-public class DefaultRemoteDatasource: RemoteFeatureFlagsProtocol {
+public class DefaultRemoteFeatureFlagsDataSource: RemoteFeatureFlagsDataSourceProtocol {
     public let apiService: APIService
 
     init(apiService: APIService) {

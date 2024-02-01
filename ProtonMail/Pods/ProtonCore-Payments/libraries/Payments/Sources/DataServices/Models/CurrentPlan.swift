@@ -53,6 +53,8 @@ public struct CurrentPlan: Decodable, Equatable {
 
         public struct ProgressEntitlement: Decodable, Equatable {
             var type: String
+            public var title: String?
+            public var iconName: String?
             public var text: String
             public var min: Int
             public var max: Int

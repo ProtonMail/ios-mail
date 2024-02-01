@@ -22,7 +22,11 @@ extension UserInfo {
     convenience override init() {
         self.init(
             maxSpace: nil,
+            maxBaseSpace: nil,
+            maxDriveSpace: nil,
             usedSpace: nil,
+            usedBaseSpace: nil,
+            usedDriveSpace: nil,
             language: nil,
             maxUpload: nil,
             role: nil,
