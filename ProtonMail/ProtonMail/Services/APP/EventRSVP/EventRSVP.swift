@@ -87,7 +87,7 @@ struct LocalEventRSVP: EventRSVP {
         let combinedICS = try combineICS(components: icsComponents)
         let iCalEvent = parseICS(combinedICS, withAuxilliaryInfo: apiEvent)
 
-        let attendees: [EventDetails.Participant] = iCalEvent.participants
+        let invitees: [EventDetails.Participant] = iCalEvent.participants
             .filter { $0.user != iCalEvent.organizer?.user }
             .map { .init(attendeeModel: $0) }
 
@@ -98,7 +98,7 @@ struct LocalEventRSVP: EventRSVP {
             calendar: .init(name: member.name, iconColor: member.color),
             location: (iCalEvent.location?.title).map { .init(name: $0) },
             organizer: iCalEvent.organizer.map { .init(attendeeModel: $0) },
-            attendees: attendees,
+            invitees: invitees,
             status: iCalEvent.status.flatMap { EventDetails.EventStatus(rawValue: $0.lowercased()) },
             calendarAppDeepLink: .ProtonCalendar.showEvent(eventUID: basicEventInfo.eventUID)
         )

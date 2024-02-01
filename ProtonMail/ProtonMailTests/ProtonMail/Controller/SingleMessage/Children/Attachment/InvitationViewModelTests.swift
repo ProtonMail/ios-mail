@@ -66,27 +66,27 @@ final class InvitationViewModelTests: XCTestCase {
         XCTAssertEqual(sut.statusString, "This event has been cancelled")
     }
 
-    func testWhenThereIsFewAttendees_thenExpansionButtonIsNotNeeded() {
-        let eventDetails = EventDetails.make(attendees: [.init(email: "attendee@example.com", status: .unknown)])
+    func testWhenThereIsFewInvitees_thenExpansionButtonIsNotNeeded() {
+        let eventDetails = EventDetails.make(invitees: [.init(email: "attendee@example.com", status: .unknown)])
         let sut = InvitationViewModel(eventDetails: eventDetails)
         XCTAssertNil(sut.expansionButtonTitle)
     }
 
-    func testWhenThereIsManyAttendees_thenTheyAreOnlyVisibleAfterTogglingExpansion() {
+    func testWhenThereIsManyInvitees_thenTheyAreOnlyVisibleAfterTogglingExpansion() {
         let eventDetails = EventDetails.make()
         var sut = InvitationViewModel(eventDetails: eventDetails)
 
-        XCTAssertEqual(sut.visibleAttendees, [])
+        XCTAssertEqual(sut.visibleInvitees, [])
         XCTAssertEqual(sut.expansionButtonTitle, "3 participants")
 
         sut.toggleParticipantListExpansion()
 
-        XCTAssertEqual(sut.visibleAttendees, eventDetails.attendees)
+        XCTAssertEqual(sut.visibleInvitees, eventDetails.invitees)
         XCTAssertEqual(sut.expansionButtonTitle, "Show less")
 
         sut.toggleParticipantListExpansion()
 
-        XCTAssertEqual(sut.visibleAttendees, [])
+        XCTAssertEqual(sut.visibleInvitees, [])
         XCTAssertEqual(sut.expansionButtonTitle, "3 participants")
     }
 }

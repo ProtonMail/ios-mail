@@ -34,6 +34,15 @@ struct EventDetails: Equatable {
         let name: String
     }
 
+    /**
+     Participant (aka attendee) can either be an organizer or an invitee.
+
+     - participant is the name used by the EventKit framework
+
+     - attendee is the name used in ICS files
+
+     organizer + invitees = participants = attendees
+     */
     struct Participant: Equatable {
         let email: String
         let status: EKParticipantStatus
@@ -45,7 +54,7 @@ struct EventDetails: Equatable {
     let calendar: Calendar
     let location: Location?
     let organizer: Participant?
-    let attendees: [Participant]
+    let invitees: [Participant]
     let status: EventStatus?
     let calendarAppDeepLink: URL
 }
