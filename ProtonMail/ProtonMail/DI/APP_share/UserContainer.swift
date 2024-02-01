@@ -35,6 +35,12 @@ final class UserContainer: ManagedContainer {
         }
     }
 
+    var contactSyncQueueFactory: Factory<ContactsSyncQueue> {
+        self {
+            ContactsSyncQueue(userID: self.user.userID, dependencies: self)
+        }
+    }
+
     var composerViewFactoryFactory: Factory<ComposerViewFactory> {
         self {
             ComposerViewFactory(dependencies: self)
