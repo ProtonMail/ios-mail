@@ -54,6 +54,7 @@ enum TestDataCreator {
         messageID: MessageID,
         conversationID: ConversationID?,
         in labelIDs: [LabelID],
+        labelIDType: LabelEntity.LabelType,
         userID: UserID,
         isUnread: Bool = false,
         isSoftDeleted: Bool = false,
@@ -75,7 +76,7 @@ enum TestDataCreator {
         message?.conversationID = conversationID?.rawValue ?? .empty
         for id in labelIDs {
             if Label.labelForLabelID(id.rawValue, inManagedObjectContext: context) == nil {
-                Self.mockLabel(labelID: id, context: context)
+                Self.mockLabel(labelID: id, type: labelIDType.rawValue, context: context)
             }
             message?.add(labelID: id.rawValue)
         }
@@ -83,9 +84,10 @@ enum TestDataCreator {
         return message
     }
 
-    static func mockLabel(labelID: LabelID, context: NSManagedObjectContext) {
+    static func mockLabel(labelID: LabelID, type: Int, context: NSManagedObjectContext) {
         let label = Label(context: context)
         label.labelID = labelID.rawValue
+        label.type = .init(value: type)
         try? context.save()
     }
 

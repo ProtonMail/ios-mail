@@ -79,7 +79,7 @@ private extension PushNavigationResolver {
             return
         }
         let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uid)
-        link.append(.init(name: String(describing: MailboxViewController.self), value: Message.Location.inbox))
+        link.append(.init(name: MenuCoordinator.Setup.switchFolderFromNotification.rawValue, value: messageId))
         link.append(.init(name: MailboxCoordinator.Destination.details.rawValue, value: messageId))
 
         completion(link)
