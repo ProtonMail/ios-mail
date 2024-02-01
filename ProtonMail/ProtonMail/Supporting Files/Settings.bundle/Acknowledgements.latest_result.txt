@@ -818,9 +818,9 @@ version: 5.0.6
 
 name: Difference, nameSpecified: Difference, owner: krzysztofzablocki, version: 1.0.2, source: https://github.com/krzysztofzablocki/Difference
 
-name: Factory, nameSpecified: Factory, owner: hmlongco, version: 2.2.0, source: https://github.com/hmlongco/Factory
+name: Factory, nameSpecified: Factory, owner: hmlongco, version: 2.3.1, source: https://github.com/hmlongco/Factory
 
-name: LifetimeTracker, nameSpecified: LifetimeTracker, owner: krzysztofzablocki, version: 1.8.1, source: https://github.com/krzysztofzablocki/LifetimeTracker
+name: LifetimeTracker, nameSpecified: LifetimeTracker, owner: krzysztofzablocki, version: 1.8.2, source: https://github.com/krzysztofzablocki/LifetimeTracker
 
 name: swift-css-parser, nameSpecified: swift-css-parser, owner: stackotter, version: 0.1.2, source: https://github.com/stackotter/swift-css-parser
 
