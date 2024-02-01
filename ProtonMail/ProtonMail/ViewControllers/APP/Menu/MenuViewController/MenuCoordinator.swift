@@ -40,17 +40,14 @@ protocol MenuCoordinatorProtocol: AnyObject {
 
 final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtocol {
     enum Setup: String {
-        case switchUser = "USER"
         case switchUserFromNotification = "UserFromNotification"
-        case switchInboxFolder = "SwitchInboxFolder"
+        case switchFolderFromNotification = "SwitchFolderFromNotification"
         init?(rawValue: String) {
             switch rawValue {
-            case "USER":
-                self = .switchUser
             case "UserFromNotification":
                 self = .switchUserFromNotification
-            case "SwitchInboxFolder":
-                self = .switchInboxFolder
+            case "SwitchFolderFromNotification":
+                self = .switchFolderFromNotification
             default:
                 return nil
             }
@@ -72,7 +69,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
     private var mailboxCoordinator: MailboxCoordinator?
     let sideMenu: PMSideMenuController
     private var settingsDeviceCoordinator: SettingsDeviceCoordinator?
-    private var currentLocation: MenuLabel?
+    private(set) var currentLocation: MenuLabel?
     weak var delegate: MenuCoordinatorDelegate?
 
     init(dependencies: Dependencies, sideMenu: PMSideMenuController, menuWidth: CGFloat) {
@@ -124,20 +121,56 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
             dependencies.pushService.processCachedLaunchOptions()
             return
         }
-        var start = deepLink.popFirst
-        start = self.processUserInfoIn(node: start)
-        start = switchFolderIfNeeded(node: start)
 
-        guard let path = start ?? deepLink.popFirst,
+        let node = deepLink.popFirst
+
+        if checkIfNeedsToHandleUserSwitchFromNotification(node: node) {
+            // Handle the switch to user here.
+            _ = self.processUserInfoIn(node: node)
+            if let node = deepLink.popFirst {
+                // Fetch message here and check which folder to go if needed
+                handleFolderSwitchIfNeeded(node: node) { message in
+                    guard let message = message else {
+                        SystemLogger.log(
+                            message: "Menu follow: failedToFetchMessage,  \(deepLink.debugDescription)",
+                            category: .notificationDebug
+                        )
+                        self.goToDetailViewIfNeeded(node: node, deepLink: deepLink)
+                        return
+                    }
+
+                    let labelIDToGo = message.messageLocation?.labelID ?? Message.Location.inbox.labelID
+                    self.switchFolderIfNeeded(labelID: labelIDToGo)
+
+                    self.goToDetailViewIfNeeded(deepLink: deepLink, labelID: labelIDToGo)
+                }
+            } else {
+                SystemLogger.log(
+                    message: "Menu follow: failedToFindFolderSwitchNode, \(node?.debugDescription ?? "Nil Node")",
+                    category: .notificationDebug
+                )
+                PMAssertionFailure("Should not reach here")
+            }
+        } else {
+            goToDetailViewIfNeeded(node: node, deepLink: deepLink)
+        }
+    }
+
+    private func goToDetailViewIfNeeded(deepLink: DeepLink, labelID: LabelID) {
+        SystemLogger.log(
+            message: "Menu follow: go to \(labelID),  \(deepLink.debugDescription)",
+            category: .notificationDebug
+        )
+        go(to: .init(location: .init(labelID: labelID, name: nil)), deepLink: deepLink)
+    }
+
+    private func goToDetailViewIfNeeded(node: DeepLink.Node?, deepLink: DeepLink) {
+        guard let path = node ?? deepLink.popFirst,
               let label = MenuCoordinator.getLocation(by: path.name, value: path.value)
         else {
             return
         }
 
-        SystemLogger.log(
-            message: "Menu follow: go to \(label.location.labelID),  \(deepLink.debugDescription)",
-            category: .notificationDebug
-        )
         self.go(to: label, deepLink: deepLink)
     }
 
@@ -221,8 +254,6 @@ extension MenuCoordinator {
         }
 
         switch dest {
-        case .switchUser:
-            viewModel.activateUser(id: user.userID)
         case .switchUserFromNotification:
             let isAnotherUser = dependencies.usersManager.firstUser?.userInfo.userId ?? "" != user.userInfo.userId
             viewModel.activateUser(id: user.userID)
@@ -235,17 +266,6 @@ extension MenuCoordinator {
         default:
             break
         }
-        return nil
-    }
-
-    private func switchFolderIfNeeded(node: DeepLink.Node?) -> DeepLink.Node? {
-        guard let node = node,
-              let dest = Setup(rawValue: node.name),
-              dest == .switchInboxFolder,
-              let folderID = node.value else {
-            return node
-        }
-        switchFolderIfNeeded(labelID: .init(folderID))
         return nil
     }
 
@@ -640,6 +660,57 @@ extension MenuCoordinator {
         let navigation = UINavigationController(rootViewController: view)
         navigation.modalPresentationStyle = .fullScreen
         sideMenu.present(navigation, animated: true)
+    }
+
+    private func checkIfNeedsToHandleUserSwitchFromNotification(node: DeepLink.Node?) -> Bool {
+        guard let node = node else {
+            return false
+        }
+        switch Setup(rawValue: node.name) {
+        case .switchUserFromNotification:
+            return true
+        default:
+            return false
+        }
+    }
+
+    private func handleFolderSwitchIfNeeded(
+        node: DeepLink.Node,
+        completion: @escaping (MessageEntity?) -> Void
+    ) {
+        switch Setup(rawValue: node.name) {
+        case .switchFolderFromNotification:
+            fetchMessageFromDeepLink(node: node) { message in
+                if let message = message {
+                    completion(message)
+                } else {
+                    completion(nil)
+                }
+            }
+        default:
+            completion(nil)
+            return
+        }
+    }
+
+    private func fetchMessageFromDeepLink(
+        node: DeepLink.Node,
+        completion: @escaping (MessageEntity?) -> Void
+    ) {
+        guard let messageID = node.value,
+              let activeUser = dependencies.usersManager.firstUser else {
+            completion(nil)
+            return
+        }
+        activeUser.messageService.fetchNotificationMessageDetail(.init(messageID)) { result in
+            switch result {
+            case .success(let message):
+                completion(message)
+            case .failure(let error):
+                SystemLogger.log(message: "\(error)", isError: true)
+                completion(nil)
+            }
+        }
     }
 }
 
