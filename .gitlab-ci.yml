@@ -28,12 +28,12 @@ stages:
   - bot
 
 .setup_project: &setup_project
-  - brew bundle --file="$CI_PROJECT_DIR/ProtonMail/Brewfile" --force
+  - brew bundle --force
   - mint bootstrap
   - cd ProtonMail
   - bundle install
+  - ./xcodeGenHelper.sh
   - cd ..
-  - ./ProtonMail/xcodeGenHelper.sh
 
 .macos_job:
   cache:
