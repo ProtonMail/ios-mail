@@ -29,9 +29,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d user</string>
+        <string>%d notandi</string>
         <key>other</key>
-        <string>%d users</string>
+        <string>%d notendur</string>
       </dict>
     </dict>
     <key>&lt;n&gt; email addresses</key>
@@ -45,9 +45,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d email address</string>
+        <string>%d netfang</string>
         <key>other</key>
-        <string>%d email addresses</string>
+        <string>%d netföng</string>
       </dict>
     </dict>
     <key>&lt;n&gt; email addresses / user</key>
@@ -109,9 +109,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d country</string>
+        <string>%d land</string>
         <key>other</key>
-        <string>%d countries</string>
+        <string>%d lönd</string>
       </dict>
     </dict>
     <key>&lt;n&gt; connections</key>
@@ -125,9 +125,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d connection</string>
+        <string>%d-tenging</string>
         <key>other</key>
-        <string>%d connections</string>
+        <string>%d-tengingar</string>
       </dict>
     </dict>
     <key>&lt;n&gt; VPN connections</key>
@@ -141,9 +141,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d VPN connection</string>
+        <string>%d VPN nettenging</string>
         <key>other</key>
-        <string>%d VPN connections</string>
+        <string>%d VPN nettengingar</string>
       </dict>
     </dict>
     <key>&lt;n&gt; high-speed VPN connections</key>
@@ -157,9 +157,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d high-speed VPN connection</string>
+        <string>%d háhraða VPN tenging</string>
         <key>other</key>
-        <string>%d high-speed VPN connections</string>
+        <string>%d háhraða VPN tengingar</string>
       </dict>
     </dict>
     <key>&lt;n&gt; custom domains</key>
@@ -221,9 +221,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d folder and label</string>
+        <string>%d mappa og merki</string>
         <key>other</key>
-        <string>%d folders and labels</string>
+        <string>%d möppur og merki</string>
       </dict>
     </dict>
     <key>High-speed VPN on &lt;n&gt; devices</key>
@@ -237,9 +237,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>High-speed VPN on %d device</string>
+        <string>Háhraða VPN á %d tæki</string>
         <key>other</key>
-        <string>High-speed VPN on %d devices</string>
+        <string>Háhraða VPN á %d tækjum</string>
       </dict>
     </dict>
     <key>&lt;n&gt;+ servers in &lt;m&gt; countries</key>
@@ -264,9 +264,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d country</string>
+        <string>%d land</string>
         <key>other</key>
-        <string>%d countries</string>
+        <string>%d lönd</string>
       </dict>
     </dict>
     <key>&lt;n&gt; servers in &lt;m&gt; countries (US, NL, JP)</key>
@@ -299,7 +299,7 @@
     <key>&lt;n&gt; of &lt;m&gt; users</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ af %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>one</key>
@@ -318,15 +318,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d user</string>
+        <string>%d notandi</string>
         <key>other</key>
-        <string>%d users</string>
+        <string>%d notendur</string>
       </dict>
     </dict>
     <key>&lt;n&gt; of &lt;m&gt; email addresses</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ af %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>one</key>
@@ -345,15 +345,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d email address</string>
+        <string>%d netfang</string>
         <key>other</key>
-        <string>%d email addresses</string>
+        <string>%d netföng</string>
       </dict>
     </dict>
     <key>&lt;n&gt; of &lt;m&gt; calendars</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ af %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>one</key>
@@ -404,9 +404,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d calendar per user</string>
+        <string>%d dagatal á hvern notanda</string>
         <key>other</key>
-        <string>%d calendars per user</string>
+        <string>%d dagatöl á hvern notanda</string>
       </dict>
     </dict>
     <key>&lt;n&gt; VPN connections per user</key>
@@ -420,9 +420,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d VPN connection per user</string>
+        <string>%d VPN tenging á hvern notanda</string>
         <key>other</key>
-        <string>%d VPN connections per user</string>
+        <string>%d VPN tengingar á hvern notanda</string>
       </dict>
     </dict>
     <key>Pay for &lt;n&gt; months</key>

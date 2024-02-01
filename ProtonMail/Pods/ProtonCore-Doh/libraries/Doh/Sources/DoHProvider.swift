@@ -144,7 +144,7 @@ extension DoHProviderInternal {
             return dnsList
 
         } catch {
-            PMLog.debug("parse error: \(error)")
+            PMLog.error("parse error: \(error)", sendToExternal: true)
             return nil
         }
     }

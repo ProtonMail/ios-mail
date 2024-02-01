@@ -1,0 +1,3 @@
+"Network connection error" = "Feil ved nettverkstilkobling";
+
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "TLS-sertifikatvalidering mislyktes under forsøk på å koble til Proto-API. Din gjeldende internettforbindelse kan være under overvåking. For å holde dataene dine sikre, forhindrer vi appen i å få tilgang til Proton API.\nFor å logge på eller få tilgang til kontoen din, bytt til et nytt nettverk og prøv å koble til igjen.";

@@ -39,6 +39,8 @@ public struct APIServiceMock: APIService {
     private func eraseGenerics<T>(from completion: @escaping DecodableCompletion<T>) -> AnyAPIDecodableResponseCompletion where T: APIDecodableResponse {
         { task, result in completion(task, result.map { $0 as! T }) }
     }
+    @FuncStub(APIServiceMock.getSession, initialReturn: nil) public var getSessionUIDStub
+    public func getSession() -> Session? { getSessionUIDStub() }
 
     @FuncStub(APIServiceMock.setSessionUID) public var setSessionUIDStub
     public func setSessionUID(uid: String) { setSessionUIDStub(uid) }

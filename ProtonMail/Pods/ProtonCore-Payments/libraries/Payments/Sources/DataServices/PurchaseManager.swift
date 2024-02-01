@@ -1,5 +1,5 @@
 //
-//  PaymentsManager.swift
+//  PurchaseManager.swift
 //  ProtonCorePaymentsUI - Created on 01/06/2021.
 //
 //  Copyright (c) 2022 Proton Technologies AG
@@ -121,6 +121,7 @@ final class PurchaseManager: PurchaseManagerProtocol {
 
         let planName: String
         let planId: String
+        let cycle: Int
         switch planService {
         case .left(let planService):
             guard let details = planService.detailsOfPlanCorrespondingToIAP(plan),
@@ -131,9 +132,11 @@ final class PurchaseManager: PurchaseManagerProtocol {
             }
             planName = details.name
             planId = id
+            cycle = 12
 
         case .right(let planDataSource):
             guard let availablePlan = planDataSource.detailsOfAvailablePlanCorrespondingToIAP(plan),
+                  let instance = planDataSource.detailsOfAvailablePlanInstanceCorrespondingToIAP(plan),
                   let name = availablePlan.name,
                   let id = availablePlan.ID else {
                 // the plan details, including its id, are unknown, preventing us from doing any further operation
@@ -142,11 +145,12 @@ final class PurchaseManager: PurchaseManagerProtocol {
             }
             planName = name
             planId = id
+            cycle = instance.cycle
         }
 
         var amountDue = 0
         if !addCredits {
-            amountDue = try fetchAmountDue(protonPlanName: planName)
+            amountDue = try fetchAmountDue(protonPlanName: planName, cycle: cycle)
             guard amountDue != .zero else {
                 // backend indicated that plan can be bought for free — no need to initiate the IAP flow
                 try buyPlanWhenAmountDueIsZero(plan: plan, planId: planId, finishCallback: finishCallback)
@@ -158,18 +162,21 @@ final class PurchaseManager: PurchaseManagerProtocol {
         buyPlanWhenIAPIsNecessaryToProvideMoney(plan: plan, amountDue: amountDue, finishCallback: finishCallback)
     }
 
-    private func fetchAmountDue(protonPlanName: String) throws -> Int {
+    private func fetchAmountDue(protonPlanName: String, cycle: Int) throws -> Int {
 
         let isAuthenticated = storeKitManager.delegate?.userId?.isEmpty == false
         let validateSubscriptionRequest = paymentsApi.validateSubscriptionRequest(
-            api: apiService, protonPlanName: protonPlanName, isAuthenticated: isAuthenticated
+            api: apiService,
+            protonPlanName: protonPlanName,
+            isAuthenticated: isAuthenticated,
+            cycle: cycle
         )
 
         let validationResponse = try validateSubscriptionRequest.awaitResponse(responseObject: ValidateSubscriptionResponse())
         if let validationError = validationResponse.error {
-            ObservabilityEnv.report(.paymentValidatePlanTotal(error: validationError))
+            ObservabilityEnv.report(.paymentValidatePlanTotal(error: validationError, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
         } else {
-            ObservabilityEnv.report(.paymentValidatePlanTotal(status: .http2xx))
+            ObservabilityEnv.report(.paymentValidatePlanTotal(status: .http2xx, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
         }
 
         guard let amountDue = validationResponse.validateSubscription?.amountDue

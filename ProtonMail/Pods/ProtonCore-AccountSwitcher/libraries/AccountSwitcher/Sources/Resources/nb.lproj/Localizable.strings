@@ -1,0 +1,27 @@
+"switch to" = "bytt til";
+
+"Manage accounts" = "Administrer kontoer";
+
+"Signed in to Proton Mail" = "Logget på Proton Mail";
+
+"Signed out of Proton Mail" = "Logget ut av Proton Mail";
+
+"Sign out" = "Logg av";
+
+"Remove account from this device" = "Fjern konto fra denne enheten";
+
+"Remove account" = "Fjern konto";
+
+"You will be signed out and all the data associated with this account will be removed from this device." = "Du blir logget av og all data assosiert med denne kontoen vil bli fjernet fra denne enheten.";
+
+"Remove" = "Fjern";
+
+"Are you sure you want to sign out %@?" = "Er du sikker på at du vil logge av %@?";
+
+"Dismiss account switcher" = "Avvis kontobytter";
+
+"Sign in to another account" = "Logg på en annen konto";
+
+"Cancel" = "Avbryt";
+
+"Sign in" = "Logg på";

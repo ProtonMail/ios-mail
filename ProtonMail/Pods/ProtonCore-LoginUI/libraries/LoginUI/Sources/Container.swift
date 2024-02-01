@@ -67,7 +67,11 @@ final class Container {
         self.externalLinks = ExternalLinks(clientApp: clientApp)
         self.troubleShootingHelper = TroubleShootingHelper(doh: apiService.dohInterface)
         self.api = apiService
-        self.api.acquireSessionIfNeeded { result in PMLog.debug("\(result)") }
+        self.api.acquireSessionIfNeeded { result in
+            #if DEBUG
+            PMLog.debug("\(result)")
+            #endif
+        }
         self.login = LoginService(api: apiService, clientApp: clientApp, minimumAccountType: minimumAccountType)
         self.signupService = SignupService(api: apiService, clientApp: clientApp)
 

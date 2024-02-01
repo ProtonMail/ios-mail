@@ -345,7 +345,7 @@ extension UsersManager {
         loggingOutUserIDs.insert(user.userID)
         user.cleanUp().ensure {
             FeatureFlagsRepository.shared.resetFlags(for: user.userID.rawValue)
-            FeatureFlagsRepository.shared.clearUserId(user.userID.rawValue)
+            FeatureFlagsRepository.shared.clearUserId()
             defer {
                 self.loggingOutUserIDs.remove(user.userID)
             }

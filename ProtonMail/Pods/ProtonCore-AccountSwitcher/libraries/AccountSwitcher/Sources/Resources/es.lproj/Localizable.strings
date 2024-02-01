@@ -8,9 +8,9 @@
 
 "Sign out" = "Cerrar sesión";
 
-"Remove account from this device" = "Borrar la cuenta de este dispositivo";
+"Remove account from this device" = "Eliminar la cuenta de este dispositivo";
 
-"Remove account" = "Borrar la cuenta";
+"Remove account" = "Eliminar cuenta";
 
 "You will be signed out and all the data associated with this account will be removed from this device." = "Se cerrará la sesión y todos los datos asociados a esta cuenta se borrarán de este dispositivo.";
 

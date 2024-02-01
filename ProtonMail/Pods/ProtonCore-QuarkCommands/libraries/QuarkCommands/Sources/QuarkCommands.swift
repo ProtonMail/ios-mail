@@ -34,6 +34,7 @@ public final class QuarkCommands {
         self.doh = env.doh
     }
 
+    @available(*, deprecated, renamed: "userCreate", message: "`QuarkCommands` has been updated to `Quark`.")
     public func createUser(username: String, password: String,
                            protonPlanName: String, completion: ((Result<(), Error>) -> Void)? = nil) {
         let account = AccountAvailableForCreation(
@@ -46,6 +47,7 @@ public final class QuarkCommands {
         }
     }
 
+    @available(*, deprecated, renamed: "userCreate", message: "`QuarkCommands` has been updated to `Quark`.")
     public func createUser(externalEmail username: String, password: String,
                            completion: ((Result<(), Error>) -> Void)? = nil) {
         let account = AccountAvailableForCreation(
@@ -59,18 +61,21 @@ public final class QuarkCommands {
         }
     }
 
+    @available(*, deprecated, renamed: "jailUnban", message: "`QuarkCommands` has been updated to `Quark`.")
     public func unban(completion: ((Result<(), Error>) -> Void)? = nil) {
         QuarkCommands.unban(currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) {
             completion?($0.map { _ in () }.mapError { $0 })
         }
     }
 
+    @available(*, deprecated, renamed: "jailUnban", message: "`QuarkCommands` has been updated to `Quark`.")
     public func disableJail(completion: ((Result<(), Error>) -> Void)? = nil) {
         QuarkCommands.disableJail(currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) {
             completion?($0.map { _ in () }.mapError { $0 })
         }
     }
 
+    @available(*, deprecated, renamed: "userExpireSession", message: "`QuarkCommands` has been updated to `Quark`.")
     public func expireSession(username: String,
                               expireRefreshToken: Bool = false,
                               completion: ((Result<Void, Error>) -> Void)? = nil) {

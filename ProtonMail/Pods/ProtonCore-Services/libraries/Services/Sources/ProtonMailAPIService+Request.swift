@@ -184,6 +184,18 @@ extension PMAPIService {
                 headers: headers, sessionUID: UID, accessToken: accessToken, retryPolicy: retryPolicy
             )
 
+            #if DEBUG
+            if let url = request.request?.url, url.pathComponents.contains("payments") {
+                PMLog.debug("""
+                Payment request: ---
+                path: \(path)
+                url: \(url)
+                headers: \(request.headers)
+                parameters: \(parameters.debugDescription)
+                """)
+            }
+            #endif
+
             let sessionRequestCall: (@escaping (URLSessionDataTask?, ResponseFromSession<T>) -> Void) -> Void
             switch completion {
             case .left:

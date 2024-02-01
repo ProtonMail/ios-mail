@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-Payments",
   "module_name": "ProtonCorePayments",
-  "version": "16.0.0",
+  "version": "18.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "16.0.0"
+    "tag": "18.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -34,25 +34,25 @@
       "~> 5.0.0"
     ],
     "ProtonCore-Foundations": [
-      "16.0.0"
+      "18.0.0"
     ],
     "ProtonCore-Hash": [
-      "16.0.0"
+      "18.0.0"
     ],
     "ProtonCore-Log": [
-      "16.0.0"
+      "18.0.0"
     ],
     "ProtonCore-Authentication": [
-      "16.0.0"
+      "18.0.0"
     ],
     "ProtonCore-Networking": [
-      "16.0.0"
+      "18.0.0"
     ],
     "ProtonCore-Services": [
-      "16.0.0"
+      "18.0.0"
     ],
     "ProtonCore-FeatureFlags": [
-      "16.0.0"
+      "18.0.0"
     ]
   },
   "source_files": [
@@ -73,28 +73,28 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Payments": [
-          "16.0.0"
+          "18.0.0"
         ],
         "ProtonCore-Authentication": [
-          "16.0.0"
+          "18.0.0"
         ],
         "ProtonCore-Challenge": [
-          "16.0.0"
+          "18.0.0"
         ],
         "ProtonCore-DataModel": [
-          "16.0.0"
+          "18.0.0"
         ],
         "ProtonCore-Doh": [
-          "16.0.0"
+          "18.0.0"
         ],
         "ProtonCore-Log": [
-          "16.0.0"
+          "18.0.0"
         ],
         "ProtonCore-Login": [
-          "16.0.0"
+          "18.0.0"
         ],
         "ProtonCore-Services": [
-          "16.0.0"
+          "18.0.0"
         ]
       },
       "source_files": "libraries/Payments/Tests/UnitTests/**/*.swift",

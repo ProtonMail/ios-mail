@@ -1,5 +1,5 @@
 //
-//  RemoteFeatureFlagsProtocol.swift
+//  LocalFeatureFlagsProtocol.swift
 //  ProtonCore-FeatureFlags - Created on 29.09.23.
 //
 //  Copyright (c) 2023 Proton Technologies AG
@@ -22,6 +22,13 @@
 
 import Foundation
 
-public protocol RemoteFeatureFlagsProtocol {
-    func getFlags() async throws -> [FeatureFlag]
+public protocol LocalFeatureFlagsDataSourceProtocol {
+    func getFeatureFlags(userId: String, reloadFromLocalDataSource: Bool) -> FeatureFlags?
+    func upsertFlags(_ flags: FeatureFlags, userId: String)
+    func cleanAllFlags()
+    func cleanFlags(for userId: String)
+
+    var userIdForActiveSession: String? { get }
+    func setUserIdForActiveSession(_ userId: String)
+    func clearUserId()
 }

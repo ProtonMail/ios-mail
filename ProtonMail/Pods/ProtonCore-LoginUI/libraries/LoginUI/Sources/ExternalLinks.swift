@@ -51,12 +51,7 @@ final class ExternalLinks {
     }
 
     var termsAndConditions: URL {
-        switch clientApp {
-        case .vpn:
-            return URL(string: "https://protonvpn.com/ios-terms-and-conditions.html")!
-        default:
-            return URL(string: "https://proton.me/legal/terms-ios")!
-        }
+        return URL(string: "https://proton.me/legal/terms-ios")!
     }
 
     var support: URL {

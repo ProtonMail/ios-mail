@@ -56,6 +56,8 @@ public class PMLog {
     private static let numberOfOldestLinesToTrimInOneGo = 500
     private static let queue = DispatchQueue(label: "ch.proton.core.log")
 
+    public static var externalLog: ExternalLogProtocol?
+
     public static var logFile: URL? {
         let file = logsDirectory?.appendingPathComponent("logs.txt", isDirectory: false)
 
@@ -79,19 +81,19 @@ public class PMLog {
 
     // MARK: - Actions
 
-    public static func debug(_ message: String, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
-        log(message, level: .debug, file: file, function: function, line: line, column: column)
+    public static func debug(_ message: String, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column, sendToExternal: Bool = false) {
+        log(message, level: .debug, file: file, function: function, line: line, column: column, sendToExternal: sendToExternal)
     }
 
-    public static func info(_ message: String, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
-        log(message, level: .info, file: file, function: function, line: line, column: column)
+    public static func info(_ message: String, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column, sendToExternal: Bool = false) {
+        log(message, level: .info, file: file, function: function, line: line, column: column, sendToExternal: sendToExternal)
     }
 
-    public static func error(_ message: String, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
-        log(message, level: .error, file: file, function: function, line: line, column: column)
+    public static func error(_ message: String, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column, sendToExternal: Bool = false) {
+        log(message, level: .error, file: file, function: function, line: line, column: column, sendToExternal: sendToExternal)
     }
 
-    public static func error(_ error: Error, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
+    public static func error(_ error: Error, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column, sendToExternal: Bool = false) {
         self.error(error.localizedDescription, file: file, function: function, line: line, column: column)
     }
 
@@ -101,12 +103,19 @@ public class PMLog {
         #endif
     }
 
+    public static func setEnvironment(environment: String) {
+        externalLog = SentryCoreManager(environment: environment)
+    }
+
     // MARK: - Internal
 
-    private static func log(_ message: String, level: LogLevel, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
+    private static func log(_ message: String, level: LogLevel, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column, sendToExternal: Bool) {
         let log = "\(Date()) : \(level.description) : \((file as NSString).lastPathComponent) : \(function) : \(line) : \(column) - \(message)"
         printToConsole(log)
         callback?(message, level)
+        if sendToExternal {
+            sendExternalLog(level: level, log: log)
+        }
 
         guard let logUrl = logFile else { return }
         queue.sync {
@@ -151,6 +160,24 @@ public class PMLog {
                 printToConsole(error.localizedDescription)
             }
         }
+    }
+
+    private static func sendExternalLog(level: LogLevel, log: String) {
+        guard !isRunningTests else { return }
+        guard let externalLog else {
+            assertionFailure("ProtonCore logger not initialized. Please use PMLog.setEnvironment(...) in the ProtonCore initialization.")
+            return
+        }
+        switch level {
+        case .error, .fatal:
+            externalLog.capture(errorMessage: log, level: level)
+        default:
+            break
+        }
+    }
+
+    private static var isRunningTests: Bool {
+        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
     }
 }
 

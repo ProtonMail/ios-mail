@@ -1,6 +1,6 @@
 "Privacy by default" = "Privacy by default";
 
-"Proton address required" = "Proton address required";
+"Proton address required" = "Potrebna Proton adresa";
 
 "Update required" = "Potrebno ažuriranje";
 
@@ -28,7 +28,7 @@
 
 "Request new code" = "Zatraži novi kôd";
 
-"Enter your Proton Account details." = "Enter your Proton Account details.";
+"Enter your Proton Account details." = "Unesite detalje vašeg Proton računa";
 
 "Email or username" = "Adresa e-pošte ili korisničko ime";
 
@@ -36,9 +36,9 @@
 
 "Sign in with password" = "Sign in with password";
 
-"Sign in with SSO" = "Sign in with SSO";
+"Sign in with SSO" = "Prijavite se sa SSO";
 
-"Sign in to your organization" = "Sign in to your organization";
+"Sign in to your organization" = "Prijavite se u vašu organizaciju";
 
 "Create an account" = "Stvori račun";
 
@@ -48,11 +48,11 @@
 
 "Forgot password" = "Zaboravili ste lozinku";
 
-"Other sign-in issues" = "Other sign-in issues";
+"Other sign-in issues" = "Drugi problemi s prijavom";
 
 "Customer support" = "Korisnička podrška";
 
-"Still need help? Contact us directly." = "Still need help? Contact us directly.";
+"Still need help? Contact us directly." = "Još trebate pomoć? Javite nam se izravno.";
 
 "Please enter your Proton Account email or username." = "Please enter your Proton Account email or username.";
 
@@ -66,7 +66,7 @@
 
 "Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
 
-"Proton address required" = "Proton address required";
+"Proton address required" = "Potrebna Proton adresa";
 
 "You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account.";
 
@@ -96,15 +96,15 @@
 
 "Enter the 6-digit code." = "Unesite 6-znamenkasti kôd.";
 
-"Enter an 8-character recovery code." = "Enter an 8-character recovery code.";
+"Enter an 8-character recovery code." = "Unesite 8-znamenkasti kod za oporavak.";
 
 "Learn more" = "Saznajte više";
 
-"Change your password" = "Change your password";
+"Change your password" = "Promijenite vašu lozinku";
 
 "Change password" = "Promjena lozinke";
 
-"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser.";
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Da biste koristili Proton aplikaciju kao član organizacije, prvo morate promijeniti vašu lozinku prijavom u Proton preko pretraživača.";
 
 "Error occured" = "Došlo je do pogreške";
 
@@ -128,7 +128,7 @@
 
 "Domain" = "Domena";
 
-"Set recovery method" = "Set recovery method";
+"Set recovery method" = "Postavite metodu oporavka";
 
 "Set recovery method (optional)" = "Set recovery method (optional)";
 
@@ -140,7 +140,7 @@
 
 "Recovery email" = "Adresa e-pošte za oporavak";
 
-"Recovery phone number" = "Recovery phone number";
+"Recovery phone number" = "Broj mobitela za oporavak";
 
 "By clicking Next, you agree with Proton's Terms and Conditions" = "By clicking Next, you agree with Proton's Terms and Conditions";
 
@@ -148,13 +148,13 @@
 
 "Skip" = "Preskoči";
 
-"Skip recovery method?" = "Skip recovery method?";
+"Skip recovery method?" = "Preskočiti metodu oporavka?";
 
-"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A recovery method will help you access your account in case you forget your password or get locked out of your account.";
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Metoda oporavka će vam pomoći pristupiti računu u slučaju da zaboravite lozinku ili vam se račun zaključa.";
 
-"Set recovery method" = "Set recovery method";
+"Set recovery method" = "Postavite metodu oporavka";
 
-"Your account is being created" = "Your account is being created";
+"Your account is being created" = "Vaš račun se stvara";
 
 "This should take no more than a minute." = "This should take no more than a minute.";
 
@@ -182,7 +182,7 @@
 
 "Invalid token error" = "Invalid token error";
 
-"Create user failed" = "Create user failed";
+"Create user failed" = "Neuspješno stvaranje korisnika";
 
 "Invalid hashed password" = "Nevažeća hashirana lozinka";
 
@@ -198,7 +198,7 @@
 
 "Change email address" = "Change email address";
 
-"Congratulations" = "Congratulations";
+"Congratulations" = "Čestitamo";
 
 "Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
 

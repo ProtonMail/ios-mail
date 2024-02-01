@@ -27,10 +27,6 @@ import UIKit
 import Foundation
 import ProtonCoreFoundations
 
-private protocol DictionaryConvertible {
-    func asDictionary() throws -> [String: Any]
-}
-
 // MARK: Enum
 extension PMChallenge {
 
@@ -78,7 +74,7 @@ extension PMChallenge {
     }
     // Ask Anti-abuse team for the version
     static let VERSION = "2.0.3"
-    public struct Challenge: Codable, DictionaryConvertible {
+    public struct Challenge: Codable {
 
         public internal(set) var behaviouralFingerprint: BehaviouralFingerprint = BehaviouralFingerprint()
         public internal(set) var deviceFingerprint: DeviceFingerprint = DeviceFingerprint()
@@ -89,7 +85,7 @@ extension PMChallenge {
             try container.encode(deviceFingerprint, forKey: .deviceFingerprint)
         }
 
-        public struct BehaviouralFingerprint: Codable, DictionaryConvertible {
+        public struct BehaviouralFingerprint: Codable {
             // MARK: Signup data
 
             /// version: String   new value for tracking the challenge object version. this value only change when challenge schema changed
@@ -146,7 +142,7 @@ extension PMChallenge {
             }
         }
 
-        public struct DeviceFingerprint: Codable, DictionaryConvertible {
+        public struct DeviceFingerprint: Codable {
             // MARK: Device relative setting
             /// Timezone of Operating System, e.g. `Asia/Taipei`
             public internal(set) var timezone: String = ""
@@ -219,7 +215,7 @@ extension PMChallenge {
         ///    it will try to convert it into a String value and return it if successful.
         /// 3. If the object can't be converted into a json dictionary nor json string, it will return an error message.
         public func allFingerprintDict() -> [[String: Any]] {
-            convertIntoArrayOfJson(from: self)
+            convertIntoArryOfJson(asDict: asDictionary)
         }
 
         /// Converts `PMChallenge` object into an array of json dictionaries.
@@ -247,7 +243,7 @@ extension PMChallenge {
         ///    it will try to convert it into a String value and return it if successful.
         /// 3. If the object can't be converted into a json dictionary nor json string, it will return an error message.
         public func deviceFingerprintDict() -> [[String: Any]] {
-            convertIntoArrayOfJson(from: deviceFingerprint)
+            convertIntoArryOfJson(asDict: deviceFingerprint.asDictionary)
         }
 
         /// Converts `PMChallenge` `BehaviouralFingerprint` object to json dictionary array
@@ -261,7 +257,7 @@ extension PMChallenge {
         ///    it will try to convert it into a String value and return it if successful.
         /// 3. If the object can't be converted into a json dictionary nor json string, it will return an error message.
         public func behaviouralFingerprintDict() -> [[String: Any]] {
-            convertIntoArrayOfJson(from: behaviouralFingerprint)
+            convertIntoArryOfJson(asDict: behaviouralFingerprint.asDictionary)
         }
 
         // MARK: - Internal
@@ -291,9 +287,9 @@ extension PMChallenge {
             return str ?? ""
         }
 
-        private func convertIntoArrayOfJson(from object: DictionaryConvertible) -> [[String: Any]] {
+        private func convertIntoArryOfJson(asDict: () throws -> [String: Any]) -> [[String: Any]] {
             do {
-                let dict = try object.asDictionary()
+                let dict = try asDict()
                 let username = getUsernameChallenge(dict: dict)
                 let recovery = getRecoveryChallenge(dict: dict)
                 return [username, recovery]

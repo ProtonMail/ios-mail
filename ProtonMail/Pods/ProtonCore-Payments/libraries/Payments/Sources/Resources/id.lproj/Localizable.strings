@@ -22,7 +22,7 @@
 
 "Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Status token pembayaran tidak sesuai. Silakan buka ulang aplikasi. Apabila masalah ini terus berlanjut, hubungi layanan dukungan.";
 
-"Do you want to activate the purchase for %@ address?" = "Anda ingin mengaktifkan pembayaran untuk alamat %@?";
+"Do you want to activate the purchase for %@ address?" = "Apakah Anda ingin mengaktifkan pembayaran untuk alamat %@?";
 
 "Yes, activate it for " = "Ya, aktifkan untuk ";
 

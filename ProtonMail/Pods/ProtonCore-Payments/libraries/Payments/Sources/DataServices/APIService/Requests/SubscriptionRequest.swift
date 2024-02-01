@@ -28,11 +28,13 @@ final class SubscriptionRequest: BaseApiRequest<SubscriptionResponse> {
     private let planId: String
     private let amount: Int
     private let paymentAction: PaymentAction?
+    private let cycle: Int
 
-    init(api: APIService, planId: String, amount: Int, paymentAction: PaymentAction) {
+    init(api: APIService, planId: String, amount: Int, cycle: Int, paymentAction: PaymentAction) {
         self.planId = planId
         self.amount = amount
         self.paymentAction = paymentAction
+        self.cycle = cycle
         super.init(api: api)
     }
 
@@ -40,6 +42,7 @@ final class SubscriptionRequest: BaseApiRequest<SubscriptionResponse> {
         self.planId = planId
         self.amount = 0
         self.paymentAction = nil
+        self.cycle = 12
         super.init(api: api)
     }
 
@@ -48,7 +51,7 @@ final class SubscriptionRequest: BaseApiRequest<SubscriptionResponse> {
     override var path: String { super.path + "/v4/subscription" }
 
     override var parameters: [String: Any]? {
-        var params: [String: Any] = ["Amount": amount, "Currency": "USD", "PlanIDs": [planId: 1], "Cycle": 12, "External": 1]
+        var params: [String: Any] = ["Amount": amount, "Currency": "USD", "PlanIDs": [planId: 1], "Cycle": cycle, "External": 1]
         guard amount != .zero, let paymentAction = paymentAction else {
             return params
         }

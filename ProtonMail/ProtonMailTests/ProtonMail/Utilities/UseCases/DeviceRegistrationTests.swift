@@ -119,7 +119,11 @@ private extension DeviceRegistrationTests {
     func createUserManager(userID: String, apiService: APIServiceMock) -> UserManager {
         let userInfo = UserInfo(
             maxSpace: nil,
+            maxBaseSpace: nil,
+            maxDriveSpace: nil,
             usedSpace: nil,
+            usedBaseSpace: nil,
+            usedDriveSpace: nil,
             language: nil,
             maxUpload: nil,
             role: 0,

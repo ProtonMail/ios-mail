@@ -64,7 +64,7 @@
 
 "Incorrect mailbox password" = "Неверный пароль почтового ящика";
 
-"Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
+"Your session has expired. Please log in again." = "Время сеанса истекло. Пожалуйста, войдите снова.";
 
 "Proton address required" = "Требуется адрес Proton";
 
@@ -154,7 +154,7 @@
 
 "Set recovery method" = "Установить способ восстановления";
 
-"Your account is being created" = "Your account is being created";
+"Your account is being created" = "Создается ваша учетная запись";
 
 "This should take no more than a minute." = "Обычно на это требуется менее минуты.";
 
@@ -198,7 +198,7 @@
 
 "Change email address" = "Изменить адрес электронной почты";
 
-"Congratulations" = "Congratulations";
+"Congratulations" = "Поздравляем";
 
 "Your Proton Free account was successfully created." = "Ваш аккаунт Proton Free был успешно создан.";
 
