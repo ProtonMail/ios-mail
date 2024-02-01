@@ -232,10 +232,12 @@ extension ImportDeviceContacts {
         )
 
         let uuidMatchBatches = uuidMatch.chunked(into: contactBatchSize)
+        var totalContactsUpdatedByUuidMatch = 0
         for batch in uuidMatchBatches {
             try Task.checkCancellation()
             autoreleasepool {
                 let mergedContactsByUuid = mergeContactsMatchByUuid(identifiers: batch, merger: contactMerger)
+                totalContactsUpdatedByUuidMatch += mergedContactsByUuid.count
                 for contact in mergedContactsByUuid {
                     enqueueUpdateContactAction(for: contact, cards: contact.cardDatas)
                 }
@@ -243,15 +245,23 @@ extension ImportDeviceContacts {
         }
 
         let emailMatchBatches = emailMatch.chunked(into: contactBatchSize)
+        var totalContactsUpdatedByEmailMatch = 0
         for batch in emailMatchBatches {
             try Task.checkCancellation()
             autoreleasepool {
                 let mergedContactsByEmail = mergeContactsMatchByEmail(identifiers: batch, merger: contactMerger)
+                totalContactsUpdatedByEmailMatch += mergedContactsByEmail.count
                 for contact in mergedContactsByEmail {
                     enqueueUpdateContactAction(for: contact, cards: contact.cardDatas)
                 }
             }
         }
+
+        let totalNumber = totalContactsUpdatedByUuidMatch + totalContactsUpdatedByEmailMatch
+        let finalUpdatesNumberMsg = "Final number of contacts updated \(totalNumber)"
+        let byUuidMsg = "by uuid: \(totalContactsUpdatedByUuidMatch)"
+        let byEmailMsg = "by email: \(totalContactsUpdatedByEmailMatch)"
+        SystemLogger.log(message: "\(finalUpdatesNumberMsg) (\(byUuidMsg) \(byEmailMsg))", category: .contacts)
     }
 
     private func mergeContactsMatchByUuid(
@@ -277,14 +287,14 @@ extension ImportDeviceContacts {
                     throw ImportDeviceContactsError.protonContactNotFoundByUuid
                 }
 
-                guard let mergedContactEntity = try merger.merge(
-                    deviceContact: deviceContact,
-                    protonContact: protonContact
-                ).contactEntity else {
-                    throw ImportDeviceContactsError.mergedContactEntityIsNil
+                let mergeResult = try merger.merge(deviceContact: deviceContact, protonContact: protonContact)
+                if mergeResult.hasContactBeenUpdated {
+                    if let mergedContactEntity = mergeResult.resultingContact.contactEntity {
+                        resultingMergedContacts.append(mergedContactEntity)
+                    } else {
+                        throw ImportDeviceContactsError.mergedContactEntityIsNil
+                    }
                 }
-                resultingMergedContacts.append(mergedContactEntity)
-
             } catch {
                 let message = "mergeContactsMatchedByUuid uuid \(normalisedContactUuid.redacted) error: \(error)"
                 SystemLogger.log(message: message, category: .contacts, isError: true)
@@ -317,13 +327,14 @@ extension ImportDeviceContacts {
                 let protonContact = matcher.findContactToMergeMatchingEmail(with: deviceContact, in: emailMatchContacts)
 
                 guard let protonContact else { continue }
-                guard let mergedContactEntity = try merger.merge(
-                    deviceContact: deviceContact,
-                    protonContact: protonContact
-                ).contactEntity else {
-                    throw ImportDeviceContactsError.mergedContactEntityIsNil
+                let mergeResult = try merger.merge(deviceContact: deviceContact, protonContact: protonContact)
+                if mergeResult.hasContactBeenUpdated {
+                    if let mergedContactEntity = mergeResult.resultingContact.contactEntity {
+                        resultingMergedContacts.append(mergedContactEntity)
+                    } else {
+                        throw ImportDeviceContactsError.mergedContactEntityIsNil
+                    }
                 }
-                resultingMergedContacts.append(mergedContactEntity)
             } catch {
                 let message = "mergeContactsMatchByEmail uuid \(deviceContactUuid.redacted) error: \(error)"
                 SystemLogger.log(message: message, category: .contacts, isError: true)
@@ -360,9 +371,9 @@ extension ImportDeviceContacts {
         let toUpdateByEmailMatch: [DeviceContactIdentifier]
 
         var description: String {
-            let msgCreate = "Proton contacts to create: \(toCreate.count)"
-            let msgUpdateUuid = "to update (uuid match): \(toUpdateByUuidMatch.count)"
-            let msgUpdateEmail = "to update (email match): \(toUpdateByEmailMatch.count)"
+            let msgCreate = "Device contacts with no match (to create): \(toCreate.count)"
+            let msgUpdateUuid = "with uuid match (update): \(toUpdateByUuidMatch.count)"
+            let msgUpdateEmail = "with email match (update): \(toUpdateByEmailMatch.count)"
             return "\(msgCreate), \(msgUpdateUuid), \(msgUpdateEmail)"
         }
     }

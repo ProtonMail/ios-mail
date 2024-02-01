@@ -37,14 +37,15 @@ final class ContactMergerTests: XCTestCase {
             mailboxPassphrase: SyncContactTestUtils.passphrase
         )
 
-        let result = try sut.merge(deviceContact: deviceContact, protonContact: contactEntity).contactEntity
+        let result = try sut.merge(deviceContact: deviceContact, protonContact: contactEntity)
+        let contactEntity = result.resultingContact.contactEntity
 
-        XCTAssertTrue(result != nil)
-        XCTAssertEqual(result?.cardDatas.count, 2)
-
+        XCTAssertTrue(result.hasContactBeenUpdated)
+        XCTAssertTrue(contactEntity != nil)
+        XCTAssertEqual(contactEntity?.cardDatas.count, 2)
 
         // signed vCard
-        let signedVCard: String! = result?.cardDatas.filter({ $0.type == .SignedOnly }).first?.data
+        let signedVCard: String! = contactEntity?.cardDatas.filter({ $0.type == .SignedOnly }).first?.data
         let pmniCard1 = PMNIEzvcard.parseFirst(signedVCard)
 
         XCTAssertEqual(pmniCard1?.getFormattedName()?.getValue(), "Kathy Bell")
@@ -55,7 +56,7 @@ final class ContactMergerTests: XCTestCase {
 
         // encrypted vCard
 
-        let encryptedVCard: String! = result?.cardDatas.filter({ $0.type == .SignAndEncrypt }).first?.data
+        let encryptedVCard: String! = contactEntity?.cardDatas.filter({ $0.type == .SignAndEncrypt }).first?.data
         let decryptedVCard = try encryptedVCard.decryptMessageWithSingleKeyNonOptional(
             ArmoredKey(value: userKeys.first!.privateKey),
             passphrase: SyncContactTestUtils.passphrase
@@ -76,6 +77,16 @@ final class ContactMergerTests: XCTestCase {
 
         let nickname = pmniCard2?.getNickname().map({ $0.getNickname() })
         XCTAssertEqual(nickname, "KAT")
+    }
+
+    func testMerge_withAutoImport_whenNoDifferences_itReturnsIsContactUpdatedFalse() throws {
+        sut = try ContactMerger(
+            strategy: AutoImportStrategy(),
+            userKeys: userKeys,
+            mailboxPassphrase: SyncContactTestUtils.passphrase
+        )
+        let result = try sut.merge(deviceContact: deviceContactWithNoDifferences, protonContact: contactEntity)
+        XCTAssertFalse(result.hasContactBeenUpdated)
     }
 }
 
@@ -98,6 +109,29 @@ extension ContactMergerTests {
             ADR;TYPE="HOME,pref";PREF=1:;;332 Laguna Street;Corte Madera;CA;94925;USA
             PRODID;TYPE=text;VALUE=TEXT:pm-ez-vcard 0.0.1
             EMAIL;TYPE="HOME";PREF=1:kate-bell@proton.me
+            UID:AB211C5F-9EC9-429F-9466-B9382FF61035
+            END:VCARD
+            """
+        )
+    }
+
+    var deviceContactWithNoDifferences: DeviceContact {
+        DeviceContact(
+            identifier: .init(uuidInDevice: "", emails: []),
+            fullName: nil,
+            vCard:
+            """
+            BEGIN:VCARD
+            VERSION:4.0
+            FN;PREF=1:Kate Bell
+            X-ABADR:us
+            TEL;TYPE="CELL";PREF=1:(555) 564-8583
+            TEL;TYPE="MAIN";PREF=1:(415) 555-3695
+            N:Bell;Kate;;;
+            ORG:Creative Consulting;
+            ADR;TYPE="WORK";PREF=1:;;165 Davis Street;Hillsborough;CA;94010
+            PRODID;TYPE=text;VALUE=TEXT:pm-ez-vcard 0.0.1
+            EMAIL;TYPE="INTERNET";PREF=1:kate-bell@mac.com
             UID:AB211C5F-9EC9-429F-9466-B9382FF61035
             END:VCARD
             """
