@@ -456,6 +456,16 @@ extension UserContainer: HasCacheService {
     }
 }
 
+protocol HasContactsSyncQueue {
+    var contactSyncQueue: ContactsSyncQueue { get }
+}
+
+extension UserContainer: HasContactsSyncQueue {
+    var contactSyncQueue: ContactsSyncQueue {
+        contactSyncQueueFactory()
+    }
+}
+
 protocol HasComposerViewFactory {
     var composerViewFactory: ComposerViewFactory { get }
 }
