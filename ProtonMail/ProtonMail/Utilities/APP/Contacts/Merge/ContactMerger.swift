@@ -35,25 +35,30 @@ struct ContactMerger {
     }
 
     /// Compares `deviceContact`and `protonContact` and merges the changes into one single contact.
-    /// - Returns: will return the resulting object of the merge. The object type will depend on the `strategy`
-    func merge(
-        deviceContact: DeviceContact,
-        protonContact: ContactEntity
-    ) throws -> Either<DeviceContact, ContactEntity> {
+    /// - Returns: will return if the contact was updated and the resulting object of the merge
+    func merge(deviceContact: DeviceContact, protonContact: ContactEntity) throws -> ContactMergeResult {
         let deviceContactVCard = try vCardObject(for: deviceContact)
         let protonVCards = protonVCards(for: protonContact)
 
-        try strategy.merge(deviceContact: deviceContactVCard, protonContact: protonVCards)
+        let hasContactBeenUpdated = try strategy.merge(deviceContact: deviceContactVCard, protonContact: protonVCards)
 
         switch strategy.mergeDestination {
         case .deviceContact:
-            return .left(makeDeviceContact(from: deviceContact, updating: try deviceContactVCard.vCard()))
+            let mergedDeviceContact = makeDeviceContact(from: deviceContact, updating: try deviceContactVCard.vCard())
+            return ContactMergeResult(
+                hasContactBeenUpdated: hasContactBeenUpdated,
+                resultingContact: .left(mergedDeviceContact)
+            )
 
         case .protonContact:
             let cards = try protonVCards
                 .write(userKey: encryptionKey, mailboxPassphrase: mailboxPassphrase)
                 .toJSONString()
-            return .right(makeContactEntity(from: protonContact, updating: cards))
+            let mergedProtonContact = makeContactEntity(from: protonContact, updating: cards)
+            return ContactMergeResult(
+                hasContactBeenUpdated: hasContactBeenUpdated,
+                resultingContact: .right(mergedProtonContact)
+            )
         }
     }
 
@@ -92,6 +97,13 @@ struct ContactMerger {
             emailRelations: contact.emailRelations
         )
     }
+}
+
+struct ContactMergeResult {
+    /// Indicates whether there were differences between the contacts and if `resultingContact` was updated.
+    let hasContactBeenUpdated: Bool
+    /// The contact that was updated if. The type will depend on the `strategy`.
+    let resultingContact: Either<DeviceContact, ContactEntity>
 }
 
 enum ContactMergerError: Error {
