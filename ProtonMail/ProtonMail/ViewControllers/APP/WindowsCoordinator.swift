@@ -49,6 +49,9 @@ final class WindowsCoordinator {
             guard appWindow == nil else { return }
             if let oldAppWindow = oldValue {
                 oldAppWindow.rootViewController?.dismiss(animated: false)
+                if let sideMenu = oldAppWindow.rootViewController as? PMSideMenuController {
+                    oldAppWindow.rootViewController = nil
+                }
             }
             menuCoordinator = nil
         }
@@ -284,6 +287,8 @@ final class WindowsCoordinator {
                             self?.go(dest: .signInWindow(.mailboxPassword))
                         case .signIn:
                             self?.go(dest: .signInWindow(.form))
+                        case .signOut:
+                            NotificationCenter.default.post(name: .didSignOutLastAccount, object: nil)
                         }
                     }
                 )

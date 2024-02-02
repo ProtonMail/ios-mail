@@ -141,6 +141,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .messageSwipeNavigation, toUserWith: user.userID)
     }
 
+    var isLoggingOut: Bool {
+        dependencies.usersManager.loggingOutUserIDs.contains(user.userID)
+    }
+
     init(labelID: LabelID,
          label: LabelInfo?,
          userManager: UserManager,
