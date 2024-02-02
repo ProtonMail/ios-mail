@@ -53,6 +53,13 @@ class NonExpandedHeaderViewController: UIViewController {
         setUpViewModelObservations()
         setUpView()
         setUpTimeLabelUpdate()
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(timeZoneDidChange),
+            name: .NSSystemTimeZoneDidChange,
+            object: nil
+        )
     }
 
     func observeShowDetails(action: @escaping (() -> Void)) {
@@ -86,9 +93,7 @@ class NonExpandedHeaderViewController: UIViewController {
 
         customView.officialBadge.isHidden = viewModel.isOfficialBadgeHidden
 
-        customView.timeLabel.set(text: viewModel.infoProvider.time,
-                                 preferredFont: .footnote,
-                                 textColor: ColorProvider.TextWeak)
+        setTimeString()
         customView.recipientLabel.set(
             text: viewModel.infoProvider.simpleRecipient ?? .init(string: ""),
             preferredFont: .footnote,
@@ -120,6 +125,12 @@ class NonExpandedHeaderViewController: UIViewController {
         }
     }
 
+    private func setTimeString() {
+        customView.timeLabel.set(text: viewModel.infoProvider.time,
+                                 preferredFont: .footnote,
+                                 textColor: ColorProvider.TextWeak)
+    }
+
     func preferredContentSizeChanged() {
         customView.preferredContentSizeChanged()
         setUpTags()
@@ -144,6 +155,11 @@ class NonExpandedHeaderViewController: UIViewController {
     @objc
     private func lockTapped() {
         viewModel.infoProvider.checkedSenderContact?.encryptionIconStatus?.text.alertToastBottom()
+    }
+
+    @objc
+    private func timeZoneDidChange() {
+        setTimeString()
     }
 
     private func setUpViewModelObservations() {

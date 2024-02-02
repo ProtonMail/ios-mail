@@ -94,6 +94,7 @@ class SearchViewController: AttachmentPreviewViewController, ComposeSaveHintProt
         self.setupSearchBar()
         self.setupTableview()
         self.viewModel.viewDidLoad()
+        addNotificationsObserver()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -444,6 +445,15 @@ extension SearchViewController {
 }
 
 extension SearchViewController {
+    private func addNotificationsObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(timeZoneDidChange),
+            name: .NSSystemTimeZoneDidChange,
+            object: nil
+        )
+    }
+
     private func updateTapped(status: Bool) {
         serialQueue.sync {
             self.messageTapped = status
@@ -629,6 +639,11 @@ extension SearchViewController {
                     self?.cellPresenter.presentSenderImage(image, in: cell.customView)
                 }
             }
+    }
+
+    @objc
+    private func timeZoneDidChange() {
+        reloadTable()
     }
 }
 

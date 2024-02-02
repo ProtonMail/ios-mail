@@ -2614,7 +2614,7 @@ extension MailboxViewController {
 
     @objc
     private func timeZoneDidChange() {
-        reloadTableViewDataSource()
+        reloadTableViewDataSource(forceReload: true)
     }
 }
 
@@ -2622,10 +2622,12 @@ extension MailboxViewController {
 extension MailboxViewController {
     private func reloadTableViewDataSource(
         snapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>? = nil,
+        forceReload: Bool = false,
         completion: (() -> Void)? = nil
     ) {
         viewModel.diffableDataSource?.reloadSnapshot(
             snapshot: snapshot,
+            forceReload: forceReload,
             completion: completion
         )
     }
