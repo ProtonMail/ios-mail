@@ -100,7 +100,11 @@ struct LocalEventRSVP: EventRSVP {
             organizer: iCalEvent.organizer.map { .init(attendeeModel: $0) },
             invitees: invitees,
             status: iCalEvent.status.flatMap { EventDetails.EventStatus(rawValue: $0.lowercased()) },
-            calendarAppDeepLink: .ProtonCalendar.showEvent(eventUID: basicEventInfo.eventUID)
+            calendarAppDeepLink: .ProtonCalendar.showEvent(
+                apiEventID: apiEvent.ID,
+                calendarID: apiEvent.calendarID,
+                startTime: Int(apiEvent.startTime)
+            )
         )
     }
 

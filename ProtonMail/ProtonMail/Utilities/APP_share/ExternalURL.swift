@@ -36,13 +36,32 @@ extension URL {
     }
 
     enum ProtonCalendar {
-        private static func baseURL(host: String) -> URL {
-            URL(string: "ProtonCalendar://\(host)")!
+        /// Only use this URL to detect if an old version of Calendar is installed.
+        /// Old means without proper deep link support.
+        static var legacyScheme: URL {
+            URL(string: "ProtonCalendar://")!
         }
 
-        // TODO: this is a fake URL that will open the Calendar app but that's it; update this once Calendar adds deep linking support
-        static func showEvent(eventUID: String) -> URL {
-            baseURL(host: "events").appendingPathComponent(eventUID)
+        private static func baseURL(host: String) -> URL {
+            URL(string: "ch.protonmail.calendar://\(host)")!
+        }
+
+        static func showEvent(apiEventID: String, calendarID: String, startTime: Int) -> URL {
+            let queryItems: [URLQueryItem] = [
+                URLQueryItem(name: "eventID", value: apiEventID),
+                URLQueryItem(name: "calendarID", value: calendarID),
+                URLQueryItem(name: "startTime", value: "\(startTime)")
+            ]
+
+            if #available(iOS 16.0, *) {
+                return baseURL(host: "eventDetails").appending(queryItems: queryItems)
+            } else {
+                var components = URLComponents()
+                components.scheme = "protoncalendar"
+                components.host = "eventDetails"
+                components.queryItems = queryItems
+                return components.url!
+            }
         }
     }
 }

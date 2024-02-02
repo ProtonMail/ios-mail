@@ -145,24 +145,26 @@ final class AttachmentViewModel {
         return attachment.data
     }
 
-    @MainActor
-    func onOpenInCalendarTapped(deepLink: URL) async {
-        let urlsInPreferredOrder: [URL] = [
-            deepLink,
-            .AppStore.calendar
-        ]
+    func instructionToHandle(deepLink: URL) -> OpenInCalendarInstruction {
+        let isCalendarInstalledAndAbleToOpenDeepLink = dependencies.urlOpener.canOpenURL(deepLink)
+        let isOlderVersionOfCalendarInstalled = dependencies.urlOpener.canOpenURL(.ProtonCalendar.legacyScheme)
 
-        for url in urlsInPreferredOrder {
-            let options: [UIApplication.OpenExternalURLOptionsKey: any Sendable] = [:]
-
-            if await dependencies.urlOpener.openAsync(url, options: options) {
-                break
-            }
+        if isCalendarInstalledAndAbleToOpenDeepLink {
+            return .openDeepLink(deepLink)
+        } else if isOlderVersionOfCalendarInstalled {
+            return .goToAppStore(askBeforeGoing: true)
+        } else {
+            return .goToAppStore(askBeforeGoing: false)
         }
     }
 }
 
 extension AttachmentViewModel {
+    enum OpenInCalendarInstruction: Equatable {
+        case openDeepLink(URL)
+        case goToAppStore(askBeforeGoing: Bool)
+    }
+
     enum InvitationViewState: Equatable {
         case noInvitationFound
         case invitationFoundAndProcessing
