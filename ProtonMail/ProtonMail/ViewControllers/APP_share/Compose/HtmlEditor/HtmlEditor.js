@@ -334,14 +334,17 @@ observer.observe(document.body)
 
 html_editor.caret = document.createElement('caret'); // something happening here preventing selection of elements
 html_editor.getCaretYPosition = function () {
-    const range = window.getSelection().getRangeAt(0).cloneRange();
-    range.collapse(false)
-    const rangeRect = range.getClientRects()[0];
-    if (rangeRect) {
-        x = rangeRect.left; // since the caret is only 1px wide, left == right
-        y = rangeRect.top; // top edge of the caret
-        window.webkit.messageHandlers.moveCaret.postMessage({ "messageHandler": "moveCaret", "cursorX": x, "cursorY": y });
-    }
+    var range = window.getSelection().getRangeAt(0).cloneRange();
+    range.collapse(false);
+    range.insertNode(html_editor.caret);
+
+    // relative to the viewport, while offsetTop is relative to parent, which differs when editing the quoted message text
+    var rect = html_editor.caret.getBoundingClientRect();
+    var leftPosition = rect.left + window.scrollX;
+    var topPosition = rect.top + window.scrollY;
+    var contentsHeight = html_editor.getContentsHeight();
+
+    window.webkit.messageHandlers.moveCaret.postMessage({ "messageHandler": "moveCaret", "cursorX": leftPosition, "cursorY": topPosition, "height": contentsHeight });
 }
 
 //this is for update protonmail email signature
@@ -560,6 +563,8 @@ html_editor.removeStyleFromSelection = function () {
 html_editor.update_font_size = function (size) {
     let pixelSize = size + "px";
     document.documentElement.style.setProperty("font-size", pixelSize);
+    var contentsHeight = html_editor.getContentsHeight();
+    window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
 };
 
 const toMap = function (list) {
