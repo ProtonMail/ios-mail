@@ -440,6 +440,8 @@ extension UsersManager {
         // For logout from lock screen
         // Have to call auth delete to revoke push notification token 
         for user in users {
+            loggingOutUserIDs.insert(user.userID)
+            user.parentManager = nil
             let authDelete = AuthDeleteRequest()
             user.apiService.perform(request: authDelete) { _, _ in }
             user.eventsService.stop()
@@ -475,17 +477,14 @@ extension UsersManager {
             // good opportunity to remove all temp folders
             FileManager.default.cleanTemporaryDirectory()
             // some tests are messed up without tmp folder, so let's keep it for consistency
-            #if targetEnvironment(simulator)
+#if targetEnvironment(simulator)
             try? FileManager.default
                 .createDirectory(at: FileManager.default.temporaryDirectory,
                                  withIntermediateDirectories: true,
                                  attributes:
                                     nil)
-            #endif
-
-            if !ProcessInfo.isRunningUnitTests {
-                NotificationCenter.default.post(name: .didSignOutLastAccount, object: self)
-            }
+#endif
+            self.loggingOutUserIDs.removeAll()
         }
     }
 

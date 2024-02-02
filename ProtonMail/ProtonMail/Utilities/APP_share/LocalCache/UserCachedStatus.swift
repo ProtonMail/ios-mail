@@ -23,6 +23,7 @@
 import Foundation
 import ProtonCoreKeymaker
 
+@available(*, deprecated, message: "Remove global access of userCachedStatus in the future.")
 let userCachedStatus = UserCachedStatus(keychain: KeychainWrapper.keychain)
 
 // sourcery: mock

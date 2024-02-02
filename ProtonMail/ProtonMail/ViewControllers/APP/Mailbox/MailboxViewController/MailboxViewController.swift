@@ -329,6 +329,10 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         if Message.Location(viewModel.labelID) == .inbox {
             viewModel.user.appRatingService.preconditionEventDidOccur(.inboxNavigation)
         }
+        guard !viewModel.isLoggingOut && viewModel.user.parentManager != nil else {
+            viewModel.resetFetchedController()
+            return
+        }
         if viewModel.isNewEventLoopEnabled && viewModel.isFirstFetch {
             getLatestMessages()
         } 
@@ -2297,6 +2301,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
                 let previousMessageCount = self.previousMessageCount,
                 previousMessageCount != 0,
                 remappedSnapshot.numberOfItems == 0,
+                !self.viewModel.isLoggingOut,
                 let item = self.viewModel.mailboxItem(at: indexPath),
                 let date = item.time(labelID: self.viewModel.labelID)
             else { return }

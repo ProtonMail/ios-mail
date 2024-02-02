@@ -209,9 +209,11 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
         cell.configCell(
             L11n.SettingsLockScreen.appKeyProtection,
             isOn: viewModel.output.isAppKeyEnabled
-        ) { [weak self] isNewValueEnabled, feedback in
+        ) { [weak self, weak cell] isNewValueEnabled, feedback in
             if isNewValueEnabled {
-                self?.showAppKeyDisclaimer(for: cell.switchView)
+                if let switchView = cell?.switchView {
+                    self?.showAppKeyDisclaimer(for: switchView)
+                }
             } else {
                 self?.viewModel.input.didChangeAppKeyValue(isNewStatusEnabled: false)
             }
