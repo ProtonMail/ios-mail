@@ -205,7 +205,7 @@ struct LocalEventRSVP: EventRSVP {
     }
 
     private func combineICS(components: [String]) throws -> String {
-        guard var firstComponent = components.first else {
+        guard let firstComponent = components.first else {
             throw EventRSVPError.noICSComponents
         }
 

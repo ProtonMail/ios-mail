@@ -46,7 +46,7 @@ extension EventPage {
 private struct RefreshStatus: OptionSet {
     let rawValue: Int
     // 255 means throw out client cache and reload everything from server, 1 is mail, 2 is contacts
-    static let upToDate       = RefreshStatus([])
+    static let upToDate = RefreshStatus([])
     /// When the user was delinquent and is not anymore
     static let mail     = RefreshStatus(rawValue: 1 << 0)
     /// When the user cleared his contacts

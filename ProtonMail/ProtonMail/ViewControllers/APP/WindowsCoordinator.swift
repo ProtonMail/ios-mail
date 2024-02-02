@@ -49,7 +49,7 @@ final class WindowsCoordinator {
             guard appWindow == nil else { return }
             if let oldAppWindow = oldValue {
                 oldAppWindow.rootViewController?.dismiss(animated: false)
-                if let sideMenu = oldAppWindow.rootViewController as? PMSideMenuController {
+                if oldAppWindow.rootViewController is PMSideMenuController {
                     oldAppWindow.rootViewController = nil
                 }
             }
@@ -548,7 +548,7 @@ extension WindowsCoordinator {
             return
         }
         SystemLogger.log(
-            message: "HandleSwitchViewDeepLinkIfNeeded: \(deepLink.debugDescription ?? "no deep link")",
+            message: "HandleSwitchViewDeepLinkIfNeeded: \(deepLink?.debugDescription ?? "no deep link")",
             category: .notificationDebug
         )
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in

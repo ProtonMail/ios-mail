@@ -417,7 +417,6 @@ private extension SingleMessageViewController {
             }
         case .snooze:
             PMAssertionFailure("Snooze doesn't support single message")
-            break
         }
     }
 

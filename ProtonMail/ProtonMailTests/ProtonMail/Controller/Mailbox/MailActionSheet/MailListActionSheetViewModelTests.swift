@@ -71,7 +71,7 @@ class MailListActionSheetViewModelTests: XCTestCase {
                 isSnoozeEnabled: true
             )
             XCTAssertEqual(sut.title, randomTitle)
-            var expected: [MailListActionSheetItemViewModel] = [
+            let expected: [MailListActionSheetItemViewModel] = [
                 .starActionViewModel(),
                 .unstarActionViewModel(),
                 .markUnreadActionViewModel(),
@@ -141,7 +141,7 @@ class MailListActionSheetViewModelTests: XCTestCase {
                 isSnoozeEnabled: true
             )
             XCTAssertEqual(sut.title, randomTitle)
-            var expected: [MailListActionSheetItemViewModel] = [
+            let expected: [MailListActionSheetItemViewModel] = [
                 .starActionViewModel(),
                 .unstarActionViewModel(),
                 .markUnreadActionViewModel(),
@@ -166,7 +166,7 @@ class MailListActionSheetViewModelTests: XCTestCase {
                 isSnoozeEnabled: true
             )
             XCTAssertEqual(sut.title, randomTitle)
-            var expected: [MailListActionSheetItemViewModel] = [
+            let expected: [MailListActionSheetItemViewModel] = [
                 .starActionViewModel(),
                 .unstarActionViewModel(),
                 .markUnreadActionViewModel(),
@@ -191,7 +191,7 @@ class MailListActionSheetViewModelTests: XCTestCase {
                 isSnoozeEnabled: true
             )
             XCTAssertEqual(sut.title, randomTitle)
-            var expected: [MailListActionSheetItemViewModel] = [
+            let expected: [MailListActionSheetItemViewModel] = [
                 .starActionViewModel(),
                 .unstarActionViewModel(),
                 .markUnreadActionViewModel(),
@@ -216,7 +216,7 @@ class MailListActionSheetViewModelTests: XCTestCase {
                 isSnoozeEnabled: true
             )
             XCTAssertEqual(sut.title, randomTitle)
-            var expected: [MailListActionSheetItemViewModel] = [
+            let expected: [MailListActionSheetItemViewModel] = [
                 .starActionViewModel(),
                 .unstarActionViewModel(),
                 .markUnreadActionViewModel(),
@@ -241,7 +241,7 @@ class MailListActionSheetViewModelTests: XCTestCase {
                 isSnoozeEnabled: true
             )
             XCTAssertEqual(sut.title, randomTitle)
-            var expected: [MailListActionSheetItemViewModel] = [
+            let expected: [MailListActionSheetItemViewModel] = [
                 .starActionViewModel(),
                 .unstarActionViewModel(),
                 .markUnreadActionViewModel(),
@@ -266,7 +266,7 @@ class MailListActionSheetViewModelTests: XCTestCase {
                 isSnoozeEnabled: true
             )
             XCTAssertEqual(sut.title, randomTitle)
-            var expected: [MailListActionSheetItemViewModel] = [
+            let expected: [MailListActionSheetItemViewModel] = [
                 .starActionViewModel(),
                 .unstarActionViewModel(),
                 .markUnreadActionViewModel(),

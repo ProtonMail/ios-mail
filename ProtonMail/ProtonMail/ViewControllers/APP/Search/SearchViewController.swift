@@ -345,15 +345,12 @@ extension SearchViewController {
         banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: self)
     }
 
-    private var moveToActionHandler: MoveToActionSheetProtocol? {
-        guard let searchVM = self.viewModel as? SearchViewModel else {
-            return nil
-        }
-        return searchVM
+    private var moveToActionHandler: MoveToActionSheetProtocol {
+        viewModel
     }
 
     private func showMoveToActionSheet(messages: [MessageEntity], isEnableColor: Bool, isInherit: Bool) {
-        guard let handler = moveToActionHandler else { return }
+        let handler = moveToActionHandler
         let moveToViewModel = MoveToActionSheetViewModelMessages(
             menuLabels: handler.getFolderMenuItems(),
             isEnableColor: isEnableColor,
@@ -382,21 +379,18 @@ extension SearchViewController {
     }
 
     private func didSelectFolderToMoveTo(folder: MenuLabel, messages: [MessageEntity]) {
-        moveToActionHandler?.handleMoveToAction(messages: messages, to: folder)
+        moveToActionHandler.handleMoveToAction(messages: messages, to: folder)
 
         dismissActionSheet()
         cancelButtonTapped()
     }
 
-    private var labelAsActionHandler: LabelAsActionSheetProtocol? {
-        guard let searchVM = self.viewModel as? SearchViewModel else {
-            return nil
-        }
-        return searchVM
+    private var labelAsActionHandler: LabelAsActionSheetProtocol {
+        viewModel
     }
 
     private func showLabelAsActionSheet(messages: [MessageEntity]) {
-        guard let handler = labelAsActionHandler else { return }
+        let handler = labelAsActionHandler
         let labelAsViewModel = LabelAsActionSheetViewModelMessages(menuLabels: handler.getLabelMenuItems(),
                                                                    messages: messages)
 
