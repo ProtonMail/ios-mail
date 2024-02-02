@@ -66,7 +66,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
     private var menuWidth: CGFloat
     private let dependencies: Dependencies
     var pendingActionAfterDismissal: (() -> Void)?
-    private var mailboxCoordinator: MailboxCoordinator?
+    private(set) var mailboxCoordinator: MailboxCoordinator?
     let sideMenu: PMSideMenuController
     private var settingsDeviceCoordinator: SettingsDeviceCoordinator?
     private(set) var currentLocation: MenuLabel?
@@ -140,9 +140,9 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
                     }
 
                     let labelIDToGo = message.messageLocation?.labelID ?? Message.Location.inbox.labelID
-                    self.switchFolderIfNeeded(labelID: labelIDToGo)
-
-                    self.goToDetailViewIfNeeded(deepLink: deepLink, labelID: labelIDToGo)
+                    self.switchFolderIfNeeded(labelID: labelIDToGo) {
+                        self.goToDetailViewIfNeeded(deepLink: deepLink, labelID: labelIDToGo)
+                    }
                 }
             } else {
                 SystemLogger.log(
@@ -269,15 +269,30 @@ extension MenuCoordinator {
         return nil
     }
 
-    private func switchFolderIfNeeded(labelID: LabelID) {
+    private func switchFolderIfNeeded(labelID: LabelID, completion: @escaping () -> Void) {
         guard currentLocation?.location.rawLabelID != labelID.rawValue else {
+            // reset unread filter
+            if let mailboxVC = mailboxCoordinator?.viewController {
+                if mailboxVC.unreadFilterButton.isSelected {
+                    mailboxVC.unreadMessageFilterButtonTapped()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                        completion()
+                    }
+                    return
+                }
+            }
+            completion()
             return
         }
+        // Reset the global unread filter flag
+        dependencies.usersManager.firstUser?.isUserSelectedUnreadFilterInInbox = false
+
         let location = LabelLocation(id: labelID.rawValue, name: nil)
         let menuLabel = MenuLabel(location: location)
         navigateToMailBox(labelInfo: menuLabel, deepLink: nil, isSwitchEvent: true)
         currentLocation = menuLabel
         viewModel.highlight(label: menuLabel)
+        completion()
     }
 
     private class func getLocation(by path: String, value: String?) -> MenuLabel? {
