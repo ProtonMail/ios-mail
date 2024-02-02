@@ -47,9 +47,68 @@ final class MenuCoordinatorTests: XCTestCase {
     }
 
     func testFollow_notificationDeepLink_folderIsSwitchedCorrectly() throws {
-        // Prepare test data
         let msgID = MessageID(String.randomString(20))
         let targetLabelID = LabelID("Vg_DqN6s-xg488vZQBkiNGz0U-62GKN6jMYRnloXY-isM9s5ZR-rWCs_w8k9Dtcc-sVC-qnf8w301Q-1sA6dyw==")
+        try prepareTestData(msgID: msgID, targetLabelID: targetLabelID)
+        sut.go(to: .init(location: .inbox))
+        sut.mailboxCoordinator?.viewController?.loadViewIfNeeded()
+        let mailboxVC = try getMailboxVC(from: sut)
+        // simulate unread filter is on
+        mailboxVC.unreadMessageFilterButtonTapped()
+        XCTAssertTrue(mailboxVC.unreadFilterButton.isSelected)
+
+        // Create test deeplink
+        let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: user.authCredential.sessionID)
+        link.append(.init(name: MenuCoordinator.Setup.switchFolderFromNotification.rawValue, value: msgID.rawValue))
+        link.append(.init(name: MailboxCoordinator.Destination.details.rawValue, value: msgID.rawValue))
+
+        // simulate opening notification
+        sut.follow(link)
+
+        wait(self.sut.currentLocation?.location.labelID.rawValue == targetLabelID.rawValue)
+        let mailboxVC2 = try getMailboxVC(from: sut)
+        mailboxVC2.loadViewIfNeeded()
+        wait(mailboxVC2.unreadFilterButton.isSelected == false)
+    }
+
+    func testFollow_notificationDeepLink_inSameFolder_withUnreadFilterOn_unreadFilterWillBeDeselected() throws {
+        let msgID = MessageID(String.randomString(20))
+        let targetLabelID = LabelID("0")
+        try prepareTestData(msgID: msgID, targetLabelID: targetLabelID)
+        sut.go(to: .init(location: .inbox))
+        sut.mailboxCoordinator?.viewController?.loadViewIfNeeded()
+        let mailboxVC = try getMailboxVC(from: sut)
+        // simulate unread filter is on
+        mailboxVC.unreadMessageFilterButtonTapped()
+        XCTAssertTrue(mailboxVC.unreadFilterButton.isSelected)
+
+        // Create test deeplink
+        let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: user.authCredential.sessionID)
+        link.append(.init(name: MenuCoordinator.Setup.switchFolderFromNotification.rawValue, value: msgID.rawValue))
+        link.append(.init(name: MailboxCoordinator.Destination.details.rawValue, value: msgID.rawValue))
+
+        // simulate opening notification
+        sut.follow(link)
+
+        wait(self.sut.currentLocation?.location.labelID.rawValue == targetLabelID.rawValue)
+        let mailboxVC2 = try getMailboxVC(from: sut)
+        wait(mailboxVC2.unreadFilterButton.isSelected == false)
+    }
+
+    func testFollow_shortCutStarDeepLink_folderIsSwitchedCorrectly() throws {
+        let deepLink = SpringboardShortcutsService.QuickActions.favorites.deeplink
+        _ = deepLink.popFirst
+        sut.follow(deepLink)
+
+        wait(self.sut.currentLocation?.location.labelID == Message.Location.starred.labelID)
+    }
+
+    private func getMailboxVC(from sut: MenuCoordinator) throws -> MailboxViewController {
+        sut.mailboxCoordinator?.viewController?.shouldAnimateSkeletonLoading = false
+        return try XCTUnwrap(sut.mailboxCoordinator?.viewController)
+    }
+
+    private func prepareTestData(msgID: MessageID, targetLabelID: LabelID) throws {
         _ = try testContainer.contextProvider.write { context in
             TestDataCreator.mockMessage(
                 messageID: msgID,
@@ -74,23 +133,5 @@ final class MenuCoordinatorTests: XCTestCase {
         apiMock.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(["Message": messageJSON]))
         }
-
-        // Create test deeplink
-        let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: user.authCredential.sessionID)
-        link.append(.init(name: MenuCoordinator.Setup.switchFolderFromNotification.rawValue, value: msgID.rawValue))
-        link.append(.init(name: MailboxCoordinator.Destination.details.rawValue, value: msgID.rawValue))
-
-        // simulate opening notification
-        sut.follow(link)
-
-        wait(self.sut.currentLocation?.location.labelID.rawValue == targetLabelID.rawValue)
-    }
-
-    func testFollow_shortCutStarDeepLink_folderIsSwitchedCorrectly() throws {
-        let deepLink = SpringboardShortcutsService.QuickActions.favorites.deeplink
-        _ = deepLink.popFirst
-        sut.follow(deepLink)
-
-        wait(self.sut.currentLocation?.location.labelID == Message.Location.starred.labelID)
     }
 }
