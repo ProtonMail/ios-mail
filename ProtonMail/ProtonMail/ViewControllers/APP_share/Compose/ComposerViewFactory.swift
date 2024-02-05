@@ -132,7 +132,7 @@ final class ComposerViewFactory {
             fetchMobileSignatureUseCase: FetchMobileSignature(
                 dependencies: .init(
                     coreKeyMaker: dependencies.keyMaker,
-                    cache: dependencies.userCachedStatus, 
+                    cache: dependencies.userCachedStatus,
                     keychain: dependencies.keychain
                 )
             ),

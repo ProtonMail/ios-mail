@@ -887,7 +887,7 @@ extension CSSMagic {
     static func splitInline(attributes: String) -> [CSSAttribute] {
         // To remove comment in the attributes
         // letter-spacing: 0px; /*padding-bottom: 4px;*/
-        var attributes = attributes.preg_replace(#"\/\*.*\*\/"#, replaceto: "")
+        let attributes = attributes.preg_replace(#"\/\*.*\*\/"#, replaceto: "")
         // "font-family: arial; font-size: 14px;"
         return attributes
             .split(separator: ";")

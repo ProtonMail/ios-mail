@@ -208,8 +208,6 @@ extension PMDatePicker {
 
         let baseDate = PMDatePicker.referenceDate(pickerType: pickerType)
 
-        let minSeconds = pickerType == .scheduleSend ?
-        Constants.ScheduleSend.minNumberOfSeconds : Constants.Snooze.minNumberOfSeconds
         let minimumDate = Date(timeInterval: Constants.ScheduleSend.minNumberOfSeconds, since: baseDate)
         self.datePicker.date = minimumDate
         self.datePicker.minimumDate = minimumDate

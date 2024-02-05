@@ -22,8 +22,8 @@
 
 import class ProtonCoreDataModel.UserInfo
 import ProtonCoreTroubleShooting
-import ProtonMailAnalytics
 import ProtonCoreUIFoundations
+import ProtonMailAnalytics
 import SideMenuSwift
 import protocol ProtonCoreServices.APIService
 
@@ -571,7 +571,7 @@ extension MailboxCoordinator {
             isUnread: viewController?.isShowingUnreadMessageOnly ?? false,
             labelID: viewModel.labelID,
             user: viewModel.user,
-            userIntroduction: userCachedStatus,
+            userIntroduction: dependencies.userCachedStatus,
             goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
@@ -586,7 +586,7 @@ extension MailboxCoordinator {
             labelID: viewModel.labelID,
             user: viewModel.user,
             targetMessageID: targetID,
-            userIntroduction: userCachedStatus,
+            userIntroduction: dependencies.userCachedStatus,
             goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
