@@ -143,6 +143,12 @@ class ExpandedHeaderViewController: UIViewController {
             contactRow = present(viewModel: ccData, doNotCoverMoreButton: doNotCoverMoreButton)
         }
 
+        if viewModel.infoProvider.message.contains(location: LabelLocation.hiddenSent),
+           let bccData = viewModel.infoProvider.bccData {
+            let doNotCoverMoreButton = viewModel.infoProvider.toData == nil && viewModel.infoProvider.ccData == nil
+            contactRow = present(viewModel: bccData, doNotCoverMoreButton: doNotCoverMoreButton)
+        }
+
         if viewModel.infoProvider.toData == nil && viewModel.infoProvider.ccData == nil {
             contactRow = present(viewModel: .undisclosedRecipients)
         }

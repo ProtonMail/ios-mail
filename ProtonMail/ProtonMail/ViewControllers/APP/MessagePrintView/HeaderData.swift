@@ -22,7 +22,7 @@
 
 import Foundation
 
-/// Incapsulates data we need for filling in the EmailHeaderView. Will not be needed once we deprecate that view.
+/// Incapsulates data we need for filling in the PrintHeaderView. Will not be needed once we deprecate that view.
 class HeaderData: NSObject {
     let title: String
     let sender: ContactVO
@@ -52,22 +52,5 @@ class HeaderData: NSObject {
         self.labels = message.labels
         self.score = message.spamScore
         self.isSent = message.isSent
-    }
-}
-
-extension EmailHeaderView {
-    func updateHeaderData(_ headerData: HeaderData) {
-        self.updateHeaderData(headerData.title,
-                              sender: headerData.sender,
-                              to: headerData.to,
-                              cc: headerData.cc,
-                              bcc: headerData.bcc,
-                              isStarred: headerData.isStarred,
-                              time: headerData.time,
-                              labels: headerData.labels,
-                              showShowImages: false,
-                              expiration: nil,
-                              score: headerData.score,
-                              isSent: headerData.isSent)
     }
 }
