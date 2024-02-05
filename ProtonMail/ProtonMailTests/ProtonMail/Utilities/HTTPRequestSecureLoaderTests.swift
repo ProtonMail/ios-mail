@@ -73,12 +73,12 @@ final class HTTPRequestSecureLoaderTests: XCTestCase {
         sut.observeHeight { _ in
             e.fulfill()
         }
-
-        sut.load(contents: content, in: webView)
+        webView.frame = CGRect(x: 0, y: 0, width: 350, height: 500)
+        _ = sut.load(contents: content, in: webView)
         // Call second time in a short time
         let e2 = expectation(description: "Closure is called")
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(150)) {
-            self.sut.load(contents: content, in: self.webView)
+            _ = self.sut.load(contents: content, in: self.webView)
             e2.fulfill()
         }
         wait(for: [e2], timeout: 0.5)
@@ -101,8 +101,9 @@ final class HTTPRequestSecureLoaderTests: XCTestCase {
             e.fulfill()
         }
 
-        sut.load(contents: content, in: webView)
-        sut.load(contents: content, in: webView)
+        webView.frame = CGRect(x: 0, y: 0, width: 350, height: 500)
+        _ = sut.load(contents: content, in: webView)
+        _ = sut.load(contents: content, in: webView)
 
         // Expect the `didFinish` is called
         waitForExpectations(timeout: 1)
