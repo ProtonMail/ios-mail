@@ -264,7 +264,7 @@ struct MessageEncryptionIconHelper {
                          isNonePM: true)
         }
 
-        if [PGPScheme.pgpInline, PGPScheme.pgpMIME]
+        if [PGPScheme.pgpInline, PGPScheme.pgpMIME, PGPScheme.cleartextMIME]
             .contains(sendPreferences.pgpScheme) {
             if sendPreferences.encrypt {
                 if sendPreferences.isPublicKeyPinned {
