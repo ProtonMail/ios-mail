@@ -88,6 +88,8 @@ extension AppDelegate: TrustKitUIDelegate {
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        setupLogLocation()
+
         let appVersion = Bundle.main.appVersion
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable) | \(appVersion)"
         SystemLogger.log(message: message, category: .appLifeCycle)
@@ -324,6 +326,22 @@ extension AppDelegate: UnlockManagerDelegate {
 
     func loadUserDataAfterUnlock() {
         dependencies.launchService.loadUserDataAfterUnlock()
+    }
+
+    private func setupLogLocation() {
+        // Delete old log in the app container
+        if let originalLogFile = PMLog.logFile {
+            if FileManager.default.fileExists(atPath: originalLogFile.path) {
+                do {
+                    try FileManager.default.removeItem(at: originalLogFile)
+                } catch {
+                    PMAssertionFailure(error)
+                }
+            }
+        }
+        // Set the log file location to app group
+        let directory = FileManager.default.appGroupsDirectoryURL
+        PMLog.logsDirectory = directory
     }
 }
 
