@@ -62,7 +62,12 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
         self.schemeHandler = schemeHandler
     }
 
-    func load(contents: WebContents, in webView: WKWebView) {
+    /// - Returns: start to load content
+    func load(contents: WebContents, in webView: WKWebView) -> Bool {
+        guard webView.frame.width > 0 else {
+            // Sometimes size of webView is wrong, viewPort ratio will be wrong when loading under this condition
+            return false
+        }
         if contents.body.isEmpty {
             delegate?.showSkeletonView()
         }
@@ -111,6 +116,7 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
             self.prepareRendering(contents, into: webView.configuration)
             webView.load(request)
         }
+        return true
     }
 
     func observeHeight(_ callBack: @escaping ((CGFloat) -> Void)) {
