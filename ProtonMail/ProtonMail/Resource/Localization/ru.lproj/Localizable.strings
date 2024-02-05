@@ -992,7 +992,7 @@
 "Retry" = "Повторить";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "'В EE, MMM d, yyyy в %@";
+"'On' E, MMM d, yyyy 'at' %@" = "'В' EE, MMM d, yyyy 'в' %@";
 
 /* No comment provided by engineer. */
 "Message expired" = "Срок действия сообщения истёк";

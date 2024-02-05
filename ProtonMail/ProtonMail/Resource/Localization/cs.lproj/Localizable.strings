@@ -1974,7 +1974,7 @@
 "Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Zapnutím této funkce automaticky přidáte nové kontakty ze zařízení do aplikace Proton Mail.";
 
 /* Auto import alert title */
-"Auto-import enabled" = "Auto-import enabled";
+"Auto-import enabled" = "Automatické importování povoleno";
 
 /* Auto import alert message */
 "The initial import may take some time and will only occur when the app is in the foreground." = "První import může nějakou dobu trvat a proběhne pouze tehdy, když je aplikace v popředí.";

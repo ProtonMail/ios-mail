@@ -1259,7 +1259,7 @@
 "Addresses" = "Adressen";
 
 /* Cell title in device settings - mute notification until a later time. */
-"Snooze" = "Sluimeren";
+"Snooze" = "Snoozen";
 
 /* cell title in device settings */
 "Mailbox" = "Mailbox";
@@ -2232,19 +2232,19 @@
 "Downloading attachment" = "Bijlage aan het downloaden";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Gesluimerd tot %@";
+"Snoozed until %@" = "Gesnoozed tot %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Ontsluimeren";
+"Unsnooze" = "Ontsnoozen";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Gesluimerd tot %@";
+"Snooze until %@" = "Gesnoozed tot %@";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "Gesprek ontsluimerd";
+"Conversation unsnoozed" = "Gesprek gesnoozed";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Sluimeren tot...";
+"Snooze until..." = "Snooze tot...";
 
 /* One of snooze option shows in action sheet */
 "Later this week" = "Later deze week";
@@ -2262,10 +2262,10 @@
 "Want to snooze any time?" = "Voor enige tijd snoozen?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Krijg toegang tot aanpasbare sluimertijden wanneer u uw abonnement upgradet";
+"Unlock custom snooze times when you upgrade" = "Krijg toegang tot aanpasbare snoozetijden wanneer u uw abonnement upgradet";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Tot 15 mail adressen/aliassen";
+"Up to 15 email addresses/aliases" = "Tot 15 e-mailadressen/aliassen";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Onbeperkt aantal mappen, labels en filters";
