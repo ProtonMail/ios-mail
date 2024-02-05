@@ -136,6 +136,7 @@ extension AppDelegate: UIApplicationDelegate {
         }
 #endif
         PMAPIService.setupTrustIfNeeded()
+        configureCoreLogger()
         configureCrypto()
         configureCoreObservability()
         configureAnalytics()
@@ -391,6 +392,16 @@ extension AppDelegate {
         Analytics.shared.setup(isInDebug: false, environment: .production)
     #endif
 #endif
+    }
+
+    private func configureCoreLogger() {
+        let environment: String
+        switch BackendConfiguration.shared.environment {
+        case .black, .blackPayment: environment = "black"
+        case .custom(let custom): environment = custom
+        default: environment = "production"
+        }
+        PMLog.setEnvironment(environment: environment)
     }
 
     private func configureCrypto() {
