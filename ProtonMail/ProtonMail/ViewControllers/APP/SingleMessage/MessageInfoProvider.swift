@@ -264,6 +264,11 @@ final class MessageInfoProvider {
         return createRecipientRowViewModel(from: list, title: "\(LocalString._general_cc_label):")
     }()
 
+    lazy var bccData: ExpandedHeaderRecipientsRowViewModel? = {
+        let list = ContactPickerModelHelper.nonGroupContacts(from: message.rawBCCList)
+        return createRecipientRowViewModel(from: list, title: LocalString._general_bcc_label)
+    }()
+
     // [cid, base64String]
     private var inlineContentIDMap: [String: String] = [:]
     private var embeddedStatus = EmbeddedDownloadStatus.none
