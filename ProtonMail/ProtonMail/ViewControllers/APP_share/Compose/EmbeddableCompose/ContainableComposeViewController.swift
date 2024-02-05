@@ -293,6 +293,7 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
             self.stepAlert = nil
             self.dependencies.keyMaker.lockTheApp()
             UIView.animate(withDuration: 0.25, animations: animationBlock) { _ in
+                SystemLogger.log(message: "Share extension is dismissing...", category: .appLifeCycle)
                 self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
             }
         }
