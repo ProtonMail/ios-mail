@@ -230,7 +230,7 @@ extension ConversationEntity {
     }
 
     func getSenderImageRequestInfo(isDarkMode: Bool) -> SenderImageRequestInfo? {
-        guard let sender = try? parseSenders().last, sender.shouldDisplaySenderImage else {
+        guard let sender = try? parseSenders().first, sender.shouldDisplaySenderImage else {
             return nil
         }
 
