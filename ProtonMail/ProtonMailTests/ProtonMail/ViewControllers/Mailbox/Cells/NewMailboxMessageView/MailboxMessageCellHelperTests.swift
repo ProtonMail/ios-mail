@@ -48,10 +48,10 @@ final class MailboxMessageCellHelperTests: XCTestCase {
         let cases: [(input: [TestPerson], expectedOutput: [SenderRowComponent])] = [
             ([protonSender], [.string("Proton"), .officialBadge]),
             ([randomSender1], [.string("Foo Bar")]),
-            ([randomSender1, randomSender2], [.string("Foo Bar, John Doe")]),
-            ([protonSender, randomSender1, randomSender2], [.string("Proton"), .officialBadge, .string(", Foo Bar, John Doe")]),
-            ([randomSender1, protonSender, randomSender2], [.string("Foo Bar, Proton"), .officialBadge, .string(", John Doe")]),
-            ([randomSender1, randomSender2, protonSender], [.string("Foo Bar, John Doe, Proton"), .officialBadge]),
+            ([randomSender1, randomSender2], [.string("Foo Bar"), .string(", John Doe")]),
+            ([protonSender, randomSender1, randomSender2], [.string("Proton"), .officialBadge, .string(", Foo Bar"), .string(", John Doe")]),
+            ([randomSender1, protonSender, randomSender2], [.string("Foo Bar"), .string(", Proton"), .officialBadge, .string(", John Doe")]),
+            ([randomSender1, randomSender2, protonSender], [.string("Foo Bar"), .string(", John Doe"), .string(", Proton"), .officialBadge]),
         ]
 
         for testCase in cases {
@@ -148,12 +148,12 @@ final class MailboxMessageCellHelperTests: XCTestCase {
             color: "#000000",
             contextProvider: testContainer.contextProvider
         )
-        let name = sut.allEmailAddresses(
+        let names = sut.allEmailAddresses(
             message: fakeMsgEntity,
             replacingEmails: [fakeEmailEntity.email: fakeEmailEntity],
             allGroupContacts: [vo]
         )
-        XCTAssertEqual("groupA (5/6), test5", name)
+        XCTAssertEqual(["groupA (5/6)", "test5"], names)
     }
 
     func testRecipientsNameWithoutGroup_localContactWithoutTheAddress() {
@@ -162,12 +162,12 @@ final class MailboxMessageCellHelperTests: XCTestCase {
 
         let fakeEmailData = testEmailData_aaa.parseObjectAny()!
         let fakeEmailEntity = prepareEmail(with: fakeEmailData)
-        let name = sut.allEmailAddresses(
+        let names = sut.allEmailAddresses(
             message: fakeMsgEntity,
             replacingEmails: [fakeEmailEntity.email: fakeEmailEntity],
             allGroupContacts: []
         )
-        XCTAssertEqual("test0, test1, test2, test3, test4, test5", name)
+        XCTAssertEqual(["test0", "test1", "test2", "test3", "test4", "test5"], names)
     }
 
     func testRecipientsNameWithoutGroup_localContactHasTheAddress() {
@@ -176,12 +176,12 @@ final class MailboxMessageCellHelperTests: XCTestCase {
 
         let fakeEmailData = testEmailData_bbb.parseObjectAny()!
         let fakeEmailEntity = prepareEmail(with: fakeEmailData)
-        let name = sut.allEmailAddresses(
+        let names = sut.allEmailAddresses(
             message: fakeMsgEntity,
             replacingEmails: [fakeEmailEntity.email: fakeEmailEntity],
             allGroupContacts: []
         )
-        XCTAssertEqual("test0, test1, test2, test3, test4, test000", name)
+        XCTAssertEqual(["test0", "test1", "test2", "test3", "test4", "test000"], names)
     }
 
     private func prepareMessage(with data: [String: Any]) -> MessageEntity {
