@@ -278,13 +278,9 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     private func importDeviceContactsIfNeeded(user: UserManager) {
-        let autoImportFlags = user.container.userDefaults[.isAutoImportContactsOn]
-        let isAutoImportEnabledForUser = autoImportFlags[user.userID.rawValue] ?? false
-
-        if UserInfo.isAutoImportContactsEnabled && isAutoImportEnabledForUser {
+        if user.container.autoImportContactsFeature.isEnabled {
             guard CNContactStore.authorizationStatus(for: .contacts) == .authorized else {
-                SystemLogger.log(message: "disabled auto import contacts setting", category: .contacts)
-                user.removeAutoImportContactsUserDefaults()
+                user.container.autoImportContactsFeature.disableAndDeleteQueue()
                 return
             }
 

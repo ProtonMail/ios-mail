@@ -35,7 +35,7 @@ protocol ContactsSettingsViewModelOutput {
 }
 
 final class ContactsSettingsViewModel: ContactsSettingsViewModelProtocol {
-    typealias Dependencies = HasUserDefaults & HasImportDeviceContacts & HasUserManager
+    typealias Dependencies = HasUserDefaults & HasImportDeviceContacts & HasUserManager & HasAutoImportContactsFeature
 
     let settings: [Setting] = [.combineContacts, .autoImportContacts]
 
@@ -82,22 +82,16 @@ extension ContactsSettingsViewModel: ContactsSettingsViewModelInput {
     }
 
     private func didTapAutoImportContacts(isEnabled: Bool) {
-        var autoImportFlags = dependencies.userDefaults[.isAutoImportContactsOn]
-        autoImportFlags[dependencies.user.userID.rawValue] = isEnabled
-        dependencies.userDefaults[.isAutoImportContactsOn] = autoImportFlags
         if isEnabled {
+            dependencies.autoImportContactsFeature.enable()
             let params = ImportDeviceContacts.Params(
                 userKeys: dependencies.user.userInfo.userKeys,
                 mailboxPassphrase: dependencies.user.mailboxPassword
             )
             dependencies.importDeviceContacts.execute(params: params)
         } else {
-            var historyTokens = dependencies.userDefaults[.contactsHistoryTokenPerUser]
-            historyTokens[dependencies.user.userID.rawValue] = nil
-            dependencies.userDefaults[.contactsHistoryTokenPerUser] = historyTokens
+            dependencies.autoImportContactsFeature.disableAndDeleteQueue()
         }
-        let msg = "Auto import contacts changed to: \(isEnabled) for user \(dependencies.user.userID.rawValue.redacted)"
-        SystemLogger.log(message: msg, category: .contacts)
     }
 }
 

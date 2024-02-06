@@ -446,6 +446,16 @@ extension UserContainer: HasAPIService {
     }
 }
 
+protocol HasAutoImportContactsFeature {
+    var autoImportContactsFeature: AutoImportContactsFeature { get }
+}
+
+extension UserContainer: HasAutoImportContactsFeature {
+    var autoImportContactsFeature: AutoImportContactsFeature {
+        autoImportContactsFeatureFactory()
+    }
+}
+
 protocol HasCacheService {
     var cacheService: CacheService { get }
 }
@@ -456,12 +466,12 @@ extension UserContainer: HasCacheService {
     }
 }
 
-protocol HasContactsSyncQueue {
-    var contactSyncQueue: ContactsSyncQueue { get }
+protocol HasContactsSyncQueueProtocol {
+    var contactSyncQueue: ContactsSyncQueueProtocol { get }
 }
 
-extension UserContainer: HasContactsSyncQueue {
-    var contactSyncQueue: ContactsSyncQueue {
+extension UserContainer: HasContactsSyncQueueProtocol {
+    var contactSyncQueue: ContactsSyncQueueProtocol {
         contactSyncQueueFactory()
     }
 }

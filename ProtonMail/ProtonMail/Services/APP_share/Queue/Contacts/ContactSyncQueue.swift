@@ -17,8 +17,19 @@
 
 import Combine
 
-final class ContactsSyncQueue {
+// sourcery: mock
+protocol ContactsSyncQueueProtocol {
+    func start()
+    func pause()
+    func resume()
+    func addTask(_ task: ContactTask)
+    func deleteQueue()
+}
+
+final class ContactsSyncQueue: ContactsSyncQueueProtocol {
     typealias Dependencies = AnyObject & HasInternetConnectionStatusProviderProtocol & HasContactDataService
+
+    static let queueFilePrefix = "contactsQueue"
 
     /// Subscribe to this publisher to get progress updates from the queue
     let progressPublisher: CurrentValueSubject<Progress, Never>
@@ -47,7 +58,7 @@ final class ContactsSyncQueue {
     private unowned let dependencies: Dependencies
 
     init(userID: UserID, dependencies: Dependencies) {
-        let path = "contactsQueue.\(userID.rawValue)"
+        let path = "\(Self.queueFilePrefix).\(userID.rawValue)"
         var queueFileUrl = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent(path)
         SystemLogger.logTemporarily(message: "taskQueueUrl = \(queueFileUrl)", category: .contacts)
         if FileManager.default.fileExists(atPath: queueFileUrl.absoluteString) {
@@ -113,12 +124,12 @@ final class ContactsSyncQueue {
     /// queue in the file system.
     func deleteQueue() {
         serial.sync {
-            operationQueue.isSuspended = true
             operationQueue.cancelAllOperations()
             taskQueue.removeAll()
             resetProgress()
             do {
                 try FileManager.default.removeItem(at: taskQueueURL)
+                SystemLogger.log(message: "queue file deleted", category: .contacts)
             } catch {
                 SystemLogger.log(error: error, category: .contacts)
             }

@@ -29,13 +29,19 @@ final class UserContainer: ManagedContainer {
         }
     }
 
+    var autoImportContactsFeatureFactory: Factory<AutoImportContactsFeature> {
+        self {
+            AutoImportContactsFeature(dependencies: self)
+        }
+    }
+
     var cacheServiceFactory: Factory<CacheService> {
         self {
             CacheService(userID: self.user.userID, dependencies: self)
         }
     }
 
-    var contactSyncQueueFactory: Factory<ContactsSyncQueue> {
+    var contactSyncQueueFactory: Factory<ContactsSyncQueueProtocol> {
         self {
             ContactsSyncQueue(userID: self.user.userID, dependencies: self)
         }

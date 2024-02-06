@@ -138,10 +138,10 @@ class ContactDataService {
     }
 
     /**
-     add a new contact
+     add new contacts
 
-     - Parameter cards: vcard contact data -- 4 different types
-     - Parameter objectID: CoreData object ID of group label
+     - Parameter contactsCards: array of array of vCards for multiple contacts (each contact has an array of vCards)
+     - Parameter objectID: CoreData object ID of local contacts to delete
      - Parameter completion: async add contact complete response
      **/
     func add(
