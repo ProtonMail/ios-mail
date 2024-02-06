@@ -35,17 +35,17 @@ stages:
   - cd ..
   - ./ProtonMail/xcodeGenHelper.sh
 
+.macos_job:
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
+
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
     - if: $CI_COMMIT_BRANCH == "develop"
-
-default:
-  cache:
-    key: "$CI_PROJECT_NAME"
-    paths:
-      - bundler-cache/
 
 linting:
   stage: linting
@@ -60,6 +60,7 @@ linting:
     - shared-small
 
 build:debug:for-testing:
+  extends: .macos_job
   stage: build
   allow_failure: false
   interruptible: true
@@ -81,6 +82,7 @@ build:debug:for-testing:
     - iOS_GENERAL
 
 test:unit:
+  extends: .macos_job
   stage: test
   coverage: '/Test Coverage: \d*.\d*%/'
   only:
@@ -108,6 +110,7 @@ test:unit:
     - iOS_GENERAL
 
 .test:ui:
+  extends: .macos_job
   dependencies:
     - deploy:review
     - build:debug:for-testing
@@ -270,6 +273,7 @@ report:testmo:sanity:
     NAME: "SanityTests"
 
 .distribute:
+  extends: .macos_job
   dependencies: []
   needs: []
   stage: distribute
