@@ -1127,7 +1127,7 @@
 "Delete contact group" = "Eliminar grupo de contactos";
 
 /* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Seleccionados";
+"%d Selected" = "%d seleccionados";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Selecciona al menos un correo electrónico para el grupo de contactos.";
