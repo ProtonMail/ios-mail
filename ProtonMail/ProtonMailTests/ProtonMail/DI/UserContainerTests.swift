@@ -62,6 +62,7 @@ final class UserContainerTests: XCTestCase {
 
         // sourcery:inline:UserContainerTests.InitializeAllDependencies
         _ = strongRefToContainer?.apiService
+        _ = strongRefToContainer?.autoImportContactsFeature
         _ = strongRefToContainer?.cacheService
         _ = strongRefToContainer?.contactSyncQueue
         _ = strongRefToContainer?.composerViewFactory
