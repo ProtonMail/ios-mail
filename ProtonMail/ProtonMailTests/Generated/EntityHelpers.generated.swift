@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.1.7 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 @testable import ProtonMail
 
@@ -222,7 +222,7 @@ extension LabelEntity {
         objectID: ObjectID = .init(rawValue: .init()),
         name: String = .init(),
         color: String = .init(),
-        type: LabelType = .messageLabel,
+        type: LabelEntity.LabelType = .messageLabel,
         sticky: Bool = .init(),
         order: Int = .init(),
         path: String = .init(),

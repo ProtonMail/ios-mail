@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.1.7 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 import BackgroundTasks
 import CoreData
@@ -313,7 +313,7 @@ class MockConversationProvider: ConversationProvider {
     }
 
     @FuncStub(MockConversationProvider.fetchConversations) var fetchConversationsStub
-    func fetchConversations(for labelID: LabelID, before timestamp: Int, unreadOnly: Bool, shouldReset: Bool, completion: ((Result<Void, Error>) -> Void)?) {
+    func fetchConversations(for labelID: LabelID, before timestamp: Int, unreadOnly: Bool, shouldReset: Bool, completion: (@Sendable (Result<Void, Error>) -> Void)?) {
         fetchConversationsStub(labelID, timestamp, unreadOnly, shouldReset, completion)
     }
 
@@ -665,7 +665,7 @@ class MockLabelProviderProtocol: LabelProviderProtocol {
     }
 
     @FuncStub(MockLabelProviderProtocol.fetchV4Labels) var fetchV4LabelsStub
-    func fetchV4Labels(completion: ((Swift.Result<Void, Error>) -> Void)?) {
+    func fetchV4Labels(completion: (@Sendable (Swift.Result<Void, Error>) -> Void)?) {
         fetchV4LabelsStub(completion)
     }
 
