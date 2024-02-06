@@ -375,6 +375,7 @@ extension CacheService {
         coreDataService.performOnRootSavingContext { context in
             if let att = try? context.existingObject(with: attachment.objectID.rawValue) as? Attachment {
                 att.isSoftDeleted = true
+                att.message.updateAttachmentMetaDatas()
                 _ = context.saveUpstreamIfNeeded()
             }
             completion?()

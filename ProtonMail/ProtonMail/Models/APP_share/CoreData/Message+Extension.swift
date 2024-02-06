@@ -310,4 +310,27 @@ extension Message {
     var hasMetaData: Bool {
         messageStatus == 1
     }
+
+    func updateAttachmentMetaDatas() {
+        guard let attachments = self.attachments.allObjects as? [Attachment] else {
+            return
+        }
+        var attachmentsMetaDatas: [AttachmentsMetadata] = []
+        for attachment in attachments where !attachment.isSoftDeleted {
+            let metaData = AttachmentsMetadata(
+                id: attachment.attachmentID,
+                name: attachment.fileName,
+                size: attachment.fileSize.intValue,
+                mimeType: attachment.mimeType,
+                disposition: attachment.inline() ? .inline : .attachment
+            )
+            attachmentsMetaDatas.append(metaData)
+        }
+        guard let result = try? AttachmentsMetadata.encodeListOfAttachmentsMetadata(
+            attachmentsMetaData: attachmentsMetaDatas
+        ) else {
+            return
+        }
+        self.attachmentsMetadata = result
+    }
 }
