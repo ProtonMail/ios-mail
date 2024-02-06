@@ -404,6 +404,15 @@ final class ComposerMessageHelperTests: XCTestCase {
         let argument = try XCTUnwrap(messageDataServiceMock.callDelete.lastArguments)
         XCTAssertEqual(argument.a1.name, AttachmentEntity(testAttachment).name)
         XCTAssertEqual(argument.a2, sut.draft?.messageID)
+
+        let message = try contextProviderMock.read { context in
+            let message = try XCTUnwrap(Message.messageForMessageID(draft.messageID.rawValue, in: context))
+            return MessageEntity(message)
+        }
+
+        let metaDatas = message.attachmentsMetadata
+        XCTAssertFalse(metaDatas.contains(where: { $0.name == fineName }))
+
     }
 
     func testAddAttachment() throws {
@@ -420,6 +429,14 @@ final class ComposerMessageHelperTests: XCTestCase {
 
         let draft = try XCTUnwrap(sut.draft)
         XCTAssertFalse(draft.attachments.isEmpty)
+
+
+        try contextProviderMock.write { context in
+            let message = try XCTUnwrap(Message.messageForMessageID(draft.messageID.rawValue, in: context))
+            let entity = MessageEntity(message)
+            let metaDatas = entity.attachmentsMetadata
+            XCTAssertTrue(metaDatas.contains(where: { $0.name == name }))
+        }
     }
 
     func testAddMIMEAttachment() throws {
