@@ -826,4 +826,4 @@ name: swift-css-parser, nameSpecified: swift-css-parser, owner: stackotter, vers
 
 add-version-numbers: false
 
-LicensePlist Version: 3.24.10
+LicensePlist Version: 3.25.1
