@@ -129,7 +129,9 @@ extension ContactsSettingsViewController {
         alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default) { [weak self] _ in
             self?.viewModel.input.didTapSetting(.autoImportContacts, isEnabled: true)
         })
-        present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async { [weak self] in
+            self?.present(alert, animated: true, completion: nil)
+        }
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

@@ -27,23 +27,43 @@ import UIKit
 
 final class ContactsViewModel: ViewModelTimer {
     typealias Dependencies = HasCoreDataContextProviderProtocol
-        & HasMailEventsPeriodicScheduler
-        & HasUserManager
+    & HasMailEventsPeriodicScheduler
+    & HasUserManager
+    & HasContactsSyncQueueProtocol
 
-    let dependencies: Dependencies
+    private let dependencies: Dependencies
 
+    let importContactsProgress: CurrentValueSubject<String, Never> = .init("")
     private var snapshotPublisher: SnapshotPublisher<Contact>?
-    private var cancellable: AnyCancellable?
+    private var cancellables: Set<AnyCancellable> = .init()
 
     var contactService: ContactDataService {
         return dependencies.user.contactService
     }
 
     var contentDidChange: ((NSDiffableDataSourceSnapshot<String, ContactEntity>) -> Void)?
+    var hasPaidMailPlan: Bool {
+        dependencies.user.hasPaidMailPlan
+    }
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
         super.init()
+        setUpBindings()
+    }
+
+    private func setUpBindings() {
+        dependencies
+            .contactSyncQueue
+            .progressPublisher
+            .sink { [weak self] progress in
+                guard progress.total > 0 else {
+                    self?.importContactsProgress.send(.empty)
+                    return
+                }
+                self?.importContactsProgress.send("\(progress.finished)/\(progress.total)")
+            }
+            .store(in: &cancellables)
     }
 
     func setupFetchedResults() {
@@ -87,7 +107,7 @@ final class ContactsViewModel: ViewModelTimer {
             sectionNameKeyPath: Contact.Attributes.sectionName,
             contextProvider: dependencies.contextProvider
         )
-        cancellable = snapshotPublisher?.contentDidChange
+        snapshotPublisher?.contentDidChange
             .sink(receiveValue: { [weak self] snapshot in
                 let snapshot = snapshot as NSDiffableDataSourceSnapshot<String, Contact>
                 var newSnapShot = NSDiffableDataSourceSnapshot<String, ContactEntity>()
@@ -98,7 +118,7 @@ final class ContactsViewModel: ViewModelTimer {
                     newSnapShot.appendItems(rows, toSection: section)
                 }
                 self?.contentDidChange?(newSnapShot)
-            })
+            }).store(in: &cancellables)
         snapshotPublisher?.start()
     }
 

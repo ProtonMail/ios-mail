@@ -17,8 +17,9 @@
 
 import Combine
 
-// sourcery: mock
 protocol ContactsSyncQueueProtocol {
+    var progressPublisher: CurrentValueSubject<ContactsSyncQueue.Progress, Never> { get }
+
     func start()
     func pause()
     func resume()
@@ -32,7 +33,7 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
     static let queueFilePrefix = "contactsQueue"
 
     /// Subscribe to this publisher to get progress updates from the queue
-    let progressPublisher: CurrentValueSubject<Progress, Never>
+    let progressPublisher: CurrentValueSubject<ContactsSyncQueue.Progress, Never>
 
     private let taskQueueURL: URL
     private var hasQueueStarted: Bool = false

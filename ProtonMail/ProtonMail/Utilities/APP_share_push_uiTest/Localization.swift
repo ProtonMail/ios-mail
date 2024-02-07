@@ -410,6 +410,7 @@ class LocalizedString {
 
     /// "Contacts"
     lazy var _contacts_title = NSLocalizedString("Contacts", comment: "Action and title")
+    lazy var _contacts_importing = NSLocalizedString("Importing contacts...", comment: "title for the contact import indicator")
 
     /// "Do you want to cancel the process?"
     lazy var _contacts_import_cancel_wanring = NSLocalizedString("Do you want to cancel the process?", comment: "Description")

@@ -45,7 +45,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         }
     }
 
-    init(dependencies: Dependencies, nibName: String) {
+    init(dependencies: Dependencies, nibName: String?) {
         self.dependencies = dependencies
         super.init(nibName: nibName, bundle: nil)
     }

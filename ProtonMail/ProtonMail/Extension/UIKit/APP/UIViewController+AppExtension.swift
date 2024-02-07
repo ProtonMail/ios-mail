@@ -38,6 +38,7 @@ extension UIViewController {
             action: #selector(self.openMenu)
         )
         menuButton.accessibilityLabel = LocalString._menu_button
+        menuButton.tintColor = ColorProvider.IconNorm
         navigationItem.leftBarButtonItem = menuButton
     }
 
