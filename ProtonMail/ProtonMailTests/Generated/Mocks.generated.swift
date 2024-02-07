@@ -260,34 +260,6 @@ class MockContactGroupsProviderProtocol: ContactGroupsProviderProtocol {
 
 }
 
-class MockContactsSyncQueueProtocol: ContactsSyncQueueProtocol {
-    @FuncStub(MockContactsSyncQueueProtocol.start) var startStub
-    func start() {
-        startStub()
-    }
-
-    @FuncStub(MockContactsSyncQueueProtocol.pause) var pauseStub
-    func pause() {
-        pauseStub()
-    }
-
-    @FuncStub(MockContactsSyncQueueProtocol.resume) var resumeStub
-    func resume() {
-        resumeStub()
-    }
-
-    @FuncStub(MockContactsSyncQueueProtocol.addTask) var addTaskStub
-    func addTask(_ task: ContactTask) {
-        addTaskStub(task)
-    }
-
-    @FuncStub(MockContactsSyncQueueProtocol.deleteQueue) var deleteQueueStub
-    func deleteQueue() {
-        deleteQueueStub()
-    }
-
-}
-
 class MockConversationCoordinatorProtocol: ConversationCoordinatorProtocol {
     @PropertyStub(\MockConversationCoordinatorProtocol.pendingActionAfterDismissal, initialGet: nil) var pendingActionAfterDismissalStub
     var pendingActionAfterDismissal: (() -> Void)? {
