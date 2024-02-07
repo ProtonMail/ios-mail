@@ -87,6 +87,7 @@ final class PagesViewController<
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showSpotlightIfNeeded { [weak self] in
+            self?.spotlight?.removeFromSuperview()
             delay(0.5) {
                 self?.showToolbarCustomizationSpotlightIfNeeded()
             }
