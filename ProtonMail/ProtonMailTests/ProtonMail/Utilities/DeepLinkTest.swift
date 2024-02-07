@@ -46,13 +46,4 @@ class DeepLinkTests: XCTestCase {
         XCTAssertEqual(oldHead, deeplink.popFirst)
         XCTAssertEqual(oldSecond, deeplink.head)
     }
-
-    func testPopLast() {
-        let deeplink = self.makeDeeplink()
-        let oldPreLast = deeplink.last?.previous
-        let oldLast = deeplink.last
-
-        XCTAssertEqual(oldLast, deeplink.popLast)
-        XCTAssertEqual(oldPreLast, deeplink.last)
-    }
 }

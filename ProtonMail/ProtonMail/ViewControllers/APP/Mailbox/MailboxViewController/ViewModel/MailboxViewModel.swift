@@ -704,10 +704,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         }
     }
 
-    private func handleMoveToInboxAction(on items: [MailboxItem]) {
-        move(items: items, from: labelID, to: Message.Location.inbox.labelID)
-    }
-
     private func handleMoveToArchiveAction(on items: [MailboxItem]) {
         move(items: items, from: labelID, to: Message.Location.archive.labelID)
     }

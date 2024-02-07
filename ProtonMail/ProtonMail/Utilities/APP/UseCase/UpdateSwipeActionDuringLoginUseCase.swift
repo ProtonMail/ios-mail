@@ -29,8 +29,6 @@ final class UpdateSwipeActionDuringLogin: UpdateSwipeActionDuringLoginUseCase {
     typealias Dependencies = AnyObject & HasSwipeActionCacheProtocol & HasSaveSwipeActionSettingForUsersUseCase
 
     private struct SwipeInfoHelper {
-        let activeUserRightSwipeAction: SwipeActionSettingType?
-        let activeUserLeftSwipeAction: SwipeActionSettingType?
         let newUserRightSwipeAction: SwipeActionSettingType?
         let newUserLeftSwipeAction: SwipeActionSettingType?
     }
@@ -43,12 +41,6 @@ final class UpdateSwipeActionDuringLogin: UpdateSwipeActionDuringLoginUseCase {
 
     override func executionBlock(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
         let info = SwipeInfoHelper(
-            activeUserRightSwipeAction: SwipeActionSettingType.convertFromServer(
-                rawValue: params.activeUserInfo.swipeRight
-            ),
-            activeUserLeftSwipeAction: SwipeActionSettingType.convertFromServer(
-                rawValue: params.activeUserInfo.swipeLeft
-            ),
             newUserRightSwipeAction: SwipeActionSettingType.convertFromServer(
                 rawValue: params.newUserInfo.swipeRight
             ),

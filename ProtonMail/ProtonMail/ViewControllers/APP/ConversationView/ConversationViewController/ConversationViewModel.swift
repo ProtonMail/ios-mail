@@ -484,18 +484,6 @@ class ConversationViewModel {
             }
     }
 
-    func hasSeenMessageNavigationSpotlight() {
-        guard isMessageSwipeNavigationEnabled else { return }
-        user.parentManager?.users.forEach({ user in
-            dependencies.userIntroductionProgressProvider.markSpotlight(
-                for: .messageSwipeNavigation,
-                asSeen: true,
-                byUserWith: user.userID
-            )
-        })
-    }
-
-
     private func markMessagesReadIfNeeded() {
         messagesDataSource
             .compactMap { $0.messageViewModel?.state.expandedViewModel?.messageContent }
