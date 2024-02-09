@@ -61,10 +61,36 @@ final class ConversationDataServiceProxy: ConversationProvider {
 
 private extension ConversationDataServiceProxy {
     // this is a workaround for the fact that just updating the ContextLabel won't trigger MailboxViewController's controllerDidChangeContent
+    @available(
+        *,
+         deprecated,
+         message: """
+This method is sync and as such it relies on the deprecated `write`. Use `refreshContextLabelsAsync` instead.
+"""
+    )
     func refreshContextLabels(for conversationIDs: [ConversationID]) {
         do {
             try contextProvider.write { context in
-                let conversations = self.fetchLocalConversations(
+                self.refreshContextLabels(for: conversationIDs, in: context)
+            }
+        } catch {
+            PMAssertionFailure(error)
+        }
+    }
+
+    // this is a workaround for the fact that just updating the ContextLabel won't trigger MailboxViewController's controllerDidChangeContent
+    func refreshContextLabelsAsync(for conversationIDs: [ConversationID]) async {
+        do {
+            try await contextProvider.writeAsync { context in
+                self.refreshContextLabels(for: conversationIDs, in: context)
+            }
+        } catch {
+            PMAssertionFailure(error)
+        }
+    }
+
+    private func refreshContextLabels(for conversationIDs: [ConversationID], in context: NSManagedObjectContext) {
+                let conversations = fetchLocalConversations(
                     withIDs: NSMutableSet(array: conversationIDs.map(\.rawValue)),
                     in: context
                 )
@@ -78,10 +104,6 @@ private extension ConversationDataServiceProxy {
                         }
                     context.refresh(conversation, mergeChanges: true)
                 }
-            }
-        } catch {
-            PMAssertionFailure(error)
-        }
     }
 }
 
@@ -244,16 +266,17 @@ extension ConversationDataServiceProxy {
         }
         self.queue(actionToQueue, isConversation: true)
 
-        DispatchQueue.global().async {
+        Task.detached {
             let result: Swift.Result<Void, Error>
             do {
-                try self.localConversationUpdater.editLabels(
+                try await self.localConversationUpdater.editLabels(
                     conversationIDs: conversationIDs,
                     labelToRemove: labelToRemove,
                     labelToAdd: labelToAdd,
                     isFolder: isFolder
                 )
-                self.refreshContextLabels(for: conversationIDs)
+
+                await self.refreshContextLabelsAsync(for: conversationIDs)
 
                 result = .success(())
             } catch {

@@ -50,7 +50,7 @@ final class LocalConversationUpdaterTests: XCTestCase {
         userID = nil
     }
 
-    func testEditLabels_moveConversationFromInboxToSpam() throws {
+    func testEditLabels_moveConversationFromInboxToSpam() async throws {
         let labelIDs = [
             Message.Location.inbox.labelID,
             Message.Location.allmail.labelID,
@@ -58,7 +58,7 @@ final class LocalConversationUpdaterTests: XCTestCase {
         ]
         try prepareTestData(labelIDs: labelIDs, unread: true)
 
-        try sut.editLabels(
+        try await sut.editLabels(
             conversationIDs: [conversationID],
             labelToRemove: Message.Location.inbox.labelID,
             labelToAdd: Message.Location.spam.labelID,
@@ -101,7 +101,7 @@ final class LocalConversationUpdaterTests: XCTestCase {
         }
     }
 
-    func testEditLabels_moveConversationFromInboxToTrash_unreadCountShouldBeZero() throws {
+    func testEditLabels_moveConversationFromInboxToTrash_unreadCountShouldBeZero() async throws {
         let labelIDs = [
             Message.Location.inbox.labelID,
             Message.Location.allmail.labelID,
@@ -109,7 +109,7 @@ final class LocalConversationUpdaterTests: XCTestCase {
         ]
         try prepareTestData(labelIDs: labelIDs, unread: true)
 
-        try sut.editLabels(
+        try await sut.editLabels(
             conversationIDs: [conversationID],
             labelToRemove: Message.Location.inbox.labelID,
             labelToAdd: Message.Location.trash.labelID,
@@ -160,14 +160,14 @@ final class LocalConversationUpdaterTests: XCTestCase {
         }
     }
 
-    func testEditLabels_moveFromTrashToInbox() throws {
+    func testEditLabels_moveFromTrashToInbox() async throws {
         let labelIDs = [
             Message.Location.trash.labelID,
             Message.Location.allmail.labelID
         ]
         try prepareTestData(labelIDs: labelIDs)
 
-        try sut.editLabels(
+        try await sut.editLabels(
             conversationIDs: [conversationID],
             labelToRemove: Message.Location.trash.labelID,
             labelToAdd: Message.Location.inbox.labelID,
