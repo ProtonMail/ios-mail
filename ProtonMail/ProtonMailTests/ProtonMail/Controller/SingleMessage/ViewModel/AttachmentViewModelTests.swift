@@ -212,26 +212,43 @@ class AttachmentViewModelTests: XCTestCase {
         XCTAssertEqual(eventRSVP.extractBasicEventInfoStub.callCounter, 0)
     }
 
-    func testOpenInCalendar_whenCalendarIsInstalled_opensCalendarInsteadOfAppStore() async {
-        urlOpener.openAsyncStub.bodyIs { _, url, _ in
+    func testOpenInCalendar_whenRecentCalendarIsInstalled_directlyOpensCalendar() {
+        let deepLink = stubbedEventDetails.calendarAppDeepLink
+
+        urlOpener.canOpenURLStub.bodyIs { _, url in
+            url == deepLink
+        }
+
+        let instruction = sut.instructionToHandle(deepLink: deepLink)
+        XCTAssertEqual(instruction, .openDeepLink(deepLink))
+    }
+
+    func testOpenInCalendar_whenOutdatedCalendarIsInstalled_promptsToOpenAppStorePage() {
+        urlOpener.canOpenURLStub.bodyIs { _, url in
+            url == .ProtonCalendar.legacyScheme
+        }
+
+        let instruction = sut.instructionToHandle(deepLink: stubbedEventDetails.calendarAppDeepLink)
+        XCTAssertEqual(instruction, .goToAppStore(askBeforeGoing: true))
+    }
+
+    func testOpenInCalendar_whenBothCalendarsAreInstalled_directlyOpensCalendar() {
+        urlOpener.canOpenURLStub.bodyIs { _, url in
             true
         }
 
-        await sut.onOpenInCalendarTapped(deepLink: stubbedEventDetails.calendarAppDeepLink)
-
-        XCTAssertEqual(urlOpener.openAsyncStub.lastArguments?.a1, stubbedEventDetails.calendarAppDeepLink)
-        XCTAssertEqual(urlOpener.openAsyncStub.callCounter, 1)
+        let deepLink = stubbedEventDetails.calendarAppDeepLink
+        let instruction = sut.instructionToHandle(deepLink: deepLink)
+        XCTAssertEqual(instruction, .openDeepLink(deepLink))
     }
 
-    func testOpenInCalendar_whenCalendarIsNotInstalled_opensAppStorePage() async {
-        urlOpener.openAsyncStub.bodyIs { _, url, _ in
-            url == .AppStore.calendar
+    func testOpenInCalendar_whenCalendarIsNotInstalled_directlyOpensAppStorePage() {
+        urlOpener.canOpenURLStub.bodyIs { _, url in
+            false
         }
 
-        await sut.onOpenInCalendarTapped(deepLink: stubbedEventDetails.calendarAppDeepLink)
-
-        XCTAssertEqual(urlOpener.openAsyncStub.lastArguments?.a1, .AppStore.calendar)
-        XCTAssertEqual(urlOpener.openAsyncStub.callCounter, 2)
+        let instruction = sut.instructionToHandle(deepLink: stubbedEventDetails.calendarAppDeepLink)
+        XCTAssertEqual(instruction, .goToAppStore(askBeforeGoing: false))
     }
 
     private func makeAttachment(isInline: Bool, mimeType: String = "text/plain") -> AttachmentInfo {

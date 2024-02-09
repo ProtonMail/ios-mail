@@ -1442,6 +1442,8 @@ enum L11n {
     }
 
     struct ProtonCalendarIntegration {
+        static let downloadCalendarAlert = NSLocalizedString("Download the latest version of the Proton Calendar to open this event", comment: "Alert prompting to update Calendar")
+        static let downloadInAppStore = NSLocalizedString("Download in App Store", comment: "Button to open App Store")
         static let openInCalendar = NSLocalizedString("Open in Proton Calendar", comment: "Button to open the Calendar app")
 	}
 

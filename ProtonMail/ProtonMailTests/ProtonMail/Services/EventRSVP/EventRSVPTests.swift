@@ -27,8 +27,6 @@ final class EventRSVPTests: XCTestCase {
     private var apiService: APIServiceMock!
     private var user: UserManager!
 
-    private let stubbedBasicEventInfo = BasicEventInfo(eventUID: "foo", recurrenceID: nil)
-
     private let summaryEvent = #"""
 BEGIN:VCALENDAR
 BEGIN:VEVENT
@@ -85,8 +83,8 @@ END:VEVENT
 END:VCALENDAR
 """#
 
-    private var memberID, passphraseID: String!
-
+    private var calendarID, eventUID, memberID, passphraseID: String!
+    private var stubbedBasicEventInfo: BasicEventInfo!
     private var expectedEventDetails: EventDetails!
 
     override func setUpWithError() throws {
@@ -98,10 +96,13 @@ END:VCALENDAR
         user = try .prepareUser(apiMock: apiService, globalContainer: testContainer)
         sut = LocalEventRSVP(dependencies: user.container)
 
+        calendarID = UUID().uuidString
+        eventUID = UUID().uuidString
         memberID = UUID().uuidString
         passphraseID = UUID().uuidString
 
-        expectedEventDetails = .make()
+        stubbedBasicEventInfo = BasicEventInfo(eventUID: eventUID, recurrenceID: nil)
+        expectedEventDetails = .make(deepLinkComponents: (eventUID: eventUID, calendarID: calendarID))
     }
 
     override func tearDownWithError() throws {
@@ -226,13 +227,13 @@ extension EventRSVPTests {
         let timeZoneIdentifier = TimeZone.autoupdatingCurrent.identifier
 
         return FullEventTransformer(
-            ID: UUID().uuidString,
+            ID: eventUID,
             addressID: nil,
             addressKeyPacket: setAddressKeyPacketInsteadOfSharedOne ? keyPacket : nil,
             attendees: [],
             attendeesEvents: attendeesEvents,
             calendarEvents: calendarEvents,
-            calendarID: UUID().uuidString,
+            calendarID: calendarID,
             calendarKeyPacket: nil,
             startTime: expectedEventDetails.startDate.timeIntervalSince1970,
             startTimezone: timeZoneIdentifier,
@@ -276,19 +277,19 @@ extension EventRSVPTests {
             case "/calendar/v1/events":
                 guard 
                     let params = anyParams as? [String: Any],
-                    params["UID"] as? String == "foo"
+                    params["UID"] as? String == self.eventUID
                 else {
-                    XCTFail("Unexpected parameters")
+                    XCTFail("Unexpected parameters: \(anyParams ?? [:])")
                     completion(nil, .failure(.badParameter(anyParams)))
                     return
                 }
 
                 let response: CalendarEventsResponse = .init(events: [event])
                 completion(nil, .success(response))
-            case "/calendar/v1/\(event.calendarID)/bootstrap":
+            case "/calendar/v1/\(self.calendarID!)/bootstrap":
                 completion(nil, .success(bootstrap))
             default:
-                XCTFail("Unexpected path")
+                XCTFail("Unexpected path: \(path)")
                 completion(nil, .failure(.badParameter(path)))
             }
         }

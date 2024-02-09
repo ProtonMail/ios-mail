@@ -19,14 +19,15 @@
 
 extension EventDetails {
     static func make(
-        startDate: Date = .init(timeIntervalSince1970: .random(in: 0...(.greatestFiniteMagnitude))),
-        endDate: Date = .init(timeIntervalSince1970: .random(in: 0...(.greatestFiniteMagnitude))),
+        startDate: Date = .init(timeIntervalSince1970: .random(in: 0...Date.distantFuture.timeIntervalSince1970)),
+        endDate: Date = .init(timeIntervalSince1970: .random(in: 0...Date.distantFuture.timeIntervalSince1970)),
         invitees: [Participant] = [
             .init(email: "employee1@example.com", status: .unknown),
             .init(email: "employee2@example.com", status: .unknown),
             .init(email: "employee3@example.com", status: .unknown),
         ],
-        status: EventStatus = .confirmed
+        status: EventStatus = .confirmed,
+        deepLinkComponents: (eventUID: String, calendarID: String) = ("", "")
     ) -> Self {
         .init(
             title: "Team Collaboration Workshop",
@@ -37,7 +38,7 @@ extension EventDetails {
             organizer: .init(email: "boss@example.com", status: .unknown),
             invitees: invitees,
             status: status,
-            calendarAppDeepLink: URL(string: "ProtonCalendar://events/foo")!
+            calendarAppDeepLink: URL(string: "ch.protonmail.calendar://eventDetails?eventID=\(deepLinkComponents.eventUID)&calendarID=\(deepLinkComponents.calendarID)&startTime=\(Int(startDate.timeIntervalSince1970))")!
         )
     }
 }
