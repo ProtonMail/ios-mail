@@ -107,6 +107,10 @@ class AttachmentViewController: UIViewController {
             self?.onOpenInCalendarTapped(deepLink: deepLink)
         }
 
+        invitationView.onInvitationAnswered = { [weak self] answer in
+            self?.viewModel.respondToInvitation(with: answer)
+        }
+
         viewModel.invitationViewState
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
@@ -127,6 +131,14 @@ class AttachmentViewController: UIViewController {
                 }
 
                 self.delegate?.invitationViewWasChanged()
+            }
+            .store(in: &subscriptions)
+
+        viewModel.respondingStatus
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] respondingStatus in
+                self?.invitationView.displayAnsweringStatus(respondingStatus)
             }
             .store(in: &subscriptions)
     }
@@ -179,20 +191,5 @@ extension AttachmentViewController: CustomViewPrintable {
         newView.layoutIfNeeded()
 
         renderer.updateImage(in: newView.frame)
-    }
-}
-
-private class InCellActivityIndicatorView: UIActivityIndicatorView {
-    @available(*, unavailable, message: "This method does nothing, use `customStopAnimating` instead.")
-    override func stopAnimating() {
-        /*
-         This method is called by the OS as a part of `prepareForReuse`.
-         However, the animation is never restarted.
-         The result is that the spinner is gone too soon, before the processing is complete.
-         */
-    }
-
-    func customStopAnimating() {
-        super.stopAnimating()
     }
 }
