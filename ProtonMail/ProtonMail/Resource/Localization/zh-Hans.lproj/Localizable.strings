@@ -1127,7 +1127,7 @@
 "Delete contact group" = "删除联系人群组";
 
 /* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Selected";
+"%d Selected" = "已选%d项";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "请先向群组中添加联系人";
@@ -1537,7 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "举报欺诈邮件";
 
-"Not spam (move to inbox)" = "Not spam (move to inbox)";
+"Not spam (move to inbox)" = "不是垃圾邮件（移动至收件箱）";
 
 /* No comment provided by engineer. */
 "Move to" = "移至";
@@ -1926,10 +1926,10 @@
 "Load" = "载入";
 
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "组织者";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "收起";
 
 /* Official badge next to sender's name */
 "Official" = "官方";
@@ -1968,16 +1968,16 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "开启后您登录的所有账户通讯录中的邮箱地址都可自动补全。";
 
 /* contacts auto import title in settings */
-"Auto-import device contacts" = "Auto-import device contacts";
+"Auto-import device contacts" = "自动导入设备中的联系人";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "开启此功能即可自动将设备中的新联系人导入 Proton Mail 应用。";
 
 /* Auto import alert title */
-"Auto-import enabled" = "Auto-import enabled";
+"Auto-import enabled" = "已开启自动导入";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "首次导入会花一些时间，在此过程中请保持软件前台运行。";
 
 /* Settings lock protection section */
 "Protection" = "安全防护";
@@ -2043,10 +2043,10 @@
 "Application logs" = "应用程序日志";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Jump to next message";
+"Jump to next message" = "下一条消息";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "在当前信息被删除、归档或移动后，自动显示下一条信息。";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "发生意外错误，请联系支持人员。\n错误:%@";
@@ -2148,7 +2148,7 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "此邮件原先的发件地址已不再有效，邮件将由您的默认地址 %@ 发送。";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
-"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+"Please retry after all attachments are uploaded." = "请在所有附件上传完成后重试";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "显示名称";
@@ -2175,13 +2175,13 @@
 "Select all" = "全选";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Unselect all";
+"Unselect all" = "取消全选";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
-"Maximum selection reached" = "Maximum selection reached";
+"Maximum selection reached" = "已达选择数量上限";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "未填写收件人";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "禁用 PIN 码";
@@ -2226,37 +2226,37 @@
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "这将使您从邮件列表中取消订阅。发件人将收到通知，不再向该地址发送电子邮件。";
 
 /* Alert telling the user that we are unable to preview this attachment */
-"Unable to preview this attachment" = "Unable to preview this attachment";
+"Unable to preview this attachment" = "无法预览该附件";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
-"Downloading attachment" = "Downloading attachment";
+"Downloading attachment" = "正在下载附件";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Snoozed until %@";
+"Snoozed until %@" = "已延后到 %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Unsnooze";
+"Unsnooze" = "取消延后";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Snooze until %@";
+"Snooze until %@" = "延后到 %@";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "Conversation unsnoozed";
+"Conversation unsnoozed" = "对话已取消延后";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Snooze until...";
+"Snooze until..." = "延后到...";
 
 /* One of snooze option shows in action sheet */
-"Later this week" = "Later this week";
+"Later this week" = "本周稍后";
 
 /* One of snooze option shows in action sheet */
-"This weekend" = "This weekend";
+"This weekend" = "本周末";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "下周";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Please select a time in the future";
+"Please select a time in the future" = "请选择位于当前时间以后的时间";
 
 /* The title of snooze promotion view */
 "Want to snooze any time?" = "Want to snooze any time?";
@@ -2265,10 +2265,10 @@
 "Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "多达15个邮件地址或别名";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "不限量文件夹、标签和筛选规则";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
-"Add it as attachment" = "Add it as attachment";
+"Add it as attachment" = "作为附件添加";

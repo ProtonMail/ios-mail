@@ -69,6 +69,7 @@ final class SendMessageResultNotificationHandler {
                 object: nil,
                 userInfo: ["text": errorMessage]
             )
+            SystemLogger.log(message: errorMessage, category: .emptyAlert)
             #else
             guard let window: UIWindow = UIApplication.shared.topMostWindow else {
                 return

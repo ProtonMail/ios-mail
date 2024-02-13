@@ -174,7 +174,7 @@ public final class AccountDeletionService {
                              performAfterShowingAccountDeletionScreen: @escaping () -> Void,
                              performBeforeClosingAccountDeletionScreen: @escaping (@escaping () -> Void) -> Void,
                              completion: @escaping (Result<AccountDeletionSuccess, AccountDeletionError>) -> Void) {
-        authenticator.forkSession { [self] result in
+        authenticator.forkSession(useCase: .forAccountDeletion) { [self] result in
             switch result {
             case let .failure(.apiMightBeBlocked(message, originalError)):
                 completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))

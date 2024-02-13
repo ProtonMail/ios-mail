@@ -1537,7 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Raportare înșelăciune";
 
-"Not spam (move to inbox)" = "Not spam (move to inbox)";
+"Not spam (move to inbox)" = "Nu este nedorit (mutare în «Primite»)";
 
 /* No comment provided by engineer. */
 "Move to" = "Mutare în";
@@ -1926,10 +1926,10 @@
 "Load" = "Încărcare";
 
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "Organizator";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "Arată mai puțin";
 
 /* Official badge next to sender's name */
 "Official" = "Oficial";
@@ -1968,16 +1968,16 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Activați această funcție pentru autocompletarea adreselor de e-mail folosind contactele din toate conturile conectate.";
 
 /* contacts auto import title in settings */
-"Auto-import device contacts" = "Auto-import device contacts";
+"Auto-import device contacts" = "Autoimportare contacte din dispozitiv";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Activați această funcție pentru a adăuga automat contacte noi de pe dispozitiv în aplicația Proton Mail.";
 
 /* Auto import alert title */
-"Auto-import enabled" = "Auto-import enabled";
+"Auto-import enabled" = "Autoimportare activată";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "Importarea inițială poate dura ceva timp și va avea loc numai atunci când aplicația este în prim-plan.";
 
 /* Settings lock protection section */
 "Protection" = "Protecție";
@@ -2043,10 +2043,10 @@
 "Application logs" = "Jurnale aplicație";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Jump to next message";
+"Jump to next message" = "Salt la mesajul următor";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "Afișare automată următorul mesaj când mesajul curent este șters, arhivat sau mutat.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "A apărut o eroare neașteptată. Contactați serviciul de asistență.\nEroare: %@";
@@ -2148,7 +2148,7 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Expeditorul original al acestui mesaj nu mai este valid. Mesajul va fi trimis de la adresa implicită %@.";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
-"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+"Please retry after all attachments are uploaded." = "Reîncercați după ce au fost încărcate toate atașamentele.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nume afișat";
@@ -2175,13 +2175,13 @@
 "Select all" = "Selectare toate";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Unselect all";
+"Unselect all" = "Deselectare toate";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
-"Maximum selection reached" = "Maximum selection reached";
+"Maximum selection reached" = "Limită de selectare atinsă";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "Fără destinatar";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "Dezactivare cod PIN";
@@ -2226,49 +2226,49 @@
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Acest lucru vă va dezabona din lista de corespondență. Expeditorul va fi notificat să nu mai trimită mesaje la această adresă.";
 
 /* Alert telling the user that we are unable to preview this attachment */
-"Unable to preview this attachment" = "Unable to preview this attachment";
+"Unable to preview this attachment" = "Nu se poate examina acest atașament.";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
-"Downloading attachment" = "Downloading attachment";
+"Downloading attachment" = "Se descarcă atașamentul";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Snoozed until %@";
+"Snoozed until %@" = "Amânat până %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Unsnooze";
+"Unsnooze" = "Anulare amânare";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Snooze until %@";
+"Snooze until %@" = "Amânat până %@";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "Conversation unsnoozed";
+"Conversation unsnoozed" = "Amânare conversație anulată.";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Snooze until...";
+"Snooze until..." = "Amânat până...";
 
 /* One of snooze option shows in action sheet */
-"Later this week" = "Later this week";
+"Later this week" = "La sfârșitul săptămânii";
 
 /* One of snooze option shows in action sheet */
-"This weekend" = "This weekend";
+"This weekend" = "În acest weekend";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "Săptămâna viitoare";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Please select a time in the future";
+"Please select a time in the future" = "Selectare o dată disponibilă";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "Doriți să modificați perioada de amânare?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "Deblocați amânări personalizate când treceți la un plan cu plată";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "Până la 15 de adrese de e-mail/aliasuri";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Foldere, etichete și filtre nelimitate";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
-"Add it as attachment" = "Add it as attachment";
+"Add it as attachment" = "Adăugare ca atașament";

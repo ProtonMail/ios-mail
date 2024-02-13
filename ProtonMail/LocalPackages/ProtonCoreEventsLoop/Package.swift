@@ -10,7 +10,7 @@ let package = Package(
         .library(
             name: "ProtonCoreEventsLoop",
             targets: ["ProtonCoreEventsLoop"]
-        ),
+        )
     ],
     dependencies: [
         .package(url: "https://github.com/krzysztofzablocki/Difference.git", .upToNextMajor(from: "1.0.0"))
@@ -24,6 +24,6 @@ let package = Package(
             name: "ProtonCoreEventsLoopTests",
             dependencies: ["Difference", "ProtonCoreEventsLoop"],
             path: "Tests"
-        ),
+        )
     ]
 )

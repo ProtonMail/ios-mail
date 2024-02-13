@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
+import Combine
 import LifetimeTracker
 import MBProgressHUD
 import ProtonCoreUIFoundations
@@ -36,10 +37,16 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         .init(maxCount: 1)
     }
 
-    @IBOutlet var tableView: UITableView!
-    @IBOutlet var tableViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet var searchView: UIView!
-    @IBOutlet var searchViewConstraint: NSLayoutConstraint!
+    private enum Layout {
+        static let importContactsHeight: CGFloat = 24.0
+    }
+
+    private let importContactsStack: UIStackView = SubviewFactory.importContactsStack
+    private let importContactsIcon = UIImageView(image: IconProvider.arrowsRotate.toTemplateUIImage())
+    private let importContactsProgress = SubviewFactory.importContactsProgressLabel
+    private var importContactsStackTopConstraint: NSLayoutConstraint = .init()
+    let tableView: UITableView = .init()
+    private var tableViewBottomConstraint: NSLayoutConstraint = .init()
 
     private let viewModel: ContactsViewModel
     private let dependencies: Dependencies
@@ -48,12 +55,17 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     private(set) var searchController: UISearchController?
 
     private var diffableDataSource: SectionTitleUITableViewDiffableDataSource<String, ContactEntity>?
+    private var cancellables: Set<AnyCancellable> = .init()
 
     init(viewModel: ContactsViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
         self.dependencies = dependencies
-        super.init(dependencies: dependencies, nibName: "ContactsViewController")
+        super.init(dependencies: dependencies, nibName: nil)
+
         trackLifetime()
+        setUpUI()
+        setUpConstraints()
+        setUpBindings()
     }
 
     @available(*, unavailable)
@@ -61,18 +73,81 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         fatalError("init(coder:) has not been implemented")
     }
 
+    private func setUpUI() {
+        view.addSubviews(importContactsStack, tableView)
+        setUpImportContactsStack()
+    }
+
+    private func setUpImportContactsStack() {
+        importContactsIcon.tintColor = ColorProvider.IconHint
+        let font = UIFont.preferredFont(for: .subheadline, weight: .regular)
+        let title = UILabel(LocalString._contacts_importing, font: font, textColor: ColorProvider.TextHint)
+
+        let iconContainer = UIView()
+        iconContainer.addSubview(importContactsIcon)
+        importContactsIcon.rotate()
+
+        [iconContainer, title, importContactsProgress].forEach(importContactsStack.addArrangedSubview)
+        importContactsProgress.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+        [
+            importContactsIcon.leadingAnchor.constraint(equalTo: iconContainer.leadingAnchor),
+            importContactsIcon.widthAnchor.constraint(equalToConstant: 16),
+            importContactsIcon.heightAnchor.constraint(equalToConstant: 16),
+            importContactsIcon.centerYAnchor.constraint(equalTo: iconContainer.centerYAnchor),
+            iconContainer.topAnchor.constraint(equalTo: importContactsStack.topAnchor),
+            iconContainer.bottomAnchor.constraint(equalTo: importContactsStack.bottomAnchor),
+            iconContainer.widthAnchor.constraint(equalTo: importContactsIcon.widthAnchor),
+            title.centerYAnchor.constraint(equalTo: iconContainer.centerYAnchor),
+            importContactsProgress.centerYAnchor.constraint(equalTo: iconContainer.centerYAnchor)
+        ].activate()
+    }
+
+    private func setUpConstraints() {
+        let guide = self.view.safeAreaLayoutGuide
+        importContactsStack.translatesAutoresizingMaskIntoConstraints = false
+        importContactsStackTopConstraint = importContactsStack.topAnchor.constraint(equalTo: guide.topAnchor)
+        [
+            importContactsStack.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 16),
+            importContactsStackTopConstraint,
+            importContactsStack.centerXAnchor.constraint(equalTo: guide.centerXAnchor),
+            importContactsStack.heightAnchor.constraint(equalToConstant: Layout.importContactsHeight),
+        ].activate()
+
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableViewBottomConstraint = tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        [
+            tableView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+            tableView.topAnchor.constraint(equalTo: importContactsStack.bottomAnchor),
+            tableView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
+            tableViewBottomConstraint,
+        ].activate()
+    }
+
+    private func setUpBindings() {
+        viewModel
+            .importContactsProgress
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] progress in
+                guard let self else { return }
+                let willBeVisible = importContactsStack.isHidden && !progress.isEmpty
+                self.importContactsProgress.text = progress
+                self.importContactsStack.isHidden = progress.isEmpty
+                self.importContactsStackTopConstraint.constant = progress.isEmpty ? -Layout.importContactsHeight : 0
+                if willBeVisible { importContactsIcon.rotate() }
+            }
+            .store(in: &cancellables)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = ColorProvider.BackgroundNorm
 
-        self.tableView.register(ContactsTableViewCell.nib,
-                                forCellReuseIdentifier: ContactsTableViewCell.cellID)
+        self.tableView.register(ContactsTableViewCell.nib, forCellReuseIdentifier: ContactsTableViewCell.cellID)
         let refreshControl = UIRefreshControl()
         self.refreshControl = refreshControl
-        self.refreshControl?.addTarget(self,
-                                       action: #selector(self.fireFetch),
-                                       for: UIControl.Event.valueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(self.fireFetch), for: UIControl.Event.valueChanged)
 
         self.tableView.estimatedRowHeight = 60.0
         self.tableView.addSubview(refreshControl)
@@ -156,8 +231,6 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         self.searchController?.searchBar.barTintColor = ColorProvider.BackgroundNorm
         self.searchController?.searchBar.backgroundColor = .clear
 
-        self.searchViewConstraint.constant = 0.0
-        self.searchView.isHidden = true
         self.navigationItem.largeTitleDisplayMode = .never
         self.navigationItem.hidesSearchBarWhenScrolling = false
         self.navigationItem.searchController = self.searchController
@@ -165,7 +238,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     }
 
     override func addContactGroupTapped() {
-        if viewModel.dependencies.user.hasPaidMailPlan {
+        if viewModel.hasPaidMailPlan {
             let newView = dependencies.contactViewsFactory.makeGroupEditView(
                 state: .create,
                 groupID: nil,
@@ -358,7 +431,7 @@ extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
         if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            self.tableViewBottomConstraint.constant = keyboardSize.height
+            self.tableViewBottomConstraint.constant = -keyboardSize.height
 
             UIView.animate(withDuration: keyboardInfo.duration,
                            delay: 0,
@@ -373,5 +446,33 @@ extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
 extension ContactsViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         self.isOnMainView = true
+    }
+}
+
+extension ContactsViewController {
+    private enum SubviewFactory {
+
+        static var importContactsStack: UIStackView {
+            .stackView(axis: .horizontal, distribution: .fillProportionally, alignment: .top, spacing: 4.0)
+        }
+
+        static var importContactsProgressLabel: UILabel {
+            let font = UIFont.preferredFont(for: .subheadline, weight: .regular)
+            let label = UILabel("", font: font, textColor: ColorProvider.TextHint)
+            label.textAlignment = .right
+            return label
+        }
+    }
+}
+
+
+extension UIImageView {
+    func rotate() {
+        let rotation : CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        rotation.toValue = NSNumber(value: Double.pi * 2)
+        rotation.duration = 2
+        rotation.isCumulative = true
+        rotation.repeatCount = Float.greatestFiniteMagnitude
+        self.layer.add(rotation, forKey: "rotationAnimation")
     }
 }

@@ -23,6 +23,7 @@
 import Foundation
 import ProtonCoreKeymaker
 
+@available(*, deprecated, message: "Remove global access of userCachedStatus in the future.")
 let userCachedStatus = UserCachedStatus(keychain: KeychainWrapper.keychain)
 
 // sourcery: mock
@@ -39,31 +40,17 @@ protocol UserCachedStatusProvider: AnyObject {
 
 final class UserCachedStatus: UserCachedStatusProvider {
     struct Key {
-
-        // pin code
-
-        static let autoLockTime = "autoLockTime" /// user cache but could restore
-
         // Global Cache
         static let UserWithLocalMobileSignature = "user_with_local_mobile_signature_mainKeyProtected"
         static let UserWithLocalMobileSignatureStatus = "user_with_local_mobile_signature_status"
         static let UserWithDefaultSignatureStatus = "user_with_default_signature_status"
         static let UserWithIsCheckSpaceDisabledStatus = "user_with_is_check_space_disabled_status"
 
-        // Snooze Notifications
-        static let snoozeConfiguration = "snoozeConfiguration"
-
-        // Contacts Sync
-        static let contactsHistoryToken = "contactsHistoryToken"
-
         // FIX ME: double check if the value belongs to user. move it into user object. 2.0
-
-        static let browser = "browser"
 
         static let leftToRightSwipeAction = "leftToRightSwipeAction"
         static let rightToLeftSwipeAction = "rightToLeftSwipeAction"
 
-        static let darkModeFlag = "dark_mode_flag"
         static let localSystemUpTime = "localSystemUpTime"
         static let localServerTime = "localServerTime"
 
@@ -176,36 +163,7 @@ final class UserCachedStatus: UserCachedStatusProvider {
     }
 }
 
-extension UserCachedStatus {
-    var lockTime: AutolockTimeout { // historically, it was saved as String
-        get {
-            guard let string = keychain.string(forKey: Key.autoLockTime),
-                let number = Int(string) else {
-                return .always
-            }
-            return AutolockTimeout(rawValue: number)
-        }
-        set {
-            keychain.set("\(newValue.rawValue)", forKey: Key.autoLockTime)
-        }
-    }
-}
-
 #if !APP_EXTENSION
-extension UserCachedStatus {
-    var browser: LinkOpener {
-        get {
-            guard let raw = keychain.string(forKey: Key.browser) ?? userDefaults.string(forKey: Key.browser) else {
-                return .safari
-            }
-            return LinkOpener(rawValue: raw) ?? .safari
-        }
-        set {
-            userDefaults.setValue(newValue.rawValue, forKey: Key.browser)
-            keychain.set(newValue.rawValue, forKey: Key.browser)
-        }
-    }
-}
 
 extension UserCachedStatus: SwipeActionCacheProtocol {
     var leftToRightSwipeActionType: SwipeActionSettingType? {

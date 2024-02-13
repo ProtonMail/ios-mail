@@ -151,6 +151,7 @@ extension SystemLogger {
         case restoreUserData = "RestoreUserData"
         case unauthorizedSession = "UnauthorizedSession"
         case notificationDebug = "NotificationDebug"
+        case emptyAlert = "EmptyAlert"
     }
 
     struct Caller {

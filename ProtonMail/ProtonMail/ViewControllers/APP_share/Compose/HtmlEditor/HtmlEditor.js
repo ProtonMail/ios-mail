@@ -18,12 +18,28 @@ var mutationObserver = new MutationObserver(function (events) {
         // check if removed image was our inline embedded attachment
         for (var j = 0; j < event.removedNodes.length; j++) {
             var removedNode = event.removedNodes[j];
-            if (removedNode.nodeType === Node.ELEMENT_NODE && removedNode.tagName != 'CARET') {
-                if (removedNode.getAttribute('src-original-pm-cid')) {
-                    var cidWithPrefix = removedNode.getAttribute('src-original-pm-cid');
-                    var cid = cidWithPrefix.replace(/^(cid:|proton-cid:)/,"");
-                    window.webkit.messageHandlers.removeImage.postMessage({ "messageHandler": "removeImage", "cid": cid });
-                }
+            if (removedNode.nodeType !== Node.ELEMENT_NODE || removedNode.tagName === 'CARET') {
+                continue
+            }
+            if (removedNode.tagName === 'DIV' && html_editor.editor.querySelectorAll('div').length === 0) {
+                // Add div back when all of divs in the html_editor.editor are removed
+                let div1 = document.createElement('div')
+                div1.innerHTML = '<br>'
+                let div2 = document.createElement('div')
+                div2.innerHTML = '<br>'
+                html_editor.editor.appendChild(div1);
+                html_editor.editor.appendChild(div2);
+
+                // Move cursor to newly created div
+                let range = new Range();
+                range.setStart(div1, 0);
+                range.setEnd(div1, 0);
+                document.getSelection().removeAllRanges();
+                document.getSelection().addRange(range);
+            } else if (removedNode.getAttribute('src-original-pm-cid')) {
+                var cidWithPrefix = removedNode.getAttribute('src-original-pm-cid');
+                var cid = cidWithPrefix.replace(/^(cid:|proton-cid:)/,"");
+                window.webkit.messageHandlers.removeImage.postMessage({ "messageHandler": "removeImage", "cid": cid });
             }
         }
 
@@ -246,10 +262,7 @@ html_editor.absorbImage = function (event, items, target) {
         html_editor.getBase64FromFile(file, function (base64) {
             var name = html_editor.createUUID() + "_" + file.name;
             var bits = "data:" + file.type + ";base64," + base64;
-            var img = new Image();
-            img.setAttribute('draggable', 'false')
-            target.appendChild(img);
-            html_editor.setImageData(img, "cid:" + name, bits);
+            html_editor.insertEmbedImage(`cid:${name}`, bits)
 
             window.webkit.messageHandlers.addImage.postMessage({ "messageHandler": "addImage", "cid": name, "data": base64 });
         });
@@ -272,7 +285,6 @@ html_editor.handlePastedData = function (event) {
         .replace(/thgiew-tnof/g, 'font-weight')
     if (item == undefined || item.length === 0) { return }
     event.preventDefault();
-    
     const processedData = uploadImageIfPastedDataHasImage(item)
 
     let selection = window.getSelection()
@@ -338,8 +350,8 @@ html_editor.getCaretYPosition = function () {
     range.collapse(false)
     const rangeRect = range.getClientRects()[0];
     if (rangeRect) {
-        x = rangeRect.left; // since the caret is only 1px wide, left == right
-        y = rangeRect.top; // top edge of the caret
+        const x = rangeRect.left; // since the caret is only 1px wide, left == right
+        const y = rangeRect.top; // top edge of the caret
         window.webkit.messageHandlers.moveCaret.postMessage({ "messageHandler": "moveCaret", "cursorX": x, "cursorY": y });
     }
 }
@@ -364,46 +376,34 @@ html_editor.updateEncodedEmbedImage = function (cid, blobdata) {
 }
 
 html_editor.insertEmbedImage = function (cid, base64) {
-    var locationToInsertTheImage;
-    if (window.getSelection) {
-        const selection = window.getSelection();
-        if (selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0).cloneRange();
-            var endContainer = range.endContainer;
-            if (endContainer.parentElement === document.body) {
-                endContainer = null;
-            }
-            locationToInsertTheImage = endContainer ? endContainer : html_editor.editor.querySelector('div');
-        } else {
-            locationToInsertTheImage = html_editor.editor.querySelector('div');
-        }
-    } else {
-        locationToInsertTheImage = html_editor.editor.querySelector('div');
-    }
-
-    let upperBr = document.createElement('br');
-    let lowerBr = document.createElement('br');
     let embed = document.createElement('img');
     embed.src = base64;
     embed.setAttribute('draggable', 'false')
     embed.setAttribute('src-original-pm-cid', `${cid}`);
     html_editor.cachedCIDs[cid] = base64;
 
-    if (locationToInsertTheImage === null) {
-        // html_editor.editor doesn't have any div
-        // happens when user keep clicking delete button
-        html_editor.editor.appendChild(upperBr);
-        html_editor.editor.appendChild(embed);
-        let div = document.createElement('div');
-        div.innerHTML = "<br>";
-        html_editor.editor.appendChild(div);
-    } else {
-        let parent = locationToInsertTheImage.parentNode;
-
-        parent.insertBefore(lowerBr, locationToInsertTheImage);
-        parent.insertBefore(embed, locationToInsertTheImage);
-        parent.insertBefore(upperBr, locationToInsertTheImage);
+    const selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+        const upperBr = document.createElement('br');
+        const lowerBr = document.createElement('br');
+        const range = selection.getRangeAt(0).cloneRange();
+        range.insertNode(upperBr)
+        range.insertNode(embed)
+        range.insertNode(lowerBr)
+        return
     }
+
+    let firstDiv = html_editor.editor.querySelector('div');
+    if (firstDiv === null) {
+        firstDiv = document.createElement('div');
+        firstDiv.innerHTML = "<br> <br>";
+        html_editor.editor.appendChild(firstDiv);
+    }
+
+    const range = new Range()
+    range.setStart(firstDiv, 1);
+    range.setEnd(firstDiv, 1);
+    range.insertNode(embed);
 }
 
 // for calls from JS

@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import CoreData
+@preconcurrency import CoreData
 import UIKit
 
 #if !APP_EXTENSION
@@ -158,6 +158,28 @@ class CoreDataService: CoreDataContextProviderProtocol {
         }
 
         return try result.get()
+    }
+
+    func writeAsync<T>(block: @escaping @Sendable (NSManagedObjectContext) throws -> T) async throws -> T {
+        let context = backgroundContext
+
+        return try await withCheckedThrowingContinuation { continuation in
+            serialQueue.addOperation {
+                context.performAndWait {
+                    do {
+                        let output = try block(context)
+
+                        if context.hasChanges {
+                            try context.save()
+                        }
+
+                        continuation.resume(returning: output)
+                    } catch {
+                        continuation.resume(throwing: error)
+                    }
+                }
+            }
+        }
     }
 
     func deleteAllData() async {

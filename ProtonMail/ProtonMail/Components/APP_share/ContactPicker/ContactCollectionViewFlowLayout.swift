@@ -80,16 +80,7 @@ class ContactCollectionViewFlowLayout: UICollectionViewFlowLayout {
         }
 
         if let delegate = self.collectionView?.delegate as? ContactCollectionViewDelegateFlowLayout {
-            do {
-                try ObjC.catchException {
-                    delegate.collectionView(
-                        collectionView: self.collectionView,
-                        willChangeContentSizeTo: self.collectionViewContentSize
-                    )
-                }
-            } catch {
-                PMAssertionFailure(error)
-            }
+            delegate.collectionView(collectionView: collectionView, willChangeContentSizeTo: collectionViewContentSize)
         }
     }
 }

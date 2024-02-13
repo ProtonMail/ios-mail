@@ -1127,7 +1127,7 @@
 "Delete contact group" = "刪除聯絡人群組";
 
 /* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Selected";
+"%d Selected" = "已選取 %d";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "請為聯絡人群組選擇至少一封電郵";
@@ -1537,7 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "回報網路釣魚";
 
-"Not spam (move to inbox)" = "Not spam (move to inbox)";
+"Not spam (move to inbox)" = "非垃圾郵件 (移動至收件匣)";
 
 /* No comment provided by engineer. */
 "Move to" = "移至";
@@ -1926,10 +1926,10 @@
 "Load" = "載入";
 
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "召集人";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "顯示較少";
 
 /* Official badge next to sender's name */
 "Official" = "官方";
@@ -1968,13 +1968,13 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "啟用此功能，以使用已登入帳號中的聯絡人，自動填入電子郵件位址。";
 
 /* contacts auto import title in settings */
-"Auto-import device contacts" = "Auto-import device contacts";
+"Auto-import device contacts" = "自動從裝置匯入聯絡人";
 
 /* contacts auto import footer in settings */
 "Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
 
 /* Auto import alert title */
-"Auto-import enabled" = "Auto-import enabled";
+"Auto-import enabled" = "自動匯入已啟用";
 
 /* Auto import alert message */
 "The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
@@ -2052,7 +2052,7 @@
 "An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
 
 /* Title for error when app set up at launch fails */
-"Insufficient disk space" = "Insufficient disk space";
+"Insufficient disk space" = "硬碟空間不足";
 
 /* Message for error when app set up at launch fails */
 "The application cannot open due to insufficient disk space. Please delete some data and try again" = "The application cannot open due to insufficient disk space. Please delete some data and try again";
@@ -2175,13 +2175,13 @@
 "Select all" = "全選";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Unselect all";
+"Unselect all" = "取消全選";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
 "Maximum selection reached" = "Maximum selection reached";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "無收件人";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "停用 PIN 碼";
@@ -2229,7 +2229,7 @@
 "Unable to preview this attachment" = "Unable to preview this attachment";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
-"Downloading attachment" = "Downloading attachment";
+"Downloading attachment" = "下載附件";
 
 /* The banner title that is shown in the message detail view. */
 "Snoozed until %@" = "Snoozed until %@";
@@ -2247,10 +2247,10 @@
 "Snooze until..." = "Snooze until...";
 
 /* One of snooze option shows in action sheet */
-"Later this week" = "Later this week";
+"Later this week" = "本週稍後";
 
 /* One of snooze option shows in action sheet */
-"This weekend" = "This weekend";
+"This weekend" = "本周末";
 
 /* One of snooze option shows in action sheet */
 "Next week" = "Next week";
@@ -2259,16 +2259,16 @@
 "Please select a time in the future" = "Please select a time in the future";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "想隨時延後?";
 
 /* The content description of snooze promotion view */
 "Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "至多15組電郵位址/別名";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "資料夾、標籤和篩選器無上限";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
-"Add it as attachment" = "Add it as attachment";
+"Add it as attachment" = "新增附件";

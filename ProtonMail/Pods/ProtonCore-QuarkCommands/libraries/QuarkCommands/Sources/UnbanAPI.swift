@@ -33,8 +33,10 @@ public enum UnbanError: Error {
     case callFailed(reason: Error)
 }
 
+@available(*, deprecated, renamed: "Quark", message: "`QuarkCommands` has been updated to `Quark`.")
 extension QuarkCommands {
 
+    @available(*, deprecated, renamed: "jailUnban", message: "`QuarkCommands` has been updated to `Quark`.")
     public static func unban(currentlyUsedHostUrl host: String,
                              callCompletionBlockOn: DispatchQueue = .main,
                              completion: @escaping (Result<UnbanDetails, UnbanError>) -> Void) {
@@ -43,6 +45,7 @@ extension QuarkCommands {
         performCommand(url: urlString, currentlyUsedHostUrl: host, callCompletionBlockOn: callCompletionBlockOn, completion: completion)
     }
 
+    @available(*, deprecated, renamed: "systemEnv", message: "`QuarkCommands` has been updated to `Quark`.")
     public static func disableJail(currentlyUsedHostUrl host: String,
                                    callCompletionBlockOn: DispatchQueue = .main,
                                    completion: @escaping (Result<UnbanDetails, UnbanError>) -> Void) {

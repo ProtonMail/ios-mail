@@ -21,7 +21,7 @@ enum PublicKeysResponseTestData {
     static func successTestResponse(
         flags: Int,
         publicKey: String
-    ) -> [String: Any] {
+    ) -> [String: any Sendable] {
         let json = """
         {
           "Code": 1000,

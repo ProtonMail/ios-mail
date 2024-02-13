@@ -9,7 +9,6 @@
 #include "../../Pods/Target Support Files/Pods-ProtonMailUI/Pods-ProtonMailUI.debug.xcconfig"
 
 ENABLE_TESTABILITY = YES
-GCC_DYNAMIC_NO_PIC = NO
 GCC_OPTIMIZATION_LEVEL = 0
 GCC_PREPROCESSOR_DEFINITIONS = DEBUG=1 $(inherited)
 MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE

@@ -410,6 +410,7 @@ class LocalizedString {
 
     /// "Contacts"
     lazy var _contacts_title = NSLocalizedString("Contacts", comment: "Action and title")
+    lazy var _contacts_importing = NSLocalizedString("Importing contacts...", comment: "title for the contact import indicator")
 
     /// "Do you want to cancel the process?"
     lazy var _contacts_import_cancel_wanring = NSLocalizedString("Do you want to cancel the process?", comment: "Description")
@@ -1305,6 +1306,8 @@ enum L11n {
         static let organizer = NSLocalizedString("Organizer", comment: "As in: event organizer")
         static let participantCount = NSLocalizedString("%u participants", comment: "Title of the button to expand participant list")
         static let showLess = NSLocalizedString("Show less", comment: "Button to hide some items in the list to conserve screen estate")
+        static let eventAlreadyEnded = NSLocalizedString("This event already ended", comment: "Text shown when opening an invitation for a past event")
+        static let eventCancelled = NSLocalizedString("This event has been cancelled", comment: "Text shown when opening an invitation for a cancelled event")
     }
 
     struct OfficialBadge {
@@ -1333,6 +1336,7 @@ enum L11n {
         static let autoImportContactsFooter = NSLocalizedString("Turn this feature on to automatically add new contacts from your device to the Proton Mail app.", comment: "contacts auto import footer in settings")
         static let autoImportAlertTitle = NSLocalizedString("Auto-import enabled", comment: "Auto import alert title")
         static let autoImportAlertMessage = NSLocalizedString("The initial import may take some time and will only occur when the app is in the foreground.", comment: "Auto import alert message")
+        static let authoriseContactsInSettingsApp = NSLocalizedString("Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission.", comment: "Alert to ask user to reauthorise access to contacts")
     }
 
     struct SettingsLockScreen {
@@ -1438,6 +1442,8 @@ enum L11n {
     }
 
     struct ProtonCalendarIntegration {
+        static let downloadCalendarAlert = NSLocalizedString("Download the latest version of the Proton Calendar to open this event", comment: "Alert prompting to update Calendar")
+        static let downloadInAppStore = NSLocalizedString("Download in App Store", comment: "Button to open App Store")
         static let openInCalendar = NSLocalizedString("Open in Proton Calendar", comment: "Button to open the Calendar app")
 	}
 

@@ -134,6 +134,7 @@ final class UploadAttachment: UploadAttachmentUseCase {
                         userKeys: params.userKeys,
                         passphrase: params.passphrase
                     )
+                    Crypto.freeGolangMem()
                     // In extremely slow connection, could take more than default timeout to upload a file
                     // When uploading over the default timeout, app receive timeout error
                     // But the request doesn't be cancelled

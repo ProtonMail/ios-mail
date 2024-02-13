@@ -22,7 +22,7 @@
 
 "Contact an administrator to make changes to your Proton subscription." = "请联系机构管理员调整 Proton 账户等级。";
 
-"%1$@ of %2$@" = "%1$@ of %2$@";
+"%1$@ of %2$@" = "共 %2$@，已使用 %1$@";
 
 "%@ storage" = "%@ 存储空间";
 

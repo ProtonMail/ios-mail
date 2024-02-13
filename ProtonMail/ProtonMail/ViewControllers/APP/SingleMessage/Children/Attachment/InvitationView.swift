@@ -25,6 +25,8 @@ final class InvitationView: UIView {
     private let widgetDetailsContainer = SubviewFactory.widgetDetailsContainer
     private let titleLabel = SubviewFactory.titleLabel
     private let timeLabel = SubviewFactory.timeLabel
+    private let statusContainer = SubviewFactory.statusContainer
+    private let statusLabel = SubviewFactory.statusLabel
     private let widgetSeparator = SubviewFactory.widgetSeparator
     private let openInCalendarButton = SubviewFactory.openInCalendarButton
     private let detailsContainer = SubviewFactory.detailsContainer
@@ -33,14 +35,7 @@ final class InvitationView: UIView {
     var onIntrinsicHeightChanged: (() -> Void)?
     var onOpenInCalendarTapped: ((URL) -> Void)?
 
-    private static let eventDurationFormatter: DateIntervalFormatter = {
-        let dateFormatter = DateIntervalFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .short
-        return dateFormatter
-    }()
-
-    private var participantListState = ParticipantListState(isExpanded: false, values: []) {
+    private var viewModel: InvitationViewModel? {
         didSet {
             updateParticipantsList()
         }
@@ -65,6 +60,7 @@ final class InvitationView: UIView {
         widgetBackground.addSubview(widgetContainer)
 
         widgetContainer.addArrangedSubview(widgetDetailsBackground)
+        widgetContainer.addArrangedSubview(statusContainer)
         widgetContainer.addArrangedSubview(widgetSeparator)
         widgetContainer.addArrangedSubview(openInCalendarButton)
 
@@ -72,6 +68,8 @@ final class InvitationView: UIView {
 
         widgetDetailsContainer.addArrangedSubview(titleLabel)
         widgetDetailsContainer.addArrangedSubview(timeLabel)
+
+        statusContainer.addSubview(statusLabel)
 
         // needed to avoid autolayout warnings raised by adding an empty UIStackView
         detailsContainer.isHidden = true
@@ -82,6 +80,7 @@ final class InvitationView: UIView {
         container.centerInSuperview()
         widgetContainer.fillSuperview()
         widgetDetailsContainer.centerInSuperview()
+        statusLabel.centerInSuperview()
 
         [
             container.topAnchor.constraint(equalTo: topAnchor),
@@ -90,6 +89,9 @@ final class InvitationView: UIView {
             widgetDetailsContainer.topAnchor.constraint(equalTo: widgetDetailsBackground.topAnchor, constant: 20),
             widgetDetailsContainer.leftAnchor.constraint(equalTo: widgetDetailsBackground.leftAnchor, constant: 16),
 
+            statusLabel.topAnchor.constraint(equalTo: statusContainer.topAnchor, constant: 23),
+            statusLabel.leftAnchor.constraint(equalTo: statusContainer.leftAnchor, constant: 20),
+
             widgetSeparator.heightAnchor.constraint(equalToConstant: 1),
 
             openInCalendarButton.heightAnchor.constraint(equalToConstant: 48)
@@ -97,7 +99,12 @@ final class InvitationView: UIView {
     }
 
     func populate(with eventDetails: EventDetails) {
-        titleLabel.set(text: eventDetails.title, preferredFont: .body, weight: .bold, textColor: ColorProvider.TextNorm)
+        let viewModel = InvitationViewModel(eventDetails: eventDetails)
+
+        titleLabel.set(text: eventDetails.title, preferredFont: .body, weight: .bold, textColor: viewModel.titleColor)
+        timeLabel.set(text: viewModel.durationString, preferredFont: .subheadline, textColor: viewModel.titleColor)
+        statusLabel.set(text: viewModel.statusString, preferredFont: .subheadline, textColor: viewModel.titleColor)
+        statusContainer.isHidden = viewModel.isStatusViewHidden
 
         openInCalendarButton.addAction(
             UIAction(identifier: .openInCalendar, handler: { [weak self] _ in
@@ -105,9 +112,6 @@ final class InvitationView: UIView {
             }),
             for: .touchUpInside
         )
-
-        let durationString = Self.eventDurationFormatter.string(from: eventDetails.startDate, to: eventDetails.endDate)
-        timeLabel.set(text: durationString, preferredFont: .subheadline, textColor: ColorProvider.TextNorm)
 
         detailsContainer.clearAllViews()
         detailsContainer.addArrangedSubview(SubviewFactory.calendarRow(calendar: eventDetails.calendar))
@@ -119,81 +123,77 @@ final class InvitationView: UIView {
         detailsContainer.addArrangedSubview(participantsRow)
         detailsContainer.isHidden = false
 
-        participantListState.values = eventDetails.participants
+        self.viewModel = viewModel
     }
 
     private func updateParticipantsList() {
+        guard let viewModel else {
+            return
+        }
+
         participantsRow.contentStackView.clearAllViews()
 
-        let visibleParticipants: [EventDetails.Participant]
-        let expansionButtonTitle: String?
+        if let organizer = viewModel.organizer {
+            // use UIButton subtitle property once we drop iOS 14
+            let titleColorAttribute: [NSAttributedString.Key: UIColor] = [.foregroundColor: ColorProvider.TextNorm]
+            let subtitleColorAttribute: [NSAttributedString.Key: UIColor] = [.foregroundColor: ColorProvider.TextWeak]
+            let title = NSMutableAttributedString(string: "\(organizer.email)\n", attributes: titleColorAttribute)
+            let subtitle = NSAttributedString(string: L11n.Event.organizer, attributes: subtitleColorAttribute)
+            title.append(subtitle)
 
-        if participantListState.values.count <= 2 {
-            visibleParticipants = participantListState.values
-            expansionButtonTitle = nil
-        } else if participantListState.isExpanded {
-            visibleParticipants = participantListState.values
-            expansionButtonTitle = L11n.Event.showLess
-        } else {
-            visibleParticipants = Array(participantListState.values.prefix(1))
-            expansionButtonTitle = String(format: L11n.Event.participantCount, participantListState.values.count)
+            let organizerButton = makeParticipantButton(participant: organizer)
+            organizerButton.titleLabel?.numberOfLines = 0
+            organizerButton.setAttributedTitle(title, for: .normal)
+
+            participantsRow.contentStackView.addArrangedSubview(organizerButton)
         }
 
-        for participant in visibleParticipants {
-            let participantStackView = SubviewFactory.participantStackView
-            let label = SubviewFactory.detailsLabel(text: participant.email)
-            participantStackView.addArrangedSubview(label)
-
-            if participant.isOrganizer {
-                let organizerLabel = SubviewFactory.detailsLabel(
-                    text: L11n.Event.organizer,
-                    textColor: ColorProvider.TextWeak
-                )
-                participantStackView.addArrangedSubview(organizerLabel)
-            }
-
-            let tapGR = UITapGestureRecognizer(target: self, action: #selector(didTapParticipant))
-            label.isUserInteractionEnabled = true
-            label.addGestureRecognizer(tapGR)
-
-            participantsRow.contentStackView.addArrangedSubview(participantStackView)
+        for invitee in viewModel.visibleInvitees {
+            let participantButton = makeParticipantButton(participant: invitee)
+            participantButton.setTitle(invitee.email, for: .normal)
+            participantsRow.contentStackView.addArrangedSubview(participantButton)
         }
 
-        if let expansionButtonTitle {
+        if let expansionButtonTitle = viewModel.expansionButtonTitle {
             let action = UIAction { [weak self] _ in
                 self?.toggleParticipantListExpansion()
             }
 
-            let button = SubviewFactory.participantListExpansionButton(primaryAction: action)
+            let button = SubviewFactory.participantListButton(
+                titleColor: ColorProvider.TextAccent,
+                primaryAction: action
+            )
+
             button.setTitle(expansionButtonTitle, for: .normal)
+
             participantsRow.contentStackView.addArrangedSubview(button)
         }
 
         onIntrinsicHeightChanged?()
     }
 
-    @objc
-    private func didTapParticipant(sender: UITapGestureRecognizer) {
-        guard
-            let participantAddressLabel = sender.view as? UILabel,
-            let participantAddress = participantAddressLabel.text,
-            let url = URL(string: "mailto://\(participantAddress)")
-        else {
-            return
+    private func makeParticipantButton(participant: EventDetails.Participant) -> UIButton {
+        let action = UIAction { _ in
+            if let url = URL(string: "mailto:\(participant.email)") {
+                UIApplication.shared.open(url)
+            }
         }
 
-        UIApplication.shared.open(url)
+        return SubviewFactory.participantListButton(
+            titleColor: ColorProvider.TextNorm,
+            primaryAction: action
+        )
     }
 
     private func toggleParticipantListExpansion() {
-        participantListState.isExpanded.toggle()
+        viewModel?.toggleParticipantListExpansion()
     }
 }
 
 private struct SubviewFactory {
     static var container: UIStackView {
         let view = genericStackView
-        view.spacing = 8
+        view.spacing = 16
         return view
     }
 
@@ -228,6 +228,16 @@ private struct SubviewFactory {
     static var timeLabel: UILabel {
         let view = UILabel()
         view.adjustsFontSizeToFitWidth = true
+        return view
+    }
+
+    static var statusContainer: UIView {
+        UIView()
+    }
+
+    static var statusLabel: UILabel {
+        let view = UILabel()
+        view.numberOfLines = 0
         return view
     }
 
@@ -278,10 +288,10 @@ private struct SubviewFactory {
         genericStackView
     }
 
-    static func participantListExpansionButton(primaryAction: UIAction) -> UIButton {
+    static func participantListButton(titleColor: UIColor, primaryAction: UIAction) -> UIButton {
         let view = UIButton(primaryAction: primaryAction)
         view.contentHorizontalAlignment = .leading
-        view.setTitleColor(ColorProvider.TextAccent, for: .normal)
+        view.setTitleColor(titleColor, for: .normal)
         view.titleLabel?.font = .adjustedFont(forTextStyle: .footnote)
         return view
     }
@@ -297,7 +307,6 @@ private struct SubviewFactory {
         let row = ExpandedHeaderRowView()
         row.titleLabel.isHidden = true
         row.iconImageView.image = IconProvider[dynamicMember: icon]
-        row.contentStackView.spacing = 8
         return row
     }
 
@@ -306,11 +315,6 @@ private struct SubviewFactory {
         view.set(text: text, preferredFont: .footnote, textColor: textColor)
         return view
     }
-}
-
-private struct ParticipantListState {
-    var isExpanded: Bool
-    var values: [EventDetails.Participant]
 }
 
 private extension UIAction.Identifier {

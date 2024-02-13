@@ -166,9 +166,7 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
     // MARK: - Actions
 
     @objc private func goBack(_ sender: Any) {
-        Task { [weak delegate] in
-            await delegate?.userDidGoBack()
-        }
+        delegate?.userDidGoBack()
     }
 
     @IBAction private func unlockPressed(_ sender: Any) {

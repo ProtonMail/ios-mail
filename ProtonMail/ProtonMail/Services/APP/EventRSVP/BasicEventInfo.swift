@@ -20,5 +20,5 @@ import Foundation
 /// The minimum amount of information needed to fetch event data from the BE.
 struct BasicEventInfo: Equatable {
     let eventUID: String
-    let recurrenceID: String?
+    let recurrenceID: Int?
 }

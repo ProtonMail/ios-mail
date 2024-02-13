@@ -18,6 +18,11 @@
 import ProtonCoreKeymaker
 
 class KeychainKeys {
+    static let autolockTimeout = RawRepresentableKeychainKey<AutolockTimeout>(
+        name: "autoLockTime",
+        defaultValue: .always
+    )
+
     static let keymakerRandomKey = StringKeychainKey(name: "randomPinForProtection")
 
     static let metadataStripping = RawRepresentableKeychainKey<AttachmentMetadataStripping>(

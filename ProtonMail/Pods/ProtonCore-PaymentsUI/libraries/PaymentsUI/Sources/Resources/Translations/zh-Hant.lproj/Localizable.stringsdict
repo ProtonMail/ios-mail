@@ -41,7 +41,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d電子郵件地址</string>
+        <string>%d電子郵件位址</string>
       </dict>
     </dict>
     <key>&lt;n&gt; email addresses / user</key>
@@ -301,7 +301,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d電子郵件地址</string>
+        <string>%d電子郵件位址</string>
       </dict>
     </dict>
     <key>&lt;n&gt; of &lt;m&gt; calendars</key>
@@ -338,7 +338,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>每個使用者%d個地址</string>
+        <string>每個使用者%d個位址</string>
       </dict>
     </dict>
     <key>&lt;n&gt; calendars per user</key>

@@ -21,7 +21,11 @@ protocol ContactMergeStrategy {
     /// Indicates if the result of the merge function updates the device or the proton contact object that was passed as parameter
     var mergeDestination: ContactMergeDestination { get }
 
-    func merge(deviceContact: VCardObject, protonContact: ProtonVCards) throws
+    /// Merges two contacts with  `mergeDestination` being the recipient of the changes.
+    /// - Returns: returns 
+    /// `true`: if there were differences and the information in `mergeDestination` was updated
+    /// `false`: if not differences were detected between the contacts
+    func merge(deviceContact: VCardObject, protonContact: ProtonVCards) throws -> Bool
 }
 
 enum ContactMergeDestination {

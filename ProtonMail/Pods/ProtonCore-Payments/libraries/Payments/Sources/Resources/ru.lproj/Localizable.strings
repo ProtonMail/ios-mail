@@ -6,11 +6,11 @@
 
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple сообщили, что вы улучшили тариф, но нам не хватает технических данных. Пожалуйста, заполните отчет об ошибке, и наша команда поддержки свяжется с вами.";
 
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Компания Apple уведомила нас, что вы улучшили свой тариф, но мы заметили, что после этого вы вышли из учётной записи.";
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple сообщила нам, что вы улучшили свой тариф, но мы заметили, что после этого вы вышли из аккаунта.";
 
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Не удалось сопоставить приобретенный вами продукт App Store с какими-либо продуктами на нашем сервере. Пожалуйста, заполните отчет об ошибке, и наша служба поддержки свяжется с вами.";
 
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Пожалуйста, войдите в аккаунт Proton Mail, тариф которого вы улучшаете, чтобы мы могли оформить покупку.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Войдите в аккаунт Proton Mail, тариф которого вы собираетесь улучшить, чтобы мы могли завершить покупку.";
 
 "Apple informed us they could not process the purchase." = "Apple проинформировал, что они не смогли обработать покупку.";
 
@@ -18,7 +18,7 @@
 
 "Please unlock the app to proceed with your service plan activation" = "Пожалуйста, разблокируйте приложение, чтобы продолжить активацию вашего тарифа";
 
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Пожалуйста, войдите в аккаунт Proton Mail, тариф которого вы улучшаете, чтобы мы могли завершить активацию обновленного тарифа обслуживания.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Войдите в аккаунт Proton Mail, тариф которого вы собираетесь улучшить, чтобы мы могли завершить активацию обновлённого тарифа.";
 
 "Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Неправильное состояние токена оплаты. Пожалуйста, перезапустите приложение. Если ошибка повторится, обратитесь в службу поддержки.";
 

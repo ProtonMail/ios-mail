@@ -50,12 +50,17 @@ extension MailboxViewController {
         )
         let isSending = viewModel.messageService.isMessageBeingSent(id: message.messageID)
 
+        var initial = ""
+        if let firstSenderRowComponent = senderRowComponents.first {
+            initial = [firstSenderRowComponent].initials()
+        }
+
         let style: NewMailboxMessageViewStyle = message.contains(location: .scheduled) ? .scheduled : .normal
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
             isLabelLocation: message.isLabelLocation(labelId: labelId),
             style: viewModel.listEditing ? .selection(isSelected: isSelected, isAbleToBeSelected: canSelectMore) : style,
-            initial: senderRowComponents.initials(),
+            initial: initial,
             isRead: !message.unRead,
             sender: senderRowComponents,
             time: isSending ? LocalString._mailbox_draft_is_sending : date(of: message, weekStart: weekStart),
@@ -112,11 +117,16 @@ extension MailboxViewController {
         let isInCustomFolder = customFolderLabels.map({ $0.labelID }).contains(labelId)
         let isHavingScheduled = conversation.contains(of: Message.Location.scheduled)
 
+        var initial = ""
+        if let firstSenderRowComponent = senderRowComponents.first {
+            initial = [firstSenderRowComponent].initials()
+        }
+
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
             isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder,
             style: viewModel.listEditing ? .selection(isSelected: isSelected, isAbleToBeSelected: canSelectMore) : .normal,
-            initial: senderRowComponents.initials(),
+            initial: initial,
             isRead: conversation.getNumUnread(labelID: labelId) <= 0,
             sender: senderRowComponents,
             time: date(of: conversation, labelId: labelId, weekStart: weekStart),

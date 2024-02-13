@@ -434,9 +434,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Bezahle für %d Monat</string>
+        <string>Für %d Monat zahlen</string>
         <key>other</key>
-        <string>Bezahle für %d Monate</string>
+        <string>Für %d Monate zahlen</string>
       </dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@VARIABLE@</string>

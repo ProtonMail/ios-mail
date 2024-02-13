@@ -54,7 +54,7 @@ extension SnoozeSupport {
     func presentSnoozeConfigSheet(on viewController: UIViewController, current: Date) {
         let presentingVC = viewController.navigationController ?? viewController
         let header = setUpActionHeader(dismiss: { [weak presentingVC] in
-            guard 
+            guard
                 let presentingVC = presentingVC,
                 let sheet = presentingVC.view.subviews.first(where: { $0 is PMActionSheet }) as? PMActionSheet
             else { return }

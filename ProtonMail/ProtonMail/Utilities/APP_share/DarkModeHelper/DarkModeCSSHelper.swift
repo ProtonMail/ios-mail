@@ -304,6 +304,9 @@ struct CSSMagic {
             64516650276,
             102546378584,
             337493535936,
+            150652609999,
+            95736483888,
+            100110744041,
             4756866629 // for test
         ]
         // sender.hash or sender.hashValue says the value could change
@@ -464,7 +467,9 @@ extension CSSMagic {
             }
             let anchor = CSSMagic.getCSSAnchor(of: node)
             guard anchor.isEmpty == false else { continue }
-            darkModeCSS[anchor] = styleCSS
+            var handledCSS = darkModeCSS[anchor] ?? []
+            handledCSS.append(contentsOf: styleCSS)
+            darkModeCSS[anchor] = handledCSS
         }
         return darkModeCSS
     }
@@ -882,7 +887,7 @@ extension CSSMagic {
     static func splitInline(attributes: String) -> [CSSAttribute] {
         // To remove comment in the attributes
         // letter-spacing: 0px; /*padding-bottom: 4px;*/
-        var attributes = attributes.preg_replace(#"\/\*.*\*\/"#, replaceto: "")
+        let attributes = attributes.preg_replace(#"\/\*.*\*\/"#, replaceto: "")
         // "font-family: arial; font-size: 14px;"
         return attributes
             .split(separator: ";")

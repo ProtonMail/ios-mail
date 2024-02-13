@@ -88,6 +88,8 @@
 	<string>d90af253-90ca-4698-95d3-40f4e4a36ce4</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>ch.protonmail.calendar</string>
+		<string>ProtonCalendar</string>
 		<string>org-appextension-feature-password-management</string>
 		<string>microsoft-edge-https</string>
 		<string>microsoft-edge-http</string>

@@ -156,7 +156,7 @@ public extension ResponseType {
     ) -> (T, ResponseError?) where T: ResponseType {
 
         if let error = originalError {
-            PMLog.debug("\(error)")
+            PMLog.error("\(error)", sendToExternal: true)
             let networkingError = apiRes.parseTaskError(response: response, taskError: error, responseDict: responseDict)
             return (apiRes, networkingError)
         }

@@ -53,20 +53,74 @@ enum AttachmentCrypto {
         passphrase: Passphrase
     ) -> Data? {
         do {
+            var attachment = attachment
+
             let addressKeyPassphrase = try key.passphrase(userPrivateKeys: userKeys, mailboxPassphrase: passphrase)
             let signingKey = SigningKey(privateKey: ArmoredKey(value: key.privateKey), passphrase: addressKeyPassphrase)
-            let dataToSign: Data
-            if let fileData = attachment.fileData {
-                dataToSign = fileData
-            } else if let localURL = attachment.filePathByLocalURL() {
-                dataToSign = try Data(contentsOf: localURL)
-            } else {
-                return nil
+
+            var path = attachment.filePathByLocalURL()
+            if let clearData = attachment.fileData, path == nil {
+                try attachment.writeToLocalURL(data: clearData)
+                path = attachment.filePathByLocalURL()
             }
-            let armoredSignature = try Sign.signDetached(signingKey: signingKey, plainData: dataToSign)
+            guard let path = path else { return nil }
+
+            let armoredSignature = try Self.signDetachedStream(
+                signerKey: signingKey,
+                plainFile: path
+            )
             return armoredSignature.value.unArmor
         } catch {
             return nil
         }
+    }
+
+    static private func signDetachedStream(
+        signerKey: SigningKey,
+        plainFile: URL
+    ) throws -> ArmoredSignature {
+        guard !signerKey.isEmpty else {
+            throw SignError.invalidSigningKey
+        }
+        guard let signKeyLocked = CryptoGo.CryptoKey(fromArmored: signerKey.privateKey.value) else {
+            throw SignError.invalidPrivateKey
+        }
+        let signKeyUnlocked = try signKeyLocked.unlock(signerKey.passphrase.data)
+        guard let signKeyRing = CryptoGo.CryptoKeyRing(signKeyUnlocked) else {
+            throw SignError.invalidPrivateKey
+        }
+
+        let readFileHandle = try FileHandle(forReadingFrom: plainFile)
+        let plaintextReader = CryptoGo.HelperMobile2GoReader(CryptoFileReader(file: readFileHandle))
+        let signature = try signKeyRing.signDetachedStream(withContext: plaintextReader, context: nil)
+        try readFileHandle.close()
+
+        var error: NSError?
+        let result = signature.getArmored(&error)
+        if let error = error {
+            throw error
+        }
+        return ArmoredSignature(value: result)
+    }
+}
+
+final private class CryptoFileReader: NSObject, HelperMobileReaderProtocol {
+    enum Errors: Error {
+        case failedToCreateCryptoHelper
+    }
+
+    let file: FileHandle
+
+    init(file: FileHandle) {
+        self.file = file
+    }
+
+    func read(_ max: Int) throws -> HelperMobileReadResult {
+        let data = self.file.readData(ofLength: max)
+        guard let helper = CryptoGo.HelperMobileReadResult(data.count, eof: data.isEmpty, data: data) else {
+            assertionFailure("Failed to create Helper of Crypto - should not happen")
+            throw Errors.failedToCreateCryptoHelper
+        }
+        return helper
     }
 }

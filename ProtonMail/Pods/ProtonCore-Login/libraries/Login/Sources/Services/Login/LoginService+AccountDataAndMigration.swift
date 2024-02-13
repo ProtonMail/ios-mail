@@ -53,15 +53,7 @@ extension LoginService {
 
             // external to internal conversion flow kick-off
             withAuthDelegateAvailable(completion) { authManager in
-                Task {
-                    let credential = await authManager.authCredential(sessionUID: sessionId)!
-                    let addressData = CreateAddressData(email: self.username!,
-                                                        credential: credential,
-                                                        user: user,
-                                                        mailboxPassword: mailboxPassword,
-                                                        passwordMode: passwordMode)
-                    completion(.success(.chooseInternalUsernameAndCreateInternalAddress(addressData)))
-                }
+                completion(.success(.chooseInternalUsernameAndCreateInternalAddress(CreateAddressData(email: self.username!, credential: authManager.authCredential(sessionUID: sessionId)!, user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode))))
             }
             return
         }
@@ -77,7 +69,7 @@ extension LoginService {
         manager.getAddresses { [weak self] result in
             switch result {
             case .failure(let error):
-                PMLog.error("Cannot fetch addresses for user")
+                PMLog.error("Cannot fetch addresses for user", sendToExternal: true)
                 completion(.failure(error.asLoginError()))
 
             case .success(let addresses):
@@ -101,18 +93,17 @@ extension LoginService {
         let isUsernameAccountAndAppSupportsIt = user.isInternal && hasNoAddressesAtAll && minimumAccountType == .username
         // user has second password mode (we need to check for keys as well) but the app doesn't need keys, we finish right away
         let hasSecondPasswordButAppDoesNotNeedKeys = passwordMode == .two && !hasNoKeys && minimumAccountType == .username
-        guard !isUsernameAccountAndAppSupportsIt && !hasSecondPasswordButAppDoesNotNeedKeys else {
+
+        if isUsernameAccountAndAppSupportsIt || hasSecondPasswordButAppDoesNotNeedKeys {
             withAuthDelegateAvailable(completion) { authManager in
-                Task { @MainActor in
-                    guard let credentials = await authManager.credential(sessionUID: sessionId),
-                          let authCredentials = await authManager.authCredential(sessionUID: sessionId) else {
-                        completion(.failure(.invalidState))
-                        return
-                    }
-                    completion(.success(.finished(
-                        UserData(credential: authCredentials, user: user, salts: [], passphrases: [:], addresses: addresses, scopes: credentials.scopes)
-                    )))
+                guard let credentials = authManager.credential(sessionUID: sessionId),
+                      let authCredentials = authManager.authCredential(sessionUID: sessionId) else {
+                    completion(.failure(.invalidState))
+                    return
                 }
+                completion(.success(.finished(
+                    UserData(credential: authCredentials, user: user, salts: [], passphrases: [:], addresses: addresses, scopes: credentials.scopes)
+                )))
             }
             return
         }
@@ -183,19 +174,17 @@ extension LoginService {
         switch minimumAccountType {
         case .username, .external:
             let activeAddresses = addresses.filter { $0.status != .disabled }
-            // If there are no active addresses that we can generate the keys for, just return
-            guard !activeAddresses.isEmpty else {
+            // I there are no active addresses that we can generate the keys for, just return
+            if activeAddresses.isEmpty {
                 withAuthDelegateAvailable(completion) { authManager in
-                    Task {
-                        guard let authCredential = await authManager.authCredential(sessionUID: sessionId),
-                              let credential = await authManager.credential(sessionUID: sessionId) else {
-                            completion(.failure(.invalidState))
-                            return
-                        }
-                        completion(.success(.finished(
-                            UserData(credential: authCredential, user: user, salts: [], passphrases: [:], addresses: addresses, scopes: credential.scopes)
-                        )))
+                    guard let authCredential = authManager.authCredential(sessionUID: sessionId),
+                          let credential = authManager.credential(sessionUID: sessionId) else {
+                        completion(.failure(.invalidState))
+                        return
                     }
+                    completion(.success(.finished(
+                        UserData(credential: authCredential, user: user, salts: [], passphrases: [:], addresses: addresses, scopes: credential.scopes)
+                    )))
                 }
                 return
             }
@@ -315,7 +304,7 @@ extension LoginService {
                 case let .failure(.apiMightBeBlocked(message, originalError)):
                     completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))
                 case let .failure(error):
-                    PMLog.debug("Fetching user info with \(error)")
+                    PMLog.error("Fetching user info with \(error)", sendToExternal: true)
                     completion(.failure(.generic(message: error.userFacingMessageInLogin, code: error.codeInLogin, originalError: error)))
                 }
             }
@@ -358,10 +347,10 @@ extension LoginService {
                     PMLog.debug("Address keys already created, moving on")
                     fetchUserDataAndRetryFetchingAddressesAndEncryptionData()
                 case let .generic(message, code, originalError):
-                    PMLog.error("Cannot fetch addresses for user")
+                    PMLog.error("Cannot fetch addresses for user", sendToExternal: true)
                     completion(.failure(.generic(message: message, code: code, originalError: originalError)))
                 case let .apiMightBeBlocked(message, originalError):
-                    PMLog.error("Cannot fetch addresses for user")
+                    PMLog.error("Cannot fetch addresses for user", sendToExternal: true)
                     completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))
                 }
             }
@@ -419,7 +408,7 @@ extension LoginService {
             case let .success(salts):
                 self?.makesPassphrasesAndValidateMailboxPassword(addresses: addresses, user: user, mailboxPassword: mailboxPassword, salts: salts, completion: completion)
             case let .failure(error):
-                PMLog.debug("Fetching key salts failed with \(error)")
+                PMLog.error("Fetching key salts failed with \(error)", sendToExternal: true)
                 completion(.failure(error.asLoginError()))
             }
         }
@@ -447,23 +436,22 @@ extension LoginService {
                         privateKey: key.privateKey
                     )
                 }
-                Task {
-                    guard let authCredentials = await authManager.authCredential(sessionUID: sessionId),
-                          let credentials = await authManager.credential(sessionUID: sessionId) else {
-                        completion(.failure(.invalidState))
-                        return
-                    }
 
-                    completion(.success(.finished(UserData(credential: authCredentials,
-                                                           user: user,
-                                                           salts: salts,
-                                                           passphrases: passphrases,
-                                                           addresses: addresses,
-                                                           scopes: credentials.scopes))))
+                guard let authCredentials = authManager.authCredential(sessionUID: sessionId),
+                      let credentials = authManager.credential(sessionUID: sessionId) else {
+                    completion(.failure(.invalidState))
+                    return
                 }
 
+                completion(.success(.finished(UserData(credential: authCredentials,
+                                                       user: user,
+                                                       salts: salts,
+                                                       passphrases: passphrases,
+                                                       addresses: addresses,
+                                                       scopes: credentials.scopes))))
+
             case let .failure(error):
-                PMLog.debug("Making passphrases failed with \(error)")
+                PMLog.error("Making passphrases failed with \(error)", sendToExternal: true)
                 completion(.failure(.generic(message: error.localizedDescription,
                                              code: error.bestShotAtReasonableErrorCode,
                                              originalError: error)))

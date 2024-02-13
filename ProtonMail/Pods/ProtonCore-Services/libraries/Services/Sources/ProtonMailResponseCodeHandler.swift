@@ -32,7 +32,7 @@ class ProtonMailResponseCodeHandler {
         completion: PMAPIService.APIResponseCompletion<T>,
         humanVerificationHandler: (PMResponseHandlerData, PMAPIService.APIResponseCompletion<T>, JSONDictionary) -> Void,
         deviceVerificationHandler: (PMResponseHandlerData, PMAPIService.APIResponseCompletion<T>, JSONDictionary) -> Void,
-        missingScopesHandler: (String, PMResponseHandlerData, PMAPIService.APIResponseCompletion<T>) -> Void,
+        missingScopesHandler: (MissingScopeMode, String, PMResponseHandlerData, PMAPIService.APIResponseCompletion<T>) -> Void,
         forceUpgradeHandler: (String?) -> Void) where T: APIDecodableResponse {
         if responseCode == APIErrorCode.humanVerificationRequired {
             // human verification required
@@ -40,7 +40,9 @@ class ProtonMailResponseCodeHandler {
         } else if responseCode == APIErrorCode.deviceVerificationRequired {
             deviceVerificationHandler(responseHandlerData, completion, response.responseDictionary)
         } else if isMissingScopeError(response: response) && FeatureFactory.shared.isEnabled(.missingScopes), let authCredential = responseHandlerData.customAuthCredential {
+            let isAccountRecovery = responseHandlerData.path == "/account/v1/recovery/session/abort"
             missingScopesHandler(
+                isAccountRecovery ? .accountRecovery : .default,
                 authCredential.userName,
                 responseHandlerData,
                 completion

@@ -240,27 +240,15 @@ extension SearchViewModel {
             labelId: labelID.rawValue,
             title: .actionSheetTitle(selectedCount: selectedIDs.count, viewMode: .singleMessage),
             locationViewMode: .singleMessage,
-            isSnoozeEnabled: user.isSnoozeEnabled
+            isSnoozeEnabled: user.isSnoozeEnabled,
+            isForSearch: true
         )
-    }
-
-    func handleBarActions(_ action: MessageViewActionSheetAction) {
-        switch action {
-        case .markRead:
-            self.mark(messages: selectedMessages, unread: false)
-        case .markUnread:
-            self.mark(messages: selectedMessages, unread: true)
-        case .trash:
-            self.move(toLabel: .trash)
-        case .delete:
-            self.deleteSelectedMessages()
-        default:
-            break
-        }
     }
 
     func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
         switch action {
+        case .delete:
+            self.deleteSelectedMessages()
         case .unstar:
             handleUnstarAction()
         case .star:
@@ -275,7 +263,7 @@ extension SearchViewModel {
             self.move(toLabel: .archive)
         case .spam:
             self.move(toLabel: .spam)
-        case .dismiss, .delete, .labelAs, .moveTo:
+        case .dismiss, .labelAs, .moveTo:
             break
         case .inbox:
             self.move(toLabel: .inbox)

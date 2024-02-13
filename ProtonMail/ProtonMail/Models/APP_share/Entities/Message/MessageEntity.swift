@@ -219,7 +219,6 @@ extension MessageEntity {
                 .decodeListOfDictionaries(jsonString: message.attachmentsMetadata)
         } catch {
             parsedAttachments = nil
-            SystemLogger.log(error: error)
         }
         self.attachmentsMetadata = parsedAttachments ?? []
     }

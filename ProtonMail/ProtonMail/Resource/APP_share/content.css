@@ -13,7 +13,7 @@
       --bg-color: {{proton-background-color-dark}};
       --brand-color: {{proton-brand-color-dark}};
   }
-  a:link { color: var(--brand-color) !important; }
+  a:link { color: var(--brand-color) }
 }
 
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary {

@@ -160,7 +160,7 @@ enum CardDataType: Int, Codable {
 }
 
 // add contacts Card object
-final class CardData: Package, Codable, Equatable {
+final class CardData: Package, Codable, Equatable, Sendable {
     let type: CardDataType
     let data: String
     let signature: String

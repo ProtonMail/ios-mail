@@ -38,7 +38,12 @@ public struct PlanSelectionCheckoutLabels: Encodable, Equatable {
 }
 
 extension ObservabilityEvent where Payload == PayloadWithLabels<PlanSelectionCheckoutLabels> {
-    public static func planSelectionCheckoutTotal(status: PlanSelectionCheckoutStatus, plan: PlanName) -> Self {
-        .init(name: "ios_core_plan_selection_checkout_total", labels: .init(status: status, plan: plan), version: .v2)
+    private enum Constants {
+        static let staticEventName = "ios_core_plan_selection_checkout_total"
+        static let dynamicEventName = "ios_core_dynamicPlan_selection_checkout_total"
+    }
+
+    public static func planSelectionCheckoutTotal(status: PlanSelectionCheckoutStatus, plan: PlanName, isDynamic: Bool = false) -> Self {
+        .init(name: isDynamic ? Constants.dynamicEventName : Constants.staticEventName, labels: .init(status: status, plan: plan), version: .v2)
     }
 }

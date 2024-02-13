@@ -22,7 +22,7 @@
 
 "Contact an administrator to make changes to your Proton subscription." = "管理者に連絡して Proton サブスクリプションを変更する必要があります。";
 
-"%1$@ of %2$@" = "%1$@ of %2$@";
+"%1$@ of %2$@" = "%2$@ の中の%1$@";
 
 "%@ storage" = "%@ ストレージ";
 
@@ -74,7 +74,7 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "このアプリでは、更新なしの年間サブスクリプションのみ利用できます";
 
-"Your subscription cannot be managed inside the mobile app." = "Your subscription cannot be managed inside the mobile app.";
+"Your subscription cannot be managed inside the mobile app." = "サブスクリプションはモバイル アプリ内では管理できません。";
 
 "Unlimited folders, labels, and filters" = "制限なしのフォルダー、ラベル、フィルター";
 

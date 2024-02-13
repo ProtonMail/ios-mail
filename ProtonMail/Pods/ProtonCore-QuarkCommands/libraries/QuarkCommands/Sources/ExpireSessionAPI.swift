@@ -29,6 +29,8 @@ public enum ExpireSessionError: Error {
 }
 
 extension QuarkCommands {
+
+    @available(*, deprecated, renamed: "userExpireSession", message: "`QuarkCommands` has been updated to `Quark`.")
     public static func expireSession(currentlyUsedHostUrl host: String,
                                      username: String,
                                      expireRefreshToken: Bool = false,

@@ -364,7 +364,7 @@
 "Title" = "Títol";
 
 /* contacts talbe cell Birthday title */
-"Birthday" = "Aniversari";
+"Birthday" = "Data de naixement";
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Aniversari";
@@ -1127,7 +1127,7 @@
 "Delete contact group" = "Eliminar grup de contactes";
 
 /* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Selected";
+"%d Selected" = "%d seleccionats";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Seleccioneu almenys un correu electrònic per al grup de contactes";
@@ -1926,10 +1926,10 @@
 "Load" = "Carrega";
 
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "Organitzador";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "Mostra menys";
 
 /* Official badge next to sender's name */
 "Official" = "Oficial";
@@ -2175,13 +2175,13 @@
 "Select all" = "Seleccionar-ho tot";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Unselect all";
+"Unselect all" = "Anul·la tota la selecció";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
 "Maximum selection reached" = "Maximum selection reached";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "Cap destinatari";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "Desactiva el codi PIN";
@@ -2229,37 +2229,37 @@
 "Unable to preview this attachment" = "Unable to preview this attachment";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
-"Downloading attachment" = "Downloading attachment";
+"Downloading attachment" = "S'està descarregant l'adjunt.";
 
 /* The banner title that is shown in the message detail view. */
 "Snoozed until %@" = "Snoozed until %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Unsnooze";
+"Unsnooze" = "Deixa de posposar";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Snooze until %@";
+"Snooze until %@" = "Posposat fins a %@";
 
 /* Notification banner when user unsnooze a conversation */
 "Conversation unsnoozed" = "Conversation unsnoozed";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Snooze until...";
+"Snooze until..." = "Posposa fins...";
 
 /* One of snooze option shows in action sheet */
-"Later this week" = "Later this week";
+"Later this week" = "Més tard aquesta setmana";
 
 /* One of snooze option shows in action sheet */
-"This weekend" = "This weekend";
+"This weekend" = "Aquest cap de setmana";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "Setmana següent";
 
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Please select a time in the future";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "Voleu posposar els vostres missatges quan vulgueu?";
 
 /* The content description of snooze promotion view */
 "Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";

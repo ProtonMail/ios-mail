@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import CoreData
 import ProtonCoreDataModel
 import ProtonCoreCrypto
 import ProtonCoreTestingToolkit
@@ -31,8 +30,7 @@ final class ImportDeviceContactsTests: XCTestCase {
     private var userContainer: UserContainer!
     private var testContainer: TestContainer!
     private var mockDeviceContacts: MockDeviceContactsProvider!
-    private var mockQueueManager: QueueManager!
-    private var mockMiscPersistentQueue: PMPersistentQueue!
+    private var mockContactsQueueSync: MockContactsSyncQueueProtocol!
 
     private let dummyUserID = UserID(rawValue: "dummy_user_id")
     private let dummyHistoryToken: Data = Data("dummy_history_token".utf8)
@@ -41,9 +39,7 @@ final class ImportDeviceContactsTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockDeviceContacts = .init()
-        let messageQueue = PMPersistentQueue(queueName: String.randomString(6))
-        mockMiscPersistentQueue = PMPersistentQueue(queueName: String.randomString(6))
-        mockQueueManager = QueueManager(messageQueue: messageQueue, miscQueue: mockMiscPersistentQueue)
+        mockContactsQueueSync = MockContactsSyncQueueProtocol()
 
         let userInfo = UserInfo()
         userInfo.userId = dummyUserID.rawValue
@@ -51,8 +47,8 @@ final class ImportDeviceContactsTests: XCTestCase {
 
         testContainer = .init()
         testContainer.deviceContactsFactory.register { self.mockDeviceContacts }
-        testContainer.queueManagerFactory.register { self.mockQueueManager }
         userContainer = UserContainer(userManager: mockUser, globalContainer: testContainer)
+        userContainer.contactSyncQueueFactory.register { self.mockContactsQueueSync }
 
         sut = .init(userID: dummyUserID, dependencies: userContainer)
         sutDelegate = .init(expectation: expectation(description: "delegate onFinish is called"))
@@ -67,7 +63,7 @@ final class ImportDeviceContactsTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         mockDeviceContacts = nil
-        mockQueueManager = nil
+        mockContactsQueueSync = nil
         mockUser = nil
         testContainer = nil
         userContainer = nil
@@ -87,7 +83,7 @@ final class ImportDeviceContactsTests: XCTestCase {
         XCTAssertEqual(historyTokens[dummyUserID.rawValue], dummyHistoryToken)
     }
 
-    func testExecute_whenNoHistoryToken_itImportsAllContacts() throws {
+    func testExecute_whenNoHistoryToken_itEnqueuesAllContacts() throws {
         // when no history token and all device contacts are new contacts
         testContainer.userDefaults[.contactsHistoryTokenPerUser] = [:]
         prepareDeviceContacts(dummyIdentifiers_toCreateAndUpdate)
@@ -95,11 +91,8 @@ final class ImportDeviceContactsTests: XCTestCase {
         sut.execute(params: sutParams)
         wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
 
-        let storedContacts = try readStoredContacts()
-        let storedEmails = try readStoredEmails()
-        XCTAssertEqual(storedContacts.count, 3)
-        XCTAssertEqual(storedEmails.count, 4)
-        XCTAssertEqual(Set(storedEmails.map(\.email)), Set(dummyIdentifiers_toCreateAndUpdate.flatMap(\.emails)))
+        let taskEnqueued = mockContactsQueueSync.addTaskStub.lastArguments?.a1
+        XCTAssertEqual(taskEnqueued?.numContacts, 3)
     }
 
     func testExecute_whenImportsContacts_normalisesTheirUuid() throws {
@@ -110,16 +103,20 @@ final class ImportDeviceContactsTests: XCTestCase {
         sut.execute(params: sutParams)
         wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
 
+        let taskEnqueued = mockContactsQueueSync.addTaskStub.lastArguments?.a1
+        XCTAssertEqual(taskEnqueued?.numContacts, 3)
+
         let expectedUuidPrefix = "protonmail-ios-autoimport-"
-        let storedContacts = try readStoredContacts()
-        XCTAssertEqual(storedContacts.count, 3)
-        for contact in storedContacts {
-            let contactPrefix = String(contact.uuid.prefix(expectedUuidPrefix.count))
-            XCTAssertEqual(contactPrefix, expectedUuidPrefix)
+        for contactVCards in taskEnqueued!.contactsVCards {
+            for card in contactVCards {
+                if case .SignedOnly = card.type {
+                    XCTAssertTrue(card.data.contains("UID:\(expectedUuidPrefix)"))
+                }
+            }
         }
     }
 
-    func testExecute_whenHistoryToken_andUuidMatch_itImportsModifiedContacts() throws {
+    func testExecute_whenHistoryToken_andUuidMatch_itEnqueuesModifiedContacts() throws {
         // when history token and all device contacts are to update an existing one matching by uuid
         testContainer.userDefaults[.contactsHistoryTokenPerUser] = [dummyUserID.rawValue: Data("someToken".utf8)]
         prepareContactInCoreData(dummyContactExistingInCoreData)
@@ -128,21 +125,11 @@ final class ImportDeviceContactsTests: XCTestCase {
         sut.execute(params: sutParams)
         wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
 
-        // TODO:
-        // ImportDeviceContacts reuses the current updateContact action which will store the changes
-        // after the endpoint request. Therefore this can't be tested checking CoreData yet.
-
-//        let storedContacts = try readStoredContacts()
-//        let storedEmails = try readStoredEmails()
-//        XCTAssertEqual(storedContacts.count, 1)
-//        XCTAssertEqual(storedEmails.count, 2)
-//        XCTAssertEqual(Set(storedEmails.map(\.email)), Set(["kathy@pm.me", "kate-bell@mac.com"]))
-
-        // Temporarily we check the queue
-        XCTAssertEqual(mockMiscPersistentQueue.count, 1)
+        let taskEnqueued = mockContactsQueueSync.addTaskStub.lastArguments?.a1
+        XCTAssertEqual(taskEnqueued?.numContacts, 1)
     }
 
-    func testExecute_whenHistoryToken_andEmailMatch_itImportsModifiedContacts() throws {
+    func testExecute_whenHistoryToken_andEmailMatch_itEnqueuesModifiedContacts() throws {
         // when history token and all device contacts are to update an existing one matching by email
         testContainer.userDefaults[.contactsHistoryTokenPerUser] = [dummyUserID.rawValue: Data("someToken".utf8)]
         prepareContactInCoreData(dummyContactExistingInCoreData)
@@ -151,18 +138,8 @@ final class ImportDeviceContactsTests: XCTestCase {
         sut.execute(params: sutParams)
         wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
 
-        // TODO:
-        // ImportDeviceContacts reuses the current updateContact action which will store the changes
-        // after the endpoint request. Therefore this can't be tested checking CoreData yet.
-
-//        let storedContacts = try readStoredContacts()
-//        let storedEmails = try readStoredEmails()
-//        XCTAssertEqual(storedContacts.count, 1)
-//        XCTAssertEqual(storedEmails.count, 2)
-//        XCTAssertEqual(Set(storedEmails.map(\.email)), Set(["kathy@pm.me", "kate-bell@mac.com"]))
-
-        // Temporarily we check the queue
-        XCTAssertEqual(mockMiscPersistentQueue.count, 1)
+        let taskEnqueued = mockContactsQueueSync.addTaskStub.lastArguments?.a1
+        XCTAssertEqual(taskEnqueued?.numContacts, 1)
     }
 
     func testExecute_whenThereAreNoContactsToImport_itFinishesTheUseCase() {
@@ -175,7 +152,7 @@ final class ImportDeviceContactsTests: XCTestCase {
         wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
     }
 
-    func testCancel_whenThereAreOnlyContactsToBeCreated_itFinishesWithoutImporting() throws {
+    func testCancel_whenThereAreOnlyContactsToBeCreated_itFinishesWithoutEnqueuingTasks() throws {
         testContainer.userDefaults[.contactsHistoryTokenPerUser] = [:]
         prepareDeviceContacts(dummyIdentifiers_toCreateAndUpdate)
 
@@ -183,13 +160,10 @@ final class ImportDeviceContactsTests: XCTestCase {
         sut.cancel()
         wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
 
-        let savedContacts = try readStoredContacts()
-        let savedEmails = try readStoredEmails()
-        XCTAssertEqual(savedContacts.count, 0)
-        XCTAssertEqual(savedEmails.count, 0)
+        XCTAssertEqual(mockContactsQueueSync.addTaskStub.callCounter, 0)
     }
 
-    func testCancel_whenThereAreOnlyContactsToBeUpdated_itFinishesWithoutImporting() throws {
+    func testCancel_whenThereAreOnlyContactsToBeUpdated_itFinishesWithoutEnqueuingTasks() throws {
         testContainer.userDefaults[.contactsHistoryTokenPerUser] = [dummyUserID.rawValue: Data("someToken".utf8)]
         prepareContactInCoreData(dummyContactExistingInCoreData)
         prepareDeviceContacts(dummyIdentifiers_toUpdateExistingContacts_uuidMatch)
@@ -198,13 +172,7 @@ final class ImportDeviceContactsTests: XCTestCase {
         sut.cancel()
         wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
 
-        // TODO:
-        // For the same reason explained above, temporarily we use the queue
-
-//        let storedEmails = try readStoredEmails()
-//        XCTAssertEqual(storedEmails.count, 1)
-
-        XCTAssertEqual(mockMiscPersistentQueue.count, 0)
+        XCTAssertEqual(mockContactsQueueSync.addTaskStub.callCounter, 0)
     }
 }
 
@@ -240,20 +208,6 @@ extension ImportDeviceContactsTests {
         }
         mockDeviceContacts.fetchEventsContactIdentifiersStub.bodyIs { _, token in
             (self.dummyHistoryToken, deviceContactIdentifiers)
-        }
-    }
-
-    private func readStoredEmails() throws -> [Email] {
-        try testContainer.contextProvider.read { context in
-            let fetchEmails = NSFetchRequest<Email>(entityName: Email.entityName)
-            return try context.fetch(fetchEmails)
-        }
-    }
-
-    private func readStoredContacts() throws -> [Contact] {
-        try testContainer.contextProvider.read { context in
-            let savedContacts = NSFetchRequest<Contact>(entityName: Contact.entityName)
-            return try context.fetch(savedContacts)
         }
     }
 }
@@ -373,5 +327,17 @@ private final class SUTDelegate: ImportDeviceContactsDelegate {
 
     func onFinish() {
         finishExpectation.fulfill()
+    }
+}
+
+private extension ProtonMail.ContactTask {
+
+    var contactsVCards: [[CardData]] {
+        switch self.command {
+        case let .create(contactObjects):
+            return contactObjects.map(\.vCards)
+        case let .update(_, vCards):
+            return [vCards]
+        }
     }
 }

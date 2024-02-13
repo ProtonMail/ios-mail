@@ -155,14 +155,7 @@ public final class Payments {
     public func updateService(completion: @escaping (Result<(), Error>) -> Void) {
         switch planService {
         case .left(let planService):
-            storeKitManager.updateAvailableProductsList { error in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-
-                planService.updateServicePlans(success: { completion(.success) }, failure: { error in completion(.failure(error)) })
-            }
+            planService.updateServicePlans(success: { completion(.success) }, failure: { error in completion(.failure(error)) })
         case .right(let plansDataSource):
             Task {
                 do {

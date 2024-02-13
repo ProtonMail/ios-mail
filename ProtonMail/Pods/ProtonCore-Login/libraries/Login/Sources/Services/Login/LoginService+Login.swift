@@ -58,9 +58,25 @@ extension LoginService {
         }
 
         let host = apiService.dohInterface.getCurrentlyUsedHostUrl()
+        let accountHost = apiService.dohInterface.getAccountHost()
         let sessionUID = apiService.sessionUID
 
-        let url = URL(string: "\((host))/auth/sso/\(ssoChallengeResponse.ssoChallengeToken)")!
+        var urlComponents = URLComponents(string: "\(host)/auth/sso/\(ssoChallengeResponse.ssoChallengeToken)")!
+
+        #if os(macOS)
+        if let callbackScheme = self.ssoCallbackScheme,
+            let accountHostUrl = URL(string: accountHost),
+            let accountHostScheme = accountHostUrl.scheme {
+
+            let modifiedAccountHost = accountHost.replacingOccurrences(of: accountHostScheme, with: callbackScheme)
+            let finalRedirectBaseURLQueryParameter = URLQueryItem(name: "FinalRedirectBaseUrl",
+                                                                 value: "\(modifiedAccountHost)")
+
+            urlComponents.queryItems = [finalRedirectBaseURLQueryParameter]
+        }
+        #endif
+
+        let url = urlComponents.url!
         var request = URLRequest(url: url)
         request.setValue(sessionUID, forHTTPHeaderField: "x-pm-uid")
         request.setValue(accessToken.token, forHTTPHeaderField: "Authorization")
@@ -92,7 +108,7 @@ extension LoginService {
                     }
 
                 case let .failure(error):
-                    PMLog.debug("Login failed with \(error)")
+                    PMLog.error("Login failed with \(error)", sendToExternal: true)
                     completion(.failure(error.asLoginError()))
                 }
             }
@@ -127,14 +143,14 @@ extension LoginService {
                     case .updatedCredential(let credential):
                         authManager.onSessionObtaining(credential: credential)
                         self.apiService.setSessionUID(uid: credential.UID)
-                        PMLog.debug("No idea how to handle updatedCredential")
+                        PMLog.error("No idea how to handle updatedCredential", sendToExternal: true)
                         completion(.failure(.invalidState))
                     case .ssoChallenge(let ssoChallengeResponse):
                         completion(.success(.ssoChallenge(ssoChallengeResponse)))
                     }
 
                 case let .failure(error):
-                    PMLog.debug("Login failed with \(error)")
+                    PMLog.error("Login failed with \(error)", sendToExternal: true)
                     if case let .networkingError(error) = error, error.isSwitchToSRPError {
                         ObservabilityEnv.report(.ssoObtainChallengeToken(status: .ssoDomainNotFound))
                     }
@@ -167,20 +183,20 @@ extension LoginService {
                         self.handleValidCredentials(credential: credential, passwordMode: passwordMode, mailboxPassword: mailboxPassword, completion: completion)
 
                     case .ask2FA:
-                        PMLog.debug("Asking afaing for 2FA code should never happen")
+                        PMLog.error("Asking afaing for 2FA code should never happen", sendToExternal: true)
                         completion(.failure(.invalidState))
 
                     case .updatedCredential(let credential):
                         authManager.onSessionObtaining(credential: credential)
                         self.apiService.setSessionUID(uid: credential.UID)
-                        PMLog.debug("No idea how to handle updatedCredential")
+                        PMLog.error("No idea how to handle updatedCredential", sendToExternal: true)
                         completion(.failure(.invalidState))
                     case .ssoChallenge:
-                        PMLog.debug("Obtaining SSO challenge should never happen")
+                        PMLog.error("Obtaining SSO challenge should never happen", sendToExternal: true)
                         completion(.failure(.invalidState))
                     }
                 case let .failure(error):
-                    PMLog.debug("Confirming 2FA code failed with \(error)")
+                    PMLog.error("Confirming 2FA code failed with \(error)", sendToExternal: true)
                     let loginError = error.asLoginError(in2FAContext: true)
                     completion(.failure(loginError))
                 }
@@ -196,7 +212,7 @@ extension LoginService {
                     user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
                 )
             case .failure(let error):
-                PMLog.debug("Fetching user info with \(error)")
+                PMLog.error("Fetching user info with \(error)", sendToExternal: true)
                 completion(.failure(error.asLoginError()))
             }
         }
@@ -210,7 +226,7 @@ extension LoginService {
             case .success:
                 completion(.success)
             case let .failure(error):
-                PMLog.debug("Logout failed with \(error)")
+                PMLog.error("Logout failed with \(error)", sendToExternal: true)
                 completion(.failure(error))
             }
         }
@@ -276,7 +292,7 @@ extension LoginService {
             return
         }
         guard let mailboxPassword = mailboxPassword else {
-            PMLog.error("Cannot create account key because no mailbox password")
+            PMLog.error("Cannot create account key because no mailbox password", sendToExternal: true)
             completion(.failure(.invalidState))
             return
         }
@@ -289,7 +305,7 @@ extension LoginService {
                 case .success(let addresses):
                     self?.createAccountKeysIfNeeded(user: user, addresses: addresses, mailboxPassword: mailboxPassword, completion: completion)
                 case .failure(let error):
-                    PMLog.debug("Login failed with \(error)")
+                    PMLog.error("Login failed with \(error)", sendToExternal: true)
                     completion(.failure(error.asLoginError()))
                 }
             }
@@ -307,7 +323,7 @@ extension LoginService {
         manager.setupAccountKeys(addresses: addresses, password: mailboxPassword) { result in
             switch result {
             case let .failure(error):
-                PMLog.error("Cannot create account keys for user")
+                PMLog.error("Cannot create account keys for user", sendToExternal: true)
                 completion(.failure(error.asLoginError()))
             case .success:
                 manager.getUserInfo { result in
@@ -368,7 +384,7 @@ extension LoginService {
         }
 
         guard let primaryKey = user.keys.first(where: { $0.primary == 1 }) else {
-            PMLog.error("Cannot create address for user without primary key")
+            PMLog.error("Cannot create address for user without primary key", sendToExternal: true)
             completion(.failure(.generic(message: LSTranslation._loginservice_error_generic.l10n,
                                          code: 0,
                                          originalError: LoginError.invalidState)))
@@ -381,7 +397,7 @@ extension LoginService {
                 completion(.failure(error.asCreateAddressKeysError()))
             case let .success(salts):
                 guard let keySalt = salts.first(where: { $0.ID == primaryKey.keyID })?.keySalt, let salt = Data(base64Encoded: keySalt) else {
-                    PMLog.error("Missing salt for primary key")
+                    PMLog.error("Missing salt for primary key", sendToExternal: true)
                     completion(.failure(.generic(message: LSTranslation._loginservice_error_generic.l10n,
                                                  code: 0,
                                                  originalError: LoginError.invalidState)))

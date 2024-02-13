@@ -52,7 +52,7 @@
 
 "Complete payment?" = "是否已完成付款？";
 
-"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Proton Bundle 方案訂購授權已經開始。按下繼續以完成付款處理，並建立您的帳號";
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Proton Bundle 方案訂購授權已經開始。按下繼續以完成付款處理，並創建您的帳號";
 
 "Complete payment" = "付款完成";
 
@@ -74,7 +74,7 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "此應用程式僅提供非續購型年約授權";
 
-"Your subscription cannot be managed inside the mobile app." = "Your subscription cannot be managed inside the mobile app.";
+"Your subscription cannot be managed inside the mobile app." = "您的訂購授權無法在行動裝置應用程式內管理。";
 
 "Unlimited folders, labels, and filters" = "資料夾、標籤和篩選器無上限";
 
@@ -98,7 +98,7 @@
 
 "Get Proton for free" = "免費取得 Proton";
 
-"Extend subscription" = "延長訂閱";
+"Extend subscription" = "延長訂購授權";
 
 "%@ of %@" = "已用 %@，最多 %@";
 

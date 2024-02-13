@@ -52,6 +52,12 @@ class ExpandedHeaderViewController: UIViewController {
         setUpLockTapAction()
         setUpViewModelObservation()
         setUpView()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(timeZoneDidChange),
+            name: .NSSystemTimeZoneDidChange,
+            object: nil
+        )
     }
 
     func observeHideDetails(action: @escaping (() -> Void)) {
@@ -113,10 +119,7 @@ class ExpandedHeaderViewController: UIViewController {
         )
 
         customView.officialBadge.isHidden = viewModel.isOfficialBadgeHidden
-
-        customView.timeLabel.set(text: viewModel.infoProvider.time,
-                                 preferredFont: .footnote,
-                                 textColor: ColorProvider.TextWeak)
+        setTimeString()
 
         customView.senderEmailControl.label.set(text: viewModel.infoProvider.senderEmail,
                                                 preferredFont: .footnote,
@@ -138,6 +141,12 @@ class ExpandedHeaderViewController: UIViewController {
         if let ccData = viewModel.infoProvider.ccData {
             let doNotCoverMoreButton = viewModel.infoProvider.toData == nil
             contactRow = present(viewModel: ccData, doNotCoverMoreButton: doNotCoverMoreButton)
+        }
+
+        if viewModel.infoProvider.message.contains(location: LabelLocation.hiddenSent),
+           let bccData = viewModel.infoProvider.bccData {
+            let doNotCoverMoreButton = viewModel.infoProvider.toData == nil && viewModel.infoProvider.ccData == nil
+            contactRow = present(viewModel: bccData, doNotCoverMoreButton: doNotCoverMoreButton)
         }
 
         if viewModel.infoProvider.toData == nil && viewModel.infoProvider.ccData == nil {
@@ -174,6 +183,12 @@ class ExpandedHeaderViewController: UIViewController {
         }
         presentHideDetailButton()
         setUpLock()
+    }
+
+    private func setTimeString() {
+        customView.timeLabel.set(text: viewModel.infoProvider.time,
+                                 preferredFont: .footnote,
+                                 textColor: ColorProvider.TextWeak)
     }
 
     private func setUpLock() {
@@ -346,6 +361,11 @@ class ExpandedHeaderViewController: UIViewController {
     @objc
     private func lockTapped() {
         viewModel.infoProvider.checkedSenderContact?.encryptionIconStatus?.text.alertToastBottom()
+    }
+
+    @objc
+    private func timeZoneDidChange() {
+        setTimeString()
     }
 
     @objc

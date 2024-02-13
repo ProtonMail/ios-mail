@@ -60,7 +60,11 @@
                "ProtonMailTests",
                "ProtonMailUITests"
             ],
-            "language": "en"
+            "language": "en",
+            "region": "US",
+            "environmentVariables": {
+               "TZ": "UTC"
+            }
          },
          "profile": {
             "config": "Debug"

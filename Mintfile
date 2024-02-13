@@ -1,7 +1,7 @@
 Asana/locheck@0.9.11
-krzysztofzablocki/Sourcery@2.0.2
-mono0926/LicensePlist@3.24.10
-realm/SwiftLint@0.52.3
+krzysztofzablocki/Sourcery@2.1.7
+mono0926/LicensePlist@3.25.1
+realm/SwiftLint@0.54.0
 SwiftGen/SwiftGen@6.6.2
-tuist/xcbeautify@0.20.0
-yonaskolb/xcodegen@2.35.0
+tuist/xcbeautify@1.4.0
+yonaskolb/xcodegen@2.38.0

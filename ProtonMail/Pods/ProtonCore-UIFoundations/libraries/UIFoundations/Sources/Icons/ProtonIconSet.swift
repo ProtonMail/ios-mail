@@ -26,6 +26,8 @@ public struct ProtonIconSet {
 
     // Proton icon set
 
+    public let fullStorage = ProtonIcon(name: "fullStorage")
+
     public let alias = ProtonIcon(name: "ic-alias")
 
     public let archiveBox = ProtonIcon(name: "ic-archive-box")
@@ -141,6 +143,10 @@ public struct ProtonIconSet {
     public let calendarCheckmark = ProtonIcon(name: "ic-calendar-checkmark")
 
     public let calendarDay = ProtonIcon(name: "ic-calendar-day")
+
+    public let calendarThreeDays = ProtonIcon(name: "ic-calendar-3day")
+
+    public let calendarWeek = ProtonIcon(name: "ic-calendar-week")
 
     public let calendarGrid = ProtonIcon(name: "ic-calendar-grid")
 

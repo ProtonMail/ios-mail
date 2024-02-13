@@ -96,7 +96,7 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
 
                 if !oldStatus.contains(.changePin) {
                     // just set pin protection
-                    didPickAutoLockTime(value: 15)
+                    didPickAutoLockTime(value: .minutes(15))
                 }
             }
 
@@ -180,8 +180,18 @@ extension SettingsLockViewModel: SettingsLockViewModelOutput {
         self.uiDelegate = delegate
     }
 
-    var autoLockTimeOptions: [Int] {
-        [-1, 0, 1, 2, 5, 10, 15, 30, 60]
+    var autoLockTimeOptions: [AutolockTimeout] {
+        [
+            .never,
+            .always,
+            .minutes(1),
+            .minutes(2),
+            .minutes(5),
+            .minutes(10),
+            .minutes(15),
+            .minutes(30),
+            .minutes(60)
+        ]
     }
 
     var biometricType: BiometricType {
@@ -198,6 +208,10 @@ extension SettingsLockViewModel: SettingsLockViewModelOutput {
 
     var isBiometricEnabled: Bool {
         dependencies.keyMaker.isTouchIDEnabled
+    }
+
+    var selectedAutolockTimeout: AutolockTimeout {
+        dependencies.keychain[.autolockTimeout]
     }
 
     var isAppKeyEnabled: Bool {
@@ -245,14 +259,8 @@ extension SettingsLockViewModel: SettingsLockViewModelInput {
         }
     }
 
-    func didPickAutoLockTime(value: Int) {
-        dependencies.userCachedStatus.setLockTime(value: AutolockTimeout(rawValue: value))
+    func didPickAutoLockTime(value: AutolockTimeout) {
+        dependencies.keychain[.autolockTimeout] = value
         dependencies.keyMaker.resetAutolock()
-    }
-}
-
-extension UserCachedStatus: LockPreferences {
-    func setLockTime(value: ProtonCoreKeymaker.AutolockTimeout) {
-        lockTime = value
     }
 }

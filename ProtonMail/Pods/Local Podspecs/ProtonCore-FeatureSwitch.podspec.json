@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-FeatureSwitch",
   "module_name": "ProtonCoreFeatureSwitch",
-  "version": "16.0.0",
+  "version": "18.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "16.0.0"
+    "tag": "18.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -31,10 +31,10 @@
   },
   "dependencies": {
     "ProtonCore-Foundations": [
-      "16.0.0"
+      "18.0.0"
     ],
     "ProtonCore-Utilities": [
-      "16.0.0"
+      "18.0.0"
     ]
   },
   "source_files": "libraries/FeatureSwitch/Sources/**/*.{h,m,swift}",
@@ -53,10 +53,10 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Doh": [
-          "16.0.0"
+          "18.0.0"
         ],
         "ProtonCore-Doh": [
-          "16.0.0"
+          "18.0.0"
         ]
       },
       "source_files": "libraries/FeatureSwitch/Tests/**/*.swift",

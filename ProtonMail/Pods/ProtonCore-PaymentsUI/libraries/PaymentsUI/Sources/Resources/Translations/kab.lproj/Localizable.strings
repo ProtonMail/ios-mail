@@ -22,7 +22,7 @@
 
 "Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
 
-"%1$@ of %2$@" = "%1$@ of %2$@";
+"%1$@ of %2$@" = "%1$@ si %2$@";
 
 "%@ storage" = "%@ n uḥraz";
 
@@ -130,4 +130,4 @@
 
 "Pay every two years" = "Pay every two years";
 
-"Free" = "Free";
+"Free" = "Baṭel";

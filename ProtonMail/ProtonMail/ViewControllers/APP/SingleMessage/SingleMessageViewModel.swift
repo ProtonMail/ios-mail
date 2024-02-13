@@ -129,26 +129,10 @@ class SingleMessageViewModel {
                              apply: !message.isStarred)
     }
 
-    func handleToolBarAction(_ action: MessageViewActionSheetAction) {
-        switch action {
-        case .delete:
-            messageService.delete(messages: [message], label: labelId)
-        case .markRead:
-            messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: labelId, unRead: false)
-        case .markUnread:
-            messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: labelId, unRead: true)
-        case .trash:
-            messageService.move(messages: [message],
-                                from: [labelId],
-                                to: Message.Location.trash.labelID,
-                                queue: true)
-        default:
-            return
-        }
-    }
-
     func handleActionSheetAction(_ action: MessageViewActionSheetAction, completion: @escaping () -> Void) {
         switch action {
+        case .markRead:
+            messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: labelId, unRead: false)
         case .markUnread:
             messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: labelId, unRead: true)
         case .trash:

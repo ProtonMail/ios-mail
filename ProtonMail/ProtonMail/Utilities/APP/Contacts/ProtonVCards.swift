@@ -117,14 +117,14 @@ final class ProtonVCards {
 
 extension ProtonVCards {
 
-    func name(fromCardOfType type: CardDataType = .PlainText) -> ContactField.Name {
+    func name(fromCardOfType type: CardDataType = .SignAndEncrypt) -> ContactField.Name {
         guard let card = cardObject(ofType: type) else {
             return ContactField.Name(firstName: "", lastName: "")
         }
         return card.object.name()
     }
 
-    func formattedName(fromCardOfType type: CardDataType = .PlainText) -> String {
+    func formattedName(fromCardOfType type: CardDataType = .SignedOnly) -> String {
         guard let card = cardObject(ofType: type) else { return "" }
         return card.object.formattedName()
     }

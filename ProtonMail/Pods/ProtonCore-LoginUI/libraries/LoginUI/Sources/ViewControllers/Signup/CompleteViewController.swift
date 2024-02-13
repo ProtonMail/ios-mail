@@ -80,7 +80,11 @@ class CompleteViewController: UIViewController, AccessibleView {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.progressCompletion = { self.progressTableView.reloadData() }
+        viewModel.progressCompletion = { [weak self] in
+            DispatchQueue.main.async {
+                self?.progressTableView.reloadData()
+            }
+        }
         setupUI()
         if signupAccountType == .internal {
             createAccount()
