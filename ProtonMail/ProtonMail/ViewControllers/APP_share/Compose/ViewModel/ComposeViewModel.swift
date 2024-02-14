@@ -55,11 +55,24 @@ class ComposeViewModel: NSObject {
         return Set(schemes.map(\.rawValue))
     }
 
-    private(set) var contacts: [ContactPickerModelProtocol] = []
+    var contacts: [ContactPickerModelProtocol] {
+        // sort the contact group and phone address together
+        let sortedContacts = phoneContacts.appending(protonGroupContacts).sorted(by: { $0.contactTitle.lowercased() < $1.contactTitle.lowercased() })
+        return protonContacts + sortedContacts
+    }
+    private var phoneContacts: [ContactPickerModelProtocol] = [] {
+        didSet {
+            contactsDidChangePublisher.send()
+        }
+    }
+    private var protonContacts: [ContactPickerModelProtocol] = [] {
+        didSet {
+            contactsDidChangePublisher.send()
+        }
+    }
+    private var protonGroupContacts: [ContactPickerModelProtocol] = []
     private var emailPublisher: EmailPublisher?
     private var cancellable: AnyCancellable?
-
-    private(set) var phoneContacts: [ContactPickerModelProtocol] = []
 
     private(set) var messageAction: ComposeMessageAction = .newDraft
     private(set) var subject: String = .empty
@@ -88,6 +101,8 @@ class ComposeViewModel: NSObject {
     var shouldStripMetaData: Bool {
         dependencies.keychain[.metadataStripping] == .stripMetadata
     }
+
+    let contactsDidChangePublisher = PassthroughSubject<Void, Never>()
 
     // For share extension
     init(
@@ -1208,35 +1223,24 @@ extension ComposeViewModel {
                         filteredResult.append(contact)
                     }
                 }
-                self?.contacts = filteredResult
-                self?.addContactWithPhoneContact()
+                self?.protonContacts = filteredResult
             })
         emailPublisher?.start()
+        fetchGroupContacts()
     }
 
-    func fetchPhoneContacts(completion: (() -> Void)?) {
+    func fetchPhoneContacts() {
         let service = user.contactService
         service.getContactVOsFromPhone { contacts, error in
             DispatchQueue.main.async {
                 self.phoneContacts = contacts
-                completion?()
             }
         }
     }
 
-    private func addContactWithPhoneContact() {
-        var contactsWithoutLastTimeUsed: [ContactPickerModelProtocol] = phoneContacts
-
-        if user.hasPaidMailPlan {
-            let contactGroupsToAdd = user.contactGroupService.getAllContactGroupVOs().filter {
-                $0.contactCount > 0
-            }
-            contactsWithoutLastTimeUsed.append(contentsOf: contactGroupsToAdd)
-        }
-        // sort the contact group and phone address together
-        contactsWithoutLastTimeUsed.sort(by: { $0.contactTitle.lowercased() < $1.contactTitle.lowercased() })
-
-        self.contacts += contactsWithoutLastTimeUsed
+    private func fetchGroupContacts() {
+        guard user.hasPaidMailPlan else { return }
+        protonGroupContacts = user.contactGroupService.getAllContactGroupVOs().filter { $0.contactCount > 0 }
     }
 }
 
