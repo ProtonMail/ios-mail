@@ -37,7 +37,9 @@ struct FeatureFlagProvider {
 
     private func localOverride(for featureFlag: MailFeatureFlag) -> Bool? {
         switch featureFlag {
-        case .rsvpWidget, .snooze:
+        case .rsvpWidget where UIApplication.isDebugOrEnterprise:
+            return true
+        case .snooze:
             return ProcessInfo.isRunningUnitTests
         default:
             return nil
