@@ -269,7 +269,6 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
         self.reachability = reachability
         self.featureFlagsRepository = featureFlagsRepository
         super.init()
-        reachability?.whenReachable = { [weak self] _ in self?.networkReachable() }
         try? reachability?.startNotifier()
     }
 
@@ -571,11 +570,6 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
         else { throw Errors.receiptLost }
         return receipt
     }
-
-    // FIXME: should not be called in main thread
-    private func networkReachable() {
-        processAllStoreKitTransactionsCurrentlyFoundInThePaymentQueue(finishHandler: transactionsFinishHandler)
-    }
 }
 
 extension StoreKitManager: SKProductsRequestDelegate {
@@ -585,14 +579,14 @@ extension StoreKitManager: SKProductsRequestDelegate {
             assertionFailure("This method should never be called with dynamic plans. The StoreKitDataSource object fetches the SKProducts")
         }
         if !response.invalidProductIdentifiers.isEmpty {
-            PMLog.error("Some IAP identifiers are reported as invalid by the AppStore: \(response.invalidProductIdentifiers)")
+            PMLog.error("Some IAP identifiers are reported as invalid by the AppStore: \(response.invalidProductIdentifiers)", sendToExternal: true)
         }
         inAppPurchaseIdentifiersSet(Set(response.products.map(\.productIdentifier)))
         availableProducts = response.products
         updateAvailableProductsListCompletionBlock?(nil)
         updateAvailableProductsListCompletionBlock = nil
         self.request = nil
-        ObservabilityEnv.report(.paymentQuerySubscriptionsTotal(status: .successful))
+        ObservabilityEnv.report(.paymentQuerySubscriptionsTotal(status: .successful, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
     }
 
     func request(_: SKRequest, didFailWithError error: Error) {
@@ -611,7 +605,7 @@ extension StoreKitManager: SKProductsRequestDelegate {
         #endif
         updateAvailableProductsListCompletionBlock = nil
         self.request = nil
-        ObservabilityEnv.report(.paymentQuerySubscriptionsTotal(status: .failed))
+        ObservabilityEnv.report(.paymentQuerySubscriptionsTotal(status: .failed, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
     }
 }
 
@@ -656,6 +650,18 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             let group = DispatchGroup()
             group.enter()
 
+            guard transaction.original == nil
+                    || transaction.transactionIdentifier == transaction.original?.transactionIdentifier else {
+                // This is not the first purchase.
+                // Caveat: Apple says original is undefined for transactionStates other than .restored,
+                // but we found this holds true as well for .purchased. So far. Proceed with caution.
+                finishTransaction(transaction, nil)
+                callSuccessCompletion(for: cacheKey, with: .autoRenewal)
+                PMLog.debug("Ignoring and finishing transaction corresponding to renewal cycle.")
+                group.leave()
+                return
+            }
+
             processPurchasedStoreKitTransaction(
                 transaction, cacheKey: cacheKey, shouldVerifyPurchaseWasForSameAccount: shouldVerify, group: group
             ) { [weak self] result in
@@ -673,7 +679,11 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         case .deferred, .purchasing:
             callDeferredCompletion(for: cacheKey)
         case .restored:
-            break // never happens in our flow
+            // Never happens in our flow, but should it happen from flows from a
+            // future app on a separate device,
+            // we need to do something to avoid the transaction
+            // reappearing on every run
+            callSuccessCompletion(for: cacheKey, with: .withPurchaseAlreadyProcessed)
         @unknown default:
             break
         }
@@ -753,7 +763,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         } catch Errors.alreadyPurchasedPlanDoesNotMatchBackend {
             callErrorCompletion(for: cacheKey, with: Errors.alreadyPurchasedPlanDoesNotMatchBackend)
 
-            if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) && 
+            if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) &&
                 transaction.payment.productIdentifier.hasSuffix("_non_renewing") {
                 // If dynamic plans are enabled, but there is a pending transaction for a non-renewing plan,
                 // finalize the transaction here.
@@ -782,6 +792,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         let planName: String
         let planAmount: Int
         let planIdentifier: String
+        let cycle: Int
         switch planService {
         case .left(let planService):
             if planService.detailsOfPlanCorrespondingToIAP(plan) == nil {
@@ -798,6 +809,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             planName = details.name
             planAmount = amount
             planIdentifier = protonIdentifier
+            cycle = 12
 
         case .right(let planDataSource):
             guard let details = planDataSource.detailsOfAvailablePlanCorrespondingToIAP(plan),
@@ -812,6 +824,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             planName = name
             planAmount = price.current
             planIdentifier = id
+            cycle = instance.cycle
         }
 
         let amountDue: Int
@@ -819,22 +832,27 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             amountDue = cachedAmountDue
         } else {
             let validateSubscriptionRequest = paymentsApi.validateSubscriptionRequest(
-                api: apiService, protonPlanName: planName, isAuthenticated: applicationUserId() != nil
+                api: apiService,
+                protonPlanName: planName,
+                isAuthenticated: applicationUserId() != nil,
+                cycle: cycle
             )
             let response = try? validateSubscriptionRequest.awaitResponse(responseObject: ValidateSubscriptionResponse())
             let fetchedAmountDue = response?.validateSubscription?.amountDue
             amountDue = fetchedAmountDue ?? planAmount
         }
 
-        let planToBeProcessed = PlanToBeProcessed(protonIdentifier: planIdentifier, amount: planAmount, amountDue: amountDue)
+        let planToBeProcessed = PlanToBeProcessed(protonIdentifier: planIdentifier, amount: planAmount, amountDue: amountDue, cycle: cycle)
+
+        let isDynamic = featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)
 
         do {
             let customCompletion: ProcessCompletionCallback = { result in
                 switch result {
                 case .finished:
-                    ObservabilityEnv.report(.paymentSubscribeTotal(status: .successful))
+                    ObservabilityEnv.report(.paymentSubscribeTotal(status: .successful, isDynamic: isDynamic))
                 case .errored, .erroredWithUnspecifiedError:
-                    ObservabilityEnv.report(.paymentSubscribeTotal(status: .failed))
+                    ObservabilityEnv.report(.paymentSubscribeTotal(status: .failed, isDynamic: isDynamic))
                 }
                 completion(result)
             }
@@ -859,7 +877,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                 )
             }
         } catch {
-            ObservabilityEnv.report(.paymentSubscribeTotal(status: .failed))
+            ObservabilityEnv.report(.paymentSubscribeTotal(status: .failed, isDynamic: isDynamic))
             throw error
         }
     }

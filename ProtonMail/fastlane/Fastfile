@@ -13,9 +13,6 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-require 'json'
-require 'net/http'
-
 default_platform(:ios)
 
 # Variable

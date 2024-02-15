@@ -30,13 +30,13 @@ final class MailboxMessageCellHelper {
         groupContacts: [ContactGroupVO],
         shouldReplaceSenderWithRecipients: Bool) -> [SenderRowComponent] {
         if shouldReplaceSenderWithRecipients && (message.isSent || message.isDraft || message.isScheduledSend) {
-            return [
-                .string(
-                    allEmailAddresses(
-                        message: message, replacingEmails: emailReplacements, allGroupContacts: groupContacts
-                    )
-                )
-            ]
+            return allEmailAddresses(
+                message: message,
+                replacingEmails: emailReplacements,
+                allGroupContacts: groupContacts
+            ).map { emailAddress in
+                SenderRowComponent.string(emailAddress)
+            }
         } else {
             return senderRowComponents(for: .message(message), basedOn: emailReplacements)
         }
@@ -82,8 +82,8 @@ final class MailboxMessageCellHelper {
             }
 
             switch acc.last {
-            case .string(let accumulatedString):
-                acc[acc.endIndex - 1] = .string(accumulatedString.appending(", \(displayableName)"))
+            case .string:
+                acc.append(.string(", \(displayableName)"))
             case .officialBadge:
                 acc.append(.string(", \(displayableName)"))
             case .none:
@@ -100,7 +100,7 @@ final class MailboxMessageCellHelper {
         message: MessageEntity,
         replacingEmails: [String: EmailEntity],
         allGroupContacts: [ContactGroupVO]
-    ) -> String {
+    ) -> [String] {
         var recipientLists = contactPickerModelHelper.contacts(from: message.rawTOList)
         + contactPickerModelHelper.contacts(from: message.rawCCList)
         + contactPickerModelHelper.contacts(from: message.rawBCCList)
@@ -118,7 +118,7 @@ final class MailboxMessageCellHelper {
             return displayName.isEmpty ? address : displayName
         }
         let result = groupList + lists
-        return result.asCommaSeparatedList(trailingSpace: true)
+        return result
     }
 }
 

@@ -30,10 +30,10 @@ import ProtonCoreUtilities
  */
 public class FeatureFlagsRepository: FeatureFlagsRepositoryProtocol {
     /// The local data source for feature flags.
-    private(set) var localDatasource: Atomic<LocalFeatureFlagsProtocol>
+    private(set) var localDataSource: Atomic<LocalFeatureFlagsDataSourceProtocol>
 
     /// The remote data source for feature flags.
-    private(set) var remoteDataSource: Atomic<RemoteFeatureFlagsProtocol?>
+    private(set) var remoteDataSource: Atomic<RemoteFeatureFlagsDataSourceProtocol?>
 
     /// The configuration for feature flags.
     private(set) var userId: String {
@@ -42,35 +42,34 @@ public class FeatureFlagsRepository: FeatureFlagsRepositoryProtocol {
         }
         set {
             _userId = newValue
-            localDatasource.value.setUserIdForActiveSession(newValue)
+            localDataSource.value.setUserIdForActiveSession(newValue)
         }
     }
 
     private var _userId: String?
 
     public internal(set) static var shared: FeatureFlagsRepository = .init(
-        localDatasource: Atomic<LocalFeatureFlagsProtocol>(DefaultLocalFeatureFlagsDatasource()),
-        remoteDatasource: Atomic<RemoteFeatureFlagsProtocol?>(nil)
+        localDataSource: Atomic<LocalFeatureFlagsDataSourceProtocol>(DefaultLocalFeatureFlagsDatasource()),
+        remoteDataSource: Atomic<RemoteFeatureFlagsDataSourceProtocol?>(nil)
     )
 
     /**
      Private initialization of the shared FeatureFlagsRepository instance.
 
      - Parameters:
-       - configuration: The configuration for feature flags.
-       - localDatasource: The local data source for feature flags.
-       - remoteDatasource: The remote data source for feature flags.
+       - localDataSource: The local data source for feature flags.
+       - remoteDataSource: The remote data source for feature flags.
      */
-    init(localDatasource: Atomic<LocalFeatureFlagsProtocol>,
-         remoteDatasource: Atomic<RemoteFeatureFlagsProtocol?>) {
-        self.localDatasource = localDatasource
-        self.remoteDataSource = remoteDatasource
-        self._userId = localDatasource.value.userIdForActiveSession
+    init(localDataSource: Atomic<LocalFeatureFlagsDataSourceProtocol>,
+         remoteDataSource: Atomic<RemoteFeatureFlagsDataSourceProtocol?>) {
+        self.localDataSource = localDataSource
+        self.remoteDataSource = remoteDataSource
+        self._userId = localDataSource.value.userIdForActiveSession
     }
 
     // Internal func for testing
-    func updateRemoteDataSource(with remoteDatasource: Atomic<RemoteFeatureFlagsProtocol?>) {
-        self.remoteDataSource = remoteDatasource
+    func updateRemoteDataSource(with remoteDataSource: Atomic<RemoteFeatureFlagsDataSourceProtocol?>) {
+        self.remoteDataSource = remoteDataSource
     }
 }
 
@@ -81,8 +80,8 @@ public extension FeatureFlagsRepository {
     /**
      Updates the local data source conforming to the `LocalFeatureFlagsProtocol` protocol
      */
-    func updateLocalDataSource(_ localDatasource: Atomic<LocalFeatureFlagsProtocol>) {
-        self.localDatasource = localDatasource
+    func updateLocalDataSource(_ localDataSource: Atomic<LocalFeatureFlagsDataSourceProtocol>) {
+        self.localDataSource = localDataSource
     }
 
     /**
@@ -102,7 +101,7 @@ public extension FeatureFlagsRepository {
        - apiService: The api service used to initialize the remote data source for feature flags.
      */
     func setApiService(_ apiService: APIService) {
-        self.remoteDataSource = Atomic<RemoteFeatureFlagsProtocol?>(DefaultRemoteDatasource(apiService: apiService))
+        self.remoteDataSource = Atomic<RemoteFeatureFlagsDataSourceProtocol?>(DefaultRemoteFeatureFlagsDataSource(apiService: apiService))
     }
 
     /**
@@ -115,10 +114,10 @@ public extension FeatureFlagsRepository {
      - Throws: An error if the operation fails.
      */
     func fetchFlags(for userId: String? = nil, using apiService: APIService? = nil) async throws {
-        let remoteDataSource: RemoteFeatureFlagsProtocol?
+        let remoteDataSource: RemoteFeatureFlagsDataSourceProtocol?
 
         if let apiService {
-            remoteDataSource = DefaultRemoteDatasource(apiService: apiService)
+            remoteDataSource = DefaultRemoteFeatureFlagsDataSource(apiService: apiService)
         } else {
             remoteDataSource = self.remoteDataSource.value
         }
@@ -131,7 +130,7 @@ public extension FeatureFlagsRepository {
 
         // Fetch flags for the supplied userId parameter, if non-nil, otherwise fetch flags
         // for self.userId.
-        localDatasource.value.upsertFlags(.init(flags: flags), userId: userId ?? self.userId)
+        localDataSource.value.upsertFlags(.init(flags: flags), userId: userId ?? self.userId)
     }
 
     /**
@@ -143,9 +142,9 @@ public extension FeatureFlagsRepository {
        - reloadValue: Pass `true` if you want the latest stored value for the flag. Pass `false` if  you want the "static" value, which is always the same as the first returned.
      */
     func isEnabled(_ flag: any FeatureFlagTypeProtocol, reloadValue: Bool) -> Bool {
-        let flags = localDatasource.value.getFeatureFlags(
+        let flags = localDataSource.value.getFeatureFlags(
             userId: self.userId,
-            reloadFromUserDefaults: reloadValue
+            reloadFromLocalDataSource: reloadValue
         )
         return flags?.getFlag(for: flag)?.enabled ?? false
     }
@@ -163,14 +162,14 @@ public extension FeatureFlagsRepository {
         let flags: FeatureFlags?
 
         if let userId {
-            flags = localDatasource.value.getFeatureFlags(
+            flags = localDataSource.value.getFeatureFlags(
                 userId: userId,
-                reloadFromUserDefaults: reloadValue
+                reloadFromLocalDataSource: reloadValue
             )
         } else {
-            flags = localDatasource.value.getFeatureFlags(
+            flags = localDataSource.value.getFeatureFlags(
                 userId: self.userId,
-                reloadFromUserDefaults: reloadValue
+                reloadFromLocalDataSource: reloadValue
             )
         }
 
@@ -185,7 +184,7 @@ public extension FeatureFlagsRepository {
      Resets all feature flags.
      */
     func resetFlags() {
-        localDatasource.value.cleanAllFlags()
+        localDataSource.value.cleanAllFlags()
     }
 
     /**
@@ -195,13 +194,14 @@ public extension FeatureFlagsRepository {
         - userId: The ID of the user whose feature flags need to be reset.
      */
     func resetFlags(for userId: String) {
-        localDatasource.value.cleanFlags(for: userId)
+        localDataSource.value.cleanFlags(for: userId)
     }
 
     /**
      Resets userId.
      */
-    func clearUserId(_ userId: String) {
-        localDatasource.value.clearUserId(userId)
+    func clearUserId() {
+        localDataSource.value.clearUserId()
+        _userId = ""
     }
 }

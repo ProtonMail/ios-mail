@@ -49,6 +49,7 @@ final class MailboxDiffableDataSource {
 
     func reloadSnapshot(
         snapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>?,
+        forceReload: Bool = false,
         completion: (() -> Void)?
     ) {
         var snapshotToLoad: NSDiffableDataSourceSnapshot<Int, MailboxRow>?
@@ -59,7 +60,11 @@ final class MailboxDiffableDataSource {
             snapshotToLoad = dataSnapshot
         }
 
-        guard let snapshotToLoad = snapshotToLoad else { return }
+        guard var snapshotToLoad = snapshotToLoad else { return }
+
+        if forceReload {
+            snapshotToLoad.reloadSections([0])
+        }
 
         queue.async {
             self.diffableDataSource.apply(

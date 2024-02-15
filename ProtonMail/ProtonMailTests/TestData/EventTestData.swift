@@ -1319,4 +1319,64 @@ enum EventTestData {
     "Notices": []
 }
 """
+
+    static let draftUpdate = """
+{
+    "Code": 1000,
+    "EventID": "F6SxA9Fhd4MbT5lJWOQms01EV-WBb5pe8j4YOjeHlyoGkUe7uGXQI0dQ==",
+    "Refresh": 0,
+    "More": 0,
+    "Messages": [
+        {
+            "ID": "w3Xjn6rCOyTM2EFMWhgRpfeNujozP6u6PEYEpH2PW0M4qymA6OENDjRI1ymKA==",
+            "Action": 2,
+            "Message": {
+                "ID": "w3Xjn6rCOyTM2EFMWhgRpfeNujozP6u6PEYEpH2PW0M4qymA6OENDjRI1ymKA==",
+                "Order": 403343586214,
+                "ConversationID": "RZX1jyBAYBRGzYOPRZ3B6rqg8N7r1sjuseJPml0H4p_LL9mhgFnHiClT7TNi_JA==",
+                "Subject": "(No Subject)",
+                "Unread": 0,
+                "Sender": {
+                    "Name": "L",
+                    "Address": "ccList",
+                    "IsProton": 0,
+                    "DisplaySenderImage": 0,
+                    "BimiSelector": null,
+                    "IsSimpleLogin": 0
+                },
+                "SenderAddress": "test@protonmail.ch",
+                "SenderName": "L",
+                "Flags": 12,
+                "Type": 1,
+                "IsEncrypted": 5,
+                "IsReplied": 0,
+                "IsRepliedAll": 0,
+                "IsForwarded": 0,
+                "IsProton": 0,
+                "DisplaySenderImage": 0,
+                "BimiSelector": null,
+                "SnoozeTime": 0,
+                "ToList": [],
+                "CCList": [],
+                "BCCList": [],
+                "Time": 1700191020,
+                "Size": 231,
+                "NumAttachments": 0,
+                "ExpirationTime": 0,
+                "AddressID": "JwUa_eV8uqbTqVNeYNEo5psVgBnB_u4pCO-01Yy1QAp3stedgACzpoI9d0f9K9AXpwLU4I6D0YIz9Z_97hCySg==",
+                "ExternalID": null,
+                "LabelIDs": [
+                    "1",
+                    "5",
+                    "8",
+                    "15"
+                ],
+                "AttachmentInfo": {},
+                "AttachmentsMetadata": []
+            }
+        }
+    ],
+    "Notices": []
+}
+"""
 }

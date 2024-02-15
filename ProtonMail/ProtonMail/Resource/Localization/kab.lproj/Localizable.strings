@@ -2229,7 +2229,7 @@
 "Unable to preview this attachment" = "Unable to preview this attachment";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
-"Downloading attachment" = "Downloading attachment";
+"Downloading attachment" = "Asider n ifuyla yeddan";
 
 /* The banner title that is shown in the message detail view. */
 "Snoozed until %@" = "Snoozed until %@";

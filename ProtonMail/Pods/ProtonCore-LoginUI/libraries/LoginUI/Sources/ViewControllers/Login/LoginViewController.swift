@@ -75,7 +75,7 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
     private var webView: SSOViewController?
     private var isSSOEnabled: Bool {
-        FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.externalSSO) &&
+        FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.externalSSO, reloadValue: true) &&
             viewModel.clientApp == .vpn
     }
 
@@ -226,6 +226,9 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
                         self?.webView?.loadRequest(request: request)
                     }
                 }
+            case .switchToSSOLogin(let info):
+                self?.showBanner(message: info, style: .info)
+                self?.signInWithSSO()
             }
         }
         viewModel.isLoading.bind { [weak self] isLoading in

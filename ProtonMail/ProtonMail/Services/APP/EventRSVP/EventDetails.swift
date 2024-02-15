@@ -15,7 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import EventKit
+import ProtonInboxICal
 
 struct EventDetails: Equatable {
     struct Calendar: Equatable {
@@ -23,33 +24,43 @@ struct EventDetails: Equatable {
         let iconColor: String
     }
 
+    enum EventStatus: String, Equatable {
+        case cancelled
+        case confirmed
+        case tentative
+    }
+
     struct Location: Equatable {
         let name: String
     }
 
+    /**
+     Participant (aka attendee) can either be an organizer or an invitee.
+
+     - participant is the name used by the EventKit framework
+
+     - attendee is the name used in ICS files
+
+     organizer + invitees = participants = attendees
+     */
     struct Participant: Equatable {
-        // design team is not sure if we want name or just email
-        //        let name: String
         let email: String
-        // I suppose bool is enough, we don't need to see all possible roles
-        let isOrganizer: Bool
-        // should we go with a 4th case (undecided) instead of optional?
-        let status: ParticipantStatus?
+        let status: EKParticipantStatus
     }
 
-    // do we want to mimic EKParticipantStatus more closely?
-    enum ParticipantStatus: Equatable {
-        case attending
-        case maybeAttending
-        case notAttending
-    }
-
-    let title: String
-    // do we use DateInterval to include both dates?
+    let title: String?
     let startDate: Date
     let endDate: Date
     let calendar: Calendar
     let location: Location?
-    let participants: [Participant]
+    let organizer: Participant?
+    let invitees: [Participant]
+    let status: EventStatus?
     let calendarAppDeepLink: URL
+}
+
+extension EventDetails.Participant {
+    init(attendeeModel: ICalAttendee) {
+        self.init(email: attendeeModel.user.email, status: attendeeModel.status)
+    }
 }

@@ -22,7 +22,7 @@
 
 "Contact an administrator to make changes to your Proton subscription." = "Свяжитесь с администратором, чтобы внести изменения в подписку на Proton.";
 
-"%1$@ of %2$@" = "%1$@ of %2$@";
+"%1$@ of %2$@" = "%1$@ из %2$@";
 
 "%@ storage" = "%@ хранилища";
 
@@ -74,7 +74,7 @@
 
 "Only non-renewing annual subscriptions are available via this app" = "Через это приложение доступны только непродлеваемые годовые подписки";
 
-"Your subscription cannot be managed inside the mobile app." = "Your subscription cannot be managed inside the mobile app.";
+"Your subscription cannot be managed inside the mobile app." = "Вы не можете управлять подпиской из мобильного приложения.";
 
 "Unlimited folders, labels, and filters" = "Неограниченное количество папок, ярлыков и фильтров";
 
@@ -124,10 +124,10 @@
 
 "For next-level password management and identity protection." = "Для нового уровня управления паролями и защиты личных данных.";
 
-"Pay monthly" = "Pay monthly";
+"Pay monthly" = "Платить ежемесячно";
 
-"Pay annually" = "Pay annually";
+"Pay annually" = "Платить ежегодно";
 
-"Pay every two years" = "Pay every two years";
+"Pay every two years" = "Платить каждые 2 года";
 
-"Free" = "Free";
+"Free" = "Бесплатно";

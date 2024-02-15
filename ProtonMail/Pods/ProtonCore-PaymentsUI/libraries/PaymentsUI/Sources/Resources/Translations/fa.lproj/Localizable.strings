@@ -22,7 +22,7 @@
 
 "Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
 
-"%1$@ of %2$@" = "%1$@ of %2$@";
+"%1$@ of %2$@" = "%1$@ از %2$@";
 
 "%@ storage" = "%@ فضای ذخیره سازی";
 
@@ -114,11 +114,11 @@
 
 "Priority support" = "اولویت پشتیبانی";
 
-"Unlimited devices" = "Unlimited devices";
+"Unlimited devices" = "دستگاه های نامحدود";
 
-"Unlimited email aliases" = "Unlimited email aliases";
+"Unlimited email aliases" = "نام‌های مستعار ایمیل نامحدود";
 
-"Unlimited logins and notes" = "Unlimited logins and notes";
+"Unlimited logins and notes" = "ورودها و یادداشت‌های نامحدود";
 
 "Custom fields" = "Custom fields";
 

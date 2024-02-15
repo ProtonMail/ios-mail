@@ -23,6 +23,7 @@
 import Foundation
 import ProtonCoreLog
 
+@available(*, deprecated, renamed: "User", message: "`QuarkCommands` has been updated to `Quark`.")
 public struct CreatedAccountDetails {
     public let details: String
     public let id: String
@@ -47,6 +48,7 @@ public enum CreateAccountError: Error {
 
 extension QuarkCommands {
     @available(*, renamed: "create(account:currentlyUsedHostUrl:callCompletionBlockOn:)")
+    @available(*, deprecated, renamed: "userCreate", message: "`QuarkCommands` has been updated to `Quark`.")
     public static func create(account: AccountAvailableForCreation,
                               currentlyUsedHostUrl host: String,
                               callCompletionBlockOn: DispatchQueue = .main,
@@ -123,6 +125,7 @@ extension QuarkCommands {
     }
 
     @available(macOS 10.15, *)
+    @available(*, deprecated, renamed: "userCreate", message: "`QuarkCommands` has been updated to `Quark`.")
     public static func create(account: AccountAvailableForCreation,
                               currentlyUsedHostUrl host: String,
                               callCompletionBlockOn: DispatchQueue = .main) async -> Result<CreatedAccountDetails, CreateAccountError> {
@@ -148,6 +151,7 @@ public func createOrgUser(host: String, username: String, password: String, crea
                currentlyUsedHostUrl: host)
 }
 
+@available(*, deprecated, renamed: "userCreate", message: "`QuarkCommands` has been updated to `Quark`.")
 private func createUser(accountType: AccountAvailableForCreation,
                         currentlyUsedHostUrl: String) -> (username: String, password: String) {
     let semaphore = DispatchSemaphore(value: 0)
@@ -167,6 +171,7 @@ private func createUser(accountType: AccountAvailableForCreation,
     return result
 }
 
+@available(*, deprecated, renamed: "userCreate", message: "`QuarkCommands` has been updated to `Quark`.")
 public func createUser(accountType: AccountAvailableForCreation,
                        currentlyUsedHostUrl: String) -> (id: String, username: String, password: String) {
     let semaphore = DispatchSemaphore(value: 0)

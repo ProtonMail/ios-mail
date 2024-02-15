@@ -32,11 +32,13 @@ import Foundation
 struct AutoImportStrategy: ContactMergeStrategy {
     let mergeDestination: ContactMergeDestination = .protonContact
 
-    func merge(deviceContact: VCardObject, protonContact: ProtonVCards) throws {
+    func merge(deviceContact: VCardObject, protonContact: ProtonVCards) throws -> Bool {
         try protonContact.read()
 
+        var isProtonContactModified = false
         if case let .merge(result) = mergeName(device: deviceContact.name(), proton: protonContact.name()) {
             protonContact.replaceName(with: result)
+            isProtonContactModified = true
         }
 
         if case let .merge(result) = mergeFormattedName(
@@ -44,10 +46,12 @@ struct AutoImportStrategy: ContactMergeStrategy {
             proton: protonContact.formattedName()
         ) {
             protonContact.replaceFormattedName(with: result)
+            isProtonContactModified = true
         }
 
         if case let .merge(result) = mergeEmails(device: deviceContact.emails(), proton: protonContact.emails()) {
             protonContact.replaceEmails(with: result)
+            isProtonContactModified = true
         }
 
         if case let .merge(result) = mergeAddresses(
@@ -55,6 +59,7 @@ struct AutoImportStrategy: ContactMergeStrategy {
             proton: protonContact.addresses()
         ) {
             protonContact.replaceAddresses(with: result)
+            isProtonContactModified = true
         }
 
         if case let .merge(result) = mergePhoneNumbers(
@@ -62,10 +67,12 @@ struct AutoImportStrategy: ContactMergeStrategy {
             proton: protonContact.phoneNumbers()
         ) {
             protonContact.replacePhoneNumbers(with: result)
+            isProtonContactModified = true
         }
 
         if case let .merge(result) = mergeUrls(device: deviceContact.urls(), proton: protonContact.urls()) {
             protonContact.replaceUrls(with: result)
+            isProtonContactModified = true
         }
 
         let otherInfoType: [InformationType] = [.nickname, .organization, .title, .birthday, .anniversary, .gender]
@@ -75,12 +82,15 @@ struct AutoImportStrategy: ContactMergeStrategy {
             }
             guard let protonInfo = protonContact.otherInfo(infoType: infoType).first else {
                 protonContact.replaceOtherInfo(infoType: infoType, with: [deviceInfo])
+                isProtonContactModified = true
                 continue
             }
             if case let .merge(result) = mergeOtherInfo(device: deviceInfo, proton: protonInfo) {
                 protonContact.replaceOtherInfo(infoType: infoType, with: [result])
+                isProtonContactModified = true
             }
         }
+        return isProtonContactModified
     }
 }
 
@@ -103,8 +113,12 @@ extension AutoImportStrategy {
         device: [ContactField.Email],
         proton: [ContactField.Email]
     ) -> FieldMergeResult<[ContactField.Email]> {
+        let deviceEmailsVCardGroupStripped = device.map {
+            ContactField.Email(type: $0.type, emailAddress: $0.emailAddress, vCardGroup: "")
+        }
+
         let emailMerger = FieldTypeMerger<ContactField.Email>()
-        emailMerger.merge(device: device, proton: proton)
+        emailMerger.merge(device: deviceEmailsVCardGroupStripped, proton: proton)
 
         guard emailMerger.resultHasChanges else {
             return .noChange

@@ -19,7 +19,6 @@ fileprivate struct id {
     static let appKeyConfirmationAlertButtonLabel = "Continue"
     static let noneAutoLockButtonLabel = LocalString._general_none
     static let everyTimeLockButtonLabel = LocalString._settings_every_time_enter_app
-    static let autoLockCellIdentifier = "SettingsCell.Auto-Lock_Timer"
     static let pinTimerCellIdentifier = "SettingsGeneralCell.Timing"
     static let backToSettingsNavBarButtonIdentifier = LocalString._menu_settings_title
     static let checkMarkButtonLabel = "checkmark"

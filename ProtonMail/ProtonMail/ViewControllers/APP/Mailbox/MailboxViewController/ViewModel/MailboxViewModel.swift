@@ -142,6 +142,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .messageSwipeNavigation, toUserWith: user.userID)
     }
 
+    var isLoggingOut: Bool {
+        dependencies.usersManager.loggingOutUserIDs.contains(user.userID)
+    }
+
     init(labelID: LabelID,
          label: LabelInfo?,
          userManager: UserManager,
@@ -459,7 +463,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         fetchedResultsController?.delegate = delegate
         fetchedResultsController?.managedObjectContext.perform {
             do {
-                try self.fetchedResultsController?.performFetch()
+                try ObjC.catchException {
+                    try? self.fetchedResultsController?.performFetch()
+                }
             } catch {
                 PMAssertionFailure(error)
             }
@@ -605,8 +611,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
             group.leave()
         }
 
-        group.notify(queue: DispatchQueue.main) {
+        group.notify(queue: DispatchQueue.main) { [weak self] in
             delay(0.2) {
+                guard let self = self else { return }
                 // For operation context sync with main context
                 let count = self.user.labelService.lastUpdate(by: self.labelID, userID: self.user.userID)
                 complete(count)
@@ -680,35 +687,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         checkSpace(usedStorageSpace,
                    maxSpace: maxStorageSpace,
                    userID: user.userInfo.userId)
-    }
-
-    func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
-        switch action {
-        case .unstar:
-            handleUnstarAction(on: selectedItems)
-        case .star:
-            handleStarAction(on: selectedItems)
-        case .markRead:
-            handleMarkReadAction(on: selectedItems)
-        case .markUnread:
-            handleMarkUnreadAction(on: selectedItems)
-        case .trash:
-            handleRemoveAction(on: selectedItems)
-        case .archive:
-            handleMoveToArchiveAction(on: selectedItems)
-        case .spam:
-            handleMoveToSpamAction(on: selectedItems)
-        case .labelAs, .moveTo:
-            // TODO: add action
-            break
-        case .snooze:
-            PMAssertionFailure("Shouldn't be triggered")
-            break
-        case .inbox:
-            handleMoveToInboxAction(on: selectedItems)
-        case .delete, .dismiss, .toolbarCustomization, .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
-            break
-        }
     }
 
     func getTimeOfItem(at indexPath: IndexPath) -> Date? {

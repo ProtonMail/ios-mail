@@ -297,12 +297,61 @@ public class Authenticator: NSObject, AuthenticatorInterface {
         })
     }
 
-    public func forkSession(_ credential: Credential? = nil, completion: @escaping (Result<AuthService.ForkSessionResponse, AuthErrors>) -> Void) {
-        var route = AuthService.ForkSessionEndpoint()
+    public func forkSession(_ credential: Credential? = nil,
+                            useCase: AuthService.ForkSessionUseCase,
+                            completion: @escaping (Result<AuthService.ForkSessionResponse, AuthErrors>) -> Void) {
+        var route = AuthService.ForkSessionEndpoint(useCase: useCase)
         if let auth = credential {
             route.auth = AuthCredential(auth)
         }
         self.apiService.perform(request: route, decodableCompletion: mapError(completion))
+    }
+
+    private func obtainChildSession(_ credential: Credential? = nil,
+                                   selector: String,
+                                   completion: @escaping (Result<AuthService.ChildSessionResponse, AuthErrors>) -> Void) {
+        var route = AuthService.ChildSessionRequest(selector: selector)
+        if let auth = credential {
+            route.auth = AuthCredential(auth)
+        }
+        self.apiService.perform(request: route, decodableCompletion: mapError(completion))
+    }
+
+    public func performForkingAndObtainChildSession(_ credential: Credential,
+                                                    useCase: AuthService.ForkSessionUseCase,
+                                                    completion: @escaping (Result<Credential, AuthErrors>) -> Void) {
+        forkSession(credential, useCase: useCase) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let response):
+                self.obtainChildSession(credential, selector: response.selector) { [weak self] result in
+                    guard let self else { return }
+                    switch result {
+                    case .success(let childSessionResponse):
+                        // According to the (documentation)[https://confluence.protontech.ch/pages/viewpage.action?pageId=11865449],
+                        // the credentials obtained from forking session must be refreshed to be usable
+                        let childSessionPartialCredentials = Credential(UID: childSessionResponse.UID,
+                                                                        accessToken: childSessionResponse.accessToken,
+                                                                        refreshToken: childSessionResponse.refreshToken,
+                                                                        userName: credential.userName,
+                                                                        userID: childSessionResponse.userID,
+                                                                        scopes: childSessionResponse.scopes)
+                        self.apiService.refreshCredential(childSessionPartialCredentials) { result in
+                            switch result {
+                            case .success(let credential):
+                                completion(.success(credential))
+                            case .failure(let error):
+                                completion(.failure(AuthErrors.from(error)))
+                            }
+                        }
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 
     public func closeSession(_ credential: Credential? = nil, completion: @escaping (Result<AuthService.EndSessionResponse, AuthErrors>) -> Void) {

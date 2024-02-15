@@ -34,7 +34,9 @@ extension UIViewController {
     }
 
     private func enableUserInteraction(enable: Bool) {
-        view.window?.isUserInteractionEnabled = enable
+        DispatchQueue.main.async { [weak self] in
+            self?.view.window?.isUserInteractionEnabled = enable
+        }
     }
 }
 

@@ -59,8 +59,37 @@ public protocol AuthenticatorInterface {
 
     func getKeySalts(_ credential: Credential?, completion: @escaping (Result<[KeySalt], AuthErrors>) -> Void)
 
+    /// Forks the session to get a selector which can be later used to obtain the child session.
+    ///
+    /// - Parameters:
+    ///   - credential: The parent session credentials. If left empty, they will be fetched from the AuthDelegate assigned to
+    ///                 the APIService used by the Authenticator.
+    ///   - useCase: Who are we forking the session for. It must be provided from the callee side, because
+    ///              the forking endpoint needs to know who we fork the session for. Depending on what we pass,
+    ///              the child session will have different scopes and abilities.
+    ///   - completion: The completion block. If successful, the selector is available. If not, the error.
     func forkSession(_ credential: Credential?,
+                     useCase: AuthService.ForkSessionUseCase,
                      completion: @escaping (Result<AuthService.ForkSessionResponse, AuthErrors>) -> Void)
+    
+    /// Performs the whole child session flow, which consists of three network calls:
+    /// 1. Forks the session to get the selector which can be later used to obtain the child session.
+    /// 2. Exchanges the selector for the inactive child session credentials.
+    /// 3. Refreshes the inactive child session credentials to have the active ones.
+    ///
+    /// The flow is documented at https://confluence.protontech.ch/pages/viewpage.action?pageId=11865449
+    ///
+    /// - Parameters:
+    ///   - credential: The parent session credentials. If left empty, they will be fetched from the AuthDelegate assigned to
+    ///                 the APIService used by the Authenticator.
+    ///   - useCase: Who are we forking the session for. It must be provided from the callee side, because
+    ///              the forking endpoint needs to know who we fork the session for. Depending on what we pass,
+    ///              the child session will have different scopes and abilities.
+    ///   - completion: The completion block. If successful, the child session credentials are returned, active and ready to be used.
+    ///                 If not, the error.
+    func performForkingAndObtainChildSession(_ credential: Credential,
+                                             useCase: AuthService.ForkSessionUseCase,
+                                             completion: @escaping (Result<Credential, AuthErrors>) -> Void)
 
     func closeSession(_ credential: Credential?,
                       completion: @escaping (Result<AuthService.EndSessionResponse, AuthErrors>) -> Void)

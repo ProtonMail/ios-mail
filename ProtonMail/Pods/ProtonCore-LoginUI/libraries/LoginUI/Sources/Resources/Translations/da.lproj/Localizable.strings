@@ -64,7 +64,7 @@
 
 "Incorrect mailbox password" = "Forkert postkasseadgangskode";
 
-"Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
+"Your session has expired. Please log in again." = "Din session er udløbet. Log venligst ind igen.";
 
 "Proton address required" = "Proton-adresse påkrævet";
 
@@ -124,7 +124,7 @@
 
 "Password must contain at least 8 characters" = "Adgangskode skal indeholde mindst 8 tegn";
 
-"Repeat password" = "Gentag kodeord";
+"Repeat password" = "Gentag adgangskode";
 
 "Domain" = "Domæne";
 
@@ -154,7 +154,7 @@
 
 "Set recovery method" = "Indstil gendannelsesmetode";
 
-"Your account is being created" = "Your account is being created";
+"Your account is being created" = "Din konto oprettes";
 
 "This should take no more than a minute." = "Det tager normalt ikke mere end et minut.";
 
@@ -182,7 +182,7 @@
 
 "Invalid token error" = "Ugyldigt token fejl";
 
-"Create user failed" = "Create user failed";
+"Create user failed" = "Brugeroprettelse mislykkedes";
 
 "Invalid hashed password" = "Ugyldig hashet adgangskode";
 

@@ -45,9 +45,6 @@ final class MessageInfoProviderTest: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        LocaleEnvironment.locale = { .enUS }
-        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-
         apiMock = APIServiceMock()
         apiMock.sessionUIDStub.fixture = String.randomString(10)
         apiMock.dohInterfaceStub.fixture = DohMock()

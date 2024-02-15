@@ -138,10 +138,10 @@ class ContactDataService {
     }
 
     /**
-     add a new contact
+     add new contacts
 
-     - Parameter cards: vcard contact data -- 4 different types
-     - Parameter objectID: CoreData object ID of group label
+     - Parameter contactsCards: array of array of vCards for multiple contacts (each contact has an array of vCards)
+     - Parameter objectID: CoreData object ID of local contacts to delete
      - Parameter completion: async add contact complete response
      **/
     func add(
@@ -153,36 +153,33 @@ class ContactDataService {
         let route = ContactAddRequest(cards: contactsCards, importedFromDevice: importFromDevice)
         self.apiService.perform(request: route, response: ContactAddResponse()) { [weak self] _, response in
             guard let self = self else { return }
-            var contactsData: [[String: Any]] = []
-            var lastError: NSError?
+            if let error = response.error {
+                completion(error.toNSError)
+            } else {
+                var contactsData: [[String: Any]] = []
+                var lastError: NSError?
 
-            let results = response.results
-            guard !results.isEmpty,
-                  contactsCards.count == results.count else {
-                DispatchQueue.main.async {
+                let results = response.results
+                guard !results.isEmpty, contactsCards.count == results.count else {
                     completion(lastError)
+                    return
                 }
-                return
-            }
 
-            for (i, res) in results.enumerated() {
-                if let error = res as? NSError {
-                    reportContactCreateError(error: error)
-                    lastError = error
-                } else if var contact = res as? [String: Any] {
-                    contact["Cards"] = contactsCards[i].toDictionary()
-                    contactsData.append(contact)
-                }
-            }
-
-            if !contactsData.isEmpty {
-                self.cacheService.addNewContact(serverResponse: contactsData, localContactsURIs: objectsURIs) { error in
-                    DispatchQueue.main.async {
-                        completion(error)
+                for (i, res) in results.enumerated() {
+                    if let error = res as? NSError {
+                        reportContactCreateError(error: error)
+                        lastError = error
+                    } else if var contact = res as? [String: Any] {
+                        contact["Cards"] = contactsCards[i].toDictionary()
+                        contactsData.append(contact)
                     }
                 }
-            } else {
-                DispatchQueue.main.async {
+
+                if !contactsData.isEmpty {
+                    self.cacheService.addNewContact(serverResponse: contactsData, localContactsURIs: objectsURIs) { error in
+                        completion(error)
+                    }
+                } else {
                     completion(lastError)
                 }
             }

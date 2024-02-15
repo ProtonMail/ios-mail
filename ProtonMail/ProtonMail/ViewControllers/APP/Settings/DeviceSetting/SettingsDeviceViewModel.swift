@@ -101,6 +101,7 @@ final class SettingsDeviceViewModel {
     typealias Dependencies = HasUserManager
     & HasCleanCache
     & HasBiometricStatusProvider
+    & HasKeychain
     & HasLockCacheStatus
     & HasUserDefaults
 
@@ -139,6 +140,15 @@ final class SettingsDeviceViewModel {
     private let dependencies: Dependencies
 
     private let induceSlowdownUseCase: InduceSlowdown
+
+    var browser: LinkOpener {
+        get {
+            dependencies.keychain[.browser]
+        }
+        set {
+            dependencies.keychain[.browser] = newValue
+        }
+    }
 
     var lockOn: Bool {
         dependencies.lockCacheStatus.isPinCodeEnabled || dependencies.lockCacheStatus.isTouchIDEnabled

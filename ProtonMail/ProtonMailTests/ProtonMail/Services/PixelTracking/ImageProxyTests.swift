@@ -183,7 +183,6 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         sut = nil
         apiServiceMock = nil
         delegate = nil
-        LocaleEnvironment.restore()
 
         try super.tearDownWithError()
     }

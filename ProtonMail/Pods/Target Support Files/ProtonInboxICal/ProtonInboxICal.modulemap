@@ -1,0 +1,6 @@
+framework module ProtonInboxICal {
+  umbrella header "ProtonInboxICal-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -19,7 +19,9 @@ import CoreData
 import Foundation
 
 final class SaveEventResponseInCacheUseCase {
-    typealias Dependencies = AnyObject & HasCoreDataContextProviderProtocol
+    typealias Dependencies = AnyObject
+        & HasCoreDataContextProviderProtocol
+        & HasQueueManager
 
     unowned let dependencies: Dependencies
     private let encoder = JSONEncoder()
@@ -35,7 +37,11 @@ final class SaveEventResponseInCacheUseCase {
         self.emailEventProcessor = .init(userID: userID, encoder: encoder)
         self.labelEventProcessor = .init(userID: userID)
         self.conversationProcessor = .init(userID: userID, encoder: encoder)
-        self.messageProcessor = .init(userID: userID, encoder: encoder)
+        self.messageProcessor = .init(
+            userID: userID,
+            encoder: encoder,
+            queueManager: dependencies.queueManager
+        )
     }
 
     func execute(response: EventAPIResponse) throws {

@@ -28,12 +28,18 @@ stages:
   - bot
 
 .setup_project: &setup_project
-  - brew bundle --file="$CI_PROJECT_DIR/ProtonMail/Brewfile" --force
+  - brew bundle --force
   - mint bootstrap
   - cd ProtonMail
   - bundle install
+  - ./xcodeGenHelper.sh
   - cd ..
-  - ./ProtonMail/xcodeGenHelper.sh
+
+.macos_job:
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
 
 workflow:
   rules:
@@ -41,22 +47,20 @@ workflow:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
     - if: $CI_COMMIT_BRANCH == "develop"
 
-default:
-  cache:
-    key: "$CI_PROJECT_NAME"
-    paths:
-      - bundler-cache/
-
 linting:
   stage: linting
+  image: harbor.protontech.ch/docker.io/library/rockylinux:9
   except:
     - schedules
+  variables:
+    GIT_SUBMODULE_STRATEGY: none
   script:
     - ./Scripts/check_link_availability.sh
   tags:
-    - iOS_GENERAL
+    - shared-small
 
 build:debug:for-testing:
+  extends: .macos_job
   stage: build
   allow_failure: false
   interruptible: true
@@ -78,6 +82,7 @@ build:debug:for-testing:
     - iOS_GENERAL
 
 test:unit:
+  extends: .macos_job
   stage: test
   coverage: '/Test Coverage: \d*.\d*%/'
   only:
@@ -105,6 +110,7 @@ test:unit:
     - iOS_GENERAL
 
 .test:ui:
+  extends: .macos_job
   dependencies:
     - deploy:review
     - build:debug:for-testing
@@ -223,6 +229,7 @@ report:slack:feature:
 report:slack:monkey:
   dependencies:
     - test:ui:monkey
+  extends: .report:slack
   rules:
     - if: '$TEST_TYPE == "monkey"'
       when: always
@@ -232,13 +239,6 @@ report:slack:monkey:
       --platform ios
       --job-name Mail-iOS-Monkey-tests
       --slack-channel mail-ios-uitests
-
-report:testmo:regression:
-  dependencies:
-    - test:ui:regression
-  extends: .report:testmo
-  variables:
-    NAME: "$TEST_PLAN"
 
 .report:testmo:
   extends: .testmo-upload
@@ -258,6 +258,13 @@ report:testmo:regression:
   tags:
     - shared-small
 
+report:testmo:regression:
+  dependencies:
+    - test:ui:regression
+  extends: .report:testmo
+  variables:
+    NAME: "$TEST_PLAN"
+
 report:testmo:sanity:
   needs:
     - test:ui:sanity
@@ -266,6 +273,7 @@ report:testmo:sanity:
     NAME: "SanityTests"
 
 .distribute:
+  extends: .macos_job
   dependencies: []
   needs: []
   stage: distribute

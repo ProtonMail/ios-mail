@@ -88,6 +88,8 @@ extension AppDelegate: TrustKitUIDelegate {
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        setupLogLocation()
+
         let appVersion = Bundle.main.appVersion
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable) | \(appVersion)"
         SystemLogger.log(message: message, category: .appLifeCycle)
@@ -128,12 +130,13 @@ extension AppDelegate: UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         SystemLogger.log(message: #function, category: .appLifeCycle)
-        #if DEBUG
+#if DEBUG
         if ProcessInfo.isRunningUITests {
             UIView.setAnimationsEnabled(false)
         }
-        #endif
+#endif
         PMAPIService.setupTrustIfNeeded()
+        configureCoreLogger()
         configureCrypto()
         configureCoreObservability()
         configureAnalytics()
@@ -151,13 +154,13 @@ extension AppDelegate: UIApplicationDelegate {
                                                selector: #selector(didSignOutNotification),
                                                name: .didSignOutLastAccount,
                                                object: nil)
-        
+
         dependencies.backgroundTaskHelper.registerBackgroundTask(task: .eventLoop)
 
         UIBarButtonItem.enableMenuSwizzle()
-        #if DEBUG
+#if DEBUG
         setupUITestsMocks()
-        #endif
+#endif
         UserObjectsPersistence.shared.cleanAll()
         return true
     }
@@ -167,25 +170,25 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     func application(
-          _ application: UIApplication,
-          supportedInterfaceOrientationsFor window: UIWindow?
-      ) -> UIInterfaceOrientationMask {
-          let viewController = window?.rootViewController
-          if UIDevice.current.userInterfaceIdiom == .pad || viewController == nil {
-              return UIInterfaceOrientationMask.all
-          }
-          if viewController as? CoordinatorKeepingViewController<LockCoordinator> != nil {
-              return .portrait
-          }
-          return .all
-      }
+        _ application: UIApplication,
+        supportedInterfaceOrientationsFor window: UIWindow?
+    ) -> UIInterfaceOrientationMask {
+        let viewController = window?.rootViewController
+        if UIDevice.current.userInterfaceIdiom == .pad || viewController == nil {
+            return UIInterfaceOrientationMask.all
+        }
+        if viewController as? CoordinatorKeepingViewController<LockCoordinator> != nil {
+            return .portrait
+        }
+        return .all
+    }
 
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.sceneDidEnterBackground()" )
     func applicationDidEnterBackground(_ application: UIApplication) {
         self.currentState = .background
 
         startAutoLockCountDownIfNeeded()
-        
+
         dependencies.backgroundTaskHelper.scheduleBackgroundRefreshIfNeeded(task: .eventLoop)
 
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
@@ -275,10 +278,12 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     private func importDeviceContactsIfNeeded(user: UserManager) {
-        let autoImportFlags = user.container.userDefaults[.isAutoImportContactsOn]
-        let isAutoImportEnabledForUser = autoImportFlags[user.userID.rawValue] ?? false
+        if user.container.autoImportContactsFeature.isEnabled {
+            guard CNContactStore.authorizationStatus(for: .contacts) == .authorized else {
+                user.container.autoImportContactsFeature.disableAndDeleteQueue()
+                return
+            }
 
-        if UserInfo.isAutoImportContactsEnabled && isAutoImportEnabledForUser {
             let params = ImportDeviceContacts.Params(
                 userKeys: user.userInfo.userKeys,
                 mailboxPassphrase: user.mailboxPassword
@@ -318,6 +323,22 @@ extension AppDelegate: UnlockManagerDelegate {
 
     func loadUserDataAfterUnlock() {
         dependencies.launchService.loadUserDataAfterUnlock()
+    }
+
+    private func setupLogLocation() {
+        // Delete old log in the app container
+        if let originalLogFile = PMLog.logFile {
+            if FileManager.default.fileExists(atPath: originalLogFile.path) {
+                do {
+                    try FileManager.default.removeItem(at: originalLogFile)
+                } catch {
+                    PMAssertionFailure(error)
+                }
+            }
+        }
+        // Set the log file location to app group
+        let directory = FileManager.default.appGroupsDirectoryURL
+        PMLog.logsDirectory = directory
     }
 }
 
@@ -367,6 +388,16 @@ extension AppDelegate {
         Analytics.shared.setup(isInDebug: false, environment: .production)
     #endif
 #endif
+    }
+
+    private func configureCoreLogger() {
+        let environment: String
+        switch BackendConfiguration.shared.environment {
+        case .black, .blackPayment: environment = "black"
+        case .custom(let custom): environment = custom
+        default: environment = "production"
+        }
+        PMLog.setEnvironment(environment: environment)
     }
 
     private func configureCrypto() {

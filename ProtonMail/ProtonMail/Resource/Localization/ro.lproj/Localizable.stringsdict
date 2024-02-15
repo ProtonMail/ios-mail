@@ -13,11 +13,11 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%u participants</string>
+        <string>%u de participanți</string>
         <key>one</key>
         <string>%u participant</string>
         <key>few</key>
-        <string>%u participants</string>
+        <string>%u participanți</string>
       </dict>
     </dict>
     <key>You have %d new emails!</key>
@@ -27,15 +27,15 @@
       <key>newemails</key>
       <dict>
         <key>one</key>
-        <string>You have %d new emails!</string>
+        <string>Aveți %d mesaj nou!</string>
         <key>few</key>
-        <string>You have %d new emails!</string>
+        <string>Aveți %d mesaje noi!</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>You have %d new emails!</string>
+        <string>Aveți %d de mesaje noi!</string>
       </dict>
     </dict>
     <key>%d email trackers blocked</key>
@@ -63,15 +63,15 @@
       <key>selected</key>
       <dict>
         <key>one</key>
-        <string>%d selected</string>
+        <string>%d selectat</string>
         <key>few</key>
-        <string>%d selected</string>
+        <string>%d selectate</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d selected</string>
+        <string>%d selectate</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>

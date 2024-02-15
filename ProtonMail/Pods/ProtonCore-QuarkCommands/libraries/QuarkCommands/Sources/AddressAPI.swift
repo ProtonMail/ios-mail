@@ -39,6 +39,7 @@ public enum AddAccountEmailError: Error {
     }
 }
 extension QuarkCommands {
+    @available(*, deprecated, renamed: "userCreateAddress", message: "`QuarkCommands` has been updated to `Quark`.")
     public static func addEmailToAccount(currentlyUsedHostUrl host: String,
                                          userID: String,
                                          password: String,
@@ -69,7 +70,7 @@ extension QuarkCommands {
         }.resume()
     }
 }
-
+@available(*, deprecated, renamed: "userCreateAddress", message: "`QuarkCommands` has been updated to `Quark`.")
 public func addAddress(userID: String,
                        password: String,
                        email: String,

@@ -99,19 +99,23 @@ final class ProtonVCardsTests: XCTestCase {
     // MARK: calling attribute functions
 
     func testName_itShouldReturnTheCorrectData() throws {
-        sut = makeReaderWithOnlyPlainVCard()
+        sut = ProtonVCards(
+            cards: [testSignedAndEncryptedCardData],
+            userKeys: [testCorrectArmoredKey],
+            mailboxPassphrase: testCorrectPassphrase1
+        )
         try sut.read()
 
         let name = sut.name()
-        XCTAssertEqual(name.firstName, "François")
-        XCTAssertEqual(name.lastName, "Clément")
+        XCTAssertEqual(name.firstName, "John")
+        XCTAssertEqual(name.lastName, "Appleseed")
     }
 
     func testFormattedName_itShouldReturnTheCorrectData() throws {
-        sut = makeReaderWithOnlyPlainVCard()
+        sut = makeReaderWithMultipleCards()
         try sut.read()
 
-        XCTAssertEqual(sut.formattedName(), "François Clément")
+        XCTAssertEqual(sut.formattedName(), "John Appleseed")
     }
 
     func testEmails_itShouldReturnAllEmails() throws {

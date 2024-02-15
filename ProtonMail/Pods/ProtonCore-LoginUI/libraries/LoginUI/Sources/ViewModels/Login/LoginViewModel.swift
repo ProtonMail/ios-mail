@@ -37,6 +37,7 @@ final class LoginViewModel {
         case mailboxPasswordNeeded
         case createAddressNeeded(CreateAddressData, String?)
         case ssoChallenge(SSOChallengeResponse)
+        case switchToSSOLogin(String)
     }
 
     // MARK: - Properties
@@ -87,7 +88,11 @@ final class LoginViewModel {
         login.login(username: username, password: password, intent: intent, challenge: challengeData) { [weak self] result in
             switch result {
             case let .failure(error):
-                self?.error.publish(error)
+                if error.codeInLogin == APIErrorCode.switchToSSOError {
+                    self?.finished.publish(.switchToSSOLogin(error.userFacingMessageInLogin))
+                } else {
+                    self?.error.publish(error)
+                }
                 self?.isLoading.value = false
             case let .success(status):
                 switch status {

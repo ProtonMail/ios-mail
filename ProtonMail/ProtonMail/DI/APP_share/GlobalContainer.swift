@@ -68,7 +68,7 @@ class GlobalContainer: ManagedContainer {
     var keyMakerFactory: Factory<KeyMakerProtocol> {
         self {
             Keymaker(
-                autolocker: Autolocker(lockTimeProvider: self.userCachedStatus),
+                autolocker: Autolocker(lockTimeProvider: self.keychain),
                 keychain: self.keychain
             )
         }

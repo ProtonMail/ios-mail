@@ -22,6 +22,7 @@
 
 import Combine
 import UIKit
+import ProtonCoreUIFoundations
 
 protocol AttachmentViewControllerDelegate: AnyObject {
     func openAttachmentList(with attachments: [AttachmentInfo])
@@ -78,8 +79,18 @@ class AttachmentViewController: UIViewController {
         let sizeString = "(\(byteCountFormatter.string(fromByteCount: Int64(data.totalSizeOfAllAttachments))))"
 
         text += sizeString
-        view.titleLabel.set(text: text,
-                            preferredFont: .subheadline)
+        if overrideUserInterfaceStyle == .unspecified {
+            view.titleLabel.set(text: text, preferredFont: .subheadline)
+        } else {
+            // To show correct text color in print
+            let trait = UITraitCollection(userInterfaceStyle: overrideUserInterfaceStyle)
+            let resolvedColor: UIColor = ColorProvider.TextNorm.resolvedColor(with: trait)
+            view.titleLabel.set(
+                text: text,
+                preferredFont: .subheadline,
+                textColor: resolvedColor
+            )
+        }
     }
 
     private func setUpTapGesture() {
@@ -93,9 +104,7 @@ class AttachmentViewController: UIViewController {
         }
 
         invitationView.onOpenInCalendarTapped = { [weak self] deepLink in
-            Task {
-                await self?.viewModel.onOpenInCalendarTapped(deepLink: deepLink)
-            }
+            self?.onOpenInCalendarTapped(deepLink: deepLink)
         }
 
         viewModel.invitationViewState
@@ -126,14 +135,40 @@ class AttachmentViewController: UIViewController {
     private func handleTap() {
         delegate?.openAttachmentList(with: Array(viewModel.attachments).sorted(by: { $0.order < $1.order }))
     }
+
+    private func onOpenInCalendarTapped(deepLink: URL) {
+        let instruction = viewModel.instructionToHandle(deepLink: deepLink)
+
+        switch instruction {
+        case .openDeepLink(let url):
+            UIApplication.shared.open(url, options: [:])
+        case .goToAppStore(let askBeforeGoing):
+            if askBeforeGoing {
+                let alert = UIAlertController(
+                    title: "Proton Calendar",
+                    message: L11n.ProtonCalendarIntegration.downloadCalendarAlert,
+                    preferredStyle: .actionSheet
+                )
+
+                alert.addURLAction(title: L11n.ProtonCalendarIntegration.downloadInAppStore, url: .AppStore.calendar)
+                alert.addCancelAction()
+                present(alert, animated: true)
+            } else {
+                UIApplication.shared.open(.AppStore.calendar, options: [:])
+            }
+        }
+    }
 }
 
 extension AttachmentViewController: CustomViewPrintable {
     func printPageRenderer() -> CustomViewPrintRenderer {
+        let style = overrideUserInterfaceStyle
+        overrideUserInterfaceStyle = .light
         let newView = AttachmentView()
-            newView.overrideUserInterfaceStyle = .light
+        newView.overrideUserInterfaceStyle = .light
         self.setup(view: newView, with: viewModel)
         newView.backgroundColor = .white
+        overrideUserInterfaceStyle = style
         return CustomViewPrintRenderer(newView)
     }
 

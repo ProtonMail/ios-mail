@@ -31,6 +31,7 @@ import SafariServices
 final class WindowsCoordinator {
     typealias Dependencies = MenuCoordinator.Dependencies
     & LockCoordinator.Dependencies
+    & HasKeychain
     & HasLaunchService
     & HasAppAccessResolver
     & HasNotificationCenter
@@ -48,6 +49,9 @@ final class WindowsCoordinator {
             guard appWindow == nil else { return }
             if let oldAppWindow = oldValue {
                 oldAppWindow.rootViewController?.dismiss(animated: false)
+                if oldAppWindow.rootViewController is PMSideMenuController {
+                    oldAppWindow.rootViewController = nil
+                }
             }
             menuCoordinator = nil
         }
@@ -283,6 +287,8 @@ final class WindowsCoordinator {
                             self?.go(dest: .signInWindow(.mailboxPassword))
                         case .signIn:
                             self?.go(dest: .signInWindow(.form))
+                        case .signOut:
+                            NotificationCenter.default.post(name: .didSignOutLastAccount, object: nil)
                         }
                     }
                 )
@@ -504,7 +510,7 @@ extension WindowsCoordinator {
     }
 
     private func handleWebUrl(url: URL) {
-        let linkOpener: LinkOpener = userCachedStatus.browser
+        let linkOpener = dependencies.keychain[.browser]
         let url = linkOpener.deeplink(to: url)
 
         if linkOpener == .inAppSafari {
@@ -542,7 +548,7 @@ extension WindowsCoordinator {
             return
         }
         SystemLogger.log(
-            message: "HandleSwitchViewDeepLinkIfNeeded: \(deepLink.debugDescription ?? "no deep link")",
+            message: "HandleSwitchViewDeepLinkIfNeeded: \(deepLink?.debugDescription ?? "no deep link")",
             category: .notificationDebug
         )
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in

@@ -2178,7 +2178,7 @@
 "Unselect all" = "Avmarkera alla";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
-"Maximum selection reached" = "Maximum selection reached";
+"Maximum selection reached" = "Maximalt antal val uppnått";
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Ingen mottagare";
@@ -2256,7 +2256,7 @@
 "Next week" = "Nästa vecka";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Please select a time in the future";
+"Please select a time in the future" = "Välj en tid i framtiden";
 
 /* The title of snooze promotion view */
 "Want to snooze any time?" = "Vill du snooza valfri tid?";

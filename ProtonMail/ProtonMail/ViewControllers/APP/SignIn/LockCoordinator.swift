@@ -15,6 +15,7 @@ final class LockCoordinator: LifetimeTrackable {
         case signIn
         case mailboxPassword
         case mailbox
+        case signOut
     }
 
     typealias Dependencies = UnlockPinCodeModelImpl.Dependencies 
@@ -135,7 +136,7 @@ extension LockCoordinator: PinCodeViewControllerDelegate {
 
         _ = dependencies.usersManager.clean().done { [weak self] in
             completion()
-            self?.finishLockFlow(.signIn)
+            self?.finishLockFlow(.signOut)
         }
     }
 }

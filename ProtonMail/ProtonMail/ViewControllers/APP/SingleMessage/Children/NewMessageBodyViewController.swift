@@ -70,6 +70,8 @@ class NewMessageBodyViewController: UIViewController {
     private let viewMode: ViewMode
     private var expectedSwipeAction = PagesSwipeAction.noAction
     private var webViewDefaultScollable = false
+    /// Start to load webContent or paused due to wrong webView size
+    private var hasLoadedContent = false
 
     var webViewIsLoaded: (() -> Void)?
 
@@ -119,7 +121,7 @@ class NewMessageBodyViewController: UIViewController {
         }
 
         if let contents = self.viewModel.contents, !contents.body.isEmpty {
-            self.loader.load(contents: contents, in: webView)
+            hasLoadedContent = self.loader.load(contents: contents, in: webView)
         } else if viewModel.internetStatusProvider.status == .notConnected &&
                     viewModel.contents == nil {
             prepareReloadView()
@@ -146,6 +148,14 @@ class NewMessageBodyViewController: UIViewController {
         )
 
         setupContentSizeObservation()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !hasLoadedContent {
+            // Load content, since the previous loading is paused due to wrong webView size
+            reloadWebView(forceRecreate: false)
+        }
     }
 
     func prepareReloadView() {
@@ -378,7 +388,7 @@ extension NewMessageBodyViewController: NewMessageBodyViewModelDelegate {
             self.prepareWebView(with: self.loader)
             if let webView = self.webView {
                 placeholder = false
-                self.loader.load(contents: contents, in: webView)
+                hasLoadedContent = self.loader.load(contents: contents, in: webView)
             }
         } else {
             if let webView = self.webView {
@@ -386,12 +396,12 @@ extension NewMessageBodyViewController: NewMessageBodyViewModelDelegate {
                     customView.embed(webView)
                 }
                 placeholder = false
-                self.loader.load(contents: contents, in: webView)
+                hasLoadedContent = self.loader.load(contents: contents, in: webView)
             } else {
                 self.prepareWebView(with: self.loader)
                 if let webView = self.webView {
                     placeholder = false
-                    self.loader.load(contents: contents, in: webView)
+                    hasLoadedContent = self.loader.load(contents: contents, in: webView)
                 }
             }
         }

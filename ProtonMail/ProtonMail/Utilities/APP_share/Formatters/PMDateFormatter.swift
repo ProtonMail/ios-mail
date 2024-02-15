@@ -48,7 +48,6 @@ class PMDateFormatter {
 
     private var calendar: Calendar {
         var calendar = LocaleEnvironment.calendar
-        calendar.timeZone = LocaleEnvironment.timeZone
         calendar.locale = LocaleEnvironment.locale()
         return calendar
     }
@@ -123,7 +122,6 @@ class PMDateFormatter {
     private func isWeekStartDate(currentDate: Date, date: Date, weekStart: WeekStart) -> Bool {
         var dateComponenets = calendar.dateComponents([.weekOfYear, .yearForWeekOfYear], from: currentDate)
         dateComponenets.weekday = weekStart.weekStartInGregorianCalendar
-        dateComponenets.timeZone = LocaleEnvironment.timeZone
         guard let weekStartDate = calendar.date(from: dateComponenets) else { return false }
         return calendar.isDate(weekStartDate, inSameDayAs: date)
     }
@@ -131,7 +129,6 @@ class PMDateFormatter {
     private func beginningOfTheWeekDate(currentDate: Date, date: Date, weekStart: WeekStart) -> Date {
         guard !isWeekStartDate(currentDate: currentDate, date: date, weekStart: weekStart) else { return date }
         var dateComponents = DateComponents()
-        dateComponents.timeZone = LocaleEnvironment.timeZone
         dateComponents.weekday = weekStart.weekStartInGregorianCalendar
         return calendar.nextDate(
             after: currentDate,
@@ -145,7 +142,6 @@ class PMDateFormatter {
     private func formatterFactory(localizedDateFormatFromTemplate: String) -> DateFormatter {
         let formatter = DateFormatter()
         formatter.locale = LocaleEnvironment.locale()
-        formatter.timeZone = LocaleEnvironment.timeZone
         formatter.setLocalizedDateFormatFromTemplate(localizedDateFormatFromTemplate)
         return formatter
     }

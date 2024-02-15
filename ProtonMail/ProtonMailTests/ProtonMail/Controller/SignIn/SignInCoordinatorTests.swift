@@ -120,7 +120,7 @@ final class SignInCoordinatorTests: XCTestCase {
 
         let out = SignInCoordinator.loginFlowForSecondAndAnotherAccount(username: "test username", environment: environment) { _ in }
         loginStubFactory.instance?.presentLoginFlowWithUpdateBlockStub.bodyIs { _, _, _, completion in
-            let user = User.dummy.updated(ID: nil, name: testUserInfo.displayName, usedSpace: Double(testUserInfo.usedSpace), currency: testUserInfo.currency, credit: testUserInfo.credit, maxSpace: Double(testUserInfo.maxSpace), maxUpload: Double(testUserInfo.maxUpload), role: testUserInfo.role, private: nil, subscribed: testUserInfo.subscribed, services: nil, delinquent: testUserInfo.delinquent, orgPrivateKey: nil, email: testUserInfo.notificationEmail, displayName: testUserInfo.displayName, keys: nil)
+            let user = User.dummy.updated(ID: nil, name: testUserInfo.displayName, usedSpace: Int64(testUserInfo.usedSpace), usedBaseSpace: nil, usedDriveSpace: nil, currency: testUserInfo.currency, credit: testUserInfo.credit, maxSpace: Int64(testUserInfo.maxSpace), maxBaseSpace: nil, maxDriveSpace: nil, maxUpload: Int64(testUserInfo.maxUpload), role: testUserInfo.role, private: nil, subscribed: testUserInfo.subscribed, services: nil, delinquent: testUserInfo.delinquent, orgPrivateKey: nil, email: testUserInfo.notificationEmail, displayName: testUserInfo.displayName, keys: nil)
             completion(.loginStateChanged(.dataIsAvailable(UserData(credential: testAuth, user: user, salts: [], passphrases: [:], addresses: [], scopes: []))))
             // Do not call .loginFinished here to simulate the case where the user doesn't finish the whole login process.
         }

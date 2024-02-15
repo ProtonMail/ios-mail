@@ -36,6 +36,8 @@ class SettingsLockViewModelTests: XCTestCase {
     private var testContainer: TestContainer!
 
     override func setUpWithError() throws {
+        try super.setUpWithError()
+
         mockRouter = MockSettingsLockRouterProtocol()
         biometricStub = BioMetricStatusStub()
         biometricStub.biometricTypeStub = .faceID
@@ -67,6 +69,8 @@ class SettingsLockViewModelTests: XCTestCase {
         biometricStub = nil
         mockKeymaker = nil
         mockUI = nil
+
+        try super.tearDownWithError()
     }
 
     private func isAppKeyFeatureEnabled() -> Bool {
@@ -148,7 +152,11 @@ class SettingsLockViewModelTests: XCTestCase {
     }
 
     func testDidPickAutoLockTime_savesValue() {
-        sut.input.didPickAutoLockTime(value: 37)
-        XCTAssert(testContainer.userCachedStatus.lockTime == .minutes(37))
+        sut.input.didPickAutoLockTime(value: .minutes(37))
+        XCTAssertEqual(sut.output.selectedAutolockTimeout, .minutes(37))
     }
+}
+
+extension AutolockTimeout: Equatable {
+    
 }

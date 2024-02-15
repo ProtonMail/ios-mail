@@ -1537,7 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Phishing melden";
 
-"Not spam (move to inbox)" = "Not spam (move to inbox)";
+"Not spam (move to inbox)" = "Kein Spam (In Posteingang verschieben)";
 
 /* No comment provided by engineer. */
 "Move to" = "Verschieben nach";
@@ -1926,10 +1926,10 @@
 "Load" = "Laden";
 
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "Organisator";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "Weniger anzeigen";
 
 /* Official badge next to sender's name */
 "Official" = "Offiziell";
@@ -1968,16 +1968,16 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Aktiviere diese Funktion, um E-Mail-Adressen aus Kontakten von all deinen angemeldeten Konten automatisch zu vervollständigen.";
 
 /* contacts auto import title in settings */
-"Auto-import device contacts" = "Auto-import device contacts";
+"Auto-import device contacts" = "Gerätekontakte automatisch importieren";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Aktiviere diese Funktion, um automatisch neue Kontakte von deinem Gerät zur Proton Mail-App hinzuzufügen.";
 
 /* Auto import alert title */
-"Auto-import enabled" = "Auto-import enabled";
+"Auto-import enabled" = "Auto-Import aktiviert";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "Der anfängliche Import kann einige Zeit in Anspruch nehmen und erfolgt nur, wenn sich die App im Vordergrund befindet.";
 
 /* Settings lock protection section */
 "Protection" = "Schutz";
@@ -2043,10 +2043,10 @@
 "Application logs" = "Anwendungsprotokolle";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Jump to next message";
+"Jump to next message" = "Zur nächsten Nachricht springen";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "Zeigt automatisch die nächste Nachricht an, wenn die aktuelle Nachricht gelöscht, archiviert oder verschoben wird.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den Support. \nFehler: %@";
@@ -2148,7 +2148,7 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Der ursprüngliche Absender dieser Nachricht ist nicht mehr gültig. Deine Nachricht wird von deiner Standardadresse %@ gesendet.";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
-"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+"Please retry after all attachments are uploaded." = "Bitte versuche es erneut, nachdem alle Anhänge hochgeladen wurden.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Anzeigename";
@@ -2175,13 +2175,13 @@
 "Select all" = "Alle auswählen";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Unselect all";
+"Unselect all" = "Alle abwählen";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
-"Maximum selection reached" = "Maximum selection reached";
+"Maximum selection reached" = "Maximale Auswahl erreicht";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "Kein Empfänger";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "PIN-Code deaktivieren";
@@ -2226,49 +2226,49 @@
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Dadurch wirst du von der Mailingliste abgemeldet. Der Absender wird benachrichtigt, keine E-Mails mehr an diese Adresse zu senden.";
 
 /* Alert telling the user that we are unable to preview this attachment */
-"Unable to preview this attachment" = "Unable to preview this attachment";
+"Unable to preview this attachment" = "Fehler beim Anzeigen der Vorschau dieses Anhangs.";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
-"Downloading attachment" = "Downloading attachment";
+"Downloading attachment" = "Anhang wird heruntergeladen";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Snoozed until %@";
+"Snoozed until %@" = "Schlummern bis %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Unsnooze";
+"Unsnooze" = "Schlummern aus";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Snooze until %@";
+"Snooze until %@" = "Schlummern bis %@";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "Conversation unsnoozed";
+"Conversation unsnoozed" = "Schlummern der Konversation aufgehoben";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Snooze until...";
+"Snooze until..." = "Schlummern bis...";
 
 /* One of snooze option shows in action sheet */
-"Later this week" = "Later this week";
+"Later this week" = "Später in dieser Woche";
 
 /* One of snooze option shows in action sheet */
-"This weekend" = "This weekend";
+"This weekend" = "Dieses Wochenende";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "Nächste Woche";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Please select a time in the future";
+"Please select a time in the future" = "Bitte wähle einen Zeitpunkt in der Zukunft aus";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "Möchtest du irgendwann Stumm schalten?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "Benutzerdefinierte Schlummerzeiten beim Upgrade aufheben";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "Bis zu 15 E-Mail-Adressen/Aliasse";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Unbegrenzte Anzahl an Ordnern, Kategorien und Filtern.";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
-"Add it as attachment" = "Add it as attachment";
+"Add it as attachment" = "Als Anhang hinzufügen";

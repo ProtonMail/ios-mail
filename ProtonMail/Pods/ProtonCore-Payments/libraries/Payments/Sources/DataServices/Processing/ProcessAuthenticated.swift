@@ -110,6 +110,7 @@ final class ProcessAuthenticated: ProcessProtocol {
                 planId: plan.protonIdentifier,
                 amount: plan.amount,
                 amountDue: plan.amountDue,
+                cycle: plan.cycle,
                 paymentAction: .token(token: token.token)
             )
             let receiptRes = try request.awaitResponse(responseObject: SubscriptionResponse())

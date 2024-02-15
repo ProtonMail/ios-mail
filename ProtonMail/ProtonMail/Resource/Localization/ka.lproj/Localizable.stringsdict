@@ -13,9 +13,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%u participants</string>
+        <string>%u მონაწილე</string>
         <key>one</key>
-        <string>%u participant</string>
+        <string>%u მონაწილე</string>
       </dict>
     </dict>
     <key>You have %d new emails!</key>
@@ -25,13 +25,13 @@
       <key>newemails</key>
       <dict>
         <key>one</key>
-        <string>You have %d new emails!</string>
+        <string>გაქვთ %d ახალი ელფოსტა!</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>You have %d new emails!</string>
+        <string>გაქვთ %d ახალი ელფოსტა!</string>
       </dict>
     </dict>
     <key>%d email trackers blocked</key>
@@ -57,13 +57,13 @@
       <key>selected</key>
       <dict>
         <key>one</key>
-        <string>%d selected</string>
+        <string>მონიშნულია %d</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d selected</string>
+        <string>მონიშნულია %d</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>

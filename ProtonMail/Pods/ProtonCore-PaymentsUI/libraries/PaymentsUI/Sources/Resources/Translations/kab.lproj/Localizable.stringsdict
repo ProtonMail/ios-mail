@@ -15,7 +15,7 @@
         <key>one</key>
         <string>%d email alias</string>
         <key>other</key>
-        <string>%d email aliases</string>
+        <string>%d aliases n yimaylen</string>
       </dict>
     </dict>
     <key>&lt;n&gt; users</key>
@@ -29,9 +29,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d user</string>
+        <string>%d useqdac</string>
         <key>other</key>
-        <string>%d users</string>
+        <string>%d yiseqdacen</string>
       </dict>
     </dict>
     <key>&lt;n&gt; email addresses</key>
@@ -45,9 +45,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d email address</string>
+        <string>%d tansa n yimayl</string>
         <key>other</key>
-        <string>%d email addresses</string>
+        <string>%d n tansiwin imayl</string>
       </dict>
     </dict>
     <key>&lt;n&gt; email addresses / user</key>
@@ -61,9 +61,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d email address / user</string>
+        <string>%d tansa n yimayl / aseqdac</string>
         <key>other</key>
-        <string>%d email addresses / user</string>
+        <string>%d tansiwin n yimayl / iseqdac</string>
       </dict>
     </dict>
     <key>&lt;n&gt; calendars</key>
@@ -77,9 +77,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d calendar</string>
+        <string>%d uwitay</string>
         <key>other</key>
-        <string>%d calendars</string>
+        <string>%d yiwitayen</string>
       </dict>
     </dict>
     <key>&lt;n&gt; folders / labels</key>
@@ -93,9 +93,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d folder / label</string>
+        <string>%d ukaram / tebzimt</string>
         <key>other</key>
-        <string>%d folders / labels</string>
+        <string>%d n Ikaramen / Tebzimin</string>
       </dict>
     </dict>
     <key>&lt;n&gt; countries</key>
@@ -109,9 +109,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d country</string>
+        <string>%d n tmurt</string>
         <key>other</key>
-        <string>%d countries</string>
+        <string>%d tmura</string>
       </dict>
     </dict>
     <key>&lt;n&gt; connections</key>
@@ -125,9 +125,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d connection</string>
+        <string>%d n tuqqna</string>
         <key>other</key>
-        <string>%d connections</string>
+        <string>%d n tuqqniwin</string>
       </dict>
     </dict>
     <key>&lt;n&gt; VPN connections</key>
@@ -141,9 +141,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d VPN connection</string>
+        <string>%d tuqqna VPN</string>
         <key>other</key>
-        <string>%d VPN connections</string>
+        <string>%d n tuqqniwin VPN</string>
       </dict>
     </dict>
     <key>&lt;n&gt; high-speed VPN connections</key>
@@ -157,9 +157,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d high-speed VPN connection</string>
+        <string>%d n tuqqna VPN s urured ɛlayen</string>
         <key>other</key>
-        <string>%d high-speed VPN connections</string>
+        <string>%d n tuqqna VPN s urured ɛlayen</string>
       </dict>
     </dict>
     <key>&lt;n&gt; custom domains</key>
@@ -173,9 +173,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d custom domain</string>
+        <string>%d taɣult tudmawant</string>
         <key>other</key>
-        <string>%d custom domains</string>
+        <string>%d tiɣula tudmawanin</string>
       </dict>
     </dict>
     <key>&lt;n&gt; vaults</key>
@@ -189,9 +189,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d vault</string>
+        <string>%d usenduq</string>
         <key>other</key>
-        <string>%d vaults</string>
+        <string>%d yisendyaq</string>
       </dict>
     </dict>
     <key>Support for &lt;n&gt; custom email domains</key>
@@ -205,9 +205,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Support for %d custom email domain</string>
+        <string>Asefrek i %d taɣult n yimayl udmawan</string>
         <key>other</key>
-        <string>Support for %d custom email domains</string>
+        <string>Asefrek i %d tiɣula n yimayl udmawan</string>
       </dict>
     </dict>
     <key>&lt;n&gt; folders and labels</key>
@@ -221,9 +221,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d folder and label</string>
+        <string>%d ukaram d tebzimt</string>
         <key>other</key>
-        <string>%d folders and labels</string>
+        <string>%d yikaramen d tebzimin</string>
       </dict>
     </dict>
     <key>High-speed VPN on &lt;n&gt; devices</key>
@@ -237,15 +237,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>High-speed VPN on %d device</string>
+        <string>VPN arurad agafay ɣef %d yibenk</string>
         <key>other</key>
-        <string>High-speed VPN on %d devices</string>
+        <string>VPN arurad agafay ɣef %d yibenkan</string>
       </dict>
     </dict>
     <key>&lt;n&gt;+ servers in &lt;m&gt; countries</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@SERVERS@ in %#@COUNTRIES@</string>
+      <string>%#@SERVERS@ deg %#@COUNTRIES@</string>
       <key>SERVERS</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -253,9 +253,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d+ server</string>
+        <string>%d+ uqeddac</string>
         <key>other</key>
-        <string>%d+ servers</string>
+        <string>%d+ yiqeddacen</string>
       </dict>
       <key>COUNTRIES</key>
       <dict>
@@ -264,15 +264,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d country</string>
+        <string>%d n tmurt</string>
         <key>other</key>
-        <string>%d countries</string>
+        <string>%d tmura</string>
       </dict>
     </dict>
     <key>&lt;n&gt; servers in &lt;m&gt; countries (US, NL, JP)</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@SERVERS@ in %#@COUNTRIES@</string>
+      <string>%#@SERVERS@ deg %#@COUNTRIES@</string>
       <key>SERVERS</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -280,9 +280,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d server</string>
+        <string>Aqeddac %d</string>
         <key>other</key>
-        <string>%d servers</string>
+        <string>%d yiqeddacen</string>
       </dict>
       <key>COUNTRIES</key>
       <dict>
@@ -291,15 +291,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d country (US, NL, JP)</string>
+        <string>%d tmurt (US, NL, JP)</string>
         <key>other</key>
-        <string>%d countries (US, NL, JP)</string>
+        <string>%d tmura (US, NL, JP)</string>
       </dict>
     </dict>
     <key>&lt;n&gt; of &lt;m&gt; users</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ n %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>one</key>
@@ -318,15 +318,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d user</string>
+        <string>%d useqdac</string>
         <key>other</key>
-        <string>%d users</string>
+        <string>%d yiseqdacen</string>
       </dict>
     </dict>
     <key>&lt;n&gt; of &lt;m&gt; email addresses</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ n %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>one</key>
@@ -345,15 +345,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d email address</string>
+        <string>%d tansa n yimayl</string>
         <key>other</key>
-        <string>%d email addresses</string>
+        <string>%d n tansiwin imayl</string>
       </dict>
     </dict>
     <key>&lt;n&gt; of &lt;m&gt; calendars</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ n %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>one</key>
@@ -372,9 +372,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d calendar</string>
+        <string>%d uwitay</string>
         <key>other</key>
-        <string>%d calendars</string>
+        <string>%d yiwitayen</string>
       </dict>
     </dict>
     <key>&lt;n&gt; addresses per user</key>
@@ -388,9 +388,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d address per user</string>
+        <string>%d tansa n yimayl i useqdac</string>
         <key>other</key>
-        <string>%d addresses per user</string>
+        <string>%d tansiwin n yimayl i useqdac</string>
       </dict>
     </dict>
     <key>&lt;n&gt; calendars per user</key>
@@ -404,9 +404,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d calendar per user</string>
+        <string>%d uwitay i yal aseqdac</string>
         <key>other</key>
-        <string>%d calendars per user</string>
+        <string>%d yiwitayen i yal aseq</string>
       </dict>
     </dict>
     <key>&lt;n&gt; VPN connections per user</key>
@@ -420,9 +420,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d VPN connection per user</string>
+        <string>%d n tuqqna VPN i useqdac</string>
         <key>other</key>
-        <string>%d VPN connections per user</string>
+        <string>%d n tuqqniwin VPN i useqdac</string>
       </dict>
     </dict>
     <key>Pay for &lt;n&gt; months</key>
@@ -470,7 +470,7 @@
         <key>one</key>
         <string>Up to %d forwarding mailbox</string>
         <key>other</key>
-        <string>Up to %d forwarding mailboxes</string>
+        <string>Alamma d %d n uwelleh n tnakiwin n urmas</string>
       </dict>
     </dict>
   </dict>

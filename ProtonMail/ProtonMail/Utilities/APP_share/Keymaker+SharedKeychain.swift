@@ -23,7 +23,11 @@
 import Foundation
 import ProtonCoreKeymaker
 
-extension UserCachedStatus: SettingsProvider {}
+extension Keychain: SettingsProvider {
+    public var lockTime: AutolockTimeout {
+        self[.autolockTimeout]
+    }
+}
 
 extension Keychain {
     var randomPinProtection: RandomPinProtection? {

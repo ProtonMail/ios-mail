@@ -40,15 +40,17 @@ public extension Keymaker {
 
 public typealias MainKey = [UInt8]
 
-public class Keymaker: NSObject {
+open class Keymaker: NSObject {
     public typealias Const = Constants
 
     private var autolocker: Autolocker?
     private let keychain: Keychain
-    public init(autolocker: Autolocker?, keychain: Keychain) {
+    private let logging: (String) -> Void
+    public init(autolocker: Autolocker?, keychain: Keychain,
+                logging: @escaping (String) -> Void = { _ in }) {
         self.autolocker = autolocker
         self.keychain = keychain
-
+        self.logging = logging
         super.init()
         #if canImport(UIKit)
         NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
@@ -88,11 +90,20 @@ public class Keymaker: NSObject {
         _mainKey != nil
     }
 
-    // accessor for stored value; if stored value is nill - calls provokeMainKeyObtention() method
-
+    // this method, in case there is no stored main key or in case of the keychain access error,
+    // calls provokeMainKeyObtention() and regenerates the main key
     @available(*, deprecated, message: "this shouldn't be used after the migration and this will be private.")
     public var mainKey: MainKey? {
         privatelyAccessibleMainKey
+    }
+
+    // the main difference between mainKeyOrError and mainKey is that
+    // the mainKey will regenerate the main key in case of keychain access error,
+    // and mainKeyOrError will throw the keychain error
+    public var mainKeyOrError: MainKey? {
+        get throws {
+            try privatelyAccessibleMainKeyOrError
+        }
     }
 
     private var privatelyAccessibleMainKey: MainKey? {
@@ -103,6 +114,18 @@ public class Keymaker: NSObject {
             self._mainKey = newKey
         }
         return self._mainKey
+    }
+
+    private var privatelyAccessibleMainKeyOrError: MainKey? {
+        get throws {
+            if self.autolocker?.shouldAutolockNow() == true {
+                self._mainKey = nil
+            }
+            if self._mainKey == nil, let newKey = try self.provokeMainKeyObtentionOrError() {
+                self._mainKey = newKey
+            }
+            return self._mainKey
+        }
     }
 
     public func mainKey(by protection: RandomPinProtection?) -> MainKey? {
@@ -191,6 +214,31 @@ public class Keymaker: NSObject {
         return newKey
     }
 
+    private func provokeMainKeyObtentionOrError() throws -> MainKey? {
+        // if we have any significant Protector - wait for obtainMainKey(_:_:) method to be called
+        guard !self.isProtectorActive(BioProtection.self),
+            !self.isProtectorActive(PinProtection.self) else
+        {
+            try NoneProtection.removeCyphertextOrError(from: self.keychain)
+            NotificationCenter.default.post(.init(name: Const.requestMainKey))
+            return nil
+        }
+
+        // if we have NoneProtection active - get the key right ahead
+        if let cypherText = try NoneProtection.getCypherBitsOrError(from: self.keychain) {
+            do {
+                return try NoneProtection(keychain: self.keychain).unlock(cypherBits: cypherText)
+            } catch let error {
+                fatalError(error.localizedDescription)
+            }
+        }
+
+        logging("provokeMainKeyObtentionOrError -> generating a new main key")
+        // otherwise there is no saved mainKey at all, so we should generate a new one with default protection
+        let newKey = try self.generateNewMainKeyWithDefaultProtectionOrError()
+        return newKey
+    }
+
     private let controlThread: OperationQueue = {
         let operation = OperationQueue()
         operation.maxConcurrentOperationCount = 1
@@ -201,6 +249,16 @@ public class Keymaker: NSObject {
         NoneProtection.removeCyphertext(from: self.keychain)
         BioProtection.removeCyphertext(from: self.keychain)
         PinProtection.removeCyphertext(from: self.keychain)
+
+        self._mainKey = nil
+        self._key = nil
+        self.setupCryptoTransformers(key: nil)
+    }
+
+    public func wipeMainKeyOrError() throws {
+        try NoneProtection.removeCyphertextOrError(from: self.keychain)
+        try BioProtection.removeCyphertextOrError(from: self.keychain)
+        try PinProtection.removeCyphertextOrError(from: self.keychain)
 
         self._mainKey = nil
         self._key = nil
@@ -368,7 +426,16 @@ public class Keymaker: NSObject {
         return newMainKey
     }
 
-    private func setupCryptoTransformers(key: MainKey?) {
+    private func generateNewMainKeyWithDefaultProtectionOrError() throws -> MainKey {
+        logging("generateNewMainKeyWithDefaultProtectionOrError -> wiping a main key")
+        try self.wipeMainKeyOrError() // get rid of all old protected mainKeys
+        let newMainKey = NoneProtection.generateRandomValue(length: 32)
+        try NoneProtection(keychain: self.keychain).lockOrError(value: newMainKey)
+        logging("generateNewMainKeyWithDefaultProtectionOrError -> a main key generated and saved")
+        return newMainKey
+    }
+
+    open func setupCryptoTransformers(key: MainKey?) {
         guard let key = key else {
             ValueTransformer.setValueTransformer(nil, forName: .init(rawValue: "StringCryptoTransformer"))
             return

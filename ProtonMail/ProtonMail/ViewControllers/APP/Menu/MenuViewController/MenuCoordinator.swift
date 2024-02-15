@@ -174,7 +174,6 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
         self.go(to: label, deepLink: deepLink)
     }
 
-    // swiftlint:disable:next function_body_length
     func go(to labelInfo: MenuLabel, deepLink: DeepLink? = nil) {
         // in some cases we should highlight a different row in the side menu, or none at all
         var labelToHighlight: MenuLabel? = labelInfo

@@ -1127,7 +1127,7 @@
 "Delete contact group" = "Supprimer le groupe de contacts";
 
 /* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Selected";
+"%d Selected" = "%d sélectionnés";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Sélectionnez au moins un message pour le groupe de contacts.";
@@ -1388,7 +1388,7 @@
 "Off" = "Désactivé";
 
 /* The title of re auth alert */
-"Re-authenticate" = "Ré-authentifier";
+"Re-authenticate" = "Authentifier de nouveau";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Saisissez votre mot de passe pour effectuer ces changements.";
@@ -1537,7 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Signaler un phishing/hameçonnage";
 
-"Not spam (move to inbox)" = "Non indésirable (déplacer dans la boîte de réception)";
+"Not spam (move to inbox)" = "Ce n'est pas un indésirable (déplacer dans la boîte de réception)";
 
 /* No comment provided by engineer. */
 "Move to" = "Déplacer";
@@ -1968,16 +1968,16 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Activez cette fonctionnalité pour compléter automatiquement les adresses e-mail en utilisant les contacts de vos comptes connectés.";
 
 /* contacts auto import title in settings */
-"Auto-import device contacts" = "Auto-import device contacts";
+"Auto-import device contacts" = "Importation automatique des contacts de l'appareil";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Activez cette fonctionnalité pour ajouter automatiquement des contacts depuis votre appareil vers l'application Proton Mail.";
 
 /* Auto import alert title */
 "Auto-import enabled" = "L'importation automatique a été activée.";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "La première importation peut prendre plus de temps et s'effectuera uniquement lorsque l'application est en arrière-plan.";
 
 /* Settings lock protection section */
 "Protection" = "Protection";
@@ -2046,7 +2046,7 @@
 "Jump to next message" = "Passer au message suivant";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "Affichez automatiquement le message suivant lorsque le message en cours est supprimé, archivé ou déplacé.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Une erreur inattendue s'est produite, nous vous invitons à contacter le support.\n%@";
@@ -2148,7 +2148,7 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "L'expéditeur à l'origine de ce message n'est plus valide. Votre message sera envoyé depuis votre adresse par défaut %@.";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
-"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+"Please retry after all attachments are uploaded." = "Veuillez réessayer une fois toutes les pièces jointes importées.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nom d'affichage";
@@ -2178,7 +2178,7 @@
 "Unselect all" = "Désélectionner tout";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
-"Maximum selection reached" = "Maximum selection reached";
+"Maximum selection reached" = "Le nombre maximum de sélections a été atteint.";
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Aucun destinataire";
@@ -2226,7 +2226,7 @@
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Cette action vous permettra de vous désabonner de la liste de diffusion. L'expéditeur sera informé qu'il ne doit plus envoyer de messages à cette adresse e-mail.";
 
 /* Alert telling the user that we are unable to preview this attachment */
-"Unable to preview this attachment" = "Unable to preview this attachment";
+"Unable to preview this attachment" = "La pièce jointe ne peut pas être prévisualisée.";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
 "Downloading attachment" = "Téléchargement de la pièce jointe";
@@ -2241,7 +2241,7 @@
 "Snooze until %@" = "Mise en pause jusqu'au %@";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "La conversation a été mise en pause.";
+"Conversation unsnoozed" = "La conversation n'est plus en attente.";
 
 /* The title of snooze config in action sheet */
 "Snooze until..." = "Mise en attente jusqu'à...";
@@ -2253,19 +2253,19 @@
 "This weekend" = "Ce week-end";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Semaine suivante";
+"Next week" = "La semaine prochaine";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Please select a time in the future";
+"Please select a time in the future" = "Veuillez sélectionner une heure dans le futur.";
 
 /* The title of snooze promotion view */
 "Want to snooze any time?" = "Vous voulez personnaliser les périodes de mise en attente ?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "Personnalisez les périodes de mise en attente en changeant d'abonnement.";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "Jusqu'à 15 adresses e-mail/alias";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Nombre illimité de dossiers, de labels et de filtres";

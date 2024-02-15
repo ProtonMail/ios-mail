@@ -15,14 +15,6 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
-### ios upload_to_appetize
-
-```sh
-[bundle exec] fastlane ios upload_to_appetize
-```
-
-Upload the debug app to Appetize
-
 ### ios build
 
 ```sh

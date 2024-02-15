@@ -78,14 +78,14 @@ final class TwoFactorViewModel {
                         self?.isLoading.value = false
                     }
                 case .ask2FA:
-                    PMLog.error("Asking for 2FA code password after successful 2FA code is an invalid state")
+                    PMLog.error("Asking for 2FA code password after successful 2FA code is an invalid state", sendToExternal: true)
                     self?.error.publish(.invalidState)
                     self?.isLoading.value = false
                 case .askSecondPassword:
                     self?.finished.publish(.mailboxPasswordNeeded)
                     self?.isLoading.value = false
                 case .ssoChallenge:
-                    PMLog.error("Receiving SSO challenge after successful 2FA code is an invalid state")
+                    PMLog.error("Receiving SSO challenge after successful 2FA code is an invalid state", sendToExternal: true)
                     self?.error.publish(.invalidState)
                     self?.isLoading.value = false
                 }

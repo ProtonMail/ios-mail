@@ -46,4 +46,9 @@ extension AttachmentsMetadata {
         let decoded = try JSONDecoder().decode([AttachmentsMetadata].self, from: Data(jsonString.utf8))
         return decoded
     }
+
+    static func encodeListOfAttachmentsMetadata(attachmentsMetaData: [AttachmentsMetadata]) throws -> String? {
+        let data = try JSONEncoder().encode(attachmentsMetaData)
+        return String(data: data, encoding: .utf8)
+    }
 }
