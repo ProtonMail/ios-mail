@@ -22,9 +22,9 @@ extension EventDetails {
         startDate: Date = .init(timeIntervalSince1970: .random(in: 0...Date.distantFuture.timeIntervalSince1970)),
         endDate: Date = .init(timeIntervalSince1970: .random(in: 0...Date.distantFuture.timeIntervalSince1970)),
         invitees: [Participant] = [
-            .init(email: "employee1@example.com", status: .unknown),
-            .init(email: "employee2@example.com", status: .unknown),
-            .init(email: "employee3@example.com", status: .unknown),
+            .init(email: "employee1@example.com", status: .pending),
+            .init(email: "employee2@example.com", status: .accepted),
+            .init(email: "employee3@example.com", status: .pending),
         ],
         status: EventStatus = .confirmed,
         deepLinkComponents: (eventUID: String, calendarID: String) = ("", "")

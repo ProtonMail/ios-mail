@@ -67,9 +67,9 @@ END:VCALENDAR
 BEGIN:VCALENDAR
 BEGIN:VEVENT
 UID:FOO
-ATTENDEE;CN=employee1;PARTSTAT=ACCEPTED:mailto:employee1@example.com
-ATTENDEE;CN=employee2;PARTSTAT=ACCEPTED:mailto:employee2@example.com
-ATTENDEE;CN=employee3;PARTSTAT=ACCEPTED:mailto:employee3@example.com
+ATTENDEE;CN=employee1;X-PM-TOKEN=foo:mailto:employee1@example.com
+ATTENDEE;CN=employee2;X-PM-TOKEN=bar:mailto:employee2@example.com
+ATTENDEE;CN=employee3;X-PM-TOKEN=xyz:mailto:employee3@example.com
 END:VEVENT
 END:VCALENDAR
 """#
@@ -226,11 +226,17 @@ extension EventRSVPTests {
 
         let timeZoneIdentifier = TimeZone.autoupdatingCurrent.identifier
 
+        let attendees: [AttendeeTransformer] = [
+            AttendeeTransformer(status: 0, token: "foo"),
+            AttendeeTransformer(status: 3, token: "bar"),
+            AttendeeTransformer(status: 0, token: "xyz")
+        ]
+
         return FullEventTransformer(
             ID: eventUID,
             addressID: nil,
             addressKeyPacket: setAddressKeyPacketInsteadOfSharedOne ? keyPacket : nil,
-            attendees: [],
+            attendees: attendees,
             attendeesEvents: attendeesEvents,
             calendarEvents: calendarEvents,
             calendarID: calendarID,
@@ -295,4 +301,3 @@ extension EventRSVPTests {
         }
     }
 }
-

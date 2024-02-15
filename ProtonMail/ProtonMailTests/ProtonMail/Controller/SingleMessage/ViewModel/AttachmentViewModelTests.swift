@@ -249,6 +249,20 @@ class AttachmentViewModelTests: XCTestCase {
         await receivedRespondingStatuses.expectNextValue(toBe: .awaitingUserInput)
     }
 
+    func testRespondingStatus_whenUserHasPreviouslyResponded_isReflected() async {
+        let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
+
+        user.userInfo.userAddresses = [
+            .dummy.updated(email: stubbedEventDetails.invitees[1].email)
+        ]
+
+        await receivedRespondingStatuses.expectNextValue(toBe: .respondingUnavailable)
+
+        sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
+
+        await receivedRespondingStatuses.expectNextValue(toBe: .alreadyResponded(.yes))
+    }
+
     // MARK: RSVP: Cases where responding is unavailable
 
     func testResponding_whenUserIsNotAnInvitee_isNotAvailable() async {
