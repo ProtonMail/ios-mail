@@ -8,5 +8,6 @@
 #include "ProtonMailUITests-Shared.xcconfig"
 #include "../../Pods/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests.debug.xcconfig"
 
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonInboxICal/Headers"
 MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG
