@@ -249,12 +249,33 @@ class AttachmentViewModelTests: XCTestCase {
         await receivedRespondingStatuses.expectNextValue(toBe: .awaitingUserInput)
     }
 
-    func testResponding_whenUserIsNotAnInvitee_isNotAvailable() async {
-        let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
+    // MARK: RSVP: Cases where responding is unavailable
 
+    func testResponding_whenUserIsNotAnInvitee_isNotAvailable() async {
         user.userInfo.userAddresses[0] = user.userInfo.userAddresses[0]
             .updated(email: "somethingOtherThanInvitee@example.com")
 
+        await ensureRespondingIsNotAvailableWhenICSIsReceived()
+    }
+
+    func testResponding_whenEventHasBeenCancelled_isNotAvailable() async {
+        eventRSVP.fetchEventDetailsStub.bodyIs { _, _ in
+                .make(status: .cancelled)
+        }
+
+        await ensureRespondingIsNotAvailableWhenICSIsReceived()
+    }
+
+    func testResponding_whenEventHasEnded_isNotAvailable() async {
+        eventRSVP.fetchEventDetailsStub.bodyIs { _, _ in
+                .make(endDate: .distantPast)
+        }
+
+        await ensureRespondingIsNotAvailableWhenICSIsReceived()
+    }
+
+    private func ensureRespondingIsNotAvailableWhenICSIsReceived() async {
+        let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
         var receivedStates: [AttachmentViewModel.RespondingStatus] = []
 
         sut.respondingStatus
@@ -269,6 +290,8 @@ class AttachmentViewModelTests: XCTestCase {
 
         XCTAssertEqual(receivedStates, [.respondingUnavailable])
     }
+
+    // MARK: RSVP: Open in Calendar
 
     func testOpenInCalendar_whenRecentCalendarIsInstalled_directlyOpensCalendar() {
         let deepLink = stubbedEventDetails.calendarAppDeepLink
