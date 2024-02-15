@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import Combine
 import MBProgressHUD
 import PromiseKit
 import ProtonCoreDataModel
@@ -59,6 +60,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
     var pickedCallback: (([DraftEmailData]) -> Void)?
     var groupSubSelectionPresenter: ContactGroupSubSelectionActionSheetPresenter?
     private lazy var schemeHandler: ComposerSchemeHandler = .init(imageProxy: dependencies.imageProxy)
+    private var cancellables = Set<AnyCancellable>()
 
     private let dependencies: Dependencies
 
@@ -106,46 +108,40 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
         // load all contacts and groups
         viewModel.fetchContacts()
-        // TODO: move to view model
-        firstly { [weak self] () -> Promise<Void> in
-            self?.retrievePhoneContacts() ?? Promise<Void>()
-        }.done { [weak self] in
-            guard let self = self else { return }
+        viewModel.fetchPhoneContacts()
 
-            self.headerView?.toContactPicker?.reloadData()
-            self.headerView?.ccContactPicker?.reloadData()
-            self.headerView?.bccContactPicker?.reloadData()
+        viewModel
+            .contactsDidChangePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+                self.headerView?.toContactPicker?.reloadContactsList()
+                self.headerView?.ccContactPicker?.reloadContactsList()
+                self.headerView?.bccContactPicker?.reloadContactsList()
+            }.store(in: &cancellables)
 
-            self.headerView?.toContactPicker?.contactCollectionView?.layoutIfNeeded()
-            self.headerView?.bccContactPicker?.contactCollectionView?.layoutIfNeeded()
-            self.headerView?.ccContactPicker?.contactCollectionView?.layoutIfNeeded()
+        self.headerView?.toContactPicker?.reloadData()
+        self.headerView?.ccContactPicker?.reloadData()
+        self.headerView?.bccContactPicker?.reloadData()
 
-            delay(0.5) {
-                // There is a height observer in ComposeContainerViewController
-                // If the tableview reload, the keyboard will be dismissed
-                switch self.viewModel.messageAction {
-                case .openDraft, .reply, .replyAll:
-                    self.headerView?.notifyViewSize(true)
-                case .forward:
-                    _ = self.headerView?.toContactPicker.becomeFirstResponder()
-                default:
-                    _ = self.headerView?.toContactPicker.becomeFirstResponder()
-                }
+        self.headerView?.toContactPicker?.contactCollectionView?.layoutIfNeeded()
+        self.headerView?.bccContactPicker?.contactCollectionView?.layoutIfNeeded()
+        self.headerView?.ccContactPicker?.contactCollectionView?.layoutIfNeeded()
+
+        delay(0.5) {
+            // There is a height observer in ComposeContainerViewController
+            // If the tableview reload, the keyboard will be dismissed
+            switch self.viewModel.messageAction {
+            case .openDraft, .reply, .replyAll:
+                self.headerView?.notifyViewSize(true)
+            case .forward:
+                _ = self.headerView?.toContactPicker.becomeFirstResponder()
+            default:
+                _ = self.headerView?.toContactPicker.becomeFirstResponder()
             }
-
-        }.catch { _ in
         }
 
         self.viewModel.markAsRead()
         generateAccessibilityIdentifiers()
-    }
-
-    private func retrievePhoneContacts() -> Promise<Void> {
-        return Promise { seal in
-            viewModel.fetchPhoneContacts {
-                seal.fulfill(())
-            }
-        }
     }
 
     @objc
