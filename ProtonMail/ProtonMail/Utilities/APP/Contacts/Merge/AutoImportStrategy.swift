@@ -113,8 +113,12 @@ extension AutoImportStrategy {
         device: [ContactField.Email],
         proton: [ContactField.Email]
     ) -> FieldMergeResult<[ContactField.Email]> {
+        let deviceEmailsVCardGroupStripped = device.map {
+            ContactField.Email(type: $0.type, emailAddress: $0.emailAddress, vCardGroup: "")
+        }
+
         let emailMerger = FieldTypeMerger<ContactField.Email>()
-        emailMerger.merge(device: device, proton: proton)
+        emailMerger.merge(device: deviceEmailsVCardGroupStripped, proton: proton)
 
         guard emailMerger.resultHasChanges else {
             return .noChange
