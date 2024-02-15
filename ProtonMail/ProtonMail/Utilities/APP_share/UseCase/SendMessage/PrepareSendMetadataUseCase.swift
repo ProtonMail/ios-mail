@@ -238,7 +238,7 @@ final class PrepareSendMetadata: PrepareSendMetadataUseCase {
         recipients: [RecipientSendPreferences],
         attachments: [AttachmentEntity],
         userKeys: UserKeys,
-        completion: @escaping ([AttachmentID: String]) -> Void
+        completion: @escaping ([AttachmentID: Base64String]) -> Void
     ) {
         guard recipients.atLeastOneRequiresMimeFormat else {
             completion([:])
@@ -247,7 +247,7 @@ final class PrepareSendMetadata: PrepareSendMetadataUseCase {
         logInfo(step: .mimeEncodingAttachments, info: "fetching \(attachments.count) attachments")
         let group = DispatchGroup()
         let serialQueue = DispatchQueue(label: "me.proton.mail.PrepareSendMetadata.fetchAndEncodeAttachmentsIfNeeded")
-        var encodedAttachments = [AttachmentID: String]()
+        var encodedAttachments = [AttachmentID: Base64String]()
 
         for attachment in attachments {
             group.enter()
@@ -259,7 +259,7 @@ final class PrepareSendMetadata: PrepareSendMetadataUseCase {
                 switch result {
                 case .success(let attachmentFile):
                     serialQueue.sync {
-                        encodedAttachments[attachment.id] = attachmentFile.data.base64EncodedString()
+                        encodedAttachments[attachment.id] = Base64String(encoding: attachmentFile.data)
                     }
                 case .failure(let error):
                     let errorMessage = "attachmentID = \(attachment.id) | error: \(error)"

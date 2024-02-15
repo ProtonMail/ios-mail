@@ -168,39 +168,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         XCTAssertEqual(sut.generatePlainTextBody(), "\r\n\r\nSent from ProtonMail for iOS\r\n")
     }
 
-    func testGenerateBoundaryString() {
-        var result = ""
-        for _ in 0..<10 {
-            let temp = sut.generateMessageBoundaryString()
-            XCTAssertFalse(temp.isEmpty)
-            XCTAssertNotEqual(result, temp)
-            result = temp
-        }
-    }
-
-    func testBuildFirstPartOfBody() {
-        let boundaryMsg = "---BoundaryMsg---"
-        let messageBody = "test"
-        let expected = "Content-Type: multipart/mixed; boundary=---BoundaryMsg---\r\n\r\n-----BoundaryMsg---\r\nContent-Type: text/html; charset=utf-8\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Language: en-US\r\n\r\ntest\r\n\r\n\r\n\r\n"
-        XCTAssertEqual(sut.buildFirstPartOfBody(boundaryMsg: boundaryMsg, messageBody: messageBody), expected)
-    }
-
-    func testBuildAttachmentBody() {
-        let boundaryMsg = "---BoundaryMsg---"
-        let attContent = "test att".data(using: .utf8)!.base64EncodedString()
-        let attName = "test"
-        let contentID = "1234"
-        let mimeType = "text"
-        let expected = "-----BoundaryMsg---\r\nContent-Type: text; name=\"test\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"test\"\r\nContent-ID: <1234>\r\n\r\ndGVzdCBhdHQ=\r\n"
-
-        let result = sut.buildAttachmentBody(boundaryMsg: boundaryMsg,
-                                             base64AttachmentContent: attContent,
-                                             attachmentName: attName,
-                                             contentID: contentID,
-                                             attachmentMIMEType: mimeType)
-        XCTAssertEqual(result, expected)
-    }
-
     func testPreparePackages() throws {
         let key = Key(keyID: "1",
                       privateKey: OpenPGPDefines.privateKey)
@@ -405,30 +372,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         setupTestBody()
 
         XCTAssertThrowsError(try sut.generatePackageBuilder())
-    }
-
-    func testExtractBase64() throws {
-        let html = #"<html><head></head><body><div>hi test</div><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAAEAQMAAACeIXx6AAAAA1BMVEVwcFynaTGjAAAACklEQVQI12OAAgAACAABod4nnQAAAABJRU5ErkJgggrr" alt="" /></body></html>"#
-        let boundary = sut.generateMessageBoundaryString()
-        let (updatedBody, inlines) = sut.extractBase64(clearBody: html, boundary: boundary)
-        XCTAssertEqual(inlines.count, 1)
-        let inline = try XCTUnwrap(inlines.first)
-        let regex = try RegularExpressionCache.regex(for: #"cid:(.*?)""#, options: .allowCommentsAndWhitespace)
-        guard
-            let match = regex.firstMatch(in: updatedBody, range: .init(location: 0, length: updatedBody.count)),
-            match.numberOfRanges == 2
-        else {
-            XCTFail("Unexpected")
-            return
-        }
-        let cid = updatedBody[match.range(at: 1)]
-        let expectedPrefix = #"\r\nContent-Type: image/png; name=".{8}"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: inline; filename=".{8}"\r\nContent-ID: <"#
-        let expectedSuffix = "\r\n\r\niVBORw0KGgoAAAANSUhEUgAAAAIAAAAEAQMAAACeIXx6AAAAA1BMVEVwcFynaTGj\r\nAAAACklEQVQI12OAAgAACAABod4nnQAAAABJRU5ErkJgggrr\r\n"
-        let expected = "--\(boundary)\(expectedPrefix)\(cid)"
-        XCTAssertTrue(inline.preg_match(expected))
-        // Somehow regular expression doesn't work with this suffix
-        // Workaround to verify
-        XCTAssertTrue(inline.hasSuffix(expectedSuffix))
     }
 
     private func setupTestBody() {

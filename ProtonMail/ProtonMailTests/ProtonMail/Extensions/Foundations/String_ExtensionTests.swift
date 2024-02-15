@@ -218,14 +218,6 @@ final class String_ExtensionTests: XCTestCase {
         XCTAssertEqual(result, str)
     }
 
-    func testInsert() {
-        let str = "abcde"
-        let temp1 = str.insert(every: 2, with: "@@")
-        XCTAssertEqual(temp1, "ab@@cd@@e")
-        let temp2 = str.insert(every: 3, with: "###")
-        XCTAssertEqual(temp2, "abc###de")
-    }
-
     func testSubscriptRange() {
         let str = "abcdefghijk"
         let range1 = NSRange(location: 0, length: 3)

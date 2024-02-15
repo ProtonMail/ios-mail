@@ -87,6 +87,7 @@ final class PagesViewController<
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showSpotlightIfNeeded { [weak self] in
+            self?.spotlight?.removeFromSuperview()
             delay(0.5) {
                 self?.showToolbarCustomizationSpotlightIfNeeded()
             }
@@ -398,9 +399,8 @@ extension PagesViewController {
         guard let currentVC = self.viewControllers?.first else { return }
         if let conversationView = currentVC as? ConversationViewController {
             let tableView = conversationView.customView.tableView
-            let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0))
-            let cellHeight = cell?.frame.height ?? 0
-            spotlight.mockTitleViewHeight?.constant = cellHeight - 2
+            let headerHeight = tableView.tableHeaderView?.frame.height ?? 0
+            spotlight.mockTitleViewHeight?.constant = headerHeight
         } else if let singleMessageView = currentVC as? SingleMessageViewController {
             let height = singleMessageView.customView.stackView.arrangedSubviews.first?.frame.height ?? 0
             spotlight.mockTitleViewHeight?.constant = height + 1

@@ -27,7 +27,6 @@ class AttachmentView: UIView {
     let iconView = SubViewsFactory.iconView
     let titleLabel = UILabel.init(frame: .zero)
     let arrowIconView = SubViewsFactory.arrowIcon
-    private let topSeparator = SubViewsFactory.separator
     private let bottomSeparator = SubViewsFactory.separator
 
     init() {
@@ -44,7 +43,6 @@ class AttachmentView: UIView {
         addSubview(iconView)
         addSubview(titleLabel)
         addSubview(arrowIconView)
-        addSubview(topSeparator)
         addSubview(bottomSeparator)
     }
 
@@ -71,13 +69,6 @@ class AttachmentView: UIView {
             arrowIconView.widthAnchor.constraint(equalToConstant: 20),
             arrowIconView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             arrowIconView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-        ].activate()
-
-        [
-            topSeparator.leadingAnchor.constraint(equalTo: leadingAnchor),
-            topSeparator.trailingAnchor.constraint(equalTo: trailingAnchor),
-            topSeparator.topAnchor.constraint(equalTo: topAnchor),
-            topSeparator.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
 
         [

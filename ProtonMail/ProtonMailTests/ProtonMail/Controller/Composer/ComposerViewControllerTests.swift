@@ -179,7 +179,7 @@ extension ComposerViewControllerTests {
 
     private func checkInline(shouldExist: Bool, cid: String? = nil) {
         let e2 = expectation(description: "Get html body")
-        sut.editor.collectDraftData().done { result in
+        sut.editor.collectDraftDataAndSaveToDB().done { result in
             let hasInline = result?.1.contains(check: "src-original-pm-cid") == true
             if shouldExist {
                 XCTAssertTrue(hasInline)

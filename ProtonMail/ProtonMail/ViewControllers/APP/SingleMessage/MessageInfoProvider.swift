@@ -459,7 +459,7 @@ extension MessageInfoProvider {
     }
 
     private func checkSenderPGP() {
-        guard message.isDetailDownloaded else { return }
+        guard checkedSenderContact?.encryptionIconStatus == nil, message.isDetailDownloaded else { return }
         pgpChecker?.check { [weak self] contact in
             self?.checkedSenderContact = contact
         }

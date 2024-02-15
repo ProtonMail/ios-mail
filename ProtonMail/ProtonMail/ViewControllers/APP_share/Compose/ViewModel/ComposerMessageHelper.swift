@@ -131,30 +131,20 @@ final class ComposerMessageHelper {
         }
     }
 
-    func copyAndCreateDraft(from messageID: MessageID, action: ComposeMessageAction) throws {
+    func copyAndCreateDraft(from messageID: MessageID, action: ComposeMessageAction) throws -> [MimeAttachment]? {
         let (messageToAssign, mimeAttachments) = try dependencies.copyMessage.execute(
             parameters: .init(copyAttachments: action == .forward, messageID: messageID)
         )
 
-        self.rawMessage = messageToAssign
+        rawMessage = messageToAssign
         updateDraft()
-
         updateMessageByMessageAction(action)
 
         // TODO: MIME attachments should also be handled by CopyMessageUseCase instead of here
         if action == ComposeMessageAction.forward {
-            /// add mime attachments if forward
-            if let mimeAtts = mimeAttachments {
-                let stripMetadata = dependencies.keychain[.metadataStripping] == .stripMetadata
-                for mimeAtt in mimeAtts {
-                    addMimeAttachments(
-                        attachment: mimeAtt,
-                        shouldStripMetaData: stripMetadata,
-                        completion: { _ in }
-                    )
-                }
-            }
+            return mimeAttachments
         }
+        return nil
     }
 
     func updateAddress(to address: Address, uploadDraft: Bool = true, completion: @escaping () -> Void) {

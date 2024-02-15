@@ -59,7 +59,7 @@ final class MessageSendingRequestBuilder {
     private(set) var plainTextDataPackage: String?
 
     // [AttachmentID: base64 attachment body]
-    private var attachmentBodys: [String: String] = [:]
+    private var attachmentBodys: [String: Base64String] = [:]
 
     private let dependencies: Dependencies
 
@@ -89,7 +89,7 @@ final class MessageSendingRequestBuilder {
         self.preAttachments.append(attachment)
     }
 
-    func add(encodedAttachmentBodies: [AttachmentID: String]) {
+    func add(encodedAttachmentBodies: [AttachmentID: Base64String]) {
         self.attachmentBodys = Dictionary(
             uniqueKeysWithValues: encodedAttachmentBodies.map { ($0.key.rawValue, $0.value) }
         )
@@ -196,37 +196,17 @@ extension MessageSendingRequestBuilder {
         userKeys: [ArmoredKey],
         keys: [Key]
     ) throws {
-        let boundaryMsg = self.generateMessageBoundaryString()
-        let messageBody = self.clearBody ?? ""
-        var (processedBody, inlines) = extractBase64(clearBody: messageBody, boundary: boundaryMsg)
-        processedBody = QuotedPrintable.encode(string: processedBody)
+        let mimeEML = MIMEEMLBuilder(
+            preAttachments: preAttachments,
+            attachmentBodys: attachmentBodys,
+            clearBody: clearBody
+        ).build()
 
-        var signbody = self.buildFirstPartOfBody(boundaryMsg: boundaryMsg, messageBody: processedBody)
-
-        for preAttachment in self.preAttachments {
-            guard let attachmentBody = self.attachmentBodys[preAttachment.attachmentId] else {
-                continue
-            }
-            let attachment = preAttachment.att
-            // The format is =?charset?encoding?encoded-text?=
-            // encoding = B means base64
-            let attName = "=?utf-8?B?\(attachment.name.encodeBase64())?="
-            let contentID = attachment.contentId ?? ""
-
-            let bodyToAdd = self.buildAttachmentBody(boundaryMsg: boundaryMsg,
-                                                     base64AttachmentContent: attachmentBody,
-                                                     attachmentName: attName,
-                                                     contentID: contentID,
-                                                     attachmentMIMEType: attachment.rawMimeType)
-            signbody.append(contentsOf: bodyToAdd)
-        }
-        inlines.forEach { signbody.append(contentsOf: $0) }
-
-        signbody.append(contentsOf: "--\(boundaryMsg)--")
-
-        let encrypted = try signbody.encrypt(withKey: senderKey,
-                                             userKeys: userKeys,
-                                             mailboxPassphrase: passphrase)
+        let encrypted = try mimeEML.encrypt(
+            withKey: senderKey,
+            userKeys: userKeys,
+            mailboxPassphrase: passphrase
+        )
         let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
 
         guard let sessionKey = try keyPacket.getSessionFromPubKeyPackage(
@@ -270,43 +250,6 @@ extension MessageSendingRequestBuilder {
         self.plainTextDataPackage = dataPacket.base64EncodedString()
     }
 
-    func buildAttachmentBody(boundaryMsg: String,
-                             base64AttachmentContent: String,
-                             attachmentName: String,
-                             contentID: String,
-                             isAttachment: Bool = true, // false means inline
-                             encoding: String = "base64",
-                             attachmentMIMEType: String) -> String {
-        let disposition = isAttachment ? "attachment" : "inline"
-        var body = ""
-        body.append(contentsOf: "--\(boundaryMsg)" + "\r\n")
-        body.append(contentsOf: "Content-Type: \(attachmentMIMEType); name=\"\(attachmentName)\"" + "\r\n")
-        body.append(contentsOf: "Content-Transfer-Encoding: \(encoding)" + "\r\n")
-        body.append(contentsOf: "Content-Disposition: \(disposition); filename=\"\(attachmentName)\"" + "\r\n")
-        body.append(contentsOf: "Content-ID: <\(contentID)>\r\n")
-
-        body.append(contentsOf: "\r\n")
-        body.append(contentsOf: base64AttachmentContent + "\r\n")
-        return body
-    }
-
-    func buildFirstPartOfBody(boundaryMsg: String, messageBody: String) -> String {
-        let typeMessage = "Content-Type: multipart/mixed; boundary=\(boundaryMsg)"
-        var signbody = ""
-        signbody.append(contentsOf: typeMessage + "\r\n")
-        signbody.append(contentsOf: "\r\n")
-        signbody.append(contentsOf: "--\(boundaryMsg)" + "\r\n")
-        signbody.append(contentsOf: "Content-Type: text/html; charset=utf-8" + "\r\n")
-        signbody.append(contentsOf: "Content-Transfer-Encoding: quoted-printable" + "\r\n")
-        signbody.append(contentsOf: "Content-Language: en-US" + "\r\n")
-        signbody.append(contentsOf: "\r\n")
-        signbody.append(contentsOf: messageBody + "\r\n")
-        signbody.append(contentsOf: "\r\n")
-        signbody.append(contentsOf: "\r\n")
-        signbody.append(contentsOf: "\r\n")
-        return signbody
-    }
-
     func preparePackages(encrypted: String) throws -> (Data, Data) {
         guard let spilted = try encrypted.split(),
               let keyPacket = spilted.keyPacket,
@@ -320,14 +263,6 @@ extension MessageSendingRequestBuilder {
         let body = self.clearBody ?? ""
         // Need to improve replace part
         return body.html2String.preg_replace("\n", replaceto: "\r\n")
-    }
-
-    func generateMessageBoundaryString() -> String {
-        var boundaryMsg = "uF5XZWCLa1E8CXCUr2Kg8CSEyuEhhw9WU222" // default
-        if let random = try? Crypto.random(byte: 20), !random.isEmpty {
-            boundaryMsg = HMAC.hexStringFromData(random)
-        }
-        return boundaryMsg
     }
 }
 
@@ -430,73 +365,5 @@ extension MessageSendingRequestBuilder {
 extension MessageSendingRequestBuilder {
     struct Dependencies {
         let apiService: APIService
-    }
-}
-
-// MARK: Build MIME
-extension MessageSendingRequestBuilder {
-    /// Extract base64 image data from message body
-    /// transform these base64 to content ID format
-    /// and convert extracted base64 data to EML string value
-    /// - Parameters:
-    ///   - clearBody: Clear message body
-    ///   - boundary: A string for multipart boundary
-    /// - Returns:
-    ///   - body: Processed message body, every base64 image becomes content ID format
-    ///           <img src="data..."> -> <img src="cid:...">
-    ///   - inlines: EML string value to represent base64 image
-    func extractBase64(clearBody: String, boundary: String) -> (body: String, inlines: [String]) {
-        guard
-            let document = try? SwiftSoup.parse(clearBody),
-            let inlines = try? document.select(#"img[src^="data"]"#).array(),
-            !inlines.isEmpty
-        else { return (clearBody, []) }
-
-        var data: [String] = []
-        for element in inlines {
-            let contentID = "\(String.randomString(8))@pm.me"
-            guard
-                let src = try? element.attr("src"),
-                let emlData = inlineDataForEML(from: src, contentID: contentID, boundary: boundary)
-            else { continue }
-            data.append(emlData)
-            _ = try? element.attr("src", "cid:\(contentID)")
-        }
-        document.outputSettings().prettyPrint(pretty: false)
-        guard let updatedBody = try? document.html() else { return (clearBody, []) }
-        return (updatedBody, data)
-    }
-
-    /// Convert base64 data URI to EML string value
-    /// - Parameters:
-    ///   - dataURI: "data:image/png;base64,iVBOR.....", the meaning is `data:(mimeType);(encoding), (data)`
-    ///   - contentID: inline content ID
-    ///   - boundary: A string for multipart boundary
-    /// - Returns: EML string value
-    private func inlineDataForEML(from dataURI: String, contentID: String, boundary: String) -> String? {
-        let pattern = #"^(.*?):(.*?);(.*?),(.*)"#
-        guard
-            let regex = try? RegularExpressionCache.regex(for: pattern, options: [.allowCommentsAndWhitespace]),
-            let match = regex.firstMatch(in: dataURI, range: .init(location: 0, length: dataURI.count)),
-            match.numberOfRanges == 5
-        else { return nil }
-
-        let mimeType = dataURI[match.range(at: 2)].trimmingCharacters(in: .whitespacesAndNewlines)
-        let encoding = dataURI[match.range(at: 3)].trimmingCharacters(in: .whitespacesAndNewlines)
-        // The maximum length is 64, should insert `\r\n` every 64 characters
-        // Otherwise the EML is broken
-        let base64 = dataURI[match.range(at: 4)]
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .insert(every: 64, with: "\r\n")
-        let name = "\(String.randomString(8))"
-        return buildAttachmentBody(
-            boundaryMsg: boundary,
-            base64AttachmentContent: base64,
-            attachmentName: name,
-            contentID: contentID,
-            isAttachment: false,
-            encoding: encoding,
-            attachmentMIMEType: mimeType
-        )
     }
 }

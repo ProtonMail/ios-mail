@@ -37,7 +37,7 @@ let testLabelsData = """
         "ID": "Vg_DqN6s-xg488vZQBkiNGz0U-62GKN6jMYRnloXY-isM9s5ZR-rWCs_w8k9Dtcc-sVC-qnf8w301Q-1sA6dyw==",
         "Name": "TestFolder",
         "Path": "TestFolder",
-        "Type": 1,
+        "Type": 3,
         "Color": "#e7d292",
         "Order": 40000,
         "Notify": 1,

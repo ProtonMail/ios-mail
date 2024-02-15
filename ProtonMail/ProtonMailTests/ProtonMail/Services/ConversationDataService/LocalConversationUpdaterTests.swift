@@ -212,6 +212,7 @@ extension LocalConversationUpdaterTests {
                 messageID: self.msgID,
                 conversationID: self.conversationID,
                 in: labelIDs,
+                labelIDType: .folder,
                 userID: self.userID,
                 isUnread: unread,
                 context: context

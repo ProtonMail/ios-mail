@@ -111,7 +111,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     private var lastNetworkStatus: ConnectionStatus? = nil
 
-    private var shouldAnimateSkeletonLoading = false {
+    var shouldAnimateSkeletonLoading = false {
         didSet {
             if shouldAnimateSkeletonLoading {
                 viewModel.diffableDataSource?.animateSkeletonLoading()
@@ -230,7 +230,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             Message.Location.trash,
             Message.Location.sent].map(\.labelID).contains(viewModel.labelID)
             && viewModel.isCurrentUserSelectedUnreadFilterInInbox {
-            unreadMessageFilterButtonTapped(unreadFilterButton as Any)
+            unreadMessageFilterButtonTapped()
         }
 
         self.loadDiffableDataSource()
@@ -617,7 +617,8 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         }
     }
 
-    @IBAction func unreadMessageFilterButtonTapped(_ sender: Any) {
+    @objc
+    func unreadMessageFilterButtonTapped() {
         if viewModel.listEditing {
             hideSelectionMode()
         }
@@ -1000,10 +1001,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
                 return
             }
 
-            let isSending = viewModel.messageService.isMessageBeingSent(id: message.messageID)
-            let isUploading = viewModel.isUploadingDraft(messageID: message.messageID)
-
-            guard !isSending, !isUploading else {
+            guard !viewModel.hasMessageEnqueuedTasks(message.messageID) else {
                 LocalString._mailbox_draft_is_uploading.alertToast()
                 self.tableView.indexPathsForSelectedRows?.forEach {
                     self.tableView.deselectRow(at: $0, animated: true)
@@ -2527,6 +2525,11 @@ extension MailboxViewController {
         self.unreadFilterButton.imageView?.tintColor = ColorProvider.IconInverted
         self.unreadFilterButton.imageView?.contentMode = .scaleAspectFit
         self.unreadFilterButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+        self.unreadFilterButton.addTarget(
+            self,
+            action: #selector(self.unreadMessageFilterButtonTapped),
+            for: .touchUpInside
+        )
     }
 
     private func configureSelectAllButton() {
@@ -2771,7 +2774,6 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
     }
 
     func updateUnreadButton(count: Int) {
-        if refreshControl.isRefreshing { return }
         let unread = count
         let isInUnreadFilter = unreadFilterButton.isSelected
         let shouldShowUnreadFilter = unread != 0

@@ -92,34 +92,36 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
         ignoreDownloaded: Bool
     ) throws -> MessageEntity {
         try dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-                guard let message = context.object(with: messageObjectID.rawValue) as? Message else {
-                    throw Errors.coreDataObjectNotExist
-                }
+            guard let message = context.object(with: messageObjectID.rawValue) as? Message else {
+                throw Errors.coreDataObjectNotExist
+            }
+            if !ignoreDownloaded,
+               message.isDetailDownloaded,
+               let responseTime = messageDict["Time"] as? Int,
+               case let responseInterval = TimeInterval(responseTime),
+               let cacheTime = message.time?.timeIntervalSince1970,
+               cacheTime > responseInterval {
+                return MessageEntity(message)
+            }
 
-                if !ignoreDownloaded,
-                   message.isDetailDownloaded,
-                   let responseTime = messageDict["Time"] as? Int,
-                   case let responseInterval = TimeInterval(responseTime),
-                   let cacheTime = message.time?.timeIntervalSince1970,
-                   cacheTime > responseInterval {
-                    return MessageEntity(message)
-                }
+            let uploadingAttachments = self.uploadingAttachment(from: message)
+            let localExpirationTime = message.expirationTime
+            // This will remove all attachments that are still not uploaded to BE
+            try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
+                                            fromJSONDictionary: messageDict,
+                                            in: context)
+            // expirationTime in response always 0, recovery data if needed 
+            message.expirationTime = localExpirationTime
+            self.restoreUploading(attachments: uploadingAttachments, to: message, context: context)
 
-                let uploadingAttachments = self.uploadingAttachment(from: message)
-                // This will remove all attachments that are still not uploaded to BE
-                try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
-                                                fromJSONDictionary: messageDict,
-                                                in: context)
-                self.restoreUploading(attachments: uploadingAttachments, to: message, context: context)
+            message.isDetailDownloaded = true
+            message.messageStatus = 1
 
-                message.isDetailDownloaded = true
-                message.messageStatus = 1
-
-                if let error = context.saveUpstreamIfNeeded() {
-                    throw error
-                } else {
-                    return MessageEntity(message)
-                }
+            if let error = context.saveUpstreamIfNeeded() {
+                throw error
+            } else {
+                return MessageEntity(message)
+            }
         }
     }
 
@@ -128,7 +130,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
             .compactMap { $0 as? Attachment }
             .filter { attach in
                 if attach.isUploaded || attach.isSoftDeleted { return false }
-                return true
+                return !attach.inline()
             }
         return localAttachments
     }

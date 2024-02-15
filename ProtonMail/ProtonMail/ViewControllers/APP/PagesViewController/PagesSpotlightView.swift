@@ -41,9 +41,9 @@ final class PagesSpotlightView: UIView {
     }
 
     private func setUpViews() {
-        addSubview(iconView)
         addSubview(mockTitleView)
         addSubview(mockToolBar)
+        addSubview(iconView)
 
         iconView.tintColor = ColorProvider.IconWeak
         mockTitleView.backgroundColor = ColorProvider.BackgroundNorm

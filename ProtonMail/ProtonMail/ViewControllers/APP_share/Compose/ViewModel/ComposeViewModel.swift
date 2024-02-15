@@ -157,11 +157,12 @@ class ComposeViewModel: NSObject {
     }
 
     func initialize(message msg: MessageEntity?, action: ComposeMessageAction) throws {
+        var mimeAttachmentsShouldBeAdded: [MimeAttachment]?
         if let msg {
             if msg.isDraft {
                 self.composerMessageHelper.setNewMessage(objectID: msg.objectID.rawValue)
             } else {
-                try composerMessageHelper.copyAndCreateDraft(from: msg.messageID, action: action)
+                mimeAttachmentsShouldBeAdded = try composerMessageHelper.copyAndCreateDraft(from: msg.messageID, action: action)
             }
         }
 
@@ -174,6 +175,19 @@ class ComposeViewModel: NSObject {
         originalSender = composerMessageHelper.draft?.senderVO
         initializeSenderAddress()
         observeAddressStatusChangedEvent()
+
+        // Create the draft before the attachment upload because we need the messageID ready.
+        composerMessageHelper.uploadDraft()
+
+        if let mimeAttachments = mimeAttachmentsShouldBeAdded {
+            let stripMetaData = dependencies.keychain[.metadataStripping] == .stripMetadata
+            for mimeAttachment in mimeAttachments {
+                composerMessageHelper.addMimeAttachments(
+                    attachment: mimeAttachment,
+                    shouldStripMetaData: stripMetaData,
+                    completion: { _ in })
+            }
+        }
     }
 
     private func showToastIfNeeded(errorCode: Int) {
@@ -402,6 +416,37 @@ extension ComposeViewModel {
             }
             self.messageService.send(inQueue: msg, deliveryTime: deliveryTime)
         }
+    }
+
+    // Exact base64 image from body and upload it, if has any
+    func extractAndUploadBase64ImagesFromSendingBody(body: String) -> String {
+        guard
+            let document = try? SwiftSoup.parse(body),
+            let base64Images = try? document.select(#"img[src^="data"]"#)
+        else {
+            return body
+        }
+        for image in base64Images {
+            let cid = "\(String.randomString(8))@pm.me"
+            guard
+                let src = try? image.attr("src"),
+                let (type, _, base64) = MIMEEMLBuilder.extractInformation(from: src),
+                let _ = try? image.attr("src", "cid:\(cid)"),
+                let data = Data(base64Encoded: base64.encoded)
+            else { continue }
+
+            composerMessageHelper.addAttachment(
+                data: data,
+                fileName: cid,
+                shouldStripMetaData: true,
+                type: type,
+                isInline: true,
+                cid: cid
+            ) { _ in }
+        }
+        document.outputSettings().prettyPrint(pretty: false)
+        guard let cleanBody = try? document.html() else { return body }
+        return cleanBody
     }
 
     func deleteAttachment(_ attachment: AttachmentEntity) -> Promise<Void> {
