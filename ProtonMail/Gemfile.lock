@@ -181,8 +181,6 @@ GEM
     fastlane-plugin-firebase_app_distribution (0.8.1)
       google-apis-firebaseappdistribution_v1 (~> 0.3.0)
       google-apis-firebaseappdistribution_v1alpha (~> 0.2.0)
-    fastlane-plugin-sentry (1.18.0)
-      os (~> 1.1, >= 1.1.4)
     ffi (1.16.3)
     fourflusher (2.3.1)
     fuzzy_match (2.0.4)
@@ -323,7 +321,6 @@ DEPENDENCIES
   cocoapods
   fastlane
   fastlane-plugin-firebase_app_distribution
-  fastlane-plugin-sentry
   slather!
 
 BUNDLED WITH
