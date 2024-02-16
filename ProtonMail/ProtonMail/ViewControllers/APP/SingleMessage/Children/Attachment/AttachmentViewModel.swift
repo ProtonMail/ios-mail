@@ -104,7 +104,7 @@ final class AttachmentViewModel {
     }
 
     private func fetchEventDetails(initialInfo: Either<AttachmentInfo, BasicEventInfo>) {
-        guard dependencies.featureFlagProvider.isEnabled(.rsvpWidget) else {
+        guard dependencies.featureFlagProvider.isEnabled(.rsvpWidget, reloadValue: false) else {
             return
         }
 

@@ -23,6 +23,7 @@ struct AutoImportContactsFeature {
     & HasUserManager
     & HasUserDefaults
     & HasContactsSyncQueueProtocol
+    & HasFeatureFlagProvider
 
     private var userID: UserID {
         dependencies.user.userID
@@ -33,13 +34,21 @@ struct AutoImportContactsFeature {
         self.dependencies = dependencies
     }
 
-    var isEnabled: Bool {
-        let autoImportFlags = dependencies.userDefaults[.isAutoImportContactsOn]
-        let isAutoImportEnabledForUser = autoImportFlags[userID.rawValue] ?? false
-        return UserInfo.isAutoImportContactsEnabled && isAutoImportEnabledForUser
+    var isFeatureEnabled: Bool {
+        false
+//      dependencies.featureFlagProvider.isEnabled(MailFeatureFlag.autoImportContacts, reloadValue: true)
     }
 
-    func enable() {
+    var shouldImportContacts: Bool {
+        isFeatureEnabled && isSettingEnabledForUser
+    }
+
+    var isSettingEnabledForUser: Bool {
+        let autoImportFlags = dependencies.userDefaults[.isAutoImportContactsOn]
+        return autoImportFlags[userID.rawValue] ?? false
+    }
+
+    func enableSettingForUser() {
         var autoImportFlags = dependencies.userDefaults[.isAutoImportContactsOn]
         autoImportFlags[userID.rawValue] = true
         dependencies.userDefaults[.isAutoImportContactsOn] = autoImportFlags
@@ -47,7 +56,7 @@ struct AutoImportContactsFeature {
         SystemLogger.log(message: message, category: .contacts)
     }
 
-    func disable() {
+    func disableSettingForUser() {
         var historyTokens = dependencies.userDefaults[.contactsHistoryTokenPerUser]
         historyTokens[userID.rawValue] = nil
         dependencies.userDefaults[.contactsHistoryTokenPerUser] = historyTokens
@@ -59,8 +68,8 @@ struct AutoImportContactsFeature {
         SystemLogger.log(message: message, category: .contacts)
     }
 
-    func disableAndDeleteQueue() {
-        disable()
+    func disableSettingAndDeleteQueueForUser() {
+        disableSettingForUser()
         dependencies.contactSyncQueue.deleteQueue()
     }
 }

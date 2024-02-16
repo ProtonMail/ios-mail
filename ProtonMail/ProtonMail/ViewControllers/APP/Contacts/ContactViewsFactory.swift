@@ -25,6 +25,7 @@ final class ContactViewsFactory {
     & ContactGroupSelectEmailViewModelImpl.Dependencies
     & ContactImportViewController.Dependencies
     & ContactsViewModel.Dependencies
+    & HasAutoImportContactsFeature
 
     private unowned let dependencies: Dependencies
 

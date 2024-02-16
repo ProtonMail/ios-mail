@@ -104,6 +104,7 @@ final class SettingsDeviceViewModel {
     & HasKeychain
     & HasLockCacheStatus
     & HasUserDefaults
+    & HasAutoImportContactsFeature
 
     let sections: [SettingDeviceSection] = {
         var standardSections: [SettingDeviceSection] = [.account, .app, .general, .clearCache]
@@ -113,7 +114,7 @@ final class SettingsDeviceViewModel {
         return standardSections
     }()
 
-    let appSettings: [DeviceSectionItem] = {
+    lazy var appSettings: [DeviceSectionItem] = {
         var appSettings: [DeviceSectionItem] = [
             .darkMode,
             .appPIN,
@@ -124,7 +125,7 @@ final class SettingsDeviceViewModel {
             .toolbar,
             .applicationLogs
         ]
-        if UserInfo.isAutoImportContactsEnabled {
+        if dependencies.autoImportContactsFeature.isFeatureEnabled {
             appSettings.removeAll(where: { $0 == .combineContacts })
             if let index = appSettings.firstIndex(of: .alternativeRouting) {
                 appSettings.insert(.contacts, at: index + 1)

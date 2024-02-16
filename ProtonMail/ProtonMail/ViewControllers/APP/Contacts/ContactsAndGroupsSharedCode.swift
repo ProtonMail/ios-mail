@@ -26,7 +26,7 @@ import ProtonCorePaymentsUI
 import ProtonCoreUIFoundations
 
 class ContactsAndGroupsSharedCode: ProtonMailViewController {
-    typealias Dependencies = HasPaymentsUIFactory
+    typealias Dependencies = HasPaymentsUIFactory & HasAutoImportContactsFeature
 
     var navigationItemRightNotEditing: [UIBarButtonItem]?
     var navigationItemLeftNotEditing: [UIBarButtonItem]?
@@ -102,7 +102,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         }
 
         var items: [PMActionSheetItem] = [newContactAction, newContactGroupAction]
-        if !UserInfo.isAutoImportContactsEnabled {
+        if !dependencies.autoImportContactsFeature.isFeatureEnabled {
             items.append(uploadDeviceContactAction)
         }
 
