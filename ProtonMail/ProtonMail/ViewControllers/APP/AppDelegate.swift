@@ -278,9 +278,9 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     private func importDeviceContactsIfNeeded(user: UserManager) {
-        if user.container.autoImportContactsFeature.isEnabled {
+        if user.container.autoImportContactsFeature.shouldImportContacts {
             guard CNContactStore.authorizationStatus(for: .contacts) == .authorized else {
-                user.container.autoImportContactsFeature.disableAndDeleteQueue()
+                user.container.autoImportContactsFeature.disableSettingAndDeleteQueueForUser()
                 return
             }
 

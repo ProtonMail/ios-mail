@@ -44,10 +44,6 @@ extension UserInfo {
         }
     }
 
-    static var isAutoImportContactsEnabled: Bool {
-        false
-    }
-
     static var shareImagesAsInlineByDefault: Bool {
         return true
     }

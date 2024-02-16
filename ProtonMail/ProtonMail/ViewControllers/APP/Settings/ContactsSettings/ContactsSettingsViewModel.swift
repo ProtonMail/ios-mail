@@ -60,8 +60,7 @@ extension ContactsSettingsViewModel: ContactsSettingsViewModelOutput {
         case .combineContacts:
             return dependencies.userDefaults[.isCombineContactOn]
         case .autoImportContacts:
-            let autoImportFlags = dependencies.userDefaults[.isAutoImportContactsOn]
-            return autoImportFlags[dependencies.user.userID.rawValue] ?? false
+            return dependencies.autoImportContactsFeature.isSettingEnabledForUser
         }
     }
 }
@@ -83,14 +82,14 @@ extension ContactsSettingsViewModel: ContactsSettingsViewModelInput {
 
     private func didTapAutoImportContacts(isEnabled: Bool) {
         if isEnabled {
-            dependencies.autoImportContactsFeature.enable()
+            dependencies.autoImportContactsFeature.enableSettingForUser()
             let params = ImportDeviceContacts.Params(
                 userKeys: dependencies.user.userInfo.userKeys,
                 mailboxPassphrase: dependencies.user.mailboxPassword
             )
             dependencies.importDeviceContacts.execute(params: params)
         } else {
-            dependencies.autoImportContactsFeature.disableAndDeleteQueue()
+            dependencies.autoImportContactsFeature.disableSettingAndDeleteQueueForUser()
         }
     }
 }
