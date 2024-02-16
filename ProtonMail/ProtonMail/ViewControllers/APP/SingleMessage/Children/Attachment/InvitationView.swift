@@ -284,10 +284,6 @@ private struct SubviewFactory {
         row(icon: \.users)
     }
 
-    static var participantStackView: UIStackView {
-        genericStackView
-    }
-
     static func participantListButton(titleColor: UIColor, primaryAction: UIAction) -> UIButton {
         let view = UIButton(primaryAction: primaryAction)
         view.contentHorizontalAlignment = .leading

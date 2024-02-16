@@ -100,10 +100,6 @@ class DeepLink {
         }
     }
 
-    var empty: Bool {
-        return head == nil
-    }
-
     var first: Node? {
         get {
             return head
@@ -117,29 +113,12 @@ class DeepLink {
         }
     }
 
-    /// Removes one from head and returns it
-    var popLast: Node? {
-        get {
-            return removeBottom()
-        }
-    }
-
     private func removeTop() -> Node? {
         if let head = head {
             self.remove(path: head)
             return head
         }
         return nil
-    }
-
-    private func removeBottom() -> Node? {
-        var current = self.head
-        while let next = current?.next {
-            current = next
-        }
-        current?.previous?.next = nil
-        current?.previous = nil
-        return current
     }
 
     private func remove(path: Node) {

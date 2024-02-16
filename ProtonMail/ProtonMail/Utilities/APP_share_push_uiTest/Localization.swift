@@ -138,10 +138,6 @@ class LocalizedString {
     /// "wrote:"
     lazy var _composer_wrote = NSLocalizedString("wrote:", comment: "Title")
 
-    /// "At {time}, e.g.: At 19:00"
-    lazy var _composer_forward_header_at = NSLocalizedString("At %@", comment: "At {time}, e.g.: At 19:00")
-    /// "On {date}, e.g.: On Aug 14"
-    lazy var _composer_forward_header_on = NSLocalizedString("On %@", comment: "On {date}, e.g.: On Aug 14")
     /// "On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00"
     lazy var _composer_forward_header_on_detail = NSLocalizedString("On %@ at %@", comment: "On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00")
 
@@ -558,9 +554,6 @@ class LocalizedString {
 
     /// "Date: %@"
     lazy var _date = NSLocalizedString("Date: %@", comment: "like Date: 2017-10-10")
-
-    /// "Details"
-    lazy var _details = NSLocalizedString("Details", comment: "Title")
 
     /// "Hide Details"
     lazy var _hide_details = NSLocalizedString("Hide details", comment: "Title")

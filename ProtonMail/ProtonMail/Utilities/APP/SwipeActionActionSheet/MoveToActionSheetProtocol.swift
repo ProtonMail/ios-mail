@@ -26,7 +26,6 @@ protocol MoveToActionSheetProtocol: AnyObject {
     var user: UserManager { get }
 
     func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel)
-    func handleMoveToAction(conversations: [ConversationEntity], to folder: MenuLabel, completion: (() -> Void)?)
 }
 
 extension MoveToActionSheetProtocol {

@@ -161,8 +161,7 @@ final class UserContainer: ManagedContainer {
                 dependencies: .init(
                     queueManager: self.queueManager,
                     apiService: self.apiService,
-                    contextProvider: self.contextProvider,
-                    cacheService: self.cacheService
+                    contextProvider: self.contextProvider
                 )
             )
         }
