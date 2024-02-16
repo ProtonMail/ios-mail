@@ -188,22 +188,16 @@ class AttachmentViewModelTests: XCTestCase {
         wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 1)
     }
 
-    func testWhenICSIsFound_notifiesAboutProcessingProgress() {
+    func testWhenICSIsFound_notifiesAboutProcessingProgress() async {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
-        var receivedStates: [AttachmentViewModel.InvitationViewState] = []
+        var receivedInvitationViewStates = sut.invitationViewState.values.makeAsyncIterator()
 
-        sut.invitationViewState
-            .sink { value in
-                receivedStates.append(value)
-            }
-            .store(in: &subscriptions)
+        await receivedInvitationViewStates.expectNextValue(toBe: .noInvitationFound)
 
         sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
 
-        let expectedStates: [AttachmentViewModel.InvitationViewState] = [
-            .noInvitationFound, .invitationFoundAndProcessing, .invitationProcessed(stubbedEventDetails)
-        ]
-        wait(receivedStates == expectedStates)
+        await receivedInvitationViewStates.expectNextValue(toBe: .invitationFoundAndProcessing)
+        await receivedInvitationViewStates.expectNextValue(toBe: .invitationProcessed(stubbedEventDetails))
     }
 
     func testGivenHeadersContainEventInfo_whenAttachmentsContainICS_doesntParseICS() {
