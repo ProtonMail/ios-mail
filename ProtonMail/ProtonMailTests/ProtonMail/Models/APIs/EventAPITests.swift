@@ -59,7 +59,7 @@ class EventAPITests: XCTestCase {
 
         XCTAssertEqual(
             sut.path,
-            "/core/v4/events/\(eventID)?ConversationCounts=1&MessageCounts=1"
+            "/core/v5/events/\(eventID)?ConversationCounts=1&MessageCounts=1"
         )
     }
 }
