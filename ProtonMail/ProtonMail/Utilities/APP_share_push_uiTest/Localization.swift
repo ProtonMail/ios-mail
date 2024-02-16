@@ -1301,6 +1301,13 @@ enum L11n {
         static let showLess = NSLocalizedString("Show less", comment: "Button to hide some items in the list to conserve screen estate")
         static let eventAlreadyEnded = NSLocalizedString("This event already ended", comment: "Text shown when opening an invitation for a past event")
         static let eventCancelled = NSLocalizedString("This event has been cancelled", comment: "Text shown when opening an invitation for a cancelled event")
+        static let attendingPrompt = NSLocalizedString("Attending?", comment: "Prompt above yes/no/maybe buttons")
+        static let yesShort = NSLocalizedString("Yes", comment: "Part of a yes/no/maybe prompt")
+        static let noShort = NSLocalizedString("No", comment: "Part of a yes/no/maybe prompt")
+        static let maybeShort = NSLocalizedString("Maybe", comment: "Part of a yes/no/maybe prompt")
+        static let yesLong = NSLocalizedString("Yes, I'll attend", comment: "Confirm attending an event")
+        static let noLong = NSLocalizedString("No, I won't attend", comment: "Deny attending an event")
+        static let maybeLong = NSLocalizedString("I might attend", comment: "Neither confirm nor deny attending an event")
     }
 
     struct OfficialBadge {
