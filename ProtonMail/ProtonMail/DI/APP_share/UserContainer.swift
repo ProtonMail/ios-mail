@@ -258,6 +258,16 @@ final class UserContainer: ManagedContainer {
         }
     }
 
+    var telemetryServiceFactory: Factory<TelemetryService> {
+        self {
+            TelemetryService(
+                userID: self.user.userID,
+                isTelemetrySettingOn: { [weak self] in self?.user.hasTelemetryEnabled ?? false },
+                dependencies: self
+            )
+        }
+    }
+
     var undoActionManagerFactory: Factory<UndoActionManagerProtocol> {
         self {
             UndoActionManager(dependencies: self)

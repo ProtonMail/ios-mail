@@ -686,6 +686,16 @@ extension UserContainer: HasQueueHandler {
     }
 }
 
+protocol HasTelemetryService {
+    var telemetryService: TelemetryService { get }
+}
+
+extension UserContainer: HasTelemetryService {
+    var telemetryService: TelemetryService {
+        telemetryServiceFactory()
+    }
+}
+
 protocol HasUndoActionManagerProtocol {
     var undoActionManager: UndoActionManagerProtocol { get }
 }
