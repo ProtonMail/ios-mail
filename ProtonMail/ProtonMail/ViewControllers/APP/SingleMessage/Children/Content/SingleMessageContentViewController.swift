@@ -385,6 +385,10 @@ class SingleMessageContentViewController: UIViewController {
         let senderBlockStatus: PMActionSheet.SenderBlockStatus
 
         switch context {
+        case .eventParticipant(let emailAddress):
+            title = emailAddress
+            showOfficialBadge = false
+            senderBlockStatus = .notApplicable
         case .recipient(let contactVO):
             title = contactVO.title
             showOfficialBadge = false
@@ -563,6 +567,10 @@ extension SingleMessageContentViewController: AttachmentViewControllerDelegate {
 
     func invitationViewWasChanged() {
         viewModel.recalculateCellHeight?(false)
+    }
+
+    func participantTapped(emailAddress: String) {
+        presentActionSheet(context: .eventParticipant(emailAddress: emailAddress))
     }
 }
 
