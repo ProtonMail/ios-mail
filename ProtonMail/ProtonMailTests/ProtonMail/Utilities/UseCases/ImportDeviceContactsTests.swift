@@ -26,6 +26,7 @@ final class ImportDeviceContactsTests: XCTestCase {
     private var sutDelegate: SUTDelegate!
     private var sutParams: ImportDeviceContacts.Params!
 
+    private var mockApiService: APIServiceMock!
     private var mockUser: UserManager!
     private var userContainer: UserContainer!
     private var testContainer: TestContainer!
@@ -36,6 +37,8 @@ final class ImportDeviceContactsTests: XCTestCase {
     private let dummyHistoryToken: Data = Data("dummy_history_token".utf8)
     private let expectationTimeout = 3.0
 
+    private let autoImportUuidPrefix = "protonmail-ios-autoimport-"
+
     override func setUp() {
         super.setUp()
         mockDeviceContacts = .init()
@@ -43,7 +46,8 @@ final class ImportDeviceContactsTests: XCTestCase {
 
         let userInfo = UserInfo()
         userInfo.userId = dummyUserID.rawValue
-        mockUser = .init(api: APIServiceMock(), userInfo: userInfo, globalContainer: testContainer)
+        mockApiService = APIServiceMock()
+        mockUser = .init(api: mockApiService, userInfo: userInfo, globalContainer: testContainer)
 
         testContainer = .init()
         testContainer.deviceContactsFactory.register { self.mockDeviceContacts }
@@ -64,6 +68,7 @@ final class ImportDeviceContactsTests: XCTestCase {
         super.tearDown()
         mockDeviceContacts = nil
         mockContactsQueueSync = nil
+        mockApiService = nil
         mockUser = nil
         testContainer = nil
         userContainer = nil
@@ -93,6 +98,7 @@ final class ImportDeviceContactsTests: XCTestCase {
 
         let taskEnqueued = mockContactsQueueSync.addTaskStub.lastArguments?.a1
         XCTAssertEqual(taskEnqueued?.numContacts, 3)
+        XCTAssertEqual(taskEnqueued?.action, .create)
     }
 
     func testExecute_whenImportsContacts_normalisesTheirUuid() throws {
@@ -105,12 +111,12 @@ final class ImportDeviceContactsTests: XCTestCase {
 
         let taskEnqueued = mockContactsQueueSync.addTaskStub.lastArguments?.a1
         XCTAssertEqual(taskEnqueued?.numContacts, 3)
+        XCTAssertEqual(taskEnqueued?.action, .create)
 
-        let expectedUuidPrefix = "protonmail-ios-autoimport-"
         for contactVCards in taskEnqueued!.contactsVCards {
             for card in contactVCards {
                 if case .SignedOnly = card.type {
-                    XCTAssertTrue(card.data.contains("UID:\(expectedUuidPrefix)"))
+                    XCTAssertTrue(card.data.contains("UID:\(autoImportUuidPrefix)"))
                 }
             }
         }
@@ -127,6 +133,7 @@ final class ImportDeviceContactsTests: XCTestCase {
 
         let taskEnqueued = mockContactsQueueSync.addTaskStub.lastArguments?.a1
         XCTAssertEqual(taskEnqueued?.numContacts, 1)
+        XCTAssertEqual(taskEnqueued?.action, .update)
     }
 
     func testExecute_whenHistoryToken_andEmailMatch_itEnqueuesModifiedContacts() throws {
@@ -140,6 +147,7 @@ final class ImportDeviceContactsTests: XCTestCase {
 
         let taskEnqueued = mockContactsQueueSync.addTaskStub.lastArguments?.a1
         XCTAssertEqual(taskEnqueued?.numContacts, 1)
+        XCTAssertEqual(taskEnqueued?.action, .update)
     }
 
     func testExecute_whenThereAreNoContactsToImport_itFinishesTheUseCase() {
@@ -151,6 +159,39 @@ final class ImportDeviceContactsTests: XCTestCase {
         sut.execute(params: sutParams)
         wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
     }
+
+    // MARK: tests for downloading contact details
+
+    func testExecute_whenNoHistoryToken_andMissingVCard_itDoesNotDownloadContactDetails() throws {
+        prepareDownloadContactDetailConditions(existingVCard: Bool.random())
+
+        sut.execute(params: sutParams)
+        wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
+
+        XCTAssertEqual(mockApiService.requestJSONStub.callCounter, 0)
+    }
+
+    func testExecute_whenHistoryToken_andUuidMatch_andMissingVCard_itDownloadsContactDetails() throws {
+        testContainer.userDefaults[.contactsHistoryTokenPerUser] = [dummyUserID.rawValue: Data("someToken".utf8)]
+        prepareDownloadContactDetailConditions(existingVCard: false)
+
+        sut.execute(params: sutParams)
+        wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
+
+        XCTAssertEqual(mockApiService.requestJSONStub.callCounter, 1)
+    }
+
+    func testExecute_whenHistoryToken_andUuidMatch_andExistingVCard_itDoesNotDownloadsContactDetails() throws {
+        testContainer.userDefaults[.contactsHistoryTokenPerUser] = [dummyUserID.rawValue: Data("someToken".utf8)]
+        prepareDownloadContactDetailConditions(existingVCard: true)
+
+        sut.execute(params: sutParams)
+        wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
+
+        XCTAssertEqual(mockApiService.requestJSONStub.callCounter, 0)
+    }
+
+    // MARK: tests for cancel
 
     func testCancel_whenThereAreOnlyContactsToBeCreated_itFinishesWithoutEnqueuingTasks() throws {
         testContainer.userDefaults[.contactsHistoryTokenPerUser] = [:]
@@ -180,13 +221,16 @@ final class ImportDeviceContactsTests: XCTestCase {
 
 extension ImportDeviceContactsTests {
 
-    private func prepareContactInCoreData(_ : (uuid: String, email: String)) {
+    private func prepareContactInCoreData(
+        _ : (uuid: String, email: String),
+        cardData: String = SyncContactTestUtils.contactCardData
+    ) {
         try! testContainer.contextProvider.write { context in
             let contact = Contact(context: context)
             contact.contactID = UUID().uuidString
             contact.userID = self.dummyUserID.rawValue
             contact.uuid = self.dummyContactExistingInCoreData.uuid
-            contact.cardData = SyncContactTestUtils.contactCardData
+            contact.cardData = cardData
 
             let mail = Email(context: context)
             mail.userID = self.dummyUserID.rawValue
@@ -210,6 +254,22 @@ extension ImportDeviceContactsTests {
             (self.dummyHistoryToken, deviceContactIdentifiers)
         }
     }
+
+    private func prepareDownloadContactDetailConditions(existingVCard: Bool) {
+        if existingVCard {
+            prepareContactInCoreData(dummyContactExistingInCoreData)
+        } else {
+            prepareContactInCoreData(dummyContactExistingInCoreData, cardData: "")
+        }
+        prepareDeviceContacts(dummyIdentifiers_toUpdateExistingContacts_uuidMatch)
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+            if path.contains("/contacts/v4/contacts/") {
+                completion(nil, .success([:]))
+            } else {
+                XCTFail("Unexpected path")
+            }
+        }
+    }
 }
 
 // MARK: test data
@@ -217,7 +277,7 @@ extension ImportDeviceContactsTests {
 extension ImportDeviceContactsTests {
 
     private var dummyContactExistingInCoreData: (uuid: String, email: String) {
-        (uuid: "uuid-1", email: "kate-bell@mac.com")
+        (uuid: "\(autoImportUuidPrefix)uuid-1", email: "kate-bell@mac.com")
     }
 
     // returns identifiers that matches the UUID of `dummyContactStoredInCoreData`
