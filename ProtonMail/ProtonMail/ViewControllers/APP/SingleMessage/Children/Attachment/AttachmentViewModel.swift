@@ -191,6 +191,8 @@ final class AttachmentViewModel {
     private func isAnsweringAvailable(for eventDetails: EventDetails) -> Bool {
         guard
             UserInfo.isRSVPMilestoneTwoEnabled,
+            eventDetails.status != .cancelled,
+            eventDetails.endDate.isFuture,
             let userAsAnInvitee = eventDetails.invitees.first(where: {
                 dependencies.user.userInfo.owns(emailAddress: $0.email)
             })
