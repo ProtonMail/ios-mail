@@ -126,10 +126,7 @@ final class AttachmentViewModel {
 
                 let eventDetails = try await dependencies.eventRSVP.fetchEventDetails(basicEventInfo: basicEventInfo)
                 invitationViewSubject.send(.invitationProcessed(eventDetails))
-
-                if isAnsweringAvailable(for: eventDetails) {
-                    respondingStatusSubject.send(.awaitingUserInput)
-                }
+                updateRespondingOptions(eventDetails: eventDetails)
             } catch {
                 if let rsvpError = error as? EventRSVPError, rsvpError != .noEventsReturnedFromAPI {
                     PMAssertionFailure(rsvpError)
@@ -188,7 +185,7 @@ final class AttachmentViewModel {
         }
     }
 
-    private func isAnsweringAvailable(for eventDetails: EventDetails) -> Bool {
+    private func updateRespondingOptions(eventDetails: EventDetails) {
         guard
             UserInfo.isRSVPMilestoneTwoEnabled,
             eventDetails.status != .cancelled,
@@ -197,11 +194,19 @@ final class AttachmentViewModel {
                 dependencies.user.userInfo.owns(emailAddress: $0.email)
             })
         else {
-            return false
+            return
         }
 
-        // TODO: retrieve attendee status to avoid showing yes/no/maybe buttons again when re-entering after answering
-        return true
+        switch userAsAnInvitee.status {
+        case .accepted:
+            respondingStatusSubject.send(.alreadyResponded(.yes))
+        case .declined:
+            respondingStatusSubject.send(.alreadyResponded(.no))
+        case .tentative:
+            respondingStatusSubject.send(.alreadyResponded(.maybe))
+        default:
+            respondingStatusSubject.send(.awaitingUserInput)
+        }
     }
 }
 
