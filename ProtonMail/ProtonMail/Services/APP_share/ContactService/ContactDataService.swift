@@ -43,6 +43,8 @@ protocol ContactProviderProtocol: AnyObject {
     func getContactsByEmailAddress(_ emailAddresses: [String]) -> [ContactEntity]
     /// Given a list of email addresses, returns all the Email objects that exist in the local storage
     func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity]
+    /// Returns the ids of those contacts without vCards out a given a list of contact ids
+    func getContactsWithoutVCards(from contactIDs: [ContactID]) -> [ContactID]
     /// Call this function to store a Contact that has been created locally. This function will also create the associated Email objects
     /// - Returns: The CoreData objectID
     func createLocalContact(
@@ -433,6 +435,29 @@ class ContactDataService {
         return coreDataService.read { newContext in
             let result = (try? newContext.fetch(request)) ?? []
             return result.map(EmailEntity.init)
+        }
+    }
+
+    func getContactsWithoutVCards(from contactIDs: [ContactID]) -> [ContactID] {
+        let contactIDsStr = contactIDs.map(\.rawValue)
+        return coreDataService.read { context in
+            let request = NSFetchRequest<Contact>(entityName: Contact.Attributes.entityName)
+            request.predicate = NSPredicate(
+                format: "%K == %@ AND %K in %@ AND (%K == nil OR %K == '')",
+                Contact.Attributes.userID,
+                userID.rawValue,
+                Contact.Attributes.contactID,
+                contactIDsStr,
+                Contact.Attributes.cardData,
+                Contact.Attributes.cardData
+            )
+            do {
+                let requestResult: [Contact] = try context.fetch(request)
+                return requestResult.map(\.contactID).compactMap(ContactID.init(rawValue:))
+            } catch {
+                PMAssertionFailure(error)
+                return []
+            }
         }
     }
 
