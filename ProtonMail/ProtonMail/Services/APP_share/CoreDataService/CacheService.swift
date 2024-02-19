@@ -162,6 +162,13 @@ class CacheService: CacheServiceProtocol {
 
         msgToUpdate.unRead = unRead
 
+        // Remove the reminder flag when the message is read.
+        if !unRead {
+            var flag = msgToUpdate.flag
+            flag.remove(.showReminder)
+            msgToUpdate.flags = .init(value: flag.rawValue)
+        }
+
         if unRead == false {
             dependencies.pushUpdater.remove(notificationIdentifiers: [msgToUpdate.notificationId])
         }
@@ -549,19 +556,26 @@ extension CacheService {
 
 // MARK: - contact related functions
 extension CacheService {
+
+    /// - Parameters:
+    ///   - serverResponse: Response body returned by the contacts request
+    ///   - localContactsURI: Local CoreData object identifiers, for the contacts fetched, that will be deleted before saving the response
     func addNewContact(
         serverResponse: [[String: Any]],
         shouldFixName: Bool = false,
-        localContactObjectID: String? = nil,
+        localContactsURIs: [String] = [],
         completion: @escaping (Error?) -> Void
     ) {
         coreDataService.performAndWaitOnRootSavingContext { [weak self]  context in
             guard let self = self else { return }
             do {
-                // Delete the temporary contact that is created locally.
-                if let id = localContactObjectID,
-                   let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
-                   let managedObject = try? context.existingObject(with: objectID) {
+                for uri in localContactsURIs {
+                    guard
+                        let objectID = coreDataService.managedObjectIDForURIRepresentation(uri),
+                        let managedObject = try? context.existingObject(with: objectID)
+                    else {
+                        continue
+                    }
                     context.delete(managedObject)
                 }
 

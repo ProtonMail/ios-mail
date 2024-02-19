@@ -67,6 +67,12 @@ extension UserContainer {
         }
     }
 
+    var eventRSVPFactory: Factory<EventRSVP> {
+        self {
+            LocalEventRSVP(dependencies: self)
+        }
+    }
+
     var fetchMessagesFactory: Factory<FetchMessages> {
         self {
             FetchMessages(

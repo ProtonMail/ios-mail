@@ -28,4 +28,8 @@ extension PMBanner {
     static func dismiss(banner: PMBanner) {
         banner.dismiss()
     }
+
+    static var onTopOfTheBottomToolBar: PMBannerPosition {
+        PMBannerPosition.bottomCustom(.init(top: .infinity, left: 8, bottom: 64, right: 8))
+    }
 }

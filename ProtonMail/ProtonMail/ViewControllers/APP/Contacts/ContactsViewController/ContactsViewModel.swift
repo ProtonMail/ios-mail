@@ -26,7 +26,9 @@ import Foundation
 import UIKit
 
 final class ContactsViewModel: ViewModelTimer {
-    typealias Dependencies = HasCoreDataContextProviderProtocol & HasUserManager
+    typealias Dependencies = HasCoreDataContextProviderProtocol
+        & HasMailEventsPeriodicScheduler
+        & HasUserManager
 
     let dependencies: Dependencies
 
@@ -120,10 +122,18 @@ final class ContactsViewModel: ViewModelTimer {
         if !isFetching {
             isFetching = true
 
-            dependencies.user.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID,
-                                                        notificationMessageID: nil,
-                                                        completion: { _ in
-                                                        })
+            if dependencies.user.isNewEventLoopEnabled {
+                dependencies.mailEventsPeriodicScheduler.triggerSpecialLoop(
+                    forSpecialLoopID: dependencies.user.userID.rawValue
+                )
+            } else {
+                dependencies.user.eventsService.fetchEvents(
+                    byLabel: Message.Location.inbox.labelID,
+                    notificationMessageID: nil,
+                    completion: { _ in
+                    }
+                )
+            }
             dependencies.user.contactService.fetchContacts { _ in
                 self.isFetching = false
                 self.fetchComplete?(nil)

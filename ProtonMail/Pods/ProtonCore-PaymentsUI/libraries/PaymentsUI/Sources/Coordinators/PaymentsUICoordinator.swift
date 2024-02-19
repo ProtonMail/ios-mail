@@ -49,7 +49,7 @@ final class PaymentsUICoordinator {
     private let alertManager: PaymentsUIAlertManager
     private let clientApp: ClientApp
     private let storyboardName: String
-
+    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
     private var unfinishedPurchasePlan: InAppPurchasePlan? {
         didSet {
             guard let unfinishedPurchasePlan = unfinishedPurchasePlan else { return }
@@ -68,7 +68,8 @@ final class PaymentsUICoordinator {
          shownPlanNames: ListOfShownPlanNames,
          customization: PaymentsUICustomizationOptions,
          alertManager: PaymentsUIAlertManager,
-         onDohTroubleshooting: @escaping () -> Void) {
+         onDohTroubleshooting: @escaping () -> Void,
+         featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared) {
         self.planService = planService
         self.storeKitManager = storeKitManager
         self.purchaseManager = purchaseManager
@@ -78,13 +79,14 @@ final class PaymentsUICoordinator {
         self.customization = customization
         self.storyboardName = "PaymentsUI"
         self.onDohTroubleshooting = onDohTroubleshooting
+        self.featureFlagsRepository = featureFlagsRepository
     }
 
     func start(viewController: UIViewController?, completionHandler: @escaping ((PaymentsUIResultReason) -> Void)) {
         self.viewController = viewController
         self.mode = .signup
         self.completionHandler = completionHandler
-        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
+        if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             Task {
                 try await showPaymentsUI(servicePlan: planService)
             }
@@ -97,7 +99,7 @@ final class PaymentsUICoordinator {
         self.presentationType = presentationType
         self.mode = mode
         self.completionHandler = completionHandler
-        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
+        if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             Task {
                 try await showPaymentsUI(servicePlan: planService)
             }
@@ -324,7 +326,7 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
         // Plan data should not be refreshed on first appear because at that time data are freshly loaded. Here must be covered situations when
         // app goes from background for example.
         guard !isFirstAppearance else { return }
-        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
+        if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             Task {
                 await refreshPlans()
             }
@@ -359,20 +361,20 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
     private func userDidSelectPlan(plan: InAppPurchasePlan, addCredits: Bool, completionHandler: @escaping () -> Void) {
         // unregister from being notified on the transactions — you will get notified via `buyPlan` completion block
         storeKitManager.stopBeingNotifiedWhenTransactionsWaitingForTheSignupAppear()
-        purchaseManager.buyPlan(plan: plan, addCredits: addCredits) { [weak self] callback in
+        purchaseManager.buyPlan(plan: plan, addCredits: addCredits) { [weak self] purchaseResult in
             completionHandler()
             guard let self = self else { return }
-            switch callback {
-            case .planPurchaseProcessingInProgress(let plan):
+            switch purchaseResult {
+            case .planPurchaseProcessingInProgress(let inProgressPlan):
                 ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .planPurchaseProcessingInProgress))
-                self.unfinishedPurchasePlan = plan
-                self.finishCallback(reason: .planPurchaseProcessingInProgress(accountPlan: plan))
+                self.unfinishedPurchasePlan = inProgressPlan
+                self.finishCallback(reason: .planPurchaseProcessingInProgress(accountPlan: inProgressPlan))
                 ObservabilityEnv.report(.paymentPurchaseTotal(status: .planPurchaseProcessingInProgress))
                 ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .processingInProgress, plan: self.getPlanNameForObservabilityPurposes(plan: plan)))
-            case .purchasedPlan(let plan):
+            case .purchasedPlan(let purchasedPlan):
                 ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .success))
                 self.unfinishedPurchasePlan = self.purchaseManager.unfinishedPurchasePlan
-                self.finishCallback(reason: .purchasedPlan(accountPlan: plan))
+                self.finishCallback(reason: .purchasedPlan(accountPlan: purchasedPlan))
                 ObservabilityEnv.report(.paymentPurchaseTotal(status: .success))
                 ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .successful, plan: self.getPlanNameForObservabilityPurposes(plan: plan)))
             case .toppedUpCredits:
@@ -383,17 +385,12 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
                 ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .successful, plan: self.getPlanNameForObservabilityPurposes(plan: plan)))
             case .purchaseError(let error, let processingPlan):
                 ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .purchaseError))
-                if let processingPlan = processingPlan {
-                    self.unfinishedPurchasePlan = processingPlan
-                }
+                self.unfinishedPurchasePlan = processingPlan
                 ObservabilityEnv.report(.paymentPurchaseTotal(status: .purchaseError))
                 ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .failed, plan: self.getPlanNameForObservabilityPurposes(plan: plan)))
                 self.showError(error: error)
             case let .apiMightBeBlocked(message, originalError, processingPlan):
                 ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .apiBlocked))
-                if let processingPlan = processingPlan {
-                    self.unfinishedPurchasePlan = processingPlan
-                }
                 self.unfinishedPurchasePlan = processingPlan
                 ObservabilityEnv.report(.paymentPurchaseTotal(status: .apiBlocked))
                 ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .apiMightBeBlocked, plan: self.getPlanNameForObservabilityPurposes(plan: plan)))

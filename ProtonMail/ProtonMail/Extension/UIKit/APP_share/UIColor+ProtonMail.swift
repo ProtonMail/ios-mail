@@ -98,10 +98,6 @@ extension UIColor {
         let hexString = String.init(format: "#%02lX%02lX%02lX", lroundf(Float(r * 255)), lroundf(Float(g * 255)), lroundf(Float(b * 255)))
         return hexString
     }
-
-    struct ProtonMail {
-        static let onboardingImageBackgroundColor = UIColor(r: 245, g: 247, b: 250, a: 1)
-    }
 }
 
 extension UIColor {

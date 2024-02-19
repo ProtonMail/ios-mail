@@ -35,7 +35,7 @@ final class MenuViewController: UIViewController, AccessibleView {
     @IBOutlet private var displayName: UILabel!
     @IBOutlet private var arrowBtn: UIButton!
     @IBOutlet private var addressLabel: UILabel!
-    @IBOutlet private var tableView: UITableView!
+    @IBOutlet private(set) var tableView: UITableView!
 
     let viewModel: MenuVMProtocol
 
@@ -309,16 +309,17 @@ extension MenuViewController: MenuUIProtocol {
     }
 
     func updateMenu(section: Int?) {
-        guard let _section = section else {
-            tableView?.reloadData()
-            return
+        DispatchQueue.main.async { [weak self] in
+            guard let _section = section else {
+                self?.tableView.reloadData()
+                return
+            }
+
+            self?.tableView.beginUpdates()
+            self?.tableView.reloadSections(IndexSet(integer: _section),
+                                          with: .fade)
+            self?.tableView.endUpdates()
         }
-
-        self.tableView.beginUpdates()
-        self.tableView.reloadSections(IndexSet(integer: _section),
-                                      with: .fade)
-        self.tableView.endUpdates()
-
     }
 
     func update(rows: [IndexPath], insertRows: [IndexPath], deleteRows: [IndexPath]) {

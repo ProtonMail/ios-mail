@@ -108,8 +108,8 @@ final class DeviceContacts: DeviceContactsProvider {
 extension CNChangeHistoryEvent {
 
     var deviceContactIdentifier: DeviceContactIdentifier? {
-        guard let id = identifier else { return nil }
-        return DeviceContactIdentifier(uuid: id, emails: emails)
+        guard let identifier else { return nil }
+        return DeviceContactIdentifier(uuidInDevice: identifier, emails: emails)
     }
 
     var identifier: String? {
@@ -166,7 +166,7 @@ extension CNContact {
     var deviceContact: DeviceContact? {
         guard let vCard = try? vCard() else { return nil }
         return DeviceContact(
-            identifier: .init(uuid: identifier, emails: emailAddressesAsString),
+            identifier: .init(uuidInDevice: identifier, emails: emailAddressesAsString),
             fullName: fullName,
             vCard: vCard
         )

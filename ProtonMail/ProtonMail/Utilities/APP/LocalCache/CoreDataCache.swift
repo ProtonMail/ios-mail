@@ -44,8 +44,8 @@ class CoreDataCache: Migrate {
         // Change this value to rebuild coredata
         static let CacheVersion: Int = 5 // this is core data cache
 
-        case v1 = 1
-        case v2 = 2
+        case version1 = 1
+        case version2 = 2
     }
 
     init(dependencies: Dependencies) {
@@ -74,7 +74,7 @@ class CoreDataCache: Migrate {
     internal func rebuild(reason: RebuildReason) {
         CoreDataStore.deleteDataStore()
 
-        if self.currentVersion <= Version.v2.rawValue {
+        if self.currentVersion <= Version.version2.rawValue {
             let userVersion = UserDefaultsSaver<Int>(
                 key: UsersManager.CoderKey.Version,
                 store: dependencies.userDefaults

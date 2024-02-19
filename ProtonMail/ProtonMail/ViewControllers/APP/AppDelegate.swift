@@ -224,6 +224,7 @@ extension AppDelegate: UIApplicationDelegate {
             dependencies.queueManager.enterForeground()
             user.refreshFeatureFlags()
             user.blockedSenderCacheUpdater.requestUpdate()
+            importDeviceContactsIfNeeded(user: user)
         }
     }
 
@@ -271,6 +272,19 @@ extension AppDelegate: UIApplicationDelegate {
             return
         }
         coreKeyMaker.updateAutolockCountdownStart()
+    }
+
+    private func importDeviceContactsIfNeeded(user: UserManager) {
+        let autoImportFlags = user.container.userDefaults[.isAutoImportContactsOn]
+        let isAutoImportEnabledForUser = autoImportFlags[user.userID.rawValue] ?? false
+
+        if UserInfo.isAutoImportContactsEnabled && isAutoImportEnabledForUser {
+            let params = ImportDeviceContacts.Params(
+                userKeys: user.userInfo.userKeys,
+                mailboxPassphrase: user.mailboxPassword
+            )
+            user.container.importDeviceContacts.execute(params: params)
+        }
     }
 }
 
@@ -364,7 +378,7 @@ extension AppDelegate {
     }
 
     private func fetchUnauthFeatureFlags() {
-        FeatureFlagsRepository.shared.setApiService(with: PMAPIService.unauthorized(dependencies: dependencies))
+        FeatureFlagsRepository.shared.setApiService(PMAPIService.unauthorized(dependencies: dependencies))
 
         // TODO: This is a wayward fetch that will complete at an arbitrary point in time during app launch,
         // possibly resulting in an inconsistent behavior.

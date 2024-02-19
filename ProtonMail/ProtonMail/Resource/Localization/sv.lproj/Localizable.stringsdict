@@ -2,6 +2,38 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>%u participants</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@participants@</string>
+      <key>participants</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%u deltagare</string>
+        <key>one</key>
+        <string>%u deltagare</string>
+      </dict>
+    </dict>
+    <key>You have %d new emails!</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@newemails@</string>
+      <key>newemails</key>
+      <dict>
+        <key>one</key>
+        <string>Du har %d nytt e-postmeddelande!</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>Du har %d nya e-postmeddelanden!</string>
+      </dict>
+    </dict>
     <key>%d email trackers blocked</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
@@ -16,6 +48,22 @@
         <string>%d e-postspårare blockerades</string>
         <key>other</key>
         <string>%d e-postspårare blockerades</string>
+      </dict>
+    </dict>
+    <key>%d selected</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@selected@</string>
+      <key>selected</key>
+      <dict>
+        <key>one</key>
+        <string>%d vald</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d valda</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>
@@ -320,22 +368,6 @@
         <string>%d sekund</string>
         <key>other</key>
         <string>%d sekunder</string>
-      </dict>
-    </dict>
-    <key>%d Selected</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@selected@</string>
-      <key>selected</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d vald</string>
-        <key>other</key>
-        <string>%d valda</string>
       </dict>
     </dict>
     <key>%d attachment</key>

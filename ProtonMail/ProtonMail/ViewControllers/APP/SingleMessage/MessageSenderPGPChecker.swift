@@ -27,7 +27,7 @@ struct CheckedSenderContact {
 final class MessageSenderPGPChecker {
     typealias Complete = (CheckedSenderContact?) -> Void
     typealias Dependencies = HasFetchAndVerifyContacts
-    & HasFetchAttachment
+    & HasFetchAttachmentUseCase
     & HasFetchEmailAddressesPublicKey
     & HasUserManager
 
@@ -121,7 +121,7 @@ final class MessageSenderPGPChecker {
                 if !pinnedKeys.isEmpty {
                     completion(.success((senderVerified: true, keys: pinnedKeys)))
                 } else {
-                    if let keysResponse = keysResponse,
+                    if let keysResponse,
                        keysResponse.recipientType == .external && !keysResponse.nonObsoletePublicKeys.isEmpty {
                         completion(.success((senderVerified: false, keys: keysResponse.nonObsoletePublicKeys)))
                     } else {
@@ -150,12 +150,14 @@ final class MessageSenderPGPChecker {
                 params: .init(
                     attachmentID: attachment.id,
                     attachmentKeyPacket: attachment.keyPacket,
-                    purpose: .decryptAndEncodePublicKey,
                     userKeys: userKeys
                 )
             ) { result in
                 defer { group.leave() }
-                guard let encodedPublicKey = try? result.get().encoded else { return }
+                guard
+                    let publicKeyData = try? result.get().data,
+                    let encodedPublicKey = String(data: publicKeyData, encoding: .utf8)
+                else { return }
                 dataToReturn.append(ArmoredKey(value: encodedPublicKey))
             }
         }

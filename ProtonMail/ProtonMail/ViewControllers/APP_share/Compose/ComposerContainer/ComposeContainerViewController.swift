@@ -663,7 +663,7 @@ extension ComposeContainerViewController: AttachmentController, ComposeContainer
 
                 let group = DispatchGroup()
                 group.enter()
-                self.editor.collectDraftData().ensure { [weak self] in
+                self.editor.collectDraftDataAndSaveToDB().ensure { [weak self] in
                     self?.viewModel.childViewModel.updateDraft()
                     self?.addAttachment(newAttachment) {
                         self?.updateCurrentAttachmentSize(completion: {
@@ -755,12 +755,12 @@ extension ComposeContainerViewController: LifetimeTrackable {
 
 extension ComposeContainerViewController: ScheduledSendHelperDelegate {
     func showScheduleSendPromotionView() {
-        editor.collectDraftData().ensure { [weak self] in
+        editor.collectDraftDataAndSaveToDB().ensure { [weak self] in
             self?.viewModel.childViewModel.updateDraft()
             guard let nav = self?.navigationController?.view else {
                 return
             }
-            let promotion = ScheduleSendPromotionView()
+            let promotion = PromotionView()
             promotion.presentPaymentUpgradeView = { [weak self] in
                 #if !APP_EXTENSION
                 self?.presentPaymentView()
@@ -776,7 +776,7 @@ extension ComposeContainerViewController: ScheduledSendHelperDelegate {
             promotion.viewWasDismissed = { [weak self] in
                 self?.showScheduleSendActionSheet()
             }
-            promotion.present(on: nav)
+            promotion.present(on: nav, type: .scheduleSend)
         }.cauterize()
     }
 
@@ -887,6 +887,12 @@ extension ComposeContainerViewController: ComposerAttachmentVCDelegate {
             self?.updateAttachmentCount(number: number)
             self?.updateCurrentAttachmentSize(completion: nil)
         }
+    }
+
+    func uploadAttachmentFailed(composerVC: ComposerAttachmentVC) {
+        let number = composerVC.attachmentCount
+        updateAttachmentCount(number: number)
+        updateCurrentAttachmentSize(completion: nil)
     }
 }
 

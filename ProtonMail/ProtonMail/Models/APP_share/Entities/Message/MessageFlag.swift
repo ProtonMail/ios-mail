@@ -120,6 +120,10 @@ struct MessageFlag: OptionSet, Equatable, Hashable {
 
     static let isExpirationTimeFrozen = MessageFlag(rawValue: 1 << 32)
 
+    /// If the snoozed message passed the snooze time, the BE will pop the message and set this flag.
+    /// Once the message is read, the flag will be removed.
+    static let showReminder = MessageFlag(rawValue: 1 << 34)
+
     var description: String {
         var outFlags: [String] = []
         if self.contains(.received) {
@@ -211,6 +215,9 @@ struct MessageFlag: OptionSet, Equatable, Hashable {
         }
         if self.contains(.isExpirationTimeFrozen) {
             outFlags.append("FLAG_IS_EXPIRATION_TIME_FROZEN")
+        }
+        if self.contains(.showReminder) {
+            outFlags.append("FLAG_SHOW_REMINDER")
         }
 
         return "Raw: \(rawValue), contains: \(outFlags.joined(separator: ", "))"

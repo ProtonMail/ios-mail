@@ -1,4 +1,3 @@
-
 "switch to" = "cambiar a";
 
 "Manage accounts" = "Administrar cuentas";
@@ -9,13 +8,13 @@
 
 "Sign out" = "Cerrar sesión";
 
-"Remove account from this device" = "Eliminar la cuenta de este dispositivo";
+"Remove account from this device" = "Borrar la cuenta de este dispositivo";
 
-"Remove account" = "Eliminar cuenta";
+"Remove account" = "Borrar la cuenta";
 
-"You will be signed out and all the data associated with this account will be removed from this device." = "Se cerrará la sesión y todos los datos asociados a esta cuenta se eliminarán de este dispositivo.";
+"You will be signed out and all the data associated with this account will be removed from this device." = "Se cerrará la sesión y todos los datos asociados a esta cuenta se borrarán de este dispositivo.";
 
-"Remove" = "Eliminar";
+"Remove" = "Borrar";
 
 "Are you sure you want to sign out %@?" = "¿Estás seguro de que quieres cerrar la sesión %@?";
 

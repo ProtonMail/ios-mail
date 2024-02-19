@@ -21,7 +21,7 @@
 
 import Foundation
 
-public struct User: Codable, Equatable {
+public struct User: Codable, Equatable, CustomDebugStringConvertible {
 
     public let ID: String
     public let name: String?
@@ -134,6 +134,32 @@ public struct User: Codable, Equatable {
         self.displayName = displayName
         self.keys = keys
         self.accountRecovery = accountRecovery
+    }
+
+    public var description: String {
+        let redactedProperties: Set = [
+            "ID",
+            "name",
+            "email",
+            "displayName",
+        ]
+        let mirror = Mirror(reflecting: self)
+        var debugString = ""
+
+        mirror.children.forEach {
+            let label = $0.label ?? ""
+
+            let shouldRedactValue = redactedProperties.contains(label)
+            let value = shouldRedactValue ? "--redacted--" : "\($0.value)"
+
+            debugString += "\n\(label): \(value)"
+        }
+
+        return debugString
+    }
+
+    public var debugDescription: String {
+        return description
     }
 }
 

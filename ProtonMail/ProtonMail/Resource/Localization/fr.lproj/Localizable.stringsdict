@@ -2,6 +2,38 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>%u participants</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@participants@</string>
+      <key>participants</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%u participants</string>
+        <key>one</key>
+        <string>%u participant</string>
+      </dict>
+    </dict>
+    <key>You have %d new emails!</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@newemails@</string>
+      <key>newemails</key>
+      <dict>
+        <key>one</key>
+        <string>Vous avez %d nouveau message.</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>Vous avez %d nouveaux messages.</string>
+      </dict>
+    </dict>
     <key>%d email trackers blocked</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
@@ -16,6 +48,22 @@
         <string>%d traqueur d'e-mails bloqué</string>
         <key>other</key>
         <string>%d traqueurs d'e-mails bloqués</string>
+      </dict>
+    </dict>
+    <key>%d selected</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@selected@</string>
+      <key>selected</key>
+      <dict>
+        <key>one</key>
+        <string>%d selected</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d selected</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>
@@ -285,9 +333,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d message sera déplacé dans le dossier Brouillons et sa programmation sera supprimée.</string>
+        <string>%d message sera déplacé dans le dossier Brouillons et sa programmation sera retirée.</string>
         <key>other</key>
-        <string>Ces %d messages seront déplacés dans le dossier Brouillons et leur programmation sera supprimée.</string>
+        <string>Ces %d messages seront déplacés dans le dossier Brouillons et leur programmation sera retirée.</string>
       </dict>
     </dict>
     <key>%d message moved to Drafts</key>
@@ -320,22 +368,6 @@
         <string>%d seconde</string>
         <key>other</key>
         <string>%d secondes</string>
-      </dict>
-    </dict>
-    <key>%d Selected</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@selected@</string>
-      <key>selected</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d sélectionné</string>
-        <key>other</key>
-        <string>%d sélectionnés</string>
       </dict>
     </dict>
     <key>%d attachment</key>

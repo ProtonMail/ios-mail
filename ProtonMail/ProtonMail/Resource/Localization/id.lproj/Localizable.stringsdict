@@ -2,6 +2,34 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>%u participants</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@participants@</string>
+      <key>participants</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%u peserta</string>
+      </dict>
+    </dict>
+    <key>You have %d new emails!</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@newemails@</string>
+      <key>newemails</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>Anda memiliki %d email baru!</string>
+      </dict>
+    </dict>
     <key>%d email trackers blocked</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
@@ -14,6 +42,20 @@
         <string>u</string>
         <key>other</key>
         <string>%d pelacak surel diblokir</string>
+      </dict>
+    </dict>
+    <key>%d selected</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@selected@</string>
+      <key>selected</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d terpilih</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>
@@ -41,7 +83,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>Proton menemukan dan memblokir %d pelacak di pesan ini.</string>
+        <string>Proton menemukan dan memblokir %d pelacak pada pesan ini.</string>
       </dict>
     </dict>
     <key>+%d others</key>
@@ -280,20 +322,6 @@
         <string>u</string>
         <key>other</key>
         <string>%d detik</string>
-      </dict>
-    </dict>
-    <key>%d Selected</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@selected@</string>
-      <key>selected</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>other</key>
-        <string>%d Dipilih</string>
       </dict>
     </dict>
     <key>%d attachment</key>

@@ -79,6 +79,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             appDelegate.dependencies.pushService.setNotification(userInfo, fetchCompletionHandler: {})
         }
 
+        self.coordinator.scene = scene
         if let shortcutItem = connectionOptions.shortcutItem,
             let _ = scene as? UIWindowScene {
             handleShortcutAction(shortcutItem: shortcutItem)
@@ -97,7 +98,6 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
 
-        self.coordinator.scene = scene
         self.coordinator.start(launchedByNotification: notificationInfo != nil) {
 
             DispatchQueue.main.async {

@@ -52,7 +52,7 @@ let testMessageMetaData = """
 "5",
 "10"
 ],
-"Time" : 1525279399,
+"Time" : 5000,
 "NumAttachments" : 0,
 "SenderAddress" : "contact@protonmail.ch",
 "MIMEType" : "texthtml",
@@ -694,7 +694,8 @@ enum MessageTestData {
     static func messageMetaData(
         sender: String,
         recipient: String,
-        messageID: String = "cA6j2rszbPUSnKojxhGlLX2U74ibyCXc3-zUAb_nBQ5UwkYSAhoBcZag8Wa0F_y_X5C9k9fQnbHAITfDd_au1Q=="
+        messageID: String = "cA6j2rszbPUSnKojxhGlLX2U74ibyCXc3-zUAb_nBQ5UwkYSAhoBcZag8Wa0F_y_X5C9k9fQnbHAITfDd_au1Q==",
+        folderLabelID: String? = nil
     ) -> String {
         """
         {
@@ -722,7 +723,7 @@ enum MessageTestData {
         "AddressID" : "hbBwBsOdTi5cDhhZcF28yrJ50AZQ8jhXF4d0P7OaUcCS5iv2N8hN_FjvAyPMt8EiP5ch_E_81gHZAjK4D3gfzw==",
         "Location" : 0,
         "LabelIDs" : [
-        "0",
+        "\(folderLabelID ?? "0")",
         "5",
         "10"
         ],

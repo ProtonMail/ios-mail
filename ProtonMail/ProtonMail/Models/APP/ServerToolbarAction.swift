@@ -38,6 +38,7 @@ enum ServerToolbarAction: String, CaseIterable {
     case saveAsPDF = "save_pdf"
     case emailsForSender = "sender_emails"
     case downloadAttachments = "save_attachments"
+    case snooze = "snooze"
 
     static func convert(action: [MessageViewActionSheetAction]) -> [Self] {
         return action.compactMap { action in
@@ -76,6 +77,8 @@ enum ServerToolbarAction: String, CaseIterable {
                 return .viewMessageInLight
             case .toolbarCustomization, .more, .dismiss:
                 return nil
+            case .snooze:
+                return .snooze
             }
         }
     }

@@ -25,7 +25,11 @@ protocol NextMessageAfterMoveStatusProvider {
 extension UserManager: NextMessageAfterMoveStatusProvider {
     var shouldMoveToNextMessageAfterMove: Bool {
         get {
-            return mailSettings.nextMessageOnMove.isEnabled
+            if isMessageSwipeNavigationSettingEnabled {
+                return mailSettings.nextMessageOnMove.isEnabled
+            } else {
+                return false
+            }
         }
         set {
             mailSettings.update(key: .nextMessageOnMove, to: newValue)

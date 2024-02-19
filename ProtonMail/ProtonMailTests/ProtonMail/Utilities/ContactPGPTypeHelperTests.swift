@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreDataModel
+import ProtonCoreNetworking
 import ProtonCoreTestingToolkit
 import ProtonCoreUIFoundations
 @testable import ProtonMail
@@ -24,34 +25,36 @@ import XCTest
 class ContactPGPTypeHelperTests: XCTestCase {
     var sut: ContactPGPTypeHelper!
     var internetConnectionStatusProviderStub: MockInternetConnectionStatusProviderProtocol!
-    var apiServiceMock: APIServiceMock!
     var localContactsStub: [PreContact] = []
+
+    private var fetchEmailAddressesPublicKey: MockFetchEmailAddressesPublicKeyUseCase!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         internetConnectionStatusProviderStub = .init()
         internetConnectionStatusProviderStub.statusStub.fixture = .connectedViaCellular
-        apiServiceMock = APIServiceMock()
+        fetchEmailAddressesPublicKey = .init()
+
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            fetchEmailAddressesPublicKey: fetchEmailAddressesPublicKey,
+            userSign: 0,
+            localContacts: [],
+            userAddresses: []
+        )
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
         internetConnectionStatusProviderStub = nil
-        apiServiceMock = nil
         localContactsStub = []
+        fetchEmailAddressesPublicKey = nil
     }
 
     func testCalculateEncryptionIcon_withNoInternet_nonPMValidEmail_returnNil() {
         let mail = "test@mail.com"
         internetConnectionStatusProviderStub.statusStub.fixture = .notConnected
-        sut = ContactPGPTypeHelper(
-            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
-            userSign: 0,
-            localContacts: [],
-            userAddresses: []
-        )
 
         let expectation1 = expectation(description: "closure is called")
         sut.calculateEncryptionIcon(email: mail,
@@ -62,19 +65,12 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasNotCalled)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasNotCalled)
     }
 
     func testCalculateEncryptionIcon_withNoInternet_PMValidEmail_returnLockIcon() {
         let mails = ["test@pm.me", "test@protonmail.com", "test@protonmail.ch", "test@proton.me"]
         internetConnectionStatusProviderStub.statusStub.fixture = .notConnected
-        sut = ContactPGPTypeHelper(
-            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
-            userSign: 0,
-            localContacts: [],
-            userAddresses: []
-        )
 
         mails.forEach {
             let expectation1 = expectation(description: "closure is called")
@@ -92,19 +88,12 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasNotCalled)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasNotCalled)
     }
 
     func testCalculateEncryptionIcon_withNoInternet_invalidEmail_returnErrorIcon() {
         let mail = "test@mailcom"
         internetConnectionStatusProviderStub.statusStub.fixture = .notConnected
-        sut = ContactPGPTypeHelper(
-            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
-            userSign: 0,
-            localContacts: [],
-            userAddresses: []
-        )
 
         let expectation1 = expectation(description: "closure is called")
         sut.calculateEncryptionIcon(email: mail,
@@ -122,29 +111,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasNotCalled)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasNotCalled)
     }
 
     func testCalculateEncryption_invalidEmail_returnErrorIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("/keys") {
-                let response: [String: Any] = [
-                    "Code": PGPTypeErrorCode.emailAddressFailedValidation.rawValue
-                ]
-                completion(nil, .success(response))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
+        fetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            throw ResponseError(responseCode: .emailAddressFailedValidation)
         }
-
-        sut = ContactPGPTypeHelper(
-            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
-            userSign: 0,
-            localContacts: [],
-            userAddresses: []
-        )
 
         let expectation1 = expectation(description: "closure is called")
         sut.calculateEncryptionIcon(email: "test@@pm.me",
@@ -161,29 +134,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryption_EmailNotExist_returnErrorIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("/keys") {
-                let response: [String: Any] = [
-                    "Code": PGPTypeErrorCode.recipientNotFound.rawValue
-                ]
-                completion(nil, .success(response))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
+        fetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            throw ResponseError(responseCode: .recipientNotFound)
         }
-
-        sut = ContactPGPTypeHelper(
-            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
-            userSign: 0,
-            localContacts: [],
-            userAddresses: []
-        )
 
         let expectation1 = expectation(description: "closure is called")
         sut.calculateEncryptionIcon(email: "test@pm.me",
@@ -201,29 +158,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryption_validEmail_withErrorFromAPI_returnErrorIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("/keys") {
-                let response: [String: Any] = [
-                    "Code": 999
-                ]
-                completion(nil, .success(response))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
+        fetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            throw ResponseError(responseCode: 999)
         }
-
-        sut = ContactPGPTypeHelper(
-            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
-            userSign: 0,
-            localContacts: [],
-            userAddresses: []
-        )
 
         let expectation1 = expectation(description: "closure is called")
         sut.calculateEncryptionIcon(email: "test@pm.me",
@@ -239,29 +180,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryption_invalidEmail_withErrorFromAPI_returnErrorIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("/keys") {
-                let response: [String: Any] = [
-                    "Code": 999
-                ]
-                completion(nil, .success(response))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
+        fetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            throw ResponseError(responseCode: 999)
         }
-
-        sut = ContactPGPTypeHelper(
-            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
-            userSign: 0,
-            localContacts: [],
-            userAddresses: []
-        )
         let expectation1 = expectation(description: "closure is called")
 
         sut.calculateEncryptionIcon(email: "test@@pm.me",
@@ -279,37 +204,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_PMMail_noKeyPinned_returnBlueIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("/keys") {
-                let keyResponse: [[String: Any]] = [
-                    [
-                        "Flags": 3,
-                        "PublicKey": OpenPGPDefines.publicKey
-                    ]
-                ]
-                let response: [String: Any] = [
-                    "Code": 1000,
-                    "RecipientType": 1,
-                    "MIMEType": "text/html",
-                    "Keys": keyResponse
-                ]
-                completion(nil, .success(response))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
+        fetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            KeysResponse(keys: [self.makeKeyResponse()], recipientType: .internal)
         }
-        sut = ContactPGPTypeHelper(
-            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
-            userSign: 0,
-            localContacts: [],
-            userAddresses: []
-        )
         let expectation1 = expectation(description: "closure is called")
 
         sut.calculateEncryptionIcon(email: "test@pm.me",
@@ -327,30 +228,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_PMMail_keyIsPinned_returnBlueIcon() {
         let email = "test@pm.me"
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("/keys") {
-                let keyResponse: [[String: Any]] = [
-                    [
-                        "Flags": 3,
-                        "PublicKey": OpenPGPDefines.publicKey
-                    ]
-                ]
-                let response: [String: Any] = [
-                    "Code": 1000,
-                    "RecipientType": 1,
-                    "MIMEType": "text/html",
-                    "Keys": keyResponse
-                ]
-                completion(nil, .success(response))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
+        fetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            KeysResponse(keys: [self.makeKeyResponse()], recipientType: .internal)
         }
         let localContact = PreContact(
             email: email,
@@ -362,7 +246,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
         )
         sut = ContactPGPTypeHelper(
             internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
+            fetchEmailAddressesPublicKey: fetchEmailAddressesPublicKey,
             userSign: 0,
             localContacts: [localContact],
             userAddresses: []
@@ -384,31 +268,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_externalEmail_withPasswordSet_returnBlueIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("/keys") {
-                let response: [String: Any] = [
-                    "Code": 1000,
-                    "RecipientType": 2,
-                    "MIMEType": "text/html",
-                    "Keys": []
-                ]
-                completion(nil, .success(response))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
+        fetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            KeysResponse(keys: [], recipientType: .external)
         }
-        sut = ContactPGPTypeHelper(
-            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
-            userSign: 0,
-            localContacts: [],
-            userAddresses: []
-        )
         let expectation1 = expectation(description: "closure is called")
 
         sut.calculateEncryptionIcon(email: "test@mail.me",
@@ -426,31 +292,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_externalEmail_returnNoIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("/keys") {
-                let response: [String: Any] = [
-                    "Code": 1000,
-                    "RecipientType": 2,
-                    "MIMEType": "text/html",
-                    "Keys": []
-                ]
-                completion(nil, .success(response))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
+        fetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            KeysResponse(keys: [], recipientType: .external)
         }
-        sut = ContactPGPTypeHelper(
-            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
-            userSign: 0,
-            localContacts: [],
-            userAddresses: []
-        )
         let expectation1 = expectation(description: "closure is called")
 
         sut.calculateEncryptionIcon(email: "test@mail.me",
@@ -461,37 +309,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_externalEmail_withAPIKey_returnGreenIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("/keys") {
-                let keyResponse: [[String: Any]] = [
-                    [
-                        "Flags": 3,
-                        "PublicKey": OpenPGPDefines.publicKey
-                    ]
-                ]
-                let response: [String: Any] = [
-                    "Code": 1000,
-                    "RecipientType": 2,
-                    "MIMEType": "text/html",
-                    "Keys": keyResponse
-                ]
-                completion(nil, .success(response))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
+        fetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            KeysResponse(keys: [self.makeKeyResponse()], recipientType: .external)
         }
-        sut = ContactPGPTypeHelper(
-            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
-            userSign: 0,
-            localContacts: [],
-            userAddresses: []
-        )
         let expectation1 = expectation(description: "closure is called")
 
         sut.calculateEncryptionIcon(email: "test@mail.me",
@@ -510,37 +334,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_externalEmail_withVerificationOnlyAPIKey_returnErrorIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("/keys") {
-                let keyResponse: [[String: Any]] = [
-                    [
-                        "Flags": 1,
-                        "PublicKey": OpenPGPDefines.publicKey
-                    ]
-                ]
-                let response: [String: Any] = [
-                    "Code": 1000,
-                    "RecipientType": 2,
-                    "MIMEType": "text/html",
-                    "Keys": keyResponse
-                ]
-                completion(nil, .success(response))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
+        fetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            KeysResponse(keys: [self.makeKeyResponse(flags: .notCompromised)], recipientType: .external)
         }
-        sut = ContactPGPTypeHelper(
-            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
-            userSign: 0,
-            localContacts: [],
-            userAddresses: []
-        )
         let expectation1 = expectation(description: "closure is called")
 
         sut.calculateEncryptionIcon(email: "test@mail.me",
@@ -557,30 +357,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_externalEmail_withAPIKeyAndPinnedKey_returnGreenIcon() {
         let email = "test@mail.me"
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("/keys") {
-                let keyResponse: [[String: Any]] = [
-                    [
-                        "Flags": 3,
-                        "PublicKey": OpenPGPDefines.publicKey
-                    ]
-                ]
-                let response: [String: Any] = [
-                    "Code": 1000,
-                    "RecipientType": 2,
-                    "MIMEType": "text/html",
-                    "Keys": keyResponse
-                ]
-                completion(nil, .success(response))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
+        fetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            KeysResponse(keys: [self.makeKeyResponse()], recipientType: .external)
         }
         let localContact = PreContact(
             email: email,
@@ -592,7 +375,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
         )
         sut = ContactPGPTypeHelper(
             internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
+            fetchEmailAddressesPublicKey: fetchEmailAddressesPublicKey,
             userSign: 0,
             localContacts: [localContact],
             userAddresses: []
@@ -615,24 +398,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_externalEmail_withPinnedKey_returnGreenIcon() {
         let email = "test@mail.me"
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("/keys") {
-                let response: [String: Any] = [
-                    "Code": 1000,
-                    "RecipientType": 2,
-                    "MIMEType": "text/html",
-                    "Keys": []
-                ]
-                completion(nil, .success(response))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
+        fetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            KeysResponse(keys: [], recipientType: .external)
         }
         let localContact = PreContact(
             email: email,
@@ -644,7 +416,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
         )
         sut = ContactPGPTypeHelper(
             internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
+            fetchEmailAddressesPublicKey: fetchEmailAddressesPublicKey,
             userSign: 0,
             localContacts: [localContact],
             userAddresses: []
@@ -667,24 +439,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_externalEmail_withKeyInContactToSign_returnGreenIcon() {
         let email = "test@mail.me"
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("/keys") {
-                let response: [String: Any] = [
-                    "Code": 1000,
-                    "RecipientType": 2,
-                    "MIMEType": "text/html",
-                    "Keys": []
-                ]
-                completion(nil, .success(response))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
+        fetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            KeysResponse(keys: [], recipientType: .external)
         }
         let localContact = PreContact(
             email: email,
@@ -696,7 +457,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
         )
         sut = ContactPGPTypeHelper(
             internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
+            fetchEmailAddressesPublicKey: fetchEmailAddressesPublicKey,
             userSign: 0,
             localContacts: [localContact],
             userAddresses: []
@@ -719,30 +480,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
     }
 
     func testCalculateEncryptionIcon_selfEmail__returnBlueIcon() {
         let email = "test@pm.me"
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("/keys") {
-                let keyResponse: [[String: Any]] = [
-                    [
-                        "Flags": 3,
-                        "PublicKey": OpenPGPDefines.publicKey
-                    ]
-                ]
-                let response: [String: Any] = [
-                    "Code": 1000,
-                    "RecipientType": 1,
-                    "MIMEType": "text/html",
-                    "Keys": keyResponse
-                ]
-                completion(nil, .success(response))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
+        fetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            KeysResponse(keys: [self.makeKeyResponse()], recipientType: .internal)
         }
         let address = Address(addressID: "",
                               domainID: nil,
@@ -759,7 +503,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
                               [Key(keyID: "", privateKey: OpenPGPDefines.privateKey)])
         sut = ContactPGPTypeHelper(
             internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-            apiService: apiServiceMock,
+            fetchEmailAddressesPublicKey: fetchEmailAddressesPublicKey,
             userSign: 0,
             localContacts: [],
             userAddresses: [address]
@@ -782,6 +526,10 @@ class ContactPGPTypeHelperTests: XCTestCase {
         }
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
+    }
+
+    private func makeKeyResponse(flags: Key.Flags = [.notCompromised, .notObsolete]) -> KeyResponse {
+        KeyResponse(flags: flags, publicKey: OpenPGPDefines.publicKey)
     }
 }

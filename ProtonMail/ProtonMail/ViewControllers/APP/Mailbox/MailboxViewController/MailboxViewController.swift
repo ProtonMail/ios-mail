@@ -29,12 +29,14 @@ import ProtonCorePaymentsUI
 import ProtonCoreServices
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
+import ProtonMailUI
 import QuickLook
 import SkeletonView
+import SwiftUI
 import SwipyCell
 import UIKit
 
-class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol, ScheduledAlertPresenter, LifetimeTrackable {
+class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintProtocol, ScheduledAlertPresenter, LifetimeTrackable {
     typealias Dependencies = HasPaymentsUIFactory
         & ReferralProgramPromptPresenter.Dependencies
         & HasMailboxMessageCellHelper
@@ -47,9 +49,9 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     let viewModel: MailboxViewModel
     private let dependencies: Dependencies
 
-    private weak var coordinator: MailboxCoordinatorProtocol?
+    private weak var coordinator: (MailboxCoordinatorProtocol & SnoozeSupport)?
 
-    func set(coordinator: MailboxCoordinatorProtocol) {
+    func set(coordinator: MailboxCoordinatorProtocol & SnoozeSupport) {
         self.coordinator = coordinator
     }
 
@@ -109,7 +111,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
     private var lastNetworkStatus: ConnectionStatus? = nil
 
-    private var shouldAnimateSkeletonLoading = false {
+    var shouldAnimateSkeletonLoading = false {
         didSet {
             if shouldAnimateSkeletonLoading {
                 viewModel.diffableDataSource?.animateSkeletonLoading()
@@ -148,22 +150,16 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
     private var notificationsAreScheduled = false
 
-    /// Setting this value to `true` will schedule an user feedback sheet on the next view did appear call
-    var scheduleUserFeedbackCallOnAppear = false
-
-    private var inAppFeedbackScheduler: InAppFeedbackPromptScheduler?
-
     private var customUnreadFilterElement: UIAccessibilityElement?
     let connectionStatusProvider = InternetConnectionStatusProvider.shared
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
-    private var attachmentPreviewPresenter: QuickLookPresenter?
-    private var attachmentPreviewWasCancelled = false
+    private var _snoozeDateConfigReceiver: SnoozeDateConfigReceiver?
 
     init(viewModel: MailboxViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
         self.dependencies = dependencies
-        super.init(nibName: nil, bundle: nil)
+        super.init(viewModel: viewModel)
         viewModel.uiDelegate = self
         trackLifetime()
     }
@@ -186,8 +182,6 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
         refetchAllIfNeeded()
         startAutoFetch()
-
-        inAppFeedbackScheduler?.markAsInForeground()
     }
 
     @objc func doEnterBackground() {
@@ -236,7 +230,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             Message.Location.trash,
             Message.Location.sent].map(\.labelID).contains(viewModel.labelID)
             && viewModel.isCurrentUserSelectedUnreadFilterInInbox {
-            unreadMessageFilterButtonTapped(unreadFilterButton as Any)
+            unreadMessageFilterButtonTapped()
         }
 
         self.loadDiffableDataSource()
@@ -257,10 +251,6 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             viewModel.resetTourValue()
         }
         #endif
-        if let destination = self.viewModel.getOnboardingDestination() {
-            viewModel.resetTourValue()
-            self.coordinator?.go(to: destination, sender: nil)
-        }
 
         // Setup top actions
         self.topActionsView.backgroundColor = ColorProvider.BackgroundNorm
@@ -279,16 +269,8 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
         refetchAllIfNeeded()
 
-        if viewModel.isNewEventLoopEnabled {
-            getLatestMessages()
-        }
-
         setupScreenEdgeGesture()
         setupAccessibility()
-
-        if viewModel.shouldAutoShowInAppFeedbackPrompt {
-            inAppFeedbackScheduler = makeInAppFeedbackPromptScheduler()
-        }
 
         connectionStatusProvider.register(receiver: self)
 
@@ -321,6 +303,15 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         viewModel.user.undoActionManager.register(handler: self)
         reloadIfSwipeActionsDidChange()
         fetchEventInScheduledSend()
+
+        if let destination = self.viewModel.getOnboardingDestination() {
+            viewModel.resetTourValue()
+            self.coordinator?.go(to: destination, sender: nil)
+        } else {
+            if !ProcessInfo.isRunningUITests {
+                showSpotlightIfNeeded()
+            }
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -338,6 +329,9 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         if Message.Location(viewModel.labelID) == .inbox {
             viewModel.user.appRatingService.preconditionEventDidOccur(.inboxNavigation)
         }
+        if viewModel.isNewEventLoopEnabled && viewModel.isFirstFetch {
+            getLatestMessages()
+        } 
 
         if !viewModel.isNewEventLoopEnabled {
             if viewModel.eventsService.status != .started {
@@ -365,20 +359,11 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
         FileManager.default.cleanCachedAttsLegacy()
 
-        if viewModel.shouldAutoShowInAppFeedbackPrompt {
-            showFeedbackViewIfNeeded()
-        }
-
         updateReferralPresenterAndShowPromptIfNeeded()
 
         DispatchQueue.global().async { [weak self] in
             self?.viewModel.prefetchIfNeeded()
         }
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        inAppFeedbackScheduler?.cancelScheduledPrompt()
     }
 
     @objc
@@ -651,7 +636,8 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         }
     }
 
-    @IBAction func unreadMessageFilterButtonTapped(_ sender: Any) {
+    @objc
+    func unreadMessageFilterButtonTapped() {
         if viewModel.listEditing {
             hideSelectionMode()
         }
@@ -751,6 +737,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
                 assertionFailure("NewMailboxMessageCell was expected for MailboxRow.real")
                 return
             }
+            mailboxCell.resetCellContent()
 
             mailboxCell.mailboxItem = mailboxItem
             mailboxCell.cellDelegate = self
@@ -786,8 +773,10 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
 #if DEBUG
             mailboxCell.generateCellAccessibilityIdentifiers(mailboxCell.customView.messageContentView.titleLabel.text!)
+            mailboxCell.accessibilityValue = mailboxItem.isUnread(labelID: viewModel.labelID) ? "unread" : "read"
 #endif
         case .skeleton:
+            inputCell.updateAnimatedGradientSkeleton(animation: nil)
             inputCell.showAnimatedGradientSkeleton()
             inputCell.backgroundColor = ColorProvider.BackgroundNorm
             inputCell.accessibilityIdentifier = "SkeletonCell"
@@ -1037,9 +1026,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
                 return
             }
 
-            let isSending = viewModel.messageService.isMessageBeingSent(id: message.messageID)
-
-            guard !isSending else {
+            guard !viewModel.hasMessageEnqueuedTasks(message.messageID) else {
                 LocalString._mailbox_draft_is_uploading.alertToast()
                 self.tableView.indexPathsForSelectedRows?.forEach {
                     self.tableView.deselectRow(at: $0, animated: true)
@@ -1261,6 +1248,45 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             return
         }
         tableView.reloadData()
+    }
+
+    private func showSpotlightIfNeeded() {
+        if viewModel.shouldShowMessageNavigationSpotlight {
+            showMessageNavigationSpotlight()
+        }
+        // TODO: Show snooze spotlight in the future.
+//        if viewModel.shouldShowShowSnoozeSpotlight() {
+//            showSnoozeSpotlight()
+//        }
+    }
+
+    private func showSnoozeSpotlight() {
+        let spotlightView = SnoozeSpotlightView(
+            buttonTitle: LocalString._general_gotIt_button,
+            message: L11n.Snooze.spotlightDesc,
+            title: L11n.Snooze.spotlightTitle
+        ) { [weak self] hostingVC in
+            hostingVC?.dismiss(animated: false)
+            self?.viewModel.hasSeenSnoozeSpotlight()
+        }
+        let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
+        spotlightView.config.hostingController = hosting
+        navigationController?.present(hosting, animated: false)
+        viewModel.hasSeenSnoozeSpotlight()
+    }
+
+    private func showMessageNavigationSpotlight() {
+        let spotlightView = MessageNavigationSpotlightView(
+            buttonTitle: LocalString._general_gotIt_button,
+            message: L11n.MessageNavigation.spotlightMessage,
+            title: L11n.MessageNavigation.spotlightTitle
+        ) { hostingVC in
+            hostingVC?.dismiss(animated: false)
+        }
+        let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
+        spotlightView.config.hostingController = hosting
+        navigationController?.present(hosting, animated: false)
+        viewModel.hasSeenMessageNavigationSpotlight()
     }
 }
 
@@ -1603,7 +1629,7 @@ extension MailboxViewController {
                         )
                     default:
                         self.viewModel.handleBarActions(action)
-                        if ![.markRead, .markUnread, .star, .unstar].contains(action) {
+                        if ![.markRead, .markUnread, .star, .unstar, .snooze].contains(action) {
                             self.showMessageMoved(title: LocalString._messages_has_been_moved)
                             self.hideSelectionMode()
                         }
@@ -2091,6 +2117,8 @@ extension MailboxViewController {
             )
         case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
+        case .snooze:
+            clickSnoozeActionButton()
         }
     }
 }
@@ -2520,44 +2548,7 @@ extension MailboxViewController: NewMailboxMessageCellDelegate {
             PMAssertionFailure("IndexPath should match MailboxItem")
             return
         }
-        let downloadBanner = PMBanner(message: L11n.AttachmentPreview.downloadingAttachment, 
-                                      style: PMBannerNewStyle.info)
-        downloadBanner.addButton(text: LocalString._general_cancel_button) { [weak self, weak downloadBanner] _ in
-            self?.attachmentPreviewWasCancelled = true
-            downloadBanner?.dismiss()
-        }
-        downloadBanner.show(at: .bottom, on: self)
-        viewModel.requestPreviewOfAttachment(at: indexPath, index: index) { [weak self] result in
-            guard self?.attachmentPreviewWasCancelled == false else {
-                self?.attachmentPreviewWasCancelled = false
-                return
-            }
-            DispatchQueue.main.async {
-                guard let self else { return }
-                switch result {
-                case .success(let file):
-                    self.showAttachment(from: file)
-                case .failure(let error):
-                    let banner = PMBanner(message: error.localizedDescription, 
-                                          style: PMBannerNewStyle.error)
-                    banner.show(at: .bottom, on: self)
-                }
-            }
-        }
-    }
-}
-
-extension MailboxViewController {
-    func showAttachment(from file: SecureTemporaryFile) {
-        guard QuickLookPresenter.canPreviewItem(at: file.url), let navigationController else {
-            let banner = PMBanner(message: L11n.AttachmentPreview.cannotPreviewMessage,
-                                  style: PMBannerNewStyle.info)
-            banner.show(at: .bottom, on: self)
-            return
-        }
-
-        attachmentPreviewPresenter = QuickLookPresenter(file: file)
-        attachmentPreviewPresenter?.present(from: navigationController)
+        showAttachmentPreviewBanner(at: indexPath, index: index)
     }
 }
 
@@ -2586,6 +2577,11 @@ extension MailboxViewController {
         self.unreadFilterButton.imageView?.tintColor = ColorProvider.IconInverted
         self.unreadFilterButton.imageView?.contentMode = .scaleAspectFit
         self.unreadFilterButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+        self.unreadFilterButton.addTarget(
+            self,
+            action: #selector(self.unreadMessageFilterButtonTapped),
+            for: .touchUpInside
+        )
     }
 
     private func configureSelectAllButton() {
@@ -2690,83 +2686,6 @@ extension MailboxViewController {
     }
 }
 
-// MARK: InApp feedback related
-
-extension MailboxViewController {
-    private var inAppFeedbackStorage: InAppFeedbackStorageProtocol {
-        UserDefaults.standard
-    }
-
-    private func makeInAppFeedbackPromptScheduler() -> InAppFeedbackPromptScheduler {
-        let allowedHandler: InAppFeedbackPromptScheduler.PromptAllowedHandler = { [weak self] in
-            guard let self = self else { return false }
-            return self.navigationController?.topViewController == self
-        }
-        let showHandler: InAppFeedbackPromptScheduler.ShowPromptHandler = { [weak self] completionHandler in
-            guard let self = self else { return }
-
-            self.showFeedbackActionSheet { completed in
-                completionHandler?(completed)
-            }
-        }
-        let scheduler = InAppFeedbackPromptScheduler(
-            storage: inAppFeedbackStorage,
-            promptDelayTime: InAppFeedbackPromptScheduler.defaultPromptDelayTime,
-            promptAllowedHandler: allowedHandler,
-            showPromptHandler: showHandler)
-        return scheduler
-    }
-
-    typealias UserFeedbackCompletedHandler = (/* Completed or not */ Bool) -> Void
-
-    private func showFeedbackActionSheet(completedHandler: UserFeedbackCompletedHandler? = nil) {
-        let delayTime = 0.1
-        let viewModel = InAppFeedbackViewModel { [weak self] result in
-            guard let self = self else {
-                return
-            }
-            switch result {
-            case .success(let userFeedback):
-                // Submit the feedback
-                let apiService = self.viewModel.user.apiService
-                let feedbackService = UserFeedbackService(apiService: apiService)
-                self.submit(userFeedback, service: feedbackService, successHandler: { [weak self] in
-                    guard let self = self else { return }
-                    completedHandler?(true)
-                    let banner = PMBanner(
-                        message: LocalString._thank_you_feedback,
-                        style: PMBannerNewStyle.success,
-                        bannerHandler: PMBanner.dismiss
-                    )
-                    banner.show(at: .bottom, on: self, ignoreKeyboard: true)
-                }, failureHandler: {
-                    completedHandler?(false)
-                })
-            default:
-                completedHandler?(false)
-                return
-            }
-        }
-        let viewController = InAppFeedbackViewController(viewModel: viewModel)
-        delay(delayTime) {
-            self.present(viewController, animated: true, completion: nil)
-        }
-    }
-
-    func showFeedbackViewIfNeeded(forceToShow: Bool = false) {
-        if forceToShow {
-            scheduleUserFeedbackCallOnAppear = true
-        }
-        if scheduleUserFeedbackCallOnAppear {
-            scheduleUserFeedbackCallOnAppear = false
-            self.showFeedbackActionSheet { [weak self] _ in
-                guard let self = self else { return }
-                self.inAppFeedbackScheduler?.markAsFeedbackSubmitted()
-            }
-        }
-    }
-}
-
 // MARK: - Auto-Delete Banners
 
 extension MailboxViewController {
@@ -2778,7 +2697,7 @@ extension MailboxViewController {
                 guard let self else { return }
                 let upsellSheet = AutoDeleteUpsellSheetView { [weak self] _ in
                     guard let self else { return }
-                    self.presentPayments()
+                    self.presentPayments(paidFeature: .autoDelete)
                 }
                 upsellSheet.present(on: self.navigationController!.view)
             }
@@ -2832,9 +2751,24 @@ extension MailboxViewController {
         }
     }
 
-    private func presentPayments() {
+    func presentPayments(paidFeature: PaidFeature) {
         paymentsUI = dependencies.paymentsUIFactory.makeView()
-        paymentsUI?.presentUpgradePlan()
+        paymentsUI?.showUpgradePlan(
+            presentationType: .modal,
+            backendFetch: true,
+            completionHandler: { [weak self] reason in
+                switch reason {
+                case .purchasedPlan:
+                    if paidFeature == .snooze {
+                        Task {
+                            await self?.viewModel.user.fetchUserInfo()
+                            self?.clickSnoozeActionButton()
+                        }
+                    }
+                default:
+                    break
+                }
+            })
     }
 }
 
@@ -2881,7 +2815,6 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
     }
 
     func updateUnreadButton(count: Int) {
-        if refreshControl.isRefreshing { return }
         let unread = count
         let isInUnreadFilter = unreadFilterButton.isSelected
         let shouldShowUnreadFilter = unread != 0
@@ -2916,6 +2849,11 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
             L11n.MailBox.maximumSelectionReached.alertToastBottom()
         }
     }
+
+    @MainActor
+    func clickSnoozeActionButton() {
+        coordinator?.presentSnoozeConfigSheet(on: self, current: Date())
+    }
 }
 
 extension MailboxViewController: ComposeContainerViewControllerDelegate {
@@ -2923,3 +2861,4 @@ extension MailboxViewController: ComposeContainerViewControllerDelegate {
         getLatestMessages()
     }
 }
+

@@ -27,6 +27,7 @@ import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreNetworking
 import ProtonCoreServices
+import enum ProtonCoreUtilities.Either
 
 final class MainQueueHandler: QueueHandler {
     typealias Completion = (Error?) -> Void
@@ -104,11 +105,15 @@ final class MainQueueHandler: QueueHandler {
                 user: user
             )
         )
+        let messageActionUpdate = MessageActionUpdate(dependencies: .init(apiService: apiService, contextProvider: coreDataService))
+        let unSnooze = UnSnooze(dependencies: .init(apiService: apiService))
 
         self.dependencies = Dependencies(
             incomingDefaultService: user.incomingDefaultService,
             uploadDraft: uploadDraftUseCase,
-            uploadAttachment: uploadAttachment
+            uploadAttachment: uploadAttachment, 
+            messageActionUpdate: messageActionUpdate,
+            unSnooze: unSnooze
         )
     }
 
@@ -125,7 +130,7 @@ final class MainQueueHandler: QueueHandler {
             case .saveDraft, .uploadAtt, .uploadPubkey, .deleteAtt, .send,
                  .updateLabel, .createLabel, .deleteLabel, .signout, .signin,
                  .fetchMessageDetail, .updateAttKeyPacket,
-                 .updateContact, .deleteContact, .addContact,
+                 .updateContact, .deleteContact, .addContact, .addContacts,
                  .addContactGroup, .updateContactGroup, .deleteContactGroup,
                  .blockSender, .unblockSender:
                 fatalError()
@@ -151,6 +156,10 @@ final class MainQueueHandler: QueueHandler {
                 self.labelConversations(itemIDs,
                                         labelID: nextLabelID,
                                         completion: completeHandler)
+            case .unsnooze(let conversationID):
+                unSnooze(conversationID: conversationID, completion: completeHandler)
+            case .snooze(let conversationIDs, let date):
+                snooze(conversationIDs: conversationIDs, on: date, completion: completeHandler)
             case let .notificationAction(messageID, action):
                 notificationAction(messageId: messageID, action: action, completion: completeHandler)
             }
@@ -194,11 +203,13 @@ final class MainQueueHandler: QueueHandler {
             case .empty(let currentLabelID):
                 self.empty(labelId: currentLabelID, UID: UID, completion: completeHandler)
             case .read(_, let objectIDs):
-                self.messageAction(objectIDs, action: action.rawValue, UID: UID, completion: completeHandler)
+                messageAction(.left(objectIDs), action: .read, UID: UID, completion: completeHandler)
             case .unread(_, _, let objectIDs):
-                self.messageAction(objectIDs, action: action.rawValue, UID: UID, completion: completeHandler)
+                messageAction(.left(objectIDs), action: .unread, UID: UID, completion: completeHandler)
             case .delete(_, let itemIDs):
-                self.messageDelete(itemIDs, action: action.rawValue, UID: UID, completion: completeHandler)
+                // must be the real message id. because the message is deleted before this triggered
+                let ids = itemIDs.map(MessageID.init(rawValue:))
+                messageAction(.right(ids), action: .delete, UID: UID, completion: completeHandler)
             case .label(let currentLabelID, let shouldFetch, let itemIDs, _):
                 self.labelMessage(LabelID(currentLabelID),
                                   messageIDs: itemIDs,
@@ -233,8 +244,20 @@ final class MainQueueHandler: QueueHandler {
                 self.updateContact(objectID: objectID, cardDatas: cardDatas, completion: completeHandler)
             case .deleteContact(let objectID):
                 self.deleteContact(objectID: objectID, completion: completeHandler)
-            case .addContact(let objectID, let cardDatas, let importFromDevice):
-                self.addContact(objectID: objectID, cardDatas: cardDatas, importFromDevice: importFromDevice, completion: completeHandler)
+            case .addContact(let objectID, let contactCards, let importFromDevice):
+                self.addContacts(
+                    objectsURIs: [objectID],
+                    contactsCards: [contactCards],
+                    importFromDevice: importFromDevice,
+                    completion: completeHandler
+                )
+            case .addContacts(let contactsLocalURIs, let contactsCards, let importFromDevice):
+                self.addContacts(
+                    objectsURIs: contactsLocalURIs,
+                    contactsCards: contactsCards,
+                    importFromDevice: true,
+                    completion: completeHandler
+                )
             case .addContactGroup(let objectID, let name, let color, let emailIDs):
                 self.createContactGroup(objectID: objectID, name: name, color: color, emailIDs: emailIDs, completion: completeHandler)
             case .updateContactGroup(let objectID, let name, let color, let addedEmailIDs, let removedEmailIDs):
@@ -247,6 +270,8 @@ final class MainQueueHandler: QueueHandler {
                 blockSender(emailAddress: emailAddress, completion: completeHandler)
             case .unblockSender(let emailAddress):
                 unblockSender(emailAddress: emailAddress, completion: completeHandler)
+            case .unsnooze, .snooze:
+                fatalError()
             }
         }
     }
@@ -435,51 +460,21 @@ extension MainQueueHandler {
         }
     }
 
-    fileprivate func messageAction(_ managedObjectIds: [String], action: String, UID: String, completion: @escaping Completion) {
-        var messageIds: [String] = []
-        coreDataService.performAndWaitOnRootSavingContext { context in
-            let messages = managedObjectIds.compactMap { (id: String) -> Message? in
-                if let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
-                    let managedObject = try? context.existingObject(with: objectID) {
-                    return managedObject as? Message
-                }
-                return nil
-            }
-            messageIds = messages.map { $0.messageID }
-        }
+    private func messageAction(
+        _ ids: Either<[MessageActionUpdateUseCase.MessageURI], [MessageID]>,
+        action: MessageActionUpdate.Action,
+        UID: String,
+        completion: @escaping Completion
+    ) {
         guard user?.userInfo.userId == UID else {
             completion(NSError.userLoggedOut())
             return
         }
-        guard messageIds.count > 0 else {
-            completion(nil)
-            return
-        }
-        let api = MessageActionRequest(action: action, ids: messageIds)
-        self.apiService.perform(request: api, response: VoidResponse()) { _, response in
-            completion(response.error)
-        }
-    }
-
-    /// delete a message
-    ///
-    /// - Parameters:
-    ///   - messageIDs: must be the real message id. becuase the message is deleted before this triggered
-    ///   - action: action type. should .delete here
-    ///   - completion: call back
-    fileprivate func messageDelete(_ messageIDs: [String], action: String, UID: String, completion: @escaping Completion) {
-        guard user?.userInfo.userId == UID else {
-            completion(NSError.userLoggedOut())
-            return
-        }
-        guard !messageIDs.isEmpty else {
-            completion(nil)
-            return
-        }
-
-        let api = MessageActionRequest(action: action, ids: messageIDs)
-        self.apiService.perform(request: api, response: VoidResponse()) { _, response in
-            completion(response.error)
+        ConcurrencyUtils.runWithCompletion(
+            block: dependencies.messageActionUpdate.execute,
+            arguments: (ids, action)
+        ) { result in
+            completion(result.error)
         }
     }
 
@@ -629,11 +624,16 @@ extension MainQueueHandler {
         }
     }
 
-    private func addContact(objectID: String, cardDatas: [CardData], importFromDevice: Bool, completion: @escaping Completion) {
+    private func addContacts(
+        objectsURIs: [String],
+        contactsCards: [[CardData]],
+        importFromDevice: Bool,
+        completion: @escaping Completion
+    ) {
         let service = self.contactService
         service.add(
-            cards: [cardDatas],
-            objectID: objectID,
+            contactsCards: contactsCards,
+            objectsURIs: objectsURIs,
             importFromDevice: importFromDevice,
             completion: completion
         )
@@ -763,6 +763,27 @@ extension MainQueueHandler {
             completion(result.error)
         }
     }
+
+    func unSnooze(conversationID: String, completion: @escaping Completion) {
+        ConcurrencyUtils.runWithCompletion(
+            block: dependencies.unSnooze.execute,
+            argument: ConversationID(conversationID)
+        ) { [weak self] result in
+            self?.user?.eventsService.fetchEvents(labelID: Message.Location.snooze.labelID)
+            completion(result.error)
+        }
+    }
+
+    func snooze(conversationIDs: [String], on date: Date, completion: @escaping Completion) {
+        let request = ConversationSnoozeRequest(
+            conversationIDs: conversationIDs.map { ConversationID($0) },
+            snoozeTime: date.timeIntervalSince1970
+        )
+        apiService.perform(request: request) { [weak self] _, result in
+            completion(result.error)
+            self?.user?.eventsService.fetchEvents(labelID: Message.Location.snooze.labelID)
+        }
+    }
 }
 
 // MARK: queue actions for notification actions
@@ -811,17 +832,23 @@ extension MainQueueHandler {
         let incomingDefaultService: IncomingDefaultServiceProtocol
         let uploadDraft: UploadDraftUseCase
         let uploadAttachment: UploadAttachmentUseCase
+        let messageActionUpdate: MessageActionUpdateUseCase
+        let unSnooze: UnSnoozeUseCase
 
         init(
             actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction(),
             incomingDefaultService: IncomingDefaultServiceProtocol,
             uploadDraft: UploadDraftUseCase,
-            uploadAttachment: UploadAttachmentUseCase
+            uploadAttachment: UploadAttachmentUseCase,
+            messageActionUpdate: MessageActionUpdateUseCase,
+            unSnooze: UnSnoozeUseCase
         ) {
             self.actionRequest = actionRequest
             self.incomingDefaultService = incomingDefaultService
             self.uploadDraft = uploadDraft
             self.uploadAttachment = uploadAttachment
+            self.messageActionUpdate = messageActionUpdate
+            self.unSnooze = unSnooze
         }
     }
 }

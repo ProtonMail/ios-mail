@@ -20,6 +20,22 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>Acknowledgements/CwlCatchException</string>
+			<key>Title</key>
+			<string>CwlCatchException</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Acknowledgements/CwlPreconditionTesting</string>
+			<key>Title</key>
+			<string>CwlPreconditionTesting</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>Acknowledgements/Difference</string>
 			<key>Title</key>
 			<string>Difference</string>
@@ -87,6 +103,14 @@
 			<string>Acknowledgements/MBProgressHUD</string>
 			<key>Title</key>
 			<string>MBProgressHUD</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Acknowledgements/Nimble</string>
+			<key>Title</key>
+			<string>Nimble</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -375,6 +399,14 @@
 			<string>Acknowledgements/ProtonCore-VCard</string>
 			<key>Title</key>
 			<string>ProtonCore-VCard</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Acknowledgements/Quick</string>
+			<key>Title</key>
+			<string>Quick</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

@@ -39,11 +39,14 @@ protocol ContactProviderProtocol: AnyObject {
     func getContactsByIds(_ ids: [String]) -> [ContactEntity]
     /// Returns the Contacts from the local storage for a given list of contact uuids
     func getContactsByUUID(_ uuids: [String]) -> [ContactEntity]
-    /// Given a user and a list of email addresses, returns all the contacts that exist in the local storage
+    /// Given a list of email addresses, returns all the contacts that exist in the local storage
+    func getContactsByEmailAddress(_ emailAddresses: [String]) -> [ContactEntity]
+    /// Given a list of email addresses, returns all the Email objects that exist in the local storage
     func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity]
     /// Call this function to store a Contact that has been created locally. This function will also create the associated Email objects
     /// - Returns: The CoreData objectID
     func createLocalContact(
+        uuid: String,
         name: String,
         emails: [(address: String, type: ContactFieldType)],
         cards: [CardData]
@@ -141,11 +144,13 @@ class ContactDataService {
      - Parameter objectID: CoreData object ID of group label
      - Parameter completion: async add contact complete response
      **/
-    func add(cards: [[CardData]],
-             objectID: String,
-             importFromDevice: Bool,
-             completion: @escaping (Error?) -> Void) {
-        let route = ContactAddRequest(cards: cards, importedFromDevice: importFromDevice)
+    func add(
+        contactsCards: [[CardData]],
+        objectsURIs: [String],
+        importFromDevice: Bool,
+        completion: @escaping (Error?) -> Void
+    ) {
+        let route = ContactAddRequest(cards: contactsCards, importedFromDevice: importFromDevice)
         self.apiService.perform(request: route, response: ContactAddResponse()) { [weak self] _, response in
             guard let self = self else { return }
             var contactsData: [[String: Any]] = []
@@ -153,7 +158,7 @@ class ContactDataService {
 
             let results = response.results
             guard !results.isEmpty,
-                  cards.count == results.count else {
+                  contactsCards.count == results.count else {
                 DispatchQueue.main.async {
                     completion(lastError)
                 }
@@ -162,15 +167,16 @@ class ContactDataService {
 
             for (i, res) in results.enumerated() {
                 if let error = res as? NSError {
+                    reportContactCreateError(error: error)
                     lastError = error
                 } else if var contact = res as? [String: Any] {
-                    contact["Cards"] = cards[i].toDictionary()
+                    contact["Cards"] = contactsCards[i].toDictionary()
                     contactsData.append(contact)
                 }
             }
 
             if !contactsData.isEmpty {
-                self.cacheService.addNewContact(serverResponse: contactsData, localContactObjectID: objectID) { error in
+                self.cacheService.addNewContact(serverResponse: contactsData, localContactsURIs: objectsURIs) { error in
                     DispatchQueue.main.async {
                         completion(error)
                     }
@@ -181,6 +187,11 @@ class ContactDataService {
                 }
             }
         }
+    }
+
+    private func reportContactCreateError(error: NSError) {
+        SystemLogger.log(error: error, category: .contacts)
+        Analytics.shared.sendError(.contactCreateFailInBatch(error: error))
     }
 
     /**
@@ -197,6 +208,7 @@ class ContactDataService {
         let api = ContactUpdateRequest(contactid: contactID.rawValue, cards:cards)
         self.apiService.perform(request: api, response: ContactDetailResponse()) { _, response in
             if let error = response.error {
+                self.reportContactUpdateError(error: error)
                 completion(error.toNSError)
             } else if var contactDict = response.contact {
                 // api is not returning the cards data so set it use request cards data
@@ -209,6 +221,13 @@ class ContactDataService {
             } else {
                 completion(NSError.unableToParseResponse(response))
             }
+        }
+    }
+
+    private func reportContactUpdateError(error: ResponseError) {
+        SystemLogger.log(error: error.toNSError, category: .contacts)
+        if let httpCode = error.httpCode, (400...499).contains(httpCode) {
+            Analytics.shared.sendError(.contactUpdateFail(error: error.toNSError))
         }
     }
 
@@ -399,6 +418,11 @@ class ContactDataService {
         }
     }
 
+    func getContactsByEmailAddress(_ emailAddresses: [String]) -> [ContactEntity] {
+        let emailEntities = getEmailsByAddress(emailAddresses)
+        return getContactsByIds(emailEntities.map(\.contactID.rawValue))
+    }
+
     func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity] {
         let request = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
         let emailPredicate = NSPredicate(format: "%K in %@", Email.Attributes.email, emailAddresses)
@@ -416,6 +440,7 @@ class ContactDataService {
     }
 
     func createLocalContact(
+        uuid: String,
         name: String,
         emails: [(address: String, type: ContactFieldType)],
         cards: [CardData]
@@ -428,7 +453,7 @@ class ContactDataService {
             contact.name = name
             contact.cardData = try cards.toJSONString()
             contact.size = NSNumber(value: 0)
-            contact.uuid = UUID().uuidString
+            contact.uuid = uuid
             contact.createTime = Date()
 
             emails.forEach { email in
@@ -570,9 +595,11 @@ extension ContactDataService: ContactDataServiceProtocol {
             }
         }
         if let objectID = objectID {
-            let action: MessageAction = .addContact(objectID: objectID,
-                                                    cardDatas: cardDatas,
-                                                    importFromDevice: importedFromDevice)
+            let action: MessageAction = .addContacts(
+                objectIDs: [objectID],
+                contactsCards: [cardDatas],
+                importFromDevice: importedFromDevice
+            )
             let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
             _ = self.queueManager?.addTask(task)
         }
@@ -677,14 +704,18 @@ extension ContactDataService {
         guard addressBookService.hasAccessToAddressBook() else {
             addressBookService.requestAuthorizationWithCompletion { granted, error in
                 if granted {
-                    completion(self.addressBookService.contacts(), nil)
+                    self.addressBookService.fetchDeviceContactsInContactVO { contactVOs in
+                        completion(contactVOs, nil)
+                    }
                 } else {
                     completion([], error)
                 }
             }
             return
         }
-        completion(addressBookService.contacts(), nil)
+        addressBookService.fetchDeviceContactsInContactVO { contactVOs in
+            completion(contactVOs, nil)
+        }
     }
 }
 

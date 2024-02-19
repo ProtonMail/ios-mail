@@ -23,4 +23,20 @@ extension UserManager {
     var isNewEventLoopEnabled: Bool {
         return false
     }
+
+    var isSnoozeEnabled: Bool {
+        return container.featureFlagsRepository.isEnabled(
+            MailFeatureFlag.snooze,
+            for: userID.rawValue,
+            reloadValue: true
+        )
+    }
+
+    var isMessageSwipeNavigationSettingEnabled: Bool {
+        return container.featureFlagsRepository.isEnabled(
+            MailFeatureFlag.nextMessageAfterMove,
+            for: userID.rawValue,
+            reloadValue: true
+        )
+    }
 }

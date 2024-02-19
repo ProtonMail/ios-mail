@@ -27,11 +27,11 @@ import PromiseKit
 import ProtonCoreChallenge
 import ProtonCoreDataModel
 import ProtonCoreDoh
+import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonMailAnalytics
-import ProtonCoreFeatureFlags
 
 // sourcery: mock
 protocol UsersManagerProtocol: AnyObject {
@@ -216,6 +216,7 @@ class UsersManager: UsersManagerProtocol {
         users.insert(user, at: 0)
         save()
         firstUser?.becomeActiveUser()
+        FeatureFlagsRepository.shared.setUserId(user.userID.rawValue)
     }
 
     func isExist(userID: UserID) -> Bool {
@@ -272,13 +273,17 @@ class UsersManager: UsersManagerProtocol {
         if !ProcessInfo.isRunningUnitTests {
             users.forEach { user in
                 Task {
-                    try await FeatureFlagsRepository.shared.fetchFlags(
+                    try await user.container.featureFlagsRepository.fetchFlags(
                         for: user.userID.rawValue,
-                        with: user.apiService
+                        using: user.apiService
                     )
                     await user.fetchUserInfo()
                 }
             }
+        }
+
+        if let userId = self.users.first?.userID.rawValue, !userId.isEmpty {
+            FeatureFlagsRepository.shared.setUserId(userId)
         }
 
         self.users.first?.cacheService.cleanSoftDeletedMessagesAndConversation()
@@ -340,6 +345,7 @@ extension UsersManager {
         loggingOutUserIDs.insert(user.userID)
         user.cleanUp().ensure {
             FeatureFlagsRepository.shared.resetFlags(for: user.userID.rawValue)
+            FeatureFlagsRepository.shared.clearUserId(user.userID.rawValue)
             defer {
                 self.loggingOutUserIDs.remove(user.userID)
             }

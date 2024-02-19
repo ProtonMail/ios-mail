@@ -19,6 +19,7 @@ protocol SingleMessageContentUIProtocol: AnyObject {
     func update(hasStrippedVersion: Bool)
     func updateAttachmentBannerIfNeeded()
     func trackerProtectionSummaryChanged()
+    func didUnSnooze()
 }
 
 class SingleMessageContentViewModel {
@@ -135,26 +136,7 @@ class SingleMessageContentViewModel {
 
         createNonExpandedHeaderViewModel()
 
-        self.bannerViewModel.editScheduledMessage = { [weak self] in
-            guard let self = self else {
-                return
-            }
-            let msgID = self.message.messageID
-            let originalScheduledTime = self.message.time
-            self.showProgressHub?()
-            self.user.messageService.undoSend(
-                of: msgID) { [weak self] result in
-                    self?.user.eventsService.fetchEvents(byLabel: Message.Location.allmail.labelID,
-                                                         notificationMessageID: nil,
-                                                         completion: { [weak self] _ in
-                        DispatchQueue.main.async {
-                            self?.hideProgressHub?()
-                            self?.goToDraft(msgID, originalScheduledTime)
-                        }
-                    })
-                }
-        }
-
+        bindBannerClosure()
         messageInfoProvider.set(delegate: self)
         messageBodyViewModel.update(content: messageInfoProvider.contents)
     }
@@ -180,7 +162,11 @@ class SingleMessageContentViewModel {
 
     private func setupBinding() {
         dependencies.isSenderBlockedPublisher.isBlocked(senderEmailAddress: messageInfoProvider.senderEmail.string)
-            .sink { [weak self] in self?.isSenderCurrentlyBlocked = $0 }
+            .sink(receiveValue: { [weak self] value in
+                if self?.isSenderCurrentlyBlocked != value {
+                    self?.isSenderCurrentlyBlocked = value
+                }
+            })
             .store(in: &cancellables)
 
         dependencies.isSenderBlockedPublisher.start()
@@ -326,6 +312,33 @@ class SingleMessageContentViewModel {
             }
         }
     }
+
+    private func bindBannerClosure() {
+        bannerViewModel.editScheduledMessage = { [weak self] in
+            guard let self = self else {
+                return
+            }
+            let msgID = self.message.messageID
+            let originalScheduledTime = self.message.time
+            self.showProgressHub?()
+            self.user.messageService.undoSend(of: msgID) { [weak self] result in
+                self?.user.eventsService.fetchEvents(byLabel: Message.Location.allmail.labelID,
+                                                     notificationMessageID: nil,
+                                                     completion: { [weak self] _ in
+                    DispatchQueue.main.async {
+                        self?.hideProgressHub?()
+                        self?.goToDraft(msgID, originalScheduledTime)
+                    }
+                })
+            }
+        }
+
+        bannerViewModel.unSnoozeMessage = { [weak self] in
+            guard let self = self else { return }
+            self.user.conversationService.unSnooze(conversationID: self.message.conversationID)
+            self.uiDelegate?.didUnSnooze()
+        }
+    }
 }
 
 extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
@@ -380,7 +393,19 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
     }
 
     func updateAttachments() {
+        let messageHeaders = messageInfoProvider.message.parsedHeaders
+        let basicEventInfo: BasicEventInfo?
+
+        if let eventUID = messageHeaders[MessageHeaderKey.pmCalendarEventUID] as? String {
+            let recurrenceID = messageHeaders[MessageHeaderKey.pmCalendarOccurrence] as? String
+            basicEventInfo = .init(eventUID: eventUID, recurrenceID: recurrenceID)
+        } else {
+            basicEventInfo = nil
+        }
+
         DispatchQueue.main.async {
+            self.attachmentViewModel.basicEventInfoSourcedFromHeaders = basicEventInfo
+
             self.attachmentViewModel.attachmentHasChanged(
                 nonInlineAttachments: self.messageInfoProvider.nonInlineAttachments.map(AttachmentNormal.init),
                 mimeAttachments: self.messageInfoProvider.mimeAttachments

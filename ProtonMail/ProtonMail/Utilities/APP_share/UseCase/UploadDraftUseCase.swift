@@ -43,7 +43,10 @@ final class UploadDraft: UploadDraftUseCase {
         } catch {
             if let responseError = error as? ResponseError,
                let underlyingError = responseError.underlyingError {
-                await NSError.alertSavingDraftError(details: underlyingError.localizedDescription)
+                if underlyingError.code != APIErrorCode.updateDraftHasBeenSent {
+                    // Doesn't need to show message has sent message to user 
+                    await NSError.alertSavingDraftError(details: underlyingError.localizedDescription)
+                }
 
                 if underlyingError.isStorageExceeded {
                     dependencies.messageDataService.deleteMessage(objectID: messageObjectID)

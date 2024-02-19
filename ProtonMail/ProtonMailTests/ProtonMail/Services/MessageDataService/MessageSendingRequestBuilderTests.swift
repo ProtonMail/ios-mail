@@ -81,10 +81,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                              sign: Bool.random(),
                                              pgpScheme: .proton,
                                              mimeType: .mime,
-                                             publicKeys: nil,
+                                             publicKey: nil,
                                              isPublicKeyPinned: Bool.random(),
                                              hasApiKeys: Bool.random(),
-                                             hasPinnedKeys: Bool.random(),
                                              error: nil)
 
         sut.add(email: testEmail, sendPreferences: testPreference)
@@ -112,10 +111,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                               sign: true,
                                               pgpScheme: .pgpMIME,
                                               mimeType: .mime,
-                                              publicKeys: testPublicKey,
+                                              publicKey: testPublicKey,
                                               isPublicKeyPinned: true,
                                               hasApiKeys: false,
-                                              hasPinnedKeys: true,
                                               error: nil)
 
         sut.add(email: testEmail, sendPreferences: testPreferences)
@@ -129,10 +127,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                                  sign: true,
                                                  pgpScheme: .pgpMIME,
                                                  mimeType: .mime,
-                                                 publicKeys: testPublicKey,
+                                                 publicKey: testPublicKey,
                                                  isPublicKeyPinned: false,
                                                  hasApiKeys: false,
-                                                 hasPinnedKeys: false,
                                                  error: nil)
         sut.add(email: testEmail, sendPreferences: pgpMIMEPreferences)
 
@@ -146,10 +143,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                                    sign: false,
                                                    pgpScheme: .cleartextInline,
                                                    mimeType: .plainText,
-                                                   publicKeys: nil,
+                                                   publicKey: nil,
                                                    isPublicKeyPinned: false,
                                                    hasApiKeys: false,
-                                                   hasPinnedKeys: false,
                                                    error: nil)
         sut.add(email: testEmail, sendPreferences: plainTextPreferences)
 
@@ -170,39 +166,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let testClearBody = "<html><head></head><body> <div><br></div><div><br></div> <div id=\"protonmail_mobile_signature_block\"><div>Sent from ProtonMail for iOS</div></div></body></html>"
         sut.set(clearBody: testClearBody)
         XCTAssertEqual(sut.generatePlainTextBody(), "\r\n\r\nSent from ProtonMail for iOS\r\n")
-    }
-
-    func testGenerateBoundaryString() {
-        var result = ""
-        for _ in 0..<10 {
-            let temp = sut.generateMessageBoundaryString()
-            XCTAssertFalse(temp.isEmpty)
-            XCTAssertNotEqual(result, temp)
-            result = temp
-        }
-    }
-
-    func testBuildFirstPartOfBody() {
-        let boundaryMsg = "---BoundaryMsg---"
-        let messageBody = "test"
-        let expected = "Content-Type: multipart/mixed; boundary=---BoundaryMsg---\r\n\r\n-----BoundaryMsg---\r\nContent-Type: text/html; charset=utf-8\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Language: en-US\r\n\r\ntest\r\n\r\n\r\n\r\n"
-        XCTAssertEqual(sut.buildFirstPartOfBody(boundaryMsg: boundaryMsg, messageBody: messageBody), expected)
-    }
-
-    func testBuildAttachmentBody() {
-        let boundaryMsg = "---BoundaryMsg---"
-        let attContent = "test att".data(using: .utf8)!.base64EncodedString()
-        let attName = "test"
-        let contentID = "1234"
-        let mimeType = "text"
-        let expected = "-----BoundaryMsg---\r\nContent-Type: text; name=\"test\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"test\"\r\nContent-ID: <1234>\r\n\r\ndGVzdCBhdHQ=\r\n"
-
-        let result = sut.buildAttachmentBody(boundaryMsg: boundaryMsg,
-                                             base64AttachmentContent: attContent,
-                                             attachmentName: attName,
-                                             contentID: contentID,
-                                             attachmentMIMEType: mimeType)
-        XCTAssertEqual(result, expected)
     }
 
     func testPreparePackages() throws {
@@ -227,10 +190,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                                  sign: true,
                                                  pgpScheme: .proton,
                                                  mimeType: .mime,
-                                                 publicKeys: testPublicKey,
+                                                 publicKey: testPublicKey,
                                                  isPublicKeyPinned: true,
                                                  hasApiKeys: false,
-                                                 hasPinnedKeys: true,
                                                  error: nil)
         sut.add(email: testEmail, sendPreferences: internalPreference)
         setupTestBody()
@@ -251,10 +213,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                                  sign: false,
                                                  pgpScheme: .proton,
                                                  mimeType: .plainText,
-                                                 publicKeys: nil,
+                                                 publicKey: nil,
                                                  isPublicKeyPinned: false,
                                                  hasApiKeys: false,
-                                                 hasPinnedKeys: false,
                                                  error: nil)
         sut.add(email: testEmail, sendPreferences: internalPreference)
         setupTestBody()
@@ -270,10 +231,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                            sign: false,
                                            pgpScheme: .encryptedToOutside,
                                            mimeType: .mime,
-                                           publicKeys: nil,
+                                           publicKey: nil,
                                            isPublicKeyPinned: false,
                                            hasApiKeys: false,
-                                           hasPinnedKeys: false,
                                            error: nil)
         sut.add(email: testEmail, sendPreferences: eoPreference)
         setupTestBody()
@@ -295,10 +255,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                               sign: false,
                                               pgpScheme: .cleartextInline,
                                               mimeType: .html,
-                                              publicKeys: nil,
+                                              publicKey: nil,
                                               isPublicKeyPinned: false,
                                               hasApiKeys: false,
-                                              hasPinnedKeys: false,
                                               error: nil)
         sut.add(email: "test@test.com", sendPreferences: clearPreference)
         setupTestBody()
@@ -317,10 +276,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                                   sign: false,
                                                   pgpScheme: .pgpInline,
                                                   mimeType: .html,
-                                                  publicKeys: testPublicKey,
+                                                  publicKey: testPublicKey,
                                                   isPublicKeyPinned: false,
                                                   hasApiKeys: false,
-                                                  hasPinnedKeys: false,
                                                   error: nil)
         sut.add(email: testEmail, sendPreferences: inlinePGPPreference)
         setupTestBody()
@@ -340,10 +298,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
                                                   sign: true,
                                                   pgpScheme: .pgpInline,
                                                   mimeType: .html,
-                                                  publicKeys: nil,
+                                                  publicKey: nil,
                                                   isPublicKeyPinned: false,
                                                   hasApiKeys: false,
-                                                  hasPinnedKeys: false,
                                                   error: nil)
         sut.add(email: testEmail, sendPreferences: inlinePGPPreference)
         setupTestBody()
@@ -362,10 +319,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
             sign: true,
             pgpScheme: .pgpInline,
             mimeType: .html,
-            publicKeys: CryptoGo.CryptoKey(fromArmored: OpenPGPDefines.publicKey),
+            publicKey: CryptoGo.CryptoKey(fromArmored: OpenPGPDefines.publicKey),
             isPublicKeyPinned: false,
             hasApiKeys: false,
-            hasPinnedKeys: false,
             error: nil
         )
         sut.add(email: testEmail, sendPreferences: sendPreference)
@@ -385,10 +341,9 @@ class MessageSendingRequestBuilderTests: XCTestCase {
             sign: true,
             pgpScheme: .pgpInline,
             mimeType: .html,
-            publicKeys: testPublicKey,
+            publicKey: testPublicKey,
             isPublicKeyPinned: false,
             hasApiKeys: false,
-            hasPinnedKeys: false,
             error: nil
         )
         sut.add(email: testEmail, sendPreferences: sendPreference)
@@ -408,40 +363,15 @@ class MessageSendingRequestBuilderTests: XCTestCase {
             sign: true,
             pgpScheme: .pgpMIME,
             mimeType: .mime,
-            publicKeys: testPublicKey,
+            publicKey: testPublicKey,
             isPublicKeyPinned: false,
             hasApiKeys: false,
-            hasPinnedKeys: false,
             error: nil
         )
         sut.add(email: testEmail, sendPreferences: clearMIMEPreference)
         setupTestBody()
 
         XCTAssertThrowsError(try sut.generatePackageBuilder())
-    }
-
-    func testExtractBase64() throws {
-        let html = #"<html><head></head><body><div>hi test</div><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAAEAQMAAACeIXx6AAAAA1BMVEVwcFynaTGjAAAACklEQVQI12OAAgAACAABod4nnQAAAABJRU5ErkJgggrr" alt="" /></body></html>"#
-        let boundary = sut.generateMessageBoundaryString()
-        let (updatedBody, inlines) = sut.extractBase64(clearBody: html, boundary: boundary)
-        XCTAssertEqual(inlines.count, 1)
-        let inline = try XCTUnwrap(inlines.first)
-        let regex = try RegularExpressionCache.regex(for: #"cid:(.*?)""#, options: .allowCommentsAndWhitespace)
-        guard
-            let match = regex.firstMatch(in: updatedBody, range: .init(location: 0, length: updatedBody.count)),
-            match.numberOfRanges == 2
-        else {
-            XCTFail("Unexpected")
-            return
-        }
-        let cid = updatedBody[match.range(at: 1)]
-        let expectedPrefix = #"\r\nContent-Type: image/png; name=".{8}"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: inline; filename=".{8}"\r\nContent-ID: <"#
-        let expectedSuffix = "\r\n\r\niVBORw0KGgoAAAANSUhEUgAAAAIAAAAEAQMAAACeIXx6AAAAA1BMVEVwcFynaTGj\r\nAAAACklEQVQI12OAAgAACAABod4nnQAAAABJRU5ErkJgggrr\r\n"
-        let expected = "--\(boundary)\(expectedPrefix)\(cid)"
-        XCTAssertTrue(inline.preg_match(expected))
-        // Somehow regular expression doesn't work with this suffix
-        // Workaround to verify
-        XCTAssertTrue(inline.hasSuffix(expectedSuffix))
     }
 
     private func setupTestBody() {

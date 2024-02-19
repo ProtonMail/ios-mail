@@ -23,14 +23,14 @@
 import Foundation
 import ProtonCoreDataModel
 import ProtonCoreUIFoundations
+import ProtonCoreUtilities
 
 class SingleMessageViewModel {
     typealias Dependencies = HasUserDefaults
 
+    private var messageEntity: Atomic<MessageEntity>
     var message: MessageEntity {
-        didSet {
-            propagateMessageData()
-        }
+        messageEntity.value
     }
 
     let contentViewModel: SingleMessageContentViewModel
@@ -42,7 +42,7 @@ class SingleMessageViewModel {
     private let messageObserver: MessageObserver
 
     var isMessageSwipeNavigationEnabled: Bool {
-        false
+        true
     }
     var refreshView: (() -> Void)?
 
@@ -80,7 +80,7 @@ class SingleMessageViewModel {
          dependencies: Dependencies
     ) {
         self.labelId = labelId
-        self.message = message
+        self.messageEntity = .init(message)
         self.messageService = user.messageService
         self.user = user
         self.messageObserver = MessageObserver(messageID: message.messageID, contextProvider: contextProvider)
@@ -109,7 +109,12 @@ class SingleMessageViewModel {
             guard self?.message != newMessageEntity else {
                 return
             }
-            self?.message = newMessageEntity
+            self?.messageEntity.mutate({ value in
+                value = newMessageEntity
+            })
+            DispatchQueue.main.async {
+                self?.propagateMessageData()
+            }
         }
     }
 
@@ -305,6 +310,7 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
         let isScheduledSend = message.isScheduledSend
 
         var actions = toolbarActionProvider.messageToolbarActions.addMoreActionToTheLastLocation()
+        actions.removeAll(where: { $0 == .snooze })
 
         if isScheduledSend {
             let forbidActions: [MessageViewActionSheetAction] = [

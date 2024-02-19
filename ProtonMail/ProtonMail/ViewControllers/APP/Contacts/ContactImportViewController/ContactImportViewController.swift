@@ -50,8 +50,6 @@ class ContactImportViewController: UIViewController {
 
     var reloadAllContact: (() -> Void)?
 
-    private lazy var contacts: [CNContact] = dependencies.addressBookService.getAllContacts()
-
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
         super.init(nibName: "ContactImportViewController", bundle: nil)
@@ -131,7 +129,9 @@ class ContactImportViewController: UIViewController {
     }
 
     private func retrieveContacts() {
-        self.appleContactParser?.queueImport(contacts: self.contacts)
+        dependencies.addressBookService.getAllDeviceContacts { [weak self] contacts in
+            self?.appleContactParser?.queueImport(contacts: contacts)
+        }
     }
 }
 

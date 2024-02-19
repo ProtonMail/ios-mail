@@ -19,7 +19,6 @@ import Foundation
 
 enum AttachmentDecrypterError: Error {
     case failDecodingKeyPacket
-    case failEncodingString
     case foundNilData
 }
 
@@ -28,18 +27,6 @@ struct AttachmentDecrypter {
     static func decryptAndEncode(fileUrl: URL, attachmentKeyPacket: String?, userKeys: UserKeys) throws -> String {
         let data = try decrypt(fileUrl: fileUrl, attachmentKeyPacket: attachmentKeyPacket, userKeys: userKeys)
         return data.base64EncodedString(options: .lineLength64Characters)
-    }
-
-    static func decryptAndEncodePublicKey(
-        fileUrl: URL,
-        attachmentKeyPacket: String?,
-        userKeys: UserKeys
-    ) throws -> String {
-        let data = try decrypt(fileUrl: fileUrl, attachmentKeyPacket: attachmentKeyPacket, userKeys: userKeys)
-        guard let encodedString = String(data: data, encoding: .utf8) else {
-            throw AttachmentDecrypterError.failEncodingString
-        }
-        return encodedString
     }
 
     static func decrypt(fileUrl: URL, attachmentKeyPacket: String?, userKeys: UserKeys) throws -> Data {

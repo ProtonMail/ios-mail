@@ -22,6 +22,7 @@ final class ToolbarSettingViewModel {
     typealias Dependencies = ToolbarCustomizeViewModel<MessageViewActionSheetAction>.Dependencies
     & HasSaveToolbarActionSettings
     & HasToolbarActionProvider
+    & HasUserManager
 
     lazy var listViewToolbarCustomizeViewModel: ToolbarCustomizeViewModel<MessageViewActionSheetAction> = {
         let viewModel = ToolbarCustomizeViewModel<MessageViewActionSheetAction>(
@@ -37,10 +38,14 @@ final class ToolbarSettingViewModel {
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
+        var allActions = MessageViewActionSheetAction.allActionsOfMessageView()
+        if !dependencies.user.isSnoozeEnabled {
+            allActions.removeAll(where: { $0 == .snooze })
+        }
 
         currentViewModeToolbarCustomizeViewModel = .init(
             currentActions: dependencies.toolbarActionProvider.messageToolbarActions,
-            allActions: MessageViewActionSheetAction.allActionsOfMessageView(),
+            allActions: allActions,
             dependencies: dependencies
         )
     }

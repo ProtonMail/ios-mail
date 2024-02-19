@@ -38,22 +38,6 @@ extension TableContainerViewModel: BannerRequester {
     internal func errorBannerToPresent() -> BannerView? {
         return self.latestErrorBanner
     }
-
-    internal func showErrorBanner(_ title: String,
-                                  action: (() -> Void)? = nil,
-                                  secondConfig: BannerView.ButtonConfiguration? = nil) {
-        DispatchQueue.main.async {
-            let config = action == nil ? nil : BannerView.ButtonConfiguration(title: LocalString._retry, action: action)
-            self.latestErrorBanner?.remove(animated: true)
-            self.latestErrorBanner = BannerView(appearance: .red, message: title, buttons: config, button2: secondConfig, offset: 8.0)
-
-            #if !APP_EXTENSION
-            UIApplication.shared.sendAction(#selector(BannerPresenting.presentBanner(_:)), to: nil, from: self, for: nil)
-            #else
-            // FIXME: send message via window
-            #endif
-        }
-    }
 }
 
 @objc protocol BannerPresenting {

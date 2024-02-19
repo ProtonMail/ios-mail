@@ -29,7 +29,7 @@ final class EventUpdatePublisher {
         trackLifetime()
     }
 
-    func startObserve(userID: UserID, onContentChanged: @escaping ([UserEvent]) -> Void) {
+    func startObserve(userID: UserID, onContentChanged: @escaping ([UserEventEntity]) -> Void) {
         let predicate = NSPredicate(
             format: "(%K == %@)",
             UserEvent.Attributes.userID,
@@ -47,7 +47,9 @@ final class EventUpdatePublisher {
             sortDescriptors: sortDescriptors,
             contextProvider: contextProvider
         )
-        cancellable = dataPublisher?.contentDidChange.sink(receiveValue: onContentChanged)
+        cancellable = dataPublisher?.contentDidChange
+            .map { $0.map { UserEventEntity(userEvent: $0) } }
+            .sink(receiveValue: onContentChanged)
         dataPublisher?.start()
     }
 }

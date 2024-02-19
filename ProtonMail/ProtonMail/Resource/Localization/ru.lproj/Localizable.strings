@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Вы собираетесь запустить браузер и перейти по адресу";
 
 /* link opeining confirmation */
@@ -59,28 +58,45 @@
 /* menu title */
 "Inbox" = "Входящие";
 
-/* menu title */
+/*
+ menu title
+ Springboard (3D Touch) shortcuts action
+ VoiceOver: email is starred
+*/
 "Starred" = "Со звёздочками";
 
-/* menu title */
+/*
+ menu title
+ Push notification action to archive
+ The title of the archive action in action sheet
+*/
 "Archive" = "Архив";
 
 /* menu title */
 "Drafts" = "Черновики";
 
-/* mail location title */
+/*
+ mail location title
+ menu title
+*/
 "All Mail" = "Все письма";
 
 /* menu title */
 "Sent" = "Отправленные";
 
-/* mail location desc */
+/*
+ mail location desc
+ menu title
+*/
 "Trash" = "Корзина";
 
 /* menu title */
 "Spam" = "Спам";
 
-/* Action and title */
+/*
+ Action and title
+ menu title
+*/
 "Contacts" = "Контакты";
 
 /* menu title (contact groups) */
@@ -89,19 +105,28 @@
 /* menu title */
 "Settings" = "Настройки";
 
-/* Alert title to confirm signout */
+/*
+ Alert title to confirm signout
+ menu title
+*/
 "Sign out" = "Выйти";
 
 /* menu title */
 "Lock The App" = "Заблокировать приложение";
 
-/* menu title */
+/*
+ menu title
+ The title of a subscription plans screen
+*/
 "Subscription" = "Подписка";
 
 /* menu title */
 "Manage accounts" = "Управление учётными записями";
 
-/* menu title */
+/*
+ menu title
+ The voiceiver title of the add attachment button in the tool bar of composer
+*/
 "Add attachment" = "Добавить вложение";
 
 /* menu title */
@@ -112,9 +137,6 @@
 
 /* Description after message have been sent */
 "Message sent" = "Сообщение отправлено";
-
-/* Description */
-"Sent Failed" = "Ошибка отправки";
 
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Тут ничего нет";
@@ -142,9 +164,6 @@
 
 /* Title */
 "You have a new email!" = "Вы получили новое письмо!";
-
-/* Message */
-"You have %d new emails!" = "У вас %d новых писем!";
 
 /* abbreviation of reply: */
 "Re:" = "Ответ:";
@@ -206,13 +225,19 @@
 /* button title */
 "Apply Password" = "Применить пароль";
 
-/* Action */
+/*
+ Action
+ Springboard (3D Touch) shortcuts action
+*/
 "Compose" = "Новое письмо";
 
 /* Composer expiration page title */
 "Message expiration" = "Срок действия сообщения";
 
-/* contacts default label type */
+/*
+ contacts default label type
+ Custom option for time config picker
+*/
 "Custom" = "Пользовательский";
 
 /* Description */
@@ -392,7 +417,13 @@
 /* Done action */
 "Done" = "Готово";
 
-/* Button to cancel encrypted search */
+/*
+ Button to cancel encrypted search
+ Cancel action
+ general cancel action
+ Title for the alert button to cancel delete all downloaded messages.
+ Title for the alert button to cancel disable content search.
+*/
 "Cancel" = "Отменить";
 
 /* Got it action */
@@ -419,16 +450,26 @@
 /* message From: field text */
 "From:" = "От:";
 
-/* message To: feild */
+/*
+ message To: feild
+ Title
+*/
 "To" = "Кому";
 
-/* message Cc: feild */
+/*
+ message Cc: feild
+ Title
+*/
 "Cc" = "Копия";
 
 /* message Bcc: feild */
 "Bcc:" = "Cкр:";
 
-/* general delete action */
+/*
+ general delete action
+ The title of the delete action in action sheet
+ Title for the alert button to delete all downloaded messages.
+*/
 "Delete" = "Удалить";
 
 /* general close action */
@@ -437,7 +478,10 @@
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Срок вашей сессии истёк, потому что вы были неактивны некоторое время или она была прервана. Пожалуйста, войдите снова.";
 
-/* Springboard (3D Touch) shortcuts action */
+/*
+ Springboard (3D Touch) shortcuts action
+ Title
+*/
 "Search" = "Поиск";
 
 /* Alert title */
@@ -452,7 +496,10 @@
 /* Action */
 "Send" = "Отправить";
 
-/* Action */
+/*
+ Action
+ The action title of the alert of the user trying to send a message that was schedule-send.
+*/
 "Schedule send" = "Запланированная отправка";
 
 /* Alert title */
@@ -477,7 +524,7 @@
 "The request timed out." = "Истекло время ожидания запроса.";
 
 /* Message */
-"Proton servers are unreachable.\nVisit our status page for details." = "Proton servers are unreachable.\nVisit our status page for details.";
+"Proton servers are unreachable.\nVisit our status page for details." = "Серверы Proton недоступны.\nПосмотрите нашу страницу состояния для получения подробной информации.";
 
 /* Title */
 "No connectivity detected…" = "Подключение не обнаружено…";
@@ -488,7 +535,10 @@
 /* Title */
 "Save" = "Сохранить";
 
-/* Action */
+/*
+ Action
+ The button title of the scheduled message banner.
+*/
 "Edit" = "Изменить";
 
 /* Error message */
@@ -548,7 +598,10 @@
 /* Hint when users delete contact offline  */
 "Contact deleted, will be synced when connection is available" = "Контакт удален. Он будет синхронизирован, когда подключение станет доступно";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup2
+*/
 "Confirm" = "Подтвердить";
 
 /* Title */
@@ -566,7 +619,10 @@
 /* Action */
 "Later" = "Позже";
 
-/* Action */
+/*
+ Action
+ The text for downloaded messages in local storage when encrypted search is disabled.
+*/
 "Disabled" = "Отключен";
 
 /* contact placeholder */
@@ -575,7 +631,12 @@
 /* top left back button */
 "Back" = "Назад";
 
-/* A *short* description saying that there is no contact group associated with this contact email */
+/*
+ A *short* description saying that there is no contact group associated with this contact email
+ Action title of none
+ The protection title of None protection
+ Title
+*/
 "None" = "Нет";
 
 /* lock app option */
@@ -605,7 +666,10 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Вы не можете сделать адрес %@ основным т.к. это платная функция.";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup1
+*/
 "Continue" = "Продолжить";
 
 /* error message */
@@ -629,10 +693,16 @@
 /* Error */
 "Unknown Error" = "Неизвестная ошибка";
 
-/* Action */
+/*
+ Action
+ The title of loading remote content banner.
+*/
 "Load remote content" = "Загрузить внешнее содержимое";
 
-/* settings general section title */
+/*
+ settings general section title
+ title
+*/
 "Change password" = "Изменить пароль";
 
 /* Title */
@@ -911,7 +981,11 @@
 /* Error */
 "Can't open the file" = "Невозможно открыть файл";
 
-/* Action */
+/*
+ Action
+ alternative routing link name in description
+ The title of learn more link
+*/
 "Learn more" = "Узнать больше";
 
 /* Action */
@@ -959,7 +1033,10 @@
 /* Action title of move to archive */
 "Move to archive" = "Переместить в Архив";
 
-/* Action title of move to spam */
+/*
+ Action title of move to spam
+ The title of the spam action in action sheet
+*/
 "Move to spam" = "Переместить в спам";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
@@ -1004,7 +1081,10 @@
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Вместо этого, мы рекомендуем установить пароль или отключить PGP для следующих получателей:";
 
-/* A option title that enable/disable notification feature */
+/*
+ A option title that enable/disable notification feature
+ cell title in device settings
+*/
 "Notifications" = "Уведомления";
 
 /* VoiceOver: email belongs to folders */
@@ -1045,6 +1125,9 @@
 
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Удалить группу контактов";
+
+/* The string that describes how many contact groups are currently selected */
+"%d Selected" = "%d Выбрано";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Пожалуйста, выберите по крайней мере один адрес электронной почты для группы контактов";
@@ -1091,7 +1174,10 @@
 /* Alert to confirm signout */
 "You will be switched to %@" = "Вы будете переключены на %@";
 
-/* Alert to confirm sign out */
+/*
+ Alert to confirm sign out
+ Alert when sign out non-primary account from account manager
+*/
 "Are you sure you want to sign out?" = "Вы уверены, что хотите выйти?";
 
 /* Alert to confirm sign out when only one account signed in */
@@ -1154,7 +1240,10 @@
 /* cell title in device settings */
 "Language" = "Язык";
 
-/* cell title in device settings */
+/*
+ cell title in device settings
+ The title of combined contact in settings
+*/
 "Combined contacts" = "Объединённые контакты";
 
 /* cell title in app settings */
@@ -1235,9 +1324,6 @@
 /* The unread title of unread action button in mailbox view */
 "unread" = "непрочитанное";
 
-/* The title of navigation bar title of mailbox view while selecting the message */
-"Selected" = "Выбрано";
-
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Обновлено >1 часа назад.";
 
@@ -1253,7 +1339,10 @@
 /* The text shown on the mailbox when the primary user changed */
 "Signed in as %@" = "Вошел как %@";
 
-/* The title of the star action in action sheet */
+/*
+ The title of the star action in action sheet
+ VoiceOver title of star button in the message view
+*/
 "Star" = "Добавить в Избранное";
 
 /* The title of the star action in action sheet */
@@ -1262,10 +1351,16 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Отметить как непрочитанное";
 
-/* Push notification action mark as read */
+/*
+ Push notification action mark as read
+ The title of the read action in action sheet
+*/
 "Mark as read" = "Отметить как прочитанное";
 
-/* Push notification action move to trash */
+/*
+ Push notification action move to trash
+ The title of the remove action in action sheet
+*/
 "Move to trash" = "Переместить в Корзину";
 
 /* The title of the remove action in action sheet */
@@ -1277,10 +1372,10 @@
 /* The title of the view message in dark mode action in action sheet */
 "View message in Dark mode" = "Посмотреть сообщение в Темной теме";
 
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Включите эту функцию для автозаполнения адресов электронной почты из контактов всех ваших авторизованных аккаунтов.";
-
-/* alternative routing description */
+/*
+ alternative routing description
+ The footer of alternative routing setting
+*/
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "В случае блокировки сайтов Proton эта настройка позволяет приложению попробовать альтернативную сетевую маршрутизацию, чтобы достигнуть Proton, что может быть полезно для обхода брандмауэров или сетевых проблем. Для большей надёжности мы рекомендуем оставить эту настройку включённой. %1$@";
 
 /* The title of alternative routing settings */
@@ -1401,7 +1496,7 @@
 "Inherit color from parent folder" = "Наследовать цвет от родительской папки";
 
 /* section title */
-"Select color" = "Select color";
+"Select color" = "Выберите цвет";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "Вы не подключены к сети. Мы не можем показать содержимое вашего сообщения.";
@@ -1442,8 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Пожаловаться на фишинг";
 
-/* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "Не спам (переместить во Входящие)";
+"Not spam (move to inbox)" = "Not spam (move to inbox)";
 
 /* No comment provided by engineer. */
 "Move to" = "Переместить в";
@@ -1782,7 +1876,7 @@
 "You can now choose and rearrange the actions in this bar" = "Теперь вы можете выбирать и изменять действия на этой панели";
 
 /* Button to block a sender */
-"Block messages from this sender" = "Block messages from this sender";
+"Block messages from this sender" = "Заблокировать сообщения от этого отправителя";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Заблокировать";
@@ -1831,6 +1925,12 @@
 /* Button inside the banner */
 "Load" = "Загрузить";
 
+/* As in: event organizer */
+"Organizer" = "Organizer";
+
+/* Button to hide some items in the list to conserve screen estate */
+"Show less" = "Show less";
+
 /* Official badge next to sender's name */
 "Official" = "Официальный";
 
@@ -1863,6 +1963,21 @@
 
 /* The title of the maybe later button in referral prompt view. */
 "Maybe later" = "Может, позже";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Включите эту функцию для автозаполнения адресов электронной почты из контактов всех ваших авторизованных аккаунтов.";
+
+/* contacts auto import title in settings */
+"Auto-import device contacts" = "Auto-import device contacts";
+
+/* contacts auto import footer in settings */
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+
+/* Auto import alert title */
+"Auto-import enabled" = "Auto-import enabled";
+
+/* Auto import alert message */
+"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
 
 /* Settings lock protection section */
 "Protection" = "Защита";
@@ -1928,22 +2043,19 @@
 "Application logs" = "Журналы приложения";
 
 /* The title of the setting of the next msg after move */
-"Next message after move" = "Следующее сообщение после перемещения";
-
-/* The title of the row inside the setting page of next msg after move function. */
-"Navigate to next message after move" = "Перейти к следующему сообщению после перемещения";
+"Jump to next message" = "Jump to next message";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Перемещение сообщения (например, в архив) приведёт к переходу к следующему сообщению.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
 
 /* Message for error when app set up at launch fails */
-"An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
+"An unexpected error occurred, please contact support.\nError: %@" = "Произошла непредвиденная ошибка, обратитесь в службу поддержки.\nОшибка: %@";
 
 /* Title for error when app set up at launch fails */
-"Insufficient disk space" = "Insufficient disk space";
+"Insufficient disk space" = "Недостаточно места на диске";
 
 /* Message for error when app set up at launch fails */
-"The application cannot open due to insufficient disk space. Please delete some data and try again" = "The application cannot open due to insufficient disk space. Please delete some data and try again";
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Приложение не открывается из-за недостатка места на диске. Пожалуйста, удалите некоторые данные и попробуйте снова";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Не удалось открыть сообщение, попробуйте ещё раз.";
@@ -1961,7 +2073,7 @@
 "Reply all (to last message)" = "Ответить всем (на последнее сообщение)";
 
 /* The action title in the action sheet of the composing new message */
-"New message" = "New message";
+"New message" = "Новое сообщение";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Настроить";
@@ -1970,7 +2082,7 @@
 "Bug Report Place Holder" = "---Чтобы мы могли вам помочь, сообщите как можно больше подробностей---\n\nКраткое описание:\n\nВозникала ли проблема чаще одного раза: да/нет\nШаги для воспроизведения проблемы:\nОжидаемый результат:\nФактический результат:\nКомментарии:";
 
 /* Checkbox to attach local application logs to the bug report. */
-"Include logs" = "Include logs";
+"Include logs" = "Добавить журналы";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Попробуйте другой поисковый запрос.";
@@ -1993,7 +2105,10 @@
 /* Message of the alert to confirm enabling of the auto delete option */
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Это удалит все сообщения, находящиеся в корзине или спаме более 30 дней, включая сообщения, находящиеся в этих папках сейчас.";
 
-/* Button to enable encrypted search */
+/*
+ Button to enable encrypted search
+ The title of the button to move to settings and enable encrypted search.
+*/
 "Enable" = "Включить";
 
 /* Text to advertise the auto delete feature to free users */
@@ -2015,37 +2130,40 @@
 "Empty trash" = "Очистить Корзину";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Clear out the junk";
+"Clear out the junk" = "Очистить от спама";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Автоматически удалять сообщения старше 30 дней из Корзины и Спама. Воспользуйтесь этими и другими функциями после обновления.";
 
 /* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Up to 3 TB of storage";
+"Up to 3 TB of storage" = "До 3 ТБ хранилища";
 
 /* Text to advertise what upgrading will provide */
-"Custom email domains" = "Custom email domains";
+"Custom email domains" = "Пользовательские домены электронной почты";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "Sender changed";
+"Sender changed" = "Отправитель изменен";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
-"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Первоначальный отправитель этого сообщения больше не действителен. Ваше сообщение будет отправлено с адреса по умолчанию %@.";
+
+/* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
+"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
 
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Display name";
+"Display name" = "Отображаемое имя";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "Имя";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "Last name";
+"Last name" = "Фамилия";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Display name field cannot be empty";
+"Display name field cannot be empty" = "Поле отображаемого имени не может быть пустым.";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "Имя контакта слишком длинное";
 
 /* The button text for add profile picture */
 "Add photo" = "Добавить фото";
@@ -2054,15 +2172,27 @@
 "Edit photo" = "Изменить фото";
 
 /* The title of select all button for select all messages feature */
-"Select all" = "Select all";
+"Select all" = "Выделить все";
 
-/* The title of PIN code disable view  */
-"Disable PIN code" = "Disable PIN code";
+/* The title of unselect all button for select all messages feature */
+"Unselect all" = "Unselect all";
+
+/* Warning message will be shown to user when user try to select more than acceptable message */
+"Maximum selection reached" = "Maximum selection reached";
+
+/* Placeholder if message sender is empty */
+"No Recipient" = "No Recipient";
+
+/* The title of PIN code disable view */
+"Disable PIN code" = "Отключить PIN";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Установите PIN-код";
 
-/* The title of PIN code setup2 view */
+/*
+ The title of PIN code setup2 view
+ The title of textfield of PIN code setup2
+*/
 "Repeat PIN code" = "Повторите PIN-код";
 
 /* The title of textfield of PIN code setup1 */
@@ -2090,7 +2220,55 @@
 "Unsubscribe from mailing list" = "Отписаться от списка рассылки";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Отписаться?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Это отменит вашу подписку на рассылку. Отправитель будет уведомлен о том, чтобы больше не отправлять электронные письма на этот адрес.";
+
+/* Alert telling the user that we are unable to preview this attachment */
+"Unable to preview this attachment" = "Unable to preview this attachment";
+
+/* Title for banner saying that we are currently downloading the attachment to preview it */
+"Downloading attachment" = "Downloading attachment";
+
+/* The banner title that is shown in the message detail view. */
+"Snoozed until %@" = "Snoozed until %@";
+
+/* The title of the button in the banner that is shown in the message detail view. */
+"Unsnooze" = "Unsnooze";
+
+/* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
+"Snooze until %@" = "Snooze until %@";
+
+/* Notification banner when user unsnooze a conversation */
+"Conversation unsnoozed" = "Conversation unsnoozed";
+
+/* The title of snooze config in action sheet */
+"Snooze until..." = "Snooze until...";
+
+/* One of snooze option shows in action sheet */
+"Later this week" = "Later this week";
+
+/* One of snooze option shows in action sheet */
+"This weekend" = "This weekend";
+
+/* One of snooze option shows in action sheet */
+"Next week" = "Next week";
+
+/* An error message will be shown to user when user select past snooze time */
+"Please select a time in the future" = "Please select a time in the future";
+
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Want to snooze any time?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Неограниченное количество папок, ярлыков и фильтров";
+
+/* The title of the action option that will make the inline attachment as normal attachment. */
+"Add it as attachment" = "Add it as attachment";

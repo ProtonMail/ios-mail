@@ -26,7 +26,7 @@ final class ProtonVCards {
         let object: VCardObject
     }
 
-    private let cards: [CardData]
+    private let originalCards: [CardData]
     private var cardObjects: [CardObject] = []
     private let userKeys: [ArmoredKey]
     private let mailboxPassphrase: Passphrase
@@ -36,20 +36,21 @@ final class ProtonVCards {
     ///   - userKeys: User keys that will be used to try to decrypt and verify vCards depending on `CardDataType`
     ///   - mailboxPassphrase: User's mailbox pasphrase used to decrypt and verify vCards  depending on `CardDataType`
     init(cards: [CardData], userKeys: [ArmoredKey], mailboxPassphrase: Passphrase) {
-        self.cards = cards
+        self.originalCards = cards
         self.userKeys = userKeys
         self.mailboxPassphrase = mailboxPassphrase
     }
 
-    /// Call this function before trying to access the vCard fields
+    /// Call this function before trying to access the vCard fields to decrypt and verify the signature
     func read() throws {
-        cardObjects = try cards.map { card in
+        try validateCardDataTypeUniqueness(cards: originalCards)
+        cardObjects = try originalCards.map { card in
             let pmniCard: PMNIVCard
             switch card.type {
             case .PlainText:
                 pmniCard = try parse(card: card)
             case .EncryptedOnly:
-                pmniCard = try decrypt(encryptedCard: card)
+                pmniCard = try decryptAndParse(encryptedCard: card)
             case .SignedOnly:
                 pmniCard = try verifyAndParse(signedCard: card)
             case .SignAndEncrypt:
@@ -58,6 +59,58 @@ final class ProtonVCards {
             return CardObject(type: card.type, object: VCardObject(object: pmniCard))
         }
     }
+
+    /// Validates that there is no more than one card for each CardDataType to verify this is a valid Proton contact
+    private func validateCardDataTypeUniqueness(cards: [CardData]) throws {
+        let duplicateCardType = Dictionary(grouping: cards, by: \.type).filter { $1.count > 1 }.keys
+        guard duplicateCardType.isEmpty else {
+            throw ProtonVCardsError.foundDuplicatedCardDataTypes
+        }
+    }
+
+    /// Call this function when you want to get the latest data signed and encrypted into an array of `CardData`
+    func write(userKey: Key, mailboxPassphrase: Passphrase) throws -> [CardData] {
+        guard let signedOnlyCardObject = cardObject(ofType: .SignedOnly)?.object else {
+            SystemLogger.log(message: "type .SignedOnly not found", category: .contacts, isError: true)
+            throw ProtonVCardsError.vCardOfTypeNotFound
+        }
+        guard let signedCard = AppleContactParser.createCard2(
+            by: signedOnlyCardObject.object,
+            uuid: signedOnlyCardObject.object.getUid(),
+            userKey: userKey,
+            passphrase: mailboxPassphrase
+        ) else {
+            throw ProtonVCardsError.failedWritingSignedCardData
+        }
+
+        guard let signedAndEncryptedCardObject = cardObject(ofType: .SignAndEncrypt)?.object else {
+            SystemLogger.log(message: "type .SignAndEncrypt not found", category: .contacts, isError: true)
+            throw ProtonVCardsError.vCardOfTypeNotFound
+        }
+        guard let encryptedAndSignedCard = AppleContactParser.createCard3(
+            by: signedAndEncryptedCardObject.object,
+            userKey: userKey,
+            passphrase: mailboxPassphrase,
+            uuid: signedAndEncryptedCardObject.object.getUid()
+        ) else {
+            throw ProtonVCardsError.failedWritingSignedCardData
+        }
+
+        let originalDataDict = Dictionary(grouping: originalCards, by: \.type)
+        let result: [CardData] = [
+            originalDataDict[.PlainText]?.first,
+            originalDataDict[.EncryptedOnly]?.first,
+            signedCard,
+            encryptedAndSignedCard
+        ].compactMap { $0 }
+
+        return result
+    }
+
+    private func cardObject(ofType type: CardDataType) -> CardObject? {
+        guard let cardObject = cardObjects.first(where: { $0.type == type }) else { return nil }
+        return cardObject
+    }
 }
 
 // MARK: read contact fields
@@ -65,14 +118,14 @@ final class ProtonVCards {
 extension ProtonVCards {
 
     func name(fromCardOfType type: CardDataType = .PlainText) -> ContactField.Name {
-        guard let card = cardObjects.first(where: { $0.type == type }) else {
+        guard let card = cardObject(ofType: type) else {
             return ContactField.Name(firstName: "", lastName: "")
         }
         return card.object.name()
     }
 
     func formattedName(fromCardOfType type: CardDataType = .PlainText) -> String {
-        guard let card = cardObjects.first(where: { $0.type == type }) else { return "" }
+        guard let card = cardObject(ofType: type) else { return "" }
         return card.object.formattedName()
     }
 
@@ -128,13 +181,38 @@ extension ProtonVCards {
 // MARK: read contact fields
 
 extension ProtonVCards {
-    
-    /// Replaces the emails of the signed card which is where emails should be according to Proton specs
-    func replaceEmails(with emails: [ContactField.Email]) throws {
-        cardObjects
-            .first(where: { $0.type == .SignedOnly })?
-            .object
-            .replaceEmails(with: emails)
+
+    func replaceName(with name: ContactField.Name) {
+        cardObject(ofType: .SignAndEncrypt)?.object.replaceName(with: name)
+    }
+
+    func replaceFormattedName(with name: String) {
+        cardObject(ofType: .SignedOnly)?.object.replaceFormattedName(with: name)
+    }
+
+    /// Replaces the emails of the signed card which is where they should be according to Proton specs
+    func replaceEmails(with emails: [ContactField.Email]) {
+        cardObject(ofType: .SignedOnly)?.object.replaceEmails(with: emails)
+    }
+
+    /// Replaces the addresses of the encrypted card which is where they should be according to Proton specs
+    func replaceAddresses(with addresses: [ContactField.Address]) {
+        cardObject(ofType: .SignAndEncrypt)?.object.replaceAddresses(with: addresses)
+    }
+
+    /// Replaces the phone numbers of the encrypted card which is where they should be according to Proton specs
+    func replacePhoneNumbers(with phoneNumbers: [ContactField.PhoneNumber]) {
+        cardObject(ofType: .SignAndEncrypt)?.object.replacePhoneNumbers(with: phoneNumbers)
+    }
+
+    /// Replaces the urls of the encrypted card which is where they should be according to Proton specs
+    func replaceUrls(with urls: [ContactField.Url]) {
+        cardObject(ofType: .SignAndEncrypt)?.object.replaceUrls(with: urls)
+    }
+
+    /// Replaces the urls of the encrypted card which is where they should be according to Proton specs
+    func replaceOtherInfo(infoType: InformationType, with info: [ContactField.OtherInfo]) {
+        cardObject(ofType: .SignAndEncrypt)?.object.replaceOtherInfo(infoType: infoType, with: info)
     }
 }
 
@@ -143,7 +221,7 @@ extension ProtonVCards {
 extension ProtonVCards {
 
     private func parseVCard(_ card: String) throws -> PMNIVCard {
-        guard let parsedObject = PMNIEzvcard.parseFirst(card) else { throw VCardReaderError.failedParsingVCardString }
+        guard let parsedObject = PMNIEzvcard.parseFirst(card) else { throw ProtonVCardsError.failedParsingVCardString }
         return parsedObject
     }
 
@@ -151,7 +229,7 @@ extension ProtonVCards {
         return try parseVCard(card.data)
     }
 
-    private func decrypt(encryptedCard: CardData) throws -> PMNIVCard {
+    private func decryptAndParse(encryptedCard: CardData) throws -> PMNIVCard {
         let decryptedData = try decrypt(text: encryptedCard.data)
         return try parseVCard(decryptedData)
     }
@@ -190,7 +268,7 @@ extension ProtonVCards {
             } catch {}
         }
         if !isVerified {
-            throw VCardReaderError.failedVerifyingCard
+            throw ProtonVCardsError.failedVerifyingCard
         }
     }
 
@@ -206,15 +284,18 @@ extension ProtonVCards {
         }
         guard let decryptedText else {
             if let caughtError { throw caughtError }
-            throw VCardReaderError.failedDecryptingVCard
+            throw ProtonVCardsError.failedDecryptingVCard
         }
         return decryptedText
     }
 }
 
-enum VCardReaderError: Error {
+enum ProtonVCardsError: Error {
+    case foundDuplicatedCardDataTypes
     case failedParsingVCardString
     case failedDecryptingVCard
     case failedVerifyingCard
-    case expectedVCardNotFound
+    case vCardOfTypeNotFound
+    case failedWritingSignedCardData
+    case failedWritingEncryptedAndSignedCardData
 }

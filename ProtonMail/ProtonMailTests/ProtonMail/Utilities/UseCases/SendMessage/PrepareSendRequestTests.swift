@@ -369,10 +369,9 @@ extension PrepareSendRequestTests {
             sign: config.sign,
             pgpScheme: config.pgpScheme,
             mimeType: config.mimeType,
-            publicKeys: config.useRecipientPublicKey ? dummyRecipientPublicKey : nil,
+            publicKey: config.useRecipientPublicKey ? dummyRecipientPublicKey : nil,
             isPublicKeyPinned: false,
             hasApiKeys: false,
-            hasPinnedKeys: false,
             error: nil
         )
     }

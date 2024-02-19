@@ -147,8 +147,23 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         NotificationCenter.default.removeObserver(self)
     }
 
-    func fetchMessages(labelID: LabelID, endTime: Int, fetchUnread: Bool, completion: @escaping (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void) {
-        let request = FetchMessagesByLabelRequest(labelID: labelID.rawValue, endTime: endTime, isUnread: fetchUnread)
+    func fetchMessages(
+        labelID: LabelID,
+        endTime: Int,
+        fetchUnread: Bool,
+        completion: @escaping (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void
+    ) {
+        var descending = true
+        if labelID == Message.Location.scheduled.labelID || labelID == Message.Location.snooze.labelID {
+            descending = false
+        }
+        let request = FetchMessagesByLabelRequest(
+            labelID: labelID.rawValue,
+            endTime: endTime,
+            sort: labelID == Message.Location.snooze.labelID ? .snoozeTime : .time,
+            isUnread: fetchUnread,
+            descending: descending
+        )
         apiService.perform(request: request, jsonDictionaryCompletion: completion)
     }
 
@@ -202,7 +217,17 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     }
                 }
             }
-            let request = FetchMessagesByLabelRequest(labelID: labelID.rawValue, endTime: time, isUnread: isUnread)
+            var descending = true
+            if labelID == Message.Location.scheduled.labelID || labelID == Message.Location.snooze.labelID {
+                descending = false
+            }
+            let request = FetchMessagesByLabelRequest(
+                labelID: labelID.rawValue,
+                endTime: time,
+                sort: labelID == Message.Location.snooze.labelID ? .snoozeTime : .time,
+                isUnread: isUnread,
+                descending: descending
+            )
             self.apiService.perform(request: request, jsonDictionaryCompletion: completionWrapper)
         }
     }
@@ -581,13 +606,36 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 isUnread: isUnread,
                 showMoved: showMoved
             )
-            let sortDescriptors = [
-                NSSortDescriptor(
-                    key: #keyPath(Message.time),
-                    ascending: isAscending
-                ),
-                NSSortDescriptor(key: #keyPath(Message.order), ascending: isAscending)
-            ]
+            var sortDescriptors: [NSSortDescriptor] = []
+            if labelID == Message.Location.snooze.labelID {
+                sortDescriptors = [
+                    NSSortDescriptor(
+                        key: #keyPath(Message.snoozeTime),
+                        ascending: true
+                    ),
+                    NSSortDescriptor(key: #keyPath(Message.order), ascending: isAscending)
+                ]
+            } else if labelID == Message.Location.inbox.labelID {
+                sortDescriptors = [
+                    NSSortDescriptor(
+                        key: #keyPath(Message.snoozeTime),
+                        ascending: isAscending
+                    ),
+                    NSSortDescriptor(
+                        key: #keyPath(Message.time),
+                        ascending: isAscending
+                    ),
+                    NSSortDescriptor(key: #keyPath(Message.order), ascending: isAscending)
+                ]
+            } else {
+                sortDescriptors = [
+                    NSSortDescriptor(
+                        key: #keyPath(Message.time),
+                        ascending: isAscending
+                    ),
+                    NSSortDescriptor(key: #keyPath(Message.order), ascending: isAscending)
+                ]
+            }
             return contextProvider.createFetchedResultsController(
                 entityName: Message.Attributes.entityName,
                 predicate: predicate,
@@ -597,10 +645,25 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             )
         case .conversation:
             let predicate = predicatesForConversationMode(labelID: labelID, isUnread: isUnread)
-            let sortDescriptors = [
-                NSSortDescriptor(keyPath: \ContextLabel.time, ascending: isAscending),
-                NSSortDescriptor(keyPath: \ContextLabel.order, ascending: isAscending)
-            ]
+            var sortDescriptors: [NSSortDescriptor] = []
+            if labelID == Message.Location.snooze.labelID {
+                sortDescriptors = [
+                    NSSortDescriptor(keyPath: \ContextLabel.snoozeTime, ascending: true),
+                    NSSortDescriptor(keyPath: \ContextLabel.order, ascending: isAscending)
+                ]
+            } else if labelID == Message.Location.inbox.labelID {
+                sortDescriptors = [
+                    NSSortDescriptor(keyPath: \ContextLabel.snoozeTime, ascending: isAscending),
+                    NSSortDescriptor(keyPath: \ContextLabel.time, ascending: isAscending),
+                    NSSortDescriptor(keyPath: \ContextLabel.order, ascending: isAscending)
+                ]
+            }
+            else {
+                sortDescriptors = [
+                    NSSortDescriptor(keyPath: \ContextLabel.time, ascending: isAscending),
+                    NSSortDescriptor(keyPath: \ContextLabel.order, ascending: isAscending)
+                ]
+            }
             return contextProvider.createFetchedResultsController(
                 entityName: ContextLabel.Attributes.entityName,
                 predicate: predicate,

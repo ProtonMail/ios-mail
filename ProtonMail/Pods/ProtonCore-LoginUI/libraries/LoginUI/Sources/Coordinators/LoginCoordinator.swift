@@ -212,15 +212,15 @@ final class LoginCoordinator {
         }
         DispatchQueue.main.async { [weak self] in
             performBeforeFlow.completion(data) { [weak self] result in
-                DispatchQueue.main.async { [weak self] in
+                Task { @MainActor [weak self] in
                     endLoading()
                     switch result {
                     case .success:
                         self?.completeLoginFlow(data: data)
                     case .failure(let error):
-                        self?.popAndShowError(error: .generic(message: error.localizedDescription,
-                                                              code: error.bestShotAtReasonableErrorCode,
-                                                              originalError: error))
+                        await self?.popAndShowError(error: .generic(message: error.localizedDescription,
+                                                                    code: error.bestShotAtReasonableErrorCode,
+                                                                    originalError: error))
                     }
                 }
             }
@@ -232,8 +232,9 @@ final class LoginCoordinator {
         delegate?.loginCoordinatorDidFinish(loginCoordinator: self, data: data)
     }
 
-    private func popAndShowError(error: LoginError) {
-        clearSessionAndPopToRootViewController(animated: true) { navigationController in
+    @MainActor
+    private func popAndShowError(error: LoginError) async {
+        await clearSessionAndPopToRootViewController(animated: true) { navigationController in
             guard let viewController = navigationController.topViewController else { return }
             if self.customization.customErrorPresenter?.willPresentError(error: error, from: viewController) == true {
                 return
@@ -244,8 +245,9 @@ final class LoginCoordinator {
         }
     }
 
-    private func popAndShowInfo(message: String) {
-        clearSessionAndPopToRootViewController(animated: true) { navigationController in
+    @MainActor
+    private func popAndShowInfo(message: String) async {
+        await clearSessionAndPopToRootViewController(animated: true) { navigationController in
             guard let viewController = navigationController.topViewController else { return }
             guard let errorCapable = viewController as? LoginErrorCapable else { return }
             errorCapable.showInfo(message: message)
@@ -345,7 +347,8 @@ extension LoginCoordinator: CreateAddressCoordinatorDelegate {
 
 extension LoginCoordinator: NavigationDelegate {
 
-    func userDidGoBack() {
+    @MainActor
+    func userDidGoBack() async {
 
         guard let navigationController = navigationController else { return }
 
@@ -362,7 +365,7 @@ extension LoginCoordinator: NavigationDelegate {
             // this flag prevents the unnecessary showing of the "session invalidated" message to the user
             // the message is unnecessary if the user came back to the root screen intentionally
             sessionInvalidatedDueToUserGoingBackToRootController = true
-            clearSessionAndPopToRootViewController(animated: true)
+            await clearSessionAndPopToRootViewController(animated: true)
 
         } else {
             // more than 2 VC on the stack and none of them is TwoFactorViewController
@@ -370,8 +373,9 @@ extension LoginCoordinator: NavigationDelegate {
         }
     }
 
+    @MainActor
     private func clearSessionAndPopToRootViewController(animated: Bool,
-                                                        completion: @escaping (LoginNavigationViewController) -> Void = { _ in }) {
+                                                        completion: @escaping (LoginNavigationViewController) -> Void = { _ in }) async {
 
         guard let navigationController = navigationController else { return }
 
@@ -387,7 +391,7 @@ extension LoginCoordinator: NavigationDelegate {
         // By invalidating the session here we remove the need for first attempt, improving UX.
         let sessionUID = container.api.sessionUID
         guard let authDelegate = container.api.authDelegate else { return }
-        guard let authCredential = authDelegate.authCredential(sessionUID: sessionUID) else { return }
+        guard let authCredential = await authDelegate.authCredential(sessionUID: sessionUID) else { return }
 
         container.login.logout(credential: authCredential, completion: { _ in })
 
@@ -406,7 +410,9 @@ extension LoginCoordinator: NavigationDelegate {
 
 extension LoginCoordinator: MailboxPasswordViewControllerDelegate {
     func mailboxPasswordViewControllerDidFail(error: LoginError) {
-        popAndShowError(error: error)
+        Task {
+            await popAndShowError(error: error)
+        }
     }
 
     func mailboxPasswordViewControllerDidFinish(endLoading: @escaping () -> Void, data: LoginData) {
@@ -422,7 +428,9 @@ extension LoginCoordinator: MailboxPasswordViewControllerDelegate {
 
 extension LoginCoordinator: TwoFactorViewControllerDelegate {
     func twoFactorViewControllerDidFail(error: LoginError) {
-        popAndShowError(error: error)
+        Task {
+            await popAndShowError(error: error)
+        }
     }
 
     func twoFactorViewControllerDidFinish(endLoading: @escaping () -> Void, data: LoginData) {
@@ -465,8 +473,8 @@ extension LoginCoordinator: AuthSessionInvalidatedDelegate {
             return
         }
         guard isAuthenticatedSession else { return }
-        CompletionBlockExecutor.asyncMainExecutor.execute { [weak self] in
-            self?.popAndShowInfo(message: LUITranslation.info_session_expired.l10n)
+        Task { @MainActor [weak self] in
+            await self?.popAndShowInfo(message: LUITranslation.info_session_expired.l10n)
         }
     }
 }

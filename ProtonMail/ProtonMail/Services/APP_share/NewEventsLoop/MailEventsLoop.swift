@@ -109,11 +109,20 @@ class MailEventsLoop: EventsLoop {
 
     func onError(error: EventsLoopError) {
         switch error {
-        case .cacheIsOutdated:
+        case .cacheIsOutdated, .mailCacheIsOutdated:
             SystemLogger.log(message: "Cache is outdated.", category: .eventLoop)
             Task {
                 do {
                     try await self.cacheResetUseCase.execute(type: .all)
+                } catch {
+                    SystemLogger.log(error: error, category: .eventLoop)
+                }
+            }
+        case .contactCacheIsOutdated:
+            SystemLogger.log(message: "Contact cache is outdated.", category: .eventLoop)
+            Task {
+                do {
+                    try await self.cacheResetUseCase.execute(type: .contact)
                 } catch {
                     SystemLogger.log(error: error, category: .eventLoop)
                 }

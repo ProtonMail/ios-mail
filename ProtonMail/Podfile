@@ -34,7 +34,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '14.0.12'
+  '16.0.2'
 end
 
 def crypto_variant
@@ -148,6 +148,10 @@ end
 
 target 'ProtonMailAnalytics' do
   pod 'Sentry', :git => 'git@gitlab.protontech.ch:jchen/sentry-cocoa.git', :tag => '8.9.3.fork'
+end
+
+target 'ProtonMailUI' do
+  pod 'ProtonCore-UIFoundations', :git => proton_core_path, :tag => proton_core_version
 end
 
 post_install do | installer |

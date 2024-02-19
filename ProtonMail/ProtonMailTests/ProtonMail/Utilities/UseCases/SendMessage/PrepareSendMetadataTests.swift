@@ -274,7 +274,7 @@ extension PrepareSendMetadataTests {
         return AttachmentFile(
             attachmentId: AttachmentID(rawValue: dummyAttachmentId),
             fileUrl: URL(fileURLWithPath: "localfile"),
-            encoded: Based64.encode(value: "dummy_attachment")
+            data: Data("dummy_attachment".utf8)
         )
     }
 
@@ -284,10 +284,9 @@ extension PrepareSendMetadataTests {
             sign: true,
             pgpScheme: .pgpMIME,
             mimeType: .mime,
-            publicKeys: nil,
+            publicKey: nil,
             isPublicKeyPinned: false,
             hasApiKeys: false,
-            hasPinnedKeys: false,
             error: nil
         )
         return RecipientSendPreferences(emailAddress: dummyRecipientEmailAddress, sendPreferences: preferences)

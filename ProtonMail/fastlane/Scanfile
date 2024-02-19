@@ -1,7 +1,7 @@
 code_coverage(true)
 derived_data_path("../test_output")
+disable_package_automatic_updates(true)
 output_types("junit")
 reinstall_app(true)
 workspace("Protonmail.xcworkspace")
 xcodebuild_formatter("xcodeGen/run_with_mint.sh xcbeautify")
-skip_package_dependencies_resolution(true)

@@ -18,6 +18,8 @@ extension MessageAction: Codable {
         case label
         case unlabel
         case folder
+        case unsnooze
+        case snooze
         case updateLabel
         case createLabel
         case deleteLabel
@@ -27,6 +29,7 @@ extension MessageAction: Codable {
         case updateContact
         case deleteContact
         case addContact
+        case addContacts
         case addContactGroup
         case updateContactGroup
         case deleteContactGroup
@@ -67,6 +70,10 @@ extension MessageAction: Codable {
             return "unlabel"
         case .folder:
             return "folder"
+        case .unsnooze:
+            return "unsnooze"
+        case .snooze:
+            return "snooze"
         case .updateLabel:
             return "updateLabel"
         case .createLabel:
@@ -85,6 +92,8 @@ extension MessageAction: Codable {
             return "deleteContact"
         case .addContact:
             return "addContact"
+        case .addContacts:
+            return "addContacts"
         case .addContactGroup:
             return "addContactGroup"
         case .updateContactGroup:
@@ -197,6 +206,17 @@ extension MessageAction: Codable {
                 itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs),
                 objectIDs: try nestedContainer.decode([String].self, forKey: .objectIDs)
             )
+        case .unsnooze:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .unsnooze)
+            self = .unsnooze(
+                conversationID: try nestedContainer.decode(String.self, forKey: .conversationID)
+            )
+        case .snooze:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .snooze)
+            self = .snooze(
+                conversationIDs: try nestedContainer.decode([String].self, forKey: .conversationIDs),
+                date: try nestedContainer.decode(Date.self, forKey: .date)
+            )
         case .updateLabel:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateLabel)
             self = .updateLabel(
@@ -238,6 +258,13 @@ extension MessageAction: Codable {
             self = .addContact(
                 objectID: try nestedContainer.decode(String.self, forKey: .objectID),
                 cardDatas: try nestedContainer.decode([CardData].self, forKey: .cardDatas),
+                importFromDevice: try nestedContainer.decode(Bool.self, forKey: .importFromDevice)
+            )
+        case .addContacts:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .addContacts)
+            self = .addContacts(
+                objectIDs: try nestedContainer.decode([String].self, forKey: .objectIDs),
+                contactsCards: try nestedContainer.decode([[CardData]].self, forKey: .contactsCards),
                 importFromDevice: try nestedContainer.decode(Bool.self, forKey: .importFromDevice)
             )
         case .addContactGroup:
@@ -343,6 +370,13 @@ extension MessageAction: Codable {
             try nestedContainer.encode(shouldFetch, forKey: .shouldFetch)
             try nestedContainer.encode(itemIDs, forKey: .itemIDs)
             try nestedContainer.encode(objectIDs, forKey: .objectIDs)
+        case let .unsnooze(conversationID):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .unsnooze)
+            try nestedContainer.encode(conversationID, forKey: .conversationID)
+        case let .snooze(conversationIDs, date):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .snooze)
+            try nestedContainer.encode(conversationIDs, forKey: .conversationIDs)
+            try nestedContainer.encode(date, forKey: .date)
         case let .updateLabel(labelID, name, color):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateLabel)
             try nestedContainer.encode(labelID, forKey: .labelID)
@@ -373,6 +407,11 @@ extension MessageAction: Codable {
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .addContact)
             try nestedContainer.encode(objectID, forKey: .objectID)
             try nestedContainer.encode(cardDatas, forKey: .cardDatas)
+            try nestedContainer.encode(importFromDevice, forKey: .importFromDevice)
+        case let .addContacts(objectIDs, contactsCards, importFromDevice):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .addContacts)
+            try nestedContainer.encode(objectIDs, forKey: .objectIDs)
+            try nestedContainer.encode(contactsCards, forKey: .contactsCards)
             try nestedContainer.encode(importFromDevice, forKey: .importFromDevice)
         case let .addContactGroup(objectID, name, color, emailIDs):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .addContactGroup)

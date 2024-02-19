@@ -36,10 +36,19 @@ public class FeatureFlagsRepository: FeatureFlagsRepositoryProtocol {
     private(set) var remoteDataSource: Atomic<RemoteFeatureFlagsProtocol?>
 
     /// The configuration for feature flags.
-    private(set) var userId: Atomic<String>
+    private(set) var userId: String {
+        get {
+            return _userId ?? ""
+        }
+        set {
+            _userId = newValue
+            localDatasource.value.setUserIdForActiveSession(newValue)
+        }
+    }
+
+    private var _userId: String?
 
     public internal(set) static var shared: FeatureFlagsRepository = .init(
-        userId: Atomic<String>(""),
         localDatasource: Atomic<LocalFeatureFlagsProtocol>(DefaultLocalFeatureFlagsDatasource()),
         remoteDatasource: Atomic<RemoteFeatureFlagsProtocol?>(nil)
     )
@@ -52,12 +61,11 @@ public class FeatureFlagsRepository: FeatureFlagsRepositoryProtocol {
        - localDatasource: The local data source for feature flags.
        - remoteDatasource: The remote data source for feature flags.
      */
-    private init(userId: Atomic<String>,
-                 localDatasource: Atomic<LocalFeatureFlagsProtocol>,
-                 remoteDatasource: Atomic<RemoteFeatureFlagsProtocol?>) {
-        self.userId = userId
+    init(localDatasource: Atomic<LocalFeatureFlagsProtocol>,
+         remoteDatasource: Atomic<RemoteFeatureFlagsProtocol?>) {
         self.localDatasource = localDatasource
         self.remoteDataSource = remoteDatasource
+        self._userId = localDatasource.value.userIdForActiveSession
     }
 
     // Internal func for testing
@@ -66,119 +74,111 @@ public class FeatureFlagsRepository: FeatureFlagsRepositoryProtocol {
     }
 }
 
-// MARK: - For single user clients
+// MARK: - For single-user clients
 
 public extension FeatureFlagsRepository {
 
     /**
      Updates the local data source conforming to the `LocalFeatureFlagsProtocol` protocol
      */
-    func updateLocalDataSource(with localDatasource: Atomic<LocalFeatureFlagsProtocol>) {
+    func updateLocalDataSource(_ localDatasource: Atomic<LocalFeatureFlagsProtocol>) {
         self.localDatasource = localDatasource
     }
 
     /**
-     Only for single user clients.
-
      Sets the FeatureFlagsRepository configuration with the given user id.
 
      - Parameters:
        - userId: The user id used to initialize the configuration for feature flags.
      */
-    func setUserId(with userId: String) {
-        self.userId = Atomic<String>(userId)
+    func setUserId(_ userId: String) {
+        self.userId = userId
     }
 
     /**
-     Only for single user clients.
-
      Sets the FeatureFlagsRepository remote data source with the given api service.
 
      - Parameters:
        - apiService: The api service used to initialize the remote data source for feature flags.
      */
-    func setApiService(with apiService: APIService) {
+    func setApiService(_ apiService: APIService) {
         self.remoteDataSource = Atomic<RemoteFeatureFlagsProtocol?>(DefaultRemoteDatasource(apiService: apiService))
     }
 
     /**
-     For unauth sessions or single user clients.
-
      Asynchronously fetches the feature flags from the remote data source and updates the local data source.
 
-    - Throws: An error if the operation fails.
+     - Parameters:
+        - userId: The user ID to fetch flags for.  If `nil`, uses the previously set user ID, if available.  See ``setUserId(_)``.
+        - apiService: A specific apiService tied to a userId, for multiple users app.
+
+     - Throws: An error if the operation fails.
      */
-    func fetchFlags() async throws {
-        guard let remoteDataSource = remoteDataSource.value else {
-            assertionFailure("You need to set the apiService of the remoteDataSource by calling `setApiService` in order to fetch the feature flags.")
+    func fetchFlags(for userId: String? = nil, using apiService: APIService? = nil) async throws {
+        let remoteDataSource: RemoteFeatureFlagsProtocol?
+
+        if let apiService {
+            remoteDataSource = DefaultRemoteDatasource(apiService: apiService)
+        } else {
+            remoteDataSource = self.remoteDataSource.value
+        }
+
+        guard let remoteDataSource = remoteDataSource else {
+            assertionFailure("No apiService was set. You need to set the apiService of the remoteDataSource by calling `setApiService`, or pass an apiService as an argument in order to fetch the feature flags.")
             return
         }
         let flags = try await remoteDataSource.getFlags()
-        localDatasource.value.upsertFlags(.init(flags: flags), userId: userId.value)
+
+        // Fetch flags for the supplied userId parameter, if non-nil, otherwise fetch flags
+        // for self.userId.
+        localDatasource.value.upsertFlags(.init(flags: flags), userId: userId ?? self.userId)
     }
 
     /**
-     For unauth sessions or single user clients.
-
      A Boolean function indicating if a feature flag is enabled or not.
-     The flag is fetched from the local data source and will always return
-     the value that is returned initally on the first call.
+     The flag is fetched from the local data source and is intended for use in a single-user context.
 
      - Parameters:
        - flag: The flag we want to know the state of.
+       - reloadValue: Pass `true` if you want the latest stored value for the flag. Pass `false` if  you want the "static" value, which is always the same as the first returned.
      */
-    func isEnabled(_ flag: any FeatureFlagTypeProtocol) -> Bool {
-        let flags = localDatasource.value.getFeatureFlags(userId: userId.value)
+    func isEnabled(_ flag: any FeatureFlagTypeProtocol, reloadValue: Bool) -> Bool {
+        let flags = localDatasource.value.getFeatureFlags(
+            userId: self.userId,
+            reloadFromUserDefaults: reloadValue
+        )
         return flags?.getFlag(for: flag)?.enabled ?? false
     }
 
     /**
-     For unauth sessions or single user clients.
-
-     An async Boolean function indicating if a feature flag is enabled or not.
-     The flag is fetched from the local data source and will always return
-     the value that is returned initally on the first call.
+     A Boolean function indicating if a feature flag is enabled or not.
+     The flag is fetched from the local data source and is intended for use in multi-user contexts.
 
      - Parameters:
        - flag: The flag we want to know the state of.
+       - userId: The user id for which we want to check the flag value. If the userId is `nil`, the first-set userId will be used.  See ``setUserId(_)``.
+       - reloadValue: Pass `true` if you want the latest stored value for the flag. Pass `false` if  you want the "static" value, which is always the same as the first returned.
      */
-    func isEnabled(_ flag: any FeatureFlagTypeProtocol) async throws -> Bool {
-        let flags = try await localDatasource.value.getFeatureFlags(userId: userId.value)
-        return flags?.getFlag(for: flag)?.enabled ?? false
-    }
-}
+    func isEnabled(_ flag: any FeatureFlagTypeProtocol, for userId: String?, reloadValue: Bool) -> Bool {
+        let flags: FeatureFlags?
 
-// - MARK: For multi users clients
+        if let userId {
+            flags = localDatasource.value.getFeatureFlags(
+                userId: userId,
+                reloadFromUserDefaults: reloadValue
+            )
+        } else {
+            flags = localDatasource.value.getFeatureFlags(
+                userId: self.userId,
+                reloadFromUserDefaults: reloadValue
+            )
+        }
 
-public extension FeatureFlagsRepository {
-    /**
-     Asynchronously fetches the feature flags for a specific apiService and a specific userId
-     from the remote data source and updates the local data source.
-
-    - Throws: An error if the operation fails.
-     */
-    func fetchFlags(for userId: String, with apiService: APIService) async throws {
-        let remoteDataSource = DefaultRemoteDatasource(apiService: apiService)
-        let flags = try await remoteDataSource.getFlags()
-        localDatasource.value.upsertFlags(.init(flags: flags), userId: userId)
-    }
-
-    /**
-     A Boolean function indicating if a feature flag is enabled or not for a specific user ID.
-     The flag is fetched from the local data source and will always return
-     the value that is returned initally on the first call.
-
-     - Parameters:
-       - flag: The flag we want to know the state of.
-       - userId: The user id for which we want to check the flag value
-     */
-    func isEnabled(_ flag: any FeatureFlagTypeProtocol, for userId: String) -> Bool {
-        let flags = localDatasource.value.getFeatureFlags(userId: userId)
         return flags?.getFlag(for: flag)?.enabled ?? false
     }
 }
 
-// MARK: - Commons
+// MARK: - Reset
 
 public extension FeatureFlagsRepository {
     /**
@@ -196,5 +196,12 @@ public extension FeatureFlagsRepository {
      */
     func resetFlags(for userId: String) {
         localDatasource.value.cleanFlags(for: userId)
+    }
+
+    /**
+     Resets userId.
+     */
+    func clearUserId(_ userId: String) {
+        localDatasource.value.clearUserId(userId)
     }
 }

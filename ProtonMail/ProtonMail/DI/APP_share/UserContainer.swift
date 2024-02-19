@@ -113,13 +113,19 @@ final class UserContainer: ManagedContainer {
         }
     }
 
+    var featureFlagProviderFactory: Factory<FeatureFlagProvider> {
+        self {
+            FeatureFlagProvider(featureFlagsRepository: self.featureFlagsRepository, userID: self.user.userID)
+        }
+    }
+
     var fetchAndVerifyContactsFactory: Factory<FetchAndVerifyContacts> {
         self {
             FetchAndVerifyContacts(user: self.user)
         }
     }
 
-    var fetchAttachmentFactory: Factory<FetchAttachment> {
+    var fetchAttachmentFactory: Factory<FetchAttachmentUseCase> {
         self {
             FetchAttachment(dependencies: .init(apiService: self.user.apiService))
         }
@@ -127,7 +133,7 @@ final class UserContainer: ManagedContainer {
 
     var fetchAttachmentMetadataFactory: Factory<FetchAttachmentMetadataUseCase> {
         self {
-            FetchAttachmentMetadataUseCase(dependencies: .init(apiService: self.user.apiService))
+            FetchAttachmentMetadata(dependencies: .init(apiService: self.user.apiService))
         }
     }
 

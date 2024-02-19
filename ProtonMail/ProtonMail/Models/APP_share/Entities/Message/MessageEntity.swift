@@ -30,6 +30,8 @@ struct MessageHeaderKey {
     static let listHelp = "List-Help"
     static let listOwner = "List-Owner"
     static let listArchive = "List-Archive"
+    static let pmCalendarEventUID = "X-Pm-Calendar-Eventuid"
+    static let pmCalendarOccurrence = "X-Pm-Calendar-Occurrence"
     static let pmRecipientEncryption = "X-Pm-Recipient-Encryption"
     static let pmRecipientAuthentication = "X-Pm-Recipient-Authentication"
     static let pmOrigin = "X-Pm-Origin"
@@ -129,6 +131,8 @@ struct MessageEntity: Equatable, Hashable {
 
     let objectID: ObjectID
 
+    let snoozeTime: Date?
+
     let attachmentsMetadata: [AttachmentsMetadata]
 
     func hash(into hasher: inout Hasher) {
@@ -205,8 +209,10 @@ extension MessageEntity {
         self.originalTime = message.orginalTime
         self.passwordEncryptedBody = message.passwordEncryptedBody
         self.password = message.password
+
         self.passwordHint = message.passwordHint
         self.objectID = .init(rawValue: message.objectID)
+        self.snoozeTime = message.snoozeTime
         let parsedAttachments: [AttachmentsMetadata]?
         do {
             parsedAttachments = try AttachmentsMetadata

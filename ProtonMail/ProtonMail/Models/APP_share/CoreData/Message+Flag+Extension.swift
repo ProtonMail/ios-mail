@@ -80,6 +80,10 @@ extension Message {
         // Frozen means that it's a self destructing message
         // Not frozen means that it's an auto-deleting message
         static let isExpirationTimeFrozen = Flag(rawValue: 1 << 32)
+
+        // If the snoozed message passed the snooze time, the BE will pop the message and set this flag.
+        // Once the message is read, the flag will be removed.
+        static let showReminder = Flag(rawValue: 1 << 34)
     }
 
     var flag: Flag {

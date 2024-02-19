@@ -1,4 +1,3 @@
-
 "Privacy by default" = "常にプライバシーを重視";
 
 "Proton address required" = "Proton アドレスが必要です";
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "無効なハッシュ化されたパスワードです";
 
 "Password can not be empty.\nPlease try again." = "パスワードを空にすることはできません。\n再度お試しください。";
-
-"Password must contain at least %@ characters." = "パスワードは %@ 文字以上必要です。";
 
 "Passwords do not match.\nPlease try again." = "パスワードが一致しません。\n再度お試しください。";
 

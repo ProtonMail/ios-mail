@@ -65,7 +65,10 @@ class ConversationViewModel {
     }
 
     var isMessageSwipeNavigationEnabled: Bool {
-        false
+        true
+    }
+    var shouldMoveToNextMessageAfterMove: Bool {
+        dependencies.nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove
     }
 
     private(set) var conversation: ConversationEntity
@@ -73,7 +76,7 @@ class ConversationViewModel {
     let user: UserManager
     let messageService: MessageDataService
     /// MessageID that want to expand at the beginning
-    private(set) var targetID: MessageID?
+    var targetID: MessageID?
     /// The messageID of a draft that should be opened at the beginning
     var draftID: MessageID?
     private let conversationMessagesProvider: ConversationMessagesProvider
@@ -476,6 +479,18 @@ class ConversationViewModel {
             }
     }
 
+    func hasSeenMessageNavigationSpotlight() {
+        guard isMessageSwipeNavigationEnabled else { return }
+        user.parentManager?.users.forEach({ user in
+            dependencies.userIntroductionProgressProvider.markSpotlight(
+                for: .messageSwipeNavigation,
+                asSeen: true,
+                byUserWith: user.userID
+            )
+        })
+    }
+
+
     private func markMessagesReadIfNeeded() {
         messagesDataSource
             .compactMap { $0.messageViewModel?.state.expandedViewModel?.messageContent }
@@ -665,14 +680,6 @@ class ConversationViewModel {
                 return
             }
             viewModel.messageHasChanged(message: message)
-
-            guard viewModel.state.isExpanded else {
-                viewModel.state.collapsedViewModel?.messageHasChanged(message: message)
-                return
-            }
-            if viewModel.state.expandedViewModel?.message != message {
-                viewModel.state.expandedViewModel?.message = message
-            }
         case let .delete(row, messageID):
             tableView.deleteRows(at: [.init(row: row, section: 1)], with: .automatic)
             dismissDeletedMessageActionSheet?(messageID)
@@ -794,6 +801,9 @@ class ConversationViewModel {
              .labelAs, .moveTo, .reply, .replyAll, .star, .unstar, .toolbarCustomization,
              .more, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
+        case .snooze:
+            PMAssertionFailure("Shouldn't be triggered")
+            break
         }
         completion()
     }
@@ -856,10 +866,19 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
         let isInTrash = areAllMessagesInThreadInTheTrash
         let isInSpam = areAllMessagesInThreadInSpam
 
+        let foldersSupportSnooze = [
+            Message.Location.inbox.labelID,
+            Message.Location.snooze.labelID
+        ]
+        let isSupportSnooze = foldersSupportSnooze.contains(labelId)
+
         var actions = toolbarActionProvider.messageToolbarActions
             .addMoreActionToTheLastLocation()
             .replaceReplyAndReplyAllWithConversationVersion()
             .replaceForwardWithConversationVersion()
+        if !isSupportSnooze {
+            actions.removeAll(where: { $0 == .snooze })
+        }
 
         let messageForAction = findLatestMessageForAction()
         let hasMultipleRecipients = (messageForAction?.allRecipients.count ?? 0) > 1

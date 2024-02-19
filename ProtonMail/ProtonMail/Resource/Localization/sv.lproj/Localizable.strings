@@ -1,5 +1,4 @@
 /* link opeining confirmation */
-
 "You are about to launch the web browser and navigate to" = "Du är på väg att öppna webbläsaren och navigera till";
 
 /* link opeining confirmation */
@@ -59,28 +58,45 @@
 /* menu title */
 "Inbox" = "Inkorg";
 
-/* menu title */
+/*
+ menu title
+ Springboard (3D Touch) shortcuts action
+ VoiceOver: email is starred
+*/
 "Starred" = "Stjärnmärkt";
 
-/* menu title */
+/*
+ menu title
+ Push notification action to archive
+ The title of the archive action in action sheet
+*/
 "Archive" = "Arkiv";
 
 /* menu title */
 "Drafts" = "Utkast";
 
-/* mail location title */
+/*
+ mail location title
+ menu title
+*/
 "All Mail" = "All e-post";
 
 /* menu title */
 "Sent" = "Skickat";
 
-/* mail location desc */
+/*
+ mail location desc
+ menu title
+*/
 "Trash" = "Papperskorg";
 
 /* menu title */
 "Spam" = "Skräppost";
 
-/* Action and title */
+/*
+ Action and title
+ menu title
+*/
 "Contacts" = "Kontakter";
 
 /* menu title (contact groups) */
@@ -89,19 +105,28 @@
 /* menu title */
 "Settings" = "Inställningar";
 
-/* Alert title to confirm signout */
+/*
+ Alert title to confirm signout
+ menu title
+*/
 "Sign out" = "Logga ut";
 
 /* menu title */
 "Lock The App" = "Lås appen";
 
-/* menu title */
+/*
+ menu title
+ The title of a subscription plans screen
+*/
 "Subscription" = "Prenumeration";
 
 /* menu title */
 "Manage accounts" = "Hantera konton";
 
-/* menu title */
+/*
+ menu title
+ The voiceiver title of the add attachment button in the tool bar of composer
+*/
 "Add attachment" = "Lägg till bilaga";
 
 /* menu title */
@@ -112,9 +137,6 @@
 
 /* Description after message have been sent */
 "Message sent" = "Meddelande skickat";
-
-/* Description */
-"Sent Failed" = "Kunde inte skicka";
 
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Inget att se här";
@@ -142,9 +164,6 @@
 
 /* Title */
 "You have a new email!" = "Du har ett nytt e-postmeddelande!";
-
-/* Message */
-"You have %d new emails!" = "Du har %d nya e-postmeddelanden!";
 
 /* abbreviation of reply: */
 "Re:" = "Svar:";
@@ -206,13 +225,19 @@
 /* button title */
 "Apply Password" = "Tillämpa lösenord";
 
-/* Action */
+/*
+ Action
+ Springboard (3D Touch) shortcuts action
+*/
 "Compose" = "Skriv";
 
 /* Composer expiration page title */
 "Message expiration" = "När meddelandet löper ut";
 
-/* contacts default label type */
+/*
+ contacts default label type
+ Custom option for time config picker
+*/
 "Custom" = "Anpassad";
 
 /* Description */
@@ -392,7 +417,13 @@
 /* Done action */
 "Done" = "Klar";
 
-/* Button to cancel encrypted search */
+/*
+ Button to cancel encrypted search
+ Cancel action
+ general cancel action
+ Title for the alert button to cancel delete all downloaded messages.
+ Title for the alert button to cancel disable content search.
+*/
 "Cancel" = "Avbryt";
 
 /* Got it action */
@@ -419,16 +450,26 @@
 /* message From: field text */
 "From:" = "Från:";
 
-/* message To: feild */
+/*
+ message To: feild
+ Title
+*/
 "To" = "Till";
 
-/* message Cc: feild */
+/*
+ message Cc: feild
+ Title
+*/
 "Cc" = "Kopia";
 
 /* message Bcc: feild */
 "Bcc:" = "Hemlig kopia:";
 
-/* general delete action */
+/*
+ general delete action
+ The title of the delete action in action sheet
+ Title for the alert button to delete all downloaded messages.
+*/
 "Delete" = "Ta bort";
 
 /* general close action */
@@ -437,7 +478,10 @@
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Din session har löpt ut eftersom du har varit inaktiv ett tag eller för att den har återkallats. Logga in igen.";
 
-/* Springboard (3D Touch) shortcuts action */
+/*
+ Springboard (3D Touch) shortcuts action
+ Title
+*/
 "Search" = "Sök";
 
 /* Alert title */
@@ -452,7 +496,10 @@
 /* Action */
 "Send" = "Skicka";
 
-/* Action */
+/*
+ Action
+ The action title of the alert of the user trying to send a message that was schedule-send.
+*/
 "Schedule send" = "Schemalägg sändning";
 
 /* Alert title */
@@ -488,7 +535,10 @@
 /* Title */
 "Save" = "Spara";
 
-/* Action */
+/*
+ Action
+ The button title of the scheduled message banner.
+*/
 "Edit" = "Redigera";
 
 /* Error message */
@@ -548,7 +598,10 @@
 /* Hint when users delete contact offline  */
 "Contact deleted, will be synced when connection is available" = "Kontakt borttagen, kommer att synkroniseras när anslutning är tillgänglig";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup2
+*/
 "Confirm" = "Bekräfta";
 
 /* Title */
@@ -566,7 +619,10 @@
 /* Action */
 "Later" = "Senare";
 
-/* Action */
+/*
+ Action
+ The text for downloaded messages in local storage when encrypted search is disabled.
+*/
 "Disabled" = "Inaktiverad";
 
 /* contact placeholder */
@@ -575,7 +631,12 @@
 /* top left back button */
 "Back" = "Tillbaka";
 
-/* A *short* description saying that there is no contact group associated with this contact email */
+/*
+ A *short* description saying that there is no contact group associated with this contact email
+ Action title of none
+ The protection title of None protection
+ Title
+*/
 "None" = "Ingen";
 
 /* lock app option */
@@ -605,7 +666,10 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Du kan inte ställa in %@-adress som standard eftersom det är en betald funktion.";
 
-/* Action */
+/*
+ Action
+ The title of button of PIN code setup1
+*/
 "Continue" = "Fortsätt";
 
 /* error message */
@@ -629,10 +693,16 @@
 /* Error */
 "Unknown Error" = "Okänt fel";
 
-/* Action */
+/*
+ Action
+ The title of loading remote content banner.
+*/
 "Load remote content" = "Ladda fjärrinnehåll";
 
-/* settings general section title */
+/*
+ settings general section title
+ title
+*/
 "Change password" = "Ändra lösenord";
 
 /* Title */
@@ -911,7 +981,11 @@
 /* Error */
 "Can't open the file" = "Kan inte öppna filen";
 
-/* Action */
+/*
+ Action
+ alternative routing link name in description
+ The title of learn more link
+*/
 "Learn more" = "Lär dig mer";
 
 /* Action */
@@ -959,7 +1033,10 @@
 /* Action title of move to archive */
 "Move to archive" = "Flytta till arkiv";
 
-/* Action title of move to spam */
+/*
+ Action title of move to spam
+ The title of the spam action in action sheet
+*/
 "Move to spam" = "Flytta till skräppost";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
@@ -1004,7 +1081,10 @@
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Vi rekommenderar att du ställer in ett lösenord istället eller inaktiverar PGP för följande mottagare:";
 
-/* A option title that enable/disable notification feature */
+/*
+ A option title that enable/disable notification feature
+ cell title in device settings
+*/
 "Notifications" = "Aviseringar";
 
 /* VoiceOver: email belongs to folders */
@@ -1045,6 +1125,9 @@
 
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Ta bort kontaktgrupp";
+
+/* The string that describes how many contact groups are currently selected */
+"%d Selected" = "%d Vald";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Välj minst en e-post för kontaktgruppen";
@@ -1091,7 +1174,10 @@
 /* Alert to confirm signout */
 "You will be switched to %@" = "Du kommer att bytas till %@";
 
-/* Alert to confirm sign out */
+/*
+ Alert to confirm sign out
+ Alert when sign out non-primary account from account manager
+*/
 "Are you sure you want to sign out?" = "Är du säker på att du vill logga ut?";
 
 /* Alert to confirm sign out when only one account signed in */
@@ -1154,7 +1240,10 @@
 /* cell title in device settings */
 "Language" = "Språk";
 
-/* cell title in device settings */
+/*
+ cell title in device settings
+ The title of combined contact in settings
+*/
 "Combined contacts" = "Kombinerade kontakter";
 
 /* cell title in app settings */
@@ -1235,9 +1324,6 @@
 /* The unread title of unread action button in mailbox view */
 "unread" = "oläst";
 
-/* The title of navigation bar title of mailbox view while selecting the message */
-"Selected" = "Valda";
-
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Uppdaterad >1 timme sedan";
 
@@ -1253,7 +1339,10 @@
 /* The text shown on the mailbox when the primary user changed */
 "Signed in as %@" = "Inloggad som %@";
 
-/* The title of the star action in action sheet */
+/*
+ The title of the star action in action sheet
+ VoiceOver title of star button in the message view
+*/
 "Star" = "Stjärnmärk";
 
 /* The title of the star action in action sheet */
@@ -1262,10 +1351,16 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Markera som oläst";
 
-/* Push notification action mark as read */
+/*
+ Push notification action mark as read
+ The title of the read action in action sheet
+*/
 "Mark as read" = "Markera som läst";
 
-/* Push notification action move to trash */
+/*
+ Push notification action move to trash
+ The title of the remove action in action sheet
+*/
 "Move to trash" = "Flytta till papperskorg";
 
 /* The title of the remove action in action sheet */
@@ -1277,10 +1372,10 @@
 /* The title of the view message in dark mode action in action sheet */
 "View message in Dark mode" = "Visa meddelande i mörkt läge";
 
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Aktivera den här funktionen för att automatiskt fylla i e-postadresser med kontakter från alla dina inloggade konton.";
-
-/* alternative routing description */
+/*
+ alternative routing description
+ The footer of alternative routing setting
+*/
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Om Proton-webbplatser är blockerade kan denna inställning göra det möjligt för appen att prova alternativ nätverksroutning för att nå Proton, vilket kan vara användbart för att kringgå brandväggar eller nätverksproblem. Vi rekommenderar att du behåller den här inställningen aktiverad för bättre tillförlitlighet. %1$@";
 
 /* The title of alternative routing settings */
@@ -1442,8 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Rapportera nätfiske";
 
-/* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "Inte skräppost (flytta till inkorg)";
+"Not spam (move to inbox)" = "Inte skräppost (flytta till inkorg)";
 
 /* No comment provided by engineer. */
 "Move to" = "Flytta till";
@@ -1674,7 +1768,7 @@
 "Sent by you with end-to-end encryption to verified recipient" = "Skickat av dig med end-to-end-kryptering till verifierad mottagare";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption to verified recipient" = "Skickat av Proton Mail med nollåtkomst-kryptering till bekräftade mottagare";
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Skickat med Proton Mail med kryptering med noll åtkomst till verifierad mottagare";
 
 /* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Skickat av dig med end-to-end-kryptering";
@@ -1831,6 +1925,12 @@
 /* Button inside the banner */
 "Load" = "Ladda";
 
+/* As in: event organizer */
+"Organizer" = "Organisatör";
+
+/* Button to hide some items in the list to conserve screen estate */
+"Show less" = "Visa mindre";
+
 /* Official badge next to sender's name */
 "Official" = "Officiell";
 
@@ -1863,6 +1963,21 @@
 
 /* The title of the maybe later button in referral prompt view. */
 "Maybe later" = "Kanske senare";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Aktivera den här funktionen för att automatiskt fylla i e-postadresser med kontakter från alla dina inloggade konton.";
+
+/* contacts auto import title in settings */
+"Auto-import device contacts" = "Importera kontakter från enheten automatiskt";
+
+/* contacts auto import footer in settings */
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Slå på denna funktion för att automatiskt lägga till nya kontakter från din enhet till Proton Mail-appen.";
+
+/* Auto import alert title */
+"Auto-import enabled" = "Automatisk import aktiverat";
+
+/* Auto import alert message */
+"The initial import may take some time and will only occur when the app is in the foreground." = "Den initiala importen kan ta lite tid och kommer bara ske när appen är i förgrunden.";
 
 /* Settings lock protection section */
 "Protection" = "Skydd";
@@ -1928,13 +2043,10 @@
 "Application logs" = "Applikationsloggar";
 
 /* The title of the setting of the next msg after move */
-"Next message after move" = "Nästa meddelande efter flytt";
-
-/* The title of the row inside the setting page of next msg after move function. */
-"Navigate to next message after move" = "Navigera till nästa meddelande efter flytt";
+"Jump to next message" = "Hoppa till nästa meddelande";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Utföra en flyttåtgärd på ett meddelande (t.ex. arkiv) kommer att navigera till nästa meddelande.";
+"Automatically show the next message when the current message is deleted, archived or moved." = "Visa automatiskt nästa meddelande när det nuvarande meddelandet är borttaget, arkiverat eller flyttat.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Ett oväntat fel uppstod, kontakta supporten.\nFel: %@";
@@ -1993,7 +2105,10 @@
 /* Message of the alert to confirm enabling of the auto delete option */
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Detta kommer ta bort alla meddelanden som finns i papperskorg eller skräppost i mer än 30 dagar, inklusive meddelanden som för närvarande finns i dessa mappar.";
 
-/* Button to enable encrypted search */
+/*
+ Button to enable encrypted search
+ The title of the button to move to settings and enable encrypted search.
+*/
 "Enable" = "Aktivera";
 
 /* Text to advertise the auto delete feature to free users */
@@ -2032,6 +2147,9 @@
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Den ursprungliga avsändaren av detta meddelande är inte längre giltig. Ditt meddelande kommer att skickas från din standardadress %@.";
 
+/* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
+"Please retry after all attachments are uploaded." = "Försök igen när alla bilagor är uppladdade.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Visningsnamn";
 
@@ -2056,13 +2174,25 @@
 /* The title of select all button for select all messages feature */
 "Select all" = "Välj alla";
 
-/* The title of PIN code disable view  */
+/* The title of unselect all button for select all messages feature */
+"Unselect all" = "Avmarkera alla";
+
+/* Warning message will be shown to user when user try to select more than acceptable message */
+"Maximum selection reached" = "Maximum selection reached";
+
+/* Placeholder if message sender is empty */
+"No Recipient" = "Ingen mottagare";
+
+/* The title of PIN code disable view */
 "Disable PIN code" = "Inaktivera PIN-kod";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Ställ in PIN-kod";
 
-/* The title of PIN code setup2 view */
+/*
+ The title of PIN code setup2 view
+ The title of textfield of PIN code setup2
+*/
 "Repeat PIN code" = "Upprepa PIN-kod";
 
 /* The title of textfield of PIN code setup1 */
@@ -2094,3 +2224,51 @@
 
 /* Unsubscribe confirmation message */
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Detta kommer avsluta din prenumeration från e-postlistan. Avsändaren kommer aviseras att inte längre skicka e-post till denna adress.";
+
+/* Alert telling the user that we are unable to preview this attachment */
+"Unable to preview this attachment" = "Kan inte förhandsgranska denna bilaga";
+
+/* Title for banner saying that we are currently downloading the attachment to preview it */
+"Downloading attachment" = "Laddar ner bilaga";
+
+/* The banner title that is shown in the message detail view. */
+"Snoozed until %@" = "Snoozad till %@";
+
+/* The title of the button in the banner that is shown in the message detail view. */
+"Unsnooze" = "Stäng av snooze";
+
+/* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
+"Snooze until %@" = "Snooza till %@";
+
+/* Notification banner when user unsnooze a conversation */
+"Conversation unsnoozed" = "Snooze borttagen för konversation";
+
+/* The title of snooze config in action sheet */
+"Snooze until..." = "Snooza till...";
+
+/* One of snooze option shows in action sheet */
+"Later this week" = "Senare denna vecka";
+
+/* One of snooze option shows in action sheet */
+"This weekend" = "Denna helg";
+
+/* One of snooze option shows in action sheet */
+"Next week" = "Nästa vecka";
+
+/* An error message will be shown to user when user select past snooze time */
+"Please select a time in the future" = "Please select a time in the future";
+
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Vill du snooza valfri tid?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Lås upp anpassade tider för snooze när du uppgraderar";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Upp till 15 e-postadresser/alias";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Obegränsade mappar, etiketter och filter";
+
+/* The title of the action option that will make the inline attachment as normal attachment. */
+"Add it as attachment" = "Lägg till det som bilaga";

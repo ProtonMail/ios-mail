@@ -32,9 +32,13 @@ class NewMailboxMessageContentView: BaseMessageView {
     let attachmentsPreviewLine = SubviewsFactory.horizontalEqualSpacingStackView
     let remainingAttachmentsLabel = SubviewsFactory.remainderAttachmentsLabel
     let attachmentsPreviewStackView = SubviewsFactory.horizontalCenterDistributedStackView
+    let snoozeTimeStackView = SubviewsFactory.horizontalStackView
+    let snoozeTimeIcon = SubviewsFactory.snoozeTimeIcon
+    let snoozeTimeLabel = UILabel(frame: .zero)
     let titleLabel = UILabel(frame: .zero)
     let messageCountLabel = SubviewsFactory.messageCountLabel
     let originalImagesStackView = SubviewsFactory.horizontalStackView
+    let firstLineSpacer = UIView()
 
     var selectAttachmentAction: ((Int) -> Void)?
 
@@ -65,7 +69,8 @@ class NewMailboxMessageContentView: BaseMessageView {
         firstLineStackView.addArrangedSubview(forwardImageView)
         firstLineStackView.addArrangedSubview(draftImageView)
         firstLineStackView.addArrangedSubview(sendersStackView)
-        firstLineStackView.addArrangedSubview(UIView())
+        firstLineSpacer.setContentHuggingPriority(.init(rawValue: 200), for: .horizontal)
+        firstLineStackView.addArrangedSubview(firstLineSpacer)
         firstLineStackView.addArrangedSubview(StackViewContainer(view: timeLabel, bottom: -2))
 
         contentStackView.addArrangedSubview(secondLineStackView)
@@ -81,6 +86,10 @@ class NewMailboxMessageContentView: BaseMessageView {
         attachmentsPreviewLine.addArrangedSubview(remainingAttachmentsLabel)
         contentStackView.addArrangedSubview(attachmentsPreviewLine)
         contentStackView.addArrangedSubview(tagsView)
+
+        snoozeTimeStackView.addArrangedSubview(snoozeTimeIcon)
+        snoozeTimeStackView.addArrangedSubview(snoozeTimeLabel)
+        contentStackView.addArrangedSubview(snoozeTimeStackView)
     }
 
     private func setUpLayout() {
@@ -132,9 +141,14 @@ class NewMailboxMessageContentView: BaseMessageView {
         }
 
         contentStackView.setCustomSpacing(2, after: firstLineStackView)
-        contentStackView.setCustomSpacing(12, after: secondLineStackView)
+        contentStackView.setCustomSpacing(8, after: secondLineStackView)
         contentStackView.setCustomSpacing(4, after: attachmentsPreviewLine)
         secondLineStackView.setCustomSpacing(8, after: sendersStackView)
+
+        [
+            snoozeTimeIcon.widthAnchor.constraint(equalTo: snoozeTimeIcon.heightAnchor),
+            snoozeTimeIcon.heightAnchor.constraint(equalToConstant: 16)
+        ].activate()
     }
 
     required init?(coder: NSCoder) {
@@ -172,6 +186,12 @@ private extension NewMailboxMessageContentView {
             let label = UILabel(frame: .zero)
             label.textAlignment = .right
             return label
+        }
+
+        static var snoozeTimeIcon: UIImageView {
+            let imageView = UIImageView(image: IconProvider.clock.withRenderingMode(.alwaysTemplate))
+            imageView.tintColor = ColorProvider.NotificationWarning
+            return imageView
         }
     }
 }

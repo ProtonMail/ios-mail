@@ -23,10 +23,7 @@ struct EncryptionPreferences {
     let scheme: String?
     let mimeType: String?
     let isInternal: Bool
-    let apiKeys: [CryptoKey]
-    let pinnedKeys: [CryptoKey]
     let hasApiKeys: Bool
-    let hasPinnedKeys: Bool
     let sendKey: CryptoKey?
     let isSendKeyPinned: Bool
     let error: EncryptionPreferencesError?

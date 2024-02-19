@@ -63,6 +63,7 @@ struct ConversationEventProcessor {
                 Date(timeIntervalSince1970: TimeInterval(conversation.expirationTime)) : nil
 
                 conversationObject.size = NSNumber(value: conversation.size)
+                conversationObject.displaySnoozedReminder = conversation.displaySnoozedReminder
 
                 handleContextLabel(
                     conversationObject: conversationObject,
@@ -102,6 +103,11 @@ struct ConversationEventProcessor {
             labelObject.size = NSNumber(value: label.contextSize)
             labelObject.attachmentCount = NSNumber(value: label.contextNumAttachments)
             labelObject.order = conversationObject.order
+            if let snoozeTime = label.contextSnoozeTime {
+                labelObject.snoozeTime = Date(timeIntervalSince1970: TimeInterval(snoozeTime))
+            } else {
+                labelObject.snoozeTime = nil
+            }
 
             labelObject.conversation = conversationObject
         }

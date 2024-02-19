@@ -59,9 +59,9 @@ final class FetchAttachmentTests: XCTestCase {
         mockDownloadService = nil
     }
 
-    func testExecute_whenSucceedsAndPurposeIsAttachment_resultIsCorrect() {
+    func testExecute_whenSucceeds_resultIsCorrect() {
         let expectation = expectation(description: "")
-        let params = makeDummyParams(.decryptAndEncodeAttachment)
+        let params = makeDummyParams()
 
         sut.execute(params: params) { [unowned self] result in
             XCTAssert(mockApiServer.downloadStub.callCounter == 1)
@@ -70,43 +70,7 @@ final class FetchAttachmentTests: XCTestCase {
 
             XCTAssert(attachmentFile.attachmentId == params.attachmentID)
             XCTAssert(attachmentFile.fileUrl.absoluteString == expectedPath)
-            XCTAssert(attachmentFile.encoded == DummyCrypto.plainData.encodeBase64())
-
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 2.0)
-    }
-
-    func testExecute_whenSucceedsAndPurposeIsPublicKey_resultIsCorrect() {
-        let expectation = expectation(description: "")
-        let params = makeDummyParams(.decryptAndEncodePublicKey)
-
-        sut.execute(params: params) { [unowned self] result in
-            XCTAssert(mockApiServer.downloadStub.callCounter == 1)
-            let attachmentFile = try! result.get()
-            let expectedPath = "\(dummyAttachmentsFolder)\(params.attachmentID)"
-
-            XCTAssert(attachmentFile.attachmentId == params.attachmentID)
-            XCTAssert(attachmentFile.fileUrl.absoluteString == expectedPath)
-            XCTAssert(attachmentFile.encoded == DummyCrypto.plainData)
-
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 2.0)
-    }
-
-    func testExecute_whenSucceedsAndPurposeIsDownloadOnly_resultIsCorrect() {
-        let expectation = expectation(description: "")
-        let params = makeDummyParams(.onlyDownload)
-
-        sut.execute(params: params) { [unowned self] result in
-            XCTAssert(mockApiServer.downloadStub.callCounter == 1)
-            let attachmentFile = try! result.get()
-            let expectedPath = "\(dummyAttachmentsFolder)\(params.attachmentID)"
-
-            XCTAssert(attachmentFile.attachmentId == params.attachmentID)
-            XCTAssert(attachmentFile.fileUrl.absoluteString == expectedPath)
-            XCTAssertTrue(attachmentFile.encoded.isEmpty)
+            XCTAssertEqual(String(data: attachmentFile.data, encoding: .utf8), DummyCrypto.plainData)
 
             expectation.fulfill()
         }
@@ -115,7 +79,7 @@ final class FetchAttachmentTests: XCTestCase {
 
     func testExecute_whenDownloadFails_returnedErrorContainsAttachmentID() {
         mockApiServiceShouldReturnError = true
-        let params = makeDummyParams(.decryptAndEncodeAttachment)
+        let params = makeDummyParams()
 
         let expectation = expectation(description: "")
         sut.execute(params: params) { [unowned self] result in
@@ -133,7 +97,7 @@ final class FetchAttachmentTests: XCTestCase {
     }
 
     func testExecute_whenDecryptionFails_returnedErrorContainsAttachmentDecrypterError() {
-        let params = makeDummyParams(.decryptAndEncodeAttachment, setNilKeyPacket: true)
+        let params = makeDummyParams(setNilKeyPacket: true)
 
         let expectation = expectation(description: "")
         sut.execute(params: params) { [unowned self] result in
@@ -158,7 +122,7 @@ final class FetchAttachmentTests: XCTestCase {
 
         let expectation1 = expectation(description: "")
         let expectation2 = expectation(description: "")
-        let params = makeDummyParams(.decryptAndEncodeAttachment)
+        let params = makeDummyParams()
 
         sut1.execute(params: params) { result in
             XCTAssertNotNil((try? result.get()))
@@ -225,7 +189,6 @@ extension FetchAttachmentTests {
     }
 
     private func makeDummyParams(
-        _ purpose: FetchAttachment.Params.Purpose,
         setNilKeyPacket: Bool = false
     ) -> FetchAttachment.Params {
         FetchAttachment.Params(
@@ -233,7 +196,6 @@ extension FetchAttachmentTests {
             attachmentKeyPacket: setNilKeyPacket
             ? nil
             : DummyCrypto.keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)),
-            purpose: purpose,
             userKeys: DummyCrypto.userKeys
         )
     }

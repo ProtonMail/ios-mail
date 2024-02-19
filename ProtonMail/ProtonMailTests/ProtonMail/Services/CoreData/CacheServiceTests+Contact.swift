@@ -36,7 +36,7 @@ extension CacheServiceTest {
 
         sut.addNewContact(
             serverResponse: contactData,
-            localContactObjectID: objectID?.uriRepresentation().absoluteString
+            localContactsURIs: [objectID!.uriRepresentation().absoluteString]
         ) { _ in
             expect.fulfill()
         }

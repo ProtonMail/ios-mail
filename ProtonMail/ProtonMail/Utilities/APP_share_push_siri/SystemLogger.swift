@@ -136,6 +136,7 @@ extension SystemLogger {
         case assertionFailure = "AssertionFailure"
         case connectionStatus = "ConnectionStatus"
         case contacts = "Contacts"
+        case draft = "Draft"
         case sendMessage = "SendMessage"
         case pushNotification = "PushNotification"
         case encryption = "Encryption"

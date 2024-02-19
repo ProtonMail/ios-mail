@@ -134,28 +134,6 @@ class MailboxItemTests: XCTestCase {
         XCTAssertEqual(sut.time(labelID: inboxLabel), date)
     }
 
-    func testInlineAttachmenstDontMakeEntityPreviewable() {
-        let attachmentMetadata = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
-                                                     name: String.randomString(Int.random(in: 0..<10)),
-                                                     size: Int.random(in: 0..<10),
-                                                     mimeType: String.randomString(Int.random(in: 0..<10)),
-                                                     disposition: .inline)
-        let entity = ConversationEntity.make(attachmentsMetadata: [attachmentMetadata])
-        let sut = MailboxItem.conversation(entity)
-        XCTAssertFalse(sut.isPreviewable)
-    }
-
-    func testNonInlineAttachmenstDoMakeEntityPreviewable() {
-        let attachmentMetadata = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
-                                                     name: String.randomString(Int.random(in: 0..<10)),
-                                                     size: Int.random(in: 0..<10),
-                                                     mimeType: String.randomString(Int.random(in: 0..<10)),
-                                                     disposition: .attachment)
-        let entity = ConversationEntity.make(attachmentsMetadata: [attachmentMetadata])
-        let sut = MailboxItem.conversation(entity)
-        XCTAssertTrue(sut.isPreviewable)
-    }
-
     func testPreviewableAttachmenstDoNotContainInlineAttachments() {
         let attachmentMetadataInline = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
                                                            name: String.randomString(Int.random(in: 0..<10)),

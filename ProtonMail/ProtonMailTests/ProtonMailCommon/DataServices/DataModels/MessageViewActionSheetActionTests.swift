@@ -36,7 +36,8 @@ class MessageViewActionSheetActionTests: XCTestCase {
             .viewHeaders,
             .viewHTML,
             .reportPhishing,
-            .saveAsPDF
+            .saveAsPDF,
+            .snooze
         ])
     }
 }

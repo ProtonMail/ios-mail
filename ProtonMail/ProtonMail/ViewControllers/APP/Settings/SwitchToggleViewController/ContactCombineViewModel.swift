@@ -45,7 +45,7 @@ extension ContactCombineViewModel: SwitchToggleVMOutput {
     var footerTopPadding: CGFloat { 8 }
 
     func cellData(for indexPath: IndexPath) -> (title: String, status: Bool)? {
-        (LocalString._settings_title_of_combined_contact, userDefaults[.isCombineContactOn])
+        (L11n.SettingsContacts.combinedContacts, userDefaults[.isCombineContactOn])
     }
 
     func sectionHeader() -> String? {
@@ -53,6 +53,6 @@ extension ContactCombineViewModel: SwitchToggleVMOutput {
     }
 
     func sectionFooter() -> Either<String, NSAttributedString>? {
-        Either.left(LocalString._settings_footer_of_combined_contact)
+        Either.left(L11n.SettingsContacts.combinedContactsFooter)
     }
 }

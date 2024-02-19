@@ -24,14 +24,27 @@ final class PMDatePickerTests: XCTestCase {
         // Sun Aug 28 2022 23:44:30 GMT+0000
         var date = Date(timeIntervalSince1970: 1661730270)
         // Sun Aug 28 2022 23:45:00 GMT+0000
-        var result = PMDatePicker.referenceDate(from: date)
+        var result = PMDatePicker.referenceDate(from: date, pickerType: .scheduleSend)
         XCTAssertEqual(result.timeIntervalSince1970, 1661730300)
 
         // Sun Aug 28 2022 23:46:00 GMT+0000
         date = Date(timeIntervalSince1970: 1661730360)
         // Sun Aug 28 2022 23:50:00 GMT+0000
-        result = PMDatePicker.referenceDate(from: date)
+        result = PMDatePicker.referenceDate(from: date, pickerType: .scheduleSend)
         XCTAssertEqual(result.timeIntervalSince1970, 1661730600)
     }
 
+    func testBaseDateForSnooze() {
+        // Sun Aug 28 2022 23:44:30 GMT+0000
+        var date = Date(timeIntervalSince1970: 1661730270)
+        // Mon Aug 29 2022 00:00:00 GMT+0000
+        var result = PMDatePicker.referenceDate(from: date, pickerType: .snooze)
+        XCTAssertEqual(result.timeIntervalSince1970, 1661731200)
+
+        // Sun Aug 28 2022 23:46:00 GMT+0000
+        date = Date(timeIntervalSince1970: 1661730360)
+        // Mon Aug 29 2022 00:00:00 GMT+0000
+        result = PMDatePicker.referenceDate(from: date, pickerType: .snooze)
+        XCTAssertEqual(result.timeIntervalSince1970, 1661731200)
+    }
 }

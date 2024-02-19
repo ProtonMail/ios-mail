@@ -19,7 +19,6 @@ import Foundation
 
 extension ProcessInfo {
     enum LaunchArgument: String {
-        case disableInAppFeedbackPromptAutoShow = "-disableInAppFeedbackPromptAutoShow"
         case disableToolbarSpotlight = "-toolbarSpotlightOff"
         case showReferralPromptView = "-showReferralPromptView"
         case uiTests = "-uiTests"

@@ -36,8 +36,6 @@ extension UserDefaultsKeys {
         defaultValue: false
     )
 
-    static let contactsHistoryTokenPerUser = plainKey(named: "contactsHistoryTokenPerUser", defaultValue: [String: Data]())
-
     // MARK: payments
 
     static let currentSubscription = codableKey(named: "currentSubscription", ofType: Subscription.self)

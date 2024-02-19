@@ -70,12 +70,11 @@ final class BannerViewController: UIViewController {
 
     override func loadView() {
         view = customView
+        setupContainerView()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupContainerView()
 
         let bannersBeforeUpdate = displayedBanners
 
@@ -90,10 +89,11 @@ final class BannerViewController: UIViewController {
             handleAutoReplyBanner()
             setUpMessageObservation()
             handleReceiptBanner()
+            showSnoozeBannerIfNeeded()
         }
 
         guard bannersBeforeUpdate.sortedBanners != displayedBanners.sortedBanners else { return }
-        viewModel.recalculateCellHeight?(false)
+        viewModel.recalculateCellHeight?(true)
         view.alpha = 0
         delay(0.5) {
             self.view.alpha = 1
@@ -110,7 +110,6 @@ final class BannerViewController: UIViewController {
             view.removeFromSuperview()
             displayedBanners.removeValue(forKey: type)
         }
-        viewModel.recalculateCellHeight?(false)
     }
 
     private func handleSpamBanner() {
@@ -177,10 +176,8 @@ final class BannerViewController: UIViewController {
         customView.addSubview(stackView)
 
         [
-            stackView.topAnchor.constraint(equalTo: customView.topAnchor, constant: 4.0)
-                .setPriority(as: .defaultHigh),
-            stackView.bottomAnchor.constraint(equalTo: customView.bottomAnchor, constant: -4.0)
-                .setPriority(as: .defaultHigh),
+            stackView.topAnchor.constraint(equalTo: customView.topAnchor, constant: 4.0),
+            stackView.bottomAnchor.constraint(equalTo: customView.bottomAnchor, constant: -4.0),
             stackView.leadingAnchor.constraint(equalTo: customView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: customView.trailingAnchor)
         ].activate()
@@ -306,6 +303,16 @@ final class BannerViewController: UIViewController {
         addBannerView(type: .scheduledSend, shouldAddContainer: true, bannerView: banner)
     }
 
+    private func showSnoozeBannerIfNeeded() {
+        guard let snoozeTime = viewModel.snoozeTime else { return }
+        let dateString = PMDateFormatter.shared.stringForSnoozeTime(from: snoozeTime)
+        let banner = UnsnoozeBanner()
+        banner.configure(date: dateString, viewMode: viewModel.viewMode) { [weak self] in
+            self?.viewModel.unSnoozeMessage?()
+        }
+        addBannerView(type: .snooze, shouldAddContainer: false, bannerView: banner)
+    }
+
     private func addBannerView(type: BannerType, shouldAddContainer: Bool, bannerView: UIView) {
         guard let containerView = self.containerView, displayedBanners[type] == nil else { return }
         var viewToAdd = bannerView
@@ -389,7 +396,7 @@ extension BannerViewController {
         }
 
         guard bannersBeforeUpdate.sortedBanners != displayedBanners.sortedBanners else { return }
-        viewModel.recalculateCellHeight?(false)
+        viewModel.recalculateCellHeight?(true)
     }
 
     func showErrorBanner(error: NSError) {

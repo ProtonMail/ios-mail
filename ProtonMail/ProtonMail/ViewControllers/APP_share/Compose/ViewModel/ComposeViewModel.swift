@@ -142,11 +142,12 @@ class ComposeViewModel: NSObject {
     }
 
     func initialize(message msg: MessageEntity?, action: ComposeMessageAction) throws {
+        var mimeAttachmentsShouldBeAdded: [MimeAttachment]?
         if let msg {
             if msg.isDraft {
                 self.composerMessageHelper.setNewMessage(objectID: msg.objectID.rawValue)
             } else {
-                try composerMessageHelper.copyAndCreateDraft(from: msg.messageID, action: action)
+                mimeAttachmentsShouldBeAdded = try composerMessageHelper.copyAndCreateDraft(from: msg.messageID, action: action)
             }
         }
 
@@ -159,6 +160,19 @@ class ComposeViewModel: NSObject {
         originalSender = composerMessageHelper.draft?.senderVO
         initializeSenderAddress()
         observeAddressStatusChangedEvent()
+
+        // Create the draft before the attachment upload because we need the messageID ready.
+        composerMessageHelper.uploadDraft()
+
+        if let mimeAttachments = mimeAttachmentsShouldBeAdded {
+            let stripMetaData = dependencies.keychain[.metadataStripping] == .stripMetadata
+            for mimeAttachment in mimeAttachments {
+                composerMessageHelper.addMimeAttachments(
+                    attachment: mimeAttachment,
+                    shouldStripMetaData: stripMetaData,
+                    completion: { _ in })
+            }
+        }
     }
 
     private func showToastIfNeeded(errorCode: Int) {
@@ -318,7 +332,8 @@ class ComposeViewModel: NSObject {
         var supplementCSS: String?
         let document = CSSMagic.parse(htmlString: html)
         if CSSMagic.darkStyleSupportLevel(
-            document: document,
+            document: document, 
+            sender: "",
             darkModeStatus: dependencies.userDefaults[.darkModeStatus]
         ) == .protonSupport {
             supplementCSS = CSSMagic.generateCSSForDarkMode(document: document)
@@ -388,6 +403,37 @@ extension ComposeViewModel {
         }
     }
 
+    // Exact base64 image from body and upload it, if has any
+    func extractAndUploadBase64ImagesFromSendingBody(body: String) -> String {
+        guard
+            let document = try? SwiftSoup.parse(body),
+            let base64Images = try? document.select(#"img[src^="data"]"#)
+        else {
+            return body
+        }
+        for image in base64Images {
+            let cid = "\(String.randomString(8))@pm.me"
+            guard
+                let src = try? image.attr("src"),
+                let (type, _, base64) = MIMEEMLBuilder.extractInformation(from: src),
+                let _ = try? image.attr("src", "cid:\(cid)"),
+                let data = Data(base64Encoded: base64.encoded)
+            else { continue }
+
+            composerMessageHelper.addAttachment(
+                data: data,
+                fileName: cid,
+                shouldStripMetaData: true,
+                type: type,
+                isInline: true,
+                cid: cid
+            ) { _ in }
+        }
+        document.outputSettings().prettyPrint(pretty: false)
+        guard let cleanBody = try? document.html() else { return body }
+        return cleanBody
+    }
+
     func deleteAttachment(_ attachment: AttachmentEntity) -> Promise<Void> {
         self.user.usedSpace(minus: attachment.fileSize.int64Value)
         return Promise { seal in
@@ -398,26 +444,40 @@ extension ComposeViewModel {
         }
     }
 
-    func updateAddress(to address: Address, uploadDraft: Bool = true) -> Promise<Void> {
-        return Promise { [weak self] seal in
-            guard self?.composerMessageHelper.draft != nil else {
-                let error = NSError(domain: "",
-                                    code: -1,
-                                    localizedDescription: LocalString._error_no_object)
-                seal.reject(error)
-                return
+    func updateAddress(
+        to address: Address,
+        uploadDraft: Bool = true,
+        completion: @escaping (Swift.Result<Void, NSError>) -> Void
+    ) {
+        guard composerMessageHelper.draft != nil else {
+            let error = NSError(
+                domain: "",
+                code: -1,
+                localizedDescription: LocalString._error_no_object
+            )
+            completion(.failure(error))
+            return
+        }
+        guard !composerMessageHelper.attachments.contains(where: { $0.id.rawValue == "0" }) else {
+            let error = NSError(
+                domain: "",
+                code: -1,
+                localizedDescription: L11n.Compose.blockSenderChangeMessage
+            )
+            completion(.failure(error))
+            return
+        }
+        if user.userInfo.userAddresses.contains(where: { $0.addressID == address.addressID }) {
+            composerMessageHelper.updateAddress(to: address, uploadDraft: uploadDraft) {
+                completion(.success(()))
             }
-            if self?.user.userInfo.userAddresses
-                .contains(where: { $0.addressID == address.addressID }) == true {
-                self?.composerMessageHelper.updateAddress(to: address, uploadDraft: uploadDraft, completion: {
-                    seal.fulfill_()
-                })
-            } else {
-                let error = NSError(domain: "",
-                                    code: -1,
-                                    localizedDescription: LocalString._error_no_object)
-                seal.reject(error)
-            }
+        } else {
+            let error = NSError(
+                domain: "",
+                code: -1,
+                localizedDescription: LocalString._error_no_object
+            )
+            completion(.failure(error))
         }
     }
 
@@ -511,11 +571,10 @@ extension ComposeViewModel {
                 params: .init(
                     attachmentID: att.id,
                     attachmentKeyPacket: att.keyPacket,
-                    purpose: .decryptAndEncodeAttachment,
                     userKeys: userKeys
                 )
             ) { result in
-                guard let base64Att = try? result.get().encoded, !base64Att.isEmpty else {
+                guard let base64Att = try? result.get().data.base64EncodedString(), !base64Att.isEmpty else {
                     return
                 }
                 htmlEditor.update(embedImage: "cid:\(contentId)", encoded:"data:\(att.rawMimeType);base64,\(base64Att)")
@@ -581,16 +640,9 @@ extension ComposeViewModel {
         dependencies.fetchAttachment.callbackOn(.main).execute(params: .init(
             attachmentID: inlineAttachment.id,
             attachmentKeyPacket: inlineAttachment.keyPacket,
-            purpose: .decryptAndEncodeAttachment,
             userKeys: user.toUserKeys()
         )) { result in
-            guard let base64Attachment = try? result.get().encoded,
-                  !base64Attachment.isEmpty
-            else {
-                completion?(false)
-                return
-            }
-            guard let data = Data(base64Encoded: base64Attachment, options: .ignoreUnknownCharacters) else {
+            guard let data = try? result.get().data, !data.isEmpty else {
                 completion?(false)
                 return
             }
@@ -621,26 +673,28 @@ extension ComposeViewModel {
     
     @objc
     private func addressesStatusChanged() {
-        defer {
-            uiDelegate?.updateSenderAddressesList()
-        }
-        switch messageAction {
-        case .forward, .reply, .replyAll, .openDraft:
-            guard
-                let senderAddress = currentSenderAddress(),
-                senderAddress.status == .disabled,
-                let validAddress = validSenderAddressFromMessage(),
-                validAddress.addressID != senderAddress.addressID,
-                validAddress.email != senderAddress.addressID
-            else { return }
-            uiDelegate?.changeInvalidSenderAddress(to: validAddress)
-        case .newDraft, .newDraftFromShare:
-            guard
-                let senderAddress = currentSenderAddress(),
-                senderAddress.status == .disabled,
-                let defaultAddress = user.addresses.defaultSendAddress()
-            else { return }
-            uiDelegate?.changeInvalidSenderAddress(to: defaultAddress)
+        DispatchQueue.main.async {
+            defer {
+                self.uiDelegate?.updateSenderAddressesList()
+            }
+            switch self.messageAction {
+            case .forward, .reply, .replyAll, .openDraft:
+                guard
+                    let senderAddress = self.currentSenderAddress(),
+                    senderAddress.status == .disabled,
+                    let validAddress = self.validSenderAddressFromMessage(),
+                    validAddress.addressID != senderAddress.addressID,
+                    validAddress.email != senderAddress.addressID
+                else { return }
+                self.uiDelegate?.changeInvalidSenderAddress(to: validAddress)
+            case .newDraft, .newDraftFromShare:
+                guard
+                    let senderAddress = self.currentSenderAddress(),
+                    senderAddress.status == .disabled,
+                    let defaultAddress = self.user.addresses.defaultSendAddress()
+                else { return }
+                self.uiDelegate?.changeInvalidSenderAddress(to: defaultAddress)
+            }
         }
     }
 
@@ -650,11 +704,11 @@ extension ComposeViewModel {
         switch messageAction {
         case .forward, .reply, .replyAll, .openDraft:
             if let address = validSenderAddressFromMessage() {
-                updateAddress(to: address, uploadDraft: false).cauterize()
+                updateAddress(to: address, uploadDraft: false) { _ in }
             }
         case .newDraft, .newDraftFromShare:
             if let address = user.addresses.defaultAddress() {
-                updateAddress(to: address, uploadDraft: false).cauterize()
+                updateAddress(to: address, uploadDraft: false) { _ in }
             }
         }
     }
@@ -1066,7 +1120,7 @@ extension ComposeViewModel {
     private func makeContactPGPTypeHelper(localContacts: [PreContact]) -> ContactPGPTypeHelper {
         return ContactPGPTypeHelper(
             internetConnectionStatusProvider: dependencies.internetStatusProvider,
-            apiService: user.apiService,
+            fetchEmailAddressesPublicKey: user.container.fetchEmailAddressesPublicKey,
             userSign: user.userInfo.sign,
             localContacts: localContacts,
             userAddresses: user.addresses
@@ -1184,29 +1238,34 @@ extension ComposeViewModel {
             isContactCombine: dependencies.userDefaults[.isCombineContactOn],
             contextProvider: dependencies.coreDataContextProvider
         )
-        cancellable = emailPublisher?.contentDidChange.map { $0.map { email in
-            ContactVO(name: email.name, email: email.email, isProtonMailContact: true)
-        }}.sink(receiveValue: { [weak self] contactVOs in
-            // Remove the duplicated items
-            var set = Set<ContactVO>()
-            var filteredResult = [ContactVO]()
-            for contact in contactVOs {
-                if !set.contains(contact) {
-                    set.insert(contact)
-                    filteredResult.append(contact)
+        cancellable = emailPublisher?.contentDidChange
+            .map { $0.map { email in
+                ContactVO(name: email.name, email: email.email, isProtonMailContact: true)
+            }}
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] contactVOs in
+                // Remove the duplicated items
+                var set = Set<ContactVO>()
+                var filteredResult = [ContactVO]()
+                for contact in contactVOs {
+                    if !set.contains(contact) {
+                        set.insert(contact)
+                        filteredResult.append(contact)
+                    }
                 }
-            }
-            self?.contacts = filteredResult
-            self?.addContactWithPhoneContact()
-        })
+                self?.contacts = filteredResult
+                self?.addContactWithPhoneContact()
+            })
         emailPublisher?.start()
     }
 
     func fetchPhoneContacts(completion: (() -> Void)?) {
         let service = user.contactService
         service.getContactVOsFromPhone { contacts, error in
-            self.phoneContacts = contacts
-            completion?()
+            DispatchQueue.main.async {
+                self.phoneContacts = contacts
+                completion?()
+            }
         }
     }
 

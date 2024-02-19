@@ -240,14 +240,25 @@ extension String {
         return self
     }
 
-    func insert(every: Int, with separator: String) -> String {
-        return String(stride(from: 0, to: Array(self).count, by: every).map {
-            Array(Array(self)[$0..<min($0 + every, Array(self).count)])
-        }.joined(separator: separator))
-    }
-
     var isHex: Bool {
         filter(\.isHexDigit).count == count
+    }
+
+    func rollingHash(base: Int = 7, mod: Int64 = 100000007) -> Int {
+        let base = Int64(base)
+        var ans = 0
+        var coefficient: Int64 = 0
+        for str in self {
+            for code in str.utf8 {
+                if coefficient == 0 {
+                    coefficient = 1
+                } else {
+                    coefficient = coefficient * base % mod
+                }
+                ans += Int(code) * Int(coefficient)
+            }
+        }
+        return ans
     }
 }
 
@@ -326,5 +337,40 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any { // emai
             return self[key] as? String ?? ""
         }
         return ""
+    }
+}
+
+struct Base64String {
+    let encoded: String
+
+    init(encoding data: Data) {
+        encoded = data.encodeBase64()
+    }
+
+    init(alreadyEncoded: String) {
+#if DEBUG_ENTERPRISE
+        if Data(base64Encoded: alreadyEncoded) == nil {
+            assertionFailure("Not a valid base64 string!")
+        }
+#endif
+
+        encoded = alreadyEncoded
+    }
+
+    func insert(every length: Int, with separator: String) -> String {
+        var result: [String] = []
+        let bytes = Data(encoded.utf8)
+        let byteCount = bytes.count
+
+        for i in stride(from: 0, to: byteCount, by: length) {
+            let upperBound = i + length < byteCount ? i + length : byteCount
+            let subSet = bytes.subdata(in: Range(i...upperBound-1))
+            guard let subString = String(data: subSet, encoding: .utf8) else {
+                continue
+            }
+
+            result.append(subString)
+        }
+        return result.joined(separator: separator)
     }
 }

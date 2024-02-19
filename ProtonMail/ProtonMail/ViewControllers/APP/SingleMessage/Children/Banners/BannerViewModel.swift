@@ -32,6 +32,7 @@ final class BannerViewModel {
     private let markLegitimateActionHandler: MarkLegitimateActionHandler
     private let receiptActionHandler: ReceiptActionHandler
     private let urlOpener: URLOpener
+    let viewMode: ViewMode
     var shouldShowReceiptBanner: Bool {
         guard let message = infoProvider?.message else { return false }
         return message.hasReceiptRequest && !message.isSent
@@ -46,6 +47,7 @@ final class BannerViewModel {
     var messageExpired: (() -> Void)?
     var reloadBanners: (() -> Void)?
     var editScheduledMessage: (() -> Void)?
+    var unSnoozeMessage: (() -> Void)?
 
     var canUnsubscribe: Bool {
         guard let message = infoProvider?.message else { return false }
@@ -70,19 +72,30 @@ final class BannerViewModel {
         return infoProvider?.scheduledSendingTime
     }
 
-    init(shouldAutoLoadRemoteContent: Bool,
-         expirationTime: Date?,
-         shouldAutoLoadEmbeddedImage: Bool,
-         unsubscribeActionHandler: UnsubscribeActionHandler,
-         markLegitimateActionHandler: MarkLegitimateActionHandler,
-         receiptActionHandler: ReceiptActionHandler,
-         urlOpener: URLOpener) {
+    var snoozeTime: Date? {
+        guard infoProvider?.message.contains(location: .snooze) == true else {
+            return nil
+        }
+        return infoProvider?.message.snoozeTime
+    }
+
+    init(
+        shouldAutoLoadRemoteContent: Bool,
+        expirationTime: Date?,
+        shouldAutoLoadEmbeddedImage: Bool,
+        unsubscribeActionHandler: UnsubscribeActionHandler,
+        markLegitimateActionHandler: MarkLegitimateActionHandler,
+        receiptActionHandler: ReceiptActionHandler,
+        urlOpener: URLOpener,
+        viewMode: ViewMode
+    ) {
         self.shouldAutoLoadRemoteContent = shouldAutoLoadRemoteContent
         self.shouldAutoLoadEmbeddedImage = shouldAutoLoadEmbeddedImage
         self.unsubscribeActionHandler = unsubscribeActionHandler
         self.markLegitimateActionHandler = markLegitimateActionHandler
         self.receiptActionHandler = receiptActionHandler
         self.urlOpener = urlOpener
+        self.viewMode = viewMode
         setUpTimer(expirationTime: expirationTime)
     }
 

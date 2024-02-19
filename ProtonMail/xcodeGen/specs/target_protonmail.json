@@ -67,6 +67,9 @@
                "sdk": "StoreKit.framework"
             },
             {
+               "package": "ProtonCoreICS"
+            },
+            {
                "package": "Factory"
             },
             {
@@ -77,6 +80,9 @@
             },
             {
                "package": "SwiftCSSParser"
+            },
+            {
+               "target": "ProtonMailUI"
             }
          ],
          "preBuildScripts": [

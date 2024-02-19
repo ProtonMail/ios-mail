@@ -1,4 +1,3 @@
-
 "Privacy by default" = "Confidențialitate implicită";
 
 "Proton address required" = "Este necesară o adresă Proton";
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "Parolă generată nevalidă";
 
 "Password can not be empty.\nPlease try again." = "Parolele nu pot fi goale.\nMai reîncercați.";
-
-"Password must contain at least %@ characters." = "Parola trebuie să conțină cel puțin %@ caractere.";
 
 "Passwords do not match.\nPlease try again." = "Parolele nu coincid.\nMai reîncercați.";
 

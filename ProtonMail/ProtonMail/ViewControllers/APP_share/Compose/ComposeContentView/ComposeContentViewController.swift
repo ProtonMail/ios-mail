@@ -382,7 +382,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         self.stopAutoSave()
         // Remove the EO when we save the draft
         self.headerView.expirationTimeInterval = 0
-        self.collectDraftData().done { [weak self] _ in
+        self.collectDraftDataAndSaveToDB().done { [weak self] _ in
             guard let self = self else { return }
             if self.viewModel.isEmptyDraft() {
                 return self.viewModel.deleteDraft()
@@ -416,7 +416,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             guard let self = self else {
                 return Promise.value(nil)
             }
-            return self.collectDraftData()
+            return self.collectDraftDataAndSaveToDB()
         }.done { [weak self] _ in
             self?.viewModel.updateDraft()
         }
@@ -435,23 +435,13 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         }
     }
 
-    func collectDraftData() -> Promise<(String, String)?> {
+    func collectDraftBody() -> Promise<String?> {
         return Promise { [weak self] seal in
             guard let self = self else {
                 seal.fulfill(nil)
                 return
             }
-            self.htmlEditor.getHtml().done { [weak self] bodyString in
-                guard let self = self else {
-                    return
-                }
-
-                guard let headerView = self.headerView else {
-                    assertionFailure("headerView not ready")
-                    seal.fulfill(nil)
-                    return
-                }
-
+            self.htmlEditor.getHtml().done { bodyString in
                 let head = "<html><head></head><body>"
                 let foot = "</body></html>"
 
@@ -467,21 +457,33 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
                 if !body.hasSuffix(foot) {
                     body += foot
                 }
-                let subject = headerView.subject.text ?? "(No Subject)"
-                self.viewModel.collectDraft(
-                    subject,
-                    body: body,
-                    expir: headerView.expirationTimeInterval,
-                    pwd: self.encryptionPassword,
-                    pwdHit: self.encryptionPasswordHint
-                )
-                seal.fulfill((subject, body))
+                seal.fulfill(body)
             }.catch { _ in
-                // handle the errors
+                seal.fulfill(nil)
             }.finally {
                 seal.fulfill(nil)
             }
         }
+    }
+
+    func collectDraftDataAndSaveToDB() -> Promise<(String, String)?> {
+        return collectDraftBody().then { [weak self] body -> Promise<(String, String)?> in
+            guard let self = self, let body = body else { return Promise.value(nil) }
+
+            let subject = self.headerView.subject.text ?? "(No Subject)"
+            self.saveDraftDataToDB(subject: subject, body: body)
+            return Promise.value((subject, body))
+        }
+    }
+
+    private func saveDraftDataToDB(subject: String, body: String) {
+        viewModel.collectDraft(
+            subject,
+            body: body,
+            expir: self.headerView.expirationTimeInterval,
+            pwd: self.encryptionPassword,
+            pwdHit: self.encryptionPasswordHint
+        )
     }
 
     private func checkEmbedImageEdit(_ original: String, edited: String) {
@@ -584,15 +586,19 @@ extension ComposeContentViewController {
         continueAction: @escaping () -> Void
     ) {
         isUserInputValidInTheHeaderViewOfComposer { [weak self] in
-            _ = self?.collectDraftData().done { result in
-                guard let result = result else { return }
+            _ = self?.collectDraftBody().done { body in
+                guard let self = self, let body = body else { return }
+                let bodyWithoutBase64 = self.viewModel.extractAndUploadBase64ImagesFromSendingBody(body: body)
 
-                self?.showRecipientEmptyAlertIfNeeded {
-                    self?.showInvalidAddressAlertIfNeeded {
-                        self?.showAttachmentRemindAlertIfNeeded(
-                            subject: result.0,
-                            body: result.1
-                        ) {
+                let subject = self.headerView.subject.text ?? "(No Subject)"
+                self.saveDraftDataToDB(subject: subject, body: bodyWithoutBase64)
+
+                self.showRecipientEmptyAlertIfNeeded {
+                    self.showInvalidAddressAlertIfNeeded {
+                        self.showAttachmentRemindAlertIfNeeded(
+                            subject: subject,
+                            body: bodyWithoutBase64
+                        ) { [weak self] in
                             self?.showScheduleSendConfirmationAlertIfNeeded(
                                 isTriggeredFromScheduleButton: isTriggeredFromScheduleButton
                             ) {
@@ -795,7 +801,9 @@ extension ComposeContentViewController {
             preferredStyle: .alert
         )
         let sendAnywayAction = UIAlertAction(title: LocalString._send_anyway, style: .destructive) { [weak self] _ in
-            self?.startSendingMessage()
+            self?.displayDraftNotValidAlertIfNeeded {
+                self?.startSendingMessage()
+            }
         }
         let cancelAction = UIAlertAction(title: LocalString._general_cancel_action, style: .default, handler: nil)
         alertController.addAction(cancelAction)
@@ -855,21 +863,22 @@ extension ComposeContentViewController: ComposeViewDelegate {
 
     private func updateSenderMail(addr: Address, complete: (() -> Void)?) {
         self.queue.sync { [weak self] in
-            self?.viewModel.updateAddress(to: addr)
-                .done { _ in
-                    self?.headerView.updateFromValue(addr.email, pickerEnabled: true)
-                }
-                .catch { error in
-                    let alertController = error.localizedDescription.alertController()
-                    alertController.addOKAction()
-                    self?.present(alertController, animated: true, completion: nil)
-                    complete?()
-                }.finally {
+            self?.viewModel.updateAddress(to: addr, completion: { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        self?.headerView.updateFromValue(addr.email, pickerEnabled: true)
+                    case .failure(let error):
+                        let alertController = error.localizedDescription.alertController()
+                        alertController.addOKAction()
+                        self?.present(alertController, animated: true, completion: nil)
+                    }
                     if let viewToAddTo = self?.parent?.navigationController?.view {
                         MBProgressHUD.hide(for: viewToAddTo, animated: true)
                     }
                     complete?()
                 }
+            })
         }
     }
 
@@ -980,7 +989,7 @@ extension ComposeContentViewController {
                 seal.fulfill_()
                 return
             }
-            self.collectDraftData().done { _ in
+            self.collectDraftDataAndSaveToDB().done { _ in
                 if let contentID = attachment.getContentID(),
                    !contentID.isEmpty &&
                    attachment.isInline {

@@ -1,4 +1,3 @@
-
 "Privacy by default" = "Privacy per default";
 
 "Proton address required" = "Indirizzo Proton richiesto";
@@ -87,7 +86,7 @@
 
 "Authenticate" = "Autentica";
 
-"Two-factor code" = "Codice a due fattori";
+"Two-factor code" = "Codice del secondo fattore";
 
 "Recovery code" = "Codice di recupero";
 
@@ -125,7 +124,7 @@
 
 "Password must contain at least 8 characters" = "La password deve contenere almeno 8 caratteri";
 
-"Repeat password" = "Ripeti la password";
+"Repeat password" = "Conferma la password";
 
 "Domain" = "Dominio";
 
@@ -188,8 +187,6 @@
 "Invalid hashed password" = "Password con hash non valido";
 
 "Password can not be empty.\nPlease try again." = "La password non può essere vuota.\nPer favore riprova.";
-
-"Password must contain at least %@ characters." = "La password deve contenere almeno %@ caratteri.";
 
 "Passwords do not match.\nPlease try again." = "Le password non corrispondono.\nPer favore riprova.";
 

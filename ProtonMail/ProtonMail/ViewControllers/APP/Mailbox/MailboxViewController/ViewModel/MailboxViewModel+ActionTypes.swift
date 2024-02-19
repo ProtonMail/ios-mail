@@ -35,8 +35,17 @@ extension MailboxViewModel: ToolbarCustomizationActionHandler {
         let isInTrash = labelID == Message.Location.trash.labelID
         let isInArchive = labelID == Message.Location.archive.labelID
 
-        let actions = toolbarActionProvider.listViewToolbarActions
+        let foldersSupportSnooze = [
+            Message.Location.inbox.labelID,
+            Message.Location.snooze.labelID
+        ]
+        let isSupportSnooze = foldersSupportSnooze.contains(labelID)
+
+        var actions = toolbarActionProvider.listViewToolbarActions
             .addMoreActionToTheLastLocation()
+        if !isSupportSnooze || locationViewMode == .singleMessage {
+            actions.removeAll(where: { $0 == .snooze} )
+        }
         return replaceActionsLocally(actions: actions,
                                      isInSpam: isInSpam,
                                      isInTrash: isInTrash,
@@ -126,6 +135,8 @@ extension MailboxViewModel: ToolbarCustomizationActionHandler {
              .print, .viewHeaders, .viewHTML, .reportPhishing, .dismiss,
              .viewInLightMode, .viewInDarkMode, .toolbarCustomization, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             assertionFailure("should not reach here")
+        case .snooze:
+            uiDelegate?.clickSnoozeActionButton()
         }
     }
 }

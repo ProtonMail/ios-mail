@@ -17,12 +17,13 @@
 
 import Foundation
 import ProtonCoreDataModel
+import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreUIFoundations
 
 struct ContactPGPTypeHelper {
     let internetConnectionStatusProvider: InternetConnectionStatusProviderProtocol
-    let apiService: APIService
+    let fetchEmailAddressesPublicKey: FetchEmailAddressesPublicKeyUseCase
     /// Get from UserManager.UserInfo.sign
     let userSign: Int
     let localContacts: [PreContact]
@@ -64,9 +65,9 @@ struct ContactPGPTypeHelper {
     func calculateEncryptionIconWithAPI(email: String,
                                         isMessageHavingPwd: Bool,
                                         completion: @escaping (EncryptionIconStatus?, Int?) -> Void) {
-        let request = UserEmailPubKeys(email: email)
-        apiService.perform(request: request, response: KeysResponse()) { _, result in
-            if let error = result.error {
+        ConcurrencyUtils.runWithCompletion(block: fetchEmailAddressesPublicKey.execute, argument: email) { result in
+            switch result {
+            case .failure(let error):
                 var errCode = error.responseCode ?? -1
                 var errorString = ""
                 if errCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue {
@@ -97,11 +98,11 @@ struct ContactPGPTypeHelper {
                                      icon: IconProvider.exclamationCircle,
                                      text: errorString), errCode)
                 }
-            } else {
+            case .success(let keysResponse):
                 let contact = localContacts.first(where: { $0.email == email })
                 let encryptionPreferences = EncryptionPreferencesHelper
                     .getEncryptionPreferences(email: email,
-                                              keysResponse: result,
+                                              keysResponse: keysResponse,
                                               userDefaultSign: userSign == 1,
                                               userAddresses: userAddresses,
                                               contact: contact)

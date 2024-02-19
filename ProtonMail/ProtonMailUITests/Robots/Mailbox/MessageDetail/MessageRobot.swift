@@ -27,6 +27,9 @@ fileprivate struct id {
     
     static let trackerShieldImageIdentifier = "ic-shield-filled"
     static let trackerShevronImageIdentifier = "ic-chevron-right-filled"
+
+    static let senderLabelIdentifier = "NonExpandedHeaderView.senderAddressLabel.label"
+    static let unblockSenderButtonTitle = "Unblock"
 }
 
 /*
@@ -35,7 +38,12 @@ fileprivate struct id {
 class MessageRobot: CoreElements {
     
     var verify = Verify()
-    
+
+    func expandMessageDetails() -> ExpandedMessageRobot {
+        staticText(id.senderLabelIdentifier).waitForHittable().tap()
+        return ExpandedMessageRobot()
+    }
+
     func addMessageToFolder(_ folderName: String) -> MessageRobot {
         openFoldersModal()
             .selectFolder(folderName)
@@ -141,7 +149,22 @@ class MessageRobot: CoreElements {
         staticText(text).tap()
         return MessageAttachmentsOverviewRobot()
     }
+
+    func unblockSenderThroughBanner() -> Self {
+        button(id.unblockSenderButtonTitle).waitForHittable().tap()
+        return self
+    }
+
+    func clickMarkAsUnreadIcon() -> InboxRobot {
+        button("ic envelope dot").tap()
+        return InboxRobot()
+    }
     
+    func waitForMessageBodyWithTextToExist(text: String) -> MessageRobot {
+        staticText(text).waitUntilExists()
+        return MessageRobot()
+    }
+        
     class MessageMoreOptions: CoreElements {
 
         func moveToSpam() -> MailboxRobotInterface {
@@ -197,6 +220,9 @@ class MessageRobot: CoreElements {
     }
     
     class Verify: CoreElements {
+        private struct ID {
+            static let senderBlockedBannerText = "Sender has been blocked"
+        }
 
         func messageBodyWithStaticTextExists(_ text: String) -> MessageRobot {
             webView().byIndex(0).onDescendant(staticText(text)).waitUntilExists().checkExists().checkHasLabel(text)
@@ -209,6 +235,20 @@ class MessageRobot: CoreElements {
 
         func attachmentWithLabelExistInMessageBody(label: String) {
             webView().byIndex(0).onDescendant(staticText(label)).waitUntilExists().checkExists().checkHasLabel(label)
+        }
+
+        @discardableResult
+        func senderBlockedBannerIsShown() -> MessageRobot {
+            staticText(ID.senderBlockedBannerText).checkExists()
+            button(id.unblockSenderButtonTitle).checkExists()
+            return ExpandedMessageRobot()
+        }
+
+        @discardableResult
+        func senderBlockedBannerIsNotShown() -> MessageRobot {
+            staticText(ID.senderBlockedBannerText).checkDoesNotExist()
+            button(id.unblockSenderButtonTitle).checkDoesNotExist()
+            return ExpandedMessageRobot()
         }
     }
 }

@@ -95,14 +95,13 @@ class GlobalContainer: ManagedContainer {
     var launchServiceFactory: Factory<LaunchService> {
         self {
             Launch(dependencies: self)
-		}
+        }
 	}
 
     var mailEventsPeriodicSchedulerFactory: Factory<MailEventsPeriodicScheduler> {
         self {
             MailEventsPeriodicScheduler(
                 refillPeriod: Constants.App.eventsPollingInterval,
-                currentDate: Date(),
                 coreLoopFactory: AnyCoreLoopFactory(EmptyCoreLoopFactory()),
                 specialLoopFactory: AnySpecialLoopFactory(MailEventsSpecialLoopFactory(dependencies: self))
             )
@@ -199,6 +198,7 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
+    @available(*, deprecated, message: "Prefer `FeatureFlagProvider`")
     var featureFlagsRepositoryFactory: Factory<FeatureFlagsRepository> {
         self {
             FeatureFlagsRepository.shared

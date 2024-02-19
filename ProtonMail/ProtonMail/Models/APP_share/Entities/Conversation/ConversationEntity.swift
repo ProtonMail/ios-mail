@@ -32,6 +32,7 @@ struct ConversationEntity: Equatable, Hashable {
     let userID: UserID
     let contextLabelRelations: [ContextLabelEntity]
     let attachmentsMetadata: [AttachmentsMetadata]
+    let displaySnoozedReminder: Bool
 
     /// Local use flag to mark this conversation is deleted
     /// (usually caused by empty trash/ spam action)
@@ -69,6 +70,7 @@ extension ConversationEntity {
             SystemLogger.log(error: error)
         }
         self.attachmentsMetadata = parsedAttachments ?? []
+        self.displaySnoozedReminder = conversation.displaySnoozedReminder
     }
 
     var starred: Bool {
@@ -108,6 +110,14 @@ extension ConversationEntity {
             return nil
         }
         return matchedLabel.time
+    }
+
+    func getSnoozeTime(labelID: LabelID) -> Date? {
+        guard let matchedLabel = contextLabelRelations
+            .first(where: { $0.labelID == labelID }) else {
+            return nil
+        }
+        return matchedLabel.snoozeTime
     }
 
     func getFirstValidFolder() -> LabelID? {

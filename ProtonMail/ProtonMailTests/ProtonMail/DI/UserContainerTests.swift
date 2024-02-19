@@ -70,6 +70,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.eventProcessor
         _ = strongRefToContainer?.eventsService
         _ = strongRefToContainer?.featureFlagsDownloadService
+        _ = strongRefToContainer?.featureFlagProvider
         _ = strongRefToContainer?.fetchAndVerifyContacts
         _ = strongRefToContainer?.fetchAttachment
         _ = strongRefToContainer?.fetchAttachmentMetadata
@@ -90,6 +91,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.cleanUserLocalMessages
         _ = strongRefToContainer?.reportService
         _ = strongRefToContainer?.contactViewsFactory
+        _ = strongRefToContainer?.eventRSVP
         _ = strongRefToContainer?.fetchMessages
         _ = strongRefToContainer?.fetchSenderImage
         _ = strongRefToContainer?.importDeviceContacts
