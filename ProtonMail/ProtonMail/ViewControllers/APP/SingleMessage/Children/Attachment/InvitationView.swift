@@ -35,6 +35,7 @@ final class InvitationView: UIView {
     private let participantsRow = SubviewFactory.participantsRow
 
     var onIntrinsicHeightChanged: (() -> Void)?
+    var onParticipantTapped: ((String) -> Void)?
     var onInvitationAnswered: ((InvitationAnswer) -> Void)?
     var onOpenInCalendarTapped: ((URL) -> Void)?
 
@@ -225,10 +226,8 @@ final class InvitationView: UIView {
     }
 
     private func makeParticipantButton(participant: EventDetails.Participant) -> UIButton {
-        let action = UIAction { _ in
-            if let url = URL(string: "mailto:\(participant.email)") {
-                UIApplication.shared.open(url)
-            }
+        let action = UIAction { [weak self] _ in
+            self?.onParticipantTapped?(participant.email)
         }
 
         return SubviewFactory.participantListButton(

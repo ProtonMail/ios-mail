@@ -27,6 +27,7 @@ import ProtonCoreUIFoundations
 protocol AttachmentViewControllerDelegate: AnyObject {
     func openAttachmentList(with attachments: [AttachmentInfo])
     func invitationViewWasChanged()
+    func participantTapped(emailAddress: String)
 }
 
 class AttachmentViewController: UIViewController {
@@ -101,6 +102,10 @@ class AttachmentViewController: UIViewController {
     private func setUpBindings() {
         invitationView.onIntrinsicHeightChanged = { [weak self] in
             self?.delegate?.invitationViewWasChanged()
+        }
+
+        invitationView.onParticipantTapped = { [weak self] emailAddress in
+            self?.delegate?.participantTapped(emailAddress: emailAddress)
         }
 
         invitationView.onOpenInCalendarTapped = { [weak self] deepLink in
