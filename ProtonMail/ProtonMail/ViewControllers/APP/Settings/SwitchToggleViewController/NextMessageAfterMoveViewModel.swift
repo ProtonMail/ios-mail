@@ -47,7 +47,7 @@ final class NextMessageAfterMoveViewModel: SwitchToggleVMProtocol, SwitchToggleV
         nil
     }
 
-    func sectionFooter() -> Either<String, NSAttributedString>? {
+    func sectionFooter(section: Int) -> Either<String, NSAttributedString>? {
         .left(L11n.NextMsgAfterMove.rowFooterTitle)
     }
 }

@@ -64,7 +64,7 @@ final class PrivacySettingViewModelTests: XCTestCase {
         XCTAssertEqual(sut.headerTopPadding, 8)
         XCTAssertEqual(sut.footerTopPadding, 0)
         XCTAssertNil(sut.sectionHeader())
-        XCTAssertNil(sut.sectionFooter())
+        XCTAssertNil(sut.sectionFooter(section: 0))
 
         for i in 0...3 {
             let item = sut.privacySections[i]

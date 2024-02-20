@@ -66,6 +66,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         case nextMsgAfterMove
         case blockList
         case autoDeleteSpamTrash
+        case privacyAndData
     }
 
     init(navigationController: UINavigationController?, dependencies: Dependencies) {
@@ -73,7 +74,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         self.dependencies = dependencies
         users = dependencies.usersManager
         let firstUser = users.firstUser!
-        viewModel = SettingsAccountViewModelImpl(
+        viewModel = SettingsAccountViewModel(
             user: firstUser,
             isMessageSwipeNavigationEnabled: firstUser.isMessageSwipeNavigationSettingEnabled
         )
@@ -122,6 +123,8 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
             } else {
                 presentAutoDeleteUpsellView()
             }
+        case .privacyAndData:
+            openPrivacyAndDataSetting()
         }
     }
 
@@ -262,5 +265,11 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     private func presentPayments() {
         paymentsUI = dependencies.paymentsUIFactory.makeView()
         paymentsUI?.presentUpgradePlan()
+    }
+
+    private func openPrivacyAndDataSetting() {
+        let viewModel = PrivacyAndDataSettingViewModel(dependencies: user.container)
+        let viewController = SwitchToggleViewController(viewModel: viewModel)
+        navigationController?.show(viewController, sender: nil)
     }
 }
