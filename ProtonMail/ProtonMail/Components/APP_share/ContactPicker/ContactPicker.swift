@@ -222,6 +222,17 @@ class ContactPicker: UIView, AccessibleView {
     // #pragma mark - Keyboard Notification Handling
     //
 
+    /// Reloads the list of contacts only if there is a query string already set. Call this function if more contacts are
+    /// available to be listed in the picker.
+    func reloadContactsList() {
+        guard let query = searchTableViewController?.queryString else {
+            return
+        }
+        // this forces to read the list of contacts again
+        let filteredContacts = self.filteredContacts(by: query)
+        searchTableViewController?.filteredContacts = filteredContacts
+    }
+
     internal func reloadData() {
         self.contactCollectionView.selectedContacts.removeAll()
 
