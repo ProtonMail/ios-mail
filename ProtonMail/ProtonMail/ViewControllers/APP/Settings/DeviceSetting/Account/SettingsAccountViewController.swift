@@ -63,10 +63,6 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
 
         updateTitle()
 
-        viewModel.reloadTable = { [weak self] in
-            self?.tableView.reloadData()
-        }
-
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: CellKey.headerCell)
         tableView.register(SettingsGeneralCell.self)
         tableView.register(SettingsTwoLinesCell.self)

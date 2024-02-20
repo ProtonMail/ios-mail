@@ -62,8 +62,7 @@ final class ComposeViewModelTests: XCTestCase {
             messageDataService: fakeUserManager.messageService,
             cacheService: fakeUserManager.cacheService,
             contextProvider: mockCoreDataService,
-            copyMessage: copyMessage,
-            keychain: testContainer.keychain
+            copyMessage: copyMessage
         )
         dependencies = ComposeViewModel.Dependencies(
             user: fakeUserManager,

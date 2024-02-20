@@ -34,11 +34,10 @@ struct AddressResponse: Decodable {
         let id, domainID, email: String
         let status, type, receive, send: Int
         let displayName, signature: String
-        let order, priority: Int
-        let catchAll, protonMX: Bool
-        let confirmationState, hasKeys, flags: Int
+        let order: Int
+        let catchAll: Bool
+        let confirmationState, hasKeys: Int
         let keys: [Key]
-        let signedKeyList: SignedKeyList
 
         // swiftlint:disable:next nesting
         enum CodingKeys: String, CodingKey {
@@ -52,14 +51,10 @@ struct AddressResponse: Decodable {
             case displayName = "DisplayName"
             case signature = "Signature"
             case order = "Order"
-            case priority = "Priority"
             case catchAll = "CatchAll"
-            case protonMX = "ProtonMX"
             case confirmationState = "ConfirmationState"
             case hasKeys = "HasKeys"
-            case flags = "Flags"
             case keys = "Keys"
-            case signedKeyList = "SignedKeyList"
         }
 
         func convertToProtonAddressModel() -> ProtonCoreDataModel.Address {
@@ -97,11 +92,7 @@ struct AddressResponse: Decodable {
         let id: String
         let primary: Int
         let flags: Int
-        let fingerprint: String
-        let fingerprints: [String]
-        let publicKey: String
         let active: Int
-        let addressForwardingID: String?
         let version: Int
         let activation: String?
         let privateKey: String
@@ -113,36 +104,11 @@ struct AddressResponse: Decodable {
             case id = "ID"
             case primary = "Primary"
             case flags = "Flags"
-            case fingerprint = "Fingerprint"
-            case fingerprints = "Fingerprints"
-            case publicKey = "PublicKey"
             case active = "Active"
-            case addressForwardingID = "AddressForwardingID"
             case version = "Version"
             case activation = "Activation"
             case privateKey = "PrivateKey"
             case token = "Token"
-            case signature = "Signature"
-        }
-    }
-
-    struct SignedKeyList: Decodable {
-        let minEpochID: Int?
-        let maxEpochID: Int?
-        let expectedMinEpochID: Int?
-        let data: String
-        let obsolescenceToken: String?
-        let revision: Int
-        let signature: String
-
-        // swiftlint:disable:next nesting
-        enum CodingKeys: String, CodingKey {
-            case minEpochID = "MinEpochID"
-            case maxEpochID = "MaxEpochID"
-            case expectedMinEpochID = "ExpectedMinEpochID"
-            case data = "Data"
-            case obsolescenceToken = "ObsolescenceToken"
-            case revision = "Revision"
             case signature = "Signature"
         }
     }

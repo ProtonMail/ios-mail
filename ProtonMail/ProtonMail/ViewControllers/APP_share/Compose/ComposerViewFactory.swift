@@ -126,8 +126,7 @@ final class ComposerViewFactory {
                         messageDecrypter: dependencies.user.messageService.messageDecrypter
                     ),
                     userDataSource: dependencies.user
-                ),
-                keychain: dependencies.keychain
+                )
             ),
             fetchMobileSignatureUseCase: FetchMobileSignature(
                 dependencies: .init(

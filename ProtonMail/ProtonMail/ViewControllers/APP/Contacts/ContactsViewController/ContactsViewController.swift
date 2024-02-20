@@ -34,10 +34,6 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         HasInternetConnectionStatusProviderProtocol &
         HasUserManager
 
-    class var lifetimeConfiguration: LifetimeConfiguration {
-        .init(maxCount: 1)
-    }
-
     private enum Layout {
         static let importContactsHeight: CGFloat = 24.0
     }

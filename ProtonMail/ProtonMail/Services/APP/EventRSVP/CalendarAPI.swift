@@ -128,6 +128,4 @@ public struct SecurityFlags: OptionSet, Codable, Equatable {
     }
 
     public static let encrypted = SecurityFlags(rawValue: 1 << 0)
-    public static let signed = SecurityFlags(rawValue: 1 << 1)
-    public static let encryptedAndSigned: SecurityFlags = [.encrypted, .signed]
 }

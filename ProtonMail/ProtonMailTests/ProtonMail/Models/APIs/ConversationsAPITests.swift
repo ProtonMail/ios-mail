@@ -190,7 +190,6 @@ class ConversationsAPITests: XCTestCase {
         
         let sut = ConversationDeleteResponse()
         XCTAssertTrue(sut.ParseResponse(responseDictionary))
-        XCTAssertNotNil(sut.results)
     }
     
     //MARK: - Conversation Label
@@ -219,8 +218,6 @@ class ConversationsAPITests: XCTestCase {
         
         let sut = ConversationLabelResponse()
         XCTAssertTrue(sut.ParseResponse(responseDictionary))
-        XCTAssertNotNil(sut.results)
-        XCTAssertNotNil(sut.responseDict)
     }
     
     //MARK: - Conversation Unlabel
@@ -249,7 +246,5 @@ class ConversationsAPITests: XCTestCase {
         
         let sut = ConversationUnlabelResponse()
         XCTAssertTrue(sut.ParseResponse(responseDictionary))
-        XCTAssertNotNil(sut.results)
-        XCTAssertNotNil(sut.responseDict)
     }
 }
