@@ -1227,13 +1227,12 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     private func showSpotlightIfNeeded() {
-        if viewModel.shouldShowMessageNavigationSpotlight {
-            showMessageNavigationSpotlight()
-        }
-        // TODO: Show snooze spotlight in the future.
-//        if viewModel.shouldShowShowSnoozeSpotlight() {
-//            showSnoozeSpotlight()
+//        if viewModel.shouldShowMessageNavigationSpotlight {
+//            showMessageNavigationSpotlight()
 //        }
+        if viewModel.shouldShowShowSnoozeSpotlight() {
+            showSnoozeSpotlight()
+        }
     }
 
     private func showSnoozeSpotlight() {
