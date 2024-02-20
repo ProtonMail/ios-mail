@@ -49,8 +49,9 @@ class MailboxRobotInterface: CoreElements {
             activityIndicator().waitUntilGone()
 
             // the spinner might still be visible (and blocking the UI) when a cell that we want to tap appears
+            // is waitUntilGone broken?
             // TODO: find if there's a better way to wait until the cell can be tapped
-            sleep(3)
+            sleep(5)
         }
     }
     
