@@ -259,7 +259,7 @@ extension SettingsAccountViewController {
             let item = self.viewModel.accountItems[row]
             cellToUpdate.configure(left: item.description)
             switch item {
-            case .singlePassword, .loginPassword, .mailboxPassword:
+            case .singlePassword, .loginPassword, .mailboxPassword, .privacyAndData:
                 break
             case .recovery:
                 cellToUpdate.configure(right: viewModel.recoveryEmail)
@@ -347,6 +347,8 @@ extension SettingsAccountViewController {
             self.coordinator.go(to: .mailboxPwd)
         case .recovery:
             self.coordinator.go(to: .recoveryEmail)
+        case .privacyAndData:
+            coordinator.go(to: .privacyAndData)
         case .storage:
             break
         }

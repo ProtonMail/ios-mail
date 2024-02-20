@@ -56,7 +56,7 @@ extension NetworkSettingViewModel: SwitchToggleVMOutput {
         LocalString._settings_alternative_routing_title
     }
 
-    func sectionFooter() -> Either<String, NSAttributedString>? {
+    func sectionFooter(section: Int) -> Either<String, NSAttributedString>? {
         let footer = LocalString._settings_alternative_routing_footer
         let learnMore = LocalString._settings_alternative_routing_learn
         let full = String.localizedStringWithFormat(footer, learnMore)

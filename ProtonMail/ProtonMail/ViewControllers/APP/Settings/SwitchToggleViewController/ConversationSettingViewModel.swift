@@ -77,7 +77,7 @@ extension ConversationSettingViewModel: SwitchToggleVMOutput {
         nil
     }
 
-    func sectionFooter() -> Either<String, NSAttributedString>? {
+    func sectionFooter(section: Int) -> Either<String, NSAttributedString>? {
         Either.left(LocalString._conversation_settings_footer_title)
     }
 }

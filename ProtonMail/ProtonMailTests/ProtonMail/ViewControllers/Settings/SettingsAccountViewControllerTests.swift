@@ -21,7 +21,7 @@ import ProtonCoreTestingToolkit
 
 class SettingsAccountViewControllerTests: XCTestCase {
     var sut: SettingsAccountViewController!
-    var viewModel: SettingsAccountViewModelImpl!
+    var viewModel: SettingsAccountViewModel!
     var coordinatorMock: MockSettingsAccountCoordinatorProtocol!
     var userMock: UserManager!
     var apiServiceMock: APIServiceMock!
@@ -29,7 +29,8 @@ class SettingsAccountViewControllerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         apiServiceMock = .init()
-        viewModel = .init(user: .init(api: apiServiceMock), isMessageSwipeNavigationEnabled: true)
+        userMock = .init(api: apiServiceMock)
+        viewModel = .init(user: userMock, isMessageSwipeNavigationEnabled: true)
         coordinatorMock = .init()
         sut = .init(viewModel: viewModel, coordinator: coordinatorMock)
     }
@@ -66,12 +67,60 @@ class SettingsAccountViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.tableView.numberOfSections, 4)
 
         // account section
-        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 0), 3)
+        let accountCells = sut.tableView.allIndexedCells(ofType: SettingsGeneralCell.self, inSection: 0)
+        XCTAssertEqual(accountCells.count, 4)
+        XCTAssertEqual(
+            accountCells[0].cell.leftTextValue(),
+            SettingsAccountItem.singlePassword.description
+        )
+        XCTAssertEqual(
+            accountCells[1].cell.leftTextValue(),
+            SettingsAccountItem.recovery.description
+        )
+        XCTAssertEqual(
+            accountCells[2].cell.leftTextValue(),
+            SettingsAccountItem.storage.description
+        )
+        XCTAssertEqual(
+            accountCells[3].cell.leftTextValue(),
+            SettingsAccountItem.privacyAndData.description
+        )
+
         // addresses section
         XCTAssertEqual(sut.tableView.numberOfRows(inSection: 1), 4)
         // mailbox section
         XCTAssertEqual(sut.tableView.numberOfRows(inSection: 2), 8)
         // account deletion
         XCTAssertEqual(sut.tableView.numberOfRows(inSection: 3), 1)
+    }
+
+    func testAccountSettings_twoPasswordMode_hasLoginAndMailboxPwdSettings() {
+        userMock.userInfo.passwordMode = 2
+        sut.loadViewIfNeeded()
+
+        XCTAssertEqual(sut.tableView.numberOfSections, 4)
+
+        let accountCells = sut.tableView.allIndexedCells(ofType: SettingsGeneralCell.self, inSection: 0)
+        XCTAssertEqual(accountCells.count, 5)
+        XCTAssertEqual(
+            accountCells[0].cell.leftTextValue(),
+            SettingsAccountItem.loginPassword.description
+        )
+        XCTAssertEqual(
+            accountCells[1].cell.leftTextValue(),
+            SettingsAccountItem.mailboxPassword.description
+        )
+        XCTAssertEqual(
+            accountCells[2].cell.leftTextValue(),
+            SettingsAccountItem.recovery.description
+        )
+        XCTAssertEqual(
+            accountCells[3].cell.leftTextValue(),
+            SettingsAccountItem.storage.description
+        )
+        XCTAssertEqual(
+            accountCells[4].cell.leftTextValue(),
+            SettingsAccountItem.privacyAndData.description
+        )
     }
 }
