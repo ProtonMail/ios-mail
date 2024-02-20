@@ -161,7 +161,6 @@ extension EventsService {
         if userManager?.isNewEventLoopEnabled == true {
             fetchEventsWithNewApproach(
                 byLabel: labelID,
-                notificationMessageID: notificationMessageID,
                 completion: completion
             )
             return
@@ -242,7 +241,6 @@ extension EventsService {
 
     private func fetchEventsWithNewApproach(
         byLabel labelID: LabelID,
-        notificationMessageID: MessageID?,
         completion: ((Swift.Result<[String: Any], Error>) -> Void)?
     ) {
         guard let user = userManager else {

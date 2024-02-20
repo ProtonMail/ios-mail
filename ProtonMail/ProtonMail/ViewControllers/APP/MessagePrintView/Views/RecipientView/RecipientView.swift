@@ -50,10 +50,6 @@ class RecipientView: PMView {
         self.tableView.backgroundColor = .white
     }
 
-    func showLock(isShow: Bool) {
-        showLocker = isShow
-    }
-
     func getContentSize() -> CGSize {
         tableView.reloadData()
         tableView.layoutIfNeeded()

@@ -923,7 +923,7 @@ private extension MailEventsPeriodicSchedulerTests {
         newEventIDMap[user.userID] = newEventID
         let e = expectation(description: "Closure is called")
         api.requestJSONStub.bodyIs { _, method, path, _, _, _, _, _, _, _, _, completion in
-            XCTAssertEqual(path, "/core/v4/events/\(eventID)?ConversationCounts=1&MessageCounts=1")
+            XCTAssertEqual(path, "/core/v5/events/\(eventID)?ConversationCounts=1&MessageCounts=1")
             XCTAssertEqual(method, .get)
             let response = response ?? [
                 "Code": 1000,

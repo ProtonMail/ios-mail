@@ -382,10 +382,6 @@ extension SearchViewModel {
 
 // TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewModel: MoveToActionSheetProtocol {
-    func handleMoveToAction(conversations: [ConversationEntity], to folder: MenuLabel, completion: (() -> Void)?) {
-        // search view doesn't support conversation mode
-    }
-
     func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel) {
         messageService.move(messages: messages, to: folder.location.labelID, queue: true)
     }

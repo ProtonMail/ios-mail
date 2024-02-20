@@ -47,7 +47,7 @@ final class ContactCombineViewModelTests: XCTestCase {
         }
 
         XCTAssertNil(sut.output.sectionHeader())
-        let footer = try XCTUnwrap(sut.output.sectionFooter())
+        let footer = try XCTUnwrap(sut.output.sectionFooter(section: 0))
         switch footer {
         case .left(let text):
             XCTAssertEqual(text, L11n.SettingsContacts.combinedContactsFooter)

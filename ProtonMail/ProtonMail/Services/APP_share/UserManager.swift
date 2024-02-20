@@ -83,7 +83,7 @@ class UserManager: ObservableObject {
             container.userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
             container.userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userID.rawValue)
             container.userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userID.rawValue)
-            container.autoImportContactsFeature.disableAndDeleteQueue()
+            container.autoImportContactsFeature.disableSettingAndDeleteQueueForUser()
             self.authCredentialAccessQueue.async {
                 seal.fulfill_()
             }

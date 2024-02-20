@@ -24,6 +24,7 @@ import ProtonInboxICal
 protocol EventRSVP {
     func extractBasicEventInfo(icsData: Data) throws -> BasicEventInfo
     func fetchEventDetails(basicEventInfo: BasicEventInfo) async throws -> EventDetails
+    func respondToInvitation(with answer: InvitationAnswer) async throws
 }
 
 struct LocalEventRSVP: EventRSVP {
@@ -249,6 +250,12 @@ struct LocalEventRSVP: EventRSVP {
         }
 
         return iCalReader.parse_single_event_ics(dependecies: dependecies, attendeeData: attendeeData)
+    }
+
+    func respondToInvitation(with answer: InvitationAnswer) async throws {
+        if #available(iOS 16.0, *) {
+            try await Task.sleep(for: .seconds(1))
+        }
     }
 }
 

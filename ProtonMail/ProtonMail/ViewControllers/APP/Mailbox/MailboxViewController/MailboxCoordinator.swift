@@ -54,7 +54,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         true
     }
     var pendingActionAfterDismissal: (() -> Void)?
-    private let getApplicationState: () -> UIApplication.State
     private var timeOfLastNavigationToMessageDetails: Date?
 
     private let troubleShootingHelper = TroubleShootingHelper(doh: BackendConfiguration.shared.doh)
@@ -65,17 +64,12 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
          nav: UINavigationController?,
          viewController: MailboxViewController,
          viewModel: MailboxViewModel,
-         dependencies: Dependencies,
-         getApplicationState: @escaping () -> UIApplication.State = {
-        return UIApplication.shared.applicationState
-    }
-    ) {
+         dependencies: Dependencies) {
         self.sideMenu = sideMenu
         self.navigation = nav
         self.viewController = viewController
         self.viewModel = viewModel
         self.contextProvider = dependencies.contextProvider
-        self.getApplicationState = getApplicationState
         self.dependencies = dependencies
     }
 

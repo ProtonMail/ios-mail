@@ -113,7 +113,7 @@ extension PrivacySettingViewModel: SwitchToggleVMOutput {
         nil
     }
 
-    func sectionFooter() -> Either<String, NSAttributedString>? {
+    func sectionFooter(section: Int) -> Either<String, NSAttributedString>? {
         nil
     }
 }

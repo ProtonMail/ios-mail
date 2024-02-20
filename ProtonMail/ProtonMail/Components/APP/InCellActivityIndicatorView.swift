@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,13 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreFeatureFlags
+import UIKit
 
-enum MailFeatureFlag: String, FeatureFlagTypeProtocol {
-    case appLaunchRefactor = "MailiosAppLaunchRefactor"
-    case autoImportContacts = "MailiosAutoImportContacts"
-    case newEventLoop = "MailiosNewEventsLoop"
-    case rsvpWidget = "MailiosRSVPWidget"
-    case snooze = "MailiosSnooze"
-    case nextMessageAfterMove = "MailiosNextMessageOnMove"
+/// The purpose of this class is to be able to use an activity indicator inside a cell.
+final class InCellActivityIndicatorView: UIActivityIndicatorView {
+    @available(*, unavailable, message: "This method does nothing, use `customStopAnimating` instead.")
+    override func stopAnimating() {
+        /*
+         This method is called by the OS as a part of `prepareForReuse`.
+         However, the animation is never restarted.
+         The result is that the spinner is gone too soon, before the processing is complete.
+         */
+    }
+
+    func customStopAnimating() {
+        super.stopAnimating()
+    }
 }

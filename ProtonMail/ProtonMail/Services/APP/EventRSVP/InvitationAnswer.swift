@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,13 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreFeatureFlags
+import Foundation
 
-enum MailFeatureFlag: String, FeatureFlagTypeProtocol {
-    case appLaunchRefactor = "MailiosAppLaunchRefactor"
-    case autoImportContacts = "MailiosAutoImportContacts"
-    case newEventLoop = "MailiosNewEventsLoop"
-    case rsvpWidget = "MailiosRSVPWidget"
-    case snooze = "MailiosSnooze"
-    case nextMessageAfterMove = "MailiosNextMessageOnMove"
+enum InvitationAnswer: CaseIterable {
+    case yes
+    case no
+    case maybe
 }

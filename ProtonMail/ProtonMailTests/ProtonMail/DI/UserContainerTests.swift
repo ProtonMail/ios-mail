@@ -86,6 +86,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.localNotificationService
         _ = strongRefToContainer?.messageService
         _ = strongRefToContainer?.queueHandler
+        _ = strongRefToContainer?.telemetryService
         _ = strongRefToContainer?.undoActionManager
         _ = strongRefToContainer?.userService
         _ = strongRefToContainer?.user

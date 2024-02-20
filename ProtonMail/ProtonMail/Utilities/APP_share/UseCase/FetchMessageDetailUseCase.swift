@@ -182,7 +182,6 @@ extension FetchMessageDetail {
         let queueManager: QueueManagerProtocol?
         let apiService: APIService
         let contextProvider: CoreDataContextProviderProtocol
-        let cacheService: CacheServiceProtocol
     }
 
     enum Errors: Error {

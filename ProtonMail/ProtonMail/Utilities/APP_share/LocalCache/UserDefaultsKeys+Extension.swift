@@ -42,4 +42,7 @@ extension UserDefaultsKeys {
     static let showServerNoticesNextTime = plainKey(named: "showServerNoticesNextTime", defaultValue: "0")
 
     static let cachedServerNotices = plainKey(named: "cachedServerNotices", defaultValue: [String]())
+
+    /// Dictionary of events with last sent timestamp per user. e.g. ["user-id-1": ["mail.ios.auto_import_contacts-heartbeat": 1707922894]]
+    static let telemetryFrequency = plainKey(named: "telemetry_frequency_flag", defaultValue: [String: [String: Int]]())
 }

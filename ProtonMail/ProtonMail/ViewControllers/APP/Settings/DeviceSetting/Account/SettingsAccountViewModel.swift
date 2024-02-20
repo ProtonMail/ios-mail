@@ -53,19 +53,22 @@ enum SettingsAccountItem: Int, CustomStringConvertible {
     case mailboxPassword
     case recovery
     case storage
+    case privacyAndData
 
     var description: String {
         switch self {
         case .singlePassword:
-            return LocalString._single_password
+            return L11n.AccountSettings.singlePassword
         case .loginPassword:
-            return LocalString._signin_password
+            return L11n.AccountSettings.loginPassword
         case .mailboxPassword:
-            return LocalString._mailbox_password
+            return L11n.AccountSettings.mailboxPassword
         case .recovery:
-            return LocalString._recovery_email
+            return L11n.AccountSettings.recoveryEmail
         case .storage:
-            return LocalString._mailbox_storage
+            return L11n.AccountSettings.storage
+        case .privacyAndData:
+            return L11n.AccountSettings.privacyAndData
         }
     }
 }
@@ -125,30 +128,7 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
     }
 }
 
-protocol SettingsAccountViewModel: AnyObject {
-    var sections: [SettingAccountSection] { get }
-    var accountItems: [SettingsAccountItem] { get }
-    var addrItems: [SettingsAddressItem] { get }
-    var mailboxItems: [SettingsMailboxItem] { get }
-
-    var storageText: String { get }
-    var recoveryEmail: String { get }
-
-    var email: String { get }
-    var displayName: String { get }
-
-    var defaultSignatureStatus: String { get }
-    var defaultMobileSignatureStatus: String { get }
-    var allSendingAddresses: [Address] { get }
-
-    var isAutoDeleteSpamAndTrashEnabled: Bool { get }
-    var isPaidUser: Bool { get }
-    func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?)
-
-    var reloadTable: (() -> Void)? { get set }
-}
-
-class SettingsAccountViewModelImpl: SettingsAccountViewModel {
+final class SettingsAccountViewModel {
     let sections: [SettingAccountSection] = [ .account, .addresses, .mailbox, .deleteAccount]
 
     var accountItems: [SettingsAccountItem] {
@@ -160,6 +140,10 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
         }
 
         items.append(contentsOf: [.recovery, .storage])
+
+        #if DEBUG
+        items.append(.privacyAndData)
+        #endif
 
         return items
     }

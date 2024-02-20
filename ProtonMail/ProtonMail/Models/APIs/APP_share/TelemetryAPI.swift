@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,13 +15,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreFeatureFlags
+import ProtonCoreNetworking
 
-enum MailFeatureFlag: String, FeatureFlagTypeProtocol {
-    case appLaunchRefactor = "MailiosAppLaunchRefactor"
-    case autoImportContacts = "MailiosAutoImportContacts"
-    case newEventLoop = "MailiosNewEventsLoop"
-    case rsvpWidget = "MailiosRSVPWidget"
-    case snooze = "MailiosSnooze"
-    case nextMessageAfterMove = "MailiosNextMessageOnMove"
+private enum TelemetryAPI {
+    static let path = "/data/v1/stats"
+}
+
+final class TelemetryRequest: Request {
+    private let event: TelemetryEvent
+
+    init(event: TelemetryEvent) {
+        self.event = event
+    }
+
+    var path: String {
+        return TelemetryAPI.path
+    }
+
+    var method: HTTPMethod {
+        return .post
+    }
+
+    var parameters: [String: Any]? {
+        [
+            "MeasurementGroup": event.measurementGroup,
+            "Event": event.name,
+            "Values": event.values,
+            "Dimensions": event.dimensions
+        ]
+    }
 }

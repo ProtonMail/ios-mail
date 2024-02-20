@@ -38,6 +38,7 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
 
     // Suggested batch size for creating contacts in backend
     private let contactBatchSize = 10
+    private let maxNumberOfVCardsToDownload = 100
     private var backgroundTask: Task<Void, Never>?
     private let userID: UserID
     private var contactsHistoryToken: Data? {
@@ -69,12 +70,19 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
         backgroundTask = Task.detached(priority: .userInitiated) { [weak self] in
             guard let self = self else { return }
             defer { taskFinished() }
-
+            let isFirstImport = contactsHistoryToken == nil
             let contactIDsToImport = fetchDeviceContactIdentifiersToImport()
             guard !contactIDsToImport.isEmpty else { return }
             delegate?.onProgressUpdate(count: 0, total: contactIDsToImport.count)
 
             let triagedContacts = triageContacts(identifiers: contactIDsToImport)
+            if !isFirstImport { // more info: MAILIOS-4176
+                await downloadProtonVCardsIfNeeded(
+                    contactsMatchedByUuid: triagedContacts.toUpdateByUuidMatch,
+                    contactsMatchedByEmail: triagedContacts.toUpdateByEmailMatch
+                )
+            }
+
             do {
                 try saveNewProtonContacts(from: triagedContacts.toCreate, params: params)
                 try updateProtonContacts(
@@ -131,7 +139,7 @@ extension ImportDeviceContacts {
         return contactIDs
     }
 
-    /// Returns which contacts have to be created and which have to be updated by uuid match and which have to updated by email match.
+    /// Returns which contacts have to be created and which have to be updated by uuid match and which have to be updated by email match.
     private func triageContacts(identifiers: [DeviceContactIdentifier]) -> DeviceContactsToImport {
         let matcher = ProtonContactMatcher(contactProvider: dependencies.contactService)
         let (matchByUuid, matchByEmail) = matcher.matchProtonContacts(with: identifiers)
@@ -141,7 +149,6 @@ extension ImportDeviceContacts {
                 .map(\.uuidNormalisedForAutoImport)
                 .contains(deviceContact.uuidNormalisedForAutoImport)
         }
-
         let deviceContactsToImport = DeviceContactsToImport(
             toCreate: toCreate,
             toUpdateByUuidMatch: matchByUuid,
@@ -149,6 +156,58 @@ extension ImportDeviceContacts {
         )
         SystemLogger.log(message: deviceContactsToImport.description, category: .contacts)
         return deviceContactsToImport
+    }
+
+    /**
+     Given some `DeviceContactIdentifier` for specific matches, it checks if the matching Proton contacts
+     in the local database have the vCards property downloaded. If it does not, it requests the contacts details to fetch them.
+     */
+    private func downloadProtonVCardsIfNeeded(
+        contactsMatchedByUuid: [DeviceContactIdentifier],
+        contactsMatchedByEmail: [DeviceContactIdentifier]
+    ) async {
+        let uuids = contactsMatchedByUuid.map(\.uuidNormalisedForAutoImport)
+        let contactIDByUuid = dependencies.contactService.getContactsByUUID(uuids).map(\.contactID)
+        let emails = contactsMatchedByEmail.flatMap(\.emails)
+        let contactIDByEmail = dependencies.contactService.getContactsByEmailAddress(emails).map(\.contactID)
+
+        let contactIDs = contactIDByUuid + contactIDByEmail
+        let idsWithMissingVCards = getLimitedMissingVCardIds(from: contactIDs)
+        guard !idsWithMissingVCards.isEmpty else { return }
+
+        let message = "fetching vCards for \(idsWithMissingVCards.count) Proton contacts"
+        SystemLogger.log(message: message, category: .contacts)
+
+        await withTaskGroup(of: Bool.self) { [weak self] group in
+            guard let contactService = self?.dependencies.contactService else { return }
+            for id in idsWithMissingVCards {
+                group.addTask {
+                    do {
+                        _ = try await contactService.fetchContact(contactID: id)
+                        return true
+                    } catch {
+                        return false
+                    }
+                }
+            }
+
+            var numFailedFetches = 0
+            for await fetchSucceed in group {
+                numFailedFetches += fetchSucceed ? 0 : 1
+            }
+            if numFailedFetches > 0 {
+                let message = "\(numFailedFetches) contact detail requests failed"
+                SystemLogger.log(message: message, category: .contacts, isError: true)
+            }
+        }
+    }
+
+    private func getLimitedMissingVCardIds(from contactIDs: [ContactID]) -> [ContactID] {
+        var result = dependencies.contactService.getContactsWithoutVCards(from: contactIDs)
+        if result.count > maxNumberOfVCardsToDownload {
+            result = Array(result[0..<maxNumberOfVCardsToDownload])
+        }
+        return result
     }
 }
 
@@ -199,7 +258,6 @@ extension ImportDeviceContacts {
 
     private func enqueueAddContactsAction(for contactsVCards: [[CardData]]) {
         guard !contactsVCards.isEmpty else { return }
-        let user = userID
         let contactVCards = contactsVCards.map(ContactObjectVCards.init(vCards:))
         let task = ContactTask(taskID: UUID(), command: .create(contacts: contactVCards))
         dependencies.contactSyncQueue.addTask(task)
@@ -335,7 +393,6 @@ extension ImportDeviceContacts {
     }
 
     private func enqueueUpdateContactAction(for contact: ContactEntity, cards: [CardData]) {
-        let contactId = contact.objectID.rawValue.uriRepresentation().absoluteString
         let task = ContactTask(taskID: UUID(), command: .update(contactID: contact.contactID, vCards: cards))
         dependencies.contactSyncQueue.addTask(task)
     }

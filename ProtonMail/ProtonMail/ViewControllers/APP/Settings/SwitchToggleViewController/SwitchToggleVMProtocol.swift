@@ -47,7 +47,7 @@ protocol SwitchToggleVMOutput {
 
     func cellData(for indexPath: IndexPath) -> (title: String, status: Bool)?
     func sectionHeader() -> String?
-    func sectionFooter() -> Either<String, NSAttributedString>?
+    func sectionFooter(section: Int) -> Either<String, NSAttributedString>?
 }
 
 extension SwitchToggleVMProtocol {

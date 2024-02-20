@@ -404,6 +404,11 @@ class MockEventRSVP: EventRSVP {
         try fetchEventDetailsStub(basicEventInfo)
     }
 
+    @ThrowingFuncStub(MockEventRSVP.respondToInvitation) var respondToInvitationStub
+    func respondToInvitation(with answer: InvitationAnswer) throws {
+        try respondToInvitationStub(answer)
+    }
+
 }
 
 class MockFailedPushDecryptionMarker: FailedPushDecryptionMarker {

@@ -27,12 +27,15 @@ final class InvitationView: UIView {
     private let timeLabel = SubviewFactory.timeLabel
     private let statusContainer = SubviewFactory.statusContainer
     private let statusLabel = SubviewFactory.statusLabel
+    private let respondingViewContainer = SubviewFactory.respondingViewContainer
+    private let respondingViewStackView = SubviewFactory.respondingViewStackView
     private let widgetSeparator = SubviewFactory.widgetSeparator
     private let openInCalendarButton = SubviewFactory.openInCalendarButton
     private let detailsContainer = SubviewFactory.detailsContainer
     private let participantsRow = SubviewFactory.participantsRow
 
     var onIntrinsicHeightChanged: (() -> Void)?
+    var onInvitationAnswered: ((InvitationAnswer) -> Void)?
     var onOpenInCalendarTapped: ((URL) -> Void)?
 
     private var viewModel: InvitationViewModel? {
@@ -61,6 +64,7 @@ final class InvitationView: UIView {
 
         widgetContainer.addArrangedSubview(widgetDetailsBackground)
         widgetContainer.addArrangedSubview(statusContainer)
+        widgetContainer.addArrangedSubview(respondingViewContainer)
         widgetContainer.addArrangedSubview(widgetSeparator)
         widgetContainer.addArrangedSubview(openInCalendarButton)
 
@@ -70,6 +74,7 @@ final class InvitationView: UIView {
         widgetDetailsContainer.addArrangedSubview(timeLabel)
 
         statusContainer.addSubview(statusLabel)
+        respondingViewContainer.addSubviews(respondingViewStackView)
 
         // needed to avoid autolayout warnings raised by adding an empty UIStackView
         detailsContainer.isHidden = true
@@ -81,6 +86,7 @@ final class InvitationView: UIView {
         widgetContainer.fillSuperview()
         widgetDetailsContainer.centerInSuperview()
         statusLabel.centerInSuperview()
+        respondingViewStackView.centerInSuperview()
 
         [
             container.topAnchor.constraint(equalTo: topAnchor),
@@ -91,6 +97,10 @@ final class InvitationView: UIView {
 
             statusLabel.topAnchor.constraint(equalTo: statusContainer.topAnchor, constant: 23),
             statusLabel.leftAnchor.constraint(equalTo: statusContainer.leftAnchor, constant: 20),
+
+            respondingViewContainer.heightAnchor.constraint(equalToConstant: 100),
+
+            respondingViewStackView.leftAnchor.constraint(equalTo: respondingViewContainer.leftAnchor, constant: 20),
 
             widgetSeparator.heightAnchor.constraint(equalToConstant: 1),
 
@@ -124,6 +134,48 @@ final class InvitationView: UIView {
         detailsContainer.isHidden = false
 
         self.viewModel = viewModel
+    }
+
+    func displayAnsweringStatus(_ status: AttachmentViewModel.RespondingStatus) {
+        respondingViewStackView.clearAllViews()
+
+        switch status {
+        case .respondingUnavailable:
+            break
+        case .awaitingUserInput:
+            respondingViewStackView.addArrangedSubview(SubviewFactory.attendingPromptLabel)
+
+            let respondingButtonsStackView = SubviewFactory.respondingButtonsStackView
+
+            for action in respondingActions() {
+                let button = SubviewFactory.respondingButton(action: action)
+                respondingButtonsStackView.addArrangedSubview(button)
+            }
+
+            respondingViewStackView.addArrangedSubview(respondingButtonsStackView)
+        case .responseIsBeingProcessed:
+            let activityIndicator = InCellActivityIndicatorView(style: .medium)
+            activityIndicator.startAnimating()
+            respondingViewStackView.addArrangedSubview(activityIndicator)
+        case .alreadyResponded(let currentAnswer):
+            respondingViewStackView.addArrangedSubview(SubviewFactory.attendingPromptLabel)
+
+            let button = SubviewFactory.currentlySelectedAnswerButton
+            button.menu = UIMenu(children: respondingActions(except: currentAnswer))
+            button.setTitle(currentAnswer.longTitle, for: .normal)
+            respondingViewStackView.addArrangedSubview(button)
+        }
+
+        respondingViewContainer.isHidden = respondingViewStackView.arrangedSubviews.isEmpty
+        onIntrinsicHeightChanged?()
+    }
+
+    private func respondingActions(except answerToExclude: InvitationAnswer? = nil) -> [UIAction] {
+        InvitationAnswer.allCases.filter { $0 != answerToExclude }.map { option in
+            UIAction(title: option.shortTitle) { [weak self] _ in
+                self?.onInvitationAnswered?(option)
+            }
+        }
     }
 
     private func updateParticipantsList() {
@@ -241,6 +293,55 @@ private struct SubviewFactory {
         return view
     }
 
+    static var respondingViewContainer: UIView {
+        UIView()
+    }
+
+    static var respondingViewStackView: UIStackView {
+        let view = genericStackView
+        view.spacing = 8
+        return view
+    }
+
+    static var attendingPromptLabel: UILabel {
+        let view = UILabel()
+        view.set(
+            text: L11n.Event.attendingPrompt,
+            preferredFont: .footnote,
+            weight: .bold,
+            textColor: ColorProvider.TextNorm
+        )
+        return view
+    }
+
+    static var respondingButtonsStackView: UIStackView {
+        let view = UIStackView()
+        view.distribution = .fillEqually
+        view.spacing = 4
+        return view
+    }
+
+    static func respondingButton(action: UIAction?) -> UIButton {
+        let view = UIButton(primaryAction: action)
+        let height = 40.0
+        view.layer.borderColor = ColorProvider.SeparatorNorm
+        view.layer.borderWidth = 1
+        view.layer.cornerRadius = height / 2
+        view.setTitleColor(ColorProvider.TextNorm, for: .normal)
+        view.heightAnchor.constraint(equalToConstant: height).isActive = true
+        return view
+    }
+
+    static var currentlySelectedAnswerButton: UIButton {
+        let view = respondingButton(action: nil)
+        // TODO: this is not the best way to do this - move to UIButton.Configuration once we drop iOS 14
+        view.semanticContentAttribute = .forceRightToLeft
+        view.setImage(IconProvider.chevronDownFilled, for: .normal)
+        view.showsMenuAsPrimaryAction = true
+        view.tintColor = ColorProvider.IconNorm
+        return view
+    }
+
     static var widgetSeparator: UIView {
         let view = UIView()
         view.backgroundColor = ColorProvider.SeparatorNorm
@@ -284,10 +385,6 @@ private struct SubviewFactory {
         row(icon: \.users)
     }
 
-    static var participantStackView: UIStackView {
-        genericStackView
-    }
-
     static func participantListButton(titleColor: UIColor, primaryAction: UIAction) -> UIButton {
         let view = UIButton(primaryAction: primaryAction)
         view.contentHorizontalAlignment = .leading
@@ -319,4 +416,28 @@ private struct SubviewFactory {
 
 private extension UIAction.Identifier {
     static let openInCalendar = Self(rawValue: "ch.protonmail.protonmail.action.openInCalendar")
+}
+
+private extension InvitationAnswer {
+    var shortTitle: String {
+        switch self {
+        case .yes:
+            return L11n.Event.yesShort
+        case .no:
+            return L11n.Event.noShort
+        case .maybe:
+            return L11n.Event.maybeShort
+        }
+    }
+
+    var longTitle: String {
+        switch self {
+        case .yes:
+            return L11n.Event.yesLong
+        case .no:
+            return L11n.Event.noLong
+        case .maybe:
+            return L11n.Event.maybeLong
+        }
+    }
 }

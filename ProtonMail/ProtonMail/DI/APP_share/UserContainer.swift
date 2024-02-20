@@ -161,8 +161,7 @@ final class UserContainer: ManagedContainer {
                 dependencies: .init(
                     queueManager: self.queueManager,
                     apiService: self.apiService,
-                    contextProvider: self.contextProvider,
-                    cacheService: self.cacheService
+                    contextProvider: self.contextProvider
                 )
             )
         }
@@ -255,6 +254,16 @@ final class UserContainer: ManagedContainer {
                 localNotificationService: self.localNotificationService,
                 undoActionManager: self.undoActionManager,
                 user: self.user
+            )
+        }
+    }
+
+    var telemetryServiceFactory: Factory<TelemetryService> {
+        self {
+            TelemetryService(
+                userID: self.user.userID,
+                isTelemetrySettingOn: { [weak self] in self?.user.hasTelemetryEnabled ?? false },
+                dependencies: self
             )
         }
     }
