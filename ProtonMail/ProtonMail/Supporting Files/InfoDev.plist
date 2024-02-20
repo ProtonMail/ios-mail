@@ -84,6 +84,8 @@
 	<string>Debug</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>ch.protonmail.calendar</string>
+		<string>ProtonCalendar</string>
 		<string>org-appextension-feature-password-management</string>
 		<string>microsoft-edge-https</string>
 		<string>microsoft-edge-http</string>
