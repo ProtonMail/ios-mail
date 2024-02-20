@@ -196,7 +196,6 @@ final class InvitationView: UIView {
             title.append(subtitle)
 
             let organizerButton = makeParticipantButton(participant: organizer)
-            organizerButton.titleLabel?.numberOfLines = 0
             organizerButton.setAttributedTitle(title, for: .normal)
 
             participantsRow.contentStackView.addArrangedSubview(organizerButton)
@@ -389,7 +388,17 @@ private struct SubviewFactory {
         let view = UIButton(primaryAction: primaryAction)
         view.contentHorizontalAlignment = .leading
         view.setTitleColor(titleColor, for: .normal)
-        view.titleLabel?.font = .adjustedFont(forTextStyle: .footnote)
+
+        if let titleLabel = view.titleLabel {
+           titleLabel.font = .adjustedFont(forTextStyle: .footnote)
+           titleLabel.lineBreakMode = .byWordWrapping
+           titleLabel.numberOfLines = 0
+
+            NSLayoutConstraint.activate([
+                view.heightAnchor.constraint(equalTo: titleLabel.heightAnchor)
+            ])
+        }
+
         return view
     }
 
