@@ -263,14 +263,14 @@ class ConversationViewModel {
             }
             self?.perform(update: update, on: tableView)
             if case .didUpdate = update {
-                self?.checkTrashedHintBanner()
+                self?.checkTrashedHintBanner(insertRowManually: true)
                 self?.reloadRowsIfNeeded()
                 self?.markMessagesReadIfNeeded()
             }
         } storedMessages: { [weak self] messages in
             self?.updateMessageDataSource(messages: messages)
             self?.markMessagesReadIfNeeded()
-            self?.checkTrashedHintBanner()
+            self?.checkTrashedHintBanner(insertRowManually: false)
             self?.reloadTableView?()
             self?.messagesAreLoaded = true
         }
@@ -499,7 +499,7 @@ class ConversationViewModel {
     }
 
     /// Add trashed hint banner if the messages contain trashed message
-    private func checkTrashedHintBanner() {
+    private func checkTrashedHintBanner(insertRowManually: Bool) {
         let hasMessages = !self.messagesDataSource.isEmpty
         guard hasMessages else { return }
         let trashed = self.messagesDataSource
@@ -507,15 +507,21 @@ class ConversationViewModel {
         let hasTrashed = !trashed.isEmpty
         let isAllTrashed = trashed.count == self.messagesDataSource.count
         if self.isTrashFolder {
-            self.checkTrashedHintBannerForTrashFolder(hasTrashed: hasTrashed,
-                                                      isAllTrashed: isAllTrashed)
+            checkTrashedHintBannerForTrashFolder(
+                hasTrashed: hasTrashed,
+                isAllTrashed: isAllTrashed,
+                insertRowManually: insertRowManually
+            )
         } else {
-            self.checkTrashedHintBannerForNonTrashFolder(hasTrashed: hasTrashed,
-                                                         isAllTrashed: isAllTrashed)
+            checkTrashedHintBannerForNonTrashFolder(
+                hasTrashed: hasTrashed,
+                isAllTrashed: isAllTrashed,
+                insertRowManually: insertRowManually
+            )
         }
     }
 
-    private func checkTrashedHintBannerForTrashFolder(hasTrashed: Bool, isAllTrashed: Bool) {
+    private func checkTrashedHintBannerForTrashFolder(hasTrashed: Bool, isAllTrashed: Bool, insertRowManually: Bool) {
         guard hasTrashed else {
             self.removeTrashedHintBanner()
             // In trash folder, without trashed message
@@ -532,11 +538,11 @@ class ConversationViewModel {
         if isAllTrashed {
             self.removeTrashedHintBanner()
         } else {
-            self.showTrashedHintBanner()
+            self.showTrashedHintBanner(insertRowManually: insertRowManually)
         }
     }
 
-    private func checkTrashedHintBannerForNonTrashFolder(hasTrashed: Bool, isAllTrashed: Bool) {
+    private func checkTrashedHintBannerForNonTrashFolder(hasTrashed: Bool, isAllTrashed: Bool, insertRowManually: Bool) {
         if isAllTrashed {
             // In non trash folder, without trashed message
             // Should show trashed messages
@@ -550,7 +556,7 @@ class ConversationViewModel {
         }
 
         if hasTrashed {
-            self.showTrashedHintBanner()
+            self.showTrashedHintBanner(insertRowManually: insertRowManually)
         } else {
             self.removeTrashedHintBanner()
         }
@@ -563,13 +569,24 @@ class ConversationViewModel {
         self.tableView?.reloadSections(headerIndexSet, with: .automatic)
     }
 
-    private func showTrashedHintBanner() {
+    private func showTrashedHintBanner(insertRowManually: Bool) {
         if self.headerSectionDataSource.contains(.trashedHint) { return }
         self.headerSectionDataSource.append(.trashedHint)
+
+        guard insertRowManually else {
+            return
+        }
+
         let visible = self.tableView?.visibleCells.count ?? 0
         if visible > 0 {
             let row = IndexPath(row: 0, section: 0)
-            self.tableView?.insertRows(at: [row], with: .automatic)
+            do {
+                try ObjC.catchException {
+                    self.tableView?.insertRows(at: [row], with: .automatic)
+                }
+            } catch {
+                PMAssertionFailure(error)
+            }
         }
     }
 
