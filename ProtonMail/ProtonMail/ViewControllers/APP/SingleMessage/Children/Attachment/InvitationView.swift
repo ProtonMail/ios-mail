@@ -83,7 +83,7 @@ final class InvitationView: UIView {
     }
 
     private func setUpLayout() {
-        container.centerInSuperview()
+        container.centerXInSuperview()
         widgetContainer.fillSuperview()
         widgetDetailsContainer.centerInSuperview()
         statusLabel.centerInSuperview()
@@ -92,6 +92,7 @@ final class InvitationView: UIView {
         [
             container.topAnchor.constraint(equalTo: topAnchor),
             container.leftAnchor.constraint(equalTo: leftAnchor, constant: 16),
+            container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
 
             widgetDetailsContainer.topAnchor.constraint(equalTo: widgetDetailsBackground.topAnchor, constant: 20),
             widgetDetailsContainer.leftAnchor.constraint(equalTo: widgetDetailsBackground.leftAnchor, constant: 16),

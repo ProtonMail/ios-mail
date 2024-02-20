@@ -36,6 +36,7 @@ class SingleMessageContentView: UIView {
         stackView.addArrangedSubview(messageHeaderContainer)
         stackView.addArrangedSubview(editScheduleSendBannerContainer)
         stackView.addArrangedSubview(attachmentContainer)
+        stackView.addArrangedSubview(separator)
         stackView.addArrangedSubview(bannerContainer)
         stackView.addArrangedSubview(messageBodyContainer)
         stackView.addArrangedSubview(showHideHistoryButtonContainer)
@@ -43,7 +44,6 @@ class SingleMessageContentView: UIView {
 
         footerButtons.setContentHuggingPriority(.defaultLow, for: .horizontal)
         footerButtons.setContentHuggingPriority(.required, for: .vertical)
-        messageHeaderContainer.addSubview(separator)
     }
 
     private func setUpLayout() {
@@ -60,9 +60,6 @@ class SingleMessageContentView: UIView {
         ].activate() 
 
         [
-            separator.leadingAnchor.constraint(equalTo: messageHeaderContainer.leadingAnchor),
-            separator.trailingAnchor.constraint(equalTo: messageHeaderContainer.trailingAnchor),
-            separator.bottomAnchor.constraint(equalTo: messageHeaderContainer.bottomAnchor),
             separator.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
     }

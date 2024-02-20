@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Combine
-import UIKit
 import ProtonCoreUIFoundations
+import UIKit
 
 protocol AttachmentViewControllerDelegate: AnyObject {
     func openAttachmentList(with attachments: [AttachmentInfo])
@@ -34,7 +34,12 @@ class AttachmentViewController: UIViewController {
     private let viewModel: AttachmentViewModel
     private var subscriptions = Set<AnyCancellable>()
 
-    private let invitationProcessingView = InCellActivityIndicatorView(style: .medium)
+    private let invitationProcessingView: InCellActivityIndicatorView = {
+        let view = InCellActivityIndicatorView(style: .medium)
+        view.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        return view
+    }()
+
     private let invitationView = InvitationView()
     private let attachmentView = AttachmentView()
 
