@@ -164,7 +164,8 @@ public struct SheetLikeSpotlightView: View {
         config: HostingProvider(),
         buttonTitle: "Got it",
         message: "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.",
-        spotlightImage: ImageAsset.snoozeSpotlight,
-        title: "Snooze it for later"
+        spotlightImage: ImageAsset.jumpToNextSpotlight,
+        title: "Snooze it for later",
+        imageAlignBottom: true
     )
 }

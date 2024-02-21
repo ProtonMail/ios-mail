@@ -24,6 +24,9 @@ public class ImageAsset {
     static var messageNavigationSpotlight: UIImage {
         UIImage(named: "messageNavigation_spotlight", in: Bundle(for: LocalImage.self), with: nil)!
     }
+    static var jumpToNextSpotlight: UIImage {
+        UIImage(named: "jumpToNext_spotlight", in: Bundle(for: LocalImage.self), with: nil)!
+    }
 }
 
 private class LocalImage {
