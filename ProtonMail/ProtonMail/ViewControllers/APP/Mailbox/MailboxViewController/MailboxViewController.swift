@@ -41,6 +41,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         & ReferralProgramPromptPresenter.Dependencies
         & HasMailboxMessageCellHelper
         & HasFeatureFlagsRepository
+        & HasUserManager
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -453,7 +454,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)
 
-        setupMenuButton()
+        setupMenuButton(userInfo: dependencies.user.userInfo)
         self.menuBarButtonItem = self.navigationItem.leftBarButtonItem
         self.menuBarButtonItem.tintColor = ColorProvider.IconNorm
 

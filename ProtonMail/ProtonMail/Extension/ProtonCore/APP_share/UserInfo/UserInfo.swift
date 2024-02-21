@@ -41,6 +41,11 @@ extension UserInfo {
         return subscribed.contains(.mail)
     }
 
+    var isOnAStoragePaidPlan: Bool {
+        return subscribed.contains(.mail)
+        || subscribed.contains(.drive)
+    }
+
     var hasCrashReportingEnabled: Bool { crashReports == 1 }
 
     func update(from userSettings: UserSettingsResponse) {

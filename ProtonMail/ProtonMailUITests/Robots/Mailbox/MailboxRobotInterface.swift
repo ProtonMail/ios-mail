@@ -10,7 +10,7 @@ import fusion
 import XCTest
 
 fileprivate struct id {
-    static let menuButtonIdentifier = "MailboxViewController.menuBarButtonItem"
+    static let menuButtonIdentifier = "Menu"
     static let composeButtonLabelIdentifier = "MailboxViewController.composeBarButtonItem"
     static let mailboxTableViewIdentifier = "MailboxViewController.tableView"
     static let searchNavBarButtonIdentifier = "MailboxViewController.searchBarButtonItem"

@@ -203,6 +203,46 @@ final class MenuViewControllerTests: XCTestCase {
                 .contains(Message.Location.scheduled.rawValue) == true
         )
     }
+
+    func testMenuBadgeIsVisible_whenStorage80orLess_andFreeUser_itShouldBeFalse() {
+        withFeatureFlags([.splitStorage]) {
+            testUser.userInfo.usedBaseSpace = 80
+            testUser.userInfo.maxBaseSpace = 100
+            testUser.userInfo.subscribed = .init(rawValue: 0)
+
+            XCTAssertFalse(sut.isMenuBadgeVisible(userInfo: testUser.userInfo))
+        }
+    }
+
+    func testMenuBadgeIsVisible_whenStorageAbove80_andFreeUser_itShouldBeTrue() {
+        withFeatureFlags([.splitStorage]) {
+            testUser.userInfo.usedBaseSpace = 100
+            testUser.userInfo.maxBaseSpace = 100
+            testUser.userInfo.subscribed = .vpn
+
+            XCTAssertTrue(sut.isMenuBadgeVisible(userInfo: testUser.userInfo))
+        }
+    }
+
+    func testMenuBadgeIsVisible_whenStorage80orLess_andPayingUser_itShouldBeFalse() {
+        withFeatureFlags([.splitStorage]) {
+            testUser.userInfo.usedBaseSpace = 80
+            testUser.userInfo.maxBaseSpace = 100
+            testUser.userInfo.subscribed = .mail
+
+            XCTAssertFalse(sut.isMenuBadgeVisible(userInfo: testUser.userInfo))
+        }
+    }
+
+    func testMenuBadgeIsVisible_whenStorageAbove80_andPayingUser_itShouldBeFalse() {
+        withFeatureFlags([.splitStorage]) {
+            testUser.userInfo.usedBaseSpace = 100
+            testUser.userInfo.maxBaseSpace = 100
+            testUser.userInfo.subscribed = .mail
+
+            XCTAssertFalse(sut.isMenuBadgeVisible(userInfo: testUser.userInfo))
+        }
+    }
 }
 
 extension MenuViewControllerTests {
