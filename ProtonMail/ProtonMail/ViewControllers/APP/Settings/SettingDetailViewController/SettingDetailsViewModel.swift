@@ -190,7 +190,7 @@ class ChangeSignatureViewModel: SettingDetailsViewModel {
                     }
                 })
         } else {
-            userService.updateSignature(auth: userManager.authCredential, valueToSave) { error in
+            userService.updateSignature(valueToSave) { error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -388,17 +388,18 @@ class ChangeNotificationEmailViewModel: SettingDetailsViewModel {
         if isOn == getSwitchStatus() {
             complete(true, nil)
         } else {
-            let service = userManager.userService
-            service.updateNotify(auth: userManager.authCredential,
-                                 user: userManager.userInfo,
-                                 isOn, completion: { error in
-                                     if let error = error {
-                                         complete(false, error)
-                                     } else {
-                                         self.userManager.save()
-                                         complete(true, nil)
-                                     }
-                                 })
+            userManager.userService.updateNotify(
+                user: userManager.userInfo,
+                isOn,
+                completion: { error in
+                    if let error = error {
+                        complete(false, error)
+                    } else {
+                        self.userManager.save()
+                        complete(true, nil)
+                    }
+                }
+            )
         }
     }
 
