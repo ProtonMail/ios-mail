@@ -110,7 +110,7 @@ final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackabl
         }
         self.title = LocalString._menu_bugs_title
 
-        setupMenuButton()
+        setupMenuButton(userInfo: dependencies.user.userInfo)
         setupSubviews()
         setupLayout()
         NotificationCenter.default

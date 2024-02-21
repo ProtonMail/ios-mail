@@ -31,7 +31,8 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     typealias Dependencies =
         ContactsAndGroupsSharedCode.Dependencies &
         HasContactViewsFactory &
-        HasInternetConnectionStatusProviderProtocol
+        HasInternetConnectionStatusProviderProtocol &
+        HasUserManager
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -176,7 +177,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
 
         emptyBackButtonTitleForNextView()
 
-        setupMenuButton()
+        setupMenuButton(userInfo: dependencies.user.userInfo)
 
         prepareNavigationItemRightDefault()
 

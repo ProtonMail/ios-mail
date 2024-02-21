@@ -41,6 +41,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     & HasContactViewsFactory
     & HasCoreDataContextProviderProtocol
     & ContactsAndGroupsSharedCode.Dependencies
+    & HasUserManager
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -103,7 +104,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         view.backgroundColor = ColorProvider.BackgroundNorm
         tableView.backgroundColor = ColorProvider.BackgroundNorm
 
-        setupMenuButton()
+        setupMenuButton(userInfo: dependencies.user.userInfo)
 
         if self.viewModel.initEditing() {
             isEditingState = true
