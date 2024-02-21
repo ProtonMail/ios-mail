@@ -30,26 +30,9 @@ struct UsersAPI {
 }
 
 /// Get user info  --- GetUserInfoResponse
-final class GetUserInfoRequest: Request {
-
-    init(authCredential: AuthCredential? = nil) {
-        self.auth = authCredential
-    }
-
-    var method: HTTPMethod {
-        return .get
-    }
-
+struct GetUserInfoRequest: Request {
     var path: String {
         return UsersAPI.path
-    }
-
-    // custom auth credentical
-    var auth: AuthCredential?
-    var authCredential: AuthCredential? {
-        get {
-            return self.auth
-        }
     }
 }
 

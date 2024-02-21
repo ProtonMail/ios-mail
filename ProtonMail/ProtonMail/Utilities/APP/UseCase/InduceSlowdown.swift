@@ -24,7 +24,7 @@ import ProtonCoreServices
  It will apply a test label to all messages in an account, and then detach it, generating a great number of events.
  The events will be fetched and processed gradually, testing how well the database and the UI can take it.
  */
-final class InduceSlowdown {
+struct InduceSlowdown: Sendable {
     private let user: UserManager
 
     init(user: UserManager) {
