@@ -23,8 +23,8 @@
 import EllipticCurveKeyPair
 import Foundation
 import Groot
-import ProtonCoreDataModel
-import ProtonCoreNetworking
+@preconcurrency import ProtonCoreDataModel
+@preconcurrency import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonMailAnalytics
 

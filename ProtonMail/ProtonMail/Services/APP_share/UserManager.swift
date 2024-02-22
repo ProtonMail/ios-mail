@@ -24,8 +24,8 @@ import Foundation
 import PromiseKit
 import ProtonCoreAuthentication
 import ProtonCoreCrypto
-import ProtonCoreDataModel
-import ProtonCoreNetworking
+@preconcurrency import ProtonCoreDataModel
+@preconcurrency import ProtonCoreNetworking
 #if !APP_EXTENSION
 import ProtonCorePayments
 #endif

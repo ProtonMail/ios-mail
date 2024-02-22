@@ -25,8 +25,8 @@ import PromiseKit
 import ProtonCoreAPIClient
 import ProtonCoreCrypto
 import ProtonCoreCryptoGoInterface
-import ProtonCoreDataModel
-import ProtonCoreNetworking
+@preconcurrency import ProtonCoreDataModel
+@preconcurrency import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreKeymaker
 
@@ -238,7 +238,6 @@ class UserDataService {
                         new_password: Passphrase,
                         twoFACode: String?,
                         completion: @escaping (NSError?) -> Void) {
-        let oldAuthCredential = currentAuth
         var _username = "" // oldAuthCredential.userName
         if _username.isEmpty {
             if let addr = user.userAddresses.defaultAddress() {
@@ -524,7 +523,6 @@ class UserDataService {
                                  user: UserInfo,
                                  new_notification_email: String, login_password: String,
                                  twoFACode: String?, completion: @escaping (NSError?) -> Void) {
-        let oldAuthCredential = currentAuth
         let userInfo = user
         //        let old_password = oldAuthCredential.mailboxpassword
         var _username = "" // oldAuthCredential.userName

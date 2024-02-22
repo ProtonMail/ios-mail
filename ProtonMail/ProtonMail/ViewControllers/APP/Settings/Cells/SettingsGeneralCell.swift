@@ -72,10 +72,6 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
         leftText.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-
     override func prepareForReuse() {
         super.prepareForReuse()
         leftText.text = nil

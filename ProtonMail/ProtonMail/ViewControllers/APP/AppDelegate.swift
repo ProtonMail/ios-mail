@@ -27,13 +27,13 @@ import ProtonCoreCrypto
 import ProtonCoreCryptoGoImplementation
 import ProtonCoreDataModel
 import ProtonCoreDoh
-import ProtonCoreFeatureFlags
+@preconcurrency import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreObservability
 import ProtonCorePayments
-import ProtonCoreServices
+@preconcurrency import ProtonCoreServices
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import SideMenuSwift

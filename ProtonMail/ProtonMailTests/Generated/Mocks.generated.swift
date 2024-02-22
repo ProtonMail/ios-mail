@@ -315,12 +315,12 @@ class MockConversationProvider: ConversationProvider {
     }
 
     @FuncStub(MockConversationProvider.unlabel) var unlabelStub
-    func unlabel(conversationIDs: [ConversationID], as labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
+    func unlabel(conversationIDs: [ConversationID], as labelID: LabelID, completion: (@Sendable (Result<Void, Error>) -> Void)?) {
         unlabelStub(conversationIDs, labelID, completion)
     }
 
     @FuncStub(MockConversationProvider.move) var moveStub
-    func move(conversationIDs: [ConversationID], from previousFolderLabel: LabelID, to nextFolderLabel: LabelID, callOrigin: String?, completion: ((Result<Void, Error>) -> Void)?) {
+    func move(conversationIDs: [ConversationID], from previousFolderLabel: LabelID, to nextFolderLabel: LabelID, callOrigin: String?, completion: (@Sendable (Result<Void, Error>) -> Void)?) {
         moveStub(conversationIDs, previousFolderLabel, nextFolderLabel, callOrigin, completion)
     }
 

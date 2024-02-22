@@ -162,16 +162,6 @@ final class SenderImageService {
         let apiService: APIService
         let internetStatusProvider: InternetConnectionStatusProviderProtocol
         let imageCache: SenderImageCache
-
-        init(
-            apiService: APIService,
-            internetStatusProvider: InternetConnectionStatusProviderProtocol,
-            imageCache: SenderImageCache
-        ) {
-            self.apiService = apiService
-            self.internetStatusProvider = internetStatusProvider
-            self.imageCache = imageCache
-        }
     }
 
     enum SenderImageServiceError: Error {
