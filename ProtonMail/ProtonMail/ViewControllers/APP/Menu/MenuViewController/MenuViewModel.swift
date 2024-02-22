@@ -92,6 +92,7 @@ final class MenuViewModel: NSObject {
 
     weak var coordinator: MenuCoordinatorProtocol?
     private var mailSettingCancellable: AnyCancellable?
+    private var dataFetchTimer: Timer?
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
@@ -131,6 +132,24 @@ extension MenuViewModel: MenuVMProtocol {
     func userDataInit() {
         assert(self.delegate != nil,
                "delegate can't be nil, use set(delegate:) to setting")
+        // Check if the menu can load the user data, if not retry after delay.
+        dataFetchTimer?.invalidate()
+        dataFetchTimer = nil
+        guard currentUser != nil else {
+            SystemLogger.log(
+                message: "User not found in userDataInit.",
+                category: .menuDebug
+            )
+            dataFetchTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] _ in
+                SystemLogger.log(
+                    message: "Retry userDataInit",
+                    category: .menuDebug
+                )
+                self?.userDataInit()
+            })
+            return
+        }
+
         self.registerNotification()
         self.fetchLabels()
         self.observeLabelUnreadUpdate()
@@ -402,7 +421,7 @@ extension MenuViewModel: LabelListenerProtocol {
 // MARK: Data source
 extension MenuViewModel {
     private func fetchLabels() {
-        guard let userID = dependencies.usersManager.firstUser?.userID, let service = labelDataService else {
+        guard let userID = currentUser?.userID, let service = labelDataService else {
             return
         }
 

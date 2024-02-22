@@ -155,13 +155,17 @@ class LabelsDataService {
             let labelIDToPreserve = allFolders.compactMap { $0["ID"] as? String }
             self.cleanLabelsAndFolders(except: labelIDToPreserve, context: context)
 
-            _ = try GRTJSONSerialization.objects(
+            let results = try GRTJSONSerialization.objects(
                 withEntityName: Label.Attributes.entityName,
                 fromJSONArray: allFolders,
                 in: context
             )
 
             let error = context.saveUpstreamIfNeeded()
+
+            if results.count != allFolders.count {
+                SystemLogger.log(message: "fetchV4Labels: data count does not match.", category: .menuDebug)
+            }
 
             if let error = error {
                 throw error
