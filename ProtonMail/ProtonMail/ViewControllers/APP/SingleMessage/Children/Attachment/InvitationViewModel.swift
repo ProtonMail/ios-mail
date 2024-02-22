@@ -54,15 +54,12 @@ struct InvitationViewModel {
     private let allInvitees: [EventDetails.Participant]
     private var participantListState: ParticipantListState
 
-    private static let eventDurationFormatter: DateIntervalFormatter = {
-        let dateFormatter = DateIntervalFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .short
-        return dateFormatter
-    }()
-
     init(eventDetails: EventDetails) {
-        durationString = Self.eventDurationFormatter.string(from: eventDetails.startDate, to: eventDetails.endDate)
+        durationString = EventDateIntervalFormatter().string(
+            from: eventDetails.startDate,
+            to: eventDetails.endDate,
+            isAllDay: eventDetails.isAllDay
+        )
 
         if eventDetails.status == .cancelled {
             statusString = L11n.Event.eventCancelled

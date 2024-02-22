@@ -21,6 +21,7 @@ extension EventDetails {
     static func make(
         startDate: Date = .init(timeIntervalSince1970: .random(in: 0...Date.distantFuture.timeIntervalSince1970)),
         endDate: Date = .init(timeIntervalSince1970: .random(in: 0...Date.distantFuture.timeIntervalSince1970)),
+        isAllDay: Bool = false,
         invitees: [Participant] = [
             .init(email: "employee1@example.com", status: .pending),
             .init(email: "employee2@example.com", status: .accepted),
@@ -33,6 +34,7 @@ extension EventDetails {
             title: "Team Collaboration Workshop",
             startDate: startDate,
             endDate: endDate,
+            isAllDay: isAllDay,
             calendar: .init(name: "My Calendar", iconColor: "#FFEEEE"),
             location: .init(name: "Zoom call"),
             organizer: .init(email: "boss@example.com", status: .unknown),
