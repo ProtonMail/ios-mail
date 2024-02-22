@@ -1126,9 +1126,6 @@
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Eliminar grup de contactes";
 
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d seleccionats";
-
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Seleccioneu almenys un correu electrònic per al grup de contactes";
 

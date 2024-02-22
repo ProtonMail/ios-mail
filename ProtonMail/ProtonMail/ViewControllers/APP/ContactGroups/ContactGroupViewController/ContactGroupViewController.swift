@@ -59,8 +59,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     private var totalSelectedContactGroups: Int = 0 {
         didSet {
             if isEditingState {
-                title = String(format: LocalString._contact_groups_selected_group_count_description,
-                               totalSelectedContactGroups)
+                title = String(format: LocalString._selected_navogationTitle, totalSelectedContactGroups)
             }
         }
     }
@@ -249,8 +248,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
 
     private func prepareNavigationItemTitle() {
         if isEditingState {
-            title = String(format: LocalString._contact_groups_selected_group_count_description,
-                           0)
+            title = String(format: LocalString._selected_navogationTitle, 0)
         } else {
             title = LocalString._menu_contact_group_title
         }

@@ -1126,9 +1126,6 @@
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "그룹 삭제";
 
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d개 선택됨";
-
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "연락처 그룹에서 하나 이상의 이메일을 선택해주세요";
 

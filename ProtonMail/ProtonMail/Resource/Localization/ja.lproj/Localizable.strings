@@ -1126,9 +1126,6 @@
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "連絡先グループを削除";
 
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Selected";
-
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "最低１つのアドレスを選択してください。";
 

@@ -1126,9 +1126,6 @@
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Выдаліць групу кантактаў";
 
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "Выбрана: %d";
-
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Выберыце прынамсі адзін адрас электроннай пошты для групы кантактаў";
 
