@@ -34,14 +34,8 @@
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d seconds";
 
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Selected";
-
 /* conversation number */
 "%u conversation" = "%u conversation";
-
-/* message number */
-"%u message" = "%u message";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";

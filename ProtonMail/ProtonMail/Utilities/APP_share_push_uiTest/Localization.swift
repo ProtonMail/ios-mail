@@ -838,8 +838,7 @@ class LocalizedString {
 
     lazy var _contact_groups_member_count_description = NSLocalizedString("%d member",
                                                                           comment: "How many members in the contact group, e.g. 0 member, 2 members")
-    lazy var _contact_groups_selected_group_count_description = NSLocalizedString("%d Selected",
-                                                                                  comment: "The string that describes how many contact groups are currently selected")
+
     lazy var _contact_group_no_contact_group_associated_with_contact_email = NSLocalizedString("None",
                                                                                                comment: "A *short* description saying that there is no contact group associated with this contact email")
 

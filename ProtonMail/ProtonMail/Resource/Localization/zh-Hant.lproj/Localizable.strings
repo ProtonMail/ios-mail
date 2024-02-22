@@ -1126,9 +1126,6 @@
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "刪除聯絡人群組";
 
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "已選取 %d";
-
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "請為聯絡人群組選擇至少一封電郵";
 
