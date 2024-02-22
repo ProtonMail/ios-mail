@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,19 +17,21 @@
 
 import Foundation
 
-final class AppResumeAfterUnlock: ResumeAfterUnlock {
-    typealias Dependencies = AnyObject
-    & HasPushNotificationService
-    & HasUsersManager
+extension TelemetryEvent {
 
-    private unowned let dependencies: Dependencies
+    static func autoImportContacts(contactsToCreate: Int, contactsToUpdate: Int, skippedVCardDownloads: Int) -> Self {
+        let values: [String: Float] = [
+            "numberOfProtonContactsToCreate": Float(contactsToCreate),
+            "numberOfProtonContactsToUpdate": Float(contactsToUpdate),
+            "numberOfSkippedVCardDownloads": Float(skippedVCardDownloads)
+        ]
 
-    init(dependencies: Dependencies) {
-        self.dependencies = dependencies
-    }
-
-    func resume() {
-        dependencies.pushService.resumePendingTasks()
-        dependencies.usersManager.firstUser?.sendLocalSettingsTelemetryHeartbeat()
+        return .init(
+            measurementGroup: "mail.ios.auto_import_contacts",
+            name: "first_import",
+            values: values,
+            dimensions: [:],
+            frequency: .always
+        )
     }
 }

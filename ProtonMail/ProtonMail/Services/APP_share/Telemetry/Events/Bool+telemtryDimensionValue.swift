@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,19 +17,9 @@
 
 import Foundation
 
-final class AppResumeAfterUnlock: ResumeAfterUnlock {
-    typealias Dependencies = AnyObject
-    & HasPushNotificationService
-    & HasUsersManager
+extension Bool {
 
-    private unowned let dependencies: Dependencies
-
-    init(dependencies: Dependencies) {
-        self.dependencies = dependencies
-    }
-
-    func resume() {
-        dependencies.pushService.resumePendingTasks()
-        dependencies.usersManager.firstUser?.sendLocalSettingsTelemetryHeartbeat()
+    var asTelemetryDimension: String {
+        self ? "true" : "false"
     }
 }
