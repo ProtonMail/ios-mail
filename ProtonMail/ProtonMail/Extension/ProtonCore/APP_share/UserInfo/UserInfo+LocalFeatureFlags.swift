@@ -49,6 +49,6 @@ extension UserInfo {
     }
 
     static var isRSVPMilestoneTwoEnabled: Bool {
-        Application.isDebugOrEnterprise
+        ProcessInfo.isRunningUnitTests
     }
 }

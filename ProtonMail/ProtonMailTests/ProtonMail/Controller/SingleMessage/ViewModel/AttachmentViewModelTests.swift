@@ -210,6 +210,17 @@ class AttachmentViewModelTests: XCTestCase {
         XCTAssertEqual(eventRSVP.extractBasicEventInfoStub.callCounter, 0)
     }
 
+    func testGivenHeadersContainEventInfo_whenThereAreNoAttachments_thenShowsViewRegardless() async {
+        await receivedRespondingStatuses.expectNextValue(toBe: .respondingUnavailable)
+
+        sut.basicEventInfoSourcedFromHeaders = stubbedBasicEventInfo
+        sut.attachmentHasChanged(nonInlineAttachments: [], mimeAttachments: [])
+
+        await receivedRespondingStatuses.expectNextValue(toBe: .awaitingUserInput)
+
+        XCTAssert(sut.viewShouldBeShown)
+    }
+
     func testRespondingStatus_whenAnsweringAndChangingAnswer_showsProcessingAndThenTheSelectedAnswerEachTime() async {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
 
