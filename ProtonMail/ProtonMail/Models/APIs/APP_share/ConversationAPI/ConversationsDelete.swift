@@ -51,8 +51,6 @@ class ConversationDeleteRequest: Request {
 }
 
 class ConversationDeleteResponse: Response {
-    var results: [ConversationDeleteData]?
-
     override func ParseResponse(_ response: [String: Any]) -> Bool {
         guard let jsonObject = response["Responses"],
                 let data = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted) else {
@@ -62,7 +60,6 @@ class ConversationDeleteResponse: Response {
         guard let result = try? JSONDecoder().decode([ConversationDeleteData].self, from: data) else {
             return false
         }
-        results = result
         return true
     }
 }

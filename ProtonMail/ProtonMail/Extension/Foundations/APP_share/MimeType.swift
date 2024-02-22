@@ -29,12 +29,6 @@ extension URL {
     }
 }
 
-extension NSString {
-    func mimeType() -> String {
-        MIMETypeBuilder.mimeType(from: pathExtension)
-    }
-}
-
 extension String {
     var pathExtension: String {
         (self as NSString).pathExtension

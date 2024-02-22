@@ -153,8 +153,6 @@ final class SettingsAccountViewModel {
 
     private let userManager: UserManager
 
-    var reloadTable: (() -> Void)?
-
     init(user: UserManager, isMessageSwipeNavigationEnabled: Bool) {
         self.userManager = user
 

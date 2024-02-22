@@ -29,11 +29,8 @@ class HeaderData: NSObject {
     let to: [ContactVO]?
     let cc: [ContactVO]?
     let bcc: [ContactVO]?
-    let isStarred: Bool
     let time: Date?
     let labels: [LabelEntity]?
-    let score: SpamScore
-    let isSent: Bool
     
     init(message: MessageEntity) {
         self.title = message.title
@@ -47,10 +44,7 @@ class HeaderData: NSObject {
         self.to = ContactPickerModelHelper.nonGroupContacts(from: message.rawTOList)
         self.cc = ContactPickerModelHelper.nonGroupContacts(from: message.rawCCList)
         self.bcc = ContactPickerModelHelper.nonGroupContacts(from: message.rawBCCList)
-        self.isStarred = message.isStarred
         self.time = message.time
         self.labels = message.labels
-        self.score = message.spamScore
-        self.isSent = message.isSent
     }
 }

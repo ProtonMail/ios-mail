@@ -54,7 +54,6 @@ final class IncomingDefaultServiceTests: XCTestCase {
         storeStubbedObject(id: "Old ID", time: .distantPast)
 
         let stubbedResponse = GetIncomingDefaultsResponse(
-            code: 0,
             incomingDefaults: [
                 IncomingDefaultDTO(
                     email: emailAddress,
@@ -80,7 +79,6 @@ final class IncomingDefaultServiceTests: XCTestCase {
         storeStubbedObject(id: "Old ID", time: .distantFuture)
 
         let stubbedResponse = GetIncomingDefaultsResponse(
-            code: 0,
             incomingDefaults: [
                 IncomingDefaultDTO(
                     email: emailAddress,
@@ -185,7 +183,6 @@ final class IncomingDefaultServiceTests: XCTestCase {
         storeStubbedObject(id: nil, time: .distantPast)
 
         let stubbedResponse = AddIncomingDefaultsResponse(
-            code: 0,
             incomingDefault: .init(email: emailAddress, id: "New ID", location: .blocked, time: .distantFuture),
             undoToken: UndoTokenData(token: "", tokenValidTime: 0)
         )
@@ -208,7 +205,6 @@ final class IncomingDefaultServiceTests: XCTestCase {
         let id = String.randomString(16)
 
         let stubbedResponse = AddIncomingDefaultsResponse(
-            code: 0,
             incomingDefault: .init(email: emailAddress, id: id, location: .blocked, time: .distantFuture),
             undoToken: UndoTokenData(token: "", tokenValidTime: 0)
         )

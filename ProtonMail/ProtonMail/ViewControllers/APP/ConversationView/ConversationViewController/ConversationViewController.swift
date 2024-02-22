@@ -373,7 +373,7 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
     }
 
     @objc
-    private func willBecomeActive(_ notification: Notification) {
+    private func willBecomeActive(_: Notification) {
         if shouldReloadWhenAppIsActive {
             viewModel.fetchConversationDetails(completion: nil)
             shouldReloadWhenAppIsActive = false
