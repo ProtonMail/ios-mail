@@ -27,7 +27,7 @@ import UIKit
 final class CoreDataStore {
     static let shared = CoreDataStore()
 
-    let container = NSPersistentContainer(name: "ProtonMail")
+    private(set) var container = NSPersistentContainer(name: "ProtonMail")
 
     private var initialized = false
     private let initializationQueue = DispatchQueue(label: "ch.protonmail.CoreDataStore.initialization")
@@ -93,14 +93,18 @@ final class CoreDataStore {
             initialized = true
 
             SystemLogger.log(message: "Instantiating persistent container", category: .coreData)
-            var url = databaseURL
+            var url = self.databaseURL
 
+            let dataProtectionStatus = Self.establishDataProtectionStatus()
+
+            performDataMigrationIfNeeded()
+
+            container = NSPersistentContainer(name: "ProtonMail")
             let description = NSPersistentStoreDescription(url: url)
             description.shouldMigrateStoreAutomatically = true
             description.shouldInferMappingModelAutomatically = true
-            container.persistentStoreDescriptions = [description]
 
-            let dataProtectionStatus = Self.establishDataProtectionStatus()
+            container.persistentStoreDescriptions = [description]
 
             do {
                 try container.loadPersistentStores()
@@ -118,6 +122,40 @@ final class CoreDataStore {
                 throw error
             }
         }
+    }
+
+    func performDataMigrationIfNeeded() {
+        guard isMigrationNeeded(), let currentModel = getManagedObjectModel() else {
+            return
+        }
+        SystemLogger.log(message: "Data migration needed. target model version: \(currentModel.versionIdentifiers)", category: .coreDataMigration)
+        do {
+            try progressivelyMigrate(sourceStoreUrl: databaseURL, type: NSSQLiteStoreType, to: currentModel)
+        } catch {
+            SystemLogger.log(message: "Error occurred during migration", category: .coreDataMigration)
+            SystemLogger.log(error: error, category: .coreDataMigration)
+        }
+    }
+
+    private func isMigrationNeeded() -> Bool {
+        var isMigrationNeeded = false
+        do {
+            let sourceMetaData = try NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: databaseURL)
+            guard let model = getManagedObjectModel() else {
+                return isMigrationNeeded
+            }
+            isMigrationNeeded = !model.isConfiguration(withName: nil, compatibleWithStoreMetadata: sourceMetaData)
+        } catch {
+            print(error)
+        }
+        return isMigrationNeeded
+    }
+
+    private func getManagedObjectModel() -> NSManagedObjectModel? {
+        guard let path = Bundle.main.path(forResource: "ProtonMail", ofType: "momd") else {
+            return nil
+        }
+        return NSManagedObjectModel(contentsOf: URL(fileURLWithPath: path))
     }
 
     @available(*, deprecated, message: "Remove this as soon as relevant reports show up in Sentry")
@@ -155,4 +193,117 @@ private extension NSPersistentContainer {
 
         try result.get()
     }
+}
+
+private extension CoreDataStore {
+    func progressivelyMigrate(
+        sourceStoreUrl: URL,
+        type: String,
+        to model: NSManagedObjectModel
+    ) throws {
+        SystemLogger.log(message: "Start migrate", category: .coreDataMigration)
+        guard let sourceMetaData = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: type, at: sourceStoreUrl) else {
+            SystemLogger.log(message: "Failed to load source meta data", category: .coreDataMigration)
+            return
+        }
+
+        if model.isConfiguration(withName: nil, compatibleWithStoreMetadata: sourceMetaData) {
+            SystemLogger.log(message: "Target model is not compatible with the source meta data.", category: .coreDataMigration)
+            return
+        }
+
+        guard let sourceModel = getSourceModel(of: sourceMetaData) else {
+            SystemLogger.log(message: "Failed to get source model", category: .coreDataMigration)
+            return
+        }
+        let result = try getDestinationModel(sourceModel: sourceModel)
+        let destinationModel = result.0
+        let destinationMappingModel = result.1
+        let destinationModelName = result.2
+        let destinationUrl = destinationStoreURL(sourceStoreUrl: sourceStoreUrl, modelName: destinationModelName)
+
+        SystemLogger.log(
+            message: "Start to migrate from \(sourceModel.versionIdentifiers) to \(destinationModel.versionIdentifiers)",
+            category: .coreDataMigration
+        )
+        let manager = NSMigrationManager(sourceModel: sourceModel, destinationModel: destinationModel)
+        do {
+            try manager.migrateStore(
+                from: sourceStoreUrl,
+                sourceType: type,
+                with: destinationMappingModel,
+                toDestinationURL: destinationUrl,
+                destinationType: type
+            )
+
+            try container.persistentStoreCoordinator.replacePersistentStore(
+                at: sourceStoreUrl,
+                withPersistentStoreFrom: destinationUrl,
+                ofType: type
+            )
+        } catch {
+            SystemLogger.log(message: "Migration failed.", category: .coreDataMigration)
+            SystemLogger.log(error: error, category: .coreDataMigration)
+            try FileManager.default.removeItem(at: destinationUrl)
+            throw error
+        }
+        try FileManager.default.removeItem(at: destinationUrl)
+
+        // Call it recursively for the multiple stage migration.
+        return try progressivelyMigrate(sourceStoreUrl: sourceStoreUrl, type: type, to: model)
+    }
+
+    private func getSourceModel(of sourceMetaData: [String: Any]) -> NSManagedObjectModel? {
+        return NSManagedObjectModel.mergedModel(from: [.main], forStoreMetadata: sourceMetaData)
+    }
+
+    private func getDestinationModel(sourceModel: NSManagedObjectModel) throws -> (NSManagedObjectModel, NSMappingModel, String) {
+        let modelPaths = modelPaths()
+        guard !modelPaths.isEmpty else {
+            throw CoreDataStoreError.noModelFound
+        }
+        var model: NSManagedObjectModel?
+        var mappingModel: NSMappingModel?
+        var modelPath: String?
+
+        for path in modelPaths {
+            let url = URL(fileURLWithPath: path)
+            model = NSManagedObjectModel(contentsOf: url)
+            mappingModel = NSMappingModel(from: [.main], forSourceModel: sourceModel, destinationModel: model)
+            modelPath = url.deletingPathExtension().lastPathComponent
+            if mappingModel != nil {
+                break
+            }
+        }
+        guard let mappingModel = mappingModel, let model = model, let modelPath = modelPath else {
+            throw CoreDataStoreError.noMappingModelFound
+        }
+        return (model, mappingModel, modelPath)
+    }
+
+    private func modelPaths() -> [String] {
+        var results: [String] = []
+        let modelPaths = Bundle.main.paths(forResourcesOfType: "momd", inDirectory: nil)
+        for modelPath in modelPaths {
+            if let resourceSubPath = try? modelPath.asURL().lastPathComponent {
+                let paths = Bundle.main.paths(forResourcesOfType: "mom", inDirectory: resourceSubPath)
+                results.append(contentsOf: paths)
+            }
+        }
+        let otherModels = Bundle.main.paths(forResourcesOfType: "mom", inDirectory: nil)
+        results.append(contentsOf: otherModels)
+        return results
+    }
+
+    private func destinationStoreURL(sourceStoreUrl: URL, modelName: String) -> URL {
+        let storeExtension = sourceStoreUrl.pathExtension
+        let storePath = sourceStoreUrl.deletingPathExtension().path
+        let result = "\(storePath).\(modelName).\(storeExtension)"
+        return URL(fileURLWithPath: result)
+    }
+}
+
+enum CoreDataStoreError: String, Error {
+    case noModelFound
+    case noMappingModelFound
 }

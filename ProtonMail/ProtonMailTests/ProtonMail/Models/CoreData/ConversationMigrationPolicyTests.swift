@@ -18,9 +18,7 @@
 import CoreData
 import XCTest
 
-final class ConversationMigrationPolicyTests: XCTestCase {
-    let modelName = "ProtonMail"
-
+final class ConversationMigrationPolicyTests: BaseMigrationTests {
     func testMigratingStores() throws {
         try migrateStore(fromVersionMOM: "2.0.10", toVersionMOM: "2.0.11")
         try migrateStore(fromVersionMOM: "2.0.9", toVersionMOM: "2.0.11")
@@ -33,49 +31,5 @@ final class ConversationMigrationPolicyTests: XCTestCase {
         try migrateStore(fromVersionMOM: "2.0.2", toVersionMOM: "2.0.11")
         try migrateStore(fromVersionMOM: "2.0.1", toVersionMOM: "2.0.11")
         try migrateStore(fromVersionMOM: "2.0.0", toVersionMOM: "2.0.11")
-    }
-
-    private func storeURL(_ version: String) -> URL? {
-        let storeURL = URL(fileURLWithPath: "\(NSTemporaryDirectory())\(version).sqlite")
-        return storeURL
-    }
-
-    private func createObjectModel(_ version: String) -> NSManagedObjectModel? {
-        let bundle = Bundle.main
-        let managedObjectModelURL = bundle.url(forResource: modelName, withExtension: "momd")
-        let managedObjectModelURLBundle = Bundle(url: managedObjectModelURL!)
-        let managedObjectModelVersionURL = managedObjectModelURLBundle!.url(forResource: version, withExtension: "mom")
-        return NSManagedObjectModel(contentsOf: managedObjectModelVersionURL!)
-    }
-
-    private func createStore(_ version: String) -> NSPersistentStoreCoordinator {
-        let model = createObjectModel(version)
-        let storeCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model!)
-        try! storeCoordinator.addPersistentStore(ofType: NSSQLiteStoreType,
-                                                 configurationName: nil,
-                                                 at: storeURL(version),
-                                                 options: nil)
-        return storeCoordinator
-    }
-
-    private func migrateStore(fromVersionMOM: String, toVersionMOM: String) throws {
-        let store = createStore(fromVersionMOM)
-        let nextVersionObjectModel = createObjectModel(toVersionMOM)!
-        let mappingModel = NSMappingModel(from: [Bundle.main], forSourceModel: store.managedObjectModel, destinationModel: nextVersionObjectModel)!
-        let migrationManager = NSMigrationManager(sourceModel: store.managedObjectModel, destinationModel: nextVersionObjectModel)
-        do {
-            try migrationManager.migrateStore(from: store.persistentStores.first!.url!,
-                                              sourceType: NSSQLiteStoreType,
-                                              options: nil,
-                                              with: mappingModel,
-                                              toDestinationURL: storeURL(toVersionMOM)!,
-                                              destinationType: NSSQLiteStoreType,
-                                              destinationOptions: nil)
-        } catch {
-            print("Error: \(error)")
-            XCTAssertNil(error)
-        }
-        try FileManager.default.removeItem(at: storeURL(toVersionMOM)!)
-        try FileManager.default.removeItem(at: storeURL(fromVersionMOM)!)
     }
 }
