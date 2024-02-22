@@ -1259,6 +1259,13 @@ class LocalizedString {
 }
 
 enum L11n {
+    struct AlertBox {
+        static let alertBoxPercentageText = NSLocalizedString("Your Mail storage is %@ full", comment: "Title of the banner alert")
+        static let alertBoxFullText = NSLocalizedString("Your Mail storage is full", comment: "Title of the banner alert")
+        static let alertBoxDescription = NSLocalizedString("Upgrade to get more storage.", comment: "Description of the banner alert")
+        static let alertBoxDismissButtonTitle = NSLocalizedString("Not now", comment: "Get more storage button action")
+        static let alertBoxButtonTitle = NSLocalizedString("Get more storage", comment: "Get more storage button action")
+    }
     struct BlockSender {
         static let blockActionTitleLong = NSLocalizedString("Block messages from this sender", comment: "Button to block a sender")
         static let blockActionTitleShort = NSLocalizedString("Block", comment: "Button to block a sender, keep it short to fit in the UI")
