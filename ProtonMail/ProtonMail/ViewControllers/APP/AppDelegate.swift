@@ -228,6 +228,7 @@ extension AppDelegate: UIApplicationDelegate {
             user.refreshFeatureFlags()
             user.blockedSenderCacheUpdater.requestUpdate()
             importDeviceContactsIfNeeded(user: user)
+            user.sendLocalSettingsTelemetryHeartbeat()
         }
     }
 

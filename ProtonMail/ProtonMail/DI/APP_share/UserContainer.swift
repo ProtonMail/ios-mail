@@ -262,6 +262,7 @@ final class UserContainer: ManagedContainer {
         self {
             TelemetryService(
                 userID: self.user.userID,
+                shouldBuildSendTelemetry: !UIApplication.isTestingBuild,
                 isTelemetrySettingOn: { [weak self] in self?.user.hasTelemetryEnabled ?? false },
                 dependencies: self
             )

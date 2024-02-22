@@ -528,3 +528,19 @@ extension UserManager: AuthHelperDelegate {
         NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": sessionUID])
     }
 }
+
+// Telemetry
+
+extension UserManager {
+
+    func sendLocalSettingsTelemetryHeartbeat() {
+        Task {
+            let event: TelemetryEvent = .localSettingsHeartbeat(
+                isAppKeyOn: container.keyMaker.isAppKeyEnabled,
+                isAutoImportContactsOn: container.autoImportContactsFeature.isFeatureEnabledTelemetryValue,
+                hasPaidMailPlan: hasPaidMailPlan
+            )
+            await container.telemetryService.sendEvent(event)
+        }
+    }
+}
