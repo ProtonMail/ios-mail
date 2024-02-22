@@ -12,6 +12,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MailboxViewController" customModule="ProtonMail" customModuleProvider="target">
             <connections>
+                <outlet property="alertButton" destination="EdM-04-v1I" id="sT2-bO-gPJ"/>
+                <outlet property="alertCardView" destination="5vp-8g-XKh" id="bCw-dt-GUS"/>
+                <outlet property="alertContainerView" destination="smN-i3-ARn" id="qsi-6C-rlP"/>
+                <outlet property="alertDescription" destination="ela-SK-sXZ" id="de4-NI-XP7"/>
+                <outlet property="alertDismissButton" destination="cxE-dN-M2a" id="5FN-PX-PaF"/>
+                <outlet property="alertIcon" destination="lh9-eD-Ewj" id="u6T-13-78Z"/>
+                <outlet property="alertLabel" destination="k6Z-95-k4S" id="odM-e4-fIg"/>
                 <outlet property="noResultFooterLabel" destination="aUq-jj-0gC" id="xlH-LA-yAv"/>
                 <outlet property="noResultImage" destination="Tm2-MH-Tuu" id="hef-ce-1rt"/>
                 <outlet property="noResultMainLabel" destination="Fwe-26-iU9" id="4EU-Gh-Usg"/>
@@ -34,16 +41,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_no_result_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Tm2-MH-Tuu">
-                    <rect key="frame" x="20" y="232" width="374" height="140"/>
+                    <rect key="frame" x="20" y="383" width="374" height="140"/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are all caught up" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fwe-26-iU9">
-                    <rect key="frame" x="108.5" y="384" width="197" height="26.5"/>
+                    <rect key="frame" x="108.5" y="535" width="197" height="26.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time to relax" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qEm-rG-CBW">
-                    <rect key="frame" x="158" y="418.5" width="98" height="20.5"/>
+                    <rect key="frame" x="158" y="569.5" width="98" height="20.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -57,8 +64,96 @@
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ikT-GM-IxK">
                     <rect key="frame" x="0.0" y="48" width="414" height="814"/>
                     <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="smN-i3-ARn">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="151"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5vp-8g-XKh">
+                                    <rect key="frame" x="12" y="0.0" width="390" height="151"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="gxI-RQ-vFV">
+                                            <rect key="frame" x="16" y="14" width="358" height="123"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="unu-h3-1ts">
+                                                    <rect key="frame" x="0.0" y="0.0" width="358" height="20.5"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s8U-QH-bff">
+                                                            <rect key="frame" x="0.0" y="0.0" width="20" height="20.5"/>
+                                                            <subviews>
+                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-exclamation-circle-filled" translatesAutoresizingMaskIntoConstraints="NO" id="lh9-eD-Ewj">
+                                                                    <rect key="frame" x="0.0" y="0.5" width="20" height="20"/>
+                                                                    <color key="tintColor" name="MobileNotificationError"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="20" id="7Zk-he-K4X"/>
+                                                                        <constraint firstAttribute="height" constant="20" id="BBf-ib-yAe"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstItem="lh9-eD-Ewj" firstAttribute="centerX" secondItem="s8U-QH-bff" secondAttribute="centerX" id="MuZ-9d-L0L"/>
+                                                                <constraint firstItem="lh9-eD-Ewj" firstAttribute="centerY" secondItem="s8U-QH-bff" secondAttribute="centerY" id="Qvb-9z-SQw"/>
+                                                                <constraint firstItem="lh9-eD-Ewj" firstAttribute="leading" secondItem="s8U-QH-bff" secondAttribute="leading" id="WqQ-Mi-ADs"/>
+                                                                <constraint firstAttribute="trailing" secondItem="lh9-eD-Ewj" secondAttribute="trailing" id="lov-Df-Eup"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Your Mail storage is full" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k6Z-95-k4S">
+                                                            <rect key="frame" x="28" y="0.0" width="330" height="20.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" name="MobileTextNorm"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upgrade to get more storage." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ela-SK-sXZ">
+                                                    <rect key="frame" x="0.0" y="36.5" width="358" height="36"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" name="MobileTextNorm"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="QVP-ir-iNR">
+                                                    <rect key="frame" x="0.0" y="88.5" width="358" height="34.5"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n67-jF-x1I">
+                                                            <rect key="frame" x="0.0" y="0.0" width="89.5" height="34.5"/>
+                                                            <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </view>
+                                                        <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cxE-dN-M2a">
+                                                            <rect key="frame" x="101.5" y="0.0" width="87.5" height="34.5"/>
+                                                            <color key="tintColor" name="MobileTextAccent"/>
+                                                            <state key="normal" title="Button"/>
+                                                            <buttonConfiguration key="configuration" style="plain" title="Not now"/>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EdM-04-v1I">
+                                                            <rect key="frame" x="201" y="0.0" width="157" height="34.5"/>
+                                                            <color key="backgroundColor" name="MobileInteractionNorm"/>
+                                                            <color key="tintColor" name="White"/>
+                                                            <state key="normal" title="Button"/>
+                                                            <buttonConfiguration key="configuration" style="plain" title="Get more storage"/>
+                                                        </button>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <color key="backgroundColor" name="MobileBackgroundSecondary"/>
+                                    <constraints>
+                                        <constraint firstItem="gxI-RQ-vFV" firstAttribute="top" secondItem="5vp-8g-XKh" secondAttribute="top" constant="14" id="E7g-x6-Gek"/>
+                                        <constraint firstAttribute="bottom" secondItem="gxI-RQ-vFV" secondAttribute="bottom" constant="14" id="GKx-C9-7Vc"/>
+                                        <constraint firstAttribute="trailing" secondItem="gxI-RQ-vFV" secondAttribute="trailing" constant="16" id="vBD-mp-teS"/>
+                                        <constraint firstItem="gxI-RQ-vFV" firstAttribute="leading" secondItem="5vp-8g-XKh" secondAttribute="leading" constant="16" id="y4q-cm-NNR"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="5vp-8g-XKh" firstAttribute="leading" secondItem="smN-i3-ARn" secondAttribute="leading" constant="12" id="YE6-S1-lIh"/>
+                                <constraint firstAttribute="bottom" secondItem="5vp-8g-XKh" secondAttribute="bottom" id="aqh-dg-OMl"/>
+                                <constraint firstItem="5vp-8g-XKh" firstAttribute="top" secondItem="smN-i3-ARn" secondAttribute="top" id="eTg-LG-Ycf"/>
+                                <constraint firstAttribute="trailing" secondItem="5vp-8g-XKh" secondAttribute="trailing" constant="12" id="siX-Ih-c2a"/>
+                            </constraints>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YKx-29-16h">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="54"/>
+                            <rect key="frame" x="0.0" y="151" width="414" height="54"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="253" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Not Updated" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="swi-KW-fLD">
                                     <rect key="frame" x="16" y="24" width="309" height="18"/>
@@ -135,7 +230,7 @@
                             </constraints>
                         </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="TableView" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="100" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="100" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="gfj-kT-G0Z">
-                            <rect key="frame" x="0.0" y="54" width="414" height="760"/>
+                            <rect key="frame" x="0.0" y="205" width="414" height="609"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <color key="separatorColor" red="0.74117647060000003" green="0.76470588240000004" blue="0.79215686269999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -167,17 +262,36 @@
                 <constraint firstItem="Fwe-26-iU9" firstAttribute="centerX" secondItem="Tm2-MH-Tuu" secondAttribute="centerX" id="yWR-lr-0an"/>
                 <constraint firstItem="qEm-rG-CBW" firstAttribute="centerX" secondItem="Fwe-26-iU9" secondAttribute="centerX" id="yvy-HC-2QD"/>
             </constraints>
-            <point key="canvasLocation" x="-243" y="-581"/>
+            <point key="canvasLocation" x="-243.47826086956525" y="-581.25"/>
         </view>
     </objects>
     <resources>
         <image name="ic-checkmark-square" width="16" height="16"/>
+        <image name="ic-exclamation-circle-filled" width="24" height="24"/>
         <image name="mail_no_result_icon" width="374" height="140"/>
         <namedColor name="CornflowerBlue">
             <color red="0.32899999618530273" green="0.32400000095367432" blue="0.4779999852180481" alpha="0.33000001311302185" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="MobileBackgroundSecondary">
+            <color red="0.96078431372549022" green="0.95686274509803926" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="MobileIconAccent">
             <color red="0.42745098039215684" green="0.29019607843137257" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MobileInteractionNorm">
+            <color red="0.42745098039215684" green="0.29019607843137257" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MobileNotificationError">
+            <color red="0.80000000000000004" green="0.17647058823529413" blue="0.30980392156862746" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MobileTextAccent">
+            <color red="0.42745098039215684" green="0.29019607843137257" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MobileTextNorm">
+            <color red="0.047058823529411764" green="0.047058823529411764" blue="0.078431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="White">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -26,6 +26,7 @@ import ProtonCoreDataModel
 import ProtonCoreUtilities
 import ProtonCoreServices
 import ProtonCoreUIFoundations
+import ProtonCoreFeatureFlags
 import ProtonMailAnalytics
 
 struct LabelInfo {
@@ -60,6 +61,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasQueueManager
 
     let labelID: LabelID
+    let shouldShowFullStorageAlert: Bool
+    let storagePercentage: Int
     /// This field saves the label object of custom folder/label
     private(set) var label: LabelInfo?
     /// This field stores the latest update time of the user event.
@@ -180,6 +183,20 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         self.dependencies = dependencies
         self.toolbarActionProvider = toolbarActionProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
+
+        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.splitStorage, reloadValue: true),
+           !userManager.userInfo.isOnAStoragePaidPlan,
+           let usedBaseSpace = userManager.userInfo.usedBaseSpace,
+           let maxBaseSpace = userManager.userInfo.maxBaseSpace,
+           maxBaseSpace > 0 {
+            let factor = CGFloat(usedBaseSpace) / CGFloat(maxBaseSpace)
+            let percentage = CGFloat.maximum(factor, 0.01)
+            shouldShowFullStorageAlert = percentage > 0.8
+            storagePercentage = Int(ceil(percentage * 100))
+        } else {
+            shouldShowFullStorageAlert = false
+            storagePercentage = 0
+        }
         super.init()
         self.conversationStateProvider.add(delegate: self)
         dependencies.updateMailbox.setup(source: self)
@@ -682,6 +699,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     }
 
     func checkStorageIsCloseLimit() {
+        guard !FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.splitStorage, reloadValue: true) else { return }
         let usedStorageSpace = user.userInfo.usedSpace
         let maxStorageSpace = user.userInfo.maxSpace
         checkSpace(usedStorageSpace,

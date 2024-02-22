@@ -80,6 +80,15 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     @IBOutlet weak var selectAllIcon: UIImageView!
     @IBOutlet weak var selectAllLabel: UILabel!
     
+    // MARK: AlertBox
+    @IBOutlet weak var alertContainerView: UIView!
+    @IBOutlet weak var alertCardView: UIView!
+    @IBOutlet weak var alertIcon: UIImageView!
+    @IBOutlet weak var alertLabel: UILabel!
+    @IBOutlet weak var alertDescription: UILabel!
+    @IBOutlet weak var alertDismissButton: UIButton!
+    @IBOutlet weak var alertButton: UIButton!
+
     // MARK: PMToolBarView
     @IBOutlet private var toolBar: PMToolBarView!
 
@@ -256,6 +265,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         // Setup top actions
         self.topActionsView.backgroundColor = ColorProvider.BackgroundNorm
         self.topActionsView.layer.zPosition = tableView.layer.zPosition + 1
+        setupAlertBox()
 
         self.updateUnreadButton(count: viewModel.unreadCount)
         self.updateTheUpdateTimeLabel()
@@ -1184,7 +1194,11 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     private func handleShadow(isScrolled: Bool) {
-        isScrolled ? topActionsView.layer.apply(shadow: .custom(y: 2, blur: 2)) : topActionsView.layer.clearShadow()
+        if viewModel.shouldShowFullStorageAlert {
+            isScrolled ? alertCardView.layer.apply(shadow: .custom(y: 2, blur: 2)) : alertCardView.layer.clearShadow()
+        } else {
+            isScrolled ? topActionsView.layer.apply(shadow: .custom(y: 2, blur: 2)) : topActionsView.layer.clearShadow()
+        }
     }
 
     private func updateScheduledMessageTimeLabel() {
@@ -2072,6 +2086,40 @@ extension MailboxViewController {
 
 // MARK: - Show banner or alert
 extension MailboxViewController {
+
+    private func setupAlertBox() {
+        if viewModel.shouldShowFullStorageAlert {
+            alertContainerView.isHidden = false
+            alertContainerView.layer.zPosition = tableView.layer.zPosition + 1
+            alertCardView.backgroundColor = ColorProvider.BackgroundSecondary
+            alertCardView.layer.cornerRadius = 8
+            alertIcon.image = IconProvider.exclamationCircleFilled
+
+            if viewModel.storagePercentage < 95 {
+                alertLabel.text = String(format: L11n.AlertBox.alertBoxPercentageText, "\(String(viewModel.storagePercentage))%")
+                alertDismissButton.isHidden = false
+                alertDescription.isHidden = true
+                alertIcon.tintColor = ColorProvider.NotificationWarning
+            } else {
+                alertLabel.text = L11n.AlertBox.alertBoxFullText
+                alertDismissButton.isHidden = true
+                alertDescription.isHidden = false
+                alertIcon.tintColor = ColorProvider.NotificationError
+            }
+
+            alertDescription.text = L11n.AlertBox.alertBoxDescription
+
+            alertLabel.textColor = ColorProvider.TextNorm
+            alertDescription.textColor = ColorProvider.TextNorm
+            alertDismissButton.setTitle(L11n.AlertBox.alertBoxDismissButtonTitle, for: .normal)
+            alertButton.setTitle(L11n.AlertBox.alertBoxButtonTitle, for: .normal)
+            alertButton.layer.cornerRadius = 8
+            alertButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        } else {
+            alertContainerView.isHidden = true
+        }
+    }
+
     private func showErrorMessage(_ error: NSError) {
         guard UIApplication.shared.applicationState == .active else { return }
         var message = error.localizedDescription

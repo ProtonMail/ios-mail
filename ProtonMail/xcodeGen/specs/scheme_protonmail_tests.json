@@ -24,7 +24,8 @@
             "language": "en",
             "region": "US",
             "environmentVariables": {
-               "TZ": "UTC"
+               "TZ": "UTC",
+               "PROJECT_ROOT": "${SRCROOT}"
             }
          },
          "profile": {
