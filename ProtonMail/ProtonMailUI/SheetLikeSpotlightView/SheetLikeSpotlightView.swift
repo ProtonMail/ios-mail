@@ -22,7 +22,7 @@ public struct SheetLikeSpotlightView: View {
     public let config: HostingProvider
 
     let buttonTitle: String
-    var closeAction: ((UIViewController?) -> Void)?
+    private var closeAction: ((UIViewController?, Bool) -> Void)?
     // iPhone 15 Plus
     let maxWidthForIPhone: CGFloat = 430
     let message: String
@@ -35,7 +35,7 @@ public struct SheetLikeSpotlightView: View {
     public init(
         config: HostingProvider,
         buttonTitle: String,
-        closeAction: ((UIViewController?) -> Void)? = nil,
+        closeAction: ((UIViewController?, Bool) -> Void)? = nil,
         message: String,
         spotlightImage: UIImage,
         title: String,
@@ -136,7 +136,7 @@ public struct SheetLikeSpotlightView: View {
                 .minimumScaleFactor(0.8)
                 .multilineTextAlignment(.center)
             Button(action: {
-                dismissView()
+                dismissView(didTapActionButton: true)
             }, label: {
                 Text(buttonTitle)
                     .frame(width: 327, height: 48)
@@ -149,12 +149,12 @@ public struct SheetLikeSpotlightView: View {
         }
     }
 
-    private func dismissView() {
+    private func dismissView(didTapActionButton: Bool = false) {
         withAnimation(.easeInOut(duration: 0.25)) {
             isVisible.toggle()
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            self.closeAction?(config.hostingController)
+            self.closeAction?(config.hostingController, didTapActionButton)
         }
     }
 }

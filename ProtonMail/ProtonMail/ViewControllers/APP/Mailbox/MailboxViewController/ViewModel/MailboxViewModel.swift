@@ -325,33 +325,29 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         dependencies.userDefaults[.lastTourVersion] = Constants.App.TourVersion
     }
 
-    func shouldShowShowSnoozeSpotlight() -> Bool {
-        guard user.isSnoozeEnabled, !ProcessInfo.isRunningUITests else { return false }
+    func shouldShowAutoImportContactsSpotlight() -> Bool {
+        guard
+            user.container.autoImportContactsFeature.isFeatureEnabled,
+            !ProcessInfo.isRunningUITests
+        else { return false }
         // If one of logged in user has seen spotlight, shouldn't show it again
         let shouldShow = dependencies.usersManager.users
             .map {
-                dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .snooze, toUserWith: $0.userID)
+                dependencies
+                    .userIntroductionProgressProvider
+                    .shouldShowSpotlight(for: .autoImportContacts, toUserWith: $0.userID)
             }
             .reduce(true) { partialResult, shouldShow in
                 partialResult && shouldShow
             }
-
         return shouldShow
     }
 
-    func hasSeenSnoozeSpotlight() {
-        guard user.isSnoozeEnabled else { return }
-        dependencies.userIntroductionProgressProvider.markSpotlight(for: .snooze, asSeen: true, byUserWith: user.userID)
-    }
-
-    func hasSeenMessageNavigationSpotlight() {
-        user.parentManager?.users.forEach({ user in
-            dependencies.userIntroductionProgressProvider.markSpotlight(
-                for: .messageSwipeNavigation,
-                asSeen: true,
-                byUserWith: user.userID
-            )
-        })
+    func hasSeenAutoImportContactsSpotlight() {
+        guard user.container.autoImportContactsFeature.isFeatureEnabled else { return }
+        dependencies
+            .userIntroductionProgressProvider
+            .markSpotlight(for: .autoImportContacts, asSeen: true, byUserWith: user.userID)
     }
 
     func tagUIModels(for conversation: ConversationEntity) -> [TagUIModel] {
