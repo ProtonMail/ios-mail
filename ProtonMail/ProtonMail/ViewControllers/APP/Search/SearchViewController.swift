@@ -514,7 +514,6 @@ extension SearchViewController {
         let coordinator = SingleMessageCoordinator(
             navigationController: navigationController,
             labelId: "",
-            message: message,
             dependencies: dependencies,
             highlightedKeywords: query.components(separatedBy: .whitespacesAndNewlines)
         )
@@ -524,7 +523,7 @@ extension SearchViewController {
             _ = self.textFieldShouldReturn(self.customView.searchBar.textField)
             self.showComposer(msgID: msgID)
         }
-        coordinator.start()
+        coordinator.start(message: message)
     }
 
     private func prepareConversationFor(message: MessageEntity) {
