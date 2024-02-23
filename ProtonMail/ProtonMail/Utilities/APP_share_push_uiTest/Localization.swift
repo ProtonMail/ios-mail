@@ -1530,6 +1530,12 @@ enum L11n {
         static let spotlightTitle = "Swipe to next message"
     }
 
+    struct AutoImportContacts {
+        static let spotlightTitle = "Contact auto-import"
+        static let spotlightMessage = "Simplify your workflow by effortlessly adding new contacts from your device automatically."
+        static let spotlightButtonTitle = "Turn on feature"
+    }
+
     struct AccountSettings {
         static let privacyAndData = NSLocalizedString("Privacy and data", comment: "The title of the privacy and data in the account setting.")
         static let storage = NSLocalizedString("Storage", comment: "cell title in device settings")

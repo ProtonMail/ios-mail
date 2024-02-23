@@ -17,18 +17,18 @@
 
 import SwiftUI
 
-public struct MessageNavigationSpotlightView: View {
+public struct AutoImportContactsSpotlightView: View {
     public let config = HostingProvider()
     let buttonTitle: String
     let message: String
     let title: String
-    var closeAction: ((UIViewController?) -> Void)?
+    var closeAction: ((UIViewController?, Bool) -> Void)?
 
     public init(
         buttonTitle: String,
         message: String,
         title: String,
-        closeAction: ((UIViewController?) -> Void)? = nil
+        closeAction: ((UIViewController?, Bool) -> Void)? = nil
     ) {
         self.buttonTitle = buttonTitle
         self.message = message
@@ -42,17 +42,17 @@ public struct MessageNavigationSpotlightView: View {
             buttonTitle: buttonTitle,
             closeAction: closeAction,
             message: message,
-            spotlightImage: ImageAsset.messageNavigationSpotlight,
+            spotlightImage: ImageAsset.autoImportContactsSpotlight,
             title: title,
-            imageAlignBottom: true
+            maxHeightOfTheImage: 110
         )
     }
 }
 
 #Preview {
-    MessageNavigationSpotlightView(
-        buttonTitle: "Got it",
-        message: "You can now effortlessly navigate through messages  by swiping left or right.",
-        title: "Jump to next message"
+    AutoImportContactsSpotlightView(
+        buttonTitle: "Turn on feature",
+        message: "Simplify your workflow by effortlessly adding new contacts from your device automatically.",
+        title: "Contact auto-import"
     )
 }

@@ -22,13 +22,13 @@ struct JumpToNextSpotlightView: View {
     let buttonTitle: String
     let message: String
     let title: String
-    var closeAction: ((UIViewController?) -> Void)?
+    var closeAction: ((UIViewController?, Bool) -> Void)?
 
     public init(
         buttonTitle: String,
         message: String,
         title: String,
-        closeAction: ((UIViewController?) -> Void)? = nil
+        closeAction: ((UIViewController?, Bool) -> Void)? = nil
     ) {
         self.buttonTitle = buttonTitle
         self.message = message

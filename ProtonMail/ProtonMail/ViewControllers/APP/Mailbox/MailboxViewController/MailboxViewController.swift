@@ -1241,41 +1241,26 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     private func showSpotlightIfNeeded() {
-//        if viewModel.shouldShowMessageNavigationSpotlight {
-//            showMessageNavigationSpotlight()
-//        }
-        if viewModel.shouldShowShowSnoozeSpotlight() {
-            showSnoozeSpotlight()
+        if viewModel.shouldShowAutoImportContactsSpotlight() {
+            showAutoImportContactsSpotlight()
         }
     }
 
-    private func showSnoozeSpotlight() {
-        let spotlightView = SnoozeSpotlightView(
-            buttonTitle: LocalString._general_gotIt_button,
-            message: L11n.Snooze.spotlightDesc,
-            title: L11n.Snooze.spotlightTitle
-        ) { [weak self] hostingVC in
+    private func showAutoImportContactsSpotlight() {
+        let spotlightView = AutoImportContactsSpotlightView(
+            buttonTitle: L11n.AutoImportContacts.spotlightButtonTitle,
+            message: L11n.AutoImportContacts.spotlightMessage,
+            title: L11n.AutoImportContacts.spotlightTitle
+        ) { [weak self] hostingVC, didTapActionButton in
             hostingVC?.dismiss(animated: false)
-            self?.viewModel.hasSeenSnoozeSpotlight()
+            if didTapActionButton {
+                self?.coordinator?.go(to: .settingsContacts, sender: nil)
+            }
         }
         let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
         spotlightView.config.hostingController = hosting
         navigationController?.present(hosting, animated: false)
-        viewModel.hasSeenSnoozeSpotlight()
-    }
-
-    private func showMessageNavigationSpotlight() {
-        let spotlightView = MessageNavigationSpotlightView(
-            buttonTitle: LocalString._general_gotIt_button,
-            message: L11n.MessageNavigation.spotlightMessage,
-            title: L11n.MessageNavigation.spotlightTitle
-        ) { hostingVC in
-            hostingVC?.dismiss(animated: false)
-        }
-        let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
-        spotlightView.config.hostingController = hosting
-        navigationController?.present(hosting, animated: false)
-        viewModel.hasSeenMessageNavigationSpotlight()
+        viewModel.hasSeenAutoImportContactsSpotlight()
     }
 
     private func endRefreshSpinner() {
