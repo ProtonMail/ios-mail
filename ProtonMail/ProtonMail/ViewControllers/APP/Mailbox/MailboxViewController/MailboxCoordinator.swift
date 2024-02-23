@@ -529,13 +529,12 @@ extension MailboxCoordinator {
         let coordinator = SingleMessageCoordinator(
             navigationController: navigationController,
             labelId: viewModel.labelID,
-            message: message,
             dependencies: dependencies
         )
         coordinator.goToDraft = { [weak self] msgID, originalScheduleTime in
             self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduleTime)
         }
-        coordinator.start()
+        coordinator.start(message: message)
     }
 
     private func present(conversation: ConversationEntity, targetID: MessageID?) {

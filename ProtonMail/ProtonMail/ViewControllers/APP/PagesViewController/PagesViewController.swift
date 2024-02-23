@@ -172,11 +172,10 @@ extension PagesViewController {
         let coordinator = SingleMessageCoordinator(
             navigationController: navigationController,
             labelId: viewModel.labelID,
-            message: message,
             dependencies: dependencies
         )
         coordinator.goToDraft = viewModel.goToDraft
-        let controller = coordinator.makeSingleMessageVC()
+        let controller = coordinator.makeSingleMessageVC(message: message)
         pageCache[messageID] = (refIndex, controller)
         return controller
     }

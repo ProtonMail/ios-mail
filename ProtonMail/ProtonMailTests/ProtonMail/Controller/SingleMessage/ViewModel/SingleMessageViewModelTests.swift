@@ -251,7 +251,6 @@ final class SingleMessageViewModelTests: XCTestCase {
 
         coordinatorMock = SingleMessageCoordinator(navigationController: UINavigationController(),
                                                    labelId: labelID,
-                                                   message: message,
                                                    dependencies: userContainer)
 
         let context = SingleMessageContentViewContext(labelId: labelID, message: message, viewMode: .singleMessage)
