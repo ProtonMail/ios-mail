@@ -62,7 +62,7 @@ final class BackendSearch: BackendSearchUseCase {
         page: UInt,
         completion: @escaping (Result<[String: Any]?, Error>) -> Void
     ) {
-        let request = SearchMessageRequest(keyword: query, page: page)
+        let request = SearchMessageRequest(page: page, keyword: query)
         dependencies.apiService.perform(
             request: request,
             response: SearchMessageResponse()
