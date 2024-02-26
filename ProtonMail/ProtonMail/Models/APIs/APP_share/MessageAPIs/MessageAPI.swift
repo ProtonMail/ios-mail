@@ -25,52 +25,20 @@ import PromiseKit
 import ProtonCoreDataModel
 import ProtonCoreNetworking
 
-// Message API
-// Doc: V1 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages.md
-// Doc: V3 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages_v3.md
 struct MessageAPI {
     /// base message api path
     static let path: String = "/\(Constants.App.API_PREFIXED)/messages"
 }
 
-final class SearchMessageRequest: Request {
-    var keyword: String
-    var page: UInt
-
-    init(keyword: String, page: UInt) {
-        self.keyword = keyword
-        self.page = page
-    }
-
-    var parameters: [String: Any]? {
-        var out: [String: Any] = [String: Any]()
-        out["Keyword"] = self.keyword
-        out["Page"] = self.page
-        return out
-    }
-
-    var method: HTTPMethod {
-        return .get
-    }
-
-    var path: String {
-        return MessageAPI.path
-    }
-}
-
 // MARK: Get messages part --- MessageCountResponse
-final class MessageCountRequest: Request {
+struct MessageCountRequest: Request {
     var path: String {
         return MessageAPI.path + "/count"
     }
 }
 
-final class FetchMessagesByID: Request {
+struct FetchMessagesByID: Request {
     let msgIDs: [String]
-
-    init(msgIDs: [String]) {
-        self.msgIDs = msgIDs
-    }
 
     var parameters: [String: Any]? {
         let out: [String: Any] = ["ID": msgIDs]
@@ -92,7 +60,7 @@ final class FetchMessagesByIDResponse: Response {
 }
 
 /// Response
-final class FetchMessagesByLabelRequest: Request {
+struct FetchMessagesByLabelRequest: Request {
     let labelID: String!
     /// UNIX timestamp to filter messages at or earlier than timestamp
     let endTime: Int?
@@ -268,14 +236,9 @@ final class UpdateDraftRequest: CreateDraftRequest {
 // MARK: Message actions part
 
 /// message action request PUT method   --- Response
-final class MessageActionRequest: Request {
+struct MessageActionRequest: Request {
     let action: String
-    var ids: [String] = [String]()
-
-    init(action: String, ids: [String]) {
-        self.action = action
-        self.ids = ids
-    }
+    let ids: [String]
 
     var parameters: [String: Any]? {
         ["IDs": self.ids]
@@ -291,12 +254,8 @@ final class MessageActionRequest: Request {
 }
 
 /// empty trash or spam -- Response
-final class EmptyMessageRequest: Request {
-
+struct EmptyMessageRequest: Request {
     let labelID: String
-    init(labelID: String) {
-        self.labelID = labelID
-    }
 
     var path: String {
         return MessageAPI.path + "/empty?LabelID=" + self.labelID
@@ -309,7 +268,7 @@ final class EmptyMessageRequest: Request {
 
 // MARK: Message Send part
 
-final class SendMessageRequest: Request {
+struct SendMessageRequest: Request {
     let messagePackage: [AddressPackageBase]  // message package
     let body: String
     let messageID: String
