@@ -44,7 +44,7 @@ extension MBProgressHUD {
         hud.label.text = LocalString._general_alert_title
         hud.detailsLabel.text = errorString
         hud.removeFromSuperViewOnHide = true
-        let delay = UIApplication.isTestingBuild ? 10.0 : 3.0
+        let delay = Application.isTestingBuild ? 10.0 : 3.0
         hud.hide(animated: true, afterDelay: delay)
     }
 }
