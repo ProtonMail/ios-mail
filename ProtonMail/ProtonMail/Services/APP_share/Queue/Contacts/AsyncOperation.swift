@@ -58,7 +58,6 @@ class AsyncOperation: Operation {
     }
 
     override func start() {
-        SystemLogger.logTemporarily(message: "started async operation \(operationID)", category: .contacts)
         guard !isCancelled else {
             finish(error: nil)
             return
@@ -73,7 +72,6 @@ class AsyncOperation: Operation {
     }
 
     func finish(error: Error?) {
-        SystemLogger.logTemporarily(message: "finished async operation \(operationID)", category: .contacts)
         delegate?.taskFinished(operation: self, error: error)
         isExecuting = false
         isFinished = true
