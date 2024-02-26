@@ -17,11 +17,19 @@
 
 import SwiftUI
 
-@main
-struct ProtonMail: App {
-    var body: some Scene {
-        WindowGroup {
-            MailboxView()
+struct MailboxView: View {
+    var body: some View {
+        VStack {
+            Image(systemName: "globe")
+                .imageScale(.large)
+                .foregroundStyle(.tint)
+            Text("Mailbox")
         }
+        .padding()
     }
 }
+
+#Preview {
+    MailboxView()
+}
+

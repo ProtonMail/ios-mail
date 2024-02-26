@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4701D41D2B8CB1C400D6DC1D /* MailboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4701D41C2B8CB1C400D6DC1D /* MailboxView.swift */; };
 		477F664E2B8CA3E300119523 /* ProtonMailApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F664D2B8CA3E300119523 /* ProtonMailApp.swift */; };
-		477F66502B8CA3E300119523 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F664F2B8CA3E300119523 /* ContentView.swift */; };
 		477F66522B8CA3E400119523 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 477F66512B8CA3E400119523 /* Assets.xcassets */; };
 		477F66552B8CA3E400119523 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 477F66542B8CA3E400119523 /* Preview Assets.xcassets */; };
 		477F665F2B8CA3E400119523 /* iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F665E2B8CA3E400119523 /* iosTests.swift */; };
@@ -34,9 +34,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4701D41C2B8CB1C400D6DC1D /* MailboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxView.swift; sourceTree = "<group>"; };
 		477F664A2B8CA3E300119523 /* ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		477F664D2B8CA3E300119523 /* ProtonMailApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonMailApp.swift; sourceTree = "<group>"; };
-		477F664F2B8CA3E300119523 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		477F66512B8CA3E400119523 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		477F66542B8CA3E400119523 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		477F665A2B8CA3E400119523 /* iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,6 +71,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4701D41A2B8CB16300D6DC1D /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				4701D41E2B8CB21300D6DC1D /* Mailbox */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		4701D41B2B8CB16D00D6DC1D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				477F66512B8CA3E400119523 /* Assets.xcassets */,
+				477F66532B8CA3E400119523 /* Preview Content */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		4701D41E2B8CB21300D6DC1D /* Mailbox */ = {
+			isa = PBXGroup;
+			children = (
+				4701D41C2B8CB1C400D6DC1D /* MailboxView.swift */,
+			);
+			path = Mailbox;
+			sourceTree = "<group>";
+		};
 		477F66412B8CA3E300119523 = {
 			isa = PBXGroup;
 			children = (
@@ -95,9 +120,8 @@
 			isa = PBXGroup;
 			children = (
 				477F664D2B8CA3E300119523 /* ProtonMailApp.swift */,
-				477F664F2B8CA3E300119523 /* ContentView.swift */,
-				477F66512B8CA3E400119523 /* Assets.xcassets */,
-				477F66532B8CA3E400119523 /* Preview Content */,
+				4701D41B2B8CB16D00D6DC1D /* Resources */,
+				4701D41A2B8CB16300D6DC1D /* Scenes */,
 			);
 			path = ios;
 			sourceTree = "<group>";
@@ -257,7 +281,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				477F66502B8CA3E300119523 /* ContentView.swift in Sources */,
+				4701D41D2B8CB1C400D6DC1D /* MailboxView.swift in Sources */,
 				477F664E2B8CA3E300119523 /* ProtonMailApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -423,7 +447,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ios/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"ios/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -457,7 +481,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ios/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"ios/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
