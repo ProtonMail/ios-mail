@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4701D41D2B8CB1C400D6DC1D /* MailboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4701D41C2B8CB1C400D6DC1D /* MailboxView.swift */; };
+		47143B782B8CDAE900AAB4E4 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 47143B772B8CDAE900AAB4E4 /* DesignSystem */; };
 		477F664E2B8CA3E300119523 /* ProtonMailApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F664D2B8CA3E300119523 /* ProtonMailApp.swift */; };
 		477F66522B8CA3E400119523 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 477F66512B8CA3E400119523 /* Assets.xcassets */; };
 		477F66552B8CA3E400119523 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 477F66542B8CA3E400119523 /* Preview Assets.xcassets */; };
@@ -35,6 +36,7 @@
 
 /* Begin PBXFileReference section */
 		4701D41C2B8CB1C400D6DC1D /* MailboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxView.swift; sourceTree = "<group>"; };
+		47143B732B8CD70A00AAB4E4 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DesignSystem; path = localPackages/DesignSystem; sourceTree = "<group>"; };
 		477F664A2B8CA3E300119523 /* ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		477F664D2B8CA3E300119523 /* ProtonMailApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonMailApp.swift; sourceTree = "<group>"; };
 		477F66512B8CA3E400119523 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -51,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47143B782B8CDAE900AAB4E4 /* DesignSystem in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,13 +99,22 @@
 			path = Mailbox;
 			sourceTree = "<group>";
 		};
+		47143B762B8CDAE900AAB4E4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		477F66412B8CA3E300119523 = {
 			isa = PBXGroup;
 			children = (
 				477F664C2B8CA3E300119523 /* ios */,
 				477F665D2B8CA3E400119523 /* iosTests */,
 				477F66672B8CA3E400119523 /* iosUITests */,
+				47143B732B8CD70A00AAB4E4 /* DesignSystem */,
 				477F664B2B8CA3E300119523 /* Products */,
+				47143B762B8CDAE900AAB4E4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -167,6 +179,9 @@
 			dependencies = (
 			);
 			name = ios;
+			packageProductDependencies = (
+				47143B772B8CDAE900AAB4E4 /* DesignSystem */,
+			);
 			productName = ios;
 			productReference = 477F664A2B8CA3E300119523 /* ios.app */;
 			productType = "com.apple.product-type.application";
@@ -239,6 +254,8 @@
 				Base,
 			);
 			mainGroup = 477F66412B8CA3E300119523;
+			packageReferences = (
+			);
 			productRefGroup = 477F664B2B8CA3E300119523 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -461,7 +478,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.mail.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -495,7 +512,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.mail.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -624,6 +641,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		47143B772B8CDAE900AAB4E4 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 477F66422B8CA3E300119523 /* Project object */;
 }
