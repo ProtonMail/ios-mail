@@ -68,11 +68,11 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
         guard backgroundTask == nil else { return }
 
         dependencies.contactSyncQueue.start()
-        backgroundTask = Task.detached(priority: .userInitiated) { [weak self] in
+        backgroundTask = Task.detached(priority: .medium) { [weak self] in
             guard let self = self else { return }
             defer { taskFinished() }
             let isFirstImport = contactsHistoryToken == nil
-            let contactIDsToImport = fetchDeviceContactIdentifiersToImport()
+            let (contactIDsToImport, newHistoryToken) = fetchDeviceContactIdentifiersToImport()
             guard !contactIDsToImport.isEmpty else { return }
             delegate?.onProgressUpdate(count: 0, total: contactIDsToImport.count)
 
@@ -84,6 +84,7 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
                 contactsMatchedByEmail: triagedContacts.toUpdateByEmailMatch,
                 numOfSkippedVCardsDownloads: &numOfSkippedVCardsDownloads
             )
+            contactsHistoryToken = newHistoryToken
 
             do {
                 var numContactsToUpdate = 0
@@ -94,6 +95,7 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
                     params: params,
                     numContactsToUpdate: &numContactsToUpdate
                 )
+
                 await reportTelemetryIfNeeded(
                     isFirstImport: isFirstImport,
                     numContactsToCreate: triagedContacts.toCreate.count,
@@ -119,8 +121,8 @@ extension ImportDeviceContacts {
         delegate?.onFinish()
     }
 
-    /// Returns the identifiers of the contacts that have to be imported
-    private func fetchDeviceContactIdentifiersToImport() -> [DeviceContactIdentifier] {
+    /// Returns the identifiers of the contacts that have to be imported and the contact history token
+    private func fetchDeviceContactIdentifiersToImport() -> ([DeviceContactIdentifier], Data?) {
         do {
             if let contactsHistoryToken {
                 return try fetchChangedContactsIdentifiers(historyToken: contactsHistoryToken)
@@ -129,24 +131,22 @@ extension ImportDeviceContacts {
             }
         } catch {
             SystemLogger.log(error: error, category: .contacts)
-            return []
+            return ([], nil)
         }
     }
 
-    private func fetchAllContactsIdentifiers() throws -> [DeviceContactIdentifier] {
-        let (newToken, contactIDs) = try dependencies.deviceContacts.fetchAllContactIdentifiers()
-        contactsHistoryToken = newToken
+    private func fetchAllContactsIdentifiers() throws -> ([DeviceContactIdentifier], Data?) {
+        let (newContactHistoryToken, contactIDs) = try dependencies.deviceContacts.fetchAllContactIdentifiers()
         SystemLogger.log(message: "fetch all device contacts: found \(contactIDs.count)", category: .contacts)
-        return contactIDs
+        return (contactIDs, newContactHistoryToken)
     }
 
-    private func fetchChangedContactsIdentifiers(historyToken: Data) throws -> [DeviceContactIdentifier] {
-        let (newToken, contactIDs) = try dependencies
+    private func fetchChangedContactsIdentifiers(historyToken: Data) throws -> ([DeviceContactIdentifier], Data?) {
+        let (newContactHistoryToken, contactIDs) = try dependencies
             .deviceContacts
             .fetchEventsContactIdentifiers(historyToken: historyToken)
-        contactsHistoryToken = newToken
         SystemLogger.log(message: "fetch device changed contacts: found \(contactIDs.count)", category: .contacts)
-        return contactIDs
+        return (contactIDs, newContactHistoryToken)
     }
 
     /// Returns which contacts have to be created and which have to be updated by uuid match and which have to be updated by email match.
@@ -201,27 +201,22 @@ extension ImportDeviceContacts {
         let message = "fetching vCards for \(idsWithMissingVCards.count) Proton contacts"
         SystemLogger.log(message: message, category: .contacts)
 
-        await withTaskGroup(of: Bool.self) { [weak self] group in
+        await withTaskGroup(of: Void.self) { [weak self] group in
             guard let contactService = self?.dependencies.contactService else { return }
-            for id in idsWithMissingVCards {
+            let maxConcurrentTasks = 3
+            for (index, id) in idsWithMissingVCards.enumerated() {
                 group.addTask {
                     do {
                         _ = try await contactService.fetchContact(contactID: id)
-                        return true
                     } catch {
-                        return false
+                        SystemLogger.log(message: "fetch contact error \(error)", category: .contacts, isError: true)
                     }
                 }
+                if index >= maxConcurrentTasks - 1 {
+                    _ = await group.next()
+                }
             }
-
-            var numFailedFetches = 0
-            for await fetchSucceed in group {
-                numFailedFetches += fetchSucceed ? 0 : 1
-            }
-            if numFailedFetches > 0 {
-                let message = "\(numFailedFetches) contact detail requests failed"
-                SystemLogger.log(message: message, category: .contacts, isError: true)
-            }
+            await group.waitForAll()
         }
     }
 

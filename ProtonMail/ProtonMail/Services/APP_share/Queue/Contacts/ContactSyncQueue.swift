@@ -61,7 +61,6 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
     init(userID: UserID, dependencies: Dependencies) {
         let path = "\(Self.queueFilePrefix).\(userID.rawValue)"
         var queueFileUrl = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent(path)
-        SystemLogger.logTemporarily(message: "taskQueueUrl = \(queueFileUrl)", category: .contacts)
         if FileManager.default.fileExists(atPath: queueFileUrl.absoluteString) {
             BackupExcluder().excludeFromBackup(url: &queueFileUrl)
         }
@@ -113,8 +112,11 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
             SystemLogger.log(message: "queue start() not called", category: .contacts, isError: true)
             return
         }
-        SystemLogger.log(message: "enqueue \(task.action) with \(task.numContacts) contacts", category: .contacts)
-        serial.sync {
+        serial.async { [weak self] in
+            guard let self else {
+                SystemLogger.log(message: "ContactsSyncQueue deallocated", category: .contacts, isError: true)
+                return
+            }
             taskQueue.append(task)
             updateProgressTotal(numAdded: task.numContacts)
             enqueueOperations([task])
@@ -160,6 +162,9 @@ extension ContactsSyncQueue {
 
     private func updateProgressTotal(numAdded: Int) {
         var progress = progressPublisher.value
+        if progress.total == 0 {
+            SystemLogger.log(message: "tasks added to empty queue", category: .contacts)
+        }
         progress.total += numAdded
         progressPublisher.send(progress)
     }
@@ -167,6 +172,9 @@ extension ContactsSyncQueue {
     private func incrementProgress(_ increment: Int) {
         var progress = progressPublisher.value
         progress.finished += increment
+        if progress.finished >= progress.total {
+            SystemLogger.log(message: "enqueued tasks finished", category: .contacts)
+        }
         progressPublisher.send(progress)
     }
 
