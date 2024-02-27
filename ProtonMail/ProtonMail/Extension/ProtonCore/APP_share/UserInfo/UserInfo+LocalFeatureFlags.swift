@@ -37,7 +37,7 @@ extension UserInfo {
     /// This way we guarantee that no matter the active user the request is made with, the value is the same every time during
     /// the app lifetime.
     static var isAppAccessResolverEnabled: Bool {
-        if UIApplication.isDebugOrEnterprise {
+        if Application.isDebugOrEnterprise {
             return true
         } else {
             return FeatureFlagsRepository.shared.isEnabled(MailFeatureFlag.appLaunchRefactor)
@@ -49,6 +49,6 @@ extension UserInfo {
     }
 
     static var isRSVPMilestoneTwoEnabled: Bool {
-        UIApplication.isDebugOrEnterprise
+        Application.isDebugOrEnterprise
     }
 }

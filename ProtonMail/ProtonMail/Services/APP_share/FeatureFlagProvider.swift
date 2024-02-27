@@ -39,7 +39,7 @@ struct FeatureFlagProvider {
         switch featureFlag {
         case .autoImportContacts:
             return nil
-        case .rsvpWidget where UIApplication.isDebugOrEnterprise:
+        case .rsvpWidget where Application.isDebugOrEnterprise:
             return true
         case .snooze:
             return ProcessInfo.isRunningUnitTests

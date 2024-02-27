@@ -36,7 +36,7 @@ struct BackendConfiguration {
     init(
         launchArguments: [String] = ProcessInfo.processInfo.arguments,
         environmentVariables: [String: String] = ProcessInfo.processInfo.environment,
-        isDebugOrEnterprise: () -> Bool = { UIApplication.isDebugOrEnterprise },
+        isDebugOrEnterprise: () -> Bool = { Application.isDebugOrEnterprise },
         configurationCache: BackendConfigurationCacheProtocol = BackendConfigurationCache()
     ) {
         if launchArguments.contains(ProcessInfo.LaunchArgument.uiTests.rawValue) {
