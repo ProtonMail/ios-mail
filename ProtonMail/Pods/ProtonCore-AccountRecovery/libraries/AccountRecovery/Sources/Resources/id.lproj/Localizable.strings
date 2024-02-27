@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "Pengaturan ulang kata sandi";
+
+"Account_Recovery_Insecure_View_Title" = "Atur ulang kata sandi";
+
+"Account_Recovery_Grace_View_Title" = "Apakah Anda ingin mengatur ulang kata sandi?";
+
+"Account_Recovery_Grace_View_line1" = "Kami telah menerima permintaan untuk mengatur ulang kata sandi bagi ";
+
+"Account_Recovery_Insecure_View_line1" = "Anda kini dapat mengubah kata sandi untuk akun ";
+
+"Account_Recovery_Insecure_View_line2" = " secara bebas selama ";
+
+"Account_Recovery_Insecure_View_line3" = "Silakan tuju perangkat yang telah terhubung masuk (dalam sesi di mana permintaan ini diajukan) untuk mengubah kata sandi Anda.";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "Batalkan permintaan";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "beberapa jam";
+
+"Account_Recovery_Grace_View_line2" = ". Untuk menjaga agar akun Anda tetap aman, kami ingin memastikan bahwa permintaan pengaturan ulang ini benar-benar berasal dari Anda. Anda akan dapat mengatur ulang kata sandi Anda dalam ";
+
+"Account_Recovery_Grace_View_line3" = "Apabila Anda tidak membuat permintaan ini, atau apabila Anda tidak lagi memerlukan bantuan untuk masuk, mohon batalkan permintaan ini dan bertindaklah untuk mengamankan akun Anda.";

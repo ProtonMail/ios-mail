@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-Services",
   "module_name": "ProtonCoreServices",
-  "version": "18.0.0",
+  "version": "19.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "18.0.0"
+    "tag": "19.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "ProtonCore-Observability": [
-      "18.0.0"
+      "19.0.0"
     ]
   },
   "default_subspecs": [
@@ -53,13 +53,13 @@
       "source_files": "libraries/Services/Tests/Unit/*.swift",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Networking": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Services": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "18.0.0"
+          "19.0.0"
         ]
       }
     },
@@ -68,16 +68,16 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-Challenge": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-Authentication": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-Login": [
-          "18.0.0"
+          "19.0.0"
         ]
       },
       "source_files": "libraries/Services/Tests/Integration/*.swift",

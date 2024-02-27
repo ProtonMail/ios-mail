@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "重設密碼";
+
+"Account_Recovery_Insecure_View_Title" = "重設您的密碼";
+
+"Account_Recovery_Grace_View_Title" = "您想要重設密碼嗎？";
+
+"Account_Recovery_Grace_View_line1" = "我們已經收到要求重設您的密碼 ";
+
+"Account_Recovery_Insecure_View_line1" = "您現在已變更密碼，帳號為 ";
+
+"Account_Recovery_Insecure_View_line2" = " freely during ";
+
+"Account_Recovery_Insecure_View_line3" = "Please go the signed-in device (in the session where the request was initiated) to change your password.";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "取消請求";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "幾個小時";
+
+"Account_Recovery_Grace_View_line2" = ". To keep your account safe, we want to make sure it’s really you trying to reset your password. You’ll be able to reset your password in ";
+
+"Account_Recovery_Grace_View_line3" = "If you didn't make this request, or if you no longer need help signing in, please cancel it and take steps to secure your account.";

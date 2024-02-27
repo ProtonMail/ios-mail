@@ -33,6 +33,7 @@ class AlertBoxCell: UITableViewCell {
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let alertActionButton = UIButton()
+    private var alertAction: (() -> Void)?
 
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
@@ -46,7 +47,8 @@ class AlertBoxCell: UITableViewCell {
         backgroundColor = .clear
     }
 
-    func configure(with viewModel: AlertBoxViewModel) {
+    func configure(with viewModel: AlertBoxViewModel, action: (() -> Void)?) {
+        self.alertAction = action
         setupMainView()
         setupIconImagView()
         setupTextStackView(viewModel: viewModel)
@@ -98,11 +100,11 @@ class AlertBoxCell: UITableViewCell {
     private func setupAlertActionButton(buttonTitle: String) {
         alertActionButton.setTitle(buttonTitle, for: .normal)
         alertActionButton.setTitleColor(ColorProvider.InteractionNorm, for: .normal)
-        alertActionButton.addTarget(self, action: #selector(scrollToPlan), for: .touchUpInside)
+        alertActionButton.addTarget(self, action: #selector(onAlertActionButtonTap), for: .touchUpInside)
     }
 
-    @objc private func scrollToPlan() {
-        // TODO: CP-7191
+    @objc private func onAlertActionButtonTap() {
+        alertAction?()
     }
 
     private func setupTextStackView(viewModel: AlertBoxViewModel) {

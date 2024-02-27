@@ -366,48 +366,48 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
             guard let self = self else { return }
             switch purchaseResult {
             case .planPurchaseProcessingInProgress(let inProgressPlan):
-                ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .planPurchaseProcessingInProgress, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .planPurchaseProcessingInProgress, isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
                 self.unfinishedPurchasePlan = inProgressPlan
                 self.finishCallback(reason: .planPurchaseProcessingInProgress(accountPlan: inProgressPlan))
-                ObservabilityEnv.report(.paymentPurchaseTotal(status: .planPurchaseProcessingInProgress, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
-                ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .processingInProgress, plan: self.getPlanNameForObservabilityPurposes(plan: plan), isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                ObservabilityEnv.report(.paymentPurchaseTotal(status: .planPurchaseProcessingInProgress, isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .processingInProgress, plan: self.getPlanNameForObservabilityPurposes(plan: plan), isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
             case .purchasedPlan(let purchasedPlan):
-                ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .success, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .success, isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
                 self.unfinishedPurchasePlan = self.purchaseManager.unfinishedPurchasePlan
                 self.finishCallback(reason: .purchasedPlan(accountPlan: purchasedPlan))
-                ObservabilityEnv.report(.paymentPurchaseTotal(status: .success, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
-                ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .successful, plan: self.getPlanNameForObservabilityPurposes(plan: plan), isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                ObservabilityEnv.report(.paymentPurchaseTotal(status: .success, isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .successful, plan: self.getPlanNameForObservabilityPurposes(plan: plan), isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
             case .toppedUpCredits:
-                ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .success, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .success, isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
                 self.unfinishedPurchasePlan = self.purchaseManager.unfinishedPurchasePlan
                 self.finishCallback(reason: .toppedUpCredits)
-                ObservabilityEnv.report(.paymentPurchaseTotal(status: .success, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                ObservabilityEnv.report(.paymentPurchaseTotal(status: .success, isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
                 ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .successful,
                                                                     plan: self.getPlanNameForObservabilityPurposes(plan: plan),
-                                                                    isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                                                                    isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
             case .purchaseError(let error, let processingPlan):
-                ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .purchaseError, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .purchaseError, isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
                 self.unfinishedPurchasePlan = processingPlan
-                ObservabilityEnv.report(.paymentPurchaseTotal(status: .purchaseError, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                ObservabilityEnv.report(.paymentPurchaseTotal(status: .purchaseError, isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
                 ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .failed,
                                                                     plan: self.getPlanNameForObservabilityPurposes(plan: plan),
-                                                                    isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                                                                    isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
                 self.showError(error: error)
             case let .apiMightBeBlocked(message, originalError, processingPlan):
-                ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .apiBlocked, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .apiBlocked, isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
                 self.unfinishedPurchasePlan = processingPlan
-                ObservabilityEnv.report(.paymentPurchaseTotal(status: .apiBlocked, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                ObservabilityEnv.report(.paymentPurchaseTotal(status: .apiBlocked, isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
                 ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .apiMightBeBlocked,
                                                                     plan: self.getPlanNameForObservabilityPurposes(plan: plan),
-                                                                    isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                                                                    isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
                 // TODO: should we handle it ourselves? or let the client do it?
                 self.finishCallback(reason: .apiMightBeBlocked(message: message, originalError: originalError))
             case .purchaseCancelled:
-                ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .canceled, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
-                ObservabilityEnv.report(.paymentPurchaseTotal(status: .canceled, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .canceled, isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                ObservabilityEnv.report(.paymentPurchaseTotal(status: .canceled, isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
                 ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .canceled,
                                                                     plan: self.getPlanNameForObservabilityPurposes(plan: plan),
-                                                                    isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+                                                                    isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
             }
         }
     }

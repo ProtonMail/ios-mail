@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "Repor a palavra-passe";
+
+"Account_Recovery_Insecure_View_Title" = "Redefinir a sua palavra-passe";
+
+"Account_Recovery_Grace_View_Title" = "Pretende redefinir a sua palavra-passe?";
+
+"Account_Recovery_Grace_View_line1" = "Recebemos um pedido para redefinir a sua palavra-passe para ";
+
+"Account_Recovery_Insecure_View_line1" = "Agora pode mudar a sua palavra-passe para a conta ";
+
+"Account_Recovery_Insecure_View_line2" = " gratuitamente durante ";
+
+"Account_Recovery_Insecure_View_line3" = "Por favor, vá ao dispositivo com sessão iniciada (na sessão onde o pedido foi iniciado) para mudar a sua palavra-passe.";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "Cancelar pedido";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "a few hours";
+
+"Account_Recovery_Grace_View_line2" = ". To keep your account safe, we want to make sure it’s really you trying to reset your password. You’ll be able to reset your password in ";
+
+"Account_Recovery_Grace_View_line3" = "Se não fez este pedido, ou se já não precisa de ajuda a iniciar sessão, por favor cancele-o e tome medidas para proteger a sua conta";

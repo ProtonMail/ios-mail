@@ -90,6 +90,7 @@ extension UserInfo {
     }
 
     func update(from user: UserResponse) {
+        self.accountRecovery = user.accountRecovery
         self.delinquent = user.delinquent
         self.maxSpace = Int64(user.maxSpace)
         self.maxUpload = Int64(user.maxUpload)

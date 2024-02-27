@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-Login",
   "module_name": "ProtonCoreLogin",
-  "version": "18.0.0",
+  "version": "19.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "18.0.0"
+    "tag": "19.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -34,31 +34,31 @@
 
     ],
     "ProtonCore-Log": [
-      "18.0.0"
+      "19.0.0"
     ],
     "ProtonCore-Foundations": [
-      "18.0.0"
+      "19.0.0"
     ],
     "ProtonCore-DataModel": [
-      "18.0.0"
+      "19.0.0"
     ],
     "ProtonCore-Observability": [
-      "18.0.0"
+      "19.0.0"
     ],
     "ProtonCore-Crypto": [
-      "18.0.0"
+      "19.0.0"
     ],
     "ProtonCore-CryptoGoInterface": [
-      "18.0.0"
+      "19.0.0"
     ],
     "ProtonCore-FeatureFlags": [
-      "18.0.0"
+      "19.0.0"
     ],
     "ProtonCore-Authentication": [
-      "18.0.0"
+      "19.0.0"
     ],
     "ProtonCore-Authentication-KeyGeneration": [
-      "18.0.0"
+      "19.0.0"
     ]
   },
   "source_files": [
@@ -82,31 +82,31 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-Go": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-Authentication": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication-KeyGeneration": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Login": [
-          "18.0.0"
+          "19.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -126,31 +126,31 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-Authentication": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication-KeyGeneration": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Login": [
-          "18.0.0"
+          "19.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -170,31 +170,31 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-Authentication": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication-KeyGeneration": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Login": [
-          "18.0.0"
+          "19.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -214,31 +214,31 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-Authentication": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication-KeyGeneration": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Login": [
-          "18.0.0"
+          "19.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -258,19 +258,19 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-Go": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-QuarkCommands": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "18.0.0"
+          "19.0.0"
         ],
         "TrustKit": [
 
@@ -289,19 +289,19 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-QuarkCommands": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "18.0.0"
+          "19.0.0"
         ],
         "TrustKit": [
 
@@ -320,19 +320,19 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-QuarkCommands": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "18.0.0"
+          "19.0.0"
         ],
         "TrustKit": [
 
@@ -351,19 +351,19 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-QuarkCommands": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "18.0.0"
+          "19.0.0"
         ],
         "TrustKit": [
 

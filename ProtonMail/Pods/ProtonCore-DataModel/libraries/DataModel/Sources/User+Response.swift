@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCoreLog
 
 extension UserInfo {
     /// Initializes the UserInfo with the response data
@@ -48,8 +49,24 @@ extension UserInfo {
             credit: response["Credit"] as? Int,
             currency: response["Currency"] as? String,
             createTime: response["CreateTime"] as? Int64,
-            subscribed: subscribed.map(User.Subscribed.init(rawValue:))
+            subscribed: subscribed.map(User.Subscribed.init(rawValue:)),
+            accountRecovery: UserInfo.parse(accountRecovery: response["AccountRecovery"] as? [String: Any])
         )
+    }
+
+    // convenience function for parsing from [String: Any]?, needed by some clients
+    private static func parse(accountRecovery: [String: Any]?) -> AccountRecovery? {
+        guard JSONSerialization.isValidJSONObject(accountRecovery as Any) else {
+            PMLog.error("Account Recovery state from /users response is not a valid JSON object", sendToExternal: true)
+            return nil
+        }
+
+        guard let data = try? JSONSerialization.data(withJSONObject: accountRecovery as Any) else {
+            PMLog.error("Account Recovery state is not encodable", sendToExternal: true)
+            return nil
+        }
+        let decodedResults = try? JSONDecoder.decapitalisingFirstLetter.decode(AccountRecovery.self, from: data)
+        return decodedResults
     }
 
     public func parse(userSettings: [String: Any]?) {

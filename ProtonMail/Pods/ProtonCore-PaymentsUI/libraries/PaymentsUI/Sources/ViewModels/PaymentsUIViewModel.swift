@@ -97,7 +97,8 @@ class PaymentsUIViewModel {
             {
                 guard isSplitStorageEnabled,
                       let shouldDisplayStorageFullAlert = currentPlan?.details.shouldDisplayStorageFullAlert,
-                      shouldDisplayStorageFullAlert else { return [] }
+                      shouldDisplayStorageFullAlert,
+                      currentPlan != nil else { return [] }
                 return  [.alert(AlertBoxViewModel())]
             }(),
             {
@@ -565,7 +566,7 @@ class PaymentsUIViewModel {
                 guard paymentSucceeded == .resolvingIAPToCredits ||
                         paymentSucceeded == .resolvingIAPToSubscription else { return }
                 // refresh plans
-                if isDynamicPlansEnabled {
+                if self.isDynamicPlansEnabled {
                     Task { [weak self] in
                         do {
                             try await self?.fetchPlans()
@@ -579,7 +580,7 @@ class PaymentsUIViewModel {
                     self.planRefreshHandler(self.getCurrentPlan)
                 }
             case .errored, .erroredWithUnspecifiedError:
-                if isDynamicPlansEnabled {
+                if self.isDynamicPlansEnabled {
                     self.planRefreshHandler(nil)
                 } else {
                     // update credits

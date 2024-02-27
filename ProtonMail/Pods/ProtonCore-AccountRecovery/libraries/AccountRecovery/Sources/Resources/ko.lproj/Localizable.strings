@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "비밀번호 재설정";
+
+"Account_Recovery_Insecure_View_Title" = "비밀번호를 재설정하세요";
+
+"Account_Recovery_Grace_View_Title" = "비밀번호를 재설정하시겠습니까?";
+
+"Account_Recovery_Grace_View_line1" = "다음으로 부터 비밀번호 재설정 요청을 수신받았습니다:";
+
+"Account_Recovery_Insecure_View_line1" = "해당 계정의 비밀번호를 이제 변경할 수 있습니다:";
+
+"Account_Recovery_Insecure_View_line2" = " 사이에 ";
+
+"Account_Recovery_Insecure_View_line3" = "비밀번호 재설정의 요청이 시작된 로그인 장치로 이동하십시오.";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "요청 취소";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "수 시간";
+
+"Account_Recovery_Grace_View_line2" = ". To keep your account safe, we want to make sure it’s really you trying to reset your password. You’ll be able to reset your password in ";
+
+"Account_Recovery_Grace_View_line3" = "만일 이 요청을 하지 않았거나 로그인 지원이 더 이상 필요하지 않으시다면, 계정 보호 위해를 위해 취소 및 일부 절차를 진행해 주세요.";

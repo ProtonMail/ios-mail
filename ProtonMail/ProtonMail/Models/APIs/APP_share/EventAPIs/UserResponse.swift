@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCoreDataModel
 
 struct UserResponse: Decodable {
     let id: String
@@ -29,6 +30,7 @@ struct UserResponse: Decodable {
     let role: Int
     let delinquent: Int
     let createTime: Int
+    let accountRecovery: ProtonCoreDataModel.AccountRecovery?
 
     enum CodingKeys: String, CodingKey {
         case id = "ID"
@@ -42,6 +44,7 @@ struct UserResponse: Decodable {
         case role = "Role"
         case delinquent = "Delinquent"
         case createTime = "CreateTime"
+        case accountRecovery = "AccountRecovery"
     }
 
     struct Key: Decodable {
