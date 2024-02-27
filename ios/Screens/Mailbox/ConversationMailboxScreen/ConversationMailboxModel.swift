@@ -15,21 +15,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Foundation
 
-struct MailboxView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Mailbox")
+typealias ConversationId = String
+
+struct Conversation: Identifiable {
+    let id: String
+    let avatarImage: URL
+    let senders: String
+    let subject: String
+    let date: Date
+}
+
+@Observable
+final class ConversationMailboxModel {
+    private(set) var conversations: [Conversation]
+    private(set) var selectedConversations: Set<ConversationId> = .init()
+
+    init(conversations: [Conversation]) {
+        self.conversations = conversations
+    }
+
+    @MainActor
+    func onConversationSelectionChange(id: String, isSelected: Bool) {
+        if isSelected {
+            selectedConversations.insert(id)
+        } else {
+            selectedConversations.remove(id)
         }
-        .padding()
     }
 }
-
-#Preview {
-    MailboxView()
-}
-

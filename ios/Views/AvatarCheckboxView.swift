@@ -16,13 +16,29 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import DesignSystem
 
-@main
-struct ProtonMail: App {
-    var body: some Scene {
-        WindowGroup {
-            ConversationMailboxScreen(model: PreviewData.conversationMailboxModel)
-        }
+struct AvatarCheckboxView: View {
+    let isSelected: Bool
+    var onDidChangeSelection: ((_ newValue: Bool) -> Void)
+
+    var body: some View {
+        Checkbox(isOn: isSelected, onDidChangeSelection: onDidChangeSelection)
+    }
+}
+
+private struct Checkbox: View {
+    let isOn: Bool
+    var onDidChangeSelection: ((_ newValue: Bool) -> Void)
+
+    var body: some View {
+
+        Button(action: {
+            onDidChangeSelection(!isOn)
+        }, label: {
+            Image(systemName: isOn ? "checkmark.square" : "square")
+                .resizable()
+                .scaledToFit()
+        })
+        .buttonStyle(.borderless) // hack to avoid a tap anywhere on the cell to trigger the button action
     }
 }

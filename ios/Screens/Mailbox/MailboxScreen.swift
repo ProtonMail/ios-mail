@@ -16,13 +16,20 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import DesignSystem
 
-@main
-struct ProtonMail: App {
-    var body: some Scene {
-        WindowGroup {
-            ConversationMailboxScreen(model: PreviewData.conversationMailboxModel)
+struct MailboxScreen: View {
+    var body: some View {
+        VStack {
+            Image(systemName: "globe")
+                .imageScale(.large)
+                .foregroundStyle(.tint)
+            Text("Mailbox")
         }
+        .padding()
     }
 }
+
+#Preview {
+    MailboxScreen()
+}
+
