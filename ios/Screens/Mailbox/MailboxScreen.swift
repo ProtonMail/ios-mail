@@ -18,18 +18,26 @@
 import SwiftUI
 
 struct MailboxScreen: View {
+    @EnvironmentObject var userSettings: UserSettings
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Mailbox")
+        NavigationStack {
+            ZStack {
+                if userSettings.mailboxViewMode == .conversation {
+                    ConversationMailboxScreen(model: PreviewData.conversationMailboxModel)
+                } else {
+                    Text("message list mailbox")
+                }
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Inbox")
         }
-        .padding()
     }
 }
 
 #Preview {
-    MailboxScreen()
+    let userSettings = UserSettings(mailboxViewMode: .conversation)
+    return MailboxScreen()
+        .environmentObject(userSettings)
 }
 

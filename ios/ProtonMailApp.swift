@@ -18,11 +18,25 @@
 import SwiftUI
 import DesignSystem
 
+enum MailboxViewMode {
+    case message
+    case conversation
+}
+
+final class UserSettings: ObservableObject {
+    var mailboxViewMode: MailboxViewMode
+
+    init(mailboxViewMode: MailboxViewMode) {
+        self.mailboxViewMode = mailboxViewMode
+    }
+}
+
 @main
 struct ProtonMail: App {
     var body: some Scene {
         WindowGroup {
-            ConversationMailboxScreen(model: PreviewData.conversationMailboxModel)
+            MailboxScreen()
+                .environmentObject(UserSettings(mailboxViewMode: .conversation))
         }
     }
 }

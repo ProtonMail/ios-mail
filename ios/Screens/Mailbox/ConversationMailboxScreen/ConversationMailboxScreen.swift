@@ -18,7 +18,7 @@
 import SwiftUI
 
 struct ConversationMailboxScreen: View {
-    @State var model: ConversationMailboxModel
+    @State var model: ConversationMailboxModel = PreviewData.conversationMailboxModel
 
     var body: some View {
         List {
