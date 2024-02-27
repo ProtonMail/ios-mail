@@ -116,6 +116,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>Acknowledgements/ProtonCore-AccountRecovery</string>
+			<key>Title</key>
+			<string>ProtonCore-AccountRecovery</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>Acknowledgements/ProtonCore-AccountSwitcher</string>
 			<key>Title</key>
 			<string>ProtonCore-AccountSwitcher</string>
@@ -292,6 +300,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>Acknowledgements/ProtonCore-MissingScopes</string>
+			<key>Title</key>
+			<string>ProtonCore-MissingScopes</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>Acknowledgements/ProtonCore-Networking</string>
 			<key>Title</key>
 			<string>ProtonCore-Networking</string>
@@ -303,6 +319,14 @@
 			<string>Acknowledgements/ProtonCore-Observability</string>
 			<key>Title</key>
 			<string>ProtonCore-Observability</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Acknowledgements/ProtonCore-PasswordRequest</string>
+			<key>Title</key>
+			<string>ProtonCore-PasswordRequest</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "Resetare parolă";
+
+"Account_Recovery_Insecure_View_Title" = "Resetați-vă parola";
+
+"Account_Recovery_Grace_View_Title" = "Doriți să vă resetați parola?";
+
+"Account_Recovery_Grace_View_line1" = "Am primit o cerere de resetare a parolei pentru ";
+
+"Account_Recovery_Insecure_View_line1" = "Acum vă puteți reseta parola pentru contul ";
+
+"Account_Recovery_Insecure_View_line2" = " timp de ";
+
+"Account_Recovery_Insecure_View_line3" = "Accesați dispozitivul conectat (în sesiunea de unde a fost inițiată solicitarea) pentru a vă schimba parola.";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "Anulare solicitare";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "câteva ore";
+
+"Account_Recovery_Grace_View_line2" = ". To keep your account safe, we want to make sure it’s really you trying to reset your password. You’ll be able to reset your password in ";
+
+"Account_Recovery_Grace_View_line3" = "Dacă nu ați făcut această solicitare sau dacă nu mai aveți nevoie de ajutor pentru autentificare, anulați-o și luați măsuri pentru a vă securiza contul.";

@@ -1,0 +1,66 @@
+{
+  "name": "ProtonCore-MissingScopes",
+  "module_name": "ProtonCoreMissingScopes",
+  "version": "19.0.0",
+  "summary": "The MissingScopes pod contains the logic to handle missing scopes in network request",
+  "description": "The MissingScopes pod contains the logic to handle missing scopes such as `password`, `LOCKED`\nor others.",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me",
+    "magohamote": "cedric.rolland@proton.ch",
+    "siejkowski": "krzysztof.siejkowski@proton.ch",
+    "vjalencas": "victor.jalencas@proton.ch"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "19.0.0"
+  },
+  "platforms": {
+    "ios": "14.0",
+    "osx": "11.0"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "YES"
+  },
+  "dependencies": {
+    "ProtonCore-APIClient": [
+      "19.0.0"
+    ],
+    "ProtonCore-Authentication": [
+      "19.0.0"
+    ],
+    "ProtonCore-Services": [
+      "19.0.0"
+    ],
+    "ProtonCore-UIFoundations": [
+      "19.0.0"
+    ],
+    "ProtonCore-PasswordRequest": [
+      "19.0.0"
+    ]
+  },
+  "source_files": "libraries/MissingScopes/Sources/**/*.swift",
+  "default_subspecs": [
+
+  ],
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-TestingToolkit/UnitTests/Networking": [
+          "19.0.0"
+        ]
+      },
+      "source_files": "libraries/MissingScopes/Tests/**/*.swift"
+    }
+  ],
+  "swift_version": "5.6"
+}

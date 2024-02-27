@@ -18,6 +18,7 @@
 
 import Foundation
 import ProtonCoreDataModel
+import ProtonCoreFeatureFlags
 
 extension UserManager {
     var isNewEventLoopEnabled: Bool {
@@ -37,6 +38,14 @@ extension UserManager {
             MailFeatureFlag.nextMessageAfterMove,
             for: userID.rawValue,
             reloadValue: true
+        )
+    }
+
+    var isAccountRecoveryEnabled: Bool {
+        return container.featureFlagsRepository.isEnabled(
+            CoreFeatureFlagType.accountRecovery,
+            for: userID.rawValue,
+            reloadValue: false
         )
     }
 }

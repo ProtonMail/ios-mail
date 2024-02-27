@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "Reset hesla";
+
+"Account_Recovery_Insecure_View_Title" = "Resetování hesla";
+
+"Account_Recovery_Grace_View_Title" = "Chcete resetovat své heslo?";
+
+"Account_Recovery_Grace_View_line1" = "Obdrželi jsme žádost o reset vašeho hesla pro ";
+
+"Account_Recovery_Insecure_View_line1" = "Nyní můžete změnit své heslo k účtu ";
+
+"Account_Recovery_Insecure_View_line2" = " během ";
+
+"Account_Recovery_Insecure_View_line3" = "Přejděte do přihlášeného zařízení (v relaci, ve které byl požadavek iniciován) a změňte heslo.";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "Zrušit žádost";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "několika hodin";
+
+"Account_Recovery_Grace_View_line2" = ". Aby byl váš účet v bezpečí, chceme se ujistit, že se o resetování hesla pokoušíte skutečně vy. Heslo si budete moci resetovat v ";
+
+"Account_Recovery_Grace_View_line3" = "Pokud jste tuto žádost nepodali nebo pokud již pomoc s přihlášením nepotřebujete, zrušte ji a podnikněte kroky k zabezpečení svého účtu.";

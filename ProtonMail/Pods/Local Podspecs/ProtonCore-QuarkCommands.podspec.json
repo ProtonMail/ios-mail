@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-QuarkCommands",
   "module_name": "ProtonCoreQuarkCommands",
-  "version": "18.0.0",
+  "version": "19.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "18.0.0"
+    "tag": "19.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -31,19 +31,19 @@
   },
   "dependencies": {
     "ProtonCore-Doh": [
-      "18.0.0"
+      "19.0.0"
     ],
     "ProtonCore-Environment": [
-      "18.0.0"
+      "19.0.0"
     ],
     "ProtonCore-Log": [
-      "18.0.0"
+      "19.0.0"
     ],
     "ProtonCore-Networking": [
-      "18.0.0"
+      "19.0.0"
     ],
     "ProtonCore-Services": [
-      "18.0.0"
+      "19.0.0"
     ]
   },
   "default_subspecs": [
@@ -59,7 +59,7 @@
 
         ],
         "ProtonCore-TestingToolkit/UnitTests/Doh": [
-          "18.0.0"
+          "19.0.0"
         ]
       },
       "source_files": "libraries/QuarkCommands/Tests/**/*.swift",

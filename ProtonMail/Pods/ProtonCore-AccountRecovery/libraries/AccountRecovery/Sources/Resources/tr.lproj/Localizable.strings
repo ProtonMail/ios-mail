@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "Parola sıfırlama";
+
+"Account_Recovery_Insecure_View_Title" = "Parolanızı sıfırlayın";
+
+"Account_Recovery_Grace_View_Title" = "Parolanızı sıfırlamak istiyor musunuz?";
+
+"Account_Recovery_Grace_View_line1" = "Şu hesap için bir parola sıfırlama isteği aldık: ";
+
+"Account_Recovery_Insecure_View_line1" = "Şu hesabınızın parolasını şimdi değiştirebilirsiniz: ";
+
+"Account_Recovery_Insecure_View_line2" = " Şu süreyle geçerlidir: ";
+
+"Account_Recovery_Insecure_View_line3" = "Parolanızı değiştirmek için oturumunuzun açık olduğu (isteğin yapıldığı oturum) aygıta geçin.";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "İsteği iptal et";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "birkaç saat";
+
+"Account_Recovery_Grace_View_line2" = ". To keep your account safe, we want to make sure it’s really you trying to reset your password. You’ll be able to reset your password in ";
+
+"Account_Recovery_Grace_View_line3" = "Bu isteği siz yapmadıysanız ya da artık oturum açmanıza gerek yoksa lütfen parola değiştirme işlemini iptal edin ve hesabınızın güvenliğini sağlayacak adımları uygulayın.";

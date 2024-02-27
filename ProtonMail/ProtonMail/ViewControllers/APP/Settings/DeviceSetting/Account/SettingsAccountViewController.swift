@@ -23,6 +23,7 @@
 import LifetimeTracker
 import MBProgressHUD
 import ProtonCoreAccountDeletion
+import ProtonCoreAccountRecovery
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
 import UIKit
@@ -261,6 +262,8 @@ extension SettingsAccountViewController {
                 cellToUpdate.configure(right: viewModel.recoveryEmail)
             case .storage:
                 cellToUpdate.configureCell(left: nil, right: viewModel.storageText, imageType: .none)
+            case .accountRecovery:
+                cellToUpdate.configureCell(left: nil, right: viewModel.accountRecoveryText, imageType: .none)
             }
         }
     }
@@ -345,6 +348,8 @@ extension SettingsAccountViewController {
             self.coordinator.go(to: .recoveryEmail)
         case .privacyAndData:
             coordinator.go(to: .privacyAndData)
+        case .accountRecovery:
+            self.coordinator.go(to: .accountRecovery)
         case .storage:
             break
         }

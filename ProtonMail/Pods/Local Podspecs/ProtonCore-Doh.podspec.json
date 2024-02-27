@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-Doh",
   "module_name": "ProtonCoreDoh",
-  "version": "18.0.0",
+  "version": "19.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "18.0.0"
+    "tag": "19.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -31,13 +31,13 @@
   },
   "dependencies": {
     "ProtonCore-Log": [
-      "18.0.0"
+      "19.0.0"
     ],
     "ProtonCore-Utilities": [
-      "18.0.0"
+      "19.0.0"
     ],
     "ProtonCore-FeatureSwitch": [
-      "18.0.0"
+      "19.0.0"
     ]
   },
   "default_subspecs": [
@@ -50,10 +50,10 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Doh": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "18.0.0"
+          "19.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -69,22 +69,22 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-Environment": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-Authentication": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-Observability": [
-          "18.0.0"
+          "19.0.0"
         ],
         "ProtonCore-Services": [
-          "18.0.0"
+          "19.0.0"
         ]
       },
       "source_files": "libraries/Doh/Tests/Integration/*.swift",
