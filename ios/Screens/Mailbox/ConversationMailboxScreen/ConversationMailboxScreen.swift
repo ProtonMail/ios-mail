@@ -18,7 +18,7 @@
 import SwiftUI
 
 struct ConversationMailboxScreen: View {
-    let model: ConversationMailboxModel
+    @State var model: ConversationMailboxModel
 
     var body: some View {
         List {
@@ -27,7 +27,7 @@ struct ConversationMailboxScreen: View {
                     senders: conversation.senders,
                     subject: conversation.subject,
                     date: conversation.date,
-                    isSelected: model.selectedConversations.contains(conversation.id),
+                    isSelected: conversation.isSelected,
                     onEvent: { [weak model] event in
                         switch event {
                         case .onSelectedChange(let isSelected):
@@ -54,7 +54,6 @@ struct ConversationCell: View {
     let onEvent: (ConversationCellEvent) -> Void
 
     var body: some View {
-
         HStack {
             AvatarCheckboxView(
                 isSelected: isSelected,

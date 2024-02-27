@@ -19,18 +19,27 @@ import Foundation
 
 typealias ConversationId = String
 
-struct Conversation: Identifiable {
+@Observable
+final class Conversation: Identifiable {
     let id: String
     let avatarImage: URL
     let senders: String
     let subject: String
     let date: Date
+    var isSelected: Bool = false
+
+    init(id: String, avatarImage: URL, senders: String, subject: String, date: Date) {
+        self.id = id
+        self.avatarImage = avatarImage
+        self.senders = senders
+        self.subject = subject
+        self.date = date
+    }
 }
 
 @Observable
 final class ConversationMailboxModel {
     private(set) var conversations: [Conversation]
-    private(set) var selectedConversations: Set<ConversationId> = .init()
 
     init(conversations: [Conversation]) {
         self.conversations = conversations
@@ -38,10 +47,9 @@ final class ConversationMailboxModel {
 
     @MainActor
     func onConversationSelectionChange(id: String, isSelected: Bool) {
-        if isSelected {
-            selectedConversations.insert(id)
-        } else {
-            selectedConversations.remove(id)
+        guard let index = conversations.firstIndex(where: { $0.id == id }) else {
+            return
         }
+        conversations[index].isSelected = isSelected
     }
 }
