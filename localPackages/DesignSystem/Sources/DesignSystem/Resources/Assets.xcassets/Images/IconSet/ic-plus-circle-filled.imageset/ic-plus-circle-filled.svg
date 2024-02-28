@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g class="ic-plus-circle-filled">
+    <path fill-rule="evenodd" d="M12 22.5c5.799 0 10.5-4.701 10.5-10.5S17.799 1.5 12 1.5 1.5 6.201 1.5 12 6.201 22.5 12 22.5Zm.75-15.803a.75.75 0 0 0-1.5 0v4.553H6.696a.75.75 0 0 0 0 1.5h4.554v4.554a.75.75 0 0 0 1.5 0V12.75h4.553a.75.75 0 0 0 0-1.5H12.75V6.697Z" class="Icon"/>
+  </g>
+</svg>

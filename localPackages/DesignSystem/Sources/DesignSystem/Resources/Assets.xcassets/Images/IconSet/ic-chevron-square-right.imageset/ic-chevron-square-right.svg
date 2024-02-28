@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g class="ic-chevron-square-right">
+    <g class="Icon">
+      <path fill-rule="evenodd" d="M16.5 21V3h-12A1.5 1.5 0 0 0 3 4.5v15A1.5 1.5 0 0 0 4.5 21h12Zm-12 1.5a3 3 0 0 1-3-3v-15a3 3 0 0 1 3-3h15a3 3 0 0 1 3 3v15a3 3 0 0 1-3 3h-15ZM18 3h1.5A1.5 1.5 0 0 1 21 4.5v15a1.5 1.5 0 0 1-1.5 1.5H18V3Z"/>
+      <path fill-rule="evenodd" d="M6.97 6.97a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 0 1-1.06-1.06L10.94 12 6.97 8.03a.75.75 0 0 1 0-1.06Z"/>
+    </g>
+  </g>
+</svg>

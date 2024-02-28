@@ -26,14 +26,18 @@ final class Conversation: Identifiable {
     let senders: String
     let subject: String
     let date: Date
+    let isRead: Bool
+    let isStarred: Bool
     var isSelected: Bool = false
 
-    init(id: String, avatarImage: URL, senders: String, subject: String, date: Date) {
+    init(id: String, avatarImage: URL, senders: String, subject: String, date: Date, isRead: Bool, isStarred: Bool) {
         self.id = id
         self.avatarImage = avatarImage
         self.senders = senders
         self.subject = subject
         self.date = date
+        self.isRead = isRead
+        self.isStarred = isStarred
     }
 }
 
@@ -51,5 +55,12 @@ final class ConversationMailboxModel {
             return
         }
         conversations[index].isSelected = isSelected
+    }
+
+    @MainActor
+    func onConversationStarChange(id: String, isStarred: Bool) {
+//        Task {
+//             RustSDK.star(conversationId: id, isStarred: isStarred)
+//        }
     }
 }

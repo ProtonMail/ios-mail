@@ -15,30 +15,51 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import SwiftUI
 
 struct AvatarCheckboxView: View {
     let isSelected: Bool
     var onDidChangeSelection: ((_ newValue: Bool) -> Void)
 
+    private let cornerRadius = 6.0
+
     var body: some View {
-        Checkbox(isOn: isSelected, onDidChangeSelection: onDidChangeSelection)
+        ZStack {
+            if isSelected {
+                ZStack {
+                    RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                        .stroke(MailColor.strokeDark, lineWidth: 1)
+                        .fill(MailColor.backgroundNorm)
+                        .overlay {
+                            Image(uiImage: MailIcon.icCheckmark)
+                                .resizable()
+                                .foregroundColor(MailColor.checkbox)
+                                .padding(10)
+
+                        }
+                }
+            } else {
+                Image("avatar-fedex")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+            }
+        }
+        .onTapGesture {
+            onDidChangeSelection(!isSelected)
+        }
     }
 }
 
-private struct Checkbox: View {
-    let isOn: Bool
-    var onDidChangeSelection: ((_ newValue: Bool) -> Void)
+#Preview {
+    VStack {
+        AvatarCheckboxView(isSelected: true) { _ in}
+            .frame(width: 40, height: 40)
+            .clipped()
 
-    var body: some View {
-
-        Button(action: {
-            onDidChangeSelection(!isOn)
-        }, label: {
-            Image(systemName: isOn ? "checkmark.square" : "square")
-                .resizable()
-                .scaledToFit()
-        })
-        .buttonStyle(.borderless) // hack to avoid a tap anywhere on the cell to trigger the button action
+        AvatarCheckboxView(isSelected: false) { _ in}
+            .frame(width: 40, height: 40)
+            .clipped()
     }
 }

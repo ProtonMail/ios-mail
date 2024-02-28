@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g class="ic-checkmark-circle">
+    <g class="Icon">
+      <path fill-rule="evenodd" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 1.5c5.799 0 10.5-4.701 10.5-10.5S17.799 1.5 12 1.5 1.5 6.201 1.5 12 6.201 22.5 12 22.5Z"/>
+      <path fill-rule="evenodd" d="M17.78 9.22a.75.75 0 0 1 0 1.06l-5.788 5.788a1.05 1.05 0 0 1-1.485 0L6.97 12.53a.75.75 0 1 1 1.06-1.06l3.22 3.22 5.47-5.47a.75.75 0 0 1 1.06 0Z"/>
+    </g>
+  </g>
+</svg>
