@@ -680,7 +680,6 @@ private extension ConversationViewController {
         if self.storedSizeHelper
             .updateStoredSizeIfNeeded(newHeightInfo: newHeightInfo, messageID: messageId) {
             cell.setNeedsLayout()
-            cell.layoutIfNeeded()
             DispatchQueue.main.async {
                 UIView.setAnimationsEnabled(false)
                 self.customView.tableView.beginUpdates()

@@ -273,12 +273,14 @@ private struct SubviewFactory {
     static var titleLabel: UILabel {
         let view = UILabel()
         view.numberOfLines = 0
+        view.setContentCompressionResistancePriority(.required, for: .vertical)
         return view
     }
 
     static var timeLabel: UILabel {
         let view = UILabel()
         view.adjustsFontSizeToFitWidth = true
+        view.setContentCompressionResistancePriority(.required, for: .vertical)
         return view
     }
 
@@ -289,6 +291,7 @@ private struct SubviewFactory {
     static var statusLabel: UILabel {
         let view = UILabel()
         view.numberOfLines = 0
+        view.setContentCompressionResistancePriority(.required, for: .vertical)
         return view
     }
 
@@ -387,6 +390,7 @@ private struct SubviewFactory {
     static func participantListButton(titleColor: UIColor, primaryAction: UIAction) -> UIButton {
         let view = UIButton(primaryAction: primaryAction)
         view.contentHorizontalAlignment = .leading
+        view.setContentCompressionResistancePriority(.required, for: .vertical)
         view.setTitleColor(titleColor, for: .normal)
 
         if let titleLabel = view.titleLabel {
