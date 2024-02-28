@@ -42,6 +42,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         & HasMailboxMessageCellHelper
         & HasFeatureFlagsRepository
         & HasUserManager
+        & HasUserDefaults
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -2100,9 +2101,28 @@ extension MailboxViewController {
             alertButton.setTitle(L11n.AlertBox.alertBoxButtonTitle, for: .normal)
             alertButton.layer.cornerRadius = 8
             alertButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+            alertButton.addTarget(
+                self,
+                action: #selector(getMoreStorageTapped),
+                for: .touchUpInside
+            )
+            alertDismissButton.addTarget(
+                self,
+                action: #selector(dismissStorageAlertTapped),
+                for: .touchUpInside
+            )
         } else {
             alertContainerView.isHidden = true
         }
+    }
+
+    @objc private func getMoreStorageTapped() {
+        self.coordinator?.go(to: .subscriptions, sender: nil)
+    }
+
+    @objc private func dismissStorageAlertTapped() {
+        viewModel.onStorageAlertDismissed()
+        alertContainerView.isHidden = true
     }
 
     private func showErrorMessage(_ error: NSError) {

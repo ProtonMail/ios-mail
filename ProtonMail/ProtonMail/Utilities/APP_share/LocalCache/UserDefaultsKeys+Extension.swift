@@ -45,4 +45,7 @@ extension UserDefaultsKeys {
 
     /// Dictionary of events with last sent timestamp per user. e.g. ["user-id-1": ["mail.ios.auto_import_contacts-heartbeat": 1707922894]]
     static let telemetryFrequency = plainKey(named: "telemetry_frequency_flag", defaultValue: [String: [String: Int]]())
+
+    /// Dictionary of booleans with users who've dismissed the storage banner. e.g. ["user-id-1": true]
+    static let usersWhoHaveSeenStorageBanner = plainKey(named: "usersWhoHaveSeenStorageBanner", defaultValue: [String: Bool]())
 }

@@ -61,8 +61,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasQueueManager
 
     let labelID: LabelID
-    let shouldShowFullStorageAlert: Bool
-    let storagePercentage: Int
+    var shouldShowFullStorageAlert: Bool = false
+    var storagePercentage: Int = 0
     /// This field saves the label object of custom folder/label
     private(set) var label: LabelInfo?
     /// This field stores the latest update time of the user event.
@@ -184,20 +184,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         self.toolbarActionProvider = toolbarActionProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
 
-        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.splitStorage, reloadValue: true),
-           !userManager.userInfo.isOnAStoragePaidPlan,
-           let usedBaseSpace = userManager.userInfo.usedBaseSpace,
-           let maxBaseSpace = userManager.userInfo.maxBaseSpace,
-           maxBaseSpace > 0 {
-            let factor = CGFloat(usedBaseSpace) / CGFloat(maxBaseSpace)
-            let percentage = CGFloat.maximum(factor, 0.01)
-            shouldShowFullStorageAlert = percentage > 0.8
-            storagePercentage = Int(ceil(percentage * 100))
-        } else {
-            shouldShowFullStorageAlert = false
-            storagePercentage = 0
-        }
         super.init()
+        self.setupStorageAlert()
         self.conversationStateProvider.add(delegate: self)
         dependencies.updateMailbox.setup(source: self)
     }
@@ -304,6 +292,32 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
     var allEmails: [EmailEntity] {
         return contactProvider.getAllEmails()
+    }
+
+    func setupStorageAlert() {
+        let usersWhoHaveSeenStorageBanner = dependencies.userDefaults[.usersWhoHaveSeenStorageBanner]
+        let userDismissedBanner = usersWhoHaveSeenStorageBanner[user.userID.rawValue] ?? false
+        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.splitStorage, reloadValue: true),
+           !userDismissedBanner,
+           !user.userInfo.isOnAStoragePaidPlan,
+           let usedBaseSpace = user.userInfo.usedBaseSpace,
+           let maxBaseSpace = user.userInfo.maxBaseSpace,
+           maxBaseSpace > 0 {
+            let factor = CGFloat(usedBaseSpace) / CGFloat(maxBaseSpace)
+            let percentage = CGFloat.maximum(factor, 0.01)
+            shouldShowFullStorageAlert = percentage > 0.8
+            storagePercentage = Int(ceil(percentage * 100))
+        } else {
+            shouldShowFullStorageAlert = false
+            storagePercentage = 0
+        }
+    }
+
+    func onStorageAlertDismissed() {
+        shouldShowFullStorageAlert = false
+        var usersWhoHaveSeenStorageBanner = dependencies.userDefaults[.usersWhoHaveSeenStorageBanner]
+        usersWhoHaveSeenStorageBanner[user.userID.rawValue] = true
+        dependencies.userDefaults[.usersWhoHaveSeenStorageBanner] = usersWhoHaveSeenStorageBanner
     }
 
     func setupDiffableDataSource(

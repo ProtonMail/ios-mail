@@ -88,6 +88,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         case newLabel = "toNewLabel"
         case referAFriend = "referAFriend"
         case settingsContacts = "toSettingsContacts"
+        case subscriptions = "subscriptions"
 
         init?(rawValue: String) {
             switch rawValue {
@@ -115,6 +116,8 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
                 self = .referAFriend
             case "toSettingsContacts":
                 self = .settingsContacts
+            case "subscriptions":
+                self = .subscriptions
             default:
                 return nil
             }
@@ -165,6 +168,8 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
             presentReferAFriend()
         case .settingsContacts:
             navigateToSettings(destination: .contactsSettings)
+        case .subscriptions:
+            goToSubscriptions()
         }
     }
 
@@ -354,6 +359,11 @@ extension MailboxCoordinator {
                 return nil
             }
         })
+    }
+
+    private func goToSubscriptions() {
+        let link = DeepLink(.toSubscriptionPage)
+        NotificationCenter.default.post(name: .switchView, object: link)
     }
 }
 
