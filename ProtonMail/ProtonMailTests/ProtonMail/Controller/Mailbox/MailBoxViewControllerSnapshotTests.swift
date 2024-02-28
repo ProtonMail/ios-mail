@@ -136,24 +136,7 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
             userManagerMock.userInfo.maxBaseSpace = 100
             userManagerMock.userInfo.subscribed = .init(rawValue: 0)
 
-            viewModel = MailboxViewModel(
-                labelID: "labelID",
-                label: nil,
-                userManager: userManagerMock,
-                pushService: MockPushNotificationService(),
-                coreDataContextProvider: testContainer.contextProvider,
-                lastUpdatedStore: MockLastUpdatedStoreProtocol(),
-                conversationStateProvider: conversationStateProviderMock,
-                contactGroupProvider: contactGroupProviderMock,
-                labelProvider: labelProviderMock,
-                contactProvider: contactProviderMock,
-                conversationProvider: conversationProviderMock,
-                eventsService: eventsServiceMock,
-                dependencies: userContainer,
-                toolbarActionProvider: toolbarActionProviderMock,
-                saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
-                totalUserCountClosure: { 0 }
-            )
+            viewModel = makeViewModel()
 
             sut = .init(viewModel: viewModel, dependencies: userContainer)
             sut.set(coordinator: fakeCoordinator)
@@ -167,24 +150,7 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
             userManagerMock.userInfo.maxBaseSpace = 100
             userManagerMock.userInfo.subscribed = .init(rawValue: 0)
 
-            viewModel = MailboxViewModel(
-                labelID: "labelID",
-                label: nil,
-                userManager: userManagerMock,
-                pushService: MockPushNotificationService(),
-                coreDataContextProvider: testContainer.contextProvider,
-                lastUpdatedStore: MockLastUpdatedStoreProtocol(),
-                conversationStateProvider: conversationStateProviderMock,
-                contactGroupProvider: contactGroupProviderMock,
-                labelProvider: labelProviderMock,
-                contactProvider: contactProviderMock,
-                conversationProvider: conversationProviderMock,
-                eventsService: eventsServiceMock,
-                dependencies: userContainer,
-                toolbarActionProvider: toolbarActionProviderMock,
-                saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
-                totalUserCountClosure: { 0 }
-            )
+            viewModel = makeViewModel()
 
             sut = .init(viewModel: viewModel, dependencies: userContainer)
             sut.set(coordinator: fakeCoordinator)
@@ -198,24 +164,7 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
             userManagerMock.userInfo.maxBaseSpace = 10000
             userManagerMock.userInfo.subscribed = .init(rawValue: 0)
 
-            viewModel = MailboxViewModel(
-                labelID: "labelID",
-                label: nil,
-                userManager: userManagerMock,
-                pushService: MockPushNotificationService(),
-                coreDataContextProvider: testContainer.contextProvider,
-                lastUpdatedStore: MockLastUpdatedStoreProtocol(),
-                conversationStateProvider: conversationStateProviderMock,
-                contactGroupProvider: contactGroupProviderMock,
-                labelProvider: labelProviderMock,
-                contactProvider: contactProviderMock,
-                conversationProvider: conversationProviderMock,
-                eventsService: eventsServiceMock,
-                dependencies: userContainer,
-                toolbarActionProvider: toolbarActionProviderMock,
-                saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
-                totalUserCountClosure: { 0 }
-            )
+            viewModel = makeViewModel()
 
             sut = .init(viewModel: viewModel, dependencies: userContainer)
             sut.set(coordinator: fakeCoordinator)
@@ -229,24 +178,7 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
             userManagerMock.userInfo.maxBaseSpace = 1
             userManagerMock.userInfo.subscribed = .init(rawValue: 0)
 
-            viewModel = MailboxViewModel(
-                labelID: "labelID",
-                label: nil,
-                userManager: userManagerMock,
-                pushService: MockPushNotificationService(),
-                coreDataContextProvider: testContainer.contextProvider,
-                lastUpdatedStore: MockLastUpdatedStoreProtocol(),
-                conversationStateProvider: conversationStateProviderMock,
-                contactGroupProvider: contactGroupProviderMock,
-                labelProvider: labelProviderMock,
-                contactProvider: contactProviderMock,
-                conversationProvider: conversationProviderMock,
-                eventsService: eventsServiceMock,
-                dependencies: userContainer,
-                toolbarActionProvider: toolbarActionProviderMock,
-                saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
-                totalUserCountClosure: { 0 }
-            )
+            viewModel = makeViewModel()
 
             sut = .init(viewModel: viewModel, dependencies: userContainer)
             sut.set(coordinator: fakeCoordinator)
@@ -259,24 +191,7 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
             userManagerMock.userInfo.usedBaseSpace = 1
             userManagerMock.userInfo.maxBaseSpace = 1
 
-            viewModel = MailboxViewModel(
-                labelID: "labelID",
-                label: nil,
-                userManager: userManagerMock,
-                pushService: MockPushNotificationService(),
-                coreDataContextProvider: testContainer.contextProvider,
-                lastUpdatedStore: MockLastUpdatedStoreProtocol(),
-                conversationStateProvider: conversationStateProviderMock,
-                contactGroupProvider: contactGroupProviderMock,
-                labelProvider: labelProviderMock,
-                contactProvider: contactProviderMock,
-                conversationProvider: conversationProviderMock,
-                eventsService: eventsServiceMock,
-                dependencies: userContainer,
-                toolbarActionProvider: toolbarActionProviderMock,
-                saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
-                totalUserCountClosure: { 0 }
-            )
+            viewModel = makeViewModel()
 
             sut = .init(viewModel: viewModel, dependencies: userContainer)
             sut.set(coordinator: fakeCoordinator)
@@ -290,24 +205,7 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
             userManagerMock.userInfo.maxBaseSpace = 1
             userManagerMock.userInfo.subscribed = .mail
 
-            viewModel = MailboxViewModel(
-                labelID: "labelID",
-                label: nil,
-                userManager: userManagerMock,
-                pushService: MockPushNotificationService(),
-                coreDataContextProvider: testContainer.contextProvider,
-                lastUpdatedStore: MockLastUpdatedStoreProtocol(),
-                conversationStateProvider: conversationStateProviderMock,
-                contactGroupProvider: contactGroupProviderMock,
-                labelProvider: labelProviderMock,
-                contactProvider: contactProviderMock,
-                conversationProvider: conversationProviderMock,
-                eventsService: eventsServiceMock,
-                dependencies: userContainer,
-                toolbarActionProvider: toolbarActionProviderMock,
-                saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
-                totalUserCountClosure: { 0 }
-            )
+            viewModel = makeViewModel()
 
             sut = .init(viewModel: viewModel, dependencies: userContainer)
             sut.set(coordinator: fakeCoordinator)
@@ -315,6 +213,43 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
         }
     }
 
+    func testStorageProgressView_whenBannerDismissed_noErrorForFreeUser() {
+        withFeatureFlags([.splitStorage]) {
+            var usersWhoHaveSeenStorageBanner = testContainer.userDefaults[.usersWhoHaveSeenStorageBanner]
+            usersWhoHaveSeenStorageBanner[userID.rawValue] = true
+            testContainer.userDefaults[.usersWhoHaveSeenStorageBanner] = usersWhoHaveSeenStorageBanner
+            userManagerMock.userInfo.usedBaseSpace = 1
+            userManagerMock.userInfo.maxBaseSpace = 1
+            userManagerMock.userInfo.subscribed = .init(rawValue: 0)
+
+            viewModel = makeViewModel()
+
+            sut = .init(viewModel: viewModel, dependencies: userContainer)
+            sut.set(coordinator: fakeCoordinator)
+            snapshot(viewController: sut)
+        }
+    }
+
+    private func makeViewModel() -> MailboxViewModel {
+        return .init(
+            labelID: "labelID",
+            label: nil,
+            userManager: userManagerMock,
+            pushService: MockPushNotificationService(),
+            coreDataContextProvider: testContainer.contextProvider,
+            lastUpdatedStore: MockLastUpdatedStoreProtocol(),
+            conversationStateProvider: conversationStateProviderMock,
+            contactGroupProvider: contactGroupProviderMock,
+            labelProvider: labelProviderMock,
+            contactProvider: contactProviderMock,
+            conversationProvider: conversationProviderMock,
+            eventsService: eventsServiceMock,
+            dependencies: userContainer,
+            toolbarActionProvider: toolbarActionProviderMock,
+            saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
+            totalUserCountClosure: { 0 }
+        )
+    }
 
     private func snapshot(viewController: UIViewController) {
         guard let snapshotDirectory = protonMailSnapshotDirectory(file: #file) else {
