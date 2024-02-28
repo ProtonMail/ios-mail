@@ -70,6 +70,10 @@ final class AttachmentViewModel {
         }
     }
 
+    var viewShouldBeShown: Bool {
+        numberOfAttachments != 0 || basicEventInfoSourcedFromHeaders != nil
+    }
+
     private let invitationViewSubject = CurrentValueSubject<InvitationViewState, Never>(.noInvitationFound)
 
     private let respondingStatusSubject = CurrentValueSubject<RespondingStatus, Never>(.respondingUnavailable)

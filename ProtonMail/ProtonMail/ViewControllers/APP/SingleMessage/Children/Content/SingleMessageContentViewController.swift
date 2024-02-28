@@ -341,7 +341,7 @@ class SingleMessageContentViewController: UIViewController {
 
     private func embedAttachmentViewIfNeeded() {
         guard self.attachmentViewController == nil else { return }
-        if viewModel.attachmentViewModel.numberOfAttachments != 0 {
+        if viewModel.attachmentViewModel.viewShouldBeShown {
             let attachmentVC = AttachmentViewController(viewModel: viewModel.attachmentViewModel)
             attachmentVC.delegate = self
             embed(attachmentVC, inside: customView.attachmentContainer)

@@ -79,6 +79,8 @@ class AttachmentViewController: UIViewController {
     }
 
     private func setup(view: AttachmentView, with data: AttachmentViewModel) {
+        view.isHidden = data.numberOfAttachments == 0
+
         var text = String(format: LocalString._attachment, data.numberOfAttachments)
 
         let byteCountFormatter = ByteCountFormatter()
