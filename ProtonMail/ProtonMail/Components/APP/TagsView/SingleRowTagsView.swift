@@ -24,9 +24,13 @@ import ProtonCoreUIFoundations
 import UIKit
 
 class SingleRowTagsView: UIView {
+    private weak var heightConstraint: NSLayoutConstraint!
 
     init() {
         super.init(frame: .zero)
+
+        heightConstraint = heightAnchor.constraint(equalToConstant: 0)
+        heightConstraint.isActive = true
     }
 
     var tagViews: [UIView] = [] {
@@ -85,11 +89,14 @@ class SingleRowTagsView: UIView {
             widthConstraint.isActive = true
 
             if index == 0 {
-                [
-                    self.heightAnchor.constraint(equalToConstant: itemSize.height)
-                ].activate()
+                heightConstraint.constant = itemSize.height
             }
         }
+
+        if row.isEmpty {
+            heightConstraint.constant = 0
+        }
+
         self.addLabelWithNumberIfNeeded(row: row)
     }
 
