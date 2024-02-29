@@ -310,21 +310,18 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
     func shouldShowShowSnoozeSpotlight() -> Bool {
         guard user.isSnoozeEnabled, !ProcessInfo.isRunningUITests else { return false }
-        // If one of logged in user has seen spotlight, shouldn't show it again
-        let shouldShow = dependencies.usersManager.users
-            .map {
-                dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .snooze, toUserWith: $0.userID)
-            }
-            .reduce(true) { partialResult, shouldShow in
-                partialResult && shouldShow
-            }
-
-        return shouldShow
+        return dependencies.userIntroductionProgressProvider
+            .shouldShowSpotlight(for: .snooze, toUserWith: user.userID)
     }
 
     func hasSeenSnoozeSpotlight() {
-        guard user.isSnoozeEnabled else { return }
-        dependencies.userIntroductionProgressProvider.markSpotlight(for: .snooze, asSeen: true, byUserWith: user.userID)
+        user.parentManager?.users.forEach({ user in
+            dependencies.userIntroductionProgressProvider.markSpotlight(
+                for: .snooze,
+                asSeen: true,
+                byUserWith: user.userID
+            )
+        })
     }
 
     func hasSeenMessageNavigationSpotlight() {
