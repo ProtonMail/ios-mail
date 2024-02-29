@@ -315,15 +315,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         viewModel.user.undoActionManager.register(handler: self)
         reloadIfSwipeActionsDidChange()
         fetchEventInScheduledSend()
-
-        if let destination = self.viewModel.getOnboardingDestination() {
-            viewModel.resetTourValue()
-            self.coordinator?.go(to: destination, sender: nil)
-        } else {
-            if !ProcessInfo.isRunningUITests {
-                showSpotlightIfNeeded()
-            }
-        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -379,6 +370,15 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
         DispatchQueue.global().async { [weak self] in
             self?.viewModel.prefetchIfNeeded()
+        }
+
+        if let destination = self.viewModel.getOnboardingDestination() {
+            viewModel.resetTourValue()
+            self.coordinator?.go(to: destination, sender: nil)
+        } else {
+            if !ProcessInfo.isRunningUITests {
+                showSpotlightIfNeeded()
+            }
         }
     }
 
