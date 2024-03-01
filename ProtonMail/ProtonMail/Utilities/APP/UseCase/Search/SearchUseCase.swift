@@ -31,7 +31,7 @@ final class MessageSearch: SearchUseCase {
         callback: @escaping UseCase<[MessageEntity], Params>.Callback
     ) {
         dependencies.backendSearch.execute(
-            params: .init(query: params.query, page: params.page),
+            params: .init(query: params.query),
             callback: callback
         )
     }
@@ -44,7 +44,6 @@ extension MessageSearch {
     }
 
     struct Params {
-        let query: String
-        let page: UInt
+        let query: SearchMessageQuery
     }
 }

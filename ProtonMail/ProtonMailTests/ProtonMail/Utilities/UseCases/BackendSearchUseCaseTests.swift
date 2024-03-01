@@ -44,15 +44,15 @@ class BackendSearchUseCaseTests: XCTestCase {
     }
 
     func testExecute_withApiError_errorIsReturned() {
-        let query = "test@pm.me"
+        let keyword = "test@pm.me"
         apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains(check: "/messages") {
                 completion(nil, .failure(.badResponse()))
             }
         }
         let e = expectation(description: "Closure is called")
-
-        sut.execute(params: .init(query: query, page: 0)) { result in
+        let query = SearchMessageQuery(page: 0, keyword: keyword)
+        sut.execute(params: .init(query: query)) { result in
             switch result {
             case .failure:
                 break
@@ -67,13 +67,13 @@ class BackendSearchUseCaseTests: XCTestCase {
 
     func testExecute_withOneMessageInResponse_dataIsSavedInsideDB() throws {
         let e = expectation(description: "Closure is called")
-        let query = "test@pm.me"
+        let keyword = "test@pm.me"
         let msgID = String.randomString(20)
         apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains(check: "/messages") {
                 let rawTestMsg = MessageTestData.messageMetaData(
                     sender: "self@pm.me",
-                    recipient: query,
+                    recipient: keyword,
                     messageID: msgID
                 )
                 let response: [String: Any] = [
@@ -89,7 +89,8 @@ class BackendSearchUseCaseTests: XCTestCase {
         }
 
         var messagesResult: [MessageEntity] = []
-        sut.execute(params: .init(query: query, page: 0)) { result in
+        let query = SearchMessageQuery(page: 0, keyword: keyword)
+        sut.execute(params: .init(query: query)) { result in
             switch result {
             case .failure:
                 XCTFail("Should not reach here")
