@@ -52,8 +52,9 @@ final class SearchUseCase: XCTestCase {
             callback(.success([]))
         }
 
+        let query = SearchMessageQuery(page: 0, keyword: "")
         sut.execute(
-            params: .init(query: "", page: 0)) { _ in
+            params: .init(query: query)) { _ in
                 e.fulfill()
             }
 

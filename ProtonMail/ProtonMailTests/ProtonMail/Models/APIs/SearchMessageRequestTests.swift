@@ -37,7 +37,7 @@ final class SearchMessageRequestTests: XCTestCase {
         let unread = Bool.random()
         let addressID = AddressID(String.randomString(10))
 
-        let sut = SearchMessageRequest(
+        let query = SearchMessageQuery(
             page: page,
             labelIDs: labelIDs,
             beginTimeStamp: UInt(beginTimeStamp),
@@ -54,6 +54,10 @@ final class SearchMessageRequestTests: XCTestCase {
             starred: starred,
             unread: unread,
             addressID: addressID
+        )
+
+        let sut = SearchMessageRequest(
+            query: query
         )
 
         XCTAssertEqual(sut.method, .get)

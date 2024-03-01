@@ -18,6 +18,68 @@
 import ProtonCoreNetworking
 
 struct SearchMessageRequest: Request {
+    let query: SearchMessageQuery
+
+    init(query: SearchMessageQuery) {
+        self.query = query
+    }
+
+    var parameters: [String: Any]? {
+        var out: [String: Any] = [:]
+        out["Page"] = query.page
+        if !query.labelIDs.isEmpty {
+            out["LabelID"] = query.labelIDs.map { $0.rawValue }.joined(separator: ",")
+        }
+        if let beginTimeStamp = query.beginTimeStamp {
+            out["Begin"] = beginTimeStamp
+        }
+        if let endTimeStamp = query.endTimeStamp {
+            out["End"] = endTimeStamp
+        }
+        if let beginID = query.beginID {
+            out["BeginID"] = beginID.rawValue
+        }
+        if let endID = query.endID {
+            out["EndID"] = endID.rawValue
+        }
+        out["Keyword"] = query.keyword
+        if !query.toField.isEmpty {
+            out["To"] = query.toField.joined(separator: ",")
+        }
+        if !query.ccField.isEmpty {
+            out["CC"] = query.ccField.joined(separator: ",")
+        }
+        if !query.bccField.isEmpty {
+            out["BCC"] = query.bccField.joined(separator: ",")
+        }
+        if !query.fromField.isEmpty {
+            out["From"] = query.fromField.joined(separator: ",")
+        }
+        if let subject = query.subject {
+            out["Subject"] = subject
+        }
+        if let hasAttachments = query.hasAttachments {
+            out["Attachments"] = hasAttachments.intValue
+        }
+        if let starred = query.starred {
+            out["Starred"] = starred.intValue
+        }
+        if let unread = query.unread {
+            out["Unread"] = unread.intValue
+        }
+        if let addressID = query.addressID {
+            out["AddressID"] = addressID.rawValue
+        }
+        out["Sort"] = query.sort
+        out["Desc"] = query.desc
+        out["Limit"] = query.limit
+        return out
+    }
+
+    var path: String { MessageAPI.path }
+}
+
+struct SearchMessageQuery {
     let page: UInt
     let labelIDs: [LabelID]
     /// UNIX timestamp to filter messages at or later than timestamp
@@ -39,9 +101,9 @@ struct SearchMessageRequest: Request {
     let starred: Bool?
     let unread: Bool?
     let addressID: AddressID?
-    let sort: String
-    let desc: Int
-    let limit: UInt
+    let sort: String = "Time"
+    let desc: Int = 1
+    let limit: UInt = 50
 
     init(
         page: UInt,
@@ -59,10 +121,7 @@ struct SearchMessageRequest: Request {
         hasAttachments: Bool? = nil,
         starred: Bool? = nil,
         unread: Bool? = nil,
-        addressID: AddressID? = nil,
-        sort: String = "Time",
-        desc: Bool = true,
-        limit: UInt = 50
+        addressID: AddressID? = nil
     ) {
         self.page = page
         self.labelIDs = labelIDs
@@ -80,62 +139,5 @@ struct SearchMessageRequest: Request {
         self.starred = starred
         self.unread = unread
         self.addressID = addressID
-        self.sort = sort
-        self.desc = desc.intValue
-        self.limit = limit
     }
-
-    var parameters: [String: Any]? {
-        var out: [String: Any] = [:]
-        out["Page"] = page
-        if !labelIDs.isEmpty {
-            out["LabelID"] = labelIDs.map { $0.rawValue }.joined(separator: ",")
-        }
-        if let beginTimeStamp {
-            out["Begin"] = beginTimeStamp
-        }
-        if let endTimeStamp {
-            out["End"] = endTimeStamp
-        }
-        if let beginID {
-            out["BeginID"] = beginID.rawValue
-        }
-        if let endID {
-            out["EndID"] = endID.rawValue
-        }
-        out["Keyword"] = keyword
-        if !toField.isEmpty {
-            out["To"] = toField.joined(separator: ",")
-        }
-        if !ccField.isEmpty {
-            out["CC"] = ccField.joined(separator: ",")
-        }
-        if !bccField.isEmpty {
-            out["BCC"] = bccField.joined(separator: ",")
-        }
-        if !fromField.isEmpty {
-            out["From"] = fromField.joined(separator: ",")
-        }
-        if let subject {
-            out["Subject"] = subject
-        }
-        if let hasAttachments {
-            out["Attachments"] = hasAttachments.intValue
-        }
-        if let starred {
-            out["Starred"] = starred.intValue
-        }
-        if let unread {
-            out["Unread"] = unread.intValue
-        }
-        if let addressID {
-            out["AddressID"] = addressID.rawValue
-        }
-        out["Sort"] = sort
-        out["Desc"] = desc
-        out["Limit"] = limit
-        return out
-    }
-
-    var path: String { MessageAPI.path }
 }

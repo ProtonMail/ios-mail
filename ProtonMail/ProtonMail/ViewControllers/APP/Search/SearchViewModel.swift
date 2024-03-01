@@ -62,7 +62,7 @@ final class SearchViewModel: NSObject, AttachmentPreviewViewModelProtocol {
     }
 
     private var dbContents: [LocalObjectsIndexRow] = []
-    private var query = ""
+    private var keyword = ""
     private let sharedReplacingEmailsMap: [String: EmailEntity]
 
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
@@ -98,13 +98,13 @@ extension SearchViewModel {
         messagesPublisher = nil
     }
 
-    func fetchRemoteData(query: String, fromStart: Bool) {
+    func fetchRemoteData(keyword: String, fromStart: Bool) {
         if fromStart {
             self.messages = []
         }
         self.uiDelegate?.activityIndicator(isAnimating: true)
 
-        self.query = query
+        self.keyword = keyword
 
         let pageToLoad = fromStart ? 0 : self.currentFetchedSearchResultPage + 1
         if fromStart {
@@ -115,10 +115,15 @@ extension SearchViewModel {
             return
         }
 
+        let searchQuery = SearchMessageQuery(
+            page: currentFetchedSearchResultPage,
+            keyword: keyword
+        )
+
         dependencies.messageSearch
             .callbackOn(.main)
             .execute(
-                params: .init(query: query, page: currentFetchedSearchResultPage)
+                params: .init(query: searchQuery)
             ) { [weak self] result in
                 self?.uiDelegate?.activityIndicator(isAnimating: false)
                 guard
@@ -145,7 +150,7 @@ extension SearchViewModel {
     func loadMoreDataIfNeeded(currentRow: Int) {
         if self.messages.count - 1 <= currentRow,
            !searchIsDone {
-            self.fetchRemoteData(query: self.query, fromStart: false)
+            self.fetchRemoteData(keyword: keyword, fromStart: false)
         }
     }
 
@@ -557,7 +562,7 @@ extension SearchViewModel {
         let messageObjectIDs: [NSManagedObjectID] = self.dbContents.compactMap {
             for field in fieldsToMatchQueryAgainst {
                 if let value = $0[field] as? String,
-                   value.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive]) != nil {
+                   value.range(of: keyword, options: [.caseInsensitive, .diacriticInsensitive]) != nil {
                     return $0["objectID"] as? NSManagedObjectID
                 }
             }

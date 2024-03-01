@@ -36,8 +36,7 @@ final class BackendSearch: BackendSearchUseCase {
         callback: @escaping UseCase<[MessageEntity], Params>.Callback
     ) {
         fetchSearchResult(
-            query: params.query,
-            page: params.page
+            query: params.query
         ) { result in
             switch result {
             case .success(let response):
@@ -58,11 +57,10 @@ final class BackendSearch: BackendSearchUseCase {
     }
 
     private func fetchSearchResult(
-        query: String,
-        page: UInt,
+        query: SearchMessageQuery,
         completion: @escaping (Result<[String: Any]?, Error>) -> Void
     ) {
-        let request = SearchMessageRequest(page: page, keyword: query)
+        let request = SearchMessageRequest(query: query)
         dependencies.apiService.perform(
             request: request,
             response: SearchMessageResponse()
@@ -115,8 +113,7 @@ final class BackendSearch: BackendSearchUseCase {
 
 extension BackendSearch {
     struct Params {
-        let query: String
-        let page: UInt
+        let query: SearchMessageQuery
     }
 
     struct Dependencies {
