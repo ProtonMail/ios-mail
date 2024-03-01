@@ -288,7 +288,6 @@ public extension Error {
         localizedDescription
     }
 
-    @available(*, deprecated, message: "Do not use, this will become non-public soon.")
     var isNetworkIssueError: Bool {
         guard let responseError = self as? ResponseError else { return false }
         if responseError.responseCode == 3500 { // tls

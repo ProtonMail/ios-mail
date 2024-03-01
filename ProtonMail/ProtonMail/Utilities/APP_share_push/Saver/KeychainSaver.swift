@@ -29,6 +29,22 @@ class KeychainSaver<T>: Saver<T> where T: Codable {
 }
 
 extension KeychainWrapper: KeyValueStoreProvider {
+    func data(forKey key: String) -> Data? {
+        do {
+            return try dataOrError(forKey: key)
+        } catch {
+            SystemLogger.log(error: error)
+        }
+        return nil
+    }
+
+    func set(_ data: Data, forKey key: String) {
+        do {
+            try setOrError(data, forKey: key)
+        } catch {
+            SystemLogger.log(error: error)
+        }
+    }
 
     func set(_ intValue: Int, forKey key: String) {
         assert(false, "Looks like this one is never actually used")

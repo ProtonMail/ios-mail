@@ -28,6 +28,8 @@ import ProtonCoreFeatureFlags
 
 final class StorageProgressView: UIView, AccessibleCell {
 
+    private let warningPercentage = 0.5
+    private let alertPercentage = 0.8
     static let reuseIdentifier = "StorageProgressView"
     static let nib = UINib(nibName: "StorageProgressView", bundle: PaymentsUI.bundle)
 
@@ -112,9 +114,9 @@ final class StorageProgressView: UIView, AccessibleCell {
     }
 
     private func getColor(multiplier: CGFloat) -> UIColor {
-        if multiplier <= 0.5 {
+        if multiplier <= warningPercentage {
             return ColorProvider.NotificationSuccess
-        } else if multiplier <= 0.9 {
+        } else if multiplier <= alertPercentage {
             return ColorProvider.NotificationWarning
         } else {
             return ColorProvider.NotificationError
@@ -122,7 +124,7 @@ final class StorageProgressView: UIView, AccessibleCell {
     }
 
     private func getLabelColor(multiplier: CGFloat) -> UIColor {
-        if multiplier > 0.9 {
+        if multiplier > alertPercentage {
             return ColorProvider.NotificationError
         } else {
             return ColorProvider.TextNorm

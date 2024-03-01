@@ -315,6 +315,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         viewModel.user.undoActionManager.register(handler: self)
         reloadIfSwipeActionsDidChange()
         fetchEventInScheduledSend()
+        setupMenuButton(userInfo: dependencies.user.userInfo)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

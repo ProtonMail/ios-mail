@@ -44,12 +44,12 @@ final class ProcessAuthenticated: ProcessProtocol {
 
     unowned let dependencies: ProcessDependencies
     let tokenHandler: TokenHandler?
-    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
+    let areSubscriptionsEnabled: Bool
 
     init(dependencies: ProcessDependencies, featureFlagsRepository: FeatureFlagsRepositoryProtocol = FeatureFlagsRepository.shared) {
         self.dependencies = dependencies
         self.tokenHandler = TokenHandler(dependencies: dependencies)
-        self.featureFlagsRepository = featureFlagsRepository
+        self.areSubscriptionsEnabled = featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)
     }
 
     let queue = DispatchQueue(label: "ProcessAuthenticated async queue", qos: .userInitiated)
@@ -111,7 +111,8 @@ final class ProcessAuthenticated: ProcessProtocol {
                 amount: plan.amount,
                 amountDue: plan.amountDue,
                 cycle: plan.cycle,
-                paymentAction: .token(token: token.token)
+                paymentAction: .token(token: token.token),
+                isCreditingAllowed: !areSubscriptionsEnabled
             )
             let receiptRes = try request.awaitResponse(responseObject: SubscriptionResponse())
             PMLog.debug("StoreKit: success (1)")
@@ -135,7 +136,7 @@ final class ProcessAuthenticated: ProcessProtocol {
 
         } catch let error where error.isPaymentAmountMismatchOrUnavailablePlanError {
             PMLog.debug("StoreKit: amount mismatch")
-            if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan){
+            if areSubscriptionsEnabled {
                 // we no longer credit the account for this kind of mismatch.
                 finish(transaction: transaction, result: .errored(.noNewSubscriptionInSuccessfulResponse), completion: completion)
             } else {

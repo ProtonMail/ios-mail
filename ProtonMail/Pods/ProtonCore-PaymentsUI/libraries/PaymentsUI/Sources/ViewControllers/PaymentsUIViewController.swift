@@ -381,11 +381,15 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
                     navigationItem.title = PUITranslations.subscription_title.l10n
                     updateTitleAttributes()
                 case .update:
-                    switch viewModel?.footerType {
-                    case .withPlansToBuy:
+                    if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
                         navigationItem.title = PUITranslations.upgrade_plan_title.l10n
-                    case .withoutPlansToBuy, .withExtendSubscriptionButton, .disabled, .none:
-                        navigationItem.title = PUITranslations.current_plan_title.l10n
+                    } else {
+                        switch viewModel?.footerType {
+                        case .withPlansToBuy:
+                            navigationItem.title = PUITranslations.upgrade_plan_title.l10n
+                        case .withoutPlansToBuy, .withExtendSubscriptionButton, .disabled, .none:
+                            navigationItem.title = PUITranslations.current_plan_title.l10n
+                        }
                     }
                     updateTitleAttributes()
                 default:

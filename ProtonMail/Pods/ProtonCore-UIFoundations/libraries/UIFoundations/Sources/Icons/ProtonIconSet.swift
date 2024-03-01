@@ -306,6 +306,8 @@ public struct ProtonIconSet {
 
     public let forward = ProtonIcon(name: "ic-forward")
 
+    public let fullStorageWhite = ProtonIcon(name: "ic-cloud-exclamation")
+
     public let gift = ProtonIcon(name: "ic-gift")
 
     public let globe = ProtonIcon(name: "ic-globe")

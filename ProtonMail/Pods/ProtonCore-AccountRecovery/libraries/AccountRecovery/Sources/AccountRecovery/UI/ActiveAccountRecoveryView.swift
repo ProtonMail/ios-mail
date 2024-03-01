@@ -27,7 +27,7 @@ public struct ActiveAccountRecoveryView: View {
     @State var isAnimating: Bool = false
 
     public var body: some View {
-        VStack(spacing: 24) {
+        VStack(alignment: .leading, spacing: 24) {
             HStack(alignment: .top, spacing: 10) {
                 IconProvider.exclamationCircle
                 Text(passwordResetReceivedL10nStringKey,
@@ -59,12 +59,10 @@ public struct ActiveAccountRecoveryView: View {
                  bundle: AccountRecoveryModule.resourceBundle,
                  comment: "In Active Account Recovery state screen, explain why the user has to wait 72h before being able to change the password."
             )
-                .frame(maxWidth: .infinity)
 
             Text(callToActionIfUnexpectedL10nStringKey,
                  bundle: AccountRecoveryModule.resourceBundle,
                  comment: "In Active Account Recovery state screen, advice in case the reset is unexpected for the user. The call to action is delimited with ** for bold type (we have a replica without delimiters for older iOS versions).")
-                .frame(maxWidth: .infinity)
 
             Button {
                 isAnimating.toggle()

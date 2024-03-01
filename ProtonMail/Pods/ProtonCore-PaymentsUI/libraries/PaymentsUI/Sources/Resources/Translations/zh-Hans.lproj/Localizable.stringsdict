@@ -69,7 +69,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 个日历</string>
+        <string>%d 份日历</string>
       </dict>
     </dict>
     <key>&lt;n&gt; folders / labels</key>
@@ -125,7 +125,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 个VPN连接</string>
+        <string>%d 台设备可同时接入 VPN</string>
       </dict>
     </dict>
     <key>&lt;n&gt; high-speed VPN connections</key>
@@ -139,7 +139,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 个高速 VPN 连接</string>
+        <string>%d 台设备可同时接入高速 VPN</string>
       </dict>
     </dict>
     <key>&lt;n&gt; custom domains</key>
@@ -324,7 +324,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 个日历</string>
+        <string>%d 份日历</string>
       </dict>
     </dict>
     <key>&lt;n&gt; addresses per user</key>
@@ -352,7 +352,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>每位用户 %d 个日历</string>
+        <string>每位用户 %d 份日历</string>
       </dict>
     </dict>
     <key>&lt;n&gt; VPN connections per user</key>
@@ -366,7 +366,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>每个用户 %d 个 VPN 连接</string>
+        <string>每位用户可通过 %d 台设备同时接入 VPN</string>
       </dict>
     </dict>
     <key>Pay for &lt;n&gt; months</key>
@@ -394,7 +394,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>中等 VPN 速度 %d 个 VPN 连接</string>
+        <string>%d 台设备可同时接入普通 VPN</string>
       </dict>
     </dict>
     <key>Up to &lt;n&gt; forwarding mailboxes</key>
