@@ -72,4 +72,9 @@ final class SettingsViewsFactory {
         let viewModel = ApplicationLogsViewModel()
         return ApplicationLogsViewController(viewModel: viewModel)
     }
+
+    func makeMessageSwipeNavigationView() -> SwitchToggleViewController {
+        let viewModel = MessageSwipeNavigationViewModel(userDefaults: dependencies.userDefaults)
+        return SwitchToggleViewController(viewModel: viewModel)
+    }
 }

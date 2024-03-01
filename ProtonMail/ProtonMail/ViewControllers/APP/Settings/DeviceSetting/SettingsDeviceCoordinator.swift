@@ -32,6 +32,7 @@ class SettingsDeviceCoordinator {
         case contactsSettings = "settings_contacts"
         case swipeAction = "settings_swipe_action"
         case darkMode = "settings_dark_mode"
+        case messageSwipeNavigation = "settings_message_swipe_navigation"
     }
 
     typealias Dependencies = HasSettingsViewsFactory
@@ -71,6 +72,8 @@ class SettingsDeviceCoordinator {
             openGesture()
         case .darkMode:
             openDarkMode()
+        case .messageSwipeNavigation:
+            openMessageSwipeNavigationSetting()
         }
     }
 
@@ -125,6 +128,11 @@ class SettingsDeviceCoordinator {
     private func openDarkMode() {
         let viewController = dependencies.settingsViewsFactory.makeDarkModeSettingView()
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    private func openMessageSwipeNavigationSetting() {
+        let viewController = dependencies.settingsViewsFactory.makeMessageSwipeNavigationView()
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     func openToolbarCustomizationView() {
