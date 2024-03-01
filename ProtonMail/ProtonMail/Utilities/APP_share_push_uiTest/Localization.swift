@@ -1528,6 +1528,11 @@ enum L11n {
     struct MessageNavigation {
         static let spotlightMessage = "You can now effortlessly navigate through messages by swiping left or right."
         static let spotlightTitle = "Swipe to next message"
+        static let settingTitle = NSLocalizedString("Swipe to next message", comment: "The title in setting page")
+        static let settingDesc = NSLocalizedString(
+            "Allow navigating through messages by swiping left or right.",
+            comment: "Description text for setting"
+        )
     }
 
     struct AutoImportContacts {
