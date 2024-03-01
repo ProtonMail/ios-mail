@@ -130,7 +130,7 @@
 
 "Set recovery method" = "设置恢复方法";
 
-"Set recovery method (optional)" = "设置恢复方式 (可选)";
+"Set recovery method (optional)" = "设置恢复方式（非必需）";
 
 "We will send recovery instructions to this email or phone number if you get locked out of your account." = "假如以后您忘记用户名或密码无法登录，我们将通过这个邮箱或电话号码帮助您恢复账户。";
 

@@ -195,6 +195,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         NotificationCenter.default.addKeyboardObserver(self)
 
         self.isOnMainView = true
+        self.setupMenuButton(userInfo: dependencies.user.userInfo)
 
         if UIAccessibility.isVoiceOverRunning {
             UIAccessibility.post(notification: .layoutChanged,

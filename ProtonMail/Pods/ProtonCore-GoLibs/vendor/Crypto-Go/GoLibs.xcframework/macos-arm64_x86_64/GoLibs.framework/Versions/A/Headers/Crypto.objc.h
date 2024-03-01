@@ -655,8 +655,19 @@ the given headers. Empty parameters are omitted from the headers.
 
 // skipped method PGPMessage.GetHexEncryptionKeyIDs with unsupported parameter or return types
 
+/**
+ * GetHexEncryptionKeyIDsJson returns the key IDs of the keys to which the session key is encrypted as a JSON array.
+If an error occurs it returns nil.
+Helper function for go-mobile clients.
+ */
+- (NSData* _Nullable)getHexEncryptionKeyIDsJson;
 // skipped method PGPMessage.GetHexSignatureKeyIDs with unsupported parameter or return types
 
+/**
+ * GetHexSignatureKeyIDsJson returns the key IDs of the keys to which the (readable) signature packets
+are encrypted to as a JSON array. Helper function for go-mobile clients.
+ */
+- (NSData* _Nullable)getHexSignatureKeyIDsJson;
 // skipped method PGPMessage.GetSignatureKeyIDs with unsupported parameter or return types
 
 // skipped method PGPMessage.NewReader with unsupported parameter or return types
@@ -747,6 +758,10 @@ packets.
  * GetBinaryKeyPacket returns the unarmored binary keypacket as a []byte.
  */
 - (NSData* _Nullable)getBinaryKeyPacket;
+/**
+ * GetNumberOfKeyPackets returns the number of keys packets in this message.
+ */
+- (BOOL)getNumberOfKeyPackets:(long* _Nullable)ret0_ error:(NSError* _Nullable* _Nullable)error;
 /**
  * GetPGPMessage joins asymmetric session key packet with the symmetric data
 packet to obtain a PGP message.

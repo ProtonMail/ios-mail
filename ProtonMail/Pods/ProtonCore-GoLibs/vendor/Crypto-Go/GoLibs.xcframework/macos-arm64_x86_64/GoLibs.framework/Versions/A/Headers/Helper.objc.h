@@ -320,6 +320,16 @@ FOUNDATION_EXPORT NSString* _Nonnull HelperEncryptMessageArmored(NSString* _Null
 FOUNDATION_EXPORT NSString* _Nonnull HelperEncryptMessageWithPassword(NSData* _Nullable password, NSString* _Nullable plaintext, NSError* _Nullable* _Nullable error);
 
 /**
+ * EncryptPGPMessageToAdditionalKey decrypts the session key of the input PGPSplitMessage with a private key in keyRing
+and encrypts it towards the additionalKeys by adding the additional key packets to the input PGPSplitMessage.
+If successful, new key packets are added to message.
+* messageToModify : The encrypted pgp message that should be modified
+* keyRing         : The private keys to decrypt the session key in the messageToModify.
+* additionalKey   : The public keys the message should be additionally encrypted to.
+ */
+FOUNDATION_EXPORT BOOL HelperEncryptPGPMessageToAdditionalKey(CryptoPGPSplitMessage* _Nullable messageToModify, CryptoKeyRing* _Nullable keyRing, CryptoKeyRing* _Nullable additionalKey, NSError* _Nullable* _Nullable error);
+
+/**
  * EncryptSessionKey encrypts a session key
 using a given armored public key.
  */

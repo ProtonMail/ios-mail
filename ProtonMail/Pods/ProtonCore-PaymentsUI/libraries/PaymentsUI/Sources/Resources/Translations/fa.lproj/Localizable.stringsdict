@@ -434,7 +434,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Pay for %d month</string>
+        <string>پرداخت برای %d ماه</string>
         <key>other</key>
         <string>Pay for %d months</string>
       </dict>

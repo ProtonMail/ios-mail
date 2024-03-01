@@ -351,7 +351,8 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
                 amount: plan.amount,
                 amountDue: plan.amountDue,
                 cycle: plan.cycle,
-                paymentAction: .token(token: token.token)
+                paymentAction: .token(token: token.token),
+                isCreditingAllowed: !areSubscriptionsEnabled
             )
             let receiptRes = try request.awaitResponse(responseObject: SubscriptionResponse())
             PMLog.debug("StoreKit: success (2)")

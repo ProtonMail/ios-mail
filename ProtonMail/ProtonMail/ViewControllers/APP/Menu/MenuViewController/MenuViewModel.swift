@@ -26,6 +26,7 @@ import Foundation
 import PromiseKit
 import ProtonCoreAccountSwitcher
 import ProtonCoreDataModel
+import ProtonCoreFeatureFlags
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import UIKit
@@ -175,7 +176,28 @@ extension MenuViewModel: MenuVMProtocol {
         return user.userInfo.enableFolderColor == 1
     }
 
+    var isStorageAlertVisible: Bool {
+        guard FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.splitStorage),
+              let userInfo = self.currentUser?.userInfo,
+              !userInfo.isOnAStoragePaidPlan,
+              currentMailStoragePercentage > 0 else {
+            return false
+        }
+        return currentMailStoragePercentage > 0.8
+    }
+
+    var currentMailStoragePercentage: CGFloat {
+        guard let userInfo = self.currentUser?.userInfo,
+              let usedBaseSpace = userInfo.usedBaseSpace,
+              let maxBaseSpace = userInfo.maxBaseSpace,
+              maxBaseSpace > 0 else {
+            return 0
+        }
+        return CGFloat(usedBaseSpace) / CGFloat(maxBaseSpace)
+    }
+
     func menuViewInit() {
+        self.updateStorageAlert()
         self.updatePrimaryUserView()
         self.updateMoreItems(shouldReload: false)
         self.updateUnread()
@@ -191,6 +213,8 @@ extension MenuViewModel: MenuVMProtocol {
 
         let sectionItems: [MenuLabel]
         switch section {
+        case .maxStorage:
+            return .success(.init(location: .init(id: "maxStorage", name: nil)))
         case .inboxes:
             return .success(self.inboxItems[row])
         case .folders:
@@ -221,6 +245,8 @@ extension MenuViewModel: MenuVMProtocol {
 
     func menuItem(in section: MenuSection, at index: Int) -> MenuLabel? {
         switch section {
+        case .maxStorage:
+            return .init(location: .init(id: "maxStorage", name: nil))
         case .inboxes:
             return inboxItems[index]
         case .folders:
@@ -234,6 +260,7 @@ extension MenuViewModel: MenuVMProtocol {
 
     func numberOfRowsIn(section: Int) -> Int {
         switch self.sections[section] {
+        case .maxStorage: return 1
         case .inboxes: return self.inboxItems.count
         case .folders:
             return self.folderItems.getNumberOfRows()
@@ -671,6 +698,14 @@ extension MenuViewModel {
         guard dependencies.usersManager.users.count > 0,
               let user = self.currentUser else {return}
         self.activateUser(id: UserID(user.userInfo.userId))
+    }
+
+    private func updateStorageAlert() {
+        if !isStorageAlertVisible {
+            self.sections.removeAll(where: { $0 == .maxStorage})
+        } else if !self.sections.contains(where: { $0 == .maxStorage }) {
+            self.sections.insert(.maxStorage, at: 0)
+        }
     }
 
     private func updatePrimaryUserView() {

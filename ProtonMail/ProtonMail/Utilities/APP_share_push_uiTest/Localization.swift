@@ -1306,6 +1306,13 @@ enum L11n {
         static let maybeLong = NSLocalizedString("I might attend", comment: "Neither confirm nor deny attending an event")
     }
 
+    struct SideMenuStorageAlert {
+        static let menuTitle = NSLocalizedString("Max Storage", comment: "Menu title")
+        static let alertBoxTitle = NSLocalizedString("Storage: %@ full", comment: "Cell title that shows the percentage of the storage")
+        static let alertBoxCaption = NSLocalizedString("Get more storage", comment: "Description of the action")
+        static let upgradeButtonTitle = NSLocalizedString("Upgrade", comment: "Upgrade button action")
+    }
+
     struct OfficialBadge {
         static let title = NSLocalizedString("Official", comment: "Official badge next to sender's name")
     }

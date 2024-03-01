@@ -16,7 +16,7 @@
 
 "Remove" = "移除";
 
-"Are you sure you want to sign out %@?" = "您确定要退出登录 %@ 吗？";
+"Are you sure you want to sign out %@?" = "确定要退出账户 %@ 吗？";
 
 "Dismiss account switcher" = "忽略切换账户";
 
