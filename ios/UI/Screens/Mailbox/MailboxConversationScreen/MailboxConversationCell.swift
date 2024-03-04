@@ -49,7 +49,7 @@ struct MailboxConversationCell: View {
                         .bold(!uiModel.isRead)
                         .foregroundColor(textColor)
                     Spacer()
-                    Text(uiModel.date.formatted(date: .long, time: .omitted))
+                    Text(uiModel.date.mailboxFormat())
                         .font(.footnote)
                         .bold(!uiModel.isRead)
                         .foregroundColor(textColor)
@@ -134,7 +134,7 @@ enum MailboxConversationCellEvent {
             labelUIModel: .init()
         )
     }
-    var model1 = model
+    let model1 = model
     model1.isSelected = true
 
     return VStack {
@@ -148,7 +148,7 @@ enum MailboxConversationCellEvent {
                 avatarImage: URL(string: "https://proton.me")!,
                 senders: "FedEx",
                 subject: "Your package is ready to ship",
-                date: Date(),
+                date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
                 isRead: false,
                 isStarred: true,
                 labelUIModel: .init(id: "", labelColor: .purple, text: "Offer", textColor: .white, numExtraLabels: 0)
@@ -162,12 +162,13 @@ enum MailboxConversationCellEvent {
                 avatarImage: URL(string: "https://proton.me")!,
                 senders: "Mary, Elijah Wood, wiseman@pm.me",
                 subject: "Summer holidays pictures and more!",
-                date: Date(),
+                date: Calendar.current.date(byAdding: .year, value: -1, to: Date())!,
                 isRead: true,
                 isStarred: true,
                 labelUIModel: .init(id: "", labelColor: .green, text: "Read later", textColor: .white, numExtraLabels: 2)
             ),
             onEvent: { _ in }
         )
+
     }
 }
