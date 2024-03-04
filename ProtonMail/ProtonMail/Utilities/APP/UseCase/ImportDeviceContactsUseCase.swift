@@ -364,6 +364,7 @@ extension ImportDeviceContacts {
         }
 
         var resultingMergedContacts = [ContactEntity]()
+        var errorCount = 0
         for deviceContact in deviceContacts {
             let normalisedContactUuid = deviceContact.identifier.uuidNormalisedForAutoImport
             do {
@@ -380,8 +381,11 @@ extension ImportDeviceContacts {
                     }
                 }
             } catch {
-                let message = "mergeContactsMatchedByUuid uuid \(normalisedContactUuid.redacted) error: \(error)"
-                SystemLogger.log(message: message, category: .contacts, isError: true)
+                errorCount += 1
+                if errorCount < 2 {
+                    let msg = "mergeContactsMatchedByUuid uuid \(normalisedContactUuid.redacted) first error in batch"
+                    SystemLogger.log(message: "\(msg): \(error)", category: .contacts, isError: true)
+                }
                 continue
             }
         }
@@ -404,6 +408,7 @@ extension ImportDeviceContacts {
         }
 
         var resultingMergedContacts = [ContactEntity]()
+        var errorCount = 0
         for deviceContact in deviceContacts {
             let deviceContactUuid = deviceContact.identifier.uuidInDevice
             do {
@@ -420,8 +425,11 @@ extension ImportDeviceContacts {
                     }
                 }
             } catch {
-                let message = "mergeContactsMatchByEmail uuid \(deviceContactUuid.redacted) error: \(error)"
-                SystemLogger.log(message: message, category: .contacts, isError: true)
+                errorCount += 1
+                if errorCount < 2 {
+                    let message = "mergeContactsMatchByEmail uuid \(deviceContactUuid.redacted) first error in batch"
+                    SystemLogger.log(message: "\(message): \(error)", category: .contacts, isError: true)
+                }
                 continue
             }
         }

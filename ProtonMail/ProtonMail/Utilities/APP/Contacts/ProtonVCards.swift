@@ -71,8 +71,7 @@ final class ProtonVCards {
     /// Call this function when you want to get the latest data signed and encrypted into an array of `CardData`
     func write(userKey: Key, mailboxPassphrase: Passphrase) throws -> [CardData] {
         guard let signedOnlyCardObject = cardObject(ofType: .SignedOnly)?.object else {
-            SystemLogger.log(message: "type .SignedOnly not found", category: .contacts, isError: true)
-            throw ProtonVCardsError.vCardOfTypeNotFound
+            throw ProtonVCardsError.vCardOfTypeSignedOnlyNotFound
         }
         guard let signedCard = AppleContactParser.createCard2(
             by: signedOnlyCardObject.object,
@@ -84,8 +83,7 @@ final class ProtonVCards {
         }
 
         guard let signedAndEncryptedCardObject = cardObject(ofType: .SignAndEncrypt)?.object else {
-            SystemLogger.log(message: "type .SignAndEncrypt not found", category: .contacts, isError: true)
-            throw ProtonVCardsError.vCardOfTypeNotFound
+            throw ProtonVCardsError.vCardOfTypeSignAndEncryptNotFound
         }
         guard let encryptedAndSignedCard = AppleContactParser.createCard3(
             by: signedAndEncryptedCardObject.object,
@@ -295,7 +293,8 @@ enum ProtonVCardsError: Error {
     case failedParsingVCardString
     case failedDecryptingVCard
     case failedVerifyingCard
-    case vCardOfTypeNotFound
+    case vCardOfTypeSignedOnlyNotFound
+    case vCardOfTypeSignAndEncryptNotFound
     case failedWritingSignedCardData
     case failedWritingEncryptedAndSignedCardData
 }
