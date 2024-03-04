@@ -151,7 +151,8 @@ final class SingleMessageViewModelTests: XCTestCase {
                                                        isBodyDecryptable: bodyInfo.isBodyDecryptable,
                                                        messageRenderStyle: bodyViewModel.currentMessageRenderStyle,
                                                        shouldShowRenderModeOption: bodyInfo.shouldDisplayRenderModeOptions,
-                                                       isScheduledSend: bodyInfo.message.isScheduledSend).items
+                                                       isScheduledSend: bodyInfo.message.isScheduledSend, 
+                                                       shouldShowSnooze: false).items
         expected = expected.filter({ $0 != .reply && $0 != .replyAll })
         expected.insert(.reply, at: 0)
 

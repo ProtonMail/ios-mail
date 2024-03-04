@@ -36,12 +36,12 @@ struct MailListActionSheetViewModel {
             .markReadActionViewModel()
         ]
 
-        let foldersSupportSnooze = [
+        let foldersSupportingSnooze = [
             Message.Location.inbox.labelID.rawValue,
             Message.Location.snooze.labelID.rawValue
         ]
         if locationViewMode == .conversation,
-           foldersSupportSnooze.contains(labelId),
+           foldersSupportingSnooze.contains(labelId),
            isSnoozeEnabled {
             items.append(.snooze())
         }

@@ -515,7 +515,8 @@ private extension ConversationViewController {
                                                         isBodyDecryptable: isBodyDecrpytable,
                                                         messageRenderStyle: messageRenderStyle,
                                                         shouldShowRenderModeOption: shouldShowRenderModeOption,
-                                                        isScheduledSend: message.isScheduledSend)
+                                                        isScheduledSend: message.isScheduledSend,
+                                                        shouldShowSnooze: false)
         actionSheetPresenter.present(on: navigationController ?? self,
                                      listener: self,
                                      viewModel: viewModel) { [weak self] in
@@ -886,11 +887,11 @@ extension ConversationViewController {
         let isUnread = viewModel.conversation.isUnread(labelID: viewModel.labelId)
         let isStarred = viewModel.conversation.starred
         let isScheduleSend = messageToApplyAction.isScheduledSend
-        let foldersSupportSnooze = [
+        let foldersSupportingSnooze = [
             Message.Location.snooze.labelID,
             Message.Location.inbox.labelID
         ]
-        let isSupportSnooze = foldersSupportSnooze.contains(viewModel.labelId) && viewModel.user.isSnoozeEnabled
+        let isSupportSnooze = foldersSupportingSnooze.contains(viewModel.labelId) && viewModel.user.isSnoozeEnabled
 
         let actionSheetViewModel = ConversationActionSheetViewModel(
             title: viewModel.conversation.subject,
