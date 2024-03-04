@@ -174,12 +174,6 @@
 /* Title */
 "wrote:" = "va escriure:";
 
-/* At {time}, e.g.: At 19:00 */
-"At %@" = "A les %@";
-
-/* On {date}, e.g.: On Aug 14 */
-"On %@" = "El %@";
-
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
 "On %@ at %@" = "El %1$@ a les %2$@";
 
@@ -589,6 +583,9 @@
 /* Title */
 "Reading device contacts data…" = "Llegint dades dels contactes del dispositiu…";
 
+/* title for the contact import indicator */
+"Importing contacts..." = "Importing contacts...";
+
 /* Description */
 "Do you want to cancel the process?" = "Voleu cancel·lar el procés?";
 
@@ -772,9 +769,6 @@
 "Date: %@" = "Data: %@";
 
 /* Title */
-"Details" = "Detalls";
-
-/* Title */
 "Hide details" = "Amagar els detalls";
 
 /* contact placeholder */
@@ -794,12 +788,6 @@
 
 /* action */
 "Add new URL" = "Afegir un URL nou";
-
-/* settings general section title */
-"Change account password" = "Canviar contrasenya del compte";
-
-/* settings general section title */
-"Change mailbox password" = "Canviar contrasenya de la bústia de correu";
 
 /* settings general section title */
 "Auto-load remote content" = "Carrega automàticament el contingut remot";
@@ -1147,9 +1135,6 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Arrossegui aquí per afegir com a fitxer adjunt";
 
-/* Downloading attachments from cloud */
-"Importing" = "Important";
-
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Importació d’adjunts, que pot trigar una estona";
 
@@ -1248,9 +1233,6 @@
 
 /* cell title in app settings */
 "Alternative routing" = "Enrutament alternatiu";
-
-/* cell title in device settings */
-"Storage" = "Emmagatzematge";
 
 /* cell title in device settings */
 "Addresses" = "Adreces";
@@ -1534,7 +1516,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Notificar suplantació d'identitat";
 
-"Not spam (move to inbox)" = "Not spam (move to inbox)";
+"Not spam (move to inbox)" = "No és correu brossa (mou a la safata d'entrada)";
 
 /* No comment provided by engineer. */
 "Move to" = "Mou a";
@@ -1619,27 +1601,6 @@
 
 /* The title of voice over action that switches the unread filter status in the inbox */
 "Switch unread filter" = "Commuta el filtre de no llegits";
-
-/* Title of user feedback view */
-"Your feedback" = "Els teus comentaris";
-
-/* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "Com descriuríeu la vostra experiència amb el nou Proton Mail?";
-
-/* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Expliqueu-nos la vostra experiència. (Opcional)";
-
-/* Title of button to send feedback */
-"Send feedback" = "Enviar comentaris";
-
-/* Example feedback */
-"Awful" = "Horrible";
-
-/* Example feedback */
-"Wonderful" = "Meravellosa";
-
-/* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Gràcies per la vostra opinió!";
 
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
 "Collapse message" = "Replega el missatge";
@@ -1872,6 +1833,21 @@
 /* The content of the Customize toolbar spotlight view. */
 "You can now choose and rearrange the actions in this bar" = "Ara podeu escollir i reorganitzar les accions d'aquesta barra";
 
+/* Title of the banner alert */
+"Your Mail storage is %@ full" = "Your Mail storage is %@ full";
+
+/* Title of the banner alert */
+"Your Mail storage is full" = "El vostre emmagatzematge de Mail és ple.";
+
+/* Description of the banner alert */
+"Upgrade to get more storage." = "Milloreu per a obtenir més emmagatzematge.";
+
+/* Get more storage button action */
+"Not now" = "Ara no";
+
+/* Get more storage button action */
+"Get more storage" = "Aconseguiu més emmagatzematge";
+
 /* Button to block a sender */
 "Block messages from this sender" = "Bloqueja els missatges d'aquest remitent";
 
@@ -1928,6 +1904,33 @@
 /* Button to hide some items in the list to conserve screen estate */
 "Show less" = "Mostra menys";
 
+/* Text shown when opening an invitation for a past event */
+"This event already ended" = "Aquest esdeveniment ja ha finalitzat.";
+
+/* Text shown when opening an invitation for a cancelled event */
+"This event has been cancelled" = "This event has been cancelled";
+
+/* Prompt above yes/no/maybe buttons */
+"Attending?" = "Hi assistireu?";
+
+/* Part of a yes/no/maybe prompt */
+"Yes" = "Sí";
+
+/* Part of a yes/no/maybe prompt */
+"No" = "No";
+
+/* Part of a yes/no/maybe prompt */
+"Maybe" = "Potser";
+
+/* Confirm attending an event */
+"Yes, I'll attend" = "Sí, hi assistiré";
+
+/* Deny attending an event */
+"No, I won't attend" = "No, no hi assistiré";
+
+/* Neither confirm nor deny attending an event */
+"I might attend" = "Podria assistir";
+
 /* Official badge next to sender's name */
 "Official" = "Oficial";
 
@@ -1971,10 +1974,13 @@
 "Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
 
 /* Auto import alert title */
-"Auto-import enabled" = "Auto-import enabled";
+"Auto-import enabled" = "La importació automàtica està activada.";
 
 /* Auto import alert message */
 "The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
+
+/* Alert to ask user to reauthorise access to contacts */
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission.";
 
 /* Settings lock protection section */
 "Protection" = "Protecció";
@@ -2040,7 +2046,7 @@
 "Application logs" = "Registres de l'aplicació";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Jump to next message";
+"Jump to next message" = "Passa al missatge següent";
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
@@ -2125,6 +2131,15 @@
 
 /* Title of button to empty trash folder */
 "Empty trash" = "Buida la paperera";
+
+/* Alert prompting to update Calendar */
+"Download the latest version of the Proton Calendar to open this event" = "Download the latest version of the Proton Calendar to open this event";
+
+/* Button to open App Store */
+"Download in App Store" = "Download in App Store";
+
+/* Button to open the Calendar app */
+"Open in Proton Calendar" = "Obre a Proton Calendar";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
 "Clear out the junk" = "Elimineu els missatges innecessaris";
@@ -2229,7 +2244,7 @@
 "Downloading attachment" = "S'està descarregant l'adjunt.";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Snoozed until %@";
+"Snoozed until %@" = "Posposat fins a %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
 "Unsnooze" = "Deixa de posposar";
@@ -2267,5 +2282,41 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Carpetes, etiquetes i filtres il·limitats";
 
+/* Description string shows in spotlight view */
+"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.";
+
+/* Description string shows in spotlight view */
+"Snooze it for later" = "Posposa per a més tard";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
-"Add it as attachment" = "Add it as attachment";
+"Add it as attachment" = "Afegeix-ho com a adjunt";
+
+/* The title in setting page */
+"Swipe to next message" = "Llisqui al següent missatge";
+
+/* Description text for setting */
+"Allow navigating through messages by swiping left or right." = "Permet navegar pels missatges fent lliscar el dit cap a l'esquerra o cap a la dreta.";
+
+/* The title of the privacy and data in the account setting. */
+"Privacy and data" = "Privacy and data";
+
+/* cell title in device settings */
+"Storage" = "Emmagatzematge";
+
+/* settings general section title */
+"Change account password" = "Canviar contrasenya del compte";
+
+/* settings general section title */
+"Change mailbox password" = "Canviar contrasenya de la bústia de correu";
+
+/* The title of the telemetry setting. */
+"Anonymous telemetry" = "Telemetria anònima";
+
+/* The title of the crash report setting. */
+"Anonymous crash reports" = "Informes anònims d'accidents";
+
+/* The subtitle of the anonymous telemetry setting. */
+"To improve our services, we sometimes collect anonymized usage data." = "Per millorar els nostres serveis, a vegades recopilem dades d'ús anònimes.";
+
+/* The subtitle of the crash report setting. */
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.";

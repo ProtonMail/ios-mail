@@ -174,12 +174,6 @@
 /* Title */
 "wrote:" = "menulis:";
 
-/* At {time}, e.g.: At 19:00 */
-"At %@" = "Pukul %@";
-
-/* On {date}, e.g.: On Aug 14 */
-"On %@" = "Pada %@";
-
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
 "On %@ at %@" = "Pada %1$@ pukul %2$@";
 
@@ -589,6 +583,9 @@
 /* Title */
 "Reading device contacts data…" = "Membaca data kontak perangkat…";
 
+/* title for the contact import indicator */
+"Importing contacts..." = "Mengimpor kontak...";
+
 /* Description */
 "Do you want to cancel the process?" = "Apakah Anda ingin membatalkan proses ini?";
 
@@ -652,7 +649,7 @@
 "Resetting message cache…" = "Mengatur ulang cache pesan…";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "Browser default Anda akan dikembalikan ke Safari apabila browser pilihan Anda dihapus.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Pengaturan ini akan secara otomatis kembali ke Safari apabila browser pilihan Anda dihapus.";
 
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL yang hendak Anda akses tidak standar dan mungkin tidak akan dapat termuat sebagaimana mestinya. Apakah Anda ingin membukanya dengan browser default milik perangkat Anda?";
@@ -772,9 +769,6 @@
 "Date: %@" = "Tanggal: %@";
 
 /* Title */
-"Details" = "Rincian";
-
-/* Title */
 "Hide details" = "Sembunyikan rincian";
 
 /* contact placeholder */
@@ -794,12 +788,6 @@
 
 /* action */
 "Add new URL" = "Tambah URL baru";
-
-/* settings general section title */
-"Change account password" = "Ubah kata sandi akun";
-
-/* settings general section title */
-"Change mailbox password" = "Ubah kata sandi kotak surat";
 
 /* settings general section title */
 "Auto-load remote content" = "Muat remote content secara otomatis";
@@ -865,10 +853,10 @@
 "Storage quota exceeded" = "Kuota penyimpanan terlampaui";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Harap tingkatkan jenis akun Anda";
+"Please upgrade your plan" = "Silakan tingkatkan paket Anda";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Harap tingkatkan jenis akun Anda untuk tetap dapat mengirim dan menerima surel.";
+"Please upgrade your plan to continue to send and receive emails." = "Silakan tingkatkan paket Anda untuk tetap dapat mengirim dan menerima email.";
 
 /* Title */
 "Warning" = "Peringatan";
@@ -1147,9 +1135,6 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Seret ke sini untuk menambahkan lampiran";
 
-/* Downloading attachments from cloud */
-"Importing" = "Mengimpor";
-
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Mengimpor lampiran, proses ini dapat memakan waktu sejenak";
 
@@ -1248,9 +1233,6 @@
 
 /* cell title in app settings */
 "Alternative routing" = "Pengalihan lalu lintas alternatif";
-
-/* cell title in device settings */
-"Storage" = "Penyimpanan";
 
 /* cell title in device settings */
 "Addresses" = "Alamat";
@@ -1352,7 +1334,7 @@
  Push notification action mark as read
  The title of the read action in action sheet
 */
-"Mark as read" = "Tandai sudah dibaca";
+"Mark as read" = "Tandai telah dibaca";
 
 /*
  Push notification action move to trash
@@ -1573,7 +1555,7 @@
 "Group emails from the same conversation together." = "Kelompokkan surel yang tergabung dalam percakapan yang sama.";
 
 /* No comment provided by engineer. */
-"Conversation grouping" = "Pengelompokan percakapan";
+"Conversation grouping" = "Kelompokkan percakapan";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Mode percakapan";
@@ -1619,27 +1601,6 @@
 
 /* The title of voice over action that switches the unread filter status in the inbox */
 "Switch unread filter" = "Ubah filter bacaan";
-
-/* Title of user feedback view */
-"Your feedback" = "Tanggapan Anda";
-
-/* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "Bagaimana Anda menggambarkan pengalaman Anda dengan Proton Mail yang baru?";
-
-/* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Mohon ceritakan pengalaman Anda kepada kami. (Opsional)";
-
-/* Title of button to send feedback */
-"Send feedback" = "Kirim tanggapan";
-
-/* Example feedback */
-"Awful" = "Mengecewakan";
-
-/* Example feedback */
-"Wonderful" = "Luar Biasa";
-
-/* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Terima kasih atas tanggapan Anda!";
 
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
 "Collapse message" = "Ciutkan pesan";
@@ -1723,7 +1684,7 @@
 "Warning: suspected fake website" = "Peringatan: situs web ini terindikasi palsu";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tautan ini tertuju kepada situs web yang dapat mencuri informasi Anda, seperti kata sandi dan rincian kartu kredit Anda.\n%@\n\nDemi keamanan Anda, jangan lanjutkan tindakan ini.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tautan ini tertuju pada situs web yang dapat mencuri informasi pribadi Anda, seperti kata sandi dan rincian kartu kredit yang Anda miliki.\n%@\n\nDemi keamanan Anda, jangan lanjutkan ke situs web ini.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Abaikan peringatan dan lanjut";
@@ -1872,6 +1833,21 @@
 /* The content of the Customize toolbar spotlight view. */
 "You can now choose and rearrange the actions in this bar" = "Anda kini dapat menentukan dan mengatur ulang daftar tindakan pada bar ini";
 
+/* Title of the banner alert */
+"Your Mail storage is %@ full" = "Ruang penyimpanan Mail Anda %@ penuh";
+
+/* Title of the banner alert */
+"Your Mail storage is full" = "Ruang penyimpanan Mail Anda penuh";
+
+/* Description of the banner alert */
+"Upgrade to get more storage." = "Tingkatkan akun Anda untuk memperoleh lebih banyak ruang penyimpanan.";
+
+/* Get more storage button action */
+"Not now" = "Tidak sekarang";
+
+/* Get more storage button action */
+"Get more storage" = "Dapatkan ruang penyimpanan tambahan";
+
 /* Button to block a sender */
 "Block messages from this sender" = "Blokir pesan dari pengirim ini";
 
@@ -1928,6 +1904,33 @@
 /* Button to hide some items in the list to conserve screen estate */
 "Show less" = "Tampilkan lebih sedikit";
 
+/* Text shown when opening an invitation for a past event */
+"This event already ended" = "Acara ini telah berakhir";
+
+/* Text shown when opening an invitation for a cancelled event */
+"This event has been cancelled" = "Acara ini telah dibatalkan";
+
+/* Prompt above yes/no/maybe buttons */
+"Attending?" = "Hadiri?";
+
+/* Part of a yes/no/maybe prompt */
+"Yes" = "Ya";
+
+/* Part of a yes/no/maybe prompt */
+"No" = "Tidak";
+
+/* Part of a yes/no/maybe prompt */
+"Maybe" = "Mungkin";
+
+/* Confirm attending an event */
+"Yes, I'll attend" = "Ya, saya akan hadir";
+
+/* Deny attending an event */
+"No, I won't attend" = "Tidak, saya tidak akan hadir";
+
+/* Neither confirm nor deny attending an event */
+"I might attend" = "Saya mungkin akan hadir";
+
 /* Official badge next to sender's name */
 "Official" = "Resmi";
 
@@ -1975,6 +1978,9 @@
 
 /* Auto import alert message */
 "The initial import may take some time and will only occur when the app is in the foreground." = "Proses impor kali pertama dapat memakan waktu sejenak dan hanya akan berlangsung pada saat jendela aplikasi sedang aktif.";
+
+/* Alert to ask user to reauthorise access to contacts */
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Akses menuju kontak telah dinonaktifkan. Untuk mengaktifkan impor otomatis, tuju pengaturan dan aktifkan izin kontak.";
 
 /* Settings lock protection section */
 "Protection" = "Perlindungan";
@@ -2126,6 +2132,15 @@
 /* Title of button to empty trash folder */
 "Empty trash" = "Kosongkan sampah";
 
+/* Alert prompting to update Calendar */
+"Download the latest version of the Proton Calendar to open this event" = "Unduh Proton Calendar versi terbaru untuk membuka acara ini";
+
+/* Button to open App Store */
+"Download in App Store" = "Unduh di App Store";
+
+/* Button to open the Calendar app */
+"Open in Proton Calendar" = "Buka di Proton Calendar";
+
 /* Title of the sheet to advertise the auto delete feature to free users */
 "Clear out the junk" = "Hapus sampah yang ada";
 
@@ -2267,5 +2282,41 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Tanpa batasan jumlah folder, label, dan filter";
 
+/* Description string shows in spotlight view */
+"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Atur kapan suatu email akan kembali muncul pada kotak masuk Anda dengan fitur tunda, yang kini tersedia pada bilah toolbar.";
+
+/* Description string shows in spotlight view */
+"Snooze it for later" = "Tunda untuk nanti";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Tambah sebagai lampiran";
+
+/* The title in setting page */
+"Swipe to next message" = "Pindah ke pesan berikutnya";
+
+/* Description text for setting */
+"Allow navigating through messages by swiping left or right." = "Perbolehkan menavigasi pesan-pesan dengan mengusap ke kiri atau ke kanan.";
+
+/* The title of the privacy and data in the account setting. */
+"Privacy and data" = "Privasi dan data";
+
+/* cell title in device settings */
+"Storage" = "Penyimpanan";
+
+/* settings general section title */
+"Change account password" = "Ubah kata sandi akun";
+
+/* settings general section title */
+"Change mailbox password" = "Ubah kata sandi kotak surat";
+
+/* The title of the telemetry setting. */
+"Anonymous telemetry" = "Telemetri anonim";
+
+/* The title of the crash report setting. */
+"Anonymous crash reports" = "Laporan crash anonim";
+
+/* The subtitle of the anonymous telemetry setting. */
+"To improve our services, we sometimes collect anonymized usage data." = "Demi meningkatkan kualitas layanan, kami mengumpulkan data penggunaan secara anonim dari waktu ke waktu.";
+
+/* The subtitle of the crash report setting. */
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Apabila aplikasi Anda mengalami crash, laporan crash terkait akan dikirim kepada tim kami beserta dengan rinciannya. Laporan ini hanya akan digunakan untuk meningkatkan kinerja aplikasi.";

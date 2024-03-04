@@ -174,12 +174,6 @@
 /* Title */
 "wrote:" = "დაწერა:";
 
-/* At {time}, e.g.: At 19:00 */
-"At %@" = "%@ - Ზე";
-
-/* On {date}, e.g.: On Aug 14 */
-"On %@" = "%@ - Ზე";
-
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
 "On %@ at %@" = "%1$@ %2$@-ზე";
 
@@ -589,6 +583,9 @@
 /* Title */
 "Reading device contacts data…" = "მოწყობილობის კონტაქტების მონაცემების კითხვა…";
 
+/* title for the contact import indicator */
+"Importing contacts..." = "კონტაქტების შემოტანა...";
+
 /* Description */
 "Do you want to cancel the process?" = "გნებავთ პროცესის გაუქმება?";
 
@@ -772,9 +769,6 @@
 "Date: %@" = "თარიღი: %@";
 
 /* Title */
-"Details" = "დეტალები";
-
-/* Title */
 "Hide details" = "დეტალების დამალვა";
 
 /* contact placeholder */
@@ -794,12 +788,6 @@
 
 /* action */
 "Add new URL" = "ახალი ბმულის დამატება";
-
-/* settings general section title */
-"Change account password" = "ანგარიშის პაროლის შეცვლა";
-
-/* settings general section title */
-"Change mailbox password" = "საფოსტო ყუთის პაროლის შეცვლა";
 
 /* settings general section title */
 "Auto-load remote content" = "სხვა სერვერებიდან შემცველობის ავტომატური ჩვენება";
@@ -1147,9 +1135,6 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ დააგდეთ აქ მათ მისამაგრებლად";
 
-/* Downloading attachments from cloud */
-"Importing" = "შემოტანა";
-
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "მიმაგრებული ფაილის შემოტანა. ამას საკმაო დრო შეიძლება, დასჭირდეს";
 
@@ -1248,9 +1233,6 @@
 
 /* cell title in app settings */
 "Alternative routing" = "ალტერნატიული რაუტინგი";
-
-/* cell title in device settings */
-"Storage" = "საცავი";
 
 /* cell title in device settings */
 "Addresses" = "მისამართები";
@@ -1620,27 +1602,6 @@
 /* The title of voice over action that switches the unread filter status in the inbox */
 "Switch unread filter" = "წაუკითხავების ფილტრის გადართვა";
 
-/* Title of user feedback view */
-"Your feedback" = "თქვენი აზრი";
-
-/* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "როგორ მოგწონთ ახალი Proton Mail?";
-
-/* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "მოგვიყევით თქვენი გამოცილების შესახებ. (არასავალდებულო)";
-
-/* Title of button to send feedback */
-"Send feedback" = "უკუკავშირის გაგზავნა";
-
-/* Example feedback */
-"Awful" = "საშინელი";
-
-/* Example feedback */
-"Wonderful" = "შესანიშნავია";
-
-/* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "მადლობა გამოხმაურებისთვის!";
-
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
 "Collapse message" = "შეტყობინების ჩაკეცვა";
 
@@ -1872,6 +1833,21 @@
 /* The content of the Customize toolbar spotlight view. */
 "You can now choose and rearrange the actions in this bar" = "ახლა ამ პანელის ქმედებების არჩევა და გადალაგება შეგიძლიათ";
 
+/* Title of the banner alert */
+"Your Mail storage is %@ full" = "თქვენი Mail-ის საცავი %@ სავსეა";
+
+/* Title of the banner alert */
+"Your Mail storage is full" = "თქვენი ელფოსტის საცავი სავსეა";
+
+/* Description of the banner alert */
+"Upgrade to get more storage." = "ასწიეთ ტარიფი მეტი საცავის მისაღებად.";
+
+/* Get more storage button action */
+"Not now" = "არა ახლა";
+
+/* Get more storage button action */
+"Get more storage" = "მიიღეთ მეტი საცავი";
+
 /* Button to block a sender */
 "Block messages from this sender" = "ამ გამომგზავნის შეტყობინებების დაბლოკვა";
 
@@ -1928,6 +1904,33 @@
 /* Button to hide some items in the list to conserve screen estate */
 "Show less" = "ნაკლების ჩვენება";
 
+/* Text shown when opening an invitation for a past event */
+"This event already ended" = "ეს მოვლენა უკვე დასრულდა";
+
+/* Text shown when opening an invitation for a cancelled event */
+"This event has been cancelled" = "ეს მოვლენა გაუქმდა";
+
+/* Prompt above yes/no/maybe buttons */
+"Attending?" = "დაესწრებით?";
+
+/* Part of a yes/no/maybe prompt */
+"Yes" = "დიახ";
+
+/* Part of a yes/no/maybe prompt */
+"No" = "არა";
+
+/* Part of a yes/no/maybe prompt */
+"Maybe" = "შეიძლება";
+
+/* Confirm attending an event */
+"Yes, I'll attend" = "დიახ, დავესწრები";
+
+/* Deny attending an event */
+"No, I won't attend" = "არ დავესწრები";
+
+/* Neither confirm nor deny attending an event */
+"I might attend" = "ალბათ, დავესწრები";
+
 /* Official badge next to sender's name */
 "Official" = "ოფიციალური";
 
@@ -1975,6 +1978,9 @@
 
 /* Auto import alert message */
 "The initial import may take some time and will only occur when the app is in the foreground." = "საწყის შემოტანას საკმაო დრო შეიძლება დასჭირდეს და მხოლოდ მაშინ შეიძლება მოხდეს, როცა აპი წინა პლანზეა.";
+
+/* Alert to ask user to reauthorise access to contacts */
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "კონტაქტებთან წვდომა გათიშულია. ავტოშემოტანის ჩასართავად გადადით მორგების ფანჯარაზე და ჩართეთ კონტაქტის წვდომა.";
 
 /* Settings lock protection section */
 "Protection" = "დაცვა";
@@ -2126,6 +2132,15 @@
 /* Title of button to empty trash folder */
 "Empty trash" = "ნაგვის ყუთის დაცარიელება";
 
+/* Alert prompting to update Calendar */
+"Download the latest version of the Proton Calendar to open this event" = "გადმოწერეთ Proton Calendar-ის ბოლო ვერსია, რათა ეს მოვლენა გახსნათ";
+
+/* Button to open App Store */
+"Download in App Store" = "გადმოწერეთ App Store-დან";
+
+/* Button to open the Calendar app */
+"Open in Proton Calendar" = "Proton Calendar-ში გახსნა";
+
 /* Title of the sheet to advertise the auto delete feature to free users */
 "Clear out the junk" = "ნაგვის მოსუფთავება";
 
@@ -2267,5 +2282,41 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "ულიმიტო საქაღალდეები, ჭდეები და ფილტრები";
 
+/* Description string shows in spotlight view */
+"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "დააყენეთ, როდის გამოჩნდება თავიდან ელფოსტა თქვენს საფოსტო ყუთში დადუმების ფუნქციით. ახლა ის ხელმისაწვდომია ხელსაწყოების პანელიდან";
+
+/* Description string shows in spotlight view */
+"Snooze it for later" = "დაყოვნება";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "დამატება მიმაგრებულ ფაილად";
+
+/* The title in setting page */
+"Swipe to next message" = "გაუსვით შემდეგ შეტყობინებამდე";
+
+/* Description text for setting */
+"Allow navigating through messages by swiping left or right." = "შეტყობინებებში ნავიგაცია მარცხნივ ან მარჯვნივ გასმით.";
+
+/* The title of the privacy and data in the account setting. */
+"Privacy and data" = "კონფიდენციალობა და მონაცემები";
+
+/* cell title in device settings */
+"Storage" = "საცავი";
+
+/* settings general section title */
+"Change account password" = "ანგარიშის პაროლის შეცვლა";
+
+/* settings general section title */
+"Change mailbox password" = "საფოსტო ყუთის პაროლის შეცვლა";
+
+/* The title of the telemetry setting. */
+"Anonymous telemetry" = "ანონიმური ტელემეტრია";
+
+/* The title of the crash report setting. */
+"Anonymous crash reports" = "აპლიკაციის ავარიის ანონიმური ანგარიშები";
+
+/* The subtitle of the anonymous telemetry setting. */
+"To improve our services, we sometimes collect anonymized usage data." = "სერვისების გასაუმჯობესებლად ჩვენ ხანდახან გამოყენების მონაცემებს ანონიმურად ვაგროვებთ.";
+
+/* The subtitle of the crash report setting. */
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "თუ აპი გაითიშება, ჩვენს ინჟინრებს მიუვათ ანგარიშის დეტალები, რატომ მოხდა ეს. ამ მონაცემებს, მხოლოდ, აპის გაუმჯობესებისთვის ვიყენებთ.";
