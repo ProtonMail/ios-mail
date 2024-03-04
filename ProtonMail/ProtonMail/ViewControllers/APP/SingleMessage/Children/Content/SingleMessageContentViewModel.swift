@@ -52,6 +52,7 @@ class SingleMessageContentViewModel {
     var hideProgressHub: (() -> Void)?
     private var isApplicationActive: (() -> Bool)?
     private var reloadWhenAppIsActive: (() -> Void)?
+    private var hasCalledMarkAsRead = false
 
     var isEmbedInConversationView: Bool {
         context.viewMode == .conversation
@@ -245,7 +246,13 @@ class SingleMessageContentViewModel {
     }
 
     func markReadIfNeeded() {
-        guard message.unRead else { return }
+        if hasCalledMarkAsRead { return }
+        guard message.unRead || message.showReminder else { return }
+        // To remove snooze time highlight, client needs to call /read API to sync with other device
+        // But before reaching final state, this function will be called couple times
+        // That means /read API will be called duplicated
+        // Introduce `hasCalledMarkedRead` as workaround to prevent duplicated call
+        hasCalledMarkAsRead = true
         messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: context.labelId, unRead: false)
     }
 
