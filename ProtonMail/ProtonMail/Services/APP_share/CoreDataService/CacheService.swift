@@ -157,9 +157,7 @@ class CacheService: CacheServiceProtocol {
             return false
         }
 
-        guard msgToUpdate.unRead != unRead else {
-            return true
-        }
+        let unreadStatusHasChanged = msgToUpdate.unRead != unRead
 
         msgToUpdate.unRead = unRead
 
@@ -176,7 +174,7 @@ class CacheService: CacheServiceProtocol {
         if let conversation = Conversation.conversationForConversationID(msgToUpdate.conversationID, inManagedObjectContext: context) {
             conversation.applySingleMarkAsChanges(unRead: unRead, labelID: labelID.rawValue)
         }
-        if shouldUpdateCounter {
+        if shouldUpdateCounter && unreadStatusHasChanged {
             updateCounterSync(markUnRead: unRead, on: msgToUpdate.getLabelIDs().map { LabelID($0) })
         }
 
