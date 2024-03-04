@@ -146,7 +146,7 @@ extension MailboxViewController {
             hasSnoozeLabel: conversation.contains(of: Message.Location.snooze.labelID),
             snoozeTime: dateForSnoozeTime(of: conversation),
             hasShowReminderFlag: conversation.displaySnoozedReminder,
-            reminderTime: dateForReminder(of: conversation, labelId: labelId, weekStart: weekStart)
+            reminderTime: dateForReminder(of: conversation, weekStart: weekStart)
         )
         let displayOriginIcon = [
             Message.Location.allmail,
@@ -212,10 +212,9 @@ extension MailboxViewController {
 
     private func dateForReminder(
         of conversation: ConversationEntity,
-        labelId: LabelID,
         weekStart: WeekStart
     ) -> String? {
-        guard let date = conversation.getSnoozeTime(labelID: labelId) else { return nil }
+        guard let date = conversation.getSnoozeTime(labelID: Message.Location.inbox.labelID) else { return nil }
         return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
     }
 }
