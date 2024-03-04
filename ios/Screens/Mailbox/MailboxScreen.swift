@@ -15,29 +15,42 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import SwiftUI
 
 struct MailboxScreen: View {
-    @EnvironmentObject var userSettings: UserSettings
+    @EnvironmentObject private var appUIState: AppUIState
+    @EnvironmentObject private var userSettings: UserSettings
 
     var body: some View {
         NavigationStack {
             ZStack {
                 if userSettings.mailboxViewMode == .conversation {
-                    ConversationMailboxScreen(model: PreviewData.conversationMailboxModel)
+                    ConversationMailboxScreen(model: PreviewData.conversationMailboxScreenModel)
                 } else {
                     Text("message list mailbox")
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("Inbox")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        appUIState.isSidebarOpen.toggle()
+                    }) {
+                        Image(uiImage: MailIcon.icHamburguer)
+                    }
+                }
+            }
         }
     }
 }
 
 #Preview {
+    let appUIState = AppUIState(isSidebarOpen: true)
     let userSettings = UserSettings(mailboxViewMode: .conversation)
     return MailboxScreen()
+        .environmentObject(appUIState)
         .environmentObject(userSettings)
 }
 

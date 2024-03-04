@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		4701D41D2B8CB1C400D6DC1D /* MailboxScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4701D41C2B8CB1C400D6DC1D /* MailboxScreen.swift */; };
 		47143B782B8CDAE900AAB4E4 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 47143B772B8CDAE900AAB4E4 /* DesignSystem */; };
-		47143B7B2B8CECAD00AAB4E4 /* ConversationMailboxModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47143B7A2B8CECAD00AAB4E4 /* ConversationMailboxModel.swift */; };
+		47143B7B2B8CECAD00AAB4E4 /* ConversationMailboxScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47143B7A2B8CECAD00AAB4E4 /* ConversationMailboxScreenModel.swift */; };
 		47143B7D2B8CECC500AAB4E4 /* ConversationMailboxScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47143B7C2B8CECC500AAB4E4 /* ConversationMailboxScreen.swift */; };
 		47143B802B8CFF1800AAB4E4 /* AvatarCheckboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47143B7F2B8CFF1800AAB4E4 /* AvatarCheckboxView.swift */; };
 		47761CCD2B8DFB1500AFE584 /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47761CCC2B8DFB1500AFE584 /* PreviewData.swift */; };
@@ -19,6 +19,8 @@
 		477F665F2B8CA3E400119523 /* iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F665E2B8CA3E400119523 /* iosTests.swift */; };
 		477F66692B8CA3E400119523 /* iosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F66682B8CA3E400119523 /* iosUITests.swift */; };
 		477F666B2B8CA3E400119523 /* iosUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F666A2B8CA3E400119523 /* iosUITestsLaunchTests.swift */; };
+		47D4614E2B9379F4007546C1 /* SidebarScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D4614D2B9379F4007546C1 /* SidebarScreen.swift */; };
+		47D461512B937C28007546C1 /* SidebarScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D461502B937C27007546C1 /* SidebarScreenModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,7 +43,7 @@
 /* Begin PBXFileReference section */
 		4701D41C2B8CB1C400D6DC1D /* MailboxScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxScreen.swift; sourceTree = "<group>"; };
 		47143B732B8CD70A00AAB4E4 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DesignSystem; path = localPackages/DesignSystem; sourceTree = "<group>"; };
-		47143B7A2B8CECAD00AAB4E4 /* ConversationMailboxModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationMailboxModel.swift; sourceTree = "<group>"; };
+		47143B7A2B8CECAD00AAB4E4 /* ConversationMailboxScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationMailboxScreenModel.swift; sourceTree = "<group>"; };
 		47143B7C2B8CECC500AAB4E4 /* ConversationMailboxScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationMailboxScreen.swift; sourceTree = "<group>"; };
 		47143B7F2B8CFF1800AAB4E4 /* AvatarCheckboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCheckboxView.swift; sourceTree = "<group>"; };
 		47761CCC2B8DFB1500AFE584 /* PreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewData.swift; sourceTree = "<group>"; };
@@ -54,6 +56,8 @@
 		477F66642B8CA3E400119523 /* iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iosUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		477F66682B8CA3E400119523 /* iosUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosUITests.swift; sourceTree = "<group>"; };
 		477F666A2B8CA3E400119523 /* iosUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		47D4614D2B9379F4007546C1 /* SidebarScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarScreen.swift; sourceTree = "<group>"; };
+		47D461502B937C27007546C1 /* SidebarScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarScreenModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				4701D41E2B8CB21300D6DC1D /* Mailbox */,
+				47D4614F2B937B68007546C1 /* Sidebar */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -118,8 +123,8 @@
 		47143B792B8CEC9300AAB4E4 /* ConversationMailboxScreen */ = {
 			isa = PBXGroup;
 			children = (
-				47143B7A2B8CECAD00AAB4E4 /* ConversationMailboxModel.swift */,
 				47143B7C2B8CECC500AAB4E4 /* ConversationMailboxScreen.swift */,
+				47143B7A2B8CECAD00AAB4E4 /* ConversationMailboxScreenModel.swift */,
 			);
 			path = ConversationMailboxScreen;
 			sourceTree = "<group>";
@@ -189,6 +194,15 @@
 				477F666A2B8CA3E400119523 /* iosUITestsLaunchTests.swift */,
 			);
 			path = iosUITests;
+			sourceTree = "<group>";
+		};
+		47D4614F2B937B68007546C1 /* Sidebar */ = {
+			isa = PBXGroup;
+			children = (
+				47D4614D2B9379F4007546C1 /* SidebarScreen.swift */,
+				47D461502B937C27007546C1 /* SidebarScreenModel.swift */,
+			);
+			path = Sidebar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -327,11 +341,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				4701D41D2B8CB1C400D6DC1D /* MailboxScreen.swift in Sources */,
-				47143B7B2B8CECAD00AAB4E4 /* ConversationMailboxModel.swift in Sources */,
+				47143B7B2B8CECAD00AAB4E4 /* ConversationMailboxScreenModel.swift in Sources */,
+				47D4614E2B9379F4007546C1 /* SidebarScreen.swift in Sources */,
 				47761CCD2B8DFB1500AFE584 /* PreviewData.swift in Sources */,
 				47143B7D2B8CECC500AAB4E4 /* ConversationMailboxScreen.swift in Sources */,
 				477F664E2B8CA3E300119523 /* ProtonMailApp.swift in Sources */,
 				47143B802B8CFF1800AAB4E4 /* AvatarCheckboxView.swift in Sources */,
+				47D461512B937C28007546C1 /* SidebarScreenModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -24,6 +24,7 @@ public extension MailColor {
 
 public extension MailIcon {
     static let icCheckmark = icon(named: "ic-checkmark")
+    static let icHamburguer = icon(named: "ic-hamburger")
     static let icStar = icon(named: "ic-star")
     static let icStarFilled = icon(named: "ic-star-filled")
 }

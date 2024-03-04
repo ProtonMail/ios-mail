@@ -20,7 +20,7 @@ import Foundation
 typealias ConversationId = String
 
 @Observable
-final class Conversation: Identifiable {
+final class ConversationUIModel: Identifiable {
     let id: String
     let avatarImage: URL
     let senders: String
@@ -42,10 +42,10 @@ final class Conversation: Identifiable {
 }
 
 @Observable
-final class ConversationMailboxModel {
-    private(set) var conversations: [Conversation]
+final class ConversationMailboxScreenModel {
+    private(set) var conversations: [ConversationUIModel]
 
-    init(conversations: [Conversation]) {
+    init(conversations: [ConversationUIModel]) {
         self.conversations = conversations
     }
 

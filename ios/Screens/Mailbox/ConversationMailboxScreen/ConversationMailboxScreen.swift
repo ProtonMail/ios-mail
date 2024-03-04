@@ -19,7 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct ConversationMailboxScreen: View {
-    @State var model: ConversationMailboxModel = PreviewData.conversationMailboxModel
+    @State var model: ConversationMailboxScreenModel
 
     var body: some View {
         List {
@@ -123,5 +123,5 @@ struct ConversationCell: View {
 }
 
 #Preview {
-    return ConversationMailboxScreen(model: PreviewData.conversationMailboxModel)
+    return ConversationMailboxScreen(model: PreviewData.conversationMailboxScreenModel)
 }

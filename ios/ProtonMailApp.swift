@@ -31,12 +31,24 @@ final class UserSettings: ObservableObject {
     }
 }
 
+final class AppUIState: ObservableObject {
+    @Published var isSidebarOpen: Bool
+
+    init(isSidebarOpen: Bool) {
+        self.isSidebarOpen = isSidebarOpen
+    }
+}
+
 @main
 struct ProtonMail: App {
     var body: some Scene {
         WindowGroup {
-            MailboxScreen()
-                .environmentObject(UserSettings(mailboxViewMode: .conversation))
+            ZStack {
+                MailboxScreen()
+                    .environmentObject(UserSettings(mailboxViewMode: .conversation))
+                SidebarScreen(model: PreviewData.sidebarScreenModel)
+            }
+            .environmentObject(AppUIState(isSidebarOpen: false))
         }
     }
 }
