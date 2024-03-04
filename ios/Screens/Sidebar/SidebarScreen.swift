@@ -30,6 +30,7 @@ struct SidebarScreen: View {
 
     var body: some View {
         ZStack {
+
             GeometryReader { _ in
                 EmptyView()
             }
@@ -54,7 +55,9 @@ struct SidebarScreen: View {
 
     var sidebarContent: some View {
         ScrollView(showsIndicators: false) {
+
             VStack(spacing: 24) {
+
                 ForEach(model.items) { item in
                     SidebarCell(icon: item.icon, text: item.text, badge: item.badge)
                 }
@@ -70,7 +73,9 @@ struct SidebarCell: View {
     let badge: String?
 
     var body: some View {
+
         HStack {
+
             Image(uiImage: icon)
             Text(text)
             Spacer()

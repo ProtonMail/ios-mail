@@ -16,11 +16,40 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import struct SwiftUI.Color
 
 typealias ConversationId = String
 
+struct MailboxLabelUIModel: Identifiable {
+    let id: String
+    let labelColor: Color
+    let text: String
+    let textColor: Color
+    /// total number of labels - 1
+    let numExtraLabels: Int
+    var isEmpty: Bool {
+        text.isEmpty
+    }
+
+    init() {
+        self.id = UUID().uuidString
+        self.labelColor = .clear
+        self.text = ""
+        self.textColor = .clear
+        self.numExtraLabels = 0
+    }
+
+    init(id: String, labelColor: Color, text: String, textColor: Color, numExtraLabels: Int) {
+        self.id = id
+        self.labelColor = labelColor
+        self.text = text
+        self.textColor = textColor
+        self.numExtraLabels = numExtraLabels
+    }
+}
+
 @Observable
-final class ConversationUIModel: Identifiable {
+final class ConversationCellUIModel: Identifiable {
     let id: String
     let avatarImage: URL
     let senders: String
@@ -30,7 +59,18 @@ final class ConversationUIModel: Identifiable {
     let isStarred: Bool
     var isSelected: Bool = false
 
-    init(id: String, avatarImage: URL, senders: String, subject: String, date: Date, isRead: Bool, isStarred: Bool) {
+    let labelUIModel: MailboxLabelUIModel
+
+    init(
+        id: String,
+        avatarImage: URL,
+        senders: String,
+        subject: String,
+        date: Date,
+        isRead: Bool,
+        isStarred: Bool,
+        labelUIModel: MailboxLabelUIModel = .init()
+    ) {
         self.id = id
         self.avatarImage = avatarImage
         self.senders = senders
@@ -38,14 +78,15 @@ final class ConversationUIModel: Identifiable {
         self.date = date
         self.isRead = isRead
         self.isStarred = isStarred
+        self.labelUIModel = labelUIModel
     }
 }
 
 @Observable
 final class ConversationMailboxScreenModel {
-    private(set) var conversations: [ConversationUIModel]
+    private(set) var conversations: [ConversationCellUIModel]
 
-    init(conversations: [ConversationUIModel]) {
+    init(conversations: [ConversationCellUIModel]) {
         self.conversations = conversations
     }
 

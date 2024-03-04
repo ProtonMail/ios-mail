@@ -29,13 +29,39 @@ enum PreviewData {
         .init(id: UUID().uuidString, icon: MailIcon.icStar, text: "Spam", badge: nil),
     ])
 
-    static let conversationMailboxScreenModel = ConversationMailboxScreenModel(conversations: [
-        .init(id: UUID().uuidString, avatarImage: URL(fileURLWithPath: ""), senders: "Proton", subject: "Save up to 40% on our most popular plans", date: Calendar.current.date(byAdding: .minute, value: -1, to: Date())!, isRead: false, isStarred: false),
-        .init(id: UUID().uuidString, avatarImage: URL(fileURLWithPath: ""), senders: "Mike Smith", subject: "Holidays in Greece!", date: Calendar.current.date(byAdding: .minute, value: -67, to: Date())!, isRead: true, isStarred: false),
-        .init(id: UUID().uuidString, avatarImage: URL(fileURLWithPath: ""), senders: "Proton", subject: "Fundraiser end Monday: Last chance to win a Lifetime account, rare usernames", date: Calendar.current.date(byAdding: .minute, value: -5000, to: Date())!, isRead: true, isStarred: false),
-        .init(id: UUID().uuidString, avatarImage: URL(fileURLWithPath: ""), senders: "Emma Sands", subject: "About today's meeting", date: Calendar.current.date(byAdding: .minute, value: -5000, to: Date())!, isRead: true, isStarred: false),
-        .init(id: UUID().uuidString, avatarImage: URL(fileURLWithPath: ""), senders: "customersupport@example.com", subject: "Ticket #6457234", date: Calendar.current.date(byAdding: .minute, value: -8800, to: Date())!, isRead: false, isStarred: true),
-        .init(id: UUID().uuidString, avatarImage: URL(fileURLWithPath: ""), senders: "Brad, Monica Lenders, Elisabeth", subject: "Beers at 7pm", date: Calendar.current.date(byAdding: .minute, value: -17500, to: Date())!, isRead: true, isStarred: true),
-        .init(id: UUID().uuidString, avatarImage: URL(fileURLWithPath: ""), senders: "Proton", subject: "Get more out of your inbox", date: Calendar.current.date(byAdding: .minute, value: -40000, to: Date())!, isRead: true, isStarred: false),
-    ])
+    static var conversationMailboxScreenModel: ConversationMailboxScreenModel {
+
+        let conversations: [ConversationCellUIModel] = (1..<100).map { value in
+            let randomSenderSubject = randomSenderSubject()
+            return .init(
+                id: UUID().uuidString,
+                avatarImage: URL(fileURLWithPath: ""),
+                senders: randomSenderSubject.0,
+                subject: randomSenderSubject.1,
+                date: Calendar.current.date(byAdding: .minute, value: -1 * (value*value*1005), to: Date())!,
+                isRead: (value == 2 || value>5),
+                isStarred: (value%6 == 0),
+                labelUIModel: [0, 1, 2].randomElement()! == 0 ? mailboxLabels.randomElement()! : .init()
+            )
+        }
+        return .init(conversations: conversations)
+    }
+
+    static let mailboxLabels: [MailboxLabelUIModel] = [
+        .init(id: UUID().uuidString, labelColor: .orange, text: "WORK", textColor: .white, numExtraLabels: [2, 3].randomElement()!),
+        .init(id: UUID().uuidString, labelColor: .blue, text:  "Read later", textColor: .white, numExtraLabels: [0, 1].randomElement()!),
+        .init(id: UUID().uuidString, labelColor: .green, text: "Newsletters", textColor: .white, numExtraLabels: [0].randomElement()!),
+    ]
+
+    static func randomSenderSubject() -> (String, String) {
+        [
+            ("Proton", "Save up to 40% on our most popular plans"),
+            ("Mike Smith", "Holidays in Greece!"),
+            ("Proton", "Fundraiser end next Monday: Last chance to win a Lifetime account, rare usernames"),
+            ("Emma Sands", "About today's meeting"),
+            ("Brad, Monica Lenders, Elisabeth", "Beers at 7pm"),
+            ("customersupport@example.com", "Ticket #6457234"),
+            ("Proton", "Get more out of your inbox"),
+        ].randomElement()!
+    }
 }

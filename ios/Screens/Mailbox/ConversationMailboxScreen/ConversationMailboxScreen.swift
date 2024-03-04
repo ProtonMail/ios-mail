@@ -25,12 +25,7 @@ struct ConversationMailboxScreen: View {
         List {
             ForEach(model.conversations) { conversation in
                 ConversationCell(
-                    senders: conversation.senders,
-                    subject: conversation.subject,
-                    date: conversation.date,
-                    isSelected: conversation.isSelected,
-                    isRead: conversation.isRead,
-                    isStarred: conversation.isStarred,
+                    uiModel: conversation,
                     onEvent: { [weak model] event in
                         switch event {
                         case .onSelectedChange(let isSelected):
@@ -64,61 +59,66 @@ enum ConversationCellEvent {
 }
 
 struct ConversationCell: View {
-    let senders: String
-    let subject: String
-    let date: Date
-    let isSelected: Bool
-    let isRead: Bool
-    let isStarred: Bool
-
+    let uiModel: ConversationCellUIModel
     let onEvent: (ConversationCellEvent) -> Void
 
-    var textColor: Color {
-        isRead ? MailColor.textWeak : MailColor.textNorm
+    private var textColor: Color {
+        uiModel.isRead ? MailColor.textWeak : MailColor.textNorm
+    }
+
+    private var labelLeadingPadding: CGFloat {
+        uiModel.labelUIModel.isEmpty ? 0 : 4
     }
 
     var body: some View {
         HStack(spacing: 16.0) {
+
             AvatarCheckboxView(
-                isSelected: isSelected,
+                isSelected: uiModel.isSelected,
                 onDidChangeSelection: { onEvent(.onSelectedChange(isSelected: $0)) }
             )
             .frame(width: 40, height: 40)
 
             VStack(spacing: 2) {
+
                 HStack {
-                    Text(senders)
+
+                    Text(uiModel.senders)
                         .font(.subheadline)
                         .lineLimit(1)
-                        .bold(!isRead)
+                        .bold(!uiModel.isRead)
                         .foregroundColor(textColor)
                     Spacer()
-                    Text(date.formatted(date: .long, time: .omitted))
+                    Text(uiModel.date.formatted(date: .long, time: .omitted))
                         .font(.footnote)
-                        .bold(!isRead)
+                        .bold(!uiModel.isRead)
                         .foregroundColor(textColor)
                 }
 
-                HStack {
-                    Text(subject)
+                HStack(spacing: 0) {
+
+                    Text(uiModel.subject)
                         .font(.callout)
                         .lineLimit(1)
-                        .bold(!isRead)
+                        .bold(!uiModel.isRead)
                         .foregroundColor(textColor)
+                        .layoutPriority(1)
+                    MailboxLabelView(uiModel: uiModel.labelUIModel)
+                        .padding(.leading, labelLeadingPadding)
                     Spacer()
-                    Image(uiImage: isStarred ? MailIcon.icStarFilled : MailIcon.icStar)
+                    Image(uiImage: uiModel.isStarred ? MailIcon.icStarFilled : MailIcon.icStar)
                         .resizable()
                         .frame(width: 16, height: 16)
-                        .foregroundColor(isStarred ? .yellow : MailColor.textWeak)
+                        .foregroundColor(uiModel.isStarred ? .yellow : MailColor.textWeak)
                         .onTapGesture {
-                            onEvent(.onStarredChange(isStarred: !isStarred))
+                            onEvent(.onStarredChange(isStarred: !uiModel.isStarred))
                         }
                 }
             }
 
         }
         .padding(14)
-        .background(isSelected ? MailColor.backgroundSecondary : Color(UIColor.systemBackground))
+        .background(uiModel.isSelected ? MailColor.backgroundSecondary : Color(UIColor.systemBackground))
     }
 }
 

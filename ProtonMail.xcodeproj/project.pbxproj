@@ -12,6 +12,7 @@
 		47143B7B2B8CECAD00AAB4E4 /* ConversationMailboxScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47143B7A2B8CECAD00AAB4E4 /* ConversationMailboxScreenModel.swift */; };
 		47143B7D2B8CECC500AAB4E4 /* ConversationMailboxScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47143B7C2B8CECC500AAB4E4 /* ConversationMailboxScreen.swift */; };
 		47143B802B8CFF1800AAB4E4 /* AvatarCheckboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47143B7F2B8CFF1800AAB4E4 /* AvatarCheckboxView.swift */; };
+		472ED7772B95DD2A00C1C8E6 /* MailboxLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472ED7762B95DD2A00C1C8E6 /* MailboxLabelView.swift */; };
 		47761CCD2B8DFB1500AFE584 /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47761CCC2B8DFB1500AFE584 /* PreviewData.swift */; };
 		477F664E2B8CA3E300119523 /* ProtonMailApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F664D2B8CA3E300119523 /* ProtonMailApp.swift */; };
 		477F66522B8CA3E400119523 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 477F66512B8CA3E400119523 /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 		47143B7A2B8CECAD00AAB4E4 /* ConversationMailboxScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationMailboxScreenModel.swift; sourceTree = "<group>"; };
 		47143B7C2B8CECC500AAB4E4 /* ConversationMailboxScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationMailboxScreen.swift; sourceTree = "<group>"; };
 		47143B7F2B8CFF1800AAB4E4 /* AvatarCheckboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCheckboxView.swift; sourceTree = "<group>"; };
+		472ED7762B95DD2A00C1C8E6 /* MailboxLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxLabelView.swift; sourceTree = "<group>"; };
 		47761CCC2B8DFB1500AFE584 /* PreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewData.swift; sourceTree = "<group>"; };
 		477F664A2B8CA3E300119523 /* ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		477F664D2B8CA3E300119523 /* ProtonMailApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonMailApp.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				47143B7F2B8CFF1800AAB4E4 /* AvatarCheckboxView.swift */,
+				472ED7762B95DD2A00C1C8E6 /* MailboxLabelView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -341,6 +344,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4701D41D2B8CB1C400D6DC1D /* MailboxScreen.swift in Sources */,
+				472ED7772B95DD2A00C1C8E6 /* MailboxLabelView.swift in Sources */,
 				47143B7B2B8CECAD00AAB4E4 /* ConversationMailboxScreenModel.swift in Sources */,
 				47D4614E2B9379F4007546C1 /* SidebarScreen.swift in Sources */,
 				47761CCD2B8DFB1500AFE584 /* PreviewData.swift in Sources */,
