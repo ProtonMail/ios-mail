@@ -171,12 +171,15 @@ extension SearchViewModel {
 
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel {
         let contactGroups = user.contactGroupService.getAllContactGroupVOs()
-        let senderRowComponents = dependencies.mailboxMessageCellHelper.senderRowComponents(
+        var senderRowComponents = dependencies.mailboxMessageCellHelper.senderRowComponents(
             for: message,
             basedOn: sharedReplacingEmailsMap,
             groupContacts: contactGroups,
             shouldReplaceSenderWithRecipients: true
         )
+        if senderRowComponents.isEmpty {
+            senderRowComponents = [.string("")]
+        }
         let weekStart = user.userInfo.weekStartValue
         let customFolderLabels = user.labelService.getAllLabels(of: .folder)
         let isSelected = self.selectedMessages.contains(message)

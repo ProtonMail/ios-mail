@@ -42,15 +42,18 @@ extension MailboxViewController {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: message.messageID.rawValue)
         let contactGroups = viewModel.contactGroups()
-        let senderRowComponents = mailboxMessageCellHelper.senderRowComponents(
+        var senderRowComponents = mailboxMessageCellHelper.senderRowComponents(
             for: message,
             basedOn: replacingEmailsMap,
             groupContacts: contactGroups,
             shouldReplaceSenderWithRecipients: true
         )
+        if senderRowComponents.isEmpty {
+            senderRowComponents = [.string("")]
+        }
         let isSending = viewModel.messageService.isMessageBeingSent(id: message.messageID)
 
-        var initial = ""
+        var initial = "?"
         if let firstSenderRowComponent = senderRowComponents.first {
             initial = [firstSenderRowComponent].initials()
         }

@@ -8,6 +8,7 @@
 
 import XCTest
 import fusion
+@testable import ProtonMail
 
 fileprivate struct id {
     static let messageTitleLabelIdentifier = "mailboxMessageCell.titleLabel"
@@ -20,7 +21,8 @@ fileprivate struct id {
  * contains actions and verifications for Drafts composer functionality.
  */
 class DraftsRobot: MailboxRobotInterface {
-    
+    static let noRecipientText = "(\(L11n.MailBox.noRecipient))"
+
     var verify = Verify()
     
     override func searchBar() -> SearchRobot {
@@ -60,6 +62,14 @@ class DraftsRobot: MailboxRobotInterface {
                 .firstMatch()
                 .waitUntilExists()
                 .checkExists()
+        }
+
+        func messageWithSubjectAndRecipientAndInitialsExists(subject: String, to: String, initials: String) {
+            let messageCell = cell("NewMailboxMessageCell.\(subject)")
+                .waitUntilExists()
+                .checkExists()
+            let isCorrect = messageCell.label()?.hasPrefix("\(initials), \(subject), \(to),") ?? false
+            XCTAssertTrue(isCorrect)
         }
     }
 }
