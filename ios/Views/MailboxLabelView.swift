@@ -27,7 +27,7 @@ struct MailboxLabelView: View {
         min(uiModel.numExtraLabels, 99)
     }
     private var minWidth: CGFloat? {
-        uiModel.isEmpty ? nil : 75
+        uiModel.isEmpty ? nil : 30
     }
     private var maxWidth: CGFloat? {
         uiModel.isEmpty ? nil : 100
@@ -46,6 +46,7 @@ struct MailboxLabelView: View {
                 .foregroundColor(uiModel.textColor)
                 .padding(textPadding)
                 .lineLimit(1)
+                .frame(minWidth: minWidth)
                 .background(
                     Capsule()
                         .foregroundColor(uiModel.labelColor)
@@ -55,7 +56,36 @@ struct MailboxLabelView: View {
                 .fontWeight(.regular)
                 .frame(width: showExtraLabels ? nil : 0)
         }
-        .frame(minWidth: minWidth, maxWidth: maxWidth, alignment: .leading)
+        .frame(maxWidth: maxWidth, alignment: .leading)
+        .fixedSize()
+    }
+}
+
+struct MailboxLabelUIModel: Identifiable {
+    let id: String
+    let labelColor: Color
+    let text: String
+    let textColor: Color
+    /// total number of labels - 1
+    let numExtraLabels: Int
+    var isEmpty: Bool {
+        text.isEmpty
+    }
+
+    init() {
+        self.id = UUID().uuidString
+        self.labelColor = .clear
+        self.text = ""
+        self.textColor = .clear
+        self.numExtraLabels = 0
+    }
+
+    init(id: String, labelColor: Color, text: String, textColor: Color, numExtraLabels: Int) {
+        self.id = id
+        self.labelColor = labelColor
+        self.text = text
+        self.textColor = textColor
+        self.numExtraLabels = numExtraLabels
     }
 }
 
@@ -68,7 +98,7 @@ struct MailboxLabelView: View {
                 uiModel: MailboxLabelUIModel(
                     id: UUID().uuidString,
                     labelColor: .blue,
-                    text: "Friends",
+                    text: "a",
                     textColor: .white,
                     numExtraLabels: 0
                 )

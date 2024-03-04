@@ -29,9 +29,9 @@ enum PreviewData {
         .init(id: UUID().uuidString, icon: MailIcon.icStar, text: "Spam", badge: nil),
     ])
 
-    static var conversationMailboxScreenModel: ConversationMailboxScreenModel {
+    static var mailboxConversationScreenModel: MailboxConversationScreenModel {
 
-        let conversations: [ConversationCellUIModel] = (1..<100).map { value in
+        let conversations: [MailboxConversationCellUIModel] = (1..<100).map { value in
             let randomSenderSubject = randomSenderSubject()
             return .init(
                 id: UUID().uuidString,

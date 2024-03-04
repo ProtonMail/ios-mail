@@ -18,49 +18,9 @@
 import DesignSystem
 import SwiftUI
 
-struct ConversationMailboxScreen: View {
-    @State var model: ConversationMailboxScreenModel
-
-    var body: some View {
-        List {
-            ForEach(model.conversations) { conversation in
-                ConversationCell(
-                    uiModel: conversation,
-                    onEvent: { [weak model] event in
-                        switch event {
-                        case .onSelectedChange(let isSelected):
-                            model?.onConversationSelectionChange(id: conversation.id, isSelected: isSelected)
-                        case .onStarredChange(let isStarred):
-                            model?.onConversationStarChange(id: conversation.id, isStarred: isStarred)
-                        }
-                    }
-                )
-                .listRowInsets(
-                    .init(top: 1, leading: 1, bottom: 1, trailing: 0)
-                )
-                .listRowSeparator(.hidden)
-                .clipShape(
-                    .rect(
-                        topLeadingRadius: 20,
-                        bottomLeadingRadius: 20,
-                        bottomTrailingRadius: 0,
-                        topTrailingRadius: 0
-                    )
-                )
-            }
-        }
-        .listStyle(.plain)
-    }
-}
-
-enum ConversationCellEvent {
-    case onSelectedChange(isSelected: Bool)
-    case onStarredChange(isStarred: Bool)
-}
-
-struct ConversationCell: View {
-    let uiModel: ConversationCellUIModel
-    let onEvent: (ConversationCellEvent) -> Void
+struct MailboxConversationCell: View {
+    let uiModel: MailboxConversationCellUIModel
+    let onEvent: (MailboxConversationCellEvent) -> Void
 
     private var textColor: Color {
         uiModel.isRead ? MailColor.textWeak : MailColor.textNorm
@@ -122,6 +82,92 @@ struct ConversationCell: View {
     }
 }
 
+@Observable
+final class MailboxConversationCellUIModel: Identifiable {
+    let id: String
+    let avatarImage: URL
+    let senders: String
+    let subject: String
+    let date: Date
+    let isRead: Bool
+    let isStarred: Bool
+    var isSelected: Bool = false
+
+    let labelUIModel: MailboxLabelUIModel
+
+    init(
+        id: String,
+        avatarImage: URL,
+        senders: String,
+        subject: String,
+        date: Date,
+        isRead: Bool,
+        isStarred: Bool,
+        labelUIModel: MailboxLabelUIModel = .init()
+    ) {
+        self.id = id
+        self.avatarImage = avatarImage
+        self.senders = senders
+        self.subject = subject
+        self.date = date
+        self.isRead = isRead
+        self.isStarred = isStarred
+        self.labelUIModel = labelUIModel
+    }
+}
+
+enum MailboxConversationCellEvent {
+    case onSelectedChange(isSelected: Bool)
+    case onStarredChange(isStarred: Bool)
+}
+
 #Preview {
-    return ConversationMailboxScreen(model: PreviewData.conversationMailboxScreenModel)
+    var model: MailboxConversationCellUIModel {
+        MailboxConversationCellUIModel(
+            id: "",
+            avatarImage: URL(string: "https://proton.me")!,
+            senders: "Proton",
+            subject: "30% discount on all our products",
+            date: Date(),
+            isRead: false,
+            isStarred: false,
+            labelUIModel: .init()
+        )
+    }
+    var model1 = model
+    model1.isSelected = true
+
+    return VStack {
+
+        MailboxConversationCell(uiModel: model, onEvent: { _ in })
+        MailboxConversationCell(uiModel: model1, onEvent: { _ in })
+
+        MailboxConversationCell(
+            uiModel: .init(
+                id: "",
+                avatarImage: URL(string: "https://proton.me")!,
+                senders: "FedEx",
+                subject: "Your package is ready to ship",
+                date: Date(),
+                isRead: false,
+                isStarred: true,
+                labelUIModel: .init(id: "", labelColor: .purple, text: "Offer", textColor: .white, numExtraLabels: 0)
+            ),
+            onEvent: { _ in }
+        )
+
+        MailboxConversationCell(
+            uiModel: .init(
+                id: "",
+                avatarImage: URL(string: "https://proton.me")!,
+                senders: "Mary, Elijah Wood, wiseman@pm.me",
+                subject: "Summer holidays pictures and more!",
+                date: Date(),
+                isRead: true,
+                isStarred: true,
+                labelUIModel: .init(id: "", labelColor: .green, text: "Read later", textColor: .white, numExtraLabels: 2)
+            ),
+            onEvent: { _ in }
+        )
+    }
 }

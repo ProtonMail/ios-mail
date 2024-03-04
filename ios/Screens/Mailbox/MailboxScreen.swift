@@ -26,7 +26,7 @@ struct MailboxScreen: View {
         NavigationStack {
             ZStack {
                 if userSettings.mailboxViewMode == .conversation {
-                    ConversationMailboxScreen(model: PreviewData.conversationMailboxScreenModel)
+                    MailboxConversationScreen(model: PreviewData.mailboxConversationScreenModel)
                 } else {
                     Text("message list mailbox")
                 }
@@ -53,4 +53,3 @@ struct MailboxScreen: View {
         .environmentObject(appUIState)
         .environmentObject(userSettings)
 }
-
