@@ -1003,15 +1003,15 @@ extension MailboxViewModel {
         }
     }
 
-    func moveSelectedIDs(from fLabel: LabelID, to tLabel: LabelID) {
-        move(items: selectedItems, from: fLabel, to: tLabel)
+    func moveSelectedIDs(from fLabel: LabelID, to tLabel: LabelID, completion: (() -> Void)? = nil) {
+        move(items: selectedItems, from: fLabel, to: tLabel, completion: completion)
     }
 
-    func move(items: [MailboxItem], from fLabel: LabelID, to tLabel: LabelID) {
-        move(items: MailboxItemGroup(mailboxItems: items), from: fLabel, to: tLabel)
+    func move(items: [MailboxItem], from fLabel: LabelID, to tLabel: LabelID, completion: (() -> Void)? = nil) {
+        move(items: MailboxItemGroup(mailboxItems: items), from: fLabel, to: tLabel, completion: completion)
     }
 
-    private func move(items: MailboxItemGroup, from fLabel: LabelID, to tLabel: LabelID) {
+    private func move(items: MailboxItemGroup, from fLabel: LabelID, to tLabel: LabelID, completion: (() -> Void)?) {
         switch items {
         case .messages(let messages):
             var fLabels: [LabelID] = []
@@ -1022,6 +1022,7 @@ extension MailboxViewModel {
             }
 
             messageService.move(messages: messages, from: fLabels, to: tLabel)
+            completion?()
         case .conversations(let conversations):
             conversationProvider.move(
                 conversationIDs: conversations.map(\.conversationID),
@@ -1029,13 +1030,16 @@ extension MailboxViewModel {
                 to: tLabel,
                 callOrigin: "MailboxViewModel - move"
             ) { [weak self] result in
+                defer {
+                    completion?()
+                }
                 guard let self = self else { return }
                 if let _ = try? result.get() {
                     self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
         case .empty:
-            break
+            completion?()
         }
     }
 }
