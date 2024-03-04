@@ -602,7 +602,7 @@ extension ComposeViewModel {
     ) -> Bool {
         // If the message contains attachments
         // It contains keywords or not doesn't important
-        if getNormalAttachmentNum() > 0 { return false }
+        guard composerMessageHelper.draft?.attachments.isEmpty ?? true else { return false }
 
         let content = "\(subject) \(body.body(strippedFromQuotes: true))"
         let language = LanguageManager().currentLanguageCode()
