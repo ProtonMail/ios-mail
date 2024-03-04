@@ -2259,7 +2259,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         var newSnapshot = NSDiffableDataSourceSnapshot<Int, MailboxRow>()
         for (index, section) in snapshot.sectionIdentifiers.enumerated() {
             let items = snapshot.itemIdentifiers(inSection: section)
-            let mailboxRows = items.compactMap { objectID in
+            var mailboxRows = items.compactMap { objectID in
                 let object = controller.managedObjectContext.object(with: objectID)
                 switch viewMode {
                 case .singleMessage:
@@ -2273,6 +2273,21 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
                     }
                 }
                 return nil
+            }
+
+            if viewModel.labelID == Message.Location.inbox.labelID {
+                mailboxRows.sort { row1, row2 in
+                    guard
+                        case .real(let item1) = row1,
+                        case .real(let item2) = row2,
+                        case .message(let message1) = item1,
+                        case .message(let message2) = item2
+                    else { return false }
+
+                    let date1 = message1.snoozeTime ?? message1.time ?? .distantFuture
+                    let date2 = message2.snoozeTime ?? message2.time ?? .distantFuture
+                    return date1 > date2
+                }
             }
 
             newSnapshot.appendSections([index])
