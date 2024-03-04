@@ -834,11 +834,11 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
         let isInTrash = areAllMessagesInThreadInTheTrash
         let isInSpam = areAllMessagesInThreadInSpam
 
-        let foldersSupportSnooze = [
+        let foldersSupportingSnooze = [
             Message.Location.inbox.labelID,
             Message.Location.snooze.labelID
         ]
-        let isSupportSnooze = foldersSupportSnooze.contains(labelId)
+        let isSupportSnooze = foldersSupportingSnooze.contains(labelId)
 
         var actions = toolbarActionProvider.messageToolbarActions
             .addMoreActionToTheLastLocation()
@@ -874,6 +874,11 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
     }
 
     func toolbarCustomizationAllAvailableActions() -> [MessageViewActionSheetAction] {
+        let foldersSupportingSnooze = [
+            Message.Location.snooze.labelID,
+            Message.Location.inbox.labelID
+        ]
+
         let actionSheetViewModel = MessageViewActionSheetViewModel(
             title: "",
             labelID: labelId,
@@ -881,7 +886,8 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
             isBodyDecryptable: true,
             messageRenderStyle: .lightOnly,
             shouldShowRenderModeOption: false,
-            isScheduledSend: false
+            isScheduledSend: false,
+            shouldShowSnooze: foldersSupportingSnooze.contains(labelId)
         )
         let isInSpam = conversation.contains(of: .spam)
         let isInArchive = conversation.contains(of: .archive)

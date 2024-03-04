@@ -35,11 +35,11 @@ extension MailboxViewModel: ToolbarCustomizationActionHandler {
         let isInTrash = labelID == Message.Location.trash.labelID
         let isInArchive = labelID == Message.Location.archive.labelID
 
-        let foldersSupportSnooze = [
+        let foldersSupportingSnooze = [
             Message.Location.inbox.labelID,
             Message.Location.snooze.labelID
         ]
-        let isSupportSnooze = foldersSupportSnooze.contains(labelID)
+        let isSupportSnooze = foldersSupportingSnooze.contains(labelID)
 
         var actions = toolbarActionProvider.listViewToolbarActions
             .addMoreActionToTheLastLocation()
