@@ -543,6 +543,86 @@ final class MailboxViewControllerTests: XCTestCase {
         )
     }
 
+    func testConversationOrdering_inAllMail_poppedConversationAreSortedCorrectly() throws {
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
+        makeSUT(labelID: Message.Location.allmail.labelID, labelType: .folder, isCustom: false, labelName: nil)
+        try testContainer.contextProvider.write { context in
+            let conversation1 = Conversation(context: context)
+            conversation1.userID = self.userID.rawValue
+            conversation1.conversationID = String.randomString(20)
+            conversation1.senders = """
+                [{
+                    "Name": "name",
+                    "Address": "test@pm.me"
+                }]
+            """
+            let contextLabel1 = ContextLabel(context: context)
+            contextLabel1.userID = self.userID.rawValue
+            contextLabel1.conversation = conversation1
+            contextLabel1.labelID = Message.Location.allmail.rawValue
+            contextLabel1.conversationID = conversation1.conversationID
+            contextLabel1.time = Date(timeIntervalSince1970: 8000)
+            let contextLabel11 = ContextLabel(context: context)
+            contextLabel11.userID = self.userID.rawValue
+            contextLabel11.conversation = conversation1
+            contextLabel11.labelID = Message.Location.inbox.rawValue
+            contextLabel11.conversationID = conversation1.conversationID
+            contextLabel11.time = Date(timeIntervalSince1970: 8000)
+
+            let conversation2 = Conversation(context: context)
+            conversation2.userID = self.userID.rawValue
+            conversation2.conversationID = String.randomString(20)
+            conversation2.senders = """
+                [{
+                    "Name": "name",
+                    "Address": "test@pm.me"
+                }]
+            """
+            conversation2.displaySnoozedReminder = true
+            let contextLabel2 = ContextLabel(context: context)
+            contextLabel2.userID = self.userID.rawValue
+            contextLabel2.conversation = conversation2
+            contextLabel2.labelID = Message.Location.allmail.rawValue
+            contextLabel2.conversationID = conversation2.conversationID
+            contextLabel2.snoozeTime = Date(timeIntervalSince1970: 7000)
+            contextLabel2.time = Date(timeIntervalSince1970: 7000)
+            let contextLabel22 = ContextLabel(context: context)
+            contextLabel22.userID = self.userID.rawValue
+            contextLabel22.conversation = conversation2
+            contextLabel22.labelID = Message.Location.inbox.rawValue
+            contextLabel22.conversationID = conversation2.conversationID
+            contextLabel22.snoozeTime = Date(timeIntervalSince1970: 100000)
+            contextLabel22.time = Date(timeIntervalSince1970: 7000)
+        }
+        sut.loadViewIfNeeded()
+
+        wait(self.sut.tableView.visibleCells.count == 2)
+
+        let cells = try XCTUnwrap(sut.tableView.visibleCells as? [NewMailboxMessageCell])
+        let firstCell = try XCTUnwrap(cells.first)
+        XCTAssertNil(
+            firstCell.mailboxItem?.snoozeTime(labelID: Message.Location.allmail.labelID)
+        )
+        XCTAssertEqual(
+            firstCell.mailboxItem?.time(labelID: Message.Location.allmail.labelID),
+            Date(timeIntervalSince1970: 8000)
+        )
+        XCTAssertEqual(
+            firstCell.customView.messageContentView.timeLabel.text,
+            "January 01, 1970"
+        )
+
+        let secondCell = try XCTUnwrap(cells[safe: 1])
+        XCTAssertEqual(
+            secondCell.mailboxItem?.snoozeTime(labelID: Message.Location.inbox.labelID),
+            Date(timeIntervalSince1970: 100000)
+        )
+        XCTAssertEqual(
+            secondCell.customView.messageContentView.timeLabel.text,
+            "January 02, 1970"
+        )
+    }
+
     func testMessagesOrdering_inInboxFolder_poppedMessagesAreSortedCorrectly() throws {
         conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         makeSUT(labelID: Message.Location.inbox.labelID, labelType: .folder, isCustom: false, labelName: nil)
@@ -600,6 +680,71 @@ final class MailboxViewControllerTests: XCTestCase {
         )
         XCTAssertEqual(
             secondCell.mailboxItem?.time(labelID: Message.Location.inbox.labelID),
+            Date(timeIntervalSince1970: 7000000)
+        )
+        XCTAssertEqual(
+            secondCell.customView.messageContentView.timeLabel.text,
+            "March 23, 1970"
+        )
+    }
+
+    func testMessagesOrdering_inAllMailFolder_poppedMessagesAreSortedCorrectly() throws {
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+        makeSUT(labelID: Message.Location.allmail.labelID, labelType: .folder, isCustom: false, labelName: nil)
+        try testContainer.contextProvider.write { context in
+            let label = Label(context: context)
+            label.labelID = Message.Location.allmail.rawValue
+            let message1 = Message(context: context)
+            message1.userID = self.userID.rawValue
+            message1.messageStatus = .init(value: 1)
+            message1.add(labelID: Message.Location.allmail.rawValue)
+            message1.snoozeTime = Date(timeIntervalSince1970: 8000000)
+            message1.time = Date(timeIntervalSince1970: 7000001)
+            message1.flag.insert(.showReminder)
+            message1.sender = """
+            {
+                "Name": "name",
+                "Address": "test@pm.me"
+            }
+            """
+
+            let message2 = Message(context: context)
+            message2.userID = self.userID.rawValue
+            message2.messageStatus = .init(value: 1)
+            message2.add(labelID: Message.Location.allmail.rawValue)
+            message2.time = Date(timeIntervalSince1970: 7000000)
+            message2.sender = """
+            {
+                "Name": "name",
+                "Address": "test@pm.me"
+            }
+            """
+        }
+        sut.loadViewIfNeeded()
+
+        wait(self.sut.tableView.visibleCells.count == 3)
+
+        let cells = try XCTUnwrap(sut.tableView.visibleCells as? [NewMailboxMessageCell])
+        let firstCell = try XCTUnwrap(cells.first)
+        XCTAssertEqual(
+            firstCell.mailboxItem?.snoozeTime(labelID: Message.Location.inbox.labelID),
+            Date(timeIntervalSince1970: 8000000)
+        )
+        XCTAssertEqual(
+            firstCell.mailboxItem?.time(labelID: Message.Location.allmail.labelID),
+            Date(timeIntervalSince1970: 7000001)
+        )
+        XCTAssertEqual(
+            firstCell.customView.messageContentView.timeLabel.text,
+            "April 03, 1970"
+        )
+
+        let secondCell = try XCTUnwrap(cells[safe: 1])
+        XCTAssertNil(
+            secondCell.mailboxItem?.snoozeTime(labelID: Message.Location.allmail.labelID)
+        )
+        XCTAssertEqual(
+            secondCell.mailboxItem?.time(labelID: Message.Location.allmail.labelID),
             Date(timeIntervalSince1970: 7000000)
         )
         XCTAssertEqual(
