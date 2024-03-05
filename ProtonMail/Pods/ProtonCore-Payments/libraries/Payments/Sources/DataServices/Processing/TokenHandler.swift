@@ -111,6 +111,7 @@ final class TokenHandler {
             // Step 2. Exchange the receipt for a token that's worth product's Proton price amount of money
             let tokenApi: BaseApiRequest<TokenResponse>
             if areSubscriptionsEnabled {
+                // Step 2. Exchange the receipt for a token
                 guard let transactionIdentifier = transaction.transactionIdentifier else {
                     throw StoreKitManagerErrors.transactionFailedByUnknownReason
                 }
@@ -128,6 +129,7 @@ final class TokenHandler {
                     productId: transaction.payment.productIdentifier
                 )
             } else {
+                // Step 2. Exchange the receipt for a token that's worth product's Proton price amount of money
                 tokenApi = dependencies.paymentsApiProtocol.paymentTokenOldRequest(
                     api: dependencies.apiService, amount: plan.amount, receipt: receipt
                 )

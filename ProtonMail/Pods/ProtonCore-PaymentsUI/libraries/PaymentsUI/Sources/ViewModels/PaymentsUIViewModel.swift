@@ -654,6 +654,9 @@ extension PaymentsUIViewModel {
                 }
             }
         }
+        if availablePlans?.isEmpty == true, mode == .update {
+            try await fetchCurrentPlan()
+        }
     }
 
     func fetchPaymentMethods() async throws {

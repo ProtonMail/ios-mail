@@ -24,13 +24,26 @@ import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public final class DefaultPlanRequest: BaseApiRequest<DefaultPlanResponse> {
+typealias DefaultPlanRequest = BaseApiRequest<DefaultPlanResponse>
+
+final class V4DefaultPlanRequest: DefaultPlanRequest {
 
     override public init(api: APIService) {
         super.init(api: api)
     }
 
     override public var path: String { super.path + "/v4/plans/default" }
+
+    override public var isAuth: Bool { false }
+}
+
+final class V5DefaultPlanRequest: DefaultPlanRequest {
+
+    override public init(api: APIService) {
+        super.init(api: api)
+    }
+
+    override public var path: String { super.path + "/v5/plans/default" }
 
     override public var isAuth: Bool { false }
 }

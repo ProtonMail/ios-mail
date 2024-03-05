@@ -33,7 +33,7 @@ private let errorBannerButton = LUITranslation._core_ok_button.l10n
 private let loginTextFieldId = "LoginViewController.loginTextField.textField"
 private let passwordTextFieldId = "LoginViewController.passwordTextField.textField"
 private let signInButtonId = "LoginViewController.signInButton"
-private let invalidCredentialText = "Incorrect login credentials. Please try again"
+private let invalidCredentialText = "Incorrect login credentials. Please try again."
 private let signUpButtonId = "LoginViewController.signUpButton"
 private let helpButtonId = "UINavigationItem.rightBarButtonItem"
 private let loginFieldTitleLabel = "LoginViewController.loginTextField.titleLabel"
@@ -125,7 +125,7 @@ public final class LoginRobot: CoreElements {
     }
 
     public func fillUsername(username: String) -> LoginRobot {
-        textField(loginTextFieldId).tap().typeText(username)
+        textField(loginTextFieldId).forceKeyboardFocus().typeText(username)
         return self
     }
 

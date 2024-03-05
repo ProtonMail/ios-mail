@@ -1,6 +1,6 @@
 //
-//  ValidateSubscription.swift
-//  ProtonCore-Payments - Created on 2/12/2020.
+//  AccountRecoveryCancellationTotalEvent.swift
+//  ProtonCore-Observability - Created on 16.12.22.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,9 +19,18 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import ProtonCoreNetworking
 
-public struct ValidateSubscription: Codable {
-    public let amount: Int
-    public let amountDue: Int
+public struct AccountRecoveryCancellationTotalLabels: Encodable, Equatable {
+    let status: HTTPResponseCodeStatus
+
+    enum CodingKeys: String, CodingKey {
+        case status
+    }
+}
+
+extension ObservabilityEvent where Payload == PayloadWithLabels<AccountRecoveryCancellationTotalLabels> {
+    public static func accountRecoveryCancellationTotal(status: HTTPResponseCodeStatus) -> Self {
+        .init(name: "ios_core_accountRecovery_cancellation_total_v1", labels: .init(status: status))
+    }
 }

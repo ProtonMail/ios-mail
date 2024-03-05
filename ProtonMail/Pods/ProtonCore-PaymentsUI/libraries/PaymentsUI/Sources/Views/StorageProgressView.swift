@@ -63,6 +63,17 @@ final class StorageProgressView: UIView, AccessibleCell {
     }
     var progressView: UIView?
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        // Mask the `progressView` to keep rounded corners at the ends of the progress bar.
+        let maskLayer = CALayer()
+        maskLayer.frame = backgroundProgressView.bounds
+        maskLayer.backgroundColor = UIColor.black.cgColor
+        maskLayer.cornerRadius = backgroundProgressView.layer.cornerRadius
+        progressView?.layer.mask = maskLayer
+    }
+
     // MARK: - Properties
 
     override init(frame: CGRect) {

@@ -30,7 +30,7 @@ public extension Quark {
 
         let args = [
             "--user=\(username)",
-            "--early-access=1"
+            "--EarlyAccess=1"
         ]
 
         let request = try route(coreSettingsUpdate)

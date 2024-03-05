@@ -783,6 +783,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
     private func informProtonBackendAboutPurchasedTransaction(_ transaction: SKPaymentTransaction,
                                                               cacheKey: UserInitiatedPurchaseCache,
                                                               completion: @escaping ProcessCompletionCallback) throws {
+        let isDynamic = featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)
 
         guard let plan = InAppPurchasePlan(storeKitProductId: transaction.payment.productIdentifier)
         else {
@@ -838,13 +839,11 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                 cycle: cycle
             )
             let response = try? validateSubscriptionRequest.awaitResponse(responseObject: ValidateSubscriptionResponse())
-            let fetchedAmountDue = response?.validateSubscription?.amountDue
+            let fetchedAmountDue = isDynamic ? response?.validateSubscription?.amount :  response?.validateSubscription?.amountDue
             amountDue = fetchedAmountDue ?? planAmount
         }
 
         let planToBeProcessed = PlanToBeProcessed(protonIdentifier: planIdentifier, amount: planAmount, amountDue: amountDue, cycle: cycle)
-
-        let isDynamic = featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)
 
         do {
             let customCompletion: ProcessCompletionCallback = { result in
