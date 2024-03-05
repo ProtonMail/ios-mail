@@ -85,4 +85,7 @@ public extension ProtonCoreFeatureFlags.FeatureFlag {
     static var splitStorage: Self {
         .init(name: "SplitStorage", enabled: true, variant: nil)
     }
+    static var telemetrySignUpMetrics: Self {
+        .init(name: "IOSTelemetrySignUpMetrics", enabled: true, variant: nil)
+    }
 }

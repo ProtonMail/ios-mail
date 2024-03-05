@@ -153,9 +153,9 @@ protocol PaymentsApiProtocol {
     func getUser(api: APIService) throws -> User
 }
 
-class PaymentsApiImplementation: PaymentsApiProtocol {
+class PaymentsApiV4Implementation: PaymentsApiProtocol {
     func paymentStatusRequest(api: APIService) -> PaymentStatusRequest {
-        PaymentStatusRequest(api: api)
+        V4PaymentStatusRequest(api: api)
     }
 
     func buySubscriptionRequest(api: APIService,
@@ -170,26 +170,26 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
             throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
         }
         guard isCreditingAllowed else { // dynamic plans case
-            return SubscriptionRequest(api: api, planId: planId, amount: amount, cycle: cycle, paymentAction: paymentAction)
+            return V4SubscriptionRequest(api: api, planId: planId, amount: amount, cycle: cycle, paymentAction: paymentAction)
         }
         if amountDue == amount {
             // if amountDue is equal to amount, request subscription
-            return SubscriptionRequest(api: api, planId: planId, amount: amount, cycle: cycle, paymentAction: paymentAction)
+            return V4SubscriptionRequest(api: api, planId: planId, amount: amount, cycle: cycle, paymentAction: paymentAction)
         } else {
             // if amountDue is not equal to amount, request credit for a full amount
             let creditReq = creditRequest(api: api, amount: amount, paymentAction: paymentAction)
             _ = try creditReq.awaitResponse(responseObject: CreditResponse())
             // then request subscription for amountDue = 0
-            return SubscriptionRequest(api: api, planId: planId, amount: 0, cycle: cycle, paymentAction: paymentAction)
+            return V4SubscriptionRequest(api: api, planId: planId, amount: 0, cycle: cycle, paymentAction: paymentAction)
         }
     }
 
     func buySubscriptionForZeroRequest(api: APIService, planId: String) -> SubscriptionRequest {
-        SubscriptionRequest(api: api, planId: planId)
+        V4SubscriptionRequest(api: api, planId: planId)
     }
 
     func getSubscriptionRequest(api: APIService) -> GetSubscriptionRequest {
-        GetSubscriptionRequest(api: api)
+        V4GetSubscriptionRequest(api: api)
     }
 
     func organizationsRequest(api: APIService) -> OrganizationsRequest {
@@ -197,11 +197,11 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
     }
 
     func defaultPlanRequest(api: APIService) -> DefaultPlanRequest {
-        DefaultPlanRequest(api: api)
+        V4DefaultPlanRequest(api: api)
     }
 
     func plansRequest(api: APIService) -> PlansRequest {
-        PlansRequest(api: api)
+        V4PlansRequest(api: api)
     }
 
     func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest {
@@ -209,7 +209,7 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
     }
 
     func methodsRequest(api: APIService) -> MethodRequest {
-        MethodRequest(api: api)
+        V4MethodRequest(api: api)
     }
 
     func paymentTokenOldRequest(api: APIService, amount: Int, receipt: String) -> PaymentTokenOldRequest {
@@ -217,15 +217,15 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
     }
 
     func paymentTokenRequest(api: APIService, amount: Int, receipt: String, transactionId: String, bundleId: String, productId: String) -> PaymentTokenRequest {
-        PaymentTokenRequest(api: api, amount: amount, receipt: receipt, transactionId: transactionId, bundleId: bundleId, productId: productId)
+        fatalError("Token Requests for auto-recurring subscriptions should not be used with API v4")
     }
 
     func paymentTokenStatusRequest(api: APIService, token: PaymentToken) -> PaymentTokenStatusRequest {
-        PaymentTokenStatusRequest(api: api, token: token)
+        V4PaymentTokenStatusRequest(api: api, token: token)
     }
 
     func validateSubscriptionRequest(api: APIService, protonPlanName: String, isAuthenticated: Bool, cycle: Int) -> ValidateSubscriptionRequest {
-        ValidateSubscriptionRequest(
+        V4ValidateSubscriptionRequest(
             api: api,
             protonPlanName: protonPlanName,
             isAuthenticated: isAuthenticated,
@@ -267,6 +267,118 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
         return try result.get()
     }
 }
+
+class PaymentsApiV5Implementation: PaymentsApiProtocol {
+    func paymentStatusRequest(api: APIService) -> PaymentStatusRequest {
+        V5PaymentStatusRequest(api: api)
+    }
+    
+    func buySubscriptionRequest(api: ProtonCoreServices.APIService, planId: String, amount: Int, amountDue: Int, cycle: Int, paymentAction: PaymentAction, isCreditingAllowed: Bool) throws -> SubscriptionRequest {
+        guard Thread.isMainThread == false else {
+            assertionFailure("This is a blocking network request, should never be called from main thread")
+            throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
+        }
+        guard isCreditingAllowed else { // dynamic plans case
+            return V5SubscriptionRequest(api: api, planId: planId, amount: amount, cycle: cycle, paymentAction: paymentAction)
+        }
+        if amountDue == amount {
+            // if amountDue is equal to amount, request subscription
+            return V5SubscriptionRequest(api: api, planId: planId, amount: amount, cycle: cycle, paymentAction: paymentAction)
+        } else {
+            // if amountDue is not equal to amount, request credit for a full amount
+            let creditReq = creditRequest(api: api, amount: amount, paymentAction: paymentAction)
+            _ = try creditReq.awaitResponse(responseObject: CreditResponse())
+            // then request subscription for amountDue = 0
+            return V5SubscriptionRequest(api: api, planId: planId, amount: 0, cycle: cycle, paymentAction: paymentAction)
+        }
+    }
+    
+    func buySubscriptionForZeroRequest(api: ProtonCoreServices.APIService, planId: String) -> SubscriptionRequest {
+        V5SubscriptionRequest(api: api, planId: planId)
+    }
+    
+    func getSubscriptionRequest(api: ProtonCoreServices.APIService) -> GetSubscriptionRequest {
+        V5GetSubscriptionRequest(api: api)
+    }
+    
+    func organizationsRequest(api: APIService) -> OrganizationsRequest {
+        OrganizationsRequest(api: api)
+    }
+
+    func defaultPlanRequest(api: APIService) -> DefaultPlanRequest {
+        V5DefaultPlanRequest(api: api)
+    }
+
+    func plansRequest(api: ProtonCoreServices.APIService) -> PlansRequest {
+        V5PlansRequest(api: api)
+    }
+    
+    func creditRequest(api: ProtonCoreServices.APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest {
+        fatalError("Credit Request should not be used with API v5")
+    }
+    
+    func methodsRequest(api: ProtonCoreServices.APIService) -> MethodRequest {
+        V5MethodRequest(api: api)
+    }
+    
+    func paymentTokenOldRequest(api: ProtonCoreServices.APIService, amount: Int, receipt: String) -> PaymentTokenOldRequest {
+        fatalError("Token Requests for 1-time payments should not be used with API v5")
+    }
+    
+    func paymentTokenRequest(api: ProtonCoreServices.APIService, amount: Int, receipt: String, transactionId: String, bundleId: String, productId: String) -> PaymentTokenRequest {
+            PaymentTokenRequest(api: api, amount: amount, receipt: receipt, transactionId: transactionId, bundleId: bundleId, productId: productId)
+    }
+    
+    func paymentTokenStatusRequest(api: ProtonCoreServices.APIService, token: PaymentToken) -> PaymentTokenStatusRequest {
+        V5PaymentTokenStatusRequest(api: api, token: token)
+    }
+    
+    func validateSubscriptionRequest(api: ProtonCoreServices.APIService, 
+                                     protonPlanName: String,
+                                     isAuthenticated: Bool,
+                                     cycle: Int) -> ValidateSubscriptionRequest {
+        V5ValidateSubscriptionRequest(
+            api: api,
+            protonPlanName: protonPlanName,
+            isAuthenticated: isAuthenticated,
+            cycle: cycle
+        )
+    }
+    
+    func countriesCountRequest(api: ProtonCoreServices.APIService) -> CountriesCountRequest {
+        CountriesCountRequest(api: api)
+    }
+    
+    func getUser(api: ProtonCoreServices.APIService) throws -> ProtonCoreDataModel.User {
+        guard Thread.isMainThread == false else {
+            assertionFailure("This is a blocking network request, should never be called from main thread")
+            throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
+        }
+
+        var result: Swift.Result<User, Error> = .failure(AwaitInternalError.shouldNeverHappen)
+
+        let semaphore = DispatchSemaphore(value: 0)
+
+        awaitQueue.async {
+            let authenticator = Authenticator(api: api)
+            authenticator.getUserInfo { callResult in
+                PMLog.debug("callResult: \(callResult)")
+                switch callResult {
+                case .success(let user):
+                    result = .success(user)
+                case .failure(let error):
+                    result = .failure(error)
+                }
+                semaphore.signal()
+            }
+        }
+
+        _ = semaphore.wait(timeout: .distantFuture)
+
+        return try result.get()
+    }
+}
+
 
 extension Response {
     private struct Key: CodingKey {

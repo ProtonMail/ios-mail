@@ -24,7 +24,9 @@ import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public final class PlansRequest: BaseApiRequest<PlansResponse> {
+typealias PlansRequest = BaseApiRequest<PlansResponse>
+
+final class V4PlansRequest: BaseApiRequest<PlansResponse> {
 
     override public init(api: APIService) {
         super.init(api: api)
@@ -41,6 +43,25 @@ public final class PlansRequest: BaseApiRequest<PlansResponse> {
         ]
     }
 }
+
+final class V5PlansRequest: PlansRequest {
+
+    override public init(api: APIService) {
+        super.init(api: api)
+    }
+
+    override public var path: String { super.path + "/v5/plans" }
+
+    override public var isAuth: Bool { false }
+
+    override public var parameters: [String: Any]? {
+        [
+            "Currency": "USD",
+            "Cycle": 12
+        ]
+    }
+}
+
 
 public final class PlansResponse: Response {
     internal var availableServicePlans: [Plan]?

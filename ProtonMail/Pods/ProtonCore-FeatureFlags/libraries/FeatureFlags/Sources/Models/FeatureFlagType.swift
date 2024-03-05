@@ -25,4 +25,5 @@ public enum CoreFeatureFlagType: String, FeatureFlagTypeProtocol {
     case dynamicPlan = "DynamicPlan"
     case externalSSO = "ExternalSSO"
     case splitStorage = "SplitStorage"
+    case telemetrySignUpMetrics = "IOSTelemetrySignUpMetrics"
 }

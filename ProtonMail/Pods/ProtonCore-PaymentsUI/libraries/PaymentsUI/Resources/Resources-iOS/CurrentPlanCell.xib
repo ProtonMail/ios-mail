@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -49,28 +49,17 @@
                                 <color key="textColor" systemColor="systemGrayColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5eC-ga-da6">
-                                <rect key="frame" x="16" y="52.5" width="373" height="48"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iZB-sA-P94">
-                                        <rect key="frame" x="0.0" y="0.0" width="373" height="16"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="16" id="kEH-at-naU"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CBq-wM-cQF" customClass="StorageProgressView" customModule="ProtonCorePaymentsUI">
-                                        <rect key="frame" x="0.0" y="16" width="373" height="32"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="FAw-Ka-b07"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="DQI-z2-Uz8" userLabel="Progress Bars Stack View">
+                                <rect key="frame" x="16" y="68.5" width="373" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" placeholder="YES" id="heO-xq-qiv"/>
+                                </constraints>
+                                <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="16" right="0.0"/>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ByM-Ed-V8z">
                                 <rect key="frame" x="16" y="116.5" width="373" height="75.5"/>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="woK-Bo-nUa">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="woK-Bo-nUa" userLabel="Footer Stack View">
                                 <rect key="frame" x="16" y="192" width="373" height="49"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9TX-YS-JEz">
@@ -106,26 +95,26 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="ByM-Ed-V8z" firstAttribute="leading" secondItem="7Yo-CW-EIF" secondAttribute="leading" constant="16" id="0Vr-uC-hdX"/>
-                            <constraint firstItem="ByM-Ed-V8z" firstAttribute="top" secondItem="5eC-ga-da6" secondAttribute="bottom" constant="16" id="20C-81-HsS"/>
+                            <constraint firstItem="ByM-Ed-V8z" firstAttribute="top" secondItem="DQI-z2-Uz8" secondAttribute="bottom" id="1DH-Y8-FDb"/>
                             <constraint firstItem="96h-8N-UcS" firstAttribute="leading" secondItem="7Yo-CW-EIF" secondAttribute="leading" constant="16" id="4cb-98-beO"/>
                             <constraint firstItem="dRD-Ad-Hy5" firstAttribute="top" secondItem="96h-8N-UcS" secondAttribute="bottom" id="4zi-pw-n4T"/>
                             <constraint firstItem="3XW-sD-Qdg" firstAttribute="leading" secondItem="dRD-Ad-Hy5" secondAttribute="trailing" constant="16" id="59h-46-0gz"/>
-                            <constraint firstItem="5eC-ga-da6" firstAttribute="top" secondItem="dRD-Ad-Hy5" secondAttribute="bottom" id="6Ob-WA-ejW"/>
                             <constraint firstAttribute="trailing" secondItem="ByM-Ed-V8z" secondAttribute="trailing" constant="16" id="7FH-N7-XNi"/>
                             <constraint firstItem="96h-8N-UcS" firstAttribute="top" secondItem="7Yo-CW-EIF" secondAttribute="top" constant="16" id="9gn-Qx-m1y"/>
                             <constraint firstItem="SeV-8Z-Ke9" firstAttribute="width" secondItem="3XW-sD-Qdg" secondAttribute="width" id="BTA-ik-0C3"/>
                             <constraint firstAttribute="trailing" secondItem="3XW-sD-Qdg" secondAttribute="trailing" constant="16" id="Bki-nY-6rh"/>
                             <constraint firstItem="3XW-sD-Qdg" firstAttribute="leading" secondItem="96h-8N-UcS" secondAttribute="trailing" constant="16" id="DOj-Zb-v7c"/>
                             <constraint firstItem="dRD-Ad-Hy5" firstAttribute="leading" secondItem="96h-8N-UcS" secondAttribute="leading" id="HA1-tx-9Hq"/>
+                            <constraint firstItem="DQI-z2-Uz8" firstAttribute="trailing" secondItem="SeV-8Z-Ke9" secondAttribute="trailing" id="TBk-LH-Qkd"/>
                             <constraint firstItem="SeV-8Z-Ke9" firstAttribute="trailing" secondItem="3XW-sD-Qdg" secondAttribute="trailing" id="TOF-ZY-1Mf"/>
                             <constraint firstItem="3XW-sD-Qdg" firstAttribute="top" secondItem="7Yo-CW-EIF" secondAttribute="top" constant="16" id="WSb-tj-PNg"/>
                             <constraint firstItem="woK-Bo-nUa" firstAttribute="trailing" secondItem="ByM-Ed-V8z" secondAttribute="trailing" id="XGH-Va-Pgz"/>
                             <constraint firstAttribute="bottom" secondItem="woK-Bo-nUa" secondAttribute="bottom" constant="16" id="ZrU-VR-8Zz"/>
+                            <constraint firstItem="DQI-z2-Uz8" firstAttribute="leading" secondItem="dRD-Ad-Hy5" secondAttribute="leading" id="aq3-qN-VyZ"/>
                             <constraint firstItem="woK-Bo-nUa" firstAttribute="top" secondItem="ByM-Ed-V8z" secondAttribute="bottom" id="pCp-Ut-7HW"/>
                             <constraint firstItem="SeV-8Z-Ke9" firstAttribute="top" secondItem="3XW-sD-Qdg" secondAttribute="bottom" id="qXB-aX-lkd"/>
-                            <constraint firstItem="5eC-ga-da6" firstAttribute="leading" secondItem="7Yo-CW-EIF" secondAttribute="leading" constant="16" id="qdq-9o-dvA"/>
+                            <constraint firstItem="DQI-z2-Uz8" firstAttribute="top" secondItem="SeV-8Z-Ke9" secondAttribute="bottom" constant="16" id="rL1-s1-hCw"/>
                             <constraint firstItem="woK-Bo-nUa" firstAttribute="leading" secondItem="ByM-Ed-V8z" secondAttribute="leading" id="xyZ-WM-ajs"/>
-                            <constraint firstAttribute="trailing" secondItem="5eC-ga-da6" secondAttribute="trailing" constant="16" id="zZn-ne-bEA"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -147,8 +136,7 @@
                 <outlet property="planTimeLabel" destination="SdJ-ze-GcP" id="FrE-Jm-Zkf"/>
                 <outlet property="priceDescriptionLabel" destination="SeV-8Z-Ke9" id="Lnz-5R-44y"/>
                 <outlet property="priceLabel" destination="3XW-sD-Qdg" id="bkI-Ne-UiO"/>
-                <outlet property="progressBarSpacerView" destination="iZB-sA-P94" id="tl5-gj-WKE"/>
-                <outlet property="progressBarView" destination="CBq-wM-cQF" id="Pz7-ZP-x0H"/>
+                <outlet property="progressBarsStackView" destination="DQI-z2-Uz8" id="LCM-Wl-JYC"/>
                 <outlet property="separatorLineView" destination="RUV-Kg-Rjf" id="hEr-LL-bgO"/>
                 <outlet property="timeSeparator1View" destination="9TX-YS-JEz" id="bt3-Fy-1AJ"/>
                 <outlet property="timeSeparator2View" destination="BD7-sE-cHY" id="FAz-ji-Hwr"/>
