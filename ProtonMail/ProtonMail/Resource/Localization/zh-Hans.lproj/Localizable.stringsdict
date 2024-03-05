@@ -55,7 +55,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>已选择 %d</string>
+        <string>已选择 %d 项</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>
