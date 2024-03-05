@@ -48,6 +48,8 @@ struct MailboxConversationCell: View {
                         .lineLimit(1)
                         .bold(!uiModel.isRead)
                         .foregroundColor(textColor)
+                    MailboxConversationMessageCountView(numMessages: uiModel.numMessages)
+                        .removeViewIf(uiModel.numMessages == 0)
                     Spacer()
                     Text(uiModel.date.mailboxFormat())
                         .font(.footnote)
@@ -93,6 +95,7 @@ final class MailboxConversationCellUIModel: Identifiable {
     let isStarred: Bool
     var isSelected: Bool = false
 
+    let numMessages: Int
     let labelUIModel: MailboxLabelUIModel
 
     init(
@@ -103,6 +106,7 @@ final class MailboxConversationCellUIModel: Identifiable {
         date: Date,
         isRead: Bool,
         isStarred: Bool,
+        numMessages: Int,
         labelUIModel: MailboxLabelUIModel = .init()
     ) {
         self.id = id
@@ -112,6 +116,7 @@ final class MailboxConversationCellUIModel: Identifiable {
         self.date = date
         self.isRead = isRead
         self.isStarred = isStarred
+        self.numMessages = numMessages
         self.labelUIModel = labelUIModel
     }
 }
@@ -131,6 +136,7 @@ enum MailboxConversationCellEvent {
             date: Date(),
             isRead: false,
             isStarred: false,
+            numMessages: 0,
             labelUIModel: .init()
         )
     }
@@ -151,6 +157,7 @@ enum MailboxConversationCellEvent {
                 date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
                 isRead: false,
                 isStarred: true,
+                numMessages: 3,
                 labelUIModel: .init(id: "", labelColor: .purple, text: "Offer", textColor: .white, numExtraLabels: 0)
             ),
             onEvent: { _ in }
@@ -165,6 +172,7 @@ enum MailboxConversationCellEvent {
                 date: Calendar.current.date(byAdding: .year, value: -1, to: Date())!,
                 isRead: true,
                 isStarred: true,
+                numMessages: 12,
                 labelUIModel: .init(id: "", labelColor: .green, text: "Read later", textColor: .white, numExtraLabels: 2)
             ),
             onEvent: { _ in }

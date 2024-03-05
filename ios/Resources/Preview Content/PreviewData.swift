@@ -41,6 +41,7 @@ enum PreviewData {
                 date: Calendar.current.date(byAdding: .minute, value: -1 * (value*value*1005), to: Date())!,
                 isRead: (value == 2 || value>5),
                 isStarred: (value%6 == 0),
+                numMessages: [0, 1, 5, [0, 2, 14].randomElement()!].randomElement()!,
                 labelUIModel: [0, 1, 2].randomElement()! == 0 ? mailboxLabels.randomElement()! : .init()
             )
         }
@@ -50,7 +51,7 @@ enum PreviewData {
     static let mailboxLabels: [MailboxLabelUIModel] = [
         .init(id: UUID().uuidString, labelColor: .orange, text: "WORK", textColor: .white, numExtraLabels: [2, 3].randomElement()!),
         .init(id: UUID().uuidString, labelColor: .blue, text:  "Read later", textColor: .white, numExtraLabels: [0, 1].randomElement()!),
-        .init(id: UUID().uuidString, labelColor: .green, text: "Newsletters", textColor: .white, numExtraLabels: [0].randomElement()!),
+        .init(id: UUID().uuidString, labelColor: .green, text: "Newsletters", textColor: .white, numExtraLabels: 0),
     ]
 
     static func randomSenderSubject() -> (String, String) {

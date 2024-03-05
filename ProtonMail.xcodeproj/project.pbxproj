@@ -10,6 +10,7 @@
 		4701D41D2B8CB1C400D6DC1D /* MailboxScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4701D41C2B8CB1C400D6DC1D /* MailboxScreen.swift */; };
 		4712AD1B2B961FBF00F18210 /* MailboxConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4712AD1A2B961FBF00F18210 /* MailboxConversationCell.swift */; };
 		4712AD1E2B96336800F18210 /* Date+formats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4712AD1D2B96336800F18210 /* Date+formats.swift */; };
+		4712AD212B9636F000F18210 /* MailboxConversationMessageCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4712AD202B9636F000F18210 /* MailboxConversationMessageCountView.swift */; };
 		47143B782B8CDAE900AAB4E4 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 47143B772B8CDAE900AAB4E4 /* DesignSystem */; };
 		47143B7B2B8CECAD00AAB4E4 /* MailboxConversationScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47143B7A2B8CECAD00AAB4E4 /* MailboxConversationScreenModel.swift */; };
 		47143B7D2B8CECC500AAB4E4 /* MailboxConversationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47143B7C2B8CECC500AAB4E4 /* MailboxConversationScreen.swift */; };
@@ -22,6 +23,7 @@
 		477F665F2B8CA3E400119523 /* iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F665E2B8CA3E400119523 /* iosTests.swift */; };
 		477F66692B8CA3E400119523 /* iosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F66682B8CA3E400119523 /* iosUITests.swift */; };
 		477F666B2B8CA3E400119523 /* iosUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F666A2B8CA3E400119523 /* iosUITestsLaunchTests.swift */; };
+		479E19182B9715AB003A3A51 /* View+removeViewIf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479E19172B9715AB003A3A51 /* View+removeViewIf.swift */; };
 		47D4614E2B9379F4007546C1 /* SidebarScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D4614D2B9379F4007546C1 /* SidebarScreen.swift */; };
 		47D461512B937C28007546C1 /* SidebarScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D461502B937C27007546C1 /* SidebarScreenModel.swift */; };
 /* End PBXBuildFile section */
@@ -47,6 +49,7 @@
 		4701D41C2B8CB1C400D6DC1D /* MailboxScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxScreen.swift; sourceTree = "<group>"; };
 		4712AD1A2B961FBF00F18210 /* MailboxConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxConversationCell.swift; sourceTree = "<group>"; };
 		4712AD1D2B96336800F18210 /* Date+formats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+formats.swift"; sourceTree = "<group>"; };
+		4712AD202B9636F000F18210 /* MailboxConversationMessageCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxConversationMessageCountView.swift; sourceTree = "<group>"; };
 		47143B732B8CD70A00AAB4E4 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DesignSystem; path = localPackages/DesignSystem; sourceTree = "<group>"; };
 		47143B7A2B8CECAD00AAB4E4 /* MailboxConversationScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxConversationScreenModel.swift; sourceTree = "<group>"; };
 		47143B7C2B8CECC500AAB4E4 /* MailboxConversationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxConversationScreen.swift; sourceTree = "<group>"; };
@@ -62,6 +65,7 @@
 		477F66642B8CA3E400119523 /* iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iosUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		477F66682B8CA3E400119523 /* iosUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosUITests.swift; sourceTree = "<group>"; };
 		477F666A2B8CA3E400119523 /* iosUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		479E19172B9715AB003A3A51 /* View+removeViewIf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+removeViewIf.swift"; sourceTree = "<group>"; };
 		47D4614D2B9379F4007546C1 /* SidebarScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarScreen.swift; sourceTree = "<group>"; };
 		47D461502B937C27007546C1 /* SidebarScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarScreenModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -113,8 +117,8 @@
 		4701D41E2B8CB21300D6DC1D /* Mailbox */ = {
 			isa = PBXGroup;
 			children = (
-				47143B792B8CEC9300AAB4E4 /* MailboxConversationScreen */,
 				4701D41C2B8CB1C400D6DC1D /* MailboxScreen.swift */,
+				47143B792B8CEC9300AAB4E4 /* MailboxConversationScreen */,
 			);
 			path = Mailbox;
 			sourceTree = "<group>";
@@ -122,7 +126,8 @@
 		4712AD1C2B96335800F18210 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				4712AD1D2B96336800F18210 /* Date+formats.swift */,
+				479E19192B971942003A3A51 /* Foundation */,
+				479E191A2B97194B003A3A51 /* SwiftUI */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -157,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				47143B7F2B8CFF1800AAB4E4 /* AvatarCheckboxView.swift */,
+				4712AD202B9636F000F18210 /* MailboxConversationMessageCountView.swift */,
 				472ED7762B95DD2A00C1C8E6 /* MailboxLabelView.swift */,
 			);
 			path = Views;
@@ -219,6 +225,22 @@
 				477F666A2B8CA3E400119523 /* iosUITestsLaunchTests.swift */,
 			);
 			path = iosUITests;
+			sourceTree = "<group>";
+		};
+		479E19192B971942003A3A51 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				4712AD1D2B96336800F18210 /* Date+formats.swift */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		479E191A2B97194B003A3A51 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				479E19172B9715AB003A3A51 /* View+removeViewIf.swift */,
+			);
+			path = SwiftUI;
 			sourceTree = "<group>";
 		};
 		47D4614F2B937B68007546C1 /* Sidebar */ = {
@@ -369,9 +391,11 @@
 				472ED7772B95DD2A00C1C8E6 /* MailboxLabelView.swift in Sources */,
 				47143B7B2B8CECAD00AAB4E4 /* MailboxConversationScreenModel.swift in Sources */,
 				47D4614E2B9379F4007546C1 /* SidebarScreen.swift in Sources */,
+				4712AD212B9636F000F18210 /* MailboxConversationMessageCountView.swift in Sources */,
 				47761CCD2B8DFB1500AFE584 /* PreviewData.swift in Sources */,
 				47143B7D2B8CECC500AAB4E4 /* MailboxConversationScreen.swift in Sources */,
 				477F664E2B8CA3E300119523 /* ProtonMailApp.swift in Sources */,
+				479E19182B9715AB003A3A51 /* View+removeViewIf.swift in Sources */,
 				4712AD1B2B961FBF00F18210 /* MailboxConversationCell.swift in Sources */,
 				4712AD1E2B96336800F18210 /* Date+formats.swift in Sources */,
 				47143B802B8CFF1800AAB4E4 /* AvatarCheckboxView.swift in Sources */,
