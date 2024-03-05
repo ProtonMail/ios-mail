@@ -184,7 +184,7 @@ public enum MailAnalyticsErrorEvent: Error {
     case userObjectsJsonDecodingError(Error, String)
     case userObjectsCouldNotBeSavedError(Error, String)
 
-    case appLockInconsistency(error: String, isAppAccessResolverEnabled: Bool)
+    case appLockInconsistency(error: String)
 
     case assertionFailure(
         message: String,
@@ -224,7 +224,7 @@ public enum MailAnalyticsErrorEvent: Error {
             return "Error while encoding user object: \(type)"
         case .userObjectsCouldNotBeSavedError(_, let type):
             return "Error while saving user object: \(type)"
-        case .appLockInconsistency(let error, _):
+        case .appLockInconsistency(let error):
             return "Unlock inconsistency: \(error)"
         }
     }
@@ -238,7 +238,8 @@ public enum MailAnalyticsErrorEvent: Error {
                 "DataProtectionStatus": dataProtectionStatus
             ]
         case .abortedConversationRequest, .conversationViewEndUpdatesCrash,
-                .sendMessageFail, .sendMessageResponseError, .sendMessageInvalidSignature:
+                .sendMessageFail, .sendMessageResponseError, .sendMessageInvalidSignature,
+                .appLockInconsistency:
             info = nil
         case let .invalidMenuItemRequested(section, row, itemCount, caller):
             info = [
@@ -277,10 +278,6 @@ public enum MailAnalyticsErrorEvent: Error {
             info = [
                 "Error": error,
                 "Type": type
-            ]
-        case let .appLockInconsistency(_, isAppAccessResolverEnabled):
-            info = [
-                "isAppAccessResolverEnabled": isAppAccessResolverEnabled
             ]
         }
         return info
