@@ -48,6 +48,8 @@ struct MailboxConversationCell: View {
                         .lineLimit(1)
                         .bold(!uiModel.isRead)
                         .foregroundColor(textColor)
+                    ProtonOfficialBadgeView()
+                        .removeViewIf(!uiModel.isSenderProtonOfficial)
                     MailboxConversationMessageCountView(numMessages: uiModel.numMessages)
                         .removeViewIf(uiModel.numMessages == 0)
                     Spacer()
@@ -91,10 +93,12 @@ final class MailboxConversationCellUIModel: Identifiable {
     let senders: String
     let subject: String
     let date: Date
+    
     let isRead: Bool
     let isStarred: Bool
     var isSelected: Bool = false
 
+    let isSenderProtonOfficial: Bool
     let numMessages: Int
     let labelUIModel: MailboxLabelUIModel
 
@@ -106,6 +110,7 @@ final class MailboxConversationCellUIModel: Identifiable {
         date: Date,
         isRead: Bool,
         isStarred: Bool,
+        isSenderProtonOfficial: Bool,
         numMessages: Int,
         labelUIModel: MailboxLabelUIModel = .init()
     ) {
@@ -116,6 +121,7 @@ final class MailboxConversationCellUIModel: Identifiable {
         self.date = date
         self.isRead = isRead
         self.isStarred = isStarred
+        self.isSenderProtonOfficial = isSenderProtonOfficial
         self.numMessages = numMessages
         self.labelUIModel = labelUIModel
     }
@@ -136,6 +142,7 @@ enum MailboxConversationCellEvent {
             date: Date(),
             isRead: false,
             isStarred: false,
+            isSenderProtonOfficial: true,
             numMessages: 0,
             labelUIModel: .init()
         )
@@ -157,6 +164,7 @@ enum MailboxConversationCellEvent {
                 date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
                 isRead: false,
                 isStarred: true,
+                isSenderProtonOfficial: false,
                 numMessages: 3,
                 labelUIModel: .init(id: "", labelColor: .purple, text: "Offer", textColor: .white, numExtraLabels: 0)
             ),
@@ -172,6 +180,7 @@ enum MailboxConversationCellEvent {
                 date: Calendar.current.date(byAdding: .year, value: -1, to: Date())!,
                 isRead: true,
                 isStarred: true,
+                isSenderProtonOfficial: true,
                 numMessages: 12,
                 labelUIModel: .init(id: "", labelColor: .green, text: "Read later", textColor: .white, numExtraLabels: 2)
             ),

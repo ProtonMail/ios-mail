@@ -18,6 +18,13 @@ public extension MailColor {
 
     static let backgroundNorm = Color(.mobileBackgroundNorm)
 
+    static let brandDarken40 = Color(.mobileBrandDarken40)
+    static let brandDarken20 = Color(.mobileBrandDarken20)
+    static let brandNorm = Color(.mobileBrandNorm)
+    static let brandLighten20 = Color(.mobileBrandLighten20)
+    static let brandLighten40 = Color(.mobileBrandLighten40)
+
+
     static let textWeak = Color(.mobileTextWeak)
     static let textNorm = Color(.mobileTextNorm)
 }
