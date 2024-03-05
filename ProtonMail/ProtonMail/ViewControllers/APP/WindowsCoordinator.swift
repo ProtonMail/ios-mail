@@ -88,16 +88,13 @@ final class WindowsCoordinator {
     }
     private let dependencies: Dependencies
     private let showPlaceHolderViewOnly: Bool
-    private let isAppAccessResolverEnabled: Bool
     private var cancellables = Set<AnyCancellable>()
 
     init(
         dependencies: Dependencies,
-        showPlaceHolderViewOnly: Bool = ProcessInfo.isRunningUnitTests,
-        isAppAccessResolverEnabled: Bool = UserInfo.isAppAccessResolverEnabled
+        showPlaceHolderViewOnly: Bool = ProcessInfo.isRunningUnitTests
     ) {
         self.showPlaceHolderViewOnly = showPlaceHolderViewOnly
-        self.isAppAccessResolverEnabled = isAppAccessResolverEnabled
         self.dependencies = dependencies
         setupNotifications()
         trackLifetime()
@@ -114,13 +111,7 @@ final class WindowsCoordinator {
             return
         }
 
-        SystemLogger.log(message: "isAppAccessResolverEnabled: \(isAppAccessResolverEnabled)", category: .appLock)
-        if isAppAccessResolverEnabled {
-            start(completion: completion)
-        } else {
-            legacyStart()
-            completion?()
-        }
+        start(completion: completion)
     }
 
     private func start(completion: (() -> Void)?) {
@@ -129,23 +120,6 @@ final class WindowsCoordinator {
             evaluateAccessAtLaunch()
             subscribeToDeniedAccess()
             completion?()
-        }
-    }
-
-    private func legacyStart() {
-        // We should not trigger the touch id here. because it is also done in the sign in vc. If we need to check lock, we just go to lock screen first.
-        // clean this up later.
-
-        let flow = dependencies.unlockManager.getUnlockFlow()
-        if dependencies.lockCacheStatus.isAppLockedAndAppKeyEnabled {
-            self.lock()
-        } else {
-            DispatchQueue.main.async {
-                // initiate unlock process which will send .didUnlock or .requestMainKey eventually
-                self.dependencies.unlockManager.initiateUnlock(flow: flow,
-                                                               requestPin: self.lock,
-                                                               requestMailboxPassword: self.lock)
-            }
         }
     }
 
@@ -445,17 +419,6 @@ final class WindowsCoordinator {
             name: .messageSendFailAddressValidationIncorrect,
             object: nil
         )
-
-        if !isAppAccessResolverEnabled {
-            // This will be triggered when the keymaker clear the mainkey from the memory.
-            // We will lock the app at this moment.
-            dependencies.notificationCenter.addObserver(
-                forName: Keymaker.Const.removedMainKeyFromMemory,
-                object: nil,
-                queue: .main) { _ in
-                    self.lock()
-                }
-        }
 
         dependencies.notificationCenter.addObserver(
             self,
