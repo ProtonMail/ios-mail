@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ic-file-type-excel.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

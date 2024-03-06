@@ -43,13 +43,13 @@ struct MailboxLabelView: View {
             Text(uiModel.text)
                 .font(.caption2)
                 .fontWeight(.medium)
-                .foregroundColor(uiModel.textColor)
+                .foregroundColor(.white)
                 .padding(textPadding)
                 .lineLimit(1)
                 .frame(minWidth: minWidth)
                 .background(
                     Capsule()
-                        .foregroundColor(uiModel.labelColor)
+                        .foregroundColor(uiModel.color)
                 )
             Text("+\(normalisedNumExtraLabels)")
                 .font(.caption2)
@@ -63,10 +63,8 @@ struct MailboxLabelView: View {
 
 struct MailboxLabelUIModel: Identifiable {
     let id: String
-    let labelColor: Color
+    let color: Color
     let text: String
-    let textColor: Color
-    /// total number of labels - 1
     let numExtraLabels: Int
     var isEmpty: Bool {
         text.isEmpty
@@ -74,17 +72,15 @@ struct MailboxLabelUIModel: Identifiable {
 
     init() {
         self.id = UUID().uuidString
-        self.labelColor = .clear
+        self.color = .clear
         self.text = ""
-        self.textColor = .clear
         self.numExtraLabels = 0
     }
 
-    init(id: String, labelColor: Color, text: String, textColor: Color, numExtraLabels: Int) {
+    init(id: String, color: Color, text: String, numExtraLabels: Int) {
         self.id = id
-        self.labelColor = labelColor
+        self.color = color
         self.text = text
-        self.textColor = textColor
         self.numExtraLabels = numExtraLabels
     }
 }
@@ -97,54 +93,48 @@ struct MailboxLabelUIModel: Identifiable {
             MailboxLabelView(
                 uiModel: MailboxLabelUIModel(
                     id: UUID().uuidString,
-                    labelColor: .blue,
+                    color: .blue,
                     text: "a",
-                    textColor: .white,
                     numExtraLabels: 0
                 )
             ).border(.red)
             MailboxLabelView(
                 uiModel: MailboxLabelUIModel(
                     id: UUID().uuidString,
-                    labelColor: .red,
+                    color: .red,
                     text: "Work",
-                    textColor: .white,
                     numExtraLabels: 2
                 )
             ).border(.red)
             MailboxLabelView(
                 uiModel: MailboxLabelUIModel(
                     id: UUID().uuidString,
-                    labelColor: .purple,
+                    color: .purple,
                     text: "Holidays",
-                    textColor: .white,
                     numExtraLabels: 25
                 )
             ).border(.red)
             MailboxLabelView(
                 uiModel: MailboxLabelUIModel(
                     id: UUID().uuidString,
-                    labelColor: .green,
+                    color: .green,
                     text: "surprise birthday party",
-                    textColor: .white,
                     numExtraLabels: 239
                 )
             ).border(.red)
             MailboxLabelView(
                 uiModel: MailboxLabelUIModel(
                     id: UUID().uuidString,
-                    labelColor: .gray,
+                    color: .gray,
                     text: "amazing pictures",
-                    textColor: .white,
                     numExtraLabels: 0
                 )
             ).border(.red)
             MailboxLabelView(
                 uiModel: MailboxLabelUIModel(
                     id: UUID().uuidString,
-                    labelColor: .gray,
+                    color: .gray,
                     text: "surprise birthday party",
-                    textColor: .white,
                     numExtraLabels: 0
                 )
             ).border(.red)

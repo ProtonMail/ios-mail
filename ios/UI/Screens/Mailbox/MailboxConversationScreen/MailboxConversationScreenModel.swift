@@ -36,10 +36,14 @@ final class MailboxConversationScreenModel {
         conversations[index].isSelected = isSelected
     }
 
-    @MainActor
     func onConversationStarChange(id: String, isStarred: Bool) {
 //        Task {
 //             RustSDK.star(conversationId: id, isStarred: isStarred)
 //        }
+    }
+
+    @MainActor
+    func onAttachmentTap(attachmentId: String) {
+        print("Attachment tapped \(attachmentId)")
     }
 }

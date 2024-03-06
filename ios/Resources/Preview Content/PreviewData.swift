@@ -21,12 +21,12 @@ import SwiftUI
 enum PreviewData {
 
     static let sidebarScreenModel = SidebarScreenModel(items: [
-        .init(id: UUID().uuidString, icon: MailIcon.icStar, text: "Inbox", badge: "3"),
-        .init(id: UUID().uuidString, icon: MailIcon.icStar, text: "Draft", badge: nil),
-        .init(id: UUID().uuidString, icon: MailIcon.icStar, text: "Sent", badge: nil),
-        .init(id: UUID().uuidString, icon: MailIcon.icStar, text: "Starred", badge: "8"),
-        .init(id: UUID().uuidString, icon: MailIcon.icStar, text: "Archive", badge: nil),
-        .init(id: UUID().uuidString, icon: MailIcon.icStar, text: "Spam", badge: nil),
+        .init(id: UUID().uuidString, icon: DS.Icon.icStar, text: "Inbox", badge: "3"),
+        .init(id: UUID().uuidString, icon: DS.Icon.icStar, text: "Draft", badge: nil),
+        .init(id: UUID().uuidString, icon: DS.Icon.icStar, text: "Sent", badge: nil),
+        .init(id: UUID().uuidString, icon: DS.Icon.icStar, text: "Starred", badge: "8"),
+        .init(id: UUID().uuidString, icon: DS.Icon.icStar, text: "Archive", badge: nil),
+        .init(id: UUID().uuidString, icon: DS.Icon.icStar, text: "Spam", badge: nil),
     ])
 
     static var mailboxConversationScreenModel: MailboxConversationScreenModel {
@@ -43,16 +43,40 @@ enum PreviewData {
                 isStarred: (value%6 == 0),
                 isSenderProtonOfficial: (randomSenderSubject.0 == "Proton"),
                 numMessages: [0, 1, 5, [0, 2, 14].randomElement()!].randomElement()!,
-                labelUIModel: [0, 1, 2].randomElement()! == 0 ? mailboxLabels.randomElement()! : .init()
+                labelUIModel: [0, 1, 2].randomElement()! == 0 ? mailboxLabels.randomElement()! : .init(),
+                attachmentsUIModel: [0, 1, 2].randomElement()! == 0 ? attachments.randomElement()! : []
             )
         }
         return .init(conversations: conversations)
     }
 
     static let mailboxLabels: [MailboxLabelUIModel] = [
-        .init(id: UUID().uuidString, labelColor: Color(hex: "179FD9"), text: "WORK", textColor: .white, numExtraLabels: [2, 3].randomElement()!),
-        .init(id: UUID().uuidString, labelColor: Color(hex: "F78400"), text:  "Read later", textColor: .white, numExtraLabels: [0, 1].randomElement()!),
-        .init(id: UUID().uuidString, labelColor: Color(hex: "3CBB3A"), text: "Newsletters", textColor: .white, numExtraLabels: 0),
+        .init(id: UUID().uuidString, color: Color(hex: "179FD9"), text: "WORK", numExtraLabels: [2, 3].randomElement()!),
+        .init(id: UUID().uuidString, color: Color(hex: "F78400"), text:  "Read later", numExtraLabels: [0, 1].randomElement()!),
+        .init(id: UUID().uuidString, color: Color(hex: "3CBB3A"), text: "Newsletters", numExtraLabels: 0),
+    ]
+
+    static let attachments: [[AttachmentCapsuleUIModel]] = [
+        [
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
+        ],
+        [
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeWord, name: "notes.doc")
+        ],
+        [
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeNumbers, name: "number.xls"),
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypePowerpoint, name: "slides.ppt")
+        ],
+        [
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeImage, name: "01.png"),
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeImage, name: "02.png"),
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeImage, name: "03.png"),
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeImage, name: "04.png"),
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeImage, name: "05.png"),
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeImage, name: "06.png"),
+        ],
     ]
 
     static func randomSenderSubject() -> (String, String) {

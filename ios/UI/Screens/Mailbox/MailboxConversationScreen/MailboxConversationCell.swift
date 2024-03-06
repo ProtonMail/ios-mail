@@ -23,7 +23,7 @@ struct MailboxConversationCell: View {
     let onEvent: (MailboxConversationCellEvent) -> Void
 
     private var textColor: Color {
-        uiModel.isRead ? MailColor.textWeak : MailColor.textNorm
+        uiModel.isRead ? DS.Color.textWeak : DS.Color.textNorm
     }
 
     private var labelLeadingPadding: CGFloat {
@@ -70,19 +70,23 @@ struct MailboxConversationCell: View {
                     MailboxLabelView(uiModel: uiModel.labelUIModel)
                         .padding(.leading, labelLeadingPadding)
                     Spacer()
-                    Image(uiImage: uiModel.isStarred ? MailIcon.icStarFilled : MailIcon.icStar)
+                    Image(uiImage: uiModel.isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
                         .resizable()
                         .frame(width: 16, height: 16)
-                        .foregroundColor(uiModel.isStarred ? .yellow : MailColor.textWeak)
+                        .foregroundColor(uiModel.isStarred ? .yellow : DS.Color.textWeak)
                         .onTapGesture {
                             onEvent(.onStarredChange(isStarred: !uiModel.isStarred))
                         }
                 }
-            }
 
+                AttachmentsView(uiModel: uiModel.attachmentsUIModel, onTapEvent: {
+                    onEvent(.onAttachmentTap(attachmentId: $0))
+                })
+                .removeViewIf(uiModel.attachmentsUIModel.isEmpty)
+            }
         }
         .padding(14)
-        .background(uiModel.isSelected ? MailColor.backgroundSecondary : Color(UIColor.systemBackground))
+        .background(uiModel.isSelected ? DS.Color.backgroundSecondary : Color(UIColor.systemBackground))
     }
 }
 
@@ -101,6 +105,7 @@ final class MailboxConversationCellUIModel: Identifiable {
     let isSenderProtonOfficial: Bool
     let numMessages: Int
     let labelUIModel: MailboxLabelUIModel
+    let attachmentsUIModel: [AttachmentCapsuleUIModel]
 
     init(
         id: String,
@@ -112,7 +117,8 @@ final class MailboxConversationCellUIModel: Identifiable {
         isStarred: Bool,
         isSenderProtonOfficial: Bool,
         numMessages: Int,
-        labelUIModel: MailboxLabelUIModel = .init()
+        labelUIModel: MailboxLabelUIModel = .init(),
+        attachmentsUIModel: [AttachmentCapsuleUIModel] = []
     ) {
         self.id = id
         self.avatarImage = avatarImage
@@ -124,12 +130,14 @@ final class MailboxConversationCellUIModel: Identifiable {
         self.isSenderProtonOfficial = isSenderProtonOfficial
         self.numMessages = numMessages
         self.labelUIModel = labelUIModel
+        self.attachmentsUIModel = attachmentsUIModel
     }
 }
 
 enum MailboxConversationCellEvent {
     case onSelectedChange(isSelected: Bool)
     case onStarredChange(isStarred: Bool)
+    case onAttachmentTap(attachmentId: String)
 }
 
 #Preview {
@@ -166,7 +174,8 @@ enum MailboxConversationCellEvent {
                 isStarred: true,
                 isSenderProtonOfficial: false,
                 numMessages: 3,
-                labelUIModel: .init(id: "", labelColor: .purple, text: "Offer", textColor: .white, numExtraLabels: 0)
+                labelUIModel: .init(id: "", color: .purple, text: "Offer", numExtraLabels: 0),
+                attachmentsUIModel: [.init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf")]
             ),
             onEvent: { _ in }
         )
@@ -182,10 +191,14 @@ enum MailboxConversationCellEvent {
                 isStarred: true,
                 isSenderProtonOfficial: true,
                 numMessages: 12,
-                labelUIModel: .init(id: "", labelColor: .green, text: "Read later", textColor: .white, numExtraLabels: 2)
+                labelUIModel: .init(id: "", color: .green, text: "Read later", numExtraLabels: 2),
+                attachmentsUIModel: [
+                    .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
+                    .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
+                    .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
+                ]
             ),
             onEvent: { _ in }
         )
-
     }
 }

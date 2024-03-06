@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ic-file-type-icon-powerpoint.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

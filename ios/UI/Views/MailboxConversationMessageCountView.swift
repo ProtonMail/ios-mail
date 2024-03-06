@@ -31,14 +31,14 @@ struct MailboxConversationMessageCountView: View {
         Text(normalisedNumMessages)
             .font(.caption2)
             .fontWeight(.medium)
-            .foregroundStyle(MailColor.textWeak)
+            .foregroundStyle(DS.Color.textWeak)
             .padding(2)
             .frame(minWidth: 20)
             .fixedSize()
             .lineLimit(1)
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .fill(MailColor.backgroundSecondary)
+                    .fill(DS.Color.backgroundSecondary)
             )
     }
 }

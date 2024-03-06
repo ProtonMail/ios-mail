@@ -32,6 +32,8 @@ struct MailboxConversationScreen: View {
                             model?.onConversationSelectionChange(id: conversation.id, isSelected: isSelected)
                         case .onStarredChange(let isStarred):
                             model?.onConversationStarChange(id: conversation.id, isStarred: isStarred)
+                        case .onAttachmentTap(let attachmentId):
+                            model?.onAttachmentTap(attachmentId: attachmentId)
                         }
                     }
                 )

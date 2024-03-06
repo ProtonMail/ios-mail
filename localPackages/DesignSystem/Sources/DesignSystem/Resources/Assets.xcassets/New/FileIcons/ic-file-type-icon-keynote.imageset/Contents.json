@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ic-file-type-icon-keynote.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -29,12 +29,12 @@ struct AvatarCheckboxView: View {
             if isSelected {
                 ZStack {
                     RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                        .stroke(MailColor.strokeDark, lineWidth: 1)
-                        .fill(MailColor.backgroundNorm)
+                        .stroke(DS.Color.strokeDark, lineWidth: 1)
+                        .fill(DS.Color.backgroundNorm)
                         .overlay {
-                            Image(uiImage: MailIcon.icCheckmark)
+                            Image(uiImage: DS.Icon.icCheckmark)
                                 .resizable()
-                                .foregroundColor(MailColor.checkbox)
+                                .foregroundColor(DS.Color.checkbox)
                                 .padding(10)
 
                         }

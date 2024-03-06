@@ -17,6 +17,7 @@
 		47143B802B8CFF1800AAB4E4 /* AvatarCheckboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47143B7F2B8CFF1800AAB4E4 /* AvatarCheckboxView.swift */; };
 		472ED7772B95DD2A00C1C8E6 /* MailboxLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472ED7762B95DD2A00C1C8E6 /* MailboxLabelView.swift */; };
 		4754F23D2B9756660094F46A /* LocalizationTemp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4754F23C2B9756660094F46A /* LocalizationTemp.swift */; };
+		4754F23F2B97586B0094F46A /* AttachmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4754F23E2B97586B0094F46A /* AttachmentsView.swift */; };
 		476F34252B973651006F6293 /* SenderBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476F34242B973651006F6293 /* SenderBadgeView.swift */; };
 		476F34272B973CF7006F6293 /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476F34262B973CF7006F6293 /* Color+hex.swift */; };
 		47761CCD2B8DFB1500AFE584 /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47761CCC2B8DFB1500AFE584 /* PreviewData.swift */; };
@@ -59,6 +60,7 @@
 		47143B7F2B8CFF1800AAB4E4 /* AvatarCheckboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCheckboxView.swift; sourceTree = "<group>"; };
 		472ED7762B95DD2A00C1C8E6 /* MailboxLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxLabelView.swift; sourceTree = "<group>"; };
 		4754F23C2B9756660094F46A /* LocalizationTemp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTemp.swift; sourceTree = "<group>"; };
+		4754F23E2B97586B0094F46A /* AttachmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentsView.swift; sourceTree = "<group>"; };
 		476F34242B973651006F6293 /* SenderBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderBadgeView.swift; sourceTree = "<group>"; };
 		476F34262B973CF7006F6293 /* Color+hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+hex.swift"; sourceTree = "<group>"; };
 		47761CCC2B8DFB1500AFE584 /* PreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewData.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				4712AD202B9636F000F18210 /* MailboxConversationMessageCountView.swift */,
 				472ED7762B95DD2A00C1C8E6 /* MailboxLabelView.swift */,
 				476F34242B973651006F6293 /* SenderBadgeView.swift */,
+				4754F23E2B97586B0094F46A /* AttachmentsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -246,8 +249,8 @@
 		479E191A2B97194B003A3A51 /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				479E19172B9715AB003A3A51 /* View+removeViewIf.swift */,
 				476F34262B973CF7006F6293 /* Color+hex.swift */,
+				479E19172B9715AB003A3A51 /* View+removeViewIf.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -400,6 +403,7 @@
 				4701D41D2B8CB1C400D6DC1D /* MailboxScreen.swift in Sources */,
 				472ED7772B95DD2A00C1C8E6 /* MailboxLabelView.swift in Sources */,
 				47143B7B2B8CECAD00AAB4E4 /* MailboxConversationScreenModel.swift in Sources */,
+				4754F23F2B97586B0094F46A /* AttachmentsView.swift in Sources */,
 				47D4614E2B9379F4007546C1 /* SidebarScreen.swift in Sources */,
 				4712AD212B9636F000F18210 /* MailboxConversationMessageCountView.swift in Sources */,
 				47761CCD2B8DFB1500AFE584 /* PreviewData.swift in Sources */,

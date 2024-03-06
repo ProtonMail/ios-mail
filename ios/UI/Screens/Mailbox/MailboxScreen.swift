@@ -38,7 +38,7 @@ struct MailboxScreen: View {
                     Button(action: {
                         appUIState.isSidebarOpen.toggle()
                     }) {
-                        Image(uiImage: MailIcon.icHamburguer)
+                        Image(uiImage: DS.Icon.icHamburguer)
                     }
                 }
             }
