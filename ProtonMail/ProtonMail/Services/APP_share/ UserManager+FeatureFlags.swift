@@ -26,19 +26,11 @@ extension UserManager {
     }
 
     var isSnoozeEnabled: Bool {
-        return container.featureFlagsRepository.isEnabled(
-            MailFeatureFlag.snooze,
-            for: userID.rawValue,
-            reloadValue: true
-        )
+        container.featureFlagProvider.isEnabled(.snooze, reloadValue: true)
     }
 
     var isMessageSwipeNavigationSettingEnabled: Bool {
-        return container.featureFlagsRepository.isEnabled(
-            MailFeatureFlag.nextMessageAfterMove,
-            for: userID.rawValue,
-            reloadValue: true
-        )
+        container.featureFlagProvider.isEnabled(.nextMessageAfterMove, reloadValue: true)
     }
 
     var isAccountRecoveryEnabled: Bool {

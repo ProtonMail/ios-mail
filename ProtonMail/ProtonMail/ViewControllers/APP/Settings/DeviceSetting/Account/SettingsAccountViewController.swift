@@ -292,6 +292,8 @@ extension SettingsAccountViewController {
             return imageCell(for: indexPath, item: item)
         case .storage:
             return generalCell(for: indexPath, item: item, rightLabel: "100 MB (disabled)")
+        case .nextMsgAfterMove:
+            return generalCell(for: indexPath, item: item, rightLabel: viewModel.jumpToNextMessageDescription)
         default:
             return generalCell(for: indexPath, item: item, rightLabel: "")
         }

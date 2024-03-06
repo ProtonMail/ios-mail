@@ -1379,9 +1379,9 @@ enum L11n {
     }
 
     struct NextMsgAfterMove {
-        static let settingTitle = NSLocalizedString("Jump to next message", comment: "The title of the setting of the next msg after move")
-        static let rowTitle = NSLocalizedString("Jump to next message", comment: "The title of the row inside the setting page of next msg after move function.")
-        static let rowFooterTitle = NSLocalizedString("Automatically show the next message when the current message is deleted, archived or moved.", comment: "The footer title of the setting row of the next msg after move functions.")
+        static let settingTitle = NSLocalizedString("Jump to next email", comment: "The title of the setting of the next msg after move")
+        static let rowTitle = NSLocalizedString("Jump to next email", comment: "The title of the row inside the setting page of next msg after move function.")
+        static let rowFooterTitle = NSLocalizedString("Automatically show the next email when an open email is deleted, archived, or moved.", comment: "The footer title of the setting row of the next msg after move functions.")
 	}
 
     struct Error {
