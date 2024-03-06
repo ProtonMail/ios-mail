@@ -242,6 +242,11 @@ final class SettingsAccountViewModel {
         userManager.isAutoDeleteEnabled
     }
 
+    var jumpToNextMessageDescription: String {
+        let isEnabled = userManager.container.nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove
+        return isEnabled ? LocalString._settings_On_title : LocalString._settings_Off_title
+    }
+
     var isPaidUser: Bool {
         userManager.hasPaidMailPlan
     }

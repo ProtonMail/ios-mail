@@ -41,6 +41,8 @@ struct FeatureFlagProvider {
             return nil
         case .rsvpWidget where Application.isDebugOrEnterprise:
             return true
+        case .nextMessageAfterMove:
+            return Application.isDebugOrEnterprise
         case .snooze:
             return ProcessInfo.isRunningUnitTests
         default:
