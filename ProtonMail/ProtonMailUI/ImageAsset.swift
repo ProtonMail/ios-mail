@@ -21,6 +21,9 @@ public class ImageAsset {
     static var autoImportContactsSpotlight: UIImage {
         UIImage(named: "auto_import_contacts_spotlight", in: Bundle(for: LocalImage.self), with: nil)!
     }
+    static var autoImportContactsNoContact: UIImage {
+        UIImage(named: "auto_import_contacts_no_contact", in: Bundle(for: LocalImage.self), with: nil)!
+    }
 
     static var snoozeSpotlight: UIImage {
         UIImage(named: "snooze_spotlight", in: Bundle(for: LocalImage.self), with: nil)!
