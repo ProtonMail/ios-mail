@@ -40,8 +40,8 @@ class UsersManagerHelperTest: XCTestCase {
     }
 
     func testNumberOfFreeAccounts_allFreeUsers() throws {
-        let user1 = UserManager(api: apiMock)
-        let user2 = UserManager(api: apiMock)
+        let user1 = UserManager(api: apiMock, subscribed: .init(rawValue: 0))
+        let user2 = UserManager(api: apiMock, subscribed: .init(rawValue: 0))
         let users = UsersManager(dependencies: globalContainer)
         users.add(newUser: user1)
         users.add(newUser: user2)
@@ -49,9 +49,9 @@ class UsersManagerHelperTest: XCTestCase {
     }
 
     func testNumberOfFreeAccounts_hasPaidUser() throws {
-        let user1 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.none)
-        let user2 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.owner)
-        let user3 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.member)
+        let user1 = UserManager(api: apiMock, subscribed: .init(rawValue: 0))
+        let user2 = UserManager(api: apiMock, subscribed: .mail)
+        let user3 = UserManager(api: apiMock, subscribed: .drive)
         let users = UsersManager(dependencies: globalContainer)
         users.add(newUser: user1)
         users.add(newUser: user2)
@@ -59,9 +59,9 @@ class UsersManagerHelperTest: XCTestCase {
         XCTAssertEqual(users.numberOfFreeAccounts, 1)
     }
 
-    func testIsAllowedNewUser_allowed() {
-        let user1 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.none)
-        let user2 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.owner)
+    func testIsAllowedNewUser_allowed_whenFreeAccountLessThanTwo_anyPaidAccountExemptFromLimit() {
+        let user1 = UserManager(api: apiMock, subscribed: .init(rawValue: 0))
+        let user2 = UserManager(api: apiMock, subscribed: .init(rawValue: 0))
         let users = UsersManager(dependencies: globalContainer)
         let userInfo = user1.userInfo
         XCTAssertTrue(users.isAllowedNewUser(userInfo: userInfo))
@@ -69,14 +69,25 @@ class UsersManagerHelperTest: XCTestCase {
         let users2 = UsersManager(dependencies: globalContainer)
         users2.add(newUser: user2)
         XCTAssertTrue(users2.isAllowedNewUser(userInfo: userInfo))
+
+        for _ in 0...4 {
+            let plans: [User.Subscribed] = [.mail, .drive, .vpn]
+            let paidUser = UserManager(api: apiMock, subscribed: plans.randomElement() ?? .mail)
+            XCTAssertTrue(users.isAllowedNewUser(userInfo: paidUser.userInfo))
+            users2.add(newUser: paidUser)
+        }
     }
 
-    func testIsAllowedNewUser_notAllowed() {
-        let user1 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.none)
-        let user2 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.none)
+    func testIsAllowedNewUser_notAllowed_whenFreeAccountMoreThanTwo() {
+        let user1 = UserManager(api: apiMock, subscribed: .init(rawValue: 0))
+        let user2 = UserManager(api: apiMock, subscribed: .init(rawValue: 0))
         let users = UsersManager(dependencies: globalContainer)
         users.add(newUser: user1)
         let userInfo = user2.userInfo
-        XCTAssertFalse(users.isAllowedNewUser(userInfo: userInfo))
+        XCTAssertTrue(users.isAllowedNewUser(userInfo: userInfo))
+        users.add(newUser: user2)
+
+        let user3 = UserManager(api: apiMock, subscribed: .init(rawValue: 0))
+        XCTAssertFalse(users.isAllowedNewUser(userInfo: user3.userInfo))
     }
 }

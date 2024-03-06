@@ -115,49 +115,6 @@ class UsersManagerTests: XCTestCase {
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: freeUserInfo))
     }
 
-    func testIsAllowedNewUser_1FreeUser() {
-        let user1 = createUserManagerMock(userID: "1", isPaid: false)
-        sut.add(newUser: user1)
-
-        let paidUserInfo = UserInfo(maxSpace: nil,
-                                    maxBaseSpace: nil,
-                                    maxDriveSpace: nil,
-                                    usedSpace: nil,
-                                    usedBaseSpace: nil,
-                                    usedDriveSpace: nil,
-                                    language: nil,
-                                    maxUpload: nil,
-                                    role: 1,
-                                    delinquent: nil,
-                                    keys: [],
-                                    userId: "1",
-                                    linkConfirmation: nil,
-                                    credit: nil,
-                                    currency: nil,
-                                    createTime: nil,
-                                    subscribed: .mail)
-        XCTAssertTrue(sut.isAllowedNewUser(userInfo: paidUserInfo))
-
-        let freeUserInfo = UserInfo(maxSpace: nil,
-                                    maxBaseSpace: nil,
-                                    maxDriveSpace: nil,
-                                    usedSpace: nil,
-                                    usedBaseSpace: nil,
-                                    usedDriveSpace: nil,
-                                    language: nil,
-                                    maxUpload: nil,
-                                    role: 0,
-                                    delinquent: nil,
-                                    keys: [],
-                                    userId: "1",
-                                    linkConfirmation: nil,
-                                    credit: nil,
-                                    currency: nil,
-                                    createTime: nil,
-                                    subscribed: nil)
-        XCTAssertFalse(sut.isAllowedNewUser(userInfo: freeUserInfo))
-    }
-
     func testAddNewUser() {
         let userID = "1"
         let auth = AuthCredential(sessionID: userID,
@@ -506,7 +463,7 @@ class UsersManagerTests: XCTestCase {
                                 credit: nil,
                                 currency: nil,
                                 createTime: nil,
-                                subscribed: .mail)
+                                subscribed: isPaid ? .mail : .init(rawValue: 0))
         let auth = createAuth(userID: userID)
         return UserManager(api: apiMock,
                            userInfo: userInfo,
