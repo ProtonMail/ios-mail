@@ -51,6 +51,7 @@ final class OnboardViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         customView.scrollView.delegate = self
+        customView.pageControl.addTarget(self, action: #selector(pageControllerIsChange), for: .valueChanged)
         setupView()
         addOnboardViews()
     }
@@ -142,6 +143,12 @@ final class OnboardViewController: UIViewController, UIScrollViewDelegate {
         } else {
             scrollToNextPageIfCan()
         }
+    }
+
+    @objc
+    private func pageControllerIsChange() {
+        let newValue = customView.pageControl.currentPage
+        scrollTo(page: newValue)
     }
 
     @objc
