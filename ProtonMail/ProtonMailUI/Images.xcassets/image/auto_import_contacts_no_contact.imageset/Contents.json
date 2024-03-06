@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "auto_import_contacts_no_contact.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

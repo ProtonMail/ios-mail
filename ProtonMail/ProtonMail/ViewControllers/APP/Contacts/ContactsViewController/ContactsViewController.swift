@@ -25,12 +25,15 @@ import Combine
 import LifetimeTracker
 import MBProgressHUD
 import ProtonCoreUIFoundations
+import ProtonMailUI
 import UIKit
+import SwiftUI
 
 final class ContactsViewController: ContactsAndGroupsSharedCode {
     typealias Dependencies =
         ContactsAndGroupsSharedCode.Dependencies &
         HasContactViewsFactory &
+        HasImportDeviceContacts &
         HasInternetConnectionStatusProviderProtocol &
         HasUserManager
 
@@ -165,6 +168,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         viewModel.contentDidChange = { [weak self] snapshot in
             DispatchQueue.main.async {
                 self?.diffableDataSource?.apply(snapshot, animatingDifferences: false)
+                self?.showNoContactViewIfNeeded(hasContact: snapshot.numberOfItems > 0)
             }
         }
 
@@ -351,6 +355,56 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
             section
         }
         diffableDataSource?.useSectionIndex = true
+    }
+}
+
+// MARK: No contact hint
+extension ContactsViewController {
+    private func showNoContactViewIfNeeded(hasContact: Bool) {
+        guard
+            dependencies.autoImportContactsFeature.isFeatureEnabled,
+            searchString.isEmpty,
+            !hasContact
+        else {
+            hideNoContactView()
+            return
+        }
+        let texts = NoContactView.Texts(
+            title: L11n.AutoImportContacts.noContactTitle,
+            description: L11n.AutoImportContacts.noContactDesc,
+            importingTitle: L11n.AutoImportContacts.importingTitle,
+            importingDesc: L11n.AutoImportContacts.importingDesc,
+            buttonTitle:  L11n.AutoImportContacts.autoImportContactButtonTitle,
+            noPermissionAlertTitle: L11n.SettingsContacts.autoImportContacts,
+            noPermissionAlertMessage: L11n.SettingsContacts.authoriseContactsInSettingsApp,
+            noPermissionButtonTitle: LocalString._general_ok_action
+        )
+        let noContactView = NoContactView(
+            texts: texts,
+            isImporting: dependencies.autoImportContactsFeature.isSettingEnabledForUser
+        ) { [weak self] _ in
+            self?.autoImportContactIsStarted()
+        }
+        let componentVC = ComponentViewController(rootView: noContactView)
+        guard let componentView = componentVC.view else { return }
+        view.addSubview(componentView)
+        componentView.fillSuperview()
+    }
+
+    private func hideNoContactView() {
+        guard
+            let noContactView = view.subviews.first(where: {$0 is SwiftUI._UIHostingView<ProtonMailUI.NoContactView>})
+        else { return }
+        noContactView.removeFromSuperview()
+    }
+
+    private func autoImportContactIsStarted() {
+        dependencies.autoImportContactsFeature.enableSettingForUser()
+        let params = ImportDeviceContacts.Params(
+            userKeys: dependencies.user.userInfo.userKeys,
+            mailboxPassphrase: dependencies.user.mailboxPassword
+        )
+        dependencies.importDeviceContacts.execute(params: params)
     }
 }
 

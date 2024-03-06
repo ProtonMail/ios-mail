@@ -1546,6 +1546,11 @@ enum L11n {
         static let spotlightTitle = "Contact auto-import"
         static let spotlightMessage = "Simplify your workflow by effortlessly adding new contacts from your device automatically."
         static let spotlightButtonTitle = "Turn on feature"
+        static let noContactTitle = NSLocalizedString("No contacts yet", comment: "The title for no contact hint view")
+        static let noContactDesc = NSLocalizedString("Import contacts from your device to send emails and invites with ease.", comment: "The description for no contact hint view")
+        static let autoImportContactButtonTitle = NSLocalizedString("Auto-import contacts", comment: "Button title for no contact hint view")
+        static let importingTitle = NSLocalizedString("Importing your contacts", comment: "A title show to user after auto import button is clicked but contacts hasn't imported yet")
+        static let importingDesc = NSLocalizedString("Your contacts will appear here shortly.", comment: "A message show to user after auto import button is clicked but contacts hasn't imported yet")
     }
 
     struct AccountSettings {
