@@ -49,7 +49,10 @@ extension AttachmentConvertible {
 
 enum MIMEType: String {
     case ics = "text/calendar"
+    /// Google's special one that doesn't have standard newlines/
+    case applicationICS = "application/ics"
     case `default` = "application/octet-stream"
+    case pgpKeys = "application/pgp-keys"
 }
 
 private struct MIMETypeBuilder {
