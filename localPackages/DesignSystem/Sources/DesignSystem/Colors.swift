@@ -23,6 +23,8 @@ public extension DS.Color {
     static let brandLighten20 = Color(.mobileBrandLighten20)
     static let brandLighten40 = Color(.mobileBrandLighten40)
 
+    static let notificationWarning = Color(.mobileNotificationWarning)
+    static let notificationError = Color(.mobileNotificationError)
 
     static let textWeak = Color(.mobileTextWeak)
     static let textNorm = Color(.mobileTextNorm)

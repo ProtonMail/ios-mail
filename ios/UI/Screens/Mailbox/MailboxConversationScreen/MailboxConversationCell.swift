@@ -79,6 +79,13 @@ struct MailboxConversationCell: View {
                         }
                 }
 
+                Text(uiModel.expirationDate.text)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .foregroundStyle(uiModel.expirationDate.color)
+                    .font(.callout)
+                    .fontWeight(.regular)
+                    .removeViewIf(uiModel.expirationDate.text.isEmpty)
+
                 AttachmentsView(uiModel: uiModel.attachmentsUIModel, onTapEvent: {
                     onEvent(.onAttachmentTap(attachmentId: $0))
                 })
@@ -88,6 +95,11 @@ struct MailboxConversationCell: View {
         .padding(14)
         .background(uiModel.isSelected ? DS.Color.backgroundSecondary : Color(UIColor.systemBackground))
     }
+}
+
+struct ExpirationDateUIModel {
+    let text: String
+    let color: Color
 }
 
 @Observable
@@ -107,6 +119,8 @@ final class MailboxConversationCellUIModel: Identifiable {
     let labelUIModel: MailboxLabelUIModel
     let attachmentsUIModel: [AttachmentCapsuleUIModel]
 
+    let expirationDate: ExpirationDateUIModel
+
     init(
         id: String,
         avatarImage: URL,
@@ -118,7 +132,8 @@ final class MailboxConversationCellUIModel: Identifiable {
         isSenderProtonOfficial: Bool,
         numMessages: Int,
         labelUIModel: MailboxLabelUIModel = .init(),
-        attachmentsUIModel: [AttachmentCapsuleUIModel] = []
+        attachmentsUIModel: [AttachmentCapsuleUIModel] = [],
+        expirationDate: ExpirationDateUIModel
     ) {
         self.id = id
         self.avatarImage = avatarImage
@@ -131,6 +146,7 @@ final class MailboxConversationCellUIModel: Identifiable {
         self.numMessages = numMessages
         self.labelUIModel = labelUIModel
         self.attachmentsUIModel = attachmentsUIModel
+        self.expirationDate = expirationDate
     }
 }
 
@@ -152,7 +168,8 @@ enum MailboxConversationCellEvent {
             isStarred: false,
             isSenderProtonOfficial: true,
             numMessages: 0,
-            labelUIModel: .init()
+            labelUIModel: .init(),
+            expirationDate: .init(text: "Expires in < 5 minutes", color: DS.Color.notificationError)
         )
     }
     let model1 = model
@@ -175,7 +192,8 @@ enum MailboxConversationCellEvent {
                 isSenderProtonOfficial: false,
                 numMessages: 3,
                 labelUIModel: .init(id: "", color: .purple, text: "Offer", numExtraLabels: 0),
-                attachmentsUIModel: [.init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf")]
+                attachmentsUIModel: [.init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf")],
+                expirationDate: .init(text: "", color: .clear)
             ),
             onEvent: { _ in }
         )
@@ -196,7 +214,8 @@ enum MailboxConversationCellEvent {
                     .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
                     .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
                     .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
-                ]
+                ],
+                expirationDate: .init(text: "", color: .clear)
             ),
             onEvent: { _ in }
         )

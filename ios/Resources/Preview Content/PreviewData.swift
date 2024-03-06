@@ -33,6 +33,7 @@ enum PreviewData {
 
         let conversations: [MailboxConversationCellUIModel] = (1..<100).map { value in
             let randomSenderSubject = randomSenderSubject()
+            let expirationDate: Bool = ((1..<11).randomElement()!%10) == 0
             return .init(
                 id: UUID().uuidString,
                 avatarImage: URL(fileURLWithPath: ""),
@@ -44,7 +45,8 @@ enum PreviewData {
                 isSenderProtonOfficial: (randomSenderSubject.0 == "Proton"),
                 numMessages: [0, 1, 5, [0, 2, 14].randomElement()!].randomElement()!,
                 labelUIModel: [0, 1, 2].randomElement()! == 0 ? mailboxLabels.randomElement()! : .init(),
-                attachmentsUIModel: [0, 1, 2].randomElement()! == 0 ? attachments.randomElement()! : []
+                attachmentsUIModel: [0, 1, 2].randomElement()! == 0 ? attachments.randomElement()! : [],
+                expirationDate: expirationDate ? .init(text: "Expires in < 5 minutes", color: DS.Color.notificationError) : .init(text: "", color: .clear)
             )
         }
         return .init(conversations: conversations)
