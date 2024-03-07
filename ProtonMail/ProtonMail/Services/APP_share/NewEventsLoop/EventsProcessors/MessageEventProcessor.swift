@@ -77,6 +77,13 @@ struct MessageEventProcessor {
         message.labelIDs.forEach { draft.add(labelID: $0) }
         applyLabelAddition(message, on: draft, context: context)
         applyLabelDeletion(message, on: draft, context: context)
+
+        if let attachmentsMetadata = message.attachmentsMetadata,
+           let jsonData = try? JSONEncoder().encode(attachmentsMetadata),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            draft.attachmentsMetadata = jsonString
+        }
+        draft.numAttachments = NSNumber(value: message.numAttachments)
     }
 
     private func handleMessage(message: MessageResponse.Message, context: NSManagedObjectContext) {

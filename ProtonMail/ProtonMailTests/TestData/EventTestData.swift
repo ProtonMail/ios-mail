@@ -1312,7 +1312,15 @@ enum EventTestData {
                     "15"
                 ],
                 "AttachmentInfo": {},
-                "AttachmentsMetadata": []
+                "AttachmentsMetadata": [
+                    {
+                        "ID": "pNnebrcs9wmfCa7le_relCZVwAEnhToQ1Z-cWGbdEGWxZjLQ7DGRhV-Bc373AzmGTuiog4MCzH5J2qxT4-nw4w==",
+                        "Name": "Test.pdf",
+                        "Size": 434137,
+                        "MIMEType": "application/pdf",
+                        "Disposition": "attachment"
+                    }
+                ]
             }
         }
     ],

@@ -805,6 +805,15 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
             XCTAssertEqual(bccList.first?.contains("test@pm.me"), true)
 
             XCTAssertEqual(entity.labels.count, 4)
+
+            let attachmentsMetaData = try AttachmentsMetadata.decodeListOfDictionaries(jsonString: draft.attachmentsMetadata)
+            XCTAssertEqual(attachmentsMetaData.count, 1)
+            let attachmentMetaData = try XCTUnwrap(attachmentsMetaData.first)
+            XCTAssertEqual(attachmentMetaData.id, "pNnebrcs9wmfCa7le_relCZVwAEnhToQ1Z-cWGbdEGWxZjLQ7DGRhV-Bc373AzmGTuiog4MCzH5J2qxT4-nw4w==")
+            XCTAssertEqual(attachmentMetaData.name, "Test.pdf")
+            XCTAssertEqual(attachmentMetaData.size, 434137)
+            XCTAssertEqual(attachmentMetaData.mimeType, "application/pdf")
+            XCTAssertEqual(attachmentMetaData.disposition, .attachment)
         }
     }
 
