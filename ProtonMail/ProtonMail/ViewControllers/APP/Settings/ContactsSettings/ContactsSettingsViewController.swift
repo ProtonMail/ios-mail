@@ -107,16 +107,7 @@ extension ContactsSettingsViewController {
     }
 
     private func informContactAccessIsDenied(completion: @escaping () -> Void) {
-        let alert = UIAlertController(
-            title: L11n.SettingsContacts.autoImportContacts,
-            message: L11n.SettingsContacts.authoriseContactsInSettingsApp,
-            preferredStyle: .alert
-        )
-        alert.addAction(
-            UIAlertAction(title: LocalString._general_ok_action, style: .default) { _ in
-                completion()
-            }
-        )
+        let alert = UIAlertController.makeContactAccessDeniedAlert(completion: completion)
         present(alert, animated: true, completion: nil)
     }
 

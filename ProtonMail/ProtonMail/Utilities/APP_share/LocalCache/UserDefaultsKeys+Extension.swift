@@ -47,7 +47,12 @@ extension UserDefaultsKeys {
     static let telemetryFrequency = plainKey(named: "telemetry_frequency_flag", defaultValue: [String: [String: Int]]())
 
     /// Dictionary of booleans with users who've dismissed the storage banner. e.g. ["user-id-1": true]
-    static let usersWhoHaveSeenStorageBanner = plainKey(named: "usersWhoHaveSeenStorageBanner", defaultValue: [String: Bool]())
-    
+    static let usersWhoHaveSeenStorageBanner = plainKey(
+        named: "usersWhoHaveSeenStorageBanner",
+        defaultValue: [String: Bool]()
+    )
+
     static let isMessageSwipeNavigationEnabled = plainKey(named: "isMessageSwipeNavigationEnabled", defaultValue: true)
+
+    static let hasContactAutoSyncBannerShown = plainKey(named: "hasContactAutoSyncBannerShown", defaultValue: false)
 }
