@@ -98,10 +98,14 @@ extension UIViewController {
               !userInfo.isOnAStoragePaidPlan,
               let usedBaseSpace = userInfo.usedBaseSpace,
               let maxBaseSpace = userInfo.maxBaseSpace,
-              maxBaseSpace > 0 else {
+              let usedDriveSpace = userInfo.usedDriveSpace,
+              let maxDriveSpace = userInfo.maxDriveSpace else {
             return false
         }
-        let factor = CGFloat(usedBaseSpace) / CGFloat(maxBaseSpace)
-        return factor > 0.8
+
+        let mailFactor = CGFloat(usedBaseSpace) / CGFloat(maxBaseSpace)
+        let driveFactor = CGFloat(usedDriveSpace) / CGFloat(maxDriveSpace)
+        return mailFactor > StorageAlertVisibility.bannerThreshold
+        || driveFactor > StorageAlertVisibility.bannerThreshold
     }
 }

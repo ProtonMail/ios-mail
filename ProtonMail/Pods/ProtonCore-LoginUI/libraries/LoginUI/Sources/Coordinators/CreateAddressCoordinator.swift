@@ -25,7 +25,6 @@ import Foundation
 import UIKit
 import ProtonCoreUIFoundations
 import ProtonCoreLogin
-import ProtonCoreFeatureSwitch
 
 protocol CreateAddressCoordinatorDelegate: AnyObject {
     func userDidGoBack()

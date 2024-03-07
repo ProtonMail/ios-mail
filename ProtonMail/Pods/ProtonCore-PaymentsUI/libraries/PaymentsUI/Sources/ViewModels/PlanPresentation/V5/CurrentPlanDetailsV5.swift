@@ -70,7 +70,9 @@ struct CurrentPlanDetailsV5 {
                 }
 
                 let multiplier = factor < 0.01 ? 0.01 : factor
-                shouldDisplayStorageFullAlert = multiplier > 0.9
+
+                // the "storage full" alert should display if any of the storage entitlements are > 98% full
+                shouldDisplayStorageFullAlert = multiplier > 0.98 || shouldDisplayStorageFullAlert
 
                 entitlements.append(.progress(.init(
                     title: entitlement.title,

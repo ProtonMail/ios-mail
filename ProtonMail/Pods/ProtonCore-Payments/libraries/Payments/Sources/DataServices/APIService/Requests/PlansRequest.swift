@@ -62,7 +62,6 @@ final class V5PlansRequest: PlansRequest {
     }
 }
 
-
 public final class PlansResponse: Response {
     internal var availableServicePlans: [Plan]?
 

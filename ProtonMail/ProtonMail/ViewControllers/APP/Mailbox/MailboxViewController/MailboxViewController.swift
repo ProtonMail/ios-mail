@@ -1197,7 +1197,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     private func handleShadow(isScrolled: Bool) {
-        if viewModel.shouldShowFullStorageAlert {
+        if viewModel.storageAlertVisibility != .hidden {
             isScrolled ? alertCardView.layer.apply(shadow: .custom(y: 2, blur: 2)) : alertCardView.layer.clearShadow()
         } else {
             isScrolled ? topActionsView.layer.apply(shadow: .custom(y: 2, blur: 2)) : topActionsView.layer.clearShadow()
@@ -2094,46 +2094,49 @@ extension MailboxViewController {
 extension MailboxViewController {
 
     private func setupAlertBox() {
-        if viewModel.shouldShowFullStorageAlert {
-            alertContainerView.isHidden = false
-            alertContainerView.layer.zPosition = tableView.layer.zPosition + 1
-            alertCardView.backgroundColor = ColorProvider.BackgroundSecondary
-            alertCardView.layer.cornerRadius = 8
-            alertIcon.image = IconProvider.exclamationCircleFilled
-
-            if viewModel.storagePercentage < 95 {
-                alertLabel.text = String(format: L11n.AlertBox.alertBoxPercentageText, "\(String(viewModel.storagePercentage))%")
-                alertDismissButton.isHidden = false
-                alertDescription.isHidden = true
-                alertIcon.tintColor = ColorProvider.NotificationWarning
-            } else {
-                alertLabel.text = L11n.AlertBox.alertBoxFullText
-                alertDismissButton.isHidden = true
-                alertDescription.isHidden = false
-                alertIcon.tintColor = ColorProvider.NotificationError
-            }
-
-            alertDescription.text = L11n.AlertBox.alertBoxDescription
-
-            alertLabel.textColor = ColorProvider.TextNorm
-            alertDescription.textColor = ColorProvider.TextNorm
-            alertDismissButton.setTitle(L11n.AlertBox.alertBoxDismissButtonTitle, for: .normal)
-            alertButton.setTitle(L11n.AlertBox.alertBoxButtonTitle, for: .normal)
-            alertButton.layer.cornerRadius = 8
-            alertButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
-            alertButton.addTarget(
-                self,
-                action: #selector(getMoreStorageTapped),
-                for: .touchUpInside
-            )
-            alertDismissButton.addTarget(
-                self,
-                action: #selector(dismissStorageAlertTapped),
-                for: .touchUpInside
-            )
-        } else {
+        guard viewModel.storageAlertVisibility != .hidden else {
             alertContainerView.isHidden = true
+            return
         }
+        alertContainerView.isHidden = false
+        alertContainerView.layer.zPosition = tableView.layer.zPosition + 1
+        alertCardView.backgroundColor = ColorProvider.BackgroundSecondary
+        alertCardView.layer.cornerRadius = 8
+        alertIcon.image = IconProvider.exclamationCircleFilled
+
+        alertLabel.text = viewModel.storageAlertVisibility.mailboxBannerTitle
+        switch viewModel.storageAlertVisibility {
+        case .mail(let value) where value < StorageAlertVisibility.fullThreshold,
+             .drive(let value) where value < StorageAlertVisibility.fullThreshold:
+            alertDismissButton.isHidden = false
+            alertDescription.isHidden = true
+            alertIcon.tintColor = ColorProvider.NotificationWarning
+        case .mail, .drive:
+            alertDismissButton.isHidden = true
+            alertDescription.isHidden = false
+            alertIcon.tintColor = ColorProvider.NotificationError
+        case .hidden:
+            break
+        }
+
+        alertDescription.text = L11n.AlertBox.alertBoxDescription
+
+        alertLabel.textColor = ColorProvider.TextNorm
+        alertDescription.textColor = ColorProvider.TextNorm
+        alertDismissButton.setTitle(L11n.AlertBox.alertBoxDismissButtonTitle, for: .normal)
+        alertButton.setTitle(L11n.AlertBox.alertBoxButtonTitle, for: .normal)
+        alertButton.layer.cornerRadius = 8
+        alertButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        alertButton.addTarget(
+            self,
+            action: #selector(getMoreStorageTapped),
+            for: .touchUpInside
+        )
+        alertDismissButton.addTarget(
+            self,
+            action: #selector(dismissStorageAlertTapped),
+            for: .touchUpInside
+        )
     }
 
     @objc private func getMoreStorageTapped() {

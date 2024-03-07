@@ -130,7 +130,7 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
         testContainer = nil
     }
 
-    func testStorageProgressView_noError_80() {
+    func testStorageProgressView_whenMailStorage80_free_noBanner() {
         withFeatureFlags([.splitStorage]) {
             userManagerMock.userInfo.usedBaseSpace = 80
             userManagerMock.userInfo.maxBaseSpace = 100
@@ -144,9 +144,23 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
         }
     }
 
-    func testStorageProgressView_error_99() {
+    func testStorageProgressView_whenDriveStorage80_free_noBanner() {
         withFeatureFlags([.splitStorage]) {
-            userManagerMock.userInfo.usedBaseSpace = 99
+            userManagerMock.userInfo.usedDriveSpace = 80
+            userManagerMock.userInfo.maxDriveSpace = 100
+            userManagerMock.userInfo.subscribed = .init(rawValue: 0)
+
+            viewModel = makeViewModel()
+
+            sut = .init(viewModel: viewModel, dependencies: userContainer)
+            sut.set(coordinator: fakeCoordinator)
+            snapshot(viewController: sut)
+        }
+    }
+
+    func testStorageProgressView_whenMailStorage90_free_showBanner() {
+        withFeatureFlags([.splitStorage]) {
+            userManagerMock.userInfo.usedBaseSpace = 90
             userManagerMock.userInfo.maxBaseSpace = 100
             userManagerMock.userInfo.subscribed = .init(rawValue: 0)
 
@@ -158,10 +172,10 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
         }
     }
 
-    func testStorageProgressView_fullError_9999() {
+    func testStorageProgressView_whenDriveStorage90_free_showBanner() {
         withFeatureFlags([.splitStorage]) {
-            userManagerMock.userInfo.usedBaseSpace = 9999
-            userManagerMock.userInfo.maxBaseSpace = 10000
+            userManagerMock.userInfo.usedDriveSpace = 90
+            userManagerMock.userInfo.maxDriveSpace = 100
             userManagerMock.userInfo.subscribed = .init(rawValue: 0)
 
             viewModel = makeViewModel()
@@ -172,10 +186,40 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
         }
     }
 
-    func testStorageProgressView_fullError_100() {
+    func testStorageProgressView_whenMailStorage98_free_showBanner() {
+        withFeatureFlags([.splitStorage]) {
+            userManagerMock.userInfo.usedBaseSpace = 98
+            userManagerMock.userInfo.maxBaseSpace = 100
+            userManagerMock.userInfo.subscribed = .init(rawValue: 0)
+
+            viewModel = makeViewModel()
+
+            sut = .init(viewModel: viewModel, dependencies: userContainer)
+            sut.set(coordinator: fakeCoordinator)
+            snapshot(viewController: sut)
+        }
+    }
+
+    func testStorageProgressView_whenDriveStorage98_free_showBanner() {
+        withFeatureFlags([.splitStorage]) {
+            userManagerMock.userInfo.usedDriveSpace = 98
+            userManagerMock.userInfo.maxDriveSpace = 100
+            userManagerMock.userInfo.subscribed = .init(rawValue: 0)
+
+            viewModel = makeViewModel()
+
+            sut = .init(viewModel: viewModel, dependencies: userContainer)
+            sut.set(coordinator: fakeCoordinator)
+            snapshot(viewController: sut)
+        }
+    }
+
+    func testStorageProgressView_whenMailAndDriveStorage100_free_showMailBanner() {
         withFeatureFlags([.splitStorage]) {
             userManagerMock.userInfo.usedBaseSpace = 1
             userManagerMock.userInfo.maxBaseSpace = 1
+            userManagerMock.userInfo.usedDriveSpace = 1
+            userManagerMock.userInfo.maxDriveSpace = 1
             userManagerMock.userInfo.subscribed = .init(rawValue: 0)
 
             viewModel = makeViewModel()
@@ -199,7 +243,7 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
         }
     }
 
-    func testStorageProgressView_noErrorForPaidUser() {
+    func testStorageProgressView_whenMailStorage100_paid_noBanner() {
         withFeatureFlags([.splitStorage]) {
             userManagerMock.userInfo.usedBaseSpace = 1
             userManagerMock.userInfo.maxBaseSpace = 1
@@ -213,13 +257,44 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
         }
     }
 
-    func testStorageProgressView_whenBannerDismissed_noErrorForFreeUser() {
+    func testStorageProgressView_whenDriveStorage100_paid_noBanner() {
+        withFeatureFlags([.splitStorage]) {
+            userManagerMock.userInfo.usedDriveSpace = 1
+            userManagerMock.userInfo.maxDriveSpace = 1
+            userManagerMock.userInfo.subscribed = .mail
+
+            viewModel = makeViewModel()
+
+            sut = .init(viewModel: viewModel, dependencies: userContainer)
+            sut.set(coordinator: fakeCoordinator)
+            snapshot(viewController: sut)
+        }
+    }
+
+    func testStorageProgressView_whenMailBannerDismissed_free_noBanner() {
         withFeatureFlags([.splitStorage]) {
             var usersWhoHaveSeenStorageBanner = testContainer.userDefaults[.usersWhoHaveSeenStorageBanner]
             usersWhoHaveSeenStorageBanner[userID.rawValue] = true
             testContainer.userDefaults[.usersWhoHaveSeenStorageBanner] = usersWhoHaveSeenStorageBanner
             userManagerMock.userInfo.usedBaseSpace = 1
             userManagerMock.userInfo.maxBaseSpace = 1
+            userManagerMock.userInfo.subscribed = .init(rawValue: 0)
+
+            viewModel = makeViewModel()
+
+            sut = .init(viewModel: viewModel, dependencies: userContainer)
+            sut.set(coordinator: fakeCoordinator)
+            snapshot(viewController: sut)
+        }
+    }
+
+    func testStorageProgressView_whenDriveBannerDismissed_free_noBanner() {
+        withFeatureFlags([.splitStorage]) {
+            var usersWhoHaveSeenStorageBanner = testContainer.userDefaults[.usersWhoHaveSeenStorageBanner]
+            usersWhoHaveSeenStorageBanner[userID.rawValue] = true
+            testContainer.userDefaults[.usersWhoHaveSeenStorageBanner] = usersWhoHaveSeenStorageBanner
+            userManagerMock.userInfo.usedDriveSpace = 1
+            userManagerMock.userInfo.maxDriveSpace = 1
             userManagerMock.userInfo.subscribed = .init(rawValue: 0)
 
             viewModel = makeViewModel()

@@ -1260,8 +1260,10 @@ class LocalizedString {
 
 enum L11n {
     struct AlertBox {
-        static let alertBoxPercentageText = NSLocalizedString("Your Mail storage is %@ full", comment: "Title of the banner alert")
-        static let alertBoxFullText = NSLocalizedString("Your Mail storage is full", comment: "Title of the banner alert")
+        static let alertBoxMailPercentageText = NSLocalizedString("Your Mail storage is %@ full", comment: "Title of the banner alert")
+        static let alertBoxDrivePercentageText = NSLocalizedString("Your Drive storage is %@ full", comment: "Title of the banner alert")
+        static let alertBoxMailFullText = NSLocalizedString("Your Mail storage is full", comment: "Title of the banner alert")
+        static let alertBoxDriveFullText = NSLocalizedString("Your Drive storage is full", comment: "Title of the banner alert")
         static let alertBoxDescription = NSLocalizedString("Upgrade to get more storage.", comment: "Description of the banner alert")
         static let alertBoxDismissButtonTitle = NSLocalizedString("Not now", comment: "Get more storage button action")
         static let alertBoxButtonTitle = NSLocalizedString("Get more storage", comment: "Get more storage button action")
@@ -1308,7 +1310,8 @@ enum L11n {
 
     struct SideMenuStorageAlert {
         static let menuTitle = NSLocalizedString("Max Storage", comment: "Menu title")
-        static let alertBoxTitle = NSLocalizedString("Storage: %@ full", comment: "Cell title that shows the percentage of the storage")
+        static let alertBoxMailTitle = NSLocalizedString("Storage: %@ full", comment: "Cell title that shows the percentage of the storage")
+        static let alertBoxDriveTitle = NSLocalizedString("Drive storage: %@ full", comment: "Cell title that shows the percentage of the storage")
         static let alertBoxCaption = NSLocalizedString("Get more storage", comment: "Description of the action")
         static let upgradeButtonTitle = NSLocalizedString("Upgrade", comment: "Upgrade button action")
     }

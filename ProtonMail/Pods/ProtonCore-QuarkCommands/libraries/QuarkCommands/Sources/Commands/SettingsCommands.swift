@@ -25,18 +25,27 @@ private let coreSettingsUpdate: String = "quark/raw::core:user:settings:update"
 
 public extension Quark {
 
-    @discardableResult
-    func enableEarlyAccess(username: String) throws -> (data: Data, response: URLResponse) {
+    func enableEarlyAccess(username: String) throws {
 
         let args = [
             "--user=\(username)",
-            "--EarlyAccess=1"
+            "--early-access=1"
         ]
 
         let request = try route(coreSettingsUpdate)
             .args(args)
             .build()
 
-        return try executeQuarkRequest(request)
+        do {
+            let (textData, urlResponse) = try executeQuarkRequest(request)
+            guard
+                let responseHTML = String(data: textData, encoding: .utf8),
+                responseHTML.contains("Done")
+            else {
+                throw QuarkError(urlResponse: urlResponse, message: "Cannot enable early access: \(String(describing: String(data: textData, encoding: .utf8)))")
+            }
+        } catch {
+            throw error
+        }
     }
 }

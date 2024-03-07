@@ -127,7 +127,7 @@ open class Keychain {
     /// - Parameters:
     ///   - data: data to be added / updated in keychain
     ///   - key: key under which the data should be added / updated
-    public func setOrError(_ data: Data, forKey key: String,  attributes: [CFString: Any]? = nil) throws {
+    public func setOrError(_ data: Data, forKey key: String, attributes: [CFString: Any]? = nil) throws {
         try self.addOrError(data: data, forKey: key, attributes: attributes)
     }
 
@@ -221,7 +221,7 @@ open class Keychain {
 
     // Private - internal for unit tests
     @available(*, deprecated, message: "Please use the throwing alternative: getDataOrError(forKey:) and handle the error")
-    internal func getData(forKey key: String,  attributes: [CFString: Any]? = nil) -> Data? {
+    internal func getData(forKey key: String, attributes: [CFString: Any]? = nil) -> Data? {
         try? getDataOrError(forKey: key, attributes: attributes)
     }
 
@@ -244,7 +244,7 @@ open class Keychain {
         {
             query[kSecAttrAccessControl as String] = accessControl
         }
-        
+
         if let attributes {
             for(key, value) in attributes {
                 query[key as String] = value as AnyObject
@@ -329,7 +329,7 @@ open class Keychain {
         if #available(macOS 10.15, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
             query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
         }
-        
+
         if let attributes {
             for(key, value) in attributes {
                 query[key as String] = value as AnyObject

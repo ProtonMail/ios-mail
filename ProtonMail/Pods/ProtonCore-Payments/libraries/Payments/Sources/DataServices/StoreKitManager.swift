@@ -839,7 +839,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                 cycle: cycle
             )
             let response = try? validateSubscriptionRequest.awaitResponse(responseObject: ValidateSubscriptionResponse())
-            let fetchedAmountDue = isDynamic ? response?.validateSubscription?.amount :  response?.validateSubscription?.amountDue
+            let fetchedAmountDue = isDynamic ? response?.validateSubscription?.amount : response?.validateSubscription?.amountDue
             amountDue = fetchedAmountDue ?? planAmount
         }
 

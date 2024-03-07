@@ -28,7 +28,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 import enum ProtonCorePayments.StoreKitManagerErrors
 import ProtonCoreUIFoundations
-import ProtonCoreFeatureSwitch
 
 public enum ScreenVariant<SpecificScreenData, CustomScreenData> {
     case mail(SpecificScreenData)
@@ -200,11 +199,6 @@ public final class LoginAndSignup {
         self.paymentsAvailability = paymentsAvailability
         self.signupAvailability = signupAvailability
         self.minimumAccountType = minimumAccountType
-
-        // Workaround for drive
-        if ProcessInfo.processInfo.environment["FeatureSwitch"] != nil {
-            FeatureFactory.shared.loadEnv()
-        }
     }
 
     @discardableResult

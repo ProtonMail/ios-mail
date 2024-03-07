@@ -21,7 +21,6 @@
 
 import Foundation
 import ProtonCoreLog
-import ProtonCoreFeatureSwitch
 
 enum DoHProvider {
     case google
@@ -61,7 +60,7 @@ protocol DoHProviderInternal: DoHProviderPublic {
 
 extension DoHProviderInternal {
     public static var defaultRecordType: DNSRecordType {
-        FeatureFactory.shared.isEnabled(.dohARecordQueries) ? .a : .txt
+        .txt
     }
     public static var defaultTimeout: TimeInterval { 5 }
 

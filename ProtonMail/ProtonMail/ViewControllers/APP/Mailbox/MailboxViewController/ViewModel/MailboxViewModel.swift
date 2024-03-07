@@ -63,8 +63,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasImportDeviceContacts
 
     let labelID: LabelID
-    var shouldShowFullStorageAlert: Bool = false
-    var storagePercentage: Int = 0
+    var storageAlertVisibility: StorageAlertVisibility = .hidden
     /// This field saves the label object of custom folder/label
     private(set) var label: LabelInfo?
     /// This field stores the latest update time of the user event.
@@ -301,22 +300,39 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         let userDismissedBanner = usersWhoHaveSeenStorageBanner[user.userID.rawValue] ?? false
         if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.splitStorage, reloadValue: true),
            !userDismissedBanner,
-           !user.userInfo.isOnAStoragePaidPlan,
-           let usedBaseSpace = user.userInfo.usedBaseSpace,
-           let maxBaseSpace = user.userInfo.maxBaseSpace,
-           maxBaseSpace > 0 {
-            let factor = CGFloat(usedBaseSpace) / CGFloat(maxBaseSpace)
-            let percentage = CGFloat.maximum(factor, 0.01)
-            shouldShowFullStorageAlert = percentage > 0.8
-            storagePercentage = Int(ceil(percentage * 100))
+           !user.userInfo.isOnAStoragePaidPlan {
+            if mailStoragePercentage > StorageAlertVisibility.bannerThreshold {
+                storageAlertVisibility = .mail(mailStoragePercentage)
+            } else if driveStoragePercentage > StorageAlertVisibility.bannerThreshold {
+                storageAlertVisibility = .drive(driveStoragePercentage)
+            }
         } else {
-            shouldShowFullStorageAlert = false
-            storagePercentage = 0
+            storageAlertVisibility = .hidden
         }
     }
 
+    private var mailStoragePercentage: CGFloat {
+        guard let usedBaseSpace = user.userInfo.usedBaseSpace,
+              let maxBaseSpace = user.userInfo.maxBaseSpace,
+              maxBaseSpace > 0 else {
+            return 0
+        }
+        let factor = CGFloat(usedBaseSpace) / CGFloat(maxBaseSpace)
+        return CGFloat.maximum(factor, 0.01)
+    }
+
+    private var driveStoragePercentage: CGFloat {
+        guard let usedDriveSpace = user.userInfo.usedDriveSpace,
+              let maxDriveSpace = user.userInfo.maxDriveSpace,
+              maxDriveSpace > 0 else {
+            return 0
+        }
+        let factor = CGFloat(usedDriveSpace) / CGFloat(maxDriveSpace)
+        return CGFloat.maximum(factor, 0.01)
+    }
+
     func onStorageAlertDismissed() {
-        shouldShowFullStorageAlert = false
+        storageAlertVisibility = .hidden
         var usersWhoHaveSeenStorageBanner = dependencies.userDefaults[.usersWhoHaveSeenStorageBanner]
         usersWhoHaveSeenStorageBanner[user.userID.rawValue] = true
         dependencies.userDefaults[.usersWhoHaveSeenStorageBanner] = usersWhoHaveSeenStorageBanner

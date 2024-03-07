@@ -25,7 +25,6 @@ import ProtonCoreAPIClient
 import ProtonCoreDataModel
 import ProtonCoreLog
 import ProtonCoreNetworking
-import ProtonCoreFeatureSwitch
 
 // these methods are responsible for fetching and refreshing the data: user, addresses, keys, salts etc.
 // in case we detect the need for account migration, it's also performed (if possible, otherwise process fails with error)
