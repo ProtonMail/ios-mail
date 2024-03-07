@@ -159,7 +159,7 @@ class UndoActionManagerTests: XCTestCase {
         apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/messages/\(messageID)/cancel_send") {
                 completion(nil, .success(["Code": 1001]))
-            } else if path.contains("/core/v4/events/") {
+            } else if path.contains("/core/v4/events/") || path.contains("/core/v5/events/") {
                 completion(nil, .success([
                     "Code": 1000,
                     "EventID": "",
@@ -190,7 +190,7 @@ class UndoActionManagerTests: XCTestCase {
 
         let undoSendRequest = UndoSendRequest(messageID: messageID)
         apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("/core/v4/events/") {
+            if path.contains("/core/v4/events/") || path.contains("/core/v5/events/") {
                 completion(nil, .success([
                     "Code": 1000,
                     "EventID": "",

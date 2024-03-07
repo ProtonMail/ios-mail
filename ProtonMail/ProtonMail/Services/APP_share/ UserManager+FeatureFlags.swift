@@ -22,7 +22,7 @@ import ProtonCoreFeatureFlags
 
 extension UserManager {
     var isNewEventLoopEnabled: Bool {
-        return false
+        Application.isDebugOrEnterprise
     }
 
     var isSnoozeEnabled: Bool {
