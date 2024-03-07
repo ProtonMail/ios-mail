@@ -1931,6 +1931,15 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "I might attend";
 
+/* Menu title */
+"Max Storage" = "Max Storage";
+
+/* Cell title that shows the percentage of the storage */
+"Storage: %@ full" = "Storage: %@ full";
+
+/* Upgrade button action */
+"Upgrade" = "Покращити";
+
 /* Official badge next to sender's name */
 "Official" = "Офіційний";
 
@@ -2046,10 +2055,10 @@
 "Application logs" = "Журнал програми";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Jump to next message";
+"Jump to next email" = "Jump to next email";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Сталася невідома помилка. Будь ласка, зверніться до служби підтримки.\nПомилка: %@";
@@ -2296,6 +2305,21 @@
 
 /* Description text for setting */
 "Allow navigating through messages by swiping left or right." = "Allow navigating through messages by swiping left or right.";
+
+/* The title for no contact hint view */
+"No contacts yet" = "No contacts yet";
+
+/* The description for no contact hint view */
+"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+
+/* Button title for no contact hint view */
+"Auto-import contacts" = "Auto-import contacts";
+
+/* A title show to user after auto import button is clicked but contacts hasn't imported yet */
+"Importing your contacts" = "Importing your contacts";
+
+/* A message show to user after auto import button is clicked but contacts hasn't imported yet */
+"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Privacy and data";
