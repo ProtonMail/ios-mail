@@ -561,8 +561,14 @@ extension SearchViewModel {
 
         let messageObjectIDs: [NSManagedObjectID] = self.dbContents.compactMap {
             for field in fieldsToMatchQueryAgainst {
-                if let value = $0[field] as? String,
-                   value.range(of: keyword, options: [.caseInsensitive, .diacriticInsensitive]) != nil {
+                guard let value = $0[field] as? String else { return nil }
+                if field == "sender",
+                   let sender = try? Sender.decodeDictionary(jsonString: value),
+                   (sender.address.range(of: keyword, options: [.caseInsensitive, .diacriticInsensitive]) != nil ||
+                    sender.name.range(of: keyword, options: [.caseInsensitive, .diacriticInsensitive]) != nil ) {
+                    // For sender field, what we care is address and name
+                    return $0["objectID"] as? NSManagedObjectID
+                } else if value.range(of: keyword, options: [.caseInsensitive, .diacriticInsensitive]) != nil {
                     return $0["objectID"] as? NSManagedObjectID
                 }
             }
