@@ -118,6 +118,7 @@
 		4701D41B2B8CB16D00D6DC1D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				47761CCC2B8DFB1500AFE584 /* PreviewData.swift */,
 				477F66512B8CA3E400119523 /* Assets.xcassets */,
 				477F66532B8CA3E400119523 /* Preview Content */,
 			);
@@ -219,7 +220,6 @@
 			isa = PBXGroup;
 			children = (
 				477F66542B8CA3E400119523 /* Preview Assets.xcassets */,
-				47761CCC2B8DFB1500AFE584 /* PreviewData.swift */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
