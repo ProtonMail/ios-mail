@@ -28,4 +28,7 @@ public extension DS.Color {
 
     static let textWeak = Color(.mobileTextWeak)
     static let textNorm = Color(.mobileTextNorm)
+
+    static let interactionWeak = Color(.mobileInteractionWeak)
+
 }

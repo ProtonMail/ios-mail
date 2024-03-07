@@ -35,6 +35,7 @@ struct MailboxConversationCell: View {
 
             AvatarCheckboxView(
                 isSelected: uiModel.isSelected,
+                avatar: uiModel.avatar,
                 onDidChangeSelection: { onEvent(.onSelectedChange(isSelected: $0)) }
             )
             .frame(width: 40, height: 40)
@@ -97,15 +98,10 @@ struct MailboxConversationCell: View {
     }
 }
 
-struct ExpirationDateUIModel {
-    let text: String
-    let color: Color
-}
-
 @Observable
 final class MailboxConversationCellUIModel: Identifiable {
     let id: String
-    let avatarImage: URL
+    let avatar: AvatarUIModel
     let senders: String
     let subject: String
     let date: Date
@@ -123,7 +119,7 @@ final class MailboxConversationCellUIModel: Identifiable {
 
     init(
         id: String,
-        avatarImage: URL,
+        avatar: AvatarUIModel,
         senders: String,
         subject: String,
         date: Date,
@@ -136,7 +132,7 @@ final class MailboxConversationCellUIModel: Identifiable {
         expirationDate: ExpirationDateUIModel
     ) {
         self.id = id
-        self.avatarImage = avatarImage
+        self.avatar = avatar
         self.senders = senders
         self.subject = subject
         self.date = date
@@ -160,7 +156,7 @@ enum MailboxConversationCellEvent {
     var model: MailboxConversationCellUIModel {
         MailboxConversationCellUIModel(
             id: "",
-            avatarImage: URL(string: "https://proton.me")!,
+            avatar: .init(initials: "P"),
             senders: "Proton",
             subject: "30% discount on all our products",
             date: Date(),
@@ -183,7 +179,7 @@ enum MailboxConversationCellEvent {
         MailboxConversationCell(
             uiModel: .init(
                 id: "",
-                avatarImage: URL(string: "https://proton.me")!,
+                avatar: .init(initials: "FE"),
                 senders: "FedEx",
                 subject: "Your package is ready to ship",
                 date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
@@ -201,7 +197,7 @@ enum MailboxConversationCellEvent {
         MailboxConversationCell(
             uiModel: .init(
                 id: "",
-                avatarImage: URL(string: "https://proton.me")!,
+                avatar: .init(initials: "MA"),
                 senders: "Mary, Elijah Wood, wiseman@pm.me",
                 subject: "Summer holidays pictures and more!",
                 date: Calendar.current.date(byAdding: .year, value: -1, to: Date())!,

@@ -36,7 +36,7 @@ enum PreviewData {
             let expirationDate: Bool = ((1..<11).randomElement()!%10) == 0
             return .init(
                 id: UUID().uuidString,
-                avatarImage: URL(fileURLWithPath: ""),
+                avatar: .init(initials: randomSenderSubject.0.prefix(2).uppercased()),
                 senders: randomSenderSubject.0,
                 subject: randomSenderSubject.1,
                 date: Calendar.current.date(byAdding: .minute, value: -1 * (value*value*1005), to: Date())!,

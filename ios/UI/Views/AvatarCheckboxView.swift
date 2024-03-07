@@ -20,6 +20,7 @@ import SwiftUI
 
 struct AvatarCheckboxView: View {
     let isSelected: Bool
+    let avatar: AvatarUIModel
     var onDidChangeSelection: ((_ newValue: Bool) -> Void)
 
     private let cornerRadius = 6.0
@@ -29,23 +30,25 @@ struct AvatarCheckboxView: View {
             if isSelected {
                 ZStack {
                     RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                        .stroke(DS.Color.strokeDark, lineWidth: 1)
                         .fill(DS.Color.backgroundNorm)
+                        .stroke(DS.Color.strokeDark, lineWidth: 1)
                         .overlay {
                             Image(uiImage: DS.Icon.icCheckmark)
                                 .resizable()
                                 .foregroundColor(DS.Color.checkbox)
                                 .padding(10)
-
                         }
                 }
             } else {
-                Image("avatar-fedex")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+                Text(avatar.initials)
+                    .font(.caption)
+                    .fontWeight(.regular)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(DS.Color.interactionWeak)
             }
         }
+        .compositingGroup()
+        .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
         .onTapGesture {
             onDidChangeSelection(!isSelected)
         }
@@ -54,11 +57,11 @@ struct AvatarCheckboxView: View {
 
 #Preview {
     VStack {
-        AvatarCheckboxView(isSelected: true) { _ in}
+        AvatarCheckboxView(isSelected: true, avatar: .init(initials: "MB")) { _ in}
             .frame(width: 40, height: 40)
             .clipped()
 
-        AvatarCheckboxView(isSelected: false) { _ in}
+        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "MB")) { _ in}
             .frame(width: 40, height: 40)
             .clipped()
     }

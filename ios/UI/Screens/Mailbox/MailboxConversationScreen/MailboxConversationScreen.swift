@@ -41,6 +41,7 @@ struct MailboxConversationScreen: View {
                     .init(top: 1, leading: 1, bottom: 1, trailing: 0)
                 )
                 .listRowSeparator(.hidden)
+                .compositingGroup()
                 .clipShape(
                     .rect(
                         topLeadingRadius: 20,
