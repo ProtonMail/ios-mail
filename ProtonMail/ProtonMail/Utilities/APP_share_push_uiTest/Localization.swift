@@ -1551,6 +1551,8 @@ enum L11n {
         static let autoImportContactButtonTitle = NSLocalizedString("Auto-import contacts", comment: "Button title for no contact hint view")
         static let importingTitle = NSLocalizedString("Importing your contacts", comment: "A title show to user after auto import button is clicked but contacts hasn't imported yet")
         static let importingDesc = NSLocalizedString("Your contacts will appear here shortly.", comment: "A message show to user after auto import button is clicked but contacts hasn't imported yet")
+        static let contactBannerTitle = NSLocalizedString("Automatically add new contacts from your device.", comment: "The title of the dismissable banner in the contacts view.")
+        static let contactBannerButtonTitle = NSLocalizedString("Enable auto-import", comment: "The title of the button of the dismissable banner in the contacts view.")
     }
 
     struct AccountSettings {

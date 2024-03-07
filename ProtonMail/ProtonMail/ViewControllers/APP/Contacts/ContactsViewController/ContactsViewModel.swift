@@ -30,6 +30,9 @@ final class ContactsViewModel: ViewModelTimer {
     & HasMailEventsPeriodicScheduler
     & HasUserManager
     & HasContactsSyncQueueProtocol
+    & HasAutoImportContactsFeature
+    & HasUserDefaults
+    & HasImportDeviceContacts
 
     private let dependencies: Dependencies
 
@@ -163,5 +166,31 @@ final class ContactsViewModel: ViewModelTimer {
 
     override func fireFetch() {
         self.fetchContacts(completion: nil)
+    }
+
+    func showShowContactAutoSyncBanner() -> Bool {
+        let isFunctionEnabled = dependencies.autoImportContactsFeature.isSettingEnabledForUser
+        if isFunctionEnabled {
+            markAutoContactSyncAsSeen()
+            return false
+        }
+        if dependencies.userDefaults[.hasContactAutoSyncBannerShown] {
+            return false
+        }
+        return true
+    }
+
+    func enableAutoContactSync() {
+        dependencies.autoImportContactsFeature.enableSettingForUser()
+        let params = ImportDeviceContacts.Params(
+            userKeys: dependencies.user.userInfo.userKeys,
+            mailboxPassphrase: dependencies.user.mailboxPassword
+        )
+        dependencies.importDeviceContacts.execute(params: params)
+        markAutoContactSyncAsSeen()
+    }
+
+    func markAutoContactSyncAsSeen() {
+        dependencies.userDefaults[.hasContactAutoSyncBannerShown] = true
     }
 }
