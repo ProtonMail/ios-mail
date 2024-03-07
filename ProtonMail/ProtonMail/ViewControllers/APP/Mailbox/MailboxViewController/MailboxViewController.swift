@@ -43,6 +43,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         & HasFeatureFlagsRepository
         & HasUserManager
         & HasUserDefaults
+        & HasAddressBookService
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -1256,13 +1257,31 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         ) { [weak self] hostingVC, didTapActionButton in
             hostingVC?.dismiss(animated: false)
             if didTapActionButton {
-                self?.coordinator?.go(to: .settingsContacts, sender: nil)
+                self?.dependencies.addressBookService.requestAuthorizationWithCompletion({ granted, _ in
+                    DispatchQueue.main.async {
+                        if granted {
+                            self?.viewModel.enableAutoImportContact()
+                        } else {
+                            self?.showContactAccessIsDenied()
+                        }
+                    }
+                })
             }
         }
         let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
         spotlightView.config.hostingController = hosting
         navigationController?.present(hosting, animated: false)
         viewModel.hasSeenAutoImportContactsSpotlight()
+    }
+
+    private func showContactAccessIsDenied() {
+        let alert = UIAlertController(
+            title: L11n.SettingsContacts.autoImportContacts,
+            message: L11n.SettingsContacts.authoriseContactsInSettingsApp,
+            preferredStyle: .alert
+        )
+        alert.addOKAction()
+        present(alert, animated: true, completion: nil)
     }
 
     private func endRefreshSpinner() {

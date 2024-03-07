@@ -51,8 +51,8 @@ public struct AutoImportContactsSpotlightView: View {
 
 #Preview {
     AutoImportContactsSpotlightView(
-        buttonTitle: "Turn on feature",
-        message: "Simplify your workflow by effortlessly adding new contacts from your device automatically.",
-        title: "Contact auto-import"
+        buttonTitle: "Enable auto-import",
+        message: "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.",
+        title: "Your contacts at your fingertips"
     )
 }
