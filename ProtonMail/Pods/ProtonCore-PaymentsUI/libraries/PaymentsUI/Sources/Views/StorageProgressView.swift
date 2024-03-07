@@ -106,7 +106,7 @@ final class StorageProgressView: UIView, AccessibleCell {
     func configure(title: String? = nil, iconUrl: URL? = nil, usedSpaceDescription: String, usedSpace: Int64, maxSpace: Int64) {
         let factor = CGFloat(usedSpace) / CGFloat(maxSpace)
         // avoid showing empty progress bar
-        let multiplier = factor < 0.01 ? 0.01 : factor
+        let multiplier = factor < 0.01 ? 0.01 : CGFloat.minimum(factor, 1.0)
         guard multiplier <= 1.0 else { return }
         progressView?.widthAnchor.constraint(equalTo: backgroundProgressView.widthAnchor, multiplier: multiplier).isActive = true
         progressView?.backgroundColor = getColor(multiplier: multiplier)

@@ -29,7 +29,6 @@ import ProtonCorePayments
 import ProtonCorePaymentsUI
 import ProtonCoreHumanVerification
 import ProtonCoreFoundations
-import ProtonCoreFeatureSwitch
 
 enum FlowStartKind {
     case over(UIViewController, UIModalTransitionStyle)

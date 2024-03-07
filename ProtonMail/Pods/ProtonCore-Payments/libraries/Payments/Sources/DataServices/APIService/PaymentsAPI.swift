@@ -272,7 +272,7 @@ class PaymentsApiV5Implementation: PaymentsApiProtocol {
     func paymentStatusRequest(api: APIService) -> PaymentStatusRequest {
         V5PaymentStatusRequest(api: api)
     }
-    
+
     func buySubscriptionRequest(api: ProtonCoreServices.APIService, planId: String, amount: Int, amountDue: Int, cycle: Int, paymentAction: PaymentAction, isCreditingAllowed: Bool) throws -> SubscriptionRequest {
         guard Thread.isMainThread == false else {
             assertionFailure("This is a blocking network request, should never be called from main thread")
@@ -292,15 +292,15 @@ class PaymentsApiV5Implementation: PaymentsApiProtocol {
             return V5SubscriptionRequest(api: api, planId: planId, amount: 0, cycle: cycle, paymentAction: paymentAction)
         }
     }
-    
+
     func buySubscriptionForZeroRequest(api: ProtonCoreServices.APIService, planId: String) -> SubscriptionRequest {
         V5SubscriptionRequest(api: api, planId: planId)
     }
-    
+
     func getSubscriptionRequest(api: ProtonCoreServices.APIService) -> GetSubscriptionRequest {
         V5GetSubscriptionRequest(api: api)
     }
-    
+
     func organizationsRequest(api: APIService) -> OrganizationsRequest {
         OrganizationsRequest(api: api)
     }
@@ -312,28 +312,28 @@ class PaymentsApiV5Implementation: PaymentsApiProtocol {
     func plansRequest(api: ProtonCoreServices.APIService) -> PlansRequest {
         V5PlansRequest(api: api)
     }
-    
+
     func creditRequest(api: ProtonCoreServices.APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest {
         fatalError("Credit Request should not be used with API v5")
     }
-    
+
     func methodsRequest(api: ProtonCoreServices.APIService) -> MethodRequest {
         V5MethodRequest(api: api)
     }
-    
+
     func paymentTokenOldRequest(api: ProtonCoreServices.APIService, amount: Int, receipt: String) -> PaymentTokenOldRequest {
         fatalError("Token Requests for 1-time payments should not be used with API v5")
     }
-    
+
     func paymentTokenRequest(api: ProtonCoreServices.APIService, amount: Int, receipt: String, transactionId: String, bundleId: String, productId: String) -> PaymentTokenRequest {
             PaymentTokenRequest(api: api, amount: amount, receipt: receipt, transactionId: transactionId, bundleId: bundleId, productId: productId)
     }
-    
+
     func paymentTokenStatusRequest(api: ProtonCoreServices.APIService, token: PaymentToken) -> PaymentTokenStatusRequest {
         V5PaymentTokenStatusRequest(api: api, token: token)
     }
-    
-    func validateSubscriptionRequest(api: ProtonCoreServices.APIService, 
+
+    func validateSubscriptionRequest(api: ProtonCoreServices.APIService,
                                      protonPlanName: String,
                                      isAuthenticated: Bool,
                                      cycle: Int) -> ValidateSubscriptionRequest {
@@ -344,11 +344,11 @@ class PaymentsApiV5Implementation: PaymentsApiProtocol {
             cycle: cycle
         )
     }
-    
+
     func countriesCountRequest(api: ProtonCoreServices.APIService) -> CountriesCountRequest {
         CountriesCountRequest(api: api)
     }
-    
+
     func getUser(api: ProtonCoreServices.APIService) throws -> ProtonCoreDataModel.User {
         guard Thread.isMainThread == false else {
             assertionFailure("This is a blocking network request, should never be called from main thread")
@@ -378,7 +378,6 @@ class PaymentsApiV5Implementation: PaymentsApiProtocol {
         return try result.get()
     }
 }
-
 
 extension Response {
     private struct Key: CodingKey {

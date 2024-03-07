@@ -380,7 +380,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         case .maxStorage:
             let cell = tableView.dequeueReusableCell(withIdentifier: "\(MaxStorageTableViewCell.self)", for: indexPath) as! MaxStorageTableViewCell
             cell.configure(
-                storagePercentage: self.viewModel.currentMailStoragePercentage,
+                storageVisibility: viewModel.storageAlertVisibility,
                 delegate: self
             )
             return cell
@@ -423,7 +423,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         let _section = self.viewModel.sections[section]
         switch _section {
         case .maxStorage: return 8
-        case .inboxes where self.viewModel.isStorageAlertVisible: return CGFloat.leastNonzeroMagnitude
+        case .inboxes where self.viewModel.storageAlertVisibility != .hidden: return CGFloat.leastNonzeroMagnitude
         case .inboxes: return 8
         default:
             return 48

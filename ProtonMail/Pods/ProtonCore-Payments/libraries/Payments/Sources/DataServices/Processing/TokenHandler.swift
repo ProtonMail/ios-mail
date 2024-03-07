@@ -21,7 +21,6 @@
 
 import Foundation
 import StoreKit
-import ProtonCoreFeatureSwitch
 import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreServices

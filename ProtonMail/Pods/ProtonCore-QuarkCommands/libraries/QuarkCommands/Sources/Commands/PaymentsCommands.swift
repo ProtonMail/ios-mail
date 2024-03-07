@@ -132,7 +132,7 @@ public extension Quark {
                 let responseHTML = String(data: textData, encoding: .utf8),
                 responseHTML.contains("Done")
             else {
-                throw QuarkError(urlResponse: urlResponse, message: "Update delinquent state failed")
+                throw QuarkError(urlResponse: urlResponse, message: "Update delinquent state failed: \(String(describing: String(data: textData, encoding: .utf8)))")
             }
         } catch {
             throw error

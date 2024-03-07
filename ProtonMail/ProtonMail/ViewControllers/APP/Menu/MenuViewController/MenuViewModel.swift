@@ -176,14 +176,18 @@ extension MenuViewModel: MenuVMProtocol {
         return user.userInfo.enableFolderColor == 1
     }
 
-    var isStorageAlertVisible: Bool {
+    var storageAlertVisibility: StorageAlertVisibility {
         guard FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.splitStorage),
               let userInfo = self.currentUser?.userInfo,
-              !userInfo.isOnAStoragePaidPlan,
-              currentMailStoragePercentage > 0 else {
-            return false
+              !userInfo.isOnAStoragePaidPlan else {
+            return .hidden
         }
-        return currentMailStoragePercentage > 0.8
+        if currentMailStoragePercentage > 0.8 {
+            return .mail(currentMailStoragePercentage)
+        } else if currentDriveStoragePercentage > 0.8 {
+            return .drive(currentDriveStoragePercentage)
+        }
+        return .hidden
     }
 
     var currentMailStoragePercentage: CGFloat {
@@ -194,6 +198,16 @@ extension MenuViewModel: MenuVMProtocol {
             return 0
         }
         return CGFloat(usedBaseSpace) / CGFloat(maxBaseSpace)
+    }
+
+    var currentDriveStoragePercentage: CGFloat {
+        guard let userInfo = self.currentUser?.userInfo,
+              let usedDriveSpace = userInfo.usedDriveSpace,
+              let maxDriveSpace = userInfo.maxDriveSpace,
+              maxDriveSpace > 0 else {
+            return 0
+        }
+        return CGFloat(usedDriveSpace) / CGFloat(maxDriveSpace)
     }
 
     func menuViewInit() {
@@ -701,7 +715,7 @@ extension MenuViewModel {
     }
 
     private func updateStorageAlert() {
-        if !isStorageAlertVisible {
+        if storageAlertVisibility == .hidden {
             self.sections.removeAll(where: { $0 == .maxStorage})
         } else if !self.sections.contains(where: { $0 == .maxStorage }) {
             self.sections.insert(.maxStorage, at: 0)

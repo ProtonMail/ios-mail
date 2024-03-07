@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-FeatureFlags",
   "module_name": "ProtonCoreFeatureFlags",
-  "version": "19.0.0",
+  "version": "20.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "19.0.0"
+    "tag": "20.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -32,10 +32,10 @@
   },
   "dependencies": {
     "ProtonCore-Services": [
-      "19.0.0"
+      "20.0.0"
     ],
     "ProtonCore-Networking": [
-      "19.0.0"
+      "20.0.0"
     ]
   },
   "source_files": "libraries/FeatureFlags/Sources/**/*.swift",
@@ -49,7 +49,7 @@
       "source_files": "libraries/FeatureFlags/Tests/**/*.swift",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Services": [
-          "19.0.0"
+          "20.0.0"
         ]
       }
     }

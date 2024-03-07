@@ -24,7 +24,6 @@ import ProtonCoreDoh
 import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreUtilities
-import ProtonCoreFeatureSwitch
 
 extension Result {
 

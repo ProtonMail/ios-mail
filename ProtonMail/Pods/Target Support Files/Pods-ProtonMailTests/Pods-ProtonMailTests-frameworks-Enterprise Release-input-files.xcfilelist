@@ -18,7 +18,6 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCoreDataModel.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCoreDoh.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Environment/ProtonCoreEnvironment.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-FeatureFlags/ProtonCoreFeatureFlags.framework
-${BUILT_PRODUCTS_DIR}/ProtonCore-FeatureSwitch/ProtonCoreFeatureSwitch.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade/ProtonCoreForceUpgrade.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCoreFoundations.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-GoLibs/ProtonCoreGoLibs.framework
@@ -34,6 +33,7 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-Observability/ProtonCoreObservability.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-PasswordRequest/ProtonCorePasswordRequest.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCorePayments.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI/ProtonCorePaymentsUI.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-PushNotifications/ProtonCorePushNotifications.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCoreServices.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-TroubleShooting/ProtonCoreTroubleShooting.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations/ProtonCoreUIFoundations.framework

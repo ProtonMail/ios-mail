@@ -34,7 +34,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '19.1.0'
+  '20.0.1'
 end
 
 def crypto_variant
@@ -66,7 +66,6 @@ def app_share_pods
   pod 'ProtonCore-Doh', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-APIClient', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Authentication-KeyGeneration", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-FeatureSwitch', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-FeatureFlags', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Authentication", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Hash', :git => proton_core_path, :tag => proton_core_version
@@ -85,6 +84,7 @@ def app_pods
   pod "ProtonCore-AccountDeletion", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountRecovery', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-PushNotifications', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-HumanVerification", :git => proton_core_path, :tag => proton_core_version

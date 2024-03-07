@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-HumanVerification",
   "module_name": "ProtonCoreHumanVerification",
-  "version": "19.0.0",
+  "version": "20.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "19.0.0"
+    "tag": "20.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -61,25 +61,25 @@
   },
   "dependencies": {
     "ProtonCore-UIFoundations": [
-      "19.0.0"
+      "20.0.0"
     ],
     "ProtonCore-Foundations": [
-      "19.0.0"
+      "20.0.0"
     ],
     "ProtonCore-Utilities": [
-      "19.0.0"
+      "20.0.0"
     ],
     "ProtonCore-APIClient": [
-      "19.0.0"
+      "20.0.0"
     ],
     "ProtonCore-Observability": [
-      "19.0.0"
+      "20.0.0"
     ],
     "ProtonCore-Crypto": [
-      "19.0.0"
+      "20.0.0"
     ],
     "ProtonCore-CryptoGoInterface": [
-      "19.0.0"
+      "20.0.0"
     ]
   },
   "default_subspecs": [
@@ -91,13 +91,13 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoInterface": [
-          "19.0.0"
+          "20.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-Go": [
-          "19.0.0"
+          "20.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "19.0.0"
+          "20.0.0"
         ]
       },
       "source_files": "libraries/HumanVerification/Tests/UnitTests/**/*"
@@ -107,13 +107,13 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoInterface": [
-          "19.0.0"
+          "20.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
-          "19.0.0"
+          "20.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "19.0.0"
+          "20.0.0"
         ]
       },
       "source_files": "libraries/HumanVerification/Tests/UnitTests/**/*"
@@ -123,13 +123,13 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoInterface": [
-          "19.0.0"
+          "20.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
-          "19.0.0"
+          "20.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "19.0.0"
+          "20.0.0"
         ]
       },
       "source_files": "libraries/HumanVerification/Tests/UnitTests/**/*"
@@ -139,13 +139,13 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoInterface": [
-          "19.0.0"
+          "20.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
-          "19.0.0"
+          "20.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "19.0.0"
+          "20.0.0"
         ]
       },
       "source_files": "libraries/HumanVerification/Tests/UnitTests/**/*"

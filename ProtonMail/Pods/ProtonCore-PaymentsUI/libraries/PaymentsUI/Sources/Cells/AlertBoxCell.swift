@@ -64,8 +64,8 @@ class AlertBoxCell: UITableViewCell {
         mainView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             mainView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            mainView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            mainView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            mainView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            mainView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             mainView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }

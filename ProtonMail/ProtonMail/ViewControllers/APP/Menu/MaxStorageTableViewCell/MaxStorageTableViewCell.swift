@@ -57,11 +57,11 @@ class MaxStorageTableViewCell: UITableViewCell, AccessibleCell {
         setupSeparatorsUI()
     }
 
-    func configure(storagePercentage: CGFloat, delegate: MaxStorageTableViewCellDelegate?) {
-        title.text = String(
-            format: L11n.SideMenuStorageAlert.alertBoxTitle,
-            storagePercentageString(storagePercentage: storagePercentage)
-        )
+    func configure(
+        storageVisibility: StorageAlertVisibility,
+        delegate: MaxStorageTableViewCellDelegate?
+    ) {
+        title.text = storageVisibility.sideMenuCellTitle
         self.delegate = delegate
     }
 
@@ -154,15 +154,7 @@ class MaxStorageTableViewCell: UITableViewCell, AccessibleCell {
         ].activate()
     }
 
-    private func storagePercentageString(storagePercentage: CGFloat) -> String {
-        percentFormatter.string(from: NSNumber(value: storagePercentage)) ?? ""
-    }
 
-    private var percentFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .percent
-        formatter.multiplier = 100
-        formatter.maximumFractionDigits = 0
-        return formatter
-    }()
+
+
 }
