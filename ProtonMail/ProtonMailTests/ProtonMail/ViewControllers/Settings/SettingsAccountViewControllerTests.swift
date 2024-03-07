@@ -123,4 +123,14 @@ class SettingsAccountViewControllerTests: XCTestCase {
             SettingsAccountItem.privacyAndData.description
         )
     }
+
+    func testTapAccountDeletion_destinationIsDeleteAccount() throws {
+        sut.loadViewIfNeeded()
+
+        sut.tableView.tapRow(at: .init(row: 0, section: 3))
+
+        XCTAssertTrue(coordinatorMock.goStub.wasCalled)
+        let argument = try XCTUnwrap(coordinatorMock.goStub.lastArguments?.a1)
+        XCTAssertEqual(argument, .deleteAccount)
+    }
 }

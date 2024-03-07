@@ -88,7 +88,12 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
         super.viewWillAppear(animated)
 
         navigationController?.setNavigationBarHidden(false, animated: true)
-        self.tableView.reloadData()
+        if isAccountDeletionPending {
+            // reset the flag when the account view is shown again.
+            isAccountDeletionPending = false
+        } else {
+            self.tableView.reloadData()
+        }
     }
 
     // MARK: - table view delegate
