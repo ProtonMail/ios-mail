@@ -23,6 +23,7 @@
 import XCTest
 import fusion
 import RegexBuilder
+import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkit
 
 final class LoginDelinquentAccountsTests: FixtureAuthenticatedTestCase {
@@ -35,8 +36,10 @@ final class LoginDelinquentAccountsTests: FixtureAuthenticatedTestCase {
         super.setUp()
         username = StringUtils().randomAlphanumericString(length: 8)
         password = StringUtils().randomAlphanumericString(length: 8)
-        user = try quarkCommandTwo.createSeedSubscribeUser(username: username, password: password, state: .availableLessThan7Days)
-        try quarkCommandTwo.updateDelinquentState(state: .overdueMoreThan14Days, for: username)
+        user = User(name: username, password: password)
+
+        try quarkCommands.seedNewSubscriber(user: user, plan: .mail2022, state: .availableLessThan7Days)
+        try quarkCommands.updateDelinquentState(state: .overdueMoreThan14Days, for: username)
     }
     
     override func tearDown() {
@@ -58,7 +61,7 @@ extension LoginRobot.Verify {
     @discardableResult
     public func delinquentError() -> LoginRobot {
         let message = "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice."
-        LoginRobot().alert(message).wait().checkExists()
+        LoginRobot().alert(message).waitUntilExists().checkExists()
         LoginRobot().button("OK").tap()
         return LoginRobot()
     }

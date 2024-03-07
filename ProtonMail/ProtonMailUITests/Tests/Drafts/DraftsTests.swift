@@ -10,7 +10,7 @@ import ProtonCoreTestingToolkit
 
 
 class DraftsTests: FixtureAuthenticatedTestCase {
-    
+
     private var subject = String()
     private var body = String()
     private var to = String()
@@ -52,13 +52,13 @@ class DraftsTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.qaMail001) {
             let plusUser = users["plus"]!
             let freeUser = users["pro"]!
-            
+
             let editOneRecipient = plusUser.email
             let editOneSubject = "Edit one \(Date().millisecondsSince1970)"
-            
+
             let editTwoRecipient = freeUser.email
             let editTwoSubject = "Edit two \(Date().millisecondsSince1970)"
-            
+
             InboxRobot()
                 .compose()
                 .draftToSubjectBody(to, subject, body)
@@ -182,9 +182,9 @@ class DraftsTests: FixtureAuthenticatedTestCase {
     }
 
     /// TestId: 34640
-    func testMinimiseAppWhileComposingDraft() async {
-        await runTestWithScenario(.qaMail001) {
-            await InboxRobot()
+    func testMinimiseAppWhileComposingDraft() {
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
                 .compose()
                 .draftToSubjectBody(to, subject, body)
                 .backgroundApp()
@@ -197,11 +197,11 @@ class DraftsTests: FixtureAuthenticatedTestCase {
     }
 
     /// TestId: 35877
-    func testEditDraftMinimiseAppAndSend() async {
+    func testEditDraftMinimiseAppAndSend() {
         let newRecipient = createUser()
         let newSubject = testData.newMessageSubject
-        await runTestWithScenario(.qaMail001) {
-            await InboxRobot()
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
                 .compose()
                 .draftToSubjectBody(to, subject, body)
                 .backgroundApp()

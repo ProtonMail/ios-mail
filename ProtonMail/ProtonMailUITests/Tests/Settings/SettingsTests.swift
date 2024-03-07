@@ -7,6 +7,7 @@
 //
 
 import ProtonCoreTestingToolkit
+import ProtonCoreQuarkCommands
 
 class SettingsTests : FixtureAuthenticatedTestCase {
     
@@ -21,8 +22,8 @@ class SettingsTests : FixtureAuthenticatedTestCase {
         }
     }
 
-    func testEditAutoLockTime() async {
-        await MenuRobot()
+    func testEditAutoLockTime() {
+        MenuRobot()
             .settings()
             .pin()
             .enablePin()
@@ -46,11 +47,10 @@ class SettingsTests : FixtureAuthenticatedTestCase {
             .verify.inboxShown()
     }
 
-    @MainActor
-    func testEnableAndDisablePinForMultipleAccounts() async throws {
+    func testEnableAndDisablePinForMultipleAccounts() throws {
         let secondAccount = createUser(scenarioName: scenario.name, plan: UserPlan.mailpro2022, isEnableEarlyAccess: false)
 
-        await MenuRobot()
+        MenuRobot()
             .accountsList()
             .manageAccounts()
             .addAccount()

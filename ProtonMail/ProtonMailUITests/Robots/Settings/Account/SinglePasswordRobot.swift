@@ -7,6 +7,7 @@
 //
 
 import fusion
+import ProtonCoreQuarkCommands
 
 fileprivate struct id {
     static let currentPasswordSecureTextFieldIdentifier = LocalString._settings_current_password

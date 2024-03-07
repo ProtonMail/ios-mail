@@ -33,8 +33,8 @@ public extension Quark {
     @discardableResult
     func userCreate(user: User, createAddress: CreateAddress = .withKey(genKeys: .Curve25519)) throws -> CreateUserQuarkResponse? {
         let args = [
-            "--name=\(user.name)",
-            "--password=\(user.password)",
+            user.name.isEmpty ? nil : "--name=\(user.name)",
+            user.password.isEmpty ? nil : "--password=\(user.password)",
             createAddress == .noKey ? "--create-address=true" : nil,
             createAddress == .withKey(genKeys: .Curve25519) ? "--gen-keys=\(GenKeys.Curve25519.rawValue)" : nil,
             user.mailboxPassword.isEmpty ? nil : "--mailbox-pass=\(user.mailboxPassword)",
