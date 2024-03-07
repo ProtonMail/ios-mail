@@ -48,6 +48,7 @@ extension UIViewController {
         let hamburgerButton = UIButton(type: .custom)
         hamburgerButton.translatesAutoresizingMaskIntoConstraints = false
         hamburgerButton.setImage(IconProvider.hamburger, for: .normal)
+        hamburgerButton.tintColor = ColorProvider.IconNorm
         hamburgerButton.addTarget(
             self,
             action: #selector(self.openMenu),
