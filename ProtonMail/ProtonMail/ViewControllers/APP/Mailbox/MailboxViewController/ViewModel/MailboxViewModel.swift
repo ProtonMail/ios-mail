@@ -59,6 +59,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasUserIntroductionProgressProvider
     & HasUsersManager
     & HasQueueManager
+    & HasAutoImportContactsFeature
+    & HasImportDeviceContacts
 
     let labelID: LabelID
     var shouldShowFullStorageAlert: Bool = false
@@ -849,6 +851,15 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         DispatchQueue.global().async {
             self.user.cacheService.deleteExpiredMessages()
         }
+    }
+
+    func enableAutoImportContact() {
+        dependencies.autoImportContactsFeature.enableSettingForUser()
+        let params = ImportDeviceContacts.Params(
+            userKeys: user.userInfo.userKeys,
+            mailboxPassphrase: user.mailboxPassword
+        )
+        dependencies.importDeviceContacts.execute(params: params)
     }
 }
 
