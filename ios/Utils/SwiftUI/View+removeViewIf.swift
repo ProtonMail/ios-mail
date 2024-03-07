@@ -39,3 +39,31 @@ extension View {
         }
     }
 }
+
+extension View {
+    func debugOverlaySize() -> some View {
+        modifier(DebugOverlaySize())
+    }
+}
+
+struct DebugOverlaySize: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .overlay {
+                GeometryReader { proxy in
+                    Text(
+                        "\(proxy.size.width) x \(proxy.size.height)"
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.white)
+                    .padding(4)
+                    .background { Color.purple }
+                    .border(.black)
+                    .fixedSize()
+                    .frame(width: proxy.size.width,
+                           height: proxy.size.height)
+                }
+            }
+    }
+}
+
