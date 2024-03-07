@@ -10,6 +10,7 @@ import XCTest
 import ProtonCoreAccountSwitcher
 import ProtonCoreForceUpgrade
 import ProtonCoreLoginUI
+import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkit
 import fusion
 

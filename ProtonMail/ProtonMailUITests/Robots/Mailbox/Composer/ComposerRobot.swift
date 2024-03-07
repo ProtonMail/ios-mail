@@ -309,10 +309,10 @@ class ComposerRobot: CoreElements {
         return self
     }
     
-    func backgroundApp() async -> ComposerRobot {
+    func backgroundApp() -> ComposerRobot {
         XCUIDevice.shared.press(.home)
         //It's always much more stable with a small gap between background and foreground
-        await sleep(milliseconds: 3000)
+        sleep(3)
         return self
     }
     

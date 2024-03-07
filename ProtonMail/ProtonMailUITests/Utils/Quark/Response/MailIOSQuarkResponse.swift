@@ -17,7 +17,7 @@
 
 import Foundation
 
-struct MailQuarkResponse: Codable {
+struct MailQuarkiOSResponse: Codable {
     let users: [QuarkUser]
 }
 

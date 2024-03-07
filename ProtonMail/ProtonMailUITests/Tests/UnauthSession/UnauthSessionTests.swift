@@ -23,7 +23,7 @@ import ProtonCoreTestingToolkit
 
 private enum CommonUnauthSessionTests {
 
-    static func testBasicOperationsOnAccountAndMailWork(_ user: User, environment: Environment) {
+    static func testBasicOperationsOnAccountAndMailWork(_ user: User) {
         MailboxRobotInterface()
             .compose()
             .editRecipients(user.email)
@@ -49,7 +49,7 @@ final class NoUnauthSessionTests: FixtureAuthenticatedTestCase {
     // TODO: approach test author to understand why it is failing
     func xtestRefreshingAndOpeningMailWorks() {
         runTestWithScenario(.qaMail001) {
-            CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user, environment: env)
+            CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user)
         }
     }
 }
@@ -63,7 +63,7 @@ final class UnauthSessionTests: FixtureAuthenticatedTestCase {
     
     func testRefreshingAndOpeningMailWorks() {
         runTestWithScenario(.qaMail001) {
-            CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user, environment: env)
+            CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user)
         }
     }
 }

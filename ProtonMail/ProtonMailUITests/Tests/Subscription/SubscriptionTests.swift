@@ -17,6 +17,7 @@
 
 import XCTest
 
+import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkit
 import StoreKitTest
 
