@@ -1923,13 +1923,22 @@
 "Maybe" = "Maybe";
 
 /* Confirm attending an event */
-"Yes, I'll attend" = "Áno, budem sa zúčastňovať";
+"Yes, I'll attend" = "Áno, zúčastním sa";
 
 /* Deny attending an event */
-"No, I won't attend" = "Nie, nebudem sa zúčastňovať";
+"No, I won't attend" = "Nie, nezúčastním sa";
 
 /* Neither confirm nor deny attending an event */
 "I might attend" = "I might attend";
+
+/* Menu title */
+"Max Storage" = "Max Storage";
+
+/* Cell title that shows the percentage of the storage */
+"Storage: %@ full" = "Storage: %@ full";
+
+/* Upgrade button action */
+"Upgrade" = "Upgradovať";
 
 /* Official badge next to sender's name */
 "Official" = "Oficiálne";
@@ -2046,10 +2055,10 @@
 "Application logs" = "Záznamy aplikácie";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Prejsť na ďalšiu správu";
+"Jump to next email" = "Jump to next email";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Vyskytla sa neočakávaná chyba, kontaktujte podporu, prosím.\nChyba: %@";
@@ -2139,7 +2148,7 @@
 "Download in App Store" = "Download in App Store";
 
 /* Button to open the Calendar app */
-"Open in Proton Calendar" = "Otvoriť v Proton Calendar";
+"Open in Proton Calendar" = "Otvoriť v Proton kalendári";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
 "Clear out the junk" = "Prečistite nevyžiadanú poštu";
@@ -2296,6 +2305,21 @@
 
 /* Description text for setting */
 "Allow navigating through messages by swiping left or right." = "Allow navigating through messages by swiping left or right.";
+
+/* The title for no contact hint view */
+"No contacts yet" = "No contacts yet";
+
+/* The description for no contact hint view */
+"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+
+/* Button title for no contact hint view */
+"Auto-import contacts" = "Auto-import contacts";
+
+/* A title show to user after auto import button is clicked but contacts hasn't imported yet */
+"Importing your contacts" = "Importing your contacts";
+
+/* A message show to user after auto import button is clicked but contacts hasn't imported yet */
+"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Privacy and data";
