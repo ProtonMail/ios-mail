@@ -8,13 +8,8 @@
 import SwiftUI
 
 public extension DS.Color {
-    static let backgroundSecondary = Color(.backgroundSecondary)
-
-    static let checkbox = Color(.mobileBrandNorm)
-
-    static let strokeDark = Color(.protonCarbonBorderNorm)
-
     static let backgroundNorm = Color(.mobileBackgroundNorm)
+    static let backgroundSecondary = Color(.mobileBackgroundSecondary)
     static let backgroundDeep = Color(.mobileBackgroundDeep)
 
     static let brandDarken40 = Color(.mobileBrandDarken40)
@@ -26,9 +21,16 @@ public extension DS.Color {
     static let notificationWarning = Color(.mobileNotificationWarning)
     static let notificationError = Color(.mobileNotificationError)
 
-    static let textWeak = Color(.mobileTextWeak)
     static let textNorm = Color(.mobileTextNorm)
+    static let textWeak = Color(.mobileTextWeak)
+    static let textHint = Color(.mobileTextHint)
+
+
+    static let iconNorm = Color(.mobileIconNorm)
+
+    static let separatorNorm = Color(.mobileSeparatorNorm)
 
     static let interactionWeak = Color(.mobileInteractionWeak)
 
+    static let accentSunbeamGold = Color(.sunbeamGold)
 }

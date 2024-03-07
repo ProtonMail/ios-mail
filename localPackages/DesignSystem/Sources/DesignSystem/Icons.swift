@@ -14,6 +14,8 @@ public extension DS.Icon {
     static let icStarFilled = icon(named: "ic-star-filled")
 }
 
+// MARK: File type icons
+
 public extension DS.Icon {
 
     static let icFileTypeAttachment = icon(named: "ic-file-type-attachment")

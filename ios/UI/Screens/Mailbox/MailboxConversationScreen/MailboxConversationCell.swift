@@ -57,7 +57,7 @@ struct MailboxConversationCell: View {
                     Text(uiModel.date.mailboxFormat())
                         .font(.footnote)
                         .bold(!uiModel.isRead)
-                        .foregroundColor(textColor)
+                        .foregroundColor(uiModel.isRead ? DS.Color.textHint : DS.Color.textNorm)
                 }
 
                 HStack(spacing: 0) {
@@ -74,17 +74,17 @@ struct MailboxConversationCell: View {
                     Image(uiImage: uiModel.isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
                         .resizable()
                         .frame(width: 16, height: 16)
-                        .foregroundColor(uiModel.isStarred ? .yellow : DS.Color.textWeak)
+                        .foregroundColor(uiModel.isStarred ? DS.Color.accentSunbeamGold : DS.Color.textWeak)
                         .onTapGesture {
                             onEvent(.onStarredChange(isStarred: !uiModel.isStarred))
                         }
                 }
 
                 Text(uiModel.expirationDate.text)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .foregroundStyle(uiModel.expirationDate.color)
                     .font(.callout)
                     .fontWeight(.regular)
+                    .foregroundStyle(uiModel.expirationDate.color)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .removeViewIf(uiModel.expirationDate.text.isEmpty)
 
                 AttachmentsView(uiModel: uiModel.attachmentsUIModel, onTapEvent: {

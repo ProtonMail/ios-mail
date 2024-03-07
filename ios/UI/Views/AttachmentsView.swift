@@ -129,7 +129,7 @@ private struct AttachmentCapsuleStyle: ButtonStyle {
   func makeBody(configuration: Self.Configuration) -> some View {
     configuration
           .label
-          .background(configuration.isPressed ? Capsule().fill(DS.Color.backgroundSecondary) : Capsule().fill(DS.Color.backgroundNorm))
+          .background(configuration.isPressed ? Capsule().fill(DS.Color.backgroundDeep) : Capsule().fill(DS.Color.backgroundNorm))
   }
 
 }

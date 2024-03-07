@@ -23,7 +23,7 @@ struct AvatarCheckboxView: View {
     let avatar: AvatarUIModel
     var onDidChangeSelection: ((_ newValue: Bool) -> Void)
 
-    private let cornerRadius = 6.0
+    private let cornerRadius = 12.0
 
     var body: some View {
         ZStack {
@@ -31,17 +31,17 @@ struct AvatarCheckboxView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                         .fill(DS.Color.backgroundNorm)
-                        .stroke(DS.Color.strokeDark, lineWidth: 1)
+                        .stroke(DS.Color.separatorNorm, lineWidth: 1)
                         .overlay {
                             Image(uiImage: DS.Icon.icCheckmark)
                                 .resizable()
-                                .foregroundColor(DS.Color.checkbox)
+                                .foregroundColor(DS.Color.iconNorm)
                                 .padding(10)
                         }
                 }
             } else {
                 Text(avatar.initials)
-                    .font(.caption)
+                    .font(.callout)
                     .fontWeight(.regular)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(DS.Color.interactionWeak)
