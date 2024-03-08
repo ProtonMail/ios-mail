@@ -638,7 +638,6 @@ extension MailboxViewControllerTests {
             labelID: labelID,
             label: isCustom ? label : nil,
             userManager: userManagerMock,
-            pushService: MockPushNotificationService(),
             coreDataContextProvider: testContainer.contextProvider,
             lastUpdatedStore: MockLastUpdatedStoreProtocol(),
             conversationStateProvider: conversationStateProviderMock,

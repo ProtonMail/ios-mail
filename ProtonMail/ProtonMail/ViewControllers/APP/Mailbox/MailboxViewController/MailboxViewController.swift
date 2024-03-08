@@ -357,7 +357,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             return
         }
 
-        self.viewModel.processCachedPush()
         self.viewModel.checkStorageIsCloseLimit()
 
         self.updateInterface(connectionStatus: connectionStatusProvider.status)

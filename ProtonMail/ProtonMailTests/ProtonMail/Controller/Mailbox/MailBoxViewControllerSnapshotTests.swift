@@ -310,7 +310,6 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
             labelID: "labelID",
             label: nil,
             userManager: userManagerMock,
-            pushService: MockPushNotificationService(),
             coreDataContextProvider: testContainer.contextProvider,
             lastUpdatedStore: MockLastUpdatedStoreProtocol(),
             conversationStateProvider: conversationStateProviderMock,

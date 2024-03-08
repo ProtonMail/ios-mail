@@ -24,7 +24,7 @@ import Foundation
 import ProtonCoreServices
 import UserNotifications
 
-final class PushNotificationService: NSObject, PushNotificationServiceProtocol {
+final class PushNotificationService: NSObject {
     /// Pending actions because the app has been just launched and can't make a request yet
     private var deviceTokenRegistrationPendingUnlock: String?
     private var notificationActionPendingUnlock: PendingNotificationAction?
@@ -119,16 +119,6 @@ final class PushNotificationService: NSObject, PushNotificationServiceProtocol {
         completionHandler()
     }
 
-    func processCachedLaunchOptions() {
-        if let options = notificationOptions {
-            try? didReceiveRemoteNotification(options, completionHandler: {})
-        }
-    }
-
-    func hasCachedNotificationOptions() -> Bool {
-        notificationOptions != nil
-    }
-
     func resumePendingTasks() {
         if let deviceToken = deviceTokenRegistrationPendingUnlock {
             deviceTokenRegistrationPendingUnlock = nil
@@ -138,6 +128,10 @@ final class PushNotificationService: NSObject, PushNotificationServiceProtocol {
         if let notificationAction = notificationActionPendingUnlock {
             notificationActionPendingUnlock = nil
             handleNotificationActionTask(notificationAction: notificationAction)
+        }
+
+        if let options = notificationOptions {
+            try? didReceiveRemoteNotification(options, completionHandler: {})
         }
     }
 }
