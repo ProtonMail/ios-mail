@@ -75,7 +75,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     internal let user: UserManager
     internal let messageService: MessageDataService
     internal let eventsService: EventsFetching
-    private let pushService: PushNotificationServiceProtocol
     /// fetch controller
     private(set) var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     private var labelPublisher: MailboxLabelPublisher?
@@ -153,7 +152,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     init(labelID: LabelID,
          label: LabelInfo?,
          userManager: UserManager,
-         pushService: PushNotificationServiceProtocol,
          coreDataContextProvider: CoreDataContextProviderProtocol,
          lastUpdatedStore: LastUpdatedStoreProtocol,
          conversationStateProvider: ConversationStateProviderProtocol,
@@ -173,7 +171,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         self.messageService = userManager.messageService
         self.eventsService = eventsService
         self.coreDataContextProvider = coreDataContextProvider
-        self.pushService = pushService
         self.lastUpdatedStore = lastUpdatedStore
         self.conversationStateProvider = conversationStateProvider
         self.contactGroupProvider = contactGroupProvider
@@ -677,11 +674,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         let isTrashFolder = self.labelID == LabelLocation.trash.labelID
         let location: Message.Location = isTrashFolder ? .trash: .spam
         self.messageService.empty(location: location)
-    }
-
-    /// process push
-    func processCachedPush() {
-        self.pushService.processCachedLaunchOptions()
     }
 
     func fetchConversationDetail(conversationID: ConversationID, completion: @escaping () -> Void) {

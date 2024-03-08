@@ -519,6 +519,7 @@ extension WindowsCoordinator {
                let coordinator = self.menuCoordinator {
                 coordinator.handleSwitchView(deepLink: deepLink)
                 stop = true
+                self.deepLink = nil
             }
         }
     }

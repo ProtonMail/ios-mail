@@ -1456,7 +1456,6 @@ extension MailboxViewModelTests {
         sut = MailboxViewModel(labelID: LabelID(labelID),
                                label: isCustom ? label : nil,
                                userManager: userManagerMock,
-                               pushService: MockPushNotificationService(),
                                coreDataContextProvider: coreDataService,
                                lastUpdatedStore: MockLastUpdatedStoreProtocol(),
                                conversationStateProvider: conversationStateProviderMock,
