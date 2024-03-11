@@ -18,24 +18,28 @@
 import SwiftUI
 
 extension View {
+    func debugOverlaySize() -> some View {
+        modifier(DebugOverlaySize())
+    }
+}
 
-    /**
-     Remove the view of the view hierarchy based on a condition.
-
-     Example:
-
-     ```swift
-     Text(String(numAttachments))
-       .removeViewIf( numAttachments == 0 )
-     ```
-
-     Before using this conditional view modifier take into account that any internal @State of the view can be lost
-     */
-    @ViewBuilder func removeViewIf(_ condition: Bool) -> some View {
-        if condition {
-            EmptyView()
-        } else {
-            self
-        }
+struct DebugOverlaySize: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .overlay {
+                GeometryReader { proxy in
+                    Text(
+                        "\(proxy.size.width) x \(proxy.size.height)"
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.white)
+                    .padding(4)
+                    .background { Color.purple }
+                    .border(.black)
+                    .fixedSize()
+                    .frame(width: proxy.size.width,
+                           height: proxy.size.height)
+                }
+            }
     }
 }

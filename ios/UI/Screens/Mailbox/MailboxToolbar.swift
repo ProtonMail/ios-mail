@@ -19,6 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxToolbar: ViewModifier {
+    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appUIState: AppUIState
 
     func body(content: Content) -> some View {
@@ -26,10 +27,18 @@ struct MailboxToolbar: ViewModifier {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
-                        appUIState.isSidebarOpen.toggle()
-                    }) {
+                        appUIState.isSidebarOpen = true
+                    }, label: {
                         Image(uiImage: DS.Icon.icHamburguer)
-                    }
+                    })
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        appState.removeSession()
+                    }, label: {
+                        Text("sign out")
+                            .font(.footnote)
+                    })
                 }
             }
     }

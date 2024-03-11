@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		4701D41D2B8CB1C400D6DC1D /* MailboxScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4701D41C2B8CB1C400D6DC1D /* MailboxScreen.swift */; };
+		470DEAB92B9F13F200881AD6 /* SignInScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470DEAB82B9F13F200881AD6 /* SignInScreen.swift */; };
+		470DEABF2B9F25DA00881AD6 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470DEABE2B9F25DA00881AD6 /* AppState.swift */; };
+		470DEAC12B9F25F000881AD6 /* AppUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470DEAC02B9F25F000881AD6 /* AppUIState.swift */; };
+		470DEAC32B9F261D00881AD6 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470DEAC22B9F261D00881AD6 /* UserSettings.swift */; };
+		470DEAC52B9F2A1900881AD6 /* View+debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470DEAC42B9F2A1900881AD6 /* View+debug.swift */; };
 		4712AD1B2B961FBF00F18210 /* MailboxConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4712AD1A2B961FBF00F18210 /* MailboxConversationCell.swift */; };
 		4712AD1E2B96336800F18210 /* Date+formats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4712AD1D2B96336800F18210 /* Date+formats.swift */; };
 		4712AD212B9636F000F18210 /* MailboxConversationMessageCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4712AD202B9636F000F18210 /* MailboxConversationMessageCountView.swift */; };
@@ -71,6 +76,11 @@
 
 /* Begin PBXFileReference section */
 		4701D41C2B8CB1C400D6DC1D /* MailboxScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxScreen.swift; sourceTree = "<group>"; };
+		470DEAB82B9F13F200881AD6 /* SignInScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInScreen.swift; sourceTree = "<group>"; };
+		470DEABE2B9F25DA00881AD6 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		470DEAC02B9F25F000881AD6 /* AppUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUIState.swift; sourceTree = "<group>"; };
+		470DEAC22B9F261D00881AD6 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		470DEAC42B9F2A1900881AD6 /* View+debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+debug.swift"; sourceTree = "<group>"; };
 		4712AD1A2B961FBF00F18210 /* MailboxConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxConversationCell.swift; sourceTree = "<group>"; };
 		4712AD1D2B96336800F18210 /* Date+formats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+formats.swift"; sourceTree = "<group>"; };
 		4712AD202B9636F000F18210 /* MailboxConversationMessageCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxConversationMessageCountView.swift; sourceTree = "<group>"; };
@@ -147,6 +157,7 @@
 		4701D41A2B8CB16300D6DC1D /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				470DEAB72B9F13D700881AD6 /* SignIn */,
 				475F74BD2B9E348C00A2AAA7 /* Settings */,
 				4701D41E2B8CB21300D6DC1D /* Mailbox */,
 				47D4614F2B937B68007546C1 /* Sidebar */,
@@ -173,6 +184,24 @@
 				478CEB1F2B99AE6F00593231 /* UIModel */,
 			);
 			path = Mailbox;
+			sourceTree = "<group>";
+		};
+		470DEAB72B9F13D700881AD6 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				470DEAB82B9F13F200881AD6 /* SignInScreen.swift */,
+			);
+			path = SignIn;
+			sourceTree = "<group>";
+		};
+		470DEABD2B9F25B100881AD6 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				470DEABE2B9F25DA00881AD6 /* AppState.swift */,
+				470DEAC02B9F25F000881AD6 /* AppUIState.swift */,
+				470DEAC22B9F261D00881AD6 /* UserSettings.swift */,
+			);
+			path = State;
 			sourceTree = "<group>";
 		};
 		4712AD1C2B96335800F18210 /* Utils */ = {
@@ -258,6 +287,7 @@
 			children = (
 				477F664D2B8CA3E300119523 /* ProtonMailApp.swift */,
 				4701D41B2B8CB16D00D6DC1D /* Resources */,
+				470DEABD2B9F25B100881AD6 /* State */,
 				4712AD1F2B9634E100F18210 /* UI */,
 				4712AD1C2B96335800F18210 /* Utils */,
 			);
@@ -314,6 +344,7 @@
 			isa = PBXGroup;
 			children = (
 				476F34262B973CF7006F6293 /* Color+hex.swift */,
+				470DEAC42B9F2A1900881AD6 /* View+debug.swift */,
 				479E19172B9715AB003A3A51 /* View+removeViewIf.swift */,
 			);
 			path = SwiftUI;
@@ -533,6 +564,7 @@
 				472ED7772B95DD2A00C1C8E6 /* MailboxLabelView.swift in Sources */,
 				47143B7B2B8CECAD00AAB4E4 /* MailboxConversationScreenModel.swift in Sources */,
 				4754F23F2B97586B0094F46A /* AttachmentsView.swift in Sources */,
+				470DEAC52B9F2A1900881AD6 /* View+debug.swift in Sources */,
 				478CEB1E2B99AE5600593231 /* MailboxSharedUIModels.swift in Sources */,
 				47D4614E2B9379F4007546C1 /* SidebarScreen.swift in Sources */,
 				4712AD212B9636F000F18210 /* MailboxConversationMessageCountView.swift in Sources */,
@@ -541,10 +573,14 @@
 				47143B7D2B8CECC500AAB4E4 /* MailboxConversationScreen.swift in Sources */,
 				475F74BF2B9E349900A2AAA7 /* SettingsScreen.swift in Sources */,
 				477F664E2B8CA3E300119523 /* ProtonMailApp.swift in Sources */,
+				470DEAC32B9F261D00881AD6 /* UserSettings.swift in Sources */,
 				479E19182B9715AB003A3A51 /* View+removeViewIf.swift in Sources */,
 				475F74C12B9E3DE200A2AAA7 /* MailboxToolbar.swift in Sources */,
 				4712AD1B2B961FBF00F18210 /* MailboxConversationCell.swift in Sources */,
+				470DEAC12B9F25F000881AD6 /* AppUIState.swift in Sources */,
 				4712AD1E2B96336800F18210 /* Date+formats.swift in Sources */,
+				470DEABF2B9F25DA00881AD6 /* AppState.swift in Sources */,
+				470DEAB92B9F13F200881AD6 /* SignInScreen.swift in Sources */,
 				476F34252B973651006F6293 /* SenderBadgeView.swift in Sources */,
 				47143B802B8CFF1800AAB4E4 /* AvatarCheckboxView.swift in Sources */,
 				47D461512B937C28007546C1 /* SidebarScreenModel.swift in Sources */,

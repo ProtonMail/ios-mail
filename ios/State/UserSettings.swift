@@ -15,27 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Foundation
 
-extension View {
+final class UserSettings: ObservableObject {
+    var mailboxViewMode: MailboxViewMode
 
-    /**
-     Remove the view of the view hierarchy based on a condition.
-
-     Example:
-
-     ```swift
-     Text(String(numAttachments))
-       .removeViewIf( numAttachments == 0 )
-     ```
-
-     Before using this conditional view modifier take into account that any internal @State of the view can be lost
-     */
-    @ViewBuilder func removeViewIf(_ condition: Bool) -> some View {
-        if condition {
-            EmptyView()
-        } else {
-            self
-        }
+    init(mailboxViewMode: MailboxViewMode) {
+        self.mailboxViewMode = mailboxViewMode
     }
+}
+
+enum MailboxViewMode {
+    case message
+    case conversation
 }

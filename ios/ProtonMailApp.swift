@@ -18,34 +18,31 @@
 import SwiftUI
 import DesignSystem
 
-enum MailboxViewMode {
-    case message
-    case conversation
-}
-
-final class UserSettings: ObservableObject {
-    var mailboxViewMode: MailboxViewMode
-
-    init(mailboxViewMode: MailboxViewMode) {
-        self.mailboxViewMode = mailboxViewMode
-    }
-}
-
-final class AppUIState: ObservableObject {
-    @Published var isSidebarOpen: Bool
-
-    init(isSidebarOpen: Bool) {
-        self.isSidebarOpen = isSidebarOpen
-    }
-}
-
-
 @main
 struct ProtonMail: App {
-    @State private var route: Route = .mailbox(labelId: "inbox")
+    let appState = AppState()
+    let appUIState = AppUIState(isSidebarOpen: false)
+    let userSettings = UserSettings(mailboxViewMode: .conversation)
 
     var body: some Scene {
         WindowGroup {
+            Root()
+                .environmentObject(appState)
+                .environmentObject(appUIState)
+                .environmentObject(userSettings)
+        }
+    }
+}
+
+struct Root: View {
+    @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var appUIState: AppUIState
+    @State private var route: Route = .mailbox(labelId: "inbox")
+
+    var body: some View {
+        if !appState.hasAuthenticatedSession {
+            SignIn()
+        } else {
             ZStack {
                 switch route {
                 case .mailbox:
@@ -57,9 +54,8 @@ struct ProtonMail: App {
             }
             .environment(\.navigate) { destinaton in
                 route = destinaton
+                appUIState.isSidebarOpen = false
             }
-            .environmentObject(AppUIState(isSidebarOpen: false))
-            .environmentObject(UserSettings(mailboxViewMode: .conversation))
         }
     }
 }

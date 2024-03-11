@@ -8,6 +8,8 @@
 import SwiftUI
 
 public extension DS.Icon {
+    static let icArrowOutFromRectangle = icon(named: "ic-arrow-out-from-rectangle")
+
     static let icCheckmark = icon(named: "ic-checkmark")
     static let icCogWheel = icon(named: "ic-cog-wheel")
     static let icHamburguer = icon(named: "ic-hamburger")

@@ -30,19 +30,8 @@ struct SidebarScreen: View {
 
     var body: some View {
         ZStack {
-
-            GeometryReader { _ in
-                EmptyView()
-            }
-            .background(.black.opacity(0.6))
-            .opacity(appUIState.isSidebarOpen ? 1 : 0)
-            .animation(animation, value: appUIState.isSidebarOpen)
-            .onTapGesture {
-                appUIState.isSidebarOpen.toggle()
-            }
-            .edgesIgnoringSafeArea(.all)
-
             GeometryReader { geometry in
+                translucidBackground
                 sidebarContent
                     .frame(width: geometry.size.width * 0.9)
                     .frame(maxHeight: .infinity)
@@ -50,6 +39,19 @@ struct SidebarScreen: View {
                     .animation(animation, value: appUIState.isSidebarOpen)
             }
         }
+    }
+
+    var translucidBackground: some View {
+        GeometryReader { _ in
+            EmptyView()
+        }
+        .background(.black.opacity(0.6))
+        .opacity(appUIState.isSidebarOpen ? 1 : 0)
+        .animation(animation, value: appUIState.isSidebarOpen)
+        .onTapGesture {
+            appUIState.isSidebarOpen = false
+        }
+        .edgesIgnoringSafeArea(.all)
     }
 
     var sidebarContent: some View {
