@@ -1,7 +1,19 @@
 enum ConversationNavigationAction {
-    case reply(message: MessageEntity)
-    case replyAll(message: MessageEntity)
-    case forward(message: MessageEntity)
+    case reply(
+        message: MessageEntity,
+        remoteContentPolicy: WebContents.RemoteContentPolicy,
+        embeddedContentPolicy: WebContents.EmbeddedContentPolicy
+    )
+    case replyAll(
+        message: MessageEntity,
+        remoteContentPolicy: WebContents.RemoteContentPolicy,
+        embeddedContentPolicy: WebContents.EmbeddedContentPolicy
+    )
+    case forward(
+        message: MessageEntity,
+        remoteContentPolicy: WebContents.RemoteContentPolicy,
+        embeddedContentPolicy: WebContents.EmbeddedContentPolicy
+    )
     case draft(message: MessageEntity)
     case addContact(contact: ContactVO)
     case composeTo(contact: ContactVO)

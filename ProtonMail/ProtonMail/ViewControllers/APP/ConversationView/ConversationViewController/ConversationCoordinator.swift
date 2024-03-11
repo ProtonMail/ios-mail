@@ -80,10 +80,20 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
 
     func handle(navigationAction: ConversationNavigationAction) {
         switch navigationAction {
-        case .reply(let message):
-            presentCompose(message: message, action: .reply)
+        case let .reply(message, remoteContentPolicy, embeddedContentPolicy):
+            presentCompose(
+                message: message,
+                action: .reply,
+                remoteContentPolicy: remoteContentPolicy,
+                embeddedContentPolicy: embeddedContentPolicy
+            )
         case .draft(let message):
-            presentCompose(message: message, action: .openDraft)
+            presentCompose(
+                message: message,
+                action: .openDraft,
+                remoteContentPolicy: nil,
+                embeddedContentPolicy: nil
+            )
         case .addContact(let contact):
             presentAddContacts(with: contact)
         case .composeTo(let contact):
@@ -92,10 +102,20 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             presentAttachmentListView(inlineCIDS: inlineCIDs, attachments: attachments)
         case .mailToUrl(let url):
             presentCompose(with: url)
-        case .replyAll(let message):
-            presentCompose(message: message, action: .replyAll)
-        case .forward(let message):
-            presentCompose(message: message, action: .forward)
+        case let .replyAll(message, remoteContentPolicy, embeddedContentPolicy):
+            presentCompose(
+                message: message,
+                action: .replyAll,
+                remoteContentPolicy: remoteContentPolicy,
+                embeddedContentPolicy: embeddedContentPolicy
+            )
+        case let .forward(message, remoteContentPolicy, embeddedContentPolicy):
+            presentCompose(
+                message: message,
+                action: .forward,
+                remoteContentPolicy: remoteContentPolicy,
+                embeddedContentPolicy: embeddedContentPolicy
+            )
         case .viewHeaders(url: let url):
             presentQuickLookView(url: url, subType: .headers)
         case .viewHTML(url: let url):
@@ -144,6 +164,8 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         let composer = dependencies.composerViewFactory.makeComposer(
             msg: nil,
             action: .newDraft,
+            remoteContentPolicy: nil,
+            embeddedContentPolicy: nil,
             toContact: contact
         )
         viewController?.present(composer, animated: true)
@@ -158,7 +180,12 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         viewController?.present(composer, animated: true)
     }
 
-    private func presentCompose(message: MessageEntity, action: ComposeMessageAction) {
+    private func presentCompose(
+        message: MessageEntity,
+        action: ComposeMessageAction,
+        remoteContentPolicy: WebContents.RemoteContentPolicy?,
+        embeddedContentPolicy: WebContents.EmbeddedContentPolicy?
+    ) {
         guard message.isDetailDownloaded else { return }
         guard let msg: MessageEntity? = dependencies.contextProvider.read(block: { context in
             if let msg = context.object(with: message.objectID.rawValue) as? Message {
@@ -169,7 +196,9 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         }) else { return }
         let composer = dependencies.composerViewFactory.makeComposer(
             msg: msg,
-            action: action
+            action: action,
+            remoteContentPolicy: remoteContentPolicy,
+            embeddedContentPolicy: embeddedContentPolicy
         )
         viewController?.present(composer, animated: true)
     }

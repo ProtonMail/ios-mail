@@ -156,7 +156,7 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
             var clean0 = DOMPurify.sanitize(dirty, \(DomPurifyConfig.imageCache.value));
         """
         switch contents.contentLoadingType {
-        case .direct:
+        case .skipProxy:
             jsCodeBlock += """
                 // Sanitize message head
                 let protonizer = DOMPurify.sanitize(dirty, \(DomPurifyConfig.protonizer.value));
@@ -165,7 +165,7 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
                 // Sanitize message content
                 var clean1 = DOMPurify.sanitize(clean0, \(DomPurifyConfig.default.value));
             """
-        case .proxy, .proxyDryRun, .none:
+        case .proxy, .skipProxyButAskForTrackerInfo:
             /* 
              `escapeForbiddenStyleInElement` function is used to escape the forbidden element in the `STYLE` tag.
              It will add `proton-` prefix to the tag e.g. `background:image-set` will become `background:proton-image-set`, `background:url(XXX` will become `background:url(proton-XXX`.

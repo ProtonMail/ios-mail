@@ -421,13 +421,32 @@ private extension SingleMessageViewController {
     }
 
     private func handleOpenComposerAction(_ action: MessageViewActionSheetAction) {
+        let infoProvider = viewModel.contentViewModel.messageInfoProvider
         switch action {
         case .reply, .replyInConversation:
-            viewModel.navigate(to: .reply(messageId: viewModel.message.messageID))
+            viewModel.navigate(
+                to: .reply(
+                    messageId: viewModel.message.messageID,
+                    remoteContentPolicy: infoProvider.remoteContentPolicy,
+                    embeddedContentPolicy: infoProvider.embeddedContentPolicy
+                )
+            )
         case .replyAll, .replyAllInConversation:
-            viewModel.navigate(to: .replyAll(messageId: viewModel.message.messageID))
+            viewModel.navigate(
+                to: .replyAll(
+                    messageId: viewModel.message.messageID,
+                    remoteContentPolicy: infoProvider.remoteContentPolicy,
+                    embeddedContentPolicy: infoProvider.embeddedContentPolicy
+                )
+            )
         case .forward, .forwardInConversation:
-            viewModel.navigate(to: .forward(messageId: viewModel.message.messageID))
+            viewModel.navigate(
+                to: .forward(
+                    messageId: viewModel.message.messageID,
+                    remoteContentPolicy: infoProvider.remoteContentPolicy,
+                    embeddedContentPolicy: infoProvider.embeddedContentPolicy
+                )
+            )
         default:
             return
         }

@@ -59,19 +59,6 @@ extension ConversationViewController {
         }
     }
 
-    private func handleOpenComposerAction(_ action: MessageViewActionSheetAction, message: MessageEntity) {
-        switch action {
-        case .reply, .replyInConversation:
-            viewModel.handleNavigationAction(.reply(message: message))
-        case .replyAll, .replyAllInConversation:
-            viewModel.handleNavigationAction(.replyAll(message: message))
-        case .forward, .forwardInConversation:
-            viewModel.handleNavigationAction(.forward(message: message))
-        default:
-            return
-        }
-    }
-
     private func handleOpenViewAction(_ action: MessageViewActionSheetAction, message: MessageEntity) {
         switch action {
         case .viewHeaders:
