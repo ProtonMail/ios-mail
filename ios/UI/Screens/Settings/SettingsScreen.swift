@@ -15,13 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import SwiftUI
 
-@Observable
-final class SidebarScreenModel {
-    let systemFolders: [SidebarCellUIModel]
+struct SettingsScreen: View {
+    @EnvironmentObject private var appUIState: AppUIState
 
-    init(systemFolders: [SidebarCellUIModel]) {
-        self.systemFolders = systemFolders
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                Text("Settings Screen")
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(LocalizationTemp.settings)
+            .mailboxToolbar()
+        }
     }
 }

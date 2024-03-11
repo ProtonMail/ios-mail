@@ -22,4 +22,10 @@ import Foundation
 enum LocalizationTemp {
 
     static let official = "Official"
+
+    enum Mailbox {
+        static let inbox = "Inbox"
+    }
+
+    static let settings = "Settings"
 }

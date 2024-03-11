@@ -39,16 +39,43 @@ final class AppUIState: ObservableObject {
     }
 }
 
+
 @main
 struct ProtonMail: App {
+    @State private var route: Route = .mailbox(labelId: "inbox")
+
     var body: some Scene {
         WindowGroup {
             ZStack {
-                MailboxScreen()
-                    .environmentObject(UserSettings(mailboxViewMode: .conversation))
-                SidebarScreen(model: PreviewData.sidebarScreenModel)
+                switch route {
+                case .mailbox:
+                    MailboxScreen()
+                case .settings:
+                    SettingsScreen()
+                }
+                SidebarScreen(screenModel: PreviewData.sideBarScreenModel)
+            }
+            .environment(\.navigate) { destinaton in
+                route = destinaton
             }
             .environmentObject(AppUIState(isSidebarOpen: false))
+            .environmentObject(UserSettings(mailboxViewMode: .conversation))
         }
+    }
+}
+
+enum Route: Hashable {
+    case mailbox(labelId: String)
+    case settings
+}
+
+struct NavigateEnvironmentKey: EnvironmentKey {
+    static var defaultValue: (Route) -> Void = { _ in }
+}
+
+extension EnvironmentValues {
+    var navigate: (Route) -> Void {
+        get { self[NavigateEnvironmentKey.self] }
+        set { self[NavigateEnvironmentKey.self] = newValue }
     }
 }

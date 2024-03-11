@@ -19,11 +19,11 @@ import DesignSystem
 import SwiftUI
 
 struct SidebarScreen: View {
-    @State private var model: SidebarScreenModel
     @EnvironmentObject private var appUIState: AppUIState
+    @State private var screenModel: SidebarScreenModel
 
-    init(model: SidebarScreenModel) {
-        self.model = model
+    init(screenModel: SidebarScreenModel) {
+        self.screenModel = screenModel
     }
 
     private let animation: Animation = .easeInOut(duration: 0.2)
@@ -44,9 +44,8 @@ struct SidebarScreen: View {
 
             GeometryReader { geometry in
                 sidebarContent
-                    .frame(width: geometry.size.width * 0.8)
-                    .padding(.init(top: 24.0, leading: 20.0, bottom: 24.0, trailing: 20.0))
-                    .background()
+                    .frame(width: geometry.size.width * 0.9)
+                    .frame(maxHeight: .infinity)
                     .offset(x: appUIState.isSidebarOpen ? 0 : -geometry.size.width)
                     .animation(animation, value: appUIState.isSidebarOpen)
             }
@@ -54,39 +53,60 @@ struct SidebarScreen: View {
     }
 
     var sidebarContent: some View {
-        ScrollView(showsIndicators: false) {
+        HStack {
+            ZStack {
 
-            VStack(spacing: 24) {
+            }
+            .frame(width: 56)
+            .frame(maxHeight: .infinity)
 
-                ForEach(model.items) { item in
-                    SidebarCell(icon: item.icon, text: item.text, badge: item.badge)
+            ScrollView(showsIndicators: false) {
+
+                VStack(spacing: 24) {
+                    ForEach(screenModel.systemFolders) { systemFolder in
+                        SidebarCell(uiModel: systemFolder)
+                    }
                 }
-                Spacer()
+                .padding(.init(top: 24.0, leading: 16.0, bottom: 24.0, trailing: 16.0))
             }
         }
+        .background(DS.Color.sidebarBackground)
     }
 }
 
-struct SidebarCell: View {
+struct SidebarCellUIModel: Identifiable {
+    let id: String
+    let name: String
     let icon: UIImage
-    let text: String
-    let badge: String?
+    let badge: String
+    let route: Route
+}
+
+struct SidebarCell: View {
+    @Environment(\.navigate) var navigate
+    let uiModel: SidebarCellUIModel
 
     var body: some View {
 
-        HStack {
+        Button(action: {
+            navigate(uiModel.route)
+        }, label: {
+            HStack {
 
-            Image(uiImage: icon)
-            Text(text)
-            Spacer()
-            Circle()
-                .frame(width: 24, height: 24)
-                .foregroundColor(.purple)
-                .overlay {
-                    Text(badge ?? "")
-                }
-                .opacity(badge == nil ? 0 : 1)
-        }
+                Image(uiImage: uiModel.icon)
+                    .renderingMode(.template)
+                    .foregroundColor(DS.Color.sidebarTextNorm)
+                Text(uiModel.name)
+                    .font(.body)
+                    .fontWeight(.regular)
+                    .foregroundStyle(DS.Color.sidebarTextNorm)
+                    .padding(.leading, 16)
+                Spacer()
+                Text(uiModel.badge)
+                    .foregroundStyle(DS.Color.sidebarTextNorm)
+                    .opacity(uiModel.badge.isEmpty ? 0 : 1)
+            }
+        })
     }
 }
 
@@ -95,7 +115,7 @@ struct SidebarCell: View {
     struct PreviewWrapper: View {
 
         var body: some View {
-            SidebarScreen(model: PreviewData.sidebarScreenModel)
+            SidebarScreen(screenModel: PreviewData.sideBarScreenModel)
         }
     }
     return PreviewWrapper().environmentObject(appUIState)

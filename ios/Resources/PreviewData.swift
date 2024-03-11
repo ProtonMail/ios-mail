@@ -20,13 +20,14 @@ import SwiftUI
 
 enum PreviewData {
 
-    static let sidebarScreenModel = SidebarScreenModel(items: [
-        .init(id: UUID().uuidString, icon: DS.Icon.icStar, text: "Inbox", badge: "3"),
-        .init(id: UUID().uuidString, icon: DS.Icon.icStar, text: "Draft", badge: nil),
-        .init(id: UUID().uuidString, icon: DS.Icon.icStar, text: "Sent", badge: nil),
-        .init(id: UUID().uuidString, icon: DS.Icon.icStar, text: "Starred", badge: "8"),
-        .init(id: UUID().uuidString, icon: DS.Icon.icStar, text: "Archive", badge: nil),
-        .init(id: UUID().uuidString, icon: DS.Icon.icStar, text: "Spam", badge: nil),
+    static let sideBarScreenModel = SidebarScreenModel(systemFolders: [
+        .init(id: UUID().uuidString, name: "Inbox", icon: DS.Icon.icStar, badge: "3", route: .mailbox(labelId: "")),
+        .init(id: UUID().uuidString, name: "Draft", icon: DS.Icon.icFile, badge: "", route: .mailbox(labelId: "")),
+        .init(id: UUID().uuidString, name: "Sent", icon: DS.Icon.icPaperPlane, badge: "", route: .mailbox(labelId: "")),
+        .init(id: UUID().uuidString, name: "Starred", icon: DS.Icon.icStar, badge: "8", route: .mailbox(labelId: "")),
+        .init(id: UUID().uuidString, name: "Archive", icon: DS.Icon.icArchiveBox, badge: "", route: .mailbox(labelId: "")),
+        .init(id: UUID().uuidString, name: "Spam", icon: DS.Icon.icFire, badge: "", route: .mailbox(labelId: "")),
+        .init(id: UUID().uuidString, name: "Settings", icon: DS.Icon.icCogWheel, badge: "", route: .settings),
     ])
 
     static var mailboxConversationScreenModel: MailboxConversationScreenModel {

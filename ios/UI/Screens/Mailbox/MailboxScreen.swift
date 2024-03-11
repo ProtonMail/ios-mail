@@ -32,16 +32,8 @@ struct MailboxScreen: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Inbox")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        appUIState.isSidebarOpen.toggle()
-                    }) {
-                        Image(uiImage: DS.Icon.icHamburguer)
-                    }
-                }
-            }
+            .navigationTitle(LocalizationTemp.Mailbox.inbox)
+            .mailboxToolbar()
         }
     }
 }

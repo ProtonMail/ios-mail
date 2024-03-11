@@ -21,6 +21,10 @@ public extension DS.Color {
     static let notificationWarning = Color(.mobileNotificationWarning)
     static let notificationError = Color(.mobileNotificationError)
 
+    static let sidebarBackground = Color(.mobileSidebarBackground)
+    static let sidebarTextNorm = Color(.mobileSidebarTextNorm)
+    static let sidebarTextWeak = Color(.mobileSidebarTextWeak)
+
     static let textNorm = Color(.mobileTextNorm)
     static let textWeak = Color(.mobileTextWeak)
     static let textHint = Color(.mobileTextHint)

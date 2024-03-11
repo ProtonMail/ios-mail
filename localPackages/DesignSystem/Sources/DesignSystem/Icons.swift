@@ -9,7 +9,12 @@ import SwiftUI
 
 public extension DS.Icon {
     static let icCheckmark = icon(named: "ic-checkmark")
+    static let icCogWheel = icon(named: "ic-cog-wheel")
     static let icHamburguer = icon(named: "ic-hamburger")
+    static let icArchiveBox = icon(named: "ic-archive-box")
+    static let icFile = icon(named: "ic-file")
+    static let icFire = icon(named: "ic-fire")
+    static let icPaperPlane = icon(named: "ic-paper-plane")
     static let icStar = icon(named: "ic-star")
     static let icStarFilled = icon(named: "ic-star-filled")
 }

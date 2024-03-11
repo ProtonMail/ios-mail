@@ -15,13 +15,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import SwiftUI
 
-@Observable
-final class SidebarScreenModel {
-    let systemFolders: [SidebarCellUIModel]
+struct MailboxToolbar: ViewModifier {
+    @EnvironmentObject private var appUIState: AppUIState
 
-    init(systemFolders: [SidebarCellUIModel]) {
-        self.systemFolders = systemFolders
+    func body(content: Content) -> some View {
+        content
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        appUIState.isSidebarOpen.toggle()
+                    }) {
+                        Image(uiImage: DS.Icon.icHamburguer)
+                    }
+                }
+            }
+    }
+}
+
+extension View {
+    @MainActor func mailboxToolbar() -> some View {
+        self.modifier(MailboxToolbar())
     }
 }
