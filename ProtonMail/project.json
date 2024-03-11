@@ -5,7 +5,7 @@
       "relativePaths": false
     },
     {
-      "path": "./xcodeGen/specs/scheme_enterprise.json",
+      "path": "./xcodeGen/specs/scheme_adhoc.json",
       "relativePaths": false
     },
     {

@@ -299,35 +299,30 @@ report:testmo:sanity:
   artifacts:
     paths:
       - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
+    name: "iOS mail app builds"
     expire_in: 90 days
+  script:
+    - brew bundle --force
+    - cd ProtonMail
+    - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
+    - |
+        if [ "$IS_QA_BUILD" = "true" ] ; then 
+          bundle exec fastlane ios adhoc
+        else
+          bundle exec fastlane ios build
+          ./fastlane/add_git_tag.sh
+        fi
+  tags:
+    - iOS_RELEASE_BUILD
 
-# --- Build app and send to testflight
 testflight:alpha:
   extends: .distribute
   variables:
     GIT_STRATEGY: clone
     GIT_DEPTH: "0"
-  artifacts:
-    name: "iOS mail app builds"
-  script:
-    - brew bundle --force
-    - cd ProtonMail
-    - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
-    - bundle exec fastlane ios build
-    - ./fastlane/add_git_tag.sh
-  tags:
-    - iOS_RELEASE_BUILD
+    IS_QA_BUILD: "false"
 
-# --- Build enterprise app for test and upload
-firebase:qa:
+firebase:adhoc:qa:
   extends: .distribute
-  artifacts:
-    name: "iOS mail app test enterprise build"
-  script:
-    - cd ProtonMail
-    - base64 -D -o Certificates.p12 <<< $ENTERPRISE_DISTRIBUTION_CERTIFICATE
-    - base64 -D -o Siri.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SIRI_PROVISIONPROFILE
-    - base64 -D -o Enterprise.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_APP_PROVISIONPROFILE
-    - base64 -D -o PushService.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_PUSHSERVICE_PROVISIONPROFILE
-    - base64 -D -o Share.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SHARE_PROVISIONPROFILE
-    - bundle exec fastlane ios enterprise usingTimeStamp:true
+  variables:
+    IS_QA_BUILD: "true"
