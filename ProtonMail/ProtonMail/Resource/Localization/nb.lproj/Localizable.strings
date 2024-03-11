@@ -1837,7 +1837,13 @@
 "Your Mail storage is %@ full" = "E-postlagringen din er %@ full";
 
 /* Title of the banner alert */
+"Your Drive storage is %@ full" = "Drive-lagringen din er %@ full";
+
+/* Title of the banner alert */
 "Your Mail storage is full" = "E-postlagringen din er full";
+
+/* Title of the banner alert */
+"Your Drive storage is full" = "Drive-lagringen din er full";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Oppgrader for å få mer lagringsplass.";
@@ -1936,6 +1942,9 @@
 
 /* Cell title that shows the percentage of the storage */
 "Storage: %@ full" = "Lagring: %@ full";
+
+/* Cell title that shows the percentage of the storage */
+"Drive storage: %@ full" = "Drive-lagring: %@ full";
 
 /* Upgrade button action */
 "Upgrade" = "Oppgrader";
@@ -2306,6 +2315,15 @@
 /* Description text for setting */
 "Allow navigating through messages by swiping left or right." = "Tillat navigering gjennom meldinger ved å sveipe til venstre eller høyre.";
 
+/* The title of the spotlight of the auto import contacts. */
+"Your contacts at your fingertips" = "Kontaktene dine for hånden";
+
+/* The message of the spotlight of the auto import contacts. */
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Du trenger ikke å forlate appen for å finne en e-postadresse. Synkroniser kontakter fra enheten din til Proton Mail.";
+
+/* The title of the button of the spotlight of the auto import contacts. */
+"Enable auto-import" = "Aktiver auto-import";
+
 /* The title for no contact hint view */
 "No contacts yet" = "Ingen kontakter enda";
 
@@ -2320,6 +2338,9 @@
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
 "Your contacts will appear here shortly." = "Kontaktene dine vises her om kort tid.";
+
+/* The title of the dismissable banner in the contacts view. */
+"Automatically add new contacts from your device." = "Legg automatisk til nye kontakter fra enheten.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Personvern og data";

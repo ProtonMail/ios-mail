@@ -1837,7 +1837,13 @@
 "Your Mail storage is %@ full" = "Ваша сховішча ў Mail запоўнена на %@.";
 
 /* Title of the banner alert */
+"Your Drive storage is %@ full" = "Ваша сховішча ў Drive запоўнена на %@.";
+
+/* Title of the banner alert */
 "Your Mail storage is full" = "Ваша сховішча Mail запоўнена.";
+
+/* Title of the banner alert */
+"Your Drive storage is full" = "Ваша сховішча Drive запоўнена";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Палепшыце тарыфны план, каб атрымаць больш сховішча.";
@@ -1936,6 +1942,9 @@
 
 /* Cell title that shows the percentage of the storage */
 "Storage: %@ full" = "Сховішча: запоўнена на %@";
+
+/* Cell title that shows the percentage of the storage */
+"Drive storage: %@ full" = "Сховішча Drive: запоўнена на %@";
 
 /* Upgrade button action */
 "Upgrade" = "Палепшыць";
@@ -2055,10 +2064,10 @@
 "Application logs" = "Журнал праграмы";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Перайсці да наступнага ліста";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Аўтаматычна паказваць наступны ліст, калі адкрыты ліст выдалены, заархіваваны або перамешчаны.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Адбылася нечаканая памылка. Звяжыцеся са службай падтрымкі.\nПамылка: %@";
@@ -2306,20 +2315,32 @@
 /* Description text for setting */
 "Allow navigating through messages by swiping left or right." = "Дазволіць навігацыю праз паведамленні правядзеннем улева або ўправа.";
 
+/* The title of the spotlight of the auto import contacts. */
+"Your contacts at your fingertips" = "Усе вашы кантакты заўсёды з вамі";
+
+/* The message of the spotlight of the auto import contacts. */
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Цяпер больш няма неабходнасці выходзіць з праграмы, каб знайсці адрас электроннай пошты. Дастаткова сінхранізаваць кантакты вашай прылады з Proton Mail.";
+
+/* The title of the button of the spotlight of the auto import contacts. */
+"Enable auto-import" = "Уключыць аўтаматычнае імпартаванне";
+
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "Пакуль няма кантактаў";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "Імпартаваць кантакты з вашай прылады, каб адпраўляць лісты і без намаганняў запрашаць іншых.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "Аўтаматычнае імпартаванне кантактаў";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "Імпартаванне вашых кантактаў";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "Вашы кантакты неўзабаве з'явяцца тут.";
+
+/* The title of the dismissable banner in the contacts view. */
+"Automatically add new contacts from your device." = "Аўтаматычна дадаваць новыя кантакты з вашай прылады.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Прыватнасць і даныя";
