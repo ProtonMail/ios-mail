@@ -57,7 +57,7 @@ class ConversationDeleteResponse: Response {
             return false
         }
 
-        guard let result = try? JSONDecoder().decode([ConversationDeleteData].self, from: data) else {
+        guard (try? JSONDecoder().decode([ConversationDeleteData].self, from: data)) != nil else {
             return false
         }
         return true

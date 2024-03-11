@@ -61,6 +61,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasQueueManager
     & HasAutoImportContactsFeature
     & HasImportDeviceContacts
+    & HasUserCachedStatus
 
     let labelID: LabelID
     var storageAlertVisibility: StorageAlertVisibility = .hidden
@@ -404,7 +405,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
         if let expirationTime = conversation.expirationTime {
             if conversation.isExpiring() {
-                let title = expirationTime.countExpirationTime(processInfo: userCachedStatus)
+                let title = expirationTime.countExpirationTime(processInfo: dependencies.userCachedStatus)
                 let expirationDateTag = TagUIModel(
                     title: title,
                     titleColor: ColorProvider.InteractionStrong,
@@ -840,7 +841,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
             }
     }
 
-    func isProtonUnreachable(completion: @escaping (Bool) -> Void) {
+    @MainActor
+    func isProtonUnreachable(completion: @MainActor @escaping (Bool) -> Void) {
         guard
             dependencies.featureFlagCache.isFeatureFlag(.protonUnreachableBanner, enabledForUserWithID: user.userID)
         else {
@@ -1348,7 +1350,7 @@ extension MailboxViewModel {
             return
         }
 
-        let prefetchSize = userCachedStatus.featureFlags(for: user.userID)[.mailboxPrefetchSize]
+        let prefetchSize = dependencies.userCachedStatus.featureFlags(for: user.userID)[.mailboxPrefetchSize]
         let itemsToPrefetch = itemsToPrefetch().prefix(prefetchSize)
 
         guard itemsToPrefetch.count > 0, prefetchedItemsCount.value < prefetchSize else {

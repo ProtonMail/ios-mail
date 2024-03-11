@@ -67,7 +67,7 @@ class ConversationUnlabelResponse: Response, UndoTokenResponseProtocol {
             return false
         }
 
-        guard let result = try? JSONDecoder().decode([ConversationUnlabelData].self, from: data) else {
+        guard (try? JSONDecoder().decode([ConversationUnlabelData].self, from: data)) != nil else {
             return false
         }
 

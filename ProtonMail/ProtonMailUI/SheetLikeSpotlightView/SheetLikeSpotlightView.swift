@@ -18,6 +18,7 @@
 import ProtonCoreUIFoundations
 import SwiftUI
 
+@MainActor
 public struct SheetLikeSpotlightView: View {
     public let config: HostingProvider
 
