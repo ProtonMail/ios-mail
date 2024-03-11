@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,33 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import ProtonCoreNetworking
-
-final class ConversationSnoozeRequest: Request {
-    private let conversationIDs: [ConversationID]
-    private let snoozeTime: TimeInterval
-
-    init(conversationIDs: [ConversationID], snoozeTime: TimeInterval) {
-        self.conversationIDs = conversationIDs
-        self.snoozeTime = snoozeTime
-    }
-
-    var path: String {
-        "\(ConversationsAPI.path)/snooze"
-    }
-
-    var method: HTTPMethod {
-        return .put
-    }
-
-    var parameters: [String: Any]? {
-        [
-            "SnoozeTime": Int(snoozeTime),
-            "IDs": conversationIDs.map(\.rawValue)
-        ]
-    }
-}
 
 struct ConversationUnSnoozeRequest: Request {
     private let conversationIDs: [ConversationID]

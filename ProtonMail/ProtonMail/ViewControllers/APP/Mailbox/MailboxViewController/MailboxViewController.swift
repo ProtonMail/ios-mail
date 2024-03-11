@@ -44,6 +44,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         & HasUserManager
         & HasUserDefaults
         & HasAddressBookService
+        & HasUserCachedStatus
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -537,8 +538,8 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             self.referralProgramPresenter = ReferralProgramPromptPresenter(
                 userID: self.viewModel.user.userID,
                 referralProgram: referralProgram,
-                featureFlagCache: userCachedStatus,
-                featureFlagService: viewModel.user.featureFlagsDownloadService, 
+                featureFlagCache: dependencies.userCachedStatus,
+                featureFlagService: viewModel.user.featureFlagsDownloadService,
                 dependencies: dependencies
             )
         }
@@ -1235,8 +1236,8 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     private func reloadIfSwipeActionsDidChange() {
         if configuredActions.isEmpty,
-           configuredActions[.left] == userCachedStatus.leftToRightSwipeActionType,
-           configuredActions[.right] == userCachedStatus.rightToLeftSwipeActionType {
+           configuredActions[.left] == dependencies.userCachedStatus.leftToRightSwipeActionType,
+           configuredActions[.right] == dependencies.userCachedStatus.rightToLeftSwipeActionType {
             return
         }
         tableView.reloadData()
@@ -1443,10 +1444,10 @@ extension MailboxViewController {
         cell.delegate = self
 
         var actions: [SwipyCellDirection: SwipeActionSettingType] = [:]
-        actions[.left] = userCachedStatus.leftToRightSwipeActionType
-        actions[.right] = userCachedStatus.rightToLeftSwipeActionType
-        configuredActions[.left] = userCachedStatus.leftToRightSwipeActionType
-        configuredActions[.right] = userCachedStatus.rightToLeftSwipeActionType
+        actions[.left] = dependencies.userCachedStatus.leftToRightSwipeActionType
+        actions[.right] = dependencies.userCachedStatus.rightToLeftSwipeActionType
+        configuredActions[.left] = dependencies.userCachedStatus.leftToRightSwipeActionType
+        configuredActions[.right] = dependencies.userCachedStatus.rightToLeftSwipeActionType
 
         cell.removeAllSwipeTriggers()
 

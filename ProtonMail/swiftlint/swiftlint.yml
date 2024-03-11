@@ -1,6 +1,7 @@
 disabled_rules:
   - discouraged_optional_boolean
   - file_length
+  - nesting
 
 opt_in_rules:
   - attributes
@@ -425,6 +426,7 @@ excluded:
   - ${PWD}/SourcePackages
   - ${PWD}/ProtonCoreEventsLoop/Tests
   - ../LocalPackages
+  - ${PWD}/ProtonMailUI/ImageAsset.swift
 
 line_length:
   ignores_comments: true
