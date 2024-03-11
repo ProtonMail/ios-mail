@@ -99,8 +99,7 @@
          "configFiles": {
             "Debug": "xcodeGen/xcconfig/ProtonMail-Debug.xcconfig",
             "Release": "xcodeGen/xcconfig/ProtonMail-Release.xcconfig",
-            "Enterprise Debug": "xcodeGen/xcconfig/ProtonMail-EnterpriseDebug.xcconfig",
-            "Enterprise Release": "xcodeGen/xcconfig/ProtonMail-Enterprise.xcconfig"
+            "Adhoc": "xcodeGen/xcconfig/ProtonMail-Adhoc.xcconfig"
          },
          "settings": {
             "configs": {
@@ -110,11 +109,8 @@
                "Release": {
                   "INFOPLIST_FILE": "ProtonMail/Supporting Files/Info.plist"
                },
-               "Enterprise Debug": {
-                  "INFOPLIST_FILE": "ProtonMail/Supporting Files/InfoDev.plist"
-               },
-               "Enterprise Release": {
-                  "INFOPLIST_FILE": "ProtonMail/Supporting Files/InfoDev.plist"
+               "Adhoc": {
+                  "INFOPLIST_FILE": "ProtonMail/Supporting Files/Info.plist"
                }
             }
          }

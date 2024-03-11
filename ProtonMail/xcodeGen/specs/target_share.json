@@ -81,8 +81,7 @@
          "configFiles": {
             "Debug": "xcodeGen/xcconfig/Share-Debug.xcconfig",
             "Release": "xcodeGen/xcconfig/Share-Release.xcconfig",
-            "Enterprise Debug": "xcodeGen/xcconfig/Share-EnterpriseDebug.xcconfig",
-            "Enterprise Release": "xcodeGen/xcconfig/Share-Enterprise.xcconfig"
+            "Adhoc": "xcodeGen/xcconfig/Share-Adhoc.xcconfig"
          },
          "settings": {
             "configs": {
@@ -92,11 +91,8 @@
                "Release": {
                   "INFOPLIST_FILE": "Share/Info.plist"
                },
-               "Enterprise Debug": {
-                  "INFOPLIST_FILE": "Share/InfoDev.plist"
-               },
-               "Enterprise Release": {
-                  "INFOPLIST_FILE": "Share/InfoDev.plist"
+               "Adhoc": {
+                  "INFOPLIST_FILE": "Share/Info.plist"
                }
             }
          }

@@ -25,8 +25,7 @@
          "configFiles": {
             "Debug": "xcodeGen/xcconfig/Siri-Debug.xcconfig",
             "Release": "xcodeGen/xcconfig/Siri-Release.xcconfig",
-            "Enterprise Debug": "xcodeGen/xcconfig/Siri-EnterpriseDebug.xcconfig",
-            "Enterprise Release": "xcodeGen/xcconfig/Siri-Enterprise.xcconfig"
+            "Adhoc": "xcodeGen/xcconfig/Siri-Adhoc.xcconfig"
          },
          "settings": {
             "configs": {
@@ -36,11 +35,8 @@
                "Release": {
                   "INFOPLIST_FILE": "Siri/Info.plist"
                },
-               "Enterprise Debug": {
-                  "INFOPLIST_FILE": "Siri/InfoDev.plist"
-               },
-               "Enterprise Release": {
-                  "INFOPLIST_FILE": "Siri/InfoDev.plist"
+               "Adhoc": {
+                  "INFOPLIST_FILE": "Siri/Info.plist"
                }
             }
          }

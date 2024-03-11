@@ -18,8 +18,7 @@
    "configs": {
       "Debug": "debug",
       "Release": "release",
-      "Enterprise Debug": "debug",
-      "Enterprise Release": "release"
+      "Adhoc": "release"
    },
    "packages": {
       "Difference": {
@@ -45,7 +44,6 @@
    "configFiles": {
       "Debug": "xcodeGen/xcconfig/Project-Debug.xcconfig",
       "Release": "xcodeGen/xcconfig/Project-Release.xcconfig",
-      "Enterprise Debug": "xcodeGen/xcconfig/Project-EnterpriseDebug.xcconfig",
-      "Enterprise Release": "xcodeGen/xcconfig/Project-Enterprise.xcconfig"
+      "Adhoc": "xcodeGen/xcconfig/Project-Release.xcconfig"
    }
 }

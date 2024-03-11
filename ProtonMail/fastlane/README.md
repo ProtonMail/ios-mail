@@ -23,6 +23,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Build the app and upload to testflight
 
+### ios adhoc
+
+```sh
+[bundle exec] fastlane ios adhoc
+```
+
+
+
 ### ios build_for_testing
 
 ```sh
@@ -30,14 +38,6 @@ Build the app and upload to testflight
 ```
 
 Build debug apps for testing
-
-### ios enterprise
-
-```sh
-[bundle exec] fastlane ios enterprise
-```
-
-Build enterprise app
 
 ### ios bump_major
 

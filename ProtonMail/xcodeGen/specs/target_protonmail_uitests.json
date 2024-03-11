@@ -48,8 +48,7 @@
          "configFiles": {
             "Debug": "xcodeGen/xcconfig/ProtonMailUITests-Debug.xcconfig",
             "Release": "xcodeGen/xcconfig/ProtonMailUITests-Release.xcconfig",
-            "Enterprise Debug": "xcodeGen/xcconfig/ProtonMailUITests-EnterpriseDebug.xcconfig",
-            "Enterprise Release": "xcodeGen/xcconfig/ProtonMailUITests-Enterprise.xcconfig"
+            "Adhoc": "xcodeGen/xcconfig/ProtonMailUITests-Adhoc.xcconfig"
          }
       }
    }
