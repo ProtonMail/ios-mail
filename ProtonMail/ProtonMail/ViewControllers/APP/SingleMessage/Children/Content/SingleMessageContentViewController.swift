@@ -179,7 +179,11 @@ class SingleMessageContentViewController: UIViewController {
             return
         }
         let messageId = viewModel.message.messageID
-        let action: SingleMessageNavigationAction = .reply(messageId: messageId)
+        let action: SingleMessageNavigationAction = .reply(
+            messageId: messageId,
+            remoteContentPolicy: viewModel.messageInfoProvider.remoteContentPolicy,
+            embeddedContentPolicy: viewModel.messageInfoProvider.embeddedContentPolicy
+        )
         navigationAction(action)
     }
 
@@ -189,7 +193,11 @@ class SingleMessageContentViewController: UIViewController {
             return
         }
         let messageId = viewModel.message.messageID
-        let action = SingleMessageNavigationAction.replyAll(messageId: messageId)
+        let action = SingleMessageNavigationAction.replyAll(
+            messageId: messageId,
+            remoteContentPolicy: viewModel.messageInfoProvider.remoteContentPolicy,
+            embeddedContentPolicy: viewModel.messageInfoProvider.embeddedContentPolicy
+        )
         navigationAction(action)
     }
 
@@ -199,7 +207,11 @@ class SingleMessageContentViewController: UIViewController {
             return
         }
         let messageId = viewModel.message.messageID
-        let action = SingleMessageNavigationAction.forward(messageId: messageId)
+        let action = SingleMessageNavigationAction.forward(
+            messageId: messageId,
+            remoteContentPolicy: viewModel.messageInfoProvider.remoteContentPolicy,
+            embeddedContentPolicy: viewModel.messageInfoProvider.embeddedContentPolicy
+        )
         navigationAction(action)
     }
 
@@ -593,7 +605,7 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
     }
 
     func loadRemoteContent() {
-        viewModel.messageInfoProvider.set(policy: .allowed)
+        viewModel.messageInfoProvider.set(policy: .allowedThroughProxy)
     }
 
     func reloadImagesWithoutProtection() {

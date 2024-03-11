@@ -151,7 +151,10 @@ extension SingleMessageCoordinator {
 
     private func presentCompose(action: SingleMessageNavigationAction) {
         guard action.isReplyAllAction || action.isReplyAction || action.isForwardAction else { return }
-        guard message.isDetailDownloaded else { return }
+        guard
+            message.isDetailDownloaded,
+            let infoProvider = viewController?.viewModel.contentViewModel.messageInfoProvider
+        else { return }
 
         let composeAction: ComposeMessageAction
         switch action {
@@ -165,7 +168,12 @@ extension SingleMessageCoordinator {
             return
         }
 
-        let composer = dependencies.composerViewFactory.makeComposer(msg: message, action: composeAction)
+        let composer = dependencies.composerViewFactory.makeComposer(
+            msg: message,
+            action: composeAction,
+            remoteContentPolicy: infoProvider.remoteContentPolicy,
+            embeddedContentPolicy: infoProvider.embeddedContentPolicy
+        )
         viewController?.present(composer, animated: true)
     }
 

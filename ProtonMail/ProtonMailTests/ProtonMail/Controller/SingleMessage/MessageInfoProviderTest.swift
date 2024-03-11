@@ -212,8 +212,8 @@ final class MessageInfoProviderTest: XCTestCase {
         await waitForMessageToBePrepared()
         XCTAssertEqual(messageDecrypter.decryptCallCount, 1)
 
-        XCTAssertNotEqual(sut.remoteContentPolicy, .allowed)
-        sut.remoteContentPolicy = .allowed
+        XCTAssertNotEqual(sut.remoteContentPolicy, .allowedThroughProxy)
+        sut.remoteContentPolicy = .allowedThroughProxy
         await waitForMessageToBePrepared()
 
         XCTAssertNotEqual(sut.embeddedContentPolicy, .allowed)
@@ -254,23 +254,23 @@ final class MessageInfoProviderTest: XCTestCase {
             highlightedKeywords: []
         )
 
-        XCTAssertEqual(sut.remoteContentPolicy, .allowedAll)
+        XCTAssertEqual(sut.remoteContentPolicy, .allowedWithoutProxy)
     }
 
     func testSetRemoteContentPolicy_toAllowAll_shouldShowImageProxyFailedBannerWillBeFalse() {
         sut.shouldShowImageProxyFailedBanner = true
 
-        sut.set(policy: .allowedAll)
+        sut.set(policy: .allowedWithoutProxy)
 
         XCTAssertFalse(sut.shouldShowImageProxyFailedBanner)
     }
 
     func testReloadImagesWithoutProtection_remoteContentWillBeSetToAllowAll() {
-        XCTAssertNotEqual(sut.remoteContentPolicy, .allowedAll)
+        XCTAssertNotEqual(sut.remoteContentPolicy, .allowedWithoutProxy)
 
         sut.reloadImagesWithoutProtection()
 
-        XCTAssertEqual(sut.remoteContentPolicy, .allowedAll)
+        XCTAssertEqual(sut.remoteContentPolicy, .allowedWithoutProxy)
     }
 
     func testFetchSenderImageIfNeeded_featureFlagIsOff_getNil() {
@@ -435,7 +435,7 @@ extension MessageInfoProviderTest {
 
     private func enableImageProxyAndRemoteContent() async {
         user.userInfo.imageProxy = .imageProxy
-        sut.remoteContentPolicy = .allowed
+        sut.remoteContentPolicy = .allowedThroughProxy
         await waitForMessageToBePrepared()
     }
 }

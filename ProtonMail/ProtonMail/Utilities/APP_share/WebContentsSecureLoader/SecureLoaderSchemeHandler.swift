@@ -64,15 +64,13 @@ class SecureLoaderSchemeHandler: NSObject, WKURLSchemeHandler {
             guard let url = urlSchemeTask.request.url?.absoluteURL else { return }
             let error = NSError(domain: "cache.proton.ch", code: -999)
 
-            let contentLoadingType = self.contents?.contentLoadingType ?? .none
+            guard let contentLoadingType = self.contents?.contentLoadingType else { return }
             switch contentLoadingType {
-            case .proxyDryRun:
+            case .skipProxyButAskForTrackerInfo:
                 self.fetchTackerInfo(url, urlSchemeTask, error)
             case .proxy:
                 self.fetchRemoteImage(url, urlSchemeTask, error)
-            case .none:
-                urlSchemeTask.didFailWithError(error)
-            case .direct:
+            case .skipProxy:
                 assertionFailure("Content loaded without proxy should not reach here.")
             }
         }

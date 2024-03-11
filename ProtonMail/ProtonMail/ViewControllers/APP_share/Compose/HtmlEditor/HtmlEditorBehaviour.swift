@@ -66,7 +66,7 @@ class HtmlEditorBehaviour: NSObject {
 
     private var isImageProxyEnabled: Bool {
         return contentHTML.contentLoadingType == .proxy ||
-            contentHTML.contentLoadingType == .proxyDryRun
+            contentHTML.contentLoadingType == .skipProxyButAskForTrackerInfo
     }
 
     // fixes retain cycle: userContentController retains his message handlers

@@ -86,7 +86,11 @@ final class ComposeViewModelTests: XCTestCase {
             Message(context: testContext)
         }
 
-        sut = ComposeViewModel(dependencies: dependencies)
+        sut = ComposeViewModel(
+            remoteContentPolicy: .allowedThroughProxy,
+            embeddedContentPolicy: .allowed,
+            dependencies: dependencies
+        )
         try sut.initialize(message: .init(message), action: .openDraft)
     }
 
@@ -227,7 +231,11 @@ final class ComposeViewModelTests: XCTestCase {
             return repliedMessage
         }
 
-        sut = ComposeViewModel(dependencies: dependencies)
+        sut = ComposeViewModel(
+            remoteContentPolicy: .allowedThroughProxy,
+            embeddedContentPolicy: .allowed,
+            dependencies: dependencies
+        )
         try sut.initialize(message: .init(message), action: .reply)
         sut.uiDelegate = mockUIDelegate
         wait(self.sut.currentSenderAddress() == aliasAddress, timeout: 5)
@@ -485,6 +493,60 @@ final class ComposeViewModelTests: XCTestCase {
         let newEmail2 = try XCTUnwrap(sut.contacts.first(where: { $0.displayName == name2 } ))
         XCTAssertEqual(newEmail2.displayName, name2)
         XCTAssertEqual(newEmail2.displayEmail, address2)
+    }
+
+    func testLoadingPolicy_whenImagePixelIsDisabled_contentLoadingTypeShouldBeSkipProxy_remoteContentShouldNotThroughProxy() {
+        fakeUserManager.userInfo.imageProxy = .none
+        var (contentLoadingType, remoteContentMode) = sut.loadingPolicy()
+        XCTAssertEqual(contentLoadingType, .skipProxy)
+        XCTAssertEqual(remoteContentMode, .allowedWithoutProxy)
+
+        sut = ComposeViewModel(
+            remoteContentPolicy: .allowedWithoutProxy,
+            embeddedContentPolicy: .allowed,
+            dependencies: dependencies
+        )
+        (contentLoadingType, remoteContentMode) = sut.loadingPolicy()
+        XCTAssertEqual(contentLoadingType, .skipProxy)
+        XCTAssertEqual(remoteContentMode, .allowedWithoutProxy)
+    }
+
+    func testLoadingPolicy_whenImagePixelIsEnabled_contentLoadingTypeShouldBeProsy_remoteContentShouldThroughProxy() {
+        fakeUserManager.userInfo.imageProxy = .imageProxy
+        var (contentLoadingType, remoteContentMode) = sut.loadingPolicy()
+        XCTAssertEqual(contentLoadingType, .proxy)
+        XCTAssertEqual(remoteContentMode, .allowedThroughProxy)
+
+        sut = ComposeViewModel(
+            remoteContentPolicy: .allowedWithoutProxy,
+            embeddedContentPolicy: .allowed,
+            dependencies: dependencies
+        )
+        (contentLoadingType, remoteContentMode) = sut.loadingPolicy()
+        XCTAssertEqual(contentLoadingType, .proxy)
+        XCTAssertEqual(remoteContentMode, .allowedThroughProxy)
+    }
+
+    func testLoadingPolicy_whenPreferredRemoteContentIsDisabled_itAlwaysReturnsDisabled() {
+        fakeUserManager.userInfo.imageProxy = .imageProxy
+        sut = ComposeViewModel(
+            remoteContentPolicy: .disallowed,
+            embeddedContentPolicy: .allowed,
+            dependencies: dependencies
+        )
+        var (contentLoadingType, remoteContentMode) = sut.loadingPolicy()
+        XCTAssertEqual(contentLoadingType, .proxy)
+        XCTAssertEqual(remoteContentMode, .disallowed)
+
+        fakeUserManager.userInfo.imageProxy = .none
+        sut = ComposeViewModel(
+            remoteContentPolicy: .disallowed,
+            embeddedContentPolicy: .allowed,
+            dependencies: dependencies
+        )
+        (contentLoadingType, remoteContentMode) = sut.loadingPolicy()
+        XCTAssertEqual(contentLoadingType, .skipProxy)
+        XCTAssertEqual(remoteContentMode, .disallowed)
     }
 
     // TODO: fix it

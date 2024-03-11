@@ -58,15 +58,30 @@ final class ComposerViewFactory {
     func makeComposer(
         msg: MessageEntity?,
         action: ComposeMessageAction,
+        remoteContentPolicy: WebContents.RemoteContentPolicy? = nil,
+        embeddedContentPolicy: WebContents.EmbeddedContentPolicy? = nil,
         isEditingScheduleMsg: Bool = false,
         mailToUrl: URL? = nil,
         toContact: ContactPickerModelProtocol? = nil,
         originalScheduledTime: Date? = nil,
         composerDelegate: ComposeContainerViewControllerDelegate? = nil
     ) -> UINavigationController {
+        let list: [ComposeMessageAction] = [.reply, .replyAll, .replyAll]
+        if list.contains(action),
+           remoteContentPolicy == nil,
+           embeddedContentPolicy == nil {
+            PMAssertionFailure("For these type should provide policy")
+        }
+        let userInfo = dependencies.user.userInfo
+        let defaultRemotePolicy: WebContents.RemoteContentPolicy 
+        defaultRemotePolicy = userInfo.hideRemoteImages == 1 ? .disallowed : .allowedWithoutProxy
+        let defaultEmbeddedPolicy: WebContents.EmbeddedContentPolicy
+        defaultEmbeddedPolicy = userInfo.hideEmbeddedImages == 1 ? .disallowed : .allowed
         let childViewModel = ComposeViewModel(
             isEditingScheduleMsg: isEditingScheduleMsg,
             originalScheduledTime: originalScheduledTime,
+            remoteContentPolicy: remoteContentPolicy ?? defaultRemotePolicy,
+            embeddedContentPolicy: embeddedContentPolicy ?? defaultEmbeddedPolicy,
             dependencies: composeViewModelDependencies
         )
 
