@@ -189,7 +189,7 @@ extension ContactDetailViewControllerTests {
             name: displayName,
             cardData: data
         )
-        mockContactService.fetchContactStub = entity
+        mockContactService.fetchContactResult = entity
         viewModel = .init(
             contact: entity,
             dependencies: .init(

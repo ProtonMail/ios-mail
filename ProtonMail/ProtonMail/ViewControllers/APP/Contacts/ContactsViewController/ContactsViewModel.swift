@@ -153,6 +153,7 @@ final class ContactsViewModel: ViewModelTimer {
                 dependencies.user.eventsService.fetchEvents(
                     byLabel: Message.Location.inbox.labelID,
                     notificationMessageID: nil,
+                    discardContactsMetadata: EventCheckRequest.isNoMetaDataForContactsEnabled,
                     completion: { _ in
                     }
                 )

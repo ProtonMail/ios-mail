@@ -130,7 +130,7 @@ final class MainQueueHandler: QueueHandler {
             case .saveDraft, .uploadAtt, .uploadPubkey, .deleteAtt, .send,
                  .updateLabel, .createLabel, .deleteLabel, .signout, .signin,
                  .fetchMessageDetail, .updateAttKeyPacket,
-                 .updateContact, .deleteContact, .addContact, .addContacts,
+                 .updateContact, .deleteContact, .addContact, .addContacts, .fetchContactDetail,
                  .addContactGroup, .updateContactGroup, .deleteContactGroup,
                  .blockSender, .unblockSender:
                 fatalError()
@@ -258,6 +258,8 @@ final class MainQueueHandler: QueueHandler {
                     importFromDevice: true,
                     completion: completeHandler
                 )
+            case .fetchContactDetail(let contactIDs):
+                fetchContactDetails(IDs: contactIDs, completion: completeHandler)
             case .addContactGroup(let objectID, let name, let color, let emailIDs):
                 self.createContactGroup(objectID: objectID, name: name, color: color, emailIDs: emailIDs, completion: completeHandler)
             case .updateContactGroup(let objectID, let name, let color, let addedEmailIDs, let removedEmailIDs):
@@ -273,6 +275,14 @@ final class MainQueueHandler: QueueHandler {
             case .unsnooze, .snooze:
                 fatalError()
             }
+        }
+    }
+
+    private func fetchContactDetails(IDs: [String], completion: @escaping Completion) {
+        Task {
+            let contactIDs = IDs.map { ContactID(rawValue: $0) }
+            await contactService.fetchContactsInParallel(contactIDs: contactIDs)
+            completion(nil)
         }
     }
 

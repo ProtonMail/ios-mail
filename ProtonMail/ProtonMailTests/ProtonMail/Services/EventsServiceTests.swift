@@ -26,17 +26,22 @@ final class EventsServiceTests: XCTestCase {
     private var mockUserManager: UserManager!
     private var mockApiService: APIServiceMock!
     private var mockContextProvider: CoreDataContextProviderProtocol!
+    private var mockContactProvider: ContactProviderProtocol!
     private var mockQueueManager: QueueManager!
+    private var miscQueue: PMPersistentQueue!
     private let dummyUserID = "dummyUserID"
+    private let dummyLabel = LabelID(rawValue: "dummylabel")
+
     private let timeout = 3.0
 
     override func setUp() {
         super.setUp()
         let messageQueue = PMPersistentQueue(queueName: String.randomString(6))
-        let miscQueue = PMPersistentQueue(queueName: String.randomString(6))
+        miscQueue = PMPersistentQueue(queueName: String.randomString(6))
         mockQueueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         mockApiService = APIServiceMock()
         mockContextProvider = MockCoreDataContextProvider()
+        mockContactProvider = MockContactProvider(coreDataContextProvider: mockContextProvider)
 
         let testContainer = TestContainer()
         testContainer.contextProviderFactory.register { self.mockContextProvider }
@@ -50,9 +55,12 @@ final class EventsServiceTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
+        miscQueue.clearAll()
+        miscQueue = nil
         mockUserManager = nil
         mockApiService = nil
         mockContextProvider = nil
+        mockContactProvider = nil
         mockQueueManager = nil
     }
 
@@ -206,9 +214,178 @@ final class EventsServiceTests: XCTestCase {
             XCTAssertEqual(conversation?.conversationID, conversationID)
         }
     }
+
+    func testFetchEvents_whenNoContactMetaData_andLessThan15ContactEventsReceived_itEnqueuesTwoTasks() throws {
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+            if path.contains("/events") {
+                let result = self.contactEvents_insertsAndUpdates_lessThan15().toDictionary()!
+                completion(nil, .success(result))
+            }
+        }
+
+        sut.start()
+        sut.fetchEvents(byLabel: dummyLabel, notificationMessageID: nil, discardContactsMetadata: true) { _ in }
+
+        wait(self.miscQueue.queue.count == 1)
+    }
+
+    func testFetchEvents_whenNoContactMetaData_andMoreThan15ContactEventsReceived_itEnqueuesTwoTasks() throws {
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+            if path.contains("/events") {
+                let result = self.contactEvents_insertsAndUpdates_moreThan15().toDictionary()!
+                completion(nil, .success(result))
+            }
+        }
+
+        sut.start()
+        sut.fetchEvents(byLabel: dummyLabel, notificationMessageID: nil, discardContactsMetadata: true) { _ in }
+
+        wait(self.miscQueue.queue.count == 2)
+    }
 }
 
 extension EventsServiceTests {
+
+    private func contactEvents_insertsAndUpdates_lessThan15() -> String {
+        return """
+        {
+          "Code": 1000,
+          "EventID": "F5Lr-HwtHPeRwIgrzlR6r4i6t408b86KaY97AANQ2ybfOka2eGWNPvtibNB4Sz19OPb2JRJ6mX_xy1ay4354Tg==",
+          "Refresh": 0,
+          "More": 0,
+          "Contacts": [
+            {
+              "ID": "FU3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "EK2sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 1
+            },
+            {
+              "ID": "PA9sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "FU3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            }
+          ],
+          "UsedSpace": 77985967,
+          "UsedBaseSpace": 77985967,
+          "UsedDriveSpace": 0,
+          "ProductUsedSpace": {
+            "Calendar": 0,
+            "Contact": 386903,
+            "Drive": 0,
+            "Mail": 77599064,
+            "Pass": 0
+          },
+          "Notifications": [],
+          "Notices": []
+        }
+        """
+    }
+    private func contactEvents_insertsAndUpdates_moreThan15() -> String {
+        return """
+        {
+          "Code": 1000,
+          "EventID": "F5Lr-HwtHPeRwIgrzlR6r4i6t408b86KaY97AANQ2ybfOka2eGWNPvtibNB4Sz19OPb2JRJ6mX_xy1ay4354Tg==",
+          "Refresh": 0,
+          "More": 0,
+          "Contacts": [
+            {
+              "ID": "FU3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "EK2sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 1
+            },
+            {
+              "ID": "PA9sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "FU3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "DD2sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 1
+            },
+            {
+              "ID": "RR9sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "WW3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "HH2sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 1
+            },
+            {
+              "ID": "JJ9sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "UU3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "TT2sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 1
+            },
+            {
+              "ID": "EP9sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "TI3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "IW2sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 1
+            },
+            {
+              "ID": "SR9sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "AB3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "AC2sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 1
+            },
+            {
+              "ID": "AD9sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "c4-E6qq6WXuDfn-5wwTmlGu6QZab3XicOGfrllraZT2jpt1zUB_UepxnBAYpET2q80LBOz1-kcDV9HAd2f9ZhA==",
+              "Action": 2
+            }
+          ],
+          "UsedSpace": 77985967,
+          "UsedBaseSpace": 77985967,
+          "UsedDriveSpace": 0,
+          "ProductUsedSpace": {
+            "Calendar": 0,
+            "Contact": 386903,
+            "Drive": 0,
+            "Mail": 77599064,
+            "Pass": 0
+          },
+          "Notifications": [],
+          "Notices": []
+        }
+        """
+    }
 
     private func newBlockedSenderEventJson(id: String, email: String, time: TimeInterval, location: String) -> String {
         return """

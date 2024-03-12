@@ -219,7 +219,8 @@ extension SendMessageTask {
         }
         dependencies.eventsFetching.fetchEvents(
             byLabel: Message.Location.scheduled.labelID,
-            notificationMessageID: nil
+            notificationMessageID: nil,
+            discardContactsMetadata: EventCheckRequest.isNoMetaDataForContactsEnabled
         ) { [unowned self] _ in
             dependencies.notificationCenter.post(
                 name: .scheduledMessageSucceed,

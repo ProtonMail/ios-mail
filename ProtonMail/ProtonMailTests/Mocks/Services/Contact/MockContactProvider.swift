@@ -24,11 +24,10 @@ import ProtonCoreTestingToolkit
 class MockContactProvider: ContactProviderProtocol {
     private let coreDataContextProvider: CoreDataContextProviderProtocol
 
-    private (set) var isFetchContactsCalled = false
     var allEmailsToReturn: [EmailEntity] = []
     var allContactsToReturn: [ContactEntity] = []
     private(set) var wasCleanUpCalled: Bool = false
-    var fetchContactStub: ContactEntity = .make()
+    var fetchContactResult: ContactEntity = .make()
 
     init(coreDataContextProvider: CoreDataContextProviderProtocol) {
         self.coreDataContextProvider = coreDataContextProvider
@@ -72,8 +71,14 @@ class MockContactProvider: ContactProviderProtocol {
         try createLocalContactStub(uuid, name, emails, cards)
     }
 
+    @FuncStub(MockContactProvider.fetchContactsInParallel) var fetchContactsInParallelStub
+    func fetchContactsInParallel(contactIDs: [ProtonMail.ContactID]) {
+        fetchContactsInParallelStub(contactIDs)
+    }
+
+    @FuncStub(MockContactProvider.fetchContacts) var fetchContactsStub
     func fetchContacts(completion: ContactFetchComplete?) {
-        isFetchContactsCalled = true
+        fetchContactsStub(completion)
         completion?(nil)
     }
 
@@ -82,7 +87,7 @@ class MockContactProvider: ContactProviderProtocol {
     }
 
     func fetchContact(contactID: ProtonMail.ContactID) async throws -> ProtonMail.ContactEntity {
-        return fetchContactStub
+        return fetchContactResult
     }
 
     func contactFetchedController(by contactID: ProtonMail.ContactID) -> NSFetchedResultsController<ProtonMail.Contact> {

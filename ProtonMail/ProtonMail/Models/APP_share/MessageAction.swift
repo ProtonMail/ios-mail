@@ -45,6 +45,7 @@ enum MessageAction: Equatable {
         case removedEmailIDs
         case contactsLocalURIs
         case contactsCards
+        case contactIDs
         case importFromDevice
         case deliveryTime
         case messageID
@@ -109,6 +110,7 @@ enum MessageAction: Equatable {
     case addContactGroup(objectID: String, name: String, color: String, emailIDs: [String])
     case updateContactGroup(objectID: String, name: String, color: String, addedEmailIDs: [String], removedEmailIDs: [String])
     case deleteContactGroup(objectID: String)
+    case fetchContactDetail(contactIDs: [String])
 
     // Push notification action
     case notificationAction(messageID: String, action: PushNotificationAction)
