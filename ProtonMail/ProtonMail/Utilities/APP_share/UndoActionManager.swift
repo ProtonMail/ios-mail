@@ -199,6 +199,7 @@ extension UndoActionManager {
                 self?.dependencies.eventsService
                     .fetchEvents(byLabel: labelID,
                                  notificationMessageID: nil,
+                                 discardContactsMetadata: EventCheckRequest.isNoMetaDataForContactsEnabled,
                                  completion: { _ in
                         completion?(true)
                     })

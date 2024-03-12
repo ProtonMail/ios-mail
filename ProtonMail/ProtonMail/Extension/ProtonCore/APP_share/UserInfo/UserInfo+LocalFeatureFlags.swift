@@ -34,5 +34,5 @@ extension UserInfo {
 
     static var isRSVPMilestoneTwoEnabled: Bool {
         ProcessInfo.isRunningUnitTests
-    }
+    }    
 }

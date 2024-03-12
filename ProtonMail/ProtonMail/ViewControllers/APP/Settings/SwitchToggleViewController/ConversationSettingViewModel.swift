@@ -49,6 +49,7 @@ extension ConversationSettingViewModel: SwitchToggleVMInput {
                 self?.eventService.fetchEvents(
                     byLabel: Message.Location.allmail.labelID,
                     notificationMessageID: nil,
+                    discardContactsMetadata: EventCheckRequest.isNoMetaDataForContactsEnabled,
                     completion: nil
                 )
                 if let viewMode = viewMode {

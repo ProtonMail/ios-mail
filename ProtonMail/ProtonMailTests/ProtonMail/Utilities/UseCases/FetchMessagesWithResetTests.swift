@@ -133,7 +133,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         XCTAssertFalse(mockLocalMessagesService.cleanMessageStub.wasCalled)
 
         XCTAssertFalse(mockContactProvider.wasCleanUpCalled)
-        XCTAssertFalse(mockContactProvider.isFetchContactsCalled)
+        XCTAssertEqual(mockContactProvider.fetchContactsStub.callCounter, 0)
 
         XCTAssertEqual(mockLabelProvider.fetchV4LabelsStub.callCounter, 0)
 
@@ -159,7 +159,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         XCTAssertFalse(mockLocalMessagesService.cleanMessageStub.wasCalled)
 
         XCTAssertTrue(mockContactProvider.wasCleanUpCalled)
-        XCTAssertTrue(mockContactProvider.isFetchContactsCalled)
+        XCTAssertEqual(mockContactProvider.fetchContactsStub.callCounter, 1)
 
         XCTAssertEqual(mockLabelProvider.fetchV4LabelsStub.callCounter, 1)
 
@@ -185,7 +185,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         XCTAssertFalse(mockLocalMessagesService.cleanMessageStub.wasCalled)
 
         XCTAssertFalse(mockContactProvider.wasCleanUpCalled)
-        XCTAssertFalse(mockContactProvider.isFetchContactsCalled)
+        XCTAssertEqual(mockContactProvider.fetchContactsStub.callCounter, 0)
 
         XCTAssertEqual(mockLabelProvider.fetchV4LabelsStub.callCounter, 1)
 
@@ -202,7 +202,7 @@ extension FetchMessagesWithResetTests {
         XCTAssertFalse(cleanMessageCall.a2)
 
         XCTAssert(mockContactProvider.wasCleanUpCalled == value)
-        XCTAssert(mockContactProvider.isFetchContactsCalled == value)
+        XCTAssertEqual(mockContactProvider.fetchContactsStub.callCounter, value ? 1 : 0)
 
         XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadStub.wasCalledExactlyOnce)
     }

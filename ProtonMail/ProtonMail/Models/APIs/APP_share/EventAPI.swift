@@ -38,10 +38,19 @@ enum EventAPI {
 }
 
 final class EventCheckRequest: Request {
-    let eventID: String
+    /*
+     When `true`, contacts in the event loop response won't contain the contact object.
+     Contacts details will be fetched for those contact events returned. The contactt detail
+     fetch will be enqueued in the misc queue.
+     **/
+    static let isNoMetaDataForContactsEnabled: Bool = true
 
-    init(eventID: String) {
+    let eventID: String
+    let discardContactsMetadata: Bool
+
+    init(eventID: String, discardContactsMetadata: Bool) {
         self.eventID = eventID
+        self.discardContactsMetadata = discardContactsMetadata
     }
 
     var path: String {
@@ -51,6 +60,9 @@ final class EventCheckRequest: Request {
             URLQueryItem(name: "ConversationCounts", value: "1"),
             URLQueryItem(name: "MessageCounts", value: "1")
         ]
+        if discardContactsMetadata {
+            urlComponents?.queryItems?.append(URLQueryItem(name: "NoMetaData[]", value: "Contact"))
+        }
         return urlComponents?.url?.absoluteString ?? .empty
     }
 }

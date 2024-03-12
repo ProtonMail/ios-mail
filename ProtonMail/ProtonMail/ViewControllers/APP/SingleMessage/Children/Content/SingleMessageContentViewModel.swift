@@ -325,14 +325,16 @@ class SingleMessageContentViewModel {
             let originalScheduledTime = self.message.time
             self.showProgressHub?()
             self.user.messageService.undoSend(of: msgID) { [weak self] result in
-                self?.user.eventsService.fetchEvents(byLabel: Message.Location.allmail.labelID,
-                                                     notificationMessageID: nil,
-                                                     completion: { [weak self] _ in
-                    DispatchQueue.main.async {
-                        self?.hideProgressHub?()
-                        self?.goToDraft(msgID, originalScheduledTime)
-                    }
-                })
+                self?.user.eventsService.fetchEvents(
+                    byLabel: Message.Location.allmail.labelID,
+                    notificationMessageID: nil,
+                    discardContactsMetadata: EventCheckRequest.isNoMetaDataForContactsEnabled,
+                    completion: { [weak self] _ in
+                        DispatchQueue.main.async {
+                            self?.hideProgressHub?()
+                            self?.goToDraft(msgID, originalScheduledTime)
+                        }
+                    })
             }
         }
 

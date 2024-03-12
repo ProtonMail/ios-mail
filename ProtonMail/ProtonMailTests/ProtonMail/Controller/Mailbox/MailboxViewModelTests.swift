@@ -548,7 +548,7 @@ final class MailboxViewModelTests: XCTestCase {
 
     func testFetchContacts() {
         sut.fetchContacts()
-        XCTAssertTrue(self.contactProviderMock.isFetchContactsCalled)
+        XCTAssertEqual(contactProviderMock.fetchContactsStub.callCounter, 1)
     }
 
     func testGetAllEmails() {

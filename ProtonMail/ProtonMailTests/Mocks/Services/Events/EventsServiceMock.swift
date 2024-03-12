@@ -14,13 +14,14 @@ class EventsServiceMock: EventsFetching {
 
     func begin(subscriber: EventsConsumer) {}
 
-    @FuncStub(EventsServiceMock.fetchEvents(byLabel:notificationMessageID:completion:)) var callFetchEvents
+    @FuncStub(EventsServiceMock.fetchEvents(byLabel:notificationMessageID:discardContactsMetadata:completion:)) var callFetchEvents
     func fetchEvents(
         byLabel labelID: LabelID,
         notificationMessageID: MessageID?,
+        discardContactsMetadata: Bool = true,
         completion: ((Swift.Result<[String: Any], Error>) -> Void)?
     ) {
-        callFetchEvents(labelID, notificationMessageID, completion)
+        callFetchEvents(labelID, notificationMessageID, discardContactsMetadata, completion)
     }
 
     @FuncStub(EventsServiceMock.fetchEvents(labelID:)) var callFetchEventsByLabelID

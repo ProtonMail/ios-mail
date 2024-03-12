@@ -58,6 +58,8 @@ protocol ContactProviderProtocol: AnyObject {
     func fetchContacts(completion: ContactFetchComplete?)
     func cleanUp()
     func fetchContact(contactID: ContactID) async throws -> ContactEntity
+    /// Sends parallel fetch contact requests and saves them to Core Data
+    func fetchContactsInParallel(contactIDs: [ContactID]) async
 }
 
 // sourcery:mock
@@ -492,6 +494,26 @@ class ContactDataService {
             return contact
         }
         return contact.objectID.uriRepresentation().absoluteString
+    }
+
+    func fetchContactsInParallel(contactIDs: [ContactID]) async {
+        await withTaskGroup(of: Void.self) { [weak self] group in
+            guard let self else { return }
+            let maxConcurrentTasks = 3
+            for (index, id) in contactIDs.enumerated() {
+                group.addTask {
+                    do {
+                        _ = try await self.fetchContact(contactID: id)
+                    } catch {
+                        SystemLogger.log(message: "fetch contact error \(error)", category: .contacts, isError: true)
+                    }
+                }
+                if index >= maxConcurrentTasks - 1 {
+                    _ = await group.next()
+                }
+            }
+            await group.waitForAll()
+        }
     }
 
     func fetchContact(contactID: ContactID) async throws -> ContactEntity {

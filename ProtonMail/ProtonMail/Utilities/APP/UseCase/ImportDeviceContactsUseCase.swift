@@ -201,23 +201,7 @@ extension ImportDeviceContacts {
         let message = "fetching vCards for \(idsWithMissingVCards.count) Proton contacts"
         SystemLogger.log(message: message, category: .contacts)
 
-        await withTaskGroup(of: Void.self) { [weak self] group in
-            guard let contactService = self?.dependencies.contactService else { return }
-            let maxConcurrentTasks = 3
-            for (index, id) in idsWithMissingVCards.enumerated() {
-                group.addTask {
-                    do {
-                        _ = try await contactService.fetchContact(contactID: id)
-                    } catch {
-                        SystemLogger.log(message: "fetch contact error \(error)", category: .contacts, isError: true)
-                    }
-                }
-                if index >= maxConcurrentTasks - 1 {
-                    _ = await group.next()
-                }
-            }
-            await group.waitForAll()
-        }
+        await dependencies.contactService.fetchContactsInParallel(contactIDs: idsWithMissingVCards)
     }
 
     private func reportTelemetryIfNeeded(

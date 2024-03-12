@@ -716,6 +716,7 @@ extension WindowsCoordinator {
                 user?.eventsService.fetchEvents(
                     byLabel: Message.Location.allmail.labelID,
                     notificationMessageID: nil,
+                    discardContactsMetadata: EventCheckRequest.isNoMetaDataForContactsEnabled,
                     completion: { _ in
                         completion()
                     })
