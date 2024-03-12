@@ -1837,7 +1837,13 @@
 "Your Mail storage is %@ full" = "메일 저장 공간이 %@ 참";
 
 /* Title of the banner alert */
+"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+
+/* Title of the banner alert */
 "Your Mail storage is full" = "메일 저장 공간이 가득 찼습니다.";
+
+/* Title of the banner alert */
+"Your Drive storage is full" = "Your Drive storage is full";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "추가 저장 공간이 필요하다면 업그레이드하세요.";
@@ -1936,6 +1942,9 @@
 
 /* Cell title that shows the percentage of the storage */
 "Storage: %@ full" = "저장공간 %@ 채워짐";
+
+/* Cell title that shows the percentage of the storage */
+"Drive storage: %@ full" = "Drive storage: %@ full";
 
 /* Upgrade button action */
 "Upgrade" = "업그레이드";
@@ -2306,6 +2315,15 @@
 /* Description text for setting */
 "Allow navigating through messages by swiping left or right." = "좌우로 밀어서 메시지 간에 이동할 수 있도록 허용해주세요.";
 
+/* The title of the spotlight of the auto import contacts. */
+"Your contacts at your fingertips" = "Your contacts at your fingertips";
+
+/* The message of the spotlight of the auto import contacts. */
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+
+/* The title of the button of the spotlight of the auto import contacts. */
+"Enable auto-import" = "Enable auto-import";
+
 /* The title for no contact hint view */
 "No contacts yet" = "No contacts yet";
 
@@ -2320,6 +2338,9 @@
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
 "Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+
+/* The title of the dismissable banner in the contacts view. */
+"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "프라이버시와 데이터";

@@ -1837,7 +1837,13 @@
 "Your Mail storage is %@ full" = "Votre espace de stockage Mail est plein à %@.";
 
 /* Title of the banner alert */
+"Your Drive storage is %@ full" = "Votre espace de stockage Drive est plein à %@.";
+
+/* Title of the banner alert */
 "Your Mail storage is full" = "Votre espace de stockage Mail est plein.";
+
+/* Title of the banner alert */
+"Your Drive storage is full" = "Votre espace de stockage Drive est plein.";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Changer d'abonnement pour augmenter votre espace de stockage.";
@@ -1936,6 +1942,9 @@
 
 /* Cell title that shows the percentage of the storage */
 "Storage: %@ full" = "Espace de stockage : %@ plein";
+
+/* Cell title that shows the percentage of the storage */
+"Drive storage: %@ full" = "Espace de stockage Drive : %@ utilisé";
 
 /* Upgrade button action */
 "Upgrade" = "Changer d'abonnement";
@@ -2306,20 +2315,32 @@
 /* Description text for setting */
 "Allow navigating through messages by swiping left or right." = "Permet la navigation entre messages en balayant vers la gauche ou la droite.";
 
+/* The title of the spotlight of the auto import contacts. */
+"Your contacts at your fingertips" = "Tous vos contacts à portée de main";
+
+/* The message of the spotlight of the auto import contacts. */
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Vous n'avez pas besoin de quitter l'application pour rechercher une adresse e-mail. Il vous suffit de synchroniser vos contacts depuis votre appareil vers Proton Mail.";
+
+/* The title of the button of the spotlight of the auto import contacts. */
+"Enable auto-import" = "Activer l'importation automatique";
+
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "Il n'y a pas encore de contacts.";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "Importez vos contacts depuis votre appareil pour envoyer facilement vos e-mails et invitations.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "Importer automatiquement les contacts";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "Importation de vos contacts";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "Vos contacts apparaîtront ici dans quelques instants.";
+
+/* The title of the dismissable banner in the contacts view. */
+"Automatically add new contacts from your device." = "Vous pouvez ajouter automatiquement des contacts depuis votre appareil.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Confidentialité et données";

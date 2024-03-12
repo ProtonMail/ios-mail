@@ -1837,7 +1837,13 @@
 "Your Mail storage is %@ full" = "Ditt lagringsutrymme för Mail är %@ fullt";
 
 /* Title of the banner alert */
+"Your Drive storage is %@ full" = "Ditt lagringsutrymme för Drive är %@ fullt";
+
+/* Title of the banner alert */
 "Your Mail storage is full" = "Ditt lagringsutrymme för Mail är fullt";
+
+/* Title of the banner alert */
+"Your Drive storage is full" = "Ditt lagringsutrymme för Drive är fullt";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Uppgradera för att skaffa mer lagringsutrymme.";
@@ -1936,6 +1942,9 @@
 
 /* Cell title that shows the percentage of the storage */
 "Storage: %@ full" = "Lagringsutrymme: %@ fullt";
+
+/* Cell title that shows the percentage of the storage */
+"Drive storage: %@ full" = "Drive lagringsutrymme: %@ fullt";
 
 /* Upgrade button action */
 "Upgrade" = "Uppgradera";
@@ -2306,6 +2315,15 @@
 /* Description text for setting */
 "Allow navigating through messages by swiping left or right." = "Tillåt navigering genom meddelanden genom att svepa vänster eller höger.";
 
+/* The title of the spotlight of the auto import contacts. */
+"Your contacts at your fingertips" = "Dina kontakter alltid till hands";
+
+/* The message of the spotlight of the auto import contacts. */
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Du behöver inte lämna appen för att hitta en e-postadress. Synkronisera kontakter från din enhet till Proton Mail.";
+
+/* The title of the button of the spotlight of the auto import contacts. */
+"Enable auto-import" = "Aktivera automatisk import";
+
 /* The title for no contact hint view */
 "No contacts yet" = "Inga kontakter än";
 
@@ -2320,6 +2338,9 @@
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
 "Your contacts will appear here shortly." = "Dina kontakter kommer visas här inom kort.";
+
+/* The title of the dismissable banner in the contacts view. */
+"Automatically add new contacts from your device." = "Lägg automatiskt till nya kontakter från din enhet.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Integritet och data";

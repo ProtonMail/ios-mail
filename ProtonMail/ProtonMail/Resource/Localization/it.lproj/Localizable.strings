@@ -1837,7 +1837,13 @@
 "Your Mail storage is %@ full" = "Il tuo spazio di archiviazione Mail è pieno al %@";
 
 /* Title of the banner alert */
+"Your Drive storage is %@ full" = "Il tuo spazio di archiviazione di Drive è pieno al %@";
+
+/* Title of the banner alert */
 "Your Mail storage is full" = "Il tuo spazio di archiviazione Mail è pieno";
+
+/* Title of the banner alert */
+"Your Drive storage is full" = "Il tuo spazio di archiviazione Drive è pieno";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Effettua l'upgrade per ottenere più spazio di archiviazione.";
@@ -1936,6 +1942,9 @@
 
 /* Cell title that shows the percentage of the storage */
 "Storage: %@ full" = "Spazio pieno al %@";
+
+/* Cell title that shows the percentage of the storage */
+"Drive storage: %@ full" = "Spazio di archiviazione di Drive: pieno al %@";
 
 /* Upgrade button action */
 "Upgrade" = "Aggiorna";
@@ -2306,6 +2315,15 @@
 /* Description text for setting */
 "Allow navigating through messages by swiping left or right." = "Consenti la navigazione tra i messaggi scorrendo verso sinistra o verso destra.";
 
+/* The title of the spotlight of the auto import contacts. */
+"Your contacts at your fingertips" = "I tuoi contatti a portata di mano";
+
+/* The message of the spotlight of the auto import contacts. */
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Non è più necessario uscire dall'app per trovare un indirizzo email. Sincronizza i contatti del tuo dispositivo con Proton Mail.";
+
+/* The title of the button of the spotlight of the auto import contacts. */
+"Enable auto-import" = "Abilita Importazione automatica";
+
 /* The title for no contact hint view */
 "No contacts yet" = "Nessun contatto";
 
@@ -2320,6 +2338,9 @@
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
 "Your contacts will appear here shortly." = "I tuoi contatti appariranno qui a breve.";
+
+/* The title of the dismissable banner in the contacts view. */
+"Automatically add new contacts from your device." = "Aggiungi automaticamente i nuovi contatti dal tuo dispositivo.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Privacy e dati";
