@@ -203,6 +203,11 @@ PODS:
     - ProtonCore-AccountDeletion (= 20.0.0)
     - ProtonCore-Doh (= 20.0.0)
     - ProtonCore-QuarkCommands (= 20.0.0)
+  - ProtonCore-TestingToolkit/UITests/Core (20.0.0):
+    - fusion
+    - ProtonCore-Doh (= 20.0.0)
+    - ProtonCore-Log (= 20.0.0)
+    - ProtonCore-QuarkCommands (= 20.0.0)
   - ProtonCore-TestingToolkit/UITests/HumanVerification (20.0.0):
     - fusion
     - ProtonCore-Doh (= 20.0.0)
@@ -334,6 +339,7 @@ DEPENDENCIES:
   - "ProtonCore-QuarkCommands (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `20.0.1`)"
   - "ProtonCore-Services (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `20.0.1`)"
   - "ProtonCore-TestingToolkit/UITests/AccountDeletion (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `20.0.1`)"
+  - "ProtonCore-TestingToolkit/UITests/Core (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `20.0.1`)"
   - "ProtonCore-TestingToolkit/UITests/HumanVerification (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `20.0.1`)"
   - "ProtonCore-TestingToolkit/UITests/Login (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `20.0.1`)"
   - "ProtonCore-TestingToolkit/UITests/PaymentsUI (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `20.0.1`)"
@@ -709,6 +715,6 @@ SPEC CHECKSUMS:
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
   Yams: e10dae147f517ed57ecae37c5e8681bdf8fcab65
 
-PODFILE CHECKSUM: 958d2cf284c5d1048ec0a320077c23d0e4d3872b
+PODFILE CHECKSUM: 87e31feb5bf46e6ac78657d7a9b7dc86c1d40f63
 
 COCOAPODS: 1.15.1

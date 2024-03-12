@@ -21,7 +21,7 @@ class RecoveryEmailRobot: CoreElements {
     var verify = Verify()
 
     func changeRecoveryEmail(_ user: User) -> RecoveryEmailRobot {
-        return newEmail(user.email)
+        return newEmail(user.dynamicDomainEmail)
             .save()
             .password(user.password)
             .confirmSave()

@@ -40,4 +40,8 @@ extension User {
     func getTwoFaCode() -> String {
         return Otp().generate(self.twoFASecurityKey)
     }
+
+    var dynamicDomainEmail: String {
+        return "\(name)@\(dynamicDomain)"
+    }
 }

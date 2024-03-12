@@ -9,6 +9,7 @@
     }
   ],
   "defaultOptions" : {
+    "defaultTestExecutionTimeAllowance" : 300,
     "environmentVariableEntries" : [
       {
         "key" : "DYNAMIC_DOMAIN",
@@ -19,7 +20,8 @@
       "containerPath" : "container:ProtonMail.xcodeproj",
       "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
       "name" : "ProtonMailUITests"
-    }
+    },
+    "testTimeoutsEnabled" : true
   },
   "testTargets" : [
     {
