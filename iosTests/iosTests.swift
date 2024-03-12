@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import ios
+@testable import ProtonMail
 
 final class iosTests: XCTestCase {
 

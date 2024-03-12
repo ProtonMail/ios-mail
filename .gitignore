@@ -28,6 +28,7 @@ Temporary Items
 # Xcode
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+*Info.plist
 
 ## Build generated
 build/
@@ -51,11 +52,8 @@ xcuserdata/
 Carthage/
 
 ### Xcode Patch ###
-*.xcodeproj/*
-!*.xcodeproj/project.pbxproj
-!*.xcodeproj/xcshareddata/
-!*.xcworkspace/contents.xcworkspacedata
-/*.gcno
+*.xcodeproj/**
+*.xcodeproj.bak/**
 # End of https://www.gitignore.io/api/xcode,osx
 
 # Fastlane
@@ -65,3 +63,7 @@ Carthage/
 **/fastlane/test_output
 
 tmp/
+
+# UITest Mocks
+iosUITests/NetworkMocks/*
+
