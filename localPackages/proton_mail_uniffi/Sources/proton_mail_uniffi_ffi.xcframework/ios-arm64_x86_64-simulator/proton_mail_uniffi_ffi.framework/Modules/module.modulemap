@@ -1,0 +1,10 @@
+framework module proton_mail_uniffi_ffi {
+    header "proton_api_coreFFI.h"
+    header "proton_api_mailFFI.h"
+    header "proton_core_commonFFI.h"
+    header "proton_core_dbFFI.h"
+    header "proton_mail_commonFFI.h"
+    header "proton_mail_dbFFI.h"
+    header "proton_mail_uniffiFFI.h"
+    export *
+}

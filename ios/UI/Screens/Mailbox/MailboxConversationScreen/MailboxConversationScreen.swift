@@ -22,40 +22,60 @@ struct MailboxConversationScreen: View {
     @State var model: MailboxConversationScreenModel
 
     var body: some View {
-        List {
-            ForEach(model.conversations) { conversation in
-                MailboxConversationCell(
-                    uiModel: conversation,
-                    onEvent: { [weak model] event in
-                        switch event {
-                        case .onSelectedChange(let isSelected):
-                            model?.onConversationSelectionChange(id: conversation.id, isSelected: isSelected)
-                        case .onStarredChange(let isStarred):
-                            model?.onConversationStarChange(id: conversation.id, isStarred: isStarred)
-                        case .onAttachmentTap(let attachmentId):
-                            model?.onAttachmentTap(attachmentId: attachmentId)
-                        }
+        ZStack {
+            switch model.state {
+            case .loading:
+                VStack {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                }
+            case .empty:
+                VStack {
+                    Text("No conversations")
+                }
+            case .data(let conversations):
+                List {
+                    ForEach(conversations) { conversation in
+                        MailboxConversationCell(
+                            uiModel: conversation,
+                            onEvent: { [weak model] event in
+                                switch event {
+                                case .onSelectedChange(let isSelected):
+                                    model?.onConversationSelectionChange(id: conversation.id, isSelected: isSelected)
+                                case .onStarredChange(let isStarred):
+                                    model?.onConversationStarChange(id: conversation.id, isStarred: isStarred)
+                                case .onAttachmentTap(let attachmentId):
+                                    model?.onAttachmentTap(attachmentId: attachmentId)
+                                }
+                            }
+                        )
+                        .listRowInsets(
+                            .init(top: 1, leading: 1, bottom: 1, trailing: 0)
+                        )
+                        .listRowSeparator(.hidden)
+                        .compositingGroup()
+                        .clipShape(
+                            .rect(
+                                topLeadingRadius: 20,
+                                bottomLeadingRadius: 20,
+                                bottomTrailingRadius: 0,
+                                topTrailingRadius: 0
+                            )
+                        )
                     }
-                )
-                .listRowInsets(
-                    .init(top: 1, leading: 1, bottom: 1, trailing: 0)
-                )
-                .listRowSeparator(.hidden)
-                .compositingGroup()
-                .clipShape(
-                    .rect(
-                        topLeadingRadius: 20,
-                        bottomLeadingRadius: 20,
-                        bottomTrailingRadius: 0,
-                        topTrailingRadius: 0
-                    )
-                )
+                }
+                .listStyle(.plain)
             }
         }
-        .listStyle(.plain)
+        .onAppear {
+            Task {
+                await model.fecthConversations()
+            }
+        }
     }
 }
 
 #Preview {
-    return MailboxConversationScreen(model: PreviewData.mailboxConversationScreenModel)
+    return MailboxConversationScreen(model: .init(conversations: PreviewData.mailboxConversations))
 }

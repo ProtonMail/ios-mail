@@ -24,6 +24,8 @@ struct SignIn: View {
     @State private var email: String = ""
     @State private var password: String = ""
 
+    private let screenModel: SignInScreenModel = .init()
+
     var body: some View {
         VStack(spacing: 28) {
             Spacer()
@@ -39,6 +41,8 @@ struct SignIn: View {
                     .frame(height: 44)
                     .padding(.horizontal, 12)
                     .background(Color.white)
+                    .textInputAutocapitalization(.never)
+                    .keyboardType(.emailAddress)
             }
 
             VStack(alignment: .leading, spacing: 11) {
@@ -54,18 +58,32 @@ struct SignIn: View {
                     .background(Color.white)
             }
 
-            Button {
-                hideKeyboard()
-                print("\(email) \(password)")
-                appState.addActiveSession(MailSession())
-            } label: {
-                Text("Sign In")
-                    .foregroundColor(.white)
-                    .frame(width: 215, height: 44, alignment: .center)
+            if screenModel.isLoading {
+
+                HStack {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                }
+            } else {
+
+                Button {
+                    hideKeyboard()
+                    screenModel.login(email: email, password: password)
+                } label: {
+                    Text("Sign In")
+                        .foregroundColor(.white)
+                        .frame(width: 215, height: 44, alignment: .center)
+                }
+                .background(.secondary)
+                .cornerRadius(4)
+                .padding(.top, 36)
+                .alert(screenModel.errorMessage, isPresented: screenModel.isErrorPresented) {
+                    Button("OK") {
+                        screenModel.showError = false
+                    }
+                }
             }
-            .background(.secondary)
-            .cornerRadius(4)
-            .padding(.top, 36)
 
             Spacer()
         }

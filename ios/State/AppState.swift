@@ -16,23 +16,26 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import proton_mail_uniffi
 
 final class AppState: ObservableObject {
-    @Published private (set) var activeSession: MailSession?
+    @Published private (set) var activeSession: Bool = false
+
+    weak var appContext: AppContext?
 
     var hasAuthenticatedSession: Bool {
-        activeSession != nil
+        appContext?.activeSession != nil
     }
 
-    func addActiveSession(_ session: MailSession) {
-        activeSession = session
+    @MainActor
+    func refresh() {
+        activeSession = hasAuthenticatedSession
     }
 
-    func removeSession() {
-        activeSession = nil
+    func removeActiveSession() {
+        guard let appContext else { return }
+        Task {
+            await appContext.removeSession()
+        }
     }
-}
-
-struct MailSession {
-
 }

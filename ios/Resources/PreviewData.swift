@@ -30,7 +30,7 @@ enum PreviewData {
         .init(id: UUID().uuidString, name: "Settings", icon: DS.Icon.icCogWheel, badge: "", route: .settings),
     ])
 
-    static var mailboxConversationScreenModel: MailboxConversationScreenModel {
+    static var mailboxConversations: [MailboxConversationCellUIModel] {
 
         let conversations: [MailboxConversationCellUIModel] = (1..<100).map { value in
             let randomSenderSubject = randomSenderSubject()
@@ -50,7 +50,7 @@ enum PreviewData {
                 expirationDate: expirationDate ? .init(text: "Expires in < 5 minutes", color: DS.Color.notificationError) : .init(text: "", color: .clear)
             )
         }
-        return .init(conversations: conversations)
+        return conversations
     }
 
     static let mailboxLabels: [MailboxLabelUIModel] = [

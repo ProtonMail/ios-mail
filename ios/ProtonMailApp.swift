@@ -20,14 +20,15 @@ import DesignSystem
 
 @main
 struct ProtonMail: App {
-    let appState = AppState()
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     let appUIState = AppUIState(isSidebarOpen: false)
     let userSettings = UserSettings(mailboxViewMode: .conversation)
 
     var body: some Scene {
         WindowGroup {
             Root()
-                .environmentObject(appState)
+                .environmentObject(AppContext.shared.appState)
                 .environmentObject(appUIState)
                 .environmentObject(userSettings)
         }

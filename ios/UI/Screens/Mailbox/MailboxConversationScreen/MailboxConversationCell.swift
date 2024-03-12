@@ -34,7 +34,7 @@ struct MailboxConversationCell: View {
         HStack(spacing: 16.0) {
 
             AvatarCheckboxView(
-                isSelected: uiModel.isSelected,
+                isSelected: uiModel.isSelected.value,
                 avatar: uiModel.avatar,
                 onDidChangeSelection: { onEvent(.onSelectedChange(isSelected: $0)) }
             )
@@ -94,12 +94,12 @@ struct MailboxConversationCell: View {
             }
         }
         .padding(14)
-        .background(uiModel.isSelected ? DS.Color.backgroundSecondary : Color(UIColor.systemBackground))
+        .background(uiModel.isSelected.value ? DS.Color.backgroundSecondary : Color(UIColor.systemBackground))
     }
 }
 
 @Observable
-final class MailboxConversationCellUIModel: Identifiable {
+final class MailboxConversationCellUIModel: Identifiable, Sendable {
     let id: String
     let avatar: AvatarUIModel
     let senders: String
@@ -108,7 +108,7 @@ final class MailboxConversationCellUIModel: Identifiable {
     
     let isRead: Bool
     let isStarred: Bool
-    var isSelected: Bool = false
+    let isSelected = SendableBool(false)
 
     let isSenderProtonOfficial: Bool
     let numMessages: Int
@@ -169,7 +169,7 @@ enum MailboxConversationCellEvent {
         )
     }
     let model1 = model
-    model1.isSelected = true
+    model1.isSelected.set(true)
 
     return VStack {
 
