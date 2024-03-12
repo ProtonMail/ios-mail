@@ -21,7 +21,7 @@ class MenuTests: FixtureAuthenticatedTestCase {
             InboxRobot()
                 .menuDrawer()
                 .settings()
-                .selectAccount(user.email)
+                .selectAccount(user.dynamicDomainEmail)
                 .displayName()
                 .setDisplayNameTextTo(newDisplayName)
                 .save()

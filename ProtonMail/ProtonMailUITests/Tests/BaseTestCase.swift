@@ -11,6 +11,7 @@ import XCTest
 import fusion
 @testable import ProtonMail
 import ProtonCoreEnvironment
+import ProtonCoreLog
 import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkit
 import Yams
@@ -27,20 +28,25 @@ var dynamicDomain: String {
         return "proton.black"
     }
 }
+var quarkCommands = Quark().baseUrl("https://\(dynamicDomain)/api").configureTimeouts(request: 120, resource: 120)
 
 /**
  Parent class for all the test classes.
  */
-class BaseTestCase: CoreTestCase {
+class BaseTestCase: ProtonCoreBaseTestCase {
 
-    var launchArguments = ["-clear_all_preference", "YES"]
-    var humanVerificationStubs = false
-    var forceUpgradeStubs = false
-    var extAccountNotSupportedStub = false
-    var usesBlackCredentialsFile = true
+    var _launchArguments = [
+        "-clear_all_preference", "YES",
+        "-disableAnimations",
+        "-skipTour",
+        "-toolbarSpotlightOff",
+        "-uiTests",
+        "-com.apple.CoreData.ConcurrencyDebug", "1",
+        "-AppleLanguages", "(en)",
+        "-disableInAppFeedbackPromptAutoShow"
+    ]
     private let loginRobot = LoginRobot()
 
-    lazy var quarkCommands = Quark().baseUrl("https://\(dynamicDomain)/api").configureTimeouts(request: 120, resource: 120)
     private static var didTryToDisableAutoFillPassword = false
 
 
@@ -54,36 +60,11 @@ class BaseTestCase: CoreTestCase {
         getTestUsersFromYamlFiles()
     }
 
-    /// Runs before eact test case.
     override func setUp() {
+        bundleIdentifier = "pm.ProtonMailUITests"
+        beforeSetUp(bundleIdentifier: "pm.ProtonMailUITests", launchArguments: _launchArguments, launchEnvironment: [apiDomainKey: dynamicDomain!])
         super.setUp()
-
-        continueAfterFailure = false
-
-        app.launchArguments = launchArguments
-
-        app.launchArguments.append("-disableAnimations")
-        app.launchArguments.append("-skipTour")
-        app.launchArguments.append("-toolbarSpotlightOff")
-        app.launchArguments.append("-uiTests")
-        app.launchArguments.append(contentsOf: ["-com.apple.CoreData.ConcurrencyDebug", "1"])
-        app.launchArguments.append(contentsOf: ["-AppleLanguages", "(en)"])
-
-        app.launchEnvironment[apiDomainKey] = dynamicDomain
-
-        if humanVerificationStubs {
-            app.launchArguments.append(contentsOf: ["HumanVerificationStubs", "1"])
-        } else if forceUpgradeStubs {
-            app.launchArguments.append(contentsOf: ["ForceUpgradeStubs", "1"])
-        } else if extAccountNotSupportedStub {
-            app.launchArguments.append(contentsOf: ["ExtAccountNotSupportedStub", "1"])
-        }
-
-        // Disable feedback pop up
-        app.launchArguments.append("-disableInAppFeedbackPromptAutoShow")
-
-        app.launch()
-
+        PMLog.info("UI TEST runs on: " + "https://\(dynamicDomain!)")
         handleInterruption()
         disableJail()
     }
@@ -91,10 +72,6 @@ class BaseTestCase: CoreTestCase {
     override func tearDown() {
         terminateApp()
         super.tearDown()
-    }
-
-    override open func tearDownWithError() throws {
-        // do nothing
     }
 
     func handleInterruption() {
@@ -236,5 +213,4 @@ private extension XCUIElement {
         let switchValue = value as? String
         return switchValue == "1"
     }
-
 }

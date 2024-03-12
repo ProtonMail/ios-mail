@@ -16,7 +16,7 @@ class ContactsTests : FixtureAuthenticatedTestCase {
                 .menuDrawer()
                 .contacts()
                 .addContact()
-                .setNameEmailAndSave(user.name, user.email)
+                .setNameEmailAndSave(user.name, user.dynamicDomainEmail)
                 .contactsView()
                 .deleteContact(user.name)
                 .verify.contactDoesNotExists(user.name)
@@ -91,7 +91,7 @@ class ContactsTests : FixtureAuthenticatedTestCase {
 
     func xtestContactDetailSendMessage() {
         let subject = testData.messageSubject
-        let contactName = testData.internalEmailTrustedKeys.email
+        let contactName = testData.internalEmailTrustedKeys.dynamicDomainEmail
         InboxRobot()
             .menuDrawer()
             .contacts()

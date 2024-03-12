@@ -44,7 +44,7 @@ final class BlockSenderTests: FixtureAuthenticatedTestCase {
         senderIsAlreadyBlocked()
             .menuDrawer()
             .settings()
-            .selectAccount(user.email)
+            .selectAccount(user.dynamicDomainEmail)
             .blockList()
             .unblockFirstSender()
             .verify.emptyListPlaceholderIsShown()

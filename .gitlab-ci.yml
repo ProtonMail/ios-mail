@@ -198,6 +198,7 @@ test:ui:feature:
 
 test:ui:regression:
   extends: .test:ui
+  timeout: 4 hours
   rules:
       # Allow job to run automatically on each scheduled job with regression test type
     - if: '$CI_PIPELINE_SOURCE == "schedule" && $TEST_TYPE == "regression"'
