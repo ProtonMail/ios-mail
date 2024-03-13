@@ -34,7 +34,9 @@ struct MailboxToolbar: ViewModifier {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        appState.removeActiveSession()
+                        Task {
+                            await appState.logoutActiveSession()
+                        }
                     }, label: {
                         Text("sign out")
                             .font(.footnote)

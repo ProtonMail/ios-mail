@@ -22,7 +22,8 @@ protocol AppContextService {
 
     init(dependencies: AppContext.Dependencies)
     func start() async throws
-    func loginFlow() throws -> LoginFlow
+    func login(email: String, password: String) async throws
+    func logoutActiveUserSession() async throws
     func userContextForActiveSession() async throws -> MailUserContext?
 }
 
@@ -79,18 +80,22 @@ final class AppContext: AppContextService {
         }
     }
 
-    func logoutCurrentSession() async {
-        do {
-            try await _userContext?.logout()
-            _userContext = nil
-        } catch {
-            print("❌ logoutCurrentSession error: \(error)")
-        }
+    private func updateUserContext(_ userContext: MailUserContext?) async throws {
+        try await userContext?.initialize(cb: UserContextInitializationDelegate.shared)
+        _userContext = userContext
         await refreshAppState()
     }
 
-    func loginFlow() throws -> LoginFlow {
-        try mailContext.newLoginFlow(cb: SessionDelegate.shared)
+    func login(email: String, password: String) async throws {
+        let flow = try mailContext.newLoginFlow(cb: SessionDelegate.shared)
+        try await flow.login(email: email, password: password)
+        let newUserContext = try flow.toUserContext()
+        try await updateUserContext(newUserContext)
+    }
+
+    func logoutActiveUserSession() async throws {
+        try await _userContext?.logout()
+        try await updateUserContext(nil)
     }
 
     func userContextForActiveSession() async throws -> MailUserContext? {
@@ -99,9 +104,8 @@ final class AppContext: AppContextService {
         }
         guard let activeSession else { return nil }
         let newUserContext = try mailContext.userContextFromSession(session: activeSession, cb: SessionDelegate.shared)
-        _userContext = newUserContext
-        try await newUserContext.initialize(cb: UserContextInitializationDelegate.shared)
-        return newUserContext
+        try await updateUserContext(newUserContext)
+        return _userContext
     }
 
     func refreshAppState() async {

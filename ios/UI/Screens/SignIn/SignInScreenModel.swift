@@ -44,9 +44,7 @@ final class SignInScreenModel {
     func login(email: String, password: String) async {
         isLoading = true
         do {
-            let flow = try dependencies.appContext.loginFlow()
-            try await flow.login(email: email, password: password)
-            await dependencies.appContext.refreshAppState()
+            try await dependencies.appContext.login(email: email, password: password)
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -60,5 +58,3 @@ extension SignInScreenModel {
         let appContext: AppContext = .shared
     }
 }
-
-extension AppContext: @unchecked Sendable {}

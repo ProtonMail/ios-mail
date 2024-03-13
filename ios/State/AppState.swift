@@ -32,10 +32,12 @@ final class AppState: ObservableObject {
         activeSession = hasAuthenticatedSession
     }
 
-    func removeActiveSession() {
+    func logoutActiveSession() async {
         guard let appContext else { return }
-        Task {
-            await appContext.logoutCurrentSession()
+        do {
+            try await appContext.logoutActiveUserSession()
+        } catch {
+            print("❌ logoutActiveSession: \(error)")
         }
     }
 }
