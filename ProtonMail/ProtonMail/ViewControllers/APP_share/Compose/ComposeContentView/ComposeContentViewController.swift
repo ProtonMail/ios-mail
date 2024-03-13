@@ -27,6 +27,7 @@ import ProtonCoreDataModel
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
 #if !APP_EXTENSION
+import LifetimeTracker
 import SideMenuSwift
 #endif
 
@@ -70,6 +71,10 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         self.viewModel = viewModel
         self.dependencies = dependencies
         super.init(nibName: nil, bundle: nil)
+
+#if !APP_EXTENSION
+        trackLifetime()
+#endif
     }
 
     @available(*, unavailable)
@@ -1028,3 +1033,11 @@ extension ComposeContentViewController: ComposeUIProtocol {
         error.alertToast(view: view)
     }
 }
+
+#if !APP_EXTENSION
+extension ComposeContentViewController: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+}
+#endif
