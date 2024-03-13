@@ -10,7 +10,14 @@
             }
          },
          "run": {
-            "config": "Debug"
+            "config": "Debug",
+            "environmentVariables": [
+               {
+                  "variable": "PROJECT_ROOT",
+                  "value": 1,
+                  "isEnabled": true
+               }
+            ]
          },
          "test": {
             "config": "Debug",

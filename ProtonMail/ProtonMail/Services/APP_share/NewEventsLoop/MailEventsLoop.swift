@@ -145,7 +145,7 @@ class MailEventsLoop: EventsLoop {
     ) async throws -> EventAPIResponse {
         let request = EventCheckRequest(
             eventID: eventID,
-            discardContactsMetadata: false
+            discardContactsMetadata: EventCheckRequest.isNoMetaDataForContactsEnabled
         )
         let result = try await apiService.perform(
             request: request,

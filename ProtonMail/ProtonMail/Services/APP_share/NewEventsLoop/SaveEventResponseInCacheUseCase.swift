@@ -22,6 +22,7 @@ final class SaveEventResponseInCacheUseCase {
     typealias Dependencies = AnyObject
         & HasCoreDataContextProviderProtocol
         & HasQueueManager
+        & HasContactDataService
 
     unowned let dependencies: Dependencies
     private let encoder = JSONEncoder()
@@ -33,7 +34,11 @@ final class SaveEventResponseInCacheUseCase {
 
     init(dependencies: Dependencies, userID: UserID) {
         self.dependencies = dependencies
-        self.contactEventProcessor = .init(userID: userID, encoder: encoder)
+        self.contactEventProcessor = .init(
+            dependencies: dependencies,
+            userID: userID,
+            encoder: encoder
+        )
         self.emailEventProcessor = .init(userID: userID, encoder: encoder)
         self.labelEventProcessor = .init(userID: userID)
         self.conversationProcessor = .init(userID: userID, encoder: encoder)
@@ -44,10 +49,17 @@ final class SaveEventResponseInCacheUseCase {
         )
     }
 
-    func execute(response: EventAPIResponse) throws {
+    func execute(
+        response: EventAPIResponse,
+        discardContactsMetadata: Bool = EventCheckRequest.isNoMetaDataForContactsEnabled
+    ) throws {
         try dependencies.contextProvider.write { context in
             self.labelEventProcessor.process(response: response, context: context)
-            self.contactEventProcessor.process(response: response, context: context)
+            if discardContactsMetadata {
+                self.contactEventProcessor.precessWithoutMetadata(response: response, context: context)
+            } else {
+                self.contactEventProcessor.process(response: response, context: context)
+            }
             self.emailEventProcessor.process(response: response, context: context)
             self.conversationProcessor.process(response: response, context: context)
             self.messageProcessor.process(response: response, context: context)

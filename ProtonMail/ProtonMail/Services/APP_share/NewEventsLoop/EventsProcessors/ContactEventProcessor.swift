@@ -19,8 +19,49 @@ import CoreData
 import Foundation
 
 struct ContactEventProcessor {
+    typealias Dependencies = AnyObject
+        & HasQueueManager
+
+    unowned let dependencies: Dependencies
     let userID: UserID
     let encoder: JSONEncoder
+
+    func precessWithoutMetadata(response: EventAPIResponse, context: NSManagedObjectContext) {
+        guard let contactResponses = response.contacts else {
+            return
+        }
+        let createdContactIDs = Set(contactResponses.filter { $0.action == EventAction.create.rawValue }.map(\.id))
+        let updatedContactIDs = Set(contactResponses.filter { $0.action == EventAction.update.rawValue }.map(\.id))
+        let deletedContactIDs = Set(contactResponses.filter { $0.action == EventAction.delete.rawValue }.map(\.id))
+
+        for contactID in deletedContactIDs {
+            if let contactObject = Contact.contactFor(contactID: contactID, userID: userID, in: context) {
+                context.delete(contactObject)
+            }
+        }
+
+        let existingContactIDs = fetchExistingContactIDs(by: createdContactIDs, context: context)
+
+        let contactIDsToFetch = Array(
+            createdContactIDs
+                .subtracting(existingContactIDs)
+                .union(updatedContactIDs)
+                .subtracting(deletedContactIDs)
+        )
+
+        let batches = contactIDsToFetch.chunked(into: 15)
+        for batch in batches {
+            let task = QueueManager.Task(
+                messageID: "",
+                action: .fetchContactDetail(contactIDs: batch),
+                userID: userID,
+                dependencyIDs: [],
+                isConversation: false
+            )
+            dependencies.queueManager.addTask(task)
+            SystemLogger.log(message: "Enqueued .fetchContactDetail with \(batch.count) IDs", category: .queue)
+        }
+    }
 
     func process(response: EventAPIResponse, context: NSManagedObjectContext) {
         guard let contactResponses = response.contacts else {
@@ -105,6 +146,25 @@ struct ContactEventProcessor {
             if let label = Label.labelFor(labelID: label, userID: self.userID, in: context) {
                 labels.add(label)
             }
+        }
+    }
+
+    private func fetchExistingContactIDs(by ids: Set<String>, context: NSManagedObjectContext) -> Set<String> {
+        let request = NSFetchRequest<Contact>(entityName: Contact.Attributes.entityName)
+        request.predicate = NSPredicate(
+            format: "%K == %@ AND %K == 0 AND %K in %@",
+            Contact.Attributes.userID,
+            userID.rawValue,
+            Contact.Attributes.isSoftDeleted,
+            Contact.Attributes.contactID,
+            Array(ids)
+        )
+        do {
+            let result: [Contact] = try context.fetch(request)
+            return Set(result.map(\.contactID))
+        } catch {
+            PMAssertionFailure(error)
+            return []
         }
     }
 }
