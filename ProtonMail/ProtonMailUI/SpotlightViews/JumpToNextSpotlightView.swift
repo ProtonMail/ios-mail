@@ -17,7 +17,7 @@
 
 import SwiftUI
 
-struct JumpToNextSpotlightView: View {
+public struct JumpToNextSpotlightView: View {
     public let config = HostingProvider()
     let buttonTitle: String
     let message: String

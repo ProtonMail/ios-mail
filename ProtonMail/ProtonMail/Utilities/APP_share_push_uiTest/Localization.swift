@@ -1391,6 +1391,9 @@ enum L11n {
         static let settingTitle = NSLocalizedString("Jump to next email", comment: "The title of the setting of the next msg after move")
         static let rowTitle = NSLocalizedString("Jump to next email", comment: "The title of the row inside the setting page of next msg after move function.")
         static let rowFooterTitle = NSLocalizedString("Automatically show the next email when an open email is deleted, archived, or moved.", comment: "The footer title of the setting row of the next msg after move functions.")
+        static let spotlightButtonTitle = NSLocalizedString("Turn on feature", comment: "The title of the button of the jump to next message spotlight.")
+        static let spotlightMessage = NSLocalizedString("View the next email in your inbox when you delete or move the current email.", comment: "The content of the jump to next message spotlight.")
+        static let spotlightTitle = NSLocalizedString("Read emails faster", comment: "The title of the jump to next message spotlight.")
 	}
 
     struct Error {

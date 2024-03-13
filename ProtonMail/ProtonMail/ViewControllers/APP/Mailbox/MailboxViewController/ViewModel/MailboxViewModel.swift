@@ -355,6 +355,21 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         dependencies.userDefaults[.lastTourVersion] = Constants.App.TourVersion
     }
 
+    func shouldShowJumpToNextMessageSpotlight() -> Bool {
+        guard !ProcessInfo.isRunningUITests else { return false }
+        // If one of logged in user has seen spotlight, shouldn't show it again
+        let shouldShow = dependencies.usersManager.users
+            .map {
+                dependencies
+                    .userIntroductionProgressProvider
+                    .shouldShowSpotlight(for: .jumpToNextMessage, toUserWith: $0.userID)
+            }
+            .reduce(true) { partialResult, shouldShow in
+                partialResult && shouldShow
+            }
+        return shouldShow
+    }
+
     func shouldShowAutoImportContactsSpotlight() -> Bool {
         guard
             user.container.autoImportContactsFeature.isFeatureEnabled,
@@ -371,6 +386,12 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
                 partialResult && shouldShow
             }
         return shouldShow
+    }
+
+    func hasSeenJumpToNextMessageSpotlight() {
+        dependencies
+            .userIntroductionProgressProvider
+            .markSpotlight(for: .jumpToNextMessage, asSeen: true, byUserWith: user.userID)
     }
 
     func hasSeenAutoImportContactsSpotlight() {
@@ -961,6 +982,20 @@ extension MailboxViewModel {
         dependencies.fetchMessageDetail
             .callbackOn(.main)
             .execute(params: params, callback: callback)
+    }
+
+    func enableJumpToNextMessage(completion: @escaping () -> Void) {
+        let request = UpdateNextMessageOnMoveRequest(isEnable: true)
+        user.apiService.perform(
+            request: request,
+            response: VoidResponse()
+        ) { [weak self] _, response in
+            if response.error == nil {
+                var statusProvider = self?.user.container.nextMessageAfterMoveStatusProvider
+                statusProvider?.shouldMoveToNextMessageAfterMove = true
+            }
+            completion()
+        }
     }
 }
 

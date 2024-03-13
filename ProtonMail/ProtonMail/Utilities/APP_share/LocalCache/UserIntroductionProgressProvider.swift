@@ -24,6 +24,7 @@ enum SpotlightableFeatureKey: String, CaseIterable {
     case snooze
     case messageSwipeNavigation
     case autoImportContacts
+    case jumpToNextMessage
 }
 
 // sourcery: mock
