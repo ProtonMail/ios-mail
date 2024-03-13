@@ -1283,6 +1283,12 @@ enum L11n {
         static let unblockActionTitleShort = NSLocalizedString("Unblock", comment: "Button to unblock a sender, keep it short to fit in the UI")
     }
 
+    struct CalendarLandingPage {
+        static let headline = NSLocalizedString("Your schedule is worth protecting", comment: "Headline of the Calendar landing page")
+        static let subheadline = NSLocalizedString("Your calendar is a record of your life, Proton Calendar helps keep it private.", comment: "Subheadline of the Calendar landing page")
+        static let getCalendar = NSLocalizedString("Get Proton Calendar app", comment: "Button to open the App Store page for Proton Calendar")
+    }
+
     struct EmailTrackerProtection {
         static let title = NSLocalizedString("Email tracking protection", comment: "Name of the feature")
         static let no_email_trackers_found = NSLocalizedString("No email trackers found", comment: "Short hint in the header view")

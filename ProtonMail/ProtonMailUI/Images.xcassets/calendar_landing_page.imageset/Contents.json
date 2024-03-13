@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "calendar_landing_page.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

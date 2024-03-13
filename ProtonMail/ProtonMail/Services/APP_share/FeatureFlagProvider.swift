@@ -18,7 +18,11 @@
 import ProtonCoreFeatureFlags
 
 // sourcery: mock
-struct FeatureFlagProvider {
+protocol FeatureFlagProvider {
+    func isEnabled(_ featureFlag: MailFeatureFlag, reloadValue: Bool) -> Bool
+}
+
+struct FeatureFlagProviderImpl: FeatureFlagProvider {
     private let featureFlagsRepository: FeatureFlagsRepository
     private let userID: UserID
 

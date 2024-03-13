@@ -127,7 +127,7 @@ final class UserContainer: ManagedContainer {
 
     var featureFlagProviderFactory: Factory<FeatureFlagProvider> {
         self {
-            FeatureFlagProvider(featureFlagsRepository: self.featureFlagsRepository, userID: self.user.userID)
+            FeatureFlagProviderImpl(featureFlagsRepository: self.featureFlagsRepository, userID: self.user.userID)
         }
     }
 
