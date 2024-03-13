@@ -58,6 +58,12 @@ class BaseTestCase: ProtonCoreBaseTestCase {
     override class func setUp() {
         super.setUp()
         getTestUsersFromYamlFiles()
+
+        do {
+            try quarkCommands.systemEnv(variable: "PROHIBIT_DEPRECATED_DEV_CLIENT_ENV", value: "0")
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
     }
 
     override func setUp() {
