@@ -69,7 +69,9 @@ struct SignIn: View {
 
                 Button {
                     hideKeyboard()
-                    screenModel.login(email: email, password: password)
+                    Task {
+                        await screenModel.login(email: email, password: password)
+                    }
                 } label: {
                     Text("Sign In")
                         .foregroundColor(.white)

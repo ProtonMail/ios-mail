@@ -35,7 +35,7 @@ final class AppState: ObservableObject {
     func removeActiveSession() {
         guard let appContext else { return }
         Task {
-            await appContext.removeSession()
+            await appContext.logoutCurrentSession()
         }
     }
 }

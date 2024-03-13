@@ -397,7 +397,7 @@ public struct LocalConversation {
     public var size: UInt64
     public var time: UInt64
     public var labels: [LocalConversationLabel]?
-    public var flagged: Bool
+    public var starred: Bool
 
     // Default memberwise initializers are never public by default, so we
     // declare one manually.
@@ -415,7 +415,7 @@ public struct LocalConversation {
         size: UInt64, 
         time: UInt64, 
         labels: [LocalConversationLabel]?, 
-        flagged: Bool) {
+        starred: Bool) {
         self.id = id
         self.remoteId = remoteId
         self.order = order
@@ -429,7 +429,7 @@ public struct LocalConversation {
         self.size = size
         self.time = time
         self.labels = labels
-        self.flagged = flagged
+        self.starred = starred
     }
 }
 
@@ -475,7 +475,7 @@ extension LocalConversation: Equatable, Hashable {
         if lhs.labels != rhs.labels {
             return false
         }
-        if lhs.flagged != rhs.flagged {
+        if lhs.starred != rhs.starred {
             return false
         }
         return true
@@ -495,7 +495,7 @@ extension LocalConversation: Equatable, Hashable {
         hasher.combine(size)
         hasher.combine(time)
         hasher.combine(labels)
-        hasher.combine(flagged)
+        hasher.combine(starred)
     }
 }
 
@@ -517,7 +517,7 @@ public struct FfiConverterTypeLocalConversation: FfiConverterRustBuffer {
                 size: FfiConverterUInt64.read(from: &buf), 
                 time: FfiConverterUInt64.read(from: &buf), 
                 labels: FfiConverterOptionSequenceTypeLocalConversationLabel.read(from: &buf), 
-                flagged: FfiConverterBool.read(from: &buf)
+                starred: FfiConverterBool.read(from: &buf)
         )
     }
 
@@ -535,7 +535,7 @@ public struct FfiConverterTypeLocalConversation: FfiConverterRustBuffer {
         FfiConverterUInt64.write(value.size, into: &buf)
         FfiConverterUInt64.write(value.time, into: &buf)
         FfiConverterOptionSequenceTypeLocalConversationLabel.write(value.labels, into: &buf)
-        FfiConverterBool.write(value.flagged, into: &buf)
+        FfiConverterBool.write(value.starred, into: &buf)
     }
 }
 

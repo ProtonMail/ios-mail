@@ -30,6 +30,7 @@ final class AppContext: AppContextService {
     static let shared: AppContext = .init()
 
     private var _mailContext: MailContext!
+    private var _userContext: MailUserContext?
     private let dependencies: AppContext.Dependencies
 
     private var mailContext: MailContext {
@@ -57,7 +58,7 @@ final class AppContext: AppContextService {
 
     func start() throws {
         guard let applicationSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
-            throw AppSessionError.applicationSupportDirectoryNotAccessible
+            throw AppContextError.applicationSupportDirectoryNotAccessible
         }
 
         // TODO: exclude application support from iCloud backup
@@ -78,8 +79,13 @@ final class AppContext: AppContextService {
         }
     }
 
-    func removeSession() async {
-        try? dependencies.keychain.delete()
+    func logoutCurrentSession() async {
+        do {
+            try await _userContext?.logout()
+            _userContext = nil
+        } catch {
+            print("❌ logoutCurrentSession error: \(error)")
+        }
         await refreshAppState()
     }
 
@@ -88,10 +94,14 @@ final class AppContext: AppContextService {
     }
 
     func userContextForActiveSession() async throws -> MailUserContext? {
+        if let userContext = _userContext {
+            return userContext
+        }
         guard let activeSession else { return nil }
-        let userContext = try mailContext.userContextFromSession(session: activeSession, cb: SessionDelegate.shared)
-        try await userContext.initialize(cb: UserContextInitializationDelegate.shared)
-        return userContext
+        let newUserContext = try mailContext.userContextFromSession(session: activeSession, cb: SessionDelegate.shared)
+        _userContext = newUserContext
+        try await newUserContext.initialize(cb: UserContextInitializationDelegate.shared)
+        return newUserContext
     }
 
     func refreshAppState() async {
@@ -108,6 +118,16 @@ extension AppContext {
     }
 }
 
+extension AppContext {
+    enum Keys: String {
+        case session
+    }
+}
+
+enum AppContextError: Error {
+    case applicationSupportDirectoryNotAccessible
+}
+
 final class Keychain: OsKeyChain {
     static let shared = Keychain()
 
@@ -115,17 +135,17 @@ final class Keychain: OsKeyChain {
 
     func store(key: String) throws {
         print("KeychainWrapper.store key:\(key)")
-        UserDefaults.standard.setValue(key, forKey: Keys.session.rawValue)
+        UserDefaults.standard.setValue(key, forKey: AppContext.Keys.session.rawValue)
     }
 
     func delete() throws {
         let existingKey: String = (try? get()) ?? ""
         print("KeychainWrapper.delete, existing value: \(existingKey)")
-        UserDefaults.standard.removeObject(forKey: Keys.session.rawValue)
+        UserDefaults.standard.removeObject(forKey: AppContext.Keys.session.rawValue)
     }
 
     func get() throws -> String? {
-        let value = UserDefaults.standard.string(forKey: Keys.session.rawValue)
+        let value = UserDefaults.standard.string(forKey: AppContext.Keys.session.rawValue)
         print("KeychainWrapper.get \(value ?? "-")")
         return value
     }

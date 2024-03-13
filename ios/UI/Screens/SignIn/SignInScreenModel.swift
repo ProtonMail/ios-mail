@@ -19,7 +19,7 @@ import proton_mail_uniffi
 import SwiftUI
 
 @Observable
-final class SignInScreenModel: Sendable {
+final class SignInScreenModel {
     private let dependencies: Dependencies
     private(set) var isLoading = false
     private(set) var errorMessage: String = "" {
@@ -41,18 +41,16 @@ final class SignInScreenModel: Sendable {
         self.dependencies = dependencies
     }
 
-    func login(email: String, password: String) {
-        Task {
-            isLoading = true
+    func login(email: String, password: String) async {
+        isLoading = true
+        do {
             let flow = try dependencies.appContext.loginFlow()
-            do {
-                try await flow.login(email: email, password: password)
-                await dependencies.appContext.refreshAppState()
-            } catch {
-                errorMessage = error.localizedDescription
-            }
-            isLoading = false
+            try await flow.login(email: email, password: password)
+            await dependencies.appContext.refreshAppState()
+        } catch {
+            errorMessage = error.localizedDescription
         }
+        isLoading = false
     }
 }
 

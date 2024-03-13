@@ -141,7 +141,7 @@ extension LocalConversation {
             subject: subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
             isRead: numUnread == 0,
-            isStarred: false, // TODO:
+            isStarred: starred,
             isSenderProtonOfficial: senders.first?.isProton.isTrue ?? false,
             numMessages: numMessages > 1 ? Int(numMessages) : 0,
             labelUIModel: toLabel(),
