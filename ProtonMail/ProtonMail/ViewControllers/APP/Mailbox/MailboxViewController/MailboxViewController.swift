@@ -1246,7 +1246,29 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     private func showSpotlightIfNeeded() {
         if viewModel.shouldShowAutoImportContactsSpotlight() {
             showAutoImportContactsSpotlight()
+        } else if viewModel.shouldShowJumpToNextMessageSpotlight() {
+            showJumpToNextMessageSpotlight()
         }
+    }
+
+    private func showJumpToNextMessageSpotlight() {
+        let spotlightView = JumpToNextSpotlightView(
+            buttonTitle: L11n.NextMsgAfterMove.spotlightButtonTitle,
+            message: L11n.NextMsgAfterMove.spotlightMessage,
+            title: L11n.NextMsgAfterMove.spotlightTitle
+        ) { [weak self] hostingVC, didTapActionButton in
+            hostingVC?.dismiss(animated: false)
+            if didTapActionButton {
+                self?.showProgressHud()
+                self?.viewModel.enableJumpToNextMessage() {
+                    self?.hideProgressHud()
+                }
+            }
+        }
+        let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
+        spotlightView.config.hostingController = hosting
+        navigationController?.present(hosting, animated: false)
+        viewModel.hasSeenJumpToNextMessageSpotlight()
     }
 
     private func showAutoImportContactsSpotlight() {
@@ -1257,7 +1279,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         ) { [weak self] hostingVC, didTapActionButton in
             hostingVC?.dismiss(animated: false)
             if didTapActionButton {
-                self?.dependencies.addressBookService.requestAuthorizationWithCompletion({ granted, _ in
+                self?.dependencies.addressBookService.requestAuthorizationWithCompletion { granted, _ in
                     DispatchQueue.main.async {
                         if granted {
                             self?.viewModel.enableAutoImportContact()
@@ -1265,7 +1287,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
                             self?.showContactAccessIsDenied()
                         }
                     }
-                })
+                }
             }
         }
         let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
