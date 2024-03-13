@@ -28,10 +28,18 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
     private var apiMocks: [UserID: APIServiceMock] = [:]
     private var eventIDMap: [UserID: String] = [:]
     private var newEventIDMap: [UserID: String] = [:]
+    private var mockQueueManager: QueueManager!
+    private var miscQueue: PMPersistentQueue!
 
     override func setUp() {
         super.setUp()
+        let messageQueue = PMPersistentQueue(queueName: String.randomString(6))
+        miscQueue = PMPersistentQueue(queueName: String.randomString(6))
+        mockQueueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         testContainer = .init()
+        testContainer.queueManagerFactory.register {
+            self.mockQueueManager
+        }
         sut = testContainer.mailEventsPeriodicScheduler
     }
 
@@ -52,7 +60,7 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
         sut.enableSpecialLoop(forSpecialLoopID: testUsers[0].userID.rawValue)
         sut.start()
 
-        waitForExpectations(timeout: 1)
+        wait(self.apiMocks.allSatisfy({ $0.value.requestJSONStub.wasCalledExactlyOnce }))
         wait(self.apiMocks[self.testUsers[0].userID]?.requestJSONStub.wasCalledExactlyOnce == true)
     }
 
@@ -66,10 +74,7 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
         }
         sut.start()
 
-        waitForExpectations(timeout: 1)
-        for item in apiMocks {
-            XCTAssertTrue(item.value.requestJSONStub.wasCalledExactlyOnce)
-        }
+        wait(self.apiMocks.allSatisfy({ $0.value.requestJSONStub.wasCalledExactlyOnce }))
 
         for item in newEventIDMap {
             wait(self.testContainer.lastUpdatedStore.lastEventID(userID: item.key) == item.value)
@@ -419,70 +424,72 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
         XCTAssertNil(email)
     }
 
-    func testSpecialLoop_withContactEditResponse_dataWillBeUpdatedInCache() throws {
-        let user = try prepareEventAPIResponse(from: EventTestData.modifyContact) {
-            try self.testContainer.contextProvider.write { context in
-                let emailToBeDeleted = Email(context: context)
-                emailToBeDeleted.emailID = "saPUe0mny7kXL44_x8cbJZhBtUtEprh0Qvzb4kO28Ey-vM-R2gwxQ9KbGeLbIPMT2JQxQ=="
-                emailToBeDeleted.userID = self.testUsers.first?.userID.rawValue ?? ""
-                let emailToBeUpdated = Email(context: context)
-                emailToBeUpdated.emailID = "JXpWbUF0BTvKCm56eKQ=="
-                emailToBeUpdated.userID = self.testUsers.first?.userID.rawValue ?? ""
-            }
-        }
-
-        try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
-            let contact = try XCTUnwrap(Contact.contactForContactID("upBasrP-iFNnomTyeuXVw3n9-4uKoiATZbPPWaQ6F5D70oXIA==", inManagedObjectContext: context))
-            XCTAssertEqual(contact.contactID, "upBasrP-iFNnomTyeuXVw3n9-4uKoiATZbPPWaQ6F5D70oXIA==")
-            XCTAssertEqual(contact.name, "TestName")
-            XCTAssertEqual(contact.uuid, "F57C8277-585D-4327-88A6-B5689FF69DFE")
-            XCTAssertEqual(contact.size.intValue, 541)
-            XCTAssertEqual(contact.createTime?.timeIntervalSince1970, 1696573579)
-            XCTAssertEqual(contact.modifyTIme?.timeIntervalSince1970, 1699593228)
-            XCTAssertFalse(contact.cardData.isEmpty)
-            XCTAssertEqual(contact.emails.count, 1)
-
-            let email = try XCTUnwrap(Array(contact.emails).first as? Email)
-            XCTAssertEqual(email.emailID, "QfgmzQv9W8FyoeCKBaJXpWbUF0BTvKCm56eKQ==")
-            XCTAssertEqual(email.name, "Anna Haro")
-            XCTAssertEqual(email.email, "anna-haro@mac.com")
-            XCTAssertEqual(email.type, "[\"internet\",\"home\",\"pref\"]")
-            XCTAssertEqual(email.defaults.intValue, 1)
-            XCTAssertEqual(email.order.intValue, 1)
-            XCTAssertEqual(email.lastUsedTime?.timeIntervalSince1970, 0)
-            XCTAssertEqual(email.contactID, "upBasrP-iFNnomTyeuXVw3n9-4uKoiATZbPPWaQ6F5D70oXIA==")
-            XCTAssertEqual(email.labels.count, 0)
-        }
-
-        XCTAssertNil(
-            try? testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
-                Email.emailFor(
-                    emailID: "saPUe0mny7kXL44_x8cbJZhBtUtEprh0Qvzb4kO28Ey-vM-R2gwxQ9KbGeLbIPMT2JQxQ==",
-                    userID: user.userID,
-                    in: context
-                )
-            }
-        )
-
-        try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
-            let emailToBeUpdated = try XCTUnwrap(
-                Email.emailFor(
-                    emailID: "JXpWbUF0BTvKCm56eKQ==",
-                    userID: user.userID,
-                    in: context
-                )
-            )
-            XCTAssertEqual(emailToBeUpdated.emailID, "JXpWbUF0BTvKCm56eKQ==")
-            XCTAssertEqual(emailToBeUpdated.name, "TestName")
-            XCTAssertEqual(emailToBeUpdated.email, "testName@proton.me")
-            XCTAssertEqual(emailToBeUpdated.type, "[\"internet\",\"home\",\"pref\"]")
-            XCTAssertEqual(emailToBeUpdated.defaults.intValue, 0)
-            XCTAssertEqual(emailToBeUpdated.order.intValue, 2)
-            XCTAssertEqual(emailToBeUpdated.lastUsedTime?.timeIntervalSince1970, 0)
-            XCTAssertEqual(emailToBeUpdated.contactID, "iFNnomTyeuXVw3n9")
-            XCTAssertEqual(emailToBeUpdated.labels.count, 0)
-        }
-    }
+    // Disable due to `discardContactsMetadata`. Remove this once we are sure the function is working without issue.
+//    func testSpecialLoop_withContactEditResponse_dataWillBeUpdatedInCache() throws {
+//        let user = try prepareEventAPIResponse(from: EventTestData.modifyContact) {
+//            try self.testContainer.contextProvider.write { context in
+//                let emailToBeDeleted = Email(context: context)
+//                emailToBeDeleted.emailID = "saPUe0mny7kXL44_x8cbJZhBtUtEprh0Qvzb4kO28Ey-vM-R2gwxQ9KbGeLbIPMT2JQxQ=="
+//                emailToBeDeleted.userID = self.testUsers.first?.userID.rawValue ?? ""
+//                let emailToBeUpdated = Email(context: context)
+//                emailToBeUpdated.emailID = "JXpWbUF0BTvKCm56eKQ=="
+//                emailToBeUpdated.userID = self.testUsers.first?.userID.rawValue ?? ""
+//            }
+//        }
+//        wait(self.apiMocks.allSatisfy({ $0.value.requestJSONStub.wasCalledExactlyOnce }))
+//
+//        try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+//            let contact = try XCTUnwrap(Contact.contactForContactID("upBasrP-iFNnomTyeuXVw3n9-4uKoiATZbPPWaQ6F5D70oXIA==", inManagedObjectContext: context))
+//            XCTAssertEqual(contact.contactID, "upBasrP-iFNnomTyeuXVw3n9-4uKoiATZbPPWaQ6F5D70oXIA==")
+//            XCTAssertEqual(contact.name, "TestName")
+//            XCTAssertEqual(contact.uuid, "F57C8277-585D-4327-88A6-B5689FF69DFE")
+//            XCTAssertEqual(contact.size.intValue, 541)
+//            XCTAssertEqual(contact.createTime?.timeIntervalSince1970, 1696573579)
+//            XCTAssertEqual(contact.modifyTIme?.timeIntervalSince1970, 1699593228)
+//            XCTAssertFalse(contact.cardData.isEmpty)
+//            XCTAssertEqual(contact.emails.count, 1)
+//
+//            let email = try XCTUnwrap(Array(contact.emails).first as? Email)
+//            XCTAssertEqual(email.emailID, "QfgmzQv9W8FyoeCKBaJXpWbUF0BTvKCm56eKQ==")
+//            XCTAssertEqual(email.name, "Anna Haro")
+//            XCTAssertEqual(email.email, "anna-haro@mac.com")
+//            XCTAssertEqual(email.type, "[\"internet\",\"home\",\"pref\"]")
+//            XCTAssertEqual(email.defaults.intValue, 1)
+//            XCTAssertEqual(email.order.intValue, 1)
+//            XCTAssertEqual(email.lastUsedTime?.timeIntervalSince1970, 0)
+//            XCTAssertEqual(email.contactID, "upBasrP-iFNnomTyeuXVw3n9-4uKoiATZbPPWaQ6F5D70oXIA==")
+//            XCTAssertEqual(email.labels.count, 0)
+//        }
+//
+//        XCTAssertNil(
+//            try? testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+//                Email.emailFor(
+//                    emailID: "saPUe0mny7kXL44_x8cbJZhBtUtEprh0Qvzb4kO28Ey-vM-R2gwxQ9KbGeLbIPMT2JQxQ==",
+//                    userID: user.userID,
+//                    in: context
+//                )
+//            }
+//        )
+//
+//        try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+//            let emailToBeUpdated = try XCTUnwrap(
+//                Email.emailFor(
+//                    emailID: "JXpWbUF0BTvKCm56eKQ==",
+//                    userID: user.userID,
+//                    in: context
+//                )
+//            )
+//            XCTAssertEqual(emailToBeUpdated.emailID, "JXpWbUF0BTvKCm56eKQ==")
+//            XCTAssertEqual(emailToBeUpdated.name, "TestName")
+//            XCTAssertEqual(emailToBeUpdated.email, "testName@proton.me")
+//            XCTAssertEqual(emailToBeUpdated.type, "[\"internet\",\"home\",\"pref\"]")
+//            XCTAssertEqual(emailToBeUpdated.defaults.intValue, 0)
+//            XCTAssertEqual(emailToBeUpdated.order.intValue, 2)
+//            XCTAssertEqual(emailToBeUpdated.lastUsedTime?.timeIntervalSince1970, 0)
+//            XCTAssertEqual(emailToBeUpdated.contactID, "iFNnomTyeuXVw3n9")
+//            XCTAssertEqual(emailToBeUpdated.labels.count, 0)
+//        }
+//    }
 
     func testSpecialLoop_withLabelDeleteResponse_dataWillBeDeletedInCache() throws {
         let user = try prepareEventAPIResponse(from: EventTestData.deleteLabel) {
@@ -889,6 +896,21 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
             XCTAssertTrue(entity.recipientsBcc.isEmpty)
         }
     }
+    func testSpecialLoop_withContactEventLessThen15_oneTaskInMiscQueue() throws {
+        _ = try prepareEventAPIResponse(from: EventTestData.contactEvents_insertsAndUpdates_lessThan15) {
+            try self.testContainer.contextProvider.write(block: { _ in })
+        }
+
+        wait(self.miscQueue.queue.count == 1)
+    }
+
+    func testSpecialLoop_withContactEventMoreThen15_twoTaskEnqueuedInMiscQueue() throws {
+        _ = try prepareEventAPIResponse(from: EventTestData.contactEvents_insertsAndUpdates_moreThan15) {
+            try self.testContainer.contextProvider.write(block: { _ in })
+        }
+
+        wait(self.miscQueue.queue.count == 2)
+    }
 }
 
 private extension MailEventsPeriodicSchedulerTests {
@@ -906,7 +928,7 @@ private extension MailEventsPeriodicSchedulerTests {
 
         sut.enableSpecialLoop(forSpecialLoopID: user.userID.rawValue)
         sut.start()
-        waitForExpectations(timeout: 1)
+
         wait(self.apiMocks[user.userID]?.requestJSONStub.wasCalledExactlyOnce == true)
         wait(user.container.eventProcessor.completeClosureCalledCount == 1)
         return user
@@ -930,19 +952,21 @@ private extension MailEventsPeriodicSchedulerTests {
 
         let newEventID = String.randomString(20)
         newEventIDMap[user.userID] = newEventID
-        let e = expectation(description: "Closure is called")
         api.requestJSONStub.bodyIs { _, method, path, _, _, _, _, _, _, _, _, completion in
-            XCTAssertEqual(path, "/core/v5/events/\(eventID)?ConversationCounts=1&MessageCounts=1")
-            XCTAssertEqual(method, .get)
-            let response = response ?? [
-                "Code": 1000,
-                "EventID": newEventID,
-                "Refresh": 0,
-                "More": 0,
-                "Notices": []
-            ]
-            completion(nil, .success(response))
-            e.fulfill()
+            if path.hasPrefix("/contacts/v4/contacts/") {
+                completion(nil, .failure(NSError.badResponse()))
+            } else {
+                XCTAssertEqual(path, "/core/v5/events/\(eventID)?ConversationCounts=1&MessageCounts=1&NoMetaData%5B%5D=Contact")
+                XCTAssertEqual(method, .get)
+                let response = response ?? [
+                    "Code": 1000,
+                    "EventID": newEventID,
+                    "Refresh": 0,
+                    "More": 0,
+                    "Notices": []
+                ]
+                completion(nil, .success(response))
+            }
         }
     }
 

@@ -155,7 +155,11 @@ class ContactDataService {
         completion: @escaping (Error?) -> Void
     ) {
         let route = ContactAddRequest(cards: contactsCards, importedFromDevice: importFromDevice)
-        self.apiService.perform(request: route, response: ContactAddResponse()) { [weak self] _, response in
+        self.apiService.perform(
+            request: route,
+            response: ContactAddResponse(),
+            callCompletionBlockUsing: .immediateExecutor
+        ) { [weak self] _, response in
             guard let self = self else { return }
             if let error = response.error {
                 completion(error.toNSError)
