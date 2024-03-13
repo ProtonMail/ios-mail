@@ -445,6 +445,14 @@ class MockFeatureFlagCache: FeatureFlagCache {
 
 }
 
+class MockFeatureFlagProvider: FeatureFlagProvider {
+    @FuncStub(MockFeatureFlagProvider.isEnabled, initialReturn: Bool()) var isEnabledStub
+    func isEnabled(_ featureFlag: MailFeatureFlag, reloadValue: Bool) -> Bool {
+        isEnabledStub(featureFlag, reloadValue)
+    }
+
+}
+
 class MockFeatureFlagsDownloadServiceProtocol: FeatureFlagsDownloadServiceProtocol {
     @FuncStub(MockFeatureFlagsDownloadServiceProtocol.updateFeatureFlag) var updateFeatureFlagStub
     func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping (Error?) -> Void) {
