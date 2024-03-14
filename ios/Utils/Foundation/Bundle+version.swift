@@ -16,28 +16,24 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import proton_mail_uniffi
 
-final class AppState: ObservableObject {
-    @Published private (set) var activeSession: Bool = false
+extension Bundle {
 
-    weak var appContext: AppContext?
+    /// the default identifier matches the one used in Mail production
+    static let defaultIdentifier = "ch.protonmail.protonmail"
 
-    var hasAuthenticatedSession: Bool {
-        appContext?.activeSession != nil
+    /// Returns the app version in a nice to read format
+    var appVersion: String {
+        return "\(bundleShortVersion) (\(buildVersion))"
     }
 
-    @MainActor
-    func refresh() {
-        activeSession = hasAuthenticatedSession
+    /// Returns the build version of the app.
+    var buildVersion: String {
+        return infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
     }
 
-    func logoutActiveSession() async {
-        guard let appContext else { return }
-        do {
-            try await appContext.logoutActiveUserSession()
-        } catch {
-            AppLogger.log(error: error, category: .rustLibrary)
-        }
+    /// Returns the major version of the app.
+    var bundleShortVersion: String {
+        return infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
     }
 }

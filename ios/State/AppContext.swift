@@ -47,7 +47,7 @@ final class AppContext: AppContextService {
         do {
             return try mailContext.storedSessions().first
         } catch {
-            print("❌ mailContext.storedSessions error: \(error)")
+            AppLogger.log(error: error, category: .rustLibrary)
             return nil
         }
     }

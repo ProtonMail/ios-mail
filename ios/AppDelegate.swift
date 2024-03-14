@@ -41,13 +41,15 @@ struct AppDelegateWrapper {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?
     ) -> Bool {
-        do {
-            try dependencies.appContext.start()
 
+        do {
+            AppLogger.log(message: "\(#function) | \(Bundle.main.appVersion)", category: .appLifeCycle)
+
+            try dependencies.appContext.start()
             return true
 
         } catch {
-            print("❌ error launching the app \(error)")
+            AppLogger.log(error: error, category: .appLifeCycle)
             return false
         }
     }

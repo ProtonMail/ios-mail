@@ -38,7 +38,7 @@ final class MailboxConversationScreenModel {
             try await initMailbox()
             try await fetchConversations()
         } catch {
-            print("❌ onViewDidAppear error: \(error)")
+            AppLogger.log(error: error, category: .rustLibrary)
         }
     }
 
@@ -63,12 +63,13 @@ final class MailboxConversationScreenModel {
         do {
             conversations = try mailbox.conversations(count: 50).map { $0.toMailboxConversationCellUIModel() }
         } catch {}
-        //let conversations = // conversationsLiveQuery.value().map { $0.toMailboxConversationCellUIModel() }
+//        let conversations = conversationsLiveQuery.value().map { $0.toMailboxConversationCellUIModel() }
         await updateState(.data(conversations))
     }
 
     @MainActor
     private func updateState(_ state: State) {
+        AppLogger.logTemporarily(message: "updateState \(state.debugDescription)", category: .mailboxConversations)
         self.state = state
     }
 
@@ -107,25 +108,18 @@ extension MailboxConversationScreenModel {
         case empty
         case data([MailboxConversationCellUIModel])
 
-        var isEmpty: Bool {
-            switch self {
-            case .empty: return true
-            case .loading, .data: return false
-            }
-        }
-
-        var isLoading: Bool {
-            switch self {
-            case .loading: return true
-            case .empty, .data: return false
-            }
-        }
-
         var conversations: [MailboxConversationCellUIModel] {
             switch self {
             case .data(let conversations): return conversations
             case .empty, .loading: return []
             }
+        }
+
+        var debugDescription: String {
+            if case .data(let array) = self {
+                return "data \(array.count) conversations"
+            }
+            return "\(self)"
         }
     }
 }
