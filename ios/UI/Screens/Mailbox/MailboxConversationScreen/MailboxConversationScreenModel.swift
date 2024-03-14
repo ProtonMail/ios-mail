@@ -18,81 +18,66 @@
 import Foundation
 import struct SwiftUI.Color
 import proton_mail_uniffi
-
-enum MailboxConversationScreenState: Sendable {
-    case loading
-    case empty
-    case data([MailboxConversationCellUIModel])
-
-    var isEmpty: Bool {
-        switch self {
-        case .empty: return true
-        case .loading, .data: return false
-        }
-    }
-
-    var isLoading: Bool {
-        switch self {
-        case .loading: return true
-        case .empty, .data: return false
-        }
-    }
-
-    var conversations: [MailboxConversationCellUIModel] {
-        switch self {
-        case .data(let conversations): return conversations
-        case .empty, .loading: return []
-        }
-    }
-}
+import class UIKit.UIImage
 
 @Observable
 final class MailboxConversationScreenModel {
     private let dependencies: Dependencies
-    private(set) var state: MailboxConversationScreenState = .loading
-
-    var conversations: [MailboxConversationCellUIModel] {
-        state.conversations
-    }
-
-    var isLoading: Bool {
-        state.isLoading
-    }
-
-    var isEmpty: Bool {
-        state.isEmpty
-    }
+    private(set) var state: State = .loading
+    private(set) var mailbox: Mailbox?
+    private(set) var conversationsLiveQuery: MailboxConversationLiveQuery?
 
     init(conversations: [MailboxConversationCellUIModel] = [], dependencies: Dependencies = .init()) {
         self.state = conversations.isEmpty ? .empty : .data(conversations)
         self.dependencies = dependencies
     }
 
-    func fecthConversations() async {
+    func onViewDidAppear() async {
         do {
             await updateState(.loading)
-            guard let userContext = try await dependencies.appContext.userContextForActiveSession() else {
-                return
-            }
-            let mailbox = try Mailbox(ctx: userContext)
-            let conversations = try mailbox.conversations(count: 50)
-            await updateState(.data(conversations.map { $0.toMailboxConversationCellUIModel() }))
+            try await initMailbox()
+            try await fetchConversations()
         } catch {
-            print("❌ fetchConversations error: \(error)")
+            print("❌ onViewDidAppear error: \(error)")
         }
     }
 
+    private func initMailbox() async throws {
+        guard let userContext = try await dependencies.appContext.userContextForActiveSession() else {
+            return
+        }
+        self.mailbox = try Mailbox(ctx: userContext)
+    }
+
+    private func fetchConversations() async throws {
+        guard let mailbox else { return }
+        let liveQuery = mailbox.newConversationObservedQuery(limit: 50, cb: self)
+        conversationsLiveQuery = liveQuery
+        await updateData()
+    }
+
+    private func updateData() async {
+        guard let mailbox else { return }
+        guard let conversationsLiveQuery else { return }
+        var conversations = [MailboxConversationCellUIModel]()
+        do {
+            conversations = try mailbox.conversations(count: 50).map { $0.toMailboxConversationCellUIModel() }
+        } catch {}
+        //let conversations = // conversationsLiveQuery.value().map { $0.toMailboxConversationCellUIModel() }
+        await updateState(.data(conversations))
+    }
+
     @MainActor
-    private func updateState(_ state: MailboxConversationScreenState) {
+    private func updateState(_ state: State) {
         self.state = state
     }
 
     @MainActor
     func onConversationSelectionChange(id: String, isSelected: Bool) {
-        guard let index = conversations.firstIndex(where: { $0.id == id }) else {
+        guard let index = state.conversations.firstIndex(where: { $0.id == id }) else {
             return
         }
-        conversations[index].isSelected.set(isSelected)
+        state.conversations[index].isSelected.set(isSelected)
     }
 
     func onConversationStarChange(id: String, isStarred: Bool) {
@@ -107,61 +92,47 @@ final class MailboxConversationScreenModel {
     }
 }
 
+extension MailboxConversationScreenModel: MailboxLiveQueryUpdatedCallback {
+    func onUpdated() {
+        Task {
+//            await updateData()
+        }
+    }
+}
+
+extension MailboxConversationScreenModel {
+
+    enum State: Sendable {
+        case loading
+        case empty
+        case data([MailboxConversationCellUIModel])
+
+        var isEmpty: Bool {
+            switch self {
+            case .empty: return true
+            case .loading, .data: return false
+            }
+        }
+
+        var isLoading: Bool {
+            switch self {
+            case .loading: return true
+            case .empty, .data: return false
+            }
+        }
+
+        var conversations: [MailboxConversationCellUIModel] {
+            switch self {
+            case .data(let conversations): return conversations
+            case .empty, .loading: return []
+            }
+        }
+    }
+}
+
 extension MailboxConversationScreenModel {
 
     struct Dependencies {
         let appContext: AppContext = .shared
-    }
-}
-
-extension LocalConversation {
-
-    var initials: String {
-        (senders.first?.senderName.prefix(2) ?? "P").uppercased()
-    }
-
-    func toLabel() -> MailboxLabelUIModel {
-        guard 
-            let labels = self.labels,
-            let firstLabel = labels.first
-        else { return .init() }
-        return .init(
-            id: String(firstLabel.id),
-            color: Color(hex: firstLabel.color),
-            text: firstLabel.name,
-            numExtraLabels: labels.count
-        )
-    }
-
-    func toMailboxConversationCellUIModel() -> MailboxConversationCellUIModel {
-        .init(
-            id: remoteId ?? String(id),
-            avatar: .init(initials: initials),
-            senders: senders.map(\.senderName).joined(separator: ", "),
-            subject: subject,
-            date: Date(timeIntervalSince1970: TimeInterval(time)),
-            isRead: numUnread == 0,
-            isStarred: starred,
-            isSenderProtonOfficial: senders.first?.isProton.isTrue ?? false,
-            numMessages: numMessages > 1 ? Int(numMessages) : 0,
-            labelUIModel: toLabel(),
-            expirationDate: .init(text: "", color: .black)
-        )
-    }
-}
-
-extension MessageAddress {
-
-    var senderName: String {
-        !name.isEmpty ? name : address
-    }
-}
-
-extension ProtonBoolean {
-    var isTrue: Bool {
-        switch self {
-        case .true: return true
-        case .false: return false
-        }
     }
 }

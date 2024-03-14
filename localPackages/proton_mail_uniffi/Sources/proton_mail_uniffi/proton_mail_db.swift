@@ -383,6 +383,100 @@ fileprivate struct FfiConverterString: FfiConverter {
 }
 
 
+public struct LocalAttachmentMetadata {
+    public var id: LocalAttachmentId
+    public var rid: AttachmentId?
+    public var name: String
+    public var size: UInt64
+    public var mimeType: String
+    public var disposition: Disposition
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(
+        id: LocalAttachmentId, 
+        rid: AttachmentId?, 
+        name: String, 
+        size: UInt64, 
+        mimeType: String, 
+        disposition: Disposition) {
+        self.id = id
+        self.rid = rid
+        self.name = name
+        self.size = size
+        self.mimeType = mimeType
+        self.disposition = disposition
+    }
+}
+
+
+extension LocalAttachmentMetadata: Equatable, Hashable {
+    public static func ==(lhs: LocalAttachmentMetadata, rhs: LocalAttachmentMetadata) -> Bool {
+        if lhs.id != rhs.id {
+            return false
+        }
+        if lhs.rid != rhs.rid {
+            return false
+        }
+        if lhs.name != rhs.name {
+            return false
+        }
+        if lhs.size != rhs.size {
+            return false
+        }
+        if lhs.mimeType != rhs.mimeType {
+            return false
+        }
+        if lhs.disposition != rhs.disposition {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(rid)
+        hasher.combine(name)
+        hasher.combine(size)
+        hasher.combine(mimeType)
+        hasher.combine(disposition)
+    }
+}
+
+
+public struct FfiConverterTypeLocalAttachmentMetadata: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> LocalAttachmentMetadata {
+        return
+            try LocalAttachmentMetadata(
+                id: FfiConverterTypeLocalAttachmentId.read(from: &buf), 
+                rid: FfiConverterOptionTypeAttachmentId.read(from: &buf), 
+                name: FfiConverterString.read(from: &buf), 
+                size: FfiConverterUInt64.read(from: &buf), 
+                mimeType: FfiConverterString.read(from: &buf), 
+                disposition: FfiConverterTypeDisposition.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: LocalAttachmentMetadata, into buf: inout [UInt8]) {
+        FfiConverterTypeLocalAttachmentId.write(value.id, into: &buf)
+        FfiConverterOptionTypeAttachmentId.write(value.rid, into: &buf)
+        FfiConverterString.write(value.name, into: &buf)
+        FfiConverterUInt64.write(value.size, into: &buf)
+        FfiConverterString.write(value.mimeType, into: &buf)
+        FfiConverterTypeDisposition.write(value.disposition, into: &buf)
+    }
+}
+
+
+public func FfiConverterTypeLocalAttachmentMetadata_lift(_ buf: RustBuffer) throws -> LocalAttachmentMetadata {
+    return try FfiConverterTypeLocalAttachmentMetadata.lift(buf)
+}
+
+public func FfiConverterTypeLocalAttachmentMetadata_lower(_ value: LocalAttachmentMetadata) -> RustBuffer {
+    return FfiConverterTypeLocalAttachmentMetadata.lower(value)
+}
+
+
 public struct LocalConversation {
     public var id: LocalConversationId
     public var remoteId: ConversationId?
@@ -391,6 +485,7 @@ public struct LocalConversation {
     public var senders: [MessageAddress]
     public var recipients: [MessageAddress]
     public var numMessages: UInt64
+    public var numMessagesCtx: UInt64
     public var numUnread: UInt64
     public var numAttachments: UInt64
     public var expirationTime: UInt64
@@ -398,6 +493,7 @@ public struct LocalConversation {
     public var time: UInt64
     public var labels: [LocalConversationLabel]?
     public var starred: Bool
+    public var attachments: [LocalAttachmentMetadata]?
 
     // Default memberwise initializers are never public by default, so we
     // declare one manually.
@@ -409,13 +505,15 @@ public struct LocalConversation {
         senders: [MessageAddress], 
         recipients: [MessageAddress], 
         numMessages: UInt64, 
+        numMessagesCtx: UInt64, 
         numUnread: UInt64, 
         numAttachments: UInt64, 
         expirationTime: UInt64, 
         size: UInt64, 
         time: UInt64, 
         labels: [LocalConversationLabel]?, 
-        starred: Bool) {
+        starred: Bool, 
+        attachments: [LocalAttachmentMetadata]?) {
         self.id = id
         self.remoteId = remoteId
         self.order = order
@@ -423,6 +521,7 @@ public struct LocalConversation {
         self.senders = senders
         self.recipients = recipients
         self.numMessages = numMessages
+        self.numMessagesCtx = numMessagesCtx
         self.numUnread = numUnread
         self.numAttachments = numAttachments
         self.expirationTime = expirationTime
@@ -430,6 +529,7 @@ public struct LocalConversation {
         self.time = time
         self.labels = labels
         self.starred = starred
+        self.attachments = attachments
     }
 }
 
@@ -457,6 +557,9 @@ extension LocalConversation: Equatable, Hashable {
         if lhs.numMessages != rhs.numMessages {
             return false
         }
+        if lhs.numMessagesCtx != rhs.numMessagesCtx {
+            return false
+        }
         if lhs.numUnread != rhs.numUnread {
             return false
         }
@@ -478,6 +581,9 @@ extension LocalConversation: Equatable, Hashable {
         if lhs.starred != rhs.starred {
             return false
         }
+        if lhs.attachments != rhs.attachments {
+            return false
+        }
         return true
     }
 
@@ -489,6 +595,7 @@ extension LocalConversation: Equatable, Hashable {
         hasher.combine(senders)
         hasher.combine(recipients)
         hasher.combine(numMessages)
+        hasher.combine(numMessagesCtx)
         hasher.combine(numUnread)
         hasher.combine(numAttachments)
         hasher.combine(expirationTime)
@@ -496,6 +603,7 @@ extension LocalConversation: Equatable, Hashable {
         hasher.combine(time)
         hasher.combine(labels)
         hasher.combine(starred)
+        hasher.combine(attachments)
     }
 }
 
@@ -511,13 +619,15 @@ public struct FfiConverterTypeLocalConversation: FfiConverterRustBuffer {
                 senders: FfiConverterSequenceTypeMessageAddress.read(from: &buf), 
                 recipients: FfiConverterSequenceTypeMessageAddress.read(from: &buf), 
                 numMessages: FfiConverterUInt64.read(from: &buf), 
+                numMessagesCtx: FfiConverterUInt64.read(from: &buf), 
                 numUnread: FfiConverterUInt64.read(from: &buf), 
                 numAttachments: FfiConverterUInt64.read(from: &buf), 
                 expirationTime: FfiConverterUInt64.read(from: &buf), 
                 size: FfiConverterUInt64.read(from: &buf), 
                 time: FfiConverterUInt64.read(from: &buf), 
                 labels: FfiConverterOptionSequenceTypeLocalConversationLabel.read(from: &buf), 
-                starred: FfiConverterBool.read(from: &buf)
+                starred: FfiConverterBool.read(from: &buf), 
+                attachments: FfiConverterOptionSequenceTypeLocalAttachmentMetadata.read(from: &buf)
         )
     }
 
@@ -529,6 +639,7 @@ public struct FfiConverterTypeLocalConversation: FfiConverterRustBuffer {
         FfiConverterSequenceTypeMessageAddress.write(value.senders, into: &buf)
         FfiConverterSequenceTypeMessageAddress.write(value.recipients, into: &buf)
         FfiConverterUInt64.write(value.numMessages, into: &buf)
+        FfiConverterUInt64.write(value.numMessagesCtx, into: &buf)
         FfiConverterUInt64.write(value.numUnread, into: &buf)
         FfiConverterUInt64.write(value.numAttachments, into: &buf)
         FfiConverterUInt64.write(value.expirationTime, into: &buf)
@@ -536,6 +647,7 @@ public struct FfiConverterTypeLocalConversation: FfiConverterRustBuffer {
         FfiConverterUInt64.write(value.time, into: &buf)
         FfiConverterOptionSequenceTypeLocalConversationLabel.write(value.labels, into: &buf)
         FfiConverterBool.write(value.starred, into: &buf)
+        FfiConverterOptionSequenceTypeLocalAttachmentMetadata.write(value.attachments, into: &buf)
     }
 }
 
@@ -625,7 +737,7 @@ public struct LocalLabel {
     public var color: LabelColor
     public var labelType: LabelType
     public var order: UInt32
-    public var notified: Bool
+    public var notify: Bool
     public var expanded: Bool
     public var sticky: Bool
 
@@ -640,7 +752,7 @@ public struct LocalLabel {
         color: LabelColor, 
         labelType: LabelType, 
         order: UInt32, 
-        notified: Bool, 
+        notify: Bool, 
         expanded: Bool, 
         sticky: Bool) {
         self.id = id
@@ -651,7 +763,7 @@ public struct LocalLabel {
         self.color = color
         self.labelType = labelType
         self.order = order
-        self.notified = notified
+        self.notify = notify
         self.expanded = expanded
         self.sticky = sticky
     }
@@ -684,7 +796,7 @@ extension LocalLabel: Equatable, Hashable {
         if lhs.order != rhs.order {
             return false
         }
-        if lhs.notified != rhs.notified {
+        if lhs.notify != rhs.notify {
             return false
         }
         if lhs.expanded != rhs.expanded {
@@ -705,7 +817,7 @@ extension LocalLabel: Equatable, Hashable {
         hasher.combine(color)
         hasher.combine(labelType)
         hasher.combine(order)
-        hasher.combine(notified)
+        hasher.combine(notify)
         hasher.combine(expanded)
         hasher.combine(sticky)
     }
@@ -724,7 +836,7 @@ public struct FfiConverterTypeLocalLabel: FfiConverterRustBuffer {
                 color: FfiConverterTypeLabelColor.read(from: &buf), 
                 labelType: FfiConverterTypeLabelType.read(from: &buf), 
                 order: FfiConverterUInt32.read(from: &buf), 
-                notified: FfiConverterBool.read(from: &buf), 
+                notify: FfiConverterBool.read(from: &buf), 
                 expanded: FfiConverterBool.read(from: &buf), 
                 sticky: FfiConverterBool.read(from: &buf)
         )
@@ -739,7 +851,7 @@ public struct FfiConverterTypeLocalLabel: FfiConverterRustBuffer {
         FfiConverterTypeLabelColor.write(value.color, into: &buf)
         FfiConverterTypeLabelType.write(value.labelType, into: &buf)
         FfiConverterUInt32.write(value.order, into: &buf)
-        FfiConverterBool.write(value.notified, into: &buf)
+        FfiConverterBool.write(value.notify, into: &buf)
         FfiConverterBool.write(value.expanded, into: &buf)
         FfiConverterBool.write(value.sticky, into: &buf)
     }
@@ -932,6 +1044,27 @@ fileprivate struct FfiConverterOptionString: FfiConverterRustBuffer {
     }
 }
 
+fileprivate struct FfiConverterOptionSequenceTypeLocalAttachmentMetadata: FfiConverterRustBuffer {
+    typealias SwiftType = [LocalAttachmentMetadata]?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterSequenceTypeLocalAttachmentMetadata.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterSequenceTypeLocalAttachmentMetadata.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
 fileprivate struct FfiConverterOptionSequenceTypeLocalConversationLabel: FfiConverterRustBuffer {
     typealias SwiftType = [LocalConversationLabel]?
 
@@ -948,6 +1081,27 @@ fileprivate struct FfiConverterOptionSequenceTypeLocalConversationLabel: FfiConv
         switch try readInt(&buf) as Int8 {
         case 0: return nil
         case 1: return try FfiConverterSequenceTypeLocalConversationLabel.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
+fileprivate struct FfiConverterOptionTypeAttachmentId: FfiConverterRustBuffer {
+    typealias SwiftType = AttachmentId?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterTypeAttachmentId.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterTypeAttachmentId.read(from: &buf)
         default: throw UniffiInternalError.unexpectedOptionalTag
         }
     }
@@ -1016,6 +1170,28 @@ fileprivate struct FfiConverterOptionTypeLocalLabelId: FfiConverterRustBuffer {
     }
 }
 
+fileprivate struct FfiConverterSequenceTypeLocalAttachmentMetadata: FfiConverterRustBuffer {
+    typealias SwiftType = [LocalAttachmentMetadata]
+
+    public static func write(_ value: [LocalAttachmentMetadata], into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        for item in value {
+            FfiConverterTypeLocalAttachmentMetadata.write(item, into: &buf)
+        }
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [LocalAttachmentMetadata] {
+        let len: Int32 = try readInt(&buf)
+        var seq = [LocalAttachmentMetadata]()
+        seq.reserveCapacity(Int(len))
+        for _ in 0 ..< len {
+            seq.append(try FfiConverterTypeLocalAttachmentMetadata.read(from: &buf))
+        }
+        return seq
+    }
+}
+
 fileprivate struct FfiConverterSequenceTypeLocalConversationLabel: FfiConverterRustBuffer {
     typealias SwiftType = [LocalConversationLabel]
 
@@ -1069,6 +1245,10 @@ fileprivate struct FfiConverterSequenceTypeMessageAddress: FfiConverterRustBuffe
 
 
 
+
+
+
+
 /**
  * Typealias from the type name used in the UDL file to the builtin type.  This
  * is needed because the UDL type name is used in function/method signatures.
@@ -1099,6 +1279,40 @@ public func FfiConverterTypeLabelColor_lift(_ value: RustBuffer) throws -> Label
 
 public func FfiConverterTypeLabelColor_lower(_ value: LabelColor) -> RustBuffer {
     return FfiConverterTypeLabelColor.lower(value)
+}
+
+
+
+/**
+ * Typealias from the type name used in the UDL file to the builtin type.  This
+ * is needed because the UDL type name is used in function/method signatures.
+ */
+public typealias LocalAttachmentId = UInt64
+public struct FfiConverterTypeLocalAttachmentId: FfiConverter {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> LocalAttachmentId {
+        return try FfiConverterUInt64.read(from: &buf)
+    }
+
+    public static func write(_ value: LocalAttachmentId, into buf: inout [UInt8]) {
+        return FfiConverterUInt64.write(value, into: &buf)
+    }
+
+    public static func lift(_ value: UInt64) throws -> LocalAttachmentId {
+        return try FfiConverterUInt64.lift(value)
+    }
+
+    public static func lower(_ value: LocalAttachmentId) -> UInt64 {
+        return FfiConverterUInt64.lower(value)
+    }
+}
+
+
+public func FfiConverterTypeLocalAttachmentId_lift(_ value: UInt64) throws -> LocalAttachmentId {
+    return try FfiConverterTypeLocalAttachmentId.lift(value)
+}
+
+public func FfiConverterTypeLocalAttachmentId_lower(_ value: LocalAttachmentId) -> UInt64 {
+    return FfiConverterTypeLocalAttachmentId.lower(value)
 }
 
 

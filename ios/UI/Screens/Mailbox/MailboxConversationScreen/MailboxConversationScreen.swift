@@ -70,7 +70,7 @@ struct MailboxConversationScreen: View {
         }
         .onAppear {
             Task {
-                await model.fecthConversations()
+                await model.onViewDidAppear()
             }
         }
     }
