@@ -77,5 +77,5 @@ struct MailboxConversationScreen: View {
 }
 
 #Preview {
-    return MailboxConversationScreen(model: .init(conversations: PreviewData.mailboxConversations))
+    return MailboxConversationScreen(model: .init(labelId: .allMail, conversations: PreviewData.mailboxConversations))
 }

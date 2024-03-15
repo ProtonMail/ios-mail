@@ -38,7 +38,7 @@ struct ProtonMail: App {
 struct Root: View {
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appUIState: AppUIState
-    @State private var route: Route = .mailbox(labelId: "inbox")
+    @State private var route: Route = .mailbox(labelId: .inbox)
 
     var body: some View {
         if !appState.hasAuthenticatedSession {
@@ -46,8 +46,8 @@ struct Root: View {
         } else {
             ZStack {
                 switch route {
-                case .mailbox:
-                    MailboxScreen()
+                case .mailbox(let labelId):
+                    MailboxScreen(labelId: labelId)
                 case .settings:
                     SettingsScreen()
                 }
@@ -61,8 +61,18 @@ struct Root: View {
     }
 }
 
+enum LabelIdentifier: UInt64 {
+    case inbox = 1
+    case spam = 4
+    case allMail = 5
+    case archive = 6
+    case sent = 7
+    case draft = 8
+    case starred = 10
+}
+
 enum Route: Hashable {
-    case mailbox(labelId: String)
+    case mailbox(labelId: LabelIdentifier)
     case settings
 }
 

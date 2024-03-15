@@ -21,12 +21,13 @@ import SwiftUI
 struct MailboxScreen: View {
     @EnvironmentObject private var appUIState: AppUIState
     @EnvironmentObject private var userSettings: UserSettings
+    let labelId: LabelIdentifier
 
     var body: some View {
         NavigationStack {
             ZStack {
                 if userSettings.mailboxViewMode == .conversation {
-                    MailboxConversationScreen(model: .init())
+                    MailboxConversationScreen(model: .init(labelId: labelId))
                 } else {
                     Text("message list mailbox")
                 }
@@ -41,7 +42,7 @@ struct MailboxScreen: View {
 #Preview {
     let appUIState = AppUIState(isSidebarOpen: true)
     let userSettings = UserSettings(mailboxViewMode: .conversation)
-    return MailboxScreen()
+    return MailboxScreen(labelId: .allMail)
         .environmentObject(appUIState)
         .environmentObject(userSettings)
 }

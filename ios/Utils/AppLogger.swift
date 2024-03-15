@@ -115,6 +115,7 @@ extension AppLogger {
 
     enum Category: String {
         case appLifeCycle = "AppLifeCycle"
+        case userSessions = "UserSessions"
         case rustLibrary = "RustLibrary"
         case mailboxConversations = "MailboxConversations"
     }

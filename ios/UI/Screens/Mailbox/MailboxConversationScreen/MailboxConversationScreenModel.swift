@@ -22,12 +22,19 @@ import class UIKit.UIImage
 
 @Observable
 final class MailboxConversationScreenModel {
+    private let labelId: LabelIdentifier
     private let dependencies: Dependencies
     private(set) var state: State = .loading
     private(set) var mailbox: Mailbox?
     private(set) var conversationsLiveQuery: MailboxConversationLiveQuery?
 
-    init(conversations: [MailboxConversationCellUIModel] = [], dependencies: Dependencies = .init()) {
+    init(
+        labelId: LabelIdentifier,
+        conversations: [MailboxConversationCellUIModel] = [],
+        dependencies: Dependencies = .init()
+    ) {
+        AppLogger.log(message: "MailboxConversationScreenModel labelId \(labelId)", category: .mailboxConversations)
+        self.labelId = labelId
         self.state = conversations.isEmpty ? .empty : .data(conversations)
         self.dependencies = dependencies
     }
@@ -47,6 +54,7 @@ final class MailboxConversationScreenModel {
             return
         }
         self.mailbox = try Mailbox(ctx: userContext)
+//        try mailbox?.switchLabel(labelId: labelId.rawValue, messageCount: 50, cb: self)
     }
 
     private func fetchConversations() async throws {
@@ -57,13 +65,8 @@ final class MailboxConversationScreenModel {
     }
 
     private func updateData() async {
-        guard let mailbox else { return }
         guard let conversationsLiveQuery else { return }
-        var conversations = [MailboxConversationCellUIModel]()
-        do {
-            conversations = try mailbox.conversations(count: 50).map { $0.toMailboxConversationCellUIModel() }
-        } catch {}
-//        let conversations = conversationsLiveQuery.value().map { $0.toMailboxConversationCellUIModel() }
+        let conversations = conversationsLiveQuery.value().map { $0.toMailboxConversationCellUIModel() }
         await updateState(.data(conversations))
     }
 
@@ -96,8 +99,15 @@ final class MailboxConversationScreenModel {
 extension MailboxConversationScreenModel: MailboxLiveQueryUpdatedCallback {
     func onUpdated() {
         Task {
-//            await updateData()
+            await updateData()
         }
+    }
+}
+
+extension MailboxConversationScreenModel: MailboxBackgroundResult {
+    func onBackgroundResult(error: proton_mail_uniffi.MailboxError?) {
+        guard let error else { return }
+        AppLogger.log(error: error)
     }
 }
 

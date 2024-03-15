@@ -22,7 +22,10 @@ import struct SwiftUI.Color
 extension LocalConversation {
 
     var initials: String {
-        (senders.first?.name.prefix(2) ?? "P").uppercased()
+        let name = senders.first?.name ?? ""
+        let address = senders.first?.address ?? ""
+        let value = name.isEmpty ? address : name
+        return value.prefix(2).uppercased()
     }
 
     private func toLabel() -> MailboxLabelUIModel {

@@ -31,7 +31,12 @@ final class AppContext: AppContextService {
     static let shared: AppContext = .init()
 
     private var _mailContext: MailContext!
-    private var _userContext: MailUserContext?
+    private var activeUserContext: MailUserContext? {
+        didSet {
+            let msg = activeUserContext == nil ? "delted activeUserContext" : "new activeUserContext"
+            AppLogger.log(message: msg, category: .userSessions)
+        }
+    }
     private let dependencies: AppContext.Dependencies
 
     private var mailContext: MailContext {
@@ -58,6 +63,7 @@ final class AppContext: AppContextService {
     }
 
     func start() throws {
+        AppLogger.log(message: "AppContext.start", category: .appLifeCycle)
         guard let applicationSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
             throw AppContextError.applicationSupportDirectoryNotAccessible
         }
@@ -82,7 +88,7 @@ final class AppContext: AppContextService {
 
     private func updateUserContext(_ userContext: MailUserContext?) async throws {
         try await userContext?.initialize(cb: UserContextInitializationDelegate.shared)
-        _userContext = userContext
+        activeUserContext = userContext
         await refreshAppState()
     }
 
@@ -94,18 +100,18 @@ final class AppContext: AppContextService {
     }
 
     func logoutActiveUserSession() async throws {
-        try await _userContext?.logout()
+        try await activeUserContext?.logout()
         try await updateUserContext(nil)
     }
 
     func userContextForActiveSession() async throws -> MailUserContext? {
-        if let userContext = _userContext {
+        if let userContext = activeUserContext {
             return userContext
         }
         guard let activeSession else { return nil }
         let newUserContext = try mailContext.userContextFromSession(session: activeSession, cb: SessionDelegate.shared)
         try await updateUserContext(newUserContext)
-        return _userContext
+        return activeUserContext
     }
 
     func refreshAppState() async {
@@ -138,19 +144,19 @@ final class Keychain: OsKeyChain {
     // TODO: use the keychain
 
     func store(key: String) throws {
-        print("KeychainWrapper.store key:\(key)")
+        AppLogger.logTemporarily(message: "KeychainWrapper.store key:\(key)")
         UserDefaults.standard.setValue(key, forKey: AppContext.Keys.session.rawValue)
     }
 
     func delete() throws {
         let existingKey: String = (try? get()) ?? ""
-        print("KeychainWrapper.delete, existing value: \(existingKey)")
+        AppLogger.logTemporarily(message: "KeychainWrapper.delete, existing value: \(existingKey)")
         UserDefaults.standard.removeObject(forKey: AppContext.Keys.session.rawValue)
     }
 
     func get() throws -> String? {
         let value = UserDefaults.standard.string(forKey: AppContext.Keys.session.rawValue)
-        print("KeychainWrapper.get \(value ?? "-")")
+        AppLogger.logTemporarily(message: "KeychainWrapper.get \(value ?? "-")")
         return value
     }
 }
@@ -159,7 +165,7 @@ final class NetworkStatusManager: NetworkStatusChanged {
     static let shared = NetworkStatusManager()
 
     func onNetworkStatusChanged(online: Bool) {
-        print("onNetworkStatusChanged online: \(online)")
+        AppLogger.logTemporarily(message: "onNetworkStatusChanged online: \(online)")
     }
 }
 
@@ -167,19 +173,19 @@ final class SessionDelegate: SessionCallback {
     static let shared = SessionDelegate()
 
     func onSessionRefresh() {
-        print("onSessionRefresh")
+        AppLogger.logTemporarily(message: "onSessionRefresh")
     }
 
     func onSessionDeleted() {
-        print("onSessionDeleted")
+        AppLogger.logTemporarily(message: "onSessionDeleted")
     }
 
     func onRefreshFailed(e: proton_mail_uniffi.SessionError) {
-        print("onRefreshFailed error: \(e)")
+        AppLogger.logTemporarily(message: "onRefreshFailed error: \(e)")
     }
 
     func onError(err: proton_mail_uniffi.SessionError) {
-        print("onError error: \(err)")
+        AppLogger.logTemporarily(message: "onError error: \(err)")
     }
 }
 
@@ -187,10 +193,10 @@ final class UserContextInitializationDelegate: MailUserContextInitializationCall
     static let shared = UserContextInitializationDelegate()
 
     func onStage(stage: proton_mail_uniffi.MailUserContextInitializationStage) {
-        print("UserContextInitializationDelegate.onStage stage: \(stage)")
+        AppLogger.logTemporarily(message: "UserContextInitializationDelegate.onStage stage: \(stage)")
     }
 
     func onStageErr(stage: proton_mail_uniffi.MailUserContextInitializationStage, err: proton_mail_uniffi.MailContextError) {
-        print("UserContextInitializationDelegate.onStageError stage: \(stage) error: \(err)")
+        AppLogger.logTemporarily(message: "UserContextInitializationDelegate.onStageError stage: \(stage) error: \(err)")
     }
 }

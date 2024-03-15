@@ -21,12 +21,12 @@ import SwiftUI
 enum PreviewData {
 
     static let sideBarScreenModel = SidebarScreenModel(systemFolders: [
-        .init(id: UUID().uuidString, name: "Inbox", icon: DS.Icon.icStar, badge: "3", route: .mailbox(labelId: "")),
-        .init(id: UUID().uuidString, name: "Draft", icon: DS.Icon.icFile, badge: "", route: .mailbox(labelId: "")),
-        .init(id: UUID().uuidString, name: "Sent", icon: DS.Icon.icPaperPlane, badge: "", route: .mailbox(labelId: "")),
-        .init(id: UUID().uuidString, name: "Starred", icon: DS.Icon.icStar, badge: "8", route: .mailbox(labelId: "")),
-        .init(id: UUID().uuidString, name: "Archive", icon: DS.Icon.icArchiveBox, badge: "", route: .mailbox(labelId: "")),
-        .init(id: UUID().uuidString, name: "Spam", icon: DS.Icon.icFire, badge: "", route: .mailbox(labelId: "")),
+        .init(id: UUID().uuidString, name: "Inbox", icon: DS.Icon.icStar, badge: "3", route: .mailbox(labelId: .inbox)),
+        .init(id: UUID().uuidString, name: "Draft", icon: DS.Icon.icFile, badge: "", route: .mailbox(labelId: .draft)),
+        .init(id: UUID().uuidString, name: "Sent", icon: DS.Icon.icPaperPlane, badge: "", route: .mailbox(labelId: .sent)),
+        .init(id: UUID().uuidString, name: "Starred", icon: DS.Icon.icStar, badge: "8", route: .mailbox(labelId: .starred)),
+        .init(id: UUID().uuidString, name: "Archive", icon: DS.Icon.icArchiveBox, badge: "", route: .mailbox(labelId: .archive)),
+        .init(id: UUID().uuidString, name: "Spam", icon: DS.Icon.icFire, badge: "", route: .mailbox(labelId: .spam)),
         .init(id: UUID().uuidString, name: "Settings", icon: DS.Icon.icCogWheel, badge: "", route: .settings),
     ])
 
