@@ -60,7 +60,7 @@ final class MailboxConversationScreenModel {
     private func fetchConversations() async throws {
         guard let mailbox else { return }
         let liveQuery = mailbox.newConversationObservedQuery(limit: 50, cb: self)
-        conversationsLiveQuery = liveQuery
+        self.conversationsLiveQuery = liveQuery
         await updateData()
     }
 

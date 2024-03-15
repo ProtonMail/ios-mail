@@ -1,0 +1,84 @@
+// Copyright (c) 2024 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+import SwiftUI
+import proton_mail_uniffi
+
+final class AppLifeCycle: NSObject {
+    static let shared = AppLifeCycle()
+
+    private var applicationServices = ApplicationServices()
+}
+
+// MARK: App Delegate
+
+extension AppLifeCycle: UIApplicationDelegate {
+
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?
+    ) -> Bool {
+        AppLogger.log(message: "\(#function) | \(Bundle.main.appVersion)", category: .appLifeCycle)
+
+        applicationServicesInitialisation()
+        applicationServices.setUp()
+
+        return true
+    }
+
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        applicationServices.becomeActive()
+    }
+
+    func applicationWillTerminate(_ application: UIApplication) {
+        applicationServices.terminate()
+    }
+}
+
+// MARK: Scene
+
+extension AppLifeCycle {
+
+    func allScenesDidBecomeActive() {
+        applicationServices.becomeActive()
+    }
+
+    func allScenesDidEnterBackground() {
+        applicationServices.enterBackground()
+    }
+}
+
+
+// MARK: Private
+
+extension AppLifeCycle {
+
+    private func applicationServicesInitialisation() {
+        let appContext = AppContext.shared
+
+        let eventLoop = EventLoopService(activeUserStatus: appContext, eventLoopProvider: appContext)
+
+        applicationServices = .init(
+            setUpServices: [appContext],
+            becomeActiveServices: [eventLoop],
+            enterBackgroundServices: [eventLoop],
+            terminateServices: []
+        )
+    }
+}
+
+

@@ -15,26 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Foundation
 import proton_mail_uniffi
 
 protocol AppContextService {
-
     init(dependencies: AppContext.Dependencies)
-    func start() async throws
     func login(email: String, password: String) async throws
     func logoutActiveUserSession() async throws
     func userContextForActiveSession() async throws -> MailUserContext?
 }
 
-final class AppContext: AppContextService {
+final class AppContext: AppContextService, Sendable {
     static let shared: AppContext = .init()
 
     private var _mailContext: MailContext!
     private var activeUserContext: MailUserContext? {
         didSet {
-            let msg = activeUserContext == nil ? "delted activeUserContext" : "new activeUserContext"
+            let hasActiveUser = activeUserContext != nil
+            let msg = hasActiveUser ? "new activeUserContext" : "deleted activeUserContext"
             AppLogger.log(message: msg, category: .userSessions)
+            activeUserStatusPublisher.send(hasActiveUser ? .hasActiveUser : .noActiveUser)
         }
     }
     private let dependencies: AppContext.Dependencies
@@ -46,7 +47,8 @@ final class AppContext: AppContextService {
         return mailContext
     }
 
-    private (set) var appState: AppState
+    private(set) var appState: AppState
+    private(set) var activeUserStatusPublisher = CurrentValueSubject<ActiveUserStatus, Never>(.noActiveUser)
 
     var activeSession: StoredSession? {
         do {
@@ -62,7 +64,7 @@ final class AppContext: AppContextService {
         self.appState = AppState()
     }
 
-    func start() throws {
+    private func start() throws {
         AppLogger.log(message: "AppContext.start", category: .appLifeCycle)
         guard let applicationSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
             throw AppContextError.applicationSupportDirectoryNotAccessible
@@ -118,6 +120,8 @@ final class AppContext: AppContextService {
         await appState.refresh()
     }
 }
+
+extension AppContext: ActiveUserStatusProvider {}
 
 extension AppContext {
 
@@ -198,5 +202,30 @@ final class UserContextInitializationDelegate: MailUserContextInitializationCall
 
     func onStageErr(stage: proton_mail_uniffi.MailUserContextInitializationStage, err: proton_mail_uniffi.MailContextError) {
         AppLogger.logTemporarily(message: "UserContextInitializationDelegate.onStageError stage: \(stage) error: \(err)")
+    }
+}
+
+extension AppContext: ApplicationServiceSetUp {
+    
+    func setUpService() {
+        do {
+            try start()
+        } catch {
+            AppLogger.log(error: error, category: .rustLibrary)
+        }
+    }
+}
+
+extension AppContext: EventLoopProvider {
+
+    func pollEvents() {
+        Task {
+            AppLogger.log(message: "poll events", category: .rustLibrary)
+            do {
+                try await activeUserContext?.pollEvents()
+            } catch {
+                AppLogger.log(error: error, category: .rustLibrary)
+            }
+        }
     }
 }

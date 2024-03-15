@@ -15,18 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Combine
 
-final class AppDelegate: NSObject, UIApplicationDelegate {
+protocol ActiveUserStatusProvider: AnyObject {
+    var activeUserStatusPublisher: CurrentValueSubject<ActiveUserStatus, Never> { get }
+}
 
-    func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
-    ) -> Bool {
-        return AppLifeCycle.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        AppLifeCycle.shared.applicationWillTerminate(application)
-    }
+enum ActiveUserStatus {
+    case noActiveUser
+    case hasActiveUser
 }

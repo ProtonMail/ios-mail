@@ -21,6 +21,7 @@ import DesignSystem
 @main
 struct ProtonMail: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @Environment(\.scenePhase) private var scenePhase
 
     let appUIState = AppUIState(isSidebarOpen: false)
     let userSettings = UserSettings(mailboxViewMode: .conversation)
@@ -32,6 +33,14 @@ struct ProtonMail: App {
                 .environmentObject(appUIState)
                 .environmentObject(userSettings)
         }
+        .onChange(of: scenePhase, { oldValue, newValue in
+            // scenePhase contains an aggregate phase for all scenes
+            if newValue == .active {
+                AppLifeCycle.shared.allScenesDidBecomeActive()
+            } else if newValue == .background {
+                AppLifeCycle.shared.allScenesDidEnterBackground()
+            }
+        })
     }
 }
 

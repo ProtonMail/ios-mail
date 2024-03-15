@@ -15,18 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Foundation
 
-final class AppDelegate: NSObject, UIApplicationDelegate {
+enum AppConstants {
 
-    func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
-    ) -> Bool {
-        return AppLifeCycle.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        AppLifeCycle.shared.applicationWillTerminate(application)
-    }
+    /// time interval between event loop poll calls
+    static let eventLoopFrequency: TimeInterval = 10
 }
