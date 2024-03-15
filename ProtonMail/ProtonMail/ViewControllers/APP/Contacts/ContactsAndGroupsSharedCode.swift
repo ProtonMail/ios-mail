@@ -74,6 +74,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     }
 
     @objc private func addButtonTapped() {
+        navigationItem.searchController?.isActive = false
         let headerView =
             PMActionSheetHeaderView(title: LocalString._contacts_action_sheet_title,
                                     subtitle: nil,

@@ -32,7 +32,7 @@ public class Breadcrumbs {
     public static let shared = Breadcrumbs()
 
     public struct Crumb {
-        static private var dateFormatter: DateFormatter = {
+        static private let dateFormatter: DateFormatter = {
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
             return formatter

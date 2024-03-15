@@ -27,10 +27,12 @@ import WebKit
 struct WebContents: Equatable {
 
     enum LoadingType {
-        case direct
+        /// Fetch remote image without image proxy
+        case skipProxy
+        /// Fetch remote image through image proxy
         case proxy
-        case proxyDryRun
-        case none
+        /// Fetch remote image without image proxy but will check with image proxy
+        case skipProxyButAskForTrackerInfo
     }
 
     let body: String
@@ -67,11 +69,12 @@ struct WebContents: Equatable {
     }
 
     enum RemoteContentPolicy: Int {
-        case allowed
+        /// Allow remote image through image proxy
+        case allowedThroughProxy
         case disallowed
         case lockdown
         /// Allow content to be loaded by webview directly
-        case allowedAll
+        case allowedWithoutProxy
 
         var cspRaw: String {
             let httpScheme = HTTPRequestSecureLoader.ProtonScheme.http.rawValue
@@ -85,12 +88,12 @@ struct WebContents: Equatable {
             case .lockdown:
                 return "default-src 'none'; style-src 'self' 'unsafe-inline';"
             case .disallowed: // this cuts off all remote content
-                let valueToAdd = "\(httpScheme): \(httpsScheme): \(noScheme): \(embeddedScheme): \(pmCacheScheme):"
+                let valueToAdd = "\(embeddedScheme): \(pmCacheScheme):"
                 return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data: blob: \(valueToAdd); script-src 'none';"
-            case .allowed: // this cuts off only scripts and connections
+            case .allowedThroughProxy: // this cuts off only scripts and connections
                 let valueToAdd = "\(httpScheme): \(httpsScheme): \(noScheme): \(embeddedScheme): \(pmCacheScheme):"
                 return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src data: blob: cid: \(valueToAdd); script-src 'none';"
-            case .allowedAll: // allow all remote contents
+            case .allowedWithoutProxy: // allow all remote contents
                 let valueToAdd = "\(httpScheme): \(httpsScheme): \(noScheme): \(embeddedScheme): \(pmCacheScheme):"
                 return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src data: blob: cid: http: https: \(valueToAdd); script-src 'none';"
             }

@@ -72,7 +72,6 @@ final class RefetchAllBlockedSendersTests: XCTestCase {
             let requestedPageNumber = parameters["Page"] as! Int
             let requestedResources = self.stubbedAPIPages[requestedPageNumber]
             let response = GetIncomingDefaultsResponse(
-                code: 0,
                 incomingDefaults: requestedResources,
                 total: self.allResources.count
             )
@@ -105,7 +104,6 @@ final class RefetchAllBlockedSendersTests: XCTestCase {
             if requestedPageNumber == 0 {
                 stubbedResult = .success(
                     GetIncomingDefaultsResponse(
-                        code: 0,
                         incomingDefaults: self.stubbedAPIPages[0],
                         total: self.allResources.count
                     )
@@ -140,7 +138,7 @@ final class RefetchAllBlockedSendersTests: XCTestCase {
 
     func testRemovesPreviousEntitiesBeforeFetching() async throws {
         apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
-            let response = GetIncomingDefaultsResponse(code: 0, incomingDefaults: [], total: 0)
+            let response = GetIncomingDefaultsResponse(incomingDefaults: [], total: 0)
             completion(nil, .success(response))
         }
 

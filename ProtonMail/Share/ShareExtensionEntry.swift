@@ -22,7 +22,6 @@
 
 import ProtonCoreCryptoGoImplementation
 import ProtonCoreEnvironment
-import ProtonCoreFeatureSwitch
 import ProtonCoreLog
 import ProtonCoreServices
 import ProtonCoreUIFoundations

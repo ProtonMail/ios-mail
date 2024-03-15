@@ -69,7 +69,7 @@ enum SendPreferencesHelper {
         if isInternal {
             return .proton
         }
-        if isPasswordProtected && encrypt == false {
+        if isPasswordProtected {
             return .encryptedToOutside
         }
         if sign {

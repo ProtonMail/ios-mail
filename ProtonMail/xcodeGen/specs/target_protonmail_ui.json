@@ -3,12 +3,15 @@
       "ProtonMailUI": {
          "type": "framework",
          "platform": "iOS",
-         "sources": "ProtonMailUI",
+         "sources": [
+            "ProtonMailUI",
+            "ProtonMail/Utilities/APP_share_push_uiTest/Localization.swift",
+            "ProtonMail/Utilities/APP_share/ExternalURL.swift"
+         ],
          "configFiles": {
             "Debug": "xcodeGen/xcconfig/ProtonMailUI-Debug.xcconfig",
             "Release": "xcodeGen/xcconfig/ProtonMailUI-Release.xcconfig",
-            "Enterprise Debug": "xcodeGen/xcconfig/ProtonMailUI-Enterprise-Debug.xcconfig",
-            "Enterprise Release": "xcodeGen/xcconfig/ProtonMailUI-Enterprise-Release.xcconfig"
+            "Adhoc": "xcodeGen/xcconfig/ProtonMailUI-Adhoc.xcconfig"
          }
       }
    }

@@ -7,6 +7,7 @@
 //
 
 import fusion
+import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkit
 
 fileprivate struct id {

@@ -24,8 +24,8 @@ import Foundation
 import PromiseKit
 import ProtonCoreAuthentication
 import ProtonCoreCrypto
-import ProtonCoreDataModel
-import ProtonCoreNetworking
+@preconcurrency import ProtonCoreDataModel
+@preconcurrency import ProtonCoreNetworking
 #if !APP_EXTENSION
 import ProtonCorePayments
 #endif
@@ -526,5 +526,21 @@ extension UserManager: AuthHelperDelegate {
         }
         self.eventsService.stop()
         NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": sessionUID])
+    }
+}
+
+// Telemetry
+
+extension UserManager {
+
+    func sendLocalSettingsTelemetryHeartbeat() {
+        Task {
+            let event: TelemetryEvent = .localSettingsHeartbeat(
+                isAppKeyOn: container.keyMaker.isAppKeyEnabled,
+                isAutoImportContactsOn: container.autoImportContactsFeature.isFeatureEnabledTelemetryValue,
+                hasPaidMailPlan: hasPaidMailPlan
+            )
+            await container.telemetryService.sendEvent(event)
+        }
     }
 }

@@ -23,9 +23,12 @@ import Foundation
 import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreServices
+import ProtonCoreFeatureFlags
 
-/// Get payment methods in priority order
-public class MethodRequest: BaseApiRequest<MethodResponse> {
+typealias MethodRequest = BaseApiRequest<MethodResponse>
+
+/// Get payment methods in priority order in API v4
+class V4MethodRequest: MethodRequest {
 
     override public init(api: APIService) {
         super.init(api: api)
@@ -34,6 +37,22 @@ public class MethodRequest: BaseApiRequest<MethodResponse> {
     override public var method: HTTPMethod { .get }
 
     override public var path: String { super.path + "/v4/methods" }
+
+    override public var parameters: [String: Any]? { nil }
+
+    override public var isAuth: Bool { true }
+}
+
+/// Get payment methods in priority order in API v5
+ class V5MethodRequest: MethodRequest {
+
+    override public init(api: APIService) {
+        super.init(api: api)
+    }
+
+    override public var method: HTTPMethod { .get }
+
+    override public var path: String { super.path + "/v5/methods" }
 
     override public var parameters: [String: Any]? { nil }
 

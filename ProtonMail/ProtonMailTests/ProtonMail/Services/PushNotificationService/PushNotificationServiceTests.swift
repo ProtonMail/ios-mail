@@ -140,12 +140,12 @@ extension PushNotificationServiceTests {
         private(set) var dict = [String: Any]()
 
         func set(_ intValue: Int, forKey key: String) { dict[key] = intValue }
-        func set(_ data: Data, forKey key: String) { dict[key] = data }
+        func set(_ data: Data, forKey key: String, attributes: [CFString : Any]? = nil) { dict[key] = data }
         func set(_ value: Bool, forKey defaultName: String) { dict[defaultName] = value }
 
         func int(forKey key: String) -> Int? { return dict[key] as? Int }
         func bool(forKey defaultName: String) -> Bool { return dict[defaultName] as? Bool ?? false }
-        func data(forKey key: String) -> Data? { return dict[key] as? Data }
+        func data(forKey key: String, attributes: [CFString : Any]? = nil) -> Data? { return dict[key] as? Data }
 
         func remove(forKey key: String) { dict[key] = nil }
 

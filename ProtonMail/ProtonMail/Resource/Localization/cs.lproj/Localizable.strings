@@ -174,12 +174,6 @@
 /* Title */
 "wrote:" = "napsal/a:";
 
-/* At {time}, e.g.: At 19:00 */
-"At %@" = "V %@";
-
-/* On {date}, e.g.: On Aug 14 */
-"On %@" = "%@";
-
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
 "On %@ at %@" = "%1$@ v(e) %2$@";
 
@@ -589,6 +583,9 @@
 /* Title */
 "Reading device contacts data…" = "Čtení kontaktů ze zařízení…";
 
+/* title for the contact import indicator */
+"Importing contacts..." = "Importování kontaktů...";
+
 /* Description */
 "Do you want to cancel the process?" = "Opravdu chcete proces zrušit?";
 
@@ -772,9 +769,6 @@
 "Date: %@" = "Datum: %@";
 
 /* Title */
-"Details" = "Detaily";
-
-/* Title */
 "Hide details" = "Skrýt detaily";
 
 /* contact placeholder */
@@ -794,12 +788,6 @@
 
 /* action */
 "Add new URL" = "Přidat novou URL";
-
-/* settings general section title */
-"Change account password" = "Změnit heslo účtu";
-
-/* settings general section title */
-"Change mailbox password" = "Změnit heslo poštovní schránky";
 
 /* settings general section title */
 "Auto-load remote content" = "Automaticky načíst vzdálený obsah";
@@ -1126,9 +1114,6 @@
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Smazat skupinu kontaktů";
 
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "Vybráno: %d";
-
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Prosím zvolte alespoň jeden e-mail pro kontaktní skupinu";
 
@@ -1149,9 +1134,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Přetažením sem přidáte přílohu";
-
-/* Downloading attachments from cloud */
-"Importing" = "Probíhá import";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Importování přílohy, může to chvíli trvat";
@@ -1251,9 +1233,6 @@
 
 /* cell title in app settings */
 "Alternative routing" = "Alternativní směrování";
-
-/* cell title in device settings */
-"Storage" = "Úložiště";
 
 /* cell title in device settings */
 "Addresses" = "Adresy";
@@ -1623,27 +1602,6 @@
 /* The title of voice over action that switches the unread filter status in the inbox */
 "Switch unread filter" = "Přepnout filtr nepřečtených zpráv";
 
-/* Title of user feedback view */
-"Your feedback" = "Vaše zpětná vazba";
-
-/* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "Jak byste popsal(a) svou zkušenost s novým Proton Mailem?";
-
-/* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Povězte nám o svých zkušenostech. (Nepovinné)";
-
-/* Title of button to send feedback */
-"Send feedback" = "Odeslat zpětnou vazbu";
-
-/* Example feedback */
-"Awful" = "Strašné";
-
-/* Example feedback */
-"Wonderful" = "Úžasné";
-
-/* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Děkujeme za zpětnou vazbu!";
-
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
 "Collapse message" = "Sbalit zprávu";
 
@@ -1875,6 +1833,27 @@
 /* The content of the Customize toolbar spotlight view. */
 "You can now choose and rearrange the actions in this bar" = "Nyní můžete vybrat a změnit uspořádání akcí na tomto panelu nástrojů";
 
+/* Title of the banner alert */
+"Your Mail storage is %@ full" = "Vaše úložiště Mail je %@ plné";
+
+/* Title of the banner alert */
+"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+
+/* Title of the banner alert */
+"Your Mail storage is full" = "Vaše úložiště Mail je plné";
+
+/* Title of the banner alert */
+"Your Drive storage is full" = "Your Drive storage is full";
+
+/* Description of the banner alert */
+"Upgrade to get more storage." = "Navyšte tarif a získejte více úložného prostoru.";
+
+/* Get more storage button action */
+"Not now" = "Nyní ne";
+
+/* Get more storage button action */
+"Get more storage" = "Získat více úložného prostoru";
+
 /* Button to block a sender */
 "Block messages from this sender" = "Blokovat zprávy tohoto odesílatele";
 
@@ -1931,6 +1910,45 @@
 /* Button to hide some items in the list to conserve screen estate */
 "Show less" = "Zobrazit méně";
 
+/* Text shown when opening an invitation for a past event */
+"This event already ended" = "Tato událost již skončila";
+
+/* Text shown when opening an invitation for a cancelled event */
+"This event has been cancelled" = "This event has been cancelled";
+
+/* Prompt above yes/no/maybe buttons */
+"Attending?" = "Zúčastníte se?";
+
+/* Part of a yes/no/maybe prompt */
+"Yes" = "Ano";
+
+/* Part of a yes/no/maybe prompt */
+"No" = "Ne";
+
+/* Part of a yes/no/maybe prompt */
+"Maybe" = "Možná";
+
+/* Confirm attending an event */
+"Yes, I'll attend" = "Ano, zúčastním se";
+
+/* Deny attending an event */
+"No, I won't attend" = "Ne, nezúčastním se";
+
+/* Neither confirm nor deny attending an event */
+"I might attend" = "Možná se zúčastním";
+
+/* Menu title */
+"Max Storage" = "Max Storage";
+
+/* Cell title that shows the percentage of the storage */
+"Storage: %@ full" = "Storage: %@ full";
+
+/* Cell title that shows the percentage of the storage */
+"Drive storage: %@ full" = "Drive storage: %@ full";
+
+/* Upgrade button action */
+"Upgrade" = "Navýšit";
+
 /* Official badge next to sender's name */
 "Official" = "Oficiální";
 
@@ -1978,6 +1996,9 @@
 
 /* Auto import alert message */
 "The initial import may take some time and will only occur when the app is in the foreground." = "První import může nějakou dobu trvat a proběhne pouze tehdy, když je aplikace v popředí.";
+
+/* Alert to ask user to reauthorise access to contacts */
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission.";
 
 /* Settings lock protection section */
 "Protection" = "Ochrana";
@@ -2043,10 +2064,10 @@
 "Application logs" = "Logy aplikace";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Přejít na další zprávu";
+"Jump to next email" = "Jump to next email";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Došlo k neočekávané chybě, kontaktujte prosím podporu.\nChyba: %@";
@@ -2128,6 +2149,15 @@
 
 /* Title of button to empty trash folder */
 "Empty trash" = "Vysypat koš";
+
+/* Alert prompting to update Calendar */
+"Download the latest version of the Proton Calendar to open this event" = "Download the latest version of the Proton Calendar to open this event";
+
+/* Button to open App Store */
+"Download in App Store" = "Download in App Store";
+
+/* Button to open the Calendar app */
+"Open in Proton Calendar" = "Otevřít v Proton kalendáři";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
 "Clear out the junk" = "Pročištění nevyžádané pošty";
@@ -2270,5 +2300,68 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Neomezený počet složek, štítků a filtrů";
 
+/* Description string shows in spotlight view */
+"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.";
+
+/* Description string shows in spotlight view */
+"Snooze it for later" = "Odložit na později";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Přidat jako přílohu";
+
+/* The title in setting page */
+"Swipe to next message" = "Swipe to next message";
+
+/* Description text for setting */
+"Allow navigating through messages by swiping left or right." = "Allow navigating through messages by swiping left or right.";
+
+/* The title of the spotlight of the auto import contacts. */
+"Your contacts at your fingertips" = "Your contacts at your fingertips";
+
+/* The message of the spotlight of the auto import contacts. */
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+
+/* The title of the button of the spotlight of the auto import contacts. */
+"Enable auto-import" = "Enable auto-import";
+
+/* The title for no contact hint view */
+"No contacts yet" = "No contacts yet";
+
+/* The description for no contact hint view */
+"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+
+/* Button title for no contact hint view */
+"Auto-import contacts" = "Auto-import contacts";
+
+/* A title show to user after auto import button is clicked but contacts hasn't imported yet */
+"Importing your contacts" = "Importing your contacts";
+
+/* A message show to user after auto import button is clicked but contacts hasn't imported yet */
+"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+
+/* The title of the dismissable banner in the contacts view. */
+"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+
+/* The title of the privacy and data in the account setting. */
+"Privacy and data" = "Soukromí a údaje";
+
+/* cell title in device settings */
+"Storage" = "Úložiště";
+
+/* settings general section title */
+"Change account password" = "Změnit heslo účtu";
+
+/* settings general section title */
+"Change mailbox password" = "Změnit heslo poštovní schránky";
+
+/* The title of the telemetry setting. */
+"Anonymous telemetry" = "Anonymní telemetrie";
+
+/* The title of the crash report setting. */
+"Anonymous crash reports" = "Anonymní hlášení pádů";
+
+/* The subtitle of the anonymous telemetry setting. */
+"To improve our services, we sometimes collect anonymized usage data." = "Za účelem zlepšení našich služeb občas shromažďujeme anonymizované údaje o používání.";
+
+/* The subtitle of the crash report setting. */
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Pokud dojde k pádu aplikace, bude našim technikům odeslána zpráva s podrobnostmi o příčině. Ty budou použity pouze ke zlepšení aplikace.";

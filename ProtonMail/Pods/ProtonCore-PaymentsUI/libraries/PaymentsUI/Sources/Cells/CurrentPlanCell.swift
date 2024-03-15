@@ -60,8 +60,7 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
             priceDescriptionLabel.textColor = ColorProvider.TextWeak
         }
     }
-    @IBOutlet weak var progressBarSpacerView: UIView!
-    @IBOutlet weak var progressBarView: StorageProgressView!
+    @IBOutlet weak var progressBarsStackView: UIStackView!
     @IBOutlet weak var planDetailsStackView: UIStackView!
     @IBOutlet weak var timeSeparator1View: UIView!
     @IBOutlet weak var separatorLineView: UIView! {
@@ -108,11 +107,12 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
             priceDescriptionLabel.isHidden = true
         }
         if let usedSpaceDescription = currentPlanDetails.usedSpaceDescription {
+            let progressBarView = StorageProgressView()
             progressBarView.configure(usedSpaceDescription: usedSpaceDescription, usedSpace: currentPlanDetails.usedSpace, maxSpace: currentPlanDetails.maxSpace)
+            progressBarsStackView.addArrangedSubview(progressBarView)
         } else {
             // No progress view, hide it
-            progressBarSpacerView.isHidden = true
-            progressBarView.isHidden = true
+            progressBarsStackView.isHidden = true
         }
         currentPlanDetails.details.forEach {
             let detailView = PlanDetailView()
@@ -135,7 +135,7 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
         planDescriptionLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
         planDescriptionLabel.text = PUITranslations.plan_details_plan_details_unavailable_contact_administrator.l10n
         planDescriptionLabel.textColor = ColorProvider.TextNorm
-        enableProgressView(enabled: false)
+        enableProgressViews(enabled: false)
         enableTimeView(enabled: false)
     }
 
@@ -148,9 +148,8 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
         planTimeLabel.isHidden = !enabled
     }
 
-    private func enableProgressView(enabled: Bool) {
-        progressBarSpacerView.isHidden = !enabled
-        progressBarView.isHidden = !enabled
+    private func enableProgressViews(enabled: Bool) {
+        progressBarsStackView.isHidden = !enabled
     }
 }
 
@@ -170,14 +169,14 @@ extension CurrentPlanCell {
         priceLabel.text = currentPlan.details.price
         priceDescriptionLabel.text = currentPlan.details.cycleDescription
 
-        progressBarSpacerView.isHidden = true
-        progressBarView.isHidden = true
+        progressBarsStackView.isHidden = true
 
         for entitlement in currentPlan.details.entitlements {
             switch entitlement {
             case .progress(let progressEntitlement):
-                progressBarSpacerView.isHidden = false
-                progressBarView.isHidden = false
+                progressBarsStackView.isHidden = false
+
+                let progressBarView = StorageProgressView()
                 progressBarView.configure(
                     title: progressEntitlement.title,
                     iconUrl: progressEntitlement.iconUrl,
@@ -185,6 +184,7 @@ extension CurrentPlanCell {
                     usedSpace: Int64(progressEntitlement.current),
                     maxSpace: Int64(progressEntitlement.max)
                 )
+                progressBarsStackView.addArrangedSubview(progressBarView)
             case .description(let descriptionEntitlement):
                 let detailView = PlanDetailView()
                 detailView.configure(iconUrl: descriptionEntitlement.iconUrl, text: descriptionEntitlement.text)

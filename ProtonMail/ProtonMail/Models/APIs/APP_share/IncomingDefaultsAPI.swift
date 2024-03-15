@@ -69,7 +69,6 @@ struct GetIncomingDefaultsRequest: Request {
 }
 
 struct GetIncomingDefaultsResponse: APIDecodableResponse {
-    let code: Int
     let incomingDefaults: [IncomingDefaultDTO]
     let total: Int
 }
@@ -115,7 +114,6 @@ struct AddIncomingDefaultsRequest: Request {
 }
 
 struct AddIncomingDefaultsResponse: APIDecodableResponse {
-    let code: Int
     let incomingDefault: IncomingDefaultDTO
     let undoToken: UndoTokenData
 }

@@ -11,6 +11,7 @@ outputs
 env-vars
 Brewfile.lock.json
 bundler-cache
+ci-cache
 
 # ignored because of XcodeGen
 ProtonMail/Pods/Pods.xcodeproj/project.pbxproj

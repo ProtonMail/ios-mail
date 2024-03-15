@@ -71,7 +71,7 @@ public protocol AuthenticatorInterface {
     func forkSession(_ credential: Credential?,
                      useCase: AuthService.ForkSessionUseCase,
                      completion: @escaping (Result<AuthService.ForkSessionResponse, AuthErrors>) -> Void)
-    
+
     /// Performs the whole child session flow, which consists of three network calls:
     /// 1. Forks the session to get the selector which can be later used to obtain the child session.
     /// 2. Exchanges the selector for the inactive child session credentials.

@@ -26,6 +26,7 @@ import Foundation
 import PromiseKit
 import ProtonCoreAccountSwitcher
 import ProtonCoreDataModel
+import ProtonCoreFeatureFlags
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import UIKit
@@ -92,6 +93,7 @@ final class MenuViewModel: NSObject {
 
     weak var coordinator: MenuCoordinatorProtocol?
     private var mailSettingCancellable: AnyCancellable?
+    private var dataFetchTimer: Timer?
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
@@ -131,6 +133,24 @@ extension MenuViewModel: MenuVMProtocol {
     func userDataInit() {
         assert(self.delegate != nil,
                "delegate can't be nil, use set(delegate:) to setting")
+        // Check if the menu can load the user data, if not retry after delay.
+        dataFetchTimer?.invalidate()
+        dataFetchTimer = nil
+        guard currentUser != nil else {
+            SystemLogger.log(
+                message: "User not found in userDataInit.",
+                category: .menuDebug
+            )
+            dataFetchTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] _ in
+                SystemLogger.log(
+                    message: "Retry userDataInit",
+                    category: .menuDebug
+                )
+                self?.userDataInit()
+            })
+            return
+        }
+
         self.registerNotification()
         self.fetchLabels()
         self.observeLabelUnreadUpdate()
@@ -156,7 +176,42 @@ extension MenuViewModel: MenuVMProtocol {
         return user.userInfo.enableFolderColor == 1
     }
 
+    var storageAlertVisibility: StorageAlertVisibility {
+        guard FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.splitStorage),
+              let userInfo = self.currentUser?.userInfo,
+              !userInfo.isOnAStoragePaidPlan else {
+            return .hidden
+        }
+        if currentMailStoragePercentage > 0.8 {
+            return .mail(currentMailStoragePercentage)
+        } else if currentDriveStoragePercentage > 0.8 {
+            return .drive(currentDriveStoragePercentage)
+        }
+        return .hidden
+    }
+
+    var currentMailStoragePercentage: CGFloat {
+        guard let userInfo = self.currentUser?.userInfo,
+              let usedBaseSpace = userInfo.usedBaseSpace,
+              let maxBaseSpace = userInfo.maxBaseSpace,
+              maxBaseSpace > 0 else {
+            return 0
+        }
+        return CGFloat(usedBaseSpace) / CGFloat(maxBaseSpace)
+    }
+
+    var currentDriveStoragePercentage: CGFloat {
+        guard let userInfo = self.currentUser?.userInfo,
+              let usedDriveSpace = userInfo.usedDriveSpace,
+              let maxDriveSpace = userInfo.maxDriveSpace,
+              maxDriveSpace > 0 else {
+            return 0
+        }
+        return CGFloat(usedDriveSpace) / CGFloat(maxDriveSpace)
+    }
+
     func menuViewInit() {
+        self.updateStorageAlert()
         self.updatePrimaryUserView()
         self.updateMoreItems(shouldReload: false)
         self.updateUnread()
@@ -172,6 +227,8 @@ extension MenuViewModel: MenuVMProtocol {
 
         let sectionItems: [MenuLabel]
         switch section {
+        case .maxStorage:
+            return .success(.init(location: .init(id: "maxStorage", name: nil)))
         case .inboxes:
             return .success(self.inboxItems[row])
         case .folders:
@@ -202,6 +259,8 @@ extension MenuViewModel: MenuVMProtocol {
 
     func menuItem(in section: MenuSection, at index: Int) -> MenuLabel? {
         switch section {
+        case .maxStorage:
+            return .init(location: .init(id: "maxStorage", name: nil))
         case .inboxes:
             return inboxItems[index]
         case .folders:
@@ -215,6 +274,7 @@ extension MenuViewModel: MenuVMProtocol {
 
     func numberOfRowsIn(section: Int) -> Int {
         switch self.sections[section] {
+        case .maxStorage: return 1
         case .inboxes: return self.inboxItems.count
         case .folders:
             return self.folderItems.getNumberOfRows()
@@ -402,7 +462,7 @@ extension MenuViewModel: LabelListenerProtocol {
 // MARK: Data source
 extension MenuViewModel {
     private func fetchLabels() {
-        guard let userID = dependencies.usersManager.firstUser?.userID, let service = labelDataService else {
+        guard let userID = currentUser?.userID, let service = labelDataService else {
             return
         }
 
@@ -652,6 +712,14 @@ extension MenuViewModel {
         guard dependencies.usersManager.users.count > 0,
               let user = self.currentUser else {return}
         self.activateUser(id: UserID(user.userInfo.userId))
+    }
+
+    private func updateStorageAlert() {
+        if storageAlertVisibility == .hidden {
+            self.sections.removeAll(where: { $0 == .maxStorage})
+        } else if !self.sections.contains(where: { $0 == .maxStorage }) {
+            self.sections.insert(.maxStorage, at: 0)
+        }
     }
 
     private func updatePrimaryUserView() {

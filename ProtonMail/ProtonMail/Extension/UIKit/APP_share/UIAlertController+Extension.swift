@@ -35,4 +35,16 @@ extension UIAlertController {
     func addCancelAction(handler: ((UIAlertAction?) -> Void)? = nil) {
         addAction(UIAlertAction.cancelAction(handler))
     }
+
+    static func makeContactAccessDeniedAlert(completion: (() -> Void)? = nil) -> UIAlertController {
+        let alert = UIAlertController(
+            title: L11n.SettingsContacts.autoImportContacts,
+            message: L11n.SettingsContacts.authoriseContactsInSettingsApp,
+            preferredStyle: .alert
+        )
+        alert.addOKAction { _ in
+            completion?()
+        }
+        return alert
+    }
 }

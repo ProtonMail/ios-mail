@@ -838,8 +838,7 @@ class LocalizedString {
 
     lazy var _contact_groups_member_count_description = NSLocalizedString("%d member",
                                                                           comment: "How many members in the contact group, e.g. 0 member, 2 members")
-    lazy var _contact_groups_selected_group_count_description = NSLocalizedString("%d Selected",
-                                                                                  comment: "The string that describes how many contact groups are currently selected")
+
     lazy var _contact_group_no_contact_group_associated_with_contact_email = NSLocalizedString("None",
                                                                                                comment: "A *short* description saying that there is no contact group associated with this contact email")
 
@@ -1260,6 +1259,15 @@ class LocalizedString {
 }
 
 enum L11n {
+    struct AlertBox {
+        static let alertBoxMailPercentageText = NSLocalizedString("Your Mail storage is %@ full", comment: "Title of the banner alert")
+        static let alertBoxDrivePercentageText = NSLocalizedString("Your Drive storage is %@ full", comment: "Title of the banner alert")
+        static let alertBoxMailFullText = NSLocalizedString("Your Mail storage is full", comment: "Title of the banner alert")
+        static let alertBoxDriveFullText = NSLocalizedString("Your Drive storage is full", comment: "Title of the banner alert")
+        static let alertBoxDescription = NSLocalizedString("Upgrade to get more storage.", comment: "Description of the banner alert")
+        static let alertBoxDismissButtonTitle = NSLocalizedString("Not now", comment: "Get more storage button action")
+        static let alertBoxButtonTitle = NSLocalizedString("Get more storage", comment: "Get more storage button action")
+    }
     struct BlockSender {
         static let blockActionTitleLong = NSLocalizedString("Block messages from this sender", comment: "Button to block a sender")
         static let blockActionTitleShort = NSLocalizedString("Block", comment: "Button to block a sender, keep it short to fit in the UI")
@@ -1273,6 +1281,12 @@ enum L11n {
         static let successfulUnblockConfirmation = NSLocalizedString("Sender %@ unblocked", comment: "Toast confirming the unblock")
         static let unblockActionTitleLong = NSLocalizedString("Unblock sender", comment: "Button to unblock a sender")
         static let unblockActionTitleShort = NSLocalizedString("Unblock", comment: "Button to unblock a sender, keep it short to fit in the UI")
+    }
+
+    struct CalendarLandingPage {
+        static let headline = NSLocalizedString("Your schedule is worth protecting", comment: "Headline of the Calendar landing page")
+        static let subheadline = NSLocalizedString("Your calendar is a record of your life, Proton Calendar helps keep it private.", comment: "Subheadline of the Calendar landing page")
+        static let getCalendar = NSLocalizedString("Get Proton Calendar app", comment: "Button to open the App Store page for Proton Calendar")
     }
 
     struct EmailTrackerProtection {
@@ -1298,6 +1312,14 @@ enum L11n {
         static let yesLong = NSLocalizedString("Yes, I'll attend", comment: "Confirm attending an event")
         static let noLong = NSLocalizedString("No, I won't attend", comment: "Deny attending an event")
         static let maybeLong = NSLocalizedString("I might attend", comment: "Neither confirm nor deny attending an event")
+    }
+
+    struct SideMenuStorageAlert {
+        static let menuTitle = NSLocalizedString("Max Storage", comment: "Menu title")
+        static let alertBoxMailTitle = NSLocalizedString("Storage: %@ full", comment: "Cell title that shows the percentage of the storage")
+        static let alertBoxDriveTitle = NSLocalizedString("Drive storage: %@ full", comment: "Cell title that shows the percentage of the storage")
+        static let alertBoxCaption = NSLocalizedString("Get more storage", comment: "Description of the action")
+        static let upgradeButtonTitle = NSLocalizedString("Upgrade", comment: "Upgrade button action")
     }
 
     struct OfficialBadge {
@@ -1366,9 +1388,12 @@ enum L11n {
     }
 
     struct NextMsgAfterMove {
-        static let settingTitle = NSLocalizedString("Jump to next message", comment: "The title of the setting of the next msg after move")
-        static let rowTitle = NSLocalizedString("Jump to next message", comment: "The title of the row inside the setting page of next msg after move function.")
-        static let rowFooterTitle = NSLocalizedString("Automatically show the next message when the current message is deleted, archived or moved.", comment: "The footer title of the setting row of the next msg after move functions.")
+        static let settingTitle = NSLocalizedString("Jump to next email", comment: "The title of the setting of the next msg after move")
+        static let rowTitle = NSLocalizedString("Jump to next email", comment: "The title of the row inside the setting page of next msg after move function.")
+        static let rowFooterTitle = NSLocalizedString("Automatically show the next email when an open email is deleted, archived, or moved.", comment: "The footer title of the setting row of the next msg after move functions.")
+        static let spotlightButtonTitle = NSLocalizedString("Turn on feature", comment: "The title of the button of the jump to next message spotlight.")
+        static let spotlightMessage = NSLocalizedString("View the next email in your inbox when you delete or move the current email.", comment: "The content of the jump to next message spotlight.")
+        static let spotlightTitle = NSLocalizedString("Read emails faster", comment: "The title of the jump to next message spotlight.")
 	}
 
     struct Error {
@@ -1522,6 +1547,24 @@ enum L11n {
     struct MessageNavigation {
         static let spotlightMessage = "You can now effortlessly navigate through messages by swiping left or right."
         static let spotlightTitle = "Swipe to next message"
+        static let settingTitle = NSLocalizedString("Swipe to next message", comment: "The title in setting page")
+        static let settingDesc = NSLocalizedString(
+            "Allow navigating through messages by swiping left or right.",
+            comment: "Description text for setting"
+        )
+    }
+
+    struct AutoImportContacts {
+        static let spotlightTitle = NSLocalizedString("Your contacts at your fingertips", comment: "The title of the spotlight of the auto import contacts.")
+        static let spotlightMessage = NSLocalizedString("No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.", comment: "The message of the spotlight of the auto import contacts.")
+        static let spotlightButtonTitle = NSLocalizedString("Enable auto-import", comment: "The title of the button of the spotlight of the auto import contacts.")
+        static let noContactTitle = NSLocalizedString("No contacts yet", comment: "The title for no contact hint view")
+        static let noContactDesc = NSLocalizedString("Import contacts from your device to send emails and invites with ease.", comment: "The description for no contact hint view")
+        static let autoImportContactButtonTitle = NSLocalizedString("Auto-import contacts", comment: "Button title for no contact hint view")
+        static let importingTitle = NSLocalizedString("Importing your contacts", comment: "A title show to user after auto import button is clicked but contacts hasn't imported yet")
+        static let importingDesc = NSLocalizedString("Your contacts will appear here shortly.", comment: "A message show to user after auto import button is clicked but contacts hasn't imported yet")
+        static let contactBannerTitle = NSLocalizedString("Automatically add new contacts from your device.", comment: "The title of the dismissable banner in the contacts view.")
+        static let contactBannerButtonTitle = NSLocalizedString("Enable auto-import", comment: "The title of the button of the dismissable banner in the contacts view.")
     }
 
     struct AccountSettings {

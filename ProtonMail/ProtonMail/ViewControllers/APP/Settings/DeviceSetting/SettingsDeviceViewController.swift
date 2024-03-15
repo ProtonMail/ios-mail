@@ -207,6 +207,10 @@ extension SettingsDeviceViewController {
                     settingsGeneralCell.configure(left: item.description)
                 case .toolbar:
                     settingsGeneralCell.configure(left: item.description)
+                case .messageSwipeNavigation:
+                    settingsGeneralCell.configure(left: item.description)
+                    let status = viewModel.isMessageSwipeEnabled ? LocalString._settings_On_title : LocalString._settings_Off_title
+                    settingsGeneralCell.configure(right: status)
                 case .applicationLogs:
                     settingsGeneralCell.configure(left: item.description)
                 }
@@ -341,6 +345,8 @@ extension SettingsDeviceViewController {
                 coordinator?.go(to: .swipeAction)
             case .toolbar:
                 coordinator?.openToolbarCustomizationView()
+            case .messageSwipeNavigation:
+                coordinator?.go(to: .messageSwipeNavigation)
             case .applicationLogs:
                 coordinator?.openApplicationLogsView()
             }

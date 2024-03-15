@@ -123,10 +123,14 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
                     completion(error)
                 }
             } else {
-                self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID, notificationMessageID: nil, completion: { result in
-                    self.isFetching = false
-                    completion(result.error)
-                })
+                self.eventsService.fetchEvents(
+                    byLabel: Message.Location.inbox.labelID,
+                    notificationMessageID: nil,
+                    discardContactsMetadata: EventCheckRequest.isNoMetaDataForContactsEnabled,
+                    completion: { result in
+                        self.isFetching = false
+                        completion(result.error)
+                    })
                 self.user.contactService.fetchContacts { _ in
                 }
             }
@@ -151,9 +155,13 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
                 dependencies.mailEventsPeriodicScheduler.triggerSpecialLoop(forSpecialLoopID: user.userID.rawValue)
                 isFetching = false
             } else {
-                self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID, notificationMessageID: nil, completion: { _ in
-                    self.isFetching = false
-                })
+                self.eventsService.fetchEvents(
+                    byLabel: Message.Location.inbox.labelID,
+                    notificationMessageID: nil,
+                    discardContactsMetadata: EventCheckRequest.isNoMetaDataForContactsEnabled,
+                    completion: { _ in
+                        self.isFetching = false
+                    })
             }
         }
     }

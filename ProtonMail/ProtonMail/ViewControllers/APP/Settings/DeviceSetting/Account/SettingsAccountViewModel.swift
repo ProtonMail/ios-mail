@@ -23,6 +23,7 @@
 import Foundation
 import ProtonCoreDataModel
 import ProtonCoreAccountDeletion
+import ProtonCoreAccountRecovery
 
 enum SettingAccountSection: Int, CustomStringConvertible {
     case account
@@ -54,6 +55,7 @@ enum SettingsAccountItem: Int, CustomStringConvertible {
     case recovery
     case storage
     case privacyAndData
+    case accountRecovery
 
     var description: String {
         switch self {
@@ -69,6 +71,8 @@ enum SettingsAccountItem: Int, CustomStringConvertible {
             return L11n.AccountSettings.storage
         case .privacyAndData:
             return L11n.AccountSettings.privacyAndData
+        case .accountRecovery:
+            return AccountRecoveryModule.settingsItem
         }
     }
 }
@@ -138,13 +142,18 @@ final class SettingsAccountViewModel {
         } else {
             items = [.loginPassword, .mailboxPassword]
         }
-
-        items.append(contentsOf: [.recovery, .storage])
+        items.append(.recovery)
+        if userManager.isAccountRecoveryEnabled,
+           let accountRecovery = userManager.userInfo.accountRecovery,
+           accountRecovery.isVisibleInSettings
+        {
+            items.append(.accountRecovery)
+        }
+        items.append(.storage)
 
         #if DEBUG
         items.append(.privacyAndData)
         #endif
-
         return items
     }
 
@@ -152,8 +161,6 @@ final class SettingsAccountViewModel {
     let mailboxItems: [SettingsMailboxItem]
 
     private let userManager: UserManager
-
-    var reloadTable: (() -> Void)?
 
     init(user: UserManager, isMessageSwipeNavigationEnabled: Bool) {
         self.userManager = user
@@ -176,6 +183,12 @@ final class SettingsAccountViewModel {
             let formattedMaxSpace = ByteCountFormatter.string(fromByteCount: Int64(maxSpace), countStyle: ByteCountFormatter.CountStyle.binary)
 
             return "\(formattedUsedSpace) / \(formattedMaxSpace)"
+        }
+    }
+
+    var accountRecoveryText: String {
+        get {
+            self.userManager.userInfo.accountRecovery?.valueForSettingsItem ?? ""
         }
     }
 
@@ -227,6 +240,11 @@ final class SettingsAccountViewModel {
 
     var isAutoDeleteSpamAndTrashEnabled: Bool {
         userManager.isAutoDeleteEnabled
+    }
+
+    var jumpToNextMessageDescription: String {
+        let isEnabled = userManager.container.nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove
+        return isEnabled ? LocalString._settings_On_title : LocalString._settings_Off_title
     }
 
     var isPaidUser: Bool {

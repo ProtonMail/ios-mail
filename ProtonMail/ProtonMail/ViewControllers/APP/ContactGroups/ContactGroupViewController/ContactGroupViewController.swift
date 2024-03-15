@@ -41,6 +41,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     & HasContactViewsFactory
     & HasCoreDataContextProviderProtocol
     & ContactsAndGroupsSharedCode.Dependencies
+    & HasUserManager
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -58,8 +59,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     private var totalSelectedContactGroups: Int = 0 {
         didSet {
             if isEditingState {
-                title = String(format: LocalString._contact_groups_selected_group_count_description,
-                               totalSelectedContactGroups)
+                title = String(format: LocalString._selected_navogationTitle, totalSelectedContactGroups)
             }
         }
     }
@@ -103,7 +103,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         view.backgroundColor = ColorProvider.BackgroundNorm
         tableView.backgroundColor = ColorProvider.BackgroundNorm
 
-        setupMenuButton()
+        setupMenuButton(userInfo: dependencies.user.userInfo)
 
         if self.viewModel.initEditing() {
             isEditingState = true
@@ -126,6 +126,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         self.viewModel.timerStart(true)
         self.isOnMainView = true
         self.viewModel.user.undoActionManager.register(handler: self)
+        self.setupMenuButton(userInfo: dependencies.user.userInfo)
         NotificationCenter.default.addKeyboardObserver(self)
     }
 
@@ -248,8 +249,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
 
     private func prepareNavigationItemTitle() {
         if isEditingState {
-            title = String(format: LocalString._contact_groups_selected_group_count_description,
-                           0)
+            title = String(format: LocalString._selected_navogationTitle, 0)
         } else {
             title = LocalString._menu_contact_group_title
         }

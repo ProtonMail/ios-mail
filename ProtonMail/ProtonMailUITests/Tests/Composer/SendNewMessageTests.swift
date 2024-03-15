@@ -43,7 +43,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
 
     // TODO: backend need a not trusted contact
     func xtestSendMessageToInternalNotTrustedContact() {
-        let to = testData.internalEmailNotTrustedKeys.email
+        let to = testData.internalEmailNotTrustedKeys.dynamicDomainEmail
         LoginRobot()
             .loginUser(testData.onePassUser)
             .compose()
@@ -86,7 +86,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .compose()
-                .sendMessageWithPassword(user.email, subject, body, password, hint)
+                .sendMessageWithPassword(user.dynamicDomainEmail, subject, body, password, hint)
                 .menuDrawer()
                 .sent()
                 .refreshMailbox()
@@ -98,7 +98,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .compose()
-                .sendMessageExpiryTimeInDays(user.email, subject, body, expirePeriod: .oneDay)
+                .sendMessageExpiryTimeInDays(user.dynamicDomainEmail, subject, body, expirePeriod: .oneDay)
                 .menuDrawer()
                 .sent()
                 .refreshMailbox()
@@ -112,7 +112,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .compose()
-                .sendMessageEOAndExpiryTime(user.email, subject, password, hint, expirePeriod: .oneDay)
+                .sendMessageEOAndExpiryTime(user.dynamicDomainEmail, subject, password, hint, expirePeriod: .oneDay)
                 .menuDrawer()
                 .sent()
                 .refreshMailbox()
@@ -139,7 +139,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .compose()
-                .sendMessageWithAttachments(user.email, subject, attachmentsAmount: 2)
+                .sendMessageWithAttachments(user.dynamicDomainEmail, subject, attachmentsAmount: 2)
                 .menuDrawer()
                 .sent()
                 .refreshMailbox()
@@ -183,7 +183,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .compose()
-                .sendMessageEOAndExpiryTimeWithAttachment(user.email, subject, password, hint, expirePeriod: .oneDay)
+                .sendMessageEOAndExpiryTimeWithAttachment(user.dynamicDomainEmail, subject, password, hint, expirePeriod: .oneDay)
                 .menuDrawer()
                 .sent()
                 .refreshMailbox()
@@ -197,7 +197,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
             InboxRobot()
                 .compose()
                 .changeFromAddressTo(user.pmMeEmail)
-                .sendMessage(user.email, subject)
+                .sendMessage(user.dynamicDomainEmail, subject)
                 .menuDrawer()
                 .sent()
                 .verify.messageExists(subject)
@@ -207,7 +207,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
     // TODO: backend need a user with another pm me address
     func xtestSendMessageWithAttachmentFromPmMe() {
         let onePassUserPmMeAddress = testData.onePassUser.pmMeEmail
-        let to = testData.internalEmailNotTrustedKeys.email
+        let to = testData.internalEmailNotTrustedKeys.dynamicDomainEmail
         LoginRobot()
             .loginUser(testData.onePassUser)
             .compose()
@@ -220,8 +220,8 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
     
     /// Disabled due to issue with CC and BCC fields location
     //    func testSendMessageTOandCC() {
-    //        let to = testData.internalEmailTrustedKeys.email
-    //        let cc = testData.externalEmailPGPSigned.email
+    //        let to = testData.internalEmailTrustedKeys.dynamicDomainEmail
+    //        let cc = testData.externalEmailPGPSigned.dynamicDomainEmail
     //        LoginRobot()
     //            .loginUser(testData.onePassUser)
     //            .compose()
@@ -231,9 +231,9 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
     //            .verify.messageWithSubjectExists(subject)
     //    }
     //    func testSendMessageTOandCCandBCC() {
-    //        let to = testData.internalEmailTrustedKeys.email
-    //        let cc = testData.externalEmailPGPSigned.email
-    //        let bcc = testData.internalEmailNotTrustedKeys.email
+    //        let to = testData.internalEmailTrustedKeys.dynamicDomainEmail
+    //        let cc = testData.externalEmailPGPSigned.dynamicDomainEmail
+    //        let bcc = testData.internalEmailNotTrustedKeys.dynamicDomainEmail
     //        LoginRobot()
     //            .loginUser(testData.onePassUser)
     //            .compose()

@@ -30,11 +30,11 @@ extension UserDefaults: KeyValueStoreProvider {
         return self.object(forKey: key) as? Int
     }
 
-    func data(forKey key: String) -> Data? {
+    func data(forKey key: String, attributes: [CFString: Any]?) -> Data? {
         return self.object(forKey: key) as? Data
     }
 
-    func set(_ data: Data, forKey key: String) {
+    func set(_ data: Data, forKey key: String, attributes: [CFString: Any]?) {
         self.setValue(data, forKey: key)
     }
 

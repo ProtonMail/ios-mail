@@ -24,30 +24,33 @@ import XCTest
 final class WindowsCoordinatorTests: XCTestCase {
     private var sut: WindowsCoordinator!
     private var testContainer: TestContainer!
-    private var unlockManagerDelegateMock: MockUnlockManagerDelegate!
-    private var cacheStatusStub: CacheStatusStub!
+    private var mockKeyMaker: MockKeyMakerProtocol!
+    private var mockSetupCoreData: MockSetupCoreDataService!
+    private var mockLaunchService: MockLaunchService!
 
-    override func setUp() async throws {
-        try await super.setUp()
+    override func setUp() {
+        super.setUp()
 
         testContainer = .init()
-        unlockManagerDelegateMock = .init()
-        cacheStatusStub = .init()
+        mockKeyMaker = .init()
+        mockSetupCoreData = .init()
+        mockLaunchService = .init()
 
-        testContainer.lockCacheStatusFactory.register { self.cacheStatusStub }
+        testContainer.keyMakerFactory.register { self.mockKeyMaker }
+        testContainer.setupCoreDataServiceFactory.register { self.mockSetupCoreData }
+        testContainer.launchServiceFactory.register { self.mockLaunchService }
 
-        await setupDependencies()
+        sut = .init(dependencies: testContainer, showPlaceHolderViewOnly: false)
     }
 
     override func tearDown() {
         super.tearDown()
 
-        testContainer.keychain.removeEverything()
-
-        sut = nil
         testContainer = nil
-        unlockManagerDelegateMock = nil
-        cacheStatusStub = nil
+        mockKeyMaker = nil
+        mockSetupCoreData = nil
+        mockLaunchService = nil
+        sut = nil
     }
 
     func testInit_defaultWindowIsPlaceHolder() {
@@ -55,109 +58,105 @@ final class WindowsCoordinatorTests: XCTestCase {
         XCTAssertTrue(sut.appWindow.rootViewController is PlaceholderViewController)
     }
 
-    func testStart_isRunningUnitTest_noUserStored_didNotReceiveSignOutNotification() {
-        let e = expectation(
-            forNotification: .didSignOutLastAccount,
-            object: nil,
-            notificationCenter: testContainer.notificationCenter
-        )
-        e.isInverted = true
-        unlockManagerDelegateMock.cleanAllStub.bodyIs { _, completion in
-            completion()
-        }
-        instantiateNewSUT(showPlaceHolderViewOnly: true, isAppAccessResolverEnabled: false)
+    // MARK: start method
 
-        sut.start()
+    //  launch service is called
 
-        waitForExpectations(timeout: 1)
+    func testStart_whenAppAccessIsGranted_itShouldCallLaunchStart() {
+        setUpAppAccessGranted()
+
+        executeStartAndWaitCompletion()
+
+        XCTAssertTrue(mockLaunchService.startStub.wasCalledExactlyOnce)
     }
 
-    func testStart_withNoUserStored_receiveDidSignOutNotification() {
-        expectation(
-            forNotification: .didSignOutLastAccount,
-            object: nil,
-            notificationCenter: testContainer.notificationCenter
-        )
-        unlockManagerDelegateMock.cleanAllStub.bodyIs { _, completion in
-            completion()
-        }
-        instantiateNewSUT(showPlaceHolderViewOnly: false, isAppAccessResolverEnabled: false)
+    func testStart_whenAppAccessIsDenied_itShouldCallLaunchStart() {
+        setUpAppAccessDeniedReasonAppLock()
 
-        sut.start()
+        mockKeyMaker.isTouchIDEnabledStub.fixture = true
+        executeStartAndWaitCompletion()
 
-        waitForExpectations(timeout: 1)
+        XCTAssertTrue(mockLaunchService.startStub.wasCalledExactlyOnce)
     }
 
-    func testStart_withPinProtection_goToLockWindowAndShowPinCodeView() {
-        testContainer.usersManager.add(newUser: UserManager(api: APIServiceMock()))
+    //  windows are set
 
-        cacheStatusStub.isPinCodeEnabledStub = true
-        instantiateNewSUT(showPlaceHolderViewOnly: false, isAppAccessResolverEnabled: false)
+    func testStart_whenAppAccessIsGranted_itShouldSetAppWindow() {
+        setUpAppAccessGranted()
 
-        sut.start()
+        executeStartAndWaitCompletion()
 
-        wait(self.sut.lockWindow != nil)
-        wait(self.sut.lockWindow?.topmostViewController() is PinCodeViewController)
+        XCTAssert(sut.appWindow != nil)
     }
 
-    func testStart_withUserStored_noMailboxPWDStored_goToLockWindow() {
-        unlockManagerDelegateMock.isUserStoredStub.bodyIs { _ in
-            true
-        }
-        unlockManagerDelegateMock.isMailboxPasswordStoredStub.bodyIs { _, _ in
-            false
-        }
-        testContainer.usersManager.add(newUser: UserManager(api: APIServiceMock()))
-        instantiateNewSUT(showPlaceHolderViewOnly: false, isAppAccessResolverEnabled: false)
+    func testStart_whenAppAccessIsDeniedBecauseThereAreUsersButThereIsNoMainKey_itShouldSetLockWindow() {
+        setUpAppAccessDeniedReasonAppLock()
 
-        sut.start()
+        executeStartAndWaitCompletion()
 
-        // Sign in View is not stored in the WindowsCoordinator.
-        wait(self.sut.lockWindow == nil)
-        wait(self.sut.appWindow == nil)
+        let expectation = expectation(description: "assertion in main thread")
+        DispatchQueue.main.async {
+            XCTAssert(self.sut.lockWindow != nil)
+            expectation.fulfill()
+        }
+        wait(for: [expectation])
     }
 
-    func testStart_withUserStored_receivedDidUnlockNotification() {
-        expectation(
-            forNotification: .didUnlock,
-            object: nil,
-            notificationCenter: testContainer.notificationCenter
-        )
-        unlockManagerDelegateMock.isUserStoredStub.bodyIs { _ in
-            true
+    func testStart_whenAppAccessIsDeniedBecauseThereAreNoUsers_itCurrentWindowChangesToShowSignIn() {
+        executeStartAndWaitCompletion()
+
+        let expectation = expectation(description: "assertion in main thread")
+        DispatchQueue.main.async {
+            XCTAssert(self.sut.lockWindow == nil)
+            XCTAssert(self.sut.appWindow == nil)
+            expectation.fulfill()
         }
-        unlockManagerDelegateMock.isMailboxPasswordStoredStub.bodyIs { _, _ in
-            true
-        }
-        testContainer.usersManager.add(newUser: UserManager(api: APIServiceMock()))
-        instantiateNewSUT(showPlaceHolderViewOnly: false, isAppAccessResolverEnabled: false)
+        wait(for: [expectation])
+    }
 
-        sut.start()
+    // access denied subscription
 
-        waitForExpectations(timeout: 1)
+    func testStart_whenAccessGranted_andAccessDeniedReceived_itShouldSetLockWindow() {
+        setUpAppAccessGranted()
+        executeStartAndWaitCompletion()
 
-        wait(self.sut.appWindow != nil)
-        XCTAssertNil(sut.lockWindow)
-        wait(self.sut.appWindow.topmostViewController() is SkeletonViewController)
+        mockKeyMaker.isTouchIDEnabledStub.fixture = true
+        simulateAppLockedByUserAction()
+
+        // To wait navigate(from:...) closure 
+        wait(self.sut.currentWindow?.rootViewController?.presentedViewController != nil, timeout: 5)
     }
 }
 
-private extension WindowsCoordinatorTests {
-    func instantiateNewSUT(showPlaceHolderViewOnly: Bool, isAppAccessResolverEnabled: Bool) {
-        sut = .init(
-            dependencies: testContainer,
-            showPlaceHolderViewOnly: showPlaceHolderViewOnly,
-            isAppAccessResolverEnabled: isAppAccessResolverEnabled
-        )
+extension WindowsCoordinatorTests {
+
+    private func executeStartAndWaitCompletion() {
+        let expectation = expectation(description: "start has completed")
+        sut.start() {
+            expectation.fulfill()
+        }
+        wait(for: [expectation])
     }
 
-    func setupDependencies() async {
-        testContainer.unlockManager.delegate = unlockManagerDelegateMock
+    private func setUpAppAccessGranted() {
+        addNewUser()
+        mockKeyMaker.isMainKeyInMemory = true
+    }
 
-        return await withCheckedContinuation { continuation in
-            testContainer.keyMaker.activate(RandomPinProtection(pin: String.randomString(32), keychain: testContainer.keychain)) { success in
-                continuation.resume()
-            }
+    private func setUpAppAccessDeniedReasonAppLock() {
+        addNewUser()
+        mockKeyMaker.isMainKeyInMemory = false
+    }
+
+    private func simulateAppLockedByUserAction() {
+        mockKeyMaker.isMainKeyInMemory = false
+        testContainer.notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
+    }
+
+    private func addNewUser() {
+        mockKeyMaker.mainKeyStub.bodyIs { _, _ in
+            NoneProtection.generateRandomValue(length: 32)
         }
+        testContainer.usersManager.add(newUser: UserManager(api: APIServiceMock()))
     }
 }

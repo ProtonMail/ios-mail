@@ -21,17 +21,25 @@ struct TelemetryService {
     typealias Dependencies = AnyObject & HasAPIService & HasUserDefaults
 
     private let userID: UserID
+    private let shouldBuildSendTelemetry: Bool
     private let isTelemetrySettingOn: () -> Bool
     private unowned let dependencies: Dependencies
 
-    init(userID: UserID, isTelemetrySettingOn: @escaping () -> Bool, dependencies: Dependencies) {
+    init(
+        userID: UserID,
+        shouldBuildSendTelemetry: Bool,
+        isTelemetrySettingOn: @escaping () -> Bool,
+        dependencies: Dependencies
+    ) {
         self.userID = userID
+        self.shouldBuildSendTelemetry = shouldBuildSendTelemetry
         self.isTelemetrySettingOn = isTelemetrySettingOn
         self.dependencies = dependencies
     }
 
     func sendEvent(_ event: TelemetryEvent) async {
         guard
+            shouldBuildSendTelemetry,
             isTelemetrySettingOn(),
             frequencyAllowsSending(event: event)
         else { return }

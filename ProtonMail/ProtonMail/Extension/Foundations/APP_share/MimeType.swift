@@ -29,12 +29,6 @@ extension URL {
     }
 }
 
-extension NSString {
-    func mimeType() -> String {
-        MIMETypeBuilder.mimeType(from: pathExtension)
-    }
-}
-
 extension String {
     var pathExtension: String {
         (self as NSString).pathExtension
@@ -55,7 +49,10 @@ extension AttachmentConvertible {
 
 enum MIMEType: String {
     case ics = "text/calendar"
+    /// Google's special one that doesn't have standard newlines/
+    case applicationICS = "application/ics"
     case `default` = "application/octet-stream"
+    case pgpKeys = "application/pgp-keys"
 }
 
 private struct MIMETypeBuilder {

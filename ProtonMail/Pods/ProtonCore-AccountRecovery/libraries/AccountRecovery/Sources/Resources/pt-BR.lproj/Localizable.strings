@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "Redefinição de senha";
+
+"Account_Recovery_Insecure_View_Title" = "Redefinir sua senha";
+
+"Account_Recovery_Grace_View_Title" = "Você gostaria de redefinir sua senha?";
+
+"Account_Recovery_Grace_View_line1" = "Recebemos uma solicitação para redefinição da sua senha ";
+
+"Account_Recovery_Insecure_View_line1" = "Agora você pode alterar a senha da sua conta ";
+
+"Account_Recovery_Insecure_View_line2" = " a qualquer momento durante ";
+
+"Account_Recovery_Insecure_View_line3" = "Vá ao dispositivo já conectado a sua conta (onde a solicitação foi realizada) para alterar sua senha.";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "Cancelar solicitação";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "algumas horas";
+
+"Account_Recovery_Grace_View_line2" = "Para manter sua conta segura, queremos garantir que seja realmente você tentando redefinir sua senha. Você poderá redefinir sua senha em ";
+
+"Account_Recovery_Grace_View_line3" = "Se você não fez está solicitação, ou se você precisa mais de ajuda para acessar, por favor cancele esta solicitação e siga os passos para tornar sua conta mais segura.";

@@ -27,10 +27,10 @@ struct DeviceRegistration: DeviceRegistrationUseCase {
 
     private var apnEnvironment: DeviceAPI.APNEnvironment {
         let result: DeviceAPI.APNEnvironment
-        if UIApplication.isEnterprise {
-            result = UIApplication.isDebug ? .enterpriseDev : .enterpriseProd
+        if Application.isEnterprise {
+            result = Application.isDebug ? .enterpriseDev : .enterpriseProd
         } else {
-            result = UIApplication.isDebug ? .development : .production
+            result = Application.isDebug ? .development : .production
         }
         return result
     }

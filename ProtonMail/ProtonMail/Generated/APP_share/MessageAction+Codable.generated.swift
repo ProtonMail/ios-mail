@@ -33,6 +33,7 @@ extension MessageAction: Codable {
         case addContactGroup
         case updateContactGroup
         case deleteContactGroup
+        case fetchContactDetail
         case notificationAction
         case blockSender
         case unblockSender
@@ -100,6 +101,8 @@ extension MessageAction: Codable {
             return "updateContactGroup"
         case .deleteContactGroup:
             return "deleteContactGroup"
+        case .fetchContactDetail:
+            return "fetchContactDetail"
         case .notificationAction:
             return "notificationAction"
         case .blockSender:
@@ -289,6 +292,11 @@ extension MessageAction: Codable {
             self = .deleteContactGroup(
                 objectID: try nestedContainer.decode(String.self, forKey: .objectID)
             )
+        case .fetchContactDetail:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .fetchContactDetail)
+            self = .fetchContactDetail(
+                contactIDs: try nestedContainer.decode([String].self, forKey: .contactIDs)
+            )
         case .notificationAction:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .notificationAction)
             self = .notificationAction(
@@ -429,6 +437,9 @@ extension MessageAction: Codable {
         case let .deleteContactGroup(objectID):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteContactGroup)
             try nestedContainer.encode(objectID, forKey: .objectID)
+        case let .fetchContactDetail(contactIDs):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .fetchContactDetail)
+            try nestedContainer.encode(contactIDs, forKey: .contactIDs)
         case let .notificationAction(messageID, action):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .notificationAction)
             try nestedContainer.encode(messageID, forKey: .messageID)

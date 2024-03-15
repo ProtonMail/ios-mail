@@ -18,5 +18,7 @@
 	<string>4.13.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>DYNAMIC_DOMAIN</key>
+	<string>${DYNAMIC_DOMAIN}</string>
 </dict>
 </plist>

@@ -80,7 +80,7 @@ class PlansDataSource: PlansDataSourceProtocol {
     }
 
     func fetchIAPAvailability() async throws {
-        let paymentStatusRequest = PaymentStatusRequest(api: apiService)
+        let paymentStatusRequest = V5PaymentStatusRequest(api: apiService)
         let paymentStatusResponse = try await paymentStatusRequest.response(responseObject: PaymentStatusResponse())
         paymentsBackendStatusAcceptsIAP = paymentStatusResponse.isAvailable ?? false
     }
@@ -120,7 +120,7 @@ class PlansDataSource: PlansDataSourceProtocol {
     }
 
     func fetchPaymentMethods() async throws {
-        let paymentMethodsRequest = MethodRequest(api: apiService)
+        let paymentMethodsRequest = V5MethodRequest(api: apiService)
         let paymentMethodsResponse = try await paymentMethodsRequest.response(responseObject: MethodResponse())
         paymentMethods = paymentMethodsResponse.methods
     }

@@ -22,5 +22,6 @@
 import Foundation
 
 public struct ValidateSubscription: Codable {
+    public let amount: Int
     public let amountDue: Int
 }

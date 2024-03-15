@@ -1312,7 +1312,15 @@ enum EventTestData {
                     "15"
                 ],
                 "AttachmentInfo": {},
-                "AttachmentsMetadata": []
+                "AttachmentsMetadata": [
+                    {
+                        "ID": "pNnebrcs9wmfCa7le_relCZVwAEnhToQ1Z-cWGbdEGWxZjLQ7DGRhV-Bc373AzmGTuiog4MCzH5J2qxT4-nw4w==",
+                        "Name": "Test.pdf",
+                        "Size": 434137,
+                        "MIMEType": "application/pdf",
+                        "Disposition": "attachment"
+                    }
+                ]
             }
         }
     ],
@@ -1378,5 +1386,144 @@ enum EventTestData {
     ],
     "Notices": []
 }
+"""
+
+    static let contactEvents_insertsAndUpdates_lessThan15 = """
+{
+          "Code": 1000,
+          "EventID": "F5Lr-HwtHPeRwIgrzlR6r4i6t408b86KaY97AANQ2ybfOka2eGWNPvtibNB4Sz19OPb2JRJ6mX_xy1ay4354Tg==",
+          "Refresh": 0,
+          "More": 0,
+          "Contacts": [
+            {
+              "ID": "FU3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "EK2sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 1
+            },
+            {
+              "ID": "PA9sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "FU3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            }
+          ],
+          "UsedSpace": 77985967,
+          "UsedBaseSpace": 77985967,
+          "UsedDriveSpace": 0,
+          "ProductUsedSpace": {
+            "Calendar": 0,
+            "Contact": 386903,
+            "Drive": 0,
+            "Mail": 77599064,
+            "Pass": 0
+          },
+          "Notifications": [],
+          "Notices": []
+        }
+"""
+
+    static let contactEvents_insertsAndUpdates_moreThan15 = """
+{
+          "Code": 1000,
+          "EventID": "F5Lr-HwtHPeRwIgrzlR6r4i6t408b86KaY97AANQ2ybfOka2eGWNPvtibNB4Sz19OPb2JRJ6mX_xy1ay4354Tg==",
+          "Refresh": 0,
+          "More": 0,
+          "Contacts": [
+            {
+              "ID": "FU3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "EK2sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 1
+            },
+            {
+              "ID": "PA9sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "FU3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "DD2sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 1
+            },
+            {
+              "ID": "RR9sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "WW3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "HH2sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 1
+            },
+            {
+              "ID": "JJ9sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "UU3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "TT2sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 1
+            },
+            {
+              "ID": "EP9sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "TI3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "IW2sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 1
+            },
+            {
+              "ID": "SR9sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "AB3sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "AC2sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 1
+            },
+            {
+              "ID": "AD9sgyFSwzI_zid5ChG0_NKTsf1zfcc7YLw6YUBDOePKs5XavUQeb9TxFIlFpYxnPEzE4qmR3H1uD8lrKEahXQ==",
+              "Action": 2
+            },
+            {
+              "ID": "c4-E6qq6WXuDfn-5wwTmlGu6QZab3XicOGfrllraZT2jpt1zUB_UepxnBAYpET2q80LBOz1-kcDV9HAd2f9ZhA==",
+              "Action": 2
+            }
+          ],
+          "UsedSpace": 77985967,
+          "UsedBaseSpace": 77985967,
+          "UsedDriveSpace": 0,
+          "ProductUsedSpace": {
+            "Calendar": 0,
+            "Contact": 386903,
+            "Drive": 0,
+            "Mail": 77599064,
+            "Pass": 0
+          },
+          "Notifications": [],
+          "Notices": []
+        }
+
 """
 }

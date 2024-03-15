@@ -22,6 +22,7 @@
 
 import Combine
 import ProtonCoreUIFoundations
+import ProtonMailUI
 import UIKit
 
 protocol AttachmentViewControllerDelegate: AnyObject {
@@ -79,6 +80,8 @@ class AttachmentViewController: UIViewController {
     }
 
     private func setup(view: AttachmentView, with data: AttachmentViewModel) {
+        view.isHidden = data.numberOfAttachments == 0
+
         var text = String(format: LocalString._attachment, data.numberOfAttachments)
 
         let byteCountFormatter = ByteCountFormatter()
@@ -164,20 +167,23 @@ class AttachmentViewController: UIViewController {
         switch instruction {
         case .openDeepLink(let url):
             UIApplication.shared.open(url, options: [:])
-        case .goToAppStore(let askBeforeGoing):
-            if askBeforeGoing {
-                let alert = UIAlertController(
-                    title: "Proton Calendar",
-                    message: L11n.ProtonCalendarIntegration.downloadCalendarAlert,
-                    preferredStyle: .actionSheet
-                )
+        case .promptToUpdateCalendarApp:
+            let alert = UIAlertController(
+                title: "Proton Calendar",
+                message: L11n.ProtonCalendarIntegration.downloadCalendarAlert,
+                preferredStyle: .actionSheet
+            )
 
-                alert.addURLAction(title: L11n.ProtonCalendarIntegration.downloadInAppStore, url: .AppStore.calendar)
-                alert.addCancelAction()
-                present(alert, animated: true)
-            } else {
-                UIApplication.shared.open(.AppStore.calendar, options: [:])
-            }
+            alert.addURLAction(title: L11n.ProtonCalendarIntegration.downloadInAppStore, url: .AppStore.calendar)
+            alert.addCancelAction()
+            present(alert, animated: true)
+        case .goToAppStoreDirectly:
+            UIApplication.shared.open(.AppStore.calendar, options: [:])
+        case .presentCalendarLandingPage:
+            let landingPage = CalendarLandingPage()
+            let hostingController = SheetLikeSpotlightViewController(rootView: landingPage)
+            hostingController.modalTransitionStyle = .crossDissolve
+            present(hostingController, animated: false)
         }
     }
 }

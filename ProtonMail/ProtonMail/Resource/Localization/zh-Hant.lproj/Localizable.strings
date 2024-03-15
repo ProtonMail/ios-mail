@@ -174,12 +174,6 @@
 /* Title */
 "wrote:" = "寫道：";
 
-/* At {time}, e.g.: At 19:00 */
-"At %@" = "於 %@";
-
-/* On {date}, e.g.: On Aug 14 */
-"On %@" = "於 %@";
-
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
 "On %@ at %@" = "於 %1$@ %2$@";
 
@@ -589,6 +583,9 @@
 /* Title */
 "Reading device contacts data…" = "正在讀取裝置通訊錄資料…";
 
+/* title for the contact import indicator */
+"Importing contacts..." = "匯入聯絡人...";
+
 /* Description */
 "Do you want to cancel the process?" = "您是否要取消此程序？";
 
@@ -772,9 +769,6 @@
 "Date: %@" = "日期：%@";
 
 /* Title */
-"Details" = "詳細資訊";
-
-/* Title */
 "Hide details" = "隱藏詳細資訊";
 
 /* contact placeholder */
@@ -794,12 +788,6 @@
 
 /* action */
 "Add new URL" = "加入網址";
-
-/* settings general section title */
-"Change account password" = "變更帳號密碼";
-
-/* settings general section title */
-"Change mailbox password" = "變更郵箱密碼";
 
 /* settings general section title */
 "Auto-load remote content" = "自動載入遠端內容";
@@ -1126,9 +1114,6 @@
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "刪除聯絡人群組";
 
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "已選取 %d";
-
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "請為聯絡人群組選擇至少一封電郵";
 
@@ -1149,9 +1134,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ 拖至此處以加入附件";
-
-/* Downloading attachments from cloud */
-"Importing" = "正在匯入";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "正在匯入附件中，可能需要一點時間";
@@ -1251,9 +1233,6 @@
 
 /* cell title in app settings */
 "Alternative routing" = "替代路由";
-
-/* cell title in device settings */
-"Storage" = "儲存空間";
 
 /* cell title in device settings */
 "Addresses" = "位址";
@@ -1623,27 +1602,6 @@
 /* The title of voice over action that switches the unread filter status in the inbox */
 "Switch unread filter" = "切換顯示已讀或未讀郵件";
 
-/* Title of user feedback view */
-"Your feedback" = "您的意見回饋";
-
-/* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "歡迎告訴我們您的新版 Proton Mail 體驗，有讓您感到驚艷嗎？";
-
-/* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "與我們分享您的使用體驗。（選填）";
-
-/* Title of button to send feedback */
-"Send feedback" = "傳送意見回饋";
-
-/* Example feedback */
-"Awful" = "糟透了";
-
-/* Example feedback */
-"Wonderful" = "太棒了";
-
-/* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "感謝您的回饋！";
-
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
 "Collapse message" = "收合郵件";
 
@@ -1875,6 +1833,27 @@
 /* The content of the Customize toolbar spotlight view. */
 "You can now choose and rearrange the actions in this bar" = "您可自由選擇或重新安排工具列的動作。";
 
+/* Title of the banner alert */
+"Your Mail storage is %@ full" = "您的 Mail 儲存空間%@滿了";
+
+/* Title of the banner alert */
+"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+
+/* Title of the banner alert */
+"Your Mail storage is full" = "您的 Mail 儲存空間已滿";
+
+/* Title of the banner alert */
+"Your Drive storage is full" = "Your Drive storage is full";
+
+/* Description of the banner alert */
+"Upgrade to get more storage." = "升級以增加儲存。";
+
+/* Get more storage button action */
+"Not now" = "現在不要";
+
+/* Get more storage button action */
+"Get more storage" = "取得更多儲存空間";
+
 /* Button to block a sender */
 "Block messages from this sender" = "封鎖來自此寄件者的訊息";
 
@@ -1931,6 +1910,45 @@
 /* Button to hide some items in the list to conserve screen estate */
 "Show less" = "顯示較少";
 
+/* Text shown when opening an invitation for a past event */
+"This event already ended" = "事件已結束";
+
+/* Text shown when opening an invitation for a cancelled event */
+"This event has been cancelled" = "此事件已取消";
+
+/* Prompt above yes/no/maybe buttons */
+"Attending?" = "參加？";
+
+/* Part of a yes/no/maybe prompt */
+"Yes" = "是";
+
+/* Part of a yes/no/maybe prompt */
+"No" = "否";
+
+/* Part of a yes/no/maybe prompt */
+"Maybe" = "也許";
+
+/* Confirm attending an event */
+"Yes, I'll attend" = "是，我會出席";
+
+/* Deny attending an event */
+"No, I won't attend" = "否，我不會出席";
+
+/* Neither confirm nor deny attending an event */
+"I might attend" = "或許參加";
+
+/* Menu title */
+"Max Storage" = "Max Storage";
+
+/* Cell title that shows the percentage of the storage */
+"Storage: %@ full" = "Storage: %@ full";
+
+/* Cell title that shows the percentage of the storage */
+"Drive storage: %@ full" = "Drive storage: %@ full";
+
+/* Upgrade button action */
+"Upgrade" = "升級";
+
 /* Official badge next to sender's name */
 "Official" = "官方";
 
@@ -1971,13 +1989,16 @@
 "Auto-import device contacts" = "自動從裝置匯入聯絡人";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "開啟此功能已自動添加於裝置上的聯絡人至Proton Mail 應用程式。";
 
 /* Auto import alert title */
 "Auto-import enabled" = "自動匯入已啟用";
 
 /* Auto import alert message */
 "The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
+
+/* Alert to ask user to reauthorise access to contacts */
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission.";
 
 /* Settings lock protection section */
 "Protection" = "保護";
@@ -2043,10 +2064,10 @@
 "Application logs" = "應用程式紀錄";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Jump to next message";
+"Jump to next email" = "Jump to next email";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
@@ -2128,6 +2149,15 @@
 
 /* Title of button to empty trash folder */
 "Empty trash" = "清空垃圾桶";
+
+/* Alert prompting to update Calendar */
+"Download the latest version of the Proton Calendar to open this event" = "Download the latest version of the Proton Calendar to open this event";
+
+/* Button to open App Store */
+"Download in App Store" = "下載至App Store";
+
+/* Button to open the Calendar app */
+"Open in Proton Calendar" = "在 Proton 行事曆開啟";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
 "Clear out the junk" = "清除垃圾";
@@ -2232,19 +2262,19 @@
 "Downloading attachment" = "下載附件";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Snoozed until %@";
+"Snoozed until %@" = "已緩辦，直至 %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Unsnooze";
+"Unsnooze" = "取消緩辦";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Snooze until %@";
+"Snooze until %@" = "緩辦直至 %@";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "Conversation unsnoozed";
+"Conversation unsnoozed" = "會話已取消緩辦";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Snooze until...";
+"Snooze until..." = "緩辦直至...";
 
 /* One of snooze option shows in action sheet */
 "Later this week" = "本週稍後";
@@ -2253,16 +2283,16 @@
 "This weekend" = "本周末";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "下一週";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Please select a time in the future";
+"Please select a time in the future" = "請選取未來的某個時間";
 
 /* The title of snooze promotion view */
 "Want to snooze any time?" = "想隨時延後?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "升級即可解鎖自訂緩辦時間";
 
 /* The benefit item for snooze promotion view */
 "Up to 15 email addresses/aliases" = "至多15組電郵位址/別名";
@@ -2270,5 +2300,68 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "資料夾、標籤和篩選器無上限";
 
+/* Description string shows in spotlight view */
+"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "使用緩辦功能，設定電子郵件何時於您的收件匣中重新陳閱，現已列於工具列中。";
+
+/* Description string shows in spotlight view */
+"Snooze it for later" = "往後挪一下";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "新增附件";
+
+/* The title in setting page */
+"Swipe to next message" = "滑動至下一則訊息";
+
+/* Description text for setting */
+"Allow navigating through messages by swiping left or right." = "Allow navigating through messages by swiping left or right.";
+
+/* The title of the spotlight of the auto import contacts. */
+"Your contacts at your fingertips" = "Your contacts at your fingertips";
+
+/* The message of the spotlight of the auto import contacts. */
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+
+/* The title of the button of the spotlight of the auto import contacts. */
+"Enable auto-import" = "Enable auto-import";
+
+/* The title for no contact hint view */
+"No contacts yet" = "No contacts yet";
+
+/* The description for no contact hint view */
+"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+
+/* Button title for no contact hint view */
+"Auto-import contacts" = "Auto-import contacts";
+
+/* A title show to user after auto import button is clicked but contacts hasn't imported yet */
+"Importing your contacts" = "Importing your contacts";
+
+/* A message show to user after auto import button is clicked but contacts hasn't imported yet */
+"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+
+/* The title of the dismissable banner in the contacts view. */
+"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+
+/* The title of the privacy and data in the account setting. */
+"Privacy and data" = "隱私與數據資料";
+
+/* cell title in device settings */
+"Storage" = "儲存空間";
+
+/* settings general section title */
+"Change account password" = "變更帳號密碼";
+
+/* settings general section title */
+"Change mailbox password" = "變更郵箱密碼";
+
+/* The title of the telemetry setting. */
+"Anonymous telemetry" = "匿名遙測";
+
+/* The title of the crash report setting. */
+"Anonymous crash reports" = "匿名當機報告";
+
+/* The subtitle of the anonymous telemetry setting. */
+"To improve our services, we sometimes collect anonymized usage data." = "為了改善我們的服務，我們有時候會蒐集匿名的使用資料。";
+
+/* The subtitle of the crash report setting. */
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.";

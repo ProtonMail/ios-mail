@@ -154,10 +154,10 @@
 "Undo" = "되돌리기";
 
 /* Title */
-"Message has been deleted." = "메세지가 삭제되었습니다";
+"Message has been deleted." = "메시지가 삭제되었습니다.";
 
 /* Title */
-"Message has been moved." = "메세지가 이동되었습니다.";
+"Message has been moved." = "메시지가 이동되었습니다.";
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "이메일을 영구히 삭제하려고 합니다. 확실한가요?";
@@ -174,12 +174,6 @@
 /* Title */
 "wrote:" = "작성됨:";
 
-/* At {time}, e.g.: At 19:00 */
-"At %@" = "%@ 에";
-
-/* On {date}, e.g.: On Aug 14 */
-"On %@" = "%@ 에";
-
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
 "On %@ at %@" = "%1$@ 일 %2$@ 에";
 
@@ -190,7 +184,7 @@
 "Subject:" = "제목:";
 
 /* forwarded message title */
-"Forwarded message" = "전달 된 메세지";
+"Forwarded message" = "전달된 메시지";
 
 /* Title */
 "Set Password" = "비밀번호 설정";
@@ -581,13 +575,16 @@
 "Offline, message queued for sending" = "오프라인, 전송 대기 중인 메시지";
 
 /* Description */
-"Message sending failed. Please try again." = "메세지 발송 실패. 다시 시도해주세요.";
+"Message sending failed. Please try again." = "메시지 발송 실패. 다시 시도해주세요.";
 
 /* import contact title */
 "Importing Contacts" = "연락처를 불러오는 중";
 
 /* Title */
 "Reading device contacts data…" = "기기의 연락처 정보를 불러오고 있습니다...";
+
+/* title for the contact import indicator */
+"Importing contacts..." = "연락처를 불러오는 중...";
 
 /* Description */
 "Do you want to cancel the process?" = "결제를 취소하시겠습니까?";
@@ -772,9 +769,6 @@
 "Date: %@" = "날짜: %@";
 
 /* Title */
-"Details" = "세부사항";
-
-/* Title */
 "Hide details" = "세부 정보 숨기기";
 
 /* contact placeholder */
@@ -794,12 +788,6 @@
 
 /* action */
 "Add new URL" = "새 URL 추가";
-
-/* settings general section title */
-"Change account password" = "계정 암호 변경";
-
-/* settings general section title */
-"Change mailbox password" = "메일함 비밀번호 변경";
 
 /* settings general section title */
 "Auto-load remote content" = "자동으로 외부 콘텐츠 불러오기";
@@ -995,7 +983,7 @@
 "'On' E, MMM d, yyyy 'at' %@" = "yyyy년 MMM월 d일 (EE) %@";
 
 /* No comment provided by engineer. */
-"Message expired" = "메세지 만료됨";
+"Message expired" = "메시지 만료됨";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "메시지가 %1$d일 %2$d시 %3$d분에 만료됨";
@@ -1126,9 +1114,6 @@
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "그룹 삭제";
 
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d개 선택됨";
-
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "연락처 그룹에서 하나 이상의 이메일을 선택해주세요";
 
@@ -1149,9 +1134,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ 첨부 파일로 추가하려면 여기로 이동";
-
-/* Downloading attachments from cloud */
-"Importing" = "가져오는 중";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "첨부파일 가져오는 중, 약간의 시간이 걸립니다";
@@ -1251,9 +1233,6 @@
 
 /* cell title in app settings */
 "Alternative routing" = "대체 라우팅";
-
-/* cell title in device settings */
-"Storage" = "저장공간";
 
 /* cell title in device settings */
 "Addresses" = "주소";
@@ -1520,7 +1499,7 @@
 "Manage" = "관리";
 
 /* No comment provided by engineer. */
-"Move message" = "메세지 이동";
+"Move message" = "메시지 이동";
 
 /* No comment provided by engineer. */
 "Print" = "인쇄";
@@ -1594,7 +1573,7 @@
 "Touch ID" = "Touch ID";
 
 /* The title of the button that shows in the conversation view when there is new message coming. */
-"New Message" = "새 메세지";
+"New Message" = "새 메시지";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "선택 모드 전환";
@@ -1623,27 +1602,6 @@
 /* The title of voice over action that switches the unread filter status in the inbox */
 "Switch unread filter" = "읽지 않음 필터 변경";
 
-/* Title of user feedback view */
-"Your feedback" = "당신의 피드백";
-
-/* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "새로운 Proton Mail에 대한 당신의 경험을 어떻게 생각하시나요?";
-
-/* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "당신의 경험에 대해 알려주세요. (선택사항)";
-
-/* Title of button to send feedback */
-"Send feedback" = "의견 전송";
-
-/* Example feedback */
-"Awful" = "공포";
-
-/* Example feedback */
-"Wonderful" = "최고";
-
-/* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "피드백 주셔서 감사합니다!";
-
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
 "Collapse message" = "메시지 닫기";
 
@@ -1660,7 +1618,7 @@
 "Always off" = "항상 끄기";
 
 /* The title of banner that is shown after using swipe action to trash a message */
-"Message moved to trash" = "메세지를 휴지통으로 이동함";
+"Message moved to trash" = "메시지를 휴지통으로 이동함";
 
 /* The title of banner that is shown after using swipe action to archive a message */
 "1 message moved to archive" = "1개 메시지가 보관함으로 이동함";
@@ -1672,7 +1630,7 @@
 "Action reverted" = "동작 되돌림";
 
 /* An action title shows in ellipsis menu */
-"Compose message" = "메세지 작성";
+"Compose message" = "메시지 작성";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "휴지통 비우기";
@@ -1875,6 +1833,27 @@
 /* The content of the Customize toolbar spotlight view. */
 "You can now choose and rearrange the actions in this bar" = "이제 도구 모음에서 작업을 선택하고 이 바를 재정렬할 수 있습니다.";
 
+/* Title of the banner alert */
+"Your Mail storage is %@ full" = "메일 저장 공간이 %@ 참";
+
+/* Title of the banner alert */
+"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+
+/* Title of the banner alert */
+"Your Mail storage is full" = "메일 저장 공간이 가득 찼습니다.";
+
+/* Title of the banner alert */
+"Your Drive storage is full" = "Your Drive storage is full";
+
+/* Description of the banner alert */
+"Upgrade to get more storage." = "추가 저장 공간이 필요하다면 업그레이드하세요.";
+
+/* Get more storage button action */
+"Not now" = "다음에";
+
+/* Get more storage button action */
+"Get more storage" = "더 많은 저장공간 확보하기";
+
 /* Button to block a sender */
 "Block messages from this sender" = "이 전송자의 메시지 차단";
 
@@ -1931,6 +1910,45 @@
 /* Button to hide some items in the list to conserve screen estate */
 "Show less" = "가리기";
 
+/* Text shown when opening an invitation for a past event */
+"This event already ended" = "이 이벤트는 이미 끝났습니다";
+
+/* Text shown when opening an invitation for a cancelled event */
+"This event has been cancelled" = "이 이벤트는 취소되었습니다";
+
+/* Prompt above yes/no/maybe buttons */
+"Attending?" = "참석하시겠습니까?";
+
+/* Part of a yes/no/maybe prompt */
+"Yes" = "예";
+
+/* Part of a yes/no/maybe prompt */
+"No" = "아니오";
+
+/* Part of a yes/no/maybe prompt */
+"Maybe" = "글쎄요";
+
+/* Confirm attending an event */
+"Yes, I'll attend" = "참여함";
+
+/* Deny attending an event */
+"No, I won't attend" = "참여하지 않음";
+
+/* Neither confirm nor deny attending an event */
+"I might attend" = "아마 참여할 것 같음";
+
+/* Menu title */
+"Max Storage" = "최대 저장공간";
+
+/* Cell title that shows the percentage of the storage */
+"Storage: %@ full" = "저장공간 %@ 채워짐";
+
+/* Cell title that shows the percentage of the storage */
+"Drive storage: %@ full" = "Drive storage: %@ full";
+
+/* Upgrade button action */
+"Upgrade" = "업그레이드";
+
 /* Official badge next to sender's name */
 "Official" = "공식";
 
@@ -1978,6 +1996,9 @@
 
 /* Auto import alert message */
 "The initial import may take some time and will only occur when the app is in the foreground." = "초기 가져오기는 시간이 좀 걸릴 수 있으며 앱이 배경 상태에 있을 때만 발생합니다.";
+
+/* Alert to ask user to reauthorise access to contacts */
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "주소록에 접근할 수 없습니다. 자동 불러오기를 활성화하려면 설정에서 주소록 권한을 활성화해주세요.";
 
 /* Settings lock protection section */
 "Protection" = "보호";
@@ -2043,10 +2064,10 @@
 "Application logs" = "어플리케이션 로그";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "다음 메시지로 바로 이동";
+"Jump to next email" = "다음 이메일로 넘어가기";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "현재 메시지가 삭제, 보관 및 이동되었을 때 다음 메시지로 자동 이동합니다.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "현재 이메일이 삭제, 보관 또는 이동되었을 때 다음 메시지로 자동 이동합니다.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "예기치 못한 오류 발생, 지원 팀에 문의하십시오.\n오류: %@";
@@ -2129,6 +2150,15 @@
 /* Title of button to empty trash folder */
 "Empty trash" = "휴지통 비우기";
 
+/* Alert prompting to update Calendar */
+"Download the latest version of the Proton Calendar to open this event" = "최신 버전의 Proton Calendar를 다운로드하고 이 이벤트 열기";
+
+/* Button to open App Store */
+"Download in App Store" = "App Store에서 다운로드";
+
+/* Button to open the Calendar app */
+"Open in Proton Calendar" = "Proton Calendar에서 열기";
+
 /* Title of the sheet to advertise the auto delete feature to free users */
 "Clear out the junk" = "정크 삭제";
 
@@ -2145,7 +2175,7 @@
 "Sender changed" = "발신자가 변경됨";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
-"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "원전송자의 메세지가 더 이상 유효하지 않습니다. 사용자의 메시지가 곧 일반 %@ 로 전송됩니다.";
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "원전송자의 메시지가 더 이상 유효하지 않습니다. 사용자의 메시지가 곧 일반 %@ 로 전송됩니다.";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "모든 첨부 파일이 업로드되면 다시 시도하세요.";
@@ -2270,5 +2300,68 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "무제한 폴더, 라벨, 필터";
 
+/* Description string shows in spotlight view */
+"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "도구 모음에서 찾을 수 있는 방해 금지 기능으로 받은 편지함에 언제 다시 표시될지를 정할 수 있습니다.";
+
+/* Description string shows in spotlight view */
+"Snooze it for later" = "나중에 방해 금지 상태로 전환";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "첨부 파일로 추가";
+
+/* The title in setting page */
+"Swipe to next message" = "다음 메시지로 넘기기";
+
+/* Description text for setting */
+"Allow navigating through messages by swiping left or right." = "좌우로 밀어서 메시지 간에 이동할 수 있도록 허용해주세요.";
+
+/* The title of the spotlight of the auto import contacts. */
+"Your contacts at your fingertips" = "Your contacts at your fingertips";
+
+/* The message of the spotlight of the auto import contacts. */
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+
+/* The title of the button of the spotlight of the auto import contacts. */
+"Enable auto-import" = "Enable auto-import";
+
+/* The title for no contact hint view */
+"No contacts yet" = "No contacts yet";
+
+/* The description for no contact hint view */
+"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+
+/* Button title for no contact hint view */
+"Auto-import contacts" = "Auto-import contacts";
+
+/* A title show to user after auto import button is clicked but contacts hasn't imported yet */
+"Importing your contacts" = "Importing your contacts";
+
+/* A message show to user after auto import button is clicked but contacts hasn't imported yet */
+"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+
+/* The title of the dismissable banner in the contacts view. */
+"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+
+/* The title of the privacy and data in the account setting. */
+"Privacy and data" = "프라이버시와 데이터";
+
+/* cell title in device settings */
+"Storage" = "저장공간";
+
+/* settings general section title */
+"Change account password" = "계정 암호 변경";
+
+/* settings general section title */
+"Change mailbox password" = "메일함 비밀번호 변경";
+
+/* The title of the telemetry setting. */
+"Anonymous telemetry" = "익명 원격 측정";
+
+/* The title of the crash report setting. */
+"Anonymous crash reports" = "익명 충돌 보고서";
+
+/* The subtitle of the anonymous telemetry setting. */
+"To improve our services, we sometimes collect anonymized usage data." = "서비스 품질 향상을 위해, 익명의 데이터를 수집할 수 있습니다.";
+
+/* The subtitle of the crash report setting. */
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "앱 크래시가 일어난다면 원인의 세부 사항이 포함된 보고서가 엔지니어들에게 보내집니다. 이것은 오직 앱 개선 용도로만 쓰입니다.";

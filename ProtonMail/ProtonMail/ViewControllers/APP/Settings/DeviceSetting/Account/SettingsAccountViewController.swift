@@ -23,6 +23,7 @@
 import LifetimeTracker
 import MBProgressHUD
 import ProtonCoreAccountDeletion
+import ProtonCoreAccountRecovery
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
 import UIKit
@@ -63,10 +64,6 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
 
         updateTitle()
 
-        viewModel.reloadTable = { [weak self] in
-            self?.tableView.reloadData()
-        }
-
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: CellKey.headerCell)
         tableView.register(SettingsGeneralCell.self)
         tableView.register(SettingsTwoLinesCell.self)
@@ -91,7 +88,12 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
         super.viewWillAppear(animated)
 
         navigationController?.setNavigationBarHidden(false, animated: true)
-        self.tableView.reloadData()
+        if isAccountDeletionPending {
+            // reset the flag when the account view is shown again.
+            isAccountDeletionPending = false
+        } else {
+            self.tableView.reloadData()
+        }
     }
 
     // MARK: - table view delegate
@@ -265,6 +267,8 @@ extension SettingsAccountViewController {
                 cellToUpdate.configure(right: viewModel.recoveryEmail)
             case .storage:
                 cellToUpdate.configureCell(left: nil, right: viewModel.storageText, imageType: .none)
+            case .accountRecovery:
+                cellToUpdate.configureCell(left: nil, right: viewModel.accountRecoveryText, imageType: .none)
             }
         }
     }
@@ -293,6 +297,8 @@ extension SettingsAccountViewController {
             return imageCell(for: indexPath, item: item)
         case .storage:
             return generalCell(for: indexPath, item: item, rightLabel: "100 MB (disabled)")
+        case .nextMsgAfterMove:
+            return generalCell(for: indexPath, item: item, rightLabel: viewModel.jumpToNextMessageDescription)
         default:
             return generalCell(for: indexPath, item: item, rightLabel: "")
         }
@@ -349,6 +355,8 @@ extension SettingsAccountViewController {
             self.coordinator.go(to: .recoveryEmail)
         case .privacyAndData:
             coordinator.go(to: .privacyAndData)
+        case .accountRecovery:
+            self.coordinator.go(to: .accountRecovery)
         case .storage:
             break
         }

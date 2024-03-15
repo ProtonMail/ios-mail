@@ -29,6 +29,7 @@ private enum CSSKeys: String {
     case borderTop = "border-top"
     case borderLeft = "border-left"
     case borderRight = "border-right"
+    case webkitTextFillColor = "-webkit-text-fill-color"
 
     case target, id, `class`
 
@@ -241,7 +242,8 @@ struct CSSMagic {
             CSSKeys.borderTop.rawValue,
             CSSKeys.borderLeft.rawValue,
             CSSKeys.borderRight.rawValue,
-            CSSKeys.borderBottom.rawValue
+            CSSKeys.borderBottom.rawValue,
+            CSSKeys.webkitTextFillColor.rawValue
         ]
         for keyword in keywords {
             guard node.hasAttr(keyword) else { continue }
@@ -481,6 +483,7 @@ extension CSSMagic {
         do {
             let bgStyle = try node.attr(CSSKeys.bgColor.rawValue)
             let colorStyle = try node.attr(CSSKeys.color.rawValue)
+            let webkitTextFillColorStyle = try node.attr(CSSKeys.webkitTextFillColor.rawValue)
             let style = try node.attr(CSSKeys.style.rawValue)
             var attributes = CSSMagic.splitInline(attributes: style)
             if bgStyle.isEmpty == false {
@@ -488,6 +491,9 @@ extension CSSMagic {
             }
             if colorStyle.isEmpty == false {
                 attributes.append((CSSKeys.color.rawValue, colorStyle, false))
+            }
+            if webkitTextFillColorStyle.isEmpty == false {
+                attributes.append((CSSKeys.webkitTextFillColor.rawValue, colorStyle, false))
             }
             return CSSMagic.switchToDarkModeStyle(attributes: attributes)
         } catch {
@@ -537,13 +543,15 @@ extension CSSMagic {
                         CSSKeys.borderTop.rawValue,
                         CSSKeys.borderLeft.rawValue,
                         CSSKeys.borderRight.rawValue,
-                        CSSKeys.borderBottom.rawValue
+                        CSSKeys.borderBottom.rawValue,
+                        CSSKeys.webkitTextFillColor.rawValue
         ]
         for attribute in attributes {
             guard keywords.contains(attribute.key.lowercased()) else { continue }
             let color = attribute.value.preg_replace("!important", replaceto: "").lowercased()
             guard color != CSSKeys.transparent.rawValue else { continue }
-            let isForeground = attribute.key.lowercased() == CSSKeys.color.rawValue
+            let isForeground = [CSSKeys.webkitTextFillColor.rawValue, CSSKeys.color.rawValue]
+                .contains(attribute.key.lowercased())
             guard let hsla = CSSMagic.getDarkModeColor(from: color, isForeground: isForeground) else {
                 continue
             }
@@ -974,6 +982,7 @@ extension CSSMagic {
                         styleValue.contains(check: ignoreKey) || partialResult
                     }
                 }
+                .filter { !$0.contains(check: "$")} // style="display: block;${directionInStyle}"
             let assemble = values
                 .map { value in
                     let text = value.preg_replace_none_regex("!important", replaceto: "").trim()

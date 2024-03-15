@@ -23,10 +23,10 @@
 import Foundation
 
 protocol KeyValueStoreProvider: AnyObject {
-    func data(forKey key: String) -> Data?
+    func data(forKey key: String, attributes: [CFString: Any]?) -> Data?
     func int(forKey key: String) -> Int?
     func set(_ intValue: Int, forKey key: String)
-    func set(_ data: Data, forKey key: String)
+    func set(_ data: Data, forKey key: String, attributes: [CFString: Any]?)
     func remove(forKey key: String)
 }
 
@@ -53,7 +53,7 @@ extension Saver where T == String {
             self.store.remove(forKey: key)
             return
         }
-        self.store.set(raw, forKey: key)
+        self.store.set(raw, forKey: key, attributes: nil)
     }
 }
 
@@ -89,7 +89,7 @@ extension Saver where T == Int {
 
 extension Saver where T: Codable {
     private func getFromStore() -> T? {
-        guard let raw = self.store.data(forKey: key),
+        guard let raw = self.store.data(forKey: key, attributes: nil),
             let subscription = try? PropertyListDecoder().decode(T.self, from: raw) else {
             return nil
         }
@@ -104,7 +104,7 @@ extension Saver where T: Codable {
             self.store.remove(forKey: key)
             return
         }
-        self.store.set(raw, forKey: key)
+        self.store.set(raw, forKey: key, attributes: nil)
     }
 
     func get() -> T? {

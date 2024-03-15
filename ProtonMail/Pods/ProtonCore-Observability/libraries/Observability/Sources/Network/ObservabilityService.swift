@@ -21,7 +21,6 @@
 //
 
 import Foundation
-import ProtonCoreFeatureSwitch
 import ProtonCoreNetworking
 import ProtonCoreUtilities
 

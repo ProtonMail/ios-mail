@@ -99,7 +99,7 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
             .output
             .autoLockTimeOptions.forEach { time in
                 let text = autoLockTimeValueToString(value: time)
-                let action = UIAlertAction(title: text, style: .default, handler: { [weak self] _ -> Void in
+                let action = UIAlertAction(title: text, style: .default, handler: { [weak self] _ in
                     self?.viewModel.input.didPickAutoLockTime(value: time)
                     self?.tableView.reloadRows(at: [indexPath], with: .fade)
                 })

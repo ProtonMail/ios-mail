@@ -97,7 +97,7 @@ final class HtmlEditorBehaviourTests: XCTestCase {
         let e2 = expectation(description: "Content is loaded")
         let webContent = WebContents(
             body: Self.testContentWithRemoteImage,
-            remoteContentMode: .allowed,
+            remoteContentMode: .allowedThroughProxy,
             messageDisplayMode: .collapsed
         )
 

@@ -125,6 +125,7 @@ extension MenuViewController {
         self.menuWidth.constant = self.viewModel.menuWidth
         self.tableView.backgroundColor = .clear
         self.tableView.register(MenuItemTableViewCell.self)
+        self.tableView.register(MaxStorageTableViewCell.self, forCellReuseIdentifier: "\(MaxStorageTableViewCell.self)")
         self.tableView.tableFooterView = self.createTableFooter()
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -368,19 +369,34 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let _section = self.viewModel.sections[indexPath.section]
+        if _section == .maxStorage { return 60 }
         return 48
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "\(MenuItemTableViewCell.self)", for: indexPath) as! MenuItemTableViewCell
-        if let label = self.viewModel.menuItem(indexPath: indexPath) {
-            cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, isUsedInSideBar: true, delegate: self)
-            cell.update(iconColor: self.viewModel.getIconColor(of: label))
+        let _section = self.viewModel.sections[indexPath.section]
+        switch _section {
+        case .maxStorage:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "\(MaxStorageTableViewCell.self)", for: indexPath) as! MaxStorageTableViewCell
+            cell.configure(
+                storageVisibility: viewModel.storageAlertVisibility,
+                delegate: self
+            )
+            return cell
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "\(MenuItemTableViewCell.self)", for: indexPath) as! MenuItemTableViewCell
+            if let label = self.viewModel.menuItem(indexPath: indexPath) {
+                cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, isUsedInSideBar: true, delegate: self)
+                cell.update(iconColor: self.viewModel.getIconColor(of: label))
+            }
+            return cell
         }
-        return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let _section = self.viewModel.sections[indexPath.section]
+        if _section == .maxStorage { return }
         tableView.deselectRow(at: indexPath, animated: true)
         guard let label = self.viewModel.menuItem(indexPath: indexPath) else {
             return
@@ -404,7 +420,14 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section == 0 ? 8: 48
+        let _section = self.viewModel.sections[section]
+        switch _section {
+        case .maxStorage: return 8
+        case .inboxes where self.viewModel.storageAlertVisibility != .hidden: return CGFloat.leastNonzeroMagnitude
+        case .inboxes: return 8
+        default:
+            return 48
+        }
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -421,7 +444,8 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         let vi = UIView()
         vi.backgroundColor = .clear
 
-        if section == .inboxes { return vi }
+        if section == .inboxes
+            || section == .maxStorage { return vi }
 
         let line = UIView()
         line.backgroundColor = ColorProvider.SidebarSeparator
@@ -549,5 +573,11 @@ extension MenuViewController: AccountSwitchDelegate {
         if UIAccessibility.isVoiceOverRunning {
             UIAccessibility.post(notification: .screenChanged, argument: primaryUserview)
         }
+    }
+}
+
+extension MenuViewController: MaxStorageTableViewCellDelegate {
+    func upgradeStorageTapped() {
+        viewModel.go(to: .init(location: .subscription))
     }
 }

@@ -28,7 +28,7 @@ private let authenticateButtonId = "TwoFactorViewController.authenticateButton"
 private let recoveryCodeButtonId = "TwoFactorViewController.recoveryCodeButton"
 private let twoFALabel = "Two-factor authentication"
 private let twoFATitleLabel = "TwoFactorViewController.codeTextField.titleLabel"
-private let invalidCredentialStaticText = "Incorrect login credentials. Please try again"
+private let invalidCredentialStaticText = "Incorrect login credentials. Please try again."
 
 public final class TwoFaRobot: CoreElements {
 

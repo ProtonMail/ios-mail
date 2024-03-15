@@ -128,9 +128,9 @@
 
 "Domain" = "Дамен";
 
-"Set recovery method" = "Задаць метад аднаўлення";
+"Set recovery method" = "Задаць спосаб аднаўлення";
 
-"Set recovery method (optional)" = "Задаць метад аднаўлення (неабавязкова)";
+"Set recovery method (optional)" = "Задаць спосаб аднаўлення (неабавязкова)";
 
 "We will send recovery instructions to this email or phone number if you get locked out of your account." = "Мы адправім вам інструкцыі для аднаўлення на гэты адрас электроннай пошты або на нумар тэлефона, калі вы не зможаце атрымаць доступ да свайго ўліковага запісу.";
 
@@ -148,11 +148,11 @@
 
 "Skip" = "Прапусціць";
 
-"Skip recovery method?" = "Прапусціць метад аднаўлення?";
+"Skip recovery method?" = "Прапусціць спосаб аднаўлення?";
 
-"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Метад аднаўлення дапаможа атрымаць доступ да вашага ўліковага запісу ў выпадку, калі вы забудзеце пароль або заблакіруеце ўліковы запіс.";
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Спосаб аднаўлення дапаможа атрымаць доступ да вашага ўліковага запісу ў выпадку, калі вы забудзеце пароль або заблакіруеце ўліковы запіс.";
 
-"Set recovery method" = "Задаць метад аднаўлення";
+"Set recovery method" = "Задаць спосаб аднаўлення";
 
 "Your account is being created" = "Адбываецца стварэнне вашага ўліковага запісу";
 

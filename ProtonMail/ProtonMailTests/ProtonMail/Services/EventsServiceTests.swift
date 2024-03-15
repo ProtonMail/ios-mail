@@ -26,17 +26,22 @@ final class EventsServiceTests: XCTestCase {
     private var mockUserManager: UserManager!
     private var mockApiService: APIServiceMock!
     private var mockContextProvider: CoreDataContextProviderProtocol!
+    private var mockContactProvider: ContactProviderProtocol!
     private var mockQueueManager: QueueManager!
+    private var miscQueue: PMPersistentQueue!
     private let dummyUserID = "dummyUserID"
+    private let dummyLabel = LabelID(rawValue: "dummylabel")
+
     private let timeout = 3.0
 
     override func setUp() {
         super.setUp()
         let messageQueue = PMPersistentQueue(queueName: String.randomString(6))
-        let miscQueue = PMPersistentQueue(queueName: String.randomString(6))
+        miscQueue = PMPersistentQueue(queueName: String.randomString(6))
         mockQueueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         mockApiService = APIServiceMock()
         mockContextProvider = MockCoreDataContextProvider()
+        mockContactProvider = MockContactProvider(coreDataContextProvider: mockContextProvider)
 
         let testContainer = TestContainer()
         testContainer.contextProviderFactory.register { self.mockContextProvider }
@@ -50,9 +55,12 @@ final class EventsServiceTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
+        miscQueue.clearAll()
+        miscQueue = nil
         mockUserManager = nil
         mockApiService = nil
         mockContextProvider = nil
+        mockContactProvider = nil
         mockQueueManager = nil
     }
 
@@ -206,10 +214,37 @@ final class EventsServiceTests: XCTestCase {
             XCTAssertEqual(conversation?.conversationID, conversationID)
         }
     }
+
+    func testFetchEvents_whenNoContactMetaData_andLessThan15ContactEventsReceived_itEnqueuesTwoTasks() throws {
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+            if path.contains("/events") {
+                let result = EventTestData.contactEvents_insertsAndUpdates_lessThan15.toDictionary()!
+                completion(nil, .success(result))
+            }
+        }
+
+        sut.start()
+        sut.fetchEvents(byLabel: dummyLabel, notificationMessageID: nil, discardContactsMetadata: true) { _ in }
+
+        wait(self.miscQueue.queue.count == 1)
+    }
+
+    func testFetchEvents_whenNoContactMetaData_andMoreThan15ContactEventsReceived_itEnqueuesTwoTasks() throws {
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+            if path.contains("/events") {
+                let result = EventTestData.contactEvents_insertsAndUpdates_moreThan15.toDictionary()!
+                completion(nil, .success(result))
+            }
+        }
+
+        sut.start()
+        sut.fetchEvents(byLabel: dummyLabel, notificationMessageID: nil, discardContactsMetadata: true) { _ in }
+
+        wait(self.miscQueue.queue.count == 2)
+    }
 }
 
 extension EventsServiceTests {
-
     private func newBlockedSenderEventJson(id: String, email: String, time: TimeInterval, location: String) -> String {
         return """
         {

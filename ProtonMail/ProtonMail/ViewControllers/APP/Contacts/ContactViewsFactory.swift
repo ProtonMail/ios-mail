@@ -26,6 +26,7 @@ final class ContactViewsFactory {
     & ContactImportViewController.Dependencies
     & ContactsViewModel.Dependencies
     & HasAutoImportContactsFeature
+    & HasImportDeviceContacts
 
     private unowned let dependencies: Dependencies
 

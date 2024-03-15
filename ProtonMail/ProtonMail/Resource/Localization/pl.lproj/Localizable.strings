@@ -174,12 +174,6 @@
 /* Title */
 "wrote:" = "napisał(a):";
 
-/* At {time}, e.g.: At 19:00 */
-"At %@" = "O godzinie %@";
-
-/* On {date}, e.g.: On Aug 14 */
-"On %@" = "do %@";
-
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
 "On %@ at %@" = "W dniu: %1$@ o godzinie %2$@";
 
@@ -589,6 +583,9 @@
 /* Title */
 "Reading device contacts data…" = "Ładowanie kontaktów urządzenia…";
 
+/* title for the contact import indicator */
+"Importing contacts..." = "Importowanie kontaktów...";
+
 /* Description */
 "Do you want to cancel the process?" = "Czy chcesz anulować proces?";
 
@@ -772,9 +769,6 @@
 "Date: %@" = "Data: %@";
 
 /* Title */
-"Details" = "Szczegóły";
-
-/* Title */
 "Hide details" = "Ukryj szczegóły";
 
 /* contact placeholder */
@@ -794,12 +788,6 @@
 
 /* action */
 "Add new URL" = "Dodaj nowy adres URL";
-
-/* settings general section title */
-"Change account password" = "Zmień hasło logowania";
-
-/* settings general section title */
-"Change mailbox password" = "Zmień hasło skrzynki pocztowej";
 
 /* settings general section title */
 "Auto-load remote content" = "Automatycznie załaduj zawartość zdalną";
@@ -1126,9 +1114,6 @@
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Usuń grupę kontaktów";
 
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Selected";
-
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Do grupy kontaktów musisz przydzielić co najmniej jeden adres e-mail";
 
@@ -1149,9 +1134,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Upuść tutaj, aby dodać jako załącznik";
-
-/* Downloading attachments from cloud */
-"Importing" = "Importowanie";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Trwa importowanie załącznika. To może zająć chwilę";
@@ -1251,9 +1233,6 @@
 
 /* cell title in app settings */
 "Alternative routing" = "Alternatywne przekierowanie połączenia";
-
-/* cell title in device settings */
-"Storage" = "Przestrzeń dyskowa";
 
 /* cell title in device settings */
 "Addresses" = "Adresy";
@@ -1623,27 +1602,6 @@
 /* The title of voice over action that switches the unread filter status in the inbox */
 "Switch unread filter" = "nieprzeczytane / przeczytane";
 
-/* Title of user feedback view */
-"Your feedback" = "Twoja opinia";
-
-/* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "Jak oceniasz nową aplikację Proton Mail?";
-
-/* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Opowiedz nam o swoich wrażeniach. (opcjonalnie)";
-
-/* Title of button to send feedback */
-"Send feedback" = "Wyślij opinię";
-
-/* Example feedback */
-"Awful" = "Okropnie";
-
-/* Example feedback */
-"Wonderful" = "Wspaniale";
-
-/* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Dziękujemy za opinię!";
-
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
 "Collapse message" = "Zwiń wiadomość";
 
@@ -1875,6 +1833,27 @@
 /* The content of the Customize toolbar spotlight view. */
 "You can now choose and rearrange the actions in this bar" = "Możesz zmienić kolejność akcji na pasku";
 
+/* Title of the banner alert */
+"Your Mail storage is %@ full" = "Your Mail storage is %@ full";
+
+/* Title of the banner alert */
+"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+
+/* Title of the banner alert */
+"Your Mail storage is full" = "Przestrzeń dyskowa Proton Mail jest pełna";
+
+/* Title of the banner alert */
+"Your Drive storage is full" = "Przestrzeń dyskowa Proton Drive jest pełna";
+
+/* Description of the banner alert */
+"Upgrade to get more storage." = "Ulepsz konto, aby uzyskać większą przestrzeń dyskową.";
+
+/* Get more storage button action */
+"Not now" = "Nie teraz";
+
+/* Get more storage button action */
+"Get more storage" = "Uzyskaj więcej przestrzeni dyskowej";
+
 /* Button to block a sender */
 "Block messages from this sender" = "Zablokuj wiadomości od tego nadawcy";
 
@@ -1931,6 +1910,45 @@
 /* Button to hide some items in the list to conserve screen estate */
 "Show less" = "Pokaż mniej";
 
+/* Text shown when opening an invitation for a past event */
+"This event already ended" = "Wydarzenie zakończyło się";
+
+/* Text shown when opening an invitation for a cancelled event */
+"This event has been cancelled" = "Wydarzenie zostało anulowane";
+
+/* Prompt above yes/no/maybe buttons */
+"Attending?" = "Będziesz uczestniczyć?";
+
+/* Part of a yes/no/maybe prompt */
+"Yes" = "Tak";
+
+/* Part of a yes/no/maybe prompt */
+"No" = "Nie";
+
+/* Part of a yes/no/maybe prompt */
+"Maybe" = "Być może";
+
+/* Confirm attending an event */
+"Yes, I'll attend" = "Tak, będę uczestniczyć";
+
+/* Deny attending an event */
+"No, I won't attend" = "Nie będę uczestniczyć";
+
+/* Neither confirm nor deny attending an event */
+"I might attend" = "Być może będę uczestniczyć";
+
+/* Menu title */
+"Max Storage" = "Maksymalna przestrzeń dyskowa";
+
+/* Cell title that shows the percentage of the storage */
+"Storage: %@ full" = "Przestrzeń dyskowa: %@";
+
+/* Cell title that shows the percentage of the storage */
+"Drive storage: %@ full" = "Przestrzeń dyskowa Proton Drive: %@";
+
+/* Upgrade button action */
+"Upgrade" = "Ulepsz";
+
 /* Official badge next to sender's name */
 "Official" = "Oficjalna";
 
@@ -1978,6 +1996,9 @@
 
 /* Auto import alert message */
 "The initial import may take some time and will only occur when the app is in the foreground." = "Import może zająć trochę czasu i nastąpi tylko wtedy, kiedy aplikacja będzie na pierwszym planie.";
+
+/* Alert to ask user to reauthorise access to contacts */
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Dostęp do kontaktów został wyłączony. Przejdź do ustawień i zezwól na dostęp do kontaktów, aby włączyć automatyczne importowanie.";
 
 /* Settings lock protection section */
 "Protection" = "Ochrona";
@@ -2043,10 +2064,10 @@
 "Application logs" = "Logi aplikacji";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Otwórz następną wiadomość";
+"Jump to next email" = "Jump to next email";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatycznie pokazuje następną wiadomość po usunięciu, zarchiwizowaniu lub przeniesieniu poprzedniej wiadomości.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Wystąpił nieoczekiwany błąd. Skontaktuj się ze wsparciem.\n%@";
@@ -2128,6 +2149,15 @@
 
 /* Title of button to empty trash folder */
 "Empty trash" = "Opróżnij Kosz";
+
+/* Alert prompting to update Calendar */
+"Download the latest version of the Proton Calendar to open this event" = "Pobierz najnowszą wersję aplikacji Proton Calendar, aby otworzyć wydarzenie";
+
+/* Button to open App Store */
+"Download in App Store" = "Pobierz z App Store";
+
+/* Button to open the Calendar app */
+"Open in Proton Calendar" = "Otwórz w Proton Calendar";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
 "Clear out the junk" = "Opróżnij Kosz";
@@ -2270,5 +2300,68 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Nieograniczona liczba folderów, etykiet i filtrów";
 
+/* Description string shows in spotlight view */
+"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Ustaw, kiedy wiadomość ma pojawić się w skrzynce odbiorczej.";
+
+/* Description string shows in spotlight view */
+"Snooze it for later" = "Odłóż na później";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Dodaj jako załącznik";
+
+/* The title in setting page */
+"Swipe to next message" = "Przesuń palcem do następnej wiadomości";
+
+/* Description text for setting */
+"Allow navigating through messages by swiping left or right." = "Umożliwia nawigację pomiędzy wiadomości za pomocą gestów przesunięcia.";
+
+/* The title of the spotlight of the auto import contacts. */
+"Your contacts at your fingertips" = "Your contacts at your fingertips";
+
+/* The message of the spotlight of the auto import contacts. */
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+
+/* The title of the button of the spotlight of the auto import contacts. */
+"Enable auto-import" = "Enable auto-import";
+
+/* The title for no contact hint view */
+"No contacts yet" = "No contacts yet";
+
+/* The description for no contact hint view */
+"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+
+/* Button title for no contact hint view */
+"Auto-import contacts" = "Automatyczne importowanie kontaktów";
+
+/* A title show to user after auto import button is clicked but contacts hasn't imported yet */
+"Importing your contacts" = "Importowanie kontaktów";
+
+/* A message show to user after auto import button is clicked but contacts hasn't imported yet */
+"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+
+/* The title of the dismissable banner in the contacts view. */
+"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+
+/* The title of the privacy and data in the account setting. */
+"Privacy and data" = "Prywatność i dane";
+
+/* cell title in device settings */
+"Storage" = "Przestrzeń dyskowa";
+
+/* settings general section title */
+"Change account password" = "Zmień hasło logowania";
+
+/* settings general section title */
+"Change mailbox password" = "Zmień hasło skrzynki pocztowej";
+
+/* The title of the telemetry setting. */
+"Anonymous telemetry" = "Anonimowa telemetria";
+
+/* The title of the crash report setting. */
+"Anonymous crash reports" = "Anonimowe raporty o awariach";
+
+/* The subtitle of the anonymous telemetry setting. */
+"To improve our services, we sometimes collect anonymized usage data." = "Aby ulepszyć nasze usługi, czasem zbieramy anonimowe dane użytkowania aplikacji.";
+
+/* The subtitle of the crash report setting. */
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Jeśli aplikacja ulegnie awarii, raport ze szczegółami błędów zostanie wysłany do naszych inżynierów. Będziemy używać tych danych tylko do ulepszenia aplikacji.";

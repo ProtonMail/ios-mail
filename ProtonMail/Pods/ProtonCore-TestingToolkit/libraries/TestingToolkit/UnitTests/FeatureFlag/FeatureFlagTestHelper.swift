@@ -74,6 +74,10 @@ extension XCTestCase {
 }
 
 public extension ProtonCoreFeatureFlags.FeatureFlag {
+    static var accountRecovery: Self {
+        .init(name: "SignedInAccountRecovery", enabled: true, variant: nil)
+    }
+
     static var dynamicPlans: Self {
         .init(name: "DynamicPlan", enabled: true, variant: nil)
     }
@@ -82,7 +86,15 @@ public extension ProtonCoreFeatureFlags.FeatureFlag {
         .init(name: "ExternalSSO", enabled: true, variant: nil)
     }
 
+    static var pushNotifications: Self {
+        .init(name: "PushNotifications", enabled: true, variant: nil)
+    }
+
     static var splitStorage: Self {
         .init(name: "SplitStorage", enabled: true, variant: nil)
+    }
+
+    static var telemetrySignUpMetrics: Self {
+        .init(name: "IOSTelemetrySignUpMetrics", enabled: true, variant: nil)
     }
 }

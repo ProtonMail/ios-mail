@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreDataModel
 import ProtonCoreLogin
 import ProtonCoreTestingToolkit
 import ProtonCoreKeymaker
@@ -77,9 +78,17 @@ final class SignInManagerTests: XCTestCase {
         XCTAssertEqual(sut.saveLoginData(loginData: userData), .errorOccurred)
     }
 
-    func testSaveLoginData_whenOneFreeAccountIsLoggedIn_returnFreeAccountsLimitReached() {
-        let userData = createLoginData(userID: userID, sessionID: sessionID)
-        usersManager.add(newUser: .init(api: apiMock, userID: String.randomString(10)))
+    func testSaveLoginData_whenOneFreeAccountIsLoggedIn_doesNotReturnLimitReached() {
+        let userData = createLoginData(userID: userID, sessionID: sessionID, subscribed: .init(rawValue: 0))
+        usersManager.add(newUser: .init(api: apiMock, userID: String.randomString(10), subscribed: .init(rawValue: 0)))
+
+        XCTAssertEqual(sut.saveLoginData(loginData: userData), .success)
+    }
+
+    func testSaveLoginData_whenTwoFreeAccountsAreLoggedIn_returnFreeAccountsLimitReached() {
+        let userData = createLoginData(userID: userID, sessionID: sessionID, subscribed: .init(rawValue: 0))
+        usersManager.add(newUser: .init(api: apiMock, userID: String.randomString(10), subscribed: .init(rawValue: 0)))
+        usersManager.add(newUser: .init(api: apiMock, userID: String.randomString(10), subscribed: .init(rawValue: 0)))
 
         XCTAssertEqual(sut.saveLoginData(loginData: userData), .freeAccountsLimitReached)
     }
@@ -250,7 +259,8 @@ extension SignInManagerTests {
     private func createLoginData(
         userID: String,
         sessionID: String,
-        delinquent: Int = 0
+        delinquent: Int = 0,
+        subscribed: User.Subscribed = .mail
     ) -> LoginData {
         return LoginData(
             credential: .init(
@@ -276,7 +286,7 @@ extension SignInManagerTests {
                 maxUpload: 0,
                 role: 0,
                 private: 0,
-                subscribed: .mail,
+                subscribed: subscribed,
                 services: 0,
                 delinquent: delinquent,
                 orgPrivateKey: nil,

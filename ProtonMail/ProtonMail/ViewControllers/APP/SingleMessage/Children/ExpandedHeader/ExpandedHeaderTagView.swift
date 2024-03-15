@@ -75,7 +75,7 @@ final class ExpandedHeaderTagView: UIView {
             iconImageView.heightAnchor.constraint(equalToConstant: 20)
         ].activate()
 
-        let heightConstraint = tagCollectionView.heightAnchor.constraint(equalToConstant: 76)
+        let heightConstraint = tagCollectionView.heightAnchor.constraint(equalToConstant: 0)
         tagCollectionViewHeight = heightConstraint
         [
             tagCollectionView.topAnchor.constraint(equalTo: iconImageView.topAnchor, constant: 1),

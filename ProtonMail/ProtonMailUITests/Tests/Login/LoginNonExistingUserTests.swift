@@ -15,13 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkit
 
 class LoginNonExistingUserTests: BaseTestCase {
     
     private let loginRobot = LoginRobot()
-    private var user: User = User()
-    
+    private var user: User = User(name: "none-existing", password: "123")
+
     func testLoginWithNonExistingUser() {
         loginRobot
             .loginWithInvalidUser(user)

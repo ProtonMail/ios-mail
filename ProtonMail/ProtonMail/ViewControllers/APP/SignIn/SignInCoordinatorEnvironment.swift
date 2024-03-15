@@ -92,7 +92,7 @@ extension SignInCoordinatorEnvironment {
                              )
                          ))
                          let payment: PaymentsAvailability
-                         if UIApplication.arePaymentsEnabled {
+                         if Application.arePaymentsEnabled {
                              payment = .available(parameters: .init(
                                  listOfIAPIdentifiers: Constants.mailPlanIDs,
                                  listOfShownPlanNames: Constants.shownPlanNames,

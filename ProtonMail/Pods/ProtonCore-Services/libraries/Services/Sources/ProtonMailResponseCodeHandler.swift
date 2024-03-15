@@ -20,7 +20,6 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCoreFeatureSwitch
 import ProtonCoreNetworking
 import ProtonCoreUtilities
 
@@ -39,7 +38,7 @@ class ProtonMailResponseCodeHandler {
             humanVerificationHandler(responseHandlerData, completion, response.responseDictionary)
         } else if responseCode == APIErrorCode.deviceVerificationRequired {
             deviceVerificationHandler(responseHandlerData, completion, response.responseDictionary)
-        } else if isMissingScopeError(response: response) && FeatureFactory.shared.isEnabled(.missingScopes), let authCredential = responseHandlerData.customAuthCredential {
+        } else if isMissingScopeError(response: response), let authCredential = responseHandlerData.customAuthCredential {
             let isAccountRecovery = responseHandlerData.path == "/account/v1/recovery/session/abort"
             missingScopesHandler(
                 isAccountRecovery ? .accountRecovery : .default,

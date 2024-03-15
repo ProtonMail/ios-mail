@@ -22,7 +22,6 @@
 #if os(iOS)
 
 import UIKit
-import ProtonCoreFeatureSwitch
 import ProtonCoreFoundations
 import ProtonCoreHumanVerification
 import ProtonCoreLogin

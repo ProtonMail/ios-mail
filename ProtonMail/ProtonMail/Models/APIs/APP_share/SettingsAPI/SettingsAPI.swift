@@ -43,17 +43,9 @@ struct SettingsAPI {
 }
 
 // Mark : get settings -- SettingsResponse
-final class GetUserSettings: Request {
+struct GetUserSettings: Request {
     var path: String {
         return SettingsAPI.settingsPath
-    }
-
-    // custom auth credentical
-    var auth: AuthCredential?
-    var authCredential: AuthCredential? {
-        get {
-            return self.auth
-        }
     }
 }
 
@@ -68,17 +60,9 @@ final class SettingsResponse: Response {
 }
 
 // Mark : get mail settings -- MailSettingsResponse
-final class GetMailSettings: Request {
+struct GetMailSettings: Request {
     var path: String {
         return SettingsAPI.path
-    }
-
-    // custom auth credentical
-    var auth: AuthCredential?
-    var authCredential: AuthCredential? {
-        get {
-            return self.auth
-        }
     }
 }
 

@@ -31,7 +31,7 @@ Currently the application supports iOS version 14.7 and above.
 
 3. [DOMPurify](https://github.com/cure53/DOMPurify) and Cocoapods are pre-downloaded. We are using git submodules for tracking DOMPurifier. After cloning the repository, run:
 
-`git submodule init`
+`git submodule update --init`
 
 4. We are using [XcodeGen](https://github.com/yonaskolb/XcodeGen) to generate Xcode project. To create the corresponding project files, run:
 

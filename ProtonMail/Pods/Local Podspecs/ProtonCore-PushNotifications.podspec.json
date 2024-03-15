@@ -1,0 +1,117 @@
+{
+  "name": "ProtonCore-PushNotifications",
+  "module_name": "ProtonCorePushNotifications",
+  "version": "20.0.0",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me",
+    "magohamote": "cedric.rolland@proton.ch",
+    "siejkowski": "krzysztof.siejkowski@proton.ch",
+    "vjalencas": "victor.jalencas@proton.ch"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "20.0.0"
+  },
+  "platforms": {
+    "ios": "14.0",
+    "osx": "11.0"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "dependencies": {
+    "ProtonCore-Log": [
+      "20.0.0"
+    ],
+    "ProtonCore-DataModel": [
+      "20.0.0"
+    ],
+    "ProtonCore-Keymaker": [
+      "20.0.0"
+    ],
+    "ProtonCore-Networking": [
+      "20.0.0"
+    ],
+    "ProtonCore-Crypto": [
+      "20.0.0"
+    ],
+    "ProtonCore-CryptoGoInterface": [
+      "20.0.0"
+    ],
+    "ProtonCore-FeatureFlags": [
+      "20.0.0"
+    ],
+    "ProtonCore-Services": [
+      "20.0.0"
+    ]
+  },
+  "default_subspecs": [
+
+  ],
+  "source_files": "libraries/PushNotifications/Sources/**/*.swift",
+  "testspecs": [
+    {
+      "name": "Tests-Crypto-Go",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-CryptoGoImplementation/Crypto-Go": [
+          "20.0.0"
+        ],
+        "ProtonCore-TestingToolkit": [
+          "20.0.0"
+        ]
+      },
+      "source_files": "libraries/PushNotifications/Tests/**/*.swift"
+    },
+    {
+      "name": "Tests-Crypto-patched-Go",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
+          "20.0.0"
+        ],
+        "ProtonCore-TestingToolkit": [
+          "20.0.0"
+        ]
+      },
+      "source_files": "libraries/PushNotifications/Tests/**/*.swift"
+    },
+    {
+      "name": "Tests-Crypto+VPN-patched-Go",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
+          "20.0.0"
+        ],
+        "ProtonCore-TestingToolkit": [
+          "20.0.0"
+        ]
+      },
+      "source_files": "libraries/PushNotifications/Tests/**/*.swift"
+    },
+    {
+      "name": "Tests-Crypto+Search-Go",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
+          "20.0.0"
+        ],
+        "ProtonCore-TestingToolkit": [
+          "20.0.0"
+        ]
+      },
+      "source_files": "libraries/PushNotifications/Tests/**/*.swift"
+    }
+  ],
+  "swift_version": "5.6"
+}

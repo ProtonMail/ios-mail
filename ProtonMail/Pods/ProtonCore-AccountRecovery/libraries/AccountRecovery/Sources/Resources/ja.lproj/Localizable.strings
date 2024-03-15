@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "パスワードリセット";
+
+"Account_Recovery_Insecure_View_Title" = "あなたのパスワードをリセット";
+
+"Account_Recovery_Grace_View_Title" = "パスワードをリセットしますか?";
+
+"Account_Recovery_Grace_View_line1" = "パスワードをリセットするリクエストを受け取りました ";
+
+"Account_Recovery_Insecure_View_line1" = "アカウントのパスワードを変更できるようになりました ";
+
+"Account_Recovery_Insecure_View_line2" = " 期間中は自由に ";
+
+"Account_Recovery_Insecure_View_line3" = "サインインしているデバイス (要求が開始されたセッション内) に移動して、パスワードを変更してください。";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "リクエストのキャンセル";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "数時間";
+
+"Account_Recovery_Grace_View_line2" = ". To keep your account safe, we want to make sure it’s really you trying to reset your password. You’ll be able to reset your password in ";
+
+"Account_Recovery_Grace_View_line3" = "このリクエストを行っていない場合、またはサインインのサポートが不要になった場合は、このリクエストをキャンセルし、アカウントを保護する措置を講じてください。";

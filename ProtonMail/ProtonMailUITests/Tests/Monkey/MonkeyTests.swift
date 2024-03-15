@@ -26,33 +26,21 @@ import ProtonCoreTestingToolkit
 @available(iOS 15.0, *)
 class MonkeyTests : BaseMonkey  {
 
-    private var user: User = User()
     private var scenario: MailScenario { .qaMail006 }
     private var isSubscriptionIncluded: Bool { true }
     private let apiDomainKey = "MAIL_APP_API_DOMAIN"
-    private var quarkCommandTwo: Quark = Quark()
     private var plan: UserPlan = .mail2022
+    private var user: User = User(name: "init", password: "init")
+    private lazy var quarkCommands = Quark().baseUrl("https://\(dynamicDomain)/api").configureTimeouts(request: 120, resource: 120)
 
     override func setUp() {
         super.setUp()
         setupTest()
         do {
+            user = try quarkCommands.createUserWithFixturesLoad(name: scenario.name)
 
-            quarkCommandTwo = Quark()
-                .baseUrl("https://\(dynamicDomain)/api/internal/quark")
-
-            let response = try quarkCommandTwo.createUserWithFixturesLoad(name: scenario.name)
-
-            if let name = response?.name, let password = response?.password, let decryptedUserId = response?.decryptedUserId {
-                user.name = name
-                user.password = password
-                user.id = Int(decryptedUserId)
-            } else {
-                XCTFail("Wrong response \(String(describing: response))")
-            }
-
-            try quarkCommandTwo.enableSubscription(id: Int(user.id!), plan: plan.rawValue)
-            try quarkCommandTwo.enableEarlyAccess(username: user.name)
+            try quarkCommands.enableSubscription(id: Int(user.id!), plan: plan.rawValue)
+            try quarkCommands.enableEarlyAccess(username: user.name)
         }
         catch {
             XCTFail(error.localizedDescription)
@@ -61,7 +49,7 @@ class MonkeyTests : BaseMonkey  {
 
     override func tearDown() {
         do {
-            try quarkCommandTwo.deleteUser(id: user.id!)
+            try quarkCommands.deleteUser(id: user.id!)
         }
         catch {
             XCTFail(error.localizedDescription)

@@ -110,7 +110,7 @@ final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackabl
         }
         self.title = LocalString._menu_bugs_title
 
-        setupMenuButton()
+        setupMenuButton(userInfo: dependencies.user.userInfo)
         setupSubviews()
         setupLayout()
         NotificationCenter.default
@@ -196,6 +196,7 @@ final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackabl
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateSendButtonForText(textView.text)
+        setupMenuButton(userInfo: dependencies.user.userInfo)
         NotificationCenter.default.addKeyboardObserver(self)
         textView.becomeFirstResponder()
     }

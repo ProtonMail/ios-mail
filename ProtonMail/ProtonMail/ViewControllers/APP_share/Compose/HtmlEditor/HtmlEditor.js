@@ -52,11 +52,6 @@ var mutationObserver = new MutationObserver(function (events) {
                     insertedImages = true;
                     continue;
                 }
-
-                var children = Array.from(element.querySelectorAll('img'));
-                for (var m = 0; m < children.length; m++) {
-                    spotImg(children[m]);
-                }
             }
         }
     }
@@ -83,6 +78,10 @@ html_editor.setHtml = function (htmlBody, sanitizeConfig, isImageProxyEnable) {
         var cleanByConfig = DOMPurify.sanitize(htmlBody, sanitizeConfig);
         html_editor.editor.innerHTML = DOMPurify.sanitize(cleanByConfig);
     }
+
+    // Sometimes ResizeObserver doesn't get correct height
+    let scrollHeight = document.body.scrollHeight;
+    window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": scrollHeight });
 
     // could update the viewport width here in the future.
 

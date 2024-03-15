@@ -123,8 +123,11 @@ extension UpdateMailbox {
                              params: Parameters,
                              callback: @escaping UseCase<Void, Parameters>.Callback) {
         self.dependencies.eventService
-            .fetchEvents(byLabel: params.labelID,
-                         notificationMessageID: notificationMessageID) { [weak self] result in
+            .fetchEvents(
+                byLabel: params.labelID,
+                notificationMessageID: notificationMessageID,
+                discardContactsMetadata: EventCheckRequest.isNoMetaDataForContactsEnabled
+            ) { [weak self] result in
                 self?.handleFetchEventResponse(params: params, result: result, callback: callback)
             }
     }

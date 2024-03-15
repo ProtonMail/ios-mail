@@ -38,6 +38,8 @@ protocol PaymentsUIViewControllerDelegate: AnyObject {
 }
 
 public final class PaymentsUIViewController: UIViewController, AccessibleView {
+    private var firstAvailablePlanIndexPath: IndexPath?
+    private var firstAvailablePlanCell: PlanCell?
 
     private lazy var selectedCycle = viewModel?.defaultCycle
 
@@ -379,11 +381,15 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
                     navigationItem.title = PUITranslations.subscription_title.l10n
                     updateTitleAttributes()
                 case .update:
-                    switch viewModel?.footerType {
-                    case .withPlansToBuy:
+                    if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.dynamicPlan) {
                         navigationItem.title = PUITranslations.upgrade_plan_title.l10n
-                    case .withoutPlansToBuy, .withExtendSubscriptionButton, .disabled, .none:
-                        navigationItem.title = PUITranslations.current_plan_title.l10n
+                    } else {
+                        switch viewModel?.footerType {
+                        case .withPlansToBuy:
+                            navigationItem.title = PUITranslations.upgrade_plan_title.l10n
+                        case .withoutPlansToBuy, .withExtendSubscriptionButton, .disabled, .none:
+                            navigationItem.title = PUITranslations.current_plan_title.l10n
+                        }
                     }
                     updateTitleAttributes()
                 default:
@@ -506,7 +512,7 @@ extension PaymentsUIViewController: UITableViewDataSource {
         case .alert(let alertBoxViewModel):
             cell = tableView.dequeueReusableCell(withIdentifier: AlertBoxCell.reuseIdentifier, for: indexPath)
             if let cell = cell as? AlertBoxCell {
-                cell.configure(with: alertBoxViewModel)
+                cell.configure(with: alertBoxViewModel, action: scrollToFirstAvailablePlan)
             }
         case .currentPlan(let currentPlan):
             cell = tableView.dequeueReusableCell(withIdentifier: CurrentPlanCell.reuseIdentifier, for: indexPath)
@@ -519,6 +525,10 @@ extension PaymentsUIViewController: UITableViewDataSource {
             if let cell = cell as? PlanCell {
                 cell.delegate = self
                 cell.configurePlan(availablePlan: availablePlan, indexPath: indexPath, isSignup: mode == .signup, isExpandButtonHidden: viewModel?.isExpandButtonHidden ?? true)
+                if indexPath.row == 0 {
+                    firstAvailablePlanIndexPath = indexPath
+                    firstAvailablePlanCell = cell
+                }
             }
             cell.selectionStyle = .none
         }
@@ -526,8 +536,18 @@ extension PaymentsUIViewController: UITableViewDataSource {
         return cell
     }
 
+    private func scrollToFirstAvailablePlan() {
+        guard let indexPath = firstAvailablePlanIndexPath,
+              let cell = firstAvailablePlanCell,
+              let dynamicPlan = cell.dynamicPlan else { return }
+        if !dynamicPlan.isExpanded {
+            cell.selectCell()
+        }
+        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+    }
+
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard mode == .current && section == 1 else { return nil }
+        guard let viewModel, viewModel.dynamicPlans.count > 1, mode == .current && section == viewModel.dynamicPlans.count - 1 else { return nil }
         let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: sectionHeaderView)
         if let header = view as? PlanSectionHeaderView {
             header.titleLabel.text = PUITranslations.upgrade_plan_title.l10n
@@ -543,7 +563,7 @@ extension PaymentsUIViewController: UITableViewDataSource {
 extension PaymentsUIViewController: UITableViewDelegate {
 
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard mode == .current && section == 1 else { return 0 }
+        guard let viewModel, viewModel.dynamicPlans.count > 1, mode == .current && section == viewModel.dynamicPlans.count - 1 else { return 0 }
         return UITableView.automaticDimension
     }
 

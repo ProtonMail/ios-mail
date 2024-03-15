@@ -25,9 +25,21 @@ enum SingleMessageNavigationAction: Equatable {
     case compose(contact: ContactVO)
     case viewHeaders(url: URL?)
     case viewHTML(url: URL?)
-    case reply(messageId: MessageID)
-    case replyAll(messageId: MessageID)
-    case forward(messageId: MessageID)
+    case reply(
+        messageId: MessageID,
+        remoteContentPolicy: WebContents.RemoteContentPolicy,
+        embeddedContentPolicy: WebContents.EmbeddedContentPolicy
+    )
+    case replyAll(
+        messageId: MessageID,
+        remoteContentPolicy: WebContents.RemoteContentPolicy,
+        embeddedContentPolicy: WebContents.EmbeddedContentPolicy
+    )
+    case forward(
+        messageId: MessageID,
+        remoteContentPolicy: WebContents.RemoteContentPolicy,
+        embeddedContentPolicy: WebContents.EmbeddedContentPolicy
+    )
     case attachmentList(messageId: MessageID, decryptedBody: String?, attachments: [AttachmentInfo])
     case url(url: URL)
     case inAppSafari(url: URL)

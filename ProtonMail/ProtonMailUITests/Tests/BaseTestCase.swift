@@ -11,6 +11,7 @@ import XCTest
 import fusion
 @testable import ProtonMail
 import ProtonCoreEnvironment
+import ProtonCoreLog
 import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkit
 import Yams
@@ -21,24 +22,31 @@ var users: [String: User] = [:]
 var wasJailDisabled = false
 
 var dynamicDomain: String {
-    ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"] ?? ""
+    if let domain = ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"], !domain.isEmpty {
+        return domain
+    } else {
+        return "proton.black"
+    }
 }
+var quarkCommands = Quark().baseUrl("https://\(dynamicDomain)/api").configureTimeouts(request: 120, resource: 120)
 
 /**
  Parent class for all the test classes.
  */
-class BaseTestCase: CoreTestCase {
+class BaseTestCase: ProtonCoreBaseTestCase {
 
-    var launchArguments = ["-clear_all_preference", "YES"]
-    var humanVerificationStubs = false
-    var forceUpgradeStubs = false
-    var extAccountNotSupportedStub = false
-    var usesBlackCredentialsFile = true
+    var _launchArguments = [
+        "-clear_all_preference", "YES",
+        "-disableAnimations",
+        "-skipTour",
+        "-toolbarSpotlightOff",
+        "-uiTests",
+        "-com.apple.CoreData.ConcurrencyDebug", "1",
+        "-AppleLanguages", "(en)",
+        "-disableInAppFeedbackPromptAutoShow"
+    ]
     private let loginRobot = LoginRobot()
 
-    var env: Environment = .black
-    lazy var quarkCommands = QuarkCommands(doh: env.doh)
-    var quarkCommandTwo = Quark()
     private static var didTryToDisableAutoFillPassword = false
 
 
@@ -52,41 +60,11 @@ class BaseTestCase: CoreTestCase {
         getTestUsersFromYamlFiles()
     }
 
-    /// Runs before eact test case.
     override func setUp() {
+        bundleIdentifier = "pm.ProtonMailUITests"
+        beforeSetUp(bundleIdentifier: "pm.ProtonMailUITests", launchArguments: _launchArguments, launchEnvironment: [apiDomainKey: dynamicDomain!])
         super.setUp()
-
-        continueAfterFailure = false
-
-        app.launchArguments = launchArguments
-
-        app.launchArguments.append("-disableAnimations")
-        app.launchArguments.append("-skipTour")
-        app.launchArguments.append("-toolbarSpotlightOff")
-        app.launchArguments.append("-uiTests")
-        app.launchArguments.append(contentsOf: ["-com.apple.CoreData.ConcurrencyDebug", "1"])
-        app.launchArguments.append(contentsOf: ["-AppleLanguages", "(en)"])
-
-        app.launchEnvironment[apiDomainKey] = dynamicDomain
-
-        if humanVerificationStubs {
-            app.launchArguments.append(contentsOf: ["HumanVerificationStubs", "1"])
-        } else if forceUpgradeStubs {
-            app.launchArguments.append(contentsOf: ["ForceUpgradeStubs", "1"])
-        } else if extAccountNotSupportedStub {
-            app.launchArguments.append(contentsOf: ["ExtAccountNotSupportedStub", "1"])
-        }
-
-        // Disable feedback pop up
-        app.launchArguments.append("-disableInAppFeedbackPromptAutoShow")
-
-        app.launch()
-
-        env = Environment.custom(dynamicDomain)
-        quarkCommands = QuarkCommands(doh: env.doh)
-        quarkCommandTwo = Quark()
-            .baseUrl("https://\(dynamicDomain)/api/internal/quark")
-
+        PMLog.info("UI TEST runs on: " + "https://\(dynamicDomain!)")
         handleInterruption()
         disableJail()
     }
@@ -94,10 +72,6 @@ class BaseTestCase: CoreTestCase {
     override func tearDown() {
         terminateApp()
         super.tearDown()
-    }
-
-    override open func tearDownWithError() throws {
-      // do nothing
     }
 
     func handleInterruption() {
@@ -151,7 +125,7 @@ class BaseTestCase: CoreTestCase {
     private func disableJail() {
         if !wasJailDisabled {
             do {
-                try quarkCommandTwo.jailUnban()
+                try quarkCommands.jailUnban()
             }
             catch {
                 XCTFail(error.localizedDescription)
@@ -166,7 +140,7 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
     var scenario: MailScenario = .qaMail001
     var plan: UserPlan { .mailpro2022 }
     var isSubscriptionIncluded: Bool { true }
-    var user: User = User()
+    var user: User = User(name: "init", password: "init")
 
     override func setUp() {
         super.setUp()
@@ -178,12 +152,6 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
         testBlock()
     }
 
-    func runTestWithScenario(_ actualScenario: MailScenario, testBlock: () async -> Void) async {
-        scenario = actualScenario
-        createUserAndLogin()
-        await testBlock()
-    }
-
     func runTestWithScenarioDoNotLogin(_ actualScenario: MailScenario, testBlock: () -> Void) {
         scenario = actualScenario
         user = createUser()
@@ -191,44 +159,26 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
     }
 
     func createUser(scenarioName: String, plan: UserPlan, isEnableEarlyAccess: Bool) -> User {
-        var user: User = User()
+        var user: User = User(name: "init", password: "init")
 
         do {
             if scenario.name.starts(with: "qa-mail-web") {
-                let response = try quarkCommandTwo.createUserWithFixturesLoad(name: scenarioName)
+                user = try quarkCommands.createUserWithFixturesLoad(name: scenarioName)
 
-                if let name = response?.name, let password = response?.password, let decryptedUserId = response?.decryptedUserId {
-                    user.name = name
-                    user.password = password
-                    user.id = Int(decryptedUserId)
-                } else {
-                    XCTFail("Wrong response \(String(describing: response))")
-                }
-
-                try quarkCommandTwo.enableSubscription(id: user.id!, plan: plan.rawValue)
-                try quarkCommandTwo.enableEarlyAccess(username: user.name)
+                try quarkCommands.enableSubscription(id: user.id!, plan: plan.rawValue)
+                try quarkCommands.enableEarlyAccess(username: user.name)
 
             } else {
-                quarkCommandTwo = Quark()
-                    .baseUrl("https://\(dynamicDomain)/internal-api/quark")
+                let users = try quarkCommands.createUserWithiOSFixturesLoad(name: scenarioName)
 
-                let fixtureUsers = try quarkCommandTwo.createUserWithiOSFixturesLoad(name: scenarioName)
-
-                if let users = fixtureUsers?.users {
-                    for fixtureUser in users {
-
-                        // TODO: update for user list
-                        user.name = fixtureUser.name
-                        user.password = fixtureUser.password
-                        user.id = fixtureUser.id.raw
-
-                        try quarkCommandTwo.enableSubscription(id: Int(fixtureUser.id.raw), plan: plan.rawValue)
-                        try quarkCommandTwo.enableEarlyAccess(username: fixtureUser.name)
-                    }
+                for user in users {
+                    try quarkCommands.enableSubscription(id: user.id!, plan: plan.rawValue)
+                    try quarkCommands.enableEarlyAccess(username: user.name)
                 }
+                user = users.first! // currently the first user used only
+
             }
-        }
-        catch {
+        } catch {
             XCTFail(error.localizedDescription)
         }
 
@@ -249,7 +199,7 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
         defer { super.tearDown() }
         guard let id = user.id else { return }
         do {
-            try quarkCommandTwo.deleteUser(id: id)
+            try quarkCommands.deleteUser(id: id)
         }
         catch {
             XCTFail(error.localizedDescription)
@@ -263,5 +213,4 @@ private extension XCUIElement {
         let switchValue = value as? String
         return switchValue == "1"
     }
-
 }

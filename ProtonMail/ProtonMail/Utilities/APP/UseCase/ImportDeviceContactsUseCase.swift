@@ -35,10 +35,11 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
     & HasDeviceContactsProvider
     & HasContactDataService
     & HasContactsSyncQueueProtocol
+    & HasTelemetryService
 
     // Suggested batch size for creating contacts in backend
     private let contactBatchSize = 10
-    private let maxNumberOfVCardsToDownload = 100
+    private let maxVCardsDownloadsAllowed = 100
     private var backgroundTask: Task<Void, Never>?
     private let userID: UserID
     private var contactsHistoryToken: Data? {
@@ -67,28 +68,39 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
         guard backgroundTask == nil else { return }
 
         dependencies.contactSyncQueue.start()
-        backgroundTask = Task.detached(priority: .userInitiated) { [weak self] in
+        backgroundTask = Task.detached(priority: .medium) { [weak self] in
             guard let self = self else { return }
             defer { taskFinished() }
             let isFirstImport = contactsHistoryToken == nil
-            let contactIDsToImport = fetchDeviceContactIdentifiersToImport()
+            let (contactIDsToImport, newHistoryToken) = fetchDeviceContactIdentifiersToImport()
             guard !contactIDsToImport.isEmpty else { return }
             delegate?.onProgressUpdate(count: 0, total: contactIDsToImport.count)
 
             let triagedContacts = triageContacts(identifiers: contactIDsToImport)
-            if !isFirstImport { // more info: MAILIOS-4176
-                await downloadProtonVCardsIfNeeded(
-                    contactsMatchedByUuid: triagedContacts.toUpdateByUuidMatch,
-                    contactsMatchedByEmail: triagedContacts.toUpdateByEmailMatch
-                )
-            }
+            var numOfSkippedVCardsDownloads: Int = 0
+            await downloadProtonVCardsIfNeeded(
+                isFirstImport: isFirstImport,
+                contactsMatchedByUuid: triagedContacts.toUpdateByUuidMatch,
+                contactsMatchedByEmail: triagedContacts.toUpdateByEmailMatch,
+                numOfSkippedVCardsDownloads: &numOfSkippedVCardsDownloads
+            )
+            contactsHistoryToken = newHistoryToken
 
             do {
+                var numContactsToUpdate = 0
                 try saveNewProtonContacts(from: triagedContacts.toCreate, params: params)
                 try updateProtonContacts(
                     fromUuidMatch: triagedContacts.toUpdateByUuidMatch,
                     fromEmailMatch: triagedContacts.toUpdateByEmailMatch,
-                    params: params
+                    params: params,
+                    numContactsToUpdate: &numContactsToUpdate
+                )
+
+                await reportTelemetryIfNeeded(
+                    isFirstImport: isFirstImport,
+                    numContactsToCreate: triagedContacts.toCreate.count,
+                    numContactsToUpdate: numContactsToUpdate,
+                    numOfSkippedVCardsDownloads: numOfSkippedVCardsDownloads
                 )
             } catch {
                 SystemLogger.log(message: "ImportDeviceContacts catch \(error)", category: .contacts, isError: true)
@@ -109,8 +121,8 @@ extension ImportDeviceContacts {
         delegate?.onFinish()
     }
 
-    /// Returns the identifiers of the contacts that have to be imported
-    private func fetchDeviceContactIdentifiersToImport() -> [DeviceContactIdentifier] {
+    /// Returns the identifiers of the contacts that have to be imported and the contact history token
+    private func fetchDeviceContactIdentifiersToImport() -> ([DeviceContactIdentifier], Data?) {
         do {
             if let contactsHistoryToken {
                 return try fetchChangedContactsIdentifiers(historyToken: contactsHistoryToken)
@@ -119,24 +131,22 @@ extension ImportDeviceContacts {
             }
         } catch {
             SystemLogger.log(error: error, category: .contacts)
-            return []
+            return ([], nil)
         }
     }
 
-    private func fetchAllContactsIdentifiers() throws -> [DeviceContactIdentifier] {
-        let (newToken, contactIDs) = try dependencies.deviceContacts.fetchAllContactIdentifiers()
-        contactsHistoryToken = newToken
+    private func fetchAllContactsIdentifiers() throws -> ([DeviceContactIdentifier], Data?) {
+        let (newContactHistoryToken, contactIDs) = try dependencies.deviceContacts.fetchAllContactIdentifiers()
         SystemLogger.log(message: "fetch all device contacts: found \(contactIDs.count)", category: .contacts)
-        return contactIDs
+        return (contactIDs, newContactHistoryToken)
     }
 
-    private func fetchChangedContactsIdentifiers(historyToken: Data) throws -> [DeviceContactIdentifier] {
-        let (newToken, contactIDs) = try dependencies
+    private func fetchChangedContactsIdentifiers(historyToken: Data) throws -> ([DeviceContactIdentifier], Data?) {
+        let (newContactHistoryToken, contactIDs) = try dependencies
             .deviceContacts
             .fetchEventsContactIdentifiers(historyToken: historyToken)
-        contactsHistoryToken = newToken
         SystemLogger.log(message: "fetch device changed contacts: found \(contactIDs.count)", category: .contacts)
-        return contactIDs
+        return (contactIDs, newContactHistoryToken)
     }
 
     /// Returns which contacts have to be created and which have to be updated by uuid match and which have to be updated by email match.
@@ -163,8 +173,10 @@ extension ImportDeviceContacts {
      in the local database have the vCards property downloaded. If it does not, it requests the contacts details to fetch them.
      */
     private func downloadProtonVCardsIfNeeded(
+        isFirstImport: Bool,
         contactsMatchedByUuid: [DeviceContactIdentifier],
-        contactsMatchedByEmail: [DeviceContactIdentifier]
+        contactsMatchedByEmail: [DeviceContactIdentifier],
+        numOfSkippedVCardsDownloads: inout Int
     ) async {
         let uuids = contactsMatchedByUuid.map(\.uuidNormalisedForAutoImport)
         let contactIDByUuid = dependencies.contactService.getContactsByUUID(uuids).map(\.contactID)
@@ -172,42 +184,49 @@ extension ImportDeviceContacts {
         let contactIDByEmail = dependencies.contactService.getContactsByEmailAddress(emails).map(\.contactID)
 
         let contactIDs = contactIDByUuid + contactIDByEmail
-        let idsWithMissingVCards = getLimitedMissingVCardIds(from: contactIDs)
-        guard !idsWithMissingVCards.isEmpty else { return }
+        var numOfContactsWithoutVCard = 0
+        let idsWithMissingVCards = getLimitedMissingVCardIds(
+            from: contactIDs,
+            numOfContactsWithoutVCard: &numOfContactsWithoutVCard
+        )
+        guard
+            !isFirstImport, // more info: MAILIOS-4176
+            !idsWithMissingVCards.isEmpty
+        else {
+            numOfSkippedVCardsDownloads = numOfContactsWithoutVCard
+            return
+        }
+        numOfSkippedVCardsDownloads = max(0, numOfContactsWithoutVCard - maxVCardsDownloadsAllowed)
 
         let message = "fetching vCards for \(idsWithMissingVCards.count) Proton contacts"
         SystemLogger.log(message: message, category: .contacts)
 
-        await withTaskGroup(of: Bool.self) { [weak self] group in
-            guard let contactService = self?.dependencies.contactService else { return }
-            for id in idsWithMissingVCards {
-                group.addTask {
-                    do {
-                        _ = try await contactService.fetchContact(contactID: id)
-                        return true
-                    } catch {
-                        return false
-                    }
-                }
-            }
-
-            var numFailedFetches = 0
-            for await fetchSucceed in group {
-                numFailedFetches += fetchSucceed ? 0 : 1
-            }
-            if numFailedFetches > 0 {
-                let message = "\(numFailedFetches) contact detail requests failed"
-                SystemLogger.log(message: message, category: .contacts, isError: true)
-            }
-        }
+        await dependencies.contactService.fetchContactsInParallel(contactIDs: idsWithMissingVCards)
     }
 
-    private func getLimitedMissingVCardIds(from contactIDs: [ContactID]) -> [ContactID] {
+    private func reportTelemetryIfNeeded(
+        isFirstImport: Bool,
+        numContactsToCreate: Int,
+        numContactsToUpdate: Int,
+        numOfSkippedVCardsDownloads: Int
+    ) async {
+        guard isFirstImport else { return }
+        await dependencies.telemetryService.sendEvent(
+            .autoImportContacts(
+                contactsToCreate: numContactsToCreate,
+                contactsToUpdate: numContactsToUpdate,
+                skippedVCardDownloads: numOfSkippedVCardsDownloads
+            )
+        )
+    }
+
+    private func getLimitedMissingVCardIds(
+        from contactIDs: [ContactID],
+        numOfContactsWithoutVCard: inout Int
+    ) -> [ContactID] {
         var result = dependencies.contactService.getContactsWithoutVCards(from: contactIDs)
-        if result.count > maxNumberOfVCardsToDownload {
-            result = Array(result[0..<maxNumberOfVCardsToDownload])
-        }
-        return result
+        numOfContactsWithoutVCard = result.count
+        return Array(result.prefix(maxVCardsDownloadsAllowed))
     }
 }
 
@@ -271,7 +290,8 @@ extension ImportDeviceContacts {
     private func updateProtonContacts(
         fromUuidMatch uuidMatch: [DeviceContactIdentifier],
         fromEmailMatch emailMatch: [DeviceContactIdentifier],
-        params: Params
+        params: Params,
+        numContactsToUpdate: inout Int
     ) throws {
         let contactMerger = try ContactMerger(
             strategy: mergeStrategy,
@@ -305,8 +325,8 @@ extension ImportDeviceContacts {
             }
         }
 
-        let totalNumber = totalContactsUpdatedByUuidMatch + totalContactsUpdatedByEmailMatch
-        let finalUpdatesNumberMsg = "Final number of contacts updated \(totalNumber)"
+        numContactsToUpdate = totalContactsUpdatedByUuidMatch + totalContactsUpdatedByEmailMatch
+        let finalUpdatesNumberMsg = "Final number of contacts to update \(numContactsToUpdate)"
         let byUuidMsg = "by uuid: \(totalContactsUpdatedByUuidMatch)"
         let byEmailMsg = "by email: \(totalContactsUpdatedByEmailMatch)"
         SystemLogger.log(message: "\(finalUpdatesNumberMsg) (\(byUuidMsg) \(byEmailMsg))", category: .contacts)
@@ -328,6 +348,7 @@ extension ImportDeviceContacts {
         }
 
         var resultingMergedContacts = [ContactEntity]()
+        var errorCount = 0
         for deviceContact in deviceContacts {
             let normalisedContactUuid = deviceContact.identifier.uuidNormalisedForAutoImport
             do {
@@ -344,8 +365,11 @@ extension ImportDeviceContacts {
                     }
                 }
             } catch {
-                let message = "mergeContactsMatchedByUuid uuid \(normalisedContactUuid.redacted) error: \(error)"
-                SystemLogger.log(message: message, category: .contacts, isError: true)
+                errorCount += 1
+                if errorCount < 2 {
+                    let msg = "mergeContactsMatchedByUuid uuid \(normalisedContactUuid.redacted) first error in batch"
+                    SystemLogger.log(message: "\(msg): \(error)", category: .contacts, isError: true)
+                }
                 continue
             }
         }
@@ -368,6 +392,7 @@ extension ImportDeviceContacts {
         }
 
         var resultingMergedContacts = [ContactEntity]()
+        var errorCount = 0
         for deviceContact in deviceContacts {
             let deviceContactUuid = deviceContact.identifier.uuidInDevice
             do {
@@ -384,8 +409,11 @@ extension ImportDeviceContacts {
                     }
                 }
             } catch {
-                let message = "mergeContactsMatchByEmail uuid \(deviceContactUuid.redacted) error: \(error)"
-                SystemLogger.log(message: message, category: .contacts, isError: true)
+                errorCount += 1
+                if errorCount < 2 {
+                    let message = "mergeContactsMatchByEmail uuid \(deviceContactUuid.redacted) first error in batch"
+                    SystemLogger.log(message: "\(message): \(error)", category: .contacts, isError: true)
+                }
                 continue
             }
         }

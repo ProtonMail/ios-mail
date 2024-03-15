@@ -21,11 +21,11 @@
 //
 
 public enum ExternalLink {
-    static let alternativeRouting = "https://proton.me/blog/anti-censorship-alternative-routing"
-    static let protonvpn = "https://protonvpn.com"
-    static let tor = "https://www.torproject.org"
-    static let protonStatus = "https://status.proton.me"
-    static let supportForm = "https://proton.me/support/contact"
-    static let protonTwitter = "https://twitter.com/ProtonMail"
-    static let protonSupportMailTo = "mailto:support@protonmail.zendesk.com"
+    public static let alternativeRouting = "https://proton.me/blog/anti-censorship-alternative-routing"
+    public static let protonvpn = "https://protonvpn.com"
+    public static let tor = "https://www.torproject.org"
+    public static let protonStatus = "https://status.proton.me"
+    public static let supportForm = "https://proton.me/support/contact"
+    public static let protonTwitter = "https://twitter.com/ProtonMail"
+    public static let protonSupportMailTo = "mailto:support@protonmail.zendesk.com"
 }

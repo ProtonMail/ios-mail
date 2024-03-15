@@ -77,10 +77,6 @@ final class MessageInfoProvider {
         }
     }
 
-    var imageProxyEnabled: Bool {
-        user.userInfo.imageProxy.contains(.imageProxy) && !message.isSent
-    }
-
     private let contactService: ContactDataService
     private let contactGroupService: ContactGroupsDataService
     private let messageDecrypter: MessageDecrypter
@@ -92,11 +88,30 @@ final class MessageInfoProvider {
     private var pgpChecker: MessageSenderPGPChecker?
     private let dependencies: Dependencies
     private var highlightedKeywords: [String]
+
     private var shouldApplyImageProxy: Bool {
         let messageNotSentByUs = !message.isSent
-        let remoteContentAllowed = remoteContentPolicy == .allowed
+        let remoteContentAllowed = remoteContentPolicy == .allowedThroughProxy
         return messageNotSentByUs && remoteContentAllowed && imageProxyEnabled
     }
+    var imageProxyEnabled: Bool {
+        user.userInfo.imageProxy.contains(.imageProxy) && !message.isSent
+    }
+    var remoteContentPolicy: WebContents.RemoteContentPolicy {
+        didSet {
+            if message.isSent && remoteContentPolicy == .allowedThroughProxy {
+                remoteContentPolicy = .allowedWithoutProxy
+            }
+            if !imageProxyEnabled && remoteContentPolicy == .allowedThroughProxy {
+                remoteContentPolicy = .allowedWithoutProxy
+            }
+            if remoteContentPolicy == .allowedWithoutProxy {
+                shouldShowImageProxyFailedBanner = false
+            }
+            prepareDisplayBody()
+        }
+    }
+
     private let dateFormatter: PMDateFormatter
 
     init(
@@ -117,7 +132,7 @@ final class MessageInfoProvider {
 
         // If the message is sent by us, we do not use the image proxy to load the content.
         let imageProxyEnabled = user.userInfo.imageProxy.contains(.imageProxy) && !message.isSent
-        let allowedPolicy: WebContents.RemoteContentPolicy = !imageProxyEnabled ? .allowedAll : .allowed
+        let allowedPolicy: WebContents.RemoteContentPolicy = !imageProxyEnabled ? .allowedWithoutProxy : .allowedThroughProxy
         self.remoteContentPolicy = user.userInfo.isAutoLoadRemoteContentEnabled ? allowedPolicy : .disallowed
 
         self.embeddedContentPolicy = user.userInfo.isAutoLoadEmbeddedImagesEnabled ? .allowed : .disallowed
@@ -293,21 +308,6 @@ final class MessageInfoProvider {
     }
     private(set) var isBodyDecryptable: Bool = false
 
-    var remoteContentPolicy: WebContents.RemoteContentPolicy {
-        didSet {
-            if message.isSent && remoteContentPolicy == .allowed {
-                remoteContentPolicy = .allowedAll
-            }
-            if !imageProxyEnabled && remoteContentPolicy == .allowed {
-                remoteContentPolicy = .allowedAll
-            }
-            if remoteContentPolicy == .allowedAll {
-                shouldShowImageProxyFailedBanner = false
-            }
-            prepareDisplayBody()
-        }
-    }
-
     var embeddedContentPolicy: WebContents.EmbeddedContentPolicy {
         didSet {
             guard embeddedContentPolicy != oldValue else { return }
@@ -411,7 +411,7 @@ extension MessageInfoProvider {
     }
 
     func reloadImagesWithoutProtection() {
-        remoteContentPolicy = .allowedAll
+        remoteContentPolicy = .allowedWithoutProxy
 	}
 
     func fetchSenderImageIfNeeded(
@@ -603,18 +603,18 @@ extension MessageInfoProvider {
 
         let contentLoadingType: WebContents.LoadingType
         // The sent message will not use the proxy. The remote content should be loaded directly through the webview.
-        if message.isSent && remoteContentPolicy == .allowed {
-            remoteContentPolicy = .allowedAll
-            contentLoadingType = .direct
+        if message.isSent && remoteContentPolicy == .allowedThroughProxy {
+            remoteContentPolicy = .allowedWithoutProxy
+            contentLoadingType = .skipProxy
             // The `allowedAll` policy will by pass the proxy and load the content through the webview.
-        } else if remoteContentPolicy == .allowedAll {
-            contentLoadingType = .direct
+        } else if remoteContentPolicy == .allowedWithoutProxy {
+            contentLoadingType = .skipProxy
         } else if shouldApplyImageProxy {
             contentLoadingType = .proxy
         } else if imageProxyEnabled {
-            contentLoadingType = .proxyDryRun
+            contentLoadingType = .skipProxyButAskForTrackerInfo
         } else {
-            contentLoadingType = .none
+            contentLoadingType = .skipProxy
         }
 
         let css = bodyParts?.darkModeCSS(darkModeStatus: dependencies.userDefaults[.darkModeStatus])

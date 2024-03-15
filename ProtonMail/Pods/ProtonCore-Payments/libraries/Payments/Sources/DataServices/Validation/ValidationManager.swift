@@ -21,7 +21,6 @@
 
 import Foundation
 import StoreKit
-import ProtonCoreFeatureSwitch
 import ProtonCoreUtilities
 
 protocol ValidationManagerDependencies: AnyObject {

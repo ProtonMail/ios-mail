@@ -21,11 +21,6 @@ DEVELOPER_KEYCHAIN_PASSWORD = "TUFJTF9JT1NfQ0VSVElGSUNBVEVfS0VZQ0hBSU4="
 CERTIFICATE_PATH = "Certificates.p12"
 APP_IDENTIFIER = "ch.protonmail.protonmail"
 
-ENTERPRISE_SIRI_PATH = "Siri.mobileprovision"
-ENTERPRISE_PATH = "Enterprise.mobileprovision"
-ENTERPRISE_PUSH_SERVICE_PATH = "PushService.mobileprovision"
-ENTERPRISE_SHARE_PATH = "Share.mobileprovision"
-
 UNIT_TEST_SCHEME = "ProtonMailTests"
 UNIT_TEST_DEVICE = "iPhone 15"
 UI_TEST_IOS_VERSION = "17.2"
@@ -39,7 +34,7 @@ def select_xcode
   )
 end
 
-def set_up_keychain(isEnterprise)
+def set_up_keychain()
   create_keychain(
       name: DEVELOPER_KEYCHAIN_NAME,
       password: DEVELOPER_KEYCHAIN_PASSWORD,
@@ -47,26 +42,12 @@ def set_up_keychain(isEnterprise)
       add_to_search_list: true,
       unlock: true
   )
-  if isEnterprise
-    import_certificate(
-      keychain_name: DEVELOPER_KEYCHAIN_NAME,
-      keychain_password: DEVELOPER_KEYCHAIN_PASSWORD,
-      certificate_path: CERTIFICATE_PATH,
-      certificate_password: ENV["ENTRIPRISE_DISTRIBUTION_CERTIFICATE_PASSWORD"]
-    )
-
-    install_provisioning_profile(path: ENTERPRISE_SIRI_PATH)
-    install_provisioning_profile(path: ENTERPRISE_PATH)
-    install_provisioning_profile(path: ENTERPRISE_PUSH_SERVICE_PATH)
-    install_provisioning_profile(path: ENTERPRISE_SHARE_PATH)
-  else
-    import_certificate(
+  import_certificate(
       keychain_name: DEVELOPER_KEYCHAIN_NAME,
       keychain_password: DEVELOPER_KEYCHAIN_PASSWORD,
       certificate_path: CERTIFICATE_PATH,
       certificate_password: ENV["DISTRIBUTION_CERTIFICATE_PASSWORD"]
     )
-  end
 end
 
 def tear_down_keychain
@@ -75,7 +56,7 @@ def tear_down_keychain
   )
 end
 
-def get_xcode_profile()
+def get_xcode_profile(isAdhoc)
   ids = [
     "ch.protonmail.protonmail",
     "ch.protonmail.protonmail.Share",
@@ -85,6 +66,7 @@ def get_xcode_profile()
 
   ids.each do |id|
     get_provisioning_profile(
+      adhoc: isAdhoc,
       app_identifier: id,
       readonly: true,
     )
@@ -109,38 +91,26 @@ def set_up_changelog(latest_build_number)
   )
 end
 
-def build_release_app
+def build_release_app(isRelease)
+  scheme = isRelease ? "ProtonMail" : "Adhoc"
+  export_method = isRelease ? "app-store" : "ad-hoc"
+  mail_profile = isRelease ? "ProtonMail Release" : "ProtonMail Ad-Hoc"
+  share_profile = isRelease ? "Protonmail share release" : "ProtonMail Share Ad-Hoc"
+  push_service_profile = isRelease ? "protonmail push service release" : "ProtonMail PushService Ad-Hoc"
+  siri_profile = isRelease ? "Protonmail Siri kit release" : "ProtonMail Siri Ad-Hoc"
   build_app(
-    scheme: "ProtonMail",
+    scheme: scheme,
     clean: true,
     output_directory: "outputs/",
-    export_method: "app-store",
+    export_method: export_method,
     export_options: {
         provisioningProfiles: {
-            "ch.protonmail.protonmail" => "ProtonMail Release",
-            "ch.protonmail.protonmail.Share" => "Protonmail share release",
-            "ch.protonmail.protonmail.PushService" => "protonmail push service release",
-            "ch.protonmail.protonmail.Siri" => "Protonmail Siri kit release"
+            "ch.protonmail.protonmail" => mail_profile,
+            "ch.protonmail.protonmail.Share" => share_profile,
+            "ch.protonmail.protonmail.PushService" => push_service_profile,
+            "ch.protonmail.protonmail.Siri" => siri_profile
         }
     },
-  )
-end
-
-def build_enterprise_app
-  build_app(
-    scheme: "Enterprise",
-    clean: true,
-    output_directory: "outputs/",
-    export_method: "enterprise",
-    export_options: {
-        provisioningProfiles: {
-            "com.protonmail.protonmail" => "ProtonMail Distribution",
-            "com.protonmail.protonmail.ShareDev" => "protonmail share Production",
-            "com.protonmail.protonmail.PushServiceDev" => "protonmail push service Production",
-            "com.protonmail.protonmail.SiriDev" => "production siriDev"
-        },
-        iCloudContainerEnvironment: "Production"
-    }
   )
 end
 
@@ -172,12 +142,12 @@ platform :ios do
   desc "Build the app and upload to testflight"
   lane :build do |options|
     select_xcode
-    set_up_keychain(false)
+    set_up_keychain()
 
     app_store_connect_api_key
 
     # Download profile
-    get_xcode_profile()
+    get_xcode_profile(false)
 
     # Collect change logs
     latest_build_number = get_latest_build_number()
@@ -186,7 +156,7 @@ platform :ios do
     # Set build version by git log numbers
     bundle_version = sh("./setup_bundle_version.sh")
 
-    build_release_app
+    build_release_app(true)
 
     upload_to_testflight(
       team_name: "Proton Technologies AG",
@@ -199,10 +169,36 @@ platform :ios do
     send_to_slack(true, changelog, "", bundle_version.strip)
   end
 
+  lane :adhoc do |options|
+    select_xcode
+    set_up_keychain()
+
+    app_store_connect_api_key
+
+    # Download profile
+    get_xcode_profile(true)
+
+    # Set build version by git log numbers
+    timeStamp = Time.now.getutc.to_i
+    bundle_version = sh("./setup_bundle_version.sh " + timeStamp.to_s)
+
+    branchName = git_branch
+    lastGitCommitHash = last_git_commit[:commit_hash]
+    releaseNote = "Built on: " + git_branch + " \nBuild number: " + bundle_version + "\nGit commit: " + lastGitCommitHash
+
+    build_release_app(false)
+
+    firebase_app_distribution(
+      app: "1:75309174866:ios:6175d77aa45a9590",
+      groups: "v4-internal-test-group",
+      release_notes: releaseNote
+    )
+
+    tear_down_keychain
+  end
+
   desc "Build debug apps for testing"
   lane :build_for_testing do |options|
-    select_xcode
-
     run_tests(
       build_for_testing: true,
       scheme: UI_TEST_SCHEME,
@@ -212,30 +208,6 @@ platform :ios do
       reinstall_app: false,
       skip_detect_devices: true
     )
-  end
-
-  desc "Build enterprise app"
-  lane :enterprise do |options|
-    select_xcode
-    set_up_keychain(true)
-
-    # Set build version by git log numbers
-    timeStamp = Time.now.getutc.to_i
-    bundle_version = sh("./setup_bundle_version.sh " + timeStamp.to_s)
-
-    build_enterprise_app
-
-    branchName = git_branch
-    lastGitCommitHash = last_git_commit[:commit_hash]
-    releaseNote = "Built on: " + git_branch + " \nBuild number: " + bundle_version + "\nGit commit: " + lastGitCommitHash
-
-    firebase_app_distribution(
-      app: "1:75309174866:ios:fb09e26e4130a105",
-      groups: "v4-internal-test-group",
-      release_notes: releaseNote
-    )
-
-    tear_down_keychain
   end
 
   %w{major minor patch}.each do |part|

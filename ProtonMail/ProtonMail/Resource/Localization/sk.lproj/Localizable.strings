@@ -174,12 +174,6 @@
 /* Title */
 "wrote:" = "napísal(-a):";
 
-/* At {time}, e.g.: At 19:00 */
-"At %@" = "O %@";
-
-/* On {date}, e.g.: On Aug 14 */
-"On %@" = "%@";
-
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
 "On %@ at %@" = "%1$@ o %2$@";
 
@@ -589,6 +583,9 @@
 /* Title */
 "Reading device contacts data…" = "Čítanie kontaktov v zariadení…";
 
+/* title for the contact import indicator */
+"Importing contacts..." = "Importing contacts...";
+
 /* Description */
 "Do you want to cancel the process?" = "Chcete prerušiť tento proces?";
 
@@ -772,9 +769,6 @@
 "Date: %@" = "Dátum: %@";
 
 /* Title */
-"Details" = "Detaily";
-
-/* Title */
 "Hide details" = "Skryť detaily";
 
 /* contact placeholder */
@@ -794,12 +788,6 @@
 
 /* action */
 "Add new URL" = "Pridať novú adresu URL";
-
-/* settings general section title */
-"Change account password" = "Zmeniť heslo účtu";
-
-/* settings general section title */
-"Change mailbox password" = "Zmeniť heslo k poštovej schránke";
 
 /* settings general section title */
 "Auto-load remote content" = "Automaticky načítať vzdialený obsah";
@@ -1126,9 +1114,6 @@
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Zmazať skupinu kontaktov";
 
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "Vybrané: %d";
-
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Vyberte aspoň jeden e-mail pre skupinu kontaktov";
 
@@ -1149,9 +1134,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Presunutím sem pridáte prílohu";
-
-/* Downloading attachments from cloud */
-"Importing" = "Prebieha import";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Import prílohy, môže to chvíľu trvať";
@@ -1251,9 +1233,6 @@
 
 /* cell title in app settings */
 "Alternative routing" = "Alternatívne smerovanie";
-
-/* cell title in device settings */
-"Storage" = "Úložisko";
 
 /* cell title in device settings */
 "Addresses" = "Adresy";
@@ -1623,27 +1602,6 @@
 /* The title of voice over action that switches the unread filter status in the inbox */
 "Switch unread filter" = "Prepnúť filter neprečítaných správ";
 
-/* Title of user feedback view */
-"Your feedback" = "Vaša spätná väzba";
-
-/* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "Ako by ste popísali svoju skúsenosť s novým Proton Mailom?";
-
-/* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Povedzte nám o vašich skúsenostiach. (Nepovinné)";
-
-/* Title of button to send feedback */
-"Send feedback" = "Odoslať spätnú väzbu";
-
-/* Example feedback */
-"Awful" = "Hrozné";
-
-/* Example feedback */
-"Wonderful" = "Skvelé";
-
-/* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Ďakujeme za vašu spätnú väzbu!";
-
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
 "Collapse message" = "Zbaliť správu";
 
@@ -1875,6 +1833,27 @@
 /* The content of the Customize toolbar spotlight view. */
 "You can now choose and rearrange the actions in this bar" = "Teraz môžete vybrať a zmeniť usporiadanie akcií na tomto paneli nástrojov";
 
+/* Title of the banner alert */
+"Your Mail storage is %@ full" = "Your Mail storage is %@ full";
+
+/* Title of the banner alert */
+"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+
+/* Title of the banner alert */
+"Your Mail storage is full" = "Vaše Mail úložisko je plné";
+
+/* Title of the banner alert */
+"Your Drive storage is full" = "Your Drive storage is full";
+
+/* Description of the banner alert */
+"Upgrade to get more storage." = "Upgrade to get more storage.";
+
+/* Get more storage button action */
+"Not now" = "Teraz nie";
+
+/* Get more storage button action */
+"Get more storage" = "Získať viac úložného priestoru";
+
 /* Button to block a sender */
 "Block messages from this sender" = "Blokovať správy od tohto odosielateľa";
 
@@ -1931,6 +1910,45 @@
 /* Button to hide some items in the list to conserve screen estate */
 "Show less" = "Zobraziť menej";
 
+/* Text shown when opening an invitation for a past event */
+"This event already ended" = "This event already ended";
+
+/* Text shown when opening an invitation for a cancelled event */
+"This event has been cancelled" = "This event has been cancelled";
+
+/* Prompt above yes/no/maybe buttons */
+"Attending?" = "Attending?";
+
+/* Part of a yes/no/maybe prompt */
+"Yes" = "Yes";
+
+/* Part of a yes/no/maybe prompt */
+"No" = "No";
+
+/* Part of a yes/no/maybe prompt */
+"Maybe" = "Maybe";
+
+/* Confirm attending an event */
+"Yes, I'll attend" = "Áno, zúčastním sa";
+
+/* Deny attending an event */
+"No, I won't attend" = "Nie, nezúčastním sa";
+
+/* Neither confirm nor deny attending an event */
+"I might attend" = "I might attend";
+
+/* Menu title */
+"Max Storage" = "Max Storage";
+
+/* Cell title that shows the percentage of the storage */
+"Storage: %@ full" = "Storage: %@ full";
+
+/* Cell title that shows the percentage of the storage */
+"Drive storage: %@ full" = "Drive storage: %@ full";
+
+/* Upgrade button action */
+"Upgrade" = "Upgradovať";
+
 /* Official badge next to sender's name */
 "Official" = "Oficiálne";
 
@@ -1971,13 +1989,16 @@
 "Auto-import device contacts" = "Auto-import device contacts";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Zapnutím tejto funkcie automaticky pridáte nové kontakty zo zariadenia do aplikácie Proton Mail.";
 
 /* Auto import alert title */
-"Auto-import enabled" = "Auto-import enabled";
+"Auto-import enabled" = "Automatický import povolený";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "Prvý import môže nejaký čas trvať a prebehne iba vtedy, keď je aplikácia v popredí.";
+
+/* Alert to ask user to reauthorise access to contacts */
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission.";
 
 /* Settings lock protection section */
 "Protection" = "Ochrana";
@@ -2043,10 +2064,10 @@
 "Application logs" = "Záznamy aplikácie";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Jump to next message";
+"Jump to next email" = "Jump to next email";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Automatically show the next message when the current message is deleted, archived or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Vyskytla sa neočakávaná chyba, kontaktujte podporu, prosím.\nChyba: %@";
@@ -2129,6 +2150,15 @@
 /* Title of button to empty trash folder */
 "Empty trash" = "Vyprázdniť kôš";
 
+/* Alert prompting to update Calendar */
+"Download the latest version of the Proton Calendar to open this event" = "Download the latest version of the Proton Calendar to open this event";
+
+/* Button to open App Store */
+"Download in App Store" = "Download in App Store";
+
+/* Button to open the Calendar app */
+"Open in Proton Calendar" = "Otvoriť v Proton kalendári";
+
 /* Title of the sheet to advertise the auto delete feature to free users */
 "Clear out the junk" = "Prečistite nevyžiadanú poštu";
 
@@ -2148,7 +2178,7 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Pôvodný odosielateľ tejto správy už nie je platný. Vaša správa bude odoslaná z vašej predvolenej adresy %@.";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
-"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+"Please retry after all attachments are uploaded." = "Skúste to znova po nahraní všetkých príloh.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Zobrazované meno";
@@ -2175,7 +2205,7 @@
 "Select all" = "Vybrať všetko";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Unselect all";
+"Unselect all" = "Zrušiť výber všetkého";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
 "Maximum selection reached" = "Maximum selection reached";
@@ -2256,7 +2286,7 @@
 "Next week" = "Nasledujúci týždeň";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Please select a time in the future";
+"Please select a time in the future" = "Vyberte prosím čas v budúcnosti";
 
 /* The title of snooze promotion view */
 "Want to snooze any time?" = "Chcete kedykoľvek odložiť?";
@@ -2270,5 +2300,68 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Neobmedzený počet priečinkov, štítkov a filtrov";
 
+/* Description string shows in spotlight view */
+"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.";
+
+/* Description string shows in spotlight view */
+"Snooze it for later" = "Odložiť na neskôr";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
-"Add it as attachment" = "Add it as attachment";
+"Add it as attachment" = "Pridať ako prílohu";
+
+/* The title in setting page */
+"Swipe to next message" = "Swipe to next message";
+
+/* Description text for setting */
+"Allow navigating through messages by swiping left or right." = "Allow navigating through messages by swiping left or right.";
+
+/* The title of the spotlight of the auto import contacts. */
+"Your contacts at your fingertips" = "Your contacts at your fingertips";
+
+/* The message of the spotlight of the auto import contacts. */
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+
+/* The title of the button of the spotlight of the auto import contacts. */
+"Enable auto-import" = "Enable auto-import";
+
+/* The title for no contact hint view */
+"No contacts yet" = "No contacts yet";
+
+/* The description for no contact hint view */
+"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+
+/* Button title for no contact hint view */
+"Auto-import contacts" = "Auto-import contacts";
+
+/* A title show to user after auto import button is clicked but contacts hasn't imported yet */
+"Importing your contacts" = "Importing your contacts";
+
+/* A message show to user after auto import button is clicked but contacts hasn't imported yet */
+"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+
+/* The title of the dismissable banner in the contacts view. */
+"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+
+/* The title of the privacy and data in the account setting. */
+"Privacy and data" = "Privacy and data";
+
+/* cell title in device settings */
+"Storage" = "Úložisko";
+
+/* settings general section title */
+"Change account password" = "Zmeniť heslo účtu";
+
+/* settings general section title */
+"Change mailbox password" = "Zmeniť heslo k poštovej schránke";
+
+/* The title of the telemetry setting. */
+"Anonymous telemetry" = "Anonymná telemetria";
+
+/* The title of the crash report setting. */
+"Anonymous crash reports" = "Anonymné správy o zlyhaní";
+
+/* The subtitle of the anonymous telemetry setting. */
+"To improve our services, we sometimes collect anonymized usage data." = "Na zlepšenie našich služieb niekedy zhromažďujeme anonymizované údaje o používaní.";
+
+/* The subtitle of the crash report setting. */
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.";

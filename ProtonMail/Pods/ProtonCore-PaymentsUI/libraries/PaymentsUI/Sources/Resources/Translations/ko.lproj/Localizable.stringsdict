@@ -139,7 +139,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>other</key>
-        <string>%d 빠른 속도의 VPN 연결</string>
+        <string> 빠른 속도의 VPN 연결 %d대</string>
       </dict>
     </dict>
     <key>&lt;n&gt; custom domains</key>

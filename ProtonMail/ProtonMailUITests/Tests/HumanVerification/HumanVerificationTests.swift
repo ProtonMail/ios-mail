@@ -16,7 +16,7 @@ class HumanVerificationTests: BaseTestCase {
     private var humanVerificationRobot = HumanVerificationRobot()
 
     override func setUp() {
-        humanVerificationStubs = true
+        _launchArguments.append(contentsOf: ["HumanVerificationStubs", "1"])
         super.setUp()
         let user = users["plus"]!
 

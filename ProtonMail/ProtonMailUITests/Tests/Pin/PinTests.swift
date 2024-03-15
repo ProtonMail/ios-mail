@@ -59,8 +59,8 @@ class PinTests: FixtureAuthenticatedTestCase {
             .verify.isPinEnabled(true)
     }
 
-    func testEnterCorrectPinCanUnlock() async {
-        await pinRobot
+    func testEnterCorrectPinCanUnlock() {
+        pinRobot
             .openPinTimerSelection()
             .selectAutolockEveryTime()
             .navigateUpToSettings()
@@ -108,8 +108,8 @@ class PinTests: FixtureAuthenticatedTestCase {
             .verify.loginScreenIsShown()
     }
 
-    func testIncorrectPinBeforeThirtySec() async {
-        await pinRobot
+    func testIncorrectPinBeforeThirtySec() {
+        pinRobot
             .openPinTimerSelection()
             .selectAutolockEveryTime()
             .navigateUpToSettings()
@@ -123,8 +123,8 @@ class PinTests: FixtureAuthenticatedTestCase {
             .verify.pinErrorMessageShows(1)
     }
 
-    func testErrorMessageOnThreeRemainingPinTries() async {
-        await pinRobot
+    func testErrorMessageOnThreeRemainingPinTries() {
+        pinRobot
             .openPinTimerSelection()
             .selectAutolockEveryTime()
             .navigateUpToSettings()

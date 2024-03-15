@@ -18,7 +18,9 @@
 import Foundation
 
 final class AppResumeAfterUnlock: ResumeAfterUnlock {
-    typealias Dependencies = AnyObject & HasPushNotificationService
+    typealias Dependencies = AnyObject
+    & HasPushNotificationService
+    & HasUsersManager
 
     private unowned let dependencies: Dependencies
 
@@ -28,5 +30,6 @@ final class AppResumeAfterUnlock: ResumeAfterUnlock {
 
     func resume() {
         dependencies.pushService.resumePendingTasks()
+        dependencies.usersManager.firstUser?.sendLocalSettingsTelemetryHeartbeat()
     }
 }

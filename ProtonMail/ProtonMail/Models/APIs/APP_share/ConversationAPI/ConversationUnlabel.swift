@@ -60,21 +60,16 @@ class ConversationUnlabelRequest: ConversationLabelActionBatchableRequest {
 
 class ConversationUnlabelResponse: Response, UndoTokenResponseProtocol {
     var undoTokenData: UndoTokenData?
-    var responseDict: [String: Any]?
-    var results: [ConversationUnlabelData]?
 
     override func ParseResponse(_ response: [String: Any]) -> Bool {
-        responseDict = response
-
         guard let jsonObject = response["Responses"],
                 let data = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted) else {
             return false
         }
 
-        guard let result = try? JSONDecoder().decode([ConversationUnlabelData].self, from: data) else {
+        guard (try? JSONDecoder().decode([ConversationUnlabelData].self, from: data)) != nil else {
             return false
         }
-        results = result
 
         parseUndoToken(response: response)
 

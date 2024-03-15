@@ -19,10 +19,6 @@ import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-protocol PushNotificationServiceProtocol: AnyObject {
-    func processCachedLaunchOptions()
-}
-
 // sourcery: mock
 protocol UnlockProvider {
     func isUnlocked() -> Bool

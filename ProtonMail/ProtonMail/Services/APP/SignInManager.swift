@@ -187,7 +187,7 @@ private extension SpotlightableFeatureKey {
             return true
         case .messageSwipeNavigation, .snooze:
             return true
-        case .messageSwipeNavigationAnimation:
+        case .messageSwipeNavigationAnimation, .autoImportContacts, .jumpToNextMessage:
             return false
         }
     }
@@ -196,7 +196,7 @@ private extension SpotlightableFeatureKey {
         switch self {
         case .messageSwipeNavigation, .messageSwipeNavigationAnimation, .snooze:
             return true
-        case .scheduledSend, .toolbarCustomization:
+        case .scheduledSend, .toolbarCustomization, .autoImportContacts, .jumpToNextMessage:
             return false
         }
     }

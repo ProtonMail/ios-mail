@@ -33,6 +33,9 @@ protocol MenuVMProtocol: AnyObject {
     var secondUser: UserManager? { get }
     var enableFolderColor: Bool { get }
     var reloadClosure: (() -> Void)? { get set }
+    var storageAlertVisibility: StorageAlertVisibility { get }
+    var currentMailStoragePercentage: CGFloat { get }
+    var currentDriveStoragePercentage: CGFloat { get }
 
     func userDataInit()
     func menuViewInit()

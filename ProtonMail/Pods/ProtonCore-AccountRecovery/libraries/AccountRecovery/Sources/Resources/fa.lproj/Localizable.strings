@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "Password reset";
+
+"Account_Recovery_Insecure_View_Title" = "Reset your password";
+
+"Account_Recovery_Grace_View_Title" = "Do you want to reset your password?";
+
+"Account_Recovery_Grace_View_line1" = "We received a request to reset your password for ";
+
+"Account_Recovery_Insecure_View_line1" = "You can now change your password for the account ";
+
+"Account_Recovery_Insecure_View_line2" = " freely during ";
+
+"Account_Recovery_Insecure_View_line3" = "Please go the signed-in device (in the session where the request was initiated) to change your password.";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "Cancel request";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "a few hours";
+
+"Account_Recovery_Grace_View_line2" = ". To keep your account safe, we want to make sure it’s really you trying to reset your password. You’ll be able to reset your password in ";
+
+"Account_Recovery_Grace_View_line3" = "If you didn't make this request, or if you no longer need help signing in, please cancel it and take steps to secure your account.";

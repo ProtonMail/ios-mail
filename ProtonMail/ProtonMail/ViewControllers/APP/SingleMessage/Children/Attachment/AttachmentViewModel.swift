@@ -70,6 +70,10 @@ final class AttachmentViewModel {
         }
     }
 
+    var viewShouldBeShown: Bool {
+        numberOfAttachments != 0 || basicEventInfoSourcedFromHeaders != nil
+    }
+
     private let invitationViewSubject = CurrentValueSubject<InvitationViewState, Never>(.noInvitationFound)
 
     private let respondingStatusSubject = CurrentValueSubject<RespondingStatus, Never>(.respondingUnavailable)
@@ -173,15 +177,14 @@ final class AttachmentViewModel {
     }
 
     func instructionToHandle(deepLink: URL) -> OpenInCalendarInstruction {
-        let isCalendarInstalledAndAbleToOpenDeepLink = dependencies.urlOpener.canOpenURL(deepLink)
-        let isOlderVersionOfCalendarInstalled = dependencies.urlOpener.canOpenURL(.ProtonCalendar.legacyScheme)
-
-        if isCalendarInstalledAndAbleToOpenDeepLink {
+        if dependencies.urlOpener.canOpenURL(deepLink) {
             return .openDeepLink(deepLink)
-        } else if isOlderVersionOfCalendarInstalled {
-            return .goToAppStore(askBeforeGoing: true)
+        } else if dependencies.urlOpener.canOpenURL(.ProtonCalendar.legacyScheme) {
+            return .promptToUpdateCalendarApp
+        } else if dependencies.featureFlagProvider.isEnabled(.calendarMiniLandingPage, reloadValue: true) {
+            return .presentCalendarLandingPage
         } else {
-            return .goToAppStore(askBeforeGoing: false)
+            return .goToAppStoreDirectly
         }
     }
 
@@ -213,7 +216,9 @@ final class AttachmentViewModel {
 extension AttachmentViewModel {
     enum OpenInCalendarInstruction: Equatable {
         case openDeepLink(URL)
-        case goToAppStore(askBeforeGoing: Bool)
+        case promptToUpdateCalendarApp
+        case goToAppStoreDirectly
+        case presentCalendarLandingPage
     }
 
     enum RespondingStatus: Equatable {

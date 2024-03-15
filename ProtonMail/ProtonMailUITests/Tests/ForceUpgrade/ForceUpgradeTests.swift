@@ -16,7 +16,7 @@ class ForceUpgradeTests: BaseTestCase {
     private var menuRobot = MenuRobot()
 
     override func setUp() {
-        forceUpgradeStubs = true
+        _launchArguments.append(contentsOf: ["ForceUpgradeStubs", "1"])
         super.setUp()
         let freeUser = users["plus"]!
 

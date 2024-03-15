@@ -10,7 +10,7 @@ import ProtonCoreTestingToolkit
 
 
 class DraftsTests: FixtureAuthenticatedTestCase {
-    
+
     private var subject = String()
     private var body = String()
     private var to = String()
@@ -20,7 +20,7 @@ class DraftsTests: FixtureAuthenticatedTestCase {
         super.setUp()
         subject = testData.messageSubject
         body = testData.messageBody
-        to = users["pro"]!.email
+        to = users["pro"]!.dynamicDomainEmail
     }
 
     func testSaveDraft() {
@@ -68,13 +68,13 @@ class DraftsTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.qaMail001) {
             let plusUser = users["plus"]!
             let freeUser = users["pro"]!
-            
-            let editOneRecipient = plusUser.email
+
+            let editOneRecipient = plusUser.dynamicDomainEmail
             let editOneSubject = "Edit one \(Date().millisecondsSince1970)"
-            
-            let editTwoRecipient = freeUser.email
+
+            let editTwoRecipient = freeUser.dynamicDomainEmail
             let editTwoSubject = "Edit two \(Date().millisecondsSince1970)"
-            
+
             InboxRobot()
                 .compose()
                 .draftToSubjectBody(to, subject, body)
@@ -143,7 +143,7 @@ class DraftsTests: FixtureAuthenticatedTestCase {
 
     // Need an account with aliases to enable test back
     func disabledChangeDraftSender() {
-        let onePassUserSecondEmail = "2\(testData.onePassUser.email)"
+        let onePassUserSecondEmail = "2\(testData.onePassUser.dynamicDomainEmail)"
 
         runTestWithScenario(.qaMail001) {
             InboxRobot()
@@ -198,9 +198,9 @@ class DraftsTests: FixtureAuthenticatedTestCase {
     }
 
     /// TestId: 34640
-    func testMinimiseAppWhileComposingDraft() async {
-        await runTestWithScenario(.qaMail001) {
-            await InboxRobot()
+    func testMinimiseAppWhileComposingDraft() {
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
                 .compose()
                 .draftToSubjectBody(to, subject, body)
                 .backgroundApp()
@@ -213,16 +213,16 @@ class DraftsTests: FixtureAuthenticatedTestCase {
     }
 
     /// TestId: 35877
-    func testEditDraftMinimiseAppAndSend() async {
+    func testEditDraftMinimiseAppAndSend() {
         let newRecipient = createUser()
         let newSubject = testData.newMessageSubject
-        await runTestWithScenario(.qaMail001) {
-            await InboxRobot()
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
                 .compose()
                 .draftToSubjectBody(to, subject, body)
                 .backgroundApp()
                 .foregroundApp()
-                .editRecipients(newRecipient.email)
+                .editRecipients(newRecipient.dynamicDomainEmail)
                 .changeSubjectTo(newSubject)
                 .tapCancel()
                 .menuDrawer()
@@ -249,11 +249,11 @@ class DraftsTests: FixtureAuthenticatedTestCase {
                 .menuDrawer()
                 .drafts()
                 .clickDraftBySubject(subject)
-                .editRecipients(user1.email)
+                .editRecipients(user1.dynamicDomainEmail)
                 .changeSubjectTo(editOneSubject)
                 .tapCancelFromDrafts()
                 .clickDraftBySubject(editOneSubject)
-                .editRecipients(user2.email)
+                .editRecipients(user2.dynamicDomainEmail)
                 .changeSubjectTo(editTwoSubject)
                 .tapCancelFromDrafts()
                 .verify.messageWithSubjectExists(editTwoSubject)
@@ -272,7 +272,7 @@ class DraftsTests: FixtureAuthenticatedTestCase {
                 .menuDrawer()
                 .drafts()
                 .clickDraftBySubject(subject)
-                .editRecipients(newRecipient.email)
+                .editRecipients(newRecipient.dynamicDomainEmail)
                 .changeSubjectTo(newSubject)
                 .tapCancelFromDrafts()
                 .clickDraftBySubject(newSubject)
@@ -297,11 +297,11 @@ class DraftsTests: FixtureAuthenticatedTestCase {
                 .menuDrawer()
                 .drafts()
                 .clickDraftBySubject(subject)
-                .editRecipients(editOneRecipient.email)
+                .editRecipients(editOneRecipient.dynamicDomainEmail)
                 .changeSubjectTo(editOneSubject)
                 .tapCancelFromDrafts()
                 .clickDraftBySubject(editOneSubject)
-                .editRecipients(editTwoRecipient.email)
+                .editRecipients(editTwoRecipient.dynamicDomainEmail)
                 .changeSubjectTo(editTwoSubject)
                 .tapCancelFromDrafts()
                 .verify.messageWithSubjectExists(editTwoSubject)

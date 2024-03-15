@@ -89,7 +89,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
-        self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
+        self.eventService.callFetchEvents.bodyIs { _, _, _, _, completion in
             completion?(.success([:]))
             eventExpected.fulfill()
         }
@@ -129,7 +129,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         mailboxSource.locationViewMode = .conversation
         sut.setup(isFetching: false)
 
-        eventService.callFetchEvents.bodyIs { times, _, _, completion in
+        eventService.callFetchEvents.bodyIs { times, _, _, _, completion in
             if times == 1 {
                 completion?(.success(["More": 1]))
             } else {
@@ -173,7 +173,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
-        self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
+        self.eventService.callFetchEvents.bodyIs { _, _, _, _, completion in
             completion?(.success(["Refresh": 1]))
             eventExpected.fulfill()
         }
@@ -221,7 +221,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.mailboxSource.locationViewMode = .conversation
         self.sut.setup(isFetching: false)
 
-        self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
+        self.eventService.callFetchEvents.bodyIs { _, _, _, _, completion in
             XCTFail("Event ID is not valid, shouldn't trigger")
         }
 
@@ -267,7 +267,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
-        self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
+        self.eventService.callFetchEvents.bodyIs { _, _, _, _, completion in
             completion?(.failure(NSError(domain: "test.com", code: 999, localizedDescription: "Event API failed")))
             eventExpected.fulfill()
         }
@@ -310,7 +310,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
-        self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
+        self.eventService.callFetchEvents.bodyIs { _, _, _, _, completion in
             completion?(.failure(NSError(domain: "test.com", code: 999, localizedDescription: "conversation failed")))
             eventExpected.fulfill()
         }
@@ -352,7 +352,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
-        self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
+        self.eventService.callFetchEvents.bodyIs { _, _, _, _, completion in
             completion?(.success([:]))
             eventExpected.fulfill()
         }
@@ -392,7 +392,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.mailboxSource.locationViewMode = .conversation
         self.sut.setup(isFetching: false)
 
-        self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
+        self.eventService.callFetchEvents.bodyIs { _, _, _, _, completion in
             XCTFail("Event ID is not valid, shouldn't trigger")
         }
 
@@ -438,7 +438,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.mailboxSource.locationViewMode = .singleMessage
         self.sut.setup(isFetching: false)
 
-        self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
+        self.eventService.callFetchEvents.bodyIs { _, _, _, _, completion in
             XCTFail("Event ID is not valid, shouldn't trigger")
         }
 
@@ -512,7 +512,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.conversationProvider.fetchConversationsStub.bodyIs { _, _, _, _, shouldReset, completion in
             XCTFail("isFetching, shouldn't trigger")
         }
-        self.eventService.callFetchEvents.bodyIs { _, _, _, _ in
+        self.eventService.callFetchEvents.bodyIs { _, _, _, _, _ in
             XCTFail("isFetching, shouldn't call event API")
         }
 
@@ -557,7 +557,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
 
 
         let eventExpected = expectation(description: "Fetch event")
-        self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
+        self.eventService.callFetchEvents.bodyIs { _, _, _, _, completion in
             completion?(.success([:]))
             eventExpected.fulfill()
         }

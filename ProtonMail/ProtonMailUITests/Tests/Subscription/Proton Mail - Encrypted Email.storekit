@@ -35,6 +35,21 @@
       "productID" : "iosmail_bundle2022_12_usd_non_renewing",
       "referenceName" : "Proton Bundle 2022 (1 year) non renewing",
       "type" : "NonRenewingSubscription"
+    },
+    {
+      "displayPrice" : "59.99",
+      "familyShareable" : false,
+      "internalID" : "1435657539",
+      "localizations" : [
+        {
+          "description" : "A 1-year subscription to ProtonMail Plus.",
+          "displayName" : "ProtonMail Plus (1 year)",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "ios_plus_12_usd_non_renewing",
+      "referenceName" : "ProtonMail Plus (1 year) non renewing",
+      "type" : "NonRenewingSubscription"
     }
   ],
   "products" : [
@@ -44,7 +59,7 @@
     "_applicationInternalID" : "979659905",
     "_developerTeamID" : "2SB5Z68H26",
     "_failTransactionsEnabled" : false,
-    "_lastSynchronizedDate" : 717939003.67974997,
+    "_lastSynchronizedDate" : 731336376.08103299,
     "_locale" : "en_US",
     "_storefront" : "USA",
     "_storeKitErrors" : [

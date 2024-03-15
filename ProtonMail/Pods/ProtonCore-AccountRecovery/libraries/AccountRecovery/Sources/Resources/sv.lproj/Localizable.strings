@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "Lösenordsåterställning";
+
+"Account_Recovery_Insecure_View_Title" = "Återställ ditt lösenord";
+
+"Account_Recovery_Grace_View_Title" = "Vill du återställa ditt lösenord?";
+
+"Account_Recovery_Grace_View_line1" = "Vi fick en begäran om att återställa ditt lösenord för ";
+
+"Account_Recovery_Insecure_View_line1" = "Du kan nu ändra ditt lösenord för kontot ";
+
+"Account_Recovery_Insecure_View_line2" = " fritt under ";
+
+"Account_Recovery_Insecure_View_line3" = "Gå till den inloggade enheten (i sessionen där begäran initierades) för att ändra ditt lösenord.";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "Avbryt begäran";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "om några timmar";
+
+"Account_Recovery_Grace_View_line2" = ". För att hålla ditt konto säkert vill vi se till att det verkligen är du som försöker återställa ditt lösenord. Du kommer att kunna återställa ditt lösenord om ";
+
+"Account_Recovery_Grace_View_line3" = "Om du inte gjorde denna begäran, eller om du inte längre behöver hjälp med att logga in, avbryt den och vidta åtgärder för att skydda ditt konto.";

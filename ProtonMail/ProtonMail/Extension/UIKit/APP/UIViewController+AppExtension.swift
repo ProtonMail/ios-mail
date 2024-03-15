@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreDataModel
+import ProtonCoreFeatureFlags
 import ProtonCoreUIFoundations
 import UIKit
 
@@ -30,20 +32,80 @@ extension UIViewController {
         presentingController.modalPresentationStyle = style
     }
 
-    func setupMenuButton() {
-        let menuButton = UIBarButtonItem(
-            image: IconProvider.hamburger,
-            style: .plain,
-            target: self,
-            action: #selector(self.openMenu)
-        )
+    func setupMenuButton(userInfo: UserInfo) {
+        let menuButton = UIBarButtonItem(customView: menuButtonUI(userInfo: userInfo))
         menuButton.accessibilityLabel = LocalString._menu_button
         menuButton.tintColor = ColorProvider.IconNorm
         navigationItem.leftBarButtonItem = menuButton
     }
 
+    private func menuButtonUI(userInfo: UserInfo) -> UIView {
+        let containerView = UIView()
+        let padding: CGFloat = 8
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.backgroundColor = .clear
+
+        let hamburgerButton = UIButton(type: .custom)
+        hamburgerButton.translatesAutoresizingMaskIntoConstraints = false
+        hamburgerButton.setImage(IconProvider.hamburger, for: .normal)
+        hamburgerButton.tintColor = ColorProvider.IconNorm
+        hamburgerButton.addTarget(
+            self,
+            action: #selector(self.openMenu),
+            for: .touchUpInside
+        )
+        hamburgerButton.accessibilityLabel = LocalString._menu_button
+        containerView.addSubview(hamburgerButton)
+        [
+            hamburgerButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
+            hamburgerButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
+            hamburgerButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: padding),
+            hamburgerButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -padding)
+        ].activate()
+
+        if isMenuBadgeVisible(userInfo: userInfo) {
+            let badge = badgeUI()
+            containerView.addSubview(badge)
+            [
+                badge.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -2),
+                badge.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 2)
+            ].activate()
+        }
+
+        return containerView
+    }
+
+    private func badgeUI() -> UIView {
+        let height: CGFloat = 8
+        let badge = UIView()
+        badge.translatesAutoresizingMaskIntoConstraints = false
+        badge.backgroundColor = ColorProvider.NotificationError
+        [
+            badge.heightAnchor.constraint(equalToConstant: height),
+            badge.widthAnchor.constraint(equalToConstant: height)
+        ].activate()
+        badge.setCornerRadius(radius: height / 2)
+        return badge
+    }
+
     @objc
     func openMenu() {
         sideMenuController?.revealMenu()
+    }
+
+    func isMenuBadgeVisible(userInfo: UserInfo) -> Bool {
+        guard FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.splitStorage, reloadValue: true),
+              !userInfo.isOnAStoragePaidPlan,
+              let usedBaseSpace = userInfo.usedBaseSpace,
+              let maxBaseSpace = userInfo.maxBaseSpace,
+              let usedDriveSpace = userInfo.usedDriveSpace,
+              let maxDriveSpace = userInfo.maxDriveSpace else {
+            return false
+        }
+
+        let mailFactor = CGFloat(usedBaseSpace) / CGFloat(maxBaseSpace)
+        let driveFactor = CGFloat(usedDriveSpace) / CGFloat(maxDriveSpace)
+        return mailFactor > StorageAlertVisibility.bannerThreshold
+        || driveFactor > StorageAlertVisibility.bannerThreshold
     }
 }

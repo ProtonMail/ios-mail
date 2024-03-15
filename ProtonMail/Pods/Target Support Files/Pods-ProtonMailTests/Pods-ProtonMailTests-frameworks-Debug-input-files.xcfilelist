@@ -7,6 +7,7 @@ ${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework
 ${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-APIClient/ProtonCoreAPIClient.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-AccountDeletion/ProtonCoreAccountDeletion.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-AccountRecovery/ProtonCoreAccountRecovery.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-AccountSwitcher/ProtonCoreAccountSwitcher.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication/ProtonCoreAuthentication.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication-KeyGeneration/ProtonCoreAuthenticationKeyGeneration.framework
@@ -18,7 +19,6 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCoreDataModel.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCoreDoh.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Environment/ProtonCoreEnvironment.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-FeatureFlags/ProtonCoreFeatureFlags.framework
-${BUILT_PRODUCTS_DIR}/ProtonCore-FeatureSwitch/ProtonCoreFeatureSwitch.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade/ProtonCoreForceUpgrade.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCoreFoundations.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-GoLibs/ProtonCoreGoLibs.framework
@@ -28,10 +28,13 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-Keymaker/ProtonCoreKeymaker.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCoreLog.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Login/ProtonCoreLogin.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-LoginUI/ProtonCoreLoginUI.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-MissingScopes/ProtonCoreMissingScopes.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCoreNetworking.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Observability/ProtonCoreObservability.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-PasswordRequest/ProtonCorePasswordRequest.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCorePayments.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI/ProtonCorePaymentsUI.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-PushNotifications/ProtonCorePushNotifications.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCoreServices.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-TroubleShooting/ProtonCoreTroubleShooting.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations/ProtonCoreUIFoundations.framework
