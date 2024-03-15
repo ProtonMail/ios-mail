@@ -280,7 +280,8 @@ extension SingleMessageViewController {
                                                                    isBodyDecryptable: isBodyDecryptable,
                                                                    messageRenderStyle: renderStyle,
                                                                    shouldShowRenderModeOption: shouldDisplayRMOptions,
-                                                                   isScheduledSend: isScheduledSend)
+                                                                   isScheduledSend: isScheduledSend,
+                                                                   shouldShowSnooze: false)
         actionSheetPresenter.present(on: navigationVC,
                                      listener: self,
                                      viewModel: actionSheetViewModel) { [weak self] action in

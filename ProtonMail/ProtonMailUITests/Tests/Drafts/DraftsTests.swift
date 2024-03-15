@@ -35,6 +35,22 @@ class DraftsTests: FixtureAuthenticatedTestCase {
         }
     }
 
+    func testSaveEmptyRecipientDraft() {
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .compose()
+                .draftSubjectBody(subject, body)
+                .tapCancel()
+                .menuDrawer()
+                .drafts()
+                .verify.messageWithSubjectAndRecipientAndInitialsExists(
+                subject: subject,
+                to: DraftsRobot.noRecipientText,
+                initials: "?"
+            )
+        }
+    }
+
     func testSaveDraftWithAttachment() {
         runTestWithScenario(.qaMail001) {
             InboxRobot()

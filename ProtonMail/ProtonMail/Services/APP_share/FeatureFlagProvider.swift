@@ -41,11 +41,7 @@ struct FeatureFlagProviderImpl: FeatureFlagProvider {
 
     private func localOverride(for featureFlag: MailFeatureFlag) -> Bool? {
         switch featureFlag {
-        case .autoImportContacts:
-            return nil
-        case .rsvpWidget where Application.isDebugOrEnterprise:
-            return true
-        case .nextMessageAfterMove:
+        case .autoImportContacts, .nextMessageAfterMove, .rsvpWidget:
             return Application.isDebugOrEnterprise
         case .snooze:
             return ProcessInfo.isRunningUnitTests

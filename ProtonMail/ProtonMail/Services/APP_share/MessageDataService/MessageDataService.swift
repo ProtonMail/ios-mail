@@ -618,18 +618,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     ),
                     NSSortDescriptor(key: #keyPath(Message.order), ascending: isAscending)
                 ]
-            } else if labelID == Message.Location.inbox.labelID {
-                sortDescriptors = [
-                    NSSortDescriptor(
-                        key: #keyPath(Message.snoozeTime),
-                        ascending: isAscending
-                    ),
-                    NSSortDescriptor(
-                        key: #keyPath(Message.time),
-                        ascending: isAscending
-                    ),
-                    NSSortDescriptor(key: #keyPath(Message.order), ascending: isAscending)
-                ]
             } else {
                 sortDescriptors = [
                     NSSortDescriptor(

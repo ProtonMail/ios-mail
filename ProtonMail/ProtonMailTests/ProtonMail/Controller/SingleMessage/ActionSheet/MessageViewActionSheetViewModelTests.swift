@@ -34,11 +34,13 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+                                              isScheduledSend: false, 
+                                              shouldShowSnooze: true)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [.reply,
                                                                .replyAll,
                                                                .forward,
+                                                               .snooze,
                                                                .markUnread,
                                                                .labelAs,
                                                                .star,
@@ -60,10 +62,12 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+                                              isScheduledSend: false, 
+                                              shouldShowSnooze: true)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
                                                                 .forward,
+                                                                .snooze,
                                                                 .markUnread,
                                                                 .labelAs,
                                                                 .unstar,
@@ -86,10 +90,12 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isBodyDecryptable: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+                                              isScheduledSend: false,
+                                              shouldShowSnooze: true)
         let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
                                                                 .forward,
+                                                                .snooze,
                                                                 .markUnread,
                                                                 .labelAs,
                                                                 .unstar,
@@ -113,7 +119,8 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+                                              isScheduledSend: false,
+                                              shouldShowSnooze: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [.reply,
                                                                .replyAll,
@@ -139,7 +146,8 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+                                              isScheduledSend: false,
+                                              shouldShowSnooze: false)
         let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
                                                                 .forward,
@@ -165,7 +173,8 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isBodyDecryptable: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+                                              isScheduledSend: false,
+                                              shouldShowSnooze: false)
         let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
                                                                 .forward,
@@ -192,7 +201,8 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+                                              isScheduledSend: false,
+                                              shouldShowSnooze: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [.reply,
                                                                .replyAll,
@@ -218,7 +228,8 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+                                              isScheduledSend: false,
+                                              shouldShowSnooze: false)
         let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
                                                                 .forward,
@@ -244,7 +255,8 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isBodyDecryptable: false,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+                                              isScheduledSend: false,
+                                              shouldShowSnooze: false)
         let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
                                                                 .forward,
@@ -271,7 +283,8 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .dark,
                                               shouldShowRenderModeOption: true,
-                                              isScheduledSend: false)
+                                              isScheduledSend: false,
+                                              shouldShowSnooze: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [.reply,
                                                                .replyAll,
@@ -298,7 +311,8 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: true,
-                                              isScheduledSend: false)
+                                              isScheduledSend: false,
+                                              shouldShowSnooze: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
                                                                 .replyAll,
@@ -327,7 +341,8 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .dark,
                                               shouldShowRenderModeOption: true,
-                                              isScheduledSend: false)
+                                              isScheduledSend: false,
+                                              shouldShowSnooze: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [
             .reply,
@@ -364,7 +379,8 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
                                               shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+                                              isScheduledSend: false,
+                                              shouldShowSnooze: false)
 
         let expectedOptions: [MessageViewActionSheetAction] = [
             .reply,
@@ -486,7 +502,8 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
             isBodyDecryptable: isBodyDecryptable,
             messageRenderStyle: messageRenderStyle,
             shouldShowRenderModeOption: shouldShowRenderModeOption,
-            isScheduledSend: isScheduledSend
+            isScheduledSend: isScheduledSend,
+            shouldShowSnooze: false
         )
     }
 }

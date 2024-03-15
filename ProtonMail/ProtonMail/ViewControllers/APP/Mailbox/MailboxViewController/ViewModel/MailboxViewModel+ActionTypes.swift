@@ -35,11 +35,11 @@ extension MailboxViewModel: ToolbarCustomizationActionHandler {
         let isInTrash = labelID == Message.Location.trash.labelID
         let isInArchive = labelID == Message.Location.archive.labelID
 
-        let foldersSupportSnooze = [
+        let foldersSupportingSnooze = [
             Message.Location.inbox.labelID,
             Message.Location.snooze.labelID
         ]
-        let isSupportSnooze = foldersSupportSnooze.contains(labelID)
+        let isSupportSnooze = foldersSupportingSnooze.contains(labelID)
 
         var actions = toolbarActionProvider.listViewToolbarActions
             .addMoreActionToTheLastLocation()
@@ -103,40 +103,62 @@ extension MailboxViewModel: ToolbarCustomizationActionHandler {
             }
     }
 
-    func handleBarActions(_ action: MessageViewActionSheetAction) {
+    func handleBarActions(_ action: MessageViewActionSheetAction, completion: (() -> Void)?) {
         switch action {
         case .markRead:
             mark(IDs: selectedIDs, unread: false)
+            completion?()
         case .markUnread:
             mark(IDs: selectedIDs, unread: true)
+            completion?()
         case .trash:
-            moveSelectedIDs(from: labelID,
-                            to: Message.Location.trash.labelID)
+            moveSelectedIDs(
+                from: labelID,
+                to: Message.Location.trash.labelID
+            ) {
+                completion?()
+            }
         case .delete:
             deleteSelectedIDs()
+            completion?()
         case .inbox, .spamMoveToInbox:
-            moveSelectedIDs(from: labelID,
-                            to: Message.Location.inbox.labelID)
+            moveSelectedIDs(
+                from: labelID,
+                to: Message.Location.inbox.labelID
+            ) {
+                completion?()
+            }
         case .star:
             label(IDs: selectedIDs,
                   with: Message.Location.starred.labelID,
                   apply: true)
+            completion?()
         case .unstar:
             label(IDs: selectedIDs,
                   with: Message.Location.starred.labelID,
                   apply: false)
+            completion?()
         case .spam:
-            moveSelectedIDs(from: labelID,
-                            to: Message.Location.spam.labelID)
+            moveSelectedIDs(
+                from: labelID,
+                to: Message.Location.spam.labelID
+            ) {
+                completion?()
+            }
         case .archive:
-            moveSelectedIDs(from: labelID,
-                            to: Message.Location.archive.labelID)
+            moveSelectedIDs(
+                from: labelID,
+                to: Message.Location.archive.labelID
+            ) {
+                completion?()
+            }
         case .moveTo, .labelAs, .more, .reply, .replyOrReplyAll, .replyAll, .forward,
              .print, .viewHeaders, .viewHTML, .reportPhishing, .dismiss,
              .viewInLightMode, .viewInDarkMode, .toolbarCustomization, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             assertionFailure("should not reach here")
         case .snooze:
             uiDelegate?.clickSnoozeActionButton()
+            completion?()
         }
     }
 }

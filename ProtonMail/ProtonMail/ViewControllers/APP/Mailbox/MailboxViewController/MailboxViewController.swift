@@ -1627,9 +1627,10 @@ extension MailboxViewController {
 
         switch action {
         case .archive, .spam, .inbox, .spamMoveToInbox:
-            viewModel.handleBarActions(action)
-            showMessageMoved(title: LocalString._messages_has_been_moved)
-            hideSelectionMode()
+            viewModel.handleBarActions(action) { [weak self] in
+                self?.showMessageMoved(title: LocalString._messages_has_been_moved)
+                self?.hideSelectionMode()
+            }
         case .delete:
             self.showDeleteAlert { [weak self] in
                 guard let `self` = self else { return }
@@ -1641,7 +1642,7 @@ extension MailboxViewController {
         case .labelAs:
             labelButtonTapped()
         case .markRead, .markUnread, .star, .unstar:
-            viewModel.handleBarActions(action)
+            viewModel.handleBarActions(action, completion: nil)
         case .snooze:
             clickSnoozeActionButton()
         case .moveTo:
@@ -1649,15 +1650,18 @@ extension MailboxViewController {
         case .trash:
             var scheduledSendNum: Int?
             let continueAction: () -> Void = { [weak self] in
-                self?.viewModel.handleBarActions(action)
-                self?.hideSelectionMode()
-                let title: String
-                if let num = scheduledSendNum {
-                    title = String(format: LocalString._message_moved_to_drafts, num)
-                } else {
-                    title = LocalString._messages_has_been_moved
+                self?.fetchingOlder = true
+                self?.viewModel.handleBarActions(action) {
+                    self?.hideSelectionMode()
+                    let title: String
+                    if let num = scheduledSendNum {
+                        title = String(format: LocalString._message_moved_to_drafts, num)
+                    } else {
+                        title = LocalString._messages_has_been_moved
+                    }
+                    self?.showMessageMoved(title: title)
+                    self?.fetchingOlder = false
                 }
-                self?.showMessageMoved(title: title)
             }
             viewModel.searchForScheduled(
                 swipeSelectedID: [],
@@ -2358,7 +2362,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         var newSnapshot = NSDiffableDataSourceSnapshot<Int, MailboxRow>()
         for (index, section) in snapshot.sectionIdentifiers.enumerated() {
             let items = snapshot.itemIdentifiers(inSection: section)
-            let mailboxRows = items.compactMap { objectID in
+            var mailboxRows = items.compactMap { objectID in
                 let object = controller.managedObjectContext.object(with: objectID)
                 switch viewMode {
                 case .singleMessage:
@@ -2372,6 +2376,21 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
                     }
                 }
                 return nil
+            }
+
+            if viewModel.labelID == Message.Location.inbox.labelID {
+                mailboxRows.sort { row1, row2 in
+                    guard
+                        case .real(let item1) = row1,
+                        case .real(let item2) = row2,
+                        case .message(let message1) = item1,
+                        case .message(let message2) = item2
+                    else { return false }
+
+                    let date1 = message1.snoozeTime ?? message1.time ?? .distantFuture
+                    let date2 = message2.snoozeTime ?? message2.time ?? .distantFuture
+                    return date1 > date2
+                }
             }
 
             newSnapshot.appendSections([index])
@@ -2401,6 +2420,10 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
                 let item = self.viewModel.mailboxItem(at: indexPath),
                 let date = item.time(labelID: self.viewModel.labelID)
             else { return }
+            guard !self.fetchingOlder else {
+                self.showNoResultLabelIfNeeded()
+                return
+            }
             self.tableView.showLoadingFooter()
             self.viewModel.fetchMessages(
                 time: Int(date.timeIntervalSince1970),
@@ -2453,7 +2476,7 @@ extension MailboxViewController: UITableViewDelegate {
             let totalMessage = self.isShowingUnreadMessageOnly ? Int(updateTime.unread) : Int(updateTime.total)
             let isNew = self.isShowingUnreadMessageOnly ? updateTime.isUnreadNew : updateTime.isNew
 
-            let isOlderMessage = endTime.compare(currentTime) != ComparisonResult.orderedAscending
+            let isOlderMessage = endTime.compare(currentTime) == ComparisonResult.orderedDescending
             let loadMore = self.viewModel.loadMore(index: indexPath)
             if  (isOlderMessage || loadMore) && !self.fetchingOlder && !isSwipingCell {
                 let sectionCount = self.viewModel.rowCount(section: indexPath.section)

@@ -326,7 +326,8 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
             isBodyDecryptable: messageInfoProvider.isBodyDecryptable,
             messageRenderStyle: bodyViewModel.currentMessageRenderStyle,
             shouldShowRenderModeOption: messageInfoProvider.shouldDisplayRenderModeOptions,
-            isScheduledSend: messageInfoProvider.message.isScheduledSend
+            isScheduledSend: messageInfoProvider.message.isScheduledSend,
+            shouldShowSnooze: false
         )
         let isInSpam = message.isSpam
         let isInTrash = message.isTrash

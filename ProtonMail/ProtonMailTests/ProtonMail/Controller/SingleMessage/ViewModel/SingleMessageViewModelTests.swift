@@ -151,7 +151,8 @@ final class SingleMessageViewModelTests: XCTestCase {
                                                        isBodyDecryptable: bodyInfo.isBodyDecryptable,
                                                        messageRenderStyle: bodyViewModel.currentMessageRenderStyle,
                                                        shouldShowRenderModeOption: bodyInfo.shouldDisplayRenderModeOptions,
-                                                       isScheduledSend: bodyInfo.message.isScheduledSend).items
+                                                       isScheduledSend: bodyInfo.message.isScheduledSend, 
+                                                       shouldShowSnooze: false).items
         expected = expected.filter({ $0 != .reply && $0 != .replyAll })
         expected.insert(.reply, at: 0)
 
@@ -251,7 +252,6 @@ final class SingleMessageViewModelTests: XCTestCase {
 
         coordinatorMock = SingleMessageCoordinator(navigationController: UINavigationController(),
                                                    labelId: labelID,
-                                                   message: message,
                                                    dependencies: userContainer)
 
         let context = SingleMessageContentViewContext(labelId: labelID, message: message, viewMode: .singleMessage)

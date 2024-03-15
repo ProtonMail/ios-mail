@@ -185,18 +185,18 @@ private extension SpotlightableFeatureKey {
         switch self {
         case .scheduledSend, .toolbarCustomization:
             return true
-        case .messageSwipeNavigation:
+        case .messageSwipeNavigation, .snooze:
             return true
-        case .snooze, .messageSwipeNavigationAnimation, .autoImportContacts, .jumpToNextMessage:
+        case .messageSwipeNavigationAnimation, .autoImportContacts, .jumpToNextMessage:
             return false
         }
     }
 
     var isFeatureShouldBeSeenByOnce: Bool {
         switch self {
-        case .messageSwipeNavigation, .messageSwipeNavigationAnimation:
+        case .messageSwipeNavigation, .messageSwipeNavigationAnimation, .snooze:
             return true
-        case .scheduledSend, .toolbarCustomization, .snooze, .autoImportContacts, .jumpToNextMessage:
+        case .scheduledSend, .toolbarCustomization, .autoImportContacts, .jumpToNextMessage:
             return false
         }
     }
