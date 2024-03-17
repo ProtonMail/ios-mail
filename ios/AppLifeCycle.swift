@@ -40,10 +40,6 @@ extension AppLifeCycle: UIApplicationDelegate {
         return true
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        applicationServices.becomeActive()
-    }
-
     func applicationWillTerminate(_ application: UIApplication) {
         applicationServices.terminate()
     }
@@ -80,5 +76,3 @@ extension AppLifeCycle {
         )
     }
 }
-
-

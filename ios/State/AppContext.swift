@@ -21,8 +21,6 @@ import proton_mail_uniffi
 
 protocol AppContextService {
     init(dependencies: AppContext.Dependencies)
-    func login(email: String, password: String) async throws
-    func logoutActiveUserSession() async throws
     func userContextForActiveSession() async throws -> MailUserContext?
 }
 
@@ -47,7 +45,6 @@ final class AppContext: AppContextService, Sendable {
         return mailContext
     }
 
-    private(set) var appState: AppState
     private(set) var activeUserStatusPublisher = CurrentValueSubject<ActiveUserStatus, Never>(.noActiveUser)
 
     var activeSession: StoredSession? {
@@ -61,7 +58,6 @@ final class AppContext: AppContextService, Sendable {
 
     init(dependencies: Dependencies = .init()) {
         self.dependencies = dependencies
-        self.appState = AppState()
     }
 
     private func start() throws {
@@ -81,17 +77,11 @@ final class AppContext: AppContextService, Sendable {
             keyChain: dependencies.keychain,
             networkCallback: dependencies.networkStatus
         )
-
-        appState.appContext = self
-        Task {
-            await refreshAppState()
-        }
     }
 
     private func updateUserContext(_ userContext: MailUserContext?) async throws {
         try await userContext?.initialize(cb: UserContextInitializationDelegate.shared)
         activeUserContext = userContext
-        await refreshAppState()
     }
 
     func login(email: String, password: String) async throws {
@@ -99,11 +89,6 @@ final class AppContext: AppContextService, Sendable {
         try await flow.login(email: email, password: password)
         let newUserContext = try flow.toUserContext()
         try await updateUserContext(newUserContext)
-    }
-
-    func logoutActiveUserSession() async throws {
-        try await activeUserContext?.logout()
-        try await updateUserContext(nil)
     }
 
     func userContextForActiveSession() async throws -> MailUserContext? {
@@ -114,10 +99,6 @@ final class AppContext: AppContextService, Sendable {
         let newUserContext = try mailContext.userContextFromSession(session: activeSession, cb: SessionDelegate.shared)
         try await updateUserContext(newUserContext)
         return activeUserContext
-    }
-
-    func refreshAppState() async {
-        await appState.refresh()
     }
 }
 
@@ -227,5 +208,13 @@ extension AppContext: EventLoopProvider {
                 AppLogger.log(error: error, category: .rustLibrary)
             }
         }
+    }
+}
+
+extension AppContext: SessionProvider {
+    
+    func logoutActiveUserSession() async throws {
+        try await activeUserContext?.logout()
+        try await updateUserContext(nil)
     }
 }

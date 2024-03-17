@@ -41,10 +41,11 @@ final class SignInScreenModel {
         self.dependencies = dependencies
     }
 
+    @MainActor
     func login(email: String, password: String) async {
         isLoading = true
         do {
-            try await dependencies.appContext.login(email: email, password: password)
+            try await dependencies.sessionProvider.login(email: email, password: password)
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -54,7 +55,11 @@ final class SignInScreenModel {
 
 extension SignInScreenModel {
 
-    struct Dependencies: Sendable {
-        let appContext: AppContext = .shared
+    struct Dependencies {
+        let sessionProvider: SessionProvider
+
+        init(sessionProvider: SessionProvider = AppContext.shared) {
+            self.sessionProvider = sessionProvider
+        }
     }
 }

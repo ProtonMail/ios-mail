@@ -15,20 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Combine
+import Foundation
 
-protocol ActiveUserStatusProvider: AnyObject {
-    var activeUserStatusPublisher: CurrentValueSubject<ActiveUserStatus, Never> { get }
-}
-
-enum ActiveUserStatus {
-    case noActiveUser
-    case hasActiveUser
-
-    var hasActiveUser: Bool {
-        switch self {
-        case .hasActiveUser: return true
-        case .noActiveUser: return false
-        }
-    }
+protocol SessionProvider: AnyObject {
+    func login(email: String, password: String) async throws
+    func logoutActiveUserSession() async throws
 }
