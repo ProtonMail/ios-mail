@@ -28,16 +28,16 @@ final class EventLoopService: @unchecked Sendable {
     private var timer: Timer = .init()
     private var appInForeground: Bool = true
     
-    private weak var activeUserStatusProvider: ActiveUserStatusProvider?
+    private weak var sessionProvider: SessionProvider?
     private weak var eventLoopProvider: EventLoopProvider?
     
     private var cancellables: Set<AnyCancellable> = .init()
 
-    init(activeUserStatus: ActiveUserStatusProvider, eventLoopProvider: EventLoopProvider) {
-        self.activeUserStatusProvider = activeUserStatus
+    init(sessionProvider: SessionProvider, eventLoopProvider: EventLoopProvider) {
+        self.sessionProvider = sessionProvider
         self.eventLoopProvider = eventLoopProvider
         
-        activeUserStatusProvider?
+        sessionProvider
             .activeUserStatusPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
@@ -49,11 +49,11 @@ final class EventLoopService: @unchecked Sendable {
     private func updateTimerStatus() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            guard appInForeground, let activeUserStatusProvider = activeUserStatusProvider else {
+            guard appInForeground, let sessionProvider else {
                 invalidateTimer()
                 return
             }
-            switch activeUserStatusProvider.activeUserStatusPublisher.value {
+            switch sessionProvider.activeUserStatusPublisher.value {
             case .noActiveUser:
                 invalidateTimer()
             case .hasActiveUser:

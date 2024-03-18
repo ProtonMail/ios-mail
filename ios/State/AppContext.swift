@@ -110,8 +110,6 @@ final class AppContext: AppContextService, Sendable {
     }
 }
 
-extension AppContext: ActiveUserStatusProvider {}
-
 extension AppContext {
 
     struct Dependencies {

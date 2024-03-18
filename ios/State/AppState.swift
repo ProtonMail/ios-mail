@@ -28,7 +28,7 @@ final class AppState: ObservableObject {
     init(dependencies: Dependencies = .init()) {
         self.dependencies = dependencies
         dependencies
-            .activeUserStatusProvider
+            .sessionProvider
             .activeUserStatusPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] status in
@@ -38,7 +38,7 @@ final class AppState: ObservableObject {
     }
 
     var hasAuthenticatedSession: Bool {
-        dependencies.activeUserStatusProvider.activeUserStatusPublisher.value.hasActiveUser
+        dependencies.sessionProvider.activeUserStatusPublisher.value.hasActiveUser
     }
 
     func logoutActiveSession() async {
@@ -53,14 +53,9 @@ final class AppState: ObservableObject {
 extension AppState {
 
     struct Dependencies {
-        let activeUserStatusProvider: ActiveUserStatusProvider
         let sessionProvider: SessionProvider
 
-        init(
-            activeUserStatusProvider: ActiveUserStatusProvider = AppContext.shared,
-            sessionProvider: SessionProvider = AppContext.shared
-        ) {
-            self.activeUserStatusProvider = activeUserStatusProvider
+        init(sessionProvider: SessionProvider = AppContext.shared) {
             self.sessionProvider = sessionProvider
         }
     }
