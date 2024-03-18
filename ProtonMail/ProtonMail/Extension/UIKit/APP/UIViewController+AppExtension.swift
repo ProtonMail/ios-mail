@@ -34,14 +34,12 @@ extension UIViewController {
 
     func setupMenuButton(userInfo: UserInfo) {
         let menuButton = UIBarButtonItem(customView: menuButtonUI(userInfo: userInfo))
-        menuButton.accessibilityLabel = LocalString._menu_button
         menuButton.tintColor = ColorProvider.IconNorm
         navigationItem.leftBarButtonItem = menuButton
     }
 
     private func menuButtonUI(userInfo: UserInfo) -> UIView {
         let containerView = UIView()
-        let padding: CGFloat = 8
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.backgroundColor = .clear
 
@@ -56,11 +54,10 @@ extension UIViewController {
         )
         hamburgerButton.accessibilityLabel = LocalString._menu_button
         containerView.addSubview(hamburgerButton)
+        hamburgerButton.fillSuperview()
         [
-            hamburgerButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
-            hamburgerButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
-            hamburgerButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: padding),
-            hamburgerButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -padding)
+            hamburgerButton.widthAnchor.constraint(equalToConstant: 44),
+            hamburgerButton.heightAnchor.constraint(equalTo: hamburgerButton.widthAnchor)
         ].activate()
 
         if isMenuBadgeVisible(userInfo: userInfo) {
