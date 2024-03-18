@@ -30,10 +30,9 @@ final class AppContext: AppContextService, Sendable {
     private var _mailContext: MailContext!
     private var activeUserContext: MailUserContext? {
         didSet {
-            let hasActiveUser = activeUserContext != nil
-            let msg = hasActiveUser ? "new activeUserContext" : "deleted activeUserContext"
+            let msg = hasActiveUserSession ? "new activeUserContext" : "deleted activeUserContext"
             AppLogger.log(message: msg, category: .userSessions)
-            activeUserStatusPublisher.send(hasActiveUser ? .hasActiveUser : .noActiveUser)
+            publishActiveUserState()
         }
     }
     private let dependencies: AppContext.Dependencies
@@ -47,13 +46,17 @@ final class AppContext: AppContextService, Sendable {
 
     private(set) var activeUserStatusPublisher = CurrentValueSubject<ActiveUserStatus, Never>(.noActiveUser)
 
-    var activeSession: StoredSession? {
+    private var firstStoredSession: StoredSession? {
         do {
             return try mailContext.storedSessions().first
         } catch {
             AppLogger.log(error: error, category: .rustLibrary)
             return nil
         }
+    }
+
+    private var hasActiveUserSession: Bool {
+        firstStoredSession != nil
     }
 
     init(dependencies: Dependencies = .init()) {
@@ -77,6 +80,11 @@ final class AppContext: AppContextService, Sendable {
             keyChain: dependencies.keychain,
             networkCallback: dependencies.networkStatus
         )
+        publishActiveUserState()
+    }
+
+    private func publishActiveUserState() {
+        activeUserStatusPublisher.send(hasActiveUserSession ? .hasActiveUser : .noActiveUser)
     }
 
     private func updateUserContext(_ userContext: MailUserContext?) async throws {
@@ -95,7 +103,7 @@ final class AppContext: AppContextService, Sendable {
         if let userContext = activeUserContext {
             return userContext
         }
-        guard let activeSession else { return nil }
+        guard let activeSession = firstStoredSession else { return nil }
         let newUserContext = try mailContext.userContextFromSession(session: activeSession, cb: SessionDelegate.shared)
         try await updateUserContext(newUserContext)
         return activeUserContext
