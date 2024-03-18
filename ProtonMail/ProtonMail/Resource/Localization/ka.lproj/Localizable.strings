@@ -1837,13 +1837,13 @@
 "Your Mail storage is %@ full" = "თქვენი Mail-ის საცავი %@ სავსეა";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "თქვენი Drive-ის საცავი %@ სავსეა";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "თქვენი ელფოსტის საცავი სავსეა";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "თქვენი Drive-ის საცავი სავსეა";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "ასწიეთ ტარიფი მეტი საცავის მისაღებად.";
@@ -1888,6 +1888,15 @@
 
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "განბლოკვა";
+
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Your schedule is worth protecting";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Get Proton Calendar app";
 
 /* Name of the feature */
 "Email tracking protection" = "ელფოსტის ტრეკერებისგან დაცვა";
@@ -1938,13 +1947,13 @@
 "I might attend" = "ალბათ, დავესწრები";
 
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "მაქს საცავი";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "საცავი: %@ დაკავებულია";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
+"Drive storage: %@ full" = "Drive-ის საცავი: %@ დაკავებულია";
 
 /* Upgrade button action */
 "Upgrade" = "ტარიფის აწევა";
@@ -2064,10 +2073,19 @@
 "Application logs" = "აპლიკაციის ჟურნალი";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "შემდეგ ელფოსტაზე გადასვლა";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "ავტომატურად მაჩვენე შემდეგი ელფოსტა, ღია ელფოსტა წაიშლება, დაარქივდება ან გადატანიი იქნება.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Turn on feature";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Read emails faster";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "აღმოჩენილია მოულოდნელი შეცდომა. დაუკავშირდით მხარდაჭერის გუნდს.\nშეცდომა: %@";
@@ -2316,31 +2334,31 @@
 "Allow navigating through messages by swiping left or right." = "შეტყობინებებში ნავიგაცია მარცხნივ ან მარჯვნივ გასმით.";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "თქვენი კონტაქტები თქვენთან ახლოს";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "ელფოსტის მისამართის საპოვნელად აპიდან გასვლა არ დაგჭირდებათ. დაასინქრონეთ კონტაქტები თქვენი მოწყობილობიდან Proton Mail-ში.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "ავტოშემოტანის ჩართვა";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "კონტაქტების გარეშე";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "შემოიტანეთ კონტაქტები თქვენი მოწყობილობიდან ელფოსტების გასაგზავნად და ადვილად მოსაწვევად.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "კონტაქტების ავტოშემოტანა";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "მიმდინარეობს თქვენი კონტაქტების შემოტანა";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "თქვენი კონტაქტები სულ მალე, აქ გამოჩნდება.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "დაამატეთ ავტომატურად კონტაქტები თქვენი მოწყობილობიდან.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "კონფიდენციალობა და მონაცემები";

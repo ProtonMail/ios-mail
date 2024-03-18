@@ -1837,13 +1837,13 @@
 "Your Mail storage is %@ full" = "메일 저장 공간이 %@ 참";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "Drive 저장 공간이 %@ 찼습니다";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "메일 저장 공간이 가득 찼습니다.";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "Drive 저장공간이 가득 찼습니다";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "추가 저장 공간이 필요하다면 업그레이드하세요.";
@@ -1888,6 +1888,15 @@
 
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "차단 해제";
+
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "당신의 스케쥴은 보호받아야 합니다";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "당신의 캘린더는 당신의 역사입니다. Proton Calendar는 그것이 사적이도록 지키지요.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Proton Calendar 앱 받기";
 
 /* Name of the feature */
 "Email tracking protection" = "이메일 트래킹 보호";
@@ -1944,7 +1953,7 @@
 "Storage: %@ full" = "저장공간 %@ 채워짐";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
+"Drive storage: %@ full" = "Drive 저장공간: %@ 가득 참";
 
 /* Upgrade button action */
 "Upgrade" = "업그레이드";
@@ -2068,6 +2077,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next email when an open email is deleted, archived, or moved." = "현재 이메일이 삭제, 보관 또는 이동되었을 때 다음 메시지로 자동 이동합니다.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "기능 켜기";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "현재 이메일을 삭제하거나 이동하면 받은 편지함에서 다음 이메일을 확인할 수 있습니다.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "이메일 더 빨리 읽기";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "예기치 못한 오류 발생, 지원 팀에 문의하십시오.\n오류: %@";
@@ -2316,31 +2334,31 @@
 "Allow navigating through messages by swiping left or right." = "좌우로 밀어서 메시지 간에 이동할 수 있도록 허용해주세요.";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "손 끝으로 온 연락처";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "이메일 주소를 확인하기 위해 앱을 떠나지 않아도 됩니다. 회원님의 기기에서 Proton Mail로 연락처를 동기화하세요.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "자동으로 들여오기 사용";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "아직 연락처가 없음";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "회원님의 기기에서 연락처를 불러오면 이메일과 초대를 쉽게 보낼 수 있습니다.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "연락처를 자동으로 들여오기";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "연락처를 들여오는 중";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "연락처가 곧 이곳에 보일 것입니다.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "새 연락처를 기기에서 자동으로 추가하십시오.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "프라이버시와 데이터";

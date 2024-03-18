@@ -1843,7 +1843,7 @@
 "Your Mail storage is full" = "Mail ストレージがいっぱいです";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "Drive ストレージがいっぱいです";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Upgrade to get more storage.";
@@ -1889,6 +1889,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "ブロックを解除する";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Your schedule is worth protecting";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Get Proton Calendar app";
+
 /* Name of the feature */
 "Email tracking protection" = "メールトラッキング防止";
 
@@ -1917,16 +1926,16 @@
 "This event has been cancelled" = "This event has been cancelled";
 
 /* Prompt above yes/no/maybe buttons */
-"Attending?" = "Attending?";
+"Attending?" = "参加しますか？";
 
 /* Part of a yes/no/maybe prompt */
-"Yes" = "Yes";
+"Yes" = "はい";
 
 /* Part of a yes/no/maybe prompt */
-"No" = "No";
+"No" = "いいえ";
 
 /* Part of a yes/no/maybe prompt */
-"Maybe" = "Maybe";
+"Maybe" = "おそらく";
 
 /* Confirm attending an event */
 "Yes, I'll attend" = "はい、参加します";
@@ -2064,10 +2073,19 @@
 "Application logs" = "アプリケーションのログ";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "次のメールにジャンプ";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "開いているメールが削除、アーカイブ、または移動されたときに自動的に次のメールを表示します。";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Turn on feature";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Read emails faster";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "予期しないエラーが発生しました。サポートにお問い合わせください。\nエラー: %@";
@@ -2124,7 +2142,7 @@
 "Delete messages?" = "メッセージを削除しますか？";
 
 /* Message of the alert to confirm enabling of the auto delete option */
-"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "ゴミ箱や迷惑メールに30日以上入っているメッセージは、現在これらのフォルダに入っているメッセージも含めてすべて削除されます。";
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "ごみ箱や迷惑メールに30日以上入っているメッセージは、現在これらのフォルダに入っているメッセージも含めてすべて削除されます。";
 
 /*
  Button to enable encrypted search
@@ -2133,16 +2151,16 @@
 "Enable" = "有効化";
 
 /* Text to advertise the auto delete feature to free users */
-"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "30日以上ゴミ箱や迷惑メールに入っているメッセージを自動的に削除するようにアップグレードできます。";
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "30日以上ごみ箱や迷惑メールに入っているメッセージを自動的に削除するようにアップグレードできます。";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "ゴミ箱に入ってから30日以上経過したメッセージを自動的に削除。";
+"Automatically delete messages that have been in trash for more than 30 days." = "ごみ箱に入ってから30日以上経過したメッセージを自動的に削除。";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "いいえ、結構です";
 
 /* Text to inform users they have the auto delete feature enabled */
-"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "ゴミ箱やスパムに30日以上入っているメッセージは自動的に削除されます。";
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "ごみ箱やスパムに30日以上入っているメッセージは自動的に削除されます。";
 
 /* Title of button to empty spam folder */
 "Empty spam" = "迷惑メールをすべて削除する";
@@ -2163,7 +2181,7 @@
 "Clear out the junk" = "ガラクタを片付ける";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "ゴミ箱や迷惑メールから30日以上前のメッセージを自動的に消去。アップグレードすると、このような特典があります。";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "ごみ箱や迷惑メールから30日以上前のメッセージを自動的に消去。アップグレードすると、このような特典があります。";
 
 /* Text to advertise what upgrading will provide */
 "Up to 3 TB of storage" = "最大3TBのストレージ";
