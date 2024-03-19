@@ -32,6 +32,7 @@ public extension Quark {
 
         let request = try route(systemEnvRoute)
             .args([args])
+            .httpMethod("POST") // Override the default GET method
             .build()
 
         return try executeQuarkRequest(request)
