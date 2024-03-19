@@ -18,9 +18,13 @@
 import Foundation
 
 final class AppUIState: ObservableObject {
-    @Published var isSidebarOpen: Bool
+    static let shared = AppUIState()
 
-    init(isSidebarOpen: Bool) {
+    @Published var isSidebarOpen: Bool
+    @Published var selectedMailbox: SelectedMailbox?
+
+    init(isSidebarOpen: Bool = false, selectedMailbox: SelectedMailbox? = nil) {
         self.isSidebarOpen = isSidebarOpen
+        self.selectedMailbox = selectedMailbox
     }
 }

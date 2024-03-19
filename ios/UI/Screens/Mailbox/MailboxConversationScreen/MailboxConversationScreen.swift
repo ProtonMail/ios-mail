@@ -19,7 +19,8 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxConversationScreen: View {
-    @State var model: MailboxConversationScreenModel
+    @EnvironmentObject private var appUIState: AppUIState
+    @State private var model: MailboxConversationScreenModel = .init()
 
     var body: some View {
         ZStack {
@@ -68,14 +69,13 @@ struct MailboxConversationScreen: View {
                 .listStyle(.plain)
             }
         }
-        .onAppear {
-            Task {
-                await model.onViewDidAppear()
-            }
+        .onReceive(appUIState.$selectedMailbox) { selectedMailbox in
+            guard let selectedMailbox else { return }
+            model.onNewSelectedMailbox(selectedMailbox: selectedMailbox)
         }
     }
 }
 
-#Preview {
-    return MailboxConversationScreen(model: .init(labelId: .allMail, conversations: PreviewData.mailboxConversations))
-}
+//#Preview {
+//    return MailboxConversationScreen(model: .init(labelId: .spam, conversations: PreviewData.mailboxConversations))
+//}

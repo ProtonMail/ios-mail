@@ -25,6 +25,9 @@ enum LocalizationTemp {
 
     enum Mailbox {
         static let inbox = "Inbox"
+        static let sent = "Sent"
+        static let spam = "Spam"
+        static let starred = "Starred"
     }
 
     static let settings = "Settings"

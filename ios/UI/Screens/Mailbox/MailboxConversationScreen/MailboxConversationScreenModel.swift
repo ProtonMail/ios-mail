@@ -21,45 +21,51 @@ import proton_mail_uniffi
 import class UIKit.UIImage
 
 @Observable
-final class MailboxConversationScreenModel {
-    private let labelId: LabelIdentifier
+final class MailboxConversationScreenModel: Sendable {
+    private var selectedMailbox: SelectedMailbox?
     private let dependencies: Dependencies
     private(set) var state: State = .loading
-    private(set) var mailbox: Mailbox?
     private(set) var conversationsLiveQuery: MailboxConversationLiveQuery?
 
     init(
-        labelId: LabelIdentifier,
+        selectedMailbox: SelectedMailbox? = nil,
         conversations: [MailboxConversationCellUIModel] = [],
         dependencies: Dependencies = .init()
     ) {
-        AppLogger.log(message: "MailboxConversationScreenModel labelId \(labelId)", category: .mailboxConversations)
-        self.labelId = labelId
+        AppLogger.log(message: "MailboxConversationScreenModel labelId \(selectedMailbox?.name ?? "-")", category: .mailboxConversations)
+        self.selectedMailbox = selectedMailbox
         self.state = conversations.isEmpty ? .empty : .data(conversations)
         self.dependencies = dependencies
+        Task {
+            await self.fetchData()
+        }
     }
 
-    func onViewDidAppear() async {
+    func onNewSelectedMailbox(selectedMailbox: SelectedMailbox) {
+        self.selectedMailbox = selectedMailbox
+        Task {
+            await fetchData()
+        }
+    }
+
+    func fetchData() async {
         do {
             await updateState(.loading)
-            try await initMailbox()
             try await fetchConversations()
         } catch {
             AppLogger.log(error: error, category: .rustLibrary)
         }
     }
 
-    private func initMailbox() async throws {
-        guard let userContext = try await dependencies.appContext.userContextForActiveSession() else {
+    private func fetchConversations() async throws {
+        guard
+            let selectedMailbox,
+            let userContext = try await dependencies.appContext.userContextForActiveSession()
+        else {
             return
         }
-        self.mailbox = try Mailbox(ctx: userContext)
-//        try mailbox?.switchLabel(labelId: labelId.rawValue, messageCount: 50, cb: self)
-    }
-
-    private func fetchConversations() async throws {
-        guard let mailbox else { return }
-        let liveQuery = mailbox.newConversationObservedQuery(limit: 50, cb: self)
+        let mailbox = Mailbox(ctx: userContext, labelId: selectedMailbox.localId)
+        let liveQuery = mailbox.newConversationLiveQuery(limit: 50, cb: self)
         self.conversationsLiveQuery = liveQuery
         await updateData()
     }

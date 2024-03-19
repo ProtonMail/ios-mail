@@ -20,11 +20,11 @@ import SwiftUI
 
 struct SidebarScreen: View {
     @EnvironmentObject private var appUIState: AppUIState
-    @State private var screenModel: SidebarScreenModel
+    @State private var screenModel = SidebarScreenModel()
 
-    init(screenModel: SidebarScreenModel) {
-        self.screenModel = screenModel
-    }
+    //    init(screenModel: SidebarScreenModel) {
+    //        self.screenModel = screenModel
+    //    }
 
     private let animation: Animation = .easeInOut(duration: 0.2)
 
@@ -38,6 +38,9 @@ struct SidebarScreen: View {
                     .offset(x: appUIState.isSidebarOpen ? 0 : -geometry.size.width)
                     .animation(animation, value: appUIState.isSidebarOpen)
             }
+        }
+        .task {
+            await screenModel.onViewWillAppear()
         }
     }
 
@@ -71,13 +74,16 @@ struct SidebarScreen: View {
                 }
                 .padding(.init(top: 24.0, leading: 16.0, bottom: 24.0, trailing: 16.0))
             }
+            Spacer()
         }
         .background(DS.Color.sidebarBackground)
     }
 }
 
+import proton_mail_uniffi
+
 struct SidebarCellUIModel: Identifiable {
-    let id: String
+    let id: LocalLabelId
     let name: String
     let icon: UIImage
     let badge: String
@@ -113,11 +119,12 @@ struct SidebarCell: View {
 }
 
 #Preview {
-    let appUIState = AppUIState(isSidebarOpen: true)
+    let appUIState = AppUIState(isSidebarOpen: true, selectedMailbox: nil)
     struct PreviewWrapper: View {
 
         var body: some View {
-            SidebarScreen(screenModel: PreviewData.sideBarScreenModel)
+            SidebarScreen()
+//            SidebarScreen(screenModel: PreviewData.sideBarScreenModel)
         }
     }
     return PreviewWrapper().environmentObject(appUIState)

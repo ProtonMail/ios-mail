@@ -81,6 +81,14 @@ RustBuffer uniffi_proton_mail_uniffi_fn_method_mailcontext_stored_sessions(void*
 );
 void*_Nonnull uniffi_proton_mail_uniffi_fn_method_mailcontext_user_context_from_session(void*_Nonnull ptr, void*_Nonnull session, RustBuffer cb, RustCallStatus *_Nonnull out_status
 );
+void*_Nonnull uniffi_proton_mail_uniffi_fn_clone_maillabelslivequery(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
+);
+void uniffi_proton_mail_uniffi_fn_free_maillabelslivequery(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
+);
+void uniffi_proton_mail_uniffi_fn_method_maillabelslivequery_disconnect(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
+);
+RustBuffer uniffi_proton_mail_uniffi_fn_method_maillabelslivequery_value(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
+);
 void*_Nonnull uniffi_proton_mail_uniffi_fn_clone_mailusercontext(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
 void uniffi_proton_mail_uniffi_fn_free_mailusercontext(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
@@ -91,29 +99,23 @@ void* _Nonnull uniffi_proton_mail_uniffi_fn_method_mailusercontext_logout(void*_
 );
 RustBuffer uniffi_proton_mail_uniffi_fn_method_mailusercontext_mail_settings(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+void*_Nonnull uniffi_proton_mail_uniffi_fn_method_mailusercontext_new_folder_labels_observed_query(void*_Nonnull ptr, uint64_t cb, RustCallStatus *_Nonnull out_status
+);
+void*_Nonnull uniffi_proton_mail_uniffi_fn_method_mailusercontext_new_label_labels_observed_query(void*_Nonnull ptr, uint64_t cb, RustCallStatus *_Nonnull out_status
+);
+void*_Nonnull uniffi_proton_mail_uniffi_fn_method_mailusercontext_new_system_labels_observed_query(void*_Nonnull ptr, uint64_t cb, RustCallStatus *_Nonnull out_status
+);
 void* _Nonnull uniffi_proton_mail_uniffi_fn_method_mailusercontext_poll_events(void*_Nonnull ptr
 );
 void*_Nonnull uniffi_proton_mail_uniffi_fn_clone_mailbox(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
 void uniffi_proton_mail_uniffi_fn_free_mailbox(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
-void*_Nonnull uniffi_proton_mail_uniffi_fn_constructor_mailbox_new(void*_Nonnull ctx, RustCallStatus *_Nonnull out_status
+void*_Nonnull uniffi_proton_mail_uniffi_fn_constructor_mailbox_inbox(void*_Nonnull ctx, RustCallStatus *_Nonnull out_status
 );
-RustBuffer uniffi_proton_mail_uniffi_fn_method_mailbox_active_label(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
+void*_Nonnull uniffi_proton_mail_uniffi_fn_constructor_mailbox_new(void*_Nonnull ctx, uint64_t label_id, RustCallStatus *_Nonnull out_status
 );
-RustBuffer uniffi_proton_mail_uniffi_fn_method_mailbox_conversations(void*_Nonnull ptr, int64_t count, RustCallStatus *_Nonnull out_status
-);
-RustBuffer uniffi_proton_mail_uniffi_fn_method_mailbox_labels_by_type(void*_Nonnull ptr, RustBuffer label_type, RustCallStatus *_Nonnull out_status
-);
-void*_Nonnull uniffi_proton_mail_uniffi_fn_method_mailbox_new_conversation_observed_query(void*_Nonnull ptr, int64_t limit, uint64_t cb, RustCallStatus *_Nonnull out_status
-);
-void*_Nonnull uniffi_proton_mail_uniffi_fn_method_mailbox_new_folder_labels_observed_query(void*_Nonnull ptr, uint64_t cb, RustCallStatus *_Nonnull out_status
-);
-void*_Nonnull uniffi_proton_mail_uniffi_fn_method_mailbox_new_label_labels_observed_query(void*_Nonnull ptr, uint64_t cb, RustCallStatus *_Nonnull out_status
-);
-void*_Nonnull uniffi_proton_mail_uniffi_fn_method_mailbox_new_system_labels_observed_query(void*_Nonnull ptr, uint64_t cb, RustCallStatus *_Nonnull out_status
-);
-void uniffi_proton_mail_uniffi_fn_method_mailbox_switch_label(void*_Nonnull ptr, uint64_t label_id, int64_t message_count, RustBuffer cb, RustCallStatus *_Nonnull out_status
+void*_Nonnull uniffi_proton_mail_uniffi_fn_method_mailbox_new_conversation_live_query(void*_Nonnull ptr, int64_t limit, uint64_t cb, RustCallStatus *_Nonnull out_status
 );
 void*_Nonnull uniffi_proton_mail_uniffi_fn_clone_mailboxconversationlivequery(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
@@ -122,14 +124,6 @@ void uniffi_proton_mail_uniffi_fn_free_mailboxconversationlivequery(void*_Nonnul
 void uniffi_proton_mail_uniffi_fn_method_mailboxconversationlivequery_disconnect(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
 RustBuffer uniffi_proton_mail_uniffi_fn_method_mailboxconversationlivequery_value(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
-);
-void*_Nonnull uniffi_proton_mail_uniffi_fn_clone_mailboxlabelslivequery(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
-);
-void uniffi_proton_mail_uniffi_fn_free_mailboxlabelslivequery(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
-);
-void uniffi_proton_mail_uniffi_fn_method_mailboxlabelslivequery_disconnect(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
-);
-RustBuffer uniffi_proton_mail_uniffi_fn_method_mailboxlabelslivequery_value(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
 void*_Nonnull uniffi_proton_mail_uniffi_fn_clone_storedsession(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
@@ -302,6 +296,12 @@ uint16_t uniffi_proton_mail_uniffi_checksum_method_mailcontext_stored_sessions(v
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailcontext_user_context_from_session(void
     
 );
+uint16_t uniffi_proton_mail_uniffi_checksum_method_maillabelslivequery_disconnect(void
+    
+);
+uint16_t uniffi_proton_mail_uniffi_checksum_method_maillabelslivequery_value(void
+    
+);
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusercontext_initialize(void
     
 );
@@ -311,43 +311,25 @@ uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusercontext_logout(void
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusercontext_mail_settings(void
     
 );
+uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusercontext_new_folder_labels_observed_query(void
+    
+);
+uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusercontext_new_label_labels_observed_query(void
+    
+);
+uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusercontext_new_system_labels_observed_query(void
+    
+);
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusercontext_poll_events(void
     
 );
-uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_active_label(void
-    
-);
-uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_conversations(void
-    
-);
-uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_labels_by_type(void
-    
-);
-uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_new_conversation_observed_query(void
-    
-);
-uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_new_folder_labels_observed_query(void
-    
-);
-uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_new_label_labels_observed_query(void
-    
-);
-uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_new_system_labels_observed_query(void
-    
-);
-uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_switch_label(void
+uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_new_conversation_live_query(void
     
 );
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailboxconversationlivequery_disconnect(void
     
 );
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailboxconversationlivequery_value(void
-    
-);
-uint16_t uniffi_proton_mail_uniffi_checksum_method_mailboxlabelslivequery_disconnect(void
-    
-);
-uint16_t uniffi_proton_mail_uniffi_checksum_method_mailboxlabelslivequery_value(void
     
 );
 uint16_t uniffi_proton_mail_uniffi_checksum_method_storedsession_email(void
@@ -363,6 +345,9 @@ uint16_t uniffi_proton_mail_uniffi_checksum_method_storedsession_user_id(void
     
 );
 uint16_t uniffi_proton_mail_uniffi_checksum_constructor_mailcontext_new(void
+    
+);
+uint16_t uniffi_proton_mail_uniffi_checksum_constructor_mailbox_inbox(void
     
 );
 uint16_t uniffi_proton_mail_uniffi_checksum_constructor_mailbox_new(void

@@ -21,28 +21,27 @@ import SwiftUI
 struct MailboxScreen: View {
     @EnvironmentObject private var appUIState: AppUIState
     @EnvironmentObject private var userSettings: UserSettings
-    let labelId: LabelIdentifier
 
     var body: some View {
         NavigationStack {
             ZStack {
                 if userSettings.mailboxViewMode == .conversation {
-                    MailboxConversationScreen(model: .init(labelId: labelId))
+                    MailboxConversationScreen()
                 } else {
                     Text("message list mailbox")
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(LocalizationTemp.Mailbox.inbox)
+            .navigationTitle(appUIState.selectedMailbox?.name ?? "")
             .mailboxToolbar()
         }
     }
 }
 
 #Preview {
-    let appUIState = AppUIState(isSidebarOpen: true)
+    let appUIState = AppUIState(isSidebarOpen: true, selectedMailbox: nil)
     let userSettings = UserSettings(mailboxViewMode: .conversation)
-    return MailboxScreen(labelId: .allMail)
+    return MailboxScreen()
         .environmentObject(appUIState)
         .environmentObject(userSettings)
 }

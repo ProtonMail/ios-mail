@@ -24,7 +24,7 @@ struct ProtonMail: App {
     @Environment(\.scenePhase) private var scenePhase
 
     let appState = AppState()
-    let appUIState = AppUIState(isSidebarOpen: false)
+    let appUIState = AppUIState.shared
     let userSettings = UserSettings(mailboxViewMode: .conversation)
 
     var body: some Scene {
@@ -48,7 +48,7 @@ struct ProtonMail: App {
 struct Root: View {
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appUIState: AppUIState
-    @State private var route: Route = .mailbox(labelId: .inbox)
+    @State private var route: Route = .mailbox(label: .defaultMailbox)
 
     var body: some View {
         if !appState.hasAuthenticatedSession {
@@ -56,33 +56,68 @@ struct Root: View {
         } else {
             ZStack {
                 switch route {
-                case .mailbox(let labelId):
-                    MailboxScreen(labelId: labelId)
+                case .mailbox:
+                    MailboxScreen()
                 case .settings:
                     SettingsScreen()
                 }
-                SidebarScreen(screenModel: PreviewData.sideBarScreenModel)
+                SidebarScreen()
             }
             .environment(\.navigate) { destinaton in
                 route = destinaton
+                switch route {
+                case .mailbox(let label):
+                    appUIState.selectedMailbox = label
+                case .settings:
+                    break
+                }
                 appUIState.isSidebarOpen = false
             }
         }
     }
 }
 
-enum LabelIdentifier: UInt64 {
-    case inbox = 1
+enum SystemFolderIdentifier: UInt64 {
+    case inbox = 0
     case spam = 4
-    case allMail = 5
-    case archive = 6
+//    case allMail = 5
+//    case archive = 6
     case sent = 7
-    case draft = 8
+//    case draft = 8
     case starred = 10
 }
 
+extension SystemFolderIdentifier {
+
+    var localisedName: String {
+        switch self {
+        case .inbox:
+            LocalizationTemp.Mailbox.inbox
+        case .sent:
+            LocalizationTemp.Mailbox.sent
+        case .spam:
+            LocalizationTemp.Mailbox.spam
+        case .starred:
+            LocalizationTemp.Mailbox.starred
+        }
+    }
+
+    var icon: UIImage {
+        switch self {
+        case .inbox:
+            DS.Icon.icInbox
+        case .sent:
+            DS.Icon.icPaperPlane
+        case .spam:
+            DS.Icon.icFire
+        case .starred:
+            DS.Icon.icStar
+        }
+    }
+}
+
 enum Route: Hashable {
-    case mailbox(labelId: LabelIdentifier)
+    case mailbox(label: SelectedMailbox)
     case settings
 }
 
