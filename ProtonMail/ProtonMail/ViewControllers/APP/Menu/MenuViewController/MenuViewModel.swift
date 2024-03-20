@@ -638,7 +638,8 @@ extension MenuViewModel {
         if newMore.count != self.moreItems.count {
             self.moreItems = newMore
             if shouldReload {
-                self.delegate?.updateMenu(section: 3)
+                let moreSectionIndex = self.sections.firstIndex(where: { $0 == .more })
+                self.delegate?.updateMenu(section: moreSectionIndex)
             }
         }
     }
@@ -715,10 +716,14 @@ extension MenuViewModel {
     }
 
     private func updateStorageAlert() {
+        let previousSectionsCount = self.sections.count
         if storageAlertVisibility == .hidden {
             self.sections.removeAll(where: { $0 == .maxStorage})
         } else if !self.sections.contains(where: { $0 == .maxStorage }) {
             self.sections.insert(.maxStorage, at: 0)
+        }
+        if self.sections.count != previousSectionsCount {
+            self.reloadClosure?()
         }
     }
 
