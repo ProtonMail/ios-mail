@@ -15,18 +15,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_mail_uniffi
 import UIKit
 
-struct SelectedMailbox: Equatable, Hashable {
-    let localId: LocalLabelId
+final class SelectedMailbox: Equatable, Hashable, ObservableObject, Sendable {
+    let localId: PMLocalLabelId
     let name: String
+
+    init(localId: PMLocalLabelId, name: String) {
+        self.localId = localId
+        self.name = name
+    }
+
+    static func == (lhs: SelectedMailbox, rhs: SelectedMailbox) -> Bool {
+        lhs.localId == rhs.localId
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(localId)
+        hasher.combine(name)
+    }
 }
 
 extension SelectedMailbox {
+
+    // TODO: Get the default localId from the Rust SDK
     static let defaultMailbox = SelectedMailbox(
         localId: 4,
         name: SystemFolderIdentifier.inbox.localisedName
     )
 }
-

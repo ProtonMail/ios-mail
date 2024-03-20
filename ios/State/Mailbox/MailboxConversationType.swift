@@ -17,13 +17,24 @@
 
 import Foundation
 
-/**
- Keeps the state for UI components
- */
-final class AppUIState: ObservableObject {
-    @Published var isSidebarOpen: Bool
+protocol MailboxConversationType: AnyObject {
+    var input: MailboxConversationInput { get }
+    var output: MailboxConversationOutput { get }
+}
 
-    init(isSidebarOpen: Bool = false) {
-        self.isSidebarOpen = isSidebarOpen
-    }
+protocol MailboxConversationInput {
+
+    @MainActor
+    func onConversationSelectionChange(id: String, isSelected: Bool)
+
+    @MainActor
+    func onConversationStarChange(id: String, isStarred: Bool)
+
+    @MainActor
+    func onAttachmentTap(attachmentId: String)
+}
+
+protocol MailboxConversationOutput {
+
+    var state: MailboxConversationModel.State { get }
 }

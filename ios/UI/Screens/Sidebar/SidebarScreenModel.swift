@@ -49,9 +49,9 @@ final class SidebarScreenModel: Sendable {
     private func updateData() {
         guard let systemFolderQuery else { return }
         systemFolders = systemFolderQuery.value().compactMap { $0.systemFolderToSidebarCellUIModel() }
-        if AppUIState.shared.selectedMailbox == nil, let firstFolder = systemFolders.first {
-            AppUIState.shared.selectedMailbox = .init(localId: firstFolder.id, name: firstFolder.name)
-        }
+//        if AppUIState.shared.selectedMailbox == nil, let firstFolder = systemFolders.first {
+//            AppUIState.shared.selectedMailbox = .init(localId: firstFolder.id, name: firstFolder.name)
+//        }
     }
 }
 

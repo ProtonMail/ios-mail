@@ -22,26 +22,36 @@ struct MailboxScreen: View {
     @EnvironmentObject private var appUIState: AppUIState
     @EnvironmentObject private var userSettings: UserSettings
 
+    var mailboxModel: MailboxModel
+
+    init(mailboxModel: MailboxModel) {
+        self.mailboxModel = mailboxModel
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
                 if userSettings.mailboxViewMode == .conversation {
-                    MailboxConversationScreen()
+                    MailboxConversationScreen(model: mailboxModel.conversationModel)
                 } else {
                     Text("message list mailbox")
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(appUIState.selectedMailbox?.name ?? "")
+            .navigationTitle(mailboxModel.selectedMailbox.name)
             .mailboxToolbar()
+        }
+        .task {
+            await mailboxModel.initialDataFetch()
         }
     }
 }
 
 #Preview {
-    let appUIState = AppUIState(isSidebarOpen: true, selectedMailbox: nil)
+    let appUIState = AppUIState(isSidebarOpen: true)
     let userSettings = UserSettings(mailboxViewMode: .conversation)
-    return MailboxScreen()
+    let mailboxModel = MailboxModel()
+    return MailboxScreen(mailboxModel: mailboxModel)
         .environmentObject(appUIState)
         .environmentObject(userSettings)
 }

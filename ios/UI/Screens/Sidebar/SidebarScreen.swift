@@ -20,11 +20,14 @@ import SwiftUI
 
 struct SidebarScreen: View {
     @EnvironmentObject private var appUIState: AppUIState
-    @State private var screenModel = SidebarScreenModel()
+    @State private var screenModel: SidebarScreenModel
 
-    //    init(screenModel: SidebarScreenModel) {
-    //        self.screenModel = screenModel
-    //    }
+    @Binding private var selectedRoute: Route
+
+    init(selectedRoute: Binding<Route>, screenModel: SidebarScreenModel = .init()) {
+        self._selectedRoute = selectedRoute
+        self.screenModel = screenModel
+    }
 
     private let animation: Animation = .easeInOut(duration: 0.2)
 
@@ -69,7 +72,10 @@ struct SidebarScreen: View {
 
                 VStack(spacing: 24) {
                     ForEach(screenModel.systemFolders) { systemFolder in
-                        SidebarCell(uiModel: systemFolder)
+                        SidebarCell(uiModel: systemFolder, isSelected: systemFolder.id == selectedRoute.localLabelId) {
+                            selectedRoute = systemFolder.route
+                            appUIState.isSidebarOpen = false
+                        }
                     }
                 }
                 .padding(.init(top: 24.0, leading: 16.0, bottom: 24.0, trailing: 16.0))
@@ -80,10 +86,8 @@ struct SidebarScreen: View {
     }
 }
 
-import proton_mail_uniffi
-
 struct SidebarCellUIModel: Identifiable {
-    let id: LocalLabelId
+    let id: PMLocalLabelId
     let name: String
     let icon: UIImage
     let badge: String
@@ -91,27 +95,38 @@ struct SidebarCellUIModel: Identifiable {
 }
 
 struct SidebarCell: View {
-    @Environment(\.navigate) var navigate
-    let uiModel: SidebarCellUIModel
+    private let uiModel: SidebarCellUIModel
+    private let isSelected: Bool
+    private var onSelection: () -> Void
+
+    init(uiModel: SidebarCellUIModel, isSelected: Bool, onSelection: @escaping () -> Void) {
+        self.uiModel = uiModel
+        self.isSelected = isSelected
+        self.onSelection = onSelection
+    }
+
+    var textColor: Color {
+        isSelected ? DS.Color.sidebarTextWeak : DS.Color.sidebarTextNorm
+    }
 
     var body: some View {
 
         Button(action: {
-            navigate(uiModel.route)
+            onSelection()
         }, label: {
             HStack {
 
                 Image(uiImage: uiModel.icon)
                     .renderingMode(.template)
-                    .foregroundColor(DS.Color.sidebarTextNorm)
+                    .foregroundColor(textColor)
                 Text(uiModel.name)
                     .font(.body)
                     .fontWeight(.regular)
-                    .foregroundStyle(DS.Color.sidebarTextNorm)
+                    .foregroundStyle(textColor)
                     .padding(.leading, 16)
                 Spacer()
                 Text(uiModel.badge)
-                    .foregroundStyle(DS.Color.sidebarTextNorm)
+                    .foregroundStyle(textColor)
                     .opacity(uiModel.badge.isEmpty ? 0 : 1)
             }
         })
@@ -119,12 +134,13 @@ struct SidebarCell: View {
 }
 
 #Preview {
-    let appUIState = AppUIState(isSidebarOpen: true, selectedMailbox: nil)
+    let appUIState = AppUIState(isSidebarOpen: true)
+
     struct PreviewWrapper: View {
+        @State var route: Route = .mailbox(label: .defaultMailbox)
 
         var body: some View {
-            SidebarScreen()
-//            SidebarScreen(screenModel: PreviewData.sideBarScreenModel)
+            SidebarScreen(selectedRoute: $route, screenModel: PreviewData.sideBarScreenModel)
         }
     }
     return PreviewWrapper().environmentObject(appUIState)

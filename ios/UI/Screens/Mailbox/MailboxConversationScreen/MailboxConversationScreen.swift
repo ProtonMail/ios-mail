@@ -19,12 +19,15 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxConversationScreen: View {
-    @EnvironmentObject private var appUIState: AppUIState
-    @State private var model: MailboxConversationScreenModel = .init()
+    private var model: MailboxConversationType
+
+    init(model: MailboxConversationType) {
+        self.model = model
+    }
 
     var body: some View {
         ZStack {
-            switch model.state {
+            switch model.output.state {
             case .loading:
                 VStack {
                     Spacer()
@@ -43,11 +46,11 @@ struct MailboxConversationScreen: View {
                             onEvent: { [weak model] event in
                                 switch event {
                                 case .onSelectedChange(let isSelected):
-                                    model?.onConversationSelectionChange(id: conversation.id, isSelected: isSelected)
+                                    model?.input.onConversationSelectionChange(id: conversation.id, isSelected: isSelected)
                                 case .onStarredChange(let isStarred):
-                                    model?.onConversationStarChange(id: conversation.id, isStarred: isStarred)
+                                    model?.input.onConversationStarChange(id: conversation.id, isStarred: isStarred)
                                 case .onAttachmentTap(let attachmentId):
-                                    model?.onAttachmentTap(attachmentId: attachmentId)
+                                    model?.input.onAttachmentTap(attachmentId: attachmentId)
                                 }
                             }
                         )
@@ -68,14 +71,15 @@ struct MailboxConversationScreen: View {
                 }
                 .listStyle(.plain)
             }
-        }
-        .onReceive(appUIState.$selectedMailbox) { selectedMailbox in
-            guard let selectedMailbox else { return }
-            model.onNewSelectedMailbox(selectedMailbox: selectedMailbox)
+            
         }
     }
 }
 
-//#Preview {
-//    return MailboxConversationScreen(model: .init(labelId: .spam, conversations: PreviewData.mailboxConversations))
-//}
+#Preview {
+    let mailboxConversationModel = MailboxConversationModel(
+        selectedMailbox: .defaultMailbox,
+        state: .data(PreviewData.mailboxConversations)
+    )
+    return MailboxConversationScreen(model: mailboxConversationModel)
+}

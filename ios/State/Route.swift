@@ -16,14 +16,33 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import class UIKit.UIImage
 
-/**
- Keeps the state for UI components
- */
-final class AppUIState: ObservableObject {
-    @Published var isSidebarOpen: Bool
+enum Route: Equatable {
+    case mailbox(label: SelectedMailbox)
+    case settings
 
-    init(isSidebarOpen: Bool = false) {
-        self.isSidebarOpen = isSidebarOpen
+    var selectedMailbox: SelectedMailbox? {
+        if case .mailbox(let label) = self {
+            return label
+        }
+        return nil
+    }
+
+    var localLabelId: PMLocalLabelId? {
+        if case .mailbox(let label) = self {
+            return label.localId
+        }
+        return nil
+    }
+
+    var screenTitle: String {
+        switch self {
+        case .mailbox(let label):
+            return label.name
+        case .settings:
+            return LocalizationTemp.settings
+        }
     }
 }
+

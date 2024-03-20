@@ -18,12 +18,27 @@
 import Foundation
 
 /**
- Keeps the state for UI components
+ Source of truth for the Mailbox view. Contains a model for conversations and another one for messages.
  */
-final class AppUIState: ObservableObject {
-    @Published var isSidebarOpen: Bool
+@Observable
+final class MailboxModel {
+    let conversationModel: MailboxConversationModel
+    // let messageModel: MailboxMessageModel
 
-    init(isSidebarOpen: Bool = false) {
-        self.isSidebarOpen = isSidebarOpen
+    private(set) var selectedMailbox: SelectedMailbox
+
+    init() {
+        let initialMailbox = SelectedMailbox.defaultMailbox
+        self.selectedMailbox = initialMailbox
+        self.conversationModel = .init(selectedMailbox: initialMailbox)
+    }
+
+    func initialDataFetch() async {
+        await conversationModel.initialDataFetch()
+    }
+
+    func updateSelectedMailbox(_ mailbox: SelectedMailbox) async {
+        selectedMailbox = mailbox
+        await conversationModel.updateSelectedMailbox(mailbox)
     }
 }

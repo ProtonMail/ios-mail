@@ -19,57 +19,6 @@ import Combine
 import Foundation
 import proton_mail_uniffi
 
-/// Ensures that the active session is thread safe and that it is only initialised once.
-actor UserSession {
-    private var activeSession: MailUserContext?
-    private(set) var activeSessionPublisher = CurrentValueSubject<ActiveUserStatus, Never>(.noActiveUser)
-    private var runningTask: Task<MailUserContext?, Error>?
-
-    /**
-     Returns the existing `activeSession` if there is one, otherwise it will try to load a stored session and initialise the MailUserContext.
-
-     This function guarantess sequential execution and therefore that MailUserContext is only initialized once no matter how many threads
-     call at the same time.
-     */
-    func activeSession(from mailContext: MailContext) async throws -> MailUserContext? {
-        guard let taskInQueue = runningTask else {
-            runningTask = Task {
-                try await _activeSession(from: mailContext)
-            }
-            return try await runningTask?.value
-        }
-        let newTask = Task {
-            _ = try await taskInQueue.value
-            return try await _activeSession(from: mailContext)
-        }
-        runningTask = newTask
-        return try await newTask.value
-    }
-
-    private func _activeSession(from mailContext: MailContext) async throws -> MailUserContext? {
-        if let activeSession {
-            return activeSession
-        }
-        guard let firstStoredSession = try mailContext.storedSessions().first else {
-            return nil
-        }
-        let newUserContext = try mailContext.userContextFromSession(session: firstStoredSession, cb: SessionDelegate.shared)
-        try await udpateActiveSession(newUserContext)
-        return activeSession
-    }
-
-    func udpateActiveSession(_ newUserSession: MailUserContext?) async throws {
-        guard let newUserSession else {
-            activeSession = nil
-            activeSessionPublisher.send(.noActiveUser)
-            return
-        }
-        try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared)
-        activeSession = newUserSession
-        activeSessionPublisher.send(.hasActiveUser)
-    }
-}
-
 final class AppContext: Sendable {
     static let shared: AppContext = .init()
 
