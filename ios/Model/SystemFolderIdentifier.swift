@@ -21,12 +21,19 @@ import class SwiftUI.UIImage
 
 enum SystemFolderIdentifier: UInt64 {
     case inbox = 0
+    case allDraft = 1
+    case allSent = 2
+    case trash = 3
     case spam = 4
-//    case allMail = 5
-//    case archive = 6
+    case allMail = 5
+    case archive = 6
     case sent = 7
-//    case draft = 8
+    case draft = 8
+    case outbox = 9
     case starred = 10
+    case allScheduled = 12
+    case almostAllMail = 15
+    case snoozed = 16
 }
 
 extension SystemFolderIdentifier {
@@ -35,12 +42,32 @@ extension SystemFolderIdentifier {
         switch self {
         case .inbox:
             LocalizationTemp.Mailbox.inbox
-        case .sent:
-            LocalizationTemp.Mailbox.sent
+        case .allDraft:
+            LocalizationTemp.Mailbox.allDraft
+        case .allSent:
+            LocalizationTemp.Mailbox.allSent
+        case .trash:
+            LocalizationTemp.Mailbox.trash
         case .spam:
             LocalizationTemp.Mailbox.spam
+        case .allMail:
+            LocalizationTemp.Mailbox.allMail
+        case .archive:
+            LocalizationTemp.Mailbox.archive
+        case .sent:
+            LocalizationTemp.Mailbox.sent
+        case .draft:
+            LocalizationTemp.Mailbox.draft
+        case .outbox:
+            LocalizationTemp.Mailbox.outbox
         case .starred:
             LocalizationTemp.Mailbox.starred
+        case .allScheduled:
+            LocalizationTemp.Mailbox.allScheduled
+        case .almostAllMail:
+            LocalizationTemp.Mailbox.allMail
+        case .snoozed:
+            LocalizationTemp.Mailbox.snoozed
         }
     }
 
@@ -48,12 +75,22 @@ extension SystemFolderIdentifier {
         switch self {
         case .inbox:
             DS.Icon.icInbox
-        case .sent:
+        case .allDraft, .draft, .outbox:
+            DS.Icon.icFile
+        case .allSent, .sent:
             DS.Icon.icPaperPlane
+        case .trash:
+            DS.Icon.icTrash
         case .spam:
             DS.Icon.icFire
+        case .allMail, .almostAllMail:
+            DS.Icon.icEnvelopes
+        case .archive:
+            DS.Icon.icArchiveBox
         case .starred:
             DS.Icon.icStar
+        case .allScheduled, .snoozed:
+            DS.Icon.icClock
         }
     }
 }

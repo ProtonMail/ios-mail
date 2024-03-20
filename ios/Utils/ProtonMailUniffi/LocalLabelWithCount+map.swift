@@ -30,7 +30,7 @@ extension LocalLabelWithCount {
             id: id,
             name: systemFolderId.localisedName,
             icon: systemFolderId.icon,
-            badge: String(unreadCount),
+            badge: unreadCount > 0 ? String(unreadCount) : "",
             route: .mailbox(
                 label: .init(localId: id, name: systemFolderId.localisedName)
             )

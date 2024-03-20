@@ -24,10 +24,19 @@ enum LocalizationTemp {
     static let official = "Official"
 
     enum Mailbox {
+        static let allDraft = "All Draft"
+        static let allMail = "All Mail"
+        static let allScheduled = "All Scheduled"
+        static let allSent = "All Sent"
+        static let archive = "Archive"
+        static let draft = "Draft"
         static let inbox = "Inbox"
+        static let outbox = "Outbox"
         static let sent = "Sent"
+        static let snoozed = "Snoozed"
         static let spam = "Spam"
         static let starred = "Starred"
+        static let trash = "Trash"
     }
 
     static let settings = "Settings"

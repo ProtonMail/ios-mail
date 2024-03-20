@@ -11,6 +11,7 @@ public extension DS.Icon {
     static let icArrowOutFromRectangle = icon(named: "ic-arrow-out-from-rectangle")
 
     static let icCheckmark = icon(named: "ic-checkmark")
+    static let icClock = icon(named: "ic-clock")
     static let icCogWheel = icon(named: "ic-cog-wheel")
     static let icHamburguer = icon(named: "ic-hamburger")
     static let icArchiveBox = icon(named: "ic-archive-box")
@@ -21,6 +22,7 @@ public extension DS.Icon {
     static let icPaperPlane = icon(named: "ic-paper-plane")
     static let icStar = icon(named: "ic-star")
     static let icStarFilled = icon(named: "ic-star-filled")
+    static let icTrash = icon(named: "ic-trash")
 }
 
 // MARK: File type icons
