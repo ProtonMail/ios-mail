@@ -914,7 +914,7 @@ class LocalizedString {
     lazy var _duplicate_logged_in = NSLocalizedString("The user is already signed in", comment: "Alert when the account is already logged in")
 
     lazy var _free_account_limit_reached_title = NSLocalizedString("Limit reached", comment: "Title of alert when the free account limit is reached")
-    lazy var _free_account_limit_reached = NSLocalizedString("Only one free account can be added", comment: "Alert when the free account limit is reached")
+    lazy var _free_account_limit_reached = NSLocalizedString("Only two free accounts can be added", comment: "Alert when the free account limit is reached")
 
     /// New Settings
     lazy var _account_settings = NSLocalizedString("Account settings", comment: "section title in settings")
