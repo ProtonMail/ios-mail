@@ -30,15 +30,16 @@ struct MailboxConversationMessageCountView: View {
     var body: some View {
         Text(normalisedNumMessages)
             .font(.caption2)
-            .fontWeight(.medium)
-            .foregroundStyle(DS.Color.textWeak)
-            .padding(2)
+            .fontWeight(.semibold)
+            .foregroundStyle(DS.Color.Text.weak)
+            .padding(.vertical, DS.Spacing.tiny)
+            .padding(.horizontal, DS.Spacing.small)
             .frame(minWidth: 20)
             .fixedSize()
             .lineLimit(1)
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .fill(DS.Color.backgroundSecondary)
+                    .fill(DS.Color.Background.secondary)
             )
     }
 }

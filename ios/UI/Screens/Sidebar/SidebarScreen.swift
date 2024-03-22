@@ -82,7 +82,7 @@ struct SidebarScreen: View {
             }
             Spacer()
         }
-        .background(DS.Color.sidebarBackground)
+        .background(DS.Color.Sidebar.background)
     }
 }
 
@@ -106,7 +106,7 @@ struct SidebarCell: View {
     }
 
     var textColor: Color {
-        isSelected ? DS.Color.sidebarTextWeak : DS.Color.sidebarTextNorm
+        isSelected ? DS.Color.Sidebar.textWeak : DS.Color.Sidebar.textNorm
     }
 
     var body: some View {

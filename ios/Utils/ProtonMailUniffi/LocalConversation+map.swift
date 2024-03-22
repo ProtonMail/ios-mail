@@ -54,7 +54,7 @@ extension LocalConversation {
             numMessages: numMessages > 1 ? Int(numMessages) : 0,
             labelUIModel: toLabel(),
             attachmentsUIModel: (attachments ?? []).toAttachmentCapsuleUIModels(),
-            expirationDate: .init(text: "", color: .black)
+            expirationDate: nil
         )
     }
 }

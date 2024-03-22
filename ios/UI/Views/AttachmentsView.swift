@@ -64,12 +64,12 @@ struct AttachmentsView: View {
             }
             let extraAttachments = min(99, uiModel.count - limit)
             Text("+\(extraAttachments)")
-                .frame(width: Layout.extraAttachmentsViewWidth)
+                .frame(width: Layout.extraAttachmentsViewWidth, alignment: .leading)
                 .fixedSize()
                 .font(.caption2)
                 .fontWeight(.regular)
-                .foregroundStyle(DS.Color.textWeak)
-                .padding(.trailing, 10)
+                .foregroundStyle(DS.Color.Text.weak)
+                .padding(.leading, DS.Spacing.small)
                 .removeViewIf(extraAttachments < 1 )
         }
     }
@@ -90,7 +90,7 @@ struct AttachmentCapsuleView: View {
     let onTapEvent: ((String) -> Void)?
 
     private let padding = EdgeInsets(
-        top: 8.0, leading: Layout.capsuleHPadding, bottom: 8.0, trailing: Layout.capsuleHPadding
+        top: DS.Spacing.standard, leading: Layout.capsuleHPadding, bottom: DS.Spacing.standard, trailing: Layout.capsuleHPadding
     )
 
     var body: some View {
@@ -104,9 +104,9 @@ struct AttachmentCapsuleView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: Layout.capsuleIconSideSize, height: Layout.capsuleIconSideSize)
                 Text(uiModel.name)
-                    .font(.caption2)
+                    .font(.caption)
                     .fontWeight(.regular)
-                    .tint(DS.Color.textNorm)
+                    .tint(DS.Color.Text.norm)
                     .lineLimit(1)
                     .frame(maxWidth: maxWidth)
                     .fixedSize()
@@ -116,7 +116,7 @@ struct AttachmentCapsuleView: View {
             .background(
                 ZStack {
                     Capsule()
-                        .strokeBorder(DS.Color.backgroundDeep, lineWidth: 1)
+                        .strokeBorder(DS.Color.Border.strong, lineWidth: 1)
                 }
             )
         }
@@ -129,17 +129,17 @@ private struct AttachmentCapsuleStyle: ButtonStyle {
   func makeBody(configuration: Self.Configuration) -> some View {
     configuration
           .label
-          .background(configuration.isPressed ? Capsule().fill(DS.Color.backgroundDeep) : Capsule().fill(DS.Color.backgroundNorm))
+          .background(configuration.isPressed ? Capsule().fill(DS.Color.Background.deep) : Capsule().fill(DS.Color.Background.norm))
   }
 
 }
 
 fileprivate enum Layout {
-    static let spacingBetweenCapsules = 10.0
-    static let extraAttachmentsViewWidth = 22.0
-    static let capsuleHPadding = 12.0
+    static let spacingBetweenCapsules = DS.Spacing.tiny
+    static let extraAttachmentsViewWidth = 42.0
+    static let capsuleHPadding = DS.Spacing.medium
     static let capsuleIconSideSize = 14.0
-    static let capsuleSpacing = 4.0
+    static let capsuleSpacing = DS.Spacing.standard
 }
 
 #Preview {

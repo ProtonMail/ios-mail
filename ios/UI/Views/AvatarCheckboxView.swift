@@ -30,12 +30,12 @@ struct AvatarCheckboxView: View {
             if isSelected {
                 ZStack {
                     RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                        .fill(DS.Color.backgroundNorm)
-                        .stroke(DS.Color.separatorNorm, lineWidth: 1)
+                        .fill(DS.Color.Background.norm)
+                        .stroke(DS.Color.Border.strong, lineWidth: 1)
                         .overlay {
                             Image(uiImage: DS.Icon.icCheckmark)
                                 .resizable()
-                                .foregroundColor(DS.Color.iconNorm)
+                                .foregroundColor(DS.Color.Icon.norm)
                                 .padding(10)
                         }
                 }
@@ -44,7 +44,7 @@ struct AvatarCheckboxView: View {
                     .font(.callout)
                     .fontWeight(.regular)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(DS.Color.interactionWeak)
+                    .background(DS.Color.Background.secondary)
             }
         }
         .compositingGroup()

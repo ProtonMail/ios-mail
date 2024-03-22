@@ -42,7 +42,7 @@ enum PreviewData {
                 numMessages: [0, 1, 5, [0, 2, 14].randomElement()!].randomElement()!,
                 labelUIModel: [0, 1, 2].randomElement()! == 0 ? mailboxLabels.randomElement()! : .init(),
                 attachmentsUIModel: [0, 1, 2].randomElement()! == 0 ? attachments.randomElement()! : [],
-                expirationDate: expirationDate ? .init(text: "Expires in < 5 minutes", color: DS.Color.notificationError) : .init(text: "", color: .clear)
+                expirationDate: expirationDate ? .now + 1000 : nil
             )
         }
         return conversations

@@ -8,4 +8,6 @@ public enum DS {}
 extension DS {
     public enum Color: Sendable {}
     public enum Icon: Sendable {}
+    public enum Font: Sendable {}
+    public enum Spacing: Sendable {}
 }

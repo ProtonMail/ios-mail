@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import SwiftUI
 
 struct MailboxLabelView: View {
@@ -35,14 +36,19 @@ struct MailboxLabelView: View {
     private var textPadding: EdgeInsets {
         uiModel.isEmpty
         ? .init(.zero)
-        : .init(top: 4.0, leading: 8.0, bottom: 4.0, trailing: 8.0)
+        : .init(
+            top: DS.Spacing.small,
+            leading: DS.Spacing.standard,
+            bottom: DS.Spacing.small,
+            trailing: DS.Spacing.standard
+        )
     }
 
     var body: some View {
-        HStack(spacing: 4) {
+        HStack(spacing: DS.Spacing.small) {
             Text(uiModel.text)
                 .font(.caption2)
-                .fontWeight(.medium)
+                .fontWeight(.semibold)
                 .foregroundColor(.white)
                 .padding(textPadding)
                 .lineLimit(1)

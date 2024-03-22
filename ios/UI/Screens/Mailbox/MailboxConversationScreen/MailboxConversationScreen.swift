@@ -41,21 +41,24 @@ struct MailboxConversationScreen: View {
             case .data(let conversations):
                 List {
                     ForEach(conversations) { conversation in
-                        MailboxConversationCell(
-                            uiModel: conversation,
-                            onEvent: { [weak model] event in
-                                switch event {
-                                case .onSelectedChange(let isSelected):
-                                    model?.input.onConversationSelectionChange(id: conversation.id, isSelected: isSelected)
-                                case .onStarredChange(let isStarred):
-                                    model?.input.onConversationStarChange(id: conversation.id, isStarred: isStarred)
-                                case .onAttachmentTap(let attachmentId):
-                                    model?.input.onAttachmentTap(attachmentId: attachmentId)
+                        VStack {
+                            MailboxConversationCell(
+                                uiModel: conversation,
+                                onEvent: { [weak model] event in
+                                    switch event {
+                                    case .onSelectedChange(let isSelected):
+                                        model?.input.onConversationSelectionChange(id: conversation.id, isSelected: isSelected)
+                                    case .onStarredChange(let isStarred):
+                                        model?.input.onConversationStarChange(id: conversation.id, isStarred: isStarred)
+                                    case .onAttachmentTap(let attachmentId):
+                                        model?.input.onAttachmentTap(attachmentId: attachmentId)
+                                    }
                                 }
-                            }
-                        )
+                            )
+                            Spacer().frame(height: DS.Spacing.tiny)
+                        }
                         .listRowInsets(
-                            .init(top: 1, leading: 1, bottom: 1, trailing: 0)
+                            .init(top: 0, leading: DS.Spacing.tiny, bottom: 0, trailing: 0)
                         )
                         .listRowSeparator(.hidden)
                         .compositingGroup()
