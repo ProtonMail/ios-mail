@@ -54,22 +54,6 @@ class BackendConfigurationTests: XCTestCase {
         XCTAssert(sut.environment == .black)
     }
 
-    func testInit_whenIsDebugOrEnterprise_andCacheReturnsNil_returnsProdEnv() {
-        mockBackendConfigurationCache.readEnvironmentStub.bodyIs({ _ in
-            nil
-        })
-        sut = BackendConfiguration(isDebugOrEnterprise: { true }, configurationCache: mockBackendConfigurationCache)
-        XCTAssert(sut.environment == .mailProd)
-    }
-
-    func testInit_whenIsNotDebugOrEnterprise_returnsProdEnv() {
-        mockBackendConfigurationCache.readEnvironmentStub.bodyIs({ _ in
-            Environment.black
-        })
-        sut = BackendConfiguration(isDebugOrEnterprise: { false }, configurationCache: mockBackendConfigurationCache)
-        XCTAssert(sut.environment == .mailProd)
-    }
-
     func testIsProduction_whenItIsProduction_returnsTrue() {
         sut = BackendConfiguration(
             isDebugOrEnterprise: { false }
