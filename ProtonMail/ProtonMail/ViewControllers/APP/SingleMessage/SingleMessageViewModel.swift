@@ -271,10 +271,8 @@ class SingleMessageViewModel {
         guard nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove else {
             return
         }
-        DispatchQueue.main.async { [weak self] in
-            let userInfo: [String: Any] = ["expectation": PagesSwipeAction.forward, "reload": true]
-            self?.notificationCenter.post(name: .pagesSwipeExpectation, object: nil, userInfo: userInfo)
-        }
+        let userInfo: [String: Any] = ["expectation": PagesSwipeAction.forward, "reload": true]
+        notificationCenter.post(name: .pagesSwipeExpectation, object: nil, userInfo: userInfo)
     }
 }
 

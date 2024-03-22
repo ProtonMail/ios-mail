@@ -359,14 +359,13 @@ private extension SingleMessageViewController {
             actionSheet?.dismiss(animated: true)
         case .delete:
             showDeleteAlert(deleteHandler: { [weak self] _ in
-                self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                    self?.viewModel.navigateToNextMessage(
-                        isInPageView: self?.isInPageView ?? false,
-                        popCurrentView: {
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                    )
-                })
+                self?.viewModel.navigateToNextMessage(
+                    isInPageView: self?.isInPageView ?? false,
+                    popCurrentView: {
+                        self?.navigationController?.popViewController(animated: true)
+                    }
+                )
+                self?.viewModel.handleActionSheetAction(action, completion: {})
             })
         case .reportPhishing:
             showPhishingAlert { [weak self] _ in
@@ -388,24 +387,22 @@ private extension SingleMessageViewController {
         case .viewInDarkMode, .viewInLightMode:
             viewModel.handleActionSheetAction(action, completion: {})
         case .archive, .spam, .inbox, .spamMoveToInbox, .star, .unstar:
-            viewModel.handleActionSheetAction(action) { [weak self] in
+            viewModel.navigateToNextMessage(
+                isInPageView: isInPageView,
+                popCurrentView: { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            )
+            viewModel.handleActionSheetAction(action, completion: {})
+        case .trash:
+            let continueAction: () -> Void = { [weak self] in
                 self?.viewModel.navigateToNextMessage(
                     isInPageView: self?.isInPageView ?? false,
                     popCurrentView: {
                         self?.navigationController?.popViewController(animated: true)
                     }
                 )
-            }
-        case .trash:
-            let continueAction: () -> Void = { [weak self] in
-                self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                    self?.viewModel.navigateToNextMessage(
-                        isInPageView: self?.isInPageView ?? false,
-                        popCurrentView: {
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                    )
-                })
+                self?.viewModel.handleActionSheetAction(action, completion: {})
             }
             viewModel.searchForScheduled(displayAlert: { [weak self] in
                 self?.displayScheduledAlert(scheduledNum: 1, continueAction: continueAction)
