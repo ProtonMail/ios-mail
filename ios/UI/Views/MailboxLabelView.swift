@@ -62,7 +62,7 @@ struct MailboxLabelView: View {
                 .fontWeight(.regular)
                 .frame(width: showExtraLabels ? nil : 0)
         }
-        .frame(maxWidth: maxWidth, alignment: .leading)
+        .frame(maxWidth: maxWidth, maxHeight: 21, alignment: .leading)
         .fixedSize()
     }
 }

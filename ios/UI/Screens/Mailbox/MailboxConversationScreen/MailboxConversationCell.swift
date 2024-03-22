@@ -40,7 +40,7 @@ struct MailboxConversationCell: View {
             )
             .frame(width: 40, height: 40)
 
-            VStack(spacing: DS.Spacing.small) {
+            VStack(spacing: 0) {
 
                 HStack(spacing: DS.Spacing.small) {
 
@@ -70,6 +70,7 @@ struct MailboxConversationCell: View {
                         .layoutPriority(1)
                     MailboxLabelView(uiModel: uiModel.labelUIModel)
                         .padding(.leading, labelLeadingPadding)
+                        .removeViewIf(uiModel.labelUIModel.isEmpty)
                     Spacer()
                     Image(uiImage: uiModel.isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
                         .resizable()
@@ -79,18 +80,19 @@ struct MailboxConversationCell: View {
                             onEvent(.onStarredChange(isStarred: !uiModel.isStarred))
                         }
                 }
+                .padding(.top, DS.Spacing.small)
 
                 Text(uiModel.expirationDate ?? "")
                     .font(.footnote)
                     .fontWeight(.semibold)
                     .foregroundStyle(DS.Color.Text.weak)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, DS.Spacing.small)
                     .removeViewIf(uiModel.expirationDate == nil)
-                Spacer()
-                    .frame(height: DS.Spacing.small)
                 AttachmentsView(uiModel: uiModel.attachmentsUIModel, onTapEvent: {
                     onEvent(.onAttachmentTap(attachmentId: $0))
                 })
+                .padding(.top, DS.Spacing.standard)
                 .removeViewIf(uiModel.attachmentsUIModel.isEmpty)
             }
         }
@@ -173,8 +175,8 @@ enum MailboxConversationCellEvent {
             isStarred: false,
             isSenderProtonOfficial: true,
             numMessages: 0,
-            labelUIModel: .init(),
-            expirationDate: .now + 230200
+            labelUIModel: .init(id: "", color: .brown, text: "New", numExtraLabels: 0),
+            expirationDate: nil
         )
     }
     let model1 = model
