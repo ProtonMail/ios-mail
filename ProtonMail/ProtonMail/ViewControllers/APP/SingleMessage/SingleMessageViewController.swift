@@ -612,15 +612,15 @@ extension SingleMessageViewController {
     private func didSelectFolderToMoveTo(folder: MenuLabel) {
         defer {
             dismissActionSheet()
-            viewModel.navigateToNextMessage(isInPageView: isInPageView, popCurrentView: {
-                self.navigationController?.popViewController(animated: true)
-            })
         }
 
         let message = viewModel.message
         let destinationId = folder.location.labelID
 
         let continueAction: () -> Void = { [weak self] in
+            self?.viewModel.navigateToNextMessage(isInPageView: self?.isInPageView ?? false, popCurrentView: {
+                self?.navigationController?.popViewController(animated: true)
+            })
             self?.viewModel.handleMoveToAction(messages: [message], to: folder)
         }
 
