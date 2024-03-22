@@ -37,6 +37,7 @@ struct MailboxScreen: View {
                     Text("message list mailbox")
                 }
             }
+            .background(DS.Color.Background.norm) // sets also the color for the navigation bar
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(mailboxModel.selectedMailbox.name)
             .mailboxToolbar()

@@ -29,11 +29,7 @@ struct MailboxConversationScreen: View {
         ZStack {
             switch model.output.state {
             case .loading:
-                VStack {
-                    Spacer()
-                    ProgressView()
-                    Spacer()
-                }
+                ProgressView()
             case .empty:
                 VStack {
                     Text("No conversations")
@@ -70,12 +66,13 @@ struct MailboxConversationScreen: View {
                                 topTrailingRadius: 0
                             )
                         )
+                        .background(DS.Color.Background.norm) // cell background color after clipping
                     }
                 }
                 .listStyle(.plain)
             }
-            
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
