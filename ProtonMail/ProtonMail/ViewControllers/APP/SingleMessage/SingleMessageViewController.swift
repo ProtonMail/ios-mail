@@ -386,13 +386,15 @@ private extension SingleMessageViewController {
             moreButtonTapped()
         case .viewInDarkMode, .viewInLightMode:
             viewModel.handleActionSheetAction(action, completion: {})
-        case .archive, .spam, .inbox, .spamMoveToInbox, .star, .unstar:
+        case .archive, .spam, .inbox, .spamMoveToInbox:
             viewModel.navigateToNextMessage(
                 isInPageView: isInPageView,
                 popCurrentView: { [weak self] in
                     self?.navigationController?.popViewController(animated: true)
                 }
             )
+            viewModel.handleActionSheetAction(action, completion: {})
+        case .star, .unstar:
             viewModel.handleActionSheetAction(action, completion: {})
         case .trash:
             let continueAction: () -> Void = { [weak self] in
