@@ -47,7 +47,7 @@ struct BackendConfiguration {
         } else if isDebugOrEnterprise(), let cachedEnv = configurationCache.readEnvironment() {
             self.environment = cachedEnv
         } else {
-            self.environment = .black
+            self.environment = .blackPayment
         }
        SystemLogger.log(message: "Environment: \(environment.doh.defaultHost)", category: .appLifeCycle)
     }
