@@ -49,7 +49,7 @@ enum PreviewData {
     }
 
     static let mailboxLabels: [MailboxLabelUIModel] = [
-        .init(id: UUID().uuidString, color: Color(hex: "179FD9"), text: "WORK", numExtraLabels: [2, 3].randomElement()!),
+        .init(id: UUID().uuidString, color: Color(hex: "179FD9"), text: "Work", numExtraLabels: [2, 3].randomElement()!),
         .init(id: UUID().uuidString, color: Color(hex: "F78400"), text:  "Read later", numExtraLabels: [0, 1].randomElement()!),
         .init(id: UUID().uuidString, color: Color(hex: "3CBB3A"), text: "Newsletters", numExtraLabels: 0),
     ]
@@ -61,19 +61,19 @@ enum PreviewData {
             .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
         ],
         [
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeWord, name: "notes.doc")
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")
         ],
         [
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeNumbers, name: "number.xls"),
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypePowerpoint, name: "slides.ppt")
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconNumbers, name: "number.xls"),
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPowerPoint, name: "slides.ppt")
         ],
         [
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeImage, name: "01.png"),
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeImage, name: "02.png"),
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeImage, name: "03.png"),
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeImage, name: "04.png"),
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeImage, name: "05.png"),
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeImage, name: "06.png"),
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconImage, name: "01.png"),
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconImage, name: "02.png"),
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconImage, name: "03.png"),
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconImage, name: "04.png"),
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconImage, name: "05.png"),
+            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconImage, name: "06.png"),
         ],
     ]
 
