@@ -284,6 +284,7 @@ extension PagesViewController: PagesViewUIProtocol {
                     self.setUpTitleView()
                     self.updateCurrentID()
                     if shouldReload {
+                        self.pageCache.removeAll()
                         self.viewModel.refetchData()
                     }
                 }
@@ -296,6 +297,7 @@ extension PagesViewController: PagesViewUIProtocol {
                     self.setUpTitleView()
                     self.updateCurrentID()
                     if shouldReload {
+                        self.pageCache.removeAll()
                         self.viewModel.refetchData()
                     }
                 }
