@@ -21,16 +21,15 @@ import SwiftUI
 struct ProtonMail: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
-    private var mailboxModel = MailboxModel()
 
-    let appState = AppState()
-    let appUIState = AppUIState()
-    let userSettings = UserSettings(mailboxViewMode: .conversation)
+    // declaration of state objects
+    private let appUIState = AppUIState()
+    private let mailboxModel = MailboxModel()
+    private let userSettings = UserSettings(mailboxViewMode: .conversation)
 
     var body: some Scene {
         WindowGroup {
-            Root(mailboxModel: mailboxModel)
-                .environmentObject(appState)
+            Root(appContext: AppContext.shared, mailboxModel: mailboxModel)
                 .environmentObject(appUIState)
                 .environmentObject(userSettings)
         }
@@ -46,21 +45,21 @@ struct ProtonMail: App {
 }
 
 struct Root: View {
-    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appUIState: AppUIState
 
-    // The route determines the view that will be rendered
+    // The route determines the screen that will be rendered
     @State private var route: Route = .mailbox(label: .defaultMailbox)
     
-    // The mailbox model is the source of truth for the mailbox
-    @State private var mailboxModel: MailboxModel
+    @ObservedObject private var appContext: AppContext
+    @ObservedObject private var mailboxModel: MailboxModel
 
-    init(mailboxModel: MailboxModel) {
+    init(appContext: AppContext, mailboxModel: MailboxModel) {
+        self.appContext = appContext
         self.mailboxModel = mailboxModel
     }
 
     var body: some View {
-        if !appState.hasAuthenticatedSession {
+        if !appContext.hasActiveUser {
             SignIn()
         } else {
             ZStack {

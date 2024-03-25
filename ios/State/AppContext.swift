@@ -19,7 +19,7 @@ import Combine
 import Foundation
 import proton_mail_uniffi
 
-final class AppContext: Sendable {
+final class AppContext: Sendable, ObservableObject {
     static let shared: AppContext = .init()
 
     private var _mailContext: MailContext!
@@ -34,7 +34,7 @@ final class AppContext: Sendable {
         return mailContext
     }
 
-    private(set) var activeUserStatusPublisher = CurrentValueSubject<ActiveUserStatus, Never>(.noActiveUser)
+    @Published private(set) var hasActiveUser: Bool = false
 
     init(dependencies: Dependencies = .init()) {
         self.dependencies = dependencies
@@ -60,16 +60,8 @@ final class AppContext: Sendable {
         )
 
         if let _ = try mailContext.storedSessions().first {
-            activeUserStatusPublisher.send(.hasActiveUser)
+            hasActiveUser = true
         }
-    }
-
-    func login(email: String, password: String) async throws {
-        let flow = try mailContext.newLoginFlow(cb: SessionDelegate.shared)
-        try await flow.login(email: email, password: password)
-        let newUserContext = try flow.toUserContext()
-        try await userSession.udpateActiveSession(newUserContext)
-        activeUserStatusPublisher.send(.hasActiveUser)
     }
 
     func userContextForActiveSession() async throws -> MailUserContext? {
@@ -186,9 +178,19 @@ extension AppContext: EventLoopProvider {
 
 extension AppContext: SessionProvider {
 
+    @MainActor
+    func login(email: String, password: String) async throws {
+        let flow = try mailContext.newLoginFlow(cb: SessionDelegate.shared)
+        try await flow.login(email: email, password: password)
+        let newUserContext = try flow.toUserContext()
+        try await userSession.udpateActiveSession(newUserContext)
+        hasActiveUser = true
+    }
+
+    @MainActor
     func logoutActiveUserSession() async throws {
         try await userSession.activeSession(from: mailContext)?.logout()
-        activeUserStatusPublisher.send(.noActiveUser)
+        hasActiveUser = false
         try await userSession.udpateActiveSession(nil)
     }
 }

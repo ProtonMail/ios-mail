@@ -19,8 +19,9 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxToolbar: ViewModifier {
-    @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appUIState: AppUIState
+
+    private(set) var sessionProvider: SessionProvider
 
     func body(content: Content) -> some View {
         content
@@ -35,7 +36,11 @@ struct MailboxToolbar: ViewModifier {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         Task {
-                            await appState.logoutActiveSession()
+                            do {
+                                try await sessionProvider.logoutActiveUserSession()
+                            } catch {
+                                AppLogger.log(error: error, category: .userSessions)
+                            }
                         }
                     }, label: {
                         Text("sign out")
@@ -48,6 +53,6 @@ struct MailboxToolbar: ViewModifier {
 
 extension View {
     @MainActor func mailboxToolbar() -> some View {
-        self.modifier(MailboxToolbar())
+        self.modifier(MailboxToolbar(sessionProvider: AppContext.shared))
     }
 }

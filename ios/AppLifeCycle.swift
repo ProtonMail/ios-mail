@@ -66,7 +66,7 @@ extension AppLifeCycle {
     private func applicationServicesInitialisation() {
         let appContext = AppContext.shared
 
-        let eventLoop = EventLoopService(sessionProvider: appContext, eventLoopProvider: appContext)
+        let eventLoop = EventLoopService(appContext: appContext, eventLoopProvider: appContext)
 
         applicationServices = .init(
             setUpServices: [appContext],

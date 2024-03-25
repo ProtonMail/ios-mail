@@ -20,8 +20,7 @@ import Foundation
 /**
  Source of truth for the Mailbox view. Contains a model for conversations and another one for messages.
  */
-@Observable
-final class MailboxModel {
+final class MailboxModel: ObservableObject {
     let conversationModel: MailboxConversationModel
     // let messageModel: MailboxMessageModel
 

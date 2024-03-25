@@ -19,8 +19,6 @@ import SwiftUI
 
 /// dummy sign in screen to be able to start a rust session
 struct SignIn: View {
-    @EnvironmentObject var appState: AppState
-
     @State private var email: String = ""
     @State private var password: String = ""
 

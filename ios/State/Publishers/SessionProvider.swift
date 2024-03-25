@@ -18,20 +18,10 @@
 import Combine
 
 protocol SessionProvider: AnyObject {
-    var activeUserStatusPublisher: CurrentValueSubject<ActiveUserStatus, Never> { get }
 
+    @MainActor
     func login(email: String, password: String) async throws
+
+    @MainActor
     func logoutActiveUserSession() async throws
-}
-
-enum ActiveUserStatus: Sendable {
-    case noActiveUser
-    case hasActiveUser
-
-    var hasActiveUser: Bool {
-        switch self {
-        case .hasActiveUser: return true
-        case .noActiveUser: return false
-        }
-    }
 }

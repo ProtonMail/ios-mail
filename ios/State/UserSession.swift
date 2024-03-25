@@ -23,7 +23,6 @@ import proton_mail_uniffi
  */
 actor UserSession {
     private var activeSession: MailUserContext?
-    private(set) var activeSessionPublisher = CurrentValueSubject<ActiveUserStatus, Never>(.noActiveUser)
     private var runningTask: Task<MailUserContext?, Error>?
 
     /**
@@ -62,12 +61,9 @@ actor UserSession {
     func udpateActiveSession(_ newUserSession: MailUserContext?) async throws {
         guard let newUserSession else {
             activeSession = nil
-            activeSessionPublisher.send(.noActiveUser)
             return
         }
         try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared)
         activeSession = newUserSession
-        activeSessionPublisher.send(.hasActiveUser)
     }
 }
-
