@@ -49,7 +49,7 @@ struct MailboxScreen: View {
 }
 
 #Preview {
-    let appUIState = AppUIState(isSidebarOpen: true)
+    let appUIState = AppUIState(isSidebarOpen: true, hasSelectedMailboxItems: true)
     let userSettings = UserSettings(mailboxViewMode: .conversation)
     let mailboxModel = MailboxModel()
     return MailboxScreen(mailboxModel: mailboxModel)

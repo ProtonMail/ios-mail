@@ -22,8 +22,8 @@ import proton_mail_uniffi
  Ensures that the active session is thread safe and that it is only initialised once.
  */
 actor UserSession {
-    private var activeSession: MailUserContext?
-    private var runningTask: Task<MailUserContext?, Error>?
+    private var activeSession: MailUserSession?
+    private var runningTask: Task<MailUserSession?, Error>?
 
     /**
      Returns the existing `activeSession` if there is one, otherwise it will try to load a stored session and initialise the MailUserContext.
@@ -31,7 +31,7 @@ actor UserSession {
      This function guarantess sequential execution and therefore that MailUserContext is only initialized once no matter how many threads
      call at the same time.
      */
-    func activeSession(from mailContext: MailContext) async throws -> MailUserContext? {
+    func activeSession(from mailContext: MailSession) async throws -> MailUserSession? {
         guard let taskInQueue = runningTask else {
             runningTask = Task {
                 try await _activeSession(from: mailContext)
@@ -46,7 +46,7 @@ actor UserSession {
         return try await newTask.value
     }
 
-    private func _activeSession(from mailContext: MailContext) async throws -> MailUserContext? {
+    private func _activeSession(from mailContext: MailSession) async throws -> MailUserSession? {
         if let activeSession {
             return activeSession
         }
@@ -58,7 +58,7 @@ actor UserSession {
         return activeSession
     }
 
-    func udpateActiveSession(_ newUserSession: MailUserContext?) async throws {
+    func udpateActiveSession(_ newUserSession: MailUserSession?) async throws {
         guard let newUserSession else {
             activeSession = nil
             return

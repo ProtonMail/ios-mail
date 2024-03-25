@@ -21,9 +21,11 @@ import Foundation
  Keeps the state for UI components
  */
 final class AppUIState: ObservableObject {
-    @Published var isSidebarOpen: Bool
+    @Published var isSidebarOpen: Bool = false
+    @Published var hasSelectedMailboxItems: Bool = false
 
-    init(isSidebarOpen: Bool = false) {
+    init(isSidebarOpen: Bool = false, hasSelectedMailboxItems: Bool = false) {
         self.isSidebarOpen = isSidebarOpen
+        self.hasSelectedMailboxItems = hasSelectedMailboxItems
     }
 }

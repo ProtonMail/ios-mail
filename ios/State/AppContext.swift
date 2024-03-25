@@ -22,12 +22,12 @@ import proton_mail_uniffi
 final class AppContext: Sendable, ObservableObject {
     static let shared: AppContext = .init()
 
-    private var _mailContext: MailContext!
+    private var _mailContext: MailSession!
     private let userSession: UserSession = UserSession()
     private let dependencies: AppContext.Dependencies
     private var cancellables = Set<AnyCancellable>()
 
-    private var mailContext: MailContext {
+    private var mailContext: MailSession {
         guard let mailContext = _mailContext else {
             fatalError("AppSession.start was not called")
         }
@@ -50,7 +50,7 @@ final class AppContext: Sendable, ObservableObject {
 
         let applicationSupportPath = applicationSupport.path()
         AppLogger.logTemporarily(message: "path: \(applicationSupportPath)")
-        _mailContext = try MailContext(
+        _mailContext = try MailSession(
             sessionDir: applicationSupportPath,
             userDir: applicationSupportPath,
             logDir: applicationSupportPath,
@@ -64,7 +64,7 @@ final class AppContext: Sendable, ObservableObject {
         }
     }
 
-    func userContextForActiveSession() async throws -> MailUserContext? {
+    func userContextForActiveSession() async throws -> MailUserSession? {
         try await userSession.activeSession(from: mailContext)
     }
 }
@@ -139,15 +139,15 @@ final class SessionDelegate: SessionCallback {
     }
 }
 
-final class UserContextInitializationDelegate: MailUserContextInitializationCallback, Sendable {
+final class UserContextInitializationDelegate: MailUserSessionInitializationCallback, Sendable {
     static let shared = UserContextInitializationDelegate()
 
-    func onStage(stage: proton_mail_uniffi.MailUserContextInitializationStage) {
-        AppLogger.logTemporarily(message: "UserContextInitializationDelegate.onStage stage: \(stage)")
+    func onStage(stage: proton_mail_uniffi.MailUserSessionInitializationStage) {
+        AppLogger.logTemporarily(message: "MailUserSessionInitializationStage.onStage stage: \(stage)")
     }
 
-    func onStageErr(stage: proton_mail_uniffi.MailUserContextInitializationStage, err: proton_mail_uniffi.MailContextError) {
-        AppLogger.logTemporarily(message: "UserContextInitializationDelegate.onStageError stage: \(stage) error: \(err)")
+    func onStageErr(stage: proton_mail_uniffi.MailUserSessionInitializationStage, err: proton_mail_uniffi.MailSessionError) {
+        AppLogger.logTemporarily(message: "MailUserSessionInitializationStage.onStageError stage: \(stage) error: \(err)")
     }
 }
 
