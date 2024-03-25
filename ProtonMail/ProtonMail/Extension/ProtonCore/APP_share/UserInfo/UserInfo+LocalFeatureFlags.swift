@@ -24,14 +24,6 @@ extension UserInfo {
         false
     }
 
-    static var enableSelectAll: Bool {
-        true
-    }
-
-    static var shareImagesAsInlineByDefault: Bool {
-        return true
-    }
-
     static var isRSVPMilestoneTwoEnabled: Bool {
         ProcessInfo.isRunningUnitTests
     }    

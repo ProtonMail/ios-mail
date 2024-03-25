@@ -1366,7 +1366,6 @@ extension MailboxViewController {
     }
 
     private func updateTopBarItemDisplay() {
-        guard UserInfo.enableSelectAll else { return }
         updateTimeLabel.isHidden = viewModel.listEditing
         selectAllButton.isHidden = !viewModel.listEditing
         if viewModel.listEditing {
