@@ -24,7 +24,7 @@ final class MailboxModel: ObservableObject {
     let conversationModel: MailboxConversationModel
     // let messageModel: MailboxMessageModel
 
-    private(set) var selectedMailbox: SelectedMailbox
+    @Published private(set) var selectedMailbox: SelectedMailbox
 
     init() {
         let initialMailbox = SelectedMailbox.defaultMailbox
@@ -36,6 +36,7 @@ final class MailboxModel: ObservableObject {
         await conversationModel.initialDataFetch()
     }
 
+    @MainActor
     func updateSelectedMailbox(_ mailbox: SelectedMailbox) async {
         selectedMailbox = mailbox
         await conversationModel.updateSelectedMailbox(mailbox)

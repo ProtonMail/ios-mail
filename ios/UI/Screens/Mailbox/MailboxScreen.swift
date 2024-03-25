@@ -22,7 +22,7 @@ struct MailboxScreen: View {
     @EnvironmentObject private var appUIState: AppUIState
     @EnvironmentObject private var userSettings: UserSettings
 
-    var mailboxModel: MailboxModel
+    @ObservedObject var mailboxModel: MailboxModel
 
     init(mailboxModel: MailboxModel) {
         self.mailboxModel = mailboxModel
