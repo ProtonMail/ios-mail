@@ -34,6 +34,7 @@ protocol SnoozeSupport: AnyObject {
     @MainActor
     func showSnoozeSuccessBanner(on date: Date)
     func presentPaymentView()
+    func willSnooze()
 }
 
 extension SnoozeSupport {
@@ -91,6 +92,9 @@ extension SnoozeSupport {
         promotion.present(on: presentingView, type: .snooze)
     }
 
+    func willSnooze() {
+        // Override this when you want to do anything before snoozing
+    }
 }
 
 // MARK: - Action sheet setting
@@ -208,6 +212,7 @@ extension SnoozeSupport {
                                        edge: [nil, nil, nil, 16],
                                        compressionResistancePriority: .required)
         ]) { [weak self] _ in
+            self?.willSnooze()
             self?.snooze(on: date)
         }
     }

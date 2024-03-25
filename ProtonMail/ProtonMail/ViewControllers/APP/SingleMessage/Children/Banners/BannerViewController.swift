@@ -176,7 +176,7 @@ final class BannerViewController: UIViewController {
         customView.addSubview(stackView)
 
         [
-            stackView.topAnchor.constraint(equalTo: customView.topAnchor, constant: 4.0),
+            stackView.topAnchor.constraint(equalTo: customView.topAnchor, constant: 0),
             stackView.bottomAnchor.constraint(equalTo: customView.bottomAnchor, constant: -4.0),
             stackView.leadingAnchor.constraint(equalTo: customView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: customView.trailingAnchor)

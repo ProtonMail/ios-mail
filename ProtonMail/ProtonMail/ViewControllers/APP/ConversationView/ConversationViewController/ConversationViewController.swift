@@ -1570,6 +1570,7 @@ extension ConversationViewController: SnoozeSupport {
     var snoozeDateConfigReceiver: SnoozeDateConfigReceiver {
         let receiver = _snoozeDateConfigReceiver ?? SnoozeDateConfigReceiver(
             saveDate: { [weak self] date in
+                self?.willSnooze()
                 self?.snooze(on: date)
                 self?._snoozeDateConfigReceiver = nil
             }, cancelHandler: { [weak self] in
@@ -1594,7 +1595,6 @@ extension ConversationViewController: SnoozeSupport {
             // PageVC
             guard let viewController = parent else { return }
             banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: viewController)
-            viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
         } else {
             // MailboxVC
             guard let viewController = navigationController?.viewControllers.first else { return }
@@ -1628,5 +1628,9 @@ extension ConversationViewController: SnoozeSupport {
                 break
             }
         }
+    }
+
+    func willSnooze() {
+        viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
     }
 }
