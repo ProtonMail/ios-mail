@@ -31,7 +31,7 @@ enum PreviewData {
             let randomSenderSubject = randomSenderSubject()
             let expirationDate: Bool = ((1..<11).randomElement()!%10) == 0
             return .init(
-                id: UUID().uuidString,
+                id: UInt64.random(in: 1...UInt64.max),
                 avatar: .init(initials: randomSenderSubject.0.prefix(2).uppercased()),
                 senders: randomSenderSubject.0,
                 subject: randomSenderSubject.1,

@@ -43,7 +43,7 @@ extension LocalConversation {
 
     func toMailboxConversationCellUIModel() -> MailboxConversationCellUIModel {
         MailboxConversationCellUIModel(
-            id: remoteId ?? String(id),
+            id: id,
             avatar: .init(initials: initials),
             senders: senders.uiRepresentation,
             subject: subject,

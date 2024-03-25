@@ -25,13 +25,19 @@ protocol MailboxConversationType: AnyObject {
 protocol MailboxConversationInput {
 
     @MainActor
-    func onConversationSelectionChange(id: String, isSelected: Bool)
+    func onConversationSelectionChange(id: PMLocalConversationId, isSelected: Bool)
 
     @MainActor
-    func onConversationStarChange(id: String, isStarred: Bool)
+    func onConversationStarChange(id: PMLocalConversationId, isStarred: Bool)
 
     @MainActor
     func onAttachmentTap(attachmentId: String)
+
+    @MainActor
+    func onConversationsDeletion(ids: [PMLocalConversationId])
+
+    @MainActor
+    func onConversationAction(_ swipeAction: SwipeAction, conversationId: PMLocalConversationId)
 }
 
 protocol MailboxConversationOutput {

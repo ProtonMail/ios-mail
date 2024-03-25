@@ -25,6 +25,14 @@ public extension DS.Icon {
     static let icTrash = icon(named: "ic-trash")
 }
 
+// MARK: Swipe actions
+
+public extension DS.Icon {
+    static let icEnvelope = icon(named: "ic-envelope")
+    static let icEnvelopeDot = icon(named: "ic-envelope-dot")
+    static let icEnvelopeOpen = icon(named: "ic-envelope-open")
+}
+
 // MARK: File type icons
 
 public extension DS.Icon {

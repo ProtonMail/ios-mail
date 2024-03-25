@@ -104,7 +104,7 @@ struct MailboxConversationCell: View {
 
 @Observable
 final class MailboxConversationCellUIModel: Identifiable, Sendable {
-    let id: String
+    let id: PMLocalConversationId
     let avatar: AvatarUIModel
     let senders: String
     let subject: String
@@ -122,7 +122,7 @@ final class MailboxConversationCellUIModel: Identifiable, Sendable {
     let expirationDate: String?
 
     init(
-        id: String,
+        id: PMLocalConversationId,
         avatar: AvatarUIModel,
         senders: String,
         subject: String,
@@ -166,7 +166,7 @@ enum MailboxConversationCellEvent {
 #Preview {
     var model: MailboxConversationCellUIModel {
         MailboxConversationCellUIModel(
-            id: "",
+            id: 0,
             avatar: .init(initials: "P"),
             senders: "Proton",
             subject: "30% discount on all our products",
@@ -189,7 +189,7 @@ enum MailboxConversationCellEvent {
 
         MailboxConversationCell(
             uiModel: .init(
-                id: "",
+                id: 0,
                 avatar: .init(initials: "FE"),
                 senders: "FedEx",
                 subject: "Your package is ready to ship",
@@ -207,7 +207,7 @@ enum MailboxConversationCellEvent {
 
         MailboxConversationCell(
             uiModel: .init(
-                id: "",
+                id: 0,
                 avatar: .init(initials: "MA"),
                 senders: "Mary, Elijah Wood, wiseman@pm.me",
                 subject: "Summer holidays pictures and more!",

@@ -28,27 +28,22 @@ final class MailboxConversationModel: MailboxConversationType, MailboxConversati
     var input: MailboxConversationInput { self }
     var output: MailboxConversationOutput { self }
 
-    private(set) var state: MailboxConversationModel.State
-
-    private var selectedMailbox: SelectedMailbox
-    private var conversationsLiveQuery: MailboxConversationLiveQuery?
+    private var mailbox: Mailbox?
+    private var liveQuery: MailboxConversationLiveQuery?
     private let dependencies: Dependencies
+
+    private(set) var state: MailboxConversationModel.State
 
     init(selectedMailbox: SelectedMailbox, state: State = .loading, dependencies: Dependencies = .init()) {
         let message = "MailboxConversationModel labelId \(selectedMailbox.name)"
         AppLogger.log(message: message, category: .mailboxConversations)
         self.state = state
-        self.selectedMailbox = selectedMailbox
         self.dependencies = dependencies
     }
 
-    func initialDataFetch() async {
-        AppLogger.log(message: "initial conversation data fetch", category: .mailboxConversations)
-        await fetchData()
-    }
-
-    func updateSelectedMailbox(_ selectedMailbox: SelectedMailbox) async {
-        self.selectedMailbox = selectedMailbox
+    func updateMailboxAndFetchData(selectedMailbox: SelectedMailbox) async throws {
+        guard let userContext = try await dependencies.appContext.userContextForActiveSession() else { return }
+        mailbox = Mailbox(ctx: userContext, labelId: selectedMailbox.localId)
         await fetchData()
     }
 }
@@ -67,18 +62,13 @@ extension MailboxConversationModel {
     }
 
     private func fetchConversations() async throws {
-        guard let userContext = try await dependencies.appContext.userContextForActiveSession() else {
-            return
-        }
-        let mailbox = Mailbox(ctx: userContext, labelId: selectedMailbox.localId)
-        let liveQuery = mailbox.newConversationLiveQuery(limit: 50, cb: self)
-        self.conversationsLiveQuery = liveQuery
+        self.liveQuery = mailbox?.newConversationLiveQuery(limit: 50, cb: self)
         await updateData()
     }
 
     private func updateData() async {
-        guard let conversationsLiveQuery else { return }
-        let conversations = conversationsLiveQuery.value().map { $0.toMailboxConversationCellUIModel() }
+        guard let liveQuery else { return }
+        let conversations = liveQuery.value().map { $0.toMailboxConversationCellUIModel() }
         await updateState(.data(conversations))
     }
 
@@ -94,7 +84,7 @@ extension MailboxConversationModel {
 extension MailboxConversationModel: MailboxConversationInput {
 
     @MainActor
-    func onConversationSelectionChange(id: String, isSelected: Bool) {
+    func onConversationSelectionChange(id: PMLocalConversationId, isSelected: Bool) {
         guard let index = state.conversations.firstIndex(where: { $0.id == id }) else {
             return
         }
@@ -102,13 +92,35 @@ extension MailboxConversationModel: MailboxConversationInput {
     }
 
     @MainActor
-    func onConversationStarChange(id: String, isStarred: Bool) {
+    func onConversationStarChange(id: PMLocalConversationId, isStarred: Bool) {
         // ...
     }
 
     @MainActor
     func onAttachmentTap(attachmentId: String) {
         print("Attachment tapped \(attachmentId)")
+    }
+
+    @MainActor
+    func onConversationsDeletion(ids: [PMLocalConversationId]) {
+        print("Conversation deletion \(ids)...")
+        do {
+            try mailbox?.deleteConversations(ids: ids)
+        } catch {
+            AppLogger.log(error: error, category: .mailboxConversations)
+        }
+    }
+
+    @MainActor
+    func onConversationAction(_ swipeAction: SwipeAction, conversationId: PMLocalConversationId) {
+        switch swipeAction {
+        case .none:
+            break
+        case .delete:
+            onConversationsDeletion(ids: [conversationId])
+        case .toggleReadStatus:
+            break
+        }
     }
 }
 

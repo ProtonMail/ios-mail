@@ -39,6 +39,12 @@ enum LocalizationTemp {
         static let trash = "Trash"
     }
 
+    enum SwipeAction {
+        static let delete = "Delete"
+        static let read = "Read"
+        static let unread = "Unread"
+    }
+
     enum MailboxCell {
         static func expiresIn(value: String) -> String { String(format: "Expires in %@", value) }
     }

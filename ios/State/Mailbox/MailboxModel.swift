@@ -33,12 +33,16 @@ final class MailboxModel: ObservableObject {
     }
 
     func initialDataFetch() async {
-        await conversationModel.initialDataFetch()
+        await updateSelectedMailbox(selectedMailbox)
     }
 
     @MainActor
-    func updateSelectedMailbox(_ mailbox: SelectedMailbox) async {
-        selectedMailbox = mailbox
-        await conversationModel.updateSelectedMailbox(mailbox)
+    func updateSelectedMailbox(_ selectedMailbox: SelectedMailbox) async {
+        self.selectedMailbox = selectedMailbox
+        do {
+            try await conversationModel.updateMailboxAndFetchData(selectedMailbox: selectedMailbox)
+        } catch {
+            AppLogger.log(error: error, category: .mailboxConversations)
+        }
     }
 }

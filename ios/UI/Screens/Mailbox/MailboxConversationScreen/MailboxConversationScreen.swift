@@ -19,6 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxConversationScreen: View {
+    @EnvironmentObject var userSettings: UserSettings
     private var model: MailboxConversationType
 
     init(model: MailboxConversationType) {
@@ -51,6 +52,12 @@ struct MailboxConversationScreen: View {
                                     }
                                 }
                             )
+                            .mailboxSwipeActions(
+                                itemId: conversation.id,
+                                isItemRead: conversation.isRead,
+                                action: model.input.onConversationAction(_:conversationId:)
+                            )
+
                             Spacer().frame(height: DS.Spacing.tiny)
                         }
                         .listRowInsets(

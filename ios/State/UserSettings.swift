@@ -19,6 +19,8 @@ import Foundation
 
 final class UserSettings: ObservableObject {
     var mailboxViewMode: MailboxViewMode
+    var leadingSwipeAction: SwipeAction = .toggleReadStatus
+    var trailingSwipeAction: SwipeAction = .delete
 
     init(mailboxViewMode: MailboxViewMode) {
         self.mailboxViewMode = mailboxViewMode
