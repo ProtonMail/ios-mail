@@ -55,7 +55,7 @@ struct MailboxConversationScreen: View {
                             .mailboxSwipeActions(
                                 itemId: conversation.id,
                                 isItemRead: conversation.isRead,
-                                action: model.input.onConversationAction(_:conversationId:)
+                                action: model.input.onConversationAction(_:conversationId:newReadStatus:)
                             )
 
                             Spacer().frame(height: DS.Spacing.tiny)

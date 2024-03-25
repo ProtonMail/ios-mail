@@ -102,24 +102,43 @@ extension MailboxConversationModel: MailboxConversationInput {
     }
 
     @MainActor
-    func onConversationsDeletion(ids: [PMLocalConversationId]) {
-        print("Conversation deletion \(ids)...")
+    func onConversationsSetReadStatus(to newStatus: MailboxReadStatus, for ids: [PMLocalConversationId]) {
+        AppLogger.log(message: "Conversation set read status \(ids)...", category: .mailboxActions)
         do {
-            try mailbox?.deleteConversations(ids: ids)
+            if case .read = newStatus {
+                try mailbox?.markConversationsRead(ids: ids)
+            } else if case .unread = newStatus {
+                try mailbox?.markConversationsUnread(ids: ids)
+            }
         } catch {
-            AppLogger.log(error: error, category: .mailboxConversations)
+            AppLogger.log(error: error, category: .mailboxActions)
         }
     }
 
     @MainActor
-    func onConversationAction(_ swipeAction: SwipeAction, conversationId: PMLocalConversationId) {
+    func onConversationsDeletion(ids: [PMLocalConversationId]) {
+        AppLogger.log(message: "Conversation deletion \(ids)...", category: .mailboxActions)
+        do {
+            try mailbox?.deleteConversations(ids: ids)
+        } catch {
+            AppLogger.log(error: error, category: .mailboxActions)
+        }
+    }
+
+    @MainActor
+    func onConversationAction(
+        _ swipeAction: SwipeAction,
+        conversationId: PMLocalConversationId,
+        newReadStatus: MailboxReadStatus? = nil
+    ) {
         switch swipeAction {
         case .none:
             break
         case .delete:
             onConversationsDeletion(ids: [conversationId])
         case .toggleReadStatus:
-            break
+            guard let newReadStatus else { return }
+            onConversationsSetReadStatus(to: newReadStatus, for: [conversationId])
         }
     }
 }

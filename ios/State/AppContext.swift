@@ -165,10 +165,20 @@ extension AppContext: ApplicationServiceSetUp {
 extension AppContext: EventLoopProvider {
 
     func pollEvents() {
-        Task {
-            AppLogger.log(message: "poll events", category: .rustLibrary)
+        Task { [weak self] in
             do {
-                try await userSession.activeSession(from: mailContext)?.pollEvents()
+                guard let mailContext = self?.mailContext, let userSession = self?.userSession else { return }
+                async let mailUserSession = try await userSession.activeSession(from: mailContext)
+
+                /**
+                 For now, event loop calls can't be run in parallel so we flush any action from the queue first.
+                 Once this is not a limitation, we should run actions right after the actionis triggered by calling `executePendingAction()`
+                 */
+                AppLogger.log(message: "execute pending actions", category: .rustLibrary)
+                try await mailUserSession?.executePendingActions()
+
+                AppLogger.log(message: "poll events", category: .rustLibrary)
+                try await mailUserSession?.pollEvents()
             } catch {
                 AppLogger.log(error: error, category: .rustLibrary)
             }

@@ -776,7 +776,7 @@ public protocol MailSessionProtocol : AnyObject {
  * This object needs to be kept alive for the entire duration of the application.
 
  */
-public class MailSession:
+public final class MailSession:
     MailSessionProtocol {
     fileprivate let pointer: UnsafeMutableRawPointer
 
@@ -1009,7 +1009,7 @@ public protocol MailUserSessionProtocol : AnyObject {
  * # Lifetime
  * This object needs to be kept alive for the duration of an active user session.
  */
-public class MailUserSession:
+public final class MailUserSession:
     MailUserSessionProtocol {
     fileprivate let pointer: UnsafeMutableRawPointer
 
@@ -3584,3 +3584,7 @@ private func uniffiEnsureInitialized() {
         fatalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
 }
+
+extension MailSession: Sendable {}
+extension MailUserSession: Sendable {}
+

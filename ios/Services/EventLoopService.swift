@@ -67,14 +67,14 @@ final class EventLoopService: @unchecked Sendable {
         timer = .scheduledTimer(
             timeInterval: AppConstants.eventLoopFrequency,
             target: self,
-            selector: #selector(onTick),
+            selector: #selector(executeTask),
             userInfo: nil,
             repeats: true
         )
     }
 
     @objc
-    private func onTick() {
+    private func executeTask() {
         eventLoopProvider?.pollEvents()
     }
 }
@@ -83,6 +83,7 @@ extension EventLoopService: ApplicationServiceDidBecomeActive {
 
     func becomeActiveService() {
         appInForeground = true
+        executeTask()
         updateTimerStatus()
     }
 }
@@ -90,6 +91,7 @@ extension EventLoopService: ApplicationServiceDidBecomeActive {
 extension EventLoopService: ApplicationServiceDidEnterBackground {
 
     func enterBackgroundService() {
+        executeTask()
         appInForeground = false
         updateTimerStatus()
     }

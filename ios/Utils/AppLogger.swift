@@ -118,6 +118,7 @@ extension AppLogger {
         case userSessions = "UserSessions"
         case rustLibrary = "RustLibrary"
         case mailboxConversations = "MailboxConversations"
+        case mailboxActions = "MailboxActions"
     }
 
     struct Caller {

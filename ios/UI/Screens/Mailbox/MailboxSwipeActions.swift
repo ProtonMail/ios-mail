@@ -18,7 +18,7 @@
 import SwiftUI
 
 struct MailboxSwipeActions: ViewModifier {
-    typealias Action = @MainActor (SwipeAction, PMMailboxItemId) -> Void
+    typealias Action = @MainActor (SwipeAction, PMMailboxItemId, _ newReadStatus: MailboxReadStatus?) -> Void
 
     @EnvironmentObject var userSettings: UserSettings
     private let itemId: PMMailboxItemId
@@ -57,7 +57,11 @@ struct MailboxSwipeActions: ViewModifier {
     private func button(for swipeAction: SwipeAction) -> some View {
         VStack {
             Button(role: swipeAction.isDestructive ? .destructive : .cancel) {
-                action(swipeAction, itemId)
+                var newReadStatus: MailboxReadStatus?
+                if case .toggleReadStatus = swipeAction {
+                    newReadStatus = MailboxReadStatus(rawValue: !isItemRead)
+                }
+                action(swipeAction, itemId, newReadStatus)
             } label: {
                 Image(uiImage: swipeAction.icon(isStatusRead: isItemRead))
             }
@@ -67,7 +71,12 @@ struct MailboxSwipeActions: ViewModifier {
 }
 
 extension View {
-    @MainActor func mailboxSwipeActions(itemId: PMMailboxItemId, isItemRead: Bool, action: @escaping MailboxSwipeActions.Action) -> some View {
+
+    @MainActor func mailboxSwipeActions(
+        itemId: PMMailboxItemId,
+        isItemRead: Bool,
+        action: @escaping MailboxSwipeActions.Action
+    ) -> some View {
         self.modifier(MailboxSwipeActions(itemId: itemId, isItemRead: isItemRead, action: action))
     }
 }

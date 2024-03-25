@@ -37,7 +37,14 @@ protocol MailboxConversationInput {
     func onConversationsDeletion(ids: [PMLocalConversationId])
 
     @MainActor
-    func onConversationAction(_ swipeAction: SwipeAction, conversationId: PMLocalConversationId)
+    func onConversationsSetReadStatus(to newStatus: MailboxReadStatus, for ids: [PMLocalConversationId])
+
+    @MainActor
+    func onConversationAction(
+        _ swipeAction: SwipeAction,
+        conversationId: PMLocalConversationId,
+        newReadStatus: MailboxReadStatus?
+    )
 }
 
 protocol MailboxConversationOutput {
