@@ -300,6 +300,10 @@ extension ConversationDataServiceProxy {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
+        if previousFolderLabel == nextFolderLabel {
+            completion?(.success(()))
+            return
+        }
 
         let uniqueConversationIDs = Array(Set(conversationIDs))
         let filteredConversationIDs = uniqueConversationIDs.filter { !$0.rawValue.isEmpty }
