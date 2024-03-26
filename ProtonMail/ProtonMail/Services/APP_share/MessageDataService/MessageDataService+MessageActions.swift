@@ -57,6 +57,7 @@ extension MessageDataService {
             .findMessagesWithSourceIds(messages: messages,
                                        customFolderIds: customFolderIDs,
                                        to: tLabel)
+        if messagesWithSourceIds.isEmpty { return true }
         try? self.dependencies.moveMessageInCacheUseCase.execute(
             params: .init(
                 messagesToBeMoved: messagesWithSourceIds.map { $0.0 },
