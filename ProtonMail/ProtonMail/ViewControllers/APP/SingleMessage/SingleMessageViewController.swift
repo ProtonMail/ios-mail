@@ -359,14 +359,13 @@ private extension SingleMessageViewController {
             actionSheet?.dismiss(animated: true)
         case .delete:
             showDeleteAlert(deleteHandler: { [weak self] _ in
-                self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                    self?.viewModel.navigateToNextMessage(
-                        isInPageView: self?.isInPageView ?? false,
-                        popCurrentView: {
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                    )
-                })
+                self?.viewModel.navigateToNextMessage(
+                    isInPageView: self?.isInPageView ?? false,
+                    popCurrentView: {
+                        self?.navigationController?.popViewController(animated: true)
+                    }
+                )
+                self?.viewModel.handleActionSheetAction(action, completion: {})
             })
         case .reportPhishing:
             showPhishingAlert { [weak self] _ in
@@ -387,25 +386,25 @@ private extension SingleMessageViewController {
             moreButtonTapped()
         case .viewInDarkMode, .viewInLightMode:
             viewModel.handleActionSheetAction(action, completion: {})
-        case .archive, .spam, .inbox, .spamMoveToInbox, .star, .unstar:
-            viewModel.handleActionSheetAction(action) { [weak self] in
+        case .archive, .spam, .inbox, .spamMoveToInbox:
+            viewModel.navigateToNextMessage(
+                isInPageView: isInPageView,
+                popCurrentView: { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            )
+            viewModel.handleActionSheetAction(action, completion: {})
+        case .star, .unstar:
+            viewModel.handleActionSheetAction(action, completion: {})
+        case .trash:
+            let continueAction: () -> Void = { [weak self] in
                 self?.viewModel.navigateToNextMessage(
                     isInPageView: self?.isInPageView ?? false,
                     popCurrentView: {
                         self?.navigationController?.popViewController(animated: true)
                     }
                 )
-            }
-        case .trash:
-            let continueAction: () -> Void = { [weak self] in
-                self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                    self?.viewModel.navigateToNextMessage(
-                        isInPageView: self?.isInPageView ?? false,
-                        popCurrentView: {
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                    )
-                })
+                self?.viewModel.handleActionSheetAction(action, completion: {})
             }
             viewModel.searchForScheduled(displayAlert: { [weak self] in
                 self?.displayScheduledAlert(scheduledNum: 1, continueAction: continueAction)
@@ -615,15 +614,15 @@ extension SingleMessageViewController {
     private func didSelectFolderToMoveTo(folder: MenuLabel) {
         defer {
             dismissActionSheet()
-            viewModel.navigateToNextMessage(isInPageView: isInPageView, popCurrentView: {
-                self.navigationController?.popViewController(animated: true)
-            })
         }
 
         let message = viewModel.message
         let destinationId = folder.location.labelID
 
         let continueAction: () -> Void = { [weak self] in
+            self?.viewModel.navigateToNextMessage(isInPageView: self?.isInPageView ?? false, popCurrentView: {
+                self?.navigationController?.popViewController(animated: true)
+            })
             self?.viewModel.handleMoveToAction(messages: [message], to: folder)
         }
 

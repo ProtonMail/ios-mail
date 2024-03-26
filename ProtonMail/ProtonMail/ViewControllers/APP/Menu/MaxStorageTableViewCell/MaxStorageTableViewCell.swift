@@ -92,6 +92,8 @@ class MaxStorageTableViewCell: UITableViewCell, AccessibleCell {
         title.translatesAutoresizingMaskIntoConstraints = false
         title.textColor = ColorProvider.SidebarTextNorm
         title.font = UIFont.preferredFont(for: .subheadline, weight: .regular)
+        title.minimumScaleFactor = 0.8
+        title.adjustsFontSizeToFitWidth = true
         labelsStack.addArrangedSubview(title)
 
         caption = UILabel()
@@ -99,6 +101,8 @@ class MaxStorageTableViewCell: UITableViewCell, AccessibleCell {
         caption.text = L11n.SideMenuStorageAlert.alertBoxCaption
         caption.textColor = ColorProvider.SidebarTextWeak
         caption.font = UIFont.preferredFont(for: .caption1, weight: .regular)
+        caption.minimumScaleFactor = 0.8
+        caption.adjustsFontSizeToFitWidth = true
         labelsStack.addArrangedSubview(caption)
 
         contentView.addSubview(labelsStack)
@@ -119,6 +123,8 @@ class MaxStorageTableViewCell: UITableViewCell, AccessibleCell {
         ctaButton.backgroundColor = ColorProvider.SidebarInteractionWeakNorm
         ctaButton.contentEdgeInsets = Constants.buttonPadding
         ctaButton.addTarget(self, action: #selector(upgradeButtonTapped), for: .touchUpInside)
+        ctaButton.titleLabel?.minimumScaleFactor = 0.8
+        ctaButton.titleLabel?.adjustsFontSizeToFitWidth = true
         contentView.addSubview(ctaButton)
 
         [

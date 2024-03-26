@@ -1199,7 +1199,7 @@
 "Limit reached" = "已達上限";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "僅可加入一個免費帳號";
+"Only two free accounts can be added" = "僅可加入兩個免費帳號";
 
 /* section title in settings */
 "Account settings" = "帳號設定";
