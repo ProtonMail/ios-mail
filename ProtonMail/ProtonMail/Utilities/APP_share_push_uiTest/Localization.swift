@@ -138,10 +138,6 @@ class LocalizedString {
     /// "wrote:"
     lazy var _composer_wrote = NSLocalizedString("wrote:", comment: "Title")
 
-    /// "At {time}, e.g.: At 19:00"
-    lazy var _composer_forward_header_at = NSLocalizedString("At %@", comment: "At {time}, e.g.: At 19:00")
-    /// "On {date}, e.g.: On Aug 14"
-    lazy var _composer_forward_header_on = NSLocalizedString("On %@", comment: "On {date}, e.g.: On Aug 14")
     /// "On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00"
     lazy var _composer_forward_header_on_detail = NSLocalizedString("On %@ at %@", comment: "On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00")
 
@@ -410,6 +406,7 @@ class LocalizedString {
 
     /// "Contacts"
     lazy var _contacts_title = NSLocalizedString("Contacts", comment: "Action and title")
+    lazy var _contacts_importing = NSLocalizedString("Importing contacts...", comment: "title for the contact import indicator")
 
     /// "Do you want to cancel the process?"
     lazy var _contacts_import_cancel_wanring = NSLocalizedString("Do you want to cancel the process?", comment: "Description")
@@ -558,9 +555,6 @@ class LocalizedString {
     /// "Date: %@"
     lazy var _date = NSLocalizedString("Date: %@", comment: "like Date: 2017-10-10")
 
-    /// "Details"
-    lazy var _details = NSLocalizedString("Details", comment: "Title")
-
     /// "Hide Details"
     lazy var _hide_details = NSLocalizedString("Hide details", comment: "Title")
 
@@ -578,12 +572,6 @@ class LocalizedString {
     /// "Add new url"
     lazy var _add_new_url = NSLocalizedString("Add new URL", comment: "action")
 
-    /// "signin Password"
-    lazy var _signin_password = NSLocalizedString("Change account password", comment: "settings general section title")
-    /// "Mailbox Password"
-    lazy var _mailbox_password = NSLocalizedString("Change mailbox password", comment: "settings general section title")
-    /// "Single Password"
-    lazy var _single_password = NSLocalizedString("Change password", comment: "settings general section title")
     lazy var _auto_load_remote_content = NSLocalizedString("Auto-load remote content", comment: "settings general section title")
     lazy var _auto_load_embedded_images = NSLocalizedString("Auto-load embedded images", comment: "settings general section title")
     /// "Swipe Left to Right"
@@ -691,9 +679,6 @@ class LocalizedString {
 
     /// "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full."
     lazy var _reporting_a_message_as_a_phishing_ = NSLocalizedString("Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.", comment: "alert message")
-
-    /// "Recovery Email"
-    lazy var _recovery_email = NSLocalizedString("Recovery email", comment: "Title")
 
     /// "Verification error"
     lazy var _verification_error = NSLocalizedString("Verification error", comment: "error title")
@@ -946,7 +931,6 @@ class LocalizedString {
 
     lazy var _swipe_actions = NSLocalizedString("Swipe actions", comment: "cell title in app settings")
     lazy var _alternative_routing = NSLocalizedString("Alternative routing", comment: "cell title in app settings")
-    lazy var _mailbox_storage = NSLocalizedString("Storage", comment: "cell title in device settings")
 
     lazy var _addresses = NSLocalizedString("Addresses", comment: "cell title in device settings")
     lazy var _snooze = NSLocalizedString("Snooze", comment: "Cell title in device settings - mute notification until a later time.")
@@ -1305,6 +1289,15 @@ enum L11n {
         static let organizer = NSLocalizedString("Organizer", comment: "As in: event organizer")
         static let participantCount = NSLocalizedString("%u participants", comment: "Title of the button to expand participant list")
         static let showLess = NSLocalizedString("Show less", comment: "Button to hide some items in the list to conserve screen estate")
+        static let eventAlreadyEnded = NSLocalizedString("This event already ended", comment: "Text shown when opening an invitation for a past event")
+        static let eventCancelled = NSLocalizedString("This event has been cancelled", comment: "Text shown when opening an invitation for a cancelled event")
+        static let attendingPrompt = NSLocalizedString("Attending?", comment: "Prompt above yes/no/maybe buttons")
+        static let yesShort = NSLocalizedString("Yes", comment: "Part of a yes/no/maybe prompt")
+        static let noShort = NSLocalizedString("No", comment: "Part of a yes/no/maybe prompt")
+        static let maybeShort = NSLocalizedString("Maybe", comment: "Part of a yes/no/maybe prompt")
+        static let yesLong = NSLocalizedString("Yes, I'll attend", comment: "Confirm attending an event")
+        static let noLong = NSLocalizedString("No, I won't attend", comment: "Deny attending an event")
+        static let maybeLong = NSLocalizedString("I might attend", comment: "Neither confirm nor deny attending an event")
     }
 
     struct OfficialBadge {
@@ -1333,6 +1326,7 @@ enum L11n {
         static let autoImportContactsFooter = NSLocalizedString("Turn this feature on to automatically add new contacts from your device to the Proton Mail app.", comment: "contacts auto import footer in settings")
         static let autoImportAlertTitle = NSLocalizedString("Auto-import enabled", comment: "Auto import alert title")
         static let autoImportAlertMessage = NSLocalizedString("The initial import may take some time and will only occur when the app is in the foreground.", comment: "Auto import alert message")
+        static let authoriseContactsInSettingsApp = NSLocalizedString("Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission.", comment: "Alert to ask user to reauthorise access to contacts")
     }
 
     struct SettingsLockScreen {
@@ -1438,6 +1432,8 @@ enum L11n {
     }
 
     struct ProtonCalendarIntegration {
+        static let downloadCalendarAlert = NSLocalizedString("Download the latest version of the Proton Calendar to open this event", comment: "Alert prompting to update Calendar")
+        static let downloadInAppStore = NSLocalizedString("Download in App Store", comment: "Button to open App Store")
         static let openInCalendar = NSLocalizedString("Open in Proton Calendar", comment: "Button to open the Calendar app")
 	}
 
@@ -1526,5 +1522,21 @@ enum L11n {
     struct MessageNavigation {
         static let spotlightMessage = "You can now effortlessly navigate through messages by swiping left or right."
         static let spotlightTitle = "Swipe to next message"
+    }
+
+    struct AccountSettings {
+        static let privacyAndData = NSLocalizedString("Privacy and data", comment: "The title of the privacy and data in the account setting.")
+        static let storage = NSLocalizedString("Storage", comment: "cell title in device settings")
+        static let recoveryEmail = NSLocalizedString("Recovery email", comment: "Title")
+        static let loginPassword = NSLocalizedString("Change account password", comment: "settings general section title")
+        static let mailboxPassword = NSLocalizedString("Change mailbox password", comment: "settings general section title")
+        static let singlePassword = NSLocalizedString("Change password", comment: "settings general section title")
+    }
+
+    struct PrivacyAndDataSettings {
+        static let telemetry = NSLocalizedString("Anonymous telemetry", comment: "The title of the telemetry setting.")
+        static let crashReport = NSLocalizedString("Anonymous crash reports", comment: "The title of the crash report setting.")
+        static let telemetrySubtitle = NSLocalizedString("To improve our services, we sometimes collect anonymized usage data.", comment: "The subtitle of the anonymous telemetry setting.")
+        static let crashReportSubtitle = NSLocalizedString("If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.", comment: "The subtitle of the crash report setting.")
     }
 }

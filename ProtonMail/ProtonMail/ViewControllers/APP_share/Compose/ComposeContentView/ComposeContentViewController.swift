@@ -113,10 +113,10 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         viewModel
             .contactsDidChangePublisher
             .receive(on: DispatchQueue.main)
-            .sink { _ in
-                self.headerView?.toContactPicker?.reloadContactsList()
-                self.headerView?.ccContactPicker?.reloadContactsList()
-                self.headerView?.bccContactPicker?.reloadContactsList()
+            .sink { [weak self] _ in
+                self?.headerView?.toContactPicker?.reloadContactsList()
+                self?.headerView?.ccContactPicker?.reloadContactsList()
+                self?.headerView?.bccContactPicker?.reloadContactsList()
             }.store(in: &cancellables)
 
         self.headerView?.toContactPicker?.reloadData()

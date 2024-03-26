@@ -44,6 +44,7 @@ extension NSError {
             object: nil,
             userInfo: ["text": NSLocalizedString(localizedDescription, comment: "Title")]
         )
+        SystemLogger.log(message: localizedDescription, category: .emptyAlert)
     }
 
     @MainActor
@@ -53,5 +54,6 @@ extension NSError {
             object: nil,
             userInfo: ["text": details]
         )
+        SystemLogger.log(message: details, category: .emptyAlert)
     }
 }

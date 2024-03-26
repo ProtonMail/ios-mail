@@ -50,9 +50,6 @@
             "Release": "xcodeGen/xcconfig/ProtonMailUITests-Release.xcconfig",
             "Enterprise Debug": "xcodeGen/xcconfig/ProtonMailUITests-EnterpriseDebug.xcconfig",
             "Enterprise Release": "xcodeGen/xcconfig/ProtonMailUITests-Enterprise.xcconfig"
-         },
-         "settings": {
-            "TEST_TARGET_NAME": "ProtonMail"
          }
       }
    }

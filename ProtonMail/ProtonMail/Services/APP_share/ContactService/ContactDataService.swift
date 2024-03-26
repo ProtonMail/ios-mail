@@ -43,6 +43,8 @@ protocol ContactProviderProtocol: AnyObject {
     func getContactsByEmailAddress(_ emailAddresses: [String]) -> [ContactEntity]
     /// Given a list of email addresses, returns all the Email objects that exist in the local storage
     func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity]
+    /// Returns the ids of those contacts without vCards out a given a list of contact ids
+    func getContactsWithoutVCards(from contactIDs: [ContactID]) -> [ContactID]
     /// Call this function to store a Contact that has been created locally. This function will also create the associated Email objects
     /// - Returns: The CoreData objectID
     func createLocalContact(
@@ -138,10 +140,10 @@ class ContactDataService {
     }
 
     /**
-     add a new contact
+     add new contacts
 
-     - Parameter cards: vcard contact data -- 4 different types
-     - Parameter objectID: CoreData object ID of group label
+     - Parameter contactsCards: array of array of vCards for multiple contacts (each contact has an array of vCards)
+     - Parameter objectID: CoreData object ID of local contacts to delete
      - Parameter completion: async add contact complete response
      **/
     func add(
@@ -153,36 +155,33 @@ class ContactDataService {
         let route = ContactAddRequest(cards: contactsCards, importedFromDevice: importFromDevice)
         self.apiService.perform(request: route, response: ContactAddResponse()) { [weak self] _, response in
             guard let self = self else { return }
-            var contactsData: [[String: Any]] = []
-            var lastError: NSError?
+            if let error = response.error {
+                completion(error.toNSError)
+            } else {
+                var contactsData: [[String: Any]] = []
+                var lastError: NSError?
 
-            let results = response.results
-            guard !results.isEmpty,
-                  contactsCards.count == results.count else {
-                DispatchQueue.main.async {
+                let results = response.results
+                guard !results.isEmpty, contactsCards.count == results.count else {
                     completion(lastError)
+                    return
                 }
-                return
-            }
 
-            for (i, res) in results.enumerated() {
-                if let error = res as? NSError {
-                    reportContactCreateError(error: error)
-                    lastError = error
-                } else if var contact = res as? [String: Any] {
-                    contact["Cards"] = contactsCards[i].toDictionary()
-                    contactsData.append(contact)
-                }
-            }
-
-            if !contactsData.isEmpty {
-                self.cacheService.addNewContact(serverResponse: contactsData, localContactsURIs: objectsURIs) { error in
-                    DispatchQueue.main.async {
-                        completion(error)
+                for (i, res) in results.enumerated() {
+                    if let error = res as? NSError {
+                        reportContactCreateError(error: error)
+                        lastError = error
+                    } else if var contact = res as? [String: Any] {
+                        contact["Cards"] = contactsCards[i].toDictionary()
+                        contactsData.append(contact)
                     }
                 }
-            } else {
-                DispatchQueue.main.async {
+
+                if !contactsData.isEmpty {
+                    self.cacheService.addNewContact(serverResponse: contactsData, localContactsURIs: objectsURIs) { error in
+                        completion(error)
+                    }
+                } else {
                     completion(lastError)
                 }
             }
@@ -436,6 +435,29 @@ class ContactDataService {
         return coreDataService.read { newContext in
             let result = (try? newContext.fetch(request)) ?? []
             return result.map(EmailEntity.init)
+        }
+    }
+
+    func getContactsWithoutVCards(from contactIDs: [ContactID]) -> [ContactID] {
+        let contactIDsStr = contactIDs.map(\.rawValue)
+        return coreDataService.read { context in
+            let request = NSFetchRequest<Contact>(entityName: Contact.Attributes.entityName)
+            request.predicate = NSPredicate(
+                format: "%K == %@ AND %K in %@ AND (%K == nil OR %K == '')",
+                Contact.Attributes.userID,
+                userID.rawValue,
+                Contact.Attributes.contactID,
+                contactIDsStr,
+                Contact.Attributes.cardData,
+                Contact.Attributes.cardData
+            )
+            do {
+                let requestResult: [Contact] = try context.fetch(request)
+                return requestResult.map(\.contactID).compactMap(ContactID.init(rawValue:))
+            } catch {
+                PMAssertionFailure(error)
+                return []
+            }
         }
     }
 

@@ -21,6 +21,7 @@
 
 import Foundation
 
+@available(*, deprecated, renamed: "User", message: "`QuarkCommands` has been updated to `Quark`.")
 public struct AccountAvailableForCreation {
 
     public enum AccountTypes {

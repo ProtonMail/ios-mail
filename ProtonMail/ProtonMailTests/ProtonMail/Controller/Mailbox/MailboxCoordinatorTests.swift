@@ -79,10 +79,7 @@ class MailboxCoordinatorTests: XCTestCase {
                                  nav: uiNavigationControllerMock,
                                  viewController: mailboxViewControllerMock,
                                  viewModel: viewModelMock,
-                                 dependencies: userContainer,
-                                 getApplicationState: {
-            return self.applicationStateStub
-        })
+                                 dependencies: userContainer)
         sut.start()
         mailboxViewControllerMock.loadViewIfNeeded()
 

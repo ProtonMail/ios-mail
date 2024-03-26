@@ -25,7 +25,11 @@ final class UserInfoOrganizationRoleTests: XCTestCase {
     override func setUp() {
         super.setUp()
         sut = UserInfo(maxSpace: nil,
+                       maxBaseSpace: nil,
+                       maxDriveSpace: nil,
                        usedSpace: nil,
+                       usedBaseSpace: nil,
+                       usedDriveSpace: nil,
                        language: nil,
                        maxUpload: nil,
                        role: nil,

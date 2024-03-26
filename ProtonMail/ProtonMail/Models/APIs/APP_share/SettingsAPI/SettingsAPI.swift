@@ -92,7 +92,7 @@ final class MailSettingsResponse: Response {
     }
 }
 
-// MARK: update email notifiy - Response
+// TODO: Remove following request in the following MR.
 final class UpdateNotify: Request {
     let notify: Int
     init(notify: Int, authCredential: AuthCredential?) {

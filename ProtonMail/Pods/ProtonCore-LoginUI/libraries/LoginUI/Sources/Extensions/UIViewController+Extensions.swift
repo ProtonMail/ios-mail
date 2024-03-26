@@ -131,8 +131,8 @@ extension LoginErrorCapable {
         showBannerWithoutButton(message: message, style: .info, position: bannerPosition)
     }
 
-    func showBanner(message: String, button: String? = nil, action: (() -> Void)? = nil) {
-        showBanner(message: message, button: button, action: action, position: bannerPosition)
+    func showBanner(message: String, style: PMBannerNewStyle = .error, button: String? = nil, action: (() -> Void)? = nil) {
+            showBanner(message: message, style: style, button: button, action: action, position: bannerPosition)
     }
 
     func onUserAccountSetupNeeded() {

@@ -1,5 +1,6 @@
 import Combine
 import ProtonCoreDataModel
+import ProtonCoreKeymaker
 import ProtonCoreNetworking
 
 struct SingleMessageContentViewContext {
@@ -33,7 +34,9 @@ class SingleMessageContentViewModel {
     }
     private(set) weak var uiDelegate: SingleMessageContentUIProtocol?
 
-    let linkOpener: LinkOpener = userCachedStatus.browser
+    private(set) lazy var linkOpener: LinkOpener = {
+        dependencies.keychain[.browser]
+    }()
 
     let messageBodyViewModel: NewMessageBodyViewModel
     let attachmentViewModel: AttachmentViewModel
@@ -49,6 +52,7 @@ class SingleMessageContentViewModel {
     var hideProgressHub: (() -> Void)?
     private var isApplicationActive: (() -> Bool)?
     private var reloadWhenAppIsActive: (() -> Void)?
+    private var hasCalledMarkAsRead = false
 
     var isEmbedInConversationView: Bool {
         context.viewMode == .conversation
@@ -242,7 +246,13 @@ class SingleMessageContentViewModel {
     }
 
     func markReadIfNeeded() {
-        guard message.unRead else { return }
+        if hasCalledMarkAsRead { return }
+        guard message.unRead || message.showReminder else { return }
+        // To remove snooze time highlight, client needs to call /read API to sync with other device
+        // But before reaching final state, this function will be called couple times
+        // That means /read API will be called duplicated
+        // Introduce `hasCalledMarkedRead` as workaround to prevent duplicated call
+        hasCalledMarkAsRead = true
         messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: context.labelId, unRead: false)
     }
 
@@ -397,7 +407,7 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
         let basicEventInfo: BasicEventInfo?
 
         if let eventUID = messageHeaders[MessageHeaderKey.pmCalendarEventUID] as? String {
-            let recurrenceID = messageHeaders[MessageHeaderKey.pmCalendarOccurrence] as? String
+            let recurrenceID = messageHeaders[MessageHeaderKey.pmCalendarOccurrence] as? Int
             basicEventInfo = .init(eventUID: eventUID, recurrenceID: recurrenceID)
         } else {
             basicEventInfo = nil
@@ -448,6 +458,7 @@ extension SingleMessageContentViewModel {
         let blockSender: BlockSender
         let fetchMessageDetail: FetchMessageDetailUseCase
         let isSenderBlockedPublisher: IsSenderBlockedPublisher
+        let keychain: Keychain
         let messageInfoProvider: MessageInfoProvider
         let unblockSender: UnblockSender
         let checkProtonServerStatus: CheckProtonServerStatusUseCase

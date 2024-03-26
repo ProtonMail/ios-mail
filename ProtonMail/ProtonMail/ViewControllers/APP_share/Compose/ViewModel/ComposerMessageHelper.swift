@@ -532,6 +532,7 @@ extension ComposerMessageHelper {
             .compactMap { $0 as? Attachment }
             .filter { !$0.inline() }
         msg.numAttachments = NSNumber(value: attachments.count)
+        msg.updateAttachmentMetaDatas()
 
         attachment.order = msg.numAttachments.int32Value
         attachment.userID = msg.userID

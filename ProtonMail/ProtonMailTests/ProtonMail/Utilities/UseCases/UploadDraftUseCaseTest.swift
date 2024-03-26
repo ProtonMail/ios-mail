@@ -45,8 +45,6 @@ final class UploadDraftUseCaseTest: XCTestCase {
                 messageDataService: messageDataService
             )
         )
-        LocaleEnvironment.locale = { .enUS }
-        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
     }
 
     override func tearDownWithError() throws {
@@ -56,7 +54,6 @@ final class UploadDraftUseCaseTest: XCTestCase {
         coreDataService = nil
         messageDataService = nil
         sut = nil
-        LocaleEnvironment.restore()
     }
 
     func testExecute_whenResourceDoesNotExist_throwResourceDoesNotExist() async throws {

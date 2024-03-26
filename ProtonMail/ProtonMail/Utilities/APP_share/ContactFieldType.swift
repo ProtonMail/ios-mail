@@ -219,6 +219,8 @@ func ==(lhs: ContactFieldType, rhs: ContactFieldType) -> Bool {
         return true
     case (.empty, .empty):
         return true
+    case (.internet, .internet):
+        return true
     default:
         return false
     }

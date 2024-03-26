@@ -98,7 +98,7 @@ extension LabelManagerViewModel: LabelManagerViewModelInput {
 
     func didChangeUseFolderColors(isEnabled: Bool) {
         uiDelegate?.showLoadingHUD()
-        let req = EnableFolderColorRequest(isEnable: isEnabled)
+        let req = SettingUpdateRequest.enableFolderColor(isEnabled)
         dependencies.apiService.perform(request: req, response: MailSettingsResponse()) { [weak self] _, response in
             guard let self = self else { return }
             self.handle(mailSettingsResponse: response)
@@ -107,7 +107,7 @@ extension LabelManagerViewModel: LabelManagerViewModelInput {
 
     func didChangeInheritColorFromParentFolder(isEnabled: Bool) {
         uiDelegate?.showLoadingHUD()
-        let req = InheritParentFolderColorRequest(isEnable: isEnabled)
+        let req = SettingUpdateRequest.inheritParentFolderColor(isEnabled)
         dependencies.apiService.perform(request: req, response: MailSettingsResponse()) { [weak self] _, response in
             guard let self = self else { return }
             self.handle(mailSettingsResponse: response)

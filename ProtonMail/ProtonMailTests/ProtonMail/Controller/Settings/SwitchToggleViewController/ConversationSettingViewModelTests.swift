@@ -60,7 +60,7 @@ final class ConversationSettingViewModelTests: XCTestCase {
         XCTAssertEqual(item.status, false)
 
         XCTAssertNil(sut.output.sectionHeader())
-        let footer = try XCTUnwrap(sut.output.sectionFooter())
+        let footer = try XCTUnwrap(sut.output.sectionFooter(section: 0))
         switch footer {
         case .left(let text):
             XCTAssertEqual(text, LocalString._conversation_settings_footer_title)

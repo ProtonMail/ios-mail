@@ -329,10 +329,9 @@ public protocol AuthSessionInvalidatedDelegate: AnyObject {
 public protocol AuthDelegate: AnyObject {
 
     /// Accessors for the credentials. They are used by APIService to fill in
-    /// the authentication header in the requests.
-    /// These typically require a trip to the keychain, so it's advantageous to make them async.
-    func authCredential(sessionUID: String) async -> AuthCredential?
-    func credential(sessionUID: String) async -> Credential?
+    /// the authentication header in the requests
+    func authCredential(sessionUID: String) -> AuthCredential?
+    func credential(sessionUID: String) -> Credential?
 
     /// This method is called when the credentials are updated — after the credentials refresh call made:
     /// * due to 401 from the server
@@ -402,6 +401,7 @@ public protocol APIService: API, RequestPerforming {
 
     // session and credentials management
     var sessionUID: String { get }
+    func getSession() -> Session?
     func setSessionUID(uid: String)
     func acquireSessionIfNeeded(completion: @escaping (Result<SessionAcquiringResult, APIError>) -> Void)
     func fetchAuthCredentials(completion: @escaping (AuthCredentialFetchingResult) -> Void)
@@ -721,7 +721,7 @@ public extension APIService {
         // wait operations
         _ = sema.wait(timeout: DispatchTime.distantFuture)
         if let e = ret_error {
-            PMLog.debug(e.localizedDescription)
+            PMLog.error(e.localizedDescription, sendToExternal: true)
         }
         return ret_res
     }

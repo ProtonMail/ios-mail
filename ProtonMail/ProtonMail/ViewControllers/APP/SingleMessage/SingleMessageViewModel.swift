@@ -129,26 +129,10 @@ class SingleMessageViewModel {
                              apply: !message.isStarred)
     }
 
-    func handleToolBarAction(_ action: MessageViewActionSheetAction) {
-        switch action {
-        case .delete:
-            messageService.delete(messages: [message], label: labelId)
-        case .markRead:
-            messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: labelId, unRead: false)
-        case .markUnread:
-            messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: labelId, unRead: true)
-        case .trash:
-            messageService.move(messages: [message],
-                                from: [labelId],
-                                to: Message.Location.trash.labelID,
-                                queue: true)
-        default:
-            return
-        }
-    }
-
     func handleActionSheetAction(_ action: MessageViewActionSheetAction, completion: @escaping () -> Void) {
         switch action {
+        case .markRead:
+            messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: labelId, unRead: false)
         case .markUnread:
             messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: labelId, unRead: true)
         case .trash:
@@ -342,7 +326,8 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
             isBodyDecryptable: messageInfoProvider.isBodyDecryptable,
             messageRenderStyle: bodyViewModel.currentMessageRenderStyle,
             shouldShowRenderModeOption: messageInfoProvider.shouldDisplayRenderModeOptions,
-            isScheduledSend: messageInfoProvider.message.isScheduledSend
+            isScheduledSend: messageInfoProvider.message.isScheduledSend,
+            shouldShowSnooze: false
         )
         let isInSpam = message.isSpam
         let isInTrash = message.isTrash
@@ -383,17 +368,8 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
 
 // MARK: - Move to functions
 extension SingleMessageViewModel: MoveToActionSheetProtocol {
-
-    func handleMoveToAction(conversations: [ConversationEntity], to folder: MenuLabel, completion: (() -> Void)?) {
-
-    }
-
     func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel) {
         messageService.move(messages: messages, to: folder.location.labelID, queue: true)
-    }
-
-    func handleMoveToAction(conversations: [ConversationEntity], completion: (() -> Void)?) {
-        fatalError("Not implemented")
     }
 }
 

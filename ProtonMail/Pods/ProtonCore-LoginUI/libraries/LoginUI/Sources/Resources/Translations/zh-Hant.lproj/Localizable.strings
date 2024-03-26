@@ -1,6 +1,6 @@
 "Privacy by default" = "隱私權為根本";
 
-"Proton address required" = "需要 Proton 地址";
+"Proton address required" = "需要 Proton 位址";
 
 "Update required" = "需要更新";
 
@@ -66,9 +66,9 @@
 
 "Your session has expired. Please log in again." = "您的工作階段已逾期。請重新登入。";
 
-"Proton address required" = "需要 Proton 地址";
+"Proton address required" = "需要 Proton 位址";
 
-"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "您需要一個 Proton 電子郵件地址，以便使用 Proton Mail 和 Proton Calendar。\n您將仍可使用 %@ 登入，以及救援您的帳號。";
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "您需要一個 Proton 電子郵件位址，以便使用 Proton Mail 和 Proton Calendar。\n您將仍可使用 %@ 登入，以及救援您的帳號。";
 
 "Username" = "使用者名稱";
 
@@ -132,7 +132,7 @@
 
 "Set recovery method (optional)" = "設定復原方式（選擇性）";
 
-"We will send recovery instructions to this email or phone number if you get locked out of your account." = "如果您的帳號被鎖定，我們會向此電子郵件地址或電話號碼傳送備援說明。";
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "如果您的帳號被鎖定，我們會向此電子郵件位址或電話號碼傳送備援說明。";
 
 "Email" = "電郵";
 
@@ -160,7 +160,7 @@
 
 "Creating your account" = "建立您的帳號";
 
-"Generating your address" = "正在建立新的電郵位址";
+"Generating your address" = "正在創建新的電郵位址";
 
 "Securing your account" = "強化帳號安全性";
 
@@ -182,7 +182,7 @@
 
 "Invalid token error" = "無效權杖出錯";
 
-"Create user failed" = "建立使用者失敗";
+"Create user failed" = "創建使用者失敗";
 
 "Invalid hashed password" = "無效的雜湊密碼";
 
@@ -190,7 +190,7 @@
 
 "Passwords do not match.\nPlease try again." = "密碼不同。\n請再試一次。";
 
-"Email address already used." = "電子郵件已被使用。";
+"Email address already used." = "電子郵件已使用。";
 
 "Please ask your admin to configure your sub-user." = "請聯絡您的管理員以設定您的下游使用者";
 
@@ -206,7 +206,7 @@
 
 "Your payment was confirmed and your %@ account successfully created." = "已確認您的付款，同時您的 %@ 帳號也已成功建立。";
 
-"Your Proton account was successfully created." = "您的 Proton 帳號已成功建立。";
+"Your Proton account was successfully created." = "您的 Proton 帳號已成功創建。";
 
 "Enjoy the world of privacy." = "享受隱私權充分保障的世界。";
 

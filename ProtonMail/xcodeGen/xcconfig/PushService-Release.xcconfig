@@ -10,6 +10,5 @@
 #include "../../Pods/Target Support Files/Pods-PushService/Pods-PushService.release.xcconfig"
 
 CODE_SIGN_ENTITLEMENTS = ${SRCROOT}/PushService/PushService.entitlements
-INFOPLIST_FILE = PushService/Info.plist
 PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService
 PROVISIONING_PROFILE_SPECIFIER = protonmail push service release

@@ -142,6 +142,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .messageSwipeNavigation, toUserWith: user.userID)
     }
 
+    var isLoggingOut: Bool {
+        dependencies.usersManager.loggingOutUserIDs.contains(user.userID)
+    }
+
     init(labelID: LabelID,
          label: LabelInfo?,
          userManager: UserManager,
@@ -306,21 +310,18 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
     func shouldShowShowSnoozeSpotlight() -> Bool {
         guard user.isSnoozeEnabled, !ProcessInfo.isRunningUITests else { return false }
-        // If one of logged in user has seen spotlight, shouldn't show it again
-        let shouldShow = dependencies.usersManager.users
-            .map {
-                dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .snooze, toUserWith: $0.userID)
-            }
-            .reduce(true) { partialResult, shouldShow in
-                partialResult && shouldShow
-            }
-
-        return shouldShow
+        return dependencies.userIntroductionProgressProvider
+            .shouldShowSpotlight(for: .snooze, toUserWith: user.userID)
     }
 
     func hasSeenSnoozeSpotlight() {
-        guard user.isSnoozeEnabled else { return }
-        dependencies.userIntroductionProgressProvider.markSpotlight(for: .snooze, asSeen: true, byUserWith: user.userID)
+        user.parentManager?.users.forEach({ user in
+            dependencies.userIntroductionProgressProvider.markSpotlight(
+                for: .snooze,
+                asSeen: true,
+                byUserWith: user.userID
+            )
+        })
     }
 
     func hasSeenMessageNavigationSpotlight() {
@@ -459,7 +460,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         fetchedResultsController?.delegate = delegate
         fetchedResultsController?.managedObjectContext.perform {
             do {
-                try self.fetchedResultsController?.performFetch()
+                try ObjC.catchException {
+                    try? self.fetchedResultsController?.performFetch()
+                }
             } catch {
                 PMAssertionFailure(error)
             }
@@ -605,8 +608,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
             group.leave()
         }
 
-        group.notify(queue: DispatchQueue.main) {
+        group.notify(queue: DispatchQueue.main) { [weak self] in
             delay(0.2) {
+                guard let self = self else { return }
                 // For operation context sync with main context
                 let count = self.user.labelService.lastUpdate(by: self.labelID, userID: self.user.userID)
                 complete(count)
@@ -682,35 +686,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
                    userID: user.userInfo.userId)
     }
 
-    func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
-        switch action {
-        case .unstar:
-            handleUnstarAction(on: selectedItems)
-        case .star:
-            handleStarAction(on: selectedItems)
-        case .markRead:
-            handleMarkReadAction(on: selectedItems)
-        case .markUnread:
-            handleMarkUnreadAction(on: selectedItems)
-        case .trash:
-            handleRemoveAction(on: selectedItems)
-        case .archive:
-            handleMoveToArchiveAction(on: selectedItems)
-        case .spam:
-            handleMoveToSpamAction(on: selectedItems)
-        case .labelAs, .moveTo:
-            // TODO: add action
-            break
-        case .snooze:
-            PMAssertionFailure("Shouldn't be triggered")
-            break
-        case .inbox:
-            handleMoveToInboxAction(on: selectedItems)
-        case .delete, .dismiss, .toolbarCustomization, .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
-            break
-        }
-    }
-
     func getTimeOfItem(at indexPath: IndexPath) -> Date? {
         mailboxItem(at: indexPath)?.time(labelID: labelID)
     }
@@ -724,10 +699,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         } else {
             return .onboardingForUpdate
         }
-    }
-
-    private func handleMoveToInboxAction(on items: [MailboxItem]) {
-        move(items: items, from: labelID, to: Message.Location.inbox.labelID)
     }
 
     private func handleMoveToArchiveAction(on items: [MailboxItem]) {
@@ -1032,15 +1003,15 @@ extension MailboxViewModel {
         }
     }
 
-    func moveSelectedIDs(from fLabel: LabelID, to tLabel: LabelID) {
-        move(items: selectedItems, from: fLabel, to: tLabel)
+    func moveSelectedIDs(from fLabel: LabelID, to tLabel: LabelID, completion: (() -> Void)? = nil) {
+        move(items: selectedItems, from: fLabel, to: tLabel, completion: completion)
     }
 
-    func move(items: [MailboxItem], from fLabel: LabelID, to tLabel: LabelID) {
-        move(items: MailboxItemGroup(mailboxItems: items), from: fLabel, to: tLabel)
+    func move(items: [MailboxItem], from fLabel: LabelID, to tLabel: LabelID, completion: (() -> Void)? = nil) {
+        move(items: MailboxItemGroup(mailboxItems: items), from: fLabel, to: tLabel, completion: completion)
     }
 
-    private func move(items: MailboxItemGroup, from fLabel: LabelID, to tLabel: LabelID) {
+    private func move(items: MailboxItemGroup, from fLabel: LabelID, to tLabel: LabelID, completion: (() -> Void)?) {
         switch items {
         case .messages(let messages):
             var fLabels: [LabelID] = []
@@ -1051,6 +1022,7 @@ extension MailboxViewModel {
             }
 
             messageService.move(messages: messages, from: fLabels, to: tLabel)
+            completion?()
         case .conversations(let conversations):
             conversationProvider.move(
                 conversationIDs: conversations.map(\.conversationID),
@@ -1058,13 +1030,16 @@ extension MailboxViewModel {
                 to: tLabel,
                 callOrigin: "MailboxViewModel - move"
             ) { [weak self] result in
+                defer {
+                    completion?()
+                }
                 guard let self = self else { return }
                 if let _ = try? result.get() {
                     self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
         case .empty:
-            break
+            completion?()
         }
     }
 }

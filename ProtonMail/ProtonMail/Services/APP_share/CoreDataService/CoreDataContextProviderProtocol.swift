@@ -29,7 +29,10 @@ protocol CoreDataContextProviderProtocol {
     func read<T>(block: (NSManagedObjectContext) -> T) -> T
     func read<T>(block: (NSManagedObjectContext) throws -> T) throws -> T
 
+    @available(*, deprecated, message: "This method violates the runtime contract that the threads do not block, which is required by Swift concurrency. Use `writeAsync` instead.")
     func write<T>(block: @escaping (NSManagedObjectContext) throws -> T) throws -> T
+
+    func writeAsync<T>(block: @escaping @Sendable (NSManagedObjectContext) throws -> T) async throws -> T
 
     func createFetchedResultsController<T>(
         entityName: String,

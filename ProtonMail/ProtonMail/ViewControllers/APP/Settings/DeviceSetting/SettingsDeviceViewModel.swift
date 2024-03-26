@@ -101,8 +101,10 @@ final class SettingsDeviceViewModel {
     typealias Dependencies = HasUserManager
     & HasCleanCache
     & HasBiometricStatusProvider
+    & HasKeychain
     & HasLockCacheStatus
     & HasUserDefaults
+    & HasAutoImportContactsFeature
 
     let sections: [SettingDeviceSection] = {
         var standardSections: [SettingDeviceSection] = [.account, .app, .general, .clearCache]
@@ -112,7 +114,7 @@ final class SettingsDeviceViewModel {
         return standardSections
     }()
 
-    let appSettings: [DeviceSectionItem] = {
+    lazy var appSettings: [DeviceSectionItem] = {
         var appSettings: [DeviceSectionItem] = [
             .darkMode,
             .appPIN,
@@ -123,7 +125,7 @@ final class SettingsDeviceViewModel {
             .toolbar,
             .applicationLogs
         ]
-        if UserInfo.isAutoImportContactsEnabled {
+        if dependencies.autoImportContactsFeature.isFeatureEnabled {
             appSettings.removeAll(where: { $0 == .combineContacts })
             if let index = appSettings.firstIndex(of: .alternativeRouting) {
                 appSettings.insert(.contacts, at: index + 1)
@@ -139,6 +141,15 @@ final class SettingsDeviceViewModel {
     private let dependencies: Dependencies
 
     private let induceSlowdownUseCase: InduceSlowdown
+
+    var browser: LinkOpener {
+        get {
+            dependencies.keychain[.browser]
+        }
+        set {
+            dependencies.keychain[.browser] = newValue
+        }
+    }
 
     var lockOn: Bool {
         dependencies.lockCacheStatus.isPinCodeEnabled || dependencies.lockCacheStatus.isTouchIDEnabled

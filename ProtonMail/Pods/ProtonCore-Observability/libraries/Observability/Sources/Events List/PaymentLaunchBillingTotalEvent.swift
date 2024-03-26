@@ -38,7 +38,7 @@ public struct PaymentLaunchBillingTotalLabels: Encodable, Equatable {
 }
 
 extension ObservabilityEvent where Payload == PayloadWithLabels<PaymentLaunchBillingTotalLabels> {
-    public static func paymentLaunchBillingTotal(status: PaymentLaunchBillingTotalStatus) -> Self {
+    public static func paymentLaunchBillingTotal(status: PaymentLaunchBillingTotalStatus, isDynamic: Bool = false) -> Self {
         ObservabilityEvent(name: "ios_core_checkout_aiapBilling_launchBilling_total", labels: PaymentLaunchBillingTotalLabels(status: status))
     }
 }

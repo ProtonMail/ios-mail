@@ -71,7 +71,7 @@ public final class ReportsBugs: Request {
     }
 
     public var path: String {
-        return "/reports/bug"
+        return "/core/v4/reports/bug"
     }
 
     public var method: HTTPMethod {

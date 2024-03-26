@@ -30,9 +30,13 @@ extension UserInfo: NSCoding {
         static let hideRemoteImages = "hideRemoteImages"
         static let imageProxy = "imageProxy"
         static let maxSpace = "maxSpace"
+        static let maxBaseSpace = "maxBaseSpace"
+        static let maxDriveSpace = "maxDriveSpace"
         static let notificationEmail = "notificationEmail"
         static let signature = "signature"
         static let usedSpace = "usedSpace"
+        static let usedBaseSpace = "usedBaseSpace"
+        static let usedDriveSpace = "usedDriveSpace"
         static let userStatus = "userStatus"
         static let userAddress = "userAddresses"
 
@@ -87,9 +91,13 @@ extension UserInfo: NSCoding {
             hideRemoteImages: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.hideRemoteImages),
             imageProxy: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.imageProxy),
             maxSpace: aDecoder.decodeInt64(forKey: CoderKey.maxSpace),
+            maxBaseSpace: aDecoder.decodeInt64IfPresent(forKey: CoderKey.maxBaseSpace),
+            maxDriveSpace: aDecoder.decodeInt64IfPresent(forKey: CoderKey.maxDriveSpace),
             notificationEmail: aDecoder.string(forKey: CoderKey.notificationEmail),
             signature: aDecoder.string(forKey: CoderKey.signature),
             usedSpace: aDecoder.decodeInt64(forKey: CoderKey.usedSpace),
+            usedBaseSpace: aDecoder.decodeInt64IfPresent(forKey: CoderKey.usedBaseSpace),
+            usedDriveSpace: aDecoder.decodeInt64IfPresent(forKey: CoderKey.usedDriveSpace),
             userAddresses: aDecoder.decodeObject(forKey: CoderKey.userAddress) as? [Address],
 
             autoSC: aDecoder.decodeInteger(forKey: CoderKey.autoSaveContact),
@@ -134,8 +142,12 @@ extension UserInfo: NSCoding {
 
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(maxSpace, forKey: CoderKey.maxSpace)
+        aCoder.encode(maxBaseSpace, forKey: CoderKey.maxBaseSpace)
+        aCoder.encode(maxDriveSpace, forKey: CoderKey.maxDriveSpace)
         aCoder.encode(notificationEmail, forKey: CoderKey.notificationEmail)
         aCoder.encode(usedSpace, forKey: CoderKey.usedSpace)
+        aCoder.encode(usedBaseSpace, forKey: CoderKey.usedBaseSpace)
+        aCoder.encode(usedDriveSpace, forKey: CoderKey.usedDriveSpace)
         aCoder.encode(userAddresses, forKey: CoderKey.userAddress)
 
         aCoder.encode(language, forKey: CoderKey.language)

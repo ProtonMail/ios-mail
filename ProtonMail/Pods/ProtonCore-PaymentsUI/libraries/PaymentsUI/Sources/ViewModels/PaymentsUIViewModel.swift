@@ -45,9 +45,18 @@ enum FooterType: Equatable {
     case disabled
 }
 
+enum PaymentCellType {
+    case alert(AlertBoxViewModel)
+    case currentPlan(CurrentPlanPresentation)
+    case availablePlan(AvailablePlansPresentation)
+}
+
 class PaymentsUIViewModel {
     private var isDynamicPlansEnabled: Bool {
         featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)
+    }
+    private var isSplitStorageEnabled: Bool {
+        featureFlagsRepository.isEnabled(CoreFeatureFlagType.splitStorage)
     }
     private var planService: Either<ServicePlanDataServiceProtocol, PlansDataSourceProtocol>
 
@@ -83,16 +92,22 @@ class PaymentsUIViewModel {
     private (set) var plans: [[PlanPresentation]] = []
     private (set) var footerType: FooterType = .withoutPlansToBuy
 
-    var dynamicPlans: [[Either<CurrentPlanPresentation, AvailablePlansPresentation>]] {
+    var dynamicPlans: [[PaymentCellType]] {
          [
-             {
-                 guard let currentPlan else { return [] }
-                 return [.left(currentPlan)]
-             }(),
-             {
-                 guard let availablePlans else { return [] }
-                 return availablePlans.map { .right($0) }
-             }()
+            {
+                guard isSplitStorageEnabled,
+                      let shouldDisplayStorageFullAlert = currentPlan?.details.shouldDisplayStorageFullAlert,
+                      shouldDisplayStorageFullAlert else { return [] }
+                return  [.alert(AlertBoxViewModel())]
+            }(),
+            {
+                guard let currentPlan else { return [] }
+                return [.currentPlan(currentPlan)]
+            }(),
+            {
+                guard let availablePlans else { return [] }
+                return availablePlans.map { .availablePlan($0) }
+            }()
          ].filter { !$0.isEmpty }
     }
     private (set) var availablePlans: [AvailablePlansPresentation]?
@@ -132,9 +147,9 @@ class PaymentsUIViewModel {
             .flatMap { $0 }
             .filter {
                 switch $0 {
-                case .right(let availablePlan):
+                case .availablePlan(let availablePlan):
                     return !(availablePlan.availablePlan?.isFreePlan ?? true)
-                case .left:
+                case .alert, .currentPlan:
                     return false
                 }
             }
@@ -197,11 +212,11 @@ class PaymentsUIViewModel {
             try await fetchCurrentPlan()
             try await fetchAvailablePlans()
             try await fetchPaymentMethods()
-            footerType = .withoutPlansToBuy
+            footerType = availablePlans?.count ?? 0 > 0 ? .disabled : .withoutPlansToBuy
         case .update:
             try await fetchAvailablePlans()
             try await fetchPaymentMethods()
-            footerType = isDynamicPlansEnabled ? .disabled : .withPlansToBuy
+            footerType = .disabled
         }
     }
 
@@ -360,11 +375,7 @@ class PaymentsUIViewModel {
             if !plansToShow.isEmpty {
                 plans.append(plansToShow)
             }
-            if isDynamicPlansEnabled {
-                footerType = .disabled
-            } else {
-                footerType = plansToShow.isEmpty ? .withoutPlansToBuy : .withPlansToBuy
-            }
+            footerType = plansToShow.isEmpty ? .withoutPlansToBuy : .withPlansToBuy
             self.plans = plans
             completionHandler?(.success((self.plans, footerType)))
 
@@ -396,7 +407,6 @@ class PaymentsUIViewModel {
                 if storeKitManager.canExtendSubscription, !servicePlan.hasPaymentMethods, isExtensionPlanAvailable, !servicePlan.willRenewAutomatically(plan: accountPlan) {
                     footerType = .withExtendSubscriptionButton(plan)
                 } else {
-                    // this is always the case when DynamicPlans is enabled
                     footerType = .withoutPlansToBuy
                 }
                 completionHandler?(.success((self.plans, footerType)))
@@ -508,7 +518,7 @@ class PaymentsUIViewModel {
      private func processUnfinishedPurchaseDynamicPlan(unfinishedPurchasePlan: InAppPurchasePlan) {
          self.dynamicPlans.forEach {
              $0.forEach {
-                 if case .right(let availablePlan) = $0 {
+                 if case .availablePlan(let availablePlan) = $0 {
                      if let planId = availablePlan.storeKitProductId, let processingPlanId = unfinishedPurchasePlan.storeKitProductId, planId == processingPlanId {
                          // select currently processed buy plan button
                          availablePlan.isCurrentlyProcessed = true
@@ -549,12 +559,13 @@ class PaymentsUIViewModel {
 
     private func registerRefreshHandler() {
         storeKitManager.refreshHandler = { [weak self] result in
+            guard let self else { return }
             switch result {
             case .finished(let paymentSucceeded):
                 guard paymentSucceeded == .resolvingIAPToCredits ||
                         paymentSucceeded == .resolvingIAPToSubscription else { return }
                 // refresh plans
-                if self?.isDynamicPlansEnabled == true {
+                if isDynamicPlansEnabled {
                     Task { [weak self] in
                         do {
                             try await self?.fetchPlans()
@@ -564,15 +575,15 @@ class PaymentsUIViewModel {
                         }
                     }
                 } else {
-                    self?.createPlanPresentations(withCurrentPlan: self?.mode == .current)
-                    self?.planRefreshHandler(self?.getCurrentPlan)
+                    self.createPlanPresentations(withCurrentPlan: self.mode == .current)
+                    self.planRefreshHandler(self.getCurrentPlan)
                 }
             case .errored, .erroredWithUnspecifiedError:
-                if self?.isDynamicPlansEnabled == true {
-                    self?.planRefreshHandler(nil)
+                if isDynamicPlansEnabled {
+                    self.planRefreshHandler(nil)
                 } else {
                     // update credits
-                    self?.updateCredits { [weak self] in self?.planRefreshHandler(nil) }
+                    self.updateCredits { [weak self] in self?.planRefreshHandler(nil) }
                 }
             }
         }

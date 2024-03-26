@@ -109,6 +109,20 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
         }
     }
 
+    func writeAsync<T>(block: @escaping @Sendable (NSManagedObjectContext) throws -> T) async throws -> T {
+        let context = rootSavingContext
+
+        return try await context.perform {
+            let result = try block(context)
+
+            if context.hasChanges {
+                try context.save()
+            }
+
+            return result
+        }
+    }
+
     func deleteAllData() async {
         await coreDataService.deleteAllData()
     }

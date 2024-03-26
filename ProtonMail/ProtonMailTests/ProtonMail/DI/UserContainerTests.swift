@@ -21,6 +21,7 @@ import XCTest
 @testable import ProtonMail
 
 final class UserContainerTests: XCTestCase {
+
     func testPropertiesThatNeedToBeStateful_whenAccessedButNotStoredElsewhere_arePersistentDuringTheLifetimeOfTheContainer() {
         class MockDelegate: MockBlockedSenderCacheUpdaterDelegate & StoreKitManagerDelegate {
             let tokenStorage: PaymentTokenStorage? = nil
@@ -61,7 +62,9 @@ final class UserContainerTests: XCTestCase {
 
         // sourcery:inline:UserContainerTests.InitializeAllDependencies
         _ = strongRefToContainer?.apiService
+        _ = strongRefToContainer?.autoImportContactsFeature
         _ = strongRefToContainer?.cacheService
+        _ = strongRefToContainer?.contactSyncQueue
         _ = strongRefToContainer?.composerViewFactory
         _ = strongRefToContainer?.contactService
         _ = strongRefToContainer?.contactGroupService
@@ -83,6 +86,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.localNotificationService
         _ = strongRefToContainer?.messageService
         _ = strongRefToContainer?.queueHandler
+        _ = strongRefToContainer?.telemetryService
         _ = strongRefToContainer?.undoActionManager
         _ = strongRefToContainer?.userService
         _ = strongRefToContainer?.user

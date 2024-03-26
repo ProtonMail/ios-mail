@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.1.7 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
@@ -446,6 +446,16 @@ extension UserContainer: HasAPIService {
     }
 }
 
+protocol HasAutoImportContactsFeature {
+    var autoImportContactsFeature: AutoImportContactsFeature { get }
+}
+
+extension UserContainer: HasAutoImportContactsFeature {
+    var autoImportContactsFeature: AutoImportContactsFeature {
+        autoImportContactsFeatureFactory()
+    }
+}
+
 protocol HasCacheService {
     var cacheService: CacheService { get }
 }
@@ -453,6 +463,16 @@ protocol HasCacheService {
 extension UserContainer: HasCacheService {
     var cacheService: CacheService {
         cacheServiceFactory()
+    }
+}
+
+protocol HasContactsSyncQueueProtocol {
+    var contactSyncQueue: ContactsSyncQueueProtocol { get }
+}
+
+extension UserContainer: HasContactsSyncQueueProtocol {
+    var contactSyncQueue: ContactsSyncQueueProtocol {
+        contactSyncQueueFactory()
     }
 }
 
@@ -663,6 +683,16 @@ protocol HasQueueHandler {
 extension UserContainer: HasQueueHandler {
     var queueHandler: QueueHandler {
         queueHandlerFactory()
+    }
+}
+
+protocol HasTelemetryService {
+    var telemetryService: TelemetryService { get }
+}
+
+extension UserContainer: HasTelemetryService {
+    var telemetryService: TelemetryService {
+        telemetryServiceFactory()
     }
 }
 

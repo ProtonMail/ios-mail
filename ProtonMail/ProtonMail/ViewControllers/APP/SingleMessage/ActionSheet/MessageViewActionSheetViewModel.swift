@@ -34,7 +34,8 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
         isBodyDecryptable: Bool,
         messageRenderStyle: MessageRenderStyle,
         shouldShowRenderModeOption: Bool,
-        isScheduledSend: Bool
+        isScheduledSend: Bool,
+        shouldShowSnooze: Bool
     ) {
         self.title = title
 
@@ -42,6 +43,10 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
             items.append(.reply)
             items.append(.replyAll)
             items.append(.forward)
+        }
+
+        if shouldShowSnooze {
+            items.append(.snooze)
         }
 
         items.append(contentsOf: [

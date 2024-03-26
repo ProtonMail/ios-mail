@@ -24,25 +24,22 @@
    "packages": {
       "Difference": {
          "url": "https://github.com/krzysztofzablocki/Difference.git",
-         "version": "1.0.2"
+         "from": "1.0.0"
       },
       "Factory": {
          "url": "https://github.com/hmlongco/Factory.git",
-         "version": "2.2.0"
+         "from": "2.0.0"
       },
       "LifetimeTracker": {
          "url": "https://github.com/krzysztofzablocki/LifetimeTracker.git",
-         "version": "1.8.1"
+         "from": "1.0.0"
       },
       "ProtonCoreEventsLoop": {
          "path": "LocalPackages/ProtonCoreEventsLoop"
       },
-      "ProtonCoreICS": {
-         "path": "LocalPackages/ProtonCoreICS"
-      },
       "SwiftCSSParser": {
          "url": "https://github.com/stackotter/swift-css-parser.git",
-         "version": "0.1.2"
+         "from": "0.0.0"
       }
    },
    "configFiles": {

@@ -31,7 +31,12 @@ public struct PaymentSubscribeTotalLabels: Encodable, Equatable {
 }
 
 extension ObservabilityEvent where Payload == PayloadWithLabels<PaymentSubscribeTotalLabels> {
-    public static func paymentSubscribeTotal(status: SuccessOrFailureStatus) -> Self {
-        ObservabilityEvent(name: "ios_core_checkout_billing_subscribe_total", labels: PaymentSubscribeTotalLabels(status: status))
+    private enum Constants {
+          static let staticEventName = "ios_core_checkout_billing_subscribe_total"
+          static let dynamicEventName = "ios_core_checkout_dynamicPlans_billing_subscribe_total"
+      }
+    public static func paymentSubscribeTotal(status: SuccessOrFailureStatus, isDynamic: Bool = false) -> Self {
+        ObservabilityEvent(name: isDynamic ? Constants.dynamicEventName : Constants.staticEventName,
+                           labels: PaymentSubscribeTotalLabels(status: status))
     }
 }

@@ -36,13 +36,9 @@ extension Date {
         return formatter.string(from: self)
     }
 
-    func localizedString(
-        locale: Locale = LocaleEnvironment.locale(),
-        timeZone: TimeZone = LocaleEnvironment.timeZone
-    ) -> String {
+    func localizedString(locale: Locale = LocaleEnvironment.locale()) -> String {
         let formatter = DateFormatter()
         formatter.locale = locale
-        formatter.timeZone = timeZone
         let template = DateFormatter
             .dateFormat(fromTemplate: "MMM dd jj mm", options: 0, locale: locale) ?? "MMM dd jj mm"
         // Some template will return `MM`, e.g. de_DE (24 H)

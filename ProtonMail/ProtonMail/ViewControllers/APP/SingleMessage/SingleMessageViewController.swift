@@ -244,31 +244,8 @@ extension SingleMessageViewController {
     }
 
     @objc
-    private func trashAction() {
-        let continueAction: () -> Void = { [weak self] in
-            self?.viewModel.handleToolBarAction(.trash)
-            self?.viewModel.navigateToNextMessage(
-                isInPageView: self?.isInPageView ?? false,
-                popCurrentView: {
-                    self?.navigationController?.popViewController(animated: true)
-                }
-            )
-        }
-
-        viewModel.searchForScheduled(displayAlert: {
-            self.displayScheduledAlert(scheduledNum: 1) {
-                self.showMessageMoved(title: LocalString._message_moved_to_drafts)
-                continueAction()
-            }
-        }, continueAction: {
-            self.showMessageMoved(title: LocalString._messages_has_been_moved, undoActionType: .trash)
-            continueAction()
-        })
-    }
-
-    @objc
     private func unreadReadAction() {
-        viewModel.handleToolBarAction(.markUnread)
+        viewModel.handleActionSheetAction(.markUnread, completion: {})
         navigationController?.popViewController(animated: true)
     }
 
@@ -278,14 +255,9 @@ extension SingleMessageViewController {
     }
 
     @objc
-    private func labelAsAction() {
-        showLabelAsActionSheet()
-    }
-
-    @objc
     private func deleteAction() {
         showDeleteAlert(deleteHandler: { [weak self] _ in
-            self?.viewModel.handleToolBarAction(.delete)
+            self?.viewModel.handleActionSheetAction(.delete, completion: {})
             self?.viewModel.navigateToNextMessage(
                 isInPageView: self?.isInPageView ?? false,
                 popCurrentView: {
@@ -308,7 +280,8 @@ extension SingleMessageViewController {
                                                                    isBodyDecryptable: isBodyDecryptable,
                                                                    messageRenderStyle: renderStyle,
                                                                    shouldShowRenderModeOption: shouldDisplayRMOptions,
-                                                                   isScheduledSend: isScheduledSend)
+                                                                   isScheduledSend: isScheduledSend,
+                                                                   shouldShowSnooze: false)
         actionSheetPresenter.present(on: navigationVC,
                                      listener: self,
                                      viewModel: actionSheetViewModel) { [weak self] action in
@@ -445,7 +418,6 @@ private extension SingleMessageViewController {
             }
         case .snooze:
             PMAssertionFailure("Snooze doesn't support single message")
-            break
         }
     }
 

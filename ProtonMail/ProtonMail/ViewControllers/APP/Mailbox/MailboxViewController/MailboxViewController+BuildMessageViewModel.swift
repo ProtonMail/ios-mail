@@ -42,20 +42,28 @@ extension MailboxViewController {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: message.messageID.rawValue)
         let contactGroups = viewModel.contactGroups()
-        let senderRowComponents = mailboxMessageCellHelper.senderRowComponents(
+        var senderRowComponents = mailboxMessageCellHelper.senderRowComponents(
             for: message,
             basedOn: replacingEmailsMap,
             groupContacts: contactGroups,
             shouldReplaceSenderWithRecipients: true
         )
+        if senderRowComponents.isEmpty {
+            senderRowComponents = [.string("")]
+        }
         let isSending = viewModel.messageService.isMessageBeingSent(id: message.messageID)
+
+        var initial = "?"
+        if let firstSenderRowComponent = senderRowComponents.first {
+            initial = [firstSenderRowComponent].initials()
+        }
 
         let style: NewMailboxMessageViewStyle = message.contains(location: .scheduled) ? .scheduled : .normal
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
             isLabelLocation: message.isLabelLocation(labelId: labelId),
             style: viewModel.listEditing ? .selection(isSelected: isSelected, isAbleToBeSelected: canSelectMore) : style,
-            initial: senderRowComponents.initials(),
+            initial: initial,
             isRead: !message.unRead,
             sender: senderRowComponents,
             time: isSending ? LocalString._mailbox_draft_is_sending : date(of: message, weekStart: weekStart),
@@ -112,11 +120,16 @@ extension MailboxViewController {
         let isInCustomFolder = customFolderLabels.map({ $0.labelID }).contains(labelId)
         let isHavingScheduled = conversation.contains(of: Message.Location.scheduled)
 
+        var initial = ""
+        if let firstSenderRowComponent = senderRowComponents.first {
+            initial = [firstSenderRowComponent].initials()
+        }
+
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
             isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder,
             style: viewModel.listEditing ? .selection(isSelected: isSelected, isAbleToBeSelected: canSelectMore) : .normal,
-            initial: senderRowComponents.initials(),
+            initial: initial,
             isRead: conversation.getNumUnread(labelID: labelId) <= 0,
             sender: senderRowComponents,
             time: date(of: conversation, labelId: labelId, weekStart: weekStart),
@@ -136,7 +149,7 @@ extension MailboxViewController {
             hasSnoozeLabel: conversation.contains(of: Message.Location.snooze.labelID),
             snoozeTime: dateForSnoozeTime(of: conversation),
             hasShowReminderFlag: conversation.displaySnoozedReminder,
-            reminderTime: dateForReminder(of: conversation, labelId: labelId, weekStart: weekStart)
+            reminderTime: dateForReminder(of: conversation, weekStart: weekStart)
         )
         let displayOriginIcon = [
             Message.Location.allmail,
@@ -202,10 +215,9 @@ extension MailboxViewController {
 
     private func dateForReminder(
         of conversation: ConversationEntity,
-        labelId: LabelID,
         weekStart: WeekStart
     ) -> String? {
-        guard let date = conversation.getSnoozeTime(labelID: labelId) else { return nil }
+        guard let date = conversation.getSnoozeTime(labelID: Message.Location.inbox.labelID) else { return nil }
         return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
     }
 }

@@ -264,11 +264,18 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
     }
 
     private func registerNotification() {
-            NotificationCenter.default
-                .addObserver(self,
-                             selector: #selector(willBecomeActive),
-                             name: UIScene.willEnterForegroundNotification,
-                             object: nil)
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(willBecomeActive),
+                         name: UIScene.willEnterForegroundNotification,
+                         object: nil)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(timeZoneDidChange),
+            name: .NSSystemTimeZoneDidChange,
+            object: nil
+        )
     }
 
     // swiftlint:disable:next function_body_length
@@ -371,6 +378,19 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
             viewModel.fetchConversationDetails(completion: nil)
             shouldReloadWhenAppIsActive = false
         }
+    }
+
+    @objc
+    private func timeZoneDidChange() {
+        let cells = customView.tableView.visibleCells.compactMap { $0 as? ConversationMessageCell }
+        var indexes: [IndexPath] = []
+        for cell in cells {
+            guard let index = customView.tableView.indexPath(for: cell) else { continue }
+            indexes.append(index)
+        }
+        customView.tableView.beginUpdates()
+        customView.tableView.reloadRows(at: indexes, with: .automatic)
+        customView.tableView.endUpdates()
     }
 
     required init?(coder: NSCoder) { nil }
@@ -495,7 +515,8 @@ private extension ConversationViewController {
                                                         isBodyDecryptable: isBodyDecrpytable,
                                                         messageRenderStyle: messageRenderStyle,
                                                         shouldShowRenderModeOption: shouldShowRenderModeOption,
-                                                        isScheduledSend: message.isScheduledSend)
+                                                        isScheduledSend: message.isScheduledSend,
+                                                        shouldShowSnooze: false)
         actionSheetPresenter.present(on: navigationController ?? self,
                                      listener: self,
                                      viewModel: viewModel) { [weak self] in
@@ -661,7 +682,7 @@ private extension ConversationViewController {
             .updateStoredSizeIfNeeded(newHeightInfo: newHeightInfo, messageID: messageId) {
             cell.setNeedsLayout()
             cell.layoutIfNeeded()
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+            DispatchQueue.main.async {
                 UIView.setAnimationsEnabled(false)
                 self.customView.tableView.beginUpdates()
                 self.customView.tableView.endUpdates()
@@ -719,10 +740,7 @@ private extension ConversationViewController {
     private func update(draft: MessageEntity) {
         MBProgressHUD.showAdded(to: self.view, animated: true)
 
-        let messageDataService = viewModel.messageService
-        let isDraftBeingSent = messageDataService.isMessageBeingSent(id: draft.messageID)
-
-        guard !isDraftBeingSent else {
+        guard !viewModel.hasMessageEnqueuedTasks(draft.messageID) else {
             LocalString._mailbox_draft_is_uploading.alertToast()
             MBProgressHUD.hide(for: self.view, animated: true)
             return
@@ -838,7 +856,7 @@ extension ConversationViewController {
         showDeleteAlert(
             deleteHandler: { [weak self] _ in
                 self?.viewModel.sendSwipeNotificationIfNeeded(isInPageView: self?.isInPageView ?? false)
-                self?.viewModel.handleToolBarAction(.delete)
+                self?.viewModel.handleActionSheetAction(.delete, completion: {})
                 self?.showMessageMoved(title: LocalString._messages_has_been_deleted)
                 guard self?.isInPageView ?? false else {
                     self?.navigationController?.popViewController(animated: true)
@@ -852,18 +870,13 @@ extension ConversationViewController {
     @objc
     private func unreadReadAction() {
         guard viewModel.messagesAreLoaded else { return }
-        viewModel.handleToolBarAction(.markUnread)
+        viewModel.handleActionSheetAction(.markUnread, completion: {})
         navigationController?.popViewController(animated: true)
     }
 
     @objc
     private func moveToAction() {
         showMoveToActionSheet(dataSource: .conversation)
-    }
-
-    @objc
-    private func labelAsAction() {
-        showLabelAsActionSheet(dataSource: .conversation)
     }
 
     @objc
@@ -874,11 +887,11 @@ extension ConversationViewController {
         let isUnread = viewModel.conversation.isUnread(labelID: viewModel.labelId)
         let isStarred = viewModel.conversation.starred
         let isScheduleSend = messageToApplyAction.isScheduledSend
-        let foldersSupportSnooze = [
+        let foldersSupportingSnooze = [
             Message.Location.snooze.labelID,
             Message.Location.inbox.labelID
         ]
-        let isSupportSnooze = foldersSupportSnooze.contains(viewModel.labelId) && viewModel.user.isSnoozeEnabled
+        let isSupportSnooze = foldersSupportingSnooze.contains(viewModel.labelId) && viewModel.user.isSnoozeEnabled
 
         let actionSheetViewModel = ConversationActionSheetViewModel(
             title: viewModel.conversation.subject,

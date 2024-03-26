@@ -56,7 +56,7 @@ final class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     // pre - defined
     private let propertylist_ket = kUTTypePropertyList as String
     private let url_key = kUTTypeURL as String
-    private var localized_errors: [String] = []
+    private(set) var localized_errors: [String] = []
     private var isUnlock = false
 
     init(dependencies: Dependencies) {

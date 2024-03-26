@@ -171,12 +171,15 @@ extension SearchViewModel {
 
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel {
         let contactGroups = user.contactGroupService.getAllContactGroupVOs()
-        let senderRowComponents = dependencies.mailboxMessageCellHelper.senderRowComponents(
+        var senderRowComponents = dependencies.mailboxMessageCellHelper.senderRowComponents(
             for: message,
             basedOn: sharedReplacingEmailsMap,
             groupContacts: contactGroups,
             shouldReplaceSenderWithRecipients: true
         )
+        if senderRowComponents.isEmpty {
+            senderRowComponents = [.string("")]
+        }
         let weekStart = user.userInfo.weekStartValue
         let customFolderLabels = user.labelService.getAllLabels(of: .folder)
         let isSelected = self.selectedMessages.contains(message)
@@ -240,27 +243,15 @@ extension SearchViewModel {
             labelId: labelID.rawValue,
             title: .actionSheetTitle(selectedCount: selectedIDs.count, viewMode: .singleMessage),
             locationViewMode: .singleMessage,
-            isSnoozeEnabled: user.isSnoozeEnabled
+            isSnoozeEnabled: user.isSnoozeEnabled,
+            isForSearch: true
         )
-    }
-
-    func handleBarActions(_ action: MessageViewActionSheetAction) {
-        switch action {
-        case .markRead:
-            self.mark(messages: selectedMessages, unread: false)
-        case .markUnread:
-            self.mark(messages: selectedMessages, unread: true)
-        case .trash:
-            self.move(toLabel: .trash)
-        case .delete:
-            self.deleteSelectedMessages()
-        default:
-            break
-        }
     }
 
     func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
         switch action {
+        case .delete:
+            self.deleteSelectedMessages()
         case .unstar:
             handleUnstarAction()
         case .star:
@@ -275,7 +266,7 @@ extension SearchViewModel {
             self.move(toLabel: .archive)
         case .spam:
             self.move(toLabel: .spam)
-        case .dismiss, .delete, .labelAs, .moveTo:
+        case .dismiss, .labelAs, .moveTo:
             break
         case .inbox:
             self.move(toLabel: .inbox)
@@ -394,10 +385,6 @@ extension SearchViewModel {
 
 // TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewModel: MoveToActionSheetProtocol {
-    func handleMoveToAction(conversations: [ConversationEntity], to folder: MenuLabel, completion: (() -> Void)?) {
-        // search view doesn't support conversation mode
-    }
-
     func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel) {
         messageService.move(messages: messages, to: folder.location.labelID, queue: true)
     }

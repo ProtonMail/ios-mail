@@ -274,7 +274,7 @@ extension ComposerAttachmentVC {
             let names = uploadingData.map { $0.name }.joined(separator: "\n")
 
             let message = "\(LocalString._attachment_upload_failed_body) \(names)"
-            let title = isTooManyAttachments 
+            let title = isTooManyAttachments
             ? LocalString._storage_exceeded : LocalString._attachment_upload_failed_title
 
             let alert = UIAlertController(title: title,

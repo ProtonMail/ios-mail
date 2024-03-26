@@ -29,9 +29,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d user</string>
+        <string>%d کاربر</string>
         <key>other</key>
-        <string>%d users</string>
+        <string>%d کاربران</string>
       </dict>
     </dict>
     <key>&lt;n&gt; email addresses</key>
@@ -45,9 +45,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d email address</string>
+        <string>%d آدرس ایمیل</string>
         <key>other</key>
-        <string>%d email addresses</string>
+        <string>%d آدرس ایمیل</string>
       </dict>
     </dict>
     <key>&lt;n&gt; email addresses / user</key>
@@ -77,9 +77,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d calendar</string>
+        <string>%d تقویم</string>
         <key>other</key>
-        <string>%d calendars</string>
+        <string>%d تقویم</string>
       </dict>
     </dict>
     <key>&lt;n&gt; folders / labels</key>
@@ -93,9 +93,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d folder / label</string>
+        <string>%d پوشه / برچسب</string>
         <key>other</key>
-        <string>%d folders / labels</string>
+        <string>%d پوشه‌ ها / برچسب ها</string>
       </dict>
     </dict>
     <key>&lt;n&gt; countries</key>
@@ -109,9 +109,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d country</string>
+        <string>%d کشور</string>
         <key>other</key>
-        <string>%d countries</string>
+        <string>%d کشورها</string>
       </dict>
     </dict>
     <key>&lt;n&gt; connections</key>
@@ -125,9 +125,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d connection</string>
+        <string>%d اتصال</string>
         <key>other</key>
-        <string>%d connections</string>
+        <string>%d اتصال</string>
       </dict>
     </dict>
     <key>&lt;n&gt; VPN connections</key>
@@ -141,9 +141,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d VPN connection</string>
+        <string>%d اتصال VPN</string>
         <key>other</key>
-        <string>%d VPN connections</string>
+        <string>%d اتصال‌ های VPN</string>
       </dict>
     </dict>
     <key>&lt;n&gt; high-speed VPN connections</key>
@@ -157,9 +157,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d high-speed VPN connection</string>
+        <string>%d اتصال VPN پرسرعت</string>
         <key>other</key>
-        <string>%d high-speed VPN connections</string>
+        <string>%d اتصالات VPN پرسرعت</string>
       </dict>
     </dict>
     <key>&lt;n&gt; custom domains</key>
@@ -173,9 +173,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d custom domain</string>
+        <string>%d دامنهٔ سفارشی</string>
         <key>other</key>
-        <string>%d custom domains</string>
+        <string>%d دامنه های سفارشی</string>
       </dict>
     </dict>
     <key>&lt;n&gt; vaults</key>
@@ -205,9 +205,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Support for %d custom email domain</string>
+        <string>پشتیبانی از %d دامنه ایمیل سفارشی</string>
         <key>other</key>
-        <string>Support for %d custom email domains</string>
+        <string>پشتیبانی از %d دامنه ایمیل سفارشی</string>
       </dict>
     </dict>
     <key>&lt;n&gt; folders and labels</key>
@@ -221,9 +221,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d folder and label</string>
+        <string>%d پوشه و برچسب</string>
         <key>other</key>
-        <string>%d folders and labels</string>
+        <string>%d پوشه ها و برچسب ها</string>
       </dict>
     </dict>
     <key>High-speed VPN on &lt;n&gt; devices</key>
@@ -237,15 +237,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>High-speed VPN on %d device</string>
+        <string>VPN پرسرعت بر روی %d دستگاه</string>
         <key>other</key>
-        <string>High-speed VPN on %d devices</string>
+        <string>VPN پرسرعت بر روی %d دستگاه</string>
       </dict>
     </dict>
     <key>&lt;n&gt;+ servers in &lt;m&gt; countries</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@SERVERS@ in %#@COUNTRIES@</string>
+      <string>%#@SERVERS@ در %#@COUNTRIES@</string>
       <key>SERVERS</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -253,9 +253,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d+ server</string>
+        <string>%d+ سرور</string>
         <key>other</key>
-        <string>%d+ servers</string>
+        <string>%d+ سرور</string>
       </dict>
       <key>COUNTRIES</key>
       <dict>
@@ -264,15 +264,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d country</string>
+        <string>%d کشور</string>
         <key>other</key>
-        <string>%d countries</string>
+        <string>%d کشورها</string>
       </dict>
     </dict>
     <key>&lt;n&gt; servers in &lt;m&gt; countries (US, NL, JP)</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@SERVERS@ in %#@COUNTRIES@</string>
+      <string>%#@SERVERS@ در %#@COUNTRIES@</string>
       <key>SERVERS</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -280,9 +280,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d server</string>
+        <string>%d سرور</string>
         <key>other</key>
-        <string>%d servers</string>
+        <string>%d سرور</string>
       </dict>
       <key>COUNTRIES</key>
       <dict>
@@ -291,15 +291,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d country (US, NL, JP)</string>
+        <string>%d کشور (US, NL, JP)</string>
         <key>other</key>
-        <string>%d countries (US, NL, JP)</string>
+        <string>%d کشور (US, NL, JP)</string>
       </dict>
     </dict>
     <key>&lt;n&gt; of &lt;m&gt; users</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ از %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>one</key>
@@ -318,15 +318,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d user</string>
+        <string>%d کاربر</string>
         <key>other</key>
-        <string>%d users</string>
+        <string>%d کاربران</string>
       </dict>
     </dict>
     <key>&lt;n&gt; of &lt;m&gt; email addresses</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ از %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>one</key>
@@ -345,15 +345,15 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d email address</string>
+        <string>%d آدرس ایمیل</string>
         <key>other</key>
-        <string>%d email addresses</string>
+        <string>%d آدرس ایمیل</string>
       </dict>
     </dict>
     <key>&lt;n&gt; of &lt;m&gt; calendars</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ از %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>one</key>
@@ -372,9 +372,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d calendar</string>
+        <string>%d تقویم</string>
         <key>other</key>
-        <string>%d calendars</string>
+        <string>%d تقویم</string>
       </dict>
     </dict>
     <key>&lt;n&gt; addresses per user</key>
@@ -388,9 +388,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d address per user</string>
+        <string>%d آدرس به ازای هر کاربر</string>
         <key>other</key>
-        <string>%d addresses per user</string>
+        <string>%d آدرس به ازای هر کاربر</string>
       </dict>
     </dict>
     <key>&lt;n&gt; calendars per user</key>
@@ -420,9 +420,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d VPN connection per user</string>
+        <string>%d اتصال VPN به ازای هر کاربر</string>
         <key>other</key>
-        <string>%d VPN connections per user</string>
+        <string>%d اتصال VPN به ازای هر کاربر</string>
       </dict>
     </dict>
     <key>Pay for &lt;n&gt; months</key>
@@ -452,9 +452,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Medium VPN speed %d VPN connection</string>
+        <string>VPN سرعت متوسط %d اتصال VPN</string>
         <key>other</key>
-        <string>Medium VPN speed %d VPN connections</string>
+        <string>VPN سرعت متوسط %d اتصال VPN</string>
       </dict>
     </dict>
     <key>Up to &lt;n&gt; forwarding mailboxes</key>

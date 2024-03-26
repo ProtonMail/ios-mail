@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCoreKeymaker
 
 protocol SettingsLockViewModelProtocol: AnyObject {
     var input: SettingsLockViewModelInput { get }
@@ -30,7 +30,7 @@ protocol SettingsLockViewModelInput: AnyObject {
     func didTapBiometricProtection()
     func didTapChangePinCode()
     func didChangeAppKeyValue(isNewStatusEnabled: Bool)
-    func didPickAutoLockTime(value: Int)
+    func didPickAutoLockTime(value: AutolockTimeout)
 }
 
 protocol SettingsLockViewModelOutput: AnyObject {
@@ -38,12 +38,13 @@ protocol SettingsLockViewModelOutput: AnyObject {
 
     var sections: [SettingLockSection] { get }
     var protectionItems: [ProtectionType] { get }
-    var autoLockTimeOptions: [Int] { get }
+    var autoLockTimeOptions: [AutolockTimeout] { get }
 
     var biometricType: BiometricType { get }
     var isProtectionEnabled: Bool { get }
     var isBiometricEnabled: Bool { get }
     var isPinCodeEnabled: Bool { get }
+    var selectedAutolockTimeout: AutolockTimeout { get }
     var isAppKeyEnabled: Bool { get }
 }
 

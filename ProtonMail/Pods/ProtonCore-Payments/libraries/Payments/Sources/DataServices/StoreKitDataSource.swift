@@ -21,6 +21,7 @@
 
 import Foundation
 import ProtonCoreLog
+import ProtonCoreObservability
 import StoreKit
 
 public protocol StoreKitDataSourceProtocol {
@@ -93,13 +94,17 @@ extension StoreKitDataSource: SKProductsRequestDelegate {
         unavailableProductsIdentifiers = response.invalidProductIdentifiers
         availableProducts = response.products
         request = nil
+        ObservabilityEnv.report(.paymentQuerySubscriptionsTotal(status: .successful, isDynamic: true))
+
         requestContinuation?.resume(returning: ())
         requestContinuation = nil
     }
 
     func request(_: SKRequest, didFailWithError error: Error) {
-        PMLog.error("SKProduct fetch failed with error \(error)")
+        PMLog.error("SKProduct fetch failed with error \(error)", sendToExternal: true)
         request = nil
+        ObservabilityEnv.report(.paymentQuerySubscriptionsTotal(status: .failed, isDynamic: false))
+
         requestContinuation?.resume(throwing: error)
         requestContinuation = nil
     }

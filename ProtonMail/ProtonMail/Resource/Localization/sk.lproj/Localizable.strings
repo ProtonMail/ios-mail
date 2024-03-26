@@ -1127,7 +1127,7 @@
 "Delete contact group" = "Zmazať skupinu kontaktov";
 
 /* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Selected";
+"%d Selected" = "Vybrané: %d";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Vyberte aspoň jeden e-mail pre skupinu kontaktov";
@@ -1537,7 +1537,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Nahlásiť phishing";
 
-"Not spam (move to inbox)" = "Not spam (move to inbox)";
+"Not spam (move to inbox)" = "Nie je spam (presunúť do doručenej pošty)";
 
 /* No comment provided by engineer. */
 "Move to" = "Presunúť do";
@@ -1926,10 +1926,10 @@
 "Load" = "Načítať";
 
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "Organizátor";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "Zobraziť menej";
 
 /* Official badge next to sender's name */
 "Official" = "Oficiálne";
@@ -2181,7 +2181,7 @@
 "Maximum selection reached" = "Maximum selection reached";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "Žiadny príjemca";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "Deaktivovať PIN kód";
@@ -2226,46 +2226,46 @@
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Týmto sa odhlásite z mailingového zoznamu. Odosielateľ bude upozornený, aby viac na túto adresu neodosielal emaily.";
 
 /* Alert telling the user that we are unable to preview this attachment */
-"Unable to preview this attachment" = "Unable to preview this attachment";
+"Unable to preview this attachment" = "Nie je možné zobraziť náhľad tejto prílohy";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
-"Downloading attachment" = "Downloading attachment";
+"Downloading attachment" = "Sťahuje sa príloha";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Snoozed until %@";
+"Snoozed until %@" = "Odložené do %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Unsnooze";
+"Unsnooze" = "Zrušiť odloženie";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Snooze until %@";
+"Snooze until %@" = "Odložiť do %@";
 
 /* Notification banner when user unsnooze a conversation */
 "Conversation unsnoozed" = "Conversation unsnoozed";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Snooze until...";
+"Snooze until..." = "Odložiť do...";
 
 /* One of snooze option shows in action sheet */
-"Later this week" = "Later this week";
+"Later this week" = "Neskôr tento týždeň";
 
 /* One of snooze option shows in action sheet */
-"This weekend" = "This weekend";
+"This weekend" = "Tento víkend";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "Nasledujúci týždeň";
 
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Please select a time in the future";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "Chcete kedykoľvek odložiť?";
 
 /* The content description of snooze promotion view */
 "Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "Až 15 emailových adries/aliasov";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Neobmedzený počet priečinkov, štítkov a filtrov";

@@ -27,17 +27,19 @@ struct FeatureFlagProvider {
         self.userID = userID
     }
 
-    func isEnabled(_ featureFlag: MailFeatureFlag) -> Bool {
+    func isEnabled(_ featureFlag: MailFeatureFlag, reloadValue: Bool) -> Bool {
         if let override = localOverride(for: featureFlag) {
             return override
         }
 
-        return featureFlagsRepository.isEnabled(featureFlag, for: userID.rawValue)
+        return featureFlagsRepository.isEnabled(featureFlag, for: userID.rawValue, reloadValue: reloadValue)
     }
 
     private func localOverride(for featureFlag: MailFeatureFlag) -> Bool? {
         switch featureFlag {
-        case .rsvpWidget, .snooze:
+        case .autoImportContacts, .rsvpWidget:
+            return UIApplication.isDebugOrEnterprise
+        case .snooze:
             return ProcessInfo.isRunningUnitTests
         default:
             return nil

@@ -13,13 +13,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%u participants</string>
+        <string>%u участников</string>
         <key>one</key>
-        <string>%u participant</string>
+        <string>%u участник</string>
         <key>few</key>
-        <string>%u participants</string>
+        <string>%u участника</string>
         <key>many</key>
-        <string>%u participants</string>
+        <string>%u участников</string>
       </dict>
     </dict>
     <key>You have %d new emails!</key>
@@ -29,17 +29,17 @@
       <key>newemails</key>
       <dict>
         <key>one</key>
-        <string>You have %d new emails!</string>
+        <string>У вас %d новых писем!</string>
         <key>few</key>
-        <string>You have %d new emails!</string>
+        <string>У вас %d новых писем!</string>
         <key>many</key>
-        <string>You have %d new emails!</string>
+        <string>У вас %d новых писем!</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>You have %d new emails!</string>
+        <string>У вас %d новых писем!</string>
       </dict>
     </dict>
     <key>%d email trackers blocked</key>
@@ -69,17 +69,17 @@
       <key>selected</key>
       <dict>
         <key>one</key>
-        <string>%d selected</string>
+        <string>%d выбран</string>
         <key>few</key>
-        <string>%d selected</string>
+        <string>%d выбраны</string>
         <key>many</key>
-        <string>%d selected</string>
+        <string>%d выбрано</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d selected</string>
+        <string>%d выбрано</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>
@@ -257,9 +257,9 @@
         <key>few</key>
         <string>%1$d сообщения перемещены в %2$@</string>
         <key>many</key>
-        <string>%1$d сообщений перемещены в %2$@</string>
+        <string>%1$d сообщений перемещено в %2$@</string>
         <key>other</key>
-        <string>%1$d сообщений перемещены в %2$@</string>
+        <string>%1$d сообщений перемещено в %2$@</string>
       </dict>
     </dict>
     <key>%1$d conversation moved to %2$@</key>
@@ -277,9 +277,9 @@
         <key>few</key>
         <string>%1$d цепочки писем перемещены в %2$@</string>
         <key>many</key>
-        <string>%1$d цепочек писем перемещены в %2$@</string>
+        <string>%1$d цепочек писем перемещено в %2$@</string>
         <key>other</key>
-        <string>%1$d беседы перемещены в %2$@</string>
+        <string>%1$d цепочек писем перемещено в %2$@</string>
       </dict>
     </dict>
     <key>%d message labeled</key>
@@ -333,13 +333,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Вы уверены, что хотите навсегда удалить %d сообщение?</string>
+        <string>Вы уверены, что хотите безвозвратно удалить %d сообщение?</string>
         <key>few</key>
-        <string>Вы уверены, что хотите навсегда удалить %d сообщения?</string>
+        <string>Вы уверены, что хотите безвозвратно удалить %d сообщения?</string>
         <key>many</key>
-        <string>Вы уверены, что хотите навсегда удалить %d сообщений?</string>
+        <string>Вы уверены, что хотите безвозвратно удалить %d сообщений?</string>
         <key>other</key>
-        <string>Вы уверены, что хотите навсегда удалить %d сообщений?</string>
+        <string>Вы уверены, что хотите безвозвратно удалить %d сообщений?</string>
       </dict>
     </dict>
     <key>Are you sure you want to permanently delete %d conversation?</key>
@@ -375,11 +375,11 @@
         <key>one</key>
         <string>%d участник</string>
         <key>few</key>
-        <string>%d участников</string>
+        <string>%d участника</string>
         <key>many</key>
-        <string>%d участника</string>
+        <string>%d участников</string>
         <key>other</key>
-        <string>%d участника</string>
+        <string>%d участников</string>
       </dict>
     </dict>
     <key>In %d minutes</key>
@@ -437,9 +437,9 @@
         <key>few</key>
         <string>%d сообщения перемещены в Черновики</string>
         <key>many</key>
-        <string>%d сообщений перемещены в Черновики</string>
+        <string>%d сообщений перемещено в Черновики</string>
         <key>other</key>
-        <string>%d сообщений перемещены в Черновики</string>
+        <string>%d сообщений перемещено в Черновики</string>
       </dict>
     </dict>
     <key>%d seconds</key>
@@ -495,11 +495,11 @@
         <key>one</key>
         <string>%d минута</string>
         <key>few</key>
-        <string>%d минут</string>
+        <string>%d минуты</string>
         <key>many</key>
-        <string>%d минуты</string>
+        <string>%d минут</string>
         <key>other</key>
-        <string>%d минуты</string>
+        <string>%d минут</string>
       </dict>
     </dict>
     <key>Are you sure you want to delete these %d messages permanently?</key>
@@ -515,7 +515,7 @@
         <key>one</key>
         <string>Вы уверены, что хотите безвозвратно удалить это сообщение?</string>
         <key>few</key>
-        <string>Вы уверены, что хотите безвозвратно удалить эти %d сообщений?</string>
+        <string>Вы уверены, что хотите безвозвратно удалить эти %d сообщения?</string>
         <key>many</key>
         <string>Вы уверены, что хотите безвозвратно удалить эти %d сообщений?</string>
         <key>other</key>

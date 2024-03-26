@@ -191,7 +191,6 @@ final class MessageInfoProvider {
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .medium
         dateFormatter.dateStyle = .long
-        dateFormatter.timeZone = LocaleEnvironment.timeZone
         dateFormatter.locale = LocaleEnvironment.locale()
         return dateFormatter.string(from: date)
     }()
@@ -263,6 +262,11 @@ final class MessageInfoProvider {
     lazy var ccData: ExpandedHeaderRecipientsRowViewModel? = {
         let list = ContactPickerModelHelper.nonGroupContacts(from: message.rawCCList)
         return createRecipientRowViewModel(from: list, title: "\(LocalString._general_cc_label):")
+    }()
+
+    lazy var bccData: ExpandedHeaderRecipientsRowViewModel? = {
+        let list = ContactPickerModelHelper.nonGroupContacts(from: message.rawBCCList)
+        return createRecipientRowViewModel(from: list, title: LocalString._general_bcc_label)
     }()
 
     // [cid, base64String]
@@ -455,7 +459,7 @@ extension MessageInfoProvider {
     }
 
     private func checkSenderPGP() {
-        guard checkedSenderContact?.encryptionIconStatus == nil else { return }
+        guard checkedSenderContact?.encryptionIconStatus == nil, message.isDetailDownloaded else { return }
         pgpChecker?.check { [weak self] contact in
             self?.checkedSenderContact = contact
         }

@@ -839,6 +839,47 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
             XCTAssertEqual(entity.labels.count, 4)
         }
     }
+
+    func testSpecialLoop_withDraftUpdateResponse_withLocalCachedDraft_draftIsQueuedForSend_noFieldWillBeUpdated() throws {
+        let msgID = MessageID("w3Xjn6rCOyTM2EFMWhgRpfeNujozP6u6PEYEpH2PW0M4qymA6OENDjRI1ymKA==")
+        let title = String.randomString(20)
+        let user = try prepareEventAPIResponse(from: EventTestData.draftUpdate) {
+            let userID = self.testUsers.first?.userID ?? .init("")
+
+            // Simulate having send task in the queue.
+            self.testContainer.queueManager.addTask(.init(
+                messageID: msgID.rawValue,
+                action: .send(messageObjectID: "", deliveryTime: nil),
+                userID: userID,
+                dependencyIDs: [],
+                isConversation: false
+            ), autoExecute: false)
+
+            try self.testContainer.contextProvider.write(block: { context in
+                self.loadBasicLabels(context: context, userID: userID)
+                let message = Message(context: context)
+                message.messageID = msgID.rawValue
+                message.userID = userID.rawValue
+                message.title = title
+            })
+        }
+
+        try testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
+            let draftObject = Message.messageFor(messageID: "w3Xjn6rCOyTM2EFMWhgRpfeNujozP6u6PEYEpH2PW0M4qymA6OENDjRI1ymKA==", userID: user.userID, in: context)
+            let draft = try XCTUnwrap(draftObject)
+
+            XCTAssertEqual(draft.messageID, "w3Xjn6rCOyTM2EFMWhgRpfeNujozP6u6PEYEpH2PW0M4qymA6OENDjRI1ymKA==")
+            XCTAssertNotEqual(draft.conversationID, "RZX1jyBAYBRGzYOPRZ3B6rqg8N7r1sjuseJPml0H4p_LL9mhgFnHiClT7TNi_JA==")
+            XCTAssertEqual(draft.subject, title)
+            XCTAssertNotEqual(draft.time?.timeIntervalSince1970, 1700191020)
+
+            let entity = MessageEntity(draft)
+
+            XCTAssertTrue(entity.recipientsTo.isEmpty)
+            XCTAssertTrue(entity.recipientsCc.isEmpty)
+            XCTAssertTrue(entity.recipientsBcc.isEmpty)
+        }
+    }
 }
 
 private extension MailEventsPeriodicSchedulerTests {
@@ -882,7 +923,7 @@ private extension MailEventsPeriodicSchedulerTests {
         newEventIDMap[user.userID] = newEventID
         let e = expectation(description: "Closure is called")
         api.requestJSONStub.bodyIs { _, method, path, _, _, _, _, _, _, _, _, completion in
-            XCTAssertEqual(path, "/core/v4/events/\(eventID)?ConversationCounts=1&MessageCounts=1")
+            XCTAssertEqual(path, "/core/v5/events/\(eventID)?ConversationCounts=1&MessageCounts=1")
             XCTAssertEqual(method, .get)
             let response = response ?? [
                 "Code": 1000,

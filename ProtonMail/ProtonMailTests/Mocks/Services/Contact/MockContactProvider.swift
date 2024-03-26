@@ -57,6 +57,11 @@ class MockContactProvider: ContactProviderProtocol {
         return allEmailsToReturn
     }
 
+    @FuncStub(MockContactProvider.getContactsWithoutVCards, initialReturn: []) var getContactsWithoutVCardsStub
+    func getContactsWithoutVCards(from contactIDs: [ContactID]) -> [ContactID] {
+        getContactsWithoutVCardsStub(contactIDs)
+    }
+
     @ThrowingFuncStub(MockContactProvider.createLocalContact, initialReturn: "") var createLocalContactStub
     func createLocalContact(
         uuid: String,

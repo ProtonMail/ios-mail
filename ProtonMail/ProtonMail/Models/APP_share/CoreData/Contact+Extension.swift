@@ -33,6 +33,7 @@ extension Contact {
         static let userID = "userID"
         static let sectionName = "sectionName"
         static let isSoftDeleted = "isSoftDeleted"
+        static let cardData = "cardData"
     }
 
     // MARK: - methods

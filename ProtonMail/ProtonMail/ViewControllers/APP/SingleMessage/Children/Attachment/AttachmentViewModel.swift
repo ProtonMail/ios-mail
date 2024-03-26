@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Combine
+import ProtonCoreDataModel
 import ProtonCoreUtilities
 
 final class AttachmentViewModel {
@@ -49,6 +50,10 @@ final class AttachmentViewModel {
         invitationViewSubject.eraseToAnyPublisher()
     }
 
+    var respondingStatus: AnyPublisher<RespondingStatus, Never> {
+        respondingStatusSubject.eraseToAnyPublisher()
+    }
+
     var totalSizeOfAllAttachments: Int {
         let attachmentSizes = attachments.map({ $0.size })
         let totalSize = attachmentSizes.reduce(0) { result, value -> Int in
@@ -66,6 +71,8 @@ final class AttachmentViewModel {
     }
 
     private let invitationViewSubject = CurrentValueSubject<InvitationViewState, Never>(.noInvitationFound)
+
+    private let respondingStatusSubject = CurrentValueSubject<RespondingStatus, Never>(.respondingUnavailable)
 
     private var invitationProcessingTask: Task<Void, Never>? {
         didSet {
@@ -97,13 +104,15 @@ final class AttachmentViewModel {
     }
 
     private func fetchEventDetails(initialInfo: Either<AttachmentInfo, BasicEventInfo>) {
-        guard dependencies.featureFlagProvider.isEnabled(.rsvpWidget) else {
+        guard dependencies.featureFlagProvider.isEnabled(.rsvpWidget, reloadValue: false) else {
             return
         }
 
         invitationViewSubject.send(.invitationFoundAndProcessing)
 
-        invitationProcessingTask = Task {
+        invitationProcessingTask = Task { [weak self] in
+            guard let self else { return }
+
             do {
                 let basicEventInfo: BasicEventInfo
 
@@ -117,9 +126,10 @@ final class AttachmentViewModel {
 
                 let eventDetails = try await dependencies.eventRSVP.fetchEventDetails(basicEventInfo: basicEventInfo)
                 invitationViewSubject.send(.invitationProcessed(eventDetails))
+                updateRespondingOptions(eventDetails: eventDetails)
             } catch {
-                if error is EventRSVPError {
-                    PMAssertionFailure(error)
+                if let rsvpError = error as? EventRSVPError, rsvpError != .noEventsReturnedFromAPI {
+                    PMAssertionFailure(rsvpError)
                 } else {
                     SystemLogger.log(error: error)
                 }
@@ -145,27 +155,83 @@ final class AttachmentViewModel {
         return attachment.data
     }
 
-    @MainActor
-    func onOpenInCalendarTapped(deepLink: URL) async {
-        let urlsInPreferredOrder: [URL] = [
-            deepLink,
-            .AppStore.calendar
-        ]
+    func respondToInvitation(with answer: InvitationAnswer) {
+        // store this in case the update fails
+        let currentValue = respondingStatusSubject.value
 
-        for url in urlsInPreferredOrder {
-            let options: [UIApplication.OpenExternalURLOptionsKey: any Sendable] = [:]
+        respondingStatusSubject.send(.responseIsBeingProcessed)
 
-            if await dependencies.urlOpener.openAsync(url, options: options) {
-                break
+        Task {
+            do {
+                try await dependencies.eventRSVP.respondToInvitation(with: answer)
+                respondingStatusSubject.send(.alreadyResponded(answer))
+            } catch {
+                SystemLogger.log(error: error)
+                respondingStatusSubject.send(currentValue)
             }
+        }
+    }
+
+    func instructionToHandle(deepLink: URL) -> OpenInCalendarInstruction {
+        let isCalendarInstalledAndAbleToOpenDeepLink = dependencies.urlOpener.canOpenURL(deepLink)
+        let isOlderVersionOfCalendarInstalled = dependencies.urlOpener.canOpenURL(.ProtonCalendar.legacyScheme)
+
+        if isCalendarInstalledAndAbleToOpenDeepLink {
+            return .openDeepLink(deepLink)
+        } else if isOlderVersionOfCalendarInstalled {
+            return .goToAppStore(askBeforeGoing: true)
+        } else {
+            return .goToAppStore(askBeforeGoing: false)
+        }
+    }
+
+    private func updateRespondingOptions(eventDetails: EventDetails) {
+        guard
+            UserInfo.isRSVPMilestoneTwoEnabled,
+            eventDetails.status != .cancelled,
+            eventDetails.endDate.isFuture,
+            let userAsAnInvitee = eventDetails.invitees.first(where: {
+                dependencies.user.userInfo.owns(emailAddress: $0.email)
+            })
+        else {
+            return
+        }
+
+        switch userAsAnInvitee.status {
+        case .accepted:
+            respondingStatusSubject.send(.alreadyResponded(.yes))
+        case .declined:
+            respondingStatusSubject.send(.alreadyResponded(.no))
+        case .tentative:
+            respondingStatusSubject.send(.alreadyResponded(.maybe))
+        default:
+            respondingStatusSubject.send(.awaitingUserInput)
         }
     }
 }
 
 extension AttachmentViewModel {
+    enum OpenInCalendarInstruction: Equatable {
+        case openDeepLink(URL)
+        case goToAppStore(askBeforeGoing: Bool)
+    }
+
+    enum RespondingStatus: Equatable {
+        case respondingUnavailable
+        case awaitingUserInput
+        case responseIsBeingProcessed
+        case alreadyResponded(InvitationAnswer)
+    }
+
     enum InvitationViewState: Equatable {
         case noInvitationFound
         case invitationFoundAndProcessing
         case invitationProcessed(EventDetails)
+    }
+}
+
+private extension UserInfo {
+    func owns(emailAddress: String) -> Bool {
+        userAddresses.contains { $0.email.compare(emailAddress, options: [.caseInsensitive]) == .orderedSame }
     }
 }

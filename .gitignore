@@ -9,7 +9,7 @@ builds
 *.p12
 outputs
 env-vars
-ProtonMail/Brewfile.lock.json
+Brewfile.lock.json
 bundler-cache
 
 # ignored because of XcodeGen

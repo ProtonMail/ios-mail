@@ -112,6 +112,7 @@ class SingleMessageComponentsFactory {
     & HasCoreDataContextProviderProtocol
     & HasFeatureFlagCache
     & HasFetchMessageDetailUseCase
+    & HasKeychain
     & HasQueueManager
     & HasUnblockSender
     & HasUserCachedStatus
@@ -152,7 +153,8 @@ class SingleMessageComponentsFactory {
         return .init(
             blockSender: blockSender,
             fetchMessageDetail: dependencies.fetchMessageDetail,
-            isSenderBlockedPublisher: isSenderBlockedPublisher,
+            isSenderBlockedPublisher: isSenderBlockedPublisher, 
+            keychain: dependencies.keychain,
             messageInfoProvider: messageInfoProvider,
             unblockSender: dependencies.unblockSender,
             checkProtonServerStatus: CheckProtonServerStatus(),

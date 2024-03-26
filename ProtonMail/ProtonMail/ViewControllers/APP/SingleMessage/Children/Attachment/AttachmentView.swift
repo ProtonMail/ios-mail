@@ -24,10 +24,10 @@ import ProtonCoreUIFoundations
 import UIKit
 
 class AttachmentView: UIView {
+    private let topSeparator = SubViewsFactory.separator
     let iconView = SubViewsFactory.iconView
     let titleLabel = UILabel.init(frame: .zero)
     let arrowIconView = SubViewsFactory.arrowIcon
-    private let bottomSeparator = SubViewsFactory.separator
 
     init() {
         super.init(frame: .zero)
@@ -40,15 +40,22 @@ class AttachmentView: UIView {
     }
 
     private func addSubViews() {
+        addSubview(topSeparator)
         addSubview(iconView)
         addSubview(titleLabel)
         addSubview(arrowIconView)
-        addSubview(bottomSeparator)
     }
 
     private func setupLayout() {
         [
             self.heightAnchor.constraint(equalToConstant: 48).setPriority(as: .oneLessThanRequired)
+        ].activate()
+
+        [
+            topSeparator.leadingAnchor.constraint(equalTo: leadingAnchor),
+            topSeparator.trailingAnchor.constraint(equalTo: trailingAnchor),
+            topSeparator.topAnchor.constraint(equalTo: topAnchor),
+            topSeparator.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
 
         [
@@ -69,13 +76,6 @@ class AttachmentView: UIView {
             arrowIconView.widthAnchor.constraint(equalToConstant: 20),
             arrowIconView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             arrowIconView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-        ].activate()
-
-        [
-            bottomSeparator.leadingAnchor.constraint(equalTo: leadingAnchor),
-            bottomSeparator.trailingAnchor.constraint(equalTo: trailingAnchor),
-            bottomSeparator.bottomAnchor.constraint(equalTo: bottomAnchor),
-            bottomSeparator.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
     }
 }

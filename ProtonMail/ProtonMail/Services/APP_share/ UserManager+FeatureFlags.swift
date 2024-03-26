@@ -25,11 +25,7 @@ extension UserManager {
     }
 
     var isSnoozeEnabled: Bool {
-        return container.featureFlagsRepository.isEnabled(
-            MailFeatureFlag.snooze,
-            for: userID.rawValue,
-            reloadValue: true
-        )
+        return true
     }
 
     var isMessageSwipeNavigationSettingEnabled: Bool {

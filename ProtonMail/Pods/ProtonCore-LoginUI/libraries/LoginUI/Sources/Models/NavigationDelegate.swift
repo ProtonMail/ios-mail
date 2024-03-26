@@ -24,8 +24,7 @@
 import Foundation
 
 protocol NavigationDelegate: AnyObject {
-    @MainActor
-    func userDidGoBack() async
+    func userDidGoBack()
 }
 
 #endif

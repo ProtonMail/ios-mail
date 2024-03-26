@@ -26,7 +26,7 @@ struct MailListActionSheetViewModel {
     let title: String
     private(set) var items: [MailListActionSheetItemViewModel] = []
 
-    init(labelId: String, title: String, locationViewMode: ViewMode, isSnoozeEnabled: Bool) {
+    init(labelId: String, title: String, locationViewMode: ViewMode, isSnoozeEnabled: Bool, isForSearch: Bool = false) {
         self.title = title
 
         items += [
@@ -36,12 +36,12 @@ struct MailListActionSheetViewModel {
             .markReadActionViewModel()
         ]
 
-        let foldersSupportSnooze = [
+        let foldersSupportingSnooze = [
             Message.Location.inbox.labelID.rawValue,
             Message.Location.snooze.labelID.rawValue
         ]
         if locationViewMode == .conversation,
-           foldersSupportSnooze.contains(labelId),
+           foldersSupportingSnooze.contains(labelId),
            isSnoozeEnabled {
             items.append(.snooze())
         }
@@ -68,6 +68,9 @@ struct MailListActionSheetViewModel {
             items += [.moveToSpam()]
         }
 
-        items += [.moveToActionViewModel(), .customizeToolbarActionViewModel()]
+        items.append(.moveToActionViewModel())
+        if !isForSearch {
+            items.append(.customizeToolbarActionViewModel())
+        }
     }
 }

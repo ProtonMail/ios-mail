@@ -88,8 +88,8 @@ final class LocalConversationUpdater {
         labelToRemove: LabelID?,
         labelToAdd: LabelID?,
         isFolder: Bool
-    ) throws {
-        try dependencies.contextProvider.write { context in
+    ) async throws {
+        try await dependencies.contextProvider.writeAsync { context in
             for conversationID in conversationIDs {
                 guard let conversation = Conversation
                     .conversationForConversationID(conversationID.rawValue, inManagedObjectContext: context) else {
@@ -233,9 +233,10 @@ final class LocalConversationUpdater {
             .starred,
             .archive,
             .allmail,
-            .scheduled
+            .scheduled,
+            .snooze
         ]
-        // If folder, first remove all labels that are not draft, sent, starred, archive, allmail, scheduled
+        // If folder, first remove all labels that are not draft, sent, starred, archive, allmail, scheduled, .snooze
         var labelsThatAlreadyUpdateTheUnreadCount: [LabelID] = []
         let allLabels = conversation.labels as? Set<ContextLabel> ?? []
         let filteredLabels = allLabels.filter({ !untouchedLocations.map(\.rawValue).contains($0.labelID) })

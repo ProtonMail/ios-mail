@@ -379,7 +379,7 @@ public class SessionRequest {
     let interceptor: ProtonRetryPolicy
 
     // in the future this dict may have race condition issue. fix it later
-    private var headers: [String: String] = [:]
+    public var headers: [String: String] = [:]
 
     internal func headerCounts() -> Int {
         return self.headers.count

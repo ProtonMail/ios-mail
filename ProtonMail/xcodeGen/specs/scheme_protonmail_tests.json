@@ -20,7 +20,12 @@
             "gatherCoverageData": true,
             "coverageTargets": [
                "ProtonMail"
-            ]
+            ],
+            "language": "en",
+            "region": "US",
+            "environmentVariables": {
+               "TZ": "UTC"
+            }
          },
          "profile": {
             "config": "Release"

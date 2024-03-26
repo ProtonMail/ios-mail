@@ -23,9 +23,18 @@
 import Foundation
 import ProtonCoreNetworking
 
-struct EventAPI {
-    /// base event api path
-    static let path: String = "/core/v4/events"
+enum EventAPI {
+    case v4
+    case v5
+
+    var path: String {
+        switch self {
+        case .v4:
+            return "/core/v4/events"
+        case .v5:
+            return "/core/v5/events"
+        }
+    }
 }
 
 final class EventCheckRequest: Request {
@@ -36,7 +45,7 @@ final class EventCheckRequest: Request {
     }
 
     var path: String {
-        let url = "\(EventAPI.path)/\(eventID)"
+        let url = "\(EventAPI.v5.path)/\(eventID)"
         var urlComponents = URLComponents(string: url)
         urlComponents?.queryItems = [
             URLQueryItem(name: "ConversationCounts", value: "1"),
@@ -49,7 +58,7 @@ final class EventCheckRequest: Request {
 // -- EventLatestIDResponse
 final class EventLatestIDRequest: Request {
     var path: String {
-        return EventAPI.path + "/latest"
+        return "\(EventAPI.v4.path)/latest"
     }
 }
 

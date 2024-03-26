@@ -22,7 +22,6 @@
 
 import Foundation
 import ProtonCoreUIFoundations
-import CoreData
 
 protocol ComposeSaveHintProtocol: UIViewController {
     func removeDraftSaveHintBanner()

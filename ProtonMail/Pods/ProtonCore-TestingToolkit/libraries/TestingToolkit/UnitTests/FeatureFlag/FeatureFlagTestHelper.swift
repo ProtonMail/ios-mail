@@ -27,7 +27,7 @@ import ProtonCoreUtilities
 /// Performs the included closure in a separate environment in which only the specified flags are enabled
 extension XCTestCase {
     public func withFeatureFlags<T>(_ flags: [ProtonCoreFeatureFlags.FeatureFlag], perform block: () throws -> T) rethrows -> T {
-        let currentLocalDataSource = FeatureFlagsRepository.shared.localDatasource
+        let currentLocalDataSource = FeatureFlagsRepository.shared.localDataSource
         let currentUserId = FeatureFlagsRepository.shared.userId
 
         defer {
@@ -41,7 +41,7 @@ extension XCTestCase {
 
         FeatureFlagsRepository.shared.setUserId(testUserId)
         FeatureFlagsRepository.shared.updateLocalDataSource(
-            Atomic<LocalFeatureFlagsProtocol>(
+            Atomic<LocalFeatureFlagsDataSourceProtocol>(
                 DefaultLocalFeatureFlagsDatasource(userDefaults: userDefaults)
             )
         )
@@ -51,7 +51,7 @@ extension XCTestCase {
 
     @available(macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     public func withFeatureFlags<T>(_ flags: [ProtonCoreFeatureFlags.FeatureFlag], perform block: () async throws -> T) async rethrows -> T {
-        let currentLocalDataSource = FeatureFlagsRepository.shared.localDatasource
+        let currentLocalDataSource = FeatureFlagsRepository.shared.localDataSource
         let currentUserId = FeatureFlagsRepository.shared.userId
 
         let testUserId = "testUserId"
@@ -60,7 +60,7 @@ extension XCTestCase {
 
         FeatureFlagsRepository.shared.setUserId(testUserId)
         FeatureFlagsRepository.shared.updateLocalDataSource(
-            Atomic<LocalFeatureFlagsProtocol>(
+            Atomic<LocalFeatureFlagsDataSourceProtocol>(
                 DefaultLocalFeatureFlagsDatasource(userDefaults: userDefaults)
             )
         )
@@ -80,5 +80,9 @@ public extension ProtonCoreFeatureFlags.FeatureFlag {
 
     static var externalSSO: Self {
         .init(name: "ExternalSSO", enabled: true, variant: nil)
+    }
+
+    static var splitStorage: Self {
+        .init(name: "SplitStorage", enabled: true, variant: nil)
     }
 }

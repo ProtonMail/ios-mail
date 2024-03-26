@@ -13,13 +13,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d email alias</string>
+        <string>%d псевдонім е-пошти</string>
         <key>few</key>
-        <string>%d email aliases</string>
+        <string>%d псевдоніми е-пошти</string>
         <key>many</key>
-        <string>%d email aliases</string>
+        <string>%d псевдонімів е-пошти</string>
         <key>other</key>
-        <string>%d email aliases</string>
+        <string>%d псевдонімів е-пошти</string>
       </dict>
     </dict>
     <key>&lt;n&gt; users</key>
@@ -35,7 +35,7 @@
         <key>one</key>
         <string>%d користувач</string>
         <key>few</key>
-        <string>%d користувачів</string>
+        <string>%d користувачі</string>
         <key>many</key>
         <string>%d користувачів</string>
         <key>other</key>
@@ -53,13 +53,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d email address</string>
+        <string>%d адреса електронної пошти</string>
         <key>few</key>
-        <string>%d email addresses</string>
+        <string>%d адреси електронної пошти</string>
         <key>many</key>
-        <string>%d email addresses</string>
+        <string>%d адрес електронної пошти</string>
         <key>other</key>
-        <string>%d email addresses</string>
+        <string>%d адрес електронної пошти</string>
       </dict>
     </dict>
     <key>&lt;n&gt; email addresses / user</key>
@@ -73,13 +73,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d email address / user</string>
+        <string>%d адреса е-пошти на користувача</string>
         <key>few</key>
-        <string>%d email addresses / user</string>
+        <string>%d адреси е-пошти на користувача</string>
         <key>many</key>
-        <string>%d email addresses / user</string>
+        <string>%d адрес е-пошти на користувача</string>
         <key>other</key>
-        <string>%d email addresses / user</string>
+        <string>%d адрес е-пошти на користувача</string>
       </dict>
     </dict>
     <key>&lt;n&gt; calendars</key>
@@ -95,7 +95,7 @@
         <key>one</key>
         <string>%d календар</string>
         <key>few</key>
-        <string>%d календарів</string>
+        <string>%d календарі</string>
         <key>many</key>
         <string>%d календарів</string>
         <key>other</key>
@@ -115,7 +115,7 @@
         <key>one</key>
         <string>%d тека / мітка</string>
         <key>few</key>
-        <string>%d тек / міток</string>
+        <string>%d теки / мітки</string>
         <key>many</key>
         <string>%d тек / міток</string>
         <key>other</key>
@@ -135,7 +135,7 @@
         <key>one</key>
         <string>%d країна</string>
         <key>few</key>
-        <string>%d країн</string>
+        <string>%d країни</string>
         <key>many</key>
         <string>%d країн</string>
         <key>other</key>
@@ -155,7 +155,7 @@
         <key>one</key>
         <string>%d з'єднання</string>
         <key>few</key>
-        <string>%d з'єднань</string>
+        <string>%d з'єднання</string>
         <key>many</key>
         <string>%d з'єднань</string>
         <key>other</key>
@@ -175,7 +175,7 @@
         <key>one</key>
         <string>%d VPN-з'єднання</string>
         <key>few</key>
-        <string>%d VPN-з'єднань</string>
+        <string>%d VPN-з'єднання</string>
         <key>many</key>
         <string>%d VPN-з'єднань</string>
         <key>other</key>
@@ -195,7 +195,7 @@
         <key>one</key>
         <string>%d високошвидкісне VPN-з'єднання</string>
         <key>few</key>
-        <string>%d високошвидкісних VPN-з'єднань</string>
+        <string>%d високошвидкісні VPN-з'єднання</string>
         <key>many</key>
         <string>%d високошвидкісних VPN-з'єднань</string>
         <key>other</key>
@@ -215,7 +215,7 @@
         <key>one</key>
         <string>%d власний домен</string>
         <key>few</key>
-        <string>%d власних доменів</string>
+        <string>%d власні домени</string>
         <key>many</key>
         <string>%d власних доменів</string>
         <key>other</key>
@@ -235,7 +235,7 @@
         <key>one</key>
         <string>%d сховище</string>
         <key>few</key>
-        <string>%d сховищ</string>
+        <string>%d сховища</string>
         <key>many</key>
         <string>%d сховищ</string>
         <key>other</key>
@@ -273,9 +273,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d тека і мітка</string>
+        <string>%d тека й мітка</string>
         <key>few</key>
-        <string>%d тек і міток</string>
+        <string>%d теки й мітки</string>
         <key>many</key>
         <string>%d тек і міток</string>
         <key>other</key>
@@ -305,7 +305,7 @@
     <key>&lt;n&gt;+ servers in &lt;m&gt; countries</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@SERVERS@ в %#@COUNTRIES@</string>
+      <string>%#@SERVERS@ у %#@COUNTRIES@</string>
       <key>SERVERS</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -315,7 +315,7 @@
         <key>one</key>
         <string>%d+ сервер</string>
         <key>few</key>
-        <string>%d+ серверів</string>
+        <string>%d+ сервери</string>
         <key>many</key>
         <string>%d+ серверів</string>
         <key>other</key>
@@ -330,7 +330,7 @@
         <key>one</key>
         <string>%d країна</string>
         <key>few</key>
-        <string>%d країн</string>
+        <string>%d країни</string>
         <key>many</key>
         <string>%d країн</string>
         <key>other</key>
@@ -340,7 +340,7 @@
     <key>&lt;n&gt; servers in &lt;m&gt; countries (US, NL, JP)</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@SERVERS@ в %#@COUNTRIES@</string>
+      <string>%#@SERVERS@ у %#@COUNTRIES@</string>
       <key>SERVERS</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
@@ -350,7 +350,7 @@
         <key>one</key>
         <string>%d сервер</string>
         <key>few</key>
-        <string>%d серверів</string>
+        <string>%d сервери</string>
         <key>many</key>
         <string>%d серверів</string>
         <key>other</key>
@@ -363,19 +363,19 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d country (US, NL, JP)</string>
+        <string>%d країна (US, NL, JP)</string>
         <key>few</key>
-        <string>%d countries (US, NL, JP)</string>
+        <string>%d країни (US, NL, JP)</string>
         <key>many</key>
-        <string>%d countries (US, NL, JP)</string>
+        <string>%d країн (US, NL, JP)</string>
         <key>other</key>
-        <string>%d countries (US, NL, JP)</string>
+        <string>%d країн (US, NL, JP)</string>
       </dict>
     </dict>
     <key>&lt;n&gt; of &lt;m&gt; users</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ з %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>one</key>
@@ -398,19 +398,19 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d user</string>
+        <string>%d користувач</string>
         <key>few</key>
-        <string>%d users</string>
+        <string>%d користувачі</string>
         <key>many</key>
-        <string>%d users</string>
+        <string>%d користувачів</string>
         <key>other</key>
-        <string>%d users</string>
+        <string>%d користувачів</string>
       </dict>
     </dict>
     <key>&lt;n&gt; of &lt;m&gt; email addresses</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ з %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>one</key>
@@ -433,19 +433,19 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d email address</string>
+        <string>%d адреса електронної пошти</string>
         <key>few</key>
-        <string>%d email addresses</string>
+        <string>%d адреси електронної пошти</string>
         <key>many</key>
-        <string>%d email addresses</string>
+        <string>%d адрес електронної пошти</string>
         <key>other</key>
-        <string>%d email addresses</string>
+        <string>%d адрес електронної пошти</string>
       </dict>
     </dict>
     <key>&lt;n&gt; of &lt;m&gt; calendars</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+      <string>%#@VARIABLE1@ з %#@VARIABLE2@</string>
       <key>VARIABLE1</key>
       <dict>
         <key>one</key>
@@ -468,13 +468,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d calendar</string>
+        <string>%d календар</string>
         <key>few</key>
-        <string>%d calendars</string>
+        <string>%d календарі</string>
         <key>many</key>
-        <string>%d calendars</string>
+        <string>%d календарів</string>
         <key>other</key>
-        <string>%d calendars</string>
+        <string>%d календарів</string>
       </dict>
     </dict>
     <key>&lt;n&gt; addresses per user</key>
@@ -488,13 +488,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d address per user</string>
+        <string>%d адреса на користувача</string>
         <key>few</key>
-        <string>%d addresses per user</string>
+        <string>%d адреси на користувача</string>
         <key>many</key>
-        <string>%d addresses per user</string>
+        <string>%d адрес на користувача</string>
         <key>other</key>
-        <string>%d addresses per user</string>
+        <string>%d адрес на користувача</string>
       </dict>
     </dict>
     <key>&lt;n&gt; calendars per user</key>
@@ -508,13 +508,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d calendar per user</string>
+        <string>%d календар на користувача</string>
         <key>few</key>
-        <string>%d calendars per user</string>
+        <string>%d календарі на користувача</string>
         <key>many</key>
-        <string>%d calendars per user</string>
+        <string>%d календарів на користувача</string>
         <key>other</key>
-        <string>%d calendars per user</string>
+        <string>%d календарів на користувача</string>
       </dict>
     </dict>
     <key>&lt;n&gt; VPN connections per user</key>
@@ -528,13 +528,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d VPN connection per user</string>
+        <string>%d VPN-з'єднання на користувача</string>
         <key>few</key>
-        <string>%d VPN connections per user</string>
+        <string>%d VPN-з'єднання на користувача</string>
         <key>many</key>
-        <string>%d VPN connections per user</string>
+        <string>%d VPN-з'єднань на користувача</string>
         <key>other</key>
-        <string>%d VPN connections per user</string>
+        <string>%d VPN-з'єднань на користувача</string>
       </dict>
     </dict>
     <key>Pay for &lt;n&gt; months</key>
@@ -548,7 +548,7 @@
         <key>one</key>
         <string>Оплата за %d місяць</string>
         <key>few</key>
-        <string>Оплата за %d місяців</string>
+        <string>Оплата за %d місяці</string>
         <key>many</key>
         <string>Оплата за %d місяців</string>
         <key>other</key>
@@ -568,13 +568,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Medium VPN speed %d VPN connection</string>
+        <string>%d з'єднання VPN середньої швидкості</string>
         <key>few</key>
-        <string>Medium VPN speed %d VPN connections</string>
+        <string>%d з'єднання VPN середньої швидкості</string>
         <key>many</key>
-        <string>Medium VPN speed %d VPN connections</string>
+        <string>%d з'єднань VPN середньої швидкості</string>
         <key>other</key>
-        <string>Medium VPN speed %d VPN connections</string>
+        <string>%d з'єднань VPN середньої швидкості</string>
       </dict>
     </dict>
     <key>Up to &lt;n&gt; forwarding mailboxes</key>

@@ -24,7 +24,12 @@ import Foundation
 import ProtonCoreNetworking
 
 public protocol MissingScopesDelegate: AnyObject {
-    func onMissingScopesHandling(username: String, responseHandlerData: PMResponseHandlerData, completion: @escaping (MissingScopesFinishReason) -> Void)
+    func onMissingScopesHandling(
+        missingScopeMode: MissingScopeMode,
+        username: String,
+        responseHandlerData: PMResponseHandlerData,
+        completion: @escaping (MissingScopesFinishReason) -> Void
+    )
     func showAlert(title: String, message: String?)
 }
 

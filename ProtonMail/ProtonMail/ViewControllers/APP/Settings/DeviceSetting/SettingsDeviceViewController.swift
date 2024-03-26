@@ -194,7 +194,7 @@ extension SettingsDeviceViewController {
                     let status = self.viewModel.combineContactOn ? LocalString._settings_On_title : LocalString._settings_Off_title
                     settingsGeneralCell.configure(right: status)
                 case .browser:
-                    let browser = userCachedStatus.browser
+                    let browser = viewModel.browser
                     settingsGeneralCell.configure(left: item.description)
                     settingsGeneralCell.configure(right: browser.isInstalled ? browser.title : LinkOpener.safari.title)
                 case .swipeAction:
@@ -321,7 +321,7 @@ extension SettingsDeviceViewController {
                     $0.isInstalled
                 }.compactMap { app in
                     UIAlertAction(title: app.title, style: .default) { [weak self] _ in
-                        userCachedStatus.browser = app
+                        self?.viewModel.browser = app
                         self?.tableView?.reloadRows(at: [indexPath], with: .fade)
                     }
                 }

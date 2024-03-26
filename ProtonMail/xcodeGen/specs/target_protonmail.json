@@ -67,9 +67,6 @@
                "sdk": "StoreKit.framework"
             },
             {
-               "package": "ProtonCoreICS"
-            },
-            {
                "package": "Factory"
             },
             {

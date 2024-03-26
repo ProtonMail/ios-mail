@@ -23,17 +23,19 @@ protocol ContactsSettingsViewModelProtocol {
 }
 
 protocol ContactsSettingsViewModelInput {
+    func requestContactAuthorization(completion: @escaping (Bool, Error?) -> Void)
     func didTapSetting(_ setting: ContactsSettingsViewModel.Setting, isEnabled: Bool)
 }
 
 protocol ContactsSettingsViewModelOutput {
     var settings: [ContactsSettingsViewModel.Setting] { get }
+    var isContactAccessDenied: Bool { get }
 
     func value(for setting: ContactsSettingsViewModel.Setting) -> Bool
 }
 
 final class ContactsSettingsViewModel: ContactsSettingsViewModelProtocol {
-    typealias Dependencies = HasUserDefaults & HasImportDeviceContacts & HasUserManager
+    typealias Dependencies = HasUserDefaults & HasImportDeviceContacts & HasUserManager & HasAutoImportContactsFeature
 
     let settings: [Setting] = [.combineContacts, .autoImportContacts]
 
@@ -49,18 +51,25 @@ final class ContactsSettingsViewModel: ContactsSettingsViewModelProtocol {
 
 extension ContactsSettingsViewModel: ContactsSettingsViewModelOutput {
 
+    var isContactAccessDenied: Bool {
+        [.denied, .restricted].contains(CNContactStore.authorizationStatus(for: .contacts))
+    }
+
     func value(for setting: Setting) -> Bool {
         switch setting {
         case .combineContacts:
             return dependencies.userDefaults[.isCombineContactOn]
         case .autoImportContacts:
-            let autoImportFlags = dependencies.userDefaults[.isAutoImportContactsOn]
-            return autoImportFlags[dependencies.user.userID.rawValue] ?? false
+            return dependencies.autoImportContactsFeature.isSettingEnabledForUser
         }
     }
 }
 
 extension ContactsSettingsViewModel: ContactsSettingsViewModelInput {
+
+    func requestContactAuthorization(completion: @escaping (Bool, Error?) -> Void) {
+        CNContactStore().requestAccess(for: .contacts, completionHandler: completion)
+    }
 
     func didTapSetting(_ setting: Setting, isEnabled: Bool) {
         switch setting {
@@ -72,22 +81,16 @@ extension ContactsSettingsViewModel: ContactsSettingsViewModelInput {
     }
 
     private func didTapAutoImportContacts(isEnabled: Bool) {
-        var autoImportFlags = dependencies.userDefaults[.isAutoImportContactsOn]
-        autoImportFlags[dependencies.user.userID.rawValue] = isEnabled
-        dependencies.userDefaults[.isAutoImportContactsOn] = autoImportFlags
         if isEnabled {
+            dependencies.autoImportContactsFeature.enableSettingForUser()
             let params = ImportDeviceContacts.Params(
                 userKeys: dependencies.user.userInfo.userKeys,
                 mailboxPassphrase: dependencies.user.mailboxPassword
             )
             dependencies.importDeviceContacts.execute(params: params)
         } else {
-            var historyTokens = dependencies.userDefaults[.contactsHistoryTokenPerUser]
-            historyTokens[dependencies.user.userID.rawValue] = nil
-            dependencies.userDefaults[.contactsHistoryTokenPerUser] = historyTokens
+            dependencies.autoImportContactsFeature.disableSettingAndDeleteQueueForUser()
         }
-        let msg = "Auto import contacts changed to: \(isEnabled) for user \(dependencies.user.userID.rawValue.redacted)"
-        SystemLogger.log(message: msg, category: .contacts)
     }
 }
 

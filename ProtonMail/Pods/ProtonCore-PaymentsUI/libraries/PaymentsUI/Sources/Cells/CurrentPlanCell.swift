@@ -179,6 +179,8 @@ extension CurrentPlanCell {
                 progressBarSpacerView.isHidden = false
                 progressBarView.isHidden = false
                 progressBarView.configure(
+                    title: progressEntitlement.title,
+                    iconUrl: progressEntitlement.iconUrl,
                     usedSpaceDescription: progressEntitlement.text,
                     usedSpace: Int64(progressEntitlement.current),
                     maxSpace: Int64(progressEntitlement.max)

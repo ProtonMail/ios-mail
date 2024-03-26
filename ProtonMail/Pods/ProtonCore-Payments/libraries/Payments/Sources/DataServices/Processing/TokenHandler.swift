@@ -135,9 +135,9 @@ final class TokenHandler {
             PMLog.debug("Making TokenRequest")
             let tokenRes = try tokenApi.awaitResponse(responseObject: TokenResponse())
             if let tokenError = tokenRes.error {
-                ObservabilityEnv.report(.paymentCreatePaymentTokenTotal(error: tokenError))
+                ObservabilityEnv.report(.paymentCreatePaymentTokenTotal(error: tokenError, isDynamic: areSubscriptionsEnabled))
             } else {
-                ObservabilityEnv.report(.paymentCreatePaymentTokenTotal(status: .http2xx))
+                ObservabilityEnv.report(.paymentCreatePaymentTokenTotal(status: .http2xx, isDynamic: areSubscriptionsEnabled))
             }
 
             guard let token = tokenRes.paymentToken else { throw StoreKitManagerErrors.transactionFailedByUnknownReason }

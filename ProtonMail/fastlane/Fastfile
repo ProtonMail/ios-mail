@@ -13,9 +13,6 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-require 'json'
-require 'net/http'
-
 default_platform(:ios)
 
 # Variable
@@ -190,17 +187,6 @@ platform :ios do
     bundle_version = sh("./setup_bundle_version.sh")
 
     build_release_app
-
-    begin
-      sentry_upload_dsym(
-        auth_token: ENV["SENTRY_AUTH_TOKEN"],
-        org_slug: ENV["SENTRY_ORG"],
-        project_slug: ENV["SENTRY_PROJECT"],
-        url: ENV["SENTRY_URL"]
-      )
-    rescue => ex
-      puts("Sentry upload error: #{ex}")
-    end
 
     upload_to_testflight(
       team_name: "Proton Technologies AG",

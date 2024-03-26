@@ -57,6 +57,7 @@ class AppCacheService {
                     .appendingPathComponent(name)
                 try? FileManager.default.removeItem(at: path)
             }
+            deleteContactsSyncQueues()
 
             if let domain = Bundle.main.bundleIdentifier {
                 UserDefaults.standard.removePersistentDomain(forName: domain)
@@ -67,5 +68,20 @@ class AppCacheService {
         }
 
         UserDefaults.standard.setValue(Bundle.main.appVersion, forKey: Constants.SettingsBundleKeys.appVersion)
+    }
+
+    private func deleteContactsSyncQueues() {
+        do {
+            let folder = FileManager.default.applicationSupportDirectoryURL
+            let files = try FileManager.default.contentsOfDirectory(
+                at: folder,
+                includingPropertiesForKeys: [.isRegularFileKey]
+            )
+            for file in files where file.lastPathComponent.hasPrefix(ContactsSyncQueue.queueFilePrefix) {
+                try FileManager.default.removeItem(at: file)
+            }
+        } catch {
+            SystemLogger.log(message: "Error deleting contacts sync queues: \(error)", isError: true)
+        }
     }
 }

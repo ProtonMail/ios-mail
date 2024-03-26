@@ -41,7 +41,7 @@ final class KeychainWrapper: Keychain {
         super.init(service: service, accessGroup: group)
     }
 
-    override init(service: String, accessGroup: String) {
+    override init(service: String, accessGroup: String, secItemMethodsProvider: SecItemMethodsProvider? = nil) {
         super.init(service: service, accessGroup: accessGroup)
     }
 }

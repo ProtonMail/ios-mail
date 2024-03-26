@@ -133,7 +133,7 @@ protocol PaymentsApiProtocol {
     /// Get the status of any vendor
     func paymentStatusRequest(api: APIService) -> PaymentStatusRequest
     func buySubscriptionRequest(
-        api: APIService, planId: String, amount: Int, amountDue: Int, paymentAction: PaymentAction
+        api: APIService, planId: String, amount: Int, amountDue: Int, cycle: Int, paymentAction: PaymentAction
     ) throws -> SubscriptionRequest
     func buySubscriptionForZeroRequest(api: APIService, planId: String) -> SubscriptionRequest
     /// Get current subscription
@@ -148,7 +148,7 @@ protocol PaymentsApiProtocol {
     func paymentTokenOldRequest(api: APIService, amount: Int, receipt: String) -> PaymentTokenOldRequest
     func paymentTokenRequest(api: APIService, amount: Int, receipt: String, transactionId: String, bundleId: String, productId: String) -> PaymentTokenRequest
     func paymentTokenStatusRequest(api: APIService, token: PaymentToken) -> PaymentTokenStatusRequest
-    func validateSubscriptionRequest(api: APIService, protonPlanName: String, isAuthenticated: Bool) -> ValidateSubscriptionRequest
+    func validateSubscriptionRequest(api: APIService, protonPlanName: String, isAuthenticated: Bool, cycle: Int) -> ValidateSubscriptionRequest
     func countriesCountRequest(api: APIService) -> CountriesCountRequest
     func getUser(api: APIService) throws -> User
 }
@@ -158,20 +158,20 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
         PaymentStatusRequest(api: api)
     }
 
-    func buySubscriptionRequest(api: APIService, planId: String, amount: Int, amountDue: Int, paymentAction: PaymentAction) throws -> SubscriptionRequest {
+    func buySubscriptionRequest(api: APIService, planId: String, amount: Int, amountDue: Int, cycle: Int, paymentAction: PaymentAction) throws -> SubscriptionRequest {
             guard Thread.isMainThread == false else {
                 assertionFailure("This is a blocking network request, should never be called from main thread")
                 throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
             }
             if amountDue == amount {
                 // if amountDue is equal to amount, request subscription
-                return SubscriptionRequest(api: api, planId: planId, amount: amount, paymentAction: paymentAction)
+                return SubscriptionRequest(api: api, planId: planId, amount: amount, cycle: cycle, paymentAction: paymentAction)
             } else {
                 // if amountDue is not equal to amount, request credit for a full amount
                 let creditReq = creditRequest(api: api, amount: amount, paymentAction: paymentAction)
                 _ = try creditReq.awaitResponse(responseObject: CreditResponse())
                 // then request subscription for amountDue = 0
-                return SubscriptionRequest(api: api, planId: planId, amount: 0, paymentAction: paymentAction)
+                return SubscriptionRequest(api: api, planId: planId, amount: 0, cycle: cycle, paymentAction: paymentAction)
             }
     }
 
@@ -215,10 +215,13 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
         PaymentTokenStatusRequest(api: api, token: token)
     }
 
-    func validateSubscriptionRequest(api: APIService, protonPlanName: String, isAuthenticated: Bool) -> ValidateSubscriptionRequest {
-        ValidateSubscriptionRequest(api: api,
-                                    protonPlanName: protonPlanName,
-                                    isAuthenticated: isAuthenticated)
+    func validateSubscriptionRequest(api: APIService, protonPlanName: String, isAuthenticated: Bool, cycle: Int) -> ValidateSubscriptionRequest {
+        ValidateSubscriptionRequest(
+            api: api,
+            protonPlanName: protonPlanName,
+            isAuthenticated: isAuthenticated,
+            cycle: cycle
+        )
     }
 
     func countriesCountRequest(api: APIService) -> CountriesCountRequest {
@@ -289,7 +292,7 @@ extension Response {
             return (true, object)
         } catch let decodingError {
             error = errorToReturn.toResponseError(updating: error)
-            PMLog.debug("Failed to parse \(T.self): \(decodingError)")
+            PMLog.error("Failed to parse \(T.self): \(decodingError)", sendToExternal: true)
             return (false, nil)
         }
     }

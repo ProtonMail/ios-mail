@@ -123,8 +123,10 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
     }
 
     private func copyItemToTempDirectory(from oldUrl: URL) throws -> URL {
+        _ = oldUrl.startAccessingSecurityScopedResource()
         let tempFileUrl = try FileManager.default.createTempURL(forCopyOfFileNamed: oldUrl.lastPathComponent)
         try FileManager.default.copyItem(at: oldUrl, to: tempFileUrl)
+        oldUrl.stopAccessingSecurityScopedResource()
         return tempFileUrl
     }
 }

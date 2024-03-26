@@ -191,19 +191,19 @@ class ConversationEntityTests: XCTestCase {
         [
             {
             "Name": "1",
-            "Address": "\(String.randomString(10))",
-            "IsProton": 0,
-            "IsSimpleLogin": 0,
-            "DisplaySenderImage": 1,
-            "BimiSelector": "\(String.randomString(10))"
-            },
-            {
-            "Name": "2",
             "Address": "\(address)",
             "IsProton": 0,
             "IsSimpleLogin": 0,
             "DisplaySenderImage": 1,
             "BimiSelector": "\(bimiSelector)"
+            },
+            {
+            "Name": "2",
+            "Address": "\(String.randomString(10))",
+            "IsProton": 0,
+            "IsSimpleLogin": 0,
+            "DisplaySenderImage": 1,
+            "BimiSelector": "\(String.randomString(10))"
             }
         ]
         """
@@ -224,7 +224,7 @@ class ConversationEntityTests: XCTestCase {
             "Address": "\(String.randomString(10))",
             "IsProton": 0,
             "IsSimpleLogin": 0,
-            "DisplaySenderImage": 1,
+            "DisplaySenderImage": 0,
             "BimiSelector": "\(String.randomString(10))"
             },
             {
@@ -232,7 +232,7 @@ class ConversationEntityTests: XCTestCase {
             "Address": "\(String.randomString(10))",
             "IsProton": 0,
             "IsSimpleLogin": 0,
-            "DisplaySenderImage": 0,
+            "DisplaySenderImage": 1,
             "BimiSelector": "\(String.randomString(10))"
             }
         ]

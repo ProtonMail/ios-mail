@@ -21,7 +21,6 @@
 //
 
 import ProtonCoreNetworking
-import ProtonCoreFeatureSwitch
 
 public struct ObservabilityEnv {
 

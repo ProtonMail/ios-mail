@@ -40,6 +40,7 @@ class ConversationPrintRenderer: UIPrintPageRenderer, LifetimeTrackable {
     private var conversationRenderers: [(WKWebView, [CustomViewPrintRenderer])] = []
     private var contentFormatters: [(UIViewPrintFormatter, [CustomViewPrintRenderer])] = []
     private var pagesHaveHeader: [Int: [CustomViewPrintRenderer]] = [:]
+    private let elementClassName = "extra_space_for_print"
 
     init(_ controllers: [SingleMessageContentViewController]) {
         super.init()
@@ -51,13 +52,16 @@ class ConversationPrintRenderer: UIPrintPageRenderer, LifetimeTrackable {
     }
 
     private func createPrintFormatters(from source: (WKWebView, [CustomViewPrintRenderer])) {
-        let topOffset = source.1.map(\.contentSize.height).reduce(0, +)
+        let pageMargin: CGFloat = 40
+        let messageMargin: CGFloat = 16
+        let topOffset = source.1.map(\.contentSize.height).reduce(0, +) + pageMargin + messageMargin
 
-        let cssString = "@media print { body { margin-top: \(topOffset)pt; } }"
+        let element = "a\(String.randomString(7))a"
         let jsString = """
-        var style = document.createElement('style');
-        style.innerHTML = '\(cssString)';
-        document.head.appendChild(style);
+        let \(element) = document.createElement('div');
+        \(element).classList.add('\(elementClassName)')
+        \(element).style = 'width: 100vw; height: \(topOffset)px'
+        document.body.insertBefore(\(element), document.body.firstChild);
         0
         """
 
@@ -120,6 +124,26 @@ class ConversationPrintRenderer: UIPrintPageRenderer, LifetimeTrackable {
                     let (slice, _) = workingRect.divided(atDistance: attachmentHeight + headerHeight, from: .minYEdge)
                     let (attachmentSlice, _) = slice.divided(atDistance: attachmentHeight, from: .maxYEdge)
                     attachmentRenderer.draw(in: attachmentSlice)
+                }
+            }
+        }
+        revertChange(for: pageIndex)
+    }
+
+    // The webView is the same instance we saw in message body
+    // Any change we did above will affect it
+    // Revert change after we draw the page
+    private func revertChange(for pageIndex: Int) {
+        DispatchQueue.main.async {
+            guard let renderer = self.conversationRenderers[safe: pageIndex] else { return }
+            let jsString = """
+        document.querySelectorAll('.\(self.elementClassName)').forEach(e=>e.remove())
+        0
+        """
+            let webView = renderer.0
+            webView.evaluateJavaScript(jsString) { _, error in
+                if let error = error {
+                    assertionFailure("\(error)")
                 }
             }
         }

@@ -23,6 +23,7 @@
 import ProtonCoreCryptoGoImplementation
 import ProtonCoreEnvironment
 import ProtonCoreFeatureSwitch
+import ProtonCoreLog
 import ProtonCoreServices
 import ProtonCoreUIFoundations
 import UIKit
@@ -50,6 +51,10 @@ class ShareExtensionEntry: UINavigationController {
         DFSSetting.enableDFS = true
         DFSSetting.limitToXXXLarge = true
         TrustKitWrapper.start(delegate: self)
+
+        setupLogLocation()
+        SystemLogger.log(message: "Share extension is launching...", category: .appLifeCycle)
+
         appCoordinator = ShareAppCoordinator(navigation: self)
         if #available(iOSApplicationExtension 15.0, *) {
             setupNavigationBarAppearance()
@@ -60,6 +65,11 @@ class ShareExtensionEntry: UINavigationController {
         super.viewDidLoad()
 
         self.appCoordinator?.start()
+    }
+
+    private func setupLogLocation() {
+        let directory = FileManager.default.appGroupsDirectoryURL
+        PMLog.logsDirectory = directory
     }
 }
 

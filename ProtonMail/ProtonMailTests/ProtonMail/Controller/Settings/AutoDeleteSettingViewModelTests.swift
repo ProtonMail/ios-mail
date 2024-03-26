@@ -47,7 +47,7 @@ final class AutoDeleteSettingViewModelTests: XCTestCase {
     }
 
     func testGetSectionFooterAndHeader() throws {
-        let result = try XCTUnwrap(sut.sectionFooter())
+        let result = try XCTUnwrap(sut.sectionFooter(section: 0))
         switch result {
         case .left(let text):
             XCTAssertEqual(text, L11n.AutoDeleteSettings.rowFooterTitle)

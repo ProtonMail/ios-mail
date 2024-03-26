@@ -222,7 +222,7 @@ class UserDataService {
                                 _ status: LinkOpeningMode, completion: @escaping (NSError?) -> Void) {
         let authCredential = currentAuth
         let userInfo = user
-        let api = UpdateLinkConfirmation(status: status, authCredential: authCredential)
+        let api = SettingUpdateRequest.linkConfirmation(status)
         self.apiService.perform(request: api, response: VoidResponse()) { _, response in
             if response.error == nil {
                 userInfo.linkConfirmation = status
@@ -296,14 +296,18 @@ class UserDataService {
 
                     do {
                         let updatePwd_res = try `await`(
-                            self.apiService.run(route: UpdateLoginPassword(clientEphemeral: clientEphemeral.encodeBase64(),
-                                                                           clientProof: clientProof.encodeBase64(),
-                                                                           SRPSession: session,
-                                                                           modulusID: moduls_id,
-                                                                           salt: new_salt.encodeBase64(),
-                                                                           verifer: verifier.encodeBase64(),
-                                                                           tfaCode: twoFACode,
-                                                                           authCredential: oldAuthCredential)))
+                            self.apiService.run(
+                                route: SettingUpdateRequest.loginPassword(
+                                    .init(clientEphemeral: clientEphemeral.encodeBase64(),
+                                          clientProof: clientProof.encodeBase64(),
+                                          srpSession: session,
+                                          twoFACode: twoFACode,
+                                          modulusID: moduls_id,
+                                          salt: new_salt.encodeBase64(),
+                                          verifier: verifier.encodeBase64())
+                                )
+                            )
+                        )
                         if updatePwd_res.responseCode == 1000 {
                             forceRetry = false
                         } else {
@@ -563,12 +567,18 @@ class UserDataService {
 
                     do {
                         let updatetNotifyEmailRes = try `await`(
-                            self.apiService.run(route: UpdateNotificationEmail(clientEphemeral: clientEphemeral.encodeBase64(),
-                                                                               clientProof: clientProof.encodeBase64(),
-                                                                               sRPSession: session,
-                                                                               notificationEmail: new_notification_email,
-                                                                               tfaCode: twoFACode,
-                                                                               authCredential: oldAuthCredential)))
+                            self.apiService.run(
+                                route: SettingUpdateRequest.notificationEmail(
+                                    .init(
+                                        email: new_notification_email,
+                                        clientEphemeral: clientEphemeral.encodeBase64(),
+                                        clientProof: clientProof.encodeBase64(),
+                                        srpSession: session,
+                                        twoFACode: twoFACode
+                                    )
+                                )
+                            )
+                        )
                         if updatetNotifyEmailRes.responseCode == 1000 {
                             userInfo.notificationEmail = new_notification_email
                             forceRetry = false
@@ -594,13 +604,14 @@ class UserDataService {
         } ~> .async
     }
 
-    func updateNotify(auth currentAuth: AuthCredential,
-                      user: UserInfo,
-                      _ isOn: Bool, completion: @escaping (NSError?) -> Void) {
-        let oldAuthCredential = currentAuth
+    func updateNotify(
+        user: UserInfo,
+        _ isOn: Bool,
+        completion: @escaping (NSError?) -> Void
+    ) {
         let userInfo = user
 
-        let notifySetting = UpdateNotify(notify: isOn ? 1 : 0, authCredential: oldAuthCredential)
+        let notifySetting = SettingUpdateRequest.notify(isOn)
         self.apiService.perform(request: notifySetting, response: VoidResponse()) { _, response in
             if response.error == nil {
                 userInfo.notify = (isOn ? 1 : 0)
@@ -609,9 +620,8 @@ class UserDataService {
         }
     }
 
-    func updateSignature(auth currentAuth: AuthCredential,
-                         _ signature: String, completion: @escaping (NSError?) -> Void) {
-        let signatureSetting = UpdateSignature(signature: signature, authCredential: currentAuth)
+    func updateSignature(_ signature: String, completion: @escaping (NSError?) -> Void) {
+        let signatureSetting = SettingUpdateRequest.signature(signature)
         self.apiService.perform(request: signatureSetting, response: VoidResponse()) { _, response in
             completion(response.error?.toNSError)
         }

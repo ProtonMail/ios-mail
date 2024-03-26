@@ -13,9 +13,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%u participants</string>
+        <string>%u yimettekkiyen</string>
         <key>one</key>
-        <string>%u participant</string>
+        <string>%u yimettekki</string>
       </dict>
     </dict>
     <key>You have %d new emails!</key>
@@ -25,13 +25,13 @@
       <key>newemails</key>
       <dict>
         <key>one</key>
-        <string>You have %d new emails!</string>
+        <string>Ɣur-k %d imaylen imaynuten!</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>You have %d new emails!</string>
+        <string>Ɣur-k %d imaylen imaynuten!</string>
       </dict>
     </dict>
     <key>%d email trackers blocked</key>
@@ -57,13 +57,13 @@
       <key>selected</key>
       <dict>
         <key>one</key>
-        <string>%d selected</string>
+        <string>%d yettwafernen</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d selected</string>
+        <string>%d yettwafernen</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>

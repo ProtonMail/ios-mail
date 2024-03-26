@@ -89,7 +89,7 @@ public final class AuthHelper: AuthDelegate {
         currentCredentials.transform { authCredentials in
             guard let existingCredentials = authCredentials else { return nil }
             guard existingCredentials.0.sessionID == sessionUID else {
-                PMLog.error("Asked for wrong credentials. It's a programmers error and should be investigated")
+                PMLog.error("Asked for wrong credentials. It's a programmers error and should be investigated", sendToExternal: true)
                 return nil
             }
             return existingCredentials[keyPath: path]
@@ -105,7 +105,7 @@ public final class AuthHelper: AuthDelegate {
             }
 
             guard existingCredentials.0.sessionID == sessionUID else {
-                PMLog.error("Asked for updating credentials of a wrong session. It's a programmers error and should be investigated")
+                PMLog.error("Asked for updating credentials of a wrong session. It's a programmers error and should be investigated", sendToExternal: true)
                 return
             }
 
@@ -146,7 +146,7 @@ public final class AuthHelper: AuthDelegate {
         currentCredentials.mutate { authCredentials in
             guard authCredentials != nil else { return }
             guard authCredentials?.0.sessionID == sessionUID else {
-                PMLog.error("Asked for updating credentials of a wrong session. It's a programmers error and should be investigated")
+                PMLog.error("Asked for updating credentials of a wrong session. It's a programmers error and should be investigated", sendToExternal: true)
                 return
             }
 
@@ -168,7 +168,7 @@ public final class AuthHelper: AuthDelegate {
         currentCredentials.mutate { authCredentials in
             guard let existingCredentials = authCredentials else { return }
             guard existingCredentials.0.sessionID == sessionUID else {
-                PMLog.error("Asked for logout of wrong session. It's a programmers error and should be investigated")
+                PMLog.error("Asked for logout of wrong session. It's a programmers error and should be investigated", sendToExternal: true)
                 return
             }
             authCredentials = nil
@@ -184,7 +184,7 @@ public final class AuthHelper: AuthDelegate {
         currentCredentials.mutate { authCredentials in
             guard let existingCredentials = authCredentials else { return }
             guard existingCredentials.0.sessionID == sessionUID else {
-                PMLog.error("Asked for erasing the credentials of a wrong session. It's a programmers error and should be investigated")
+                PMLog.error("Asked for erasing the credentials of a wrong session. It's a programmers error and should be investigated", sendToExternal: true)
                 return
             }
             authCredentials = nil

@@ -141,9 +141,7 @@ extension Conversation {
             let newUnreadCount = max(label.unreadCount.intValue + offset, 0)
             label.unreadCount = NSNumber(value: newUnreadCount)
         }
-        if !unRead {
-            displaySnoozedReminder = false
-        }
+        displaySnoozedReminder = false
         didChangeValue(forKey: Conversation.Attributes.labels)
     }
 

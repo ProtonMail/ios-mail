@@ -69,17 +69,17 @@
       <key>selected</key>
       <dict>
         <key>one</key>
-        <string>%d selected</string>
+        <string>%d vybrána</string>
         <key>few</key>
-        <string>%d selected</string>
+        <string>%d vybrány</string>
         <key>many</key>
-        <string>%d selected</string>
+        <string>%d vybráno</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d selected</string>
+        <string>%d vybráno</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>

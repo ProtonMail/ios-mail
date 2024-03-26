@@ -21,11 +21,14 @@
 //  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
 enum MessageHeaderContactContext {
+    case eventParticipant(emailAddress: String)
     case recipient(ContactVO)
     case sender(Sender)
 
     var contact: ContactVO {
         switch self {
+        case .eventParticipant(let emailAddress):
+            return ContactVO(name: emailAddress, email: emailAddress)
         case .recipient(let contactVO):
             return contactVO
         case .sender(let sender):

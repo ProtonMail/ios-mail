@@ -27,6 +27,7 @@ final class EventProcessor {
         & HasNotificationCenter
         & HasUserManager
         & HasUserDefaults
+        & SaveEventResponseInCacheUseCase.Dependencies
 
     private unowned let dependencies: Dependencies
     private lazy var saveEventResponseInCache: SaveEventResponseInCacheUseCase = {

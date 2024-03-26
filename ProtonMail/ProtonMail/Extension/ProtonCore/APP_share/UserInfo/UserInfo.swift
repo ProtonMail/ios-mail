@@ -40,7 +40,9 @@ extension UserInfo {
         else { return false }
         return subscribed.contains(.mail)
     }
-    
+
+    var hasCrashReportingEnabled: Bool { crashReports == 1 }
+
     func update(from userSettings: UserSettingsResponse) {
         self.notificationEmail = userSettings.email.value ?? ""
         self.notify = userSettings.email.notify

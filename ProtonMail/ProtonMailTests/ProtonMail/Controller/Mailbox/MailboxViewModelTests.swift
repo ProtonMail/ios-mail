@@ -72,7 +72,11 @@ final class MailboxViewModelTests: XCTestCase {
                                       privateKey: nil,
                                       passwordKeySalt: nil)
         let stubUserInfo = UserInfo(maxSpace: nil,
+                                    maxBaseSpace: nil,
+                                    maxDriveSpace: nil,
                                     usedSpace: nil,
+                                    usedBaseSpace: nil,
+                                    usedDriveSpace: nil,
                                     language: nil,
                                     maxUpload: nil,
                                     role: nil,
@@ -564,7 +568,7 @@ final class MailboxViewModelTests: XCTestCase {
             _ = sut.select(id: id)
         }
 
-        sut.handleActionSheetAction(.trash)
+        sut.handleBarActions(.trash, completion: nil)
 
         XCTAssertTrue(self.conversationProviderMock.moveStub.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(self.conversationProviderMock.moveStub.lastArguments)

@@ -27,10 +27,10 @@ extension NSCoder {
     }
 
     public func decodeIntegerIfPresent(forKey key: String) -> Int? {
-        containsValue(forKey: key) ? decodeInteger(forKey: key) : nil
+        containsValue(forKey: key) ? decodeObject(forKey: key) as? Int : nil
     }
 
     public func decodeInt64IfPresent(forKey key: String) -> Int64? {
-        containsValue(forKey: key) ? decodeInt64(forKey: key) : nil
+        containsValue(forKey: key) ? decodeObject(forKey: key) as? Int64 : nil
     }
 }

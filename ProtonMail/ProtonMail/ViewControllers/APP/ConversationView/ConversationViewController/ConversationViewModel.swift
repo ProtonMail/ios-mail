@@ -18,6 +18,7 @@ class ConversationViewModel {
     & HasNotificationCenter
     & HasUserDefaults
     & HasUserIntroductionProgressProvider
+    & HasQueueManager
 
     var headerSectionDataSource: [ConversationViewItemType] = []
     var messagesDataSource: [ConversationViewItemType] = [] {
@@ -348,6 +349,10 @@ class ConversationViewModel {
         return numMessagesInLocation == conversation.messageCount
     }
 
+    func hasMessageEnqueuedTasks(_ messageID: MessageID) -> Bool {
+        dependencies.queueManager.queuedMessageIds().contains(messageID.rawValue)
+    }
+
     func fetchMessageDetail(message: MessageEntity,
                             callback: @escaping FetchMessageDetailUseCase.Callback) {
         let params: FetchMessageDetail.Params = .init(
@@ -478,18 +483,6 @@ class ConversationViewModel {
                     }
             }
     }
-
-    func hasSeenMessageNavigationSpotlight() {
-        guard isMessageSwipeNavigationEnabled else { return }
-        user.parentManager?.users.forEach({ user in
-            dependencies.userIntroductionProgressProvider.markSpotlight(
-                for: .messageSwipeNavigation,
-                asSeen: true,
-                byUserWith: user.userID
-            )
-        })
-    }
-
 
     private func markMessagesReadIfNeeded() {
         messagesDataSource
@@ -734,52 +727,9 @@ class ConversationViewModel {
         }
     }
 
-    func handleToolBarAction(_ action: MessageViewActionSheetAction) {
-        guard messagesAreLoaded else { return }
-        switch action {
-        case .delete:
-            conversationService.deleteConversations(with: [conversation.conversationID],
-                                                    labelID: labelId) { [weak self] result in
-                guard let self = self else { return }
-                if (try? result.get()) != nil {
-                    self.eventsService.fetchEvents(labelID: self.labelId)
-                }
-            }
-        case .markRead:
-            conversationService.markAsRead(
-                conversationIDs: [conversation.conversationID],
-                labelID: labelId
-            ) { [weak self] result in
-                guard let self = self else { return }
-                if (try? result.get()) != nil {
-                    self.eventsService.fetchEvents(labelID: self.labelId)
-                }
-            }
-        case .markUnread:
-            blockMarkReadIfNeeded = true
-            conversationService.markAsUnread(conversationIDs: [conversation.conversationID],
-                                             labelID: labelId) { [weak self] result in
-                guard let self = self else { return }
-                if (try? result.get()) != nil {
-                    self.eventsService.fetchEvents(labelID: self.labelId)
-                }
-            }
-        case .trash:
-            conversationService.move(conversationIDs: [conversation.conversationID],
-                                     from: labelId,
-                                     to: Message.Location.trash.labelID,
-                                     callOrigin: "ConversationViewModel - toolbar") { [weak self] result in
-                guard let self = self else { return }
-                if (try? result.get()) != nil {
-                    self.eventsService.fetchEvents(labelID: self.labelId)
-                }
-            }
-        default:
-            return
-        }
-    }
-
     func handleActionSheetAction(_ action: MessageViewActionSheetAction, completion: @escaping () -> Void) {
+        guard messagesAreLoaded else { return }
+
         let fetchEvents = { [weak self] (result: Result<Void, Error>) in
             guard let self = self else { return }
             if (try? result.get()) != nil { self.eventsService.fetchEvents(labelID: self.labelId) }
@@ -794,6 +744,7 @@ class ConversationViewModel {
         }
         switch action {
         case .markUnread:
+            blockMarkReadIfNeeded = true
             conversationService.markAsUnread(conversationIDs: [conversation.conversationID],
                                              labelID: labelId,
                                              completion: fetchEvents)
@@ -883,11 +834,11 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
         let isInTrash = areAllMessagesInThreadInTheTrash
         let isInSpam = areAllMessagesInThreadInSpam
 
-        let foldersSupportSnooze = [
+        let foldersSupportingSnooze = [
             Message.Location.inbox.labelID,
             Message.Location.snooze.labelID
         ]
-        let isSupportSnooze = foldersSupportSnooze.contains(labelId)
+        let isSupportSnooze = foldersSupportingSnooze.contains(labelId)
 
         var actions = toolbarActionProvider.messageToolbarActions
             .addMoreActionToTheLastLocation()
@@ -923,6 +874,11 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
     }
 
     func toolbarCustomizationAllAvailableActions() -> [MessageViewActionSheetAction] {
+        let foldersSupportingSnooze = [
+            Message.Location.snooze.labelID,
+            Message.Location.inbox.labelID
+        ]
+
         let actionSheetViewModel = MessageViewActionSheetViewModel(
             title: "",
             labelID: labelId,
@@ -930,7 +886,8 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
             isBodyDecryptable: true,
             messageRenderStyle: .lightOnly,
             shouldShowRenderModeOption: false,
-            isScheduledSend: false
+            isScheduledSend: false,
+            shouldShowSnooze: foldersSupportingSnooze.contains(labelId)
         )
         let isInSpam = conversation.contains(of: .spam)
         let isInArchive = conversation.contains(of: .archive)

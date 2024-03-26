@@ -17,7 +17,7 @@
 
 import Foundation
 
-struct ContactEntity: Hashable {
+struct ContactEntity: Hashable, Sendable {
     // MARK: Properties
     private(set) var objectID: ObjectID
     private(set) var contactID: ContactID

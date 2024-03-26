@@ -21,18 +21,25 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Combine
+import ProtonCoreUIFoundations
 import UIKit
 
 protocol AttachmentViewControllerDelegate: AnyObject {
     func openAttachmentList(with attachments: [AttachmentInfo])
     func invitationViewWasChanged()
+    func participantTapped(emailAddress: String)
 }
 
 class AttachmentViewController: UIViewController {
     private let viewModel: AttachmentViewModel
     private var subscriptions = Set<AnyCancellable>()
 
-    private let invitationProcessingView = InCellActivityIndicatorView(style: .medium)
+    private let invitationProcessingView: InCellActivityIndicatorView = {
+        let view = InCellActivityIndicatorView(style: .medium)
+        view.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        return view
+    }()
+
     private let invitationView = InvitationView()
     private let attachmentView = AttachmentView()
 
@@ -78,8 +85,18 @@ class AttachmentViewController: UIViewController {
         let sizeString = "(\(byteCountFormatter.string(fromByteCount: Int64(data.totalSizeOfAllAttachments))))"
 
         text += sizeString
-        view.titleLabel.set(text: text,
-                            preferredFont: .subheadline)
+        if overrideUserInterfaceStyle == .unspecified {
+            view.titleLabel.set(text: text, preferredFont: .subheadline)
+        } else {
+            // To show correct text color in print
+            let trait = UITraitCollection(userInterfaceStyle: overrideUserInterfaceStyle)
+            let resolvedColor: UIColor = ColorProvider.TextNorm.resolvedColor(with: trait)
+            view.titleLabel.set(
+                text: text,
+                preferredFont: .subheadline,
+                textColor: resolvedColor
+            )
+        }
     }
 
     private func setUpTapGesture() {
@@ -92,10 +109,16 @@ class AttachmentViewController: UIViewController {
             self?.delegate?.invitationViewWasChanged()
         }
 
+        invitationView.onParticipantTapped = { [weak self] emailAddress in
+            self?.delegate?.participantTapped(emailAddress: emailAddress)
+        }
+
         invitationView.onOpenInCalendarTapped = { [weak self] deepLink in
-            Task {
-                await self?.viewModel.onOpenInCalendarTapped(deepLink: deepLink)
-            }
+            self?.onOpenInCalendarTapped(deepLink: deepLink)
+        }
+
+        invitationView.onInvitationAnswered = { [weak self] answer in
+            self?.viewModel.respondToInvitation(with: answer)
         }
 
         viewModel.invitationViewState
@@ -120,20 +143,54 @@ class AttachmentViewController: UIViewController {
                 self.delegate?.invitationViewWasChanged()
             }
             .store(in: &subscriptions)
+
+        viewModel.respondingStatus
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] respondingStatus in
+                self?.invitationView.displayAnsweringStatus(respondingStatus)
+            }
+            .store(in: &subscriptions)
     }
 
     @objc
     private func handleTap() {
         delegate?.openAttachmentList(with: Array(viewModel.attachments).sorted(by: { $0.order < $1.order }))
     }
+
+    private func onOpenInCalendarTapped(deepLink: URL) {
+        let instruction = viewModel.instructionToHandle(deepLink: deepLink)
+
+        switch instruction {
+        case .openDeepLink(let url):
+            UIApplication.shared.open(url, options: [:])
+        case .goToAppStore(let askBeforeGoing):
+            if askBeforeGoing {
+                let alert = UIAlertController(
+                    title: "Proton Calendar",
+                    message: L11n.ProtonCalendarIntegration.downloadCalendarAlert,
+                    preferredStyle: .actionSheet
+                )
+
+                alert.addURLAction(title: L11n.ProtonCalendarIntegration.downloadInAppStore, url: .AppStore.calendar)
+                alert.addCancelAction()
+                present(alert, animated: true)
+            } else {
+                UIApplication.shared.open(.AppStore.calendar, options: [:])
+            }
+        }
+    }
 }
 
 extension AttachmentViewController: CustomViewPrintable {
     func printPageRenderer() -> CustomViewPrintRenderer {
+        let style = overrideUserInterfaceStyle
+        overrideUserInterfaceStyle = .light
         let newView = AttachmentView()
-            newView.overrideUserInterfaceStyle = .light
+        newView.overrideUserInterfaceStyle = .light
         self.setup(view: newView, with: viewModel)
         newView.backgroundColor = .white
+        overrideUserInterfaceStyle = style
         return CustomViewPrintRenderer(newView)
     }
 
@@ -144,20 +201,5 @@ extension AttachmentViewController: CustomViewPrintable {
         newView.layoutIfNeeded()
 
         renderer.updateImage(in: newView.frame)
-    }
-}
-
-private class InCellActivityIndicatorView: UIActivityIndicatorView {
-    @available(*, unavailable, message: "This method does nothing, use `customStopAnimating` instead.")
-    override func stopAnimating() {
-        /*
-         This method is called by the OS as a part of `prepareForReuse`.
-         However, the animation is never restarted.
-         The result is that the spinner is gone too soon, before the processing is complete.
-         */
-    }
-
-    func customStopAnimating() {
-        super.stopAnimating()
     }
 }

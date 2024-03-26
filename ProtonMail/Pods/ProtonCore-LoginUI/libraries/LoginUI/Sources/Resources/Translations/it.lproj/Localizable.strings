@@ -148,9 +148,9 @@
 
 "Skip" = "Salta";
 
-"Skip recovery method?" = "Ignorare metodo di recupero?";
+"Skip recovery method?" = "Vuoi ignorare il metodo di recupero?";
 
-"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Un metodo di recupero ti aiuterà ad accedere al tuo account nel caso in cui dimentichi la password o ti blocchi fuori dal tuo account.";
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Un metodo di recupero ti aiuterà ad accedere al tuo account nel caso in cui dimentichi la password o non riesci ad accedere al tuo account.";
 
 "Set recovery method" = "Impostare metodo di recupero";
 

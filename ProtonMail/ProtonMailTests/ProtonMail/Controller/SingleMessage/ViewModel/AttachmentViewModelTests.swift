@@ -24,6 +24,7 @@ class AttachmentViewModelTests: XCTestCase {
     private var urlOpener: MockURLOpener!
     private var user: UserManager!
     private var eventRSVP: MockEventRSVP!
+    private var receivedRespondingStatuses: AsyncPublisher<AnyPublisher<AttachmentViewModel.RespondingStatus, Never>>.Iterator!
     private var subscriptions: Set<AnyCancellable>!
 
     var sut: AttachmentViewModel!
@@ -33,23 +34,7 @@ class AttachmentViewModelTests: XCTestCase {
 
     private let stubbedBasicEventInfo = BasicEventInfo(eventUID: "foo", recurrenceID: nil)
 
-    private let stubbedEventDetails = EventDetails(
-        title: "Team Collaboration Workshop",
-        startDate: .distantPast,
-        endDate: .distantFuture,
-        calendar: .init(
-            name: "General",
-            iconColor: "#FF0000"
-        ),
-        location: .init(
-            name: "Zoom call"
-        ),
-        participants: [
-            .init(email: "aubrey.thompson@proton.me", isOrganizer: true, status: .attending),
-            .init(email: "eric.norbert@proton.me", isOrganizer: false, status: .attending)
-        ], 
-        calendarAppDeepLink: URL(string: UUID().uuidString)!
-    )
+    private let stubbedEventDetails = EventDetails.make()
 
     override func setUp() {
         super.setUp()
@@ -68,6 +53,7 @@ class AttachmentViewModelTests: XCTestCase {
         }
 
         user = UserManager(api: apiService, globalContainer: testContainer)
+        user.userInfo.userAddresses.append(.dummy.updated(email: stubbedEventDetails.invitees[0].email))
 
         let fetchAttachmentMetadata = MockFetchAttachmentMetadataUseCase()
         fetchAttachmentMetadata.executionStub.bodyIs { _, _ in
@@ -93,11 +79,13 @@ class AttachmentViewModelTests: XCTestCase {
         user.container.fetchAttachmentFactory.register { fetchAttachment }
 
         sut = AttachmentViewModel(dependencies: user.container)
+        receivedRespondingStatuses = sut.respondingStatus.values.makeAsyncIterator()
     }
 
     override func tearDown() {
         super.tearDown()
 
+        receivedRespondingStatuses = nil
         subscriptions = nil
         testAttachments.removeAll()
 
@@ -200,22 +188,16 @@ class AttachmentViewModelTests: XCTestCase {
         wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 1)
     }
 
-    func testWhenICSIsFound_notifiesAboutProcessingProgress() {
+    func testWhenICSIsFound_notifiesAboutProcessingProgress() async {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
-        var receivedStates: [AttachmentViewModel.InvitationViewState] = []
+        var receivedInvitationViewStates = sut.invitationViewState.values.makeAsyncIterator()
 
-        sut.invitationViewState
-            .sink { value in
-                receivedStates.append(value)
-            }
-            .store(in: &subscriptions)
+        await receivedInvitationViewStates.expectNextValue(toBe: .noInvitationFound)
 
         sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
 
-        let expectedStates: [AttachmentViewModel.InvitationViewState] = [
-            .noInvitationFound, .invitationFoundAndProcessing, .invitationProcessed(stubbedEventDetails)
-        ]
-        wait(receivedStates == expectedStates)
+        await receivedInvitationViewStates.expectNextValue(toBe: .invitationFoundAndProcessing)
+        await receivedInvitationViewStates.expectNextValue(toBe: .invitationProcessed(stubbedEventDetails))
     }
 
     func testGivenHeadersContainEventInfo_whenAttachmentsContainICS_doesntParseICS() {
@@ -228,26 +210,140 @@ class AttachmentViewModelTests: XCTestCase {
         XCTAssertEqual(eventRSVP.extractBasicEventInfoStub.callCounter, 0)
     }
 
-    func testOpenInCalendar_whenCalendarIsInstalled_opensCalendarInsteadOfAppStore() async {
-        urlOpener.openAsyncStub.bodyIs { _, url, _ in
+    func testRespondingStatus_whenAnsweringAndChangingAnswer_showsProcessingAndThenTheSelectedAnswerEachTime() async {
+        let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
+
+        await receivedRespondingStatuses.expectNextValue(toBe: .respondingUnavailable)
+
+        sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
+
+        await receivedRespondingStatuses.expectNextValue(toBe: .awaitingUserInput)
+
+        sut.respondToInvitation(with: .yes)
+
+        await receivedRespondingStatuses.expectNextValue(toBe: .responseIsBeingProcessed)
+        await receivedRespondingStatuses.expectNextValue(toBe: .alreadyResponded(.yes))
+
+        sut.respondToInvitation(with: .maybe)
+
+        await receivedRespondingStatuses.expectNextValue(toBe: .responseIsBeingProcessed)
+        await receivedRespondingStatuses.expectNextValue(toBe: .alreadyResponded(.maybe))
+    }
+
+    func testRespondingStatus_whenAnsweringFails_revertsToPreviousValue() async {
+        let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
+
+        eventRSVP.respondToInvitationStub.bodyIs { _, _ in
+            throw NSError.badResponse()
+        }
+
+        await receivedRespondingStatuses.expectNextValue(toBe: .respondingUnavailable)
+
+        sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
+
+        await receivedRespondingStatuses.expectNextValue(toBe: .awaitingUserInput)
+
+        sut.respondToInvitation(with: .yes)
+
+        await receivedRespondingStatuses.expectNextValue(toBe: .responseIsBeingProcessed)
+        await receivedRespondingStatuses.expectNextValue(toBe: .awaitingUserInput)
+    }
+
+    func testRespondingStatus_whenUserHasPreviouslyResponded_isReflected() async {
+        let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
+
+        user.userInfo.userAddresses = [
+            .dummy.updated(email: stubbedEventDetails.invitees[1].email)
+        ]
+
+        await receivedRespondingStatuses.expectNextValue(toBe: .respondingUnavailable)
+
+        sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
+
+        await receivedRespondingStatuses.expectNextValue(toBe: .alreadyResponded(.yes))
+    }
+
+    // MARK: RSVP: Cases where responding is unavailable
+
+    func testResponding_whenUserIsNotAnInvitee_isNotAvailable() async {
+        user.userInfo.userAddresses[0] = user.userInfo.userAddresses[0]
+            .updated(email: "somethingOtherThanInvitee@example.com")
+
+        await ensureRespondingIsNotAvailableWhenICSIsReceived()
+    }
+
+    func testResponding_whenEventHasBeenCancelled_isNotAvailable() async {
+        eventRSVP.fetchEventDetailsStub.bodyIs { _, _ in
+                .make(status: .cancelled)
+        }
+
+        await ensureRespondingIsNotAvailableWhenICSIsReceived()
+    }
+
+    func testResponding_whenEventHasEnded_isNotAvailable() async {
+        eventRSVP.fetchEventDetailsStub.bodyIs { _, _ in
+                .make(endDate: .distantPast)
+        }
+
+        await ensureRespondingIsNotAvailableWhenICSIsReceived()
+    }
+
+    private func ensureRespondingIsNotAvailableWhenICSIsReceived() async {
+        let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
+        var receivedStates: [AttachmentViewModel.RespondingStatus] = []
+
+        sut.respondingStatus
+            .sink { value in
+                receivedStates.append(value)
+            }
+            .store(in: &subscriptions)
+
+        sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
+
+        await sleep(milliseconds: 50)
+
+        XCTAssertEqual(receivedStates, [.respondingUnavailable])
+    }
+
+    // MARK: RSVP: Open in Calendar
+
+    func testOpenInCalendar_whenRecentCalendarIsInstalled_directlyOpensCalendar() {
+        let deepLink = stubbedEventDetails.calendarAppDeepLink
+
+        urlOpener.canOpenURLStub.bodyIs { _, url in
+            url == deepLink
+        }
+
+        let instruction = sut.instructionToHandle(deepLink: deepLink)
+        XCTAssertEqual(instruction, .openDeepLink(deepLink))
+    }
+
+    func testOpenInCalendar_whenOutdatedCalendarIsInstalled_promptsToOpenAppStorePage() {
+        urlOpener.canOpenURLStub.bodyIs { _, url in
+            url == .ProtonCalendar.legacyScheme
+        }
+
+        let instruction = sut.instructionToHandle(deepLink: stubbedEventDetails.calendarAppDeepLink)
+        XCTAssertEqual(instruction, .goToAppStore(askBeforeGoing: true))
+    }
+
+    func testOpenInCalendar_whenBothCalendarsAreInstalled_directlyOpensCalendar() {
+        urlOpener.canOpenURLStub.bodyIs { _, url in
             true
         }
 
-        await sut.onOpenInCalendarTapped(deepLink: stubbedEventDetails.calendarAppDeepLink)
-
-        XCTAssertEqual(urlOpener.openAsyncStub.lastArguments?.a1, stubbedEventDetails.calendarAppDeepLink)
-        XCTAssertEqual(urlOpener.openAsyncStub.callCounter, 1)
+        let deepLink = stubbedEventDetails.calendarAppDeepLink
+        let instruction = sut.instructionToHandle(deepLink: deepLink)
+        XCTAssertEqual(instruction, .openDeepLink(deepLink))
     }
 
-    func testOpenInCalendar_whenCalendarIsNotInstalled_opensAppStorePage() async {
-        urlOpener.openAsyncStub.bodyIs { _, url, _ in
-            url == .AppStore.calendar
+    func testOpenInCalendar_whenCalendarIsNotInstalled_directlyOpensAppStorePage() {
+        urlOpener.canOpenURLStub.bodyIs { _, url in
+            false
         }
 
-        await sut.onOpenInCalendarTapped(deepLink: stubbedEventDetails.calendarAppDeepLink)
-
-        XCTAssertEqual(urlOpener.openAsyncStub.lastArguments?.a1, .AppStore.calendar)
-        XCTAssertEqual(urlOpener.openAsyncStub.callCounter, 2)
+        let instruction = sut.instructionToHandle(deepLink: stubbedEventDetails.calendarAppDeepLink)
+        XCTAssertEqual(instruction, .goToAppStore(askBeforeGoing: false))
     }
 
     private func makeAttachment(isInline: Bool, mimeType: String = "text/plain") -> AttachmentInfo {

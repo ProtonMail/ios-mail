@@ -32,15 +32,16 @@ public struct PaymentCreatePaymentTokenTotalLabels: Encodable, Equatable {
 
 extension ObservabilityEvent where Payload == PayloadWithLabels<PaymentCreatePaymentTokenTotalLabels> {
     private enum Constants {
-        static let eventName = "ios_core_checkout_aiapBilling_createPaymentToken_total"
+        static let staticEventName = "ios_core_checkout_aiapBilling_createPaymentToken_total"
+        static let dynamicEventName = "ios_core_checkout_dynamicPlans_aiapBilling_createPaymentToken_total"
     }
 
-    public static func paymentCreatePaymentTokenTotal(status: HTTPResponseCodeStatus) -> Self {
-        ObservabilityEvent(name: Constants.eventName, labels: PaymentCreatePaymentTokenTotalLabels(status: status))
+    public static func paymentCreatePaymentTokenTotal(status: HTTPResponseCodeStatus, isDynamic: Bool = false) -> Self {
+        ObservabilityEvent(name: isDynamic ? Constants.dynamicEventName : Constants.staticEventName, labels: PaymentCreatePaymentTokenTotalLabels(status: status))
     }
 
-    public static func paymentCreatePaymentTokenTotal(error: ResponseError) -> Self {
-        let name = Constants.eventName
+    public static func paymentCreatePaymentTokenTotal(error: ResponseError, isDynamic: Bool = false) -> Self {
+        let name = isDynamic ? Constants.dynamicEventName : Constants.staticEventName
         if let httpCode = error.httpCode {
             switch httpCode {
             case 400...499:

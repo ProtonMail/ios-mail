@@ -22,8 +22,8 @@
 
 import class ProtonCoreDataModel.UserInfo
 import ProtonCoreTroubleShooting
-import ProtonMailAnalytics
 import ProtonCoreUIFoundations
+import ProtonMailAnalytics
 import SideMenuSwift
 import protocol ProtonCoreServices.APIService
 
@@ -54,7 +54,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         true
     }
     var pendingActionAfterDismissal: (() -> Void)?
-    private let getApplicationState: () -> UIApplication.State
     private var timeOfLastNavigationToMessageDetails: Date?
 
     private let troubleShootingHelper = TroubleShootingHelper(doh: BackendConfiguration.shared.doh)
@@ -65,17 +64,12 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
          nav: UINavigationController?,
          viewController: MailboxViewController,
          viewModel: MailboxViewModel,
-         dependencies: Dependencies,
-         getApplicationState: @escaping () -> UIApplication.State = {
-        return UIApplication.shared.applicationState
-    }
-    ) {
+         dependencies: Dependencies) {
         self.sideMenu = sideMenu
         self.navigation = nav
         self.viewController = viewController
         self.viewModel = viewModel
         self.contextProvider = dependencies.contextProvider
-        self.getApplicationState = getApplicationState
         self.dependencies = dependencies
     }
 
@@ -535,13 +529,12 @@ extension MailboxCoordinator {
         let coordinator = SingleMessageCoordinator(
             navigationController: navigationController,
             labelId: viewModel.labelID,
-            message: message,
             dependencies: dependencies
         )
         coordinator.goToDraft = { [weak self] msgID, originalScheduleTime in
             self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduleTime)
         }
-        coordinator.start()
+        coordinator.start(message: message)
     }
 
     private func present(conversation: ConversationEntity, targetID: MessageID?) {
@@ -571,7 +564,7 @@ extension MailboxCoordinator {
             isUnread: viewController?.isShowingUnreadMessageOnly ?? false,
             labelID: viewModel.labelID,
             user: viewModel.user,
-            userIntroduction: userCachedStatus,
+            userIntroduction: dependencies.userCachedStatus,
             goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
@@ -586,7 +579,7 @@ extension MailboxCoordinator {
             labelID: viewModel.labelID,
             user: viewModel.user,
             targetMessageID: targetID,
-            userIntroduction: userCachedStatus,
+            userIntroduction: dependencies.userCachedStatus,
             goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }

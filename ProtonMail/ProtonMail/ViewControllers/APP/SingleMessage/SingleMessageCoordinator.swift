@@ -34,7 +34,6 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     weak var viewController: SingleMessageViewController?
 
     private let labelId: LabelID
-    let message: MessageEntity
     private let user: UserManager
     private let highlightedKeywords: [String]
     private weak var navigationController: UINavigationController?
@@ -45,20 +44,20 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     init(
         navigationController: UINavigationController,
         labelId: LabelID,
-        message: MessageEntity,
         dependencies: Dependencies,
         highlightedKeywords: [String] = []
     ) {
         self.navigationController = navigationController
         self.labelId = labelId
-        self.message = message
         self.user = dependencies.user
         self.highlightedKeywords = highlightedKeywords
         self.dependencies = dependencies
+
+        super.init()
     }
 
-    func start() {
-        let viewController = makeSingleMessageVC()
+    func start(message: MessageEntity) {
+        let viewController = makeSingleMessageVC(message: message)
         self.viewController = viewController
         if navigationController?.viewControllers.last is MessagePlaceholderVC,
            var viewControllers = navigationController?.viewControllers {
@@ -70,7 +69,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         }
     }
 
-    func makeSingleMessageVC() -> SingleMessageViewController {
+    func makeSingleMessageVC(message: MessageEntity) -> SingleMessageViewController {
         let singleMessageViewModelFactory = SingleMessageViewModelFactory(dependencies: dependencies)
         let viewModel = singleMessageViewModelFactory.createViewModel(
             labelId: labelId,
@@ -151,6 +150,10 @@ extension SingleMessageCoordinator {
 
     private func presentCompose(action: SingleMessageNavigationAction) {
         guard action.isReplyAllAction || action.isReplyAction || action.isForwardAction else { return }
+        guard
+            let message = viewController?.viewModel.message,
+            message.isDetailDownloaded
+        else { return }
 
         let composeAction: ComposeMessageAction
         switch action {
@@ -169,6 +172,7 @@ extension SingleMessageCoordinator {
     }
 
     private func presentAttachmentListView(decryptedBody: String?, attachments: [AttachmentInfo]) {
+        guard let message = viewController?.viewModel.message else { return }
         let inlineCIDS = message.getCIDOfInlineAttachment(decryptedBody: decryptedBody)
         let viewModel = AttachmentListViewModel(
             attachments: attachments,

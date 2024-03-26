@@ -78,6 +78,10 @@ final class ShareUnlockCoordinator {
             navigationViewController: navigationController
         )
         navigationController.setViewControllers([composer], animated: true)
+
+        if let error = controller.localized_errors.first {
+            error.alertToast(view: composer.view)
+        }
     }
 
     @MainActor

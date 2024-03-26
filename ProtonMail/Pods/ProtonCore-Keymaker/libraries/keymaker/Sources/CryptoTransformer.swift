@@ -57,8 +57,9 @@ public class StringCryptoTransformer: CryptoTransformer {
     }
 }
 
-public class CryptoTransformer: ValueTransformer {
-    fileprivate var key: MainKey
+open class CryptoTransformer: ValueTransformer {
+    public private(set) var key: MainKey
+
     public init(key: MainKey) {
         self.key = key
     }
