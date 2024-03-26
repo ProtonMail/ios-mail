@@ -109,10 +109,6 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
              // approx height and width of our text row
             let сaretBounds = CGSize(width: 100, height: 100)
 
-            // horizontal
-            let offsetAreaInWebView = CGRect(x: offset.x - сaretBounds.width / 2, y: 0, width: сaretBounds.width, height: 1)
-            self.webView.scrollView.scrollRectToVisible(offsetAreaInWebView, animated: true)
-
             // vertical
             let offsetAreaInCell = CGRect(x: 0, y: offset.y - сaretBounds.height / 2, width: 1, height: сaretBounds.height)
             let offsetArea = self.view.convert(offsetAreaInCell, to: enclosingScroller.scroller)
