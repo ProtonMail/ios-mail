@@ -1837,13 +1837,13 @@
 "Your Mail storage is %@ full" = "Dit Mail-lager er %@ fyldt";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "Dit drev lagerplads er %@ fyldt";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "Din Mail lagerplads er fuld";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "Din Drev lagerplads er fuld";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Opgrader for at få mere lagerplads.";
@@ -1888,6 +1888,15 @@
 
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Fjern blokering";
+
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Your schedule is worth protecting";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Get Proton Calendar app";
 
 /* Name of the feature */
 "Email tracking protection" = "Beskyttelse mod sporing af e-mail";
@@ -1938,13 +1947,13 @@
 "I might attend" = "Jeg deltager måske";
 
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "Max lagerplads";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "Lagerplads: %@ fyldt";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
+"Drive storage: %@ full" = "Drev lagerplads: %@ fyldt";
 
 /* Upgrade button action */
 "Upgrade" = "Opgradér";
@@ -2064,10 +2073,19 @@
 "Application logs" = "Applikationslogs";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Gå til næste e-mail";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Vis automatisk den næste e-mail når en åben e-mail slettes, arkiveres eller flyttes.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Turn on feature";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Read emails faster";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Der opstod en ukendt fejl. Kontakt supporten.\nError: %@";
@@ -2316,31 +2334,31 @@
 "Allow navigating through messages by swiping left or right." = "Gør det muligt at navigere gennem beskeder ved at stryge til venstre eller højre.";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "Dine kontakter lige ved hånden";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Ingen grund til at forlade app'en for at finde en e-mailadresse. Synkroniser kontakter fra din enhed til Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "Aktiver automatisk import";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "Ingen kontakter endnu";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "Importer kontakter fra din enhed, for nemt at kunne sende emails og invitationer";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "Automatisk import af kontakter";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "Importerer dine kontakter";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "Dine kontakter vises her om kort tid";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "Tilføj automatisk nye kontakter fra din enhed";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Privatliv og data";

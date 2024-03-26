@@ -49,6 +49,7 @@ public class Quark {
     private var httpClientReadTimeout: TimeInterval = 30
     private var httpClientWriteTimeout: TimeInterval = 30
     private var onResponse: OnQuarkResponse?
+    private var httpMethod: String = "GET"
 
     public init() {
     }
@@ -116,6 +117,12 @@ public class Quark {
     public func proxyToken(_ proxyToken: String) -> Quark {
         self.proxyToken = proxyToken
         return self
+    }    
+
+    @discardableResult
+    public func httpMethod(_ method: String) -> Quark {
+        self.httpMethod = method
+        return self
     }
 
     /**
@@ -170,6 +177,7 @@ public class Quark {
 
         var request = URLRequest(url: URL(string: "https://dummy")!) // Using a dummy URL, internalUrl will replace it
         request.internalUrl(baseUrl: baseUrl, route: route, args: self.args)
+        request.httpMethod = self.httpMethod
 
         onRequestBuilder?(&request)
 

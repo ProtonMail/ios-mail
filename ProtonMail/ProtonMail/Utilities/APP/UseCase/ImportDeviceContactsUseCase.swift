@@ -154,10 +154,10 @@ extension ImportDeviceContacts {
         let matcher = ProtonContactMatcher(contactProvider: dependencies.contactService)
         let (matchByUuid, matchByEmail) = matcher.matchProtonContacts(with: identifiers)
         let allDeviceContactsToUpdate = matchByUuid + matchByEmail
+
+        let tempAllDeviceContactsUUIDSet = Set(allDeviceContactsToUpdate.map(\.uuidNormalisedForAutoImport))
         let toCreate = identifiers.filter { deviceContact in
-            !allDeviceContactsToUpdate
-                .map(\.uuidNormalisedForAutoImport)
-                .contains(deviceContact.uuidNormalisedForAutoImport)
+            !tempAllDeviceContactsUUIDSet.contains(deviceContact.uuidNormalisedForAutoImport)
         }
         let deviceContactsToImport = DeviceContactsToImport(
             toCreate: toCreate,

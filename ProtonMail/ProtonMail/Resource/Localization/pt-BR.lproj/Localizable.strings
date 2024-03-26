@@ -1837,13 +1837,13 @@
 "Your Mail storage is %@ full" = "Seu armazenamento do Mail está %@ cheio";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "Seu armazenamento do Drive está %@ cheio";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "Seu armazenamento do Mail está cheio";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "Seu armazenamento do Drive está cheio";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Faça upgrade para obter mais armazenamento.";
@@ -1888,6 +1888,15 @@
 
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Desbloquear";
+
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Não deixe sua agenda sem proteção";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Seu calendário é um registro da sua vida. O Proton Calendar ajuda a mantê-lo em sigilo.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Obtenha o Proton Calendar";
 
 /* Name of the feature */
 "Email tracking protection" = "Proteção de rastreamento de e-mail";
@@ -1941,10 +1950,10 @@
 "Max Storage" = "Armazenamento máximo";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "Armazenamento: %@ cheio";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
+"Drive storage: %@ full" = "Armazenamento do Drive: %@ cheio";
 
 /* Upgrade button action */
 "Upgrade" = "Fazer upgrade";
@@ -2064,10 +2073,19 @@
 "Application logs" = "Registros do aplicativo";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Ir para o próximo e-mail";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Mostrar automaticamente o próximo email quando um email aberto for excluído, arquivado ou movido.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Ativar recurso";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "Abra o próximo e-mail na caixa de entrada ao excluir ou mover o atual.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Leia e-mails com mais rapidez";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Ocorreu um erro inesperado, entre em contato com o suporte.\nErro: %@";
@@ -2316,10 +2334,10 @@
 "Allow navigating through messages by swiping left or right." = "Permitir a navegação através das mensagens deslizando para a esquerda ou para a direita.";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "Seus contatos ao seu alcance";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Não é necessário sair do aplicativo para encontrar um endereço de email. Sincronize os contatos do seu dispositivo com o Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
 "Enable auto-import" = "Ativar importação automática";
@@ -2328,7 +2346,7 @@
 "No contacts yet" = "Ainda não existem contatos";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "Importe contatos do seu dispositivo para enviar emails e convites com facilidade.";
 
 /* Button title for no contact hint view */
 "Auto-import contacts" = "Importar automaticamente contatos";
@@ -2337,10 +2355,10 @@
 "Importing your contacts" = "Importando seus contatos";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "Seus contatos aparecerão aqui em breve.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "Adicionar automaticamente novos contatos do seu dispositivo.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Privacidade e dados";

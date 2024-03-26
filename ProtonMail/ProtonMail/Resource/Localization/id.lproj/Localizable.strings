@@ -1837,13 +1837,13 @@
 "Your Mail storage is %@ full" = "Ruang penyimpanan Mail Anda %@ penuh";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "Ruang penyimpanan Drive Anda %@ penuh";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "Ruang penyimpanan Mail Anda penuh";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "Ruang penyimpanan Drive Anda penuh";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Tingkatkan akun Anda untuk memperoleh lebih banyak ruang penyimpanan.";
@@ -1888,6 +1888,15 @@
 
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Buka Blokir";
+
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Jadwal Anda layak untuk dilindungi";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Kalendermu catatan hidupmu. Proton Calendar menjaga privasimu.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Dapatkan aplikasi Proton Calendar";
 
 /* Name of the feature */
 "Email tracking protection" = "Perlindungan pelacak surel";
@@ -1938,13 +1947,13 @@
 "I might attend" = "Saya mungkin akan hadir";
 
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "Penyimpanan Maks";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "Penyimpanan: %@ penuh";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
+"Drive storage: %@ full" = "Penyimpanan drive: %@ penuh";
 
 /* Upgrade button action */
 "Upgrade" = "Tingkatkan";
@@ -2064,10 +2073,19 @@
 "Application logs" = "Log aplikasi";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Pergi ke surel berikutnya";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Tampilkan surel berikutnya secara otomaris ketika surel yang dibuka telah dihapus, diarsip, atau dipindah.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Aktifkan fitur";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "Lihat surel berikutnya di kotak masuk setelah menghapus atau memindahkan surel yang baru saja dibaca.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Baca surel lebih cepat";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Terjadi kesalahan yang tidak diduga, silakan menghubungi bantuan.\nKesalahan: %@";
@@ -2316,31 +2334,31 @@
 "Allow navigating through messages by swiping left or right." = "Perbolehkan menavigasi pesan-pesan dengan mengusap ke kiri atau ke kanan.";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "Kontak Anda di ujung jari Anda";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Tidak perlu keluar dari aplikasi untuk mencari alamat surel. Sinkronkan kontak dari perangkat ke Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "Aktifkan pengimporan otomatis";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "Belum ada kontak";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "Impor kontak dari perangkat Anda untuk mengirim surel dan undangan dengan mudah.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "Impor kontak secara otomatis";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "Mengimpor kontak Anda";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "Kontak Anda akan muncul di sini.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "Tambahkan kontak baru dari perangkat Anda secara otomatis.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Privasi dan data";

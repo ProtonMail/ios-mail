@@ -1889,6 +1889,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Avblockera";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Your schedule is worth protecting";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Din kalender är ett register över ditt liv, Proton Calendar hjälper till att hålla den privat.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Skaffa Proton Calendar-appen";
+
 /* Name of the feature */
 "Email tracking protection" = "E-postspårningsskydd";
 
@@ -2068,6 +2077,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Visa automatiskt nästa e-postmeddelande när ett öppet e-postmeddelande tas bort, arkiveras eller flyttas.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Slå på funktion";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "Visa nästa e-postmeddelande i din inkorg när du tar bort eller flyttar det nuvarande e-postmeddelandet.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Läs e-post fortare";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Ett oväntat fel uppstod, kontakta supporten.\nFel: %@";
