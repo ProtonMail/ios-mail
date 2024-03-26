@@ -1889,6 +1889,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Débloquer";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Votre horaire mérite d'être protégé";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Votre calendrier reflète votre vie quotidienne. Proton Calendar assure sa confidentialité.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Obtenez Proton Calendar";
+
 /* Name of the feature */
 "Email tracking protection" = "Protection contre le suivi des e-mails";
 
@@ -2068,6 +2077,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Affichez automatiquement le message suivant lorsque le message en cours est supprimé, archivé ou déplacé.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Activer la fonctionnalité";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "Affichez le message suivant dans votre boite de réception lorsque vous supprimez ou déplacez le message actuel.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Lisez vos messages plus vite";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Une erreur inattendue s'est produite, nous vous invitons à contacter le support.\n%@";
@@ -2262,13 +2280,13 @@
 "Downloading attachment" = "Téléchargement de la pièce jointe";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Mise en pause jusqu'au %@";
+"Snoozed until %@" = "Mise en attente jusqu'au %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
 "Unsnooze" = "Arrêter la mise en attente";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Mise en pause jusqu'au %@";
+"Snooze until %@" = "Mise en attente jusqu'au %@";
 
 /* Notification banner when user unsnooze a conversation */
 "Conversation unsnoozed" = "La conversation n'est plus en attente.";

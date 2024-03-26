@@ -1843,7 +1843,7 @@
 "Your Mail storage is full" = "Ваше сховище Proton Mail заповнене";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "Ваше сховище Proton Drive заповнене";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Upgrade to get more storage.";
@@ -1889,6 +1889,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Розблокувати";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Your schedule is worth protecting";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Get Proton Calendar app";
+
 /* Name of the feature */
 "Email tracking protection" = "Захист від стеження електронної пошти";
 
@@ -1929,10 +1938,10 @@
 "Maybe" = "Maybe";
 
 /* Confirm attending an event */
-"Yes, I'll attend" = "Підтверджую присутність";
+"Yes, I'll attend" = "Підтверджую участь";
 
 /* Deny attending an event */
-"No, I won't attend" = "Не підтверджую присутність";
+"No, I won't attend" = "Не підтверджую участь";
 
 /* Neither confirm nor deny attending an event */
 "I might attend" = "I might attend";
@@ -2068,6 +2077,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Turn on feature";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Read emails faster";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Сталася невідома помилка. Будь ласка, зверніться до служби підтримки.\nПомилка: %@";
@@ -2259,7 +2277,7 @@
 "Unable to preview this attachment" = "Unable to preview this attachment";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
-"Downloading attachment" = "Завантаження вкладення";
+"Downloading attachment" = "Завантажується вкладення";
 
 /* The banner title that is shown in the message detail view. */
 "Snoozed until %@" = "Snoozed until %@";
@@ -2304,7 +2322,7 @@
 "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.";
 
 /* Description string shows in spotlight view */
-"Snooze it for later" = "Відкласти це на потім";
+"Snooze it for later" = "Відкласти на потім";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Add it as attachment";

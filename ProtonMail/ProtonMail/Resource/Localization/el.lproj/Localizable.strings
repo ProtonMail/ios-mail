@@ -1837,13 +1837,13 @@
 "Your Mail storage is %@ full" = "Ο αποθηκευτικός χώρος του Mail σας είναι %@ γεμάτος";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "Ο αποθηκευτικός χώρος του Drive σας είναι %@ γεμάτος";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "Ο αποθηκευτικός χώρος του Mail σας είναι γεμάτος";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "Ο αποθηκευτικός χώρος του Drive σας είναι γεμάτος";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Αναβαθμίστε για να αποκτήσετε περισσότερο χώρο αποθήκευσης.";
@@ -1888,6 +1888,15 @@
 
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Κατάργηση από αποκλεισμό";
+
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Your schedule is worth protecting";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Get Proton Calendar app";
 
 /* Name of the feature */
 "Email tracking protection" = "Προστασία ιχνηλασίας μηνυμάτων";
@@ -1938,13 +1947,13 @@
 "I might attend" = "Μπορεί να παρευρεθώ";
 
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "Μέγιστος Αποθηκευτικός χώρος";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "Αποθηκευτικός χώρος: %@ πλήρης";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
+"Drive storage: %@ full" = "Αποθηκευτικός χώρος Drive: %@ πλήρης";
 
 /* Upgrade button action */
 "Upgrade" = "Αναβάθμιση";
@@ -2064,10 +2073,19 @@
 "Application logs" = "Αρχεία καταγραφών εφαρμογής";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Μετάβαση στο επόμενο μήνυμα";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Αυτόματη εμφάνιση του επόμενου μηνύματος όταν το τρέχον μήνυμα διαγράφεται, αρχειοθετείται ή μετακινείται.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Turn on feature";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Read emails faster";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Παρουσιάστηκε μην αναμενόμενο σφάλμα, παρακαλούμε επικοινωνήστε με την υποστήριξη.\nΣφάλμα: %@";
@@ -2316,31 +2334,31 @@
 "Allow navigating through messages by swiping left or right." = "Επιτρέψτε την πλοήγηση στα μηνύματα σύροντας προς τα αριστερά ή προς τα δεξιά.";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "Οι επαφές σας στα χέρια σας";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Δε χρειάζεται να αποχωρήσετε από την εφαρμογή για να βρείτε μια διεύθυνση email. Συγχρονίστε επαφές από τη συσκευή σας στο Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "Ενεργοποίηση Αυτόματης Εισαγωγής";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "Καμία Επαφή";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "Εισαγάγετε επαφές από τη συσκευή σας για εύκολη αποστολή μηνυμάτων ηλεκτρονικού ταχυδρομείου και προσκλήσεων.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "Αυτόματη εισαγωγή επαφών";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "Εισαγωγή των επαφών σας";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "Οι επαφές σας θα εμφανιστούν εδώ σύντομα.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "Προσθέστε αυτόματα νέες επαφές από τη συσκευή σας.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Απόρρητο και δεδομένα";

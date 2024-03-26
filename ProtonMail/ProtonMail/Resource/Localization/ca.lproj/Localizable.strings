@@ -1843,7 +1843,7 @@
 "Your Mail storage is full" = "El vostre emmagatzematge de Mail és ple.";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "El seu espai a Drive és ple";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Milloreu per a obtenir més emmagatzematge.";
@@ -1888,6 +1888,15 @@
 
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Desbloqueja";
+
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Your schedule is worth protecting";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Get Proton Calendar app";
 
 /* Name of the feature */
 "Email tracking protection" = "Protecció de seguiment de correu electrònic";
@@ -1941,7 +1950,7 @@
 "Max Storage" = "Emmagatzematge màxim";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "Emmagatzematge: %@ ple";
 
 /* Cell title that shows the percentage of the storage */
 "Drive storage: %@ full" = "Drive storage: %@ full";
@@ -2068,6 +2077,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Turn on feature";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Read emails faster";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "S'ha produït un error inesperat.\nError: %@";

@@ -1481,7 +1481,7 @@
 "You are not connected. We cannot display the content of your message." = "No está conectado. No podemos mostrar el contenido del mensaje.";
 
 /* No comment provided by engineer. */
-"Do you really want to remove this file from attachments?" = "¿En verdad desea borrar este archivo de los archivos adjuntos?";
+"Do you really want to remove this file from attachments?" = "¿Está seguro de que quiere borrar este archivo de los archivos adjuntos?";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Cargar imágenes incrustadas";
@@ -1889,6 +1889,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Desbloquear";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Su agenda merece estar protegida";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Su calendario es un registro de su vida. Proton Calendar le ayuda a mantenerlo privado.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Obtenga la app de Proton Calendar";
+
 /* Name of the feature */
 "Email tracking protection" = "Protección de rastreo de correo";
 
@@ -2068,6 +2077,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Muestra automáticamente el correo electrónico siguiente cuando el correo electrónico actual se elimina, archiva o mueve.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Activar la función";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "Visualice el siguiente correo electrónico en su bandeja de entrada cuando elimine o mueva el correo electrónico actual.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Lee sus correos electrónicos más rápido";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Ocurrió un error inesperado. Contacte con soporte.\nError: %@";

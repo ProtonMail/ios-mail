@@ -1843,7 +1843,7 @@
 "Your Mail storage is full" = "Uw Mail opslag is vol";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "Uw online opslag is vol";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Upgrade om meer opslag te krijgen.";
@@ -1888,6 +1888,15 @@
 
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Deblokkeer";
+
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Your schedule is worth protecting";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Get Proton Calendar app";
 
 /* Name of the feature */
 "Email tracking protection" = "Bescherming tegen e-mailtracking";
@@ -1944,7 +1953,7 @@
 "Storage: %@ full" = "Storage: %@ full";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
+"Drive storage: %@ full" = "Drive-opslag: %@ vol";
 
 /* Upgrade button action */
 "Upgrade" = "Upgraden";
@@ -2061,13 +2070,22 @@
 "Password updated" = "Wachtwoord bijgewerkt";
 
 /* Title for application logs settings option */
-"Application logs" = "Toepassingslogboek";
+"Application logs" = "Applicatielogboek";
 
 /* The title of the setting of the next msg after move */
 "Jump to next email" = "Jump to next email";
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Turn on feature";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Read emails faster";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Er gebeurde een onverwachte fout, contacteer support.\nFout: %@";
@@ -2331,16 +2349,16 @@
 "Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "Automatisch contacten importeren";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "Contactpersonen importeren";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "Uw contactpersonen verschijnen binnenkort.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "Voeg automatisch nieuwe contactpersonen toe van uw apparaat.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Privacy en gegevens";
