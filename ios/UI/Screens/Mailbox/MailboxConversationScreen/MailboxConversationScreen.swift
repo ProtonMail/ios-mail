@@ -30,56 +30,71 @@ struct MailboxConversationScreen: View {
         ZStack {
             switch model.state {
             case .loading:
-                ProgressView()
+                loadingView
             case .empty:
-                VStack {
-                    Text("No conversations")
-                }
+                emptyStateView
             case .data(let conversations):
-                List {
-                    ForEach(conversations) { conversation in
-                        VStack {
-                            MailboxConversationCell(
-                                uiModel: conversation,
-                                onEvent: { [weak model] event in
-                                    switch event {
-                                    case .onSelectedChange(let isSelected):
-                                        model?.onConversationSelectionChange(id: conversation.id, isSelected: isSelected)
-                                    case .onStarredChange(let isStarred):
-                                        model?.onConversationStarChange(id: conversation.id, isStarred: isStarred)
-                                    case .onAttachmentTap(let attachmentId):
-                                        model?.onAttachmentTap(attachmentId: attachmentId)
-                                    }
-                                }
-                            )
-                            .mailboxSwipeActions(
-                                itemId: conversation.id,
-                                isItemRead: conversation.isRead,
-                                action: model.onConversationAction(_:conversationId:newReadStatus:)
-                            )
-
-                            Spacer().frame(height: DS.Spacing.tiny)
-                        }
-                        .listRowInsets(
-                            .init(top: 0, leading: DS.Spacing.tiny, bottom: 0, trailing: 0)
-                        )
-                        .listRowSeparator(.hidden)
-                        .compositingGroup()
-                        .clipShape(
-                            .rect(
-                                topLeadingRadius: 20,
-                                bottomLeadingRadius: 20,
-                                bottomTrailingRadius: 0,
-                                topTrailingRadius: 0
-                            )
-                        )
-                        .background(DS.Color.Background.norm) // cell background color after clipping
-                    }
-                }
-                .listStyle(.plain)
+                conversationListView(conversations: conversations)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+extension MailboxConversationScreen {
+
+    private var loadingView: some View {
+        ProgressView()
+    }
+
+    private var emptyStateView: some View {
+        VStack {
+            Text("No conversations")
+        }
+    }
+
+    private func conversationListView(conversations: [MailboxConversationCellUIModel]) -> some View {
+        List {
+            ForEach(conversations) { conversation in
+                VStack {
+                    MailboxConversationCell(
+                        uiModel: conversation,
+                        onEvent: { [weak model] event in
+                            switch event {
+                            case .onSelectedChange(let isSelected):
+                                model?.onConversationSelectionChange(id: conversation.id, isSelected: isSelected)
+                            case .onStarredChange(let isStarred):
+                                model?.onConversationStarChange(id: conversation.id, isStarred: isStarred)
+                            case .onAttachmentTap(let attachmentId):
+                                model?.onAttachmentTap(attachmentId: attachmentId)
+                            }
+                        }
+                    )
+                    .mailboxSwipeActions(
+                        itemId: conversation.id,
+                        isItemRead: conversation.isRead,
+                        action: model.onConversationAction(_:conversationId:newReadStatus:)
+                    )
+
+                    Spacer().frame(height: DS.Spacing.tiny)
+                }
+                .listRowInsets(
+                    .init(top: 0, leading: DS.Spacing.tiny, bottom: 0, trailing: 0)
+                )
+                .listRowSeparator(.hidden)
+                .compositingGroup()
+                .clipShape(
+                    .rect(
+                        topLeadingRadius: 20,
+                        bottomLeadingRadius: 20,
+                        bottomTrailingRadius: 0,
+                        topTrailingRadius: 0
+                    )
+                )
+                .background(DS.Color.Background.norm) // cell background color after clipping
+            }
+        }
+        .listStyle(.plain)
     }
 }
 

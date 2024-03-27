@@ -32,73 +32,91 @@ struct MailboxConversationCell: View {
 
     var body: some View {
         HStack(spacing: DS.Spacing.large) {
-
-            AvatarCheckboxView(
-                isSelected: uiModel.isSelected.value,
-                avatar: uiModel.avatar,
-                onDidChangeSelection: { onEvent(.onSelectedChange(isSelected: $0)) }
-            )
-            .frame(width: 40, height: 40)
-
+            avatarView
             VStack(spacing: 0) {
-
-                HStack(spacing: DS.Spacing.small) {
-
-                    Text(uiModel.senders)
-                        .font(.subheadline)
-                        .fontWeight(uiModel.isRead ? .regular : .bold)
-                        .lineLimit(1)
-                        .foregroundColor(textColor)
-                    ProtonOfficialBadgeView()
-                        .removeViewIf(!uiModel.isSenderProtonOfficial)
-                    MailboxConversationMessageCountView(numMessages: uiModel.numMessages)
-                        .removeViewIf(uiModel.numMessages == 0)
-                    Spacer()
-                    Text(uiModel.date.mailboxFormat())
-                        .font(.caption2)
-                        .fontWeight(uiModel.isRead ? .regular : .bold)
-                        .foregroundColor(uiModel.isRead ? DS.Color.Text.hint : DS.Color.Text.norm)
-                }
-
-                HStack(spacing: DS.Spacing.small) {
-
-                    Text(uiModel.subject)
-                        .font(DS.Font.body3)
-                        .fontWeight(uiModel.isRead ? .regular : .bold)
-                        .lineLimit(1)
-                        .foregroundColor(textColor)
-                        .layoutPriority(1)
-                    MailboxLabelView(uiModel: uiModel.labelUIModel)
-                        .padding(.leading, labelLeadingPadding)
-                        .removeViewIf(uiModel.labelUIModel.isEmpty)
-                    Spacer()
-                    Image(uiImage: uiModel.isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
-                        .resizable()
-                        .frame(width: 16, height: 16)
-                        .foregroundColor(uiModel.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
-                        .onTapGesture {
-                            onEvent(.onStarredChange(isStarred: !uiModel.isStarred))
-                        }
-                }
-                .padding(.top, DS.Spacing.small)
-
-                Text(uiModel.expirationDate ?? "")
-                    .font(.footnote)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(DS.Color.Text.weak)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.top, DS.Spacing.small)
-                    .removeViewIf(uiModel.expirationDate == nil)
-                AttachmentsView(uiModel: uiModel.attachmentsUIModel, onTapEvent: {
-                    onEvent(.onAttachmentTap(attachmentId: $0))
-                })
-                .padding(.top, DS.Spacing.standard)
-                .removeViewIf(uiModel.attachmentsUIModel.isEmpty)
+                senderRowView
+                subjectRowView
+                expirationRowView
+                attachmentRowView
             }
         }
         .padding(.horizontal, DS.Spacing.large)
         .padding(.vertical, DS.Spacing.medium)
         .background(uiModel.isSelected.value ? DS.Color.Background.secondary : DS.Color.Background.norm)
+    }
+}
+
+extension MailboxConversationCell {
+
+    private var avatarView: some View {
+        AvatarCheckboxView(
+            isSelected: uiModel.isSelected.value,
+            avatar: uiModel.avatar,
+            onDidChangeSelection: { onEvent(.onSelectedChange(isSelected: $0)) }
+        )
+        .frame(width: 40, height: 40)
+    }
+
+    private var senderRowView: some View {
+        HStack(spacing: DS.Spacing.small) {
+            Text(uiModel.senders)
+                .font(.subheadline)
+                .fontWeight(uiModel.isRead ? .regular : .bold)
+                .lineLimit(1)
+                .foregroundColor(textColor)
+            ProtonOfficialBadgeView()
+                .removeViewIf(!uiModel.isSenderProtonOfficial)
+            MailboxConversationMessageCountView(numMessages: uiModel.numMessages)
+                .removeViewIf(uiModel.numMessages == 0)
+            Spacer()
+            Text(uiModel.date.mailboxFormat())
+                .font(.caption2)
+                .fontWeight(uiModel.isRead ? .regular : .bold)
+                .foregroundColor(uiModel.isRead ? DS.Color.Text.hint : DS.Color.Text.norm)
+        }
+    }
+
+    private var subjectRowView: some View {
+        HStack(spacing: DS.Spacing.small) {
+            Text(uiModel.subject)
+                .font(DS.Font.body3)
+                .fontWeight(uiModel.isRead ? .regular : .bold)
+                .lineLimit(1)
+                .foregroundColor(textColor)
+                .layoutPriority(1)
+            MailboxLabelView(uiModel: uiModel.labelUIModel)
+                .padding(.leading, labelLeadingPadding)
+                .removeViewIf(uiModel.labelUIModel.isEmpty)
+            Spacer()
+            Image(uiImage: uiModel.isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
+                .resizable()
+                .frame(width: 16, height: 16)
+                .foregroundColor(uiModel.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
+                .onTapGesture {
+                    onEvent(.onStarredChange(isStarred: !uiModel.isStarred))
+                }
+        }
+        .padding(.top, DS.Spacing.small)
+    }
+
+    private var expirationRowView: some View {
+
+        Text(uiModel.expirationDate ?? "")
+            .font(.footnote)
+            .fontWeight(.semibold)
+            .foregroundStyle(DS.Color.Text.weak)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, DS.Spacing.small)
+            .removeViewIf(uiModel.expirationDate == nil)
+    }
+
+    private var attachmentRowView: some View {
+
+        AttachmentsView(uiModel: uiModel.attachmentsUIModel, onTapEvent: {
+            onEvent(.onAttachmentTap(attachmentId: $0))
+        })
+        .padding(.top, DS.Spacing.standard)
+        .removeViewIf(uiModel.attachmentsUIModel.isEmpty)
     }
 }
 
