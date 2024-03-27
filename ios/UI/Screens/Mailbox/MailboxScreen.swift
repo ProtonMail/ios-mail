@@ -22,10 +22,12 @@ struct MailboxScreen: View {
     @EnvironmentObject private var appUIState: AppUIState
     @EnvironmentObject private var userSettings: UserSettings
 
-    var mailboxModel: MailboxModel
+    private var mailboxModel: MailboxModel
+    @ObservedObject private var appRoute: AppRoute
 
     init(mailboxModel: MailboxModel) {
         self.mailboxModel = mailboxModel
+        self.appRoute = mailboxModel.appRoute
     }
 
     var body: some View {
@@ -39,7 +41,7 @@ struct MailboxScreen: View {
             }
             .background(DS.Color.Background.norm) // sets also the color for the navigation bar
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(mailboxModel.appRoute.selectedMailbox.name)
+            .navigationTitle(appRoute.selectedMailbox.name)
             .mailboxToolbar()
         }
     }
