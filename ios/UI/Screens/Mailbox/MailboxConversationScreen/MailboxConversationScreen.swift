@@ -20,15 +20,15 @@ import SwiftUI
 
 struct MailboxConversationScreen: View {
     @EnvironmentObject var userSettings: UserSettings
-    private var model: MailboxConversationType
+    @ObservedObject private var model: MailboxConversationModel
 
-    init(model: MailboxConversationType) {
+    init(model: MailboxConversationModel) {
         self.model = model
     }
 
     var body: some View {
         ZStack {
-            switch model.output.state {
+            switch model.state {
             case .loading:
                 ProgressView()
             case .empty:
@@ -44,18 +44,18 @@ struct MailboxConversationScreen: View {
                                 onEvent: { [weak model] event in
                                     switch event {
                                     case .onSelectedChange(let isSelected):
-                                        model?.input.onConversationSelectionChange(id: conversation.id, isSelected: isSelected)
+                                        model?.onConversationSelectionChange(id: conversation.id, isSelected: isSelected)
                                     case .onStarredChange(let isStarred):
-                                        model?.input.onConversationStarChange(id: conversation.id, isStarred: isStarred)
+                                        model?.onConversationStarChange(id: conversation.id, isStarred: isStarred)
                                     case .onAttachmentTap(let attachmentId):
-                                        model?.input.onAttachmentTap(attachmentId: attachmentId)
+                                        model?.onAttachmentTap(attachmentId: attachmentId)
                                     }
                                 }
                             )
                             .mailboxSwipeActions(
                                 itemId: conversation.id,
                                 isItemRead: conversation.isRead,
-                                action: model.input.onConversationAction(_:conversationId:newReadStatus:)
+                                action: model.onConversationAction(_:conversationId:newReadStatus:)
                             )
 
                             Spacer().frame(height: DS.Spacing.tiny)
@@ -84,9 +84,17 @@ struct MailboxConversationScreen: View {
 }
 
 #Preview {
-    let mailboxConversationModel = MailboxConversationModel(
-        selectedMailbox: .defaultMailbox,
-        state: .data(PreviewData.mailboxConversations)
-    )
-    return MailboxConversationScreen(model: mailboxConversationModel)
+    let route: AppRoute = .init(route: .mailbox(label: .placeHolderMailbox))
+
+    struct PreviewWrapper: View {
+        @State var appRoute: AppRoute
+
+        var body: some View {
+            MailboxConversationScreen(model: .init(
+                appRoute: appRoute,
+                state: .empty // .data(PreviewData.mailboxConversations)
+            ))
+        }
+    }
+    return PreviewWrapper(appRoute: route)
 }

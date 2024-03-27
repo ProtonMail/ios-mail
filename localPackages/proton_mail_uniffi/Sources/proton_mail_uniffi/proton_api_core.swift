@@ -297,6 +297,27 @@ private func uniffiCheckCallStatus(
 // Public interface members begin here.
 
 
+fileprivate struct FfiConverterBool : FfiConverter {
+    typealias FfiType = Int8
+    typealias SwiftType = Bool
+
+    public static func lift(_ value: Int8) throws -> Bool {
+        return value != 0
+    }
+
+    public static func lower(_ value: Bool) -> Int8 {
+        return value ? 1 : 0
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> Bool {
+        return try lift(readInt(&buf))
+    }
+
+    public static func write(_ value: Bool, into buf: inout [UInt8]) {
+        writeInt(&buf, lower(value))
+    }
+}
+
 fileprivate struct FfiConverterString: FfiConverter {
     typealias SwiftType = String
     typealias FfiType = RustBuffer
@@ -333,6 +354,94 @@ fileprivate struct FfiConverterString: FfiConverter {
         writeInt(&buf, len)
         writeBytes(&buf, value.utf8)
     }
+}
+
+
+/**
+ * API Environment Configuration
+ */
+public struct ApiEnvConfig {
+    public var appVersion: String
+    public var baseUrl: String
+    public var userAgent: String
+    public var allowHttp: Bool
+    public var skipSrpProofValidation: Bool
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(
+        appVersion: String, 
+        baseUrl: String, 
+        userAgent: String, 
+        allowHttp: Bool, 
+        skipSrpProofValidation: Bool) {
+        self.appVersion = appVersion
+        self.baseUrl = baseUrl
+        self.userAgent = userAgent
+        self.allowHttp = allowHttp
+        self.skipSrpProofValidation = skipSrpProofValidation
+    }
+}
+
+
+extension ApiEnvConfig: Equatable, Hashable {
+    public static func ==(lhs: ApiEnvConfig, rhs: ApiEnvConfig) -> Bool {
+        if lhs.appVersion != rhs.appVersion {
+            return false
+        }
+        if lhs.baseUrl != rhs.baseUrl {
+            return false
+        }
+        if lhs.userAgent != rhs.userAgent {
+            return false
+        }
+        if lhs.allowHttp != rhs.allowHttp {
+            return false
+        }
+        if lhs.skipSrpProofValidation != rhs.skipSrpProofValidation {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(appVersion)
+        hasher.combine(baseUrl)
+        hasher.combine(userAgent)
+        hasher.combine(allowHttp)
+        hasher.combine(skipSrpProofValidation)
+    }
+}
+
+
+public struct FfiConverterTypeAPIEnvConfig: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> ApiEnvConfig {
+        return
+            try ApiEnvConfig(
+                appVersion: FfiConverterString.read(from: &buf), 
+                baseUrl: FfiConverterString.read(from: &buf), 
+                userAgent: FfiConverterString.read(from: &buf), 
+                allowHttp: FfiConverterBool.read(from: &buf), 
+                skipSrpProofValidation: FfiConverterBool.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: ApiEnvConfig, into buf: inout [UInt8]) {
+        FfiConverterString.write(value.appVersion, into: &buf)
+        FfiConverterString.write(value.baseUrl, into: &buf)
+        FfiConverterString.write(value.userAgent, into: &buf)
+        FfiConverterBool.write(value.allowHttp, into: &buf)
+        FfiConverterBool.write(value.skipSrpProofValidation, into: &buf)
+    }
+}
+
+
+public func FfiConverterTypeAPIEnvConfig_lift(_ buf: RustBuffer) throws -> ApiEnvConfig {
+    return try FfiConverterTypeAPIEnvConfig.lift(buf)
+}
+
+public func FfiConverterTypeAPIEnvConfig_lower(_ value: ApiEnvConfig) -> RustBuffer {
+    return FfiConverterTypeAPIEnvConfig.lower(value)
 }
 
 

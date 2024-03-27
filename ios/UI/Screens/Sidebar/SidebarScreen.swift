@@ -22,14 +22,11 @@ struct SidebarScreen: View {
     @EnvironmentObject private var appUIState: AppUIState
     @State private var screenModel: SidebarScreenModel
 
-    @Binding private var selectedRoute: Route
+    private let animation: Animation = .easeInOut(duration: 0.2)
 
-    init(selectedRoute: Binding<Route>, screenModel: SidebarScreenModel = .init()) {
-        self._selectedRoute = selectedRoute
+    init(screenModel: SidebarScreenModel) {
         self.screenModel = screenModel
     }
-
-    private let animation: Animation = .easeInOut(duration: 0.2)
 
     var body: some View {
         ZStack {
@@ -72,8 +69,11 @@ struct SidebarScreen: View {
 
                 VStack(spacing: 24) {
                     ForEach(screenModel.systemFolders) { systemFolder in
-                        SidebarCell(uiModel: systemFolder, isSelected: systemFolder.id == selectedRoute.localLabelId) {
-                            selectedRoute = systemFolder.route
+                        SidebarCell(
+                            uiModel: systemFolder,
+                            isSelected: systemFolder.id == screenModel.route.localLabelId
+                        ) {
+                            screenModel.updateRoute(newRoute: systemFolder.route)
                             appUIState.isSidebarOpen = false
                         }
                     }
@@ -135,13 +135,14 @@ struct SidebarCell: View {
 
 #Preview {
     let appUIState = AppUIState(isSidebarOpen: true)
+    let route: AppRoute = .init(route: .mailbox(label: .placeHolderMailbox))
 
     struct PreviewWrapper: View {
-        @State var route: Route = .mailbox(label: .defaultMailbox)
+        @State var appRoute: AppRoute
 
         var body: some View {
-            SidebarScreen(selectedRoute: $route, screenModel: PreviewData.sideBarScreenModel)
+            SidebarScreen(screenModel: .init(appRoute: appRoute, systemFolders: PreviewData.systemFolders))
         }
     }
-    return PreviewWrapper().environmentObject(appUIState)
+    return PreviewWrapper(appRoute: route).environmentObject(appUIState)
 }

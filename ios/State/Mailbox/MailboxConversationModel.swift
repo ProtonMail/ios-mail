@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Foundation
 import SwiftUI
 import proton_mail_uniffi
@@ -23,22 +24,29 @@ import class UIKit.UIImage
 /**
  Source of truth for the Mailbox view showing conversations.
  */
-@Observable
-final class MailboxConversationModel: MailboxConversationType, MailboxConversationOutput, Sendable {
-    var input: MailboxConversationInput { self }
-    var output: MailboxConversationOutput { self }
+final class MailboxConversationModel: ObservableObject {
+    @ObservedObject var appRoute: AppRoute
+    @Published private(set) var state: MailboxConversationModel.State
 
     private var mailbox: Mailbox?
     private var liveQuery: MailboxConversationLiveQuery?
     private let dependencies: Dependencies
+    private var cancellables = Set<AnyCancellable>()
 
-    private(set) var state: MailboxConversationModel.State
 
-    init(selectedMailbox: SelectedMailbox, state: State = .loading, dependencies: Dependencies = .init()) {
-        let message = "MailboxConversationModel labelId \(selectedMailbox.name)"
-        AppLogger.log(message: message, category: .mailboxConversations)
+    init(appRoute: AppRoute, state: State = .loading, dependencies: Dependencies = .init()) {
+        self.appRoute = appRoute
         self.state = state
         self.dependencies = dependencies
+
+        appRoute
+            .$selectedMailbox
+            .sink { [weak self] value in
+                Task {
+                    try? await self?.updateMailboxAndFetchData(selectedMailbox: appRoute.selectedMailbox)
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func updateMailboxAndFetchData(selectedMailbox: SelectedMailbox) async throws {
@@ -73,15 +81,15 @@ extension MailboxConversationModel {
     }
 
     @MainActor
-    private func updateState(_ newState: State) {
+    private func updateState(_ newState: State) async {
         AppLogger.logTemporarily(message: "updateState \(newState.debugDescription)", category: .mailboxConversations)
         state = newState
     }
 }
 
-// MARK: MailboxConversationInput
+// MARK: View actions
 
-extension MailboxConversationModel: MailboxConversationInput {
+extension MailboxConversationModel {
 
     @MainActor
     func onConversationSelectionChange(id: PMLocalConversationId, isSelected: Bool) {

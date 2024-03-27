@@ -796,10 +796,11 @@ public final class MailSession:
      * * `user_dri`: Directory where the user db should be stored.
      * * `log_dir:`: Directory where the log file should be stored.
      * * `log_debug`: Whether to enable debug and trace logs
+     * * `api_env_config`: The API environment configuration.
      * * `key_chain`: KeyChain implementation
      * * `network_callback`: Optional network status changed callback
      */
-    public convenience init(sessionDir: String, userDir: String, logDir: String, logDebug: Bool, keyChain: OsKeyChain, networkCallback: NetworkStatusChanged?) throws  {
+    public convenience init(sessionDir: String, userDir: String, logDir: String, logDebug: Bool, keyChain: OsKeyChain, apiEnvConfig: ApiEnvConfig?, networkCallback: NetworkStatusChanged?) throws  {
         self.init(unsafeFromRawPointer: try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
     uniffi_proton_mail_uniffi_fn_constructor_mailsession_new(
         FfiConverterString.lower(sessionDir),
@@ -807,6 +808,7 @@ public final class MailSession:
         FfiConverterString.lower(logDir),
         FfiConverterBool.lower(logDebug),
         FfiConverterCallbackInterfaceOsKeyChain.lower(keyChain),
+        FfiConverterOptionTypeAPIEnvConfig.lower(apiEnvConfig),
         FfiConverterOptionCallbackInterfaceNetworkStatusChanged.lower(networkCallback),$0)
 })
     }
@@ -1301,6 +1303,18 @@ public class Mailbox:
         return Mailbox(unsafeFromRawPointer: try rustCallWithError(FfiConverterTypeMailboxError.lift) {
     uniffi_proton_mail_uniffi_fn_constructor_mailbox_inbox(
         FfiConverterTypeMailUserSession.lower(ctx),$0)
+})
+    }
+
+    
+    /**
+     * Create a new mailbox for a given remote id.
+     */
+    public static func withRemoteId(ctx: MailUserSession, labelId: LabelId) throws  -> Mailbox {
+        return Mailbox(unsafeFromRawPointer: try rustCallWithError(FfiConverterTypeMailboxError.lift) {
+    uniffi_proton_mail_uniffi_fn_constructor_mailbox_with_remote_id(
+        FfiConverterTypeMailUserSession.lower(ctx),
+        FfiConverterTypeLabelId_lower(labelId),$0)
 })
     }
 
@@ -3242,6 +3256,27 @@ fileprivate struct FfiConverterOptionCallbackInterfaceSessionCallback: FfiConver
     }
 }
 
+fileprivate struct FfiConverterOptionTypeAPIEnvConfig: FfiConverterRustBuffer {
+    typealias SwiftType = ApiEnvConfig?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterTypeAPIEnvConfig.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterTypeAPIEnvConfig.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
 fileprivate struct FfiConverterSequenceUInt64: FfiConverterRustBuffer {
     typealias SwiftType = [UInt64]
 
@@ -3329,6 +3364,10 @@ fileprivate struct FfiConverterSequenceTypeLocalLabelWithCount: FfiConverterRust
         return seq
     }
 }
+
+
+
+
 
 
 
@@ -3522,13 +3561,16 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_storedsession_user_id() != 38174) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_constructor_mailsession_new() != 36764) {
+    if (uniffi_proton_mail_uniffi_checksum_constructor_mailsession_new() != 27040) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_inbox() != 21440) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_new() != 34877) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_with_remote_id() != 16758) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersessioninitializationcallback_on_stage() != 24987) {
@@ -3585,6 +3627,6 @@ private func uniffiEnsureInitialized() {
     }
 }
 
+
 extension MailSession: Sendable {}
 extension MailUserSession: Sendable {}
-

@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import SwiftUI
 
 /**
  Source of truth for the Mailbox view. Contains a model for conversations and another one for messages.
@@ -24,25 +24,10 @@ final class MailboxModel: ObservableObject {
     let conversationModel: MailboxConversationModel
     // let messageModel: MailboxMessageModel
 
-    @Published private(set) var selectedMailbox: SelectedMailbox
+    @ObservedObject private(set) var appRoute: AppRoute
 
-    init() {
-        let initialMailbox = SelectedMailbox.defaultMailbox
-        self.selectedMailbox = initialMailbox
-        self.conversationModel = .init(selectedMailbox: initialMailbox)
-    }
-
-    func initialDataFetch() async {
-        await updateSelectedMailbox(selectedMailbox)
-    }
-
-    @MainActor
-    func updateSelectedMailbox(_ selectedMailbox: SelectedMailbox) async {
-        self.selectedMailbox = selectedMailbox
-        do {
-            try await conversationModel.updateMailboxAndFetchData(selectedMailbox: selectedMailbox)
-        } catch {
-            AppLogger.log(error: error, category: .mailboxConversations)
-        }
+    init(appRoute: AppRoute) {
+        self.appRoute = appRoute
+        self.conversationModel = .init(appRoute: appRoute)
     }
 }

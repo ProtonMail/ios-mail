@@ -18,14 +18,19 @@
 import proton_mail_uniffi
 import SwiftUI
 
-@Observable
-final class SidebarScreenModel: Sendable {
+final class SidebarScreenModel: ObservableObject, Sendable {
+    @ObservedObject private var appRoute: AppRoute
+
     private(set) var systemFolders: [SidebarCellUIModel]
-    let dependencies: Dependencies
-
     private var systemFolderQuery: MailLabelsLiveQuery?
+    private let dependencies: Dependencies
 
-    init(systemFolders: [SidebarCellUIModel] = [], dependencies: Dependencies = .init()) {
+    var route: Route {
+        appRoute.route
+    }
+
+    init(appRoute: AppRoute, systemFolders: [SidebarCellUIModel] = [], dependencies: Dependencies = .init()) {
+        self.appRoute = appRoute
         self.systemFolders = systemFolders
         self.dependencies = dependencies
     }
@@ -48,14 +53,24 @@ final class SidebarScreenModel: Sendable {
     @MainActor
     private func updateData() {
         guard let systemFolderQuery else { return }
-        systemFolders = systemFolderQuery.value().compactMap { $0.systemFolderToSidebarCellUIModel() }
-//        if AppUIState.shared.selectedMailbox == nil, let firstFolder = systemFolders.first {
-//            AppUIState.shared.selectedMailbox = .init(localId: firstFolder.id, name: firstFolder.name)
-//        }
+        let folders = systemFolderQuery.value()
+        setInitialFolderIfNeeded(from: folders)
+        systemFolders = folders.compactMap { $0.systemFolderToSidebarCellUIModel() }
+    }
+
+    private func setInitialFolderIfNeeded(from folders: [LocalLabelWithCount]) {
+        guard appRoute.selectedMailbox == .placeHolderMailbox, let firstSystemFolders = folders.first else { return }
+        appRoute.updateRoute(to: .mailbox(label: .init(localId: firstSystemFolders.id, name: firstSystemFolders.name)))
+    }
+
+    @MainActor
+    func updateRoute(newRoute: Route) {
+        appRoute.updateRoute(to: newRoute)
     }
 }
 
 extension SidebarScreenModel: MailboxLiveQueryUpdatedCallback {
+    
     func onUpdated() {
         Task {
             await updateData()

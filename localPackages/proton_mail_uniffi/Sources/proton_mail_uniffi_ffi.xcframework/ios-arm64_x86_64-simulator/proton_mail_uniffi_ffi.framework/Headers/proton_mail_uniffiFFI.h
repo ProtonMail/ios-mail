@@ -77,7 +77,7 @@ void*_Nonnull uniffi_proton_mail_uniffi_fn_clone_mailsession(void*_Nonnull ptr, 
 );
 void uniffi_proton_mail_uniffi_fn_free_mailsession(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
-void*_Nonnull uniffi_proton_mail_uniffi_fn_constructor_mailsession_new(RustBuffer session_dir, RustBuffer user_dir, RustBuffer log_dir, int8_t log_debug, uint64_t key_chain, RustBuffer network_callback, RustCallStatus *_Nonnull out_status
+void*_Nonnull uniffi_proton_mail_uniffi_fn_constructor_mailsession_new(RustBuffer session_dir, RustBuffer user_dir, RustBuffer log_dir, int8_t log_debug, uint64_t key_chain, RustBuffer api_env_config, RustBuffer network_callback, RustCallStatus *_Nonnull out_status
 );
 int8_t uniffi_proton_mail_uniffi_fn_method_mailsession_is_network_connected(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
@@ -118,6 +118,8 @@ void uniffi_proton_mail_uniffi_fn_free_mailbox(void*_Nonnull ptr, RustCallStatus
 void*_Nonnull uniffi_proton_mail_uniffi_fn_constructor_mailbox_inbox(void*_Nonnull ctx, RustCallStatus *_Nonnull out_status
 );
 void*_Nonnull uniffi_proton_mail_uniffi_fn_constructor_mailbox_new(void*_Nonnull ctx, uint64_t label_id, RustCallStatus *_Nonnull out_status
+);
+void*_Nonnull uniffi_proton_mail_uniffi_fn_constructor_mailbox_with_remote_id(void*_Nonnull ctx, RustBuffer label_id, RustCallStatus *_Nonnull out_status
 );
 void uniffi_proton_mail_uniffi_fn_method_mailbox_delete_conversations(void*_Nonnull ptr, RustBuffer ids, RustCallStatus *_Nonnull out_status
 );
@@ -376,6 +378,9 @@ uint16_t uniffi_proton_mail_uniffi_checksum_constructor_mailbox_inbox(void
     
 );
 uint16_t uniffi_proton_mail_uniffi_checksum_constructor_mailbox_new(void
+    
+);
+uint16_t uniffi_proton_mail_uniffi_checksum_constructor_mailbox_with_remote_id(void
     
 );
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusersessioninitializationcallback_on_stage(void

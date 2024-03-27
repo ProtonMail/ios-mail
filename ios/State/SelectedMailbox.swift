@@ -38,9 +38,8 @@ final class SelectedMailbox: Equatable, Hashable, ObservableObject, Sendable {
 
 extension SelectedMailbox {
 
-    // TODO: Get the default localId from the Rust SDK
-    static let defaultMailbox = SelectedMailbox(
-        localId: 4,
+    static let placeHolderMailbox = SelectedMailbox(
+        localId: UInt64.max,
         name: SystemFolderIdentifier.inbox.localisedName
     )
 }

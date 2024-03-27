@@ -56,6 +56,7 @@ final class AppContext: Sendable, ObservableObject {
             logDir: applicationSupportPath,
             logDebug: true,
             keyChain: dependencies.keychain,
+            apiEnvConfig: nil,
             networkCallback: dependencies.networkStatus
         )
 

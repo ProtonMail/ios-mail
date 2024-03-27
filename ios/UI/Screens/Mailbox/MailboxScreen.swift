@@ -22,7 +22,7 @@ struct MailboxScreen: View {
     @EnvironmentObject private var appUIState: AppUIState
     @EnvironmentObject private var userSettings: UserSettings
 
-    @ObservedObject var mailboxModel: MailboxModel
+    var mailboxModel: MailboxModel
 
     init(mailboxModel: MailboxModel) {
         self.mailboxModel = mailboxModel
@@ -39,11 +39,8 @@ struct MailboxScreen: View {
             }
             .background(DS.Color.Background.norm) // sets also the color for the navigation bar
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(mailboxModel.selectedMailbox.name)
+            .navigationTitle(mailboxModel.appRoute.selectedMailbox.name)
             .mailboxToolbar()
-        }
-        .task {
-            await mailboxModel.initialDataFetch()
         }
     }
 }
@@ -51,7 +48,7 @@ struct MailboxScreen: View {
 #Preview {
     let appUIState = AppUIState(isSidebarOpen: true, hasSelectedMailboxItems: true)
     let userSettings = UserSettings(mailboxViewMode: .conversation)
-    let mailboxModel = MailboxModel()
+    let mailboxModel = MailboxModel(appRoute: .shared)
     return MailboxScreen(mailboxModel: mailboxModel)
         .environmentObject(appUIState)
         .environmentObject(userSettings)

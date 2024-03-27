@@ -24,12 +24,12 @@ struct ProtonMail: App {
 
     // declaration of state objects
     private let appUIState = AppUIState()
-    private let mailboxModel = MailboxModel()
+    private let mailboxModel = MailboxModel(appRoute: .shared)
     private let userSettings = UserSettings(mailboxViewMode: .conversation)
 
     var body: some Scene {
         WindowGroup {
-            Root(appContext: AppContext.shared, mailboxModel: mailboxModel)
+            Root(appContext: .shared, appRoute: .shared, mailboxModel: mailboxModel)
                 .environmentObject(appUIState)
                 .environmentObject(userSettings)
         }
@@ -48,13 +48,13 @@ struct Root: View {
     @EnvironmentObject private var appUIState: AppUIState
 
     // The route determines the screen that will be rendered
-    @State private var route: Route = .mailbox(label: .defaultMailbox)
-    
     @ObservedObject private var appContext: AppContext
+    @ObservedObject private var appRoute: AppRoute
     @ObservedObject private var mailboxModel: MailboxModel
 
-    init(appContext: AppContext, mailboxModel: MailboxModel) {
+    init(appContext: AppContext, appRoute: AppRoute, mailboxModel: MailboxModel) {
         self.appContext = appContext
+        self.appRoute = appRoute
         self.mailboxModel = mailboxModel
     }
 
@@ -63,20 +63,13 @@ struct Root: View {
             SignIn()
         } else {
             ZStack {
-                switch route {
-                case .mailbox:
+                switch appRoute.route {
+                case .mailbox, .appLaunching:
                     MailboxScreen(mailboxModel: mailboxModel)
                 case .settings:
                     SettingsScreen()
                 }
-                SidebarScreen(selectedRoute: $route)
-            }
-            .onChange(of: route) { oldValue, newValue in
-                if let selectedMailbox = newValue.selectedMailbox {
-                    Task {
-                        await mailboxModel.updateSelectedMailbox(selectedMailbox)
-                    }
-                }
+                SidebarScreen(screenModel: .init(appRoute: appRoute))
             }
         }
     }

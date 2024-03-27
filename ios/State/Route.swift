@@ -15,10 +15,37 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Foundation
-import class UIKit.UIImage
+
+@MainActor
+final class AppRoute: ObservableObject, Sendable {
+    static let shared = AppRoute(route: .appLaunching)
+
+    @Published private(set) var route: Route
+    @Published private(set) var selectedMailbox: SelectedMailbox
+    private var cancellables = Set<AnyCancellable>()
+
+    init(route: Route) {
+        self.route = route
+        self.selectedMailbox = route.selectedMailbox ?? .placeHolderMailbox
+
+        $route
+            .receive(on: DispatchQueue.main)
+            .sink { newRoute in
+                self.selectedMailbox = newRoute.selectedMailbox ?? .placeHolderMailbox
+            }
+            .store(in: &cancellables)
+    }
+
+    func updateRoute(to newRoute: Route) {
+        AppLogger.log(message: "new route \(newRoute)", category: .appRoute)
+        route = newRoute
+    }
+}
 
 enum Route: Equatable {
+    case appLaunching
     case mailbox(label: SelectedMailbox)
     case settings
 
@@ -34,15 +61,6 @@ enum Route: Equatable {
             return label.localId
         }
         return nil
-    }
-
-    var screenTitle: String {
-        switch self {
-        case .mailbox(let label):
-            return label.name
-        case .settings:
-            return LocalizationTemp.settings
-        }
     }
 }
 
