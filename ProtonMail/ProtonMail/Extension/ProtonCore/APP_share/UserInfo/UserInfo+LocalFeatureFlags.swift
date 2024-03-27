@@ -27,4 +27,8 @@ extension UserInfo {
     static var isRSVPMilestoneTwoEnabled: Bool {
         ProcessInfo.isRunningUnitTests
     }
+
+    static var isUpsellButtonEnabled: Bool {
+        Application.isDebugOrEnterprise
+    }
 }

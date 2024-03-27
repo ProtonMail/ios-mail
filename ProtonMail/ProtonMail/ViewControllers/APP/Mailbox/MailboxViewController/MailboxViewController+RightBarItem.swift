@@ -21,29 +21,32 @@ import UIKit
 
 private enum BarButtonType: Int {
     case cancel = 1000
-    case search, storageExceeded, composer, ellipsis
+    case search, storageExceeded, composer, ellipsis, upsell
 }
 
-// MARK: Setup right bar items
 extension MailboxViewController {
     func setupRightButtons(_ editingMode: Bool, isStorageExceeded: Bool) {
+        let items: [UIBarButtonItem]
+        let shouldShowUpsellButton = viewModel.shouldShowUpsellButton
+
         if editingMode {
-            let cancelBarItem = self.setupCancelBarItem()
-            self.updateRightButtonsIfNeeded(items: [cancelBarItem])
-            return
-        }
-
-        if self.viewModel.isTrashOrSpam {
-            let items = [
-                setupEllipsisMenuBarItem(),
-                setupSearchBarItem()
+            items = [
+                setupCancelBarItem()
             ]
-            self.updateRightButtonsIfNeeded(items: items)
-            return
+        } else if self.viewModel.isTrashOrSpam {
+            items = [
+                setupEllipsisMenuBarItem(),
+                setupSearchBarItem(),
+                shouldShowUpsellButton ? setupUpsellBarButtonItem() : nil
+            ].compactMap { $0 }
+        } else {
+            items = [
+                isStorageExceeded ? setupStorageExceededBarItem() : setupComposerBarItem(),
+                setupSearchBarItem(),
+                shouldShowUpsellButton ? setupUpsellBarButtonItem() : nil
+            ].compactMap { $0 }
         }
 
-        let item: UIBarButtonItem = isStorageExceeded ? setupStorageExceededBarItem(): setupComposerBarItem()
-        let items = [item, setupSearchBarItem()]
         self.updateRightButtonsIfNeeded(items: items)
     }
 
@@ -71,8 +74,7 @@ extension MailboxViewController {
         let item = IconProvider.magnifier.toUIBarButtonItem(
             target: self,
             action: #selector(searchButtonTapped),
-            tintColor: ColorProvider.IconNorm,
-            backgroundSquareSize: 40
+            tintColor: ColorProvider.IconNorm
         )
         #if DEBUG
         item.accessibilityLabel = "MailboxViewController.searchBarButtonItem"
@@ -87,8 +89,7 @@ extension MailboxViewController {
         let item = IconProvider.penSquare.toUIBarButtonItem(
             target: self,
             action: #selector(storageExceededButtonTapped),
-            tintColor: ColorProvider.Shade50,
-            backgroundSquareSize: 40
+            tintColor: ColorProvider.Shade50
         )
         item.accessibilityLabel = LocalString._storage_exceeded
         item.tag = BarButtonType.storageExceeded.rawValue
@@ -99,8 +100,7 @@ extension MailboxViewController {
         let item = IconProvider.penSquare.toUIBarButtonItem(
             target: self,
             action: #selector(composeButtonTapped),
-            tintColor: ColorProvider.IconNorm,
-            backgroundSquareSize: 40
+            tintColor: ColorProvider.IconNorm
         )
         #if DEBUG
         item.accessibilityLabel = "MailboxViewController.composeBarButtonItem"
@@ -133,5 +133,17 @@ extension MailboxViewController {
         let id: UIMenu.Identifier = .init(rawValue: "com.protonmail.menu.ellipsis")
         let menu = UIMenu(title: "", image: nil, identifier: id, options: [], children: [composeAction, emptyAction])
         return menu
+    }
+
+    private func setupUpsellBarButtonItem() -> UIBarButtonItem {
+        let item = UIBarButtonItem(
+            image: Asset.upsellButton.image.withRenderingMode(.alwaysOriginal),
+            style: .plain,
+            target: self,
+            action: #selector(upsellButtonTapped)
+        )
+        item.accessibilityLabel = L11n.AutoDeleteUpsellSheet.upgradeButtonTitle
+        item.tag = BarButtonType.upsell.rawValue
+        return item
     }
 }

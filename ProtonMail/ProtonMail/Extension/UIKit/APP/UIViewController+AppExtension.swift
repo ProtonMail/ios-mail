@@ -33,9 +33,13 @@ extension UIViewController {
     }
 
     func setupMenuButton(userInfo: UserInfo) {
+        navigationItem.leftBarButtonItem = makeMenuButton(userInfo: userInfo)
+    }
+
+    func makeMenuButton(userInfo: UserInfo) -> UIBarButtonItem {
         let menuButton = UIBarButtonItem(customView: menuButtonUI(userInfo: userInfo))
         menuButton.tintColor = ColorProvider.IconNorm
-        navigationItem.leftBarButtonItem = menuButton
+        return menuButton
     }
 
     private func menuButtonUI(userInfo: UserInfo) -> UIView {

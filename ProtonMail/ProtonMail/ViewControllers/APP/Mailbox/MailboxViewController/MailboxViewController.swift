@@ -95,6 +95,13 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     // MARK: PMToolBarView
     @IBOutlet private var toolBar: PMToolBarView!
 
+    private let titleLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.set(text: nil, preferredFont: .body, weight: .bold)
+        return titleLabel
+    }()
+
     // MARK: - Private attributes
 
     private var bannerContainer: UIView?
@@ -112,9 +119,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     // MARK: - Private views
     private var refreshControl: UIRefreshControl!
-
-    // MARK: - Left bar button
-    private var menuBarButtonItem: UIBarButtonItem!
 
     // MARK: - No result image and label
     @IBOutlet weak var noResultImage: UIImageView!
@@ -169,10 +173,18 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
     private var _snoozeDateConfigReceiver: SnoozeDateConfigReceiver?
 
+    override var title: String? {
+        didSet {
+            titleLabel.text = title
+        }
+    }
+
     init(viewModel: MailboxViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
         self.dependencies = dependencies
+
         super.init(viewModel: viewModel)
+
         viewModel.uiDelegate = self
         trackLifetime()
     }
@@ -324,7 +336,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         viewModel.user.undoActionManager.register(handler: self)
         reloadIfSwipeActionsDidChange()
         fetchEventInScheduledSend()
-        setupMenuButton(userInfo: dependencies.user.userInfo)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -474,11 +485,8 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)
 
-        setupMenuButton(userInfo: dependencies.user.userInfo)
-        self.menuBarButtonItem = self.navigationItem.leftBarButtonItem
-        self.menuBarButtonItem.tintColor = ColorProvider.IconNorm
-
         setUpNoResultView()
+        navigationItem.titleView = UIView()
         self.navigationItem.assignNavItemIndentifiers()
     }
 
@@ -581,6 +589,12 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     // MARK: - Button Targets
+
+    @objc
+    func upsellButtonTapped() {
+        viewModel.upsellButtonWasTapped()
+        setupRightButtons(viewModel.listEditing, isStorageExceeded: viewModel.user.isStorageExceeded)
+    }
 
     @objc func composeButtonTapped() {
         coordinator?.go(to: .composer, sender: nil)
@@ -1081,15 +1095,18 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     private func setupLeftButtons(_ editingMode: Bool) {
-        var leftButtons: [UIBarButtonItem]
+        let menuButton = makeMenuButton(userInfo: dependencies.user.userInfo)
+        menuButton.customView?.alpha = editingMode ? 0 : 1
 
-        if !editingMode {
-            leftButtons = [self.menuBarButtonItem]
-        } else {
-            leftButtons = []
-        }
+        let titleItem = UIBarButtonItem(customView: titleLabel)
 
-        self.navigationItem.setLeftBarButtonItems(leftButtons, animated: true)
+        let leftBarButtonItems: [UIBarButtonItem] = [
+            menuButton,
+            .fixedSpace(20),
+            titleItem
+        ]
+
+        navigationItem.setLeftBarButtonItems(leftBarButtonItems, animated: true)
     }
 
     private func setupNavigationTitle(showSelected: Bool) {

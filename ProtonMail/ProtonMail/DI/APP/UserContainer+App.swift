@@ -235,4 +235,10 @@ extension UserContainer {
             )
         }
     }
+
+    var upsellButtonStateProviderFactory: Factory<UpsellButtonStateProvider> {
+        self {
+            .init(dependencies: self)
+        }
+    }
 }

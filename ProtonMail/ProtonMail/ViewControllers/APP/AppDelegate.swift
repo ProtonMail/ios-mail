@@ -356,6 +356,7 @@ extension AppDelegate {
             setupNavigationBarAppearance()
             UITableView.appearance().sectionHeaderTopPadding = .zero
         }
+        UIStackView.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).spacing = -4
     }
 
     @available(iOS 15.0, *)

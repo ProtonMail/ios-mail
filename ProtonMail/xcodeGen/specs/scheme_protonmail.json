@@ -63,6 +63,7 @@
             "language": "en",
             "region": "US",
             "environmentVariables": {
+               "PROJECT_ROOT": "${SRCROOT}",
                "TZ": "UTC"
             }
          },

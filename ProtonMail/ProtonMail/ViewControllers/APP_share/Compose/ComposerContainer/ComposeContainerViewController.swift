@@ -393,12 +393,7 @@ extension ComposeContainerViewController {
             target: target,
             action: isEnabled ? action : nil,
             style: .plain,
-            tintColor: tintColor,
-            squareSize: 22,
-            backgroundColor: .clear,
-            backgroundSquareSize: 35,
-            isRound: true,
-            imageInsets: .zero
+            tintColor: tintColor
         )
         return item
     }

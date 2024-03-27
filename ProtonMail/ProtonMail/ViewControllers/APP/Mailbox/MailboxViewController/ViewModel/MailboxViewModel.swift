@@ -56,6 +56,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasFetchSenderImage
     & HasMailEventsPeriodicScheduler
     & HasUpdateMailbox
+    & HasUpsellButtonStateProvider
     & HasUserDefaults
     & HasUserIntroductionProgressProvider
     & HasUsersManager
@@ -1471,6 +1472,18 @@ extension MailboxViewModel {
 
     func startNewEventLoop() {
         dependencies.mailEventsPeriodicScheduler.enableSpecialLoop(forSpecialLoopID: user.userID.rawValue)
+    }
+}
+
+// MARK: upsell
+
+extension MailboxViewModel {
+    var shouldShowUpsellButton: Bool {
+        dependencies.upsellButtonStateProvider.shouldShowUpsellButton
+    }
+
+    func upsellButtonWasTapped() {
+        dependencies.upsellButtonStateProvider.upsellButtonWasTapped()
     }
 }
 
