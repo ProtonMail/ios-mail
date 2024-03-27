@@ -173,6 +173,16 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
     private func deactivatePinProtection() {
         dependencies.keyMaker.deactivate(PinProtection(pin: "doesnotmatter", keychain: dependencies.keychain))
     }
+
+    private func deactivateBioProtectionAfterPassing() {
+        Task {
+            try await dependencies.keyMaker.verify(protector: bioProtection)
+            await MainActor.run {
+                self.disableProtection()
+                self.updateProtectionItems()
+            }
+        }
+    }
 }
 
 extension SettingsLockViewModel: SettingsLockViewModelOutput {
@@ -227,6 +237,8 @@ extension SettingsLockViewModel: SettingsLockViewModelInput {
     func didTapNoProtection() {
         if dependencies.keyMaker.isPinCodeEnabled {
             router.go(to: .pinCodeDisable)
+        } else if isBiometricEnabled {
+            deactivateBioProtectionAfterPassing()
         } else {
             disableProtection()
             updateProtectionItems()
@@ -234,6 +246,16 @@ extension SettingsLockViewModel: SettingsLockViewModelInput {
     }
 
     func didTapPinProtection() {
+        if isBiometricEnabled {
+            Task {
+                try await dependencies.keyMaker.verify(protector: bioProtection)
+                await MainActor.run {
+                    self.router.go(to: .pinCodeSetup)
+                }
+            }
+            return
+        }
+
         if dependencies.keyMaker.isPinCodeEnabled {
             router.go(to: .changePinCode)
         } else {
