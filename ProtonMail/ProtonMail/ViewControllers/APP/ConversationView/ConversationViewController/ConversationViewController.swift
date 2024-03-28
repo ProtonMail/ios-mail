@@ -1451,8 +1451,7 @@ extension ConversationViewController {
         let continueAction: () -> Void = { [weak self] in
             self?.viewModel.handleMoveToAction(
                 conversations: [conversation],
-                to: folder,
-                completion: nil
+                to: folder
             )
             self?.showMessageMoved(
                 title: LocalString._messages_has_been_moved,

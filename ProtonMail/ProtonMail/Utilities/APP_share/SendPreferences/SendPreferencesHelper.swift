@@ -40,7 +40,6 @@ enum SendPreferencesHelper {
                                         isMessageHavingPWD: Bool) -> (PGPScheme, SendMIMEType) {
         let pgpScheme = getPGPScheme(isInternal: encryptionPreferences.isInternal,
                                      schemeString: encryptionPreferences.scheme ?? "",
-                                     encrypt: encryptionPreferences.encrypt,
                                      sign: encryptionPreferences.sign,
                                      isPasswordProtected: isMessageHavingPWD,
                                      hasPublicKeys: encryptionPreferences.sendKey != nil)
@@ -62,7 +61,6 @@ enum SendPreferencesHelper {
      */
     static func getPGPScheme(isInternal: Bool,
                              schemeString: String,
-                             encrypt: Bool,
                              sign: Bool,
                              isPasswordProtected: Bool,
                              hasPublicKeys: Bool) -> PGPScheme {

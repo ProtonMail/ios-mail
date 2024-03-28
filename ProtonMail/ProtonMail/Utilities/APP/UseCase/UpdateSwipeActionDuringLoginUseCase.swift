@@ -100,6 +100,5 @@ extension UpdateSwipeActionDuringLogin {
     struct Parameters {
         let activeUserInfo: UserInfo
         let newUserInfo: UserInfo
-        let newUserApiService: APIService
     }
 }

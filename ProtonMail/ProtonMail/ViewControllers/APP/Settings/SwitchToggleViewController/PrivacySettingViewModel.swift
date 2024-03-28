@@ -148,7 +148,6 @@ extension PrivacySettingViewModel {
 
     func updateBlockEmailTrackingStatus(newStatus: Bool, completion: @escaping (NSError?) -> Void) {
         user.userService.updateBlockEmailTracking(
-            authCredential: user.authCredential,
             userInfo: user.userInfo,
             action: newStatus ? .add : .remove,
             completion: saveData(thenPerform: completion)

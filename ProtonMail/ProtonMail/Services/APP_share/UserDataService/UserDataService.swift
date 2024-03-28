@@ -178,7 +178,6 @@ class UserDataService {
     }
 
     func updateBlockEmailTracking(
-        authCredential: AuthCredential,
         userInfo: UserInfo,
         action: UpdateImageProxy.Action,
         completion: @escaping (NSError?) -> Void
@@ -186,7 +185,7 @@ class UserDataService {
         // currently Image Incorporator is not yet supported by any Proton product
         let flag: ProtonCoreDataModel.ImageProxy = .imageProxy
 
-        let request = UpdateImageProxy(flags: flag, action: action, authCredential: authCredential)
+        let request = UpdateImageProxy(flags: flag, action: action)
         apiService.perform(request: request, response: VoidResponse()) { _, response in
             if response.error == nil {
                 var newStatus = userInfo.imageProxy
@@ -232,8 +231,7 @@ class UserDataService {
     }
     #endif
 
-    func updatePassword(auth currentAuth: AuthCredential,
-                        user: UserInfo,
+    func updatePassword(user: UserInfo,
                         login_password: String,
                         new_password: Passphrase,
                         twoFACode: String?,
@@ -519,8 +517,7 @@ class UserDataService {
         }
     }
 
-    func updateNotificationEmail(auth currentAuth: AuthCredential,
-                                 user: UserInfo,
+    func updateNotificationEmail(user: UserInfo,
                                  new_notification_email: String, login_password: String,
                                  twoFACode: String?, completion: @escaping (NSError?) -> Void) {
         let userInfo = user

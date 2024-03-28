@@ -26,12 +26,10 @@ final class UpdateImageProxy: Request {
 
     let flags: ProtonCoreDataModel.ImageProxy
     let action: Action
-    let authCredential: AuthCredential
 
-    init(flags: ProtonCoreDataModel.ImageProxy, action: Action, authCredential: AuthCredential) {
+    init(flags: ProtonCoreDataModel.ImageProxy, action: Action) {
         self.flags = flags
         self.action = action
-        self.authCredential = authCredential
     }
 
     var parameters: [String: Any]? {

@@ -25,12 +25,7 @@ final class SearchUseCase: XCTestCase {
     override func setUp() {
         super.setUp()
         mockBackendSearch = .init()
-        sut = .init(
-            dependencies: .init(
-                userID: "",
-                backendSearch: mockBackendSearch
-            )
-        )
+        sut = .init(dependencies: .init(backendSearch: mockBackendSearch))
     }
 
     override func tearDown() {
@@ -41,12 +36,6 @@ final class SearchUseCase: XCTestCase {
 
 
     func testExecute_backendSearchIsUsed() {
-        sut = .init(
-            dependencies: .init(
-                userID: "",
-                backendSearch: mockBackendSearch
-            )
-        )
         let e = expectation(description: "Closure is called")
         mockBackendSearch.executionBlockStub.bodyIs { _, _, callback in
             callback(.success([]))

@@ -144,8 +144,7 @@ class SignInManager {
                 .execute(
                 params: .init(
                     activeUserInfo: activeUser.userInfo,
-                    newUserInfo: user.userInfo,
-                    newUserApiService: user.apiService
+                    newUserInfo: user.userInfo
                 )) { _ in
                     tryUnlock()
                 }
