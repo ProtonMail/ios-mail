@@ -26,6 +26,11 @@ class TrashRobot: MailboxRobotInterface {
             .confirmEmptyTrashFolderAction()
     }
     
+    func deleteMessageAction() -> TrashRobot {
+        button(id.confirmDeleteButtonText).tap()
+        return TrashRobot()
+    }
+    
     private func moreOptions() -> TrashRobot {
         button(id.mailboxMoreButtonIdentifier).tap()
         return TrashRobot()
@@ -34,6 +39,11 @@ class TrashRobot: MailboxRobotInterface {
     private func emptyFolder() -> TrashDialogRobot {
         button(id.emptyTrashButtonText).tap()
         return TrashDialogRobot()
+    }
+    
+    override func longClickMessageBySubject(_ subject: String) -> TrashSelectionStateRobot {
+        super.longClickMessageBySubject(subject)
+        return TrashSelectionStateRobot()
     }
     
     class TrashDialogRobot: CoreElements {
