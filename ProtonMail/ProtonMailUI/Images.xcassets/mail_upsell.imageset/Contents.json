@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "mail_upsell.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
