@@ -1199,7 +1199,7 @@
 "Limit reached" = "Εξάντληση ορίου";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Μόνο ένας δωρεάν λογαριασμός μπορεί να προστεθεί";
+"Only two free accounts can be added" = "Μόνο δύο δωρεάν λογαριασμοί μπορούν να προστεθούν";
 
 /* section title in settings */
 "Account settings" = "Ρυθμίσεις λογαριασμού";
@@ -1890,13 +1890,13 @@
 "Unblock" = "Κατάργηση από αποκλεισμό";
 
 /* Headline of the Calendar landing page */
-"Your schedule is worth protecting" = "Your schedule is worth protecting";
+"Your schedule is worth protecting" = "Το πρόγραμμά σας αξίζει να προστατευτεί";
 
 /* Subheadline of the Calendar landing page */
-"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Το ημερολόγιό σας είναι ένα αρχείο της ζωής σας, το Proton Calendar βοηθά να το διατηρήσετε ιδιωτικό.";
 
 /* Button to open the App Store page for Proton Calendar */
-"Get Proton Calendar app" = "Get Proton Calendar app";
+"Get Proton Calendar app" = "Αποκτήστε την εφαρμογή Proton Calendar";
 
 /* Name of the feature */
 "Email tracking protection" = "Προστασία ιχνηλασίας μηνυμάτων";
@@ -2079,13 +2079,13 @@
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Αυτόματη εμφάνιση του επόμενου μηνύματος όταν το τρέχον μήνυμα διαγράφεται, αρχειοθετείται ή μετακινείται.";
 
 /* The title of the button of the jump to next message spotlight. */
-"Turn on feature" = "Turn on feature";
+"Turn on feature" = "Ενεργοποίηση χαρακτηριστικού";
 
 /* The content of the jump to next message spotlight. */
-"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+"View the next email in your inbox when you delete or move the current email." = "Προβάλετε το επόμενο μήνυμα ηλεκτρονικού ταχυδρομείου στα εισερχόμενά σας όταν διαγράφετε ή μετακινείτε το τρέχον μήνυμα ηλεκτρονικού ταχυδρομείου.";
 
 /* The title of the jump to next message spotlight. */
-"Read emails faster" = "Read emails faster";
+"Read emails faster" = "Ταχύτερη ανάγνωση μηνυμάτων ηλεκτρονικού ταχυδρομείου";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Παρουσιάστηκε μην αναμενόμενο σφάλμα, παρακαλούμε επικοινωνήστε με την υποστήριξη.\nΣφάλμα: %@";

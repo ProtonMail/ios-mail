@@ -403,7 +403,7 @@
 "Label Name" = "Nama Label";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Akses ke akun ini telah ditangguhkan karena adanya tagihan yang tertunggak. Silakan masuk melalui proton.me untuk melunasi tagihan Anda.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Akses ke akun ini telah ditangguhkan karena adanya faktur yang tertunggak. Silakan masuk melalui proton.me untuk melunasi tagihan Anda.";
 
 /* Title */
 "Alert" = "Peringatan";
@@ -1199,7 +1199,7 @@
 "Limit reached" = "Batas tercapai";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Hanya satu akun gratis yang dapat ditambahkan";
+"Only two free accounts can be added" = "Hanya dua akun gratis yang dapat ditambahkan";
 
 /* section title in settings */
 "Account settings" = "Pengaturan akun";
@@ -2049,7 +2049,7 @@
 "Unlimited folders and labels" = "Tanpa batasan jumlah folder dan label";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Kuota penyimpanan hingga 500 GB";
+"Up to 500 GB of storage" = "Ruang penyimpanan hingga 500 GB";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Up to 15 email addresses" = "Hingga 15 alamat surel";
@@ -2184,7 +2184,7 @@
 "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Hapus pesan lebih lama dari 30 hari dari sampah dan spam secara otomatis. Nikmati ini dan manfaat lainnya ketika Anda tingkatkan.";
 
 /* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Kuota penyimpanan hingga 3 TB";
+"Up to 3 TB of storage" = "Ruang penyimpanan hingga 3 TB";
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Domain surel khusus";

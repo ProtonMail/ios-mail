@@ -1199,7 +1199,7 @@
 "Limit reached" = "Sınıra ulaşıldı";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Yalnızca bir tane ücretsiz hesap eklenebilir";
+"Only two free accounts can be added" = "Yalnızca iki ücretsiz hesap eklenebilir";
 
 /* section title in settings */
 "Account settings" = "Hesap ayarları";
@@ -1890,10 +1890,10 @@
 "Unblock" = "Engellemeyi kaldır";
 
 /* Headline of the Calendar landing page */
-"Your schedule is worth protecting" = "Programınız korunmaya değer";
+"Your schedule is worth protecting" = "Takviminiz korunmaya değer";
 
 /* Subheadline of the Calendar landing page */
-"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Takviminiz hayatınızın bir kaydıdır, Proton Calendar onu gizli tutmanıza yardımcı olur.";
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Takviminiz yaşamınızın bir kaydıdır. Proton Calendar, gizli kalmasına yardımcı olur.";
 
 /* Button to open the App Store page for Proton Calendar */
 "Get Proton Calendar app" = "Proton Calendar uygulamasını edinin";
@@ -2082,7 +2082,7 @@
 "Turn on feature" = "Özelliği aç";
 
 /* The content of the jump to next message spotlight. */
-"View the next email in your inbox when you delete or move the current email." = "Geçerli e-postayı sildiğinizde veya taşıdığınızda gelen kutunuzdaki bir sonraki e-postayı görüntüleyin.";
+"View the next email in your inbox when you delete or move the current email." = "Geçerli e-postayı sildiğinizde ya da taşıdığınızda gelen kutunuzdaki bir sonraki e-postayı görüntüleyin.";
 
 /* The title of the jump to next message spotlight. */
 "Read emails faster" = "E-postaları daha hızlı okuyun";

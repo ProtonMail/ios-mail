@@ -1199,7 +1199,7 @@
 "Limit reached" = "Limite atingido";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Só é possível adicionar uma conta gratuita";
+"Only two free accounts can be added" = "Only two free accounts can be added";
 
 /* section title in settings */
 "Account settings" = "Definições de conta";

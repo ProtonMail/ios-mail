@@ -1199,7 +1199,7 @@
 "Limit reached" = "Limiet bereikt";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Er kan slechts één gratis account worden toegevoegd";
+"Only two free accounts can be added" = "Er kunnen slechts twee gratis accounts worden toegevoegd";
 
 /* section title in settings */
 "Account settings" = "Accountinstellingen";
@@ -1837,7 +1837,7 @@
 "Your Mail storage is %@ full" = "Uw e-mailopslag is %@ vol";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "Uw Drive-opslag is %@ vol";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "Uw Mail opslag is vol";
@@ -1890,13 +1890,13 @@
 "Unblock" = "Deblokkeer";
 
 /* Headline of the Calendar landing page */
-"Your schedule is worth protecting" = "Your schedule is worth protecting";
+"Your schedule is worth protecting" = "Uw agenda is het beschermen waard";
 
 /* Subheadline of the Calendar landing page */
-"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Uw agenda is een verslag van uw leven. Proton Calendar helpt om dit privé te houden.";
 
 /* Button to open the App Store page for Proton Calendar */
-"Get Proton Calendar app" = "Get Proton Calendar app";
+"Get Proton Calendar app" = "Download de Proton Calendar app";
 
 /* Name of the feature */
 "Email tracking protection" = "Bescherming tegen e-mailtracking";
@@ -1947,10 +1947,10 @@
 "I might attend" = "Misschien aanwezig";
 
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "Maximale Opslagruimte";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "Opslagruimte: %@ vol";
 
 /* Cell title that shows the percentage of the storage */
 "Drive storage: %@ full" = "Drive-opslag: %@ vol";
@@ -2073,19 +2073,19 @@
 "Application logs" = "Applicatielogboek";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Ga naar volgende e-mail";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Toon automatisch de volgende e-mail wanneer een geopende e-mail is verwijderd, gearchiveerd of verplaatst.";
 
 /* The title of the button of the jump to next message spotlight. */
-"Turn on feature" = "Turn on feature";
+"Turn on feature" = "Functie inschakelen";
 
 /* The content of the jump to next message spotlight. */
-"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+"View the next email in your inbox when you delete or move the current email." = "Bekijk de volgende e-mail in uw inbox wanneer u de huidige e-mail verwijdert of verplaatst.";
 
 /* The title of the jump to next message spotlight. */
-"Read emails faster" = "Read emails faster";
+"Read emails faster" = "Lees e-mails sneller";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Er gebeurde een onverwachte fout, contacteer support.\nFout: %@";
@@ -2334,19 +2334,19 @@
 "Allow navigating through messages by swiping left or right." = "Navigeren door berichten toestaan door naar links of rechts te vegen.";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "Uw contacten binnen handbereik";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Het is niet nodig om de app te verlaten om een e-mailadres te vinden. Synchroniseer contacten van uw apparaat met Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "Automatisch importeren inschakelen";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "Nog geen contactpersonen";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "Importeer contactpersonen vanaf uw toestel om gemakkelijk e-mails en uitnodigingen te verzenden.";
 
 /* Button title for no contact hint view */
 "Auto-import contacts" = "Automatisch contacten importeren";

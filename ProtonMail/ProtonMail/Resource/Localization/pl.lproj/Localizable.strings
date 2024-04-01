@@ -1199,7 +1199,7 @@
 "Limit reached" = "Limit został osiągnięty";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Możesz dodać tylko jedno darmowe konto";
+"Only two free accounts can be added" = "Można dodać tylko 2 darmowe konta";
 
 /* section title in settings */
 "Account settings" = "Ustawienia konta";
@@ -1834,10 +1834,10 @@
 "You can now choose and rearrange the actions in this bar" = "Możesz zmienić kolejność akcji na pasku";
 
 /* Title of the banner alert */
-"Your Mail storage is %@ full" = "Your Mail storage is %@ full";
+"Your Mail storage is %@ full" = "Przestrzeń dyskowa Proton Mail jest w %@ pełna";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "Przestrzeń dyskowa Proton Drive jest w %@ pełna";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "Przestrzeń dyskowa Proton Mail jest pełna";
@@ -1890,13 +1890,13 @@
 "Unblock" = "Odblokuj";
 
 /* Headline of the Calendar landing page */
-"Your schedule is worth protecting" = "Your schedule is worth protecting";
+"Your schedule is worth protecting" = "Twój harmonogram jest wart ochrony";
 
 /* Subheadline of the Calendar landing page */
-"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Kalendarz jest zapisem Twojego życia. Proton Calendar pomaga zachować jego prywatność.";
 
 /* Button to open the App Store page for Proton Calendar */
-"Get Proton Calendar app" = "Get Proton Calendar app";
+"Get Proton Calendar app" = "Pobierz aplikację Proton Calendar";
 
 /* Name of the feature */
 "Email tracking protection" = "Ochrona przed śledzeniem wiadomości";
@@ -2076,13 +2076,13 @@
 "Jump to next email" = "Otwórz następną wiadomość";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatycznie pokazuje następną wiadomość po usunięciu, zarchiwizowaniu lub przeniesieniu poprzedniej wiadomości.";
 
 /* The title of the button of the jump to next message spotlight. */
-"Turn on feature" = "Turn on feature";
+"Turn on feature" = "Włącz funkcję";
 
 /* The content of the jump to next message spotlight. */
-"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+"View the next email in your inbox when you delete or move the current email." = "Pokaż następną wiadomość po usunięciu lub zarchiwizowaniu poprzedniej wiadomości.";
 
 /* The title of the jump to next message spotlight. */
 "Read emails faster" = "Czytaj wiadomości szybciej";
@@ -2337,7 +2337,7 @@
 "Your contacts at your fingertips" = "Kontakty na wyciągnięcie ręki";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Nie ma potrzeby wychodzić z aplikacji, aby znaleźć adres e-mail. Synchronizuj kontakty ze swojego urządzenia z Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Nie musisz wychodzić z aplikacji, aby znaleźć adres e-mail. Synchronizuj kontakty urządzenia z Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
 "Enable auto-import" = "Włącz automatyczne importowanie";

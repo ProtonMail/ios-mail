@@ -1199,7 +1199,7 @@
 "Limit reached" = "Grænse nået";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Kun én gratis konto kan tilføjes";
+"Only two free accounts can be added" = "Only two free accounts can be added";
 
 /* section title in settings */
 "Account settings" = "Kontoindstillinger";
@@ -1890,13 +1890,13 @@
 "Unblock" = "Fjern blokering";
 
 /* Headline of the Calendar landing page */
-"Your schedule is worth protecting" = "Your schedule is worth protecting";
+"Your schedule is worth protecting" = "Din tidsplan er værd at beskytte";
 
 /* Subheadline of the Calendar landing page */
-"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Din kalender er en registrering af dit liv, og Proton Calendar hjælper dig med at holde den privat.";
 
 /* Button to open the App Store page for Proton Calendar */
-"Get Proton Calendar app" = "Get Proton Calendar app";
+"Get Proton Calendar app" = "Hent Proton Calendar gratis";
 
 /* Name of the feature */
 "Email tracking protection" = "Beskyttelse mod sporing af e-mail";
@@ -2079,13 +2079,13 @@
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Vis automatisk den næste e-mail når en åben e-mail slettes, arkiveres eller flyttes.";
 
 /* The title of the button of the jump to next message spotlight. */
-"Turn on feature" = "Turn on feature";
+"Turn on feature" = "Slå funktion til";
 
 /* The content of the jump to next message spotlight. */
-"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+"View the next email in your inbox when you delete or move the current email." = "Se den næste e-mail i din indbakke, når du sletter eller flytter den aktuelle e-mail.";
 
 /* The title of the jump to next message spotlight. */
-"Read emails faster" = "Read emails faster";
+"Read emails faster" = "Læs e-mails hurtigere";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Der opstod en ukendt fejl. Kontakt supporten.\nError: %@";

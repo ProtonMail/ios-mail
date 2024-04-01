@@ -1199,7 +1199,7 @@
 "Limit reached" = "Ograničenje je dosegnuto";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Možete dodati samo jedan besplatni račun";
+"Only two free accounts can be added" = "Only two free accounts can be added";
 
 /* section title in settings */
 "Account settings" = "Postavke računa";

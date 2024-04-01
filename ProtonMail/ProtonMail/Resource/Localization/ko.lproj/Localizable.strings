@@ -1199,7 +1199,7 @@
 "Limit reached" = "한계 도달";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "한 개의 무료 계정만 추가할 수 있습니다.";
+"Only two free accounts can be added" = "두 개의 무료 계정만 추가할 수 있습니다.";
 
 /* section title in settings */
 "Account settings" = "계정 설정";

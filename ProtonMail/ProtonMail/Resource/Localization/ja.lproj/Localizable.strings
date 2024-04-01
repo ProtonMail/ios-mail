@@ -355,7 +355,7 @@
 "Nickname" = "ニックネーム";
 
 /* contacts talbe cell Title title */
-"Title" = "肩書き";
+"Title" = "タイトル";
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "誕生日";
@@ -1199,7 +1199,7 @@
 "Limit reached" = "アカウントの利用上限に到達しました";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "無料アカウントは１つのみ追加できます";
+"Only two free accounts can be added" = "Only two free accounts can be added";
 
 /* section title in settings */
 "Account settings" = "アカウント設定";

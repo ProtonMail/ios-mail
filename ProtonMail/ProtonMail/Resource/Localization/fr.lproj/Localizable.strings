@@ -1199,7 +1199,7 @@
 "Limit reached" = "Limite atteinte";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Un seul compte gratuit peut être ajouté.";
+"Only two free accounts can be added" = "Seuls deux comptes gratuits peuvent être ajoutés.";
 
 /* section title in settings */
 "Account settings" = "Paramètres du compte";
@@ -1890,13 +1890,13 @@
 "Unblock" = "Débloquer";
 
 /* Headline of the Calendar landing page */
-"Your schedule is worth protecting" = "Votre horaire mérite d'être protégé";
+"Your schedule is worth protecting" = "Votre emploi du temps mérite d'être protégé.";
 
 /* Subheadline of the Calendar landing page */
 "Your calendar is a record of your life, Proton Calendar helps keep it private." = "Votre calendrier reflète votre vie quotidienne. Proton Calendar assure sa confidentialité.";
 
 /* Button to open the App Store page for Proton Calendar */
-"Get Proton Calendar app" = "Obtenez Proton Calendar";
+"Get Proton Calendar app" = "Je télécharge Proton Calendar";
 
 /* Name of the feature */
 "Email tracking protection" = "Protection contre le suivi des e-mails";

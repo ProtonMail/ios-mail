@@ -1199,7 +1199,7 @@
 "Limit reached" = "მიაღწიეთ ლიმიტს";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "შეიძლება, დაემატოს, მხოლოდ, ერთი უფასო ანგარიში";
+"Only two free accounts can be added" = "შეიძლება, დაემატოს, მხოლოდ, ორი უფასო ანგარიში";
 
 /* section title in settings */
 "Account settings" = "ანგარიშის მორგება";
@@ -1890,13 +1890,13 @@
 "Unblock" = "განბლოკვა";
 
 /* Headline of the Calendar landing page */
-"Your schedule is worth protecting" = "Your schedule is worth protecting";
+"Your schedule is worth protecting" = "თქვენი განრიგი იმსახურებს, დაიცვან";
 
 /* Subheadline of the Calendar landing page */
-"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "თქენი კალენდარი თქვენი ცხოვრების ჩანაწერია. Proton Calendar დაგეხმარებათ, ის საიდუმლოდ შეინახოთ.";
 
 /* Button to open the App Store page for Proton Calendar */
-"Get Proton Calendar app" = "Get Proton Calendar app";
+"Get Proton Calendar app" = "გადმოწერეთ Proton Calendar-ის აპი";
 
 /* Name of the feature */
 "Email tracking protection" = "ელფოსტის ტრეკერებისგან დაცვა";
@@ -2079,13 +2079,13 @@
 "Automatically show the next email when an open email is deleted, archived, or moved." = "ავტომატურად მაჩვენე შემდეგი ელფოსტა, ღია ელფოსტა წაიშლება, დაარქივდება ან გადატანიი იქნება.";
 
 /* The title of the button of the jump to next message spotlight. */
-"Turn on feature" = "Turn on feature";
+"Turn on feature" = "ფუნქციის ჩართვა";
 
 /* The content of the jump to next message spotlight. */
-"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+"View the next email in your inbox when you delete or move the current email." = "მიმდინარე ელფოსტის წაშლის ან გადატანისას თქვენს საფოსტო ყუთში არსებულ შემდეგ ელფოსტაზე გადასვლა.";
 
 /* The title of the jump to next message spotlight. */
-"Read emails faster" = "Read emails faster";
+"Read emails faster" = "წაიკითხეთ ელფოსტა უფრო სწრაფად";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "აღმოჩენილია მოულოდნელი შეცდომა. დაუკავშირდით მხარდაჭერის გუნდს.\nშეცდომა: %@";
@@ -2355,7 +2355,7 @@
 "Importing your contacts" = "მიმდინარეობს თქვენი კონტაქტების შემოტანა";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "თქვენი კონტაქტები სულ მალე, აქ გამოჩნდება.";
+"Your contacts will appear here shortly." = "თქვენი კონტაქტები სულ მალე გამოჩნდება აქ.";
 
 /* The title of the dismissable banner in the contacts view. */
 "Automatically add new contacts from your device." = "დაამატეთ ავტომატურად კონტაქტები თქვენი მოწყობილობიდან.";
