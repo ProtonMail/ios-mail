@@ -549,6 +549,59 @@ final class ComposeViewModelTests: XCTestCase {
         XCTAssertEqual(remoteContentMode, .disallowed)
     }
 
+    func testShouldShowSenderChangedAlertDueToDisableAddress() throws {
+        var addresses = generateAddress(number: 2)
+        let invalidAddress = updateAddressStatus(address: addresses[0], status: .disabled)
+        addresses[0] = invalidAddress
+        fakeUserManager.userInfo.set(addresses: addresses)
+        let aliasAddress = aliasAddress(from: addresses[0])
+
+        message = mockCoreDataService.mainContext.performAndWait {
+            let original = Message(context: self.mockCoreDataService.mainContext)
+            original.messageID = UUID().uuidString
+            original.parsedHeaders = "{\"X-Original-To\": \"\(aliasAddress.email)\"}"
+
+            let repliedMessage = Message(context: self.mockCoreDataService.mainContext)
+            repliedMessage.orginalMessageID = original.messageID
+            return repliedMessage
+        }
+
+        try sut.initialize(message: .init(message), action: .reply)
+        XCTAssertEqual(sut.currentSenderAddress(), fakeUserManager.addresses.defaultAddress())
+        XCTAssertEqual(sut.originalSenderAddress(), aliasAddress)
+
+        XCTAssertTrue(sut.shouldShowSenderChangedAlertDueToDisabledAddress())
+    }
+
+    func testShouldShowErrorWhenOriginalAddressIsAnUnpaidPMAddress() throws {
+        var addresses = generateAddress(number: 2)
+        let pmAddress = updateAddressStatus(
+            address: addresses[0],
+            status: .enabled,
+            email: "test@pm.me",
+            send: .inactive
+        )
+        addresses[0] = pmAddress
+        fakeUserManager.userInfo.set(addresses: addresses)
+
+        message = mockCoreDataService.mainContext.performAndWait {
+            let original = Message(context: self.mockCoreDataService.mainContext)
+            original.messageID = UUID().uuidString
+            original.parsedHeaders = "{\"X-Original-To\": \"\(pmAddress.email)\"}"
+
+            let repliedMessage = Message(context: self.mockCoreDataService.mainContext)
+            repliedMessage.orginalMessageID = original.messageID
+            repliedMessage.sender = "{\"Address\": \"\(addresses[1].email)\", \"Name\": \"Test\"}"
+            return repliedMessage
+        }
+
+        try sut.initialize(message: .init(message), action: .reply)
+        XCTAssertEqual(sut.currentSenderAddress(), fakeUserManager.addresses.defaultSendAddress())
+        XCTAssertEqual(sut.originalSenderAddress(), pmAddress)
+
+        XCTAssertTrue(sut.shouldShowErrorWhenOriginalAddressIsAnUnpaidPMAddress())
+    }
+
     // TODO: fix it
 //    func testGetHtmlBody_replyAction_checkTheQuotedDataIsCorrect() {
 //        message.sender = "{\"BimiSelector\":null,\"IsSimpleLogin\":0,\"IsProton\":0,\"Address\":\"oldSender@pm.test\",\"Name\":\"old sender\",\"DisplaySenderImage\":0}"
@@ -603,7 +656,7 @@ extension ComposeViewModelTests {
             return Address(
                 addressID: id,
                 domainID: UUID().uuidString,
-                email: "\(userPart)@\(domain)",
+                email: "\(userPart)@\(domain)".lowercased(),
                 send: .active,
                 receive: .active,
                 status: .enabled,
@@ -618,12 +671,17 @@ extension ComposeViewModelTests {
         return list
     }
     
-    func updateAddressStatus(address: Address, status: Address.AddressStatus) -> Address {
+    func updateAddressStatus(
+        address: Address,
+        status: Address.AddressStatus,
+        email: String? = nil,
+        send: Address.AddressSendReceive? = nil
+    ) -> Address {
         return Address(
             addressID: address.addressID,
             domainID: address.domainID,
-            email: address.email,
-            send: address.send,
+            email: email ?? address.email,
+            send: send ?? address.send,
             receive: address.receive,
             status: status,
             type: address.type,
