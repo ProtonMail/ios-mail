@@ -246,7 +246,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             headerView.updateFromValue(currentSenderAddress.email, pickerEnabled: true)
         }
 
-        showErrorWhenOriginalAddressIsAnUnpaidPMAddress()
+        showErrorWhenOriginalAddressIsDifferentFromCurrentOne()
         // update draft if first time create
         if viewModel.messageAction != .openDraft {
             self.viewModel.updateDraft()
@@ -728,19 +728,36 @@ extension ComposeContentViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    /// Send message from pm alias is a paid feature
-    /// Show error to user in this case
-    private func showErrorWhenOriginalAddressIsAnUnpaidPMAddress() {
+    private func showErrorWhenOriginalAddressIsDifferentFromCurrentOne() {
+        guard let currentSenderAddress = viewModel.currentSenderAddress(),
+              let originalAddress = viewModel.originalSenderAddress() else {
+            return
+        }
+
+        if viewModel.shouldShowSenderChangedAlertDueToDisabledAddress() {
+            showSenderChangedAlert(newAddress: currentSenderAddress)
+        } else if viewModel.shouldShowErrorWhenOriginalAddressIsAnUnpaidPMAddress() {
+            showErrorWhenOriginalAddressIsAnUnpaidPMAddress(
+                currentSenderAddress: currentSenderAddress,
+                originalAddress: originalAddress
+            )
+        }
+    }
+
+    private func showErrorWhenOriginalAddressIsAnUnpaidPMAddress(
+        currentSenderAddress: Address,
+        originalAddress: Address
+    ) {
         guard
-            let currentSenderAddress = viewModel.currentSenderAddress(),
-            let originalAddress = viewModel.originalSenderAddress(),
-            originalAddress.addressID != currentSenderAddress.addressID,
             originalAddress.send == .inactive,
             originalAddress.isPMAlias,
             !dependencies.userDefaults[.isPMMEWarningDisabled]
         else { return }
 
-        showPaidFeatureAddressAlert(originalAddress: originalAddress, currentSenderAddress: currentSenderAddress)
+        showPaidFeatureAddressAlert(
+            originalAddress: originalAddress,
+            currentSenderAddress: currentSenderAddress
+        )
     }
 
     private func showPaidFeatureAddressAlert(originalAddress: Address, currentSenderAddress: Address) {
@@ -1011,13 +1028,7 @@ extension ComposeContentViewController: ComposeUIProtocol {
     func changeInvalidSenderAddress(to newAddress: Address) {
         updateSenderMail(addr: newAddress) { [weak self] in
             DispatchQueue.main.async {
-                let alert = UIAlertController(
-                    title: L11n.Compose.senderChanged,
-                    message: String(format: L11n.Compose.senderChangedMessage, newAddress.email),
-                    preferredStyle: .alert
-                )
-                alert.addOKAction()
-                self?.present(alert, animated: true)
+                self?.showSenderChangedAlert(newAddress: newAddress)
             }
         }
     }
@@ -1031,6 +1042,16 @@ extension ComposeContentViewController: ComposeUIProtocol {
 
     func show(error: String) {
         error.alertToast(view: view)
+    }
+
+    private func showSenderChangedAlert(newAddress: Address) {
+        let alert = UIAlertController(
+            title: L11n.Compose.senderChanged,
+            message: String(format: L11n.Compose.senderChangedMessage, newAddress.email),
+            preferredStyle: .alert
+        )
+        alert.addOKAction()
+        present(alert, animated: true)
     }
 }
 

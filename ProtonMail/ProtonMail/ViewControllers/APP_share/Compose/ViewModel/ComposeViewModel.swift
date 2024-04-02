@@ -742,7 +742,7 @@ extension ComposeViewModel {
                     senderAddress.status == .disabled,
                     let validAddress = self.validSenderAddressFromMessage(),
                     validAddress.addressID != senderAddress.addressID,
-                    validAddress.email != senderAddress.addressID
+                    validAddress.email != senderAddress.email
                 else { return }
                 self.uiDelegate?.changeInvalidSenderAddress(to: validAddress)
             case .newDraft, .newDraftFromShare:
@@ -772,17 +772,16 @@ extension ComposeViewModel {
     }
 
     private func validSenderAddressFromMessage() -> Address? {
-        let userAddresses = user.addresses
+        let validUserAddresses = user.addresses
+            .filter { $0.status == .enabled && $0.send == .active }
         var validAddress: Address?
         let referenceAddress = composerMessageHelper.originalTo() ?? composerMessageHelper.originalFrom() ?? ""
-        if let address = userAddresses.first(where: {
-            $0.email == referenceAddress &&
-            $0.status == .enabled &&
-            $0.send == .active
+        if let address = validUserAddresses.first(where: {
+            $0.email == referenceAddress
         }) {
             validAddress = address
         } else if let aliasAddress = getAddressFromPlusAlias(
-            userAddress: userAddresses,
+            userAddress: validUserAddresses,
             originalAddress: referenceAddress
         ) {
             validAddress = aliasAddress
@@ -790,7 +789,7 @@ extension ComposeViewModel {
                   let defaultAddress = messageService.defaultUserAddress(of: draft.sendAddressID) {
             validAddress = defaultAddress
         } else {
-            validAddress = userAddresses.defaultAddress()
+            validAddress = user.addresses.defaultAddress()
         }
         return validAddress
     }
@@ -811,7 +810,7 @@ extension ComposeViewModel {
     }
 
     func currentSenderAddress() -> Address? {
-        let defaultAddress = user.addresses.defaultAddress()
+        let defaultAddress = user.addresses.defaultSendAddress()
         guard
             let entity = composerMessageHelper.getMessageEntity(),
             let draft = composerMessageHelper.draft,
@@ -869,9 +868,7 @@ extension ComposeViewModel {
         let normalizedAddress = originalAddress.canonicalizeEmail(scheme: .proton)
         guard let address = userAddress
             .first(where: {
-                $0.email.canonicalizeEmail(scheme: .proton) == normalizedAddress &&
-                $0.status == .enabled &&
-                $0.send == .active
+                $0.email.canonicalizeEmail(scheme: .proton) == normalizedAddress
             }),
               address.email != originalAddress
         else { return nil }
@@ -1329,6 +1326,28 @@ extension ComposeViewModel {
     private func fetchGroupContacts() {
         guard user.hasPaidMailPlan else { return }
         protonGroupContacts = user.contactGroupService.getAllContactGroupVOs().filter { $0.contactCount > 0 }
+    }
+
+    func shouldShowSenderChangedAlertDueToDisabledAddress() -> Bool {
+        guard let currentSenderAddress = currentSenderAddress(),
+              let originalAddress = originalSenderAddress(),
+              originalAddress.addressID != currentSenderAddress.addressID,
+              originalAddress.status == .disabled else {
+            return false
+        }
+        return true
+    }
+
+    func shouldShowErrorWhenOriginalAddressIsAnUnpaidPMAddress() -> Bool {
+        guard let currentSenderAddress = currentSenderAddress(),
+              let originalAddress = originalSenderAddress(),
+              originalAddress.addressID != currentSenderAddress.addressID,
+              originalAddress.send == .inactive,
+              originalAddress.isPMAlias,
+              !dependencies.userDefaults[.isPMMEWarningDisabled] else {
+            return false
+        }
+        return true
     }
 }
 
