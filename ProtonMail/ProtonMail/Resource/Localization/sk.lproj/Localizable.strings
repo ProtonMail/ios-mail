@@ -757,7 +757,7 @@
 "Skip" = "Preskočiť";
 
 /* title of the next button */
-"Next" = "Ďalší";
+"Next" = "Ďalej";
 
 /* title of the next button */
 "Get Started" = "Začnite";
@@ -1199,7 +1199,7 @@
 "Limit reached" = "Dosiahnutý limit";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Je možné pridať iba jeden bezplatný účet";
+"Only two free accounts can be added" = "Only two free accounts can be added";
 
 /* section title in settings */
 "Account settings" = "Nastavenia účtu";

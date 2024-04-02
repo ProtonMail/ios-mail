@@ -118,7 +118,7 @@
  menu title
  The title of a subscription plans screen
 */
-"Subscription" = "訂閲計劃";
+"Subscription" = "訂購授權";
 
 /* menu title */
 "Manage accounts" = "管理帳號";
@@ -1199,7 +1199,7 @@
 "Limit reached" = "已達上限";
 
 /* Alert when the free account limit is reached */
-"Only two free accounts can be added" = "僅可加入兩個免費帳號";
+"Only two free accounts can be added" = "Only two free accounts can be added";
 
 /* section title in settings */
 "Account settings" = "帳號設定";
@@ -1837,7 +1837,7 @@
 "Your Mail storage is %@ full" = "您的 Mail 儲存空間%@滿了";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "您的雲端磁碟儲存空間%@滿了";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "您的 Mail 儲存空間已滿";
@@ -1947,13 +1947,13 @@
 "I might attend" = "或許參加";
 
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "最大儲存";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "儲存: %@以滿";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
+"Drive storage: %@ full" = "Drive 儲存空間：%@以滿";
 
 /* Upgrade button action */
 "Upgrade" = "升級";
@@ -2073,13 +2073,13 @@
 "Application logs" = "應用程式紀錄";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "跳到下一則電子郵件";
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
 
 /* The title of the button of the jump to next message spotlight. */
-"Turn on feature" = "Turn on feature";
+"Turn on feature" = "啟用功能";
 
 /* The content of the jump to next message spotlight. */
 "View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";

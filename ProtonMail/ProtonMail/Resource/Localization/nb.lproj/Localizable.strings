@@ -1199,7 +1199,7 @@
 "Limit reached" = "Grense nådd";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Bare én gratis konto kan legges til";
+"Only two free accounts can be added" = "Bare to gratis kontoer kan legges til";
 
 /* section title in settings */
 "Account settings" = "Kontoinnstillinger";

@@ -1199,7 +1199,7 @@
 "Limit reached" = "Дасягнута абмежаванне";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Можна дадаць толькі адзін бясплатны ўліковы запіс";
+"Only two free accounts can be added" = "Можна дадаць толькі два бясплатныя ўліковыя запісы";
 
 /* section title in settings */
 "Account settings" = "Налады ўліковага запісу";
@@ -1708,13 +1708,13 @@
 "Schedule will be removed" = "Расклад будзе выдалены";
 
 /* The alert title of the user trying to send a message that was schedule-send. */
-"Send immediately?" = "Адправіць адразу?";
+"Send immediately?" = "Адправіць неадкладна?";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Гэта паведамленне больш не запланавана для адпраўкі пазней. Калі вы ўсё яшчэ хочаце адправіць яго пазней, вы можаце націснуць на \"Запланаваць адпраўку\"";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
-"Send immediately" = "Адправіць адразу";
+"Send immediately" = "Адправіць неадкладна";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Цяпер вы можаце запланаваць адпраўку паведамленняў на больш позні час";
@@ -2223,7 +2223,7 @@
 "Select all" = "Выбраць усе";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Зняць выбар з усіх";
+"Unselect all" = "Скасаваць выбар усіх";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
 "Maximum selection reached" = "Дасягнуты максімум выбраных паведамленняў";

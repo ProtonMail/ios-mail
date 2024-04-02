@@ -1199,7 +1199,7 @@
 "Limit reached" = "数量已达上限";
 
 /* Alert when the free account limit is reached */
-"Only two free accounts can be added" = "只能添加兩个免费账户";
+"Only two free accounts can be added" = "免费账户只能同时登录两个";
 
 /* section title in settings */
 "Account settings" = "账户设置";
@@ -1834,10 +1834,10 @@
 "You can now choose and rearrange the actions in this bar" = "现已支持选择并排列此栏中的操作";
 
 /* Title of the banner alert */
-"Your Mail storage is %@ full" = "Your Mail storage is %@ full";
+"Your Mail storage is %@ full" = "您的 Mail 存储空间已使用 %@";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "您的 Drive 存储空间已使用 %@";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "您的 Proton Mail 存储空间已满";
@@ -1846,7 +1846,7 @@
 "Your Drive storage is full" = "您的 Proton Drive 存储空间已满";
 
 /* Description of the banner alert */
-"Upgrade to get more storage." = "Upgrade to get more storage.";
+"Upgrade to get more storage." = "升级账户即可扩容。";
 
 /* Get more storage button action */
 "Not now" = "以后再说";
@@ -1890,13 +1890,13 @@
 "Unblock" = "解除屏蔽";
 
 /* Headline of the Calendar landing page */
-"Your schedule is worth protecting" = "Your schedule is worth protecting";
+"Your schedule is worth protecting" = "您的日程信息同样值得保护";
 
 /* Subheadline of the Calendar landing page */
-"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "您的日历也是一种生活轨迹，让 Proton Calendar 来为您守护。";
 
 /* Button to open the App Store page for Proton Calendar */
-"Get Proton Calendar app" = "Get Proton Calendar app";
+"Get Proton Calendar app" = "下载 Proton Calendar 移动应用";
 
 /* Name of the feature */
 "Email tracking protection" = "邮件追踪防护";
@@ -1950,10 +1950,10 @@
 "Max Storage" = "Max Storage";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "存储空间：已使用 %@";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
+"Drive storage: %@ full" = "Drive 存储空间：已使用 %@";
 
 /* Upgrade button action */
 "Upgrade" = "升级账户";
@@ -2073,16 +2073,16 @@
 "Application logs" = "应用程序日志";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "跳转至下一封邮件";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "现已支持删除、存档、移动邮件后自动显示下一封邮件。";
 
 /* The title of the button of the jump to next message spotlight. */
-"Turn on feature" = "Turn on feature";
+"Turn on feature" = "开启此功能";
 
 /* The content of the jump to next message spotlight. */
-"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+"View the next email in your inbox when you delete or move the current email." = "删除或移动当前邮件后自动打开收件箱中的下一封邮件。";
 
 /* The title of the jump to next message spotlight. */
 "Read emails faster" = "Read emails faster";

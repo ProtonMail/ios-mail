@@ -1199,7 +1199,7 @@
 "Limit reached" = "Límite alcanzado";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Solo se puede añadir una cuenta gratuita.";
+"Only two free accounts can be added" = "Solo se pueden añadir dos cuentas gratuitas.";
 
 /* section title in settings */
 "Account settings" = "Configuración de la cuenta";
@@ -2100,7 +2100,7 @@
 "Couldn't open the message, try again." = "No se ha podido abrir el mensaje. Inténtalo de nuevo.";
 
 /* Error message when user open the share extension without account logged in. */
-"Please sign in to the Proton Mail app." = "Inicie sesión en la aplicación de Proton Mail.";
+"Please sign in to the Proton Mail app." = "Inicia sesión en la aplicación de Proton Mail.";
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply (to last message)" = "Responder (al último mensaje)";

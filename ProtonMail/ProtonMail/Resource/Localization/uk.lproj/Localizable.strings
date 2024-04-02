@@ -584,7 +584,7 @@
 "Reading device contacts data…" = "Зчитування контактів пристрою…";
 
 /* title for the contact import indicator */
-"Importing contacts..." = "Importing contacts...";
+"Importing contacts..." = "Імпортування контактів...";
 
 /* Description */
 "Do you want to cancel the process?" = "Хочете скасувати процес?";
@@ -1199,7 +1199,7 @@
 "Limit reached" = "Досягнуто обмеження";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Можна додати лише один безплатний обліковий запис";
+"Only two free accounts can be added" = "Можна додати лише два безплатних облікових записів";
 
 /* section title in settings */
 "Account settings" = "Налаштування облікового запису";
@@ -1516,7 +1516,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Звіт про шахрайство";
 
-"Not spam (move to inbox)" = "Not spam (move to inbox)";
+"Not spam (move to inbox)" = "Не спам (перемістити до вхідних)";
 
 /* No comment provided by engineer. */
 "Move to" = "Перемістити";
@@ -1834,10 +1834,10 @@
 "You can now choose and rearrange the actions in this bar" = "Відтепер ви можете вибирати й переставляти дії на цій панелі";
 
 /* Title of the banner alert */
-"Your Mail storage is %@ full" = "Your Mail storage is %@ full";
+"Your Mail storage is %@ full" = "Ваше сховище Mail заповнено на %@";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "Ваше сховище Drive заповнено на %@";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "Ваше сховище Proton Mail заповнене";
@@ -1846,7 +1846,7 @@
 "Your Drive storage is full" = "Ваше сховище Proton Drive заповнене";
 
 /* Description of the banner alert */
-"Upgrade to get more storage." = "Upgrade to get more storage.";
+"Upgrade to get more storage." = "Покращте, щоб отримати більше місця.";
 
 /* Get more storage button action */
 "Not now" = "Не зараз";
@@ -1890,13 +1890,13 @@
 "Unblock" = "Розблокувати";
 
 /* Headline of the Calendar landing page */
-"Your schedule is worth protecting" = "Your schedule is worth protecting";
+"Your schedule is worth protecting" = "Ваш графік вартий захисту";
 
 /* Subheadline of the Calendar landing page */
-"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Ваш календар — запис вашого життя, Proton Calendar допомагає зберегти його приватним.";
 
 /* Button to open the App Store page for Proton Calendar */
-"Get Proton Calendar app" = "Get Proton Calendar app";
+"Get Proton Calendar app" = "Отримати застосунок Proton Calendar";
 
 /* Name of the feature */
 "Email tracking protection" = "Захист від стеження електронної пошти";
@@ -1914,28 +1914,28 @@
 "Load" = "Завантажити";
 
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "Організатор";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "Показувати менше";
 
 /* Text shown when opening an invitation for a past event */
-"This event already ended" = "This event already ended";
+"This event already ended" = "Ця подія вже закінчилася";
 
 /* Text shown when opening an invitation for a cancelled event */
-"This event has been cancelled" = "This event has been cancelled";
+"This event has been cancelled" = "Цю подію скасовано";
 
 /* Prompt above yes/no/maybe buttons */
-"Attending?" = "Attending?";
+"Attending?" = "Братимете участь?";
 
 /* Part of a yes/no/maybe prompt */
-"Yes" = "Yes";
+"Yes" = "Так";
 
 /* Part of a yes/no/maybe prompt */
-"No" = "No";
+"No" = "Ні";
 
 /* Part of a yes/no/maybe prompt */
-"Maybe" = "Maybe";
+"Maybe" = "Можливо";
 
 /* Confirm attending an event */
 "Yes, I'll attend" = "Підтверджую участь";
@@ -1944,16 +1944,16 @@
 "No, I won't attend" = "Не підтверджую участь";
 
 /* Neither confirm nor deny attending an event */
-"I might attend" = "I might attend";
+"I might attend" = "Можливо братиму";
 
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "Максимальне місце у сховищі";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "Сховище: заповнено на %@";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
+"Drive storage: %@ full" = "Сховище Drive: заповнено на %@";
 
 /* Upgrade button action */
 "Upgrade" = "Покращити";
@@ -1995,19 +1995,19 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Увімкніть цю функцію для автозавершення адрес електронної пошти, використовуючи контакти з усіх облікових записів, до яких ви ввійшли.";
 
 /* contacts auto import title in settings */
-"Auto-import device contacts" = "Auto-import device contacts";
+"Auto-import device contacts" = "Автоімпорт контактів на пристрої";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Увімкніть цю функцію, щоб автоматично додавати нові контакти з вашого пристрою до застосунку Proton Mail.";
 
 /* Auto import alert title */
-"Auto-import enabled" = "Auto-import enabled";
+"Auto-import enabled" = "Автоімпорт увімкнено";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "Початковий імпорт може зайняти деякий час і відбудеться лише тоді, коли застосунок буде не у фоновому режимі.";
 
 /* Alert to ask user to reauthorise access to contacts */
-"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission.";
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Доступ до контактів було вимкнено. Щоб увімкнути автоімпорт, перейдіть до налаштувань та надайте дозвіл.";
 
 /* Settings lock protection section */
 "Protection" = "Захист";
@@ -2073,19 +2073,19 @@
 "Application logs" = "Журнал програми";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Перейти до наступного листа";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Автоматично показувати наступний лист, коли відкритий лист видаляється, архівується або переміщується.";
 
 /* The title of the button of the jump to next message spotlight. */
-"Turn on feature" = "Turn on feature";
+"Turn on feature" = "Ввімкнути функцію";
 
 /* The content of the jump to next message spotlight. */
-"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+"View the next email in your inbox when you delete or move the current email." = "Переглядайте наступний лист у вашій пошті, коли ви видаляєте або переміщуєте поточний лист.";
 
 /* The title of the jump to next message spotlight. */
-"Read emails faster" = "Read emails faster";
+"Read emails faster" = "Швидше читати електронні листи";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Сталася невідома помилка. Будь ласка, зверніться до служби підтримки.\nПомилка: %@";
@@ -2169,10 +2169,10 @@
 "Empty trash" = "Очистити смітник";
 
 /* Alert prompting to update Calendar */
-"Download the latest version of the Proton Calendar to open this event" = "Download the latest version of the Proton Calendar to open this event";
+"Download the latest version of the Proton Calendar to open this event" = "Завантажте останню версію Proton Calendar, щоби відкрити цю подію";
 
 /* Button to open App Store */
-"Download in App Store" = "Download in App Store";
+"Download in App Store" = "Завантажити з App Store";
 
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Відкрити у Proton Calendar";
@@ -2196,7 +2196,7 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Початковий відправник цього повідомлення більше недійсний. Ваше повідомлення буде надіслано з типової адреси %@.";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
-"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+"Please retry after all attachments are uploaded." = "Будь ласка, повторіть спробу після завантаження всіх вкладень.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Ім'я";
@@ -2223,13 +2223,13 @@
 "Select all" = "Вибрати всі";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Unselect all";
+"Unselect all" = "Скасувати вибір";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
-"Maximum selection reached" = "Maximum selection reached";
+"Maximum selection reached" = "Досягнуто максимального вибору";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "Немає отримувача";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "Вимкнути PIN-код";
@@ -2274,94 +2274,94 @@
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Ви відмовитеся від цього списку розсилки. Відправник отримає сповіщення про вашу відмову від роозсилки за цією адресою.";
 
 /* Alert telling the user that we are unable to preview this attachment */
-"Unable to preview this attachment" = "Unable to preview this attachment";
+"Unable to preview this attachment" = "Не вдасться переглянути це вкладення";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
 "Downloading attachment" = "Завантажується вкладення";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Snoozed until %@";
+"Snoozed until %@" = "Відкладено до %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Unsnooze";
+"Unsnooze" = "Скасувати відкладення";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Snooze until %@";
+"Snooze until %@" = "Відкласти до %@";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "Conversation unsnoozed";
+"Conversation unsnoozed" = "Скасовано відкладення розмови";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Snooze until...";
+"Snooze until..." = "Відкласти до...";
 
 /* One of snooze option shows in action sheet */
-"Later this week" = "Later this week";
+"Later this week" = "Пізніше цього тижня";
 
 /* One of snooze option shows in action sheet */
-"This weekend" = "This weekend";
+"This weekend" = "На цих вихідних";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "Наступного тижня";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Please select a time in the future";
+"Please select a time in the future" = "Будь ласка, виберіть час у майбутньому";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "Хочете відкладати в будь-який час?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "Розблокуйте користувацький час відкладення після покращення тарифу";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "До 15 адрес пошти/псевдонімів";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Необмежена кількість тек, міток і фільтрів";
 
 /* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.";
+"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Налаштуйте, коли лист знову з'явиться у вашій пошті, за допомогою функції нагадування, яка тепер доступна на панелі інструментів.";
 
 /* Description string shows in spotlight view */
 "Snooze it for later" = "Відкласти на потім";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
-"Add it as attachment" = "Add it as attachment";
+"Add it as attachment" = "Додайте його як вкладення";
 
 /* The title in setting page */
-"Swipe to next message" = "Swipe to next message";
+"Swipe to next message" = "Проведіть пальцем, щоби перейти до наступного повідомлення";
 
 /* Description text for setting */
-"Allow navigating through messages by swiping left or right." = "Allow navigating through messages by swiping left or right.";
+"Allow navigating through messages by swiping left or right." = "Дозволяє переходити між повідомленнями за допомогою проведення вліво або вправо.";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "Ваші контакти завжди під рукою";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Не потрібно виходити із застосунку, щоб знайти пошту. Синхронізуйте контакти зі свого пристрою з Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "Увімкнути автоімпорт";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "Контактів ще немає";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "Імпортуйте контакти зі свого пристрою, щоб легко надсилати листи та запрошення.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "Автоімпорт контактів";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "Імпортування ваших контактів";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "Ваші контакти з'являться тут незабаром.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "Автоматично додавати нові контакти зі свого пристрою.";
 
 /* The title of the privacy and data in the account setting. */
-"Privacy and data" = "Privacy and data";
+"Privacy and data" = "Приватність та дані";
 
 /* cell title in device settings */
 "Storage" = "Сховище";
@@ -2382,4 +2382,4 @@
 "To improve our services, we sometimes collect anonymized usage data." = "Для поліпшення наших послуг ми іноді збираємо анонімні дані користування.";
 
 /* The subtitle of the crash report setting. */
-"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.";
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Якщо застосунок аварійно закриється, нашим інженерам буде надіслано звіт з детальною інформацією про причину збою. Ці дані будуть використані лише для вдосконалення застосунку.";

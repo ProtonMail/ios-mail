@@ -1199,7 +1199,7 @@
 "Limit reached" = "Limită atinsă";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Doar un singur cont gratuit poate fi adăugat";
+"Only two free accounts can be added" = "Se pot adăuga doar două conturi gratuite";
 
 /* section title in settings */
 "Account settings" = "Setări cont";
@@ -1837,7 +1837,7 @@
 "Your Mail storage is %@ full" = "Spațiul de stocare mesaje este %@ ocupat";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Stocarea unității dvs. este %@ plină";
+"Your Drive storage is %@ full" = "Spațiul din Drive este %@ ocupat.";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "Spațiul de stocare mesaje este plin";
@@ -1890,13 +1890,13 @@
 "Unblock" = "Deblocare";
 
 /* Headline of the Calendar landing page */
-"Your schedule is worth protecting" = "Your schedule is worth protecting";
+"Your schedule is worth protecting" = "Merită să vă protejați propriul program";
 
 /* Subheadline of the Calendar landing page */
-"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Calendarul personal este o înregistrare a propriei vieți. Proton Calendar ajută la menținerea confidențială a acesteia.";
 
 /* Button to open the App Store page for Proton Calendar */
-"Get Proton Calendar app" = "Get Proton Calendar app";
+"Get Proton Calendar app" = "Luați aplicația Proton Calendar";
 
 /* Name of the feature */
 "Email tracking protection" = "Protejare e-mail împotriva urmăririi";
@@ -1947,13 +1947,13 @@
 "I might attend" = "S-ar putea";
 
 /* Menu title */
-"Max Storage" = "Stocare maximă";
+"Max Storage" = "Spațiu stocare maxim";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Depozitare: %@ plin";
+"Storage: %@ full" = "Spațiu: %@ ocupat";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Stocarea unităților: %@ plin";
+"Drive storage: %@ full" = "Spațiu Drive: %@ ocupat";
 
 /* Upgrade button action */
 "Upgrade" = "Modificare";
@@ -2073,19 +2073,19 @@
 "Application logs" = "Jurnale aplicație";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Treci la următorul e-mail";
+"Jump to next email" = "Salt la mesajul următor";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Afișați automat următorul e-mail atunci când un e-mail deschis este șters, arhivat sau mutat.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Afișare automată următorul mesaj când un mesaj deschis este șters, arhivat sau mutat.";
 
 /* The title of the button of the jump to next message spotlight. */
-"Turn on feature" = "Turn on feature";
+"Turn on feature" = "Activare funcție";
 
 /* The content of the jump to next message spotlight. */
-"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+"View the next email in your inbox when you delete or move the current email." = "Vizualizați următorul mesaj când îl ștergeți sau îl mutați pe cel curent.";
 
 /* The title of the jump to next message spotlight. */
-"Read emails faster" = "Read emails faster";
+"Read emails faster" = "Citire mai rapidă mesaje";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "A apărut o eroare neașteptată. Contactați serviciul de asistență.\nEroare: %@";
@@ -2334,31 +2334,31 @@
 "Allow navigating through messages by swiping left or right." = "Permitere răsfoirea mesajelor prin glisare la stânga sau la dreapta.";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Contactele dvs. la îndemână";
+"Your contacts at your fingertips" = "Contactele personale la îndemână";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Nu este nevoie să părăsiți aplicația pentru a găsi o adresă de e-mail. Sincronizați contactele de pe dispozitivul dvs. cu Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Nu trebuie să părăsiți aplicația pentru a găsi o adresă de e-mail. Sincronizați contactele de pe dispozitiv cu Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Activați autoimportul";
+"Enable auto-import" = "Activare autoimportare";
 
 /* The title for no contact hint view */
 "No contacts yet" = "Încă nu există contacte";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Importați contacte de pe dispozitivul dvs. pentru a trimite cu ușurință e-mailuri și invitații.";
+"Import contacts from your device to send emails and invites with ease." = "Importați contacte de pe dispozitiv pentru a trimite cu ușurință mesaje și invitații.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-importul contactelor";
+"Auto-import contacts" = "Autoimportare contacte";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importarea contactelor dvs.";
+"Importing your contacts" = "Se importă contactele";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Contactele dvs. vor apărea aici în scurt timp.";
+"Your contacts will appear here shortly." = "Contactele vor apărea aici în scurt timp.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Adăugați automat noi contacte de pe dispozitiv.";
+"Automatically add new contacts from your device." = "Adăugați automat contacte noi de pe dispozitiv.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Confidențialitate și date";
