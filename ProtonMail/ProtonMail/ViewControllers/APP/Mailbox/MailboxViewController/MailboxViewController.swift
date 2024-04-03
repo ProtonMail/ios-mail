@@ -298,6 +298,13 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
                          selector: #selector(tempNetworkError(_:)),
                          name: .tempNetworkError,
                          object: nil)
+
+        viewModel.setupStorageObservation { [weak self] newValue in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.setupRightButtons(self.viewModel.listEditing, isStorageExceeded: newValue)
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -1098,7 +1105,9 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     private func updateNavigationController(_ editingMode: Bool) {
         self.setupLeftButtons(editingMode)
         self.setupNavigationTitle(showSelected: editingMode)
-        self.setupRightButtons(editingMode)
+        self.setupRightButtons(
+            editingMode,
+            isStorageExceeded: viewModel.user.isStorageExceeded)
     }
 
     private func retry(delay: Double = 0) {

@@ -368,17 +368,6 @@ final class WindowsCoordinator {
         }
 
         dependencies.notificationCenter.addObserver(
-            forName: .didFetchSettingsForPrimaryUser,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            if self?.arePrimaryUserSettingsFetched == false {
-                self?.arePrimaryUserSettingsFetched = true
-                self?.restoreAppStates()
-            }
-        }
-
-        dependencies.notificationCenter.addObserver(
             forName: .switchView,
             object: nil,
             queue: .main

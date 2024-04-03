@@ -20,13 +20,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import Combine
 import CoreData
+import Foundation
 import ProtonCoreDataModel
-import ProtonCoreUtilities
+import ProtonCoreFeatureFlags
 import ProtonCoreServices
 import ProtonCoreUIFoundations
-import ProtonCoreFeatureFlags
+import ProtonCoreUtilities
 import ProtonMailAnalytics
 
 struct LabelInfo {
@@ -149,6 +150,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     var isLoggingOut: Bool {
         dependencies.usersManager.loggingOutUserIDs.contains(user.userID)
     }
+
+    private var storageExceedObservation: Cancellable?
 
     init(labelID: LabelID,
          label: LabelInfo?,
@@ -891,6 +894,12 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
             mailboxPassphrase: user.mailboxPassword
         )
         dependencies.importDeviceContacts.execute(params: params)
+    }
+
+    func setupStorageObservation(didChanged: @escaping (Bool) -> Void) {
+        storageExceedObservation = user.$isStorageExceeded.sink(receiveValue: { value in
+            didChanged(value)
+        })
     }
 }
 
