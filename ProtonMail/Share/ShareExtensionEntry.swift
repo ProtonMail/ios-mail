@@ -43,6 +43,7 @@ class ShareExtensionEntry: UINavigationController {
 
     private func setup() {
         injectDefaultCryptoImplementation()
+        configureCoreLogger()
 
         #if DEBUG
         PMAPIService.noTrustKit = true
@@ -64,6 +65,19 @@ class ShareExtensionEntry: UINavigationController {
         super.viewDidLoad()
 
         self.appCoordinator?.start()
+    }
+
+    private func configureCoreLogger() {
+        let environment: String
+        switch BackendConfiguration.shared.environment {
+        case .black, .blackPayment:
+            environment = "black"
+        case .custom(let custom):
+            environment = custom
+        default:
+            environment = "production"
+        }
+        PMLog.setEnvironment(environment: environment)
     }
 
     private func setupLogLocation() {
