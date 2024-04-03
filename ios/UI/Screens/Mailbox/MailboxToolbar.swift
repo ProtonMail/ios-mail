@@ -20,18 +20,55 @@ import SwiftUI
 
 struct MailboxToolbar: ViewModifier {
     @EnvironmentObject private var appUIState: AppUIState
+    @ObservedObject private var selectionMode: SelectionMode
 
-    private(set) var sessionProvider: SessionProvider
+    private let title: String
+    private var sessionProvider: SessionProvider
+
+    private var state: ToolbarState {
+        selectionMode.hasSelectedItems ? .selection : .noSelection
+    }
+
+    init(title: String, selectionMode: SelectionMode, sessionProvider: SessionProvider) {
+        self.title = title
+        self.selectionMode = selectionMode
+        self.sessionProvider = sessionProvider
+    }
 
     func body(content: Content) -> some View {
         content
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .principal) {
+                    VStack(alignment: .leading) {
+                        Text(title)
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, DS.Spacing.medium)
+                }
+                ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
-                        appUIState.isSidebarOpen = true
+                        switch state {
+                        case .noSelection:
+                            appUIState.isSidebarOpen = true
+                        case .selection:
+                            selectionMode.exitSelectionMode()
+                        }
                     }, label: {
-                        Image(uiImage: DS.Icon.icHamburguer)
+                        HStack {
+                            Spacer()
+                            Image(uiImage: state.icon)
+                                .id(state.rawValue)
+                                .transition(.scale.animation(.easeOut(duration: AppConstants.selectionModeStartDuration)))
+                        }
+                        .padding(10)
                     })
+                    .frame(width: 40, height: 40)
+                    .overlay {
+                        Circle()
+                            .stroke(DS.Color.Border.norm)
+                    }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -45,14 +82,50 @@ struct MailboxToolbar: ViewModifier {
                     }, label: {
                         Text("sign out")
                             .font(.footnote)
+                            .opacity(selectionMode.hasSelectedItems ? 0 : 1)
+                            .animation(
+                                .easeInOut(duration: AppConstants.selectionModeStartDuration),
+                                value: selectionMode.hasSelectedItems
+                            )
                     })
                 }
             }
+            .tint(DS.Color.Text.norm)
     }
 }
 
 extension View {
-    @MainActor func mailboxToolbar() -> some View {
-        self.modifier(MailboxToolbar(sessionProvider: AppContext.shared))
+    @MainActor func mailboxToolbar(title: String, selectionMode: SelectionMode) -> some View {
+        self.modifier(MailboxToolbar(title: title, selectionMode: selectionMode, sessionProvider: AppContext.shared))
     }
+}
+
+extension MailboxToolbar {
+
+    enum ToolbarState: Int {
+        case noSelection
+        case selection
+
+        var icon: UIImage {
+            switch self {
+            case .noSelection:
+                return DS.Icon.icHamburguer
+            case .selection:
+                return DS.Icon.icChevronLeft
+            }
+        }
+    }
+}
+
+
+#Preview {
+    let appUIState = AppUIState(isSidebarOpen: false)
+    let userSettings = UserSettings(mailboxViewMode: .conversation)
+
+    let mailboxModel = MailboxModel(appRoute: .shared, state: .data( PreviewData.mailboxConversations))
+
+    return MailboxScreen(mailboxModel: mailboxModel)
+        .mailboxToolbar(title: "Inbox", selectionMode: .init())
+        .environmentObject(appUIState)
+        .environmentObject(userSettings)
 }

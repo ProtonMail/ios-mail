@@ -41,7 +41,7 @@ extension LocalConversation {
         )
     }
 
-    func toMailboxConversationCellUIModel() -> MailboxConversationCellUIModel {
+    func toMailboxConversationCellUIModel(selectedIds: Set<PMMailboxItemId>) -> MailboxConversationCellUIModel {
         MailboxConversationCellUIModel(
             id: id,
             avatar: .init(initials: initials),
@@ -50,6 +50,7 @@ extension LocalConversation {
             date: Date(timeIntervalSince1970: TimeInterval(time)),
             isRead: numUnread == 0,
             isStarred: starred,
+            isSelected: selectedIds.contains(id),
             isSenderProtonOfficial: senders.first?.isProton.isTrue ?? false,
             numMessages: numMessages > 1 ? Int(numMessages) : 0,
             labelUIModel: toLabel(),

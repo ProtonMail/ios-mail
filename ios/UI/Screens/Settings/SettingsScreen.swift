@@ -28,7 +28,6 @@ struct SettingsScreen: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(LocalizationTemp.settings)
-            .mailboxToolbar()
         }
     }
 }

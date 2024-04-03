@@ -21,13 +21,25 @@ import SwiftUI
  Source of truth for the Mailbox view. Contains a model for conversations and another one for messages.
  */
 final class MailboxModel: ObservableObject {
+    @ObservedObject private(set) var appRoute: AppRoute
+
     let conversationModel: MailboxConversationModel
     // let messageModel: MailboxMessageModel
 
-    @ObservedObject private(set) var appRoute: AppRoute
+    let selectionMode: SelectionMode
 
     init(appRoute: AppRoute) {
         self.appRoute = appRoute
-        self.conversationModel = .init(appRoute: appRoute)
+        let selectionMode = SelectionMode()
+        self.selectionMode = selectionMode
+        self.conversationModel = MailboxConversationModel(appRoute: appRoute, selectionMode: selectionMode)
+    }
+
+    // Init for preview purposes only
+    init(appRoute: AppRoute, state: MailboxConversationModel.State) {
+        let selection = SelectionMode()
+        self.selectionMode = selection
+        self.conversationModel = MailboxConversationModel(appRoute: appRoute, selectionMode: selection, state: state)
+        self.appRoute = conversationModel.appRoute
     }
 }

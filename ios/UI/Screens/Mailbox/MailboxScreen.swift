@@ -19,38 +19,56 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxScreen: View {
-    @EnvironmentObject private var appUIState: AppUIState
     @EnvironmentObject private var userSettings: UserSettings
 
-    private var mailboxModel: MailboxModel
     @ObservedObject private var appRoute: AppRoute
+    @ObservedObject private var selectionMode: SelectionMode
+
+    private var mailboxModel: MailboxModel
+
+    private var navigationTitle: String {
+        selectionMode.hasSelectedItems
+        ? LocalizationTemp.Selection.title(value: selectionMode.selectedItems.count)
+        : appRoute.selectedMailbox.name
+    }
 
     init(mailboxModel: MailboxModel) {
         self.mailboxModel = mailboxModel
         self.appRoute = mailboxModel.appRoute
+        self.selectionMode = mailboxModel.selectionMode
     }
 
     var body: some View {
+        let _ = Self._printChanges()
         NavigationStack {
-            ZStack {
+            ZStack(alignment: .bottom) {
                 if userSettings.mailboxViewMode == .conversation {
                     MailboxConversationScreen(model: mailboxModel.conversationModel)
                 } else {
                     Text("message list mailbox")
                 }
+
+                MailboxActionBarView()
+                    .opacity(selectionMode.hasSelectedItems ? 1 : 0)
+                    .offset(y: selectionMode.hasSelectedItems ? 0 : 45 + 100)
+                    .animation(
+                        .easeInOut(duration: AppConstants.selectionModeStartDuration),
+                        value: selectionMode.hasSelectedItems
+                    )
             }
             .background(DS.Color.Background.norm) // sets also the color for the navigation bar
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(appRoute.selectedMailbox.name)
-            .mailboxToolbar()
+            .mailboxToolbar(title: navigationTitle, selectionMode: selectionMode)
         }
     }
 }
 
 #Preview {
-    let appUIState = AppUIState(isSidebarOpen: true, hasSelectedMailboxItems: true)
+    let appUIState = AppUIState(isSidebarOpen: false)
     let userSettings = UserSettings(mailboxViewMode: .conversation)
-    let mailboxModel = MailboxModel(appRoute: .shared)
+
+    let mailboxModel = MailboxModel(appRoute: .shared, state: .data( PreviewData.mailboxConversations))
+
     return MailboxScreen(mailboxModel: mailboxModel)
         .environmentObject(appUIState)
         .environmentObject(userSettings)

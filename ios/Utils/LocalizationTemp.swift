@@ -39,6 +39,10 @@ enum LocalizationTemp {
         static let trash = "Trash"
     }
 
+    enum Selection {
+        static func title(value: Int) -> String { String(format: "%d selected", value) }
+    }
+
     enum SwipeAction {
         static let delete = "Delete"
         static let read = "Read"

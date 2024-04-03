@@ -40,9 +40,12 @@ struct MailboxConversationCell: View {
                 attachmentRowView
             }
         }
+        .onTapGesture {
+            onEvent(.onTap)
+        }
         .padding(.horizontal, DS.Spacing.large)
         .padding(.vertical, DS.Spacing.medium)
-        .background(uiModel.isSelected.value ? DS.Color.Background.secondary : DS.Color.Background.norm)
+        .background(uiModel.isSelected ? DS.Color.Background.secondary : DS.Color.Background.norm)
     }
 }
 
@@ -50,7 +53,7 @@ extension MailboxConversationCell {
 
     private var avatarView: some View {
         AvatarCheckboxView(
-            isSelected: uiModel.isSelected.value,
+            isSelected: uiModel.isSelected,
             avatar: uiModel.avatar,
             onDidChangeSelection: { onEvent(.onSelectedChange(isSelected: $0)) }
         )
@@ -130,7 +133,7 @@ final class MailboxConversationCellUIModel: Identifiable, Sendable {
     
     let isRead: Bool
     let isStarred: Bool
-    let isSelected = SendableBool(false)
+    let isSelected: Bool
 
     let isSenderProtonOfficial: Bool
     let numMessages: Int
@@ -147,6 +150,7 @@ final class MailboxConversationCellUIModel: Identifiable, Sendable {
         date: Date,
         isRead: Bool,
         isStarred: Bool,
+        isSelected: Bool,
         isSenderProtonOfficial: Bool,
         numMessages: Int,
         labelUIModel: MailboxLabelUIModel = .init(),
@@ -160,6 +164,7 @@ final class MailboxConversationCellUIModel: Identifiable, Sendable {
         self.date = date
         self.isRead = isRead
         self.isStarred = isStarred
+        self.isSelected = isSelected
         self.isSenderProtonOfficial = isSenderProtonOfficial
         self.numMessages = numMessages
         self.labelUIModel = labelUIModel
@@ -176,6 +181,7 @@ final class MailboxConversationCellUIModel: Identifiable, Sendable {
 }
 
 enum MailboxConversationCellEvent {
+    case onTap
     case onSelectedChange(isSelected: Bool)
     case onStarredChange(isStarred: Bool)
     case onAttachmentTap(attachmentId: String)
@@ -191,19 +197,17 @@ enum MailboxConversationCellEvent {
             date: Date(),
             isRead: false,
             isStarred: false,
+            isSelected: true,
             isSenderProtonOfficial: true,
             numMessages: 0,
             labelUIModel: .init(id: "", color: .brown, text: "New", numExtraLabels: 0),
             expirationDate: nil
         )
     }
-    let model1 = model
-    model1.isSelected.set(true)
 
     return VStack {
 
         MailboxConversationCell(uiModel: model, onEvent: { _ in })
-        MailboxConversationCell(uiModel: model1, onEvent: { _ in })
 
         MailboxConversationCell(
             uiModel: .init(
@@ -214,6 +218,7 @@ enum MailboxConversationCellEvent {
                 date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
                 isRead: false,
                 isStarred: true,
+                isSelected: false,
                 isSenderProtonOfficial: false,
                 numMessages: 3,
                 labelUIModel: .init(id: "", color: .purple, text: "Offer", numExtraLabels: 0),
@@ -232,6 +237,7 @@ enum MailboxConversationCellEvent {
                 date: Calendar.current.date(byAdding: .year, value: -1, to: Date())!,
                 isRead: true,
                 isStarred: true,
+                isSelected: false,
                 isSenderProtonOfficial: true,
                 numMessages: 12,
                 labelUIModel: .init(id: "", color: .green, text: "Read later", numExtraLabels: 2),

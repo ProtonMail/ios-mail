@@ -11,6 +11,7 @@ public extension DS.Icon {
     static let icArrowOutFromRectangle = icon(named: "ic-arrow-out-from-rectangle")
 
     static let icCheckmark = icon(named: "ic-checkmark")
+    static let icChevronLeft = icon(named: "ic-chevron-left")
     static let icClock = icon(named: "ic-clock")
     static let icCogWheel = icon(named: "ic-cog-wheel")
     static let icHamburguer = icon(named: "ic-hamburger")
@@ -25,12 +26,14 @@ public extension DS.Icon {
     static let icTrash = icon(named: "ic-trash")
 }
 
-// MARK: Swipe actions
+// MARK: mailbox item actions
 
 public extension DS.Icon {
     static let icEnvelope = icon(named: "ic-envelope")
     static let icEnvelopeDot = icon(named: "ic-envelope-dot")
     static let icEnvelopeOpen = icon(named: "ic-envelope-open")
+    static let icTag = icon(named: "ic-tag")
+    static let icThreeDotsHorizontal = icon(named: "ic-three-dots-horizontal")
 }
 
 // MARK: File type icons

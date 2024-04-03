@@ -21,4 +21,7 @@ enum AppConstants {
 
     /// time interval between event loop poll calls
     static let eventLoopFrequency: TimeInterval = 10
+
+    /// selection mode animation duration
+    static let selectionModeStartDuration = 0.2
 }

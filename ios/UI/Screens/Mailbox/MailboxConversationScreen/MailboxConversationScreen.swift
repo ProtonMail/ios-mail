@@ -61,12 +61,14 @@ extension MailboxConversationScreen {
                         uiModel: conversation,
                         onEvent: { [weak model] event in
                             switch event {
+                            case .onTap:
+                                model?.onConversationTap(id: conversation.id)
                             case .onSelectedChange(let isSelected):
                                 model?.onConversationSelectionChange(id: conversation.id, isSelected: isSelected)
                             case .onStarredChange(let isStarred):
                                 model?.onConversationStarChange(id: conversation.id, isStarred: isStarred)
                             case .onAttachmentTap(let attachmentId):
-                                model?.onAttachmentTap(attachmentId: attachmentId)
+                                model?.onConversationAttachmentTap(attachmentId: attachmentId)
                             }
                         }
                     )
@@ -100,16 +102,19 @@ extension MailboxConversationScreen {
 
 #Preview {
     let route: AppRoute = .init(route: .mailbox(label: .placeHolderMailbox))
+    let selectionMode = SelectionMode()
 
     struct PreviewWrapper: View {
         @State var appRoute: AppRoute
+        @State var selectionMode: SelectionMode
 
         var body: some View {
             MailboxConversationScreen(model: .init(
                 appRoute: appRoute,
+                selectionMode: selectionMode,
                 state: .empty // .data(PreviewData.mailboxConversations)
             ))
         }
     }
-    return PreviewWrapper(appRoute: route)
+    return PreviewWrapper(appRoute: route, selectionMode: selectionMode)
 }

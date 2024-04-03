@@ -22,10 +22,35 @@ import Foundation
  */
 final class AppUIState: ObservableObject {
     @Published var isSidebarOpen: Bool = false
-    @Published var hasSelectedMailboxItems: Bool = false
 
-    init(isSidebarOpen: Bool = false, hasSelectedMailboxItems: Bool = false) {
+    init(isSidebarOpen: Bool = false) {
         self.isSidebarOpen = isSidebarOpen
-        self.hasSelectedMailboxItems = hasSelectedMailboxItems
+    }
+}
+
+@MainActor
+final class SelectionMode: ObservableObject {
+
+    @Published private(set) var hasSelectedItems: Bool
+    private(set) var selectedItems: Set<PMMailboxItemId>
+
+    init(selectedItems: Set<PMMailboxItemId> = .init()) {
+        self.hasSelectedItems = false
+        self.selectedItems = selectedItems
+    }
+
+    func addMailboxItem(id: PMMailboxItemId) {
+        selectedItems.insert(id)
+        hasSelectedItems = true
+    }
+
+    func removeMailboxItem(id: PMMailboxItemId) {
+        selectedItems.remove(id)
+        hasSelectedItems = !selectedItems.isEmpty
+    }
+
+    func exitSelectionMode() {
+        selectedItems.removeAll()
+        hasSelectedItems = false
     }
 }

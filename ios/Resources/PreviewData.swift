@@ -40,6 +40,7 @@ enum PreviewData {
                 date: Calendar.current.date(byAdding: .minute, value: -1 * (value*value*1005), to: Date())!,
                 isRead: (value == 2 || value>5),
                 isStarred: (value%6 == 0),
+                isSelected: false,
                 isSenderProtonOfficial: (randomSenderSubject.0 == "Proton"),
                 numMessages: [0, 1, 5, [0, 2, 14].randomElement()!].randomElement()!,
                 labelUIModel: [0, 1, 2].randomElement()! == 0 ? mailboxLabels.randomElement()! : .init(),
