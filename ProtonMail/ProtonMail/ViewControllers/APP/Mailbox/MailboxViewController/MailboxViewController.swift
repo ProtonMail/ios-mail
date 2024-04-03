@@ -2208,7 +2208,7 @@ extension MailboxViewController {
 extension MailboxViewController {
 
     private func setupAlertBox() {
-        guard viewModel.storageAlertVisibility != .hidden else {
+        guard viewModel.storageAlertVisibility != .hidden || viewModel.lockedStateAlertVisibility != .hidden else {
             alertContainerView.isHidden = true
             return
         }
@@ -2218,6 +2218,43 @@ extension MailboxViewController {
         alertCardView.layer.cornerRadius = 8
         alertIcon.image = IconProvider.exclamationCircleFilled
 
+        alertLabel.textColor = ColorProvider.TextNorm
+        alertDescription.textColor = ColorProvider.TextNorm
+        alertDescription.numberOfLines = 0
+        alertDismissButton.setTitle(L10n.AlertBox.alertBoxDismissButtonTitle, for: .normal)
+        alertButton.layer.cornerRadius = 8
+        alertButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        alertButton.addTarget(
+            self,
+            action: #selector(getMoreStorageTapped),
+            for: .touchUpInside
+        )
+        alertDismissButton.addTarget(
+            self,
+            action: #selector(dismissStorageAlertTapped),
+            for: .touchUpInside
+        )
+        
+        if (viewModel.lockedStateAlertVisibility != .hidden) {
+            setupLockedStateAlertBox()
+        } else if (viewModel.storageAlertVisibility != .hidden) {
+            setupStorageAlertBox()
+        }
+    }
+    
+    private func setupLockedStateAlertBox() {
+        guard viewModel.lockedStateAlertVisibility != .hidden else {
+            return
+        }
+        alertIcon.tintColor = ColorProvider.NotificationError
+        alertDismissButton.isHidden = true
+        
+        alertLabel.text = viewModel.lockedStateAlertVisibility.mailboxBannerTitle
+        alertDescription.text = viewModel.lockedStateAlertVisibility.mailboxBannerDescription
+        alertButton.setTitle(viewModel.lockedStateAlertVisibility.mailBoxBannerButtonTitle, for: .normal)
+    }
+    
+    private func setupStorageAlertBox() {
         alertLabel.text = viewModel.storageAlertVisibility.mailboxBannerTitle
         switch viewModel.storageAlertVisibility {
         case .mail(let value) where value < StorageAlertVisibility.fullThreshold,
@@ -2232,15 +2269,9 @@ extension MailboxViewController {
         case .hidden:
             break
         }
-
+        
         alertDescription.text = L10n.AlertBox.alertBoxDescription
-
-        alertLabel.textColor = ColorProvider.TextNorm
-        alertDescription.textColor = ColorProvider.TextNorm
-        alertDismissButton.setTitle(L10n.AlertBox.alertBoxDismissButtonTitle, for: .normal)
         alertButton.setTitle(L10n.AlertBox.alertBoxButtonTitle, for: .normal)
-        alertButton.layer.cornerRadius = 8
-        alertButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
         alertButton.addTarget(
             self,
             action: #selector(getMoreStorageTapped),

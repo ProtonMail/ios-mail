@@ -74,6 +74,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
     let labelID: LabelID
     var storageAlertVisibility: StorageAlertVisibility = .hidden
+    var lockedStateAlertVisibility: LockedStateAlertVisibility = .hidden
     /// This field saves the label object of custom folder/label
     private(set) var label: LabelInfo?
     /// This field stores the latest update time of the user event.
@@ -206,7 +207,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
         super.init()
         trackLifetime()
-        self.setupStorageAlert()
+        self.setupAlertBox()
         self.conversationStateProvider.add(delegate: self)
         dependencies.updateMailbox.setup(source: self)
     }
@@ -325,8 +326,16 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     var allEmails: [EmailEntity] {
         return contactProvider.getAllEmails()
     }
+    
+    private func setupAlertBox() {
+        if let lockedFlags = user.userInfo.lockedFlags {
+            setupLockedStateAlert(by: lockedFlags)
+        } else {
+            setupStorageAlert()
+        }
+    }
 
-    func setupStorageAlert() {
+    private func setupStorageAlert() {
         let usersWhoHaveSeenStorageBanner = dependencies.userDefaults[.usersWhoHaveSeenStorageBanner]
         let userDismissedBanner = usersWhoHaveSeenStorageBanner[user.userID.rawValue] ?? false
         if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.splitStorage, reloadValue: true),
@@ -339,6 +348,21 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
             }
         } else {
             storageAlertVisibility = .hidden
+        }
+    }
+    
+    private func setupLockedStateAlert(by lockedFlags: LockedFlags) {
+        switch lockedFlags {
+        case .mailStorageExceeded:
+            lockedStateAlertVisibility = .mail
+        case .driveStorageExceeded:
+            lockedStateAlertVisibility = .drive
+        case .storageExceeded:
+            lockedStateAlertVisibility = .storageFull
+        case .orgIssueForPrimaryAdmin:
+            lockedStateAlertVisibility = .orgIssueForPrimaryAdmin
+        case .orgIssueForMember:
+            lockedStateAlertVisibility = .orgIssueForMember
         }
     }
 
