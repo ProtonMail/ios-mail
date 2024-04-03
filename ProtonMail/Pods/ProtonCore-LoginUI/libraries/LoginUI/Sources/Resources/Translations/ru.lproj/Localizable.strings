@@ -182,7 +182,7 @@
 
 "Invalid token error" = "Ошибка недействительного токена";
 
-"Create user failed" = "Create user failed";
+"Create user failed" = "Не удалось создать пользователя";
 
 "Invalid hashed password" = "Неверный хешированный пароль";
 

@@ -7,6 +7,7 @@
 //
 
 import fusion
+import ProtonCoreQuarkCommands
 
 fileprivate struct id {
     static let saveNavBarButtonLabel = LocalString._general_save_action
@@ -20,7 +21,7 @@ class RecoveryEmailRobot: CoreElements {
     var verify = Verify()
 
     func changeRecoveryEmail(_ user: User) -> RecoveryEmailRobot {
-        return newEmail(user.email)
+        return newEmail(user.dynamicDomainEmail)
             .save()
             .password(user.password)
             .confirmSave()

@@ -26,6 +26,7 @@ import ProtonCoreDataModel
 import ProtonCoreUtilities
 import ProtonCoreServices
 import ProtonCoreUIFoundations
+import ProtonCoreFeatureFlags
 import ProtonMailAnalytics
 
 struct LabelInfo {
@@ -58,8 +59,12 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasUserIntroductionProgressProvider
     & HasUsersManager
     & HasQueueManager
+    & HasAutoImportContactsFeature
+    & HasImportDeviceContacts
+    & HasUserCachedStatus
 
     let labelID: LabelID
+    var storageAlertVisibility: StorageAlertVisibility = .hidden
     /// This field saves the label object of custom folder/label
     private(set) var label: LabelInfo?
     /// This field stores the latest update time of the user event.
@@ -71,7 +76,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     internal let user: UserManager
     internal let messageService: MessageDataService
     internal let eventsService: EventsFetching
-    private let pushService: PushNotificationServiceProtocol
     /// fetch controller
     private(set) var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     private var labelPublisher: MailboxLabelPublisher?
@@ -149,7 +153,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     init(labelID: LabelID,
          label: LabelInfo?,
          userManager: UserManager,
-         pushService: PushNotificationServiceProtocol,
          coreDataContextProvider: CoreDataContextProviderProtocol,
          lastUpdatedStore: LastUpdatedStoreProtocol,
          conversationStateProvider: ConversationStateProviderProtocol,
@@ -169,7 +172,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         self.messageService = userManager.messageService
         self.eventsService = eventsService
         self.coreDataContextProvider = coreDataContextProvider
-        self.pushService = pushService
         self.lastUpdatedStore = lastUpdatedStore
         self.conversationStateProvider = conversationStateProvider
         self.contactGroupProvider = contactGroupProvider
@@ -180,7 +182,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         self.dependencies = dependencies
         self.toolbarActionProvider = toolbarActionProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
+
         super.init()
+        self.setupStorageAlert()
         self.conversationStateProvider.add(delegate: self)
         dependencies.updateMailbox.setup(source: self)
     }
@@ -289,6 +293,49 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         return contactProvider.getAllEmails()
     }
 
+    func setupStorageAlert() {
+        let usersWhoHaveSeenStorageBanner = dependencies.userDefaults[.usersWhoHaveSeenStorageBanner]
+        let userDismissedBanner = usersWhoHaveSeenStorageBanner[user.userID.rawValue] ?? false
+        if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.splitStorage, reloadValue: true),
+           !userDismissedBanner,
+           !user.userInfo.isOnAStoragePaidPlan {
+            if mailStoragePercentage > StorageAlertVisibility.bannerThreshold {
+                storageAlertVisibility = .mail(mailStoragePercentage)
+            } else if driveStoragePercentage > StorageAlertVisibility.bannerThreshold {
+                storageAlertVisibility = .drive(driveStoragePercentage)
+            }
+        } else {
+            storageAlertVisibility = .hidden
+        }
+    }
+
+    private var mailStoragePercentage: CGFloat {
+        guard let usedBaseSpace = user.userInfo.usedBaseSpace,
+              let maxBaseSpace = user.userInfo.maxBaseSpace,
+              maxBaseSpace > 0 else {
+            return 0
+        }
+        let factor = CGFloat(usedBaseSpace) / CGFloat(maxBaseSpace)
+        return CGFloat.maximum(factor, 0.01)
+    }
+
+    private var driveStoragePercentage: CGFloat {
+        guard let usedDriveSpace = user.userInfo.usedDriveSpace,
+              let maxDriveSpace = user.userInfo.maxDriveSpace,
+              maxDriveSpace > 0 else {
+            return 0
+        }
+        let factor = CGFloat(usedDriveSpace) / CGFloat(maxDriveSpace)
+        return CGFloat.maximum(factor, 0.01)
+    }
+
+    func onStorageAlertDismissed() {
+        storageAlertVisibility = .hidden
+        var usersWhoHaveSeenStorageBanner = dependencies.userDefaults[.usersWhoHaveSeenStorageBanner]
+        usersWhoHaveSeenStorageBanner[user.userID.rawValue] = true
+        dependencies.userDefaults[.usersWhoHaveSeenStorageBanner] = usersWhoHaveSeenStorageBanner
+    }
+
     func setupDiffableDataSource(
         tableView: UITableView,
         cellConfigurator: @escaping (UITableView, IndexPath, MailboxRow) -> UITableViewCell
@@ -308,30 +355,50 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         dependencies.userDefaults[.lastTourVersion] = Constants.App.TourVersion
     }
 
-    func shouldShowShowSnoozeSpotlight() -> Bool {
-        guard user.isSnoozeEnabled, !ProcessInfo.isRunningUITests else { return false }
-        return dependencies.userIntroductionProgressProvider
-            .shouldShowSpotlight(for: .snooze, toUserWith: user.userID)
+    func shouldShowJumpToNextMessageSpotlight() -> Bool {
+        guard !ProcessInfo.isRunningUITests else { return false }
+        // If one of logged in user has seen spotlight, shouldn't show it again
+        let shouldShow = dependencies.usersManager.users
+            .map {
+                dependencies
+                    .userIntroductionProgressProvider
+                    .shouldShowSpotlight(for: .jumpToNextMessage, toUserWith: $0.userID)
+            }
+            .reduce(true) { partialResult, shouldShow in
+                partialResult && shouldShow
+            }
+        return shouldShow
     }
 
-    func hasSeenSnoozeSpotlight() {
-        user.parentManager?.users.forEach({ user in
-            dependencies.userIntroductionProgressProvider.markSpotlight(
-                for: .snooze,
-                asSeen: true,
-                byUserWith: user.userID
-            )
-        })
+    func shouldShowAutoImportContactsSpotlight() -> Bool {
+        guard
+            user.container.autoImportContactsFeature.isFeatureEnabled,
+            !ProcessInfo.isRunningUITests
+        else { return false }
+        // If one of logged in user has seen spotlight, shouldn't show it again
+        let shouldShow = dependencies.usersManager.users
+            .map {
+                dependencies
+                    .userIntroductionProgressProvider
+                    .shouldShowSpotlight(for: .autoImportContacts, toUserWith: $0.userID)
+            }
+            .reduce(true) { partialResult, shouldShow in
+                partialResult && shouldShow
+            }
+        return shouldShow
     }
 
-    func hasSeenMessageNavigationSpotlight() {
-        user.parentManager?.users.forEach({ user in
-            dependencies.userIntroductionProgressProvider.markSpotlight(
-                for: .messageSwipeNavigation,
-                asSeen: true,
-                byUserWith: user.userID
-            )
-        })
+    func hasSeenJumpToNextMessageSpotlight() {
+        dependencies
+            .userIntroductionProgressProvider
+            .markSpotlight(for: .jumpToNextMessage, asSeen: true, byUserWith: user.userID)
+    }
+
+    func hasSeenAutoImportContactsSpotlight() {
+        guard user.container.autoImportContactsFeature.isFeatureEnabled else { return }
+        dependencies
+            .userIntroductionProgressProvider
+            .markSpotlight(for: .autoImportContacts, asSeen: true, byUserWith: user.userID)
     }
 
     func tagUIModels(for conversation: ConversationEntity) -> [TagUIModel] {
@@ -359,7 +426,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
         if let expirationTime = conversation.expirationTime {
             if conversation.isExpiring() {
-                let title = expirationTime.countExpirationTime(processInfo: userCachedStatus)
+                let title = expirationTime.countExpirationTime(processInfo: dependencies.userCachedStatus)
                 let expirationDateTag = TagUIModel(
                     title: title,
                     titleColor: ColorProvider.InteractionStrong,
@@ -631,11 +698,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         self.messageService.empty(location: location)
     }
 
-    /// process push
-    func processCachedPush() {
-        self.pushService.processCachedLaunchOptions()
-    }
-
     func fetchConversationDetail(conversationID: ConversationID, completion: @escaping () -> Void) {
         conversationProvider.fetchConversation(with: conversationID, includeBodyOf: nil, callOrigin: "MailboxViewModel") { result in
             assert(result.error == nil)
@@ -679,6 +741,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     }
 
     func checkStorageIsCloseLimit() {
+        guard !FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.splitStorage, reloadValue: true) else { return }
         let usedStorageSpace = user.userInfo.usedSpace
         let maxStorageSpace = user.userInfo.maxSpace
         checkSpace(usedStorageSpace,
@@ -799,7 +862,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
             }
     }
 
-    func isProtonUnreachable(completion: @escaping (Bool) -> Void) {
+    @MainActor
+    func isProtonUnreachable(completion: @MainActor @escaping (Bool) -> Void) {
         guard
             dependencies.featureFlagCache.isFeatureFlag(.protonUnreachableBanner, enabledForUserWithID: user.userID)
         else {
@@ -818,6 +882,15 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         DispatchQueue.global().async {
             self.user.cacheService.deleteExpiredMessages()
         }
+    }
+
+    func enableAutoImportContact() {
+        dependencies.autoImportContactsFeature.enableSettingForUser()
+        let params = ImportDeviceContacts.Params(
+            userKeys: user.userInfo.userKeys,
+            mailboxPassphrase: user.mailboxPassword
+        )
+        dependencies.importDeviceContacts.execute(params: params)
     }
 }
 
@@ -909,6 +982,20 @@ extension MailboxViewModel {
         dependencies.fetchMessageDetail
             .callbackOn(.main)
             .execute(params: params, callback: callback)
+    }
+
+    func enableJumpToNextMessage(completion: @escaping () -> Void) {
+        let request = UpdateNextMessageOnMoveRequest(isEnable: true)
+        user.apiService.perform(
+            request: request,
+            response: VoidResponse()
+        ) { [weak self] _, response in
+            if response.error == nil {
+                var statusProvider = self?.user.container.nextMessageAfterMoveStatusProvider
+                statusProvider?.shouldMoveToNextMessageAfterMove = true
+            }
+            completion()
+        }
     }
 }
 
@@ -1302,7 +1389,7 @@ extension MailboxViewModel {
             return
         }
 
-        let prefetchSize = userCachedStatus.featureFlags(for: user.userID)[.mailboxPrefetchSize]
+        let prefetchSize = dependencies.userCachedStatus.featureFlags(for: user.userID)[.mailboxPrefetchSize]
         let itemsToPrefetch = itemsToPrefetch().prefix(prefetchSize)
 
         guard itemsToPrefetch.count > 0, prefetchedItemsCount.value < prefetchSize else {

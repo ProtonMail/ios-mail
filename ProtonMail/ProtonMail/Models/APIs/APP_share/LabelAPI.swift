@@ -31,7 +31,7 @@ struct LabelAPI {
     static let versionPrefix: String = "/v4"
 }
 
-final class GetV4LabelsRequest: Request {
+struct GetV4LabelsRequest: Request {
     private let type: Int
     init(type: PMLabelType) {
         self.type = type.rawValue

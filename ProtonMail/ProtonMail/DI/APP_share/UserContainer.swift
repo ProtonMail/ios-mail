@@ -127,7 +127,7 @@ final class UserContainer: ManagedContainer {
 
     var featureFlagProviderFactory: Factory<FeatureFlagProvider> {
         self {
-            FeatureFlagProvider(featureFlagsRepository: self.featureFlagsRepository, userID: self.user.userID)
+            FeatureFlagProviderImpl(featureFlagsRepository: self.featureFlagsRepository, userID: self.user.userID)
         }
     }
 
@@ -262,6 +262,7 @@ final class UserContainer: ManagedContainer {
         self {
             TelemetryService(
                 userID: self.user.userID,
+                shouldBuildSendTelemetry: !Application.isTestingBuild,
                 isTelemetrySettingOn: { [weak self] in self?.user.hasTelemetryEnabled ?? false },
                 dependencies: self
             )

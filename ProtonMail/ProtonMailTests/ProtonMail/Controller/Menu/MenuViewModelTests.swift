@@ -501,6 +501,74 @@ class MenuViewModelTests: XCTestCase {
         )
         XCTAssertEqual(argument.location, .archive)
     }
+
+    func testIsStorageAlertVisible_whenStorage80orLess_andFreeUser_itShouldBeFalse() {
+        withFeatureFlags([.splitStorage]) {
+            testUser.userInfo.usedBaseSpace = 80
+            testUser.userInfo.maxBaseSpace = 100
+            testUser.userInfo.subscribed = .init(rawValue: 0)
+
+            XCTAssertEqual(sut.storageAlertVisibility, .hidden)
+        }
+    }
+
+    func testIsStorageAlertVisible_whenMailStorageAbove80_andFreeUser_itShouldBeTrue() {
+        withFeatureFlags([.splitStorage]) {
+            testUser.userInfo.usedBaseSpace = 100
+            testUser.userInfo.maxBaseSpace = 100
+            testUser.userInfo.usedDriveSpace = 0
+            testUser.userInfo.maxDriveSpace = 100
+            testUser.userInfo.subscribed = .init(rawValue: 0)
+
+            XCTAssertEqual(sut.storageAlertVisibility, .mail(1))
+        }
+    }
+
+    func testIsStorageAlertVisible_whenDriveStorageAbove80_andFreeUser_itShouldBeTrue() {
+        withFeatureFlags([.splitStorage]) {
+            testUser.userInfo.usedBaseSpace = 0
+            testUser.userInfo.maxBaseSpace = 100
+            testUser.userInfo.usedDriveSpace = 100
+            testUser.userInfo.maxDriveSpace = 100
+            testUser.userInfo.subscribed = .init(rawValue: 0)
+
+            XCTAssertEqual(sut.storageAlertVisibility, .drive(1))
+        }
+    }
+
+    func testIsStorageAlertVisible_whenBothStorageAbove80_andFreeUser_itShouldBeTrue() {
+        withFeatureFlags([.splitStorage]) {
+            testUser.userInfo.usedBaseSpace = 100
+            testUser.userInfo.maxBaseSpace = 100
+            testUser.userInfo.usedDriveSpace = 100
+            testUser.userInfo.maxDriveSpace = 100
+            testUser.userInfo.subscribed = .init(rawValue: 0)
+
+            XCTAssertEqual(sut.storageAlertVisibility, .mail(1))
+        }
+    }
+
+    func testIsStorageAlertVisible_whenStorage80orLess_andPayingUser_itShouldBeFalse() {
+        withFeatureFlags([.splitStorage]) {
+            testUser.userInfo.usedBaseSpace = 80
+            testUser.userInfo.maxBaseSpace = 100
+            testUser.userInfo.usedDriveSpace = 80
+            testUser.userInfo.maxDriveSpace = 100
+            testUser.userInfo.subscribed = .mail
+
+            XCTAssertEqual(sut.storageAlertVisibility, .hidden)
+        }
+    }
+
+    func testIsStorageAlertVisible_whenStorageAbove80_andPayingUser_itShouldBeFalse() {
+        withFeatureFlags([.splitStorage]) {
+            testUser.userInfo.usedBaseSpace = 100
+            testUser.userInfo.maxBaseSpace = 100
+            testUser.userInfo.subscribed = .mail
+
+            XCTAssertEqual(sut.storageAlertVisibility, .hidden)
+        }
+    }
 }
 
 class TestViewController: UIViewController, MenuUIProtocol {

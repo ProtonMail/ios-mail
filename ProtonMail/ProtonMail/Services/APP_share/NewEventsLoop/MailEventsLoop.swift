@@ -143,7 +143,10 @@ class MailEventsLoop: EventsLoop {
         apiService: APIService,
         jsonDecoder: JSONDecoder
     ) async throws -> EventAPIResponse {
-        let request = EventCheckRequest(eventID: eventID)
+        let request = EventCheckRequest(
+            eventID: eventID,
+            discardContactsMetadata: EventCheckRequest.isNoMetaDataForContactsEnabled
+        )
         let result = try await apiService.perform(
             request: request,
             callCompletionBlockUsing: .immediateExecutor

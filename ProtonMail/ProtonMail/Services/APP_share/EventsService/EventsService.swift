@@ -23,8 +23,8 @@
 import EllipticCurveKeyPair
 import Foundation
 import Groot
-import ProtonCoreDataModel
-import ProtonCoreNetworking
+@preconcurrency import ProtonCoreDataModel
+@preconcurrency import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonMailAnalytics
 
@@ -44,7 +44,7 @@ protocol EventsFetching: EventsServiceProtocol {
 
     func begin(subscriber: EventsConsumer)
 
-    func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, completion: ((Swift.Result<[String: Any], Error>) -> Void)?)
+    func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, discardContactsMetadata: Bool, completion: ((Swift.Result<[String: Any], Error>) -> Void)?)
     func fetchEvents(labelID: LabelID)
     func processEvents(mailSettings: [String: Any]?)
     func processEvents(space usedSpace: Int64?)
@@ -77,6 +77,7 @@ final class EventsService: EventsFetching {
     & HasUsersManager
     & HasNotificationCenter
     & HasUserDefaults
+    & HasContactDataService
     & HasMailEventsPeriodicScheduler
     & HasFeatureFlagsRepository
 
@@ -156,6 +157,7 @@ extension EventsService {
     func fetchEvents(
         byLabel labelID: LabelID,
         notificationMessageID: MessageID?,
+        discardContactsMetadata: Bool = EventCheckRequest.isNoMetaDataForContactsEnabled,
         completion: ((Swift.Result<[String: Any], Error>) -> Void)?
     ) {
         if userManager?.isNewEventLoopEnabled == true {
@@ -177,7 +179,7 @@ extension EventsService {
             }
         
             let eventID = self.dependencies.lastUpdatedStore.lastEventID(userID: userManager.userID)
-            let eventAPI = EventCheckRequest(eventID: eventID)
+            let eventAPI = EventCheckRequest(eventID: eventID, discardContactsMetadata: discardContactsMetadata)
             userManager.apiService.perform(request: eventAPI, response: EventCheckResponse()) { _, eventsRes in
 
                 guard eventsRes.responseCode == 1000 else {
@@ -209,7 +211,11 @@ extension EventsService {
                         try self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID)
                         self.processEvents(conversations: eventsRes.conversations)
                         self.processEvents(contactEmails: eventsRes.contactEmails)
-                        self.processEvents(contacts: eventsRes.contacts)
+                        if discardContactsMetadata {
+                            self.processContactEventsWithoutMetadata(eventsRes.contacts)
+                        } else {
+                            self.processEvents(contacts: eventsRes.contacts)
+                        }
                         self.processEvents(labels: eventsRes.labels)
                         self.processEvents(addresses: eventsRes.addresses)
                         self.processEvents(incomingDefaults: eventsRes.incomingDefaults)
@@ -674,6 +680,71 @@ extension EventsService {
                 }
                 _ = context.saveUpstreamIfNeeded()
             }
+    }
+
+    /// Enqueues fetch contact detail operations for contact events
+    private func processContactEventsWithoutMetadata(_ contacts: [[String: Any]]?) {
+        guard  let contacts = contacts else { return }
+
+        let contactObjects = contacts.compactMap { object in
+            let contactObj = ContactEvent(event: object)
+            switch contactObj.action {
+            case .insert, .update, .delete:
+                return contactObj
+            default:
+                PMAssertionFailure("event loop unexpected contact action \(contactObj.action)")
+                return nil
+            }
+        }
+        let createdContactIDs: Set<String> = Set(contactObjects.filter { $0.action == .insert }.map(\.ID))
+        let updatedContactIDs: Set<String> = Set(contactObjects.filter { $0.action == .update }.map(\.ID))
+        let deletedContactIDs: Set<String> = Set(contactObjects.filter { $0.action == .delete }.map(\.ID))
+
+        let existingContactsIDs: Set<String> = Set(
+            dependencies.contactService.getContactsByIds(Array(createdContactIDs)).map(\.contactID.rawValue)
+        )
+
+        // 1. Manage `delete` events
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            for contactID in deletedContactIDs {
+                guard let tempContact = Contact.contactForContactID(contactID, inManagedObjectContext: context) else {
+                    return
+                }
+                context.delete(tempContact)
+            }
+        }
+
+        // 2. Manage `create` and `update` events
+        let contactIDsToFetch = Array(
+            createdContactIDs                          // all create events
+                .subtracting(existingContactsIDs)      // remove create events for contacts that exist
+                .union(updatedContactIDs)              // add update events
+                .subtracting(deletedContactIDs)        // remove any event if there is a delete
+        )
+
+        guard let userID = userManager?.userID else {
+            PMAssertionFailure("processContactEventsWithoutMetadata no userID found")
+            return
+        }
+
+        // We break in batches to have smaller tasks enqueued, otherwise if the task does 
+        // not finish (e.g. app killed) the task would start from the beginning on next launch.
+        // If we enqueue one single task with hundreds of requests, the app could struggle
+        // to move the misc queue forward in bad connection conditions. In smaller
+        // tasks, some will be removed from the queue at a time.
+
+        let batches = contactIDsToFetch.chunked(into: 15)
+        for batch in batches {
+            let task = QueueManager.Task(
+                messageID: "",
+                action: .fetchContactDetail(contactIDs: batch),
+                userID: userID,
+                dependencyIDs: [],
+                isConversation: false
+            )
+            dependencies.queueManager.addTask(task)
+            SystemLogger.log(message: "Enqueued .fetchContactDetail with \(batch.count) IDs", category: .queue)
+        }
     }
 
     /// Process contact emails this is like metadata update

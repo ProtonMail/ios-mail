@@ -10,7 +10,7 @@ import fusion
 import XCTest
 
 fileprivate struct id {
-    static let menuButtonIdentifier = "MailboxViewController.menuBarButtonItem"
+    static let menuButtonIdentifier = "Menu"
     static let composeButtonLabelIdentifier = "MailboxViewController.composeBarButtonItem"
     static let mailboxTableViewIdentifier = "MailboxViewController.tableView"
     static let searchNavBarButtonIdentifier = "MailboxViewController.searchBarButtonItem"
@@ -49,8 +49,9 @@ class MailboxRobotInterface: CoreElements {
             activityIndicator().waitUntilGone()
 
             // the spinner might still be visible (and blocking the UI) when a cell that we want to tap appears
+            // is waitUntilGone broken?
             // TODO: find if there's a better way to wait until the cell can be tapped
-            sleep(3)
+            sleep(5)
         }
     }
     
@@ -146,9 +147,9 @@ class MailboxRobotInterface: CoreElements {
     }
 
     
-    func backgroundApp() async -> PinRobot {
+    func backgroundApp() -> PinRobot {
         XCUIDevice.shared.press(.home)
-        await sleep(milliseconds: 3000)    //It's always more stable when there is a small gap between background and foreground
+        sleep(3) 
         return PinRobot()
     }
 

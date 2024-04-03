@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCoreAccountDeletion
+import ProtonCoreAccountRecovery
 import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCorePaymentsUI
@@ -67,6 +68,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         case blockList
         case autoDeleteSpamTrash
         case privacyAndData
+        case accountRecovery
     }
 
     init(navigationController: UINavigationController?, dependencies: Dependencies) {
@@ -125,6 +127,8 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
             }
         case .privacyAndData:
             openPrivacyAndDataSetting()
+        case .accountRecovery:
+            openAccountRecovery()
         }
     }
 
@@ -271,5 +275,12 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         let viewModel = PrivacyAndDataSettingViewModel(dependencies: user.container)
         let viewController = SwitchToggleViewController(viewModel: viewModel)
         navigationController?.show(viewController, sender: nil)
+	}
+
+    private func openAccountRecovery() {
+        let accountRecoveryVC = AccountRecoveryModule.settingsViewController(user.apiService) { [weak self] newAccountRecovery in
+            self?.user.userInfo.accountRecovery = newAccountRecovery
+        }
+        navigationController?.show(accountRecoveryVC, sender: nil)
     }
 }

@@ -31,8 +31,7 @@
          "configFiles": {
             "Debug": "xcodeGen/xcconfig/PushService-Debug.xcconfig",
             "Release": "xcodeGen/xcconfig/PushService-Release.xcconfig",
-            "Enterprise Debug": "xcodeGen/xcconfig/PushService-EnterpriseDebug.xcconfig",
-            "Enterprise Release": "xcodeGen/xcconfig/PushService-Enterprise.xcconfig"
+            "Adhoc": "xcodeGen/xcconfig/PushService-Adhoc.xcconfig"
          },
          "settings": {
             "configs": {
@@ -42,11 +41,8 @@
                "Release": {
                   "INFOPLIST_FILE": "PushService/Info.plist"
                },
-               "Enterprise Debug": {
-                  "INFOPLIST_FILE": "PushService/InfoDev.plist"
-               },
-               "Enterprise Release": {
-                  "INFOPLIST_FILE": "PushService/InfoDev.plist"
+               "Adhoc": {
+                  "INFOPLIST_FILE": "PushService/Info.plist"
                }
             }
          }

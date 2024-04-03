@@ -22,7 +22,6 @@
 import Foundation
 
 public struct User: Codable, Equatable, CustomDebugStringConvertible {
-
     public let ID: String
     public let name: String?
     public let usedSpace: Int64
@@ -67,48 +66,6 @@ public struct User: Codable, Equatable, CustomDebugStringConvertible {
         public static let drive    = Subscribed(rawValue: 1 << 1)
         /// 4: has `VPN` subscription.
         public static let vpn      = Subscribed(rawValue: 1 << 2)
-    }
-
-    public struct AccountRecovery: Codable, Equatable {
-        public let state: RecoveryState
-        public let reason: RecoveryReason?
-        public let startTime: TimeInterval
-        public let endTime: TimeInterval
-        public let UID: String
-
-        public init(state: User.RecoveryState, reason: User.RecoveryReason? = nil, startTime: TimeInterval, endTime: TimeInterval, UID: String) {
-            self.state = state
-            self.reason = reason
-            self.startTime = startTime
-            self.endTime = endTime
-            self.UID = UID
-        }
-
-    }
-
-    public enum RecoveryState: Int, Codable {
-        case none = 0
-        case grace = 1
-        case cancelled = 2
-        case insecure = 3
-        case expired = 4
-    }
-
-    public enum RecoveryReason: Int, Codable {
-        case none = 0
-        case cancelled = 1
-        case authentication = 2
-
-        public var localizableDescription: String {
-            switch self {
-            case .cancelled:
-                return "Cancelled by the user"
-            case .authentication:
-                return "Authenticated in another session"
-            case .none:
-                return "none"
-            }
-        }
     }
 
     public init(ID: String,
@@ -186,6 +143,7 @@ public struct User: Codable, Equatable, CustomDebugStringConvertible {
 
 @objc(UserInfo)
 public final class UserInfo: NSObject, Codable {
+    public var accountRecovery: AccountRecovery?
     public var attachPublicKey: Int
     public var autoSaveContact: Int
     public var conversationToolbarActions: ToolbarActions
@@ -356,7 +314,9 @@ public final class UserInfo: NSObject, Codable {
                          credit: Int?,
                          currency: String?,
                          createTime: Int64?,
-                         subscribed: User.Subscribed?) {
+                         subscribed: User.Subscribed?,
+                         accountRecovery: AccountRecovery? = nil) {
+        self.accountRecovery = accountRecovery ?? DefaultValue.accountRecovery
         self.attachPublicKey = DefaultValue.attachPublicKey
         self.autoSaveContact = DefaultValue.autoSaveContact
         self.conversationToolbarActions = DefaultValue.conversationToolbarActions
@@ -412,6 +372,7 @@ public final class UserInfo: NSObject, Codable {
     ///
     /// - Parameter userinfo: New user info
     public func set(userinfo: UserInfo) {
+        self.accountRecovery = nil
         self.delinquent = userinfo.delinquent
         self.language = userinfo.language
         self.linkConfirmation = userinfo.linkConfirmation
@@ -486,10 +447,61 @@ extension UserInfo {
     }
 }
 
+// MARK: Account Recovery
+public struct AccountRecovery: Codable, Equatable {
+    public let state: RecoveryState
+    public let reason: RecoveryReason?
+    public let startTime: TimeInterval
+    public let endTime: TimeInterval
+    public let UID: String
+
+    public init(state: RecoveryState, reason: RecoveryReason? = nil, startTime: TimeInterval, endTime: TimeInterval, UID: String) {
+        self.state = state
+        self.reason = reason
+        self.startTime = startTime
+        self.endTime = endTime
+        self.UID = UID
+    }
+
+    public var isVisibleInSettings: Bool {
+        switch (state, reason) {
+        case (.none, _), (.cancelled, .none?), (.cancelled, .cancelled): return false
+        default: return true
+        }
+    }
+
+}
+
+public enum RecoveryState: Int, Codable {
+    case none = 0
+    case grace = 1
+    case cancelled = 2
+    case insecure = 3
+    case expired = 4
+}
+
+public enum RecoveryReason: Int, Codable {
+    case none = 0
+    case cancelled = 1
+    case authentication = 2
+
+    public var localizableDescription: String {
+        switch self {
+        case .cancelled:
+            return "Cancelled by the user"
+        case .authentication:
+            return "Authenticated in another session"
+        case .none:
+            return "none"
+        }
+    }
+}
+
 // MARK: Default values
 
 extension UserInfo {
     struct DefaultValue {
+        static let accountRecovery: AccountRecovery? = nil
         static let attachPublicKey: Int = 0
         static let autoSaveContact: Int = 0
         static let crashReports: Int = 1

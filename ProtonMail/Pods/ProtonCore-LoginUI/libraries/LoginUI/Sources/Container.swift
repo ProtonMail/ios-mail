@@ -40,7 +40,6 @@ import typealias ProtonCorePayments.BugAlertHandler
 import ProtonCorePaymentsUI
 import ProtonCoreTroubleShooting
 import ProtonCoreEnvironment
-import ProtonCoreFeatureSwitch
 
 final class Container {
     let login: Login

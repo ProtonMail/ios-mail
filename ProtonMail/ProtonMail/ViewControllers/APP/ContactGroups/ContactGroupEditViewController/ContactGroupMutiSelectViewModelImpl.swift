@@ -152,10 +152,14 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     func fetchLatestContactGroup(completion: @escaping (Error?) -> Void) {
         if self.isFetching == false {
             self.isFetching = true
-            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID, notificationMessageID: nil, completion: { result in
+            self.eventsService.fetchEvents(
+                byLabel: Message.Location.inbox.labelID,
+                notificationMessageID: nil,
+                discardContactsMetadata: EventCheckRequest.isNoMetaDataForContactsEnabled
+            ) { result in
                 self.isFetching = false
                 completion(result.error)
-            })
+            }
             self.user.contactService.fetchContacts { error in
 
             }
@@ -175,11 +179,13 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     private func fetchContacts() {
         if isFetching == false {
             isFetching = true
-            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID,
-                                            notificationMessageID: nil,
-                                            completion: { _ in
-                self.isFetching = false
-            })
+            self.eventsService.fetchEvents(
+                byLabel: Message.Location.inbox.labelID,
+                notificationMessageID: nil,
+                discardContactsMetadata: EventCheckRequest.isNoMetaDataForContactsEnabled,
+                completion: { _ in
+                    self.isFetching = false
+                })
         }
     }
 

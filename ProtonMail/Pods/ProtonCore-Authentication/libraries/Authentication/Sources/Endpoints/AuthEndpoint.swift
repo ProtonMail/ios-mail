@@ -22,7 +22,6 @@
 import Foundation
 import ProtonCoreAPIClient
 import ProtonCoreDataModel
-import ProtonCoreFeatureSwitch
 import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreUtilities

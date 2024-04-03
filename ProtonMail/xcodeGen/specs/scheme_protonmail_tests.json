@@ -10,7 +10,14 @@
             }
          },
          "run": {
-            "config": "Debug"
+            "config": "Debug",
+            "environmentVariables": [
+               {
+                  "variable": "PROJECT_ROOT",
+                  "value": 1,
+                  "isEnabled": true
+               }
+            ]
          },
          "test": {
             "config": "Debug",
@@ -24,7 +31,8 @@
             "language": "en",
             "region": "US",
             "environmentVariables": {
-               "TZ": "UTC"
+               "TZ": "UTC",
+               "PROJECT_ROOT": "${SRCROOT}"
             }
          },
          "profile": {

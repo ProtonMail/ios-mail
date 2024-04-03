@@ -29,7 +29,7 @@ class LoginExtAccountsTests: BaseTestCase {
     let loginRobot = LoginRobot()
     
     override func setUp() {
-        extAccountNotSupportedStub = true
+        _launchArguments.append(contentsOf: ["ExtAccountNotSupportedStub", "1"])
         super.setUp()
     }
 

@@ -18,6 +18,13 @@
 import UIKit
 
 public class ImageAsset {
+    static var autoImportContactsSpotlight: UIImage {
+        UIImage(named: "auto_import_contacts_spotlight", in: Bundle(for: LocalImage.self), with: nil)!
+    }
+    static var autoImportContactsNoContact: UIImage {
+        UIImage(named: "auto_import_contacts_no_contact", in: Bundle(for: LocalImage.self), with: nil)!
+    }
+
     static var snoozeSpotlight: UIImage {
         UIImage(named: "snooze_spotlight", in: Bundle(for: LocalImage.self), with: nil)!
     }
@@ -26,6 +33,10 @@ public class ImageAsset {
     }
     static var jumpToNextSpotlight: UIImage {
         UIImage(named: "jumpToNext_spotlight", in: Bundle(for: LocalImage.self), with: nil)!
+    }
+
+    static var contactSync: UIImage {
+        UIImage(named: "contact_sync", in: Bundle(for: LocalImage.self), with: nil)!
     }
 }
 

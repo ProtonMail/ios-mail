@@ -17,7 +17,7 @@
 
 import CoreData
 import Foundation
-import ProtonCoreDataModel
+@preconcurrency import ProtonCoreDataModel
 
 final class EventProcessor {
     typealias Dependencies = AnyObject

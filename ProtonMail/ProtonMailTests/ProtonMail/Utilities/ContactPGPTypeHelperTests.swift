@@ -529,6 +529,49 @@ class ContactPGPTypeHelperTests: XCTestCase {
         XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
     }
 
+    func testCalculateEncryptionIcon_withEncryptedOutsideAndExternalPGP_EOWillOverrideExternalPGP() {
+        let email = "test@mail.me"
+        fetchEmailAddressesPublicKey.executeStub.bodyIs { _, _ in
+            KeysResponse(keys: [], recipientType: .external)
+        }
+        let localContact = PreContact(
+            email: email,
+            pubKeys: [OpenPGPDefines.publicKey.unArmor!],
+            sign: .sign,
+            encrypt: false,
+            scheme: nil,
+            mimeType: nil
+        )
+        sut = ContactPGPTypeHelper(
+            internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+            fetchEmailAddressesPublicKey: fetchEmailAddressesPublicKey,
+            userSign: 0,
+            localContacts: [localContact],
+            userAddresses: []
+        )
+        let expectation1 = expectation(description: "closure is called")
+
+        sut.calculateEncryptionIcon(
+            email: email,
+            isMessageHavingPWD: true
+        ) { encryptionIcon, code in
+
+            XCTAssertEqual(
+                encryptionIcon,
+                .init(iconColor: .blue,
+                      icon: IconProvider.lockFilled,
+                      text: LocalString._end_to_end_encrypted_of_recipient,
+                      isPGPPinned: false,
+                      isNonePM: true)
+            )
+            XCTAssertNil(code)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(fetchEmailAddressesPublicKey.executeStub.wasCalledExactlyOnce)
+    }
+
     private func makeKeyResponse(flags: Key.Flags = [.notCompromised, .notObsolete]) -> KeyResponse {
         KeyResponse(flags: flags, publicKey: OpenPGPDefines.publicKey)
     }

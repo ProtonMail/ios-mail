@@ -62,7 +62,7 @@ final class SwitchTableViewCell: UITableViewCell, AccessibleCell {
 
     @IBAction func switchAction(_ sender: UISwitch) {
         let status = sender.isOn
-        onSwitch?(status) { isOK -> Void in
+        onSwitch?(status) { isOK in
             if isOK == false {
                 self.switchView.setOn(false, animated: true)
                 self.layoutIfNeeded()

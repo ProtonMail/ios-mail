@@ -25,6 +25,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreFeatureFlags
 
+/// Payment Token Request in API v4 (1-time payments)
 final class PaymentTokenOldRequest: BaseApiRequest<TokenResponse> {
     private let amount: Int
     private let receipt: String
@@ -64,6 +65,7 @@ final class PaymentTokenOldRequest: BaseApiRequest<TokenResponse> {
     }
 }
 
+/// Payment Token Request in API v5 (auto-recurring payments)
 final class PaymentTokenRequest: BaseApiRequest<TokenResponse> {
     private let amount: Int
     private let receipt: String
@@ -93,7 +95,7 @@ final class PaymentTokenRequest: BaseApiRequest<TokenResponse> {
 
     override var isAuth: Bool { false }
 
-    override var path: String { super.path + "/v4/tokens" }
+    override var path: String { super.path + "/v5/tokens" }
 
     override var parameters: [String: Any]? {
         let paymentDict: [String: Any]

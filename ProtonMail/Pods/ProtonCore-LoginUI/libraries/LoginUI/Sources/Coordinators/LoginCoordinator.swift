@@ -28,7 +28,6 @@ import ProtonCoreLogin
 import ProtonCoreAuthentication
 import ProtonCoreNetworking
 import ProtonCoreTroubleShooting
-import ProtonCoreFeatureSwitch
 import ProtonCoreServices
 import ProtonCoreUtilities
 

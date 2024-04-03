@@ -56,7 +56,7 @@ class SearchViewController: AttachmentPreviewViewController, ComposeSaveHintProt
     private(set) var listEditing: Bool = false
 
     private let viewModel: SearchViewModel
-    private var query: String = ""
+    private var searchTerm: String = ""
     private let mailListActionSheetPresenter = MailListActionSheetPresenter()
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
@@ -515,7 +515,7 @@ extension SearchViewController {
             navigationController: navigationController,
             labelId: "",
             dependencies: dependencies,
-            highlightedKeywords: query.components(separatedBy: .whitespacesAndNewlines)
+            highlightedKeywords: searchTerm.components(separatedBy: .whitespacesAndNewlines)
         )
         coordinator.goToDraft = { [weak self] msgID, _ in
             guard let self = self else { return }
@@ -546,7 +546,7 @@ extension SearchViewController {
                     labelId: self.viewModel.labelID,
                     navigationController: navigation,
                     conversation: conversation,
-                    highlightedKeywords: self.query.components(separatedBy: .whitespacesAndNewlines),
+                    highlightedKeywords: self.searchTerm.components(separatedBy: .whitespacesAndNewlines),
                     dependencies: self.dependencies,
                     targetID: messageID
                 )
@@ -700,7 +700,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         cellPresenter.present(
             viewModel: viewModel,
             in: mailboxCell.customView,
-            highlightedKeywords: query.components(separatedBy: .whitespacesAndNewlines)
+            highlightedKeywords: searchTerm.components(separatedBy: .whitespacesAndNewlines)
         )
 
         showSenderImageIfNeeded(in: mailboxCell, item: .message(message))
@@ -774,20 +774,20 @@ extension SearchViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-        query = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-        customView.searchBar.clearButton.isHidden = query.isEmpty == true
+        searchTerm = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+        customView.searchBar.clearButton.isHidden = searchTerm.isEmpty == true
         return true
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         customView.searchBar.clearButton.isHidden = true
         textField.resignFirstResponder()
-        self.query = self.query.trim()
-        textField.text = self.query
-        guard !self.query.isEmpty else {
+        self.searchTerm = self.searchTerm.trim()
+        textField.text = self.searchTerm
+        guard !self.searchTerm.isEmpty else {
             return true
         }
-        self.viewModel.fetchRemoteData(query: self.query, fromStart: true)
+        self.viewModel.fetchRemoteData(keyword: self.searchTerm, fromStart: true)
         self.cancelEditingMode()
         return true
     }

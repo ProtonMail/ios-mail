@@ -57,6 +57,7 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
     case contacts
     case browser
     case toolbar
+    case messageSwipeNavigation
     case applicationLogs
 
     var description: String {
@@ -77,6 +78,8 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
             return LocalString._menu_contacts_title
         case .toolbar:
             return LocalString._toolbar_customize_general_title
+        case .messageSwipeNavigation:
+            return L11n.MessageNavigation.settingTitle
         case .applicationLogs:
             return L11n.Settings.applicationLogs
         }
@@ -123,6 +126,7 @@ final class SettingsDeviceViewModel {
             .alternativeRouting,
             .swipeAction,
             .toolbar,
+            .messageSwipeNavigation,
             .applicationLogs
         ]
         if dependencies.autoImportContactsFeature.isFeatureEnabled {
@@ -170,6 +174,10 @@ final class SettingsDeviceViewModel {
 
     var isDohOn: Bool {
         BackendConfiguration.shared.doh.status == .on
+    }
+
+    var isMessageSwipeEnabled: Bool {
+        dependencies.userDefaults[.isMessageSwipeNavigationEnabled]
     }
 
     var appPINTitle: String {

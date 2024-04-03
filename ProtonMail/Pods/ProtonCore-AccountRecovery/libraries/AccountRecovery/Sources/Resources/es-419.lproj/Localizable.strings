@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "Restablecimiento de contraseña";
+
+"Account_Recovery_Insecure_View_Title" = "Restablecer su contraseña";
+
+"Account_Recovery_Grace_View_Title" = "¿Quiere restablecer su contraseña?";
+
+"Account_Recovery_Grace_View_line1" = "Hemos recibido una solicitud para restablecer la contraseña de ";
+
+"Account_Recovery_Insecure_View_line1" = "Ahora puede cambiar la contraseña para la cuenta ";
+
+"Account_Recovery_Insecure_View_line2" = " libremente durante ";
+
+"Account_Recovery_Insecure_View_line3" = "Vaya al dispositivo en el que inició sesión y donde se realizó la solicitud para cambiar su contraseña.";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "Cancelar la solicitud";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "algunas horas";
+
+"Account_Recovery_Grace_View_line2" = ". Para mantener su cuenta segura, queremos asegurarnos de que realmente es usted quien intenta restablecer su contraseña. Podrá restablecer su contraseña en ";
+
+"Account_Recovery_Grace_View_line3" = "Si no realizó esta solicitud o si ya no necesita ayuda para iniciar sesión, cancélela y tome medidas para proteger su cuenta.";

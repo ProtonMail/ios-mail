@@ -69,17 +69,17 @@
       <key>selected</key>
       <dict>
         <key>one</key>
-        <string>zaznaczono: %d</string>
+        <string>Zaznaczono: %d</string>
         <key>few</key>
-        <string>zaznaczono: %d</string>
+        <string>Zaznaczono: %d</string>
         <key>many</key>
-        <string>zaznaczono: %d</string>
+        <string>Zaznaczono: %d</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>zaznaczono: %d</string>
+        <string>Zaznaczono: %d</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>

@@ -30,6 +30,26 @@ final class InvitationViewModelTests: XCTestCase {
         XCTAssertEqual(sut.durationString, "Nov 16, 2023, 2:30 – 3:30 PM")
     }
 
+    func testAllDayEvent_whenIsSingleDay_thenDurationStringDoesNotMentionTheDayTwice() {
+        let eventDetails = EventDetails.make(
+            startDate: .fixture("2023-11-16 00:00:00"),
+            endDate: .fixture("2023-11-17 00:00:00"),
+            isAllDay: true
+        )
+        let sut = InvitationViewModel(eventDetails: eventDetails)
+        XCTAssertEqual(sut.durationString, "Nov 16, 2023")
+    }
+
+    func testAllDayEvent_whenSpansMultipleDays_thenEndDateIsOneDayEarlier() {
+        let eventDetails = EventDetails.make(
+            startDate: .fixture("2023-11-16 00:00:00"),
+            endDate: .fixture("2023-11-18 00:00:00"),
+            isAllDay: true
+        )
+        let sut = InvitationViewModel(eventDetails: eventDetails)
+        XCTAssertEqual(sut.durationString, "Nov 16 – 17, 2023")
+    }
+
     func testWhenEventHasNotEndedAndHasNotBeenCancelled_thenTitleColorIsNormAndStatusIsEmpty() {
         let eventDetails = EventDetails.make(endDate: .distantFuture, status: .confirmed)
         let sut = InvitationViewModel(eventDetails: eventDetails)

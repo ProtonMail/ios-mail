@@ -52,12 +52,12 @@ protocol ConversationProvider: AnyObject {
                completion: ((Result<Void, Error>) -> Void)?)
     func unlabel(conversationIDs: [ConversationID],
                  as labelID: LabelID,
-                 completion: ((Result<Void, Error>) -> Void)?)
+                 completion: (@Sendable (Result<Void, Error>) -> Void)?)
     func move(conversationIDs: [ConversationID],
               from previousFolderLabel: LabelID,
               to nextFolderLabel: LabelID,
               callOrigin: String?,
-              completion: ((Result<Void, Error>) -> Void)?)
+              completion: (@Sendable (Result<Void, Error>) -> Void)?)
     // MARK: - Local for legacy reasons
     func fetchLocalConversations(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Conversation]
     func findConversationIDsToApplyLabels(conversations: [ConversationEntity], labelID: LabelID) -> [ConversationID]

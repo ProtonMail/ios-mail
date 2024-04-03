@@ -164,6 +164,7 @@ final class PurchaseManager: PurchaseManagerProtocol {
 
     private func fetchAmountDue(protonPlanName: String, cycle: Int) throws -> Int {
 
+        let isDynamic = featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)
         let isAuthenticated = storeKitManager.delegate?.userId?.isEmpty == false
         let validateSubscriptionRequest = paymentsApi.validateSubscriptionRequest(
             api: apiService,
@@ -179,7 +180,7 @@ final class PurchaseManager: PurchaseManagerProtocol {
             ObservabilityEnv.report(.paymentValidatePlanTotal(status: .http2xx, isDynamic: featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
         }
 
-        guard let amountDue = validationResponse.validateSubscription?.amountDue
+        guard let amountDue = isDynamic ? validationResponse.validateSubscription?.amount : validationResponse.validateSubscription?.amountDue
         else { throw StoreKitManagerErrors.transactionFailedByUnknownReason }
 
         return amountDue

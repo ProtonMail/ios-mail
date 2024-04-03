@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "Passwort zurückgesetzt";
+
+"Account_Recovery_Insecure_View_Title" = "Passwort zurücksetzen";
+
+"Account_Recovery_Grace_View_Title" = "Möchtest du dein Passwort zurücksetzen?";
+
+"Account_Recovery_Grace_View_line1" = "Wir haben eine Anfrage erhalten, dein Passwort zurückzusetzen für ";
+
+"Account_Recovery_Insecure_View_line1" = "Du kannst nun dein Passwort für das Konto ändern ";
+
+"Account_Recovery_Insecure_View_line2" = " frei während ";
+
+"Account_Recovery_Insecure_View_line3" = "Bitte gehe zu dem angemeldeten Gerät, von dem aus die Anfrage zur Passwortänderung gestartet wurde, um dein Passwort zu ändern.";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "Anfrage abbrechen";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "ein paar Stunden";
+
+"Account_Recovery_Grace_View_line2" = ". Um dein Konto zu schützen, möchten wir sicherstellen, dass du wirklich versuchst, dein Passwort zurückzusetzen. Du kannst dein Passwort zurücksetzen unter ";
+
+"Account_Recovery_Grace_View_line3" = "Wenn du diese Anfrage nicht gestellt hast oder bei der Anmeldung keine Hilfe mehr brauchst, storniere sie bitte und ergreife Maßnahmen, um dein Konto zu sichern.";

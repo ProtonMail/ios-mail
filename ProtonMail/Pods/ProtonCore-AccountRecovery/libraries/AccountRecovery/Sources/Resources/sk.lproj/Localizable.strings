@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "Obnovenie hesla";
+
+"Account_Recovery_Insecure_View_Title" = "Obnovenie vášho hesla";
+
+"Account_Recovery_Grace_View_Title" = "Chcete si obnoviť vaše heslo?";
+
+"Account_Recovery_Grace_View_line1" = "Prijali sme žiadosť na obnovenie vášho hesla pre ";
+
+"Account_Recovery_Insecure_View_line1" = "Teraz si môžete zmeniť vaše heslo pre účet ";
+
+"Account_Recovery_Insecure_View_line2" = " neobmedzene počas ";
+
+"Account_Recovery_Insecure_View_line3" = "Prejdite na prihlásené zariadenie (v relácii, kde bola žiadosť iniciovaná) a zmeňte heslo.";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "Zrušiť žiadosť";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "niekoľko hodín";
+
+"Account_Recovery_Grace_View_line2" = ". Aby bol váš účet v bezpečí, chceme sa uistiť, že heslo sa snažíte obnoviť naozaj vy. Heslo budete môcť obnoviť o ";
+
+"Account_Recovery_Grace_View_line3" = "Ak ste túto žiadosť nepodali alebo ak už nepotrebujete pomoc pri prihlasovaní, zrušte ju a vykonajte kroky na zabezpečenie svojho konta.";

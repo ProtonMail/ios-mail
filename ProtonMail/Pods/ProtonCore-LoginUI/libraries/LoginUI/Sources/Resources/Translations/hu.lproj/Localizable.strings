@@ -64,7 +64,7 @@
 
 "Incorrect mailbox password" = "Érvénytelen postafiók jelszó";
 
-"Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
+"Your session has expired. Please log in again." = "A munkamenete lejárt, kérjük jelentkezzen be újra!";
 
 "Proton address required" = "Proton e-mail cím szükséges";
 
@@ -182,7 +182,7 @@
 
 "Invalid token error" = "Érvénytelen token azonosító";
 
-"Create user failed" = "Create user failed";
+"Create user failed" = "A felhasználó létrehozása nem sikerült";
 
 "Invalid hashed password" = "Érvénytelen hash-elt jelszó";
 

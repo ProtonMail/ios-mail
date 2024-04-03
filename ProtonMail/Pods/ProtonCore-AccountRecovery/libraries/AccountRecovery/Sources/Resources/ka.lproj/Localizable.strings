@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "პაროლის ჩამოყრა";
+
+"Account_Recovery_Insecure_View_Title" = "პაროლის აღდგენა";
+
+"Account_Recovery_Grace_View_Title" = "მართლა გნებავთ თქვენი პაროლის ჩამოყრა?";
+
+"Account_Recovery_Grace_View_line1" = "მივიღეთ თქვენი პაროლის ჩამოყრის მოთხოვნა ანგარიშისთვის ";
+
+"Account_Recovery_Insecure_View_line1" = "ახლა შეგიძლიათ შეცვალოთ თქვენი პაროლი ანგარიშისთვის ";
+
+"Account_Recovery_Insecure_View_line2" = " თავისუფლად ";
+
+"Account_Recovery_Insecure_View_line3" = "პაროლის შესაცვლელად გადადით მოწყობილობაზე (სესიაში, საიდანაც მოთხოვნა გამოიგაზვნა), რომელზეც შესული ბრძანდებით.";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "მოთხოვნის გაუქმება";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "რამდენიმე საათი";
+
+"Account_Recovery_Grace_View_line2" = ". To keep your account safe, we want to make sure it’s really you trying to reset your password. You’ll be able to reset your password in ";
+
+"Account_Recovery_Grace_View_line3" = "თუ ეს მოთხოვნა თქვენ არ გამოგიგზავნიათ, ან შესვლაზე დახმარება აღარ გჭირდებათ, გააუქმეთ ის და გაიარეთ ნაბიჯები, რათა თქვენი ანგარიში უკეთ დაიცვათ.";

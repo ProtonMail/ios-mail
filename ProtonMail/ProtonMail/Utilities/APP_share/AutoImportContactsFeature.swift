@@ -39,6 +39,15 @@ struct AutoImportContactsFeature {
 //      dependencies.featureFlagProvider.isEnabled(MailFeatureFlag.autoImportContacts, reloadValue: true)
     }
 
+    /// This is a value for telemetry.
+    /// Returns `nil` if the feature flag is off, otherwise it returns the user setting value.
+    var isFeatureEnabledTelemetryValue: Bool? {
+        guard dependencies.featureFlagProvider.isEnabled(MailFeatureFlag.autoImportContacts, reloadValue: true) else {
+            return nil
+        }
+        return isSettingEnabledForUser
+    }
+
     var shouldImportContacts: Bool {
         isFeatureEnabled && isSettingEnabledForUser
     }

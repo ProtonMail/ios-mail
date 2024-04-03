@@ -246,21 +246,14 @@ class NewMailboxMessageCellPresenter {
 
     private func updateCustomSpacing(viewModel: NewMailboxMessageViewModel, in view: NewMailboxMessageContentView) {
         let hasAttachments = !viewModel.attachmentsPreviewViewModels.isEmpty
-        let hasTags = !viewModel.tags.isEmpty
+        let space1: CGFloat = hasAttachments ? 8 : 0
+        view.contentStackView.setCustomSpacing(space1, after: view.secondLineStackView)
 
-        switch (hasAttachments, hasTags) {
-        case (true, true):
-            view.contentStackView.setCustomSpacing(8, after: view.secondLineStackView)
-            view.contentStackView.setCustomSpacing(4, after: view.attachmentsPreviewLine)
-        case (true, false):
-            view.contentStackView.setCustomSpacing(8, after: view.secondLineStackView)
-            view.contentStackView.setCustomSpacing(0, after: view.attachmentsPreviewLine)
-        case (false, true):
-            view.contentStackView.setCustomSpacing(8, after: view.secondLineStackView)
-            view.contentStackView.setCustomSpacing(0, after: view.attachmentsPreviewLine)
-        case (false, false):
-            view.contentStackView.setCustomSpacing(0, after: view.secondLineStackView)
-            view.contentStackView.setCustomSpacing(0, after: view.attachmentsPreviewLine)
-        }
+        let hasTags = !viewModel.tags.isEmpty
+        let space2: CGFloat = hasTags ? 4 : 0
+        view.contentStackView.setCustomSpacing(space2, after: view.attachmentsPreviewLine)
+
+        let space3: CGFloat = viewModel.hasSnoozeLabel ? 4 : 0
+        view.contentStackView.setCustomSpacing(space3, after: view.tagsView)
     }
 }

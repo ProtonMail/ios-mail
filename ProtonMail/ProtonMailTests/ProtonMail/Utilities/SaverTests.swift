@@ -26,13 +26,13 @@ import XCTest
 
 class SaverTests: XCTestCase {
     
-    private class StoreMock : KeyValueStoreProvider {        
+    private class StoreMock : KeyValueStoreProvider {
         var log: String = ""
         func resetLog() {
             log = ""
         }
         var cachedData : [String: Any] = [:]
-        func data(forKey key: String) -> Data? {
+        func data(forKey key: String, attributes: [CFString : Any]? = nil) -> Data? {
             log += "g-key"
             return cachedData[key] as? Data
         }
@@ -51,10 +51,18 @@ class SaverTests: XCTestCase {
             log += "s-key"
             cachedData[key] = intValue
         }
+
+        func set(_ intValue: Int, forKey key: String, attributes: [CFString : Any]? = nil) {
+            set(intValue, forKey: key)
+        }
         
         func set(_ data: Data, forKey key: String) {
             log += "s-key"
             cachedData[key] = data
+        }
+
+        func set(_ data: Data, forKey key: String, attributes: [CFString : Any]? = nil) {
+            set(data, forKey: key)
         }
 
         func set(_ value: Bool, forKey defaultName: String) {

@@ -96,6 +96,7 @@ struct LocalEventRSVP: EventRSVP {
             title: iCalEvent.title,
             startDate: Date(timeIntervalSince1970: apiEvent.startTime),
             endDate: Date(timeIntervalSince1970: apiEvent.endTime),
+            isAllDay: iCalEvent.isAllDay,
             calendar: .init(name: member.name, iconColor: member.color),
             location: (iCalEvent.location?.title).map { .init(name: $0) },
             organizer: iCalEvent.organizer.map { .init(attendeeModel: $0) },

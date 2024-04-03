@@ -81,6 +81,8 @@ class ComposeViewModel: NSObject {
     private var importedFiles: [FileData] = []
     weak var uiDelegate: ComposeUIProtocol?
     private var originalSender: ContactVO?
+    private let preferredRemoteContentPolicy: WebContents.RemoteContentPolicy
+    private let preferredEmbeddedContentPolicy: WebContents.EmbeddedContentPolicy
 
     var toSelectedContacts: [ContactPickerModelProtocol] = [] {
         didSet { self.contactsChange += 1 }
@@ -128,7 +130,8 @@ class ComposeViewModel: NSObject {
         self.messageAction = action
         self.originalScheduledTime = originalScheduledTime
         self.importedFiles = files
-
+        self.preferredRemoteContentPolicy = dependencies.user.userInfo.hideRemoteImages == 1 ? .disallowed : .allowedWithoutProxy
+        self.preferredEmbeddedContentPolicy = dependencies.user.userInfo.hideEmbeddedImages == 1 ? .disallowed : .allowed
         super.init()
 
         self.collectDraft(subject,
@@ -143,9 +146,13 @@ class ComposeViewModel: NSObject {
     init(
         isEditingScheduleMsg: Bool = false,
         originalScheduledTime: Date? = nil,
+        remoteContentPolicy: WebContents.RemoteContentPolicy,
+        embeddedContentPolicy: WebContents.EmbeddedContentPolicy,
         dependencies: Dependencies
     ) {
         self.user = dependencies.user
+        self.preferredRemoteContentPolicy = remoteContentPolicy
+        self.preferredEmbeddedContentPolicy = embeddedContentPolicy
         messageService = dependencies.user.messageService
         self.isEditingScheduleMsg = isEditingScheduleMsg
         self.originalScheduledTime = originalScheduledTime
@@ -232,9 +239,20 @@ class ComposeViewModel: NSObject {
         }
     }
 
+    func loadingPolicy() -> (WebContents.LoadingType, WebContents.RemoteContentPolicy) {
+        let isImageProxyEnabled = user.userInfo.imageProxy.contains(.imageProxy)
+        let contentLoadingType: WebContents.LoadingType = isImageProxyEnabled ? .proxy : .skipProxy
+        var remoteContentMode: WebContents.RemoteContentPolicy = preferredRemoteContentPolicy
+        if remoteContentMode == .allowedThroughProxy && !isImageProxyEnabled {
+            remoteContentMode = .allowedWithoutProxy
+        } else if remoteContentMode == .allowedWithoutProxy && isImageProxyEnabled {
+            remoteContentMode = .allowedThroughProxy
+        }
+        return (contentLoadingType, remoteContentMode)
+    }
+
     func getHtmlBody() -> WebContents {
-        let globalRemoteContentMode: WebContents.RemoteContentPolicy =
-            (user.userInfo.hideRemoteImages != 0) ? .disallowed : .allowed
+        let (contentLoadingType, remoteContentMode) = loadingPolicy()
 
         let head = "<html><head></head><body>"
         let foot = "</body></html>"
@@ -246,8 +264,9 @@ class ComposeViewModel: NSObject {
             let supplementCSS = supplementCSS(from: body)
             return .init(
                 body: body,
-                remoteContentMode: globalRemoteContentMode,
+                remoteContentMode: remoteContentMode,
                 messageDisplayMode: .expanded,
+                contentLoadingType: contentLoadingType,
                 supplementCSS: supplementCSS
             )
         case .reply, .replyAll:
@@ -271,8 +290,9 @@ class ComposeViewModel: NSObject {
             let supplementCSS = supplementCSS(from: result)
             return .init(
                 body: result,
-                remoteContentMode: globalRemoteContentMode,
+                remoteContentMode: remoteContentMode,
                 messageDisplayMode: .expanded,
+                contentLoadingType: contentLoadingType,
                 supplementCSS: supplementCSS
             )
         case .forward:
@@ -309,22 +329,29 @@ class ComposeViewModel: NSObject {
             let supplementCSS = supplementCSS(from: result)
             return .init(
                 body: result,
-                remoteContentMode: globalRemoteContentMode,
+                remoteContentMode: remoteContentMode,
                 messageDisplayMode: .expanded,
+                contentLoadingType: contentLoadingType,
                 supplementCSS: supplementCSS
             )
         case .newDraft:
             if !self.body.isEmpty {
                 let newHTMLString = "\(head) \(self.body) \(signatureHtml) \(foot)"
                 self.body = ""
-                return .init(body: newHTMLString, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
+                return .init(
+                    body: newHTMLString,
+                    remoteContentMode: remoteContentMode,
+                    messageDisplayMode: .expanded,
+                    contentLoadingType: contentLoadingType
+                )
             }
             let body: String = signatureHtml.trim().isEmpty ? .empty : signatureHtml
             let supplementCSS = supplementCSS(from: body)
             return .init(
                 body: body,
-                remoteContentMode: globalRemoteContentMode,
+                remoteContentMode: remoteContentMode,
                 messageDisplayMode: .expanded,
+                contentLoadingType: contentLoadingType,
                 supplementCSS: supplementCSS
             )
         case .newDraftFromShare:
@@ -333,13 +360,28 @@ class ComposeViewModel: NSObject {
                 \(head) \(self.body.ln2br()) \(signatureHtml) \(foot)
                 """
 
-                return .init(body: newHTMLString, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
+                return .init(
+                    body: newHTMLString,
+                    remoteContentMode: remoteContentMode,
+                    messageDisplayMode: .expanded,
+                    contentLoadingType: contentLoadingType
+                )
             } else if signatureHtml.trim().isEmpty {
                 // add some space
                 let defaultBody = "<div><br></div><div><br></div><div><br></div><div><br></div>"
-                return .init(body: defaultBody, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
+                return .init(
+                    body: defaultBody,
+                    remoteContentMode: remoteContentMode,
+                    messageDisplayMode: .expanded,
+                    contentLoadingType: contentLoadingType
+                )
             }
-            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
+            return .init(
+                body: signatureHtml,
+                remoteContentMode: remoteContentMode,
+                messageDisplayMode: .expanded,
+                contentLoadingType: contentLoadingType
+            )
         }
     }
 
@@ -572,6 +614,7 @@ extension ComposeViewModel {
     }
 
     func embedInlineAttachments(in htmlEditor: HtmlEditorBehaviour) {
+        guard preferredEmbeddedContentPolicy == .allowed else { return }
         let attachments = getAttachments()
         let inlineAttachments = attachments
             .filter({ attachment in

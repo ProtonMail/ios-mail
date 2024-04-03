@@ -49,6 +49,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
 
     weak var viewController: MailboxViewController?
     private(set) weak var navigation: UINavigationController?
+    private var settingsDeviceCoordinator: SettingsDeviceCoordinator?
     private weak var sideMenu: SideMenuController?
     private var isMessageSwipeNavigationEnabled: Bool {
         true
@@ -86,6 +87,8 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         case newFolder = "toNewFolder"
         case newLabel = "toNewLabel"
         case referAFriend = "referAFriend"
+        case settingsContacts = "toSettingsContacts"
+        case subscriptions = "subscriptions"
 
         init?(rawValue: String) {
             switch rawValue {
@@ -111,6 +114,10 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
                 self = .composeScheduledMessage
             case "referAFriend":
                 self = .referAFriend
+            case "toSettingsContacts":
+                self = .settingsContacts
+            case "subscriptions":
+                self = .subscriptions
             default:
                 return nil
             }
@@ -159,6 +166,10 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
             presentSearch()
         case .referAFriend:
             presentReferAFriend()
+        case .settingsContacts:
+            navigateToSettings(destination: .contactsSettings)
+        case .subscriptions:
+            goToSubscriptions()
         }
     }
 
@@ -348,6 +359,11 @@ extension MailboxCoordinator {
                 return nil
             }
         })
+    }
+
+    private func goToSubscriptions() {
+        let link = DeepLink(.toSubscriptionPage)
+        NotificationCenter.default.post(name: .switchView, object: link)
     }
 }
 
@@ -628,6 +644,26 @@ extension MailboxCoordinator {
            viewStack.count > 1,
            let firstVC = viewStack.first {
             viewController?.navigationController?.setViewControllers([firstVC], animated: false)
+        }
+    }
+
+    private func navigateToSettings(destination: SettingsDeviceCoordinator.Destination?) {
+        let settingsNavController = UINavigationController()
+        settingsNavController.modalPresentationStyle = .fullScreen
+
+        let settings = SettingsDeviceCoordinator(
+            navigationController: settingsNavController,
+            dependencies: dependencies.user.container
+        )
+        settings.start()
+        let backItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        settingsNavController.viewControllers.first?.navigationItem.backBarButtonItem = backItem
+
+        settingsDeviceCoordinator = settings
+
+        navigation?.present(settingsNavController, animated: true)
+        if let destination {
+            settings.go(to: destination)
         }
     }
 }

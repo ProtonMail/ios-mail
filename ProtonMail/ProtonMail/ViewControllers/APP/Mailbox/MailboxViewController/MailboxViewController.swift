@@ -41,6 +41,10 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         & ReferralProgramPromptPresenter.Dependencies
         & HasMailboxMessageCellHelper
         & HasFeatureFlagsRepository
+        & HasUserManager
+        & HasUserDefaults
+        & HasAddressBookService
+        & HasUserCachedStatus
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -79,6 +83,15 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     @IBOutlet weak var selectAllIcon: UIImageView!
     @IBOutlet weak var selectAllLabel: UILabel!
     
+    // MARK: AlertBox
+    @IBOutlet weak var alertContainerView: UIView!
+    @IBOutlet weak var alertCardView: UIView!
+    @IBOutlet weak var alertIcon: UIImageView!
+    @IBOutlet weak var alertLabel: UILabel!
+    @IBOutlet weak var alertDescription: UILabel!
+    @IBOutlet weak var alertDismissButton: UIButton!
+    @IBOutlet weak var alertButton: UIButton!
+
     // MARK: PMToolBarView
     @IBOutlet private var toolBar: PMToolBarView!
 
@@ -255,6 +268,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         // Setup top actions
         self.topActionsView.backgroundColor = ColorProvider.BackgroundNorm
         self.topActionsView.layer.zPosition = tableView.layer.zPosition + 1
+        setupAlertBox()
 
         self.updateUnreadButton(count: viewModel.unreadCount)
         self.updateTheUpdateTimeLabel()
@@ -303,15 +317,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         viewModel.user.undoActionManager.register(handler: self)
         reloadIfSwipeActionsDidChange()
         fetchEventInScheduledSend()
-
-        if let destination = self.viewModel.getOnboardingDestination() {
-            viewModel.resetTourValue()
-            self.coordinator?.go(to: destination, sender: nil)
-        } else {
-            if !ProcessInfo.isRunningUITests {
-                showSpotlightIfNeeded()
-            }
-        }
+        setupMenuButton(userInfo: dependencies.user.userInfo)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -352,7 +358,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             return
         }
 
-        self.viewModel.processCachedPush()
         self.viewModel.checkStorageIsCloseLimit()
 
         self.updateInterface(connectionStatus: connectionStatusProvider.status)
@@ -367,6 +372,15 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
         DispatchQueue.global().async { [weak self] in
             self?.viewModel.prefetchIfNeeded()
+        }
+
+        if let destination = self.viewModel.getOnboardingDestination() {
+            viewModel.resetTourValue()
+            self.coordinator?.go(to: destination, sender: nil)
+        } else {
+            if !ProcessInfo.isRunningUITests {
+                showSpotlightIfNeeded()
+            }
         }
     }
 
@@ -453,7 +467,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)
 
-        setupMenuButton()
+        setupMenuButton(userInfo: dependencies.user.userInfo)
         self.menuBarButtonItem = self.navigationItem.leftBarButtonItem
         self.menuBarButtonItem.tintColor = ColorProvider.IconNorm
 
@@ -524,8 +538,8 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             self.referralProgramPresenter = ReferralProgramPromptPresenter(
                 userID: self.viewModel.user.userID,
                 referralProgram: referralProgram,
-                featureFlagCache: userCachedStatus,
-                featureFlagService: viewModel.user.featureFlagsDownloadService, 
+                featureFlagCache: dependencies.userCachedStatus,
+                featureFlagService: viewModel.user.featureFlagsDownloadService,
                 dependencies: dependencies
             )
         }
@@ -1183,7 +1197,11 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     private func handleShadow(isScrolled: Bool) {
-        isScrolled ? topActionsView.layer.apply(shadow: .custom(y: 2, blur: 2)) : topActionsView.layer.clearShadow()
+        if viewModel.storageAlertVisibility != .hidden {
+            isScrolled ? alertCardView.layer.apply(shadow: .custom(y: 2, blur: 2)) : alertCardView.layer.clearShadow()
+        } else {
+            isScrolled ? topActionsView.layer.apply(shadow: .custom(y: 2, blur: 2)) : topActionsView.layer.clearShadow()
+        }
     }
 
     private func updateScheduledMessageTimeLabel() {
@@ -1218,49 +1236,74 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     private func reloadIfSwipeActionsDidChange() {
         if configuredActions.isEmpty,
-           configuredActions[.left] == userCachedStatus.leftToRightSwipeActionType,
-           configuredActions[.right] == userCachedStatus.rightToLeftSwipeActionType {
+           configuredActions[.left] == dependencies.userCachedStatus.leftToRightSwipeActionType,
+           configuredActions[.right] == dependencies.userCachedStatus.rightToLeftSwipeActionType {
             return
         }
         tableView.reloadData()
     }
 
     private func showSpotlightIfNeeded() {
-//        if viewModel.shouldShowMessageNavigationSpotlight {
-//            showMessageNavigationSpotlight()
-//        }
-        if viewModel.shouldShowShowSnoozeSpotlight() {
-            showSnoozeSpotlight()
+        if viewModel.shouldShowAutoImportContactsSpotlight() {
+            showAutoImportContactsSpotlight()
+        } else if viewModel.shouldShowJumpToNextMessageSpotlight() {
+            showJumpToNextMessageSpotlight()
         }
     }
 
-    private func showSnoozeSpotlight() {
-        let spotlightView = SnoozeSpotlightView(
-            buttonTitle: LocalString._general_gotIt_button,
-            message: L11n.Snooze.spotlightDesc,
-            title: L11n.Snooze.spotlightTitle
-        ) { [weak self] hostingVC in
+    private func showJumpToNextMessageSpotlight() {
+        let spotlightView = JumpToNextSpotlightView(
+            buttonTitle: L11n.NextMsgAfterMove.spotlightButtonTitle,
+            message: L11n.NextMsgAfterMove.spotlightMessage,
+            title: L11n.NextMsgAfterMove.spotlightTitle
+        ) { [weak self] hostingVC, didTapActionButton in
             hostingVC?.dismiss(animated: false)
-            self?.viewModel.hasSeenSnoozeSpotlight()
+            if didTapActionButton {
+                self?.showProgressHud()
+                self?.viewModel.enableJumpToNextMessage() {
+                    self?.hideProgressHud()
+                }
+            }
         }
         let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
         spotlightView.config.hostingController = hosting
         navigationController?.present(hosting, animated: false)
-        viewModel.hasSeenSnoozeSpotlight()
+        viewModel.hasSeenJumpToNextMessageSpotlight()
     }
 
-    private func showMessageNavigationSpotlight() {
-        let spotlightView = MessageNavigationSpotlightView(
-            buttonTitle: LocalString._general_gotIt_button,
-            message: L11n.MessageNavigation.spotlightMessage,
-            title: L11n.MessageNavigation.spotlightTitle
-        ) { hostingVC in
+    private func showAutoImportContactsSpotlight() {
+        let spotlightView = AutoImportContactsSpotlightView(
+            buttonTitle: L11n.AutoImportContacts.spotlightButtonTitle,
+            message: L11n.AutoImportContacts.spotlightMessage,
+            title: L11n.AutoImportContacts.spotlightTitle
+        ) { [weak self] hostingVC, didTapActionButton in
             hostingVC?.dismiss(animated: false)
+            if didTapActionButton {
+                self?.dependencies.addressBookService.requestAuthorizationWithCompletion { granted, _ in
+                    DispatchQueue.main.async {
+                        if granted {
+                            self?.viewModel.enableAutoImportContact()
+                        } else {
+                            self?.showContactAccessIsDenied()
+                        }
+                    }
+                }
+            }
         }
         let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
         spotlightView.config.hostingController = hosting
         navigationController?.present(hosting, animated: false)
-        viewModel.hasSeenMessageNavigationSpotlight()
+        viewModel.hasSeenAutoImportContactsSpotlight()
+    }
+
+    private func showContactAccessIsDenied() {
+        let alert = UIAlertController(
+            title: L11n.SettingsContacts.autoImportContacts,
+            message: L11n.SettingsContacts.authoriseContactsInSettingsApp,
+            preferredStyle: .alert
+        )
+        alert.addOKAction()
+        present(alert, animated: true, completion: nil)
     }
 
     private func endRefreshSpinner() {
@@ -1423,10 +1466,10 @@ extension MailboxViewController {
         cell.delegate = self
 
         var actions: [SwipyCellDirection: SwipeActionSettingType] = [:]
-        actions[.left] = userCachedStatus.leftToRightSwipeActionType
-        actions[.right] = userCachedStatus.rightToLeftSwipeActionType
-        configuredActions[.left] = userCachedStatus.leftToRightSwipeActionType
-        configuredActions[.right] = userCachedStatus.rightToLeftSwipeActionType
+        actions[.left] = dependencies.userCachedStatus.leftToRightSwipeActionType
+        actions[.right] = dependencies.userCachedStatus.rightToLeftSwipeActionType
+        configuredActions[.left] = dependencies.userCachedStatus.leftToRightSwipeActionType
+        configuredActions[.right] = dependencies.userCachedStatus.rightToLeftSwipeActionType
 
         cell.removeAllSwipeTriggers()
 
@@ -2075,6 +2118,62 @@ extension MailboxViewController {
 
 // MARK: - Show banner or alert
 extension MailboxViewController {
+
+    private func setupAlertBox() {
+        guard viewModel.storageAlertVisibility != .hidden else {
+            alertContainerView.isHidden = true
+            return
+        }
+        alertContainerView.isHidden = false
+        alertContainerView.layer.zPosition = tableView.layer.zPosition + 1
+        alertCardView.backgroundColor = ColorProvider.BackgroundSecondary
+        alertCardView.layer.cornerRadius = 8
+        alertIcon.image = IconProvider.exclamationCircleFilled
+
+        alertLabel.text = viewModel.storageAlertVisibility.mailboxBannerTitle
+        switch viewModel.storageAlertVisibility {
+        case .mail(let value) where value < StorageAlertVisibility.fullThreshold,
+             .drive(let value) where value < StorageAlertVisibility.fullThreshold:
+            alertDismissButton.isHidden = false
+            alertDescription.isHidden = true
+            alertIcon.tintColor = ColorProvider.NotificationWarning
+        case .mail, .drive:
+            alertDismissButton.isHidden = true
+            alertDescription.isHidden = false
+            alertIcon.tintColor = ColorProvider.NotificationError
+        case .hidden:
+            break
+        }
+
+        alertDescription.text = L11n.AlertBox.alertBoxDescription
+
+        alertLabel.textColor = ColorProvider.TextNorm
+        alertDescription.textColor = ColorProvider.TextNorm
+        alertDismissButton.setTitle(L11n.AlertBox.alertBoxDismissButtonTitle, for: .normal)
+        alertButton.setTitle(L11n.AlertBox.alertBoxButtonTitle, for: .normal)
+        alertButton.layer.cornerRadius = 8
+        alertButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        alertButton.addTarget(
+            self,
+            action: #selector(getMoreStorageTapped),
+            for: .touchUpInside
+        )
+        alertDismissButton.addTarget(
+            self,
+            action: #selector(dismissStorageAlertTapped),
+            for: .touchUpInside
+        )
+    }
+
+    @objc private func getMoreStorageTapped() {
+        self.coordinator?.go(to: .subscriptions, sender: nil)
+    }
+
+    @objc private func dismissStorageAlertTapped() {
+        viewModel.onStorageAlertDismissed()
+        alertContainerView.isHidden = true
+    }
+
     private func showErrorMessage(_ error: NSError) {
         guard UIApplication.shared.applicationState == .active else { return }
         var message = error.localizedDescription

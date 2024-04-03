@@ -10,6 +10,7 @@ import XCTest
 import ProtonCoreAccountSwitcher
 import ProtonCoreForceUpgrade
 import ProtonCoreLoginUI
+import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkit
 import fusion
 
@@ -175,14 +176,14 @@ class MenuRobot: CoreElements {
         class Verify: CoreElements {
 
             func accountName(_ user: User) -> MenuAccountListRobot{
-                staticText(user.email).checkExists()
+                staticText(user.dynamicDomainEmail).checkExists()
                 return MenuAccountListRobot()
             }
 
             @discardableResult
             func accountNameEmail(_ user: User) -> MenuAccountListRobot {
                 staticText(user.name).checkExists()
-                staticText(user.email).checkExists()
+                staticText(user.dynamicDomainEmail).checkExists()
                 return MenuAccountListRobot()
             }
             

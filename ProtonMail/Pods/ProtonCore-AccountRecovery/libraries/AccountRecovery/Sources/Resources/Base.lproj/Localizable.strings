@@ -1,0 +1,9 @@
+/* 
+  Localizable.strings
+  Pods
+
+  Created by Victor Jalencas on 14/7/23.
+  
+*/
+
+// Don't look for strings here, Base localization is only used for XIB and Storyboards

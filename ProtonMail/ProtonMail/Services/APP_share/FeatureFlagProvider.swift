@@ -18,7 +18,11 @@
 import ProtonCoreFeatureFlags
 
 // sourcery: mock
-struct FeatureFlagProvider {
+protocol FeatureFlagProvider {
+    func isEnabled(_ featureFlag: MailFeatureFlag, reloadValue: Bool) -> Bool
+}
+
+struct FeatureFlagProviderImpl: FeatureFlagProvider {
     private let featureFlagsRepository: FeatureFlagsRepository
     private let userID: UserID
 
@@ -37,8 +41,8 @@ struct FeatureFlagProvider {
 
     private func localOverride(for featureFlag: MailFeatureFlag) -> Bool? {
         switch featureFlag {
-        case .autoImportContacts, .rsvpWidget:
-            return UIApplication.isDebugOrEnterprise
+        case .autoImportContacts:
+            return Application.isDebugOrEnterprise
         case .snooze:
             return ProcessInfo.isRunningUnitTests
         default:

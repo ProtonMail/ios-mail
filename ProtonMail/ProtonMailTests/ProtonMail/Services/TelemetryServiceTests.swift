@@ -46,6 +46,7 @@ final class TelemetryServiceTests: XCTestCase {
 
         sut = .init(
             userID: dummyUserID,
+            shouldBuildSendTelemetry: true,
             isTelemetrySettingOn: { self.isTelemetrySettingOn },
             dependencies: userContainer
         )

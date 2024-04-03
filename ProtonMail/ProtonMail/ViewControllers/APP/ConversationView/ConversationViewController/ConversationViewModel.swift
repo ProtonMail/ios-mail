@@ -938,10 +938,8 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
             isInPageView,
             dependencies.nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove
         else { return }
-        DispatchQueue.main.async { [weak self] in
-            let userInfo: [String: Any] = ["expectation": PagesSwipeAction.forward, "reload": true]
-            self?.dependencies.notificationCenter.post(name: .pagesSwipeExpectation, object: nil, userInfo: userInfo)
-        }
+        let userInfo: [String: Any] = ["expectation": PagesSwipeAction.forward, "reload": true]
+        dependencies.notificationCenter.post(name: .pagesSwipeExpectation, object: nil, userInfo: userInfo)
     }
 }
 

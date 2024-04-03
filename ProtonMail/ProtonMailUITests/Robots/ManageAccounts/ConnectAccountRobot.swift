@@ -7,6 +7,7 @@
 //
 
 import fusion
+import ProtonCoreQuarkCommands
 
 fileprivate struct id {
     static let usernameTextFieldIdentifier = "LoginViewController.loginTextField.textField"

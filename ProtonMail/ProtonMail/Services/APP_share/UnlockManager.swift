@@ -133,10 +133,6 @@ final class UnlockManager {
         return true
     }
 
-    private func biometricAuthentication(requestMailboxPassword: @escaping () -> Void) {
-        biometricAuthentication(afterBioAuthPassed: { self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword) })
-    }
-
     private var isRequestingBiometricAuthentication: Bool = false
     func biometricAuthentication(afterBioAuthPassed: @escaping () -> Void) {
         var error: NSError?
@@ -158,49 +154,7 @@ final class UnlockManager {
             afterBioAuthPassed()
         }
     }
-
-    func initiateUnlock(
-        flow signInFlow: SignInUIFlow,
-        requestPin: @escaping () -> Void,
-        requestMailboxPassword: @escaping () -> Void
-    ) {
-        if cacheStatus.isAppLockedAndAppKeyDisabled {
-            unlockIfRememberedCredentials(
-                requestMailboxPassword: requestMailboxPassword,
-                unlocked: {
-                    switch signInFlow {
-                    case .requirePin:
-                        requestPin()
-                    case .requireTouchID:
-                        requestPin()
-                        self.biometricAuthentication(afterBioAuthPassed: {
-                            self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
-                        })
-                    case .restore:
-                        assertionFailure("Should not reach here.")
-                    }
-                }
-            )
-        } else {
-            switch signInFlow {
-            case .requirePin:
-                requestPin()
-            case .requireTouchID:
-                biometricAuthentication(requestMailboxPassword: requestMailboxPassword)
-            case .restore:
-                unlockIfRememberedCredentials(
-                    requestMailboxPassword: requestMailboxPassword,
-                    unlockFailed: {
-                        self.notificationCenter.post(
-                            name: .didSignOutLastAccount,
-                            object: nil
-                        )
-                    }
-                )
-            }
-        }
-    }
-
+    
     func unlockIfRememberedCredentials(
         forUser uid: String? = nil,
         requestMailboxPassword: () -> Void,

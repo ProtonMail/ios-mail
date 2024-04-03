@@ -22,7 +22,7 @@ fileprivate struct id {
     static func groupCellIdentifier(_ name: String) -> String { return "ContactGroupsViewCell.\(name)" }
     static func groupStaticTextIdentifier(_ name: String) -> String { return "\(name).nameLabel" }
     static func groupCellSendImailButtonIdentifier(_ name: String) -> String { return "\(name).sendButton" }
-    static let menuButtonIdentifier = "UINavigationItem.leftBarButtonItem"
+    static let menuButtonIdentifier = "Menu"
     static let addContactNavBarButtonText = LocalString._general_create_action
     static let importContactNavBarButtonIdentifier = "UINavigationItem.importButton"
     static let contactsTableViewIdentifier = "ContactsViewController.tableView"

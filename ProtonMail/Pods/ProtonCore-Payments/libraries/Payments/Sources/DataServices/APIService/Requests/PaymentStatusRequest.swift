@@ -24,7 +24,10 @@ import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-final class PaymentStatusRequest: BaseApiRequest<PaymentStatusResponse> {
+typealias PaymentStatusRequest = BaseApiRequest<PaymentStatusResponse>
+
+/// Payment Status request for API v4
+final class V4PaymentStatusRequest: PaymentStatusRequest {
 
     override init(api: APIService) {
         super.init(api: api)
@@ -35,12 +38,26 @@ final class PaymentStatusRequest: BaseApiRequest<PaymentStatusResponse> {
     override var isAuth: Bool { false }
 }
 
+/// Payment Status request for API v5
+final class V5PaymentStatusRequest: PaymentStatusRequest {
+
+    override init(api: APIService) {
+        super.init(api: api)
+    }
+
+    override var path: String { super.path + "/v5/status/apple" }
+
+    override var isAuth: Bool { false }
+}
+
+/// Common Payment Status response
 final class PaymentStatusResponse: Response {
     var isAvailable: Bool?
 
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+    override func ParseResponse(_ response: [String: Any]) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
-        self.isAvailable = response["InApp"].map { $0 as? Int == 1 }
+        let states = response["VendorStates"] as? [String: Any] ?? response
+        self.isAvailable = states["InApp"].map { $0 as? Int == 1 }
         return true
     }
 }

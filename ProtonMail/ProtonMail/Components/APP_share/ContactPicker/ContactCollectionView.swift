@@ -324,14 +324,20 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         }
     }
     //
-    func setFocusOnEntry() {
+    func setFocusOnEntry(text: String? = nil) {
         if self.entryIsVisible {
             if let entryCell = self.cellForItem(at: self.entryCellIndexPath) as? ContactCollectionViewEntryCell {
+                if let text = text {
+                    entryCell.text = text
+                }
                 entryCell.setFocus()
             }
         } else {
             self.scrollToEntryAnimated(animated: true) {
                 if let entryCell = self.cellForItem(at: self.entryCellIndexPath) as?  ContactCollectionViewEntryCell {
+                    if let text = text {
+                        entryCell.text = text
+                    }
                     entryCell.setFocus()
                 }
             }
@@ -456,7 +462,7 @@ extension ContactCollectionView: UIKeyInput {
     }
 
     func insertText(_ text: String) {
-
+        setFocusOnEntry(text: text)
     }
 
     func deleteBackward() {
@@ -569,7 +575,9 @@ extension ContactCollectionView: UITextFieldDelegateImproved {
             range.location == 0 &&
             range.length == 1 {
             if self.selectedContacts.count > 0 {
+                textField.text = " "
                 textField.resignFirstResponder()
+                textFieldDidChange(textField: textField)
 
                 let newSelectedIndexPath = IndexPath(row: self.selectedContacts.count - (self.showPrompt ? 0 : 1), section: 0)
                 self.selectItem(at: newSelectedIndexPath, animated: true, scrollPosition: .bottom)

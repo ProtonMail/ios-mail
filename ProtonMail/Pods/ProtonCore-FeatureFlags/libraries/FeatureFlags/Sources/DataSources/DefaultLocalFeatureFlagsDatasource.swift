@@ -56,7 +56,8 @@ public class DefaultLocalFeatureFlagsDatasource: LocalFeatureFlagsDataSourceProt
 
     public func upsertFlags(_ flags: FeatureFlags, userId: String) {
         serialAccessQueue.sync {
-            var flagsToUpdate: [String: FeatureFlags] = userDefaults.decodableValue(forKey: Self.featureFlagsKey) ?? [:]
+            var flagsToUpdate: [String: FeatureFlags] =
+                userDefaults.decodableValue(forKey: Self.featureFlagsKey) ?? [:]
             flagsToUpdate[userId] = flags
             userDefaults.setEncodableValue(flagsToUpdate, forKey: Self.featureFlagsKey)
         }
@@ -70,7 +71,8 @@ public class DefaultLocalFeatureFlagsDatasource: LocalFeatureFlagsDataSourceProt
 
     public func cleanFlags(for userId: String) {
         serialAccessQueue.sync {
-            var flagsToClean: [String: FeatureFlags]? = userDefaults.decodableValue(forKey: Self.featureFlagsKey)
+            var flagsToClean: [String: FeatureFlags]? = 
+                userDefaults.decodableValue(forKey: Self.featureFlagsKey)
             flagsToClean?[userId] = nil
             userDefaults.setEncodableValue(flagsToClean, forKey: Self.featureFlagsKey)
         }

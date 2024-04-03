@@ -53,13 +53,23 @@ class EventAPITests: XCTestCase {
         XCTAssertEqual(sut.notices, [])
     }
 
-    func testEventCheckRequestUrlPath() {
+    func testEventCheckRequestUrlPath_whenDiscardContactsMetadataIsFalse() {
         let eventID = String.randomString(20)
-        let sut = EventCheckRequest(eventID: eventID)
+        let sut = EventCheckRequest(eventID: eventID, discardContactsMetadata: false)
 
         XCTAssertEqual(
             sut.path,
             "/core/v5/events/\(eventID)?ConversationCounts=1&MessageCounts=1"
+        )
+    }
+
+    func testEventCheckRequestUrlPath_whenDiscardContactsMetadataIsTrue() {
+        let eventID = String.randomString(20)
+        let sut = EventCheckRequest(eventID: eventID, discardContactsMetadata: true)
+
+        XCTAssertEqual(
+            sut.path,
+            "/core/v5/events/\(eventID)?ConversationCounts=1&MessageCounts=1&NoMetaData%5B%5D=Contact"
         )
     }
 }

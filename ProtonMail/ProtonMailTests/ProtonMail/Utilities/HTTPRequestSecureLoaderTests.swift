@@ -63,7 +63,7 @@ final class HTTPRequestSecureLoaderTests: XCTestCase {
     func testLoad_callTwiceInAShortTime_shouldNotGetFailProvisionalNavigation() {
         let content = WebContents(
             body: bodyWithoutRemoteImages,
-            remoteContentMode: .allowed,
+            remoteContentMode: .allowedThroughProxy,
             messageDisplayMode: .collapsed
         )
         navigationDelegateMock.didFailProvisionalNavigationIsCalled = {
@@ -90,7 +90,7 @@ final class HTTPRequestSecureLoaderTests: XCTestCase {
     func testLoad_callTwiceInTheSameTime_shouldLoadSuccessfully() {
         let content = WebContents(
             body: bodyWithoutRemoteImages,
-            remoteContentMode: .allowed,
+            remoteContentMode: .allowedThroughProxy,
             messageDisplayMode: .collapsed
         )
         navigationDelegateMock.didFailProvisionalNavigationIsCalled = {

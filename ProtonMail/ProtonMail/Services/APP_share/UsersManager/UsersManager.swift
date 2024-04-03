@@ -190,10 +190,12 @@ class UsersManager: UsersManagerProtocol {
     }
 
     func isAllowedNewUser(userInfo: UserInfo) -> Bool {
-        if numberOfFreeAccounts > 0, !userInfo.hasPaidMailPlan {
-            return false
+        // If the account has any subscription (even if not mail paid), exempt from limit 
+        if userInfo.subscribed.rawValue > 0 {
+            return true
         }
-        return true
+        let maximumFreeAccount = 2
+        return maximumFreeAccount > numberOfFreeAccounts
     }
 
     func update(userInfo: UserInfo, for sessionID: String) {
@@ -632,7 +634,7 @@ extension UsersManager {
     }
 
     var numberOfFreeAccounts: Int {
-        self.users.filter { !$0.hasPaidMailPlan }.count
+        users.filter { $0.userInfo.subscribed.rawValue == 0 }.count
     }
 }
 

@@ -28,6 +28,8 @@ import ProtonCoreFeatureFlags
 
 final class StorageProgressView: UIView, AccessibleCell {
 
+    private let warningPercentage = 0.5
+    private let alertPercentage = 0.8
     static let reuseIdentifier = "StorageProgressView"
     static let nib = UINib(nibName: "StorageProgressView", bundle: PaymentsUI.bundle)
 
@@ -61,6 +63,17 @@ final class StorageProgressView: UIView, AccessibleCell {
     }
     var progressView: UIView?
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        // Mask the `progressView` to keep rounded corners at the ends of the progress bar.
+        let maskLayer = CALayer()
+        maskLayer.frame = backgroundProgressView.bounds
+        maskLayer.backgroundColor = UIColor.black.cgColor
+        maskLayer.cornerRadius = backgroundProgressView.layer.cornerRadius
+        progressView?.layer.mask = maskLayer
+    }
+
     // MARK: - Properties
 
     override init(frame: CGRect) {
@@ -93,7 +106,7 @@ final class StorageProgressView: UIView, AccessibleCell {
     func configure(title: String? = nil, iconUrl: URL? = nil, usedSpaceDescription: String, usedSpace: Int64, maxSpace: Int64) {
         let factor = CGFloat(usedSpace) / CGFloat(maxSpace)
         // avoid showing empty progress bar
-        let multiplier = factor < 0.01 ? 0.01 : factor
+        let multiplier = factor < 0.01 ? 0.01 : CGFloat.minimum(factor, 1.0)
         guard multiplier <= 1.0 else { return }
         progressView?.widthAnchor.constraint(equalTo: backgroundProgressView.widthAnchor, multiplier: multiplier).isActive = true
         progressView?.backgroundColor = getColor(multiplier: multiplier)
@@ -112,9 +125,9 @@ final class StorageProgressView: UIView, AccessibleCell {
     }
 
     private func getColor(multiplier: CGFloat) -> UIColor {
-        if multiplier <= 0.5 {
+        if multiplier <= warningPercentage {
             return ColorProvider.NotificationSuccess
-        } else if multiplier <= 0.9 {
+        } else if multiplier <= alertPercentage {
             return ColorProvider.NotificationWarning
         } else {
             return ColorProvider.NotificationError
@@ -122,7 +135,7 @@ final class StorageProgressView: UIView, AccessibleCell {
     }
 
     private func getLabelColor(multiplier: CGFloat) -> UIColor {
-        if multiplier > 0.9 {
+        if multiplier > alertPercentage {
             return ColorProvider.NotificationError
         } else {
             return ColorProvider.TextNorm

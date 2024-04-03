@@ -18,8 +18,8 @@
 import ProtonCoreFeatureFlags
 
 enum MailFeatureFlag: String, FeatureFlagTypeProtocol {
-    case appLaunchRefactor = "MailiosAppLaunchRefactor"
     case autoImportContacts = "MailiosAutoImportContacts"
+    case calendarMiniLandingPage = "MailiosCalendarMiniLandingPage"
     case newEventLoop = "MailiosNewEventsLoop"
     case rsvpWidget = "MailiosRSVPWidget"
     case snooze = "MailiosSnooze"

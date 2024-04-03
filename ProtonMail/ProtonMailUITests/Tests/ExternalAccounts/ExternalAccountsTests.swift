@@ -25,29 +25,17 @@ final class ExternalAccountsTests: BaseTestCase {
 
     let quarkCommandTimeout = 30.0
     let accountCreationTimeout = 90.0
-    
-//    Sign-in:
-//    Sign-in with internal account works
-//    Sign-in with external account works
-//    Sign-in with username account works (account is converted to internal under the hood)
-    
-    func testSignInWithInternalAccountWorks() {
+
+    //    Sign-in:
+    //    Sign-in with internal account works
+    //    Sign-in with external account works
+    //    Sign-in with username account works (account is converted to internal under the hood)
+
+    func testSignInWithInternalAccountWorks() throws {
         let randomUsername = StringUtils().randomAlphanumericString(length: 8)
         let randomPassword = StringUtils().randomAlphanumericString(length: 8)
-        
-        let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
-        var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
-        QuarkCommands.create(account: .freeWithAddressAndKeys(username: randomUsername, password: randomPassword),
-                             currentlyUsedHostUrl:  env.doh.getCurrentlyUsedHostUrl()) { result in
-            quarkCommandResult = result
-            expectQuarkCommandToFinish.fulfill()
-        }
-        
-        wait(for: [expectQuarkCommandToFinish], timeout: quarkCommandTimeout)
-        if case .failure(let error) = quarkCommandResult {
-            XCTFail("Internal account creation failed in test \(#function) because of \(error.userFacingMessageInQuarkCommands)")
-            return
-        }
+
+        try quarkCommands.userCreate(user: User(name: randomUsername, password: randomPassword))
 
         SigninExternalAccountsCapability()
             .signInWithAccount(userName: randomUsername,
@@ -56,23 +44,13 @@ final class ExternalAccountsTests: BaseTestCase {
                                retRobot: InboxRobot.self)
             .verify.inboxShown(time: accountCreationTimeout)
     }
-    
-    func testSignInWithExternalAccountWorks() {
+
+    func testSignInWithExternalAccountWorks() throws {
         let randomEmail = "\(StringUtils().randomAlphanumericString(length: 8))@proton.uitests"
         let randomPassword = StringUtils().randomAlphanumericString(length: 8)
-        
-        let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
-        var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
-        QuarkCommands.create(account: .external(email: randomEmail, password: randomPassword),
-                             currentlyUsedHostUrl: env.doh.getCurrentlyUsedHostUrl()) { result in
-            quarkCommandResult = result
-            expectQuarkCommandToFinish.fulfill()
-        }
-        wait(for: [expectQuarkCommandToFinish], timeout: quarkCommandTimeout)
-        if case .failure(let error) = quarkCommandResult {
-            XCTFail("External account creation failed in test \(#function) because of \(error.userFacingMessageInQuarkCommands)")
-            return
-        }
+
+        let user = User(email: randomEmail, name: "", password: randomPassword, isExternal: true)
+        try quarkCommands.userCreate(user: user)
 
         SigninExternalAccountsCapability()
             .convertExternalAccountToInternal(email: randomEmail,
@@ -82,23 +60,12 @@ final class ExternalAccountsTests: BaseTestCase {
                                               retRobot: InboxRobot.self)
             .verify.inboxShown(time: accountCreationTimeout)
     }
-    
-    func testSignInWithUsernameAccountWorks() {
+
+    func testSignInWithUsernameAccountWorks() throws {
         let randomUsername = StringUtils().randomAlphanumericString(length: 8)
         let randomPassword = StringUtils().randomAlphanumericString(length: 8)
-        
-        let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
-        var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
-        QuarkCommands.create(account: .freeNoAddressNoKeys(username: randomUsername, password: randomPassword),
-                             currentlyUsedHostUrl: env.doh.getCurrentlyUsedHostUrl()) { result in
-            quarkCommandResult = result
-            expectQuarkCommandToFinish.fulfill()
-        }
-        wait(for: [expectQuarkCommandToFinish], timeout: quarkCommandTimeout)
-        if case .failure(let error) = quarkCommandResult {
-            XCTFail("Username account creation failed in test \(#function) because of \(error.userFacingMessageInQuarkCommands)")
-            return
-        }
+
+        try quarkCommands.userCreate(user: User(name: randomUsername, password: randomPassword), createAddress: .noKey)
 
         SigninExternalAccountsCapability()
             .signInWithAccount(userName: randomUsername,
@@ -107,20 +74,16 @@ final class ExternalAccountsTests: BaseTestCase {
                                retRobot: InboxRobot.self)
             .verify.inboxShown(time: accountCreationTimeout)
     }
-    
-//    Sign-up:
-//    Sign-up with internal account works
-//    The UI for sign-up with external account is not available
-//    The UI for sign-up with username account is not available
-    
-    func testSignUpWithInternalAccountWorks() {
-        
-        let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
-        QuarkCommands.unban(currentlyUsedHostUrl: env.doh.getCurrentlyUsedHostUrl()) { _ in
-            expectQuarkCommandToFinish.fulfill()
-        }
-        wait(for: [expectQuarkCommandToFinish], timeout: quarkCommandTimeout)
-        
+
+    //    Sign-up:
+    //    Sign-up with internal account works
+    //    The UI for sign-up with external account is not available
+    //    The UI for sign-up with username account is not available
+
+    func testSignUpWithInternalAccountWorks() throws {
+
+        try quarkCommands.jailUnban()
+
         let randomUsername = StringUtils().randomAlphanumericString(length: 8)
         let randomPassword = StringUtils().randomAlphanumericString(length: 8)
         let randomEmail = "\(StringUtils().randomAlphanumericString(length: 8))@proton.uitests"
@@ -147,14 +110,14 @@ final class ExternalAccountsTests: BaseTestCase {
             .startUsingAppTap(robot: InboxRobot.self)
             .verify.inboxShown(time: accountCreationTimeout)
     }
-    
-    
+
+
     func testSignUpWithExternalAccountIsNotAvailable() {
         LoginRobot()
             .switchToCreateAccount()
             .verify.otherAccountExtButtonIsNotShown()
     }
-    
+
     func testSignUpWithUsernameAccountIsNotAvailable() {
         LoginRobot()
             .switchToCreateAccount()
@@ -174,18 +137,8 @@ extension SignupRobot.Verify {
     @discardableResult
     public func domainsButtonHasValue(domain: String) -> SignupRobot {
         // arbitrary wait to ensure that the domains refresh call finishes
-        wait(timeInterval: 15.0)
+        sleep(15)
         button(domainsButtonId).checkHasLabel(domain)
         return SignupRobot()
     }
-}
-
-// not the greatest use of expectations, but it does the job
-private func wait(timeInterval: TimeInterval) {
-    let testCase = XCTestCase()
-    let waitExpectation = testCase.expectation(description: "Waiting")
-    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + timeInterval) {
-        waitExpectation.fulfill()
-    }
-    testCase.waitForExpectations(timeout: timeInterval + 0.5)
 }

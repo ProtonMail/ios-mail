@@ -20,22 +20,22 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import CoreData
 import Combine
+import CoreData
 import LifetimeTracker
 import MBProgressHUD
 import ProtonCoreUIFoundations
+import ProtonMailUI
 import UIKit
+import SwiftUI
 
 final class ContactsViewController: ContactsAndGroupsSharedCode {
-    typealias Dependencies =
-        ContactsAndGroupsSharedCode.Dependencies &
-        HasContactViewsFactory &
-        HasInternetConnectionStatusProviderProtocol
-
-    class var lifetimeConfiguration: LifetimeConfiguration {
-        .init(maxCount: 1)
-    }
+    typealias Dependencies = ContactsAndGroupsSharedCode.Dependencies
+        & HasContactViewsFactory
+        & HasImportDeviceContacts
+        & HasInternetConnectionStatusProviderProtocol
+        & HasUserManager
+        & HasAddressBookService
 
     private enum Layout {
         static let importContactsHeight: CGFloat = 24.0
@@ -56,6 +56,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
 
     private var diffableDataSource: SectionTitleUITableViewDiffableDataSource<String, ContactEntity>?
     private var cancellables: Set<AnyCancellable> = .init()
+    private var contactAutoSyncBannerHost: BannerHostViewController<ContactAutoSyncBanner>?
 
     init(viewModel: ContactsViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
@@ -168,6 +169,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         viewModel.contentDidChange = { [weak self] snapshot in
             DispatchQueue.main.async {
                 self?.diffableDataSource?.apply(snapshot, animatingDifferences: false)
+                self?.showNoContactViewIfNeeded(hasContact: snapshot.numberOfItems > 0)
             }
         }
 
@@ -176,7 +178,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
 
         emptyBackButtonTitleForNextView()
 
-        setupMenuButton()
+        setupMenuButton(userInfo: dependencies.user.userInfo)
 
         prepareNavigationItemRightDefault()
 
@@ -198,6 +200,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         NotificationCenter.default.addKeyboardObserver(self)
 
         self.isOnMainView = true
+        self.setupMenuButton(userInfo: dependencies.user.userInfo)
 
         if UIAccessibility.isVoiceOverRunning {
             UIAccessibility.post(notification: .layoutChanged,
@@ -213,6 +216,8 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
+        updateHeaderConstraint()
     }
 
     private func prepareSearchBar() {
@@ -295,12 +300,14 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
             return
         }
         self.viewModel.fetchContacts { [weak self] error in
-            if let error = error as NSError? {
-                let alertController = error.alertController()
-                alertController.addOKAction()
-                self?.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                if let error = error as NSError? {
+                    let alertController = error.alertController()
+                    alertController.addOKAction()
+                    self?.present(alertController, animated: true, completion: nil)
+                }
+                self?.refreshControl?.endRefreshing()
             }
-            self?.refreshControl?.endRefreshing()
         }
     }
 
@@ -353,6 +360,107 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
             section
         }
         diffableDataSource?.useSectionIndex = true
+    }
+
+    private func showContactAutoSyncBannerIfNeeded() {
+        guard viewModel.showShowContactAutoSyncBanner() else {
+            return
+        }
+
+        let banner = ContactAutoSyncBanner(
+            title: L11n.AutoImportContacts.contactBannerTitle,
+            buttonTitle: L11n.AutoImportContacts.contactBannerButtonTitle,
+            buttonTriggered: { [weak self] in
+                self?.dependencies.addressBookService
+                    .requestAuthorizationWithCompletion({ granted, error in
+                    DispatchQueue.main.async {
+                        if granted {
+                            self?.viewModel.enableAutoContactSync()
+                        } else {
+                            let alert = UIAlertController.makeContactAccessDeniedAlert()
+                            self?.present(alert, animated: true, completion: nil)
+                        }
+                        self?.tableView.tableHeaderView = nil
+                        self?.contactAutoSyncBannerHost = nil
+                        self?.viewModel.markAutoContactSyncAsSeen()
+                    }
+                })
+            },
+            dismiss: { [weak self] in
+                self?.viewModel.markAutoContactSyncAsSeen()
+                self?.tableView.tableHeaderView = nil
+                self?.contactAutoSyncBannerHost = nil
+            }
+        )
+        let hostVC = BannerHostViewController(rootView: banner)
+        guard let viewToAdd = hostVC.view else { return }
+        tableView.tableHeaderView = viewToAdd
+        contactAutoSyncBannerHost = hostVC
+        updateHeaderConstraint()
+    }
+
+    private func updateHeaderConstraint() {
+        if !tableView.frame.isEmpty, let headerView = tableView.tableHeaderView {
+            // Apparently setting the frame and setting the tableViewHeader property again is needed
+            // https://stackoverflow.com/questions/16471846/is-it-possible-to-use-autolayout-with-uitableviews-tableheaderview
+            headerView.frame.size = headerView.systemLayoutSizeFitting(
+                CGSize(width: tableView.frame.width, height: 0)
+            )
+            tableView.tableHeaderView = headerView
+        }
+    }
+}
+
+// MARK: No contact hint
+extension ContactsViewController {
+    private func showNoContactViewIfNeeded(hasContact: Bool) {
+        guard dependencies.autoImportContactsFeature.isFeatureEnabled else {
+            return
+        }
+        guard searchString.isEmpty, !hasContact else {
+            showContactAutoSyncBannerIfNeeded()
+            hideNoContactView()
+            return
+        }
+        let texts = NoContactView.Texts(
+            title: L11n.AutoImportContacts.noContactTitle,
+            description: L11n.AutoImportContacts.noContactDesc,
+            importingTitle: L11n.AutoImportContacts.importingTitle,
+            importingDesc: L11n.AutoImportContacts.importingDesc,
+            buttonTitle:  L11n.AutoImportContacts.autoImportContactButtonTitle,
+            noPermissionAlertTitle: L11n.SettingsContacts.autoImportContacts,
+            noPermissionAlertMessage: L11n.SettingsContacts.authoriseContactsInSettingsApp,
+            noPermissionButtonTitle: LocalString._general_ok_action
+        )
+        let noContactView = NoContactView(
+            texts: texts,
+            isImporting: dependencies.autoImportContactsFeature.isSettingEnabledForUser
+        ) { [weak self] _ in
+            self?.autoImportContactIsStarted()
+        }
+        let componentVC = ComponentViewController(rootView: noContactView)
+        guard let componentView = componentVC.view else { return }
+        view.addSubview(componentView)
+        componentView.fillSuperview()
+
+        tableView.tableHeaderView = nil
+        contactAutoSyncBannerHost = nil
+    }
+
+    private func hideNoContactView() {
+        guard
+            let noContactView = view.subviews.first(where: {$0 is SwiftUI._UIHostingView<ProtonMailUI.NoContactView>})
+        else { return }
+        noContactView.removeFromSuperview()
+    }
+
+    private func autoImportContactIsStarted() {
+        dependencies.autoImportContactsFeature.enableSettingForUser()
+        let params = ImportDeviceContacts.Params(
+            userKeys: dependencies.user.userInfo.userKeys,
+            mailboxPassphrase: dependencies.user.mailboxPassword
+        )
+        dependencies.importDeviceContacts.execute(params: params)
     }
 }
 

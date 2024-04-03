@@ -203,6 +203,66 @@ final class MenuViewControllerTests: XCTestCase {
                 .contains(Message.Location.scheduled.rawValue) == true
         )
     }
+
+    func testMenuBadgeIsVisible_whenStorage80orLess_andFreeUser_itShouldBeFalse() {
+        withFeatureFlags([.splitStorage]) {
+            testUser.userInfo.usedBaseSpace = 80
+            testUser.userInfo.maxBaseSpace = 100
+            testUser.userInfo.usedDriveSpace = 80
+            testUser.userInfo.maxDriveSpace = 100
+            testUser.userInfo.subscribed = .init(rawValue: 0)
+
+            XCTAssertFalse(sut.isMenuBadgeVisible(userInfo: testUser.userInfo))
+        }
+    }
+
+    func testMenuBadgeIsVisible_whenMailStorageAbove80_andFreeUser_itShouldBeTrue() {
+        withFeatureFlags([.splitStorage]) {
+            testUser.userInfo.usedBaseSpace = 100
+            testUser.userInfo.maxBaseSpace = 100
+            testUser.userInfo.usedDriveSpace = 0
+            testUser.userInfo.maxDriveSpace = 100
+            testUser.userInfo.subscribed = .vpn
+
+            XCTAssertTrue(sut.isMenuBadgeVisible(userInfo: testUser.userInfo))
+        }
+    }
+
+    func testMenuBadgeIsVisible_whenDriveStorageAbove80_andFreeUser_itShouldBeTrue() {
+        withFeatureFlags([.splitStorage]) {
+            testUser.userInfo.usedBaseSpace = 0
+            testUser.userInfo.maxBaseSpace = 100
+            testUser.userInfo.usedDriveSpace = 100
+            testUser.userInfo.maxDriveSpace = 100
+            testUser.userInfo.subscribed = .init(rawValue: 0)
+
+            XCTAssertTrue(sut.isMenuBadgeVisible(userInfo: testUser.userInfo))
+        }
+    }
+
+    func testMenuBadgeIsVisible_whenMailStorage80orLess_andPayingUser_itShouldBeFalse() {
+        withFeatureFlags([.splitStorage]) {
+            testUser.userInfo.usedBaseSpace = 80
+            testUser.userInfo.maxBaseSpace = 100
+            testUser.userInfo.usedDriveSpace = 80
+            testUser.userInfo.maxDriveSpace = 100
+            testUser.userInfo.subscribed = .mail
+
+            XCTAssertFalse(sut.isMenuBadgeVisible(userInfo: testUser.userInfo))
+        }
+    }
+
+    func testMenuBadgeIsVisible_whenMailStorageAbove80_andPayingUser_itShouldBeFalse() {
+        withFeatureFlags([.splitStorage]) {
+            testUser.userInfo.usedBaseSpace = 100
+            testUser.userInfo.maxBaseSpace = 100
+            testUser.userInfo.usedDriveSpace = 100
+            testUser.userInfo.maxDriveSpace = 100
+            testUser.userInfo.subscribed = .mail
+
+            XCTAssertFalse(sut.isMenuBadgeVisible(userInfo: testUser.userInfo))
+        }
+    }
 }
 
 extension MenuViewControllerTests {

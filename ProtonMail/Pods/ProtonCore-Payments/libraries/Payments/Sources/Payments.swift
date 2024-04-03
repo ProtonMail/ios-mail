@@ -111,7 +111,11 @@ public final class Payments {
         self.localStorage = localStorage
         self.canExtendSubscription = canExtendSubscription && !featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)
         paymentsAlertManager = PaymentsAlertManager(alertManager: alertManager ?? AlertManager())
-        paymentsApi = PaymentsApiImplementation()
+        if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan, reloadValue: false) {
+            paymentsApi = PaymentsApiV5Implementation()
+        } else {
+            paymentsApi = PaymentsApiV4Implementation()
+        }
         self.featureFlagsRepository = featureFlagsRepository
     }
 

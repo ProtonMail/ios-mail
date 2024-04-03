@@ -47,7 +47,7 @@ final class UnlockTests: XCTestCase {
             self.dummyMainKey
         }
 
-        sut = .init(dependencies: testContainer, isAppAccessResolverEnabled: false)
+        sut = .init(dependencies: testContainer)
     }
 
     override func tearDown() {
@@ -93,16 +93,9 @@ final class UnlockTests: XCTestCase {
         XCTAssertEqual(mockKeyMaker.mainKeyExistsStub.callCounter, 0)
     }
 
-    func testStart_whenIsAppAccessResolverDisabled_itShouldSetupCoreData() async {
-        sut = .init(dependencies: testContainer, isAppAccessResolverEnabled: false)
-
-        _ = await sut.start()
-        XCTAssertEqual(mockSetupCoreData.setupStub.callCounter, 1)
-    }
-
-    func testStart_whenIsAppAccessResolverEnabled_itShouldLoadUsers() async {
+    func testStart_itShouldLoadUsers() async {
         setUpAppAccessGranted_and_userInUserDefaults()
-        sut = .init(dependencies: testContainer, isAppAccessResolverEnabled: true)
+        sut = .init(dependencies: testContainer)
         XCTAssertEqual(testContainer.usersManager.users.count, 0)
 
         _ = await sut.start()

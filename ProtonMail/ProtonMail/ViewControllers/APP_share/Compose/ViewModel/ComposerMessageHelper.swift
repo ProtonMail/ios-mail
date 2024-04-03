@@ -547,6 +547,5 @@ extension ComposerMessageHelper {
         let cacheService: CacheServiceProtocol
         let contextProvider: CoreDataContextProviderProtocol
         let copyMessage: CopyMessageUseCase
-        let keychain: Keychain
     }
 }

@@ -28,27 +28,11 @@ extension UserInfo {
         true
     }
 
-    /// The app launch refactor logic is executed before any user is loaded into memory so we can't inject the dependency
-    /// with the UserContainer. To overcome this, we use the `FeatureFlagsRepository` singleton without specifying
-    /// any user because it will by default use the last active user if no user has been set yet in `FeatureFlagsRepository`.
-    ///
-    /// Also, we want the FF value to be consistent, so to avoid potentially different values when having multiple users
-    /// authenticated in the app, the feature flag should be set to ON or OFF for all users at once in the Uleash dashboard.
-    /// This way we guarantee that no matter the active user the request is made with, the value is the same every time during
-    /// the app lifetime.
-    static var isAppAccessResolverEnabled: Bool {
-        if UIApplication.isDebugOrEnterprise {
-            return true
-        } else {
-            return FeatureFlagsRepository.shared.isEnabled(MailFeatureFlag.appLaunchRefactor)
-        }
-    }
-
     static var shareImagesAsInlineByDefault: Bool {
         return true
     }
 
     static var isRSVPMilestoneTwoEnabled: Bool {
-        UIApplication.isDebugOrEnterprise
-    }
+        ProcessInfo.isRunningUnitTests
+    }    
 }

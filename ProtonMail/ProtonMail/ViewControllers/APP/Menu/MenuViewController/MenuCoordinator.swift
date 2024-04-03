@@ -113,15 +113,6 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
     }
 
     func follow(_ deepLink: DeepLink) {
-        if dependencies.pushService.hasCachedNotificationOptions() {
-            SystemLogger.log(
-                message: "Menu handle cached notification options",
-                category: .notificationDebug
-            )
-            dependencies.pushService.processCachedLaunchOptions()
-            return
-        }
-
         let node = deepLink.popFirst
 
         if checkIfNeedsToHandleUserSwitchFromNotification(node: node) {
@@ -377,7 +368,6 @@ extension MenuCoordinator {
             labelID: labelID,
             label: labelInfo,
             userManager: userManager,
-            pushService: dependencies.pushService,
             coreDataContextProvider: dependencies.contextProvider,
             lastUpdatedStore: dependencies.lastUpdatedStore,
             conversationStateProvider: userManager.conversationStateService,

@@ -14,14 +14,14 @@ class RecipientAddressesTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.pgpmime) {
             InboxRobot()
                 .compose()
-                .recipients(user.email)
+                .recipients(user.dynamicDomainEmail)
                 .verify.invalidAddressToastIsNotShown()
         }
     }
     
     func testNonExistingRecepient() {
         runTestWithScenario(.pgpmime) {
-            let recipient = "not_\(user.email)"
+            let recipient = "not_\(user.dynamicDomainEmail)"
 
             InboxRobot()
                 .compose()
@@ -42,7 +42,7 @@ class RecipientAddressesTests: FixtureAuthenticatedTestCase {
     
     func xtestExistingNonPMRecepient() {
         let user = testData.onePassUser
-        let recipient = testData.externalEmailPGPSigned.email
+        let recipient = testData.externalEmailPGPSigned.dynamicDomainEmail
         LoginRobot()
             .loginUser(user)
             .compose()

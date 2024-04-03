@@ -24,7 +24,9 @@ import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public final class ValidateSubscriptionRequest: BaseApiRequest<ValidateSubscriptionResponse> {
+typealias ValidateSubscriptionRequest = BaseApiRequest<ValidateSubscriptionResponse>
+
+final class V4ValidateSubscriptionRequest: ValidateSubscriptionRequest {
     private let protonPlanName: String
     private let isAuthenticated: Bool
     private let cycle: Int
@@ -41,6 +43,33 @@ public final class ValidateSubscriptionRequest: BaseApiRequest<ValidateSubscript
     override public var method: HTTPMethod { .put }
 
     override public var path: String { super.path + "/v4/subscription/check" }
+
+    override public var parameters: [String: Any]? {
+        [
+            "Currency": "USD",
+            "Plans": [protonPlanName: 1],
+            "Cycle": cycle
+        ]
+    }
+}
+
+final class V5ValidateSubscriptionRequest: ValidateSubscriptionRequest {
+    private let protonPlanName: String
+    private let isAuthenticated: Bool
+    private let cycle: Int
+
+    public init(api: APIService, protonPlanName: String, isAuthenticated: Bool, cycle: Int) {
+        self.protonPlanName = protonPlanName
+        self.isAuthenticated = isAuthenticated
+        self.cycle = cycle
+        super.init(api: api)
+    }
+
+    override public var isAuth: Bool { isAuthenticated }
+
+    override public var method: HTTPMethod { .put }
+
+    override public var path: String { super.path + "/v5/subscription/check" }
 
     override public var parameters: [String: Any]? {
         [

@@ -24,7 +24,9 @@ import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-final class PaymentTokenStatusRequest: BaseApiRequest<TokenStatusResponse> {
+typealias PaymentTokenStatusRequest = BaseApiRequest<TokenStatusResponse>
+
+final class V4PaymentTokenStatusRequest: PaymentTokenStatusRequest {
     private let token: PaymentToken
 
     init (api: APIService, token: PaymentToken) {
@@ -35,6 +37,19 @@ final class PaymentTokenStatusRequest: BaseApiRequest<TokenStatusResponse> {
     override var isAuth: Bool { false }
 
     override var path: String { super.path + "/v4/tokens/" + token.token }
+}
+
+final class V5PaymentTokenStatusRequest: PaymentTokenStatusRequest {
+    private let token: PaymentToken
+
+    init (api: APIService, token: PaymentToken) {
+        self.token = token
+        super.init(api: api)
+    }
+
+    override var isAuth: Bool { false }
+
+    override var path: String { super.path + "/v5/tokens/" + token.token }
 }
 
 final class TokenStatusResponse: Response {

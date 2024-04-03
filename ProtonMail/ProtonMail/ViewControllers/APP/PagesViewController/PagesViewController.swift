@@ -30,7 +30,10 @@ final class PagesViewController<
    UIPageViewControllerDataSource,
    ComposeSaveHintProtocol,
    LifetimeTrackable {
-    typealias Dependencies = SingleMessageCoordinator.Dependencies & ConversationCoordinator.Dependencies
+
+    typealias Dependencies = SingleMessageCoordinator.Dependencies
+    & ConversationCoordinator.Dependencies
+    & HasUserDefaults
 
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -38,6 +41,7 @@ final class PagesViewController<
 
     private let viewModel: PagesViewModel<IDType, EntityType, FetchResultType>
     private let dependencies: Dependencies
+    private var userDefaults: UserDefaults { dependencies.userDefaults }
     private var titleViewObserver: NSKeyValueObservation?
     private var spotlight: PagesSpotlightView?
     // Message objectID or ContextLabel objectID
@@ -84,6 +88,11 @@ final class PagesViewController<
         emptyBackButtonTitleForNextView()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateBounceSetting()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showSpotlightIfNeeded { [weak self] in
@@ -111,6 +120,11 @@ final class PagesViewController<
         viewControllerBefore viewController: UIViewController
     ) -> UIViewController? {
         spotlight?.removeFromSuperview()
+
+        if !userDefaults[.isMessageSwipeNavigationEnabled] {
+            return nil
+        }
+
         switch viewModel.viewMode {
         case .singleMessage:
             let data = singleMessageVC(baseOn: viewController, offset: -1)
@@ -128,6 +142,11 @@ final class PagesViewController<
         viewControllerAfter viewController: UIViewController
     ) -> UIViewController? {
         spotlight?.removeFromSuperview()
+
+        if !userDefaults[.isMessageSwipeNavigationEnabled] {
+            return nil
+        }
+
         switch viewModel.viewMode {
         case .singleMessage:
             let data = singleMessageVC(baseOn: viewController, offset: 1)
@@ -265,6 +284,7 @@ extension PagesViewController: PagesViewUIProtocol {
                     self.setUpTitleView()
                     self.updateCurrentID()
                     if shouldReload {
+                        self.pageCache.removeAll()
                         self.viewModel.refetchData()
                     }
                 }
@@ -277,12 +297,21 @@ extension PagesViewController: PagesViewUIProtocol {
                     self.setUpTitleView()
                     self.updateCurrentID()
                     if shouldReload {
+                        self.pageCache.removeAll()
                         self.viewModel.refetchData()
                     }
                 }
             } else {
                 navigationController?.popViewController(animated: true)
             }
+        }
+    }
+
+    /// Update scroll bounce
+    func updateBounceSetting() {
+        for sub in view.subviews {
+            guard let scrollView = sub as? UIScrollView else { continue }
+            scrollView.bounces = userDefaults[.isMessageSwipeNavigationEnabled]
         }
     }
 }
@@ -336,7 +365,7 @@ extension PagesViewController {
 // MARK: - Spotlight
 extension PagesViewController {
     private func showSpotlightIfNeeded(animationCompletion: @escaping () -> Void) {
-        if viewModel.hasUserSeenSpotlight() {
+        if viewModel.hasUserSeenSpotlight() || !userDefaults[.isMessageSwipeNavigationEnabled] {
             animationCompletion()
             return
         }

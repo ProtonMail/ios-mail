@@ -21,6 +21,7 @@ import XCTest
 @testable import ProtonMail
 
 class AttachmentViewModelTests: XCTestCase {
+    private var featureFlagProvider: MockFeatureFlagProvider!
     private var urlOpener: MockURLOpener!
     private var user: UserManager!
     private var eventRSVP: MockEventRSVP!
@@ -29,6 +30,8 @@ class AttachmentViewModelTests: XCTestCase {
 
     var sut: AttachmentViewModel!
     var testAttachments: [AttachmentInfo] = []
+
+    private var isCalendarLandingPageEnabled: Bool!
 
     private let icsMimeType = "text/calendar"
 
@@ -50,6 +53,18 @@ class AttachmentViewModelTests: XCTestCase {
         let apiService = APIServiceMock()
         apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success([:]))
+        }
+
+        featureFlagProvider = .init()
+        featureFlagProvider.isEnabledStub.bodyIs { [unowned self] _, flag, _ in
+            switch flag {
+            case .calendarMiniLandingPage:
+                return self.isCalendarLandingPageEnabled
+            case .rsvpWidget:
+                return true
+            default:
+                fatalError("Unexpected flag: \(flag)")
+            }
         }
 
         user = UserManager(api: apiService, globalContainer: testContainer)
@@ -75,6 +90,7 @@ class AttachmentViewModelTests: XCTestCase {
 
         user.container.reset()
         user.container.eventRSVPFactory.register { self.eventRSVP }
+        user.container.featureFlagProviderFactory.register { self.featureFlagProvider }
         user.container.fetchAttachmentMetadataFactory.register { fetchAttachmentMetadata }
         user.container.fetchAttachmentFactory.register { fetchAttachment }
 
@@ -90,6 +106,7 @@ class AttachmentViewModelTests: XCTestCase {
         testAttachments.removeAll()
 
         sut = nil
+        featureFlagProvider = nil
         urlOpener = nil
         user = nil
         eventRSVP = nil
@@ -210,6 +227,17 @@ class AttachmentViewModelTests: XCTestCase {
         XCTAssertEqual(eventRSVP.extractBasicEventInfoStub.callCounter, 0)
     }
 
+    func testGivenHeadersContainEventInfo_whenThereAreNoAttachments_thenShowsViewRegardless() async {
+        await receivedRespondingStatuses.expectNextValue(toBe: .respondingUnavailable)
+
+        sut.basicEventInfoSourcedFromHeaders = stubbedBasicEventInfo
+        sut.attachmentHasChanged(nonInlineAttachments: [], mimeAttachments: [])
+
+        await receivedRespondingStatuses.expectNextValue(toBe: .awaitingUserInput)
+
+        XCTAssert(sut.viewShouldBeShown)
+    }
+
     func testRespondingStatus_whenAnsweringAndChangingAnswer_showsProcessingAndThenTheSelectedAnswerEachTime() async {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
 
@@ -318,13 +346,13 @@ class AttachmentViewModelTests: XCTestCase {
         XCTAssertEqual(instruction, .openDeepLink(deepLink))
     }
 
-    func testOpenInCalendar_whenOutdatedCalendarIsInstalled_promptsToOpenAppStorePage() {
+    func testOpenInCalendar_whenOutdatedCalendarIsInstalled_promptsTheUserToUpdate() {
         urlOpener.canOpenURLStub.bodyIs { _, url in
             url == .ProtonCalendar.legacyScheme
         }
 
         let instruction = sut.instructionToHandle(deepLink: stubbedEventDetails.calendarAppDeepLink)
-        XCTAssertEqual(instruction, .goToAppStore(askBeforeGoing: true))
+        XCTAssertEqual(instruction, .promptToUpdateCalendarApp)
     }
 
     func testOpenInCalendar_whenBothCalendarsAreInstalled_directlyOpensCalendar() {
@@ -337,13 +365,26 @@ class AttachmentViewModelTests: XCTestCase {
         XCTAssertEqual(instruction, .openDeepLink(deepLink))
     }
 
-    func testOpenInCalendar_whenCalendarIsNotInstalled_directlyOpensAppStorePage() {
+    func testOpenInCalendar_whenCalendarIsNotInstalledAndLandingPageIsDisabled_directlyOpensAppStorePage() {
         urlOpener.canOpenURLStub.bodyIs { _, url in
             false
         }
 
+        isCalendarLandingPageEnabled = false
+
         let instruction = sut.instructionToHandle(deepLink: stubbedEventDetails.calendarAppDeepLink)
-        XCTAssertEqual(instruction, .goToAppStore(askBeforeGoing: false))
+        XCTAssertEqual(instruction, .goToAppStoreDirectly)
+    }
+
+    func testOpenInCalendar_whenCalendarIsNotInstalledAndLandingPageIsEnabled_presentsCalendarLandingPage() {
+        urlOpener.canOpenURLStub.bodyIs { _, url in
+            false
+        }
+
+        isCalendarLandingPageEnabled = true
+
+        let instruction = sut.instructionToHandle(deepLink: stubbedEventDetails.calendarAppDeepLink)
+        XCTAssertEqual(instruction, .presentCalendarLandingPage)
     }
 
     private func makeAttachment(isInline: Bool, mimeType: String = "text/plain") -> AttachmentInfo {

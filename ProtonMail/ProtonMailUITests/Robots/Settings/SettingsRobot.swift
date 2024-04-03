@@ -12,7 +12,7 @@ fileprivate struct id {
     static func accountCellIdentifier(_ name: String) -> String { return "SettingsTwoLinesCell.\(name)" }
     static let closeButtonIdentifier = LocalString._general_close_action
     static let menuNavBarButtonIdentifier = "UINavigationItem.revealToggle"
-    static let menuButtonIdentifier = "MailboxViewController.menuBarButtonItem"
+    static let menuButtonIdentifier = "Menu"
     static let pinCellIdentifier = "SettingsGeneralCell.App_PIN"
     static let swipeActionStaticTextIdentifier = LocalString._swipe_actions
     static let clearLocalCacheStaticTextIdentifier = LocalString._empty_cache

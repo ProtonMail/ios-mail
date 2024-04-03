@@ -112,17 +112,9 @@ final class AddressesResponse: Response {
 // Get Addresses [GET /addresses]
 // Get Address [GET /addresses/{address_id}]
 // response : AddressesResponse
-final class GetAddressesRequest: Request {
+struct GetAddressesRequest: Request {
     var path: String {
         return AddressesAPI.path
-    }
-
-    // custom auth credentical
-    var auth: AuthCredential?
-    var authCredential: AuthCredential? {
-        get {
-            return self.auth
-        }
     }
 }
 

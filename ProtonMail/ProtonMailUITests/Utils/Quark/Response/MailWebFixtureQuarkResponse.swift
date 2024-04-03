@@ -18,9 +18,8 @@
 import Foundation
 
 struct MailWebFixtureQuarkResponse: Codable {
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case userId = "ID"
-        case decryptedUserId = "ID (decrypt)"
         case name = "Name"
         case password = "Password"
         case status = "Status"
@@ -29,16 +28,25 @@ struct MailWebFixtureQuarkResponse: Codable {
         case authVersion = "AuthVersion"
         case email = "Email"
         case addressID = "AddressID"
+        case decryptedAddressId = "AddressID (decrypt)"
+        case keySalt = "KeySalt"
+        case keyFingerprint = "KeyFingerprint"
+        case mailboxPassword = "MailboxPassword"
+        case decryptedUserId = "ID (decrypt)"
     }
 
-    let userId: String
-    let decryptedUserId: String
-    let name: String?
-    let password: String
-    let status: String
-    let recovery: String
-    let recoveryPhone: String
-    let authVersion: String
-    let email: String?
-    let addressID: String?
+    public let userId: String
+    public let name: String
+    public let password: String
+    public let status: String
+    public let recovery: String
+    public let recoveryPhone: String?
+    public let authVersion: String
+    public let email: String
+    public let addressID: String?
+    public let decryptedAddressId: String?
+    public let keySalt: String?
+    public let keyFingerprint: String?
+    public let mailboxPassword: String?
+    public let decryptedUserId: String
 }

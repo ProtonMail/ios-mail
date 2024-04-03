@@ -174,12 +174,6 @@
 /* Title */
 "wrote:" = "şunu yazdı:";
 
-/* At {time}, e.g.: At 19:00 */
-"At %@" = "%@ saatinde";
-
-/* On {date}, e.g.: On Aug 14 */
-"On %@" = "%@ tarihinde";
-
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
 "On %@ at %@" = "%1$@ tarihinde %2$@ saatinde";
 
@@ -589,6 +583,9 @@
 /* Title */
 "Reading device contacts data…" = "Aygıt kişileri verileri okunuyor…";
 
+/* title for the contact import indicator */
+"Importing contacts..." = "Kişiler içe aktarılıyor...";
+
 /* Description */
 "Do you want to cancel the process?" = "İşlemi iptal etmek istiyor musunuz?";
 
@@ -772,9 +769,6 @@
 "Date: %@" = "Tarih: %@";
 
 /* Title */
-"Details" = "Bilgiler";
-
-/* Title */
 "Hide details" = "Bilgileri gizle";
 
 /* contact placeholder */
@@ -794,12 +788,6 @@
 
 /* action */
 "Add new URL" = "Yeni bağlantı ekle";
-
-/* settings general section title */
-"Change account password" = "Hesap parolasını değiştir";
-
-/* settings general section title */
-"Change mailbox password" = "Posta kutusu parolasını değiştir";
 
 /* settings general section title */
 "Auto-load remote content" = "Uzak içerik otomatik olarak yüklensin";
@@ -1126,9 +1114,6 @@
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Kişi grubunu sil";
 
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d seçilmiş";
-
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Lütfen kişi grubu için en az bir e-posta adresi seçin";
 
@@ -1149,9 +1134,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Dosyayı eklemek için sürükleyip buraya bırakın";
-
-/* Downloading attachments from cloud */
-"Importing" = "İçe aktarılıyor";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Ek dosya içe aktarılıyor, biraz zaman alabilir";
@@ -1251,9 +1233,6 @@
 
 /* cell title in app settings */
 "Alternative routing" = "Alternatif yöneltme";
-
-/* cell title in device settings */
-"Storage" = "Depolama alanı";
 
 /* cell title in device settings */
 "Addresses" = "Adresler";
@@ -1623,27 +1602,6 @@
 /* The title of voice over action that switches the unread filter status in the inbox */
 "Switch unread filter" = "Okunmamış süzgecine geç";
 
-/* Title of user feedback view */
-"Your feedback" = "Geri bildiriminiz";
-
-/* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "Yeni Proton Mail ile yaşadığınız deneyimi nasıl değerlendirirsiniz?";
-
-/* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Bize deneyimlerinizi anlatın. (İsteğe bağlı)";
-
-/* Title of button to send feedback */
-"Send feedback" = "Geri bildirimi gönder";
-
-/* Example feedback */
-"Awful" = "Çok kötü";
-
-/* Example feedback */
-"Wonderful" = "Çok iyi";
-
-/* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Geri bildiriminiz için teşekkürler!";
-
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
 "Collapse message" = "İletiyi daralt";
 
@@ -1875,6 +1833,27 @@
 /* The content of the Customize toolbar spotlight view. */
 "You can now choose and rearrange the actions in this bar" = "Şimdi bu araç çubuğundaki işlemleri seçebilir ve yeniden düzenleyebilirsiniz";
 
+/* Title of the banner alert */
+"Your Mail storage is %@ full" = "Mail depolama alanınız %@ dolu";
+
+/* Title of the banner alert */
+"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+
+/* Title of the banner alert */
+"Your Mail storage is full" = "Mail depolama alanınız dolu";
+
+/* Title of the banner alert */
+"Your Drive storage is full" = "Drive depolama alanınız dolu";
+
+/* Description of the banner alert */
+"Upgrade to get more storage." = "Daha fazla depolama alanı edinmek için tarifenizi yükseltin.";
+
+/* Get more storage button action */
+"Not now" = "Şimdi değil";
+
+/* Get more storage button action */
+"Get more storage" = "Daha fazla depolama alanı edinin";
+
 /* Button to block a sender */
 "Block messages from this sender" = "Bu göndericiden gelen iletileri engelle";
 
@@ -1931,6 +1910,45 @@
 /* Button to hide some items in the list to conserve screen estate */
 "Show less" = "Daha az görüntüle";
 
+/* Text shown when opening an invitation for a past event */
+"This event already ended" = "Etkinlik zaten bitmiş";
+
+/* Text shown when opening an invitation for a cancelled event */
+"This event has been cancelled" = "Bu etkinlik iptal edilmiş";
+
+/* Prompt above yes/no/maybe buttons */
+"Attending?" = "Katılıyor musunuz?";
+
+/* Part of a yes/no/maybe prompt */
+"Yes" = "Evet";
+
+/* Part of a yes/no/maybe prompt */
+"No" = "Hayır";
+
+/* Part of a yes/no/maybe prompt */
+"Maybe" = "Belki";
+
+/* Confirm attending an event */
+"Yes, I'll attend" = "Evet, katılacağım";
+
+/* Deny attending an event */
+"No, I won't attend" = "Hayır, katılmayacağım";
+
+/* Neither confirm nor deny attending an event */
+"I might attend" = "Katılabilirim";
+
+/* Menu title */
+"Max Storage" = "Maksimum depolama alanı";
+
+/* Cell title that shows the percentage of the storage */
+"Storage: %@ full" = "Depolama alanı %@ dolu";
+
+/* Cell title that shows the percentage of the storage */
+"Drive storage: %@ full" = "Drive depolama alanı: %@ dolu";
+
+/* Upgrade button action */
+"Upgrade" = "Yükselt";
+
 /* Official badge next to sender's name */
 "Official" = "Resmi";
 
@@ -1950,7 +1968,7 @@
 "Share" = "Paylaş";
 
 /* The title of the track reward button in referral share view. */
-"Track your rewards" = "Ödüllerinizi izleyin";
+"Track your rewards" = "Hediyelerinizi izleyin";
 
 /* The title of the terms and conditions button in referral share view. */
 "Terms & conditions" = "Hüküm ve koşullar";
@@ -1978,6 +1996,9 @@
 
 /* Auto import alert message */
 "The initial import may take some time and will only occur when the app is in the foreground." = "İlk içe aktarma işleminin tamamlanması biraz zaman alabilir ve yalnızca uygulama ön planda çalışırken yapılır.";
+
+/* Alert to ask user to reauthorise access to contacts */
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Kişilere erişim izni verilmemiş. Otomatik içe aktarmayı kullanabilmek için ayarlar bölümüne gidin ve kişiler iznini verin.";
 
 /* Settings lock protection section */
 "Protection" = "Koruma";
@@ -2043,10 +2064,10 @@
 "Application logs" = "Uygulama günlüğü kayıtları";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Sonraki iletiye geçilsin";
+"Jump to next email" = "Jump to next email";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Geçerli ileti silindiğinde, arşivlendiğinde ya da taşındığında otomatik olarak sonraki ileti görüntülenir.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Beklenmeyen bir sorun çıktı. Lütfen destek ekibi ile görüşün.\nHata: %@";
@@ -2128,6 +2149,15 @@
 
 /* Title of button to empty trash folder */
 "Empty trash" = "Çöp kutusunu boşalt";
+
+/* Alert prompting to update Calendar */
+"Download the latest version of the Proton Calendar to open this event" = "Bu etkinliği açmak için güncel Proton Calendar sürümünü indirin";
+
+/* Button to open App Store */
+"Download in App Store" = "App Store üzerinden indirin";
+
+/* Button to open the Calendar app */
+"Open in Proton Calendar" = "Proton Calendar ile aç";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
 "Clear out the junk" = "Çöpleri temizleyin";
@@ -2270,5 +2300,68 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Sınırsız sayıda klasör, etiket ve süzgeç";
 
+/* Description string shows in spotlight view */
+"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Artık araç çubuğunda bulunan erteleme özelliği ile bir e-postanın gelen kutunuzda ne zaman yeniden görüneceğini ayarlayabilirsiniz.";
+
+/* Description string shows in spotlight view */
+"Snooze it for later" = "Daha sonraya ertele";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Dosya olarak ekle";
+
+/* The title in setting page */
+"Swipe to next message" = "Sonraki iletiye geçmek için kaydırın";
+
+/* Description text for setting */
+"Allow navigating through messages by swiping left or right." = "Sola ya da sağa kaydırarak iletiler arasında gezinilebilsin.";
+
+/* The title of the spotlight of the auto import contacts. */
+"Your contacts at your fingertips" = "Kişileriniz parmak uçlarınızda";
+
+/* The message of the spotlight of the auto import contacts. */
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+
+/* The title of the button of the spotlight of the auto import contacts. */
+"Enable auto-import" = "Enable auto-import";
+
+/* The title for no contact hint view */
+"No contacts yet" = "Henüz kişi yok";
+
+/* The description for no contact hint view */
+"Import contacts from your device to send emails and invites with ease." = "Kolaylıkla e-posta göndermek ve davetler için cihazınızdan kişileri içeri aktarın.";
+
+/* Button title for no contact hint view */
+"Auto-import contacts" = "Kişileri otomatik içeri aktar";
+
+/* A title show to user after auto import button is clicked but contacts hasn't imported yet */
+"Importing your contacts" = "Kişileriniz içe aktarılıyor";
+
+/* A message show to user after auto import button is clicked but contacts hasn't imported yet */
+"Your contacts will appear here shortly." = "Kişileriniz kısa süre içerisinde burada gözükecek.";
+
+/* The title of the dismissable banner in the contacts view. */
+"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+
+/* The title of the privacy and data in the account setting. */
+"Privacy and data" = "Gizlilik ve veriler";
+
+/* cell title in device settings */
+"Storage" = "Depolama alanı";
+
+/* settings general section title */
+"Change account password" = "Hesap parolasını değiştir";
+
+/* settings general section title */
+"Change mailbox password" = "Posta kutusu parolasını değiştir";
+
+/* The title of the telemetry setting. */
+"Anonymous telemetry" = "Anonim kullanım verileri";
+
+/* The title of the crash report setting. */
+"Anonymous crash reports" = "Anonim çökme bildirimleri";
+
+/* The subtitle of the anonymous telemetry setting. */
+"To improve our services, we sometimes collect anonymized usage data." = "Hizmetlerimizi iyileştirmek için bazen anonimleştirilmiş kullanım verileri toplarız.";
+
+/* The subtitle of the crash report setting. */
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Uygulama çökerse, mühendislerimize nedeniyle ilgili bilgilerin bulunduğu bir bildirim gönderilir. Bu veriler yalnızca uygulamayı iyileştirmek için kullanılır.";

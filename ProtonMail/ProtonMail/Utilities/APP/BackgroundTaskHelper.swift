@@ -142,7 +142,7 @@ extension BackgroundTaskHelper {
         var identifier: String {
             switch self {
             case .eventLoop:
-                if UIApplication.isEnterprise {
+                if Application.isEnterprise {
                     return "com.protonmail.protonmail.eventloop"
                 } else {
                     return "ch.protonmail.protonmail.eventloop"

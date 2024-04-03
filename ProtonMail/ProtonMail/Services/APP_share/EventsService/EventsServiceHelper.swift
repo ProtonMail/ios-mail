@@ -48,6 +48,14 @@ extension EventsService {
                 currentLabels.forEach { existing.remove(labelID: $0) }
                 labelIDs.forEach { existing.add(labelID: $0) }
             }
+            if let attachmentsMetadataArray = response["AttachmentsMetadata"] as? [[String: Any]],
+               let jsonData = try? JSONSerialization.data(withJSONObject: attachmentsMetadataArray),
+               let jsonString = String(data: jsonData, encoding: .utf8) {
+                existing.attachmentsMetadata = jsonString
+            }
+            if let numOfAttachment = response["NumAttachments"] as? Int {
+                existing.numAttachments = NSNumber(integerLiteral: numOfAttachment)
+            }
         }
 
         static func getMessageWithMetaData(for draftID: String,

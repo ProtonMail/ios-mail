@@ -38,7 +38,11 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
         testContainer = .init()
         user = try UserManager.prepareUser(apiMock: APIServiceMock(), globalContainer: testContainer)
         let composerViewFactory = user.container.composerViewFactory
-        sut = ComposeViewModel(dependencies: composerViewFactory.composeViewModelDependencies)
+        sut = ComposeViewModel(
+            remoteContentPolicy: .allowedThroughProxy,
+            embeddedContentPolicy: .allowed,
+            dependencies: composerViewFactory.composeViewModelDependencies
+        )
     }
 
     override func tearDownWithError() throws {

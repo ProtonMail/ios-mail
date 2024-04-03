@@ -35,27 +35,17 @@ final class Unlock: UnlockService {
     & HasSetupCoreDataService
     & HasResumeAfterUnlock
 
-    private let isAppAccessResolverEnabled: Bool
     private unowned let dependencies: Dependencies
 
-    init(dependencies: Dependencies, isAppAccessResolverEnabled: Bool = UserInfo.isAppAccessResolverEnabled) {
-        self.isAppAccessResolverEnabled = isAppAccessResolverEnabled
+    init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
     func start() async -> AppAccess {
-        SystemLogger.log(
-            message: "Unlock start, isAppAccessResolverEnabled: \(isAppAccessResolverEnabled)",
-            category: .appLock
-        )
-
         /// The main key might no be in memory yet if App Key is enabled
         if !dependencies.keyMaker.isMainKeyInMemory {
             _ = dependencies.keyMaker.mainKeyExists()
         }
-
-        // For compatibility with the app launch when no `isAppAccessResolverEnabled`
-        setUpCoreDataIfAppAcessResolverDisabled()
 
         // If users could not be loaded because of App Key we do it now
         if dependencies.usersManager.users.isEmpty {
@@ -68,9 +58,7 @@ final class Unlock: UnlockService {
             // after unlock, app access should be granted
             let message = "Unlock start \(appAccess)"
             SystemLogger.log(message: message, category: .appLock, isError: true)
-            Analytics.shared.sendError(
-                .appLockInconsistency(error: message, isAppAccessResolverEnabled: isAppAccessResolverEnabled)
-            )
+            Analytics.shared.sendError(.appLockInconsistency(error: message))
 
             await dependencies.usersManager.clean()
             return appAccess
@@ -80,18 +68,5 @@ final class Unlock: UnlockService {
         dependencies.resumeAfterUnlock.resume()
 
         return appAccess
-    }
-
-    /**
-     When `isAppAccessResolverEnabled` Core Data is set up in LaunchService. However in
-     the legacy approach Core Data might not be set yet.
-     */
-    private func setUpCoreDataIfAppAcessResolverDisabled() {
-        guard !isAppAccessResolverEnabled else { return }
-        do {
-            try dependencies.setupCoreDataService.setup()
-        } catch {
-            fatalError("\(error)")
-        }
     }
 }

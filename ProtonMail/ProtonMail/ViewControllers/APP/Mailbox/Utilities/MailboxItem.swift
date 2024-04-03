@@ -98,10 +98,15 @@ extension MailboxItem {
     }
 
     var previewableAttachments: [AttachmentsMetadata] {
-        attachmentsMetadata
-            .filter {
-                $0.mimeType.lowercased() != MIMEType.ics.rawValue.lowercased() &&
-                $0.disposition == .attachment
-            }
+        attachmentsMetadata.filter { metadata in
+            guard metadata.disposition == .attachment else { return false }
+            if metadata.name.pathExtension.contains(check: "ics") { return false }
+            let blockMIMEs = [
+                MIMEType.ics.rawValue.lowercased(),
+                MIMEType.applicationICS.rawValue.lowercased(),
+                MIMEType.pgpKeys.rawValue.lowercased()
+            ]
+            return !blockMIMEs.contains(metadata.mimeType.lowercased())
+        }
     }
 }

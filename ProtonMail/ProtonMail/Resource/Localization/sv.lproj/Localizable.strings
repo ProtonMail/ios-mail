@@ -174,12 +174,6 @@
 /* Title */
 "wrote:" = "skrev:";
 
-/* At {time}, e.g.: At 19:00 */
-"At %@" = "Kl. %@";
-
-/* On {date}, e.g.: On Aug 14 */
-"On %@" = "Den %@";
-
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
 "On %@ at %@" = "Den %1$@ kl. %2$@";
 
@@ -589,6 +583,9 @@
 /* Title */
 "Reading device contacts data…" = "Läser enhetens kontaktdata…";
 
+/* title for the contact import indicator */
+"Importing contacts..." = "Importerar kontakter …";
+
 /* Description */
 "Do you want to cancel the process?" = "Vill du avbryta processen?";
 
@@ -772,9 +769,6 @@
 "Date: %@" = "Datum: %@";
 
 /* Title */
-"Details" = "Detaljer";
-
-/* Title */
 "Hide details" = "Dölj detaljer";
 
 /* contact placeholder */
@@ -794,12 +788,6 @@
 
 /* action */
 "Add new URL" = "Lägg till ny URL";
-
-/* settings general section title */
-"Change account password" = "Ändra kontolösenord";
-
-/* settings general section title */
-"Change mailbox password" = "Ändra lösenord för brevlådan";
 
 /* settings general section title */
 "Auto-load remote content" = "Ladda fjärrinnehåll automatiskt";
@@ -1126,9 +1114,6 @@
 /* The description of the button for deleting the contact group */
 "Delete contact group" = "Ta bort kontaktgrupp";
 
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Vald";
-
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Välj minst en e-post för kontaktgruppen";
 
@@ -1149,9 +1134,6 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Släpp här för att lägga till som bilaga";
-
-/* Downloading attachments from cloud */
-"Importing" = "Importerar";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Importerar bilaga, det kan ta ett tag";
@@ -1251,9 +1233,6 @@
 
 /* cell title in app settings */
 "Alternative routing" = "Alternativ routing";
-
-/* cell title in device settings */
-"Storage" = "Lagringsutrymme";
 
 /* cell title in device settings */
 "Addresses" = "Adresser";
@@ -1623,27 +1602,6 @@
 /* The title of voice over action that switches the unread filter status in the inbox */
 "Switch unread filter" = "Växla oläst filter";
 
-/* Title of user feedback view */
-"Your feedback" = "Din feedback";
-
-/* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "Hur skulle du beskriva din upplevelse med nya Proton Mail?";
-
-/* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Berätta om dina upplevelse. (valfritt)";
-
-/* Title of button to send feedback */
-"Send feedback" = "Skicka feedback";
-
-/* Example feedback */
-"Awful" = "Förfärlig";
-
-/* Example feedback */
-"Wonderful" = "Underbar";
-
-/* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Tack för din feedback!";
-
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
 "Collapse message" = "Minimera meddelande";
 
@@ -1875,6 +1833,27 @@
 /* The content of the Customize toolbar spotlight view. */
 "You can now choose and rearrange the actions in this bar" = "Du kan nu välja och sortera om åtgärderna i denna list";
 
+/* Title of the banner alert */
+"Your Mail storage is %@ full" = "Ditt lagringsutrymme för Mail är %@ fullt";
+
+/* Title of the banner alert */
+"Your Drive storage is %@ full" = "Ditt lagringsutrymme för Drive är %@ fullt";
+
+/* Title of the banner alert */
+"Your Mail storage is full" = "Ditt lagringsutrymme för Mail är fullt";
+
+/* Title of the banner alert */
+"Your Drive storage is full" = "Ditt lagringsutrymme för Drive är fullt";
+
+/* Description of the banner alert */
+"Upgrade to get more storage." = "Uppgradera för att skaffa mer lagringsutrymme.";
+
+/* Get more storage button action */
+"Not now" = "Inte nu";
+
+/* Get more storage button action */
+"Get more storage" = "Skaffa mer lagringsutrymme";
+
 /* Button to block a sender */
 "Block messages from this sender" = "Blockera meddelanden från denna avsändare";
 
@@ -1931,6 +1910,45 @@
 /* Button to hide some items in the list to conserve screen estate */
 "Show less" = "Visa mindre";
 
+/* Text shown when opening an invitation for a past event */
+"This event already ended" = "Denna händelse har redan slutat";
+
+/* Text shown when opening an invitation for a cancelled event */
+"This event has been cancelled" = "Denna händelse har ställts in";
+
+/* Prompt above yes/no/maybe buttons */
+"Attending?" = "Delta?";
+
+/* Part of a yes/no/maybe prompt */
+"Yes" = "Ja";
+
+/* Part of a yes/no/maybe prompt */
+"No" = "Nej";
+
+/* Part of a yes/no/maybe prompt */
+"Maybe" = "Kanske";
+
+/* Confirm attending an event */
+"Yes, I'll attend" = "Ja, jag ska delta";
+
+/* Deny attending an event */
+"No, I won't attend" = "Nej, jag kommer inte delta";
+
+/* Neither confirm nor deny attending an event */
+"I might attend" = "Jag kanske deltar";
+
+/* Menu title */
+"Max Storage" = "Maximalt lagringsutrymme";
+
+/* Cell title that shows the percentage of the storage */
+"Storage: %@ full" = "Lagringsutrymme: %@ fullt";
+
+/* Cell title that shows the percentage of the storage */
+"Drive storage: %@ full" = "Drive lagringsutrymme: %@ fullt";
+
+/* Upgrade button action */
+"Upgrade" = "Uppgradera";
+
 /* Official badge next to sender's name */
 "Official" = "Officiell";
 
@@ -1978,6 +1996,9 @@
 
 /* Auto import alert message */
 "The initial import may take some time and will only occur when the app is in the foreground." = "Den initiala importen kan ta lite tid och kommer bara ske när appen är i förgrunden.";
+
+/* Alert to ask user to reauthorise access to contacts */
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Åtkomst till kontakter har inaktiverats. För att aktivera automatisk import, gå till inställningar och aktivera kontaktbehörighet.";
 
 /* Settings lock protection section */
 "Protection" = "Skydd";
@@ -2043,10 +2064,10 @@
 "Application logs" = "Applikationsloggar";
 
 /* The title of the setting of the next msg after move */
-"Jump to next message" = "Hoppa till nästa meddelande";
+"Jump to next email" = "Hoppa till nästa e-postmeddelande";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next message when the current message is deleted, archived or moved." = "Visa automatiskt nästa meddelande när det nuvarande meddelandet är borttaget, arkiverat eller flyttat.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Visa automatiskt nästa e-postmeddelande när ett öppet e-postmeddelande tas bort, arkiveras eller flyttas.";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Ett oväntat fel uppstod, kontakta supporten.\nFel: %@";
@@ -2128,6 +2149,15 @@
 
 /* Title of button to empty trash folder */
 "Empty trash" = "Töm papperskorg";
+
+/* Alert prompting to update Calendar */
+"Download the latest version of the Proton Calendar to open this event" = "Ladda ner den senaste versionen av Proton Calendar för att öppna denna händelse";
+
+/* Button to open App Store */
+"Download in App Store" = "Ladda ner i App Store";
+
+/* Button to open the Calendar app */
+"Open in Proton Calendar" = "Öppna i Proton Calendar";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
 "Clear out the junk" = "Rensa bort skräpet";
@@ -2270,5 +2300,68 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Obegränsade mappar, etiketter och filter";
 
+/* Description string shows in spotlight view */
+"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Ställ in när ett e-postmeddelande ska dyka upp igen i din inkorg med snoozefunktionen som nu är tillgänglig i verktygsfältet.";
+
+/* Description string shows in spotlight view */
+"Snooze it for later" = "Snooza det till senare";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Lägg till det som bilaga";
+
+/* The title in setting page */
+"Swipe to next message" = "Svep till nästa meddelande";
+
+/* Description text for setting */
+"Allow navigating through messages by swiping left or right." = "Tillåt navigering genom meddelanden genom att svepa vänster eller höger.";
+
+/* The title of the spotlight of the auto import contacts. */
+"Your contacts at your fingertips" = "Dina kontakter alltid till hands";
+
+/* The message of the spotlight of the auto import contacts. */
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Du behöver inte lämna appen för att hitta en e-postadress. Synkronisera kontakter från din enhet till Proton Mail.";
+
+/* The title of the button of the spotlight of the auto import contacts. */
+"Enable auto-import" = "Aktivera automatisk import";
+
+/* The title for no contact hint view */
+"No contacts yet" = "Inga kontakter än";
+
+/* The description for no contact hint view */
+"Import contacts from your device to send emails and invites with ease." = "Importera kontakter från din enhet för att enkelt skicka e-post och inbjudningar.";
+
+/* Button title for no contact hint view */
+"Auto-import contacts" = "Importera kontakter automatiskt";
+
+/* A title show to user after auto import button is clicked but contacts hasn't imported yet */
+"Importing your contacts" = "Importerar dina kontakter";
+
+/* A message show to user after auto import button is clicked but contacts hasn't imported yet */
+"Your contacts will appear here shortly." = "Dina kontakter kommer visas här inom kort.";
+
+/* The title of the dismissable banner in the contacts view. */
+"Automatically add new contacts from your device." = "Lägg automatiskt till nya kontakter från din enhet.";
+
+/* The title of the privacy and data in the account setting. */
+"Privacy and data" = "Integritet och data";
+
+/* cell title in device settings */
+"Storage" = "Lagringsutrymme";
+
+/* settings general section title */
+"Change account password" = "Ändra kontolösenord";
+
+/* settings general section title */
+"Change mailbox password" = "Ändra lösenord för brevlådan";
+
+/* The title of the telemetry setting. */
+"Anonymous telemetry" = "Anonym telemetri";
+
+/* The title of the crash report setting. */
+"Anonymous crash reports" = "Anonyma kraschrapporter";
+
+/* The subtitle of the anonymous telemetry setting. */
+"To improve our services, we sometimes collect anonymized usage data." = "För att förbättra våra tjänster samlar vi ibland in anonymiserad användningsdata.";
+
+/* The subtitle of the crash report setting. */
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Om appen kraschar kommer en rapport att skickas till våra ingenjörer med detaljer om orsaken. Dessa kommer endast att användas för att förbättra appen.";

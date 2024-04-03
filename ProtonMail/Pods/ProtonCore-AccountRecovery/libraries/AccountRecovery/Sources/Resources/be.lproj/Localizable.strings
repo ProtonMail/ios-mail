@@ -1,0 +1,22 @@
+
+"Account_Recovery_Settings_Item" = "Скінуць пароль";
+
+"Account_Recovery_Insecure_View_Title" = "Скінуць ваш пароль";
+
+"Account_Recovery_Grace_View_Title" = "Вы сапраўды хочаце скінуць свой пароль?";
+
+"Account_Recovery_Grace_View_line1" = "Мы атрымалі запыт на скіданне вашага пароля для ";
+
+"Account_Recovery_Insecure_View_line1" = "Цяпер вы можаце змяніць свой пароль для ўліковага запісу ";
+
+"Account_Recovery_Insecure_View_line2" = " бясплатна на працягу ";
+
+"Account_Recovery_Insecure_View_line3" = "Перайдзіце на прыладу, якая знаходзіцца ў сістэме (з якой быў ініцыяваны запыт), каб змяніць пароль.";
+
+"Account_Recovery_Grace_View_Cancel_Button_CTA" = "Скасаваць запыт";
+
+"Account_Recovery_Grace_View_Undefined_Time_Left" = "некалькі гадзін";
+
+"Account_Recovery_Grace_View_line2" = ". У мэтах захавання бяспекі вашага ўліковага запісу нам неабходна пераканацца, што менавіта вы спрабуеце скінуць свой пароль. Вы зможаце скінуць яго праз ";
+
+"Account_Recovery_Grace_View_line3" = "Калі вы не рабілі запыт або дапамога з уваходам вам больш не патрабуецца, скасуйце яго і прыміце меры па абароне свайго ўліковага запісу.";

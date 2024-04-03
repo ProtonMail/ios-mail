@@ -373,7 +373,7 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
     }
 
     @objc
-    private func willBecomeActive(_ notification: Notification) {
+    private func willBecomeActive(_: Notification) {
         if shouldReloadWhenAppIsActive {
             viewModel.fetchConversationDetails(completion: nil)
             shouldReloadWhenAppIsActive = false
@@ -681,7 +681,6 @@ private extension ConversationViewController {
         if self.storedSizeHelper
             .updateStoredSizeIfNeeded(newHeightInfo: newHeightInfo, messageID: messageId) {
             cell.setNeedsLayout()
-            cell.layoutIfNeeded()
             DispatchQueue.main.async {
                 UIView.setAnimationsEnabled(false)
                 self.customView.tableView.beginUpdates()
@@ -936,7 +935,7 @@ extension ConversationViewController {
         switch action {
         case .reply, .replyAll, .forward, .replyInConversation, .forwardInConversation,
                 .replyOrReplyAllInConversation, .replyAllInConversation:
-            handleOpenComposerAction(action)
+            handleOpenComposerAction(action, message: viewModel.findLatestMessageForAction())
         case .labelAs:
             showLabelAsActionSheet(dataSource: .conversation)
         case .moveTo:
@@ -999,15 +998,42 @@ extension ConversationViewController {
         }
     }
 
-    private func handleOpenComposerAction(_ action: MessageViewActionSheetAction) {
-        guard let message = viewModel.findLatestMessageForAction() else { return }
+    func handleOpenComposerAction(_ action: MessageViewActionSheetAction, message: MessageEntity?) {
+        guard
+            let message,
+            let messageVM = viewModel.messagesDataSource.first(where: { $0.message?.messageID == message.messageID }),
+            let singleMessageVM = messageVM.messageViewModel?.state.expandedViewModel?.messageContent
+        else { return }
+
+        let infoProvider = singleMessageVM.messageInfoProvider
+        let remoteContentPolicy = infoProvider.remoteContentPolicy
+        let embeddedContentPolicy = infoProvider.embeddedContentPolicy
+
         switch action {
         case .reply, .replyInConversation:
-            viewModel.handleNavigationAction(.reply(message: message))
+            viewModel.handleNavigationAction(
+                .reply(
+                    message: message,
+                    remoteContentPolicy: remoteContentPolicy,
+                    embeddedContentPolicy: embeddedContentPolicy
+                )
+            )
         case .replyAll, .replyAllInConversation:
-            viewModel.handleNavigationAction(.replyAll(message: message))
+            viewModel.handleNavigationAction(
+                .replyAll(
+                    message: message,
+                    remoteContentPolicy: remoteContentPolicy,
+                    embeddedContentPolicy: embeddedContentPolicy
+                )
+            )
         case .forward, .forwardInConversation:
-            viewModel.handleNavigationAction(.forward(message: message))
+            viewModel.handleNavigationAction(
+                .forward(
+                    message: message,
+                    remoteContentPolicy: remoteContentPolicy,
+                    embeddedContentPolicy: embeddedContentPolicy
+                )
+            )
         default:
             return
         }
@@ -1015,12 +1041,24 @@ extension ConversationViewController {
 
     private func handleSingleMessageAction(action: SingleMessageNavigationAction) {
         switch action {
-        case .reply(let messageId):
+        case let .reply(messageId, remoteContentPolicy, embeddedContentPolicy):
             guard let message = viewModel.messagesDataSource.message(with: messageId) else { return }
-            viewModel.handleNavigationAction(.reply(message: message))
-        case .replyAll(let messageId):
+            viewModel.handleNavigationAction(
+                .reply(
+                    message: message,
+                    remoteContentPolicy: remoteContentPolicy,
+                    embeddedContentPolicy: embeddedContentPolicy
+                )
+            )
+        case let .replyAll(messageId, remoteContentPolicy, embeddedContentPolicy):
             guard let message = viewModel.messagesDataSource.message(with: messageId) else { return }
-            viewModel.handleNavigationAction(.replyAll(message: message))
+            viewModel.handleNavigationAction(
+                .replyAll(
+                    message: message,
+                    remoteContentPolicy: remoteContentPolicy,
+                    embeddedContentPolicy: embeddedContentPolicy
+                )
+            )
         case .compose(let contact):
             viewModel.handleNavigationAction(.composeTo(contact: contact))
         case .contacts(let contact):
@@ -1039,9 +1077,15 @@ extension ConversationViewController {
             viewModel.handleNavigationAction(.inAppSafari(url: url))
         case .mailToUrl(let url):
             viewModel.handleNavigationAction(.mailToUrl(url: url))
-        case .forward(let messageId):
+        case let .forward(messageId, remoteContentPolicy, embeddedContentPolicy):
             guard let message = viewModel.messagesDataSource.message(with: messageId) else { return }
-            viewModel.handleNavigationAction(.forward(message: message))
+            viewModel.handleNavigationAction(
+                .forward(
+                    message: message,
+                    remoteContentPolicy: remoteContentPolicy,
+                    embeddedContentPolicy: embeddedContentPolicy
+                )
+            )
         case .viewCypher(url: let url):
             viewModel.handleNavigationAction(.viewCypher(url: url))
         default:
@@ -1526,6 +1570,7 @@ extension ConversationViewController: SnoozeSupport {
     var snoozeDateConfigReceiver: SnoozeDateConfigReceiver {
         let receiver = _snoozeDateConfigReceiver ?? SnoozeDateConfigReceiver(
             saveDate: { [weak self] date in
+                self?.willSnooze()
                 self?.snooze(on: date)
                 self?._snoozeDateConfigReceiver = nil
             }, cancelHandler: { [weak self] in
@@ -1550,7 +1595,6 @@ extension ConversationViewController: SnoozeSupport {
             // PageVC
             guard let viewController = parent else { return }
             banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: viewController)
-            viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
         } else {
             // MailboxVC
             guard let viewController = navigationController?.viewControllers.first else { return }
@@ -1584,5 +1628,9 @@ extension ConversationViewController: SnoozeSupport {
                 break
             }
         }
+    }
+
+    func willSnooze() {
+        viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
     }
 }

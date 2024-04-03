@@ -40,7 +40,6 @@ class MailboxCoordinatorTests: XCTestCase {
 
         conversationStateProviderMock = .init()
         let lastUpdatedStoreMock = MockLastUpdatedStoreProtocol()
-        let pushServiceMock = MockPushNotificationService()
         let contextProviderMock = MockCoreDataContextProvider()
         let contactGroupProviderMock = MockContactGroupsProviderProtocol()
         let labelProviderMock = MockLabelProviderProtocol()
@@ -54,7 +53,6 @@ class MailboxCoordinatorTests: XCTestCase {
         viewModelMock = MockMailBoxViewModel(labelID: "",
                                              label: nil,
                                              userManager: dummyUser,
-                                             pushService: pushServiceMock,
                                              coreDataContextProvider: contextProviderMock,
                                              lastUpdatedStore: lastUpdatedStoreMock,
                                              conversationStateProvider: conversationStateProviderMock,

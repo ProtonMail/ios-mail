@@ -241,7 +241,10 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     /// workaround
     func syncMailSetting() {
         self.queueManager?.queue {
-            let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: self.userID))
+            let eventAPI = EventCheckRequest(
+                eventID: self.lastUpdatedStore.lastEventID(userID: self.userID),
+                discardContactsMetadata: EventCheckRequest.isNoMetaDataForContactsEnabled
+            )
             self.apiService.perform(request: eventAPI, response: EventCheckResponse()) { _, response in
                 guard response.responseCode == 1000 else {
                     return

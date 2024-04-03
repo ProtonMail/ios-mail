@@ -1,0 +1,6 @@
+framework module ProtonCoreMissingScopes {
+  umbrella header "ProtonCore-MissingScopes-umbrella.h"
+
+  export *
+  module * { export * }
+}
