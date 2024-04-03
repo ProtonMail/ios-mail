@@ -97,15 +97,15 @@ class UserManager: ObservableObject {
     private(set) var userInfo: UserInfo {
         didSet {
             updateTelemetryAndCatchCrash()
-
-            let maxSpace = self.userInfo.maxSpace
-            let usedSpace = self.userInfo.usedSpace
-            isStorageExceeded = usedSpace >= maxSpace
+            didSetUserInfo(oldValue: oldValue)
         }
     }
 
     @Published
     private(set) var isStorageExceeded: Bool = false
+    
+    @Published
+    private(set) var userLockedFlagsChanged: Bool = false
 
     let authHelper: AuthHelper
     private(set) var authCredential: AuthCredential
@@ -241,6 +241,13 @@ class UserManager: ObservableObject {
             }
         }
     }
+    
+    private func didSetUserInfo(oldValue: UserInfo) {
+        let maxSpace = self.userInfo.maxSpace
+        let usedSpace = self.userInfo.usedSpace
+        isStorageExceeded = usedSpace >= maxSpace
+        userLockedFlagsChanged = self.userInfo.lockedFlags != oldValue.lockedFlags
+    }
 
     func isMatch(sessionID uid: String) -> Bool {
         return authCredential.sessionID == uid
@@ -355,7 +362,13 @@ extension UserManager: UserDataSource {
     func updateFromEvents(userInfoRes: [String: Any]?) {
         if let userData = userInfoRes {
             let newUserInfo = UserInfo(response: userData)
+            let oldUserInfo = self.userInfo
             userInfo.set(userinfo: newUserInfo)
+            
+            // Temporary fix, should be handled in User.set in Core
+            userInfo.lockedFlags = newUserInfo.lockedFlags
+            
+            self.didSetUserInfo(oldValue: oldUserInfo)
             self.save()
         }
     }
