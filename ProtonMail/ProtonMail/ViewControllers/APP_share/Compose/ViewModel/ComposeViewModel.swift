@@ -658,8 +658,7 @@ extension ComposeViewModel {
     // For others, insert as normal attachment
     func insertImportedFiles(in htmlEditor: HtmlEditorBehaviour) {
         for file in importedFiles {
-            if (AttachmentType.mimeTypeMap[.image] ?? []).contains(file.mimeType.lowercased()) &&
-                UserInfo.shareImagesAsInlineByDefault {
+            if (AttachmentType.mimeTypeMap[.image] ?? []).contains(file.mimeType.lowercased()) {
                 insertImportedImage(file: file, in: htmlEditor)
             } else {
                 attachImported(file: file)

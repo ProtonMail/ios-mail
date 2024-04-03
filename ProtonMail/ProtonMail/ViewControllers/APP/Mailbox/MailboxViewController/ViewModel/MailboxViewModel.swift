@@ -1135,29 +1135,20 @@ extension MailboxViewModel {
 extension MailboxViewModel {
 
     func canSelectMore() -> Bool {
-        if UserInfo.enableSelectAll {
-            let maximum = dependencies.featureFlagCache.featureFlags(for: user.userID)[.mailboxSelectionLimitation]
-            return selectedIDs.count < maximum
-        } else {
-            return true
-        }
+        let maximum = dependencies.featureFlagCache.featureFlags(for: user.userID)[.mailboxSelectionLimitation]
+        return selectedIDs.count < maximum
     }
 
     /// - Returns: Does id allow to be added?
     func select(id: String) -> Bool {
-        if UserInfo.enableSelectAll {
-            let maximum = dependencies.featureFlagCache.featureFlags(for: user.userID)[.mailboxSelectionLimitation]
-            guard selectedIDs.count < maximum else {
-                uiDelegate?.selectionDidChange()
-                return false
-            }
-            self.selectedIDs.insert(id)
+        let maximum = dependencies.featureFlagCache.featureFlags(for: user.userID)[.mailboxSelectionLimitation]
+        guard selectedIDs.count < maximum else {
             uiDelegate?.selectionDidChange()
-            return true
-        } else {
-            selectedIDs.insert(id)
-            return true
+            return false
         }
+        self.selectedIDs.insert(id)
+        uiDelegate?.selectionDidChange()
+        return true
     }
 
     func removeSelected(id: String) {
