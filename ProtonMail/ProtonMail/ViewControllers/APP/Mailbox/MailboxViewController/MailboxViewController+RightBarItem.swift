@@ -26,7 +26,7 @@ private enum BarButtonType: Int {
 
 // MARK: Setup right bar items
 extension MailboxViewController {
-    func setupRightButtons(_ editingMode: Bool) {
+    func setupRightButtons(_ editingMode: Bool, isStorageExceeded: Bool) {
         if editingMode {
             let cancelBarItem = self.setupCancelBarItem()
             self.updateRightButtonsIfNeeded(items: [cancelBarItem])
@@ -42,7 +42,7 @@ extension MailboxViewController {
             return
         }
 
-        let item: UIBarButtonItem = self.viewModel.user.isStorageExceeded ? setupStorageExceededBarItem(): setupComposerBarItem()
+        let item: UIBarButtonItem = isStorageExceeded ? setupStorageExceededBarItem(): setupComposerBarItem()
         let items = [item, setupSearchBarItem()]
         self.updateRightButtonsIfNeeded(items: items)
     }

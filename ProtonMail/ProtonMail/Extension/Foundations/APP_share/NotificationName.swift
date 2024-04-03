@@ -76,10 +76,6 @@ extension Notification.Name {
         return .init("attachmentUploadFailed")
     }
 
-    static var didFetchSettingsForPrimaryUser: Notification.Name {
-        return .init("didFetchSettingsForPrimaryUser")
-    }
-
     static var showScheduleSendUnavailable: Notification.Name {
         return .init("showScheduleSendUnavailable")
     }

@@ -66,6 +66,8 @@ final class Launch {
             primaryUser.payments.storeKitManager.retryProcessingAllPendingTransactions(finishHandler: nil)
         }
         #endif
+
+        NotificationCenter.default.post(name: .switchView, object: nil)
     }
 
     private func loadUsersIfMainKeyAvailable() {
