@@ -74,6 +74,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
     let labelID: LabelID
     var storageAlertVisibility: StorageAlertVisibility = .hidden
+    var lockedStateAlertVisibility: LockedStateAlertVisibility = .hidden
     /// This field saves the label object of custom folder/label
     private(set) var label: LabelInfo?
     /// This field stores the latest update time of the user event.
@@ -170,6 +171,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     }
 
     private var storageExceedObservation: Cancellable?
+    private var lockedStateObservation: Cancellable?
 
     init(labelID: LabelID,
          label: LabelInfo?,
@@ -206,7 +208,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
         super.init()
         trackLifetime()
-        self.setupStorageAlert()
+        self.setupAlertBox()
         self.conversationStateProvider.add(delegate: self)
         dependencies.updateMailbox.setup(source: self)
     }
@@ -326,7 +328,15 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         return contactProvider.getAllEmails()
     }
 
-    func setupStorageAlert() {
+    func setupAlertBox() {
+        if let lockedFlags = user.userInfo.lockedFlags {
+            lockedStateAlertVisibility = LockedStateAlertVisibility(lockedFlags: lockedFlags)
+        } else {
+            setupStorageAlert()
+        }
+    }
+
+    private func setupStorageAlert() {
         let usersWhoHaveSeenStorageBanner = dependencies.userDefaults[.usersWhoHaveSeenStorageBanner]
         let userDismissedBanner = usersWhoHaveSeenStorageBanner[user.userID.rawValue] ?? false
         if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.splitStorage, reloadValue: true),
@@ -917,6 +927,17 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         storageExceedObservation = user.$isStorageExceeded.sink(receiveValue: { value in
             didChanged(value)
         })
+    }
+    
+    func setupLockedStateObservation(didChanged: @escaping (Bool) -> Void) {
+        lockedStateObservation = user.$userLockedFlagsChanged.sink(receiveValue: { value in
+            didChanged(value)
+        })
+    }
+    
+    func removeObservers() {
+        storageExceedObservation?.cancel()
+        lockedStateObservation?.cancel()
     }
 }
 

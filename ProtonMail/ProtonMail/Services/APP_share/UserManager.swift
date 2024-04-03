@@ -101,11 +101,15 @@ class UserManager: ObservableObject {
             let maxSpace = self.userInfo.maxSpace
             let usedSpace = self.userInfo.usedSpace
             isStorageExceeded = usedSpace >= maxSpace
+            userLockedFlagsChanged = self.userInfo.lockedFlags != oldValue.lockedFlags
         }
     }
 
     @Published
     private(set) var isStorageExceeded: Bool = false
+    
+    @Published
+    private(set) var userLockedFlagsChanged: Bool = false
 
     let authHelper: AuthHelper
     private(set) var authCredential: AuthCredential
