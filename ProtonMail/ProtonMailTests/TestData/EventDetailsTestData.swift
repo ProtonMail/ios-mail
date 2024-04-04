@@ -23,10 +23,11 @@ extension EventDetails {
         endDate: Date = .init(timeIntervalSince1970: .random(in: 0...Date.distantFuture.timeIntervalSince1970)),
         isAllDay: Bool = false,
         invitees: [Participant] = [
-            .init(email: "employee1@example.com", status: .pending),
-            .init(email: "employee2@example.com", status: .accepted),
-            .init(email: "employee3@example.com", status: .pending),
+            .init(email: "employee1@example.com", role: .unknown, status: .pending),
+            .init(email: "employee2@example.com", role: .unknown, status: .accepted),
+            .init(email: "employee3@example.com", role: .unknown, status: .pending),
         ],
+        currentUserAmongInvitees: Participant? = nil,
         status: EventStatus = .confirmed,
         deepLinkComponents: (eventUID: String, calendarID: String) = ("", "")
     ) -> Self {
@@ -37,8 +38,9 @@ extension EventDetails {
             isAllDay: isAllDay,
             calendar: .init(name: "My Calendar", iconColor: "#FFEEEE"),
             location: .init(name: "Zoom call"),
-            organizer: .init(email: "boss@example.com", status: .unknown),
+            organizer: .init(email: "boss@example.com", role: .chair, status: .unknown),
             invitees: invitees,
+            currentUserAmongInvitees: currentUserAmongInvitees,
             status: status,
             calendarAppDeepLink: URL(string: "ch.protonmail.calendar://eventDetails?eventID=\(deepLinkComponents.eventUID)&calendarID=\(deepLinkComponents.calendarID)&startTime=\(Int(startDate.timeIntervalSince1970))")!
         )

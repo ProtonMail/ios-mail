@@ -1312,6 +1312,7 @@ enum L11n {
         static let yesLong = NSLocalizedString("Yes, I'll attend", comment: "Confirm attending an event")
         static let noLong = NSLocalizedString("No, I won't attend", comment: "Deny attending an event")
         static let maybeLong = NSLocalizedString("I might attend", comment: "Neither confirm nor deny attending an event")
+        static let attendanceOptional = NSLocalizedString("(Attendance optional)", comment: "Information that the user is an optional participant")
     }
 
     struct SideMenuStorageAlert {

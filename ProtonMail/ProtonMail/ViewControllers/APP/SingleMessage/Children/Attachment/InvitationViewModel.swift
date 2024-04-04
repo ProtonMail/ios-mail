@@ -19,6 +19,7 @@ import ProtonCoreUIFoundations
 
 struct InvitationViewModel {
     let durationString: String
+    let isOptionalAttendanceLabelHidden: Bool
     let statusString: String?
 
     var isStatusViewHidden: Bool {
@@ -60,6 +61,8 @@ struct InvitationViewModel {
             to: eventDetails.endDate,
             isAllDay: eventDetails.isAllDay
         )
+
+        isOptionalAttendanceLabelHidden = eventDetails.currentUserAmongInvitees?.role != .optional
 
         if eventDetails.status == .cancelled {
             statusString = L11n.Event.eventCancelled

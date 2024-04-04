@@ -193,14 +193,12 @@ final class AttachmentViewModel {
             UserInfo.isRSVPMilestoneTwoEnabled,
             eventDetails.status != .cancelled,
             eventDetails.endDate.isFuture,
-            let userAsAnInvitee = eventDetails.invitees.first(where: {
-                dependencies.user.userInfo.owns(emailAddress: $0.email)
-            })
+            let currentUserAmongInvitees = eventDetails.currentUserAmongInvitees
         else {
             return
         }
 
-        switch userAsAnInvitee.status {
+        switch currentUserAmongInvitees.status {
         case .accepted:
             respondingStatusSubject.send(.alreadyResponded(.yes))
         case .declined:
@@ -232,11 +230,5 @@ extension AttachmentViewModel {
         case noInvitationFound
         case invitationFoundAndProcessing
         case invitationProcessed(EventDetails)
-    }
-}
-
-private extension UserInfo {
-    func owns(emailAddress: String) -> Bool {
-        userAddresses.contains { $0.email.compare(emailAddress, options: [.caseInsensitive]) == .orderedSame }
     }
 }
