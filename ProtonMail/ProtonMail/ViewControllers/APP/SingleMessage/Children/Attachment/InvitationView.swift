@@ -129,6 +129,11 @@ final class InvitationView: UIView {
         )
 
         detailsContainer.clearAllViews()
+
+        if let recurrence = eventDetails.recurrence {
+            detailsContainer.addArrangedSubview(SubviewFactory.recurrenceRow(recurrence: recurrence))
+        }
+
         detailsContainer.addArrangedSubview(SubviewFactory.calendarRow(calendar: eventDetails.calendar))
 
         if let location = eventDetails.location {
@@ -375,6 +380,15 @@ private struct SubviewFactory {
         return view
     }
 
+    static func recurrenceRow(recurrence: String) -> UIView {
+        let row = row(icon: \.arrowsRotate)
+
+        let label = detailsLabel(text: recurrence)
+        row.contentStackView.addArrangedSubview(label)
+
+        return row
+    }
+
     static func calendarRow(calendar: EventDetails.Calendar) -> UIView {
         let row = row(icon: \.circleFilled)
         row.iconImageView.tintColor = UIColor(hexColorCode: calendar.iconColor)
@@ -433,6 +447,7 @@ private struct SubviewFactory {
 
     static func detailsLabel(text: String, textColor: UIColor = ColorProvider.TextNorm) -> UILabel {
         let view = UILabel()
+        view.numberOfLines = 0
         view.set(text: text, preferredFont: .footnote, textColor: textColor)
         return view
     }

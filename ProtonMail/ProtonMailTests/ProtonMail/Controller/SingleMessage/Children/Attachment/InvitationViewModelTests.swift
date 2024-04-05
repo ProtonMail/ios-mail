@@ -79,6 +79,11 @@ final class InvitationViewModelTests: XCTestCase {
     }
 
     func testWhenEventHasEndedOrHasBeenCancelled_thenTitleColorIsWeakAndStatusIsNotEmpty() {
+        struct TestScenario {
+            let endDate: Date
+            let status: EventDetails.EventStatus
+        }
+
         let scenarios: [TestScenario] = [
             .init(endDate: .distantPast, status: .confirmed),
             .init(endDate: .distantFuture, status: .cancelled),
@@ -131,9 +136,4 @@ final class InvitationViewModelTests: XCTestCase {
         XCTAssertEqual(sut.visibleInvitees, [])
         XCTAssertEqual(sut.expansionButtonTitle, "3 participants")
     }
-}
-
-private struct TestScenario {
-    let endDate: Date
-    let status: EventDetails.EventStatus
 }

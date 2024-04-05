@@ -1313,6 +1313,24 @@ enum L11n {
         static let noLong = NSLocalizedString("No, I won't attend", comment: "Deny attending an event")
         static let maybeLong = NSLocalizedString("I might attend", comment: "Neither confirm nor deny attending an event")
         static let attendanceOptional = NSLocalizedString("(Attendance optional)", comment: "Information that the user is an optional participant")
+        static let every = NSLocalizedString("Every %@", comment: "As in: Every 3 days")
+        static let onDays = NSLocalizedString("on %@", comment: "As in: on Saturday")
+        static let onThe = NSLocalizedString("on the %@", comment: "As in: on the last Saturday")
+        static let onDay = NSLocalizedString("on day %u", comment: "Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month")
+        static let times = NSLocalizedString("%d times", comment: "Count, as in: 1 time, 2 times")
+        static let until = NSLocalizedString("until %@", comment: "As in: Until Sep 27, 2025")
+    }
+
+    struct Recurrence {
+        static let daily = NSLocalizedString("Daily", comment: "Occurring every day")
+        static let weekly = NSLocalizedString("Weekly", comment: "Occurring every week")
+        static let monthly = NSLocalizedString("Monthly", comment: "Occurring every month")
+        static let yearly = NSLocalizedString("Yearly", comment: "Occurring every year")
+        static let first = NSLocalizedString("first", comment: "\"1st\" spelled out")
+        static let second = NSLocalizedString("second", comment: "\"2nd\" spelled out")
+        static let third = NSLocalizedString("third", comment: "\"3rd\" spelled out")
+        static let fourth = NSLocalizedString("fourth", comment: "\"4th\" spelled out")
+        static let last = NSLocalizedString("last", comment: "Opposite of \"first\"")
     }
 
     struct SideMenuStorageAlert {
