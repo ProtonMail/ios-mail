@@ -17,6 +17,7 @@
 
 import ProtonCoreCrypto
 import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
 import ProtonCoreServices
 import ProtonInboxICal
 
@@ -92,6 +93,8 @@ struct LocalEventRSVP: EventRSVP {
             .filter { $0.user != iCalEvent.organizer?.user }
             .map { .init(attendeeModel: $0) }
 
+        let currentUserAmongInvitees = invitees.first { dependencies.user.userInfo.owns(emailAddress: $0.email) }
+
         return .init(
             title: iCalEvent.title,
             startDate: Date(timeIntervalSince1970: apiEvent.startTime),
@@ -101,6 +104,7 @@ struct LocalEventRSVP: EventRSVP {
             location: (iCalEvent.location?.title).map { .init(name: $0) },
             organizer: iCalEvent.organizer.map { .init(attendeeModel: $0) },
             invitees: invitees,
+            currentUserAmongInvitees: currentUserAmongInvitees,
             status: iCalEvent.status.flatMap { EventDetails.EventStatus(rawValue: $0.lowercased()) },
             calendarAppDeepLink: .ProtonCalendar.showEvent(
                 apiEventID: apiEvent.ID,
@@ -286,5 +290,11 @@ extension icaltimetype {
         }
 
         return Int(date.timeIntervalSince1970)
+    }
+}
+
+private extension UserInfo {
+    func owns(emailAddress: String) -> Bool {
+        userAddresses.contains { $0.email.compare(emailAddress, options: [.caseInsensitive]) == .orderedSame }
     }
 }

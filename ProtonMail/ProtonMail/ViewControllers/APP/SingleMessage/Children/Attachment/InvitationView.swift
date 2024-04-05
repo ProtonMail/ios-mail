@@ -25,6 +25,7 @@ final class InvitationView: UIView {
     private let widgetDetailsContainer = SubviewFactory.widgetDetailsContainer
     private let titleLabel = SubviewFactory.titleLabel
     private let timeLabel = SubviewFactory.timeLabel
+    private let optionalAttendanceLabel = SubviewFactory.optionalAttendanceLabel
     private let statusContainer = SubviewFactory.statusContainer
     private let statusLabel = SubviewFactory.statusLabel
     private let respondingViewContainer = SubviewFactory.respondingViewContainer
@@ -73,6 +74,7 @@ final class InvitationView: UIView {
 
         widgetDetailsContainer.addArrangedSubview(titleLabel)
         widgetDetailsContainer.addArrangedSubview(timeLabel)
+        widgetDetailsContainer.addArrangedSubview(optionalAttendanceLabel)
 
         statusContainer.addSubview(statusLabel)
         respondingViewContainer.addSubviews(respondingViewStackView)
@@ -115,6 +117,7 @@ final class InvitationView: UIView {
 
         titleLabel.set(text: eventDetails.title, preferredFont: .body, weight: .bold, textColor: viewModel.titleColor)
         timeLabel.set(text: viewModel.durationString, preferredFont: .subheadline, textColor: viewModel.titleColor)
+        optionalAttendanceLabel.isHidden = viewModel.isOptionalAttendanceLabelHidden
         statusLabel.set(text: viewModel.statusString, preferredFont: .subheadline, textColor: viewModel.titleColor)
         statusContainer.isHidden = viewModel.isStatusViewHidden
 
@@ -281,6 +284,14 @@ private struct SubviewFactory {
         let view = UILabel()
         view.adjustsFontSizeToFitWidth = true
         view.setContentCompressionResistancePriority(.required, for: .vertical)
+        return view
+    }
+
+    static var optionalAttendanceLabel: UILabel {
+        let view = UILabel()
+        view.adjustsFontSizeToFitWidth = true
+        view.setContentCompressionResistancePriority(.required, for: .vertical)
+        view.set(text: L11n.Event.attendanceOptional, preferredFont: .footnote, textColor: ColorProvider.TextWeak)
         return view
     }
 

@@ -50,6 +50,26 @@ final class InvitationViewModelTests: XCTestCase {
         XCTAssertEqual(sut.durationString, "Nov 16 – 17, 2023")
     }
 
+    func testWhenUserIsNotAmongInvitees_thenOptionalAttendanceIsNotShown() {
+        let eventDetails = EventDetails.make(currentUserAmongInvitees: nil)
+        let sut = InvitationViewModel(eventDetails: eventDetails)
+        XCTAssert(sut.isOptionalAttendanceLabelHidden)
+    }
+
+    func testWhenUserIsARequiredInvitee_thenOptionalAttendanceIsNotShown() {
+        let currentUser = EventDetails.Participant(email: "user@example.com", role: .required, status: .unknown)
+        let eventDetails = EventDetails.make(invitees: [currentUser], currentUserAmongInvitees: currentUser)
+        let sut = InvitationViewModel(eventDetails: eventDetails)
+        XCTAssert(sut.isOptionalAttendanceLabelHidden)
+    }
+
+    func testWhenUserIsAnOptionalInvitee_thenOptionalAttendanceIsNotShown() {
+        let currentUser = EventDetails.Participant(email: "user@example.com", role: .optional, status: .unknown)
+        let eventDetails = EventDetails.make(invitees: [currentUser], currentUserAmongInvitees: currentUser)
+        let sut = InvitationViewModel(eventDetails: eventDetails)
+        XCTAssertFalse(sut.isOptionalAttendanceLabelHidden)
+    }
+
     func testWhenEventHasNotEndedAndHasNotBeenCancelled_thenTitleColorIsNormAndStatusIsEmpty() {
         let eventDetails = EventDetails.make(endDate: .distantFuture, status: .confirmed)
         let sut = InvitationViewModel(eventDetails: eventDetails)
@@ -87,7 +107,9 @@ final class InvitationViewModelTests: XCTestCase {
     }
 
     func testWhenThereIsFewInvitees_thenExpansionButtonIsNotNeeded() {
-        let eventDetails = EventDetails.make(invitees: [.init(email: "attendee@example.com", status: .unknown)])
+        let eventDetails = EventDetails.make(
+            invitees: [.init(email: "attendee@example.com", role: .unknown, status: .unknown)]
+        )
         let sut = InvitationViewModel(eventDetails: eventDetails)
         XCTAssertNil(sut.expansionButtonTitle)
     }

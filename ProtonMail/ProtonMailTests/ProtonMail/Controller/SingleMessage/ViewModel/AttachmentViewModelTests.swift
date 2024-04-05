@@ -37,7 +37,7 @@ class AttachmentViewModelTests: XCTestCase {
 
     private let stubbedBasicEventInfo = BasicEventInfo(eventUID: "foo", recurrenceID: nil)
 
-    private let stubbedEventDetails = EventDetails.make()
+    private var stubbedEventDetails: EventDetails!
 
     override func setUp() {
         super.setUp()
@@ -67,8 +67,11 @@ class AttachmentViewModelTests: XCTestCase {
             }
         }
 
+        stubbedEventDetails = .make(
+            currentUserAmongInvitees: .init(email: "employee1@example.com", role: .unknown, status: .pending)
+        )
+
         user = UserManager(api: apiService, globalContainer: testContainer)
-        user.userInfo.userAddresses.append(.dummy.updated(email: stubbedEventDetails.invitees[0].email))
 
         let fetchAttachmentMetadata = MockFetchAttachmentMetadataUseCase()
         fetchAttachmentMetadata.executionStub.bodyIs { _, _ in
@@ -104,6 +107,7 @@ class AttachmentViewModelTests: XCTestCase {
         receivedRespondingStatuses = nil
         subscriptions = nil
         testAttachments.removeAll()
+        stubbedEventDetails = nil
 
         sut = nil
         featureFlagProvider = nil
@@ -280,9 +284,9 @@ class AttachmentViewModelTests: XCTestCase {
     func testRespondingStatus_whenUserHasPreviouslyResponded_isReflected() async {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
 
-        user.userInfo.userAddresses = [
-            .dummy.updated(email: stubbedEventDetails.invitees[1].email)
-        ]
+        stubbedEventDetails = .make(
+            currentUserAmongInvitees: .init(email: "employee1@example.com", role: .unknown, status: .accepted)
+        )
 
         await receivedRespondingStatuses.expectNextValue(toBe: .respondingUnavailable)
 
@@ -294,8 +298,7 @@ class AttachmentViewModelTests: XCTestCase {
     // MARK: RSVP: Cases where responding is unavailable
 
     func testResponding_whenUserIsNotAnInvitee_isNotAvailable() async {
-        user.userInfo.userAddresses[0] = user.userInfo.userAddresses[0]
-            .updated(email: "somethingOtherThanInvitee@example.com")
+        stubbedEventDetails = .make(currentUserAmongInvitees: nil)
 
         await ensureRespondingIsNotAvailableWhenICSIsReceived()
     }

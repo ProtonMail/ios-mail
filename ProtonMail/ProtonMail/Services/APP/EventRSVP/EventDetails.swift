@@ -45,6 +45,7 @@ struct EventDetails: Equatable {
      */
     struct Participant: Equatable {
         let email: String
+        let role: EKParticipantRole
         let status: EKParticipantStatus
     }
 
@@ -56,12 +57,13 @@ struct EventDetails: Equatable {
     let location: Location?
     let organizer: Participant?
     let invitees: [Participant]
+    let currentUserAmongInvitees: Participant?
     let status: EventStatus?
     let calendarAppDeepLink: URL
 }
 
 extension EventDetails.Participant {
     init(attendeeModel: ICalAttendee) {
-        self.init(email: attendeeModel.user.email, status: attendeeModel.status)
+        self.init(email: attendeeModel.user.email, role: attendeeModel.role, status: attendeeModel.status)
     }
 }
