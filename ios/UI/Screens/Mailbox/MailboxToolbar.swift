@@ -20,7 +20,7 @@ import SwiftUI
 
 struct MailboxToolbar: ViewModifier {
     @EnvironmentObject private var appUIState: AppUIState
-    @ObservedObject private var selectionMode: SelectionMode
+    @ObservedObject private var selectionMode: SelectionModeState
 
     private let title: String
     private var sessionProvider: SessionProvider
@@ -29,7 +29,7 @@ struct MailboxToolbar: ViewModifier {
         selectionMode.hasSelectedItems ? .selection : .noSelection
     }
 
-    init(title: String, selectionMode: SelectionMode, sessionProvider: SessionProvider) {
+    init(title: String, selectionMode: SelectionModeState, sessionProvider: SessionProvider) {
         self.title = title
         self.selectionMode = selectionMode
         self.sessionProvider = sessionProvider
@@ -95,7 +95,7 @@ struct MailboxToolbar: ViewModifier {
 }
 
 extension View {
-    @MainActor func mailboxToolbar(title: String, selectionMode: SelectionMode) -> some View {
+    @MainActor func mailboxToolbar(title: String, selectionMode: SelectionModeState) -> some View {
         self.modifier(MailboxToolbar(title: title, selectionMode: selectionMode, sessionProvider: AppContext.shared))
     }
 }
@@ -120,7 +120,7 @@ extension MailboxToolbar {
 
 #Preview {
     let appUIState = AppUIState(isSidebarOpen: false)
-    let userSettings = UserSettings(mailboxViewMode: .conversation)
+    let userSettings = UserSettings(mailboxViewMode: .conversation, mailboxActions: .init())
 
     let mailboxModel = MailboxModel(appRoute: .shared, state: .data( PreviewData.mailboxConversations))
 

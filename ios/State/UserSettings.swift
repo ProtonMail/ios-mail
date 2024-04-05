@@ -19,15 +19,40 @@ import Foundation
 
 final class UserSettings: ObservableObject {
     var mailboxViewMode: MailboxViewMode
+    var mailboxActions: MailboxActionSettings
+
     var leadingSwipeAction: SwipeAction = .toggleReadStatus
     var trailingSwipeAction: SwipeAction = .delete
 
-    init(mailboxViewMode: MailboxViewMode) {
+    init(
+        mailboxViewMode: MailboxViewMode,
+        mailboxActions: MailboxActionSettings
+    ) {
         self.mailboxViewMode = mailboxViewMode
+        self.mailboxActions = mailboxActions
     }
 }
 
 enum MailboxViewMode {
     case message
     case conversation
+}
+
+struct MailboxActionSettings {
+    let action1: MailboxAction
+    let action2: MailboxAction
+    let action3: MailboxAction
+    let action4: MailboxAction
+
+    init(
+        action1: MailboxAction = .toggleReadStatus,
+        action2: MailboxAction = .moveToArchive,
+        action3: MailboxAction = .moveToTrash,
+        action4: MailboxAction = .labelAs
+    ) {
+        self.action1 = action1
+        self.action2 = action2
+        self.action3 = action3
+        self.action4 = action4
+    }
 }

@@ -135,10 +135,10 @@ struct SidebarCell: View {
 
 #Preview {
     let appUIState = AppUIState(isSidebarOpen: true)
-    let route: AppRoute = .init(route: .mailbox(label: .placeHolderMailbox))
+    let route: AppRouteState = .init(route: .mailbox(label: .placeHolderMailbox))
 
     struct PreviewWrapper: View {
-        @State var appRoute: AppRoute
+        @State var appRoute: AppRouteState
 
         var body: some View {
             SidebarScreen(screenModel: .init(appRoute: appRoute, systemFolders: PreviewData.systemFolders))

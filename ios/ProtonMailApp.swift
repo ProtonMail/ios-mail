@@ -25,7 +25,10 @@ struct ProtonMail: App {
     // declaration of state objects
     private let appUIState = AppUIState()
     private let mailboxModel = MailboxModel(appRoute: .shared)
-    private let userSettings = UserSettings(mailboxViewMode: .conversation)
+    private let userSettings = UserSettings(
+        mailboxViewMode: .conversation,
+        mailboxActions: .init()
+    )
 
     var body: some Scene {
         WindowGroup {
@@ -49,10 +52,10 @@ struct Root: View {
 
     // The route determines the screen that will be rendered
     @ObservedObject private var appContext: AppContext
-    @ObservedObject private var appRoute: AppRoute
+    @ObservedObject private var appRoute: AppRouteState
     @ObservedObject private var mailboxModel: MailboxModel
 
-    init(appContext: AppContext, appRoute: AppRoute, mailboxModel: MailboxModel) {
+    init(appContext: AppContext, appRoute: AppRouteState, mailboxModel: MailboxModel) {
         self.appContext = appContext
         self.appRoute = appRoute
         self.mailboxModel = mailboxModel

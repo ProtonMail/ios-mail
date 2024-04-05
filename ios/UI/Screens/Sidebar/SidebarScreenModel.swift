@@ -19,7 +19,7 @@ import proton_mail_uniffi
 import SwiftUI
 
 final class SidebarScreenModel: ObservableObject, Sendable {
-    @ObservedObject private var appRoute: AppRoute
+    @ObservedObject private var appRoute: AppRouteState
 
     private(set) var systemFolders: [SidebarCellUIModel]
     private var systemFolderQuery: MailLabelsLiveQuery?
@@ -29,7 +29,7 @@ final class SidebarScreenModel: ObservableObject, Sendable {
         appRoute.route
     }
 
-    init(appRoute: AppRoute, systemFolders: [SidebarCellUIModel] = [], dependencies: Dependencies = .init()) {
+    init(appRoute: AppRouteState, systemFolders: [SidebarCellUIModel] = [], dependencies: Dependencies = .init()) {
         self.appRoute = appRoute
         self.systemFolders = systemFolders
         self.dependencies = dependencies
@@ -60,7 +60,19 @@ final class SidebarScreenModel: ObservableObject, Sendable {
 
     private func setInitialFolderIfNeeded(from folders: [LocalLabelWithCount]) {
         guard appRoute.selectedMailbox == .placeHolderMailbox, let firstSystemFolders = folders.first else { return }
-        appRoute.updateRoute(to: .mailbox(label: .init(localId: firstSystemFolders.id, name: firstSystemFolders.name)))
+        var systemFolder: SystemFolderIdentifier? = nil
+        if let rid = firstSystemFolders.rid, let remoteId = UInt64(rid) {
+            systemFolder = SystemFolderIdentifier(rawValue: remoteId)
+        }
+        appRoute.updateRoute(
+            to: .mailbox(
+                label: .init(
+                    localId: firstSystemFolders.id,
+                    name: firstSystemFolders.name,
+                    systemFolder: systemFolder
+                )
+            )
+        )
     }
 
     @MainActor

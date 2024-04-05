@@ -20,10 +20,14 @@ import UIKit
 final class SelectedMailbox: Equatable, Hashable, ObservableObject, Sendable {
     let localId: PMLocalLabelId
     let name: String
+    
+    /// Only available for system folders.
+    let systemFolder: SystemFolderIdentifier?
 
-    init(localId: PMLocalLabelId, name: String) {
+    init(localId: PMLocalLabelId, name: String, systemFolder: SystemFolderIdentifier?) {
         self.localId = localId
         self.name = name
+        self.systemFolder = systemFolder
     }
 
     static func == (lhs: SelectedMailbox, rhs: SelectedMailbox) -> Bool {
@@ -40,6 +44,7 @@ extension SelectedMailbox {
 
     static let placeHolderMailbox = SelectedMailbox(
         localId: UInt64.max,
-        name: SystemFolderIdentifier.inbox.localisedName
+        name: SystemFolderIdentifier.inbox.localisedName,
+        systemFolder: .inbox
     )
 }

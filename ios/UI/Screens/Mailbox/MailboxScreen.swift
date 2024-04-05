@@ -21,8 +21,8 @@ import SwiftUI
 struct MailboxScreen: View {
     @EnvironmentObject private var userSettings: UserSettings
 
-    @ObservedObject private var appRoute: AppRoute
-    @ObservedObject private var selectionMode: SelectionMode
+    @ObservedObject private var appRoute: AppRouteState
+    @ObservedObject private var selectionMode: SelectionModeState
 
     private var mailboxModel: MailboxModel
 
@@ -39,7 +39,6 @@ struct MailboxScreen: View {
     }
 
     var body: some View {
-        let _ = Self._printChanges()
         NavigationStack {
             ZStack(alignment: .bottom) {
                 if userSettings.mailboxViewMode == .conversation {
@@ -48,24 +47,36 @@ struct MailboxScreen: View {
                     Text("message list mailbox")
                 }
 
-                MailboxActionBarView()
-                    .opacity(selectionMode.hasSelectedItems ? 1 : 0)
-                    .offset(y: selectionMode.hasSelectedItems ? 0 : 45 + 100)
-                    .animation(
-                        .easeInOut(duration: AppConstants.selectionModeStartDuration),
-                        value: selectionMode.hasSelectedItems
-                    )
+                MailboxActionBarView(
+                    selectionMode: selectionMode,
+                    mailbox: appRoute.selectedMailbox
+                ) { action, itemIds in
+                    if userSettings.mailboxViewMode == .conversation {
+                        mailboxModel.conversationModel.onConversationAction(action, conversationIds: itemIds)
+                    } else {
+                        AppLogger.logTemporarily(message: "\(action) for message not implemented", isError: true)
+                    }
+                }
+                .opacity(selectionMode.hasSelectedItems ? 1 : 0)
+                .offset(y: selectionMode.hasSelectedItems ? 0 : 45 + 100)
+                .animation(
+                    .easeInOut(duration: AppConstants.selectionModeStartDuration),
+                    value: selectionMode.hasSelectedItems
+                )
             }
             .background(DS.Color.Background.norm) // sets also the color for the navigation bar
             .navigationBarTitleDisplayMode(.inline)
             .mailboxToolbar(title: navigationTitle, selectionMode: selectionMode)
+            .sensoryFeedback(trigger: selectionMode.selectedItems) { oldValue, newValue in
+                oldValue.count != newValue.count ? .selection : nil
+            }
         }
     }
 }
 
 #Preview {
     let appUIState = AppUIState(isSidebarOpen: false)
-    let userSettings = UserSettings(mailboxViewMode: .conversation)
+    let userSettings = UserSettings(mailboxViewMode: .conversation, mailboxActions: .init())
 
     let mailboxModel = MailboxModel(appRoute: .shared, state: .data( PreviewData.mailboxConversations))
 

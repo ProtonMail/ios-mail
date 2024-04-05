@@ -40,6 +40,7 @@ struct MailboxConversationCell: View {
                 attachmentRowView
             }
         }
+        .contentShape(Rectangle())
         .onTapGesture {
             onEvent(.onTap)
         }

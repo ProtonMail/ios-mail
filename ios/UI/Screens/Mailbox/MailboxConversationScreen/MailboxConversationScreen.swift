@@ -62,9 +62,9 @@ extension MailboxConversationScreen {
                         onEvent: { [weak model] event in
                             switch event {
                             case .onTap:
-                                model?.onConversationTap(id: conversation.id)
+                                model?.onConversationTap(conversation: conversation)
                             case .onSelectedChange(let isSelected):
-                                model?.onConversationSelectionChange(id: conversation.id, isSelected: isSelected)
+                                model?.onConversationSelectionChange(conversation: conversation, isSelected: isSelected)
                             case .onStarredChange(let isStarred):
                                 model?.onConversationStarChange(id: conversation.id, isStarred: isStarred)
                             case .onAttachmentTap(let attachmentId):
@@ -73,9 +73,10 @@ extension MailboxConversationScreen {
                         }
                     )
                     .mailboxSwipeActions(
+                        isSelectionModeOn: model.selectionMode.hasSelectedItems,
                         itemId: conversation.id,
                         isItemRead: conversation.isRead,
-                        action: model.onConversationAction(_:conversationId:newReadStatus:)
+                        onTapAction: model.onConversationAction(_:conversationIds:)
                     )
 
                     Spacer().frame(height: DS.Spacing.tiny)
@@ -101,12 +102,12 @@ extension MailboxConversationScreen {
 }
 
 #Preview {
-    let route: AppRoute = .init(route: .mailbox(label: .placeHolderMailbox))
-    let selectionMode = SelectionMode()
+    let route: AppRouteState = .init(route: .mailbox(label: .placeHolderMailbox))
+    let selectionMode = SelectionModeState()
 
     struct PreviewWrapper: View {
-        @State var appRoute: AppRoute
-        @State var selectionMode: SelectionMode
+        @State var appRoute: AppRouteState
+        @State var selectionMode: SelectionModeState
 
         var body: some View {
             MailboxConversationScreen(model: .init(

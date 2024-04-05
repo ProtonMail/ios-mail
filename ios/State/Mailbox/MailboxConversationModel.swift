@@ -25,8 +25,8 @@ import class UIKit.UIImage
  Source of truth for the Mailbox view showing conversations.
  */
 final class MailboxConversationModel: ObservableObject {
-    @ObservedObject private(set) var appRoute: AppRoute
-    @ObservedObject private(set) var selectionMode: SelectionMode
+    @ObservedObject private(set) var appRoute: AppRouteState
+    @ObservedObject private(set) var selectionMode: SelectionModeState
 
     @Published private(set) var state: MailboxConversationModel.State
 
@@ -35,7 +35,7 @@ final class MailboxConversationModel: ObservableObject {
     private let dependencies: Dependencies
     private var cancellables = Set<AnyCancellable>()
 
-    init(appRoute: AppRoute, selectionMode: SelectionMode, state: State = .loading, dependencies: Dependencies = .init()) {
+    init(appRoute: AppRouteState, selectionMode: SelectionModeState, state: State = .loading, dependencies: Dependencies = .init()) {
         self.appRoute = appRoute
         self.selectionMode = selectionMode
         self.state = state
@@ -88,7 +88,7 @@ extension MailboxConversationModel {
     private func updateData() async {
         guard let liveQuery else { return }
         let conversations = liveQuery.value().map {
-            $0.toMailboxConversationCellUIModel(selectedIds: selectionMode.selectedItems)
+            $0.toMailboxConversationCellUIModel(selectedIds: Set(selectionMode.selectedItems.map(\.id)))
         }
         await updateState(.data(conversations))
     }
@@ -105,20 +105,20 @@ extension MailboxConversationModel {
 extension MailboxConversationModel {
 
     @MainActor
-    func onConversationTap(id: PMLocalConversationId) {
+    func onConversationTap(conversation: MailboxConversationCellUIModel) {
         if selectionMode.hasSelectedItems {
-            let isCurrentlySelected = selectionMode.selectedItems.contains(id)
-            onConversationSelectionChange(id: id, isSelected: !isCurrentlySelected)
+            let isCurrentlySelected = selectionMode.selectedItems.contains(conversation.toSelectedItem())
+            onConversationSelectionChange(conversation: conversation, isSelected: !isCurrentlySelected)
         } else {
             // ...
         }
     }
 
     @MainActor
-    func onConversationSelectionChange(id: PMLocalConversationId, isSelected: Bool) {
+    func onConversationSelectionChange(conversation: MailboxConversationCellUIModel, isSelected: Bool) {
         isSelected
-        ? selectionMode.addMailboxItem(id: id)
-        : selectionMode.removeMailboxItem(id: id)
+        ? selectionMode.addMailboxItem(conversation.toSelectedItem())
+        : selectionMode.removeMailboxItem(conversation.toSelectedItem())
     }
 
     func onConversationStarChange(id: PMLocalConversationId, isStarred: Bool) {
@@ -151,19 +151,16 @@ extension MailboxConversationModel {
         }
     }
 
-    func onConversationAction(
-        _ swipeAction: SwipeAction,
-        conversationId: PMLocalConversationId,
-        newReadStatus: MailboxReadStatus? = nil
-    ) {
-        switch swipeAction {
-        case .none:
-            break
+    func onConversationAction(_ action: Action, conversationIds: [PMLocalConversationId]) {
+        switch action {
         case .delete:
-            onConversationsDeletion(ids: [conversationId])
-        case .toggleReadStatus:
-            guard let newReadStatus else { return }
-            onConversationsSetReadStatus(to: newReadStatus, for: [conversationId])
+            onConversationsDeletion(ids: conversationIds)
+        case .markAsRead:
+            onConversationsSetReadStatus(to: .read, for: conversationIds)
+        case .markAsUnread:
+            onConversationsSetReadStatus(to: .unread, for: conversationIds)
+        default:
+            break
         }
     }
 }

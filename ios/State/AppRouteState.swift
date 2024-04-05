@@ -19,8 +19,8 @@ import Combine
 import Foundation
 
 @MainActor
-final class AppRoute: ObservableObject, Sendable {
-    static let shared = AppRoute(route: .appLaunching)
+final class AppRouteState: ObservableObject, Sendable {
+    static let shared = AppRouteState(route: .appLaunching)
 
     @Published private(set) var route: Route
     @Published private(set) var selectedMailbox: SelectedMailbox
@@ -63,4 +63,3 @@ enum Route: Equatable {
         return nil
     }
 }
-

@@ -15,25 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_mail_uniffi
+import Foundation
 
-extension LocalLabelWithCount {
+struct SelectedItem: Hashable {
+    let id: PMMailboxItemId
+    let isRead: Bool
+    let isStarred: Bool
 
-    func systemFolderToSidebarCellUIModel() -> SidebarCellUIModel? {
-        guard let rid,
-              let remoteId = UInt64(rid),
-              let systemFolderId = SystemFolderIdentifier(rawValue: remoteId)
-        else {
-            return nil
-        }
-        return .init(
-            id: id,
-            name: systemFolderId.localisedName,
-            icon: systemFolderId.icon,
-            badge: unreadCount > 0 ? String(unreadCount) : "",
-            route: .mailbox(
-                label: .init(localId: id, name: systemFolderId.localisedName, systemFolder: systemFolderId)
-            )
-        )
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    static func == (lhs: SelectedItem, rhs: SelectedItem) -> Bool {
+        return lhs.id == rhs.id
     }
 }

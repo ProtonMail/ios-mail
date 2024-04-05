@@ -17,13 +17,15 @@
 
 import SwiftUI
 
-struct MailboxSwipeActions: ViewModifier {
-    typealias Action = @MainActor (SwipeAction, PMMailboxItemId, _ newReadStatus: MailboxReadStatus?) -> Void
+struct MailboxSwipeActionsModifier: ViewModifier {
+    typealias OnTapAction = @MainActor (Action, [PMMailboxItemId]) -> Void
 
-    @EnvironmentObject var userSettings: UserSettings
+    @EnvironmentObject private var userSettings: UserSettings
+    @State private(set) var triggerFeedback = false
+    private let isSelectionModeOn: Bool
     private let itemId: PMMailboxItemId
     private let isItemRead: Bool
-    private let action: Action
+    private let onTap: OnTapAction
 
     var leadingSwipe: SwipeAction {
         userSettings.leadingSwipeAction
@@ -33,24 +35,29 @@ struct MailboxSwipeActions: ViewModifier {
         userSettings.trailingSwipeAction
     }
 
-    init(itemId: PMMailboxItemId, isItemRead: Bool, action: @escaping Action) {
+    init(isSelectionModeOn: Bool, itemId: PMMailboxItemId, isItemRead: Bool, onTapAction: @escaping OnTapAction) {
+        self.isSelectionModeOn = isSelectionModeOn
         self.itemId = itemId
         self.isItemRead = isItemRead
-        self.action = action
+        self.onTap = onTapAction
     }
 
     func body(content: Content) -> some View {
-        content
-            .if(leadingSwipe.isActionAssigned) { view in
-                view.swipeActions(edge: .leading) {
-                    button(for: leadingSwipe)
+        if isSelectionModeOn {
+            content
+        } else {
+            content
+                .if(leadingSwipe.isActionAssigned) { view in
+                    view.swipeActions(edge: .leading) {
+                        button(for: leadingSwipe)
+                    }
                 }
-            }
-            .if(trailingSwipe.isActionAssigned) { view in
-                view.swipeActions(edge: .trailing) {
-                    button(for: trailingSwipe)
+                .if(trailingSwipe.isActionAssigned) { view in
+                    view.swipeActions(edge: .trailing) {
+                        button(for: trailingSwipe)
+                    }
                 }
-            }
+        }
     }
 
     @ViewBuilder
@@ -61,22 +68,33 @@ struct MailboxSwipeActions: ViewModifier {
                 if case .toggleReadStatus = swipeAction {
                     newReadStatus = MailboxReadStatus(rawValue: !isItemRead)
                 }
-                action(swipeAction, itemId, newReadStatus)
+                guard let action = swipeAction.toAction(newReadStatus: newReadStatus) else { return }
+                onTap(action, [itemId])
+                triggerFeedback.toggle()
             } label: {
-                Image(uiImage: swipeAction.icon(isStatusRead: isItemRead))
+                Image(uiImage: swipeAction.icon(readStatus: isItemRead ? .allRead : .noneRead))
             }
         }
         .tint(swipeAction.color)
+        .sensoryFeedback(.success, trigger: triggerFeedback)
     }
 }
 
 extension View {
 
     @MainActor func mailboxSwipeActions(
+        isSelectionModeOn: Bool,
         itemId: PMMailboxItemId,
         isItemRead: Bool,
-        action: @escaping MailboxSwipeActions.Action
+        onTapAction: @escaping MailboxSwipeActionsModifier.OnTapAction
     ) -> some View {
-        self.modifier(MailboxSwipeActions(itemId: itemId, isItemRead: isItemRead, action: action))
+        self.modifier(
+            MailboxSwipeActionsModifier(
+                isSelectionModeOn: isSelectionModeOn,
+                itemId: itemId,
+                isItemRead: isItemRead,
+                onTapAction: onTapAction
+            )
+        )
     }
 }

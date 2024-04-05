@@ -40,14 +40,14 @@ enum SwipeAction {
         }
     }
 
-    func icon(isStatusRead: Bool) -> UIImage {
+    func icon(readStatus: SelectionReadStatus) -> UIImage {
         switch self {
         case .none:
             return UIImage()
         case .toggleReadStatus:
-            return isStatusRead ? DS.Icon.icEnvelopeDot : DS.Icon.icEnvelopeOpen
+            return Action.toggleReadStatusAction(when: readStatus).icon
         case .delete:
-            return DS.Icon.icTrash
+            return Action.delete.icon
         }
     }
 
@@ -59,6 +59,21 @@ enum SwipeAction {
             return DS.Color.Brand.norm
         case .delete:
             return DS.Color.Notification.error
+        }
+    }
+}
+
+extension SwipeAction {
+
+    func toAction(newReadStatus: MailboxReadStatus?) -> Action? {
+        switch self {
+        case .toggleReadStatus:
+            guard let newReadStatus else { return nil }
+            return newReadStatus == .read ? .markAsRead : .markAsUnread
+        case .delete:
+            return .delete
+        default:
+            return nil
         }
     }
 }

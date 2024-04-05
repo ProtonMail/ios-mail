@@ -43,10 +43,19 @@ enum LocalizationTemp {
         static func title(value: Int) -> String { String(format: "%d selected", value) }
     }
 
-    enum SwipeAction {
+    enum Action {
         static let delete = "Delete"
-        static let read = "Read"
-        static let unread = "Unread"
+        static let labelAs = "Label as…"
+        static let markAsRead = "Mark as Read"
+        static let markAsUnread = "Mark as Unread"
+        static let moveTo = "Move to…"
+        static let moveToArchive = "Archive"
+        static let moveToInbox = "Inbox"
+        static let moveToSpam = "Move to spam"
+        static let moveToTrash = "Move to trash"
+        static let snooze = "Snooze"
+        static let star = "Star"
+        static let unstar = "Unstar"
     }
 
     enum MailboxCell {
