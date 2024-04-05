@@ -91,6 +91,13 @@ extension MailboxConversationModel {
             $0.toMailboxConversationCellUIModel(selectedIds: Set(selectionMode.selectedItems.map(\.id)))
         }
         await updateState(.data(conversations))
+        selectionMode.refreshSelectedItemsStatus { itemIds in
+            guard !itemIds.isEmpty, case .data(let conversations) = state else { return [] }
+            let selectedItems = conversations
+                .filter { itemIds.contains($0.id) }
+                .map { $0.toSelectedItem() }
+            return Set(selectedItems)
+        }
     }
 
     @MainActor

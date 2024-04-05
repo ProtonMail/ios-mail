@@ -17,6 +17,7 @@
 
 import Foundation
 
+/// Keeps the state of the items selected in a Mailbox. This class is agnostic of Messages and Conversations and so it works for both.
 @MainActor
 final class SelectionModeState: ObservableObject {
 
@@ -46,6 +47,30 @@ final class SelectionModeState: ObservableObject {
     func exitSelectionMode() {
         selectedItems.removeAll()
         hasSelectedItems = false
+        updateSelectionStatus()
+    }
+
+    /**
+     Call this method to refresh the status of the selected items when their status might have changed.
+     - Parameter itemProvider: closure that given a collection of item ids, returns the newest status of those items.
+     
+     - If `itemProvider` does not return one of the selected items, this will be removed from the selection collection. The reason
+     being that the item might not exist anymore.
+     - If `itemProvider` returns one item that did not belong to the selection collection, that item won't be added to the collection. New
+     items should be added calling  `addMailboxItem`.
+     */
+    func refreshSelectedItemsStatus(itemProvider: ([PMMailboxItemId]) -> Set<SelectedItem> ) {
+        let returnedItems = itemProvider(selectedItems.map(\.id))
+        let selectedItemsNewStatus = returnedItems.union(returnedItems)
+        selectedItems.removeAll()
+        selectedItems = selectedItemsNewStatus
+
+        // Given that this method can be frequently called, we only change the `hasSelectedItems` property
+        // if the value changes to avoid potential infinite loops with observers.
+        let newHasSelectedItemsValue = !selectedItems.isEmpty
+        if hasSelectedItems != newHasSelectedItemsValue {
+            hasSelectedItems = newHasSelectedItemsValue
+        }
         updateSelectionStatus()
     }
 }

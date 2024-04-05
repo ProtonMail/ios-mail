@@ -165,6 +165,85 @@ final class SelectionModeStateTests: XCTestCase {
         XCTAssertEqual(sut.selectionStatus.starStatus, .noneStarred)
     }
 
+    func testRefreshSelectedItemsStatus_whenStatusDoesChanges_itChangesTheSelectionStatus() {
+        let items = [
+            SelectedItem(id: 1, isRead: false, isStarred: false),
+            SelectedItem(id: 2, isRead: false, isStarred: false),
+        ]
+        items.forEach(sut.addMailboxItem(_:))
+        XCTAssertEqual(sut.hasSelectedItems, true)
+        XCTAssertEqual(sut.selectedItems, Set(items))
+        XCTAssertEqual(sut.selectionStatus.readStatus, .noneRead)
+        XCTAssertEqual(sut.selectionStatus.starStatus, .noneStarred)
+
+        sut.refreshSelectedItemsStatus { _ in
+            let newItems = items.map {
+                SelectedItem(id: $0.id, isRead: !$0.isRead, isStarred: !$0.isStarred)
+            }
+            return Set(newItems)
+        }
+        XCTAssertEqual(sut.hasSelectedItems, true)
+        XCTAssertEqual(sut.selectedItems, Set(items))
+        XCTAssertEqual(sut.selectionStatus.readStatus, .allRead)
+        XCTAssertEqual(sut.selectionStatus.starStatus, .allStarred)
+    }
+
+    func testRefreshSelectedItemsStatus_whenStatusDoesNotChange_itKeepsTheSelectionStatus() {
+        let items = [
+            SelectedItem(id: 1, isRead: true, isStarred: true),
+            SelectedItem(id: 2, isRead: true, isStarred: true),
+        ]
+        items.forEach(sut.addMailboxItem(_:))
+        XCTAssertEqual(sut.hasSelectedItems, true)
+        XCTAssertEqual(sut.selectedItems, Set(items))
+        XCTAssertEqual(sut.selectionStatus.readStatus, .allRead)
+        XCTAssertEqual(sut.selectionStatus.starStatus, .allStarred)
+
+        sut.refreshSelectedItemsStatus { _ in
+            return Set(items)
+        }
+        XCTAssertEqual(sut.hasSelectedItems, true)
+        XCTAssertEqual(sut.selectedItems, Set(items))
+        XCTAssertEqual(sut.selectionStatus.readStatus, .allRead)
+        XCTAssertEqual(sut.selectionStatus.starStatus, .allStarred)
+    }
+
+    func testRefreshSelectedItemsStatus_whenLessItemsAreReturned_itRemovesTheNotReturnedItemsFromSelection() {
+        let item1 = SelectedItem(id: 1, isRead: true, isStarred: true)
+        let item2 = SelectedItem(id: 2, isRead: true, isStarred: true)
+        [item1, item2].forEach(sut.addMailboxItem(_:))
+        XCTAssertEqual(sut.hasSelectedItems, true)
+        XCTAssertEqual(sut.selectedItems, [item1, item2])
+
+        sut.refreshSelectedItemsStatus { _ in
+            return [item1]
+        }
+        XCTAssertEqual(sut.hasSelectedItems, true)
+        XCTAssertEqual(sut.selectedItems, [item1])
+
+        sut.refreshSelectedItemsStatus { _ in
+            return []
+        }
+        XCTAssertEqual(sut.hasSelectedItems, false)
+        XCTAssertEqual(sut.selectedItems, [])
+    }
+
+    func testRefreshSelectedItemsStatus_whenSelectedItemsDoNotChange_itDoesNotTriggerHasSelectedItemsPublisher() {
+        let items = [
+            SelectedItem(id: 1, isRead: true, isStarred: true),
+            SelectedItem(id: 2, isRead: true, isStarred: true),
+        ]
+        items.forEach(sut.addMailboxItem(_:))
+
+        let observation = sut.$hasSelectedItems.dropFirst().sink { newValue in
+            XCTFail("hasSelectedItems should not send a value if it does not change the value")
+        }
+
+        sut.refreshSelectedItemsStatus { _ in
+            return Set(items)
+        }
+    }
+
     func testExitSelectionMode_itRemovesAllSelectedItems() {
         let items = [
             SelectedItem(id: 1, isRead: Bool.random(), isStarred: false),
