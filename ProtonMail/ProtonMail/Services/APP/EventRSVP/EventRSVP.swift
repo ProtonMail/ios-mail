@@ -32,6 +32,7 @@ struct LocalEventRSVP: EventRSVP {
     typealias Dependencies = AnyObject & HasAPIService & HasUserManager
 
     private let iCalReader: ICalReader
+    private let iCalRecurrenceFormatter = ICalRecurrenceFormatter()
     private let timeZoneProvider = TimeZoneProvider()
     private unowned let dependencies: Dependencies
 
@@ -100,6 +101,7 @@ struct LocalEventRSVP: EventRSVP {
             startDate: Date(timeIntervalSince1970: apiEvent.startTime),
             endDate: Date(timeIntervalSince1970: apiEvent.endTime),
             isAllDay: iCalEvent.isAllDay,
+            recurrence: iCalRecurrenceFormatter.string(from: iCalEvent.recurrence, startDate: iCalEvent.startDate),
             calendar: .init(name: member.name, iconColor: member.color),
             location: (iCalEvent.location?.title).map { .init(name: $0) },
             organizer: iCalEvent.organizer.map { .init(attendeeModel: $0) },

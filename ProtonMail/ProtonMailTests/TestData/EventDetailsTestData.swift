@@ -36,6 +36,7 @@ extension EventDetails {
             startDate: startDate,
             endDate: endDate,
             isAllDay: isAllDay,
+            recurrence: nil,
             calendar: .init(name: "My Calendar", iconColor: "#FFEEEE"),
             location: .init(name: "Zoom call"),
             organizer: .init(email: "boss@example.com", role: .chair, status: .unknown),

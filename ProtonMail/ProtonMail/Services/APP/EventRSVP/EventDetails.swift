@@ -53,6 +53,7 @@ struct EventDetails: Equatable {
     let startDate: Date
     let endDate: Date
     let isAllDay: Bool
+    let recurrence: String?
     let calendar: Calendar
     let location: Location?
     let organizer: Participant?
