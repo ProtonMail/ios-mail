@@ -28,14 +28,21 @@ protocol ContactsSyncQueueProtocol {
 }
 
 final class ContactsSyncQueue: ContactsSyncQueueProtocol {
-    typealias Dependencies = AnyObject & HasInternetConnectionStatusProviderProtocol & HasContactDataService
+    typealias Dependencies = AnyObject
+    & HasInternetConnectionStatusProviderProtocol
+    & HasContactDataService // not used here but forwarded to the operations that will be enqueued
 
     static let queueFilePrefix = "contactsQueue"
 
     /// Subscribe to this publisher to get progress updates from the queue
     let progressPublisher: CurrentValueSubject<ContactsSyncQueue.Progress, Never>
 
-    private let taskQueueURL: URL
+    let taskQueueURL: URL
+    /// for testing purposes
+    var isPaused: Bool {
+        operationQueue.isSuspended
+    }
+    private let fileManager: FileManager
     private var hasQueueStarted: Bool = false
     private var taskQueue: [ContactTask] {
         didSet {
@@ -58,10 +65,11 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
     private let serial = DispatchQueue(label: "ch.protonmail.protonmail.ContactsSyncRequests")
     private unowned let dependencies: Dependencies
 
-    init(userID: UserID, dependencies: Dependencies) {
+    init(userID: UserID, fileManager: FileManager = .default, dependencies: Dependencies) {
+        self.fileManager = fileManager
         let path = "\(Self.queueFilePrefix).\(userID.rawValue)"
-        var queueFileUrl = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent(path)
-        if FileManager.default.fileExists(atPath: queueFileUrl.absoluteString) {
+        var queueFileUrl = fileManager.applicationSupportDirectoryURL.appendingPathComponent(path)
+        if fileManager.fileExists(atPath: queueFileUrl.path) {
             BackupExcluder().excludeFromBackup(url: &queueFileUrl)
         }
         self.taskQueueURL = queueFileUrl
@@ -77,7 +85,7 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
         guard !hasQueueStarted else { return }
         hasQueueStarted = true
         SystemLogger.log(message: "queue started", category: .contacts)
-        if FileManager.default.fileExists(atPath: taskQueueURL.absoluteString) {
+        if fileManager.fileExists(atPath: taskQueueURL.path) {
             do {
                 let data = try Data(contentsOf: taskQueueURL)
                 self.taskQueue = try JSONDecoder().decode([ContactTask].self, from: data)
@@ -87,6 +95,7 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
             }
             SystemLogger.log(message: "queue disk read count \(taskQueue.count)", category: .contacts)
         } else {
+            SystemLogger.log(message: "queue file does not exist", category: .contacts)
             self.taskQueue = []
         }
         updateProgressTotal(numAdded: taskQueue.reduce(0, { $0 + $1.numContacts }))
@@ -131,7 +140,7 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
             taskQueue.removeAll()
             resetProgress()
             do {
-                try FileManager.default.removeItem(at: taskQueueURL)
+                try fileManager.removeItem(at: taskQueueURL)
                 SystemLogger.log(message: "queue file deleted", category: .contacts)
             } catch {
                 SystemLogger.log(error: error, category: .contacts)
