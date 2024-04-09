@@ -19,7 +19,6 @@ internal enum Asset {
   internal static let composeScheduleStar = ImageAsset(name: "compose_schedule_star")
   internal static let launchScreenBackground = ColorAsset(name: "LaunchScreenBackground")
   internal static let launchScreenMailLogo = ImageAsset(name: "LaunchScreenMailLogo")
-  internal static let icFileTypeAttachment = ImageAsset(name: "ic-file-type-attachment")
   internal static let icFileTypeAudio = ImageAsset(name: "ic-file-type-audio")
   internal static let icFileTypeCalendar = ImageAsset(name: "ic-file-type-calendar")
   internal static let icFileTypeCode = ImageAsset(name: "ic-file-type-code")

@@ -52,10 +52,6 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
         setUpAvatarTapHandling()
     }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-    }
-
     func resetCellContent() {
         shouldUpdateTime = false
         mailboxItem = nil

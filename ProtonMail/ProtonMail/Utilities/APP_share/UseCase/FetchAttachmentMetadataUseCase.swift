@@ -36,9 +36,9 @@ final class FetchAttachmentMetadata: FetchAttachmentMetadataUseCase {
         let request = AttachmentMetadataRequest(attID: params.attachmentID.rawValue)
         let response = await dependencies.apiService.perform(request: request, response: AttachmentMetadataResponse())
         if let keyPacket = response.1.keyPacket {
-            return AttachmentMetadata(id: params.attachmentID, keyPacket: keyPacket)
+            return AttachmentMetadata(keyPacket: keyPacket)
         } else {
-            throw FetchAttachmentMetadataError(attachmentID: params.attachmentID)
+            throw FetchAttachmentMetadataError()
         }
     }
 }
@@ -58,13 +58,10 @@ extension FetchAttachmentMetadata {
 }
 
 struct AttachmentMetadata: Decodable {
-    let id: AttachmentID
     let keyPacket: String
 }
 
 struct FetchAttachmentMetadataError: LocalizedError {
-    let attachmentID: AttachmentID
-
     var errorDescription: String? {
         "FetchAttachmentMetadataError: Key Packets Not Found"
     }

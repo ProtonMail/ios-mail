@@ -41,7 +41,6 @@ public extension Quark {
         let (data, _) = try executeQuarkRequest(request)
 
         let usersResponse = try parseQuarkCommandJsonResponse(jsonData: data, type: MailQuarkiOSResponse.self)
-        let currentUser = usersResponse!.users.first!
 
         if let users = usersResponse?.users {
             for quarkUser in users {

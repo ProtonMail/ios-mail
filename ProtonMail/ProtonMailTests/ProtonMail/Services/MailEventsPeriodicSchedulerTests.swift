@@ -653,7 +653,6 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
             XCTAssertEqual(sender.name, "name")
             XCTAssertEqual(sender.isFromProton, false)
             XCTAssertEqual(sender.shouldDisplaySenderImage, false)
-            XCTAssertEqual(sender.isFromSimpleLogin, false)
 
             XCTAssertTrue(entity.recipients.contains("testMail@pm.me"))
         }
@@ -739,7 +738,6 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
             XCTAssertEqual(sender.name, "name")
             XCTAssertEqual(sender.address, "sender@mail.me")
             XCTAssertEqual(sender.isFromProton, false)
-            XCTAssertEqual(sender.isFromSimpleLogin, false)
             XCTAssertEqual(sender.shouldDisplaySenderImage, false)
             XCTAssertEqual(sender.bimiSelector, nil)
 
@@ -801,7 +799,6 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
             XCTAssertEqual(sender.name, "L")
             XCTAssertEqual(sender.address, "ccList")
             XCTAssertEqual(sender.isFromProton, false)
-            XCTAssertEqual(sender.isFromSimpleLogin, false)
             XCTAssertEqual(sender.shouldDisplaySenderImage, false)
             XCTAssertEqual(sender.bimiSelector, nil)
 

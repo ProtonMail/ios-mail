@@ -589,13 +589,6 @@ extension ComposeViewModel {
             .sorted(by: { $0.order < $1.order })
     }
 
-    func getNormalAttachmentNum() -> Int {
-        guard let draft = self.composerMessageHelper.draft else { return 0 }
-        let attachments = draft.attachments
-            .filter { !$0.isInline && !$0.isSoftDeleted }
-        return attachments.count
-    }
-
     func needAttachRemindAlert(
         subject: String,
         body: String

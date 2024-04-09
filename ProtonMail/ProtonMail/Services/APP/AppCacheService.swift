@@ -29,7 +29,6 @@ class AppCacheService {
         enum SettingsBundleKeys {
             static var clearAll = "clear_all_preference"
             static var appVersion = "version_preference"
-            static var libVersion = "lib_version_preference"
         }
     }
 

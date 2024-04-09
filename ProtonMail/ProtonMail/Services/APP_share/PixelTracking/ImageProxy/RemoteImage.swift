@@ -18,26 +18,11 @@
 import Alamofire
 
 struct RemoteImage: Codable {
-    let contentType: String?
     let data: Data
     let trackerProvider: String?
 
     init(data: Data, httpURLResponse: HTTPURLResponse) {
-        contentType = Self.determineContentType(headers: httpURLResponse.headers)
         self.data = data
         trackerProvider = httpURLResponse.headers["x-pm-tracker-provider"]
-    }
-
-    private static func determineContentType(headers: HTTPHeaders) -> String? {
-        guard let contentType = headers["Content-Type"] else {
-            assertionFailure("Content-Type not declared")
-            return nil
-        }
-
-        if contentType.components(separatedBy: "/").first != "image" {
-            assertionFailure("\(contentType) does not describe an image")
-        }
-
-        return contentType
     }
 }

@@ -143,10 +143,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
     private(set) var diffableDataSource: MailboxDiffableDataSource?
 
-    var shouldShowMessageNavigationSpotlight: Bool {
-        dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .messageSwipeNavigation, toUserWith: user.userID)
-    }
-
     var isLoggingOut: Bool {
         dependencies.usersManager.loggingOutUserIDs.contains(user.userID)
     }

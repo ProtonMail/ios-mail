@@ -152,7 +152,7 @@ class GlobalContainer: ManagedContainer {
 
     var setupCoreDataServiceFactory: Factory<SetupCoreDataService> {
         self {
-            SetupCoreData(dependencies: self)
+            SetupCoreData()
         }
     }
 

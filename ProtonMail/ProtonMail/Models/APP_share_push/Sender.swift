@@ -47,10 +47,6 @@ struct Sender: Codable {
         isProton == 1
     }
 
-    var isFromSimpleLogin: Bool {
-        isSimpleLogin == 1
-    }
-
     var shouldDisplaySenderImage: Bool {
         displaySenderImage == 1
     }

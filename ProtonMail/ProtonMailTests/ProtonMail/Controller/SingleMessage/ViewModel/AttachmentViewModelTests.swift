@@ -75,7 +75,7 @@ class AttachmentViewModelTests: XCTestCase {
 
         let fetchAttachmentMetadata = MockFetchAttachmentMetadataUseCase()
         fetchAttachmentMetadata.executionStub.bodyIs { _, _ in
-            AttachmentMetadata(id: "", keyPacket: "")
+            AttachmentMetadata(keyPacket: "")
         }
 
         let fetchAttachment = MockFetchAttachment()

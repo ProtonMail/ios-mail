@@ -26,7 +26,6 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
     var stubSwipeActionCache: SwipeActionCacheStub!
 
     private var globalContainer: GlobalContainer!
-    private var mockApi: APIServiceMock!
     private var activeUserInfo, newUserInfo: UserInfo!
 
     override func setUp() {
@@ -35,8 +34,6 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         globalContainer = .init()
         globalContainer.swipeActionCacheFactory.register { self.stubSwipeActionCache }
         sut = UpdateSwipeActionDuringLogin(dependencies: globalContainer)
-
-        mockApi = APIServiceMock()
 
         activeUserInfo = .getDefault()
         activeUserInfo.userId = "test"
@@ -56,7 +53,6 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         stubSwipeActionCache = nil
         activeUserInfo = nil
         newUserInfo = nil
-        mockApi = nil
     }
 
     func testUpdateSwipeAction_activeUserIsTheSameAsNewUser_saveSwipeActionToCache() throws {
@@ -67,14 +63,12 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         sut.execute(
             params: .init(
                 activeUserInfo: activeUserInfo,
-                newUserInfo: activeUserInfo,
-                newUserApiService: mockApi
+                newUserInfo: activeUserInfo
             )) { _ in
                 expectation1.fulfill()
             }
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertTrue(mockApi.requestJSONStub.wasNotCalled)
         let leftToRight = try XCTUnwrap(stubSwipeActionCache.leftToRightSwipeActionType)
         XCTAssertEqual(leftToRight,
                        SwipeActionSettingType.convertFromServer(rawValue: activeUserInfo.swipeRight))
@@ -93,15 +87,13 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         sut.execute(
             params: .init(
                 activeUserInfo: activeUserInfo,
-                newUserInfo: newUserInfo,
-                newUserApiService: mockApi
+                newUserInfo: newUserInfo
             )
         ) { _ in
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertTrue(mockApi.requestJSONStub.wasNotCalled)
         let leftToRight = try XCTUnwrap(stubSwipeActionCache.leftToRightSwipeActionType)
         XCTAssertEqual(leftToRight,
                        SwipeActionSettingType.convertFromServer(rawValue: activeUserInfo.swipeRight))
@@ -123,15 +115,13 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         sut.execute(
             params: .init(
                 activeUserInfo: activeUserInfo,
-                newUserInfo: newUserInfo,
-                newUserApiService: mockApi
+                newUserInfo: newUserInfo
             )
         ) { _ in
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertTrue(mockApi.requestJSONStub.wasNotCalled)
         let leftToRight = try XCTUnwrap(stubSwipeActionCache.leftToRightSwipeActionType)
         XCTAssertEqual(leftToRight, .labelAs)
 

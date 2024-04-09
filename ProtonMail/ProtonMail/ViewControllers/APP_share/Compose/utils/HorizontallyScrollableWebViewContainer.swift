@@ -46,8 +46,6 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
     private var scrollDecelerationOverlay: ViewBlowingAfterTouch!
     private var scrollDecelerationOverlayObservation: NSKeyValueObservation!
 
-    private var defaultScale: CGFloat?
-
     deinit {
         self.contentSizeObservation = nil
         self.loadingObservation = nil
@@ -200,8 +198,6 @@ extension HorizontallyScrollableWebViewContainer: WKNavigationDelegate, WKUIDele
             guard self?.shouldDefaultObserveContentSizeChanges() == true else { return }
             guard webView.estimatedProgress > 0.1 else { return } // skip first call because it will inherit irrelevant contentSize
             self?.updateHeight(to: webView.scrollView.contentSize.height)
-            // Work around for webview tap too sensitive. Save the default scale value
-            self?.defaultScale = round(webView.scrollView.zoomScale * 1000) / 1000.0
         }
 
         decisionHandler(.allow)

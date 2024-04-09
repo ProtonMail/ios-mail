@@ -1537,8 +1537,6 @@ enum L11n {
         static let addressBenefit = NSLocalizedString("Up to 15 email addresses/aliases", comment: "The benefit item for snooze promotion view")
         static let folderBenefit = NSLocalizedString("Unlimited folders, labels, and filters", comment: "The benefit item for snooze promotion view")
         static let domainBenefit = NSLocalizedString("Custom email domains", comment: "The benefit item for snooze promotion view")
-        static let spotlightDesc = NSLocalizedString("Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.", comment: "Description string shows in spotlight view")
-        static let spotlightTitle = NSLocalizedString("Snooze it for later", comment: "Description string shows in spotlight view")
     }
 
 	struct InlineAttachment {
@@ -1547,7 +1545,6 @@ enum L11n {
 
     struct MessageNavigation {
         static let spotlightMessage = "You can now effortlessly navigate through messages by swiping left or right."
-        static let spotlightTitle = "Swipe to next message"
         static let settingTitle = NSLocalizedString("Swipe to next message", comment: "The title in setting page")
         static let settingDesc = NSLocalizedString(
             "Allow navigating through messages by swiping left or right.",

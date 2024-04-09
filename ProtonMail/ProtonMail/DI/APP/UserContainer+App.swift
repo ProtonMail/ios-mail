@@ -113,7 +113,6 @@ extension UserContainer {
         self {
             MessageSearch(
                 dependencies: .init(
-                    userID: self.user.userID,
                     backendSearch: BackendSearch(
                         dependencies: .init(
                             apiService: self.user.apiService,
