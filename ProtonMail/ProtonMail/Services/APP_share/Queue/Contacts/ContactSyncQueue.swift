@@ -18,7 +18,8 @@
 import Combine
 
 protocol ContactsSyncQueueProtocol {
-    var progressPublisher: CurrentValueSubject<ContactsSyncQueue.Progress, Never> { get }
+    var progressPublisher: AnyPublisher<ContactsSyncQueue.Progress, Never> { get }
+    var protonStorageQuotaExceeded: AnyPublisher<Void, Never> { get }
 
     func start()
     func pause()
@@ -34,15 +35,25 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
 
     static let queueFilePrefix = "contactsQueue"
 
+    private let fileManager: FileManager
+
     /// Subscribe to this publisher to get progress updates from the queue
-    let progressPublisher: CurrentValueSubject<ContactsSyncQueue.Progress, Never>
+    var progressPublisher: AnyPublisher<ContactsSyncQueue.Progress, Never> {
+        _progressPublisher.eraseToAnyPublisher()
+    }
+    private let _progressPublisher: CurrentValueSubject<ContactsSyncQueue.Progress, Never>
+
+    /// Subscribe to know when the backend responds with storage exceeded
+    var protonStorageQuotaExceeded: AnyPublisher<Void, Never> {
+        _protonStorageQuotaExceeded.eraseToAnyPublisher()
+    }
+    private let _protonStorageQuotaExceeded: PassthroughSubject<Void, Never>
 
     let taskQueueURL: URL
     /// for testing purposes
     var isPaused: Bool {
         operationQueue.isSuspended
     }
-    private let fileManager: FileManager
     private var hasQueueStarted: Bool = false
     private var taskQueue: [ContactTask] {
         didSet {
@@ -75,7 +86,8 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
         self.taskQueueURL = queueFileUrl
 
         self.taskQueue = []
-        self.progressPublisher = .init(Progress())
+        self._progressPublisher = .init(Progress())
+        self._protonStorageQuotaExceeded = .init()
         self.operationErrorHandler = .init(dependencies: dependencies)
         self.dependencies = dependencies
     }
@@ -170,25 +182,25 @@ extension ContactsSyncQueue {
     }
 
     private func updateProgressTotal(numAdded: Int) {
-        var progress = progressPublisher.value
+        var progress = _progressPublisher.value
         if progress.total == 0 {
             SystemLogger.log(message: "tasks added to empty queue", category: .contacts)
         }
         progress.total += numAdded
-        progressPublisher.send(progress)
+        _progressPublisher.send(progress)
     }
 
     private func incrementProgress(_ increment: Int) {
-        var progress = progressPublisher.value
+        var progress = _progressPublisher.value
         progress.finished += increment
         if progress.finished >= progress.total {
             SystemLogger.log(message: "enqueued tasks finished", category: .contacts)
         }
-        progressPublisher.send(progress)
+        _progressPublisher.send(progress)
     }
 
     private func resetProgress() {
-        progressPublisher.send(Progress())
+        _progressPublisher.send(Progress())
     }
 }
 
@@ -197,6 +209,7 @@ extension ContactsSyncQueue {
 extension ContactsSyncQueue: AsyncOperationDelegate {
 
     func taskFinished(operation: AsyncOperation, error: Error?) {
+        var hasReceivedAbort: Bool = false
         serial.sync {
             guard !operation.isCancelled else { return }
             guard let taskID = UUID(uuidString: operation.operationID) else { return }
@@ -207,15 +220,22 @@ extension ContactsSyncQueue: AsyncOperationDelegate {
                 SystemLogger.log(message: message, category: .contacts, isError: true)
 
                 switch resolution {
-                case .abort:
+                case .skipTask:
                     removeFromTasksQueue(taskID: taskID)
-                case .pause:
+                case .pauseQueue:
                     pause()
                     enqueueOperationAgain(taskID: taskID)
+                case .abort:
+                    hasReceivedAbort = true
                 }
             } else {
                 removeFromTasksQueue(taskID: taskID)
             }
+        }
+
+        if hasReceivedAbort {
+            // we publish to obervers outside the serial queue to avoid potential deadlocks
+            _protonStorageQuotaExceeded.send()
         }
     }
 

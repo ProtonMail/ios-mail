@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import class ProtonCoreServices.APIErrorCode
 
 struct AsyncOperationErrorHandler {
     typealias Dependencies = AnyObject & HasInternetConnectionStatusProviderProtocol
@@ -27,7 +28,11 @@ struct AsyncOperationErrorHandler {
     }
 
     func onOperationError(_ error: NSError) -> ErrorResolution {
-        isNetworkConnectionProblem(error: error) ? .pause : .abort
+        if error.code == APIErrorCode.storageQuotaExceeded {
+            return .abort
+        } else {
+            return isNetworkConnectionProblem(error: error) ? .pauseQueue : .skipTask
+        }
     }
 
     private func isNetworkConnectionProblem(error: NSError) -> Bool {
@@ -38,7 +43,11 @@ struct AsyncOperationErrorHandler {
     }
 
     enum ErrorResolution {
-        case pause
+        /// pause tasks and retry the current task in the future
+        case pauseQueue
+        /// the task that triggered this error should not be retried
+        case skipTask
+        /// stop executing tasks and remove pending ones
         case abort
     }
 }

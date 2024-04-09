@@ -15,10 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Foundation
 import ProtonCoreDataModel
 
-struct AutoImportContactsFeature {
+final class AutoImportContactsFeature {
     typealias Dependencies = AnyObject
     & HasUserManager
     & HasUserDefaults
@@ -29,9 +30,17 @@ struct AutoImportContactsFeature {
         dependencies.user.userID
     }
     private unowned var dependencies: Dependencies
+    private var cancellables = Set<AnyCancellable>()
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
+        dependencies
+            .contactSyncQueue
+            .protonStorageQuotaExceeded
+            .sink { [weak self] _ in
+                self?.onProtonStorageExcceeded()
+            }
+            .store(in: &cancellables)
     }
 
     var isFeatureEnabled: Bool {
@@ -80,5 +89,16 @@ struct AutoImportContactsFeature {
     func disableSettingAndDeleteQueueForUser() {
         disableSettingForUser()
         dependencies.contactSyncQueue.deleteQueue()
+    }
+}
+
+extension AutoImportContactsFeature {
+
+    private func onProtonStorageExcceeded() {
+        SystemLogger.log(message: "Proton quota exceeded", category: .contacts)
+        disableSettingAndDeleteQueueForUser()
+        DispatchQueue.main.async {
+            LocalString._storage_exceeded.alertToastBottom()
+        }
     }
 }
