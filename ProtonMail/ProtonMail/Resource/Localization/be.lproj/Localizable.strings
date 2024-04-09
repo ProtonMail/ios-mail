@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "Сховішча: запоўнена на %@";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Сховішча Drive: запоўнена на %@";
-
-/* Upgrade button action */
-"Upgrade" = "Палепшыць";
+"Drive: %@ full" = "Сховішча Drive: запоўнена на %@";
 
 /* Official badge next to sender's name */
 "Official" = "Афіцыйны";

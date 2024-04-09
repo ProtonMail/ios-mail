@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "საცავი: %@ დაკავებულია";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive-ის საცავი: %@ დაკავებულია";
-
-/* Upgrade button action */
-"Upgrade" = "ტარიფის აწევა";
+"Drive: %@ full" = "Drive-ის საცავი: %@ დაკავებულია";
 
 /* Official badge next to sender's name */
 "Official" = "ოფიციალური";

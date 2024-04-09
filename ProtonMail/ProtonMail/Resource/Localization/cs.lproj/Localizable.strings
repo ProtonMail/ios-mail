@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "Úložiště: zaplňeno na %@";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Úložiště Drive: zaplňeno na %@";
-
-/* Upgrade button action */
-"Upgrade" = "Navýšit";
+"Drive: %@ full" = "Úložiště Drive: zaplňeno na %@";
 
 /* Official badge next to sender's name */
 "Official" = "Oficiální";

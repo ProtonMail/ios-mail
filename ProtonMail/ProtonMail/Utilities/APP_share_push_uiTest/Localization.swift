@@ -1336,9 +1336,8 @@ enum L11n {
     struct SideMenuStorageAlert {
         static let menuTitle = NSLocalizedString("Max Storage", comment: "Menu title")
         static let alertBoxMailTitle = NSLocalizedString("Storage: %@ full", comment: "Cell title that shows the percentage of the storage")
-        static let alertBoxDriveTitle = NSLocalizedString("Drive storage: %@ full", comment: "Cell title that shows the percentage of the storage")
+        static let alertBoxDriveTitle = NSLocalizedString("Drive: %@ full", comment: "Cell title that shows the percentage of the storage")
         static let alertBoxCaption = NSLocalizedString("Get more storage", comment: "Description of the action")
-        static let upgradeButtonTitle = NSLocalizedString("Upgrade", comment: "Upgrade button action")
     }
 
     struct OfficialBadge {

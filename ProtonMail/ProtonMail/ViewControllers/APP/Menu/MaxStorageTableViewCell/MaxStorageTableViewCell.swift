@@ -28,7 +28,7 @@ class MaxStorageTableViewCell: UITableViewCell, AccessibleCell {
     private var labelsStack: UIStackView!
     private var title: UILabel!
     private var caption: UILabel!
-    private var ctaButton: UIButton!
+    private var upgradeButton: UIButton!
     private weak var delegate: MaxStorageTableViewCellDelegate?
 
     enum Constants {
@@ -114,23 +114,17 @@ class MaxStorageTableViewCell: UITableViewCell, AccessibleCell {
     }
 
     private func setupButtonUI() {
-        ctaButton = UIButton(type: .custom)
-        ctaButton.translatesAutoresizingMaskIntoConstraints = false
-        ctaButton.setTitle(L11n.SideMenuStorageAlert.upgradeButtonTitle, for: .normal)
-        ctaButton.titleLabel?.font = UIFont.preferredFont(for: .caption1, weight: .regular)
-        ctaButton.tintColor = ColorProvider.TextInverted
-        ctaButton.layer.cornerRadius = 8
-        ctaButton.backgroundColor = ColorProvider.SidebarInteractionWeakNorm
-        ctaButton.contentEdgeInsets = Constants.buttonPadding
-        ctaButton.addTarget(self, action: #selector(upgradeButtonTapped), for: .touchUpInside)
-        ctaButton.titleLabel?.minimumScaleFactor = 0.8
-        ctaButton.titleLabel?.adjustsFontSizeToFitWidth = true
-        contentView.addSubview(ctaButton)
+        upgradeButton = UIButton(image: IconProvider.arrowUp)
+        upgradeButton.translatesAutoresizingMaskIntoConstraints = false
+        upgradeButton.tintColor = ColorProvider.IconInverted
+        upgradeButton.addTarget(self, action: #selector(upgradeButtonTapped), for: .touchUpInside)
+        contentView.addSubview(upgradeButton)
 
         [
-            ctaButton.leadingAnchor.constraint(greaterThanOrEqualTo: labelsStack.trailingAnchor, constant: 8),
-            ctaButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            ctaButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.cellPadding)
+            upgradeButton.leadingAnchor.constraint(greaterThanOrEqualTo: labelsStack.trailingAnchor, constant: 8),
+            upgradeButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            upgradeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                    constant: -Constants.cellPadding)
         ].activate()
     }
 

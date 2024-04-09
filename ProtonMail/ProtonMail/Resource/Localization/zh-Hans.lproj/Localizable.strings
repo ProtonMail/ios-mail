@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "存储空间：已使用 %@";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive 存储空间：已使用 %@";
-
-/* Upgrade button action */
-"Upgrade" = "升级账户";
+"Drive: %@ full" = "Drive 存储空间：已使用 %@";
 
 /* Official badge next to sender's name */
 "Official" = "官方";

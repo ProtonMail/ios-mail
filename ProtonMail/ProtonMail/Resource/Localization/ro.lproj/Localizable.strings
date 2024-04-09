@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "Spațiu: %@ ocupat";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Spațiu Drive: %@ ocupat";
-
-/* Upgrade button action */
-"Upgrade" = "Modificare";
+"Drive: %@ full" = "Spațiu Drive: %@ ocupat";
 
 /* Official badge next to sender's name */
 "Official" = "Oficial";

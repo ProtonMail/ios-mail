@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "Emmagatzematge: %@ ple";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "L'emmagatzematge del Drive és: %@ ple";
-
-/* Upgrade button action */
-"Upgrade" = "Millora";
+"Drive: %@ full" = "L'emmagatzematge del Drive és: %@ ple";
 
 /* Official badge next to sender's name */
 "Official" = "Oficial";

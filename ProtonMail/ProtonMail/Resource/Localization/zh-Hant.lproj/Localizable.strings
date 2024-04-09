@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "儲存: %@以滿";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive 儲存空間：%@以滿";
-
-/* Upgrade button action */
-"Upgrade" = "升級";
+"Drive: %@ full" = "Drive 儲存空間：%@以滿";
 
 /* Official badge next to sender's name */
 "Official" = "官方";
