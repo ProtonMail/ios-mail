@@ -41,9 +41,6 @@ class SingleMessageViewModel {
     let labelId: LabelID
     private let messageObserver: MessageObserver
 
-    var isMessageSwipeNavigationEnabled: Bool {
-        true
-    }
     var refreshView: (() -> Void)?
 
     var selectedLabelAsLabels: Set<LabelLocation> = Set()

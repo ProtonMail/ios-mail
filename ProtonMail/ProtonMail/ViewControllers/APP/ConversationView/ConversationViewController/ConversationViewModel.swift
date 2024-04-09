@@ -65,9 +65,6 @@ class ConversationViewModel {
         )
     }
 
-    var isMessageSwipeNavigationEnabled: Bool {
-        true
-    }
     var shouldMoveToNextMessageAfterMove: Bool {
         dependencies.nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove
     }

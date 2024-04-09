@@ -118,10 +118,6 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if !viewModel.isMessageSwipeNavigationEnabled {
-            showToolbarCustomizeSpotlightIfNeeded()
-        }
-
         conversationIsReadyToBeDisplayedTimer = .scheduledTimer(
             withTimeInterval: 0.25,
             repeats: false
@@ -768,8 +764,7 @@ private extension ConversationViewController {
     }
 
     private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {
-        guard viewModel.isMessageSwipeNavigationEnabled,
-              !viewModel.user.shouldMoveToNextMessageAfterMove else {
+        guard !viewModel.user.shouldMoveToNextMessageAfterMove else {
             return
         }
         if var type = undoActionType {
@@ -1591,7 +1586,7 @@ extension ConversationViewController: SnoozeSupport {
 
         let title = String(format: L11n.Snooze.bannerTitle, dateStr)
         let banner = PMBanner(message: title, style: PMBannerNewStyle.info)
-        if viewModel.isMessageSwipeNavigationEnabled && viewModel.shouldMoveToNextMessageAfterMove {
+        if viewModel.shouldMoveToNextMessageAfterMove {
             // PageVC
             guard let viewController = parent else { return }
             banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: viewController)
