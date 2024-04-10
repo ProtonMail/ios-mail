@@ -27,7 +27,7 @@ private enum BarButtonType: Int {
 extension MailboxViewController {
     func setupRightButtons(_ editingMode: Bool, isStorageExceeded: Bool) {
         let items: [UIBarButtonItem]
-        let shouldShowUpsellButton = viewModel.shouldShowUpsellButton
+        let isUpsellButtonVisible = viewModel.isUpsellButtonVisible
 
         if editingMode {
             items = [
@@ -37,13 +37,13 @@ extension MailboxViewController {
             items = [
                 setupEllipsisMenuBarItem(),
                 setupSearchBarItem(),
-                shouldShowUpsellButton ? setupUpsellBarButtonItem() : nil
+                isUpsellButtonVisible ? setupUpsellBarButtonItem() : nil
             ].compactMap { $0 }
         } else {
             items = [
                 isStorageExceeded ? setupStorageExceededBarItem() : setupComposerBarItem(),
                 setupSearchBarItem(),
-                shouldShowUpsellButton ? setupUpsellBarButtonItem() : nil
+                isUpsellButtonVisible ? setupUpsellBarButtonItem() : nil
             ].compactMap { $0 }
         }
 

@@ -17,8 +17,8 @@
 
 import ProtonCoreUIFoundations
 
-public struct UpsellPageModel {
-    public struct Plan {
+public struct UpsellPageModel: Equatable {
+    public struct Plan: Equatable {
         public let name: String
         public let perks: [Perk]
         public let purchasingOptions: [PurchasingOption]
@@ -30,7 +30,7 @@ public struct UpsellPageModel {
         }
     }
 
-    public struct Perk {
+    public struct Perk: Equatable {
         public let icon: KeyPath<ProtonIconSet, ProtonIcon>
         public let description: String
 
@@ -40,14 +40,22 @@ public struct UpsellPageModel {
         }
     }
 
-    public struct PurchasingOption {
-        public let months: Int
+    public struct PurchasingOption: Equatable {
+        public let identifier: String
+        public let cycleInMonths: Int
         public let monthlyPrice: String
         public let isHighlighted: Bool
-        public let discount: Double?
+        public let discount: Int?
 
-        public init(months: Int, monthlyPrice: String, isHighlighted: Bool, discount: Double?) {
-            self.months = months
+        public init(
+            identifier: String,
+            cycleInMonths: Int,
+            monthlyPrice: String,
+            isHighlighted: Bool,
+            discount: Int?
+        ) {
+            self.identifier = identifier
+            self.cycleInMonths = cycleInMonths
             self.monthlyPrice = monthlyPrice
             self.isHighlighted = isHighlighted
             self.discount = discount
