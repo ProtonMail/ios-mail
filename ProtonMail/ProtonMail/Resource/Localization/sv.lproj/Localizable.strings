@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "Lagringsutrymme: %@ fullt";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive lagringsutrymme: %@ fullt";
-
-/* Upgrade button action */
-"Upgrade" = "Uppgradera";
+"Drive: %@ full" = "Drive lagringsutrymme: %@ fullt";
 
 /* Official badge next to sender's name */
 "Official" = "Officiell";

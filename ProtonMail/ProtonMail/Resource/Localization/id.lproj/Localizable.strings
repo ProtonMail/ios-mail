@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "Penyimpanan: %@ penuh";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Penyimpanan drive: %@ penuh";
-
-/* Upgrade button action */
-"Upgrade" = "Tingkatkan";
+"Drive: %@ full" = "Penyimpanan drive: %@ penuh";
 
 /* Official badge next to sender's name */
 "Official" = "Resmi";

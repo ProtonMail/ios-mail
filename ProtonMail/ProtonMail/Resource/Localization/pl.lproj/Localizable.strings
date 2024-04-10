@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "Przestrzeń dyskowa: %@";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Przestrzeń dyskowa Proton Drive: %@";
-
-/* Upgrade button action */
-"Upgrade" = "Ulepsz";
+"Drive: %@ full" = "Przestrzeń dyskowa Proton Drive: %@";
 
 /* Official badge next to sender's name */
 "Official" = "Oficjalna";

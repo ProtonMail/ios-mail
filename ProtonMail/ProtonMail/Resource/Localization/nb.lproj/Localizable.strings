@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "Lagring: %@ full";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive-lagring: %@ full";
-
-/* Upgrade button action */
-"Upgrade" = "Oppgrader";
+"Drive: %@ full" = "Drive-lagring: %@ full";
 
 /* Official badge next to sender's name */
 "Official" = "Offisiell";

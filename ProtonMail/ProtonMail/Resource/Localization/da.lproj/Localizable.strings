@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "Lagerplads: %@ fyldt";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drev lagerplads: %@ fyldt";
-
-/* Upgrade button action */
-"Upgrade" = "Opgradér";
+"Drive: %@ full" = "Drev lagerplads: %@ fyldt";
 
 /* Official badge next to sender's name */
 "Official" = "Officiel";

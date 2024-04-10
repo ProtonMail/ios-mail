@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "Αποθηκευτικός χώρος: %@ πλήρης";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Αποθηκευτικός χώρος Drive: %@ πλήρης";
-
-/* Upgrade button action */
-"Upgrade" = "Αναβάθμιση";
+"Drive: %@ full" = "Αποθηκευτικός χώρος Drive: %@ πλήρης";
 
 /* Official badge next to sender's name */
 "Official" = "Επίσημο";

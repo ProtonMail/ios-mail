@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "Storage: %@ full";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive tárhely: %@";
-
-/* Upgrade button action */
-"Upgrade" = "Váltás nagyobb csomagra";
+"Drive: %@ full" = "Drive tárhely: %@";
 
 /* Official badge next to sender's name */
 "Official" = "Hivatalos";

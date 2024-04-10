@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "Speicherplatz: %@ voll";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive-Speicherplatz: %@ voll";
-
-/* Upgrade button action */
-"Upgrade" = "Upgrade durchführen";
+"Drive: %@ full" = "Drive-Speicherplatz: %@ voll";
 
 /* Official badge next to sender's name */
 "Official" = "Offiziell";

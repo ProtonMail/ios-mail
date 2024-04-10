@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "저장공간 %@ 채워짐";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive 저장공간: %@ 가득 참";
-
-/* Upgrade button action */
-"Upgrade" = "업그레이드";
+"Drive: %@ full" = "Drive 저장공간: %@ 가득 참";
 
 /* Official badge next to sender's name */
 "Official" = "공식";

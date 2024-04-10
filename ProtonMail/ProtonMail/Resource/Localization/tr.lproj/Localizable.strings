@@ -1953,10 +1953,7 @@
 "Storage: %@ full" = "Depolama alanı %@ dolu";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive depolama alanı: %@ dolu";
-
-/* Upgrade button action */
-"Upgrade" = "Yükselt";
+"Drive: %@ full" = "Drive depolama alanı: %@ dolu";
 
 /* Official badge next to sender's name */
 "Official" = "Resmi";
