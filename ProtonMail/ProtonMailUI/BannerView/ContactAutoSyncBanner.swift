@@ -69,7 +69,7 @@ public struct ContactAutoSyncBanner: View {
             RoundedRectangle(cornerRadius: 16)
                 .stroke(Color(ColorProvider.SeparatorNorm), lineWidth: 1)
         )
-        .padding(.init(top: 12, leading: 16, bottom: 16, trailing: 12))
+        .padding(.init(top: 12, leading: 16, bottom: 16, trailing: 16))
     }
 }
 

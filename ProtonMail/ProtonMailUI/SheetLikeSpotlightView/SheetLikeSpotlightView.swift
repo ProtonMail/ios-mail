@@ -129,6 +129,7 @@ public struct SheetLikeSpotlightView: View {
                 .padding(.horizontal, 8)
                 .foregroundColor(ColorProvider.TextNorm)
                 .font(Font(UIFont.adjustedFont(forTextStyle: .title2, weight: .bold)))
+                .multilineTextAlignment(.center)
             Text(message)
                 .padding(.bottom, 16)
                 .padding(.horizontal, 8)
