@@ -41,6 +41,8 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         static let importContactsHeight: CGFloat = 24.0
     }
 
+    private var noContactsView: NoContactView = SubviewFactory.noContactsView
+    private let noContactsUIView: UIView = SubviewFactory.noContactsUIView
     private let importContactsStack: UIStackView = SubviewFactory.importContactsStack
     private let importContactsIcon = UIImageView(image: IconProvider.arrowsRotate.toTemplateUIImage())
     private let importContactsProgress = SubviewFactory.importContactsProgressLabel
@@ -75,7 +77,11 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     }
 
     private func setUpUI() {
-        view.addSubviews(importContactsStack, tableView)
+        view.addSubviews(importContactsStack, tableView, noContactsUIView)
+        noContactsView.model.onDidTapAutoImport = { [weak self] in
+            self?.autoImportContactIsStarted()
+        }
+
         setUpImportContactsStack()
     }
 
@@ -106,6 +112,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
 
     private func setUpConstraints() {
         let guide = self.view.safeAreaLayoutGuide
+        noContactsUIView.fillSuperview()
         importContactsStack.translatesAutoresizingMaskIntoConstraints = false
         importContactsStackTopConstraint = importContactsStack.topAnchor.constraint(equalTo: guide.topAnchor)
         [
@@ -167,11 +174,19 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         setupDataSource()
         tableView.dataSource = diffableDataSource
         viewModel.contentDidChange = { [weak self] snapshot in
-            DispatchQueue.main.async {
+            self?.publisher.send(snapshot)
+        }
+        publisher
+            .throttle(
+                for: .seconds(1), // we need it to avoid glitches when adding contacts manually
+                scheduler: DispatchQueue.main,
+                latest: true
+            )
+            .sink { [weak self] snapshot in
                 self?.diffableDataSource?.apply(snapshot, animatingDifferences: false)
                 self?.showNoContactViewIfNeeded(hasContact: snapshot.numberOfItems > 0)
             }
-        }
+            .store(in: &cancellables)
 
         self.viewModel.setupFetchedResults()
         self.prepareSearchBar()
@@ -186,12 +201,15 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         navigationItem.assignNavItemIndentifiers()
     }
 
+    private let publisher: CurrentValueSubject<NSDiffableDataSourceSnapshot<String, ContactEntity>, Never> = .init(.init())
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.tableView.setEditing(false, animated: true)
         self.title = LocalString._contacts_title
 
         self.tableView.reloadData()
+        noContactsView.model.isAutoImportContactsEnabled = dependencies.autoImportContactsFeature.isSettingEnabledForUser
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -415,43 +433,18 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
 extension ContactsViewController {
     private func showNoContactViewIfNeeded(hasContact: Bool) {
         guard dependencies.autoImportContactsFeature.isFeatureEnabled else {
+            noContactsUIView.isHidden = true
             return
         }
         guard searchString.isEmpty, !hasContact else {
             showContactAutoSyncBannerIfNeeded()
-            hideNoContactView()
+            noContactsUIView.isHidden = true
             return
         }
-        let texts = NoContactView.Texts(
-            title: L11n.AutoImportContacts.noContactTitle,
-            description: L11n.AutoImportContacts.noContactDesc,
-            importingTitle: L11n.AutoImportContacts.importingTitle,
-            importingDesc: L11n.AutoImportContacts.importingDesc,
-            buttonTitle:  L11n.AutoImportContacts.autoImportContactButtonTitle,
-            noPermissionAlertTitle: L11n.SettingsContacts.autoImportContacts,
-            noPermissionAlertMessage: L11n.SettingsContacts.authoriseContactsInSettingsApp,
-            noPermissionButtonTitle: LocalString._general_ok_action
-        )
-        let noContactView = NoContactView(
-            texts: texts,
-            isImporting: dependencies.autoImportContactsFeature.isSettingEnabledForUser
-        ) { [weak self] _ in
-            self?.autoImportContactIsStarted()
-        }
-        let componentVC = ComponentViewController(rootView: noContactView)
-        guard let componentView = componentVC.view else { return }
-        view.addSubview(componentView)
-        componentView.fillSuperview()
+        noContactsUIView.isHidden = false
 
         tableView.tableHeaderView = nil
         contactAutoSyncBannerHost = nil
-    }
-
-    private func hideNoContactView() {
-        guard
-            let noContactView = view.subviews.first(where: {$0 is SwiftUI._UIHostingView<ProtonMailUI.NoContactView>})
-        else { return }
-        noContactView.removeFromSuperview()
     }
 
     private func autoImportContactIsStarted() {
@@ -570,9 +563,17 @@ extension ContactsViewController {
             label.textAlignment = .right
             return label
         }
+
+        static var noContactsView: NoContactView {
+            NoContactView()
+        }
+
+        static var noContactsUIView: UIView {
+            let componentVC = ComponentViewController(rootView: Self.noContactsView)
+            return componentVC.view
+        }
     }
 }
-
 
 extension UIImageView {
     func rotate() {
