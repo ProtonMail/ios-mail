@@ -21,6 +21,7 @@ import SwiftUI
 struct UpsellCTATile: View {
     let planName: String
     let purchasingOption: UpsellPageModel.PurchasingOption
+    let onTap: () -> Void
 
     private static let planDurationFormatter: Formatter = {
         let formatter = DateComponentsFormatter()
@@ -43,7 +44,7 @@ struct UpsellCTATile: View {
         ZStack {
             VStack(spacing: 14) {
                 VStack(spacing: 12) {
-                    Text(DateComponents(month: purchasingOption.months), formatter: Self.planDurationFormatter)
+                    Text(DateComponents(month: purchasingOption.cycleInMonths), formatter: Self.planDurationFormatter)
                         .font(.caption2)
                         .foregroundColor(.white)
 
@@ -51,12 +52,13 @@ struct UpsellCTATile: View {
                         .font(.system(size: 18, weight: .semibold))
                         .foregroundColor(.white)
                     +
-                    Text("/month")
+                    Text(L11n.Upsell.perMonth)
                         .font(.caption2)
                         .foregroundColor(ColorProvider.SidebarTextWeak)
                 }
 
-                Button("Get \(planName)") {
+                Button(String(format: L11n.Upsell.getPlan, planName)) {
+                    onTap()
                 }
                 .padding(.vertical, 8)
                 .padding(.horizontal, 20)
@@ -75,7 +77,7 @@ struct UpsellCTATile: View {
             .alignmentGuide(VerticalAlignment.center) { $0[.top] }
 
             if let discount = purchasingOption.discount {
-                Text("Save \(Int(discount * 100))%".uppercased())
+                Text(String(format: L11n.Upsell.save, Int(discount * 100)).uppercased())
                     .font(.system(size: 10, weight: .semibold))
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)

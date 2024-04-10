@@ -418,6 +418,16 @@ extension UserContainer: HasSendBugReport {
     }
 }
 
+protocol HasStoreKitManagerProtocol {
+    var storeKitManager: StoreKitManagerProtocol { get }
+}
+
+extension UserContainer: HasStoreKitManagerProtocol {
+    var storeKitManager: StoreKitManagerProtocol {
+        storeKitManagerFactory()
+    }
+}
+
 protocol HasToolbarActionProvider {
     var toolbarActionProvider: ToolbarActionProvider { get }
 }
@@ -465,6 +475,26 @@ protocol HasUpsellButtonStateProvider {
 extension UserContainer: HasUpsellButtonStateProvider {
     var upsellButtonStateProvider: UpsellButtonStateProvider {
         upsellButtonStateProviderFactory()
+    }
+}
+
+protocol HasUpsellPageFactory {
+    var upsellPageFactory: UpsellPageFactory { get }
+}
+
+extension UserContainer: HasUpsellPageFactory {
+    var upsellPageFactory: UpsellPageFactory {
+        upsellPageFactoryFactory()
+    }
+}
+
+protocol HasUpsellOfferProvider {
+    var upsellOfferProvider: UpsellOfferProvider { get }
+}
+
+extension UserContainer: HasUpsellOfferProvider {
+    var upsellOfferProvider: UpsellOfferProvider {
+        upsellOfferProviderFactory()
     }
 }
 

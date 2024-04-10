@@ -25,10 +25,12 @@ import CoreData
 import Foundation
 import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
+import ProtonCoreLog
 import ProtonCoreServices
 import ProtonCoreUIFoundations
 import ProtonCoreUtilities
 import ProtonMailAnalytics
+import ProtonMailUI
 
 struct LabelInfo {
     let name: String
@@ -55,6 +57,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasFetchMessages
     & HasFetchSenderImage
     & HasMailEventsPeriodicScheduler
+    & HasUpsellPageFactory
+    & HasUpsellOfferProvider
     & HasUpdateMailbox
     & HasUpsellButtonStateProvider
     & HasUserDefaults
@@ -135,6 +139,14 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         }
     }
 
+    var reloadRightBarButtons: AnyPublisher<Void, Never> {
+        let publishersThatAffectVisibleButtons: [AnyPublisher] = [
+            upsellButtonVisibilityHasChanged
+        ]
+
+        return Publishers.MergeMany(publishersThatAffectVisibleButtons).eraseToAnyPublisher()
+    }
+
     var isNewEventLoopEnabled: Bool {
         user.isNewEventLoopEnabled
     }
@@ -187,6 +199,18 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         self.setupStorageAlert()
         self.conversationStateProvider.add(delegate: self)
         dependencies.updateMailbox.setup(source: self)
+    }
+
+    func viewDidLoad() {
+        if !hasPreloadedPlanToUpsell && shouldShowUpsellButton {
+            Task {
+                do {
+                    try await dependencies.upsellOfferProvider.update()
+                } catch {
+                    PMLog.error(error)
+                }
+            }
+        }
     }
 
     /// localized navigation title. override it or return label name
@@ -1475,15 +1499,41 @@ extension MailboxViewModel {
     }
 }
 
-// MARK: upsell
+// MARK: - Upsell
 
 extension MailboxViewModel {
-    var shouldShowUpsellButton: Bool {
+    var isUpsellButtonVisible: Bool {
+        shouldShowUpsellButton && hasPreloadedPlanToUpsell
+    }
+
+    private var shouldShowUpsellButton: Bool {
         dependencies.upsellButtonStateProvider.shouldShowUpsellButton
+    }
+
+    private var upsellButtonVisibilityHasChanged: AnyPublisher<Void, Never> {
+        dependencies
+            .upsellOfferProvider
+            .$availablePlan
+            .map { [unowned self] _ in isUpsellButtonVisible }
+            .removeDuplicates()
+            .map { _ in }
+            .eraseToAnyPublisher()
+    }
+
+    private var hasPreloadedPlanToUpsell: Bool {
+        dependencies.upsellOfferProvider.availablePlan != nil
     }
 
     func upsellButtonWasTapped() {
         dependencies.upsellButtonStateProvider.upsellButtonWasTapped()
+    }
+
+    func makeUpsellPageModel() -> UpsellPageModel? {
+        dependencies.upsellOfferProvider.availablePlan.map(dependencies.upsellPageFactory.makeUpsellPageModel)
+    }
+
+    func purchasePlan(storeKitProductId: String) {
+        print(storeKitProductId)
     }
 }
 

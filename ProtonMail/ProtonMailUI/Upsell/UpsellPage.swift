@@ -20,6 +20,7 @@ import SwiftUI
 
 public struct UpsellPage: View {
     private let model: UpsellPageModel
+    private let onPurchaseTapped: (String) -> Void
 
     @Environment(\.verticalSizeClass)
     private var verticalSizeClass
@@ -34,8 +35,9 @@ public struct UpsellPage: View {
             .safeAreaInsets ?? .zero
     }
 
-    public init(model: UpsellPageModel) {
+    public init(model: UpsellPageModel, onPurchaseTapped: @escaping (String) -> Void) {
         self.model = model
+        self.onPurchaseTapped = onPurchaseTapped
     }
 
     public var body: some View {
@@ -114,11 +116,10 @@ public struct UpsellPage: View {
     }
 
     private var tiles: some View {
-        ForEach(model.plan.purchasingOptions, id: \.months) { option in
-            UpsellCTATile(
-                planName: model.plan.name,
-                purchasingOption: option
-            )
+        ForEach(model.plan.purchasingOptions, id: \.identifier) { option in
+            UpsellCTATile(planName: model.plan.name, purchasingOption: option) {
+                onPurchaseTapped(option.identifier)
+            }
             .fixedSize()
         }
     }
