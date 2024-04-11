@@ -21,13 +21,6 @@ import struct SwiftUI.Color
 
 extension LocalConversation {
 
-    var initials: String {
-        let name = senders.first?.name ?? ""
-        let address = senders.first?.address ?? ""
-        let value = name.isEmpty ? address : name
-        return value.prefix(2).uppercased()
-    }
-
     private func toLabel() -> MailboxLabelUIModel {
         guard
             let labels = self.labels,
@@ -44,14 +37,14 @@ extension LocalConversation {
     func toMailboxConversationCellUIModel(selectedIds: Set<PMMailboxItemId>) -> MailboxConversationCellUIModel {
         MailboxConversationCellUIModel(
             id: id,
-            avatar: .init(initials: initials),
+            avatar: .init(initials: avatarInformation.text, backgroundColor: Color(hex: avatarInformation.color)),
             senders: senders.uiRepresentation,
             subject: subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
             isRead: numUnread == 0,
             isStarred: starred,
             isSelected: selectedIds.contains(id),
-            isSenderProtonOfficial: senders.first?.isProton.isTrue ?? false,
+            isSenderProtonOfficial: senders.first?.isProton ?? false,
             numMessages: numMessages > 1 ? Int(numMessages) : 0,
             labelUIModel: toLabel(),
             attachmentsUIModel: (attachments ?? []).toAttachmentCapsuleUIModels(),

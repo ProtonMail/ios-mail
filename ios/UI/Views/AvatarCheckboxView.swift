@@ -43,8 +43,9 @@ struct AvatarCheckboxView: View {
                 Text(avatar.initials)
                     .font(.callout)
                     .fontWeight(.regular)
+                    .foregroundStyle(DS.Color.Global.white)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(DS.Color.Background.secondary)
+                    .background(avatar.backgroundColor)
             }
         }
         .compositingGroup()
@@ -57,11 +58,11 @@ struct AvatarCheckboxView: View {
 
 #Preview {
     VStack {
-        AvatarCheckboxView(isSelected: true, avatar: .init(initials: "MB")) { _ in}
+        AvatarCheckboxView(isSelected: true, avatar: .init(initials: "Mb", backgroundColor: .cyan)) { _ in}
             .frame(width: 40, height: 40)
             .clipped()
 
-        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "MB")) { _ in}
+        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "Mb", backgroundColor: .cyan)) { _ in}
             .frame(width: 40, height: 40)
             .clipped()
     }

@@ -15,14 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import SwiftUI
 
 struct AvatarUIModel {
     let initials: String
+    let backgroundColor: Color
     let image: URL?
 
-    init(initials: String, image: URL? = nil) {
+    init(initials: String, backgroundColor: Color = DS.Color.Background.secondary, image: URL? = nil) {
         self.initials = initials
+        self.backgroundColor = backgroundColor
         self.image = image
     }
 }

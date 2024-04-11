@@ -24,12 +24,10 @@
 
 typedef struct RustBuffer
 {
-    int32_t capacity;
-    int32_t len;
+    uint64_t capacity;
+    uint64_t len;
     uint8_t *_Nullable data;
 } RustBuffer;
-
-typedef int32_t (*ForeignCallback)(uint64_t, int32_t, const uint8_t *_Nonnull, int32_t, RustBuffer *_Nonnull);
 
 typedef struct ForeignBytes
 {
@@ -46,377 +44,1244 @@ typedef struct RustCallStatus {
 // ⚠️ Attention: If you change this #else block (ending in `#endif // def UNIFFI_SHARED_H`) you *must* ⚠️
 // ⚠️ increment the version suffix in all instances of UNIFFI_SHARED_HEADER_V4 in this file.           ⚠️
 #endif // def UNIFFI_SHARED_H
+#ifndef UNIFFI_FFIDEF_RUST_FUTURE_CONTINUATION_CALLBACK
+#define UNIFFI_FFIDEF_RUST_FUTURE_CONTINUATION_CALLBACK
+typedef void (*UniffiRustFutureContinuationCallback)(uint64_t, int8_t
+    );
 
-// Continuation callback for UniFFI Futures
-typedef void (*UniFfiRustFutureContinuation)(void * _Nonnull, int8_t);
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_FREE
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_FREE
+typedef void (*UniffiForeignFutureFree)(uint64_t
+    );
 
-// Scaffolding functions
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_FREE
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_FREE
+typedef void (*UniffiCallbackInterfaceFree)(uint64_t
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE
+typedef struct UniffiForeignFuture {
+    uint64_t handle;
+    UniffiForeignFutureFree _Nonnull free;
+} UniffiForeignFuture;
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U8
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U8
+typedef struct UniffiForeignFutureStructU8 {
+    uint8_t returnValue;
+    RustCallStatus callStatus;
+} UniffiForeignFutureStructU8;
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U8
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U8
+typedef void (*UniffiForeignFutureCompleteU8)(uint64_t, UniffiForeignFutureStructU8
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I8
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I8
+typedef struct UniffiForeignFutureStructI8 {
+    int8_t returnValue;
+    RustCallStatus callStatus;
+} UniffiForeignFutureStructI8;
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I8
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I8
+typedef void (*UniffiForeignFutureCompleteI8)(uint64_t, UniffiForeignFutureStructI8
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U16
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U16
+typedef struct UniffiForeignFutureStructU16 {
+    uint16_t returnValue;
+    RustCallStatus callStatus;
+} UniffiForeignFutureStructU16;
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U16
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U16
+typedef void (*UniffiForeignFutureCompleteU16)(uint64_t, UniffiForeignFutureStructU16
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I16
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I16
+typedef struct UniffiForeignFutureStructI16 {
+    int16_t returnValue;
+    RustCallStatus callStatus;
+} UniffiForeignFutureStructI16;
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I16
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I16
+typedef void (*UniffiForeignFutureCompleteI16)(uint64_t, UniffiForeignFutureStructI16
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U32
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U32
+typedef struct UniffiForeignFutureStructU32 {
+    uint32_t returnValue;
+    RustCallStatus callStatus;
+} UniffiForeignFutureStructU32;
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U32
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U32
+typedef void (*UniffiForeignFutureCompleteU32)(uint64_t, UniffiForeignFutureStructU32
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I32
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I32
+typedef struct UniffiForeignFutureStructI32 {
+    int32_t returnValue;
+    RustCallStatus callStatus;
+} UniffiForeignFutureStructI32;
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I32
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I32
+typedef void (*UniffiForeignFutureCompleteI32)(uint64_t, UniffiForeignFutureStructI32
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U64
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_U64
+typedef struct UniffiForeignFutureStructU64 {
+    uint64_t returnValue;
+    RustCallStatus callStatus;
+} UniffiForeignFutureStructU64;
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U64
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_U64
+typedef void (*UniffiForeignFutureCompleteU64)(uint64_t, UniffiForeignFutureStructU64
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I64
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_I64
+typedef struct UniffiForeignFutureStructI64 {
+    int64_t returnValue;
+    RustCallStatus callStatus;
+} UniffiForeignFutureStructI64;
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I64
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_I64
+typedef void (*UniffiForeignFutureCompleteI64)(uint64_t, UniffiForeignFutureStructI64
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_F32
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_F32
+typedef struct UniffiForeignFutureStructF32 {
+    float returnValue;
+    RustCallStatus callStatus;
+} UniffiForeignFutureStructF32;
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_F32
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_F32
+typedef void (*UniffiForeignFutureCompleteF32)(uint64_t, UniffiForeignFutureStructF32
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_F64
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_F64
+typedef struct UniffiForeignFutureStructF64 {
+    double returnValue;
+    RustCallStatus callStatus;
+} UniffiForeignFutureStructF64;
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_F64
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_F64
+typedef void (*UniffiForeignFutureCompleteF64)(uint64_t, UniffiForeignFutureStructF64
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_POINTER
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_POINTER
+typedef struct UniffiForeignFutureStructPointer {
+    void*_Nonnull returnValue;
+    RustCallStatus callStatus;
+} UniffiForeignFutureStructPointer;
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_POINTER
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_POINTER
+typedef void (*UniffiForeignFutureCompletePointer)(uint64_t, UniffiForeignFutureStructPointer
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_RUST_BUFFER
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_RUST_BUFFER
+typedef struct UniffiForeignFutureStructRustBuffer {
+    RustBuffer returnValue;
+    RustCallStatus callStatus;
+} UniffiForeignFutureStructRustBuffer;
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_RUST_BUFFER
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_RUST_BUFFER
+typedef void (*UniffiForeignFutureCompleteRustBuffer)(uint64_t, UniffiForeignFutureStructRustBuffer
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_VOID
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_STRUCT_VOID
+typedef struct UniffiForeignFutureStructVoid {
+    RustCallStatus callStatus;
+} UniffiForeignFutureStructVoid;
+
+#endif
+#ifndef UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_VOID
+#define UNIFFI_FFIDEF_FOREIGN_FUTURE_COMPLETE_VOID
+typedef void (*UniffiForeignFutureCompleteVoid)(uint64_t, UniffiForeignFutureStructVoid
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_MAIL_USER_SESSION_INITIALIZATION_CALLBACK_METHOD0
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_MAIL_USER_SESSION_INITIALIZATION_CALLBACK_METHOD0
+typedef void (*UniffiCallbackInterfaceMailUserSessionInitializationCallbackMethod0)(uint64_t, RustBuffer, void* _Nonnull, 
+        RustCallStatus *_Nonnull uniffiCallStatus
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_MAILBOX_BACKGROUND_RESULT_METHOD0
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_MAILBOX_BACKGROUND_RESULT_METHOD0
+typedef void (*UniffiCallbackInterfaceMailboxBackgroundResultMethod0)(uint64_t, RustBuffer, void* _Nonnull, 
+        RustCallStatus *_Nonnull uniffiCallStatus
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_MAILBOX_LIVE_QUERY_UPDATED_CALLBACK_METHOD0
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_MAILBOX_LIVE_QUERY_UPDATED_CALLBACK_METHOD0
+typedef void (*UniffiCallbackInterfaceMailboxLiveQueryUpdatedCallbackMethod0)(uint64_t, void* _Nonnull, 
+        RustCallStatus *_Nonnull uniffiCallStatus
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_NETWORK_STATUS_CHANGED_METHOD0
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_NETWORK_STATUS_CHANGED_METHOD0
+typedef void (*UniffiCallbackInterfaceNetworkStatusChangedMethod0)(uint64_t, int8_t, void* _Nonnull, 
+        RustCallStatus *_Nonnull uniffiCallStatus
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_OS_KEY_CHAIN_METHOD0
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_OS_KEY_CHAIN_METHOD0
+typedef void (*UniffiCallbackInterfaceOsKeyChainMethod0)(uint64_t, RustBuffer, void* _Nonnull, 
+        RustCallStatus *_Nonnull uniffiCallStatus
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_OS_KEY_CHAIN_METHOD1
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_OS_KEY_CHAIN_METHOD1
+typedef void (*UniffiCallbackInterfaceOsKeyChainMethod1)(uint64_t, void* _Nonnull, 
+        RustCallStatus *_Nonnull uniffiCallStatus
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_OS_KEY_CHAIN_METHOD2
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_OS_KEY_CHAIN_METHOD2
+typedef void (*UniffiCallbackInterfaceOsKeyChainMethod2)(uint64_t, RustBuffer* _Nonnull, 
+        RustCallStatus *_Nonnull uniffiCallStatus
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SESSION_CALLBACK_METHOD0
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SESSION_CALLBACK_METHOD0
+typedef void (*UniffiCallbackInterfaceSessionCallbackMethod0)(uint64_t, void* _Nonnull, 
+        RustCallStatus *_Nonnull uniffiCallStatus
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SESSION_CALLBACK_METHOD1
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SESSION_CALLBACK_METHOD1
+typedef void (*UniffiCallbackInterfaceSessionCallbackMethod1)(uint64_t, void* _Nonnull, 
+        RustCallStatus *_Nonnull uniffiCallStatus
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SESSION_CALLBACK_METHOD2
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SESSION_CALLBACK_METHOD2
+typedef void (*UniffiCallbackInterfaceSessionCallbackMethod2)(uint64_t, RustBuffer, void* _Nonnull, 
+        RustCallStatus *_Nonnull uniffiCallStatus
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SESSION_CALLBACK_METHOD3
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SESSION_CALLBACK_METHOD3
+typedef void (*UniffiCallbackInterfaceSessionCallbackMethod3)(uint64_t, RustBuffer, void* _Nonnull, 
+        RustCallStatus *_Nonnull uniffiCallStatus
+    );
+
+#endif
+#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_MAIL_USER_SESSION_INITIALIZATION_CALLBACK
+#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_MAIL_USER_SESSION_INITIALIZATION_CALLBACK
+typedef struct UniffiVTableCallbackInterfaceMailUserSessionInitializationCallback {
+    UniffiCallbackInterfaceMailUserSessionInitializationCallbackMethod0 _Nonnull onStage;
+    UniffiCallbackInterfaceFree _Nonnull uniffiFree;
+} UniffiVTableCallbackInterfaceMailUserSessionInitializationCallback;
+
+#endif
+#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_MAILBOX_BACKGROUND_RESULT
+#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_MAILBOX_BACKGROUND_RESULT
+typedef struct UniffiVTableCallbackInterfaceMailboxBackgroundResult {
+    UniffiCallbackInterfaceMailboxBackgroundResultMethod0 _Nonnull onBackgroundResult;
+    UniffiCallbackInterfaceFree _Nonnull uniffiFree;
+} UniffiVTableCallbackInterfaceMailboxBackgroundResult;
+
+#endif
+#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_MAILBOX_LIVE_QUERY_UPDATED_CALLBACK
+#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_MAILBOX_LIVE_QUERY_UPDATED_CALLBACK
+typedef struct UniffiVTableCallbackInterfaceMailboxLiveQueryUpdatedCallback {
+    UniffiCallbackInterfaceMailboxLiveQueryUpdatedCallbackMethod0 _Nonnull onUpdated;
+    UniffiCallbackInterfaceFree _Nonnull uniffiFree;
+} UniffiVTableCallbackInterfaceMailboxLiveQueryUpdatedCallback;
+
+#endif
+#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_NETWORK_STATUS_CHANGED
+#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_NETWORK_STATUS_CHANGED
+typedef struct UniffiVTableCallbackInterfaceNetworkStatusChanged {
+    UniffiCallbackInterfaceNetworkStatusChangedMethod0 _Nonnull onNetworkStatusChanged;
+    UniffiCallbackInterfaceFree _Nonnull uniffiFree;
+} UniffiVTableCallbackInterfaceNetworkStatusChanged;
+
+#endif
+#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_OS_KEY_CHAIN
+#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_OS_KEY_CHAIN
+typedef struct UniffiVTableCallbackInterfaceOsKeyChain {
+    UniffiCallbackInterfaceOsKeyChainMethod0 _Nonnull store;
+    UniffiCallbackInterfaceOsKeyChainMethod1 _Nonnull delete;
+    UniffiCallbackInterfaceOsKeyChainMethod2 _Nonnull get;
+    UniffiCallbackInterfaceFree _Nonnull uniffiFree;
+} UniffiVTableCallbackInterfaceOsKeyChain;
+
+#endif
+#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_SESSION_CALLBACK
+#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_SESSION_CALLBACK
+typedef struct UniffiVTableCallbackInterfaceSessionCallback {
+    UniffiCallbackInterfaceSessionCallbackMethod0 _Nonnull onSessionRefresh;
+    UniffiCallbackInterfaceSessionCallbackMethod1 _Nonnull onSessionDeleted;
+    UniffiCallbackInterfaceSessionCallbackMethod2 _Nonnull onRefreshFailed;
+    UniffiCallbackInterfaceSessionCallbackMethod3 _Nonnull onError;
+    UniffiCallbackInterfaceFree _Nonnull uniffiFree;
+} UniffiVTableCallbackInterfaceSessionCallback;
+
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CLONE_LOGINFLOW
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CLONE_LOGINFLOW
 void*_Nonnull uniffi_proton_mail_uniffi_fn_clone_loginflow(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FREE_LOGINFLOW
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FREE_LOGINFLOW
 void uniffi_proton_mail_uniffi_fn_free_loginflow(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_LOGINFLOW_IS_AWAITING_2FA
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_LOGINFLOW_IS_AWAITING_2FA
 int8_t uniffi_proton_mail_uniffi_fn_method_loginflow_is_awaiting_2fa(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_LOGINFLOW_IS_LOGGED_IN
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_LOGINFLOW_IS_LOGGED_IN
 int8_t uniffi_proton_mail_uniffi_fn_method_loginflow_is_logged_in(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
-void* _Nonnull uniffi_proton_mail_uniffi_fn_method_loginflow_login(void*_Nonnull ptr, RustBuffer email, RustBuffer password
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_LOGINFLOW_LOGIN
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_LOGINFLOW_LOGIN
+uint64_t uniffi_proton_mail_uniffi_fn_method_loginflow_login(void*_Nonnull ptr, RustBuffer email, RustBuffer password
 );
-void* _Nonnull uniffi_proton_mail_uniffi_fn_method_loginflow_submit_totp(void*_Nonnull ptr, RustBuffer code
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_LOGINFLOW_SUBMIT_TOTP
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_LOGINFLOW_SUBMIT_TOTP
+uint64_t uniffi_proton_mail_uniffi_fn_method_loginflow_submit_totp(void*_Nonnull ptr, RustBuffer code
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_LOGINFLOW_TO_USER_CONTEXT
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_LOGINFLOW_TO_USER_CONTEXT
 void*_Nonnull uniffi_proton_mail_uniffi_fn_method_loginflow_to_user_context(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CLONE_MAILLABELSLIVEQUERY
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CLONE_MAILLABELSLIVEQUERY
 void*_Nonnull uniffi_proton_mail_uniffi_fn_clone_maillabelslivequery(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FREE_MAILLABELSLIVEQUERY
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FREE_MAILLABELSLIVEQUERY
 void uniffi_proton_mail_uniffi_fn_free_maillabelslivequery(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILLABELSLIVEQUERY_DISCONNECT
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILLABELSLIVEQUERY_DISCONNECT
 void uniffi_proton_mail_uniffi_fn_method_maillabelslivequery_disconnect(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILLABELSLIVEQUERY_VALUE
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILLABELSLIVEQUERY_VALUE
 RustBuffer uniffi_proton_mail_uniffi_fn_method_maillabelslivequery_value(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CLONE_MAILSESSION
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CLONE_MAILSESSION
 void*_Nonnull uniffi_proton_mail_uniffi_fn_clone_mailsession(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FREE_MAILSESSION
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FREE_MAILSESSION
 void uniffi_proton_mail_uniffi_fn_free_mailsession(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
-void*_Nonnull uniffi_proton_mail_uniffi_fn_constructor_mailsession_new(RustBuffer session_dir, RustBuffer user_dir, RustBuffer log_dir, int8_t log_debug, uint64_t key_chain, RustBuffer api_env_config, RustBuffer network_callback, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CONSTRUCTOR_MAILSESSION_CREATE
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CONSTRUCTOR_MAILSESSION_CREATE
+void*_Nonnull uniffi_proton_mail_uniffi_fn_constructor_mailsession_create(RustBuffer session_dir, RustBuffer user_dir, RustBuffer log_dir, int8_t log_debug, uint64_t key_chain, RustBuffer api_env_config, RustBuffer network_callback, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILSESSION_IS_NETWORK_CONNECTED
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILSESSION_IS_NETWORK_CONNECTED
 int8_t uniffi_proton_mail_uniffi_fn_method_mailsession_is_network_connected(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILSESSION_NEW_LOGIN_FLOW
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILSESSION_NEW_LOGIN_FLOW
 void*_Nonnull uniffi_proton_mail_uniffi_fn_method_mailsession_new_login_flow(void*_Nonnull ptr, RustBuffer cb, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILSESSION_SET_NETWORK_CONNECTED
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILSESSION_SET_NETWORK_CONNECTED
 void uniffi_proton_mail_uniffi_fn_method_mailsession_set_network_connected(void*_Nonnull ptr, int8_t online, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILSESSION_STORED_SESSIONS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILSESSION_STORED_SESSIONS
 RustBuffer uniffi_proton_mail_uniffi_fn_method_mailsession_stored_sessions(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILSESSION_USER_CONTEXT_FROM_SESSION
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILSESSION_USER_CONTEXT_FROM_SESSION
 void*_Nonnull uniffi_proton_mail_uniffi_fn_method_mailsession_user_context_from_session(void*_Nonnull ptr, void*_Nonnull session, RustBuffer cb, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CLONE_MAILUSERSESSION
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CLONE_MAILUSERSESSION
 void*_Nonnull uniffi_proton_mail_uniffi_fn_clone_mailusersession(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FREE_MAILUSERSESSION
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FREE_MAILUSERSESSION
 void uniffi_proton_mail_uniffi_fn_free_mailusersession(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
-void* _Nonnull uniffi_proton_mail_uniffi_fn_method_mailusersession_execute_pending_action(void*_Nonnull ptr
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_APPLICABLE_LABELS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_APPLICABLE_LABELS
+RustBuffer uniffi_proton_mail_uniffi_fn_method_mailusersession_applicable_labels(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
-void* _Nonnull uniffi_proton_mail_uniffi_fn_method_mailusersession_execute_pending_actions(void*_Nonnull ptr
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_EXECUTE_PENDING_ACTION
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_EXECUTE_PENDING_ACTION
+uint64_t uniffi_proton_mail_uniffi_fn_method_mailusersession_execute_pending_action(void*_Nonnull ptr
 );
-void* _Nonnull uniffi_proton_mail_uniffi_fn_method_mailusersession_initialize(void*_Nonnull ptr, uint64_t cb
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_EXECUTE_PENDING_ACTIONS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_EXECUTE_PENDING_ACTIONS
+uint64_t uniffi_proton_mail_uniffi_fn_method_mailusersession_execute_pending_actions(void*_Nonnull ptr
 );
-void* _Nonnull uniffi_proton_mail_uniffi_fn_method_mailusersession_logout(void*_Nonnull ptr
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_INITIALIZE
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_INITIALIZE
+uint64_t uniffi_proton_mail_uniffi_fn_method_mailusersession_initialize(void*_Nonnull ptr, uint64_t cb
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_LOGOUT
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_LOGOUT
+uint64_t uniffi_proton_mail_uniffi_fn_method_mailusersession_logout(void*_Nonnull ptr
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_MAIL_SETTINGS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_MAIL_SETTINGS
 RustBuffer uniffi_proton_mail_uniffi_fn_method_mailusersession_mail_settings(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_MOVABLE_FOLDERS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_MOVABLE_FOLDERS
+RustBuffer uniffi_proton_mail_uniffi_fn_method_mailusersession_movable_folders(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_NEW_FOLDER_LABELS_OBSERVED_QUERY
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_NEW_FOLDER_LABELS_OBSERVED_QUERY
 void*_Nonnull uniffi_proton_mail_uniffi_fn_method_mailusersession_new_folder_labels_observed_query(void*_Nonnull ptr, uint64_t cb, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_NEW_LABEL_LABELS_OBSERVED_QUERY
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_NEW_LABEL_LABELS_OBSERVED_QUERY
 void*_Nonnull uniffi_proton_mail_uniffi_fn_method_mailusersession_new_label_labels_observed_query(void*_Nonnull ptr, uint64_t cb, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_NEW_SYSTEM_LABELS_OBSERVED_QUERY
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_NEW_SYSTEM_LABELS_OBSERVED_QUERY
 void*_Nonnull uniffi_proton_mail_uniffi_fn_method_mailusersession_new_system_labels_observed_query(void*_Nonnull ptr, uint64_t cb, RustCallStatus *_Nonnull out_status
 );
-void* _Nonnull uniffi_proton_mail_uniffi_fn_method_mailusersession_poll_events(void*_Nonnull ptr
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_POLL_EVENTS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILUSERSESSION_POLL_EVENTS
+uint64_t uniffi_proton_mail_uniffi_fn_method_mailusersession_poll_events(void*_Nonnull ptr
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CLONE_MAILBOX
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CLONE_MAILBOX
 void*_Nonnull uniffi_proton_mail_uniffi_fn_clone_mailbox(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FREE_MAILBOX
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FREE_MAILBOX
 void uniffi_proton_mail_uniffi_fn_free_mailbox(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CONSTRUCTOR_MAILBOX_INBOX
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CONSTRUCTOR_MAILBOX_INBOX
 void*_Nonnull uniffi_proton_mail_uniffi_fn_constructor_mailbox_inbox(void*_Nonnull ctx, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CONSTRUCTOR_MAILBOX_NEW
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CONSTRUCTOR_MAILBOX_NEW
 void*_Nonnull uniffi_proton_mail_uniffi_fn_constructor_mailbox_new(void*_Nonnull ctx, uint64_t label_id, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CONSTRUCTOR_MAILBOX_WITH_REMOTE_ID
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CONSTRUCTOR_MAILBOX_WITH_REMOTE_ID
 void*_Nonnull uniffi_proton_mail_uniffi_fn_constructor_mailbox_with_remote_id(void*_Nonnull ctx, RustBuffer label_id, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOX_DELETE_CONVERSATIONS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOX_DELETE_CONVERSATIONS
 void uniffi_proton_mail_uniffi_fn_method_mailbox_delete_conversations(void*_Nonnull ptr, RustBuffer ids, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOX_LABEL_CONVERSATIONS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOX_LABEL_CONVERSATIONS
+void uniffi_proton_mail_uniffi_fn_method_mailbox_label_conversations(void*_Nonnull ptr, uint64_t label_id, RustBuffer ids, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOX_MARK_CONVERSATIONS_READ
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOX_MARK_CONVERSATIONS_READ
 void uniffi_proton_mail_uniffi_fn_method_mailbox_mark_conversations_read(void*_Nonnull ptr, RustBuffer ids, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOX_MARK_CONVERSATIONS_UNREAD
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOX_MARK_CONVERSATIONS_UNREAD
 void uniffi_proton_mail_uniffi_fn_method_mailbox_mark_conversations_unread(void*_Nonnull ptr, RustBuffer ids, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOX_MOVE_CONVERSATIONS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOX_MOVE_CONVERSATIONS
+void uniffi_proton_mail_uniffi_fn_method_mailbox_move_conversations(void*_Nonnull ptr, uint64_t label_id, RustBuffer ids, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOX_NEW_CONVERSATION_LIVE_QUERY
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOX_NEW_CONVERSATION_LIVE_QUERY
 void*_Nonnull uniffi_proton_mail_uniffi_fn_method_mailbox_new_conversation_live_query(void*_Nonnull ptr, int64_t limit, uint64_t cb, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOX_UNLABEL_CONVERSATIONS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOX_UNLABEL_CONVERSATIONS
+void uniffi_proton_mail_uniffi_fn_method_mailbox_unlabel_conversations(void*_Nonnull ptr, uint64_t label_id, RustBuffer ids, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CLONE_MAILBOXCONVERSATIONLIVEQUERY
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CLONE_MAILBOXCONVERSATIONLIVEQUERY
 void*_Nonnull uniffi_proton_mail_uniffi_fn_clone_mailboxconversationlivequery(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FREE_MAILBOXCONVERSATIONLIVEQUERY
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FREE_MAILBOXCONVERSATIONLIVEQUERY
 void uniffi_proton_mail_uniffi_fn_free_mailboxconversationlivequery(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOXCONVERSATIONLIVEQUERY_DISCONNECT
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOXCONVERSATIONLIVEQUERY_DISCONNECT
 void uniffi_proton_mail_uniffi_fn_method_mailboxconversationlivequery_disconnect(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOXCONVERSATIONLIVEQUERY_VALUE
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_MAILBOXCONVERSATIONLIVEQUERY_VALUE
 RustBuffer uniffi_proton_mail_uniffi_fn_method_mailboxconversationlivequery_value(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CLONE_STOREDSESSION
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CLONE_STOREDSESSION
 void*_Nonnull uniffi_proton_mail_uniffi_fn_clone_storedsession(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FREE_STOREDSESSION
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FREE_STOREDSESSION
 void uniffi_proton_mail_uniffi_fn_free_storedsession(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_STOREDSESSION_EMAIL
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_STOREDSESSION_EMAIL
 RustBuffer uniffi_proton_mail_uniffi_fn_method_storedsession_email(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_STOREDSESSION_NAME
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_STOREDSESSION_NAME
 RustBuffer uniffi_proton_mail_uniffi_fn_method_storedsession_name(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_STOREDSESSION_SESSION_ID
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_STOREDSESSION_SESSION_ID
 RustBuffer uniffi_proton_mail_uniffi_fn_method_storedsession_session_id(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_STOREDSESSION_USER_ID
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_METHOD_STOREDSESSION_USER_ID
 RustBuffer uniffi_proton_mail_uniffi_fn_method_storedsession_user_id(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
-void uniffi_proton_mail_uniffi_fn_init_callback_mailusersessioninitializationcallback(ForeignCallback _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_INIT_CALLBACK_VTABLE_MAILUSERSESSIONINITIALIZATIONCALLBACK
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_INIT_CALLBACK_VTABLE_MAILUSERSESSIONINITIALIZATIONCALLBACK
+void uniffi_proton_mail_uniffi_fn_init_callback_vtable_mailusersessioninitializationcallback(UniffiVTableCallbackInterfaceMailUserSessionInitializationCallback* _Nonnull vtable
 );
-void uniffi_proton_mail_uniffi_fn_init_callback_mailboxbackgroundresult(ForeignCallback _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_INIT_CALLBACK_VTABLE_MAILBOXBACKGROUNDRESULT
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_INIT_CALLBACK_VTABLE_MAILBOXBACKGROUNDRESULT
+void uniffi_proton_mail_uniffi_fn_init_callback_vtable_mailboxbackgroundresult(UniffiVTableCallbackInterfaceMailboxBackgroundResult* _Nonnull vtable
 );
-void uniffi_proton_mail_uniffi_fn_init_callback_mailboxlivequeryupdatedcallback(ForeignCallback _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_INIT_CALLBACK_VTABLE_MAILBOXLIVEQUERYUPDATEDCALLBACK
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_INIT_CALLBACK_VTABLE_MAILBOXLIVEQUERYUPDATEDCALLBACK
+void uniffi_proton_mail_uniffi_fn_init_callback_vtable_mailboxlivequeryupdatedcallback(UniffiVTableCallbackInterfaceMailboxLiveQueryUpdatedCallback* _Nonnull vtable
 );
-void uniffi_proton_mail_uniffi_fn_init_callback_networkstatuschanged(ForeignCallback _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_INIT_CALLBACK_VTABLE_NETWORKSTATUSCHANGED
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_INIT_CALLBACK_VTABLE_NETWORKSTATUSCHANGED
+void uniffi_proton_mail_uniffi_fn_init_callback_vtable_networkstatuschanged(UniffiVTableCallbackInterfaceNetworkStatusChanged* _Nonnull vtable
 );
-void uniffi_proton_mail_uniffi_fn_init_callback_oskeychain(ForeignCallback _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_INIT_CALLBACK_VTABLE_OSKEYCHAIN
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_INIT_CALLBACK_VTABLE_OSKEYCHAIN
+void uniffi_proton_mail_uniffi_fn_init_callback_vtable_oskeychain(UniffiVTableCallbackInterfaceOsKeyChain* _Nonnull vtable
 );
-void uniffi_proton_mail_uniffi_fn_init_callback_sessioncallback(ForeignCallback _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_INIT_CALLBACK_VTABLE_SESSIONCALLBACK
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_INIT_CALLBACK_VTABLE_SESSIONCALLBACK
+void uniffi_proton_mail_uniffi_fn_init_callback_vtable_sessioncallback(UniffiVTableCallbackInterfaceSessionCallback* _Nonnull vtable
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FUNC_LOCATE_BLOCKQUOTE
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_FUNC_LOCATE_BLOCKQUOTE
 RustBuffer uniffi_proton_mail_uniffi_fn_func_locate_blockquote(RustBuffer input, RustCallStatus *_Nonnull out_status
 );
-RustBuffer ffi_proton_mail_uniffi_rustbuffer_alloc(int32_t size, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUSTBUFFER_ALLOC
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUSTBUFFER_ALLOC
+RustBuffer ffi_proton_mail_uniffi_rustbuffer_alloc(uint64_t size, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUSTBUFFER_FROM_BYTES
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUSTBUFFER_FROM_BYTES
 RustBuffer ffi_proton_mail_uniffi_rustbuffer_from_bytes(ForeignBytes bytes, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUSTBUFFER_FREE
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUSTBUFFER_FREE
 void ffi_proton_mail_uniffi_rustbuffer_free(RustBuffer buf, RustCallStatus *_Nonnull out_status
 );
-RustBuffer ffi_proton_mail_uniffi_rustbuffer_reserve(RustBuffer buf, int32_t additional, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUSTBUFFER_RESERVE
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUSTBUFFER_RESERVE
+RustBuffer ffi_proton_mail_uniffi_rustbuffer_reserve(RustBuffer buf, uint64_t additional, RustCallStatus *_Nonnull out_status
 );
-void ffi_proton_mail_uniffi_rust_future_poll_u8(void* _Nonnull handle, UniFfiRustFutureContinuation _Nonnull callback, void* _Nonnull callback_data
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_U8
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_U8
+void ffi_proton_mail_uniffi_rust_future_poll_u8(uint64_t handle, UniffiRustFutureContinuationCallback _Nonnull callback, uint64_t callback_data
 );
-void ffi_proton_mail_uniffi_rust_future_cancel_u8(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_U8
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_U8
+void ffi_proton_mail_uniffi_rust_future_cancel_u8(uint64_t handle
 );
-void ffi_proton_mail_uniffi_rust_future_free_u8(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_U8
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_U8
+void ffi_proton_mail_uniffi_rust_future_free_u8(uint64_t handle
 );
-uint8_t ffi_proton_mail_uniffi_rust_future_complete_u8(void* _Nonnull handle, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_U8
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_U8
+uint8_t ffi_proton_mail_uniffi_rust_future_complete_u8(uint64_t handle, RustCallStatus *_Nonnull out_status
 );
-void ffi_proton_mail_uniffi_rust_future_poll_i8(void* _Nonnull handle, UniFfiRustFutureContinuation _Nonnull callback, void* _Nonnull callback_data
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_I8
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_I8
+void ffi_proton_mail_uniffi_rust_future_poll_i8(uint64_t handle, UniffiRustFutureContinuationCallback _Nonnull callback, uint64_t callback_data
 );
-void ffi_proton_mail_uniffi_rust_future_cancel_i8(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_I8
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_I8
+void ffi_proton_mail_uniffi_rust_future_cancel_i8(uint64_t handle
 );
-void ffi_proton_mail_uniffi_rust_future_free_i8(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_I8
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_I8
+void ffi_proton_mail_uniffi_rust_future_free_i8(uint64_t handle
 );
-int8_t ffi_proton_mail_uniffi_rust_future_complete_i8(void* _Nonnull handle, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_I8
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_I8
+int8_t ffi_proton_mail_uniffi_rust_future_complete_i8(uint64_t handle, RustCallStatus *_Nonnull out_status
 );
-void ffi_proton_mail_uniffi_rust_future_poll_u16(void* _Nonnull handle, UniFfiRustFutureContinuation _Nonnull callback, void* _Nonnull callback_data
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_U16
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_U16
+void ffi_proton_mail_uniffi_rust_future_poll_u16(uint64_t handle, UniffiRustFutureContinuationCallback _Nonnull callback, uint64_t callback_data
 );
-void ffi_proton_mail_uniffi_rust_future_cancel_u16(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_U16
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_U16
+void ffi_proton_mail_uniffi_rust_future_cancel_u16(uint64_t handle
 );
-void ffi_proton_mail_uniffi_rust_future_free_u16(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_U16
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_U16
+void ffi_proton_mail_uniffi_rust_future_free_u16(uint64_t handle
 );
-uint16_t ffi_proton_mail_uniffi_rust_future_complete_u16(void* _Nonnull handle, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_U16
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_U16
+uint16_t ffi_proton_mail_uniffi_rust_future_complete_u16(uint64_t handle, RustCallStatus *_Nonnull out_status
 );
-void ffi_proton_mail_uniffi_rust_future_poll_i16(void* _Nonnull handle, UniFfiRustFutureContinuation _Nonnull callback, void* _Nonnull callback_data
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_I16
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_I16
+void ffi_proton_mail_uniffi_rust_future_poll_i16(uint64_t handle, UniffiRustFutureContinuationCallback _Nonnull callback, uint64_t callback_data
 );
-void ffi_proton_mail_uniffi_rust_future_cancel_i16(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_I16
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_I16
+void ffi_proton_mail_uniffi_rust_future_cancel_i16(uint64_t handle
 );
-void ffi_proton_mail_uniffi_rust_future_free_i16(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_I16
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_I16
+void ffi_proton_mail_uniffi_rust_future_free_i16(uint64_t handle
 );
-int16_t ffi_proton_mail_uniffi_rust_future_complete_i16(void* _Nonnull handle, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_I16
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_I16
+int16_t ffi_proton_mail_uniffi_rust_future_complete_i16(uint64_t handle, RustCallStatus *_Nonnull out_status
 );
-void ffi_proton_mail_uniffi_rust_future_poll_u32(void* _Nonnull handle, UniFfiRustFutureContinuation _Nonnull callback, void* _Nonnull callback_data
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_U32
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_U32
+void ffi_proton_mail_uniffi_rust_future_poll_u32(uint64_t handle, UniffiRustFutureContinuationCallback _Nonnull callback, uint64_t callback_data
 );
-void ffi_proton_mail_uniffi_rust_future_cancel_u32(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_U32
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_U32
+void ffi_proton_mail_uniffi_rust_future_cancel_u32(uint64_t handle
 );
-void ffi_proton_mail_uniffi_rust_future_free_u32(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_U32
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_U32
+void ffi_proton_mail_uniffi_rust_future_free_u32(uint64_t handle
 );
-uint32_t ffi_proton_mail_uniffi_rust_future_complete_u32(void* _Nonnull handle, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_U32
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_U32
+uint32_t ffi_proton_mail_uniffi_rust_future_complete_u32(uint64_t handle, RustCallStatus *_Nonnull out_status
 );
-void ffi_proton_mail_uniffi_rust_future_poll_i32(void* _Nonnull handle, UniFfiRustFutureContinuation _Nonnull callback, void* _Nonnull callback_data
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_I32
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_I32
+void ffi_proton_mail_uniffi_rust_future_poll_i32(uint64_t handle, UniffiRustFutureContinuationCallback _Nonnull callback, uint64_t callback_data
 );
-void ffi_proton_mail_uniffi_rust_future_cancel_i32(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_I32
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_I32
+void ffi_proton_mail_uniffi_rust_future_cancel_i32(uint64_t handle
 );
-void ffi_proton_mail_uniffi_rust_future_free_i32(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_I32
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_I32
+void ffi_proton_mail_uniffi_rust_future_free_i32(uint64_t handle
 );
-int32_t ffi_proton_mail_uniffi_rust_future_complete_i32(void* _Nonnull handle, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_I32
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_I32
+int32_t ffi_proton_mail_uniffi_rust_future_complete_i32(uint64_t handle, RustCallStatus *_Nonnull out_status
 );
-void ffi_proton_mail_uniffi_rust_future_poll_u64(void* _Nonnull handle, UniFfiRustFutureContinuation _Nonnull callback, void* _Nonnull callback_data
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_U64
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_U64
+void ffi_proton_mail_uniffi_rust_future_poll_u64(uint64_t handle, UniffiRustFutureContinuationCallback _Nonnull callback, uint64_t callback_data
 );
-void ffi_proton_mail_uniffi_rust_future_cancel_u64(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_U64
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_U64
+void ffi_proton_mail_uniffi_rust_future_cancel_u64(uint64_t handle
 );
-void ffi_proton_mail_uniffi_rust_future_free_u64(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_U64
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_U64
+void ffi_proton_mail_uniffi_rust_future_free_u64(uint64_t handle
 );
-uint64_t ffi_proton_mail_uniffi_rust_future_complete_u64(void* _Nonnull handle, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_U64
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_U64
+uint64_t ffi_proton_mail_uniffi_rust_future_complete_u64(uint64_t handle, RustCallStatus *_Nonnull out_status
 );
-void ffi_proton_mail_uniffi_rust_future_poll_i64(void* _Nonnull handle, UniFfiRustFutureContinuation _Nonnull callback, void* _Nonnull callback_data
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_I64
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_I64
+void ffi_proton_mail_uniffi_rust_future_poll_i64(uint64_t handle, UniffiRustFutureContinuationCallback _Nonnull callback, uint64_t callback_data
 );
-void ffi_proton_mail_uniffi_rust_future_cancel_i64(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_I64
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_I64
+void ffi_proton_mail_uniffi_rust_future_cancel_i64(uint64_t handle
 );
-void ffi_proton_mail_uniffi_rust_future_free_i64(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_I64
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_I64
+void ffi_proton_mail_uniffi_rust_future_free_i64(uint64_t handle
 );
-int64_t ffi_proton_mail_uniffi_rust_future_complete_i64(void* _Nonnull handle, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_I64
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_I64
+int64_t ffi_proton_mail_uniffi_rust_future_complete_i64(uint64_t handle, RustCallStatus *_Nonnull out_status
 );
-void ffi_proton_mail_uniffi_rust_future_poll_f32(void* _Nonnull handle, UniFfiRustFutureContinuation _Nonnull callback, void* _Nonnull callback_data
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_F32
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_F32
+void ffi_proton_mail_uniffi_rust_future_poll_f32(uint64_t handle, UniffiRustFutureContinuationCallback _Nonnull callback, uint64_t callback_data
 );
-void ffi_proton_mail_uniffi_rust_future_cancel_f32(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_F32
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_F32
+void ffi_proton_mail_uniffi_rust_future_cancel_f32(uint64_t handle
 );
-void ffi_proton_mail_uniffi_rust_future_free_f32(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_F32
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_F32
+void ffi_proton_mail_uniffi_rust_future_free_f32(uint64_t handle
 );
-float ffi_proton_mail_uniffi_rust_future_complete_f32(void* _Nonnull handle, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_F32
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_F32
+float ffi_proton_mail_uniffi_rust_future_complete_f32(uint64_t handle, RustCallStatus *_Nonnull out_status
 );
-void ffi_proton_mail_uniffi_rust_future_poll_f64(void* _Nonnull handle, UniFfiRustFutureContinuation _Nonnull callback, void* _Nonnull callback_data
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_F64
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_F64
+void ffi_proton_mail_uniffi_rust_future_poll_f64(uint64_t handle, UniffiRustFutureContinuationCallback _Nonnull callback, uint64_t callback_data
 );
-void ffi_proton_mail_uniffi_rust_future_cancel_f64(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_F64
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_F64
+void ffi_proton_mail_uniffi_rust_future_cancel_f64(uint64_t handle
 );
-void ffi_proton_mail_uniffi_rust_future_free_f64(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_F64
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_F64
+void ffi_proton_mail_uniffi_rust_future_free_f64(uint64_t handle
 );
-double ffi_proton_mail_uniffi_rust_future_complete_f64(void* _Nonnull handle, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_F64
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_F64
+double ffi_proton_mail_uniffi_rust_future_complete_f64(uint64_t handle, RustCallStatus *_Nonnull out_status
 );
-void ffi_proton_mail_uniffi_rust_future_poll_pointer(void* _Nonnull handle, UniFfiRustFutureContinuation _Nonnull callback, void* _Nonnull callback_data
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_POINTER
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_POINTER
+void ffi_proton_mail_uniffi_rust_future_poll_pointer(uint64_t handle, UniffiRustFutureContinuationCallback _Nonnull callback, uint64_t callback_data
 );
-void ffi_proton_mail_uniffi_rust_future_cancel_pointer(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_POINTER
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_POINTER
+void ffi_proton_mail_uniffi_rust_future_cancel_pointer(uint64_t handle
 );
-void ffi_proton_mail_uniffi_rust_future_free_pointer(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_POINTER
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_POINTER
+void ffi_proton_mail_uniffi_rust_future_free_pointer(uint64_t handle
 );
-void*_Nonnull ffi_proton_mail_uniffi_rust_future_complete_pointer(void* _Nonnull handle, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_POINTER
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_POINTER
+void*_Nonnull ffi_proton_mail_uniffi_rust_future_complete_pointer(uint64_t handle, RustCallStatus *_Nonnull out_status
 );
-void ffi_proton_mail_uniffi_rust_future_poll_rust_buffer(void* _Nonnull handle, UniFfiRustFutureContinuation _Nonnull callback, void* _Nonnull callback_data
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_RUST_BUFFER
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_RUST_BUFFER
+void ffi_proton_mail_uniffi_rust_future_poll_rust_buffer(uint64_t handle, UniffiRustFutureContinuationCallback _Nonnull callback, uint64_t callback_data
 );
-void ffi_proton_mail_uniffi_rust_future_cancel_rust_buffer(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_RUST_BUFFER
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_RUST_BUFFER
+void ffi_proton_mail_uniffi_rust_future_cancel_rust_buffer(uint64_t handle
 );
-void ffi_proton_mail_uniffi_rust_future_free_rust_buffer(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_RUST_BUFFER
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_RUST_BUFFER
+void ffi_proton_mail_uniffi_rust_future_free_rust_buffer(uint64_t handle
 );
-RustBuffer ffi_proton_mail_uniffi_rust_future_complete_rust_buffer(void* _Nonnull handle, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_RUST_BUFFER
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_RUST_BUFFER
+RustBuffer ffi_proton_mail_uniffi_rust_future_complete_rust_buffer(uint64_t handle, RustCallStatus *_Nonnull out_status
 );
-void ffi_proton_mail_uniffi_rust_future_poll_void(void* _Nonnull handle, UniFfiRustFutureContinuation _Nonnull callback, void* _Nonnull callback_data
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_VOID
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_POLL_VOID
+void ffi_proton_mail_uniffi_rust_future_poll_void(uint64_t handle, UniffiRustFutureContinuationCallback _Nonnull callback, uint64_t callback_data
 );
-void ffi_proton_mail_uniffi_rust_future_cancel_void(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_VOID
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_CANCEL_VOID
+void ffi_proton_mail_uniffi_rust_future_cancel_void(uint64_t handle
 );
-void ffi_proton_mail_uniffi_rust_future_free_void(void* _Nonnull handle
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_VOID
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_FREE_VOID
+void ffi_proton_mail_uniffi_rust_future_free_void(uint64_t handle
 );
-void ffi_proton_mail_uniffi_rust_future_complete_void(void* _Nonnull handle, RustCallStatus *_Nonnull out_status
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_VOID
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_RUST_FUTURE_COMPLETE_VOID
+void ffi_proton_mail_uniffi_rust_future_complete_void(uint64_t handle, RustCallStatus *_Nonnull out_status
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_FUNC_LOCATE_BLOCKQUOTE
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_FUNC_LOCATE_BLOCKQUOTE
 uint16_t uniffi_proton_mail_uniffi_checksum_func_locate_blockquote(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_LOGINFLOW_IS_AWAITING_2FA
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_LOGINFLOW_IS_AWAITING_2FA
 uint16_t uniffi_proton_mail_uniffi_checksum_method_loginflow_is_awaiting_2fa(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_LOGINFLOW_IS_LOGGED_IN
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_LOGINFLOW_IS_LOGGED_IN
 uint16_t uniffi_proton_mail_uniffi_checksum_method_loginflow_is_logged_in(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_LOGINFLOW_LOGIN
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_LOGINFLOW_LOGIN
 uint16_t uniffi_proton_mail_uniffi_checksum_method_loginflow_login(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_LOGINFLOW_SUBMIT_TOTP
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_LOGINFLOW_SUBMIT_TOTP
 uint16_t uniffi_proton_mail_uniffi_checksum_method_loginflow_submit_totp(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_LOGINFLOW_TO_USER_CONTEXT
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_LOGINFLOW_TO_USER_CONTEXT
 uint16_t uniffi_proton_mail_uniffi_checksum_method_loginflow_to_user_context(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILLABELSLIVEQUERY_DISCONNECT
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILLABELSLIVEQUERY_DISCONNECT
 uint16_t uniffi_proton_mail_uniffi_checksum_method_maillabelslivequery_disconnect(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILLABELSLIVEQUERY_VALUE
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILLABELSLIVEQUERY_VALUE
 uint16_t uniffi_proton_mail_uniffi_checksum_method_maillabelslivequery_value(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILSESSION_IS_NETWORK_CONNECTED
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILSESSION_IS_NETWORK_CONNECTED
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailsession_is_network_connected(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILSESSION_NEW_LOGIN_FLOW
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILSESSION_NEW_LOGIN_FLOW
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailsession_new_login_flow(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILSESSION_SET_NETWORK_CONNECTED
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILSESSION_SET_NETWORK_CONNECTED
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailsession_set_network_connected(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILSESSION_STORED_SESSIONS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILSESSION_STORED_SESSIONS
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailsession_stored_sessions(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILSESSION_USER_CONTEXT_FROM_SESSION
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILSESSION_USER_CONTEXT_FROM_SESSION
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailsession_user_context_from_session(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_APPLICABLE_LABELS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_APPLICABLE_LABELS
+uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusersession_applicable_labels(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_EXECUTE_PENDING_ACTION
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_EXECUTE_PENDING_ACTION
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusersession_execute_pending_action(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_EXECUTE_PENDING_ACTIONS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_EXECUTE_PENDING_ACTIONS
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusersession_execute_pending_actions(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_INITIALIZE
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_INITIALIZE
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusersession_initialize(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_LOGOUT
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_LOGOUT
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusersession_logout(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_MAIL_SETTINGS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_MAIL_SETTINGS
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusersession_mail_settings(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_MOVABLE_FOLDERS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_MOVABLE_FOLDERS
+uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusersession_movable_folders(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_NEW_FOLDER_LABELS_OBSERVED_QUERY
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_NEW_FOLDER_LABELS_OBSERVED_QUERY
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusersession_new_folder_labels_observed_query(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_NEW_LABEL_LABELS_OBSERVED_QUERY
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_NEW_LABEL_LABELS_OBSERVED_QUERY
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusersession_new_label_labels_observed_query(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_NEW_SYSTEM_LABELS_OBSERVED_QUERY
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_NEW_SYSTEM_LABELS_OBSERVED_QUERY
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusersession_new_system_labels_observed_query(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_POLL_EVENTS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSION_POLL_EVENTS
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusersession_poll_events(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOX_DELETE_CONVERSATIONS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOX_DELETE_CONVERSATIONS
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_delete_conversations(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOX_LABEL_CONVERSATIONS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOX_LABEL_CONVERSATIONS
+uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_label_conversations(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOX_MARK_CONVERSATIONS_READ
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOX_MARK_CONVERSATIONS_READ
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_mark_conversations_read(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOX_MARK_CONVERSATIONS_UNREAD
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOX_MARK_CONVERSATIONS_UNREAD
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_mark_conversations_unread(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOX_MOVE_CONVERSATIONS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOX_MOVE_CONVERSATIONS
+uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_move_conversations(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOX_NEW_CONVERSATION_LIVE_QUERY
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOX_NEW_CONVERSATION_LIVE_QUERY
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_new_conversation_live_query(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOX_UNLABEL_CONVERSATIONS
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOX_UNLABEL_CONVERSATIONS
+uint16_t uniffi_proton_mail_uniffi_checksum_method_mailbox_unlabel_conversations(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOXCONVERSATIONLIVEQUERY_DISCONNECT
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOXCONVERSATIONLIVEQUERY_DISCONNECT
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailboxconversationlivequery_disconnect(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOXCONVERSATIONLIVEQUERY_VALUE
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOXCONVERSATIONLIVEQUERY_VALUE
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailboxconversationlivequery_value(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_STOREDSESSION_EMAIL
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_STOREDSESSION_EMAIL
 uint16_t uniffi_proton_mail_uniffi_checksum_method_storedsession_email(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_STOREDSESSION_NAME
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_STOREDSESSION_NAME
 uint16_t uniffi_proton_mail_uniffi_checksum_method_storedsession_name(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_STOREDSESSION_SESSION_ID
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_STOREDSESSION_SESSION_ID
 uint16_t uniffi_proton_mail_uniffi_checksum_method_storedsession_session_id(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_STOREDSESSION_USER_ID
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_STOREDSESSION_USER_ID
 uint16_t uniffi_proton_mail_uniffi_checksum_method_storedsession_user_id(void
     
 );
-uint16_t uniffi_proton_mail_uniffi_checksum_constructor_mailsession_new(void
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_CONSTRUCTOR_MAILSESSION_CREATE
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_CONSTRUCTOR_MAILSESSION_CREATE
+uint16_t uniffi_proton_mail_uniffi_checksum_constructor_mailsession_create(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_CONSTRUCTOR_MAILBOX_INBOX
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_CONSTRUCTOR_MAILBOX_INBOX
 uint16_t uniffi_proton_mail_uniffi_checksum_constructor_mailbox_inbox(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_CONSTRUCTOR_MAILBOX_NEW
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_CONSTRUCTOR_MAILBOX_NEW
 uint16_t uniffi_proton_mail_uniffi_checksum_constructor_mailbox_new(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_CONSTRUCTOR_MAILBOX_WITH_REMOTE_ID
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_CONSTRUCTOR_MAILBOX_WITH_REMOTE_ID
 uint16_t uniffi_proton_mail_uniffi_checksum_constructor_mailbox_with_remote_id(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSIONINITIALIZATIONCALLBACK_ON_STAGE
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILUSERSESSIONINITIALIZATIONCALLBACK_ON_STAGE
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailusersessioninitializationcallback_on_stage(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOXBACKGROUNDRESULT_ON_BACKGROUND_RESULT
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOXBACKGROUNDRESULT_ON_BACKGROUND_RESULT
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailboxbackgroundresult_on_background_result(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOXLIVEQUERYUPDATEDCALLBACK_ON_UPDATED
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_MAILBOXLIVEQUERYUPDATEDCALLBACK_ON_UPDATED
 uint16_t uniffi_proton_mail_uniffi_checksum_method_mailboxlivequeryupdatedcallback_on_updated(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_NETWORKSTATUSCHANGED_ON_NETWORK_STATUS_CHANGED
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_NETWORKSTATUSCHANGED_ON_NETWORK_STATUS_CHANGED
 uint16_t uniffi_proton_mail_uniffi_checksum_method_networkstatuschanged_on_network_status_changed(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_OSKEYCHAIN_STORE
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_OSKEYCHAIN_STORE
 uint16_t uniffi_proton_mail_uniffi_checksum_method_oskeychain_store(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_OSKEYCHAIN_DELETE
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_OSKEYCHAIN_DELETE
 uint16_t uniffi_proton_mail_uniffi_checksum_method_oskeychain_delete(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_OSKEYCHAIN_GET
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_OSKEYCHAIN_GET
 uint16_t uniffi_proton_mail_uniffi_checksum_method_oskeychain_get(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_SESSIONCALLBACK_ON_SESSION_REFRESH
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_SESSIONCALLBACK_ON_SESSION_REFRESH
 uint16_t uniffi_proton_mail_uniffi_checksum_method_sessioncallback_on_session_refresh(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_SESSIONCALLBACK_ON_SESSION_DELETED
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_SESSIONCALLBACK_ON_SESSION_DELETED
 uint16_t uniffi_proton_mail_uniffi_checksum_method_sessioncallback_on_session_deleted(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_SESSIONCALLBACK_ON_REFRESH_FAILED
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_SESSIONCALLBACK_ON_REFRESH_FAILED
 uint16_t uniffi_proton_mail_uniffi_checksum_method_sessioncallback_on_refresh_failed(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_SESSIONCALLBACK_ON_ERROR
+#define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_CHECKSUM_METHOD_SESSIONCALLBACK_ON_ERROR
 uint16_t uniffi_proton_mail_uniffi_checksum_method_sessioncallback_on_error(void
     
 );
+#endif
+#ifndef UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_UNIFFI_CONTRACT_VERSION
+#define UNIFFI_FFIDEF_FFI_PROTON_MAIL_UNIFFI_UNIFFI_CONTRACT_VERSION
 uint32_t ffi_proton_mail_uniffi_uniffi_contract_version(void
     
 );
+#endif
 

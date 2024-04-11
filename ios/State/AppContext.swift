@@ -50,7 +50,7 @@ final class AppContext: Sendable, ObservableObject {
 
         let applicationSupportPath = applicationSupport.path()
         AppLogger.logTemporarily(message: "path: \(applicationSupportPath)")
-        _mailContext = try MailSession(
+        _mailContext = try MailSession.create(
             sessionDir: applicationSupportPath,
             userDir: applicationSupportPath,
             logDir: applicationSupportPath,
