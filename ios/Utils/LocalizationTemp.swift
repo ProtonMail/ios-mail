@@ -60,6 +60,7 @@ enum LocalizationTemp {
 
     enum MailboxCell {
         static func expiresIn(value: String) -> String { String(format: "Expires in %@", value) }
+        static func snoozedTill(value: String) -> String { String(format: "Snoozed till %@", value) }
     }
 
     static let settings = "Settings"

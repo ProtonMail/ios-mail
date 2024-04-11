@@ -32,6 +32,7 @@ enum PreviewData {
         let conversations: [MailboxConversationCellUIModel] = (1..<100).map { value in
             let randomSenderSubject = randomSenderSubject()
             let expirationDate: Bool = ((1..<11).randomElement()!%10) == 0
+            let snoozeDate: Bool = ((1..<11).randomElement()!%10) == 0
             return .init(
                 id: UInt64.random(in: 1...UInt64.max),
                 avatar: .init(initials: randomSenderSubject.0.prefix(2).uppercased()),
@@ -45,7 +46,8 @@ enum PreviewData {
                 numMessages: [0, 1, 5, [0, 2, 14].randomElement()!].randomElement()!,
                 labelUIModel: [0, 1, 2].randomElement()! == 0 ? mailboxLabels.randomElement()! : .init(),
                 attachmentsUIModel: [0, 1, 2].randomElement()! == 0 ? attachments.randomElement()! : [],
-                expirationDate: expirationDate ? .now + 1000 : nil
+                expirationDate: expirationDate ? .now + 1000 : nil,
+                snoozeDate: snoozeDate ? .now + 5000 : nil
             )
         }
         return conversations

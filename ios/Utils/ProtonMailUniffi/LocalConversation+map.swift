@@ -48,7 +48,8 @@ extension LocalConversation {
             numMessages: numMessages > 1 ? Int(numMessages) : 0,
             labelUIModel: toLabel(),
             attachmentsUIModel: (attachments ?? []).toAttachmentCapsuleUIModels(),
-            expirationDate: nil
+            expirationDate: Date(timeIntervalSince1970: TimeInterval(expirationTime)),
+            snoozeDate: nil
         )
     }
 }

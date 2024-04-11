@@ -40,7 +40,24 @@ extension Date {
             return formatted(date: .abbreviated, time: .omitted)
         }
     }
-    
+
+    /**
+     Mailbox date format
+
+     The date will support the locale passed which migth bring some differences to the following examples:
+     ```
+     Today:           11:24
+     From tomorrow:   Thu, Feb 24, 17:00
+     ```
+     */
+    func mailboxSnoozeFormat(calendar: Calendar = .current) -> String {
+        if calendar.isDateInToday(self) {
+            return formatted(.dateTime.hour().minute())
+        } else {
+            return formatted(.dateTime.weekday().month().day().hour().minute())
+        }
+    }
+
     /**
      Returns the time remaining to a future date.
 

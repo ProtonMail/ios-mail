@@ -37,6 +37,7 @@ struct MailboxConversationCell: View {
                 senderRowView
                 subjectRowView
                 expirationRowView
+                snoozedRowView
                 attachmentRowView
             }
         }
@@ -114,6 +115,17 @@ extension MailboxConversationCell {
             .removeViewIf(uiModel.expirationDate == nil)
     }
 
+    private var snoozedRowView: some View {
+
+        Text(uiModel.snoozeDate ?? "")
+            .font(.footnote)
+            .fontWeight(.semibold)
+            .foregroundStyle(DS.Color.Notification.warning)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, DS.Spacing.small)
+            .removeViewIf(uiModel.snoozeDate == nil)
+    }
+
     private var attachmentRowView: some View {
 
         AttachmentsView(uiModel: uiModel.attachmentsUIModel, onTapEvent: {
@@ -142,6 +154,7 @@ final class MailboxConversationCellUIModel: Identifiable, Sendable {
     let attachmentsUIModel: [AttachmentCapsuleUIModel]
 
     let expirationDate: String?
+    let snoozeDate: String?
 
     init(
         id: PMLocalConversationId,
@@ -156,7 +169,8 @@ final class MailboxConversationCellUIModel: Identifiable, Sendable {
         numMessages: Int,
         labelUIModel: MailboxLabelUIModel = .init(),
         attachmentsUIModel: [AttachmentCapsuleUIModel] = [],
-        expirationDate: Date?
+        expirationDate: Date?,
+        snoozeDate: Date?
     ) {
         self.id = id
         self.avatar = avatar
@@ -178,6 +192,14 @@ final class MailboxConversationCellUIModel: Identifiable, Sendable {
                 .expiresIn(value: expirationDate.localisedRemainingTimeFromNow())
         }
         self.expirationDate = expiration
+
+        var snoozeTime: String? = nil
+        if let snoozeDate {
+            snoozeTime = LocalizationTemp
+                .MailboxCell
+                .snoozedTill(value: snoozeDate.mailboxSnoozeFormat())
+        }
+        self.snoozeDate = snoozeTime
     }
 }
 
@@ -202,7 +224,8 @@ enum MailboxConversationCellEvent {
             isSenderProtonOfficial: true,
             numMessages: 0,
             labelUIModel: .init(id: "", color: .brown, text: "New", numExtraLabels: 0),
-            expirationDate: nil
+            expirationDate: nil,
+            snoozeDate: nil
         )
     }
 
@@ -224,7 +247,8 @@ enum MailboxConversationCellEvent {
                 numMessages: 3,
                 labelUIModel: .init(id: "", color: .purple, text: "Offer", numExtraLabels: 0),
                 attachmentsUIModel: [.init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf")],
-                expirationDate: .now
+                expirationDate: .now,
+                snoozeDate: .now + 500
             ),
             onEvent: { _ in }
         )
@@ -247,7 +271,8 @@ enum MailboxConversationCellEvent {
                     .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
                     .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
                 ],
-                expirationDate: .now + 500
+                expirationDate: .now + 500,
+                snoozeDate: .now + 55000
             ),
             onEvent: { _ in }
         )
