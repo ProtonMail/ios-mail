@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCoreDataModel
 
 enum LockedStateAlertVisibility: Equatable {
     case mail
@@ -25,7 +26,22 @@ enum LockedStateAlertVisibility: Equatable {
     case orgIssueForMember
     case hidden
 
-    var mailboxBannerTitle: String {
+    init(lockedFlags: LockedFlags) {
+        switch lockedFlags {
+        case .mailStorageExceeded:
+            self = .mail
+        case .driveStorageExceeded:
+            self = .drive
+        case .storageExceeded:
+            self = .storageFull
+        case .orgIssueForPrimaryAdmin:
+            self = .orgIssueForPrimaryAdmin
+        case .orgIssueForMember:
+            self = .orgIssueForMember
+        }
+    }
+
+    var mailboxBannerTitle: String? {
         switch self {
         case .mail:
             return L10n.LockedStateAlertBox.alertBoxMailFullText
@@ -38,11 +54,11 @@ enum LockedStateAlertVisibility: Equatable {
         case .orgIssueForMember:
             return L10n.LockedStateAlertBox.alertBoxAccountAtRiskText
         case .hidden:
-            return ""
+            return nil
         }
     }
-    
-    var mailboxBannerDescription: String {
+
+    var mailboxBannerDescription: String? {
         switch self {
         case .mail, .storageFull:
             return L10n.LockedStateAlertBox.alertBoxMailFullDescription
@@ -53,18 +69,18 @@ enum LockedStateAlertVisibility: Equatable {
         case .orgIssueForMember:
             return L10n.LockedStateAlertBox.alertBoxDescriptionForOrgMember
         case .hidden:
-            return ""
+            return nil
         }
     }
-    
-    var mailBoxBannerButtonTitle: String {
+
+    var mailBoxBannerButtonTitle: String? {
         switch self {
         case .orgIssueForPrimaryAdmin:
             return L10n.LockedStateAlertBox.alertBoxButtonTitleForPrimaryAdmin
         case .orgIssueForMember:
             return L10n.LockedStateAlertBox.alertBoxButtonTitleForOrgMember
         case .hidden:
-            return ""
+            return nil
         default:
             return L10n.LockedStateAlertBox.alertBoxDefaultButtonTitle
         }

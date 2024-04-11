@@ -326,10 +326,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     var allEmails: [EmailEntity] {
         return contactProvider.getAllEmails()
     }
-    
+
     private func setupAlertBox() {
         if let lockedFlags = user.userInfo.lockedFlags {
-            setupLockedStateAlert(by: lockedFlags)
+            lockedStateAlertVisibility = LockedStateAlertVisibility(lockedFlags: lockedFlags)
         } else {
             setupStorageAlert()
         }
@@ -348,21 +348,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
             }
         } else {
             storageAlertVisibility = .hidden
-        }
-    }
-    
-    private func setupLockedStateAlert(by lockedFlags: LockedFlags) {
-        switch lockedFlags {
-        case .mailStorageExceeded:
-            lockedStateAlertVisibility = .mail
-        case .driveStorageExceeded:
-            lockedStateAlertVisibility = .drive
-        case .storageExceeded:
-            lockedStateAlertVisibility = .storageFull
-        case .orgIssueForPrimaryAdmin:
-            lockedStateAlertVisibility = .orgIssueForPrimaryAdmin
-        case .orgIssueForMember:
-            lockedStateAlertVisibility = .orgIssueForMember
         }
     }
 

@@ -2241,11 +2241,8 @@ extension MailboxViewController {
             setupStorageAlertBox()
         }
     }
-    
+
     private func setupLockedStateAlertBox() {
-        guard viewModel.lockedStateAlertVisibility != .hidden else {
-            return
-        }
         alertIcon.tintColor = ColorProvider.NotificationError
         alertDismissButton.isHidden = true
         
@@ -2253,7 +2250,7 @@ extension MailboxViewController {
         alertDescription.text = viewModel.lockedStateAlertVisibility.mailboxBannerDescription
         alertButton.setTitle(viewModel.lockedStateAlertVisibility.mailBoxBannerButtonTitle, for: .normal)
     }
-    
+
     private func setupStorageAlertBox() {
         alertLabel.text = viewModel.storageAlertVisibility.mailboxBannerTitle
         switch viewModel.storageAlertVisibility {
