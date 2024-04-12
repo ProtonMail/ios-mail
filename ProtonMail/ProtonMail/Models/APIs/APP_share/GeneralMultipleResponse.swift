@@ -23,7 +23,6 @@ struct GeneralMultipleResponse: Decodable {
     let responses: [Responses]
 
     struct Responses: Decodable {
-        let id: String
         let response: Response
     }
 
@@ -35,7 +34,6 @@ struct GeneralMultipleResponse: Decodable {
 
 extension GeneralMultipleResponse.Responses {
     enum CodingKeys: String, CodingKey {
-        case id = "ID"
         case response = "response"
     }
 }

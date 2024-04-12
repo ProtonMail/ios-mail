@@ -71,7 +71,6 @@ class SingleMessageContentViewModel {
 
     private let internetStatusProvider: InternetConnectionStatusProviderProtocol
     private let messageService: MessageDataService
-    private let observerID = UUID()
 
     var isExpanded = false {
         didSet { isExpanded ? createExpandedHeaderViewModel() : createNonExpandedHeaderViewModel() }

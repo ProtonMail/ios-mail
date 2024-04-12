@@ -304,17 +304,6 @@ final class WindowsCoordinator {
         }
     }
 
-    private func restoreAppStates() {
-        guard appWindow != nil else { return }
-        self.appWindow.enumerateViewControllerHierarchy { controller, stop in
-            if let _ = controller as? MenuViewController,
-               let coordinator = self.menuCoordinator {
-                coordinator.handleSwitchView(deepLink: self.deepLink)
-                stop = true
-            }
-        }
-    }
-
     @discardableResult
     private func navigate(from source: UIWindow?, to destination: UIWindow, animated: Bool, completion: (() -> Void)? = nil) -> Bool {
         guard source != destination else {

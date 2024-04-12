@@ -71,11 +71,9 @@ class ConversationLabelResponse: Response, UndoTokenResponseProtocol {
 }
 
 struct ConversationLabelData: Decodable {
-    let id: String
     let response: ResponseCode
 
     enum CodingKeys: String, CodingKey {
-        case id = "ID"
         case response = "Response"
     }
 

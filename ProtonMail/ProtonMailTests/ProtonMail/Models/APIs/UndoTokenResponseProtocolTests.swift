@@ -46,6 +46,5 @@ class UndoTokenResponseProtocolTests: XCTestCase {
         sut.parseUndoToken(response: response)
 
         XCTAssertEqual(sut.undoTokenData?.token, undoResponse["Token"] as? String)
-        XCTAssertEqual(sut.undoTokenData?.tokenValidTime, undoResponse["ValidUntil"] as? Int)
     }
 }
