@@ -74,7 +74,7 @@ final class GlobalContainerTests: XCTestCase {
         _ = strongRefToContainer?.saveSwipeActionSetting
         _ = strongRefToContainer?.senderImageCache
         _ = strongRefToContainer?.signInManager
-        _ = strongRefToContainer?.storeKitManager
+        _ = strongRefToContainer?.storeKitManagerDelegate
         _ = strongRefToContainer?.swipeActionCache
         _ = strongRefToContainer?.urlOpener
         // sourcery:end
