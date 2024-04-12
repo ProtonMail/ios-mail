@@ -19,10 +19,8 @@ import Foundation
 
 struct UndoTokenData: Codable {
     let token: String
-    let tokenValidTime: Int
 
     enum CodingKeys: String, CodingKey {
         case token = "token"
-        case tokenValidTime = "validUntil"
     }
 }

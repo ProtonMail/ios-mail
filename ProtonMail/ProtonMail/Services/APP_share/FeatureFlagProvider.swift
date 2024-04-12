@@ -43,8 +43,6 @@ struct FeatureFlagProviderImpl: FeatureFlagProvider {
         switch featureFlag {
         case .autoImportContacts:
             return Application.isDebugOrEnterprise
-        case .snooze:
-            return ProcessInfo.isRunningUnitTests
         default:
             return nil
         }

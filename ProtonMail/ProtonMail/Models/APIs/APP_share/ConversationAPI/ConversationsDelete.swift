@@ -65,11 +65,9 @@ class ConversationDeleteResponse: Response {
 }
 
 struct ConversationDeleteData: Decodable {
-    let id: String
     let response: ResponseCode
 
     enum CodingKeys: String, CodingKey {
-        case id = "ID"
         case response = "Response"
     }
 
