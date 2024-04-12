@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import SwiftUI
 
 /// dummy sign in screen to be able to start a rust session
@@ -31,14 +32,14 @@ struct SignIn: View {
             VStack(alignment: .leading, spacing: 11) {
                 Text("Email")
                     .font(.system(size: 13, weight: .light))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(DS.Color.Text.norm)
                     .frame(height: 15, alignment: .leading)
 
                 TextField("", text: $email)
-                    .foregroundColor(.primary)
+                    .foregroundColor(DS.Color.Text.norm)
                     .frame(height: 44)
                     .padding(.horizontal, 12)
-                    .background(Color.white)
+                    .background(DS.Color.Background.secondary)
                     .textInputAutocapitalization(.never)
                     .keyboardType(.emailAddress)
             }
@@ -46,14 +47,14 @@ struct SignIn: View {
             VStack(alignment: .leading, spacing: 11) {
                 Text("Password")
                     .font(.system(size: 13, weight: .light))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(DS.Color.Text.norm)
                     .frame(height: 15, alignment: .leading)
 
                 SecureField("", text: $password)
                     .frame(height: 44)
-                    .foregroundColor(.primary)
+                    .foregroundColor(DS.Color.Text.norm)
                     .padding(.horizontal, 12)
-                    .background(Color.white)
+                    .background(DS.Color.Background.secondary)
             }
 
             if screenModel.isLoading {
@@ -72,10 +73,10 @@ struct SignIn: View {
                     }
                 } label: {
                     Text("Sign In")
-                        .foregroundColor(.white)
+                        .foregroundColor(DS.Color.Text.norm)
                         .frame(width: 215, height: 44, alignment: .center)
                 }
-                .background(.secondary)
+                .background(DS.Color.Background.deep)
                 .cornerRadius(4)
                 .padding(.top, 36)
                 .alert(screenModel.errorMessage, isPresented: screenModel.isErrorPresented) {
@@ -88,7 +89,7 @@ struct SignIn: View {
             Spacer()
         }
         .padding()
-        .background(.secondary.opacity(0.1))
+        .background(DS.Color.Background.norm)
     }
 }
 
