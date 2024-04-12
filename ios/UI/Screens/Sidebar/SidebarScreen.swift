@@ -66,23 +66,33 @@ struct SidebarScreen: View {
             .frame(maxHeight: .infinity)
 
             ScrollView(showsIndicators: false) {
-
-                VStack(spacing: 24) {
-                    ForEach(screenModel.systemFolders) { systemFolder in
-                        SidebarCell(
-                            uiModel: systemFolder,
-                            isSelected: systemFolder.id == screenModel.route.localLabelId
-                        ) {
-                            screenModel.updateRoute(newRoute: systemFolder.route)
-                            appUIState.isSidebarOpen = false
-                        }
-                    }
-                }
-                .padding(.init(top: 24.0, leading: 16.0, bottom: 24.0, trailing: 16.0))
+                foldersAndLabelsView
+                appVersionView
             }
             Spacer()
         }
         .background(DS.Color.Sidebar.background)
+    }
+
+    var foldersAndLabelsView: some View {
+        VStack(spacing: 24) {
+            ForEach(screenModel.systemFolders) { systemFolder in
+                SidebarCell(
+                    uiModel: systemFolder,
+                    isSelected: systemFolder.id == screenModel.route.localLabelId
+                ) {
+                    screenModel.updateRoute(newRoute: systemFolder.route)
+                    appUIState.isSidebarOpen = false
+                }
+            }
+        }
+        .padding(.init(top: 24.0, leading: 16.0, bottom: 24.0, trailing: 16.0))
+    }
+
+    var appVersionView: some View {
+        Text("Proton Mail \(Bundle.main.appVersion)")
+            .font(.footnote)
+            .foregroundStyle(DS.Color.Sidebar.textNorm)
     }
 }
 
