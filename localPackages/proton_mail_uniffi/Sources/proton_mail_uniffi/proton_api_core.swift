@@ -583,11 +583,252 @@ public func FfiConverterTypeDummy_lower(_ value: Dummy) -> RustBuffer {
 
 // Note that we don't yet support `indirect` for enums.
 // See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
+
+public enum DateFormat : UInt8 {
+    
+    case `default` = 0
+    case ddmmyyyy = 1
+    case mmddyyyy = 2
+    case yyyymmdd = 3
+}
+
+
+public struct FfiConverterTypeDateFormat: FfiConverterRustBuffer {
+    typealias SwiftType = DateFormat
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> DateFormat {
+        let variant: Int32 = try readInt(&buf)
+        switch variant {
+        
+        case 1: return .`default`
+        
+        case 2: return .ddmmyyyy
+        
+        case 3: return .mmddyyyy
+        
+        case 4: return .yyyymmdd
+        
+        default: throw UniffiInternalError.unexpectedEnumCase
+        }
+    }
+
+    public static func write(_ value: DateFormat, into buf: inout [UInt8]) {
+        switch value {
+        
+        
+        case .`default`:
+            writeInt(&buf, Int32(1))
+        
+        
+        case .ddmmyyyy:
+            writeInt(&buf, Int32(2))
+        
+        
+        case .mmddyyyy:
+            writeInt(&buf, Int32(3))
+        
+        
+        case .yyyymmdd:
+            writeInt(&buf, Int32(4))
+        
+        }
+    }
+}
+
+
+public func FfiConverterTypeDateFormat_lift(_ buf: RustBuffer) throws -> DateFormat {
+    return try FfiConverterTypeDateFormat.lift(buf)
+}
+
+public func FfiConverterTypeDateFormat_lower(_ value: DateFormat) -> RustBuffer {
+    return FfiConverterTypeDateFormat.lower(value)
+}
+
+
+extension DateFormat: Sendable {} 
+extension DateFormat: Equatable, Hashable {}
+
+
+
+// Note that we don't yet support `indirect` for enums.
+// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
+
+public enum Density : UInt8 {
+    
+    case comfortable = 0
+    case compact = 1
+}
+
+
+public struct FfiConverterTypeDensity: FfiConverterRustBuffer {
+    typealias SwiftType = Density
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> Density {
+        let variant: Int32 = try readInt(&buf)
+        switch variant {
+        
+        case 1: return .comfortable
+        
+        case 2: return .compact
+        
+        default: throw UniffiInternalError.unexpectedEnumCase
+        }
+    }
+
+    public static func write(_ value: Density, into buf: inout [UInt8]) {
+        switch value {
+        
+        
+        case .comfortable:
+            writeInt(&buf, Int32(1))
+        
+        
+        case .compact:
+            writeInt(&buf, Int32(2))
+        
+        }
+    }
+}
+
+
+public func FfiConverterTypeDensity_lift(_ buf: RustBuffer) throws -> Density {
+    return try FfiConverterTypeDensity.lift(buf)
+}
+
+public func FfiConverterTypeDensity_lower(_ value: Density) -> RustBuffer {
+    return FfiConverterTypeDensity.lower(value)
+}
+
+
+extension Density: Sendable {} 
+extension Density: Equatable, Hashable {}
+
+
+
+// Note that we don't yet support `indirect` for enums.
+// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
+
+public enum EarlyAccess : UInt8 {
+    
+    case regular = 0
+    case beta = 1
+}
+
+
+public struct FfiConverterTypeEarlyAccess: FfiConverterRustBuffer {
+    typealias SwiftType = EarlyAccess
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> EarlyAccess {
+        let variant: Int32 = try readInt(&buf)
+        switch variant {
+        
+        case 1: return .regular
+        
+        case 2: return .beta
+        
+        default: throw UniffiInternalError.unexpectedEnumCase
+        }
+    }
+
+    public static func write(_ value: EarlyAccess, into buf: inout [UInt8]) {
+        switch value {
+        
+        
+        case .regular:
+            writeInt(&buf, Int32(1))
+        
+        
+        case .beta:
+            writeInt(&buf, Int32(2))
+        
+        }
+    }
+}
+
+
+public func FfiConverterTypeEarlyAccess_lift(_ buf: RustBuffer) throws -> EarlyAccess {
+    return try FfiConverterTypeEarlyAccess.lift(buf)
+}
+
+public func FfiConverterTypeEarlyAccess_lower(_ value: EarlyAccess) -> RustBuffer {
+    return FfiConverterTypeEarlyAccess.lower(value)
+}
+
+
+extension EarlyAccess: Sendable {} 
+extension EarlyAccess: Equatable, Hashable {}
+
+
+
+// Note that we don't yet support `indirect` for enums.
+// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
+
+public enum LogAuth : UInt8 {
+    
+    case disabled = 0
+    case basic = 1
+    case advanced = 2
+}
+
+
+public struct FfiConverterTypeLogAuth: FfiConverterRustBuffer {
+    typealias SwiftType = LogAuth
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> LogAuth {
+        let variant: Int32 = try readInt(&buf)
+        switch variant {
+        
+        case 1: return .disabled
+        
+        case 2: return .basic
+        
+        case 3: return .advanced
+        
+        default: throw UniffiInternalError.unexpectedEnumCase
+        }
+    }
+
+    public static func write(_ value: LogAuth, into buf: inout [UInt8]) {
+        switch value {
+        
+        
+        case .disabled:
+            writeInt(&buf, Int32(1))
+        
+        
+        case .basic:
+            writeInt(&buf, Int32(2))
+        
+        
+        case .advanced:
+            writeInt(&buf, Int32(3))
+        
+        }
+    }
+}
+
+
+public func FfiConverterTypeLogAuth_lift(_ buf: RustBuffer) throws -> LogAuth {
+    return try FfiConverterTypeLogAuth.lift(buf)
+}
+
+public func FfiConverterTypeLogAuth_lower(_ value: LogAuth) -> RustBuffer {
+    return FfiConverterTypeLogAuth.lower(value)
+}
+
+
+extension LogAuth: Sendable {} 
+extension LogAuth: Equatable, Hashable {}
+
+
+
+// Note that we don't yet support `indirect` for enums.
+// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
 /**
  * Errors that may occur during an HTTP request, mostly related to network.
  */
 
-public enum HttpRequestError {
+public enum RequestError {
     
     case api
     case redirect
@@ -599,10 +840,10 @@ public enum HttpRequestError {
 }
 
 
-public struct FfiConverterTypeHttpRequestError: FfiConverterRustBuffer {
-    typealias SwiftType = HttpRequestError
+public struct FfiConverterTypeRequestError: FfiConverterRustBuffer {
+    typealias SwiftType = RequestError
 
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> HttpRequestError {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> RequestError {
         let variant: Int32 = try readInt(&buf)
         switch variant {
         
@@ -624,7 +865,7 @@ public struct FfiConverterTypeHttpRequestError: FfiConverterRustBuffer {
         }
     }
 
-    public static func write(_ value: HttpRequestError, into buf: inout [UInt8]) {
+    public static func write(_ value: RequestError, into buf: inout [UInt8]) {
         switch value {
         
         
@@ -660,17 +901,17 @@ public struct FfiConverterTypeHttpRequestError: FfiConverterRustBuffer {
 }
 
 
-public func FfiConverterTypeHttpRequestError_lift(_ buf: RustBuffer) throws -> HttpRequestError {
-    return try FfiConverterTypeHttpRequestError.lift(buf)
+public func FfiConverterTypeRequestError_lift(_ buf: RustBuffer) throws -> RequestError {
+    return try FfiConverterTypeRequestError.lift(buf)
 }
 
-public func FfiConverterTypeHttpRequestError_lower(_ value: HttpRequestError) -> RustBuffer {
-    return FfiConverterTypeHttpRequestError.lower(value)
+public func FfiConverterTypeRequestError_lower(_ value: RequestError) -> RustBuffer {
+    return FfiConverterTypeRequestError.lower(value)
 }
 
 
-extension HttpRequestError: Sendable {} 
-extension HttpRequestError: Equatable, Hashable {}
+extension RequestError: Sendable {} 
+extension RequestError: Equatable, Hashable {}
 
 
 
@@ -746,44 +987,44 @@ extension TfaStatus: Equatable, Hashable {}
 // Note that we don't yet support `indirect` for enums.
 // See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
 
-public enum UserLogAuth : UInt8 {
+public enum TimeFormat : UInt8 {
     
-    case disabled = 0
-    case basic = 1
-    case advanced = 2
+    case `default` = 0
+    case h24 = 1
+    case h12 = 2
 }
 
 
-public struct FfiConverterTypeUserLogAuth: FfiConverterRustBuffer {
-    typealias SwiftType = UserLogAuth
+public struct FfiConverterTypeTimeFormat: FfiConverterRustBuffer {
+    typealias SwiftType = TimeFormat
 
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> UserLogAuth {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> TimeFormat {
         let variant: Int32 = try readInt(&buf)
         switch variant {
         
-        case 1: return .disabled
+        case 1: return .`default`
         
-        case 2: return .basic
+        case 2: return .h24
         
-        case 3: return .advanced
+        case 3: return .h12
         
         default: throw UniffiInternalError.unexpectedEnumCase
         }
     }
 
-    public static func write(_ value: UserLogAuth, into buf: inout [UInt8]) {
+    public static func write(_ value: TimeFormat, into buf: inout [UInt8]) {
         switch value {
         
         
-        case .disabled:
+        case .`default`:
             writeInt(&buf, Int32(1))
         
         
-        case .basic:
+        case .h24:
             writeInt(&buf, Int32(2))
         
         
-        case .advanced:
+        case .h12:
             writeInt(&buf, Int32(3))
         
         }
@@ -791,17 +1032,17 @@ public struct FfiConverterTypeUserLogAuth: FfiConverterRustBuffer {
 }
 
 
-public func FfiConverterTypeUserLogAuth_lift(_ buf: RustBuffer) throws -> UserLogAuth {
-    return try FfiConverterTypeUserLogAuth.lift(buf)
+public func FfiConverterTypeTimeFormat_lift(_ buf: RustBuffer) throws -> TimeFormat {
+    return try FfiConverterTypeTimeFormat.lift(buf)
 }
 
-public func FfiConverterTypeUserLogAuth_lower(_ value: UserLogAuth) -> RustBuffer {
-    return FfiConverterTypeUserLogAuth.lower(value)
+public func FfiConverterTypeTimeFormat_lower(_ value: TimeFormat) -> RustBuffer {
+    return FfiConverterTypeTimeFormat.lower(value)
 }
 
 
-extension UserLogAuth: Sendable {} 
-extension UserLogAuth: Equatable, Hashable {}
+extension TimeFormat: Sendable {} 
+extension TimeFormat: Equatable, Hashable {}
 
 
 
@@ -884,316 +1125,6 @@ extension UserMnemonicStatus: Equatable, Hashable {}
 // Note that we don't yet support `indirect` for enums.
 // See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
 
-public enum UserSettingsDateFormat : UInt8 {
-    
-    case `default` = 0
-    case ddmmyyyy = 1
-    case mmddyyyy = 2
-    case yyyymmdd = 3
-}
-
-
-public struct FfiConverterTypeUserSettingsDateFormat: FfiConverterRustBuffer {
-    typealias SwiftType = UserSettingsDateFormat
-
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> UserSettingsDateFormat {
-        let variant: Int32 = try readInt(&buf)
-        switch variant {
-        
-        case 1: return .`default`
-        
-        case 2: return .ddmmyyyy
-        
-        case 3: return .mmddyyyy
-        
-        case 4: return .yyyymmdd
-        
-        default: throw UniffiInternalError.unexpectedEnumCase
-        }
-    }
-
-    public static func write(_ value: UserSettingsDateFormat, into buf: inout [UInt8]) {
-        switch value {
-        
-        
-        case .`default`:
-            writeInt(&buf, Int32(1))
-        
-        
-        case .ddmmyyyy:
-            writeInt(&buf, Int32(2))
-        
-        
-        case .mmddyyyy:
-            writeInt(&buf, Int32(3))
-        
-        
-        case .yyyymmdd:
-            writeInt(&buf, Int32(4))
-        
-        }
-    }
-}
-
-
-public func FfiConverterTypeUserSettingsDateFormat_lift(_ buf: RustBuffer) throws -> UserSettingsDateFormat {
-    return try FfiConverterTypeUserSettingsDateFormat.lift(buf)
-}
-
-public func FfiConverterTypeUserSettingsDateFormat_lower(_ value: UserSettingsDateFormat) -> RustBuffer {
-    return FfiConverterTypeUserSettingsDateFormat.lower(value)
-}
-
-
-extension UserSettingsDateFormat: Sendable {} 
-extension UserSettingsDateFormat: Equatable, Hashable {}
-
-
-
-// Note that we don't yet support `indirect` for enums.
-// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
-
-public enum UserSettingsDensity : UInt8 {
-    
-    case comfortable = 0
-    case compact = 1
-}
-
-
-public struct FfiConverterTypeUserSettingsDensity: FfiConverterRustBuffer {
-    typealias SwiftType = UserSettingsDensity
-
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> UserSettingsDensity {
-        let variant: Int32 = try readInt(&buf)
-        switch variant {
-        
-        case 1: return .comfortable
-        
-        case 2: return .compact
-        
-        default: throw UniffiInternalError.unexpectedEnumCase
-        }
-    }
-
-    public static func write(_ value: UserSettingsDensity, into buf: inout [UInt8]) {
-        switch value {
-        
-        
-        case .comfortable:
-            writeInt(&buf, Int32(1))
-        
-        
-        case .compact:
-            writeInt(&buf, Int32(2))
-        
-        }
-    }
-}
-
-
-public func FfiConverterTypeUserSettingsDensity_lift(_ buf: RustBuffer) throws -> UserSettingsDensity {
-    return try FfiConverterTypeUserSettingsDensity.lift(buf)
-}
-
-public func FfiConverterTypeUserSettingsDensity_lower(_ value: UserSettingsDensity) -> RustBuffer {
-    return FfiConverterTypeUserSettingsDensity.lower(value)
-}
-
-
-extension UserSettingsDensity: Sendable {} 
-extension UserSettingsDensity: Equatable, Hashable {}
-
-
-
-// Note that we don't yet support `indirect` for enums.
-// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
-
-public enum UserSettingsEarlyAccess : UInt8 {
-    
-    case regular = 0
-    case beta = 1
-}
-
-
-public struct FfiConverterTypeUserSettingsEarlyAccess: FfiConverterRustBuffer {
-    typealias SwiftType = UserSettingsEarlyAccess
-
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> UserSettingsEarlyAccess {
-        let variant: Int32 = try readInt(&buf)
-        switch variant {
-        
-        case 1: return .regular
-        
-        case 2: return .beta
-        
-        default: throw UniffiInternalError.unexpectedEnumCase
-        }
-    }
-
-    public static func write(_ value: UserSettingsEarlyAccess, into buf: inout [UInt8]) {
-        switch value {
-        
-        
-        case .regular:
-            writeInt(&buf, Int32(1))
-        
-        
-        case .beta:
-            writeInt(&buf, Int32(2))
-        
-        }
-    }
-}
-
-
-public func FfiConverterTypeUserSettingsEarlyAccess_lift(_ buf: RustBuffer) throws -> UserSettingsEarlyAccess {
-    return try FfiConverterTypeUserSettingsEarlyAccess.lift(buf)
-}
-
-public func FfiConverterTypeUserSettingsEarlyAccess_lower(_ value: UserSettingsEarlyAccess) -> RustBuffer {
-    return FfiConverterTypeUserSettingsEarlyAccess.lower(value)
-}
-
-
-extension UserSettingsEarlyAccess: Sendable {} 
-extension UserSettingsEarlyAccess: Equatable, Hashable {}
-
-
-
-// Note that we don't yet support `indirect` for enums.
-// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
-
-public enum UserSettingsTimeFormat : UInt8 {
-    
-    case `default` = 0
-    case h24 = 1
-    case h12 = 2
-}
-
-
-public struct FfiConverterTypeUserSettingsTimeFormat: FfiConverterRustBuffer {
-    typealias SwiftType = UserSettingsTimeFormat
-
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> UserSettingsTimeFormat {
-        let variant: Int32 = try readInt(&buf)
-        switch variant {
-        
-        case 1: return .`default`
-        
-        case 2: return .h24
-        
-        case 3: return .h12
-        
-        default: throw UniffiInternalError.unexpectedEnumCase
-        }
-    }
-
-    public static func write(_ value: UserSettingsTimeFormat, into buf: inout [UInt8]) {
-        switch value {
-        
-        
-        case .`default`:
-            writeInt(&buf, Int32(1))
-        
-        
-        case .h24:
-            writeInt(&buf, Int32(2))
-        
-        
-        case .h12:
-            writeInt(&buf, Int32(3))
-        
-        }
-    }
-}
-
-
-public func FfiConverterTypeUserSettingsTimeFormat_lift(_ buf: RustBuffer) throws -> UserSettingsTimeFormat {
-    return try FfiConverterTypeUserSettingsTimeFormat.lift(buf)
-}
-
-public func FfiConverterTypeUserSettingsTimeFormat_lower(_ value: UserSettingsTimeFormat) -> RustBuffer {
-    return FfiConverterTypeUserSettingsTimeFormat.lower(value)
-}
-
-
-extension UserSettingsTimeFormat: Sendable {} 
-extension UserSettingsTimeFormat: Equatable, Hashable {}
-
-
-
-// Note that we don't yet support `indirect` for enums.
-// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
-
-public enum UserSettingsWeekStart : UInt8 {
-    
-    case `default` = 0
-    case monday = 1
-    case saturday = 6
-    case sunday = 7
-}
-
-
-public struct FfiConverterTypeUserSettingsWeekStart: FfiConverterRustBuffer {
-    typealias SwiftType = UserSettingsWeekStart
-
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> UserSettingsWeekStart {
-        let variant: Int32 = try readInt(&buf)
-        switch variant {
-        
-        case 1: return .`default`
-        
-        case 2: return .monday
-        
-        case 3: return .saturday
-        
-        case 4: return .sunday
-        
-        default: throw UniffiInternalError.unexpectedEnumCase
-        }
-    }
-
-    public static func write(_ value: UserSettingsWeekStart, into buf: inout [UInt8]) {
-        switch value {
-        
-        
-        case .`default`:
-            writeInt(&buf, Int32(1))
-        
-        
-        case .monday:
-            writeInt(&buf, Int32(2))
-        
-        
-        case .saturday:
-            writeInt(&buf, Int32(3))
-        
-        
-        case .sunday:
-            writeInt(&buf, Int32(4))
-        
-        }
-    }
-}
-
-
-public func FfiConverterTypeUserSettingsWeekStart_lift(_ buf: RustBuffer) throws -> UserSettingsWeekStart {
-    return try FfiConverterTypeUserSettingsWeekStart.lift(buf)
-}
-
-public func FfiConverterTypeUserSettingsWeekStart_lower(_ value: UserSettingsWeekStart) -> RustBuffer {
-    return FfiConverterTypeUserSettingsWeekStart.lower(value)
-}
-
-
-extension UserSettingsWeekStart: Sendable {} 
-extension UserSettingsWeekStart: Equatable, Hashable {}
-
-
-
-// Note that we don't yet support `indirect` for enums.
-// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
-
 public enum UserType : UInt8 {
     
     case proton = 1
@@ -1250,6 +1181,75 @@ public func FfiConverterTypeUserType_lower(_ value: UserType) -> RustBuffer {
 
 extension UserType: Sendable {} 
 extension UserType: Equatable, Hashable {}
+
+
+
+// Note that we don't yet support `indirect` for enums.
+// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
+
+public enum WeekStart : UInt8 {
+    
+    case `default` = 0
+    case monday = 1
+    case saturday = 6
+    case sunday = 7
+}
+
+
+public struct FfiConverterTypeWeekStart: FfiConverterRustBuffer {
+    typealias SwiftType = WeekStart
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> WeekStart {
+        let variant: Int32 = try readInt(&buf)
+        switch variant {
+        
+        case 1: return .`default`
+        
+        case 2: return .monday
+        
+        case 3: return .saturday
+        
+        case 4: return .sunday
+        
+        default: throw UniffiInternalError.unexpectedEnumCase
+        }
+    }
+
+    public static func write(_ value: WeekStart, into buf: inout [UInt8]) {
+        switch value {
+        
+        
+        case .`default`:
+            writeInt(&buf, Int32(1))
+        
+        
+        case .monday:
+            writeInt(&buf, Int32(2))
+        
+        
+        case .saturday:
+            writeInt(&buf, Int32(3))
+        
+        
+        case .sunday:
+            writeInt(&buf, Int32(4))
+        
+        }
+    }
+}
+
+
+public func FfiConverterTypeWeekStart_lift(_ buf: RustBuffer) throws -> WeekStart {
+    return try FfiConverterTypeWeekStart.lift(buf)
+}
+
+public func FfiConverterTypeWeekStart_lower(_ value: WeekStart) -> RustBuffer {
+    return FfiConverterTypeWeekStart.lower(value)
+}
+
+
+extension WeekStart: Sendable {} 
+extension WeekStart: Equatable, Hashable {}
 
 
 

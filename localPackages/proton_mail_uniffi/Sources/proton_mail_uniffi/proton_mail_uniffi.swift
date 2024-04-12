@@ -1513,7 +1513,8 @@ open class Mailbox:
      * Create a new mailbox for a given label id.
      */
 public convenience init(ctx: MailUserSession, labelId: UInt64) {
-    let pointer = try! rustCall() {
+    let pointer =
+        try! rustCall() {
     uniffi_proton_mail_uniffi_fn_constructor_mailbox_new(
         FfiConverterTypeMailUserSession.lower(ctx),
         FfiConverterUInt64.lower(labelId),$0
@@ -3660,7 +3661,7 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_maillabelslivequery_disconnect() != 54050) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_maillabelslivequery_value() != 51411) {
+    if (uniffi_proton_mail_uniffi_checksum_method_maillabelslivequery_value() != 8597) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailsession_is_network_connected() != 42192) {
@@ -3678,7 +3679,7 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailsession_user_context_from_session() != 22569) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_applicable_labels() != 21400) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_applicable_labels() != 64448) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_execute_pending_action() != 49952) {
@@ -3696,7 +3697,7 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_mail_settings() != 62567) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_movable_folders() != 23164) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_movable_folders() != 21776) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_new_folder_labels_observed_query() != 44564) {
@@ -3735,7 +3736,7 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailboxconversationlivequery_disconnect() != 55329) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailboxconversationlivequery_value() != 13397) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailboxconversationlivequery_value() != 65160) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_storedsession_email() != 51014) {

@@ -48,7 +48,7 @@ struct MailboxActionSettings {
         action1: MailboxAction = .toggleReadStatus,
         action2: MailboxAction = .moveToArchive,
         action3: MailboxAction = .moveToTrash,
-        action4: MailboxAction = .labelAs
+        action4: MailboxAction = .moveToSpam
     ) {
         self.action1 = action1
         self.action2 = action2

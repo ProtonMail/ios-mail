@@ -136,36 +136,22 @@ extension MailboxConversationModel {
         print("Attachment tapped \(attachmentId)")
     }
 
-    func onConversationsSetReadStatus(to newStatus: MailboxReadStatus, for ids: [PMLocalConversationId]) {
-        AppLogger.log(message: "Conversation set read status \(ids)...", category: .mailboxActions)
-        do {
-            if case .read = newStatus {
-                try mailbox?.markConversationsRead(ids: ids)
-            } else if case .unread = newStatus {
-                try mailbox?.markConversationsUnread(ids: ids)
-            }
-        } catch {
-            AppLogger.log(error: error, category: .mailboxActions)
-        }
-    }
-
-    func onConversationsDeletion(ids: [PMLocalConversationId]) {
-        AppLogger.log(message: "Conversation deletion \(ids)...", category: .mailboxActions)
-        do {
-            try mailbox?.deleteConversations(ids: ids)
-        } catch {
-            AppLogger.log(error: error, category: .mailboxActions)
-        }
-    }
-
     func onConversationAction(_ action: Action, conversationIds: [PMLocalConversationId]) {
         switch action {
         case .delete:
-            onConversationsDeletion(ids: conversationIds)
+            actionDelete(ids: conversationIds)
         case .markAsRead:
-            onConversationsSetReadStatus(to: .read, for: conversationIds)
+            actionUpdateReadStatus(to: .read, for: conversationIds)
         case .markAsUnread:
-            onConversationsSetReadStatus(to: .unread, for: conversationIds)
+            actionUpdateReadStatus(to: .unread, for: conversationIds)
+        case .moveToArchive:
+            actionMoveTo(systemFolder: .archive, ids: conversationIds)
+        case .moveToInbox:
+            actionMoveTo(systemFolder: .inbox, ids: conversationIds)
+        case .moveToSpam:
+            actionMoveTo(systemFolder: .spam, ids: conversationIds)
+        case .moveToTrash:
+            actionMoveTo(systemFolder: .trash, ids: conversationIds)
         default:
             break
         }
@@ -179,6 +165,60 @@ extension MailboxConversationModel: MailboxLiveQueryUpdatedCallback {
     func onUpdated() {
         Task {
             await updateData()
+        }
+    }
+}
+
+// MARK: conversation actions
+
+extension MailboxConversationModel {
+
+    func actionDelete(ids: [PMLocalConversationId]) {
+        AppLogger.log(message: "Conversation deletion \(ids)...", category: .mailboxActions)
+        do {
+            try mailbox?.deleteConversations(ids: ids)
+        } catch {
+            AppLogger.log(error: error, category: .mailboxActions)
+        }
+    }
+
+    func actionMoveTo(systemFolder: SystemFolderIdentifier, ids: [PMLocalConversationId]) {
+        Task {
+            do {
+                guard let userSession = try await dependencies.appContext.userContextForActiveSession() else { return }
+                guard let systemFolderLocalLabel = try userSession.movableFolders().first(where: { folder in
+                    guard let rid = folder.rid, let remoteId = UInt64(rid) else { return false }
+                    return remoteId == systemFolder.rawValue
+                }) else {
+                    let message = "system folder \(systemFolder) local label id not found"
+                    AppLogger.log(message: message, category: .mailboxActions, isError: true)
+                    return
+                }
+                actionMoveTo(labelId: systemFolderLocalLabel.id, ids: ids)
+            } catch {
+                AppLogger.log(error: error)
+            }
+        }
+    }
+
+    func actionMoveTo(labelId: PMLocalLabelId, ids: [PMLocalConversationId]) {
+        do {
+            try mailbox?.moveConversations(labelId: labelId, ids: ids)
+        } catch {
+            AppLogger.log(error: error, category: .mailboxActions)
+        }
+    }
+
+    func actionUpdateReadStatus(to newStatus: MailboxReadStatus, for ids: [PMLocalConversationId]) {
+        AppLogger.log(message: "Conversation set read status \(ids)...", category: .mailboxActions)
+        do {
+            if case .read = newStatus {
+                try mailbox?.markConversationsRead(ids: ids)
+            } else if case .unread = newStatus {
+                try mailbox?.markConversationsUnread(ids: ids)
+            }
+        } catch {
+            AppLogger.log(error: error, category: .mailboxActions)
         }
     }
 }

@@ -19,6 +19,7 @@ import DesignSystem
 import Foundation
 import class SwiftUI.UIImage
 
+/// List of remote identifiers for system folders. These values are not to be used for PMLocalLabelId
 enum SystemFolderIdentifier: UInt64 {
     case inbox = 0
     case allDraft = 1
