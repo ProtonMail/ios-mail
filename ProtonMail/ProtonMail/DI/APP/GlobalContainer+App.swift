@@ -126,9 +126,9 @@ extension GlobalContainer {
         }
     }
 
-    var storeKitManagerFactory: Factory<StoreKitManagerImpl> {
+    var storeKitManagerDelegateFactory: Factory<StoreKitManagerDelegateImpl> {
         self {
-            StoreKitManagerImpl(dependencies: self)
+            StoreKitManagerDelegateImpl(dependencies: self)
         }
     }
 

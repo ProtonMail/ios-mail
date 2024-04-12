@@ -287,7 +287,7 @@ class UserManager: ObservableObject {
 
     func activatePayments() {
         #if !APP_EXTENSION
-        payments.activate(delegate: container.storeKitManager)
+        payments.activate(delegate: container.storeKitManagerDelegate)
         #endif
     }
 

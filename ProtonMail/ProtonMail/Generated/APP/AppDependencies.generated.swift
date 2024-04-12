@@ -210,19 +210,19 @@ extension UserContainer: HasSignInManager {
     }
 }
 
-protocol HasStoreKitManagerImpl {
-    var storeKitManager: StoreKitManagerImpl { get }
+protocol HasStoreKitManagerDelegateImpl {
+    var storeKitManagerDelegate: StoreKitManagerDelegateImpl { get }
 }
 
-extension GlobalContainer: HasStoreKitManagerImpl {
-    var storeKitManager: StoreKitManagerImpl {
-        storeKitManagerFactory()
+extension GlobalContainer: HasStoreKitManagerDelegateImpl {
+    var storeKitManagerDelegate: StoreKitManagerDelegateImpl {
+        storeKitManagerDelegateFactory()
     }
 }
 
-extension UserContainer: HasStoreKitManagerImpl {
-    var storeKitManager: StoreKitManagerImpl {
-        globalContainer.storeKitManager
+extension UserContainer: HasStoreKitManagerDelegateImpl {
+    var storeKitManagerDelegate: StoreKitManagerDelegateImpl {
+        globalContainer.storeKitManagerDelegate
     }
 }
 
