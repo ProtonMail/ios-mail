@@ -24,6 +24,8 @@ public extension DS.Icon {
     static let icStarFilled = icon(named: "ic-star-filled")
     static let icTrash = icon(named: "ic-trash")
     static let icTrashCross = icon(named: "ic-trash-cross")
+
+    static let icBug = icon(named: "ic-bug")
 }
 
 // MARK: mailbox item actions

@@ -79,6 +79,15 @@ final class SidebarScreenModel: ObservableObject, Sendable {
     func updateRoute(newRoute: Route) {
         appRoute.updateRoute(to: newRoute)
     }
+
+    @MainActor
+    func onShareLogsTap() {
+        let fileManager = FileManager.default
+        guard let logFolder = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else { return }
+        let sourceLogFile = logFolder.appending(path: "proton-mail-uniffi.log")
+        let activityVC = UIActivityViewController(activityItems: [sourceLogFile], applicationActivities: nil)
+        UIApplication.shared.keyWindow?.rootViewController?.present(activityVC, animated: true)
+    }
 }
 
 extension SidebarScreenModel: MailboxLiveQueryUpdatedCallback {

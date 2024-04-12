@@ -90,9 +90,20 @@ struct SidebarScreen: View {
     }
 
     var appVersionView: some View {
-        Text("Proton Mail \(Bundle.main.appVersion)")
-            .font(.footnote)
-            .foregroundStyle(DS.Color.Sidebar.textNorm)
+        VStack {
+            // temporary hacky share logs cell
+            SidebarCell(uiModel: .init(id: UInt64.max, name: "Share logs", icon: DS.Icon.icBug , badge: "", route: .appLaunching), isSelected: false) {
+                screenModel.onShareLogsTap()
+            }
+            .padding(.init(top: 24.0, leading: 16.0, bottom: 24.0, trailing: 16.0))
+
+            Divider()
+                .background(DS.Color.Global.white)
+            Spacer()
+            Text("Proton Mail \(Bundle.main.appVersion)")
+                .font(.footnote)
+                .foregroundStyle(DS.Color.Sidebar.textNorm)
+        }
     }
 }
 

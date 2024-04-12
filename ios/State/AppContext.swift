@@ -42,18 +42,22 @@ final class AppContext: Sendable, ObservableObject {
 
     private func start() throws {
         AppLogger.log(message: "AppContext.start", category: .appLifeCycle)
-        guard let applicationSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+        guard let applicationSupportFolder = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
             throw AppContextError.applicationSupportDirectoryNotAccessible
+        }
+        guard let cacheFolder = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
+            throw AppContextError.cacheDirectoryNotAccessible
         }
 
         // TODO: exclude application support from iCloud backup
 
-        let applicationSupportPath = applicationSupport.path()
-        AppLogger.logTemporarily(message: "path: \(applicationSupportPath)")
+        let applicationSupportPath = applicationSupportFolder.path()
+        let cachePath = cacheFolder.path()
+        AppLogger.logTemporarily(message: "path: \(cacheFolder)")
         _mailContext = try MailSession.create(
             sessionDir: applicationSupportPath,
             userDir: applicationSupportPath,
-            logDir: applicationSupportPath,
+            logDir: cachePath,
             logDebug: true,
             keyChain: dependencies.keychain,
             apiEnvConfig: nil,
@@ -87,6 +91,7 @@ extension AppContext {
 
 enum AppContextError: Error {
     case applicationSupportDirectoryNotAccessible
+    case cacheDirectoryNotAccessible
 }
 
 final class Keychain: OsKeyChain {
