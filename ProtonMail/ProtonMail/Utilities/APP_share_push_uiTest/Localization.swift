@@ -1590,10 +1590,22 @@ enum L11n {
         static let singlePassword = NSLocalizedString("Change password", comment: "settings general section title")
     }
 
+    enum PremiumPerks {
+        static let scheduleSendAndSnooze = NSLocalizedString("Schedule send and snooze", comment: "Description of a feature of a paid subscription")
+        static let customEmailDomain = NSLocalizedString("Custom email domain support", comment: "Description of a feature of a paid subscription")
+        static let andMore = NSLocalizedString("And %u more premium features", comment: "Description of a feature of a paid subscription")
+    }
+
     struct PrivacyAndDataSettings {
         static let telemetry = NSLocalizedString("Anonymous telemetry", comment: "The title of the telemetry setting.")
         static let crashReport = NSLocalizedString("Anonymous crash reports", comment: "The title of the crash report setting.")
         static let telemetrySubtitle = NSLocalizedString("To improve our services, we sometimes collect anonymized usage data.", comment: "The subtitle of the anonymous telemetry setting.")
         static let crashReportSubtitle = NSLocalizedString("If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.", comment: "The subtitle of the crash report setting.")
+    }
+
+    enum Upsell {
+        static let upgradeToPlan = NSLocalizedString("Upgrade to %@", comment: "Title of the upsell page.")
+        static let mailPlusDescription = NSLocalizedString("To unlock more storage and premium features.", comment: "Subtitle of the upsell page.")
+        static let protonUnlimitedDescription = NSLocalizedString(" For more storage and all premium features across all Proton services.", comment: "Subtitle of the upsell page.")
     }
 }

@@ -592,6 +592,25 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     @objc
     func upsellButtonTapped() {
+        let stubbedMailPlusPlan = UpsellPageModel.Plan(
+            name: "Mail Plus",
+            perks: [
+                .init(icon: \.clock, description: L11n.PremiumPerks.scheduleSendAndSnooze),
+                .init(icon: \.globe, description: L11n.PremiumPerks.customEmailDomain),
+                .init(icon: \.tag, description: L11n.Snooze.folderBenefit),
+                .init(icon: \.gift, description: String(format: L11n.PremiumPerks.andMore, 14))
+            ],
+            purchasingOptions: [
+                .init(months: 1, monthlyPrice: "4.99 CHF", isHighlighted: false, discount: nil),
+                .init(months: 12, monthlyPrice: "3.99 CHF", isHighlighted: true, discount: 0.2)
+            ]
+        )
+        let upsellPageModel = UpsellPageModel(plan: stubbedMailPlusPlan)
+        let upsellPage = UpsellPage(model: upsellPageModel)
+        let hostingController = SheetLikeSpotlightViewController(rootView: upsellPage)
+        hostingController.modalTransitionStyle = .crossDissolve
+        present(hostingController, animated: false)
+
         viewModel.upsellButtonWasTapped()
         setupRightButtons(viewModel.listEditing, isStorageExceeded: viewModel.user.isStorageExceeded)
     }
