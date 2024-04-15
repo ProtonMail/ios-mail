@@ -57,6 +57,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasFetchMessages
     & HasFetchSenderImage
     & HasMailEventsPeriodicScheduler
+    & HasPurchasePlan
     & HasUpsellPageFactory
     & HasUpsellOfferProvider
     & HasUpdateMailbox
@@ -113,6 +114,12 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         dependencies.updateMailbox.isFetching
     }
     private(set) var isFirstFetch: Bool = true
+
+    var error: AnyPublisher<Error, Never> {
+        errorSubject.eraseToAnyPublisher()
+    }
+
+    private let errorSubject = PassthroughSubject<Error, Never>()
 
     weak var uiDelegate: MailboxViewModelUIProtocol?
 
@@ -1514,6 +1521,14 @@ extension MailboxViewModel {
         dependencies
             .upsellOfferProvider
             .$availablePlan
+        /**
+         Don't remove this receive(on:).
+
+         @Published publishes on willSet.
+
+         Without it, isUpsellButtonVisible would return a wrong value, because it would rely on outdated availablePlan.
+         */
+            .receive(on: DispatchQueue.main)
             .map { [unowned self] _ in isUpsellButtonVisible }
             .removeDuplicates()
             .map { _ in }
@@ -1532,8 +1547,28 @@ extension MailboxViewModel {
         dependencies.upsellOfferProvider.availablePlan.map(dependencies.upsellPageFactory.makeUpsellPageModel)
     }
 
-    func purchasePlan(storeKitProductId: String) {
-        print(storeKitProductId)
+    func purchasePlan(storeKitProductId: String) async -> Bool {
+        SystemLogger.log(message: "Will purchase \(storeKitProductId)", category: .iap)
+
+        let result = await dependencies.purchasePlan.execute(storeKitProductId: storeKitProductId)
+
+        switch result {
+        case .planPurchased:
+            SystemLogger.log(message: "Purchase complete", category: .iap)
+
+            await user.fetchUserInfo()
+
+            return true
+        case .error(let error):
+            SystemLogger.log(error: error, category: .iap)
+
+            errorSubject.send(error)
+
+            return false
+        case .cancelled:
+            SystemLogger.log(message: "Purchase cancelled", category: .iap)
+            return false
+        }
     }
 }
 

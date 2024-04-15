@@ -103,6 +103,8 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.nextMessageAfterMoveStatusProvider
         _ = strongRefToContainer?.payments
         _ = strongRefToContainer?.paymentsUIFactory
+        _ = strongRefToContainer?.purchaseManager
+        _ = strongRefToContainer?.purchasePlan
         _ = strongRefToContainer?.settingsViewsFactory
         _ = strongRefToContainer?.saveToolbarActionSettings
         _ = strongRefToContainer?.sendBugReport

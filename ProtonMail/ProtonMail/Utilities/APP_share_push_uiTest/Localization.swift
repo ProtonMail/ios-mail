@@ -1609,5 +1609,7 @@ enum L11n {
         static let perMonth = NSLocalizedString("/month", comment: "Displayed next to the monthly price")
         static let getPlan = NSLocalizedString("Get %@", comment: "CTA button to purchase a plan (e.g. Get Mail Plus)")
         static let save = NSLocalizedString("Save %u%%", comment: "In the context of a discount")
+        static let invalidProductID = NSLocalizedString("Invalid product ID: $@", comment: "Error when trying to purchase an invalid product")
+        static let purchaseAlreadyInProgress = NSLocalizedString("Purchase already in progress", comment: "Error when the user tries to purchase a plan before the current transaction is finished")
     }
 }
