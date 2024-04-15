@@ -1946,6 +1946,51 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "ალბათ, დავესწრები";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Attendance optional)";
+
+/* As in: Every 3 days */
+"Every %@" = "Every %@";
+
+/* As in: on Saturday */
+"on %@" = "on %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "on the %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "on day %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "until %@";
+
+/* Occurring every day */
+"Daily" = "Daily";
+
+/* Occurring every week */
+"Weekly" = "Weekly";
+
+/* Occurring every month */
+"Monthly" = "Monthly";
+
+/* Occurring every year */
+"Yearly" = "Yearly";
+
+/* \"1st\" spelled out */
+"first" = "first";
+
+/* \"2nd\" spelled out */
+"second" = "second";
+
+/* \"3rd\" spelled out */
+"third" = "third";
+
+/* \"4th\" spelled out */
+"fourth" = "fourth";
+
+/* Opposite of \"first\" */
+"last" = "last";
+
 /* Menu title */
 "Max Storage" = "მაქს საცავი";
 
@@ -1953,7 +1998,7 @@
 "Storage: %@ full" = "საცავი: %@ დაკავებულია";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive-ის საცავი: %@ დაკავებულია";
+"Drive: %@ full" = "Drive: %@ full";
 
 /* Official badge next to sender's name */
 "Official" = "ოფიციალური";
@@ -2314,12 +2359,6 @@
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "ულიმიტო საქაღალდეები, ჭდეები და ფილტრები";
-
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "დააყენეთ, როდის გამოჩნდება თავიდან ელფოსტა თქვენს საფოსტო ყუთში დადუმების ფუნქციით. ახლა ის ხელმისაწვდომია ხელსაწყოების პანელიდან";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "დაყოვნება";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "დამატება მიმაგრებულ ფაილად";

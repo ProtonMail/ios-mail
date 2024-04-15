@@ -1946,6 +1946,51 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "Być może będę uczestniczyć";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(uczestnictwo jest opcjonalne)";
+
+/* As in: Every 3 days */
+"Every %@" = "Co %@";
+
+/* As in: on Saturday */
+"on %@" = "w: %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "w %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "%u. dnia miesiąca";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "do %@";
+
+/* Occurring every day */
+"Daily" = "Codziennie";
+
+/* Occurring every week */
+"Weekly" = "Co tydzień";
+
+/* Occurring every month */
+"Monthly" = "Co miesiąc";
+
+/* Occurring every year */
+"Yearly" = "Co rok";
+
+/* \"1st\" spelled out */
+"first" = "pierwszy";
+
+/* \"2nd\" spelled out */
+"second" = "drugi";
+
+/* \"3rd\" spelled out */
+"third" = "trzeci";
+
+/* \"4th\" spelled out */
+"fourth" = "czwarty";
+
+/* Opposite of \"first\" */
+"last" = "ostatni";
+
 /* Menu title */
 "Max Storage" = "Maksymalna przestrzeń dyskowa";
 
@@ -2314,12 +2359,6 @@
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Nieograniczona liczba folderów, etykiet i filtrów";
-
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Ustaw, kiedy wiadomość ma pojawić się w skrzynce odbiorczej.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Odłóż na później";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Dodaj jako załącznik";

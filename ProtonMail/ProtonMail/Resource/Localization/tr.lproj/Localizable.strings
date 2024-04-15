@@ -1946,6 +1946,51 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "Katılabilirim";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Attendance optional)";
+
+/* As in: Every 3 days */
+"Every %@" = "Her %@";
+
+/* As in: on Saturday */
+"on %@" = "%@ günlerinde";
+
+/* As in: on the last Saturday */
+"on the %@" = "%@ gününde";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "%u. gününde";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "%@ tarihine kadar";
+
+/* Occurring every day */
+"Daily" = "Günlük";
+
+/* Occurring every week */
+"Weekly" = "Haftalık";
+
+/* Occurring every month */
+"Monthly" = "Aylık";
+
+/* Occurring every year */
+"Yearly" = "Yıllık";
+
+/* \"1st\" spelled out */
+"first" = "ilk";
+
+/* \"2nd\" spelled out */
+"second" = "ikinci";
+
+/* \"3rd\" spelled out */
+"third" = "üçüncü";
+
+/* \"4th\" spelled out */
+"fourth" = "dördüncü";
+
+/* Opposite of \"first\" */
+"last" = "son";
+
 /* Menu title */
 "Max Storage" = "En fazla depolama alanı";
 
@@ -1953,7 +1998,7 @@
 "Storage: %@ full" = "Depolama alanı %@ dolu";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive depolama alanı: %@ dolu";
+"Drive: %@ full" = "Drive: %@ dolu";
 
 /* Official badge next to sender's name */
 "Official" = "Resmi";
@@ -2314,12 +2359,6 @@
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Sınırsız sayıda klasör, etiket ve süzgeç";
-
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Artık araç çubuğunda bulunan erteleme özelliği ile bir e-postanın gelen kutunuzda ne zaman yeniden görüneceğini ayarlayabilirsiniz.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Daha sonraya ertele";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Dosya olarak ekle";

@@ -1946,6 +1946,51 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "J'y participerai peut-être.";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(présence facultative)";
+
+/* As in: Every 3 days */
+"Every %@" = "Chaque %@";
+
+/* As in: on Saturday */
+"on %@" = "les %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "le %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "le %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "jusqu'au %@";
+
+/* Occurring every day */
+"Daily" = "Chaque jour";
+
+/* Occurring every week */
+"Weekly" = "Chaque semaine";
+
+/* Occurring every month */
+"Monthly" = "Chaque mois";
+
+/* Occurring every year */
+"Yearly" = "Chaque année";
+
+/* \"1st\" spelled out */
+"first" = "premier";
+
+/* \"2nd\" spelled out */
+"second" = "deuxième";
+
+/* \"3rd\" spelled out */
+"third" = "troisième";
+
+/* \"4th\" spelled out */
+"fourth" = "quatrième";
+
+/* Opposite of \"first\" */
+"last" = "dernier";
+
 /* Menu title */
 "Max Storage" = "Espace de stockage maximum";
 
@@ -1953,7 +1998,7 @@
 "Storage: %@ full" = "Espace de stockage : %@ plein";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Espace de stockage Drive : %@ utilisé";
+"Drive: %@ full" = "Drive : %@ plein";
 
 /* Official badge next to sender's name */
 "Official" = "Officiel";
@@ -2314,12 +2359,6 @@
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Nombre illimité de dossiers, de labels et de filtres";
-
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Définissez à quel moment un message doit réapparaître dans votre boite de réception grâce à la fonctionnalité de mise en attente disponible désormais dans la barre d'outils.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Reportez-le à plus tard";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Ajouter comme pièce jointe";

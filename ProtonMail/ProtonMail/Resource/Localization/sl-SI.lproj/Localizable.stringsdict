@@ -16,6 +16,10 @@
         <string>%u times</string>
         <key>one</key>
         <string>%u time</string>
+        <key>two</key>
+        <string>%u times</string>
+        <key>few</key>
+        <string>%u times</string>
       </dict>
     </dict>
     <key>%u participants</key>
@@ -29,9 +33,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%u participants</string>
+        <string>%u udeležencv</string>
         <key>one</key>
-        <string>%u participant</string>
+        <string>%u udeleženec</string>
+        <key>two</key>
+        <string>%u udeleženca</string>
+        <key>few</key>
+        <string>%u udeležencv</string>
       </dict>
     </dict>
     <key>You have %d new emails!</key>
@@ -41,13 +49,17 @@
       <key>newemails</key>
       <dict>
         <key>one</key>
-        <string>Teniu %d nous correus electrònics!</string>
+        <string>Imate %d novo sporočilo!</string>
+        <key>two</key>
+        <string>Imate %d novi sporočili!</string>
+        <key>few</key>
+        <string>Imate %d nova sporočila!</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>Teniu %d nous correus electrònics!</string>
+        <string>Imate %d novih sporočil!</string>
       </dict>
     </dict>
     <key>%d email trackers blocked</key>
@@ -61,9 +73,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d rastrejador de correu bloquejat</string>
+        <string>%d e-poštni sledilec je blokiran</string>
+        <key>two</key>
+        <string>%d e-poštna sledilca sta blokirana</string>
+        <key>few</key>
+        <string>%d e-poštni sledilci so blokirani</string>
         <key>other</key>
-        <string>%d rastrejadors de correu bloquejats</string>
+        <string>%d e-poštnih sledilcev je blokiranih</string>
       </dict>
     </dict>
     <key>%d selected</key>
@@ -73,13 +89,17 @@
       <key>selected</key>
       <dict>
         <key>one</key>
-        <string>%d seleccionats</string>
+        <string>%d izbrana</string>
+        <key>two</key>
+        <string>%d izbrana</string>
+        <key>few</key>
+        <string>%d izbrani</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d seleccionats</string>
+        <string>%d izbrana</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>
@@ -93,9 +113,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d rastrejador de correu trobat</string>
+        <string>Odkrit je %d e-poštni sledilec</string>
+        <key>two</key>
+        <string>Odkrita sta %d e-poštna sledilca</string>
+        <key>few</key>
+        <string>Odkriti so %d e-poštni sledilci</string>
         <key>other</key>
-        <string>%d rastrejadors de correu trobats</string>
+        <string>Odkritih je %d e-poštnih sledilcev</string>
       </dict>
     </dict>
     <key>Proton found %d trackers on this message.</key>
@@ -109,9 +133,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Proton ha trobat i bloquejat %d rastrejador en aquest missatge.</string>
+        <string>Proton je v tem sporočilu odkril in blokiral %d sledilca.</string>
+        <key>two</key>
+        <string>Proton je v tem sporočilu odkril in blokiral %d sledilca.</string>
+        <key>few</key>
+        <string>Proton je v tem sporočilu odkril in blokiral %d sledilce.</string>
         <key>other</key>
-        <string>Proton ha trobat i bloquejat %d rastrejadors en aquest missatge.</string>
+        <string>Proton je v tem sporočilu odkril in blokiral %d sledilcev.</string>
       </dict>
     </dict>
     <key>+%d others</key>
@@ -125,9 +153,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d altre</string>
+        <string>%d ostal</string>
+        <key>two</key>
+        <string>%d ostala</string>
+        <key>few</key>
+        <string>%d ostalih</string>
         <key>other</key>
-        <string>%d altres</string>
+        <string>%d ostalih</string>
       </dict>
     </dict>
     <key>Updated %d min ago</key>
@@ -141,9 +173,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Actualitzat fa %d min</string>
+        <string>Posodobljeno pred %d minuto</string>
+        <key>two</key>
+        <string>Posodobljeno pred %d minutama</string>
+        <key>few</key>
+        <string>Posodobljeno pred %d minutami</string>
         <key>other</key>
-        <string>Actualitzat fa %d min</string>
+        <string>Posodobljeno pred %d minutami</string>
       </dict>
     </dict>
     <key>%u message</key>
@@ -157,9 +193,13 @@
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>one</key>
-        <string>%u missatge</string>
+        <string>%u sporočilo</string>
+        <key>two</key>
+        <string>%u sporočili</string>
+        <key>few</key>
+        <string>%u sporočil</string>
         <key>other</key>
-        <string>%u missatges</string>
+        <string>%u sporočil</string>
       </dict>
     </dict>
     <key>%u conversation</key>
@@ -173,9 +213,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%u conversa</string>
+        <string>%u pogovor</string>
+        <key>two</key>
+        <string>%u pogovora</string>
+        <key>few</key>
+        <string>%u pogovori</string>
         <key>other</key>
-        <string>%u converses</string>
+        <string>%u pogovorov</string>
       </dict>
     </dict>
     <key>%d attempt remaining</key>
@@ -189,9 +233,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Queda %d intent</string>
+        <string>Na voljo imate še %d poskus</string>
+        <key>two</key>
+        <string>Na voljo imate še %d poskusa</string>
+        <key>few</key>
+        <string>Na voljo imate še %d poskuse</string>
         <key>other</key>
-        <string>Queden %d intents</string>
+        <string>Na voljo imate še %d poskusov</string>
       </dict>
     </dict>
     <key>%d attempt remaining until secure data wipe!</key>
@@ -205,9 +253,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Queda %d intent abans de l'eliminació de les dades segures!</string>
+        <string>Še %d poskus do varnega izbrisa vseh podatkov!</string>
+        <key>two</key>
+        <string>Še %d poskusa do varnega izbrisa vseh podatkov!</string>
+        <key>few</key>
+        <string>Še %d poskusi do varnega izbrisa vseh podatkov!</string>
         <key>other</key>
-        <string>Queden %d intents abans de l'eliminació de les dades segures!</string>
+        <string>Še %d poskusov do varnega izbrisa vseh podatkov!</string>
       </dict>
     </dict>
     <key>%1$d message moved to %2$@</key>
@@ -221,9 +273,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>S'ha mogut %1$d missatge a %2$@</string>
+        <string>%1$d sporočilo premaknjeno v mapo %2$@</string>
+        <key>two</key>
+        <string>%1$d sporočili premaknjeni v mapo %2$@</string>
+        <key>few</key>
+        <string>%1$d sporočila premaknjena v mapo %2$@</string>
         <key>other</key>
-        <string>S'han mogut %1$d missatges a %2$@</string>
+        <string>%1$d sporočil premaknjenih v mapo %2$@</string>
       </dict>
     </dict>
     <key>%1$d conversation moved to %2$@</key>
@@ -237,9 +293,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>S'ha mogut %1$d conversa a %2$@</string>
+        <string>%1$d pogovor premaknjen v mapo %2$@</string>
+        <key>two</key>
+        <string>%1$d pogovora premaknjena v mapo %2$@</string>
+        <key>few</key>
+        <string>%1$d pogovori premaknjeni v mapo %2$@</string>
         <key>other</key>
-        <string>S'han mogut %1$d converses a %2$@</string>
+        <string>%1$d pogovorov premaknjenih v mapo %2$@</string>
       </dict>
     </dict>
     <key>%d message labeled</key>
@@ -253,9 +313,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d missatge etiquetat</string>
+        <string>%d sporočilo označeno</string>
+        <key>two</key>
+        <string>%d sporočili označeni</string>
+        <key>few</key>
+        <string>%d sporočila označena</string>
         <key>other</key>
-        <string>%d missatges etiquetats</string>
+        <string>%d sporočil označenih</string>
       </dict>
     </dict>
     <key>%d conversation labeled</key>
@@ -269,9 +333,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d conversa etiquetada</string>
+        <string>%d pogovor označen</string>
+        <key>two</key>
+        <string>%d pogovora označena</string>
+        <key>few</key>
+        <string>%d pogovori označeni</string>
         <key>other</key>
-        <string>%d converses etiquetades</string>
+        <string>%d pogovorov označenih</string>
       </dict>
     </dict>
     <key>Are you sure you want to permanently delete %d message?</key>
@@ -285,9 +353,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Segur que voleu eliminar permanentment %d missatge?</string>
+        <string>Ali ste prepričani, da želite trajno izbrisati %d sporočilo?</string>
+        <key>two</key>
+        <string>Ali ste prepričani, da želite trajno izbrisati %d sporočili?</string>
+        <key>few</key>
+        <string>Ali ste prepričani, da želite trajno izbrisati %d sporočila?</string>
         <key>other</key>
-        <string>Segur que voleu eliminar permanentment %d missatges?</string>
+        <string>Ali ste prepričani, da želite trajno izbrisati %d sporočil?</string>
       </dict>
     </dict>
     <key>Are you sure you want to permanently delete %d conversation?</key>
@@ -301,9 +373,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Segur que voleu eliminar permanentment aquesta %d conversa?</string>
+        <string>Ali ste prepričani, da želite trajno izbrisati %d pogovor?</string>
+        <key>two</key>
+        <string>Ali ste prepričani, da želite trajno izbrisati %d pogovora?</string>
+        <key>few</key>
+        <string>Ali ste prepričani, da želite trajno izbrisati %d pogovore?</string>
         <key>other</key>
-        <string>Segur que voleu eliminar permanentment aquestes %d converses?</string>
+        <string>Ali ste prepričani, da želite trajno izbrisati %d pogovorov?</string>
       </dict>
     </dict>
     <key>%d member</key>
@@ -317,9 +393,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d membre</string>
+        <string>%d član</string>
+        <key>two</key>
+        <string>%d člana</string>
+        <key>few</key>
+        <string>%d člani</string>
         <key>other</key>
-        <string>%d membres</string>
+        <string>%d članov</string>
       </dict>
     </dict>
     <key>In %d minutes</key>
@@ -333,9 +413,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>En %d minut</string>
+        <string>Čez %d minuto</string>
+        <key>two</key>
+        <string>Čez %d minuti</string>
+        <key>few</key>
+        <string>Čez %d minute</string>
         <key>other</key>
-        <string>En %d minuts</string>
+        <string>Čez %d minut</string>
       </dict>
     </dict>
     <key>These %d messages will move to Drafts and have their schedule removed.</key>
@@ -349,9 +433,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d missatge es mourà a Esborranys i se n'esborrarà la programació.</string>
+        <string>To %d sporočilo bo premaknjeno med Osnutke in ne bo več načrtovano.</string>
+        <key>two</key>
+        <string>Ti %d sporočili bosta premaknjeni med Osnutke in ne bosta več načrtovani.</string>
+        <key>few</key>
+        <string>Te %d sporočila bodo premaknjena med Osnutke in ne bodo več načrtovana.</string>
         <key>other</key>
-        <string>Aquests %d missatges es mouran a Esborranys i se n'esborrarà la programació.</string>
+        <string>Teh %d sporočil bo premaknjenih med Osnutke in ne bodo več načrtovana.</string>
       </dict>
     </dict>
     <key>%d message moved to Drafts</key>
@@ -365,9 +453,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d missatge mogut a Esborranys</string>
+        <string>%d sporočilo premaknjeno med osnutke</string>
+        <key>two</key>
+        <string>%d sporočili premaknjeni med osnutke</string>
+        <key>few</key>
+        <string>%d sporočila premaknjena med osnutke</string>
         <key>other</key>
-        <string>%d missatges moguts a Esborranys</string>
+        <string>%d sporočil premaknjenih med osnutke</string>
       </dict>
     </dict>
     <key>%d seconds</key>
@@ -381,9 +473,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d segon</string>
+        <string>%d sekunda</string>
+        <key>two</key>
+        <string>%d sekundi</string>
+        <key>few</key>
+        <string>%d sekunde</string>
         <key>other</key>
-        <string>%d segons</string>
+        <string>%d sekund</string>
       </dict>
     </dict>
     <key>%d attachment</key>
@@ -397,9 +493,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d adjunt</string>
+        <string>%d priloga</string>
+        <key>two</key>
+        <string>%d prilogi</string>
+        <key>few</key>
+        <string>%d priloge</string>
         <key>other</key>
-        <string>%d adjunts</string>
+        <string>%d prilog</string>
       </dict>
     </dict>
     <key>%d Minutes</key>
@@ -413,9 +513,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
+        <string>%d minuta</string>
+        <key>two</key>
+        <string>%d minut</string>
+        <key>few</key>
         <string>%d minut</string>
         <key>other</key>
-        <string>%d minuts</string>
+        <string>%d minut</string>
       </dict>
     </dict>
     <key>Are you sure you want to delete these %d messages permanently?</key>
@@ -429,9 +533,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Segur que voleu eliminar aquest missatge de manera permanent?</string>
+        <string>Ali ste prepričani, da želite trajno izbrisati to sporočilo?</string>
+        <key>two</key>
+        <string>Ali ste prepričani, da želite trajno izbrisati ti %d sporočili?</string>
+        <key>few</key>
+        <string>Ali ste prepričani, da želite trajno izbrisati ta %d sporočila?</string>
         <key>other</key>
-        <string>Segur que voleu eliminar aquests %d missatges de manera permanent?</string>
+        <string>Ali ste prepričani, da želite trajno izbrisati teh %d sporočil?</string>
       </dict>
     </dict>
   </dict>

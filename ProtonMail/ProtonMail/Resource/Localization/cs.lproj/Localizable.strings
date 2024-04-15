@@ -1199,7 +1199,7 @@
 "Limit reached" = "Limit dosažen";
 
 /* Alert when the free account limit is reached */
-"Only two free accounts can be added" = "Only two free accounts can be added";
+"Only two free accounts can be added" = "Lze přidat pouze dva bezplatné účty";
 
 /* section title in settings */
 "Account settings" = "Nastavení účtu";
@@ -1890,13 +1890,13 @@
 "Unblock" = "Odblokovat";
 
 /* Headline of the Calendar landing page */
-"Your schedule is worth protecting" = "Your schedule is worth protecting";
+"Your schedule is worth protecting" = "Váš rozvrh událostí stojí za ochranu";
 
 /* Subheadline of the Calendar landing page */
-"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Váš kalendář je záznamem vašeho života. Proton Calendar vám ho pomůže udržet v soukromí.";
 
 /* Button to open the App Store page for Proton Calendar */
-"Get Proton Calendar app" = "Get Proton Calendar app";
+"Get Proton Calendar app" = "Získat aplikaci Proton Calendar";
 
 /* Name of the feature */
 "Email tracking protection" = "Ochrana před sledovacími prvky v e-mailech";
@@ -1946,6 +1946,51 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "Možná se zúčastním";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Attendance optional)";
+
+/* As in: Every 3 days */
+"Every %@" = "Every %@";
+
+/* As in: on Saturday */
+"on %@" = "on %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "on the %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "on day %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "until %@";
+
+/* Occurring every day */
+"Daily" = "Daily";
+
+/* Occurring every week */
+"Weekly" = "Weekly";
+
+/* Occurring every month */
+"Monthly" = "Monthly";
+
+/* Occurring every year */
+"Yearly" = "Yearly";
+
+/* \"1st\" spelled out */
+"first" = "first";
+
+/* \"2nd\" spelled out */
+"second" = "second";
+
+/* \"3rd\" spelled out */
+"third" = "third";
+
+/* \"4th\" spelled out */
+"fourth" = "fourth";
+
+/* Opposite of \"first\" */
+"last" = "last";
+
 /* Menu title */
 "Max Storage" = "Maximální úložný prostor";
 
@@ -1953,7 +1998,7 @@
 "Storage: %@ full" = "Úložiště: zaplňeno na %@";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Úložiště Drive: zaplňeno na %@";
+"Drive: %@ full" = "Drive: %@ full";
 
 /* Official badge next to sender's name */
 "Official" = "Oficiální";
@@ -2076,13 +2121,13 @@
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Automatické zobrazení dalšího e-mailu, pokud je otevřený e-mail smazán, archivován nebo přesunut.";
 
 /* The title of the button of the jump to next message spotlight. */
-"Turn on feature" = "Turn on feature";
+"Turn on feature" = "Zapnout funkci";
 
 /* The content of the jump to next message spotlight. */
-"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+"View the next email in your inbox when you delete or move the current email." = "Zobrazení dalšího e-mailu v doručené poště po smazání nebo přesunutí aktuálního e-mailu.";
 
 /* The title of the jump to next message spotlight. */
-"Read emails faster" = "Read emails faster";
+"Read emails faster" = "Rychlejší čtení e-mailů";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Došlo k neočekávané chybě, kontaktujte prosím podporu.\nChyba: %@";
@@ -2314,12 +2359,6 @@
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Neomezený počet složek, štítků a filtrů";
-
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Pomocí funkce odložení, která je nyní k dispozici na panelu nástrojů si nastavte, kdy se má e-mail znovu objevit v doručené poště.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Odložit na později";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Přidat jako přílohu";
