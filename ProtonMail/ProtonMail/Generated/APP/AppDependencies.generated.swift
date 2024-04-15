@@ -458,3 +458,13 @@ extension UserContainer: HasUpdateMailbox {
     }
 }
 
+protocol HasUpsellButtonStateProvider {
+    var upsellButtonStateProvider: UpsellButtonStateProvider { get }
+}
+
+extension UserContainer: HasUpsellButtonStateProvider {
+    var upsellButtonStateProvider: UpsellButtonStateProvider {
+        upsellButtonStateProviderFactory()
+    }
+}
+

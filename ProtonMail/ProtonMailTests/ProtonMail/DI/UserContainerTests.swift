@@ -110,6 +110,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.toolbarSettingViewFactory
         _ = strongRefToContainer?.unblockSender
         _ = strongRefToContainer?.updateMailbox
+        _ = strongRefToContainer?.upsellButtonStateProvider
         // sourcery:end
 
         strongRefToUser = nil
