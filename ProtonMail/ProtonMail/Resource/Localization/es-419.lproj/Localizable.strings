@@ -1946,6 +1946,51 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "Podría asistir";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Asistencia opcional)";
+
+/* As in: Every 3 days */
+"Every %@" = "Cada %@";
+
+/* As in: on Saturday */
+"on %@" = "el %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "en el %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "el día %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "hasta el %@";
+
+/* Occurring every day */
+"Daily" = "Diariamente";
+
+/* Occurring every week */
+"Weekly" = "Semanalmente";
+
+/* Occurring every month */
+"Monthly" = "Mensualmente";
+
+/* Occurring every year */
+"Yearly" = "Anualmente";
+
+/* \"1st\" spelled out */
+"first" = "primero";
+
+/* \"2nd\" spelled out */
+"second" = "segundo";
+
+/* \"3rd\" spelled out */
+"third" = "tercero";
+
+/* \"4th\" spelled out */
+"fourth" = "cuarto";
+
+/* Opposite of \"first\" */
+"last" = "último";
+
 /* Menu title */
 "Max Storage" = "Almacenamiento máximo";
 
@@ -1953,7 +1998,7 @@
 "Storage: %@ full" = "Almacenamiento: lleno al %@";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Almacenamiento de Drive: %@ lleno";
+"Drive: %@ full" = "Drive: lleno al %@";
 
 /* Official badge next to sender's name */
 "Official" = "Oficial";
@@ -2314,12 +2359,6 @@
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Carpetas, etiquetas y filtros ilimitados";
-
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Establece cuando un correo electrónico debe reaparecer en su buzón con la función de pausar notificaciones, ahora disponible en la barra de herramientas.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Pausar notificaciones para después";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Añadir como adjunto";

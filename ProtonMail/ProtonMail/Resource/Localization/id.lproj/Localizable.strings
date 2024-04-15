@@ -23,13 +23,13 @@
 "Mobile Signature" = "Tanda Tangan Mobile";
 
 /* Title */
-"Recovery email" = "Surel pemulihan";
+"Recovery email" = "Email pemulihan";
 
 /* Title */
-"Enable email notices" = "Aktifkan notifikasi surel";
+"Enable email notices" = "Aktifkan notifikasi email";
 
 /* place holder */
-"Input Notification Email…" = "Masukkan Surel Notifikasi…";
+"Input Notification Email…" = "Masukkan Email Notifikasi…";
 
 /* Placeholder */
 "Current password" = "Kata sandi saat ini";
@@ -44,7 +44,7 @@
 "Remove image metadata" = "Hapus metadata gambar";
 
 /* Settings row */
-"Block email tracking" = "Blokir pelacak surel";
+"Block email tracking" = "Blokir pelacak email";
 
 /* Settings row */
 "Default browser" = "Browser default";
@@ -163,7 +163,7 @@
 "You're going to delete the message irreversibly. Are you sure?" = "Anda akan menghapus pesan ini secara permanen. Apakah Anda yakin?";
 
 /* Title */
-"You have a new email!" = "Anda memiliki surel baru!";
+"You have a new email!" = "Anda memiliki email baru!";
 
 /* abbreviation of reply: */
 "Re:" = "Ttg:";
@@ -292,7 +292,7 @@
 "Add new custom field" = "Tambah kolom khusus baru";
 
 /* new email action */
-"Add new email" = "Tambah surel baru";
+"Add new email" = "Tambah email baru";
 
 /* new phone action */
 "Add new phone number" = "Tambah nomor telepon baru";
@@ -307,7 +307,7 @@
 "Work" = "Kantor";
 
 /* default vcard types */
-"Email" = "Surel";
+"Email" = "Email";
 
 /* default vcard types */
 "Other" = "Lainnya";
@@ -367,13 +367,13 @@
 "Gender" = "Jenis kelamin";
 
 /* Send an email to the current contact (button title text) */
-"Email contact" = "Surel kontak";
+"Email contact" = "Email kontak";
 
 /* Call the contact (button title text) */
 "Call contact" = "Hubungi kontak";
 
 /* contact detail view, email addresses section title */
-"Email addresses" = "Alamat surel";
+"Email addresses" = "Alamat email";
 
 /* contact section title */
 "Encrypted contact details" = "Rincian kontak yang terenkripsi";
@@ -560,10 +560,10 @@
 "Unable to parse the response object:\n%@" = "Objek respon berikut tidak dapat diurai:\n%@";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Walaupun surel ini sekilas terlihat seperti dikirim dari alamat Proton Mail, surel ini sepertinya berasal dari luar sistem kami dan tidak memenuhi persyaratan autentikasi yang kami miliki. Surel ini mungkin palsu atau tidak diteruskan dengan benar!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Walaupun email ini sekilas terlihat seperti dikirim dari alamat Proton Mail, email ini sepertinya berasal dari luar sistem kami dan tidak memenuhi persyaratan autentikasi yang kami miliki. email ini mungkin palsu atau tidak diteruskan dengan benar!";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Surel ini telah gagal memenuhi syarat autentikasi domainnya. Surel ini mungkin telah dipalsukan atau tidak diteruskan dengan benar.";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Email ini telah gagal memenuhi syarat autentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar.";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Pesan ini mungkin merupakan bentuk upaya phishing. Mohon periksa pengirim dan isi pesan untuk memastikan keabsahannya.";
@@ -623,7 +623,7 @@
 "Disabled" = "Dinonaktifkan";
 
 /* contact placeholder */
-"Email address" = "Alamat surel";
+"Email address" = "Alamat email";
 
 /* top left back button */
 "Back" = "Kembali";
@@ -670,7 +670,7 @@
 "Continue" = "Lanjut";
 
 /* error message */
-"Please input a valid email address." = "Silakan masukkan alamat surel yang valid.";
+"Please input a valid email address." = "Silakan masukkan alamat email yang valid.";
 
 /* Title */
 "Enter your PIN to unlock your inbox." = "Masukkan kode PIN Anda untuk membuka kunci kotak masuk.";
@@ -841,10 +841,10 @@
 "Storage Warning" = "Peringatan Ruang Penyimpanan";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Anda telah menggunakan seluruh kuota penyimpanan Anda (%@). Harap tingkatkan jenis akun Anda untuk tetap dapat mengirim dan menerima surel.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Anda telah menggunakan seluruh kuota penyimpanan Anda (%@). Harap tingkatkan jenis akun Anda untuk tetap dapat mengirim dan menerima email.";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Anda telah menggunakan %1$d%% dari ruang penyimpanan Anda (%2$@). Silakan tingkatkan paket Anda untuk melanjutkan mengirim dan menerima surel.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Anda telah menggunakan %1$d%% dari ruang penyimpanan Anda (%2$@). Silakan tingkatkan paket Anda untuk melanjutkan mengirim dan menerima email.";
 
 /* Alert title */
 "Storage full" = "Kuota penyimpanan penuh";
@@ -904,7 +904,7 @@
 "Password update failed" = "Pembaruan kata sandi gagal";
 
 /* update notification email error title */
-"Update Notification Email" = "Perbarui Surel Notifikasi";
+"Update Notification Email" = "Perbarui Email Notifikasi";
 
 /* Title */
 "Apply Labels" = "Terapkan Label";
@@ -1115,7 +1115,7 @@
 "Delete contact group" = "Hapus grup kontak";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
-"Please select at least one email for the contact group" = "Silakan pilih minimal satu surel untuk dimasukkan ke dalam grup kontak";
+"Please select at least one email for the contact group" = "Silakan pilih minimal satu email untuk dimasukkan ke dalam grup kontak";
 
 /* The message will show up when the user attempts to create a contact group without any name specified */
 "Please provide a group name" = "Silakan tentukan nama grup";
@@ -1169,7 +1169,7 @@
 "There are unsent messages that will be lost if you sign out" = "Terdapat pesan tidak terkirim yang akan hilang apabila Anda keluar";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
-"Please select at least one email" = "Silakan pilih setidaknya satu surel";
+"Please select at least one email" = "Silakan pilih setidaknya satu email";
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Keluar dari %1$@ dan masuk sebagai %2$@";
@@ -1265,28 +1265,28 @@
 "Recipient not found" = "Penerima tidak ditemukan";
 
 /* The error message is shown in composer */
-"Invalid email address" = "Alamat surel tidak valid";
+"Invalid email address" = "Alamat email tidak valid";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "Setidaknya satu alamat surel penerima tidak terformat dengan benar. Mohon periksa kembali.";
+"At least one recipient email address is improperly formatted, please double check them." = "Setidaknya satu alamat email penerima tidak terformat dengan benar. Mohon periksa kembali.";
 
 /* incorrect email format error in composer */
 "Error sending" = "Kesalahan dalam pengiriman";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "Setidaknya satu alamat surel yang terdapat di grup tidak dapat ditemukan";
+"At least one email address in the group could not be found" = "Setidaknya satu alamat email yang terdapat di grup tidak dapat ditemukan";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Setidaknya satu domain/alamat surel penerima yang hendak dituju tidak ada atau tidak terformat dengan benar. Pesan dipindahkan ke draf.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Setidaknya satu domain/alamat email penerima yang hendak dituju tidak ada atau tidak terformat dengan benar. Pesan dipindahkan ke draf.";
 
 /* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "Setidaknya satu alamat surel yang hendak Anda tuju tidak valid. Mohon periksa kembali alamat surel tujuan Anda.";
+"You have entered at least one invalid email address. Please verify your recipients." = "Setidaknya satu alamat email yang hendak Anda tuju tidak valid. Mohon periksa kembali alamat email tujuan Anda.";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found." = "Setidaknya satu alamat surel yang terdapat di grup tidak dapat ditemukan.";
+"At least one email address in the group could not be found." = "Setidaknya satu alamat email yang terdapat di grup tidak dapat ditemukan.";
 
 /* incorrect email format error while sending */
-"You have entered at least one unknown recipient. Please verify your recipients." = "Setidaknya satu alamat surel yang hendak Anda tuju tidak dikenal. Mohon periksa kembali alamat surel tujuan Anda.";
+"You have entered at least one unknown recipient. Please verify your recipients." = "Setidaknya satu alamat email yang hendak Anda tuju tidak dikenal. Mohon periksa kembali alamat email tujuan Anda.";
 
 /* title of incorrect email format error while sending */
 "Sending failed" = "Pengiriman gagal";
@@ -1388,13 +1388,13 @@
 "Delete %d Messages" = "Hapus %d Pesan";
 
 /* No comment provided by engineer. */
-"Current Recovery Email" = "Surel Pemulihan Saat Ini";
+"Current Recovery Email" = "Email Pemulihan Saat Ini";
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Pemulihan diaktifkan";
 
 /* No comment provided by engineer. */
-"Please set a recovery / notification email" = "Harap tentukan alamat surel pemulihan / notifikasi";
+"Please set a recovery / notification email" = "Harap tentukan alamat email pemulihan / notifikasi";
 
 /* No comment provided by engineer. */
 "Unread" = "Belum dibaca";
@@ -1442,7 +1442,7 @@
 "Parent folder" = "Folder induk";
 
 /* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Tindakan ini tidak dapat diurungkan. Seluruh surel yang tersimpan pada folder ini tidak akan dihapus dan dapat ditemukan di folder Semua Surat.";
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Tindakan ini tidak dapat diurungkan. Seluruh email yang tersimpan pada folder ini tidak akan dihapus dan dapat ditemukan di folder Semua Surat.";
 
 /* Alert message when user tries to delete label */
 "This action cannot be undone." = "Tindakan ini tidak dapat diurungkan.";
@@ -1552,7 +1552,7 @@
 "Do you want to discard the changes?" = "Apakah Anda ingin membatalkan perubahan?";
 
 /* No comment provided by engineer. */
-"Group emails from the same conversation together." = "Kelompokkan surel yang tergabung dalam percakapan yang sama.";
+"Group emails from the same conversation together." = "Kelompokkan email yang tergabung dalam percakapan yang sama.";
 
 /* No comment provided by engineer. */
 "Conversation grouping" = "Kelompokkan percakapan";
@@ -1693,7 +1693,7 @@
 "Go back (recommended)" = "Kembali (disarankan)";
 
 /* Description for undo send */
-"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Fitur ini akan menunda pengiriman surel Anda, yang memberikan Anda kesempatan untuk dapat membatalkan pengiriman dalam rentang waktu yang dipilih.";
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Fitur ini akan menunda pengiriman email Anda, yang memberikan Anda kesempatan untuk dapat membatalkan pengiriman dalam rentang waktu yang dipilih.";
 
 /* The title of the scheduled message banner. */
 "This message will be sent on %@ at %@" = "Pesan ini akan terkirim pada %1$@ pukul %2$@";
@@ -1774,7 +1774,7 @@
 "PGP-signed" = "Ditandatangani PGP";
 
 /* The error message while calculating the encryption preferences */
-"Email address disabled" = "Alamat surel dinonaktifkan";
+"Email address disabled" = "Alamat email dinonaktifkan";
 
 /* The error message while calculating the encryption preferences */
 "No keys retrieved for internal user" = "Tidak ada kunci untuk pengguna internal yang diterima";
@@ -1872,7 +1872,7 @@
 /* Placeholder for empty sender list */
 "No blocked senders" = "Tidak ada pengirim yang diblokir";
 
-"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Surel baru dari %@ tidak akan disampaikan kepada Anda dan akan dihapus secara permanen. Kelola daftar alamat surel yang diblokir pada menu pengaturan.";
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "email baru dari %@ tidak akan disampaikan kepada Anda dan akan dihapus secara permanen. Kelola daftar alamat email yang diblokir pada menu pengaturan.";
 
 /* Banner in the message view */
 "Sender has been blocked" = "Pengirim telah diblokir";
@@ -1899,13 +1899,13 @@
 "Get Proton Calendar app" = "Dapatkan aplikasi Proton Calendar";
 
 /* Name of the feature */
-"Email tracking protection" = "Perlindungan pelacak surel";
+"Email tracking protection" = "Perlindungan pelacak email";
 
 /* Short hint in the header view */
-"No email trackers found" = "Tidak ada pelacak surel yang ditemukan";
+"No email trackers found" = "Tidak ada pelacak email yang ditemukan";
 
 /* Tracker protection feature explanation */
-"Email trackers can violate your privacy." = "Pelacak surel dapat mengusik privasi Anda.";
+"Email trackers can violate your privacy." = "Pelacak email dapat mengusik privasi Anda.";
 
 /* The banner shown in case of proxy failure */
 "Some images could not be loaded with tracking protection." = "Sebagian gambar tidak dapat dimuat dengan perlindungan pelacak yang aktif.";
@@ -1946,6 +1946,51 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "Saya mungkin akan hadir";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Kehadiran tidak diwajibkan)";
+
+/* As in: Every 3 days */
+"Every %@" = "Every %@";
+
+/* As in: on Saturday */
+"on %@" = "on %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "on the %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "on day %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "until %@";
+
+/* Occurring every day */
+"Daily" = "Daily";
+
+/* Occurring every week */
+"Weekly" = "Weekly";
+
+/* Occurring every month */
+"Monthly" = "Monthly";
+
+/* Occurring every year */
+"Yearly" = "Yearly";
+
+/* \"1st\" spelled out */
+"first" = "first";
+
+/* \"2nd\" spelled out */
+"second" = "second";
+
+/* \"3rd\" spelled out */
+"third" = "third";
+
+/* \"4th\" spelled out */
+"fourth" = "fourth";
+
+/* Opposite of \"first\" */
+"last" = "last";
+
 /* Menu title */
 "Max Storage" = "Penyimpanan Maks";
 
@@ -1953,7 +1998,7 @@
 "Storage: %@ full" = "Penyimpanan: %@ penuh";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Penyimpanan drive: %@ penuh";
+"Drive: %@ full" = "Penyimpanan: %@ penuh";
 
 /* Official badge next to sender's name */
 "Official" = "Resmi";
@@ -1980,7 +2025,7 @@
 "Terms & conditions" = "Syarat & ketentuan";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Saya telah menggunakan Proton Mail dan saya pikir layanan ini cocok untuk Anda. Layanan ini merupakan layanan surel aman yang melindungi privasi Anda. Daftar sekarang juga melalui tautan berikut dan nikmati berbagai fitur premium selama 1 bulan secara gratis:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Saya telah menggunakan Proton Mail dan saya pikir layanan ini cocok untuk Anda. Layanan ini merupakan layanan email aman yang melindungi privasi Anda. Daftar sekarang juga melalui tautan berikut dan nikmati berbagai fitur premium selama 1 bulan secara gratis:";
 
 /* The content of the referral prompt view. */
 "Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Privasi Anda terlindungi dengan baik jika kontak Anda juga menggunakan Proton Mail. Undang teman-teman Anda ke Proton, dan Anda akan menerima manfaat premium secara gratis.";
@@ -1989,7 +2034,7 @@
 "Maybe later" = "Mungkin nanti";
 
 /* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Aktifkan fitur ini agar alamat surel yang Anda ketik dapat dilengkapi secara otomatis dengan data kontak dari seluruh akun yang terhubung masuk.";
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Aktifkan fitur ini agar alamat email yang Anda ketik dapat dilengkapi secara otomatis dengan data kontak dari seluruh akun yang terhubung masuk.";
 
 /* contacts auto import title in settings */
 "Auto-import device contacts" = "Impor kontak perangkat secara otomatis";
@@ -2049,10 +2094,10 @@
 "Up to 500 GB of storage" = "Ruang penyimpanan hingga 500 GB";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Hingga 15 alamat surel";
+"Up to 15 email addresses" = "Hingga 15 alamat email";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Hingga 3 domain surel khusus";
+"Up to 3 custom email domains" = "Hingga 3 domain email khusus";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Hide My Email aliases" = "Alias Hide My Email";
@@ -2070,19 +2115,19 @@
 "Application logs" = "Log aplikasi";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Pergi ke surel berikutnya";
+"Jump to next email" = "Pergi ke email berikutnya";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Tampilkan surel berikutnya secara otomaris ketika surel yang dibuka telah dihapus, diarsip, atau dipindah.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Tampilkan email berikutnya secara otomaris ketika email yang dibuka telah dihapus, diarsip, atau dipindah.";
 
 /* The title of the button of the jump to next message spotlight. */
 "Turn on feature" = "Aktifkan fitur";
 
 /* The content of the jump to next message spotlight. */
-"View the next email in your inbox when you delete or move the current email." = "Lihat surel berikutnya di kotak masuk setelah menghapus atau memindahkan surel yang baru saja dibaca.";
+"View the next email in your inbox when you delete or move the current email." = "Lihat email berikutnya di kotak masuk setelah menghapus atau memindahkan email yang baru saja dibaca.";
 
 /* The title of the jump to next message spotlight. */
-"Read emails faster" = "Baca surel lebih cepat";
+"Read emails faster" = "Baca email lebih cepat";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Terjadi kesalahan yang tidak diduga, silakan menghubungi bantuan.\nKesalahan: %@";
@@ -2184,7 +2229,7 @@
 "Up to 3 TB of storage" = "Ruang penyimpanan hingga 3 TB";
 
 /* Text to advertise what upgrading will provide */
-"Custom email domains" = "Domain surel khusus";
+"Custom email domains" = "Domain email khusus";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Pengirim diubah";
@@ -2268,7 +2313,7 @@
 "Unsubscribe?" = "Berhenti berlangganan?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Ini akan menghentikan langganan Anda dari milis. Pengirim akan diberi tahu untuk berhenti mengirimkan surel ke alamat ini.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Ini akan menghentikan langganan Anda dari milis. Pengirim akan diberi tahu untuk berhenti mengirimkan email ke alamat ini.";
 
 /* Alert telling the user that we are unable to preview this attachment */
 "Unable to preview this attachment" = "Lampiran ini tidak dapat dipratinjau";
@@ -2315,12 +2360,6 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Tanpa batasan jumlah folder, label, dan filter";
 
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Atur kapan suatu email akan kembali muncul pada kotak masuk Anda dengan fitur tunda, yang kini tersedia pada bilah toolbar.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Tunda untuk nanti";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Tambah sebagai lampiran";
 
@@ -2334,7 +2373,7 @@
 "Your contacts at your fingertips" = "Kontak Anda di ujung jari Anda";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Tidak perlu keluar dari aplikasi untuk mencari alamat surel. Sinkronkan kontak dari perangkat ke Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Tidak perlu keluar dari aplikasi untuk mencari alamat email. Sinkronkan kontak dari perangkat ke Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
 "Enable auto-import" = "Aktifkan pengimporan otomatis";
@@ -2343,7 +2382,7 @@
 "No contacts yet" = "Belum ada kontak";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Impor kontak dari perangkat Anda untuk mengirim surel dan undangan dengan mudah.";
+"Import contacts from your device to send emails and invites with ease." = "Impor kontak dari perangkat Anda untuk mengirim email dan undangan dengan mudah.";
 
 /* Button title for no contact hint view */
 "Auto-import contacts" = "Impor kontak secara otomatis";

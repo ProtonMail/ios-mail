@@ -584,7 +584,7 @@
 "Reading device contacts data…" = "Чтение данных контактов на устройстве…";
 
 /* title for the contact import indicator */
-"Importing contacts..." = "Importing contacts...";
+"Importing contacts..." = "Импорт контактов...";
 
 /* Description */
 "Do you want to cancel the process?" = "Вы хотите отменить процесс?";
@@ -1199,7 +1199,7 @@
 "Limit reached" = "Предел кол-ва подкл. уч. записей";
 
 /* Alert when the free account limit is reached */
-"Only two free accounts can be added" = "Only two free accounts can be added";
+"Only two free accounts can be added" = "Можно добавить только два бесплатных аккаунта";
 
 /* section title in settings */
 "Account settings" = "Настройки аккаунта";
@@ -1834,10 +1834,10 @@
 "You can now choose and rearrange the actions in this bar" = "Теперь вы можете выбирать и изменять действия на этой панели";
 
 /* Title of the banner alert */
-"Your Mail storage is %@ full" = "Your Mail storage is %@ full";
+"Your Mail storage is %@ full" = "Ваше почтовое хранилище заполнено на %@";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "Ваше хранилище Drive заполнено на %@";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "Ваше Mail хранилище заполнено";
@@ -1846,7 +1846,7 @@
 "Your Drive storage is full" = "Ваше Drive хранилище заполнено";
 
 /* Description of the banner alert */
-"Upgrade to get more storage." = "Upgrade to get more storage.";
+"Upgrade to get more storage." = "Улучшите, чтобы получить больше места в хранилище.";
 
 /* Get more storage button action */
 "Not now" = "Не сейчас";
@@ -1890,13 +1890,13 @@
 "Unblock" = "Разблокировать";
 
 /* Headline of the Calendar landing page */
-"Your schedule is worth protecting" = "Your schedule is worth protecting";
+"Your schedule is worth protecting" = "Ваш рабочий график стоит того, чтобы его защитить";
 
 /* Subheadline of the Calendar landing page */
-"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Ваш календарь - это запись вашей жизни, а Proton Calendar помогает сохранить ее в тайне.";
 
 /* Button to open the App Store page for Proton Calendar */
-"Get Proton Calendar app" = "Get Proton Calendar app";
+"Get Proton Calendar app" = "Получить приложение Proton Calendar";
 
 /* Name of the feature */
 "Email tracking protection" = "Защита от отслеживания электронной почты";
@@ -1920,10 +1920,10 @@
 "Show less" = "Показать меньше";
 
 /* Text shown when opening an invitation for a past event */
-"This event already ended" = "This event already ended";
+"This event already ended" = "Это событие уже закончилось";
 
 /* Text shown when opening an invitation for a cancelled event */
-"This event has been cancelled" = "This event has been cancelled";
+"This event has been cancelled" = "Это событие было отменено";
 
 /* Prompt above yes/no/maybe buttons */
 "Attending?" = "Участвуете?";
@@ -1944,13 +1944,58 @@
 "No, I won't attend" = "Нет, я не участвую";
 
 /* Neither confirm nor deny attending an event */
-"I might attend" = "I might attend";
+"I might attend" = "Я мог бы присутствовать";
+
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Attendance optional)";
+
+/* As in: Every 3 days */
+"Every %@" = "Every %@";
+
+/* As in: on Saturday */
+"on %@" = "on %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "on the %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "on day %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "until %@";
+
+/* Occurring every day */
+"Daily" = "Ежедневно";
+
+/* Occurring every week */
+"Weekly" = "Еженедельно";
+
+/* Occurring every month */
+"Monthly" = "Monthly";
+
+/* Occurring every year */
+"Yearly" = "Ежегодно";
+
+/* \"1st\" spelled out */
+"first" = "first";
+
+/* \"2nd\" spelled out */
+"second" = "second";
+
+/* \"3rd\" spelled out */
+"third" = "third";
+
+/* \"4th\" spelled out */
+"fourth" = "fourth";
+
+/* Opposite of \"first\" */
+"last" = "last";
 
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "Максимальное хранилище";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "Хранилище: заполнено на %@";
 
 /* Cell title that shows the percentage of the storage */
 "Drive: %@ full" = "Drive: %@ full";
@@ -2004,7 +2049,7 @@
 "The initial import may take some time and will only occur when the app is in the foreground." = "Первый импорт может занять какое-то время и будет происходить только тогда, когда окно приложения активно.";
 
 /* Alert to ask user to reauthorise access to contacts */
-"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission.";
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Доступ к контактам был отключен. Чтобы включить автоимпорт, перейдите в настройки и включите разрешение на доступ к контактам.";
 
 /* Settings lock protection section */
 "Protection" = "Защита";
@@ -2070,19 +2115,19 @@
 "Application logs" = "Журналы приложения";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Перейти к следующему электронному письму";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Автоматически показывать следующее электронное письмо, если открытое письмо удалено, заархивировано или перемещено.";
 
 /* The title of the button of the jump to next message spotlight. */
-"Turn on feature" = "Turn on feature";
+"Turn on feature" = "Выключить функцию";
 
 /* The content of the jump to next message spotlight. */
-"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+"View the next email in your inbox when you delete or move the current email." = "Просмотр следующего письма в почтовом ящике при удалении или перемещении текущего письма.";
 
 /* The title of the jump to next message spotlight. */
-"Read emails faster" = "Read emails faster";
+"Read emails faster" = "Читайте электронные письма быстрее";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Произошла непредвиденная ошибка, обратитесь в службу поддержки.\nОшибка: %@";
@@ -2166,10 +2211,10 @@
 "Empty trash" = "Очистить Корзину";
 
 /* Alert prompting to update Calendar */
-"Download the latest version of the Proton Calendar to open this event" = "Download the latest version of the Proton Calendar to open this event";
+"Download the latest version of the Proton Calendar to open this event" = "Загрузите последнюю версию Proton Calendar, чтобы открыть это событие";
 
 /* Button to open App Store */
-"Download in App Store" = "Download in App Store";
+"Download in App Store" = "Скачать из App Store";
 
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Открыть в Proton Calendar";
@@ -2315,50 +2360,44 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Неограниченное количество папок, ярлыков и фильтров";
 
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Snooze it for later";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Добавить как вложение";
 
 /* The title in setting page */
-"Swipe to next message" = "Swipe to next message";
+"Swipe to next message" = "Пролистать к следующему сообщению";
 
 /* Description text for setting */
-"Allow navigating through messages by swiping left or right." = "Allow navigating through messages by swiping left or right.";
+"Allow navigating through messages by swiping left or right." = "Позволяет перемещаться по сообщениям, проводя пальцем влево или вправо.";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "Ваши контакты под рукой";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Не нужно выходить из приложения, чтобы найти адрес электронной почты. Синхронизируйте контакты из вашего устройства с Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "Включить автоимпорт";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "Пока нет контактов";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "Импортируйте контакты с вашего устройства, чтобы с легкостью отправлять электронные письма и приглашения.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "Автоимпорт контактов";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "Импортирование ваших контактов";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "Вскоре здесь появятся ваши контакты.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "Автоматическое добавление новых контактов с вашего устройства.";
 
 /* The title of the privacy and data in the account setting. */
-"Privacy and data" = "Privacy and data";
+"Privacy and data" = "Конфиденциальность и данные";
 
 /* cell title in device settings */
 "Storage" = "Хранилище";
@@ -2379,4 +2418,4 @@
 "To improve our services, we sometimes collect anonymized usage data." = "Иногда мы собираем обезличенные данные для улучшения наших сервисов.";
 
 /* The subtitle of the crash report setting. */
-"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.";
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Если в приложении произойдет сбой, нашим инженерам будет отправлен отчет с подробным описанием причины. Эти данные будут использованы только для улучшения приложения.";

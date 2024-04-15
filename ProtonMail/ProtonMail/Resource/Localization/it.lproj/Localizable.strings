@@ -109,7 +109,7 @@
  Alert title to confirm signout
  menu title
 */
-"Sign out" = "Disconnetti";
+"Sign out" = "Esci dall'account";
 
 /* menu title */
 "Lock The App" = "Blocca l'app";
@@ -989,7 +989,7 @@
 "This message will expire in %dD %dH %dM" = "Questo messaggio scadrà in %1$dG %2$dH %3$dM";
 
 /* Action */
-"Sign Out" = "Disconnetti";
+"Sign Out" = "Esci";
 
 /* Alert title */
 "Sending in progress" = "Invio in corso";
@@ -1160,13 +1160,13 @@
  Alert to confirm sign out
  Alert when sign out non-primary account from account manager
 */
-"Are you sure you want to sign out?" = "Sei sicuro di volerti disconnettere?";
+"Are you sure you want to sign out?" = "Sei sicuro di voler uscire dall'account?";
 
 /* Alert to confirm sign out when only one account signed in */
-"Are you sure you want to sign out %@?" = "Sei sicuro di voler disconnettere %@?";
+"Are you sure you want to sign out %@?" = "Sei sicuro di voler uscire dall'account %@?";
 
 /* Alert to confirm signout with pending message in the queue */
-"There are unsent messages that will be lost if you sign out" = "Ci sono messaggi non inviati che andranno persi se ti disconnetti";
+"There are unsent messages that will be lost if you sign out" = "Ci sono messaggi non inviati che andranno persi se ti esci dall'account";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
 "Please select at least one email" = "Selezionare almeno una email";
@@ -1946,6 +1946,51 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "Potrei partecipare";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Partecipazione facoltativa)";
+
+/* As in: Every 3 days */
+"Every %@" = "Ogni %@";
+
+/* As in: on Saturday */
+"on %@" = "il %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "%@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "il %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "fino al %@";
+
+/* Occurring every day */
+"Daily" = "Giornalmente";
+
+/* Occurring every week */
+"Weekly" = "Settimanalmente";
+
+/* Occurring every month */
+"Monthly" = "Mensilmente";
+
+/* Occurring every year */
+"Yearly" = "Annualmente";
+
+/* \"1st\" spelled out */
+"first" = "primo";
+
+/* \"2nd\" spelled out */
+"second" = "secondo";
+
+/* \"3rd\" spelled out */
+"third" = "terzo";
+
+/* \"4th\" spelled out */
+"fourth" = "quarto";
+
+/* Opposite of \"first\" */
+"last" = "ultimo";
+
 /* Menu title */
 "Max Storage" = "Spazio massimo";
 
@@ -1953,7 +1998,7 @@
 "Storage: %@ full" = "Spazio pieno al %@";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Spazio di archiviazione di Drive: pieno al %@";
+"Drive: %@ full" = "Drive: pieno al %@";
 
 /* Official badge next to sender's name */
 "Official" = "Ufficiale";
@@ -2314,12 +2359,6 @@
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Cartelle, etichette e filtri illimitati";
-
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Imposta quando un'email dovrebbe riapparire nella tua casella di posta con la nuova funzionalità di posticipazione, ora disponibile nella barra degli strumenti.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Posticipa per dopo";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Aggiungilo come allegato";

@@ -1946,6 +1946,51 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "Jag kanske deltar";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Frivilligt deltagande)";
+
+/* As in: Every 3 days */
+"Every %@" = "Every %@";
+
+/* As in: on Saturday */
+"on %@" = "på %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "on the %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "on day %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "fram till %@";
+
+/* Occurring every day */
+"Daily" = "Dagligen";
+
+/* Occurring every week */
+"Weekly" = "Veckovis";
+
+/* Occurring every month */
+"Monthly" = "Månadsvis";
+
+/* Occurring every year */
+"Yearly" = "Årsvis";
+
+/* \"1st\" spelled out */
+"first" = "första";
+
+/* \"2nd\" spelled out */
+"second" = "andra";
+
+/* \"3rd\" spelled out */
+"third" = "tredje";
+
+/* \"4th\" spelled out */
+"fourth" = "fjärde";
+
+/* Opposite of \"first\" */
+"last" = "sista";
+
 /* Menu title */
 "Max Storage" = "Maximalt lagringsutrymme";
 
@@ -1953,7 +1998,7 @@
 "Storage: %@ full" = "Lagringsutrymme: %@ fullt";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive lagringsutrymme: %@ fullt";
+"Drive: %@ full" = "Drive: %@ full";
 
 /* Official badge next to sender's name */
 "Official" = "Officiell";
@@ -2314,12 +2359,6 @@
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Obegränsade mappar, etiketter och filter";
-
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Ställ in när ett e-postmeddelande ska dyka upp igen i din inkorg med snoozefunktionen som nu är tillgänglig i verktygsfältet.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Snooza det till senare";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Lägg till det som bilaga";

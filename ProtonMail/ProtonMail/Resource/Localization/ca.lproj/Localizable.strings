@@ -1199,7 +1199,7 @@
 "Limit reached" = "S'ha assolit el límit";
 
 /* Alert when the free account limit is reached */
-"Only two free accounts can be added" = "Only two free accounts can be added";
+"Only two free accounts can be added" = "Només es poden afegir dos comptes gratuïts";
 
 /* section title in settings */
 "Account settings" = "Configuració del compte";
@@ -1946,6 +1946,51 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "Podria assistir";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Attendance optional)";
+
+/* As in: Every 3 days */
+"Every %@" = "Every %@";
+
+/* As in: on Saturday */
+"on %@" = "on %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "on the %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "on day %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "until %@";
+
+/* Occurring every day */
+"Daily" = "Daily";
+
+/* Occurring every week */
+"Weekly" = "Weekly";
+
+/* Occurring every month */
+"Monthly" = "Monthly";
+
+/* Occurring every year */
+"Yearly" = "Yearly";
+
+/* \"1st\" spelled out */
+"first" = "first";
+
+/* \"2nd\" spelled out */
+"second" = "second";
+
+/* \"3rd\" spelled out */
+"third" = "third";
+
+/* \"4th\" spelled out */
+"fourth" = "fourth";
+
+/* Opposite of \"first\" */
+"last" = "last";
+
 /* Menu title */
 "Max Storage" = "Emmagatzematge màxim";
 
@@ -1953,7 +1998,7 @@
 "Storage: %@ full" = "Emmagatzematge: %@ ple";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "L'emmagatzematge del Drive és: %@ ple";
+"Drive: %@ full" = "Drive: %@ full";
 
 /* Official badge next to sender's name */
 "Official" = "Oficial";
@@ -2314,12 +2359,6 @@
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Carpetes, etiquetes i filtres il·limitats";
-
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Establiu quan un correu electrònic hauria de reaparèixer a la safata d'entrada amb la característica de posposició, ara disponible a la barra d'eines.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Posposa per a més tard";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Afegeix-ho com a adjunt";

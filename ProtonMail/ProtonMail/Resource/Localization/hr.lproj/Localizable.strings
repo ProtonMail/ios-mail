@@ -1929,10 +1929,10 @@
 "Attending?" = "Attending?";
 
 /* Part of a yes/no/maybe prompt */
-"Yes" = "Yes";
+"Yes" = "Da";
 
 /* Part of a yes/no/maybe prompt */
-"No" = "No";
+"No" = "Ne";
 
 /* Part of a yes/no/maybe prompt */
 "Maybe" = "Maybe";
@@ -1945,6 +1945,51 @@
 
 /* Neither confirm nor deny attending an event */
 "I might attend" = "I might attend";
+
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Attendance optional)";
+
+/* As in: Every 3 days */
+"Every %@" = "Every %@";
+
+/* As in: on Saturday */
+"on %@" = "on %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "on the %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "on day %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "until %@";
+
+/* Occurring every day */
+"Daily" = "Dnevno";
+
+/* Occurring every week */
+"Weekly" = "Tjedno";
+
+/* Occurring every month */
+"Monthly" = "Mjesečno";
+
+/* Occurring every year */
+"Yearly" = "Yearly";
+
+/* \"1st\" spelled out */
+"first" = "prvi";
+
+/* \"2nd\" spelled out */
+"second" = "drugi";
+
+/* \"3rd\" spelled out */
+"third" = "treći";
+
+/* \"4th\" spelled out */
+"fourth" = "četvrti";
+
+/* Opposite of \"first\" */
+"last" = "last";
 
 /* Menu title */
 "Max Storage" = "Max Storage";
@@ -2314,12 +2359,6 @@
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Neograničen broj mapa, oznaka i filtara";
-
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Snooze it for later";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Add it as attachment";

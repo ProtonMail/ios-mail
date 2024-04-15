@@ -2,6 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>%d times</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@times@</string>
+      <key>times</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%u kali</string>
+      </dict>
+    </dict>
     <key>%u participants</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
@@ -41,7 +55,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d pelacak surel diblokir</string>
+        <string>%d pelacak email diblokir</string>
       </dict>
     </dict>
     <key>%d selected</key>
@@ -69,7 +83,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d pelacak surel ditemukan</string>
+        <string>%d pelacak email ditemukan</string>
       </dict>
     </dict>
     <key>Proton found %d trackers on this message.</key>
