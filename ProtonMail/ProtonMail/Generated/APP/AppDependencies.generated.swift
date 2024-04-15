@@ -388,6 +388,26 @@ extension UserContainer: HasPaymentsUIFactory {
     }
 }
 
+protocol HasPurchaseManagerProtocol {
+    var purchaseManager: PurchaseManagerProtocol { get }
+}
+
+extension UserContainer: HasPurchaseManagerProtocol {
+    var purchaseManager: PurchaseManagerProtocol {
+        purchaseManagerFactory()
+    }
+}
+
+protocol HasPurchasePlan {
+    var purchasePlan: PurchasePlan { get }
+}
+
+extension UserContainer: HasPurchasePlan {
+    var purchasePlan: PurchasePlan {
+        purchasePlanFactory()
+    }
+}
+
 protocol HasSettingsViewsFactory {
     var settingsViewsFactory: SettingsViewsFactory { get }
 }

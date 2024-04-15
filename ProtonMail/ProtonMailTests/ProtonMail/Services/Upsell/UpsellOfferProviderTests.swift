@@ -65,6 +65,8 @@ final class UpsellOfferProviderTests: XCTestCase {
     private func stubPlans(named names: [String]) {
         apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             switch path {
+            case "/payments/v5/status/apple":
+                completion(nil, .success([:]))
             case "/payments/v5/plans":
                 completion(nil, .success(AvailablePlansTestData.availablePlans(named: names)))
             default:

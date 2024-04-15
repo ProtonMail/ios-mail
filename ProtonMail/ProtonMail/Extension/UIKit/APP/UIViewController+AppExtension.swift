@@ -109,4 +109,10 @@ extension UIViewController {
         return mailFactor > StorageAlertVisibility.bannerThreshold
         || driveFactor > StorageAlertVisibility.bannerThreshold
     }
+
+    func dismiss(animated: Bool) async {
+        await withCheckedContinuation { continuation in
+            dismiss(animated: animated, completion: continuation.resume)
+        }
+    }
 }

@@ -321,6 +321,14 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         }
 
         viewModel
+            .error
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] error in
+                showErrorMessage(error as NSError)
+            }
+            .store(in: &cancellables)
+
+        viewModel
             .reloadRightBarButtons
             .receive(on: DispatchQueue.main)
             .sink { [unowned self] in
@@ -608,13 +616,27 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             return
         }
 
-        let upsellPage = UpsellPage(model: upsellPageModel, onPurchaseTapped: viewModel.purchasePlan)
+        let upsellPage = UpsellPage(model: upsellPageModel, onPurchaseTapped: purchasePlan)
         let hostingController = SheetLikeSpotlightViewController(rootView: upsellPage)
         hostingController.modalTransitionStyle = .crossDissolve
         present(hostingController, animated: false)
 
         viewModel.upsellButtonWasTapped()
         setupRightButtons(viewModel.listEditing, isStorageExceeded: viewModel.user.isStorageExceeded)
+    }
+
+    private func purchasePlan(storeKitProductId: String) {
+        Task { [weak self] in
+            guard let self else { return }
+
+            lockUI()
+            let planPurchased = await self.viewModel.purchasePlan(storeKitProductId: storeKitProductId)
+            unlockUI()
+
+            if planPurchased {
+                await presentedViewController?.dismiss(animated: true)
+            }
+        }
     }
 
     @objc func composeButtonTapped() {

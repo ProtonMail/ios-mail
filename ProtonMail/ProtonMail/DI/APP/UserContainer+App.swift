@@ -153,6 +153,18 @@ extension UserContainer {
         }
     }
 
+    var purchaseManagerFactory: Factory<PurchaseManagerProtocol> {
+        self {
+            self.payments.purchaseManager
+        }
+    }
+
+    var purchasePlanFactory: Factory<PurchasePlan> {
+        self {
+            PurchasePlan(dependencies: self)
+        }
+    }
+
     var settingsViewsFactoryFactory: Factory<SettingsViewsFactory> {
         self {
             SettingsViewsFactory(dependencies: self)
