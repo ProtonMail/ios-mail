@@ -347,10 +347,8 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
         do {
             let request = try dependencies.paymentsApiProtocol.buySubscriptionRequest(
                 api: dependencies.apiService,
-                planId: plan.protonIdentifier,
-                amount: plan.amount,
+                plan: plan,
                 amountDue: plan.amountDue,
-                cycle: plan.cycle,
                 paymentAction: .token(token: token.token),
                 isCreditingAllowed: !areSubscriptionsEnabled
             )

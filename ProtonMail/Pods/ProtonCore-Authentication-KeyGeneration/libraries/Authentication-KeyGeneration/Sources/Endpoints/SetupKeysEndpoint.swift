@@ -56,7 +56,7 @@ extension AuthService {
                 "KeySalt": keySalt,
                 "PrimaryKey": privateKey.value,
                 "AddressKeys": addresses,
-                "Auth": passwordAuth.toDictionary()!
+                "Auth": passwordAuth.parameters!
             ]
 
             return out

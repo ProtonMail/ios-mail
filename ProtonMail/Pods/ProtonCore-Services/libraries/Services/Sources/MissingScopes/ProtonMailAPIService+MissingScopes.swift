@@ -31,13 +31,11 @@ public enum MissingScopeMode {
 
 extension PMAPIService {
     func missingScopesHandler<T>(
-        missingScopeMode: MissingScopeMode,
         username: String,
         responseHandler: PMResponseHandlerData,
         completion: PMAPIService.APIResponseCompletion<T>) where T: Decodable {
         if !isPasswordVerifyUIPresented.transform({ $0 }) {
             missingPasswordScopesUIHandler(
-                missingScopeMode: missingScopeMode,
                 username: username,
                 responseHandlerData: responseHandler,
                 completion: completion
@@ -45,13 +43,12 @@ extension PMAPIService {
         }
     }
 
-    private func missingPasswordScopesUIHandler<T>(missingScopeMode: MissingScopeMode,
-                                                   username: String,
+    private func missingPasswordScopesUIHandler<T>(username: String,
                                                    responseHandlerData: PMResponseHandlerData,
                                                    completion: APIResponseCompletion<T>) where T: Decodable {
         self.isPasswordVerifyUIPresented.mutate { $0 = true }
 
-        missingScopesDelegate?.onMissingScopesHandling(missingScopeMode: missingScopeMode, username: username, responseHandlerData: responseHandlerData) { [weak self] reason in
+        missingScopesDelegate?.onMissingScopesHandling(username: username, responseHandlerData: responseHandlerData) { [weak self] reason in
 
             guard let self else { return }
 

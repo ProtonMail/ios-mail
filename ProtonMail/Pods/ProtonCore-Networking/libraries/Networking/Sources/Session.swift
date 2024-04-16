@@ -310,17 +310,17 @@ public extension Session {
 extension Session {
 
     public func generate(with method: HTTPMethod, urlString: String, parameters: Any? = nil, timeout: TimeInterval? = nil, retryPolicy: ProtonRetryPolicy.RetryMode) throws -> SessionRequest {
-        return SessionRequest.init(parameters: parameters,
-                                   urlString: urlString,
-                                   method: method,
-                                   timeout: timeout ?? defaultTimeout,
-                                   retryPolicy: retryPolicy)
+        try SessionRequest.init(parameters: parameters,
+                                urlString: urlString,
+                                method: method,
+                                timeout: timeout ?? defaultTimeout,
+                                retryPolicy: retryPolicy)
     }
 }
 
 public protocol SessionFactoryInterface {
     func createSessionInstance(url apiHostUrl: String) -> Session
-    func createSessionRequest(parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval, retryPolicy: ProtonRetryPolicy.RetryMode) -> SessionRequest
+    func createSessionRequest(parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval, retryPolicy: ProtonRetryPolicy.RetryMode) throws -> SessionRequest
 }
 
 public final class SessionFactory: SessionFactoryInterface {
@@ -337,8 +337,8 @@ public final class SessionFactory: SessionFactoryInterface {
                                             urlString: String,
                                             method: HTTPMethod,
                                             timeout: TimeInterval,
-                                            retryPolicy: ProtonRetryPolicy.RetryMode = .userInitiated) -> SessionRequest {
-        instance.createSessionRequest(parameters: parameters, urlString: urlString, method: method, timeout: timeout, retryPolicy: retryPolicy)
+                                            retryPolicy: ProtonRetryPolicy.RetryMode = .userInitiated) throws -> SessionRequest {
+        try instance.createSessionRequest(parameters: parameters, urlString: urlString, method: method, timeout: timeout, retryPolicy: retryPolicy)
     }
 
     public func createSessionInstance(url apiHostUrl: String) -> Session {
@@ -347,13 +347,13 @@ public final class SessionFactory: SessionFactoryInterface {
 
     public func createSessionRequest(
         parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval, retryPolicy: ProtonRetryPolicy.RetryMode = .userInitiated
-    ) -> SessionRequest {
-        AlamofireRequest(parameters: parameters, urlString: urlString, method: method, timeout: timeout, retryPolicy: retryPolicy)
+    ) throws -> SessionRequest {
+        try AlamofireRequest(parameters: parameters, urlString: urlString, method: method, timeout: timeout, retryPolicy: retryPolicy)
     }
 }
 
 public class SessionRequest {
-    init(parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval, retryPolicy: ProtonRetryPolicy.RetryMode = .userInitiated) {
+    init(parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval, retryPolicy: ProtonRetryPolicy.RetryMode = .userInitiated) throws {
         self.parameters = parameters
         self.method = method
         self.urlString = urlString

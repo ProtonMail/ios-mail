@@ -133,9 +133,9 @@ protocol PaymentsApiProtocol {
     /// Get the status of any vendor
     func paymentStatusRequest(api: APIService) -> PaymentStatusRequest
     func buySubscriptionRequest(
-        api: APIService, planId: String, amount: Int, amountDue: Int, cycle: Int, paymentAction: PaymentAction, isCreditingAllowed: Bool
+        api: APIService, plan: PlanToBeProcessed, amountDue: Int, paymentAction: PaymentAction, isCreditingAllowed: Bool
     ) throws -> SubscriptionRequest
-    func buySubscriptionForZeroRequest(api: APIService, planId: String) -> SubscriptionRequest
+    func buySubscriptionForZeroRequest(api: APIService, plan: PlanToBeProcessed) -> SubscriptionRequest
     /// Get current subscription
     func getSubscriptionRequest(api: APIService) -> GetSubscriptionRequest
     /// Get information about current organization
@@ -159,10 +159,10 @@ class PaymentsApiV4Implementation: PaymentsApiProtocol {
     }
 
     func buySubscriptionRequest(api: APIService,
-                                planId: String,
-                                amount: Int,
+                                plan: PlanToBeProcessed,
+
                                 amountDue: Int,
-                                cycle: Int,
+
                                 paymentAction: PaymentAction,
                                 isCreditingAllowed: Bool) throws -> SubscriptionRequest {
         guard Thread.isMainThread == false else {
@@ -170,22 +170,22 @@ class PaymentsApiV4Implementation: PaymentsApiProtocol {
             throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
         }
         guard isCreditingAllowed else { // dynamic plans case
-            return V4SubscriptionRequest(api: api, planId: planId, amount: amount, cycle: cycle, paymentAction: paymentAction)
+            return V4SubscriptionRequest(api: api, planId: plan.protonIdentifier, amount: plan.amount, cycle: plan.cycle, paymentAction: paymentAction)
         }
-        if amountDue == amount {
+        if amountDue == plan.amount {
             // if amountDue is equal to amount, request subscription
-            return V4SubscriptionRequest(api: api, planId: planId, amount: amount, cycle: cycle, paymentAction: paymentAction)
+            return V4SubscriptionRequest(api: api, planId: plan.protonIdentifier, amount: plan.amount, cycle: plan.cycle, paymentAction: paymentAction)
         } else {
             // if amountDue is not equal to amount, request credit for a full amount
-            let creditReq = creditRequest(api: api, amount: amount, paymentAction: paymentAction)
+            let creditReq = creditRequest(api: api, amount: plan.amount, paymentAction: paymentAction)
             _ = try creditReq.awaitResponse(responseObject: CreditResponse())
             // then request subscription for amountDue = 0
-            return V4SubscriptionRequest(api: api, planId: planId, amount: 0, cycle: cycle, paymentAction: paymentAction)
+            return V4SubscriptionRequest(api: api, planId: plan.protonIdentifier, amount: 0, cycle: plan.cycle, paymentAction: paymentAction)
         }
     }
 
-    func buySubscriptionForZeroRequest(api: APIService, planId: String) -> SubscriptionRequest {
-        V4SubscriptionRequest(api: api, planId: planId)
+    func buySubscriptionForZeroRequest(api: APIService, plan: PlanToBeProcessed) -> SubscriptionRequest {
+        V4SubscriptionRequest(api: api, planId: plan.protonIdentifier)
     }
 
     func getSubscriptionRequest(api: APIService) -> GetSubscriptionRequest {
@@ -273,28 +273,21 @@ class PaymentsApiV5Implementation: PaymentsApiProtocol {
         V5PaymentStatusRequest(api: api)
     }
 
-    func buySubscriptionRequest(api: ProtonCoreServices.APIService, planId: String, amount: Int, amountDue: Int, cycle: Int, paymentAction: PaymentAction, isCreditingAllowed: Bool) throws -> SubscriptionRequest {
+    func buySubscriptionRequest(api: ProtonCoreServices.APIService, plan: PlanToBeProcessed, amountDue: Int, paymentAction: PaymentAction, isCreditingAllowed: Bool) throws -> SubscriptionRequest {
         guard Thread.isMainThread == false else {
             assertionFailure("This is a blocking network request, should never be called from main thread")
             throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
         }
-        guard isCreditingAllowed else { // dynamic plans case
-            return V5SubscriptionRequest(api: api, planId: planId, amount: amount, cycle: cycle, paymentAction: paymentAction)
+        guard !isCreditingAllowed else { // static plans case
+            throw StoreKitManagerErrors.alreadyPurchasedPlanDoesNotMatchBackend
         }
-        if amountDue == amount {
-            // if amountDue is equal to amount, request subscription
-            return V5SubscriptionRequest(api: api, planId: planId, amount: amount, cycle: cycle, paymentAction: paymentAction)
-        } else {
-            // if amountDue is not equal to amount, request credit for a full amount
-            let creditReq = creditRequest(api: api, amount: amount, paymentAction: paymentAction)
-            _ = try creditReq.awaitResponse(responseObject: CreditResponse())
-            // then request subscription for amountDue = 0
-            return V5SubscriptionRequest(api: api, planId: planId, amount: 0, cycle: cycle, paymentAction: paymentAction)
-        }
+
+        return V5SubscriptionRequest(api: api, planName: plan.planName, amount: plan.amount, cycle: plan.cycle, paymentAction: paymentAction)
+
     }
 
-    func buySubscriptionForZeroRequest(api: ProtonCoreServices.APIService, planId: String) -> SubscriptionRequest {
-        V5SubscriptionRequest(api: api, planId: planId)
+    func buySubscriptionForZeroRequest(api: ProtonCoreServices.APIService, plan: PlanToBeProcessed) -> SubscriptionRequest {
+        V5SubscriptionRequest(api: api, planName: plan.planName)
     }
 
     func getSubscriptionRequest(api: ProtonCoreServices.APIService) -> GetSubscriptionRequest {

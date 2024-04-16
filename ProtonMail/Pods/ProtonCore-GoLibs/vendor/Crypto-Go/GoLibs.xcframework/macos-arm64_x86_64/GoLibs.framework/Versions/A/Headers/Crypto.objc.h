@@ -297,6 +297,11 @@ the given headers. Empty parameters are omitted from the headers.
  */
 - (nullable instancetype)init:(CryptoKey* _Nullable)key;
 /**
+ * NewKeyRingFromBinary creates a new keyring with all the keys contained in the unarmored binary data.
+Note that it accepts only unlocked or public keys, as KeyRing cannot contain locked keys.
+ */
+- (nullable instancetype)initFromBinary:(NSData* _Nullable)binKeys;
+/**
  * FirstKeyID as obtained from API to match salt
  */
 @property (nonatomic) NSString* _Nonnull firstKeyID;
@@ -518,6 +523,10 @@ the signature notation with name the name set in `constants.SignatureContextName
 - (BOOL)getVerifiedSignatureTimestampWithContext:(CryptoPlainMessage* _Nullable)message signature:(CryptoPGPSignature* _Nullable)signature verifyTime:(int64_t)verifyTime verificationContext:(CryptoVerificationContext* _Nullable)verificationContext ret0_:(int64_t* _Nullable)ret0_ error:(NSError* _Nullable* _Nullable)error;
 - (CryptoAttachmentProcessor* _Nullable)newLowMemoryAttachmentProcessor:(long)estimatedSize filename:(NSString* _Nullable)filename error:(NSError* _Nullable* _Nullable)error;
 - (CryptoManualAttachmentProcessor* _Nullable)newManualAttachmentProcessor:(long)estimatedSize filename:(NSString* _Nullable)filename dataBuffer:(NSData* _Nullable)dataBuffer error:(NSError* _Nullable* _Nullable)error;
+/**
+ * Serialize serializes a KeyRing to binary data.
+ */
+- (NSData* _Nullable)serialize:(NSError* _Nullable* _Nullable)error;
 /**
  * SignDetached generates and returns a PGPSignature for a given PlainMessage.
  */
@@ -886,6 +895,7 @@ or if the message hasn't been read entirely.
 
 - (nonnull instancetype)initWithRef:(_Nonnull id)ref;
 - (nullable instancetype)initFromToken:(NSData* _Nullable)token algo:(NSString* _Nullable)algo;
+@property (nonatomic) BOOL v6;
 /**
  * The decrypted binary session key.
  */
@@ -1183,6 +1193,12 @@ FOUNDATION_EXPORT CryptoKey* _Nullable CryptoNewKeyFromArmored(NSString* _Nullab
  * NewKeyRing creates a new KeyRing, empty if key is nil.
  */
 FOUNDATION_EXPORT CryptoKeyRing* _Nullable CryptoNewKeyRing(CryptoKey* _Nullable key, NSError* _Nullable* _Nullable error);
+
+/**
+ * NewKeyRingFromBinary creates a new keyring with all the keys contained in the unarmored binary data.
+Note that it accepts only unlocked or public keys, as KeyRing cannot contain locked keys.
+ */
+FOUNDATION_EXPORT CryptoKeyRing* _Nullable CryptoNewKeyRingFromBinary(NSData* _Nullable binKeys, NSError* _Nullable* _Nullable error);
 
 /**
  * NewPGPMessage generates a new PGPMessage from the unarmored binary data.

@@ -26,6 +26,41 @@ import UIKit
 
 public protocol ExternalLogProtocol {
     func capture(errorMessage: String, level: PMLog.LogLevel)
+
+    func breadcrumb(
+        message: String,
+        category: String,
+        level: PMLog.LogLevel,
+        type: SentryBreadcrumbType,
+        timestamp: Date,
+        data: [String: Any]?
+    )
+}
+
+extension ExternalLogProtocol {
+    public func breadcrumb(
+        message: String,
+        category: String = "",
+        level: PMLog.LogLevel = .info,
+        type: SentryBreadcrumbType = .empty,
+        data: [String: Any]? = nil
+    ) {
+        breadcrumb(
+            message: message,
+            category: category,
+            level: level,
+            type: type,
+            timestamp: Date(),
+            data: data
+        )
+    }
+}
+
+public enum SentryBreadcrumbType: String {
+    case http
+    case navigation
+    case empty
+    case user
 }
 
 public final class SentryCoreManager: ExternalLogProtocol {
@@ -73,6 +108,22 @@ public final class SentryCoreManager: ExternalLogProtocol {
             client: .init(options: options),
             andScope: scope
         )
+    }
+
+    public func breadcrumb(
+        message: String,
+        category: String = "",
+        level: PMLog.LogLevel = .info,
+        type: SentryBreadcrumbType = .empty,
+        timestamp: Date = Date(),
+        data: [String: Any]? = nil
+    ) {
+        let crumb = Breadcrumb(level: level.sentryLevel, category: category)
+        crumb.message = message
+        crumb.timestamp = timestamp
+        crumb.type = type.rawValue
+        crumb.data = data
+        hub.add(crumb)
     }
 
     public func capture(errorMessage: String, level: PMLog.LogLevel) {

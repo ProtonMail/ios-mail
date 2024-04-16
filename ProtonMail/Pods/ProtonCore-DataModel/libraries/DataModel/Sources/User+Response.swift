@@ -32,6 +32,11 @@ extension UserInfo {
             }
         }
         let subscribed = response["Subscribed"] as? UInt8
+        var lockedFlags: LockedFlags? = nil
+        if let lockedFlagsRes = response["LockedFlags"] as? Int8 {
+            lockedFlags = LockedFlags(rawValue: lockedFlagsRes)
+        }
+        
         self.init(
             maxSpace: response["MaxSpace"] as? Int64,
             maxBaseSpace: response["MaxBaseSpace"] as? Int64,
@@ -50,12 +55,15 @@ extension UserInfo {
             currency: response["Currency"] as? String,
             createTime: response["CreateTime"] as? Int64,
             subscribed: subscribed.map(User.Subscribed.init(rawValue:)),
-            accountRecovery: UserInfo.parse(accountRecovery: response["AccountRecovery"] as? [String: Any])
+            accountRecovery: UserInfo.parse(accountRecovery: response["AccountRecovery"] as? [String: Any]),
+            lockedFlags: lockedFlags
         )
     }
 
     // convenience function for parsing from [String: Any]?, needed by some clients
     private static func parse(accountRecovery: [String: Any]?) -> AccountRecovery? {
+        guard let accountRecovery else { return nil }
+
         guard JSONSerialization.isValidJSONObject(accountRecovery as Any) else {
             PMLog.error("Account Recovery state from /users response is not a valid JSON object", sendToExternal: true)
             return nil

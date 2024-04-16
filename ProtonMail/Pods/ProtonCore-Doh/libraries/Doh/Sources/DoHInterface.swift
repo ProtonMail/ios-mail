@@ -74,6 +74,7 @@ public protocol ServerConfig {
 
     /// the doh provider timeout  the default value is 5s
     var timeout: TimeInterval { get }
+    var proxyToken: String? { get }
 }
 
 public extension ServerConfig {
@@ -162,6 +163,7 @@ public protocol DoHInterface {
 
     func clearCache()
 
+    func getProxyToken() -> String?
     func getCurrentlyUsedHostUrl() -> String
     func getCaptchaHostUrl() -> String
     func getHumanVerificationV3Host() -> String
@@ -176,7 +178,7 @@ public protocol DoHInterface {
     func errorIndicatesDoHSolvableProblem(error: Error?) -> Bool
 
     func getSignUpString() -> String
-
+    var isCurrentlyUsingProxyDomain: Bool { get }
     var status: DoHStatus { get set }
 
     var currentlyUsedCookiesStorage: HTTPCookieStorage? { get }

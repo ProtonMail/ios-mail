@@ -51,8 +51,11 @@ class ObservabilityTimerImpl: ObservabilityTimer {
         }
         stop()
         isRunning = true
-        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
-            self?.tick()
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.timer = Timer.scheduledTimer(withTimeInterval: self.interval, repeats: true) { [weak self] _ in
+                self?.tick()
+            }
         }
     }
 

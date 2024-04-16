@@ -311,6 +311,10 @@ class UserManager: ObservableObject {
     func update(userInfo: UserInfo) {
         self.userInfo = userInfo
     }
+
+    func update(authCredential: AuthCredential) {
+        self.authCredential = authCredential
+    }
 }
 
 extension UserManager: UserManagerSaveAction {

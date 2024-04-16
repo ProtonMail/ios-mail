@@ -153,7 +153,7 @@ final class PurchaseManager: PurchaseManagerProtocol {
             amountDue = try fetchAmountDue(protonPlanName: planName, cycle: cycle)
             guard amountDue != .zero else {
                 // backend indicated that plan can be bought for free — no need to initiate the IAP flow
-                try buyPlanWhenAmountDueIsZero(plan: plan, planId: planId, finishCallback: finishCallback)
+                try buyPlanWhenAmountDueIsZero(plan: plan, finishCallback: finishCallback)
                 return
             }
         }
@@ -187,9 +187,10 @@ final class PurchaseManager: PurchaseManagerProtocol {
     }
 
     private func buyPlanWhenAmountDueIsZero(
-        plan: InAppPurchasePlan, planId: String, finishCallback: @escaping (PurchaseResult) -> Void
+        plan: InAppPurchasePlan, finishCallback: @escaping (PurchaseResult) -> Void
     ) throws {
-        let subscriptionRequest = paymentsApi.buySubscriptionForZeroRequest(api: apiService, planId: planId)
+        let processablePlan = try plan.processablePlan()
+        let subscriptionRequest = paymentsApi.buySubscriptionForZeroRequest(api: apiService, plan: processablePlan)
         let subscriptionResponse = try subscriptionRequest.awaitResponse(responseObject: SubscriptionResponse())
         if let newSubscription = subscriptionResponse.newSubscription {
             switch planService {

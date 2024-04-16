@@ -18,6 +18,7 @@
 #if os(iOS)
 import SwiftUI
 import ProtonCoreUIFoundations
+import ProtonCoreObservability
 
 public struct InsecureAccountRecoveryView: View {
 
@@ -85,7 +86,9 @@ public struct InsecureAccountRecoveryView: View {
         .frame(maxWidth: .infinity)
         .navigationTitle(ARTranslation.insecureViewTitle.l10n)
         .navigationBarTitleDisplayMode(.inline)
-
+        .onAppear() {
+            ObservabilityEnv.report(.accountRecoveryScreenView(screenID: .passwordChangeInfo))
+        }
     }
 
     var timeRemainingAndInstructionsL10nStringKey: LocalizedStringKey {

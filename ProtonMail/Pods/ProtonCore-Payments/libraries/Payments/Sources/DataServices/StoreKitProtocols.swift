@@ -156,6 +156,7 @@ public enum ProcessCompletionResult {
 
 struct PlanToBeProcessed {
     let protonIdentifier: String
+    let planName: String
     let amount: Int
     let amountDue: Int
     let cycle: Int
@@ -197,4 +198,20 @@ protocol ProcessDependencies: AnyObject {
 
 extension SKPaymentQueue: PaymentQueueProtocol {
 
+}
+
+extension InAppPurchasePlan {
+    // only needed for backwards compatibility to purchase 0 cost plans
+    func processablePlan() throws -> PlanToBeProcessed {
+        guard let storeKitProductId = self.storeKitProductId,
+              let period = self.period,
+              let cycle: Int = Int(period) else {
+            throw StoreKitManagerErrors.invalidPurchase
+        }
+        return .init(protonIdentifier: storeKitProductId,
+                     planName: self.protonName,
+                     amount: 0,
+                     amountDue: 0,
+                     cycle: cycle)
+    }
 }

@@ -1,0 +1,3 @@
+"Network connection error" = "Napaka omrežne povezave";
+
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Pri poskusu povezave s Proton API je bilo preverjanje potrdila TLS neuspešno. Vaša trenutna povezava z internetom je morda nadzorovana. Da bi zagotovili varnost vaših podatkov, aplikaciji preprečujemo dostop do Proton API.\nČe se želite prijaviti ali uporabljati vaš račun, preklopite na novo omrežje in se poskusite znova povezati.";

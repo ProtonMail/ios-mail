@@ -77,7 +77,7 @@ final class AccountKeySetupV1 {
 
         let verifierForKey = try authForKey.generateVerifier(2048)
 
-        let passwordAuth = PasswordAuth(modulusID: modulusId, salt: newSaltForKey.encodeBase64(), verifer: verifierForKey.encodeBase64())
+        let passwordAuth = PasswordAuth(modulusID: modulusId, salt: newSaltForKey.encodeBase64(), verifier: verifierForKey.encodeBase64())
 
         /*
          let address: [String: Any] = [

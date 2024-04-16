@@ -247,10 +247,10 @@ class UserDataService {
             do {
                 // generate new pwd and verifier
                 let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthAPI.Router.modulus))
-                guard let moduls_id = authModuls.ModulusID else {
+                guard let moduls_id = authModuls.modulusID else {
                     throw UpdatePasswordError.invalidModulusID.error
                 }
-                guard let new_moduls = authModuls.Modulus else {
+                guard let new_moduls = authModuls.modulus else {
                     throw UpdatePasswordError.invalidModulus.error
                 }
                 // generate new verifier
@@ -383,10 +383,10 @@ class UserDataService {
                 var authPacket: PasswordAuth?
                 if buildAuth {
                     let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthAPI.Router.modulus))
-                    guard let moduls_id = authModuls.ModulusID else {
+                    guard let moduls_id = authModuls.modulusID else {
                         throw UpdatePasswordError.invalidModulusID.error
                     }
-                    guard let new_moduls = authModuls.Modulus else {
+                    guard let new_moduls = authModuls.modulus else {
                         throw UpdatePasswordError.invalidModulus.error
                     }
                     // generate new verifier

@@ -6,7 +6,7 @@
 
 "Signed out of Proton Mail" = "Disconnesso da Proton Mail";
 
-"Sign out" = "Disconnetti";
+"Sign out" = "Esci dall'account";
 
 "Remove account from this device" = "Rimuovi l'account da questo dispositivo";
 
@@ -16,7 +16,7 @@
 
 "Remove" = "Rimuovi";
 
-"Are you sure you want to sign out %@?" = "Sei sicuro di voler disconnettere %@?";
+"Are you sure you want to sign out %@?" = "Sei sicuro di voler uscire dall'account %@?";
 
 "Dismiss account switcher" = "Ignora cambio account";
 

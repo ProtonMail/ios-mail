@@ -30,7 +30,7 @@
 
 "Enter your Proton Account details." = "Masukkan rincian Akun Proton Anda.";
 
-"Email or username" = "Surel atau nama pengguna";
+"Email or username" = "Email atau nama pengguna";
 
 "Sign in" = "Masuk";
 
@@ -54,7 +54,7 @@
 
 "Still need help? Contact us directly." = "Masih butuh bantuan lebih lanjut? Hubungi kami secara langsung.";
 
-"Please enter your Proton Account email or username." = "Silakan masukkan Akun surel Proton atau nama pengguna Anda.";
+"Please enter your Proton Account email or username." = "Silakan masukkan Akun email Proton atau nama pengguna Anda.";
 
 "Complete Setup" = "Selesaikan Persiapan";
 
@@ -68,7 +68,7 @@
 
 "Proton address required" = "Alamat Proton dibutuhkan";
 
-"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Anda butuh alamat surel Proton untuk menggunakan Proton Mail dan Proton Calendar.\nAnda akan tetap dapat menggunakan %@ untuk masuk dan memulihkan akun Anda.";
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Anda butuh alamat email Proton untuk menggunakan Proton Mail dan Proton Calendar.\nAnda akan tetap dapat menggunakan %@ untuk masuk dan memulihkan akun Anda.";
 
 "Username" = "Nama pengguna";
 
@@ -114,11 +114,11 @@
 
 "Next" = "Selanjutnya";
 
-"Use your current email instead" = "Gunakan surel Anda saat ini";
+"Use your current email instead" = "Gunakan email Anda saat ini";
 
 "Create a secure Proton Mail address instead" = "Buat alamat Proton Mail yang aman";
 
-"Email" = "Surel";
+"Email" = "Email";
 
 "Create your password" = "Buat kata sandi Anda";
 
@@ -132,13 +132,13 @@
 
 "Set recovery method (optional)" = "Atur metode pemulihan (opsional)";
 
-"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Kami akan mengirimkan instruksi pemulihan ke surel atau nomor telepon ini seandainya Anda terkunci dari akun Anda.";
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Kami akan mengirimkan instruksi pemulihan ke email atau nomor telepon ini seandainya Anda terkunci dari akun Anda.";
 
-"Email" = "Surel";
+"Email" = "Email";
 
 "Phone" = "Telepon";
 
-"Recovery email" = "Surel pemulihan";
+"Recovery email" = "Email pemulihan";
 
 "Recovery phone number" = "Nomor telepon pemulihan";
 
@@ -160,7 +160,7 @@
 
 "Creating your account" = "Membuat akun Anda";
 
-"Generating your address" = "Membuat alamat surel Anda";
+"Generating your address" = "Membuat alamat email Anda";
 
 "Securing your account" = "Mengamankan akun Anda";
 
@@ -190,13 +190,13 @@
 
 "Passwords do not match.\nPlease try again." = "Kata sandi tidak cocok. \nSilakan coba lagi.";
 
-"Email address already used." = "Alamat surel sudah digunakan.";
+"Email address already used." = "Alamat email sudah digunakan.";
 
 "Please ask your admin to configure your sub-user." = "Mohon minta admin Anda untuk menyesuaikan pengaturan sub-pengguna Anda.";
 
-"Would you like to receive a new verification code or use an alternate email address?" = "Apakah Anda ingin menerima kode verifikasi baru atau menggunakan alamat surel alternatif?";
+"Would you like to receive a new verification code or use an alternate email address?" = "Apakah Anda ingin menerima kode verifikasi baru atau menggunakan alamat email alternatif?";
 
-"Change email address" = "Ubah alamat surel";
+"Change email address" = "Ubah alamat email";
 
 "Congratulations" = "Selamat";
 

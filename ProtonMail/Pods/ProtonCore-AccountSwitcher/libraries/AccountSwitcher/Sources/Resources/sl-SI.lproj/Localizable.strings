@@ -1,0 +1,27 @@
+"switch to" = "preklopi na";
+
+"Manage accounts" = "Uredi račune";
+
+"Signed in to Proton Mail" = "Prijavljeni ste v Proton Mail";
+
+"Signed out of Proton Mail" = "Odjavljeni ste iz Proton Mail";
+
+"Sign out" = "Odjava";
+
+"Remove account from this device" = "Odstranite račun iz te naprave";
+
+"Remove account" = "Odstrani račun";
+
+"You will be signed out and all the data associated with this account will be removed from this device." = "Izpisali se boste in vsi podatki, povezani s tem računom, bodo odstranjeni iz te naprave.";
+
+"Remove" = "Odstrani";
+
+"Are you sure you want to sign out %@?" = "Ali ste prepričani, da se želite izpisati %@?";
+
+"Dismiss account switcher" = "Zavrni preklop računa";
+
+"Sign in to another account" = "Prijava v drug račun";
+
+"Cancel" = "Prekliči";
+
+"Sign in" = "Prijava";

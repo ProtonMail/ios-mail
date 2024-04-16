@@ -22,7 +22,7 @@
 import ProtonCoreNetworking
 
 public struct AccountRecoveryCancellationTotalLabels: Encodable, Equatable {
-    let status: HTTPResponseCodeStatus
+    let status: AcccountRecoveryCancellationHTTPResponseCodeStatus
 
     enum CodingKeys: String, CodingKey {
         case status
@@ -30,7 +30,7 @@ public struct AccountRecoveryCancellationTotalLabels: Encodable, Equatable {
 }
 
 extension ObservabilityEvent where Payload == PayloadWithLabels<AccountRecoveryCancellationTotalLabels> {
-    public static func accountRecoveryCancellationTotal(status: HTTPResponseCodeStatus) -> Self {
-        .init(name: "ios_core_accountRecovery_cancellation_total_v1", labels: .init(status: status))
+    public static func accountRecoveryCancellationTotal(status: AcccountRecoveryCancellationHTTPResponseCodeStatus) -> Self {
+        .init(name: "ios_core_accountRecovery_cancellation_total", labels: .init(status: status))
     }
 }

@@ -25,7 +25,6 @@ import ProtonCoreNetworking
 
 public protocol MissingScopesDelegate: AnyObject {
     func onMissingScopesHandling(
-        missingScopeMode: MissingScopeMode,
         username: String,
         responseHandlerData: PMResponseHandlerData,
         completion: @escaping (MissingScopesFinishReason) -> Void

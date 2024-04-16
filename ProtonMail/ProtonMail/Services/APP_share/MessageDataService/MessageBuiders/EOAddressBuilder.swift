@@ -63,10 +63,10 @@ class EOAddressBuilder: PackageBuilder {
             let authModuls: AuthModulusResponse = try `await`(
                 self.apiService.run(route: AuthAPI.Router.modulus)
             )
-            guard let modulsId = authModuls.ModulusID else {
+            guard let modulsId = authModuls.modulusID else {
                 throw UpdatePasswordError.invalidModulusID.error
             }
-            guard let newModuls = authModuls.Modulus else {
+            guard let newModuls = authModuls.modulus else {
                 throw UpdatePasswordError.invalidModulus.error
             }
 

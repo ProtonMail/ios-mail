@@ -23,8 +23,10 @@
 #if os(iOS)
 import Foundation
 import ProtonCoreDataModel
+import ProtonCoreObservability
 import ProtonCorePasswordRequest
 import UIKit
+import ProtonCoreUtilities
 
 public enum AccountRecoveryViewError: Error {
     case missingArguments
@@ -117,6 +119,9 @@ extension AccountRecoveryView {
         }
 
         public func userUnlocked() {
+            ObservabilityEnv.report(
+                .accountRecoveryCancellationTotal(status: .http200)
+            )
             isLoaded = false
             loadData()
         }
@@ -128,8 +133,17 @@ extension AccountRecoveryView {
         }
 
         public func didCloseWithError(code: Int, description: String) {
+            ObservabilityEnv.report(
+                .accountRecoveryCancellationTotal(status: .unknown)
+            )
             isLoaded = false
             loadData()
+        }
+
+        public func didShowWrongPassword() {
+            ObservabilityEnv.report(
+                .accountRecoveryCancellationTotal(status: .wrongPassword)
+            )
         }
     }
 }

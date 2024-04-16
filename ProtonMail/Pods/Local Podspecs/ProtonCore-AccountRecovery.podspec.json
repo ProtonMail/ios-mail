@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-AccountRecovery",
   "module_name": "ProtonCoreAccountRecovery",
-  "version": "20.0.0",
+  "version": "22.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "20.0.0"
+    "tag": "22.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -31,31 +31,31 @@
   },
   "dependencies": {
     "ProtonCore-FeatureFlags": [
-      "20.0.0"
+      "22.0.0"
     ],
     "ProtonCore-PushNotifications": [
-      "20.0.0"
+      "22.0.0"
     ],
     "ProtonCore-Services": [
-      "20.0.0"
+      "22.0.0"
     ],
     "ProtonCore-Authentication": [
-      "20.0.0"
+      "22.0.0"
     ],
     "ProtonCore-DataModel": [
-      "20.0.0"
+      "22.0.0"
     ],
     "ProtonCore-UIFoundations": [
-      "20.0.0"
+      "22.0.0"
     ],
     "ProtonCore-Networking": [
-      "20.0.0"
+      "22.0.0"
     ],
     "ProtonCore-PasswordRequest": [
-      "20.0.0"
+      "22.0.0"
     ],
     "ProtonCore-MissingScopes": [
-      "20.0.0"
+      "22.0.0"
     ]
   },
   "default_subspecs": [
@@ -73,7 +73,7 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit": [
-          "20.0.0"
+          "22.0.0"
         ],
         "ViewInspector": [
 
