@@ -30,6 +30,8 @@ struct MailboxActionBarView: View {
     }
     private let onTap: OnTapAction
 
+    @State private var showLabelPicker: Bool = false
+
     init(selectionMode: SelectionModeState, mailbox: SelectedMailbox, onTapAction: @escaping OnTapAction) {
         self.selectionMode = selectionMode
         self.mailbox = mailbox
@@ -52,6 +54,7 @@ struct MailboxActionBarView: View {
         .compositingGroup()
         .shadow(radius: 2)
         .tint(DS.Color.Text.norm)
+        .sheet(isPresented: $showLabelPicker, content: { labelPicker })
     }
 
     @ViewBuilder
@@ -63,13 +66,26 @@ struct MailboxActionBarView: View {
                 systemFolder: mailbox.systemFolder ?? .inbox
             ) {
             Button(action: {
-                onTap(action, selectionMode.selectedItems.map(\.id))
+                if case .labelAs = action {
+                    showLabelPicker.toggle()
+                } else {
+                    onTap(action, selectionMode.selectedItems.map(\.id))
+                }
             }, label: {
                 Image(uiImage: action.icon)
             })
         } else {
             EmptyView()
         }
+    }
+
+    private var labelPicker: some View {
+        LabelPickerView(labels: [
+            .init(id: 3, name: "Holidays", color: .pink)
+        ])
+        .safeAreaPadding(.top, DS.Spacing.extraLarge)
+        .presentationCornerRadius(24)
+        .presentationDetents([.medium, .large])
     }
 }
 

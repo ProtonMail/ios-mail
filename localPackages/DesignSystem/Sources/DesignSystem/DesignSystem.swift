@@ -10,4 +10,5 @@ extension DS {
     public enum Icon: Sendable {}
     public enum Font: Sendable {}
     public enum Spacing: Sendable {}
+    public enum Radius: Sendable {}
 }

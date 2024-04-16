@@ -10,8 +10,10 @@ import SwiftUI
 public extension DS.Icon {
     static let icArrowOutFromRectangle = icon(named: "ic-arrow-out-from-rectangle")
 
+    static let icBug = icon(named: "ic-bug")
     static let icCheckmark = icon(named: "ic-checkmark")
     static let icChevronLeft = icon(named: "ic-chevron-left")
+    static let icCircleFilled = icon(named: "ic-circle-filled")
     static let icClock = icon(named: "ic-clock")
     static let icCogWheel = icon(named: "ic-cog-wheel")
     static let icHamburguer = icon(named: "ic-hamburger")
@@ -21,11 +23,11 @@ public extension DS.Icon {
     static let icFire = icon(named: "ic-fire")
     static let icInbox = icon(named: "ic-inbox")
     static let icPaperPlane = icon(named: "ic-paper-plane")
+    static let icPlus = icon(named: "ic-plus")
     static let icStarFilled = icon(named: "ic-star-filled")
     static let icTrash = icon(named: "ic-trash")
     static let icTrashCross = icon(named: "ic-trash-cross")
 
-    static let icBug = icon(named: "ic-bug")
 }
 
 // MARK: mailbox item actions

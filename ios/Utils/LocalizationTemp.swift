@@ -23,6 +23,10 @@ enum LocalizationTemp {
 
     static let official = "Official"
 
+    enum Common {
+        static let done = "Done"
+    }
+
     enum Mailbox {
         static let allDraft = "All Draft"
         static let allMail = "All Mail"
@@ -61,6 +65,12 @@ enum LocalizationTemp {
     enum MailboxCell {
         static func expiresIn(value: String) -> String { String(format: "Expires in %@", value) }
         static func snoozedTill(value: String) -> String { String(format: "Snoozed till %@", value) }
+    }
+
+    enum LabelPicker {
+        static let title = "Labels"
+        static let alsoArchive = "Also archive?"
+        static let newLabel = "Create new label"
     }
 
     static let settings = "Settings"
