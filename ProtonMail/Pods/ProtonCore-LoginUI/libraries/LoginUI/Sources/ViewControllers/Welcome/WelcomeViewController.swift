@@ -24,6 +24,7 @@
 import UIKit
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
+import ProtonCoreTelemetry
 import func AVFoundation.AVMakeRect
 
 public typealias WelcomeScreenVariant = ScreenVariant<WelcomeScreenTexts, WelcomeScreenCustomData>
@@ -33,7 +34,12 @@ public protocol WelcomeViewControllerDelegate: AnyObject {
     func userWantsToSignUp()
 }
 
-public final class WelcomeViewController: UIViewController, AccessibleView {
+public final class WelcomeViewController: UIViewController, AccessibleView, ProductMetricsMeasurable {
+    public var productMetrics: ProductMetrics = .init(
+        group: TelemetryMeasurementGroup.signUp.rawValue,
+        flow: TelemetryFlow.signUpFull.rawValue,
+        screen: .welcome
+    )
 
     var layout: WelcomeViewLayout?
     private let variant: WelcomeScreenVariant
@@ -79,12 +85,19 @@ public final class WelcomeViewController: UIViewController, AccessibleView {
         generateAccessibilityIdentifiers()
     }
 
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        measureOnViewDisplayed()
+    }
+
     @objc private func loginActionWasPerformed() {
         delegate?.userWantsToLogIn(username: username)
+        measureOnViewClicked(item: "sign_in")
     }
 
     @objc private func signupActionWasPerformed() {
         delegate?.userWantsToSignUp()
+        measureOnViewClicked(item: "sign_up")
     }
 }
 

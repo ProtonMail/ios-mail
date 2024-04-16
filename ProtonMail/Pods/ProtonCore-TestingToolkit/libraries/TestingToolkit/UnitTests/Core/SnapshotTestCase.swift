@@ -63,6 +63,7 @@ open class SnapshotTestCase: XCTestCase {
 
     public func checkSnapshots<Content>(view: Content,
                                         perceptualPrecision: Float = 1,
+                                        name: String = #function,
                                         record: Bool = false,
                                         file: StaticString = #filePath,
                                         line: UInt = #line) where Content: View {

@@ -189,6 +189,7 @@ public final class UserInfo: NSObject, Codable {
     public var userId: String
     public var userKeys: [Key]
     public var weekStart: Int
+    public let lockedFlags: LockedFlags?
 
     public static func getDefault() -> UserInfo {
         return .init(maxSpace: 0, maxBaseSpace: 0, maxDriveSpace: 0, usedSpace: 0,
@@ -295,6 +296,7 @@ public final class UserInfo: NSObject, Codable {
         self.messageToolbarActions = messageToolbarActions ?? DefaultValue.messageToolbarActions
         self.listToolbarActions = listToolbarActions ?? DefaultValue.listToolbarActions
         self.referralProgram = referralProgram
+        self.lockedFlags = DefaultValue.lockedFlags
     }
 
     // init from api
@@ -315,7 +317,8 @@ public final class UserInfo: NSObject, Codable {
                          currency: String?,
                          createTime: Int64?,
                          subscribed: User.Subscribed?,
-                         accountRecovery: AccountRecovery? = nil) {
+                         accountRecovery: AccountRecovery? = nil,
+                         lockedFlags: LockedFlags? = nil) {
         self.accountRecovery = accountRecovery ?? DefaultValue.accountRecovery
         self.attachPublicKey = DefaultValue.attachPublicKey
         self.autoSaveContact = DefaultValue.autoSaveContact
@@ -359,6 +362,7 @@ public final class UserInfo: NSObject, Codable {
         self.userId = userId ?? DefaultValue.userId
         self.userKeys = keys ?? DefaultValue.userKeys
         self.weekStart = DefaultValue.weekStart
+        self.lockedFlags = lockedFlags ?? DefaultValue.lockedFlags
     }
 
     /// Update user addresses
@@ -445,6 +449,15 @@ extension UserInfo {
         }
         return addr.keys
     }
+}
+
+// MARK: LockedFlags
+public enum LockedFlags: Int8, Codable {
+    case mailStorageExceeded = 1
+    case driveStorageExceeded = 2
+    case storageExceeded = 3
+    case orgIssueForPrimaryAdmin = 4
+    case orgIssueForMember = 8
 }
 
 // MARK: Account Recovery
@@ -544,5 +557,6 @@ extension UserInfo {
         static let conversationToolbarActions: ToolbarActions = .init(isCustom: false, actions: [])
         static let messageToolbarActions: ToolbarActions = .init(isCustom: false, actions: [])
         static let listToolbarActions: ToolbarActions = .init(isCustom: false, actions: [])
+        static let lockedFlags: LockedFlags? = nil
     }
 }

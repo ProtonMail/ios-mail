@@ -24,11 +24,10 @@ import Foundation
 
 public private(set) var CryptoGo: CryptoGoMethods!
 
-public func inject(cryptoImplementation: CryptoGoMethods) {
-    guard CryptoGo == nil else {
+public func inject(cryptoImplementation: CryptoGoMethods, replaceExisting: Bool = false) {
+    guard CryptoGo == nil || replaceExisting else {
         // if the implementation is already injected, it's a no-op
         return
     }
     CryptoGo = cryptoImplementation
-
 }

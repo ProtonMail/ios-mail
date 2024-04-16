@@ -34,4 +34,5 @@ final class ProductionCalendar: DoH, VerificationModifiable {
     let apiHost: String = ProductionHosts.calendarAPI.dohHost
     let defaultPath: String = ""
     let signupDomain: String = "proton.me"
+    let proxyToken: String? = nil
 }

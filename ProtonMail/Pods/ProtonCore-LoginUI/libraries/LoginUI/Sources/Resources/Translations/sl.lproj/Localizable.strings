@@ -1,0 +1,217 @@
+"Privacy by default" = "Privzeta zasebnost";
+
+"Proton address required" = "Potreben je naslov Proton";
+
+"Update required" = "Zahtevana je posodobitev";
+
+"Please enter your Proton Account password." = "Vnesite geslo za vaš Proton račun.";
+
+"OK" = "V redu";
+
+"Help" = "Pomoč";
+
+"Continue" = "Nadaljuj";
+
+"Password" = "Geslo";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Strežniki Proton niso dosegljivi. Vzrok je lahko napačna konfiguracija omrežja, nedelovanje strežnikov Proton ali blokada strežnikov Proton";
+
+"Search country" = "Iskanje po državah";
+
+"Code sent to %@" = "Koda je bila poslana na naslov %@";
+
+"Request new code?" = "Zahtevaj novo kodo?";
+
+"Resend" = "Ponovno pošiljanje";
+
+"Get a replacement code sent to %@." = "Dobi nadomestno kodo, poslano %@.";
+
+"Request new code" = "Zahtevaj novo kodo";
+
+"Enter your Proton Account details." = "Vnesite podrobnosti o Proton računu.";
+
+"Email or username" = "E-pošta ali uporabniško ime";
+
+"Sign in" = "Prijava";
+
+"Sign in with password" = "Prijava z geslom";
+
+"Sign in with SSO" = "Prijava s SSO";
+
+"Sign in to your organization" = "Prijavite se v svojo organizacijo";
+
+"Create an account" = "Ustvarite račun";
+
+"How can we help?" = "Kako lahko pomagamo?";
+
+"Forgot username" = "Pozabljeno uporabniško ime";
+
+"Forgot password" = "Pozabljeno geslo";
+
+"Other sign-in issues" = "Druge težave z vpisom";
+
+"Customer support" = "Podpora strankam";
+
+"Still need help? Contact us directly." = "Še vedno potrebuješ pomoč? Kontaktirajte nas neposredno.";
+
+"Please enter your Proton Account email or username." = "Vnesite e-poštni naslov ali uporabniško ime za vaš Proton račun.";
+
+"Complete Setup" = "Dokončaj nastavitve";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Vašemu računu manjkajo ključi. Prijavite se preko spleta in samodejno se bodo ustvarili novi ključi. Nato se vrnite v aplikacijo in znova poskusite s prijavo.";
+
+"Account setup required" = "Potrebna je nastavitev računa";
+
+"Incorrect mailbox password" = "Neveljavno geslo e-poštnega nabiralnika";
+
+"Your session has expired. Please log in again." = "Vaša seja se je iztekla. Ponovno se prijavite.";
+
+"Proton address required" = "Potreben je naslov Proton";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Za uporabo storitev Proton Mail in Proton Calendar potrebujete naslov Proton.\nZa prijavo in obnovitev računa lahko še vedno uporabljate naslov %@.";
+
+"Username" = "Uporabniško ime";
+
+"Please enter a username." = "Vnesite uporabniško ime.";
+
+"Unlock your mailbox" = "Odklepanje nabiralnika";
+
+"Mailbox password" = "Geslo e-poštnega nabiralnika";
+
+"Unlock" = "Odkleni";
+
+"Forgot password" = "Pozabljeno geslo";
+
+"Two-factor authentication" = "Dvojno preverjanja pristnosti";
+
+"Authenticate" = "Preverjanje pristnosti";
+
+"Two-factor code" = "Geslo za dvojno preverjanje pristnosti";
+
+"Recovery code" = "Koda za obnovitev";
+
+"Use recovery code" = "Uporabite kode za obnovitev";
+
+"Use two-factor code" = "Uporabite kodo za dvostopenjsko preverjanje";
+
+"Enter the 6-digit code." = "Vnesite 6-mestno kodo.";
+
+"Enter an 8-character recovery code." = "Vnesite 8-mestno kodo za obnovitev.";
+
+"Learn more" = "Več o tem";
+
+"Change your password" = "Spremenite vaše geslo";
+
+"Change password" = "Spremeni geslo";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Če želite aplikacijo Proton uporabljati kot član organizacije, se z brskalnikom naprej prijavite v Proton na spletu in spremenite geslo.";
+
+"Error occured" = "Prišlo je do napake";
+
+"Create your Proton Account" = "Ustvarite vaš Proton račun";
+
+"One account for all Proton services." = "En račun za vse storitve Proton.";
+
+"Next" = "Naprej";
+
+"Use your current email instead" = "Namesto tega uporabite vaš trenutni e-poštni naslov";
+
+"Create a secure Proton Mail address instead" = "Namesto tega ustvarite varen Proton Mail naslov";
+
+"Email" = "E-pošta";
+
+"Create your password" = "Ustvarite geslo";
+
+"Password must contain at least 8 characters" = "Geslo mora vsebovati vsaj osem znakov";
+
+"Repeat password" = "Ponovi geslo";
+
+"Domain" = "Domena";
+
+"Set recovery method" = "Nastavitev načina obnovitve";
+
+"Set recovery method (optional)" = "Nastavitev načina obnovitve (neobvezno)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Na ta e-poštni naslov ali telefonsko številko vam bomo poslali navodila za obnovitev, če bo vaš račun zaklenjen.";
+
+"Email" = "E-pošta";
+
+"Phone" = "Telefon";
+
+"Recovery email" = "E-poštni naslov za obnovitev";
+
+"Recovery phone number" = "Telefonska številka za obnovitev";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "S klikom na Naprej potrjujete, da se strinjate s Proton pravili in pogoji";
+
+"Terms and Conditions" = "Pravila in pogoji";
+
+"Skip" = "Preskoči";
+
+"Skip recovery method?" = "Preskoči metodo obnovitve?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Način obnovitve vam pomaga pri dostopu do računa, če pozabite geslo ali če je vaš račun zaklenjen.";
+
+"Set recovery method" = "Nastavitev načina obnovitve";
+
+"Your account is being created" = "Vaš račun se ustvarja";
+
+"This should take no more than a minute." = "To ne bo trajalo več kot minuto.";
+
+"Creating your account" = "Ustvarjanje vašega računa";
+
+"Generating your address" = "Pridobivanje vašega naslova";
+
+"Securing your account" = "Vaš račun je zaščiten";
+
+"Verifying your payment" = "Preverjanje vašega plačila";
+
+"Account verification" = "Preverjanje računa";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Zaradi vaše varnosti moramo preveriti, ali vneseni naslov pripada vam. Na naslov %@ smo poslali kodo za preverjanje. Prosimo, vnesite kodo:";
+
+"Verification code" = "Koda za preverjanje";
+
+"Enter the 6-digit code." = "Vnesite 6-mestno kodo.";
+
+"Did not receive a code?" = "Niste prejeli kode?";
+
+"Terms and Conditions" = "Pravila in pogoji";
+
+"Invalid token request" = "Neveljavna zahteva žetona";
+
+"Invalid token error" = "Neveljavna napaka žetona";
+
+"Create user failed" = "Ustvarjanje uporabnika ni uspelo";
+
+"Invalid hashed password" = "Neveljavno zgoščeno geslo";
+
+"Password can not be empty.\nPlease try again." = "Geslo ne sme biti prazno.\nPoskusite znova.";
+
+"Passwords do not match.\nPlease try again." = "Gesla niso enaka.\nProsimo, poskusite znova.";
+
+"Email address already used." = "E-poštni naslov je že zaseden.";
+
+"Please ask your admin to configure your sub-user." = "Prosite vašega skrbnika, naj nastavi souporabnike.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Želite prejeti novo kodo za preverjanje ali uporabiti drug e-poštni naslov?";
+
+"Change email address" = "Sprememba e-poštnega naslova";
+
+"Congratulations" = "Čestitamo";
+
+"Your Proton Free account was successfully created." = "Vaš račun Proton Free je bil uspešno ustvarjen.";
+
+"Proton Free" = "Brezplačen Proton";
+
+"Your payment was confirmed and your %@ account successfully created." = "Plačilo je bilo potrjeno in vaš %@ račun je bil uspešno ustvarjen.";
+
+"Your Proton account was successfully created." = "Vaš račun Proton je bil uspešno ustvarjen.";
+
+"Enjoy the world of privacy." = "Uživajte v zasebnosti.";
+
+"Cancel" = "Prekliči";
+
+"Sign in" = "Prijava";
+
+"Troubleshoot" = "Odpravljanje težave";

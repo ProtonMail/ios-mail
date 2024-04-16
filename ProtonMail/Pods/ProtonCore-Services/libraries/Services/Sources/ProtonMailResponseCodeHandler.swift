@@ -31,17 +31,16 @@ class ProtonMailResponseCodeHandler {
         completion: PMAPIService.APIResponseCompletion<T>,
         humanVerificationHandler: (PMResponseHandlerData, PMAPIService.APIResponseCompletion<T>, JSONDictionary) -> Void,
         deviceVerificationHandler: (PMResponseHandlerData, PMAPIService.APIResponseCompletion<T>, JSONDictionary) -> Void,
-        missingScopesHandler: (MissingScopeMode, String, PMResponseHandlerData, PMAPIService.APIResponseCompletion<T>) -> Void,
+        missingScopesHandler: (String, PMResponseHandlerData, PMAPIService.APIResponseCompletion<T>) -> Void,
         forceUpgradeHandler: (String?) -> Void) where T: APIDecodableResponse {
         if responseCode == APIErrorCode.humanVerificationRequired {
             // human verification required
             humanVerificationHandler(responseHandlerData, completion, response.responseDictionary)
         } else if responseCode == APIErrorCode.deviceVerificationRequired {
             deviceVerificationHandler(responseHandlerData, completion, response.responseDictionary)
-        } else if isMissingScopeError(response: response), let authCredential = responseHandlerData.customAuthCredential {
-            let isAccountRecovery = responseHandlerData.path == "/account/v1/recovery/session/abort"
+        } else if responseCode == APIErrorCode.lockedScopeRequired,
+                    let authCredential = responseHandlerData.customAuthCredential {
             missingScopesHandler(
-                isAccountRecovery ? .accountRecovery : .default,
                 authCredential.userName,
                 responseHandlerData,
                 completion
@@ -55,17 +54,5 @@ class ProtonMailResponseCodeHandler {
             case .right(let responseError): completion.call(task: responseHandlerData.task, error: responseError as NSError)
             }
         }
-    }
-
-    private func isMissingScopeError(response: Either<JSONDictionary, ResponseError>) -> Bool {
-        if case let .right(error) = response, case .missingScopes = error.details {
-            return true
-        }
-
-        if case let .left(error) = response, case .missingScopes = error.details {
-            return true
-        }
-
-        return false
     }
 }

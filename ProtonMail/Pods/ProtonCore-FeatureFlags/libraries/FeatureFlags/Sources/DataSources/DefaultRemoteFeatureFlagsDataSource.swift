@@ -22,6 +22,7 @@
 
 import ProtonCoreNetworking
 import ProtonCoreServices
+import ProtonCoreUtilities
 
 struct FeatureFlagRequest: Request {
     var path: String {
@@ -57,11 +58,18 @@ public class DefaultRemoteFeatureFlagsDataSource: RemoteFeatureFlagsDataSourcePr
     }
 }
 
+public enum FeatureFlagsEnvironment {
+    public static var networkCompletionExecutor: CompletionBlockExecutor = .asyncMainExecutor
+}
+
 private extension APIService {
     /// Async variant that can take an `Endpoint`
     func exec<T: Decodable>(endpoint: Request) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
-            perform(request: endpoint) { _, result in
+            perform(
+                request: endpoint,
+                callCompletionBlockUsing: FeatureFlagsEnvironment.networkCompletionExecutor
+            ) { _, result in
                 continuation.resume(with: result)
             }
         }

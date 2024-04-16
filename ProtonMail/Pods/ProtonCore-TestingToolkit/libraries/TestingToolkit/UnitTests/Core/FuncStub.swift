@@ -53,16 +53,46 @@ public final class StubbedFunction<Input, Output, A1, A2, A3, A4, A5, A6, A7, A8
     public var ensureWasCalled = false
     public var failOnBeingCalledUnexpectedly = false
 
-    private lazy var implementation: (UInt, Input) -> Output = { [unowned self] _, input in
-        guard let initialReturn = initialReturn else {
-            XCTFail("initial return was not provided: \(self.description)")
-            fatalError()
+    private let lazyInitializationQueue = DispatchQueue(label: "ch.proton.testing.funcstub.\(UUID())", attributes: .concurrent)
+
+    private var _implementation: ((UInt, Input) -> Output)?
+
+    private var implementation: (UInt, Input) -> Output {
+        get {
+            // First, check the value without getting exclusive access to the queue.
+            if let already = lazyInitializationQueue.sync(execute: { _implementation }) {
+                return already
+            }
+
+            // If we still weren't able to get a value, upgrade to exclusive access.
+            return lazyInitializationQueue.sync(flags: .barrier) {
+                // In case another thread was able to get here during the race window, do another check.
+                if let _implementation {
+                    return _implementation
+                }
+
+                // Provide a default value if none is set.
+                let closure: (UInt, Input) -> Output = { [unowned self] _, input in
+                    guard let initialReturn = initialReturn else {
+                        XCTFail("initial return was not provided: \(self.description)")
+                        fatalError()
+                    }
+                    if self.failOnBeingCalledUnexpectedly {
+                        XCTFail("this method should not be called but was: \(self.description)")
+                        return try! initialReturn.closure(input)
+                    }
+                    return try! initialReturn.closure(input)
+                }
+
+                _implementation = closure
+                return closure
+            }
         }
-        if self.failOnBeingCalledUnexpectedly {
-            XCTFail("this method should not be called but was: \(self.description)")
-            return try! initialReturn.closure(input)
+        set {
+            lazyInitializationQueue.sync(flags: .barrier) {
+                _implementation = newValue
+            }
         }
-        return try! initialReturn.closure(input)
     }
 
     private var initialReturn: InitialReturn<Input, Output>?

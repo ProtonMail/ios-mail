@@ -58,6 +58,10 @@ class HumanVerifyViewModel {
     // the order matters, methods below assume it's kept
     let schemeMapping = [("coreioss", "https"), ("coreios", "http")]
 
+    var isCurrentlyUsingProxyDomain: Bool {
+        apiService.dohInterface.isCurrentlyUsingProxyDomain
+    }
+
     // MARK: - Public properties and methods
 
     init(api: APIService, startToken: String?, methods: [VerifyMethod]?, clientApp: ClientApp) {

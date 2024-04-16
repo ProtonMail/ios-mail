@@ -31,6 +31,11 @@ public protocol PMTextFieldComboDelegate: AnyObject {
     func didEndEditing(textField: PMTextFieldCombo)
 
     /**
+     Tells the delegate that editing started for the specified text field.
+     */
+    func didBeginEditing(textField: PMTextFieldCombo)
+
+    /**
      Tells the delegate the value changed for the specific text field
      */
     func didChangeValue(_ textField: PMTextFieldCombo, value: String)
@@ -313,6 +318,7 @@ extension PMTextFieldCombo: UITextFieldDelegate {
 
     public func textFieldDidBeginEditing(_ textField: UITextField) {
         self.textField.setBorder()
+        delegate?.didBeginEditing(textField: self)
     }
 
     public func textFieldDidEndEditing(_ textField: UITextField) {

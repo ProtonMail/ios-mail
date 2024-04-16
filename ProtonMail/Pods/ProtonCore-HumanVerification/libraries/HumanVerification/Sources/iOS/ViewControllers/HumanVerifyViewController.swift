@@ -30,6 +30,7 @@ import ProtonCoreObservability
 import ProtonCoreServices
 import ProtonCoreUIFoundations
 import ProtonCoreUtilities
+import ProtonCoreTelemetry
 
 protocol HumanVerifyViewControllerDelegate: AnyObject {
     func didDismissViewController()
@@ -40,7 +41,19 @@ protocol HumanVerifyViewControllerDelegate: AnyObject {
     func emailAddressAlreadyTakenWithError(code: Int, description: String)
 }
 
-final class HumanVerifyViewController: UIViewController, AccessibleView {
+final class HumanVerifyViewController: UIViewController, AccessibleView, ProductMetricsMeasurable {
+    var productMetrics: ProductMetrics = .init(
+        group: TelemetryMeasurementGroup.signUp.rawValue,
+        flow: TelemetryFlow.signUpFull.rawValue,
+        screen: .hv
+    )
+
+    enum MeasureConstants {
+        static let resultFailure = "failure"
+        static let resultSuccess = "success"
+        static let hostAlternative = "alternative"
+        static let hostStandard = "standard"
+    }
 
     // MARK: Outlets
 
@@ -69,6 +82,7 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
     var presentsBannerInsteadOfWebView = false
     var dispatchQueue: CompletionBlockExecutor = .asyncMainExecutor
     private var webViewInterfaceStyle: UIUserInterfaceStyle = .unspecified
+    private var firstLoad = true
 
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
@@ -104,10 +118,12 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
     @IBAction func closeAction(_ sender: Any) {
         ObservabilityEnv.report(.humanVerificationOutcomeTotal(status: .canceled))
         delegate?.didDismissViewController()
+        measureOnViewClosed()
     }
 
     @IBAction func helpAction(_ sender: Any) {
         delegate?.didShowHelpViewController()
+        measureOnViewClicked(item: "help")
     }
 
     // MARK: Private interface
@@ -161,6 +177,7 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
         URLCache.shared.removeAllCachedResponses()
         let requestObj = viewModel.getURLRequest
         lastLoadingURL = requestObj.url?.absoluteString
+        firstLoad = true
         webView.load(requestObj)
     }
 
@@ -239,6 +256,13 @@ extension HumanVerifyViewController: WKNavigationDelegate {
 
     private func handleFailedRequest(_ error: Error) {
         ObservabilityEnv.report(.humanVerificationScreenLoadTotal(status: .failed))
+        measureOnViewAction(
+            action: .displayed,
+            additionalDimensions: [
+                .result(MeasureConstants.resultFailure),
+                .hostType(viewModel.isCurrentlyUsingProxyDomain ? MeasureConstants.hostAlternative : MeasureConstants.hostStandard)
+            ]
+        )
         guard let loadingUrl = lastLoadingURL else { return }
         viewModel.shouldRetryFailedLoading(host: loadingUrl, error: error) { [weak self] in
             if $0 {
@@ -258,6 +282,19 @@ extension HumanVerifyViewController: WKNavigationDelegate {
             trustKit: PMAPIService.trustKit,
             challengeCompletionHandler: completionHandler
         )
+    }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        if firstLoad {
+            firstLoad = false
+            measureOnViewAction(
+                action: .displayed,
+                additionalDimensions: [
+                    .result(MeasureConstants.resultSuccess),
+                    .hostType(viewModel.isCurrentlyUsingProxyDomain ? MeasureConstants.hostAlternative : MeasureConstants.hostStandard)
+                ]
+            )
+        }
     }
 }
 
@@ -311,6 +348,7 @@ extension HumanVerifyViewController: WKScriptMessageHandler {
                     ObservabilityEnv.report(.humanVerificationOutcomeTotal(status: .failed))
                     self?.presentErrorWithoutWebView(message: error.localizedDescription)
                 }
+                self?.measureOnViewAction(action: .verify, additionalDimensions: [.result(MeasureConstants.resultFailure)])
             }
         }, completeHandler: { [weak self] method in
             let delay: DispatchTimeInterval = method.predefinedMethod == .captcha ? .seconds(1) : .seconds(0)
@@ -318,6 +356,7 @@ extension HumanVerifyViewController: WKScriptMessageHandler {
             self?.dispatchQueue.execute(after: delay) { [weak self] in
                 self?.delegate?.didFinishViewController()
             }
+            self?.measureOnViewAction(action: .verify, additionalDimensions: [.result(MeasureConstants.resultSuccess)])
         })
     }
 }

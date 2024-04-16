@@ -30,8 +30,8 @@ public final class MissingScopesDelegateMock: MissingScopesDelegate {
     public init() {}
 
     @FuncStub(MissingScopesDelegateMock.onMissingScopesHandling) public var onMissingScopesHandlingStub
-    public func onMissingScopesHandling(missingScopeMode: MissingScopeMode, username: String, responseHandlerData: PMResponseHandlerData, completion: @escaping (MissingScopesFinishReason) -> Void) {
-        onMissingScopesHandlingStub(missingScopeMode, username, responseHandlerData, completion)
+    public func onMissingScopesHandling(username: String, responseHandlerData: PMResponseHandlerData, completion: @escaping (MissingScopesFinishReason) -> Void) {
+        onMissingScopesHandlingStub(username, responseHandlerData, completion)
     }
 
     @FuncStub(MissingScopesDelegateMock.showAlert) public var showAlert

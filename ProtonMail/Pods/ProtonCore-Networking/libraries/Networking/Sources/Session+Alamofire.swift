@@ -78,8 +78,8 @@ public class AlamofireSession: Session {
         }
     }
 
-    public func generate(with method: HTTPMethod, urlString: String, parameters: Any? = nil, timeout: TimeInterval? = nil, retryPolicy: ProtonRetryPolicy.RetryMode) -> SessionRequest {
-        return AlamofireRequest.init(parameters: parameters, urlString: urlString, method: method, timeout: timeout ?? defaultTimeout, retryPolicy: retryPolicy)
+    public func generate(with method: HTTPMethod, urlString: String, parameters: Any? = nil, timeout: TimeInterval? = nil, retryPolicy: ProtonRetryPolicy.RetryMode) throws -> SessionRequest {
+        try AlamofireRequest.init(parameters: parameters, urlString: urlString, method: method, timeout: timeout ?? defaultTimeout, retryPolicy: retryPolicy)
     }
 
     public func failsTLS(request: SessionRequest) -> String? {
@@ -511,11 +511,9 @@ class AlamofireRequest: SessionRequest, URLRequestConvertible {
         }
     }
 
-    override init(parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval, retryPolicy: ProtonRetryPolicy.RetryMode) {
-        // super.init(parameters: parameters, urlString: urlString, method: method, timeout: 1, retryPolicy: retryPolicy)
-        super.init(parameters: parameters, urlString: urlString, method: method, timeout: timeout, retryPolicy: retryPolicy)
-        // TODO: this url need to add a validation and throws
-        let url = URL.init(string: urlString)!
+    override init(parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval, retryPolicy: ProtonRetryPolicy.RetryMode) throws {
+        try super.init(parameters: parameters, urlString: urlString, method: method, timeout: timeout, retryPolicy: retryPolicy)
+        let url = try urlString.asURL()
         self.request = URLRequest(url: url)
         self.request?.timeoutInterval = timeout
         self.request?.httpMethod = self.method.rawValue

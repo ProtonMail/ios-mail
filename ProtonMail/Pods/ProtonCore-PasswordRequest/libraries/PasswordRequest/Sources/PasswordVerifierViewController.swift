@@ -24,6 +24,7 @@
 
 import UIKit
 import ProtonCoreServices
+import ProtonCoreObservability
 import ProtonCoreNetworking
 import ProtonCoreUIFoundations
 
@@ -31,6 +32,7 @@ public protocol PasswordVerifierViewControllerDelegate: AnyObject {
     func userUnlocked()
     func didCloseVerifyPassword()
     func didCloseWithError(code: Int, description: String)
+    func didShowWrongPassword() // but was not dismissed
 }
 
 public final class PasswordVerifierViewController: UIViewController {
@@ -42,6 +44,9 @@ public final class PasswordVerifierViewController: UIViewController {
 
     public var viewModel: PasswordVerifier?
     public weak var delegate: PasswordVerifierViewControllerDelegate?
+    private var isAccountRecoveryMode: Bool {
+        viewModel?.missingScopeMode == .accountRecovery
+    }
 
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +57,9 @@ public final class PasswordVerifierViewController: UIViewController {
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         _ = passwordTextField.becomeFirstResponder()
+        if isAccountRecoveryMode {
+            ObservabilityEnv.report(.accountRecoveryScreenView(screenID: .cancelResetPassword))
+        }
     }
 
     private func setupUI() {
@@ -71,7 +79,7 @@ public final class PasswordVerifierViewController: UIViewController {
         passwordTextField.isPassword = true
         passwordTextField.textContentType = .password
 
-        setTitles(isAccountRecoveryEnabled: viewModel?.missingScopeMode == .accountRecovery)
+        setTitles()
 
         view.backgroundColor = ColorProvider.BackgroundNorm
         view.addSubview(scrollView)
@@ -133,8 +141,8 @@ public final class PasswordVerifierViewController: UIViewController {
         }
     }
 
-    private func setTitles(isAccountRecoveryEnabled: Bool) {
-        if isAccountRecoveryEnabled {
+    private func setTitles() {
+        if isAccountRecoveryMode {
             titleLabel.text = NSLocalizedString("Cancel password reset?", comment: "")
             submitButton.setTitle(NSLocalizedString("Cancel password reset", comment: "Button cancelling the password request"), for: .normal)
             headerLabel.text = NSLocalizedString("Enter your current password to cancel the password reset process. No other changes will take effect.", comment: "")
@@ -203,6 +211,7 @@ public final class PasswordVerifierViewController: UIViewController {
         case .wrongPassword:
             passwordTextField.isError = true
             passwordTextField.errorMessage = PRTranslations.validation_invalid_password.l10n
+            delegate?.didShowWrongPassword()
         default:
             dismiss(
                 animated: true,

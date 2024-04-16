@@ -81,6 +81,7 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
     // MARK: - Properties
 
     func configurePlan(plan: PlanPresentation) {
+        progressBarsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         planDetailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         guard case PlanPresentationType.current(let planDetails) = plan.planPresentationType else { return }
         switch planDetails {
@@ -158,6 +159,7 @@ final class CurrentPlanCell: UITableViewCell, AccessibleCell {
 
 extension CurrentPlanCell {
     func configurePlan(currentPlan: CurrentPlanPresentation) {
+        progressBarsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         planDetailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         generateCellAccessibilityIdentifiers(currentPlan.details.title)
 

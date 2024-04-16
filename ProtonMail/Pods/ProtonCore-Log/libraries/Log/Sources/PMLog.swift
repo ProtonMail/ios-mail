@@ -97,6 +97,13 @@ public class PMLog {
         self.error(error.localizedDescription, file: file, function: function, line: line, column: column)
     }
 
+    public static func signpost(_ message: String, category: String = "default", level: LogLevel = .info, type: SentryBreadcrumbType = .empty, data: [String: Any]? = nil, sendToExternal: Bool = false) {
+        printToConsole("SIGNPOST: \(category) \(level) \(type): \(message) \(data ?? [:])")
+        if sendToExternal {
+            sendExternalSignpost(level: level, message: message, category: category, type: type, data: data)
+        }
+    }
+
     public static func printToConsole(_ text: String) {
         #if DEBUG_CORE_INTERNALS
         print(text)
@@ -114,7 +121,8 @@ public class PMLog {
         printToConsole(log)
         callback?(message, level)
         if sendToExternal {
-            sendExternalLog(level: level, log: log)
+            let externalLogMessage = "\(message) - \((file as NSString).lastPathComponent) : \(function) : Line: \(line) : Col: \(column)"
+            sendExternalLog(level: level, log: externalLogMessage)
         }
 
         guard let logUrl = logFile else { return }
@@ -176,9 +184,29 @@ public class PMLog {
         }
     }
 
-    private static var isRunningTests: Bool {
-        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+    private static func sendExternalSignpost(
+        level: LogLevel,
+        message: String,
+        category: String,
+        type: SentryBreadcrumbType,
+        data: [String: Any]?
+    ) {
+        guard !isRunningTests else { return }
+        guard let externalLog else {
+            assertionFailure("ProtonCore logger not initialized. Please use PMLog.setEnvironment(...) in the ProtonCore initialization.")
+            return
+        }
+
+        externalLog.breadcrumb(
+            message: message,
+            category: category,
+            level: level,
+            type: type,
+            data: data
+        )
     }
+
+    private static let isRunningTests = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
 }
 
 // swiftlint:enable no_print

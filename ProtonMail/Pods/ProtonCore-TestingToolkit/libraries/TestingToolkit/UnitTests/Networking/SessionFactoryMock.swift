@@ -32,8 +32,8 @@ public final class SessionFactoryMock: SessionFactoryInterface {
     @FuncStub(SessionFactoryMock.createSessionInstance, initialReturn: .crash) public var createSessionInstanceStub
     public func createSessionInstance(url apiHostUrl: String) -> Session { createSessionInstanceStub(apiHostUrl) }
 
-    @FuncStub(SessionFactoryMock.createSessionRequest, initialReturn: .crash) public var createSessionRequestStub
-    public func createSessionRequest(parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval, retryPolicy: ProtonRetryPolicy.RetryMode) -> SessionRequest {
-        createSessionRequestStub(parameters, urlString, method, timeout, retryPolicy)
+    @ThrowingFuncStub(SessionFactoryMock.createSessionRequest, initialReturn: .crash) public var createSessionRequestStub
+    public func createSessionRequest(parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval, retryPolicy: ProtonRetryPolicy.RetryMode) throws -> SessionRequest {
+        try createSessionRequestStub(parameters, urlString, method, timeout, retryPolicy)
     }
 }

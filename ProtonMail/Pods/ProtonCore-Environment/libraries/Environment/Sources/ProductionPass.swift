@@ -34,4 +34,5 @@ final class ProductionPass: DoH, VerificationModifiable {
     let apiHost: String = ProductionHosts.passAPI.dohHost
     let defaultPath: String = ""
     let signupDomain: String = "proton.me"
+    let proxyToken: String? = nil
 }

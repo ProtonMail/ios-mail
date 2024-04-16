@@ -22,6 +22,7 @@
 #if os(iOS)
 import SwiftUI
 import ProtonCoreUIFoundations
+import ProtonCoreObservability
 
 public struct CancelledAccountRecoveryView: View {
 
@@ -65,6 +66,9 @@ public struct CancelledAccountRecoveryView: View {
         .frame(maxHeight: .infinity)
         .navigationTitle(ARTranslation.cancelledViewTitle.l10n)
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear() {
+            ObservabilityEnv.report(.accountRecoveryScreenView(screenID: .recoveryCancelledInfo))
+        }
     }
 
     var changePasswordAdviceL10nStrongKey: LocalizedStringKey {

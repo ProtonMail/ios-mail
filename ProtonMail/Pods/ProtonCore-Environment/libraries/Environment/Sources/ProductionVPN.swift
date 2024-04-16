@@ -34,4 +34,5 @@ final class ProductionVPN: DoH, VerificationModifiable {
     let apiHost: String = ProductionHosts.legacyProtonVPNAPI.dohHost
     let defaultPath: String = ""
     let signupDomain: String = "proton.me"
+    let proxyToken: String? = nil
 }

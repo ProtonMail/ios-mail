@@ -41,6 +41,7 @@ extension Result {
 // MARK: - Performing the network request
 
 extension PMAPIService {
+    public static var reportInvalidUnauthRequests = false
 
     // never used anywhere, jsut a placeholder for generics so we can keep single implementation for both JSONDictionary and Decodable
     struct DummyAPIDecodableResponseOnlyForSatisfyingGenericsResolving: APIDecodableResponse {}
@@ -117,6 +118,13 @@ extension PMAPIService {
                          onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                          completion: APIResponseCompletion<T>) where T: APIDecodableResponse {
 
+        PMLog.signpost(
+            "Started \(method) request for \(path)",
+            level: .info,
+            type: .http,
+            sendToExternal: true
+        )
+
         if let customAuthCredential = customAuthCredential {
             performRequestHavingFetchedCredentials(method: method,
                                                    path: path,
@@ -168,6 +176,12 @@ extension PMAPIService {
             authCredential = credentials
             accessToken = credentials.accessToken
             UID = credentials.sessionID
+
+            if authenticated &&
+                credentials.isForUnauthenticatedSession &&
+                Self.reportInvalidUnauthRequests {
+                PMLog.error("Unauth credentials used for authenticated route: \(path)", sendToExternal: true)
+            }
         } else {
             authCredential = nil
             accessToken = nil
@@ -321,6 +335,10 @@ extension PMAPIService {
 
         // 401 handling for unauth sessions, when no credentials were sent
         if httpCode == 401, authCredential == nil {
+            PMLog.signpost(
+                "Acquiring session for \(method) \(path) after receiving 401",
+                level: .info, type: .http, sendToExternal: true
+            )
             handleSessionAcquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, onDataTaskCreated, completion, task, authRetry, authRetryRemains)
 
         // 401 handling for unauth sessions, when credentials were sent
@@ -334,6 +352,11 @@ extension PMAPIService {
                 switch result {
                 case .refreshed(let credentials):
                     // retry the original call
+                    PMLog.signpost(
+                        "Retrying \(method) request at \(path) after refreshing credentials",
+                        level: .info, type: .http, sendToExternal: true
+                    )
+
                     self.performRequestHavingFetchedCredentials(method: method,
                                                                 path: path,
                                                                 parameters: parameters,
@@ -350,18 +373,35 @@ extension PMAPIService {
                     let error = underlyingError.underlyingError
                         ?? NSError.protonMailError(underlyingError.bestShotAtReasonableErrorCode,
                                                    localizedDescription: underlyingError.localizedDescription)
+                    PMLog.signpost(
+                        "\(method) \(path) error: \(String(describing: underlyingError))",
+                        level: .info, type: .http, sendToExternal: true
+                    )
                     completion.call(task: task, error: error)
                 case .refreshingError(let underlyingError):
                     let error = NSError.protonMailError(underlyingError.codeInNetworking,
                                                         localizedDescription: underlyingError.localizedDescription)
+                    PMLog.signpost(
+                        "\(method) \(path) error: \(String(describing: underlyingError))",
+                        level: .info, type: .http, sendToExternal: true
+                    )
                     completion.call(task: task, error: error)
                 case .wrongConfigurationNoDelegate, .noCredentialsToBeRefreshed, .tooManyRefreshingAttempts:
                     let error = NSError.protonMailError(0, localizedDescription: "Refreshing credentials failed")
+                    PMLog.signpost(
+                        "\(method) \(path) error: \(String(describing: error))",
+                        level: .info, type: .http, sendToExternal: true
+                    )
                     completion.call(task: task, error: error)
                 }
             }
 
         } else if let responseError = error as? ResponseError, let responseCode = responseError.responseCode {
+
+            PMLog.signpost(
+                "\(method) \(path) code \(responseCode) and error \(String(describing: responseError))",
+                level: .info, type: .http, sendToExternal: true
+            )
 
             protonMailResponseCodeHandler.handleProtonResponseCode(
                 responseHandlerData: PMResponseHandlerData(
@@ -424,6 +464,10 @@ extension PMAPIService {
 
         // 401 handling for unauth sessions, when no credentials were sent
         if httpCode == 401, authCredential == nil {
+            PMLog.signpost(
+                "Acquiring session for \(method) \(path) after receiving 401",
+                level: .info, type: .http, sendToExternal: true
+            )
             handleSessionAcquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, onDataTaskCreated, completion, task, authRetry, authRetryRemains)
 
         // 401 handling for unauth sessions, when credentials were sent
@@ -437,6 +481,10 @@ extension PMAPIService {
                 switch result {
                 case .refreshed(let credentials):
                     // retry the original call
+                    PMLog.signpost(
+                        "Retrying \(method) request at \(path) after refreshing credentials",
+                        level: .info, type: .http, sendToExternal: true
+                    )
                     self.performRequestHavingFetchedCredentials(method: method,
                                                                 path: path,
                                                                 parameters: parameters,
@@ -453,18 +501,34 @@ extension PMAPIService {
                     let error = underlyingError.underlyingError
                         ?? NSError.protonMailError(underlyingError.bestShotAtReasonableErrorCode,
                                                    localizedDescription: underlyingError.localizedDescription)
+                    PMLog.signpost(
+                        "\(method) \(path) error: \(String(describing: underlyingError))",
+                        level: .info, type: .http, sendToExternal: true
+                    )
                     completion.call(task: task, error: error)
                 case .refreshingError(let underlyingError):
                     let error = NSError.protonMailError(underlyingError.codeInNetworking,
                                                         localizedDescription: underlyingError.localizedDescription)
+                    PMLog.signpost(
+                        "\(method) \(path) error: \(String(describing: underlyingError))",
+                        level: .info, type: .http, sendToExternal: true
+                    )
                     completion.call(task: task, error: error)
                 case .wrongConfigurationNoDelegate, .noCredentialsToBeRefreshed, .tooManyRefreshingAttempts:
                     let error = NSError.protonMailError(0, localizedDescription: "Refreshing credentials failed")
+                    PMLog.signpost(
+                        "\(method) \(path) error: \(String(describing: error))",
+                        level: .info, type: .http, sendToExternal: true
+                    )
                     completion.call(task: task, error: error)
                 }
             }
 
         } else {
+            PMLog.signpost(
+                "\(method) \(path) got response code \(responseCode)",
+                level: .info, type: .http, sendToExternal: true
+            )
             self.protonMailResponseCodeHandler.handleProtonResponseCode(
                 responseHandlerData: PMResponseHandlerData(
                     method: method,
@@ -619,6 +683,10 @@ extension PMAPIService {
             }
         }
 
+        if let proxyToken = dohInterface.getProxyToken() {
+            request.setValue(header: "x-atlas-secret", proxyToken)
+        }
+
         if let header = headers {
             for (k, v) in header {
                 request.setValue(header: k, "\(v)")
@@ -632,8 +700,6 @@ extension PMAPIService {
         if let sessionUID = sessionUID, !sessionUID.isEmpty {
             request.setValue(header: "x-pm-uid", sessionUID)
         }
-
-        request.setValue(header: "X-Enforce-UnauthSession", "true")
 
         var appversion = "iOS_\(Bundle.main.majorVersion)"
         if let delegateAppVersion = serviceDelegate?.appVersion, !delegateAppVersion.isEmpty {

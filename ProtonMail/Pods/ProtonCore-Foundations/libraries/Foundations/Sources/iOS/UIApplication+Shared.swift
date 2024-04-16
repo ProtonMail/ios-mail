@@ -32,7 +32,7 @@ public extension UIApplication {
     static func openURLIfPossible(_ url: URL) {
         // Can't use `#selector("openURL:")` here because this Swift error emerges:
         // Argument of '#selector' does not refer to an '@objc' method, property, or initializer
-        let selector = Selector("openURL:")
+        let selector = NSSelectorFromString("openURL:")
         if UIApplication.getInstance()?.responds(to: selector) == true {
             UIApplication.getInstance()?.perform(selector, with: url as NSURL)
         }

@@ -29,12 +29,19 @@ import UserNotifications
 import ProtonCoreFeatureFlags
 import ProtonCoreServices
 import ProtonCoreNetworking
+import ProtonCoreObservability
 import ProtonCoreLog
 
 public enum RegistrationState {
     case unregistered
     case registered
     case failed
+}
+
+enum PushNotificationError: Error {
+    case unrecognizedMessageFormat
+    case unhandledType
+    case unavailableDelegate
 }
 
 public class PushNotificationService: NSObject, PushNotificationServiceProtocol {
@@ -58,6 +65,7 @@ public class PushNotificationService: NSObject, PushNotificationServiceProtocol 
     }
     private let apiService: APIService
     public var registrationState: RegistrationState = .unregistered
+    public var fallbackDelegate: UNUserNotificationCenterDelegate?
 
     var currentUID: String {
         apiService.sessionUID
@@ -71,12 +79,14 @@ public class PushNotificationService: NSObject, PushNotificationServiceProtocol 
     public func setup() {
         guard FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.pushNotifications) else { return }
 
+        fallbackDelegate = NotificationCenterFactory.current.delegate
         NotificationCenterFactory.current.delegate = Self.shared
         registerForRemoteNotifications()
     }
 
     private func registerForRemoteNotifications() {
         NotificationCenterFactory.current.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            ObservabilityEnv.report(.pushNotificationsPermissionsRequested(result: granted ? .accepted : .rejected))
             guard granted else {
                 PMLog.error("User didn't grant permission", sendToExternal: true)
                 return
@@ -111,9 +121,10 @@ public class PushNotificationService: NSObject, PushNotificationServiceProtocol 
 
     public func didLoginWithUID(_ uid: String) {
         registerIfPossible()
-
     }
 }
+
+// MARK: Notification Handling
 
 extension PushNotificationService: UNUserNotificationCenterDelegate {
     /// Method called when receiving a Push Notification while app is in the foreground
@@ -121,15 +132,30 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
                                        willPresent notification: UNNotification,
                                        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
 
-        processNotification(notification) { options in
-            completionHandler(options)
+        do {
+            try processNotification(notification)
+            completionHandler([.banner, .sound, .badge])
+            ObservabilityEnv.report(.pushNotificationsReceived(result: .handled, applicationStatus: .active))
+        } catch {
+            ObservabilityEnv.report(.pushNotificationsReceived(result: .ignored, applicationStatus: .active))
+            guard let delegate = fallbackDelegate else {
+                PMLog.info("Undefined fallback delegate for handling an unrecognized Push Notification")
+                completionHandler([.banner, .sound, .badge])
+                return
+            }
+            delegate.userNotificationCenter?(center,
+                                            willPresent: notification,
+                                            withCompletionHandler: completionHandler)
         }
     }
 
+    /// Asks the delegate to process the user's response to a delivered notification.
     public func userNotificationCenter(_ center: UNUserNotificationCenter,
                                        didReceive response: UNNotificationResponse,
                                        withCompletionHandler completionHandler: @escaping () -> Void) {
-        notificationCenter(center as NotificationCenterProtocol, didReceive: response, withCompletionHandler: completionHandler)
+        notificationCenter(center as NotificationCenterProtocol, 
+                           didReceive: response,
+                           withCompletionHandler: completionHandler)
     }
 }
 
@@ -138,34 +164,59 @@ extension PushNotificationService {
     func notificationCenter(_ center: NotificationCenterProtocol,
                             didReceive response: UNNotificationResponse,
                             withCompletionHandler completionHandler: @escaping () -> Void) {
-
-        processNotification(response.notification) { _ in
+        do {
+            try processNotification(response.notification)
             completionHandler()
+            ObservabilityEnv.report(.pushNotificationsReceived(result: .handled, applicationStatus: .inactive))
+        } catch {
+            ObservabilityEnv.report(.pushNotificationsReceived(result: .ignored, applicationStatus: .inactive))
+            guard let delegate = fallbackDelegate else {
+                PMLog.info("Undefined fallback delegate for handling an unrecognized Push Notification")
+                completionHandler()
+                return
+            }
+
+            /*
+             We use `NotificationCenterProtocol` to allow spying on the notification mechanism, as
+             there is no public constructor for `UNUserNotificationCenter` to subclass and mock.
+             But to forward the call to a different delegate which may not be instrumented for testing,
+             the notification needs to come from a real `UNUserNotificationCenter`, as that is the signature
+             that they implement. The following cast would therefore only fail during testing with
+             a mock – which is ok, as we already know and we don't want to pass a Mock to something that
+             doesn't expect it.
+             */
+
+            guard let center = center as? UNUserNotificationCenter else {
+                completionHandler()
+                return
+            }
+            delegate.userNotificationCenter?(center,
+                                            didReceive: response,
+                                            withCompletionHandler: completionHandler)
         }
     }
 
-    private func processNotification(_ notification: UNNotification, completion: @escaping (UNNotificationPresentationOptions) -> Void) {
+    // Central method for handling notifications from background and foreground,
+    // the difference being the options in the completion handler
+    private func processNotification(_ notification: UNNotification) throws {
         let content = notification.request.content
         let userInfo = content.userInfo as? [String: Any]
 
         guard let message = userInfo?["unencryptedMessage"] as? [String: Any],
               let type = message["type"] as? String else {
-            PMLog.error("Unknown message format, ignoring…", sendToExternal: true)
-            completion([])
-            return
+            PMLog.debug("Unknown message format, forwarding…", sendToExternal: true)
+            throw PushNotificationError.unrecognizedMessageFormat
         }
 
         guard let handler = handlers[type] else {
             PMLog.error("Unknown message type \(type), possibly from the future", sendToExternal: true)
-            completion([])
-            return
+            throw PushNotificationError.unhandledType
         }
 
         handler.handle(notification: notification.request.content)
-
-        completion([.badge, .sound, .list])
-
     }
+
+    // MARK: TOKEN REGISTRATION
 
     private func registerIfPossible() {
         // swiftlint:disable:next empty_string
@@ -215,7 +266,28 @@ extension PushNotificationService {
                                    customAuthCredential: request.authCredential,
                                    nonDefaultTimeout: request.nonDefaultTimeout,
                                    retryPolicy: request.retryPolicy,
-                                   onDataTaskCreated: { _ in }) { _, result in
+                                   onDataTaskCreated: { _ in }) { task, result in
+                    if let httpResponse = task?.response as? HTTPURLResponse {
+                        let statusCode = httpResponse.statusCode
+                        let status: PushNotificationsHTTPResponseCodeStatus
+                        switch statusCode {
+                        case 200: status = .http200
+                        case 201...299: status = .http2xx
+                        case 300...399: status = .http3xx
+                        case 400: status = .http400
+                        case 401: status = .http401
+                        case 403: status = .http403
+                        case 408: status = .http408
+                        case 421: status = .http421
+                        case 422: status = .http422
+                        case 402, 404...407, 409...420, 423...499: status = .http4xx
+                        case 500: status = .http500
+                        case 503: status = .http503
+                        case 501, 502, 504...599: status = .http5xx
+                        default: status = .unknown
+                        }
+                        ObservabilityEnv.report(.pushNotificationsTokenRegistered(status: status))
+                    }
                     continuation.resume(with: result)
                 }
            }
@@ -243,7 +315,6 @@ private extension PushNotificationService {
 extension APIErrorCode {
     static let resourceDoesNotExist = 2501
     static let deviceTokenIsInvalid = 11210
-
 }
 
 fileprivate extension String {

@@ -26,6 +26,7 @@ import ProtonCoreFoundations
 import ProtonCoreUIFoundations
 import typealias ProtonCoreLogin.AccountType
 import ProtonCoreObservability
+import ProtonCoreTelemetry
 
 protocol RecoveryViewControllerDelegate: AnyObject {
     func recoveryBackButtonPressed()
@@ -34,7 +35,12 @@ protocol RecoveryViewControllerDelegate: AnyObject {
     func recoveryCountryPickerPressed()
 }
 
-class RecoveryViewController: UIViewController, AccessibleView, Focusable {
+class RecoveryViewController: UIViewController, AccessibleView, Focusable, ProductMetricsMeasurable {
+    var productMetrics: ProductMetrics = .init(
+        group: TelemetryMeasurementGroup.signUp.rawValue,
+        flow: TelemetryFlow.signUpFull.rawValue,
+        screen: .recoveryMethod
+    )
 
     enum RecoveryMethod: Int {
         case email = 0
@@ -154,6 +160,7 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
         case RecoveryMethod.phoneNumber.rawValue: focusOnce(view: recoveryPhoneTextField)
         default: break
         }
+        measureOnViewDisplayed()
     }
 
     override func viewDidLayoutSubviews() {
@@ -179,10 +186,12 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
             recoveryEmailTextField.isHidden = false
             recoveryPhoneTextField.isHidden = true
             _ = recoveryEmailTextField.becomeFirstResponder()
+            measureOnViewClicked(item: "email")
         case RecoveryMethod.phoneNumber.rawValue:
             recoveryEmailTextField.isHidden = true
             recoveryPhoneTextField.isHidden = false
             _ = recoveryPhoneTextField.becomeFirstResponder()
+            measureOnViewClicked(item: "phone")
         default:
             break
         }
@@ -191,15 +200,18 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
 
     @objc func onBackButtonTap(_ sender: UIButton) {
         delegate?.recoveryBackButtonPressed()
+        measureOnViewClosed()
     }
 
     @objc func onSkipButtonTap(_ sender: UIButton) {
         PMBanner.dismissAll(on: self)
         showSkipRecoveryAlert()
+        measureOnViewClicked(item: "skip")
     }
 
     @IBAction func onNextButtonTap(_ sender: ProtonButton) {
         PMBanner.dismissAll(on: self)
+        measureOnViewClicked(item: "next")
         switch methodSegmenedControl.selectedSegmentIndex {
         case RecoveryMethod.email.rawValue:
             nextButton.isSelected = true
@@ -224,6 +236,11 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
                 self?.unlockUI()
                 self?.nextButton.isSelected = false
                 self?.showError(error: error)
+                self?.measureOnViewAction(
+                    action: .verify,
+                    additionalValues: [.httpCode(error.codeInLogin)],
+                    additionalDimensions: [.result("failure")]
+                )
             }
         }
     }
@@ -239,11 +256,20 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
                 self?.unlockUI()
                 self?.nextButton.isSelected = false
                 self?.showError(error: error)
+                self?.measureOnViewAction(
+                    action: .verify,
+                    additionalValues: [.httpCode(error.codeInLogin)],
+                    additionalDimensions: [.result("failure")]
+                )
             }
         }
     }
 
     private func pressNextButton(email: String?, phoneNumber: String?) {
+        measureOnViewAction(
+            action: .verify,
+            additionalDimensions: [.result("success")]
+        )
         self.delegate?.recoveryFinish(email: email, phoneNumber: phoneNumber) {
             self.unlockUI()
             self.nextButton.isSelected = false
@@ -358,13 +384,27 @@ extension RecoveryViewController: PMTextFieldDelegate {
     }
 
     func didBeginEditing(textField: PMTextField) {
-
+        switch textField {
+        case recoveryEmailTextField:
+            measureOnViewFocused(item: "email")
+        default:
+            break
+        }
     }
 }
 
 extension RecoveryViewController: PMTextFieldComboDelegate {
     func didChangeValue(_ textField: PMTextFieldCombo, value: String) {
         validateNextButton()
+    }
+
+    func didBeginEditing(textField: PMTextFieldCombo) {
+        switch textField {
+        case recoveryPhoneTextField:
+            measureOnViewFocused(item: "phone")
+        default:
+            break
+        }
     }
 
     func didEndEditing(textField: PMTextFieldCombo) {
@@ -379,12 +419,14 @@ extension RecoveryViewController: PMTextFieldComboDelegate {
     func userDidRequestDataSelection(button: UIButton) {
         delegate?.recoveryCountryPickerPressed()
         recoveryPhoneTextField.pickerButton(isActive: true)
+        measureOnViewFocused(item: "phone_country")
     }
 }
 
 extension RecoveryViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         delegate?.termsAndConditionsLinkPressed()
+        measureOnViewClicked(item: "terms")
         return false
     }
 }

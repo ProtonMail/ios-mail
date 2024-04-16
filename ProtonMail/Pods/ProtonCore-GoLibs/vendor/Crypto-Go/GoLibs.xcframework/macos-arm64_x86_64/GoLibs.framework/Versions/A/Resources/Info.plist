@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-      <dict>
-      </dict>
-    </plist>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleExecutable</key>
+  <string>GoLibs</string>
+  <key>CFBundleIdentifier</key>
+  <string>GoLibs</string>
+  <key>MinimumOSVersion</key>
+  <string>100.0</string>
+  <key>CFBundleShortVersionString</key>
+  <string>0.0.1712764340</string>
+  <key>CFBundleVersion</key>
+  <string>0.0.1712764340</string>
+  <key>CFBundlePackageType</key>
+  <string>FMWK</string>
+</dict>
+</plist>

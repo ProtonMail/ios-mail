@@ -40,7 +40,7 @@ final class V4ValidateSubscriptionRequest: ValidateSubscriptionRequest {
 
     override public var isAuth: Bool { isAuthenticated }
 
-    override public var method: HTTPMethod { .put }
+    override public var method: HTTPMethod { .post }
 
     override public var path: String { super.path + "/v4/subscription/check" }
 
@@ -67,7 +67,7 @@ final class V5ValidateSubscriptionRequest: ValidateSubscriptionRequest {
 
     override public var isAuth: Bool { isAuthenticated }
 
-    override public var method: HTTPMethod { .put }
+    override public var method: HTTPMethod { .post }
 
     override public var path: String { super.path + "/v5/subscription/check" }
 

@@ -97,4 +97,8 @@ public extension ProtonCoreFeatureFlags.FeatureFlag {
     static var telemetrySignUpMetrics: Self {
         .init(name: "IOSTelemetrySignUpMetrics", enabled: true, variant: nil)
     }
+
+    static var changePassword: Self {
+        .init(name: "IOSChangePassword", enabled: true, variant: nil)
+    }
 }

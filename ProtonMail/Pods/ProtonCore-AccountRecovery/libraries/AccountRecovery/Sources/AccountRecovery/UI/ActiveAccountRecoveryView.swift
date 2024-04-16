@@ -19,6 +19,7 @@
 #if os(iOS)
 import SwiftUI
 import ProtonCoreUIFoundations
+import ProtonCoreObservability
 
 /// View shown for the Grace period state of the **Account Recovery** process
 public struct ActiveAccountRecoveryView: View {
@@ -95,6 +96,9 @@ public struct ActiveAccountRecoveryView: View {
         .frame(maxHeight: .infinity)
         .navigationTitle(ARTranslation.graceViewTitle.l10n)
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear() {
+            ObservabilityEnv.report(.accountRecoveryScreenView(screenID: .gracePeriodInfo))
+        }
     }
 
     var passwordResetReceivedL10nStringKey: LocalizedStringKey {

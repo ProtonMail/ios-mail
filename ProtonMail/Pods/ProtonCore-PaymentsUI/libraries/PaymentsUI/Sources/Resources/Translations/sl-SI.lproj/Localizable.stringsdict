@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>&lt;n&gt; email aliases</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d e-poštni vzdevek</string>
+        <key>two</key>
+        <string>%d e-poštnih vzdevkov</string>
+        <key>few</key>
+        <string>%d e-poštni vzdevki</string>
+        <key>other</key>
+        <string>%d e-poštnih vzdevkov</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; users</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d uporabnik</string>
+        <key>two</key>
+        <string>%d uporabnika</string>
+        <key>few</key>
+        <string>%d uporabniki</string>
+        <key>other</key>
+        <string>%d uporabnikov</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; email addresses</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d e-poštni naslov</string>
+        <key>two</key>
+        <string>%d e-poštna naslova</string>
+        <key>few</key>
+        <string>%d e-poštni naslovi</string>
+        <key>other</key>
+        <string>%d e-poštnih naslovov</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; email addresses / user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d e-poštni naslov na uporabnika</string>
+        <key>two</key>
+        <string>%d e-poštna naslova na uporabnika</string>
+        <key>few</key>
+        <string>%d e-poštni naslovi na uporabnika</string>
+        <key>other</key>
+        <string>%d e-poštnih naslovov na uporabnika</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; calendars</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d koledar</string>
+        <key>two</key>
+        <string>%d koledarja</string>
+        <key>few</key>
+        <string>%d koledarji</string>
+        <key>other</key>
+        <string>%d koledarjev</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; folders / labels</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d mapa / oznaka</string>
+        <key>two</key>
+        <string>%d mapi / oznaki</string>
+        <key>few</key>
+        <string>%d mape / oznake</string>
+        <key>other</key>
+        <string>%d map / oznak</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; countries</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d država</string>
+        <key>two</key>
+        <string>%d državi</string>
+        <key>few</key>
+        <string>%d države</string>
+        <key>other</key>
+        <string>%d držav</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d povezava</string>
+        <key>two</key>
+        <string>%d povezavi</string>
+        <key>few</key>
+        <string>%d povezave</string>
+        <key>other</key>
+        <string>%d povezav</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; VPN connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d VPN povezava</string>
+        <key>two</key>
+        <string>%d VPN povezavi</string>
+        <key>few</key>
+        <string>%d VPN povezave</string>
+        <key>other</key>
+        <string>%d VPN povezav</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; high-speed VPN connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d hitra VPN povezava</string>
+        <key>two</key>
+        <string>%d hitri VPN povezavi</string>
+        <key>few</key>
+        <string>%d hitre VPN povezave</string>
+        <key>other</key>
+        <string>%d hitrih VPN povezav</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; custom domains</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d domena po meri</string>
+        <key>two</key>
+        <string>%d domeni po meri</string>
+        <key>few</key>
+        <string>%d domene po meri</string>
+        <key>other</key>
+        <string>%d domen po meri</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; vaults</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d trezor</string>
+        <key>two</key>
+        <string>%d trezorja</string>
+        <key>few</key>
+        <string>%d trezorji</string>
+        <key>other</key>
+        <string>%d trezorjev</string>
+      </dict>
+    </dict>
+    <key>Support for &lt;n&gt; custom email domains</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Podpora za %d e-poštno domeno po meri</string>
+        <key>two</key>
+        <string>Podpora za %d e-poštni domeni po meri</string>
+        <key>few</key>
+        <string>Podpora za %d e-poštne domene po meri</string>
+        <key>other</key>
+        <string>Podpora za %d e-poštnih domen po meri</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; folders and labels</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d mapa in oznaka</string>
+        <key>two</key>
+        <string>%d mapi in oznaki</string>
+        <key>few</key>
+        <string>%d mape in oznake</string>
+        <key>other</key>
+        <string>%d map in oznak</string>
+      </dict>
+    </dict>
+    <key>High-speed VPN on &lt;n&gt; devices</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Hitri VPN v %d napravi</string>
+        <key>two</key>
+        <string>Hitri VPN v %d napravah</string>
+        <key>few</key>
+        <string>Hitri VPN v %d napravah</string>
+        <key>other</key>
+        <string>Hitri VPN v %d napravah</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt;+ servers in &lt;m&gt; countries</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@SERVERS@ v %#@COUNTRIES@</string>
+      <key>SERVERS</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d+ strežnik</string>
+        <key>two</key>
+        <string>%d+ strežnika</string>
+        <key>few</key>
+        <string>%d+ strežniki</string>
+        <key>other</key>
+        <string>%d+ strežnikov</string>
+      </dict>
+      <key>COUNTRIES</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d država</string>
+        <key>two</key>
+        <string>%d državi</string>
+        <key>few</key>
+        <string>%d države</string>
+        <key>other</key>
+        <string>%d držav</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; servers in &lt;m&gt; countries (US, NL, JP)</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@SERVERS@ v %#@COUNTRIES@</string>
+      <key>SERVERS</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d strežnik</string>
+        <key>two</key>
+        <string>%d strežnika</string>
+        <key>few</key>
+        <string>%d strežniki</string>
+        <key>other</key>
+        <string>%d strežnikov</string>
+      </dict>
+      <key>COUNTRIES</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d država (US, NL, JP)</string>
+        <key>two</key>
+        <string>%d državi (US, NL, JP)</string>
+        <key>few</key>
+        <string>%d države (US, NL, JP)</string>
+        <key>other</key>
+        <string>%d držav (US, NL, JP)</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; of &lt;m&gt; users</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE1@ od %#@VARIABLE2@</string>
+      <key>VARIABLE1</key>
+      <dict>
+        <key>one</key>
+        <string>%d</string>
+        <key>two</key>
+        <string>%d</string>
+        <key>few</key>
+        <string>%d</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d</string>
+      </dict>
+      <key>VARIABLE2</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d uporabnik</string>
+        <key>two</key>
+        <string>%d uporabnika</string>
+        <key>few</key>
+        <string>%d uporabniki</string>
+        <key>other</key>
+        <string>%d uporabnikov</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; of &lt;m&gt; email addresses</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE1@ od %#@VARIABLE2@</string>
+      <key>VARIABLE1</key>
+      <dict>
+        <key>one</key>
+        <string>%d</string>
+        <key>two</key>
+        <string>%d</string>
+        <key>few</key>
+        <string>%d</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d</string>
+      </dict>
+      <key>VARIABLE2</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d e-poštni naslov</string>
+        <key>two</key>
+        <string>%d e-poštna naslova</string>
+        <key>few</key>
+        <string>%d e-poštni naslovi</string>
+        <key>other</key>
+        <string>%d e-poštnih naslovov</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; of &lt;m&gt; calendars</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE1@ od %#@VARIABLE2@</string>
+      <key>VARIABLE1</key>
+      <dict>
+        <key>one</key>
+        <string>%d</string>
+        <key>two</key>
+        <string>%d</string>
+        <key>few</key>
+        <string>%d</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d</string>
+      </dict>
+      <key>VARIABLE2</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d koledar</string>
+        <key>two</key>
+        <string>%d koledarja</string>
+        <key>few</key>
+        <string>%d koledarji</string>
+        <key>other</key>
+        <string>%d koledarjev</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; addresses per user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d naslov na uporabnika</string>
+        <key>two</key>
+        <string>%d naslova na uporabnika</string>
+        <key>few</key>
+        <string>%d naslovi na uporabnika</string>
+        <key>other</key>
+        <string>%d naslovov na uporabnika</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; calendars per user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d koledar na uporabnika</string>
+        <key>two</key>
+        <string>%d koledarja na uporabnika</string>
+        <key>few</key>
+        <string>%d koledarji na uporabnika</string>
+        <key>other</key>
+        <string>%d koledarjev na uporabnika</string>
+      </dict>
+    </dict>
+    <key>&lt;n&gt; VPN connections per user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d VPN povezava na uporabnika</string>
+        <key>two</key>
+        <string>%d VPN povezavi na uporabnika</string>
+        <key>few</key>
+        <string>%d VPN povezave na uporabnika</string>
+        <key>other</key>
+        <string>%d VPN povezav na uporabnika</string>
+      </dict>
+    </dict>
+    <key>Pay for &lt;n&gt; months</key>
+    <dict>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Plačajte za %d mesec</string>
+        <key>two</key>
+        <string>Plačajte za %d meseca</string>
+        <key>few</key>
+        <string>Plačajte za %d mesece</string>
+        <key>other</key>
+        <string>Plačajte za %d mesece</string>
+      </dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+    </dict>
+    <key>Medium VPN speed &lt;n&gt; VPN connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d VPN povezava s srednjo VPN hitrostjo</string>
+        <key>two</key>
+        <string>%d VPN povezavi s srednjo VPN hitrostjo</string>
+        <key>few</key>
+        <string>%d VPN povezave s srednjo VPN hitrostjo</string>
+        <key>other</key>
+        <string>%d VPN povezav s srednjo VPN hitrostjo</string>
+      </dict>
+    </dict>
+    <key>Up to &lt;n&gt; forwarding mailboxes</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Do %d e-poštnega predala za posredovanje</string>
+        <key>two</key>
+        <string>Do %d e-poštnih predalov za posredovanje</string>
+        <key>few</key>
+        <string>Do %d e-poštnih predalov za posredovanje</string>
+        <key>other</key>
+        <string>Do %d e-poštnih predalov za posredovanje</string>
+      </dict>
+    </dict>
+  </dict>
+</plist>

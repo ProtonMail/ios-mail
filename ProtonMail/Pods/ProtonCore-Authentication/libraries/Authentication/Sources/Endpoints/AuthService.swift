@@ -145,6 +145,7 @@ public class AuthService: Client {
                     // we invalidate both authenticated and unauthenticated session
                     // if POST /auth is called within the context of auth session,
                     // because we want to clear the session completely and start from the clean slate
+                    PMLog.signpost("Authenticated session invalidated (BAD) in \(#function)", level: .info)
                     service.authDelegate?.onAuthenticatedSessionInvalidated(sessionUID: credential.sessionID)
                     service.authDelegate?.onUnauthenticatedSessionInvalidated(sessionUID: credential.sessionID)
                     service.acquireSessionIfNeeded { _ in /* result ignored by design, we don't use it */ }

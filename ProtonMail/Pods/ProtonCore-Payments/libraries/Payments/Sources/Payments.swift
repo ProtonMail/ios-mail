@@ -24,6 +24,7 @@ import Foundation
 import ProtonCoreFeatureFlags
 import ProtonCoreServices
 import ProtonCoreUtilities
+import ProtonCoreLog
 
 typealias ListOfIAPIdentifiersGet = () -> ListOfIAPIdentifiers
 typealias ListOfIAPIdentifiersSet = (ListOfIAPIdentifiers) -> Void
@@ -133,7 +134,11 @@ public final class Payments {
             // It is done alongside fetching available plans
             Task {
                 if case let .right(plansDataSource) = planService {
-                    try await plansDataSource.fetchAvailablePlans()
+                    do {
+                        try await plansDataSource.fetchAvailablePlans()
+                    } catch {
+                        PMLog.error(error)
+                    }
                     storeKitManager.subscribeToPaymentQueue()
                 }
                 storeKitProductsFetched(nil)

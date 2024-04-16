@@ -407,9 +407,11 @@ extension PMBanner {
         textView.backgroundColor = .clear
         textView.font = style.messageFont
         textView.textColor = self.style.bannerTextColor
-        if let _link = self.linkAttributed {
-            textView.linkTextAttributes = _link
-        }
+        let defaultLinkAttributes = [
+            NSAttributedString.Key.foregroundColor: self.style.bannerTextColor,
+            NSAttributedString.Key.underlineStyle: NSNumber(value: NSUnderlineStyle.single.rawValue)
+        ]
+        textView.linkTextAttributes = self.linkAttributed ?? defaultLinkAttributes
         if let message = message {
             textView.text = message
         }

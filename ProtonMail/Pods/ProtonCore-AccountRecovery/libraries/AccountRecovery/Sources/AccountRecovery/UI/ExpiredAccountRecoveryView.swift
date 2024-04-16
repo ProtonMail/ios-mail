@@ -21,6 +21,7 @@
 //
 #if os(iOS)
 import SwiftUI
+import ProtonCoreObservability
 
 public struct ExpiredAccountRecoveryView: View {
     public var body: some View {
@@ -33,6 +34,9 @@ public struct ExpiredAccountRecoveryView: View {
         .padding(16)
         .navigationTitle(ARTranslation.expiredViewTitle.l10n)
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear() {
+            ObservabilityEnv.report(.accountRecoveryScreenView(screenID: .recoveryExpiredInfo))
+        }
     }
 }
 

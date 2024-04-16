@@ -47,13 +47,14 @@ public class MissingScopesHandler: MissingScopesDelegate {
         self.authService = .init(api: apiService)
     }
 
-    public func onMissingScopesHandling(missingScopeMode: MissingScopeMode, username: String, responseHandlerData: PMResponseHandlerData, completion: @escaping (MissingScopesFinishReason) -> Void) {
+    public func onMissingScopesHandling(username: String, responseHandlerData: PMResponseHandlerData, completion: @escaping (MissingScopesFinishReason) -> Void) {
         queue.execute {
             if self.missingScopesCoordinator == nil {
+                let isAccountRecovery = responseHandlerData.path == "/account/v1/recovery/session/abort"
                 let missingScopesCoordinator = MissingScopesCoordinator(
                     apiService: self.apiService,
                     username: username,
-                    missingScopeMode: missingScopeMode,
+                    missingScopeMode: isAccountRecovery ? .accountRecovery : .default,
                     inAppTheme: self.inAppTheme,
                     responseHandlerData: responseHandlerData,
                     completion: { [weak self] finishReason in

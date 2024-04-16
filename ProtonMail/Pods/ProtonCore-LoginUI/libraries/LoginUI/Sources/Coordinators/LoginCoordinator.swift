@@ -24,6 +24,7 @@
 import Foundation
 import UIKit
 import ProtonCoreUIFoundations
+import ProtonCoreLog
 import ProtonCoreLogin
 import ProtonCoreAuthentication
 import ProtonCoreNetworking
@@ -393,6 +394,7 @@ extension LoginCoordinator: NavigationDelegate {
         if authCredential.isForUnauthenticatedSession {
             authDelegate.onUnauthenticatedSessionInvalidated(sessionUID: sessionUID)
         } else {
+            PMLog.signpost("Authenticated session invalidated in \(#function)", level: .info)
             authDelegate.onAuthenticatedSessionInvalidated(sessionUID: sessionUID)
         }
 
