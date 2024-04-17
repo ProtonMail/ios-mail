@@ -19,7 +19,7 @@ import ProtonCoreCryptoGoInterface
 import ProtonCoreDataModel
 
 struct UpsellButtonStateProvider {
-    typealias Dependencies = AnyObject & HasUserDefaults & HasUserManager
+    typealias Dependencies = AnyObject & HasFeatureFlagProvider & HasUserDefaults & HasUserManager
 
     private let calendar = Calendar.autoupdatingCurrent
     private unowned let dependencies: Dependencies
@@ -56,6 +56,10 @@ struct UpsellButtonStateProvider {
 
     var shouldShowUpsellButton: Bool {
         guard UserInfo.isUpsellButtonEnabled else {
+            return false
+        }
+
+        guard dependencies.featureFlagProvider.isEnabled(.upsellButton, reloadValue: true) else {
             return false
         }
 
