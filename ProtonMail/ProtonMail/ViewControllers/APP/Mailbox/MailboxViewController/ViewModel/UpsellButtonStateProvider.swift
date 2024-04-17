@@ -40,7 +40,7 @@ struct UpsellButtonStateProvider {
         // facilitate manual testing and QA
         if Application.isDebug && !ProcessInfo.isRunningUnitTests {
             dateComponents.second = 30
-        } else if Application.isDebugOrEnterprise && !ProcessInfo.isRunningUnitTests {
+        } else if Application.isTestingBuild && !ProcessInfo.isRunningUnitTests {
             dateComponents.minute = 5
         } else {
             dateComponents.day = 10

@@ -29,6 +29,6 @@ extension UserInfo {
     }
 
     static var isUpsellButtonEnabled: Bool {
-        Application.isDebugOrEnterprise
+        Application.isTestingBuild
     }
 }
