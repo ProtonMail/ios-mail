@@ -171,6 +171,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     }
 
     private var storageExceedObservation: Cancellable?
+    private var lockedStateObservation: Cancellable?
 
     init(labelID: LabelID,
          label: LabelInfo?,
@@ -327,7 +328,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         return contactProvider.getAllEmails()
     }
 
-    private func setupAlertBox() {
+    func setupAlertBox() {
         if let lockedFlags = user.userInfo.lockedFlags {
             lockedStateAlertVisibility = LockedStateAlertVisibility(lockedFlags: lockedFlags)
         } else {
@@ -926,6 +927,17 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         storageExceedObservation = user.$isStorageExceeded.sink(receiveValue: { value in
             didChanged(value)
         })
+    }
+    
+    func setupLockedStateObservation(didChanged: @escaping (Bool) -> Void) {
+        lockedStateObservation = user.$isUserInLockedState.sink(receiveValue: { value in
+            didChanged(value)
+        })
+    }
+    
+    func removeObservers() {
+        storageExceedObservation?.cancel()
+        lockedStateObservation?.cancel()
     }
 }
 

@@ -1272,7 +1272,7 @@ enum L10n {
         static let alertBoxDriveFullText = NSLocalizedString("Your Drive storage is full", comment: "Title of the banner alert")
         static let alertBoxStorageFullText = NSLocalizedString("Your storage is full", comment: "Title of the banner alert")
         static let alertBoxSubscriptionEndedText = NSLocalizedString("Your subscription has ended", comment: "Title of the banner alert")
-    static let alertBoxAccountAtRiskText = NSLocalizedString("Your account is at risk of deletion", comment: "Title of the banner alert")
+        static let alertBoxAccountAtRiskText = NSLocalizedString("Your account is at risk of deletion", comment: "Title of the banner alert")
         static let alertBoxMailFullDescription = NSLocalizedString("To send or receive emails, free up space or upgrade for more storage.", comment: "Description of the banner alert")
         static let alertBoxDriveFullDescription = NSLocalizedString("To upload files, free up space or upgrade for more storage.", comment: "Description of the banner alert")
         static let alertBoxDescriptionForPrimaryAdmin = NSLocalizedString("Upgrade to restore full access and to avoid data loss.", comment: "Description of the banner alert")

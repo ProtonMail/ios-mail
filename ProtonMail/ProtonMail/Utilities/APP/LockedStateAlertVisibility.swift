@@ -85,4 +85,15 @@ enum LockedStateAlertVisibility: Equatable {
             return L10n.LockedStateAlertBox.alertBoxDefaultButtonTitle
         }
     }
+    
+    var mailBoxBannerButtonUrl: String? {
+        switch self {
+        case .orgIssueForMember:
+            return "https://proton.me/support/free-plan-limits"
+        case .hidden:
+            return nil
+        default:
+            return "https://account.proton.me/drive/dashboard"
+        }
+    }
 }

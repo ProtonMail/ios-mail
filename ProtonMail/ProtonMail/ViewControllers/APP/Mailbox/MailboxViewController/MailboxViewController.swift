@@ -320,6 +320,13 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             }
         }
 
+        viewModel.setupLockedStateObservation { [weak self] newValue in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.setupAlertBox()
+            }
+        }
+
         viewModel
             .error
             .receive(on: DispatchQueue.main)
@@ -363,6 +370,8 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
         notificationsAreScheduled = false
         NotificationCenter.default.removeObserver(self)
+        
+        viewModel.removeObservers()
 
         PMBanner.dismissAll(on: self, animated: animated)
     }
@@ -2208,6 +2217,7 @@ extension MailboxViewController {
 extension MailboxViewController {
 
     private func setupAlertBox() {
+        viewModel.setupAlertBox()
         guard viewModel.storageAlertVisibility != .hidden || viewModel.lockedStateAlertVisibility != .hidden else {
             alertContainerView.isHidden = true
             return
@@ -2224,16 +2234,6 @@ extension MailboxViewController {
         alertDismissButton.setTitle(L10n.AlertBox.alertBoxDismissButtonTitle, for: .normal)
         alertButton.layer.cornerRadius = 8
         alertButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
-        alertButton.addTarget(
-            self,
-            action: #selector(getMoreStorageTapped),
-            for: .touchUpInside
-        )
-        alertDismissButton.addTarget(
-            self,
-            action: #selector(dismissStorageAlertTapped),
-            for: .touchUpInside
-        )
         
         if (viewModel.lockedStateAlertVisibility != .hidden) {
             setupLockedStateAlertBox()
@@ -2249,6 +2249,11 @@ extension MailboxViewController {
         alertLabel.text = viewModel.lockedStateAlertVisibility.mailboxBannerTitle
         alertDescription.text = viewModel.lockedStateAlertVisibility.mailboxBannerDescription
         alertButton.setTitle(viewModel.lockedStateAlertVisibility.mailBoxBannerButtonTitle, for: .normal)
+        alertButton.addTarget(
+            self,
+            action: #selector(lockedStateBannerTapped),
+            for: .touchUpInside
+        )
     }
 
     private func setupStorageAlertBox() {
@@ -2279,6 +2284,12 @@ extension MailboxViewController {
             action: #selector(dismissStorageAlertTapped),
             for: .touchUpInside
         )
+    }
+    
+    @objc private func lockedStateBannerTapped() {
+        guard let urlString = viewModel.lockedStateAlertVisibility.mailBoxBannerButtonUrl,
+              let url = URL(string: urlString) else { return }
+        UIApplication.shared.open(url)
     }
 
     @objc private func getMoreStorageTapped() {
