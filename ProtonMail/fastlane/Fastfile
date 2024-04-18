@@ -66,7 +66,6 @@ def get_xcode_profile(isAdhoc)
 
   ids.each do |id|
     get_provisioning_profile(
-      adhoc: isAdhoc,
       app_identifier: id,
       readonly: true,
     )
@@ -93,22 +92,17 @@ end
 
 def build_release_app(isRelease)
   scheme = isRelease ? "ProtonMail" : "Adhoc"
-  export_method = isRelease ? "app-store" : "ad-hoc"
-  mail_profile = isRelease ? "ProtonMail Release" : "ProtonMail Ad-Hoc"
-  share_profile = isRelease ? "Protonmail share release" : "ProtonMail Share Ad-Hoc"
-  push_service_profile = isRelease ? "protonmail push service release" : "ProtonMail PushService Ad-Hoc"
-  siri_profile = isRelease ? "Protonmail Siri kit release" : "ProtonMail Siri Ad-Hoc"
   build_app(
     scheme: scheme,
     clean: true,
     output_directory: "outputs/",
-    export_method: export_method,
+    export_method: "app-store",
     export_options: {
         provisioningProfiles: {
-            "ch.protonmail.protonmail" => mail_profile,
-            "ch.protonmail.protonmail.Share" => share_profile,
-            "ch.protonmail.protonmail.PushService" => push_service_profile,
-            "ch.protonmail.protonmail.Siri" => siri_profile
+            "ch.protonmail.protonmail" => "ProtonMail Release",
+            "ch.protonmail.protonmail.Share" => "Protonmail share release",
+            "ch.protonmail.protonmail.PushService" => "protonmail push service release",
+            "ch.protonmail.protonmail.Siri" => "Protonmail Siri kit release"
         }
     },
   )
@@ -130,7 +124,7 @@ def send_to_slack(success, changelog, exception, bundle_version)
 
   slack(
     message: message,
-    channel: "@Anson Chen",
+    channel: "@Jacek Krasiukianis",
     use_webhook_configured_username_and_icon: true,
     slack_url: ENV["SLACK_CI_BOT_URL"],
     payload: payload,
@@ -153,8 +147,8 @@ platform :ios do
     latest_build_number = get_latest_build_number()
     changelog = set_up_changelog(latest_build_number)
 
-    # Set build version by git log numbers
-    bundle_version = sh("./setup_bundle_version.sh")
+    next_build_number = latest_build_number + 1
+    bundle_version = sh("./setup_bundle_version.sh " + next_build_number.to_s)
 
     build_release_app(true)
 
@@ -178,9 +172,9 @@ platform :ios do
     # Download profile
     get_xcode_profile(true)
 
-    # Set build version by git log numbers
-    timeStamp = Time.now.getutc.to_i
-    bundle_version = sh("./setup_bundle_version.sh " + timeStamp.to_s)
+    latest_build_number = get_latest_build_number()
+    next_build_number = latest_build_number + 1
+    bundle_version = sh("./setup_bundle_version.sh " + next_build_number.to_s)
 
     branchName = git_branch
     lastGitCommitHash = last_git_commit[:commit_hash]
@@ -188,10 +182,10 @@ platform :ios do
 
     build_release_app(false)
 
-    firebase_app_distribution(
-      app: "1:75309174866:ios:6175d77aa45a9590",
-      groups: "v4-internal-test-group",
-      release_notes: releaseNote
+    upload_to_testflight(
+      team_name: "Proton Technologies AG",
+      skip_waiting_for_build_processing: true,
+      changelog: releaseNote
     )
 
     tear_down_keychain
