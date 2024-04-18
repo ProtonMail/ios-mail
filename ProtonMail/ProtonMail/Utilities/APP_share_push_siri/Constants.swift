@@ -22,13 +22,7 @@ struct Constants {
     static let kDefaultAttachmentFileSize: Int = 25 * 1_000 * 1_000
     static let k12HourMinuteFormat = "h:mm a"
     static let k24HourMinuteFormat = "HH:mm"
-    static var AppGroup: String {
-#if Enterprise
-        return "group.com.protonmail.protonmail"
-#else
-        return "group.ch.protonmail.protonmail"
-#endif
-    }
+    static let AppGroup = "group.ch.protonmail.protonmail"
 
     enum App {
         static let SpaceWarningThresholdDouble: Double = 90
