@@ -173,7 +173,7 @@ extension MailboxConversationModel: MailboxLiveQueryUpdatedCallback {
 
 extension MailboxConversationModel {
 
-    func actionDelete(ids: [PMLocalConversationId]) {
+    private func actionDelete(ids: [PMLocalConversationId]) {
         AppLogger.log(message: "Conversation deletion \(ids)...", category: .mailboxActions)
         do {
             try mailbox?.deleteConversations(ids: ids)
@@ -182,7 +182,7 @@ extension MailboxConversationModel {
         }
     }
 
-    func actionMoveTo(systemFolder: SystemFolderIdentifier, ids: [PMLocalConversationId]) {
+    private func actionMoveTo(systemFolder: SystemFolderIdentifier, ids: [PMLocalConversationId]) {
         Task {
             do {
                 guard let userSession = try await dependencies.appContext.userContextForActiveSession() else { return }
@@ -201,7 +201,7 @@ extension MailboxConversationModel {
         }
     }
 
-    func actionMoveTo(labelId: PMLocalLabelId, ids: [PMLocalConversationId]) {
+    private func actionMoveTo(labelId: PMLocalLabelId, ids: [PMLocalConversationId]) {
         do {
             try mailbox?.moveConversations(labelId: labelId, ids: ids)
         } catch {
@@ -209,7 +209,7 @@ extension MailboxConversationModel {
         }
     }
 
-    func actionUpdateReadStatus(to newStatus: MailboxReadStatus, for ids: [PMLocalConversationId]) {
+    private func actionUpdateReadStatus(to newStatus: MailboxReadStatus, for ids: [PMLocalConversationId]) {
         AppLogger.log(message: "Conversation set read status \(ids)...", category: .mailboxActions)
         do {
             if case .read = newStatus {
@@ -219,6 +219,48 @@ extension MailboxConversationModel {
             }
         } catch {
             AppLogger.log(error: error, category: .mailboxActions)
+        }
+    }
+
+    private func actionApplyLabels(_ selectedLabels: Set<PMLocalLabelId>, to ids: [PMLocalConversationId]) {
+        guard case .data(let conversations) = state else { return }
+        let selectedConversations = conversations.filter({ $0.isSelected })
+        do {
+            let existingLabelsInConversations = selectedConversations
+                .map(\.labelUIModel.allLabelIds)
+                .reduce(Set<PMLocalLabelId>(), { $0.union($1) })
+            
+            try existingLabelsInConversations.forEach { labelId in
+                try mailbox?.unlabelConversations(labelId: labelId, ids: selectedConversations.map(\.id))
+            }
+
+            try selectedLabels.forEach { labelId in
+                try mailbox?.labelConversations(labelId: labelId, ids: selectedConversations.map(\.id))
+            }
+        } catch {
+            AppLogger.log(error: error, category: .mailboxActions)
+        }
+    }
+}
+
+// MARK: MailboxActionnable
+
+extension MailboxConversationModel: MailboxActionable {
+    
+    func labelsOfSelectedItems() -> [Set<PMLocalLabelId>] {
+        guard case .data(let conversations) = state else { return [] }
+        return conversations.filter({ $0.isSelected }).map(\.labelUIModel.allLabelIds)
+    }
+
+    func onActionTap(_ action: Action) {
+        onConversationAction(action, conversationIds: selectionMode.selectedItems.map(\.id))
+    }
+
+    func onLabelsSelected(labelIds: Set<PMLocalLabelId>, alsoArchive: Bool) {
+        let selectedConversationIds = selectionMode.selectedItems.map(\.id)
+        actionApplyLabels(labelIds, to: selectedConversationIds)
+        if alsoArchive {
+            actionMoveTo(systemFolder: .archive, ids: selectedConversationIds)
         }
     }
 }

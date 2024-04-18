@@ -18,9 +18,26 @@
 import DesignSystem
 import SwiftUI
 
-struct MailboxActionBarView: View {
-    typealias OnTapAction = @MainActor (Action, [PMMailboxItemId]) -> Void
+protocol MailboxActionable {
+    
+    @MainActor
+    func labelsOfSelectedItems() -> [Set<PMLocalLabelId>]
 
+    @MainActor 
+    func onActionTap(_ action: Action)
+
+    @MainActor
+    func onLabelsSelected(labelIds: Set<PMLocalLabelId>, alsoArchive: Bool)
+}
+
+struct EmptyMailboxActionable: MailboxActionable {
+    func labelsOfSelectedItems() -> [Set<PMLocalLabelId>] { [] }
+    func onActionTap(_ action: Action) {}
+    func onLabelsSelected(labelIds: Set<PMLocalLabelId>, alsoArchive: Bool) {}
+}
+
+
+struct MailboxActionBarView: View {
     @EnvironmentObject var userSettings: UserSettings
     @ObservedObject var selectionMode: SelectionModeState
 
@@ -28,14 +45,21 @@ struct MailboxActionBarView: View {
     private var mailboxActions: MailboxActionSettings {
         userSettings.mailboxActions
     }
-    private let onTap: OnTapAction
+    private let customLabelModel: CustomLabelModel
+    private let mailboxActionable: MailboxActionable
 
     @State private var showLabelPicker: Bool = false
 
-    init(selectionMode: SelectionModeState, mailbox: SelectedMailbox, onTapAction: @escaping OnTapAction) {
+    init(
+        selectionMode: SelectionModeState,
+        mailbox: SelectedMailbox,
+        mailboxActionable: MailboxActionable,
+        customLabelModel: CustomLabelModel
+    ) {
         self.selectionMode = selectionMode
         self.mailbox = mailbox
-        self.onTap = onTapAction
+        self.mailboxActionable = mailboxActionable
+        self.customLabelModel = customLabelModel
     }
 
     var body: some View {
@@ -69,7 +93,7 @@ struct MailboxActionBarView: View {
                 if case .labelAs = action {
                     showLabelPicker.toggle()
                 } else {
-                    onTap(action, selectionMode.selectedItems.map(\.id))
+                    mailboxActionable.onActionTap(action)
                 }
             }, label: {
                 Image(uiImage: action.icon)
@@ -80,12 +104,19 @@ struct MailboxActionBarView: View {
     }
 
     private var labelPicker: some View {
-        LabelPickerView(labels: [
-            .init(id: 3, name: "Holidays", color: .pink)
-        ])
-        .safeAreaPadding(.top, DS.Spacing.extraLarge)
-        .presentationCornerRadius(24)
-        .presentationDetents([.medium, .large])
+        let model = LabelPickerModel(
+            model: customLabelModel,
+            labelIdsByItem: mailboxActionable.labelsOfSelectedItems(),
+            onDoneTap: { selectedLabelIds, alsoArchive in
+                showLabelPicker.toggle()
+                mailboxActionable.onLabelsSelected(labelIds: selectedLabelIds, alsoArchive: alsoArchive)
+            }
+        )
+        return LabelPickerView(model: model)
+            .safeAreaPadding(.top, DS.Spacing.extraLarge)
+            .presentationContentInteraction(.scrolls)
+            .presentationCornerRadius(24)
+            .presentationDetents([.medium, .large])
     }
 }
 
@@ -104,13 +135,15 @@ struct MailboxActionBarView: View {
         MailboxActionBarView(
             selectionMode:.init(selectedItems: Set([.init(id: 1, isRead: false, isStarred: true)])),
             mailbox: .init(localId: 0, name: "", systemFolder: .archive),
-            onTapAction: { _, _ in }
+            mailboxActionable: EmptyMailboxActionable(),
+            customLabelModel: .init()
         )
 
         MailboxActionBarView(
             selectionMode: .init(selectedItems: Set([.init(id: 1, isRead: true, isStarred: false)])),
             mailbox: .init(localId: 0, name: "", systemFolder: .trash),
-            onTapAction: { _, _ in }
+            mailboxActionable: EmptyMailboxActionable(),
+            customLabelModel: .init()
         )
     }
     .environmentObject(userSettings)

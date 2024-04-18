@@ -71,7 +71,10 @@ struct MailboxLabelUIModel: Identifiable {
     let id: String
     let color: Color
     let text: String
-    let numExtraLabels: Int
+    var numExtraLabels: Int {
+        allLabelIds.count - 1
+    }
+    let allLabelIds: Set<PMLocalLabelId>
     var isEmpty: Bool {
         text.isEmpty
     }
@@ -80,14 +83,14 @@ struct MailboxLabelUIModel: Identifiable {
         self.id = UUID().uuidString
         self.color = .clear
         self.text = ""
-        self.numExtraLabels = 0
+        self.allLabelIds = .init()
     }
 
-    init(id: String, color: Color, text: String, numExtraLabels: Int) {
+    init(id: String, color: Color, text: String, allLabelIds: Set<PMLocalLabelId>) {
         self.id = id
         self.color = color
         self.text = text
-        self.numExtraLabels = numExtraLabels
+        self.allLabelIds = allLabelIds
     }
 }
 
@@ -101,7 +104,7 @@ struct MailboxLabelUIModel: Identifiable {
                     id: UUID().uuidString,
                     color: .blue,
                     text: "a",
-                    numExtraLabels: 0
+                    allLabelIds: .init()
                 )
             ).border(.red)
             MailboxLabelView(
@@ -109,7 +112,7 @@ struct MailboxLabelUIModel: Identifiable {
                     id: UUID().uuidString,
                     color: .red,
                     text: "Work",
-                    numExtraLabels: 2
+                    allLabelIds: Set(arrayLiteral: 0, 1, 2)
                 )
             ).border(.red)
             MailboxLabelView(
@@ -117,7 +120,7 @@ struct MailboxLabelUIModel: Identifiable {
                     id: UUID().uuidString,
                     color: .purple,
                     text: "Holidays",
-                    numExtraLabels: 25
+                    allLabelIds: Set(Array(0...25))
                 )
             ).border(.red)
             MailboxLabelView(
@@ -125,7 +128,7 @@ struct MailboxLabelUIModel: Identifiable {
                     id: UUID().uuidString,
                     color: .green,
                     text: "surprise birthday party",
-                    numExtraLabels: 239
+                    allLabelIds: Set(Array(0...240))
                 )
             ).border(.red)
             MailboxLabelView(
@@ -133,7 +136,7 @@ struct MailboxLabelUIModel: Identifiable {
                     id: UUID().uuidString,
                     color: .gray,
                     text: "amazing pictures",
-                    numExtraLabels: 0
+                    allLabelIds: .init()
                 )
             ).border(.red)
             MailboxLabelView(
@@ -141,7 +144,7 @@ struct MailboxLabelUIModel: Identifiable {
                     id: UUID().uuidString,
                     color: .gray,
                     text: "surprise birthday party",
-                    numExtraLabels: 0
+                    allLabelIds: .init()
                 )
             ).border(.red)
         }

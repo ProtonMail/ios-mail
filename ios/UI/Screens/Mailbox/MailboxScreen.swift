@@ -25,6 +25,7 @@ struct MailboxScreen: View {
     @ObservedObject private var selectionMode: SelectionModeState
 
     private var mailboxModel: MailboxModel
+    private var customLabelModel: CustomLabelModel
 
     private var navigationTitle: String {
         selectionMode.hasSelectedItems
@@ -32,37 +33,18 @@ struct MailboxScreen: View {
         : appRoute.selectedMailbox.name
     }
 
-    init(mailboxModel: MailboxModel) {
+    init(mailboxModel: MailboxModel, customLabelModel: CustomLabelModel) {
         self.mailboxModel = mailboxModel
         self.appRoute = mailboxModel.appRoute
         self.selectionMode = mailboxModel.selectionMode
+        self.customLabelModel = customLabelModel
     }
 
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
-                if userSettings.mailboxViewMode == .conversation {
-                    MailboxConversationScreen(model: mailboxModel.conversationModel)
-                } else {
-                    Text("message list mailbox")
-                }
-
-                MailboxActionBarView(
-                    selectionMode: selectionMode,
-                    mailbox: appRoute.selectedMailbox
-                ) { action, itemIds in
-                    if userSettings.mailboxViewMode == .conversation {
-                        mailboxModel.conversationModel.onConversationAction(action, conversationIds: itemIds)
-                    } else {
-                        AppLogger.logTemporarily(message: "\(action) for message not implemented", isError: true)
-                    }
-                }
-                .opacity(selectionMode.hasSelectedItems ? 1 : 0)
-                .offset(y: selectionMode.hasSelectedItems ? 0 : 45 + 100)
-                .animation(
-                    .easeInOut(duration: AppConstants.selectionModeStartDuration),
-                    value: selectionMode.hasSelectedItems
-                )
+                mailboxScreen
+                mailboxActionBarView
             }
             .background(DS.Color.Background.norm) // sets also the color for the navigation bar
             .navigationBarTitleDisplayMode(.inline)
@@ -74,13 +56,50 @@ struct MailboxScreen: View {
     }
 }
 
+extension MailboxScreen {
+
+    @ViewBuilder
+    private var mailboxScreen: some View {
+        if userSettings.mailboxViewMode == .conversation {
+            MailboxConversationScreen(model: mailboxModel.conversationModel)
+        } else {
+            Text("message list mailbox")
+        }
+    }
+
+    private var mailboxActionable: MailboxActionable {
+        if userSettings.mailboxViewMode == .conversation {
+            return mailboxModel.conversationModel
+        } else {
+            // TODO: ...
+            return EmptyMailboxActionable()
+        }
+    }
+
+    private var mailboxActionBarView: some View {
+        MailboxActionBarView(
+            selectionMode: selectionMode,
+            mailbox: appRoute.selectedMailbox,
+            mailboxActionable: mailboxActionable,
+            customLabelModel: customLabelModel
+        )
+        .opacity(selectionMode.hasSelectedItems ? 1 : 0)
+        .offset(y: selectionMode.hasSelectedItems ? 0 : 45 + 100)
+        .animation(
+            .easeInOut(duration: AppConstants.selectionModeStartDuration),
+            value: selectionMode.hasSelectedItems
+        )
+    }
+}
+
 #Preview {
     let appUIState = AppUIState(isSidebarOpen: false)
     let userSettings = UserSettings(mailboxViewMode: .conversation, mailboxActions: .init())
 
     let mailboxModel = MailboxModel(appRoute: .shared, state: .data( PreviewData.mailboxConversations))
+    let customLabelModel = CustomLabelModel()
 
-    return MailboxScreen(mailboxModel: mailboxModel)
+    return MailboxScreen(mailboxModel: mailboxModel, customLabelModel: customLabelModel)
         .environmentObject(appUIState)
         .environmentObject(userSettings)
 }

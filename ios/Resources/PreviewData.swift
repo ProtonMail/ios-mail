@@ -54,9 +54,9 @@ enum PreviewData {
     }
 
     static let mailboxLabels: [MailboxLabelUIModel] = [
-        .init(id: UUID().uuidString, color: Color(hex: "179FD9"), text: "Work", numExtraLabels: [2, 3].randomElement()!),
-        .init(id: UUID().uuidString, color: Color(hex: "F78400"), text:  "Read later", numExtraLabels: [0, 1].randomElement()!),
-        .init(id: UUID().uuidString, color: Color(hex: "3CBB3A"), text: "Newsletters", numExtraLabels: 0),
+        .init(id: UUID().uuidString, color: Color(hex: "179FD9"), text: "Work", allLabelIds: Set(arrayLiteral: [2, 3].randomElement()!)),
+        .init(id: UUID().uuidString, color: Color(hex: "F78400"), text:  "Read later", allLabelIds: Set(arrayLiteral: [0, 1].randomElement()!)),
+        .init(id: UUID().uuidString, color: Color(hex: "3CBB3A"), text: "Newsletters", allLabelIds: .init()),
     ]
 
     static let attachments: [[AttachmentCapsuleUIModel]] = [

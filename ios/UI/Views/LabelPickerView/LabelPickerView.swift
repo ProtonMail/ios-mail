@@ -19,12 +19,11 @@ import DesignSystem
 import SwiftUI
 
 struct LabelPickerView: View {
-    @State private var isArchiveSelected: Bool = true
+    @State private var isArchiveSelected: Bool = false
+    @ObservedObject private var model: LabelPickerModel
 
-    private let labels: [LabelUIModel]
-
-    init(labels: [LabelUIModel] = []) {
-        self.labels = labels
+    init(model: LabelPickerModel) {
+        self.model = model
     }
 
     var body: some View {
@@ -40,6 +39,9 @@ struct LabelPickerView: View {
         }
         .padding(.horizontal, DS.Spacing.extraLarge)
         .background(DS.Color.Background.secondary)
+        .task {
+            await model.fetchLabels()
+        }
     }
 }
 
@@ -74,9 +76,14 @@ extension LabelPickerView {
     @MainActor
     private var labelList: some View {
         List {
-            ForEach(labels) { item in
+            ForEach(model.labels) { uiModel in
                 VStack {
-                    LabelPickerCell(label: item)
+                    LabelPickerCell(uiModel: uiModel)
+                        .onTapGesture {
+                            Task {
+                                await model.onLabelTap(labelId: uiModel.id)
+                            }
+                        }
                 }
             }
             .listRowBackground(DS.Color.Background.norm)
@@ -92,7 +99,9 @@ extension LabelPickerView {
     private var buttonDone: some View {
         HStack {
             Button(action: {
-
+                Task {
+                    await model.onDoneTap(alsoArchive: isArchiveSelected)
+                }
             }, label: {
                 Text(LocalizationTemp.Common.done)
                     .font(.subheadline)
@@ -108,27 +117,42 @@ extension LabelPickerView {
     }
 }
 
-struct LabelUIModel: Identifiable {
+struct CustomLabelUIModel: Identifiable {
     let id: PMLocalLabelId
     let name: String
     let color: Color
+    let itemsWithLabel: Quantifier
 }
 
 private struct LabelPickerCell: View {
-    let label: LabelUIModel
+    let uiModel: CustomLabelUIModel
+
+    private var selectionImage: UIImage {
+        if uiModel.itemsWithLabel.some {
+            return DS.Icon.icMinus
+        }
+        return DS.Icon.icCheckmark
+    }
 
     var body: some View {
         HStack() {
             Circle()
                 .frame(width: 12)
-                .foregroundStyle(label.color)
+                .foregroundStyle(uiModel.color)
                 .padding(.leading, DS.Spacing.tiny)
-            Text(label.name)
+            Text(uiModel.name)
                 .font(DS.Font.body3)
                 .foregroundStyle(DS.Color.Text.weak)
+                .lineLimit(1)
                 .padding(.leading, DS.Spacing.moderatelyLarge)
+                .padding(.leading, DS.Spacing.small)
+            Spacer()
+            Image(uiImage: selectionImage)
+                .opacity(uiModel.itemsWithLabel.atLeastOne ? 1 : 0)
+                .foregroundStyle(DS.Color.Brand.norm)
         }
-        .padding(.vertical, 10)
+        .contentShape(Rectangle())
+        .padding(.vertical, DS.Spacing.standard)
         .alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
             return -2000
         }
@@ -154,10 +178,23 @@ private struct AddNewLabel: View {
     }
 }
 
+//#Preview {
+//    let colors: [Color] = [.red, .orange, .cyan, .purple, .yellow, .brown, .pink]
+//    let labels = ["Work", "Holiday 🏝️", "Newsletters"].map({ str in
+//        CustomLabelUIModel(id: UInt64.random(in: 1...UInt64.max), name: str, color: colors.randomElement()!, isSelected: true)
+//    })
+//    return LabelPickerView(model: .init(labels: labels))
+//}
+
 #Preview {
-    let colors: [Color] = [.red, .orange, .cyan, .purple, .yellow, .brown, .pink]
-    let labels = ["Work", "Holiday 🏝️", "Newsletters"].map({ str in
-        LabelUIModel(id: UInt64.random(in: 1...UInt64.max), name: str, color: colors.randomElement()!)
-    })
-    return LabelPickerView(labels: labels)
+    ZStack {
+        List {
+            LabelPickerCell(uiModel: .init(id: 1, name: "Holidays and a very long name to check how it behaves", color: .pink, itemsWithLabel: .all))
+            LabelPickerCell(uiModel: .init(id: 1, name: "Work", color: .blue, itemsWithLabel: .some))
+            LabelPickerCell(uiModel: .init(id: 1, name: "Sports", color: .green, itemsWithLabel: .none))
+        }
+        .listStyle(.inset)
+        .padding(20)
+    }
+    .background(DS.Color.Background.secondary)
 }

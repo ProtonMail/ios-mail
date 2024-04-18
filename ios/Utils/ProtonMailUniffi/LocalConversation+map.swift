@@ -30,7 +30,7 @@ extension LocalConversation {
             id: String(firstLabel.id),
             color: Color(hex: firstLabel.color),
             text: firstLabel.name,
-            numExtraLabels: labels.count
+            allLabelIds: Set(labels.map(\.id))
         )
     }
 

@@ -94,7 +94,7 @@ extension SidebarScreenModel: MailboxLiveQueryUpdatedCallback {
     
     func onUpdated() {
         Task {
-            await updateData()
+            updateData()
         }
     }
 }
