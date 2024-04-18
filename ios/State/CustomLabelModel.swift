@@ -23,23 +23,21 @@ import proton_mail_uniffi
  Source of truth for custom labels that are applicable to Mailbox messages or conversations
  */
 final class CustomLabelModel: ObservableObject {
-    private let _labelsPublisher: CurrentValueSubject<[LocalLabel], Never> = .init([])
-    var labelsPublisher: AnyPublisher<[LocalLabel], Never> {
-        _labelsPublisher.eraseToAnyPublisher()
-    }
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies = .init()) {
         self.dependencies = dependencies
     }
 
-    func fetchLabels() async {
+    func fetchLabels() async -> [LocalLabel] {
         do {
-            guard let userSession = try await dependencies.appContext.userContextForActiveSession() else { return }
-            let applicableLabels = try userSession.applicableLabels()
-            _labelsPublisher.value = applicableLabels
+            guard let userSession = try await dependencies.appContext.userContextForActiveSession() else {
+                return []
+            }
+            return try userSession.applicableLabels()
         } catch {
             AppLogger.log(error: error)
+            return []
         }
     }
 }

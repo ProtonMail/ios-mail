@@ -19,11 +19,29 @@ import DesignSystem
 import SwiftUI
 
 struct LabelPickerView: View {
-    @State private var isArchiveSelected: Bool = false
-    @ObservedObject private var model: LabelPickerModel
+    typealias OnDoneTap = (_ selectedLabelIds: Set<PMLocalLabelId>, _ alsoArchive: Bool) -> Void
 
-    init(model: LabelPickerModel) {
-        self.model = model
+    @State private var isArchiveSelected: Bool = false
+    @State private var labels: [LabelPickerCellUIModel] = []
+
+    private let customLabelModel: CustomLabelModel
+    private let labelsOfSelectedItems: () -> [Set<PMLocalLabelId>]
+    private let onDone: OnDoneTap
+
+    /// - Parameters:
+    ///   - customLabelModel: model that provides the list of custom labels
+    ///   - labelsOfSelectedItems: array of label id sets, representing the labels the selected mailbox items have.
+    ///   This information will be transformed to show which labels are applied to all / some / none.
+    ///   e.g. [(1,2),( ),(2,4),(2)]
+    ///   - onDoneTap: closure returning the user's label picks
+    init(
+        customLabelModel: CustomLabelModel,
+        labelsOfSelectedItems: @escaping () -> [Set<PMLocalLabelId>],
+        onDoneTap: @escaping OnDoneTap
+    ) {
+        self.customLabelModel = customLabelModel
+        self.labelsOfSelectedItems = labelsOfSelectedItems
+        self.onDone = onDoneTap
     }
 
     var body: some View {
@@ -40,7 +58,7 @@ struct LabelPickerView: View {
         .padding(.horizontal, DS.Spacing.extraLarge)
         .background(DS.Color.Background.secondary)
         .task {
-            await model.fetchLabels()
+            await initialiseState()
         }
     }
 }
@@ -76,12 +94,12 @@ extension LabelPickerView {
     @MainActor
     private var labelList: some View {
         List {
-            ForEach(model.labels) { uiModel in
+            ForEach(labels) { uiModel in
                 VStack {
                     LabelPickerCell(uiModel: uiModel)
                         .onTapGesture {
                             Task {
-                                await model.onLabelTap(labelId: uiModel.id)
+                                await onCellTap(for: uiModel)
                             }
                         }
                 }
@@ -99,9 +117,7 @@ extension LabelPickerView {
     private var buttonDone: some View {
         HStack {
             Button(action: {
-                Task {
-                    await model.onDoneTap(alsoArchive: isArchiveSelected)
-                }
+                onDoneTapped()
             }, label: {
                 Text(LocalizationTemp.Common.done)
                     .font(.subheadline)
@@ -117,7 +133,48 @@ extension LabelPickerView {
     }
 }
 
-struct CustomLabelUIModel: Identifiable {
+// MARK: logic
+
+extension LabelPickerView {
+
+    private func initialiseState() async {
+        let labelsOfSelectedItems = labelsOfSelectedItems()
+        let selectedLabelIds: [PMLocalLabelId: Quantifier] = labelsOfSelectedItems
+            .reduce([PMLocalLabelId: Int](), { partialResult, currentItem in
+                var newPartialResult = partialResult
+                currentItem.forEach { labelId in
+                    if let count = newPartialResult[labelId] {
+                        newPartialResult[labelId] = count + 1
+                    } else {
+                        newPartialResult[labelId] = 1
+                    }
+                }
+                return newPartialResult
+            })
+            .mapValues {
+                $0 == labelsOfSelectedItems.count ? .all : .some
+            }
+        labels = await customLabelModel.fetchLabels().map { $0.toLabelPickerCellUIModel(selectedIds: selectedLabelIds) }
+    }
+
+    private func onCellTap(for tappedModel: LabelPickerCellUIModel) async {
+        var selectedIds: [PMLocalLabelId: Quantifier] = labels
+            .reduce([:]) { partialResult, uiModel in
+                var result = partialResult
+                result[uiModel.id] = uiModel.itemsWithLabel
+                return result
+            }
+        selectedIds[tappedModel.id] = tappedModel.itemsWithLabel.atLeastOne ? Optional.none : .all
+        labels = await customLabelModel.fetchLabels().map { $0.toLabelPickerCellUIModel(selectedIds: selectedIds) }
+    }
+
+    private func onDoneTapped() {
+        let selectedLabelIds = Set(labels.filter { $0.itemsWithLabel.atLeastOne }.map(\.id))
+        onDone(selectedLabelIds, isArchiveSelected)
+    }
+}
+
+struct LabelPickerCellUIModel: Identifiable {
     let id: PMLocalLabelId
     let name: String
     let color: Color
@@ -125,7 +182,7 @@ struct CustomLabelUIModel: Identifiable {
 }
 
 private struct LabelPickerCell: View {
-    let uiModel: CustomLabelUIModel
+    let uiModel: LabelPickerCellUIModel
 
     private var selectionImage: UIImage {
         if uiModel.itemsWithLabel.some {
@@ -181,9 +238,9 @@ private struct AddNewLabel: View {
 //#Preview {
 //    let colors: [Color] = [.red, .orange, .cyan, .purple, .yellow, .brown, .pink]
 //    let labels = ["Work", "Holiday 🏝️", "Newsletters"].map({ str in
-//        CustomLabelUIModel(id: UInt64.random(in: 1...UInt64.max), name: str, color: colors.randomElement()!, isSelected: true)
+//        LabelPickerCellUIModel(id: UInt64.random(in: 1...UInt64.max), name: str, color: colors.randomElement()!, itemsWithLabel: .all)
 //    })
-//    return LabelPickerView(model: .init(labels: labels))
+////    return LabelPickerView(customLabelModel: <#T##CustomLabelModel#>, labelsOfSelectedItems: <#T##() -> [Set<PMLocalLabelId>]#>, onDoneTap: <#T##LabelPickerView.OnDoneTap##LabelPickerView.OnDoneTap##(_ selectedLabelIds: Set<PMLocalLabelId>, _ alsoArchive: Bool) -> Void#>
 //}
 
 #Preview {

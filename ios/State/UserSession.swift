@@ -51,6 +51,7 @@ actor UserSession {
             return activeSession
         }
         guard let firstStoredSession = try mailContext.storedSessions().first else {
+            AppLogger.log(message: "no active user session found", category: .userSessions, isError: true)
             return nil
         }
         let newUserContext = try mailContext.userContextFromSession(session: firstStoredSession, cb: SessionDelegate.shared)

@@ -20,8 +20,8 @@ import proton_mail_uniffi
 
 extension LocalLabel {
 
-    func toCustomLabelUIModel(selectedIds: [PMLocalLabelId: Quantifier]) -> CustomLabelUIModel {
+    func toLabelPickerCellUIModel(selectedIds: [PMLocalLabelId: Quantifier]) -> LabelPickerCellUIModel {
         let quantifier = selectedIds[id] ?? .none
-        return CustomLabelUIModel(id: id, name: name, color: Color(hex: color), itemsWithLabel: quantifier)
+        return LabelPickerCellUIModel(id: id, name: name, color: Color(hex: color), itemsWithLabel: quantifier)
     }
 }

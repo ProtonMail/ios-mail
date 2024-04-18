@@ -19,8 +19,7 @@ import DesignSystem
 import SwiftUI
 
 protocol MailboxActionable {
-    
-    @MainActor
+
     func labelsOfSelectedItems() -> [Set<PMLocalLabelId>]
 
     @MainActor 
@@ -104,19 +103,18 @@ struct MailboxActionBarView: View {
     }
 
     private var labelPicker: some View {
-        let model = LabelPickerModel(
-            model: customLabelModel,
-            labelIdsByItem: mailboxActionable.labelsOfSelectedItems(),
+        LabelPickerView(
+            customLabelModel: customLabelModel,
+            labelsOfSelectedItems: mailboxActionable.labelsOfSelectedItems,
             onDoneTap: { selectedLabelIds, alsoArchive in
                 showLabelPicker.toggle()
                 mailboxActionable.onLabelsSelected(labelIds: selectedLabelIds, alsoArchive: alsoArchive)
             }
         )
-        return LabelPickerView(model: model)
-            .safeAreaPadding(.top, DS.Spacing.extraLarge)
-            .presentationContentInteraction(.scrolls)
-            .presentationCornerRadius(24)
-            .presentationDetents([.medium, .large])
+        .safeAreaPadding(.top, DS.Spacing.extraLarge)
+        .presentationContentInteraction(.scrolls)
+        .presentationCornerRadius(24)
+        .presentationDetents([.medium, .large])
     }
 }
 
