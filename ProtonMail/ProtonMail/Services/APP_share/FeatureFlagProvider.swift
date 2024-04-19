@@ -42,7 +42,8 @@ struct FeatureFlagProviderImpl: FeatureFlagProvider {
     private func localOverride(for featureFlag: MailFeatureFlag) -> Bool? {
         switch featureFlag {
         case .autoImportContacts:
-            return Application.isDebugOrEnterprise
+            let result = ProcessInfo.isRunningUnitTests ? true : nil
+            return result
         default:
             return nil
         }

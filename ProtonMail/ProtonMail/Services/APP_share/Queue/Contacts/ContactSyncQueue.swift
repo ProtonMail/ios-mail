@@ -216,8 +216,7 @@ extension ContactsSyncQueue: AsyncOperationDelegate {
 
             if let error = error as? NSError {
                 let resolution = operationErrorHandler.onOperationError(error)
-                let message = "operation resolution \(resolution) for \(taskID)"
-                SystemLogger.log(message: message, category: .contacts, isError: true)
+                logResolutionError(message: "Operation resolution \(resolution) for \(taskID)", error: error)
 
                 switch resolution {
                 case .skipTask:
@@ -237,6 +236,15 @@ extension ContactsSyncQueue: AsyncOperationDelegate {
             // we publish to obervers outside the serial queue to avoid potential deadlocks
             _protonStorageQuotaExceeded.send()
         }
+    }
+
+    private func logResolutionError(message: String, error: Error) {
+        let message = """
+        \(message).
+        Internet status= \(dependencies.internetConnectionStatusProvider.status).
+        Error = \(error).
+        """
+        SystemLogger.log(message: message, category: .contacts, isError: true)
     }
 
     private func enqueueOperationAgain(taskID: UUID) {
