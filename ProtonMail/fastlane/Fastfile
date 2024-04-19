@@ -154,7 +154,7 @@ platform :ios do
     changelog = set_up_changelog(latest_build_number)
 
     # Set build version by git log numbers
-    bundle_version = sh("./setup_bundle_version.sh")
+    bundle_version = sh("./setup_bundle_version.sh 10209")
 
     build_release_app(true)
 
