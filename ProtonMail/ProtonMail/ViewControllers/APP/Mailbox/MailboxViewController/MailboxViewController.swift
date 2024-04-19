@@ -616,7 +616,9 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             return
         }
 
-        let upsellPage = UpsellPage(model: upsellPageModel, onPurchaseTapped: purchasePlan)
+        let upsellPage = UpsellPage(model: upsellPageModel) { [unowned self] selectedProductId in
+            purchasePlan(storeKitProductId: selectedProductId, upsellPageModel: upsellPageModel)
+        }
         let hostingController = SheetLikeSpotlightViewController(rootView: upsellPage)
         hostingController.modalTransitionStyle = .crossDissolve
         present(hostingController, animated: false)
@@ -625,12 +627,14 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         setupRightButtons(viewModel.listEditing, isStorageExceeded: viewModel.user.isStorageExceeded)
     }
 
-    private func purchasePlan(storeKitProductId: String) {
+    private func purchasePlan(storeKitProductId: String, upsellPageModel: UpsellPageModel) {
         Task { [weak self] in
             guard let self else { return }
 
             lockUI()
+            upsellPageModel.isBusy = true
             let planPurchased = await self.viewModel.purchasePlan(storeKitProductId: storeKitProductId)
+            upsellPageModel.isBusy = false
             unlockUI()
 
             if planPurchased {

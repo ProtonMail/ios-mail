@@ -19,7 +19,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct UpsellPage: View {
-    private let model: UpsellPageModel
+    @ObservedObject private var model: UpsellPageModel
     private let onPurchaseTapped: (String) -> Void
 
     @Environment(\.verticalSizeClass)
@@ -116,11 +116,18 @@ public struct UpsellPage: View {
     }
 
     private var tiles: some View {
-        ForEach(model.plan.purchasingOptions, id: \.identifier) { option in
-            UpsellCTATile(planName: model.plan.name, purchasingOption: option) {
-                onPurchaseTapped(option.identifier)
+        ZStack {
+            ForEach(model.plan.purchasingOptions, id: \.identifier) { option in
+                UpsellCTATile(planName: model.plan.name, purchasingOption: option) {
+                    onPurchaseTapped(option.identifier)
+                }
+                .fixedSize()
             }
-            .fixedSize()
+            .visible(!model.isBusy)
+
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                .visible(model.isBusy)
         }
     }
 }

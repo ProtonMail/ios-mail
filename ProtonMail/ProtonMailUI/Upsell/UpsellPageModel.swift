@@ -17,7 +17,7 @@
 
 import ProtonCoreUIFoundations
 
-public struct UpsellPageModel: Equatable {
+public final class UpsellPageModel: ObservableObject {
     public struct Plan: Equatable {
         public let name: String
         public let perks: [Perk]
@@ -63,6 +63,7 @@ public struct UpsellPageModel: Equatable {
     }
 
     public let plan: Plan
+    @Published public var isBusy = false
 
     public init(plan: Plan) {
         self.plan = plan
