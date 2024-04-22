@@ -248,7 +248,6 @@ extension SearchViewModel {
             labelId: labelID.rawValue,
             title: .actionSheetTitle(selectedCount: selectedIDs.count, viewMode: .singleMessage),
             locationViewMode: .singleMessage,
-            isSnoozeEnabled: user.isSnoozeEnabled,
             isForSearch: true
         )
     }

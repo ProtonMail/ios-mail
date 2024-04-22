@@ -232,8 +232,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         return .init(
             labelId: labelId.rawValue,
             title: .actionSheetTitle(selectedCount: selectedIDs.count, viewMode: locationViewMode),
-            locationViewMode: locationViewMode,
-            isSnoozeEnabled: user.isSnoozeEnabled
+            locationViewMode: locationViewMode
         )
     }
 
