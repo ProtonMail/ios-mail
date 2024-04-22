@@ -1950,46 +1950,46 @@
 "(Attendance optional)" = "(Kehadiran tidak diwajibkan)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "Setiap %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "pada %@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "pada %@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "tanggal %u";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "sampai %@";
 
 /* Occurring every day */
-"Daily" = "Daily";
+"Daily" = "Harian";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "Mingguan";
 
 /* Occurring every month */
-"Monthly" = "Monthly";
+"Monthly" = "Bulanan";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "Tahunan";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "pertama";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "kedua";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "ketiga";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "keempat";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "terakhir";
 
 /* Menu title */
 "Max Storage" = "Penyimpanan Maks";
@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "Ubah kata sandi kotak surat";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "Jadwalkan pengiriman dan penundaan";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Dukungan domain email khusus";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "Dan %u fitur premium lainnya";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetri anonim";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Apabila aplikasi Anda mengalami crash, laporan crash terkait akan dikirim kepada tim kami beserta dengan rinciannya. Laporan ini hanya akan digunakan untuk meningkatkan kinerja aplikasi.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Tingkatkan ke %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "Buka ruang lebih dan fitur premium";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = "Untuk ruang lebih dan fitur premium di semua layanan Proton.";

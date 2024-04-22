@@ -1947,49 +1947,49 @@
 "I might attend" = "Podria assistir";
 
 /* Information that the user is an optional participant */
-"(Attendance optional)" = "(Attendance optional)";
+"(Attendance optional)" = "(Assistència opcional)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "Cada %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "el %@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "al %@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "el dia %u";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "fins al %@";
 
 /* Occurring every day */
-"Daily" = "Daily";
+"Daily" = "Cada dia";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "Cada setmana";
 
 /* Occurring every month */
-"Monthly" = "Monthly";
+"Monthly" = "Cada mes";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "Cada any";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "primer";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "segon";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "tercer";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "quart";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "últim";
 
 /* Menu title */
 "Max Storage" = "Emmagatzematge màxim";
@@ -1998,7 +1998,7 @@
 "Storage: %@ full" = "Emmagatzematge: %@ ple";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "Unitat: %@ plena";
 
 /* Official badge next to sender's name */
 "Official" = "Oficial";
@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "Canviar contrasenya de la bústia de correu";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "Schedule send and snooze";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Custom email domain support";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "And %u more premium features";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetria anònima";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Si l'aplicació es falla, s'enviarà un informe als nostres enginyers amb detalls de la causa. Només s'utilitzaran per a millorar l'aplicació.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Upgrade to %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = " For more storage and all premium features across all Proton services.";

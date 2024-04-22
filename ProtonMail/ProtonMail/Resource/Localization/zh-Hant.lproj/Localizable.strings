@@ -1947,7 +1947,7 @@
 "I might attend" = "或許參加";
 
 /* Information that the user is an optional participant */
-"(Attendance optional)" = "(Attendance optional)";
+"(Attendance optional)" = "(非必要出席)";
 
 /* As in: Every 3 days */
 "Every %@" = "Every %@";
@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "變更郵箱密碼";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "Schedule send and snooze";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Custom email domain support";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "And %u more premium features";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "匿名遙測";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "如果應用程式崩潰，系統將向我們的工程師發送詳細的崩潰報告。這些報告僅用於改進應用程式。";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Upgrade to %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = " For more storage and all premium features across all Proton services.";

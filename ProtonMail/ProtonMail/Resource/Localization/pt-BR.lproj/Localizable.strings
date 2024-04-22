@@ -1998,7 +1998,7 @@
 "Storage: %@ full" = "Armazenamento: %@ cheio";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "Armazenamento: %@ cheio";
 
 /* Official badge next to sender's name */
 "Official" = "Oficial";
@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "Alterar senha da caixa de correio";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "Agendamento de envio e adiamento";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Suporte para domínios de email personalizados";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "E %u mais recursos premium";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetria anônima";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Se o aplicativo travar, um relatório será enviado para nossos engenheiros com detalhes da causa. Estes serão utilizados apenas para melhorar o aplicativo.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Faça upgrade para %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "Obtenha mais armazenamento e recursos premium.";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = " Para mais armazenamento e todos os recursos premium para todos os serviços Proton.";

@@ -1947,7 +1947,7 @@
 "I might attend" = "Katılabilirim";
 
 /* Information that the user is an optional participant */
-"(Attendance optional)" = "(Attendance optional)";
+"(Attendance optional)" = "(Katılım isteğe bağlı)";
 
 /* As in: Every 3 days */
 "Every %@" = "Her %@";
@@ -1965,16 +1965,16 @@
 "until %@" = "%@ tarihine kadar";
 
 /* Occurring every day */
-"Daily" = "Günlük";
+"Daily" = "Günde bir";
 
 /* Occurring every week */
-"Weekly" = "Haftalık";
+"Weekly" = "Haftada bir";
 
 /* Occurring every month */
-"Monthly" = "Aylık";
+"Monthly" = "Ayda bir";
 
 /* Occurring every year */
-"Yearly" = "Yıllık";
+"Yearly" = "Yılda bir";
 
 /* \"1st\" spelled out */
 "first" = "ilk";
@@ -1989,7 +1989,7 @@
 "fourth" = "dördüncü";
 
 /* Opposite of \"first\" */
-"last" = "son";
+"last" = "sonuncu";
 
 /* Menu title */
 "Max Storage" = "En fazla depolama alanı";
@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "Posta kutusu parolasını değiştir";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "Gönderimi zamanla ve sustur";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Özel e-posta etki alanı desteği";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "Ve %u diğer ücretli özellik";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonim kullanım verileri";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Uygulama çökerse, mühendislerimize nedeniyle ilgili bilgilerin bulunduğu bir bildirim gönderilir. Bu veriler yalnızca uygulamayı iyileştirmek için kullanılır.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "%@ tarifesine yükselt";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "Daha fazla depolama alanı ve ücretli özellikler alın.";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = " Daha fazla depolama alanı ve tüm Proton hizmetlerindeki tüm ücretli özellikler için.";

@@ -1947,49 +1947,49 @@
 "I might attend" = "S-ar putea";
 
 /* Information that the user is an optional participant */
-"(Attendance optional)" = "(Attendance optional)";
+"(Attendance optional)" = "(Prezență opțională)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "La fiecare %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "%@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "%@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "în ziua %u";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "până la %@";
 
 /* Occurring every day */
-"Daily" = "Daily";
+"Daily" = "Zilnic";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "Săptămânal";
 
 /* Occurring every month */
-"Monthly" = "Monthly";
+"Monthly" = "Lunar";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "Anual";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "prima";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "a doua";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "a treia";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "a patra";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "ultima";
 
 /* Menu title */
 "Max Storage" = "Spațiu stocare maxim";
@@ -1998,7 +1998,7 @@
 "Storage: %@ full" = "Spațiu: %@ ocupat";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "Drive: %@ ocupat";
 
 /* Official badge next to sender's name */
 "Official" = "Oficial";
@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "Schimbare parolă mesaje";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "Programare trimitere și amânare";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Suport pentru domeniu personal de e-mail";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "Și încă alte %u funcții premium";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetrie anonimă";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Dacă aplicația se blochează, va fi trimis un raport inginerilor noștri cu detalii despre cauză. Acestea vor fi folosite doar pentru a îmbunătăți aplicația.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Trecere la %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "Pentru a debloca mai mult spațiu și funcții premium.";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = "Pentru mai mult spațiu și toate funcțiile premium în toate serviciile Proton.";

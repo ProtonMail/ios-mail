@@ -1950,19 +1950,19 @@
 "(Attendance optional)" = "(참석 선택사항)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "매 %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "%@에";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "%@에";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "%u일에";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "%@까지";
 
 /* Occurring every day */
 "Daily" = "매일";
@@ -1986,10 +1986,10 @@
 "third" = "세 번째";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "네 번째";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "마지막";
 
 /* Menu title */
 "Max Storage" = "최대 저장공간";
@@ -1998,7 +1998,7 @@
 "Storage: %@ full" = "저장공간 %@ 채워짐";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "Drive: %@ 채워짐";
 
 /* Official badge next to sender's name */
 "Official" = "공식";
@@ -2100,7 +2100,7 @@
 "Up to 3 custom email domains" = "최대 3개 사용자 지정 이메일 도메인";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "나의 이메일 숨기기 별명";
+"Hide My Email aliases" = "나의 이메일 숨기기 별칭";
 
 /* One of schedule time options */
 "In the morning" = "아침";
@@ -2355,7 +2355,7 @@
 "Unlock custom snooze times when you upgrade" = "업그레이드로 사용자 지정 방해 금지 모드를 잠금 해제하세요";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "최대 15개 이메일 주소/별명";
+"Up to 15 email addresses/aliases" = "최대 15개 이메일 주소/별칭";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "무제한 폴더, 라벨, 필터";
@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "메일함 비밀번호 변경";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "스케줄 전송됨 및 방해 금지됨";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "사용자 지정 이메일 도메인 지원";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "그리고 %u개 이상의 프리미엄 기능";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "익명 원격 측정";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "앱 크래시가 일어난다면 원인의 세부 사항이 포함된 보고서가 엔지니어들에게 보내집니다. 이것은 오직 앱 개선 용도로만 쓰입니다.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "%@로 업그레이드";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "더 많은 저장 공간과 프리미엄 기능을 잠금 해제하기 위해.";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = " 더 많은 스토리지와 Proton 서비스를 아우르는 프리미엄 기능을 위해";

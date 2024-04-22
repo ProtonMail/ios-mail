@@ -1947,7 +1947,7 @@
 "I might attend" = "Можливо братиму";
 
 /* Information that the user is an optional participant */
-"(Attendance optional)" = "(Attendance optional)";
+"(Attendance optional)" = "(Участь необов'язкова)";
 
 /* As in: Every 3 days */
 "Every %@" = "Every %@";
@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "Змінити пароль поштової скриньки";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "Schedule send and snooze";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Custom email domain support";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "And %u more premium features";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Анонімна телеметрія";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Якщо застосунок аварійно закриється, нашим інженерам буде надіслано звіт з детальною інформацією про причину збою. Ці дані будуть використані лише для вдосконалення застосунку.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Upgrade to %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = " For more storage and all premium features across all Proton services.";

@@ -382,7 +382,7 @@
 "Share contact" = "Del kontakt";
 
 /* title */
-"Notes" = "Notater";
+"Notes" = "Noter";
 
 /* Action */
 "Upload device contacts" = "Upload enhedskontakter";
@@ -1322,7 +1322,7 @@
  The title of the star action in action sheet
  VoiceOver title of star button in the message view
 */
-"Star" = "Stjerne";
+"Star" = "Stjernemarkér";
 
 /* The title of the star action in action sheet */
 "Unstar" = "Fjern stjernemarkering";
@@ -1947,49 +1947,49 @@
 "I might attend" = "Jeg deltager måske";
 
 /* Information that the user is an optional participant */
-"(Attendance optional)" = "(Attendance optional)";
+"(Attendance optional)" = "(Deltagelse valgfri)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "Hver %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "%@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "den %@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "på dag %u";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "indtil %@";
 
 /* Occurring every day */
-"Daily" = "Daily";
+"Daily" = "Dagligt";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "Ugentligt";
 
 /* Occurring every month */
-"Monthly" = "Monthly";
+"Monthly" = "Månedligt";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "Årligt";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "første";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "anden";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "tredje";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "fjerde";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "sidste";
 
 /* Menu title */
 "Max Storage" = "Max lagerplads";
@@ -1998,7 +1998,7 @@
 "Storage: %@ full" = "Lagerplads: %@ fyldt";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "Lagerplads: %@ fyldt";
 
 /* Official badge next to sender's name */
 "Official" = "Officiel";
@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "Skift postkasseadgangskode";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "Planlæg afsendelse og udsæt";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Custom email domain support";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "And %u more premium features";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonym telemetri";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Hvis appen bryder sammen, vil der blive sendt en rapport til vores teknikere med oplysninger om årsagen. Disse vil kun blive brugt til at forbedre appen.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Upgrade to %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = " For more storage and all premium features across all Proton services.";

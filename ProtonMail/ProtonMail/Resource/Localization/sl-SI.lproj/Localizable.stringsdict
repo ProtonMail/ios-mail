@@ -13,13 +13,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%u times</string>
+        <string>%u krat</string>
         <key>one</key>
-        <string>%u time</string>
+        <string>%u-krat</string>
         <key>two</key>
-        <string>%u times</string>
+        <string>%u krat</string>
         <key>few</key>
-        <string>%u times</string>
+        <string>%u krat</string>
       </dict>
     </dict>
     <key>%u participants</key>

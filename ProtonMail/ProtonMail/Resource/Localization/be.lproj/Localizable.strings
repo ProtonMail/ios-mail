@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "Змяніць пароль паштовай скрыні";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "Планаванне адпраўкі і адкладанне";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Падтрымка карыстальніцкіх даменаў";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "І яшчэ %u прэміяльныя функцыі";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ананімная тэлеметрыя";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Справаздача з падрабязнасцямі будзе адпраўлена нашым інжынерам у выпадку, калі ў праграме адбыўся збой. Гэтыя даныя выкарыстоўваюцца толькі для паляпшэння праграмы.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Палепшыць да %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "Для разблакіроўкі большага памеру сховішча і прэміяльных функцый.";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = " Для разблакіроўкі большага памеру сховішча і ўсіх прэміяльных функцый паміж усімі сэрвісамі Proton.";

@@ -1947,49 +1947,49 @@
 "I might attend" = "ალბათ, დავესწრები";
 
 /* Information that the user is an optional participant */
-"(Attendance optional)" = "(Attendance optional)";
+"(Attendance optional)" = "(დასწრება არასავალდებულოა)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "ყოველი %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "%@ - ზე";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "%@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "დღე %u";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "%@-მდე";
 
 /* Occurring every day */
-"Daily" = "Daily";
+"Daily" = "ყოველდღიურად";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "კვირაში ერთხელ";
 
 /* Occurring every month */
-"Monthly" = "Monthly";
+"Monthly" = "თვეში ერთხელ";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "წლიურად";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "პირველი";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "მეორე";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "მესამე";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "მეოთხე";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "ბოლო";
 
 /* Menu title */
 "Max Storage" = "მაქს საცავი";
@@ -1998,7 +1998,7 @@
 "Storage: %@ full" = "საცავი: %@ დაკავებულია";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "Drive: %@ დაკავებულია";
 
 /* Official badge next to sender's name */
 "Official" = "ოფიციალური";
@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "საფოსტო ყუთის პაროლის შეცვლა";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "გაგზავნისა და დადუმების დაგეგმვა";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "თქვენი ელფოსტის დომენების მხარდაჭერა";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "და კიდევ %u ფასიანი ფუნქცია";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "ანონიმური ტელემეტრია";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "თუ აპი გაითიშება, ჩვენს ინჟინრებს მიუვათ ანგარიშის დეტალები, რატომ მოხდა ეს. ამ მონაცემებს, მხოლოდ, აპის გაუმჯობესებისთვის ვიყენებთ.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "სატარიფო გეგმის განახლება: %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "მეტი საცავი და ფასიანი თვისებების მისაღებად.";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = " მეტი საცავისა და ყველა ფასიანი ფუნქციისთვის Proton-ის ყველა სერვისისთვის.";
