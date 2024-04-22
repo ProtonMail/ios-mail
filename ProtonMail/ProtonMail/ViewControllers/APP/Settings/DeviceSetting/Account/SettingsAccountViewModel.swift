@@ -150,10 +150,7 @@ final class SettingsAccountViewModel {
             items.append(.accountRecovery)
         }
         items.append(.storage)
-
-        #if DEBUG
         items.append(.privacyAndData)
-        #endif
         return items
     }
 

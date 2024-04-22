@@ -36,13 +36,8 @@ class AnalyticsTests: XCTestCase {
         analyticsMock = nil
     }
 
-    func testSetup_inDebug() {
-        sut.setup(isInDebug: true, environment: .production)
-        XCTAssertFalse(sut.isEnabled)
-    }
-
     func testSetup_notInDebug_isProduction() throws {
-        sut.setup(isInDebug: false, environment: .production)
+        sut.setup(environment: .production, reportCrashes: true, telemetry: true)
         XCTAssertTrue(sut.isEnabled)
         XCTAssertEqual(analyticsMock.environment, "production")
         let isDebug = try XCTUnwrap(analyticsMock.debug)
@@ -50,7 +45,7 @@ class AnalyticsTests: XCTestCase {
     }
 
     func testSetup_notInDebug_isEnterprise() throws {
-        sut.setup(isInDebug: false, environment: .enterprise)
+        sut.setup(environment: .enterprise, reportCrashes: true, telemetry: true)
         XCTAssertTrue(sut.isEnabled)
         XCTAssertEqual(analyticsMock.environment, "enterprise")
         let isDebug = try XCTUnwrap(analyticsMock.debug)
@@ -58,7 +53,7 @@ class AnalyticsTests: XCTestCase {
     }
 
     func testSendEvent_whenSetupCalled_shouldSendTheEventSuccessfully() {
-        sut.setup(isInDebug: false, environment: .production)
+        sut.setup(environment: .production, reportCrashes: true, telemetry: true)
         sut.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
         XCTAssertEqual(analyticsMock.event, .userKickedOut(reason: .apiAccessTokenInvalid))
     }
@@ -69,14 +64,14 @@ class AnalyticsTests: XCTestCase {
     }
 
     func testSendEvent_whenDisabled_shouldNotSendTheEvent() {
-        sut.setup(isInDebug: false, environment: .production)
+        sut.setup(environment: .production, reportCrashes: true, telemetry: true)
         sut.disableAnalytics()
         sut.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
         XCTAssertNil(analyticsMock.event)
     }
 
     func testSendError_whenSetupCalled_shouldSendTheErrorSuccessfully() {
-        sut.setup(isInDebug: false, environment: .production)
+        sut.setup(environment: .production, reportCrashes: true, telemetry: true)
         sut.sendError(.sendMessageFail(error: "error desc"))
         XCTAssertEqual(analyticsMock.errorEvent, .sendMessageFail(error: "error desc"))
     }
@@ -87,7 +82,7 @@ class AnalyticsTests: XCTestCase {
     }
 
     func testSendError_whenDisabled_shouldNotSendTheError() {
-        sut.setup(isInDebug: false, environment: .production)
+        sut.setup(environment: .production, reportCrashes: true, telemetry: true)
         sut.disableAnalytics()
         sut.sendError(.sendMessageFail(error: "error desc"))
         XCTAssertNil(analyticsMock.errorEvent)

@@ -95,7 +95,7 @@ class UserManager: ObservableObject {
     private(set) var apiService: APIService
     private(set) var userInfo: UserInfo {
         didSet {
-            updateTelemetry()
+            updateTelemetryAndCatchCrash()
 
             let maxSpace = self.userInfo.maxSpace
             let usedSpace = self.userInfo.usedSpace
@@ -267,14 +267,20 @@ class UserManager: ObservableObject {
     }
 
     func becomeActiveUser() {
-        updateTelemetry()
+        updateTelemetryAndCatchCrash()
         refreshFeatureFlags()
         activatePayments()
         appTelemetry.assignUser(userID: userID)
     }
 
-    private func updateTelemetry() {
-        hasTelemetryEnabled ? appTelemetry.enable() : appTelemetry.disable()
+    func updateTelemetryAndCatchCrash() {
+        guard parentManager?.firstUser?.userID == userID else {
+            return
+        }
+        appTelemetry.configure(
+            telemetry: hasTelemetryEnabled,
+            reportCrashes: userInfo.hasCrashReportingEnabled
+        )
     }
 
     func refreshFeatureFlags() {
@@ -356,6 +362,7 @@ extension UserManager: UserDataSource {
     func updateFromEvents(userSettingsRes: [String: Any]?) {
         if let settings = userSettingsRes {
             userInfo.parse(userSettings: settings)
+            updateTelemetryAndCatchCrash()
             self.save()
         }
     }

@@ -27,9 +27,16 @@ final class PrivacyAndDataSettingViewModel: SwitchToggleVMProtocol {
         .anonymousCrashReport
     ]
     private let dependencies: Dependencies
+    private let analytics: Analytics
 
-    init(dependencies: Dependencies) {
+    init(dependencies: Dependencies, analytics: Analytics = .shared) {
         self.dependencies = dependencies
+        self.analytics = analytics
+    }
+
+    private func configureAnalytics() {
+        guard !Application.isDebug else { return }
+        dependencies.user.updateTelemetryAndCatchCrash()
     }
 }
 
@@ -57,11 +64,30 @@ extension PrivacyAndDataSettingViewModel: SwitchToggleVMInput {
         }
         switch item {
         case .anonymousTelemetry:
-            break
+            dependencies.user.apiService.perform(
+                request: SettingUpdateRequest.telemetry(newStatus),
+                response: VoidResponse()
+            ) { [weak self] _, response in
+                if response.error == nil {
+                    self?.dependencies.user.userInfo.telemetry = newStatus.intValue
+                    self?.dependencies.user.parentManager?.save()
+                    self?.configureAnalytics()
+                }
+                completion(response.error?.toNSError)
+            }
         case .anonymousCrashReport:
-            break
+            dependencies.user.apiService.perform(
+                request: SettingUpdateRequest.crashReports(newStatus),
+                response: VoidResponse()
+            ) { [weak self] _, response in
+                if response.error == nil {
+                    self?.dependencies.user.userInfo.crashReports = newStatus.intValue
+                    self?.dependencies.user.parentManager?.save()
+                    self?.configureAnalytics()
+                }
+                completion(response.error?.toNSError)
+            }
         }
-        completion(nil)
     }
 }
 

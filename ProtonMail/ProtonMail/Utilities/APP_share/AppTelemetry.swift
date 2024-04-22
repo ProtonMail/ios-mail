@@ -16,17 +16,25 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import UIKit
 
 // sourcery: mock
 protocol AppTelemetry {
-    func enable()
+    func configure(telemetry: Bool, reportCrashes: Bool)
     func disable()
     func assignUser(userID: UserID?)
 }
 
 struct MailAppTelemetry: AppTelemetry {
-    func enable() {
-        Analytics.shared.enableAnalytics()
+    func configure(telemetry: Bool, reportCrashes: Bool) {
+        DispatchQueue.main.async {
+            let env: Analytics.Environment = Application.isDebugOrEnterprise ? .enterprise : .production
+            Analytics.shared.setup(
+                environment: env,
+                reportCrashes: reportCrashes,
+                telemetry: telemetry
+            )
+        }
     }
 
     func disable() {

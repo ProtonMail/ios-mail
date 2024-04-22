@@ -139,7 +139,6 @@ extension AppDelegate: UIApplicationDelegate {
         configureCoreLogger()
         configureCrypto()
         configureCoreObservability()
-        configureAnalytics()
         configureAppearance()
         fetchUnauthFeatureFlags()
         DFSSetting.enableDFS = true
@@ -375,23 +374,6 @@ extension AppDelegate {
 
 // MARK: Launch configuration
 extension AppDelegate {
-
-    private func configureAnalytics() {
-#if Enterprise
-    #if DEBUG
-        Analytics.shared.setup(isInDebug: true, environment: .enterprise)
-    #else
-        Analytics.shared.setup(isInDebug: false, environment: .enterprise)
-    #endif
-#else
-    #if DEBUG
-        Analytics.shared.setup(isInDebug: true, environment: .production)
-    #else
-        Analytics.shared.setup(isInDebug: false, environment: .production)
-    #endif
-#endif
-    }
-
     private func configureCoreLogger() {
         let environment: String
         switch BackendConfiguration.shared.environment {

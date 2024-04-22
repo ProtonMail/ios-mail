@@ -19,7 +19,7 @@ import Foundation
 import Sentry
 
 public protocol ProtonMailAnalyticsProtocol: AnyObject {
-    func setup(environment: String, debug: Bool)
+    func setup(environment: String, debug: Bool, reportCrashes: Bool, telemetry: Bool)
     func assignUser(userID: String?)
     func track(event: MailAnalyticsEvent, trace: String?)
     func track(error: MailAnalyticsErrorEvent, trace: String?, fingerprint: Bool)
@@ -28,21 +28,45 @@ public protocol ProtonMailAnalyticsProtocol: AnyObject {
 public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
     private let endPoint: String
     private(set) var isEnabled = false
+    private var telemetry = false
+    private var reportCrashes = false
 
     required public init(endPoint: String) {
         self.endPoint = endPoint
     }
 
-    public func setup(environment: String, debug: Bool = false) {
-        SentrySDK.start { options in
-            options.dsn = self.endPoint
-            options.debug = debug
-            options.environment = environment
-            options.enableAutoPerformanceTracing = false
-            options.enableAppHangTracking = false
-            options.enableCaptureFailedRequests = false
+    public func setup(
+        environment: String,
+        debug: Bool = false,
+        reportCrashes: Bool,
+        telemetry: Bool
+    ) {
+        guard reportCrashes != self.reportCrashes || telemetry != self.telemetry else { return }
+        self.telemetry = telemetry
+        self.reportCrashes = reportCrashes
+        if reportCrashes == false, telemetry == false {
+            SentrySDK.close()
+        } else {
+            SentrySDK.close()
+            SentrySDK.start { options in
+                options.dsn = self.endPoint
+                options.debug = debug
+                options.environment = environment
+                options.enableAutoPerformanceTracing = false
+                options.enableAppHangTracking = false
+                options.enableCaptureFailedRequests = false
+                options.enableTracing = false
+
+                options.enableNetworkTracking = reportCrashes
+                options.enableNetworkBreadcrumbs = reportCrashes
+                options.enableAutoSessionTracking = reportCrashes
+                options.enableAutoBreadcrumbTracking = reportCrashes
+                options.enableWatchdogTerminationTracking = reportCrashes
+
+                options.enableCrashHandler = reportCrashes
+            }
+            isEnabled = true
         }
-        isEnabled = true
     }
 
     public func assignUser(userID: String?) {
@@ -55,7 +79,7 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
     }
 
     public func track(event: MailAnalyticsEvent, trace: String?) {
-        guard isEnabled else { return }
+        guard isEnabled, telemetry else { return }
         let eventToSend = Sentry.Event(level: .info)
         let formattedMessage: String
         if let description = event.description {
@@ -70,7 +94,7 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
     }
 
     public func track(error errorEvent: MailAnalyticsErrorEvent, trace: String?, fingerprint: Bool) {
-        guard isEnabled else { return }
+        guard isEnabled, telemetry else { return }
         let eventToSend = Sentry.Event(level: .error)
         eventToSend.message = SentryMessage(formatted: errorEvent.name)
         if fingerprint {
