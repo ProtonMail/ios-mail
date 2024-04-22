@@ -510,7 +510,7 @@ public protocol LoginFlowProtocol : AnyObject {
     func submitTotp(code: String) async throws 
     
     /**
-     * When the flow is considered logged in, transform it into a MailUserContext.
+     * When the flow is considered logged in, transform it into a `MailUserContext`.
      */
     func toUserContext() throws  -> MailUserSession
     
@@ -636,7 +636,7 @@ open func submitTotp(code: String)async throws  {
 }
     
     /**
-     * When the flow is considered logged in, transform it into a MailUserContext.
+     * When the flow is considered logged in, transform it into a `MailUserContext`.
      */
 open func toUserContext()throws  -> MailUserSession {
     return try  FfiConverterTypeMailUserSession.lift(try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
@@ -932,7 +932,7 @@ open class MailSession:
      * * `log_dir:`: Directory where the log file should be stored.
      * * `log_debug`: Whether to enable debug and trace logs
      * * `api_env_config`: The API environment configuration.
-     * * `key_chain`: KeyChain implementation
+     * * `key_chain`: `KeyChain` implementation
      * * `network_callback`: Optional network status changed callback
      */
 public static func create(sessionDir: String, userDir: String, logDir: String, logDebug: Bool, keyChain: OsKeyChain, apiEnvConfig: ApiEnvConfig?, networkCallback: NetworkStatusChanged?)throws  -> MailSession {
@@ -1512,14 +1512,21 @@ open class Mailbox:
     /**
      * Create a new mailbox for a given label id.
      */
-public convenience init(ctx: MailUserSession, labelId: UInt64) {
+public convenience init(ctx: MailUserSession, labelId: UInt64)async throws  {
     let pointer =
-        try! rustCall() {
-    uniffi_proton_mail_uniffi_fn_constructor_mailbox_new(
-        FfiConverterTypeMailUserSession.lower(ctx),
-        FfiConverterUInt64.lower(labelId),$0
-    )
-}
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_constructor_mailbox_new(FfiConverterTypeMailUserSession.lower(ctx),FfiConverterUInt64.lower(labelId)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_pointer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_pointer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_pointer,
+            liftFunc: FfiConverterTypeMailbox.lift,
+            errorHandler: FfiConverterTypeMailSessionError.lift
+        )
+        
+        .uniffiClonePointer()
     self.init(unsafeFromRawPointer: pointer)
 }
 
@@ -2368,7 +2375,6 @@ public enum MailUserSessionInitializationStage {
     case events
     case labels
     case counters
-    case conversation
     case finished
 }
 
@@ -2392,9 +2398,7 @@ public struct FfiConverterTypeMailUserSessionInitializationStage: FfiConverterRu
         
         case 6: return .counters
         
-        case 7: return .conversation
-        
-        case 8: return .finished
+        case 7: return .finished
         
         default: throw UniffiInternalError.unexpectedEnumCase
         }
@@ -2428,12 +2432,8 @@ public struct FfiConverterTypeMailUserSessionInitializationStage: FfiConverterRu
             writeInt(&buf, Int32(6))
         
         
-        case .conversation:
-            writeInt(&buf, Int32(7))
-        
-        
         case .finished:
-            writeInt(&buf, Int32(8))
+            writeInt(&buf, Int32(7))
         
         }
     }
@@ -3655,7 +3655,7 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_loginflow_submit_totp() != 14120) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_loginflow_to_user_context() != 62451) {
+    if (uniffi_proton_mail_uniffi_checksum_method_loginflow_to_user_context() != 57124) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_maillabelslivequery_disconnect() != 54050) {
@@ -3751,13 +3751,13 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_storedsession_user_id() != 38174) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_constructor_mailsession_create() != 37280) {
+    if (uniffi_proton_mail_uniffi_checksum_constructor_mailsession_create() != 60183) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_inbox() != 4668) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_new() != 1751) {
+    if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_new() != 56045) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_with_remote_id() != 28270) {

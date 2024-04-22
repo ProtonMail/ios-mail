@@ -633,6 +633,7 @@ public struct LocalConversation {
     public var numUnread: UInt64
     public var numAttachments: UInt64
     public var expirationTime: UInt64
+    public var snoozeTime: UInt64
     public var size: UInt64
     public var time: UInt64
     public var labels: [LocalConversationLabel]?
@@ -642,7 +643,7 @@ public struct LocalConversation {
 
     // Default memberwise initializers are never public by default, so we
     // declare one manually.
-    public init(id: LocalConversationId, remoteId: ConversationId?, order: UInt64, subject: String, senders: [MessageAddress], recipients: [MessageAddress], numMessages: UInt64, numMessagesCtx: UInt64, numUnread: UInt64, numAttachments: UInt64, expirationTime: UInt64, size: UInt64, time: UInt64, labels: [LocalConversationLabel]?, starred: Bool, attachments: [LocalAttachmentMetadata]?, avatarInformation: ConversationAvatarInformation) {
+    public init(id: LocalConversationId, remoteId: ConversationId?, order: UInt64, subject: String, senders: [MessageAddress], recipients: [MessageAddress], numMessages: UInt64, numMessagesCtx: UInt64, numUnread: UInt64, numAttachments: UInt64, expirationTime: UInt64, snoozeTime: UInt64, size: UInt64, time: UInt64, labels: [LocalConversationLabel]?, starred: Bool, attachments: [LocalAttachmentMetadata]?, avatarInformation: ConversationAvatarInformation) {
         self.id = id
         self.remoteId = remoteId
         self.order = order
@@ -654,6 +655,7 @@ public struct LocalConversation {
         self.numUnread = numUnread
         self.numAttachments = numAttachments
         self.expirationTime = expirationTime
+        self.snoozeTime = snoozeTime
         self.size = size
         self.time = time
         self.labels = labels
@@ -700,6 +702,9 @@ extension LocalConversation: Equatable, Hashable {
         if lhs.expirationTime != rhs.expirationTime {
             return false
         }
+        if lhs.snoozeTime != rhs.snoozeTime {
+            return false
+        }
         if lhs.size != rhs.size {
             return false
         }
@@ -733,6 +738,7 @@ extension LocalConversation: Equatable, Hashable {
         hasher.combine(numUnread)
         hasher.combine(numAttachments)
         hasher.combine(expirationTime)
+        hasher.combine(snoozeTime)
         hasher.combine(size)
         hasher.combine(time)
         hasher.combine(labels)
@@ -758,6 +764,7 @@ public struct FfiConverterTypeLocalConversation: FfiConverterRustBuffer {
                 numUnread: FfiConverterUInt64.read(from: &buf), 
                 numAttachments: FfiConverterUInt64.read(from: &buf), 
                 expirationTime: FfiConverterUInt64.read(from: &buf), 
+                snoozeTime: FfiConverterUInt64.read(from: &buf), 
                 size: FfiConverterUInt64.read(from: &buf), 
                 time: FfiConverterUInt64.read(from: &buf), 
                 labels: FfiConverterOptionSequenceTypeLocalConversationLabel.read(from: &buf), 
@@ -779,6 +786,7 @@ public struct FfiConverterTypeLocalConversation: FfiConverterRustBuffer {
         FfiConverterUInt64.write(value.numUnread, into: &buf)
         FfiConverterUInt64.write(value.numAttachments, into: &buf)
         FfiConverterUInt64.write(value.expirationTime, into: &buf)
+        FfiConverterUInt64.write(value.snoozeTime, into: &buf)
         FfiConverterUInt64.write(value.size, into: &buf)
         FfiConverterUInt64.write(value.time, into: &buf)
         FfiConverterOptionSequenceTypeLocalConversationLabel.write(value.labels, into: &buf)

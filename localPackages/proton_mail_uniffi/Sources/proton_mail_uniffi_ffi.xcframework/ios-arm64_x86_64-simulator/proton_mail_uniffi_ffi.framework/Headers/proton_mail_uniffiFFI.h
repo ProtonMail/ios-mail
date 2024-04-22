@@ -558,7 +558,7 @@ void*_Nonnull uniffi_proton_mail_uniffi_fn_constructor_mailbox_inbox(void*_Nonnu
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CONSTRUCTOR_MAILBOX_NEW
 #define UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CONSTRUCTOR_MAILBOX_NEW
-void*_Nonnull uniffi_proton_mail_uniffi_fn_constructor_mailbox_new(void*_Nonnull ctx, uint64_t label_id, RustCallStatus *_Nonnull out_status
+uint64_t uniffi_proton_mail_uniffi_fn_constructor_mailbox_new(void*_Nonnull ctx, uint64_t label_id
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_PROTON_MAIL_UNIFFI_FN_CONSTRUCTOR_MAILBOX_WITH_REMOTE_ID

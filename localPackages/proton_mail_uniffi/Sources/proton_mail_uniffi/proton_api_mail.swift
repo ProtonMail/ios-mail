@@ -1270,12 +1270,13 @@ public struct MessageMetadata {
     public var isRepliedAll: Bool
     public var isForwarded: Bool
     public var expirationTime: UInt64
+    public var snoozeTime: UInt64
     public var numAttachments: UInt32
     public var attachmentsMetadata: [AttachmentMetadata]
 
     // Default memberwise initializers are never public by default, so we
     // declare one manually.
-    public init(id: MessageId, conversationId: ConversationId, order: UInt64, addressId: AddressId, labelIds: [LabelId], externalId: ExternalId?, subject: String, sender: MessageAddress, toList: [MessageAddress], ccList: [MessageAddress], bccList: [MessageAddress], replyTos: [MessageAddress], flags: UInt64, time: UInt64, size: UInt64, unread: Bool, isReplied: Bool, isRepliedAll: Bool, isForwarded: Bool, expirationTime: UInt64, numAttachments: UInt32, attachmentsMetadata: [AttachmentMetadata]) {
+    public init(id: MessageId, conversationId: ConversationId, order: UInt64, addressId: AddressId, labelIds: [LabelId], externalId: ExternalId?, subject: String, sender: MessageAddress, toList: [MessageAddress], ccList: [MessageAddress], bccList: [MessageAddress], replyTos: [MessageAddress], flags: UInt64, time: UInt64, size: UInt64, unread: Bool, isReplied: Bool, isRepliedAll: Bool, isForwarded: Bool, expirationTime: UInt64, snoozeTime: UInt64, numAttachments: UInt32, attachmentsMetadata: [AttachmentMetadata]) {
         self.id = id
         self.conversationId = conversationId
         self.order = order
@@ -1296,6 +1297,7 @@ public struct MessageMetadata {
         self.isRepliedAll = isRepliedAll
         self.isForwarded = isForwarded
         self.expirationTime = expirationTime
+        self.snoozeTime = snoozeTime
         self.numAttachments = numAttachments
         self.attachmentsMetadata = attachmentsMetadata
     }
@@ -1365,6 +1367,9 @@ extension MessageMetadata: Equatable, Hashable {
         if lhs.expirationTime != rhs.expirationTime {
             return false
         }
+        if lhs.snoozeTime != rhs.snoozeTime {
+            return false
+        }
         if lhs.numAttachments != rhs.numAttachments {
             return false
         }
@@ -1395,6 +1400,7 @@ extension MessageMetadata: Equatable, Hashable {
         hasher.combine(isRepliedAll)
         hasher.combine(isForwarded)
         hasher.combine(expirationTime)
+        hasher.combine(snoozeTime)
         hasher.combine(numAttachments)
         hasher.combine(attachmentsMetadata)
     }
@@ -1425,6 +1431,7 @@ public struct FfiConverterTypeMessageMetadata: FfiConverterRustBuffer {
                 isRepliedAll: FfiConverterBool.read(from: &buf), 
                 isForwarded: FfiConverterBool.read(from: &buf), 
                 expirationTime: FfiConverterUInt64.read(from: &buf), 
+                snoozeTime: FfiConverterUInt64.read(from: &buf), 
                 numAttachments: FfiConverterUInt32.read(from: &buf), 
                 attachmentsMetadata: FfiConverterSequenceTypeAttachmentMetadata.read(from: &buf)
         )
@@ -1451,6 +1458,7 @@ public struct FfiConverterTypeMessageMetadata: FfiConverterRustBuffer {
         FfiConverterBool.write(value.isRepliedAll, into: &buf)
         FfiConverterBool.write(value.isForwarded, into: &buf)
         FfiConverterUInt64.write(value.expirationTime, into: &buf)
+        FfiConverterUInt64.write(value.snoozeTime, into: &buf)
         FfiConverterUInt32.write(value.numAttachments, into: &buf)
         FfiConverterSequenceTypeAttachmentMetadata.write(value.attachmentsMetadata, into: &buf)
     }

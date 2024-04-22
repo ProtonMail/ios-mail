@@ -62,7 +62,7 @@ final class MailboxConversationModel: ObservableObject {
 
     func updateMailboxAndFetchData(selectedMailbox: SelectedMailbox) async throws {
         guard let userContext = try await dependencies.appContext.userContextForActiveSession() else { return }
-        mailbox = Mailbox(ctx: userContext, labelId: selectedMailbox.localId)
+        mailbox = try await Mailbox(ctx: userContext, labelId: selectedMailbox.localId)
         await fetchData()
     }
 }
