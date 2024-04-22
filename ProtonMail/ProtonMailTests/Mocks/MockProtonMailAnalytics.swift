@@ -31,7 +31,7 @@ class MockProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         self.endPoint = endPoint
     }
 
-    func setup(environment: String, debug: Bool) {
+    func setup(environment: String, debug: Bool, reportCrashes: Bool, telemetry: Bool) {
         self.environment = environment
         self.debug = debug
     }

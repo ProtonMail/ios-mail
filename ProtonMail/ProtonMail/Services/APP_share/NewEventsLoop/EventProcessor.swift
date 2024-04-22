@@ -78,7 +78,11 @@ final class EventProcessor {
         guard let userSettings = response.userSettings else {
             return
         }
-        dependencies.user.userInfo.update(from: userSettings)
+        let user = dependencies.user
+        let shouldUpdateTelemetryOrCrashReport = user.userInfo.hasCrashReportingEnabled.intValue != userSettings.crashReports
+            || user.hasTelemetryEnabled.intValue != userSettings.telemetry
+        user.userInfo.update(from: userSettings)
+        user.updateTelemetryAndCatchCrash()
     }
 
     private func processMailSettings(_ response: EventAPIResponse) {

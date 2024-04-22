@@ -49,9 +49,9 @@ class MockAppRatingWrapper: AppRatingWrapper {
 }
 
 class MockAppTelemetry: AppTelemetry {
-    @FuncStub(MockAppTelemetry.enable) var enableStub
-    func enable() {
-        enableStub()
+    @FuncStub(MockAppTelemetry.configure) var configureStub
+    func configure(telemetry: Bool, reportCrashes: Bool) {
+        configureStub(telemetry, reportCrashes)
     }
 
     @FuncStub(MockAppTelemetry.disable) var disableStub

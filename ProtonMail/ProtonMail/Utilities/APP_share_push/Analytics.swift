@@ -38,26 +38,31 @@ class Analytics {
     }
 
     private let analytics: ProtonMailAnalyticsProtocol
+    private var env: Environment = .production
 
     init(analytics: ProtonMailAnalyticsProtocol = ProtonMailAnalytics(endPoint: Analytics.sentryEndpoint)) {
         self.analytics = analytics
     }
 
-    func setup(isInDebug: Bool, environment: Environment) {
-        if isInDebug {
-            disableAnalytics()
-        } else {
-            analytics.setup(environment: environment.rawValue, debug: false)
-            enableAnalytics()
-        }
+    func setup(environment: Environment, reportCrashes: Bool, telemetry: Bool) {
+        env = environment
+        isEnabled = telemetry
+        analytics.setup(
+            environment: environment.rawValue,
+            debug: false,
+            reportCrashes: reportCrashes,
+            telemetry: telemetry
+        )
     }
 
     func disableAnalytics() {
         isEnabled = false
-    }
-
-    func enableAnalytics() {
-        isEnabled = true
+        analytics.setup(
+            environment: env.rawValue,
+            debug: isDebug,
+            reportCrashes: false,
+            telemetry: false
+        )
     }
 
     func assignUser(userID: UserID?) {
@@ -72,5 +77,13 @@ class Analytics {
     func sendError(_ error: MailAnalyticsErrorEvent, trace: String? = nil, fingerprint: Bool = false) {
         guard isEnabled else { return }
         analytics.track(error: error, trace: trace, fingerprint: fingerprint)
+    }
+
+    private var isDebug: Bool {
+        #if DEBUG
+        return true
+        #else
+        return false
+        #endif
     }
 }
