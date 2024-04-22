@@ -10,16 +10,19 @@ options:
     cp ./scripts/templates/IDETemplateMacros.plist ProtonMail.xcodeproj/xcshareddata/
 
 packages:
+  DesignSystem:
+    path: localPackages/DesignSystem
+  proton_mail_uniffi:
+    path: localPackages/proton_mail_uniffi
   SwiftNIO:
     url: https://github.com/apple/swift-nio.git
     minorVersion: "2.64.0"
   SwiftNIOHTTP2:
     url: https://github.com/apple/swift-nio-http2.git
     minorVersion: "1.30.0"
-  DesignSystem:
-    path: localPackages/DesignSystem
-  proton_mail_uniffi:
-    path: localPackages/proton_mail_uniffi
+  SwiftUIIntrospect:
+    url: https://github.com/siteline/swiftui-introspect
+    minorVersion: "1.1.0"
 
 targets:
   ProtonMail:
@@ -74,6 +77,7 @@ targets:
           - UIInterfaceOrientationLandscapeRight  
     dependencies:
       - package: DesignSystem
+      - package: SwiftUIIntrospect
       - package: proton_mail_uniffi
 
   ProtonMailTest:
