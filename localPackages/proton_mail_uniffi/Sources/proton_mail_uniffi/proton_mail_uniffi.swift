@@ -1460,10 +1460,31 @@ public protocol MailboxProtocol : AnyObject {
     func moveConversations(labelId: UInt64, ids: [UInt64]) throws 
     
     /**
+     * Move the given conversations from the current mailbox.
+     *
+     * Move the conversations with `ids` from the current mailbox to the label with remote id `label_id`.
+     * If the current mailbox is not a folder, the conversation will not be moved.
+     * To retrieve the list of movable folders use the
+     * [`crate::mail::MailUserSession::movable_folders()`] method.
+     *
+     * # Errors
+     * Returns error if the action fails.
+     */
+    func moveConversationsWithRemoteId(labelId: LabelId, ids: [UInt64]) throws 
+    
+    /**
      * Create a live query for conversations for the currently selected label. If you
      * change the mailbox label with `switch_label` you need to create a new instance.
      */
     func newConversationLiveQuery(limit: Int64, cb: MailboxLiveQueryUpdatedCallback)  -> MailboxConversationLiveQuery
+    
+    /**
+     * Star the given conversations.
+     *
+     * # Errors
+     * Returns error if the action fails.
+     */
+    func starConversations(ids: [UInt64]) throws 
     
     /**
      * Unlabel the given conversations with the given label id.
@@ -1475,6 +1496,14 @@ public protocol MailboxProtocol : AnyObject {
      * Returns error if the action fails.
      */
     func unlabelConversations(labelId: UInt64, ids: [UInt64]) throws 
+    
+    /**
+     * Unstar the given conversations.
+     *
+     * # Errors
+     * Returns error if the action fails.
+     */
+    func unstarConversations(ids: [UInt64]) throws 
     
 }
 
@@ -1523,7 +1552,7 @@ public convenience init(ctx: MailUserSession, labelId: UInt64)async throws  {
             completeFunc: ffi_proton_mail_uniffi_rust_future_complete_pointer,
             freeFunc: ffi_proton_mail_uniffi_rust_future_free_pointer,
             liftFunc: FfiConverterTypeMailbox.lift,
-            errorHandler: FfiConverterTypeMailSessionError.lift
+            errorHandler: FfiConverterTypeMailboxError.lift
         )
         
         .uniffiClonePointer()
@@ -1542,24 +1571,37 @@ public convenience init(ctx: MailUserSession, labelId: UInt64)async throws  {
     /**
      * Create a new mailbox for Inbox.
      */
-public static func inbox(ctx: MailUserSession)throws  -> Mailbox {
-    return try  FfiConverterTypeMailbox.lift(try rustCallWithError(FfiConverterTypeMailboxError.lift) {
-    uniffi_proton_mail_uniffi_fn_constructor_mailbox_inbox(
-        FfiConverterTypeMailUserSession.lower(ctx),$0
-    )
-})
+public static func inbox(ctx: MailUserSession)async throws  -> Mailbox {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_constructor_mailbox_inbox(FfiConverterTypeMailUserSession.lower(ctx)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_pointer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_pointer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_pointer,
+            liftFunc: FfiConverterTypeMailbox.lift,
+            errorHandler: FfiConverterTypeMailboxError.lift
+        )
 }
     
     /**
      * Create a new mailbox for a given remote id.
      */
-public static func withRemoteId(ctx: MailUserSession, labelId: LabelId)throws  -> Mailbox {
-    return try  FfiConverterTypeMailbox.lift(try rustCallWithError(FfiConverterTypeMailboxError.lift) {
-    uniffi_proton_mail_uniffi_fn_constructor_mailbox_with_remote_id(
-        FfiConverterTypeMailUserSession.lower(ctx),
-        FfiConverterTypeLabelId_lower(labelId),$0
-    )
-})
+public static func withRemoteId(ctx: MailUserSession, labelId: LabelId)async throws  -> Mailbox {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_constructor_mailbox_with_remote_id(FfiConverterTypeMailUserSession.lower(ctx),FfiConverterTypeLabelId_lower(labelId)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_pointer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_pointer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_pointer,
+            liftFunc: FfiConverterTypeMailbox.lift,
+            errorHandler: FfiConverterTypeMailboxError.lift
+        )
 }
     
 
@@ -1631,6 +1673,25 @@ open func moveConversations(labelId: UInt64, ids: [UInt64])throws  {try rustCall
 }
     
     /**
+     * Move the given conversations from the current mailbox.
+     *
+     * Move the conversations with `ids` from the current mailbox to the label with remote id `label_id`.
+     * If the current mailbox is not a folder, the conversation will not be moved.
+     * To retrieve the list of movable folders use the
+     * [`crate::mail::MailUserSession::movable_folders()`] method.
+     *
+     * # Errors
+     * Returns error if the action fails.
+     */
+open func moveConversationsWithRemoteId(labelId: LabelId, ids: [UInt64])throws  {try rustCallWithError(FfiConverterTypeMailboxError.lift) {
+    uniffi_proton_mail_uniffi_fn_method_mailbox_move_conversations_with_remote_id(self.uniffiClonePointer(),
+        FfiConverterTypeLabelId_lower(labelId),
+        FfiConverterSequenceUInt64.lower(ids),$0
+    )
+}
+}
+    
+    /**
      * Create a live query for conversations for the currently selected label. If you
      * change the mailbox label with `switch_label` you need to create a new instance.
      */
@@ -1641,6 +1702,19 @@ open func newConversationLiveQuery(limit: Int64, cb: MailboxLiveQueryUpdatedCall
         FfiConverterCallbackInterfaceMailboxLiveQueryUpdatedCallback.lower(cb),$0
     )
 })
+}
+    
+    /**
+     * Star the given conversations.
+     *
+     * # Errors
+     * Returns error if the action fails.
+     */
+open func starConversations(ids: [UInt64])throws  {try rustCallWithError(FfiConverterTypeMailboxError.lift) {
+    uniffi_proton_mail_uniffi_fn_method_mailbox_star_conversations(self.uniffiClonePointer(),
+        FfiConverterSequenceUInt64.lower(ids),$0
+    )
+}
 }
     
     /**
@@ -1655,6 +1729,19 @@ open func newConversationLiveQuery(limit: Int64, cb: MailboxLiveQueryUpdatedCall
 open func unlabelConversations(labelId: UInt64, ids: [UInt64])throws  {try rustCallWithError(FfiConverterTypeMailboxError.lift) {
     uniffi_proton_mail_uniffi_fn_method_mailbox_unlabel_conversations(self.uniffiClonePointer(),
         FfiConverterUInt64.lower(labelId),
+        FfiConverterSequenceUInt64.lower(ids),$0
+    )
+}
+}
+    
+    /**
+     * Unstar the given conversations.
+     *
+     * # Errors
+     * Returns error if the action fails.
+     */
+open func unstarConversations(ids: [UInt64])throws  {try rustCallWithError(FfiConverterTypeMailboxError.lift) {
+    uniffi_proton_mail_uniffi_fn_method_mailbox_unstar_conversations(self.uniffiClonePointer(),
         FfiConverterSequenceUInt64.lower(ids),$0
     )
 }
@@ -2469,6 +2556,10 @@ public enum MailboxError {
     
     case ActionQueue(message: String)
     
+    case InvalidAction(message: String)
+    
+    case Other(message: String)
+    
 }
 
 
@@ -2502,6 +2593,14 @@ public struct FfiConverterTypeMailboxError: FfiConverterRustBuffer {
             message: try FfiConverterString.read(from: &buf)
         )
         
+        case 6: return .InvalidAction(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 7: return .Other(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
 
         default: throw UniffiInternalError.unexpectedEnumCase
         }
@@ -2523,6 +2622,10 @@ public struct FfiConverterTypeMailboxError: FfiConverterRustBuffer {
             writeInt(&buf, Int32(4))
         case .ActionQueue(_ /* message is ignored*/):
             writeInt(&buf, Int32(5))
+        case .InvalidAction(_ /* message is ignored*/):
+            writeInt(&buf, Int32(6))
+        case .Other(_ /* message is ignored*/):
+            writeInt(&buf, Int32(7))
 
         
         }
@@ -3727,10 +3830,19 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_move_conversations() != 2511) {
         return InitializationResult.apiChecksumMismatch
     }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_move_conversations_with_remote_id() != 60609) {
+        return InitializationResult.apiChecksumMismatch
+    }
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_conversation_live_query() != 60165) {
         return InitializationResult.apiChecksumMismatch
     }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_star_conversations() != 2423) {
+        return InitializationResult.apiChecksumMismatch
+    }
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_unlabel_conversations() != 16521) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_unstar_conversations() != 27850) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailboxconversationlivequery_disconnect() != 55329) {
@@ -3754,13 +3866,13 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_constructor_mailsession_create() != 60183) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_inbox() != 4668) {
+    if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_inbox() != 27257) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_new() != 56045) {
+    if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_new() != 23502) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_with_remote_id() != 28270) {
+    if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_with_remote_id() != 44056) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersessioninitializationcallback_on_stage() != 55853) {
