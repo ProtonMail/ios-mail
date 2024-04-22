@@ -25,10 +25,6 @@ extension UserManager {
         false
     }
 
-    var isSnoozeEnabled: Bool {
-        return true
-    }
-
     var isMessageSwipeNavigationSettingEnabled: Bool {
         container.featureFlagProvider.isEnabled(.nextMessageAfterMove, reloadValue: true)
     }

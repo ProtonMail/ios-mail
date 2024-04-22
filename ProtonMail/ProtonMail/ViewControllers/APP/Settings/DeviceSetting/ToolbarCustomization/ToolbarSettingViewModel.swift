@@ -38,10 +38,7 @@ final class ToolbarSettingViewModel {
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
-        var allActions = MessageViewActionSheetAction.allActionsOfMessageView()
-        if !dependencies.user.isSnoozeEnabled {
-            allActions.removeAll(where: { $0 == .snooze })
-        }
+        let allActions = MessageViewActionSheetAction.allActionsOfMessageView()
 
         currentViewModeToolbarCustomizeViewModel = .init(
             currentActions: dependencies.toolbarActionProvider.messageToolbarActions,

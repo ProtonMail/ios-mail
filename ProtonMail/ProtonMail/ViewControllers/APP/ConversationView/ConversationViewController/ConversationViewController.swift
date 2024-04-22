@@ -885,7 +885,7 @@ extension ConversationViewController {
             Message.Location.snooze.labelID,
             Message.Location.inbox.labelID
         ]
-        let isSupportSnooze = foldersSupportingSnooze.contains(viewModel.labelId) && viewModel.user.isSnoozeEnabled
+        let isSupportSnooze = foldersSupportingSnooze.contains(viewModel.labelId)
 
         let actionSheetViewModel = ConversationActionSheetViewModel(
             title: viewModel.conversation.subject,
