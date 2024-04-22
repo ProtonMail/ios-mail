@@ -1947,49 +1947,49 @@
 "I might attend" = "Možno sa zúčastním";
 
 /* Information that the user is an optional participant */
-"(Attendance optional)" = "(Attendance optional)";
+"(Attendance optional)" = "(Účasť nie je povinná)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "Každé %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "v %@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "v %@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "v %u. deň";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "do %@";
 
 /* Occurring every day */
-"Daily" = "Daily";
+"Daily" = "Denne";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "Týždenne";
 
 /* Occurring every month */
-"Monthly" = "Monthly";
+"Monthly" = "Mesačne";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "Ročne";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "prvý";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "druhý";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "tretí";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "štvrtý";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "posledný";
 
 /* Menu title */
 "Max Storage" = "Max. úložný priestor";
@@ -1998,7 +1998,7 @@
 "Storage: %@ full" = "Úložisko: %@ využitých";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "Úložisko: %@ využitých";
 
 /* Official badge next to sender's name */
 "Official" = "Oficiálne";
@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "Zmeniť heslo k poštovej schránke";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "Plánovanie odoslania a odloženia";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Podpora vlastnej emailovej domény";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "A ďalšie %u prémiové funkcie";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonymná telemetria";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Ak aplikácia zlyhá, našim technikom sa odošle správa s podrobnosťami o príčine. Tie sa použijú len na zlepšenie aplikácie.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Upgradujte na %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "Na získanie väčšieho úložiska a prémiových funkcií.";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = " Pre viac úložného priestoru a všetky prémiové funkcie vo všetkých službách Proton.";

@@ -13,11 +13,11 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%u times</string>
+        <string>%u puta</string>
         <key>one</key>
         <string>%u time</string>
         <key>few</key>
-        <string>%u times</string>
+        <string>%u puta</string>
       </dict>
     </dict>
     <key>%u participants</key>

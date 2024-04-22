@@ -1947,49 +1947,49 @@
 "I might attend" = "Misschien aanwezig";
 
 /* Information that the user is an optional participant */
-"(Attendance optional)" = "(Attendance optional)";
+"(Attendance optional)" = "(Aanwezigheid optioneel)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "Elke %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "op %@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "op de %@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "op dag %u";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "tot %@";
 
 /* Occurring every day */
-"Daily" = "Daily";
+"Daily" = "Dagelijks";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "Wekelijks";
 
 /* Occurring every month */
-"Monthly" = "Monthly";
+"Monthly" = "Maandelijks";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "Jaarlijks";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "eerste";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "tweede";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "derde";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "vierde";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "laatste";
 
 /* Menu title */
 "Max Storage" = "Maximale Opslagruimte";
@@ -1998,7 +1998,7 @@
 "Storage: %@ full" = "Opslagruimte: %@ vol";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "Opslagruimte: %@ vol";
 
 /* Official badge next to sender's name */
 "Official" = "Officieel";
@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "Mailboxwachtwoord wijzigen";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "Geplande verzenden en snoozen";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Gepersonaliseerde e-maildomein ondersteuning";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "En %u meer premium functies";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonieme telemetrie";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Als de app crasht, wordt er een rapport verzonden naar onze ingenieurs met details over de oorzaak. Deze worden alleen gebruikt om de app te verbeteren.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Upgraden naar %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "Om meer opslag- en premiumfuncties te ontgrendelen.";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = " Voor meer opslag en alle premium functies van alle Proton diensten.";

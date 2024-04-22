@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "Promijeni lozinku sandučića e-pošte";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "Schedule send and snooze";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Custom email domain support";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "And %u more premium features";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonymous telemetry";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Upgrade to %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = " For more storage and all premium features across all Proton services.";

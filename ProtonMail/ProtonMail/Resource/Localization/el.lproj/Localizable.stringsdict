@@ -13,9 +13,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%u times</string>
+        <string>%u φορές</string>
         <key>one</key>
-        <string>%u time</string>
+        <string>%u φορά</string>
       </dict>
     </dict>
     <key>%u participants</key>

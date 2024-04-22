@@ -1947,49 +1947,49 @@
 "I might attend" = "Μπορεί να παρευρεθώ";
 
 /* Information that the user is an optional participant */
-"(Attendance optional)" = "(Attendance optional)";
+"(Attendance optional)" = "(Συμμετοχή προαιρετική)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "Κάθε %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "στις %@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "στις %@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "στην ημέρα %u";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "μέχρι %@";
 
 /* Occurring every day */
-"Daily" = "Daily";
+"Daily" = "Καθημερινά";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "Εβδομαδιαία";
 
 /* Occurring every month */
-"Monthly" = "Monthly";
+"Monthly" = "Μηνιαία";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "Ετησίως";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "πρώτο";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "δεύτερο";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "τρίτο";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "τέταρτο";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "τελευταίο";
 
 /* Menu title */
 "Max Storage" = "Μέγιστος Αποθηκευτικός χώρος";
@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "Αλλαγή κωδικού γραμματοκιβωτίου";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "Schedule send and snooze";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Custom email domain support";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "And %u more premium features";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ανώνυμη τηλεμετρία";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Εάν η εφαρμογή διακοπεί, θα σταλεί μια αναφορά στους μηχανικούς μας με λεπτομέρειες σχετικά με την αιτία. Αυτά θα χρησιμοποιηθούν μόνο για τη βελτίωση της εφαρμογής.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Αναβάθμιση σε %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = " For more storage and all premium features across all Proton services.";

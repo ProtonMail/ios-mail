@@ -13,9 +13,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%u times</string>
+        <string>%u vegades</string>
         <key>one</key>
-        <string>%u time</string>
+        <string>%u vegada</string>
       </dict>
     </dict>
     <key>%u participants</key>

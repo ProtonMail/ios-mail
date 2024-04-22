@@ -2408,6 +2408,15 @@
 /* settings general section title */
 "Change mailbox password" = "Ändra lösenord för brevlådan";
 
+/* Description of a feature of a paid subscription */
+"Schedule send and snooze" = "Schedule send and snooze";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Stöd för anpassad e-postdomän";
+
+/* Description of a feature of a paid subscription */
+"And %u more premium features" = "Och %u fler premiumfunktioner";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonym telemetri";
 
@@ -2419,3 +2428,12 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Om appen kraschar kommer en rapport att skickas till våra ingenjörer med detaljer om orsaken. Dessa kommer endast att användas för att förbättra appen.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Uppgradera till %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "För att låsa upp mer lagringsutrymme och premiumfunktioner.";
+
+/* Subtitle of the upsell page. */
+" For more storage and all premium features across all Proton services." = " För mer lagringsutrymmen och alla premiumfunktioner för alla Proton-tjänster.";
