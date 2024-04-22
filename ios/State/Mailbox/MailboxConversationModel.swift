@@ -263,6 +263,10 @@ extension MailboxConversationModel: MailboxActionable {
             actionMoveTo(systemFolder: .archive, ids: selectedConversationIds)
         }
     }
+
+    func onFolderSelected(labelId: PMLocalLabelId) {
+        actionMoveTo(labelId: labelId, ids: selectionMode.selectedItems.map(\.id))
+    }
 }
 
 extension MailboxConversationModel {

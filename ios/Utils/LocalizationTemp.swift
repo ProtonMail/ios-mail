@@ -73,5 +73,10 @@ enum LocalizationTemp {
         static let newLabel = "Create new label"
     }
 
+    enum FolderPicker {
+        static let title = "Move to"
+        static let newFolder = "Create new folder"
+    }
+
     static let settings = "Settings"
 }

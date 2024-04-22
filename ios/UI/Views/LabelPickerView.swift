@@ -174,6 +174,8 @@ extension LabelPickerView {
     }
 }
 
+// MARK: cell
+
 struct LabelPickerCellUIModel: Identifiable {
     let id: PMLocalLabelId
     let name: String
@@ -210,9 +212,7 @@ private struct LabelPickerCell: View {
         }
         .contentShape(Rectangle())
         .padding(.vertical, DS.Spacing.standard)
-        .alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-            return -2000
-        }
+        .customListLeadingSeparator()
     }
 }
 
@@ -229,9 +229,7 @@ private struct AddNewLabel: View {
         }
         .listRowBackground(DS.Color.Background.norm)
         .padding(.vertical, 10)
-        .alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-            return -2000
-        }
+        .customListLeadingSeparator()
     }
 }
 

@@ -101,6 +101,7 @@ extension MailboxConversationCell {
                     onEvent(.onStarredChange(isStarred: !uiModel.isStarred))
                 }
         }
+        .frame(height: 21.0)
         .padding(.top, DS.Spacing.small)
     }
 

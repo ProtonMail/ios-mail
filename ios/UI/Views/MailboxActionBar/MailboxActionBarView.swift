@@ -18,27 +18,12 @@
 import DesignSystem
 import SwiftUI
 
-protocol MailboxActionable {
-
-    func labelsOfSelectedItems() -> [Set<PMLocalLabelId>]
-
-    @MainActor 
-    func onActionTap(_ action: Action)
-
-    @MainActor
-    func onLabelsSelected(labelIds: Set<PMLocalLabelId>, alsoArchive: Bool)
-}
-
-struct EmptyMailboxActionable: MailboxActionable {
-    func labelsOfSelectedItems() -> [Set<PMLocalLabelId>] { [] }
-    func onActionTap(_ action: Action) {}
-    func onLabelsSelected(labelIds: Set<PMLocalLabelId>, alsoArchive: Bool) {}
-}
-
-
 struct MailboxActionBarView: View {
     @EnvironmentObject var userSettings: UserSettings
     @ObservedObject var selectionMode: SelectionModeState
+
+    @State private var showLabelPicker: Bool = false
+    @State private var showFolderPicker: Bool = false
 
     private let mailbox: SelectedMailbox
     private var mailboxActions: MailboxActionSettings {
@@ -46,8 +31,6 @@ struct MailboxActionBarView: View {
     }
     private let customLabelModel: CustomLabelModel
     private let mailboxActionable: MailboxActionable
-
-    @State private var showLabelPicker: Bool = false
 
     init(
         selectionMode: SelectionModeState,
@@ -77,7 +60,8 @@ struct MailboxActionBarView: View {
         .compositingGroup()
         .shadow(radius: 2)
         .tint(DS.Color.Text.norm)
-        .sheet(isPresented: $showLabelPicker, content: { labelPicker })
+        .sheet(isPresented: $showLabelPicker, content: { labelPickerView })
+        .sheet(isPresented: $showFolderPicker, content: { folderPickerView })
     }
 
     @ViewBuilder
@@ -91,6 +75,8 @@ struct MailboxActionBarView: View {
             Button(action: {
                 if case .labelAs = action {
                     showLabelPicker.toggle()
+                } else if case .moveTo = action {
+                    showFolderPicker.toggle()
                 } else {
                     mailboxActionable.onActionTap(action)
                 }
@@ -102,7 +88,7 @@ struct MailboxActionBarView: View {
         }
     }
 
-    private var labelPicker: some View {
+    private var labelPickerView: some View {
         LabelPickerView(
             customLabelModel: customLabelModel,
             labelsOfSelectedItems: mailboxActionable.labelsOfSelectedItems,
@@ -111,10 +97,27 @@ struct MailboxActionBarView: View {
                 mailboxActionable.onLabelsSelected(labelIds: selectedLabelIds, alsoArchive: alsoArchive)
             }
         )
-        .safeAreaPadding(.top, DS.Spacing.extraLarge)
-        .presentationContentInteraction(.scrolls)
-        .presentationCornerRadius(24)
-        .presentationDetents([.medium, .large])
+        .pickerViewStyle()
+    }
+
+    private var folderPickerView: some View {
+        FolderPickerView(onSelectionDone: { selectedFolderId in
+            showFolderPicker.toggle()
+            mailboxActionable.onFolderSelected(labelId: selectedFolderId)
+        })
+        .pickerViewStyle()
+    }
+}
+
+private extension View {
+
+    func pickerViewStyle() -> some View {
+        self
+            .background(DS.Color.Background.secondary)
+            .safeAreaPadding(.top, DS.Spacing.extraLarge)
+            .presentationContentInteraction(.scrolls)
+            .presentationCornerRadius(24)
+            .presentationDetents([.medium, .large])
     }
 }
 
