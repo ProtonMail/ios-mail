@@ -17,6 +17,7 @@
 
 import DesignSystem
 import SwiftUI
+import SwiftUIIntrospect
 
 struct FolderPickerView: View {
     typealias OnSelectionDone = (_ selectedLabelId: PMLocalLabelId) -> Void
@@ -75,10 +76,10 @@ extension FolderPickerView {
                 }
             }
         }
-//        .onAppear {
-//            // fixing the default top content inset
-//            UICollectionView.appearance().contentInset.top = -34
-//        }
+        .introspect(.list, on: .iOS(.v17)) { collectionView in
+            // fixing the default top content inset
+            collectionView.contentInset.top = -34
+        }
         .background(DS.Color.Background.secondary)
         .scrollContentBackground(.hidden)
         .scrollBounceBehavior(.basedOnSize)
