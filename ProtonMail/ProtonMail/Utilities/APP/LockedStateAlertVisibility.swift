@@ -28,6 +28,8 @@ enum LockedStateAlertVisibility: Equatable {
 
     init(lockedFlags: LockedFlags) {
         switch lockedFlags {
+        case .none:
+            self = .hidden
         case .mailStorageExceeded:
             self = .mail
         case .driveStorageExceeded:
