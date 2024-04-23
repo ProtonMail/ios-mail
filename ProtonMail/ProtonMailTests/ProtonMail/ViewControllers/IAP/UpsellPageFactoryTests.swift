@@ -55,41 +55,39 @@ final class UpsellPageFactoryTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testGeneratedUpsellPageModel() throws {
+    func testGeneratedPlan() throws {
         let planJSON = AvailablePlansTestData.availablePlan(named: "mail2022")
         let planData = try JSONSerialization.data(withJSONObject: planJSON)
         let plan = try JSONDecoder.decapitalisingFirstLetter.decode(AvailablePlans.AvailablePlan.self, from: planData)
 
         let pageModel = sut.makeUpsellPageModel(for: plan)
 
-        let expectedPageModel = UpsellPageModel(
-            plan: .init(
-                name: "Mail Plus",
-                perks: [
-                    .init(icon: \.clock, description: "Schedule send and snooze"),
-                    .init(icon: \.globe, description: "Custom email domain support"),
-                    .init(icon: \.tag, description: "Unlimited folders, labels, and filters"),
-                    .init(icon: \.gift, description: "And 14 more premium features")
-                ],
-                purchasingOptions: [
-                    .init(
-                        identifier: "iosmail_mail2022_1_usd_auto_renewing",
-                        cycleInMonths: 1,
-                        monthlyPrice: "$4.99",
-                        isHighlighted: false,
-                        discount: nil
-                    ),
-                    .init(
-                        identifier: "iosmail_mail2022_12_usd_auto_renewing",
-                        cycleInMonths: 12,
-                        monthlyPrice: "$3.99",
-                        isHighlighted: true,
-                        discount: 20
-                    )
-                ]
-            )
+        let expectedPlan = UpsellPageModel.Plan(
+            name: "Mail Plus",
+            perks: [
+                .init(icon: \.clock, description: "Schedule send and snooze"),
+                .init(icon: \.globe, description: "Custom email domain support"),
+                .init(icon: \.tag, description: "Unlimited folders, labels, and filters"),
+                .init(icon: \.gift, description: "And 14 more premium features")
+            ],
+            purchasingOptions: [
+                .init(
+                    identifier: "iosmail_mail2022_1_usd_auto_renewing",
+                    cycleInMonths: 1,
+                    monthlyPrice: "$4.99",
+                    isHighlighted: false,
+                    discount: nil
+                ),
+                .init(
+                    identifier: "iosmail_mail2022_12_usd_auto_renewing",
+                    cycleInMonths: 12,
+                    monthlyPrice: "$3.99",
+                    isHighlighted: true,
+                    discount: 20
+                )
+            ]
         )
 
-        XCTAssertEqual(pageModel, expectedPageModel)
+        XCTAssertEqual(pageModel.plan, expectedPlan)
     }
 }
