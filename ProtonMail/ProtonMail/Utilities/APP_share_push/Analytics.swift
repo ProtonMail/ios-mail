@@ -28,7 +28,7 @@ class Analytics {
     static var shared = Analytics()
 
     enum Environment: String {
-        case production, enterprise
+        case production
     }
 
     private(set) var isEnabled = false

@@ -127,9 +127,6 @@ private extension PushNotificationHandler {
         }
         mutableContent.body = "You received a new message!"
         mutableContent.sound = UNNotificationSound.default
-        #if Enterprise
-        mutableContent.title = "You received a new message!"
-        #endif
         return mutableContent
     }
 

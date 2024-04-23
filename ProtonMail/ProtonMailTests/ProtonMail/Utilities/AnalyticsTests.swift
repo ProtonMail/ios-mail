@@ -44,14 +44,6 @@ class AnalyticsTests: XCTestCase {
         XCTAssertFalse(isDebug)
     }
 
-    func testSetup_notInDebug_isEnterprise() throws {
-        sut.setup(environment: .enterprise, reportCrashes: true, telemetry: true)
-        XCTAssertTrue(sut.isEnabled)
-        XCTAssertEqual(analyticsMock.environment, "enterprise")
-        let isDebug = try XCTUnwrap(analyticsMock.debug)
-        XCTAssertFalse(isDebug)
-    }
-
     func testSendEvent_whenSetupCalled_shouldSendTheEventSuccessfully() {
         sut.setup(environment: .production, reportCrashes: true, telemetry: true)
         sut.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))

@@ -28,9 +28,8 @@ protocol AppTelemetry {
 struct MailAppTelemetry: AppTelemetry {
     func configure(telemetry: Bool, reportCrashes: Bool) {
         DispatchQueue.main.async {
-            let env: Analytics.Environment = Application.isDebugOrEnterprise ? .enterprise : .production
             Analytics.shared.setup(
-                environment: env,
+                environment: .production,
                 reportCrashes: reportCrashes,
                 telemetry: telemetry
             )
