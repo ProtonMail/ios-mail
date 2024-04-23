@@ -42,6 +42,7 @@ final class UpsellOfferProvider {
             plansDataSource = pdsp
         }
 
+        try await plansDataSource.fetchIAPAvailability()
         try await plansDataSource.fetchAvailablePlans()
 
         return plansDataSource.availablePlans?.plans.first { $0.name == "mail2022" }

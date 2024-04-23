@@ -57,6 +57,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasFetchMessages
     & HasFetchSenderImage
     & HasMailEventsPeriodicScheduler
+    & HasPurchasePlan
     & HasUpsellPageFactory
     & HasUpsellOfferProvider
     & HasUpdateMailbox
@@ -113,6 +114,12 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         dependencies.updateMailbox.isFetching
     }
     private(set) var isFirstFetch: Bool = true
+
+    var error: AnyPublisher<Error, Never> {
+        errorSubject.eraseToAnyPublisher()
+    }
+
+    private let errorSubject = PassthroughSubject<Error, Never>()
 
     weak var uiDelegate: MailboxViewModelUIProtocol?
 
@@ -1537,8 +1544,28 @@ extension MailboxViewModel {
         dependencies.upsellOfferProvider.availablePlan.map(dependencies.upsellPageFactory.makeUpsellPageModel)
     }
 
-    func purchasePlan(storeKitProductId: String) {
-        print(storeKitProductId)
+    func purchasePlan(storeKitProductId: String) async -> Bool {
+        SystemLogger.log(message: "Will purchase \(storeKitProductId)", category: .iap)
+
+        let result = await dependencies.purchasePlan.execute(storeKitProductId: storeKitProductId)
+
+        switch result {
+        case .planPurchased:
+            SystemLogger.log(message: "Purchase complete", category: .iap)
+
+            await user.fetchUserInfo()
+
+            return true
+        case .error(let error):
+            SystemLogger.log(error: error, category: .iap)
+
+            errorSubject.send(error)
+
+            return false
+        case .cancelled:
+            SystemLogger.log(message: "Purchase cancelled", category: .iap)
+            return false
+        }
     }
 }
 
