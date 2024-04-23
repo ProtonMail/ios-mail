@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key>
+    <string>me.proton.proton_mail_uniffi_fii</string>
+    <key>CFBundleName</key>
+    <string>proton_mail_uniffi_ffi</string>
+    <key>CFBundleVersion</key>
+    <string>0.10.0</string>
+    <key>CFBundleShortVersionString</key>
+    <string>0.10.0</string>
+    <key>CFBundleExecutable</key>
+    <string>proton_mail_uniffi_ffi</string>
+    <key>MinimumOSVersion</key>
+    <string>17.0</string>
+    <key>CFBundleSupportedPlatforms</key>
+    <array>
+        <string>iphoneos</string>
+    </array>
+</dict>
+</plist>
