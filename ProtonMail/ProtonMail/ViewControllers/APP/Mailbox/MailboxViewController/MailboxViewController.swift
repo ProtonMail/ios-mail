@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Alamofire
+import Combine
 import CoreData
 import LifetimeTracker
 import ProtonCoreDataModel
@@ -52,6 +53,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     let viewModel: MailboxViewModel
     private let dependencies: Dependencies
+    private var cancellables = Set<AnyCancellable>()
 
     private weak var coordinator: (MailboxCoordinatorProtocol & SnoozeSupport)?
 
@@ -317,6 +319,16 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
                 self.setupRightButtons(self.viewModel.listEditing, isStorageExceeded: newValue)
             }
         }
+
+        viewModel
+            .reloadRightBarButtons
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] in
+                setupRightButtons(viewModel.listEditing, isStorageExceeded: viewModel.user.isStorageExceeded)
+            }
+            .store(in: &cancellables)
+
+        viewModel.viewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -592,21 +604,11 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     @objc
     func upsellButtonTapped() {
-        let stubbedMailPlusPlan = UpsellPageModel.Plan(
-            name: "Mail Plus",
-            perks: [
-                .init(icon: \.clock, description: L11n.PremiumPerks.scheduleSendAndSnooze),
-                .init(icon: \.globe, description: L11n.PremiumPerks.customEmailDomain),
-                .init(icon: \.tag, description: L11n.Snooze.folderBenefit),
-                .init(icon: \.gift, description: String(format: L11n.PremiumPerks.andMore, 14))
-            ],
-            purchasingOptions: [
-                .init(months: 1, monthlyPrice: "4.99 CHF", isHighlighted: false, discount: nil),
-                .init(months: 12, monthlyPrice: "3.99 CHF", isHighlighted: true, discount: 0.2)
-            ]
-        )
-        let upsellPageModel = UpsellPageModel(plan: stubbedMailPlusPlan)
-        let upsellPage = UpsellPage(model: upsellPageModel)
+        guard let upsellPageModel = viewModel.makeUpsellPageModel() else {
+            return
+        }
+
+        let upsellPage = UpsellPage(model: upsellPageModel, onPurchaseTapped: viewModel.purchasePlan)
         let hostingController = SheetLikeSpotlightViewController(rootView: upsellPage)
         hostingController.modalTransitionStyle = .crossDissolve
         present(hostingController, animated: false)

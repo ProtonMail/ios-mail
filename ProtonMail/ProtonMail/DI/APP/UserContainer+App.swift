@@ -174,6 +174,12 @@ extension UserContainer {
         }
     }
 
+    var storeKitManagerFactory: Factory<StoreKitManagerProtocol> {
+        self {
+            self.payments.storeKitManager
+        }
+    }
+
     var toolbarActionProviderFactory: Factory<ToolbarActionProvider> {
         self {
             self.user
@@ -239,6 +245,18 @@ extension UserContainer {
     var upsellButtonStateProviderFactory: Factory<UpsellButtonStateProvider> {
         self {
             .init(dependencies: self)
+        }
+    }
+
+    var upsellPageFactoryFactory: Factory<UpsellPageFactory> {
+        self {
+            UpsellPageFactory(dependencies: self)
+        }
+    }
+
+    var upsellOfferProviderFactory: Factory<UpsellOfferProvider> {
+        self {
+            UpsellOfferProvider(dependencies: self)
         }
     }
 }
