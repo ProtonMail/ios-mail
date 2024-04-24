@@ -36,6 +36,7 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
     & HasContactDataService
     & HasContactsSyncQueueProtocol
     & HasTelemetryService
+    & HasNotificationCenter
 
     // Suggested batch size for creating contacts in backend
     private let contactBatchSize = 10
@@ -61,6 +62,19 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
     init(userID: UserID, dependencies: Dependencies) {
         self.userID = userID
         self.dependencies = dependencies
+        self.observeNotifications()
+    }
+
+    private func observeNotifications() {
+        dependencies
+            .notificationCenter
+            .addObserver(
+                forName: .cancelImportContactsTask,
+                object: nil,
+                queue: nil
+            ) { [weak self] _ in
+                self?.cancel()
+            }
     }
 
     func execute(params: Params) {
@@ -76,8 +90,11 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
             guard !contactIDsToImport.isEmpty else { return }
             delegate?.onProgressUpdate(count: 0, total: contactIDsToImport.count)
 
+            guard !Task.isCancelled else { return }
             let triagedContacts = triageContacts(identifiers: contactIDsToImport)
             var numOfSkippedVCardsDownloads: Int = 0
+
+            guard !Task.isCancelled else { return }
             await downloadProtonVCardsIfNeeded(
                 isFirstImport: isFirstImport,
                 contactsMatchedByUuid: triagedContacts.toUpdateByUuidMatch,
@@ -110,7 +127,11 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
 
     func cancel() {
         SystemLogger.log(message: "ImportDeviceContacts cancelled", category: .contacts)
-        backgroundTask?.cancel()
+        guard let backgroundTask else {
+            SystemLogger.log(message: "No task was found to be cancelled", category: .contacts)
+            return
+        }
+        backgroundTask.cancel()
     }
 }
 
