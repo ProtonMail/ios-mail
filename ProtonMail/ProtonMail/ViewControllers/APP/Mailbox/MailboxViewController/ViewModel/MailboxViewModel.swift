@@ -930,7 +930,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     }
     
     func setupLockedStateObservation(didChanged: @escaping (Bool) -> Void) {
-        lockedStateObservation = user.$isUserInLockedState.sink(receiveValue: { value in
+        lockedStateObservation = user.$userLockedFlagsChanged.sink(receiveValue: { value in
             didChanged(value)
         })
     }

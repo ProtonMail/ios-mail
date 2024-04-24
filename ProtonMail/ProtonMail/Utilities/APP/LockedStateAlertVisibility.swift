@@ -27,19 +27,18 @@ enum LockedStateAlertVisibility: Equatable {
     case hidden
 
     init(lockedFlags: LockedFlags) {
-        switch lockedFlags {
-        case .none:
-            self = .hidden
-        case .mailStorageExceeded:
-            self = .mail
-        case .driveStorageExceeded:
-            self = .drive
-        case .storageExceeded:
-            self = .storageFull
-        case .orgIssueForPrimaryAdmin:
+        self = .hidden
+
+        if lockedFlags.contains(.orgIssueForPrimaryAdmin) {
             self = .orgIssueForPrimaryAdmin
-        case .orgIssueForMember:
+        } else if lockedFlags.contains(.orgIssueForMember) {
             self = .orgIssueForMember
+        } else if lockedFlags.contains(.storageExceeded) {
+            self = .storageFull
+        } else if lockedFlags.contains(.mailStorageExceeded) {
+            self = .mail
+        } else if lockedFlags.contains(.driveStorageExceeded) {
+            self = .drive
         }
     }
 
@@ -87,7 +86,7 @@ enum LockedStateAlertVisibility: Equatable {
             return L10n.LockedStateAlertBox.alertBoxDefaultButtonTitle
         }
     }
-    
+
     var mailBoxBannerButtonUrl: String? {
         switch self {
         case .orgIssueForMember:
