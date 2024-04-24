@@ -45,6 +45,16 @@ final class AutoImportContactsFeatureTests: XCTestCase {
         super.tearDown()
     }
 
+    func testDisableSettingForUser_itTriggersCancelTaskNotification() {
+        let cancelImportContactsTaskExpectation = XCTNSNotificationExpectation(
+            name: .cancelImportContactsTask,
+            object: nil,
+            notificationCenter: testContainer.notificationCenter
+        )
+        sut.disableSettingForUser()
+        wait(for: [cancelImportContactsTaskExpectation], timeout: 2)
+    }
+
     func testOnProtonStorageExceeded_whenEventReceived_itShouldDisableFeature() {
         sut.enableSettingForUser()
         XCTAssertTrue(sut.isSettingEnabledForUser)
