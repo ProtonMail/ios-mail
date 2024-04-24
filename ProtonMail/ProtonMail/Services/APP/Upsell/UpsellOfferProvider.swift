@@ -42,6 +42,11 @@ final class UpsellOfferProvider {
             plansDataSource = pdsp
         }
 
+        /*
+         knowing the current plan is not necessary for the upsell itself (yet), but we must know it for telemetry
+         purposes for when the user taps the upsell button
+         */
+        try await plansDataSource.fetchCurrentPlan()
         try await plansDataSource.fetchIAPAvailability()
         try await plansDataSource.fetchAvailablePlans()
 

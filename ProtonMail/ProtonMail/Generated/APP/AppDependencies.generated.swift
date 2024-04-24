@@ -408,6 +408,16 @@ extension UserContainer: HasPaymentsUIFactory {
     }
 }
 
+protocol HasPlanService {
+    var planService: PlanService { get }
+}
+
+extension UserContainer: HasPlanService {
+    var planService: PlanService {
+        planServiceFactory()
+    }
+}
+
 protocol HasPurchaseManagerProtocol {
     var purchaseManager: PurchaseManagerProtocol { get }
 }
@@ -535,6 +545,16 @@ protocol HasUpsellOfferProvider {
 extension UserContainer: HasUpsellOfferProvider {
     var upsellOfferProvider: UpsellOfferProvider {
         upsellOfferProviderFactory()
+    }
+}
+
+protocol HasUpsellTelemetryReporter {
+    var upsellTelemetryReporter: UpsellTelemetryReporter { get }
+}
+
+extension UserContainer: HasUpsellTelemetryReporter {
+    var upsellTelemetryReporter: UpsellTelemetryReporter {
+        upsellTelemetryReporterFactory()
     }
 }
 

@@ -1231,6 +1231,14 @@ class MockSwipeActionInfo: SwipeActionInfo {
 
 }
 
+class MockTelemetryServiceProtocol: TelemetryServiceProtocol {
+    @FuncStub(MockTelemetryServiceProtocol.sendEvent) var sendEventStub
+    func sendEvent(_ event: TelemetryEvent) {
+        sendEventStub(event)
+    }
+
+}
+
 class MockURLOpener: URLOpener {
     @FuncStub(MockURLOpener.canOpenURL, initialReturn: Bool()) var canOpenURLStub
     func canOpenURL(_ url: URL) -> Bool {

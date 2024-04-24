@@ -258,7 +258,7 @@ final class UserContainer: ManagedContainer {
         }
     }
 
-    var telemetryServiceFactory: Factory<TelemetryService> {
+    var telemetryServiceFactory: Factory<TelemetryServiceProtocol> {
         self {
             TelemetryService(
                 userID: self.user.userID,

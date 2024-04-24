@@ -18,7 +18,7 @@
 import ProtonCorePayments
 
 struct PurchasePlan {
-    typealias Dependencies = AnyObject & HasPurchaseManagerProtocol
+    typealias Dependencies = AnyObject & HasPurchaseManagerProtocol & HasUpsellTelemetryReporter
 
     private unowned let dependencies: Dependencies
 
@@ -31,16 +31,19 @@ struct PurchasePlan {
             return .error(PurchasePlanError.productNotFound(storeKitProductId: storeKitProductId))
         }
 
+        await dependencies.upsellTelemetryReporter.upgradeAttempt(protonPlanName: plan.protonName)
+
         let purchaseResult = await withCheckedContinuation { continuation in
             dependencies.purchaseManager.buyPlan(plan: plan, finishCallback: continuation.resume(returning:))
         }
 
         switch purchaseResult {
-        case .purchasedPlan:
+        case .purchasedPlan(let plan):
+            await dependencies.upsellTelemetryReporter.upgradeSuccess(protonPlanName: plan.protonName)
             return .planPurchased
         case .toppedUpCredits:
             return .cancelled
-        case .planPurchaseProcessingInProgress(let processingPlan):
+        case .planPurchaseProcessingInProgress:
             return .error(PurchasePlanError.purchaseAlreadyInProgress)
         case .purchaseError(let error, _):
             return .error(error)
