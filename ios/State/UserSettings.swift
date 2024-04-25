@@ -46,7 +46,7 @@ struct MailboxActionSettings {
 
     init(
         action1: MailboxAction = .toggleReadStatus,
-        action2: MailboxAction = .moveToArchive,
+        action2: MailboxAction = .toggleStarStatus,
         action3: MailboxAction = .moveTo,
         action4: MailboxAction = .labelAs
     ) {

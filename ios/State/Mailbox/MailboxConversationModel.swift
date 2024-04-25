@@ -129,7 +129,7 @@ extension MailboxConversationModel {
     }
 
     func onConversationStarChange(id: PMLocalConversationId, isStarred: Bool) {
-        // ...
+        isStarred ? actionStar(ids: [id]) : actionUnstar(ids: [id])
     }
 
     func onConversationAttachmentTap(attachmentId: String) {
@@ -152,6 +152,10 @@ extension MailboxConversationModel {
             actionMoveTo(systemFolder: .spam, ids: conversationIds)
         case .moveToTrash:
             actionMoveTo(systemFolder: .trash, ids: conversationIds)
+        case .star:
+            actionStar(ids: conversationIds)
+        case .unstar:
+            actionUnstar(ids: conversationIds)
         default:
             break
         }
@@ -172,6 +176,22 @@ extension MailboxConversationModel: MailboxLiveQueryUpdatedCallback {
 // MARK: conversation actions
 
 extension MailboxConversationModel {
+
+    private func actionStar(ids: [PMLocalConversationId]) {
+        do {
+            try mailbox?.starConversations(ids: ids)
+        } catch {
+            AppLogger.log(error: error, category: .mailboxActions)
+        }
+    }
+
+    private func actionUnstar(ids: [PMLocalConversationId]) {
+        do {
+            try mailbox?.unstarConversations(ids: ids)
+        } catch {
+            AppLogger.log(error: error, category: .mailboxActions)
+        }
+    }
 
     private func actionDelete(ids: [PMLocalConversationId]) {
         AppLogger.log(message: "Conversation deletion \(ids)...", category: .mailboxActions)

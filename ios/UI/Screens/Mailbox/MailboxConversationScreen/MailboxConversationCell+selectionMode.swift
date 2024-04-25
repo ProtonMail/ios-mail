@@ -20,6 +20,6 @@ import Foundation
 extension MailboxConversationCellUIModel {
 
     func toSelectedItem() -> SelectedItem {
-        SelectedItem(id: id, isRead: isRead, isStarred: isRead)
+        SelectedItem(id: id, isRead: isRead, isStarred: isStarred)
     }
 }
