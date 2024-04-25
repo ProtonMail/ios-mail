@@ -32,7 +32,7 @@ struct MailboxConversationScreen: View {
             case .loading:
                 loadingView
             case .empty:
-                emptyStateView
+                MailboxEmptyView()
             case .data(let conversations):
                 conversationListView(conversations: conversations)
             }
@@ -45,12 +45,6 @@ extension MailboxConversationScreen {
 
     private var loadingView: some View {
         ProgressView()
-    }
-
-    private var emptyStateView: some View {
-        VStack {
-            Text("No conversations")
-        }
     }
 
     private func conversationListView(conversations: [MailboxConversationCellUIModel]) -> some View {

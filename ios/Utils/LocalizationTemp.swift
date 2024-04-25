@@ -41,6 +41,8 @@ enum LocalizationTemp {
         static let spam = "Spam"
         static let starred = "Starred"
         static let trash = "Trash"
+        static let noEmailsYet = "No emails yet"
+        static let emptyMailbox = "Why not take a breather or check back later?"
     }
 
     enum Selection {

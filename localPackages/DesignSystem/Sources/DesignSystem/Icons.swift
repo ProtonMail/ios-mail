@@ -92,5 +92,3 @@ private extension DS.Icon {
         UIImage(named: named, in: .module, with: nil)!
     }
 }
-
-

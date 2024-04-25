@@ -44,7 +44,7 @@ final class AppRouteState: ObservableObject, Sendable {
     }
 }
 
-enum Route: Equatable {
+enum Route: Equatable, CustomStringConvertible {
     case appLaunching
     case mailbox(label: SelectedMailbox)
     case settings
@@ -61,5 +61,14 @@ enum Route: Equatable {
             return label.localId
         }
         return nil
+    }
+
+    var description: String {
+        switch self {
+        case .appLaunching, .settings:
+            "\(self)"
+        case .mailbox(let label):
+            "mailbox \(label.name)"
+        }
     }
 }

@@ -90,7 +90,8 @@ extension MailboxConversationModel {
         let conversations = liveQuery.value().map {
             $0.toMailboxConversationCellUIModel(selectedIds: Set(selectionMode.selectedItems.map(\.id)))
         }
-        await updateState(.data(conversations))
+        let newState: State = conversations.count > 0 ? .data(conversations) : .empty
+        await updateState(newState)
         selectionMode.refreshSelectedItemsStatus { itemIds in
             guard !itemIds.isEmpty, case .data(let conversations) = state else { return [] }
             let selectedItems = conversations
