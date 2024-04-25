@@ -21,10 +21,12 @@ protocol ContactsSyncQueueProtocol {
     var progressPublisher: AnyPublisher<ContactsSyncQueue.Progress, Never> { get }
     var protonStorageQuotaExceeded: AnyPublisher<Void, Never> { get }
 
+    func setup()
     func start()
     func pause()
     func resume()
     func addTask(_ task: ContactTask)
+    func saveQueueToDisk()
     func deleteQueue()
 }
 
@@ -54,19 +56,12 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
     var isPaused: Bool {
         operationQueue.isSuspended
     }
-    private var hasQueueStarted: Bool = false
-    private var taskQueue: [ContactTask] {
-        didSet {
-            do {
-                let data = try JSONEncoder().encode(taskQueue)
-                try data.write(to: taskQueueURL)
-            } catch {
-                SystemLogger.log(error: error, category: .contacts)
-            }
-        }
-    }
+
+    private var hasBeenSetup: Bool = false
+    private var taskQueue: [ContactTask]
     private let operationQueue: OperationQueue = {
         let queue = OperationQueue()
+        queue.isSuspended = true
         queue.qualityOfService = .background
         // using a low number to leave room for other network operations
         queue.maxConcurrentOperationCount = 3
@@ -92,11 +87,11 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
         self.dependencies = dependencies
     }
 
-    /// Call before adding tasks. This function will load the persisted queue from disk and start the queue execution
-    func start() {
-        guard !hasQueueStarted else { return }
-        hasQueueStarted = true
-        SystemLogger.log(message: "queue started", category: .contacts)
+    /// Call before adding tasks. This function will load the persisted queue from disk
+    func setup() {
+        guard !hasBeenSetup else { return }
+        hasBeenSetup = true
+        SystemLogger.log(message: "queue setup", category: .contacts)
         if fileManager.fileExists(atPath: taskQueueURL.path) {
             do {
                 let data = try Data(contentsOf: taskQueueURL)
@@ -105,7 +100,7 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
                 SystemLogger.log(error: error, category: .contacts)
                 self.taskQueue = []
             }
-            SystemLogger.log(message: "queue disk read count \(taskQueue.count)", category: .contacts)
+            SystemLogger.log(message: "queue disk read count: \(taskQueue.count) batches", category: .contacts)
         } else {
             SystemLogger.log(message: "queue file does not exist", category: .contacts)
             self.taskQueue = []
@@ -116,8 +111,12 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
         dependencies.internetConnectionStatusProvider.register(receiver: self, fireWhenRegister: false)
     }
 
+    func start() {
+        resume()
+    }
+
     func pause() {
-        guard hasQueueStarted else { return }
+        guard hasBeenSetup else { return }
         operationQueue.isSuspended = true
         SystemLogger.log(message: "queue paused", category: .contacts)
     }
@@ -129,8 +128,8 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
     }
 
     func addTask(_ task: ContactTask) {
-        guard hasQueueStarted else {
-            SystemLogger.log(message: "queue start() not called", category: .contacts, isError: true)
+        guard hasBeenSetup else {
+            SystemLogger.log(message: "queue setup() not called", category: .contacts, isError: true)
             return
         }
         serial.async { [weak self] in
@@ -141,6 +140,13 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
             taskQueue.append(task)
             updateProgressTotal(numAdded: task.numContacts)
             enqueueOperations([task])
+        }
+    }
+
+    func saveQueueToDisk() {
+        serial.sync {
+            SystemLogger.log(message: "save contact sync queue to disk", category: .contacts)
+            saveQueueWithoutThreadSafety()
         }
     }
 
@@ -164,6 +170,17 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
 // MARK: Private
 
 extension ContactsSyncQueue {
+
+    /// This functions serialises the queue to disk. The thread safety is not the responsability of this function, but
+    /// it is of the functions calling it.
+    private func saveQueueWithoutThreadSafety() {
+        do {
+            let data = try JSONEncoder().encode(taskQueue)
+            try data.write(to: taskQueueURL)
+        } catch {
+            SystemLogger.log(error: error, category: .contacts)
+        }
+    }
 
     private func enqueueOperations(_ tasks: [ContactTask]) {
         let operations = tasks.map { task -> AsyncOperation in
@@ -257,6 +274,7 @@ extension ContactsSyncQueue: AsyncOperationDelegate {
         guard let index = taskQueue.firstIndex(where: { $0.taskID == taskID }) else { return }
         let finishedIncrement = taskQueue[index].numContacts
         taskQueue.remove(at: index)
+        saveQueueWithoutThreadSafety()
         incrementProgress(finishedIncrement)
         if taskQueue.isEmpty {
             resetProgress()

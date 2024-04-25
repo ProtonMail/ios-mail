@@ -38,6 +38,12 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
     & HasTelemetryService
     & HasNotificationCenter
 
+    /// This is the limit of number of contacts in Proton, for any kind of user.
+    /// To help with memory management in extreme cases where the device
+    /// contains dozens of thousands of contacts, we will cap the number of
+    /// enqueued operations to this number.
+    private let maxNumberOfContactsInProton = 10_000
+
     // Suggested batch size for creating contacts in backend
     private let contactBatchSize = 10
     private let maxVCardsDownloadsAllowed = 100
@@ -81,17 +87,22 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
         SystemLogger.log(message: "ImportDeviceContacts call for user \(userID.rawValue.redacted)", category: .contacts)
         guard backgroundTask == nil else { return }
 
-        dependencies.contactSyncQueue.start()
+        dependencies.contactSyncQueue.setup()
         backgroundTask = Task.detached(priority: .medium) { [weak self] in
             guard let self = self else { return }
             defer { taskFinished() }
             let isFirstImport = contactsHistoryToken == nil
             let (contactIDsToImport, newHistoryToken) = fetchDeviceContactIdentifiersToImport()
-            guard !contactIDsToImport.isEmpty else { return }
+            guard !contactIDsToImport.isEmpty else {
+                // we start for potential previously persisted operations
+                dependencies.contactSyncQueue.start()
+                return
+            }
             delegate?.onProgressUpdate(count: 0, total: contactIDsToImport.count)
 
             guard !Task.isCancelled else { return }
             let triagedContacts = triageContacts(identifiers: contactIDsToImport)
+                .capNumberOfContactsIfNeeded(maxAllowed: maxNumberOfContactsInProton)
             var numOfSkippedVCardsDownloads: Int = 0
 
             guard !Task.isCancelled else { return }
@@ -112,6 +123,9 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
                     params: params,
                     numContactsToUpdate: &numContactsToUpdate
                 )
+
+                // once everything is enqueued we start the sync
+                dependencies.contactSyncQueue.start()
 
                 await reportTelemetryIfNeeded(
                     isFirstImport: isFirstImport,
@@ -245,7 +259,7 @@ extension ImportDeviceContacts {
         from contactIDs: [ContactID],
         numOfContactsWithoutVCard: inout Int
     ) -> [ContactID] {
-        var result = dependencies.contactService.getContactsWithoutVCards(from: contactIDs)
+        let result = dependencies.contactService.getContactsWithoutVCards(from: contactIDs)
         numOfContactsWithoutVCard = result.count
         return Array(result.prefix(maxVCardsDownloadsAllowed))
     }
@@ -270,6 +284,7 @@ extension ImportDeviceContacts {
                 }
             }
         }
+        dependencies.contactSyncQueue.saveQueueToDisk()
     }
 
     private func saveProtonContacts(from deviceContacts: [DeviceContact], params: Params) {
@@ -332,6 +347,7 @@ extension ImportDeviceContacts {
                 }
             }
         }
+        dependencies.contactSyncQueue.saveQueueToDisk()
 
         let emailMatchBatches = emailMatch.chunked(into: contactBatchSize)
         var totalContactsUpdatedByEmailMatch = 0
@@ -345,6 +361,7 @@ extension ImportDeviceContacts {
                 }
             }
         }
+        dependencies.contactSyncQueue.saveQueueToDisk()
 
         numContactsToUpdate = totalContactsUpdatedByUuidMatch + totalContactsUpdatedByEmailMatch
         let finalUpdatesNumberMsg = "Final number of contacts to update \(numContactsToUpdate)"
@@ -458,16 +475,55 @@ extension ImportDeviceContacts {
         let mailboxPassphrase: Passphrase
     }
 
-    private struct DeviceContactsToImport {
+    struct DeviceContactsToImport {
         let toCreate: [DeviceContactIdentifier]
         let toUpdateByUuidMatch: [DeviceContactIdentifier]
         let toUpdateByEmailMatch: [DeviceContactIdentifier]
+
+        var toUpdateCount: Int {
+            toUpdateByUuidMatch.count + toUpdateByEmailMatch.count
+        }
 
         var description: String {
             let msgCreate = "Device contacts with no match (to create): \(toCreate.count)"
             let msgUpdateUuid = "with uuid match (update): \(toUpdateByUuidMatch.count)"
             let msgUpdateEmail = "with email match (update): \(toUpdateByEmailMatch.count)"
             return "\(msgCreate), \(msgUpdateUuid), \(msgUpdateEmail)"
+        }
+
+        /// Limits the number of contact tasks to be enqueued to the max number of contacts that Proton allows to create.
+        /// The function will give priority to operations to update contacts since those already exist in Proton.
+        func capNumberOfContactsIfNeeded(maxAllowed: Int) -> DeviceContactsToImport {
+            let count = toCreate.count + toUpdateCount
+            guard count > maxAllowed else { return self }
+
+            // we will cap the number of tasks
+            var newToCreate = toCreate
+            var newToUpdateByUuidMatch = toUpdateByUuidMatch
+            var newToUpdateByEmailMatch = toUpdateByEmailMatch
+
+            if toUpdateCount > maxAllowed {
+                newToCreate = []
+                if toUpdateByUuidMatch.count > maxAllowed {
+                    newToUpdateByEmailMatch = []
+                    newToUpdateByUuidMatch = Array(toUpdateByUuidMatch.prefix(maxAllowed))
+                }
+                let remainingToUpdateAllowed = max(maxAllowed - newToUpdateByUuidMatch.count, 0)
+                newToUpdateByEmailMatch = Array(toUpdateByEmailMatch.prefix(remainingToUpdateAllowed))
+            }
+
+            let newTotalToUpdate = newToUpdateByUuidMatch.count + newToUpdateByEmailMatch.count
+            let remainingAllowed = max(maxAllowed - newTotalToUpdate, 0)
+            newToCreate = Array(toCreate.prefix(remainingAllowed))
+
+            let result = DeviceContactsToImport(
+                toCreate: newToCreate,
+                toUpdateByUuidMatch: newToUpdateByUuidMatch,
+                toUpdateByEmailMatch: newToUpdateByEmailMatch
+            )
+            let message = "Number of contact operations capped at \(maxAllowed): \(result.description)"
+            SystemLogger.log(message: message, category: .contacts)
+            return result
         }
     }
 }
