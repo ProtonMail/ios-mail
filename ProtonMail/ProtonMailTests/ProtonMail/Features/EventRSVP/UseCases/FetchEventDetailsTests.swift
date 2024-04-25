@@ -85,8 +85,15 @@ END:VCALENDAR
 """#
 
     private var calendarID, eventUID, memberID, passphraseID: String!
-    private var stubbedBasicEventInfo: BasicEventInfo!
     private var expectedEventDetails: EventDetails!
+
+    private var basicInfoWithOccurrence: BasicEventInfo {
+        .init(eventUID: eventUID, occurrence: 1715152200, recurrenceID: nil)
+    }
+
+    private var basicInfoWithoutOccurrence: BasicEventInfo {
+        .init(eventUID: eventUID, occurrence: nil, recurrenceID: nil)
+    }
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -94,7 +101,7 @@ END:VCALENDAR
         let testContainer = TestContainer()
 
         apiService = .init()
-        user = try .prepareUser(apiMock: apiService, globalContainer: testContainer)
+        user = try .prepareUser(apiMock: apiService, email: "employee1@example.com", globalContainer: testContainer)
         sut = .init(dependencies: user.container)
 
         calendarID = UUID().uuidString
@@ -102,10 +109,10 @@ END:VCALENDAR
         memberID = UUID().uuidString
         passphraseID = UUID().uuidString
 
-        stubbedBasicEventInfo = BasicEventInfo(eventUID: eventUID, occurrence: nil, recurrenceID: nil)
         expectedEventDetails = .make(
             startDate: .fixture("2024-01-17 13:18:00"),
             endDate: .fixture("2024-01-17 15:18:00"),
+            currentUserAmongInvitees: .init(email: "employee1@example.com", role: .unknown, status: .pending),
             deepLinkComponents: (eventUID: eventUID, calendarID: calendarID)
         )
     }
@@ -124,31 +131,44 @@ END:VCALENDAR
 
     func testWhenEventIsEncryptedWithCalendarKeys_decryptsSuccessfully() async throws {
         try prepareSharedKeyPacketVariant()
-        let eventDetails = try await sut.execute(basicEventInfo: stubbedBasicEventInfo)
+        let eventDetails = try await sut.execute(basicEventInfo: basicInfoWithoutOccurrence).0
         XCTAssertEqual(eventDetails, expectedEventDetails)
     }
 
     func testWhenEventIsEncryptedWithAddressKeys_decryptsSuccessfully() async throws {
         try prepareAddressKeyPacketVariant()
-        let eventDetails = try await sut.execute(basicEventInfo: stubbedBasicEventInfo)
+        let eventDetails = try await sut.execute(basicEventInfo: basicInfoWithoutOccurrence).0
         XCTAssertEqual(eventDetails, expectedEventDetails)
     }
 
     func testWhenOccurrenceTimestampIsProvided_shiftsStartAndEndDates() async throws {
-        try prepareAddressKeyPacketVariant()
-
-        let occurrence = 1715152200
-        let basicInfoWithOccurrence = BasicEventInfo(eventUID: eventUID, occurrence: occurrence, recurrenceID: nil)
-
-        let eventDetails = try await sut.execute(basicEventInfo: basicInfoWithOccurrence)
-
+        try prepareSharedKeyPacketVariant()
+        let eventDetails = try await sut.execute(basicEventInfo: basicInfoWithOccurrence).0
         XCTAssertEqual(eventDetails.startDate, .fixture("2024-05-08 07:10:00"))
         XCTAssertEqual(eventDetails.endDate, .fixture("2024-05-08 09:10:00"))
+    }
+
+    func testWhenHasSuperownerPermissionsToCalendarAndOccurrenceTimestampIsNotProvided_answeringIsPossible() async throws {
+        try prepareSharedKeyPacketVariant(permissions: [.superowner])
+        let answeringContext = try await sut.execute(basicEventInfo: basicInfoWithoutOccurrence).1
+        XCTAssertNotNil(answeringContext)
+    }
+
+    func testWhenOccurrenceTimestampIsProvided_answeringIsNotPossible() async throws {
+        try prepareSharedKeyPacketVariant()
+        let answeringContext = try await sut.execute(basicEventInfo: basicInfoWithOccurrence).1
+        XCTAssertNil(answeringContext)
+    }
+
+    func testWhenDoesntHaveSuperownerPermissionsToCalendar_answeringIsNotPossible() async throws {
+        try prepareSharedKeyPacketVariant(permissions: [])
+        let answeringContext = try await sut.execute(basicEventInfo: basicInfoWithoutOccurrence).1
+        XCTAssertNil(answeringContext)
     }
 }
 
 extension FetchEventDetailsTests {
-    private func prepareSharedKeyPacketVariant() throws {
+    private func prepareSharedKeyPacketVariant(permissions: MemberTransformer.Permissions = [.superowner]) throws {
         let calendarKeyPair = try CryptoKeyHelper.makeKeyPair()
 
         let calendarPublicKey = calendarKeyPair.publicKey
@@ -175,7 +195,8 @@ extension FetchEventDetailsTests {
             ],
             memberPassphrases: [
                 .init(memberID: memberID, passphrase: encryptedCalendarPassphrase.value)
-            ]
+            ],
+            permissions: permissions
         )
 
         setupAPIResponses(event: fullEventTransformer, bootstrap: bootstrap)
@@ -187,7 +208,7 @@ extension FetchEventDetailsTests {
             setAddressKeyPacketInsteadOfSharedOne: true
         )
 
-        let bootstrap = makeBootstrapResponse(keys: [], memberPassphrases: [])
+        let bootstrap = makeBootstrapResponse(keys: [], memberPassphrases: [], permissions: [.superowner])
 
         setupAPIResponses(event: fullEventTransformer, bootstrap: bootstrap)
     }
@@ -196,8 +217,7 @@ extension FetchEventDetailsTests {
         encryptingSessionKeyWith publicKey: String,
         setAddressKeyPacketInsteadOfSharedOne: Bool
     ) throws -> FullEventTransformer {
-        let sessionKeyBytes = try Crypto.random(byte: 32)
-        let sessionKey = SessionKey(sessionKey: sessionKeyBytes, algo: .AES256)
+        let (sessionKey, keyPacket) = try CryptoUtils.randomSessionKeyAndKeyPacket(publicKey: publicKey)
 
         let cryptoSessionKey = try XCTUnwrap(CryptoGo.CryptoNewSessionKeyFromToken(
             sessionKey.sessionKey,
@@ -215,8 +235,6 @@ extension FetchEventDetailsTests {
         let calendarEvents: [EventElement] = [calendarEvent].map { icsString in
             EventElement(author: "", data: icsString, type: [])
         }
-
-        let keyPacket = try Encryptor.encryptSession(publicKey: .init(value: publicKey), sessionKey: sessionKey).value
 
         let timeZoneIdentifier = TimeZone.autoupdatingCurrent.identifier
 
@@ -258,7 +276,8 @@ extension FetchEventDetailsTests {
 
     private func makeBootstrapResponse(
         keys: [KeyTransformer],
-        memberPassphrases: [MemberPassphraseTransformer]
+        memberPassphrases: [MemberPassphraseTransformer],
+        permissions: MemberTransformer.Permissions
     ) -> CalendarBootstrapResponse {
         CalendarBootstrapResponse(
             keys: keys,
@@ -269,7 +288,7 @@ extension FetchEventDetailsTests {
                     flags: [],
                     ID: memberID,
                     name: expectedEventDetails.calendar.name,
-                    permissions: []
+                    permissions: permissions
                 )
             ],
             passphrase: .init(ID: passphraseID, memberPassphrases: memberPassphrases)

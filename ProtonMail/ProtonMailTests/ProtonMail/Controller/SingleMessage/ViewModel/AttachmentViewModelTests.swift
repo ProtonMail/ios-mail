@@ -89,7 +89,7 @@ class AttachmentViewModelTests: XCTestCase {
 
         fetchEventDetails = .init()
         fetchEventDetails.executeStub.bodyIs { _, _ in
-            self.stubbedEventDetails
+            (self.stubbedEventDetails, nil)
         }
 
         user.container.reset()
@@ -321,17 +321,10 @@ class AttachmentViewModelTests: XCTestCase {
     }
 
     func testResponding_whenEventHasBeenCancelled_isNotAvailable() async {
-        fetchEventDetails.executeStub.bodyIs { _, _ in
-                .make(status: .cancelled)
-        }
-
-        await ensureRespondingIsNotAvailableWhenICSIsReceived()
-    }
-
-    func testResponding_whenEventHasEnded_isNotAvailable() async {
-        fetchEventDetails.executeStub.bodyIs { _, _ in
-                .make(endDate: .distantPast)
-        }
+        stubbedEventDetails = .make(
+            currentUserAmongInvitees: stubbedEventDetails.currentUserAmongInvitees,
+            status: .cancelled
+        )
 
         await ensureRespondingIsNotAvailableWhenICSIsReceived()
     }

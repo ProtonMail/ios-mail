@@ -26,18 +26,15 @@ enum CalendarAPI {
 
 struct CalendarEventsRequest: Request {
     let uid: String
-    let recurrenceID: Int?
 
     var path: String {
         "\(CalendarAPI.prefix)/events"
     }
 
     var parameters: [String: Any]? {
-        var params: [String: Any] = [
+        [
             "UID": uid
         ]
-        params["RecurrenceID"] = recurrenceID
-        return params
     }
 }
 

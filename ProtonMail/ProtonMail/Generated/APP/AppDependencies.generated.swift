@@ -1,6 +1,7 @@
 // Generated using Sourcery 2.1.7 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 import ProtonCorePayments
+import ProtonInboxRSVP
 
 protocol HasAddressBookService {
     var addressBookService: AddressBookService { get }
@@ -295,6 +296,16 @@ protocol HasCleanUserLocalMessages {
 extension UserContainer: HasCleanUserLocalMessages {
     var cleanUserLocalMessages: CleanUserLocalMessages {
         cleanUserLocalMessagesFactory()
+    }
+}
+
+protocol HasEmailAddressStorage {
+    var emailAddressStorage: EmailAddressStorage { get }
+}
+
+extension UserContainer: HasEmailAddressStorage {
+    var emailAddressStorage: EmailAddressStorage {
+        emailAddressStorageFactory()
     }
 }
 

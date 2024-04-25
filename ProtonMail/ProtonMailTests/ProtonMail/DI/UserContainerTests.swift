@@ -94,6 +94,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.appRatingService
         _ = strongRefToContainer?.blockedSenderCacheUpdater
         _ = strongRefToContainer?.cleanUserLocalMessages
+        _ = strongRefToContainer?.emailAddressStorage
         _ = strongRefToContainer?.reportService
         _ = strongRefToContainer?.contactViewsFactory
         _ = strongRefToContainer?.extractBasicEventInfo

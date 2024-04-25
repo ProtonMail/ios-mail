@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -16,19 +16,18 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreDataModel
-import ProtonCoreFeatureFlags
+import ProtonInboxRSVP
 
-extension UserInfo {
-    // Highlight body without encrypted search will give a wrong impression to user that we can search body without ES
-    static var isBodySearchKeywordHighlightEnabled: Bool {
-        false
+struct UserBasedEmailAddressStorage: EmailAddressStorage {
+    typealias Dependencies = AnyObject & HasUserManager
+
+    private unowned let dependencies: Dependencies
+
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
     }
 
-    static var isRSVPMilestoneTwoEnabled: Bool {
-        Application.isDebugOrEnterprise
-    }
-
-    static var isUpsellButtonEnabled: Bool {
-        Application.isDebugOrEnterprise
+    func currentUserAddresses() -> [Address_v2] {
+        dependencies.user.userInfo.userAddresses.map(\.toAddress_v2)
     }
 }

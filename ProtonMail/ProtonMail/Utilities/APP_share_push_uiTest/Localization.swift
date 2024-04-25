@@ -1319,6 +1319,60 @@ enum L11n {
         static let until = NSLocalizedString("until %@", comment: "As in: Until Sep 27, 2025")
     }
 
+    // this can be removed once CALIOS-2736 is done
+    enum InvitationEmail {
+        static let emailInvitationSubjectFullDateWithTimeAndTimeZone = NSLocalizedString(
+            "%1@ at %2@ %3@",
+            comment: """
+Event date format used in email sent with an invitation answer
+example: "January 28, 2023 at 8:00 PM (GMT+2)"
+%1@ - month, day, and year
+%2@ - hour
+%3@ - time zone offset
+"""
+        )
+
+        static let accepted = NSLocalizedString("accepted", comment: "Status in an email body sent with an invitation answer")
+        static let declined = NSLocalizedString("declined", comment: "Status in an email body sent with an invitation answer")
+        static let tentativelyAccepted = NSLocalizedString("tentatively accepted", comment: "Status in an email body sent with an invitation answer")
+
+        enum Body {
+            static let content = NSLocalizedString(
+                "%1@ has %2@ your invitation to %3@",
+                comment: """
+Body of an email sent with an invitation answer
+format: "<event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title>",
+example: "john.doe@protonmail.com has accepted your invitation to birthday party"
+%1@ - event attendee email
+%2@ - accepted | tentatively accepted | declined
+%3@ - event title
+"""
+            )
+
+            static let title = NSLocalizedString("You are invited to %@", comment: "Part of the body of the email sent to the participants that indicates the event's title")
+            static let location = NSLocalizedString("LOCATION:\n%@", comment: "Part of the body of the email sent to the participants that indicates the event's location")
+            static let notes = NSLocalizedString("DESCRIPTION:\n%@", comment: "Part of the body of the email sent to the participants that indicates the event's notes")
+        }
+
+        static let cancellationBody = NSLocalizedString("%@ was cancelled.", comment: "Body of the email sent to the participants that indicates the event has been cancelled")
+
+        enum Answer {
+            enum Subject {
+                static let allDaySingle = NSLocalizedString("Re: Invitation for an event on %@", comment: "Subject of the email sent to the participants invited to a given all-day single event after answering")
+
+                static let other = NSLocalizedString(
+                    "Re: Invitation for an event starting on %@",
+                    comment: """
+Subject of an email sent with an invitation answer after answering
+example: "Re: Invitation for an event starting on Saturday, January 28, 2023 at 8:00 PM (GMT+2)"
+"""
+                )
+            }
+        }
+
+        static let noTitle = NSLocalizedString("(no title)", comment: "Title of an event with missing title")
+    }
+
     struct Recurrence {
         static let daily = NSLocalizedString("Daily", comment: "Occurring every day")
         static let weekly = NSLocalizedString("Weekly", comment: "Occurring every week")

@@ -111,6 +111,12 @@ final class InvitationViewModelTests: XCTestCase {
         XCTAssertEqual(sut.statusString, "This event has been cancelled")
     }
 
+    func testWhenEventHasEndedButIsRecurring_thenAlreadyEndedStatusIsNotShown() {
+        let eventDetails = EventDetails.make(endDate: .distantPast, recurrence: "anything")
+        let sut = InvitationViewModel(eventDetails: eventDetails)
+        XCTAssertNil(sut.statusString)
+    }
+
     func testWhenThereIsFewInvitees_thenExpansionButtonIsNotNeeded() {
         let eventDetails = EventDetails.make(
             invitees: [.init(email: "attendee@example.com", role: .unknown, status: .unknown)]

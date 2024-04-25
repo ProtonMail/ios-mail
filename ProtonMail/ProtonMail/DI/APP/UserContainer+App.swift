@@ -17,11 +17,12 @@
 
 import Factory
 import ProtonCorePayments
+import ProtonInboxRSVP
 
 extension UserContainer {
     var answerInvitationFactory: Factory<AnswerInvitation> {
         self {
-            AnswerInvitationImpl()
+            AnswerInvitationWrapper(dependencies: self)
         }
     }
 
@@ -58,6 +59,12 @@ extension UserContainer {
     var cleanUserLocalMessagesFactory: Factory<CleanUserLocalMessages> {
         self {
             CleanUserLocalMessages(dependencies: self)
+        }
+    }
+
+    var emailAddressStorageFactory: Factory<EmailAddressStorage> {
+        self {
+            UserBasedEmailAddressStorage(dependencies: self)
         }
     }
 

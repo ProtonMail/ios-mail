@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,20 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreDataModel
-import ProtonCoreFeatureFlags
+import ProtonInboxRSVP
 
-extension UserInfo {
-    // Highlight body without encrypted search will give a wrong impression to user that we can search body without ES
-    static var isBodySearchKeywordHighlightEnabled: Bool {
-        false
-    }
+extension AnswerInvitationUseCase {
+    struct DateFormatterProvider: DateFormatterProviding {
+        func timeFormatter(userID: String, with timeZone: TimeZone) -> DateFormatter {
+            let dateFormatter = DateFormatter()
+            dateFormatter.timeZone = timeZone
+            return dateFormatter
+        }
 
-    static var isRSVPMilestoneTwoEnabled: Bool {
-        Application.isDebugOrEnterprise
-    }
-
-    static var isUpsellButtonEnabled: Bool {
-        Application.isDebugOrEnterprise
+        func dayFormatter() -> DateFormatter {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.dateStyle = .full
+            formatter.timeStyle = .none
+            return formatter
+        }
     }
 }

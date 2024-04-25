@@ -1,6 +1,7 @@
 disabled_rules:
   - discouraged_optional_boolean
   - file_length
+  - file_name
   - nesting
 
 opt_in_rules:

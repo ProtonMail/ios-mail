@@ -28,10 +28,9 @@ extension APIService {
                 perform(
                     request: request,
                     callCompletionBlockUsing: .immediateExecutor,
-                    onDataTaskCreated: { newDataTask in dataTask = newDataTask }
-                ) { _, result in
-                    completion(result)
-                }
+                    onDataTaskCreated: { newDataTask in dataTask = newDataTask },
+                    decodableCompletion: { _, result in completion(result) }
+                )
             }
         }
         .handleEvents(receiveCancel: { dataTask?.cancel() })

@@ -19,5 +19,4 @@ import ProtonCoreDataModel
 
 public protocol EmailAddressStorage {
     func currentUserAddresses() -> [Address_v2]
-    func addresses(userID: String) -> [Address_v2]
 }

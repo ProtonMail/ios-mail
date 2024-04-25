@@ -56,15 +56,16 @@ extension UserManager {
     static func prepareUser(
         apiMock: APIServiceMock,
         userID: UserID = .init(String.randomString(10)),
+        email: String = "",
         globalContainer: GlobalContainer? = nil
     ) throws -> UserManager {
         let keyPair = try MailCrypto.generateRandomKeyPair()
-        let key = Key(keyID: "1", privateKey: keyPair.privateKey)
+        let key = Key(keyID: "1", privateKey: keyPair.privateKey, active: 1, primary: 1)
         key.signature = "signature is needed to make this a V2 key"
         let address = Address(
             addressID: "1",
             domainID: nil,
-            email: "",
+            email: email,
             send: .active,
             receive: .active,
             status: .enabled,
