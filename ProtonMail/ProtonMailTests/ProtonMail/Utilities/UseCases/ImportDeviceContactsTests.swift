@@ -160,6 +160,55 @@ final class ImportDeviceContactsTests: XCTestCase {
         wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
     }
 
+    // MARK: tests for the operation queue state
+
+    func testExecute_itSetsUpTheQueue() throws {
+        prepareDeviceContacts([])
+
+        sut.execute(params: sutParams)
+        wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
+
+        XCTAssertEqual(mockContactsQueueSync.setupStub.callCounter, 1)
+    }
+
+    func testExecute_whenChangesToImport_itStartsTheQueue() throws {
+        testContainer.userDefaults[.contactsHistoryTokenPerUser] = [:]
+        prepareDeviceContacts(dummyIdentifiers_toCreateAndUpdate)
+
+        sut.execute(params: sutParams)
+        wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
+
+        let taskEnqueued = mockContactsQueueSync.addTaskStub.lastArguments?.a1
+        XCTAssertEqual(taskEnqueued?.numContacts, 3)
+        XCTAssertEqual(taskEnqueued?.action, .create)
+
+        XCTAssertEqual(mockContactsQueueSync.startStub.callCounter, 1)
+    }
+
+    func testExecute_whenNoChangesToImport_itStartsTheQueueForPotentialPreviouslyPersistedOperations() throws {
+        prepareDeviceContacts([])
+
+        sut.execute(params: sutParams)
+        wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
+
+        XCTAssertEqual(mockContactsQueueSync.addTaskStub.callCounter, 0)
+        XCTAssertEqual(mockContactsQueueSync.startStub.callCounter, 1)
+    }
+
+    func testExecute_whenChangesToImport_itSavesTheQueue() throws {
+        testContainer.userDefaults[.contactsHistoryTokenPerUser] = [:]
+        prepareDeviceContacts(dummyIdentifiers_toCreateAndUpdate)
+
+        sut.execute(params: sutParams)
+        wait(for: [sutDelegate.finishExpectation], timeout: expectationTimeout)
+
+        let taskEnqueued = mockContactsQueueSync.addTaskStub.lastArguments?.a1
+        XCTAssertEqual(taskEnqueued?.numContacts, 3)
+        XCTAssertEqual(taskEnqueued?.action, .create)
+
+        XCTAssertTrue(mockContactsQueueSync.saveQueueToDiskStub.wasCalled)
+    }
+
     // MARK: tests for downloading contact details
 
     func testExecute_whenNoHistoryToken_andMissingVCard_itDoesNotDownloadContactDetails() throws {
