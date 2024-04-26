@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -18,17 +18,14 @@
 import ProtonCoreCrypto
 import ProtonCoreCryptoGoInterface
 import ProtonCoreDataModel
-import ProtonCoreServices
 import ProtonInboxICal
 
 // sourcery: mock
-protocol EventRSVP {
-    func extractBasicEventInfo(icsData: Data) throws -> BasicEventInfo
-    func fetchEventDetails(basicEventInfo: BasicEventInfo) async throws -> EventDetails
-    func respondToInvitation(with answer: InvitationAnswer) async throws
+protocol FetchEventDetails {
+    func execute(basicEventInfo: BasicEventInfo) async throws -> EventDetails
 }
 
-struct LocalEventRSVP: EventRSVP {
+struct FetchEventDetailsImpl: FetchEventDetails {
     typealias Dependencies = AnyObject & HasAPIService & HasUserManager
 
     private let iCalReader: ICalReader
@@ -49,27 +46,7 @@ struct LocalEventRSVP: EventRSVP {
         )
     }
 
-    func extractBasicEventInfo(icsData: Data) throws -> BasicEventInfo {
-        guard let icsString = String(data: icsData, encoding: .utf8) else {
-            throw EventRSVPError.icsDataIsNotValidUTF8String
-        }
-
-        let component = icalparser_parse_string(icsString)
-
-        defer {
-            icalcomponent_free(component)
-        }
-
-        guard let uidComponent = icalcomponent_get_uid(component) else {
-            throw EventRSVPError.icsDataDoesNotContainUID
-        }
-
-        let uid = String(cString: uidComponent)
-        let recurrenceID = icalcomponent_get_recurrenceid(component).toUnixTimestamp()
-        return BasicEventInfo(eventUID: uid, recurrenceID: recurrenceID)
-    }
-
-    func fetchEventDetails(basicEventInfo: BasicEventInfo) async throws -> EventDetails {
+    func execute(basicEventInfo: BasicEventInfo) async throws -> EventDetails {
         let apiEvent = try await fetchEvent(basicEventInfo: basicEventInfo)
         let calendarBootstrapResponse = try await fetchCalendarBootstrapData(calendarID: apiEvent.calendarID)
 
@@ -257,41 +234,6 @@ struct LocalEventRSVP: EventRSVP {
         }
 
         return iCalReader.parse_single_event_ics(dependecies: dependecies, attendeeData: attendeeData)
-    }
-
-    func respondToInvitation(with answer: InvitationAnswer) async throws {
-        if #available(iOS 16.0, *) {
-            try await Task.sleep(for: .seconds(1))
-        }
-    }
-}
-
-enum EventRSVPError: Error {
-    case encryptedDataFoundButSessionKeyMissing
-    case encryptedDataIsNotValidBase64
-    case icsDataDoesNotContainUID
-    case icsDataIsNotValidUTF8String
-    case keyPacketIsNotValidBase64
-    case noEventsReturnedFromAPI
-    case noICSComponents
-    case noMembersInBootstrapResponse
-    case noPassphraseForGivenMember
-    case sessionKeyDecryptionFailed
-}
-
-extension icaltimetype {
-    func toUnixTimestamp() -> Int? {
-        guard let cString = icaltime_as_ical_string(self) else {
-            return nil
-        }
-
-        let string = String(cString: cString)
-
-        guard let date = Date.getDateFrom(timeString: string)?.date else {
-            return nil
-        }
-
-        return Int(date.timeIntervalSince1970)
     }
 }
 

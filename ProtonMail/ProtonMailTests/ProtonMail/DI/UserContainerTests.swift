@@ -90,12 +90,14 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.undoActionManager
         _ = strongRefToContainer?.userService
         _ = strongRefToContainer?.user
+        _ = strongRefToContainer?.answerInvitation
         _ = strongRefToContainer?.appRatingService
         _ = strongRefToContainer?.blockedSenderCacheUpdater
         _ = strongRefToContainer?.cleanUserLocalMessages
         _ = strongRefToContainer?.reportService
         _ = strongRefToContainer?.contactViewsFactory
-        _ = strongRefToContainer?.eventRSVP
+        _ = strongRefToContainer?.extractBasicEventInfo
+        _ = strongRefToContainer?.fetchEventDetails
         _ = strongRefToContainer?.fetchMessages
         _ = strongRefToContainer?.fetchSenderImage
         _ = strongRefToContainer?.importDeviceContacts

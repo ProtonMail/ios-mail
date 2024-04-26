@@ -17,6 +17,14 @@ import class ProtonCoreDataModel.UserInfo
 
 @testable import ProtonMail
 
+class MockAnswerInvitation: AnswerInvitation {
+    @ThrowingFuncStub(MockAnswerInvitation.execute) var executeStub
+    func execute(answer: InvitationAnswer) throws {
+        try executeStub(answer)
+    }
+
+}
+
 class MockAppRatingStatusProvider: AppRatingStatusProvider {
     @FuncStub(MockAppRatingStatusProvider.isAppRatingEnabled, initialReturn: Bool()) var isAppRatingEnabledStub
     func isAppRatingEnabled() -> Bool {
@@ -393,20 +401,10 @@ class MockDeviceRegistrationUseCase: DeviceRegistrationUseCase {
 
 }
 
-class MockEventRSVP: EventRSVP {
-    @ThrowingFuncStub(MockEventRSVP.extractBasicEventInfo, initialReturn: .crash) var extractBasicEventInfoStub
-    func extractBasicEventInfo(icsData: Data) throws -> BasicEventInfo {
-        try extractBasicEventInfoStub(icsData)
-    }
-
-    @ThrowingFuncStub(MockEventRSVP.fetchEventDetails, initialReturn: .crash) var fetchEventDetailsStub
-    func fetchEventDetails(basicEventInfo: BasicEventInfo) throws -> EventDetails {
-        try fetchEventDetailsStub(basicEventInfo)
-    }
-
-    @ThrowingFuncStub(MockEventRSVP.respondToInvitation) var respondToInvitationStub
-    func respondToInvitation(with answer: InvitationAnswer) throws {
-        try respondToInvitationStub(answer)
+class MockExtractBasicEventInfo: ExtractBasicEventInfo {
+    @ThrowingFuncStub(MockExtractBasicEventInfo.execute, initialReturn: .crash) var executeStub
+    func execute(icsData: Data) throws -> BasicEventInfo {
+        try executeStub(icsData)
     }
 
 }
@@ -473,6 +471,14 @@ class MockFetchEmailAddressesPublicKeyUseCase: FetchEmailAddressesPublicKeyUseCa
     @ThrowingFuncStub(MockFetchEmailAddressesPublicKeyUseCase.execute, initialReturn: .crash) var executeStub
     func execute(email: String) throws -> KeysResponse {
         try executeStub(email)
+    }
+
+}
+
+class MockFetchEventDetails: FetchEventDetails {
+    @ThrowingFuncStub(MockFetchEventDetails.execute, initialReturn: .crash) var executeStub
+    func execute(basicEventInfo: BasicEventInfo) throws -> EventDetails {
+        try executeStub(basicEventInfo)
     }
 
 }

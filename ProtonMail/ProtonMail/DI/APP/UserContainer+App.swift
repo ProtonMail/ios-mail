@@ -19,6 +19,12 @@ import Factory
 import ProtonCorePayments
 
 extension UserContainer {
+    var answerInvitationFactory: Factory<AnswerInvitation> {
+        self {
+            AnswerInvitationImpl()
+        }
+    }
+
     var appRatingServiceFactory: Factory<AppRatingService> {
         self {
             AppRatingService(
@@ -67,9 +73,15 @@ extension UserContainer {
         }
     }
 
-    var eventRSVPFactory: Factory<EventRSVP> {
+    var extractBasicEventInfoFactory: Factory<ExtractBasicEventInfo> {
         self {
-            LocalEventRSVP(dependencies: self)
+            ExtractBasicEventInfoImpl()
+        }
+    }
+
+    var fetchEventDetailsFactory: Factory<FetchEventDetails> {
+        self {
+            FetchEventDetailsImpl(dependencies: self)
         }
     }
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -22,8 +22,8 @@ import XCTest
 
 @testable import ProtonMail
 
-final class EventRSVPTests: XCTestCase {
-    private var sut: EventRSVP!
+final class FetchEventDetailsTests: XCTestCase {
+    private var sut: FetchEventDetailsImpl!
     private var apiService: APIServiceMock!
     private var user: UserManager!
 
@@ -94,7 +94,7 @@ END:VCALENDAR
 
         apiService = .init()
         user = try .prepareUser(apiMock: apiService, globalContainer: testContainer)
-        sut = LocalEventRSVP(dependencies: user.container)
+        sut = .init(dependencies: user.container)
 
         calendarID = UUID().uuidString
         eventUID = UUID().uuidString
@@ -117,49 +117,20 @@ END:VCALENDAR
         try super.tearDownWithError()
     }
 
-    func testBasicInfoExtraction_withRecurrenceID() throws {
-        let basicICS = #"""
-BEGIN:VCALENDAR
-BEGIN:VEVENT
-UID:FOO
-RECURRENCE-ID;VALUE=DATE:19960401
-END:VEVENT
-END:VCALENDAR
-"""#
-
-        let icsData = Data(basicICS.utf8)
-        let basicEventInfo = try sut.extractBasicEventInfo(icsData: icsData)
-        XCTAssertEqual(basicEventInfo, .init(eventUID: "FOO", recurrenceID: 828316800))
-    }
-
-    func testBasicInfoExtraction_withoutRecurrenceID() throws {
-        let basicICS = #"""
-BEGIN:VCALENDAR
-BEGIN:VEVENT
-UID:FOO
-END:VEVENT
-END:VCALENDAR
-"""#
-
-        let icsData = Data(basicICS.utf8)
-        let basicEventInfo = try sut.extractBasicEventInfo(icsData: icsData)
-        XCTAssertEqual(basicEventInfo, .init(eventUID: "FOO", recurrenceID: nil))
-    }
-
     func testWhenEventIsEncryptedWithCalendarKeys_decryptsSuccessfully() async throws {
         try prepareSharedKeyPacketVariant()
-        let eventDetails = try await sut.fetchEventDetails(basicEventInfo: stubbedBasicEventInfo)
+        let eventDetails = try await sut.execute(basicEventInfo: stubbedBasicEventInfo)
         XCTAssertEqual(eventDetails, expectedEventDetails)
     }
 
     func testWhenEventIsEncryptedWithAddressKeys_decryptsSuccessfully() async throws {
         try prepareAddressKeyPacketVariant()
-        let eventDetails = try await sut.fetchEventDetails(basicEventInfo: stubbedBasicEventInfo)
+        let eventDetails = try await sut.execute(basicEventInfo: stubbedBasicEventInfo)
         XCTAssertEqual(eventDetails, expectedEventDetails)
     }
 }
 
-extension EventRSVPTests {
+extension FetchEventDetailsTests {
     private func prepareSharedKeyPacketVariant() throws {
         let calendarKeyPair = try CryptoKeyHelper.makeKeyPair()
 
@@ -281,7 +252,7 @@ extension EventRSVPTests {
         apiService.requestDecodableStub.bodyIs { _, _, path, anyParams, _, _, _, _, _, _, _, completion in
             switch path {
             case "/calendar/v1/events":
-                guard 
+                guard
                     let params = anyParams as? [String: Any],
                     params["UID"] as? String == self.eventUID
                 else {

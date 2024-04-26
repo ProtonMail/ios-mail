@@ -258,6 +258,16 @@ extension UserContainer: HasURLOpener {
     }
 }
 
+protocol HasAnswerInvitation {
+    var answerInvitation: AnswerInvitation { get }
+}
+
+extension UserContainer: HasAnswerInvitation {
+    var answerInvitation: AnswerInvitation {
+        answerInvitationFactory()
+    }
+}
+
 protocol HasAppRatingService {
     var appRatingService: AppRatingService { get }
 }
@@ -308,13 +318,23 @@ extension UserContainer: HasContactViewsFactory {
     }
 }
 
-protocol HasEventRSVP {
-    var eventRSVP: EventRSVP { get }
+protocol HasExtractBasicEventInfo {
+    var extractBasicEventInfo: ExtractBasicEventInfo { get }
 }
 
-extension UserContainer: HasEventRSVP {
-    var eventRSVP: EventRSVP {
-        eventRSVPFactory()
+extension UserContainer: HasExtractBasicEventInfo {
+    var extractBasicEventInfo: ExtractBasicEventInfo {
+        extractBasicEventInfoFactory()
+    }
+}
+
+protocol HasFetchEventDetails {
+    var fetchEventDetails: FetchEventDetails { get }
+}
+
+extension UserContainer: HasFetchEventDetails {
+    var fetchEventDetails: FetchEventDetails {
+        fetchEventDetailsFactory()
     }
 }
 
