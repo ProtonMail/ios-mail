@@ -381,6 +381,19 @@ fileprivate class UniffiHandleMap<T> {
 // Public interface members begin here.
 
 
+fileprivate struct FfiConverterUInt32: FfiConverterPrimitive {
+    typealias FfiType = UInt32
+    typealias SwiftType = UInt32
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> UInt32 {
+        return try lift(readInt(&buf))
+    }
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        writeInt(&buf, lower(value))
+    }
+}
+
 fileprivate struct FfiConverterUInt64: FfiConverterPrimitive {
     typealias FfiType = UInt64
     typealias SwiftType = UInt64
@@ -463,6 +476,21 @@ fileprivate struct FfiConverterString: FfiConverter {
         let len = Int32(value.utf8.count)
         writeInt(&buf, len)
         writeBytes(&buf, value.utf8)
+    }
+}
+
+fileprivate struct FfiConverterData: FfiConverterRustBuffer {
+    typealias SwiftType = Data
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> Data {
+        let len: Int32 = try readInt(&buf)
+        return Data(try readBytes(&buf, count: Int(len)))
+    }
+
+    public static func write(_ value: Data, into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        writeBytes(&buf, value)
     }
 }
 
@@ -1426,6 +1454,18 @@ public protocol MailboxProtocol : AnyObject {
     func deleteConversations(ids: [UInt64]) throws 
     
     /**
+     * Get the sender image for a conversation.
+     *
+     * size is used to give the x*x size of the returned image (will default to 32 if none provided)
+     * mode can be used to select if the "light" or "dark" mode of the image is desired (default is light)
+     *
+     * # Errors
+     * Returns errors if the API call fails, the mode value is invalid, the conversation doesn't exist, or
+     * if there's an issue with the sender that causes problems when creating the API request on our side.
+     */
+    func getImageForConversation(conversationId: UInt64, size: UInt32?, mode: String?) async throws  -> Data
+    
+    /**
      * Label the given conversations with the given label id.
      *
      * To retrieve the list of applicable labels use the
@@ -1614,6 +1654,33 @@ open func deleteConversations(ids: [UInt64])throws  {try rustCallWithError(FfiCo
         FfiConverterSequenceUInt64.lower(ids),$0
     )
 }
+}
+    
+    /**
+     * Get the sender image for a conversation.
+     *
+     * size is used to give the x*x size of the returned image (will default to 32 if none provided)
+     * mode can be used to select if the "light" or "dark" mode of the image is desired (default is light)
+     *
+     * # Errors
+     * Returns errors if the API call fails, the mode value is invalid, the conversation doesn't exist, or
+     * if there's an issue with the sender that causes problems when creating the API request on our side.
+     */
+open func getImageForConversation(conversationId: UInt64, size: UInt32?, mode: String?)async throws  -> Data {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_method_mailbox_get_image_for_conversation(
+                    self.uniffiClonePointer(),
+                    FfiConverterUInt64.lower(conversationId),FfiConverterOptionUInt32.lower(size),FfiConverterOptionString.lower(mode)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
+            liftFunc: FfiConverterData.lift,
+            errorHandler: FfiConverterTypeMailboxError.lift
+        )
 }
     
     /**
@@ -2558,6 +2625,14 @@ public enum MailboxError {
     
     case InvalidAction(message: String)
     
+    case ConversationNotFound(message: String)
+    
+    case ApiError(message: String)
+    
+    case InvalidImageMode(message: String)
+    
+    case AddressDomainLogoError(message: String)
+    
     case Other(message: String)
     
 }
@@ -2597,7 +2672,23 @@ public struct FfiConverterTypeMailboxError: FfiConverterRustBuffer {
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 7: return .Other(
+        case 7: return .ConversationNotFound(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 8: return .ApiError(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 9: return .InvalidImageMode(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 10: return .AddressDomainLogoError(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 11: return .Other(
             message: try FfiConverterString.read(from: &buf)
         )
         
@@ -2624,8 +2715,16 @@ public struct FfiConverterTypeMailboxError: FfiConverterRustBuffer {
             writeInt(&buf, Int32(5))
         case .InvalidAction(_ /* message is ignored*/):
             writeInt(&buf, Int32(6))
-        case .Other(_ /* message is ignored*/):
+        case .ConversationNotFound(_ /* message is ignored*/):
             writeInt(&buf, Int32(7))
+        case .ApiError(_ /* message is ignored*/):
+            writeInt(&buf, Int32(8))
+        case .InvalidImageMode(_ /* message is ignored*/):
+            writeInt(&buf, Int32(9))
+        case .AddressDomainLogoError(_ /* message is ignored*/):
+            writeInt(&buf, Int32(10))
+        case .Other(_ /* message is ignored*/):
+            writeInt(&buf, Int32(11))
 
         
         }
@@ -3439,6 +3538,27 @@ extension FfiConverterCallbackInterfaceSessionCallback : FfiConverter {
     }
 }
 
+fileprivate struct FfiConverterOptionUInt32: FfiConverterRustBuffer {
+    typealias SwiftType = UInt32?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterUInt32.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterUInt32.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
 fileprivate struct FfiConverterOptionString: FfiConverterRustBuffer {
     typealias SwiftType = String?
 
@@ -3816,6 +3936,9 @@ private var initializationResult: InitializationResult {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_delete_conversations() != 34381) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_get_image_for_conversation() != 33537) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_label_conversations() != 1773) {

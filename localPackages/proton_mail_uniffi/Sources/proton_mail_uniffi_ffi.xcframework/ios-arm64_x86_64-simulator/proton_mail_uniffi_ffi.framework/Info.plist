@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleIdentifier</key>
-    <string>me.proton.proton_mail_uniffi_fii</string>
+    <string>me.proton.ProtonMailUniffiFfi</string>
     <key>CFBundleName</key>
     <string>proton_mail_uniffi_ffi</string>
     <key>CFBundleVersion</key>

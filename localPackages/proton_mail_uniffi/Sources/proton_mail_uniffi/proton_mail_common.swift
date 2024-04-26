@@ -470,14 +470,12 @@ fileprivate struct FfiConverterString: FfiConverter {
 public struct ConversationAvatarInformation {
     public var text: String
     public var color: String
-    public var senderImageUrl: String
 
     // Default memberwise initializers are never public by default, so we
     // declare one manually.
-    public init(text: String, color: String, senderImageUrl: String) {
+    public init(text: String, color: String) {
         self.text = text
         self.color = color
-        self.senderImageUrl = senderImageUrl
     }
 }
 
@@ -491,16 +489,12 @@ extension ConversationAvatarInformation: Equatable, Hashable {
         if lhs.color != rhs.color {
             return false
         }
-        if lhs.senderImageUrl != rhs.senderImageUrl {
-            return false
-        }
         return true
     }
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(text)
         hasher.combine(color)
-        hasher.combine(senderImageUrl)
     }
 }
 
@@ -510,15 +504,13 @@ public struct FfiConverterTypeConversationAvatarInformation: FfiConverterRustBuf
         return
             try ConversationAvatarInformation(
                 text: FfiConverterString.read(from: &buf), 
-                color: FfiConverterString.read(from: &buf), 
-                senderImageUrl: FfiConverterString.read(from: &buf)
+                color: FfiConverterString.read(from: &buf)
         )
     }
 
     public static func write(_ value: ConversationAvatarInformation, into buf: inout [UInt8]) {
         FfiConverterString.write(value.text, into: &buf)
         FfiConverterString.write(value.color, into: &buf)
-        FfiConverterString.write(value.senderImageUrl, into: &buf)
     }
 }
 
