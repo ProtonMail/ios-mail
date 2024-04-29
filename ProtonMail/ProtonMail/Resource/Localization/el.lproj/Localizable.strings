@@ -1998,7 +1998,7 @@
 "Storage: %@ full" = "Αποθηκευτικός χώρος: %@ πλήρης";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "Drive: %@ πλήρης";
 
 /* Official badge next to sender's name */
 "Official" = "Επίσημο";
@@ -2409,13 +2409,13 @@
 "Change mailbox password" = "Αλλαγή κωδικού γραμματοκιβωτίου";
 
 /* Description of a feature of a paid subscription */
-"Schedule send and snooze" = "Schedule send and snooze";
+"Schedule send and snooze" = "Προγραμματισμός αποστολής και αναβολής";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain support" = "Custom email domain support";
+"Custom email domain support" = "Υποστήριξη προσαρμοσμένου τομέα ηλεκτρονικού ταχυδρομείου";
 
 /* Description of a feature of a paid subscription */
-"And %u more premium features" = "And %u more premium features";
+"And %u more premium features" = "Και %u περισσότερα premium χαρακτηριστικά";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ανώνυμη τηλεμετρία";
@@ -2433,7 +2433,19 @@
 "Upgrade to %@" = "Αναβάθμιση σε %@";
 
 /* Subtitle of the upsell page. */
-"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+"To unlock more storage and premium features." = "Για να ξεκλειδώσετε περισσότερο χώρο αποθήκευσης και premium λειτουργίες.";
 
-/* Subtitle of the upsell page. */
-" For more storage and all premium features across all Proton services." = " For more storage and all premium features across all Proton services.";
+/* Displayed next to the monthly price */
+"/month" = "/month";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Αποκτήστε %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Save %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Invalid product ID: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Purchase already in progress";

@@ -2409,7 +2409,7 @@
 "Change mailbox password" = "Endre postbokspassord";
 
 /* Description of a feature of a paid subscription */
-"Schedule send and snooze" = "Planlegg sending og slumre";
+"Schedule send and snooze" = "Planlegg sending og slumring";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Støtte for tilpasset e-postdomene";
@@ -2435,5 +2435,17 @@
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "For å låse opp mer lagringsplass og premiumfunksjoner.";
 
-/* Subtitle of the upsell page. */
-" For more storage and all premium features across all Proton services." = " For mer lagring og alle premiumfunksjoner på tvers av alle Proton-tjenester.";
+/* Displayed next to the monthly price */
+"/month" = "/måned";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Få %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Spar %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Ugyldig produkt-ID: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Kjøpet pågår allerede";

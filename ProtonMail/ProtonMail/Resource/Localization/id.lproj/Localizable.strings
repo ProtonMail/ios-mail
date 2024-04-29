@@ -2435,5 +2435,17 @@
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Buka ruang lebih dan fitur premium";
 
-/* Subtitle of the upsell page. */
-" For more storage and all premium features across all Proton services." = "Untuk ruang lebih dan fitur premium di semua layanan Proton.";
+/* Displayed next to the monthly price */
+"/month" = "/bulan";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Dapatkan %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Hemat %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "ID produk tidak valid: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Pembelian sedang berlangsung";

@@ -2435,5 +2435,17 @@
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "მეტი საცავი და ფასიანი თვისებების მისაღებად.";
 
-/* Subtitle of the upsell page. */
-" For more storage and all premium features across all Proton services." = " მეტი საცავისა და ყველა ფასიანი ფუნქციისთვის Proton-ის ყველა სერვისისთვის.";
+/* Displayed next to the monthly price */
+"/month" = "/month";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "%@-ის მიღება";
+
+/* In the context of a discount */
+"Save %u%%" = "Save %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Invalid product ID: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Purchase already in progress";

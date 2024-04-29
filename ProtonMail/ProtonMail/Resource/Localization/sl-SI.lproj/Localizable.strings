@@ -53,7 +53,7 @@
 "Menu" = "Meni";
 
 /* menu title */
-"Report a problem" = "Prijavi težavo";
+"Report a problem" = "Prijavite težavo";
 
 /* menu title */
 "Inbox" = "Prejeto";
@@ -2028,7 +2028,7 @@
 "I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Uporabljam ProtonMail in pomislil sem, da bi bil morda všeč tudi vam. To je varna e-poštna storitev, ki varuje vašo zasebnost. Prijavite se prek te povezave in za en mesec dobite premijske funkcije brezplačno:";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Vaša zasebnost je bolje zaščitena, če Proton Mail uporabljajo tudi vaši stiki. Povabite svoje prijatelje v Proton in vsi boste prejeli vrhunske ugodnosti brezplačno.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Vaša zasebnost je bolje zaščitena, če Proton Mail uporabljajo tudi vaši stiki. Povabite svoje prijatelje v Proton in vsi boste prejeli premijske ugodnosti brezplačno.";
 
 /* The title of the maybe later button in referral prompt view. */
 "Maybe later" = "Morda kasneje";
@@ -2409,13 +2409,13 @@
 "Change mailbox password" = "Spremeni geslo poštnega nabiralnika";
 
 /* Description of a feature of a paid subscription */
-"Schedule send and snooze" = "Schedule send and snooze";
+"Schedule send and snooze" = "Načrtujte pošiljanje in dremež";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain support" = "Custom email domain support";
+"Custom email domain support" = "Podpora za e-poštno domeno po meri";
 
 /* Description of a feature of a paid subscription */
-"And %u more premium features" = "And %u more premium features";
+"And %u more premium features" = "In %u več premijskih funkcij";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonimna telemetrija";
@@ -2430,10 +2430,22 @@
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Če aplikacija preneha delovati, se našim razvijalcem pošlje poročilo s podrobnostmi o vzroku. Uporabili ga bomo izključno za izboljšanje aplikacije.";
 
 /* Title of the upsell page. */
-"Upgrade to %@" = "Upgrade to %@";
+"Upgrade to %@" = "Nadgradi na %@.";
 
 /* Subtitle of the upsell page. */
-"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+"To unlock more storage and premium features." = "Ndgradite za več prostora za shranjevanje in premium funkcij.";
 
-/* Subtitle of the upsell page. */
-" For more storage and all premium features across all Proton services." = " For more storage and all premium features across all Proton services.";
+/* Displayed next to the monthly price */
+"/month" = "/month";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Pridobi %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Save %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Invalid product ID: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Purchase already in progress";

@@ -23,10 +23,10 @@
 "Mobile Signature" = "Mobilný podpis";
 
 /* Title */
-"Recovery email" = "E-mail pre obnovenie";
+"Recovery email" = "Email na obnovenie";
 
 /* Title */
-"Enable email notices" = "Povoliť e-mailové upozornenia";
+"Enable email notices" = "Povoliť emailové upozornenia";
 
 /* place holder */
 "Input Notification Email…" = "Zadajte email na zasielanie notifikácií…";
@@ -292,7 +292,7 @@
 "Add new custom field" = "Pridať nové vlastné pole";
 
 /* new email action */
-"Add new email" = "Pridať nový e-mail";
+"Add new email" = "Pridať nový email";
 
 /* new phone action */
 "Add new phone number" = "Pridať nové telefónne číslo";
@@ -307,7 +307,7 @@
 "Work" = "Práca";
 
 /* default vcard types */
-"Email" = "E-mail";
+"Email" = "Email";
 
 /* default vcard types */
 "Other" = "Iné";
@@ -367,13 +367,13 @@
 "Gender" = "Pohlavie";
 
 /* Send an email to the current contact (button title text) */
-"Email contact" = "E-mailový kontakt";
+"Email contact" = "Emailový kontakt";
 
 /* Call the contact (button title text) */
 "Call contact" = "Zavolať kontakt";
 
 /* contact detail view, email addresses section title */
-"Email addresses" = "E-mailové adresy";
+"Email addresses" = "Emailové adresy";
 
 /* contact section title */
 "Encrypted contact details" = "Šifrované kontaktné údaje";
@@ -563,7 +563,7 @@
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Zdá sa, že tento e-mail pochádza z adresy Proton Mail, ale prišiel z externého systému a nespĺňa naše overovacie požiadavky. Správa môže byť sfalšovaná alebo nesprávne preposlaná!";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Tento e-mail nesplnil požiadavky na overenie domény. Môže byť sfalšovaný alebo nesprávne preposlaný.";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Tento email nesplnil požiadavky na overenie svojej domény. Môže byť sfalšovaný alebo nesprávne preposlaný.";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Táto správa môže byť pokus o phishing. Skontrolujte odosielateľa a obsah správy, aby ste sa uistili o ich legitimite, prosím.";
@@ -841,10 +841,10 @@
 "Storage Warning" = "Varovanie o dochádzajúcom mieste";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Využili ste všetok úložný priestor (%@). Ak chcete naďalej odosielať a prijímať e-maily, upgradujte svoj plán predplatného.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Využili ste všetok úložný priestor (%@). Ak chcete naďalej odosielať a prijímať emaily, upgradujte svoj plán predplatného.";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Využili ste %1$d%% vášho úložného priestoru (%2$@). Ak chcete naďalej odosielať a prijímať e-maily, prosím upgradujte svoj plán predplatného.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Využili ste %1$d%% vášho úložného priestoru (%2$@). Ak chcete naďalej odosielať a prijímať emaily, prosím upgradujte svoj plán predplatného.";
 
 /* Alert title */
 "Storage full" = "Plné úložisko";
@@ -856,7 +856,7 @@
 "Please upgrade your plan" = "Prosíme prejdite na vyšší plán";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Aby ste naďalej mohli odosielať a prijímať e-maily, navýšte svoj plán, prosím.";
+"Please upgrade your plan to continue to send and receive emails." = "Aby ste naďalej mohli odosielať a prijímať emaily, navýšte svoj plán, prosím.";
 
 /* Title */
 "Warning" = "Upozornenie";
@@ -1115,7 +1115,7 @@
 "Delete contact group" = "Zmazať skupinu kontaktov";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
-"Please select at least one email for the contact group" = "Vyberte aspoň jeden e-mail pre skupinu kontaktov";
+"Please select at least one email for the contact group" = "Vyberte aspoň jeden email pre skupinu kontaktov";
 
 /* The message will show up when the user attempts to create a contact group without any name specified */
 "Please provide a group name" = "Prosím, zadajte názov skupiny";
@@ -1265,25 +1265,25 @@
 "Recipient not found" = "Príjemca nenájdený";
 
 /* The error message is shown in composer */
-"Invalid email address" = "Neplatná e-mailová adresa";
+"Invalid email address" = "Neplatná emailová adresa";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "Najmenej jedna e-mailová adresa príjemcu má nesprávny formát, skontrolujte ich prosím.";
+"At least one recipient email address is improperly formatted, please double check them." = "Najmenej jedna emailová adresa príjemcu má nesprávny formát, skontrolujte ich prosím.";
 
 /* incorrect email format error in composer */
 "Error sending" = "Chyba pri odosielaní";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "Minimálne jedna e-mailová adresa nebola v skupine nájdená";
+"At least one email address in the group could not be found" = "Minimálne jedna emailová adresa nebola v skupine nájdená";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Aspoň jedna e-mailová adresa/doména príjemcu neexistuje, alebo má zlý formát. Správa bola presunutá do konceptov.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Aspoň jedna emailová adresa/doména príjemcu neexistuje, alebo má zlý formát. Správa bola presunutá do konceptov.";
 
 /* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "Zadali ste aspoň jednu neplatnú e-mailovú adresu. Overte prosím príjemcu.";
+"You have entered at least one invalid email address. Please verify your recipients." = "Zadali ste aspoň jednu neplatnú emailovú adresu. Overte prosím príjemcu.";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found." = "Minimálne jedna e-mailová adresa nebola v skupine nájdená.";
+"At least one email address in the group could not be found." = "Minimálne jedna emailová adresa nebola v skupine nájdená.";
 
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "Zadali ste aspoň jedného neznámeho príjemcu. Overte prosím príjemcu.";
@@ -1388,7 +1388,7 @@
 "Delete %d Messages" = "Odstrániť $%d správy";
 
 /* No comment provided by engineer. */
-"Current Recovery Email" = "Aktuálny e-mail na obnovenie";
+"Current Recovery Email" = "Aktuálny email na obnovenie";
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Obnovenie povolené";
@@ -1442,7 +1442,7 @@
 "Parent folder" = "Nadradený priečinok";
 
 /* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Túto akciu nie je možné vrátiť späť. E-maily uložené v tomto priečinku nebudú vymazané a je možné ich nájsť v priečinku Všetky správy.";
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Túto akciu nie je možné vrátiť späť. Emaily uložené v tomto priečinku nebudú vymazané a je možné ich nájsť v priečinku Všetky správy.";
 
 /* Alert message when user tries to delete label */
 "This action cannot be undone." = "Túto akciu nie je možné vrátiť späť.";
@@ -1508,7 +1508,7 @@
 "Save as PDF" = "Uložiť ako PDF";
 
 /* No comment provided by engineer. */
-"View headers" = "Zobraziť hlavičku e-mailu";
+"View headers" = "Zobraziť hlavičku emailu";
 
 /* No comment provided by engineer. */
 "View HTML" = "Zobrazenie HTML";
@@ -1552,7 +1552,7 @@
 "Do you want to discard the changes?" = "Prajete si zrušiť zmeny?";
 
 /* No comment provided by engineer. */
-"Group emails from the same conversation together." = "Zoskupiť e-maily z rovnakej konverzácie.";
+"Group emails from the same conversation together." = "Zoskupiť emaily z rovnakej konverzácie.";
 
 /* No comment provided by engineer. */
 "Conversation grouping" = "Zoskupovanie konverzácií";
@@ -1675,7 +1675,7 @@
 "Set mail password" = "Nastavte heslo pre poštu";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
-"Set mail expiration" = "Nastaviť vypršanie e-mailu";
+"Set mail expiration" = "Nastaviť koniec platnosti mailu";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Schovať klávesnicu";
@@ -1693,7 +1693,7 @@
 "Go back (recommended)" = "Naspäť (odporúčané)";
 
 /* Description for undo send */
-"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Táto funkcia oneskoruje posielanie Vašich e-mailov, dáva možnosť prerušiť zasielanie správy, ktorá už bola na ceste a vrátiť ju späť.";
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Táto funkcia oneskoruje posielanie Vašich emailov, dáva možnosť prerušiť zasielanie správy, ktorá už bola na ceste a vrátiť ju späť.";
 
 /* The title of the scheduled message banner. */
 "This message will be sent on %@ at %@" = "Táto správa bude odoslaná %1$@ o %2$@";
@@ -1774,7 +1774,7 @@
 "PGP-signed" = "Podpísané pomocou PGP";
 
 /* The error message while calculating the encryption preferences */
-"Email address disabled" = "E-mailová adresa je deaktivovaná";
+"Email address disabled" = "Emailová adresa je deaktivovaná";
 
 /* The error message while calculating the encryption preferences */
 "No keys retrieved for internal user" = "Pre interného používateľa neboli nájdené žiadne kľúče";
@@ -1786,7 +1786,7 @@
 "Trusted keys are not valid for sending" = "Dôveryhodné kľúče nie sú použiteľné na odosielanie";
 
 /* The error message while calculating the encryption preferences */
-"No WKD key retrieved for user is valid for sending" = "Žiadny WKD kľúč pre užívateľov nie je platný pre odosielanie";
+"No WKD key retrieved for user is valid for sending" = "Žiadny WKD kľúč pre používateľov nie je platný pre odosielanie";
 
 /* The error message while calculating the encryption preferences */
 "The sending key is not valid" = "Kľúč na odosielanie je neplatný";
@@ -2025,7 +2025,7 @@
 "Terms & conditions" = "Podmienky používania";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Používam Proton Mail a myslím si, že by sa vám mohol páčiť. Je to bezpečná e-mailová služba, ktorá chráni vaše súkromie. Zaregistrujte sa pomocou tohto odkazu a získajte 1 mesiac prémiových funkcií zadarmo:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Používam Proton Mail a myslím si, že by sa vám mohol páčiť. Je to bezpečná emailová služba, ktorá chráni vaše súkromie. Zaregistrujte sa pomocou tohto odkazu a získajte 1 mesiac prémiových funkcií zadarmo:";
 
 /* The content of the referral prompt view. */
 "Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Vaše súkromie je lepšie chránené, ak aj vaše kontakty používajú Proton Mail. Pozvite svojich priateľov do Protonu a každý z vás získa prémiové výhody zadarmo.";
@@ -2435,5 +2435,17 @@
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Na získanie väčšieho úložiska a prémiových funkcií.";
 
-/* Subtitle of the upsell page. */
-" For more storage and all premium features across all Proton services." = " Pre viac úložného priestoru a všetky prémiové funkcie vo všetkých službách Proton.";
+/* Displayed next to the monthly price */
+"/month" = "/month";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Získať %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Save %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Invalid product ID: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Purchase already in progress";

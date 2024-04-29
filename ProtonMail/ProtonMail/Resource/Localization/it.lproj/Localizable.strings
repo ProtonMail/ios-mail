@@ -2435,5 +2435,17 @@
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Per sbloccare più spazio di archiviazione e funzionalità premium.";
 
-/* Subtitle of the upsell page. */
-" For more storage and all premium features across all Proton services." = " Per più spazio di archiviazione e tutte le funzionalità premium su tutti i servizi Proton.";
+/* Displayed next to the monthly price */
+"/month" = "/mese";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Ottieni %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Risparmia il %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "ID prodotto non valido: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Acquisto già in corso";

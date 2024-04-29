@@ -937,7 +937,7 @@
 "Decryption of this content failed" = "No s'ha pogut desxifrar aquest contingut.";
 
 /* error details */
-"Decryption of this message's encrypted content failed." = "El contingut encriptat d'aquest missatge no s'ha pogut desxifrar.";
+"Decryption of this message's encrypted content failed." = "El contingut xifrat d'aquest missatge no s'ha pogut desxifrar.";
 
 /* error title */
 "Logs" = "Registres";
@@ -2409,13 +2409,13 @@
 "Change mailbox password" = "Canviar contrasenya de la bústia de correu";
 
 /* Description of a feature of a paid subscription */
-"Schedule send and snooze" = "Schedule send and snooze";
+"Schedule send and snooze" = "Programi l'enviament i la posposició";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain support" = "Custom email domain support";
+"Custom email domain support" = "Suport de domini de correu electrònic personalitzat";
 
 /* Description of a feature of a paid subscription */
-"And %u more premium features" = "And %u more premium features";
+"And %u more premium features" = "I %u més característiques prèmium";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetria anònima";
@@ -2430,10 +2430,22 @@
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Si l'aplicació es falla, s'enviarà un informe als nostres enginyers amb detalls de la causa. Només s'utilitzaran per a millorar l'aplicació.";
 
 /* Title of the upsell page. */
-"Upgrade to %@" = "Upgrade to %@";
+"Upgrade to %@" = "Millori a %@";
 
 /* Subtitle of the upsell page. */
-"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+"To unlock more storage and premium features." = "Per desbloquejar més emmagatzematge i característiques prèmium.";
 
-/* Subtitle of the upsell page. */
-" For more storage and all premium features across all Proton services." = " For more storage and all premium features across all Proton services.";
+/* Displayed next to the monthly price */
+"/month" = "/month";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Obtingueu %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Save %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Invalid product ID: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Purchase already in progress";
