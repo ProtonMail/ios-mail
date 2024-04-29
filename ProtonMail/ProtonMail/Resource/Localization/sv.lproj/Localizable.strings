@@ -1950,16 +1950,16 @@
 "(Attendance optional)" = "(Frivilligt deltagande)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "Varje %@";
 
 /* As in: on Saturday */
 "on %@" = "på %@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "på %@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "på dag %u";
 
 /* As in: Until Sep 27, 2025 */
 "until %@" = "fram till %@";
@@ -2435,5 +2435,17 @@
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "För att låsa upp mer lagringsutrymme och premiumfunktioner.";
 
-/* Subtitle of the upsell page. */
-" For more storage and all premium features across all Proton services." = " För mer lagringsutrymmen och alla premiumfunktioner för alla Proton-tjänster.";
+/* Displayed next to the monthly price */
+"/month" = "/månad";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Skaffa %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Spara %u %%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Ogiltigt produkt-ID: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Köp pågår redan";

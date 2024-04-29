@@ -1238,7 +1238,7 @@
 "Addresses" = "地址";
 
 /* Cell title in device settings - mute notification until a later time. */
-"Snooze" = "免打扰";
+"Snooze" = "延迟通知";
 
 /* cell title in device settings */
 "Mailbox" = "邮箱";
@@ -2322,19 +2322,19 @@
 "Downloading attachment" = "正在下载附件";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "已延后到 %@";
+"Snoozed until %@" = "通知已推迟至 %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "取消延后";
+"Unsnooze" = "取消延迟通知";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "延后到 %@";
+"Snooze until %@" = "将通知推迟至 %@";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "对话已取消延后";
+"Conversation unsnoozed" = "会话已取消延迟通知";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "延后到...";
+"Snooze until..." = "将通知推迟至...";
 
 /* One of snooze option shows in action sheet */
 "Later this week" = "本周稍后";
@@ -2346,13 +2346,13 @@
 "Next week" = "下周";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "请选择位于当前时间以后的时间";
+"Please select a time in the future" = "请选择将来的时间点";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "想在其他时间免打扰？";
+"Want to snooze any time?" = "想将通知推迟至任意时间？";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "升级账户即可自由调整免打扰时间";
+"Unlock custom snooze times when you upgrade" = "升级账户即可自由调整延迟通知时间";
 
 /* The benefit item for snooze promotion view */
 "Up to 15 email addresses/aliases" = "最多 15 个邮箱地址/别名";
@@ -2409,7 +2409,7 @@
 "Change mailbox password" = "更改邮箱密码";
 
 /* Description of a feature of a paid subscription */
-"Schedule send and snooze" = "Schedule send and snooze";
+"Schedule send and snooze" = "定时发送及延迟通知";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Custom email domain support";
@@ -2435,5 +2435,17 @@
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "To unlock more storage and premium features.";
 
-/* Subtitle of the upsell page. */
-" For more storage and all premium features across all Proton services." = " For more storage and all premium features across all Proton services.";
+/* Displayed next to the monthly price */
+"/month" = "/month";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "开通 %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Save %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Invalid product ID: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Purchase already in progress";

@@ -1373,10 +1373,10 @@
 "Enter your password to make changes" = "Увядзіце пароль для выканання змен";
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
-"Send read receipt" = "Адправіць апавяшчэнне пра прачытанне";
+"Send read receipt" = "Адправіць апавяшчэнне аб прачытанні";
 
 /* A label text which is displayed after sending read receipt to sender */
-"Receipt sent" = "Апавяшчэнне прачытання адпраўлена";
+"Receipt sent" = "Квітанцыя адпраўлена";
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Узнікла праблема з падключэннем да сервераў. Паспрабуйце падключыцца яшчэ раз.";
@@ -1454,10 +1454,10 @@
 "Inherited from parent folder" = "Унаследавана ад бацькоўскай папкі";
 
 /* Alert title */
-"Creating folder not allowed" = "Стварэнне папкі не дазволена";
+"Creating folder not allowed" = "Стварэнне папкі забаронена";
 
 /* Alert title */
-"Creating label not allowed" = "Стварэнне меткі не дазволена";
+"Creating label not allowed" = "Стварэнне меткі забаронена";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Перайдзіце на платны тарыфны план, каб выкарыстоўваць больш за 3 папкі";
@@ -2435,5 +2435,17 @@
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Для разблакіроўкі большага памеру сховішча і прэміяльных функцый.";
 
-/* Subtitle of the upsell page. */
-" For more storage and all premium features across all Proton services." = " Для разблакіроўкі большага памеру сховішча і ўсіх прэміяльных функцый паміж усімі сэрвісамі Proton.";
+/* Displayed next to the monthly price */
+"/month" = "/месяц";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Атрымаць %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Эканомія %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Памылковы ідэнтыфікатар прадукту: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Купля ўжо ажыццяўляецца";

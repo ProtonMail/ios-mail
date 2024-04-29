@@ -223,7 +223,7 @@
  Action
  Springboard (3D Touch) shortcuts action
 */
-"Compose" = "Redactar";
+"Compose" = "Escribir";
 
 /* Composer expiration page title */
 "Message expiration" = "Expiración del mensaje";
@@ -1630,7 +1630,7 @@
 "Action reverted" = "Acción revertida";
 
 /* An action title shows in ellipsis menu */
-"Compose message" = "Redactar mensaje";
+"Compose message" = "Escribir mensaje";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Vaciar papelera";
@@ -2435,5 +2435,17 @@
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Para desbloquear más almacenamiento y funciones premium.";
 
-/* Subtitle of the upsell page. */
-" For more storage and all premium features across all Proton services." = "Para más almacenamiento y todas las funciones premium a través de todos los servicios de Proton.";
+/* Displayed next to the monthly price */
+"/month" = "/mes";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Obtén %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Ahorra un %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "El ID de producto no es válido: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "La compra ya está en progreso.";
