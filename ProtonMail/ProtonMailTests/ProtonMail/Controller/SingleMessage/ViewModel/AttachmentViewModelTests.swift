@@ -21,10 +21,12 @@ import XCTest
 @testable import ProtonMail
 
 class AttachmentViewModelTests: XCTestCase {
+    private var answerInvitation: MockAnswerInvitation!
+    private var extractBasicEventInfo: MockExtractBasicEventInfo!
+    private var fetchEventDetails: MockFetchEventDetails!
     private var featureFlagProvider: MockFeatureFlagProvider!
     private var urlOpener: MockURLOpener!
     private var user: UserManager!
-    private var eventRSVP: MockEventRSVP!
     private var receivedRespondingStatuses: AsyncPublisher<AnyPublisher<AttachmentViewModel.RespondingStatus, Never>>.Iterator!
     private var subscriptions: Set<AnyCancellable>!
 
@@ -73,6 +75,8 @@ class AttachmentViewModelTests: XCTestCase {
 
         user = UserManager(api: apiService, globalContainer: testContainer)
 
+        answerInvitation = .init()
+
         let fetchAttachmentMetadata = MockFetchAttachmentMetadataUseCase()
         fetchAttachmentMetadata.executionStub.bodyIs { _, _ in
             AttachmentMetadata(keyPacket: "")
@@ -83,19 +87,23 @@ class AttachmentViewModelTests: XCTestCase {
             AttachmentFile(attachmentId: "", fileUrl: URL(fileURLWithPath: ""), data: Data())
         )
 
-        eventRSVP = .init()
-        eventRSVP.extractBasicEventInfoStub.bodyIs { _, _ in
+        extractBasicEventInfo = .init()
+        extractBasicEventInfo.executeStub.bodyIs { _, _ in
             self.stubbedBasicEventInfo
         }
-        eventRSVP.fetchEventDetailsStub.bodyIs { _, _ in
+
+        fetchEventDetails = .init()
+        fetchEventDetails.executeStub.bodyIs { _, _ in
             self.stubbedEventDetails
         }
 
         user.container.reset()
-        user.container.eventRSVPFactory.register { self.eventRSVP }
+        user.container.answerInvitationFactory.register { self.answerInvitation }
+        user.container.extractBasicEventInfoFactory.register { self.extractBasicEventInfo }
         user.container.featureFlagProviderFactory.register { self.featureFlagProvider }
         user.container.fetchAttachmentMetadataFactory.register { fetchAttachmentMetadata }
         user.container.fetchAttachmentFactory.register { fetchAttachment }
+        user.container.fetchEventDetailsFactory.register { self.fetchEventDetails }
 
         sut = AttachmentViewModel(dependencies: user.container)
         receivedRespondingStatuses = sut.respondingStatus.values.makeAsyncIterator()
@@ -110,10 +118,12 @@ class AttachmentViewModelTests: XCTestCase {
         stubbedEventDetails = nil
 
         sut = nil
+        answerInvitation = nil
+        extractBasicEventInfo = nil
         featureFlagProvider = nil
+        fetchEventDetails = nil
         urlOpener = nil
         user = nil
-        eventRSVP = nil
     }
 
     func testInit_withNonInlineAttachments_realAttachmentIsFalse_addAllAttachments() {
@@ -181,22 +191,22 @@ class AttachmentViewModelTests: XCTestCase {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
         sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
 
-        wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 1)
+        wait(self.extractBasicEventInfo.executeStub.callCounter == 1)
 
         let inlineICS = makeAttachment(isInline: true, mimeType: icsMimeType)
         sut.attachmentHasChanged(nonInlineAttachments: [inlineICS], mimeAttachments: [])
 
-        wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 2)
+        wait(self.extractBasicEventInfo.executeStub.callCounter == 2)
 
         let mimeICS = MimeAttachment(filename: "", size: 0, mime: icsMimeType, path: nil, disposition: nil)
         sut.attachmentHasChanged(nonInlineAttachments: [], mimeAttachments: [mimeICS])
 
-        wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 3)
+        wait(self.extractBasicEventInfo.executeStub.callCounter == 3)
 
         let nonICS = makeAttachment(isInline: false)
         sut.attachmentHasChanged(nonInlineAttachments: [nonICS], mimeAttachments: [])
 
-        wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 3)
+        wait(self.extractBasicEventInfo.executeStub.callCounter == 3)
     }
 
     func testGivenICSIsAttached_whenCalledMultipleTimesInQuickSuccession_doesntParseMultipleTimes() {
@@ -206,7 +216,7 @@ class AttachmentViewModelTests: XCTestCase {
             sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
         }
 
-        wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 1)
+        wait(self.extractBasicEventInfo.executeStub.callCounter == 1)
     }
 
     func testWhenICSIsFound_notifiesAboutProcessingProgress() async {
@@ -227,8 +237,8 @@ class AttachmentViewModelTests: XCTestCase {
         sut.basicEventInfoSourcedFromHeaders = stubbedBasicEventInfo
         sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
 
-        wait(self.eventRSVP.fetchEventDetailsStub.callCounter == 1)
-        XCTAssertEqual(eventRSVP.extractBasicEventInfoStub.callCounter, 0)
+        wait(self.fetchEventDetails.executeStub.callCounter == 1)
+        XCTAssertEqual(extractBasicEventInfo.executeStub.callCounter, 0)
     }
 
     func testGivenHeadersContainEventInfo_whenThereAreNoAttachments_thenShowsViewRegardless() async {
@@ -265,7 +275,7 @@ class AttachmentViewModelTests: XCTestCase {
     func testRespondingStatus_whenAnsweringFails_revertsToPreviousValue() async {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
 
-        eventRSVP.respondToInvitationStub.bodyIs { _, _ in
+        answerInvitation.executeStub.bodyIs { _, _ in
             throw NSError.badResponse()
         }
 
@@ -304,7 +314,7 @@ class AttachmentViewModelTests: XCTestCase {
     }
 
     func testResponding_whenEventHasBeenCancelled_isNotAvailable() async {
-        eventRSVP.fetchEventDetailsStub.bodyIs { _, _ in
+        fetchEventDetails.executeStub.bodyIs { _, _ in
                 .make(status: .cancelled)
         }
 
@@ -312,7 +322,7 @@ class AttachmentViewModelTests: XCTestCase {
     }
 
     func testResponding_whenEventHasEnded_isNotAvailable() async {
-        eventRSVP.fetchEventDetailsStub.bodyIs { _, _ in
+        fetchEventDetails.executeStub.bodyIs { _, _ in
                 .make(endDate: .distantPast)
         }
 

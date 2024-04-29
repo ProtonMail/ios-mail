@@ -25,10 +25,12 @@ import ProtonCoreDataModel
 import ProtonCoreUtilities
 
 final class AttachmentViewModel {
-    typealias Dependencies = HasEventRSVP
+    typealias Dependencies = HasAnswerInvitation
+    & HasExtractBasicEventInfo
     & HasFeatureFlagProvider
     & HasFetchAttachmentUseCase
     & HasFetchAttachmentMetadataUseCase
+    & HasFetchEventDetails
     & HasURLOpener
     & HasUserManager
 
@@ -123,12 +125,12 @@ final class AttachmentViewModel {
                 switch initialInfo {
                 case .left(let attachmentInfo):
                     let icsData = try await fetchAndDecrypt(ics: attachmentInfo)
-                    basicEventInfo = try dependencies.eventRSVP.extractBasicEventInfo(icsData: icsData)
+                    basicEventInfo = try dependencies.extractBasicEventInfo.execute(icsData: icsData)
                 case .right(let value):
                     basicEventInfo = value
                 }
 
-                let eventDetails = try await dependencies.eventRSVP.fetchEventDetails(basicEventInfo: basicEventInfo)
+                let eventDetails = try await dependencies.fetchEventDetails.execute(basicEventInfo: basicEventInfo)
                 invitationViewSubject.send(.invitationProcessed(eventDetails))
                 updateRespondingOptions(eventDetails: eventDetails)
             } catch {
@@ -167,7 +169,7 @@ final class AttachmentViewModel {
 
         Task {
             do {
-                try await dependencies.eventRSVP.respondToInvitation(with: answer)
+                try await dependencies.answerInvitation.execute(answer: answer)
                 respondingStatusSubject.send(.alreadyResponded(answer))
             } catch {
                 SystemLogger.log(error: error)
