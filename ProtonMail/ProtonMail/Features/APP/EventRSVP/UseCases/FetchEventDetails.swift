@@ -200,7 +200,9 @@ struct FetchEventDetailsImpl: FetchEventDetails {
 
         let remainingComponents = components.dropFirst()
 
-        return remainingComponents.reduce(firstComponent, iCalReader.parse_and_merge_event_ics)
+        return remainingComponents.reduce(firstComponent) { combinedICS, icsComponent in
+            iCalReader.parse_and_merge_event_ics(old: combinedICS, new: icsComponent, date: Date.init)
+        }
     }
 
     private func parseICS(_ ics: String, withAuxilliaryInfo apiEvent: FullEventTransformer) -> ICalEvent {
@@ -226,7 +228,8 @@ struct FetchEventDetailsImpl: FetchEventDetails {
             isOrganizer: apiEvent.isOrganizer == 1,
             isProtonToProtonInvitation: apiEvent.isProtonProtonInvite == 1,
             notifications: nil,
-            lastModifiedInCoreData: nil
+            lastModifiedInCoreData: nil,
+            color: nil
         )
 
         let attendeeData: [ICalAttendeeData] = apiEvent.attendees.map {

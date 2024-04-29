@@ -1,0 +1,6 @@
+framework module ProtonCoreKeyManager {
+  umbrella header "ProtonCore-KeyManager-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -90,6 +90,14 @@ PODS:
   - ProtonCore-FeatureFlags (22.0.0):
     - ProtonCore-Networking (= 22.0.0)
     - ProtonCore-Services (= 22.0.0)
+  - ProtonCore-Features (22.0.0):
+    - ProtonCore-Authentication (= 22.0.0)
+    - ProtonCore-Crypto (= 22.0.0)
+    - ProtonCore-CryptoGoInterface (= 22.0.0)
+    - ProtonCore-DataModel (= 22.0.0)
+    - ProtonCore-Hash (= 22.0.0)
+    - ProtonCore-KeyManager (= 22.0.0)
+    - ProtonCore-Networking (= 22.0.0)
   - ProtonCore-ForceUpgrade (22.0.0):
     - ProtonCore-Networking (= 22.0.0)
     - ProtonCore-UIFoundations (= 22.0.0)
@@ -112,6 +120,10 @@ PODS:
   - ProtonCore-Keymaker (22.0.0):
     - EllipticCurveKeyPair (~> 2.0)
     - ProtonCore-CryptoGoInterface (= 22.0.0)
+  - ProtonCore-KeyManager (22.0.0):
+    - ProtonCore-Crypto (= 22.0.0)
+    - ProtonCore-CryptoGoInterface (= 22.0.0)
+    - ProtonCore-DataModel (= 22.0.0)
   - ProtonCore-Log (22.0.0):
     - Sentry
   - ProtonCore-Login (22.0.0):
@@ -295,7 +307,14 @@ PODS:
   - ProtonCore-Utilities (22.0.0):
     - ProtonCore-Log (= 22.0.0)
   - ProtonCore-VCard (22.0.0)
-  - ProtonInboxICal (0.2.0)
+  - ProtonInboxICal (0.2.5)
+  - ProtonInboxRSVP (0.3.0):
+    - ProtonCore-Crypto
+    - ProtonCore-DataModel
+    - ProtonCore-Features
+    - ProtonCore-Networking
+    - ProtonCore-Services
+    - ProtonInboxICal
   - ReachabilitySwift (5.0.0)
   - SDWebImage (5.15.8):
     - SDWebImage/Core (= 5.15.8)
@@ -335,12 +354,14 @@ DEPENDENCIES:
   - "ProtonCore-Doh (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
   - "ProtonCore-Environment (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
   - "ProtonCore-FeatureFlags (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
+  - "ProtonCore-Features (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
   - "ProtonCore-ForceUpgrade (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
   - "ProtonCore-Foundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
   - "ProtonCore-GoLibs (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
   - "ProtonCore-Hash (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
   - "ProtonCore-HumanVerification (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
   - "ProtonCore-Keymaker (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
+  - "ProtonCore-KeyManager (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
   - "ProtonCore-Log (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
   - "ProtonCore-Login (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
   - "ProtonCore-LoginUI (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
@@ -373,6 +394,7 @@ DEPENDENCIES:
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
   - "ProtonCore-VCard (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
   - "ProtonInboxICal (from `git@gitlab.protontech.ch:apple/inbox/protoninboxical`)"
+  - "ProtonInboxRSVP (from `git@gitlab.protontech.ch:apple/inbox/protoninboxrsvp.git`)"
   - SDWebImage (~> 5.15)
   - "Sentry (from `git@gitlab.protontech.ch:jchen/sentry-cocoa.git`, tag `8.9.3.fork`)"
   - "SideMenuSwift (from `git@gitlab.protontech.ch:jchen/SideMenu.git`, tag `v2.0.9.autolayout`)"
@@ -448,6 +470,9 @@ EXTERNAL SOURCES:
   ProtonCore-FeatureFlags:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 22.0.0
+  ProtonCore-Features:
+    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+    :tag: 22.0.0
   ProtonCore-ForceUpgrade:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 22.0.0
@@ -464,6 +489,9 @@ EXTERNAL SOURCES:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 22.0.0
   ProtonCore-Keymaker:
+    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+    :tag: 22.0.0
+  ProtonCore-KeyManager:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 22.0.0
   ProtonCore-Log:
@@ -525,6 +553,8 @@ EXTERNAL SOURCES:
     :tag: 22.0.0
   ProtonInboxICal:
     :git: "git@gitlab.protontech.ch:apple/inbox/protoninboxical"
+  ProtonInboxRSVP:
+    :git: "git@gitlab.protontech.ch:apple/inbox/protoninboxrsvp.git"
   Sentry:
     :git: "git@gitlab.protontech.ch:jchen/sentry-cocoa.git"
     :tag: 8.9.3.fork
@@ -590,6 +620,9 @@ CHECKOUT OPTIONS:
   ProtonCore-FeatureFlags:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 22.0.0
+  ProtonCore-Features:
+    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+    :tag: 22.0.0
   ProtonCore-ForceUpgrade:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 22.0.0
@@ -606,6 +639,9 @@ CHECKOUT OPTIONS:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 22.0.0
   ProtonCore-Keymaker:
+    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+    :tag: 22.0.0
+  ProtonCore-KeyManager:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 22.0.0
   ProtonCore-Log:
@@ -666,8 +702,11 @@ CHECKOUT OPTIONS:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 22.0.0
   ProtonInboxICal:
-    :commit: a1a36360a6c49bb56800fcf0c5108d92f99dad85
+    :commit: ff2df4bc4bb9030a9c0f93cdf85b838c80c4e0b8
     :git: "git@gitlab.protontech.ch:apple/inbox/protoninboxical"
+  ProtonInboxRSVP:
+    :commit: e802258cbed2c5b82e670b6b71654deb2f74a322
+    :git: "git@gitlab.protontech.ch:apple/inbox/protoninboxrsvp.git"
   Sentry:
     :git: "git@gitlab.protontech.ch:jchen/sentry-cocoa.git"
     :tag: 8.9.3.fork
@@ -708,12 +747,14 @@ SPEC CHECKSUMS:
   ProtonCore-Doh: 591e06dd45a698357d9e40ee6bc44fa07e2c6e0c
   ProtonCore-Environment: 6b0a59f880972ee6bced20347268c95d7675e32c
   ProtonCore-FeatureFlags: 48af3ecdead3ff8bbfd79e7aa13534adc966ffac
+  ProtonCore-Features: bbb14ab3feff47d325c56d12dd2e8ffe38b0f193
   ProtonCore-ForceUpgrade: 7a0d507721dd37a10b99336b4c54fb24806763f4
   ProtonCore-Foundations: d564774df99021a18a0dddba920a0c485e19240f
   ProtonCore-GoLibs: 77fb9f34ed9303c93a42a7fbc127558ec0257db9
   ProtonCore-Hash: 3aaeb146a2d109aed36860bc74a7d415acb628d9
   ProtonCore-HumanVerification: 85355c328b3f321c3f5c88819e7e44bed88df3a7
   ProtonCore-Keymaker: 81c37f663285597de5c53ebc0b3e82e097e74c09
+  ProtonCore-KeyManager: 3f49e4e07fa99129e840bf21e1063566470a30c8
   ProtonCore-Log: 98cdcdbf5d5d5ae3d04a3e4c4a9765a666a4e10b
   ProtonCore-Login: b15dbbb6ef6360b93db116ed26d84ae4688c35f5
   ProtonCore-LoginUI: caa9a9701b0509cb1fe88af20cb46ff217793a5e
@@ -733,7 +774,8 @@ SPEC CHECKSUMS:
   ProtonCore-UIFoundations: 8c296ab396375483c586fb2833f9e18dc337d6d5
   ProtonCore-Utilities: 107857ee80bc9c33e268b735d363f7b086d2a496
   ProtonCore-VCard: d83777b7c0e940d4489aea7ef472a2411e1706b5
-  ProtonInboxICal: 166beb2265886ac4ad31a818e2f2b59e8ecdbfe6
+  ProtonInboxICal: 196d714f4ccf10f702cf0722ab780f3d493372d7
+  ProtonInboxRSVP: 9d6da54f0380c4e1d7b25b17f253f915ccb06d38
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: cb032eba469c54e0000e78bcb0a13cdde0a52798
   Sentry: 97161cac725da1ecbe77d1445bf8a61c1e5667f1
@@ -746,6 +788,6 @@ SPEC CHECKSUMS:
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
   Yams: e10dae147f517ed57ecae37c5e8681bdf8fcab65
 
-PODFILE CHECKSUM: 446da65483d2ab2b6c677e0a34bf9079951d4afd
+PODFILE CHECKSUM: a7eca600043d3180d9977a84f5e0bd5cd4076147
 
-COCOAPODS: 1.15.1
+COCOAPODS: 1.15.2

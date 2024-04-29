@@ -85,9 +85,12 @@ def app_pods
   pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountRecovery', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-PushNotifications', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Features', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-HumanVerification", :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Features', :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-KeyManager", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Login", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-LoginUI", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-MissingScopes", :git => proton_core_path, :tag => proton_core_version
@@ -99,6 +102,7 @@ def app_pods
   pod "ProtonCore-Telemetry", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonInboxICal', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxical'
+  pod 'ProtonInboxRSVP', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxrsvp.git'
   pod 'SideMenuSwift', :git=> 'git@gitlab.protontech.ch:jchen/SideMenu.git', :tag=>'v2.0.9.autolayout'
   pod 'SwipyCell', :git=> 'git@gitlab.protontech.ch:jchen/SwipyCell.git', :commit => '923310a'
   pod "SkeletonView", '1.30.4'

@@ -19,7 +19,7 @@ import Foundation
 
 public class ICalVEventWriter: ICalComponentWriter {
 
-    private let timeZoneProvider: TimeZoneProviderProtocol
+    private let timeZoneProvider = TimeZoneProvider()
     private let event: ICalEvent
     private let timestamp: () -> Date
 
@@ -27,14 +27,9 @@ public class ICalVEventWriter: ICalComponentWriter {
         self.component
     }
 
-    init(
-        event: ICalEvent,
-        timestamp: @escaping () -> Date,
-        timeZoneProvider: TimeZoneProviderProtocol = TimeZoneProvider()
-    ) {
+    init(event: ICalEvent, timestamp: @escaping () -> Date) {
         self.event = event
         self.timestamp = timestamp
-        self.timeZoneProvider = timeZoneProvider
         super.init(icalcomponent_new(ICAL_VEVENT_COMPONENT))
     }
 

@@ -17,15 +17,11 @@
 
 import Foundation
 
-public protocol TimeZoneProviderProtocol {
-    func timeZone(identifier: String) -> TimeZone
-}
-
-public class TimeZoneProvider: TimeZoneProviderProtocol {
+public class TimeZoneProvider {
 
     public init() {}
 
-    func convertTimeZoneFromTable(identifier timezone: String) -> String? {
+    public func convertTimeZoneFromTable(identifier timezone: String) -> String? {
         if allowedTimeZones.contains(timezone) {
             return timezone
         }

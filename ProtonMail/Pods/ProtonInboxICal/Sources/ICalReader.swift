@@ -69,7 +69,8 @@ public class ICalReader {
             startDateTimeZoneIdentifier: dependecies.startDateTimeZoneIdentifier,
             endDate: dependecies.endDate,
             endDateTimeZoneIdentifier: dependecies.endDateTimeZoneIdentifier,
-            endDateTimeZone: dependecies.endDateTimeZone
+            endDateTimeZone: dependecies.endDateTimeZone,
+            color: dependecies.color
         )
 
         // FIXME: - move assigning those properties higher
@@ -460,7 +461,7 @@ public class ICalReader {
     /**
      This function merges the ics file components together, as the ics files from the API is split
      */
-    private func merge(oldEventComponent: OpaquePointer, newEventComponent: OpaquePointer) -> String {
+    private func merge(oldEventComponent: OpaquePointer, newEventComponent: OpaquePointer, date: Date) -> String {
         // create new VEVENT component
         let vevent: OpaquePointer = icalcomponent_new(ICAL_VEVENT_COMPONENT)
         defer {
@@ -469,7 +470,7 @@ public class ICalReader {
 
         // created, lastmodified, dtstamp
         // icaltime_today() // FIXME: can't get current time from this function for some reason
-        let current = icaltime_from_string(Date.getCurrentZuluTimestampString())
+        let current = icaltime_from_string(Date.getCurrentZuluTimestampString(for: date))
         let created = icalproperty_new_created(current)
         icalcomponent_add_property(vevent,
                                    created)
@@ -583,7 +584,7 @@ public class ICalReader {
             icalcomponent_add_property_clone(vevent,
                                              dtstart)
 
-            if let dtEndProperty = icalcomponent_get_first_property(oldEventComponent,
+            if let dtEndProperty = icalcomponent_get_first_property(newEventComponent,
                                                                     ICAL_DTEND_PROPERTY)
             {
                 icalcomponent_add_property_clone(vevent,
@@ -650,27 +651,8 @@ public class ICalReader {
                                              property)
         }
 
-        // EXDATE
-        var exdate: OpaquePointer?
-        evc = nil
-        if let tmp = icalcomponent_get_first_property(oldEventComponent,
-                                                      ICAL_EXDATE_PROPERTY)
-        {
-            exdate = tmp
-            evc = oldEventComponent
-        } else if let tmp = icalcomponent_get_first_property(newEventComponent,
-                                                             ICAL_EXDATE_PROPERTY)
-        {
-            exdate = tmp
-            evc = newEventComponent
-        }
-
-        while exdate != nil {
-            icalcomponent_add_property_clone(vevent,
-                                             exdate!)
-
-            exdate = icalcomponent_get_next_property(evc!,
-                                                     ICAL_EXDATE_PROPERTY)
+        unionExdates(from: oldEventComponent, and: newEventComponent).forEach { exdate in
+            icalcomponent_add_property_clone(vevent, exdate)
         }
 
         // organizer
@@ -712,7 +694,7 @@ public class ICalReader {
         return self.iCalWriter.getICS(unsafeEvent: vevent)
     }
 
-    public func parse_and_merge_event_ics(old: String, new: String) -> String {
+    public func parse_and_merge_event_ics(old: String, new: String, date: () -> Date = Date.init) -> String {
         // If the string contains only one component, the parser will return the component in libical form.
         // If the string contains multiple components, the multiple components will be returned as the children of an ICAL_XROOT_COMPONENT component -> according to our assumption, it will be 1 VCALENDAR
         guard let oldCalendarComponent = icalparser_parse_string(old) else {
@@ -746,8 +728,7 @@ public class ICalReader {
             fatalError("should have exactly 1 event")
         }
 
-        let ret = self.merge(oldEventComponent: oldEventComponent,
-                             newEventComponent: newEventComponent)
+        let ret = merge(oldEventComponent: oldEventComponent, newEventComponent: newEventComponent, date: date())
 
         // get next event in component
         _oldEventComponent = icalcomponent_get_next_component(oldCalendarComponent,
@@ -774,4 +755,52 @@ public class ICalReader {
 
         return icalparameter_get_tzid(_timezone_parameter).toString
     }
+
+    private func unionExdates(
+        from oldEventComponent: OpaquePointer,
+        and newEventComponent: OpaquePointer
+    ) -> [OpaquePointer] {
+        let oldExdates = exdates(fromEventComponent: oldEventComponent)
+        let newExdates = exdates(fromEventComponent: newEventComponent)
+        return unionExdates(oldExdates, newExdates)
+    }
+
+    private func exdates(fromEventComponent eventComponent: OpaquePointer) -> [OpaquePointer] {
+        let exdateProperty: icalproperty_kind = ICAL_EXDATE_PROPERTY
+
+        var exdate: OpaquePointer? = icalcomponent_get_first_property(eventComponent, exdateProperty)
+        var exdates: [OpaquePointer] = []
+
+        while let unwrappedExdate = exdate {
+            exdates.append(unwrappedExdate)
+            exdate = icalcomponent_get_next_property(eventComponent, exdateProperty)
+        }
+
+        return exdates
+    }
+
+    private func unionExdates(_ first: [OpaquePointer], _ second: [OpaquePointer]) -> [OpaquePointer] {
+        let allExdatePointers: [OpaquePointer] = first + second
+        let allExdates: [icaltimetype] = allExdatePointers.map(icalproperty_get_exdate)
+
+        var uniqueExdatePointers: [OpaquePointer] = []
+        var uniqueExdates: [icaltimetype] = []
+
+        zip(allExdatePointers, allExdates).forEach { exdatePointer, exdate in
+            if !uniqueExdates.contains(exdate) {
+                uniqueExdatePointers.append(exdatePointer)
+                uniqueExdates.append(exdate)
+            }
+        }
+
+        return uniqueExdatePointers
+    }
+}
+
+extension icaltimetype: Equatable {
+
+    public static func ==(lhs: icaltimetype, rhs: icaltimetype) -> Bool {
+        icaltime_compare(lhs, rhs) == 0
+    }
+
 }

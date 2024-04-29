@@ -38,7 +38,7 @@ extension Date {
         return dateFormatter.string(from: self)
     }
 
-    static func getCurrentZuluTimestampString(for date: Date = Date()) -> String {
+    static func getCurrentZuluTimestampString(for date: Date) -> String {
         DateFormatters.Timestamp.zulu.string(from: date)
     }
 

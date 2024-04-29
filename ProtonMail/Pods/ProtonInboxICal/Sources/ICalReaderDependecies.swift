@@ -28,6 +28,7 @@ public struct ICalReaderDependecies {
     public let ics: String
     public let apiEventID: String?
     public let startDateCalendar: Calendar
+    public let color: String?
 
     // FIXME: - Those properties should not be here
     public let addressKeyPacket: String?
@@ -59,7 +60,8 @@ public struct ICalReaderDependecies {
         isOrganizer: Bool,
         isProtonToProtonInvitation: Bool,
         notifications: [ICalEvent.RawNotification]?,
-        lastModifiedInCoreData: Date?
+        lastModifiedInCoreData: Date?,
+        color: String?
     ) {
         self.startDate = startDate
         self.startDateTimeZone = startDateTimeZone
@@ -81,5 +83,6 @@ public struct ICalReaderDependecies {
         self.isProtonToProtonInvitation = isProtonToProtonInvitation
         self.notifications = notifications
         self.lastModifiedInCoreData = lastModifiedInCoreData
+        self.color = color
     }
 }
