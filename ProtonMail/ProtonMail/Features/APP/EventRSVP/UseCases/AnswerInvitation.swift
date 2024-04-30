@@ -15,15 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonInboxRSVP
 
 // sourcery: mock
 protocol AnswerInvitation {
-    func execute(answer: InvitationAnswer) async throws
+    func execute(answer: AttendeeStatusDisplay) async throws
 }
 
 struct AnswerInvitationImpl: AnswerInvitation {
-    func execute(answer: InvitationAnswer) async throws {
+    func execute(answer: AttendeeStatusDisplay) async throws {
         if #available(iOS 16.0, *) {
             try await Task.sleep(for: .seconds(1))
         }

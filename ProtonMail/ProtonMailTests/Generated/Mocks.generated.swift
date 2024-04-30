@@ -10,16 +10,16 @@ import ProtonCoreKeymaker
 import ProtonCorePaymentsUI
 import ProtonCoreServices
 import ProtonCoreTestingToolkit
+import ProtonInboxRSVP
 
 import class ProtonCoreDataModel.Address
-import class PromiseKit.Promise
 import class ProtonCoreDataModel.UserInfo
 
 @testable import ProtonMail
 
 class MockAnswerInvitation: AnswerInvitation {
     @ThrowingFuncStub(MockAnswerInvitation.execute) var executeStub
-    func execute(answer: InvitationAnswer) throws {
+    func execute(answer: AttendeeStatusDisplay) throws {
         try executeStub(answer)
     }
 
