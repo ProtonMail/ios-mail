@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreNetworking
+import ProtonInboxRSVP
 
 // MARK: requests and responses
 
@@ -58,10 +59,103 @@ struct CalendarBootstrapResponse: Decodable {
     let passphrase: PassphraseTransformer
 }
 
+struct UpdateParticipationStatusRequest: Request {
+    let attendeeID: String
+    let calendarID: String
+    let eventID: String
+    let status: AttendeeTransformer.Status
+    let updateTime: Date
+
+    var method: HTTPMethod {
+        .put
+    }
+
+    var path: String {
+        "\(CalendarAPI.prefix)/\(calendarID)/events/\(eventID)/attendees/\(attendeeID)"
+    }
+
+    var parameters: [String: Any]? {
+        [
+            "Status": status.rawValue,
+            "UpdateTime": Int(updateTime.timeIntervalSince1970)
+        ]
+    }
+}
+
+struct UpdatePersonalPartRequest: Request {
+    let calendarID: String
+    let eventID: String
+    let notifications: [EventNotification]?
+
+    var method: HTTPMethod {
+        .put
+    }
+
+    var path: String {
+        "\(CalendarAPI.prefix)/\(calendarID)/events/\(eventID)/personal"
+    }
+
+    var parameters: [String: Any]? {
+        if let notifications {
+            return [
+                "Notifications": notifications
+            ]
+        } else {
+            return nil
+        }
+    }
+}
+
+struct UpdateProtonToProtonInvitationRequest: Request {
+    let calendarID: String
+    let eventID: String
+    let sharedKeyPacket: String
+
+    var method: HTTPMethod {
+        .put
+    }
+
+    var path: String {
+        "\(CalendarAPI.prefix)/\(calendarID)/events/\(eventID)/upgrade"
+    }
+
+    var parameters: [String: Any]? {
+        [
+            "SharedKeyPacket": sharedKeyPacket
+        ]
+    }
+}
+
+struct VTimeZonesRequest: Request {
+    let timeZoneIDs: [String]
+
+    var path: String {
+        "\(CalendarAPI.prefix)/vtimezones"
+    }
+
+    var parameters: [String: Any]? {
+        [
+            "Timezones": timeZoneIDs
+        ]
+    }
+}
+
+struct VTimeZoneResponse: Decodable {
+    let timezones: [String: String]
+}
+
 // MARK: models
 
 struct AttendeeTransformer: Decodable {
-    let status: Int
+    enum Status: Int, Codable {
+        case unanswered = 0
+        case maybe = 1
+        case no = 2
+        case yes = 3
+    }
+
+    let ID: String
+    let status: Status
     let token: String
 }
 
@@ -69,6 +163,16 @@ struct EventElement: Decodable {
     let author: String
     let data: String
     let type: SecurityFlags
+}
+
+struct EventNotification: Codable, Hashable {
+    enum NotificationType: Int, CaseIterable, Codable {
+        case email
+        case push
+    }
+
+    let type: NotificationType
+    let trigger: String
 }
 
 struct FullEventTransformer: Decodable {
@@ -93,12 +197,15 @@ struct FullEventTransformer: Decodable {
 }
 
 struct KeyTransformer: Decodable {
-    enum Flags: UInt8, Decodable {
-        case inactive = 0
-        case active = 1
-        case activeAndPrimary = 3
+    struct Flags: OptionSet, Decodable {
+        let rawValue: Int
+
+        static let active = Self(rawValue: 1 << 0)
+        static let primary = Self(rawValue: 1 << 1)
     }
 
+    let ID: String
+    let calendarID: String
     let flags: Flags
     let passphraseID: String
     let privateKey: String
@@ -120,12 +227,8 @@ struct PassphraseTransformer: Decodable {
     let memberPassphrases: [MemberPassphraseTransformer]
 }
 
-public struct SecurityFlags: OptionSet, Codable, Equatable {
-    public let rawValue: UInt
+struct SecurityFlags: OptionSet, Codable, Equatable {
+    let rawValue: UInt
 
-    public init(rawValue: UInt) {
-        self.rawValue = rawValue
-    }
-
-    public static let encrypted = SecurityFlags(rawValue: 1 << 0)
+    static let encrypted = SecurityFlags(rawValue: 1 << 0)
 }

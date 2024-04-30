@@ -148,7 +148,13 @@ extension FetchEventDetailsTests {
 
         let bootstrap = makeBootstrapResponse(
             keys: [
-                .init(flags: .active, passphraseID: passphraseID, privateKey: calendarKeyPair.privateKey)
+                .init(
+                    ID: "",
+                    calendarID: calendarID,
+                    flags: .active,
+                    passphraseID: passphraseID,
+                    privateKey: calendarKeyPair.privateKey
+                )
             ],
             memberPassphrases: [
                 .init(memberID: memberID, passphrase: encryptedCalendarPassphrase.value)
@@ -198,9 +204,9 @@ extension FetchEventDetailsTests {
         let timeZoneIdentifier = TimeZone.autoupdatingCurrent.identifier
 
         let attendees: [AttendeeTransformer] = [
-            AttendeeTransformer(status: 0, token: "foo"),
-            AttendeeTransformer(status: 3, token: "bar"),
-            AttendeeTransformer(status: 0, token: "xyz")
+            AttendeeTransformer(ID: "", status: .unanswered, token: "foo"),
+            AttendeeTransformer(ID: "", status: .yes, token: "bar"),
+            AttendeeTransformer(ID: "", status: .unanswered, token: "xyz")
         ]
 
         return FullEventTransformer(
