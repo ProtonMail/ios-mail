@@ -19,6 +19,7 @@ import ProtonCoreCrypto
 import ProtonCoreCryptoGoInterface
 import ProtonCoreDataModel
 import ProtonInboxICal
+import ProtonInboxRSVP
 
 // sourcery: mock
 protocol FetchEventDetails {
@@ -73,6 +74,12 @@ struct FetchEventDetailsImpl: FetchEventDetails {
 
         let currentUserAmongInvitees = invitees.first { dependencies.user.userInfo.owns(emailAddress: $0.email) }
 
+        let eventIdentificationData = EventIdentificationData(
+            id: apiEvent.ID,
+            calendarID: apiEvent.calendarID,
+            startDate: Date(timeIntervalSince1970: apiEvent.startTime)
+        )
+
         return .init(
             title: iCalEvent.title,
             startDate: Date(timeIntervalSince1970: apiEvent.startTime),
@@ -85,11 +92,7 @@ struct FetchEventDetailsImpl: FetchEventDetails {
             invitees: invitees,
             currentUserAmongInvitees: currentUserAmongInvitees,
             status: iCalEvent.status.flatMap { EventDetails.EventStatus(rawValue: $0.lowercased()) },
-            calendarAppDeepLink: .ProtonCalendar.showEvent(
-                apiEventID: apiEvent.ID,
-                calendarID: apiEvent.calendarID,
-                startTime: Int(apiEvent.startTime)
-            )
+            calendarAppDeepLink: .ProtonCalendar.eventDetails(for: eventIdentificationData)
         )
     }
 
@@ -201,7 +204,7 @@ struct FetchEventDetailsImpl: FetchEventDetails {
         let remainingComponents = components.dropFirst()
 
         return remainingComponents.reduce(firstComponent) { combinedICS, icsComponent in
-            iCalReader.parse_and_merge_event_ics(old: combinedICS, new: icsComponent, date: Date.init)
+            iCalReader.parse_and_merge_event_ics(old: combinedICS, new: icsComponent)
         }
     }
 

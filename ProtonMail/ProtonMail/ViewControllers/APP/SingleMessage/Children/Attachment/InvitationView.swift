@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreUIFoundations
+import ProtonInboxRSVP
 
 final class InvitationView: UIView {
     private let container = SubviewFactory.container
@@ -37,7 +38,7 @@ final class InvitationView: UIView {
 
     var onIntrinsicHeightChanged: (() -> Void)?
     var onParticipantTapped: ((String) -> Void)?
-    var onInvitationAnswered: ((InvitationAnswer) -> Void)?
+    var onInvitationAnswered: ((AttendeeStatusDisplay) -> Void)?
     var onOpenInCalendarTapped: ((URL) -> Void)?
 
     private var viewModel: InvitationViewModel? {
@@ -180,8 +181,10 @@ final class InvitationView: UIView {
         onIntrinsicHeightChanged?()
     }
 
-    private func respondingActions(except answerToExclude: InvitationAnswer? = nil) -> [UIAction] {
-        InvitationAnswer.allCases.filter { $0 != answerToExclude }.map { option in
+    private func respondingActions(except answerToExclude: AttendeeStatusDisplay? = nil) -> [UIAction] {
+        let orderedOptions: [AttendeeStatusDisplay] = [.yes, .no, .maybe]
+
+        return orderedOptions.filter { $0 != answerToExclude }.map { option in
             UIAction(title: option.shortTitle) { [weak self] _ in
                 self?.onInvitationAnswered?(option)
             }
@@ -457,7 +460,7 @@ private extension UIAction.Identifier {
     static let openInCalendar = Self(rawValue: "ch.protonmail.protonmail.action.openInCalendar")
 }
 
-private extension InvitationAnswer {
+private extension AttendeeStatusDisplay {
     var shortTitle: String {
         switch self {
         case .yes:

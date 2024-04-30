@@ -23,6 +23,7 @@
 import Combine
 import ProtonCoreDataModel
 import ProtonCoreUtilities
+import ProtonInboxRSVP
 
 final class AttachmentViewModel {
     typealias Dependencies = HasAnswerInvitation
@@ -166,7 +167,7 @@ final class AttachmentViewModel {
         return attachment.data
     }
 
-    func respondToInvitation(with answer: InvitationAnswer) {
+    func respondToInvitation(with answer: AttendeeStatusDisplay) {
         // store this in case the update fails
         let currentValue = respondingStatusSubject.value
 
@@ -230,7 +231,7 @@ extension AttachmentViewModel {
         case respondingUnavailable
         case awaitingUserInput
         case responseIsBeingProcessed
-        case alreadyResponded(InvitationAnswer)
+        case alreadyResponded(AttendeeStatusDisplay)
     }
 
     enum InvitationViewState: Equatable {

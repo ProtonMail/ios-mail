@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonInboxRSVP
 
-enum InvitationAnswer: CaseIterable {
-    case yes
-    case no
-    case maybe
+struct EventIdentificationData: IdentifiableEvent {
+    let id: String
+    let calendarID: String
+    let startDate: Date
 }
