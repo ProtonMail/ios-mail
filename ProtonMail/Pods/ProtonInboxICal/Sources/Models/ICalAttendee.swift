@@ -18,7 +18,7 @@
 import EventKit
 import Foundation
 
-public struct ICalAttendee {
+public struct ICalAttendee: Equatable {
     public let calendarId: String
     public let localEventId: String
     public let user: ICalUser

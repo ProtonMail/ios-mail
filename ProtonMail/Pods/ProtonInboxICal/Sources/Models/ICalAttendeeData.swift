@@ -17,7 +17,7 @@
 
 import Foundation
 
-public struct ICalAttendeeData {
+public struct ICalAttendeeData: Equatable {
     public let eventID: String
     let status: Int
     let token: String

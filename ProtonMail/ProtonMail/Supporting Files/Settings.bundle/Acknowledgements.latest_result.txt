@@ -346,6 +346,14 @@ name: ProtonCore-FeatureFlags, nameSpecified:
 body:                     …
 version: 22.0.0
 
+name: ProtonCore-Features, nameSpecified: 
+body:                     …
+version: 22.0.0
+
+name: ProtonCore-Features, nameSpecified: 
+body:                     …
+version: 22.0.0
+
 name: ProtonCore-ForceUpgrade, nameSpecified: 
 body:                     …
 version: 22.0.0
@@ -439,6 +447,14 @@ body:                     …
 version: 22.0.0
 
 name: ProtonCore-Keymaker, nameSpecified: 
+body:                     …
+version: 22.0.0
+
+name: ProtonCore-KeyManager, nameSpecified: 
+body:                     …
+version: 22.0.0
+
+name: ProtonCore-KeyManager, nameSpecified: 
 body:                     …
 version: 22.0.0
 

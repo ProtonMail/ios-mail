@@ -17,7 +17,7 @@
 
 import Foundation
 
-public enum ICalNotificationType {
+public enum ICalNotificationType: Equatable {
     case display
     case email
 }
