@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import ProtonCoreTestingToolkit
 import XCTest
 @testable import ProtonMail
@@ -27,8 +26,8 @@ class AttachmentViewModelTests: XCTestCase {
     private var featureFlagProvider: MockFeatureFlagProvider!
     private var urlOpener: MockURLOpener!
     private var user: UserManager!
-    private var receivedRespondingStatuses: AsyncPublisher<AnyPublisher<AttachmentViewModel.RespondingStatus, Never>>.Iterator!
-    private var subscriptions: Set<AnyCancellable>!
+    private var receivedRespondingStatuses: EmittedValuesObserver<AttachmentViewModel.RespondingStatus>!
+    private var receivedErrors: EmittedValuesObserver<Error>!
 
     var sut: AttachmentViewModel!
     var testAttachments: [AttachmentInfo] = []
@@ -43,8 +42,6 @@ class AttachmentViewModelTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-
-        subscriptions = []
 
         urlOpener = MockURLOpener()
 
@@ -62,10 +59,8 @@ class AttachmentViewModelTests: XCTestCase {
             switch flag {
             case .calendarMiniLandingPage:
                 return self.isCalendarLandingPageEnabled
-            case .rsvpWidget:
-                return true
             default:
-                fatalError("Unexpected flag: \(flag)")
+                return true
             }
         }
 
@@ -106,14 +101,15 @@ class AttachmentViewModelTests: XCTestCase {
         user.container.fetchEventDetailsFactory.register { self.fetchEventDetails }
 
         sut = AttachmentViewModel(dependencies: user.container)
-        receivedRespondingStatuses = sut.respondingStatus.values.makeAsyncIterator()
+        receivedRespondingStatuses = .init(observing: sut.respondingStatus)
+        receivedErrors = .init(observing: sut.error)
     }
 
     override func tearDown() {
         super.tearDown()
 
         receivedRespondingStatuses = nil
-        subscriptions = nil
+        receivedErrors = nil
         testAttachments.removeAll()
         stubbedEventDetails = nil
 
@@ -272,11 +268,12 @@ class AttachmentViewModelTests: XCTestCase {
         await receivedRespondingStatuses.expectNextValue(toBe: .alreadyResponded(.maybe))
     }
 
-    func testRespondingStatus_whenAnsweringFails_revertsToPreviousValue() async {
+    func testRespondingStatus_whenAnsweringFails_revertsToPreviousValueAndPublisherError() async throws {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
+        let stubbedError = NSError.badResponse()
 
         answerInvitation.executeStub.bodyIs { _, _ in
-            throw NSError.badResponse()
+            throw stubbedError
         }
 
         await receivedRespondingStatuses.expectNextValue(toBe: .respondingUnavailable)
@@ -289,6 +286,16 @@ class AttachmentViewModelTests: XCTestCase {
 
         await receivedRespondingStatuses.expectNextValue(toBe: .responseIsBeingProcessed)
         await receivedRespondingStatuses.expectNextValue(toBe: .awaitingUserInput)
+
+        let receivedErrorOptional = await receivedErrors.next()
+        let receivedError = try XCTUnwrap(receivedErrorOptional) as NSError
+
+        switch receivedError {
+        case stubbedError:
+            break
+        default:
+            throw receivedError
+        }
     }
 
     func testRespondingStatus_whenUserHasPreviouslyResponded_isReflected() async {
@@ -331,19 +338,12 @@ class AttachmentViewModelTests: XCTestCase {
 
     private func ensureRespondingIsNotAvailableWhenICSIsReceived() async {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
-        var receivedStates: [AttachmentViewModel.RespondingStatus] = []
-
-        sut.respondingStatus
-            .sink { value in
-                receivedStates.append(value)
-            }
-            .store(in: &subscriptions)
 
         sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
 
+        await receivedRespondingStatuses.expectNextValue(toBe: .respondingUnavailable)
         await sleep(milliseconds: 50)
-
-        XCTAssertEqual(receivedStates, [.respondingUnavailable])
+        XCTAssertFalse(receivedRespondingStatuses.hasPendingUnreadValues)
     }
 
     // MARK: RSVP: Open in Calendar

@@ -124,6 +124,13 @@ class AttachmentViewController: UIViewController {
             self?.viewModel.respondToInvitation(with: answer)
         }
 
+        viewModel.error
+            .receive(on: DispatchQueue.main)
+            .sink { error in
+                SystemLogger.log(error: error)
+            }
+            .store(in: &subscriptions)
+
         viewModel.invitationViewState
             .removeDuplicates()
             .receive(on: DispatchQueue.main)

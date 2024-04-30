@@ -48,6 +48,10 @@ final class AttachmentViewModel {
         attachments.count
     }
 
+    var error: AnyPublisher<Error, Never> {
+        errorSubject.eraseToAnyPublisher()
+    }
+
     var invitationViewState: AnyPublisher<InvitationViewState, Never> {
         invitationViewSubject.eraseToAnyPublisher()
     }
@@ -76,8 +80,8 @@ final class AttachmentViewModel {
         numberOfAttachments != 0 || basicEventInfoSourcedFromHeaders != nil
     }
 
+    private let errorSubject = PassthroughSubject<Error, Never>()
     private let invitationViewSubject = CurrentValueSubject<InvitationViewState, Never>(.noInvitationFound)
-
     private let respondingStatusSubject = CurrentValueSubject<RespondingStatus, Never>(.respondingUnavailable)
 
     private var invitationProcessingTask: Task<Void, Never>? {
@@ -134,13 +138,14 @@ final class AttachmentViewModel {
                 invitationViewSubject.send(.invitationProcessed(eventDetails))
                 updateRespondingOptions(eventDetails: eventDetails)
             } catch {
-                if let rsvpError = error as? EventRSVPError, rsvpError != .noEventsReturnedFromAPI {
-                    PMAssertionFailure(rsvpError)
-                } else {
-                    SystemLogger.log(error: error)
-                }
-
                 invitationViewSubject.send(.noInvitationFound)
+
+                switch error {
+                case EventRSVPError.noEventsReturnedFromAPI:
+                    break
+                default:
+                    errorSubject.send(error)
+                }
             }
         }
     }
@@ -172,7 +177,7 @@ final class AttachmentViewModel {
                 try await dependencies.answerInvitation.execute(answer: answer)
                 respondingStatusSubject.send(.alreadyResponded(answer))
             } catch {
-                SystemLogger.log(error: error)
+                errorSubject.send(error)
                 respondingStatusSubject.send(currentValue)
             }
         }
