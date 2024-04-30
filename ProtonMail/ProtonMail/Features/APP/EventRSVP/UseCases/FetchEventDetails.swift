@@ -146,7 +146,7 @@ struct FetchEventDetailsImpl: FetchEventDetails {
             )
 
             decryptionKeys = calendarBootstrapResponse.keys
-                .filter { $0.flags != .inactive && $0.passphraseID == calendarBootstrapResponse.passphrase.ID }
+                .filter { $0.flags.contains(.active) && $0.passphraseID == calendarBootstrapResponse.passphrase.ID }
                 .map { calendarKey in
                     DecryptionKey(
                         privateKey: ArmoredKey(value: calendarKey.privateKey),
@@ -233,7 +233,7 @@ struct FetchEventDetailsImpl: FetchEventDetails {
         )
 
         let attendeeData: [ICalAttendeeData] = apiEvent.attendees.map {
-            .init(eventID: apiEvent.ID, status: $0.status, token: $0.token)
+            .init(eventID: apiEvent.ID, status: $0.status.rawValue, token: $0.token)
         }
 
         return iCalReader.parse_single_event_ics(dependecies: dependecies, attendeeData: attendeeData)
