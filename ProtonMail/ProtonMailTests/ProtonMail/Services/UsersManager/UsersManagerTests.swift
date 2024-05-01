@@ -55,8 +55,6 @@ class UsersManagerTests: XCTestCase {
         cachedUserDataProviderMock = nil
 
         globalContainer.userDefaults.remove(forKey: UsersManager.CoderKey.authKeychainStore)
-        globalContainer.userDefaults.remove(forKey: UsersManager.CoderKey.userInfo)
-        globalContainer.userDefaults.remove(forKey: UsersManager.CoderKey.authKeychainStore)
         globalContainer.userDefaults.remove(forKey: UsersManager.CoderKey.usersInfo)
         self.customKeyChain.removeEverything()
         globalContainer = nil
@@ -300,24 +298,6 @@ class UsersManagerTests: XCTestCase {
         XCTAssertEqual(argument.count, 1)
     }
 
-    func testTryRestore_dataInLegacyFormat_dataIsSavedToNewLocation() throws {
-        let userID = String.randomString(20)
-        try prepareLegacyUserData(userID: userID)
-
-        sut.tryRestore()
-
-        XCTAssertTrue(sut.hasUsers())
-        XCTAssertEqual(sut.users.count, 1)
-        XCTAssertEqual(sut.firstUser?.userID.rawValue, userID)
-
-        XCTAssertNil(customKeyChain.data(forKey: UsersManager.CoderKey.keychainStore))
-        let userInfoData = globalContainer.userDefaults.object(forKey: UsersManager.CoderKey.userInfo) as? Data
-        XCTAssertNil(userInfoData)
-
-        XCTAssertNotNil(globalContainer.userDefaults.object(forKey: UsersManager.CoderKey.authKeychainStore))
-        XCTAssertNotNil(globalContainer.userDefaults.object(forKey: UsersManager.CoderKey.usersInfo))
-    }
-
     func testTryRestore_withNoMailSettingInCache_userHasDefaultMailSetting() throws {
         let userID = String.randomString(20)
         try prepareUserDataInCache(userID: userID, hasMailSetting: false)
@@ -402,18 +382,6 @@ class UsersManagerTests: XCTestCase {
             let lockedMailSetting = try Locked<[String: MailSettings]>(clearValue: value, with: mainKey)
             globalContainer.userDefaults.set(lockedMailSetting.encryptedValue, forKey: UsersManager.CoderKey.mailSettingsStore)
         }
-    }
-
-    private func prepareLegacyUserData(userID: String) throws {
-        let mainKey = keyMaker.mainKey(by: globalContainer.keychain.randomPinProtection)!
-        let auth = createAuth(userID: userID)
-        let userInfo = createUserInfo(userID: userID)
-        let archived = auth.archive()
-        let lockedAuth = try Locked<Data>(clearValue: archived, with: mainKey)
-        customKeyChain.set(lockedAuth.encryptedValue, forKey: UsersManager.CoderKey.keychainStore)
-
-        let lockedUserInfo = try Locked<UserInfo>(clearValue: userInfo, with: mainKey)
-        globalContainer.userDefaults.set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.userInfo)
     }
 
     private func createAuth(userID: String) -> AuthCredential {

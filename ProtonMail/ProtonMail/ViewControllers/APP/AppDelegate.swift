@@ -296,17 +296,10 @@ extension AppDelegate: UIApplicationDelegate {
 extension AppDelegate: UnlockManagerDelegate {
     func isUserStored() -> Bool {
         let users = dependencies.usersManager
-        if users.hasUserName() || users.hasUsers() {
-            return true
-        }
-        return false
+        return users.hasUsers()
     }
 
-    func isMailboxPasswordStored(forUser uid: String?) -> Bool {
-        let users = dependencies.usersManager
-        guard let _ = uid else {
-            return users.isPasswordStored || users.hasUserName() // || users.isMailboxPasswordStored
-        }
+    func isMailboxPasswordStoredForActiveUser() -> Bool {
         return !(dependencies.usersManager.users.last?.mailboxPassword.value ?? "").isEmpty
     }
 
