@@ -247,7 +247,7 @@ final class UnlockManagerTests: XCTestCase {
         delegateMock.isUserStoredStub.bodyIs { _ in
             return true
         }
-        delegateMock.isMailboxPasswordStoredStub.bodyIs { _, _ in
+        delegateMock.isMailboxPasswordStoredForActiveUserStub.bodyIs { _ in
             return false
         }
 
@@ -275,7 +275,7 @@ final class UnlockManagerTests: XCTestCase {
         delegateMock.isUserStoredStub.bodyIs { _ in
             return true
         }
-        delegateMock.isMailboxPasswordStoredStub.bodyIs { _, _ in
+        delegateMock.isMailboxPasswordStoredForActiveUserStub.bodyIs { _ in
             return true
         }
 
@@ -300,7 +300,7 @@ final class UnlockManagerTests: XCTestCase {
         delegateMock.isUserStoredStub.bodyIs { _ in
             return true
         }
-        delegateMock.isMailboxPasswordStoredStub.bodyIs { _, _ in
+        delegateMock.isMailboxPasswordStoredForActiveUserStub.bodyIs { _ in
             return true
         }
         cacheMock.isTouchIDEnabledStub.fixture = true
@@ -326,7 +326,7 @@ final class UnlockManagerTests: XCTestCase {
         delegateMock.isUserStoredStub.bodyIs { _ in
             return true
         }
-        delegateMock.isMailboxPasswordStoredStub.bodyIs { _, _ in
+        delegateMock.isMailboxPasswordStoredForActiveUserStub.bodyIs { _ in
             return true
         }
         cacheMock.isPinCodeEnabledStub.fixture = true

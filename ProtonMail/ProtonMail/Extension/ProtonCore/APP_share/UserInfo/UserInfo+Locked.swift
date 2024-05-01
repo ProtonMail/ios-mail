@@ -38,12 +38,6 @@ extension Locked where T == [UserInfo] {
         return parsedData
     }
 
-    internal func lagcyUnlock(with key: MainKey) throws -> T {
-        let locked = Locked<Data>(encryptedValue: self.encryptedValue)
-        let data = try locked.lagcyUnlock(with: key)
-        return try self.parse(data: data)
-    }
-
     internal func parse(data: Data) throws -> T {
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ProtonMail.UserInfo")
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "Share.UserInfo")

@@ -52,7 +52,6 @@ final class Launch {
 
     private func loadUserData() {
         let usersManager = dependencies.usersManager
-        usersManager.run()
         usersManager.tryRestore()
 
         #if !APP_EXTENSION
