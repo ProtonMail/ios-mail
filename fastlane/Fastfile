@@ -1,0 +1,47 @@
+opt_out_usage
+
+default_platform(:ios)
+
+UNIT_TESTS_SCHEME = "ProtonMailTest"
+UI_TESTS_SCHEME = "ProtonMailUITest"
+UI_TESTS_DEVICE = "iPhone 15 Pro"
+UNIT_TESTS_DEVICE = "iPhone 15 Pro"
+
+platform :ios do
+  desc "Build the app"
+  # Skip archiving and codesigning, until provisioning is properly set.
+  lane :build do
+    build_app(
+      scheme: "ProtonMail",
+      configuration: "Release",
+      skip_codesigning: true,
+      clean: true,
+      skip_archive: true
+    )
+  end
+
+  desc "Run unit tests"
+  lane :tests do
+    run_tests(
+      scheme: UNIT_TESTS_SCHEME,
+      devices: UNIT_TESTS_DEVICE,
+      build_for_testing: true,
+      prelaunch_simulator: true,
+      reset_simulator: true,
+      result_bundle: true
+      )
+  end
+
+  desc "Run UI tests"
+  lane :uitests do
+    run_tests(
+      scheme: UI_TESTS_SCHEME,
+      devices: UI_TESTS_DEVICE,
+      build_for_testing: true,
+      prelaunch_simulator: true,
+      reset_simulator: true,
+      concurrent_workers: 1,
+      result_bundle: true
+      )
+  end
+end
