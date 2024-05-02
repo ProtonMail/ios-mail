@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreDataModel
 import ProtonCoreTestingToolkit
 import XCTest
 
@@ -59,9 +60,11 @@ final class UpsellButtonStateProviderTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testDoesntShowButtonForPaidUsers() {
-        user.userInfo.subscribed = [.mail]
-        XCTAssertFalse(sut.shouldShowUpsellButton)
+    func testDoesntShowButtonForPaidUsersOfAnyPlan() {
+        for subscription in [User.Subscribed.mail, .drive, .vpn] {
+            user.userInfo.subscribed = subscription
+            XCTAssertFalse(sut.shouldShowUpsellButton)
+        }
     }
 
     func testShowsButtonIfItHasNeverBeenShownBefore() {

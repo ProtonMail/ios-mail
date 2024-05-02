@@ -55,15 +55,11 @@ struct UpsellButtonStateProvider {
     }
 
     var shouldShowUpsellButton: Bool {
-        guard UserInfo.isUpsellButtonEnabled else {
-            return false
-        }
-
-        guard dependencies.featureFlagProvider.isEnabled(.upsellButton, reloadValue: true) else {
-            return false
-        }
-
-        guard !dependencies.user.userInfo.hasPaidMailPlan else {
+        guard
+            UserInfo.isUpsellButtonEnabled,
+            dependencies.featureFlagProvider.isEnabled(.upsellButton, reloadValue: true),
+            dependencies.user.userInfo.subscribed.isEmpty
+        else {
             return false
         }
 
