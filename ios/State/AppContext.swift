@@ -54,13 +54,16 @@ final class AppContext: Sendable, ObservableObject {
         let applicationSupportPath = applicationSupportFolder.path()
         let cachePath = cacheFolder.path()
         AppLogger.logTemporarily(message: "path: \(cacheFolder)")
+        
+        let apiEnvConfig = dependencies.apiEnvConfigService.getConfiguration()
+        
         _mailContext = try MailSession.create(
             sessionDir: applicationSupportPath,
             userDir: applicationSupportPath,
             logDir: cachePath,
             logDebug: true,
             keyChain: dependencies.keychain,
-            apiEnvConfig: nil,
+            apiEnvConfig: apiEnvConfig,
             networkCallback: dependencies.networkStatus
         )
 
@@ -80,6 +83,7 @@ extension AppContext {
         let fileManager: FileManager = .default
         let keychain: OsKeyChain = Keychain.shared
         let networkStatus: NetworkStatusChanged = NetworkStatusManager.shared
+        let apiEnvConfigService: ApiEnvConfigService = ApiEnvConfigService.shared
     }
 }
 

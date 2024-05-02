@@ -22,7 +22,7 @@ import XCTest
 final class MockServer: Sendable {
     private let host: String
     private let port: Int
-    let requestsHandler: RequestsHandler
+    private let requestsHandler: RequestsHandler
     private let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
 
     private var serverBootstrap: ServerBootstrap {
@@ -77,6 +77,14 @@ extension MockServer {
         }
         catch {
             XCTFail("Error on stopping the mock server: \(error.localizedDescription)")
+        }
+    }
+}
+
+extension MockServer {
+    func addRequests(_ requests: NetworkRequest...) async {
+        for request in requests {
+            await self.requestsHandler.addMockedRequest(request)
         }
     }
 }

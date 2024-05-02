@@ -19,34 +19,35 @@ import Foundation
 import NIO
 import XCTest
 
+@MainActor
 public class PMUITestCase: XCTestCase {
-    var mockServer: MockServer!
-    private var mockServerSocketAddress: SocketAddress!
+    var environment: UITestsEnvironment!
+    var navigator: UITestNavigator!
+
+    var loginType: UITestLoginType {
+        UITestLoginType.Mocked.Paid.FancyCapybara
+    }
 
     public override func setUpWithError() throws {
         continueAfterFailure = false
     }
 
-    override public func setUp() {
-        mockServer = MockServer(bundle: Bundle(for: type(of: self)))
-        mockServerSocketAddress = mockServer.start()
+    override public func setUp() async throws {
+        environment = UITestsEnvironment(
+            mockServer: MockServer(bundle: Bundle(for: type(of: self)))
+        )
+        navigator = UITestNavigator(environment: environment, loginType: loginType)
+
+        switch loginType {
+        case .loggedIn(let user):
+            await environment.mockServer.setupUserAuthorisationMocks(user: user)
+        case .loggedOut:
+            break
+        }
     }
 
     override public func tearDown() {
-        mockServer.stop()
-    }
-
-    @MainActor
-    func launchApp() {
-        let app = XCUIApplication()
-
-        if let serverPort = mockServerSocketAddress?.port {
-            app.launchArguments += ["-mockServerPort", "\(serverPort)"]
-        }
-        else {
-            print("No mock server running, skipping custom launch arguments.")
-        }
-
-        app.launch()
+        environment.mockServer.stop()
+        super.tearDown()
     }
 }

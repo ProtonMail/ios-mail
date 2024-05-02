@@ -18,16 +18,12 @@
 import Foundation
 import XCTest
 
-// To be removed once we have actual tests in place
-final class MockedUITestsSample: PMUITestCase {
-
-    func testMockNetworkSample() async {
-        await mockServer.requestsHandler.addMockedRequests(
-            NetworkRequest(method: .get, remotePath: "/", localPath: "test.json", serveOnce: true)
-        )
-
-        await launchApp()
-
-        // Remaining test logic
+final class MailboxRobot: Robot {
+    var rootElement: XCUIElement {
+        application.otherElements[MailboxScreenIdentifiers.rootElement]
     }
+}
+
+private struct MailboxScreenIdentifiers {
+    static let rootElement = "mailbox.rootElement"
 }

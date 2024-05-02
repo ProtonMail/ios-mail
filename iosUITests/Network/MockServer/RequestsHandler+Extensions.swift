@@ -31,7 +31,11 @@ final class RequestsHandler: ChannelInboundHandler, RemovableChannelHandler, Sen
         self.bundle = bundle
     }
 
-    func addMockedRequests(_ requests: NetworkRequest...) async{
+    func addMockedRequest(_ request: NetworkRequest) async {
+        await requestsHandlerActor.addMockedRequests(request)
+    }
+
+    func addMockedRequests(_ requests: NetworkRequest...) async {
         for request in requests {
             await requestsHandlerActor.addMockedRequests(request)
         }
@@ -89,7 +93,7 @@ final class RequestsHandler: ChannelInboundHandler, RemovableChannelHandler, Sen
 }
 
 extension RequestsHandler {
-    @Sendable func serveResponse(
+    @Sendable private func serveResponse(
         context: ChannelHandlerContext,
         statusCode: Int,
         body: Data
@@ -120,7 +124,7 @@ extension RequestsHandler {
             context.channel.writeAndFlush(
                 self.wrapOutboundOut(HTTPServerResponsePart.end(nil))
             ).whenComplete { _ in
-                context.close(promise: nil)
+                /* no op */
             }
         }
     }

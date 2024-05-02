@@ -42,7 +42,9 @@ struct SignIn: View {
                     .background(DS.Color.Background.secondary)
                     .textInputAutocapitalization(.never)
                     .keyboardType(.emailAddress)
+                    .accessibilityIdentifier(SignInIdentifiers.emailField)
             }
+            .accessibilityElement(children: .contain)
 
             VStack(alignment: .leading, spacing: 11) {
                 Text("Password")
@@ -55,7 +57,9 @@ struct SignIn: View {
                     .foregroundColor(DS.Color.Text.norm)
                     .padding(.horizontal, 12)
                     .background(DS.Color.Background.secondary)
+                    .accessibilityIdentifier(SignInIdentifiers.passwordField)
             }
+            .accessibilityElement(children: .contain)
 
             if screenModel.isLoading {
 
@@ -84,12 +88,15 @@ struct SignIn: View {
                         screenModel.showError = false
                     }
                 }
+                .accessibilityIdentifier(SignInIdentifiers.signInButton)
             }
 
             Spacer()
         }
         .padding()
         .background(DS.Color.Background.norm)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(SignInIdentifiers.rootElement)
     }
 }
 
@@ -104,4 +111,12 @@ extension View {
 
 #Preview {
     SignIn()
+}
+
+
+private enum SignInIdentifiers {
+    static let rootElement = "signIn.rootElement"
+    static let emailField = "signIn.fields.email"
+    static let passwordField = "signIn.fields.password"
+    static let signInButton = "signIn.buttons.signIn"
 }

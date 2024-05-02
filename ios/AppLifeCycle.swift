@@ -64,12 +64,14 @@ extension AppLifeCycle {
 extension AppLifeCycle {
 
     private func applicationServicesInitialisation() {
+        let apiEnvironmentService = ApiEnvConfigService.shared
+        let testService = TestService.shared
         let appContext = AppContext.shared
 
         let eventLoop = EventLoopService(appContext: appContext, eventLoopProvider: appContext)
 
         applicationServices = .init(
-            setUpServices: [appContext],
+            setUpServices: [apiEnvironmentService, testService, appContext],
             becomeActiveServices: [eventLoop],
             enterBackgroundServices: [eventLoop],
             terminateServices: []

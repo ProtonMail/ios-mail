@@ -60,4 +60,3 @@ struct NetworkRequest: Equatable, Sendable {
         self.priority = priority
     }
 }
-

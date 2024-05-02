@@ -69,6 +69,7 @@ struct MailboxToolbar: ViewModifier {
                         Circle()
                             .stroke(DS.Color.Border.norm)
                     }
+                    .accessibilityIdentifier(MailboxToolbarIdentifiers.hamburgerButton)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -129,4 +130,8 @@ extension MailboxToolbar {
         .mailboxToolbar(title: "Inbox", selectionMode: .init())
         .environmentObject(appUIState)
         .environmentObject(userSettings)
+}
+
+private struct MailboxToolbarIdentifiers {
+    static let hamburgerButton = "mailbox.toolbar.hamburgerButton"
 }

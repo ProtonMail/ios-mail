@@ -72,6 +72,8 @@ struct SidebarScreen: View {
             Spacer()
         }
         .background(DS.Color.Sidebar.background)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(SidebarScreenIdentifiers.rootElement)
     }
 
     var foldersAndLabelsView: some View {
@@ -166,4 +168,8 @@ struct SidebarCell: View {
         }
     }
     return PreviewWrapper(appRoute: route).environmentObject(appUIState)
+}
+
+private struct SidebarScreenIdentifiers {
+    static let rootElement = "sidebar.rootElement"
 }
