@@ -1950,46 +1950,46 @@
 "(Attendance optional)" = "(Účast není povinná)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "Každé %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "v(e) %@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "%@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
 "on day %u" = "on day %u";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "do %@";
 
 /* Occurring every day */
-"Daily" = "Daily";
+"Daily" = "Denně";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "Týdně";
 
 /* Occurring every month */
-"Monthly" = "Monthly";
+"Monthly" = "Měsíčně";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "Ročně";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "první";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "druhý";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "třetí";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "čtvrtý";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "poslední";
 
 /* Menu title */
 "Max Storage" = "Maximální úložný prostor";
@@ -2436,13 +2436,13 @@
 "To unlock more storage and premium features." = "To unlock more storage and premium features.";
 
 /* Displayed next to the monthly price */
-"/month" = "/month";
+"/month" = "/měsíčně";
 
 /* CTA button to purchase a plan (e.g. Get Mail Plus) */
 "Get %@" = "Získejte %@";
 
 /* In the context of a discount */
-"Save %u%%" = "Save %u%%";
+"Save %u%%" = "Ušetřete %u%%";
 
 /* Error when trying to purchase an invalid product */
 "Invalid product ID: $@" = "Invalid product ID: $@";

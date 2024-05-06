@@ -1914,7 +1914,7 @@
 "Load" = "読み込む";
 
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "主催者";
 
 /* Button to hide some items in the list to conserve screen estate */
 "Show less" = "Show less";
@@ -2271,7 +2271,7 @@
 "Maximum selection reached" = "Maximum selection reached";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "宛先が未入力です";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "PINコードを無効にする";
@@ -2325,7 +2325,7 @@
 "Snoozed until %@" = "Snoozed until %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Unsnooze";
+"Unsnooze" = "スヌーズを解除";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
 "Snooze until %@" = "Snooze until %@";
@@ -2343,7 +2343,7 @@
 "This weekend" = "This weekend";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "次の週";
 
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Please select a time in the future";

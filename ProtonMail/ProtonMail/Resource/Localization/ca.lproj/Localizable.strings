@@ -14,7 +14,7 @@
 "Signature" = "Signatura";
 
 /* Title */
-"Enable signature" = "Habilitar signatura";
+"Enable signature" = "Activar signatura";
 
 /* No comment provided by engineer. */
 "Enter your signature here" = "Introduïu aquí la vostra signatura";
@@ -26,7 +26,7 @@
 "Recovery email" = "Correu electrònic de recuperació";
 
 /* Title */
-"Enable email notices" = "Habilitar avisos de correu electrònic";
+"Enable email notices" = "Activar avisos de correu electrònic";
 
 /* place holder */
 "Input Notification Email…" = "Introduïu el correu electrònic de notificació…";
@@ -1067,7 +1067,7 @@
 "We recommend setting up a password instead for the following recipients:" = "Recomanem configurar una contrasenya pels destinataris següents:";
 
 /* alert body before list of addresses */
-"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Recomanem configurar una contrasenya o deshabilitar PGP pels destinataris següents:";
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Recomanem configurar una contrasenya o desactivar PGP pels destinataris següents:";
 
 /*
  A option title that enable/disable notification feature
@@ -1968,7 +1968,7 @@
 "Daily" = "Cada dia";
 
 /* Occurring every week */
-"Weekly" = "Cada setmana";
+"Weekly" = "Setmanalment";
 
 /* Occurring every month */
 "Monthly" = "Cada mes";
@@ -2190,7 +2190,7 @@
  Button to enable encrypted search
  The title of the button to move to settings and enable encrypted search.
 */
-"Enable" = "Habilitar";
+"Enable" = "Activar";
 
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Milloreu per a eliminar automàticament els missatges que han estat a la paperera o al correu brossa durant més de 30 dies.";
@@ -2436,13 +2436,13 @@
 "To unlock more storage and premium features." = "Per desbloquejar més emmagatzematge i característiques prèmium.";
 
 /* Displayed next to the monthly price */
-"/month" = "/month";
+"/month" = "/mes";
 
 /* CTA button to purchase a plan (e.g. Get Mail Plus) */
 "Get %@" = "Obtingueu %@";
 
 /* In the context of a discount */
-"Save %u%%" = "Save %u%%";
+"Save %u%%" = "Estalvieu el %u%%";
 
 /* Error when trying to purchase an invalid product */
 "Invalid product ID: $@" = "Invalid product ID: $@";

@@ -33,13 +33,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%u udeležencv</string>
+        <string>%u udeležencev</string>
         <key>one</key>
         <string>%u udeleženec</string>
         <key>two</key>
         <string>%u udeleženca</string>
         <key>few</key>
-        <string>%u udeležencv</string>
+        <string>%u udeleženci</string>
       </dict>
     </dict>
     <key>You have %d new emails!</key>
@@ -73,13 +73,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d e-poštni sledilec je blokiran</string>
+        <string>%d e-poštni sledilnik je blokiran</string>
         <key>two</key>
-        <string>%d e-poštna sledilca sta blokirana</string>
+        <string>%d e-poštna sledilnika sta blokirana</string>
         <key>few</key>
-        <string>%d e-poštni sledilci so blokirani</string>
+        <string>%d e-poštni sledilniki so blokirani</string>
         <key>other</key>
-        <string>%d e-poštnih sledilcev je blokiranih</string>
+        <string>%d e-poštnih sledilnikov je blokiranih</string>
       </dict>
     </dict>
     <key>%d selected</key>
@@ -113,13 +113,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Odkrit je %d e-poštni sledilec</string>
+        <string>Odkrit je %d e-poštni sledilnik</string>
         <key>two</key>
-        <string>Odkrita sta %d e-poštna sledilca</string>
+        <string>Odkrita sta %d e-poštna sledilnika</string>
         <key>few</key>
-        <string>Odkriti so %d e-poštni sledilci</string>
+        <string>Odkriti so %d e-poštni sledilniki</string>
         <key>other</key>
-        <string>Odkritih je %d e-poštnih sledilcev</string>
+        <string>Odkritih je %d e-poštnih sledilnikov</string>
       </dict>
     </dict>
     <key>Proton found %d trackers on this message.</key>
@@ -133,13 +133,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Proton je v tem sporočilu odkril in blokiral %d sledilca.</string>
+        <string>Proton je v tem sporočilu odkril in blokiral %d sledilnika.</string>
         <key>two</key>
-        <string>Proton je v tem sporočilu odkril in blokiral %d sledilca.</string>
+        <string>Proton je v tem sporočilu odkril in blokiral %d sledilnika.</string>
         <key>few</key>
-        <string>Proton je v tem sporočilu odkril in blokiral %d sledilce.</string>
+        <string>Proton je v tem sporočilu odkril in blokiral %d sledilnike.</string>
         <key>other</key>
-        <string>Proton je v tem sporočilu odkril in blokiral %d sledilcev.</string>
+        <string>Proton je v tem sporočilu odkril in blokiral %d sledilnikov.</string>
       </dict>
     </dict>
     <key>+%d others</key>

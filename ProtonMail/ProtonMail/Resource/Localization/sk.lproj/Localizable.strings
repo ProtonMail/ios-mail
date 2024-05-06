@@ -2436,7 +2436,7 @@
 "To unlock more storage and premium features." = "Na získanie väčšieho úložiska a prémiových funkcií.";
 
 /* Displayed next to the monthly price */
-"/month" = "/month";
+"/month" = "/mesiac";
 
 /* CTA button to purchase a plan (e.g. Get Mail Plus) */
 "Get %@" = "Získať %@";

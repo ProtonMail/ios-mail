@@ -748,7 +748,7 @@
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Undang kontak Anda ke Proton Mail agar mereka dapat ikut terlindung oleh enkripsi ujung ke ujung, atau tambahkan kata sandi pada pesan yang Anda kirimkan kepada mereka.";
 
 /* Onboarding content */
-"File, label, and color code messages to create your perfect, custom inbox." = "Arsipkan, labeli, dan warnai pesan Anda agar kotak masuk Anda dapat tampak sempurna sebagaimana yang Anda kehendaki.";
+"File, label, and color code messages to create your perfect, custom inbox." = "Arsipkan, labeli, dan warnai pesan Anda untuk menciptakan kotak masuk khusus yang sempurna bagi Anda.";
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Memperkenalkan tampilan Proton yang baru.\nBerbagai layanan, satu misi. Selamat datang di Internet yang menjunjung privasi sebagai hal yang baku.";
@@ -841,7 +841,7 @@
 "Storage Warning" = "Peringatan Ruang Penyimpanan";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Anda telah menggunakan seluruh kuota penyimpanan Anda (%@). Harap tingkatkan jenis akun Anda untuk tetap dapat mengirim dan menerima email.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Anda telah menggunakan seluruh ruang penyimpanan yang Anda miliki (%@). Silakan tingkatkan paket Anda untuk tetap dapat mengirim dan menerima email.";
 
 /* Content of space warning */
 "You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Anda telah menggunakan %1$d%% dari ruang penyimpanan Anda (%2$@). Silakan tingkatkan paket Anda untuk melanjutkan mengirim dan menerima email.";
@@ -1872,7 +1872,7 @@
 /* Placeholder for empty sender list */
 "No blocked senders" = "Tidak ada pengirim yang diblokir";
 
-"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "email baru dari %@ tidak akan disampaikan kepada Anda dan akan dihapus secara permanen. Kelola daftar alamat email yang diblokir pada menu pengaturan.";
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Email baru dari %@ tidak akan disampaikan dan akan dihapus secara permanen. Kelola daftar alamat email yang diblokir pada menu pengaturan.";
 
 /* Banner in the message view */
 "Sender has been blocked" = "Pengirim telah diblokir";
@@ -1899,7 +1899,7 @@
 "Get Proton Calendar app" = "Dapatkan aplikasi Proton Calendar";
 
 /* Name of the feature */
-"Email tracking protection" = "Perlindungan pelacak email";
+"Email tracking protection" = "Perlindungan pelacakan email";
 
 /* Short hint in the header view */
 "No email trackers found" = "Tidak ada pelacak email yang ditemukan";
@@ -2115,7 +2115,7 @@
 "Application logs" = "Log aplikasi";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Pergi ke email berikutnya";
+"Jump to next email" = "Pindah ke email selanjutnya";
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Tampilkan email berikutnya secara otomaris ketika email yang dibuka telah dihapus, diarsip, atau dipindah.";
@@ -2313,7 +2313,7 @@
 "Unsubscribe?" = "Berhenti berlangganan?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Ini akan menghentikan langganan Anda dari milis. Pengirim akan diberi tahu untuk berhenti mengirimkan email ke alamat ini.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Tindakan ini akan memberhentikan langganan Anda dari milis. Pengirim pesan akan diberi tahu untuk tidak lagi mengirimkan email ke alamat ini.";
 
 /* Alert telling the user that we are unable to preview this attachment */
 "Unable to preview this attachment" = "Lampiran ini tidak dapat dipratinjau";

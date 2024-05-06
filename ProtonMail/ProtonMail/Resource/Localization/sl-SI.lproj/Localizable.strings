@@ -1902,10 +1902,10 @@
 "Email tracking protection" = "Zaščita pred sledenjem v sporočilih";
 
 /* Short hint in the header view */
-"No email trackers found" = "Ni odkritih e-poštnih sledilcev";
+"No email trackers found" = "Ni odkritih e-poštnih sledilnikov";
 
 /* Tracker protection feature explanation */
-"Email trackers can violate your privacy." = "Sledilci e-pošte lahko kršijo vašo zasebnost.";
+"Email trackers can violate your privacy." = "Sledilniki e-pošte lahko kršijo vašo zasebnost.";
 
 /* The banner shown in case of proxy failure */
 "Some images could not be loaded with tracking protection." = "Nekaterih slik ni bilo mogoče naložiti z zaščito pred sledenjem.";
@@ -2136,13 +2136,13 @@
 "Insufficient disk space" = "Premalo prostora na disku";
 
 /* Message for error when app set up at launch fails */
-"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Aplikacije ni mogoče odpreti, ker je premalo prostora na disku. Prosimo, izbrišite nekaj podatkov in poskusite znova.";
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Aplikacije ni mogoče odpreti, ker je premalo prostora na disku. Izbrišite nekaj podatkov in poskusite znova.";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Sporočila ni bilo mogoče odpreti, poizkusite znova.";
 
 /* Error message when user open the share extension without account logged in. */
-"Please sign in to the Proton Mail app." = "Prosimo, prijavite se v aplikacijo Proton Mail.";
+"Please sign in to the Proton Mail app." = "Prijavite se v aplikacijo Proton Mail.";
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply (to last message)" = "Odgovori (na zadnje sporočilo)";
@@ -2160,7 +2160,7 @@
 "Customize (verb)" = "Prilagodi";
 
 /* The place holder text in the bug report view. */
-"Bug Report Place Holder" = "---Da bi vam lažje pomagali, pomagajte nam, navedite čim več podrobnosti---\n\nPovzetek:\n\nAli se je težava pojavila večkrat: da/ne\nKoraki za ponovitev težave:\nPričakovani rezultat:\nDejanski rezultat:\nKomentarji:";
+"Bug Report Place Holder" = "- Za lažjo pomoč navedite čim več podrobnosti -\n\nPovzetek:\n\nAli se je težava pojavila večkrat: da/ne\nKoraki za ponovitev težave:\nPričakovani rezultat:\nDejanski rezultat:\nKomentarji:";
 
 /* Checkbox to attach local application logs to the bug report. */
 "Include logs" = "Priloži dnevnike";
@@ -2301,7 +2301,7 @@
 "The PIN codes must match!" = "Kodi PIN se morata ujemati!";
 
 /* The textField title when user trying to update its pin code setting */
-"Please enter old pin code " = "Prosimo, vnesite staro kodo PIN. ";
+"Please enter old pin code " = "Vnesite staro kodo PIN. ";
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Spremeni kodo PIN";
@@ -2334,7 +2334,7 @@
 "Conversation unsnoozed" = "Preložitev pogovora je preklicana";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Dremež do...";
+"Snooze until..." = "Dremež do ...";
 
 /* One of snooze option shows in action sheet */
 "Later this week" = "Kasneje ta teden";
@@ -2433,7 +2433,7 @@
 "Upgrade to %@" = "Nadgradi na %@.";
 
 /* Subtitle of the upsell page. */
-"To unlock more storage and premium features." = "Ndgradite za več prostora za shranjevanje in premium funkcij.";
+"To unlock more storage and premium features." = "Nadgradite za več prostora za shranjevanje in premijskih funkcij.";
 
 /* Displayed next to the monthly price */
 "/month" = "/month";

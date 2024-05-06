@@ -2436,16 +2436,16 @@
 "To unlock more storage and premium features." = "Obtenha mais armazenamento e recursos premium.";
 
 /* Displayed next to the monthly price */
-"/month" = "/month";
+"/month" = "/mês";
 
 /* CTA button to purchase a plan (e.g. Get Mail Plus) */
 "Get %@" = "Obter %@";
 
 /* In the context of a discount */
-"Save %u%%" = "Save %u%%";
+"Save %u%%" = "Economize %u%%";
 
 /* Error when trying to purchase an invalid product */
-"Invalid product ID: $@" = "Invalid product ID: $@";
+"Invalid product ID: $@" = "ID de produto inválido: $@";
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
-"Purchase already in progress" = "Purchase already in progress";
+"Purchase already in progress" = "A compra já está em progresso";
