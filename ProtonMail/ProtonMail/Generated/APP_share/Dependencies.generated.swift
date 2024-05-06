@@ -686,12 +686,12 @@ extension UserContainer: HasQueueHandler {
     }
 }
 
-protocol HasTelemetryService {
-    var telemetryService: TelemetryService { get }
+protocol HasTelemetryServiceProtocol {
+    var telemetryService: TelemetryServiceProtocol { get }
 }
 
-extension UserContainer: HasTelemetryService {
-    var telemetryService: TelemetryService {
+extension UserContainer: HasTelemetryServiceProtocol {
+    var telemetryService: TelemetryServiceProtocol {
         telemetryServiceFactory()
     }
 }

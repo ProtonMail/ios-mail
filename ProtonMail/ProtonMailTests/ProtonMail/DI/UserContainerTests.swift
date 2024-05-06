@@ -105,6 +105,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.nextMessageAfterMoveStatusProvider
         _ = strongRefToContainer?.payments
         _ = strongRefToContainer?.paymentsUIFactory
+        _ = strongRefToContainer?.planService
         _ = strongRefToContainer?.purchaseManager
         _ = strongRefToContainer?.purchasePlan
         _ = strongRefToContainer?.settingsViewsFactory
@@ -118,6 +119,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.upsellButtonStateProvider
         _ = strongRefToContainer?.upsellPageFactory
         _ = strongRefToContainer?.upsellOfferProvider
+        _ = strongRefToContainer?.upsellTelemetryReporter
         // sourcery:end
 
         strongRefToUser = nil

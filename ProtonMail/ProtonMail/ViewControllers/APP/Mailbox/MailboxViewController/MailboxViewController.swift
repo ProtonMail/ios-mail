@@ -39,13 +39,14 @@ import UIKit
 
 class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintProtocol, ScheduledAlertPresenter, LifetimeTrackable {
     typealias Dependencies = HasPaymentsUIFactory
-        & ReferralProgramPromptPresenter.Dependencies
-        & HasMailboxMessageCellHelper
-        & HasFeatureFlagsRepository
-        & HasUserManager
-        & HasUserDefaults
-        & HasAddressBookService
-        & HasUserCachedStatus
+    & ReferralProgramPromptPresenter.Dependencies
+    & HasMailboxMessageCellHelper
+    & HasFeatureFlagsRepository
+    & HasUpsellTelemetryReporter
+    & HasUserManager
+    & HasUserDefaults
+    & HasAddressBookService
+    & HasUserCachedStatus
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -614,6 +615,12 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     func upsellButtonTapped() {
         guard let upsellPageModel = viewModel.makeUpsellPageModel() else {
             return
+        }
+
+        dependencies.upsellTelemetryReporter.prepare()
+
+        Task { [weak self] in
+            await self?.dependencies.upsellTelemetryReporter.upsellButtonTapped()
         }
 
         let upsellPage = UpsellPage(model: upsellPageModel) { [unowned self] selectedProductId in

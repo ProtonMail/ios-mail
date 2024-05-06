@@ -35,7 +35,7 @@ final class ImportDeviceContacts: ImportDeviceContactsUseCase {
     & HasDeviceContactsProvider
     & HasContactDataService
     & HasContactsSyncQueueProtocol
-    & HasTelemetryService
+    & HasTelemetryServiceProtocol
 
     // Suggested batch size for creating contacts in backend
     private let contactBatchSize = 10

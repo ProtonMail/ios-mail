@@ -22,7 +22,7 @@
 
 import Combine
 import CoreData
-import Foundation
+import LifetimeTracker
 import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
 import ProtonCoreLog
@@ -203,6 +203,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
 
         super.init()
+        trackLifetime()
         self.setupStorageAlert()
         self.conversationStateProvider.add(delegate: self)
         dependencies.updateMailbox.setup(source: self)
@@ -1566,6 +1567,12 @@ extension MailboxViewModel {
             SystemLogger.log(message: "Purchase cancelled", category: .iap)
             return false
         }
+    }
+}
+
+extension MailboxViewModel: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
     }
 }
 

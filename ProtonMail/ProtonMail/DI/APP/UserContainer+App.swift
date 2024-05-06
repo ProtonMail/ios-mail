@@ -165,6 +165,12 @@ extension UserContainer {
         }
     }
 
+    var planServiceFactory: Factory<PlanService> {
+        self {
+            self.payments.planService
+        }
+    }
+
     var purchaseManagerFactory: Factory<PurchaseManagerProtocol> {
         self {
             self.payments.purchaseManager
@@ -281,6 +287,12 @@ extension UserContainer {
     var upsellOfferProviderFactory: Factory<UpsellOfferProvider> {
         self {
             UpsellOfferProvider(dependencies: self)
+        }
+    }
+
+    var upsellTelemetryReporterFactory: Factory<UpsellTelemetryReporter> {
+        self {
+            UpsellTelemetryReporter(dependencies: self)
         }
     }
 }

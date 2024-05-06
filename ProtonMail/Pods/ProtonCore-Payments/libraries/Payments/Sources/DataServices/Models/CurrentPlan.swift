@@ -29,6 +29,7 @@ public struct CurrentPlan: Decodable, Equatable {
 
     public struct Subscription: Decodable, Equatable {
         public var title: String
+        public var name: String?
         public var description: String
         public var cycleDescription: String?
         public var cycle: Int?
@@ -68,8 +69,9 @@ public struct CurrentPlan: Decodable, Equatable {
             public var hint: String?
         }
 
-        public init(title: String, description: String, cycleDescription: String? = nil, cycle: Int? = nil, currency: String? = nil, amount: Int? = nil, periodEnd: Int? = nil, renew: Int? = nil, external: PaymentMethod? = nil, entitlements: [Entitlement]) {
+        public init(title: String, name: String?, description: String, cycleDescription: String? = nil, cycle: Int? = nil, currency: String? = nil, amount: Int? = nil, periodEnd: Int? = nil, renew: Int? = nil, external: PaymentMethod? = nil, entitlements: [Entitlement]) {
             self.title = title
+            self.name = name
             self.description = description
             self.cycleDescription = cycleDescription
             self.cycle = cycle
