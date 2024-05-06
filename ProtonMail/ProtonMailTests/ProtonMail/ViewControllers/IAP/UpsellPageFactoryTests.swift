@@ -65,10 +65,11 @@ final class UpsellPageFactoryTests: XCTestCase {
         let expectedPlan = UpsellPageModel.Plan(
             name: "Mail Plus",
             perks: [
-                .init(icon: \.clock, description: "Schedule send and snooze"),
+                .init(icon: \.storage, description: "15 GB storage"),
+                .init(icon: \.inbox, description: "10 email addresses"),
                 .init(icon: \.globe, description: "Custom email domain support"),
-                .init(icon: \.tag, description: "Unlimited folders, labels, and filters"),
-                .init(icon: \.gift, description: "And 14 more premium features")
+                .init(icon: \.rocket, description: "New Proton Mail desktop app"),
+                .init(icon: \.tag, description: "Unlimited folders, labels, and filters")
             ],
             purchasingOptions: [
                 .init(

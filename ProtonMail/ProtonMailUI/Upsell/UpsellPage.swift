@@ -100,6 +100,7 @@ public struct UpsellPage: View {
                             Text(perk.description)
                                 .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
                                 .foregroundColor(ColorProvider.SidebarTextWeak)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
 
                         Rectangle()

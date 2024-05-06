@@ -1591,9 +1591,10 @@ enum L11n {
     }
 
     enum PremiumPerks {
-        static let scheduleSendAndSnooze = NSLocalizedString("Schedule send and snooze", comment: "Description of a feature of a paid subscription")
+        static let storage = NSLocalizedString("15 GB storage", comment: "Description of a feature of a paid subscription")
+        static let emailAddresses = NSLocalizedString("%u email addresses", comment: "Description of a feature of a paid subscription")
         static let customEmailDomain = NSLocalizedString("Custom email domain support", comment: "Description of a feature of a paid subscription")
-        static let andMore = NSLocalizedString("And %u more premium features", comment: "Description of a feature of a paid subscription")
+        static let desktopApp = NSLocalizedString("New Proton Mail desktop app", comment: "Description of a feature of a paid subscription")
     }
 
     struct PrivacyAndDataSettings {
