@@ -2421,7 +2421,7 @@
 "Anonymous telemetry" = "Ананімная тэлеметрыя";
 
 /* The title of the crash report setting. */
-"Anonymous crash reports" = "Ананімная справаздачы пра збоі";
+"Anonymous crash reports" = "Ананімная справаздачы аб збоях";
 
 /* The subtitle of the anonymous telemetry setting. */
 "To improve our services, we sometimes collect anonymized usage data." = "Для ўдасканалення нашага сэрвісу час ад часу мы ананімна збіраем даныя аб выкарыстанні.";

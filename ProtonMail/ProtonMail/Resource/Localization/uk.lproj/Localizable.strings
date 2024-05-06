@@ -1950,7 +1950,7 @@
 "(Attendance optional)" = "(Участь необов'язкова)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "Кожні %@";
 
 /* As in: on Saturday */
 "on %@" = "on %@";
@@ -1962,31 +1962,31 @@
 "on day %u" = "on day %u";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "до %@";
 
 /* Occurring every day */
-"Daily" = "Daily";
+"Daily" = "Щодня";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "Щотижня";
 
 /* Occurring every month */
 "Monthly" = "Monthly";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "Щороку";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "перший";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "другий";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "третій";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "четвертий";
 
 /* Opposite of \"first\" */
 "last" = "last";
@@ -2415,7 +2415,7 @@
 "Custom email domain support" = "Custom email domain support";
 
 /* Description of a feature of a paid subscription */
-"And %u more premium features" = "And %u more premium features";
+"And %u more premium features" = "І %u більше преміум функцій";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Анонімна телеметрія";
@@ -2430,10 +2430,10 @@
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Якщо застосунок аварійно закриється, нашим інженерам буде надіслано звіт з детальною інформацією про причину збою. Ці дані будуть використані лише для вдосконалення застосунку.";
 
 /* Title of the upsell page. */
-"Upgrade to %@" = "Upgrade to %@";
+"Upgrade to %@" = "Покращення до %@";
 
 /* Subtitle of the upsell page. */
-"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+"To unlock more storage and premium features." = "Щоб розблокувати більше сховища та преміум функцій.";
 
 /* Displayed next to the monthly price */
 "/month" = "/month";

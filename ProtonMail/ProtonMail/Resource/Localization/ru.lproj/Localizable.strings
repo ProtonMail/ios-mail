@@ -1962,7 +1962,7 @@
 "on day %u" = "on day %u";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "до %@";
 
 /* Occurring every day */
 "Daily" = "Ежедневно";

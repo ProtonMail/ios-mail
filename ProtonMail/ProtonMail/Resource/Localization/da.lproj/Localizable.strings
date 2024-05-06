@@ -1085,7 +1085,7 @@
 "Is this bug report about an in-app purchase?" = "Omhandler denne fejlanmeldelse In-app køb?";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Vores kundeservice vil forsøge at aktivere dit serviceabonnement manuelt, hvis du accepterer at vedhæfte de tekniske data, som App Store har leveret til appen på købstidspunktet. Disse data omfatter ikke oplysninger om din iTunes-konto, Apple ID, tilknyttede betalingskort eller andre brugeroplysninger. De tekniske data hjælper os kun med at kontrollere og verificere, at transaktionen blev gennemført på App Store's servere.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Vores kundeservice vil forsøge at aktivere dit serviceabonnement manuelt, hvis du accepterer at vedhæfte de tekniske data, som App Store har leveret til appen på købstidspunktet. Disse data omfatter ikke oplysninger om din iTunes-konto, Apple ID, tilknyttede betalingskort eller andre brugeroplysninger. De tekniske data hjælper os kun med at kontrollere og bekræfte, at transaktionen blev gennemført på App Store's servere.";
 
 /* Error message */
 "Yes, attach details of payment" = "Ja, vedhæft betalingsoplysninger";
@@ -2412,10 +2412,10 @@
 "Schedule send and snooze" = "Planlæg afsendelse og udsæt";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain support" = "Custom email domain support";
+"Custom email domain support" = "Understøttelse af brugerdefinerede e-maildomæner";
 
 /* Description of a feature of a paid subscription */
-"And %u more premium features" = "And %u more premium features";
+"And %u more premium features" = "Og %u flere premium-funktioner";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonym telemetri";
@@ -2430,10 +2430,10 @@
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Hvis appen bryder sammen, vil der blive sendt en rapport til vores teknikere med oplysninger om årsagen. Disse vil kun blive brugt til at forbedre appen.";
 
 /* Title of the upsell page. */
-"Upgrade to %@" = "Upgrade to %@";
+"Upgrade to %@" = "Opgradér til %@";
 
 /* Subtitle of the upsell page. */
-"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+"To unlock more storage and premium features." = "For at få mere lagerplads og premium-funktioner.";
 
 /* Displayed next to the monthly price */
 "/month" = "/month";

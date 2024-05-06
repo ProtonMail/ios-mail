@@ -919,7 +919,7 @@
 "Message body" = "Cuerpo del mensaje";
 
 /* alert title */
-"Confirm phishing report" = "Confirmar reporte de suplantación";
+"Confirm phishing report" = "Confirmar informe de suplantación";
 
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Al reportar un mensaje como suplantación de identidad, enviará una alerta a nosotros para analizarlo y mejorar nuestros filtros. Significa que podremos ver todo el contenido del mensaje.";
@@ -1082,7 +1082,7 @@
 "Labels" = "Etiquetas";
 
 /* Error message */
-"Is this bug report about an in-app purchase?" = "¿Este reporte es acerca de una compra en la aplicación?";
+"Is this bug report about an in-app purchase?" = "¿Este informe es acerca de una compra en la aplicación?";
 
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Nuestro equipo tratará de activar el plan de servicio manualmente si está de acuerdo en adjuntar los datos técnicos que App Store proporcionó al momento de la compra. Estos datos no incluyen detalles de la cuenta en iTunes, Apple ID, tarjetas de crédito u otra información personal. Solamente servirá para verificar que la transacción fue realizada en los servidores de App Store.";
@@ -2421,7 +2421,7 @@
 "Anonymous telemetry" = "Telemetría anónima";
 
 /* The title of the crash report setting. */
-"Anonymous crash reports" = "Reportes de errores anónimos";
+"Anonymous crash reports" = "Informes de errores anónimos";
 
 /* The subtitle of the anonymous telemetry setting. */
 "To improve our services, we sometimes collect anonymized usage data." = "Para mejorar nuestros servicios, a veces recolectamos datos de uso anónimos.";
