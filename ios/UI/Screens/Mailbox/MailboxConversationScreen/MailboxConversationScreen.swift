@@ -57,6 +57,8 @@ extension MailboxConversationScreen {
                             switch event {
                             case .onTap:
                                 model?.onConversationTap(conversation: conversation)
+                            case .onLongPress:
+                                model?.onLongPress(conversation: conversation)
                             case .onSelectedChange(let isSelected):
                                 model?.onConversationSelectionChange(conversation: conversation, isSelected: isSelected)
                             case .onStarredChange(let isStarred):

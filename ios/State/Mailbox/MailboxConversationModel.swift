@@ -124,6 +124,12 @@ extension MailboxConversationModel {
     }
 
     @MainActor
+    func onLongPress(conversation: MailboxConversationCellUIModel) {
+        guard !selectionMode.hasSelectedItems else { return }
+        onConversationSelectionChange(conversation: conversation, isSelected: true)
+    }
+
+    @MainActor
     func onConversationSelectionChange(conversation: MailboxConversationCellUIModel, isSelected: Bool) {
         isSelected
         ? selectionMode.addMailboxItem(conversation.toSelectedItem())

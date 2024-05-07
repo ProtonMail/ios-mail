@@ -45,6 +45,9 @@ struct MailboxConversationCell: View {
         .onTapGesture {
             onEvent(.onTap)
         }
+        .onLongPressGesture {
+            onEvent(.onLongPress)
+        }
         .padding(.horizontal, DS.Spacing.large)
         .padding(.vertical, DS.Spacing.medium)
         .background(uiModel.isSelected ? DS.Color.Background.secondary : DS.Color.Background.norm)
@@ -206,6 +209,7 @@ final class MailboxConversationCellUIModel: Identifiable, Sendable {
 
 enum MailboxConversationCellEvent {
     case onTap
+    case onLongPress
     case onSelectedChange(isSelected: Bool)
     case onStarredChange(isStarred: Bool)
     case onAttachmentTap(attachmentId: String)
