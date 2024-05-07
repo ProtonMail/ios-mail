@@ -65,16 +65,18 @@ struct FetchEventDetailsImpl: FetchEventDetails {
 
         let currentUserAmongInvitees = invitees.first { dependencies.user.userInfo.owns(emailAddress: $0.email) }
 
+        let dateInterval = calculateDateInterval(iCalEvent: iCalEvent, occurrence: basicEventInfo.occurrence)
+
         let eventIdentificationData = EventIdentificationData(
             id: apiEvent.ID,
             calendarID: apiEvent.calendarID,
-            startDate: Date(timeIntervalSince1970: apiEvent.startTime)
+            startDate: dateInterval.start
         )
 
         return .init(
             title: iCalEvent.title,
-            startDate: Date(timeIntervalSince1970: apiEvent.startTime),
-            endDate: Date(timeIntervalSince1970: apiEvent.endTime),
+            startDate: dateInterval.start,
+            endDate: dateInterval.end,
             isAllDay: iCalEvent.isAllDay,
             recurrence: iCalRecurrenceFormatter.string(from: iCalEvent.recurrence, startDate: iCalEvent.startDate),
             calendar: .init(name: member.name, iconColor: member.color),
@@ -252,6 +254,16 @@ struct FetchEventDetailsImpl: FetchEventDetails {
         }
 
         return iCalReader.parse_single_event_ics(dependecies: dependecies, attendeeData: attendeeData)
+    }
+
+    private func calculateDateInterval(iCalEvent: ICalEvent, occurrence: Int?) -> DateInterval {
+        if let occurrence {
+            let startDateOfThisSpecificOccurrence = Date(timeIntervalSince1970: TimeInterval(occurrence))
+            let duration = iCalEvent.endDate.timeIntervalSince(iCalEvent.startDate)
+            return DateInterval(start: startDateOfThisSpecificOccurrence, duration: duration)
+        } else {
+            return DateInterval(start: iCalEvent.startDate, end: iCalEvent.endDate)
+        }
     }
 }
 

@@ -22,6 +22,7 @@ enum EventRSVPError: Error {
     case encryptedDataIsNotValidBase64
     case icsDataDoesNotContainUID
     case icsDataIsNotValidUTF8String
+    case icsDoesNotContainEvents
     case keyPacketIsNotValidBase64
     case noEventsReturnedFromAPI
     case noICSComponents

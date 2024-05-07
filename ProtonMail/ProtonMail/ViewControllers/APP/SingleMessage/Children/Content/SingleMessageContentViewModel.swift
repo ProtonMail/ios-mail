@@ -408,8 +408,11 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
         let basicEventInfo: BasicEventInfo?
 
         if let eventUID = messageHeaders[MessageHeaderKey.pmCalendarEventUID] as? String {
-            let recurrenceID = messageHeaders[MessageHeaderKey.pmCalendarOccurrence] as? Int
-            basicEventInfo = .init(eventUID: eventUID, recurrenceID: recurrenceID)
+            let occurrence = (messageHeaders[MessageHeaderKey.pmCalendarOccurrence] as? String)
+                .flatMap { Int($0, radix: 10) }
+            let recurrenceID = (messageHeaders[MessageHeaderKey.pmCalendarRecurrenceID] as? String)
+                .flatMap { Int($0, radix: 10) }
+            basicEventInfo = .init(eventUID: eventUID, occurrence: occurrence, recurrenceID: recurrenceID)
         } else {
             basicEventInfo = nil
         }

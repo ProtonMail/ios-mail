@@ -41,6 +41,7 @@ BEGIN:VCALENDAR
 BEGIN:VEVENT
 UID:FOO
 DTSTART:20240117T131800Z
+DTEND:20240117T151800Z
 END:VEVENT
 END:VCALENDAR
 """#
@@ -101,8 +102,12 @@ END:VCALENDAR
         memberID = UUID().uuidString
         passphraseID = UUID().uuidString
 
-        stubbedBasicEventInfo = BasicEventInfo(eventUID: eventUID, recurrenceID: nil)
-        expectedEventDetails = .make(deepLinkComponents: (eventUID: eventUID, calendarID: calendarID))
+        stubbedBasicEventInfo = BasicEventInfo(eventUID: eventUID, occurrence: nil, recurrenceID: nil)
+        expectedEventDetails = .make(
+            startDate: .fixture("2024-01-17 13:18:00"),
+            endDate: .fixture("2024-01-17 15:18:00"),
+            deepLinkComponents: (eventUID: eventUID, calendarID: calendarID)
+        )
     }
 
     override func tearDownWithError() throws {
@@ -127,6 +132,18 @@ END:VCALENDAR
         try prepareAddressKeyPacketVariant()
         let eventDetails = try await sut.execute(basicEventInfo: stubbedBasicEventInfo)
         XCTAssertEqual(eventDetails, expectedEventDetails)
+    }
+
+    func testWhenOccurrenceTimestampIsProvided_shiftsStartAndEndDates() async throws {
+        try prepareAddressKeyPacketVariant()
+
+        let occurrence = 1715152200
+        let basicInfoWithOccurrence = BasicEventInfo(eventUID: eventUID, occurrence: occurrence, recurrenceID: nil)
+
+        let eventDetails = try await sut.execute(basicEventInfo: basicInfoWithOccurrence)
+
+        XCTAssertEqual(eventDetails.startDate, .fixture("2024-05-08 07:10:00"))
+        XCTAssertEqual(eventDetails.endDate, .fixture("2024-05-08 09:10:00"))
     }
 }
 
@@ -218,6 +235,7 @@ extension FetchEventDetailsTests {
             calendarEvents: calendarEvents,
             calendarID: calendarID,
             calendarKeyPacket: nil,
+            recurrenceID: nil,
             startTime: expectedEventDetails.startDate.timeIntervalSince1970,
             startTimezone: timeZoneIdentifier,
             endTime: expectedEventDetails.endDate.timeIntervalSince1970,
