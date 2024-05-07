@@ -235,6 +235,7 @@ extension FetchEventDetailsTests {
             calendarEvents: calendarEvents,
             calendarID: calendarID,
             calendarKeyPacket: nil,
+            color: nil,
             recurrenceID: nil,
             startTime: expectedEventDetails.startDate.timeIntervalSince1970,
             startTimezone: timeZoneIdentifier,
@@ -263,9 +264,12 @@ extension FetchEventDetailsTests {
             keys: keys,
             members: [
                 .init(
-                    ID: memberID,
+                    calendarID: calendarID,
                     color: expectedEventDetails.calendar.iconColor,
-                    name: expectedEventDetails.calendar.name
+                    flags: [],
+                    ID: memberID,
+                    name: expectedEventDetails.calendar.name,
+                    permissions: []
                 )
             ],
             passphrase: .init(ID: passphraseID, memberPassphrases: memberPassphrases)
