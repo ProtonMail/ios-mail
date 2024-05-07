@@ -73,8 +73,8 @@ struct AvatarCheckboxView: View {
 
     private var initialsView: some View {
         Text(avatar.initials)
-            .font(.callout)
-            .fontWeight(.regular)
+            .font(DS.Font.body3)
+            .fontWeight(.semibold)
             .foregroundStyle(DS.Color.Global.white)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(avatar.backgroundColor)
