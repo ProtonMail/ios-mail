@@ -53,6 +53,7 @@ extension MailboxConversationScreen {
                 VStack {
                     MailboxConversationCell(
                         uiModel: conversation,
+                        isAttachmentHighlightEnabled: !model.selectionMode.hasSelectedItems,
                         onEvent: { [weak model] event in
                             switch event {
                             case .onTap:
@@ -62,9 +63,9 @@ extension MailboxConversationScreen {
                             case .onSelectedChange(let isSelected):
                                 model?.onConversationSelectionChange(conversation: conversation, isSelected: isSelected)
                             case .onStarredChange(let isStarred):
-                                model?.onConversationStarChange(id: conversation.id, isStarred: isStarred)
+                                model?.onConversationStarChange(conversation: conversation, isStarred: isStarred)
                             case .onAttachmentTap(let attachmentId):
-                                model?.onConversationAttachmentTap(attachmentId: attachmentId)
+                                model?.onConversationAttachmentTap(attachmentId: attachmentId, for: conversation)
                             }
                         }
                     )

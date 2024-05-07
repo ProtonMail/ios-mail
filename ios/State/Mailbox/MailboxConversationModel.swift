@@ -113,14 +113,19 @@ extension MailboxConversationModel {
 
 extension MailboxConversationModel {
 
+    private func applySelectionStateChangeInstead(conversation: MailboxConversationCellUIModel) {
+        let isCurrentlySelected = selectionMode.selectedItems.contains(conversation.toSelectedItem())
+        onConversationSelectionChange(conversation: conversation, isSelected: !isCurrentlySelected)
+    }
+
     @MainActor
     func onConversationTap(conversation: MailboxConversationCellUIModel) {
-        if selectionMode.hasSelectedItems {
-            let isCurrentlySelected = selectionMode.selectedItems.contains(conversation.toSelectedItem())
-            onConversationSelectionChange(conversation: conversation, isSelected: !isCurrentlySelected)
-        } else {
-            // ...
+        guard !selectionMode.hasSelectedItems else {
+            applySelectionStateChangeInstead(conversation: conversation)
+            return
         }
+
+        // navigate to conversation ...
     }
 
     @MainActor
@@ -136,11 +141,19 @@ extension MailboxConversationModel {
         : selectionMode.removeMailboxItem(conversation.toSelectedItem())
     }
 
-    func onConversationStarChange(id: PMLocalConversationId, isStarred: Bool) {
-        isStarred ? actionStar(ids: [id]) : actionUnstar(ids: [id])
+    func onConversationStarChange(conversation: MailboxConversationCellUIModel, isStarred: Bool) {
+        guard !selectionMode.hasSelectedItems else {
+            applySelectionStateChangeInstead(conversation: conversation)
+            return
+        }
+        isStarred ? actionStar(ids: [conversation.id]) : actionUnstar(ids: [conversation.id])
     }
 
-    func onConversationAttachmentTap(attachmentId: String) {
+    func onConversationAttachmentTap(attachmentId: String, for conversation: MailboxConversationCellUIModel) {
+        guard !selectionMode.hasSelectedItems else {
+            applySelectionStateChangeInstead(conversation: conversation)
+            return
+        }
         print("Attachment tapped \(attachmentId)")
     }
 

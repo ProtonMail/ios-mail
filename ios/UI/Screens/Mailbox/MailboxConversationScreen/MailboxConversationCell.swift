@@ -20,6 +20,7 @@ import SwiftUI
 
 struct MailboxConversationCell: View {
     let uiModel: MailboxConversationCellUIModel
+    let isAttachmentHighlightEnabled: Bool
     let onEvent: (MailboxConversationCellEvent) -> Void
 
     private var textColor: Color {
@@ -132,9 +133,13 @@ extension MailboxConversationCell {
 
     private var attachmentRowView: some View {
 
-        AttachmentsView(uiModel: uiModel.attachmentsUIModel, onTapEvent: {
-            onEvent(.onAttachmentTap(attachmentId: $0))
-        })
+        AttachmentsView(
+            uiModel: uiModel.attachmentsUIModel,
+            isAttachmentHighlightEnabled: isAttachmentHighlightEnabled,
+            onTapEvent: {
+                onEvent(.onAttachmentTap(attachmentId: $0))
+            }
+        )
         .padding(.top, DS.Spacing.standard)
         .removeViewIf(uiModel.attachmentsUIModel.isEmpty)
     }
@@ -236,7 +241,7 @@ enum MailboxConversationCellEvent {
 
     return VStack {
 
-        MailboxConversationCell(uiModel: model, onEvent: { _ in })
+        MailboxConversationCell(uiModel: model, isAttachmentHighlightEnabled: true, onEvent: { _ in })
 
         MailboxConversationCell(
             uiModel: .init(
@@ -255,6 +260,7 @@ enum MailboxConversationCellEvent {
                 expirationDate: .now,
                 snoozeDate: .now + 500
             ),
+            isAttachmentHighlightEnabled: true,
             onEvent: { _ in }
         )
 
@@ -279,6 +285,7 @@ enum MailboxConversationCellEvent {
                 expirationDate: .now + 500,
                 snoozeDate: .now + 55000
             ),
+            isAttachmentHighlightEnabled: true,
             onEvent: { _ in }
         )
     }

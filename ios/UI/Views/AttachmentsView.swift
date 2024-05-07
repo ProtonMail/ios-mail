@@ -22,6 +22,7 @@ struct AttachmentsView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     let uiModel: [AttachmentCapsuleUIModel]
+    let isAttachmentHighlightEnabled: Bool
     let onTapEvent: ((String) -> Void)?
     
     /// Maximum number of attachment capsules to try to show for each horizontal size class
@@ -29,8 +30,13 @@ struct AttachmentsView: View {
         horizontalSizeClass == .compact ? 3 : 5
     }
 
-    init(uiModel: [AttachmentCapsuleUIModel], onTapEvent: ((String) -> Void)? = nil) {
+    init(
+        uiModel: [AttachmentCapsuleUIModel],
+        isAttachmentHighlightEnabled: Bool = false,
+        onTapEvent: ((String) -> Void)? = nil
+    ) {
         self.uiModel = uiModel
+        self.isAttachmentHighlightEnabled = isAttachmentHighlightEnabled
         self.onTapEvent = onTapEvent
     }
 
@@ -59,7 +65,12 @@ struct AttachmentsView: View {
             HStack(spacing: Layout.spacingBetweenCapsules) {
                 let items = uiModel.prefix(limit)
                 ForEach(items) { item in
-                    AttachmentCapsuleView(uiModel: item, maxWidth: capsuleMaxWidth, onTapEvent: onTapEvent)
+                    AttachmentCapsuleView(
+                        uiModel: item,
+                        maxWidth: capsuleMaxWidth,
+                        isAttachmentHighlightEnabled: isAttachmentHighlightEnabled,
+                        onTapEvent: onTapEvent
+                    )
                 }
             }
             let extraAttachments = min(99, uiModel.count - limit)
@@ -87,6 +98,7 @@ struct AttachmentCapsuleUIModel: Identifiable, Hashable {
 struct AttachmentCapsuleView: View {
     let uiModel: AttachmentCapsuleUIModel
     let maxWidth: CGFloat
+    let isAttachmentHighlightEnabled: Bool
     let onTapEvent: ((String) -> Void)?
 
     private let padding = EdgeInsets(
@@ -120,18 +132,30 @@ struct AttachmentCapsuleView: View {
                 }
             )
         }
-        .buttonStyle(AttachmentCapsuleStyle())
+        .buttonStyle(AttachmentCapsuleStyle(isEnabled: isAttachmentHighlightEnabled))
     }
 }
 
 private struct AttachmentCapsuleStyle: ButtonStyle {
+    private let isEnabled: Bool
 
-  func makeBody(configuration: Self.Configuration) -> some View {
-    configuration
-          .label
-          .background(configuration.isPressed ? Capsule().fill(DS.Color.Background.deep) : Capsule().fill(DS.Color.Background.norm))
-  }
+    init(isEnabled: Bool) {
+        self.isEnabled = isEnabled
+    }
 
+    func makeBody(configuration: Self.Configuration) -> some View {
+        if isEnabled {
+            configuration
+                .label
+                .background(
+                    configuration.isPressed
+                    ? Capsule().fill(DS.Color.Background.deep)
+                    : Capsule().fill(DS.Color.Background.norm)
+                )
+        } else {
+            configuration.label
+        }
+    }
 }
 
 fileprivate enum Layout {
