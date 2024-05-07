@@ -55,18 +55,9 @@ struct FetchEventDetailsImpl: FetchEventDetails {
             throw EventRSVPError.noMembersInBootstrapResponse
         }
 
-        let sessionKey = try obtainSessionKey(
-            apiEvent: apiEvent,
-            calendarBootstrapResponse: calendarBootstrapResponse,
-            memberID: member.ID
-        )
+        let decryptionKit = makeDecryptionKit(calendarBootstrapResponse: calendarBootstrapResponse, memberID: member.ID)
 
-        let relevantEvents = apiEvent.sharedEvents + apiEvent.attendeesEvents
-        let decryptedEvents = try decryptIfNeeded(events: relevantEvents, using: sessionKey)
-        let unencryptedCalendarEventsData = apiEvent.calendarEvents.filter { !$0.type.contains(.encrypted) }.map(\.data)
-        let icsComponents: [String] = decryptedEvents + unencryptedCalendarEventsData
-        let combinedICS = try combineICS(components: icsComponents)
-        let iCalEvent = parseICS(combinedICS, withAuxilliaryInfo: apiEvent)
+        let iCalEvent = try decrypt(apiEvent: apiEvent, decryptionKit: decryptionKit)
 
         let invitees: [EventDetails.Participant] = iCalEvent.participants
             .filter { $0.user != iCalEvent.organizer?.user }
@@ -118,25 +109,42 @@ struct FetchEventDetailsImpl: FetchEventDetails {
         return try await dependencies.apiService.perform(request: calendarBootstrapRequest).1
     }
 
-    private func obtainSessionKey(
-        apiEvent: FullEventTransformer,
+    private func makeDecryptionKit(
         calendarBootstrapResponse: CalendarBootstrapResponse,
         memberID: String
-    ) throws -> SessionKey? {
+    ) -> DecryptionKit {
         let addressKeys = MailCrypto.decryptionKeys(
             basedOn: dependencies.user.userInfo.addressKeys,
             mailboxPassword: dependencies.user.mailboxPassword,
             userKeys: dependencies.user.userInfo.userPrivateKeys
         )
 
+        return DecryptionKit(
+            addressKeys: addressKeys,
+            calendarBootstrapResponse: calendarBootstrapResponse,
+            memberID: memberID
+        )
+    }
+
+    private func decrypt(apiEvent: FullEventTransformer, decryptionKit: DecryptionKit) throws -> ICalEvent {
+        let sessionKey = try obtainSessionKey(apiEvent: apiEvent, decryptionKit: decryptionKit)
+        let relevantEvents = apiEvent.sharedEvents + apiEvent.attendeesEvents
+        let decryptedEvents = try decryptIfNeeded(events: relevantEvents, using: sessionKey)
+        let unencryptedCalendarEventsData = apiEvent.calendarEvents.filter { !$0.type.contains(.encrypted) }.map(\.data)
+        let icsComponents: [String] = decryptedEvents + unencryptedCalendarEventsData
+        let combinedICS = try combineICS(components: icsComponents)
+        return parseICS(combinedICS, withAuxilliaryInfo: apiEvent)
+    }
+
+    private func obtainSessionKey(apiEvent: FullEventTransformer, decryptionKit: DecryptionKit) throws -> SessionKey? {
         let keyPacket: String
         let decryptionKeys: [DecryptionKey]
 
         if let sharedKeyPacket = apiEvent.sharedKeyPacket {
             keyPacket = sharedKeyPacket
 
-            guard let memberPassphrase = calendarBootstrapResponse.passphrase.memberPassphrases.first(
-                where: { $0.memberID == memberID }
+            guard let memberPassphrase = decryptionKit.calendarBootstrapResponse.passphrase.memberPassphrases.first(
+                where: { $0.memberID == decryptionKit.memberID }
             ) else {
                 throw EventRSVPError.noPassphraseForGivenMember
             }
@@ -144,12 +152,16 @@ struct FetchEventDetailsImpl: FetchEventDetails {
             let encryptedCalendarPassphrase = memberPassphrase.passphrase
 
             let decryptedCalendarPassphrase: String = try Decryptor.decrypt(
-                decryptionKeys: addressKeys,
+                decryptionKeys: decryptionKit.addressKeys,
                 encrypted: ArmoredMessage(value: encryptedCalendarPassphrase)
             )
 
-            decryptionKeys = calendarBootstrapResponse.keys
-                .filter { $0.flags.contains(.active) && $0.passphraseID == calendarBootstrapResponse.passphrase.ID }
+            decryptionKeys = decryptionKit.calendarBootstrapResponse.keys
+                .filter {
+                    $0.flags.contains(.active)
+                    &&
+                    $0.passphraseID == decryptionKit.calendarBootstrapResponse.passphrase.ID
+                }
                 .map { calendarKey in
                     DecryptionKey(
                         privateKey: ArmoredKey(value: calendarKey.privateKey),
@@ -158,7 +170,7 @@ struct FetchEventDetailsImpl: FetchEventDetails {
                 }
         } else if let addressKeyPacket = apiEvent.addressKeyPacket {
             keyPacket = addressKeyPacket
-            decryptionKeys = addressKeys
+            decryptionKeys = decryptionKit.addressKeys
         } else {
             return nil
         }
@@ -247,4 +259,10 @@ private extension UserInfo {
     func owns(emailAddress: String) -> Bool {
         userAddresses.contains { $0.email.compare(emailAddress, options: [.caseInsensitive]) == .orderedSame }
     }
+}
+
+private struct DecryptionKit {
+    let addressKeys: [DecryptionKey]
+    let calendarBootstrapResponse: CalendarBootstrapResponse
+    let memberID: String
 }
