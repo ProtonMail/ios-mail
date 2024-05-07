@@ -467,7 +467,7 @@ fileprivate struct FfiConverterString: FfiConverter {
 }
 
 
-public struct ConversationAvatarInformation {
+public struct AvatarInformation {
     public var text: String
     public var color: String
 
@@ -480,9 +480,9 @@ public struct ConversationAvatarInformation {
 }
 
 
-extension ConversationAvatarInformation: Sendable {} 
-extension ConversationAvatarInformation: Equatable, Hashable {
-    public static func ==(lhs: ConversationAvatarInformation, rhs: ConversationAvatarInformation) -> Bool {
+extension AvatarInformation: Sendable {} 
+extension AvatarInformation: Equatable, Hashable {
+    public static func ==(lhs: AvatarInformation, rhs: AvatarInformation) -> Bool {
         if lhs.text != rhs.text {
             return false
         }
@@ -499,28 +499,28 @@ extension ConversationAvatarInformation: Equatable, Hashable {
 }
 
 
-public struct FfiConverterTypeConversationAvatarInformation: FfiConverterRustBuffer {
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> ConversationAvatarInformation {
+public struct FfiConverterTypeAvatarInformation: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> AvatarInformation {
         return
-            try ConversationAvatarInformation(
+            try AvatarInformation(
                 text: FfiConverterString.read(from: &buf), 
                 color: FfiConverterString.read(from: &buf)
         )
     }
 
-    public static func write(_ value: ConversationAvatarInformation, into buf: inout [UInt8]) {
+    public static func write(_ value: AvatarInformation, into buf: inout [UInt8]) {
         FfiConverterString.write(value.text, into: &buf)
         FfiConverterString.write(value.color, into: &buf)
     }
 }
 
 
-public func FfiConverterTypeConversationAvatarInformation_lift(_ buf: RustBuffer) throws -> ConversationAvatarInformation {
-    return try FfiConverterTypeConversationAvatarInformation.lift(buf)
+public func FfiConverterTypeAvatarInformation_lift(_ buf: RustBuffer) throws -> AvatarInformation {
+    return try FfiConverterTypeAvatarInformation.lift(buf)
 }
 
-public func FfiConverterTypeConversationAvatarInformation_lower(_ value: ConversationAvatarInformation) -> RustBuffer {
-    return FfiConverterTypeConversationAvatarInformation.lower(value)
+public func FfiConverterTypeAvatarInformation_lower(_ value: AvatarInformation) -> RustBuffer {
+    return FfiConverterTypeAvatarInformation.lower(value)
 }
 
 
@@ -628,14 +628,14 @@ public struct LocalConversation {
     public var snoozeTime: UInt64
     public var size: UInt64
     public var time: UInt64
-    public var labels: [LocalConversationLabel]?
+    public var labels: [LocalInlineLabelInfo]?
     public var starred: Bool
     public var attachments: [LocalAttachmentMetadata]?
-    public var avatarInformation: ConversationAvatarInformation
+    public var avatarInformation: AvatarInformation
 
     // Default memberwise initializers are never public by default, so we
     // declare one manually.
-    public init(id: LocalConversationId, remoteId: ConversationId?, order: UInt64, subject: String, senders: [MessageAddress], recipients: [MessageAddress], numMessages: UInt64, numMessagesCtx: UInt64, numUnread: UInt64, numAttachments: UInt64, expirationTime: UInt64, snoozeTime: UInt64, size: UInt64, time: UInt64, labels: [LocalConversationLabel]?, starred: Bool, attachments: [LocalAttachmentMetadata]?, avatarInformation: ConversationAvatarInformation) {
+    public init(id: LocalConversationId, remoteId: ConversationId?, order: UInt64, subject: String, senders: [MessageAddress], recipients: [MessageAddress], numMessages: UInt64, numMessagesCtx: UInt64, numUnread: UInt64, numAttachments: UInt64, expirationTime: UInt64, snoozeTime: UInt64, size: UInt64, time: UInt64, labels: [LocalInlineLabelInfo]?, starred: Bool, attachments: [LocalAttachmentMetadata]?, avatarInformation: AvatarInformation) {
         self.id = id
         self.remoteId = remoteId
         self.order = order
@@ -759,10 +759,10 @@ public struct FfiConverterTypeLocalConversation: FfiConverterRustBuffer {
                 snoozeTime: FfiConverterUInt64.read(from: &buf), 
                 size: FfiConverterUInt64.read(from: &buf), 
                 time: FfiConverterUInt64.read(from: &buf), 
-                labels: FfiConverterOptionSequenceTypeLocalConversationLabel.read(from: &buf), 
+                labels: FfiConverterOptionSequenceTypeLocalInlineLabelInfo.read(from: &buf), 
                 starred: FfiConverterBool.read(from: &buf), 
                 attachments: FfiConverterOptionSequenceTypeLocalAttachmentMetadata.read(from: &buf), 
-                avatarInformation: FfiConverterTypeConversationAvatarInformation.read(from: &buf)
+                avatarInformation: FfiConverterTypeAvatarInformation.read(from: &buf)
         )
     }
 
@@ -781,10 +781,10 @@ public struct FfiConverterTypeLocalConversation: FfiConverterRustBuffer {
         FfiConverterUInt64.write(value.snoozeTime, into: &buf)
         FfiConverterUInt64.write(value.size, into: &buf)
         FfiConverterUInt64.write(value.time, into: &buf)
-        FfiConverterOptionSequenceTypeLocalConversationLabel.write(value.labels, into: &buf)
+        FfiConverterOptionSequenceTypeLocalInlineLabelInfo.write(value.labels, into: &buf)
         FfiConverterBool.write(value.starred, into: &buf)
         FfiConverterOptionSequenceTypeLocalAttachmentMetadata.write(value.attachments, into: &buf)
-        FfiConverterTypeConversationAvatarInformation.write(value.avatarInformation, into: &buf)
+        FfiConverterTypeAvatarInformation.write(value.avatarInformation, into: &buf)
     }
 }
 
@@ -798,7 +798,7 @@ public func FfiConverterTypeLocalConversation_lower(_ value: LocalConversation) 
 }
 
 
-public struct LocalConversationLabel {
+public struct LocalInlineLabelInfo {
     public var id: LocalLabelId
     public var name: String
     public var color: LabelColor
@@ -813,9 +813,9 @@ public struct LocalConversationLabel {
 }
 
 
-extension LocalConversationLabel: Sendable {} 
-extension LocalConversationLabel: Equatable, Hashable {
-    public static func ==(lhs: LocalConversationLabel, rhs: LocalConversationLabel) -> Bool {
+extension LocalInlineLabelInfo: Sendable {} 
+extension LocalInlineLabelInfo: Equatable, Hashable {
+    public static func ==(lhs: LocalInlineLabelInfo, rhs: LocalInlineLabelInfo) -> Bool {
         if lhs.id != rhs.id {
             return false
         }
@@ -836,17 +836,17 @@ extension LocalConversationLabel: Equatable, Hashable {
 }
 
 
-public struct FfiConverterTypeLocalConversationLabel: FfiConverterRustBuffer {
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> LocalConversationLabel {
+public struct FfiConverterTypeLocalInlineLabelInfo: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> LocalInlineLabelInfo {
         return
-            try LocalConversationLabel(
+            try LocalInlineLabelInfo(
                 id: FfiConverterTypeLocalLabelId.read(from: &buf), 
                 name: FfiConverterString.read(from: &buf), 
                 color: FfiConverterTypeLabelColor.read(from: &buf)
         )
     }
 
-    public static func write(_ value: LocalConversationLabel, into buf: inout [UInt8]) {
+    public static func write(_ value: LocalInlineLabelInfo, into buf: inout [UInt8]) {
         FfiConverterTypeLocalLabelId.write(value.id, into: &buf)
         FfiConverterString.write(value.name, into: &buf)
         FfiConverterTypeLabelColor.write(value.color, into: &buf)
@@ -854,12 +854,12 @@ public struct FfiConverterTypeLocalConversationLabel: FfiConverterRustBuffer {
 }
 
 
-public func FfiConverterTypeLocalConversationLabel_lift(_ buf: RustBuffer) throws -> LocalConversationLabel {
-    return try FfiConverterTypeLocalConversationLabel.lift(buf)
+public func FfiConverterTypeLocalInlineLabelInfo_lift(_ buf: RustBuffer) throws -> LocalInlineLabelInfo {
+    return try FfiConverterTypeLocalInlineLabelInfo.lift(buf)
 }
 
-public func FfiConverterTypeLocalConversationLabel_lower(_ value: LocalConversationLabel) -> RustBuffer {
-    return FfiConverterTypeLocalConversationLabel.lower(value)
+public func FfiConverterTypeLocalInlineLabelInfo_lower(_ value: LocalInlineLabelInfo) -> RustBuffer {
+    return FfiConverterTypeLocalInlineLabelInfo.lower(value)
 }
 
 
@@ -1178,8 +1178,8 @@ fileprivate struct FfiConverterOptionSequenceTypeLocalAttachmentMetadata: FfiCon
     }
 }
 
-fileprivate struct FfiConverterOptionSequenceTypeLocalConversationLabel: FfiConverterRustBuffer {
-    typealias SwiftType = [LocalConversationLabel]?
+fileprivate struct FfiConverterOptionSequenceTypeLocalInlineLabelInfo: FfiConverterRustBuffer {
+    typealias SwiftType = [LocalInlineLabelInfo]?
 
     public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
         guard let value = value else {
@@ -1187,13 +1187,13 @@ fileprivate struct FfiConverterOptionSequenceTypeLocalConversationLabel: FfiConv
             return
         }
         writeInt(&buf, Int8(1))
-        FfiConverterSequenceTypeLocalConversationLabel.write(value, into: &buf)
+        FfiConverterSequenceTypeLocalInlineLabelInfo.write(value, into: &buf)
     }
 
     public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
         switch try readInt(&buf) as Int8 {
         case 0: return nil
-        case 1: return try FfiConverterSequenceTypeLocalConversationLabel.read(from: &buf)
+        case 1: return try FfiConverterSequenceTypeLocalInlineLabelInfo.read(from: &buf)
         default: throw UniffiInternalError.unexpectedOptionalTag
         }
     }
@@ -1305,23 +1305,23 @@ fileprivate struct FfiConverterSequenceTypeLocalAttachmentMetadata: FfiConverter
     }
 }
 
-fileprivate struct FfiConverterSequenceTypeLocalConversationLabel: FfiConverterRustBuffer {
-    typealias SwiftType = [LocalConversationLabel]
+fileprivate struct FfiConverterSequenceTypeLocalInlineLabelInfo: FfiConverterRustBuffer {
+    typealias SwiftType = [LocalInlineLabelInfo]
 
-    public static func write(_ value: [LocalConversationLabel], into buf: inout [UInt8]) {
+    public static func write(_ value: [LocalInlineLabelInfo], into buf: inout [UInt8]) {
         let len = Int32(value.count)
         writeInt(&buf, len)
         for item in value {
-            FfiConverterTypeLocalConversationLabel.write(item, into: &buf)
+            FfiConverterTypeLocalInlineLabelInfo.write(item, into: &buf)
         }
     }
 
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [LocalConversationLabel] {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [LocalInlineLabelInfo] {
         let len: Int32 = try readInt(&buf)
-        var seq = [LocalConversationLabel]()
+        var seq = [LocalInlineLabelInfo]()
         seq.reserveCapacity(Int(len))
         for _ in 0 ..< len {
-            seq.append(try FfiConverterTypeLocalConversationLabel.read(from: &buf))
+            seq.append(try FfiConverterTypeLocalInlineLabelInfo.read(from: &buf))
         }
         return seq
     }

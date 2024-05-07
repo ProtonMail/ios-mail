@@ -18,6 +18,7 @@
 import Foundation
 import proton_mail_uniffi
 import struct SwiftUI.Color
+import class SwiftUI.UIImage
 
 extension LocalConversation {
 
@@ -34,10 +35,19 @@ extension LocalConversation {
         )
     }
 
-    func toMailboxConversationCellUIModel(selectedIds: Set<PMMailboxItemId>) -> MailboxConversationCellUIModel {
-        MailboxConversationCellUIModel(
+    func toMailboxConversationCellUIModel(selectedIds: Set<PMMailboxItemId>) async -> MailboxConversationCellUIModel {
+        var senderImage: UIImage? = nil
+        if let firstSender = senders.first {
+            senderImage = await SenderImageMemoryCache.shared.image(for: firstSender.hashValue)
+        }
+        return MailboxConversationCellUIModel(
             id: id,
-            avatar: .init(initials: avatarInformation.text, backgroundColor: Color(hex: avatarInformation.color)),
+            avatar: .init(
+                initials: avatarInformation.text,
+                senderImage: senderImage,
+                messageAddresses: senders,
+                backgroundColor: Color(hex: avatarInformation.color)
+            ),
             senders: senders.uiRepresentation,
             subject: subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),

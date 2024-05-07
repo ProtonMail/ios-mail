@@ -40,12 +40,7 @@ struct AvatarCheckboxView: View {
                         }
                 }
             } else {
-                Text(avatar.initials)
-                    .font(.callout)
-                    .fontWeight(.regular)
-                    .foregroundStyle(DS.Color.Global.white)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(avatar.backgroundColor)
+                avatarView()
             }
         }
         .compositingGroup()
@@ -54,15 +49,49 @@ struct AvatarCheckboxView: View {
             onDidChangeSelection(!isSelected)
         }
     }
+
+    @MainActor @ViewBuilder
+    private func avatarView() -> some View {
+        if let senderImage = avatar.senderImage {
+            senderImageView(uiImage: senderImage)
+        } else {
+            AsyncSenderImageView(addresses: avatar.messageAddresses) { senderImage in
+                switch senderImage {
+                case .empty:
+                    initialsView
+                case .image(let uiImage):
+                    senderImageView(uiImage: uiImage)
+                }
+            }
+        }
+    }
+
+    private func senderImageView(uiImage: UIImage) -> some View {
+        Image(uiImage: uiImage)
+            .resizable()
+    }
+
+    private var initialsView: some View {
+        Text(avatar.initials)
+            .font(.callout)
+            .fontWeight(.regular)
+            .foregroundStyle(DS.Color.Global.white)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(avatar.backgroundColor)
+    }
 }
 
 #Preview {
-    VStack {
-        AvatarCheckboxView(isSelected: true, avatar: .init(initials: "Mb", backgroundColor: .cyan)) { _ in}
+    return VStack {
+        AvatarCheckboxView(isSelected: true, avatar: .init(initials: "Mb", messageAddresses: [], backgroundColor: .cyan)) { _ in}
             .frame(width: 40, height: 40)
             .clipped()
 
-        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "Mb", backgroundColor: .cyan)) { _ in}
+        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "Mb", messageAddresses: [], backgroundColor: .cyan)) { _ in}
+            .frame(width: 40, height: 40)
+            .clipped()
+
+        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "Mb", messageAddresses: [], backgroundColor: .cyan)) { _ in}
             .frame(width: 40, height: 40)
             .clipped()
     }

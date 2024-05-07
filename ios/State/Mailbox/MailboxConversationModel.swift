@@ -87,8 +87,9 @@ extension MailboxConversationModel {
 
     private func updateData() async {
         guard let liveQuery else { return }
-        let conversations = liveQuery.value().map {
-            $0.toMailboxConversationCellUIModel(selectedIds: Set(selectionMode.selectedItems.map(\.id)))
+        let selectedIds = Set(selectionMode.selectedItems.map(\.id))
+        let conversations = await liveQuery.value().asyncMap { @Sendable in
+            await $0.toMailboxConversationCellUIModel(selectedIds: selectedIds)
         }
         let newState: State = conversations.count > 0 ? .data(conversations) : .empty
         await updateState(newState)

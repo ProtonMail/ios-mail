@@ -215,7 +215,7 @@ enum MailboxConversationCellEvent {
     var model: MailboxConversationCellUIModel {
         MailboxConversationCellUIModel(
             id: 0,
-            avatar: .init(initials: "P"),
+            avatar: .init(initials: "P", messageAddresses: []),
             senders: "Proton",
             subject: "30% discount on all our products",
             date: Date(),
@@ -237,7 +237,7 @@ enum MailboxConversationCellEvent {
         MailboxConversationCell(
             uiModel: .init(
                 id: 0,
-                avatar: .init(initials: "FE"),
+                avatar: .init(initials: "FE", messageAddresses: [], backgroundColor: .yellow),
                 senders: "FedEx",
                 subject: "Your package is ready to ship",
                 date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
@@ -257,7 +257,7 @@ enum MailboxConversationCellEvent {
         MailboxConversationCell(
             uiModel: .init(
                 id: 0,
-                avatar: .init(initials: "MA"),
+                avatar: .init(initials: "MA", messageAddresses: [], backgroundColor: .cyan),
                 senders: "Mary, Elijah Wood, wiseman@pm.me",
                 subject: "Summer holidays pictures and more!",
                 date: Calendar.current.date(byAdding: .year, value: -1, to: Date())!,

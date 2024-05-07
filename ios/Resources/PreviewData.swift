@@ -35,7 +35,7 @@ enum PreviewData {
             let snoozeDate: Bool = ((1..<11).randomElement()!%10) == 0
             return .init(
                 id: UInt64.random(in: 1...UInt64.max),
-                avatar: .init(initials: randomSenderSubject.0.prefix(2).uppercased()),
+                avatar: .init(initials: randomSenderSubject.0.prefix(2).uppercased(), messageAddresses: []),
                 senders: randomSenderSubject.0,
                 subject: randomSenderSubject.1,
                 date: Calendar.current.date(byAdding: .minute, value: -1 * (value*value*1005), to: Date())!,
@@ -93,4 +93,8 @@ enum PreviewData {
             ("Proton", "Get more out of your inbox"),
         ].randomElement()!
     }
+
+    static let senderImage: UIImage = {
+        UIImage(named: "avatar-fedex", in: .main, with: nil)!
+    }()
 }

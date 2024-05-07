@@ -1115,6 +1115,38 @@ public protocol MailUserSessionProtocol : AnyObject {
     func executePendingActions() async throws 
     
     /**
+     * Get the sender image for a sender address.
+     *
+     * # Parameters
+     * * `size`: Is used to give the x*x size of the returned image (will default to 32 if none provided).
+     * * `mode`: Can be used to select if the "light" or "dark" mode of the image is desired (default is light).
+     * * `format`: Desired image format, if none is specified the default format of the image will be used.
+     *
+     * Returns `None` if no image needs to be displayed.
+     *
+     * # Errors
+     * Returns errors if the API call fails, the mode value is invalid, the conversation doesn't exist, or
+     * if there's an issue with the sender that causes problems when creating the API request on our side.
+     */
+    func imageForSender(sender: MessageAddress, size: UInt32?, mode: String?, format: String?) async throws  -> Data?
+    
+    /**
+     * Get the sender image for a list of senders.
+     *
+     * # Parameters
+     * * `size`: Is used to give the x*x size of the returned image (will default to 32 if none provided).
+     * * `mode`: Can be used to select if the "light" or "dark" mode of the image is desired (default is light).
+     * * `format`: Desired image format, if none is specified the default format of the image will be used.
+     *
+     * Returns `None` if no image needs to be displayed.
+     *
+     * # Errors
+     * Returns errors if the API call fails, the mode value is invalid, the conversation doesn't exist, or
+     * if there's an issue with the sender that causes problems when creating the API request on our side.
+     */
+    func imageForSenders(senders: [MessageAddress], size: UInt32?, mode: String?, format: String?) async throws  -> Data?
+    
+    /**
      * Initialize the user context. Should be called at least once.
      *
      * *NOTE*: You should not create any [`crate::mail::Mailbox`] types until this initialization has
@@ -1269,6 +1301,68 @@ open func executePendingActions()async throws  {
             completeFunc: ffi_proton_mail_uniffi_rust_future_complete_void,
             freeFunc: ffi_proton_mail_uniffi_rust_future_free_void,
             liftFunc: { $0 },
+            errorHandler: FfiConverterTypeMailSessionError.lift
+        )
+}
+    
+    /**
+     * Get the sender image for a sender address.
+     *
+     * # Parameters
+     * * `size`: Is used to give the x*x size of the returned image (will default to 32 if none provided).
+     * * `mode`: Can be used to select if the "light" or "dark" mode of the image is desired (default is light).
+     * * `format`: Desired image format, if none is specified the default format of the image will be used.
+     *
+     * Returns `None` if no image needs to be displayed.
+     *
+     * # Errors
+     * Returns errors if the API call fails, the mode value is invalid, the conversation doesn't exist, or
+     * if there's an issue with the sender that causes problems when creating the API request on our side.
+     */
+open func imageForSender(sender: MessageAddress, size: UInt32?, mode: String?, format: String?)async throws  -> Data? {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_method_mailusersession_image_for_sender(
+                    self.uniffiClonePointer(),
+                    FfiConverterTypeMessageAddress_lower(sender),FfiConverterOptionUInt32.lower(size),FfiConverterOptionString.lower(mode),FfiConverterOptionString.lower(format)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
+            liftFunc: FfiConverterOptionData.lift,
+            errorHandler: FfiConverterTypeMailSessionError.lift
+        )
+}
+    
+    /**
+     * Get the sender image for a list of senders.
+     *
+     * # Parameters
+     * * `size`: Is used to give the x*x size of the returned image (will default to 32 if none provided).
+     * * `mode`: Can be used to select if the "light" or "dark" mode of the image is desired (default is light).
+     * * `format`: Desired image format, if none is specified the default format of the image will be used.
+     *
+     * Returns `None` if no image needs to be displayed.
+     *
+     * # Errors
+     * Returns errors if the API call fails, the mode value is invalid, the conversation doesn't exist, or
+     * if there's an issue with the sender that causes problems when creating the API request on our side.
+     */
+open func imageForSenders(senders: [MessageAddress], size: UInt32?, mode: String?, format: String?)async throws  -> Data? {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_method_mailusersession_image_for_senders(
+                    self.uniffiClonePointer(),
+                    FfiConverterSequenceTypeMessageAddress.lower(senders),FfiConverterOptionUInt32.lower(size),FfiConverterOptionString.lower(mode),FfiConverterOptionString.lower(format)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
+            liftFunc: FfiConverterOptionData.lift,
             errorHandler: FfiConverterTypeMailSessionError.lift
         )
 }
@@ -1454,18 +1548,6 @@ public protocol MailboxProtocol : AnyObject {
     func deleteConversations(ids: [UInt64]) throws 
     
     /**
-     * Get the sender image for a conversation.
-     *
-     * size is used to give the x*x size of the returned image (will default to 32 if none provided)
-     * mode can be used to select if the "light" or "dark" mode of the image is desired (default is light)
-     *
-     * # Errors
-     * Returns errors if the API call fails, the mode value is invalid, the conversation doesn't exist, or
-     * if there's an issue with the sender that causes problems when creating the API request on our side.
-     */
-    func getImageForConversation(conversationId: UInt64, size: UInt32?, mode: String?) async throws  -> Data
-    
-    /**
      * Label the given conversations with the given label id.
      *
      * To retrieve the list of applicable labels use the
@@ -1475,6 +1557,11 @@ public protocol MailboxProtocol : AnyObject {
      * Returns error if the action fails.
      */
     func labelConversations(labelId: UInt64, ids: [UInt64]) throws 
+    
+    /**
+     * Get the label id of the mailbox.
+     */
+    func labelId()  -> UInt64
     
     /**
      * Mark the given conversations as read.
@@ -1627,6 +1714,24 @@ public static func inbox(ctx: MailUserSession)async throws  -> Mailbox {
 }
     
     /**
+     * Create a new mailbox for a given label id.
+     */
+public static func withLocalId(ctx: MailUserSession, labelId: UInt64)async throws  -> Mailbox {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_constructor_mailbox_with_local_id(FfiConverterTypeMailUserSession.lower(ctx),FfiConverterUInt64.lower(labelId)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_pointer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_pointer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_pointer,
+            liftFunc: FfiConverterTypeMailbox.lift,
+            errorHandler: FfiConverterTypeMailboxError.lift
+        )
+}
+    
+    /**
      * Create a new mailbox for a given remote id.
      */
 public static func withRemoteId(ctx: MailUserSession, labelId: LabelId)async throws  -> Mailbox {
@@ -1657,33 +1762,6 @@ open func deleteConversations(ids: [UInt64])throws  {try rustCallWithError(FfiCo
 }
     
     /**
-     * Get the sender image for a conversation.
-     *
-     * size is used to give the x*x size of the returned image (will default to 32 if none provided)
-     * mode can be used to select if the "light" or "dark" mode of the image is desired (default is light)
-     *
-     * # Errors
-     * Returns errors if the API call fails, the mode value is invalid, the conversation doesn't exist, or
-     * if there's an issue with the sender that causes problems when creating the API request on our side.
-     */
-open func getImageForConversation(conversationId: UInt64, size: UInt32?, mode: String?)async throws  -> Data {
-    return
-        try  await uniffiRustCallAsync(
-            rustFutureFunc: {
-                uniffi_proton_mail_uniffi_fn_method_mailbox_get_image_for_conversation(
-                    self.uniffiClonePointer(),
-                    FfiConverterUInt64.lower(conversationId),FfiConverterOptionUInt32.lower(size),FfiConverterOptionString.lower(mode)
-                )
-            },
-            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
-            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
-            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
-            liftFunc: FfiConverterData.lift,
-            errorHandler: FfiConverterTypeMailboxError.lift
-        )
-}
-    
-    /**
      * Label the given conversations with the given label id.
      *
      * To retrieve the list of applicable labels use the
@@ -1698,6 +1776,16 @@ open func labelConversations(labelId: UInt64, ids: [UInt64])throws  {try rustCal
         FfiConverterSequenceUInt64.lower(ids),$0
     )
 }
+}
+    
+    /**
+     * Get the label id of the mailbox.
+     */
+open func labelId() -> UInt64 {
+    return try!  FfiConverterUInt64.lift(try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_method_mailbox_label_id(self.uniffiClonePointer(),$0
+    )
+})
 }
     
     /**
@@ -2324,6 +2412,16 @@ public enum LoginFlowError {
     
     case InvalidState(message: String)
     
+    case KeySecretDerivation(message: String)
+    
+    case KeySecretSaltFetch(message: String)
+    
+    case KeySecretAuthUpdate(message: String)
+    
+    case KeySecretDecryption(message: String)
+    
+    case WrongMailboxPassword(message: String)
+    
 }
 
 
@@ -2361,6 +2459,26 @@ public struct FfiConverterTypeLoginFlowError: FfiConverterRustBuffer {
             message: try FfiConverterString.read(from: &buf)
         )
         
+        case 7: return .KeySecretDerivation(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 8: return .KeySecretSaltFetch(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 9: return .KeySecretAuthUpdate(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 10: return .KeySecretDecryption(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 11: return .WrongMailboxPassword(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
 
         default: throw UniffiInternalError.unexpectedEnumCase
         }
@@ -2384,6 +2502,16 @@ public struct FfiConverterTypeLoginFlowError: FfiConverterRustBuffer {
             writeInt(&buf, Int32(5))
         case .InvalidState(_ /* message is ignored*/):
             writeInt(&buf, Int32(6))
+        case .KeySecretDerivation(_ /* message is ignored*/):
+            writeInt(&buf, Int32(7))
+        case .KeySecretSaltFetch(_ /* message is ignored*/):
+            writeInt(&buf, Int32(8))
+        case .KeySecretAuthUpdate(_ /* message is ignored*/):
+            writeInt(&buf, Int32(9))
+        case .KeySecretDecryption(_ /* message is ignored*/):
+            writeInt(&buf, Int32(10))
+        case .WrongMailboxPassword(_ /* message is ignored*/):
+            writeInt(&buf, Int32(11))
 
         
         }
@@ -2417,6 +2545,12 @@ public enum MailSessionError {
     case EventLoop(message: String)
     
     case ActionQueue(message: String)
+    
+    case PgpKeyAccess(message: String)
+    
+    case InvalidImageMode(message: String)
+    
+    case AddressDomainLogoError(message: String)
     
     case Other(message: String)
     
@@ -2469,7 +2603,19 @@ public struct FfiConverterTypeMailSessionError: FfiConverterRustBuffer {
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 10: return .Other(
+        case 10: return .PgpKeyAccess(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 11: return .InvalidImageMode(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 12: return .AddressDomainLogoError(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 13: return .Other(
             message: try FfiConverterString.read(from: &buf)
         )
         
@@ -2502,8 +2648,14 @@ public struct FfiConverterTypeMailSessionError: FfiConverterRustBuffer {
             writeInt(&buf, Int32(8))
         case .ActionQueue(_ /* message is ignored*/):
             writeInt(&buf, Int32(9))
-        case .Other(_ /* message is ignored*/):
+        case .PgpKeyAccess(_ /* message is ignored*/):
             writeInt(&buf, Int32(10))
+        case .InvalidImageMode(_ /* message is ignored*/):
+            writeInt(&buf, Int32(11))
+        case .AddressDomainLogoError(_ /* message is ignored*/):
+            writeInt(&buf, Int32(12))
+        case .Other(_ /* message is ignored*/):
+            writeInt(&buf, Int32(13))
 
         
         }
@@ -2627,11 +2779,9 @@ public enum MailboxError {
     
     case ConversationNotFound(message: String)
     
+    case ConversationError(message: String)
+    
     case ApiError(message: String)
-    
-    case InvalidImageMode(message: String)
-    
-    case AddressDomainLogoError(message: String)
     
     case Other(message: String)
     
@@ -2676,19 +2826,15 @@ public struct FfiConverterTypeMailboxError: FfiConverterRustBuffer {
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 8: return .ApiError(
+        case 8: return .ConversationError(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 9: return .InvalidImageMode(
+        case 9: return .ApiError(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 10: return .AddressDomainLogoError(
-            message: try FfiConverterString.read(from: &buf)
-        )
-        
-        case 11: return .Other(
+        case 10: return .Other(
             message: try FfiConverterString.read(from: &buf)
         )
         
@@ -2717,14 +2863,12 @@ public struct FfiConverterTypeMailboxError: FfiConverterRustBuffer {
             writeInt(&buf, Int32(6))
         case .ConversationNotFound(_ /* message is ignored*/):
             writeInt(&buf, Int32(7))
-        case .ApiError(_ /* message is ignored*/):
+        case .ConversationError(_ /* message is ignored*/):
             writeInt(&buf, Int32(8))
-        case .InvalidImageMode(_ /* message is ignored*/):
+        case .ApiError(_ /* message is ignored*/):
             writeInt(&buf, Int32(9))
-        case .AddressDomainLogoError(_ /* message is ignored*/):
-            writeInt(&buf, Int32(10))
         case .Other(_ /* message is ignored*/):
-            writeInt(&buf, Int32(11))
+            writeInt(&buf, Int32(10))
 
         
         }
@@ -3580,6 +3724,27 @@ fileprivate struct FfiConverterOptionString: FfiConverterRustBuffer {
     }
 }
 
+fileprivate struct FfiConverterOptionData: FfiConverterRustBuffer {
+    typealias SwiftType = Data?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterData.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterData.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
 fileprivate struct FfiConverterOptionTypeMailboxError: FfiConverterRustBuffer {
     typealias SwiftType = MailboxError?
 
@@ -3708,6 +3873,28 @@ fileprivate struct FfiConverterSequenceTypeStoredSession: FfiConverterRustBuffer
     }
 }
 
+fileprivate struct FfiConverterSequenceTypeMessageAddress: FfiConverterRustBuffer {
+    typealias SwiftType = [MessageAddress]
+
+    public static func write(_ value: [MessageAddress], into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        for item in value {
+            FfiConverterTypeMessageAddress.write(item, into: &buf)
+        }
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [MessageAddress] {
+        let len: Int32 = try readInt(&buf)
+        var seq = [MessageAddress]()
+        seq.reserveCapacity(Int(len))
+        for _ in 0 ..< len {
+            seq.append(try FfiConverterTypeMessageAddress.read(from: &buf))
+        }
+        return seq
+    }
+}
+
 fileprivate struct FfiConverterSequenceTypeLocalConversation: FfiConverterRustBuffer {
     typealias SwiftType = [LocalConversation]
 
@@ -3773,6 +3960,8 @@ fileprivate struct FfiConverterSequenceTypeLocalLabelWithCount: FfiConverterRust
         return seq
     }
 }
+
+
 
 
 
@@ -3911,6 +4100,12 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_execute_pending_actions() != 15772) {
         return InitializationResult.apiChecksumMismatch
     }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_image_for_sender() != 23609) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_image_for_senders() != 61442) {
+        return InitializationResult.apiChecksumMismatch
+    }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_initialize() != 41654) {
         return InitializationResult.apiChecksumMismatch
     }
@@ -3938,10 +4133,10 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_delete_conversations() != 34381) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_get_image_for_conversation() != 33537) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_label_conversations() != 1773) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_label_conversations() != 1773) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_label_id() != 4843) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_mark_conversations_read() != 39360) {
@@ -3993,6 +4188,9 @@ private var initializationResult: InitializationResult {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_new() != 23502) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_with_local_id() != 34437) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_with_remote_id() != 44056) {
