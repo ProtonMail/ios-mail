@@ -48,7 +48,7 @@ extension MockServer {
             ),
             NetworkRequest(
                 method: .get,
-                remotePath: "/core/v4/key/salts",
+                remotePath: "/core/v4/keys/salts",
                 localPath: "salts_\(user.id).json"
             ),
             NetworkRequest(

@@ -18,7 +18,61 @@
 import Foundation
 
 extension MailboxRobot {
+
+    // MARK: Actions
+
     func scrollDown() {
         rootElement.swipeUp()
+    }
+    
+    func longPressItemAt(index: Int) {
+        let model = MailboxListItemEntryModel(index: index)
+        model.longPress()
+    }
+
+    func selectItemAt(index: Int) {
+        let model = MailboxListItemEntryModel(index: index)
+        model.tapAvatar()
+    }
+
+    func selectItemsAt(indexes: [Int]) {
+        indexes.forEach { index in
+            selectItemAt(index: index)
+        }
+    }
+
+    func unselectItemAt(index: Int) {
+        let model = MailboxListItemEntryModel(index: index)
+        model.tapCheckedAvatar()
+    }
+
+    func unselectItemsAt(indexes: Int...) {
+        indexes.forEach { index in
+            unselectItemAt(index: index)
+        }
+    }
+
+    // MARK: Assertions
+
+    func hasSelectedItemAt(index: Int) {
+        let model = MailboxListItemEntryModel(index: index)
+        model.isItemSelected()
+    }
+
+    func hasSelectedItemsAt(indexes: [Int]) {
+        indexes.forEach { index in
+            hasSelectedItemAt(index: index)
+        }
+    }
+
+    func hasUnselectedItemAt(index: Int) {
+        let model = MailboxListItemEntryModel(index: index)
+        model.isItemUnselected()
+    }
+
+    func hasUnselectedItemsAt(indexes: [Int]) {
+        indexes.forEach { index in
+            hasUnselectedItemAt(index: index)
+        }
     }
 }

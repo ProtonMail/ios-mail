@@ -104,7 +104,7 @@ extension MockServer {
                     NetworkRequest(
                         method: .get,
                         remotePath: "/mail/v4/settings",
-                        localPath: "mail-v4-settings_base_placeholder.json",
+                        localPath: "mail-v4-settings_placeholder_conversation.json",
                         serveOnce: true
                     )
                 )

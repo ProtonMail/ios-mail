@@ -37,8 +37,9 @@ struct AvatarCheckboxView: View {
                                 .resizable()
                                 .foregroundColor(DS.Color.Icon.norm)
                                 .padding(10)
+                                .accessibilityIdentifier(AvatarCheckboxViewIdentifiers.AvatarChecked)
                         }
-                }
+                }.accessibilityElement(children: .contain)
             } else {
                 avatarView()
             }
@@ -48,6 +49,7 @@ struct AvatarCheckboxView: View {
         .onTapGesture {
             onDidChangeSelection(!isSelected)
         }
+        .accessibilityElement(children: .contain)
     }
 
     @MainActor @ViewBuilder
@@ -78,6 +80,7 @@ struct AvatarCheckboxView: View {
             .foregroundStyle(DS.Color.Global.white)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(avatar.backgroundColor)
+			.accessibilityIdentifier(AvatarCheckboxViewIdentifiers.AvatarText)
     }
 }
 
@@ -95,4 +98,9 @@ struct AvatarCheckboxView: View {
             .frame(width: 40, height: 40)
             .clipped()
     }
+}
+
+private struct AvatarCheckboxViewIdentifiers {
+    static let AvatarText = "avatar.text"
+    static let AvatarChecked = "avatar.checked"
 }

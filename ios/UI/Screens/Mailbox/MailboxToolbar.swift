@@ -46,6 +46,7 @@ struct MailboxToolbar: ViewModifier {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading, DS.Spacing.medium)
+                    .accessibilityIdentifier(MailboxToolbarIdentifiers.title)
                 }
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
@@ -69,7 +70,7 @@ struct MailboxToolbar: ViewModifier {
                         Circle()
                             .stroke(DS.Color.Border.norm)
                     }
-                    .accessibilityIdentifier(MailboxToolbarIdentifiers.hamburgerButton)
+                    .accessibilityIdentifier(MailboxToolbarIdentifiers.navigationButton(forState: state))
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -133,5 +134,14 @@ extension MailboxToolbar {
 }
 
 private struct MailboxToolbarIdentifiers {
-    static let hamburgerButton = "mailbox.toolbar.hamburgerButton"
+    static let title = "mailbox.toolbar.title"
+    
+    static func navigationButton(forState state: MailboxToolbar.ToolbarState) -> String {
+        switch state {
+        case .noSelection:
+            "mailbox.toolbar.hamburgerButton"
+        case .selection:
+            "mailbox.toolbar.backButton"
+        }
+    }
 }

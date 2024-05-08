@@ -19,15 +19,48 @@ import Foundation
 import XCTest
 
 extension MailboxRobot {
+
+    // MARK: UI Elements
+
     private var hamburgerButton: XCUIElement {
-        application.buttons[MailboxToolbarIdentifiers.hamburgerButton]
+        application.buttons[Identifiers.hamburgerButton].firstMatch
     }
+
+    private var backButton: XCUIElement {
+        application.buttons[Identifiers.backButton].firstMatch
+    }
+
+    private var toolbarTitle: XCUIElement {
+        application.staticTexts[Identifiers.title].firstMatch
+    }
+
+    // MARK: Actions
 
     func openSidebarMenu() {
         hamburgerButton.tap()
     }
+
+    func tapBackButton() {
+        backButton.tap()
+    }
+
+    // MARK: Assertions
+
+    func verifySelectionState(withCount count: Int) {
+        XCTAssertTrue(backButton.exists)
+        XCTAssertFalse(hamburgerButton.exists)
+        XCTAssertEqual(toolbarTitle.label, "\(count) selected")
+    }
+
+    func verifyMailboxTitle(folder: UITestFolder) {
+        XCTAssertFalse(backButton.exists)
+        XCTAssertTrue(hamburgerButton.exists)
+        XCTAssertEqual(toolbarTitle.label, folder.value)
+    }
 }
 
-private struct MailboxToolbarIdentifiers {
+private struct Identifiers {
     static let hamburgerButton = "mailbox.toolbar.hamburgerButton"
+    static let backButton = "mailbox.toolbar.backButton"
+    static let title = "mailbox.toolbar.title"
 }

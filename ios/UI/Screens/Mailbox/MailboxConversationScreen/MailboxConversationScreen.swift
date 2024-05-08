@@ -49,7 +49,7 @@ extension MailboxConversationScreen {
 
     private func conversationListView(conversations: [MailboxConversationCellUIModel]) -> some View {
         List {
-            ForEach(conversations) { conversation in
+            ForEach(Array(conversations.enumerated()), id: \.1.id) { index, conversation in
                 VStack {
                     MailboxConversationCell(
                         uiModel: conversation,
@@ -69,6 +69,8 @@ extension MailboxConversationScreen {
                             }
                         }
                     )
+                    .accessibilityElement(children: .contain)
+                    .accessibilityIdentifier("\(MailboxConversationScreenIdentifiers.MailboxConversationCell)\(index)")
                     .mailboxSwipeActions(
                         isSelectionModeOn: model.selectionMode.hasSelectedItems,
                         itemId: conversation.id,
@@ -115,4 +117,8 @@ extension MailboxConversationScreen {
         }
     }
     return PreviewWrapper(appRoute: route, selectionMode: selectionMode)
+}
+
+private struct MailboxConversationScreenIdentifiers {
+    static let MailboxConversationCell = "mailbox.list.cell"
 }
