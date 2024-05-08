@@ -1324,11 +1324,21 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     private func showSpotlightIfNeeded() {
-        if viewModel.shouldShowAutoImportContactsSpotlight() {
+        if viewModel.shouldShowSpotlight(for: .answerInvitation) {
+            showAnswerInvitationSpotlight()
+        } else if viewModel.shouldShowAutoImportContactsSpotlight() {
             showAutoImportContactsSpotlight()
-        } else if viewModel.shouldShowJumpToNextMessageSpotlight() {
+        } else if viewModel.shouldShowSpotlight(for: .jumpToNextMessage) {
             showJumpToNextMessageSpotlight()
         }
+    }
+
+    private func showAnswerInvitationSpotlight() {
+        let spotlightView = AnswerInvitationSpotlightView()
+        let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
+        spotlightView.config.hostingController = hosting
+        navigationController?.present(hosting, animated: false)
+        viewModel.hasSeenSpotlight(for: .answerInvitation)
     }
 
     private func showJumpToNextMessageSpotlight() {
@@ -1348,7 +1358,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
         spotlightView.config.hostingController = hosting
         navigationController?.present(hosting, animated: false)
-        viewModel.hasSeenJumpToNextMessageSpotlight()
+        viewModel.hasSeenSpotlight(for: .jumpToNextMessage)
     }
 
     private func showAutoImportContactsSpotlight() {

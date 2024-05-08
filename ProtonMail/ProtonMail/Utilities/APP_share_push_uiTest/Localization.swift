@@ -296,8 +296,6 @@ class LocalizedString {
     /// "Cancel"
     lazy var _general_cancel_button   = NSLocalizedString("Cancel", comment: "Cancel action")
 
-    lazy var _general_gotIt_button = NSLocalizedString("Got it", comment: "Got it action")
-
     /// "Open"
     lazy var _general_open_button     = NSLocalizedString("Open", comment: "Open action")
     /// "Remove"
@@ -1333,6 +1331,13 @@ enum L11n {
         static let last = NSLocalizedString("last", comment: "Opposite of \"first\"")
     }
 
+    struct RSVP {
+        struct Spotlight {
+            static let title = NSLocalizedString("Easily RSVP to events", comment: "Title of the spotlight view")
+            static let body = NSLocalizedString("Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ", comment: "Body of the spotlight view")
+        }
+    }
+
     struct SideMenuStorageAlert {
         static let menuTitle = NSLocalizedString("Max Storage", comment: "Menu title")
         static let alertBoxMailTitle = NSLocalizedString("Storage: %@ full", comment: "Cell title that shows the percentage of the storage")
@@ -1403,6 +1408,11 @@ enum L11n {
     struct Settings {
         static let passwordUpdated = NSLocalizedString("Password updated", comment: "Message to show to user after updating password.")
         static let applicationLogs = NSLocalizedString("Application logs", comment: "Title for application logs settings option")
+    }
+
+    struct Spotlight {
+        static let new = NSLocalizedString("New!", comment: "Badge present on some spotlights")
+        static let gotIt = NSLocalizedString("Got it", comment: "Got it action")
     }
 
     struct NextMsgAfterMove {

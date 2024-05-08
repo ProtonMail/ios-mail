@@ -32,6 +32,7 @@ public struct SheetLikeSpotlightView: View {
     @State var isVisible = false
     private let imageAlignBottom: Bool
     private let maxHeightOfTheImage: CGFloat?
+    private let showNewBadge: Bool
 
     public init(
         config: HostingProvider,
@@ -42,7 +43,8 @@ public struct SheetLikeSpotlightView: View {
         title: String,
         isVisible: Bool = false,
         imageAlignBottom: Bool = false,
-        maxHeightOfTheImage: CGFloat? = nil
+        maxHeightOfTheImage: CGFloat? = nil,
+        showNewBadge: Bool = false
     ) {
         self.config = config
         self.buttonTitle = buttonTitle
@@ -53,6 +55,7 @@ public struct SheetLikeSpotlightView: View {
         self.isVisible = isVisible
         self.imageAlignBottom = imageAlignBottom
         self.maxHeightOfTheImage = maxHeightOfTheImage
+        self.showNewBadge = showNewBadge
     }
 
     public var body: some View {
@@ -101,6 +104,7 @@ public struct SheetLikeSpotlightView: View {
         VStack(spacing: 0) {
             ZStack {
                 ColorProvider.BackgroundSecondary
+
                 VStack {
                     if imageAlignBottom {
                         Spacer()
@@ -108,19 +112,35 @@ public struct SheetLikeSpotlightView: View {
                     Image(uiImage: spotlightImage)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .padding(.leading, 28)
-                        .padding(.trailing, 28)
+                        .padding(.horizontal, 28)
                         .frame(maxHeight: maxHeightOfTheImage)
                 }
-                Button(action: {
-                    dismissView()
-                }, label: {
-                    Image(uiImage: IconProvider.cross)
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                        .foregroundColor(ColorProvider.IconNorm)
-                        .position(CGPoint(x: 28, y: 28))
-                })
+
+                HStack(alignment: .top) {
+                    Button(action: {
+                        dismissView()
+                    }, label: {
+                        Image(uiImage: IconProvider.cross)
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(ColorProvider.IconNorm)
+                            .position(CGPoint(x: 12, y: 4))
+                    })
+
+                    if showNewBadge {
+                        Spacer()
+
+                        Text(L11n.Spotlight.new)
+                            .foregroundColor(ColorProvider.TextAccent)
+                            .font(Font(UIFont.adjustedFont(forTextStyle: .caption2, weight: .bold)))
+                            .padding(.vertical, 6)
+                            .padding(.horizontal, 8)
+                            .background(ColorProvider.InteractionNormDisabled.opacity(0.4))
+                            .clipShape(Capsule())
+                    }
+                }
+                .padding([.top, .trailing], 24)
+                .padding(.leading, 16)
             }
             .frame(maxHeight: 169)
             .padding(.bottom, 24)
