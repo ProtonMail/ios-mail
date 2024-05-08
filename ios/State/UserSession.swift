@@ -55,16 +55,22 @@ actor UserSession {
             return nil
         }
         let newUserContext = try mailContext.userContextFromSession(session: firstStoredSession, cb: SessionDelegate.shared)
-        try await udpateActiveSession(newUserContext)
+        try await udpateActiveSession(newUserContext, needsInitialization: false)
         return activeSession
     }
-
-    func udpateActiveSession(_ newUserSession: MailUserSession?) async throws {
-        guard let newUserSession else {
-            activeSession = nil
-            return
+    
+    /// Call this function to change the current user session
+    /// - Parameters:
+    ///   - needsInitialization: sessions coming from a sign in/up need to be initiliased. Sessions that
+    ///   were persisted do not require to be initilized again.
+    func udpateActiveSession(_ newUserSession: MailUserSession, needsInitialization: Bool) async throws {
+        if needsInitialization {
+            try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared)
         }
-        try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared)
         activeSession = newUserSession
+    }
+
+    func deleteActiveSession() {
+        activeSession = nil
     }
 }

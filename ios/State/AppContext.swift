@@ -203,7 +203,7 @@ extension AppContext: SessionProvider {
         let flow = try mailContext.newLoginFlow(cb: SessionDelegate.shared)
         try await flow.login(email: email, password: password)
         let newUserContext = try flow.toUserContext()
-        try await userSession.udpateActiveSession(newUserContext)
+        try await userSession.udpateActiveSession(newUserContext, needsInitialization: true)
         hasActiveUser = true
     }
 
@@ -211,6 +211,6 @@ extension AppContext: SessionProvider {
     func logoutActiveUserSession() async throws {
         try await userSession.activeSession(from: mailContext)?.logout()
         hasActiveUser = false
-        try await userSession.udpateActiveSession(nil)
+        await userSession.deleteActiveSession()
     }
 }
