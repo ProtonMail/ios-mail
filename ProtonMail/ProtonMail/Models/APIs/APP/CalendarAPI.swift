@@ -184,6 +184,7 @@ struct FullEventTransformer: Decodable {
     let calendarEvents: [EventElement]
     let calendarID: String
     let calendarKeyPacket: String?
+    let recurrenceID: Int?
     let startTime: TimeInterval
     let startTimezone: String
     let endTime: TimeInterval

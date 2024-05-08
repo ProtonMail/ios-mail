@@ -21,19 +21,19 @@ import XCTest
 
 final class ExtractBasicEventInfoTests: XCTestCase {
     private var sut: ExtractBasicEventInfoImpl!
-    
+
     override func setUpWithError() throws {
         try super.setUpWithError()
         
         sut = .init()
     }
-    
+
     override func tearDownWithError() throws {
         sut = nil
         
         try super.tearDownWithError()
     }
-    
+
     func testBasicInfoExtraction_withRecurrenceID() throws {
         let basicICS = #"""
 BEGIN:VCALENDAR
@@ -46,9 +46,9 @@ END:VCALENDAR
         
         let icsData = Data(basicICS.utf8)
         let basicEventInfo = try sut.execute(icsData: icsData)
-        XCTAssertEqual(basicEventInfo, .init(eventUID: "FOO", recurrenceID: 828316800))
+        XCTAssertEqual(basicEventInfo, .init(eventUID: "FOO", occurrence: nil, recurrenceID: 828316800))
     }
-    
+
     func testBasicInfoExtraction_withoutRecurrenceID() throws {
         let basicICS = #"""
 BEGIN:VCALENDAR
@@ -57,9 +57,24 @@ UID:FOO
 END:VEVENT
 END:VCALENDAR
 """#
-        
+
         let icsData = Data(basicICS.utf8)
         let basicEventInfo = try sut.execute(icsData: icsData)
-        XCTAssertEqual(basicEventInfo, .init(eventUID: "FOO", recurrenceID: nil))
+        XCTAssertEqual(basicEventInfo, .init(eventUID: "FOO", occurrence: nil, recurrenceID: nil))
+    }
+
+    func testBasicInfoExtraction_withRecurrenceID_inSpecificTimezone() throws {
+        let basicICS = #"""
+BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:FOO
+RECURRENCE-ID;TZID=Europe/Warsaw:20240508T120000
+END:VEVENT
+END:VCALENDAR
+"""#
+
+        let icsData = Data(basicICS.utf8)
+        let basicEventInfo = try sut.execute(icsData: icsData)
+        XCTAssertEqual(basicEventInfo, .init(eventUID: "FOO", occurrence: nil, recurrenceID: 1715162400))
     }
 }
