@@ -246,7 +246,7 @@ struct FetchEventDetailsImpl: FetchEventDetails {
             isProtonToProtonInvitation: apiEvent.isProtonProtonInvite == 1,
             notifications: nil,
             lastModifiedInCoreData: nil,
-            color: nil
+            color: apiEvent.color
         )
 
         let attendeeData: [ICalAttendeeData] = apiEvent.attendees.map {

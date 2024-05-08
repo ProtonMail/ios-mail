@@ -159,6 +159,28 @@ struct AttendeeTransformer: Decodable {
     let token: String
 }
 
+struct CalendarFlags: OptionSet, Decodable {
+    let rawValue: UInt16
+
+    /// 1: the calendar is all good!
+    static let active = CalendarFlags(rawValue: 1 << 0)
+    /// 2: a deactivated passphrase is again accessible,
+    /// you should re-encrypt the linked calendar key using the primary passphrase
+    static let updatePassphrase = CalendarFlags(rawValue: 1 << 1)
+    /// 4: the calendar needs to be reset
+    static let resetNeeded = CalendarFlags(rawValue: 1 << 2)
+    /// 8: the calendar setup was not completed, need to setup the key and passphrase
+    static let incompleteSetup = CalendarFlags(rawValue: 1 << 3)
+    /// 16: the user lost access to the calendar but an admin can re-invite him
+    public static let accessLost = CalendarFlags(rawValue: 1 << 4)
+    /// 32: the calendar is disabled for the current user only
+    /// (all the addresses linked to the current user's members are disabled)
+    public static let disabledCalendar = CalendarFlags(rawValue: 1 << 5)
+    /// 64: the calendar is disabled because the super-owner disabled his address.
+    /// Possibility to transfer super-ownership to reactive the calendar.
+    public static let superOwnerDisabledCalendar = CalendarFlags(rawValue: 1 << 6)
+}
+
 struct EventElement: Decodable {
     let author: String
     let data: String
@@ -184,6 +206,7 @@ struct FullEventTransformer: Decodable {
     let calendarEvents: [EventElement]
     let calendarID: String
     let calendarKeyPacket: String?
+    let color: String?
     let recurrenceID: Int?
     let startTime: TimeInterval
     let startTimezone: String
@@ -218,9 +241,18 @@ struct MemberPassphraseTransformer: Decodable {
 }
 
 struct MemberTransformer: Decodable {
-    let ID: String
+    struct Permissions: OptionSet, Decodable {
+        public let rawValue: UInt16
+
+        static let superowner = Permissions(rawValue: 1 << 0)
+    }
+
+    let calendarID: String
     let color: String
+    let flags: CalendarFlags
+    let ID: String
     let name: String
+    let permissions: Permissions
 }
 
 struct PassphraseTransformer: Decodable {
