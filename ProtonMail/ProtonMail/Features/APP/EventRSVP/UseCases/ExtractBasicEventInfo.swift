@@ -46,7 +46,7 @@ struct ExtractBasicEventInfoImpl: ExtractBasicEventInfo {
 
         let uid = String(cString: uidComponent)
         let recurrenceID = parseRecurrenceID(from: eventComponent)
-        return BasicEventInfo(eventUID: uid, occurrence: nil, recurrenceID: recurrenceID)
+        return .inviteDataFromICS(eventUID: uid, recurrenceID: recurrenceID)
     }
 
     private func parseRecurrenceID(from eventComponent: OpaquePointer?) -> Int? {

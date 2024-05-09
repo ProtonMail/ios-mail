@@ -81,8 +81,7 @@ struct FetchEventDetailsImpl: FetchEventDetails {
             startDate: dateInterval.start
         )
 
-        let isReminder = basicEventInfo.occurrence != nil
-        let answeringAllowed = !isReminder
+        let answeringAllowed = !basicEventInfo.isReminder
 
         let answeringContext: AnsweringContext?
         if answeringAllowed {

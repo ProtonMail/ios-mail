@@ -87,12 +87,12 @@ END:VCALENDAR
     private var calendarID, eventUID, memberID, passphraseID: String!
     private var expectedEventDetails: EventDetails!
 
-    private var basicInfoWithOccurrence: BasicEventInfo {
-        .init(eventUID: eventUID, occurrence: 1715152200, recurrenceID: nil)
+    private var basicInfoForInvites: BasicEventInfo {
+        .inviteDataFromHeaders(eventUID: eventUID, recurrenceID: nil)
     }
 
-    private var basicInfoWithoutOccurrence: BasicEventInfo {
-        .init(eventUID: eventUID, occurrence: nil, recurrenceID: nil)
+    private var basicInfoForReminders: BasicEventInfo {
+        .reminderDataFromHeaders(eventUID: eventUID, occurrence: 1715152200, recurrenceID: nil)
     }
 
     override func setUpWithError() throws {
@@ -131,38 +131,38 @@ END:VCALENDAR
 
     func testWhenEventIsEncryptedWithCalendarKeys_decryptsSuccessfully() async throws {
         try prepareSharedKeyPacketVariant()
-        let eventDetails = try await sut.execute(basicEventInfo: basicInfoWithoutOccurrence).0
+        let eventDetails = try await sut.execute(basicEventInfo: basicInfoForInvites).0
         XCTAssertEqual(eventDetails, expectedEventDetails)
     }
 
     func testWhenEventIsEncryptedWithAddressKeys_decryptsSuccessfully() async throws {
         try prepareAddressKeyPacketVariant()
-        let eventDetails = try await sut.execute(basicEventInfo: basicInfoWithoutOccurrence).0
+        let eventDetails = try await sut.execute(basicEventInfo: basicInfoForInvites).0
         XCTAssertEqual(eventDetails, expectedEventDetails)
     }
 
-    func testWhenOccurrenceTimestampIsProvided_shiftsStartAndEndDates() async throws {
+    func testWhenReceivingAReminderForARecurringOccurrence_startAndEndDatesAreShifted() async throws {
         try prepareSharedKeyPacketVariant()
-        let eventDetails = try await sut.execute(basicEventInfo: basicInfoWithOccurrence).0
+        let eventDetails = try await sut.execute(basicEventInfo: basicInfoForReminders).0
         XCTAssertEqual(eventDetails.startDate, .fixture("2024-05-08 07:10:00"))
         XCTAssertEqual(eventDetails.endDate, .fixture("2024-05-08 09:10:00"))
     }
 
-    func testWhenHasSuperownerPermissionsToCalendarAndOccurrenceTimestampIsNotProvided_answeringIsPossible() async throws {
+    func testWhenReceivingAnInviteAndHasSuperownerPermissionsToCalendar_answeringIsPossible() async throws {
         try prepareSharedKeyPacketVariant(permissions: [.superowner])
-        let answeringContext = try await sut.execute(basicEventInfo: basicInfoWithoutOccurrence).1
+        let answeringContext = try await sut.execute(basicEventInfo: basicInfoForInvites).1
         XCTAssertNotNil(answeringContext)
     }
 
-    func testWhenOccurrenceTimestampIsProvided_answeringIsNotPossible() async throws {
-        try prepareSharedKeyPacketVariant()
-        let answeringContext = try await sut.execute(basicEventInfo: basicInfoWithOccurrence).1
+    func testWhenReceivingAReminder_answeringIsNotPossibleDespiteSuperownerPermissionsToCalendar() async throws {
+        try prepareSharedKeyPacketVariant(permissions: [.superowner])
+        let answeringContext = try await sut.execute(basicEventInfo: basicInfoForReminders).1
         XCTAssertNil(answeringContext)
     }
 
     func testWhenDoesntHaveSuperownerPermissionsToCalendar_answeringIsNotPossible() async throws {
         try prepareSharedKeyPacketVariant(permissions: [])
-        let answeringContext = try await sut.execute(basicEventInfo: basicInfoWithoutOccurrence).1
+        let answeringContext = try await sut.execute(basicEventInfo: basicInfoForInvites).1
         XCTAssertNil(answeringContext)
     }
 }

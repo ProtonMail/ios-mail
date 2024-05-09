@@ -18,8 +18,68 @@
 import Foundation
 
 /// The minimum amount of information needed to fetch event data from the BE.
-struct BasicEventInfo: Equatable {
-    let eventUID: String
-    let occurrence: Int?
-    let recurrenceID: Int?
+enum BasicEventInfo: Equatable {
+    case inviteDataFromICS(eventUID: String, recurrenceID: Int?)
+    case inviteDataFromHeaders(eventUID: String, recurrenceID: Int?)
+    case reminderDataFromHeaders(eventUID: String, occurrence: Int, recurrenceID: Int?)
+
+    var eventUID: String {
+        switch self {
+        case
+                .inviteDataFromICS(let eventUID, _),
+                .inviteDataFromHeaders(let eventUID, _),
+                .reminderDataFromHeaders(let eventUID, _, _):
+            return eventUID
+        }
+    }
+
+    var isReminder: Bool {
+        switch self {
+        case .inviteDataFromICS, .inviteDataFromHeaders:
+            return false
+        case .reminderDataFromHeaders:
+            return true
+        }
+    }
+
+    var occurrence: Int? {
+        switch self {
+        case .inviteDataFromICS, .inviteDataFromHeaders:
+            return nil
+        case .reminderDataFromHeaders(_, let occurrence, _):
+            return occurrence
+        }
+    }
+
+    var recurrenceID: Int? {
+        switch self {
+        case
+                .inviteDataFromICS(_, let recurrenceID),
+                .inviteDataFromHeaders(_, let recurrenceID),
+                .reminderDataFromHeaders(_, _, let recurrenceID):
+            return recurrenceID
+        }
+    }
+
+    init?(messageHeaders: [String: Any]) {
+        guard let eventUID = messageHeaders[MessageHeaderKey.pmCalendarEventUID] as? String else {
+            return nil
+        }
+
+        let isReminder = messageHeaders[MessageHeaderKey.pmCalendarCalendarID] != nil
+
+        let occurrence = (messageHeaders[MessageHeaderKey.pmCalendarOccurrence] as? String)
+            .flatMap { Int($0, radix: 10) }
+
+        if isReminder, let occurrence {
+            let recurrenceID = (messageHeaders[MessageHeaderKey.pmCalendarRecurrenceID] as? String)
+                .flatMap { Int($0, radix: 10) }
+
+            self = .reminderDataFromHeaders(eventUID: eventUID, occurrence: occurrence, recurrenceID: recurrenceID)
+        } else {
+            // NOTE: This is not a mistake. In case of invites, RecurrenceID is placed in the Occurence header
+            let recurrenceID = occurrence
+            self = .inviteDataFromHeaders(eventUID: eventUID, recurrenceID: recurrenceID)
+        }
+    }
 }

@@ -36,7 +36,7 @@ class AttachmentViewModelTests: XCTestCase {
 
     private let icsMimeType = "text/calendar"
 
-    private let stubbedBasicEventInfo = BasicEventInfo(eventUID: "foo", occurrence: nil, recurrenceID: nil)
+    private let stubbedBasicEventInfo = BasicEventInfo.inviteDataFromICS(eventUID: "foo", recurrenceID: nil)
 
     private var stubbedEventDetails: EventDetails!
 
