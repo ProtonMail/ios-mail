@@ -53,7 +53,7 @@ struct MailboxScreen: View {
                 oldValue.count != newValue.count ? .selection : nil
             }
         }
-        .accessibilityIdentifier(MailboxScreenIdentifiers.rootElement)
+        .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
         .accessibilityElement(children: .contain)
     }
 }
@@ -107,5 +107,5 @@ extension MailboxScreen {
 }
 
 private struct MailboxScreenIdentifiers {
-    static let rootElement = "mailbox.rootElement"
+    static let rootItem = "mailbox.rootItem"
 }

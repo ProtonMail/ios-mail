@@ -73,7 +73,7 @@ struct SidebarScreen: View {
         }
         .background(DS.Color.Sidebar.background)
         .accessibilityElement(children: .contain)
-        .accessibilityIdentifier(SidebarScreenIdentifiers.rootElement)
+        .accessibilityIdentifier(SidebarScreenIdentifiers.rootItem)
     }
 
     var foldersAndLabelsView: some View {
@@ -138,20 +138,23 @@ struct SidebarCell: View {
             onSelection()
         }, label: {
             HStack {
-
                 Image(uiImage: uiModel.icon)
                     .renderingMode(.template)
                     .foregroundColor(textColor)
+                    .accessibilityIdentifier(SidebarScreenIdentifiers.folderIcon)
                 Text(uiModel.name)
                     .font(.body)
                     .fontWeight(.regular)
                     .foregroundStyle(textColor)
                     .padding(.leading, 16)
+                    .accessibilityIdentifier(SidebarScreenIdentifiers.labelText)
                 Spacer()
                 Text(uiModel.badge)
                     .foregroundStyle(textColor)
                     .opacity(uiModel.badge.isEmpty ? 0 : 1)
+                    .accessibilityIdentifier(SidebarScreenIdentifiers.badgeIcon)
             }
+            .accessibilityElement(children: .contain)
         })
     }
 }
@@ -171,5 +174,9 @@ struct SidebarCell: View {
 }
 
 private struct SidebarScreenIdentifiers {
-    static let rootElement = "sidebar.rootElement"
+    static let rootItem = "sidebar.rootItem"
+    static let button = "sidebar.button"
+    static let folderIcon = "sidebar.button.folderIcon"
+    static let labelText = "sidebar.button.labelText"
+    static let badgeIcon = "sidebar.button.badgeIcon"
 }

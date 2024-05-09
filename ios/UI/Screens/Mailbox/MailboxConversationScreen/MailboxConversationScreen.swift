@@ -70,7 +70,7 @@ extension MailboxConversationScreen {
                         }
                     )
                     .accessibilityElement(children: .contain)
-                    .accessibilityIdentifier("\(MailboxConversationScreenIdentifiers.MailboxConversationCell)\(index)")
+                    .accessibilityIdentifier("\(MailboxConversationScreenIdentifiers.listCell)\(index)")
                     .mailboxSwipeActions(
                         isSelectionModeOn: model.selectionMode.hasSelectedItems,
                         itemId: conversation.id,
@@ -120,5 +120,5 @@ extension MailboxConversationScreen {
 }
 
 private struct MailboxConversationScreenIdentifiers {
-    static let MailboxConversationCell = "mailbox.list.cell"
+    static let listCell = "mailbox.list.cell"
 }

@@ -41,6 +41,7 @@ struct MailboxConversationMessageCountView: View {
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                     .fill(DS.Color.Background.secondary)
             )
+            .accessibilityIdentifier(MailConversationMessageCountView.countText)
     }
 }
 
@@ -50,4 +51,8 @@ struct MailboxConversationMessageCountView: View {
         MailboxConversationMessageCountView(numMessages: 12)
         MailboxConversationMessageCountView(numMessages: 23889)
     }
+}
+
+private struct MailConversationMessageCountView {
+    static let countText = "count.text"
 }

@@ -37,7 +37,7 @@ struct AvatarCheckboxView: View {
                                 .resizable()
                                 .foregroundColor(DS.Color.Icon.norm)
                                 .padding(10)
-                                .accessibilityIdentifier(AvatarCheckboxViewIdentifiers.AvatarChecked)
+                                .accessibilityIdentifier(AvatarCheckboxViewIdentifiers.avatarChecked)
                         }
                 }.accessibilityElement(children: .contain)
             } else {
@@ -80,7 +80,7 @@ struct AvatarCheckboxView: View {
             .foregroundStyle(DS.Color.Global.white)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(avatar.backgroundColor)
-			.accessibilityIdentifier(AvatarCheckboxViewIdentifiers.AvatarText)
+			.accessibilityIdentifier(AvatarCheckboxViewIdentifiers.avatarText)
     }
 }
 
@@ -101,6 +101,6 @@ struct AvatarCheckboxView: View {
 }
 
 private struct AvatarCheckboxViewIdentifiers {
-    static let AvatarText = "avatar.text"
-    static let AvatarChecked = "avatar.checked"
+    static let avatarText = "avatar.text"
+    static let avatarChecked = "avatar.checked"
 }

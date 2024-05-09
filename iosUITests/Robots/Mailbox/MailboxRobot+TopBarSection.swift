@@ -62,5 +62,5 @@ extension MailboxRobot {
 private struct Identifiers {
     static let hamburgerButton = "mailbox.toolbar.hamburgerButton"
     static let backButton = "mailbox.toolbar.backButton"
-    static let title = "mailbox.toolbar.title"
+    static let titleText = "mailbox.toolbar.titleText"
 }

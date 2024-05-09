@@ -46,7 +46,7 @@ struct MailboxToolbar: ViewModifier {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading, DS.Spacing.medium)
-                    .accessibilityIdentifier(MailboxToolbarIdentifiers.title)
+                    .accessibilityIdentifier(MailboxToolbarIdentifiers.titleText)
                 }
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
@@ -134,7 +134,7 @@ extension MailboxToolbar {
 }
 
 private struct MailboxToolbarIdentifiers {
-    static let title = "mailbox.toolbar.title"
+    static let titleText = "mailbox.toolbar.titleText"
     
     static func navigationButton(forState state: MailboxToolbar.ToolbarState) -> String {
         switch state {

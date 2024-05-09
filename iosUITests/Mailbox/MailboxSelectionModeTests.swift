@@ -41,7 +41,7 @@ final class MailboxSelectionModeTests: PMUITestCase {
             $0.hasUnselectedItemAt(index: secondSelectableItemIndex)
         }
     }
-    
+
     /// TestId 422157, 422159, 422160
     func testAvatarClickSelectionMode() async {
         await environment.mockServer.addRequestsWithDefaults(

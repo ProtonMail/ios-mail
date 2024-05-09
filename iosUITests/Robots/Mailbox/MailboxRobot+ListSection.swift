@@ -24,14 +24,14 @@ extension MailboxRobot {
     func scrollDown() {
         rootElement.swipeUp()
     }
-    
+
     func longPressItemAt(index: Int) {
-        let model = MailboxListItemEntryModel(index: index)
+        let model = UITestMailboxListItemEntryModel(index: index)
         model.longPress()
     }
 
     func selectItemAt(index: Int) {
-        let model = MailboxListItemEntryModel(index: index)
+        let model = UITestMailboxListItemEntryModel(index: index)
         model.tapAvatar()
     }
 
@@ -42,7 +42,7 @@ extension MailboxRobot {
     }
 
     func unselectItemAt(index: Int) {
-        let model = MailboxListItemEntryModel(index: index)
+        let model = UITestMailboxListItemEntryModel(index: index)
         model.tapCheckedAvatar()
     }
 
@@ -55,7 +55,7 @@ extension MailboxRobot {
     // MARK: Assertions
 
     func hasSelectedItemAt(index: Int) {
-        let model = MailboxListItemEntryModel(index: index)
+        let model = UITestMailboxListItemEntryModel(index: index)
         model.isItemSelected()
     }
 
@@ -66,13 +66,31 @@ extension MailboxRobot {
     }
 
     func hasUnselectedItemAt(index: Int) {
-        let model = MailboxListItemEntryModel(index: index)
+        let model = UITestMailboxListItemEntryModel(index: index)
         model.isItemUnselected()
     }
 
     func hasUnselectedItemsAt(indexes: [Int]) {
         indexes.forEach { index in
             hasUnselectedItemAt(index: index)
+        }
+    }
+
+    func hasEntries(entries: UITestMailboxListItemEntry...) {
+        entries.forEach { entry in
+            let model = UITestMailboxListItemEntryModel(index: entry.index)
+
+            model.hasInitials(entry.initials)
+            model.hasSenders(entry.sender)
+            model.hasSubject(entry.subject)
+            model.hasDate(entry.date)
+
+            if let count = entry.count {
+                model.hasCount(count)
+            }
+            else {
+                model.hasNoCount()
+            }
         }
     }
 }

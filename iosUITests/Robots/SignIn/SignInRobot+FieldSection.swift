@@ -47,7 +47,7 @@ extension SignInRobot {
 }
 
 private enum SignInIdentifiers {
-    static let emailField = "signIn.fields.email"
-    static let passwordField = "signIn.fields.password"
-    static let signInButton = "signIn.buttons.signIn"
+    static let emailField = "signIn.emailField"
+    static let passwordField = "signIn.passwordField"
+    static let signInButton = "signIn.signInButton"
 }

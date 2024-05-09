@@ -16,28 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import XCTest
 
-final class MailboxScreenTests: PMUITestCase {
-
-    func testSidebarMenuOpening() async {
-        await environment.mockServer.addRequestsWithDefaults(
-            NetworkRequest(
-                method: .get,
-                remotePath: "/mail/v4/conversations",
-                localPath: "conversations_base_placeholder_multiple.json",
-                ignoreQueryParams: true
-            )
-        )
-
-        navigator.navigateTo(UITestDestination.inbox)
-
-        MailboxRobot {
-            $0.openSidebarMenu()
-        }
-
-        SidebarMenuRobot {
-            $0.verifyShown()
-        }
-    }
+struct SidebarListItemEntry {
+    let hasIcon: Bool
+    let text: String
+    let badge: String?
 }

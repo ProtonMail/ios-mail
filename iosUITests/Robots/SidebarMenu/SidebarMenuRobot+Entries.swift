@@ -16,18 +16,18 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import XCTest
 
-final class SidebarMenuRobot: Robot {
-    var rootElement: XCUIElement {
-        application.scrollViews[SidebarScreenIdentifiers.rootItem]
+extension SidebarMenuRobot {
+    func openInbox() {
+        tapEntry(withLabel: UITestFolder.system(.inbox).value)
     }
 
-    func verifyHidden() {
-        XCTAssertFalse(rootElement.isHittable)
+    func openArchive() {
+        tapEntry(withLabel: UITestFolder.system(.archive).value)
     }
-}
 
-private struct SidebarScreenIdentifiers {
-    static let rootItem = "sidebar.rootItem"
+    func tapEntry(withLabel label: String) {
+        let model = UITestSidebarListItemEntryModel(label: label)
+        model.tap()
+    }
 }

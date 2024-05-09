@@ -96,7 +96,7 @@ struct SignIn: View {
         .padding()
         .background(DS.Color.Background.norm)
         .accessibilityElement(children: .contain)
-        .accessibilityIdentifier(SignInIdentifiers.rootElement)
+        .accessibilityIdentifier(SignInIdentifiers.rootItem)
     }
 }
 
@@ -115,8 +115,8 @@ extension View {
 
 
 private enum SignInIdentifiers {
-    static let rootElement = "signIn.rootElement"
-    static let emailField = "signIn.fields.email"
-    static let passwordField = "signIn.fields.password"
-    static let signInButton = "signIn.buttons.signIn"
+    static let rootItem = "signIn.rootItem"
+    static let emailField = "signIn.emailField"
+    static let passwordField = "signIn.passwordField"
+    static let signInButton = "signIn.signInButton"
 }

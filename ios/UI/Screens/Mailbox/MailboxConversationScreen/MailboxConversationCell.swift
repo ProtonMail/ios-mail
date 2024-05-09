@@ -73,6 +73,7 @@ extension MailboxConversationCell {
                 .fontWeight(uiModel.isRead ? .regular : .bold)
                 .lineLimit(1)
                 .foregroundColor(textColor)
+                .accessibilityIdentifier(MailboxConversationCellIdentifiers.senderText)
             ProtonOfficialBadgeView()
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
             MailboxConversationMessageCountView(numMessages: uiModel.numMessages)
@@ -82,6 +83,7 @@ extension MailboxConversationCell {
                 .font(.caption2)
                 .fontWeight(uiModel.isRead ? .regular : .bold)
                 .foregroundColor(uiModel.isRead ? DS.Color.Text.hint : DS.Color.Text.norm)
+                .accessibilityIdentifier(MailboxConversationCellIdentifiers.dateText)
         }
     }
 
@@ -93,6 +95,7 @@ extension MailboxConversationCell {
                 .lineLimit(1)
                 .foregroundColor(textColor)
                 .layoutPriority(1)
+                .accessibilityIdentifier(MailboxConversationCellIdentifiers.subjectText)
             MailboxLabelView(uiModel: uiModel.labelUIModel)
                 .padding(.leading, labelLeadingPadding)
                 .removeViewIf(uiModel.labelUIModel.isEmpty)
@@ -104,6 +107,7 @@ extension MailboxConversationCell {
                 .onTapGesture {
                     onEvent(.onStarredChange(isStarred: !uiModel.isStarred))
                 }
+                .accessibilityIdentifier(MailboxConversationCellIdentifiers.starIcon)
         }
         .frame(height: 21.0)
         .padding(.top, DS.Spacing.small)
@@ -289,4 +293,11 @@ enum MailboxConversationCellEvent {
             onEvent: { _ in }
         )
     }
+}
+
+private struct MailboxConversationCellIdentifiers {
+    static let senderText = "cell.senderText"
+    static let subjectText = "cell.subjectText"
+    static let starIcon = "cell.starIcon"
+    static let dateText = "cell.dateText"
 }
