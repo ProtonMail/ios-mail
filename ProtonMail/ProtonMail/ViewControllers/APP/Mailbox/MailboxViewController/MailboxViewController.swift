@@ -1466,7 +1466,7 @@ extension MailboxViewController {
     }
 
     @objc
-    private func tapSelectAllButton(gesture: UITapGestureRecognizer) {
+    private func tapSelectAllButton() {
         selectAllButton.backgroundColor = ColorProvider.BackgroundSecondary
         UIView.animate(withDuration: 0.25) {
             self.selectAllButton.backgroundColor = .clear

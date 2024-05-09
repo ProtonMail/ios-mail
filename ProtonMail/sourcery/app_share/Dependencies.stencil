@@ -1,3 +1,5 @@
+// periphery:ignore:all
+
 import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 import ProtonCoreServices

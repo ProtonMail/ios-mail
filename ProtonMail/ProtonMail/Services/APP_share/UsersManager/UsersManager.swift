@@ -465,10 +465,6 @@ extension UsersManager {
         return hasUsers
     }
 
-    var isMailboxPasswordStored: Bool {
-        return keychain.string(forKey: CoderKey.atLeastOneLoggedIn) != nil
-    }
-
     func loggedIn() {
         keychain.set("LoggedIn", forKey: CoderKey.atLeastOneLoggedIn)
     }

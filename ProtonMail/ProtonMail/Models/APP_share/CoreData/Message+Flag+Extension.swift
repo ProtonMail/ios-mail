@@ -24,7 +24,7 @@ import Foundation
 
 extension Message {
 
-    /// Flags
+    // periphery:ignore:all
     struct Flag: OptionSet {
         let rawValue: Int64
 

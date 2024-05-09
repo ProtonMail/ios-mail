@@ -564,7 +564,8 @@ final class MailEventsPeriodicSchedulerTests: XCTestCase {
 
         // Context label should also be deleted
         testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
-            let request = ContextLabel.makeFetchRequest()
+            let request = NSFetchRequest<ContextLabel>(entityName: ContextLabel.Attributes.entityName)
+
             request.predicate = NSPredicate(
                 format: "%K == %@",
                 ContextLabel.Attributes.conversationID,

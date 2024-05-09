@@ -25,6 +25,7 @@ import ProtonCoreNetworking
 
 // Get a list of conversations
 class ConversationsRequest: Request {
+    // periphery:ignore:all
     struct Parameters {
         var location: Int?
         var page: Int?

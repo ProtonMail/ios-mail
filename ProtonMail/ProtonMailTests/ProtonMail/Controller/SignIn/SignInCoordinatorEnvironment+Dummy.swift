@@ -27,7 +27,7 @@ extension SignInCoordinatorEnvironment {
 
     static var dummyFinalizeSignIn: (LoginData, @escaping (NSError) -> Void, () -> Void, @escaping () -> Void) -> Void {{ _, _, _, _ in }}
 
-    static var dummyUnlockIfRememberedCredentials: (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void {{ _, _, _, _ in }}
+    static var dummyUnlockIfRememberedCredentials: (() -> Void, (() -> Void)?, (() -> Void)?) -> Void {{ _, _, _ in }}
 
     static var dummySaveLoginData: (LoginData) -> SignInManager.LoginDataSavingResult {{ _ in return .success }}
 
@@ -37,7 +37,7 @@ extension SignInCoordinatorEnvironment {
         currentAuth: @escaping () -> AuthCredential? = dummyCurrentAuth,
         tryRestoringPersistedUser: @escaping () -> Void = dummyTryRestoringPersistedUser,
         finalizeSignIn: @escaping (LoginData, @escaping (NSError) -> Void, () -> Void, @escaping () -> Void) -> Void = dummyFinalizeSignIn,
-        unlockIfRememberedCredentials: @escaping (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void = dummyUnlockIfRememberedCredentials,
+        unlockIfRememberedCredentials: @escaping (() -> Void, (() -> Void)?, (() -> Void)?) -> Void = dummyUnlockIfRememberedCredentials,
         saveLoginData: @escaping (LoginData) -> SignInManager.LoginDataSavingResult = dummySaveLoginData
     ) -> SignInCoordinatorEnvironment {
         let apiMock = APIServiceMock()

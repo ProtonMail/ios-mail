@@ -25,7 +25,7 @@ import UIKit
 import ProtonCoreUIFoundations
 
 protocol BioCodeViewDelegate: AnyObject {
-    func touch_id_action(_ sender: Any)
+    func touch_id_action()
 }
 
 final class BioCodeView: UIView {
@@ -38,8 +38,8 @@ final class BioCodeView: UIView {
     weak var delegate: BioCodeViewDelegate?
 
     @objc
-    private func touchIDTapped(_ sender: Any) {
-        delegate?.touch_id_action(sender)
+    private func touchIDTapped() {
+        delegate?.touch_id_action()
     }
 
     override init(frame: CGRect) {
@@ -101,7 +101,7 @@ final class BioCodeView: UIView {
         ].activate()
 
         bioButton.addTarget(self,
-                            action: #selector(touchIDTapped(_:)),
+                            action: #selector(touchIDTapped),
                             for: .touchUpInside)
     }
 

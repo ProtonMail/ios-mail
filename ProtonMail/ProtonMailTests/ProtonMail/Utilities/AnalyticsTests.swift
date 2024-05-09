@@ -56,8 +56,7 @@ class AnalyticsTests: XCTestCase {
     }
 
     func testSendEvent_whenDisabled_shouldNotSendTheEvent() {
-        sut.setup(environment: .production, reportCrashes: true, telemetry: true)
-        sut.disableAnalytics()
+        sut.setup(environment: .production, reportCrashes: true, telemetry: false)
         sut.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
         XCTAssertNil(analyticsMock.event)
     }
@@ -74,8 +73,7 @@ class AnalyticsTests: XCTestCase {
     }
 
     func testSendError_whenDisabled_shouldNotSendTheError() {
-        sut.setup(environment: .production, reportCrashes: true, telemetry: true)
-        sut.disableAnalytics()
+        sut.setup(environment: .production, reportCrashes: true, telemetry: false)
         sut.sendError(.sendMessageFail(error: "error desc"))
         XCTAssertNil(analyticsMock.errorEvent)
     }

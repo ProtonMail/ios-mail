@@ -55,16 +55,6 @@ class Analytics {
         )
     }
 
-    func disableAnalytics() {
-        isEnabled = false
-        analytics.setup(
-            environment: env.rawValue,
-            debug: isDebug,
-            reportCrashes: false,
-            telemetry: false
-        )
-    }
-
     func assignUser(userID: UserID?) {
         analytics.assignUser(userID: userID?.rawValue)
     }
@@ -77,13 +67,5 @@ class Analytics {
     func sendError(_ error: MailAnalyticsErrorEvent, trace: String? = nil, fingerprint: Bool = false) {
         guard isEnabled else { return }
         analytics.track(error: error, trace: trace, fingerprint: fingerprint)
-    }
-
-    private var isDebug: Bool {
-        #if DEBUG
-        return true
-        #else
-        return false
-        #endif
     }
 }

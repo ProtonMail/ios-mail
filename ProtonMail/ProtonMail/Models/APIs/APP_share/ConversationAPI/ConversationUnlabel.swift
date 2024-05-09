@@ -67,28 +67,12 @@ class ConversationUnlabelResponse: Response, UndoTokenResponseProtocol {
             return false
         }
 
-        guard (try? JSONDecoder().decode([ConversationUnlabelData].self, from: data)) != nil else {
+        guard (try? JSONDecoder().decode([GeneralConversationActionResult].self, from: data)) != nil else {
             return false
         }
 
         parseUndoToken(response: response)
 
         return true
-    }
-}
-
-struct ConversationUnlabelData: Decodable {
-    let response: ResponseCode
-
-    enum CodingKeys: String, CodingKey {
-        case response = "Response"
-    }
-
-    struct ResponseCode: Decodable {
-        let code: Int
-
-        enum CodingKeys: String, CodingKey {
-            case code = "Code"
-        }
     }
 }

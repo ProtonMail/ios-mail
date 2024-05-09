@@ -23,7 +23,7 @@ class UserEventMigrationPolicy: NSEntityMigrationPolicy {
     override func begin(_ mapping: NSEntityMapping, with manager: NSMigrationManager) throws {
         let sourceContext = manager.sourceContext
 
-        let request = NSFetchRequest<NSManagedObject>(entityName: UserEvent.entityName)
+        let request = NSFetchRequest<NSManagedObject>(entityName: UserEvent.Attributes.entityName)
         let events = try sourceContext.fetch(request)
 
         let userIDs = Set(

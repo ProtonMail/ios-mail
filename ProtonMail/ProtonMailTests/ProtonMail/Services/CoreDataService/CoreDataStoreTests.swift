@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import CoreData
 import XCTest
 
 @testable import ProtonMail
@@ -50,17 +51,11 @@ final class CoreDataStoreTests: XCTestCase {
             try context.save()
         }
 
-        try container.viewContext.performAndWait {
-            let messages = try Message.makeFetchRequest().execute()
-            XCTAssertEqual(messages.map(\.messageID), ["foo"])
-        }
+        XCTAssertEqual(try sut.storedMessageIDs(), ["foo"])
 
         CoreDataStore.deleteDataStore()
 
-        try container.viewContext.performAndWait {
-            let messages = try Message.makeFetchRequest().execute()
-            XCTAssertEqual(messages.map(\.messageID), [])
-        }
+        XCTAssertEqual(try sut.storedMessageIDs(), [])
     }
 
     func testDeletingDataStore_doesNotBreakSavingNewEntities() throws {
@@ -76,9 +71,14 @@ final class CoreDataStoreTests: XCTestCase {
             try context.save()
         }
 
+        XCTAssertEqual(try sut.storedMessageIDs(), ["foo"])
+    }
+}
+
+private extension CoreDataStore {
+    func storedMessageIDs() throws -> [String] {
         try container.viewContext.performAndWait {
-            let messages = try Message.makeFetchRequest().execute()
-            XCTAssertEqual(messages.map(\.messageID), ["foo"])
+            try NSFetchRequest<Message>(entityName: Message.Attributes.entityName).execute().map(\.messageID)
         }
     }
 }

@@ -49,7 +49,7 @@ class ConversationReadRequest: Request {
 }
 
 class ConversationReadResponse: Response {
-    var results: [ConversationReadData]?
+    var results: [GeneralConversationActionResult]?
 
     override func ParseResponse(_ response: [String: Any]) -> Bool {
         guard let jsonObject = response["Responses"],
@@ -57,26 +57,10 @@ class ConversationReadResponse: Response {
             return false
         }
 
-        guard let result = try? JSONDecoder().decode([ConversationReadData].self, from: data) else {
+        guard let result = try? JSONDecoder().decode([GeneralConversationActionResult].self, from: data) else {
             return false
         }
         results = result
         return true
-    }
-}
-
-struct ConversationReadData: Decodable {
-    let response: ResponseCode
-
-    enum CodingKeys: String, CodingKey {
-        case response = "Response"
-    }
-
-    struct ResponseCode: Decodable {
-        let code: Int
-
-        enum CodingKeys: String, CodingKey {
-            case code = "Code"
-        }
     }
 }

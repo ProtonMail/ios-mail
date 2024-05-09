@@ -35,7 +35,6 @@ class MaxStorageTableViewCell: UITableViewCell, AccessibleCell {
         static let iconSize: CGFloat = 24
         static let itemsSpacing: CGFloat = 13
         static let cellPadding: CGFloat = 17.5
-        static let buttonPadding = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
