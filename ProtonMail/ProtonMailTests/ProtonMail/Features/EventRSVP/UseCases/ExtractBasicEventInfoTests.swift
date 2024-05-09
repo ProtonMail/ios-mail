@@ -43,10 +43,10 @@ RECURRENCE-ID;VALUE=DATE:19960401
 END:VEVENT
 END:VCALENDAR
 """#
-        
+
         let icsData = Data(basicICS.utf8)
         let basicEventInfo = try sut.execute(icsData: icsData)
-        XCTAssertEqual(basicEventInfo, .init(eventUID: "FOO", occurrence: nil, recurrenceID: 828316800))
+        XCTAssertEqual(basicEventInfo, .inviteDataFromICS(eventUID: "FOO", recurrenceID: 828316800))
     }
 
     func testBasicInfoExtraction_withoutRecurrenceID() throws {
@@ -60,7 +60,7 @@ END:VCALENDAR
 
         let icsData = Data(basicICS.utf8)
         let basicEventInfo = try sut.execute(icsData: icsData)
-        XCTAssertEqual(basicEventInfo, .init(eventUID: "FOO", occurrence: nil, recurrenceID: nil))
+        XCTAssertEqual(basicEventInfo, .inviteDataFromICS(eventUID: "FOO", recurrenceID: nil))
     }
 
     func testBasicInfoExtraction_withRecurrenceID_inSpecificTimezone() throws {
@@ -75,6 +75,6 @@ END:VCALENDAR
 
         let icsData = Data(basicICS.utf8)
         let basicEventInfo = try sut.execute(icsData: icsData)
-        XCTAssertEqual(basicEventInfo, .init(eventUID: "FOO", occurrence: nil, recurrenceID: 1715162400))
+        XCTAssertEqual(basicEventInfo, .inviteDataFromICS(eventUID: "FOO", recurrenceID: 1715162400))
     }
 }

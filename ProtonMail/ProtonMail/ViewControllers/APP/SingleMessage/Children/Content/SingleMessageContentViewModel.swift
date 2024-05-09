@@ -405,20 +405,9 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
 
     func updateAttachments() {
         let messageHeaders = messageInfoProvider.message.parsedHeaders
-        let basicEventInfo: BasicEventInfo?
-
-        if let eventUID = messageHeaders[MessageHeaderKey.pmCalendarEventUID] as? String {
-            let occurrence = (messageHeaders[MessageHeaderKey.pmCalendarOccurrence] as? String)
-                .flatMap { Int($0, radix: 10) }
-            let recurrenceID = (messageHeaders[MessageHeaderKey.pmCalendarRecurrenceID] as? String)
-                .flatMap { Int($0, radix: 10) }
-            basicEventInfo = .init(eventUID: eventUID, occurrence: occurrence, recurrenceID: recurrenceID)
-        } else {
-            basicEventInfo = nil
-        }
 
         DispatchQueue.main.async {
-            self.attachmentViewModel.basicEventInfoSourcedFromHeaders = basicEventInfo
+            self.attachmentViewModel.basicEventInfoSourcedFromHeaders = .init(messageHeaders: messageHeaders)
 
             self.attachmentViewModel.attachmentHasChanged(
                 nonInlineAttachments: self.messageInfoProvider.nonInlineAttachments.map(AttachmentNormal.init),
