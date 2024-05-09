@@ -66,7 +66,7 @@ struct InvitationViewModel {
 
         if eventDetails.status == .cancelled {
             statusString = L11n.Event.eventCancelled
-        } else if eventDetails.endDate.timeIntervalSinceNow < 0 {
+        } else if eventDetails.endDate.timeIntervalSinceNow < 0 && eventDetails.recurrence == nil {
             statusString = L11n.Event.eventAlreadyEnded
         } else {
             statusString = nil

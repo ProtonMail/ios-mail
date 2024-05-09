@@ -19,8 +19,8 @@ import class ProtonCoreDataModel.UserInfo
 
 class MockAnswerInvitation: AnswerInvitation {
     @ThrowingFuncStub(MockAnswerInvitation.execute) var executeStub
-    func execute(answer: AttendeeStatusDisplay) throws {
-        try executeStub(answer)
+    func execute(parameters: AnswerInvitationWrapper.Parameters) throws {
+        try executeStub(parameters)
     }
 
 }
@@ -477,7 +477,7 @@ class MockFetchEmailAddressesPublicKeyUseCase: FetchEmailAddressesPublicKeyUseCa
 
 class MockFetchEventDetails: FetchEventDetails {
     @ThrowingFuncStub(MockFetchEventDetails.execute, initialReturn: .crash) var executeStub
-    func execute(basicEventInfo: BasicEventInfo) throws -> EventDetails {
+    func execute(basicEventInfo: BasicEventInfo) throws -> (EventDetails, AnsweringContext?) {
         try executeStub(basicEventInfo)
     }
 

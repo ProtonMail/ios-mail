@@ -26,7 +26,7 @@ struct CheckedSenderContact {
 
 final class MessageSenderPGPChecker {
     typealias Complete = (CheckedSenderContact?) -> Void
-    typealias Dependencies = HasFetchAndVerifyContacts
+    typealias Dependencies = HasFetchAndVerifyContactsUseCase
     & HasFetchAttachmentUseCase
     & HasFetchEmailAddressesPublicKey
     & HasUserManager

@@ -566,12 +566,12 @@ extension UserContainer: HasFeatureFlagProvider {
     }
 }
 
-protocol HasFetchAndVerifyContacts {
-    var fetchAndVerifyContacts: FetchAndVerifyContacts { get }
+protocol HasFetchAndVerifyContactsUseCase {
+    var fetchAndVerifyContacts: FetchAndVerifyContactsUseCase { get }
 }
 
-extension UserContainer: HasFetchAndVerifyContacts {
-    var fetchAndVerifyContacts: FetchAndVerifyContacts {
+extension UserContainer: HasFetchAndVerifyContactsUseCase {
+    var fetchAndVerifyContacts: FetchAndVerifyContactsUseCase {
         fetchAndVerifyContactsFactory()
     }
 }

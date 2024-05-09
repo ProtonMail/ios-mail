@@ -91,6 +91,8 @@ final class AttachmentViewModel {
         }
     }
 
+    private var answeringContext: AnsweringContext?
+
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
@@ -135,7 +137,11 @@ final class AttachmentViewModel {
                     basicEventInfo = value
                 }
 
-                let eventDetails = try await dependencies.fetchEventDetails.execute(basicEventInfo: basicEventInfo)
+                let (eventDetails, answeringContext) = try await dependencies.fetchEventDetails.execute(
+                    basicEventInfo: basicEventInfo
+                )
+
+                self.answeringContext = answeringContext
                 invitationViewSubject.send(.invitationProcessed(eventDetails))
                 updateRespondingOptions(eventDetails: eventDetails)
             } catch {
@@ -175,7 +181,13 @@ final class AttachmentViewModel {
 
         Task {
             do {
-                try await dependencies.answerInvitation.execute(answer: answer)
+                let parameters = AnswerInvitationWrapper.Parameters(
+                    answer: answer,
+                    context: answeringContext
+                )
+
+                try await dependencies.answerInvitation.execute(parameters: parameters)
+
                 respondingStatusSubject.send(.alreadyResponded(answer))
             } catch {
                 errorSubject.send(error)
@@ -199,8 +211,8 @@ final class AttachmentViewModel {
     private func updateRespondingOptions(eventDetails: EventDetails) {
         guard
             UserInfo.isRSVPMilestoneTwoEnabled,
+            dependencies.featureFlagProvider.isEnabled(.answerInvitation, reloadValue: true),
             eventDetails.status != .cancelled,
-            eventDetails.endDate.isFuture,
             let currentUserAmongInvitees = eventDetails.currentUserAmongInvitees
         else {
             return

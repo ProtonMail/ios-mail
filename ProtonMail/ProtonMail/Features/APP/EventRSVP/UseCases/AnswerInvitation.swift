@@ -19,13 +19,38 @@ import ProtonInboxRSVP
 
 // sourcery: mock
 protocol AnswerInvitation {
-    func execute(answer: AttendeeStatusDisplay) async throws
+    func execute(parameters: AnswerInvitationWrapper.Parameters) async throws
 }
 
-struct AnswerInvitationImpl: AnswerInvitation {
-    func execute(answer: AttendeeStatusDisplay) async throws {
-        if #available(iOS 16.0, *) {
-            try await Task.sleep(for: .seconds(1))
+/// This struct wraps the external AnswerInvitationUseCase to make it usable in Mail.
+struct AnswerInvitationWrapper: AnswerInvitation {
+    typealias Dependencies = AnyObject & AnswerInvitationUseCase.Dependencies
+
+    private unowned let dependencies: Dependencies
+
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
+    }
+
+    func execute(parameters: Parameters) async throws {
+        guard let answeringContext = parameters.context else {
+            return
         }
+
+        let useCase = AnswerInvitationUseCase(dependencies: dependencies, answeringContext: answeringContext)
+
+        try await useCase.execute(
+            with: parameters.answer,
+            for: answeringContext.event,
+            calendar: answeringContext.calendarInfo,
+            validatedContext: answeringContext.validated
+        ).await()
+    }
+}
+
+extension AnswerInvitationWrapper {
+    struct Parameters {
+        let answer: AttendeeStatusDisplay
+        let context: AnsweringContext?
     }
 }

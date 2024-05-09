@@ -22,6 +22,7 @@ extension EventDetails {
         startDate: Date = .init(timeIntervalSince1970: .random(in: 0...Date.distantFuture.timeIntervalSince1970)),
         endDate: Date = .init(timeIntervalSince1970: .random(in: 0...Date.distantFuture.timeIntervalSince1970)),
         isAllDay: Bool = false,
+        recurrence: String? = nil,
         invitees: [Participant] = [
             .init(email: "employee1@example.com", role: .unknown, status: .pending),
             .init(email: "employee2@example.com", role: .unknown, status: .accepted),
@@ -36,7 +37,7 @@ extension EventDetails {
             startDate: startDate,
             endDate: endDate,
             isAllDay: isAllDay,
-            recurrence: nil,
+            recurrence: recurrence,
             calendar: .init(name: "My Calendar", iconColor: "#FFEEEE"),
             location: .init(name: "Zoom call"),
             organizer: .init(email: "boss@example.com", role: .chair, status: .unknown),

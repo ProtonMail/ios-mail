@@ -23,12 +23,13 @@ import ProtonInboxRSVP
 
 // sourcery: mock
 protocol FetchEventDetails {
-    func execute(basicEventInfo: BasicEventInfo) async throws -> EventDetails
+    func execute(basicEventInfo: BasicEventInfo) async throws -> (EventDetails, AnsweringContext?)
 }
 
 struct FetchEventDetailsImpl: FetchEventDetails {
-    typealias Dependencies = AnyObject & HasAPIService & HasUserManager
+    typealias Dependencies = AnyObject & HasAPIService & HasEmailAddressStorage & HasUserManager
 
+    private let answerToEventPermissionValidator: AnswerToEventPermissionValidator
     private let iCalReader: ICalReader
     private let iCalRecurrenceFormatter = ICalRecurrenceFormatter()
     private let timeZoneProvider = TimeZoneProvider()
@@ -36,6 +37,8 @@ struct FetchEventDetailsImpl: FetchEventDetails {
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
+
+        answerToEventPermissionValidator = .init(emailAddressStorage: dependencies.emailAddressStorage)
 
         let iCalWriter = ICalWriter(timestamp: Date.init)
 
@@ -47,8 +50,15 @@ struct FetchEventDetailsImpl: FetchEventDetails {
         )
     }
 
-    func execute(basicEventInfo: BasicEventInfo) async throws -> EventDetails {
-        let apiEvent = try await fetchEvent(basicEventInfo: basicEventInfo)
+    func execute(basicEventInfo: BasicEventInfo) async throws -> (EventDetails, AnsweringContext?) {
+        let apiEvents = try await fetchEvents(uid: basicEventInfo.eventUID)
+
+        guard
+            let apiEvent = apiEvents.first(where: { $0.recurrenceID == basicEventInfo.recurrenceID }) ?? apiEvents.first
+        else {
+            throw EventRSVPError.noEventsReturnedFromAPI
+        }
+
         let calendarBootstrapResponse = try await fetchCalendarBootstrapData(calendarID: apiEvent.calendarID)
 
         guard let member = calendarBootstrapResponse.members.first else {
@@ -63,8 +73,6 @@ struct FetchEventDetailsImpl: FetchEventDetails {
             .filter { $0.user != iCalEvent.organizer?.user }
             .map { .init(attendeeModel: $0) }
 
-        let currentUserAmongInvitees = invitees.first { dependencies.user.userInfo.owns(emailAddress: $0.email) }
-
         let dateInterval = calculateDateInterval(iCalEvent: iCalEvent, occurrence: basicEventInfo.occurrence)
 
         let eventIdentificationData = EventIdentificationData(
@@ -73,7 +81,29 @@ struct FetchEventDetailsImpl: FetchEventDetails {
             startDate: dateInterval.start
         )
 
-        return .init(
+        let isReminder = basicEventInfo.occurrence != nil
+        let answeringAllowed = !isReminder
+
+        let answeringContext: AnsweringContext?
+        if answeringAllowed {
+            answeringContext = try prepareAnsweringContext(
+                iCalEvent: iCalEvent,
+                apiEvents: apiEvents,
+                attendeeTransformers: apiEvent.attendees,
+                decryptionKit: decryptionKit,
+                eventIdentificationData: eventIdentificationData,
+                keyTransformers: calendarBootstrapResponse.keys,
+                member: member
+            )
+        } else {
+            answeringContext = nil
+        }
+
+        let currentUserAmongInvitees = answeringContext.map {
+            EventDetails.Participant(attendeeModel: $0.validated.invitedParticipant.attendee)
+        }
+
+        let eventDetails = EventDetails(
             title: iCalEvent.title,
             startDate: dateInterval.start,
             endDate: dateInterval.end,
@@ -87,23 +117,18 @@ struct FetchEventDetailsImpl: FetchEventDetails {
             status: iCalEvent.status.flatMap { EventDetails.EventStatus(rawValue: $0.lowercased()) },
             calendarAppDeepLink: .ProtonCalendar.eventDetails(for: eventIdentificationData)
         )
+
+        return (eventDetails, answeringContext)
     }
 
-    private func fetchEvent(basicEventInfo: BasicEventInfo) async throws -> FullEventTransformer {
-        let calendarEventsRequest = CalendarEventsRequest(
-            uid: basicEventInfo.eventUID,
-            recurrenceID: basicEventInfo.recurrenceID
-        )
+    private func fetchEvents(uid: String) async throws -> [FullEventTransformer] {
+        let calendarEventsRequest = CalendarEventsRequest(uid: uid)
 
         let calendarEventsResponse: CalendarEventsResponse = try await dependencies.apiService.perform(
             request: calendarEventsRequest
         ).1
 
-        guard let apiEvent = calendarEventsResponse.events.first else {
-            throw EventRSVPError.noEventsReturnedFromAPI
-        }
-
-        return apiEvent
+        return calendarEventsResponse.events
     }
 
     private func fetchCalendarBootstrapData(calendarID: String) async throws -> CalendarBootstrapResponse {
@@ -265,11 +290,62 @@ struct FetchEventDetailsImpl: FetchEventDetails {
             return DateInterval(start: iCalEvent.startDate, end: iCalEvent.endDate)
         }
     }
-}
 
-private extension UserInfo {
-    func owns(emailAddress: String) -> Bool {
-        userAddresses.contains { $0.email.compare(emailAddress, options: [.caseInsensitive]) == .orderedSame }
+    private func prepareAnsweringContext(
+        iCalEvent: ICalEvent,
+        apiEvents: [FullEventTransformer],
+        attendeeTransformers: [AttendeeTransformer],
+        decryptionKit: DecryptionKit,
+        eventIdentificationData: EventIdentificationData,
+        keyTransformers: [KeyTransformer],
+        member: MemberTransformer
+    ) throws -> AnsweringContext? {
+        let calendarInfo = CalendarInfo(member: member)
+        let validationResult = answerToEventPermissionValidator.canAnswer(for: iCalEvent, with: calendarInfo)
+
+        switch validationResult {
+        case .canAnswer(let validatedContext):
+            let eventType = try calculateEventType(
+                iCalEvent: iCalEvent,
+                apiEvents: apiEvents,
+                decryptionKit: decryptionKit
+            )
+
+            return .init(
+                attendeeTransformers: attendeeTransformers,
+                calendarInfo: calendarInfo,
+                event: eventIdentificationData,
+                eventType: eventType,
+                keyTransformers: keyTransformers,
+                iCalEvent: iCalEvent,
+                validated: validatedContext
+            )
+        case .canNotAnswer:
+            return nil
+        }
+    }
+
+    private func calculateEventType(
+        iCalEvent: ICalEvent,
+        apiEvents: [FullEventTransformer],
+        decryptionKit: DecryptionKit
+    ) throws -> EventType {
+        let isSingleEdit = iCalEvent.recurrenceID != nil
+
+        if isSingleEdit {
+            let mainOccurrenceExists = apiEvents.contains { $0.recurrenceID == nil }
+            return .singleEdit(mainOccurrenceExists ? .regular : .orphan)
+        } else {
+            if iCalEvent.recurrence.doesRepeat {
+                let singleEdits = try apiEvents
+                    .filter { $0.recurrenceID != nil }
+                    .map { try decrypt(apiEvent: $0, decryptionKit: decryptionKit) }
+
+                return .recurring(.init(singleEdits: singleEdits))
+            } else {
+                return .nonRecurring
+            }
+        }
     }
 }
 
