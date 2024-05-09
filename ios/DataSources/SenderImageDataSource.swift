@@ -22,7 +22,20 @@ import class SwiftUI.UIImage
 
 protocol SenderImageDataSource {
     @MainActor
-    func senderImage(for emails: [MessageAddress], colorScheme: ColorScheme) async -> UIImage?
+    func senderImage(for params: SenderImageDataParameters, colorScheme: ColorScheme) async -> UIImage?
+}
+
+/// This is the information required by the Rust SDK to retrieve a sender's avatar image
+struct SenderImageDataParameters {
+    let address: String
+    let bimiSelector: String?
+    let displaySenderImage: Bool
+
+    init(address: String = "", bimiSelector: String? = nil, displaySenderImage: Bool = true) {
+        self.address = address
+        self.bimiSelector = bimiSelector
+        self.displaySenderImage = displaySenderImage
+    }
 }
 
 final class SenderImageAPIDataSource: Sendable, SenderImageDataSource {
@@ -33,9 +46,8 @@ final class SenderImageAPIDataSource: Sendable, SenderImageDataSource {
         self.dependencies = dependencies
     }
 
-    func senderImage(for addresses: [MessageAddress], colorScheme: ColorScheme) async -> UIImage? {
-        guard !addresses.isEmpty, let firstAddress = addresses.first else { return nil }
-        if let cachedImage = await dependencies.cache.image(for: firstAddress.hashValue) {
+    func senderImage(for params: SenderImageDataParameters, colorScheme: ColorScheme) async -> UIImage? {
+        if let cachedImage = await dependencies.cache.object(for: params.address) {
             return cachedImage
         }
         do {
@@ -43,8 +55,10 @@ final class SenderImageAPIDataSource: Sendable, SenderImageDataSource {
                 return nil
             }
             guard let data = try await userSession
-                .imageForSenders(
-                    senders: addresses,
+                .imageForSender(
+                    address: params.address,
+                    bimiSelector: params.bimiSelector,
+                    displaySenderImage: params.displaySenderImage,
                     size: 128,
                     mode: colorScheme == .dark ? "dark" : "light",
                     format: "png"
@@ -53,8 +67,8 @@ final class SenderImageAPIDataSource: Sendable, SenderImageDataSource {
                 return nil
             }
             let image = UIImage(data: data)
-            if let firstAddress = addresses.first, let image {
-                await dependencies.cache.setImage(image, for: firstAddress.hashValue)
+            if let image {
+                await dependencies.cache.setObject(image, for: params.address)
             }
             return image
         } catch {
@@ -68,6 +82,6 @@ extension SenderImageAPIDataSource {
 
     struct Dependencies {
         let appContext: AppContext = .shared
-        let cache: SenderImageMemoryCache = .shared
+        let cache: MemoryCache<String, UIImage> = Caches.senderImageCache
     }
 }

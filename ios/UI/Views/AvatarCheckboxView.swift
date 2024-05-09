@@ -57,7 +57,7 @@ struct AvatarCheckboxView: View {
         if let senderImage = avatar.senderImage {
             senderImageView(uiImage: senderImage)
         } else {
-            AsyncSenderImageView(addresses: avatar.messageAddresses) { senderImage in
+            AsyncSenderImageView(senderImageParams: avatar.senderImageParams) { senderImage in
                 switch senderImage {
                 case .empty:
                     initialsView
@@ -86,15 +86,15 @@ struct AvatarCheckboxView: View {
 
 #Preview {
     return VStack {
-        AvatarCheckboxView(isSelected: true, avatar: .init(initials: "Mb", messageAddresses: [], backgroundColor: .cyan)) { _ in}
+        AvatarCheckboxView(isSelected: true, avatar: .init(initials: "Mb", senderImageParams: .init(), backgroundColor: .cyan)) { _ in}
             .frame(width: 40, height: 40)
             .clipped()
 
-        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "Mb", messageAddresses: [], backgroundColor: .cyan)) { _ in}
+        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "Mb", senderImageParams: .init(), backgroundColor: .cyan)) { _ in}
             .frame(width: 40, height: 40)
             .clipped()
 
-        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "Mb", messageAddresses: [], backgroundColor: .cyan)) { _ in}
+        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "Mb", senderImageParams: .init(), backgroundColor: .cyan)) { _ in}
             .frame(width: 40, height: 40)
             .clipped()
     }

@@ -1136,6 +1136,247 @@ public func FfiConverterTypeLocalLabelWithCount_lower(_ value: LocalLabelWithCou
     return FfiConverterTypeLocalLabelWithCount.lower(value)
 }
 
+
+public struct LocalMessageMetadata {
+    public var id: LocalMessageId
+    public var rid: MessageId?
+    public var conversationId: LocalConversationId?
+    public var addressId: AddressId
+    public var order: UInt64
+    public var subject: String
+    public var unread: Bool
+    public var sender: MessageAddress
+    public var to: [MessageAddress]
+    public var cc: [MessageAddress]
+    public var bcc: [MessageAddress]
+    public var time: UInt64
+    public var size: UInt64
+    public var expirationTime: UInt64
+    public var snoozeTime: UInt64
+    public var isReplied: Bool
+    public var isRepliedAll: Bool
+    public var isForwarded: Bool
+    public var externalId: ExternalId?
+    public var numAttachments: UInt32
+    public var flags: UInt64
+    public var starred: Bool
+    public var attachments: [LocalAttachmentMetadata]?
+    public var labels: [LocalInlineLabelInfo]?
+    public var avatarInformation: AvatarInformation
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(id: LocalMessageId, rid: MessageId?, conversationId: LocalConversationId?, addressId: AddressId, order: UInt64, subject: String, unread: Bool, sender: MessageAddress, to: [MessageAddress], cc: [MessageAddress], bcc: [MessageAddress], time: UInt64, size: UInt64, expirationTime: UInt64, snoozeTime: UInt64, isReplied: Bool, isRepliedAll: Bool, isForwarded: Bool, externalId: ExternalId?, numAttachments: UInt32, flags: UInt64, starred: Bool, attachments: [LocalAttachmentMetadata]?, labels: [LocalInlineLabelInfo]?, avatarInformation: AvatarInformation) {
+        self.id = id
+        self.rid = rid
+        self.conversationId = conversationId
+        self.addressId = addressId
+        self.order = order
+        self.subject = subject
+        self.unread = unread
+        self.sender = sender
+        self.to = to
+        self.cc = cc
+        self.bcc = bcc
+        self.time = time
+        self.size = size
+        self.expirationTime = expirationTime
+        self.snoozeTime = snoozeTime
+        self.isReplied = isReplied
+        self.isRepliedAll = isRepliedAll
+        self.isForwarded = isForwarded
+        self.externalId = externalId
+        self.numAttachments = numAttachments
+        self.flags = flags
+        self.starred = starred
+        self.attachments = attachments
+        self.labels = labels
+        self.avatarInformation = avatarInformation
+    }
+}
+
+
+extension LocalMessageMetadata: Sendable {} 
+extension LocalMessageMetadata: Equatable, Hashable {
+    public static func ==(lhs: LocalMessageMetadata, rhs: LocalMessageMetadata) -> Bool {
+        if lhs.id != rhs.id {
+            return false
+        }
+        if lhs.rid != rhs.rid {
+            return false
+        }
+        if lhs.conversationId != rhs.conversationId {
+            return false
+        }
+        if lhs.addressId != rhs.addressId {
+            return false
+        }
+        if lhs.order != rhs.order {
+            return false
+        }
+        if lhs.subject != rhs.subject {
+            return false
+        }
+        if lhs.unread != rhs.unread {
+            return false
+        }
+        if lhs.sender != rhs.sender {
+            return false
+        }
+        if lhs.to != rhs.to {
+            return false
+        }
+        if lhs.cc != rhs.cc {
+            return false
+        }
+        if lhs.bcc != rhs.bcc {
+            return false
+        }
+        if lhs.time != rhs.time {
+            return false
+        }
+        if lhs.size != rhs.size {
+            return false
+        }
+        if lhs.expirationTime != rhs.expirationTime {
+            return false
+        }
+        if lhs.snoozeTime != rhs.snoozeTime {
+            return false
+        }
+        if lhs.isReplied != rhs.isReplied {
+            return false
+        }
+        if lhs.isRepliedAll != rhs.isRepliedAll {
+            return false
+        }
+        if lhs.isForwarded != rhs.isForwarded {
+            return false
+        }
+        if lhs.externalId != rhs.externalId {
+            return false
+        }
+        if lhs.numAttachments != rhs.numAttachments {
+            return false
+        }
+        if lhs.flags != rhs.flags {
+            return false
+        }
+        if lhs.starred != rhs.starred {
+            return false
+        }
+        if lhs.attachments != rhs.attachments {
+            return false
+        }
+        if lhs.labels != rhs.labels {
+            return false
+        }
+        if lhs.avatarInformation != rhs.avatarInformation {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(rid)
+        hasher.combine(conversationId)
+        hasher.combine(addressId)
+        hasher.combine(order)
+        hasher.combine(subject)
+        hasher.combine(unread)
+        hasher.combine(sender)
+        hasher.combine(to)
+        hasher.combine(cc)
+        hasher.combine(bcc)
+        hasher.combine(time)
+        hasher.combine(size)
+        hasher.combine(expirationTime)
+        hasher.combine(snoozeTime)
+        hasher.combine(isReplied)
+        hasher.combine(isRepliedAll)
+        hasher.combine(isForwarded)
+        hasher.combine(externalId)
+        hasher.combine(numAttachments)
+        hasher.combine(flags)
+        hasher.combine(starred)
+        hasher.combine(attachments)
+        hasher.combine(labels)
+        hasher.combine(avatarInformation)
+    }
+}
+
+
+public struct FfiConverterTypeLocalMessageMetadata: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> LocalMessageMetadata {
+        return
+            try LocalMessageMetadata(
+                id: FfiConverterTypeLocalMessageId.read(from: &buf), 
+                rid: FfiConverterOptionTypeMessageId.read(from: &buf), 
+                conversationId: FfiConverterOptionTypeLocalConversationId.read(from: &buf), 
+                addressId: FfiConverterTypeAddressId.read(from: &buf), 
+                order: FfiConverterUInt64.read(from: &buf), 
+                subject: FfiConverterString.read(from: &buf), 
+                unread: FfiConverterBool.read(from: &buf), 
+                sender: FfiConverterTypeMessageAddress.read(from: &buf), 
+                to: FfiConverterSequenceTypeMessageAddress.read(from: &buf), 
+                cc: FfiConverterSequenceTypeMessageAddress.read(from: &buf), 
+                bcc: FfiConverterSequenceTypeMessageAddress.read(from: &buf), 
+                time: FfiConverterUInt64.read(from: &buf), 
+                size: FfiConverterUInt64.read(from: &buf), 
+                expirationTime: FfiConverterUInt64.read(from: &buf), 
+                snoozeTime: FfiConverterUInt64.read(from: &buf), 
+                isReplied: FfiConverterBool.read(from: &buf), 
+                isRepliedAll: FfiConverterBool.read(from: &buf), 
+                isForwarded: FfiConverterBool.read(from: &buf), 
+                externalId: FfiConverterOptionTypeExternalId.read(from: &buf), 
+                numAttachments: FfiConverterUInt32.read(from: &buf), 
+                flags: FfiConverterUInt64.read(from: &buf), 
+                starred: FfiConverterBool.read(from: &buf), 
+                attachments: FfiConverterOptionSequenceTypeLocalAttachmentMetadata.read(from: &buf), 
+                labels: FfiConverterOptionSequenceTypeLocalInlineLabelInfo.read(from: &buf), 
+                avatarInformation: FfiConverterTypeAvatarInformation.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: LocalMessageMetadata, into buf: inout [UInt8]) {
+        FfiConverterTypeLocalMessageId.write(value.id, into: &buf)
+        FfiConverterOptionTypeMessageId.write(value.rid, into: &buf)
+        FfiConverterOptionTypeLocalConversationId.write(value.conversationId, into: &buf)
+        FfiConverterTypeAddressId.write(value.addressId, into: &buf)
+        FfiConverterUInt64.write(value.order, into: &buf)
+        FfiConverterString.write(value.subject, into: &buf)
+        FfiConverterBool.write(value.unread, into: &buf)
+        FfiConverterTypeMessageAddress.write(value.sender, into: &buf)
+        FfiConverterSequenceTypeMessageAddress.write(value.to, into: &buf)
+        FfiConverterSequenceTypeMessageAddress.write(value.cc, into: &buf)
+        FfiConverterSequenceTypeMessageAddress.write(value.bcc, into: &buf)
+        FfiConverterUInt64.write(value.time, into: &buf)
+        FfiConverterUInt64.write(value.size, into: &buf)
+        FfiConverterUInt64.write(value.expirationTime, into: &buf)
+        FfiConverterUInt64.write(value.snoozeTime, into: &buf)
+        FfiConverterBool.write(value.isReplied, into: &buf)
+        FfiConverterBool.write(value.isRepliedAll, into: &buf)
+        FfiConverterBool.write(value.isForwarded, into: &buf)
+        FfiConverterOptionTypeExternalId.write(value.externalId, into: &buf)
+        FfiConverterUInt32.write(value.numAttachments, into: &buf)
+        FfiConverterUInt64.write(value.flags, into: &buf)
+        FfiConverterBool.write(value.starred, into: &buf)
+        FfiConverterOptionSequenceTypeLocalAttachmentMetadata.write(value.attachments, into: &buf)
+        FfiConverterOptionSequenceTypeLocalInlineLabelInfo.write(value.labels, into: &buf)
+        FfiConverterTypeAvatarInformation.write(value.avatarInformation, into: &buf)
+    }
+}
+
+
+public func FfiConverterTypeLocalMessageMetadata_lift(_ buf: RustBuffer) throws -> LocalMessageMetadata {
+    return try FfiConverterTypeLocalMessageMetadata.lift(buf)
+}
+
+public func FfiConverterTypeLocalMessageMetadata_lower(_ value: LocalMessageMetadata) -> RustBuffer {
+    return FfiConverterTypeLocalMessageMetadata.lower(value)
+}
+
 fileprivate struct FfiConverterOptionString: FfiConverterRustBuffer {
     typealias SwiftType = String?
 
@@ -1241,6 +1482,27 @@ fileprivate struct FfiConverterOptionTypeConversationId: FfiConverterRustBuffer 
     }
 }
 
+fileprivate struct FfiConverterOptionTypeExternalId: FfiConverterRustBuffer {
+    typealias SwiftType = ExternalId?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterTypeExternalId.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterTypeExternalId.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
 fileprivate struct FfiConverterOptionTypeLabelId: FfiConverterRustBuffer {
     typealias SwiftType = LabelId?
 
@@ -1257,6 +1519,48 @@ fileprivate struct FfiConverterOptionTypeLabelId: FfiConverterRustBuffer {
         switch try readInt(&buf) as Int8 {
         case 0: return nil
         case 1: return try FfiConverterTypeLabelId.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
+fileprivate struct FfiConverterOptionTypeMessageId: FfiConverterRustBuffer {
+    typealias SwiftType = MessageId?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterTypeMessageId.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterTypeMessageId.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
+fileprivate struct FfiConverterOptionTypeLocalConversationId: FfiConverterRustBuffer {
+    typealias SwiftType = LocalConversationId?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterTypeLocalConversationId.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterTypeLocalConversationId.read(from: &buf)
         default: throw UniffiInternalError.unexpectedOptionalTag
         }
     }
@@ -1348,6 +1652,12 @@ fileprivate struct FfiConverterSequenceTypeMessageAddress: FfiConverterRustBuffe
         return seq
     }
 }
+
+
+
+
+
+
 
 
 
@@ -1494,6 +1804,40 @@ public func FfiConverterTypeLocalLabelId_lift(_ value: UInt64) throws -> LocalLa
 
 public func FfiConverterTypeLocalLabelId_lower(_ value: LocalLabelId) -> UInt64 {
     return FfiConverterTypeLocalLabelId.lower(value)
+}
+
+
+
+/**
+ * Typealias from the type name used in the UDL file to the builtin type.  This
+ * is needed because the UDL type name is used in function/method signatures.
+ */
+public typealias LocalMessageId = UInt64
+public struct FfiConverterTypeLocalMessageId: FfiConverter {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> LocalMessageId {
+        return try FfiConverterUInt64.read(from: &buf)
+    }
+
+    public static func write(_ value: LocalMessageId, into buf: inout [UInt8]) {
+        return FfiConverterUInt64.write(value, into: &buf)
+    }
+
+    public static func lift(_ value: UInt64) throws -> LocalMessageId {
+        return try FfiConverterUInt64.lift(value)
+    }
+
+    public static func lower(_ value: LocalMessageId) -> UInt64 {
+        return FfiConverterUInt64.lower(value)
+    }
+}
+
+
+public func FfiConverterTypeLocalMessageId_lift(_ value: UInt64) throws -> LocalMessageId {
+    return try FfiConverterTypeLocalMessageId.lift(value)
+}
+
+public func FfiConverterTypeLocalMessageId_lower(_ value: LocalMessageId) -> UInt64 {
+    return FfiConverterTypeLocalMessageId.lower(value)
 }
 
 

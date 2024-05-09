@@ -24,15 +24,15 @@ struct AsyncSenderImageView<Content>: View where Content: View {
     @StateObject private var loader: SenderImageLoader
     @ViewBuilder private var content: (SenderImageLoader.Image) -> Content
 
-    private let addresses: [MessageAddress]
+    private let senderImageParams: SenderImageDataParameters
 
     init(
         loader: SenderImageLoader = .init(),
-        addresses: [MessageAddress],
+        senderImageParams: SenderImageDataParameters,
         @ViewBuilder content: @escaping (SenderImageLoader.Image) -> Content
     ) {
         _loader = .init(wrappedValue: loader)
-        self.addresses = addresses
+        self.senderImageParams = senderImageParams
         self.content = content
     }
 
@@ -40,7 +40,7 @@ struct AsyncSenderImageView<Content>: View where Content: View {
         content(loader.senderImage)
             .onAppear() {
                 Task {
-                    await loader.loadImage(for: addresses, colorScheme: colorScheme)
+                    await loader.loadImage(for: senderImageParams, colorScheme: colorScheme)
                 }
             }
     }
@@ -60,8 +60,8 @@ final class SenderImageLoader: ObservableObject {
     }
 
     @MainActor
-    func loadImage(for addresses: [MessageAddress], colorScheme: ColorScheme) async {
-        guard let image = await provider.senderImage(for: addresses, colorScheme: colorScheme) else {
+    func loadImage(for params: SenderImageDataParameters, colorScheme: ColorScheme) async {
+        guard let image = await provider.senderImage(for: params, colorScheme: colorScheme) else {
             senderImage = .empty
             return
         }
@@ -71,13 +71,13 @@ final class SenderImageLoader: ObservableObject {
 
 #Preview {
     class DummyDataSource: SenderImageDataSource {
-        func senderImage(for emails: [MessageAddress], colorScheme: ColorScheme) async -> UIImage? {
+        func senderImage(for params: SenderImageDataParameters, colorScheme: ColorScheme) async -> UIImage? {
             return PreviewData.senderImage
-        }
+        }        
     }
     let loader = SenderImageLoader(provider: DummyDataSource())
 
-    return AsyncSenderImageView(loader: loader, addresses: []) { image in
+    return AsyncSenderImageView(loader: loader, senderImageParams: .init()) { image in
         switch image {
         case .empty:
             Text("EMPTY")

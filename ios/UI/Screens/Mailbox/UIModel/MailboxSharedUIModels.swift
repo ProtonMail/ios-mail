@@ -22,18 +22,18 @@ import struct proton_mail_uniffi.MessageAddress
 struct AvatarUIModel {
     let initials: String
     let senderImage: UIImage?
-    let messageAddresses: [MessageAddress]
+    let senderImageParams: SenderImageDataParameters
     let backgroundColor: Color
 
     init(
         initials: String,
         senderImage: UIImage? = nil,
-        messageAddresses: [MessageAddress],
+        senderImageParams: SenderImageDataParameters,
         backgroundColor: Color = DS.Color.Background.secondary
     ) {
         self.initials = initials
         self.senderImage = senderImage
-        self.messageAddresses = messageAddresses
+        self.senderImageParams = senderImageParams
         self.backgroundColor = backgroundColor
     }
 }

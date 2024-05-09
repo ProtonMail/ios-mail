@@ -1115,25 +1115,12 @@ public protocol MailUserSessionProtocol : AnyObject {
     func executePendingActions() async throws 
     
     /**
-     * Get the sender image for a sender address.
-     *
-     * # Parameters
-     * * `size`: Is used to give the x*x size of the returned image (will default to 32 if none provided).
-     * * `mode`: Can be used to select if the "light" or "dark" mode of the image is desired (default is light).
-     * * `format`: Desired image format, if none is specified the default format of the image will be used.
-     *
-     * Returns `None` if no image needs to be displayed.
-     *
-     * # Errors
-     * Returns errors if the API call fails, the mode value is invalid, the conversation doesn't exist, or
-     * if there's an issue with the sender that causes problems when creating the API request on our side.
-     */
-    func imageForSender(sender: MessageAddress, size: UInt32?, mode: String?, format: String?) async throws  -> Data?
-    
-    /**
      * Get the sender image for a list of senders.
      *
      * # Parameters
+     * * `address`: Email address of the sender.
+     * * `bimi_selector`: BIMI protocol selector.
+     * * `display_sender_image`: Whether this sender would has sender image enabled.
      * * `size`: Is used to give the x*x size of the returned image (will default to 32 if none provided).
      * * `mode`: Can be used to select if the "light" or "dark" mode of the image is desired (default is light).
      * * `format`: Desired image format, if none is specified the default format of the image will be used.
@@ -1144,7 +1131,7 @@ public protocol MailUserSessionProtocol : AnyObject {
      * Returns errors if the API call fails, the mode value is invalid, the conversation doesn't exist, or
      * if there's an issue with the sender that causes problems when creating the API request on our side.
      */
-    func imageForSenders(senders: [MessageAddress], size: UInt32?, mode: String?, format: String?) async throws  -> Data?
+    func imageForSender(address: String, bimiSelector: String?, displaySenderImage: Bool, size: UInt32?, mode: String?, format: String?) async throws  -> Data?
     
     /**
      * Initialize the user context. Should be called at least once.
@@ -1306,9 +1293,12 @@ open func executePendingActions()async throws  {
 }
     
     /**
-     * Get the sender image for a sender address.
+     * Get the sender image for a list of senders.
      *
      * # Parameters
+     * * `address`: Email address of the sender.
+     * * `bimi_selector`: BIMI protocol selector.
+     * * `display_sender_image`: Whether this sender would has sender image enabled.
      * * `size`: Is used to give the x*x size of the returned image (will default to 32 if none provided).
      * * `mode`: Can be used to select if the "light" or "dark" mode of the image is desired (default is light).
      * * `format`: Desired image format, if none is specified the default format of the image will be used.
@@ -1319,44 +1309,13 @@ open func executePendingActions()async throws  {
      * Returns errors if the API call fails, the mode value is invalid, the conversation doesn't exist, or
      * if there's an issue with the sender that causes problems when creating the API request on our side.
      */
-open func imageForSender(sender: MessageAddress, size: UInt32?, mode: String?, format: String?)async throws  -> Data? {
+open func imageForSender(address: String, bimiSelector: String?, displaySenderImage: Bool, size: UInt32?, mode: String?, format: String?)async throws  -> Data? {
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
                 uniffi_proton_mail_uniffi_fn_method_mailusersession_image_for_sender(
                     self.uniffiClonePointer(),
-                    FfiConverterTypeMessageAddress_lower(sender),FfiConverterOptionUInt32.lower(size),FfiConverterOptionString.lower(mode),FfiConverterOptionString.lower(format)
-                )
-            },
-            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
-            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
-            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
-            liftFunc: FfiConverterOptionData.lift,
-            errorHandler: FfiConverterTypeMailSessionError.lift
-        )
-}
-    
-    /**
-     * Get the sender image for a list of senders.
-     *
-     * # Parameters
-     * * `size`: Is used to give the x*x size of the returned image (will default to 32 if none provided).
-     * * `mode`: Can be used to select if the "light" or "dark" mode of the image is desired (default is light).
-     * * `format`: Desired image format, if none is specified the default format of the image will be used.
-     *
-     * Returns `None` if no image needs to be displayed.
-     *
-     * # Errors
-     * Returns errors if the API call fails, the mode value is invalid, the conversation doesn't exist, or
-     * if there's an issue with the sender that causes problems when creating the API request on our side.
-     */
-open func imageForSenders(senders: [MessageAddress], size: UInt32?, mode: String?, format: String?)async throws  -> Data? {
-    return
-        try  await uniffiRustCallAsync(
-            rustFutureFunc: {
-                uniffi_proton_mail_uniffi_fn_method_mailusersession_image_for_senders(
-                    self.uniffiClonePointer(),
-                    FfiConverterSequenceTypeMessageAddress.lower(senders),FfiConverterOptionUInt32.lower(size),FfiConverterOptionString.lower(mode),FfiConverterOptionString.lower(format)
+                    FfiConverterString.lower(address),FfiConverterOptionString.lower(bimiSelector),FfiConverterBool.lower(displaySenderImage),FfiConverterOptionUInt32.lower(size),FfiConverterOptionString.lower(mode),FfiConverterOptionString.lower(format)
                 )
             },
             pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
@@ -1564,6 +1523,23 @@ public protocol MailboxProtocol : AnyObject {
     func labelId()  -> UInt64
     
     /**
+     * Loads the plaintext attachment with the given local attachment identifier into the buffer.
+     *
+     * Internally loads the encrypted attachment, decrypts it using the user's matching address keys,
+     * and writes the data into the buffer.
+     * Additionally, attempts to verify any attached signatures with the sender's keys. The result can be accessed via
+     * the `verification_result` field in the [`AttachmentBufferResult`] result type.
+     *
+     * # Warning
+     * Signature verification is currently always failing since no sender keys are fetched yet.
+     *
+     * # Errors
+     * Returns errors if the retrieval or decryption of the attachment fails.
+     * Signature verification failures are not returned as errors.
+     */
+    func loadAttachmentToBuffer(localAttachmentId: UInt64) async throws  -> DecryptedAttachment
+    
+    /**
      * Mark the given conversations as read.
      */
     func markConversationsRead(ids: [UInt64]) throws 
@@ -1600,10 +1576,20 @@ public protocol MailboxProtocol : AnyObject {
     func moveConversationsWithRemoteId(labelId: LabelId, ids: [UInt64]) throws 
     
     /**
-     * Create a live query for conversations for the currently selected label. If you
-     * change the mailbox label with `switch_label` you need to create a new instance.
+     * Create a live query for conversations for the currently selected label.
+     *
+     * # Errors
+     * Return error if the mailbox's view mode is not [`MailSettingsViewMode::Conversations`].
      */
-    func newConversationLiveQuery(limit: Int64, cb: MailboxLiveQueryUpdatedCallback)  -> MailboxConversationLiveQuery
+    func newConversationLiveQuery(limit: Int64, cb: MailboxLiveQueryUpdatedCallback) throws  -> MailboxConversationLiveQuery
+    
+    /**
+     * Create a live query for messages for the currently selected label.
+     *
+     * # Errors
+     * Return error if the mailbox's view mode is not [`MailSettingsViewMode::Messages`].
+     */
+    func newMessageLiveQuery(limit: Int64, cb: MailboxLiveQueryUpdatedCallback) throws  -> MailboxMessageLiveQuery
     
     /**
      * Star the given conversations.
@@ -1631,6 +1617,11 @@ public protocol MailboxProtocol : AnyObject {
      * Returns error if the action fails.
      */
     func unstarConversations(ids: [UInt64]) throws 
+    
+    /**
+     * Get the mailbox's active view mode.
+     */
+    func viewMode()  -> MailSettingsViewMode
     
 }
 
@@ -1789,6 +1780,38 @@ open func labelId() -> UInt64 {
 }
     
     /**
+     * Loads the plaintext attachment with the given local attachment identifier into the buffer.
+     *
+     * Internally loads the encrypted attachment, decrypts it using the user's matching address keys,
+     * and writes the data into the buffer.
+     * Additionally, attempts to verify any attached signatures with the sender's keys. The result can be accessed via
+     * the `verification_result` field in the [`AttachmentBufferResult`] result type.
+     *
+     * # Warning
+     * Signature verification is currently always failing since no sender keys are fetched yet.
+     *
+     * # Errors
+     * Returns errors if the retrieval or decryption of the attachment fails.
+     * Signature verification failures are not returned as errors.
+     */
+open func loadAttachmentToBuffer(localAttachmentId: UInt64)async throws  -> DecryptedAttachment {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_method_mailbox_load_attachment_to_buffer(
+                    self.uniffiClonePointer(),
+                    FfiConverterUInt64.lower(localAttachmentId)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
+            liftFunc: FfiConverterTypeDecryptedAttachment.lift,
+            errorHandler: FfiConverterTypeMailboxError.lift
+        )
+}
+    
+    /**
      * Mark the given conversations as read.
      */
 open func markConversationsRead(ids: [UInt64])throws  {try rustCallWithError(FfiConverterTypeMailboxError.lift) {
@@ -1847,12 +1870,29 @@ open func moveConversationsWithRemoteId(labelId: LabelId, ids: [UInt64])throws  
 }
     
     /**
-     * Create a live query for conversations for the currently selected label. If you
-     * change the mailbox label with `switch_label` you need to create a new instance.
+     * Create a live query for conversations for the currently selected label.
+     *
+     * # Errors
+     * Return error if the mailbox's view mode is not [`MailSettingsViewMode::Conversations`].
      */
-open func newConversationLiveQuery(limit: Int64, cb: MailboxLiveQueryUpdatedCallback) -> MailboxConversationLiveQuery {
-    return try!  FfiConverterTypeMailboxConversationLiveQuery.lift(try! rustCall() {
+open func newConversationLiveQuery(limit: Int64, cb: MailboxLiveQueryUpdatedCallback)throws  -> MailboxConversationLiveQuery {
+    return try  FfiConverterTypeMailboxConversationLiveQuery.lift(try rustCallWithError(FfiConverterTypeMailboxError.lift) {
     uniffi_proton_mail_uniffi_fn_method_mailbox_new_conversation_live_query(self.uniffiClonePointer(),
+        FfiConverterInt64.lower(limit),
+        FfiConverterCallbackInterfaceMailboxLiveQueryUpdatedCallback.lower(cb),$0
+    )
+})
+}
+    
+    /**
+     * Create a live query for messages for the currently selected label.
+     *
+     * # Errors
+     * Return error if the mailbox's view mode is not [`MailSettingsViewMode::Messages`].
+     */
+open func newMessageLiveQuery(limit: Int64, cb: MailboxLiveQueryUpdatedCallback)throws  -> MailboxMessageLiveQuery {
+    return try  FfiConverterTypeMailboxMessageLiveQuery.lift(try rustCallWithError(FfiConverterTypeMailboxError.lift) {
+    uniffi_proton_mail_uniffi_fn_method_mailbox_new_message_live_query(self.uniffiClonePointer(),
         FfiConverterInt64.lower(limit),
         FfiConverterCallbackInterfaceMailboxLiveQueryUpdatedCallback.lower(cb),$0
     )
@@ -1900,6 +1940,16 @@ open func unstarConversations(ids: [UInt64])throws  {try rustCallWithError(FfiCo
         FfiConverterSequenceUInt64.lower(ids),$0
     )
 }
+}
+    
+    /**
+     * Get the mailbox's active view mode.
+     */
+open func viewMode() -> MailSettingsViewMode {
+    return try!  FfiConverterTypeMailSettingsViewMode_lift(try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_method_mailbox_view_mode(self.uniffiClonePointer(),$0
+    )
+})
 }
     
 
@@ -2099,6 +2149,317 @@ public func FfiConverterTypeMailboxConversationLiveQuery_lower(_ value: MailboxC
 
 
 /**
+ * Live queries behave similarly to CoreData/Room's FetchedResult/ObservedQueries. However, since
+ * the observation happens from the rust side we can't provide optimal default integration in
+ * the target application runtime (JetPack Compose/SwiftUI).
+ *
+ * Live queries accept a callback which will be triggered when the query has been refreshed.
+ * Refresh can occur when the tables the query is watching are modified.
+ * Once a callback has occurred you should [`$name::value()`] to access the new data.
+ *
+ * [`$name::value()`] can be called as many times as you wish and will always return the
+ * latest result of the query.
+
+ */
+public protocol MailboxMessageLiveQueryProtocol : AnyObject {
+    
+    /**
+     * Terminate the observer for this query and stop receiving updates.
+     */
+    func disconnect() 
+    
+    /**
+     * Get the latest value for this Query.
+     */
+    func value()  -> [LocalMessageMetadata]
+    
+}
+
+/**
+ * Live queries behave similarly to CoreData/Room's FetchedResult/ObservedQueries. However, since
+ * the observation happens from the rust side we can't provide optimal default integration in
+ * the target application runtime (JetPack Compose/SwiftUI).
+ *
+ * Live queries accept a callback which will be triggered when the query has been refreshed.
+ * Refresh can occur when the tables the query is watching are modified.
+ * Once a callback has occurred you should [`$name::value()`] to access the new data.
+ *
+ * [`$name::value()`] can be called as many times as you wish and will always return the
+ * latest result of the query.
+
+ */
+open class MailboxMessageLiveQuery:
+    MailboxMessageLiveQueryProtocol {
+    fileprivate let pointer: UnsafeMutableRawPointer!
+
+    /// Used to instantiate a [FFIObject] without an actual pointer, for fakes in tests, mostly.
+    public struct NoPointer {
+        public init() {}
+    }
+
+    // TODO: We'd like this to be `private` but for Swifty reasons,
+    // we can't implement `FfiConverter` without making this `required` and we can't
+    // make it `required` without making it `public`.
+    required public init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        self.pointer = pointer
+    }
+
+    /// This constructor can be used to instantiate a fake object.
+    /// - Parameter noPointer: Placeholder value so we can have a constructor separate from the default empty one that may be implemented for classes extending [FFIObject].
+    ///
+    /// - Warning:
+    ///     Any object instantiated with this constructor cannot be passed to an actual Rust-backed object. Since there isn't a backing [Pointer] the FFI lower functions will crash.
+    public init(noPointer: NoPointer) {
+        self.pointer = nil
+    }
+
+    public func uniffiClonePointer() -> UnsafeMutableRawPointer {
+        return try! rustCall { uniffi_proton_mail_uniffi_fn_clone_mailboxmessagelivequery(self.pointer, $0) }
+    }
+    // No primary constructor declared for this class.
+
+    deinit {
+        guard let pointer = pointer else {
+            return
+        }
+
+        try! rustCall { uniffi_proton_mail_uniffi_fn_free_mailboxmessagelivequery(pointer, $0) }
+    }
+
+    
+
+    
+    /**
+     * Terminate the observer for this query and stop receiving updates.
+     */
+open func disconnect() {try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_method_mailboxmessagelivequery_disconnect(self.uniffiClonePointer(),$0
+    )
+}
+}
+    
+    /**
+     * Get the latest value for this Query.
+     */
+open func value() -> [LocalMessageMetadata] {
+    return try!  FfiConverterSequenceTypeLocalMessageMetadata.lift(try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_method_mailboxmessagelivequery_value(self.uniffiClonePointer(),$0
+    )
+})
+}
+    
+
+}
+
+public struct FfiConverterTypeMailboxMessageLiveQuery: FfiConverter {
+
+    typealias FfiType = UnsafeMutableRawPointer
+    typealias SwiftType = MailboxMessageLiveQuery
+
+    public static func lift(_ pointer: UnsafeMutableRawPointer) throws -> MailboxMessageLiveQuery {
+        return MailboxMessageLiveQuery(unsafeFromRawPointer: pointer)
+    }
+
+    public static func lower(_ value: MailboxMessageLiveQuery) -> UnsafeMutableRawPointer {
+        return value.uniffiClonePointer()
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> MailboxMessageLiveQuery {
+        let v: UInt64 = try readInt(&buf)
+        // The Rust code won't compile if a pointer won't fit in a UInt64.
+        // We have to go via `UInt` because that's the thing that's the size of a pointer.
+        let ptr = UnsafeMutableRawPointer(bitPattern: UInt(truncatingIfNeeded: v))
+        if (ptr == nil) {
+            throw UniffiInternalError.unexpectedNullPointer
+        }
+        return try lift(ptr!)
+    }
+
+    public static func write(_ value: MailboxMessageLiveQuery, into buf: inout [UInt8]) {
+        // This fiddling is because `Int` is the thing that's the same size as a pointer.
+        // The Rust code won't compile if a pointer won't fit in a `UInt64`.
+        writeInt(&buf, UInt64(bitPattern: Int64(Int(bitPattern: lower(value)))))
+    }
+}
+
+
+
+
+public func FfiConverterTypeMailboxMessageLiveQuery_lift(_ pointer: UnsafeMutableRawPointer) throws -> MailboxMessageLiveQuery {
+    return try FfiConverterTypeMailboxMessageLiveQuery.lift(pointer)
+}
+
+public func FfiConverterTypeMailboxMessageLiveQuery_lower(_ value: MailboxMessageLiveQuery) -> UnsafeMutableRawPointer {
+    return FfiConverterTypeMailboxMessageLiveQuery.lower(value)
+}
+
+
+
+
+/**
+ * Represent the result of a `OpenPGP` signature verification.
+ */
+public protocol SignatureVerificationResultProtocol : AnyObject {
+    
+    /**
+     * Returns more info about the signature verification error.
+     *
+     * If the verification was successful there is no message.
+     */
+    func errorInfo()  -> String?
+    
+    /**
+     * Returns the creation time of the signature.
+     */
+    func signatureCreationTime()  -> UInt64?
+    
+    /**
+     * Returns the key id of the key the signature was created with if any.
+     */
+    func signatureKeyId()  -> UInt64?
+    
+    /**
+     * The result of the signature verification with an enum type.
+     */
+    func verificationResult()  -> SignatureVerification
+    
+}
+
+/**
+ * Represent the result of a `OpenPGP` signature verification.
+ */
+open class SignatureVerificationResult:
+    SignatureVerificationResultProtocol {
+    fileprivate let pointer: UnsafeMutableRawPointer!
+
+    /// Used to instantiate a [FFIObject] without an actual pointer, for fakes in tests, mostly.
+    public struct NoPointer {
+        public init() {}
+    }
+
+    // TODO: We'd like this to be `private` but for Swifty reasons,
+    // we can't implement `FfiConverter` without making this `required` and we can't
+    // make it `required` without making it `public`.
+    required public init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        self.pointer = pointer
+    }
+
+    /// This constructor can be used to instantiate a fake object.
+    /// - Parameter noPointer: Placeholder value so we can have a constructor separate from the default empty one that may be implemented for classes extending [FFIObject].
+    ///
+    /// - Warning:
+    ///     Any object instantiated with this constructor cannot be passed to an actual Rust-backed object. Since there isn't a backing [Pointer] the FFI lower functions will crash.
+    public init(noPointer: NoPointer) {
+        self.pointer = nil
+    }
+
+    public func uniffiClonePointer() -> UnsafeMutableRawPointer {
+        return try! rustCall { uniffi_proton_mail_uniffi_fn_clone_signatureverificationresult(self.pointer, $0) }
+    }
+    // No primary constructor declared for this class.
+
+    deinit {
+        guard let pointer = pointer else {
+            return
+        }
+
+        try! rustCall { uniffi_proton_mail_uniffi_fn_free_signatureverificationresult(pointer, $0) }
+    }
+
+    
+
+    
+    /**
+     * Returns more info about the signature verification error.
+     *
+     * If the verification was successful there is no message.
+     */
+open func errorInfo() -> String? {
+    return try!  FfiConverterOptionString.lift(try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_method_signatureverificationresult_error_info(self.uniffiClonePointer(),$0
+    )
+})
+}
+    
+    /**
+     * Returns the creation time of the signature.
+     */
+open func signatureCreationTime() -> UInt64? {
+    return try!  FfiConverterOptionUInt64.lift(try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_method_signatureverificationresult_signature_creation_time(self.uniffiClonePointer(),$0
+    )
+})
+}
+    
+    /**
+     * Returns the key id of the key the signature was created with if any.
+     */
+open func signatureKeyId() -> UInt64? {
+    return try!  FfiConverterOptionUInt64.lift(try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_method_signatureverificationresult_signature_key_id(self.uniffiClonePointer(),$0
+    )
+})
+}
+    
+    /**
+     * The result of the signature verification with an enum type.
+     */
+open func verificationResult() -> SignatureVerification {
+    return try!  FfiConverterTypeSignatureVerification.lift(try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_method_signatureverificationresult_verification_result(self.uniffiClonePointer(),$0
+    )
+})
+}
+    
+
+}
+
+public struct FfiConverterTypeSignatureVerificationResult: FfiConverter {
+
+    typealias FfiType = UnsafeMutableRawPointer
+    typealias SwiftType = SignatureVerificationResult
+
+    public static func lift(_ pointer: UnsafeMutableRawPointer) throws -> SignatureVerificationResult {
+        return SignatureVerificationResult(unsafeFromRawPointer: pointer)
+    }
+
+    public static func lower(_ value: SignatureVerificationResult) -> UnsafeMutableRawPointer {
+        return value.uniffiClonePointer()
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SignatureVerificationResult {
+        let v: UInt64 = try readInt(&buf)
+        // The Rust code won't compile if a pointer won't fit in a UInt64.
+        // We have to go via `UInt` because that's the thing that's the size of a pointer.
+        let ptr = UnsafeMutableRawPointer(bitPattern: UInt(truncatingIfNeeded: v))
+        if (ptr == nil) {
+            throw UniffiInternalError.unexpectedNullPointer
+        }
+        return try lift(ptr!)
+    }
+
+    public static func write(_ value: SignatureVerificationResult, into buf: inout [UInt8]) {
+        // This fiddling is because `Int` is the thing that's the same size as a pointer.
+        // The Rust code won't compile if a pointer won't fit in a `UInt64`.
+        writeInt(&buf, UInt64(bitPattern: Int64(Int(bitPattern: lower(value)))))
+    }
+}
+
+
+
+
+public func FfiConverterTypeSignatureVerificationResult_lift(_ pointer: UnsafeMutableRawPointer) throws -> SignatureVerificationResult {
+    return try FfiConverterTypeSignatureVerificationResult.lift(pointer)
+}
+
+public func FfiConverterTypeSignatureVerificationResult_lower(_ value: SignatureVerificationResult) -> UnsafeMutableRawPointer {
+    return FfiConverterTypeSignatureVerificationResult.lower(value)
+}
+
+
+
+
+/**
  * Represents a session that has been stored on the device.
  */
 public protocol StoredSessionProtocol : AnyObject {
@@ -2252,6 +2613,70 @@ public func FfiConverterTypeStoredSession_lift(_ pointer: UnsafeMutableRawPointe
 
 public func FfiConverterTypeStoredSession_lower(_ value: StoredSession) -> UnsafeMutableRawPointer {
     return FfiConverterTypeStoredSession.lower(value)
+}
+
+
+/**
+ * Returned by [`Mailbox::load_attachment_to_buffer`].
+ */
+public struct DecryptedAttachment {
+    /**
+     * Metadata of the decrypted attachment.
+     */
+    public var attachmentMetadata: LocalAttachmentMetadata
+    /**
+     * The attachment content.
+     */
+    public var content: Data
+    /**
+     * The result of the signature verification.
+     */
+    public var verificationResult: SignatureVerificationResult
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(
+        /**
+         * Metadata of the decrypted attachment.
+         */attachmentMetadata: LocalAttachmentMetadata, 
+        /**
+         * The attachment content.
+         */content: Data, 
+        /**
+         * The result of the signature verification.
+         */verificationResult: SignatureVerificationResult) {
+        self.attachmentMetadata = attachmentMetadata
+        self.content = content
+        self.verificationResult = verificationResult
+    }
+}
+
+
+
+public struct FfiConverterTypeDecryptedAttachment: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> DecryptedAttachment {
+        return
+            try DecryptedAttachment(
+                attachmentMetadata: FfiConverterTypeLocalAttachmentMetadata.read(from: &buf), 
+                content: FfiConverterData.read(from: &buf), 
+                verificationResult: FfiConverterTypeSignatureVerificationResult.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: DecryptedAttachment, into buf: inout [UInt8]) {
+        FfiConverterTypeLocalAttachmentMetadata.write(value.attachmentMetadata, into: &buf)
+        FfiConverterData.write(value.content, into: &buf)
+        FfiConverterTypeSignatureVerificationResult.write(value.verificationResult, into: &buf)
+    }
+}
+
+
+public func FfiConverterTypeDecryptedAttachment_lift(_ buf: RustBuffer) throws -> DecryptedAttachment {
+    return try FfiConverterTypeDecryptedAttachment.lift(buf)
+}
+
+public func FfiConverterTypeDecryptedAttachment_lower(_ value: DecryptedAttachment) -> RustBuffer {
+    return FfiConverterTypeDecryptedAttachment.lower(value)
 }
 
 
@@ -2783,6 +3208,14 @@ public enum MailboxError {
     
     case ApiError(message: String)
     
+    case InvalidViewMode(message: String)
+    
+    case AddressDomainLogoError(message: String)
+    
+    case AttachmentNotFound(message: String)
+    
+    case AttachmentDecryption(message: String)
+    
     case Other(message: String)
     
 }
@@ -2834,7 +3267,23 @@ public struct FfiConverterTypeMailboxError: FfiConverterRustBuffer {
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 10: return .Other(
+        case 10: return .InvalidViewMode(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 11: return .AddressDomainLogoError(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 12: return .AttachmentNotFound(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 13: return .AttachmentDecryption(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 14: return .Other(
             message: try FfiConverterString.read(from: &buf)
         )
         
@@ -2867,8 +3316,16 @@ public struct FfiConverterTypeMailboxError: FfiConverterRustBuffer {
             writeInt(&buf, Int32(8))
         case .ApiError(_ /* message is ignored*/):
             writeInt(&buf, Int32(9))
-        case .Other(_ /* message is ignored*/):
+        case .InvalidViewMode(_ /* message is ignored*/):
             writeInt(&buf, Int32(10))
+        case .AddressDomainLogoError(_ /* message is ignored*/):
+            writeInt(&buf, Int32(11))
+        case .AttachmentNotFound(_ /* message is ignored*/):
+            writeInt(&buf, Int32(12))
+        case .AttachmentDecryption(_ /* message is ignored*/):
+            writeInt(&buf, Int32(13))
+        case .Other(_ /* message is ignored*/):
+            writeInt(&buf, Int32(14))
 
         
         }
@@ -3025,6 +3482,107 @@ public func FfiConverterTypeSessionError_lower(_ value: SessionError) -> RustBuf
 
 extension SessionError: Sendable {} 
 extension SessionError: Equatable, Hashable {}
+
+
+
+// Note that we don't yet support `indirect` for enums.
+// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
+
+public enum SignatureVerification {
+    
+    /**
+     * Successfully verified the signature
+     */
+    case ok
+    /**
+     * No signature found
+     */
+    case notSigned
+    /**
+     * No matching key found.
+     */
+    case noVerifier
+    /**
+     * Signature verification failure.
+     */
+    case failed
+    /**
+     * Signature context did not match verification context.
+     */
+    case badContext
+    /**
+     * Unknown error occurred.
+     */
+    case runtimeError
+}
+
+
+public struct FfiConverterTypeSignatureVerification: FfiConverterRustBuffer {
+    typealias SwiftType = SignatureVerification
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SignatureVerification {
+        let variant: Int32 = try readInt(&buf)
+        switch variant {
+        
+        case 1: return .ok
+        
+        case 2: return .notSigned
+        
+        case 3: return .noVerifier
+        
+        case 4: return .failed
+        
+        case 5: return .badContext
+        
+        case 6: return .runtimeError
+        
+        default: throw UniffiInternalError.unexpectedEnumCase
+        }
+    }
+
+    public static func write(_ value: SignatureVerification, into buf: inout [UInt8]) {
+        switch value {
+        
+        
+        case .ok:
+            writeInt(&buf, Int32(1))
+        
+        
+        case .notSigned:
+            writeInt(&buf, Int32(2))
+        
+        
+        case .noVerifier:
+            writeInt(&buf, Int32(3))
+        
+        
+        case .failed:
+            writeInt(&buf, Int32(4))
+        
+        
+        case .badContext:
+            writeInt(&buf, Int32(5))
+        
+        
+        case .runtimeError:
+            writeInt(&buf, Int32(6))
+        
+        }
+    }
+}
+
+
+public func FfiConverterTypeSignatureVerification_lift(_ buf: RustBuffer) throws -> SignatureVerification {
+    return try FfiConverterTypeSignatureVerification.lift(buf)
+}
+
+public func FfiConverterTypeSignatureVerification_lower(_ value: SignatureVerification) -> RustBuffer {
+    return FfiConverterTypeSignatureVerification.lower(value)
+}
+
+
+extension SignatureVerification: Sendable {} 
+extension SignatureVerification: Equatable, Hashable {}
 
 
 
@@ -3703,6 +4261,27 @@ fileprivate struct FfiConverterOptionUInt32: FfiConverterRustBuffer {
     }
 }
 
+fileprivate struct FfiConverterOptionUInt64: FfiConverterRustBuffer {
+    typealias SwiftType = UInt64?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterUInt64.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterUInt64.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
 fileprivate struct FfiConverterOptionString: FfiConverterRustBuffer {
     typealias SwiftType = String?
 
@@ -3873,28 +4452,6 @@ fileprivate struct FfiConverterSequenceTypeStoredSession: FfiConverterRustBuffer
     }
 }
 
-fileprivate struct FfiConverterSequenceTypeMessageAddress: FfiConverterRustBuffer {
-    typealias SwiftType = [MessageAddress]
-
-    public static func write(_ value: [MessageAddress], into buf: inout [UInt8]) {
-        let len = Int32(value.count)
-        writeInt(&buf, len)
-        for item in value {
-            FfiConverterTypeMessageAddress.write(item, into: &buf)
-        }
-    }
-
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [MessageAddress] {
-        let len: Int32 = try readInt(&buf)
-        var seq = [MessageAddress]()
-        seq.reserveCapacity(Int(len))
-        for _ in 0 ..< len {
-            seq.append(try FfiConverterTypeMessageAddress.read(from: &buf))
-        }
-        return seq
-    }
-}
-
 fileprivate struct FfiConverterSequenceTypeLocalConversation: FfiConverterRustBuffer {
     typealias SwiftType = [LocalConversation]
 
@@ -3960,6 +4517,32 @@ fileprivate struct FfiConverterSequenceTypeLocalLabelWithCount: FfiConverterRust
         return seq
     }
 }
+
+fileprivate struct FfiConverterSequenceTypeLocalMessageMetadata: FfiConverterRustBuffer {
+    typealias SwiftType = [LocalMessageMetadata]
+
+    public static func write(_ value: [LocalMessageMetadata], into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        for item in value {
+            FfiConverterTypeLocalMessageMetadata.write(item, into: &buf)
+        }
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [LocalMessageMetadata] {
+        let len: Int32 = try readInt(&buf)
+        var seq = [LocalMessageMetadata]()
+        seq.reserveCapacity(Int(len))
+        for _ in 0 ..< len {
+            seq.append(try FfiConverterTypeLocalMessageMetadata.read(from: &buf))
+        }
+        return seq
+    }
+}
+
+
+
+
 
 
 
@@ -4100,10 +4683,7 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_execute_pending_actions() != 15772) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_image_for_sender() != 23609) {
-        return InitializationResult.apiChecksumMismatch
-    }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_image_for_senders() != 61442) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_image_for_sender() != 12894) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_initialize() != 41654) {
@@ -4139,6 +4719,9 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_label_id() != 4843) {
         return InitializationResult.apiChecksumMismatch
     }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_load_attachment_to_buffer() != 32401) {
+        return InitializationResult.apiChecksumMismatch
+    }
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_mark_conversations_read() != 39360) {
         return InitializationResult.apiChecksumMismatch
     }
@@ -4151,7 +4734,10 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_move_conversations_with_remote_id() != 60609) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_conversation_live_query() != 60165) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_conversation_live_query() != 43504) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_message_live_query() != 51759) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_star_conversations() != 2423) {
@@ -4163,10 +4749,31 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_unstar_conversations() != 27850) {
         return InitializationResult.apiChecksumMismatch
     }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_view_mode() != 58984) {
+        return InitializationResult.apiChecksumMismatch
+    }
     if (uniffi_proton_mail_uniffi_checksum_method_mailboxconversationlivequery_disconnect() != 55329) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailboxconversationlivequery_value() != 65160) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailboxmessagelivequery_disconnect() != 56194) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailboxmessagelivequery_value() != 4813) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_signatureverificationresult_error_info() != 6062) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_signatureverificationresult_signature_creation_time() != 48544) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_signatureverificationresult_signature_key_id() != 2265) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_signatureverificationresult_verification_result() != 52976) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_storedsession_email() != 51014) {

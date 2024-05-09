@@ -81,7 +81,7 @@ extension MailboxConversationModel {
     }
 
     private func fetchConversations() async throws {
-        self.liveQuery = mailbox?.newConversationLiveQuery(limit: 50, cb: self)
+        self.liveQuery = try mailbox?.newConversationLiveQuery(limit: 50, cb: self)
         await updateData()
     }
 

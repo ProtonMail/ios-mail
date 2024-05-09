@@ -528,12 +528,14 @@ public func FfiConverterTypeAPIEnvConfig_lower(_ value: ApiEnvConfig) -> RustBuf
 public struct Dummy {
     public var userId: UserId
     public var uid: Uid
+    public var aid: AddressId
 
     // Default memberwise initializers are never public by default, so we
     // declare one manually.
-    public init(userId: UserId, uid: Uid) {
+    public init(userId: UserId, uid: Uid, aid: AddressId) {
         self.userId = userId
         self.uid = uid
+        self.aid = aid
     }
 }
 
@@ -547,12 +549,16 @@ extension Dummy: Equatable, Hashable {
         if lhs.uid != rhs.uid {
             return false
         }
+        if lhs.aid != rhs.aid {
+            return false
+        }
         return true
     }
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(userId)
         hasher.combine(uid)
+        hasher.combine(aid)
     }
 }
 
@@ -562,13 +568,15 @@ public struct FfiConverterTypeDummy: FfiConverterRustBuffer {
         return
             try Dummy(
                 userId: FfiConverterTypeUserId.read(from: &buf), 
-                uid: FfiConverterTypeUid.read(from: &buf)
+                uid: FfiConverterTypeUid.read(from: &buf), 
+                aid: FfiConverterTypeAddressId.read(from: &buf)
         )
     }
 
     public static func write(_ value: Dummy, into buf: inout [UInt8]) {
         FfiConverterTypeUserId.write(value.userId, into: &buf)
         FfiConverterTypeUid.write(value.uid, into: &buf)
+        FfiConverterTypeAddressId.write(value.aid, into: &buf)
     }
 }
 
@@ -1389,6 +1397,40 @@ public func FfiConverterTypeWeekStart_lower(_ value: WeekStart) -> RustBuffer {
 extension WeekStart: Sendable {} 
 extension WeekStart: Equatable, Hashable {}
 
+
+
+
+/**
+ * Typealias from the type name used in the UDL file to the builtin type.  This
+ * is needed because the UDL type name is used in function/method signatures.
+ */
+public typealias AddressId = String
+public struct FfiConverterTypeAddressId: FfiConverter {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> AddressId {
+        return try FfiConverterString.read(from: &buf)
+    }
+
+    public static func write(_ value: AddressId, into buf: inout [UInt8]) {
+        return FfiConverterString.write(value, into: &buf)
+    }
+
+    public static func lift(_ value: RustBuffer) throws -> AddressId {
+        return try FfiConverterString.lift(value)
+    }
+
+    public static func lower(_ value: AddressId) -> RustBuffer {
+        return FfiConverterString.lower(value)
+    }
+}
+
+
+public func FfiConverterTypeAddressId_lift(_ value: RustBuffer) throws -> AddressId {
+    return try FfiConverterTypeAddressId.lift(value)
+}
+
+public func FfiConverterTypeAddressId_lower(_ value: AddressId) -> RustBuffer {
+    return FfiConverterTypeAddressId.lower(value)
+}
 
 
 

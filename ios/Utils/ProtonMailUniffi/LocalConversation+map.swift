@@ -38,14 +38,18 @@ extension LocalConversation {
     func toMailboxConversationCellUIModel(selectedIds: Set<PMMailboxItemId>) async -> MailboxConversationCellUIModel {
         var senderImage: UIImage? = nil
         if let firstSender = senders.first {
-            senderImage = await SenderImageMemoryCache.shared.image(for: firstSender.hashValue)
+            senderImage = await Caches.senderImageCache.object(for: firstSender.address)
         }
         return MailboxConversationCellUIModel(
             id: id,
             avatar: .init(
                 initials: avatarInformation.text,
                 senderImage: senderImage,
-                messageAddresses: senders,
+                senderImageParams: .init(
+                    address: senders.first?.address ?? "",
+                    bimiSelector: senders.first?.bimiSelector,
+                    displaySenderImage: senders.first?.displaySenderImage ?? true
+                ),
                 backgroundColor: Color(hex: avatarInformation.color)
             ),
             senders: senders.uiRepresentation,
