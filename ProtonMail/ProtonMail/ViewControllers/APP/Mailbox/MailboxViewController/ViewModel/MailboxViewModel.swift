@@ -51,6 +51,7 @@ protocol MailboxViewModelUIProtocol: AnyObject {
 class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, AttachmentPreviewViewModelProtocol {
     typealias Dependencies = HasCheckProtonServerStatus
     & HasFeatureFlagCache
+    & HasFeatureFlagProvider
     & HasFetchAttachmentUseCase
     & HasFetchAttachmentMetadataUseCase
     & HasFetchMessageDetailUseCase
@@ -386,50 +387,37 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         dependencies.userDefaults[.lastTourVersion] = Constants.App.TourVersion
     }
 
-    func shouldShowJumpToNextMessageSpotlight() -> Bool {
-        guard !ProcessInfo.isRunningUITests else { return false }
-        // If one of logged in user has seen spotlight, shouldn't show it again
-        let shouldShow = dependencies.usersManager.users
-            .map {
-                dependencies
-                    .userIntroductionProgressProvider
-                    .shouldShowSpotlight(for: .jumpToNextMessage, toUserWith: $0.userID)
-            }
-            .reduce(true) { partialResult, shouldShow in
-                partialResult && shouldShow
-            }
-        return shouldShow
-    }
-
     func shouldShowAutoImportContactsSpotlight() -> Bool {
-        guard
-            user.container.autoImportContactsFeature.isFeatureEnabled,
-            !ProcessInfo.isRunningUITests
-        else { return false }
-        // If one of logged in user has seen spotlight, shouldn't show it again
-        let shouldShow = dependencies.usersManager.users
-            .map {
-                dependencies
-                    .userIntroductionProgressProvider
-                    .shouldShowSpotlight(for: .autoImportContacts, toUserWith: $0.userID)
-            }
-            .reduce(true) { partialResult, shouldShow in
-                partialResult && shouldShow
-            }
-        return shouldShow
+        user.container.autoImportContactsFeature.isFeatureEnabled && shouldShowSpotlight(for: .autoImportContacts)
     }
 
-    func hasSeenJumpToNextMessageSpotlight() {
+    func shouldShowSpotlight(for featureKey: SpotlightableFeatureKey) -> Bool {
+        guard !ProcessInfo.isRunningUITests else { return false }
+
+        if 
+            let remoteFeatureFlag = featureKey.correspondingRemoteFeatureFlag,
+            !dependencies.featureFlagProvider.isEnabled(remoteFeatureFlag, reloadValue: true)
+        {
+            return false
+        }
+
+        // If one of logged in user has seen spotlight, shouldn't show it again
+        return dependencies.usersManager.users.allSatisfy {
+            dependencies
+                .userIntroductionProgressProvider
+                .shouldShowSpotlight(for: featureKey, toUserWith: $0.userID)
+        }
+    }
+
+    func hasSeenSpotlight(for featureKey: SpotlightableFeatureKey) {
         dependencies
             .userIntroductionProgressProvider
-            .markSpotlight(for: .jumpToNextMessage, asSeen: true, byUserWith: user.userID)
+            .markSpotlight(for: featureKey, asSeen: true, byUserWith: user.userID)
     }
 
     func hasSeenAutoImportContactsSpotlight() {
         guard user.container.autoImportContactsFeature.isFeatureEnabled else { return }
-        dependencies
-            .userIntroductionProgressProvider
-            .markSpotlight(for: .autoImportContacts, asSeen: true, byUserWith: user.userID)
+        hasSeenSpotlight(for: .autoImportContacts)
     }
 
     func tagUIModels(for conversation: ConversationEntity) -> [TagUIModel] {

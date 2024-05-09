@@ -18,13 +18,24 @@
 import Foundation
 
 enum SpotlightableFeatureKey: String, CaseIterable {
+    case answerInvitation
     case scheduledSend
     case toolbarCustomization
     case messageSwipeNavigationAnimation
-    case snooze
     case messageSwipeNavigation
     case autoImportContacts
     case jumpToNextMessage
+
+    var correspondingRemoteFeatureFlag: MailFeatureFlag? {
+        switch self {
+        case .autoImportContacts:
+            return .autoImportContacts
+        case .answerInvitation:
+            return .answerInvitation
+        default:
+            return nil
+        }
+    }
 }
 
 // sourcery: mock

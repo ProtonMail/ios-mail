@@ -182,18 +182,16 @@ extension SignInManager: LifetimeTrackable {
 private extension SpotlightableFeatureKey {
     var isFeatureEnabledLocallyByDefault: Bool {
         switch self {
-        case .scheduledSend, .toolbarCustomization:
+        case .scheduledSend, .toolbarCustomization, .messageSwipeNavigation, .jumpToNextMessage:
             return true
-        case .messageSwipeNavigation, .snooze, .jumpToNextMessage:
-            return true
-        case .messageSwipeNavigationAnimation, .autoImportContacts:
+        case .answerInvitation, .messageSwipeNavigationAnimation, .autoImportContacts:
             return false
         }
     }
 
     var isFeatureShouldBeSeenByOnce: Bool {
         switch self {
-        case .messageSwipeNavigation, .messageSwipeNavigationAnimation, .snooze, .jumpToNextMessage:
+        case .answerInvitation, .messageSwipeNavigation, .messageSwipeNavigationAnimation, .jumpToNextMessage:
             return true
         case .scheduledSend, .toolbarCustomization, .autoImportContacts:
             return false
