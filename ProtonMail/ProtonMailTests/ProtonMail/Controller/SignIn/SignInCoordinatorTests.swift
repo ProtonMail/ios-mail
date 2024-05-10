@@ -112,7 +112,7 @@ final class SignInCoordinatorTests: XCTestCase {
                                                               finalizeSignIn: { _, _, _, _ in
                                                                   XCTFail("Should not called here")
                                                               },
-                                                              unlockIfRememberedCredentials: { _, _, _, _ in },
+                                                              unlockIfRememberedCredentials: { _, _, _ in },
                                                               saveLoginData: { loginDataRes in
                                                                   loginData = loginDataRes
                                                                   return .success
@@ -141,7 +141,7 @@ final class SignInCoordinatorTests: XCTestCase {
         var wasUnlockCredentialsCalled = false
         let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { _, _, _, tryUnlock in
             tryUnlock()
-        }, unlockIfRememberedCredentials: { _, _, _, _ in wasUnlockCredentialsCalled = true })
+        }, unlockIfRememberedCredentials: { _, _, _ in wasUnlockCredentialsCalled = true })
         let out = SignInCoordinator.loginFlowForSecondAndAnotherAccount(username: "test username", environment: environment) { _ in }
         loginStubFactory.instance?.presentLoginFlowWithUpdateBlockStub.bodyIs { _, _, _, completion in
             completion(.loginStateChanged(.dataIsAvailable(.dummy)))
@@ -174,7 +174,7 @@ final class SignInCoordinatorTests: XCTestCase {
         let loginStubFactory = PMLoginStubFactory()
         let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { _, _, _, tryUnlock in
             tryUnlock()
-        }, unlockIfRememberedCredentials: { _, _, unlockFailed, _ in unlockFailed?() })
+        }, unlockIfRememberedCredentials: { _, unlockFailed, _ in unlockFailed?() })
         var flowResult: SignInCoordinator.FlowResult?
         let out = SignInCoordinator.loginFlowForFirstAccount(startingPoint: .form, environment: environment) { flowResult = $0 }
         loginStubFactory.instance?.presentLoginFlowWithUpdateBlockStub.bodyIs { _, _, _, completion in
@@ -189,7 +189,7 @@ final class SignInCoordinatorTests: XCTestCase {
         let loginStubFactory = PMLoginStubFactory()
         let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make, finalizeSignIn: { _, _, _, tryUnlock in
             tryUnlock()
-        }, unlockIfRememberedCredentials: { _, _, _, unlocked in unlocked?() })
+        }, unlockIfRememberedCredentials: { _, _, unlocked in unlocked?() })
         var flowResult: SignInCoordinator.FlowResult?
         let out = SignInCoordinator.loginFlowForFirstAccount(startingPoint: .form, environment: environment) { flowResult = $0 }
         loginStubFactory.instance?.presentLoginFlowWithUpdateBlockStub.bodyIs { _, _, _, completion in

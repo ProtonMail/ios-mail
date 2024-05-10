@@ -38,8 +38,6 @@ struct SettingsAPI {
     static let path: String = "/\(Constants.App.API_PREFIXED)/settings"
 
     static let settingsPath: String = "/settings"
-
-    static let versionPrefix: String = "/mail/v4"
 }
 
 // Mark : get settings -- SettingsResponse

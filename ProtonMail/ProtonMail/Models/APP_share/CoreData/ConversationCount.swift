@@ -24,7 +24,6 @@
 import CoreData
 import Foundation
 
-// sourcery: CoreDataHelpers
 class ConversationCount: NSManagedObject, LabelCount {
     @NSManaged var userID: String
     @NSManaged var labelID: String

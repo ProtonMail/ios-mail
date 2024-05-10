@@ -233,7 +233,7 @@ extension FetchEventDetailsTests {
         }
 
         let calendarEvents: [EventElement] = [calendarEvent].map { icsString in
-            EventElement(author: "", data: icsString, type: [])
+            EventElement(data: icsString, type: [])
         }
 
         let timeZoneIdentifier = TimeZone.autoupdatingCurrent.identifier
@@ -259,7 +259,6 @@ extension FetchEventDetailsTests {
             startTimezone: timeZoneIdentifier,
             endTime: expectedEventDetails.endDate.timeIntervalSince1970,
             endTimezone: timeZoneIdentifier,
-            fullDay: 0,
             isOrganizer: 0,
             isProtonProtonInvite: 0,
             sharedEventID: UUID().uuidString,
@@ -271,7 +270,7 @@ extension FetchEventDetailsTests {
     private func makeEncryptedEvent(icsString: String, cryptoSessionKey: CryptoSessionKey) throws -> EventElement {
         let plaintext = CryptoGo.CryptoNewPlainMessageFromString(icsString)
         let ciphertext = try cryptoSessionKey.encrypt(plaintext).base64EncodedString()
-        return EventElement(author: "", data: ciphertext, type: .encrypted)
+        return EventElement(data: ciphertext, type: .encrypted)
     }
 
     private func makeBootstrapResponse(

@@ -3,10 +3,6 @@ import CoreData
 {% for type in types.based.NSManagedObject where type|annotated:"CoreDataHelpers" %}
 extension {{ type.name }}: DeletableManagedObject {
     static var entityName: String { "{{ type.name }}" }
-
-    static func makeFetchRequest() -> NSFetchRequest<{{ type.name }}> {
-        NSFetchRequest<{{ type.name }}>(entityName: entityName)
-    }
 }
 
 {% endfor %}

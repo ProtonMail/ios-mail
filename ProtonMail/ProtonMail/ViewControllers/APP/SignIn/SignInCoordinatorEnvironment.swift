@@ -46,7 +46,7 @@ struct SignInCoordinatorEnvironment {
                          @escaping (NSError) -> Void,
                          () -> Void,
                          @escaping () -> Void) -> Void
-    let unlockIfRememberedCredentials: (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void
+    let unlockIfRememberedCredentials: (() -> Void, (() -> Void)?, (() -> Void)?) -> Void
     let loginCreationClosure: LoginCreationClosure
     let shouldShowAlertOnError: Bool
     let saveLoginData: (LoginData) -> SignInManager.LoginDataSavingResult
@@ -61,12 +61,11 @@ struct SignInCoordinatorEnvironment {
     }
 
     func unlockIfRememberedCredentials(
-        forUser: String?,
         requestMailboxPassword: @escaping () -> Void,
         unlockFailed: @escaping () -> Void,
         unlocked: @escaping () -> Void
     ) {
-        unlockIfRememberedCredentials(forUser, requestMailboxPassword, unlockFailed, unlocked)
+        unlockIfRememberedCredentials(requestMailboxPassword, unlockFailed, unlocked)
     }
 }
 
@@ -82,7 +81,7 @@ extension SignInCoordinatorEnvironment {
                      finalizeSignIn: dependencies.signInManager
                          .finalizeSignIn(loginData:onError:showSkeleton:tryUnlock:),
                      unlockIfRememberedCredentials: dependencies.unlockManager
-                         .unlockIfRememberedCredentials(forUser:requestMailboxPassword:unlockFailed:unlocked:),
+                         .unlockIfRememberedCredentials(requestMailboxPassword:unlockFailed:unlocked:),
                      loginCreationClosure: { appName, minimumAccountType, passwordRestrictions, isCloseButtonAvailable in
                          let signup: SignupAvailability = .available(parameters: .init(
                              separateDomainsButton: true,

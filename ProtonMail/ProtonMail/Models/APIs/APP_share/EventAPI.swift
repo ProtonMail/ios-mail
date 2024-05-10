@@ -82,6 +82,7 @@ final class EventLatestIDResponse: Response {
     }
 }
 
+// periphery:ignore
 struct RefreshStatus: OptionSet {
     let rawValue: Int
     // 255 means throw out client cache and reload everything from server, 1 is mail, 2 is contacts
@@ -113,11 +114,6 @@ final class EventCheckResponse: Response {
     var userSettings: [String: Any]?
     var mailSettings: [String: Any]?
 
-    var vpnSettings: [String: Any]? // TODO:: vpn settings events, to use this when we add vpn setting in the app
-    var invoices: [String: Any]? // TODO:: use when we add invoice setting
-    var members: [[String: Any]]? // TODO:: use when we add memebers setting in the app
-    var domains: [[String: Any]]? // TODO:: use when we add domain configure in the app
-
     var addresses: [[String: Any]]?
     var incomingDefaults: [[String: Any]]?
 
@@ -147,11 +143,6 @@ final class EventCheckResponse: Response {
         self.user         = response["User"] as? [String: Any]
         self.userSettings = response["UserSettings"] as? [String: Any]
         self.mailSettings = response["MailSettings"] as? [String: Any]
-
-        // self.vpnSettings = response["VPNSettings"] as? [String : Any]
-        // self.invoices = response["Invoices"] as? [String : Any]
-        // self.members  = response["Members"] as? [[String : Any]]
-        // self.domains  = response["Domains"] as? [[String : Any]]
 
         self.addresses = response["Addresses"] as? [[String: Any]]
         self.incomingDefaults = response["IncomingDefaults"] as? [[String: Any]]

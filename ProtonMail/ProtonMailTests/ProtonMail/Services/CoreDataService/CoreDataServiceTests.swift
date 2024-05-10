@@ -294,7 +294,7 @@ class CoreDataServiceTests: XCTestCase {
         wait(for: [deletionExecuted, writeHasCompleted, deletionCompleted], timeout: 1, enforceOrder: true)
 
         let idsOfStoredMessages = try coreDataService.read { _ in
-            try Message.makeFetchRequest().execute().map(\.messageID)
+            try NSFetchRequest<Message>(entityName: Message.Attributes.entityName).execute().map(\.messageID)
         }
 
         XCTAssertEqual(idsOfStoredMessages, [])

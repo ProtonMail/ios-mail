@@ -25,16 +25,14 @@ final class PrivacyAndDataSettingViewModelTests: XCTestCase {
     var sut: PrivacyAndDataSettingViewModel!
     var user: UserManager!
     var api: APIServiceMock!
-    var analytics: Analytics!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
         testContainer = .init()
         api = .init()
-        analytics = .init()
         user = try UserManager.prepareUser(apiMock: api, globalContainer: testContainer)
-        sut = .init(dependencies: user.container, analytics: analytics)
+        sut = .init(dependencies: user.container)
     }
 
     override func tearDown() {

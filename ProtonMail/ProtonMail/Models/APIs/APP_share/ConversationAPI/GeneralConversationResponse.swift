@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -16,26 +16,19 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import UIKit
 
-// sourcery: mock
-protocol AppTelemetry {
-    func configure(telemetry: Bool, reportCrashes: Bool)
-    func assignUser(userID: UserID?)
-}
+struct GeneralConversationActionResult: Decodable {
+    let response: ResponseCode
 
-struct MailAppTelemetry: AppTelemetry {
-    func configure(telemetry: Bool, reportCrashes: Bool) {
-        DispatchQueue.main.async {
-            Analytics.shared.setup(
-                environment: .production,
-                reportCrashes: reportCrashes,
-                telemetry: telemetry
-            )
-        }
+    enum CodingKeys: String, CodingKey {
+        case response = "Response"
     }
 
-    func assignUser(userID: UserID?) {
-        Analytics.shared.assignUser(userID: userID)
+    struct ResponseCode: Decodable {
+        let code: Int
+
+        enum CodingKeys: String, CodingKey {
+            case code = "Code"
+        }
     }
 }

@@ -154,9 +154,8 @@ final class UnlockManager {
             afterBioAuthPassed()
         }
     }
-    
+
     func unlockIfRememberedCredentials(
-        forUser uid: String? = nil,
         requestMailboxPassword: () -> Void,
         unlockFailed: (() -> Void)? = nil,
         unlocked: (() -> Void)? = nil

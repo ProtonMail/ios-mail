@@ -23,7 +23,6 @@
 import Foundation
 import CoreData
 
-// sourcery: CoreDataHelpers
 class UserEvent: NSManagedObject {
 
     @NSManaged var userID: String

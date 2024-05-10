@@ -161,7 +161,7 @@ extension BioCodeViewController: BioAuthenticating {
         })
     }
 
-    func touch_id_action(_ sender: Any) {
+    func touch_id_action() {
         self.authenticateUser()
     }
 }

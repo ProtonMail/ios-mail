@@ -309,7 +309,6 @@ final class SignInCoordinator {
 
     private func unlockMainKey(failOnMailboxPassword: Bool) {
         environment.unlockIfRememberedCredentials(
-            forUser: username,
             requestMailboxPassword: { [weak self] in
                 assertionFailure("should never happen: the password should be provided by login module")
                 let error: FlowError

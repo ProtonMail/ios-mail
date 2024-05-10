@@ -27,11 +27,9 @@ final class PrivacyAndDataSettingViewModel: SwitchToggleVMProtocol {
         .anonymousCrashReport
     ]
     private let dependencies: Dependencies
-    private let analytics: Analytics
 
-    init(dependencies: Dependencies, analytics: Analytics = .shared) {
+    init(dependencies: Dependencies) {
         self.dependencies = dependencies
-        self.analytics = analytics
     }
 
     private func configureAnalytics() {

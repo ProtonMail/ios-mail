@@ -159,27 +159,11 @@ struct AttendeeTransformer: Decodable {
 struct CalendarFlags: OptionSet, Decodable {
     let rawValue: UInt16
 
-    /// 1: the calendar is all good!
-    static let active = CalendarFlags(rawValue: 1 << 0)
-    /// 2: a deactivated passphrase is again accessible,
-    /// you should re-encrypt the linked calendar key using the primary passphrase
-    static let updatePassphrase = CalendarFlags(rawValue: 1 << 1)
-    /// 4: the calendar needs to be reset
-    static let resetNeeded = CalendarFlags(rawValue: 1 << 2)
-    /// 8: the calendar setup was not completed, need to setup the key and passphrase
-    static let incompleteSetup = CalendarFlags(rawValue: 1 << 3)
-    /// 16: the user lost access to the calendar but an admin can re-invite him
-    public static let accessLost = CalendarFlags(rawValue: 1 << 4)
-    /// 32: the calendar is disabled for the current user only
-    /// (all the addresses linked to the current user's members are disabled)
-    public static let disabledCalendar = CalendarFlags(rawValue: 1 << 5)
-    /// 64: the calendar is disabled because the super-owner disabled his address.
-    /// Possibility to transfer super-ownership to reactive the calendar.
-    public static let superOwnerDisabledCalendar = CalendarFlags(rawValue: 1 << 6)
+    static let disabledCalendar = CalendarFlags(rawValue: 1 << 5)
+    static let superOwnerDisabledCalendar = CalendarFlags(rawValue: 1 << 6)
 }
 
 struct EventElement: Decodable {
-    let author: String
     let data: String
     let type: SecurityFlags
 }
@@ -209,7 +193,6 @@ struct FullEventTransformer: Decodable {
     let startTimezone: String
     let endTime: TimeInterval
     let endTimezone: String
-    let fullDay: Int
     let isOrganizer: Int
     let isProtonProtonInvite: Int
     let sharedEventID: String

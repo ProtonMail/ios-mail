@@ -62,11 +62,6 @@ class MockAppTelemetry: AppTelemetry {
         configureStub(telemetry, reportCrashes)
     }
 
-    @FuncStub(MockAppTelemetry.disable) var disableStub
-    func disable() {
-        disableStub()
-    }
-
     @FuncStub(MockAppTelemetry.assignUser) var assignUserStub
     func assignUser(userID: UserID?) {
         assignUserStub(userID)
