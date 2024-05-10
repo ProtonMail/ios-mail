@@ -95,7 +95,6 @@ class SignInManager {
         self.usersManager.add(auth: auth, user: userInfo, mailSettings: .init())
         self.usersManager.firstUser?.appRatingService.preconditionEventDidOccur(.userSignIn)
 
-        self.usersManager.loggedIn()
         dependencies.userDefaults[.areContactsCached] = 0
 
         dependencies.notificationCenter.post(name: .didSignIn, object: nil)

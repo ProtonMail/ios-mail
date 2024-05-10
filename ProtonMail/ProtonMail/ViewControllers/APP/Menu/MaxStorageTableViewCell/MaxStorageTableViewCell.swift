@@ -152,8 +152,4 @@ class MaxStorageTableViewCell: UITableViewCell, AccessibleCell {
             bottomSeparator.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ].activate()
     }
-
-
-
-
 }

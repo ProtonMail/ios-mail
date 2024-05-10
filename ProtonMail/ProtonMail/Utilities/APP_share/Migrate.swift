@@ -50,8 +50,6 @@ protocol Migrate: AnyObject {
     ///
     /// - Parameter reason: the rebuild reason
     func rebuild(reason: RebuildReason)
-    /// after migrate finished with no errors. this will be called. if sub class received reset then should call this manually
-    func cleanLagacy()
 }
 
 extension Migrate {
@@ -116,8 +114,5 @@ extension Migrate {
                 return
             }
         }
-
-        // The migration is done
-        self.cleanLagacy()
     }
 }

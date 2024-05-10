@@ -88,8 +88,4 @@ class CoreDataCache: Migrate {
         // sharedMessageDataService.cleanUp()
         self.currentVersion = self.latestVersion
     }
-
-    internal func cleanLagacy() {
-
-    }
 }
