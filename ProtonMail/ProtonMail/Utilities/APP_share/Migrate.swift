@@ -38,16 +38,16 @@ protocol Migrate: AnyObject {
     /// rebuild the case
     ///
     /// - Parameter reason: the rebuild reason
-    func rebuild(reason: RebuildReason)
+    func rebuild(reason: RebuildReason) throws
 }
 
 extension Migrate {
 
-    func run() {
+    func run() throws {
 
         /// run rebuild if it is inital run
         guard initalRun == false else {
-            self.rebuild(reason: .inital)
+            try rebuild(reason: .inital)
             return
         }
 
@@ -56,6 +56,6 @@ extension Migrate {
             return
         }
 
-        rebuild(reason: .noSupports)
+        try rebuild(reason: .noSupports)
     }
 }

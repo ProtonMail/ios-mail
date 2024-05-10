@@ -52,13 +52,22 @@ final class RawRepresentableKeychainKey<T: RawRepresentable>: KeychainKeys where
 extension Keychain {
     subscript(_ key: StringKeychainKey) -> String? {
         get {
-            string(forKey: key.name)
+            do {
+                return try stringOrError(forKey: key.name)
+            } catch {
+                SystemLogger.log(error: error)
+                return nil
+            }
         }
         set {
-            if let newValue {
-                set(newValue, forKey: key.name)
-            } else {
-                remove(forKey: key.name)
+            do {
+                if let newValue {
+                    try setOrError(newValue, forKey: key.name)
+                } else {
+                    try removeOrError(forKey: key.name)
+                }
+            } catch {
+                SystemLogger.log(error: error)
             }
         }
     }

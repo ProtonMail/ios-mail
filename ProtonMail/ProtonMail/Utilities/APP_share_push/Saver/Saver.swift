@@ -31,7 +31,6 @@ protocol KeyValueStoreProvider: AnyObject {
 class Saver<T: Codable> {
     private let key: String
     private let store: KeyValueStoreProvider
-    private var value: T?
 
     init(key: String, store: KeyValueStoreProvider) {
         self.key = key
@@ -49,8 +48,6 @@ extension Saver where T: Codable {
     }
 
     func set(newValue: T?) {
-        self.value = newValue
-
         guard let value = newValue,
             let raw = try? PropertyListEncoder().encode(value) else {
             self.store.remove(forKey: key)
@@ -60,6 +57,6 @@ extension Saver where T: Codable {
     }
 
     func get() -> T? {
-            return self.getFromStore()
+        getFromStore()
     }
 }

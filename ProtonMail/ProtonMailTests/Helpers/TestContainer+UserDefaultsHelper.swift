@@ -60,7 +60,13 @@ extension TestContainer {
         XCTAssertTrue(usersManager.users.isEmpty)
 
         // Add and remove user to UsersManager copying stored data in the middle
-        usersManager.add(auth: auth, user: userInfo, mailSettings: .init())
+        do {
+            try usersManager.add(auth: auth, user: userInfo, mailSettings: .init())
+        } catch {
+            XCTFail("\(error)")
+            return
+        }
+
         let authCredentials = userDefaults.value(forKey: UsersManager.CoderKey.authKeychainStore)
         let usersInfo = userDefaults.value(forKey: UsersManager.CoderKey.usersInfo)
         let mailSettings = userDefaults.value(forKey: UsersManager.CoderKey.mailSettingsStore)

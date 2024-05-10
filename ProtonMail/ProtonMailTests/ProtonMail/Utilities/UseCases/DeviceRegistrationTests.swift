@@ -29,7 +29,7 @@ final class DeviceRegistrationTests: XCTestCase {
     private var mockApiService: APIServiceMock!
     private var mockFailingApiService: APIServiceMock!
     private var dependencies: DeviceRegistration.Dependencies!
-    private var globalContainer: GlobalContainer!
+    private var globalContainer: TestContainer!
 
     override func setUp() {
         super.setUp()

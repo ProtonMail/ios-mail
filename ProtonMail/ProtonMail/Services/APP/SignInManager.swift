@@ -92,7 +92,13 @@ class SignInManager {
             }
         }
 
-        self.usersManager.add(auth: auth, user: userInfo, mailSettings: .init())
+        do {
+            try self.usersManager.add(auth: auth, user: userInfo, mailSettings: .init())
+        } catch {
+            SystemLogger.log(error: error)
+            return .errorOccurred
+        }
+
         self.usersManager.firstUser?.appRatingService.preconditionEventDidOccur(.userSignIn)
 
         dependencies.userDefaults[.areContactsCached] = 0
