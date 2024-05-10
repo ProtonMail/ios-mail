@@ -29,6 +29,7 @@ final class MailboxConversationModel: ObservableObject {
     @ObservedObject private(set) var selectionMode: SelectionModeState
 
     @Published private(set) var state: MailboxConversationModel.State
+    @Published var attachmentPresented: AttachmentViewConfig?
 
     private var mailbox: Mailbox?
     private var liveQuery: MailboxConversationLiveQuery?
@@ -149,12 +150,15 @@ extension MailboxConversationModel {
         isStarred ? actionStar(ids: [conversation.id]) : actionUnstar(ids: [conversation.id])
     }
 
-    func onConversationAttachmentTap(attachmentId: String, for conversation: MailboxConversationCellUIModel) {
-        guard !selectionMode.hasSelectedItems else {
+    func onConversationAttachmentTap(attachmentId: PMLocalAttachmentId, for conversation: MailboxConversationCellUIModel) {
+        guard !selectionMode.hasSelectedItems, let mailbox else {
             applySelectionStateChangeInstead(conversation: conversation)
             return
         }
-        print("Attachment tapped \(attachmentId)")
+        attachmentPresented = AttachmentViewConfig(
+            attachmentId: attachmentId,
+            dataSource: AttachmentAPIDataSource(mailbox: mailbox)
+        )
     }
 
     func onConversationAction(_ action: Action, conversationIds: [PMLocalConversationId]) {

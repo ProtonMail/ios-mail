@@ -61,24 +61,24 @@ enum PreviewData {
 
     static let attachments: [[AttachmentCapsuleUIModel]] = [
         [
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
+            .init(attachmentId: 1, icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
+            .init(attachmentId: 2, icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
+            .init(attachmentId: 3, icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
         ],
         [
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")
+            .init(attachmentId: 4, icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")
         ],
         [
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconNumbers, name: "number.xls"),
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPowerPoint, name: "slides.ppt")
+            .init(attachmentId: 5, icon: DS.Icon.icFileTypeIconNumbers, name: "number.xls"),
+            .init(attachmentId: 6, icon: DS.Icon.icFileTypeIconPowerPoint, name: "slides.ppt")
         ],
         [
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconImage, name: "01.png"),
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconImage, name: "02.png"),
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconImage, name: "03.png"),
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconImage, name: "04.png"),
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconImage, name: "05.png"),
-            .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconImage, name: "06.png"),
+            .init(attachmentId: 7, icon: DS.Icon.icFileTypeIconImage, name: "01.png"),
+            .init(attachmentId: 8, icon: DS.Icon.icFileTypeIconImage, name: "02.png"),
+            .init(attachmentId: 9, icon: DS.Icon.icFileTypeIconImage, name: "03.png"),
+            .init(attachmentId: 10, icon: DS.Icon.icFileTypeIconImage, name: "04.png"),
+            .init(attachmentId: 11, icon: DS.Icon.icFileTypeIconImage, name: "05.png"),
+            .init(attachmentId: 12, icon: DS.Icon.icFileTypeIconImage, name: "06.png"),
         ],
     ]
 

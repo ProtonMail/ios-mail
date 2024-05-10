@@ -21,7 +21,7 @@ extension LocalAttachmentMetadata {
 
     func toAttachmentCapsuleUIModel() -> AttachmentCapsuleUIModel {
         AttachmentCapsuleUIModel(
-            attachmentId: String(id),
+            attachmentId: id,
             icon: AttachmentType(mimeType: mimeType).icon,
             name: name
         )

@@ -15,11 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_mail_uniffi
+import QuickLook
 
-// Rust library aliases mappings to avoid having to import the library everywhere
+final class AttachmentViewCoordinator: QLPreviewControllerDataSource {
+    let parent: AttachmentViewController
 
-typealias PMMailboxItemId = LocalConversationId
-typealias PMLocalAttachmentId = LocalAttachmentId
-typealias PMLocalConversationId = LocalConversationId
-typealias PMLocalLabelId = LocalLabelId
+    init(parent: AttachmentViewController) {
+        self.parent = parent
+    }
+
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return 1
+    }
+
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return parent.url as QLPreviewItem
+    }
+
+    @objc func dismiss() {
+        parent.presentationMode.wrappedValue.dismiss()
+    }
+}

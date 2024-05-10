@@ -38,6 +38,10 @@ struct MailboxConversationScreen: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .fullScreenCover(item: $model.attachmentPresented) { config in
+            AttachmentView(config: config)
+                .edgesIgnoringSafeArea([.top, .bottom])
+        }
     }
 }
 

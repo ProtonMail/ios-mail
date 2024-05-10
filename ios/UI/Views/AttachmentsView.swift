@@ -23,8 +23,8 @@ struct AttachmentsView: View {
 
     let uiModel: [AttachmentCapsuleUIModel]
     let isAttachmentHighlightEnabled: Bool
-    let onTapEvent: ((String) -> Void)?
-    
+    let onTapEvent: ((PMLocalAttachmentId) -> Void)?
+
     /// Maximum number of attachment capsules to try to show for each horizontal size class
     private var maxNumberOfCapsules: CGFloat {
         horizontalSizeClass == .compact ? 3 : 5
@@ -33,7 +33,7 @@ struct AttachmentsView: View {
     init(
         uiModel: [AttachmentCapsuleUIModel],
         isAttachmentHighlightEnabled: Bool = false,
-        onTapEvent: ((String) -> Void)? = nil
+        onTapEvent: ((PMLocalAttachmentId) -> Void)? = nil
     ) {
         self.uiModel = uiModel
         self.isAttachmentHighlightEnabled = isAttachmentHighlightEnabled
@@ -87,10 +87,10 @@ struct AttachmentsView: View {
 }
 
 struct AttachmentCapsuleUIModel: Identifiable, Hashable {
-    var id: String {
+    var id: PMLocalAttachmentId {
         attachmentId
     }
-    let attachmentId: String
+    let attachmentId: PMLocalAttachmentId
     let icon: UIImage
     let name: String
 }
@@ -99,7 +99,7 @@ struct AttachmentCapsuleView: View {
     let uiModel: AttachmentCapsuleUIModel
     let maxWidth: CGFloat
     let isAttachmentHighlightEnabled: Bool
-    let onTapEvent: ((String) -> Void)?
+    let onTapEvent: ((PMLocalAttachmentId) -> Void)?
 
     private let padding = EdgeInsets(
         top: DS.Spacing.standard, leading: Layout.capsuleHPadding, bottom: DS.Spacing.standard, trailing: Layout.capsuleHPadding
@@ -170,32 +170,32 @@ fileprivate enum Layout {
     VStack {
         AttachmentsView(
             uiModel:[
-                .init(attachmentId: "1", icon: DS.Icon.icFileTypePages, name: "single_attachment_super_long_title_that_goes_beyond_the_half_width_of_a_big_iphone_in_landscape.pdf")
+                .init(attachmentId: 1, icon: DS.Icon.icFileTypePages, name: "single_attachment_super_long_title_that_goes_beyond_the_half_width_of_a_big_iphone_in_landscape.pdf")
             ]
         )
         .border(.red)
 
         AttachmentsView(
             uiModel:[
-                .init(attachmentId: "1", icon: DS.Icon.icFileTypeIconPdf, name: "1.pdf"),
-                .init(attachmentId: "2", icon: DS.Icon.icFileTypeIconImage, name: "2.png"),
-                .init(attachmentId: "3", icon: DS.Icon.icFileTypeIconExcel, name: "3.xls"),
-                .init(attachmentId: "4", icon: DS.Icon.icFileTypeIconWord, name: "4.doc"),
-                .init(attachmentId: "5", icon: DS.Icon.icFileTypeIconCode, name: "5.bash"),
-                .init(attachmentId: "6", icon: DS.Icon.icFileTypeIconWord, name: "6.pdf"),
-                .init(attachmentId: "7", icon: DS.Icon.icFileTypeIconCode, name: "7.png"),
-                .init(attachmentId: "8", icon: DS.Icon.icFileTypeIconWord, name: "8.xls"),
+                .init(attachmentId: 1, icon: DS.Icon.icFileTypeIconPdf, name: "1.pdf"),
+                .init(attachmentId: 2, icon: DS.Icon.icFileTypeIconImage, name: "2.png"),
+                .init(attachmentId: 3, icon: DS.Icon.icFileTypeIconExcel, name: "3.xls"),
+                .init(attachmentId: 4, icon: DS.Icon.icFileTypeIconWord, name: "4.doc"),
+                .init(attachmentId: 5, icon: DS.Icon.icFileTypeIconCode, name: "5.bash"),
+                .init(attachmentId: 6, icon: DS.Icon.icFileTypeIconWord, name: "6.pdf"),
+                .init(attachmentId: 7, icon: DS.Icon.icFileTypeIconCode, name: "7.png"),
+                .init(attachmentId: 8, icon: DS.Icon.icFileTypeIconWord, name: "8.xls"),
             ]
         )
         .border(.red)
 
         AttachmentsView(
             uiModel:[
-                .init(attachmentId: "1", icon: DS.Icon.icFileTypeIconPdf, name: "super_long_title_that_goes_beyond_half.pdf"),
-                .init(attachmentId: "2", icon: DS.Icon.icFileTypeIconImage, name: "quite.png"),
-                .init(attachmentId: "3", icon: DS.Icon.icFileTypeIconExcel, name: "numebrs.xls"),
-                .init(attachmentId: "4", icon: DS.Icon.icFileTypeIconWord, name: "words.doc"),
-                .init(attachmentId: "5", icon: DS.Icon.icFileTypeIconCode, name: "scripts.bash"),
+                .init(attachmentId: 1, icon: DS.Icon.icFileTypeIconPdf, name: "super_long_title_that_goes_beyond_half.pdf"),
+                .init(attachmentId: 2, icon: DS.Icon.icFileTypeIconImage, name: "quite.png"),
+                .init(attachmentId: 3, icon: DS.Icon.icFileTypeIconExcel, name: "numebrs.xls"),
+                .init(attachmentId: 4, icon: DS.Icon.icFileTypeIconWord, name: "words.doc"),
+                .init(attachmentId: 5, icon: DS.Icon.icFileTypeIconCode, name: "scripts.bash"),
             ]
         )
         .frame(width: 300)

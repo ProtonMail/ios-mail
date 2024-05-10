@@ -221,7 +221,7 @@ enum MailboxConversationCellEvent {
     case onLongPress
     case onSelectedChange(isSelected: Bool)
     case onStarredChange(isStarred: Bool)
-    case onAttachmentTap(attachmentId: String)
+    case onAttachmentTap(attachmentId: PMLocalAttachmentId)
 }
 
 #Preview {
@@ -260,7 +260,7 @@ enum MailboxConversationCellEvent {
                 isSenderProtonOfficial: false,
                 numMessages: 3,
                 labelUIModel: .init(id: "", color: .purple, text: "Offer", allLabelIds: .init()),
-                attachmentsUIModel: [.init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf")],
+                attachmentsUIModel: [.init(attachmentId: 1, icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf")],
                 expirationDate: .now,
                 snoozeDate: .now + 500
             ),
@@ -282,9 +282,9 @@ enum MailboxConversationCellEvent {
                 numMessages: 12,
                 labelUIModel: .init(id: "", color: .green, text: "Read later", allLabelIds: Set(arrayLiteral: 0, 1, 2)),
                 attachmentsUIModel: [
-                    .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
-                    .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
-                    .init(attachmentId: UUID().uuidString, icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
+                    .init(attachmentId: 1, icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
+                    .init(attachmentId: 2, icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
+                    .init(attachmentId: 3, icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
                 ],
                 expirationDate: .now + 500,
                 snoozeDate: .now + 55000
