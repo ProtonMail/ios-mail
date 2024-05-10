@@ -44,7 +44,8 @@ targets:
         CODE_SIGN_IDENTITY: "Apple Development"
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: 2SB5Z68H26
-        MARKETING_VERSION: 0.1.5
+        MARKETING_VERSION: 0.1.6
+        CURRENT_PROJECT_VERSION: 1
         PRODUCT_BUNDLE_IDENTIFIER: "me.proton.mail.ios"
         PROVISIONING_PROFILE_SPECIFIER: ""
         SWIFT_STRICT_CONCURRENCY: "complete"
@@ -58,7 +59,7 @@ targets:
       properties:
         CFBundleDisplayName: "$(BUNDLE_DISPLAY_NAME)"
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
-        CFBundleVersion: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         CFBundlePackageType: "$(PRODUCT_BUNDLE_PACKAGE_TYPE)"
         LSRequiresIPhoneOS: YES
         UIApplicationSupportsIndirectInputEvents: YES
