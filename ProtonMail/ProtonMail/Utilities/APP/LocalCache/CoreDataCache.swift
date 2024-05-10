@@ -31,9 +31,6 @@ class CoreDataCache: Migrate {
     /// latest version, pass in from outside. should be constants in global.
     internal var latestVersion: Int
 
-    /// concider pass this value in. keep the version tracking in app cache service
-    internal var supportedVersions: [Int] = []
-
     /// saver for versioning
     private let versionSaver: Saver<Int>
 
@@ -65,10 +62,6 @@ class CoreDataCache: Migrate {
 
     var initalRun: Bool {
         return currentVersion == 0
-    }
-
-    internal func migrate(from verfrom: Int, to verto: Int) -> Bool {
-        return false
     }
 
     internal func rebuild(reason: RebuildReason) {
