@@ -31,9 +31,6 @@ class CoreDataCache: Migrate {
     /// latest version, pass in from outside. should be constants in global.
     internal var latestVersion: Int
 
-    /// saver for versioning
-    private let versionSaver: Saver<Int>
-
     enum Key {
         static let coreDataVersion = "latest_core_data_cache"
     }
@@ -48,15 +45,14 @@ class CoreDataCache: Migrate {
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
         self.latestVersion = Version.CacheVersion
-        self.versionSaver = UserDefaultsSaver<Int>(key: Key.coreDataVersion, store: dependencies.userDefaults)
     }
 
     var currentVersion: Int {
         get {
-            return self.versionSaver.get() ?? 0
+            dependencies.userDefaults.integer(forKey: Key.coreDataVersion)
         }
         set {
-            self.versionSaver.set(newValue: newValue)
+            dependencies.userDefaults.set(newValue, forKey: Key.coreDataVersion)
         }
     }
 
@@ -68,11 +64,7 @@ class CoreDataCache: Migrate {
         CoreDataStore.deleteDataStore()
 
         if self.currentVersion <= Version.version2.rawValue {
-            let userVersion = UserDefaultsSaver<Int>(
-                key: UsersManager.CoderKey.Version,
-                store: dependencies.userDefaults
-            )
-            userVersion.set(newValue: 0)
+            dependencies.userDefaults.set(0, forKey: UsersManager.CoderKey.Version)
             dependencies.keychain.remove(forKey: "BioProtection" + ".version")
             dependencies.keychain.remove(forKey: "PinProtection" + ".version")
         }

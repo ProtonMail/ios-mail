@@ -24,8 +24,6 @@ import Foundation
 
 protocol KeyValueStoreProvider: AnyObject {
     func data(forKey key: String, attributes: [CFString: Any]?) -> Data?
-    func int(forKey key: String) -> Int?
-    func set(_ intValue: Int, forKey key: String)
     func set(_ data: Data, forKey key: String, attributes: [CFString: Any]?)
     func remove(forKey key: String)
 }
@@ -54,36 +52,6 @@ extension Saver where T == String {
             return
         }
         self.store.set(raw, forKey: key, attributes: nil)
-    }
-}
-
-extension Saver where T == Int {
-    private func getInt() -> Int? {
-        guard let raw = self.store.int(forKey: key) else {
-            return nil
-        }
-        return raw
-    }
-
-    func set(newValue: Int?) {
-        if isCaching {
-            self.value = newValue
-        }
-        guard let value = newValue else {
-            self.store.remove(forKey: key)
-            return
-        }
-        self.store.set(value, forKey: key)
-    }
-    func get() -> Int? {
-        guard self.isCaching == true else {
-            return self.getInt()
-        }
-        guard self.value == nil else {
-            return self.value
-        }
-        self.value = self.getInt()
-        return self.value
     }
 }
 

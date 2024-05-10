@@ -45,14 +45,4 @@ extension KeychainWrapper: KeyValueStoreProvider {
             SystemLogger.log(error: error)
         }
     }
-
-    func set(_ intValue: Int, forKey key: String) {
-        assert(false, "Looks like this one is never actually used")
-    }
-
-    func int(forKey key: String) -> Int? {
-        assert(false, "Looks like this one is never actually used")
-        return nil
-    }
-
 }
