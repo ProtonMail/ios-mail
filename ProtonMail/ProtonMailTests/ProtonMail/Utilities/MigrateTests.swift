@@ -84,9 +84,6 @@ class MigrateTests: XCTestCase {
             //update cache version
             currentVersion = latestVersion
         }
-        func cleanLagacy() {
-            testLogs += "cleanLagacy"
-        }
     }
 
     func testMigrateCases() {
@@ -123,7 +120,7 @@ class MigrateTests: XCTestCase {
         /// migrate case 1
         let mCase1 = MigrateTest(l: 5, c: 3, s: [3,4])
         mCase1.run()
-        XCTAssert(mCase1.testLogs == "default:from:3-to:4ok:from:4-to:5cleanLagacy")
+        XCTAssert(mCase1.testLogs == "default:from:3-to:4ok:from:4-to:5")
         XCTAssert(mCase1.latestVersion == mCase1.currentVersion)
         /// migrate case 2
         let mCase2 = MigrateTest(l: 10, c: 4, s: [3,4,5,6,7,8,10])
@@ -133,12 +130,12 @@ class MigrateTests: XCTestCase {
         /// migrate case 3
         let mCase3 = MigrateTest(l: 7, c: 4, s: [3,4,5,6])
         mCase3.run()
-        XCTAssert(mCase3.testLogs == "ok:from:4-to:5ignore:from:5-to:6ignore:from:6-to:7cleanLagacy")
+        XCTAssert(mCase3.testLogs == "ok:from:4-to:5ignore:from:5-to:6ignore:from:6-to:7")
         XCTAssert(mCase3.latestVersion == mCase3.currentVersion)
         /// migrate case 4
         let mCase4 = MigrateTest(l: 7, c: 6, s: [3,4,5,6])
         mCase4.run()
-        XCTAssert(mCase4.testLogs == "ignore:from:6-to:7cleanLagacy")
+        XCTAssert(mCase4.testLogs == "ignore:from:6-to:7")
         XCTAssert(mCase4.latestVersion == mCase4.currentVersion)
     }
 }

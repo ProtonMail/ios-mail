@@ -65,9 +65,6 @@ class UsersManager: UsersManagerProtocol {
         // new
         static let usersInfo = "usersInfoKeyProtectedWithMainKey"
 
-        // new one, check if user logged in already
-        static let atLeastOneLoggedIn = "UsersManager.AtLeastoneLoggedIn"
-
         static let disconnectedUsers = "disconnectedUsers"
         static let mailSettingsStore = "mailSettingsKeyProtectedWithMainKey"
     }
@@ -248,7 +245,6 @@ class UsersManager: UsersManagerProtocol {
         }
 
         self.users.first?.cacheService.cleanSoftDeletedMessagesAndConversation()
-        self.loggedIn()
     }
 
     func save() {
@@ -424,7 +420,6 @@ extension UsersManager {
             self.dependencies.userDefaults.remove(forKey: CoderKey.authKeychainStore)
             self.dependencies.featureFlagsRepository.resetFlags()
             self.keychain.remove(forKey: CoderKey.authKeychainStore)
-            self.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
             self.keychain.remove(forKey: CoderKey.disconnectedUsers)
 
             self.dependencies.userCachedStatus.cleanAllData()
@@ -463,10 +458,6 @@ extension UsersManager {
         Breadcrumbs.shared.add(message: message, to: .randomLogout)
 
         return hasUsers
-    }
-
-    func loggedIn() {
-        keychain.set("LoggedIn", forKey: CoderKey.atLeastOneLoggedIn)
     }
 
     struct CachedUserData {
