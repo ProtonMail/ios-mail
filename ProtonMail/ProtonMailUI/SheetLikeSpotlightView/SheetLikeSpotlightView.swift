@@ -130,7 +130,7 @@ public struct SheetLikeSpotlightView: View {
                     if showNewBadge {
                         Spacer()
 
-                        Text(L11n.Spotlight.new)
+                        Text(L10n.Spotlight.new)
                             .foregroundColor(ColorProvider.TextAccent)
                             .font(Font(UIFont.adjustedFont(forTextStyle: .caption2, weight: .bold)))
                             .padding(.vertical, 6)

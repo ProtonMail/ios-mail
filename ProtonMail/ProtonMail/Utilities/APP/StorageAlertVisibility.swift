@@ -29,18 +29,18 @@ enum StorageAlertVisibility: Equatable {
         switch self {
         case .mail(let value) where value < Self.fullThreshold:
             return String(
-                format: L11n.AlertBox.alertBoxMailPercentageText,
+                format: L10n.AlertBox.alertBoxMailPercentageText,
                 storagePercentageString(storagePercentage: value)
             )
         case .drive(let value) where value < Self.fullThreshold:
             return String(
-                format: L11n.AlertBox.alertBoxDrivePercentageText,
+                format: L10n.AlertBox.alertBoxDrivePercentageText,
                 storagePercentageString(storagePercentage: value)
             )
         case .mail:
-            return L11n.AlertBox.alertBoxMailFullText
+            return L10n.AlertBox.alertBoxMailFullText
         case .drive:
-            return L11n.AlertBox.alertBoxDriveFullText
+            return L10n.AlertBox.alertBoxDriveFullText
         case .hidden:
             return ""
         }
@@ -50,12 +50,12 @@ enum StorageAlertVisibility: Equatable {
         switch self {
         case .mail(let value):
             return String(
-                format: L11n.SideMenuStorageAlert.alertBoxMailTitle,
+                format: L10n.SideMenuStorageAlert.alertBoxMailTitle,
                 storagePercentageString(storagePercentage: value)
             )
         case .drive(let value):
             return String(
-                format: L11n.SideMenuStorageAlert.alertBoxDriveTitle,
+                format: L10n.SideMenuStorageAlert.alertBoxDriveTitle,
                 storagePercentageString(storagePercentage: value)
             )
         case .hidden:

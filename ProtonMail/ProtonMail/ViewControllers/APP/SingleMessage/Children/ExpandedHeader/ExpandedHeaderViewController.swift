@@ -377,11 +377,11 @@ class ExpandedHeaderViewController: UIViewController {
             navigationController?.pushViewController(trackerList, animated: true)
         } else {
             let messageComponents: [String] = [
-                L11n.EmailTrackerProtection.email_trackers_can_violate_your_privacy,
-                String.localizedStringWithFormat(L11n.EmailTrackerProtection.proton_found_n_trackers_on_this_message, 0)
+                L10n.EmailTrackerProtection.email_trackers_can_violate_your_privacy,
+                String.localizedStringWithFormat(L10n.EmailTrackerProtection.proton_found_n_trackers_on_this_message, 0)
             ]
             let alert = UIAlertController(
-                title: L11n.EmailTrackerProtection.no_email_trackers_found,
+                title: L10n.EmailTrackerProtection.no_email_trackers_found,
                 message: messageComponents.joined(separator: " "),
                 preferredStyle: .alert
             )

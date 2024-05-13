@@ -386,8 +386,8 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         }
 
         let banner = ContactAutoSyncBanner(
-            title: L11n.AutoImportContacts.contactBannerTitle,
-            buttonTitle: L11n.AutoImportContacts.contactBannerButtonTitle,
+            title: L10n.AutoImportContacts.contactBannerTitle,
+            buttonTitle: L10n.AutoImportContacts.contactBannerButtonTitle,
             buttonTriggered: { [weak self] in
                 self?.dependencies.addressBookService
                     .requestAuthorizationWithCompletion({ granted, error in

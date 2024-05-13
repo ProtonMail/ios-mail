@@ -21,7 +21,7 @@ fileprivate struct id {
  * contains actions and verifications for Drafts composer functionality.
  */
 class DraftsRobot: MailboxRobotInterface {
-    static let noRecipientText = "(\(L11n.MailBox.noRecipient))"
+    static let noRecipientText = "(\(L10n.MailBox.noRecipient))"
 
     var verify = Verify()
     

@@ -97,7 +97,7 @@ class MaxStorageTableViewCell: UITableViewCell, AccessibleCell {
 
         caption = UILabel()
         caption.translatesAutoresizingMaskIntoConstraints = false
-        caption.text = L11n.SideMenuStorageAlert.alertBoxCaption
+        caption.text = L10n.SideMenuStorageAlert.alertBoxCaption
         caption.textColor = ColorProvider.SidebarTextWeak
         caption.font = UIFont.preferredFont(for: .caption1, weight: .regular)
         caption.minimumScaleFactor = 0.8

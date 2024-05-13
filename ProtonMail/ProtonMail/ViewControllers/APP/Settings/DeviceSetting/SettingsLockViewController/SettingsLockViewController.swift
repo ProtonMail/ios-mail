@@ -135,8 +135,8 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
 
     private func showAppKeyDisclaimer(for appKeySwitch: UISwitch) {
         let alert = UIAlertController(
-            title: L11n.SettingsLockScreen.appKeyDisclaimerTitle,
-            message: L11n.SettingsLockScreen.appKeyDisclaimer,
+            title: L10n.SettingsLockScreen.appKeyDisclaimerTitle,
+            message: L10n.SettingsLockScreen.appKeyDisclaimer,
             preferredStyle: .alert
         )
         let proceed = UIAlertAction(title: LocalString._genernal_continue, style: .default) { [weak self] _ in
@@ -189,7 +189,7 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
     private func cellForChangePinCodeSection() -> UITableViewCell {
         let cell = tableView.dequeue(cellType: UITableViewCell.self)
         cell.textLabel?.set(
-            text: L11n.PinCodeSetup.changePinCode,
+            text: L10n.PinCodeSetup.changePinCode,
             preferredFont: .body,
             textColor: ColorProvider.InteractionNorm
         )
@@ -207,7 +207,7 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
     private func cellForAppKeySection() -> UITableViewCell {
         let cell = tableView.dequeue(cellType: SwitchTableViewCell.self)
         cell.configCell(
-            L11n.SettingsLockScreen.appKeyProtection,
+            L10n.SettingsLockScreen.appKeyProtection,
             isOn: viewModel.output.isAppKeyEnabled
         ) { [weak self, weak cell] isNewValueEnabled, feedback in
             if isNewValueEnabled {
@@ -353,7 +353,7 @@ extension SettingsLockViewController {
             textView.font = .preferredFont(forTextStyle: .footnote)
 
             let learnMore = LocalString._learn_more
-            let text = String.localizedStringWithFormat(L11n.SettingsLockScreen.appKeyProtectionDescription, learnMore)
+            let text = String.localizedStringWithFormat(L10n.SettingsLockScreen.appKeyProtectionDescription, learnMore)
             let attributes = FontManager.CaptionWeak.lineBreakMode(.byWordWrapping)
             let attributedString = NSMutableAttributedString(string: text, attributes: attributes)
             if let subrange = text.range(of: learnMore) {
@@ -375,10 +375,10 @@ private extension SettingLockSection {
     var description: String {
         switch self {
         case .protection:
-            let title = "\n\n\(L11n.SettingsLockScreen.protectionTitle)"
+            let title = "\n\n\(L10n.SettingsLockScreen.protectionTitle)"
             return LocalString._lock_wipe_desc + title
         case .appKeyProtection:
-            return L11n.SettingsLockScreen.advancedSettings
+            return L10n.SettingsLockScreen.advancedSettings
         case .autoLockTime:
             return LocalString._timing
         default:

@@ -31,11 +31,11 @@ struct UpsellPageFactory {
 
     // product team decided to replace the dynamic list of all entitlements with these most important ones
     private let hardCodedPerks: [UpsellPageModel.Perk] = [
-        .init(icon: \.storage, description: L11n.PremiumPerks.storage),
-        .init(icon: \.inbox, description: String(format: L11n.PremiumPerks.emailAddresses, 10)),
-        .init(icon: \.globe, description: L11n.PremiumPerks.customEmailDomain),
-        .init(icon: \.rocket, description: L11n.PremiumPerks.desktopApp),
-        .init(icon: \.tag, description: L11n.Snooze.folderBenefit)
+        .init(icon: \.storage, description: L10n.PremiumPerks.storage),
+        .init(icon: \.inbox, description: String(format: L10n.PremiumPerks.emailAddresses, 10)),
+        .init(icon: \.globe, description: L10n.PremiumPerks.customEmailDomain),
+        .init(icon: \.rocket, description: L10n.PremiumPerks.desktopApp),
+        .init(icon: \.tag, description: L10n.Snooze.folderBenefit)
     ]
 
     init(dependencies: Dependencies) {

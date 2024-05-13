@@ -70,9 +70,9 @@ enum PurchasePlanError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .productNotFound(let storeKitProductId):
-            return String(format: L11n.Upsell.invalidProductID, storeKitProductId)
+            return String(format: L10n.Upsell.invalidProductID, storeKitProductId)
         case .purchaseAlreadyInProgress:
-            return L11n.Upsell.purchaseAlreadyInProgress
+            return L10n.Upsell.purchaseAlreadyInProgress
         }
     }
 }

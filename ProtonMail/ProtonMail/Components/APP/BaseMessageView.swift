@@ -43,7 +43,7 @@ class BaseMessageView: UIView {
                 label.lineBreakMode = .byTruncatingTail
                 let text: NSMutableAttributedString
                 if string.isEmpty {
-                    text = "(\(L11n.MailBox.noRecipient))"
+                    text = "(\(L10n.MailBox.noRecipient))"
                         .keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
                 } else {
                     text = string.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)

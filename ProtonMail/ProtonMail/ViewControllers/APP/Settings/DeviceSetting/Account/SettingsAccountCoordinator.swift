@@ -176,7 +176,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         user.update(userInfo: userInfo)
         user.update(authCredential: authCredential)
         self.navigationController?.popToRootViewController(animated: true)
-        L11n.Settings.passwordUpdated.alertToast(withTitle: false)
+        L10n.Settings.passwordUpdated.alertToast(withTitle: false)
     }
 
     private func openChangePassword<T: ChangePasswordViewModel>(ofType viewModelType: T.Type) {

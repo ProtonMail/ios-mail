@@ -22,7 +22,7 @@ import enum ProtonCoreUtilities.Either
 final class NextMessageAfterMoveViewModel: SwitchToggleVMProtocol, SwitchToggleVMOutput {
     var input: SwitchToggleVMInput { self }
     var output: SwitchToggleVMOutput { self }
-    let title = L11n.NextMsgAfterMove.settingTitle
+    let title = L10n.NextMsgAfterMove.settingTitle
     let sectionNumber = 1
     let rowNumber = 1
     let headerTopPadding: CGFloat = 8.0
@@ -39,7 +39,7 @@ final class NextMessageAfterMoveViewModel: SwitchToggleVMProtocol, SwitchToggleV
     }
 
     func cellData(for indexPath: IndexPath) -> (title: String, status: Bool)? {
-        (L11n.NextMsgAfterMove.rowTitle,
+        (L10n.NextMsgAfterMove.rowTitle,
          nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove)
     }
 
@@ -48,7 +48,7 @@ final class NextMessageAfterMoveViewModel: SwitchToggleVMProtocol, SwitchToggleV
     }
 
     func sectionFooter(section: Int) -> Either<String, NSAttributedString>? {
-        .left(L11n.NextMsgAfterMove.rowFooterTitle)
+        .left(L10n.NextMsgAfterMove.rowFooterTitle)
     }
 }
 

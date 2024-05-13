@@ -178,7 +178,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .accountManger: return LocalString._menu_manage_accounts
         case .addAccount: return ""
         case .scheduled: return LocalString._locations_scheduled_title
-        case .snooze: return L11n.Snooze.title
+        case .snooze: return L10n.Snooze.title
         }
     }
 

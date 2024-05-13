@@ -71,7 +71,7 @@ final class ComposerViewControllerTests: XCTestCase {
         let item = actionSheet?.itemGroups.first?.items.first?.components.first as? PMActionSheetTextComponent
         switch item!.text {
         case .left(let text):
-            XCTAssertEqual(text, L11n.ScheduledSend.asSchedule)
+            XCTAssertEqual(text, L10n.ScheduledSend.asSchedule)
         default:
             XCTFail()
         }

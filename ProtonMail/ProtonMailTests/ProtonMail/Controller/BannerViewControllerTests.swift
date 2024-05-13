@@ -70,7 +70,7 @@ final class BannerViewControllerTests: XCTestCase {
         let dateString = PMDateFormatter.shared.stringForSnoozeTime(from: Date(timeIntervalSince1970: 700000))
         XCTAssertEqual(
             banner.infoLabel.text,
-            String(format: L11n.Snooze.bannerTitle, dateString)
+            String(format: L10n.Snooze.bannerTitle, dateString)
         )
     }
 
@@ -113,7 +113,7 @@ final class BannerViewControllerTests: XCTestCase {
         let dateString = PMDateFormatter.shared.stringForSnoozeTime(from: Date(timeIntervalSince1970: 700000))
         XCTAssertEqual(
             banner.infoLabel.text,
-            String(format: L11n.Snooze.bannerTitle, dateString)
+            String(format: L10n.Snooze.bannerTitle, dateString)
         )
         XCTAssertNil(banner.unsnoozeButton.superview)
     }

@@ -109,14 +109,14 @@ extension AutoDeletePromptHeaderView {
         static var promptLabel: UILabel {
             let label = UILabel()
             label.numberOfLines = 0
-            label.set(text: L11n.AutoDeleteBanners.paidPrompt, preferredFont: .footnote)
+            label.set(text: L10n.AutoDeleteBanners.paidPrompt, preferredFont: .footnote)
             return label
         }
 
         static var enableButton: UIButton {
             let button = ProtonButton()
             button.setMode(mode: .solid)
-            button.setTitle(L11n.AutoDeleteBanners.enableButtonTitle, for: .normal)
+            button.setTitle(L10n.AutoDeleteBanners.enableButtonTitle, for: .normal)
             button.titleLabel?.adjustsFontForContentSizeCategory = true
             button.titleLabel?.adjustsFontSizeToFitWidth = true
             button.titleLabel?.numberOfLines = 1
@@ -130,7 +130,7 @@ extension AutoDeletePromptHeaderView {
             button.setBackgroundImage(UIImage.colored(with: ColorProvider.InteractionWeak), for: .normal)
             button.setTitleColor(ColorProvider.TextNorm, for: .normal)
             button.setTitleColor(ColorProvider.TextNorm, for: .highlighted)
-            button.setTitle(L11n.AutoDeleteBanners.noThanksButtonTitle, for: .normal)
+            button.setTitle(L10n.AutoDeleteBanners.noThanksButtonTitle, for: .normal)
             button.titleLabel?.adjustsFontForContentSizeCategory = true
             button.titleLabel?.adjustsFontSizeToFitWidth = true
             button.titleLabel?.numberOfLines = 1

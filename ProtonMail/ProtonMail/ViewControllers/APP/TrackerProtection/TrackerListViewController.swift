@@ -59,7 +59,7 @@ class TrackerListViewController: UIViewController, LifetimeTrackable, Accessible
 
         super.init(nibName: nil, bundle: nil)
 
-        title = L11n.EmailTrackerProtection.title
+        title = L10n.EmailTrackerProtection.title
         trackLifetime()
     }
 
@@ -171,7 +171,7 @@ private enum SubviewFactory {
     private static func titleLabel(numberOfTrackers: Int) -> UILabel {
         let titleLabel = UILabel()
         titleLabel.attributedText = String
-            .localizedStringWithFormat(L11n.EmailTrackerProtection.n_email_trackers_blocked, numberOfTrackers)
+            .localizedStringWithFormat(L10n.EmailTrackerProtection.n_email_trackers_blocked, numberOfTrackers)
             .apply(style: FontManager.DefaultStrong)
         return titleLabel
     }
@@ -181,9 +181,9 @@ private enum SubviewFactory {
         let attributes = FontManager.DefaultSmall
 
         let plainTextMessageComponents: [String] = [
-            L11n.EmailTrackerProtection.email_trackers_can_violate_your_privacy,
+            L10n.EmailTrackerProtection.email_trackers_can_violate_your_privacy,
             String.localizedStringWithFormat(
-                L11n.EmailTrackerProtection.proton_found_n_trackers_on_this_message,
+                L10n.EmailTrackerProtection.proton_found_n_trackers_on_this_message,
                 numberOfTrackers
             )
         ]

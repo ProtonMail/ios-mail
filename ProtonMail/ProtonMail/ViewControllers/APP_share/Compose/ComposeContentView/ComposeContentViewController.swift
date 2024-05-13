@@ -558,7 +558,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             ) { [weak self] _ in
                 self?.htmlEditor.remove(embedImage: "cid:\(cid)")
             },
-            PMActionSheetItem(title: L11n.InlineAttachment.addAsAttachment, icon: nil) { [weak self] _ in
+            PMActionSheetItem(title: L10n.InlineAttachment.addAsAttachment, icon: nil) { [weak self] _ in
                 MBProgressHUD.showAdded(to: targetView.view, animated: true)
                 self?.viewModel.attachInlineAttachment(
                     inlineAttachment: attachment
@@ -1046,8 +1046,8 @@ extension ComposeContentViewController: ComposeUIProtocol {
 
     private func showSenderChangedAlert(newAddress: Address) {
         let alert = UIAlertController(
-            title: L11n.Compose.senderChanged,
-            message: String(format: L11n.Compose.senderChangedMessage, newAddress.email),
+            title: L10n.Compose.senderChanged,
+            message: String(format: L10n.Compose.senderChangedMessage, newAddress.email),
             preferredStyle: .alert
         )
         alert.addOKAction()

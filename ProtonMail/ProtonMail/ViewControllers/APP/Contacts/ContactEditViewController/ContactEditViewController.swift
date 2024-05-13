@@ -924,9 +924,9 @@ extension ContactEditViewController {
         let profilePicture = viewModel.getProfilePicture()
         customView.profileImageView.image = profilePicture
         if profilePicture == nil {
-            customView.photoButton.setTitle(L11n.ContactEdit.addPhoto, for: .normal)
+            customView.photoButton.setTitle(L10n.ContactEdit.addPhoto, for: .normal)
         } else {
-            customView.photoButton.setTitle(L11n.ContactEdit.editPhoto, for: .normal)
+            customView.photoButton.setTitle(L10n.ContactEdit.editPhoto, for: .normal)
         }
 
 
@@ -1069,9 +1069,9 @@ extension ContactEditViewController: PHPickerViewControllerDelegate {
     private func setProfilePhoto(image: UIImage) {
         viewModel.setProfilePicture(image: image)
         if viewModel.getProfilePicture() != nil {
-            customView.photoButton.setTitle(L11n.ContactEdit.editPhoto, for: .normal)
+            customView.photoButton.setTitle(L10n.ContactEdit.editPhoto, for: .normal)
         } else {
-            customView.photoButton.setTitle(L11n.ContactEdit.addPhoto, for: .normal)
+            customView.photoButton.setTitle(L10n.ContactEdit.addPhoto, for: .normal)
         }
 
         customView.profileImageView.backgroundColor = .clear

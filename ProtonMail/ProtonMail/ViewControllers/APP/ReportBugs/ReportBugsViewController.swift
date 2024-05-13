@@ -143,7 +143,7 @@ final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackabl
         setUpSideMenuMethods()
 
         let logAttachmentLabel = UILabel()
-        logAttachmentLabel.set(text: L11n.BugReport.includeLogs, preferredFont: .body)
+        logAttachmentLabel.set(text: L10n.BugReport.includeLogs, preferredFont: .body)
         [logAttachmentLabel, logAttachmentSwitch].forEach(logAttachmentSwitchRow.addArrangedSubview)
 
         logAttachmentSwitchRowContainer.addSubview(logAttachmentSwitchRow)
@@ -229,7 +229,7 @@ final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackabl
     // MARK: - Private methods
 
     fileprivate func addPlaceholder() {
-        textView.set(text: L11n.BugReport.placeHolder, preferredFont: .body)
+        textView.set(text: L10n.BugReport.placeHolder, preferredFont: .body)
     }
 
     fileprivate func reset() {
@@ -240,7 +240,7 @@ final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackabl
     }
 
     fileprivate func updateSendButtonForText(_ text: String?) {
-        sendButton.isEnabled = (text != nil) && !text!.isEmpty && !(text! == L11n.BugReport.placeHolder)
+        sendButton.isEnabled = (text != nil) && !text!.isEmpty && !(text! == L10n.BugReport.placeHolder)
     }
 
     @objc

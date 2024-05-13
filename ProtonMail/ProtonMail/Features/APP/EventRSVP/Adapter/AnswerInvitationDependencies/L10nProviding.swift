@@ -27,33 +27,33 @@ extension AnswerInvitationUseCase {
                 formattedTimeZone
             ):
                 return String(
-                    format: L11n.InvitationEmail.emailInvitationSubjectFullDateWithTimeAndTimeZone,
+                    format: L10n.InvitationEmail.emailInvitationSubjectFullDateWithTimeAndTimeZone,
                     formattedDate,
                     formattedTime,
                     formattedTimeZone
                 )
             case .emailInvitationBodyAttendeeStatusDescriptionAccepted:
-                return L11n.InvitationEmail.accepted
+                return L10n.InvitationEmail.accepted
             case .emailInvitationBodyAttendeeStatusDescriptionDeclined:
-                return L11n.InvitationEmail.declined
+                return L10n.InvitationEmail.declined
             case .emailInvitationBodyAttendeeStatusDescriptionTentative:
-                return L11n.InvitationEmail.tentativelyAccepted
+                return L10n.InvitationEmail.tentativelyAccepted
             case let .emailInvitationBodyContent(email, localizedStatus, eventTitle):
-                return String(format: L11n.InvitationEmail.Body.content, email, localizedStatus, eventTitle)
+                return String(format: L10n.InvitationEmail.Body.content, email, localizedStatus, eventTitle)
             case .emailInvitationBodyTitle(let eventTitle):
-                return String(format: L11n.InvitationEmail.Body.title, eventTitle)
+                return String(format: L10n.InvitationEmail.Body.title, eventTitle)
             case .emailInvitationBodyLocation(let locationName):
-                return String(format: L11n.InvitationEmail.Body.location, locationName)
+                return String(format: L10n.InvitationEmail.Body.location, locationName)
             case .emailInvitationBodyNotes(let eventNotes):
-                return String(format: L11n.InvitationEmail.Body.notes, eventNotes)
+                return String(format: L10n.InvitationEmail.Body.notes, eventNotes)
             case .emailCancellationBody(let eventTitle):
-                return String(format: L11n.InvitationEmail.cancellationBody, eventTitle)
+                return String(format: L10n.InvitationEmail.cancellationBody, eventTitle)
             case .emailAnswerSubjectAllDaySingle(let formattedDate):
-                return String(format: L11n.InvitationEmail.Answer.Subject.allDaySingle, formattedDate)
+                return String(format: L10n.InvitationEmail.Answer.Subject.allDaySingle, formattedDate)
             case .emailAnswerSubjectOther(let formattedDate):
-                return String(format: L11n.InvitationEmail.Answer.Subject.other, formattedDate)
+                return String(format: L10n.InvitationEmail.Answer.Subject.other, formattedDate)
             case .eventNoTitle:
-                return L11n.InvitationEmail.noTitle
+                return L10n.InvitationEmail.noTitle
             }
         }
     }

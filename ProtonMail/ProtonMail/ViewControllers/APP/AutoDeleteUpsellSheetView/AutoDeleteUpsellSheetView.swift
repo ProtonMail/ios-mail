@@ -262,7 +262,7 @@ private enum SubviewFactory {
         label.font = UIFont.adjustedFont(forTextStyle: .title2, weight: .bold)
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center
-        label.text = L11n.AutoDeleteUpsellSheet.title
+        label.text = L10n.AutoDeleteUpsellSheet.title
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         return label
@@ -274,7 +274,7 @@ private enum SubviewFactory {
         label.lineBreakMode = .byWordWrapping
         label.font = UIFont.adjustedFont(forTextStyle: .subheadline)
         label.textColor = ColorProvider.TextWeak
-        label.text = L11n.AutoDeleteUpsellSheet.description
+        label.text = L10n.AutoDeleteUpsellSheet.description
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         return label
@@ -318,13 +318,13 @@ private enum SubviewFactory {
         label.font = UIFont.adjustedFont(forTextStyle: .subheadline)
         switch position {
         case .one:
-            label.text = L11n.AutoDeleteUpsellSheet.upsellLineOne
+            label.text = L10n.AutoDeleteUpsellSheet.upsellLineOne
         case .two:
-            label.text = L11n.AutoDeleteUpsellSheet.upsellLineTwo
+            label.text = L10n.AutoDeleteUpsellSheet.upsellLineTwo
         case .three:
-            label.text = L11n.AutoDeleteUpsellSheet.upsellLineThree
+            label.text = L10n.AutoDeleteUpsellSheet.upsellLineThree
         case .four:
-            label.text = L11n.AutoDeleteUpsellSheet.upsellLineFour
+            label.text = L10n.AutoDeleteUpsellSheet.upsellLineFour
         }
         return label
     }
@@ -332,7 +332,7 @@ private enum SubviewFactory {
     static var upgradeButton: ProtonButton {
         let button = ProtonButton()
         button.setMode(mode: .solid)
-        button.setTitle(L11n.AutoDeleteUpsellSheet.upgradeButtonTitle, for: .normal)
+        button.setTitle(L10n.AutoDeleteUpsellSheet.upgradeButtonTitle, for: .normal)
         return button
     }
 }

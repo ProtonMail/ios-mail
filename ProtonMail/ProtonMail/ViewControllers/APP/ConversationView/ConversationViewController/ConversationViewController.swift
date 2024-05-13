@@ -1570,7 +1570,7 @@ extension ConversationViewController: SnoozeSupport {
             }, cancelHandler: { [weak self] in
                 self?._snoozeDateConfigReceiver = nil
             }, showSendInTheFutureAlertHandler: {
-                L11n.Snooze.selectTimeInFuture.alertToastBottom()
+                L10n.Snooze.selectTimeInFuture.alertToastBottom()
             }
         )
         _snoozeDateConfigReceiver = receiver
@@ -1583,7 +1583,7 @@ extension ConversationViewController: SnoozeSupport {
     func showSnoozeSuccessBanner(on date: Date) {
         let dateStr = PMDateFormatter.shared.stringForSnoozeTime(from: date)
 
-        let title = String(format: L11n.Snooze.bannerTitle, dateStr)
+        let title = String(format: L10n.Snooze.bannerTitle, dateStr)
         let banner = PMBanner(message: title, style: PMBannerNewStyle.info)
         if viewModel.shouldMoveToNextMessageAfterMove {
             // PageVC

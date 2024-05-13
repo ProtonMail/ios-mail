@@ -31,7 +31,7 @@ enum MenuSection {
 
     var title: String {
         switch self {
-        case .maxStorage: return L11n.SideMenuStorageAlert.menuTitle
+        case .maxStorage: return L10n.SideMenuStorageAlert.menuTitle
         case .inboxes: return LocalString._menu_inbox_title
         case .folders: return LocalString._folders
         case .labels: return LocalString._labels

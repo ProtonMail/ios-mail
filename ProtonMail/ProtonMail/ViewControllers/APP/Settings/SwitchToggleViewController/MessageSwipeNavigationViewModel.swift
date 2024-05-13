@@ -36,19 +36,19 @@ extension MessageSwipeNavigationViewModel: SwitchToggleVMInput {
 }
 
 extension MessageSwipeNavigationViewModel: SwitchToggleVMOutput {
-    var title: String { L11n.MessageNavigation.settingTitle }
+    var title: String { L10n.MessageNavigation.settingTitle }
     var sectionNumber: Int { 1 }
     var rowNumber: Int { 1 }
     var headerTopPadding: CGFloat { 24 }
     var footerTopPadding: CGFloat { 8 }
 
     func cellData(for indexPath: IndexPath) -> (title: String, status: Bool)? {
-        (L11n.MessageNavigation.settingTitle, userDefaults[.isMessageSwipeNavigationEnabled])
+        (L10n.MessageNavigation.settingTitle, userDefaults[.isMessageSwipeNavigationEnabled])
     }
 
     func sectionHeader() -> String? { nil }
 
     func sectionFooter(section: Int) -> ProtonCoreUtilities.Either<String, NSAttributedString>? {
-        .left(L11n.MessageNavigation.settingDesc)
+        .left(L10n.MessageNavigation.settingDesc)
     }
 }

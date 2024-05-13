@@ -527,7 +527,7 @@ extension ComposeViewModel {
             let error = NSError(
                 domain: "",
                 code: -1,
-                localizedDescription: L11n.Compose.blockSenderChangeMessage
+                localizedDescription: L10n.Compose.blockSenderChangeMessage
             )
             completion(.failure(error))
             return

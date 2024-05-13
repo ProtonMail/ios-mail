@@ -55,27 +55,27 @@ extension PinCodeSetupViewController {
     private func setUpView() {
         switch step {
         case .enterNewPinCode:
-            title = L11n.PinCodeSetup.setPinCode
+            title = L10n.PinCodeSetup.setPinCode
             setupPasswordTextField(
-                title: L11n.PinCodeSetup.enterNewPinCode,
-                assistiveText: L11n.PinCodeSetup.enterNewPinCodeAssistiveText
+                title: L10n.PinCodeSetup.enterNewPinCode,
+                assistiveText: L10n.PinCodeSetup.enterNewPinCodeAssistiveText
             )
             customView.confirmationButton.setTitle(LocalString._genernal_continue, for: .normal)
 
             setUpNavigationBar()
         case .repeatPinCode:
-            title = L11n.PinCodeSetup.repeatPinCode
-            setupPasswordTextField(title: L11n.PinCodeSetup.repeatPinCode)
+            title = L10n.PinCodeSetup.repeatPinCode
+            setupPasswordTextField(title: L10n.PinCodeSetup.repeatPinCode)
             customView.confirmationButton.setTitle(LocalString._general_confirm_action, for: .normal)
         case .confirmBeforeChanging:
-            title = L11n.PinCodeSetup.changePinCode
-            setupPasswordTextField(title: L11n.PinCodeSetup.enterOldPinCode)
+            title = L10n.PinCodeSetup.changePinCode
+            setupPasswordTextField(title: L10n.PinCodeSetup.enterOldPinCode)
             customView.confirmationButton.setTitle(LocalString._general_confirm_action, for: .normal)
 
             setUpNavigationBar()
         case .confirmBeforeDisabling:
-            title = L11n.PinCodeSetup.disablePinCode
-            setupPasswordTextField(title: L11n.PinCodeSetup.enterOldPinCode)
+            title = L10n.PinCodeSetup.disablePinCode
+            setupPasswordTextField(title: L10n.PinCodeSetup.enterOldPinCode)
             customView.confirmationButton.setTitle(LocalString._general_confirm_action, for: .normal)
 
             setUpNavigationBar()

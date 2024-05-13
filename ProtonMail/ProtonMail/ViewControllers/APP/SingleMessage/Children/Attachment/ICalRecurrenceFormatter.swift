@@ -64,7 +64,7 @@ struct ICalRecurrenceFormatter {
                 return ""
             }
 
-            return String(format: L11n.Event.every, intervalDescription)
+            return String(format: L10n.Event.every, intervalDescription)
         }
     }
 
@@ -76,19 +76,19 @@ struct ICalRecurrenceFormatter {
                 .map { weekdayNames[$0 - 1] }
                 .joined(separator: ", ")
 
-            return String(format: L11n.Event.onDays, daysString)
+            return String(format: L10n.Event.onDays, daysString)
         } else if let repeatMonthOnWeekDay = recurrence.repeatMonthOnWeekDay {
             if let repeatMonthOnIth = recurrence.repeatMonthOnIth {
                 return String(
-                    format: L11n.Event.onThe,
+                    format: L10n.Event.onThe,
                     "\(repeatMonthOnIth.spelledOut) \(weekdayNames[repeatMonthOnWeekDay - 1])"
                 )
             } else {
-                return String(format: L11n.Event.onDay, repeatMonthOnWeekDay)
+                return String(format: L10n.Event.onDay, repeatMonthOnWeekDay)
             }
         } else if recurrence.repeatEveryType == .month {
             let fallbackDay = calendar.component(.day, from: startDate)
-            return String(format: L11n.Event.onDay, fallbackDay)
+            return String(format: L10n.Event.onDay, fallbackDay)
         } else {
             return nil
         }
@@ -96,9 +96,9 @@ struct ICalRecurrenceFormatter {
 
     private func endingDescription(of recurrence: ICalRecurrence) -> String? {
         if let endsAfterNum = recurrence.endsAfterNum {
-            return String(format: L11n.Event.times, endsAfterNum)
+            return String(format: L10n.Event.times, endsAfterNum)
         } else if let endsOnDate = recurrence.endsOnDate {
-            return String(format: L11n.Event.until, untilDateFormatter.string(from: endsOnDate))
+            return String(format: L10n.Event.until, untilDateFormatter.string(from: endsOnDate))
         } else {
             return nil
         }
@@ -122,13 +122,13 @@ private extension ICalRecurrence.RepeatEveryType {
     var intervalOfOneDescription: String {
         switch self {
         case .day:
-            return L11n.Recurrence.daily
+            return L10n.Recurrence.daily
         case .week:
-            return L11n.Recurrence.weekly
+            return L10n.Recurrence.weekly
         case .month:
-            return L11n.Recurrence.monthly
+            return L10n.Recurrence.monthly
         case .year:
-            return L11n.Recurrence.yearly
+            return L10n.Recurrence.yearly
         }
     }
 }
@@ -137,15 +137,15 @@ private extension ICalRecurrence.RepeatMonthOnIth {
     var spelledOut: String {
         switch self {
         case .first:
-            return L11n.Recurrence.first
+            return L10n.Recurrence.first
         case .second:
-            return L11n.Recurrence.second
+            return L10n.Recurrence.second
         case .third:
-            return L11n.Recurrence.third
+            return L10n.Recurrence.third
         case .fourth:
-            return L11n.Recurrence.fourth
+            return L10n.Recurrence.fourth
         case .last:
-            return L11n.Recurrence.last
+            return L10n.Recurrence.last
         }
     }
 }

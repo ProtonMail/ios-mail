@@ -112,10 +112,10 @@ extension ScheduledSendHelper {
         let title: String
         if (0..<6).contains(current.hour) {
             date = current.today(at: 8, minute: 0)
-            title = L11n.ScheduledSend.inTheMorning
+            title = L10n.ScheduledSend.inTheMorning
         } else {
             date = current.tomorrow(at: 8, minute: 0)
-            title = L11n.ScheduledSend.tomorrow
+            title = L10n.ScheduledSend.tomorrow
         }
 
         guard let date = date else {
@@ -151,10 +151,10 @@ extension ScheduledSendHelper {
     private func setUpCustomAction() -> PMActionSheetItem {
         let isPaid = delegate?.isItAPaidUser() ?? false
         return PMActionSheetItem(components: isPaid ? [
-            PMActionSheetTextComponent(text: .left(L11n.ScheduledSend.custom), edge: [nil, nil, nil, 16]),
+            PMActionSheetTextComponent(text: .left(L10n.ScheduledSend.custom), edge: [nil, nil, nil, 16]),
             PMActionSheetIconComponent(icon: IconProvider.chevronRight, edge: [nil, nil, nil, 16])
         ] : [
-            PMActionSheetTextComponent(text: .left(L11n.ScheduledSend.custom), edge: [nil, nil, nil, 16]),
+            PMActionSheetTextComponent(text: .left(L10n.ScheduledSend.custom), edge: [nil, nil, nil, 16]),
             PMActionSheetIconComponent(icon: Asset.upgradeIcon.image,
                                        size: Asset.upgradeIcon.image.size,
                                        edge: [nil, nil, nil, 16]),
@@ -180,7 +180,7 @@ extension ScheduledSendHelper {
             return nil
         }
         return PMActionSheetItem(components: [
-            PMActionSheetTextComponent(text: .left(L11n.ScheduledSend.asSchedule), edge: [nil, nil, nil, 16]),
+            PMActionSheetTextComponent(text: .left(L10n.ScheduledSend.asSchedule), edge: [nil, nil, nil, 16]),
             PMActionSheetTextComponent(text: .left(originalTime.localizedString()),
                                        edge: [nil, nil, nil, 16],
                                        compressionResistancePriority: .required)

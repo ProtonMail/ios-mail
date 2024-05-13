@@ -38,11 +38,11 @@ public struct CalendarLandingPage: View {
                         .frame(height: 36)
                         .colorScheme(.dark)
 
-                    Text(L11n.CalendarLandingPage.headline)
+                    Text(L10n.CalendarLandingPage.headline)
                         .font(Font(UIFont.adjustedFont(forTextStyle: .title1, weight: .bold)))
                         .foregroundColor(ColorProvider.SidebarTextNorm)
 
-                    Text(L11n.CalendarLandingPage.subheadline)
+                    Text(L10n.CalendarLandingPage.subheadline)
                         .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
                         .foregroundColor(ColorProvider.SidebarTextWeak)
                 }
@@ -51,7 +51,7 @@ public struct CalendarLandingPage: View {
                 Spacer()
                     .frame(height: 40)
 
-                Button(L11n.CalendarLandingPage.getCalendar) {
+                Button(L10n.CalendarLandingPage.getCalendar) {
                     dismiss()
                     openURL(.AppStore.calendar)
                 }

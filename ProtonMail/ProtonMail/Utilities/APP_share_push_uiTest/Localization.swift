@@ -1246,17 +1246,17 @@ class LocalizedString {
     lazy var _toolbar_spotlight_content: String = NSLocalizedString("You can now choose and rearrange the actions in this bar", comment: "The content of the Customize toolbar spotlight view.")
 
     var _title_notification_action_mark_as_read: String {
-        L11n.PushNotificationAction.mark_as_read
+        L10n.PushNotificationAction.mark_as_read
     }
     var _title_notification_action_archive: String {
-        L11n.PushNotificationAction.archive
+        L10n.PushNotificationAction.archive
     }
     var _title_notification_action_move_to_trash: String {
-        L11n.PushNotificationAction.move_to_trash
+        L10n.PushNotificationAction.move_to_trash
     }
 }
 
-enum L11n {
+enum L10n {
     struct AlertBox {
         static let alertBoxMailPercentageText = NSLocalizedString("Your Mail storage is %@ full", comment: "Title of the banner alert")
         static let alertBoxDrivePercentageText = NSLocalizedString("Your Drive storage is %@ full", comment: "Title of the banner alert")
@@ -1323,13 +1323,7 @@ enum L11n {
     enum InvitationEmail {
         static let emailInvitationSubjectFullDateWithTimeAndTimeZone = NSLocalizedString(
             "%1@ at %2@ %3@",
-            comment: """
-Event date format used in email sent with an invitation answer
-example: "January 28, 2023 at 8:00 PM (GMT+2)"
-%1@ - month, day, and year
-%2@ - hour
-%3@ - time zone offset
-"""
+            comment: "Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset"
         )
 
         static let accepted = NSLocalizedString("accepted", comment: "Status in an email body sent with an invitation answer")
@@ -1339,14 +1333,7 @@ example: "January 28, 2023 at 8:00 PM (GMT+2)"
         enum Body {
             static let content = NSLocalizedString(
                 "%1@ has %2@ your invitation to %3@",
-                comment: """
-Body of an email sent with an invitation answer
-format: "<event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title>",
-example: "john.doe@protonmail.com has accepted your invitation to birthday party"
-%1@ - event attendee email
-%2@ - accepted | tentatively accepted | declined
-%3@ - event title
-"""
+                comment: "Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title>"
             )
 
             static let title = NSLocalizedString("You are invited to %@", comment: "Part of the body of the email sent to the participants that indicates the event's title")
@@ -1362,10 +1349,7 @@ example: "john.doe@protonmail.com has accepted your invitation to birthday party
 
                 static let other = NSLocalizedString(
                     "Re: Invitation for an event starting on %@",
-                    comment: """
-Subject of an email sent with an invitation answer after answering
-example: "Re: Invitation for an event starting on Saturday, January 28, 2023 at 8:00 PM (GMT+2)"
-"""
+                    comment: "Subject of an email sent with an invitation answer after answering"
                 )
             }
         }

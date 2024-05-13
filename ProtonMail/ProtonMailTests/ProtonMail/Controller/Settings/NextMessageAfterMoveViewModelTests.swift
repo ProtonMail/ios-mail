@@ -42,7 +42,7 @@ final class NextMessageAfterMoveViewModelTests: XCTestCase {
 
         let result = sut.cellData(for: IndexPath(row: 0, section: 0))
 
-        XCTAssertEqual(result?.title, L11n.NextMsgAfterMove.rowTitle)
+        XCTAssertEqual(result?.title, L10n.NextMsgAfterMove.rowTitle)
         XCTAssertEqual(result?.status, mockNextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove)
     }
 
@@ -50,7 +50,7 @@ final class NextMessageAfterMoveViewModelTests: XCTestCase {
         let result = try XCTUnwrap(sut.sectionFooter(section: 0))
         switch result {
         case .left(let text):
-            XCTAssertEqual(text, L11n.NextMsgAfterMove.rowFooterTitle)
+            XCTAssertEqual(text, L10n.NextMsgAfterMove.rowFooterTitle)
         case .right:
             XCTFail("Shouldn't be an attributedString")
         }

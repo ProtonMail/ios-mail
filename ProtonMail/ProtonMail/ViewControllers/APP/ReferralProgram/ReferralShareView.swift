@@ -148,7 +148,7 @@ private enum SubviewFactory {
         label.font = UIFont.adjustedFont(forTextStyle: .title2, weight: .bold)
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center
-        label.text = L11n.ReferralProgram.title
+        label.text = L10n.ReferralProgram.title
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         return label
@@ -159,7 +159,7 @@ private enum SubviewFactory {
         label.textAlignment = .center
         label.lineBreakMode = .byWordWrapping
         label.font = UIFont.adjustedFont(forTextStyle: .subheadline)
-        label.text = L11n.ReferralProgram.content
+        label.text = L10n.ReferralProgram.content
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         return label
@@ -168,7 +168,7 @@ private enum SubviewFactory {
     static var inviteLinkLabel: UILabel {
         let label = UILabel()
         label.font = UIFont.adjustedFont(forTextStyle: .footnote, weight: .semibold)
-        label.text = L11n.ReferralProgram.inviteLinkTitle
+        label.text = L10n.ReferralProgram.inviteLinkTitle
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         return label
@@ -203,7 +203,7 @@ private enum SubviewFactory {
     static var shareButton: ProtonButton {
         let button = ProtonButton()
         button.setMode(mode: .solid)
-        button.setTitle(L11n.ReferralProgram.shareTitle, for: .normal)
+        button.setTitle(L10n.ReferralProgram.shareTitle, for: .normal)
         button.titleLabel?.font = .adjustedFont(forTextStyle: .body)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         return button
@@ -211,7 +211,7 @@ private enum SubviewFactory {
 
     static var trackRewardButton: UIButton {
         let button = ButtonWithImageOnTheRight()
-        button.setTitle(L11n.ReferralProgram.trackRewardTitle, for: .normal)
+        button.setTitle(L10n.ReferralProgram.trackRewardTitle, for: .normal)
         button.titleLabel?.font = UIFont.adjustedFont(forTextStyle: .body)
         button.titleLabel?.textAlignment = .center
         button.setTitleColor(ColorProvider.TextWeak, for: .normal)
@@ -228,7 +228,7 @@ private enum SubviewFactory {
     static var bottomButton: UIButton {
         let button = UIButton()
 
-        button.setTitle(L11n.ReferralProgram.termsAndConditionTitle, for: .normal)
+        button.setTitle(L10n.ReferralProgram.termsAndConditionTitle, for: .normal)
         button.setTitleColor(ColorProvider.TextNorm, for: .normal)
         button.titleLabel?.textAlignment = .center
         button.titleLabel?.font = .adjustedFont(forTextStyle: .subheadline)
