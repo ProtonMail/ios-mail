@@ -60,13 +60,13 @@ class CoreDataCache: Migrate {
         return currentVersion == 0
     }
 
-    internal func rebuild(reason: RebuildReason) {
+    func rebuild(reason: RebuildReason) throws {
         CoreDataStore.deleteDataStore()
 
         if self.currentVersion <= Version.version2.rawValue {
             dependencies.userDefaults.set(0, forKey: UsersManager.CoderKey.Version)
-            dependencies.keychain.remove(forKey: "BioProtection" + ".version")
-            dependencies.keychain.remove(forKey: "PinProtection" + ".version")
+            try dependencies.keychain.removeOrError(forKey: "BioProtection" + ".version")
+            try dependencies.keychain.removeOrError(forKey: "PinProtection" + ".version")
         }
 
         // TODO:: fix me

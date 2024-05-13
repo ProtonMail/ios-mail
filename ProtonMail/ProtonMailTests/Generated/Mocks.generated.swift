@@ -171,14 +171,14 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
 }
 
 class MockCachedUserDataProvider: CachedUserDataProvider {
-    @FuncStub(MockCachedUserDataProvider.set) var setStub
-    func set(disconnectedUsers: [UsersManager.DisconnectedUserHandle]) {
-        setStub(disconnectedUsers)
+    @ThrowingFuncStub(MockCachedUserDataProvider.set) var setStub
+    func set(disconnectedUsers: [UsersManager.DisconnectedUserHandle]) throws {
+        try setStub(disconnectedUsers)
     }
 
-    @FuncStub(MockCachedUserDataProvider.fetchDisconnectedUsers, initialReturn: [UsersManager.DisconnectedUserHandle]()) var fetchDisconnectedUsersStub
-    func fetchDisconnectedUsers() -> [UsersManager.DisconnectedUserHandle] {
-        fetchDisconnectedUsersStub()
+    @ThrowingFuncStub(MockCachedUserDataProvider.fetchDisconnectedUsers, initialReturn: [UsersManager.DisconnectedUserHandle]()) var fetchDisconnectedUsersStub
+    func fetchDisconnectedUsers() throws -> [UsersManager.DisconnectedUserHandle] {
+        try fetchDisconnectedUsersStub()
     }
 
 }

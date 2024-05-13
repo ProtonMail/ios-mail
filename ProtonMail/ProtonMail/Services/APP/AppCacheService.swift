@@ -40,9 +40,9 @@ class AppCacheService {
         self.dependencies = dependencies
     }
 
-    func restoreCacheWhenAppStart() {
+    func restoreCacheWhenAppStart() throws {
         self.checkSettingsBundle()
-        self.coreDataCache.run()
+        try coreDataCache.run()
     }
 
     private func checkSettingsBundle() {

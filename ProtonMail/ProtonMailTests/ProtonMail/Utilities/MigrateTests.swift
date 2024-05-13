@@ -60,20 +60,20 @@ class MigrateTests: XCTestCase {
         }
     }
 
-    func testMigrateCases() {
+    func testMigrateCases() throws {
         ///test first run
         let firstTime = MigrateTest(l: 10, c: 0)
-        firstTime.run()
+        try firstTime.run()
         XCTAssert(firstTime.testLogs == "inital")
         XCTAssert(firstTime.latestVersion == firstTime.currentVersion)
         /// current == latest
         let okRun = MigrateTest(l: 1, c: 1)
-        okRun.run()
+        try okRun.run()
         XCTAssert(okRun.testLogs == "")
         XCTAssert(okRun.latestVersion == okRun.currentVersion)
         /// no support
         let noSupportCase = MigrateTest(l: 9, c: 6)
-        noSupportCase.run()
+        try noSupportCase.run()
         XCTAssert(noSupportCase.testLogs == "noSupports")
         XCTAssert(noSupportCase.latestVersion == noSupportCase.currentVersion)
     }

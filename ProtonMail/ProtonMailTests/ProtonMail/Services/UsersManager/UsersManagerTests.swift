@@ -113,7 +113,7 @@ class UsersManagerTests: XCTestCase {
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: freeUserInfo))
     }
 
-    func testAddNewUser() {
+    func testAddNewUser() throws {
         let userID = "1"
         let auth = AuthCredential(sessionID: userID,
                                   accessToken: "",
@@ -140,7 +140,7 @@ class UsersManagerTests: XCTestCase {
                                 createTime: nil,
                                 subscribed: nil)
         XCTAssertTrue(sut.users.isEmpty)
-        sut.add(auth: auth, user: userInfo, mailSettings: .init())
+        try sut.add(auth: auth, user: userInfo, mailSettings: .init())
         XCTAssertFalse(sut.users.isEmpty)
         XCTAssertEqual(sut.users[0].authCredential, auth)
         XCTAssertEqual(sut.users[0].userInfo, userInfo)

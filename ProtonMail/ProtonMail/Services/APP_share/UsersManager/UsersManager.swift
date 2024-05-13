@@ -54,7 +54,7 @@ extension UsersManagerProtocol {
     }
 }
 
-/// manager all the users and there services
+// swiftlint:disable force_try
 class UsersManager: UsersManagerProtocol {
     enum CoderKey {
         // tracking the cache version added 1.12.0
@@ -109,8 +109,8 @@ class UsersManager: UsersManagerProtocol {
      - Parameter user: user information
      - Parameter mailSettings: mail settings of the user
      **/
-    func add(auth: AuthCredential, user: UserInfo, mailSettings: MailSettings?) {
-        self.cleanRandomKeyIfNeeded()
+    func add(auth: AuthCredential, user: UserInfo, mailSettings: MailSettings?) throws {
+        try cleanRandomKeyIfNeeded()
         let session = auth.sessionID
         let apiService = PMAPIService.createAPIService(
             doh: doh,
@@ -201,7 +201,7 @@ class UsersManager: UsersManagerProtocol {
             return
         }
 
-        if let result = loadUserDataFromCache() {
+        if let result = try! loadUserDataFromCache() {
             self.users.removeAll()
 
             for cachedUserData in result {
@@ -266,7 +266,7 @@ class UsersManager: UsersManagerProtocol {
         // Check MAILIOS-854, MAILIOS-1208
         dependencies.userDefaults.set(lockedUsers.encryptedValue, forKey: CoderKey.usersInfo)
         dependencies.userDefaults.synchronize()
-        keychain.remove(forKey: CoderKey.authKeychainStore)
+        try! keychain.removeOrError(forKey: CoderKey.authKeychainStore)
 
         var mailSettingsList: [String: MailSettings] = [:]
         users.forEach { user in
@@ -419,8 +419,8 @@ extension UsersManager {
             self.dependencies.userDefaults.remove(forKey: CoderKey.usersInfo)
             self.dependencies.userDefaults.remove(forKey: CoderKey.authKeychainStore)
             self.dependencies.featureFlagsRepository.resetFlags()
-            self.keychain.remove(forKey: CoderKey.authKeychainStore)
-            self.keychain.remove(forKey: CoderKey.disconnectedUsers)
+            try! self.keychain.removeOrError(forKey: CoderKey.authKeychainStore)
+            try! self.keychain.removeOrError(forKey: CoderKey.disconnectedUsers)
 
             self.dependencies.userCachedStatus.cleanAllData()
 
@@ -445,7 +445,7 @@ extension UsersManager {
         // Have this value after 1.12.0
         let hasUsersInfo = dependencies.userDefaults.value(forKey: CoderKey.usersInfo) != nil
 
-        let authKeychainStore = keychain.data(forKey: CoderKey.authKeychainStore)
+        let authKeychainStore = try! keychain.dataOrError(forKey: CoderKey.authKeychainStore)
         let authUserDefaultStore = dependencies.userDefaults.data(forKey: CoderKey.authKeychainStore)
 
         let hasUsers = (authKeychainStore != nil || authUserDefaultStore != nil)
@@ -466,13 +466,13 @@ extension UsersManager {
         let mailSettings: MailSettings?
     }
 
-    private func loadUserDataFromCache() -> [CachedUserData]? {
+    private func loadUserDataFromCache() throws -> [CachedUserData]? {
         guard let mainKey = coreKeyMaker.mainKey(by: keychain.randomPinProtection) else {
             SystemLogger.log(message: "Can not found mainkey", category: .restoreUserData, isError: true)
             return nil
         }
         let authDataInUserDefault = dependencies.userDefaults.data(forKey: CoderKey.authKeychainStore)
-        let authDataInKeyChain = keychain.data(forKey: CoderKey.authKeychainStore)
+        let authDataInKeyChain = try keychain.dataOrError(forKey: CoderKey.authKeychainStore)
         guard let encryptedAuthData = authDataInUserDefault ?? authDataInKeyChain else {
             SystemLogger.log(message: "Can not found encryptedAuthData", category: .restoreUserData, isError: true)
             return nil
@@ -482,9 +482,9 @@ extension UsersManager {
         let authCredentialsFromNSCoding = try? lockedAuthData.unlock(with: mainKey)
 
         guard let authCredentials: [AuthCredential] = authCredentialsFromNSCoding else {
-            dependencies.userDefaults.remove(forKey: CoderKey.authKeychainStore)
-            keychain.remove(forKey: CoderKey.authKeychainStore)
             SystemLogger.log(message: "Can not found authCredentials", category: .restoreUserData, isError: true)
+            dependencies.userDefaults.remove(forKey: CoderKey.authKeychainStore)
+            try keychain.removeOrError(forKey: CoderKey.authKeychainStore)
             return nil
         }
 
@@ -559,10 +559,10 @@ extension UsersManager {
      Persisted until logout of last user, protected with MainKey. */
     var disconnectedUsers: [DisconnectedUserHandle] {
         get {
-            dependencies.cachedUserDataProvider.fetchDisconnectedUsers()
+            try! dependencies.cachedUserDataProvider.fetchDisconnectedUsers()
         }
         set {
-            dependencies.cachedUserDataProvider.set(disconnectedUsers: newValue)
+            try! dependencies.cachedUserDataProvider.set(disconnectedUsers: newValue)
         }
     }
 
@@ -573,13 +573,13 @@ extension UsersManager {
 
 // MARK: - Legacy crypto functions
 extension UsersManager {
-    func cleanRandomKeyIfNeeded() {
+    private func cleanRandomKeyIfNeeded() throws {
         // Random key status is in the key chain
         // That means if the users delete the app
         // The key chain could keep the old data
         // If there is not user data, remove the random protection
         let dataInUserDefault = dependencies.userDefaults.data(forKey: CoderKey.authKeychainStore)
-        let dataInKeyChain = keychain.data(forKey: CoderKey.authKeychainStore)
+        let dataInKeyChain = try keychain.dataOrError(forKey: CoderKey.authKeychainStore)
         guard dataInUserDefault != nil || dataInKeyChain != nil,
               !self.users.isEmpty
         else {

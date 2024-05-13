@@ -29,7 +29,7 @@ class KeychainSaver<T>: Saver<T> where T: Codable {
 }
 
 extension KeychainWrapper: KeyValueStoreProvider {
-    func data(forKey key: String) -> Data? {
+    func data(forKey key: String, attributes: [CFString: Any]?) -> Data? {
         do {
             return try dataOrError(forKey: key)
         } catch {
@@ -38,9 +38,17 @@ extension KeychainWrapper: KeyValueStoreProvider {
         return nil
     }
 
-    func set(_ data: Data, forKey key: String) {
+    func set(_ data: Data, forKey key: String, attributes: [CFString: Any]?) {
         do {
             try setOrError(data, forKey: key)
+        } catch {
+            SystemLogger.log(error: error)
+        }
+    }
+
+    func remove(forKey key: String) {
+        do {
+            try removeOrError(forKey: key)
         } catch {
             SystemLogger.log(error: error)
         }

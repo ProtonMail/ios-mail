@@ -97,7 +97,12 @@ extension AppDelegate: UIApplicationDelegate {
 
         cleanKeychainInCaseOfAppReinstall()
         let appCache = AppCacheService(dependencies: dependencies)
-        appCache.restoreCacheWhenAppStart()
+
+        do {
+            try appCache.restoreCacheWhenAppStart()
+        } catch {
+            SystemLogger.log(error: error)
+        }
 
         let coreKeyMaker = dependencies.keyMaker
 
