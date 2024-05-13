@@ -420,9 +420,6 @@
 */
 "Cancel" = "取消";
 
-/* Got it action */
-"Got it" = "了解";
-
 /* Open action */
 "Open" = "打開";
 
@@ -1950,46 +1947,88 @@
 "(Attendance optional)" = "(非必要出席)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "每 %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "於 %@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "在%@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "於 %u 日";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "直到 %@ 為止";
+
+/* " */
+"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "accepted";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "declined";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "tentatively accepted";
+
+/* " */
+"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "You are invited to %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "LOCATION:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ was cancelled.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Re: Invitation for an event on %@";
+
+/* " */
+"Re: Invitation for an event starting on %@" = "Re: Invitation for an event starting on %@";
+
+/* Title of an event with missing title */
+"(no title)" = "(no title)";
 
 /* Occurring every day */
-"Daily" = "Daily";
+"Daily" = "每天";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "每週";
 
 /* Occurring every month */
-"Monthly" = "Monthly";
+"Monthly" = "每月";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "每年";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "第一";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "第二";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "第三";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "第四";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "最後";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Easily RSVP to events";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
 
 /* Menu title */
 "Max Storage" = "最大儲存";
@@ -1998,7 +2037,7 @@
 "Storage: %@ full" = "儲存: %@以滿";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "硬碟: %@以滿";
 
 /* Official badge next to sender's name */
 "Official" = "官方";
@@ -2113,6 +2152,12 @@
 
 /* Title for application logs settings option */
 "Application logs" = "應用程式紀錄";
+
+/* Badge present on some spotlights */
+"New!" = "New!";
+
+/* Got it action */
+"Got it" = "了解";
 
 /* The title of the setting of the next msg after move */
 "Jump to next email" = "跳到下一則電子郵件";
@@ -2409,13 +2454,16 @@
 "Change mailbox password" = "變更郵箱密碼";
 
 /* Description of a feature of a paid subscription */
-"Schedule send and snooze" = "Schedule send and snooze";
+"15 GB storage" = "15 GB storage";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u email addresses";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Custom email domain support";
 
 /* Description of a feature of a paid subscription */
-"And %u more premium features" = "And %u more premium features";
+"New Proton Mail desktop app" = "New Proton Mail desktop app";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "匿名遙測";
@@ -2430,22 +2478,22 @@
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "如果應用程式崩潰，系統將向我們的工程師發送詳細的崩潰報告。這些報告僅用於改進應用程式。";
 
 /* Title of the upsell page. */
-"Upgrade to %@" = "Upgrade to %@";
+"Upgrade to %@" = "升級到 %@";
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "To unlock more storage and premium features.";
 
 /* Displayed next to the monthly price */
-"/month" = "/month";
+"/month" = "/月";
 
 /* CTA button to purchase a plan (e.g. Get Mail Plus) */
 "Get %@" = "取得 %@";
 
 /* In the context of a discount */
-"Save %u%%" = "Save %u%%";
+"Save %u%%" = "省下 %u%%";
 
 /* Error when trying to purchase an invalid product */
-"Invalid product ID: $@" = "Invalid product ID: $@";
+"Invalid product ID: $@" = "無效的產品編號 : $@";
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Purchase already in progress";

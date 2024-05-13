@@ -420,9 +420,6 @@
 */
 "Cancel" = "Скасаваць";
 
-/* Got it action */
-"Got it" = "Зразумела";
-
 /* Open action */
 "Open" = "Адкрыць";
 
@@ -1085,7 +1082,7 @@
 "Is this bug report about an in-app purchase?" = "Гэта памылка датычыцца куплі ў праграме?";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Наша служба падтрымкі кліентаў паспрабуе змяніць ваш тарыфны план уручную, калі вы згадзіцеся дадаць тэхнічныя даныя, якія былі выдадзены крамай App Store праграме ў момант куплі. Сярод гэтых даных няма ніякіх падрабязнасцей пра ваш уліковы запіс iTunes, Apple ID, прывязаныя крэдытныя карткі або якой-небудзь іншай карыстальніцкай інфармацыі. Тэхнічныя даныя толькі дапамогуць нам праверыць, што трансакцыя цалкам завяршылася на серверах App Store.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Наша каманда падтрымкі кліентаў паспрабуе змяніць ваш тарыфны план уручную, калі вы згадзіцеся дадаць тэхнічныя даныя, якія былі выдадзены крамай App Store праграме ў момант куплі. Сярод гэтых даных няма ніякіх падрабязнасцей аб вашым уліковым запісе iTunes, Apple ID, прывязаных крэдытных картках або якой-небудзь іншай карыстальніцкай інфармацыі. Тэхнічныя даныя толькі дапамогуць нам праверыць, што трансакцыя цалкам завяршылася на серверах App Store.";
 
 /* Error message */
 "Yes, attach details of payment" = "Так, далучыць рэквізіты плацяжу";
@@ -1964,6 +1961,42 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "да %@";
 
+/* " */
+"%1@ at %2@ %3@" = "%1@ у %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "прынята";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "адхілена";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "умоўна прынята";
+
+/* " */
+"%1@ has %2@ your invitation to %3@" = "%1@ %2@ ваша запрашэнне на %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "Вас запрасілі на %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "МЕСЦАЗНАХОДЖАННЕ:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "АПІСАННЕ:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ было скасавана.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Re: Запрашэнне на падзею ў %@";
+
+/* " */
+"Re: Invitation for an event starting on %@" = "Re: Запрашэнне на падзею, якая пачынаецца ў %@";
+
+/* Title of an event with missing title */
+"(no title)" = "(без загалоўка)";
+
 /* Occurring every day */
 "Daily" = "Штодзень";
 
@@ -1990,6 +2023,12 @@
 
 /* Opposite of \"first\" */
 "last" = "апошні";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Лёгкі адказ на запрашэнне для падзей";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Цяпер вы адным націскам можаце адказаць на запрашэнне або паглядзець падзею ў Proton Calendar. ";
 
 /* Menu title */
 "Max Storage" = "Максімальная прастора ў сховішчы";
@@ -2113,6 +2152,12 @@
 
 /* Title for application logs settings option */
 "Application logs" = "Журнал праграмы";
+
+/* Badge present on some spotlights */
+"New!" = "Новае!";
+
+/* Got it action */
+"Got it" = "Зразумела";
 
 /* The title of the setting of the next msg after move */
 "Jump to next email" = "Перайсці да наступнага ліста";
@@ -2409,13 +2454,16 @@
 "Change mailbox password" = "Змяніць пароль паштовай скрыні";
 
 /* Description of a feature of a paid subscription */
-"Schedule send and snooze" = "Планаванне адпраўкі і адкладанне";
+"15 GB storage" = "15 ГБ сховішча";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u адрасоў электроннай пошты";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Падтрымка карыстальніцкіх даменаў";
 
 /* Description of a feature of a paid subscription */
-"And %u more premium features" = "І яшчэ %u прэміяльныя функцыі";
+"New Proton Mail desktop app" = "Новая настольная праграма Proton Mail";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ананімная тэлеметрыя";

@@ -420,9 +420,6 @@
 */
 "Cancel" = "취소";
 
-/* Got it action */
-"Got it" = "알겠습니다";
-
 /* Open action */
 "Open" = "열기";
 
@@ -1964,6 +1961,42 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "%@까지";
 
+/* " */
+"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "수락함";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "거절함";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "잠정적으로 수락함";
+
+/* " */
+"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "%@에 초대받았습니다.";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "지역:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "설명:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@이(가) 취소되었습니다.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Re: %@에 있는 이벤트에 초대";
+
+/* " */
+"Re: Invitation for an event starting on %@" = "Re: %@에 시작하는 이벤트에 초대";
+
+/* Title of an event with missing title */
+"(no title)" = "(제목 없음)";
+
 /* Occurring every day */
 "Daily" = "매일";
 
@@ -1990,6 +2023,12 @@
 
 /* Opposite of \"first\" */
 "last" = "마지막";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "이벤트에 대한 RSVP를 쉽게";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "이제 탭 한번으로 초대에 응답하거나 Proton Calendar의 이벤트를 볼 수 있게 되었습니다. ";
 
 /* Menu title */
 "Max Storage" = "최대 저장공간";
@@ -2113,6 +2152,12 @@
 
 /* Title for application logs settings option */
 "Application logs" = "어플리케이션 로그";
+
+/* Badge present on some spotlights */
+"New!" = "신규!";
+
+/* Got it action */
+"Got it" = "알겠습니다";
 
 /* The title of the setting of the next msg after move */
 "Jump to next email" = "다음 이메일로 넘어가기";
@@ -2409,13 +2454,16 @@
 "Change mailbox password" = "메일함 비밀번호 변경";
 
 /* Description of a feature of a paid subscription */
-"Schedule send and snooze" = "스케줄 전송됨 및 방해 금지됨";
+"15 GB storage" = "저장공간 15GB";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "이메일 주소 %u개";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "사용자 지정 이메일 도메인 지원";
 
 /* Description of a feature of a paid subscription */
-"And %u more premium features" = "그리고 %u개 이상의 프리미엄 기능";
+"New Proton Mail desktop app" = "새로운 Proton Mail 데스크톱 앱";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "익명 원격 측정";
@@ -2436,16 +2484,16 @@
 "To unlock more storage and premium features." = "더 많은 저장 공간과 프리미엄 기능을 잠금 해제하기 위해.";
 
 /* Displayed next to the monthly price */
-"/month" = "/month";
+"/month" = "/월간";
 
 /* CTA button to purchase a plan (e.g. Get Mail Plus) */
 "Get %@" = "%@ 가져오기";
 
 /* In the context of a discount */
-"Save %u%%" = "Save %u%%";
+"Save %u%%" = "%u 할인%%";
 
 /* Error when trying to purchase an invalid product */
-"Invalid product ID: $@" = "Invalid product ID: $@";
+"Invalid product ID: $@" = "상품 ID가 올바르지 않음: $@";
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "구매가 이미 진행중입니다";
