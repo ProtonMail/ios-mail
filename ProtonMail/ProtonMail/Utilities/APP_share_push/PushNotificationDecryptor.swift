@@ -32,5 +32,5 @@ final class PushNotificationDecryptor {
     }
 
     @available(*, deprecated, message: "Old aproach to store encryption kits. Check `PushEncryptionKitSaver` instead.")
-    static var saver = KeychainSaver<Set<PushSubscriptionSettings>>(key: Key.encryptionKit, cachingInMemory: false)
+    static var saver = KeychainSaver<Set<PushSubscriptionSettings>>(key: Key.encryptionKit)
 }

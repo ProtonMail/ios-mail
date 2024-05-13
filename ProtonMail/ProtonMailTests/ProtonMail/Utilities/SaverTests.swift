@@ -54,7 +54,7 @@ class SaverTests: XCTestCase {
     
     private class SaverTestsMock<T: Codable>: Saver<T> {
         convenience init(key: String, store: KeyValueStoreProvider, memory: Bool) {
-            self.init(key: key, store: store, cachingInMemory: memory)
+            self.init(key: key, store: store)
         }
     }
     private class CoableMockSub: Codable, Equatable {
@@ -119,48 +119,9 @@ class SaverTests: XCTestCase {
     
     func testCases() {
         let store = StoreMock()
-        
-        let saverCase4 = SaverTestsMock<String>(key:"string-1", store: store, memory: true)
-        saverCase4.set(newValue: "100")
-        XCTAssert(saverCase4.get() == "100")
-        XCTAssert(store.log == "s-key", store.log)
-        saverCase4.set(newValue: nil)
-        XCTAssert(saverCase4.get() == nil)
-        XCTAssert(store.log == "s-keyr-keyg-key", store.log)
-        saverCase4.set(newValue: "1001")
-        XCTAssert(saverCase4.get() == "1001")
-        XCTAssert(store.log == "s-keyr-keyg-keys-key", store.log)
-        store.resetLog()
-        let saverCase5 = SaverTestsMock<String>(key:"string-2", store: store, memory: false)
-        saverCase5.set(newValue: "1000")
-        XCTAssert(saverCase5.get() == "1000")
-        XCTAssert(store.log == "s-keyg-key", store.log)
-        saverCase5.set(newValue: nil)
-        XCTAssert(saverCase5.get() == nil)
-        XCTAssert(store.log == "s-keyg-keyr-keyg-key", store.log)
-        store.resetLog()
-        let saverCase6 = SaverTestsMock<String>(key:"string-1", store: store, memory: true)
-        XCTAssert(saverCase6.get() == "1001")
-        XCTAssert(store.log == "g-key", store.log)
-        XCTAssert(saverCase6.get() == "1001")
-        XCTAssert(store.log == "g-key", store.log)
-        store.resetLog()
 
         let sub = CoableMockSub(sub1: "String1", sub2: 11, sub3: 0.4, sub4: true)
         let mock = CoableMock(var1: "String1", var2: "String2", int1: 100, subObj: sub)
-        let saverCase7 = SaverTestsMock<CoableMock>(key:"object-1", store: store, memory: true)
-        XCTAssert(saverCase7.get() == nil)
-        XCTAssert(store.log == "g-key", store.log)
-        saverCase7.set(newValue: mock)
-        XCTAssert(saverCase7.get() == mock)
-        XCTAssert(store.log == "g-keys-key", store.log)
-        saverCase7.set(newValue: nil)
-        XCTAssert(store.log == "g-keys-keyr-key", store.log)
-        XCTAssert(saverCase7.get() == nil)
-        XCTAssert(store.log == "g-keys-keyr-keyg-key", store.log)
-        saverCase7.set(newValue: mock)
-        XCTAssert(saverCase7.get() == mock)
-        store.resetLog()
         
         mock.subObj.sub4 = false
         let saverCase8 = SaverTestsMock<CoableMock>(key:"object-1", store: store, memory: false)

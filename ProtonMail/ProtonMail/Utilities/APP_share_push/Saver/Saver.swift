@@ -32,26 +32,10 @@ class Saver<T: Codable> {
     private let key: String
     private let store: KeyValueStoreProvider
     private var value: T?
-    private var isCaching: Bool
 
-    init(key: String, store: KeyValueStoreProvider, cachingInMemory: Bool = true) {
+    init(key: String, store: KeyValueStoreProvider) {
         self.key = key
         self.store = store
-        self.isCaching = cachingInMemory
-    }
-}
-
-extension Saver where T == String {
-    func set(newValue: String?) {
-        if isCaching {
-            self.value = newValue
-        }
-        guard let value = newValue,
-            let raw = value.data(using: .utf8) else {
-            self.store.remove(forKey: key)
-            return
-        }
-        self.store.set(raw, forKey: key, attributes: nil)
     }
 }
 
@@ -76,13 +60,6 @@ extension Saver where T: Codable {
     }
 
     func get() -> T? {
-        guard self.isCaching == true else {
             return self.getFromStore()
-        }
-        guard self.value == nil else {
-            return self.value
-        }
-        self.value = self.getFromStore()
-        return self.value
     }
 }
