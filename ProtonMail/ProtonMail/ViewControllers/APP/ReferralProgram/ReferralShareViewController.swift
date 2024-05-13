@@ -95,7 +95,7 @@ final class ReferralShareViewController: UIViewController {
                 referralLink,
                 forPasteboardType: UTType.plainText.identifier)
         let banner = PMBanner(
-            message: L11n.ReferralProgram.linkCopied,
+            message: L10n.ReferralProgram.linkCopied,
             style: PMBannerNewStyle.info
         )
         banner.show(at: .bottom, on: self)
@@ -103,7 +103,7 @@ final class ReferralShareViewController: UIViewController {
 
     @objc
     private func shareLink(_ sender: UIButton) {
-        let shareContent = "\(L11n.ReferralProgram.shareContent) \(referralLink)"
+        let shareContent = "\(L10n.ReferralProgram.shareContent) \(referralLink)"
         let activityVC = UIActivityViewController(
             activityItems: [shareContent],
             applicationActivities: nil

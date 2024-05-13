@@ -85,7 +85,7 @@ final class UnsnoozeBanner: UIView {
 
     func configure(date: String, viewMode: ViewMode, unsnoozeAction: @escaping () -> Void) {
         let infoText = String(
-            format: L11n.Snooze.bannerTitle,
+            format: L10n.Snooze.bannerTitle,
             date
         )
         infoLabel.set(text: infoText, preferredFont: .footnote, textColor: ColorProvider.TextNorm)
@@ -119,7 +119,7 @@ private enum SubviewsFactory {
     static var unsnoozeButton: UIButton {
         let button = UIButton(frame: .zero)
         button.titleLabel?.set(text: nil, preferredFont: .caption1)
-        button.setTitle(L11n.Snooze.buttonTitle, for: .normal)
+        button.setTitle(L10n.Snooze.buttonTitle, for: .normal)
         button.backgroundColor = ColorProvider.InteractionWeak
         button.setCornerRadius(radius: 8)
         button.setTitleColor(ColorProvider.TextNorm, for: .normal)

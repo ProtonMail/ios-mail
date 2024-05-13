@@ -451,21 +451,21 @@ class SingleMessageContentViewController: UIViewController {
         let senderEmail = viewModel.messageInfoProvider.senderEmail.string
 
         let alert = UIAlertController(
-            title: L11n.BlockSender.blockActionTitleLong,
-            message: String(format: L11n.BlockSender.explanation, senderEmail),
+            title: L10n.BlockSender.blockActionTitleLong,
+            message: String(format: L10n.BlockSender.explanation, senderEmail),
             preferredStyle: .alert
         )
 
         alert.addCancelAction()
 
         let confirmAction = UIAlertAction(
-            title: L11n.BlockSender.blockActionTitleShort,
+            title: L10n.BlockSender.blockActionTitleShort,
             style: .destructive
         ) { [weak self] _ in
             guard let self = self else { return }
 
             if self.viewModel.updateSenderBlockedStatus(blocked: true) {
-                self.showBottomToast(message: String(format: L11n.BlockSender.successfulBlockConfirmation, senderEmail))
+                self.showBottomToast(message: String(format: L10n.BlockSender.successfulBlockConfirmation, senderEmail))
             }
         }
         alert.addAction(confirmAction)
@@ -619,7 +619,7 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
 
         showBottomToast(
             message: String(
-                format: L11n.BlockSender.successfulUnblockConfirmation,
+                format: L10n.BlockSender.successfulUnblockConfirmation,
                 viewModel.messageInfoProvider.senderEmail.string
             )
         )
@@ -711,7 +711,7 @@ extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
         navigationController?.popViewController(animated: true)
         guard let mailboxVC = navigationController?.viewControllers.first else { return }
         let banner = PMBanner(
-            message: L11n.Snooze.unsnoozeSuccessBannerTitle,
+            message: L10n.Snooze.unsnoozeSuccessBannerTitle,
             style: PMBannerNewStyle.info,
             bannerHandler: PMBanner.dismiss
         )

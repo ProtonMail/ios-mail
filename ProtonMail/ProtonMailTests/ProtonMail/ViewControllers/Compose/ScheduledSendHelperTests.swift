@@ -59,7 +59,7 @@ final class ScheduledSendHelperTests: XCTestCase {
         let tomorrowDate = try XCTUnwrap(date.today(at: 8, minute: 0))
         let firstItemTitle = try XCTUnwrap(itemGroup.items.first?.components.first as? PMActionSheetTextComponent)
         let firstItemDetail = try XCTUnwrap(itemGroup.items.first?.components.last as? PMActionSheetTextComponent)
-        XCTAssertEqual(firstItemTitle.text.mapRight { $0.string }.value(), L11n.ScheduledSend.inTheMorning)
+        XCTAssertEqual(firstItemTitle.text.mapRight { $0.string }.value(), L10n.ScheduledSend.inTheMorning)
         XCTAssertEqual(firstItemDetail.text.mapRight { $0.string }.value(), tomorrowDate.localizedString())
 
         let nextMondayDate = try XCTUnwrap(date.next(.monday, hour: 8, minute: 0))
@@ -69,7 +69,7 @@ final class ScheduledSendHelperTests: XCTestCase {
         XCTAssertEqual(secondItemDetails.text.mapRight { $0.string }.value(), nextMondayDate.localizedString())
 
         let lastItem = try XCTUnwrap(itemGroup.items[safe: 2]?.components.first as? PMActionSheetTextComponent)
-        XCTAssertEqual(lastItem.text.mapRight { $0.string }.value(), L11n.ScheduledSend.custom)
+        XCTAssertEqual(lastItem.text.mapRight { $0.string }.value(), L10n.ScheduledSend.custom)
     }
 
     func testPresentActionSheet_dateIsLaterThan6am_havingTomorrowItems() throws {
@@ -87,7 +87,7 @@ final class ScheduledSendHelperTests: XCTestCase {
 
         let tomorrowDate = try XCTUnwrap(date.tomorrow(at: 8, minute: 0))
         let firstItemTitle = try XCTUnwrap(itemGroup.items.first?.components.first as? PMActionSheetTextComponent)
-        XCTAssertEqual(firstItemTitle.text.mapRight { $0.string }.value(), L11n.ScheduledSend.tomorrow)
+        XCTAssertEqual(firstItemTitle.text.mapRight { $0.string }.value(), L10n.ScheduledSend.tomorrow)
         let firstItemDetail = try XCTUnwrap(itemGroup.items.first?.components.last as? PMActionSheetTextComponent)
         XCTAssertEqual(firstItemDetail.text.mapRight { $0.string }.value(), tomorrowDate.localizedString())
 
@@ -98,6 +98,6 @@ final class ScheduledSendHelperTests: XCTestCase {
         XCTAssertEqual(secondItemDetail.text.mapRight { $0.string }.value(), nextMondayDate.localizedString())
 
         let lastItem = try XCTUnwrap(itemGroup.items[safe: 2]?.components.first as? PMActionSheetTextComponent)
-        XCTAssertEqual(lastItem.text.mapRight { $0.string }.value(), L11n.ScheduledSend.custom)
+        XCTAssertEqual(lastItem.text.mapRight { $0.string }.value(), L10n.ScheduledSend.custom)
     }
 }

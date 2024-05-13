@@ -46,9 +46,9 @@ extension PrivacyAndDataSettingViewModel {
         var description: String {
             switch self {
             case .anonymousTelemetry:
-                return L11n.PrivacyAndDataSettings.telemetry
+                return L10n.PrivacyAndDataSettings.telemetry
             case .anonymousCrashReport:
-                return L11n.PrivacyAndDataSettings.crashReport
+                return L10n.PrivacyAndDataSettings.crashReport
             }
         }
     }
@@ -92,7 +92,7 @@ extension PrivacyAndDataSettingViewModel: SwitchToggleVMInput {
 extension PrivacyAndDataSettingViewModel: SwitchToggleVMOutput {
     var headerTopPadding: CGFloat { 0 }
     var footerTopPadding: CGFloat { 8 }
-    var title: String { L11n.AccountSettings.privacyAndData }
+    var title: String { L10n.AccountSettings.privacyAndData }
     var sectionNumber: Int { PrivacyAndDataSettingItem.allCases.count }
     var rowNumber: Int { 1 }
 
@@ -116,9 +116,9 @@ extension PrivacyAndDataSettingViewModel: SwitchToggleVMOutput {
         }
         switch section {
         case .anonymousTelemetry:
-            return .left(L11n.PrivacyAndDataSettings.telemetrySubtitle)
+            return .left(L10n.PrivacyAndDataSettings.telemetrySubtitle)
         case .anonymousCrashReport:
-            return .left(L11n.PrivacyAndDataSettings.crashReportSubtitle)
+            return .left(L10n.PrivacyAndDataSettings.crashReportSubtitle)
         }
     }
 }

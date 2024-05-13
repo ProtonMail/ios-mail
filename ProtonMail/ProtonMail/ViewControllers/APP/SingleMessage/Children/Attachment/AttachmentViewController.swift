@@ -177,11 +177,11 @@ class AttachmentViewController: UIViewController {
         case .promptToUpdateCalendarApp:
             let alert = UIAlertController(
                 title: "Proton Calendar",
-                message: L11n.ProtonCalendarIntegration.downloadCalendarAlert,
+                message: L10n.ProtonCalendarIntegration.downloadCalendarAlert,
                 preferredStyle: .actionSheet
             )
 
-            alert.addURLAction(title: L11n.ProtonCalendarIntegration.downloadInAppStore, url: .AppStore.calendar)
+            alert.addURLAction(title: L10n.ProtonCalendarIntegration.downloadInAppStore, url: .AppStore.calendar)
             alert.addCancelAction()
             present(alert, animated: true)
         case .goToAppStoreDirectly:

@@ -44,11 +44,11 @@ public struct NoContactView: View {
     public init() {}
 
     private func displayedTitle(isImporting: Bool) -> String {
-        isImporting ? L11n.AutoImportContacts.importingTitle : L11n.AutoImportContacts.noContactTitle
+        isImporting ? L10n.AutoImportContacts.importingTitle : L10n.AutoImportContacts.noContactTitle
     }
 
     private func displayedDesc(isImporting: Bool) -> String {
-        isImporting ? L11n.AutoImportContacts.importingDesc : L11n.AutoImportContacts.noContactDesc
+        isImporting ? L10n.AutoImportContacts.importingDesc : L10n.AutoImportContacts.noContactDesc
     }
 
     public var body: some View {
@@ -68,7 +68,7 @@ public struct NoContactView: View {
                 Button(action: {
                     self.importButtonIsClicked()
                 }, label: {
-                    Text(L11n.AutoImportContacts.autoImportContactButtonTitle)
+                    Text(L10n.AutoImportContacts.autoImportContactButtonTitle)
                         .frame(maxWidth: .infinity, minHeight: 48)
 
                 })
@@ -87,8 +87,8 @@ public struct NoContactView: View {
         )
         .alert(isPresented: $showingAlert, content: {
             Alert(
-                title: Text(L11n.SettingsContacts.autoImportContacts),
-                message: Text(L11n.SettingsContacts.authoriseContactsInSettingsApp),
+                title: Text(L10n.SettingsContacts.autoImportContacts),
+                message: Text(L10n.SettingsContacts.authoriseContactsInSettingsApp),
                 dismissButton: .cancel(Text(LocalString._general_ok_action))
             )
         })

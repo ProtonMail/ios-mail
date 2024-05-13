@@ -1343,9 +1343,9 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     private func showJumpToNextMessageSpotlight() {
         let spotlightView = JumpToNextSpotlightView(
-            buttonTitle: L11n.NextMsgAfterMove.spotlightButtonTitle,
-            message: L11n.NextMsgAfterMove.spotlightMessage,
-            title: L11n.NextMsgAfterMove.spotlightTitle
+            buttonTitle: L10n.NextMsgAfterMove.spotlightButtonTitle,
+            message: L10n.NextMsgAfterMove.spotlightMessage,
+            title: L10n.NextMsgAfterMove.spotlightTitle
         ) { [weak self] hostingVC, didTapActionButton in
             hostingVC?.dismiss(animated: false)
             if didTapActionButton {
@@ -1363,9 +1363,9 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     private func showAutoImportContactsSpotlight() {
         let spotlightView = AutoImportContactsSpotlightView(
-            buttonTitle: L11n.AutoImportContacts.spotlightButtonTitle,
-            message: L11n.AutoImportContacts.spotlightMessage,
-            title: L11n.AutoImportContacts.spotlightTitle
+            buttonTitle: L10n.AutoImportContacts.spotlightButtonTitle,
+            message: L10n.AutoImportContacts.spotlightMessage,
+            title: L10n.AutoImportContacts.spotlightTitle
         ) { [weak self] hostingVC, didTapActionButton in
             hostingVC?.dismiss(animated: false)
             if didTapActionButton {
@@ -1388,8 +1388,8 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     private func showContactAccessIsDenied() {
         let alert = UIAlertController(
-            title: L11n.SettingsContacts.autoImportContacts,
-            message: L11n.SettingsContacts.authoriseContactsInSettingsApp,
+            title: L10n.SettingsContacts.autoImportContacts,
+            message: L10n.SettingsContacts.authoriseContactsInSettingsApp,
             preferredStyle: .alert
         )
         alert.addOKAction()
@@ -1471,7 +1471,7 @@ extension MailboxViewController {
         UIView.animate(withDuration: 0.25) {
             self.selectAllButton.backgroundColor = .clear
         }
-        if selectAllLabel.text == L11n.MailBox.selectAll {
+        if selectAllLabel.text == L10n.MailBox.selectAll {
             selectAllMessages()
         } else {
             viewModel.removeAllSelectedIDs()
@@ -1511,19 +1511,19 @@ extension MailboxViewController {
             selectAllIcon.tintColor = ColorProvider.IconAccent
             selectAllIcon.image = Asset.icSquareChecked.image
             selectAllLabel.textColor = ColorProvider.TextAccent
-            selectAllLabel.text = L11n.MailBox.unselectAll
+            selectAllLabel.text = L10n.MailBox.unselectAll
             selectAllButton.isUserInteractionEnabled = true
         case (true, false):
             selectAllIcon.tintColor = ColorProvider.IconAccent
             selectAllIcon.image = Asset.icSquare.image
             selectAllLabel.textColor = ColorProvider.TextAccent
-            selectAllLabel.text = L11n.MailBox.selectAll
+            selectAllLabel.text = L10n.MailBox.selectAll
             selectAllButton.isUserInteractionEnabled = true
         case (false, _):
             selectAllIcon.tintColor = ColorProvider.IconDisabled
             selectAllIcon.image = Asset.icSquare.image
             selectAllLabel.textColor = ColorProvider.TextDisabled
-            selectAllLabel.text = L11n.MailBox.selectAll
+            selectAllLabel.text = L10n.MailBox.selectAll
             selectAllButton.isUserInteractionEnabled = false
         }
     }
@@ -2234,12 +2234,12 @@ extension MailboxViewController {
             break
         }
 
-        alertDescription.text = L11n.AlertBox.alertBoxDescription
+        alertDescription.text = L10n.AlertBox.alertBoxDescription
 
         alertLabel.textColor = ColorProvider.TextNorm
         alertDescription.textColor = ColorProvider.TextNorm
-        alertDismissButton.setTitle(L11n.AlertBox.alertBoxDismissButtonTitle, for: .normal)
-        alertButton.setTitle(L11n.AlertBox.alertBoxButtonTitle, for: .normal)
+        alertDismissButton.setTitle(L10n.AlertBox.alertBoxDismissButtonTitle, for: .normal)
+        alertButton.setTitle(L10n.AlertBox.alertBoxButtonTitle, for: .normal)
         alertButton.layer.cornerRadius = 8
         alertButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
         alertButton.addTarget(
@@ -2746,7 +2746,7 @@ extension MailboxViewController {
         selectAllIcon.tintColor = ColorProvider.IconAccent
         // TODO use ImageProvider when core library contains this image
         selectAllIcon.image = Asset.icSquare.image
-        selectAllLabel.set(text: L11n.MailBox.selectAll, preferredFont: .subheadline, textColor: ColorProvider.TextAccent)
+        selectAllLabel.set(text: L10n.MailBox.selectAll, preferredFont: .subheadline, textColor: ColorProvider.TextAccent)
 
         selectAllButton.roundCorner(12)
         selectAllButton.backgroundColor = .clear
@@ -3015,7 +3015,7 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
         updateCellBasedOnSelectionStatus()
 
         if !viewModel.canSelectMore() {
-            L11n.MailBox.maximumSelectionReached.alertToastBottom()
+            L10n.MailBox.maximumSelectionReached.alertToastBottom()
         }
     }
 

@@ -24,10 +24,10 @@ fileprivate struct id {
     static let checkMarkButtonLabel = "checkmark"
 
     // PIN code setup page
-    static let setPinStaticTextLabel =  L11n.PinCodeSetup.setPinCode
-    static let repeatPinStaticTextLabel = L11n.PinCodeSetup.repeatPinCode
-    static let changePinStaticTextLabel = L11n.PinCodeSetup.changePinCode
-    static let disablePinStaticTextLabel = L11n.PinCodeSetup.disablePinCode
+    static let setPinStaticTextLabel =  L10n.PinCodeSetup.setPinCode
+    static let repeatPinStaticTextLabel = L10n.PinCodeSetup.repeatPinCode
+    static let changePinStaticTextLabel = L10n.PinCodeSetup.changePinCode
+    static let disablePinStaticTextLabel = L10n.PinCodeSetup.disablePinCode
     static let pinTextFieldIdentifier = "PinCodeSetupView.passwordTextField.textField"
     static let confirmButtonIdentifier = "PinCodeSetupViewController.customView.confirmationButton"
     static let pinTextErrorLabelIdentifier = "PinCodeSetupView.passwordTextField.errorLabel"

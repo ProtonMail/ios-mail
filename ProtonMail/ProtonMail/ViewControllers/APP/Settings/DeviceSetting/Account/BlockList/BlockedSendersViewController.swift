@@ -28,7 +28,7 @@ final class BlockedSendersViewController: ProtonMailTableViewController {
 
         super.init(style: .plain)
 
-        title = L11n.BlockSender.blockListScreenTitle
+        title = L10n.BlockSender.blockListScreenTitle
 
         trackLifetime()
     }
@@ -85,7 +85,7 @@ final class BlockedSendersViewController: ProtonMailTableViewController {
                 try viewModel.input.deleteRow(at: indexPath)
 
                 showBanner(
-                    message: String(format: L11n.BlockSender.successfulUnblockConfirmation, model.title),
+                    message: String(format: L10n.BlockSender.successfulUnblockConfirmation, model.title),
                     style: .info
                 )
             } catch {
@@ -145,7 +145,7 @@ extension BlockedSendersViewController: BlockedSendersViewModelUIDelegate {
     }
 
     func showOfflineToast() {
-        showBanner(message: L11n.BlockSender.cannotRefreshWhileOffline, style: .info)
+        showBanner(message: L10n.BlockSender.cannotRefreshWhileOffline, style: .info)
     }
 }
 
@@ -163,7 +163,7 @@ extension BlockedSendersViewController {
             let placeholderLabel = UILabel()
             placeholderLabel.numberOfLines = 0
             placeholderLabel.set(
-                text: L11n.BlockSender.emptyList,
+                text: L10n.BlockSender.emptyList,
                 preferredFont: .body,
                 textColor: ColorProvider.TextHint
             )

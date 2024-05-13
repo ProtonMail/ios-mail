@@ -42,7 +42,7 @@ final class ContactCombineViewModelTests: XCTestCase {
         for i in 0...3 {
             let indexPath = IndexPath(row: i, section: 0)
             let item = try XCTUnwrap(sut.output.cellData(for: indexPath))
-            XCTAssertEqual(item.title, L11n.SettingsContacts.combinedContacts)
+            XCTAssertEqual(item.title, L10n.SettingsContacts.combinedContacts)
             XCTAssertEqual(item.status, userDefaults[.isCombineContactOn])
         }
 
@@ -50,7 +50,7 @@ final class ContactCombineViewModelTests: XCTestCase {
         let footer = try XCTUnwrap(sut.output.sectionFooter(section: 0))
         switch footer {
         case .left(let text):
-            XCTAssertEqual(text, L11n.SettingsContacts.combinedContactsFooter)
+            XCTAssertEqual(text, L10n.SettingsContacts.combinedContactsFooter)
         case .right(_):
             XCTFail("Should be a string")
         }

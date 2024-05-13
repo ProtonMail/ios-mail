@@ -138,11 +138,11 @@ final class WindowsCoordinator {
             let title: String
             let message: String
             if error.isSqlLiteDiskFull {
-                title = L11n.Error.core_data_setup_insufficient_disk_title
-                message = L11n.Error.core_data_setup_insufficient_disk_messsage
+                title = L10n.Error.core_data_setup_insufficient_disk_title
+                message = L10n.Error.core_data_setup_insufficient_disk_messsage
             } else {
                 title = LocalString._general_error_alert_title
-                message = String(format: L11n.Error.core_data_setup_generic_messsage, error.localizedDescription)
+                message = String(format: L10n.Error.core_data_setup_generic_messsage, error.localizedDescription)
             }
 
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)

@@ -171,14 +171,14 @@ private enum SubviewFactory {
 
     static var noResultLabel: UILabel {
         let view = UILabel()
-        view.attributedText = L11n.Search.noResultsTitle.apply(style: .Headline.alignment(.center))
+        view.attributedText = L10n.Search.noResultsTitle.apply(style: .Headline.alignment(.center))
         view.isHidden = true
         return view
     }
 
     static var noResultSubLabel: UILabel {
         let view = UILabel()
-        view.attributedText = L11n.Search.noResultSubTitle.apply(style: .DefaultWeak.alignment(.center))
+        view.attributedText = L10n.Search.noResultSubTitle.apply(style: .DefaultWeak.alignment(.center))
         view.isHidden = true
         return view
     }

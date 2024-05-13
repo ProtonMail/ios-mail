@@ -99,7 +99,7 @@ extension PMActionSheet {
     private static func composeTo(
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheetItem {
-        PMActionSheetItem(style: .default(IconProvider.penSquare, L11n.ActionSheetActionTitle.newMessage)) { _ in
+        PMActionSheetItem(style: .default(IconProvider.penSquare, L10n.ActionSheetActionTitle.newMessage)) { _ in
             action(.composeTo)
         }
     }
@@ -117,7 +117,7 @@ extension PMActionSheet {
     ) -> PMActionSheetItem {
         let color: UIColor = ColorProvider.NotificationError
         return PMActionSheetItem(
-            title: L11n.BlockSender.blockActionTitleLong,
+            title: L10n.BlockSender.blockActionTitleLong,
             icon: IconProvider.circleSlash,
             textColor: color,
             iconColor: color
@@ -129,7 +129,7 @@ extension PMActionSheet {
     private static func unblockSender(
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheetItem {
-        PMActionSheetItem(style: .default(IconProvider.circleSlash, L11n.BlockSender.unblockActionTitleLong)) { _ in
+        PMActionSheetItem(style: .default(IconProvider.circleSlash, L10n.BlockSender.unblockActionTitleLong)) { _ in
             action(.unblockSender)
         }
     }

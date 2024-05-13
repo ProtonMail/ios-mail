@@ -49,7 +49,7 @@ extension MailListActionSheetItemViewModel {
     }
 
     static func snooze() -> MailListActionSheetItemViewModel {
-        return .init(type: .snooze, title: L11n.Snooze.title, icon: IconProvider.clock)
+        return .init(type: .snooze, title: L10n.Snooze.title, icon: IconProvider.clock)
     }
 
     static func moveToArchive() -> MailListActionSheetItemViewModel {

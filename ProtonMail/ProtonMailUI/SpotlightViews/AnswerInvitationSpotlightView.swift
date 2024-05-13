@@ -25,13 +25,13 @@ public struct AnswerInvitationSpotlightView: View {
     public var body: some View {
         SheetLikeSpotlightView(
             config: config,
-            buttonTitle: L11n.Spotlight.gotIt,
+            buttonTitle: L10n.Spotlight.gotIt,
             closeAction: { hostingVC, _ in
                 hostingVC?.dismiss(animated: false)
             },
-            message: L11n.RSVP.Spotlight.body,
+            message: L10n.RSVP.Spotlight.body,
             spotlightImage: ImageAsset.rsvpSpotlight,
-            title: L11n.RSVP.Spotlight.title,
+            title: L10n.RSVP.Spotlight.title,
             imageAlignBottom: true,
             maxHeightOfTheImage: 145,
             showNewBadge: true

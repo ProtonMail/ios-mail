@@ -43,7 +43,7 @@ extension SnoozeSupport {
             let picker = PMDatePicker(
                 delegate: snoozeDateConfigReceiver,
                 cancelTitle: LocalString._general_cancel_action,
-                saveTitle: L11n.Snooze.title,
+                saveTitle: L10n.Snooze.title,
                 pickerType: .snooze
             )
             picker.present(on: presentingView)
@@ -101,7 +101,7 @@ extension SnoozeSupport {
 extension SnoozeSupport {
     private func setUpActionHeader(dismiss: @escaping () -> Void) -> PMActionSheetHeaderView {
         let header = PMActionSheetHeaderView(
-            title: L11n.Snooze.snoozeUntil,
+            title: L10n.Snooze.snoozeUntil,
             subtitle: "",
             leftItem: .right(IconProvider.cross),
             rightItem: nil,
@@ -113,7 +113,7 @@ extension SnoozeSupport {
 
     func setUpTomorrowAction(current: Date) -> PMActionSheetItem? {
         guard let date = current.tomorrow(at: Constants.Snooze.snoozeHour, minute: 0) else { return nil }
-        return actionItem(optionTitle: L11n.ScheduledSend.tomorrow, date: date)
+        return actionItem(optionTitle: L10n.ScheduledSend.tomorrow, date: date)
     }
 
     func setUpLaterThisWeek(current: Date) -> PMActionSheetItem? {
@@ -126,7 +126,7 @@ extension SnoozeSupport {
                 .tomorrow(at: Constants.Snooze.snoozeHour, minute: 0)?
                 .tomorrow(at: Constants.Snooze.snoozeHour, minute: 0)
         else { return nil }
-        return actionItem(optionTitle: L11n.Snooze.laterThisWeek, date: date)
+        return actionItem(optionTitle: L10n.Snooze.laterThisWeek, date: date)
     }
 
     func setUpThisWeekend(current: Date) -> PMActionSheetItem? {
@@ -139,7 +139,7 @@ extension SnoozeSupport {
             validWeekDaysRaw.contains(current.weekday),
             let date = current.next(.saturday, hour: Constants.Snooze.snoozeHour, minute: 0)
         else { return nil }
-        return actionItem(optionTitle: L11n.Snooze.thisWeekend, date: date)
+        return actionItem(optionTitle: L10n.Snooze.thisWeekend, date: date)
     }
 
     func setUpNextWeek(current: Date) -> PMActionSheetItem? {
@@ -168,17 +168,17 @@ extension SnoozeSupport {
             PMAssertionFailure("Unexpected week start: \(calendar.firstWeekday)")
         }
         guard let date = date else { return nil }
-        return actionItem(optionTitle: L11n.Snooze.nextWeek, date: date)
+        return actionItem(optionTitle: L10n.Snooze.nextWeek, date: date)
     }
 
     private func setUpCustom() -> PMActionSheetItem? {
         let paidUserComponents: [any PMActionSheetComponent] = [
-            PMActionSheetTextComponent(text: .left(L11n.ScheduledSend.custom), edge: [nil, nil, nil, 16]),
+            PMActionSheetTextComponent(text: .left(L10n.ScheduledSend.custom), edge: [nil, nil, nil, 16]),
             PMActionSheetIconComponent(icon: IconProvider.chevronRight, edge: [nil, nil, nil, 16])
         ]
 
         let freeUserComponents: [any PMActionSheetComponent] = [
-            PMActionSheetTextComponent(text: .left(L11n.ScheduledSend.custom), edge: [nil, nil, nil, 16]),
+            PMActionSheetTextComponent(text: .left(L10n.ScheduledSend.custom), edge: [nil, nil, nil, 16]),
             PMActionSheetIconComponent(icon: Asset.upgradeIcon.image,
                                        size: Asset.upgradeIcon.image.size,
                                        edge: [nil, nil, nil, 16]),

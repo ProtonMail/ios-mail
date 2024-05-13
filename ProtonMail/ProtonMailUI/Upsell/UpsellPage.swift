@@ -78,11 +78,11 @@ public struct UpsellPage: View {
             }
 
             VStack(spacing: 8) {
-                Text(String(format: L11n.Upsell.upgradeToPlan, model.plan.name))
+                Text(String(format: L10n.Upsell.upgradeToPlan, model.plan.name))
                     .font(Font(UIFont.adjustedFont(forTextStyle: .title1, weight: .bold)))
                     .foregroundColor(ColorProvider.SidebarTextNorm)
 
-                Text(L11n.Upsell.mailPlusDescription)
+                Text(L10n.Upsell.mailPlusDescription)
                     .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
                     .foregroundColor(ColorProvider.SidebarTextWeak)
             }

@@ -203,7 +203,7 @@ final class InvitationView: UIView {
             let titleColorAttribute: [NSAttributedString.Key: UIColor] = [.foregroundColor: ColorProvider.TextNorm]
             let subtitleColorAttribute: [NSAttributedString.Key: UIColor] = [.foregroundColor: ColorProvider.TextWeak]
             let title = NSMutableAttributedString(string: "\(organizer.email)\n", attributes: titleColorAttribute)
-            let subtitle = NSAttributedString(string: L11n.Event.organizer, attributes: subtitleColorAttribute)
+            let subtitle = NSAttributedString(string: L10n.Event.organizer, attributes: subtitleColorAttribute)
             title.append(subtitle)
 
             let organizerButton = makeParticipantButton(participant: organizer)
@@ -299,7 +299,7 @@ private struct SubviewFactory {
         let view = UILabel()
         view.adjustsFontSizeToFitWidth = true
         view.setContentCompressionResistancePriority(.required, for: .vertical)
-        view.set(text: L11n.Event.attendanceOptional, preferredFont: .footnote, textColor: ColorProvider.TextWeak)
+        view.set(text: L10n.Event.attendanceOptional, preferredFont: .footnote, textColor: ColorProvider.TextWeak)
         return view
     }
 
@@ -327,7 +327,7 @@ private struct SubviewFactory {
     static var attendingPromptLabel: UILabel {
         let view = UILabel()
         view.set(
-            text: L11n.Event.attendingPrompt,
+            text: L10n.Event.attendingPrompt,
             preferredFont: .footnote,
             weight: .bold,
             textColor: ColorProvider.TextNorm
@@ -372,7 +372,7 @@ private struct SubviewFactory {
     static var openInCalendarButton: UIButton {
         let view = UIButton()
         view.titleLabel?.set(text: nil, preferredFont: .footnote)
-        view.setTitle(L11n.ProtonCalendarIntegration.openInCalendar, for: .normal)
+        view.setTitle(L10n.ProtonCalendarIntegration.openInCalendar, for: .normal)
         view.setTitleColor(ColorProvider.TextAccent, for: .normal)
         return view
     }
@@ -464,22 +464,22 @@ private extension AttendeeStatusDisplay {
     var shortTitle: String {
         switch self {
         case .yes:
-            return L11n.Event.yesShort
+            return L10n.Event.yesShort
         case .no:
-            return L11n.Event.noShort
+            return L10n.Event.noShort
         case .maybe:
-            return L11n.Event.maybeShort
+            return L10n.Event.maybeShort
         }
     }
 
     var longTitle: String {
         switch self {
         case .yes:
-            return L11n.Event.yesLong
+            return L10n.Event.yesLong
         case .no:
-            return L11n.Event.noLong
+            return L10n.Event.noLong
         case .maybe:
-            return L11n.Event.maybeLong
+            return L10n.Event.maybeLong
         }
     }
 }

@@ -44,9 +44,9 @@ struct InvitationViewModel {
     var expansionButtonTitle: String? {
         switch participantListState {
         case .collapsed:
-            return String(format: L11n.Event.participantCount, allInvitees.count)
+            return String(format: L10n.Event.participantCount, allInvitees.count)
         case .expanded:
-            return L11n.Event.showLess
+            return L10n.Event.showLess
         case .allInviteesCanBeShownWithoutCollapsing:
             return nil
         }
@@ -65,9 +65,9 @@ struct InvitationViewModel {
         isOptionalAttendanceLabelHidden = eventDetails.currentUserAmongInvitees?.role != .optional
 
         if eventDetails.status == .cancelled {
-            statusString = L11n.Event.eventCancelled
+            statusString = L10n.Event.eventCancelled
         } else if eventDetails.endDate.timeIntervalSinceNow < 0 && eventDetails.recurrence == nil {
-            statusString = L11n.Event.eventAlreadyEnded
+            statusString = L10n.Event.eventAlreadyEnded
         } else {
             statusString = nil
         }

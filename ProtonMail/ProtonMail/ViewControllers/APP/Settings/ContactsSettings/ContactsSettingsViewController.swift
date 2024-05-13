@@ -113,8 +113,8 @@ extension ContactsSettingsViewController {
 
     private func didEnableAutoImport() {
         let alert = UIAlertController(
-            title: L11n.SettingsContacts.autoImportAlertTitle,
-            message: L11n.SettingsContacts.autoImportAlertMessage,
+            title: L10n.SettingsContacts.autoImportAlertTitle,
+            message: L10n.SettingsContacts.autoImportAlertMessage,
             preferredStyle: .alert
         )
         alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default) { [weak self] _ in

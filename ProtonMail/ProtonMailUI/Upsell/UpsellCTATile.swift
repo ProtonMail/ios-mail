@@ -52,12 +52,12 @@ struct UpsellCTATile: View {
                         .font(.system(size: 18, weight: .semibold))
                         .foregroundColor(.white)
                     +
-                    Text(L11n.Upsell.perMonth)
+                    Text(L10n.Upsell.perMonth)
                         .font(.caption2)
                         .foregroundColor(ColorProvider.SidebarTextWeak)
                 }
 
-                Button(String(format: L11n.Upsell.getPlan, planName)) {
+                Button(String(format: L10n.Upsell.getPlan, planName)) {
                     onTap()
                 }
                 .padding(.vertical, 8)
@@ -77,7 +77,7 @@ struct UpsellCTATile: View {
             .alignmentGuide(VerticalAlignment.center) { $0[.top] }
 
             if let discount = purchasingOption.discount {
-                Text(String(format: L11n.Upsell.save, discount).uppercased())
+                Text(String(format: L10n.Upsell.save, discount).uppercased())
                     .font(.system(size: 10, weight: .semibold))
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)

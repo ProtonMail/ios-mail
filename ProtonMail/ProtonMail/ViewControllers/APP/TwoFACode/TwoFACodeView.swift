@@ -87,7 +87,7 @@ class TwoFACodeView: PMView {
         twoFactorCodeField.inputAccessoryView = toolbarDone
 
         twoFactorCodeField.placeholder = LocalString._two_factor_code
-        loginPasswordField.placeholder = L11n.AccountSettings.loginPassword
+        loginPasswordField.placeholder = L10n.AccountSettings.loginPassword
         topTitleLabel.text = LocalString._authentication
         cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
         enterButton.setTitle(LocalString._enter, for: .normal)

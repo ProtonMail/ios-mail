@@ -79,9 +79,9 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
         case .toolbar:
             return LocalString._toolbar_customize_general_title
         case .messageSwipeNavigation:
-            return L11n.MessageNavigation.settingTitle
+            return L10n.MessageNavigation.settingTitle
         case .applicationLogs:
-            return L11n.Settings.applicationLogs
+            return L10n.Settings.applicationLogs
         }
     }
 }

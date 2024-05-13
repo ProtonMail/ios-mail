@@ -331,7 +331,7 @@ final class ContactEditViewModel {
             throw NSError(
                 domain: "ContactEdit",
                 code: Constants.emptyDisplayNameError,
-                localizedDescription: L11n.ContactEdit.emptyDisplayNameError
+                localizedDescription: L10n.ContactEdit.emptyDisplayNameError
             )
         }
         guard newDisplayName.isEmpty else {
@@ -344,7 +344,7 @@ final class ContactEditViewModel {
             throw NSError(
                 domain: "ContactEdit",
                 code: Constants.emptyDisplayNameError,
-                localizedDescription: L11n.ContactEdit.emptyDisplayNameError
+                localizedDescription: L10n.ContactEdit.emptyDisplayNameError
             )
         default:
             let displayName = "\(firstName) \(lastName)".trim()
@@ -359,7 +359,7 @@ final class ContactEditViewModel {
             domain: "ContactEdit",
             code: 998,
             userInfo: [
-                NSLocalizedDescriptionKey: L11n.ContactEdit.contactNameTooLong,
+                NSLocalizedDescriptionKey: L10n.ContactEdit.contactNameTooLong,
                 "displayName": displayName
             ]
         )

@@ -142,7 +142,7 @@ extension MailboxViewController {
             target: self,
             action: #selector(upsellButtonTapped)
         )
-        item.accessibilityLabel = L11n.AutoDeleteUpsellSheet.upgradeButtonTitle
+        item.accessibilityLabel = L10n.AutoDeleteUpsellSheet.upgradeButtonTitle
         item.tag = BarButtonType.upsell.rawValue
         return item
     }

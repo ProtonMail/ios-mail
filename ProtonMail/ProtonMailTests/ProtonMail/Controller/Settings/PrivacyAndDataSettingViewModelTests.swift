@@ -71,14 +71,14 @@ final class PrivacyAndDataSettingViewModelTests: XCTestCase {
     func testSectionFooter() {
         switch sut.sectionFooter(section: 0) {
         case .left(let value):
-            XCTAssertEqual(value, L11n.PrivacyAndDataSettings.telemetrySubtitle)
+            XCTAssertEqual(value, L10n.PrivacyAndDataSettings.telemetrySubtitle)
         default:
             XCTFail("Should not be NSAttributed String")
         }
 
         switch sut.sectionFooter(section: 1) {
         case .left(let value):
-            XCTAssertEqual(value, L11n.PrivacyAndDataSettings.crashReportSubtitle)
+            XCTAssertEqual(value, L10n.PrivacyAndDataSettings.crashReportSubtitle)
         default:
             XCTFail("Should not be NSAttributed String")
         }

@@ -58,7 +58,7 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
     var title: String? {
         switch self {
         case .archive:
-            return L11n.PushNotificationAction.archive
+            return L10n.PushNotificationAction.archive
         case .reply:
             return LocalString._action_sheet_action_title_reply
         case .replyAll:
@@ -70,7 +70,7 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
         case .markRead:
             return LocalString._title_of_read_action_in_action_sheet
         case .snooze:
-            return L11n.Snooze.title
+            return L10n.Snooze.title
         case .labelAs:
             return LocalString._action_sheet_action_title_labelAs
         case .trash:
@@ -112,13 +112,13 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
         case .replyOrReplyAll:
             return LocalString._action_sheet_action_title_reply
         case .replyInConversation:
-            return L11n.ActionSheetActionTitle.reply_in_conversation
+            return L10n.ActionSheetActionTitle.reply_in_conversation
         case .forwardInConversation:
-            return L11n.ActionSheetActionTitle.forward_in_conversation
+            return L10n.ActionSheetActionTitle.forward_in_conversation
         case .replyAllInConversation:
-            return L11n.ActionSheetActionTitle.replyAll_in_conversation
+            return L10n.ActionSheetActionTitle.replyAll_in_conversation
         case .replyOrReplyAllInConversation:
-            return L11n.ActionSheetActionTitle.reply_in_conversation
+            return L10n.ActionSheetActionTitle.reply_in_conversation
         }
     }
 
