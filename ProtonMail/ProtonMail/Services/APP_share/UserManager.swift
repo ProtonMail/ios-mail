@@ -26,6 +26,7 @@ import ProtonCoreAuthentication
 import ProtonCoreCrypto
 @preconcurrency import ProtonCoreDataModel
 @preconcurrency import ProtonCoreNetworking
+import ProtonCoreTelemetry
 #if !APP_EXTENSION
 import ProtonCorePayments
 #endif
@@ -277,6 +278,7 @@ class UserManager: ObservableObject {
         guard parentManager?.firstUser?.userID == userID else {
             return
         }
+        ProtonCoreTelemetry.TelemetryService.shared.setTelemetryEnabled(hasTelemetryEnabled)
         appTelemetry.configure(
             telemetry: hasTelemetryEnabled,
             reportCrashes: userInfo.hasCrashReportingEnabled
