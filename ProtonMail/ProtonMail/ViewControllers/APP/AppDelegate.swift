@@ -34,6 +34,7 @@ import ProtonCoreNetworking
 import ProtonCoreObservability
 import ProtonCorePayments
 @preconcurrency import ProtonCoreServices
+import ProtonCoreTelemetry
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import SideMenuSwift
@@ -141,6 +142,7 @@ extension AppDelegate: UIApplicationDelegate {
         configureCoreObservability()
         configureAppearance()
         fetchUnauthFeatureFlags()
+        configureCoreTelemetry()
         DFSSetting.enableDFS = true
         DFSSetting.limitToXXXLarge = true
         /// configurePushService needs to be called in didFinishLaunchingWithOptions to make push
@@ -383,6 +385,11 @@ extension AppDelegate {
 
     private func configureCoreObservability() {
         ObservabilityEnv.current.setupWorld(requestPerformer: PMAPIService.unauthorized(dependencies: dependencies))
+    }
+
+    private func configureCoreTelemetry() {
+        ProtonCoreTelemetry.TelemetryService.shared.setApiService(apiService: PMAPIService.unauthorized(dependencies: dependencies))
+        ProtonCoreTelemetry.TelemetryService.shared.setTelemetryEnabled(dependencies.usersManager.firstUser?.hasTelemetryEnabled ?? true)
     }
 
     private func fetchUnauthFeatureFlags() {

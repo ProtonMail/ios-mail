@@ -630,6 +630,10 @@ name: ProtonCore-Telemetry, nameSpecified:
 body:                     …
 version: 22.0.0
 
+name: ProtonCore-Telemetry, nameSpecified: 
+body:                     …
+version: 22.0.0
+
 name: ProtonCore-TestingToolkit, nameSpecified: 
 body:                     …
 version: 22.0.0

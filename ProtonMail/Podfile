@@ -70,6 +70,7 @@ def app_share_pods
   pod "ProtonCore-Authentication", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Hash', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Networking', :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-Telemetry", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Services', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-VCard', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-UIFoundations', :git => proton_core_path, :tag => proton_core_version
@@ -99,7 +100,6 @@ def app_pods
   pod "ProtonCore-PasswordRequest", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Payments", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-PaymentsUI", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-Telemetry", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonInboxICal', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxical'
   pod 'ProtonInboxRSVP', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxrsvp.git'
