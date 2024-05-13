@@ -420,9 +420,6 @@
 */
 "Cancel" = "Annullér";
 
-/* Got it action */
-"Got it" = "Forstået";
-
 /* Open action */
 "Open" = "Åbn";
 
@@ -1964,6 +1961,42 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "indtil %@";
 
+/* " */
+"%1@ at %2@ %3@" = "%1@ ved %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "accepteret";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "afvist";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "foreløbig accepteret";
+
+/* " */
+"%1@ has %2@ your invitation to %3@" = "%1@ har %2@ din invitation til %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "Du er inviteret til %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "PLACERING:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "BESKRIVELSE:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ blev annulleret.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Re: Invitation til et event på %@";
+
+/* " */
+"Re: Invitation for an event starting on %@" = "Re: Invitation til en event, der starter den %@";
+
+/* Title of an event with missing title */
+"(no title)" = "(ingen titel)";
+
 /* Occurring every day */
 "Daily" = "Dagligt";
 
@@ -1990,6 +2023,12 @@
 
 /* Opposite of \"first\" */
 "last" = "sidste";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Svar venligst på events";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Nu kan du svare på en invitation eller se eventen i Proton Calendar med bare ét tryk. ";
 
 /* Menu title */
 "Max Storage" = "Max lagerplads";
@@ -2113,6 +2152,12 @@
 
 /* Title for application logs settings option */
 "Application logs" = "Applikationslogs";
+
+/* Badge present on some spotlights */
+"New!" = "Nyt!";
+
+/* Got it action */
+"Got it" = "Forstået";
 
 /* The title of the setting of the next msg after move */
 "Jump to next email" = "Gå til næste e-mail";
@@ -2409,13 +2454,16 @@
 "Change mailbox password" = "Skift postkasseadgangskode";
 
 /* Description of a feature of a paid subscription */
-"Schedule send and snooze" = "Planlæg afsendelse og udsæt";
+"15 GB storage" = "15 GB lagerplads";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u e-mailadresser";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Understøttelse af brugerdefinerede e-maildomæner";
 
 /* Description of a feature of a paid subscription */
-"And %u more premium features" = "Og %u flere premium-funktioner";
+"New Proton Mail desktop app" = "Ny Proton Mail-skrivebordsapp";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonym telemetri";
@@ -2436,16 +2484,16 @@
 "To unlock more storage and premium features." = "For at få mere lagerplads og premium-funktioner.";
 
 /* Displayed next to the monthly price */
-"/month" = "/month";
+"/month" = "/måned";
 
 /* CTA button to purchase a plan (e.g. Get Mail Plus) */
 "Get %@" = "Få %@";
 
 /* In the context of a discount */
-"Save %u%%" = "Save %u%%";
+"Save %u%%" = "Spar %u%%";
 
 /* Error when trying to purchase an invalid product */
-"Invalid product ID: $@" = "Invalid product ID: $@";
+"Invalid product ID: $@" = "Ugyldigt produkt-ID: $@";
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
-"Purchase already in progress" = "Purchase already in progress";
+"Purchase already in progress" = "Køb pågår allerede";

@@ -420,9 +420,6 @@
 */
 "Cancel" = "Avbryt";
 
-/* Got it action */
-"Got it" = "Förstått";
-
 /* Open action */
 "Open" = "Öppna";
 
@@ -1964,6 +1961,42 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "fram till %@";
 
+/* " */
+"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "accepterad";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "avböjd";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "preliminärt accepterat";
+
+/* " */
+"%1@ has %2@ your invitation to %3@" = "%1@ har %2@ din inbjudan till %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "Du är inbjuden till %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "PLATS:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "BESKRIVNING:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ blev inställd.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Sv: Inbjudan till en händelse den %@";
+
+/* " */
+"Re: Invitation for an event starting on %@" = "Sv: Inbjudan till en händelse som börjar den %@";
+
+/* Title of an event with missing title */
+"(no title)" = "(ingen rubrik)";
+
 /* Occurring every day */
 "Daily" = "Dagligen";
 
@@ -1990,6 +2023,12 @@
 
 /* Opposite of \"first\" */
 "last" = "sista";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Easily RSVP to events";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
 
 /* Menu title */
 "Max Storage" = "Maximalt lagringsutrymme";
@@ -2113,6 +2152,12 @@
 
 /* Title for application logs settings option */
 "Application logs" = "Applikationsloggar";
+
+/* Badge present on some spotlights */
+"New!" = "Nytt!";
+
+/* Got it action */
+"Got it" = "Förstått";
 
 /* The title of the setting of the next msg after move */
 "Jump to next email" = "Hoppa till nästa e-postmeddelande";
@@ -2409,13 +2454,16 @@
 "Change mailbox password" = "Ändra lösenord för brevlådan";
 
 /* Description of a feature of a paid subscription */
-"Schedule send and snooze" = "Schedule send and snooze";
+"15 GB storage" = "15 GB lagringsutrymme";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u e-postadresser";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Stöd för anpassad e-postdomän";
 
 /* Description of a feature of a paid subscription */
-"And %u more premium features" = "Och %u fler premiumfunktioner";
+"New Proton Mail desktop app" = "Ny Proton Mail-app för stationär dator";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonym telemetri";

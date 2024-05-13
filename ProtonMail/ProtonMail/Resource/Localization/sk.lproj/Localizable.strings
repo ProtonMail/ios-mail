@@ -420,9 +420,6 @@
 */
 "Cancel" = "Zrušiť";
 
-/* Got it action */
-"Got it" = "Rozumiem";
-
 /* Open action */
 "Open" = "Otvoriť";
 
@@ -1786,7 +1783,7 @@
 "Trusted keys are not valid for sending" = "Dôveryhodné kľúče nie sú použiteľné na odosielanie";
 
 /* The error message while calculating the encryption preferences */
-"No WKD key retrieved for user is valid for sending" = "Žiadny WKD kľúč pre používateľov nie je platný pre odosielanie";
+"No WKD key retrieved for user is valid for sending" = "Žiadny získaný WKD kľúč pre používateľa nie je platný na odoslanie";
 
 /* The error message while calculating the encryption preferences */
 "The sending key is not valid" = "Kľúč na odosielanie je neplatný";
@@ -1947,7 +1944,7 @@
 "I might attend" = "Možno sa zúčastním";
 
 /* Information that the user is an optional participant */
-"(Attendance optional)" = "(Účasť nie je povinná)";
+"(Attendance optional)" = "(Účasť je voliteľná)";
 
 /* As in: Every 3 days */
 "Every %@" = "Každé %@";
@@ -1963,6 +1960,42 @@
 
 /* As in: Until Sep 27, 2025 */
 "until %@" = "do %@";
+
+/* " */
+"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "accepted";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "declined";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "tentatively accepted";
+
+/* " */
+"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "You are invited to %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "LOCATION:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ was cancelled.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Re: Invitation for an event on %@";
+
+/* " */
+"Re: Invitation for an event starting on %@" = "Re: Invitation for an event starting on %@";
+
+/* Title of an event with missing title */
+"(no title)" = "(no title)";
 
 /* Occurring every day */
 "Daily" = "Denne";
@@ -1990,6 +2023,12 @@
 
 /* Opposite of \"first\" */
 "last" = "posledný";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Easily RSVP to events";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
 
 /* Menu title */
 "Max Storage" = "Max. úložný priestor";
@@ -2113,6 +2152,12 @@
 
 /* Title for application logs settings option */
 "Application logs" = "Záznamy aplikácie";
+
+/* Badge present on some spotlights */
+"New!" = "New!";
+
+/* Got it action */
+"Got it" = "Rozumiem";
 
 /* The title of the setting of the next msg after move */
 "Jump to next email" = "Prejsť na ďalší email";
@@ -2409,13 +2454,16 @@
 "Change mailbox password" = "Zmeniť heslo k poštovej schránke";
 
 /* Description of a feature of a paid subscription */
-"Schedule send and snooze" = "Plánovanie odoslania a odloženia";
+"15 GB storage" = "15 GB storage";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u email addresses";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Podpora vlastnej emailovej domény";
 
 /* Description of a feature of a paid subscription */
-"And %u more premium features" = "A ďalšie %u prémiové funkcie";
+"New Proton Mail desktop app" = "New Proton Mail desktop app";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonymná telemetria";
@@ -2442,10 +2490,10 @@
 "Get %@" = "Získať %@";
 
 /* In the context of a discount */
-"Save %u%%" = "Save %u%%";
+"Save %u%%" = "Ušetríte %u%%";
 
 /* Error when trying to purchase an invalid product */
-"Invalid product ID: $@" = "Invalid product ID: $@";
+"Invalid product ID: $@" = "Neplatné ID produktu: $@";
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
-"Purchase already in progress" = "Purchase already in progress";
+"Purchase already in progress" = "Nákup už prebieha";

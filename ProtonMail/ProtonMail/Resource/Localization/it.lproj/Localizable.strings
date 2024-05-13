@@ -420,9 +420,6 @@
 */
 "Cancel" = "Annulla";
 
-/* Got it action */
-"Got it" = "Ho capito";
-
 /* Open action */
 "Open" = "Apri";
 
@@ -1964,6 +1961,42 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "fino al %@";
 
+/* " */
+"%1@ at %2@ %3@" = "%1@ alle %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "accettato";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "rifiutato";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "accettato provvisoriamente";
+
+/* " */
+"%1@ has %2@ your invitation to %3@" = "%1@ ha %2@ il tuo invito a %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "Sei invitato a %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "LUOGO:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "DESCRIZIONE:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ è stato annullato.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "R: Invito per un evento il %@";
+
+/* " */
+"Re: Invitation for an event starting on %@" = "R: Invito per un evento che inizia il %@";
+
+/* Title of an event with missing title */
+"(no title)" = "(nessun titolo)";
+
 /* Occurring every day */
 "Daily" = "Giornalmente";
 
@@ -1990,6 +2023,12 @@
 
 /* Opposite of \"first\" */
 "last" = "ultimo";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Rispondi facilmente agli inviti per gli eventi";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Ora puoi rispondere a un invito o visualizzare l'evento in Proton Calendar con un solo tocco. ";
 
 /* Menu title */
 "Max Storage" = "Spazio massimo";
@@ -2113,6 +2152,12 @@
 
 /* Title for application logs settings option */
 "Application logs" = "Log dell'applicazione";
+
+/* Badge present on some spotlights */
+"New!" = "Novità!";
+
+/* Got it action */
+"Got it" = "Ho capito";
 
 /* The title of the setting of the next msg after move */
 "Jump to next email" = "Vai all'email successiva";
@@ -2409,13 +2454,16 @@
 "Change mailbox password" = "Cambia la password della casella di posta";
 
 /* Description of a feature of a paid subscription */
-"Schedule send and snooze" = "Programma l'invio e posticipa";
+"15 GB storage" = "15 GB di spazio di archiviazione";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u indirizzi email";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Supporto per domini di posta elettronica personalizzati";
 
 /* Description of a feature of a paid subscription */
-"And %u more premium features" = "E %u funzionalità premium in più";
+"New Proton Mail desktop app" = "Nuova app desktop Proton Mail";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetria anonima";

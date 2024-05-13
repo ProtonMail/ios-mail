@@ -420,9 +420,6 @@
 */
 "Cancel" = "Cancelar";
 
-/* Got it action */
-"Got it" = "Entendido";
-
 /* Open action */
 "Open" = "Abrir";
 
@@ -1964,6 +1961,42 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "hasta el %@";
 
+/* " */
+"%1@ at %2@ %3@" = "%1@ a las %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "aceptado";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "rechazado";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "aceptado provisionalmente";
+
+/* " */
+"%1@ has %2@ your invitation to %3@" = "%1@ ha %2@ la invitación para %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "Estás invitado a %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "UBICACIÓN:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "DESCRIPCIÓN:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ se ha cancelado.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Re: Invitación para un evento el %@";
+
+/* " */
+"Re: Invitation for an event starting on %@" = "Re: Invitación para un evento que comienza el %@";
+
+/* Title of an event with missing title */
+"(no title)" = "(sin título)";
+
 /* Occurring every day */
 "Daily" = "Diariamente";
 
@@ -1990,6 +2023,12 @@
 
 /* Opposite of \"first\" */
 "last" = "último";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Confirmación de asistencia a eventos mucho más fácil";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Ahora puedes responder a una invitación o ver el evento en Proton Calendar con un solo toque. ";
 
 /* Menu title */
 "Max Storage" = "Almacenamiento máximo";
@@ -2113,6 +2152,12 @@
 
 /* Title for application logs settings option */
 "Application logs" = "Registros de la aplicación";
+
+/* Badge present on some spotlights */
+"New!" = "Nuevo";
+
+/* Got it action */
+"Got it" = "Entendido";
 
 /* The title of the setting of the next msg after move */
 "Jump to next email" = "Ir al correo electrónico siguiente";
@@ -2409,13 +2454,16 @@
 "Change mailbox password" = "Cambiar contraseña del buzón";
 
 /* Description of a feature of a paid subscription */
-"Schedule send and snooze" = "Envío programado y pausa";
+"15 GB storage" = "15 GB de espacio de almacenamiento";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u direcciones de correo electrónico";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Soporte de dominio de correo personalizado";
 
 /* Description of a feature of a paid subscription */
-"And %u more premium features" = "Y más de %u funciones premium";
+"New Proton Mail desktop app" = "Nueva aplicación de escritorio para Proton Mail";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetría anónima";

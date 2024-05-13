@@ -420,9 +420,6 @@
 */
 "Cancel" = "Batal";
 
-/* Got it action */
-"Got it" = "Dimengerti";
-
 /* Open action */
 "Open" = "Buka";
 
@@ -1964,6 +1961,42 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "sampai %@";
 
+/* " */
+"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "accepted";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "declined";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "tentatively accepted";
+
+/* " */
+"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "You are invited to %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "LOCATION:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ was cancelled.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Ttg: Undangan untuk acara pada hari %@";
+
+/* " */
+"Re: Invitation for an event starting on %@" = "Ttg: Undangan untuk acara yang akan dimulai pada %@";
+
+/* Title of an event with missing title */
+"(no title)" = "(no title)";
+
 /* Occurring every day */
 "Daily" = "Harian";
 
@@ -1990,6 +2023,12 @@
 
 /* Opposite of \"first\" */
 "last" = "terakhir";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Konfirmasi kehadiran (RSVP) ke berbagai acara secara mudah";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Kini Anda dapat membalas undangan atau melihat acara ini pada Proton Calendar hanya dengan satu ketukan. ";
 
 /* Menu title */
 "Max Storage" = "Penyimpanan Maks";
@@ -2114,6 +2153,12 @@
 /* Title for application logs settings option */
 "Application logs" = "Log aplikasi";
 
+/* Badge present on some spotlights */
+"New!" = "New!";
+
+/* Got it action */
+"Got it" = "Dimengerti";
+
 /* The title of the setting of the next msg after move */
 "Jump to next email" = "Pindah ke email selanjutnya";
 
@@ -2223,7 +2268,7 @@
 "Clear out the junk" = "Hapus sampah yang ada";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Hapus pesan lebih lama dari 30 hari dari sampah dan spam secara otomatis. Nikmati ini dan manfaat lainnya ketika Anda tingkatkan.";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Hapus pesan yang telah berusia lebih dari 30 hari dari spam dan sampah secara otomatis. Nikmati fitur ini dan berbagai kelebihan lainnya pada saat Anda meningkatkan akun.";
 
 /* Text to advertise what upgrading will provide */
 "Up to 3 TB of storage" = "Ruang penyimpanan hingga 3 TB";
@@ -2409,13 +2454,16 @@
 "Change mailbox password" = "Ubah kata sandi kotak surat";
 
 /* Description of a feature of a paid subscription */
-"Schedule send and snooze" = "Jadwalkan pengiriman dan penundaan";
+"15 GB storage" = "Ruang penyimpanan 15 GB";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u alamat email";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Dukungan domain email khusus";
 
 /* Description of a feature of a paid subscription */
-"And %u more premium features" = "Dan %u fitur premium lainnya";
+"New Proton Mail desktop app" = "Aplikasi desktop Proton Mail baru";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetri anonim";
