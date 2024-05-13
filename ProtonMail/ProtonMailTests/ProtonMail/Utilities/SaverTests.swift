@@ -37,25 +37,6 @@ class SaverTests: XCTestCase {
             return cachedData[key] as? Data
         }
         
-        func int(forKey key: String) -> Int? {
-            log += "g-key"
-            return cachedData[key] as? Int
-        }
-
-        func bool(forKey defaultName: String) -> Bool {
-            log += "g-key"
-            return cachedData[defaultName] as? Bool ?? false
-        }
-        
-        func set(_ intValue: Int, forKey key: String) {
-            log += "s-key"
-            cachedData[key] = intValue
-        }
-
-        func set(_ intValue: Int, forKey key: String, attributes: [CFString : Any]? = nil) {
-            set(intValue, forKey: key)
-        }
-        
         func set(_ data: Data, forKey key: String) {
             log += "s-key"
             cachedData[key] = data
@@ -63,11 +44,6 @@ class SaverTests: XCTestCase {
 
         func set(_ data: Data, forKey key: String, attributes: [CFString : Any]? = nil) {
             set(data, forKey: key)
-        }
-
-        func set(_ value: Bool, forKey defaultName: String) {
-            log += "s-key"
-            cachedData[defaultName] = value
         }
         
         func remove(forKey key: String) {
@@ -143,31 +119,6 @@ class SaverTests: XCTestCase {
     
     func testCases() {
         let store = StoreMock()
-        let saverCase1 = SaverTestsMock<Int>(key:"test-1", store: store, memory: true)
-        saverCase1.set(newValue: 100)
-        XCTAssert(saverCase1.get() == 100)
-        XCTAssert(store.log == "s-key", store.log)
-        saverCase1.set(newValue: nil)
-        XCTAssert(saverCase1.get() == nil)
-        XCTAssert(store.log == "s-keyr-keyg-key", store.log)
-        saverCase1.set(newValue: 11)
-        XCTAssert(saverCase1.get() == 11)
-        XCTAssert(store.log == "s-keyr-keyg-keys-key", store.log)
-        store.resetLog()
-        let saverCase2 = SaverTestsMock<Int>(key:"test-2", store: store, memory: false)
-        saverCase2.set(newValue: 1000)
-        XCTAssert(saverCase2.get() == 1000)
-        XCTAssert(store.log == "s-keyg-key", store.log)
-        saverCase2.set(newValue: nil)
-        XCTAssert(saverCase2.get() == nil)
-        XCTAssert(store.log == "s-keyg-keyr-keyg-key", store.log)
-        store.resetLog()
-        let saverCase3 = SaverTestsMock<Int>(key:"test-1", store: store, memory: true)
-        XCTAssert(saverCase3.get() == 11)
-        XCTAssert(store.log == "g-key", store.log)
-        XCTAssert(saverCase3.get() == 11)
-        XCTAssert(store.log == "g-key", store.log)
-        store.resetLog()
         
         let saverCase4 = SaverTestsMock<String>(key:"string-1", store: store, memory: true)
         saverCase4.set(newValue: "100")
