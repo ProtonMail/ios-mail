@@ -23,8 +23,8 @@
 import Foundation
 
 class KeychainSaver<T>: Saver<T> where T: Codable {
-    convenience init(key: String, cachingInMemory: Bool = true) {
-        self.init(key: key, store: KeychainWrapper.keychain, cachingInMemory: cachingInMemory)
+    convenience init(key: String) {
+        self.init(key: key, store: KeychainWrapper.keychain)
     }
 }
 
