@@ -123,6 +123,10 @@ extension Notification.Name {
     static var addressesStatusAreChanged: Notification.Name {
         return .init("addressesStatusAreChanged")
     }
+
+    static var cancelImportContactsTask: Notification.Name {
+        return .init("cancelImportContactsTask")
+    }
 }
 
 extension Notification {
