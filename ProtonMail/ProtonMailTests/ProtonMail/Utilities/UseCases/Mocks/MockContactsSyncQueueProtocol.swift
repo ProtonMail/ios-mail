@@ -30,6 +30,11 @@ class MockContactsSyncQueueProtocol: ContactsSyncQueueProtocol {
     }
     var _protonStorageQuotaExceeded: PassthroughSubject<Void, Never> = .init()
 
+    @FuncStub(MockContactsSyncQueueProtocol.setup) var setupStub
+    func setup() {
+        setupStub()
+    }
+
     @FuncStub(MockContactsSyncQueueProtocol.start) var startStub
     func start() {
         startStub()
@@ -48,6 +53,11 @@ class MockContactsSyncQueueProtocol: ContactsSyncQueueProtocol {
     @FuncStub(MockContactsSyncQueueProtocol.addTask) var addTaskStub
     func addTask(_ task: ContactTask) {
         addTaskStub(task)
+    }
+
+    @FuncStub(MockContactsSyncQueueProtocol.saveQueueToDisk) var saveQueueToDiskStub
+    func saveQueueToDisk() {
+        saveQueueToDiskStub()
     }
 
     @FuncStub(MockContactsSyncQueueProtocol.deleteQueue) var deleteQueueStub

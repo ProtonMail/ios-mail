@@ -25,6 +25,7 @@ final class AutoImportContactsFeature {
     & HasUserDefaults
     & HasContactsSyncQueueProtocol
     & HasFeatureFlagProvider
+    & HasNotificationCenter
 
     private var userID: UserID {
         dependencies.user.userID
@@ -44,7 +45,11 @@ final class AutoImportContactsFeature {
     }
 
     var isFeatureEnabled: Bool {
-        dependencies.featureFlagProvider.isEnabled(MailFeatureFlag.autoImportContacts, reloadValue: true)
+        let isFFEnabled = dependencies
+            .featureFlagProvider
+            .isEnabled(MailFeatureFlag.autoImportContacts, reloadValue: true)
+        SystemLogger.logTemporarily(message: "isAutoImportContactsFeature enabled \(isFFEnabled)", category: .contacts)
+        return isFFEnabled
     }
 
     /// This is a value for telemetry.
@@ -74,6 +79,8 @@ final class AutoImportContactsFeature {
     }
 
     func disableSettingForUser() {
+        postNotificationToCancelImportTask()
+
         var historyTokens = dependencies.userDefaults[.contactsHistoryTokenPerUser]
         historyTokens[userID.rawValue] = nil
         dependencies.userDefaults[.contactsHistoryTokenPerUser] = historyTokens
@@ -92,6 +99,12 @@ final class AutoImportContactsFeature {
 }
 
 extension AutoImportContactsFeature {
+
+    private func postNotificationToCancelImportTask() {
+        // We have to rely on a notification because ImportDeviceContacts does not
+        // exist in Share but this class does and so we can't add the dependency.
+        dependencies.notificationCenter.post(name: .cancelImportContactsTask, object: nil)
+    }
 
     private func onProtonStorageExcceeded() {
         SystemLogger.log(message: "Proton quota exceeded", category: .contacts)

@@ -219,6 +219,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
+        SystemLogger.log(message: "application will terminate", category: .appLifeCycle)
         BackgroundTimer().willEnterBackgroundOrTerminate()
     }
 

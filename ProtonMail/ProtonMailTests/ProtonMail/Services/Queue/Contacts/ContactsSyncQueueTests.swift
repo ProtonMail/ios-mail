@@ -57,7 +57,7 @@ final class ContactsSyncQueueTests: XCTestCase {
         super.tearDown()
     }
 
-    func testStart_whenNoPersistedData_itShouldPublishZeroProgress() {
+    func testSetup_whenNoPersistedData_itShouldPublishZeroProgress() {
         let expectation = self.expectation(description: "progress published")
         expectation.assertForOverFulfill = false
 
@@ -68,13 +68,11 @@ final class ContactsSyncQueueTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        sut.start()
+        sut.setup()
         waitForExpectations(timeout: timeout)
-
-        XCTAssertTrue(fileManager.fileExists(atPath: sut.taskQueueURL.path))
     }
 
-    func testStart_whenPersistedData_itShouldPublishSomeProgress() {
+    func testSetup_whenPersistedData_itShouldPublishSomeProgress() {
         let data = try! JSONEncoder().encode([makeTask()])
         try! data.write(to: sut.taskQueueURL)
         XCTAssertTrue(fileManager.fileExists(atPath: sut.taskQueueURL.path))
@@ -90,32 +88,40 @@ final class ContactsSyncQueueTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        sut.start()
+        sut.setup()
         sut.pause() // to avoid the queue executing any task
         waitForExpectations(timeout: timeout)
     }
 
+    func testSetup_itShouldReturnQueueIsPaused() {
+        sut.setup()
+        XCTAssertTrue(sut.isPaused)
+    }
+
     func testStart_itShouldReturnQueueIsNotPaused() {
+        sut.setup()
         sut.start()
         XCTAssertFalse(sut.isPaused)
     }
 
     func testPause_itShouldReturnQueueIsPaused() {
-        sut.start()
+        sut.setup()
         sut.pause()
         XCTAssertTrue(sut.isPaused)
     }
 
     func testResume_whenIsPaused_itShouldResumeTheQueue() {
+        sut.setup()
         sut.start()
+        XCTAssertFalse(sut.isPaused)
         sut.pause()
         XCTAssertTrue(sut.isPaused)
         sut.resume()
         XCTAssertFalse(sut.isPaused)
     }
 
-    func testAddTask_whenStartHadBeenCalled_itShouldPersistTheAddedTask() {
-        sut.start()
+    func testSaveQueueToDisk_itShouldPersistTheExistingTasksToDisk() {
+        sut.setup()
 
         let expectation = self.expectation(description: "progress published")
         expectation.assertForOverFulfill = false
@@ -126,10 +132,10 @@ final class ContactsSyncQueueTests: XCTestCase {
                 }
             }
             .store(in: &cancellables)
-
         let task = makeTask()
         sut.addTask(task)
 
+        sut.saveQueueToDisk()
         waitForExpectations(timeout: timeout)
 
         // Check data was persisted
@@ -140,9 +146,10 @@ final class ContactsSyncQueueTests: XCTestCase {
     }
 
     func testDeleteQueue_itShouldDeleteTheSystemFile() {
-        sut.start()
+        sut.setup()
         let task = makeTask()
         sut.addTask(task)
+        sut.saveQueueToDisk()
         let expectation = self.expectation(description: "progress published")
         expectation.assertForOverFulfill = false
         sut.progressPublisher
