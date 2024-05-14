@@ -17,7 +17,7 @@
 
 import Foundation
 
-struct SidebarListItemEntry {
+struct UITestSidebarListItemEntry {
     let hasIcon: Bool
     let text: String
     let badge: String?

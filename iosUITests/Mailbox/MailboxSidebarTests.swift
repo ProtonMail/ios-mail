@@ -96,4 +96,50 @@ final class MailboxSidebarTests: PMUITestCase {
             $0.hasEntries(entries: expectedArchiveEntry)
         }
     }
+
+    /// TestId 426538, 426539, 426540
+    func testSidebarCounters() async {
+        await environment.mockServer.addRequestsWithDefaults(
+            useDefaultConversationCount: false,
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_base_placeholder.json",
+                ignoreQueryParams: true,
+                serveOnce: true
+            ),
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations/count",
+                localPath: "conversations-count_426538.json",
+                serveOnce: true
+            )
+        )
+
+        let expectedBadgeEntry = UITestSidebarListItemEntry(
+            hasIcon: true,
+            text: "Inbox",
+            badge: "1"
+        )
+        let expectedNoBadgeEntry = UITestSidebarListItemEntry(
+            hasIcon: true,
+            text: "Draft",
+            badge: nil
+        )
+        let expectedCappedEntry = UITestSidebarListItemEntry(
+            hasIcon: true,
+            text: "Sent",
+            badge: "999+"
+        )
+
+        navigator.navigateTo(UITestDestination.inbox)
+
+        MailboxRobot {
+            $0.openSidebarMenu()
+        }
+
+        SidebarMenuRobot {
+            $0.hasEntries(expectedBadgeEntry, expectedNoBadgeEntry, expectedCappedEntry)
+        }
+    }
 }

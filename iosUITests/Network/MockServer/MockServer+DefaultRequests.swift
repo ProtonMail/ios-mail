@@ -88,7 +88,7 @@ extension MockServer {
                 )
             }
 
-            if useDefaultMailSettings {
+            if useDefaultCoreSettings {
                 await addRequests(
                     NetworkRequest(
                         method: .get,
@@ -99,7 +99,7 @@ extension MockServer {
                 )
             }
 
-            if useDefaultCoreSettings {
+            if useDefaultMailSettings {
                 await addRequests(
                     NetworkRequest(
                         method: .get,

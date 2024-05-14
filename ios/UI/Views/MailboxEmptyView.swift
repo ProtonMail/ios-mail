@@ -23,20 +23,32 @@ struct MailboxEmptyView: View {
     var body: some View {
         VStack(spacing: 0) {
             Image(uiImage: DS.Images.emptyMailbox)
+                .accessibilityIdentifier(MailboxEmptyViewIdentifiers.emptyIcon)
             Text(LocalizationTemp.Mailbox.noEmailsYet)
                 .font(.title2)
                 .fontWeight(.semibold)
                 .foregroundStyle(DS.Color.Text.weak)
                 .multilineTextAlignment(.center)
                 .padding(.top, DS.Spacing.large)
+                .accessibilityIdentifier(MailboxEmptyViewIdentifiers.emptyTitle)
             Text(LocalizationTemp.Mailbox.emptyMailbox)
                 .font(.subheadline)
                 .foregroundStyle(DS.Color.Text.weak)
                 .multilineTextAlignment(.center)
                 .padding(.top, DS.Spacing.compact)
+                .accessibilityIdentifier(MailboxEmptyViewIdentifiers.emptyDescription)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal, DS.Spacing.jumbo)
         .background(DS.Color.Background.norm)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(MailboxEmptyViewIdentifiers.rootItem)
     }
+}
+
+private struct MailboxEmptyViewIdentifiers {
+    static let rootItem = "mailbox.empty.rootItem"
+    static let emptyIcon = "mailbox.empty.icon"
+    static let emptyTitle = "mailbox.empty.title"
+    static let emptyDescription = "mailbox.empty.description"
 }

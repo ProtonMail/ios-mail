@@ -52,6 +52,7 @@ struct MailboxScreen: View {
             .sensoryFeedback(trigger: selectionMode.selectedItems) { oldValue, newValue in
                 oldValue.count != newValue.count ? .selection : nil
             }
+            .accessibilityElement(children: .contain)
         }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
         .accessibilityElement(children: .contain)

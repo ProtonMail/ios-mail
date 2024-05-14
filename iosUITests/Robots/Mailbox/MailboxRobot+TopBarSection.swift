@@ -31,7 +31,7 @@ extension MailboxRobot {
     }
 
     private var toolbarTitle: XCUIElement {
-        application.staticTexts[Identifiers.title].firstMatch
+        application.staticTexts[Identifiers.titleText].firstMatch
     }
 
     // MARK: Actions

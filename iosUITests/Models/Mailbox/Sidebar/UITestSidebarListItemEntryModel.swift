@@ -24,7 +24,7 @@ struct UITestSidebarListItemEntryModel: ApplicationHolder {
     // MARK: UI Elements
 
     private var rootItem: XCUIElement {
-        let predicate = NSPredicate(format: "label CONTAINS[c] %@", label)
+        let predicate = NSPredicate(format: "label BEGINSWITH[c] %@", label)
         return application.buttons.containing(predicate).firstMatch
     }
 
@@ -61,13 +61,13 @@ struct UITestSidebarListItemEntryModel: ApplicationHolder {
     }
 
     func isBadgeNotShown() {
-        XCTAssertFalse(badgeElement.exists)
+        XCTAssertEqual("", badgeElement.label)
     }
 }
 
 private struct Identifiers {
     static let buttonItem = "sidebar.button.container"
-    static let iconItem = "sidebar.button.icon"
-    static let badgeItem = "sidebar.button.badge"
-    static let textItem = "sidebar.button.text"
+    static let iconItem = "sidebar.button.folderIcon"
+    static let badgeItem = "sidebar.button.badgeIcon"
+    static let textItem = "sidebar.button.labelText"
 }

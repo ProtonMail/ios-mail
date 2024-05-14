@@ -20,10 +20,10 @@ import XCTest
 
 final class MailboxRobot: Robot {
     var rootElement: XCUIElement {
-        application.otherElements[MailboxScreenIdentifiers.rootElement]
+        application.otherElements[MailboxScreenIdentifiers.rootItem]
     }
 }
 
 private struct MailboxScreenIdentifiers {
-    static let rootElement = "mailbox.rootElement"
+    static let rootItem = "mailbox.rootItem"
 }

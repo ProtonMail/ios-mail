@@ -30,4 +30,22 @@ extension SidebarMenuRobot {
         let model = UITestSidebarListItemEntryModel(label: label)
         model.tap()
     }
+
+    func hasEntries(_ entries: UITestSidebarListItemEntry...) {
+        entries.forEach { entry in
+            hasEntry(entry)
+        }
+    }
+
+    private func hasEntry(_ entry: UITestSidebarListItemEntry) {
+        let model = UITestSidebarListItemEntryModel(label: entry.text)
+        model.isIconDisplayed()
+        model.isTextMatching(value: entry.text)
+
+        if let badge = entry.badge {
+            model.isBadgeShown(value: badge)
+        } else {
+            model.isBadgeNotShown()
+        }
+    }
 }

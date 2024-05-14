@@ -33,7 +33,11 @@ extension UITestLoginType {
 
         enum Paid {
             static let FancyCapybara = UITestLoginType.loggedIn(
-                UITestUser(id: "fncyra", username: "fancycapybara@proton.black", password: "password")
+                UITestUser(
+                    id: "fncyra",
+                    username: "fancycapybara@proton.black",
+                    password: "password"
+                )
             )
         }
 
