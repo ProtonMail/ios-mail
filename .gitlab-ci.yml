@@ -319,3 +319,8 @@ firebase:adhoc:qa:
   extends: .distribute
   variables:
     IS_QA_BUILD: "true"
+
+gitleaks-scan-repository:
+  variables:
+    GIT_STRATEGY: clone
+    GIT_SUBMODULE_STRATEGY: none

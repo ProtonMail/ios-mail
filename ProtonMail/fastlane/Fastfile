@@ -152,6 +152,8 @@ platform :ios do
 
     build_release_app(true)
 
+    sentry_debug_files_upload
+
     upload_to_testflight(
       team_name: "Proton Technologies AG",
       skip_waiting_for_build_processing: true,
@@ -181,6 +183,8 @@ platform :ios do
     releaseNote = "Built on: " + git_branch + " \nBuild number: " + bundle_version + "\nGit commit: " + lastGitCommitHash
 
     build_release_app(false)
+
+    sentry_debug_files_upload
 
     upload_to_testflight(
       team_name: "Proton Technologies AG",
