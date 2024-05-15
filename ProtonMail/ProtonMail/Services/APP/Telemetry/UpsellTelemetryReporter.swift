@@ -135,7 +135,7 @@ private extension UpsellTelemetryReporter {
         if accountAgeInDays == 0 {
             return "0"
         } else if let matchingBracket = validBrackets.first(where: { $0.contains(accountAgeInDays) }) {
-            return "\(matchingBracket.lowerBound)-\(matchingBracket.upperBound)"
+            return String(format: "%02d-%02d", matchingBracket.lowerBound, matchingBracket.upperBound)
         } else if let maximumUpperBound = validBrackets.map(\.upperBound).max(), accountAgeInDays > maximumUpperBound {
             return ">\(maximumUpperBound)"
         } else {

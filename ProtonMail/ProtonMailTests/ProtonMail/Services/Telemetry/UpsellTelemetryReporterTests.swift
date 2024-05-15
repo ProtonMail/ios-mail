@@ -135,10 +135,10 @@ final class UpsellTelemetryReporterTests: XCTestCase {
 
         let expectedBracketsByAge: [Int: String] = [
             0: "0",
-            1: "1-3",
-            3: "1-3",
-            4: "4-10",
-            10: "4-10",
+            1: "01-03",
+            3: "01-03",
+            4: "04-10",
+            10: "04-10",
             11: "11-30",
             30: "11-30",
             31: "31-60",
