@@ -18,6 +18,7 @@
 import ProtonCoreUIFoundations
 
 struct InvitationViewModel {
+    let title: String
     let durationString: String
     let isOptionalAttendanceLabelHidden: Bool
     let statusString: String?
@@ -56,6 +57,12 @@ struct InvitationViewModel {
     private var participantListState: ParticipantListState
 
     init(eventDetails: EventDetails) {
+        if let title = eventDetails.title, !title.isEmpty {
+            self.title = title
+        } else {
+            title = L10n.Event.noTitle
+        }
+
         durationString = EventDateIntervalFormatter().string(
             from: eventDetails.startDate,
             to: eventDetails.endDate,

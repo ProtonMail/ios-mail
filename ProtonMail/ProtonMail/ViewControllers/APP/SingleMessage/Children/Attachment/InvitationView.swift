@@ -116,7 +116,7 @@ final class InvitationView: UIView {
     func populate(with eventDetails: EventDetails) {
         let viewModel = InvitationViewModel(eventDetails: eventDetails)
 
-        titleLabel.set(text: eventDetails.title, preferredFont: .body, weight: .bold, textColor: viewModel.titleColor)
+        titleLabel.set(text: viewModel.title, preferredFont: .body, weight: .bold, textColor: viewModel.titleColor)
         timeLabel.set(text: viewModel.durationString, preferredFont: .subheadline, textColor: viewModel.titleColor)
         optionalAttendanceLabel.isHidden = viewModel.isOptionalAttendanceLabelHidden
         statusLabel.set(text: viewModel.statusString, preferredFont: .subheadline, textColor: viewModel.titleColor)

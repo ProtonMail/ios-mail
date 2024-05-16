@@ -142,4 +142,14 @@ final class InvitationViewModelTests: XCTestCase {
         XCTAssertEqual(sut.visibleInvitees, [])
         XCTAssertEqual(sut.expansionButtonTitle, "3 participants")
     }
+
+    func testWhenEventHasNoTitle_thenNoTitleStringIsShown() {
+        let emptyTitles: [String?] = [nil, ""]
+
+        for emptyTitle in emptyTitles {
+            let eventDetails = EventDetails.make(title: emptyTitle)
+            let sut = InvitationViewModel(eventDetails: eventDetails)
+            XCTAssertEqual(sut.title, "(no title)")
+        }
+    }
 }

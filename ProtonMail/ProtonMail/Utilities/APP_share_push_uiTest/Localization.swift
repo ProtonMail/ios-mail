@@ -1298,6 +1298,7 @@ enum L10n {
     }
 
     struct Event {
+        static let noTitle = NSLocalizedString("(no title)", comment: "Title of an event with missing title")
         static let organizer = NSLocalizedString("Organizer", comment: "As in: event organizer")
         static let participantCount = NSLocalizedString("%u participants", comment: "Title of the button to expand participant list")
         static let showLess = NSLocalizedString("Show less", comment: "Button to hide some items in the list to conserve screen estate")
@@ -1353,8 +1354,6 @@ enum L10n {
                 )
             }
         }
-
-        static let noTitle = NSLocalizedString("(no title)", comment: "Title of an event with missing title")
     }
 
     struct Recurrence {

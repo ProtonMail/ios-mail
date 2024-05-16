@@ -19,6 +19,7 @@
 
 extension EventDetails {
     static func make(
+        title: String? = "Team Collaboration Workshop",
         startDate: Date = .init(timeIntervalSince1970: .random(in: 0...Date.distantFuture.timeIntervalSince1970)),
         endDate: Date = .init(timeIntervalSince1970: .random(in: 0...Date.distantFuture.timeIntervalSince1970)),
         isAllDay: Bool = false,
@@ -33,7 +34,7 @@ extension EventDetails {
         deepLinkComponents: (eventUID: String, calendarID: String) = ("", "")
     ) -> Self {
         .init(
-            title: "Team Collaboration Workshop",
+            title: title,
             startDate: startDate,
             endDate: endDate,
             isAllDay: isAllDay,
