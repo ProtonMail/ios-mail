@@ -53,7 +53,7 @@ extension AnswerInvitationUseCase {
             case .emailAnswerSubjectOther(let formattedDate):
                 return String(format: L10n.InvitationEmail.Answer.Subject.other, formattedDate)
             case .eventNoTitle:
-                return L10n.InvitationEmail.noTitle
+                return L10n.Event.noTitle
             }
         }
     }
