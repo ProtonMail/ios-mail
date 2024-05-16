@@ -51,7 +51,7 @@ final class SenderImageAPIDataSource: Sendable, SenderImageDataSource {
             return cachedImage
         }
         do {
-            guard let userSession = try await dependencies.appContext.userContextForActiveSession() else {
+            guard let userSession = dependencies.appContext.activeUserSession else {
                 return nil
             }
             guard let data = try await userSession

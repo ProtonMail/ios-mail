@@ -22,19 +22,21 @@ import proton_mail_uniffi
 final class AppContext: Sendable, ObservableObject {
     static let shared: AppContext = .init()
 
-    private var _mailContext: MailSession!
-    private let userSession: UserSession = UserSession()
+    private var _mailSession: MailSession!
     private let dependencies: AppContext.Dependencies
     private var cancellables = Set<AnyCancellable>()
 
-    private var mailContext: MailSession {
-        guard let mailContext = _mailContext else {
+    private var mailSession: MailSession {
+        guard let mailContext = _mailSession else {
             fatalError("AppSession.start was not called")
         }
         return mailContext
     }
 
-    @Published private(set) var hasActiveUser: Bool = false
+    @Published private(set) var activeUserSession: MailUserSession?
+    var hasActiveUser: Bool {
+        activeUserSession != nil
+    }
 
     init(dependencies: Dependencies = .init()) {
         self.dependencies = dependencies
@@ -57,7 +59,7 @@ final class AppContext: Sendable, ObservableObject {
         
         let apiEnvConfig = dependencies.apiEnvConfigService.getConfiguration()
         
-        _mailContext = try MailSession.create(
+        _mailSession = try MailSession.create(
             sessionDir: applicationSupportPath,
             userDir: applicationSupportPath,
             logDir: cachePath,
@@ -67,13 +69,9 @@ final class AppContext: Sendable, ObservableObject {
             networkCallback: dependencies.networkStatus
         )
 
-        if let _ = try mailContext.storedSessions().first {
-            hasActiveUser = true
+        if let storedSession = try mailSession.storedSessions().first {
+            activeUserSession = try mailSession.userContextFromSession(session: storedSession, cb: SessionDelegate.shared)
         }
-    }
-
-    func userContextForActiveSession() async throws -> MailUserSession? {
-        try await userSession.activeSession(from: mailContext)
     }
 }
 
@@ -98,7 +96,7 @@ enum AppContextError: Error {
     case cacheDirectoryNotAccessible
 }
 
-final class Keychain: OsKeyChain {
+final class Keychain: OsKeyChain, Sendable {
     static let shared = Keychain()
 
     // TODO: use the keychain
@@ -121,7 +119,7 @@ final class Keychain: OsKeyChain {
     }
 }
 
-final class NetworkStatusManager: NetworkStatusChanged {
+final class NetworkStatusManager: NetworkStatusChanged, Sendable {
     static let shared = NetworkStatusManager()
 
     func onNetworkStatusChanged(online: Bool) {
@@ -129,23 +127,23 @@ final class NetworkStatusManager: NetworkStatusChanged {
     }
 }
 
-final class SessionDelegate: SessionCallback {
+final class SessionDelegate: SessionCallback, Sendable {
     static let shared = SessionDelegate()
 
     func onSessionRefresh() {
-        AppLogger.logTemporarily(message: "onSessionRefresh")
+        AppLogger.logTemporarily(message: "onSessionRefresh", category: .userSessions)
     }
 
     func onSessionDeleted() {
-        AppLogger.logTemporarily(message: "onSessionDeleted")
+        AppLogger.logTemporarily(message: "onSessionDeleted", category: .userSessions)
     }
 
     func onRefreshFailed(e: proton_mail_uniffi.SessionError) {
-        AppLogger.logTemporarily(message: "onRefreshFailed error: \(e)")
+        AppLogger.logTemporarily(message: "onRefreshFailed error: \(e)", category: .userSessions)
     }
 
     func onError(err: proton_mail_uniffi.SessionError) {
-        AppLogger.logTemporarily(message: "onError error: \(err)")
+        AppLogger.logTemporarily(message: "onError error: \(err)", category: .userSessions)
     }
 }
 
@@ -177,18 +175,20 @@ extension AppContext: EventLoopProvider {
     func pollEvents() {
         Task { [weak self] in
             do {
-                guard let mailContext = self?.mailContext, let userSession = self?.userSession else { return }
-                async let mailUserSession = try await userSession.activeSession(from: mailContext)
+                guard let mailUserSession = self?.activeUserSession else {
+                    AppLogger.log(message: "poll events called but no active session found", category: .userSessions)
+                    return
+                }
 
                 /**
                  For now, event loop calls can't be run in parallel so we flush any action from the queue first.
                  Once this is not a limitation, we should run actions right after the actionis triggered by calling `executePendingAction()`
                  */
                 AppLogger.log(message: "execute pending actions", category: .rustLibrary)
-                try await mailUserSession?.executePendingActions()
+                try await mailUserSession.executePendingActions()
 
                 AppLogger.log(message: "poll events", category: .rustLibrary)
-                try await mailUserSession?.pollEvents()
+                try await mailUserSession.pollEvents()
             } catch {
                 AppLogger.log(error: error, category: .rustLibrary)
             }
@@ -200,17 +200,16 @@ extension AppContext: SessionProvider {
 
     @MainActor
     func login(email: String, password: String) async throws {
-        let flow = try mailContext.newLoginFlow(cb: SessionDelegate.shared)
+        let flow = try mailSession.newLoginFlow(cb: SessionDelegate.shared)
         try await flow.login(email: email, password: password)
-        let newUserContext = try flow.toUserContext()
-        try await userSession.udpateActiveSession(newUserContext, needsInitialization: true)
-        hasActiveUser = true
+        let newUserSession = try flow.toUserContext()
+        try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared)
+        activeUserSession = newUserSession
     }
 
     @MainActor
     func logoutActiveUserSession() async throws {
-        try await userSession.activeSession(from: mailContext)?.logout()
-        hasActiveUser = false
-        await userSession.deleteActiveSession()
+        try await activeUserSession?.logout()
+        activeUserSession = nil
     }
 }

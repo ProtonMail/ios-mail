@@ -45,7 +45,7 @@ struct MoveToFolderModel {
 
     private func fetchMovableFolders() async -> [LocalLabel] {
         do {
-            guard let userSession = try await dependencies.appContext.userContextForActiveSession() else { return [] }
+            guard let userSession = dependencies.appContext.activeUserSession else { return [] }
             return try userSession.movableFolders()
         } catch {
             AppLogger.log(error: error)

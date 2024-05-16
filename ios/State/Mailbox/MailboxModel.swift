@@ -70,7 +70,7 @@ final class MailboxModel: ObservableObject {
 
     func updateMailboxAndFetchData(selectedMailbox: SelectedMailbox) async throws {
         await updateState(.loading)
-        guard let userContext = try await dependencies.appContext.userContextForActiveSession() else { return }
+        guard let userContext = dependencies.appContext.activeUserSession else { return }
         mailbox = try await Mailbox(ctx: userContext, labelId: selectedMailbox.localId)
         AppLogger.log(message: "mailbox view mode: \(mailbox?.viewMode().description ?? "n/a")", category: .mailbox)
         try await initialiseLiveQuery()
@@ -248,9 +248,9 @@ extension MailboxModel {
     }
 
     private func actionMoveTo(systemFolder: SystemFolderIdentifier, ids: [PMMailboxItemId]) {
+        guard let userSession = dependencies.appContext.activeUserSession else { return }
         Task {
             do {
-                guard let userSession = try await dependencies.appContext.userContextForActiveSession() else { return }
                 guard let systemFolderLocalLabel = try userSession.movableFolders().first(where: { folder in
                     guard let rid = folder.rid, let remoteId = UInt64(rid) else { return false }
                     return remoteId == systemFolder.rawValue

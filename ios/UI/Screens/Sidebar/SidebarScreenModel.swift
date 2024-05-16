@@ -40,14 +40,8 @@ final class SidebarScreenModel: ObservableObject, Sendable {
     }
 
     private func initLiveQuery() async {
-        do {
-            guard let userContext = try await dependencies.appContext.userContextForActiveSession() else {
-                return
-            }
-            systemFolderQuery = userContext.newSystemLabelsObservedQuery(cb: self)
-        } catch {
-            AppLogger.log(error: error, category: .rustLibrary)
-        }
+        guard let userContext = dependencies.appContext.activeUserSession else { return }
+        systemFolderQuery = userContext.newSystemLabelsObservedQuery(cb: self)
     }
 
     @MainActor
