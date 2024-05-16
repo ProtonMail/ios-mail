@@ -18,11 +18,10 @@
 import DesignSystem
 import SwiftUI
 
-struct MailboxConversationScreen: View {
-    @EnvironmentObject var userSettings: UserSettings
-    @ObservedObject private var model: MailboxConversationModel
+struct MailboxListView: View {
+    @ObservedObject private var model: MailboxModel
 
-    init(model: MailboxConversationModel) {
+    init(model: MailboxModel) {
         self.model = model
     }
 
@@ -33,53 +32,52 @@ struct MailboxConversationScreen: View {
                 loadingView
             case .empty:
                 MailboxEmptyView()
-            case .data(let conversations):
-                conversationListView(conversations: conversations)
+            case .data(let mailboxItems):
+                mailboxItemsListView(mailboxItems: mailboxItems)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .fullScreenCover(item: $model.attachmentPresented) { config in
-            AttachmentView(config: config)
-                .edgesIgnoringSafeArea([.top, .bottom])
+        .sensoryFeedback(trigger: model.selectionMode.selectedItems) { oldValue, newValue in
+            oldValue.count != newValue.count ? .selection : nil
         }
     }
 }
 
-extension MailboxConversationScreen {
+extension MailboxListView {
 
     private var loadingView: some View {
         ProgressView()
     }
 
-    private func conversationListView(conversations: [MailboxConversationCellUIModel]) -> some View {
+    private func mailboxItemsListView(mailboxItems: [MailboxItemCellUIModel]) -> some View {
         List {
-            ForEach(Array(conversations.enumerated()), id: \.1.id) { index, conversation in
+            ForEach(Array(mailboxItems.enumerated()), id: \.1.id) { index, item in
                 VStack {
-                    MailboxConversationCell(
-                        uiModel: conversation,
+                    MailboxItemCell(
+                        uiModel: item,
                         isAttachmentHighlightEnabled: !model.selectionMode.hasSelectedItems,
                         onEvent: { [weak model] event in
                             switch event {
                             case .onTap:
-                                model?.onConversationTap(conversation: conversation)
+                                model?.onMailboxItemTap(item: item)
                             case .onLongPress:
-                                model?.onLongPress(conversation: conversation)
+                                model?.onLongPress(mailboxItem: item)
                             case .onSelectedChange(let isSelected):
-                                model?.onConversationSelectionChange(conversation: conversation, isSelected: isSelected)
+                                model?.onMailboxItemSelectionChange(item: item, isSelected: isSelected)
                             case .onStarredChange(let isStarred):
-                                model?.onConversationStarChange(conversation: conversation, isStarred: isStarred)
+                                model?.onMailboxItemStarChange(item: item, isStarred: isStarred)
                             case .onAttachmentTap(let attachmentId):
-                                model?.onConversationAttachmentTap(attachmentId: attachmentId, for: conversation)
+                                model?.onMailboxItemAttachmentTap(attachmentId: attachmentId, for: item)
                             }
                         }
                     )
                     .accessibilityElement(children: .contain)
-                    .accessibilityIdentifier("\(MailboxConversationScreenIdentifiers.listCell)\(index)")
+                    .accessibilityIdentifier("\(MailboxListViewIdentifiers.listCell)\(index)")
                     .mailboxSwipeActions(
                         isSelectionModeOn: model.selectionMode.hasSelectedItems,
-                        itemId: conversation.id,
-                        isItemRead: conversation.isRead,
-                        onTapAction: model.onConversationAction(_:conversationIds:)
+                        itemId: item.id,
+                        isItemRead: item.isRead,
+                        onTapAction: model.onMailboxItemAction(_:itemIds:)
                     )
 
                     Spacer().frame(height: DS.Spacing.tiny)
@@ -106,23 +104,13 @@ extension MailboxConversationScreen {
 
 #Preview {
     let route: AppRouteState = .init(route: .mailbox(label: .placeHolderMailbox))
-    let selectionMode = SelectionModeState()
 
-    struct PreviewWrapper: View {
-        @State var appRoute: AppRouteState
-        @State var selectionMode: SelectionModeState
-
-        var body: some View {
-            MailboxConversationScreen(model: .init(
-                appRoute: appRoute,
-                selectionMode: selectionMode,
-                state: .empty // .data(PreviewData.mailboxConversations)
-            ))
-        }
-    }
-    return PreviewWrapper(appRoute: route, selectionMode: selectionMode)
+    return MailboxListView(model: .init(
+        appRoute: route,
+        state: .empty // .data(PreviewData.mailboxConversations)
+    ))
 }
 
-private struct MailboxConversationScreenIdentifiers {
+private struct MailboxListViewIdentifiers {
     static let listCell = "mailbox.list.cell"
 }

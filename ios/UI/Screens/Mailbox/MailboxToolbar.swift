@@ -124,10 +124,9 @@ extension MailboxToolbar {
     let appUIState = AppUIState(isSidebarOpen: false)
     let userSettings = UserSettings(mailboxViewMode: .conversation, mailboxActions: .init())
 
-    let mailboxModel = MailboxModel(appRoute: .shared, state: .data( PreviewData.mailboxConversations))
     let customLabelModel = CustomLabelModel()
 
-    return MailboxScreen(mailboxModel: mailboxModel, customLabelModel: customLabelModel)
+    return MailboxScreen(customLabelModel: customLabelModel)
         .mailboxToolbar(title: "Inbox", selectionMode: .init())
         .environmentObject(appUIState)
         .environmentObject(userSettings)

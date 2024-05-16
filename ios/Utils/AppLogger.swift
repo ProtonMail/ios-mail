@@ -118,7 +118,7 @@ extension AppLogger {
         case appRoute = "AppRoute"
         case userSessions = "UserSessions"
         case rustLibrary = "RustLibrary"
-        case mailboxConversations = "MailboxConversations"
+        case mailbox = "Mailbox"
         case mailboxActions = "MailboxActions"
     }
 

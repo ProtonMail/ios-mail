@@ -33,6 +33,14 @@ public extension DS.Icon {
 
 }
 
+// MARK: mailbox messages
+
+public extension DS.Icon {
+    static let icForward = icon(named: "ic-forward")
+    static let icReplay = icon(named: "ic-reply")
+    static let icReplayAll = icon(named: "ic-reply-all")
+}
+
 // MARK: mailbox item actions
 
 public extension DS.Icon {

@@ -18,10 +18,10 @@
 import DesignSystem
 import SwiftUI
 
-struct MailboxConversationCell: View {
-    let uiModel: MailboxConversationCellUIModel
+struct MailboxItemCell: View {
+    let uiModel: MailboxItemCellUIModel
     let isAttachmentHighlightEnabled: Bool
-    let onEvent: (MailboxConversationCellEvent) -> Void
+    let onEvent: (MailboxItemCellEvent) -> Void
 
     private var textColor: Color {
         uiModel.isRead ? DS.Color.Text.weak : DS.Color.Text.norm
@@ -55,7 +55,7 @@ struct MailboxConversationCell: View {
     }
 }
 
-extension MailboxConversationCell {
+extension MailboxItemCell {
 
     private var avatarView: some View {
         AvatarCheckboxView(
@@ -68,12 +68,13 @@ extension MailboxConversationCell {
 
     private var senderRowView: some View {
         HStack(spacing: DS.Spacing.small) {
+            replyIcons
             Text(uiModel.senders)
                 .font(.subheadline)
                 .fontWeight(uiModel.isRead ? .regular : .bold)
                 .lineLimit(1)
                 .foregroundColor(textColor)
-                .accessibilityIdentifier(MailboxConversationCellIdentifiers.senderText)
+                .accessibilityIdentifier(MailboxItemCellIdentifiers.senderText)
             ProtonOfficialBadgeView()
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
             MailboxConversationMessageCountView(numMessages: uiModel.numMessages)
@@ -83,7 +84,7 @@ extension MailboxConversationCell {
                 .font(.caption2)
                 .fontWeight(uiModel.isRead ? .regular : .bold)
                 .foregroundColor(uiModel.isRead ? DS.Color.Text.hint : DS.Color.Text.norm)
-                .accessibilityIdentifier(MailboxConversationCellIdentifiers.dateText)
+                .accessibilityIdentifier(MailboxItemCellIdentifiers.dateText)
         }
     }
 
@@ -95,7 +96,7 @@ extension MailboxConversationCell {
                 .lineLimit(1)
                 .foregroundColor(textColor)
                 .layoutPriority(1)
-                .accessibilityIdentifier(MailboxConversationCellIdentifiers.subjectText)
+                .accessibilityIdentifier(MailboxItemCellIdentifiers.subjectText)
             MailboxLabelView(uiModel: uiModel.labelUIModel)
                 .padding(.leading, labelLeadingPadding)
                 .removeViewIf(uiModel.labelUIModel.isEmpty)
@@ -107,10 +108,36 @@ extension MailboxConversationCell {
                 .onTapGesture {
                     onEvent(.onStarredChange(isStarred: !uiModel.isStarred))
                 }
-                .accessibilityIdentifier(MailboxConversationCellIdentifiers.starIcon)
+                .accessibilityIdentifier(MailboxItemCellIdentifiers.starIcon)
         }
         .frame(height: 21.0)
         .padding(.top, DS.Spacing.small)
+    }
+
+    @ViewBuilder
+    private var replyIcons: some View {
+        if uiModel.replyIcons.shouldShowIcon {
+            HStack(spacing: DS.Spacing.tiny) {
+                if uiModel.replyIcons.shouldShowRepliedIcon {
+                    imageForReplyIcon(icon: DS.Icon.icReplay)
+                }
+                if uiModel.replyIcons.shouldShowRepliedAllIcon {
+                    imageForReplyIcon(icon: DS.Icon.icReplayAll)
+                }
+                if uiModel.replyIcons.shouldShowForwardedIcon {
+                    imageForReplyIcon(icon: DS.Icon.icForward)
+                }
+            }
+        } else {
+            EmptyView()
+        }
+    }
+
+    private func imageForReplyIcon(icon: UIImage) -> some View {
+        Image(uiImage: icon)
+            .resizable()
+            .frame(width: 16, height: 16)
+            .foregroundColor(DS.Color.Text.weak)
     }
 
     private var expirationRowView: some View {
@@ -150,8 +177,9 @@ extension MailboxConversationCell {
 }
 
 @Observable
-final class MailboxConversationCellUIModel: Identifiable, Sendable {
-    let id: PMLocalConversationId
+final class MailboxItemCellUIModel: Identifiable, Sendable {
+    let id: PMMailboxItemId
+    let type: MailboxItemType
     let avatar: AvatarUIModel
     let senders: String
     let subject: String
@@ -165,12 +193,14 @@ final class MailboxConversationCellUIModel: Identifiable, Sendable {
     let numMessages: Int
     let labelUIModel: MailboxLabelUIModel
     let attachmentsUIModel: [AttachmentCapsuleUIModel]
+    let replyIcons: ReplyIconsUIModel
 
     let expirationDate: String?
     let snoozeDate: String?
 
     init(
-        id: PMLocalConversationId,
+        id: PMMailboxItemId,
+        type: MailboxItemType,
         avatar: AvatarUIModel,
         senders: String,
         subject: String,
@@ -182,10 +212,12 @@ final class MailboxConversationCellUIModel: Identifiable, Sendable {
         numMessages: Int,
         labelUIModel: MailboxLabelUIModel = .init(),
         attachmentsUIModel: [AttachmentCapsuleUIModel] = [],
+        replyIcons: ReplyIconsUIModel = .init(),
         expirationDate: Date?,
         snoozeDate: Date?
     ) {
         self.id = id
+        self.type = type
         self.avatar = avatar
         self.senders = senders
         self.subject = subject
@@ -197,6 +229,7 @@ final class MailboxConversationCellUIModel: Identifiable, Sendable {
         self.numMessages = numMessages
         self.labelUIModel = labelUIModel
         self.attachmentsUIModel = attachmentsUIModel
+        self.replyIcons = replyIcons
 
         var expiration: String? = nil
         if let expirationDate, expirationDate > .now {
@@ -216,7 +249,27 @@ final class MailboxConversationCellUIModel: Identifiable, Sendable {
     }
 }
 
-enum MailboxConversationCellEvent {
+struct ReplyIconsUIModel {
+    let shouldShowRepliedIcon: Bool
+    let shouldShowRepliedAllIcon: Bool
+    let shouldShowForwardedIcon: Bool
+
+    init(
+        shouldShowRepliedIcon: Bool = false,
+        shouldShowRepliedAllIcon: Bool = false,
+        shouldShowForwardedIcon: Bool = false
+    ) {
+        self.shouldShowRepliedIcon = shouldShowRepliedIcon
+        self.shouldShowRepliedAllIcon = shouldShowRepliedAllIcon
+        self.shouldShowForwardedIcon = shouldShowForwardedIcon
+    }
+
+    var shouldShowIcon: Bool {
+        shouldShowRepliedIcon || shouldShowRepliedAllIcon || shouldShowForwardedIcon
+    }
+}
+
+enum MailboxItemCellEvent {
     case onTap
     case onLongPress
     case onSelectedChange(isSelected: Bool)
@@ -225,9 +278,10 @@ enum MailboxConversationCellEvent {
 }
 
 #Preview {
-    var model: MailboxConversationCellUIModel {
-        MailboxConversationCellUIModel(
+    var model: MailboxItemCellUIModel {
+        MailboxItemCellUIModel(
             id: 0,
+            type: .conversation,
             avatar: .init(initials: "P", senderImageParams: .init()),
             senders: "Proton",
             subject: "30% discount on all our products",
@@ -245,11 +299,12 @@ enum MailboxConversationCellEvent {
 
     return VStack {
 
-        MailboxConversationCell(uiModel: model, isAttachmentHighlightEnabled: true, onEvent: { _ in })
+        MailboxItemCell(uiModel: model, isAttachmentHighlightEnabled: true, onEvent: { _ in })
 
-        MailboxConversationCell(
+        MailboxItemCell(
             uiModel: .init(
                 id: 0,
+                type: .message,
                 avatar: .init(initials: "FE", senderImageParams: .init(), backgroundColor: .yellow),
                 senders: "FedEx",
                 subject: "Your package is ready to ship",
@@ -261,6 +316,7 @@ enum MailboxConversationCellEvent {
                 numMessages: 3,
                 labelUIModel: .init(id: "", color: .purple, text: "Offer", allLabelIds: .init()),
                 attachmentsUIModel: [.init(attachmentId: 1, icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf")],
+                replyIcons: .init(shouldShowForwardedIcon: true),
                 expirationDate: .now,
                 snoozeDate: .now + 500
             ),
@@ -268,9 +324,10 @@ enum MailboxConversationCellEvent {
             onEvent: { _ in }
         )
 
-        MailboxConversationCell(
+        MailboxItemCell(
             uiModel: .init(
                 id: 0,
+                type: .message,
                 avatar: .init(initials: "MA", senderImageParams: .init(), backgroundColor: .cyan),
                 senders: "Mary, Elijah Wood, wiseman@pm.me",
                 subject: "Summer holidays pictures and more!",
@@ -286,6 +343,7 @@ enum MailboxConversationCellEvent {
                     .init(attachmentId: 2, icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
                     .init(attachmentId: 3, icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
                 ],
+                replyIcons: .init(shouldShowRepliedAllIcon: true),
                 expirationDate: .now + 500,
                 snoozeDate: .now + 55000
             ),
@@ -295,7 +353,7 @@ enum MailboxConversationCellEvent {
     }
 }
 
-private struct MailboxConversationCellIdentifiers {
+private struct MailboxItemCellIdentifiers {
     static let senderText = "cell.senderText"
     static let subjectText = "cell.subjectText"
     static let starIcon = "cell.starIcon"

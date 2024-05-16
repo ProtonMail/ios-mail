@@ -24,7 +24,6 @@ struct ProtonMail: App {
 
     // declaration of state objects
     private let appUIState = AppUIState()
-    private let mailboxModel = MailboxModel(appRoute: .shared)
     private let userSettings = UserSettings(
         mailboxViewMode: .conversation,
         mailboxActions: .init()
@@ -33,7 +32,7 @@ struct ProtonMail: App {
 
     var body: some Scene {
         WindowGroup {
-            Root(appContext: .shared, appRoute: .shared, mailboxModel: mailboxModel, customLabelModel: customLabelModel)
+            Root(appContext: .shared, appRoute: .shared, customLabelModel: customLabelModel)
                 .environmentObject(appUIState)
                 .environmentObject(userSettings)
         }
@@ -54,18 +53,15 @@ struct Root: View {
     // The route determines the screen that will be rendered
     @ObservedObject private var appContext: AppContext
     @ObservedObject private var appRoute: AppRouteState
-    @ObservedObject private var mailboxModel: MailboxModel
     @ObservedObject private var customLabelModel: CustomLabelModel
 
     init(
         appContext: AppContext,
         appRoute: AppRouteState,
-        mailboxModel: MailboxModel,
         customLabelModel: CustomLabelModel
     ) {
         self.appContext = appContext
         self.appRoute = appRoute
-        self.mailboxModel = mailboxModel
         self.customLabelModel = customLabelModel
     }
 
@@ -76,7 +72,7 @@ struct Root: View {
             ZStack {
                 switch appRoute.route {
                 case .mailbox, .appLaunching:
-                    MailboxScreen(mailboxModel: mailboxModel, customLabelModel: customLabelModel)
+                    MailboxScreen(customLabelModel: customLabelModel)
                 case .settings:
                     SettingsScreen()
                 }

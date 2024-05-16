@@ -17,9 +17,7 @@
 
 import Foundation
 
-extension MailboxConversationCellUIModel {
-
-    func toSelectedItem() -> SelectedItem {
-        SelectedItem(id: id, isRead: isRead, isStarred: isStarred)
-    }
+enum MailboxItemType {
+    case conversation
+    case message
 }

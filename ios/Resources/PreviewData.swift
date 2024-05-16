@@ -27,14 +27,15 @@ enum PreviewData {
         ]
     }
 
-    static var mailboxConversations: [MailboxConversationCellUIModel] {
+    static var mailboxConversations: [MailboxItemCellUIModel] {
 
-        let conversations: [MailboxConversationCellUIModel] = (1..<100).map { value in
+        let conversations: [MailboxItemCellUIModel] = (1..<100).map { value in
             let randomSenderSubject = randomSenderSubject()
             let expirationDate: Bool = ((1..<11).randomElement()!%10) == 0
             let snoozeDate: Bool = ((1..<11).randomElement()!%10) == 0
             return .init(
                 id: UInt64.random(in: 1...UInt64.max),
+                type: .conversation,
                 avatar: .init(initials: randomSenderSubject.0.prefix(2).uppercased(), senderImageParams: .init()),
                 senders: randomSenderSubject.0,
                 subject: randomSenderSubject.1,

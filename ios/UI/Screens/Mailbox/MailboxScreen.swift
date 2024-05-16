@@ -20,39 +20,28 @@ import SwiftUI
 
 struct MailboxScreen: View {
     @EnvironmentObject private var userSettings: UserSettings
+    @StateObject private var mailboxModel: MailboxModel
 
-    @ObservedObject private var appRoute: AppRouteState
-    @ObservedObject private var selectionMode: SelectionModeState
-
-    private var mailboxModel: MailboxModel
     private var customLabelModel: CustomLabelModel
 
     private var navigationTitle: String {
-        selectionMode.hasSelectedItems
-        ? LocalizationTemp.Selection.title(value: selectionMode.selectedItems.count)
-        : appRoute.selectedMailbox.name
+        mailboxModel.selectionMode.hasSelectedItems
+        ? LocalizationTemp.Selection.title(value: mailboxModel.selectionMode.selectedItems.count)
+        : mailboxModel.appRoute.selectedMailbox.name
     }
 
-    init(mailboxModel: MailboxModel, customLabelModel: CustomLabelModel) {
-        self.mailboxModel = mailboxModel
-        self.appRoute = mailboxModel.appRoute
-        self.selectionMode = mailboxModel.selectionMode
+    init(customLabelModel: CustomLabelModel) {
+        self._mailboxModel = StateObject(wrappedValue: MailboxModel())
         self.customLabelModel = customLabelModel
     }
 
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .bottom) {
-                mailboxScreen
-                mailboxActionBarView
-            }
-            .background(DS.Color.Background.norm) // sets also the color for the navigation bar
-            .navigationBarTitleDisplayMode(.inline)
-            .mailboxToolbar(title: navigationTitle, selectionMode: selectionMode)
-            .sensoryFeedback(trigger: selectionMode.selectedItems) { oldValue, newValue in
-                oldValue.count != newValue.count ? .selection : nil
-            }
-            .accessibilityElement(children: .contain)
+            mailboxScreen
+                .fullScreenCover(item: $mailboxModel.attachmentPresented) { config in
+                    AttachmentView(config: config)
+                        .edgesIgnoringSafeArea([.top, .bottom])
+                }
         }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
         .accessibilityElement(children: .contain)
@@ -61,36 +50,29 @@ struct MailboxScreen: View {
 
 extension MailboxScreen {
 
-    @ViewBuilder
     private var mailboxScreen: some View {
-        if userSettings.mailboxViewMode == .conversation {
-            MailboxConversationScreen(model: mailboxModel.conversationModel)
-        } else {
-            Text("message list mailbox")
+        ZStack(alignment: .bottom) {
+            MailboxListView(model: mailboxModel)
+            mailboxActionBarView
         }
-    }
-
-    private var mailboxActionable: MailboxActionable {
-        if userSettings.mailboxViewMode == .conversation {
-            return mailboxModel.conversationModel
-        } else {
-            // TODO: ...
-            return EmptyMailboxActionable()
-        }
+        .background(DS.Color.Background.norm) // sets also the color for the navigation bar
+        .navigationBarTitleDisplayMode(.inline)
+        .mailboxToolbar(title: navigationTitle, selectionMode: mailboxModel.selectionMode)
+        .accessibilityElement(children: .contain)
     }
 
     private var mailboxActionBarView: some View {
         MailboxActionBarView(
-            selectionMode: selectionMode,
-            mailbox: appRoute.selectedMailbox,
-            mailboxActionable: mailboxActionable,
+            selectionMode: mailboxModel.selectionMode,
+            mailbox: mailboxModel.appRoute.selectedMailbox,
+            mailboxActionable: mailboxModel,
             customLabelModel: customLabelModel
         )
-        .opacity(selectionMode.hasSelectedItems ? 1 : 0)
-        .offset(y: selectionMode.hasSelectedItems ? 0 : 45 + 100)
+        .opacity(mailboxModel.selectionMode.hasSelectedItems ? 1 : 0)
+        .offset(y: mailboxModel.selectionMode.hasSelectedItems ? 0 : 45 + 100)
         .animation(
             .easeInOut(duration: AppConstants.selectionModeStartDuration),
-            value: selectionMode.hasSelectedItems
+            value: mailboxModel.selectionMode.hasSelectedItems
         )
     }
 }
@@ -98,11 +80,9 @@ extension MailboxScreen {
 #Preview {
     let appUIState = AppUIState(isSidebarOpen: false)
     let userSettings = UserSettings(mailboxViewMode: .conversation, mailboxActions: .init())
-
-    let mailboxModel = MailboxModel(appRoute: .shared, state: .data( PreviewData.mailboxConversations))
     let customLabelModel = CustomLabelModel()
 
-    return MailboxScreen(mailboxModel: mailboxModel, customLabelModel: customLabelModel)
+    return MailboxScreen(customLabelModel: customLabelModel)
         .environmentObject(appUIState)
         .environmentObject(userSettings)
 }
