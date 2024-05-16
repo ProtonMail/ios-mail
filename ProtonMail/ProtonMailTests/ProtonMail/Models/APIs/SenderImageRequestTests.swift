@@ -34,6 +34,17 @@ final class SenderImageRequestTests: XCTestCase {
         )
     }
 
+    func testInit_withAddressThatContainsPlusSign() {
+        let address = "donotreply+267b3091-59c0-4710-b3af-c98c07d2fbba@example.com"
+        let sut = SenderImageRequest(email: address, isDarkMode: isDarkMode)
+
+        let value = isDarkMode ? "dark" : "light"
+        XCTAssertEqual(
+            sut.path,
+            "/core/v4/images/logo?Address=donotreply%2B267b3091-59c0-4710-b3af-c98c07d2fbba@example.com&Mode=\(value)&Format=png"
+        )
+    }
+
     func testInit_withAllParameters() {
         let sut = SenderImageRequest(
             email: email,
