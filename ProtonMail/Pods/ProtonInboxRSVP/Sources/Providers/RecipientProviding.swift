@@ -15,15 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Calendar. If not, see https://www.gnu.org/licenses/.
 
-import ProtonInboxICal
+import Combine
+import ProtonCoreFeatures
 
-public protocol IdentifiableEvent {
-    var id: String { get }
-    var startDate: Date { get }
-    var calendarID: String { get }
-}
-
-public protocol EventStorage {
-    func calendarEvent(for event: IdentifiableEvent) -> CalendarEvent?
-    func mainEvent(for event: IdentifiableEvent) -> ICalEvent?
+public protocol RecipientProviding {
+    func recipient(email: String) -> AnyPublisher<Recipient, Error>
 }

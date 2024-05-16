@@ -18,6 +18,7 @@
 import Combine
 import EventKit
 import ProtonInboxICal
+import ProtonCoreFeatures
 import ProtonCoreServices
 
 public struct AnswerInvitationOrganizerNotifier {
@@ -25,13 +26,15 @@ public struct AnswerInvitationOrganizerNotifier {
     private let invitationEmailSender: InvitationEmailSender
     private let emailSubjectFormatter: AnswerEventEmailSubjectFormatter
     private let emailBodyFormatter: AnswerInvitationEmailBodyFormatter
+    private let recipientProvider: RecipientProviding
 
     public init(
         emailSender: EmailSending,
         localization: L10nProviding,
         dateFormatterProvider: DateFormatterProviding,
         vTimeZonesInfoProvider: VTimeZonesInfoProviding,
-        userPreContactsProvider: UserPreContactsProviding
+        userPreContactsProvider: UserPreContactsProviding,
+        recipientProvider: RecipientProviding
     ) {
         icsTimeZonesDecorator = .init(vTimeZonesInfoProvider: vTimeZonesInfoProvider)
         invitationEmailSender = .init(
@@ -43,6 +46,7 @@ public struct AnswerInvitationOrganizerNotifier {
             dateFormatterProvider: dateFormatterProvider
         )
         emailBodyFormatter = .init(localization: localization)
+        self.recipientProvider = recipientProvider
     }
 
     public func notifyOrganizer(
@@ -59,6 +63,11 @@ public struct AnswerInvitationOrganizerNotifier {
         return icsTimeZonesDecorator
             .build(for: icsMethod, event: updatedEvent, timestamp: context.currentDate)
             .flatMap { ics in
+                recipientProvider
+                    .recipient(email: context.validatedAnswer.organizer.user.email)
+                    .map { organizer in (ics, organizer) }
+            }
+            .flatMap { ics, organizer in
                 invitationEmailSender.send(
                     content: .init(
                         subject: emailSubjectFormatter.string(for: event, userID: keyPackage.passphraseInfo.user.ID),
@@ -69,7 +78,7 @@ public struct AnswerInvitationOrganizerNotifier {
                         ),
                         ics: .init(value: ics, method: icsMethod)
                     ),
-                    toRecipients: [context.validatedAnswer.organizer.user.email],
+                    toRecipients: [organizer],
                     senderParticipant: context.validatedAnswer.invitedParticipant,
                     addressKeyPackage: keyPackage
                 )

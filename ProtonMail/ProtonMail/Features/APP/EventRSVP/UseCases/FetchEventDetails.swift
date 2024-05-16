@@ -333,14 +333,15 @@ struct FetchEventDetailsImpl: FetchEventDetails {
 
         if isSingleEdit {
             let mainOccurrenceExists = apiEvents.contains { $0.recurrenceID == nil }
-            return .singleEdit(mainOccurrenceExists ? .regular : .orphan)
+            let unusedEditInfo = EventType.SingleEdit.EditInfo(editCount: .one, deletionCount: 0)
+            return .singleEdit(mainOccurrenceExists ? .regular(editInfo: unusedEditInfo) : .orphan)
         } else {
             if iCalEvent.recurrence.doesRepeat {
                 let singleEdits = try apiEvents
                     .filter { $0.recurrenceID != nil }
                     .map { try decrypt(apiEvent: $0, decryptionKit: decryptionKit) }
 
-                return .recurring(.init(singleEdits: singleEdits))
+                return .recurring(.init(mainOccurrence: iCalEvent, singleEdits: singleEdits))
             } else {
                 return .nonRecurring
             }

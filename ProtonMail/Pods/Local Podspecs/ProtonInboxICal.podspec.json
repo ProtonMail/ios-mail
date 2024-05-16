@@ -1,13 +1,13 @@
 {
   "name": "ProtonInboxICal",
-  "version": "0.2.5",
+  "version": "0.2.7",
   "summary": "ProtonInboxICal - CocoaPod for ICS file operations",
   "homepage": "https://gitlab.protontech.ch/apple/inbox/protoninboxical",
   "license": "GPLv3",
   "authors": "Proton Calendar",
   "source": {
     "git": "https://gitlab.protontech.ch/apple/inbox/protoninboxical.git",
-    "tag": "0.2.5"
+    "tag": "0.2.7"
   },
   "swift_versions": [
     "5.6"
