@@ -41,10 +41,6 @@ final class SectionTitleUITableViewDiffableDataSource<SectionIdentifier, ItemIde
         animatingDifferences: Bool = true,
         completion: (() -> Void)? = nil
     ) {
-        if #available(iOS 15, *) {
-            super.applySnapshotUsingReloadData(snapshot, completion: completion)
-        } else {
-            super.apply(snapshot, animatingDifferences: animatingDifferences, completion: completion)
-        }
+        super.applySnapshotUsingReloadData(snapshot, completion: completion)
     }
 }

@@ -22,8 +22,6 @@ import ProtonCoreEnvironment
 import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkit
 
-
-@available(iOS 15.0, *)
 class MonkeyTests : BaseMonkey  {
 
     private var scenario: MailScenario { .qaMail006 }

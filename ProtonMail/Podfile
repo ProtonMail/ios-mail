@@ -26,7 +26,7 @@ end
 ENV['PROTON_CORE_GIT_URL'] = proton_core_path
 
 def minimum_deployment_target
-  '14.7'
+  '15.0'
 end
 
 platform :ios, minimum_deployment_target
