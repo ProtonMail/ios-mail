@@ -29,6 +29,7 @@ protocol AttachmentViewControllerDelegate: AnyObject {
     func openAttachmentList(with attachments: [AttachmentInfo])
     func invitationViewWasChanged()
     func participantTapped(emailAddress: String)
+    func showError(error: Error)
 }
 
 class AttachmentViewController: UIViewController {
@@ -126,8 +127,8 @@ class AttachmentViewController: UIViewController {
 
         viewModel.error
             .receive(on: DispatchQueue.main)
-            .sink { error in
-                SystemLogger.log(error: error)
+            .sink { [weak self] error in
+                self?.delegate?.showError(error: error)
             }
             .store(in: &subscriptions)
 

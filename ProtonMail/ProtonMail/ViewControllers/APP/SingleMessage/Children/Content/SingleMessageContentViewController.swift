@@ -584,6 +584,16 @@ extension SingleMessageContentViewController: AttachmentViewControllerDelegate {
     func participantTapped(emailAddress: String) {
         presentActionSheet(context: .eventParticipant(emailAddress: emailAddress))
     }
+
+    func showError(error: Error) {
+        let banner = PMBanner(
+            message: error.localizedDescription,
+            style: PMBannerNewStyle.error,
+            dismissDuration: 5.0,
+            bannerHandler: PMBanner.dismiss
+        )
+        banner.show(at: .top, on: self)
+    }
 }
 
 extension SingleMessageContentViewController: BannerViewControllerDelegate {
