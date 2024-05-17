@@ -56,7 +56,8 @@ public struct AnswerInvitationUseCase {
         eventParticipationStatusUpdater: EventParticipationStatusUpdating,
         eventPersonalPartUpdater: EventPersonalPartUpdating,
         userPreContactsProvider: UserPreContactsProviding,
-        vTimeZonesInfoProvider: VTimeZonesInfoProviding
+        vTimeZonesInfoProvider: VTimeZonesInfoProviding,
+        recipientProvider: RecipientProviding
     ) {
         self.currentDateProvider = currentDateProvider
         dataValidator = .init(
@@ -79,7 +80,8 @@ public struct AnswerInvitationUseCase {
             localization: localization,
             dateFormatterProvider: dateFormatterProvider,
             vTimeZonesInfoProvider: vTimeZonesInfoProvider,
-            userPreContactsProvider: userPreContactsProvider
+            userPreContactsProvider: userPreContactsProvider,
+            recipientProvider: recipientProvider
         )
     }
 

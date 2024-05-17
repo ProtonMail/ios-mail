@@ -24,6 +24,12 @@ import Foundation
 
 let ICAL_RECURRENCE_ARRAY_MAX_INT16: Int16 = Int16(ICAL_RECURRENCE_ARRAY_MAX.rawValue)
 
+// FIXME: - [CALIOS-2810] Temporary code that proxy logs to the app target. Has to be removed after fixing CALIOS-2784.
+public enum ICalAnalytics {
+    public static var capture: ((_ message: String) -> Void)?
+    public static var addTrace: ((_ trace: String, _ fileID: String, _ function: String, _ line: UInt) -> Void)?
+}
+
 public class ICalPropertyRRule {
     public init() {}
 
@@ -769,6 +775,14 @@ public class ICalPropertyRRule {
         // failure to do so may lead to issues with Daylight Saving Time (DST)
 
         guard event.recurrence.doesRepeat else {
+            let rrule: String
+            if var recurrenceType = event.recurringRulesLibical {
+                rrule = String(cString: icalrecurrencetype_as_string(&recurrenceType))
+            } else {
+                rrule = "missing recurringRulesLibical"
+            }
+            ICalAnalytics.addTrace?("RRule: \(rrule)", #file, #function, #line)
+            ICalAnalytics.capture?("Got non-recurring event")
             assertionFailure("\(#function) got non-recurring event")
             return nil
         }

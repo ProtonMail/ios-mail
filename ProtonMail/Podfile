@@ -90,7 +90,6 @@ def app_pods
   pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-HumanVerification", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Features', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-KeyManager", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Login", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-LoginUI", :git => proton_core_path, :tag => proton_core_version
@@ -101,7 +100,7 @@ def app_pods
   pod "ProtonCore-Payments", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-PaymentsUI", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonInboxICal', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxical'
+  pod 'ProtonInboxICal', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxical.git'
   pod 'ProtonInboxRSVP', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxrsvp.git'
   pod 'SideMenuSwift', :git=> 'git@gitlab.protontech.ch:jchen/SideMenu.git', :tag=>'v2.0.9.autolayout'
   pod 'SwipyCell', :git=> 'git@gitlab.protontech.ch:jchen/SwipyCell.git', :commit => '923310a'
@@ -147,7 +146,7 @@ target 'ProtonMailUITests' do
   pod 'ProtonCore-QuarkCommands', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Environment', :git => proton_core_path, :tag => proton_core_version
   pod 'Yams'
-  pod 'ProtonInboxICal', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxical'
+  pod 'ProtonInboxICal', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxical.git'
 end
 
 target 'Share' do

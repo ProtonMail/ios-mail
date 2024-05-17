@@ -65,12 +65,12 @@ public final class InvitationEmailSender {
 
     public func send(
         content: EmailContent,
-        toRecipients recipients: [String],
+        toRecipients recipients: [Recipient],
         senderParticipant: Participant,
         addressKeyPackage: AddressKeyPackage
     ) -> AnyPublisher<Void, Error> {
         userPreContactsProvider
-            .preContacts(for: addressKeyPackage.passphraseInfo.user, recipients: recipients)
+            .preContacts(for: addressKeyPackage.passphraseInfo.user, recipients: recipients.map(\.email))
             .tryMap { preContacts -> (MessageContent, [PreContact]) in
                 (try self.messageContent(content, recipients, addressKeyPackage), preContacts)
             }
@@ -96,7 +96,7 @@ public final class InvitationEmailSender {
 
     private func messageContent(
         _ emailContent: EmailContent,
-        _ recipients: [String],
+        _ recipients: [Recipient],
         _ addressKeyPackage: AddressKeyPackage
     ) throws -> MessageContent {
         let decryptionKey = try addressKeyPackage.primaryDecryptionKey()

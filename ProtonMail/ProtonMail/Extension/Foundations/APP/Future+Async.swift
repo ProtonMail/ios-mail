@@ -15,24 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreDataModel
-import ProtonInboxRSVP
+import Combine
 
-struct UserBasedEmailAddressStorage: EmailAddressStorage {
-    typealias Dependencies = AnyObject & HasUserManager
-
-    private unowned let dependencies: Dependencies
-
-    init(dependencies: Dependencies) {
-        self.dependencies = dependencies
-    }
-
-    func currentUserAddresses() -> [Address_v2] {
-        dependencies.user.userInfo.userAddresses.map(\.toAddress_v2)
-    }
-
-    func addresses(userID: String) -> [Address_v2] {
-        assertionFailure("This is not used by RSVP")
-        return currentUserAddresses()
+extension Future where Failure == Error {
+    convenience init(block: @escaping () async throws -> Output) {
+        self.init { completion in
+            Task {
+                do {
+                    let output = try await block()
+                    completion(.success(output))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+        }
     }
 }

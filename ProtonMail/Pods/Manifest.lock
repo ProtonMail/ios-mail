@@ -307,8 +307,8 @@ PODS:
   - ProtonCore-Utilities (22.0.0):
     - ProtonCore-Log (= 22.0.0)
   - ProtonCore-VCard (22.0.0)
-  - ProtonInboxICal (0.2.5)
-  - ProtonInboxRSVP (0.3.0):
+  - ProtonInboxICal (0.2.7)
+  - ProtonInboxRSVP (0.4.0):
     - ProtonCore-Crypto
     - ProtonCore-DataModel
     - ProtonCore-Features
@@ -393,7 +393,7 @@ DEPENDENCIES:
   - "ProtonCore-UIFoundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
   - "ProtonCore-VCard (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `22.0.0`)"
-  - "ProtonInboxICal (from `git@gitlab.protontech.ch:apple/inbox/protoninboxical`)"
+  - "ProtonInboxICal (from `git@gitlab.protontech.ch:apple/inbox/protoninboxical.git`)"
   - "ProtonInboxRSVP (from `git@gitlab.protontech.ch:apple/inbox/protoninboxrsvp.git`)"
   - SDWebImage (~> 5.15)
   - "Sentry (from `git@gitlab.protontech.ch:jchen/sentry-cocoa.git`, tag `8.9.3.fork`)"
@@ -552,7 +552,7 @@ EXTERNAL SOURCES:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 22.0.0
   ProtonInboxICal:
-    :git: "git@gitlab.protontech.ch:apple/inbox/protoninboxical"
+    :git: "git@gitlab.protontech.ch:apple/inbox/protoninboxical.git"
   ProtonInboxRSVP:
     :git: "git@gitlab.protontech.ch:apple/inbox/protoninboxrsvp.git"
   Sentry:
@@ -702,10 +702,10 @@ CHECKOUT OPTIONS:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 22.0.0
   ProtonInboxICal:
-    :commit: ff2df4bc4bb9030a9c0f93cdf85b838c80c4e0b8
-    :git: "git@gitlab.protontech.ch:apple/inbox/protoninboxical"
+    :commit: 2b8a2ddf667f55efb98beb7ce7a0ca1633dd9543
+    :git: "git@gitlab.protontech.ch:apple/inbox/protoninboxical.git"
   ProtonInboxRSVP:
-    :commit: e802258cbed2c5b82e670b6b71654deb2f74a322
+    :commit: 30bd5b9769b6cddb7c79c4412255bb76e31f0715
     :git: "git@gitlab.protontech.ch:apple/inbox/protoninboxrsvp.git"
   Sentry:
     :git: "git@gitlab.protontech.ch:jchen/sentry-cocoa.git"
@@ -774,8 +774,8 @@ SPEC CHECKSUMS:
   ProtonCore-UIFoundations: 8c296ab396375483c586fb2833f9e18dc337d6d5
   ProtonCore-Utilities: 107857ee80bc9c33e268b735d363f7b086d2a496
   ProtonCore-VCard: d83777b7c0e940d4489aea7ef472a2411e1706b5
-  ProtonInboxICal: 196d714f4ccf10f702cf0722ab780f3d493372d7
-  ProtonInboxRSVP: 9d6da54f0380c4e1d7b25b17f253f915ccb06d38
+  ProtonInboxICal: bcc8e19ccdd3956f3e5e27909b1224291157b061
+  ProtonInboxRSVP: 63ff9cfdb4c6ce5850f7fcd0c7d620752a92e513
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: cb032eba469c54e0000e78bcb0a13cdde0a52798
   Sentry: 97161cac725da1ecbe77d1445bf8a61c1e5667f1
@@ -788,6 +788,6 @@ SPEC CHECKSUMS:
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
   Yams: e10dae147f517ed57ecae37c5e8681bdf8fcab65
 
-PODFILE CHECKSUM: 12637b2dffe7fb44a8ac5b0b08a4e31a131dc4e8
+PODFILE CHECKSUM: 399373f341c368e8c9c6dbc948e71071bc5ab0b5
 
 COCOAPODS: 1.15.2
