@@ -77,7 +77,7 @@ final class UpsellTelemetryReporterTests: XCTestCase {
     }
 
     func testUpgradeAttempt() async throws {
-        await sut.upgradeAttempt(protonPlanName: "foo2024")
+        await sut.upgradeAttempt(storeKitProductId: "iosmail_mail2022_12_usd_auto_renewing")
 
         let transmittedEvent = try XCTUnwrap(telemetryService.sendEventStub.lastArguments?.value)
 
@@ -89,7 +89,8 @@ final class UpsellTelemetryReporterTests: XCTestCase {
                 "plan_before_upgrade": "free",
                 "days_since_account_creation": ">60",
                 "upsell_modal_version": "A.1",
-                "selected_plan": "foo2024"
+                "selected_plan": "mail2022",
+                "selected_cycle": "12"
             ],
             frequency: .always
         )
@@ -98,7 +99,7 @@ final class UpsellTelemetryReporterTests: XCTestCase {
     }
 
     func testUpgradeSuccess() async throws {
-        await sut.upgradeSuccess(protonPlanName: "foo2024")
+        await sut.upgradeSuccess(storeKitProductId: "iosmail_mail2022_12_usd_auto_renewing")
 
         let transmittedEvent = try XCTUnwrap(telemetryService.sendEventStub.lastArguments?.value)
 
@@ -110,7 +111,8 @@ final class UpsellTelemetryReporterTests: XCTestCase {
                 "plan_before_upgrade": "free",
                 "days_since_account_creation": ">60",
                 "upsell_modal_version": "A.1",
-                "selected_plan": "foo2024"
+                "selected_plan": "mail2022",
+                "selected_cycle": "12"
             ],
             frequency: .always
         )

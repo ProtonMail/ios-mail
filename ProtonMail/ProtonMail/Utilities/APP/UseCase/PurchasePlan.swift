@@ -31,7 +31,7 @@ struct PurchasePlan {
             return .error(PurchasePlanError.productNotFound(storeKitProductId: storeKitProductId))
         }
 
-        await dependencies.upsellTelemetryReporter.upgradeAttempt(protonPlanName: plan.protonName)
+        await dependencies.upsellTelemetryReporter.upgradeAttempt(storeKitProductId: storeKitProductId)
 
         let purchaseResult = await withCheckedContinuation { continuation in
             dependencies.purchaseManager.buyPlan(plan: plan, finishCallback: continuation.resume(returning:))
@@ -39,7 +39,7 @@ struct PurchasePlan {
 
         switch purchaseResult {
         case .purchasedPlan(let plan):
-            await dependencies.upsellTelemetryReporter.upgradeSuccess(protonPlanName: plan.protonName)
+            await dependencies.upsellTelemetryReporter.upgradeSuccess(storeKitProductId: storeKitProductId)
             return .planPurchased
         case .toppedUpCredits:
             return .cancelled
