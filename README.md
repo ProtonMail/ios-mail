@@ -19,7 +19,7 @@ Proton Mail iOS client for encrypted email.
 
 The application contains the following features among others (some are only available to paid users): create new accounts, sign in to multiple accounts, read and compose emails, schedule emails to be sent at a specific time, protect emails with a password, set emails expiration time, organise emails with labels and folders, manage contacts, change account settings, and many more...
 
-Currently the application supports iOS version 14.7 and above.
+Currently the application supports iOS version 15.0 and above.
 
 ## Project setup
 

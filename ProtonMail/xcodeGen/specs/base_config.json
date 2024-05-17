@@ -3,7 +3,7 @@
    "options": {
       "createIntermediateGroups": true,
       "deploymentTarget": {
-         "iOS": "14.7"
+         "iOS": "15.0"
       },
       "postGenCommand": "xcodeGen/post_gen.sh"
    },
