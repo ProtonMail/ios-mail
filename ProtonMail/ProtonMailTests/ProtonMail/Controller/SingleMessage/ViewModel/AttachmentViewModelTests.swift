@@ -22,6 +22,8 @@ import XCTest
 class AttachmentViewModelTests: XCTestCase {
     private var answerInvitation: MockAnswerInvitation!
     private var extractBasicEventInfo: MockExtractBasicEventInfo!
+    private var fetchAttachment: MockFetchAttachment!
+    private var fetchAttachmentMetadata: MockFetchAttachmentMetadataUseCase!
     private var fetchEventDetails: MockFetchEventDetails!
     private var featureFlagProvider: MockFeatureFlagProvider!
     private var urlOpener: MockURLOpener!
@@ -72,12 +74,12 @@ class AttachmentViewModelTests: XCTestCase {
 
         answerInvitation = .init()
 
-        let fetchAttachmentMetadata = MockFetchAttachmentMetadataUseCase()
+        fetchAttachmentMetadata = .init()
         fetchAttachmentMetadata.executionStub.bodyIs { _, _ in
             AttachmentMetadata(keyPacket: "")
         }
 
-        let fetchAttachment = MockFetchAttachment()
+        fetchAttachment = .init()
         fetchAttachment.result = .success(
             AttachmentFile(attachmentId: "", fileUrl: URL(fileURLWithPath: ""), data: Data())
         )
@@ -96,8 +98,8 @@ class AttachmentViewModelTests: XCTestCase {
         user.container.answerInvitationFactory.register { self.answerInvitation }
         user.container.extractBasicEventInfoFactory.register { self.extractBasicEventInfo }
         user.container.featureFlagProviderFactory.register { self.featureFlagProvider }
-        user.container.fetchAttachmentMetadataFactory.register { fetchAttachmentMetadata }
-        user.container.fetchAttachmentFactory.register { fetchAttachment }
+        user.container.fetchAttachmentMetadataFactory.register { self.fetchAttachmentMetadata }
+        user.container.fetchAttachmentFactory.register { self.fetchAttachment }
         user.container.fetchEventDetailsFactory.register { self.fetchEventDetails }
 
         sut = AttachmentViewModel(dependencies: user.container)
@@ -117,6 +119,8 @@ class AttachmentViewModelTests: XCTestCase {
         answerInvitation = nil
         extractBasicEventInfo = nil
         featureFlagProvider = nil
+        fetchAttachment = nil
+        fetchAttachmentMetadata = nil
         fetchEventDetails = nil
         urlOpener = nil
         user = nil
@@ -247,6 +251,20 @@ class AttachmentViewModelTests: XCTestCase {
 
         XCTAssert(sut.viewShouldBeShown)
     }
+
+    func testGivenICSIsCachedLocally_whenLoadingData_doesNotPerformNetworkRequests() {
+        let icsData = Data("foo".utf8)
+        let icsFile = SecureTemporaryFile(data: icsData, name: "ics.ics")
+        let ics = makeAttachment(isInline: false, localUrl: icsFile.url, mimeType: icsMimeType)
+
+        sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
+        wait(self.extractBasicEventInfo.executeStub.wasCalled)
+
+        XCTAssert(fetchAttachmentMetadata.executionStub.wasNotCalled)
+        XCTAssert(fetchAttachment.executionBlock.wasNotCalled)
+    }
+
+    // MARK: RSVP - Responding status
 
     func testRespondingStatus_whenAnsweringAndChangingAnswer_showsProcessingAndThenTheSelectedAnswerEachTime() async {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
@@ -393,12 +411,16 @@ class AttachmentViewModelTests: XCTestCase {
         XCTAssertEqual(instruction, .presentCalendarLandingPage)
     }
 
-    private func makeAttachment(isInline: Bool, mimeType: String = "text/plain") -> AttachmentInfo {
+    private func makeAttachment(
+        isInline: Bool,
+        localUrl: URL? = nil,
+        mimeType: String = "text/plain"
+    ) -> AttachmentInfo {
         return AttachmentInfo(
             fileName: String.randomString(50),
             size: 99,
             mimeType: mimeType,
-            localUrl: nil,
+            localUrl: localUrl,
             isDownloaded: true,
             id: "",
             isInline: isInline,
