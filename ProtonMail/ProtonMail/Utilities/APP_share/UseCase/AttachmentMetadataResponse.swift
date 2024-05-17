@@ -15,19 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreNetworking
-
-class AttachmentMetadataResponse: Response {
-    private(set) var keyPacket: String?
-
-    override func ParseResponse(_ response: [String: Any]) -> Bool {
-        guard let attachment = response["Attachment"] as? [String: Any],
-              let keyPackets = attachment["KeyPackets"] as? String else {
-            return false
-        }
-
-        self.keyPacket = keyPackets
-
-        return true
+struct AttachmentMetadataResponse: Decodable {
+    struct Attachment: Decodable {
+        let keyPackets: String
     }
+
+    let attachment: Attachment
 }

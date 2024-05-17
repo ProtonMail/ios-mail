@@ -34,12 +34,8 @@ final class FetchAttachmentMetadata: FetchAttachmentMetadataUseCase {
 
     func execution(params: Params) async throws -> AttachmentMetadata {
         let request = AttachmentMetadataRequest(attID: params.attachmentID.rawValue)
-        let response = await dependencies.apiService.perform(request: request, response: AttachmentMetadataResponse())
-        if let keyPacket = response.1.keyPacket {
-            return AttachmentMetadata(keyPacket: keyPacket)
-        } else {
-            throw FetchAttachmentMetadataError()
-        }
+        let response: AttachmentMetadataResponse = try await dependencies.apiService.perform(request: request).1
+        return AttachmentMetadata(keyPacket: response.attachment.keyPackets)
     }
 }
 
@@ -59,10 +55,4 @@ extension FetchAttachmentMetadata {
 
 struct AttachmentMetadata: Decodable {
     let keyPacket: String
-}
-
-struct FetchAttachmentMetadataError: LocalizedError {
-    var errorDescription: String? {
-        "FetchAttachmentMetadataError: Key Packets Not Found"
-    }
 }
