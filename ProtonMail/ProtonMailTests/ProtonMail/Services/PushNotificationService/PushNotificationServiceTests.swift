@@ -127,22 +127,8 @@ extension PushNotificationServiceTests {
     typealias Completion = JSONCompletion
     
     class InMemorySaver<T: Codable>: Saver<T> {
-        
-        convenience init(store: StoreMock = StoreMock()) {
+        convenience init(store: SaverTests.StoreMock = .init()) {
             self.init(key: "", store: store)
         }
-    }
-    
-    class StoreMock: KeyValueStoreProvider {
-        enum Errors: Error {
-            case noData
-        }
-        private(set) var dict = [String: Any]()
-
-        func set(_ data: Data, forKey key: String, attributes: [CFString : Any]? = nil) { dict[key] = data }
-
-        func data(forKey key: String, attributes: [CFString : Any]? = nil) -> Data? { return dict[key] as? Data }
-
-        func remove(forKey key: String) { dict[key] = nil }
     }
 }
