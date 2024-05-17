@@ -46,20 +46,52 @@ final class UpsellTelemetryReporter {
         await dependencies.telemetryService.sendEvent(event)
     }
 
-    func upgradeAttempt(protonPlanName: String) async {
+    func upgradeAttempt(storeKitProductId: InAppPurchasePlan.ProductId) async {
         var dimensions = commonDimensions()
-        dimensions.selectedPlan = protonPlanName
+
+        if let (selectedPlan, selectedCycle) = parsePlanNameAndCycle(from: storeKitProductId) {
+            dimensions.selectedPlan = selectedPlan
+            dimensions.selectedCycle = selectedCycle
+        }
 
         let event = makeEvent(name: .upgradeAttempt, dimensions: dimensions)
         await dependencies.telemetryService.sendEvent(event)
     }
 
-    func upgradeSuccess(protonPlanName: String) async {
+    func upgradeSuccess(storeKitProductId: InAppPurchasePlan.ProductId) async {
         var dimensions = commonDimensions()
-        dimensions.selectedPlan = protonPlanName
+
+        if let (selectedPlan, selectedCycle) = parsePlanNameAndCycle(from: storeKitProductId) {
+            dimensions.selectedPlan = selectedPlan
+            dimensions.selectedCycle = selectedCycle
+        }
 
         let event = makeEvent(name: .upgradeSuccess, dimensions: dimensions)
         await dependencies.telemetryService.sendEvent(event)
+    }
+
+    private func parsePlanNameAndCycle(
+        from storeKitProductId: InAppPurchasePlan.ProductId
+    ) -> (name: String, cycle: String)? {
+        guard
+            let regex = try? NSRegularExpression(
+                pattern: "^ios[^_]*_([^_]*)_?(.*)_(\\d+)_(\\w+)_(?:non_|auto_)renewing(?:_v\\d+)?$"
+            ),
+            let result = regex.firstMatch(
+                in: storeKitProductId,
+                range: NSRange(location: 0, length: storeKitProductId.count)
+            ),
+            result.numberOfRanges == 5
+        else {
+            return nil
+        }
+
+        let captureGroupAtIndex: (Int) -> String = {
+            let range = result.range(at: $0)
+            return NSString(string: storeKitProductId).substring(with: range)
+        }
+
+        return (captureGroupAtIndex(1), captureGroupAtIndex(3))
     }
 
     private func makeEvent(name: EventName, dimensions: Dimensions) -> TelemetryEvent {
@@ -105,13 +137,15 @@ private extension UpsellTelemetryReporter {
         let daysSinceAccountCreation: String
         let upsellModalVersion: String
         var selectedPlan: String?
+        var selectedCycle: String?
 
         var asDictionary: [String: String] {
             [
                 "plan_before_upgrade": planBeforeUpgrade,
                 "days_since_account_creation": daysSinceAccountCreation,
                 "upsell_modal_version": upsellModalVersion,
-                "selected_plan": selectedPlan
+                "selected_plan": selectedPlan,
+                "selected_cycle": selectedCycle
             ].compactMapValues { $0 }
         }
     }
