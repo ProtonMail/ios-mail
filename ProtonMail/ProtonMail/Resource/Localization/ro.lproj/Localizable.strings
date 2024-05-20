@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "Încărcare";
 
+/* Title of an event with missing title */
+"(no title)" = "(fără titlu)";
+
 /* As in: event organizer */
 "Organizer" = "Organizator";
 
@@ -1961,41 +1964,38 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "până la %@";
 
-/* " */
-"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ la %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "acceptat";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "refuzat";
 
 /* Status in an email body sent with an invitation answer */
-"tentatively accepted" = "tentatively accepted";
+"tentatively accepted" = "acceptat provizoriu";
 
-/* " */
-"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ v-a %2@ invitația la %3@";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
-"You are invited to %@" = "You are invited to %@";
+"You are invited to %@" = "Ați primit o invitație la %@";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
-"LOCATION:\n%@" = "LOCATION:\n%@";
+"LOCATION:\n%@" = "LOC:\n%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's notes */
-"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+"DESCRIPTION:\n%@" = "DESCRIERE:\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ was cancelled.";
+"%@ was cancelled." = "%@ a fost anulat.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
-"Re: Invitation for an event on %@" = "Re: Invitation for an event on %@";
+"Re: Invitation for an event on %@" = "Rs: Invitație la un eveniment %@";
 
-/* " */
-"Re: Invitation for an event starting on %@" = "Re: Invitation for an event starting on %@";
-
-/* Title of an event with missing title */
-"(no title)" = "(no title)";
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Rs: Invitație la un eveniment care începe %@";
 
 /* Occurring every day */
 "Daily" = "Zilnic";
@@ -2025,10 +2025,10 @@
 "last" = "ultima";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Easily RSVP to events";
+"Easily RSVP to events" = "Confirmați ușor participarea la evenimente";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Acum puteți răspunde la o invitație sau puteți vizualiza evenimentul în Proton Calendar cu o singură atingere.";
 
 /* Menu title */
 "Max Storage" = "Spațiu stocare maxim";
@@ -2154,7 +2154,7 @@
 "Application logs" = "Jurnale aplicație";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "Nouă!";
 
 /* Got it action */
 "Got it" = "Am înțeles";
@@ -2454,16 +2454,16 @@
 "Change mailbox password" = "Schimbare parolă mesaje";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB storage";
+"15 GB storage" = "15 GiB spațiu de stocare";
 
 /* Description of a feature of a paid subscription */
-"%u email addresses" = "%u email addresses";
+"%u email addresses" = "%u adrese de e-mail";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Suport pentru domeniu personal de e-mail";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"New Proton Mail desktop app" = "✓ Aplicație nouă Proton Mail pentru desktop";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetrie anonimă";

@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "Carregar";
 
+/* Title of an event with missing title */
+"(no title)" = "(sem título)";
+
 /* As in: event organizer */
 "Organizer" = "Organizador";
 
@@ -1961,20 +1964,20 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "até %@";
 
-/* " */
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
 "%1@ at %2@ %3@" = "%1@ às %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
 "accepted" = "aceitado";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "negou";
 
 /* Status in an email body sent with an invitation answer */
 "tentatively accepted" = "aceito provisoriamente";
 
-/* " */
-"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ tem %2@ seu convite para %3@.";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
 "You are invited to %@" = "Você está convidado para %@.";
@@ -1991,11 +1994,8 @@
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
 "Re: Invitation for an event on %@" = "Re: Convite para um evento em %@";
 
-/* " */
-"Re: Invitation for an event starting on %@" = "Re: Invitation for an event starting on %@";
-
-/* Title of an event with missing title */
-"(no title)" = "(sem título)";
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Re: Convite para um evento começando em %@";
 
 /* Occurring every day */
 "Daily" = "Diariamente";
@@ -2028,7 +2028,7 @@
 "Easily RSVP to events" = "Easily RSVP to events";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Agora você pode responder a um convite ou visualizar o evento no Proton Calendar em um só toque. ";
 
 /* Menu title */
 "Max Storage" = "Armazenamento máximo";
@@ -2154,7 +2154,7 @@
 "Application logs" = "Registros do aplicativo";
 
 /* Badge present on some spotlights */
-"New!" = "Novo";
+"New!" = "Novo!";
 
 /* Got it action */
 "Got it" = "Entendi";
@@ -2463,7 +2463,7 @@
 "Custom email domain support" = "Suporte para domínios de email personalizados";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"New Proton Mail desktop app" = "Novo aplicativo do Proton Mail para computador";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetria anônima";

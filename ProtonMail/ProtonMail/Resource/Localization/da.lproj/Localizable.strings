@@ -1178,10 +1178,10 @@
 "Insecure connection" = "Usikker forbindelse";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Validering af TLS-certifikat mislykkedes. Din forbindelse kan blive overvåget, og appen er midlertidigt blokeret af hensyn til din sikkerhed.\n\nSkift straks netværk.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Validering af TLS-certifikat mislykkedes. Din forbindelse kan være overvåget, og appen er midlertidigt blokeret af hensyn til din sikkerhed.\n\nSkift straks netværk.";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "TLS-certifikatvalidering mislykkedes. Din forbindelse kan overvåges, og appen blokeres midlertidigt af hensyn til din sikkerhed.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Validering af TLS-certifikat mislykkedes. Din forbindelse kan være overvåget, og appen er midlertidigt blokeret af hensyn til din sikkerhed.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Deaktivér validering";
@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "Indlæs";
 
+/* Title of an event with missing title */
+"(no title)" = "(ingen titel)";
+
 /* As in: event organizer */
 "Organizer" = "Arrangør";
 
@@ -1961,7 +1964,7 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "indtil %@";
 
-/* " */
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
 "%1@ at %2@ %3@" = "%1@ ved %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
@@ -1973,7 +1976,7 @@
 /* Status in an email body sent with an invitation answer */
 "tentatively accepted" = "foreløbig accepteret";
 
-/* " */
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
 "%1@ has %2@ your invitation to %3@" = "%1@ har %2@ din invitation til %3@";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
@@ -1991,11 +1994,8 @@
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
 "Re: Invitation for an event on %@" = "Re: Invitation til et event på %@";
 
-/* " */
+/* Subject of an email sent with an invitation answer after answering */
 "Re: Invitation for an event starting on %@" = "Re: Invitation til en event, der starter den %@";
-
-/* Title of an event with missing title */
-"(no title)" = "(ingen titel)";
 
 /* Occurring every day */
 "Daily" = "Dagligt";
