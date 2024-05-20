@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "Carrega";
 
+/* Title of an event with missing title */
+"(no title)" = "(sense títol)";
+
 /* As in: event organizer */
 "Organizer" = "Organitzador";
 
@@ -1961,41 +1964,38 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "fins al %@";
 
-/* " */
-"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ @ %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "acceptat";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "rebutjat";
 
 /* Status in an email body sent with an invitation answer */
-"tentatively accepted" = "tentatively accepted";
+"tentatively accepted" = "acceptat provisionalment";
 
-/* " */
-"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ ha %2@ la vostra invitació a %3@";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
-"You are invited to %@" = "You are invited to %@";
+"You are invited to %@" = "Heu estat convidat a %@";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
-"LOCATION:\n%@" = "LOCATION:\n%@";
+"LOCATION:\n%@" = "Ubicació:\n%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's notes */
-"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+"DESCRIPTION:\n%@" = "DESCRIPCIÓ:\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ was cancelled.";
+"%@ was cancelled." = "S'ha cancel·lat %@.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
-"Re: Invitation for an event on %@" = "Re: Invitation for an event on %@";
+"Re: Invitation for an event on %@" = "Re: Invitació a un esdeveniment el %@";
 
-/* " */
-"Re: Invitation for an event starting on %@" = "Re: Invitation for an event starting on %@";
-
-/* Title of an event with missing title */
-"(no title)" = "(no title)";
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Re: Invitació a un esdeveniment que comença el %@";
 
 /* Occurring every day */
 "Daily" = "Cada dia";
@@ -2007,7 +2007,7 @@
 "Monthly" = "Cada mes";
 
 /* Occurring every year */
-"Yearly" = "Cada any";
+"Yearly" = "Anualment";
 
 /* \"1st\" spelled out */
 "first" = "primer";
@@ -2025,10 +2025,10 @@
 "last" = "últim";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Easily RSVP to events";
+"Easily RSVP to events" = "Confirmi fàcilment els esdeveniments";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Ara pot respondre a una invitació o veure l'esdeveniment a Proton Calendar amb només un toc. ";
 
 /* Menu title */
 "Max Storage" = "Emmagatzematge màxim";
@@ -2154,7 +2154,7 @@
 "Application logs" = "Registres de l'aplicació";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "Nou!";
 
 /* Got it action */
 "Got it" = "D'acord";
@@ -2454,16 +2454,16 @@
 "Change mailbox password" = "Canviar contrasenya de la bústia de correu";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB storage";
+"15 GB storage" = "15 GB d'emmagatzematge";
 
 /* Description of a feature of a paid subscription */
-"%u email addresses" = "%u email addresses";
+"%u email addresses" = "%u adreces de correu electrònic";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Suport de domini de correu electrònic personalitzat";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"New Proton Mail desktop app" = "Nova aplicació d'escriptori de Proton Mail";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetria anònima";
@@ -2493,7 +2493,7 @@
 "Save %u%%" = "Estalvieu el %u%%";
 
 /* Error when trying to purchase an invalid product */
-"Invalid product ID: $@" = "Invalid product ID: $@";
+"Invalid product ID: $@" = "ID de producte no vàlid: $@";
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Purchase already in progress";

@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "読み込む";
 
+/* Title of an event with missing title */
+"(no title)" = "(no title)";
+
 /* As in: event organizer */
 "Organizer" = "主催者";
 
@@ -1961,8 +1964,8 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "until %@";
 
-/* " */
-"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ の %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
 "accepted" = "accepted";
@@ -1971,13 +1974,13 @@
 "declined" = "declined";
 
 /* Status in an email body sent with an invitation answer */
-"tentatively accepted" = "tentatively accepted";
+"tentatively accepted" = "仮承諾";
 
-/* " */
-"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ は %2@ への招待を%3@しました";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
-"You are invited to %@" = "You are invited to %@";
+"You are invited to %@" = "%@ に招待されています";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
 "LOCATION:\n%@" = "LOCATION:\n%@";
@@ -1989,13 +1992,10 @@
 "%@ was cancelled." = "%@ was cancelled.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
-"Re: Invitation for an event on %@" = "Re: Invitation for an event on %@";
+"Re: Invitation for an event on %@" = "Re: %@ の予定への招待";
 
-/* " */
-"Re: Invitation for an event starting on %@" = "Re: Invitation for an event starting on %@";
-
-/* Title of an event with missing title */
-"(no title)" = "(no title)";
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Re: %@ から始まる予定への招待";
 
 /* Occurring every day */
 "Daily" = "Daily";
@@ -2457,7 +2457,7 @@
 "15 GB storage" = "15 GB storage";
 
 /* Description of a feature of a paid subscription */
-"%u email addresses" = "%u email addresses";
+"%u email addresses" = "%u メールアドレス";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Custom email domain support";
