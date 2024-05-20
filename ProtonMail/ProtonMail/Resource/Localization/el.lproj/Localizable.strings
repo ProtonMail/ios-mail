@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "Φόρτωση";
 
+/* Title of an event with missing title */
+"(no title)" = "(χωρίς τίτλο)";
+
 /* As in: event organizer */
 "Organizer" = "Διοργανωτής";
 
@@ -1961,41 +1964,38 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "μέχρι %@";
 
-/* " */
-"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ στο %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "αποδέχτηκε";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "απορρίφθηκε";
 
 /* Status in an email body sent with an invitation answer */
-"tentatively accepted" = "tentatively accepted";
+"tentatively accepted" = "προσωρινά αποδεκτή";
 
-/* " */
-"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ έχει %2@ την πρόσκλησή σας στο %3@";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
-"You are invited to %@" = "You are invited to %@";
+"You are invited to %@" = "Είστε προσκεκλημένοι στο %@";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
-"LOCATION:\n%@" = "LOCATION:\n%@";
+"LOCATION:\n%@" = "ΤΟΠΟΘΕΣΙΑ:\n%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's notes */
-"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+"DESCRIPTION:\n%@" = "ΠΕΡΙΓΡΑΦΗ:\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ was cancelled.";
+"%@ was cancelled." = "Η %@ ακυρώθηκε.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
-"Re: Invitation for an event on %@" = "Re: Invitation for an event on %@";
+"Re: Invitation for an event on %@" = "Re: Πρόσκληση για μια εκδήλωση στις %@";
 
-/* " */
-"Re: Invitation for an event starting on %@" = "Re: Invitation for an event starting on %@";
-
-/* Title of an event with missing title */
-"(no title)" = "(no title)";
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Απ: Πρόσκληση για ένα γεγονός που αρχίζει στις %@";
 
 /* Occurring every day */
 "Daily" = "Καθημερινά";
@@ -2025,10 +2025,10 @@
 "last" = "τελευταίο";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Easily RSVP to events";
+"Easily RSVP to events" = "Εύκολη απάντηση σε εκδηλώσεις";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Τώρα μπορείτε να απαντήσετε σε μια πρόσκληση ή να προβάλετε την εκδήλωση στο Proton Calendar με ένα μόνο πάτημα. ";
 
 /* Menu title */
 "Max Storage" = "Μέγιστος Αποθηκευτικός χώρος";
@@ -2154,7 +2154,7 @@
 "Application logs" = "Αρχεία καταγραφών εφαρμογής";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "Νέο!";
 
 /* Got it action */
 "Got it" = "Το κατάλαβα";
@@ -2454,16 +2454,16 @@
 "Change mailbox password" = "Αλλαγή κωδικού γραμματοκιβωτίου";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB storage";
+"15 GB storage" = "15 GB αποθηκευτικός χώρος";
 
 /* Description of a feature of a paid subscription */
-"%u email addresses" = "%u email addresses";
+"%u email addresses" = "%u διευθύνσεις ηλεκτρονικού ταχυδρομείου";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Υποστήριξη προσαρμοσμένου τομέα ηλεκτρονικού ταχυδρομείου";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"New Proton Mail desktop app" = "Νέα Proton Mail εφαρμογή για υπολογιστές";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ανώνυμη τηλεμετρία";

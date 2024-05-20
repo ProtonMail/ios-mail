@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "Načítať";
 
+/* Title of an event with missing title */
+"(no title)" = "(bez názvu)";
+
 /* As in: event organizer */
 "Organizer" = "Organizátor";
 
@@ -1961,41 +1964,38 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "do %@";
 
-/* " */
-"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ o %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "prijaté";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "odmietnuté";
 
 /* Status in an email body sent with an invitation answer */
-"tentatively accepted" = "tentatively accepted";
+"tentatively accepted" = "predbežne prijal(-a)";
 
-/* " */
-"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ má %2@ vašu pozvánku na %3@";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
-"You are invited to %@" = "You are invited to %@";
+"You are invited to %@" = "Pozývame vás na %@";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
-"LOCATION:\n%@" = "LOCATION:\n%@";
+"LOCATION:\n%@" = "UMIESTNENIE:\n%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's notes */
-"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+"DESCRIPTION:\n%@" = "POPIS:\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ was cancelled.";
+"%@ was cancelled." = "Udalosť %@ bola zrušená.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
-"Re: Invitation for an event on %@" = "Re: Invitation for an event on %@";
+"Re: Invitation for an event on %@" = "Odp.: Pozvánka na udalosť dňa %@";
 
-/* " */
-"Re: Invitation for an event starting on %@" = "Re: Invitation for an event starting on %@";
-
-/* Title of an event with missing title */
-"(no title)" = "(no title)";
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Odp.: Pozvánka na udalosť, ktorá sa začína %@";
 
 /* Occurring every day */
 "Daily" = "Denne";
@@ -2025,10 +2025,10 @@
 "last" = "posledný";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Easily RSVP to events";
+"Easily RSVP to events" = "Jednoduché prihlasovanie na podujatia";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Teraz môžete reagovať na pozvánku alebo zobraziť udalosť v Proton Calendar jedným ťuknutím. ";
 
 /* Menu title */
 "Max Storage" = "Max. úložný priestor";
@@ -2154,7 +2154,7 @@
 "Application logs" = "Záznamy aplikácie";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "Nové!";
 
 /* Got it action */
 "Got it" = "Rozumiem";
@@ -2454,16 +2454,16 @@
 "Change mailbox password" = "Zmeniť heslo k poštovej schránke";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB storage";
+"15 GB storage" = "15 GB úložného priestoru";
 
 /* Description of a feature of a paid subscription */
-"%u email addresses" = "%u email addresses";
+"%u email addresses" = "%u emailových adries";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Podpora vlastnej emailovej domény";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"New Proton Mail desktop app" = "Nová desktopová aplikácia Proton Mail";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonymná telemetria";

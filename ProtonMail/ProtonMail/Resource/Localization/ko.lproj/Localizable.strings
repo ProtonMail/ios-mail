@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "불러오기";
 
+/* Title of an event with missing title */
+"(no title)" = "(제목 없음)";
+
 /* As in: event organizer */
 "Organizer" = "주최자";
 
@@ -1961,8 +1964,8 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "%@까지";
 
-/* " */
-"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ %2@%3@ 에";
 
 /* Status in an email body sent with an invitation answer */
 "accepted" = "수락함";
@@ -1973,8 +1976,8 @@
 /* Status in an email body sent with an invitation answer */
 "tentatively accepted" = "잠정적으로 수락함";
 
-/* " */
-"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@가 %2@의 %3@ 를";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
 "You are invited to %@" = "%@에 초대받았습니다.";
@@ -1991,11 +1994,8 @@
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
 "Re: Invitation for an event on %@" = "Re: %@에 있는 이벤트에 초대";
 
-/* " */
+/* Subject of an email sent with an invitation answer after answering */
 "Re: Invitation for an event starting on %@" = "Re: %@에 시작하는 이벤트에 초대";
-
-/* Title of an event with missing title */
-"(no title)" = "(제목 없음)";
 
 /* Occurring every day */
 "Daily" = "매일";

@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "ჩატვირთვა";
 
+/* Title of an event with missing title */
+"(no title)" = "(no title)";
+
 /* As in: event organizer */
 "Organizer" = "ორგანიზატორი";
 
@@ -1961,8 +1964,8 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "%@-მდე";
 
-/* " */
-"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ %2@%3@-ზე";
 
 /* Status in an email body sent with an invitation answer */
 "accepted" = "accepted";
@@ -1971,13 +1974,13 @@
 "declined" = "declined";
 
 /* Status in an email body sent with an invitation answer */
-"tentatively accepted" = "tentatively accepted";
+"tentatively accepted" = "ფრთხილად დაეთანხმა";
 
-/* " */
-"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@-მა %2@ თქვენი მოსაწვევი %3@-ზე";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
-"You are invited to %@" = "You are invited to %@";
+"You are invited to %@" = "მიწვეული ბრძანდებით %@-ზე";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
 "LOCATION:\n%@" = "LOCATION:\n%@";
@@ -1989,13 +1992,10 @@
 "%@ was cancelled." = "%@ was cancelled.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
-"Re: Invitation for an event on %@" = "Re: Invitation for an event on %@";
+"Re: Invitation for an event on %@" = "პას: მოსაწვევი მოვლენაზე, რომელიც იწყება %@-ზე";
 
-/* " */
-"Re: Invitation for an event starting on %@" = "Re: Invitation for an event starting on %@";
-
-/* Title of an event with missing title */
-"(no title)" = "(no title)";
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "პასუხი: მოსაწვევი მოვლენაზე, რომელიც %@-ზე იწყება";
 
 /* Occurring every day */
 "Daily" = "ყოველდღიურად";
@@ -2457,7 +2457,7 @@
 "15 GB storage" = "15 GB storage";
 
 /* Description of a feature of a paid subscription */
-"%u email addresses" = "%u email addresses";
+"%u email addresses" = "%u ელფოსტის მისამართი";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "თქვენი ელფოსტის დომენების მხარდაჭერა";

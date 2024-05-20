@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "Załaduj";
 
+/* Title of an event with missing title */
+"(no title)" = "(brak tytułu)";
+
 /* As in: event organizer */
 "Organizer" = "Organizator";
 
@@ -1961,41 +1964,38 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "do %@";
 
-/* " */
-"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ o godzinie %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "zaakceptował";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "odrzucił";
 
 /* Status in an email body sent with an invitation answer */
-"tentatively accepted" = "tentatively accepted";
+"tentatively accepted" = "wstępnie zaakceptował";
 
-/* " */
-"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "Uczestnik %1@ %2@ zaproszenie na wydarzenie %3@";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
-"You are invited to %@" = "You are invited to %@";
+"You are invited to %@" = "Zaproszenie na wydarzenie %@";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
-"LOCATION:\n%@" = "LOCATION:\n%@";
+"LOCATION:\n%@" = "Lokalizacja:\n%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's notes */
-"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+"DESCRIPTION:\n%@" = "Opis:\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ was cancelled.";
+"%@ was cancelled." = "Wydarzenie %@ zostało anulowane.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
-"Re: Invitation for an event on %@" = "Re: Invitation for an event on %@";
+"Re: Invitation for an event on %@" = "Re: Zaproszenie na wydarzenie w dniu: %@";
 
-/* " */
-"Re: Invitation for an event starting on %@" = "Re: Invitation for an event starting on %@";
-
-/* Title of an event with missing title */
-"(no title)" = "(no title)";
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Re: Zaproszenie na wydarzenie rozpoczynające się w dniu: %@";
 
 /* Occurring every day */
 "Daily" = "Codziennie";
@@ -2025,10 +2025,10 @@
 "last" = "ostatni";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Easily RSVP to events";
+"Easily RSVP to events" = "Łatwe odpowiadanie na zaproszenia";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Odpowiadaj na zaproszenia lub wyświetlaj wydarzenia w Proton Calendar jednym kliknięciem.";
 
 /* Menu title */
 "Max Storage" = "Maksymalna przestrzeń dyskowa";
@@ -2154,7 +2154,7 @@
 "Application logs" = "Logi aplikacji";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "Nowość!";
 
 /* Got it action */
 "Got it" = "Ok";

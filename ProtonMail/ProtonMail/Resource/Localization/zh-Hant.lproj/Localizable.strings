@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "載入";
 
+/* Title of an event with missing title */
+"(no title)" = "(無標題)";
+
 /* As in: event organizer */
 "Organizer" = "召集人";
 
@@ -1961,41 +1964,38 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "直到 %@ 為止";
 
-/* " */
-"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@，於 %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "已接受";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "已拒絕";
 
 /* Status in an email body sent with an invitation answer */
-"tentatively accepted" = "tentatively accepted";
+"tentatively accepted" = "暫訂參與";
 
-/* " */
-"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ 中 %2@ 您的邀請出席 %3@";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
-"You are invited to %@" = "You are invited to %@";
+"You are invited to %@" = "你被邀請至%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
-"LOCATION:\n%@" = "LOCATION:\n%@";
+"LOCATION:\n%@" = "地點:\n%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's notes */
-"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+"DESCRIPTION:\n%@" = "說明:\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ was cancelled.";
+"%@ was cancelled." = "%@ 已被取消。";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
-"Re: Invitation for an event on %@" = "Re: Invitation for an event on %@";
+"Re: Invitation for an event on %@" = "回覆：誠摯邀請您參與訂於 %@ 的活動";
 
-/* " */
-"Re: Invitation for an event starting on %@" = "Re: Invitation for an event starting on %@";
-
-/* Title of an event with missing title */
-"(no title)" = "(no title)";
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "回覆：誠摯邀請您參與 %@ 開展的活動";
 
 /* Occurring every day */
 "Daily" = "每天";
@@ -2154,7 +2154,7 @@
 "Application logs" = "應用程式紀錄";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "新版!";
 
 /* Got it action */
 "Got it" = "了解";
@@ -2454,13 +2454,13 @@
 "Change mailbox password" = "變更郵箱密碼";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB storage";
+"15 GB storage" = "15 GB 儲存空間";
 
 /* Description of a feature of a paid subscription */
-"%u email addresses" = "%u email addresses";
+"%u email addresses" = "%u電子郵件位址";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain support" = "Custom email domain support";
+"Custom email domain support" = "支援自訂電子郵件網域";
 
 /* Description of a feature of a paid subscription */
 "New Proton Mail desktop app" = "New Proton Mail desktop app";
