@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "Naloži";
 
+/* Title of an event with missing title */
+"(no title)" = "(no title)";
+
 /* As in: event organizer */
 "Organizer" = "Organizator";
 
@@ -1961,8 +1964,8 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "until %@";
 
-/* " */
-"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ ob %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
 "accepted" = "accepted";
@@ -1971,13 +1974,13 @@
 "declined" = "declined";
 
 /* Status in an email body sent with an invitation answer */
-"tentatively accepted" = "tentatively accepted";
+"tentatively accepted" = "pogojno sprejeto";
 
-/* " */
-"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ ima %2@ vaše povabilo na %3@";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
-"You are invited to %@" = "You are invited to %@";
+"You are invited to %@" = "Povabljeni ste na %@";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
 "LOCATION:\n%@" = "LOCATION:\n%@";
@@ -1989,13 +1992,10 @@
 "%@ was cancelled." = "%@ was cancelled.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
-"Re: Invitation for an event on %@" = "Re: Invitation for an event on %@";
+"Re: Invitation for an event on %@" = "Re: Povabilo na dogodek %@";
 
-/* " */
-"Re: Invitation for an event starting on %@" = "Re: Invitation for an event starting on %@";
-
-/* Title of an event with missing title */
-"(no title)" = "(no title)";
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Re: Povabilo na dogodek s pričetkom %@";
 
 /* Occurring every day */
 "Daily" = "Daily";
@@ -2454,16 +2454,16 @@
 "Change mailbox password" = "Spremeni geslo poštnega nabiralnika";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB storage";
+"15 GB storage" = "15 GB prostora za shranjevanje";
 
 /* Description of a feature of a paid subscription */
-"%u email addresses" = "%u email addresses";
+"%u email addresses" = "%u e-poštnih naslovov";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Podpora za e-poštno domeno po meri";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"New Proton Mail desktop app" = "Nova namizna aplikacija Proton Mail";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonimna telemetrija";

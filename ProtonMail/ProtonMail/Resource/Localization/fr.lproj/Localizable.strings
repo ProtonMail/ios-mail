@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "Charger";
 
+/* Title of an event with missing title */
+"(no title)" = "(sans titre)";
+
 /* As in: event organizer */
 "Organizer" = "Organisateur";
 
@@ -1961,7 +1964,7 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "jusqu'au %@";
 
-/* " */
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
 "%1@ at %2@ %3@" = "%1@ à %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
@@ -1973,7 +1976,7 @@
 /* Status in an email body sent with an invitation answer */
 "tentatively accepted" = "accepté provisoirement";
 
-/* " */
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
 "%1@ has %2@ your invitation to %3@" = "%1@ a %2@ votre invitation à %3@.";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
@@ -1991,11 +1994,8 @@
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
 "Re: Invitation for an event on %@" = "Re : Invitation à un événement le %@";
 
-/* " */
+/* Subject of an email sent with an invitation answer after answering */
 "Re: Invitation for an event starting on %@" = "Re : Invitation à un événement commençant le %@";
-
-/* Title of an event with missing title */
-"(no title)" = "(sans titre)";
 
 /* Occurring every day */
 "Daily" = "Chaque jour";

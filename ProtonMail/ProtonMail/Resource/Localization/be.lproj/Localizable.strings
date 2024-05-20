@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "Загрузіць";
 
+/* Title of an event with missing title */
+"(no title)" = "(без загалоўка)";
+
 /* As in: event organizer */
 "Organizer" = "Арганізатар";
 
@@ -1961,7 +1964,7 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "да %@";
 
-/* " */
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
 "%1@ at %2@ %3@" = "%1@ у %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
@@ -1973,7 +1976,7 @@
 /* Status in an email body sent with an invitation answer */
 "tentatively accepted" = "умоўна прынята";
 
-/* " */
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
 "%1@ has %2@ your invitation to %3@" = "%1@ %2@ ваша запрашэнне на %3@";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
@@ -1991,11 +1994,8 @@
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
 "Re: Invitation for an event on %@" = "Re: Запрашэнне на падзею ў %@";
 
-/* " */
+/* Subject of an email sent with an invitation answer after answering */
 "Re: Invitation for an event starting on %@" = "Re: Запрашэнне на падзею, якая пачынаецца ў %@";
-
-/* Title of an event with missing title */
-"(no title)" = "(без загалоўка)";
 
 /* Occurring every day */
 "Daily" = "Штодзень";

@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "Muat";
 
+/* Title of an event with missing title */
+"(no title)" = "(tanpa judul)";
+
 /* As in: event organizer */
 "Organizer" = "Penyelenggara";
 
@@ -1961,41 +1964,38 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "sampai %@";
 
-/* " */
-"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ pada %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "Diterima";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "ditolak";
 
 /* Status in an email body sent with an invitation answer */
-"tentatively accepted" = "tentatively accepted";
+"tentatively accepted" = "diterima secara tentatif";
 
-/* " */
-"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ telah %2@ undangan Anda untuk acara %3@";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
-"You are invited to %@" = "You are invited to %@";
+"You are invited to %@" = "Anda diundang ke %@";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
-"LOCATION:\n%@" = "LOCATION:\n%@";
+"LOCATION:\n%@" = "TEMPAT:\n%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's notes */
-"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+"DESCRIPTION:\n%@" = "DESKRIPSI:\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ was cancelled.";
+"%@ was cancelled." = "%@ telah dibatalkan.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
 "Re: Invitation for an event on %@" = "Ttg: Undangan untuk acara pada hari %@";
 
-/* " */
+/* Subject of an email sent with an invitation answer after answering */
 "Re: Invitation for an event starting on %@" = "Ttg: Undangan untuk acara yang akan dimulai pada %@";
-
-/* Title of an event with missing title */
-"(no title)" = "(no title)";
 
 /* Occurring every day */
 "Daily" = "Harian";
@@ -2154,7 +2154,7 @@
 "Application logs" = "Log aplikasi";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "Baru";
 
 /* Got it action */
 "Got it" = "Dimengerti";

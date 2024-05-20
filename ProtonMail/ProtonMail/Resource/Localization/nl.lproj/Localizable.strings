@@ -1910,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "Laden";
 
+/* Title of an event with missing title */
+"(no title)" = "(geen titel)";
+
 /* As in: event organizer */
 "Organizer" = "Organisator";
 
@@ -1961,41 +1964,38 @@
 /* As in: Until Sep 27, 2025 */
 "until %@" = "tot %@";
 
-/* " */
-"%1@ at %2@ %3@" = "%1@ at %2@ %3@";
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ om %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "geaccepteerd";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "geweigerd";
 
 /* Status in an email body sent with an invitation answer */
-"tentatively accepted" = "tentatively accepted";
+"tentatively accepted" = "voorlopig geaccepteerd";
 
-/* " */
-"%1@ has %2@ your invitation to %3@" = "%1@ has %2@ your invitation to %3@";
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ heeft uw uitnodiging aan%2@ %3@.";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
-"You are invited to %@" = "You are invited to %@";
+"You are invited to %@" = "U bent uitgenodigd voor %@.";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
-"LOCATION:\n%@" = "LOCATION:\n%@";
+"LOCATION:\n%@" = "LOCATIE:\n%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's notes */
-"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+"DESCRIPTION:\n%@" = "BESCHRIJVING:\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ was cancelled.";
+"%@ was cancelled." = "%@ werd geannuleerd.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
-"Re: Invitation for an event on %@" = "Re: Invitation for an event on %@";
+"Re: Invitation for an event on %@" = "Re: Uitnodiging voor een afspraak op %@";
 
-/* " */
-"Re: Invitation for an event starting on %@" = "Re: Invitation for an event starting on %@";
-
-/* Title of an event with missing title */
-"(no title)" = "(no title)";
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Re: Uitnodiging voor een afspraak die begint op %@";
 
 /* Occurring every day */
 "Daily" = "Dagelijks";
@@ -2025,10 +2025,10 @@
 "last" = "laatste";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Easily RSVP to events";
+"Easily RSVP to events" = "Eenvoudig RSVP'en voor gebeurtenissen";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "U kunt nu reageren op een uitnodiging of de gebeurtenis bekijken in Proton Calendar met één tik.";
 
 /* Menu title */
 "Max Storage" = "Maximale Opslagruimte";
@@ -2154,7 +2154,7 @@
 "Application logs" = "Applicatielogboek";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "Nieuw!";
 
 /* Got it action */
 "Got it" = "Begrepen";
@@ -2454,16 +2454,16 @@
 "Change mailbox password" = "Mailboxwachtwoord wijzigen";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB storage";
+"15 GB storage" = "15 GB opslagruimte";
 
 /* Description of a feature of a paid subscription */
-"%u email addresses" = "%u email addresses";
+"%u email addresses" = "%u e-mailadressen";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Gepersonaliseerde e-maildomein ondersteuning";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"New Proton Mail desktop app" = "Nieuwe Proton Mail desktop app";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonieme telemetrie";
@@ -2493,7 +2493,7 @@
 "Save %u%%" = "Bespaar %u%%";
 
 /* Error when trying to purchase an invalid product */
-"Invalid product ID: $@" = "Foutief product ID: $@";
+"Invalid product ID: $@" = "Foutief product-ID: $@";
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Aankoop wordt al uitgevoerd";
