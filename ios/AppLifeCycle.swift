@@ -18,7 +18,7 @@
 import SwiftUI
 import proton_mail_uniffi
 
-final class AppLifeCycle: NSObject {
+final class AppLifeCycle: NSObject, @unchecked Sendable {
     static let shared = AppLifeCycle()
 
     private var applicationServices = ApplicationServices()

@@ -4,7 +4,7 @@ options:
   dead_code_stripping: true
   generateEmptyDirectories: true
   deploymentTarget:
-    iOS: "17.0"
+    iOS: "17.2"
   postGenCommand:
     # Copy the File header into the generated xcodeproj bundle.
     cp ./scripts/templates/IDETemplateMacros.plist ProtonMail.xcodeproj/xcshareddata/
@@ -30,7 +30,7 @@ targets:
     platform: iOS
     supportedDestinations:
       - iOS
-    deploymentTarget: 17.0
+    deploymentTarget: 17.2
     scheme: {}
     attributes:
       ProvisioningStyle: Manual    

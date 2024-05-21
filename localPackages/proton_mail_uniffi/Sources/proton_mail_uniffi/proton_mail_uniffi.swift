@@ -954,24 +954,19 @@ open class MailSession:
 
     
     /**
-     * Create a new mail context:
-     * * `session_dir`: Directory where the session db should be stored.
-     * * `user_dri`: Directory where the user db should be stored.
-     * * `log_dir:`: Directory where the log file should be stored.
-     * * `log_debug`: Whether to enable debug and trace logs
-     * * `api_env_config`: The API environment configuration.
-     * * `key_chain`: `KeyChain` implementation
-     * * `network_callback`: Optional network status changed callback
+     * Create a new mail session.
+     *
+     * # Params
+     * * `params`: See [`MailSessionParams`] for parameter details.
+     * * `key_chain`: Keychain implementation.
+     * * `network_callback`: Optional network status changes callback.
+
      */
-public static func create(sessionDir: String, userDir: String, logDir: String, logDebug: Bool, keyChain: OsKeyChain, apiEnvConfig: ApiEnvConfig?, networkCallback: NetworkStatusChanged?)throws  -> MailSession {
+public static func create(params: MailSessionParams, keyChain: OsKeyChain, networkCallback: NetworkStatusChanged?)throws  -> MailSession {
     return try  FfiConverterTypeMailSession.lift(try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
     uniffi_proton_mail_uniffi_fn_constructor_mailsession_create(
-        FfiConverterString.lower(sessionDir),
-        FfiConverterString.lower(userDir),
-        FfiConverterString.lower(logDir),
-        FfiConverterBool.lower(logDebug),
+        FfiConverterTypeMailSessionParams.lower(params),
         FfiConverterCallbackInterfaceOsKeyChain.lower(keyChain),
-        FfiConverterOptionTypeAPIEnvConfig.lower(apiEnvConfig),
         FfiConverterOptionCallbackInterfaceNetworkStatusChanged.lower(networkCallback),$0
     )
 })
@@ -1715,6 +1710,18 @@ public protocol MailboxProtocol : AnyObject {
     func markConversationsUnread(ids: [UInt64]) throws 
     
     /**
+     * Retrieve and decrypt the body of message with `id`.
+     *
+     * If the message body has never been fetched before, it will be retrieved from the
+     * servers.
+     *
+     * # Errors
+     * Returns error if the network request, the database query, reading/writing
+     * the body to the cache or decrypting the body failed.
+     */
+    func messageBody(id: UInt64) async throws  -> String
+    
+    /**
      * Move the given conversations from the current mailbox.
      *
      * Move the conversations with `ids` from the current mailbox to the label with id `label_id`.
@@ -2005,6 +2012,33 @@ open func markConversationsUnread(ids: [UInt64])throws  {try rustCallWithError(F
         FfiConverterSequenceUInt64.lower(ids),$0
     )
 }
+}
+    
+    /**
+     * Retrieve and decrypt the body of message with `id`.
+     *
+     * If the message body has never been fetched before, it will be retrieved from the
+     * servers.
+     *
+     * # Errors
+     * Returns error if the network request, the database query, reading/writing
+     * the body to the cache or decrypting the body failed.
+     */
+open func messageBody(id: UInt64)async throws  -> String {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_method_mailbox_message_body(
+                    self.uniffiClonePointer(),
+                    FfiConverterUInt64.lower(id)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
+            liftFunc: FfiConverterString.lift,
+            errorHandler: FfiConverterTypeMailboxError.lift
+        )
 }
     
     /**
@@ -3091,6 +3125,134 @@ public func FfiConverterTypeLocateBlockquoteResult_lower(_ value: LocateBlockquo
 }
 
 
+/**
+ * Configuration parameters for the [`MailSession`]
+ */
+public struct MailSessionParams {
+    /**
+     * Directory where the session database should be stored.
+     */
+    public var sessionDir: String
+    /**
+     * Directory where the user databases should be stored.
+     */
+    public var userDir: String
+    /**
+     * Directory where the mail cache should be stored.
+     */
+    public var mailCacheDir: String
+    /**
+     * Directory where the logs should be stored.
+     */
+    public var logDir: String
+    /**
+     * Whether to enable debug and trace logs.
+     */
+    public var logDebug: Bool
+    /**
+     * API Environment configuration.
+     */
+    public var apiEnvConfig: ApiEnvConfig?
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(
+        /**
+         * Directory where the session database should be stored.
+         */sessionDir: String, 
+        /**
+         * Directory where the user databases should be stored.
+         */userDir: String, 
+        /**
+         * Directory where the mail cache should be stored.
+         */mailCacheDir: String, 
+        /**
+         * Directory where the logs should be stored.
+         */logDir: String, 
+        /**
+         * Whether to enable debug and trace logs.
+         */logDebug: Bool, 
+        /**
+         * API Environment configuration.
+         */apiEnvConfig: ApiEnvConfig?) {
+        self.sessionDir = sessionDir
+        self.userDir = userDir
+        self.mailCacheDir = mailCacheDir
+        self.logDir = logDir
+        self.logDebug = logDebug
+        self.apiEnvConfig = apiEnvConfig
+    }
+}
+
+
+extension MailSessionParams: Sendable {} 
+extension MailSessionParams: Equatable, Hashable {
+    public static func ==(lhs: MailSessionParams, rhs: MailSessionParams) -> Bool {
+        if lhs.sessionDir != rhs.sessionDir {
+            return false
+        }
+        if lhs.userDir != rhs.userDir {
+            return false
+        }
+        if lhs.mailCacheDir != rhs.mailCacheDir {
+            return false
+        }
+        if lhs.logDir != rhs.logDir {
+            return false
+        }
+        if lhs.logDebug != rhs.logDebug {
+            return false
+        }
+        if lhs.apiEnvConfig != rhs.apiEnvConfig {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(sessionDir)
+        hasher.combine(userDir)
+        hasher.combine(mailCacheDir)
+        hasher.combine(logDir)
+        hasher.combine(logDebug)
+        hasher.combine(apiEnvConfig)
+    }
+}
+
+
+public struct FfiConverterTypeMailSessionParams: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> MailSessionParams {
+        return
+            try MailSessionParams(
+                sessionDir: FfiConverterString.read(from: &buf), 
+                userDir: FfiConverterString.read(from: &buf), 
+                mailCacheDir: FfiConverterString.read(from: &buf), 
+                logDir: FfiConverterString.read(from: &buf), 
+                logDebug: FfiConverterBool.read(from: &buf), 
+                apiEnvConfig: FfiConverterOptionTypeAPIEnvConfig.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: MailSessionParams, into buf: inout [UInt8]) {
+        FfiConverterString.write(value.sessionDir, into: &buf)
+        FfiConverterString.write(value.userDir, into: &buf)
+        FfiConverterString.write(value.mailCacheDir, into: &buf)
+        FfiConverterString.write(value.logDir, into: &buf)
+        FfiConverterBool.write(value.logDebug, into: &buf)
+        FfiConverterOptionTypeAPIEnvConfig.write(value.apiEnvConfig, into: &buf)
+    }
+}
+
+
+public func FfiConverterTypeMailSessionParams_lift(_ buf: RustBuffer) throws -> MailSessionParams {
+    return try FfiConverterTypeMailSessionParams.lift(buf)
+}
+
+public func FfiConverterTypeMailSessionParams_lower(_ value: MailSessionParams) -> RustBuffer {
+    return FfiConverterTypeMailSessionParams.lower(value)
+}
+
+
 public enum EventLoopError {
 
     
@@ -3614,6 +3776,8 @@ public enum MailboxError {
     
     case ConversationError(message: String)
     
+    case MessageDoesNotHaveRemoteId(message: String)
+    
     case ApiError(message: String)
     
     case InvalidViewMode(message: String)
@@ -3625,6 +3789,8 @@ public enum MailboxError {
     case AttachmentDecryption(message: String)
     
     case Db(message: String)
+    
+    case MessageDecryption(message: String)
     
     case Other(message: String)
     
@@ -3677,31 +3843,39 @@ public struct FfiConverterTypeMailboxError: FfiConverterRustBuffer {
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 10: return .ApiError(
+        case 10: return .MessageDoesNotHaveRemoteId(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 11: return .InvalidViewMode(
+        case 11: return .ApiError(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 12: return .AddressDomainLogoError(
+        case 12: return .InvalidViewMode(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 13: return .AttachmentNotFound(
+        case 13: return .AddressDomainLogoError(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 14: return .AttachmentDecryption(
+        case 14: return .AttachmentNotFound(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 15: return .Db(
+        case 15: return .AttachmentDecryption(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 16: return .Other(
+        case 16: return .Db(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 17: return .MessageDecryption(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 18: return .Other(
             message: try FfiConverterString.read(from: &buf)
         )
         
@@ -3734,20 +3908,24 @@ public struct FfiConverterTypeMailboxError: FfiConverterRustBuffer {
             writeInt(&buf, Int32(8))
         case .ConversationError(_ /* message is ignored*/):
             writeInt(&buf, Int32(9))
-        case .ApiError(_ /* message is ignored*/):
+        case .MessageDoesNotHaveRemoteId(_ /* message is ignored*/):
             writeInt(&buf, Int32(10))
-        case .InvalidViewMode(_ /* message is ignored*/):
+        case .ApiError(_ /* message is ignored*/):
             writeInt(&buf, Int32(11))
-        case .AddressDomainLogoError(_ /* message is ignored*/):
+        case .InvalidViewMode(_ /* message is ignored*/):
             writeInt(&buf, Int32(12))
-        case .AttachmentNotFound(_ /* message is ignored*/):
+        case .AddressDomainLogoError(_ /* message is ignored*/):
             writeInt(&buf, Int32(13))
-        case .AttachmentDecryption(_ /* message is ignored*/):
+        case .AttachmentNotFound(_ /* message is ignored*/):
             writeInt(&buf, Int32(14))
-        case .Db(_ /* message is ignored*/):
+        case .AttachmentDecryption(_ /* message is ignored*/):
             writeInt(&buf, Int32(15))
-        case .Other(_ /* message is ignored*/):
+        case .Db(_ /* message is ignored*/):
             writeInt(&buf, Int32(16))
+        case .MessageDecryption(_ /* message is ignored*/):
+            writeInt(&buf, Int32(17))
+        case .Other(_ /* message is ignored*/):
+            writeInt(&buf, Int32(18))
 
         
         }
@@ -5256,6 +5434,9 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_mark_conversations_unread() != 47243) {
         return InitializationResult.apiChecksumMismatch
     }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_message_body() != 9151) {
+        return InitializationResult.apiChecksumMismatch
+    }
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_move_conversations() != 2511) {
         return InitializationResult.apiChecksumMismatch
     }
@@ -5325,7 +5506,7 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_storedsession_user_id() != 38174) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_constructor_mailsession_create() != 60183) {
+    if (uniffi_proton_mail_uniffi_checksum_constructor_mailsession_create() != 10287) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_constructor_mailusersettings_new() != 48539) {

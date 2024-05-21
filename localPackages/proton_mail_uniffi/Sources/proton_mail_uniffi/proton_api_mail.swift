@@ -1253,13 +1253,15 @@ public struct UniffiGenCustomTypes {
     public var cid: ConversationId
     public var mid: MessageId
     public var eid: ExternalId
+    public var mimeType: MimeType
 
     // Default memberwise initializers are never public by default, so we
     // declare one manually.
-    public init(cid: ConversationId, mid: MessageId, eid: ExternalId) {
+    public init(cid: ConversationId, mid: MessageId, eid: ExternalId, mimeType: MimeType) {
         self.cid = cid
         self.mid = mid
         self.eid = eid
+        self.mimeType = mimeType
     }
 }
 
@@ -1276,6 +1278,9 @@ extension UniffiGenCustomTypes: Equatable, Hashable {
         if lhs.eid != rhs.eid {
             return false
         }
+        if lhs.mimeType != rhs.mimeType {
+            return false
+        }
         return true
     }
 
@@ -1283,6 +1288,7 @@ extension UniffiGenCustomTypes: Equatable, Hashable {
         hasher.combine(cid)
         hasher.combine(mid)
         hasher.combine(eid)
+        hasher.combine(mimeType)
     }
 }
 
@@ -1293,7 +1299,8 @@ public struct FfiConverterTypeUniffiGenCustomTypes: FfiConverterRustBuffer {
             try UniffiGenCustomTypes(
                 cid: FfiConverterTypeConversationId.read(from: &buf), 
                 mid: FfiConverterTypeMessageId.read(from: &buf), 
-                eid: FfiConverterTypeExternalId.read(from: &buf)
+                eid: FfiConverterTypeExternalId.read(from: &buf), 
+                mimeType: FfiConverterTypeMimeType.read(from: &buf)
         )
     }
 
@@ -1301,6 +1308,7 @@ public struct FfiConverterTypeUniffiGenCustomTypes: FfiConverterRustBuffer {
         FfiConverterTypeConversationId.write(value.cid, into: &buf)
         FfiConverterTypeMessageId.write(value.mid, into: &buf)
         FfiConverterTypeExternalId.write(value.eid, into: &buf)
+        FfiConverterTypeMimeType.write(value.mimeType, into: &buf)
     }
 }
 
@@ -2212,6 +2220,82 @@ public func FfiConverterTypeMailSettingsViewMode_lower(_ value: MailSettingsView
 
 extension MailSettingsViewMode: Sendable {} 
 extension MailSettingsViewMode: Equatable, Hashable {}
+
+
+
+// Note that we don't yet support `indirect` for enums.
+// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
+
+public enum MimeType {
+    
+    case textPlain
+    case textHtml
+    case multipartMixed
+    case multipartRelated
+    case messageRfc822
+}
+
+
+public struct FfiConverterTypeMimeType: FfiConverterRustBuffer {
+    typealias SwiftType = MimeType
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> MimeType {
+        let variant: Int32 = try readInt(&buf)
+        switch variant {
+        
+        case 1: return .textPlain
+        
+        case 2: return .textHtml
+        
+        case 3: return .multipartMixed
+        
+        case 4: return .multipartRelated
+        
+        case 5: return .messageRfc822
+        
+        default: throw UniffiInternalError.unexpectedEnumCase
+        }
+    }
+
+    public static func write(_ value: MimeType, into buf: inout [UInt8]) {
+        switch value {
+        
+        
+        case .textPlain:
+            writeInt(&buf, Int32(1))
+        
+        
+        case .textHtml:
+            writeInt(&buf, Int32(2))
+        
+        
+        case .multipartMixed:
+            writeInt(&buf, Int32(3))
+        
+        
+        case .multipartRelated:
+            writeInt(&buf, Int32(4))
+        
+        
+        case .messageRfc822:
+            writeInt(&buf, Int32(5))
+        
+        }
+    }
+}
+
+
+public func FfiConverterTypeMimeType_lift(_ buf: RustBuffer) throws -> MimeType {
+    return try FfiConverterTypeMimeType.lift(buf)
+}
+
+public func FfiConverterTypeMimeType_lower(_ value: MimeType) -> RustBuffer {
+    return FfiConverterTypeMimeType.lower(value)
+}
+
+
+extension MimeType: Sendable {} 
+extension MimeType: Equatable, Hashable {}
 
 
 

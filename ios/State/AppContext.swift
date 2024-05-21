@@ -58,14 +58,19 @@ final class AppContext: Sendable, ObservableObject {
         AppLogger.logTemporarily(message: "path: \(cacheFolder)")
         
         let apiEnvConfig = dependencies.apiEnvConfigService.getConfiguration()
-        
-        _mailSession = try MailSession.create(
+
+        let params = MailSessionParams(
             sessionDir: applicationSupportPath,
             userDir: applicationSupportPath,
+            mailCacheDir: cachePath,
             logDir: cachePath,
             logDebug: true,
+            apiEnvConfig: apiEnvConfig
+        )
+
+        _mailSession = try MailSession.create(
+            params: params,
             keyChain: dependencies.keychain,
-            apiEnvConfig: apiEnvConfig,
             networkCallback: dependencies.networkStatus
         )
 
