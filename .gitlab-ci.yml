@@ -290,11 +290,6 @@ report:testmo:sanity:
     - if: '$CI_PIPELINE_SOURCE != "schedule"'
       when: manual
       allow_failure: true
-  artifacts:
-    paths:
-      - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
-    name: "iOS mail app builds"
-    expire_in: 90 days
   script:
     - brew bundle --force
     - cd ProtonMail
@@ -312,8 +307,6 @@ report:testmo:sanity:
 testflight:alpha:
   extends: .distribute
   variables:
-    GIT_STRATEGY: clone
-    GIT_DEPTH: "0"
     IS_QA_BUILD: "false"
 
 firebase:adhoc:qa:
