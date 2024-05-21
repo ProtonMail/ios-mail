@@ -38,6 +38,5 @@ class CacheStatusStub: LockCacheStatus {
 
     var isAppKeyEnabled: Bool = true
 
-    var isAppLockedAndAppKeyDisabled: Bool = false
     var isAppLockedAndAppKeyEnabled: Bool = false
 }
