@@ -281,7 +281,7 @@ report:testmo:sanity:
   variables:
     NAME: "SanityTests"
 
-.distribute:
+.testflight:
   extends: .macos_job
   dependencies: []
   needs: []
@@ -294,22 +294,17 @@ report:testmo:sanity:
     - brew bundle --force
     - cd ProtonMail
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
-    - |
-        if [ "$IS_QA_BUILD" = "true" ] ; then
-          bundle exec fastlane ios adhoc
-        else
-          bundle exec fastlane ios build
-          ./fastlane/add_git_tag.sh
-        fi
+    - bundle exec fastlane distribute scheme:"$SCHEME"
+    - ./fastlane/add_git_tag.sh
   tags:
     - iOS_RELEASE_BUILD
 
-testflight:alpha:
-  extends: .distribute
+testflight:qa:
+  extends: .testflight
   variables:
-    IS_QA_BUILD: "false"
+    SCHEME: "Adhoc"
 
-firebase:adhoc:qa:
-  extends: .distribute
+testflight:release:
+  extends: .testflight
   variables:
-    IS_QA_BUILD: "true"
+    SCHEME: "ProtonMail"
