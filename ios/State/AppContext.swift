@@ -70,7 +70,10 @@ final class AppContext: Sendable, ObservableObject {
         )
 
         if let storedSession = try mailSession.storedSessions().first {
-            activeUserSession = try mailSession.userContextFromSession(session: storedSession, cb: SessionDelegate.shared)
+            activeUserSession = try mailSession.userContextFromSession(
+                session: storedSession,
+                sessionCb: SessionDelegate.shared
+            )
         }
     }
 }

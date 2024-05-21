@@ -25,7 +25,6 @@ struct ProtonMail: App {
     // declaration of state objects
     private let appUIState = AppUIState()
     private let userSettings = UserSettings(
-        mailboxViewMode: .conversation,
         mailboxActions: .init()
     )
     private let customLabelModel = CustomLabelModel()
@@ -66,18 +65,10 @@ struct Root: View {
     }
 
     var body: some View {
-        if !appContext.hasActiveUser {
-            SignIn()
+        if let activerUser = appContext.activeUserSession {
+            AuthenticatedScreens(appRoute: appRoute, customLabelModel: customLabelModel, userSession: activerUser)
         } else {
-            ZStack {
-                switch appRoute.route {
-                case .mailbox, .appLaunching:
-                    MailboxScreen(customLabelModel: customLabelModel)
-                case .settings:
-                    SettingsScreen()
-                }
-                SidebarScreen(screenModel: .init(appRoute: appRoute))
-            }
+            SignIn()
         }
     }
 }

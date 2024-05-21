@@ -56,6 +56,7 @@ final class SenderImageAPIDataSource: Sendable, SenderImageDataSource {
             }
             guard let data = try await userSession
                 .imageForSender(
+                    mailSettings: .init(session: userSession, callback: nil),
                     address: params.address,
                     bimiSelector: params.bimiSelector,
                     displaySenderImage: params.displaySenderImage,

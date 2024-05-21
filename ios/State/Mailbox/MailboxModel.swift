@@ -34,6 +34,7 @@ final class MailboxModel: ObservableObject {
 
     private let pageSize: Int64 = 50
 
+    private let mailSettings: PMMailSettingsProtocol
     private var mailbox: Mailbox?
     private var viewMode: MailSettingsViewMode {
         mailbox?.viewMode() ?? .conversations
@@ -43,17 +44,44 @@ final class MailboxModel: ObservableObject {
     private let dependencies: Dependencies
     private var cancellables = Set<AnyCancellable>()
 
-    init(appRoute: AppRouteState = .shared, state: State = .loading, dependencies: Dependencies = .init()) {
+    init(
+        state: State = .loading,
+        mailSettings: PMMailSettingsProtocol,
+        appRoute: AppRouteState = .shared,
+        dependencies: Dependencies = .init()
+    ) {
+        AppLogger.log(message: "MailboxModel init", category: .mailbox)
+        self.state = state
+        self.mailSettings = mailSettings
         self.appRoute = appRoute
         self.selectionMode = SelectionModeState()
-        self.state = state
         self.dependencies = dependencies
 
+        setUpBindings()
+    }
+
+    deinit {
+        AppLogger.log(message: "MailboxModel deinit", category: .mailbox)
+    }
+
+    private func setUpBindings() {
         appRoute
             .$selectedMailbox
-            .sink { [weak self] value in
+            .sink { [weak self] _ in
                 Task {
-                    try? await self?.updateMailboxAndFetchData(selectedMailbox: appRoute.selectedMailbox)
+                    guard let self else { return }
+                    try? await self.updateMailboxAndFetchData(selectedMailbox: self.appRoute.selectedMailbox)
+                }
+            }
+            .store(in: &cancellables)
+
+        mailSettings
+            .viewModeHasChanged
+            .sink { [weak self] _ in
+                Task {
+                    guard let self else { return }
+                    AppLogger.log(message: "viewMode has changed", category: .mailbox)
+                    try? await self.updateMailboxAndFetchData(selectedMailbox: self.appRoute.selectedMailbox)
                 }
             }
             .store(in: &cancellables)
@@ -67,56 +95,63 @@ final class MailboxModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
-
-    func updateMailboxAndFetchData(selectedMailbox: SelectedMailbox) async throws {
-        await updateState(.loading)
-        guard let userContext = dependencies.appContext.activeUserSession else { return }
-        mailbox = try await Mailbox(ctx: userContext, labelId: selectedMailbox.localId)
-        AppLogger.log(message: "mailbox view mode: \(mailbox?.viewMode().description ?? "n/a")", category: .mailbox)
-        try await initialiseLiveQuery()
-    }
 }
 
 // MARK: Private
 
 extension MailboxModel {
 
+    /// Call this function to reset the Mailbox object with a new label id and fetch its mailbox items
+    private func updateMailboxAndFetchData(selectedMailbox: SelectedMailbox) async throws {
+        await updateState(.loading)
+        guard let userContext = dependencies.appContext.activeUserSession else { return }
+        mailbox = try await Mailbox(ctx: userContext, labelId: selectedMailbox.localId)
+        AppLogger.log(message: "mailbox view mode: \(mailbox?.viewMode().description ?? "n/a")", category: .mailbox)
+        try await initialiseLiveQuery()
+    }
+
     private func initialiseLiveQuery() async throws {
         switch viewMode {
         case .conversations:
-            self.conversationLiveQuery = try mailbox?.newConversationLiveQuery(limit: pageSize, cb: self)
+            self.conversationLiveQuery = try mailbox?.newConversationLiveQuery(limit: pageSize, cb: PMMailboxLiveQueryUpdatedCallback(delegate: self))
 
         case .messages:
-            self.messageLiveQuery = try mailbox?.newMessageLiveQuery(limit: pageSize, cb: self)
+            self.messageLiveQuery = try mailbox?.newMessageLiveQuery(limit: pageSize, cb: PMMailboxLiveQueryUpdatedCallback(delegate: self))
         }
     }
 
     private func readLiveQueryValues() async {
-        let mailboxItems = await liveQueryMailboxItems()
-        let newState: State = mailboxItems.count > 0 ? .data(mailboxItems) : .empty
-        await updateState(newState)
+        do {
+            let mailboxItems = try await liveQueryMailboxItems()
+            let newState: State = mailboxItems.count > 0 ? .data(mailboxItems) : .empty
+            await updateState(newState)
 
-        selectionMode.refreshSelectedItemsStatus { itemIds in
-            guard !itemIds.isEmpty, case .data(let mailboxItems) = state else { return [] }
-            let selectedItems = mailboxItems
-                .filter { itemIds.contains($0.id) }
-                .map { $0.toSelectedItem() }
-            return Set(selectedItems)
+            selectionMode.refreshSelectedItemsStatus { itemIds in
+                guard !itemIds.isEmpty, case .data(let mailboxItems) = state else { return [] }
+                let selectedItems = mailboxItems
+                    .filter { itemIds.contains($0.id) }
+                    .map { $0.toSelectedItem() }
+                return Set(selectedItems)
+            }
+        } catch {
+            AppLogger.log(error: error, category: .mailbox)
+            return
         }
+
     }
 
-    private func liveQueryMailboxItems() async -> [MailboxItemCellUIModel] {
+    private func liveQueryMailboxItems() async throws -> [MailboxItemCellUIModel] {
         let selectedIds = Set(selectionMode.selectedItems.map(\.id))
         var mailboxItems = [MailboxItemCellUIModel]()
         switch viewMode {
         case .conversations:
             guard let conversationLiveQuery else { break  }
-            mailboxItems = await conversationLiveQuery.value().asyncMap { @Sendable in
+            mailboxItems = try await conversationLiveQuery.value().asyncMap { @Sendable in
                 await $0.toMailboxItemCellUIModel(selectedIds: selectedIds)
             }
         case .messages:
             guard let messageLiveQuery else { break  }
-            mailboxItems = await messageLiveQuery.value().asyncMap { @Sendable in
+            mailboxItems = try await messageLiveQuery.value().asyncMap { @Sendable in
                 await $0.toMailboxItemCellUIModel(selectedIds: selectedIds)
             }
         }

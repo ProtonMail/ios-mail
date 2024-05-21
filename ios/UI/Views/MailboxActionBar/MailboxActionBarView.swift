@@ -123,7 +123,6 @@ private extension View {
 
 #Preview {
     let userSettings = UserSettings(
-        mailboxViewMode: .conversation,
         mailboxActions: .init(
             action1: .toggleReadStatus,
             action2: .toggleStarStatus,

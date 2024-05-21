@@ -19,7 +19,6 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxScreen: View {
-    @EnvironmentObject private var userSettings: UserSettings
     @StateObject private var mailboxModel: MailboxModel
 
     private var customLabelModel: CustomLabelModel
@@ -30,8 +29,8 @@ struct MailboxScreen: View {
         : mailboxModel.appRoute.selectedMailbox.name
     }
 
-    init(customLabelModel: CustomLabelModel) {
-        self._mailboxModel = StateObject(wrappedValue: MailboxModel())
+    init(customLabelModel: CustomLabelModel, mailSettings: PMMailSettingsProtocol) {
+        self._mailboxModel = StateObject(wrappedValue: MailboxModel(mailSettings: mailSettings))
         self.customLabelModel = customLabelModel
     }
 
@@ -79,12 +78,11 @@ extension MailboxScreen {
 
 #Preview {
     let appUIState = AppUIState(isSidebarOpen: false)
-    let userSettings = UserSettings(mailboxViewMode: .conversation, mailboxActions: .init())
     let customLabelModel = CustomLabelModel()
+    let dummySettings = EmptyPMMailSettings()
 
-    return MailboxScreen(customLabelModel: customLabelModel)
+    return MailboxScreen(customLabelModel: customLabelModel, mailSettings: dummySettings)
         .environmentObject(appUIState)
-        .environmentObject(userSettings)
 }
 
 private struct MailboxScreenIdentifiers {

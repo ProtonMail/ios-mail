@@ -47,9 +47,13 @@ final class SidebarScreenModel: ObservableObject, Sendable {
     @MainActor
     private func updateData() {
         guard let systemFolderQuery else { return }
-        let folders = systemFolderQuery.value()
-        setInitialFolderIfNeeded(from: folders)
-        systemFolders = folders.compactMap { $0.systemFolderToSidebarCellUIModel() }
+        do {
+            let folders = try systemFolderQuery.value()
+            setInitialFolderIfNeeded(from: folders)
+            systemFolders = folders.compactMap { $0.systemFolderToSidebarCellUIModel() }
+        } catch {
+            AppLogger.log(error: error)
+        }
     }
 
     private func setInitialFolderIfNeeded(from folders: [LocalLabelWithCount]) {

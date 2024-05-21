@@ -744,7 +744,7 @@ public protocol MailLabelsLiveQueryProtocol : AnyObject {
     /**
      * Get the latest value for this Query.
      */
-    func value()  -> [LocalLabelWithCount]
+    func value() throws  -> [LocalLabelWithCount]
     
 }
 
@@ -814,8 +814,8 @@ open func disconnect() {try! rustCall() {
     /**
      * Get the latest value for this Query.
      */
-open func value() -> [LocalLabelWithCount] {
-    return try!  FfiConverterSequenceTypeLocalLabelWithCount.lift(try! rustCall() {
+open func value()throws  -> [LocalLabelWithCount] {
+    return try  FfiConverterSequenceTypeLocalLabelWithCount.lift(try rustCallWithError(FfiConverterTypeLiveQueryError.lift) {
     uniffi_proton_mail_uniffi_fn_method_maillabelslivequery_value(self.uniffiClonePointer(),$0
     )
 })
@@ -902,7 +902,7 @@ public protocol MailSessionProtocol : AnyObject {
     /**
      * Create an user context from a stored session.
      */
-    func userContextFromSession(session: StoredSession, cb: SessionCallback?) throws  -> MailUserSession
+    func userContextFromSession(session: StoredSession, sessionCb: SessionCallback?) throws  -> MailUserSession
     
 }
 
@@ -1023,11 +1023,11 @@ open func storedSessions()throws  -> [StoredSession] {
     /**
      * Create an user context from a stored session.
      */
-open func userContextFromSession(session: StoredSession, cb: SessionCallback?)throws  -> MailUserSession {
+open func userContextFromSession(session: StoredSession, sessionCb: SessionCallback?)throws  -> MailUserSession {
     return try  FfiConverterTypeMailUserSession.lift(try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
     uniffi_proton_mail_uniffi_fn_method_mailsession_user_context_from_session(self.uniffiClonePointer(),
         FfiConverterTypeStoredSession.lower(session),
-        FfiConverterOptionCallbackInterfaceSessionCallback.lower(cb),$0
+        FfiConverterOptionCallbackInterfaceSessionCallback.lower(sessionCb),$0
     )
 })
 }
@@ -1115,6 +1115,24 @@ public protocol MailUserSessionProtocol : AnyObject {
     func executePendingActions() async throws 
     
     /**
+     * Fork the current session.
+     *
+     * This call has to be made from a parent session, and forks the current
+     * logged-in user session in order to provide a new session for the same
+     * user.
+     *
+     * If successful, this will return the "Selector" string for the new
+     * session.
+     *
+     * # Errors
+     *
+     * Any of the [`MailSessionError::Http`] possibilities could be returned if
+     * there is a problem with the HTTP request.
+
+     */
+    func fork() async throws  -> String
+    
+    /**
      * Get the sender image for a list of senders.
      *
      * # Parameters
@@ -1131,7 +1149,7 @@ public protocol MailUserSessionProtocol : AnyObject {
      * Returns errors if the API call fails, the mode value is invalid, the conversation doesn't exist, or
      * if there's an issue with the sender that causes problems when creating the API request on our side.
      */
-    func imageForSender(address: String, bimiSelector: String?, displaySenderImage: Bool, size: UInt32?, mode: String?, format: String?) async throws  -> Data?
+    func imageForSender(mailSettings: MailUserSettings, address: String, bimiSelector: String?, displaySenderImage: Bool, size: UInt32?, mode: String?, format: String?) async throws  -> Data?
     
     /**
      * Initialize the user context. Should be called at least once.
@@ -1145,11 +1163,6 @@ public protocol MailUserSessionProtocol : AnyObject {
      * Log out a session.
      */
     func logout() async throws 
-    
-    /**
-     * Returns the user's mail settings.
-     */
-    func mailSettings() throws  -> MailSettings
     
     /**
      * Return the list of labels of type Folder into which a conversations or
@@ -1293,6 +1306,39 @@ open func executePendingActions()async throws  {
 }
     
     /**
+     * Fork the current session.
+     *
+     * This call has to be made from a parent session, and forks the current
+     * logged-in user session in order to provide a new session for the same
+     * user.
+     *
+     * If successful, this will return the "Selector" string for the new
+     * session.
+     *
+     * # Errors
+     *
+     * Any of the [`MailSessionError::Http`] possibilities could be returned if
+     * there is a problem with the HTTP request.
+
+     */
+open func fork()async throws  -> String {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_method_mailusersession_fork(
+                    self.uniffiClonePointer()
+                    
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
+            liftFunc: FfiConverterString.lift,
+            errorHandler: FfiConverterTypeMailSessionError.lift
+        )
+}
+    
+    /**
      * Get the sender image for a list of senders.
      *
      * # Parameters
@@ -1309,13 +1355,13 @@ open func executePendingActions()async throws  {
      * Returns errors if the API call fails, the mode value is invalid, the conversation doesn't exist, or
      * if there's an issue with the sender that causes problems when creating the API request on our side.
      */
-open func imageForSender(address: String, bimiSelector: String?, displaySenderImage: Bool, size: UInt32?, mode: String?, format: String?)async throws  -> Data? {
+open func imageForSender(mailSettings: MailUserSettings, address: String, bimiSelector: String?, displaySenderImage: Bool, size: UInt32?, mode: String?, format: String?)async throws  -> Data? {
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
                 uniffi_proton_mail_uniffi_fn_method_mailusersession_image_for_sender(
                     self.uniffiClonePointer(),
-                    FfiConverterString.lower(address),FfiConverterOptionString.lower(bimiSelector),FfiConverterBool.lower(displaySenderImage),FfiConverterOptionUInt32.lower(size),FfiConverterOptionString.lower(mode),FfiConverterOptionString.lower(format)
+                    FfiConverterTypeMailUserSettings.lower(mailSettings),FfiConverterString.lower(address),FfiConverterOptionString.lower(bimiSelector),FfiConverterBool.lower(displaySenderImage),FfiConverterOptionUInt32.lower(size),FfiConverterOptionString.lower(mode),FfiConverterOptionString.lower(format)
                 )
             },
             pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
@@ -1367,16 +1413,6 @@ open func logout()async throws  {
             liftFunc: { $0 },
             errorHandler: FfiConverterTypeMailSessionError.lift
         )
-}
-    
-    /**
-     * Returns the user's mail settings.
-     */
-open func mailSettings()throws  -> MailSettings {
-    return try  FfiConverterTypeMailSettings_lift(try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
-    uniffi_proton_mail_uniffi_fn_method_mailusersession_mail_settings(self.uniffiClonePointer(),$0
-    )
-})
 }
     
     /**
@@ -1497,6 +1533,135 @@ public func FfiConverterTypeMailUserSession_lower(_ value: MailUserSession) -> U
 
 
 /**
+ * Access the user's mail settings
+ */
+public protocol MailUserSettingsProtocol : AnyObject {
+    
+    /**
+     * Returns the user's mail settings.
+     */
+    func value() throws  -> MailSettings
+    
+}
+
+/**
+ * Access the user's mail settings
+ */
+open class MailUserSettings:
+    MailUserSettingsProtocol {
+    fileprivate let pointer: UnsafeMutableRawPointer!
+
+    /// Used to instantiate a [FFIObject] without an actual pointer, for fakes in tests, mostly.
+    public struct NoPointer {
+        public init() {}
+    }
+
+    // TODO: We'd like this to be `private` but for Swifty reasons,
+    // we can't implement `FfiConverter` without making this `required` and we can't
+    // make it `required` without making it `public`.
+    required public init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        self.pointer = pointer
+    }
+
+    /// This constructor can be used to instantiate a fake object.
+    /// - Parameter noPointer: Placeholder value so we can have a constructor separate from the default empty one that may be implemented for classes extending [FFIObject].
+    ///
+    /// - Warning:
+    ///     Any object instantiated with this constructor cannot be passed to an actual Rust-backed object. Since there isn't a backing [Pointer] the FFI lower functions will crash.
+    public init(noPointer: NoPointer) {
+        self.pointer = nil
+    }
+
+    public func uniffiClonePointer() -> UnsafeMutableRawPointer {
+        return try! rustCall { uniffi_proton_mail_uniffi_fn_clone_mailusersettings(self.pointer, $0) }
+    }
+    /**
+     * Create a new mail settings instance.
+     *
+     * An optional `callback` can be provided to be signaled when
+     * the settings have been changed in the database.
+     */
+public convenience init(session: MailUserSession, callback: MailSettingsUpdated?) {
+    let pointer =
+        try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_constructor_mailusersettings_new(
+        FfiConverterTypeMailUserSession.lower(session),
+        FfiConverterOptionCallbackInterfaceMailSettingsUpdated.lower(callback),$0
+    )
+}
+    self.init(unsafeFromRawPointer: pointer)
+}
+
+    deinit {
+        guard let pointer = pointer else {
+            return
+        }
+
+        try! rustCall { uniffi_proton_mail_uniffi_fn_free_mailusersettings(pointer, $0) }
+    }
+
+    
+
+    
+    /**
+     * Returns the user's mail settings.
+     */
+open func value()throws  -> MailSettings {
+    return try  FfiConverterTypeMailSettings_lift(try rustCallWithError(FfiConverterTypeLiveQueryError.lift) {
+    uniffi_proton_mail_uniffi_fn_method_mailusersettings_value(self.uniffiClonePointer(),$0
+    )
+})
+}
+    
+
+}
+
+public struct FfiConverterTypeMailUserSettings: FfiConverter {
+
+    typealias FfiType = UnsafeMutableRawPointer
+    typealias SwiftType = MailUserSettings
+
+    public static func lift(_ pointer: UnsafeMutableRawPointer) throws -> MailUserSettings {
+        return MailUserSettings(unsafeFromRawPointer: pointer)
+    }
+
+    public static func lower(_ value: MailUserSettings) -> UnsafeMutableRawPointer {
+        return value.uniffiClonePointer()
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> MailUserSettings {
+        let v: UInt64 = try readInt(&buf)
+        // The Rust code won't compile if a pointer won't fit in a UInt64.
+        // We have to go via `UInt` because that's the thing that's the size of a pointer.
+        let ptr = UnsafeMutableRawPointer(bitPattern: UInt(truncatingIfNeeded: v))
+        if (ptr == nil) {
+            throw UniffiInternalError.unexpectedNullPointer
+        }
+        return try lift(ptr!)
+    }
+
+    public static func write(_ value: MailUserSettings, into buf: inout [UInt8]) {
+        // This fiddling is because `Int` is the thing that's the same size as a pointer.
+        // The Rust code won't compile if a pointer won't fit in a `UInt64`.
+        writeInt(&buf, UInt64(bitPattern: Int64(Int(bitPattern: lower(value)))))
+    }
+}
+
+
+
+
+public func FfiConverterTypeMailUserSettings_lift(_ pointer: UnsafeMutableRawPointer) throws -> MailUserSettings {
+    return try FfiConverterTypeMailUserSettings.lift(pointer)
+}
+
+public func FfiConverterTypeMailUserSettings_lower(_ value: MailUserSettings) -> UnsafeMutableRawPointer {
+    return FfiConverterTypeMailUserSettings.lower(value)
+}
+
+
+
+
+/**
  * A [`Mailbox`] provides a gateway to manipulating messages and conversations for a given label.
  */
 public protocol MailboxProtocol : AnyObject {
@@ -1582,6 +1747,17 @@ public protocol MailboxProtocol : AnyObject {
      * Return error if the mailbox's view mode is not [`MailSettingsViewMode::Conversations`].
      */
     func newConversationLiveQuery(limit: Int64, cb: MailboxLiveQueryUpdatedCallback) throws  -> MailboxConversationLiveQuery
+    
+    /**
+     * Create a live query for a conversation with `id`'s messages.
+     *
+     * If this is the first time it is called for this conversation, the messages will
+     * be retrieved from the server.
+     *
+     * # Errors
+     * Returns error if the request or the db query
+     */
+    func newConversationMessagesLiveQuery(id: UInt64, cb: MailboxLiveQueryUpdatedCallback) async throws  -> MailboxConversationMessagesLiveQuery
     
     /**
      * Create a live query for messages for the currently selected label.
@@ -1885,6 +2061,32 @@ open func newConversationLiveQuery(limit: Int64, cb: MailboxLiveQueryUpdatedCall
 }
     
     /**
+     * Create a live query for a conversation with `id`'s messages.
+     *
+     * If this is the first time it is called for this conversation, the messages will
+     * be retrieved from the server.
+     *
+     * # Errors
+     * Returns error if the request or the db query
+     */
+open func newConversationMessagesLiveQuery(id: UInt64, cb: MailboxLiveQueryUpdatedCallback)async throws  -> MailboxConversationMessagesLiveQuery {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_method_mailbox_new_conversation_messages_live_query(
+                    self.uniffiClonePointer(),
+                    FfiConverterUInt64.lower(id),FfiConverterCallbackInterfaceMailboxLiveQueryUpdatedCallback.lower(cb)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_pointer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_pointer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_pointer,
+            liftFunc: FfiConverterTypeMailboxConversationMessagesLiveQuery.lift,
+            errorHandler: FfiConverterTypeMailboxError.lift
+        )
+}
+    
+    /**
      * Create a live query for messages for the currently selected label.
      *
      * # Errors
@@ -2023,7 +2225,7 @@ public protocol MailboxConversationLiveQueryProtocol : AnyObject {
     /**
      * Get the latest value for this Query.
      */
-    func value()  -> [LocalConversation]
+    func value() throws  -> [LocalConversation]
     
 }
 
@@ -2093,8 +2295,8 @@ open func disconnect() {try! rustCall() {
     /**
      * Get the latest value for this Query.
      */
-open func value() -> [LocalConversation] {
-    return try!  FfiConverterSequenceTypeLocalConversation.lift(try! rustCall() {
+open func value()throws  -> [LocalConversation] {
+    return try  FfiConverterSequenceTypeLocalConversation.lift(try rustCallWithError(FfiConverterTypeLiveQueryError.lift) {
     uniffi_proton_mail_uniffi_fn_method_mailboxconversationlivequery_value(self.uniffiClonePointer(),$0
     )
 })
@@ -2161,6 +2363,154 @@ public func FfiConverterTypeMailboxConversationLiveQuery_lower(_ value: MailboxC
  * latest result of the query.
 
  */
+public protocol MailboxConversationMessagesLiveQueryProtocol : AnyObject {
+    
+    /**
+     * Terminate the observer for this query and stop receiving updates.
+     */
+    func disconnect() 
+    
+    /**
+     * Get the latest value for this Query.
+     */
+    func value() throws  -> [LocalMessageMetadata]
+    
+}
+
+/**
+ * Live queries behave similarly to CoreData/Room's FetchedResult/ObservedQueries. However, since
+ * the observation happens from the rust side we can't provide optimal default integration in
+ * the target application runtime (JetPack Compose/SwiftUI).
+ *
+ * Live queries accept a callback which will be triggered when the query has been refreshed.
+ * Refresh can occur when the tables the query is watching are modified.
+ * Once a callback has occurred you should [`$name::value()`] to access the new data.
+ *
+ * [`$name::value()`] can be called as many times as you wish and will always return the
+ * latest result of the query.
+
+ */
+open class MailboxConversationMessagesLiveQuery:
+    MailboxConversationMessagesLiveQueryProtocol {
+    fileprivate let pointer: UnsafeMutableRawPointer!
+
+    /// Used to instantiate a [FFIObject] without an actual pointer, for fakes in tests, mostly.
+    public struct NoPointer {
+        public init() {}
+    }
+
+    // TODO: We'd like this to be `private` but for Swifty reasons,
+    // we can't implement `FfiConverter` without making this `required` and we can't
+    // make it `required` without making it `public`.
+    required public init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        self.pointer = pointer
+    }
+
+    /// This constructor can be used to instantiate a fake object.
+    /// - Parameter noPointer: Placeholder value so we can have a constructor separate from the default empty one that may be implemented for classes extending [FFIObject].
+    ///
+    /// - Warning:
+    ///     Any object instantiated with this constructor cannot be passed to an actual Rust-backed object. Since there isn't a backing [Pointer] the FFI lower functions will crash.
+    public init(noPointer: NoPointer) {
+        self.pointer = nil
+    }
+
+    public func uniffiClonePointer() -> UnsafeMutableRawPointer {
+        return try! rustCall { uniffi_proton_mail_uniffi_fn_clone_mailboxconversationmessageslivequery(self.pointer, $0) }
+    }
+    // No primary constructor declared for this class.
+
+    deinit {
+        guard let pointer = pointer else {
+            return
+        }
+
+        try! rustCall { uniffi_proton_mail_uniffi_fn_free_mailboxconversationmessageslivequery(pointer, $0) }
+    }
+
+    
+
+    
+    /**
+     * Terminate the observer for this query and stop receiving updates.
+     */
+open func disconnect() {try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_method_mailboxconversationmessageslivequery_disconnect(self.uniffiClonePointer(),$0
+    )
+}
+}
+    
+    /**
+     * Get the latest value for this Query.
+     */
+open func value()throws  -> [LocalMessageMetadata] {
+    return try  FfiConverterSequenceTypeLocalMessageMetadata.lift(try rustCallWithError(FfiConverterTypeLiveQueryError.lift) {
+    uniffi_proton_mail_uniffi_fn_method_mailboxconversationmessageslivequery_value(self.uniffiClonePointer(),$0
+    )
+})
+}
+    
+
+}
+
+public struct FfiConverterTypeMailboxConversationMessagesLiveQuery: FfiConverter {
+
+    typealias FfiType = UnsafeMutableRawPointer
+    typealias SwiftType = MailboxConversationMessagesLiveQuery
+
+    public static func lift(_ pointer: UnsafeMutableRawPointer) throws -> MailboxConversationMessagesLiveQuery {
+        return MailboxConversationMessagesLiveQuery(unsafeFromRawPointer: pointer)
+    }
+
+    public static func lower(_ value: MailboxConversationMessagesLiveQuery) -> UnsafeMutableRawPointer {
+        return value.uniffiClonePointer()
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> MailboxConversationMessagesLiveQuery {
+        let v: UInt64 = try readInt(&buf)
+        // The Rust code won't compile if a pointer won't fit in a UInt64.
+        // We have to go via `UInt` because that's the thing that's the size of a pointer.
+        let ptr = UnsafeMutableRawPointer(bitPattern: UInt(truncatingIfNeeded: v))
+        if (ptr == nil) {
+            throw UniffiInternalError.unexpectedNullPointer
+        }
+        return try lift(ptr!)
+    }
+
+    public static func write(_ value: MailboxConversationMessagesLiveQuery, into buf: inout [UInt8]) {
+        // This fiddling is because `Int` is the thing that's the same size as a pointer.
+        // The Rust code won't compile if a pointer won't fit in a `UInt64`.
+        writeInt(&buf, UInt64(bitPattern: Int64(Int(bitPattern: lower(value)))))
+    }
+}
+
+
+
+
+public func FfiConverterTypeMailboxConversationMessagesLiveQuery_lift(_ pointer: UnsafeMutableRawPointer) throws -> MailboxConversationMessagesLiveQuery {
+    return try FfiConverterTypeMailboxConversationMessagesLiveQuery.lift(pointer)
+}
+
+public func FfiConverterTypeMailboxConversationMessagesLiveQuery_lower(_ value: MailboxConversationMessagesLiveQuery) -> UnsafeMutableRawPointer {
+    return FfiConverterTypeMailboxConversationMessagesLiveQuery.lower(value)
+}
+
+
+
+
+/**
+ * Live queries behave similarly to CoreData/Room's FetchedResult/ObservedQueries. However, since
+ * the observation happens from the rust side we can't provide optimal default integration in
+ * the target application runtime (JetPack Compose/SwiftUI).
+ *
+ * Live queries accept a callback which will be triggered when the query has been refreshed.
+ * Refresh can occur when the tables the query is watching are modified.
+ * Once a callback has occurred you should [`$name::value()`] to access the new data.
+ *
+ * [`$name::value()`] can be called as many times as you wish and will always return the
+ * latest result of the query.
+
+ */
 public protocol MailboxMessageLiveQueryProtocol : AnyObject {
     
     /**
@@ -2171,7 +2521,7 @@ public protocol MailboxMessageLiveQueryProtocol : AnyObject {
     /**
      * Get the latest value for this Query.
      */
-    func value()  -> [LocalMessageMetadata]
+    func value() throws  -> [LocalMessageMetadata]
     
 }
 
@@ -2241,8 +2591,8 @@ open func disconnect() {try! rustCall() {
     /**
      * Get the latest value for this Query.
      */
-open func value() -> [LocalMessageMetadata] {
-    return try!  FfiConverterSequenceTypeLocalMessageMetadata.lift(try! rustCall() {
+open func value()throws  -> [LocalMessageMetadata] {
+    return try  FfiConverterSequenceTypeLocalMessageMetadata.lift(try rustCallWithError(FfiConverterTypeLiveQueryError.lift) {
     uniffi_proton_mail_uniffi_fn_method_mailboxmessagelivequery_value(self.uniffiClonePointer(),$0
     )
 })
@@ -2821,6 +3171,62 @@ extension EventLoopError: Equatable, Hashable {}
 extension EventLoopError: Error { }
 
 
+public enum LiveQueryError {
+
+    
+    
+    case DataNotFound(message: String)
+    
+    case Error(message: String)
+    
+}
+
+
+public struct FfiConverterTypeLiveQueryError: FfiConverterRustBuffer {
+    typealias SwiftType = LiveQueryError
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> LiveQueryError {
+        let variant: Int32 = try readInt(&buf)
+        switch variant {
+
+        
+
+        
+        case 1: return .DataNotFound(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 2: return .Error(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+
+        default: throw UniffiInternalError.unexpectedEnumCase
+        }
+    }
+
+    public static func write(_ value: LiveQueryError, into buf: inout [UInt8]) {
+        switch value {
+
+        
+
+        
+        case .DataNotFound(_ /* message is ignored*/):
+            writeInt(&buf, Int32(1))
+        case .Error(_ /* message is ignored*/):
+            writeInt(&buf, Int32(2))
+
+        
+        }
+    }
+}
+
+
+extension LiveQueryError: Equatable, Hashable {}
+
+extension LiveQueryError: Error { }
+
+
 public enum LoginFlowError {
 
     
@@ -3204,6 +3610,8 @@ public enum MailboxError {
     
     case ConversationNotFound(message: String)
     
+    case ConversationDoesNotHaveRemoteId(message: String)
+    
     case ConversationError(message: String)
     
     case ApiError(message: String)
@@ -3215,6 +3623,8 @@ public enum MailboxError {
     case AttachmentNotFound(message: String)
     
     case AttachmentDecryption(message: String)
+    
+    case Db(message: String)
     
     case Other(message: String)
     
@@ -3259,31 +3669,39 @@ public struct FfiConverterTypeMailboxError: FfiConverterRustBuffer {
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 8: return .ConversationError(
+        case 8: return .ConversationDoesNotHaveRemoteId(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 9: return .ApiError(
+        case 9: return .ConversationError(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 10: return .InvalidViewMode(
+        case 10: return .ApiError(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 11: return .AddressDomainLogoError(
+        case 11: return .InvalidViewMode(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 12: return .AttachmentNotFound(
+        case 12: return .AddressDomainLogoError(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 13: return .AttachmentDecryption(
+        case 13: return .AttachmentNotFound(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 14: return .Other(
+        case 14: return .AttachmentDecryption(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 15: return .Db(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 16: return .Other(
             message: try FfiConverterString.read(from: &buf)
         )
         
@@ -3312,20 +3730,24 @@ public struct FfiConverterTypeMailboxError: FfiConverterRustBuffer {
             writeInt(&buf, Int32(6))
         case .ConversationNotFound(_ /* message is ignored*/):
             writeInt(&buf, Int32(7))
-        case .ConversationError(_ /* message is ignored*/):
+        case .ConversationDoesNotHaveRemoteId(_ /* message is ignored*/):
             writeInt(&buf, Int32(8))
-        case .ApiError(_ /* message is ignored*/):
+        case .ConversationError(_ /* message is ignored*/):
             writeInt(&buf, Int32(9))
-        case .InvalidViewMode(_ /* message is ignored*/):
+        case .ApiError(_ /* message is ignored*/):
             writeInt(&buf, Int32(10))
-        case .AddressDomainLogoError(_ /* message is ignored*/):
+        case .InvalidViewMode(_ /* message is ignored*/):
             writeInt(&buf, Int32(11))
-        case .AttachmentNotFound(_ /* message is ignored*/):
+        case .AddressDomainLogoError(_ /* message is ignored*/):
             writeInt(&buf, Int32(12))
-        case .AttachmentDecryption(_ /* message is ignored*/):
+        case .AttachmentNotFound(_ /* message is ignored*/):
             writeInt(&buf, Int32(13))
-        case .Other(_ /* message is ignored*/):
+        case .AttachmentDecryption(_ /* message is ignored*/):
             writeInt(&buf, Int32(14))
+        case .Db(_ /* message is ignored*/):
+            writeInt(&buf, Int32(15))
+        case .Other(_ /* message is ignored*/):
+            writeInt(&buf, Int32(16))
 
         
         }
@@ -3590,6 +4012,94 @@ extension SignatureVerification: Equatable, Hashable {}
 
 
 /**
+ * Callback interface to signal the mail settings have been updated.
+ */
+public protocol MailSettingsUpdated : AnyObject {
+    
+    func onUpdated() 
+    
+}
+
+// Magic number for the Rust proxy to call using the same mechanism as every other method,
+// to free the callback once it's dropped by Rust.
+private let IDX_CALLBACK_FREE: Int32 = 0
+// Callback return codes
+private let UNIFFI_CALLBACK_SUCCESS: Int32 = 0
+private let UNIFFI_CALLBACK_ERROR: Int32 = 1
+private let UNIFFI_CALLBACK_UNEXPECTED_ERROR: Int32 = 2
+
+// Put the implementation in a struct so we don't pollute the top-level namespace
+fileprivate struct UniffiCallbackInterfaceMailSettingsUpdated {
+
+    // Create the VTable using a series of closures.
+    // Swift automatically converts these into C callback functions.
+    static var vtable: UniffiVTableCallbackInterfaceMailSettingsUpdated = UniffiVTableCallbackInterfaceMailSettingsUpdated(
+        onUpdated: { (
+            uniffiHandle: UInt64,
+            uniffiOutReturn: UnsafeMutableRawPointer,
+            uniffiCallStatus: UnsafeMutablePointer<RustCallStatus>
+        ) in
+            let makeCall = {
+                () throws -> () in
+                guard let uniffiObj = try? FfiConverterCallbackInterfaceMailSettingsUpdated.handleMap.get(handle: uniffiHandle) else {
+                    throw UniffiInternalError.unexpectedStaleHandle
+                }
+                return uniffiObj.onUpdated(
+                )
+            }
+
+            
+            let writeReturn = { () }
+            uniffiTraitInterfaceCall(
+                callStatus: uniffiCallStatus,
+                makeCall: makeCall,
+                writeReturn: writeReturn
+            )
+        },
+        uniffiFree: { (uniffiHandle: UInt64) -> () in
+            let result = try? FfiConverterCallbackInterfaceMailSettingsUpdated.handleMap.remove(handle: uniffiHandle)
+            if result == nil {
+                print("Uniffi callback interface MailSettingsUpdated: handle missing in uniffiFree")
+            }
+        }
+    )
+}
+
+private func uniffiCallbackInitMailSettingsUpdated() {
+    uniffi_proton_mail_uniffi_fn_init_callback_vtable_mailsettingsupdated(&UniffiCallbackInterfaceMailSettingsUpdated.vtable)
+}
+
+// FfiConverter protocol for callback interfaces
+fileprivate struct FfiConverterCallbackInterfaceMailSettingsUpdated {
+    fileprivate static var handleMap = UniffiHandleMap<MailSettingsUpdated>()
+}
+
+extension FfiConverterCallbackInterfaceMailSettingsUpdated : FfiConverter {
+    typealias SwiftType = MailSettingsUpdated
+    typealias FfiType = UInt64
+
+    public static func lift(_ handle: UInt64) throws -> SwiftType {
+        try handleMap.get(handle: handle)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        let handle: UInt64 = try readInt(&buf)
+        return try lift(handle)
+    }
+
+    public static func lower(_ v: SwiftType) -> UInt64 {
+        return handleMap.insert(obj: v)
+    }
+
+    public static func write(_ v: SwiftType, into buf: inout [UInt8]) {
+        writeInt(&buf, lower(v))
+    }
+}
+
+
+
+
+/**
  * Callback for initialization progress.
  */
 public protocol MailUserSessionInitializationCallback : AnyObject {
@@ -3601,13 +4111,7 @@ public protocol MailUserSessionInitializationCallback : AnyObject {
     
 }
 
-// Magic number for the Rust proxy to call using the same mechanism as every other method,
-// to free the callback once it's dropped by Rust.
-private let IDX_CALLBACK_FREE: Int32 = 0
-// Callback return codes
-private let UNIFFI_CALLBACK_SUCCESS: Int32 = 0
-private let UNIFFI_CALLBACK_ERROR: Int32 = 1
-private let UNIFFI_CALLBACK_UNEXPECTED_ERROR: Int32 = 2
+
 
 // Put the implementation in a struct so we don't pollute the top-level namespace
 fileprivate struct UniffiCallbackInterfaceMailUserSessionInitializationCallback {
@@ -4345,6 +4849,27 @@ fileprivate struct FfiConverterOptionTypeMailboxError: FfiConverterRustBuffer {
     }
 }
 
+fileprivate struct FfiConverterOptionCallbackInterfaceMailSettingsUpdated: FfiConverterRustBuffer {
+    typealias SwiftType = MailSettingsUpdated?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterCallbackInterfaceMailSettingsUpdated.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterCallbackInterfaceMailSettingsUpdated.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
 fileprivate struct FfiConverterOptionCallbackInterfaceNetworkStatusChanged: FfiConverterRustBuffer {
     typealias SwiftType = NetworkStatusChanged?
 
@@ -4656,7 +5181,7 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_maillabelslivequery_disconnect() != 54050) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_maillabelslivequery_value() != 8597) {
+    if (uniffi_proton_mail_uniffi_checksum_method_maillabelslivequery_value() != 34268) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailsession_is_network_connected() != 42192) {
@@ -4671,7 +5196,7 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailsession_stored_sessions() != 13893) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailsession_user_context_from_session() != 22569) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailsession_user_context_from_session() != 61878) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_applicable_labels() != 64448) {
@@ -4683,16 +5208,16 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_execute_pending_actions() != 15772) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_image_for_sender() != 12894) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_fork() != 50159) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_image_for_sender() != 12873) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_initialize() != 41654) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_logout() != 62214) {
-        return InitializationResult.apiChecksumMismatch
-    }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_mail_settings() != 62567) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_movable_folders() != 21776) {
@@ -4708,6 +5233,9 @@ private var initializationResult: InitializationResult {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_poll_events() != 9014) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersettings_value() != 60521) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_delete_conversations() != 34381) {
@@ -4737,6 +5265,9 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_conversation_live_query() != 43504) {
         return InitializationResult.apiChecksumMismatch
     }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_conversation_messages_live_query() != 24042) {
+        return InitializationResult.apiChecksumMismatch
+    }
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_message_live_query() != 51759) {
         return InitializationResult.apiChecksumMismatch
     }
@@ -4755,13 +5286,19 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailboxconversationlivequery_disconnect() != 55329) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailboxconversationlivequery_value() != 65160) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailboxconversationlivequery_value() != 14838) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailboxconversationmessageslivequery_disconnect() != 25045) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailboxconversationmessageslivequery_value() != 1716) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailboxmessagelivequery_disconnect() != 56194) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailboxmessagelivequery_value() != 4813) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailboxmessagelivequery_value() != 52561) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_signatureverificationresult_error_info() != 6062) {
@@ -4791,6 +5328,9 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_constructor_mailsession_create() != 60183) {
         return InitializationResult.apiChecksumMismatch
     }
+    if (uniffi_proton_mail_uniffi_checksum_constructor_mailusersettings_new() != 48539) {
+        return InitializationResult.apiChecksumMismatch
+    }
     if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_inbox() != 27257) {
         return InitializationResult.apiChecksumMismatch
     }
@@ -4801,6 +5341,9 @@ private var initializationResult: InitializationResult {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_constructor_mailbox_with_remote_id() != 44056) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailsettingsupdated_on_updated() != 55580) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersessioninitializationcallback_on_stage() != 55853) {
@@ -4837,6 +5380,7 @@ private var initializationResult: InitializationResult {
         return InitializationResult.apiChecksumMismatch
     }
 
+    uniffiCallbackInitMailSettingsUpdated()
     uniffiCallbackInitMailUserSessionInitializationCallback()
     uniffiCallbackInitMailboxBackgroundResult()
     uniffiCallbackInitMailboxLiveQueryUpdatedCallback()
