@@ -15,19 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Calendar. If not, see https://www.gnu.org/licenses/.
 
-extension Collection {
+import Foundation
 
-    subscript (safe index: Index) -> Element? {
-        indices.contains(index) ? self[index] : nil
+public struct ICalParticipant {
+    public let atendee: ICalAttendee
+    public let address: ICalAddress
+
+    public init(atendee: ICalAttendee, address: ICalAddress) {
+        self.atendee = atendee
+        self.address = address
     }
-
-    func sorted<Value>(
-        by keyPath: KeyPath<Element, Value>,
-        _ comparator: (_ lhs: Value, _ rhs: Value) -> Bool
-    ) -> [Element] {
-        sorted {
-            comparator($0[keyPath: keyPath], $1[keyPath: keyPath])
-        }
-    }
-
 }

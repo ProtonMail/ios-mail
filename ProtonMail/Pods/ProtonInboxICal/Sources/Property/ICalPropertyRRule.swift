@@ -388,13 +388,8 @@ public class ICalPropertyRRule {
             switch month_day {
             case month_day_options.MONTH_DAY_NTH:
                 if month_num == month_num_options.MONTH_NUM_LAST {
-                    guard let weekIndex = e_ews_cal_util_month_index_to_days_of_week(month_index: month_index) else {
-                        return nil
-                    }
-
                     recurrence = recurrence
-                        .copy(repeatMonthOnWeekDay: weekIndex.rawValue)
-                        .copy(repeatMonthOnIth: ICalRecurrence.RepeatMonthOnIth(value: -1))
+                        .copy(repeatMonthOnIth: .last)
                 } else {
                     // No action, not supported
                 }
@@ -521,6 +516,10 @@ public class ICalPropertyRRule {
                   let repeatMonthOnWeekDay = recurring.repeatMonthOnWeekDay
         {
             str += "BYDAY=\(weekdayStr[repeatMonthOnWeekDay]);BYSETPOS=\(repeatMonthOnIth.integer);"
+        } else if let repeatMonthOnIth = recurring.repeatMonthOnIth,
+                  repeatMonthOnIth == .last,
+                  recurring.repeatEveryType == .month {
+            str += "BYMONTHDAY=\(repeatMonthOnIth.integer)"
         }
 
         if let WKST = WKST {
