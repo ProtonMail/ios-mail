@@ -19,6 +19,7 @@ import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreUIFoundations
+import UIKit
 
 protocol UndoActionManagerProtocol {
     func addUndoToken(_ token: UndoTokenData, undoActionType: UndoAction?)

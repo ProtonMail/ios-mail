@@ -24,6 +24,7 @@ import CoreData
 import ProtonCoreCrypto
 import ProtonCoreCryptoGoInterface
 import ProtonCoreDataModel
+import UIKit
 
 // TODO::fixme import header
 extension Attachment {

@@ -1,4 +1,5 @@
 import ProtonCoreUIFoundations
+import UIKit
 
 class ConversationExpandedMessageCell: UITableViewCell {
 

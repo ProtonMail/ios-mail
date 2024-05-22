@@ -17,6 +17,7 @@
 
 import Foundation
 import ProtonCoreUIFoundations
+import UIKit
 
 extension PMBanner {
 

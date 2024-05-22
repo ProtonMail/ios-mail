@@ -25,6 +25,7 @@ import CoreData
 import Foundation
 import ProtonCoreCrypto
 import ProtonCoreDataModel
+import UIKit
 import VCard
 
 final class ContactDetailsViewModel: NSObject {

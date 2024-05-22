@@ -1,5 +1,6 @@
 import CoreGraphics
 import ProtonCoreUIFoundations
+import UIKit
 
 class ConversationView: UIView {
 
