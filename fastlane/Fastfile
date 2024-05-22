@@ -25,7 +25,6 @@ platform :ios do
     run_tests(
       scheme: UNIT_TESTS_SCHEME,
       devices: UNIT_TESTS_DEVICE,
-      build_for_testing: true,
       prelaunch_simulator: true,
       reset_simulator: true,
       result_bundle: true
@@ -37,10 +36,11 @@ platform :ios do
     run_tests(
       scheme: UI_TESTS_SCHEME,
       devices: UI_TESTS_DEVICE,
-      build_for_testing: true,
+      max_concurrent_simulators: 2,
+      concurrent_workers: 2,
+      include_simulator_logs: true,
       prelaunch_simulator: true,
       reset_simulator: true,
-      concurrent_workers: 1,
       result_bundle: true
       )
   end

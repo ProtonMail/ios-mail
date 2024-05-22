@@ -44,8 +44,8 @@ extension TestService: ApplicationServiceSetUp {
                 throw TestServiceError.cacheDirectoryNotAccessible
             }
             
-            try! FileManager.default.removeItem(atPath: applicationSupportFolder.path())
-            try! FileManager.default.removeItem(atPath: cacheFolder.path)
+            try? FileManager.default.removeItem(atPath: applicationSupportFolder.path())
+            try? FileManager.default.removeItem(atPath: cacheFolder.path)
         }
     }
     

@@ -65,7 +65,7 @@ final class MailboxSidebarTests: PMUITestCase {
             initials: "M",
             sender: "mobileappsuitesting2",
             subject: "Test message",
-            date: "Mar 6, 2023",
+            date: "6 Mar 2023",
             count: nil
         )
 
@@ -74,7 +74,7 @@ final class MailboxSidebarTests: PMUITestCase {
             initials: "M",
             sender: "mobileappsuitesting3",
             subject: "Base subject",
-            date: "Mar 28, 2023",
+            date: "28 Mar 2023",
             count: nil
         )
 
