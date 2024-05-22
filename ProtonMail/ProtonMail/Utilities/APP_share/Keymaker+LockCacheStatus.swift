@@ -23,10 +23,6 @@ protocol LockCacheStatus {
     var isTouchIDEnabled: Bool { get }
     var isAppKeyEnabled: Bool { get }
 
-    /// Returns `true` if there is some kind of protection to access the app, but
-    /// the main key is accessible without the user having to interact to unlock the app.
-    var isAppLockedAndAppKeyDisabled: Bool { get }
-
     /// Returns `true` if there is some kind of protection to access the app, and
     /// the main key is only accessible if user interacts to unlock the app (e.g. enters pin, uses FaceID,...)
     var isAppLockedAndAppKeyEnabled: Bool { get }
@@ -47,10 +43,6 @@ extension Keymaker: LockCacheStatus {
         } else {
             return true
         }
-    }
-
-    var isAppLockedAndAppKeyDisabled: Bool {
-        return isAppLockEnabled && !isAppKeyEnabled
     }
 
     var isAppLockedAndAppKeyEnabled: Bool {

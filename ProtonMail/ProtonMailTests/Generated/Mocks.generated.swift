@@ -581,11 +581,6 @@ class MockLAContextProtocol: LAContextProtocol {
         canEvaluatePolicyStub(policy, error)
     }
 
-    @FuncStub(MockLAContextProtocol.evaluatePolicy) var evaluatePolicyStub
-    func evaluatePolicy(_ policy: LAPolicy, localizedReason: String, reply: @escaping (Bool, Error?) -> Void) {
-        evaluatePolicyStub(policy, localizedReason, reply)
-    }
-
 }
 
 class MockLabelManagerRouterProtocol: LabelManagerRouterProtocol {
@@ -780,22 +775,9 @@ class MockLockCacheStatus: LockCacheStatus {
         isAppKeyEnabledStub()
     }
 
-    @PropertyStub(\MockLockCacheStatus.isAppLockedAndAppKeyDisabled, initialGet: Bool()) var isAppLockedAndAppKeyDisabledStub
-    var isAppLockedAndAppKeyDisabled: Bool {
-        isAppLockedAndAppKeyDisabledStub()
-    }
-
     @PropertyStub(\MockLockCacheStatus.isAppLockedAndAppKeyEnabled, initialGet: Bool()) var isAppLockedAndAppKeyEnabledStub
     var isAppLockedAndAppKeyEnabled: Bool {
         isAppLockedAndAppKeyEnabledStub()
-    }
-
-}
-
-class MockLockPreferences: LockPreferences {
-    @FuncStub(MockLockPreferences.setLockTime) var setLockTimeStub
-    func setLockTime(value: AutolockTimeout) {
-        setLockTimeStub(value)
     }
 
 }
