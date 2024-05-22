@@ -18,38 +18,36 @@
 import Foundation
 import XCTest
 
-extension MailboxRobot {
+struct UITestBottomSheetLabelAsAlsoArchiveEntryModel: ApplicationHolder {
+    let parent: XCUIElement
 
     // MARK: UI Elements
 
-    private var container: XCUIElement {
-        application.otherElements[Identifiers.rootItem]
+    private var rootElement: XCUIElement {
+        parent.otherElements[Identifiers.rootElement]
     }
 
-    private var emptyIcon: XCUIElement {
-        container.images[Identifiers.emptyIcon]
+    private var icon: XCUIElement {
+        rootElement.images[Identifiers.alsoArchiveIcon]
     }
 
-    private var emptyTitle: XCUIElement {
-        container.staticTexts[Identifiers.emptyTitle]
-    }
-
-    private var emptyDescription: XCUIElement {
-        container.staticTexts[Identifiers.emptyDescription]
+    private var toggle: XCUIElement {
+        rootElement.switches[Identifiers.alsoArchiveToggle]
     }
 
     // MARK: Assertions
 
-    func verifyEmptyMailboxState() {
-        XCTAssertTrue(emptyIcon.isHittable)
-        XCTAssertTrue(emptyTitle.isHittable)
-        XCTAssertTrue(emptyDescription.isHittable)
+    func hasText() {
+        XCTAssertEqual("Also archive?", toggle.label)
+    }
+
+    func hasToggledState(_ value: Bool) {
+        XCTAssertEqual(value, toggle.value.booleanValue)
     }
 }
 
 private struct Identifiers {
-    static let rootItem = "mailbox.empty.rootItem"
-    static let emptyIcon = "mailbox.empty.icon"
-    static let emptyTitle = "mailbox.empty.title"
-    static let emptyDescription = "mailbox.empty.description"
+    static let rootElement = "bottomSheet.labelAs.alsoArchive"
+    static let alsoArchiveIcon = "bottomSheet.labelAs.alsoArchive.icon"
+    static let alsoArchiveToggle = "bottomSheet.labelAs.alsoArchive.toggle"
 }

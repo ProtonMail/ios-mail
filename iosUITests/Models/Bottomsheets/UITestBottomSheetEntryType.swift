@@ -16,27 +16,23 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import XCTest
 
-protocol Robot: ApplicationHolder {
-    var rootElement: XCUIElement { get }
-    func verifyShown()
-    func verifyHidden()
+enum UITestBottomSheetEntryType {
+    case folder
+    case createFolder
+    case label
+    case createLabel
 
-    init()
-}
-
-extension Robot {
-    func verifyShown() {
-        XCTAssert(rootElement.exists, "Root element of \(self) is not displayed.")
-    }
-
-    func verifyHidden() {
-        XCTAssertFalse(rootElement.isHittable, "Root element of \(self) is displayed.")
-    }
-
-    @discardableResult init(_ block: (Self) -> Void) {
-        self.init()
-        block(self)
+    func identifier() -> String {
+        switch self {
+        case .folder:
+            return "bottomSheet.moveTo.folderCell"
+        case .createFolder:
+            return "bottomSheet.moveTo.createNewFolderCell"
+        case .label:
+            return "bottomSheet.labelAs.labelCell"
+        case .createLabel:
+            return "bottomSheet.labelAs.createNewLabelCell"
+        }
     }
 }

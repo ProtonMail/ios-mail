@@ -16,16 +16,17 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import XCTest
 
-final class MailboxEmptyScreenTests: PMUITestCase {
+final class MailboxSelectionModeActionBarTests: PMUITestCase {
 
-    /// TestId 426599
-    func testEmptyStateInConversationMode() async {
+    /// TestId 426597
+    func testSelectionModeShowsActionBar() async {
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/conversations",
-                localPath: "conversations_empty.json",
+                localPath: "conversations_base_placeholder_multiple.json",
                 ignoreQueryParams: true
             )
         )
@@ -33,24 +34,20 @@ final class MailboxEmptyScreenTests: PMUITestCase {
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
-            $0.verifyEmptyMailboxState()
+            $0.verifyActionBarNotShown()
+
+            $0.selectItemAt(index: 0)
+            $0.verifyActionBarElements()
         }
     }
 
-    /// TestId 426600
-    func testEmptyStateInMessageMode() async {
+    /// TestId 426598
+    func testExitSelectionModeDismissesActionBar() async {
         await environment.mockServer.addRequestsWithDefaults(
-            useDefaultMailSettings: false,
             NetworkRequest(
                 method: .get,
-                remotePath: "/mail/v4/settings",
-                localPath: "mail-v4-settings_placeholder_messages.json",
-                serveOnce: true
-            ),
-            NetworkRequest(
-                method: .get,
-                remotePath: "/mail/v4/messages",
-                localPath: "messages_empty.json",
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_base_placeholder_multiple.json",
                 ignoreQueryParams: true
             )
         )
@@ -58,7 +55,11 @@ final class MailboxEmptyScreenTests: PMUITestCase {
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
-            $0.verifyEmptyMailboxState()
+            $0.selectItemAt(index: 0)
+            $0.verifyActionBarElements()
+
+            $0.unselectItemAt(index: 0)
+            $0.verifyActionBarNotShown()
         }
     }
 }

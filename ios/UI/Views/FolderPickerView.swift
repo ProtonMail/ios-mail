@@ -48,6 +48,8 @@ struct FolderPickerView: View {
                 .moveToSystemFolders()
                 .map { $0.toFolderPickerCellUIModel(parentIds: .init()) }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(FolderPickerViewIdentifiers.rootItem)
     }
 }
 
@@ -57,6 +59,7 @@ extension FolderPickerView {
         Text(LocalizationTemp.FolderPicker.title)
             .font(DS.Font.body3)
             .fontWeight(.bold)
+            .accessibilityIdentifier(FolderPickerViewIdentifiers.titleText)
     }
 
     @MainActor
@@ -69,12 +72,15 @@ extension FolderPickerView {
                 AddNewFolder()
                     .listRowBackground(DS.Color.Background.norm)
             }
+            .accessibilityIdentifier(FolderPickerViewIdentifiers.foldersList)
 
             Section {
                 forEachFor(folders: moveToSystemFolders) { uiModel in
                     onSelectionDone(uiModel.id)
                 }
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier(FolderPickerViewIdentifiers.systemFoldersList)
         }
         .introspect(.list, on: .iOS(.v17)) { collectionView in
             // fixing the default top content inset
@@ -83,16 +89,19 @@ extension FolderPickerView {
         .background(DS.Color.Background.secondary)
         .scrollContentBackground(.hidden)
         .scrollBounceBehavior(.basedOnSize)
+        .accessibilityElement(children: .contain)
     }
 
     private func forEachFor(folders: [FolderPickerCellUIModel], onSelection: @escaping (_ uiModel: FolderPickerCellUIModel) -> Void) -> some View {
-        ForEach(folders) { uiModel in
+        ForEach(Array(folders.enumerated()), id: \.1.id) { index, uiModel in
             FolderPickerCell(uiModel: uiModel)
                 .onTapGesture {
                     onSelection(uiModel)
                 }
+                .accessibilityIdentifier("\(FolderPickerViewIdentifiers.folderCell)\(index)")
         }
         .listRowBackground(DS.Color.Background.norm)
+        .accessibilityElement(children: .contain)
     }
 }
 
@@ -109,6 +118,7 @@ private struct AddNewFolder: View {
         }
         .listRowBackground(DS.Color.Background.norm)
         .padding(.vertical, 10)
+        .accessibilityIdentifier(FolderPickerViewIdentifiers.createNewFolderCell)
     }
 }
 
@@ -129,16 +139,32 @@ private struct FolderPickerCell: View {
             Image(uiImage: uiModel.icon)
                 .foregroundStyle(DS.Color.Icon.weak)
                 .padding(.leading, CGFloat(20 * uiModel.level))
+                .accessibilityIdentifier(FolderPickerViewIdentifiers.cellIcon)
             Text(uiModel.name)
                 .font(DS.Font.body3)
                 .foregroundStyle(DS.Color.Text.weak)
                 .lineLimit(1)
                 .padding(.leading, DS.Spacing.moderatelyLarge)
                 .padding(.leading, DS.Spacing.small)
+                .accessibilityIdentifier(FolderPickerViewIdentifiers.cellText)
             Spacer()
         }
         .contentShape(Rectangle())
         .padding(.vertical, DS.Spacing.standard)
         .customListLeadingSeparator()
+        .accessibilityElement(children: .contain)
     }
+}
+
+// MARK: Accessibility
+
+private struct FolderPickerViewIdentifiers {
+    static let rootItem = "bottomSheet.moveTo.rootItem"
+    static let titleText = "bottomSheet.moveTo.titleText"
+    static let foldersList = "bottomSheet.moveTo.foldersList"
+    static let systemFoldersList = "bottomSheet.moveTo.systemFoldersList"
+    static let folderCell = "bottomSheet.moveTo.folderCell"
+    static let createNewFolderCell = "bottomSheet.moveTo.createNewFolderCell"
+    static let cellText = "bottomSheet.cell.text"
+    static let cellIcon = "bottomSheet.cell.icon"
 }

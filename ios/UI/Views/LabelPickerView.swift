@@ -54,12 +54,15 @@ struct LabelPickerView: View {
                 buttonDone
                 Spacer()
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier(LabelPickerViewIdentifiers.rootItem)
         }
         .padding(.horizontal, DS.Spacing.extraLarge)
         .background(DS.Color.Background.secondary)
         .task {
             await initialiseState()
         }
+        .accessibilityElement(children: .contain)
     }
 }
 
@@ -69,12 +72,14 @@ extension LabelPickerView {
         Text(LocalizationTemp.LabelPicker.title)
             .font(DS.Font.body3)
             .fontWeight(.bold)
+            .accessibilityIdentifier(LabelPickerViewIdentifiers.titleText)
     }
 
     private var alsoArchiveView: some View {
         HStack(spacing: 0) {
             Image(uiImage: DS.Icon.icArchiveBox)
                 .foregroundStyle(DS.Color.Text.weak)
+                .accessibilityIdentifier(LabelPickerViewIdentifiers.alsoArchiveIcon)
             Toggle(isOn: $isArchiveSelected, label: {
                 Text(LocalizationTemp.LabelPicker.alsoArchive)
                     .font(DS.Font.body3)
@@ -84,17 +89,20 @@ extension LabelPickerView {
             .tint(DS.Color.Text.accent)
             .padding(.leading, DS.Spacing.large)
             .padding(.trailing, DS.Spacing.large)
+            .accessibilityIdentifier(LabelPickerViewIdentifiers.alsoArchiveToggle)
         }
         .padding(.vertical, DS.Spacing.large)
         .padding(.horizontal, DS.Spacing.large)
         .background(DS.Color.Background.norm)
         .clipShape(.rect(cornerRadius: DS.Radius.extraLarge))
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(LabelPickerViewIdentifiers.alsoArchiveRootElement)
     }
 
     @MainActor
     private var labelList: some View {
         List {
-            ForEach(labels) { uiModel in
+            ForEach(Array(labels.enumerated()), id: \.1.id) { index, uiModel in
                 VStack {
                     LabelPickerCell(uiModel: uiModel)
                         .onTapGesture {
@@ -102,16 +110,25 @@ extension LabelPickerView {
                                 await onCellTap(for: uiModel)
                             }
                         }
+                        .accessibilityElement(children: .contain)
+                        .accessibilityIdentifier("\(LabelPickerViewIdentifiers.labelCell)\(index)")
                 }
+                .accessibilityElement(children: .contain)
             }
             .listRowBackground(DS.Color.Background.norm)
 
             AddNewLabel()
                 .listRowBackground(DS.Color.Background.norm)
+                .accessibilityElement(children: .contain)
+                .accessibilityIdentifier(
+                    "\(LabelPickerViewIdentifiers.createNewLabelCell)\(labels.count)"
+                )
         }
         .background(DS.Color.Background.norm)
         .listStyle(.inset)
         .scrollBounceBehavior(.basedOnSize)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(LabelPickerViewIdentifiers.labelsList)
     }
 
     private var buttonDone: some View {
@@ -129,6 +146,7 @@ extension LabelPickerView {
             .buttonBorderShape(.capsule)
             .controlSize(.large)
             .tint(DS.Color.Brand.darken20)
+            .accessibilityIdentifier(LabelPickerViewIdentifiers.doneButton)
         }
     }
 }
@@ -199,16 +217,21 @@ private struct LabelPickerCell: View {
                 .frame(width: 12)
                 .foregroundStyle(uiModel.color)
                 .padding(.leading, DS.Spacing.tiny)
+                .accessibilityIdentifier(LabelPickerViewIdentifiers.cellIcon)
             Text(uiModel.name)
                 .font(DS.Font.body3)
                 .foregroundStyle(DS.Color.Text.weak)
                 .lineLimit(1)
                 .padding(.leading, DS.Spacing.moderatelyLarge)
                 .padding(.leading, DS.Spacing.small)
+                .accessibilityIdentifier(LabelPickerViewIdentifiers.cellText)
             Spacer()
             Image(uiImage: selectionImage)
                 .opacity(uiModel.itemsWithLabel.atLeastOne ? 1 : 0)
                 .foregroundStyle(DS.Color.Brand.norm)
+                .accessibilityIdentifier(
+                    LabelPickerViewIdentifiers.cellSelection(uiModel.itemsWithLabel.atLeastOne)
+                )
         }
         .contentShape(Rectangle())
         .padding(.vertical, DS.Spacing.standard)
@@ -222,10 +245,13 @@ private struct AddNewLabel: View {
         HStack() {
             Image(uiImage: DS.Icon.icPlus)
                 .foregroundStyle(DS.Color.Text.weak)
+                .accessibilityIdentifier(LabelPickerViewIdentifiers.cellIcon)
             Text(LocalizationTemp.LabelPicker.newLabel)
                 .font(DS.Font.body3)
                 .foregroundStyle(DS.Color.Text.weak)
                 .padding(.leading, DS.Spacing.moderatelyLarge)
+                .accessibilityIdentifier(LabelPickerViewIdentifiers.cellText)
+            
         }
         .listRowBackground(DS.Color.Background.norm)
         .padding(.vertical, 10)
@@ -252,4 +278,24 @@ private struct AddNewLabel: View {
         .padding(20)
     }
     .background(DS.Color.Background.secondary)
+}
+
+// MARK: Accessibility
+
+private struct LabelPickerViewIdentifiers {
+    static let rootItem = "bottomSheet.labelAs.rootItem"
+    static let titleText = "bottomSheet.labelAs.titleText"
+    static let alsoArchiveRootElement = "bottomSheet.labelAs.alsoArchive"
+    static let alsoArchiveIcon = "bottomSheet.labelAs.alsoArchive.icon"
+    static let alsoArchiveToggle = "bottomSheet.labelAs.alsoArchive.toggle"
+    static let labelsList = "bottomSheet.labelAs.labelsList"
+    static let labelCell = "bottomSheet.labelAs.labelCell"
+    static let createNewLabelCell = "bottomSheet.labelAs.createNewLabelCell"
+    static let cellText = "bottomSheet.cell.text"
+    static let cellIcon = "bottomSheet.cell.icon"
+    static let doneButton = "bottomSheet.labelAs.doneButton"
+    
+    static func cellSelection(_ value: Bool) -> String {
+        value ? "bottomSheet.cell.selectionIcon" : ""
+    }
 }

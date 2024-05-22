@@ -47,12 +47,17 @@ struct MailboxActionBarView: View {
     var body: some View {
         HStack(spacing: 48) {
             button(for: mailboxActions.action1)
+                .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button1)
             button(for: mailboxActions.action2)
+                .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button2)
             button(for: mailboxActions.action3)
+                .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button3)
             button(for: mailboxActions.action4)
+                .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button4)
             Button(action: {}, label: {
                 Image(uiImage: DS.Icon.icThreeDotsHorizontal)
             })
+            .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button5)
         }
         .frame(height: 44)
         .frame(maxWidth: .infinity)
@@ -62,6 +67,8 @@ struct MailboxActionBarView: View {
         .tint(DS.Color.Text.norm)
         .sheet(isPresented: $showLabelPicker, content: { labelPickerView })
         .sheet(isPresented: $showFolderPicker, content: { folderPickerView })
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(MailboxActionBarViewIdentifiers.rootItem)
     }
 
     @ViewBuilder
@@ -148,4 +155,15 @@ private extension View {
     }
     .environmentObject(userSettings)
 
+}
+
+// MARK: Accessibility
+
+private struct MailboxActionBarViewIdentifiers {
+    static let rootItem = "mailbox.actionBar.rootItem"
+    static let button1 = "mailbox.actionBar.button1"
+    static let button2 = "mailbox.actionBar.button2"
+    static let button3 = "mailbox.actionBar.button3"
+    static let button4 = "mailbox.actionBar.button4"
+    static let button5 = "mailbox.actionBar.button5"
 }

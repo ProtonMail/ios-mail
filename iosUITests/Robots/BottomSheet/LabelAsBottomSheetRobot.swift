@@ -18,25 +18,12 @@
 import Foundation
 import XCTest
 
-protocol Robot: ApplicationHolder {
-    var rootElement: XCUIElement { get }
-    func verifyShown()
-    func verifyHidden()
-
-    init()
+final class LabelAsBottomSheetRobot: Robot {
+    var rootElement: XCUIElement {
+        application.otherElements[Identifiers.rootItem]
+    }
 }
 
-extension Robot {
-    func verifyShown() {
-        XCTAssert(rootElement.exists, "Root element of \(self) is not displayed.")
-    }
-
-    func verifyHidden() {
-        XCTAssertFalse(rootElement.isHittable, "Root element of \(self) is displayed.")
-    }
-
-    @discardableResult init(_ block: (Self) -> Void) {
-        self.init()
-        block(self)
-    }
+private struct Identifiers {
+    static let rootItem = "bottomSheet.labelAs.rootItem"
 }

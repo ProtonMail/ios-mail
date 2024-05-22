@@ -39,6 +39,13 @@ extension UITestLoginType {
                     password: "password"
                 )
             )
+            static let YoungBee = UITestLoginType.loggedIn(
+                UITestUser(
+                    id: "yngbee",
+                    username: "youngbee@proton.black",
+                    password: "password"
+                )
+            )
         }
 
         enum External {

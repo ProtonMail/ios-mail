@@ -16,16 +16,21 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import XCTest
 
-final class MailboxEmptyScreenTests: PMUITestCase {
+final class MailboxSelectionModeLabelAsTests: PMUITestCase {
 
-    /// TestId 426599
-    func testEmptyStateInConversationMode() async {
+    override var loginType: UITestLoginType {
+        UITestLoginType.Mocked.Paid.YoungBee
+    }
+
+    /// TestId 427477
+    func testLabelAsBottomSheetClosedWithDoneButton() async {
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/conversations",
-                localPath: "conversations_empty.json",
+                localPath: "conversations_base_placeholder_multiple.json",
                 ignoreQueryParams: true
             )
         )
@@ -33,24 +38,25 @@ final class MailboxEmptyScreenTests: PMUITestCase {
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
-            $0.verifyEmptyMailboxState()
+            $0.selectItemAt(index: 0)
+            $0.tapAction4()
+        }
+
+        LabelAsBottomSheetRobot {
+            $0.verifyShown()
+
+            $0.tapDoneButton()
+            $0.verifyHidden()
         }
     }
 
-    /// TestId 426600
-    func testEmptyStateInMessageMode() async {
+    /// TestId 427478
+    func testLabelAsBottomSheetClosedWithExternalTap() async {
         await environment.mockServer.addRequestsWithDefaults(
-            useDefaultMailSettings: false,
             NetworkRequest(
                 method: .get,
-                remotePath: "/mail/v4/settings",
-                localPath: "mail-v4-settings_placeholder_messages.json",
-                serveOnce: true
-            ),
-            NetworkRequest(
-                method: .get,
-                remotePath: "/mail/v4/messages",
-                localPath: "messages_empty.json",
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_base_placeholder_multiple.json",
                 ignoreQueryParams: true
             )
         )
@@ -58,7 +64,20 @@ final class MailboxEmptyScreenTests: PMUITestCase {
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
-            $0.verifyEmptyMailboxState()
+            $0.selectItemAt(index: 0)
+            $0.tapAction4()
+        }
+
+        LabelAsBottomSheetRobot {
+            $0.verifyShown()
+        }
+
+        MailboxRobot {
+            $0.selectItemAt(index: 1)
+        }
+
+        LabelAsBottomSheetRobot {
+            $0.verifyHidden()
         }
     }
 }
