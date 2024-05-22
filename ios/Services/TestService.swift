@@ -17,17 +17,17 @@
 
 import Foundation
 
-final class TestService {
+final class TestService: Sendable {
     static let shared: TestService = .init()
 }
 
-#if !DEBUG
+#if !UITESTS
 extension TestService: ApplicationServiceSetUp {
     func setUpService() {}
 }
 #endif
 
-#if DEBUG
+#if UITESTS
 extension TestService: ApplicationServiceSetUp {
 
     func setUpService() {

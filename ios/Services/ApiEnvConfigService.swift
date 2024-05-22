@@ -18,7 +18,7 @@
 import Foundation
 import proton_mail_uniffi
 
-final class ApiEnvConfigService {
+final class ApiEnvConfigService: Sendable {
     static let shared: ApiEnvConfigService = .init()
     private var apiEnvConfig: ApiEnvConfig? = nil
     
@@ -27,13 +27,13 @@ final class ApiEnvConfigService {
     }
 }
 
-#if !DEBUG
+#if !UITESTS
 extension ApiEnvConfigService: ApplicationServiceSetUp {
     func setUpService() {}
 }
 #endif
 
-#if DEBUG
+#if UITESTS
 extension ApiEnvConfigService: ApplicationServiceSetUp {
     
     func setUpService() {

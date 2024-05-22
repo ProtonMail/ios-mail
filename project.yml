@@ -24,6 +24,11 @@ packages:
     url: https://github.com/siteline/swiftui-introspect
     minorVersion: "1.1.0"
 
+configs:
+  Debug: debug
+  Release: release
+  UITests: debug
+
 targets:
   ProtonMail:
     type: application 
@@ -50,7 +55,9 @@ targets:
         PROVISIONING_PROFILE_SPECIFIER: ""
         SWIFT_STRICT_CONCURRENCY: "complete"
       configs:
-        release:
+        UITests:
+           SWIFT_ACTIVE_COMPILATION_CONDITIONS: "UITESTS"
+        Release:
           CODE_SIGN_STYLE: Manual
           CODE_SIGN_IDENTITY: "iPhone Distribution: Proton AG (2SB5Z68H26)"
           PROVISIONING_PROFILE_SPECIFIER: "Mail - Engineering Transformation - Distribution"
@@ -101,7 +108,7 @@ targets:
     type: bundle.ui-testing
     platform: iOS
     info: 
-      path: iosUITests/Info/Info.plist  
+      path: iosUITests/Info/Info.plist
     sources:
       - path: iosUITests
       - path: iosUITests/NetworkMocks
@@ -113,9 +120,23 @@ targets:
         product: NIOHTTP1
       - package: SwiftNIOHTTP2 
         product: NIOHTTP2
-    scheme:
+    settings:
+      configs:
+        UITests: 
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: "UITESTS"
+    scheme: ProtonMailUITest
+
+schemes:
+  ProtonMailUITest:
+    build:
+      config: UITests
+      targets:
+        ProtonMail: all
+        ProtonMailUITest: all
+    test:
+      config: UITests
+      targets:
+        - ProtonMailUITest
       gatherCoverageData: true
-      testTargets:
-        - name: ProtonMailUITest
-          parallelizable: true
-          randomExecutionOrder: true
+      parallelizable: true
+      randomExecutionOrder: true

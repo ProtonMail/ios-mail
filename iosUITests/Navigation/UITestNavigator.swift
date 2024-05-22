@@ -18,7 +18,7 @@
 import Foundation
 import XCTest
 
-struct UITestNavigator {
+struct UITestNavigator: ApplicationHolder {
     let environment: UITestsEnvironment
     let loginType: UITestLoginType
 
@@ -58,7 +58,7 @@ struct UITestNavigator {
     }
 
     private func launchApp(environment: UITestsEnvironment) {
-        let app = XCUIApplication()
+        let app = application
 
         app.launchArguments += ["-uiTesting", "true"]
         app.launchArguments += ["-forceCleanState", "true"]
