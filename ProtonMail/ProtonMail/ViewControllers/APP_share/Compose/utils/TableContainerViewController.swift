@@ -22,6 +22,7 @@
 
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
+import UIKit
 
 protocol ScrollableContainer: AnyObject {
     func propagate(scrolling: CGPoint, boundsTouchedHandler: () -> Void)

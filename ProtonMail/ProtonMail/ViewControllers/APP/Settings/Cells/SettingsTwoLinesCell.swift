@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCoreFoundations
+import UIKit
 
 @IBDesignable class SettingsTwoLinesCell: UITableViewCell, AccessibleCell {
     @IBOutlet weak var topLineLabel: UILabel!

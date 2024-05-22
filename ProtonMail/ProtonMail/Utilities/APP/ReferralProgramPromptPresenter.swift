@@ -17,6 +17,7 @@
 
 import Foundation
 import ProtonCoreDataModel
+import UIKit
 
 final class ReferralProgramPromptPresenter {
     typealias Dependencies = HasUserDefaults

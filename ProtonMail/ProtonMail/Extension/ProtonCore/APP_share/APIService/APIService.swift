@@ -29,6 +29,7 @@ import ProtonCoreKeymaker
 import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonMailAnalytics
+import UIKit
 
 extension PMAPIService {
     private static let dispatchQueue = DispatchQueue(label: "ch.protonmail.PMAPIService.unauthorized")

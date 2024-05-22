@@ -22,6 +22,7 @@
 
 import Foundation
 import ProtonCoreUIFoundations
+import UIKit
 
 // abstract
 class AnyImagePickerDelegate: NSObject, AttachmentProvider, ImageProcessor {

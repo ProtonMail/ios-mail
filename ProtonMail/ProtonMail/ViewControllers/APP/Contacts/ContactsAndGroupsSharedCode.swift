@@ -24,6 +24,7 @@ import Contacts
 import ProtonCoreDataModel
 import ProtonCorePaymentsUI
 import ProtonCoreUIFoundations
+import UIKit
 
 class ContactsAndGroupsSharedCode: ProtonMailViewController {
     typealias Dependencies = HasPaymentsUIFactory & HasAutoImportContactsFeature
