@@ -24,10 +24,6 @@ extension UserInfo {
         false
     }
 
-    static var isRSVPMilestoneTwoEnabled: Bool {
-        Application.isDebugOrEnterprise
-    }
-
     static var isUpsellButtonEnabled: Bool {
         Application.isDebugOrEnterprise
     }

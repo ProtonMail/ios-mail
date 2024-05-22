@@ -214,7 +214,6 @@ final class AttachmentViewModel {
 
     private func updateRespondingOptions(eventDetails: EventDetails) {
         guard
-            UserInfo.isRSVPMilestoneTwoEnabled,
             dependencies.featureFlagProvider.isEnabled(.answerInvitation, reloadValue: true),
             eventDetails.status != .cancelled,
             let currentUserAmongInvitees = eventDetails.currentUserAmongInvitees
