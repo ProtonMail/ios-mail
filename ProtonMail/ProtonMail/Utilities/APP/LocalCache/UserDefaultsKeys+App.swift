@@ -20,6 +20,8 @@ import ProtonCorePayments
 extension UserDefaultsKeys {
     static let firstRunDate = plainKey(named: "firstRunDate", ofType: Date.self)
 
+    static let initialUserLoggedInVersion = plainKey(named: "initialUserLoggedInVersion", ofType: String.self)
+
     static let lastBugReport = plainKey(named: "BugReportCache_LastBugReport", defaultValue: "")
 
     static let referralProgramPromptWasShown = plainKey(named: "referralProgramPromptWasShown", defaultValue: false)

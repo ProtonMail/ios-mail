@@ -446,7 +446,7 @@ extension AppDelegate {
 
     /// If this is the first app launch, we clean the keychain to avoid state inconsistencies from a previous installation
     private func cleanKeychainInCaseOfAppReinstall() {
-        let isFirstLaunch = dependencies.userCachedStatus.initialUserLoggedInVersion == nil
+        let isFirstLaunch = UserDefaults.standard[.initialUserLoggedInVersion] == nil
         if isFirstLaunch {
             dependencies.keychain.removeEverything()
         }

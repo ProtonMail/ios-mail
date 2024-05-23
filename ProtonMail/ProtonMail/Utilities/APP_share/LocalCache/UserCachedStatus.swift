@@ -53,8 +53,6 @@ final class UserCachedStatus: UserCachedStatusProvider {
 
         static let localSystemUpTime = "localSystemUpTime"
         static let localServerTime = "localServerTime"
-
-        static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
     }
 
     // Do not set values for these keys, they are only needed to check for data saved by older versions
@@ -144,7 +142,6 @@ final class UserCachedStatus: UserCachedStatusProvider {
     func cleanAllData() {
         SystemLogger.log(message: "deleting user defaults and keychain")
         let protectedUserDefaultsKeys: [String] = [
-            Key.initialUserLoggedInVersion,
             UserDefaultsKeys.lastTourVersion.name,
             "latest_core_data_cache", // CoreDataCache.Key.coreDataVersion
             BackendConfigurationCache.Key.environment.rawValue,
@@ -201,18 +198,6 @@ extension UserCachedStatus: SwipeActionCacheProtocol {
         if self.userDefaults.int(forKey: Key.rightToLeftSwipeAction) == nil,
            let action = SwipeActionSettingType.convertFromServer(rawValue: rightToLeft) {
             self.rightToLeftSwipeActionType = action
-        }
-    }
-}
-
-extension UserCachedStatus {
-    var initialUserLoggedInVersion: String? {
-        get {
-            userDefaults.string(forKey: Key.initialUserLoggedInVersion)
-        }
-        set {
-            userDefaults.set(newValue, forKey: Key.initialUserLoggedInVersion)
-            userDefaults.synchronize()
         }
     }
 }

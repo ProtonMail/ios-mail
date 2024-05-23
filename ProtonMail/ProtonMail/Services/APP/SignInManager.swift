@@ -75,7 +75,7 @@ class SignInManager {
         }
 
         if usersManager.count == 0 {
-            userCachedStatus.initialUserLoggedInVersion = Bundle.main.majorVersion
+            UserDefaults.standard[.initialUserLoggedInVersion] = Bundle.main.majorVersion
         }
 
         // The spotlight views are only shown when user updates from old version.
