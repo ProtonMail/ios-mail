@@ -27,7 +27,7 @@ struct SettingsScreen: View {
                 Text("Settings Screen")
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(LocalizationTemp.settings)
+            .navigationTitle(LocalizationTemp.Settings.settings)
         }
     }
 }

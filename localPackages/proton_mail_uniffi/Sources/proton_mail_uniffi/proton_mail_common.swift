@@ -596,6 +596,150 @@ public func FfiConverterTypeDecryptedMessageBody_lower(_ value: DecryptedMessage
 }
 
 
+/**
+ * Result of the call to [`MailUserContext::filter_conversations`].
+ */
+public struct FilteredConversations {
+    /**
+     * Total number of conversations that match the filter.
+     */
+    public var total: UInt64
+    /**
+     * Returned conversations that match the filter.
+     */
+    public var conversations: [LocalConversation]
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(
+        /**
+         * Total number of conversations that match the filter.
+         */total: UInt64, 
+        /**
+         * Returned conversations that match the filter.
+         */conversations: [LocalConversation]) {
+        self.total = total
+        self.conversations = conversations
+    }
+}
+
+
+extension FilteredConversations: Sendable {} 
+extension FilteredConversations: Equatable, Hashable {
+    public static func ==(lhs: FilteredConversations, rhs: FilteredConversations) -> Bool {
+        if lhs.total != rhs.total {
+            return false
+        }
+        if lhs.conversations != rhs.conversations {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(total)
+        hasher.combine(conversations)
+    }
+}
+
+
+public struct FfiConverterTypeFilteredConversations: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> FilteredConversations {
+        return
+            try FilteredConversations(
+                total: FfiConverterUInt64.read(from: &buf), 
+                conversations: FfiConverterSequenceTypeLocalConversation.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: FilteredConversations, into buf: inout [UInt8]) {
+        FfiConverterUInt64.write(value.total, into: &buf)
+        FfiConverterSequenceTypeLocalConversation.write(value.conversations, into: &buf)
+    }
+}
+
+
+public func FfiConverterTypeFilteredConversations_lift(_ buf: RustBuffer) throws -> FilteredConversations {
+    return try FfiConverterTypeFilteredConversations.lift(buf)
+}
+
+public func FfiConverterTypeFilteredConversations_lower(_ value: FilteredConversations) -> RustBuffer {
+    return FfiConverterTypeFilteredConversations.lower(value)
+}
+
+
+/**
+ * Result of the call to [`MailUserContext::filter_messages`].
+ */
+public struct FilteredMessages {
+    /**
+     * Total number of message that match the filter.
+     */
+    public var total: UInt64
+    /**
+     * Returned messages that match the filter.
+     */
+    public var messages: [LocalMessageMetadata]
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(
+        /**
+         * Total number of message that match the filter.
+         */total: UInt64, 
+        /**
+         * Returned messages that match the filter.
+         */messages: [LocalMessageMetadata]) {
+        self.total = total
+        self.messages = messages
+    }
+}
+
+
+extension FilteredMessages: Sendable {} 
+extension FilteredMessages: Equatable, Hashable {
+    public static func ==(lhs: FilteredMessages, rhs: FilteredMessages) -> Bool {
+        if lhs.total != rhs.total {
+            return false
+        }
+        if lhs.messages != rhs.messages {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(total)
+        hasher.combine(messages)
+    }
+}
+
+
+public struct FfiConverterTypeFilteredMessages: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> FilteredMessages {
+        return
+            try FilteredMessages(
+                total: FfiConverterUInt64.read(from: &buf), 
+                messages: FfiConverterSequenceTypeLocalMessageMetadata.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: FilteredMessages, into buf: inout [UInt8]) {
+        FfiConverterUInt64.write(value.total, into: &buf)
+        FfiConverterSequenceTypeLocalMessageMetadata.write(value.messages, into: &buf)
+    }
+}
+
+
+public func FfiConverterTypeFilteredMessages_lift(_ buf: RustBuffer) throws -> FilteredMessages {
+    return try FfiConverterTypeFilteredMessages.lift(buf)
+}
+
+public func FfiConverterTypeFilteredMessages_lower(_ value: FilteredMessages) -> RustBuffer {
+    return FfiConverterTypeFilteredMessages.lower(value)
+}
+
+
 public struct LocalAttachmentMetadata {
     public var id: LocalAttachmentId
     public var rid: AttachmentId?
@@ -1782,6 +1926,28 @@ fileprivate struct FfiConverterSequenceTypeLocalAttachmentMetadata: FfiConverter
     }
 }
 
+fileprivate struct FfiConverterSequenceTypeLocalConversation: FfiConverterRustBuffer {
+    typealias SwiftType = [LocalConversation]
+
+    public static func write(_ value: [LocalConversation], into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        for item in value {
+            FfiConverterTypeLocalConversation.write(item, into: &buf)
+        }
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [LocalConversation] {
+        let len: Int32 = try readInt(&buf)
+        var seq = [LocalConversation]()
+        seq.reserveCapacity(Int(len))
+        for _ in 0 ..< len {
+            seq.append(try FfiConverterTypeLocalConversation.read(from: &buf))
+        }
+        return seq
+    }
+}
+
 fileprivate struct FfiConverterSequenceTypeLocalInlineLabelInfo: FfiConverterRustBuffer {
     typealias SwiftType = [LocalInlineLabelInfo]
 
@@ -1799,6 +1965,28 @@ fileprivate struct FfiConverterSequenceTypeLocalInlineLabelInfo: FfiConverterRus
         seq.reserveCapacity(Int(len))
         for _ in 0 ..< len {
             seq.append(try FfiConverterTypeLocalInlineLabelInfo.read(from: &buf))
+        }
+        return seq
+    }
+}
+
+fileprivate struct FfiConverterSequenceTypeLocalMessageMetadata: FfiConverterRustBuffer {
+    typealias SwiftType = [LocalMessageMetadata]
+
+    public static func write(_ value: [LocalMessageMetadata], into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        for item in value {
+            FfiConverterTypeLocalMessageMetadata.write(item, into: &buf)
+        }
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [LocalMessageMetadata] {
+        let len: Int32 = try readInt(&buf)
+        var seq = [LocalMessageMetadata]()
+        seq.reserveCapacity(Int(len))
+        for _ in 0 ..< len {
+            seq.append(try FfiConverterTypeLocalMessageMetadata.read(from: &buf))
         }
         return seq
     }

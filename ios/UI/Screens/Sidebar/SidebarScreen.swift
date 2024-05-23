@@ -67,6 +67,7 @@ struct SidebarScreen: View {
 
             ScrollView(showsIndicators: false) {
                 foldersAndLabelsView
+                subscriptionView
                 appVersionView
             }
             Spacer()
@@ -86,6 +87,23 @@ struct SidebarScreen: View {
                     screenModel.updateRoute(newRoute: systemFolder.route)
                     appUIState.isSidebarOpen = false
                 }
+            }
+        }
+        .padding(.init(top: 24.0, leading: 16.0, bottom: 24.0, trailing: 16.0))
+    }
+
+    var subscriptionView: some View {
+        VStack(spacing: 24) {
+            let uiModel = SidebarCellUIModel(
+                id: UInt64.max,
+                name: LocalizationTemp.Settings.subscription,
+                icon: DS.Icon.icPencil,
+                badge: "",
+                route: .subscription
+            )
+            SidebarCell(uiModel: uiModel, isSelected: false) {
+                screenModel.updateRoute(newRoute: uiModel.route)
+                appUIState.isSidebarOpen = false
             }
         }
         .padding(.init(top: 24.0, leading: 16.0, bottom: 24.0, trailing: 16.0))

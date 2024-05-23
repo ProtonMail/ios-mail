@@ -548,6 +548,334 @@ public func FfiConverterTypeAttachmentMetadata_lower(_ value: AttachmentMetadata
 }
 
 
+/**
+ * Parameters to filter/search conversations with a given criteria.
+ */
+public struct ConversationFilter {
+    /**
+     * Conversation ids to filter on.
+     */
+    public var ids: [ConversationId]?
+    /**
+     * Keyword search of Subject field.
+     */
+    public var subject: String?
+    /**
+     * Keyword search of From field.
+     */
+    public var from: String?
+    /**
+     * Keyword search of To, CC and BCC fields.
+     */
+    public var recipients: [String]?
+    /**
+     * Keyword search of To, CC, BCC, From and Subject fields
+     */
+    public var keyword: String?
+    /**
+     * Address id to filter on.
+     */
+    public var addressId: AddressId?
+    /**
+     * Label id to filter on.
+     */
+    public var labelId: LabelId?
+    /**
+     * External id to filter on.
+     */
+    public var externalId: ExternalId?
+    /**
+     * Return only conversations older, in creation time (NOT timestamp), than `end_id` if timestamp = `end`
+     */
+    public var endId: ConversationId?
+    /**
+     * Return only conversations newer, in creation time (NOT timestamp), than `begin_id` if timestamp = `begin`
+     */
+    public var beginId: ConversationId?
+    /**
+     * UNIX timestamp to filter conversations earlier than timestamp
+     */
+    public var begin: UInt64?
+    /**
+     * UNIX timestamp to filter conversations later than timestamp
+     */
+    public var end: UInt64?
+    /**
+     * If true, return results in descending order rather than ascending.
+     */
+    public var desc: Bool?
+    /**
+     * If true, only return conversations which have attachments. If false, only return
+     * conversations which have no attachments.
+     */
+    public var attachments: Bool?
+    /**
+     * If true, only return conversations which have unread messages. If false only return
+     * conversations which have all messages read.
+     */
+    public var unread: Bool?
+    /**
+     * Sort the results by one of the sorting modes.
+     */
+    public var sort: MessageMetadataSortMode?
+    /**
+     * The number of conversations to return.
+     */
+    public var limit: UInt64?
+    /**
+     * If true automatically convert simple queries to wildcarded versions, such as `test` to `*test*`.
+     */
+    public var autoWildcard: Bool?
+    /**
+     * Page index
+     */
+    public var page: UInt64
+    /**
+     * Number of elements per page.
+     */
+    public var pageSize: UInt64
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(
+        /**
+         * Conversation ids to filter on.
+         */ids: [ConversationId]?, 
+        /**
+         * Keyword search of Subject field.
+         */subject: String?, 
+        /**
+         * Keyword search of From field.
+         */from: String?, 
+        /**
+         * Keyword search of To, CC and BCC fields.
+         */recipients: [String]?, 
+        /**
+         * Keyword search of To, CC, BCC, From and Subject fields
+         */keyword: String?, 
+        /**
+         * Address id to filter on.
+         */addressId: AddressId?, 
+        /**
+         * Label id to filter on.
+         */labelId: LabelId?, 
+        /**
+         * External id to filter on.
+         */externalId: ExternalId?, 
+        /**
+         * Return only conversations older, in creation time (NOT timestamp), than `end_id` if timestamp = `end`
+         */endId: ConversationId?, 
+        /**
+         * Return only conversations newer, in creation time (NOT timestamp), than `begin_id` if timestamp = `begin`
+         */beginId: ConversationId?, 
+        /**
+         * UNIX timestamp to filter conversations earlier than timestamp
+         */begin: UInt64?, 
+        /**
+         * UNIX timestamp to filter conversations later than timestamp
+         */end: UInt64?, 
+        /**
+         * If true, return results in descending order rather than ascending.
+         */desc: Bool?, 
+        /**
+         * If true, only return conversations which have attachments. If false, only return
+         * conversations which have no attachments.
+         */attachments: Bool?, 
+        /**
+         * If true, only return conversations which have unread messages. If false only return
+         * conversations which have all messages read.
+         */unread: Bool?, 
+        /**
+         * Sort the results by one of the sorting modes.
+         */sort: MessageMetadataSortMode?, 
+        /**
+         * The number of conversations to return.
+         */limit: UInt64?, 
+        /**
+         * If true automatically convert simple queries to wildcarded versions, such as `test` to `*test*`.
+         */autoWildcard: Bool?, 
+        /**
+         * Page index
+         */page: UInt64, 
+        /**
+         * Number of elements per page.
+         */pageSize: UInt64) {
+        self.ids = ids
+        self.subject = subject
+        self.from = from
+        self.recipients = recipients
+        self.keyword = keyword
+        self.addressId = addressId
+        self.labelId = labelId
+        self.externalId = externalId
+        self.endId = endId
+        self.beginId = beginId
+        self.begin = begin
+        self.end = end
+        self.desc = desc
+        self.attachments = attachments
+        self.unread = unread
+        self.sort = sort
+        self.limit = limit
+        self.autoWildcard = autoWildcard
+        self.page = page
+        self.pageSize = pageSize
+    }
+}
+
+
+extension ConversationFilter: Sendable {} 
+extension ConversationFilter: Equatable, Hashable {
+    public static func ==(lhs: ConversationFilter, rhs: ConversationFilter) -> Bool {
+        if lhs.ids != rhs.ids {
+            return false
+        }
+        if lhs.subject != rhs.subject {
+            return false
+        }
+        if lhs.from != rhs.from {
+            return false
+        }
+        if lhs.recipients != rhs.recipients {
+            return false
+        }
+        if lhs.keyword != rhs.keyword {
+            return false
+        }
+        if lhs.addressId != rhs.addressId {
+            return false
+        }
+        if lhs.labelId != rhs.labelId {
+            return false
+        }
+        if lhs.externalId != rhs.externalId {
+            return false
+        }
+        if lhs.endId != rhs.endId {
+            return false
+        }
+        if lhs.beginId != rhs.beginId {
+            return false
+        }
+        if lhs.begin != rhs.begin {
+            return false
+        }
+        if lhs.end != rhs.end {
+            return false
+        }
+        if lhs.desc != rhs.desc {
+            return false
+        }
+        if lhs.attachments != rhs.attachments {
+            return false
+        }
+        if lhs.unread != rhs.unread {
+            return false
+        }
+        if lhs.sort != rhs.sort {
+            return false
+        }
+        if lhs.limit != rhs.limit {
+            return false
+        }
+        if lhs.autoWildcard != rhs.autoWildcard {
+            return false
+        }
+        if lhs.page != rhs.page {
+            return false
+        }
+        if lhs.pageSize != rhs.pageSize {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(ids)
+        hasher.combine(subject)
+        hasher.combine(from)
+        hasher.combine(recipients)
+        hasher.combine(keyword)
+        hasher.combine(addressId)
+        hasher.combine(labelId)
+        hasher.combine(externalId)
+        hasher.combine(endId)
+        hasher.combine(beginId)
+        hasher.combine(begin)
+        hasher.combine(end)
+        hasher.combine(desc)
+        hasher.combine(attachments)
+        hasher.combine(unread)
+        hasher.combine(sort)
+        hasher.combine(limit)
+        hasher.combine(autoWildcard)
+        hasher.combine(page)
+        hasher.combine(pageSize)
+    }
+}
+
+
+public struct FfiConverterTypeConversationFilter: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> ConversationFilter {
+        return
+            try ConversationFilter(
+                ids: FfiConverterOptionSequenceTypeConversationId.read(from: &buf), 
+                subject: FfiConverterOptionString.read(from: &buf), 
+                from: FfiConverterOptionString.read(from: &buf), 
+                recipients: FfiConverterOptionSequenceString.read(from: &buf), 
+                keyword: FfiConverterOptionString.read(from: &buf), 
+                addressId: FfiConverterOptionTypeAddressId.read(from: &buf), 
+                labelId: FfiConverterOptionTypeLabelId.read(from: &buf), 
+                externalId: FfiConverterOptionTypeExternalId.read(from: &buf), 
+                endId: FfiConverterOptionTypeConversationId.read(from: &buf), 
+                beginId: FfiConverterOptionTypeConversationId.read(from: &buf), 
+                begin: FfiConverterOptionUInt64.read(from: &buf), 
+                end: FfiConverterOptionUInt64.read(from: &buf), 
+                desc: FfiConverterOptionBool.read(from: &buf), 
+                attachments: FfiConverterOptionBool.read(from: &buf), 
+                unread: FfiConverterOptionBool.read(from: &buf), 
+                sort: FfiConverterOptionTypeMessageMetadataSortMode.read(from: &buf), 
+                limit: FfiConverterOptionUInt64.read(from: &buf), 
+                autoWildcard: FfiConverterOptionBool.read(from: &buf), 
+                page: FfiConverterUInt64.read(from: &buf), 
+                pageSize: FfiConverterUInt64.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: ConversationFilter, into buf: inout [UInt8]) {
+        FfiConverterOptionSequenceTypeConversationId.write(value.ids, into: &buf)
+        FfiConverterOptionString.write(value.subject, into: &buf)
+        FfiConverterOptionString.write(value.from, into: &buf)
+        FfiConverterOptionSequenceString.write(value.recipients, into: &buf)
+        FfiConverterOptionString.write(value.keyword, into: &buf)
+        FfiConverterOptionTypeAddressId.write(value.addressId, into: &buf)
+        FfiConverterOptionTypeLabelId.write(value.labelId, into: &buf)
+        FfiConverterOptionTypeExternalId.write(value.externalId, into: &buf)
+        FfiConverterOptionTypeConversationId.write(value.endId, into: &buf)
+        FfiConverterOptionTypeConversationId.write(value.beginId, into: &buf)
+        FfiConverterOptionUInt64.write(value.begin, into: &buf)
+        FfiConverterOptionUInt64.write(value.end, into: &buf)
+        FfiConverterOptionBool.write(value.desc, into: &buf)
+        FfiConverterOptionBool.write(value.attachments, into: &buf)
+        FfiConverterOptionBool.write(value.unread, into: &buf)
+        FfiConverterOptionTypeMessageMetadataSortMode.write(value.sort, into: &buf)
+        FfiConverterOptionUInt64.write(value.limit, into: &buf)
+        FfiConverterOptionBool.write(value.autoWildcard, into: &buf)
+        FfiConverterUInt64.write(value.page, into: &buf)
+        FfiConverterUInt64.write(value.pageSize, into: &buf)
+    }
+}
+
+
+public func FfiConverterTypeConversationFilter_lift(_ buf: RustBuffer) throws -> ConversationFilter {
+    return try FfiConverterTypeConversationFilter.lift(buf)
+}
+
+public func FfiConverterTypeConversationFilter_lower(_ value: ConversationFilter) -> RustBuffer {
+    return FfiConverterTypeConversationFilter.lower(value)
+}
+
+
 public struct Label {
     public var id: LabelId
     public var parentId: LabelId?
@@ -1246,6 +1574,388 @@ public func FfiConverterTypeMessageAddress_lift(_ buf: RustBuffer) throws -> Mes
 
 public func FfiConverterTypeMessageAddress_lower(_ value: MessageAddress) -> RustBuffer {
     return FfiConverterTypeMessageAddress.lower(value)
+}
+
+
+/**
+ * Parameters to filter/search messages with a given criteria.
+ */
+public struct MessageMetadataFilter {
+    /**
+     * Page index.
+     */
+    public var page: UInt64
+    /**
+     * Number of elements per page.
+     */
+    public var pageSize: UInt64
+    /**
+     * The number of messages to return.
+     */
+    public var limit: UInt64?
+    /**
+     * Label ids to filter on.
+     */
+    public var labelId: [LabelId]?
+    /**
+     * Result sort mode.
+     */
+    public var sort: MessageMetadataSortMode?
+    /**
+     * If true sort results descending. If false, sort ascending.
+     */
+    public var desc: Bool?
+    /**
+     * UNIX timestamp to filter messages at or later than timestamp.
+     */
+    public var begin: UInt64?
+    /**
+     * UNIX timestamp to filter messages at or earlier than timestamp.
+     */
+    public var end: UInt64?
+    /**
+     * Return only messages newer, in creation time (NOT timestamp), than `begin_id`.
+     */
+    public var beginId: MessageId?
+    /**
+     * Return only messages older, in creation time (NOT timestamp), than `end_id`.
+     */
+    public var endId: MessageId?
+    /**
+     * Keyword search of To, CC, BCC, From and Subject fields.
+     */
+    public var keyword: String?
+    /**
+     * Keyword search of To, CC and BCC fields.
+     */
+    public var recipients: [String]?
+    /**
+     * Keyword search of To field.
+     */
+    public var to: String?
+    /**
+     * Keyword search of CC field.
+     */
+    public var cc: String?
+    /**
+     * Keyword search of BCC field.
+     */
+    public var bcc: String?
+    /**
+     * Keyword search From field.
+     */
+    public var from: String?
+    /**
+     * Keyword search Subject field.
+     */
+    public var subject: String?
+    /**
+     * If true return only messages which have attachments. If false return only messages which
+     * have no attachments.
+     */
+    public var attachments: Bool?
+    /**
+     * If true return only messages which are unread. If false return only messages which are read.
+     */
+    public var unread: Bool?
+    /**
+     * Filter messages by `conversation_id`.
+     */
+    public var conversationId: ConversationId?
+    /**
+     * Filter on address id.
+     */
+    public var addressId: AddressId?
+    /**
+     * Filter on external id.
+     */
+    public var externalId: ExternalId?
+    /**
+     * Filter on the given message ids.
+     */
+    public var ids: [MessageId]?
+    /**
+     * If true automatically convert simple queries to wildcarded versions, such as `test` to `*test*`.
+     */
+    public var autoWildcard: Bool?
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(
+        /**
+         * Page index.
+         */page: UInt64, 
+        /**
+         * Number of elements per page.
+         */pageSize: UInt64, 
+        /**
+         * The number of messages to return.
+         */limit: UInt64?, 
+        /**
+         * Label ids to filter on.
+         */labelId: [LabelId]?, 
+        /**
+         * Result sort mode.
+         */sort: MessageMetadataSortMode?, 
+        /**
+         * If true sort results descending. If false, sort ascending.
+         */desc: Bool?, 
+        /**
+         * UNIX timestamp to filter messages at or later than timestamp.
+         */begin: UInt64?, 
+        /**
+         * UNIX timestamp to filter messages at or earlier than timestamp.
+         */end: UInt64?, 
+        /**
+         * Return only messages newer, in creation time (NOT timestamp), than `begin_id`.
+         */beginId: MessageId?, 
+        /**
+         * Return only messages older, in creation time (NOT timestamp), than `end_id`.
+         */endId: MessageId?, 
+        /**
+         * Keyword search of To, CC, BCC, From and Subject fields.
+         */keyword: String?, 
+        /**
+         * Keyword search of To, CC and BCC fields.
+         */recipients: [String]?, 
+        /**
+         * Keyword search of To field.
+         */to: String?, 
+        /**
+         * Keyword search of CC field.
+         */cc: String?, 
+        /**
+         * Keyword search of BCC field.
+         */bcc: String?, 
+        /**
+         * Keyword search From field.
+         */from: String?, 
+        /**
+         * Keyword search Subject field.
+         */subject: String?, 
+        /**
+         * If true return only messages which have attachments. If false return only messages which
+         * have no attachments.
+         */attachments: Bool?, 
+        /**
+         * If true return only messages which are unread. If false return only messages which are read.
+         */unread: Bool?, 
+        /**
+         * Filter messages by `conversation_id`.
+         */conversationId: ConversationId?, 
+        /**
+         * Filter on address id.
+         */addressId: AddressId?, 
+        /**
+         * Filter on external id.
+         */externalId: ExternalId?, 
+        /**
+         * Filter on the given message ids.
+         */ids: [MessageId]?, 
+        /**
+         * If true automatically convert simple queries to wildcarded versions, such as `test` to `*test*`.
+         */autoWildcard: Bool?) {
+        self.page = page
+        self.pageSize = pageSize
+        self.limit = limit
+        self.labelId = labelId
+        self.sort = sort
+        self.desc = desc
+        self.begin = begin
+        self.end = end
+        self.beginId = beginId
+        self.endId = endId
+        self.keyword = keyword
+        self.recipients = recipients
+        self.to = to
+        self.cc = cc
+        self.bcc = bcc
+        self.from = from
+        self.subject = subject
+        self.attachments = attachments
+        self.unread = unread
+        self.conversationId = conversationId
+        self.addressId = addressId
+        self.externalId = externalId
+        self.ids = ids
+        self.autoWildcard = autoWildcard
+    }
+}
+
+
+extension MessageMetadataFilter: Sendable {} 
+extension MessageMetadataFilter: Equatable, Hashable {
+    public static func ==(lhs: MessageMetadataFilter, rhs: MessageMetadataFilter) -> Bool {
+        if lhs.page != rhs.page {
+            return false
+        }
+        if lhs.pageSize != rhs.pageSize {
+            return false
+        }
+        if lhs.limit != rhs.limit {
+            return false
+        }
+        if lhs.labelId != rhs.labelId {
+            return false
+        }
+        if lhs.sort != rhs.sort {
+            return false
+        }
+        if lhs.desc != rhs.desc {
+            return false
+        }
+        if lhs.begin != rhs.begin {
+            return false
+        }
+        if lhs.end != rhs.end {
+            return false
+        }
+        if lhs.beginId != rhs.beginId {
+            return false
+        }
+        if lhs.endId != rhs.endId {
+            return false
+        }
+        if lhs.keyword != rhs.keyword {
+            return false
+        }
+        if lhs.recipients != rhs.recipients {
+            return false
+        }
+        if lhs.to != rhs.to {
+            return false
+        }
+        if lhs.cc != rhs.cc {
+            return false
+        }
+        if lhs.bcc != rhs.bcc {
+            return false
+        }
+        if lhs.from != rhs.from {
+            return false
+        }
+        if lhs.subject != rhs.subject {
+            return false
+        }
+        if lhs.attachments != rhs.attachments {
+            return false
+        }
+        if lhs.unread != rhs.unread {
+            return false
+        }
+        if lhs.conversationId != rhs.conversationId {
+            return false
+        }
+        if lhs.addressId != rhs.addressId {
+            return false
+        }
+        if lhs.externalId != rhs.externalId {
+            return false
+        }
+        if lhs.ids != rhs.ids {
+            return false
+        }
+        if lhs.autoWildcard != rhs.autoWildcard {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(page)
+        hasher.combine(pageSize)
+        hasher.combine(limit)
+        hasher.combine(labelId)
+        hasher.combine(sort)
+        hasher.combine(desc)
+        hasher.combine(begin)
+        hasher.combine(end)
+        hasher.combine(beginId)
+        hasher.combine(endId)
+        hasher.combine(keyword)
+        hasher.combine(recipients)
+        hasher.combine(to)
+        hasher.combine(cc)
+        hasher.combine(bcc)
+        hasher.combine(from)
+        hasher.combine(subject)
+        hasher.combine(attachments)
+        hasher.combine(unread)
+        hasher.combine(conversationId)
+        hasher.combine(addressId)
+        hasher.combine(externalId)
+        hasher.combine(ids)
+        hasher.combine(autoWildcard)
+    }
+}
+
+
+public struct FfiConverterTypeMessageMetadataFilter: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> MessageMetadataFilter {
+        return
+            try MessageMetadataFilter(
+                page: FfiConverterUInt64.read(from: &buf), 
+                pageSize: FfiConverterUInt64.read(from: &buf), 
+                limit: FfiConverterOptionUInt64.read(from: &buf), 
+                labelId: FfiConverterOptionSequenceTypeLabelId.read(from: &buf), 
+                sort: FfiConverterOptionTypeMessageMetadataSortMode.read(from: &buf), 
+                desc: FfiConverterOptionBool.read(from: &buf), 
+                begin: FfiConverterOptionUInt64.read(from: &buf), 
+                end: FfiConverterOptionUInt64.read(from: &buf), 
+                beginId: FfiConverterOptionTypeMessageId.read(from: &buf), 
+                endId: FfiConverterOptionTypeMessageId.read(from: &buf), 
+                keyword: FfiConverterOptionString.read(from: &buf), 
+                recipients: FfiConverterOptionSequenceString.read(from: &buf), 
+                to: FfiConverterOptionString.read(from: &buf), 
+                cc: FfiConverterOptionString.read(from: &buf), 
+                bcc: FfiConverterOptionString.read(from: &buf), 
+                from: FfiConverterOptionString.read(from: &buf), 
+                subject: FfiConverterOptionString.read(from: &buf), 
+                attachments: FfiConverterOptionBool.read(from: &buf), 
+                unread: FfiConverterOptionBool.read(from: &buf), 
+                conversationId: FfiConverterOptionTypeConversationId.read(from: &buf), 
+                addressId: FfiConverterOptionTypeAddressId.read(from: &buf), 
+                externalId: FfiConverterOptionTypeExternalId.read(from: &buf), 
+                ids: FfiConverterOptionSequenceTypeMessageId.read(from: &buf), 
+                autoWildcard: FfiConverterOptionBool.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: MessageMetadataFilter, into buf: inout [UInt8]) {
+        FfiConverterUInt64.write(value.page, into: &buf)
+        FfiConverterUInt64.write(value.pageSize, into: &buf)
+        FfiConverterOptionUInt64.write(value.limit, into: &buf)
+        FfiConverterOptionSequenceTypeLabelId.write(value.labelId, into: &buf)
+        FfiConverterOptionTypeMessageMetadataSortMode.write(value.sort, into: &buf)
+        FfiConverterOptionBool.write(value.desc, into: &buf)
+        FfiConverterOptionUInt64.write(value.begin, into: &buf)
+        FfiConverterOptionUInt64.write(value.end, into: &buf)
+        FfiConverterOptionTypeMessageId.write(value.beginId, into: &buf)
+        FfiConverterOptionTypeMessageId.write(value.endId, into: &buf)
+        FfiConverterOptionString.write(value.keyword, into: &buf)
+        FfiConverterOptionSequenceString.write(value.recipients, into: &buf)
+        FfiConverterOptionString.write(value.to, into: &buf)
+        FfiConverterOptionString.write(value.cc, into: &buf)
+        FfiConverterOptionString.write(value.bcc, into: &buf)
+        FfiConverterOptionString.write(value.from, into: &buf)
+        FfiConverterOptionString.write(value.subject, into: &buf)
+        FfiConverterOptionBool.write(value.attachments, into: &buf)
+        FfiConverterOptionBool.write(value.unread, into: &buf)
+        FfiConverterOptionTypeConversationId.write(value.conversationId, into: &buf)
+        FfiConverterOptionTypeAddressId.write(value.addressId, into: &buf)
+        FfiConverterOptionTypeExternalId.write(value.externalId, into: &buf)
+        FfiConverterOptionSequenceTypeMessageId.write(value.ids, into: &buf)
+        FfiConverterOptionBool.write(value.autoWildcard, into: &buf)
+    }
+}
+
+
+public func FfiConverterTypeMessageMetadataFilter_lift(_ buf: RustBuffer) throws -> MessageMetadataFilter {
+    return try FfiConverterTypeMessageMetadataFilter.lift(buf)
+}
+
+public func FfiConverterTypeMessageMetadataFilter_lower(_ value: MessageMetadataFilter) -> RustBuffer {
+    return FfiConverterTypeMessageMetadataFilter.lower(value)
 }
 
 
@@ -2226,6 +2936,68 @@ extension MailSettingsViewMode: Equatable, Hashable {}
 // Note that we don't yet support `indirect` for enums.
 // See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
 
+public enum MessageMetadataSortMode {
+    
+    case time
+    case size
+    case id
+}
+
+
+public struct FfiConverterTypeMessageMetadataSortMode: FfiConverterRustBuffer {
+    typealias SwiftType = MessageMetadataSortMode
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> MessageMetadataSortMode {
+        let variant: Int32 = try readInt(&buf)
+        switch variant {
+        
+        case 1: return .time
+        
+        case 2: return .size
+        
+        case 3: return .id
+        
+        default: throw UniffiInternalError.unexpectedEnumCase
+        }
+    }
+
+    public static func write(_ value: MessageMetadataSortMode, into buf: inout [UInt8]) {
+        switch value {
+        
+        
+        case .time:
+            writeInt(&buf, Int32(1))
+        
+        
+        case .size:
+            writeInt(&buf, Int32(2))
+        
+        
+        case .id:
+            writeInt(&buf, Int32(3))
+        
+        }
+    }
+}
+
+
+public func FfiConverterTypeMessageMetadataSortMode_lift(_ buf: RustBuffer) throws -> MessageMetadataSortMode {
+    return try FfiConverterTypeMessageMetadataSortMode.lift(buf)
+}
+
+public func FfiConverterTypeMessageMetadataSortMode_lower(_ value: MessageMetadataSortMode) -> RustBuffer {
+    return FfiConverterTypeMessageMetadataSortMode.lower(value)
+}
+
+
+extension MessageMetadataSortMode: Sendable {} 
+extension MessageMetadataSortMode: Equatable, Hashable {}
+
+
+
+// Note that we don't yet support `indirect` for enums.
+// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
+
 public enum MimeType {
     
     case textPlain
@@ -2315,6 +3087,27 @@ fileprivate struct FfiConverterOptionUInt32: FfiConverterRustBuffer {
         switch try readInt(&buf) as Int8 {
         case 0: return nil
         case 1: return try FfiConverterUInt32.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
+fileprivate struct FfiConverterOptionUInt64: FfiConverterRustBuffer {
+    typealias SwiftType = UInt64?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterUInt64.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterUInt64.read(from: &buf)
         default: throw UniffiInternalError.unexpectedOptionalTag
         }
     }
@@ -2425,6 +3218,174 @@ fileprivate struct FfiConverterOptionTypeMailSettingsSpamAction: FfiConverterRus
     }
 }
 
+fileprivate struct FfiConverterOptionTypeMessageMetadataSortMode: FfiConverterRustBuffer {
+    typealias SwiftType = MessageMetadataSortMode?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterTypeMessageMetadataSortMode.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterTypeMessageMetadataSortMode.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
+fileprivate struct FfiConverterOptionSequenceString: FfiConverterRustBuffer {
+    typealias SwiftType = [String]?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterSequenceString.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterSequenceString.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
+fileprivate struct FfiConverterOptionSequenceTypeConversationId: FfiConverterRustBuffer {
+    typealias SwiftType = [ConversationId]?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterSequenceTypeConversationId.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterSequenceTypeConversationId.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
+fileprivate struct FfiConverterOptionSequenceTypeLabelId: FfiConverterRustBuffer {
+    typealias SwiftType = [LabelId]?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterSequenceTypeLabelId.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterSequenceTypeLabelId.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
+fileprivate struct FfiConverterOptionSequenceTypeMessageId: FfiConverterRustBuffer {
+    typealias SwiftType = [MessageId]?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterSequenceTypeMessageId.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterSequenceTypeMessageId.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
+fileprivate struct FfiConverterOptionTypeAddressId: FfiConverterRustBuffer {
+    typealias SwiftType = AddressId?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterTypeAddressId.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterTypeAddressId.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
+fileprivate struct FfiConverterOptionTypeConversationId: FfiConverterRustBuffer {
+    typealias SwiftType = ConversationId?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterTypeConversationId.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterTypeConversationId.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
+fileprivate struct FfiConverterOptionTypeExternalId: FfiConverterRustBuffer {
+    typealias SwiftType = ExternalId?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterTypeExternalId.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterTypeExternalId.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
 fileprivate struct FfiConverterOptionTypeLabelId: FfiConverterRustBuffer {
     typealias SwiftType = LabelId?
 
@@ -2441,6 +3402,27 @@ fileprivate struct FfiConverterOptionTypeLabelId: FfiConverterRustBuffer {
         switch try readInt(&buf) as Int8 {
         case 0: return nil
         case 1: return try FfiConverterTypeLabelId.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
+fileprivate struct FfiConverterOptionTypeMessageId: FfiConverterRustBuffer {
+    typealias SwiftType = MessageId?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterTypeMessageId.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterTypeMessageId.read(from: &buf)
         default: throw UniffiInternalError.unexpectedOptionalTag
         }
     }
@@ -2467,6 +3449,74 @@ fileprivate struct FfiConverterSequenceString: FfiConverterRustBuffer {
         return seq
     }
 }
+
+fileprivate struct FfiConverterSequenceTypeConversationId: FfiConverterRustBuffer {
+    typealias SwiftType = [ConversationId]
+
+    public static func write(_ value: [ConversationId], into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        for item in value {
+            FfiConverterTypeConversationId.write(item, into: &buf)
+        }
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [ConversationId] {
+        let len: Int32 = try readInt(&buf)
+        var seq = [ConversationId]()
+        seq.reserveCapacity(Int(len))
+        for _ in 0 ..< len {
+            seq.append(try FfiConverterTypeConversationId.read(from: &buf))
+        }
+        return seq
+    }
+}
+
+fileprivate struct FfiConverterSequenceTypeLabelId: FfiConverterRustBuffer {
+    typealias SwiftType = [LabelId]
+
+    public static func write(_ value: [LabelId], into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        for item in value {
+            FfiConverterTypeLabelId.write(item, into: &buf)
+        }
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [LabelId] {
+        let len: Int32 = try readInt(&buf)
+        var seq = [LabelId]()
+        seq.reserveCapacity(Int(len))
+        for _ in 0 ..< len {
+            seq.append(try FfiConverterTypeLabelId.read(from: &buf))
+        }
+        return seq
+    }
+}
+
+fileprivate struct FfiConverterSequenceTypeMessageId: FfiConverterRustBuffer {
+    typealias SwiftType = [MessageId]
+
+    public static func write(_ value: [MessageId], into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        for item in value {
+            FfiConverterTypeMessageId.write(item, into: &buf)
+        }
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [MessageId] {
+        let len: Int32 = try readInt(&buf)
+        var seq = [MessageId]()
+        seq.reserveCapacity(Int(len))
+        for _ in 0 ..< len {
+            seq.append(try FfiConverterTypeMessageId.read(from: &buf))
+        }
+        return seq
+    }
+}
+
+
 
 
 /**

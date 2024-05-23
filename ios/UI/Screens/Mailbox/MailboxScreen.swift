@@ -56,7 +56,7 @@ extension MailboxScreen {
         }
         .background(DS.Color.Background.norm) // sets also the color for the navigation bar
         .navigationBarTitleDisplayMode(.inline)
-        .mailboxToolbar(title: navigationTitle, selectionMode: mailboxModel.selectionMode)
+        .mainToolbar(title: navigationTitle, selectionMode: mailboxModel.selectionMode)
         .accessibilityElement(children: .contain)
     }
 

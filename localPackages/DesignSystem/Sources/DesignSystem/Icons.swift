@@ -26,6 +26,7 @@ public extension DS.Icon {
     static let icInbox = icon(named: "ic-inbox")
     static let icMinus = icon(named: "ic-minus")
     static let icPaperPlane = icon(named: "ic-paper-plane")
+    static let icPencil = icon(named: "ic-pencil")
     static let icPlus = icon(named: "ic-plus")
     static let icStarFilled = icon(named: "ic-star-filled")
     static let icTrash = icon(named: "ic-trash")

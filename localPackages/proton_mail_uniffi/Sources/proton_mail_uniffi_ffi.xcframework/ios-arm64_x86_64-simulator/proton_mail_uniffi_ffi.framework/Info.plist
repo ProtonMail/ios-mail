@@ -7,9 +7,9 @@
     <key>CFBundleName</key>
     <string>proton_mail_uniffi_ffi</string>
     <key>CFBundleVersion</key>
-    <string>0.10.15</string>
+    <string>0.10.18</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.10.15</string>
+    <string>0.10.18</string>
     <key>CFBundleExecutable</key>
     <string>proton_mail_uniffi_ffi</string>
     <key>MinimumOSVersion</key>

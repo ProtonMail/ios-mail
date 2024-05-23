@@ -36,6 +36,8 @@ struct AuthenticatedScreens: View {
                 MailboxScreen(customLabelModel: customLabelModel, mailSettings: mailSettings)
             case .settings:
                 SettingsScreen()
+            case .subscription:
+                SubscriptionScreen()
             }
             SidebarScreen(screenModel: .init(appRoute: appRoute))
         }

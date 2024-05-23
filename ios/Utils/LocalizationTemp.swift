@@ -80,5 +80,8 @@ enum LocalizationTemp {
         static let newFolder = "Create new folder"
     }
 
-    static let settings = "Settings"
+    enum Settings {
+        static let settings = "Settings"
+        static let subscription = "Subscription"
+    }
 }

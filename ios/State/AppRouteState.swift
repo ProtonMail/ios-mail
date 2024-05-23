@@ -48,6 +48,7 @@ enum Route: Equatable, CustomStringConvertible {
     case appLaunching
     case mailbox(label: SelectedMailbox)
     case settings
+    case subscription
 
     var selectedMailbox: SelectedMailbox? {
         if case .mailbox(let label) = self {
@@ -65,10 +66,14 @@ enum Route: Equatable, CustomStringConvertible {
 
     var description: String {
         switch self {
-        case .appLaunching, .settings:
-            "\(self)"
+        case .appLaunching:
+            "appLaunching"
         case .mailbox(let label):
             "mailbox \(label.name)"
+        case .settings:
+            "settings"
+        case .subscription:
+            "subscription"
         }
     }
 }
