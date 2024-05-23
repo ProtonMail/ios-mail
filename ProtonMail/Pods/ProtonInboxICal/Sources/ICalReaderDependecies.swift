@@ -24,7 +24,7 @@ public struct ICalReaderDependecies {
     public let endDateTimeZone: TimeZone
     public let calendarID: String
     public let localEventID: String
-    public let allEmailsCanonized: [String]
+    public let addresses: [ICalAddress]
     public let ics: String
     public let apiEventID: String?
     public let startDateCalendar: Calendar
@@ -49,7 +49,7 @@ public struct ICalReaderDependecies {
         endDateTimeZone: TimeZone,
         calendarID: String,
         localEventID: String,
-        allEmailsCanonized: [String],
+        addresses: [ICalAddress],
         ics: String,
         apiEventID: String?,
         startDateCalendar: Calendar,
@@ -71,7 +71,7 @@ public struct ICalReaderDependecies {
         self.endDateTimeZone = endDateTimeZone
         self.calendarID = calendarID
         self.localEventID = localEventID
-        self.allEmailsCanonized = allEmailsCanonized
+        self.addresses = addresses
         self.ics = ics
         self.apiEventID = apiEventID
         self.startDateCalendar = startDateCalendar

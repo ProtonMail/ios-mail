@@ -46,27 +46,34 @@ public struct AnswerToEventPermissionValidator {
 
     private func currentUserInvitedActiveAddressWithAttendee(at event: ICalEvent) -> Participant? {
         let addresses = emailAddressStorage.currentUserAddresses()
-        let currentUserParticipants = addresses
-            .filter(\.send)
-            .compactMap(eventAttendeeLinkedWithAddress(in: event.participants))
-            .sorted(by: \.address, SortingDescriptors.increasing(by: \.order))
-            .sorted(by: \.attendee, SortingDescriptors.trueFirst(by: \.answered))
-
-        return currentUserParticipants.first
+        return CurrentUserParticipantResolver.resolve(
+            participants: event.participants,
+            addresses: addresses.map(ICalAddress.init)
+        ).flatMap { participant in
+            Participant(
+                address: addresses.first(where: { address in address.id == participant.address.id }),
+                attendee: participant.atendee
+            )
+        }
     }
 
-    private func eventAttendeeLinkedWithAddress(in attendees: [ICalAttendee]) -> (Address_v2) -> Participant? {
-        return { address in
-            let attendee = attendees.first { attendee in
-                attendee.user.email.canonicalizedEmailAddress == address.email.canonicalizedEmailAddress
-            }
+}
 
-            guard let attendee = attendee else {
-                return nil
-            }
+private extension Participant {
 
-            return .init(attendee: attendee, address: address)
+    init?(address: Address_v2?, attendee: ICalAttendee) {
+        guard let address = address else {
+            return nil
         }
+        self.init(attendee: attendee, address: address)
+    }
+
+}
+
+private extension ICalAddress {
+
+    init(address: Address_v2) {
+        self.init(id: address.id, email: address.email, order: address.order, send: address.send)
     }
 
 }
@@ -75,15 +82,6 @@ private extension ICalEvent {
 
     var isCancelled: Bool {
         status == "CANCELLED"
-    }
-
-}
-
-private extension ICalAttendee {
-
-    var answered: Bool {
-        let answeredStatuses: [EKParticipantStatus] = [.accepted, .tentative, .declined]
-        return answeredStatuses.contains(status)
     }
 
 }

@@ -307,8 +307,8 @@ PODS:
   - ProtonCore-Utilities (22.0.0):
     - ProtonCore-Log (= 22.0.0)
   - ProtonCore-VCard (22.0.0)
-  - ProtonInboxICal (0.2.7)
-  - ProtonInboxRSVP (0.4.0):
+  - ProtonInboxICal (0.2.9)
+  - ProtonInboxRSVP (0.4.1):
     - ProtonCore-Crypto
     - ProtonCore-DataModel
     - ProtonCore-Features
@@ -702,10 +702,10 @@ CHECKOUT OPTIONS:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 22.0.0
   ProtonInboxICal:
-    :commit: 2b8a2ddf667f55efb98beb7ce7a0ca1633dd9543
+    :commit: 19427b717b59264558b4fa81c1e06276843de87a
     :git: "git@gitlab.protontech.ch:apple/inbox/protoninboxical.git"
   ProtonInboxRSVP:
-    :commit: 30bd5b9769b6cddb7c79c4412255bb76e31f0715
+    :commit: 976555c850de6441329e0aa237be2db737edfdaa
     :git: "git@gitlab.protontech.ch:apple/inbox/protoninboxrsvp.git"
   Sentry:
     :git: "git@gitlab.protontech.ch:jchen/sentry-cocoa.git"
@@ -774,8 +774,8 @@ SPEC CHECKSUMS:
   ProtonCore-UIFoundations: 8c296ab396375483c586fb2833f9e18dc337d6d5
   ProtonCore-Utilities: 107857ee80bc9c33e268b735d363f7b086d2a496
   ProtonCore-VCard: d83777b7c0e940d4489aea7ef472a2411e1706b5
-  ProtonInboxICal: bcc8e19ccdd3956f3e5e27909b1224291157b061
-  ProtonInboxRSVP: 63ff9cfdb4c6ce5850f7fcd0c7d620752a92e513
+  ProtonInboxICal: fe3c6f8f015d790538c9b5f4ec0f0845dfed8ac8
+  ProtonInboxRSVP: 918fd6fe0d34b8daed90dd9086246e27d2a7d9ca
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: cb032eba469c54e0000e78bcb0a13cdde0a52798
   Sentry: 97161cac725da1ecbe77d1445bf8a61c1e5667f1
