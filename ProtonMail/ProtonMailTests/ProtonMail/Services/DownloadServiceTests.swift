@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 import XCTest
 
 final class DownloadServiceTests: XCTestCase {

@@ -7,12 +7,12 @@
 //
 
 import XCTest
-import ProtonCoreAccountSwitcher
-import ProtonCoreForceUpgrade
 import ProtonCoreLoginUI
 import ProtonCoreQuarkCommands
-import ProtonCoreTestingToolkit
 import fusion
+import ProtonCoreTestingToolkitUITestsHumanVerification
+import ProtonCoreTestingToolkitUITestsLogin
+import ProtonCoreTestingToolkitUITestsPaymentsUI
 
 fileprivate struct id {
     static let logoutCell = "MenuItemTableViewCell.Sign_out"
@@ -27,17 +27,17 @@ fileprivate struct id {
     static let settingsStaticText = "MenuItemTableViewCell.\(LocalString._menu_settings_title)"
     static let subscriptionStaticText = "MenuItemTableViewCell.\(LocalString._menu_service_plan_title)"
     static let sidebarHeaderViewOtherIdentifier = "MenuViewController.primaryUserview"
-    static let manageAccountsStaticTextLabel = ASTranslation.manage_accounts.l10n
+    static let manageAccountsStaticTextLabel = "Manage accounts"
     static let primaryViewIdentifier = "AccountSwitcher.primaryView"
     static let primaryUserViewIdentifier = "MenuViewController.primaryUserview"
     static let primaryUserNameTextIdentifier = "AccountSwitcher.username"
     static let primaryUserMailTextIdentifier = "AccountSwitcher.usermail"
     static func primaryUserMailStaticTextIdentifier(_ name: String) -> String { return "\(name).usermail" }
     static let iapErrorAlertTitle = LocalString._general_alert_title
-    static let forceUpgrateAlertTitle = FUTranslation.alert_title.l10n
+    static let forceUpgrateAlertTitle = "Update required"
     static let forceUpgrateAlertMessage = "Test error description"
-    static let forceUpgrateLearnMoreButton = FUTranslation.alert_learn_more_button.l10n
-    static let forceUpgrateUpdateButton = FUTranslation.alert_update_button.l10n
+    static let forceUpgrateLearnMoreButton = "Learn more"
+    static let forceUpgrateUpdateButton = "Update"
     static let signInButtonLabel = LUITranslation.sign_in_button.l10n
     static func signInButtonIdentifier(_ name: String) -> String { return "\(name).signInBtn" }
     static func userAccountCellIdentifier(_ name: String) -> String { return "AccountSwitcherCell.\(name)" }

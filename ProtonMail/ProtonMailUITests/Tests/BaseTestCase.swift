@@ -11,7 +11,8 @@ import XCTest
 import fusion
 import ProtonCoreLog
 import ProtonCoreQuarkCommands
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUITestsCore
+import ProtonCoreTestingToolkitUITestsLogin
 import Yams
 
 let apiDomainKey = "MAIL_APP_API_DOMAIN"

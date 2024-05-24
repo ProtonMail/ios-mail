@@ -8,7 +8,7 @@
 
 import fusion
 import ProtonCoreQuarkCommands
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUITestsLogin
 
 fileprivate struct id {
     static let addAccountButtonIdentifier = "UINavigationItem.rightBarButtonItem"

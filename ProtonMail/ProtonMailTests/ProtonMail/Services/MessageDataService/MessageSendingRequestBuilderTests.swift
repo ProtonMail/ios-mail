@@ -19,7 +19,7 @@ import CoreData
 import ProtonCoreCrypto
 import ProtonCoreCryptoGoInterface
 import ProtonCoreDataModel
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 @testable import ProtonMail
 import XCTest
 

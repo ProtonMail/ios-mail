@@ -1,6 +1,0 @@
-framework module ProtonCoreLoginUI {
-  umbrella header "ProtonCore-LoginUI-umbrella.h"
-
-  export *
-  module * { export * }
-}

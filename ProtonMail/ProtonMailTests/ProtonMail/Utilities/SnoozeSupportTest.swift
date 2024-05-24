@@ -17,7 +17,7 @@
 
 import CoreData
 import ProtonCoreUIFoundations
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 import XCTest
 import protocol ProtonCoreServices.APIService
 @testable import ProtonMail

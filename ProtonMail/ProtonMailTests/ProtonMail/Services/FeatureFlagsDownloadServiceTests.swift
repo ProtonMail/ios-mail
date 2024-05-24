@@ -18,7 +18,7 @@
 import XCTest
 @testable import ProtonMail
 import ProtonCoreNetworking
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 
 class FeatureFlagsDownloadServiceTests: XCTestCase {
 

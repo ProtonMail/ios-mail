@@ -26,6 +26,14 @@
          "dependencies": [
             {
                "sdk": "UserNotifications.framework"
+            },
+            {
+               "package": "ProtonCore",
+               "products": [
+                  "ProtonCoreCrypto",
+                  "ProtonCoreCryptoGoImplementation",
+                  "ProtonCoreKeymaker"
+               ]
             }
          ],
          "configFiles": {

@@ -18,7 +18,7 @@
 import CoreData
 import Foundation
 @testable import ProtonMail
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 import XCTest
 
 final class EventsServiceTests: XCTestCase {

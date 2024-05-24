@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreCrypto
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 @testable import ProtonMail
 import VCard
 import XCTest

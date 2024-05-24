@@ -9,7 +9,7 @@
 import Foundation
 import XCTest
 
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUITestsLogin
 
 class ReplyToMessageTests: FixtureAuthenticatedTestCase {
 

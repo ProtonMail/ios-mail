@@ -7,7 +7,6 @@
 
 #include "PushService-Shared.xcconfig"
 #include "Production-common.xcconfig"
-#include "../../Pods/Target Support Files/Pods-PushService/Pods-PushService.debug.xcconfig"
 
 OTHER_SWIFT_FLAGS = $(inherited) -DDEBUG_ENTERPRISE
 PROVISIONING_PROFILE_SPECIFIER = protonmail push service dev

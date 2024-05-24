@@ -17,7 +17,7 @@
 
 import XCTest
 @testable import ProtonMail
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 
 final class NotificationCenterMock: NotificationCenterProtocol {
     @FuncStub(NotificationCenterMock.removeDeliveredNotifications) var callRemove

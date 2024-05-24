@@ -18,7 +18,7 @@
 @testable import ProtonMail
 import XCTest
 import ProtonCoreServices
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 
 final class FetchMessageMetaDataUseCaseTests: XCTestCase {
     var sut: FetchMessageMetaDataUseCase!

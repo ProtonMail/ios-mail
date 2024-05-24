@@ -21,7 +21,7 @@ import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreNetworking
 import ProtonCoreServices
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 @testable import ProtonMail
 
 class MockMessageDataService: MessageDataServiceProtocol {

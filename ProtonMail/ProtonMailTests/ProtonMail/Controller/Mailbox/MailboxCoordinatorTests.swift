@@ -17,7 +17,8 @@
 
 import XCTest
 @testable import ProtonMail
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
+import ProtonCoreTestingToolkitUnitTestsServices
 
 class MailboxCoordinatorTests: XCTestCase {
 

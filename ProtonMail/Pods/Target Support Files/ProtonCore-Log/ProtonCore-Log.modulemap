@@ -1,6 +1,0 @@
-framework module ProtonCoreLog {
-  umbrella header "ProtonCore-Log-umbrella.h"
-
-  export *
-  module * { export * }
-}

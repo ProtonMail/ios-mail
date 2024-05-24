@@ -1,6 +1,0 @@
-framework module ProtonCoreCryptoGoInterface {
-  umbrella header "ProtonCore-CryptoGoInterface-umbrella.h"
-
-  export *
-  module * { export * }
-}

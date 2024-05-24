@@ -22,7 +22,7 @@
 
 import XCTest
 import ProtonCoreDoh
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsDoh
 
 @testable import ProtonMail
 
