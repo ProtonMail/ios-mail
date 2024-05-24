@@ -31,6 +31,12 @@ platform :ios do
       )
   end
 
+  desc "Setup UI Tests assets"
+    lane :setup_uitests_assets do
+    sh("../scripts/uitests/setup-mock-network-assets.sh setup-remote")
+    sh("xcodegen -s ../project.yml") # We need to do it another time to include UI tests assets.
+  end
+
   desc "Run UI tests"
   lane :uitests do
     run_tests(
