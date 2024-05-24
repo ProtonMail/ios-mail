@@ -27,7 +27,7 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
     private var mockQueueManager: MockQueueManager!
     private var mockExecuteNotificationAction: MockExecuteNotificationAction!
     private var mockIsNetworkAvailable: Bool!
-    private var mockCacheStatusInject: CacheStatusStub!
+    private var mockCacheStatusInject: MockLockCacheStatus!
     private var mockNotificationCenter: NotificationCenter!
     private var mockUserNotificationCenter: UNUserNotificationCenter!
     private var mockUsersManager: MockUsersManagerProtocol!
@@ -45,7 +45,7 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
         mockQueueManager = MockQueueManager()
         mockExecuteNotificationAction = MockExecuteNotificationAction()
         mockIsNetworkAvailable = true
-        mockCacheStatusInject = CacheStatusStub()
+        mockCacheStatusInject = .init()
         mockNotificationCenter = NotificationCenter()
         mockUserNotificationCenter = UNUserNotificationCenter.current()
         sut = PushNotificationActionsHandler(dependencies: makeDependencies())
@@ -69,7 +69,7 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
     }
 
     func testRegisterActions_whenAppLockedAndAppKeyEnabled() {
-        mockCacheStatusInject.isAppLockedAndAppKeyEnabled = true
+        mockCacheStatusInject.isAppLockedAndAppKeyEnabledStub.fixture = true
         sut.registerActions()
 
         let expectation = expectation(description: "categories are registered")
@@ -81,7 +81,7 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
     }
 
     func testRegisterActions_whenNotAppLockedAndAppKeyEnabled() {
-        mockCacheStatusInject.isAppLockedAndAppKeyEnabled = false
+        mockCacheStatusInject.isAppLockedAndAppKeyEnabledStub.fixture = false
         sut.registerActions()
 
         let expectation = expectation(description: "categories are registered")
@@ -147,7 +147,7 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
     }
 
     func testRegisterActions_whenActionsAreRegisteredAndAppKeyEnabledReceived_itShouldDeregisterActions() {
-        mockCacheStatusInject.isAppLockedAndAppKeyEnabled = false
+        mockCacheStatusInject.isAppLockedAndAppKeyEnabledStub.fixture = false
         sut.registerActions()
 
         let expectation1 = expectation(description: "categories are registered")
@@ -158,7 +158,7 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2.0)
 
         // Security is enabled
-        mockCacheStatusInject.isAppLockedAndAppKeyEnabled = true
+        mockCacheStatusInject.isAppLockedAndAppKeyEnabledStub.fixture = true
         mockNotificationCenter.post(name: .appKeyEnabled, object: nil)
 
         let expectation2 = expectation(description: "categories are unregistered")
@@ -171,7 +171,7 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
     }
 
     func testRegisterActions_whenActionsAreNotRegisteredAndAppKeyDisabledReceived_itShouldRegisterActions() {
-        mockCacheStatusInject.isAppLockedAndAppKeyEnabled = true
+        mockCacheStatusInject.isAppLockedAndAppKeyEnabledStub.fixture = true
         sut.registerActions()
 
         let expectation1 = expectation(description: "categories are not registered")
@@ -182,7 +182,7 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2.0)
 
         // Security is disabled
-        mockCacheStatusInject.isAppLockedAndAppKeyEnabled = false
+        mockCacheStatusInject.isAppLockedAndAppKeyEnabledStub.fixture = false
         mockNotificationCenter.post(name: .appKeyDisabled, object: nil)
 
         let expectation2 = expectation(description: "categories are registered")

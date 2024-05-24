@@ -34,7 +34,7 @@ final class SendMessageTaskTests: XCTestCase {
     private var mockEventsService: EventsServiceMock!
     private var mockNotificationHandler: MockNotificationHandler!
     private var mockLocalNotificationService: LocalNotificationService!
-    private var mockUndoActionManager: MockUndoActionManager!
+    private var mockUndoActionManager: MockUndoActionManagerProtocol!
     private var mockNotificationCenter: NotificationCenter!
 
     private let dummyID = "dummyID"
@@ -68,7 +68,7 @@ final class SendMessageTaskTests: XCTestCase {
             userID: UserID.init(rawValue: dummyID),
             notificationHandler: mockNotificationHandler
         )
-        mockUndoActionManager = MockUndoActionManager()
+        mockUndoActionManager = .init()
         mockNotificationCenter = NotificationCenter()
 
         // Configurations
@@ -115,7 +115,7 @@ final class SendMessageTaskTests: XCTestCase {
         let expect = expectation(description: "")
         sut.run(params: makeDummyParams()) { [unowned self] error in
             XCTAssertNil(error)
-            XCTAssertTrue(mockNotificationHandler.callRemovePendingNoti.wasCalledExactlyOnce)
+            XCTAssertTrue(mockNotificationHandler.removePendingNotificationRequestsStub.wasCalledExactlyOnce)
             expect.fulfill()
         }
         waitForExpectations(timeout: waitTimeout)
@@ -125,7 +125,7 @@ final class SendMessageTaskTests: XCTestCase {
         let expect = expectation(description: "")
         sut.run(params: makeDummyParams()) { [unowned self] error in
             XCTAssertNil(error)
-            XCTAssertTrue(mockUndoActionManager.callShowUndoSendBanner.wasCalledExactlyOnce)
+            XCTAssertTrue(mockUndoActionManager.showUndoSendBannerStub.wasCalledExactlyOnce)
             expect.fulfill()
         }
         waitForExpectations(timeout: waitTimeout)
@@ -189,7 +189,7 @@ final class SendMessageTaskTests: XCTestCase {
         mockSendMessageUseCase.result = .failure(nsError)
         sut.run(params: makeDummyParams()) { [unowned self] error in
             XCTAssertNotNil(error)
-            XCTAssertTrue(mockNotificationHandler.callAdd.wasCalledExactlyOnce)
+            XCTAssertTrue(mockNotificationHandler.addStub.wasCalledExactlyOnce)
             expect.fulfill()
         }
         waitForExpectations(timeout: waitTimeout)
@@ -231,7 +231,7 @@ final class SendMessageTaskTests: XCTestCase {
         mockSendMessageUseCase.result = .failure(makeAPIError(with: APIErrorCode.invalidRequirements))
         sut.run(params: makeDummyParams()) { [unowned self] error in
             XCTAssertNil(error)
-            XCTAssertTrue(mockNotificationHandler.callRemovePendingNoti.wasCalledExactlyOnce)
+            XCTAssertTrue(mockNotificationHandler.removePendingNotificationRequestsStub.wasCalledExactlyOnce)
             expect.fulfill()
         }
         waitForExpectations(timeout: waitTimeout)

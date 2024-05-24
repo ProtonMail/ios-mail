@@ -51,6 +51,7 @@ extension UIDevice: BiometricStatusProvider {
     }
 }
 
+// sourcery: mock
 protocol BiometricStatusProvider {
     var biometricType: BiometricType { get }
 }

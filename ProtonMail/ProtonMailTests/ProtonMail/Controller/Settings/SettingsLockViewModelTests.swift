@@ -27,7 +27,7 @@ import ProtonCoreKeymaker
 class SettingsLockViewModelTests: XCTestCase {
     var sut: SettingsLockViewModel!
     var mockRouter: MockSettingsLockRouterProtocol!
-    var biometricStub: BioMetricStatusStub!
+    var biometricStub: MockBiometricStatusProvider!
     var mockKeymaker: MockKeyMakerProtocol!
     var isAppKeyEnabled: Bool = false
     var mockUI: MockSettingsLockUIProtocol!
@@ -39,8 +39,8 @@ class SettingsLockViewModelTests: XCTestCase {
         try super.setUpWithError()
 
         mockRouter = MockSettingsLockRouterProtocol()
-        biometricStub = BioMetricStatusStub()
-        biometricStub.biometricTypeStub = .faceID
+        biometricStub = .init()
+        biometricStub.biometricTypeStub.fixture = .faceID
         mockKeymaker = MockKeyMakerProtocol()
         mockKeymaker.activateStub.bodyIs { _, _, completion in completion(true) }
         mockKeymaker.deactivateStub.bodyIs { _, _ in return true }

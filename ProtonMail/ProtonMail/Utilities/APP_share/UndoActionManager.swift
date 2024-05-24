@@ -21,6 +21,7 @@ import ProtonCoreServices
 import ProtonCoreUIFoundations
 import UIKit
 
+// sourcery: mock
 protocol UndoActionManagerProtocol {
     func addUndoToken(_ token: UndoTokenData, undoActionType: UndoAction?)
     func addUndoTokens(_ tokens: [String], undoActionType: UndoAction?)
