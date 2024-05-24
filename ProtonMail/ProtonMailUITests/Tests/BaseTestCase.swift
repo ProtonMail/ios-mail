@@ -9,8 +9,6 @@
 import Foundation
 import XCTest
 import fusion
-@testable import ProtonMail
-import ProtonCoreEnvironment
 import ProtonCoreLog
 import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkit

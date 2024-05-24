@@ -7,7 +7,6 @@
 //
 
 import fusion
-import ProtonMail
 
 fileprivate struct id {
     static let saveNavBarButtonIdentifier = "ContactEditViewController.doneButton"
@@ -16,7 +15,7 @@ fileprivate struct id {
     static let addNewEmailCellIdentifier = "ContactEditAddCell.Add_new_email"
     static let emailTextFieldIdentifier = "Email_address.valueField"
     static let deleteCellIdentifier = "ContactEditAddCell.Delete_contact"
-    static let deleteContactButtonText = LocalString._delete_contact
+    static let deleteContactButtonText = "Delete contact"
 }
 
 /**

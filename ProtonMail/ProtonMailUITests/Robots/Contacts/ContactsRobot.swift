@@ -7,23 +7,22 @@
 //
 
 import fusion
-import ProtonMail
 import XCTest
 
 fileprivate struct id {
-    static let addContactAlertButtonText = LocalString._contacts_new_contact
-    static let addGroupAlertButtonText = LocalString._contact_groups_new
-    static let deleteContactAlertButtonText = LocalString._delete_contact
-    static let deleteGroupAlertButtonText = LocalString._contact_groups_delete
-    static let deleteButtonText = LocalString._general_delete_action
-    static let contactsTabBarButtonIdentifier = "UITabBar.\(LocalString._contacts_title)"
-    static let groupsTabBarButtonIdentifier = "UITabBar.\(LocalString._menu_contact_group_title)"
+    static let addContactAlertButtonText = "New contact"
+    static let addGroupAlertButtonText = "New group"
+    static let deleteContactAlertButtonText = "Delete contact"
+    static let deleteGroupAlertButtonText = "Delete contact group"
+    static let deleteButtonText = "Delete"
+    static let contactsTabBarButtonIdentifier = "UITabBar.Contacts"
+    static let groupsTabBarButtonIdentifier = "UITabBar.Groups"
     static func contactCellIdentifier(_ name: String) -> String { return "ContactsTableViewCell.\(name)" }
     static func groupCellIdentifier(_ name: String) -> String { return "ContactGroupsViewCell.\(name)" }
     static func groupStaticTextIdentifier(_ name: String) -> String { return "\(name).nameLabel" }
     static func groupCellSendImailButtonIdentifier(_ name: String) -> String { return "\(name).sendButton" }
     static let menuButtonIdentifier = "Menu"
-    static let addContactNavBarButtonText = LocalString._general_create_action
+    static let addContactNavBarButtonText = "Create"
     static let importContactNavBarButtonIdentifier = "UINavigationItem.importButton"
     static let contactsTableViewIdentifier = "ContactsViewController.tableView"
 }

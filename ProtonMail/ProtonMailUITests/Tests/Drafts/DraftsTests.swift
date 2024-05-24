@@ -6,8 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import ProtonCoreTestingToolkit
-
+import Foundation
 
 class DraftsTests: FixtureAuthenticatedTestCase {
 

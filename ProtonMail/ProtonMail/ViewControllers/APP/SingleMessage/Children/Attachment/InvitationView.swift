@@ -17,6 +17,7 @@
 
 import ProtonCoreUIFoundations
 import ProtonInboxRSVP
+import UIKit
 
 final class InvitationView: UIView {
     private let container = SubviewFactory.container

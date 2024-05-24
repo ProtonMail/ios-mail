@@ -9,7 +9,6 @@
 import Foundation
 import XCTest
 
-import ProtonCoreTestingToolkit
 
 class ForwardMessageTests: FixtureAuthenticatedTestCase {
 
