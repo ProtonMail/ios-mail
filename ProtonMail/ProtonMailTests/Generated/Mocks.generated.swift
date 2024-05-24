@@ -108,6 +108,14 @@ class MockBackendConfigurationCacheProtocol: BackendConfigurationCacheProtocol {
 
 }
 
+class MockBiometricStatusProvider: BiometricStatusProvider {
+    @PropertyStub(\MockBiometricStatusProvider.biometricType, initialGet: .none) var biometricTypeStub
+    var biometricType: BiometricType {
+        biometricTypeStub()
+    }
+
+}
+
 class MockBlockedSenderCacheUpdaterDelegate: BlockedSenderCacheUpdaterDelegate {
     @FuncStub(MockBlockedSenderCacheUpdaterDelegate.blockedSenderCacheUpdater) var blockedSenderCacheUpdaterStub
     func blockedSenderCacheUpdater(_ blockedSenderCacheUpdater: BlockedSenderCacheUpdater, didEnter newState: BlockedSenderCacheUpdater.State) {
@@ -931,6 +939,34 @@ class MockNextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
 
 }
 
+class MockNotificationHandler: NotificationHandler {
+    @FuncStub(MockNotificationHandler.add) var addStub
+    func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?) {
+        addStub(request, completionHandler)
+    }
+
+    @FuncStub(MockNotificationHandler.removePendingNotificationRequests) var removePendingNotificationRequestsStub
+    func removePendingNotificationRequests(withIdentifiers identifiers: [String]) {
+        removePendingNotificationRequestsStub(identifiers)
+    }
+
+    @FuncStub(MockNotificationHandler.getPendingNotificationRequests) var getPendingNotificationRequestsStub
+    func getPendingNotificationRequests(completionHandler: @escaping ([UNNotificationRequest]) -> Void) {
+        getPendingNotificationRequestsStub(completionHandler)
+    }
+
+    @FuncStub(MockNotificationHandler.getDeliveredNotifications) var getDeliveredNotificationsStub
+    func getDeliveredNotifications(completionHandler: @escaping ([UNNotification]) -> Void) {
+        getDeliveredNotificationsStub(completionHandler)
+    }
+
+    @FuncStub(MockNotificationHandler.removeDeliveredNotifications) var removeDeliveredNotificationsStub
+    func removeDeliveredNotifications(withIdentifiers identifiers: [String]) {
+        removeDeliveredNotificationsStub(identifiers)
+    }
+
+}
+
 class MockPMPersistentQueueProtocol: PMPersistentQueueProtocol {
     @PropertyStub(\MockPMPersistentQueueProtocol.count, initialGet: Int()) var countStub
     var count: Int {
@@ -1238,6 +1274,44 @@ class MockURLSessionProtocol: URLSessionProtocol {
     @ThrowingFuncStub(MockURLSessionProtocol.data, initialReturn: .crash) var dataStub
     func data(for request: URLRequest) throws -> (Data, URLResponse) {
         try dataStub(request)
+    }
+
+}
+
+class MockUndoActionManagerProtocol: UndoActionManagerProtocol {
+    @FuncStub(MockUndoActionManagerProtocol.addUndoToken) var addUndoTokenStub
+    func addUndoToken(_ token: UndoTokenData, undoActionType: UndoAction?) {
+        addUndoTokenStub(token, undoActionType)
+    }
+
+    @FuncStub(MockUndoActionManagerProtocol.addUndoTokens) var addUndoTokensStub
+    func addUndoTokens(_ tokens: [String], undoActionType: UndoAction?) {
+        addUndoTokensStub(tokens, undoActionType)
+    }
+
+    @FuncStub(MockUndoActionManagerProtocol.showUndoSendBanner) var showUndoSendBannerStub
+    func showUndoSendBanner(for messageID: MessageID) {
+        showUndoSendBannerStub(messageID)
+    }
+
+    @FuncStub(MockUndoActionManagerProtocol.register) var registerStub
+    func register(handler: UndoActionHandlerBase) {
+        registerStub(handler)
+    }
+
+    @FuncStub(MockUndoActionManagerProtocol.requestUndoAction) var requestUndoActionStub
+    func requestUndoAction(undoTokens: [String], completion: ((Bool) -> Void)?) {
+        requestUndoActionStub(undoTokens, completion)
+    }
+
+    @FuncStub(MockUndoActionManagerProtocol.calculateUndoActionBy, initialReturn: nil) var calculateUndoActionByStub
+    func calculateUndoActionBy(labelID: LabelID) -> UndoAction? {
+        calculateUndoActionByStub(labelID)
+    }
+
+    @FuncStub(MockUndoActionManagerProtocol.addTitleWithAction) var addTitleWithActionStub
+    func addTitleWithAction(title: String, action: UndoAction) {
+        addTitleWithActionStub(title, action)
     }
 
 }

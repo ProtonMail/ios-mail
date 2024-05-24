@@ -39,7 +39,7 @@ final class ConversationDataServiceTests: XCTestCase {
                                       lastUpdatedStore: MockLastUpdatedStoreProtocol(),
                                       messageDataService: MockMessageDataService(),
                                       eventsService: mockEventsService,
-                                      undoActionManager: MockUndoActionManager(),
+                                      undoActionManager: MockUndoActionManagerProtocol(),
                                       userDefaults: TestContainer().userDefaults)
     }
 
