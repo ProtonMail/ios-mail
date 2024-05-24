@@ -149,6 +149,7 @@ platform :ios do
       scheme: UNIT_TEST_SCHEME,
       app_identifier: APP_IDENTIFIER,
       reset_simulator: true,
+      skip_package_dependencies_resolution: true,
       test_without_building: true,
       output_directory: "../test_output/"
     )
@@ -160,7 +161,7 @@ platform :ios do
 
     run_tests(
       scheme: UI_TEST_SCHEME,
-      skip_build: true,
+      skip_package_dependencies_resolution: true,
       prelaunch_simulator: true,
       test_without_building: true,
       parallel_testing: true,

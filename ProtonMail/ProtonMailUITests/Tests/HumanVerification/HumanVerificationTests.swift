@@ -6,7 +6,6 @@
 //  Copyright © 2021 Proton Mail. All rights reserved.
 //
 
-import XCTest
 import ProtonCoreTestingToolkit
 
 class HumanVerificationTests: BaseTestCase {

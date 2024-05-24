@@ -25,10 +25,10 @@ import VCard
 
 extension PMNIVCard {
     func write() throws -> String? {
-        var out_vcard: String?
+        var result: String?
         try ObjC.catchException {
-            out_vcard = PMNIEzvcard.write(self)
+            result = PMNIEzvcard.write(self)
         }
-        return out_vcard
+        return result
     }
 }

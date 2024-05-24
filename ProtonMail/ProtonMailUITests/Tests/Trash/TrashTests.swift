@@ -8,7 +8,6 @@
 
 import XCTest
 
-import ProtonCoreTestingToolkit
 
 class TrashTests: FixtureAuthenticatedTestCase {
 

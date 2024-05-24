@@ -11,6 +11,7 @@ import ProtonCorePaymentsUI
 import ProtonCoreServices
 import ProtonCoreTestingToolkit
 import ProtonInboxRSVP
+import UIKit
 
 import class ProtonCoreDataModel.Address
 import class ProtonCoreDataModel.UserInfo

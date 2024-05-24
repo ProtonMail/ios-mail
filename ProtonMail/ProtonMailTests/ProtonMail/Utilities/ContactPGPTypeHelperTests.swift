@@ -17,7 +17,6 @@
 
 import ProtonCoreDataModel
 import ProtonCoreNetworking
-import ProtonCoreTestingToolkit
 import ProtonCoreUIFoundations
 @testable import ProtonMail
 import XCTest

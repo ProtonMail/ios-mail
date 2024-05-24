@@ -8,10 +8,7 @@
 
 import XCTest
 
-import ProtonCoreTestingToolkit
-
 class SpamTests: FixtureAuthenticatedTestCase {
-
 
     func testSpamSingleMessageFromLongClick() {
         runTestWithScenario(.trashOneMessage) {

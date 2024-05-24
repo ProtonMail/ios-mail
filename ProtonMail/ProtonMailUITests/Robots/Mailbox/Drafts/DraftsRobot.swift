@@ -8,7 +8,6 @@
 
 import XCTest
 import fusion
-@testable import ProtonMail
 
 fileprivate struct id {
     static let messageTitleLabelIdentifier = "mailboxMessageCell.titleLabel"
@@ -21,7 +20,7 @@ fileprivate struct id {
  * contains actions and verifications for Drafts composer functionality.
  */
 class DraftsRobot: MailboxRobotInterface {
-    static let noRecipientText = "(\(L10n.MailBox.noRecipient))"
+    static let noRecipientText = "No Recipient"
 
     var verify = Verify()
     

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreUIFoundations
+import UIKit
 
 public extension UIViewController {
 

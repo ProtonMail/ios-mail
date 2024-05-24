@@ -19,6 +19,8 @@ import ProtonCoreDataModel
 import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreTestingToolkit
+import UIKit
+
 @testable import ProtonMail
 
 extension UserManager {

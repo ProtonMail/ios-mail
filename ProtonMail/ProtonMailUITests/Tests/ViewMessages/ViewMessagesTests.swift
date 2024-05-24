@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
-import ProtonCoreTestingToolkit
 
 class ViewMessagesTests: FixtureAuthenticatedTestCase {
 
