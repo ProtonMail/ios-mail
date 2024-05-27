@@ -3,7 +3,6 @@ ${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
 ${BUILT_PRODUCTS_DIR}/EllipticCurveKeyPair/EllipticCurveKeyPair.framework
 ${BUILT_PRODUCTS_DIR}/Groot/Groot.framework
 ${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework
-${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework
 ${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-APIClient/ProtonCoreAPIClient.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-AccountDeletion/ProtonCoreAccountDeletion.framework

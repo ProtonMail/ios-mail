@@ -98,18 +98,6 @@ name: MBProgressHUD, nameSpecified:
 body: Copyright © 2009-201…
 version: 1.1.0
 
-name: OHHTTPStubs, nameSpecified: 
-body: - MIT LICENSE -
-
-Cop…
-version: 9.1.0
-
-name: OHHTTPStubs, nameSpecified: 
-body: - MIT LICENSE -
-
-Cop…
-version: 9.1.0
-
 name: PromiseKit, nameSpecified: 
 body: Copyright 2016-prese…
 version: 6.13.1
@@ -877,6 +865,8 @@ name: Difference, nameSpecified: Difference, owner: krzysztofzablocki, version: 
 name: Factory, nameSpecified: Factory, owner: hmlongco, version: 2.3.1, source: https://github.com/hmlongco/Factory
 
 name: LifetimeTracker, nameSpecified: LifetimeTracker, owner: krzysztofzablocki, version: 1.8.2, source: https://github.com/krzysztofzablocki/LifetimeTracker
+
+name: OHHTTPStubs, nameSpecified: OHHTTPStubs, owner: AliSoftware, version: 9.1.0, source: https://github.com/AliSoftware/OHHTTPStubs
 
 name: swift-css-parser, nameSpecified: swift-css-parser, owner: stackotter, version: 0.1.2, source: https://github.com/stackotter/swift-css-parser
 
