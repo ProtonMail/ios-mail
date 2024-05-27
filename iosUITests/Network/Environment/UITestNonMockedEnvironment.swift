@@ -16,32 +16,5 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import XCTest
 
-protocol Robot: ApplicationHolder {
-    var rootElement: XCUIElement { get }
-    func verifyShown()
-    func verifyHidden()
-
-    init()
-}
-
-extension Robot {
-    private var timeout: TimeInterval { 30 }
-
-    func verifyShown() {
-        XCTAssert(
-            rootElement.waitForExistence(timeout: timeout),
-            "Root element of \(self) is not displayed."
-        )
-    }
-
-    func verifyHidden() {
-        XCTAssertFalse(rootElement.isHittable, "Root element of \(self) is displayed.")
-    }
-
-    @discardableResult init(_ block: (Self) -> Void) {
-        self.init()
-        block(self)
-    }
-}
+struct UITestNonMockedEnvironment: UITestEnvironment {}

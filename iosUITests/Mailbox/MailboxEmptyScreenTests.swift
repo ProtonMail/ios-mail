@@ -17,7 +17,7 @@
 
 import Foundation
 
-final class MailboxEmptyScreenTests: PMUITestCase {
+final class MailboxEmptyScreenTests: PMUIMockedNetworkTestCase {
 
     /// TestId 426599
     func testEmptyStateInConversationMode() async {

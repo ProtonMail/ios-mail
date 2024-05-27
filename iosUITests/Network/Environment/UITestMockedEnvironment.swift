@@ -18,7 +18,7 @@
 import Foundation
 import NIO
 
-struct UITestsEnvironment {
+struct UITestMockedEnvironment: UITestEnvironment {
     let mockServer: MockServer
     let socketAddress: SocketAddress!
 

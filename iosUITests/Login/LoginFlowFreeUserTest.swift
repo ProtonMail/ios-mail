@@ -18,30 +18,18 @@
 import Foundation
 import XCTest
 
-protocol Robot: ApplicationHolder {
-    var rootElement: XCUIElement { get }
-    func verifyShown()
-    func verifyHidden()
+final class LoginFlowFreeUserTest: PMUIUnmockedNetworkTestCase {
 
-    init()
-}
-
-extension Robot {
-    private var timeout: TimeInterval { 30 }
-
-    func verifyShown() {
-        XCTAssert(
-            rootElement.waitForExistence(timeout: timeout),
-            "Root element of \(self) is not displayed."
-        )
+    override var loginType: UITestLoginType {
+        UITestLoginType.Unmocked.Black.Free.Free
     }
 
-    func verifyHidden() {
-        XCTAssertFalse(rootElement.isHittable, "Root element of \(self) is displayed.")
-    }
+    /// TestId 428584
+    func testLoginFlowFreeUser() {
+        navigator.navigateTo(UITestDestination.inbox)
 
-    @discardableResult init(_ block: (Self) -> Void) {
-        self.init()
-        block(self)
+        MailboxRobot {
+            $0.verifyShown()
+        }
     }
 }

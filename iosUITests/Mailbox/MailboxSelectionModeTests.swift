@@ -18,7 +18,7 @@
 import Foundation
 import XCTest
 
-final class MailboxSelectionModeTests: PMUITestCase {
+final class MailboxSelectionModeTests: PMUIMockedNetworkTestCase {
     private let firstSelectableItemIndex = 0
     private let secondSelectableItemIndex = 1
 

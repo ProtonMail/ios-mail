@@ -24,6 +24,30 @@ enum UITestLoginType {
 
 extension UITestLoginType {
 
+    enum Unmocked {
+        enum Black {
+            enum Free {
+                static let Free = UITestLoginType.loggedIn(
+                    UITestUser(
+                        id: "free",
+                        username: "free",
+                        password: "free"
+                    )
+                )
+            }
+
+            enum Paid {
+                static let Plus = UITestLoginType.loggedIn(
+                    UITestUser(
+                        id: "plus",
+                        username: "plus",
+                        password: "plus"
+                    )
+                )
+            }
+        }
+    }
+
     enum Mocked {
         enum Free {
             static let SleepyKoala = UITestLoginType.loggedIn(

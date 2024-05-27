@@ -16,38 +16,20 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import NIO
 import XCTest
 
-@MainActor
-public class PMUITestCase: XCTestCase {
-    var environment: UITestsEnvironment!
+open class PMUIUnmockedNetworkTestCase: XCTestCase, PMUITestCase {
+    var environment: UITestNonMockedEnvironment!
     var navigator: UITestNavigator!
 
     var loginType: UITestLoginType {
-        UITestLoginType.Mocked.Paid.FancyCapybara
+        UITestLoginType.Unmocked.Black.Paid.Plus
     }
+}
 
-    public override func setUpWithError() throws {
-        continueAfterFailure = false
-    }
-
-    override public func setUp() async throws {
-        environment = UITestsEnvironment(
-            mockServer: MockServer(bundle: Bundle(for: type(of: self)))
-        )
+extension PMUIUnmockedNetworkTestCase {
+    override public func setUp() {
+        environment = UITestNonMockedEnvironment()
         navigator = UITestNavigator(environment: environment, loginType: loginType)
-
-        switch loginType {
-        case .loggedIn(let user):
-            await environment.mockServer.setupUserAuthorisationMocks(user: user)
-        case .loggedOut:
-            break
-        }
-    }
-
-    override public func tearDown() {
-        environment.mockServer.stop()
-        super.tearDown()
     }
 }

@@ -19,7 +19,7 @@ import Foundation
 import XCTest
 
 struct UITestNavigator: ApplicationHolder {
-    let environment: UITestsEnvironment
+    let environment: UITestEnvironment
     let loginType: UITestLoginType
 
     func navigateTo(
@@ -57,19 +57,31 @@ struct UITestNavigator: ApplicationHolder {
         }
     }
 
-    private func launchApp(environment: UITestsEnvironment) {
-        let app = application
+    private func launchApp(environment: UITestEnvironment) {
+        let appWithLaunchArguments = setAppLaunchArguments(
+            app: application,
+            environment: environment
+        )
+        appWithLaunchArguments.launch()
+    }
 
+    private func setAppLaunchArguments(
+        app: XCUIApplication,
+        environment: UITestEnvironment
+    ) -> XCUIApplication {
         app.launchArguments += ["-uiTesting", "true"]
         app.launchArguments += ["-forceCleanState", "true"]
 
-        if let serverPort = environment.socketAddress.port {
+        if let serverPort = environment.mockServerPort {
             app.launchArguments += ["-mockServerPort", "\(serverPort)"]
         }
-        else {
-            print("No mock server running, skipping custom launch arguments.")
-        }
 
-        app.launch()
+        return app
+    }
+}
+
+extension UITestEnvironment {
+    fileprivate var mockServerPort: Int? {
+        return (self as? UITestMockedEnvironment)?.socketAddress?.port
     }
 }

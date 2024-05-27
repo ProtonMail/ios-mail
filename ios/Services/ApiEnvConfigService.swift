@@ -41,13 +41,21 @@ extension ApiEnvConfigService: ApplicationServiceSetUp {
     }
     
     private func setupMockServerIfNecessary() {
-        if let serverPort = UserDefaults.standard.string(forKey: "mockServerPort") {
+        if let mockServerPort = UserDefaults.standard.string(forKey: "mockServerPort") {
             apiEnvConfig = ApiEnvConfig(
                 appVersion: "ios-mail@0.0.1",
-                baseUrl: "http://localhost:\(serverPort)",
+                baseUrl: "http://localhost:\(mockServerPort)",
                 userAgent: "Mozilla/5.0",
                 allowHttp: true,
                 skipSrpProofValidation: true
+            )
+        } else {
+            apiEnvConfig = ApiEnvConfig(
+                appVersion: "Other",
+                baseUrl: "https://mail-api.proton.black",
+                userAgent: "Mozilla/5.0",
+                allowHttp: false,
+                skipSrpProofValidation: false
             )
         }
     }

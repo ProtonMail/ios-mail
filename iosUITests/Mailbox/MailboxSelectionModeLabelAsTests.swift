@@ -18,7 +18,7 @@
 import Foundation
 import XCTest
 
-final class MailboxSelectionModeLabelAsTests: PMUITestCase {
+final class MailboxSelectionModeLabelAsTests: PMUIMockedNetworkTestCase {
 
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Paid.YoungBee

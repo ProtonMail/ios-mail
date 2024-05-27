@@ -18,7 +18,7 @@
 import Foundation
 import XCTest
 
-final class MailboxSelectionModeActionBarTests: PMUITestCase {
+final class MailboxSelectionModeActionBarTests: PMUIMockedNetworkTestCase {
 
     /// TestId 426597
     func testSelectionModeShowsActionBar() async {
