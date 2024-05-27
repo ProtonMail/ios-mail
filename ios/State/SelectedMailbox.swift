@@ -41,8 +41,10 @@ final class SelectedMailbox: Equatable, Hashable, ObservableObject, Sendable {
 }
 
 extension SelectedMailbox {
-
-    static let placeHolderMailbox = SelectedMailbox(
+    
+    /// We use this placeholder when the app is launching and we don't have the
+    /// corresponding local labelId for inbox yet.
+    static let inboxPlaceholder = SelectedMailbox(
         localId: UInt64.max,
         name: SystemFolderIdentifier.inbox.localisedName,
         systemFolder: .inbox

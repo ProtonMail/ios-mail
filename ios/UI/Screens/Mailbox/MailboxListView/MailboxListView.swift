@@ -40,6 +40,9 @@ struct MailboxListView: View {
         .sensoryFeedback(trigger: model.selectionMode.selectedItems) { oldValue, newValue in
             oldValue.count != newValue.count ? .selection : nil
         }
+        .task {
+            await model.onViewDidAppear()
+        }
     }
 }
 
@@ -103,7 +106,7 @@ extension MailboxListView {
 }
 
 #Preview {
-    let route: AppRouteState = .init(route: .mailbox(label: .placeHolderMailbox))
+    let route: AppRouteState = .init(route: .mailbox(label: .inboxPlaceholder))
     let dummySettings = EmptyPMMailSettings()
 
     return MailboxListView(model: .init(

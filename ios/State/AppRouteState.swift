@@ -23,23 +23,27 @@ final class AppRouteState: ObservableObject, Sendable {
     static let shared = AppRouteState(route: .appLaunching)
 
     @Published private(set) var route: Route
-    @Published private(set) var selectedMailbox: SelectedMailbox
+    var selectedMailbox: AnyPublisher<SelectedMailbox, Never> {
+        _selectedMailbox.eraseToAnyPublisher()
+    }
+    private let _selectedMailbox: PassthroughSubject<SelectedMailbox, Never> = .init()
     private var cancellables = Set<AnyCancellable>()
 
     init(route: Route) {
         self.route = route
-        self.selectedMailbox = route.selectedMailbox ?? .placeHolderMailbox
 
         $route
             .receive(on: DispatchQueue.main)
-            .sink { newRoute in
-                self.selectedMailbox = newRoute.selectedMailbox ?? .placeHolderMailbox
+            .sink { [weak self] newRoute in
+                if let newSelectedMailbox = newRoute.selectedMailbox {
+                    self?._selectedMailbox.send(newSelectedMailbox)
+                }
             }
             .store(in: &cancellables)
     }
 
     func updateRoute(to newRoute: Route) {
-        AppLogger.log(message: "new route \(newRoute)", category: .appRoute)
+        AppLogger.log(message: "new app route [\(newRoute)]", category: .appRoute)
         route = newRoute
     }
 }
@@ -49,6 +53,7 @@ enum Route: Equatable, CustomStringConvertible {
     case mailbox(label: SelectedMailbox)
     case settings
     case subscription
+    case openMailboxItem(item: OpenMailboxItemInfo)
 
     var selectedMailbox: SelectedMailbox? {
         if case .mailbox(let label) = self {
@@ -74,6 +79,8 @@ enum Route: Equatable, CustomStringConvertible {
             "settings"
         case .subscription:
             "subscription"
+        case .openMailboxItem:
+            "openMailboxItem"
         }
     }
 }

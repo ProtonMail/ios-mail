@@ -23,7 +23,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) -> Bool {
-        return AppLifeCycle.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        AppLifeCycle.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

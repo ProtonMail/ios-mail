@@ -179,7 +179,7 @@ struct SidebarCell: View {
 
 #Preview {
     let appUIState = AppUIState(isSidebarOpen: true)
-    let route: AppRouteState = .init(route: .mailbox(label: .placeHolderMailbox))
+    let route: AppRouteState = .init(route: .mailbox(label: .inboxPlaceholder))
 
     struct PreviewWrapper: View {
         @State var appRoute: AppRouteState

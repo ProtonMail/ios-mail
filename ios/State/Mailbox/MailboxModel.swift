@@ -25,16 +25,19 @@ import class UIKit.UIImage
  Source of truth for the Mailbox view showing mailbox items (conversations or messages).
  */
 final class MailboxModel: ObservableObject {
-    @ObservedObject private(set) var appRoute: AppRouteState
+    @ObservedObject private var appRoute: AppRouteState
 
     @Published private(set) var state: MailboxModel.State
+
+    // Navigation properties
     @Published var attachmentPresented: AttachmentViewConfig?
+    @Published var navigationPath: NavigationPath = .init()
 
     let selectionMode: SelectionModeState
 
     private let pageSize: Int64 = 50
-
     private let mailSettings: PMMailSettingsProtocol
+    private(set) var selectedMailbox: SelectedMailbox
     private var mailbox: Mailbox?
     private var viewMode: MailSettingsViewMode {
         mailbox?.viewMode() ?? .conversations
@@ -48,29 +51,49 @@ final class MailboxModel: ObservableObject {
         state: State = .loading,
         mailSettings: PMMailSettingsProtocol,
         appRoute: AppRouteState = .shared,
+        openedItem: OpenMailboxItemInfo? = nil,
         dependencies: Dependencies = .init()
     ) {
         AppLogger.log(message: "MailboxModel init", category: .mailbox)
         self.state = state
         self.mailSettings = mailSettings
         self.appRoute = appRoute
+        if let selectedMailbox = appRoute.route.selectedMailbox {
+            self.selectedMailbox = selectedMailbox
+        } else {
+            self.selectedMailbox = .inboxPlaceholder
+        }
         self.selectionMode = SelectionModeState()
         self.dependencies = dependencies
 
         setUpBindings()
+
+        if let openedItem = openedItem {
+            navigationPath.append(openedItem)
+        }
     }
 
     deinit {
         AppLogger.log(message: "MailboxModel deinit", category: .mailbox)
     }
 
+    func onViewDidAppear() async {
+        await updateMailboxAndFetchData()
+    }
+}
+
+// MARK: Private
+
+extension MailboxModel {
+
     private func setUpBindings() {
         appRoute
-            .$selectedMailbox
-            .sink { [weak self] _ in
+            .selectedMailbox
+            .sink { [weak self] newSelectedMailbox in
                 Task {
                     guard let self else { return }
-                    try? await self.updateMailboxAndFetchData(selectedMailbox: self.appRoute.selectedMailbox)
+                    self.selectedMailbox = newSelectedMailbox
+                    await self.updateMailboxAndFetchData()
                 }
             }
             .store(in: &cancellables)
@@ -81,7 +104,7 @@ final class MailboxModel: ObservableObject {
                 Task {
                     guard let self else { return }
                     AppLogger.log(message: "viewMode has changed", category: .mailbox)
-                    try? await self.updateMailboxAndFetchData(selectedMailbox: self.appRoute.selectedMailbox)
+                    await self.updateMailboxAndFetchData()
                 }
             }
             .store(in: &cancellables)
@@ -95,19 +118,21 @@ final class MailboxModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
-}
-
-// MARK: Private
-
-extension MailboxModel {
 
     /// Call this function to reset the Mailbox object with a new label id and fetch its mailbox items
-    private func updateMailboxAndFetchData(selectedMailbox: SelectedMailbox) async throws {
+    private func updateMailboxAndFetchData() async {
         await updateState(.loading)
-        guard let userContext = dependencies.appContext.activeUserSession else { return }
-        mailbox = try await Mailbox(ctx: userContext, labelId: selectedMailbox.localId)
-        AppLogger.log(message: "mailbox view mode: \(mailbox?.viewMode().description ?? "n/a")", category: .mailbox)
-        try await initialiseLiveQuery()
+        guard let userSession = dependencies.appContext.activeUserSession else { return }
+        do {
+            mailbox = selectedMailbox == .inboxPlaceholder 
+            ? try await Mailbox.inbox(ctx: userSession)
+            : try await Mailbox(ctx: userSession, labelId: selectedMailbox.localId)
+
+            AppLogger.log(message: "mailbox view mode: \(mailbox?.viewMode().description ?? "n/a")", category: .mailbox)
+            try await initialiseLiveQuery()
+        } catch {
+            AppLogger.log(error: error, category: .mailbox)
+        }
     }
 
     private func initialiseLiveQuery() async throws {
@@ -160,7 +185,7 @@ extension MailboxModel {
 
     @MainActor
     private func updateState(_ newState: State) async {
-        AppLogger.logTemporarily(message: "updateState \(newState.debugDescription)", category: .mailbox)
+        AppLogger.logTemporarily(message: "mailbox update state \(newState.debugDescription)", category: .mailbox)
         state = newState
     }
 }
@@ -180,8 +205,7 @@ extension MailboxModel {
             applySelectionStateChangeInstead(mailboxItem: item)
             return
         }
-
-        // navigate to conversation ...
+//        navigationPath.append(item)  // uncomment when the conversation detail is ready
     }
 
     @MainActor

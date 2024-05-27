@@ -26,20 +26,26 @@ struct MailboxScreen: View {
     private var navigationTitle: String {
         mailboxModel.selectionMode.hasSelectedItems
         ? LocalizationTemp.Selection.title(value: mailboxModel.selectionMode.selectedItems.count)
-        : mailboxModel.appRoute.selectedMailbox.name
+        : mailboxModel.selectedMailbox.name
     }
 
-    init(customLabelModel: CustomLabelModel, mailSettings: PMMailSettingsProtocol) {
-        self._mailboxModel = StateObject(wrappedValue: MailboxModel(mailSettings: mailSettings))
+    init(customLabelModel: CustomLabelModel, mailSettings: PMMailSettingsProtocol, openedItem: OpenMailboxItemInfo? = nil) {
+        self._mailboxModel = StateObject(wrappedValue: MailboxModel(mailSettings: mailSettings, openedItem: openedItem))
         self.customLabelModel = customLabelModel
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $mailboxModel.navigationPath) {
             mailboxScreen
                 .fullScreenCover(item: $mailboxModel.attachmentPresented) { config in
                     AttachmentView(config: config)
                         .edgesIgnoringSafeArea([.top, .bottom])
+                }
+                .navigationDestination(for: MailboxItemCellUIModel.self) { uiModel in
+                    ConversationScreen(conversation: .init(id: uiModel.id, subject: uiModel.subject, senders: uiModel.senders))
+                }
+                .navigationDestination(for: OpenMailboxItemInfo.self) { info in
+                    ConversationScreen(conversation: .init(id: info.id, subject: info.subject, senders: info.senders))
                 }
         }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
@@ -63,7 +69,7 @@ extension MailboxScreen {
     private var mailboxActionBarView: some View {
         MailboxActionBarView(
             selectionMode: mailboxModel.selectionMode,
-            mailbox: mailboxModel.appRoute.selectedMailbox,
+            mailbox: mailboxModel.selectedMailbox,
             mailboxActionable: mailboxModel,
             customLabelModel: customLabelModel
         )

@@ -57,14 +57,16 @@ final class SidebarScreenModel: ObservableObject, Sendable {
     }
 
     private func setInitialFolderIfNeeded(from folders: [LocalLabelWithCount]) {
-        guard appRoute.selectedMailbox == .placeHolderMailbox, let firstSystemFolders = folders.first else { return }
+        guard appRoute.route == .appLaunching, let firstSystemFolders = folders.first else {
+            return
+        }
         var systemFolder: SystemFolderIdentifier? = nil
         if let rid = firstSystemFolders.rid, let remoteId = UInt64(rid) {
             systemFolder = SystemFolderIdentifier(rawValue: remoteId)
         }
         appRoute.updateRoute(
             to: .mailbox(
-                label: .init(
+                label: SelectedMailbox(
                     localId: firstSystemFolders.id,
                     name: firstSystemFolders.name,
                     systemFolder: systemFolder

@@ -249,6 +249,18 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
     }
 }
 
+extension MailboxItemCellUIModel: Hashable {
+    static func == (lhs: MailboxItemCellUIModel, rhs: MailboxItemCellUIModel) -> Bool {
+        lhs.type == rhs.type 
+        && lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(type)
+    }
+}
+
 struct ReplyIconsUIModel {
     let shouldShowRepliedIcon: Bool
     let shouldShowRepliedAllIcon: Bool
