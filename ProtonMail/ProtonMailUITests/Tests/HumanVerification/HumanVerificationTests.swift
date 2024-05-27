@@ -12,7 +12,6 @@ class HumanVerificationTests: BaseTestCase {
 
     private let loginRobot = LoginRobot()
     private var menuRobot = MenuRobot()
-    private var humanVerificationRobot = HumanVerificationRobot()
 
     override func setUp() {
         _launchArguments.append(contentsOf: ["HumanVerificationStubs", "1"])

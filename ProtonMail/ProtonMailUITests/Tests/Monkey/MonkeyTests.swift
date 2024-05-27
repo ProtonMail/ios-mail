@@ -25,7 +25,6 @@ import ProtonCoreTestingToolkit
 class MonkeyTests : BaseMonkey  {
 
     private var scenario: MailScenario { .qaMail006 }
-    private var isSubscriptionIncluded: Bool { true }
     private let apiDomainKey = "MAIL_APP_API_DOMAIN"
     private var plan: UserPlan = .mail2022
     private var user: User = User(name: "init", password: "init")

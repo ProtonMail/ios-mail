@@ -9,8 +9,6 @@
 import ProtonCoreTestingToolkit
 
 class MenuTests: FixtureAuthenticatedTestCase {
-
-    private let loginRobot = LoginRobot()
     
     func testSaveSpecialCharacterDisplayName() {
         let emoji = "😀"

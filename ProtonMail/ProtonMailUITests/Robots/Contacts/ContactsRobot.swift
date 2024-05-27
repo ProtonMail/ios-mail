@@ -31,8 +31,6 @@ fileprivate struct id {
  ContactsRobot class contains actions and verifications for Contacts functionality.
  */
 class ContactsRobot: CoreElements {
-    
-    var verify = Verify()
 
     func addContact() -> AddContactRobot {
         return add().contact()
