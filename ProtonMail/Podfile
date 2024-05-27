@@ -81,7 +81,6 @@ end
 def app_pods
   app_share_pods
   pod 'SDWebImage', '~> 5.15'
-  pod 'OHHTTPStubs/Swift', :configurations => ['Debug']
   pod "ProtonCore-AccountDeletion", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountRecovery', :git => proton_core_path, :tag => proton_core_version
@@ -117,7 +116,6 @@ end
 
 target 'ProtonMailTests' do
   inherit! :search_paths
-  pod 'OHHTTPStubs/Swift'
   pod 'ProtonCore-Utilities', :git => proton_core_path, :tag => proton_core_version
   pod 'swift-snapshot-testing', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Core', :git => proton_core_path, :tag => proton_core_version
