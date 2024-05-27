@@ -581,7 +581,7 @@
 "Reading device contacts data…" = "Az eszköz névjegyeinek olvasása…";
 
 /* title for the contact import indicator */
-"Importing contacts..." = "Importing contacts...";
+"Importing contacts..." = "Névjegyek importálása...";
 
 /* Description */
 "Do you want to cancel the process?" = "Megszakítja a folyamatot?";

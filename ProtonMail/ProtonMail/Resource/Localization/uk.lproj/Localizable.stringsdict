@@ -13,13 +13,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%u рази</string>
+        <string>%u разів</string>
         <key>one</key>
         <string>%u раз</string>
         <key>few</key>
-        <string>%u разів</string>
-        <key>many</key>
         <string>%u рази</string>
+        <key>many</key>
+        <string>%u разів</string>
       </dict>
     </dict>
     <key>%u participants</key>
