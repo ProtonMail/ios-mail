@@ -52,6 +52,7 @@
         "SettingsTests\/testCustomSwipeActions()",
         "SettingsTests\/testDefaultSwipeActions()",
         "SpamTests\/testSwipeToSpamMessage()",
+        "TrashTests\/testDeleteSingleMessageFromTrashFolder()",
         "ViewMessagesTests\/testMarkConversationAsUnreadFromMessageView()",
         "ViewMessagesTests\/testOpenMessageWithLink()",
         "ViewMessagesTests\/testOpenMessageWithRichText()"
