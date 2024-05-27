@@ -18,6 +18,10 @@
 import UIKit
 
 extension UIAlertController {
+    func addCloseAction() {
+        addAction(UIAlertAction.closeAction())
+    }
+
     func addURLAction(title: String, url: URL) {
         addAction(.urlAction(title: title, url: url))
     }
@@ -32,5 +36,17 @@ extension UIAlertController {
             alert.addAction(action)
             window.topmostViewController()?.present(alert, animated: true, completion: nil)
         }
+    }
+
+    static func makeContactAccessDeniedAlert(completion: (() -> Void)? = nil) -> UIAlertController {
+        let alert = UIAlertController(
+            title: L10n.SettingsContacts.autoImportContacts,
+            message: L10n.SettingsContacts.authoriseContactsInSettingsApp,
+            preferredStyle: .alert
+        )
+        alert.addOKAction { _ in
+            completion?()
+        }
+        return alert
     }
 }

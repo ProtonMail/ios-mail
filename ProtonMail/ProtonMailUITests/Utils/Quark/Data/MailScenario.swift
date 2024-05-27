@@ -16,13 +16,13 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 struct MailScenario: Hashable {
-    public let name: String
-    public let description: String
-    public let subject: String
-    public let body: String
-    public let contacts: [Contact]
+    let name: String
+    let description: String
+    let subject: String
+    let body: String
+    let contacts: [Contact]
 
-    public init(name: String, description: String, subject: String = "", body: String = "", contacts: [Contact] = []) {
+    init(name: String, description: String, subject: String = "", body: String = "", contacts: [Contact] = []) {
         self.name = name
         self.description = description
         self.subject = subject

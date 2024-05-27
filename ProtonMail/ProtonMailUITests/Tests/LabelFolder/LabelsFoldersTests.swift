@@ -9,7 +9,6 @@
 import ProtonCoreTestingToolkit
 
 class LabelsFoldersTests: FixtureAuthenticatedTestCase {
-    private let accountSettingsRobot: AccountSettingsRobot = AccountSettingsRobot()
     private let loginRobot = LoginRobot()
 
     func testCreateAndDeleteFolder() {

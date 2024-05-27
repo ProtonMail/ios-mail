@@ -45,8 +45,6 @@ class BaseTestCase: ProtonCoreBaseTestCase {
     ]
     private let loginRobot = LoginRobot()
 
-    private static var didTryToDisableAutoFillPassword = false
-
 
     func terminateApp() {
         app.terminate()
@@ -208,13 +206,5 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
         catch {
             XCTFail(error.localizedDescription)
         }
-    }
-}
-
-private extension XCUIElement {
-
-    var isSwitchOn: Bool {
-        let switchValue = value as? String
-        return switchValue == "1"
     }
 }
