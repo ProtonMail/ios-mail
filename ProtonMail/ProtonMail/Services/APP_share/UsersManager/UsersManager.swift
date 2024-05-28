@@ -228,20 +228,15 @@ class UsersManager: UsersManagerProtocol {
         }
         Breadcrumbs.shared.add(message: "restored \(self.users.count) users", to: .randomLogout)
 
-        if !ProcessInfo.isRunningUnitTests {
-            users.forEach { user in
-                Task {
-                    try await user.container.featureFlagsRepository.fetchFlags(
-                        for: user.userID.rawValue,
-                        using: user.apiService
-                    )
-                    await user.fetchUserInfo()
-                }
-            }
-        }
-
         if let userId = self.users.first?.userID.rawValue, !userId.isEmpty {
             FeatureFlagsRepository.shared.setUserId(userId)
+        }
+
+        if !ProcessInfo.isRunningUnitTests {
+            Task {
+                try await self.users.first?.container.featureFlagsRepository.fetchFlags()
+                await self.users.first?.fetchUserInfo()
+            }
         }
 
         self.users.first?.cacheService.cleanSoftDeletedMessagesAndConversation()

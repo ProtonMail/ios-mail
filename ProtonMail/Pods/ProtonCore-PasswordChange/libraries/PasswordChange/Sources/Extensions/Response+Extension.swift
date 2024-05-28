@@ -29,9 +29,9 @@ public final class DefaultResponse: Response, Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.responseCode = try container.decodeIfPresent(Int.self, forKey: .responseCode)
     }
-    
+
     required init() {}
-    
+
     enum CodingKeys: String, CodingKey {
         case responseCode = "code"
     }

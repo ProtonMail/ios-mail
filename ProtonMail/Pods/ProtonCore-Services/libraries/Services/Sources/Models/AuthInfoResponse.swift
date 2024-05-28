@@ -97,4 +97,15 @@ public final class AuthInfoResponse: Response, APIDecodableResponse {
         self._2FA = response["2FA"] as? TwoFA
         return true
     }
+
+    public struct TwoFA: Codable {
+
+        public var enabled: EnabledMechanism
+        public var FIDO2: Fido2?
+
+        public init(enabled: EnabledMechanism, fido2: Fido2? = nil) {
+            self.enabled = enabled
+            self.FIDO2 = fido2
+        }
+    }
 }

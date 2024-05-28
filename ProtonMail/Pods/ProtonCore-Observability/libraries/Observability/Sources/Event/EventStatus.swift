@@ -109,3 +109,20 @@ public enum TwoFactorMode: String, Encodable, CaseIterable {
     case enabled
     case disabled
 }
+
+public enum PasswordChangeHTTPResponseCodeStatus: String, Encodable, CaseIterable {
+    case http200
+    case http2xx
+    case http4xx
+    case http401
+    case http5xx
+    case invalidCredentials
+    case invalidUserName
+    case invalidModulusID
+    case invalidModulus
+    case cantHashPassword
+    case cantGenerateVerifier
+    case cantGenerateSRPClient
+    case keyUpdateFailed
+    case unknown
+}

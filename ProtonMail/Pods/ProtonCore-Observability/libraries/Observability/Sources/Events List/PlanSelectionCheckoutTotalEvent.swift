@@ -44,8 +44,8 @@ extension ObservabilityEvent where Payload == PayloadWithLabels<PlanSelectionChe
     }
 
     public static func planSelectionCheckoutTotal(status: PlanSelectionCheckoutStatus, plan: PlanName, isDynamic: Bool = false) -> Self {
-        isDynamic 
-        ? .init(name: Constants.dynamicEventName , labels: .init(status: status, plan: plan), version: .v1)
+        isDynamic
+        ? .init(name: Constants.dynamicEventName, labels: .init(status: status, plan: plan), version: .v1)
         : .init(name: Constants.staticEventName, labels: .init(status: status, plan: plan), version: .v2)
     }
 }

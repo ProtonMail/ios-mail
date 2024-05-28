@@ -24,6 +24,7 @@
 import SwiftUI
 
 struct PCButtonSolidStyle: ButtonStyle {
+    let brand: Brand
     let isEnabled: Bool
 
     func makeBody(configuration: Self.Configuration) -> some View {
@@ -32,7 +33,7 @@ struct PCButtonSolidStyle: ButtonStyle {
             .font(.body)
             .foregroundColor(titleColor(configuration: configuration))
             .background(backgroundColor(configuration: configuration))
-            .cornerRadius(8.0)
+            .cornerRadius(cornerRadius())
     }
 
     private func titleColor(configuration: Self.Configuration) -> Color {
@@ -46,9 +47,25 @@ struct PCButtonSolidStyle: ButtonStyle {
         guard isEnabled else {
             return ColorProvider.InteractionNormDisabled
         }
+        var backgroundNormal: Color
+        switch brand {
+        case .proton, .vpn:
+            backgroundNormal = ColorProvider.InteractionNorm
+        case .pass:
+            backgroundNormal = ColorProvider.InteractionNormMajor1PassTheme
+        }
         return configuration.isPressed ?
         ColorProvider.InteractionNormPressed :
-        ColorProvider.InteractionNorm
+        backgroundNormal
+    }
+
+    private func cornerRadius() -> CGFloat {
+        switch brand {
+        case .proton, .vpn:
+            return 8.0
+        case .pass:
+            return 24.0
+        }
     }
 }
 #endif

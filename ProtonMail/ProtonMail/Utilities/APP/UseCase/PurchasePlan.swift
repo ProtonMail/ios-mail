@@ -33,13 +33,27 @@ struct PurchasePlan {
 
         await dependencies.upsellTelemetryReporter.upgradeAttempt(storeKitProductId: storeKitProductId)
 
-        let purchaseResult = await withCheckedContinuation { continuation in
-            dependencies.purchaseManager.buyPlan(plan: plan, finishCallback: continuation.resume(returning:))
+        let output = await withCheckedContinuation { continuation in
+            dependencies.purchaseManager.buyPlan(plan: plan) { purchaseResult in
+                if let output = mapPurchaseResultToUseCaseOutput(purchaseResult) {
+                    continuation.resume(returning: output)
+                }
+            }
         }
 
-        switch purchaseResult {
-        case .purchasedPlan(let plan):
+        switch output {
+        case .planPurchased:
             await dependencies.upsellTelemetryReporter.upgradeSuccess(storeKitProductId: storeKitProductId)
+        default:
+            break
+        }
+
+        return output
+    }
+
+    private func mapPurchaseResultToUseCaseOutput(_ purchaseResult: PurchaseResult) -> Output? {
+        switch purchaseResult {
+        case .purchasedPlan:
             return .planPurchased
         case .toppedUpCredits:
             return .cancelled
@@ -51,6 +65,8 @@ struct PurchasePlan {
             return .error(originalError)
         case .purchaseCancelled:
             return .cancelled
+        case .renewalNotification:
+            return nil
         }
     }
 }

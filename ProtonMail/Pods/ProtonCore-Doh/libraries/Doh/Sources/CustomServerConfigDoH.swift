@@ -28,6 +28,7 @@ public final class CustomServerConfigDoH: DoH, ServerConfig {
     public let apiHost: String
     public let defaultPath: String
     public let proxyToken: String?
+    public let apnEnvironment: APNEnvironment
 
     public init(signupDomain: String,
                 captchaHost: String,
@@ -36,7 +37,8 @@ public final class CustomServerConfigDoH: DoH, ServerConfig {
                 defaultHost: String,
                 apiHost: String,
                 defaultPath: String,
-                proxyToken: String? = nil) {
+                proxyToken: String? = nil,
+                apnEnvironment: APNEnvironment) {
         self.signupDomain = signupDomain
         self.captchaHost = captchaHost
         self.humanVerificationV3Host = humanVerificationV3Host
@@ -45,6 +47,7 @@ public final class CustomServerConfigDoH: DoH, ServerConfig {
         self.apiHost = apiHost
         self.defaultPath = defaultPath
         self.proxyToken = proxyToken
+        self.apnEnvironment = apnEnvironment
         super.init()
     }
 
@@ -57,7 +60,8 @@ public final class CustomServerConfigDoH: DoH, ServerConfig {
                              defaultHost: String,
                              apiHost: String,
                              defaultPath: String,
-                             proxyToken: String? = nil) -> CustomServerConfigDoH {
+                             proxyToken: String? = nil,
+                             apnEnvironment: APNEnvironment) -> CustomServerConfigDoH {
         if CustomServerConfigDoH.default != nil && CustomServerConfigDoH.default.signupDomain == signupDomain {
             return CustomServerConfigDoH.default
         }
@@ -66,8 +70,9 @@ public final class CustomServerConfigDoH: DoH, ServerConfig {
                                           humanVerificationV3Host: humanVerificationV3Host,
                                           accountHost: accountHost,
                                           defaultHost: defaultHost,
-                                          apiHost: apiHost, 
+                                          apiHost: apiHost,
                                           defaultPath: defaultPath,
-                                          proxyToken: proxyToken)
+                                          proxyToken: proxyToken,
+                                          apnEnvironment: apnEnvironment)
     }
 }

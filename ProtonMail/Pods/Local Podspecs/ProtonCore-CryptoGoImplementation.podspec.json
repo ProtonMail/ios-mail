@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-CryptoGoImplementation",
   "module_name": "ProtonCoreCryptoGoImplementation",
-  "version": "22.0.0",
+  "version": "25.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "22.0.0"
+    "tag": "25.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "ProtonCore-CryptoGoInterface": [
-      "22.0.0"
+      "25.0.0"
     ]
   },
   "default_subspecs": [
@@ -42,7 +42,7 @@
       "name": "Crypto-Go",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go": [
-          "22.0.0"
+          "25.0.0"
         ]
       },
       "source_files": "libraries/CryptoGoImplementation/Sources/*.swift"
@@ -51,7 +51,7 @@
       "name": "Crypto-patched-Go",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-patched-Go": [
-          "22.0.0"
+          "25.0.0"
         ]
       },
       "source_files": "libraries/CryptoGoImplementation/Sources/*.swift"
@@ -60,7 +60,7 @@
       "name": "Crypto+VPN-patched-Go",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-patched-Go": [
-          "22.0.0"
+          "25.0.0"
         ]
       },
       "source_files": "libraries/CryptoGoImplementation/Sources/*.swift"
@@ -69,7 +69,7 @@
       "name": "Crypto+Search-Go",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go": [
-          "22.0.0"
+          "25.0.0"
         ]
       },
       "source_files": "libraries/CryptoGoImplementation/Sources/*.swift"

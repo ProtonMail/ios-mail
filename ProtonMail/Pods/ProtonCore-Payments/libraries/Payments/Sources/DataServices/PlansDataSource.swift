@@ -24,6 +24,11 @@ import ProtonCoreServices
 import Network
 import ProtonCoreFeatureFlags
 import ProtonCoreObservability
+import StoreKit
+
+public enum PlansDataSourceError: Error {
+    case purchaseBecameUnavailable
+}
 
 public protocol PlansDataSourceProtocol {
     var isIAPAvailable: Bool { get }
@@ -32,6 +37,7 @@ public protocol PlansDataSourceProtocol {
     var paymentMethods: [PaymentMethod]? { get }
     var willRenewAutomatically: Bool { get }
     var hasPaymentMethods: Bool { get }
+    var lastFetchedProducts: [SKProduct] { get }
 
     func fetchIAPAvailability() async throws
     func fetchAvailablePlans() async throws
@@ -62,6 +68,16 @@ class PlansDataSource: PlansDataSourceProtocol {
     var availablePlans: AvailablePlans?
     var currentPlan: CurrentPlan?
     var paymentMethods: [PaymentMethod]?
+    var lastFetchedProducts: [SKProduct] {
+        if storeKitDataSource.availableProducts.isEmpty {
+            // populate for next iteration
+            Task { // ignoring throws on purpose, not much we can do about it
+                try await fetchAvailablePlans()
+            }
+        }
+        return storeKitDataSource.availableProducts
+    }
+
 
     private let apiService: APIService
     private let storeKitDataSource: StoreKitDataSourceProtocol

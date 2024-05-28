@@ -39,7 +39,7 @@ extension PasswordChangeView {
 
     /// The `ObservableObject` that holds the model data for this View
     @MainActor
-    public final class ViewModel: ObservableObject, PasswordValidator {
+    public final class ViewModel: ObservableObject, PasswordValidator, PasswordChangeObservability {
 
         private let passwordChangeService: PasswordChangeService?
         private let authCredential: AuthCredential?
@@ -47,6 +47,7 @@ extension PasswordChangeView {
         private var passwordChangeCompletion: PasswordChangeCompletion?
         private let mode: PasswordChangeModule.PasswordChangeMode
 
+        let showingDismissButton: Bool
         @Published var currentPasswordFieldContent: PCTextFieldContent!
         @Published var newPasswordFieldContent: PCTextFieldContent!
         @Published var confirmNewPasswordFieldContent: PCTextFieldContent!
@@ -67,30 +68,35 @@ extension PasswordChangeView {
             passwordChangeService: PasswordChangeService? = nil,
             authCredential: AuthCredential? = AuthCredential.none,
             userInfo: UserInfo? = .getDefault(),
+            showingDismissButton: Bool,
             passwordChangeCompletion: PasswordChangeCompletion?
         ) {
             self.mode = mode
             self.passwordChangeService = passwordChangeService
             self.authCredential = authCredential
             self.userInfo = userInfo
+            self.showingDismissButton = showingDismissButton
             self.passwordChangeCompletion = passwordChangeCompletion
             self.setupViews()
         }
 
         func setupViews() {
             currentPasswordFieldContent = .init(
-                title: PCTranslation.currentPassword.l10n,
-                isSecureEntry: true
+                title: mode == .mailboxPassword ? PCTranslation.currentSignInPassword.l10n : PCTranslation.currentPassword.l10n,
+                isSecureEntry: true,
+                textContentType: .password
             )
 
             newPasswordFieldContent = .init(
-                title: mode == .mailboxPassword ? PCTranslation.newMailboxPassword.l10n : PCTranslation.newSignInPassword.l10n,
-                isSecureEntry: true
+                title: mode == .mailboxPassword ? PCTranslation.newMailboxPassword.l10n : PCTranslation.newPassword.l10n,
+                isSecureEntry: true,
+                textContentType: .newPassword
             )
 
             confirmNewPasswordFieldContent = .init(
-                title: mode == .mailboxPassword ? PCTranslation.confirmNewMailboxPassword.l10n : PCTranslation.confirmNewSignInPassword.l10n,
-                isSecureEntry: true
+                title: mode == .mailboxPassword ? PCTranslation.confirmNewMailboxPassword.l10n : PCTranslation.confirmNewPassword.l10n,
+                isSecureEntry: true,
+                textContentType: .newPassword
             )
 
             newPasswordFieldStyle = .init(mode: .idle)
@@ -105,8 +111,13 @@ extension PasswordChangeView {
             }
         }
 
+        func dismissView() {
+            PasswordChangeModule.initialViewController?.dismiss(animated: true)
+        }
+
         func savePasswordTapped() {
             do {
+                resetTextFieldsErrors()
                 try validate(
                     for: .default,
                     password: newPasswordFieldContent.text,
@@ -132,7 +143,7 @@ extension PasswordChangeView {
                 authCredential: authCredential,
                 userInfo: userInfo,
                 loginPassword: currentPasswordFieldContent.text,
-                newPassword: newPasswordFieldContent.text, 
+                newPassword: newPasswordFieldContent.text,
                 passwordChangeCompletion: passwordChangeCompletion
             )
             let viewController = UIHostingController(rootView: PasswordChange2FAView(viewModel: viewModel))
@@ -149,19 +160,18 @@ extension PasswordChangeView {
             Task { @MainActor in
                 PasswordChangeModule.initialViewController?.lockUI()
                 savePasswordIsLoading.toggle()
-                resetTextFieldsErrors()
                 do {
                     try await updatePasswordRequest(
                         passwordChangeService: passwordChangeService,
                         authCredential: authCredential,
                         userInfo: userInfo
                     )
-                    observabilityPasswordChangeSuccess()
+                    observabilityPasswordChangeSuccess(mode: mode, twoFAEnabled: false)
                     passwordChangeCompletion?(authCredential, userInfo)
                 } catch {
                     PMLog.error(error)
                     bannerState = .error(content: .init(message: error.localizedDescription))
-                    observabilityPasswordChangeError(error: error)
+                    observabilityPasswordChangeError(mode: mode, error: error, twoFAEnabled: false)
                 }
                 PasswordChangeModule.initialViewController?.unlockUI()
                 savePasswordIsLoading = false
@@ -214,24 +224,6 @@ extension PasswordChangeView {
             case .passwordNotEqual:
                 confirmNewPasswordFieldStyle.mode = .error
                 confirmNewPasswordFieldContent.footnote = PCTranslation.passwordNotMatchErrorDescription.l10n
-            }
-        }
-
-        private func observabilityPasswordChangeSuccess() {
-            switch mode {
-            case .singlePassword, .loginPassword:
-                ObservabilityEnv.report(.updateLoginPassword(status: .http2xx, twoFactorMode: .disabled))
-            case .mailboxPassword:
-                ObservabilityEnv.report(.updateMailboxPassword(status: .http2xx, twoFactorMode: .disabled))
-            }
-        }
-
-        private func observabilityPasswordChangeError(error: Error) {
-            switch mode {
-            case .singlePassword, .loginPassword:
-                ObservabilityEnv.report(.updateLoginPassword(status: .http2xx, twoFactorMode: .disabled))
-            case .mailboxPassword:
-                ObservabilityEnv.report(.updateMailboxPassword(status: .http2xx, twoFactorMode: .disabled))
             }
         }
     }

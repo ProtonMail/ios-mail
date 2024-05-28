@@ -71,7 +71,7 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable, Produ
             passwordTextField.title = LUITranslation._core_password_field_title.l10n
             passwordTextField.assistiveText = LUITranslation.password_field_minimum_length_hint.l10n
             passwordTextField.delegate = self
-            passwordTextField.textContentType = .password
+            passwordTextField.textContentType = .newPassword
             passwordTextField.autocorrectionType = .no
             passwordTextField.autocapitalizationType = .none
         }
@@ -80,7 +80,7 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable, Produ
         didSet {
             repeatPasswordTextField.title = LUITranslation.repeat_password_field_title.l10n
             repeatPasswordTextField.delegate = self
-            repeatPasswordTextField.textContentType = .password
+            repeatPasswordTextField.textContentType = .newPassword
             repeatPasswordTextField.autocorrectionType = .no
             repeatPasswordTextField.autocapitalizationType = .none
         }

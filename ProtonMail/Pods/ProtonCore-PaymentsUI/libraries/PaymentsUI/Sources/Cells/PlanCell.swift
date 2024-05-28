@@ -47,6 +47,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
     var dynamicPlan: AvailablePlansPresentation?
     var indexPath: IndexPath?
     var isSignup = false
+    var isPurchaseButtonDisabled = false
 
     // MARK: - Outlets
 
@@ -269,6 +270,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         detailsSpacerView.isHidden = !dynamicPlan.canBePurchasedNow || !dynamicPlan.isExpanded
         buttonSpacerView.isHidden = !dynamicPlan.canBePurchasedNow || !dynamicPlan.isExpanded
         selectPlanButton.isHidden = !dynamicPlan.canBePurchasedNow || !dynamicPlan.isExpanded
+        selectPlanButton.isEnabled = !isPurchaseButtonDisabled
         planDetailsStackView.isHidden = !dynamicPlan.canBePurchasedNow || !dynamicPlan.isExpanded
         expandButton.isSelected = dynamicPlan.isExpanded
 
@@ -357,11 +359,12 @@ final class PlanCell: UITableViewCell, AccessibleCell {
 // MARK: Dynamic plans
 
 extension PlanCell {
-    func configurePlan(availablePlan: AvailablePlansPresentation, indexPath: IndexPath, isSignup: Bool, isExpandButtonHidden: Bool) {
+    func configurePlan(availablePlan: AvailablePlansPresentation, indexPath: IndexPath, isSignup: Bool, isExpandButtonHidden: Bool, isPurchaseButtonDisabled: Bool = false) {
         planDetailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         self.dynamicPlan = availablePlan
         self.indexPath = indexPath
         self.isSignup = isSignup
+        self.isPurchaseButtonDisabled = isPurchaseButtonDisabled
         if isExpandButtonHidden {
             expandButton.isHidden = true
             availablePlan.isExpanded = true

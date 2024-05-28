@@ -185,6 +185,18 @@ public final class PaymentsUIRobot: CoreElements {
             staticText(title).waitUntilExists().checkExists()
             return PaymentsUIRobot()
         }
+        
+        @discardableResult
+        public func storageInfo(usedSpace: String, totalSpace: String) -> PaymentsUIRobot {
+            staticText("\(usedSpace) of \(totalSpace)").waitUntilExists().checkExists()
+            return PaymentsUIRobot()
+        }
+
+        @discardableResult
+        public func currentPlan(is plan: PaymentsPlan) -> PaymentsUIRobot {
+            staticText("\(plan.rawValue).planDescriptionLabel").waitUntilExists().checkExists()
+            return PaymentsUIRobot()
+        }
     }
 
     public func selectPlanCell(plan: PaymentsPlan) -> PaymentsUIRobot {

@@ -22,7 +22,7 @@
 import ProtonCoreNetworking
 
 public struct ChangePasswordUpdateMailboxPasswordTotalLabels: Encodable, Equatable {
-    let status: HTTPResponseCodeStatus
+    let status: PasswordChangeHTTPResponseCodeStatus
     let twoFactorMode: TwoFactorMode
 
     enum CodingKeys: String, CodingKey {
@@ -32,7 +32,7 @@ public struct ChangePasswordUpdateMailboxPasswordTotalLabels: Encodable, Equatab
 }
 
 extension ObservabilityEvent where Payload == PayloadWithLabels<ChangePasswordUpdateMailboxPasswordTotalLabels> {
-    public static func updateMailboxPassword(status: HTTPResponseCodeStatus, twoFactorMode: TwoFactorMode) -> Self {
+    public static func updateMailboxPassword(status: PasswordChangeHTTPResponseCodeStatus, twoFactorMode: TwoFactorMode) -> Self {
         .init(name: "ios_core_changePassword_updateMailboxPassword_total", labels: .init(status: status, twoFactorMode: twoFactorMode))
     }
 }

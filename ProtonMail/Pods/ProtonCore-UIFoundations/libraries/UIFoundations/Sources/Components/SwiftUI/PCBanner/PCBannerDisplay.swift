@@ -92,7 +92,7 @@ public struct PCBannerDisplay: ViewModifier {
                 }
                 .onEnded { value in
                     let velocity = CGSize(
-                        width:  value.predictedEndLocation.x - value.location.x,
+                        width: value.predictedEndLocation.x - value.location.x,
                         height: value.predictedEndLocation.y - value.location.y
                     )
                     if velocity.height <= -50 {

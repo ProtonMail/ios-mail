@@ -31,7 +31,7 @@ public func SrpAuth(version hashVersion: Int,
     var error: NSError?
     let passwordSlic = password.data(using: .utf8)
     let outAuth = CryptoGo.SrpNewAuth(hashVersion, username, passwordSlic, salt, signedModulus, serverEphemeral, &error)
-    
+
     if let err = error {
         throw err
     }

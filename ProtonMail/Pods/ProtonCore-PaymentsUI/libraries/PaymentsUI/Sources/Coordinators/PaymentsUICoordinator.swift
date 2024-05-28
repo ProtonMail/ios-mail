@@ -270,9 +270,9 @@ final class PaymentsUICoordinator {
         finishCallback(reason: .purchaseError(error: error))
     }
 
-    private func showError(message: String, error: Error) {
+    private func showError(message: String, error: Error, action: ActionCallback = nil) {
         guard localErrorMessages else { return }
-        alertManager.showError(message: message, error: error)
+        alertManager.showError(message: message, error: error, action: action)
     }
 
     private var localErrorMessages: Bool {
@@ -347,6 +347,7 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
     }
 
     func userDidSelectPlan(plan: AvailablePlansPresentation, completionHandler: @escaping () -> Void) {
+        
         guard let inAppPlan = plan.availablePlan else {
             completionHandler()
             return
@@ -362,7 +363,9 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
         // unregister from being notified on the transactions — you will get notified via `buyPlan` completion block
         storeKitManager.stopBeingNotifiedWhenTransactionsWaitingForTheSignupAppear()
         purchaseManager.buyPlan(plan: plan, addCredits: addCredits) { [weak self] purchaseResult in
-            completionHandler()
+            if case .renewalNotification = purchaseResult {} else {
+                completionHandler()
+            }
             guard let self = self else { return }
             switch purchaseResult {
             case .planPurchaseProcessingInProgress(let inProgressPlan):
@@ -408,6 +411,8 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
                 ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .canceled,
                                                                     plan: self.getPlanNameForObservabilityPurposes(plan: plan),
                                                                     isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
+            case .renewalNotification:
+                break
             }
         }
     }
@@ -423,6 +428,13 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
     func planPurchaseError() {
         if mode == .signup {
             self.showProcessingTransactionAlert(isError: true)
+        }
+    }
+
+    func purchaseBecameUnavailable() {
+        self.showError(message: PUITranslations.iap_temporarily_unavailable.l10n,
+                       error: PlansDataSourceError.purchaseBecameUnavailable) {
+            self.userDidCloseViewController()
         }
     }
 }

@@ -44,6 +44,7 @@ public extension Quark {
         return try executeQuarkRequest(request)
     }
 
+    @available(*, renamed: "Quark.setUsedSpace", message: "Please use general setting command")
     @discardableResult
     func driveSetUsedSpace(uid: Int, space: String) throws -> (data: Data, response: URLResponse) {
 

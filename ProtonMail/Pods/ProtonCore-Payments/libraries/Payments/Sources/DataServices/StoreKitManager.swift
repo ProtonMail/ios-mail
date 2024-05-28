@@ -657,7 +657,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                 // but we found this holds true as well for .purchased. So far. Proceed with caution.
                 finishTransaction(transaction, nil)
                 callSuccessCompletion(for: cacheKey, with: .autoRenewal)
-                PMLog.debug("Ignoring and finishing transaction corresponding to renewal cycle.")
+                PMLog.debug("Ignoring and finishing transaction corresponding to renewal cycle. Current transaction: \(transaction.transactionIdentifier ?? "nil"). Original transaction: \(transaction.original?.transactionIdentifier ?? "nil"). Original transaction date: \(transaction.original?.transactionDate?.description ?? "nil")")
                 group.leave()
                 return
             }
@@ -690,6 +690,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
     }
 
     private func processFailedStoreKitTransaction(_ transaction: SKPaymentTransaction, cacheKey: UserInitiatedPurchaseCache) {
+        PMLog.debug("Processing failed transaction")
         finishTransaction(transaction, nil)
         let error = transaction.error as NSError?
         let refreshHandler = refreshHandler
@@ -793,6 +794,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         let planName: String
         let planAmount: Int
         let planIdentifier: String
+        let currencyCode: String
         let cycle: Int
         switch planService {
         case .left(let planService):
@@ -811,27 +813,32 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             planAmount = amount
             planIdentifier = protonIdentifier
             cycle = 12
+            currencyCode = "USD"
 
         case .right(let planDataSource):
+            let productIdentifier = transaction.payment.productIdentifier
             guard let details = planDataSource.detailsOfAvailablePlanCorrespondingToIAP(plan),
                   let instance = planDataSource.detailsOfAvailablePlanInstanceCorrespondingToIAP(plan),
-                  let price = instance.price.first(where: { $0.currency.lowercased() == plan.currency?.lowercased() }),
+                  let product = planDataSource.lastFetchedProducts.first(where: {$0.productIdentifier == productIdentifier}),
+                  let productCurrencyCode = product.priceLocale.currencyCode,
                   let name = details.name,
                   let id = details.ID
             else {
                 throw Errors.alreadyPurchasedPlanDoesNotMatchBackend
             }
-
+            planAmount = Int(product.price.doubleValue * 100.0)
+            currencyCode = productCurrencyCode
             planName = name
-            planAmount = price.current
             planIdentifier = id
             cycle = instance.cycle
         }
 
         let amountDue: Int
         if let cachedAmountDue = threadSafeCache.removeValueSynchronously(for: cacheKey, in: \.amountDue) {
+            PMLog.debug("Using cached amount \(cachedAmountDue)")
             amountDue = cachedAmountDue
         } else {
+            PMLog.debug("No amount cached, validating subscription request")
             let validateSubscriptionRequest = paymentsApi.validateSubscriptionRequest(
                 api: apiService,
                 protonPlanName: planName,
@@ -842,8 +849,15 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             let fetchedAmountDue = isDynamic ? response?.validateSubscription?.amount : response?.validateSubscription?.amountDue
             amountDue = fetchedAmountDue ?? planAmount
         }
+        PMLog.debug("final amount \(amountDue)")
 
-        let planToBeProcessed = PlanToBeProcessed(protonIdentifier: planIdentifier, planName: planName, amount: planAmount, amountDue: amountDue, cycle: cycle)
+
+        let planToBeProcessed = PlanToBeProcessed(protonIdentifier: planIdentifier,
+                                                  planName: planName,
+                                                  amount: planAmount,
+                                                  currencyCode:  currencyCode,
+                                                  amountDue: amountDue,
+                                                  cycle: cycle)
 
         do {
             let customCompletion: ProcessCompletionCallback = { result in
@@ -877,6 +891,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             }
         } catch {
             ObservabilityEnv.report(.paymentSubscribeTotal(status: .failed, isDynamic: isDynamic))
+            PMLog.error(error)
             throw error
         }
     }
@@ -962,7 +977,6 @@ extension StoreKitManager: ProcessDependencies {
 
     /// Refreshes the current subscription details from BE
     func updateCurrentSubscription(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
-        // TODO: test purchase process with PlansDataSource object
         switch planService {
         case .left(let planService):
             planService.updateCurrentSubscription(success: success, failure: failure)

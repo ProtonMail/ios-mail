@@ -73,249 +73,33 @@ extension PMChallenge {
         }
     }
     // Ask Anti-abuse team for the version
-    static let VERSION = "2.0.3"
-    public struct Challenge: Codable {
+    static let VERSION = "2.1.0"
+    public struct Challenge {
 
         public internal(set) var behaviouralFingerprint: BehaviouralFingerprint = BehaviouralFingerprint()
-        public internal(set) var deviceFingerprint: DeviceFingerprint = DeviceFingerprint()
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(behaviouralFingerprint, forKey: .behaviouralFingerprint)
-            try container.encode(deviceFingerprint, forKey: .deviceFingerprint)
-        }
-
-        public struct BehaviouralFingerprint: Codable {
-            // MARK: Signup data
-
-            /// version: String   new value for tracking the challenge object version. this value only change when challenge schema changed
-            public internal(set) var v: String = VERSION
-
-            /// Number of seconds from signup form load to start filling username input
-            public internal(set) var timeUsername: [Int] = []
-            /// Chars that typed in username input
-            public internal(set) var keydownUsername: [String] = []
-            /// Chars that deleted in username input
-            public internal(set) var keydownRecovery: [String] = []
-            /// Number of clicks/taps during username input
-            public internal(set) var clickUsername: Int = 0
-            /// Number of clicks/taps during recovery address input
-            public internal(set) var clickRecovery: Int = 0
-            // Number of seconds from signup form load to start filling recovery input
-            public internal(set) var timeRecovery: [Int] = []
-            /// Phrases copied during username inputs
-            public internal(set) var copyUsername: [String] = []
-            /// Phrases copied during recovery inputs
-            public internal(set) var copyRecovery: [String] = []
-            /// Phrases pasted during username inputs
-            public internal(set) var pasteUsername: [String] = []
-            /// Phrases pasted during recovery inputs
-            public internal(set) var pasteRecovery: [String] = []
-
-            public func encode(to encoder: Encoder) throws {
-                // Since some of variables are deprecated
-                // to remove these variables from JSONEncoder
-                // implement this function
-                // after removing these variables, consider to remove this function too
-                var container = encoder.container(keyedBy: CodingKeys.self)
-                try container.encode(v, forKey: .v)
-                try container.encode(timeUsername, forKey: .timeUsername)
-                try container.encode(keydownUsername, forKey: .keydownUsername)
-                try container.encode(keydownRecovery, forKey: .keydownRecovery)
-                try container.encode(clickUsername, forKey: .clickUsername)
-                try container.encode(clickRecovery, forKey: .clickRecovery)
-                try container.encode(timeRecovery, forKey: .timeRecovery)
-                try container.encode(copyUsername, forKey: .copyUsername)
-                try container.encode(copyRecovery, forKey: .copyRecovery)
-                try container.encode(pasteUsername, forKey: .pasteUsername)
-                try container.encode(pasteRecovery, forKey: .pasteRecovery)
-            }
-
-            func asDictionary() throws -> [String: Any] {
-                let data = try JSONEncoder().encode(self)
-                guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
-                    let context = EncodingError.Context(codingPath: [],
-                                                        debugDescription: "JSONEncoder cannot encode this value as [String: Any].")
-                    throw EncodingError.invalidValue(data, context)
-                }
-                return dictionary
-            }
-        }
-
-        public struct DeviceFingerprint: Codable {
-            // MARK: Device relative setting
-            /// Timezone of Operating System, e.g. `Asia/Taipei`
-            public internal(set) var timezone: String = ""
-            /// Timezone offset in minutes
-            public internal(set) var timezoneOffset: Int = 0
-            /// Is device jail break
-            public internal(set) var isJailbreak = FileManager.isJailbreak()
-            /// Device name with hash
-            public internal(set) var deviceName: Int = -1
-            /// App language
-            public internal(set) var appLang = ""
-            /// System setting region, not the real geo location
-            public internal(set) var regionCode = ""
-            /// Device capacity size in gigabyte
-            public internal(set) var storageCapacity = FileManager.deviceCapacity() ?? -1
-            /// Keyboards
-            public internal(set) var keyboards: [String] = []
-            /// Device cellulars information
-            public internal(set) var cellulars: [Cellular] = []
-            /// Returns a Boolean value indicating whether darken colors is enabled.
-            public internal(set) var isDarkmodeOn: Bool = false
-            /// Return user preferred content size
-            public internal(set) var preferredContentSize: String = ""
-            /// UUID for this app, will change after reinstall
-            public internal(set) var uuid = UIDevice.current.identifierForVendor?.uuidString ?? "unknow"
-            /// same as web, iframe-  name: username, recovery
-            public internal(set) var frame: [Frame] = []
-
-            public func encode(to encoder: Encoder) throws {
-                // Since some of variables are deprecated
-                // to remove these variables from JSONEncoder
-                // implement this function
-                // after removing these variables, consider to remove this function too
-                var container = encoder.container(keyedBy: CodingKeys.self)
-                try container.encode(timezone, forKey: .timezone)
-                try container.encode(timezoneOffset, forKey: .timezoneOffset)
-                try container.encode(isJailbreak, forKey: .isJailbreak)
-                try container.encode(deviceName, forKey: .deviceName)
-                try container.encode(appLang, forKey: .appLang)
-                try container.encode(regionCode, forKey: .regionCode)
-                try container.encode(storageCapacity, forKey: .storageCapacity)
-                try container.encode(keyboards, forKey: .keyboards)
-                try container.encode(cellulars, forKey: .cellulars)
-                try container.encode(isDarkmodeOn, forKey: .isDarkmodeOn)
-                try container.encode(preferredContentSize, forKey: .preferredContentSize)
-                try container.encode(uuid, forKey: .uuid)
-                try container.encode(frame, forKey: .frame)
-            }
-
-            func asDictionary() throws -> [String: Any] {
-                let data = try JSONEncoder().encode(self)
-                guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
-                    let context = EncodingError.Context(codingPath: [],
-                                                        debugDescription: "JSONEncoder cannot encode this value as [String: Any].")
-                    throw EncodingError.invalidValue(data, context)
-                }
-                return dictionary
-            }
-        }
 
         // MARK: - API
-
-        /// Converts `PMChallenge` object into an array of json dictionaries.
-        ///
-        /// This function is the combination of `getUsernameChallenge()` and `getRecoveryChallenge()`.
-        ///
-        /// There are 3 possible situations:
-        /// 1. Object is successfully converted into an array of json dictionaries and returned.
-        /// 2. If the object failed to be converted into an array of json dictionaries,
-        ///    it will try to convert it into a String value and return it if successful.
-        /// 3. If the object can't be converted into a json dictionary nor json string, it will return an error message.
-        public func allFingerprintDict() -> [[String: Any]] {
-            convertIntoArryOfJson(asDict: asDictionary)
-        }
-
-        /// Converts `PMChallenge` object into an array of json dictionaries.
-        ///
-        /// This function is the combination of `getUsernameChallenge()` and `getRecoveryChallenge()`.
-        ///
-        /// There are 3 possible situations:
-        /// 1. Object is successfully converted into an array of json dictionaries and returned.
-        /// 2. If the object failed to be converted into an array of json dictionaries,
-        ///    it will try to convert it into a String value and return it if successful.
-        /// 3. If the object can't be converted into a json dictionary nor json string, it will return an error message.
-        @available(*, deprecated, renamed: "allFingerprintDict")
-        public func toDictArray() -> [[String: Any]] {
-            allFingerprintDict()
-        }
-
-        /// Converts `PMChallenge` `DeviceFingerprint` object into an array of json dictionaries.
-        ///
-        /// This function is the combination of `getUsernameChallenge()` and `getRecoveryChallenge()`.
-        /// However it only contains device fingerprint data.
-        ///
-        /// There are 3 possible situations:
-        /// 1. Object is successfully converted into an array of json dictionaries and returned.
-        /// 2. If the object failed to be converted into an array of json dictionaries,
-        ///    it will try to convert it into a String value and return it if successful.
-        /// 3. If the object can't be converted into a json dictionary nor json string, it will return an error message.
-        public func deviceFingerprintDict() -> [[String: Any]] {
-            convertIntoArryOfJson(asDict: deviceFingerprint.asDictionary)
-        }
-
-        /// Converts `PMChallenge` `BehaviouralFingerprint` object to json dictionary array
-        ///
-        /// This function is the combination of `getUsernameChallenge()` and `getRecoveryChallenge()`.
-        /// However it only contains behavioural fingerprint data.
-        ///
-        /// There are 3 possible situations:
-        /// 1. Object is successfully converted into an array of json dictionaries and returned.
-        /// 2. If the object failed to be converted into an array of json dictionaries,
-        ///    it will try to convert it into a String value and return it if successful.
-        /// 3. If the object can't be converted into a json dictionary nor json string, it will return an error message.
-        public func behaviouralFingerprintDict() -> [[String: Any]] {
-            convertIntoArryOfJson(asDict: behaviouralFingerprint.asDictionary)
+        public func signupFingerprintDict() -> [[String: Any]] {
+            do {
+                let deviceDictionary = DeviceFingerprint.deviceFingerprintDict(addVersion: false)
+                let behaviouralDict = try behaviouralFingerprint.asDictionary()
+                let username = getUsernameChallenge(dict: behaviouralDict).merging(deviceDictionary) { current, _ in
+                    current
+                }
+                let recovery = getRecoveryChallenge(dict: behaviouralDict).merging(deviceDictionary) { current, _ in
+                    current
+                }
+                return [username, recovery]
+            } catch {
+                // Abuse team doesn't use this value
+                // This more like a debug information for client
+                return [
+                    ["Challenge-parse-dic-error": error.localizedDescription]
+                ]
+            }
         }
 
         // MARK: - Internal
-
-        /// Converts `PMChallenge` object into a json dictionary.
-        /// - Throws: JSONSerialization exception.
-        /// - Returns: Challenge data converted into a json dictionary.
-        func asDictionary() throws -> [String: Any] {
-            let data = try JSONEncoder().encode(self)
-            guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: [String: Any]] else {
-                throw NSError(domain: "PMChalleng", code: 0)
-            }
-            return dictionary
-                .reduce([String: Any]()) { emptyDict, tuple in
-                    var dict = emptyDict
-                    tuple.1.forEach { dict[$0.key] = $0.value }
-                    return dict
-                }
-        }
-
-        /// Converts `PMChallenge` object into a json encoded String.
-        /// - Throws: JSONEncoder exception.
-        /// - Returns: Challenge data converted into a json encoded String.
-        func asString() throws -> String {
-            let data = try JSONEncoder().encode(self)
-            let str = String(data: data, encoding: .utf8)
-            return str ?? ""
-        }
-
-        private func convertIntoArryOfJson(asDict: () throws -> [String: Any]) -> [[String: Any]] {
-            do {
-                let dict = try asDict()
-                let username = getUsernameChallenge(dict: dict)
-                let recovery = getRecoveryChallenge(dict: dict)
-                return [username, recovery]
-            } catch {
-                let parsingError = error.localizedDescription
-                do {
-                    let challengeStr = try asString()
-                    return [["StringValue": challengeStr]]
-                } catch {
-                    return [
-                        ["Challenge-parse-dic-error": parsingError,
-                         "Challenge-parse-string-error": error.localizedDescription]
-                    ]
-                }
-            }
-        }
-
-        private func collectKeyboardData() -> [String] {
-            let keyboards = UITextInputMode.activeInputModes
-
-            let names = keyboards.map { info -> String in
-                let id: String = (info.value(forKey: "identifier") as? String) ?? ""
-                return id
-            }
-            return names
-        }
 
         mutating func reset() {
             behaviouralFingerprint.timeUsername = []
@@ -328,46 +112,6 @@ extension PMChallenge {
             behaviouralFingerprint.copyRecovery = []
             behaviouralFingerprint.pasteUsername = []
             behaviouralFingerprint.pasteRecovery = []
-            deviceFingerprint.frame = []
-        }
-
-        mutating func fetchValues(device: UIDevice = .current,
-                                  locale: Locale = .autoupdatingCurrent,
-                                  timeZone: TimeZone = .autoupdatingCurrent) {
-            deviceFingerprint.deviceName = device.name.rollingHash()
-            deviceFingerprint.appLang = locale.languageCode ?? "unknow"
-            deviceFingerprint.regionCode = locale.regionCode ?? "unknow"
-            deviceFingerprint.timezone = timeZone.identifier
-            deviceFingerprint.timezoneOffset = -1 * (timeZone.secondsFromGMT() / 60)
-            deviceFingerprint.keyboards = collectKeyboardData()
-            deviceFingerprint.cellulars = NetworkInformation.getCellularInfo()
-            deviceFingerprint.isDarkmodeOn = UITraitCollection.current.userInterfaceStyle == .dark
-            deviceFingerprint.preferredContentSize = UIApplication.getInstance()?.preferredContentSizeCategory.rawValue ?? UIContentSizeCategory.medium.rawValue
-        }
-
-        /// Convert `PMChallenge` object into a json dictionary
-        ///
-        /// This function is the combination of `asDictionary()` and `asString()`.
-        /// This function is recommended to export all challenge data.
-        ///
-        /// There are 3 possible situations:
-        /// 1. Object is successfully converted into an array of json dictionaries and returned.
-        /// 2. If the object failed to be converted into an array of json dictionaries,
-        ///    it will try to convert it into a String value and return it if successful.
-        /// 3. If the object can't be converted into a json dictionary nor json string, it will return an error message.
-        private func toDictionary() -> [String: Any] {
-            do {
-                return try asDictionary()
-            } catch {
-                let err1 = error.localizedDescription
-                do {
-                    let challengeStr = try asString()
-                    return ["StringValue": challengeStr]
-                } catch {
-                    return ["Challenge-parse-dic-error": err1,
-                            "Challenge-parse-string-error": error.localizedDescription]
-                }
-            }
         }
 
         private func getUsernameChallenge(dict: [String: Any]) -> [String: Any] {
@@ -398,6 +142,159 @@ extension PMChallenge {
             challenge.removeValue(forKey: "pasteUsername")
 
             return challenge
+        }
+    }
+}
+
+extension PMChallenge.Challenge {
+    public struct DeviceFingerprint: Codable {
+        // MARK: Device relative setting
+        /// Timezone of Operating System, e.g. `Asia/Taipei`
+        public internal(set) var timezone: String = ""
+        /// Timezone offset in minutes
+        public internal(set) var timezoneOffset: Int = 0
+        /// Is device jailbroken, the spelling is meant to match BE format
+        public internal(set) var isJailbreak = FileManager.isJailbroken()
+        /// Device name with hash
+        public internal(set) var deviceName: Int = -1
+        /// App language
+        public internal(set) var appLang = ""
+        /// System setting region, not the real geo location
+        public internal(set) var regionCode = ""
+        /// Keyboards
+        public internal(set) var keyboards: [String] = []
+        /// Device cellulars information
+        public internal(set) var cellulars: [PMChallenge.Cellular] = []
+        /// Returns a Boolean value indicating whether darken colors is enabled.
+        public internal(set) var isDarkmodeOn: Bool = false
+        /// Return user preferred content size
+        public internal(set) var preferredContentSize: String = ""
+        /// UUID for this app, will change after reinstall
+        public internal(set) var uuid = UIDevice.current.identifierForVendor?.uuidString ?? "unknown"
+
+        private init(
+            device: UIDevice = .current,
+            locale: Locale = .autoupdatingCurrent,
+            timeZone: TimeZone = .autoupdatingCurrent,
+            userDefaults: UserDefaults = .standard
+        ) {
+
+            self.appLang = locale.languageCode ?? "unknown"
+            self.cellulars = NetworkInformation.getCellularInfo()
+            self.deviceName = device.name.rollingHash()
+            self.isDarkmodeOn = UITraitCollection.current.userInterfaceStyle == .dark
+            self.isJailbreak = FileManager.isJailbroken()
+
+            self.regionCode = locale.regionCode ?? "unknown"
+            self.timezone = timeZone.identifier
+            self.timezoneOffset = -1 * (timeZone.secondsFromGMT() / 60)
+            self.uuid = device.identifierForVendor?.uuidString ?? "unknown"
+
+            if let keyboardNames = userDefaults.object(forKey: "AppleKeyboards") as? [String] {
+                self.keyboards = Array(Set(keyboardNames))
+            } else {
+                self.keyboards = []
+            }
+        }
+
+        // Make sure `DeviceFingerprint` is initialized in main thread
+        static func generate(
+            device: UIDevice = .current,
+            locale: Locale = .autoupdatingCurrent,
+            timeZone: TimeZone = .autoupdatingCurrent,
+            userDefaults: UserDefaults = .standard
+        ) -> DeviceFingerprint {
+            var fingerprint: DeviceFingerprint = DeviceFingerprint(
+                device: device,
+                locale: locale,
+                timeZone: timeZone,
+                userDefaults: userDefaults
+            )
+            let semaphore = DispatchSemaphore(value: 0)
+            runInMainThread {
+                // Needs to run in main thread
+                fingerprint.preferredContentSize = UIApplication.getInstance()?.preferredContentSizeCategory.rawValue ?? UIContentSizeCategory.medium.rawValue
+                semaphore.signal()
+            }
+            semaphore.wait()
+            return fingerprint
+        }
+
+        private static func runInMainThread(closure: @escaping () -> Void) {
+            if Thread.isMainThread {
+                closure()
+            } else {
+                DispatchQueue.main.async {
+                    closure()
+                }
+            }
+        }
+
+        func asDictionary(addVersion: Bool = false) throws -> [String: Any] {
+            let data = try JSONEncoder().encode(self)
+            guard var dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+                let context = EncodingError.Context(codingPath: [],
+                                                    debugDescription: "JSONEncoder cannot encode this value as [String: Any].")
+                throw EncodingError.invalidValue(data, context)
+            }
+            if addVersion {
+                dictionary["v"] = PMChallenge.VERSION
+            }
+            return dictionary
+        }
+
+        static func deviceFingerprintDict(addVersion: Bool) -> [String: Any] {
+            let fingerprint = DeviceFingerprint.generate()
+            do {
+                let dictionary = try fingerprint.asDictionary(addVersion: addVersion)
+                return dictionary
+            } catch {
+                // Abuse team doesn't use this value
+                // This more like a debug information for client
+                return ["Challenge-parse-dic-error": error.localizedDescription]
+            }
+        }
+
+        static func deviceFingerprintDictInArray() -> [[String: Any]] {
+            return [deviceFingerprintDict(addVersion: true)]
+        }
+    }
+
+    public struct BehaviouralFingerprint: Codable {
+        // MARK: Signup data
+
+        /// version: String   new value for tracking the challenge object version. this value only change when challenge schema changed
+        public internal(set) var v: String = PMChallenge.VERSION
+
+        /// Number of seconds from signup form load to start filling username input
+        public internal(set) var timeUsername: [Int] = []
+        /// Chars that typed in username input
+        public internal(set) var keydownUsername: [String] = []
+        /// Chars that deleted in username input
+        public internal(set) var keydownRecovery: [String] = []
+        /// Number of clicks/taps during username input
+        public internal(set) var clickUsername: Int = 0
+        /// Number of clicks/taps during recovery address input
+        public internal(set) var clickRecovery: Int = 0
+        // Number of seconds from signup form load to start filling recovery input
+        public internal(set) var timeRecovery: [Int] = []
+        /// Phrases copied during username inputs
+        public internal(set) var copyUsername: [String] = []
+        /// Phrases copied during recovery inputs
+        public internal(set) var copyRecovery: [String] = []
+        /// Phrases pasted during username inputs
+        public internal(set) var pasteUsername: [String] = []
+        /// Phrases pasted during recovery inputs
+        public internal(set) var pasteRecovery: [String] = []
+
+        func asDictionary() throws -> [String: Any] {
+            let data = try JSONEncoder().encode(self)
+            guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+                let context = EncodingError.Context(codingPath: [],
+                                                    debugDescription: "JSONEncoder cannot encode this value as [String: Any].")
+                throw EncodingError.invalidValue(data, context)
+            }
+            return dictionary
         }
     }
 }

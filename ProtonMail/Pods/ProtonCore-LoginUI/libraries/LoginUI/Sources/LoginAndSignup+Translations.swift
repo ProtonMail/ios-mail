@@ -148,6 +148,9 @@ public enum LUITranslation: TranslationsExposing {
     case _core_cancel_button
     case _core_sign_in_screen_title
     case _core_api_might_be_blocked_button
+    case twofa_invalid_state_banner
+    case twofa_invalid_2fa_key
+    case twofa_unexpected_authorization_type
 
     public var l10n: String {
         switch self {
@@ -375,6 +378,15 @@ public enum LUITranslation: TranslationsExposing {
             return localized(key: "Sign in", comment: "Login screen title")
         case ._core_api_might_be_blocked_button:
             return localized(key: "Troubleshoot", comment: "Button for the error banner shown when we suspect that the Proton servers are blocked")
+        case .twofa_invalid_state_banner:
+            return localized(key: "Invalid state. Please quit the app and try again in a few minutes.",
+                             comment: "This is the error shown in the banner when the backend responds us with an unexpected state after 2FA validation. *Shoould* never happen.")
+        case .twofa_invalid_2fa_key:
+            return localized(key: "There was a problem reading your security key.",
+                             comment: "Error banner shown when a problem occurs reading FIDO2 security key.")
+        case .twofa_unexpected_authorization_type:
+            return localized(key: "We received an authorization from a type we don't support yet.",
+                             comment: "Error shown when recieving a successful authorization of unkown type.")
         }
     }
 }

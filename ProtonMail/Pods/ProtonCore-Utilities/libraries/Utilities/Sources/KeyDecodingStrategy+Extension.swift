@@ -56,6 +56,7 @@ extension JSONDecoder {
     public static let decapitalisingFirstLetter: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .decapitaliseFirstLetter
+        decoder.dataDecodingStrategy = .deferredToData
         return decoder
     }()
 }

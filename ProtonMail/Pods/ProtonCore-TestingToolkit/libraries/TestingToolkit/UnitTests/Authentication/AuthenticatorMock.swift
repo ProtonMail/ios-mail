@@ -44,8 +44,13 @@ public struct AuthenticatorMock: AuthenticatorInterface {
     }
 
     @FuncStub(Self.confirm2FA) public var confirm2FAStub
-    public func confirm2FA(_ twoFactorCode: String, context: TwoFactorContext, completion: @escaping Authenticator.Completion) {
+    public func confirm2FA(_ twoFactorCode: String, context: TOTPContext, completion: @escaping Authenticator.Completion) {
         confirm2FAStub(twoFactorCode, context, completion)
+    }
+
+    @FuncStub(Self.sendFIDO2Signature) public var sendFIDO2SignatureStub
+    public func sendFIDO2Signature(_ signature: Fido2Signature, context: ProtonCoreAuthentication.FIDO2Context, completion: @escaping ProtonCoreAuthentication.Authenticator.Completion) {
+        sendFIDO2SignatureStub(signature, context, completion)
     }
 
     @FuncStub(Self.refreshCredential) public var refreshCredentialStub

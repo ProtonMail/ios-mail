@@ -14,7 +14,7 @@
 
 "Apple informed us they could not process the purchase." = "Apple nos informó que no se pudo procesar la compra.";
 
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Hemos activado su suscripción. Reinicie la aplicación para empezar a usar su plan de servicio nuevo.";
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Hemos activado la suscripción. Reinicie la aplicación para empezar a usar el plan de servicio nuevo.";
 
 "Please unlock the app to proceed with your service plan activation" = "Desbloquee la aplicación para proceder con la activación del plan de servicio";
 
@@ -28,7 +28,7 @@
 
 "No, for another Proton Mail account" = "No, para otra cuenta de Proton Mail";
 
-"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "No pudimos actualizar su cuenta al plan que seleccionó, por lo que añadimos su pago como créditos a su cuenta. Para obtener más información y completar la actualización, comuníquese con soporte.";
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "No pudimos actualizar la cuenta al plan que seleccionó, por lo que añadimos el pago como créditos a la cuenta. Para obtener más información y completar la actualización, comuníquese con soporte.";
 
 "Contact Support" = "Contactar con soporte";
 
@@ -36,7 +36,7 @@
 
 "Payment failed" = "Error en el pago";
 
-"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Se ha registrado pero su pago no ha sido procesado. Para reenviar su información de pago, haga clic en reintentar. Sólo se le cobrará una vez. Si el problema persiste, póngase en contacto con soporte al cliente.";
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Se ha registrado pero el pago no ha sido procesado. Para reenviar su información de pago, haga clic en reintentar. Sólo se le cobrará una vez. Si el problema persiste, póngase en contacto con soporte al cliente.";
 
 "Retry" = "Reintentar";
 

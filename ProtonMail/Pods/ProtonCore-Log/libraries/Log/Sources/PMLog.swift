@@ -57,6 +57,7 @@ public class PMLog {
     private static let queue = DispatchQueue(label: "ch.proton.core.log")
 
     public static var externalLog: ExternalLogProtocol?
+    public static var isExternalLogEnabled: (() -> Bool)?
 
     public static var logFile: URL? {
         let file = logsDirectory?.appendingPathComponent("logs.txt", isDirectory: false)
@@ -110,8 +111,9 @@ public class PMLog {
         #endif
     }
 
-    public static func setEnvironment(environment: String) {
+    public static func setEnvironment(environment: String, isExternalLogEnabled: (@Sendable () -> Bool)? = nil) {
         externalLog = SentryCoreManager(environment: environment)
+        self.isExternalLogEnabled = isExternalLogEnabled
     }
 
     // MARK: - Internal
@@ -172,6 +174,10 @@ public class PMLog {
 
     private static func sendExternalLog(level: LogLevel, log: String) {
         guard !isRunningTests else { return }
+        if let isExternalLogEnabled, !isExternalLogEnabled() {
+            // App disabled external logging
+            return
+        }
         guard let externalLog else {
             assertionFailure("ProtonCore logger not initialized. Please use PMLog.setEnvironment(...) in the ProtonCore initialization.")
             return
@@ -192,6 +198,10 @@ public class PMLog {
         data: [String: Any]?
     ) {
         guard !isRunningTests else { return }
+        if let isExternalLogEnabled, !isExternalLogEnabled() {
+            // App disabled external logging
+            return
+        }
         guard let externalLog else {
             assertionFailure("ProtonCore logger not initialized. Please use PMLog.setEnvironment(...) in the ProtonCore initialization.")
             return

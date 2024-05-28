@@ -34,6 +34,7 @@ public struct PCTextFieldContent {
     public var footnote: String
     public var keyboardType: UIKeyboardType
     public var autocapitalization: UITextAutocapitalizationType
+    public var textContentType: UITextContentType?
 
     var currentFocus: String?
     private var baseFocusID: String = UUID().uuidString
@@ -53,7 +54,8 @@ public struct PCTextFieldContent {
         showClearButton: Bool = true,
         footnote: String = "",
         keyboardType: UIKeyboardType = .default,
-        autocapitalization: UITextAutocapitalizationType = .sentences
+        autocapitalization: UITextAutocapitalizationType = .sentences,
+        textContentType: UITextContentType? = nil
     ) {
         self.title = title
         self.text = text
@@ -63,13 +65,14 @@ public struct PCTextFieldContent {
         self.footnote = footnote
         self.keyboardType = keyboardType
         self.autocapitalization = autocapitalization
+        self.textContentType = textContentType
     }
 
     public var isFocused: Bool {
         currentFocus == focusID
     }
 
-    mutating public func focus() {
+    public mutating func focus() {
         self.currentFocus = focusID
     }
 }

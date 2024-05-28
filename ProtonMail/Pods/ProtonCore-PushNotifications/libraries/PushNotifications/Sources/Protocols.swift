@@ -21,6 +21,10 @@ import Foundation
 import UserNotifications
 
 public protocol PushNotificationServiceProtocol: AnyObject {
+
+    /// Sets up the PushNotificationService instance
+    func setup()
+
     /// Notifies the Push Notification Service about successful registration
     /// - Parameters:
     ///     - token: The device token used to send notifications to this device
@@ -33,9 +37,10 @@ public protocol PushNotificationServiceProtocol: AnyObject {
     /// Registers a handler for a notification category
     func registerHandler(_ handler: NotificationHandler, forType type: String)
 
-    func setup()
+    /// Start device registration, requesting system permission if necessary
+    /// - Parameter uid: user ID to register for remote notifications
+    func registerForRemoteNotifications(uid: String)
 
-    func didLoginWithUID(_ uid: String)
     /// Delegate to pass unhandled notifications to
     var fallbackDelegate: UNUserNotificationCenterDelegate? { get set }
 }

@@ -25,33 +25,39 @@ import fusion
 import XCTest
 import ProtonCoreLog
 
+extension Bundle {
+    static var testBundle: Bundle {
+        let suffix = ".xctest"
+        guard let testBundle = Bundle.allBundles.first(where: { $0.bundlePath.hasSuffix(suffix) }) else {
+            fatalError("Cannot find a bundle with suffix '\(suffix)'. Ensure the test bundle is correctly configured.")
+        }
+        return testBundle
+    }
+}
+
 open class ProtonCoreBaseTestCase: CoreTestCase {
 
     public let app = XCUIApplication()
-    public var bundleIdentifier: String = "ch.protontech.core.ios.testing-toolkit.uitests"
+    public var bundleIdentifier: String?
     public var launchArguments: [String] = []
     public var launchEnvironment: [String: String] = [:]
 
-    public var uiTestBundle: Bundle? {
-        Bundle.allBundles.first(where: { $0.bundleIdentifier == bundleIdentifier })
-    }
-
     public var dynamicDomain: String? {
-        uiTestBundle?.object(forInfoDictionaryKey: "DYNAMIC_DOMAIN").flatMap { domain in
-            guard let dynamicDomain = domain as? String, !dynamicDomain.isEmpty
-            else { return nil }
-            return dynamicDomain
-        }
+        // Using `testBundle` or the specified bundle to fetch the domain from Info.plist
+        let bundle = bundleIdentifier.flatMap { Bundle(identifier: $0) } ?? Bundle.testBundle
+        let domain = bundle.object(forInfoDictionaryKey: "DYNAMIC_DOMAIN") as? String
+        guard let domain, !domain.isEmpty else { return nil }
+        return domain
     }
-
-    public var dynamicDomainAvailable: Bool { dynamicDomain != nil }
 
     open var host: String? { dynamicDomain.map { "https://\($0)" } }
 
     public func beforeSetUp(bundleIdentifier: String? = nil,
                             launchArguments: [String]? = nil,
                             launchEnvironment: [String: String]? = nil) {
-        self.bundleIdentifier = bundleIdentifier ?? self.bundleIdentifier
+        if let bundleIdentifier = bundleIdentifier {
+            self.bundleIdentifier = bundleIdentifier
+        }
         self.launchArguments = launchArguments ?? self.launchArguments
         self.launchEnvironment = launchEnvironment ?? self.launchEnvironment
     }

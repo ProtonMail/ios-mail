@@ -20,7 +20,7 @@
 
 "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Conectați-vă la contul Proton Mail pentru care modificați tipul de abonament pentru a putea finaliza activarea abonamentului.";
 
-"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Status token de plată greșit. Reporniți aplicația. Dacă eroarea persistă, contactați asistența.";
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Stare cod de acces de plată greșit. Reporniți aplicația. Dacă eroarea persistă, contactați asistența.";
 
 "Do you want to activate the purchase for %@ address?" = "Doriți să activați achiziția pentru adresa %@?";
 
