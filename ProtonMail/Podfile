@@ -34,7 +34,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '22.0.0'
+  '25.0.2'
 end
 
 def crypto_variant

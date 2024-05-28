@@ -178,7 +178,7 @@
 
 "Terms and Conditions" = "Termeni și condiții";
 
-"Invalid token request" = "Token solicitare nevalid";
+"Invalid token request" = "Co de acces solicitare nevalid.";
 
 "Invalid token error" = "Cod de autorizare nevalid";
 

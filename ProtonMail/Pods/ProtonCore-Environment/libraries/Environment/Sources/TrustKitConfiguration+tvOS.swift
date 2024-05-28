@@ -1,7 +1,7 @@
 //
-//  Created on 19/7/23.
+//  Created on 22/04/2024.
 //
-//  Copyright (c) 2023 Proton AG
+//  Copyright (c) 2024 Proton AG
 //
 //  ProtonVPN is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -16,23 +16,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(tvOS)
+
 import Foundation
-import ProtonCoreNetworking
+import ProtonCoreDoh
+import TrustKit
 
-public final class DeviceRegistrationEndpoint: Request {
-    public let path = "/core/v4/devices"
-
-    public let method: HTTPMethod = .post
-
-    public let parameters: [String: Any]?
-
-    public let isAuth = true
-
-    init(deviceToken: String, publicKey: String) {
-        parameters = [
-            "DeviceToken": deviceToken,
-            "Environment": 6, // App Store, also for development and staging environments
-            "PublicKey": publicKey
-        ]
+extension TrustKitWrapper {
+    static func platformSpecificTrustKitProperties(_ ignoreMacUserDefinedTrustAnchors: Bool) -> Configuration {
+        [:]
     }
 }
+
+#endif

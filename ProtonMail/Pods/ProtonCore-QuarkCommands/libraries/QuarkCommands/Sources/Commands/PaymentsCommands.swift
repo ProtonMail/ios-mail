@@ -117,6 +117,7 @@ public extension Quark {
         return try executeQuarkRequest(request)
     }
 
+    @discardableResult
     func updateDelinquentState(state: DelinquentState, for username: String) throws {
         let args = [
             "username=\(username)&&--delinquentState=\(state.rawValue)"

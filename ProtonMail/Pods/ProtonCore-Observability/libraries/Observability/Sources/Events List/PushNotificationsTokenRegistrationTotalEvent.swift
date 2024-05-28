@@ -34,4 +34,3 @@ extension ObservabilityEvent where Payload == PayloadWithLabels<PushNotification
         .init(name: "ios_core_pushNotifications_token_registration_total", labels: .init(status: status))
     }
 }
-

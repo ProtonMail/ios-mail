@@ -10,17 +10,17 @@
 
 "Subscription" = "Suscripción";
 
-"Upgrade your plan" = "Actualice su plan";
+"Upgrade your plan" = "Actualice el plan";
 
-"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Solo las suscripciones anuales sin renovación automática están disponibles en la app.";
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Solo las suscripciones anuales sin renovación automática están disponibles en la aplicación.";
 
-"You cannot manage subscriptions inside the mobile application." = "No puede gestionar las suscripciones dentro de la app.";
+"You cannot manage subscriptions inside the mobile application." = "No puede gestionar las suscripciones dentro de la aplicación.";
 
-"Your plan will automatically renew on %@" = "Su plan se renovará automáticamente en %@";
+"Your plan will automatically renew on %@" = "El plan se renovará automáticamente en %@";
 
 "Current plan will expire on %@" = "El plan actual expirará el %@";
 
-"Contact an administrator to make changes to your Proton subscription." = "Contacte con un administrador para realizar cambios a su suscripción de Proton.";
+"Contact an administrator to make changes to your Proton subscription." = "Contacte con un administrador para realizar cambios a la suscripción de Proton.";
 
 "%1$@ of %2$@" = "%1$@ de %2$@";
 
@@ -52,13 +52,15 @@
 
 "Complete payment?" = "¿Completar pago?";
 
-"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Ya se ha iniciado la compra de un plan de paquete de Proton. Presione continuar para completar el procesamiento del pago y crear su cuenta.";
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Ya se ha iniciado la compra de un plan de paquete de Proton. Presione continuar para completar el procesamiento del pago y crear la cuenta.";
 
 "Complete payment" = "Completar pago";
 
 "The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "El proceso de configuración de la cuenta no se pudo finalizar debido a un error inesperado.\nIntente de nuevo.";
 
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "La compra en la aplicación ha comenzado. Siga las instrucciones de Apple para completar o cancelar la compra.";
+
+"In app payments are temporarily unavailable." = "Los pagos en la aplicación no están disponibles temporalmente.";
 
 "One plan for all Proton services" = "Un plan para todos los servicios de Proton";
 
@@ -68,13 +70,13 @@
 
 "Your privacy and security are our priority." = "Su privacidad y seguridad son nuestra prioridad";
 
-"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "El plan centrado en almacenamiento con 200 GB de almacenamiento en la nube para mantener privados sus archivos.";
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "El plan centrado en almacenamiento con 200 GB de almacenamiento en la nube para mantener privados los archivos.";
 
 "The ultimate privacy pack with access to all premium Proton services." = "El paquete de privacidad definitivo con acceso a todos los servicios premium de Proton.";
 
 "Only non-renewing annual subscriptions are available via this app" = "Solo las suscripciones anuales no renovables están disponibles en esta aplicación";
 
-"Your subscription cannot be managed inside the mobile app." = "Su suscripción no puede gestionarse dentro de la aplicación móvil.";
+"Your subscription cannot be managed inside the mobile app." = "La suscripción no puede gestionarse dentro de la aplicación móvil.";
 
 "Unlimited folders, labels, and filters" = "Carpetas, etiquetas y filtros ilimitados";
 
@@ -104,7 +106,7 @@
 
 "Connection issues" = "Problema de conexión";
 
-"Check your internet connection" = "Compruebe su conexión a internet";
+"Check your internet connection" = "Compruebe la conexión a internet";
 
 "Strict no-logs policy" = "Política estricta de no registros";
 

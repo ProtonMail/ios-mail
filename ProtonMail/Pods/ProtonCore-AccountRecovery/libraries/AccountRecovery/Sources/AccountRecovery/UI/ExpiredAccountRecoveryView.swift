@@ -34,7 +34,7 @@ public struct ExpiredAccountRecoveryView: View {
         .padding(16)
         .navigationTitle(ARTranslation.expiredViewTitle.l10n)
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear() {
+        .onAppear {
             ObservabilityEnv.report(.accountRecoveryScreenView(screenID: .recoveryExpiredInfo))
         }
     }

@@ -272,7 +272,7 @@ public struct ProtonIconSet {
 
     public let fileShapes = ProtonIcon(name: "ic-file-shapes")
 
-    public let file = ProtonIcon(name: "ic-file")
+    public let fileEmpty = ProtonIcon(name: "ic-file-empty")
 
     public let filingCabinet = ProtonIcon(name: "ic-filing-cabinet")
 

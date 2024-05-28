@@ -51,10 +51,11 @@ public class DefaultRemoteFeatureFlagsDataSource: RemoteFeatureFlagsDataSourcePr
         self.apiService = apiService
     }
 
-    public func getFlags() async throws -> [FeatureFlag] {
+    public func getFlags() async throws -> (featureFlags: [FeatureFlag], userID: String) {
         let endpoint = FeatureFlagRequest()
         let response: FeatureFlagResponse = try await apiService.exec(endpoint: endpoint)
-        return response.toggles
+        let userID = apiService.authDelegate?.credential(sessionUID: apiService.sessionUID)?.userID
+        return (response.toggles, userID ?? "")
     }
 }
 

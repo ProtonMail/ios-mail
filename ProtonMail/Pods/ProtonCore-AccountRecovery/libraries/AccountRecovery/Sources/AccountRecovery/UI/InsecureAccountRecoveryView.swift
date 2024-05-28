@@ -86,7 +86,7 @@ public struct InsecureAccountRecoveryView: View {
         .frame(maxWidth: .infinity)
         .navigationTitle(ARTranslation.insecureViewTitle.l10n)
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear() {
+        .onAppear {
             ObservabilityEnv.report(.accountRecoveryScreenView(screenID: .passwordChangeInfo))
         }
     }

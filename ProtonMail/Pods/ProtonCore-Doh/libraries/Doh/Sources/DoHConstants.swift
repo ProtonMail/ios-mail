@@ -70,4 +70,7 @@ public enum ProductionHosts: String, CaseIterable {
         return "d\(result).protonpro.xyz"
     }
 
+    public var apnEnvironment: APNEnvironment {
+        .production
+    }
 }

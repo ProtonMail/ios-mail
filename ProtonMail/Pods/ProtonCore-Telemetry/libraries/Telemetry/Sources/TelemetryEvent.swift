@@ -37,8 +37,8 @@ public struct TelemetryEvent: TelemetryEventProtocol {
     public var event: String {
         "\(source.rawValue).\(screen.rawValue).\(action.rawValue)"
     }
-    public var values: [String : Float]
-    public var dimensions: [String : String]
+    public var values: [String: Float]
+    public var dimensions: [String: String]
 
     public init(
         source: TelemetryEventSource,
@@ -52,8 +52,8 @@ public struct TelemetryEvent: TelemetryEventProtocol {
         self.screen = screen
         self.action = action
         self.measurementGroup = measurementGroup
-        self.values = Dictionary(uniqueKeysWithValues: values.flatMap{ $0.value })
-        self.dimensions = Dictionary(uniqueKeysWithValues: dimensions.flatMap{ $0.value })
+        self.values = Dictionary(uniqueKeysWithValues: values.flatMap { $0.value })
+        self.dimensions = Dictionary(uniqueKeysWithValues: dimensions.flatMap { $0.value })
     }
 }
 

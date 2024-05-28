@@ -32,7 +32,7 @@ extension PasswordChange2FAView {
 
     /// The `ObservableObject` that holds the model data for this View
     @MainActor
-    public final class ViewModel: ObservableObject {
+    public final class ViewModel: ObservableObject, PasswordChangeObservability {
 
         private let passwordChangeService: PasswordChangeService?
         private let authCredential: AuthCredential?
@@ -71,7 +71,8 @@ extension PasswordChange2FAView {
             tfaFieldContent = .init(
                 title: PCTranslation.tfaCode.l10n,
                 footnote: PCTranslation.enterDigitsCode.l10n,
-                keyboardType: .numberPad
+                keyboardType: .numberPad,
+                textContentType: .oneTimeCode
             )
         }
 
@@ -90,10 +91,12 @@ extension PasswordChange2FAView {
                         authCredential: authCredential,
                         userInfo: userInfo
                     )
+                    observabilityPasswordChangeSuccess(mode: mode, twoFAEnabled: true)
                     passwordChangeCompletion?(authCredential, userInfo)
                 } catch {
                     PMLog.error(error)
                     bannerState = .error(content: .init(message: error.localizedDescription))
+                    observabilityPasswordChangeError(mode: mode, error: error, twoFAEnabled: true)
                 }
                 PasswordChangeModule.initialViewController?.unlockUI()
                 authenticateIsLoading = false

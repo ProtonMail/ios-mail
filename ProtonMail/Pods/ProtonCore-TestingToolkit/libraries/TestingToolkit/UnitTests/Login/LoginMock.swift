@@ -97,6 +97,11 @@ public class LoginMock: Login {
         provide2FACodeStub(code, completion)
     }
 
+    @FuncStub(Login.provideFido2Signature) public var provideFido2SignatureStub
+    public func provideFido2Signature(_ signature: Fido2Signature, completion: @escaping (Result<ProtonCoreLogin.LoginStatus, ProtonCoreLogin.LoginError>) -> Void) {
+        provideFido2SignatureStub(signature, completion)
+    }
+
     @FuncStub(Login.finishLoginFlow) public var finishLoginFlowStub
     public func finishLoginFlow(mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         finishLoginFlowStub(mailboxPassword, passwordMode, completion)

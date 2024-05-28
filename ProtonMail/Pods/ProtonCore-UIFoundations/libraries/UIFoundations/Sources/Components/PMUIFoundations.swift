@@ -21,6 +21,8 @@
 
 #if canImport(ProtonCoreUIFoundationsResourcesiOS)
 import ProtonCoreUIFoundationsResourcesiOS
+#elseif canImport(ProtonCoreUIFoundationsResourcestvOS)
+import ProtonCoreUIFoundationsResourcestvOS
 #elseif canImport(ProtonCoreUIFoundationsResourcesmacOS)
 import ProtonCoreUIFoundationsResourcesmacOS
 #endif

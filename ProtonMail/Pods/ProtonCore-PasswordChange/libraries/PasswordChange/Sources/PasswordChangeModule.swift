@@ -61,7 +61,7 @@ public enum PasswordChangeModule {
         return podBundle
         #endif
     }
-    
+
     /// Localized name of the settings item for Password Change
     public static let settingsItem = PCTranslation.settingsItem.l10n
 
@@ -79,6 +79,7 @@ public enum PasswordChangeModule {
         apiService: APIService,
         authCredential: AuthCredential,
         userInfo: UserInfo,
+        showingDismissButton: Bool = false,
         completion: PasswordChangeCompletion?
     ) -> PasswordChangeViewController {
         let passwordChangeService = PasswordChangeService(api: apiService)
@@ -87,6 +88,7 @@ public enum PasswordChangeModule {
             passwordChangeService: passwordChangeService,
             authCredential: authCredential,
             userInfo: userInfo,
+            showingDismissButton: showingDismissButton,
             passwordChangeCompletion: completion
         )
         let viewController = UIHostingController(rootView: PasswordChangeView(viewModel: viewModel))
@@ -95,7 +97,7 @@ public enum PasswordChangeModule {
         return viewController
     }
 
-    weak static var initialViewController: UIViewController?
+    static weak var initialViewController: UIViewController?
 }
 
 private class PasswordChangeClass {}

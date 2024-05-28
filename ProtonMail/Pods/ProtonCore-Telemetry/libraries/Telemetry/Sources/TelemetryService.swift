@@ -37,7 +37,7 @@ public class TelemetryService: TelemetryServiceProtocol {
 
     private let telemetrySettingsService: TelemetrySettingsServiceProtocol
     private var apiService: APIService?
-    
+
     public init(
         telemetrySettingsService: TelemetrySettingsServiceProtocol = TelemetrySettingsService(),
         apiService: APIService? = nil

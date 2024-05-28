@@ -72,9 +72,11 @@ final class PaymentTokenRequest: BaseApiRequest<TokenResponse> {
     private let transactionId: String
     private let bundleId: String
     private let productId: String
+    private let currencyCode: String
 
     init(api: APIService,
          amount: Int,
+         currencyCode: String,
          receipt: String,
          transactionId: String,
          bundleId: String,
@@ -88,6 +90,7 @@ final class PaymentTokenRequest: BaseApiRequest<TokenResponse> {
         self.transactionId = transactionId
         self.bundleId = bundleId
         self.productId = productId
+        self.currencyCode = currencyCode
         super.init(api: api)
     }
 
@@ -114,7 +117,7 @@ final class PaymentTokenRequest: BaseApiRequest<TokenResponse> {
                             ]
             ]
         }
-        return ["Amount": amount, "Currency": "USD", "Payment": paymentDict]
+        return ["Amount": amount, "Currency": currencyCode, "Payment": paymentDict]
     }
 }
 

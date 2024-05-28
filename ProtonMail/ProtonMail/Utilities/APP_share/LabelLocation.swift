@@ -188,7 +188,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .inbox:
             return IconProvider.inbox
         case .draft:
-            return IconProvider.file
+            return IconProvider.fileEmpty
         case .sent:
             return IconProvider.paperPlane
         case .starred:

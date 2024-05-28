@@ -288,8 +288,7 @@ class UserManager: ObservableObject {
     func refreshFeatureFlags() {
         featureFlagsDownloadService.getFeatureFlags(completion: nil)
         Task {
-            try? await self.container.featureFlagsRepository
-                .fetchFlags(for: userID.rawValue, using: apiService)
+            try? await self.container.featureFlagsRepository.fetchFlags()
         }
     }
 

@@ -26,12 +26,21 @@ import ProtonCoreDataModel
 import ProtonCoreNetworking
 import ProtonCoreServices
 
+/// Handles interactions with the Authentication routes.
 public protocol AuthenticatorInterface {
     func authenticate(idpEmail: String, responseToken: SSOResponseToken, completion: @escaping Authenticator.Completion)
 
     func authenticate(username: String, password: String, challenge: ChallengeProperties?, intent: Intent?, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion)
 
-    func confirm2FA(_ twoFactorCode: String, context: TwoFactorContext, completion: @escaping Authenticator.Completion)
+    /// Sends TOTP code to complete authentication after logging in with a TOTP enabled account
+    func confirm2FA(_ twoFactorCode: String, context: TOTPContext, completion: @escaping Authenticator.Completion)
+
+    /// Sends FIDO2 signed challenge to complete authentication after logging in with a FIDO2 enabled account
+    /// - Parameters:
+    ///   - signature: Signed challenge
+    ///   - context: Contains details pertaining to the original auth request and the challenge
+    ///   - completion: Completion closure which will receive the result of the request
+    func sendFIDO2Signature(_ signature: Fido2Signature, context: FIDO2Context, completion: @escaping Authenticator.Completion)
 
     func refreshCredential(_ oldCredential: Credential, completion: @escaping Authenticator.Completion)
 

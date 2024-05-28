@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-Features",
   "module_name": "ProtonCoreFeatures",
-  "version": "22.0.0",
+  "version": "25.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "22.0.0"
+    "tag": "25.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -31,25 +31,25 @@
   },
   "dependencies": {
     "ProtonCore-DataModel": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Hash": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Crypto": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-CryptoGoInterface": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-KeyManager": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Authentication": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Networking": [
-      "22.0.0"
+      "25.0.0"
     ]
   },
   "source_files": "libraries/Features/Sources/*.swift",

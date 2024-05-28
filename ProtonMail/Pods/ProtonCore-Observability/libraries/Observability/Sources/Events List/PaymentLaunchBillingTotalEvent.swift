@@ -26,6 +26,7 @@ public enum PaymentLaunchBillingTotalStatus: String, Encodable, CaseIterable {
     case purchaseError
     case apiBlocked
     case canceled
+    case renewalNotification
     case unknown
 }
 

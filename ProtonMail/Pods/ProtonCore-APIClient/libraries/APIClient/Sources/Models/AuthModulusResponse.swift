@@ -32,6 +32,6 @@ public final class AuthModulusResponse: Response, Codable {
         self.modulusID = response["ModulusID"] as? String
         return true
     }
-    
+
     required init() {}
 }

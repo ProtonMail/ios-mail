@@ -27,7 +27,7 @@ public protocol FeatureFlagsRepositoryProtocol: AnyObject {
     func updateLocalDataSource(_ localDataSource: Atomic<LocalFeatureFlagsDataSourceProtocol>)
     func setUserId(_ userId: String)
     func setApiService(_ apiService: APIService)
-    func fetchFlags(for userId: String?, using apiService: APIService?) async throws
+    func fetchFlags() async throws
 
     // MARK: - For single-user clients
     func isEnabled(_ flag: any FeatureFlagTypeProtocol, reloadValue: Bool) -> Bool
@@ -42,11 +42,6 @@ public protocol FeatureFlagsRepositoryProtocol: AnyObject {
 }
 
 public extension FeatureFlagsRepositoryProtocol {
-
-    func fetchFlags(for userId: String? = nil,
-                    using apiService: APIService? = nil) async throws {
-        try await self.fetchFlags(for: userId, using: apiService)
-    }
 
     /// For single-user clients
     func isEnabled(_ flag: any FeatureFlagTypeProtocol, reloadValue: Bool = false) -> Bool {

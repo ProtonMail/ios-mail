@@ -21,6 +21,7 @@
 
 import Foundation
 import ProtonCoreNetworking
+import ProtonCoreServices
 
 extension AuthService {
 
@@ -29,10 +30,14 @@ extension AuthService {
     }
 
     struct TwoFAEndpoint: Request {
-        let code: String
+        let twoFAParams: TwoFAParams
 
-        init(code: String)  {
-            self.code = code
+        init(code: String) {
+            self.twoFAParams = .totp(code)
+        }
+
+        init(signature: Fido2Signature, authenticationOptions: AuthenticationOptions) {
+            self.twoFAParams = .fido2(signature, authenticationOptions)
         }
 
         var path: String {
@@ -44,7 +49,7 @@ extension AuthService {
         }
 
         var parameters: [String: Any]? {
-            ["TwoFactorCode": code]
+            twoFAParams.asParameterDictionary
         }
 
         var isAuth: Bool {
@@ -59,6 +64,32 @@ extension AuthService {
 
         var authRetry: Bool {
             false
+        }
+    }
+
+    enum TwoFAParams {
+        case totp(String)
+        case fido2(Fido2Signature, AuthenticationOptions)
+
+        var asParameterDictionary: [String: Any]? {
+            switch self {
+            case let .totp(code):
+                return ["TwoFactorCode": code]
+            case let .fido2(signature, authenticationOptions):
+                let encoder = JSONEncoder()
+                encoder.dataEncodingStrategy = .deferredToData
+                guard let authenticationOptionsDictionary = try? JSONSerialization.jsonObject(with: try encoder.encode(authenticationOptions)) else {
+                    return nil
+                }
+                return ["FIDO2": [
+                    "AuthenticationOptions": authenticationOptionsDictionary,
+                    "ClientData": signature.clientData.base64EncodedString(),
+                    "AuthenticatorData": signature.authenticatorData.base64EncodedString(),
+                    "Signature": signature.signature.base64EncodedString(),
+                    "CredentialID": [UInt8](signature.credentialID)
+                ]
+                ]
+            }
         }
     }
 }

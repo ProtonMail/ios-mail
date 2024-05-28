@@ -68,6 +68,7 @@ public enum PUITranslations: TranslationsExposing {
     case plan_unfinished_error_retry_button
     case plan_unfinished_desc
     case iap_in_progress_banner
+    case iap_temporarily_unavailable
     case plan_details_n_users
     case plan_details_n_addresses
     case plan_details_n_addresses_per_user
@@ -196,6 +197,8 @@ public enum PUITranslations: TranslationsExposing {
             return localized(key: "The account setup process could not be finalized due to an unexpected error.\nPlease try again.", comment: "Unfinished operation dialog description")
         case .iap_in_progress_banner:
             return localized(key: "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase.", comment: "IAP in progress banner message")
+        case .iap_temporarily_unavailable:
+            return localized(key: "In app payments are temporarily unavailable.", comment: "IAP became unavailale for maintenance or other reasons.")
         case .plan_details_n_users:
             return localized(key: "<n> users", comment: "Plan details n users")
         case .plan_details_n_addresses:

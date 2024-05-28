@@ -24,6 +24,7 @@
 import SwiftUI
 
 struct PCButtonTextStyle: ButtonStyle {
+    let brand: Brand
     let isEnabled: Bool
 
     func makeBody(configuration: Self.Configuration) -> some View {
@@ -37,9 +38,16 @@ struct PCButtonTextStyle: ButtonStyle {
         guard isEnabled else {
             return ColorProvider.TextWeak.opacity(0.4)
         }
+        var titleColorNormal: Color
+        switch brand {
+        case .proton, .vpn:
+            titleColorNormal = ColorProvider.TextAccent
+        case .pass:
+            titleColorNormal = ColorProvider.InteractionNormMajor2PassTheme
+        }
         return configuration.isPressed ?
         ColorProvider.InteractionNormPressed :
-        ColorProvider.TextAccent
+        titleColorNormal
     }
 }
 

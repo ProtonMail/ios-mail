@@ -123,6 +123,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
                     let tokenApi = dependencies.paymentsApiProtocol.paymentTokenRequest(
                         api: dependencies.apiService,
                         amount: plan.amount,
+                        currencyCode: plan.currencyCode,
                         receipt: receipt,
                         transactionId: transactionIdentifier,
                         bundleId: bundleIdentifier,
@@ -232,6 +233,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
                         let tokenApi = dependencies.paymentsApiProtocol.paymentTokenRequest(
                             api: dependencies.apiService,
                             amount: plan.amount,
+                            currencyCode: plan.currencyCode,
                             receipt: receipt,
                             transactionId: transactionIdentifier,
                             bundleId: bundleIdentifier,

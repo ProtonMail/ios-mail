@@ -60,7 +60,7 @@ public class PushNotificationService: NSObject, PushNotificationServiceProtocol 
 
     var latestDeviceToken: String? {
         didSet {
-            registerIfPossible()
+            registerCurrentUserDeviceToken()
         }
     }
     private let apiService: APIService
@@ -81,10 +81,10 @@ public class PushNotificationService: NSObject, PushNotificationServiceProtocol 
 
         fallbackDelegate = NotificationCenterFactory.current.delegate
         NotificationCenterFactory.current.delegate = Self.shared
-        registerForRemoteNotifications()
     }
 
-    private func registerForRemoteNotifications() {
+    public func registerForRemoteNotifications(uid: String) {
+        guard FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.pushNotifications) else { return }
         NotificationCenterFactory.current.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             ObservabilityEnv.report(.pushNotificationsPermissionsRequested(result: granted ? .accepted : .rejected))
             guard granted else {
@@ -107,7 +107,6 @@ public class PushNotificationService: NSObject, PushNotificationServiceProtocol 
         PMLog.debug("Received new device token \(deviceToken.redacted)")
 #endif
         latestDeviceToken = deviceToken
-
     }
 
     public func didFailToRegisterForRemoteNotifications(withError error: Error) {
@@ -117,10 +116,6 @@ public class PushNotificationService: NSObject, PushNotificationServiceProtocol 
 
     public func registerHandler(_ handler: NotificationHandler, forType type: String) {
         handlers[type] = handler
-    }
-
-    public func didLoginWithUID(_ uid: String) {
-        registerIfPossible()
     }
 }
 
@@ -153,14 +148,11 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
     public func userNotificationCenter(_ center: UNUserNotificationCenter,
                                        didReceive response: UNNotificationResponse,
                                        withCompletionHandler completionHandler: @escaping () -> Void) {
-        notificationCenter(center as NotificationCenterProtocol, 
+        notificationCenter(center as NotificationCenterProtocol,
                            didReceive: response,
                            withCompletionHandler: completionHandler)
     }
-}
 
-// More abstract methods for simpler testing
-extension PushNotificationService {
     func notificationCenter(_ center: NotificationCenterProtocol,
                             didReceive response: UNNotificationResponse,
                             withCompletionHandler completionHandler: @escaping () -> Void) {
@@ -191,8 +183,8 @@ extension PushNotificationService {
                 return
             }
             delegate.userNotificationCenter?(center,
-                                            didReceive: response,
-                                            withCompletionHandler: completionHandler)
+                                             didReceive: response,
+                                             withCompletionHandler: completionHandler)
         }
     }
 
@@ -215,44 +207,38 @@ extension PushNotificationService {
 
         handler.handle(notification: notification.request.content)
     }
+}
 
-    // MARK: TOKEN REGISTRATION
+// MARK: Token Registration
 
-    private func registerIfPossible() {
-        // swiftlint:disable:next empty_string
-        guard currentUID != "",
-              let token = latestDeviceToken
-        else { return }
+extension PushNotificationService {
+
+    private func registerCurrentUserDeviceToken() {
+        guard !currentUID.isEmpty, let deviceToken = latestDeviceToken else { return }
         Task {
-            await prepareSettingsAndReport(token: token, uid: currentUID)
+            guard let encryptionKit = generateEncryptionKit() else { return }
+
+            await register(sessionUID: currentUID,
+                           token: deviceToken,
+                           encryptionKit: encryptionKit)
         }
-    }
-
-    private func prepareSettingsAndReport(token: String, uid: String) async {
-        guard let deviceToken = latestDeviceToken else { return }
-        guard let kit = generateEncryptionKit() else { return }
-        let sessionID = uid
-
-        await register(sessionUID: sessionID, token: deviceToken, encryptionKit: kit)
     }
 
     private func generateEncryptionKit() -> EncryptionKit? {
         do {
-            let keyPair = try MailCrypto.generateRandomKeyPair()
-            return EncryptionKit(
-                passphrase: keyPair.passphrase,
-                privateKey: keyPair.privateKey,
-                publicKey: keyPair.publicKey
-            )
+            return try EncryptionKit.generateEncryptionKit()
         } catch {
+            PMLog.error("Failed to generate EncryptionKit with error: \(error)", sendToExternal: true)
             return nil
         }
     }
 
+    /// Registers a user with `sessionUID` and device token`token` and keys in `encryptionKit` for Push Notifications
     private func register(sessionUID: String, token: String, encryptionKit: EncryptionKit) async {
         let publicKey = encryptionKit.publicKey
 
         let request = DeviceRegistrationEndpoint(deviceToken: token,
+                                                 apnEnvironment: apiService.dohInterface.getAPNEnvironment(),
                                                  publicKey: publicKey)
 
         do {
@@ -267,33 +253,38 @@ extension PushNotificationService {
                                    nonDefaultTimeout: request.nonDefaultTimeout,
                                    retryPolicy: request.retryPolicy,
                                    onDataTaskCreated: { _ in }) { task, result in
+
                     if let httpResponse = task?.response as? HTTPURLResponse {
-                        let statusCode = httpResponse.statusCode
-                        let status: PushNotificationsHTTPResponseCodeStatus
-                        switch statusCode {
-                        case 200: status = .http200
-                        case 201...299: status = .http2xx
-                        case 300...399: status = .http3xx
-                        case 400: status = .http400
-                        case 401: status = .http401
-                        case 403: status = .http403
-                        case 408: status = .http408
-                        case 421: status = .http421
-                        case 422: status = .http422
-                        case 402, 404...407, 409...420, 423...499: status = .http4xx
-                        case 500: status = .http500
-                        case 503: status = .http503
-                        case 501, 502, 504...599: status = .http5xx
-                        default: status = .unknown
-                        }
-                        ObservabilityEnv.report(.pushNotificationsTokenRegistered(status: status))
+                        self.reportRegistrationResponseToObservability(statusCode: httpResponse.statusCode)
                     }
+
                     continuation.resume(with: result)
                 }
            }
         } catch {
             PMLog.error("Couldn't register APNS token: \(error.localizedDescription)", sendToExternal: true)
         }
+    }
+
+    private func reportRegistrationResponseToObservability(statusCode: Int) {
+        let status: PushNotificationsHTTPResponseCodeStatus
+        switch statusCode {
+        case 200: status = .http200
+        case 201...299: status = .http2xx
+        case 300...399: status = .http3xx
+        case 400: status = .http400
+        case 401: status = .http401
+        case 403: status = .http403
+        case 408: status = .http408
+        case 421: status = .http421
+        case 422: status = .http422
+        case 402, 404...407, 409...420, 423...499: status = .http4xx
+        case 500: status = .http500
+        case 503: status = .http503
+        case 501, 502, 504...599: status = .http5xx
+        default: status = .unknown
+        }
+        ObservabilityEnv.report(.pushNotificationsTokenRegistered(status: status))
     }
 
 }

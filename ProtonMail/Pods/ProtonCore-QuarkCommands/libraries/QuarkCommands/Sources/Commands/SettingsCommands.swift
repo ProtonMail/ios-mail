@@ -25,6 +25,7 @@ private let coreSettingsUpdate: String = "quark/raw::core:user:settings:update"
 
 public extension Quark {
 
+    @discardableResult
     func enableEarlyAccess(username: String) throws {
 
         let args = [

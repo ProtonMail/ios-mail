@@ -26,15 +26,15 @@
 
 "Learn more" = "Más información";
 
-"Please make sure that your internet connection is working." = "Asegúrese de que su conexión a internet está funcionando.";
+"Please make sure that your internet connection is working." = "Asegúrese de que la conexión a internet está funcionando.";
 
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Pruebe conectarse a Proton desde una red distinta (o use %1$@ o %2$@).";
 
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Su país puede estar bloqueando el acceso a Proton. Pruebe usando %1$@ (u otra VPN) o %2$@ para acceder a Proton.";
 
-"Temporarily disable or remove your antivirus software." = "Desactive temporalmente o borre su software de antivirus.";
+"Temporarily disable or remove your antivirus software." = "Desactive temporalmente o borre el software de antivirus.";
 
-"Disable any proxies or firewalls, or contact your network administrator." = "Desactive cualquier proxy o firewall, o contacte con el administrador de su red.";
+"Disable any proxies or firewalls, or contact your network administrator." = "Desactive cualquier proxy o firewall, o contacte con el administrador de la red.";
 
 "Check Proton Status for our system status." = "Compruebe la conexión de Proton para ver el estado de nuestro sistema.";
 
@@ -44,6 +44,6 @@
 
 "Subject..." = "Asunto...";
 
-"Please share your problem." = "Comparta su problema.";
+"Please share your problem." = "Comparta el problema.";
 
 "Back" = "Atrás";

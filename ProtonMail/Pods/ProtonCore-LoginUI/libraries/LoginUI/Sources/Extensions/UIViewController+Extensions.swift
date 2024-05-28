@@ -124,6 +124,8 @@ extension LoginErrorCapable {
             showBanner(message: LUITranslation.error_email_already_used.l10n)
         case .missingSubUserConfiguration:
             showBanner(message: LUITranslation.error_missing_sub_user_configuration.l10n)
+        case .invalid2FAKey:
+            showBanner(message: LUITranslation.twofa_invalid_2fa_key.l10n)
         }
     }
 

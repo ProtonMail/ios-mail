@@ -1,6 +1,6 @@
 //
-//  Crypto.swift
-//  Proton Mail - Created on 9/11/19.
+//  EncryptionKit.swift
+//  Proton Mail - Created on 12/18/18.
 //
 //
 //  Copyright (c) 2019 Proton AG
@@ -28,8 +28,9 @@ import ProtonCoreCryptoGoInterface
 import ProtonCoreLog
 import ProtonCoreCrypto
 
-/// Helper
-class MailCrypto {
+/// Keys for push notifications.
+struct EncryptionKit: Codable, Equatable {
+    var passphrase, privateKey, publicKey: String
 
     enum CryptoError: Error {
         case failedGeneratingKeypair(Error?)
@@ -38,7 +39,7 @@ class MailCrypto {
 
     // MARK: - static
 
-    static func generateRandomKeyPair() throws -> (passphrase: String, publicKey: String, privateKey: String) {
+    static func generateEncryptionKit() throws -> EncryptionKit {
         let passphrase = UUID().uuidString
         let username = UUID().uuidString
         let domain = "protonmail.com"
@@ -51,7 +52,7 @@ class MailCrypto {
         }
 
         let cryptoKey = try unlockedKey.lock(passphrase.data(using: .utf8))
-        unlockedKey.clearPrivateParams()
+        _ = unlockedKey.clearPrivateParams()
 
         let publicKey = cryptoKey.getArmoredPublicKey(&error)
         if let concreteError = error {
@@ -62,6 +63,6 @@ class MailCrypto {
             throw CryptoError.failedGeneratingKeypair(concreteError)
         }
 
-        return (passphrase, publicKey, privateKey)
+        return EncryptionKit(passphrase: passphrase, privateKey: publicKey, publicKey: privateKey)
     }
 }

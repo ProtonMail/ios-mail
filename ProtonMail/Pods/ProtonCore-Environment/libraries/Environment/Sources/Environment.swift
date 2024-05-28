@@ -136,7 +136,8 @@ extension Environment {
             defaultHost: "https://\(customDomain)",
             apiHost: ProductionHosts.mailAPI.dohHost,
             defaultPath: "/api",
-            proxyToken: nil
+            proxyToken: nil,
+            apnEnvironment: .development
         )
     }
 }
