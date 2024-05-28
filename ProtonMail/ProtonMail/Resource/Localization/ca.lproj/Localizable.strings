@@ -2478,7 +2478,7 @@
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Si l'aplicació es falla, s'enviarà un informe als nostres enginyers amb detalls de la causa. Només s'utilitzaran per a millorar l'aplicació.";
 
 /* Title of the upsell page. */
-"Upgrade to %@" = "Millori a %@";
+"Upgrade to %@" = "Milloreu a %@";
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Per desbloquejar més emmagatzematge i característiques prèmium.";
