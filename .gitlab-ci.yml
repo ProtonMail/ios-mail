@@ -56,7 +56,7 @@ stages:
       when: always
     - key:
         files:
-          - ProtonMail/ProtonMail.xcworkspace/xcshareddata/swiftpm/Package.resolve
+          - ProtonMail/ProtonMail.xcworkspace/xcshareddata/swiftpm/Package.resolved
       paths:
         - ci-cache/spm
       when: always
