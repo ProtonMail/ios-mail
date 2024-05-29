@@ -10,6 +10,8 @@ include:
   - component: gitlab.protontech.ch/proton/devops/cicd-components/kits/devsecops/generic@0.0.1
     inputs:
       allowed-to-fail: false
+      run-gitleaks-no-git-scan: false
+      runner-tag: shared-medium
       stage: scan
 
 variables:
