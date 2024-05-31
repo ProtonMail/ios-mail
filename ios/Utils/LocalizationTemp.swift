@@ -64,9 +64,19 @@ enum LocalizationTemp {
         static let unstar = "Unstar"
     }
 
+    enum MessageAction {
+        static let reply = "Reply"
+        static let replyAll = "ReplyAll"
+        static let forward = "Forward"
+    }
+
     enum MailboxCell {
         static func expiresIn(value: String) -> String { String(format: "Expires in %@", value) }
         static func snoozedTill(value: String) -> String { String(format: "Snoozed till %@", value) }
+    }
+
+    enum Recipients {
+        static let to = "to"
     }
 
     enum LabelPicker {
@@ -83,5 +93,10 @@ enum LocalizationTemp {
     enum Settings {
         static let settings = "Settings"
         static let subscription = "Subscription"
+    }
+
+    // TODO: We need the singular and plural form for these texts
+    enum Plurals {
+        static let file = "Files" 
     }
 }

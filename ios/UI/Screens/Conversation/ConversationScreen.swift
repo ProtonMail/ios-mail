@@ -15,47 +15,127 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import SwiftUI
 
 struct ConversationScreen: View {
-    @State var conversation: ConversationSeed
-    init(conversation: ConversationSeed) {
-        self.conversation = conversation
+    @StateObject private var model: ConversationModel
+    init(seed: ConversationScreenSeedUIModel) {
+        self._model = StateObject(wrappedValue: .init(seed: seed))
     }
 
     var body: some View {
-        VStack {
-            Text(conversation.subject)
-                .font(.headline)
-            Text(conversation.senders)
-                .font(.callout)
+        GeometryReader { proxy in
+
+            ScrollView {
+                VStack {
+                    VStack(spacing: 0) {
+                        subjectView
+                            .padding(.top, DS.Spacing.standard)
+                            .padding(.horizontal, DS.Spacing.large)
+
+                        attachmentsView
+                            .padding(.top, DS.Spacing.medium)
+                            .padding(.leading, DS.Spacing.large)
+                            .removeViewIf(model.seed.numAttachments < 1)
+                    }
+                    VStack(spacing: 0) {
+
+                        switch model.state {
+                        case .initial:
+                            EmptyView()
+                        case .fetchingMessages:
+                            ProgressView()
+                                .padding(.top, DS.Spacing.large)
+                        case .messagesReady(let previous, let last):
+                            messageList(previous: previous, last: last)
+                                .padding(.top, DS.Spacing.large)
+                        }
+                    }
+                    .frame(maxHeight: .infinity)
+                }
+                .frame(minHeight: proxy.size.height)
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .mailboxItemDetailToolbar(
+                isStarStateKnown: model.seed.isStarStateKnown,
+                isStarred: model.seed.isStarred
+            )
+            .task {
+                await model.fetchData()
+            }
+        }
+    }
+
+    private var subjectView: some View {
+        Text(model.seed.subject)
+            .font(.title2)
+            .fontWeight(.semibold)
+            .foregroundStyle(DS.Color.Text.norm)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var attachmentsView: some View {
+        HStack {
+            Image(uiImage: DS.Icon.icPaperClip)
+                .resizable()
+                .frame(width: 14, height: 14)
+                .foregroundColor(DS.Color.Icon.weak)
+            Text("\(model.seed.numAttachments) \(LocalizationTemp.Plurals.file)")
+                .font(.caption)
+                .foregroundColor(DS.Color.Text.weak)
+            Spacer()
+        }
+    }
+
+    private func messageList(previous: [MessageCellUIModel], last: OpenMessageCellUIModel) -> some View {
+        VStack(spacing: 0) {
+            LazyVStack(spacing: 0) {
+                ForEach(Array(previous.enumerated()), id: \.1.id) { index, model in
+                    switch model.type {
+                    case .collapsed(let uiModel):
+                        CollapsedMessageCell(uiModel: uiModel, isFirstCell: index == 0)
+                    case .open(let uiModel):
+                        OpenMessageCell(uiModel: uiModel, isFirstCell: index == 0)
+                    }
+                }
+            }
+            OpenMessageCell(uiModel: last, isFirstCell: previous.isEmpty)
         }
     }
 }
 
-struct ConversationSeed {
-    let id: PMLocalConversationId
-    let subject: String
-    let senders: String
-}
 
-final class ConversationModel: ObservableObject {
-    private let dependencies: Dependencies
+#Preview("From Mailbox") {
 
-    init(dependencies: Dependencies = .init()) {
-        self.dependencies = dependencies
-
-        
+    NavigationView {
+        ConversationScreen(seed:
+                .mailboxItem(
+                    .init(
+                        id: 0,
+                        type: .conversation,
+                        avatar: .init(initials: "Pf", senderImageParams: .init()),
+                        senders: "",
+                        subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia",
+                        date: .now,
+                        isRead: true,
+                        isStarred: true,
+                        isSelected: false,
+                        isSenderProtonOfficial: true,
+                        numMessages: 3,
+                        labelUIModel: .init(),
+                        attachmentsUIModel: [.init(attachmentId: 4, icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")],
+                        expirationDate: nil,
+                        snoozeDate: nil
+                    )
+                )
+        )
     }
 }
 
-extension ConversationModel {
+#Preview("From Notification") {
 
-    struct Dependencies {
-        let appContext: AppContext
-
-        init(appContext: AppContext = .shared) {
-            self.appContext = appContext
-        }
+    NavigationView {
+        ConversationScreen(seed: .pushNotification(messageId: "0", subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia", sender: "him"))
     }
 }

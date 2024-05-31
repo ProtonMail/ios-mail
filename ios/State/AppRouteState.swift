@@ -53,7 +53,7 @@ enum Route: Equatable, CustomStringConvertible {
     case mailbox(label: SelectedMailbox)
     case settings
     case subscription
-    case openMailboxItem(item: OpenMailboxItemInfo)
+    case openMailboxItem(seed: MailboxItemSeed)
 
     var selectedMailbox: SelectedMailbox? {
         if case .mailbox(let label) = self {

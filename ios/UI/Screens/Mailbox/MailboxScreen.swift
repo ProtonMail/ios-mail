@@ -29,7 +29,7 @@ struct MailboxScreen: View {
         : mailboxModel.selectedMailbox.name
     }
 
-    init(customLabelModel: CustomLabelModel, mailSettings: PMMailSettingsProtocol, openedItem: OpenMailboxItemInfo? = nil) {
+    init(customLabelModel: CustomLabelModel, mailSettings: PMMailSettingsProtocol, openedItem: MailboxItemSeed? = nil) {
         self._mailboxModel = StateObject(wrappedValue: MailboxModel(mailSettings: mailSettings, openedItem: openedItem))
         self.customLabelModel = customLabelModel
     }
@@ -42,10 +42,10 @@ struct MailboxScreen: View {
                         .edgesIgnoringSafeArea([.top, .bottom])
                 }
                 .navigationDestination(for: MailboxItemCellUIModel.self) { uiModel in
-                    ConversationScreen(conversation: .init(id: uiModel.id, subject: uiModel.subject, senders: uiModel.senders))
+                    ConversationScreen(seed: .mailboxItem(uiModel))
                 }
-                .navigationDestination(for: OpenMailboxItemInfo.self) { info in
-                    ConversationScreen(conversation: .init(id: info.id, subject: info.subject, senders: info.senders))
+                .navigationDestination(for: MailboxItemSeed.self) { info in
+                    ConversationScreen(seed: .pushNotification(messageId: info.messageId, subject: info.subject, sender: info.sender))
                 }
         }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)

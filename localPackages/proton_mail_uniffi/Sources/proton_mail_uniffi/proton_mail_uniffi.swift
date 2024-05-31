@@ -498,6 +498,181 @@ fileprivate struct FfiConverterData: FfiConverterRustBuffer {
 
 
 /**
+ * Contains the decrypted and parsed message body from a message.
+ */
+public protocol DecryptedMessageBodyProtocol : AnyObject {
+    
+    /**
+     * Returns the decrypted body of the message.
+     */
+    func body()  -> String
+    
+    /**
+     * Returns the header strings associated with the message.
+     */
+    func headerString()  -> String
+    
+    /**
+     * The message id of which this body belongs to.
+     */
+    func id()  -> UInt64
+    
+    /**
+     * The mime type of the message.
+     */
+    func mimeType()  -> MimeType
+    
+    /**
+     * Retrieve a parsed header value for a given `key`.
+     */
+    func parsedHeaderValue(key: String)  -> ParsedHeaderValue?
+    
+}
+
+/**
+ * Contains the decrypted and parsed message body from a message.
+ */
+open class DecryptedMessageBody:
+    DecryptedMessageBodyProtocol {
+    fileprivate let pointer: UnsafeMutableRawPointer!
+
+    /// Used to instantiate a [FFIObject] without an actual pointer, for fakes in tests, mostly.
+    public struct NoPointer {
+        public init() {}
+    }
+
+    // TODO: We'd like this to be `private` but for Swifty reasons,
+    // we can't implement `FfiConverter` without making this `required` and we can't
+    // make it `required` without making it `public`.
+    required public init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        self.pointer = pointer
+    }
+
+    /// This constructor can be used to instantiate a fake object.
+    /// - Parameter noPointer: Placeholder value so we can have a constructor separate from the default empty one that may be implemented for classes extending [FFIObject].
+    ///
+    /// - Warning:
+    ///     Any object instantiated with this constructor cannot be passed to an actual Rust-backed object. Since there isn't a backing [Pointer] the FFI lower functions will crash.
+    public init(noPointer: NoPointer) {
+        self.pointer = nil
+    }
+
+    public func uniffiClonePointer() -> UnsafeMutableRawPointer {
+        return try! rustCall { uniffi_proton_mail_uniffi_fn_clone_decryptedmessagebody(self.pointer, $0) }
+    }
+    // No primary constructor declared for this class.
+
+    deinit {
+        guard let pointer = pointer else {
+            return
+        }
+
+        try! rustCall { uniffi_proton_mail_uniffi_fn_free_decryptedmessagebody(pointer, $0) }
+    }
+
+    
+
+    
+    /**
+     * Returns the decrypted body of the message.
+     */
+open func body() -> String {
+    return try!  FfiConverterString.lift(try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_method_decryptedmessagebody_body(self.uniffiClonePointer(),$0
+    )
+})
+}
+    
+    /**
+     * Returns the header strings associated with the message.
+     */
+open func headerString() -> String {
+    return try!  FfiConverterString.lift(try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_method_decryptedmessagebody_header_string(self.uniffiClonePointer(),$0
+    )
+})
+}
+    
+    /**
+     * The message id of which this body belongs to.
+     */
+open func id() -> UInt64 {
+    return try!  FfiConverterUInt64.lift(try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_method_decryptedmessagebody_id(self.uniffiClonePointer(),$0
+    )
+})
+}
+    
+    /**
+     * The mime type of the message.
+     */
+open func mimeType() -> MimeType {
+    return try!  FfiConverterTypeMimeType_lift(try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_method_decryptedmessagebody_mime_type(self.uniffiClonePointer(),$0
+    )
+})
+}
+    
+    /**
+     * Retrieve a parsed header value for a given `key`.
+     */
+open func parsedHeaderValue(key: String) -> ParsedHeaderValue? {
+    return try!  FfiConverterOptionTypeParsedHeaderValue.lift(try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_method_decryptedmessagebody_parsed_header_value(self.uniffiClonePointer(),
+        FfiConverterString.lower(key),$0
+    )
+})
+}
+    
+
+}
+
+public struct FfiConverterTypeDecryptedMessageBody: FfiConverter {
+
+    typealias FfiType = UnsafeMutableRawPointer
+    typealias SwiftType = DecryptedMessageBody
+
+    public static func lift(_ pointer: UnsafeMutableRawPointer) throws -> DecryptedMessageBody {
+        return DecryptedMessageBody(unsafeFromRawPointer: pointer)
+    }
+
+    public static func lower(_ value: DecryptedMessageBody) -> UnsafeMutableRawPointer {
+        return value.uniffiClonePointer()
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> DecryptedMessageBody {
+        let v: UInt64 = try readInt(&buf)
+        // The Rust code won't compile if a pointer won't fit in a UInt64.
+        // We have to go via `UInt` because that's the thing that's the size of a pointer.
+        let ptr = UnsafeMutableRawPointer(bitPattern: UInt(truncatingIfNeeded: v))
+        if (ptr == nil) {
+            throw UniffiInternalError.unexpectedNullPointer
+        }
+        return try lift(ptr!)
+    }
+
+    public static func write(_ value: DecryptedMessageBody, into buf: inout [UInt8]) {
+        // This fiddling is because `Int` is the thing that's the same size as a pointer.
+        // The Rust code won't compile if a pointer won't fit in a `UInt64`.
+        writeInt(&buf, UInt64(bitPattern: Int64(Int(bitPattern: lower(value)))))
+    }
+}
+
+
+
+
+public func FfiConverterTypeDecryptedMessageBody_lift(_ pointer: UnsafeMutableRawPointer) throws -> DecryptedMessageBody {
+    return try FfiConverterTypeDecryptedMessageBody.lift(pointer)
+}
+
+public func FfiConverterTypeDecryptedMessageBody_lower(_ value: DecryptedMessageBody) -> UnsafeMutableRawPointer {
+    return FfiConverterTypeDecryptedMessageBody.lower(value)
+}
+
+
+
+
+/**
  * Flow through the required steps to authenticate and login a user.
  *
  * The first stage of the login is the submission of the user credentials with [`LoginFlow::login`].
@@ -1110,6 +1285,26 @@ public protocol MailUserSessionProtocol : AnyObject {
     func executePendingActions() async throws 
     
     /**
+     * Filter or Search conversations which match the given `filter`.
+     *
+     * Note that search results are inserted into the database.
+     *
+     * # Errors
+     * Returns error if the network request or the query failed.
+     */
+    func filterConversations(filter: ConversationFilter) async throws  -> FilteredConversations
+    
+    /**
+     * Filter or Search messages which match the given `filter`.
+     *
+     * Note that search results are inserted into the database.
+     *
+     * # Errors
+     * Returns error if the network request or the query failed.
+     */
+    func filterMessages(filter: MessageMetadataFilter) async throws  -> FilteredMessages
+    
+    /**
      * Fork the current session.
      *
      * This call has to be made from a parent session, and forks the current
@@ -1296,6 +1491,56 @@ open func executePendingActions()async throws  {
             completeFunc: ffi_proton_mail_uniffi_rust_future_complete_void,
             freeFunc: ffi_proton_mail_uniffi_rust_future_free_void,
             liftFunc: { $0 },
+            errorHandler: FfiConverterTypeMailSessionError.lift
+        )
+}
+    
+    /**
+     * Filter or Search conversations which match the given `filter`.
+     *
+     * Note that search results are inserted into the database.
+     *
+     * # Errors
+     * Returns error if the network request or the query failed.
+     */
+open func filterConversations(filter: ConversationFilter)async throws  -> FilteredConversations {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_method_mailusersession_filter_conversations(
+                    self.uniffiClonePointer(),
+                    FfiConverterTypeConversationFilter_lower(filter)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
+            liftFunc: FfiConverterTypeFilteredConversations_lift,
+            errorHandler: FfiConverterTypeMailSessionError.lift
+        )
+}
+    
+    /**
+     * Filter or Search messages which match the given `filter`.
+     *
+     * Note that search results are inserted into the database.
+     *
+     * # Errors
+     * Returns error if the network request or the query failed.
+     */
+open func filterMessages(filter: MessageMetadataFilter)async throws  -> FilteredMessages {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_method_mailusersession_filter_messages(
+                    self.uniffiClonePointer(),
+                    FfiConverterTypeMessageMetadataFilter_lower(filter)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
+            liftFunc: FfiConverterTypeFilteredMessages_lift,
             errorHandler: FfiConverterTypeMailSessionError.lift
         )
 }
@@ -1719,7 +1964,7 @@ public protocol MailboxProtocol : AnyObject {
      * Returns error if the network request, the database query, reading/writing
      * the body to the cache or decrypting the body failed.
      */
-    func messageBody(id: UInt64) async throws  -> String
+    func messageBody(id: UInt64) async throws  -> DecryptedMessageBody
     
     /**
      * Move the given conversations from the current mailbox.
@@ -2024,7 +2269,7 @@ open func markConversationsUnread(ids: [UInt64])throws  {try rustCallWithError(F
      * Returns error if the network request, the database query, reading/writing
      * the body to the cache or decrypting the body failed.
      */
-open func messageBody(id: UInt64)async throws  -> String {
+open func messageBody(id: UInt64)async throws  -> DecryptedMessageBody {
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
@@ -2033,10 +2278,10 @@ open func messageBody(id: UInt64)async throws  -> String {
                     FfiConverterUInt64.lower(id)
                 )
             },
-            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
-            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
-            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
-            liftFunc: FfiConverterString.lift,
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_pointer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_pointer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_pointer,
+            liftFunc: FfiConverterTypeDecryptedMessageBody.lift,
             errorHandler: FfiConverterTypeMailboxError.lift
         )
 }
@@ -5111,6 +5356,27 @@ fileprivate struct FfiConverterOptionTypeAPIEnvConfig: FfiConverterRustBuffer {
     }
 }
 
+fileprivate struct FfiConverterOptionTypeParsedHeaderValue: FfiConverterRustBuffer {
+    typealias SwiftType = ParsedHeaderValue?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterTypeParsedHeaderValue.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterTypeParsedHeaderValue.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
 fileprivate struct FfiConverterSequenceUInt64: FfiConverterRustBuffer {
     typealias SwiftType = [UInt64]
 
@@ -5264,6 +5530,18 @@ fileprivate struct FfiConverterSequenceTypeLocalMessageMetadata: FfiConverterRus
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 private let UNIFFI_RUST_FUTURE_POLL_READY: Int8 = 0
 private let UNIFFI_RUST_FUTURE_POLL_MAYBE_READY: Int8 = 1
 
@@ -5341,6 +5619,21 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_func_locate_blockquote() != 22116) {
         return InitializationResult.apiChecksumMismatch
     }
+    if (uniffi_proton_mail_uniffi_checksum_method_decryptedmessagebody_body() != 10397) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_decryptedmessagebody_header_string() != 476) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_decryptedmessagebody_id() != 55886) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_decryptedmessagebody_mime_type() != 29655) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_decryptedmessagebody_parsed_header_value() != 10509) {
+        return InitializationResult.apiChecksumMismatch
+    }
     if (uniffi_proton_mail_uniffi_checksum_method_loginflow_is_awaiting_2fa() != 64412) {
         return InitializationResult.apiChecksumMismatch
     }
@@ -5384,6 +5677,12 @@ private var initializationResult: InitializationResult {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_execute_pending_actions() != 15772) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_filter_conversations() != 21516) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_filter_messages() != 18013) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_fork() != 50159) {
@@ -5434,7 +5733,7 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_mark_conversations_unread() != 47243) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_message_body() != 9151) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_message_body() != 27720) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_move_conversations() != 2511) {

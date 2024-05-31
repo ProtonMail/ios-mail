@@ -20,6 +20,7 @@ import SwiftUI
 
 struct MailboxListView: View {
     @ObservedObject private var model: MailboxModel
+    @State private var didAppearBefore = false
 
     init(model: MailboxModel) {
         self.model = model
@@ -41,6 +42,8 @@ struct MailboxListView: View {
             oldValue.count != newValue.count ? .selection : nil
         }
         .task {
+            guard !didAppearBefore else { return }
+            didAppearBefore = true
             await model.onViewDidAppear()
         }
     }

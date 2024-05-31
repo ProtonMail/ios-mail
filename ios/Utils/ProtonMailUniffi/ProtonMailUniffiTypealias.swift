@@ -22,4 +22,5 @@ import proton_mail_uniffi
 typealias PMMailboxItemId = LocalConversationId
 typealias PMLocalAttachmentId = LocalAttachmentId
 typealias PMLocalConversationId = LocalConversationId
+typealias PMLocalMessageId = LocalMessageId
 typealias PMLocalLabelId = LocalLabelId

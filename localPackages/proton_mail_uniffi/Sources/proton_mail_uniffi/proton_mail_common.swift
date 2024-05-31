@@ -525,78 +525,6 @@ public func FfiConverterTypeAvatarInformation_lower(_ value: AvatarInformation) 
 
 
 /**
- * Consists of the message's body metadata and decrypted content.
- */
-public struct DecryptedMessageBody {
-    /**
-     * Metadata associated with the message body
-     */
-    public var metadata: LocalMessageBodyMetadata
-    /**
-     * The decrypted message contents.
-     */
-    public var body: String
-
-    // Default memberwise initializers are never public by default, so we
-    // declare one manually.
-    public init(
-        /**
-         * Metadata associated with the message body
-         */metadata: LocalMessageBodyMetadata, 
-        /**
-         * The decrypted message contents.
-         */body: String) {
-        self.metadata = metadata
-        self.body = body
-    }
-}
-
-
-extension DecryptedMessageBody: Sendable {} 
-extension DecryptedMessageBody: Equatable, Hashable {
-    public static func ==(lhs: DecryptedMessageBody, rhs: DecryptedMessageBody) -> Bool {
-        if lhs.metadata != rhs.metadata {
-            return false
-        }
-        if lhs.body != rhs.body {
-            return false
-        }
-        return true
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(metadata)
-        hasher.combine(body)
-    }
-}
-
-
-public struct FfiConverterTypeDecryptedMessageBody: FfiConverterRustBuffer {
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> DecryptedMessageBody {
-        return
-            try DecryptedMessageBody(
-                metadata: FfiConverterTypeLocalMessageBodyMetadata.read(from: &buf), 
-                body: FfiConverterString.read(from: &buf)
-        )
-    }
-
-    public static func write(_ value: DecryptedMessageBody, into buf: inout [UInt8]) {
-        FfiConverterTypeLocalMessageBodyMetadata.write(value.metadata, into: &buf)
-        FfiConverterString.write(value.body, into: &buf)
-    }
-}
-
-
-public func FfiConverterTypeDecryptedMessageBody_lift(_ buf: RustBuffer) throws -> DecryptedMessageBody {
-    return try FfiConverterTypeDecryptedMessageBody.lift(buf)
-}
-
-public func FfiConverterTypeDecryptedMessageBody_lower(_ value: DecryptedMessageBody) -> RustBuffer {
-    return FfiConverterTypeDecryptedMessageBody.lower(value)
-}
-
-
-/**
  * Result of the call to [`MailUserContext::filter_conversations`].
  */
 public struct FilteredConversations {
@@ -1354,102 +1282,6 @@ public func FfiConverterTypeLocalLabelWithCount_lower(_ value: LocalLabelWithCou
 
 
 /**
- * Metadata associated with the Body of a message.
- *
- * Message bodies are not stored in the database.
- *
- * For metadata associated with a message see [`LocalMessageMetadata`].
- */
-public struct LocalMessageBodyMetadata {
-    public var id: LocalMessageId
-    public var rid: MessageId?
-    public var header: String
-    public var parsedHeaders: [String: String]
-    public var mimeType: MimeType
-    public var addressId: AddressId
-
-    // Default memberwise initializers are never public by default, so we
-    // declare one manually.
-    public init(id: LocalMessageId, rid: MessageId?, header: String, parsedHeaders: [String: String], mimeType: MimeType, addressId: AddressId) {
-        self.id = id
-        self.rid = rid
-        self.header = header
-        self.parsedHeaders = parsedHeaders
-        self.mimeType = mimeType
-        self.addressId = addressId
-    }
-}
-
-
-extension LocalMessageBodyMetadata: Sendable {} 
-extension LocalMessageBodyMetadata: Equatable, Hashable {
-    public static func ==(lhs: LocalMessageBodyMetadata, rhs: LocalMessageBodyMetadata) -> Bool {
-        if lhs.id != rhs.id {
-            return false
-        }
-        if lhs.rid != rhs.rid {
-            return false
-        }
-        if lhs.header != rhs.header {
-            return false
-        }
-        if lhs.parsedHeaders != rhs.parsedHeaders {
-            return false
-        }
-        if lhs.mimeType != rhs.mimeType {
-            return false
-        }
-        if lhs.addressId != rhs.addressId {
-            return false
-        }
-        return true
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(rid)
-        hasher.combine(header)
-        hasher.combine(parsedHeaders)
-        hasher.combine(mimeType)
-        hasher.combine(addressId)
-    }
-}
-
-
-public struct FfiConverterTypeLocalMessageBodyMetadata: FfiConverterRustBuffer {
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> LocalMessageBodyMetadata {
-        return
-            try LocalMessageBodyMetadata(
-                id: FfiConverterTypeLocalMessageId.read(from: &buf), 
-                rid: FfiConverterOptionTypeMessageId.read(from: &buf), 
-                header: FfiConverterString.read(from: &buf), 
-                parsedHeaders: FfiConverterDictionaryStringString.read(from: &buf), 
-                mimeType: FfiConverterTypeMimeType.read(from: &buf), 
-                addressId: FfiConverterTypeAddressId.read(from: &buf)
-        )
-    }
-
-    public static func write(_ value: LocalMessageBodyMetadata, into buf: inout [UInt8]) {
-        FfiConverterTypeLocalMessageId.write(value.id, into: &buf)
-        FfiConverterOptionTypeMessageId.write(value.rid, into: &buf)
-        FfiConverterString.write(value.header, into: &buf)
-        FfiConverterDictionaryStringString.write(value.parsedHeaders, into: &buf)
-        FfiConverterTypeMimeType.write(value.mimeType, into: &buf)
-        FfiConverterTypeAddressId.write(value.addressId, into: &buf)
-    }
-}
-
-
-public func FfiConverterTypeLocalMessageBodyMetadata_lift(_ buf: RustBuffer) throws -> LocalMessageBodyMetadata {
-    return try FfiConverterTypeLocalMessageBodyMetadata.lift(buf)
-}
-
-public func FfiConverterTypeLocalMessageBodyMetadata_lower(_ value: LocalMessageBodyMetadata) -> RustBuffer {
-    return FfiConverterTypeLocalMessageBodyMetadata.lower(value)
-}
-
-
-/**
  * Contains all the metadata associated with a message.
  *
  * For the message body see [`LocalMessageBodyMetadata`].
@@ -1694,6 +1526,70 @@ public func FfiConverterTypeLocalMessageMetadata_lower(_ value: LocalMessageMeta
     return FfiConverterTypeLocalMessageMetadata.lower(value)
 }
 
+// Note that we don't yet support `indirect` for enums.
+// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
+/**
+ * A message parsed header value can either be a string or an array of strings.
+ */
+
+public enum ParsedHeaderValue {
+    
+    case string(String
+    )
+    case array([String]
+    )
+}
+
+
+public struct FfiConverterTypeParsedHeaderValue: FfiConverterRustBuffer {
+    typealias SwiftType = ParsedHeaderValue
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> ParsedHeaderValue {
+        let variant: Int32 = try readInt(&buf)
+        switch variant {
+        
+        case 1: return .string(try FfiConverterString.read(from: &buf)
+        )
+        
+        case 2: return .array(try FfiConverterSequenceString.read(from: &buf)
+        )
+        
+        default: throw UniffiInternalError.unexpectedEnumCase
+        }
+    }
+
+    public static func write(_ value: ParsedHeaderValue, into buf: inout [UInt8]) {
+        switch value {
+        
+        
+        case let .string(v1):
+            writeInt(&buf, Int32(1))
+            FfiConverterString.write(v1, into: &buf)
+            
+        
+        case let .array(v1):
+            writeInt(&buf, Int32(2))
+            FfiConverterSequenceString.write(v1, into: &buf)
+            
+        }
+    }
+}
+
+
+public func FfiConverterTypeParsedHeaderValue_lift(_ buf: RustBuffer) throws -> ParsedHeaderValue {
+    return try FfiConverterTypeParsedHeaderValue.lift(buf)
+}
+
+public func FfiConverterTypeParsedHeaderValue_lower(_ value: ParsedHeaderValue) -> RustBuffer {
+    return FfiConverterTypeParsedHeaderValue.lower(value)
+}
+
+
+extension ParsedHeaderValue: Sendable {} 
+extension ParsedHeaderValue: Equatable, Hashable {}
+
+
+
 fileprivate struct FfiConverterOptionString: FfiConverterRustBuffer {
     typealias SwiftType = String?
 
@@ -1904,6 +1800,28 @@ fileprivate struct FfiConverterOptionTypeLocalLabelId: FfiConverterRustBuffer {
     }
 }
 
+fileprivate struct FfiConverterSequenceString: FfiConverterRustBuffer {
+    typealias SwiftType = [String]
+
+    public static func write(_ value: [String], into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        for item in value {
+            FfiConverterString.write(item, into: &buf)
+        }
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [String] {
+        let len: Int32 = try readInt(&buf)
+        var seq = [String]()
+        seq.reserveCapacity(Int(len))
+        for _ in 0 ..< len {
+            seq.append(try FfiConverterString.read(from: &buf))
+        }
+        return seq
+    }
+}
+
 fileprivate struct FfiConverterSequenceTypeLocalAttachmentMetadata: FfiConverterRustBuffer {
     typealias SwiftType = [LocalAttachmentMetadata]
 
@@ -2013,31 +1931,6 @@ fileprivate struct FfiConverterSequenceTypeMessageAddress: FfiConverterRustBuffe
         return seq
     }
 }
-
-fileprivate struct FfiConverterDictionaryStringString: FfiConverterRustBuffer {
-    public static func write(_ value: [String: String], into buf: inout [UInt8]) {
-        let len = Int32(value.count)
-        writeInt(&buf, len)
-        for (key, value) in value {
-            FfiConverterString.write(key, into: &buf)
-            FfiConverterString.write(value, into: &buf)
-        }
-    }
-
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [String: String] {
-        let len: Int32 = try readInt(&buf)
-        var dict = [String: String]()
-        dict.reserveCapacity(Int(len))
-        for _ in 0..<len {
-            let key = try FfiConverterString.read(from: &buf)
-            let value = try FfiConverterString.read(from: &buf)
-            dict[key] = value
-        }
-        return dict
-    }
-}
-
-
 
 
 

@@ -59,3 +59,32 @@ extension LocalMessageMetadata {
     }
 }
 
+extension LocalMessageMetadata {
+
+    func toCollapsedMessageCellUIModel() async -> CollapsedMessageCellUIModel {
+        .init(
+            id: id,
+            sender: sender.uiRepresentation,
+            date: Date(timeIntervalSince1970: TimeInterval(time)),
+            recipients: recipientsUIRepresentation,
+            messagePreview: nil,
+            isRead: !unread,
+            avatar: await toAvatarUIModel()
+        )
+    }
+}
+
+extension LocalMessageMetadata {
+
+    func toOpenMessageCellUIModel(message: String) async -> OpenMessageCellUIModel {
+        .init(
+            message: message,
+            sender: sender.uiRepresentation,
+            date: Date(timeIntervalSince1970: TimeInterval(time)),
+            senderPrivacy: sender.address,
+            recipients: recipientsUIRepresentation,
+            isSingleRecipient: numberOfRecipients == 1,
+            avatar: await toAvatarUIModel()
+        )
+    }
+}

@@ -1,0 +1,135 @@
+// Copyright (c) 2024 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+import DesignSystem
+import SwiftUI
+
+struct CollapsedMessageCell: View {
+    private let uiModel: CollapsedMessageCellUIModel
+
+    /**
+     Determines how the horizontal edges of the card are rendered to give visual
+     continuation to the list (only visible in landscape mode).
+     */
+    private let isFirstCell: Bool
+
+    init(uiModel: CollapsedMessageCellUIModel, isFirstCell: Bool = false) {
+        self.uiModel = uiModel
+        self.isFirstCell = isFirstCell
+    }
+
+    var body: some View {
+
+        ZStack(alignment: .top) {
+            messageCardTopView
+            messageDataView
+                .padding(.bottom, DS.Spacing.large)
+                .overlay { borderOnTheSides(show: isFirstCell) }
+                .padding(.top, DS.Spacing.large)
+        }
+        .overlay { borderOnTheSides(show: !isFirstCell) }
+    }
+
+    private func borderOnTheSides(show: Bool) -> some View {
+        EdgeBorder(
+            width: 1,
+            edges: [.leading, .trailing]
+        )
+        .foregroundColor(DS.Color.Border.strong)
+        .removeViewIf(!show)
+    }
+
+    private var messageCardTopView: some View {
+        MessageCardTopView(cornerRadius: DS.Radius.extraLarge)
+    }
+
+    private var messageDataView: some View {
+        HStack(spacing: DS.Spacing.large) {
+            AvatarCheckboxView(isSelected: false, avatar: uiModel.avatar, onDidChangeSelection: { _ in })
+                .frame(width: 40, height: 40)
+            VStack(spacing: DS.Spacing.small) {
+                senderRow
+                previewRow
+            }
+        }
+        .padding(.horizontal, DS.Spacing.large)
+    }
+
+    private var previewRow: some View {
+        Text(uiModel.messagePreview ?? uiModel.recipients)
+            .font(.caption)
+            .foregroundStyle(uiModel.isRead ? DS.Color.Text.hint : DS.Color.Text.norm)
+            .lineLimit(1)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var senderRow: some View {
+        HStack(spacing: DS.Spacing.small) {
+            Text(uiModel.sender)
+                .font(DS.Font.body3)
+                .fontWeight(uiModel.isRead ? .regular : .bold)
+                .lineLimit(1)
+                .foregroundColor(uiModel.isRead ? DS.Color.Text.weak : DS.Color.Text.norm)
+            Text(uiModel.date.mailboxFormat())
+                .font(.caption)
+                .foregroundColor(uiModel.isRead ? DS.Color.Text.hint : DS.Color.Text.norm)
+            Spacer()
+        }
+    }
+}
+
+struct CollapsedMessageCellUIModel {
+    let id: PMLocalMessageId
+    let sender: String
+    let date: Date
+    let recipients: String
+    let messagePreview: String?
+    let isRead: Bool
+    let avatar: AvatarUIModel
+}
+
+#Preview {
+    VStack(spacing: 0) {
+        CollapsedMessageCell(uiModel: .init(
+            id: 1,
+            sender: "Martha",
+            date: .now,
+            recipients: "john@gmail.com",
+            messagePreview: "Dear All, This sounds absolutely incredible! Patagonia has been on my bucket list for ages.",
+            isRead: true,
+            avatar: .init(initials: "Ba", senderImageParams: .init())
+        ), isFirstCell: true)
+        CollapsedMessageCell(uiModel: .init(
+            id: 2,
+            sender: "john@gmail.com",
+            date: .now,
+            recipients: "martha@proton.me",
+            messagePreview: "I'm definitely on board for this adventure",
+            isRead: false,
+            avatar: .init(initials: "De", senderImageParams: .init())
+        ))
+        CollapsedMessageCell(uiModel: .init(
+            id: 3,
+            sender: "Martha",
+            date: .now,
+            recipients: "john@gmail.com",
+            messagePreview: nil,
+            isRead: true,
+            avatar: .init(initials: "Pr", senderImageParams: .init())
+        ))
+    }
+}

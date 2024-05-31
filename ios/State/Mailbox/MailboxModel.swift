@@ -51,7 +51,7 @@ final class MailboxModel: ObservableObject {
         state: State = .loading,
         mailSettings: PMMailSettingsProtocol,
         appRoute: AppRouteState = .shared,
-        openedItem: OpenMailboxItemInfo? = nil,
+        openedItem: MailboxItemSeed? = nil,
         dependencies: Dependencies = .init()
     ) {
         AppLogger.log(message: "MailboxModel init", category: .mailbox)
@@ -205,7 +205,7 @@ extension MailboxModel {
             applySelectionStateChangeInstead(mailboxItem: item)
             return
         }
-//        navigationPath.append(item)  // uncomment when the conversation detail is ready
+        navigationPath.append(item)
     }
 
     @MainActor
