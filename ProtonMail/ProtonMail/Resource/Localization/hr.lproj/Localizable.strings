@@ -1914,7 +1914,7 @@
 "(no title)" = "(no title)";
 
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "Organizator";
 
 /* Button to hide some items in the list to conserve screen estate */
 "Show less" = "Show less";
@@ -1935,7 +1935,7 @@
 "No" = "Ne";
 
 /* Part of a yes/no/maybe prompt */
-"Maybe" = "Maybe";
+"Maybe" = "Možda";
 
 /* Confirm attending an event */
 "Yes, I'll attend" = "Da, prisustvovati ću";
@@ -2154,7 +2154,7 @@
 "Application logs" = "Zapisnici aplikacije";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "Novo";
 
 /* Got it action */
 "Got it" = "Shvaćam";
@@ -2388,7 +2388,7 @@
 "This weekend" = "This weekend";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "Sljedeći tjedan";
 
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Please select a time in the future";

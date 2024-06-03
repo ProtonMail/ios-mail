@@ -2028,7 +2028,7 @@
 "Easily RSVP to events" = "Confirmer facilement votre participation à des événements";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Vous pouvez maintenant répondre à une invitation ou afficher l'événement dans Proton Calendar avec simple pression. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Vous pouvez maintenant répondre à une invitation ou afficher l'événement dans Proton Calendar avec une simple pression. ";
 
 /* Menu title */
 "Max Storage" = "Espace de stockage maximum";
@@ -2424,7 +2424,7 @@
 "Enable auto-import" = "Activer l'importation automatique";
 
 /* The title for no contact hint view */
-"No contacts yet" = "Il n'y a pas encore de contacts.";
+"No contacts yet" = "Il n'y a aucun contact pour l'instant.";
 
 /* The description for no contact hint view */
 "Import contacts from your device to send emails and invites with ease." = "Importez vos contacts depuis votre appareil pour envoyer facilement vos e-mails et invitations.";
@@ -2439,7 +2439,7 @@
 "Your contacts will appear here shortly." = "Vos contacts apparaîtront ici dans quelques instants.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Vous pouvez ajouter automatiquement des contacts depuis votre appareil.";
+"Automatically add new contacts from your device." = "Ajoutez automatiquement de nouveaux contacts depuis votre appareil.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Confidentialité et données";

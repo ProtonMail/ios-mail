@@ -1911,7 +1911,7 @@
 "Load" = "ჩატვირთვა";
 
 /* Title of an event with missing title */
-"(no title)" = "(no title)";
+"(no title)" = "(უსათაურო)";
 
 /* As in: event organizer */
 "Organizer" = "ორგანიზატორი";
@@ -1968,10 +1968,10 @@
 "%1@ at %2@ %3@" = "%1@ %2@%3@-ზე";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "დადასტურებულია";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "უარყოფილია";
 
 /* Status in an email body sent with an invitation answer */
 "tentatively accepted" = "ფრთხილად დაეთანხმა";
@@ -1983,13 +1983,13 @@
 "You are invited to %@" = "მიწვეული ბრძანდებით %@-ზე";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
-"LOCATION:\n%@" = "LOCATION:\n%@";
+"LOCATION:\n%@" = "მდებარეობა:\n%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's notes */
-"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+"DESCRIPTION:\n%@" = "აღწერა:\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ was cancelled.";
+"%@ was cancelled." = "%@ გაუქმდა.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
 "Re: Invitation for an event on %@" = "პას: მოსაწვევი მოვლენაზე, რომელიც იწყება %@-ზე";
@@ -2025,7 +2025,7 @@
 "last" = "ბოლო";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Easily RSVP to events";
+"Easily RSVP to events" = "ადვილი პასუხი მოვლენებზე";
 
 /* Body of the spotlight view */
 "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
@@ -2154,7 +2154,7 @@
 "Application logs" = "აპლიკაციის ჟურნალი";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "ახალი!";
 
 /* Got it action */
 "Got it" = "გავიგე";
@@ -2454,7 +2454,7 @@
 "Change mailbox password" = "საფოსტო ყუთის პაროლის შეცვლა";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB storage";
+"15 GB storage" = "15 გბ საცავი";
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u ელფოსტის მისამართი";
@@ -2463,7 +2463,7 @@
 "Custom email domain support" = "თქვენი ელფოსტის დომენების მხარდაჭერა";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"New Proton Mail desktop app" = "ახალი Proton Mal-ის კომპიუტერის აპი";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "ანონიმური ტელემეტრია";
@@ -2484,16 +2484,16 @@
 "To unlock more storage and premium features." = "მეტი საცავი და ფასიანი თვისებების მისაღებად.";
 
 /* Displayed next to the monthly price */
-"/month" = "/month";
+"/month" = "/თვე";
 
 /* CTA button to purchase a plan (e.g. Get Mail Plus) */
 "Get %@" = "%@-ის მიღება";
 
 /* In the context of a discount */
-"Save %u%%" = "Save %u%%";
+"Save %u%%" = "დაზოგეთ %u%%";
 
 /* Error when trying to purchase an invalid product */
-"Invalid product ID: $@" = "Invalid product ID: $@";
+"Invalid product ID: $@" = "არასწორი პროდუქტის ID: $@";
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
-"Purchase already in progress" = "Purchase already in progress";
+"Purchase already in progress" = "შეძენა უკვე მიმდინარეობს";

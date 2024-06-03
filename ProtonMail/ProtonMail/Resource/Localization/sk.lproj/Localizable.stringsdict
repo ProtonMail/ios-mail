@@ -19,7 +19,7 @@
         <key>few</key>
         <string>%u -krát</string>
         <key>many</key>
-        <string>%u -krát</string>
+        <string>%u-krát</string>
       </dict>
     </dict>
     <key>%u participants</key>
