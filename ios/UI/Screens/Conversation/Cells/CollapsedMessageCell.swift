@@ -93,7 +93,7 @@ struct CollapsedMessageCell: View {
 }
 
 struct CollapsedMessageCellUIModel {
-    let id: PMLocalMessageId
+    let messageId: PMLocalMessageId
     let sender: String
     let date: Date
     let recipients: String
@@ -105,7 +105,7 @@ struct CollapsedMessageCellUIModel {
 #Preview {
     VStack(spacing: 0) {
         CollapsedMessageCell(uiModel: .init(
-            id: 1,
+            messageId: 1,
             sender: "Martha",
             date: .now,
             recipients: "john@gmail.com",
@@ -114,7 +114,7 @@ struct CollapsedMessageCellUIModel {
             avatar: .init(initials: "Ba", senderImageParams: .init())
         ), isFirstCell: true)
         CollapsedMessageCell(uiModel: .init(
-            id: 2,
+            messageId: 2,
             sender: "john@gmail.com",
             date: .now,
             recipients: "martha@proton.me",
@@ -123,7 +123,7 @@ struct CollapsedMessageCellUIModel {
             avatar: .init(initials: "De", senderImageParams: .init())
         ))
         CollapsedMessageCell(uiModel: .init(
-            id: 3,
+            messageId: 3,
             sender: "Martha",
             date: .now,
             recipients: "john@gmail.com",

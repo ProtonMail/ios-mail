@@ -18,8 +18,8 @@
 import DesignSystem
 import SwiftUI
 
-struct OpenMessageHeaderView: View {
-    let uiModel: OpenMessageCellUIModel
+struct ExpandedMessageHeaderView: View {
+    let uiModel: ExpandedMessageCellUIModel
 
     var body: some View {
         messageDataView

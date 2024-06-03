@@ -63,7 +63,7 @@ extension LocalMessageMetadata {
 
     func toCollapsedMessageCellUIModel() async -> CollapsedMessageCellUIModel {
         .init(
-            id: id,
+            messageId: id,
             sender: sender.uiRepresentation,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
             recipients: recipientsUIRepresentation,
@@ -76,8 +76,9 @@ extension LocalMessageMetadata {
 
 extension LocalMessageMetadata {
 
-    func toOpenMessageCellUIModel(message: String) async -> OpenMessageCellUIModel {
+    func toExpandedMessageCellUIModel(message: String) async -> ExpandedMessageCellUIModel {
         .init(
+            messageId: id,
             message: message,
             sender: sender.uiRepresentation,
             date: Date(timeIntervalSince1970: TimeInterval(time)),

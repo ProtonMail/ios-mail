@@ -61,6 +61,7 @@ struct ConversationScreen: View {
                 isStarStateKnown: model.seed.isStarStateKnown,
                 isStarred: model.seed.isStarred
             )
+            .smoothScreenTransition()
             .task {
                 await model.fetchData()
             }
@@ -88,23 +89,50 @@ struct ConversationScreen: View {
         }
     }
 
-    private func messageList(previous: [MessageCellUIModel], last: OpenMessageCellUIModel) -> some View {
+    private func messageList(previous: [MessageCellUIModel], last: ExpandedMessageCellUIModel) -> some View {
         VStack(spacing: 0) {
-            LazyVStack(spacing: 0) {
-                ForEach(Array(previous.enumerated()), id: \.1.id) { index, model in
-                    switch model.type {
-                    case .collapsed(let uiModel):
-                        CollapsedMessageCell(uiModel: uiModel, isFirstCell: index == 0)
-                    case .open(let uiModel):
-                        OpenMessageCell(uiModel: uiModel, isFirstCell: index == 0)
+            ScrollViewReader { scrollView in
+                LazyVStack(spacing: 0) {
+                    ForEach(Array(previous.enumerated()), id: \.1.id) { index, model in
+                        switch model.type {
+                        case .collapsed(let uiModel):
+                            CollapsedMessageCell(uiModel: uiModel, isFirstCell: index == 0)
+                                .id(uiModel.messageId)
+                        case .expanded(let uiModel):
+                            ExpandedMessageCell(uiModel: uiModel, isFirstCell: index == 0)
+                                .id(uiModel.messageId)
+                        }
                     }
                 }
+                ExpandedMessageCell(uiModel: last, isFirstCell: previous.isEmpty)
+                    .id(last.messageId)
+                    .task {
+                        scrollView.scrollTo(model.focusedMessageOnAppear, anchor: .top)
+                    }
             }
-            OpenMessageCell(uiModel: last, isFirstCell: previous.isEmpty)
         }
     }
 }
 
+private struct ModifiersForSmoothScreenTransition: ViewModifier {
+
+    func body(content: Content) -> some View {
+        /**
+         With the combination of a white background toolbar and clipping the content to th scrollview area
+         we manage to have a nice UI transition from the mailbox to an expanded message that we have to scroll to.
+         */
+        content
+            .toolbarBackground(DS.Color.Background.norm, for: .navigationBar, .tabBar)
+            .clipped()
+    }
+}
+
+private extension View {
+
+    func smoothScreenTransition() -> some View {
+        self.modifier(ModifiersForSmoothScreenTransition())
+    }
+}
 
 #Preview("From Mailbox") {
 

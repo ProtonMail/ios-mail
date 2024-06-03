@@ -18,8 +18,8 @@
 import DesignSystem
 import SwiftUI
 
-struct OpenMessageCell: View {
-    let uiModel: OpenMessageCellUIModel
+struct ExpandedMessageCell: View {
+    let uiModel: ExpandedMessageCellUIModel
 
     /**
      Determines how the horizontal edges of the card are rendered to give visual
@@ -29,7 +29,7 @@ struct OpenMessageCell: View {
 
     private let cardCornerRadius = DS.Radius.extraLarge
 
-    init(uiModel: OpenMessageCellUIModel, isFirstCell: Bool = false) {
+    init(uiModel: ExpandedMessageCellUIModel, isFirstCell: Bool = false) {
         self.uiModel = uiModel
         self.isFirstCell = isFirstCell
     }
@@ -39,7 +39,7 @@ struct OpenMessageCell: View {
             MessageCardTopView(cornerRadius: cardCornerRadius)
 
             VStack(spacing: 0) {
-                OpenMessageHeaderView(uiModel: uiModel)
+                ExpandedMessageHeaderView(uiModel: uiModel)
                 MessageBodyView(message: uiModel.message)
 
                 Spacer()
@@ -62,7 +62,8 @@ struct OpenMessageCell: View {
     }
 }
 
-struct OpenMessageCellUIModel {
+struct ExpandedMessageCellUIModel {
+    let messageId: PMLocalMessageId
     let message: String
     let sender: String
     let date: Date
@@ -72,11 +73,12 @@ struct OpenMessageCellUIModel {
     let avatar: AvatarUIModel
 }
 
-#Preview("CollapsedMessageCell") {
+#Preview {
 
     VStack(spacing: 0) {
-        OpenMessageCell(
+        ExpandedMessageCell(
             uiModel: .init(
+                messageId: 0,
                 message: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it",
                 sender: "john@gmail.com",
                 date: .now,
@@ -87,8 +89,9 @@ struct OpenMessageCellUIModel {
             ), 
             isFirstCell: true
         )
-        OpenMessageCell(
+        ExpandedMessageCell(
             uiModel: .init(
+                messageId: 1,
                 message: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it",
                 sender: "john@gmail.com",
                 date: .now,
