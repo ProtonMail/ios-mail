@@ -17,7 +17,7 @@
 
 import OSLog
 
-final class AppLogger {
+final class AppLogger: @unchecked Sendable {
     private static let shared = AppLogger()
     private let serialQueue = DispatchQueue(label: "\(Bundle.defaultIdentifier).AppLogger")
 

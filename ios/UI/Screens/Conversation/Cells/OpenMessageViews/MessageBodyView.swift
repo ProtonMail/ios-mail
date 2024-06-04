@@ -19,10 +19,36 @@ import DesignSystem
 import SwiftUI
 
 struct MessageBodyView: View {
-    let message: String
+    let messageBody: String?
+    let messageId: PMLocalMessageId
+    let uiModel: ExpandedMessageCellUIModel
 
     var body: some View {
-        Text(message)
+        if let messageBody = uiModel.message {
+            messageBodyView(body: messageBody)
+
+        } else {
+            AsyncMessageBodyView(messageId: messageId) { messageBody in
+                switch messageBody {
+                case .fetching:
+                    ZStack {
+                        ProgressView()
+                    }
+                    .padding(.vertical, DS.Spacing.jumbo)
+
+                case .value(let body):
+                    messageBodyView(body: body)
+
+                case .error(let error):
+                    Text(String(describing: error))
+
+                }
+            }
+        }
+    }
+
+    private func messageBodyView(body: String) -> some View {
+        Text(body)
             .font(.subheadline)
             .foregroundStyle(DS.Color.Text.norm)
             .frame(maxWidth: .infinity, alignment: .leading)

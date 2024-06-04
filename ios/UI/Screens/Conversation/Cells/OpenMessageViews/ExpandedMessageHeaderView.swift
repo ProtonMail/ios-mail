@@ -20,29 +20,32 @@ import SwiftUI
 
 struct ExpandedMessageHeaderView: View {
     let uiModel: ExpandedMessageCellUIModel
+    let onTap: () -> Void
 
     var body: some View {
         messageDataView
     }
 
     private var messageDataView: some View {
-        HStack(alignment: .top) {
-            HStack(spacing: DS.Spacing.large) {
-                AvatarCheckboxView(isSelected: false, avatar: uiModel.avatar, onDidChangeSelection: { _ in })
-                    .frame(width: 40, height: 40)
-                VStack(spacing: DS.Spacing.small) {
-                    senderRowView
-                    senderPrivacyView
-                    recipientsView
-                }
-                Spacer()
+        HStack(alignment: .top, spacing: 0) {
+            AvatarCheckboxView(isSelected: false, avatar: uiModel.avatar, onDidChangeSelection: { _ in })
+                .frame(width: 40, height: 40)
+            VStack(spacing: DS.Spacing.small) {
+                senderRowView
+                senderPrivacyView
+                recipientsView
             }
+            .padding(.leading, DS.Spacing.large)
+
+            Spacer()
+
             ZStack(alignment: .top) {
                 headerActionsView
             }
         }
+        .contentShape(Rectangle())
         .onTapGesture {
-
+            onTap()
         }
         .padding(.horizontal, DS.Spacing.large)
     }

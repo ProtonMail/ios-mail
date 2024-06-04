@@ -19,7 +19,8 @@ import DesignSystem
 import SwiftUI
 
 struct ExpandedMessageCell: View {
-    let uiModel: ExpandedMessageCellUIModel
+    private let uiModel: ExpandedMessageCellUIModel
+    private let onTap: () -> Void
 
     /**
      Determines how the horizontal edges of the card are rendered to give visual
@@ -29,9 +30,10 @@ struct ExpandedMessageCell: View {
 
     private let cardCornerRadius = DS.Radius.extraLarge
 
-    init(uiModel: ExpandedMessageCellUIModel, isFirstCell: Bool = false) {
+    init(uiModel: ExpandedMessageCellUIModel, isFirstCell: Bool = false, onTap: @escaping () -> Void) {
         self.uiModel = uiModel
         self.isFirstCell = isFirstCell
+        self.onTap = onTap
     }
 
     var body: some View {
@@ -39,8 +41,8 @@ struct ExpandedMessageCell: View {
             MessageCardTopView(cornerRadius: cardCornerRadius)
 
             VStack(spacing: 0) {
-                ExpandedMessageHeaderView(uiModel: uiModel)
-                MessageBodyView(message: uiModel.message)
+                ExpandedMessageHeaderView(uiModel: uiModel, onTap: onTap)
+                MessageBodyView(messageBody: uiModel.message, messageId: uiModel.messageId, uiModel: uiModel)
 
                 Spacer()
 
@@ -64,7 +66,7 @@ struct ExpandedMessageCell: View {
 
 struct ExpandedMessageCellUIModel {
     let messageId: PMLocalMessageId
-    let message: String
+    let message: String?
     let sender: String
     let date: Date
     let senderPrivacy: String
@@ -87,7 +89,8 @@ struct ExpandedMessageCellUIModel {
                 isSingleRecipient: false,
                 avatar: .init(initials: "Gg", senderImageParams: .init())
             ), 
-            isFirstCell: true
+            isFirstCell: true,
+            onTap: {}
         )
         ExpandedMessageCell(
             uiModel: .init(
@@ -100,7 +103,8 @@ struct ExpandedMessageCellUIModel {
                 isSingleRecipient: false,
                 avatar: .init(initials: "Gg", senderImageParams: .init())
             ),
-            isFirstCell: false
+            isFirstCell: false,
+            onTap: {}
         )
     }
 }

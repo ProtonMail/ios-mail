@@ -22,15 +22,16 @@ import proton_mail_uniffi
 final class ConversationModel: Sendable, ObservableObject {
     @Published private(set) var state: State = .initial
     @Published private(set) var seed: ConversationScreenSeedUIModel
-    @Published private(set) var focusedMessageOnAppear: PMLocalMessageId? = nil
+    @Published private(set) var scrollToMessageOnAppear: PMLocalMessageId? = nil
 
     private var mailbox: Mailbox?
     private var messagesLiveQuery: MailboxConversationMessagesLiveQuery?
-
+    private var expandedMessages: Set<PMLocalMessageId>
     private let dependencies: Dependencies
 
     init(seed: ConversationScreenSeedUIModel, dependencies: Dependencies = .init()) {
         self.seed = seed
+        self.expandedMessages = .init()
         self.dependencies = dependencies
     }
 
@@ -53,30 +54,57 @@ final class ConversationModel: Sendable, ObservableObject {
             let messages = await readLiveQueryValues()
             if let lastMessage = messages.last, case .expanded(let last) = lastMessage.type {
                 await updateState(.messagesReady(previous: messages.dropLast(), last: last))
-                focusedMessageOnAppear = lastMessage.id
+                scrollToMessageOnAppear = messages.count == 1 ? nil : lastMessage.id
             }
         } catch {
             AppLogger.log(error: error, category: .mailboxItemDetail)
         }
     }
 
+    func onMessageTap(messageId: PMLocalMessageId) {
+        Task {
+            if expandedMessages.contains(messageId) {
+                expandedMessages.remove(messageId)
+            } else {
+                expandedMessages.insert(messageId)
+            }
+            let messages = await readLiveQueryValues()
+            if let lastMessage = messages.last, case .expanded(let last) = lastMessage.type {
+                await updateState(.initial)
+                await updateState(.messagesReady(previous: messages.dropLast(), last: last))
+            }
+        }
+    }
+
     private func readLiveQueryValues() async -> [MessageCellUIModel] {
         do {
-            guard let messagesLiveQuery else { return [] }
+            guard let mailbox, let messagesLiveQuery else {
+                let msg = "no mailbox object or message live query"
+                AppLogger.log(message: msg, category: .mailboxItemDetail, isError: true)
+                return []
+            }
             let messages = try messagesLiveQuery.value()
             guard let lastMessage = messages.last else { return [] }
+            
+            // list of messages except the last one
             var result = [MessageCellUIModel]()
             for i in messages.indices.dropLast() {
                 let message = messages[i]
-                let collapsedMessage = await message.toCollapsedMessageCellUIModel()
-                result.append(.init(id: message.id, type: .collapsed(collapsedMessage)))
+
+                let messageCellUIModel: MessageCellUIModelType
+                if expandedMessages.contains(message.id) {
+                    messageCellUIModel = try await .expanded(expandedMessageCellUIModel(for: message, wait: false, mailbox: mailbox))
+                } else {
+                    messageCellUIModel = await .collapsed(message.toCollapsedMessageCellUIModel())
+                }
+
+                result.append(.init(id: message.id, type: messageCellUIModel))
             }
-            guard let mailbox else {
-                AppLogger.log(message: "no mailbox object", category: .mailboxItemDetail, isError: true)
-                return result
-            }
-            let expandedMessage = try await expandedMessageCellUIModel(for: lastMessage, mailbox: mailbox)
+            
+            // last message
+            let expandedMessage = try await expandedMessageCellUIModel(for: lastMessage, wait: true, mailbox: mailbox)
             result.append(.init(id: lastMessage.id, type: .expanded(expandedMessage)))
+
             return result
         } catch {
             AppLogger.log(error: error, category: .mailboxItemDetail)
@@ -86,10 +114,13 @@ final class ConversationModel: Sendable, ObservableObject {
 
     private func expandedMessageCellUIModel(
         for message: LocalMessageMetadata,
+        wait: Bool,
         mailbox: Mailbox
     ) async throws -> ExpandedMessageCellUIModel {
-//        let messageBody = try await mailbox.messageBody(id: message.id).body()
-        return await message.toExpandedMessageCellUIModel(message:"\n\n[MESSAGE BODY NOT IMPLEMENTED YET] \n\n Yours sincerely, \n The ET team.")
+        let messageBody = wait ? try await mailbox.messageBody(id: message.id).body() : nil
+        return await message.toExpandedMessageCellUIModel(message: messageBody)
+
+//        return await message.toExpandedMessageCellUIModel(message:"\n\n[MESSAGE BODY NOT IMPLEMENTED YET] \n\n Yours sincerely, \n The ET team.")
     }
 
     @MainActor

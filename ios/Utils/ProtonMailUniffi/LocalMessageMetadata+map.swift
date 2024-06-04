@@ -76,7 +76,7 @@ extension LocalMessageMetadata {
 
 extension LocalMessageMetadata {
 
-    func toExpandedMessageCellUIModel(message: String) async -> ExpandedMessageCellUIModel {
+    func toExpandedMessageCellUIModel(message: String?) async -> ExpandedMessageCellUIModel {
         .init(
             messageId: id,
             message: message,

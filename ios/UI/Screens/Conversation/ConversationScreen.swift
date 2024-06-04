@@ -29,30 +29,9 @@ struct ConversationScreen: View {
 
             ScrollView {
                 VStack {
-                    VStack(spacing: 0) {
-                        subjectView
-                            .padding(.top, DS.Spacing.standard)
-                            .padding(.horizontal, DS.Spacing.large)
-
-                        attachmentsView
-                            .padding(.top, DS.Spacing.medium)
-                            .padding(.leading, DS.Spacing.large)
-                            .removeViewIf(model.seed.numAttachments < 1)
-                    }
-                    VStack(spacing: 0) {
-
-                        switch model.state {
-                        case .initial:
-                            EmptyView()
-                        case .fetchingMessages:
-                            ProgressView()
-                                .padding(.top, DS.Spacing.large)
-                        case .messagesReady(let previous, let last):
-                            messageList(previous: previous, last: last)
-                                .padding(.top, DS.Spacing.large)
-                        }
-                    }
-                    .frame(maxHeight: .infinity)
+                    conversationContentRowsView
+                    messageListStateView
+                        .frame(maxHeight: .infinity)
                 }
                 .frame(minHeight: proxy.size.height)
             }
@@ -64,6 +43,35 @@ struct ConversationScreen: View {
             .smoothScreenTransition()
             .task {
                 await model.fetchData()
+            }
+        }
+    }
+
+    private var conversationContentRowsView: some View {
+        VStack(spacing: 0) {
+            subjectView
+                .padding(.top, DS.Spacing.standard)
+                .padding(.horizontal, DS.Spacing.large)
+
+            attachmentsView
+                .padding(.top, DS.Spacing.medium)
+                .padding(.leading, DS.Spacing.large)
+                .removeViewIf(model.seed.numAttachments < 1)
+        }
+    }
+
+    private var messageListStateView: some View {
+        VStack(spacing: 0) {
+
+            switch model.state {
+            case .initial:
+                EmptyView()
+            case .fetchingMessages:
+                ProgressView()
+                    .padding(.top, DS.Spacing.large)
+            case .messagesReady(let previous, let last):
+                messageList(previous: previous, last: last)
+                    .padding(.top, DS.Spacing.large)
             }
         }
     }
@@ -90,25 +98,29 @@ struct ConversationScreen: View {
     }
 
     private func messageList(previous: [MessageCellUIModel], last: ExpandedMessageCellUIModel) -> some View {
-        VStack(spacing: 0) {
-            ScrollViewReader { scrollView in
+        ScrollViewReader { scrollView in
+            VStack(spacing: 0) {
                 LazyVStack(spacing: 0) {
-                    ForEach(Array(previous.enumerated()), id: \.1.id) { index, model in
-                        switch model.type {
+                    ForEach(Array(previous.enumerated()), id: \.element.id) { index, cellUIModel in
+                        switch cellUIModel.type {
                         case .collapsed(let uiModel):
-                            CollapsedMessageCell(uiModel: uiModel, isFirstCell: index == 0)
-                                .id(uiModel.messageId)
+                            CollapsedMessageCell(uiModel: uiModel, isFirstCell: index == 0, onTap: {
+                                model.onMessageTap(messageId: cellUIModel.id)
+                            })
                         case .expanded(let uiModel):
-                            ExpandedMessageCell(uiModel: uiModel, isFirstCell: index == 0)
-                                .id(uiModel.messageId)
+                            ExpandedMessageCell(uiModel: uiModel, isFirstCell: index == 0, onTap: {
+                                model.onMessageTap(messageId: cellUIModel.id)
+                            })
                         }
                     }
                 }
-                ExpandedMessageCell(uiModel: last, isFirstCell: previous.isEmpty)
-                    .id(last.messageId)
-                    .task {
-                        scrollView.scrollTo(model.focusedMessageOnAppear, anchor: .top)
-                    }
+                ExpandedMessageCell(uiModel: last, isFirstCell: previous.isEmpty, onTap: {
+                    model.onMessageTap(messageId: last.messageId)
+                })
+                .id(last.messageId)
+            }
+            .task {
+                scrollView.scrollTo(model.scrollToMessageOnAppear, anchor: .top)
             }
         }
     }
@@ -124,6 +136,7 @@ private struct ModifiersForSmoothScreenTransition: ViewModifier {
         content
             .toolbarBackground(DS.Color.Background.norm, for: .navigationBar, .tabBar)
             .clipped()
+            .background(DS.Color.Background.norm) // has to go before the clipping
     }
 }
 

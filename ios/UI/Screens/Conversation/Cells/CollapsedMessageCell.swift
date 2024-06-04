@@ -20,6 +20,7 @@ import SwiftUI
 
 struct CollapsedMessageCell: View {
     private let uiModel: CollapsedMessageCellUIModel
+    private let onTap: () -> Void
 
     /**
      Determines how the horizontal edges of the card are rendered to give visual
@@ -27,9 +28,14 @@ struct CollapsedMessageCell: View {
      */
     private let isFirstCell: Bool
 
-    init(uiModel: CollapsedMessageCellUIModel, isFirstCell: Bool = false) {
+    init(
+        uiModel: CollapsedMessageCellUIModel,
+        isFirstCell: Bool = false,
+        onTap: @escaping () -> Void
+    ) {
         self.uiModel = uiModel
         self.isFirstCell = isFirstCell
+        self.onTap = onTap
     }
 
     var body: some View {
@@ -42,6 +48,10 @@ struct CollapsedMessageCell: View {
                 .padding(.top, DS.Spacing.large)
         }
         .overlay { borderOnTheSides(show: !isFirstCell) }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            onTap()
+        }
     }
 
     private func borderOnTheSides(show: Bool) -> some View {
@@ -58,7 +68,7 @@ struct CollapsedMessageCell: View {
     }
 
     private var messageDataView: some View {
-        HStack(spacing: DS.Spacing.large) {
+        HStack(alignment: .top, spacing: DS.Spacing.large) {
             AvatarCheckboxView(isSelected: false, avatar: uiModel.avatar, onDidChangeSelection: { _ in })
                 .frame(width: 40, height: 40)
             VStack(spacing: DS.Spacing.small) {
@@ -102,6 +112,10 @@ struct CollapsedMessageCellUIModel {
     let avatar: AvatarUIModel
 }
 
+enum CollapsedMessageCellEvent {
+    case onTap
+}
+
 #Preview {
     VStack(spacing: 0) {
         CollapsedMessageCell(uiModel: .init(
@@ -112,7 +126,7 @@ struct CollapsedMessageCellUIModel {
             messagePreview: "Dear All, This sounds absolutely incredible! Patagonia has been on my bucket list for ages.",
             isRead: true,
             avatar: .init(initials: "Ba", senderImageParams: .init())
-        ), isFirstCell: true)
+        ), isFirstCell: true, onTap: {})
         CollapsedMessageCell(uiModel: .init(
             messageId: 2,
             sender: "john@gmail.com",
@@ -121,7 +135,7 @@ struct CollapsedMessageCellUIModel {
             messagePreview: "I'm definitely on board for this adventure",
             isRead: false,
             avatar: .init(initials: "De", senderImageParams: .init())
-        ))
+        ), onTap: {})
         CollapsedMessageCell(uiModel: .init(
             messageId: 3,
             sender: "Martha",
@@ -130,6 +144,6 @@ struct CollapsedMessageCellUIModel {
             messagePreview: nil,
             isRead: true,
             avatar: .init(initials: "Pr", senderImageParams: .init())
-        ))
+        ), onTap: {})
     }
 }

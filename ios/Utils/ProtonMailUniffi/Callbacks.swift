@@ -26,7 +26,7 @@ import proton_mail_uniffi
  with a proxy callback retaining a weak reference to the Swift object.
  */
 
-final class PMMailboxLiveQueryUpdatedCallback: MailboxLiveQueryUpdatedCallback {
+final class PMMailboxLiveQueryUpdatedCallback: @unchecked Sendable, MailboxLiveQueryUpdatedCallback {
     weak var delegate: MailboxLiveQueryUpdatedCallback?
 
     init(delegate: MailboxLiveQueryUpdatedCallback? = nil) {
