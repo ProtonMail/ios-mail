@@ -158,6 +158,10 @@ final class AttachmentViewModel {
     }
 
     private func fetchAndDecrypt(ics: AttachmentInfo) async throws -> Data {
+        if let localUrl = ics.localUrl, let data = try? Data(contentsOf: localUrl) {
+            return data
+        }
+
         let attachmentMetadata = try await dependencies.fetchAttachmentMetadata.execution(
             params: .init(attachmentID: ics.id)
         )
@@ -210,7 +214,6 @@ final class AttachmentViewModel {
 
     private func updateRespondingOptions(eventDetails: EventDetails) {
         guard
-            UserInfo.isRSVPMilestoneTwoEnabled,
             dependencies.featureFlagProvider.isEnabled(.answerInvitation, reloadValue: true),
             eventDetails.status != .cancelled,
             let currentUserAmongInvitees = eventDetails.currentUserAmongInvitees
