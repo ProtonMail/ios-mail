@@ -2076,7 +2076,7 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Ative esta funcionalidade para auto completar os endereços de e-mail utilizando os contactos de todas as suas contas em que está com sessão iniciada.";
 
 /* contacts auto import title in settings */
-"Auto-import device contacts" = "Auto-import device contacts";
+"Auto-import device contacts" = "Importar os contactos do dispositivo automaticamente";
 
 /* contacts auto import footer in settings */
 "Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
@@ -2460,7 +2460,7 @@
 "%u email addresses" = "%u endereços de e-mail";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain support" = "Custom email domain support";
+"Custom email domain support" = "Suporte para domínio de e-mail personalizado";
 
 /* Description of a feature of a paid subscription */
 "New Proton Mail desktop app" = "Nova aplicação Proton Mail para desktop";
