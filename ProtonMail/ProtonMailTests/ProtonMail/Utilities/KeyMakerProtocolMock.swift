@@ -37,11 +37,6 @@ class MockKeyMakerProtocol: KeyMakerProtocol {
         isAppKeyEnabledStub()
     }
 
-    @PropertyStub(\MockLockCacheStatus.isAppLockedAndAppKeyDisabled, initialGet: Bool()) var isAppLockedAndAppKeyDisabledStub
-    var isAppLockedAndAppKeyDisabled: Bool {
-        isAppLockedAndAppKeyDisabledStub()
-    }
-
     @PropertyStub(\MockLockCacheStatus.isAppLockedAndAppKeyEnabled, initialGet: Bool()) var isAppLockedAndAppKeyEnabledStub
     var isAppLockedAndAppKeyEnabled: Bool {
         isAppLockedAndAppKeyEnabledStub()

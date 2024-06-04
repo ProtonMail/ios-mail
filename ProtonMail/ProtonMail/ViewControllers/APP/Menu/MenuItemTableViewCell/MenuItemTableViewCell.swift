@@ -22,6 +22,7 @@
 
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
+import UIKit
 
 protocol MenuItemTableViewCellDelegate: AnyObject {
     func clickCollapsedArrow(labelID: LabelID)

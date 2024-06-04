@@ -107,30 +107,16 @@ public extension FeatureFlagsRepository {
     /**
      Asynchronously fetches the feature flags from the remote data source and updates the local data source.
 
-     - Parameters:
-        - userId: The user ID to fetch flags for.  If `nil`, uses the previously set user ID, if available.  See ``setUserId(_)``.
-        - apiService: A specific apiService tied to a userId, for multiple users app.
-
      - Throws: An error if the operation fails.
      */
-    func fetchFlags(for userId: String? = nil, using apiService: APIService? = nil) async throws {
-        let remoteDataSource: RemoteFeatureFlagsDataSourceProtocol?
-
-        if let apiService {
-            remoteDataSource = DefaultRemoteFeatureFlagsDataSource(apiService: apiService)
-        } else {
-            remoteDataSource = self.remoteDataSource.value
-        }
-
-        guard let remoteDataSource = remoteDataSource else {
-            assertionFailure("No apiService was set. You need to set the apiService of the remoteDataSource by calling `setApiService`, or pass an apiService as an argument in order to fetch the feature flags.")
+    func fetchFlags() async throws {
+        guard let remoteDataSource = self.remoteDataSource.value else {
+            assertionFailure("No apiService was set. You need to set the apiService of by calling `setApiService` in order to fetch the feature flags.")
             return
         }
-        let flags = try await remoteDataSource.getFlags()
 
-        // Fetch flags for the supplied userId parameter, if non-nil, otherwise fetch flags
-        // for self.userId.
-        localDataSource.value.upsertFlags(.init(flags: flags), userId: userId ?? self.userId)
+        let (flags, userID) = try await remoteDataSource.getFlags()
+        localDataSource.value.upsertFlags(.init(flags: flags), userId: userID)
     }
 
     /**

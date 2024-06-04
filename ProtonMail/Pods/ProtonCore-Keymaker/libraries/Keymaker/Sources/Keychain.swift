@@ -102,7 +102,7 @@ open class Keychain {
     ///   - data: data to be added / updated in keychain
     ///   - key: key under which the data should be added / updated
     @available(*, deprecated, message: "Please use the throwing alternative: setOrError(:forKey:) and handle the error")
-    func set(_ data: Data, forKey key: String, attributes: [CFString: Any]? = nil) {
+    public func set(_ data: Data, forKey key: String, attributes: [CFString: Any]? = nil) {
        _ = self.add(data: data, forKey: key, attributes: attributes)
     }
 
@@ -115,7 +115,7 @@ open class Keychain {
     ///   - string: string to be added / updated in keychain
     ///   - key: key under which the string should be added / updated
     @available(*, deprecated, message: "Please use the throwing alternative: setOrError(:forKey:) and handle the error")
-    func set(_ string: String, forKey key: String, attributes: [CFString: Any]? = nil) {
+    public func set(_ string: String, forKey key: String, attributes: [CFString: Any]? = nil) {
         _ = self.add(data: string.data(using: .utf8)!, forKey: key, attributes: attributes)
     }
 
@@ -151,7 +151,7 @@ open class Keychain {
     /// - Parameters:
     ///   - forKey: key under which the value is stored in keychain
     @available(*, deprecated, message: "Please use the throwing alternative: dataOrError(forKey:) and handle the error")
-    func data(forKey key: String, attributes: [CFString: Any]? = nil) -> Data? {
+    public func data(forKey key: String, attributes: [CFString: Any]? = nil) -> Data? {
         return self.getData(forKey: key, attributes: attributes)
     }
 
@@ -163,7 +163,7 @@ open class Keychain {
     /// - Parameters:
     ///   - forKey: key under which the value is stored in keychain
     @available(*, deprecated, message: "Please use the throwing alternative: stringOrError(forKey:) and handle the error")
-    func string(forKey key: String, attributes: [CFString: Any]? = nil) -> String? {
+    public func string(forKey key: String, attributes: [CFString: Any]? = nil) -> String? {
         guard let data = self.getData(forKey: key, attributes: attributes) else {
             return nil
         }
@@ -204,7 +204,7 @@ open class Keychain {
     /// - Parameters:
     ///   - forKey: key under which the value should be removed from the keychain
     @available(*, deprecated, message: "Please use the throwing alternative: removeOrError(forKey:) and handle the error")
-    func remove(forKey key: String) {
+    public func remove(forKey key: String) {
         _ = self.remove(key)
     }
 

@@ -22,6 +22,7 @@
 
 import Foundation
 import ProtonCoreUIFoundations
+import UIKit
 
 final class CameraAttachmentProvider: AnyImagePickerDelegate {
     override var actionSheetItem: PMActionSheetItem {

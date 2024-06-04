@@ -30,4 +30,9 @@ struct UserBasedEmailAddressStorage: EmailAddressStorage {
     func currentUserAddresses() -> [Address_v2] {
         dependencies.user.userInfo.userAddresses.map(\.toAddress_v2)
     }
+
+    func addresses(userID: String) -> [Address_v2] {
+        assertionFailure("This is not used by RSVP")
+        return currentUserAddresses()
+    }
 }

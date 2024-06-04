@@ -57,21 +57,9 @@ final class CoreDataStore {
         do {
             for persistentStore in persistentStores {
                 let url = persistentStoreCoordinator.url(for: persistentStore)
-
-                if #available(iOS 15.0, *) {
-                    let storeType = NSPersistentStore.StoreType(rawValue: persistentStore.type)
-                    try persistentStoreCoordinator.destroyPersistentStore(at: url, type: storeType)
-                    _ = try persistentStoreCoordinator.addPersistentStore(type: storeType, at: url)
-                } else {
-                    let storeType = persistentStore.type
-                    try persistentStoreCoordinator.destroyPersistentStore(at: url, ofType: storeType)
-                    _ = try persistentStoreCoordinator.addPersistentStore(
-                        ofType: storeType,
-                        configurationName: nil,
-                        at: url
-                    )
-                }
-
+                let storeType = NSPersistentStore.StoreType(rawValue: persistentStore.type)
+                try persistentStoreCoordinator.destroyPersistentStore(at: url, type: storeType)
+                _ = try persistentStoreCoordinator.addPersistentStore(type: storeType, at: url)
                 SystemLogger.log(message: "Data store at \(url) deleted", category: .coreData)
             }
         } catch {

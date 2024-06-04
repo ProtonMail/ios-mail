@@ -28,7 +28,7 @@ import ProtonCoreLogin
 import ProtonCoreUIFoundations
 
 protocol TwoFactorViewControllerDelegate: NavigationDelegate, LoginStepsDelegate {
-    func twoFactorViewControllerDidFinish(endLoading: @escaping () -> Void, data: LoginData)
+    func twoFactorViewControllerDidFinish(data: LoginData, endLoading: @escaping () -> Void)
     func twoFactorViewControllerDidFail(error: LoginError)
 }
 
@@ -90,6 +90,7 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
     private func setupUI() {
         view.backgroundColor = ColorProvider.BackgroundNorm
         recoveryCodeButton.setMode(mode: .text)
+        codeTextField.textContentType = .oneTimeCode
 
         titleView.text = LUITranslation.login_2fa_screen_title.l10n
         titleView.textColor = ColorProvider.TextNorm
@@ -157,7 +158,9 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
             self?.fillInAccount()
             switch result {
             case let .done(data):
-                self?.delegate?.twoFactorViewControllerDidFinish(endLoading: { [weak self] in self?.viewModel.isLoading.value = false }, data: data)
+                self?.delegate?.twoFactorViewControllerDidFinish(data: data) { [weak self] in
+                    self?.viewModel.isLoading.value = false
+                }
             case .mailboxPasswordNeeded:
                 self?.delegate?.mailboxPasswordNeeded()
             case let .createAddressNeeded(data, defaultUsername):

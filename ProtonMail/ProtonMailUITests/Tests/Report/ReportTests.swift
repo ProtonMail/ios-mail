@@ -8,8 +8,6 @@
 
 import XCTest
 
-import ProtonCoreTestingToolkit
-
 class ReportTests: FixtureAuthenticatedTestCase {
     
     func testEditAndSendBugReport() {

@@ -17,6 +17,7 @@
 
 import Foundation
 import ProtonCoreUIFoundations
+import UIKit
 
 enum ProtonCSS {
     /// For message detail view, general case

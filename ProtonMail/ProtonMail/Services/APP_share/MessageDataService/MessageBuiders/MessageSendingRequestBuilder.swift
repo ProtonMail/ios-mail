@@ -21,7 +21,6 @@ import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreHash
 import ProtonCoreServices
-import SwiftSoup
 
 /// A sending message request builder
 ///

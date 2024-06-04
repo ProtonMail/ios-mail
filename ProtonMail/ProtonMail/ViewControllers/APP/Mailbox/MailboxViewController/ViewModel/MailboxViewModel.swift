@@ -31,6 +31,7 @@ import ProtonCoreUIFoundations
 import ProtonCoreUtilities
 import ProtonMailAnalytics
 import ProtonMailUI
+import UIKit
 
 struct LabelInfo {
     let name: String

@@ -29,7 +29,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreObservability
 
-extension LoginService {
+extension LoginService: Login {
 
     public func processResponseToken(idpEmail: String, responseToken: SSOResponseToken, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         if responseToken.uid != apiService.sessionUID,
@@ -103,7 +103,7 @@ extension LoginService {
                     switch status {
                     case let .newCredential(credential, passwordMode):
                         self.handleValidCredentials(credential: credential, passwordMode: passwordMode, mailboxPassword: nil, isSSO: true, completion: completion)
-                    case .updatedCredential, .ssoChallenge, .ask2FA:
+                    case .updatedCredential, .ssoChallenge, .askTOTP, .askFIDO2, .askAny2FA:
                         completion(.failure(.invalidState))
                     }
 
@@ -133,12 +133,20 @@ extension LoginService {
                 switch result {
                 case let .success(status):
                     switch status {
-                    case let .ask2FA(context):
-                        self.context = context
-                        PMLog.debug("Login successful but needs 2FA code")
-                        completion(.success(.ask2FA))
+                    case let .askTOTP(totpContext):
+                        self.totpContext = totpContext
+                        PMLog.debug("Login successful but needs TOTP code")
+                        completion(.success(.askTOTP))
+                    case let .askFIDO2(fido2Context):
+                        self.fido2Context = fido2Context
+                        PMLog.debug("Login successful but needs FIDO2 validation")
+                        completion(.success(.askFIDO2(fido2Context)))
+                    case let .askAny2FA(totpContext, fido2Context):
+                        self.fido2Context = fido2Context
+                        self.totpContext = totpContext
+                        PMLog.debug("Login successful but needs 2FA validation")
+                        completion(.success(.askAny2FA(fido2Context)))
                     case let .newCredential(credential, passwordMode):
-                        self.context = (credential: credential, passwordMode: passwordMode)
                         self.handleValidCredentials(credential: credential, passwordMode: passwordMode, mailboxPassword: password, completion: completion)
                     case .updatedCredential(let credential):
                         authManager.onSessionObtaining(credential: credential)
@@ -148,7 +156,6 @@ extension LoginService {
                     case .ssoChallenge(let ssoChallengeResponse):
                         completion(.success(.ssoChallenge(ssoChallengeResponse)))
                     }
-
                 case let .failure(error):
                     PMLog.error("Login failed with \(error)", sendToExternal: true)
                     if case let .networkingError(error) = error, error.isSwitchToSRPError {
@@ -163,7 +170,7 @@ extension LoginService {
     public func provide2FACode(_ code: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         withAuthDelegateAvailable(completion) { authManager in
             PMLog.debug("Confirming 2FA code")
-            guard let context = self.context else {
+            guard let context = self.totpContext else {
                 completion(.failure(.invalidState))
                 return
             }
@@ -179,11 +186,11 @@ extension LoginService {
                     switch status {
                     case let .newCredential(credential, passwordMode):
                         PMLog.debug("2FA code accepted, updating the credentials context and moving further")
-                        self.context = (credential: credential, passwordMode: passwordMode)
+                        self.totpContext = TOTPContext(credential: credential, passwordMode: passwordMode)
                         self.handleValidCredentials(credential: credential, passwordMode: passwordMode, mailboxPassword: mailboxPassword, completion: completion)
 
-                    case .ask2FA:
-                        PMLog.error("Asking afaing for 2FA code should never happen", sendToExternal: true)
+                    case .askTOTP, .askAny2FA, .askFIDO2:
+                        PMLog.error("Asking again for 2FA should never happen", sendToExternal: true)
                         completion(.failure(.invalidState))
 
                     case .updatedCredential(let credential):
@@ -199,6 +206,49 @@ extension LoginService {
                     PMLog.error("Confirming 2FA code failed with \(error)", sendToExternal: true)
                     let loginError = error.asLoginError(in2FAContext: true)
                     completion(.failure(loginError))
+                }
+            }
+        }
+    }
+
+    public func provideFido2Signature(_ signature: Fido2Signature, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+        if #available(iOS 15.0, macOS 12.0, *) {
+            withAuthDelegateAvailable(completion) { authManager in
+
+                PMLog.debug("Sending FIDO2 challenge")
+                guard let mailboxPassword = mailboxPassword,
+                      let fido2Context else {
+                    completion(.failure(.invalidState))
+                    return
+                }
+
+                manager.sendFIDO2Signature(signature, context: fido2Context) { result in
+                    switch result {
+                    case let .success(status):
+                        switch status {
+                        case let .newCredential(credential, passwordMode):
+                            PMLog.debug("2FA code accepted, updating the credentials context and moving further")
+                            self.totpContext = TOTPContext(credential: credential, passwordMode: passwordMode)
+                            self.handleValidCredentials(credential: credential, passwordMode: passwordMode, mailboxPassword: mailboxPassword, completion: completion)
+
+                        case .askTOTP, .askAny2FA, .askFIDO2:
+                            PMLog.error("Asking again for 2FA should never happen", sendToExternal: true)
+                            completion(.failure(.invalidState))
+
+                        case .updatedCredential(let credential):
+                            authManager.onSessionObtaining(credential: credential)
+                            self.apiService.setSessionUID(uid: credential.UID)
+                            PMLog.error("No idea how to handle updatedCredential", sendToExternal: true)
+                            completion(.failure(.invalidState))
+                        case .ssoChallenge:
+                            PMLog.error("Obtaining SSO challenge should never happen", sendToExternal: true)
+                            completion(.failure(.invalidState))
+                        }
+                    case let .failure(error):
+                        PMLog.error("Confirming 2FA code failed with \(error)", sendToExternal: true)
+                        let loginError = error.asLoginError(in2FAContext: true)
+                        completion(.failure(loginError))
+                    }
                 }
             }
         }

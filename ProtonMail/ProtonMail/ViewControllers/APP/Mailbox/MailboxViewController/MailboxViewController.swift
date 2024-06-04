@@ -174,7 +174,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     let connectionStatusProvider = InternetConnectionStatusProvider.shared
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
-    private var _snoozeDateConfigReceiver: SnoozeDateConfigReceiver?
 
     override var title: String? {
         didSet {

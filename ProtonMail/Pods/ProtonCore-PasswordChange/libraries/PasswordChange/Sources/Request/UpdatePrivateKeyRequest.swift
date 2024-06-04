@@ -47,7 +47,6 @@ final class UpdatePrivateKeyRequest: Request {
     let keySalt: String // base64 encoded need random value
     var userLevelKeys: [Key]
     var userAddressKeys: [Key]
-    let orgKey: String?
     let userKeys: [Key]?
     let auth: PasswordAuth?
 
@@ -58,7 +57,6 @@ final class UpdatePrivateKeyRequest: Request {
          userlevelKeys: [Key] = [],
          addressKeys: [Key] = [],
          tfaCode: String? = nil,
-         orgKey: String? = nil,
          userKeys: [Key]?,
          auth: PasswordAuth?,
          authCredential: AuthCredential?) {
@@ -72,7 +70,6 @@ final class UpdatePrivateKeyRequest: Request {
         self.userKeys = userKeys
 
         // optional values
-        self.orgKey = orgKey
         self.tfaCode = tfaCode
         self.auth = auth
 
@@ -120,9 +117,6 @@ final class UpdatePrivateKeyRequest: Request {
         if let code = tfaCode {
             out["TwoFactorCode"] = code
         }
-        if let org_key = orgKey {
-             out["OrganizationKey"] = org_key
-        }
         if let auth_obj = self.auth {
             out["Auth"] = auth_obj.parameters
         }
@@ -138,4 +132,3 @@ final class UpdatePrivateKeyRequest: Request {
         return KeysAPI.path + "/private"
     }
 }
-

@@ -26,27 +26,23 @@ import XCTest
 
 class SaverTests: XCTestCase {
     
-    private class StoreMock : KeyValueStoreProvider {
+    class StoreMock : KeyValueStoreProvider {
         var log: String = ""
         func resetLog() {
             log = ""
         }
         var cachedData : [String: Any] = [:]
-        func data(forKey key: String, attributes: [CFString : Any]? = nil) -> Data? {
+        func dataOrError(forKey key: String, attributes: [CFString : Any]? = nil) throws -> Data? {
             log += "g-key"
             return cachedData[key] as? Data
         }
-        
-        func set(_ data: Data, forKey key: String) {
+
+        func setOrError(_ data: Data, forKey key: String, attributes: [CFString: Any]? = nil) throws {
             log += "s-key"
             cachedData[key] = data
         }
-
-        func set(_ data: Data, forKey key: String, attributes: [CFString : Any]? = nil) {
-            set(data, forKey: key)
-        }
         
-        func remove(forKey key: String) {
+        func removeOrError(forKey key: String) throws {
             log += "r-key"
             cachedData.removeValue(forKey: key)
         }

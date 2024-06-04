@@ -35,6 +35,11 @@ protocol PaymentsUIViewControllerDelegate: AnyObject {
     func userDidSelectPlan(plan: PlanPresentation, addCredits: Bool, completionHandler: @escaping () -> Void)
     func userDidSelectPlan(plan: AvailablePlansPresentation, completionHandler: @escaping () -> Void)
     func planPurchaseError()
+    func purchaseBecameUnavailable()
+}
+
+extension PaymentsUIViewControllerDelegate { // for backwards compatibility
+    func purchaseBecameUnavailable() { }
 }
 
 public final class PaymentsUIViewController: UIViewController, AccessibleView {
@@ -524,7 +529,7 @@ extension PaymentsUIViewController: UITableViewDataSource {
             cell = tableView.dequeueReusableCell(withIdentifier: PlanCell.reuseIdentifier, for: indexPath)
             if let cell = cell as? PlanCell {
                 cell.delegate = self
-                cell.configurePlan(availablePlan: availablePlan, indexPath: indexPath, isSignup: mode == .signup, isExpandButtonHidden: viewModel?.isExpandButtonHidden ?? true)
+                cell.configurePlan(availablePlan: availablePlan, indexPath: indexPath, isSignup: mode == .signup, isExpandButtonHidden: viewModel?.isExpandButtonHidden ?? true, isPurchaseButtonDisabled: viewModel?.shouldDisablePurchaseButtons ?? true)
                 if indexPath.row == 0 {
                     firstAvailablePlanIndexPath = indexPath
                     firstAvailablePlanCell = cell
@@ -633,6 +638,7 @@ extension PaymentsUIViewController: PlanCellDelegate {
         tableView.scrollToRow(at: indexPath, at: .none, animated: true)
     }
 
+    // Static plans
     func userPressedSelectPlanButton(plan: PlanPresentation, completionHandler: @escaping () -> Void) {
         lockUI()
         delegate?.userDidSelectPlan(plan: plan, addCredits: false) { [weak self] in
@@ -641,7 +647,12 @@ extension PaymentsUIViewController: PlanCellDelegate {
         }
     }
 
+    // Dynamic plans
     func userPressedSelectPlanButton(plan: AvailablePlansPresentation, completionHandler: @escaping () -> Void) {
+        guard !(viewModel?.shouldDisablePurchaseButtons ?? true) else {
+            delegate?.purchaseBecameUnavailable()
+            return
+        }
         lockUI()
         delegate?.userDidSelectPlan(plan: plan) { [weak self] in
             self?.unlockUI()

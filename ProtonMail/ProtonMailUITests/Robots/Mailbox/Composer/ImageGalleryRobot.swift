@@ -6,6 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
+import Foundation
 import fusion
 
 fileprivate struct id {

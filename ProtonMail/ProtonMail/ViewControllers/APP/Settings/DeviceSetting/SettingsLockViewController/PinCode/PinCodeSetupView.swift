@@ -18,6 +18,7 @@
 import Foundation
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
+import UIKit
 
 final class PinCodeSetupView: UIView, AccessibleView {
     let passwordTextField = SubViewsFactory.passwordTextField()

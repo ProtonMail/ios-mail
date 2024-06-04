@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCoreServices
+import UIKit
 
 typealias LockCheckComplete = (_ lock: UIImage?, _ lockType: Int) -> Void
 

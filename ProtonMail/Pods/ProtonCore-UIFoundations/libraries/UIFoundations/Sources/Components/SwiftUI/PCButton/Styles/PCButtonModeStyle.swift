@@ -25,15 +25,16 @@ import SwiftUI
 struct PCButtonModeStyle: ButtonStyle {
     @Environment(\.isEnabled) var isEnabled
 
+    let brand: Brand
     let mode: PCButtonStyle.ButtonMode
 
     func makeBody(configuration: Configuration) -> some View {
         switch mode {
         case .solid:
-            PCButtonSolidStyle(isEnabled: isEnabled)
+            PCButtonSolidStyle(brand: brand, isEnabled: isEnabled)
                 .makeBody(configuration: configuration)
         case .text:
-            PCButtonTextStyle(isEnabled: isEnabled)
+            PCButtonTextStyle(brand: brand, isEnabled: isEnabled)
                 .makeBody(configuration: configuration)
         }
     }

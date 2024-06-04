@@ -173,6 +173,13 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
 
     @FuncStub(DohInterfaceMock.getProxyToken, initialReturn: nil) public var getProxyTokenStub
     public func getProxyToken() -> String? { getSignUpStringStub() }
+
+    @FuncStub(DohInterfaceMock.getAPNEnvironment, initialReturn: .development) public var getAPNEnvironmentStub
+    public func getAPNEnvironment() -> ProtonCoreDoh.APNEnvironment { getAPNEnvironmentStub() }
+
+    @PropertyStub(\DohInterfaceMock.apnEnvironment, initialGet: .development) public var apnEnvironmentStub
+    public var apnEnvironment: ProtonCoreDoh.APNEnvironment { apnEnvironmentStub() }
+
 }
 
 public final class DohMock: DoH, ServerConfig {
@@ -294,7 +301,7 @@ public final class DohMock: DoH, ServerConfig {
     override public var status: DoHStatus { get { statusStub() } set { statusStub(newValue) } }
 
     @PropertyStub(\DohInterfaceMock.isCurrentlyUsingProxyDomain, initialGet: .crash) public var isCurrentlyUsingProxyDomainStub
-    public override var isCurrentlyUsingProxyDomain: Bool { isCurrentlyUsingProxyDomainStub() }
+    override public var isCurrentlyUsingProxyDomain: Bool { isCurrentlyUsingProxyDomainStub() }
 
     @FuncStub(DohInterfaceMock.resolveProxyDomainHostUrl) public var resolveProxyDomainHostUrlStub
     public func resolveProxyDomainHostUrl(completion: @escaping (String?) -> Void) { resolveProxyDomainHostUrlStub(completion) }
@@ -307,10 +314,14 @@ public final class DohMock: DoH, ServerConfig {
 
     @FuncStub(DohInterfaceMock.setUpCookieSynchronization) public var setUpCookieSynchronizationStub
     override public func setUpCookieSynchronization(storage: HTTPCookieStorage?) { setUpCookieSynchronizationStub(storage) }
-    
+
     @PropertyStub(\DohInterfaceMock.proxyToken, initialGet: nil) public var proxyTokenStub
     public var proxyToken: String? { proxyTokenStub() }
 
     @FuncStub(DohInterfaceMock.getProxyToken, initialReturn: nil) public var getProxyTokenStub
     override public func getProxyToken() -> String? { getSignUpStringStub() }
+
+    @PropertyStub(\DohInterfaceMock.apnEnvironment, initialGet: .development) public var apnEnvironmentStub
+    public var apnEnvironment: ProtonCoreDoh.APNEnvironment { apnEnvironmentStub() }
+
 }

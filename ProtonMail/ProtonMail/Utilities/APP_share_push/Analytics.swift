@@ -38,14 +38,12 @@ class Analytics {
     }
 
     private let analytics: ProtonMailAnalyticsProtocol
-    private var env: Environment = .production
 
     init(analytics: ProtonMailAnalyticsProtocol = ProtonMailAnalytics(endPoint: Analytics.sentryEndpoint)) {
         self.analytics = analytics
     }
 
     func setup(environment: Environment, reportCrashes: Bool, telemetry: Bool) {
-        env = environment
         isEnabled = telemetry
         analytics.setup(
             environment: environment.rawValue,

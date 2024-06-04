@@ -25,13 +25,18 @@ import SwiftUI
 
 @MainActor
 public struct PCButtonStyle {
+    public var brand: Brand
     public var mode: ButtonMode
     public enum ButtonMode {
         case solid
         case text
     }
 
-    public init(mode: ButtonMode) {
+    public init(
+        brand: Brand = .currentBrand,
+        mode: ButtonMode
+    ) {
+        self.brand = brand
         self.mode = mode
     }
 }

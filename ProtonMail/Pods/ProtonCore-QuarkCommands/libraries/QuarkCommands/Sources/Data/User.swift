@@ -57,7 +57,7 @@ public struct User: Decodable {
 
     // additional properties...
     public var mailboxPassword: String
-    public var twoFASecurityKey: String
+    public var totpSecurityKey: String
     public var displayName: String
     public var id: Int?
     public var userPlan: UserPlan?
@@ -67,6 +67,8 @@ public struct User: Decodable {
     public var isExternal: Bool = false
     public var passphrase: String = ""
     public var recoveryEmail: String = ""
+    /// Is recovery email verified?
+    public var recoveryVerified: Bool = false
 
     public enum CodingKeys: String, CodingKey {
         case name = "UserName"
@@ -81,28 +83,42 @@ public struct User: Decodable {
         self.name = try container.decode(String.self, forKey: .name)
         self.password = try container.decode(String.self, forKey: .password)
         self.mailboxPassword = ""
-        self.twoFASecurityKey = ""
+        self.totpSecurityKey = ""
         self.displayName = name
         self.email = name
     }
 
-    public init(name: String, password: String, mailboxPassword: String = "", twoFASecurityKey: String = "") {
+    public init(
+        name: String,
+        password: String,
+        mailboxPassword: String = "",
+        totpSecurityKey: String = "",
+        recoveryVerified: Bool = false
+    ) {
         self.name = name
         self.password = password
         self.mailboxPassword = mailboxPassword
-        self.twoFASecurityKey = twoFASecurityKey
+        self.totpSecurityKey = totpSecurityKey
         self.displayName = name
         self.email = name
+        self.recoveryVerified = recoveryVerified
     }
 
-    public init(email: String, name: String, password: String, isExternal: Bool = false) {
+    public init(
+        email: String,
+        name: String,
+        password: String,
+        isExternal: Bool = false,
+        recoveryVerified: Bool = false
+    ) {
         self.name = name
         self.password = password
         self.email = email
         self.displayName = name
         self.isExternal = isExternal
         self.mailboxPassword = ""
-        self.twoFASecurityKey = ""
+        self.totpSecurityKey = ""
+        self.recoveryVerified = recoveryVerified
     }
 
     init(user: String) {
@@ -110,7 +126,7 @@ public struct User: Decodable {
         self.name = String(userData[0].split(separator: "@")[0])
         self.password = String(userData[1])
         self.mailboxPassword = userData.count > 2 ? String(userData[2]) : ""
-        self.twoFASecurityKey = userData.count > 3 ? String(userData[3]) : ""
+        self.totpSecurityKey = userData.count > 3 ? String(userData[3]) : ""
         self.displayName = name
         self.email = name
     }

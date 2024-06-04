@@ -15,8 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Calendar. If not, see https://www.gnu.org/licenses/.
 
-typealias SortingDescriptor<Value> = (Value, Value) -> Bool
-
 extension Collection {
 
     subscript (safe index: Index) -> Element? {
@@ -32,28 +30,4 @@ extension Collection {
         }
     }
 
-}
-
-enum SortingDescriptors {
-
-    static func increasing<Value, Property>(
-        by property: @escaping (Value) -> Property
-    ) -> SortingDescriptor<Value> where Property: Comparable {
-        sorting(by: property, comparator: <)
-    }
-
-    static func trueFirst<Value>(by property: @escaping (Value) -> Bool) -> SortingDescriptor<Value> {
-        return { lhs, rhs in
-            property(lhs) && !property(rhs)
-        }
-    }
-
-    private static func sorting<Value, Property>(
-        by property: @escaping (Value) -> Property,
-        comparator: @escaping (_ lhs: Property, _ rhs: Property) -> Bool
-    ) -> SortingDescriptor<Value> where Property: Comparable {
-        return { lhs, rhs in
-            comparator(property(lhs), property(rhs))
-        }
-    }
 }

@@ -26,7 +26,7 @@ end
 ENV['PROTON_CORE_GIT_URL'] = proton_core_path
 
 def minimum_deployment_target
-  '14.7'
+  '15.0'
 end
 
 platform :ios, minimum_deployment_target
@@ -34,7 +34,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '22.0.0'
+  '25.0.2'
 end
 
 def crypto_variant
@@ -81,7 +81,6 @@ end
 def app_pods
   app_share_pods
   pod 'SDWebImage', '~> 5.15'
-  pod 'OHHTTPStubs/Swift', :configurations => ['Debug']
   pod "ProtonCore-AccountDeletion", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountRecovery', :git => proton_core_path, :tag => proton_core_version
@@ -90,7 +89,6 @@ def app_pods
   pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-HumanVerification", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Features', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-KeyManager", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Login", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-LoginUI", :git => proton_core_path, :tag => proton_core_version
@@ -101,7 +99,7 @@ def app_pods
   pod "ProtonCore-Payments", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-PaymentsUI", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonInboxICal', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxical'
+  pod 'ProtonInboxICal', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxical.git'
   pod 'ProtonInboxRSVP', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxrsvp.git'
   pod 'SideMenuSwift', :git=> 'git@gitlab.protontech.ch:jchen/SideMenu.git', :tag=>'v2.0.9.autolayout'
   pod 'SwipyCell', :git=> 'git@gitlab.protontech.ch:jchen/SwipyCell.git', :commit => '923310a'
@@ -118,7 +116,6 @@ end
 
 target 'ProtonMailTests' do
   inherit! :search_paths
-  pod 'OHHTTPStubs/Swift'
   pod 'ProtonCore-Utilities', :git => proton_core_path, :tag => proton_core_version
   pod 'swift-snapshot-testing', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Core', :git => proton_core_path, :tag => proton_core_version
@@ -147,7 +144,7 @@ target 'ProtonMailUITests' do
   pod 'ProtonCore-QuarkCommands', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Environment', :git => proton_core_path, :tag => proton_core_version
   pod 'Yams'
-  pod 'ProtonInboxICal', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxical'
+  pod 'ProtonInboxICal', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxical.git'
 end
 
 target 'Share' do

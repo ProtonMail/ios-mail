@@ -7,7 +7,6 @@
 //
 
 import XCTest
-import ProtonCoreTestingToolkit
 
 class PinTests: FixtureAuthenticatedTestCase {
 

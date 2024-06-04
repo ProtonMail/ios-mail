@@ -56,9 +56,7 @@ class ShareExtensionEntry: UINavigationController {
         SystemLogger.log(message: "Share extension is launching...", category: .appLifeCycle)
 
         appCoordinator = ShareAppCoordinator(navigation: self)
-        if #available(iOSApplicationExtension 15.0, *) {
-            setupNavigationBarAppearance()
-        }
+        setupNavigationBarAppearance()
     }
 
     override func viewDidLoad() {
@@ -93,7 +91,6 @@ extension ShareExtensionEntry: TrustKitUIDelegate {
 }
 
 extension ShareExtensionEntry {
-    @available(iOS 15.0, *)
     private func setupNavigationBarAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()

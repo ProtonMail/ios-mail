@@ -20,6 +20,7 @@ import CoreData
 import Foundation
 import ProtonCoreDataModel
 import ProtonCoreUIFoundations
+import UIKit
 
 final class SearchViewModel: NSObject, AttachmentPreviewViewModelProtocol {
     typealias Dependencies = HasSearchUseCase

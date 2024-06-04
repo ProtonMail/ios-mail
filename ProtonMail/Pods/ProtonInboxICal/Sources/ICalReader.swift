@@ -293,7 +293,7 @@ public class ICalReader {
             // Case 1: we are the organizer
             // Case 2: we are the attendee
 
-            let userEmailAddresses = dependecies.allEmailsCanonized
+            let userEmailAddresses = dependecies.addresses.map(\.email.canonicalizedEmailAddress)
 
             if let organizerCanonizedEmailAddress = attendeeRet.organizer?.user.email.canonicalizedEmailAddress,
                userEmailAddresses.contains(organizerCanonizedEmailAddress),
@@ -301,11 +301,12 @@ public class ICalReader {
             {
                 // Case 1
                 event.invitationState = organizerStatus
-            } else if let attendee = attendeeRet.participants.first(where: {
-                userEmailAddresses.contains($0.user.email.canonicalizedEmailAddress)
-            }) {
+            } else if let particiapnt = CurrentUserParticipantResolver.resolve(
+                participants: attendeeRet.participants,
+                addresses: dependecies.addresses
+            ) {
                 // Case 2
-                event.invitationState = attendee.status
+                event.invitationState = particiapnt.atendee.status
             }
         }
 

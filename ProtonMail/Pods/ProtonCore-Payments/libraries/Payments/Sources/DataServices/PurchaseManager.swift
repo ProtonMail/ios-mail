@@ -32,6 +32,7 @@ public enum PurchaseResult {
     case purchaseError(error: Error, processingPlan: InAppPurchasePlan? = nil)
     case apiMightBeBlocked(message: String, originalError: Error, processingPlan: InAppPurchasePlan? = nil)
     case purchaseCancelled
+    case renewalNotification
 }
 
 public protocol PurchaseManagerProtocol {
@@ -91,7 +92,9 @@ final class PurchaseManager: PurchaseManagerProtocol {
                     assertionFailure("Purchase product completion block should be called only once")
                     return
                 }
-                callbackExecuted = true
+                if case .renewalNotification = result {} else {
+                    callbackExecuted = true
+                }
                 finishCallbackToBeCalledOnProvidedQueue(result)
             }
         }
@@ -240,6 +243,8 @@ final class PurchaseManager: PurchaseManagerProtocol {
             } else if case .resolvingIAPToCreditsCausedByError = result,
                       !self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
                 finishCallback(.toppedUpCredits)
+            } else if case .autoRenewal = result {
+                finishCallback(.renewalNotification)
             } else {
                 finishCallback(.purchasedPlan(accountPlan: plan))
             }

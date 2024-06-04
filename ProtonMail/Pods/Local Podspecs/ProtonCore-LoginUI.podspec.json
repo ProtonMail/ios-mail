@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-LoginUI",
   "module_name": "ProtonCoreLoginUI",
-  "version": "22.0.0",
+  "version": "25.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "22.0.0"
+    "tag": "25.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -50,55 +50,55 @@
   },
   "dependencies": {
     "ProtonCore-Log": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Foundations": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-UIFoundations": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Challenge": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-DataModel": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-TroubleShooting": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Environment": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Observability": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Crypto": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-CryptoGoInterface": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Authentication": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Authentication-KeyGeneration": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Login": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Payments": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-PaymentsUI": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-HumanVerification": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Telemetry": [
-      "22.0.0"
+      "25.0.0"
     ],
     "lottie-ios": [
       "4.3.3"
@@ -117,46 +117,46 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-Go": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Login": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Payments": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-PaymentsUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-HumanVerification": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "22.0.0"
+          "25.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -173,46 +173,46 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Login": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Payments": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-PaymentsUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-HumanVerification": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "22.0.0"
+          "25.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -229,46 +229,46 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Login": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Payments": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-PaymentsUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-HumanVerification": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "22.0.0"
+          "25.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -285,46 +285,46 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Login": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Payments": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-PaymentsUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-HumanVerification": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "22.0.0"
+          "25.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -341,43 +341,43 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-Go": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Login": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Payments": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-PaymentsUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-HumanVerification": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "TrustKit": [
 
@@ -393,43 +393,43 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Login": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Payments": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-PaymentsUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-HumanVerification": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "TrustKit": [
 
@@ -445,43 +445,43 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Login": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Payments": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-PaymentsUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-HumanVerification": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "TrustKit": [
 
@@ -497,43 +497,43 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Login": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-Payments": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-PaymentsUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-HumanVerification": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI": [
-          "22.0.0"
+          "25.0.0"
         ],
         "TrustKit": [
 

@@ -6,7 +6,7 @@
          "sources": [
             "ProtonMailUI",
             "ProtonMail/Utilities/APP_share_push_uiTest/Localization.swift",
-            "ProtonMail/Utilities/APP_share/ExternalURL.swift"
+            "ProtonMail/Utilities/APP/ExternalURL.swift"
          ],
          "configFiles": {
             "Debug": "xcodeGen/xcconfig/ProtonMailUI-Debug.xcconfig",

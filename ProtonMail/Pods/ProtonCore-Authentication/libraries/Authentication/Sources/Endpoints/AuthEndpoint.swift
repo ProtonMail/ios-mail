@@ -39,7 +39,7 @@ extension AuthService {
         var serverProof: String?
         var passwordMode: PasswordMode
 
-        var _2FA: TwoFA
+        var _2FA: AuthInfoResponse.TwoFA
     }
 
     struct AuthEndpoint: Request {

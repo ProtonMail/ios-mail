@@ -22,6 +22,7 @@
 
 import ProtonCoreDataModel
 import ProtonCoreUIFoundations
+import UIKit
 
 extension PMActionSheet {
     enum SenderBlockStatus {

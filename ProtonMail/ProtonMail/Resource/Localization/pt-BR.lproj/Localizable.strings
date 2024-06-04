@@ -2430,7 +2430,7 @@
 "Import contacts from your device to send emails and invites with ease." = "Importe contatos do seu dispositivo para enviar emails e convites com facilidade.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Importar automaticamente contatos";
+"Auto-import contacts" = "Importar contatos automaticamente";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
 "Importing your contacts" = "Importando seus contatos";
@@ -2460,7 +2460,7 @@
 "%u email addresses" = "%u endereços de e-mail";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain support" = "Suporte para domínios de email personalizados";
+"Custom email domain support" = "Suporte para domínios de e-mail personalizados";
 
 /* Description of a feature of a paid subscription */
 "New Proton Mail desktop app" = "Novo aplicativo do Proton Mail para computador";

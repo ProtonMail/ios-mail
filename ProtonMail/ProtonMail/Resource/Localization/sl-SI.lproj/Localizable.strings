@@ -1660,10 +1660,10 @@
 "Do you want to send your message anyway?" = "Ali želite vaše sporočilo vseeno poslati?";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add CC and BCC" = "Dodaj kp in skp";
+"Add CC and BCC" = "Dodaj Kp in Skp";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close CC and BCC" = "Zapri kp in skp";
+"Close CC and BCC" = "Zapri Kp in Skp";
 
 /* The title of the button in the composer that can select different sender address. */
 "Choose different sender address" = "Izberite drug naslov pošiljatelja";
@@ -1911,7 +1911,7 @@
 "Load" = "Naloži";
 
 /* Title of an event with missing title */
-"(no title)" = "(no title)";
+"(no title)" = "(brez naslova)";
 
 /* As in: event organizer */
 "Organizer" = "Organizator";
@@ -1950,28 +1950,28 @@
 "(Attendance optional)" = "(Udeležba neobvezna)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "Vsak %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "na %@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "na %@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "na dan %u";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "do %@";
 
 /* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
 "%1@ at %2@ %3@" = "%1@ ob %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "sprejeto";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "zavrnjeno";
 
 /* Status in an email body sent with an invitation answer */
 "tentatively accepted" = "pogojno sprejeto";
@@ -1983,13 +1983,13 @@
 "You are invited to %@" = "Povabljeni ste na %@";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
-"LOCATION:\n%@" = "LOCATION:\n%@";
+"LOCATION:\n%@" = "LOKACIJA:\n%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's notes */
-"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+"DESCRIPTION:\n%@" = "OPIS:\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ was cancelled.";
+"%@ was cancelled." = "%@ je bil preklican.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
 "Re: Invitation for an event on %@" = "Re: Povabilo na dogodek %@";
@@ -1998,37 +1998,37 @@
 "Re: Invitation for an event starting on %@" = "Re: Povabilo na dogodek s pričetkom %@";
 
 /* Occurring every day */
-"Daily" = "Daily";
+"Daily" = "Dnevno";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "Tedensko";
 
 /* Occurring every month */
-"Monthly" = "Monthly";
+"Monthly" = "Mesečno";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "Letno";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "prvi";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "drugi";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "tretji";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "četrti";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "zadnji";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Easily RSVP to events";
+"Easily RSVP to events" = "Preprosto odgovorite na dogodke";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Zdaj lahko odgovorite na povabilo ali si ogledate dogodek v koledarju Proton le z enim dotikom. ";
 
 /* Menu title */
 "Max Storage" = "Največ prostora";
@@ -2037,7 +2037,7 @@
 "Storage: %@ full" = "Shramba: %@ zasedeno";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "Drive: %@ zasedeno";
 
 /* Official badge next to sender's name */
 "Official" = "Uradno";
@@ -2154,7 +2154,7 @@
 "Application logs" = "Dnevniki aplikacij";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "Novo!";
 
 /* Got it action */
 "Got it" = "Razumem";
@@ -2484,16 +2484,16 @@
 "To unlock more storage and premium features." = "Nadgradite za več prostora za shranjevanje in premijskih funkcij.";
 
 /* Displayed next to the monthly price */
-"/month" = "/month";
+"/month" = "/mesec";
 
 /* CTA button to purchase a plan (e.g. Get Mail Plus) */
 "Get %@" = "Pridobi %@";
 
 /* In the context of a discount */
-"Save %u%%" = "Save %u%%";
+"Save %u%%" = "Prihranite %u%%";
 
 /* Error when trying to purchase an invalid product */
-"Invalid product ID: $@" = "Invalid product ID: $@";
+"Invalid product ID: $@" = "Neveljaven ID izdelka: $@";
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
-"Purchase already in progress" = "Purchase already in progress";
+"Purchase already in progress" = "Nakup je že v obdelavi";

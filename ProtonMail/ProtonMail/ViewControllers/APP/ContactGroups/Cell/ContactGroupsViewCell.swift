@@ -22,6 +22,7 @@
 
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
+import UIKit
 
 protocol ContactGroupsViewCellDelegate: AnyObject {
     func isMultiSelect() -> Bool

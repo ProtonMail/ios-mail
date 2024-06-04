@@ -7,7 +7,6 @@
 //
 
 import fusion
-import ProtonCoreTestingToolkit
 
 fileprivate struct id {
     static let singlePasswordLabel = L10n.AccountSettings.loginPassword

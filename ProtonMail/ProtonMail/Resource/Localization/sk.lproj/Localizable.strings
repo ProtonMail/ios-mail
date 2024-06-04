@@ -1974,7 +1974,7 @@
 "declined" = "odmietnuté";
 
 /* Status in an email body sent with an invitation answer */
-"tentatively accepted" = "predbežne prijal(-a)";
+"tentatively accepted" = "predbežne prijaté";
 
 /* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
 "%1@ has %2@ your invitation to %3@" = "%1@ má %2@ vašu pozvánku na %3@";
@@ -1992,10 +1992,10 @@
 "%@ was cancelled." = "Udalosť %@ bola zrušená.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
-"Re: Invitation for an event on %@" = "Odp.: Pozvánka na udalosť dňa %@";
+"Re: Invitation for an event on %@" = "Re.: Pozvánka na udalosť dňa %@";
 
 /* Subject of an email sent with an invitation answer after answering */
-"Re: Invitation for an event starting on %@" = "Odp.: Pozvánka na udalosť, ktorá sa začína %@";
+"Re: Invitation for an event starting on %@" = "Re.: Pozvánka na udalosť, ktorá sa začína %@";
 
 /* Occurring every day */
 "Daily" = "Denne";
@@ -2025,7 +2025,7 @@
 "last" = "posledný";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Jednoduché prihlasovanie na podujatia";
+"Easily RSVP to events" = "Jednoduché odpovedanie na udalosti";
 
 /* Body of the spotlight view */
 "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Teraz môžete reagovať na pozvánku alebo zobraziť udalosť v Proton Calendar jedným ťuknutím. ";
@@ -2256,7 +2256,7 @@
 "Empty trash" = "Vyprázdniť kôš";
 
 /* Alert prompting to update Calendar */
-"Download the latest version of the Proton Calendar to open this event" = "Stiahnite si najnovšiu verziu Proton Calendar na otvorenie tejto udalosti";
+"Download the latest version of the Proton Calendar to open this event" = "Pre otvorenie tejto udalosti si stiahnite najnovšiu verziu Proton Calendar";
 
 /* Button to open App Store */
 "Download in App Store" = "Stiahnuť v App Store";

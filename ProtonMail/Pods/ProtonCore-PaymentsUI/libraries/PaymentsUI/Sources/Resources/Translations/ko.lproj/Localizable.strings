@@ -60,9 +60,11 @@
 
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "IAP 결제 절차가 시작되었습니다. Apple의 지침에 따라 구매를 완료하거나 취소하십시오.";
 
+"In app payments are temporarily unavailable." = "인 앱 결제를 일시적으로 사용할 수 없습니다.";
+
 "One plan for all Proton services" = "모든 Proton 서비스를 위한 하나의 요금제";
 
-"The no-cost starter account designed to empower everyone with privacy by default." = "모든 사람에게 개인 정보를 제공하도록 설계된 무료 스타터 계정.";
+"The no-cost starter account designed to empower everyone with privacy by default." = "모두에게 프라이버시가 기본인 서비스를 제공하기 위해 설계된 무료 스타터 계정.";
 
 "The privacy-first email and calendar solution for your everyday communication needs." = "일상적인 커뮤니케이션 요구에 맞는 개인 정보 보호 우선 메일 및 일정관리 솔루션입니다.";
 
@@ -110,13 +112,13 @@
 
 "Plan successfully upgraded" = "요금제가 성공적으로 업그레이드 되었습니다";
 
-"Integrated 2FA authenticator" = "통합된 2FA 인증기";
+"Integrated 2FA authenticator" = "통합된 2단계 인증기";
 
 "Priority support" = "우선 지원";
 
 "Unlimited devices" = "기기 개수 무제한";
 
-"Unlimited email aliases" = "무제한 나의 이메일 별명";
+"Unlimited email aliases" = "무제한 나의 이메일 별칭";
 
 "Unlimited logins and notes" = "무제한 로그인 및 메모";
 

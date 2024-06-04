@@ -25,19 +25,13 @@ import Foundation
 import ProtonCoreLog
 import ProtonCoreLogin
 
-final class TwoFactorViewModel {
+public final class TwoFactorViewModel: ObservableObject {
     enum Mode {
         case twoFactorCode
         case recoveryCode
     }
 
-    enum TwoFactorResult {
-        case done(LoginData)
-        case mailboxPasswordNeeded
-        case createAddressNeeded(CreateAddressData, String?)
-    }
-
-    // MARK: - Properties
+     // MARK: - Properties
 
     let finished = Publisher<TwoFactorResult>()
     let error = Publisher<LoginError>()
@@ -77,8 +71,8 @@ final class TwoFactorViewModel {
                         self?.finished.publish(.createAddressNeeded(data, username))
                         self?.isLoading.value = false
                     }
-                case .ask2FA:
-                    PMLog.error("Asking for 2FA code password after successful 2FA code is an invalid state", sendToExternal: true)
+                case .askTOTP, .askAny2FA, .askFIDO2:
+                    PMLog.error("Asking for 2FA validation after successful 2FA validation is an invalid state", sendToExternal: true)
                     self?.error.publish(.invalidState)
                     self?.isLoading.value = false
                 case .askSecondPassword:

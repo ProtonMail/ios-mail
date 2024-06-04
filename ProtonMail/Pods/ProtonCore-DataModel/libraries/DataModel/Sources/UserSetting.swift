@@ -37,24 +37,13 @@ struct PasswordSetting {
     public let expirationTime: String
 }
 
-struct U2FKey {
-    // "Label": "A name",
-    let label: String
-    // "KeyHandle": "aKeyHandle",
-    let keyHandle: String
-    // "Compromised": 0
-    let compromised: Int
-}
-
 struct TFASetting {
     // "Enabled": 3,
-    let  enabled: Int
+    let enabled: Int
     // "Allowed": 3,
     let allowed: Int
     // "ExpirationTime": null,
     let expirationTime: String
-    // "U2FKeys": [U2FKey]
-    let u2fKeys: [U2FKey]
 }
 
 public struct UserSetting {

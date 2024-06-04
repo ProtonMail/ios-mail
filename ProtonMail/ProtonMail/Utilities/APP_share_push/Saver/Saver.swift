@@ -23,9 +23,9 @@
 import Foundation
 
 protocol KeyValueStoreProvider: AnyObject {
-    func data(forKey key: String, attributes: [CFString: Any]?) -> Data?
-    func set(_ data: Data, forKey key: String, attributes: [CFString: Any]?)
-    func remove(forKey key: String)
+    func dataOrError(forKey key: String, attributes: [CFString: Any]?) throws -> Data?
+    func setOrError(_ data: Data, forKey key: String, attributes: [CFString: Any]?) throws
+    func removeOrError(forKey key: String) throws
 }
 
 class Saver<T: Codable> {
@@ -39,24 +39,29 @@ class Saver<T: Codable> {
 }
 
 extension Saver where T: Codable {
-    private func getFromStore() -> T? {
-        guard let raw = self.store.data(forKey: key, attributes: nil),
-            let subscription = try? PropertyListDecoder().decode(T.self, from: raw) else {
+    func get() -> T? {
+        do {
+            guard let raw = try store.dataOrError(forKey: key, attributes: nil) else {
+                return nil
+            }
+
+            return try PropertyListDecoder().decode(T.self, from: raw)
+        } catch {
+            SystemLogger.log(error: error)
             return nil
         }
-        return subscription
     }
 
     func set(newValue: T?) {
-        guard let value = newValue,
-            let raw = try? PropertyListEncoder().encode(value) else {
-            self.store.remove(forKey: key)
-            return
+        do {
+            if let newValue {
+                let raw = try PropertyListEncoder().encode(newValue)
+                try store.setOrError(raw, forKey: key, attributes: nil)
+            } else {
+                try store.removeOrError(forKey: key)
+            }
+        } catch {
+            SystemLogger.log(error: error)
         }
-        self.store.set(raw, forKey: key, attributes: nil)
-    }
-
-    func get() -> T? {
-        getFromStore()
     }
 }

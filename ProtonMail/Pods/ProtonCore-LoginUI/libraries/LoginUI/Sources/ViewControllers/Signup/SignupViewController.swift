@@ -185,6 +185,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable, Product
         configureAccountType(nil)
         generateAccessibilityIdentifiers()
 
+        viewModel.challenge.reset()
         try? internalNameTextField.setUpChallenge(viewModel.challenge, type: .username)
         try? externalEmailTextField.setUpChallenge(viewModel.challenge, type: .username_email)
     }

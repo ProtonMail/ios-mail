@@ -23,7 +23,7 @@ import Foundation
 
 extension ThrowingFuncStub where Input == Void, Output == Void, A1 == Absent, A2 == Absent, A3 == Absent, A4 == Absent, A5 == Absent, A6 == Absent, A7 == Absent,
                          A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
-    
+
     public convenience init(_ prototype: () -> () throws -> Void,
                             function: String = #function, line: UInt = #line, file: String = #filePath) {
         self.init(function: function, line: line, file: file)
@@ -37,7 +37,7 @@ extension ThrowingFuncStub where Input == Void, Output == Void, A1 == Absent, A2
 
 extension ThrowingFuncStub where Input == Void, A1 == Absent, A2 == Absent, A3 == Absent, A4 == Absent, A5 == Absent, A6 == Absent, A7 == Absent,
                          A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
-    
+
     public convenience init(_ prototype: @escaping () -> () throws -> Output,
                             initialReturn: InitialReturn<Input, Output>,
                             function: String = #function, line: UInt = #line, file: String = #filePath) {
@@ -65,7 +65,7 @@ extension ThrowingFuncStub where Input == Void, A1 == Absent, A2 == Absent, A3 =
 
 extension ThrowingFuncStub where Input == A1, A2 == Absent, A3 == Absent, A4 == Absent, A5 == Absent, A6 == Absent, A7 == Absent,
                          A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
-    
+
     public convenience init(_ prototype: @escaping () -> (A1) throws -> Output,
                             initialReturn: InitialReturn<Input, Output>,
                             function: String = #function, line: UInt = #line, file: String = #filePath) {
@@ -98,7 +98,7 @@ extension ThrowingFuncStub where Input == A1, A2 == Absent, A3 == Absent, A4 == 
 
 extension ThrowingFuncStub where Input == (A1, A2), A3 == Absent, A4 == Absent, A5 == Absent, A6 == Absent, A7 == Absent,
                          A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
-    
+
     public convenience init(_ prototype: @escaping () -> (A1, A2) throws -> Output,
                             initialReturn: InitialReturn<Input, Output>,
                             function: String = #function, line: UInt = #line, file: String = #filePath) {
@@ -131,7 +131,7 @@ extension ThrowingFuncStub where Input == (A1, A2), A3 == Absent, A4 == Absent, 
 
 extension ThrowingFuncStub where Input == (A1, A2, A3), A4 == Absent, A5 == Absent, A6 == Absent, A7 == Absent,
                          A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
-    
+
     public convenience init(_ prototype: @escaping () -> (A1, A2, A3) throws -> Output,
                             initialReturn: InitialReturn<Input, Output>,
                             function: String = #function, line: UInt = #line, file: String = #filePath) {
@@ -164,7 +164,7 @@ extension ThrowingFuncStub where Input == (A1, A2, A3), A4 == Absent, A5 == Abse
 
 extension ThrowingFuncStub where Input == (A1, A2, A3, A4), A5 == Absent, A6 == Absent, A7 == Absent,
                          A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
-    
+
     public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4) throws -> Output,
                             initialReturn: InitialReturn<Input, Output>,
                             function: String = #function, line: UInt = #line, file: String = #filePath) {
@@ -197,7 +197,7 @@ extension ThrowingFuncStub where Input == (A1, A2, A3, A4), A5 == Absent, A6 == 
 
 extension ThrowingFuncStub where Input == (A1, A2, A3, A4, A5), A6 == Absent, A7 == Absent,
                          A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
-    
+
     public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5) throws -> Output,
                             initialReturn: InitialReturn<Input, Output>,
                             function: String = #function, line: UInt = #line, file: String = #filePath) {
@@ -229,7 +229,7 @@ extension ThrowingFuncStub where Input == (A1, A2, A3, A4, A5), A6 == Absent, A7
 }
 
 extension ThrowingFuncStub where Input == (A1, A2, A3, A4, A5, A6), A7 == Absent, A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
-    
+
     public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5, A6) throws -> Output,
                             initialReturn: InitialReturn<Input, Output>,
                             function: String = #function, line: UInt = #line, file: String = #filePath) {
@@ -261,7 +261,7 @@ extension ThrowingFuncStub where Input == (A1, A2, A3, A4, A5, A6), A7 == Absent
 }
 
 extension ThrowingFuncStub where Input == (A1, A2, A3, A4, A5, A6, A7), A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
-    
+
     public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5, A6, A7) throws -> Output,
                             initialReturn: InitialReturn<Input, Output>,
                             function: String = #function, line: UInt = #line, file: String = #filePath) {
@@ -293,7 +293,7 @@ extension ThrowingFuncStub where Input == (A1, A2, A3, A4, A5, A6, A7), A8 == Ab
 }
 
 extension ThrowingFuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8), A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
-    
+
     public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5, A6, A7, A8) throws -> Output,
                             initialReturn: InitialReturn<Input, Output>,
                             function: String = #function, line: UInt = #line, file: String = #filePath) {
@@ -325,7 +325,7 @@ extension ThrowingFuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8), A9 =
 }
 
 extension ThrowingFuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8, A9), A10 == Absent, A11 == Absent, A12 == Absent {
-    
+
     public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5, A6, A7, A8, A9) throws -> Output,
                             initialReturn: InitialReturn<Input, Output>,
                             function: String = #function, line: UInt = #line, file: String = #filePath) {
@@ -357,7 +357,7 @@ extension ThrowingFuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8, A9), 
 }
 
 extension ThrowingFuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10), A11 == Absent, A12 == Absent {
-    
+
     public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) throws -> Output,
                             initialReturn: InitialReturn<Input, Output>,
                             function: String = #function, line: UInt = #line, file: String = #filePath) {
@@ -389,7 +389,7 @@ extension ThrowingFuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8, A9, A
 }
 
 extension ThrowingFuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11), A12 == Absent {
-    
+
     public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) throws -> Output,
                             initialReturn: InitialReturn<Input, Output>,
                             function: String = #function, line: UInt = #line, file: String = #filePath) {
@@ -421,7 +421,7 @@ extension ThrowingFuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8, A9, A
 }
 
 extension ThrowingFuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) {
-    
+
     public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) throws -> Output,
                             initialReturn: InitialReturn<Input, Output>,
                             function: String = #function, line: UInt = #line, file: String = #filePath) {

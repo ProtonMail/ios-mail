@@ -34,5 +34,10 @@ extension AnswerInvitationUseCase {
             assert(iCalEvent.startDate == event.startDate)
             return Output(iCalEvent: iCalEvent, eventType: eventType)
         }
+
+        func mainEvent(for event: any IdentifiableEvent) -> ICalEvent? {
+            assertionFailure("This is not used by RSVP")
+            return iCalEvent
+        }
     }
 }

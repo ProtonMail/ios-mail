@@ -9,8 +9,6 @@
 import ProtonCoreTestingToolkit
 
 class LogoutTests: FixtureAuthenticatedTestCase {
-    
-    private let loginRobot = LoginRobot()
 
     func testLogoutOnePassUser() {
         runTestWithScenario(.qaMail001) {

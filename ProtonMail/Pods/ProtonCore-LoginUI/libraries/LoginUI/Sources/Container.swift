@@ -113,6 +113,16 @@ final class Container {
         return TwoFactorViewModel(login: login, username: username, password: password)
     }
 
+    @MainActor
+    func makeTOTPViewModel() -> TOTPView.ViewModel {
+        return TOTPView.ViewModel(login: login)
+    }
+
+    @available(iOS 15.0, *)
+    func makeFido2ViewModel(challenge: Data, relyingPartyIdentifier: String, allowedCredentialIds: [Data]) -> Fido2View.ViewModel {
+        .init(login: login, challenge: challenge, relyingPartyIdentifier: relyingPartyIdentifier, allowedCredentialIds: allowedCredentialIds)
+    }
+
     // MARK: Signup view models
 
     func makeSignupViewModel() -> SignupViewModel {

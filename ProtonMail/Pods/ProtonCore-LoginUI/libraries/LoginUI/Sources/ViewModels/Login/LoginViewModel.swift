@@ -33,7 +33,9 @@ import ProtonCoreObservability
 final class LoginViewModel {
     enum LoginResult {
         case done(LoginData)
-        case twoFactorCodeNeeded
+        case totpCodeNeeded
+        case fido2KeyNeeded(FIDO2Context)
+        case anyOfFido2TotpNeeded(FIDO2Context)
         case mailboxPasswordNeeded
         case createAddressNeeded(CreateAddressData, String?)
         case ssoChallenge(SSOChallengeResponse)
@@ -85,7 +87,7 @@ final class LoginViewModel {
 
         let userFrame = ["name": "username"]
         let challengeData = self.challenge.export()
-            .allFingerprintDict()
+            .signupFingerprintDict()
             .first(where: { $0["frame"] as? [String: String] == userFrame })
         let intent: Intent = isSsoUIEnabled ? .sso : .auto
 
@@ -102,8 +104,14 @@ final class LoginViewModel {
                 switch status {
                 case let .finished(data):
                     self?.finished.publish(.done(data))
-                case .ask2FA:
-                    self?.finished.publish(.twoFactorCodeNeeded)
+                case .askTOTP:
+                    self?.finished.publish(.totpCodeNeeded)
+                    self?.isLoading.value = false
+                case let .askFIDO2(context):
+                    self?.finished.publish(.fido2KeyNeeded(context))
+                    self?.isLoading.value = false
+                case let .askAny2FA(context):
+                    self?.finished.publish(.anyOfFido2TotpNeeded(context))
                     self?.isLoading.value = false
                 case .askSecondPassword:
                     self?.finished.publish(.mailboxPasswordNeeded)

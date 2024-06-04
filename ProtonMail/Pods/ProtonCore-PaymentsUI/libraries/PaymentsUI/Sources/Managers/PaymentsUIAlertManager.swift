@@ -28,7 +28,7 @@ import ProtonCoreUIFoundations
 protocol PaymentsUIAlertManager: AlertManagerProtocol {
     var viewController: PaymentsUIViewController? { get set }
     var delegatedAlertManager: AlertManagerProtocol { get }
-    func showError(message: String, error: Error)
+    func showError(message: String, error: Error?, action: ActionCallback)
 }
 
 extension PaymentsUIAlertManager {
@@ -78,11 +78,7 @@ final class LocallyPresentingPaymentsUIAlertManager: PaymentsUIAlertManager {
         showError(message: message, action: confirmAction ?? cancelAction)
     }
 
-    func showError(message: String, error: Error) {
-        showError(message: message, error: error, action: nil)
-    }
-
-    private func showError(message: String, error: Error? = nil, action: ActionCallback) {
+    func showError(message: String, error: Error? = nil, action: ActionCallback = nil) {
         guard let viewController = viewController else { return }
         if !viewController.activityIndicator.isHidden {
             viewController.activityIndicator.isHidden = true
@@ -121,7 +117,7 @@ final class AlwaysDelegatingPaymentsUIAlertManager: PaymentsUIAlertManager {
         passAlertToDelegatedManager(confirmAction: confirmAction, cancelAction: cancelAction)
     }
 
-    func showError(message: String, error: Error) {
+    func showError(message: String, error: Error?, action: ProtonCorePayments.ActionCallback) {
         showErrorOnDelegatedManager(message: message)
     }
 }

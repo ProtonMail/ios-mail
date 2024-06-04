@@ -73,6 +73,12 @@
                "package": "LifetimeTracker"
             },
             {
+               "package": "OHHTTPStubs",
+               "products": [
+                  "OHHTTPStubsSwift"
+               ]
+            },
+            {
                "package": "ProtonCoreEventsLoop"
             },
             {

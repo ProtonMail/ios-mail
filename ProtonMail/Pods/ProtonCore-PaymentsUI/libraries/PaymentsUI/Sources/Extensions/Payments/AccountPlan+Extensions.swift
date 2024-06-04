@@ -27,7 +27,7 @@ import ProtonCorePayments
 public extension InAppPurchasePlan {
     func planPrice(from storeKitManager: StoreKitManagerProtocol) -> String? {
         guard let priceLabel = priceLabel(from: storeKitManager) else { return nil }
-        return PriceFormatter.formatPlanPrice(price: priceLabel.value.doubleValue, 
+        return PriceFormatter.formatPlanPrice(price: priceLabel.value.doubleValue,
                                               locale: priceLabel.locale)
     }
 

@@ -146,7 +146,7 @@ protocol PaymentsApiProtocol {
     /// Get payment methods in priority order
     func methodsRequest(api: APIService) -> MethodRequest
     func paymentTokenOldRequest(api: APIService, amount: Int, receipt: String) -> PaymentTokenOldRequest
-    func paymentTokenRequest(api: APIService, amount: Int, receipt: String, transactionId: String, bundleId: String, productId: String) -> PaymentTokenRequest
+    func paymentTokenRequest(api: APIService, amount: Int, currencyCode: String, receipt: String, transactionId: String, bundleId: String, productId: String) -> PaymentTokenRequest
     func paymentTokenStatusRequest(api: APIService, token: PaymentToken) -> PaymentTokenStatusRequest
     func validateSubscriptionRequest(api: APIService, protonPlanName: String, isAuthenticated: Bool, cycle: Int) -> ValidateSubscriptionRequest
     func countriesCountRequest(api: APIService) -> CountriesCountRequest
@@ -160,9 +160,7 @@ class PaymentsApiV4Implementation: PaymentsApiProtocol {
 
     func buySubscriptionRequest(api: APIService,
                                 plan: PlanToBeProcessed,
-
                                 amountDue: Int,
-
                                 paymentAction: PaymentAction,
                                 isCreditingAllowed: Bool) throws -> SubscriptionRequest {
         guard Thread.isMainThread == false else {
@@ -170,22 +168,22 @@ class PaymentsApiV4Implementation: PaymentsApiProtocol {
             throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
         }
         guard isCreditingAllowed else { // dynamic plans case
-            return V4SubscriptionRequest(api: api, planId: plan.protonIdentifier, amount: plan.amount, cycle: plan.cycle, paymentAction: paymentAction)
+            return V4SubscriptionRequest(api: api, planName: plan.planName, amount: plan.amount, currencyCode: plan.currencyCode, cycle: plan.cycle, paymentAction: paymentAction)
         }
         if amountDue == plan.amount {
             // if amountDue is equal to amount, request subscription
-            return V4SubscriptionRequest(api: api, planId: plan.protonIdentifier, amount: plan.amount, cycle: plan.cycle, paymentAction: paymentAction)
+            return V4SubscriptionRequest(api: api, planName: plan.planName, amount: plan.amount, currencyCode: plan.currencyCode, cycle: plan.cycle, paymentAction: paymentAction)
         } else {
             // if amountDue is not equal to amount, request credit for a full amount
             let creditReq = creditRequest(api: api, amount: plan.amount, paymentAction: paymentAction)
             _ = try creditReq.awaitResponse(responseObject: CreditResponse())
             // then request subscription for amountDue = 0
-            return V4SubscriptionRequest(api: api, planId: plan.protonIdentifier, amount: 0, cycle: plan.cycle, paymentAction: paymentAction)
+            return V4SubscriptionRequest(api: api, planName: plan.planName, amount: 0, currencyCode: plan.currencyCode, cycle: plan.cycle, paymentAction: paymentAction)
         }
     }
 
     func buySubscriptionForZeroRequest(api: APIService, plan: PlanToBeProcessed) -> SubscriptionRequest {
-        V4SubscriptionRequest(api: api, planId: plan.protonIdentifier)
+        V4SubscriptionRequest(api: api, planName: plan.planName)
     }
 
     func getSubscriptionRequest(api: APIService) -> GetSubscriptionRequest {
@@ -216,7 +214,7 @@ class PaymentsApiV4Implementation: PaymentsApiProtocol {
         PaymentTokenOldRequest(api: api, amount: amount, receipt: receipt)
     }
 
-    func paymentTokenRequest(api: APIService, amount: Int, receipt: String, transactionId: String, bundleId: String, productId: String) -> PaymentTokenRequest {
+    func paymentTokenRequest(api: APIService, amount: Int, currencyCode: String, receipt: String, transactionId: String, bundleId: String, productId: String) -> PaymentTokenRequest {
         fatalError("Token Requests for auto-recurring subscriptions should not be used with API v4")
     }
 
@@ -282,7 +280,7 @@ class PaymentsApiV5Implementation: PaymentsApiProtocol {
             throw StoreKitManagerErrors.alreadyPurchasedPlanDoesNotMatchBackend
         }
 
-        return V5SubscriptionRequest(api: api, planName: plan.planName, amount: plan.amount, cycle: plan.cycle, paymentAction: paymentAction)
+        return V5SubscriptionRequest(api: api, planName: plan.planName, amount: plan.amount, currencyCode: plan.currencyCode, cycle: plan.cycle, paymentAction: paymentAction)
 
     }
 
@@ -318,8 +316,8 @@ class PaymentsApiV5Implementation: PaymentsApiProtocol {
         fatalError("Token Requests for 1-time payments should not be used with API v5")
     }
 
-    func paymentTokenRequest(api: ProtonCoreServices.APIService, amount: Int, receipt: String, transactionId: String, bundleId: String, productId: String) -> PaymentTokenRequest {
-            PaymentTokenRequest(api: api, amount: amount, receipt: receipt, transactionId: transactionId, bundleId: bundleId, productId: productId)
+    func paymentTokenRequest(api: ProtonCoreServices.APIService, amount: Int, currencyCode: String, receipt: String, transactionId: String, bundleId: String, productId: String) -> PaymentTokenRequest {
+        PaymentTokenRequest(api: api, amount: amount, currencyCode: currencyCode, receipt: receipt, transactionId: transactionId, bundleId: bundleId, productId: productId)
     }
 
     func paymentTokenStatusRequest(api: ProtonCoreServices.APIService, token: PaymentToken) -> PaymentTokenStatusRequest {

@@ -45,12 +45,11 @@ final class AutoImportContactsFeature {
     }
 
     var isFeatureEnabled: Bool {
-        ProcessInfo.isRunningUnitTests
-//        let isFFEnabled = dependencies
-//            .featureFlagProvider
-//            .isEnabled(MailFeatureFlag.autoImportContacts, reloadValue: true)
-//        SystemLogger.logTemporarily(message: "isAutoImportContactsFeature enabled \(isFFEnabled)", category: .contacts)
-//        return isFFEnabled
+        let isFFEnabled = dependencies
+            .featureFlagProvider
+            .isEnabled(MailFeatureFlag.autoImportContacts, reloadValue: true)
+        SystemLogger.logTemporarily(message: "isAutoImportContactsFeature enabled \(isFFEnabled)", category: .contacts)
+        return isFFEnabled
     }
 
     /// This is a value for telemetry.

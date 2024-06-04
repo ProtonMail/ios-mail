@@ -84,14 +84,6 @@ extension PMChallenge {
 
     /// Export collected challenge data
     public func export() -> PMChallenge.Challenge {
-        let semaphore = DispatchSemaphore(value: 0)
-        runInMainThread {
-            self.challenge.fetchValues()
-            semaphore.signal()
-        }
-        semaphore.wait()
-        let challenge = self.challenge
-        self.challenge.reset()
         return challenge
     }
 
@@ -143,19 +135,6 @@ extension PMChallenge {
         }
         // make sure the textField is not focused after check username.
         interceptor.textField?.resignFirstResponder()
-    }
-}
-
-// MARK: Private function
-extension PMChallenge {
-    private func runInMainThread(closure: @escaping () -> Void) {
-        if Thread.isMainThread {
-            closure()
-        } else {
-            DispatchQueue.main.async {
-                closure()
-            }
-        }
     }
 }
 
@@ -284,10 +263,14 @@ extension PMChallenge {
 
 public extension ChallengeParametersProvider {
     static func forAPIService(clientApp: ClientApp, challenge: PMChallenge) -> ChallengeParametersProvider {
-        ChallengeParametersProvider(prefix: clientApp.name,
-                                    challengeProtocol: challenge,
-                                    provideParametersForLoginAndSignup: { challenge.export().allFingerprintDict() },
-                                    provideParametersForSessionFetching: { challenge.export().deviceFingerprintDict() })
+        ChallengeParametersProvider(
+            prefix: clientApp.name,
+            challengeProtocol: challenge,
+            provideParametersForLoginAndSignup: { challenge.export().signupFingerprintDict() },
+            provideParametersForSessionFetching: {
+                PMChallenge.Challenge.DeviceFingerprint.deviceFingerprintDictInArray()
+            }
+        )
     }
 
     var challenge: PMChallenge? { challengeProtocol as? PMChallenge }

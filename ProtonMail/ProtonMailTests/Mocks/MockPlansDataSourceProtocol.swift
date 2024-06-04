@@ -17,8 +17,13 @@
 
 import ProtonCorePayments
 import ProtonCoreTestingToolkit
+import StoreKit
 
 final class MockPlansDataSourceProtocol: PlansDataSourceProtocol {
+    var lastFetchedProducts: [SKProduct] {
+        fatalError("not implemented")
+    }
+
     var isIAPAvailable: Bool {
         fatalError("not implemented")
     }

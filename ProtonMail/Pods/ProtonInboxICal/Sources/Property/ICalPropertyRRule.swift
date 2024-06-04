@@ -24,6 +24,12 @@ import Foundation
 
 let ICAL_RECURRENCE_ARRAY_MAX_INT16: Int16 = Int16(ICAL_RECURRENCE_ARRAY_MAX.rawValue)
 
+// FIXME: - [CALIOS-2810] Temporary code that proxy logs to the app target. Has to be removed after fixing CALIOS-2784.
+public enum ICalAnalytics {
+    public static var capture: ((_ message: String) -> Void)?
+    public static var addTrace: ((_ trace: String, _ fileID: String, _ function: String, _ line: UInt) -> Void)?
+}
+
 public class ICalPropertyRRule {
     public init() {}
 
@@ -382,13 +388,8 @@ public class ICalPropertyRRule {
             switch month_day {
             case month_day_options.MONTH_DAY_NTH:
                 if month_num == month_num_options.MONTH_NUM_LAST {
-                    guard let weekIndex = e_ews_cal_util_month_index_to_days_of_week(month_index: month_index) else {
-                        return nil
-                    }
-
                     recurrence = recurrence
-                        .copy(repeatMonthOnWeekDay: weekIndex.rawValue)
-                        .copy(repeatMonthOnIth: ICalRecurrence.RepeatMonthOnIth(value: -1))
+                        .copy(repeatMonthOnIth: .last)
                 } else {
                     // No action, not supported
                 }
@@ -515,6 +516,10 @@ public class ICalPropertyRRule {
                   let repeatMonthOnWeekDay = recurring.repeatMonthOnWeekDay
         {
             str += "BYDAY=\(weekdayStr[repeatMonthOnWeekDay]);BYSETPOS=\(repeatMonthOnIth.integer);"
+        } else if let repeatMonthOnIth = recurring.repeatMonthOnIth,
+                  repeatMonthOnIth == .last,
+                  recurring.repeatEveryType == .month {
+            str += "BYMONTHDAY=\(repeatMonthOnIth.integer)"
         }
 
         if let WKST = WKST {
@@ -769,6 +774,14 @@ public class ICalPropertyRRule {
         // failure to do so may lead to issues with Daylight Saving Time (DST)
 
         guard event.recurrence.doesRepeat else {
+            let rrule: String
+            if var recurrenceType = event.recurringRulesLibical {
+                rrule = String(cString: icalrecurrencetype_as_string(&recurrenceType))
+            } else {
+                rrule = "missing recurringRulesLibical"
+            }
+            ICalAnalytics.addTrace?("RRule: \(rrule)", #file, #function, #line)
+            ICalAnalytics.capture?("Got non-recurring event")
             assertionFailure("\(#function) got non-recurring event")
             return nil
         }

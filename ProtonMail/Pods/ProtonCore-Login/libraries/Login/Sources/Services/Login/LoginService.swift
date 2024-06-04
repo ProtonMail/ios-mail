@@ -29,7 +29,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreFeatureFlags
 
-public final class LoginService: Login {
+public final class LoginService {
 
     public typealias AuthenticationManager = AuthenticatorInterface & AuthenticatorKeyGenerationInterface
 
@@ -39,7 +39,8 @@ public final class LoginService: Login {
     var sessionId: String { apiService.sessionUID }
     let clientApp: ClientApp
     let manager: AuthenticationManager
-    var context: TwoFactorContext?
+    var totpContext: TOTPContext?
+    var fido2Context: FIDO2Context?
     var mailboxPassword: String?
     public private(set) var minimumAccountType: AccountType
     var username: String?
@@ -126,7 +127,7 @@ public final class LoginService: Login {
                 switch result {
                 case .failure(let error):
                     completion(.failure(error.asLoginError()))
-                case .success(.ask2FA), .success(.ssoChallenge):
+                case .success(.askTOTP), .success(.ssoChallenge), .success(.askFIDO2), .success(.askAny2FA):
                     completion(.failure(.invalidState))
                 case .success(.newCredential(let credential, _)), .success(.updatedCredential(let credential)):
                     authManager.onUpdate(credential: credential, sessionUID: self.sessionId)

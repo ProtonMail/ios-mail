@@ -178,9 +178,9 @@
 
 "Terms and Conditions" = "Termes i Condicions";
 
-"Invalid token request" = "Sol·licitud de testimoni invàlida";
+"Invalid token request" = "Sol·licitud de token invàlida";
 
-"Invalid token error" = "Error de testimoni invàlid";
+"Invalid token error" = "Error de token invàlid";
 
 "Create user failed" = "No s'ha pogut crear l'usuari.";
 

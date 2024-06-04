@@ -158,7 +158,8 @@ struct PlanToBeProcessed {
     let protonIdentifier: String
     let planName: String
     let amount: Int
-    let amountDue: Int
+    let currencyCode: String
+    let amountDue: Int // v4
     let cycle: Int
 }
 
@@ -211,6 +212,7 @@ extension InAppPurchasePlan {
         return .init(protonIdentifier: storeKitProductId,
                      planName: self.protonName,
                      amount: 0,
+                     currencyCode: "USD",
                      amountDue: 0,
                      cycle: cycle)
     }

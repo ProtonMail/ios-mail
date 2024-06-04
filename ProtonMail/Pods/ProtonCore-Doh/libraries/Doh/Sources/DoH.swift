@@ -187,6 +187,8 @@ open class DoH: DoHInterface {
 
     open func getSignUpString() -> String { config.signupDomain }
 
+    open func getAPNEnvironment() -> APNEnvironment { config.apnEnvironment }
+
     // MARK: - Caching
 
     open var isCurrentlyUsingProxyDomain: Bool {

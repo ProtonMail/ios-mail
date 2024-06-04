@@ -52,6 +52,8 @@ extension LoginError {
             return ""
         case .missingSubUserConfiguration:
             return ""
+        case .invalid2FAKey:
+            return ""
         }
     }
 }

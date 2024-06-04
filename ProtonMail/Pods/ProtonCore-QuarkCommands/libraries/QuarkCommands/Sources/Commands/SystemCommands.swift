@@ -23,7 +23,6 @@ import Foundation
 
 private let systemEnvRoute: String = "system/env"
 
-
 // variable: FINGERPRINT_RESPONSE
 public enum FingerprintResponse: String {
     case ok = "{\\\"code\\\": 1000, \\\"result\\\": \\\"ok\\\", \\\"message\\\":\\\"{\\\\\\\"VerifyMethods\\\\\\\":[\\\\\\\"captcha\\\\\\\", \\\\\\\"email\\\\\\\", \\\\\\\"sms\\\\\\\"]}\\\"}"

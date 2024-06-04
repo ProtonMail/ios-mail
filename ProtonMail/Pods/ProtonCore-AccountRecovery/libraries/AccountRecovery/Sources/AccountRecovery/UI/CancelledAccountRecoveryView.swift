@@ -66,7 +66,7 @@ public struct CancelledAccountRecoveryView: View {
         .frame(maxHeight: .infinity)
         .navigationTitle(ARTranslation.cancelledViewTitle.l10n)
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear() {
+        .onAppear {
             ObservabilityEnv.report(.accountRecoveryScreenView(screenID: .recoveryCancelledInfo))
         }
     }

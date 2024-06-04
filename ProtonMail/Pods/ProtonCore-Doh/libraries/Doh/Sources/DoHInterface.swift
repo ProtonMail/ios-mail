@@ -46,7 +46,12 @@ public enum DoHStatus {
     case auto // mix don't know yet
 }
 
-/// server configuation
+public enum APNEnvironment: Int {
+    case production = 6
+    case development = 16
+}
+
+/// server configuration
 public protocol ServerConfig {
 
     /// enable doh or not default is True. if you don't want to use doh, set this value to false
@@ -75,6 +80,9 @@ public protocol ServerConfig {
     /// the doh provider timeout  the default value is 5s
     var timeout: TimeInterval { get }
     var proxyToken: String? { get }
+
+    /// the APNS Environment to use
+    var apnEnvironment: APNEnvironment { get }
 }
 
 public extension ServerConfig {
@@ -96,6 +104,10 @@ public extension ServerConfig {
 
     var timeout: TimeInterval {
         return 20
+    }
+
+    var apnEnvironment: APNEnvironment {
+        .development
     }
 }
 
@@ -169,6 +181,7 @@ public protocol DoHInterface {
     func getHumanVerificationV3Host() -> String
     func getAccountHost() -> String
     func getAccountHostForAPI() -> String
+    func getAPNEnvironment() -> APNEnvironment
 
     func getCurrentlyUsedUrlHeaders() -> [String: String]
     func getCaptchaHeaders() -> [String: String]

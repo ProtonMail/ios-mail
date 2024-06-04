@@ -13,7 +13,7 @@ extension User {
     init(id: Int, name: String, password: String = "", email: String = "") {
         self.init(name: name, password: password)
         self.mailboxPassword = ""
-        self.twoFASecurityKey = ""
+        self.totpSecurityKey = ""
         self.displayName = name
         self.id = id
         self.email = email
@@ -24,7 +24,7 @@ extension User {
         self.email = quarkResponse.email
         self.displayName = self.name
         self.mailboxPassword = ""
-        self.twoFASecurityKey = ""
+        self.totpSecurityKey = ""
         self.id = Int(quarkResponse.decryptedUserId)
         self.recoveryEmail = quarkResponse.recovery
     }
@@ -33,12 +33,12 @@ extension User {
         self.init(name: quarkResponse.name, password: quarkResponse.password)
         self.displayName = self.name
         self.mailboxPassword = ""
-        self.twoFASecurityKey = ""
+        self.totpSecurityKey = ""
         self.id = quarkResponse.id.raw
     }
 
     func getTwoFaCode() -> String {
-        return Otp().generate(self.twoFASecurityKey)
+        return Otp().generate(self.totpSecurityKey)
     }
 
     var dynamicDomainEmail: String {

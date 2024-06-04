@@ -24,6 +24,7 @@ import ProtonCoreAuthentication
 import ProtonCoreCrypto
 import ProtonCoreCryptoGoInterface
 import ProtonCoreDataModel
+import ProtonCoreKeyManager
 import ProtonCoreNetworking
 import ProtonCoreServices
 
@@ -55,26 +56,43 @@ public class AttachmentContent {
     }
 }
 
-public class Recipient: Package {
+public enum RecipientType: Int {
+    case `internal` = 1
+    case external = 2
+}
 
-    public init(email: String, name: String) {
+public struct Recipient: Equatable {
+    public let email: String
+    public let type: RecipientType
+    public let activePublicKeys: [ActivePublicKey]
+
+    var publicKeyForEncryption: String? {
+        activePublicKeys
+            .first { $0.flags.contains(.encryptNewData) }?
+            .publicKey
+    }
+
+    public init(email: String, type: RecipientType, activePublicKeys: [ActivePublicKey]) {
         self.email = email
-        self.name = name
+        self.type = type
+        self.activePublicKeys = activePublicKeys
     }
+}
 
-    var email: String
-    var name: String
+public struct ActivePublicKey: Equatable {
+    public let flags: KeyFlags
+    public let publicKey: String
 
-    public var parameters: [String: Any]? {
-        return nil
+    public init(flags: KeyFlags, publicKey: String) {
+        self.flags = flags
+        self.publicKey = publicKey
     }
-
 }
 
 /// Message content need to be send
 public class MessageContent {
     /// recipints internal & external
-    var recipients: [String] // chagne to Recipient later when use contacts
+    var recipients: [Recipient]
 
     /// encrypted message body. encrypted by self key
     var body: String = ""
@@ -91,7 +109,7 @@ public class MessageContent {
     ///   - emails: email addresses
     ///   - body: event body
     ///   - attachments: attachments
-    public init(recipients: [String], subject: String, body: String, attachments: [AttachmentContent]) {
+    public init(recipients: [Recipient], subject: String, body: String, attachments: [AttachmentContent]) {
         self.recipients = recipients
         self.subject = subject
         self.body = body
@@ -193,12 +211,6 @@ public class MailFeature {
 
         let addressKey = addrPrivKeys.first!
 
-        var requests: [UserEmailPubKeys] = [UserEmailPubKeys]()
-        let emails: [String] = content.recipients
-        for email in emails {
-            requests.append(UserEmailPubKeys(email: email, authCredential: authCredential))
-        }
-
         // is encrypt outside -- disable now
         let isEO = false // !message.password.isEmpty
 
@@ -217,11 +229,6 @@ public class MailFeature {
 
         sendQueue.async {
             do {
-                let callResults = requests.performConcurrentlyAndWaitForResults(api: self.apiService, response: KeysResponse.self)
-                let results = try callResults.map { response in
-                    try response.get()
-                }
-
                 // all prebuild errors need pop up from here
                 guard let splited = try body.split(),
                       let bodyData = splited.dataPacket,
@@ -240,23 +247,58 @@ public class MailFeature {
                 sendBuilder.update(bodyData: bodyData, bodySession: key, algo: session.algo)
                 // sendBuilder.set(pwd: message.password, hit: message.passwordHint)
 
-                for (index, value) in results.enumerated() {
-                    let req = requests[index]
+                content.recipients.forEach { recipient in
                     // check contacts have pub key or not
-                    if let contact = contacts.find(email: req.email) {
-                        if value.recipientType == 1 {
+                    if let contact = contacts.find(email: recipient.email) {
+                        if recipient.type == .internal {
                             // if type is internal check is key match with contact key
                             // compare the key if doesn't match
-                            sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: contact.firstPgpKey, recipintType: value.recipientType, eo: isEO, hasMime: false, isSigned: true, isPgpEncrypted: false, isPlainText: true))
+                            sendBuilder.addPreAddress(
+                                recipient: recipient,
+                                pubKey: recipient.publicKeyForEncryption,
+                                pgpKey: contact.firstPgpKey,
+                                isEO: isEO,
+                                hasMime: false,
+                                isSigned: true,
+                                isPgpEncrypted: false,
+                                isPlainText: true
+                            )
                         } else {
-                            let areKeysEmpty = value.keys.isEmpty
-                            sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: areKeysEmpty ? nil : contact.firstPgpKey, recipintType: value.recipientType, eo: isEO, hasMime: areKeysEmpty ? false : contact.hasMime, isSigned: contact.isSigned, isPgpEncrypted: contact.isEncrypted, isPlainText: true))
+                            let areKeysEmpty = recipient.activePublicKeys.isEmpty
+                            sendBuilder.addPreAddress(
+                                recipient: recipient,
+                                pubKey: nil,
+                                pgpKey: areKeysEmpty ? nil : contact.firstPgpKey,
+                                isEO: isEO,
+                                hasMime: areKeysEmpty ? false : contact.hasMime,
+                                isSigned: contact.isSigned,
+                                isPgpEncrypted: contact.isEncrypted,
+                                isPlainText: true
+                            )
                         }
                     } else {
                         if sign == 1 {
-                            sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, eo: isEO, hasMime: true, isSigned: true, isPgpEncrypted: false, isPlainText: true))
+                            sendBuilder.addPreAddress(
+                                recipient: recipient,
+                                pubKey: recipient.publicKeyForEncryption,
+                                pgpKey: nil,
+                                isEO: isEO,
+                                hasMime: true,
+                                isSigned: true,
+                                isPgpEncrypted: false,
+                                isPlainText: true
+                            )
                         } else {
-                            sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, eo: isEO, hasMime: false, isSigned: false, isPgpEncrypted: false, isPlainText: true))
+                            sendBuilder.addPreAddress(
+                                recipient: recipient,
+                                pubKey: recipient.publicKeyForEncryption,
+                                pgpKey: nil,
+                                isEO: isEO,
+                                hasMime: false,
+                                isSigned: false,
+                                isPgpEncrypted: false,
+                                isPlainText: true
+                            )
                         }
                     }
                 }
@@ -326,7 +368,7 @@ public class MailFeature {
                                                 body: body,
                                                 bodyData: encodedBody,
                                                 senderName: senderName, senderAddr: senderAddr,
-                                                recipients: content.recipients, atts: content.attachments,
+                                                recipients: content.recipients.map(\.email), atts: content.attachments,
 
                                                 messagePackage: msgs, clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts,
                                                 mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
@@ -390,6 +432,33 @@ public class MailFeature {
 
         let sessionKey = try data.getSessionFromPubKeyPackageNonOptional(userKeys: userKey, passphrase: passphrase, keys: keys)
         return sessionKey
+    }
+
+}
+
+private extension SendBuilder {
+
+    func addPreAddress(
+        recipient: Recipient,
+        pubKey: String?,
+        pgpKey: Data?,
+        isEO: Bool,
+        hasMime: Bool,
+        isSigned: Bool,
+        isPgpEncrypted: Bool,
+        isPlainText: Bool
+    ) {
+        add(addr: PreAddress(
+            email: recipient.email,
+            pubKey: pubKey,
+            pgpKey: pgpKey,
+            recipintType: recipient.type.rawValue,
+            eo: isEO,
+            hasMime: hasMime,
+            isSigned: isSigned,
+            isPgpEncrypted: isPgpEncrypted,
+            isPlainText: isPlainText
+        ))
     }
 
 }

@@ -26,6 +26,7 @@ import ProtonCoreForceUpgrade
 import ProtonCoreNetworking
 #if DEBUG
 import OHHTTPStubs
+import OHHTTPStubsSwift
 #endif
 
 class ForceUpgradeManager: LifetimeTrackable {

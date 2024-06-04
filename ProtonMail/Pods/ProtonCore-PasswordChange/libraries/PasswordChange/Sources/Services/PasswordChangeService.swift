@@ -102,11 +102,6 @@ public class PasswordChangeService {
                                                       oldPassword: oldPassword,
                                                       newPassword: newPassword)
 
-        let newOrganizationKey = try await updateOrganizationKeys(userInfo: userInfo,
-                                                                  oldPassword: oldPassword,
-                                                                  newPassphrase: resultOfKeyUpdate.hashedNewPassword)
-
-
         var passwordAuth: PasswordAuth?
         if buildAuth {
             passwordAuth = try await generatePasswordAuth(newPassword: newPassword)
@@ -124,7 +119,7 @@ public class PasswordChangeService {
         }
         let srpClient = try auth.generateProofs(2048)
 
-        guard let clientEphemeral = srpClient.clientEphemeral, 
+        guard let clientEphemeral = srpClient.clientEphemeral,
               let clientProof = srpClient.clientProof else {
             throw UpdatePasswordError.cantGenerateSRPClient
         }
@@ -137,12 +132,10 @@ public class PasswordChangeService {
             userlevelKeys: userInfo.isKeyV2 ? [] : resultOfKeyUpdate.updatedUserKeys,
             addressKeys: userInfo.isKeyV2 ? [] : resultOfKeyUpdate.updatedAddresses?.toKeys() ?? [],
             tfaCode: twoFACode,
-            orgKey: newOrganizationKey?.value,
             userKeys: resultOfKeyUpdate.updatedUserKeys,
             auth: passwordAuth,
             authCredential: currentAuth
         )
-
 
         let (_, updatePrivateKeyResponse): (URLSessionDataTask?, DefaultResponse) = try await apiService.perform(request: updatePrivateKeyRequest)
 
@@ -211,22 +204,6 @@ public class PasswordChangeService {
         return PasswordAuth(modulusID: modulusID,
                             salt: newSalt.encodeBase64(),
                             verifier: verifier.encodeBase64())
-    }
-
-    private func updateOrganizationKeys(
-        userInfo: UserInfo,
-        oldPassword: Passphrase,
-        newPassphrase: Passphrase
-    ) async throws -> ArmoredKey? {
-        /// Check user role if equal 2 try to get the org key.
-        guard userInfo.role == 2 else { return nil }
-        let (_, currentOrganizationKey): (URLSessionDataTask?, OrgKeyResponse) = try await apiService.perform(request: OrganizationKeysRequest())
-        guard let organizationPrivateKey = currentOrganizationKey.privKey, !organizationPrivateKey.isEmpty else {
-            return nil
-        }
-        return try Crypto.updatePassphrase(privateKey: ArmoredKey(value: organizationPrivateKey),
-                                           oldPassphrase: oldPassword,
-                                           newPassphrase: newPassphrase)
     }
 }
 

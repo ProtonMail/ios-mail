@@ -29,16 +29,12 @@ public enum Brand {
     public static var currentBrand: Brand = .proton
 }
 
-#if canImport(UIKit)
+#if canImport(UIKit) && !os(tvOS)
 
 import UIKit
 
 open class DarkModeAwareNavigationViewController: UINavigationController {
     override open var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
-}
-
-public func darkModeAwareValue<T>(value: () -> T, protonFallback: () -> T, vpnFallback: () -> T) -> T {
-    value()
 }
 
 public func darkModeAwarePreferredStatusBarStyle() -> UIStatusBarStyle {
@@ -57,6 +53,12 @@ public func darkModeAwareValue<T>(value: () -> T, protonFallback: () -> T, vpnFa
     } else {
         return protonFallback()
     }
+}
+
+#else
+
+public func darkModeAwareValue<T>(value: () -> T, protonFallback: () -> T, vpnFallback: () -> T) -> T {
+    value()
 }
 
 #endif

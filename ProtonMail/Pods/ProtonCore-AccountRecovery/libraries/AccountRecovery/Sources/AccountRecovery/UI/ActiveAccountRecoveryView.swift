@@ -96,7 +96,7 @@ public struct ActiveAccountRecoveryView: View {
         .frame(maxHeight: .infinity)
         .navigationTitle(ARTranslation.graceViewTitle.l10n)
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear() {
+        .onAppear {
             ObservabilityEnv.report(.accountRecoveryScreenView(screenID: .gracePeriodInfo))
         }
     }
