@@ -23,8 +23,4 @@ extension UserInfo {
     static var isBodySearchKeywordHighlightEnabled: Bool {
         false
     }
-
-    static var isUpsellButtonEnabled: Bool {
-        Application.isDebugOrEnterprise
-    }
 }

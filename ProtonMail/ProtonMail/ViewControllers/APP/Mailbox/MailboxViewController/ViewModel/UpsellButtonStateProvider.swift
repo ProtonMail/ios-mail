@@ -56,7 +56,6 @@ struct UpsellButtonStateProvider {
 
     var shouldShowUpsellButton: Bool {
         guard
-            UserInfo.isUpsellButtonEnabled,
             dependencies.featureFlagProvider.isEnabled(.upsellButton, reloadValue: true),
             dependencies.user.userInfo.subscribed.isEmpty
         else {
