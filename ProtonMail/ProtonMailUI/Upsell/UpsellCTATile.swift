@@ -60,6 +60,9 @@ struct UpsellCTATile: View {
                 Button(String(format: L10n.Upsell.getPlan, planName)) {
                     onTap()
                 }
+                .lineLimit(1)
+                .fixedSize()
+                .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
                 .padding(.horizontal, 20)
                 .background(purchasingOption.isHighlighted ? ColorProvider.InteractionNorm : Color.white.opacity(0.16))

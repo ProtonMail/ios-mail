@@ -25,14 +25,25 @@ public struct UpsellPage: View {
     @Environment(\.verticalSizeClass)
     private var verticalSizeClass
 
-    @MainActor private var windowSafeAreaInsets: UIEdgeInsets {
+    @State private var previousVerticalSizeClass: UserInterfaceSizeClass?
+    @State private var enforceVerticalTiles = LayoutFix()
+    @State private var hideLogo = LayoutFix()
+
+    private var keyWindow: UIWindow? {
         UIApplication
             .shared
             .connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .flatMap(\.windows)
-            .first(where: \.isKeyWindow)?
-            .safeAreaInsets ?? .zero
+            .first(where: \.isKeyWindow)
+    }
+
+    private var windowSafeAreaInsets: UIEdgeInsets {
+        keyWindow?.safeAreaInsets ?? .zero
+    }
+
+    private var layoutTilesVertically: Bool {
+        verticalSizeClass == .compact || enforceVerticalTiles.value
     }
 
     public init(model: UpsellPageModel, onPurchaseTapped: @escaping (String) -> Void) {
@@ -46,33 +57,48 @@ public struct UpsellPage: View {
                 HStack {
                     infoSection
 
-                    VStack {
-                        tiles
-                    }
-                    .padding(.top, 10)
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 16)
+                    interactiveArea
                 }
                 .padding(.bottom, windowSafeAreaInsets.bottom)
             } else {
                 VStack {
                     infoSection
 
-                    HStack(alignment: .bottom) {
-                        tiles
-                    }
-                    .padding(.top, 10)
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 16)
+                    interactiveArea
                 }
                 .padding(.bottom, windowSafeAreaInsets.bottom)
+            }
+        }
+        .background(GeometryReader { geometry in
+            Color.clear.preference(
+                key: SizePreferenceKey.self,
+                value: geometry.size
+            )
+        })
+        .onPreferenceChange(SizePreferenceKey.self) {
+            if verticalSizeClass != previousVerticalSizeClass {
+                enforceVerticalTiles.reset()
+                hideLogo.reset()
+                previousVerticalSizeClass = verticalSizeClass
+            }
+
+            guard let keyWindowSize = keyWindow?.frame.size else {
+                return
+            }
+
+            if $0.width > keyWindowSize.width && !enforceVerticalTiles.isActivated {
+                enforceVerticalTiles.activate()
+            }
+
+            if $0.height > keyWindowSize.height && !hideLogo.isActivated {
+                hideLogo.activate()
             }
         }
     }
 
     private var infoSection: some View {
         VStack(spacing: 4) {
-            if verticalSizeClass != .compact {
+            if !hideLogo.value {
                 Image(.mailUpsell)
                     .padding(-20)
             }
@@ -116,19 +142,93 @@ public struct UpsellPage: View {
         }
     }
 
-    private var tiles: some View {
+    private var interactiveArea: some View {
         ZStack {
-            ForEach(model.plan.purchasingOptions, id: \.identifier) { option in
-                UpsellCTATile(planName: model.plan.name, purchasingOption: option) {
-                    onPurchaseTapped(option.identifier)
+            if layoutTilesVertically {
+                VStack {
+                    tiles
                 }
-                .fixedSize()
+                .padding(.top, 10)
+                .padding(.horizontal, 24)
+                .padding(.bottom, 16)
+            } else {
+                HStack(alignment: .bottom) {
+                    tiles
+                }
+                .padding(.top, 10)
+                .padding(.horizontal, 24)
+                .padding(.bottom, 16)
             }
-            .visible(!model.isBusy)
 
             ProgressView()
                 .progressViewStyle(CircularProgressViewStyle(tint: .white))
                 .visible(model.isBusy)
         }
     }
+
+    private var tiles: some View {
+        ForEach(model.plan.purchasingOptions, id: \.identifier) { option in
+            UpsellCTATile(planName: model.plan.name, purchasingOption: option) {
+                onPurchaseTapped(option.identifier)
+            }
+        }
+        .visible(!model.isBusy)
+    }
+}
+
+extension UpsellPage {
+    struct SizePreferenceKey: PreferenceKey {
+        static let defaultValue: CGSize = .zero
+
+        static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
+            let newValue = nextValue()
+
+            if newValue != defaultValue {
+                value = newValue
+            }
+        }
+    }
+
+    struct LayoutFix {
+        private(set) var value: Bool
+        private let initialValue = false
+
+        var isActivated: Bool {
+            value != initialValue
+        }
+
+        init() {
+            value = initialValue
+        }
+
+        mutating func activate() {
+            value = !initialValue
+        }
+
+        mutating func reset() {
+            value = initialValue
+        }
+    }
+}
+
+#Preview {
+    UpsellPage(
+        model: .init(
+            plan: .init(
+                name: "Mail Plus",
+                perks: [
+                    .init(icon: \.storage, description: L10n.PremiumPerks.storage),
+                    .init(icon: \.inbox, description: String(format: L10n.PremiumPerks.emailAddresses, 10)),
+                    .init(icon: \.globe, description: L10n.PremiumPerks.customEmailDomain),
+                    .init(icon: \.rocket, description: L10n.PremiumPerks.desktopApp),
+                    .init(icon: \.tag, description: L10n.Snooze.folderBenefit)
+                ],
+                purchasingOptions: [
+                    .init(identifier: "a", cycleInMonths: 1, monthlyPrice: "CHF 4.99", isHighlighted: false, discount: nil),
+                    .init(identifier: "b", cycleInMonths: 1, monthlyPrice: "CHF 3.99", isHighlighted: true, discount: 20)
+                ]
+            )
+        ),
+        onPurchaseTapped: { _ in }
+    )
 }
