@@ -26,14 +26,6 @@ protocol SetupCoreDataService {
 /// because of the sharedServices
 /// TODO: sharedServices are now gone, revisit if this class is still needed
 final class SetupCoreData: SetupCoreDataService {
-    typealias Dependencies = AnyObject & HasLastUpdatedStoreProtocol
-
-    private unowned let dependencies: Dependencies
-
-    init(dependencies: Dependencies) {
-        self.dependencies = dependencies
-    }
-
     func setup() throws {
         do {
             try CoreDataStore.shared.initialize()

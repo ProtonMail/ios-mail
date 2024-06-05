@@ -36,6 +36,8 @@ public protocol PushNotificationServiceProtocol: AnyObject {
     func setup()
 
     func didLoginWithUID(_ uid: String)
+    /// Delegate to pass unhandled notifications to
+    var fallbackDelegate: UNUserNotificationCenterDelegate? { get set }
 }
 
 public struct NotificationType {

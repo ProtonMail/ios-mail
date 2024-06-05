@@ -79,7 +79,7 @@ final class ContactEditViewControllerTests: XCTestCase {
 
         clickDone()
 
-        wait(self.sut.failureBanner(withErrorMessage: L11n.ContactEdit.emptyDisplayNameError) != nil)
+        wait(self.sut.failureBanner(withErrorMessage: L10n.ContactEdit.emptyDisplayNameError) != nil)
 
         XCTAssertTrue(mockContactService.queueAddContactStub.wasNotCalled)
     }
@@ -213,7 +213,7 @@ final class ContactEditViewControllerTests: XCTestCase {
 
         clickDone()
 
-        wait(self.sut.failureBanner(withErrorMessage: L11n.ContactEdit.emptyDisplayNameError) != nil)
+        wait(self.sut.failureBanner(withErrorMessage: L10n.ContactEdit.emptyDisplayNameError) != nil)
 
         XCTAssertTrue(mockContactService.queueAddContactStub.wasNotCalled)
     }

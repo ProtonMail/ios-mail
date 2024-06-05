@@ -206,7 +206,7 @@ public struct InAppPurchasePlan: Equatable, Hashable {
         self.period = availablePlanInstance.cycle.description
     }
 
-    /// Creates an InAppPurchasePlan with a Proton plan anem, an offer if present,
+    /// Creates an InAppPurchasePlan with a Proton plan name, an offer if present,
     /// and a list of Product Ids, picking the first product id that matches
     /// the proton plan name (if possible, otherwise the passed one),
     /// the offer (if possible), the cycle and the currency (if they exist)

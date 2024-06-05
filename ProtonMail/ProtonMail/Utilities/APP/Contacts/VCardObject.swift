@@ -109,7 +109,7 @@ struct VCardObject {
         case .birthday:
             result = object.getBirthdays().map(\.formattedBirthday)
         case .anniversary:
-            result = object.getBirthdays().map { $0.getDate() }
+            result = object.getAnniversaries().map { $0.getDate() }
         case .gender:
             if let gender = object.getGender()?.getGender() { result = [gender] }
         default:

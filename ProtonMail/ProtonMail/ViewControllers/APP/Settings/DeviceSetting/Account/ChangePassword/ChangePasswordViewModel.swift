@@ -81,7 +81,6 @@ class ChangeLoginPWDViewModel: ChangePasswordViewModel {
             complete(UpdatePasswordError.newNotMatch.error)
         } else {
             self.userManager.userService.updatePassword(
-                auth: userManager.authCredential,
                 user: userManager.userInfo,
                 login_password: currentPassword,
                 new_password: newpwd,

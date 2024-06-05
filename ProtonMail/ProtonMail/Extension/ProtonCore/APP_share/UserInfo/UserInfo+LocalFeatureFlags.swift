@@ -24,15 +24,7 @@ extension UserInfo {
         false
     }
 
-    static var enableSelectAll: Bool {
-        true
+    static var isUpsellButtonEnabled: Bool {
+        Application.isDebugOrEnterprise
     }
-
-    static var shareImagesAsInlineByDefault: Bool {
-        return true
-    }
-
-    static var isRSVPMilestoneTwoEnabled: Bool {
-        ProcessInfo.isRunningUnitTests
-    }    
 }

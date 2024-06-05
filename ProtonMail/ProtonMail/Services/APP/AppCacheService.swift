@@ -29,7 +29,6 @@ class AppCacheService {
         enum SettingsBundleKeys {
             static var clearAll = "clear_all_preference"
             static var appVersion = "version_preference"
-            static var libVersion = "lib_version_preference"
         }
     }
 
@@ -41,9 +40,9 @@ class AppCacheService {
         self.dependencies = dependencies
     }
 
-    func restoreCacheWhenAppStart() {
+    func restoreCacheWhenAppStart() throws {
         self.checkSettingsBundle()
-        self.coreDataCache.run()
+        try coreDataCache.run()
     }
 
     private func checkSettingsBundle() {

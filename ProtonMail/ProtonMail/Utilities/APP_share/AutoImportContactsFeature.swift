@@ -15,28 +15,42 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Foundation
 import ProtonCoreDataModel
 
-struct AutoImportContactsFeature {
+final class AutoImportContactsFeature {
     typealias Dependencies = AnyObject
     & HasUserManager
     & HasUserDefaults
     & HasContactsSyncQueueProtocol
     & HasFeatureFlagProvider
+    & HasNotificationCenter
 
     private var userID: UserID {
         dependencies.user.userID
     }
     private unowned var dependencies: Dependencies
+    private var cancellables = Set<AnyCancellable>()
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
+        dependencies
+            .contactSyncQueue
+            .protonStorageQuotaExceeded
+            .sink { [weak self] _ in
+                self?.onProtonStorageExcceeded()
+            }
+            .store(in: &cancellables)
     }
 
     var isFeatureEnabled: Bool {
-        false
-//      dependencies.featureFlagProvider.isEnabled(MailFeatureFlag.autoImportContacts, reloadValue: true)
+        ProcessInfo.isRunningUnitTests
+//        let isFFEnabled = dependencies
+//            .featureFlagProvider
+//            .isEnabled(MailFeatureFlag.autoImportContacts, reloadValue: true)
+//        SystemLogger.logTemporarily(message: "isAutoImportContactsFeature enabled \(isFFEnabled)", category: .contacts)
+//        return isFFEnabled
     }
 
     /// This is a value for telemetry.
@@ -66,6 +80,8 @@ struct AutoImportContactsFeature {
     }
 
     func disableSettingForUser() {
+        postNotificationToCancelImportTask()
+
         var historyTokens = dependencies.userDefaults[.contactsHistoryTokenPerUser]
         historyTokens[userID.rawValue] = nil
         dependencies.userDefaults[.contactsHistoryTokenPerUser] = historyTokens
@@ -80,5 +96,22 @@ struct AutoImportContactsFeature {
     func disableSettingAndDeleteQueueForUser() {
         disableSettingForUser()
         dependencies.contactSyncQueue.deleteQueue()
+    }
+}
+
+extension AutoImportContactsFeature {
+
+    private func postNotificationToCancelImportTask() {
+        // We have to rely on a notification because ImportDeviceContacts does not
+        // exist in Share but this class does and so we can't add the dependency.
+        dependencies.notificationCenter.post(name: .cancelImportContactsTask, object: nil)
+    }
+
+    private func onProtonStorageExcceeded() {
+        SystemLogger.log(message: "Proton quota exceeded", category: .contacts)
+        disableSettingAndDeleteQueueForUser()
+        DispatchQueue.main.async {
+            LocalString._storage_exceeded.alertToastBottom()
+        }
     }
 }

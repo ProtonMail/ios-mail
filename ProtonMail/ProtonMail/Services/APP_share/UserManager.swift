@@ -26,6 +26,7 @@ import ProtonCoreAuthentication
 import ProtonCoreCrypto
 @preconcurrency import ProtonCoreDataModel
 @preconcurrency import ProtonCoreNetworking
+import ProtonCoreTelemetry
 #if !APP_EXTENSION
 import ProtonCorePayments
 #endif
@@ -95,9 +96,17 @@ class UserManager: ObservableObject {
     private(set) var apiService: APIService
     private(set) var userInfo: UserInfo {
         didSet {
-            updateTelemetry()
+            updateTelemetryAndCatchCrash()
+
+            let maxSpace = self.userInfo.maxSpace
+            let usedSpace = self.userInfo.usedSpace
+            isStorageExceeded = usedSpace >= maxSpace
         }
     }
+
+    @Published
+    private(set) var isStorageExceeded: Bool = false
+
     let authHelper: AuthHelper
     private(set) var authCredential: AuthCredential
 
@@ -250,9 +259,6 @@ class UserManager: ObservableObject {
               firstUser.userID == self.userID else { return }
         self.activatePayments()
         container.userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeRight, rightToLeft: info.swipeLeft)
-        // When app launch, the app will show a skeleton view
-        // After getting setting data, show inbox
-        NotificationCenter.default.post(name: .didFetchSettingsForPrimaryUser, object: nil)
         #endif
     }
 
@@ -262,14 +268,21 @@ class UserManager: ObservableObject {
     }
 
     func becomeActiveUser() {
-        updateTelemetry()
+        updateTelemetryAndCatchCrash()
         refreshFeatureFlags()
         activatePayments()
         appTelemetry.assignUser(userID: userID)
     }
 
-    private func updateTelemetry() {
-        hasTelemetryEnabled ? appTelemetry.enable() : appTelemetry.disable()
+    func updateTelemetryAndCatchCrash() {
+        guard parentManager?.firstUser?.userID == userID else {
+            return
+        }
+        ProtonCoreTelemetry.TelemetryService.shared.setTelemetryEnabled(hasTelemetryEnabled)
+        appTelemetry.configure(
+            telemetry: hasTelemetryEnabled,
+            reportCrashes: userInfo.hasCrashReportingEnabled
+        )
     }
 
     func refreshFeatureFlags() {
@@ -282,7 +295,7 @@ class UserManager: ObservableObject {
 
     func activatePayments() {
         #if !APP_EXTENSION
-        payments.activate(delegate: container.storeKitManager)
+        payments.activate(delegate: container.storeKitManagerDelegate)
         #endif
     }
 
@@ -305,6 +318,10 @@ class UserManager: ObservableObject {
 
     func update(userInfo: UserInfo) {
         self.userInfo = userInfo
+    }
+
+    func update(authCredential: AuthCredential) {
+        self.authCredential = authCredential
     }
 }
 
@@ -347,6 +364,7 @@ extension UserManager: UserDataSource {
     func updateFromEvents(userSettingsRes: [String: Any]?) {
         if let settings = userSettingsRes {
             userInfo.parse(userSettings: settings)
+            updateTelemetryAndCatchCrash()
             self.save()
         }
     }
@@ -370,7 +388,12 @@ extension UserManager: UserDataSource {
     }
 
     func update(usedSpace: Int64) {
+        guard userInfo.usedSpace != usedSpace else {
+            return
+        }
         self.userInfo.usedSpace = usedSpace
+        // trigger the didSet of userInfo
+        self.userInfo = { self.userInfo }()
         self.save()
     }
 
@@ -463,12 +486,6 @@ extension UserManager {
 
     var isInheritParentFolderColor: Bool {
         return userInfo.inheritParentFolderColor == 1
-    }
-
-    var isStorageExceeded: Bool {
-        let maxSpace = self.userInfo.maxSpace
-        let usedSpace = self.userInfo.usedSpace
-        return usedSpace >= maxSpace
     }
 
     var hasAtLeastOneNonStandardToolbarAction: Bool {

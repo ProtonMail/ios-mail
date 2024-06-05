@@ -92,10 +92,15 @@ class SignInManager {
             }
         }
 
-        self.usersManager.add(auth: auth, user: userInfo, mailSettings: .init())
+        do {
+            try self.usersManager.add(auth: auth, user: userInfo, mailSettings: .init())
+        } catch {
+            SystemLogger.log(error: error)
+            return .errorOccurred
+        }
+
         self.usersManager.firstUser?.appRatingService.preconditionEventDidOccur(.userSignIn)
 
-        self.usersManager.loggedIn()
         dependencies.userDefaults[.areContactsCached] = 0
 
         dependencies.notificationCenter.post(name: .didSignIn, object: nil)
@@ -144,8 +149,7 @@ class SignInManager {
                 .execute(
                 params: .init(
                     activeUserInfo: activeUser.userInfo,
-                    newUserInfo: user.userInfo,
-                    newUserApiService: user.apiService
+                    newUserInfo: user.userInfo
                 )) { _ in
                     tryUnlock()
                 }
@@ -183,18 +187,16 @@ extension SignInManager: LifetimeTrackable {
 private extension SpotlightableFeatureKey {
     var isFeatureEnabledLocallyByDefault: Bool {
         switch self {
-        case .scheduledSend, .toolbarCustomization:
+        case .scheduledSend, .toolbarCustomization, .messageSwipeNavigation, .jumpToNextMessage:
             return true
-        case .messageSwipeNavigation, .snooze, .jumpToNextMessage:
-            return true
-        case .messageSwipeNavigationAnimation, .autoImportContacts:
+        case .answerInvitation, .messageSwipeNavigationAnimation, .autoImportContacts:
             return false
         }
     }
 
     var isFeatureShouldBeSeenByOnce: Bool {
         switch self {
-        case .messageSwipeNavigation, .messageSwipeNavigationAnimation, .snooze, .jumpToNextMessage:
+        case .answerInvitation, .messageSwipeNavigation, .messageSwipeNavigationAnimation, .jumpToNextMessage:
             return true
         case .scheduledSend, .toolbarCustomization, .autoImportContacts:
             return false

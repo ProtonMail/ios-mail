@@ -52,7 +52,7 @@ class SettingsAccountViewControllerTests: XCTestCase {
         let cell = try XCTUnwrap(
             sut.tableView(sut.tableView, cellForRowAt: IndexPath(row: 7, section: 2)) as? SettingsGeneralCell
         )
-        XCTAssertEqual(cell.leftTextValue(), L11n.AutoDeleteSettings.settingTitle)
+        XCTAssertEqual(cell.leftTextValue(), L10n.AutoDeleteSettings.settingTitle)
 
         sut.tableView(sut.tableView, didSelectRowAt: .init(row: 7, section: 2))
 

@@ -102,8 +102,7 @@ extension SaveToolbarActionSettings {
         unowned let mailSettingsHandler: MailSettingsHandler
 
         init(user: UserManager) {
-            apiService = user.apiService
-            mailSettingsHandler = user
+            self.init(apiService: user.apiService, mailSettingsHandler: user)
         }
 
         init(apiService: APIService, mailSettingsHandler: MailSettingsHandler) {

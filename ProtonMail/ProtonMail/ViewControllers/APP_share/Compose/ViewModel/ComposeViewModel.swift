@@ -56,10 +56,18 @@ class ComposeViewModel: NSObject {
     }
 
     var contacts: [ContactPickerModelProtocol] {
-        // sort the contact group and phone address together
-        let sortedContacts = phoneContacts.appending(protonGroupContacts).sorted(by: { $0.contactTitle.lowercased() < $1.contactTitle.lowercased() })
-        return protonContacts + sortedContacts
+        /**
+         We use `contactTitle` and `displayEmail` combined to determine the unique contacts because:
+         1. The same name could be used in 2 different contacts, but each contact has a different email.
+         2. The same email could be in 2 different contacts using the same name, but one contact card could have specific send preferences.
+         */
+        protonContacts
+            .appending(protonGroupContacts)
+            .appending(phoneContacts)
+            .unique { "\($0.contactTitle)-\($0.displayEmail ?? "")" }
+            .sorted(by: { $0.contactTitle.lowercased() < $1.contactTitle.lowercased() })
     }
+
     private var phoneContacts: [ContactPickerModelProtocol] = [] {
         didSet {
             contactsDidChangePublisher.send()
@@ -519,7 +527,7 @@ extension ComposeViewModel {
             let error = NSError(
                 domain: "",
                 code: -1,
-                localizedDescription: L11n.Compose.blockSenderChangeMessage
+                localizedDescription: L10n.Compose.blockSenderChangeMessage
             )
             completion(.failure(error))
             return
@@ -589,20 +597,13 @@ extension ComposeViewModel {
             .sorted(by: { $0.order < $1.order })
     }
 
-    func getNormalAttachmentNum() -> Int {
-        guard let draft = self.composerMessageHelper.draft else { return 0 }
-        let attachments = draft.attachments
-            .filter { !$0.isInline && !$0.isSoftDeleted }
-        return attachments.count
-    }
-
     func needAttachRemindAlert(
         subject: String,
         body: String
     ) -> Bool {
         // If the message contains attachments
         // It contains keywords or not doesn't important
-        if getNormalAttachmentNum() > 0 { return false }
+        guard composerMessageHelper.draft?.attachments.isEmpty ?? true else { return false }
 
         let content = "\(subject) \(body.body(strippedFromQuotes: true))"
         let language = LanguageManager().currentLanguageCode()
@@ -658,8 +659,7 @@ extension ComposeViewModel {
     // For others, insert as normal attachment
     func insertImportedFiles(in htmlEditor: HtmlEditorBehaviour) {
         for file in importedFiles {
-            if (AttachmentType.mimeTypeMap[.image] ?? []).contains(file.mimeType.lowercased()) &&
-                UserInfo.shareImagesAsInlineByDefault {
+            if (AttachmentType.mimeTypeMap[.image] ?? []).contains(file.mimeType.lowercased()) {
                 insertImportedImage(file: file, in: htmlEditor)
             } else {
                 attachImported(file: file)
@@ -742,7 +742,7 @@ extension ComposeViewModel {
                     senderAddress.status == .disabled,
                     let validAddress = self.validSenderAddressFromMessage(),
                     validAddress.addressID != senderAddress.addressID,
-                    validAddress.email != senderAddress.addressID
+                    validAddress.email != senderAddress.email
                 else { return }
                 self.uiDelegate?.changeInvalidSenderAddress(to: validAddress)
             case .newDraft, .newDraftFromShare:
@@ -772,17 +772,16 @@ extension ComposeViewModel {
     }
 
     private func validSenderAddressFromMessage() -> Address? {
-        let userAddresses = user.addresses
+        let validUserAddresses = user.addresses
+            .filter { $0.status == .enabled && $0.send == .active }
         var validAddress: Address?
         let referenceAddress = composerMessageHelper.originalTo() ?? composerMessageHelper.originalFrom() ?? ""
-        if let address = userAddresses.first(where: {
-            $0.email == referenceAddress &&
-            $0.status == .enabled &&
-            $0.send == .active
+        if let address = validUserAddresses.first(where: {
+            $0.email == referenceAddress
         }) {
             validAddress = address
         } else if let aliasAddress = getAddressFromPlusAlias(
-            userAddress: userAddresses,
+            userAddress: validUserAddresses,
             originalAddress: referenceAddress
         ) {
             validAddress = aliasAddress
@@ -790,7 +789,7 @@ extension ComposeViewModel {
                   let defaultAddress = messageService.defaultUserAddress(of: draft.sendAddressID) {
             validAddress = defaultAddress
         } else {
-            validAddress = userAddresses.defaultAddress()
+            validAddress = user.addresses.defaultAddress()
         }
         return validAddress
     }
@@ -811,7 +810,7 @@ extension ComposeViewModel {
     }
 
     func currentSenderAddress() -> Address? {
-        let defaultAddress = user.addresses.defaultAddress()
+        let defaultAddress = user.addresses.defaultSendAddress()
         guard
             let entity = composerMessageHelper.getMessageEntity(),
             let draft = composerMessageHelper.draft,
@@ -869,9 +868,7 @@ extension ComposeViewModel {
         let normalizedAddress = originalAddress.canonicalizeEmail(scheme: .proton)
         guard let address = userAddress
             .first(where: {
-                $0.email.canonicalizeEmail(scheme: .proton) == normalizedAddress &&
-                $0.status == .enabled &&
-                $0.send == .active
+                $0.email.canonicalizeEmail(scheme: .proton) == normalizedAddress
             }),
               address.email != originalAddress
         else { return nil }
@@ -1329,6 +1326,28 @@ extension ComposeViewModel {
     private func fetchGroupContacts() {
         guard user.hasPaidMailPlan else { return }
         protonGroupContacts = user.contactGroupService.getAllContactGroupVOs().filter { $0.contactCount > 0 }
+    }
+
+    func shouldShowSenderChangedAlertDueToDisabledAddress() -> Bool {
+        guard let currentSenderAddress = currentSenderAddress(),
+              let originalAddress = originalSenderAddress(),
+              originalAddress.addressID != currentSenderAddress.addressID,
+              originalAddress.status == .disabled else {
+            return false
+        }
+        return true
+    }
+
+    func shouldShowErrorWhenOriginalAddressIsAnUnpaidPMAddress() -> Bool {
+        guard let currentSenderAddress = currentSenderAddress(),
+              let originalAddress = originalSenderAddress(),
+              originalAddress.addressID != currentSenderAddress.addressID,
+              originalAddress.send == .inactive,
+              originalAddress.isPMAlias,
+              !dependencies.userDefaults[.isPMMEWarningDisabled] else {
+            return false
+        }
+        return true
     }
 }
 

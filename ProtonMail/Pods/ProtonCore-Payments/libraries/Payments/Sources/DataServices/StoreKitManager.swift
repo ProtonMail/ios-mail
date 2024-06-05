@@ -843,7 +843,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             amountDue = fetchedAmountDue ?? planAmount
         }
 
-        let planToBeProcessed = PlanToBeProcessed(protonIdentifier: planIdentifier, amount: planAmount, amountDue: amountDue, cycle: cycle)
+        let planToBeProcessed = PlanToBeProcessed(protonIdentifier: planIdentifier, planName: planName, amount: planAmount, amountDue: amountDue, cycle: cycle)
 
         do {
             let customCompletion: ProcessCompletionCallback = { result in

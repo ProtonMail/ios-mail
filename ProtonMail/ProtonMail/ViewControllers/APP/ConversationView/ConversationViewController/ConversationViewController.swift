@@ -118,10 +118,6 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if !viewModel.isMessageSwipeNavigationEnabled {
-            showToolbarCustomizeSpotlightIfNeeded()
-        }
-
         conversationIsReadyToBeDisplayedTimer = .scheduledTimer(
             withTimeInterval: 0.25,
             repeats: false
@@ -768,8 +764,7 @@ private extension ConversationViewController {
     }
 
     private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {
-        guard viewModel.isMessageSwipeNavigationEnabled,
-              !viewModel.user.shouldMoveToNextMessageAfterMove else {
+        guard !viewModel.user.shouldMoveToNextMessageAfterMove else {
             return
         }
         if var type = undoActionType {
@@ -890,7 +885,7 @@ extension ConversationViewController {
             Message.Location.snooze.labelID,
             Message.Location.inbox.labelID
         ]
-        let isSupportSnooze = foldersSupportingSnooze.contains(viewModel.labelId) && viewModel.user.isSnoozeEnabled
+        let isSupportSnooze = foldersSupportingSnooze.contains(viewModel.labelId)
 
         let actionSheetViewModel = ConversationActionSheetViewModel(
             title: viewModel.conversation.subject,
@@ -1456,8 +1451,7 @@ extension ConversationViewController {
         let continueAction: () -> Void = { [weak self] in
             self?.viewModel.handleMoveToAction(
                 conversations: [conversation],
-                to: folder,
-                completion: nil
+                to: folder
             )
             self?.showMessageMoved(
                 title: LocalString._messages_has_been_moved,
@@ -1576,7 +1570,7 @@ extension ConversationViewController: SnoozeSupport {
             }, cancelHandler: { [weak self] in
                 self?._snoozeDateConfigReceiver = nil
             }, showSendInTheFutureAlertHandler: {
-                L11n.Snooze.selectTimeInFuture.alertToastBottom()
+                L10n.Snooze.selectTimeInFuture.alertToastBottom()
             }
         )
         _snoozeDateConfigReceiver = receiver
@@ -1589,9 +1583,9 @@ extension ConversationViewController: SnoozeSupport {
     func showSnoozeSuccessBanner(on date: Date) {
         let dateStr = PMDateFormatter.shared.stringForSnoozeTime(from: date)
 
-        let title = String(format: L11n.Snooze.bannerTitle, dateStr)
+        let title = String(format: L10n.Snooze.bannerTitle, dateStr)
         let banner = PMBanner(message: title, style: PMBannerNewStyle.info)
-        if viewModel.isMessageSwipeNavigationEnabled && viewModel.shouldMoveToNextMessageAfterMove {
+        if viewModel.shouldMoveToNextMessageAfterMove {
             // PageVC
             guard let viewController = parent else { return }
             banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: viewController)

@@ -26,13 +26,7 @@ struct DeviceRegistration: DeviceRegistrationUseCase {
     private let dependencies: Dependencies
 
     private var apnEnvironment: DeviceAPI.APNEnvironment {
-        let result: DeviceAPI.APNEnvironment
-        if Application.isEnterprise {
-            result = Application.isDebug ? .enterpriseDev : .enterpriseProd
-        } else {
-            result = Application.isDebug ? .development : .production
-        }
-        return result
+        Application.isDebug ? .development : .production
     }
 
     init(dependencies: Dependencies) {

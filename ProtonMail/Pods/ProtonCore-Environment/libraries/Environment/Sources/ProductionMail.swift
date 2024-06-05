@@ -34,4 +34,5 @@ final class ProductionMail: DoH, VerificationModifiable {
     let apiHost: String = ProductionHosts.mailAPI.dohHost
     let defaultPath: String = ""
     let signupDomain: String = "proton.me"
+    let proxyToken: String? = nil
 }

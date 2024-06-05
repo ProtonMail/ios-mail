@@ -178,7 +178,6 @@ class UserDataService {
     }
 
     func updateBlockEmailTracking(
-        authCredential: AuthCredential,
         userInfo: UserInfo,
         action: UpdateImageProxy.Action,
         completion: @escaping (NSError?) -> Void
@@ -186,7 +185,7 @@ class UserDataService {
         // currently Image Incorporator is not yet supported by any Proton product
         let flag: ProtonCoreDataModel.ImageProxy = .imageProxy
 
-        let request = UpdateImageProxy(flags: flag, action: action, authCredential: authCredential)
+        let request = UpdateImageProxy(flags: flag, action: action)
         apiService.perform(request: request, response: VoidResponse()) { _, response in
             if response.error == nil {
                 var newStatus = userInfo.imageProxy
@@ -232,8 +231,7 @@ class UserDataService {
     }
     #endif
 
-    func updatePassword(auth currentAuth: AuthCredential,
-                        user: UserInfo,
+    func updatePassword(user: UserInfo,
                         login_password: String,
                         new_password: Passphrase,
                         twoFACode: String?,
@@ -249,10 +247,10 @@ class UserDataService {
             do {
                 // generate new pwd and verifier
                 let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthAPI.Router.modulus))
-                guard let moduls_id = authModuls.ModulusID else {
+                guard let moduls_id = authModuls.modulusID else {
                     throw UpdatePasswordError.invalidModulusID.error
                 }
-                guard let new_moduls = authModuls.Modulus else {
+                guard let new_moduls = authModuls.modulus else {
                     throw UpdatePasswordError.invalidModulus.error
                 }
                 // generate new verifier
@@ -385,10 +383,10 @@ class UserDataService {
                 var authPacket: PasswordAuth?
                 if buildAuth {
                     let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthAPI.Router.modulus))
-                    guard let moduls_id = authModuls.ModulusID else {
+                    guard let moduls_id = authModuls.modulusID else {
                         throw UpdatePasswordError.invalidModulusID.error
                     }
-                    guard let new_moduls = authModuls.Modulus else {
+                    guard let new_moduls = authModuls.modulus else {
                         throw UpdatePasswordError.invalidModulus.error
                     }
                     // generate new verifier
@@ -519,8 +517,7 @@ class UserDataService {
         }
     }
 
-    func updateNotificationEmail(auth currentAuth: AuthCredential,
-                                 user: UserInfo,
+    func updateNotificationEmail(user: UserInfo,
                                  new_notification_email: String, login_password: String,
                                  twoFACode: String?, completion: @escaping (NSError?) -> Void) {
         let userInfo = user

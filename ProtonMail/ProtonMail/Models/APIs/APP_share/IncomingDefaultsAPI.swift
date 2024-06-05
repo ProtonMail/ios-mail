@@ -115,7 +115,6 @@ struct AddIncomingDefaultsRequest: Request {
 
 struct AddIncomingDefaultsResponse: APIDecodableResponse {
     let incomingDefault: IncomingDefaultDTO
-    let undoToken: UndoTokenData
 }
 
 struct DeleteIncomingDefaultsRequest: Request {

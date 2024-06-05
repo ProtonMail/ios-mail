@@ -18,10 +18,5 @@
 import Foundation
 
 struct QueueConstant {
-
-    #if Enterprise
-    static let queueIdentifier = "com.protonmail.persistentQueue"
-    #else
     static let queueIdentifier = "ch.protonmail.persistentQueue"
-    #endif
 }

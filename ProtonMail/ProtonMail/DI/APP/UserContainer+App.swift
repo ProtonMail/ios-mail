@@ -17,8 +17,15 @@
 
 import Factory
 import ProtonCorePayments
+import ProtonInboxRSVP
 
 extension UserContainer {
+    var answerInvitationFactory: Factory<AnswerInvitation> {
+        self {
+            AnswerInvitationWrapper(dependencies: self)
+        }
+    }
+
     var appRatingServiceFactory: Factory<AppRatingService> {
         self {
             AppRatingService(
@@ -55,6 +62,12 @@ extension UserContainer {
         }
     }
 
+    var emailAddressStorageFactory: Factory<EmailAddressStorage> {
+        self {
+            UserBasedEmailAddressStorage(dependencies: self)
+        }
+    }
+
     var reportServiceFactory: Factory<BugReportService> {
         self {
             BugReportService(api: self.apiService)
@@ -67,9 +80,15 @@ extension UserContainer {
         }
     }
 
-    var eventRSVPFactory: Factory<EventRSVP> {
+    var extractBasicEventInfoFactory: Factory<ExtractBasicEventInfo> {
         self {
-            LocalEventRSVP(dependencies: self)
+            ExtractBasicEventInfoImpl()
+        }
+    }
+
+    var fetchEventDetailsFactory: Factory<FetchEventDetails> {
+        self {
+            FetchEventDetailsImpl(dependencies: self)
         }
     }
 
@@ -113,7 +132,6 @@ extension UserContainer {
         self {
             MessageSearch(
                 dependencies: .init(
-                    userID: self.user.userID,
                     backendSearch: BackendSearch(
                         dependencies: .init(
                             apiService: self.user.apiService,
@@ -154,6 +172,24 @@ extension UserContainer {
         }
     }
 
+    var planServiceFactory: Factory<PlanService> {
+        self {
+            self.payments.planService
+        }
+    }
+
+    var purchaseManagerFactory: Factory<PurchaseManagerProtocol> {
+        self {
+            self.payments.purchaseManager
+        }
+    }
+
+    var purchasePlanFactory: Factory<PurchasePlan> {
+        self {
+            PurchasePlan(dependencies: self)
+        }
+    }
+
     var settingsViewsFactoryFactory: Factory<SettingsViewsFactory> {
         self {
             SettingsViewsFactory(dependencies: self)
@@ -172,6 +208,12 @@ extension UserContainer {
                 bugReportService: self.user.reportService,
                 internetConnectionStatusProvider: self.internetConnectionStatusProvider
             )
+        }
+    }
+
+    var storeKitManagerFactory: Factory<StoreKitManagerProtocol> {
+        self {
+            self.payments.storeKitManager
         }
     }
 
@@ -234,6 +276,30 @@ extension UserContainer {
                     userDefaults: self.userDefaults
                 )
             )
+        }
+    }
+
+    var upsellButtonStateProviderFactory: Factory<UpsellButtonStateProvider> {
+        self {
+            .init(dependencies: self)
+        }
+    }
+
+    var upsellPageFactoryFactory: Factory<UpsellPageFactory> {
+        self {
+            UpsellPageFactory(dependencies: self)
+        }
+    }
+
+    var upsellOfferProviderFactory: Factory<UpsellOfferProvider> {
+        self {
+            UpsellOfferProvider(dependencies: self)
+        }
+    }
+
+    var upsellTelemetryReporterFactory: Factory<UpsellTelemetryReporter> {
+        self {
+            UpsellTelemetryReporter(dependencies: self)
         }
     }
 }

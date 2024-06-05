@@ -206,8 +206,8 @@ final class BannerViewController: UIViewController {
     private func showImageProxyFailedBanner() {
         let banner = BannerWithButton(
             icon: IconProvider.infoCircle,
-            content: L11n.EmailTrackerProtection.some_images_failed_to_load,
-            buttonTitle: L11n.EmailTrackerProtection.load,
+            content: L10n.EmailTrackerProtection.some_images_failed_to_load,
+            buttonTitle: L10n.EmailTrackerProtection.load,
             iconColor: ColorProvider.IconNorm
         ) { [weak self] in
             self?.reloadImagesWithoutProtection()
@@ -218,8 +218,8 @@ final class BannerViewController: UIViewController {
     private func showSenderIsBlockedBanner() {
         let banner = BannerWithButton(
             icon: IconProvider.exclamationCircleFilled,
-            content: L11n.BlockSender.senderIsBlockedBanner,
-            buttonTitle: L11n.BlockSender.unblockActionTitleShort,
+            content: L10n.BlockSender.senderIsBlockedBanner,
+            buttonTitle: L10n.BlockSender.unblockActionTitleShort,
             iconColor: ColorProvider.IconNorm
         ) { [weak self] in
             self?.unblockSender()
@@ -246,7 +246,7 @@ final class BannerViewController: UIViewController {
     private func showUnsubscribeBanner() {
         let banner = CompactBannerView(
             appearance: .normal,
-            title: L11n.Unsubscribe.bannerMessage,
+            title: L10n.Unsubscribe.bannerMessage,
             icon: IconProvider.envelopeCross
         ) { [weak self] in
             self?.showUnsubscribeConfirmation()
@@ -256,8 +256,8 @@ final class BannerViewController: UIViewController {
 
     private func showUnsubscribeConfirmation() {
         let alert = UIAlertController(
-            title: L11n.Unsubscribe.confirmationTitle,
-            message: L11n.Unsubscribe.confirmationMessage,
+            title: L10n.Unsubscribe.confirmationTitle,
+            message: L10n.Unsubscribe.confirmationMessage,
             preferredStyle: .alert
         )
         let proceed = UIAlertAction(title: LocalString._general_confirm_action, style: .default) { [weak self] _ in

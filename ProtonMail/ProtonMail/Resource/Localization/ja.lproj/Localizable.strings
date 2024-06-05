@@ -355,7 +355,7 @@
 "Nickname" = "ニックネーム";
 
 /* contacts talbe cell Title title */
-"Title" = "肩書き";
+"Title" = "タイトル";
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "誕生日";
@@ -419,9 +419,6 @@
  Title for the alert button to cancel disable content search.
 */
 "Cancel" = "キャンセル";
-
-/* Got it action */
-"Got it" = "はい";
 
 /* Open action */
 "Open" = "開く";
@@ -1199,7 +1196,7 @@
 "Limit reached" = "アカウントの利用上限に到達しました";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "無料アカウントは１つのみ追加できます";
+"Only two free accounts can be added" = "Only two free accounts can be added";
 
 /* section title in settings */
 "Account settings" = "アカウント設定";
@@ -1843,7 +1840,7 @@
 "Your Mail storage is full" = "Mail ストレージがいっぱいです";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "Drive ストレージがいっぱいです";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Upgrade to get more storage.";
@@ -1889,6 +1886,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "ブロックを解除する";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Your schedule is worth protecting";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Get Proton Calendar app";
+
 /* Name of the feature */
 "Email tracking protection" = "メールトラッキング防止";
 
@@ -1904,8 +1910,11 @@
 /* Button inside the banner */
 "Load" = "読み込む";
 
+/* Title of an event with missing title */
+"(no title)" = "(no title)";
+
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "主催者";
 
 /* Button to hide some items in the list to conserve screen estate */
 "Show less" = "Show less";
@@ -1917,16 +1926,16 @@
 "This event has been cancelled" = "This event has been cancelled";
 
 /* Prompt above yes/no/maybe buttons */
-"Attending?" = "Attending?";
+"Attending?" = "参加しますか？";
 
 /* Part of a yes/no/maybe prompt */
-"Yes" = "Yes";
+"Yes" = "はい";
 
 /* Part of a yes/no/maybe prompt */
-"No" = "No";
+"No" = "いいえ";
 
 /* Part of a yes/no/maybe prompt */
-"Maybe" = "Maybe";
+"Maybe" = "おそらく";
 
 /* Confirm attending an event */
 "Yes, I'll attend" = "はい、参加します";
@@ -1937,6 +1946,90 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "I might attend";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(参加は任意です)";
+
+/* As in: Every 3 days */
+"Every %@" = "Every %@";
+
+/* As in: on Saturday */
+"on %@" = "on %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "on the %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "on day %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "until %@";
+
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ の %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "accepted";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "declined";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "仮承諾";
+
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ は %2@ への招待を%3@しました";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "%@ に招待されています";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "LOCATION:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ was cancelled.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Re: %@ の予定への招待";
+
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Re: %@ から始まる予定への招待";
+
+/* Occurring every day */
+"Daily" = "Daily";
+
+/* Occurring every week */
+"Weekly" = "Weekly";
+
+/* Occurring every month */
+"Monthly" = "Monthly";
+
+/* Occurring every year */
+"Yearly" = "Yearly";
+
+/* \"1st\" spelled out */
+"first" = "first";
+
+/* \"2nd\" spelled out */
+"second" = "second";
+
+/* \"3rd\" spelled out */
+"third" = "third";
+
+/* \"4th\" spelled out */
+"fourth" = "fourth";
+
+/* Opposite of \"first\" */
+"last" = "last";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Easily RSVP to events";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+
 /* Menu title */
 "Max Storage" = "Max Storage";
 
@@ -1944,10 +2037,7 @@
 "Storage: %@ full" = "Storage: %@ full";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
-
-/* Upgrade button action */
-"Upgrade" = "アップグレード";
+"Drive: %@ full" = "Drive: %@ full";
 
 /* Official badge next to sender's name */
 "Official" = "公式";
@@ -2063,11 +2153,26 @@
 /* Title for application logs settings option */
 "Application logs" = "アプリケーションのログ";
 
+/* Badge present on some spotlights */
+"New!" = "New!";
+
+/* Got it action */
+"Got it" = "はい";
+
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "次のメールにジャンプ";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "開いているメールが削除、アーカイブ、または移動されたときに自動的に次のメールを表示します。";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Turn on feature";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Read emails faster";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "予期しないエラーが発生しました。サポートにお問い合わせください。\nエラー: %@";
@@ -2124,7 +2229,7 @@
 "Delete messages?" = "メッセージを削除しますか？";
 
 /* Message of the alert to confirm enabling of the auto delete option */
-"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "ゴミ箱や迷惑メールに30日以上入っているメッセージは、現在これらのフォルダに入っているメッセージも含めてすべて削除されます。";
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "ごみ箱や迷惑メールに30日以上入っているメッセージは、現在これらのフォルダに入っているメッセージも含めてすべて削除されます。";
 
 /*
  Button to enable encrypted search
@@ -2133,16 +2238,16 @@
 "Enable" = "有効化";
 
 /* Text to advertise the auto delete feature to free users */
-"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "30日以上ゴミ箱や迷惑メールに入っているメッセージを自動的に削除するようにアップグレードできます。";
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "30日以上ごみ箱や迷惑メールに入っているメッセージを自動的に削除するようにアップグレードできます。";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "ゴミ箱に入ってから30日以上経過したメッセージを自動的に削除。";
+"Automatically delete messages that have been in trash for more than 30 days." = "ごみ箱に入ってから30日以上経過したメッセージを自動的に削除。";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "いいえ、結構です";
 
 /* Text to inform users they have the auto delete feature enabled */
-"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "ゴミ箱やスパムに30日以上入っているメッセージは自動的に削除されます。";
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "ごみ箱やスパムに30日以上入っているメッセージは自動的に削除されます。";
 
 /* Title of button to empty spam folder */
 "Empty spam" = "迷惑メールをすべて削除する";
@@ -2163,7 +2268,7 @@
 "Clear out the junk" = "ガラクタを片付ける";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "ゴミ箱や迷惑メールから30日以上前のメッセージを自動的に消去。アップグレードすると、このような特典があります。";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "ごみ箱や迷惑メールから30日以上前のメッセージを自動的に消去。アップグレードすると、このような特典があります。";
 
 /* Text to advertise what upgrading will provide */
 "Up to 3 TB of storage" = "最大3TBのストレージ";
@@ -2211,7 +2316,7 @@
 "Maximum selection reached" = "Maximum selection reached";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "宛先が未入力です";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "PINコードを無効にする";
@@ -2265,7 +2370,7 @@
 "Snoozed until %@" = "Snoozed until %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Unsnooze";
+"Unsnooze" = "スヌーズを解除";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
 "Snooze until %@" = "Snooze until %@";
@@ -2283,7 +2388,7 @@
 "This weekend" = "This weekend";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "次の週";
 
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Please select a time in the future";
@@ -2299,12 +2404,6 @@
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "制限なしのフォルダー、ラベル、フィルター";
-
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "スヌーズで再通知する";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Add it as attachment";
@@ -2354,6 +2453,18 @@
 /* settings general section title */
 "Change mailbox password" = "メールボックスのパスワードを変更";
 
+/* Description of a feature of a paid subscription */
+"15 GB storage" = "15 GB storage";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u メールアドレス";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Custom email domain support";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "New Proton Mail desktop app";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "匿名の情報収集";
 
@@ -2365,3 +2476,24 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Upgrade to %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+
+/* Displayed next to the monthly price */
+"/month" = "/month";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "%@ を入手";
+
+/* In the context of a discount */
+"Save %u%%" = "Save %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Invalid product ID: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Purchase already in progress";

@@ -77,10 +77,7 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
         dependencies.usersManager.hasUsers()
     }
 
-    func isMailboxPasswordStored(forUser uid: String?) -> Bool {
-        guard uid != nil else {
-            return dependencies.usersManager.isMailboxPasswordStored
-        }
+    func isMailboxPasswordStoredForActiveUser() -> Bool {
         return !(dependencies.usersManager.users.last?.mailboxPassword.value ?? "").isEmpty
     }
 

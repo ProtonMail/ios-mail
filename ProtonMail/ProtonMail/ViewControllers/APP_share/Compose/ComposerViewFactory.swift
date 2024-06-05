@@ -73,7 +73,7 @@ final class ComposerViewFactory {
             PMAssertionFailure("For these type should provide policy")
         }
         let userInfo = dependencies.user.userInfo
-        let defaultRemotePolicy: WebContents.RemoteContentPolicy 
+        let defaultRemotePolicy: WebContents.RemoteContentPolicy
         defaultRemotePolicy = userInfo.hideRemoteImages == 1 ? .disallowed : .allowedWithoutProxy
         let defaultEmbeddedPolicy: WebContents.EmbeddedContentPolicy
         defaultEmbeddedPolicy = userInfo.hideEmbeddedImages == 1 ? .disallowed : .allowed

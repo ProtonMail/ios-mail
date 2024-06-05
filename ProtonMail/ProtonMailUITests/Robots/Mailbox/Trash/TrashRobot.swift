@@ -12,8 +12,8 @@ import XCTest
 fileprivate struct id {
     static let mailboxMoreButtonIdentifier = "MailboxViewController.ellipsisMenuBarItem"
     static let emptyTrashButtonText = LocalString._empty_trash
-    static let confirmDeleteButtonText = LocalString._general_delete_action
     static let mailBoxTableView = "MailboxViewController.tableView"
+    static let confirmDeleteButtonText = LocalString._general_delete_action
 }
 
 class TrashRobot: MailboxRobotInterface {
@@ -26,6 +26,11 @@ class TrashRobot: MailboxRobotInterface {
             .confirmEmptyTrashFolderAction()
     }
     
+    override func confirmMessageDeletion() -> TrashRobot {
+        super.confirmMessageDeletion()
+        return TrashRobot()
+    }
+    
     private func moreOptions() -> TrashRobot {
         button(id.mailboxMoreButtonIdentifier).tap()
         return TrashRobot()
@@ -34,6 +39,16 @@ class TrashRobot: MailboxRobotInterface {
     private func emptyFolder() -> TrashDialogRobot {
         button(id.emptyTrashButtonText).tap()
         return TrashDialogRobot()
+    }
+    
+    override func longClickMessageBySubject(_ subject: String) -> TrashSelectionStateRobot {
+        super.longClickMessageBySubject(subject)
+        return TrashSelectionStateRobot()
+    }
+    
+    override func selectMultipleMessages(_ positions: [Int]) -> TrashSelectionStateRobot {
+        super.selectMultipleMessages(positions)
+        return TrashSelectionStateRobot()
     }
     
     class TrashDialogRobot: CoreElements {

@@ -34,6 +34,7 @@ import ProtonCoreNetworking
 import ProtonCoreObservability
 import ProtonCorePayments
 @preconcurrency import ProtonCoreServices
+import ProtonCoreTelemetry
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import SideMenuSwift
@@ -96,7 +97,12 @@ extension AppDelegate: UIApplicationDelegate {
 
         cleanKeychainInCaseOfAppReinstall()
         let appCache = AppCacheService(dependencies: dependencies)
-        appCache.restoreCacheWhenAppStart()
+
+        do {
+            try appCache.restoreCacheWhenAppStart()
+        } catch {
+            SystemLogger.log(error: error)
+        }
 
         let coreKeyMaker = dependencies.keyMaker
 
@@ -139,9 +145,9 @@ extension AppDelegate: UIApplicationDelegate {
         configureCoreLogger()
         configureCrypto()
         configureCoreObservability()
-        configureAnalytics()
         configureAppearance()
         fetchUnauthFeatureFlags()
+        configureCoreTelemetry()
         DFSSetting.enableDFS = true
         DFSSetting.limitToXXXLarge = true
         /// configurePushService needs to be called in didFinishLaunchingWithOptions to make push
@@ -213,6 +219,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
+        SystemLogger.log(message: "application will terminate", category: .appLifeCycle)
         BackgroundTimer().willEnterBackgroundOrTerminate()
     }
 
@@ -297,17 +304,10 @@ extension AppDelegate: UIApplicationDelegate {
 extension AppDelegate: UnlockManagerDelegate {
     func isUserStored() -> Bool {
         let users = dependencies.usersManager
-        if users.hasUserName() || users.hasUsers() {
-            return true
-        }
-        return false
+        return users.hasUsers()
     }
 
-    func isMailboxPasswordStored(forUser uid: String?) -> Bool {
-        let users = dependencies.usersManager
-        guard let _ = uid else {
-            return users.isPasswordStored || users.hasUserName() // || users.isMailboxPasswordStored
-        }
+    func isMailboxPasswordStoredForActiveUser() -> Bool {
         return !(dependencies.usersManager.users.last?.mailboxPassword.value ?? "").isEmpty
     }
 
@@ -356,6 +356,7 @@ extension AppDelegate {
             setupNavigationBarAppearance()
             UITableView.appearance().sectionHeaderTopPadding = .zero
         }
+        UIStackView.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).spacing = -4
     }
 
     @available(iOS 15.0, *)
@@ -374,23 +375,6 @@ extension AppDelegate {
 
 // MARK: Launch configuration
 extension AppDelegate {
-
-    private func configureAnalytics() {
-#if Enterprise
-    #if DEBUG
-        Analytics.shared.setup(isInDebug: true, environment: .enterprise)
-    #else
-        Analytics.shared.setup(isInDebug: false, environment: .enterprise)
-    #endif
-#else
-    #if DEBUG
-        Analytics.shared.setup(isInDebug: true, environment: .production)
-    #else
-        Analytics.shared.setup(isInDebug: false, environment: .production)
-    #endif
-#endif
-    }
-
     private func configureCoreLogger() {
         let environment: String
         switch BackendConfiguration.shared.environment {
@@ -407,6 +391,11 @@ extension AppDelegate {
 
     private func configureCoreObservability() {
         ObservabilityEnv.current.setupWorld(requestPerformer: PMAPIService.unauthorized(dependencies: dependencies))
+    }
+
+    private func configureCoreTelemetry() {
+        ProtonCoreTelemetry.TelemetryService.shared.setApiService(apiService: PMAPIService.unauthorized(dependencies: dependencies))
+        ProtonCoreTelemetry.TelemetryService.shared.setTelemetryEnabled(dependencies.usersManager.firstUser?.hasTelemetryEnabled ?? true)
     }
 
     private func fetchUnauthFeatureFlags() {

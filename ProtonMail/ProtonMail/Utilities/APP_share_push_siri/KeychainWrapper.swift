@@ -28,15 +28,9 @@ final class KeychainWrapper: Keychain {
     static let keychain = KeychainWrapper()
 
     init() {
-        #if Enterprise
-            let prefix = "6UN54H93QT."
-            let group = prefix + "com.protonmail.protonmail"
-            let service = "com.protonmail"
-        #else
-            let prefix = "2SB5Z68H26."
-            let group = prefix + "ch.protonmail.protonmail"
-            let service = "ch.protonmail"
-        #endif
+        let prefix = "2SB5Z68H26."
+        let group = prefix + "ch.protonmail.protonmail"
+        let service = "ch.protonmail"
 
         super.init(service: service, accessGroup: group)
     }

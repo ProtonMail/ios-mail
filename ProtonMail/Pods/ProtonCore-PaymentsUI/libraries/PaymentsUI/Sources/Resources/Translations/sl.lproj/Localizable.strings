@@ -1,0 +1,133 @@
+"OK" = "V redu";
+
+"Cancel" = "Prekliči";
+
+"Warning" = "Opozorilo";
+
+"Select a plan" = "Izberite paket";
+
+"Current plan" = "Trenutni paket";
+
+"Subscription" = "Naročnina";
+
+"Upgrade your plan" = "Nadgradite trenutni paket";
+
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "V mobilni aplikaciji so na voljo le letne naročnine brez samodejnega podaljšanja.";
+
+"You cannot manage subscriptions inside the mobile application." = "V mobilni aplikaciji ne morete upravljati naročnin.";
+
+"Your plan will automatically renew on %@" = "Vaš paket se bo samodejno obnovil dne %@";
+
+"Current plan will expire on %@" = "Trenutni paket poteče dne %@";
+
+"Contact an administrator to make changes to your Proton subscription." = "Za spremembo naročnine se obrnite na skrbnika.";
+
+"%1$@ of %2$@" = "%1$@ od %2$@";
+
+"%@ storage" = "%@ shrambe";
+
+"%@ storage / user" = "%@ shrambe / uporabnika";
+
+"for %@" = "za %@";
+
+"Custom email addresses" = "E-poštni naslov po meri";
+
+"Priority customer support" = "Prednostna podpora strankam";
+
+"Adblocker (NetShield)" = "Blokiranje oglasov (NetShield)";
+
+"Streaming service support" = "Podpora pretočnim servisom";
+
+"High speed" = "Visoka hitrost";
+
+"Highest speed" = "Najvišja hitrost";
+
+"Multi-user support" = "Podpora za več uporabnikov";
+
+"The basic for private and secure communications." = "Osnova za zasebne in varne komunikacije.";
+
+"Full-featured mailbox with advanced protection." = "Poštni predal z neokrnjenimi funkcijami in z izboljšano zaščito.";
+
+"Limited time offer" = "Časovno omejena ponudba";
+
+"Complete payment?" = "Dokončajte plačilo?";
+
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Nakup paketa Proton že poteka. Za dokončanje obdelave plačila in ustvarjanje računa pritisnite Nadaljuj";
+
+"Complete payment" = "Dokončajte plačilo";
+
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "Nastavitve računa ni bilo mogoče dokončati zaradi nepričakovane napake.\nPoskusite znova.";
+
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Začel se je postopek nakupa IAP. Sledite navodilom družbe Apple in dokončajte ali prekličite nakup.";
+
+"One plan for all Proton services" = "En paket za vse storitve Proton";
+
+"The no-cost starter account designed to empower everyone with privacy by default." = "Brezplačen začetni račun, ki privzeto zagotavlja zasebnost vsem uporabnikom.";
+
+"The privacy-first email and calendar solution for your everyday communication needs." = "Zasebna pošta in koledar za vsakodnevno komunikacijo.";
+
+"Your privacy and security are our priority." = "Vaša zasebnost in varnost sta naša prednostna naloga.";
+
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Paket z 200 GB prostora za varno shranjevanje v oblaku.";
+
+"The ultimate privacy pack with access to all premium Proton services." = "Najvišji paket za zaščito podatkov z dostopom do vseh premijskih storitev Proton.";
+
+"Only non-renewing annual subscriptions are available via this app" = "V tej aplikaciji so na voljo samo neobnovljive letne naročnine";
+
+"Your subscription cannot be managed inside the mobile app." = "Vaše naročnine ni mogoče upravljati znotraj mobilne aplikacije.";
+
+"Unlimited folders, labels, and filters" = "Neomejeno število map, oznak in filtrov";
+
+"Up to %@ storage" = "Do %@ prostora za shranjevanje";
+
+"Free VPN on a single device" = "Brezplačna storitev VPN v eni napravi";
+
+"Highest VPN speed" = "Najhitrejši VPN";
+
+"Built-in ad-blocker (NetShield)" = "Vgrajeno blokiranje oglasov (NetShield)";
+
+"Access to streaming services globally" = "Globalen dostop so pretočnih storitev";
+
+"Secure Core servers" = "Strežniki Secure Core";
+
+"TOR over VPN" = "Tor preko VPN";
+
+"P2P/BitTorrent" = "P2P/BitTorrent";
+
+"Get %@" = "Pridobi %@";
+
+"Get Proton for free" = "Pridobite brezplačni Proton";
+
+"Extend subscription" = "Podaljšaj naročnino";
+
+"%@ of %@" = "%@ od %@.";
+
+"Connection issues" = "Težave s povezavo";
+
+"Check your internet connection" = "Preverite internetno povezavo";
+
+"Strict no-logs policy" = "Strog pravilnik brez dnevniških datotek";
+
+"Plan successfully upgraded" = "Paket je uspešno nadgrajen";
+
+"Integrated 2FA authenticator" = "Vgrajen modul za preverjanje pristnosti 2FA";
+
+"Priority support" = "Prednostna podpora";
+
+"Unlimited devices" = "Neomejeno število naprav";
+
+"Unlimited email aliases" = "Neomejeno število e-poštnih vzdevkov";
+
+"Unlimited logins and notes" = "Neomejeno število prijav in beležk";
+
+"Custom fields" = "Polja po meri";
+
+"For next-level password management and identity protection." = "Za napredno upravljanje gesel in zaščito identitete.";
+
+"Pay monthly" = "Plačajte mesečno";
+
+"Pay annually" = "Plačajte letno";
+
+"Pay every two years" = "Plačajte vsaki dve leti";
+
+"Free" = "Brezplačno";

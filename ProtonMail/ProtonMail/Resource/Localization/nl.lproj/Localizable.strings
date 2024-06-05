@@ -420,9 +420,6 @@
 */
 "Cancel" = "Annuleren";
 
-/* Got it action */
-"Got it" = "Begrepen";
-
 /* Open action */
 "Open" = "Open";
 
@@ -1199,7 +1196,7 @@
 "Limit reached" = "Limiet bereikt";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Er kan slechts één gratis account worden toegevoegd";
+"Only two free accounts can be added" = "Er kunnen slechts twee gratis accounts worden toegevoegd";
 
 /* section title in settings */
 "Account settings" = "Accountinstellingen";
@@ -1837,13 +1834,13 @@
 "Your Mail storage is %@ full" = "Uw e-mailopslag is %@ vol";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "Uw Drive-opslag is %@ vol";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "Uw Mail opslag is vol";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "Uw online opslag is vol";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Upgrade om meer opslag te krijgen.";
@@ -1889,6 +1886,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Deblokkeer";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Uw agenda is het beschermen waard";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Uw agenda is een verslag van uw leven. Proton Calendar helpt om dit privé te houden.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Download de Proton Calendar app";
+
 /* Name of the feature */
 "Email tracking protection" = "Bescherming tegen e-mailtracking";
 
@@ -1903,6 +1909,9 @@
 
 /* Button inside the banner */
 "Load" = "Laden";
+
+/* Title of an event with missing title */
+"(no title)" = "(geen titel)";
 
 /* As in: event organizer */
 "Organizer" = "Organisator";
@@ -1937,17 +1946,98 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "Misschien aanwezig";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Aanwezigheid optioneel)";
+
+/* As in: Every 3 days */
+"Every %@" = "Elke %@";
+
+/* As in: on Saturday */
+"on %@" = "op %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "op de %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "op dag %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "tot %@";
+
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ om %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "geaccepteerd";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "geweigerd";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "voorlopig geaccepteerd";
+
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ heeft uw uitnodiging aan%2@ %3@.";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "U bent uitgenodigd voor %@.";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "LOCATIE:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "BESCHRIJVING:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ werd geannuleerd.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Re: Uitnodiging voor een afspraak op %@";
+
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Re: Uitnodiging voor een afspraak die begint op %@";
+
+/* Occurring every day */
+"Daily" = "Dagelijks";
+
+/* Occurring every week */
+"Weekly" = "Wekelijks";
+
+/* Occurring every month */
+"Monthly" = "Maandelijks";
+
+/* Occurring every year */
+"Yearly" = "Jaarlijks";
+
+/* \"1st\" spelled out */
+"first" = "eerste";
+
+/* \"2nd\" spelled out */
+"second" = "tweede";
+
+/* \"3rd\" spelled out */
+"third" = "derde";
+
+/* \"4th\" spelled out */
+"fourth" = "vierde";
+
+/* Opposite of \"first\" */
+"last" = "laatste";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Eenvoudig RSVP'en voor gebeurtenissen";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "U kunt nu reageren op een uitnodiging of de gebeurtenis bekijken in Proton Calendar met één tik.";
+
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "Maximale Opslagruimte";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "Opslagruimte: %@ vol";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
-
-/* Upgrade button action */
-"Upgrade" = "Upgraden";
+"Drive: %@ full" = "Opslagruimte: %@ vol";
 
 /* Official badge next to sender's name */
 "Official" = "Officieel";
@@ -2061,13 +2151,28 @@
 "Password updated" = "Wachtwoord bijgewerkt";
 
 /* Title for application logs settings option */
-"Application logs" = "Toepassingslogboek";
+"Application logs" = "Applicatielogboek";
+
+/* Badge present on some spotlights */
+"New!" = "Nieuw!";
+
+/* Got it action */
+"Got it" = "Begrepen";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Ga naar volgende e-mail";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Toon automatisch de volgende e-mail wanneer een geopende e-mail is verwijderd, gearchiveerd of verplaatst.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Functie inschakelen";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "Bekijk de volgende e-mail in uw inbox wanneer u de huidige e-mail verwijdert of verplaatst.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Lees e-mails sneller";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Er gebeurde een onverwachte fout, contacteer support.\nFout: %@";
@@ -2300,12 +2405,6 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Onbeperkt aantal mappen, labels en filters";
 
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Stel in wanneer een e-mail opnieuw in uw inbox verschijnt met de snoozefunctie, nu beschikbaar in de werkbalk.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Snoozen voor later";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Voeg toe als bijlage";
 
@@ -2316,31 +2415,31 @@
 "Allow navigating through messages by swiping left or right." = "Navigeren door berichten toestaan door naar links of rechts te vegen.";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "Uw contacten binnen handbereik";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Het is niet nodig om de app te verlaten om een e-mailadres te vinden. Synchroniseer contacten van uw apparaat met Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "Automatisch importeren inschakelen";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "Nog geen contactpersonen";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "Importeer contactpersonen vanaf uw toestel om gemakkelijk e-mails en uitnodigingen te verzenden.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "Automatisch contacten importeren";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "Contactpersonen importeren";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "Uw contactpersonen verschijnen binnenkort.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "Voeg automatisch nieuwe contactpersonen toe van uw apparaat.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Privacy en gegevens";
@@ -2354,6 +2453,18 @@
 /* settings general section title */
 "Change mailbox password" = "Mailboxwachtwoord wijzigen";
 
+/* Description of a feature of a paid subscription */
+"15 GB storage" = "15 GB opslagruimte";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u e-mailadressen";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Gepersonaliseerde e-maildomein ondersteuning";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "Nieuwe Proton Mail desktop app";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonieme telemetrie";
 
@@ -2365,3 +2476,24 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Als de app crasht, wordt er een rapport verzonden naar onze ingenieurs met details over de oorzaak. Deze worden alleen gebruikt om de app te verbeteren.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Upgraden naar %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "Om meer opslag- en premiumfuncties te ontgrendelen.";
+
+/* Displayed next to the monthly price */
+"/month" = "/maand";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Kies %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Bespaar %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Foutief product-ID: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Aankoop wordt al uitgevoerd";

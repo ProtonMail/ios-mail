@@ -198,17 +198,17 @@ public final class SignupPaymentsRobot: CoreElements {
     }
 
     public func freePlanV3ButtonTap(wait: TimeInterval = 10.0) -> SignupHumanVerificationV3Robot.HV3OrCompletionRobot {
-        button(selectPlanButtonIdentifier(name: SignupPaymentsPlan.free.rawValue)).tap()
+        button(selectPlanButtonIdentifier(name: SignupPaymentsPlan.free.rawValue)).forceTap()
         return SignupHumanVerificationV3Robot().verify.isHumanVerificationRequired(wait: wait)
     }
 
     public func freePlanButtonTap() -> SignupHumanVerificationRobot.HVOrSummaryRobot {
-        button(selectPlanButtonIdentifier(name: SignupPaymentsPlan.free.rawValue)).tap()
+        button(selectPlanButtonIdentifier(name: SignupPaymentsPlan.free.rawValue)).forceTap()
         return SignupHumanVerificationRobot().verify.isHumanVerificationRequired()
     }
 
     public func mailFreePlanButtonTap() -> SignupHumanVerificationRobot.HVOrSummaryRobot {
-        button(selectPlanButtonIdentifier(name: SignupPaymentsPlan.mailFree.rawValue)).tap()
+        button(selectPlanButtonIdentifier(name: SignupPaymentsPlan.mailFree.rawValue)).forceTap()
         return SignupHumanVerificationRobot().verify.isHumanVerificationRequired()
     }
 

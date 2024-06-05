@@ -34,4 +34,5 @@ final class ProductionDrive: DoH, VerificationModifiable {
     let apiHost: String = ProductionHosts.driveAPI.dohHost
     let defaultPath: String = ""
     let signupDomain: String = "proton.me"
+    let proxyToken: String? = nil
 }

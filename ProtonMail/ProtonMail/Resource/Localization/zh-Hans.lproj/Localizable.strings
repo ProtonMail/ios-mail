@@ -420,9 +420,6 @@
 */
 "Cancel" = "取消";
 
-/* Got it action */
-"Got it" = "知道了";
-
 /* Open action */
 "Open" = "打开";
 
@@ -1199,7 +1196,7 @@
 "Limit reached" = "数量已达上限";
 
 /* Alert when the free account limit is reached */
-"Only two free accounts can be added" = "只能添加兩个免费账户";
+"Only two free accounts can be added" = "免费账户只能同时登录两个";
 
 /* section title in settings */
 "Account settings" = "账户设置";
@@ -1238,7 +1235,7 @@
 "Addresses" = "地址";
 
 /* Cell title in device settings - mute notification until a later time. */
-"Snooze" = "免打扰";
+"Snooze" = "延迟通知";
 
 /* cell title in device settings */
 "Mailbox" = "邮箱";
@@ -1834,19 +1831,19 @@
 "You can now choose and rearrange the actions in this bar" = "现已支持选择并排列此栏中的操作";
 
 /* Title of the banner alert */
-"Your Mail storage is %@ full" = "Your Mail storage is %@ full";
+"Your Mail storage is %@ full" = "您的 Mail 存储空间已使用 %@";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "您的 Drive 存储空间已使用 %@";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "您的 Proton Mail 存储空间已满";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "您的 Proton Drive 存储空间已满";
 
 /* Description of the banner alert */
-"Upgrade to get more storage." = "Upgrade to get more storage.";
+"Upgrade to get more storage." = "升级账户即可扩容。";
 
 /* Get more storage button action */
 "Not now" = "以后再说";
@@ -1889,6 +1886,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "解除屏蔽";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "您的日程信息同样值得保护";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "您的日历也是一种生活轨迹，让 Proton Calendar 来为您守护。";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "下载 Proton Calendar 移动应用";
+
 /* Name of the feature */
 "Email tracking protection" = "邮件追踪防护";
 
@@ -1903,6 +1909,9 @@
 
 /* Button inside the banner */
 "Load" = "载入";
+
+/* Title of an event with missing title */
+"(no title)" = "(no title)";
 
 /* As in: event organizer */
 "Organizer" = "组织者";
@@ -1937,17 +1946,98 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "I might attend";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "（非必须出席）";
+
+/* As in: Every 3 days */
+"Every %@" = "Every %@";
+
+/* As in: on Saturday */
+"on %@" = "on %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "on the %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "on day %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "until %@";
+
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ 在 %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "accepted";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "declined";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "暂时接受";
+
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ 有 %2@ 您对 %3@ 的邀请";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "您受邀参加 %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "LOCATION:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ was cancelled.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "回复：%@ 的活动邀请函";
+
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "回复：开始于 %@ 的活动邀请函";
+
+/* Occurring every day */
+"Daily" = "每天";
+
+/* Occurring every week */
+"Weekly" = "Weekly";
+
+/* Occurring every month */
+"Monthly" = "每月";
+
+/* Occurring every year */
+"Yearly" = "每年";
+
+/* \"1st\" spelled out */
+"first" = "第一个";
+
+/* \"2nd\" spelled out */
+"second" = "第二个";
+
+/* \"3rd\" spelled out */
+"third" = "第三个";
+
+/* \"4th\" spelled out */
+"fourth" = "第四个";
+
+/* Opposite of \"first\" */
+"last" = "last";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Easily RSVP to events";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+
 /* Menu title */
 "Max Storage" = "Max Storage";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "存储空间：已使用 %@";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
-
-/* Upgrade button action */
-"Upgrade" = "升级账户";
+"Drive: %@ full" = "Drive: %@ full";
 
 /* Official badge next to sender's name */
 "Official" = "官方";
@@ -2063,11 +2153,26 @@
 /* Title for application logs settings option */
 "Application logs" = "应用程序日志";
 
+/* Badge present on some spotlights */
+"New!" = "New!";
+
+/* Got it action */
+"Got it" = "知道了";
+
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "跳转至下一封邮件";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "现已支持删除、存档、移动邮件后自动显示下一封邮件。";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "开启此功能";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "删除或移动当前邮件后自动打开收件箱中的下一封邮件。";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Read emails faster";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "发生意外错误，请联系客服。\n错误信息：%@";
@@ -2262,19 +2367,19 @@
 "Downloading attachment" = "正在下载附件";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "已延后到 %@";
+"Snoozed until %@" = "通知已推迟至 %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "取消延后";
+"Unsnooze" = "取消延迟通知";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "延后到 %@";
+"Snooze until %@" = "将通知推迟至 %@";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "对话已取消延后";
+"Conversation unsnoozed" = "会话已取消延迟通知";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "延后到...";
+"Snooze until..." = "将通知推迟至...";
 
 /* One of snooze option shows in action sheet */
 "Later this week" = "本周稍后";
@@ -2286,25 +2391,19 @@
 "Next week" = "下周";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "请选择位于当前时间以后的时间";
+"Please select a time in the future" = "请选择将来的时间点";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "想在其他时间免打扰？";
+"Want to snooze any time?" = "想将通知推迟至任意时间？";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "升级账户即可自由调整免打扰时间";
+"Unlock custom snooze times when you upgrade" = "升级账户即可自由调整延迟通知时间";
 
 /* The benefit item for snooze promotion view */
 "Up to 15 email addresses/aliases" = "最多 15 个邮箱地址/别名";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "不限量文件夹、标签和筛选规则";
-
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Snooze it for later";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "作为附件添加";
@@ -2354,6 +2453,18 @@
 /* settings general section title */
 "Change mailbox password" = "更改邮箱密码";
 
+/* Description of a feature of a paid subscription */
+"15 GB storage" = "15 GB storage";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u 个邮箱地址";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Custom email domain support";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "New Proton Mail desktop app";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "匿名遥测";
 
@@ -2365,3 +2476,24 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Upgrade to %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+
+/* Displayed next to the monthly price */
+"/month" = "/月";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "开通 %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Save %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Invalid product ID: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Purchase already in progress";

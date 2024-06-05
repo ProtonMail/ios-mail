@@ -65,9 +65,6 @@ class ConversationViewModel {
         )
     }
 
-    var isMessageSwipeNavigationEnabled: Bool {
-        true
-    }
     var shouldMoveToNextMessageAfterMove: Bool {
         dependencies.nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove
     }
@@ -1176,8 +1173,7 @@ extension ConversationViewModel: MoveToActionSheetProtocol {
 
     func handleMoveToAction(
         conversations: [ConversationEntity],
-        to folder: MenuLabel,
-        completion: (() -> Void)? = nil
+        to folder: MenuLabel
     ) {
         let ids = conversations.map(\.conversationID)
         conversationService.move(

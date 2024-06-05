@@ -23,10 +23,10 @@
 "Mobile Signature" = "Mobilný podpis";
 
 /* Title */
-"Recovery email" = "E-mail pre obnovenie";
+"Recovery email" = "Email na obnovenie";
 
 /* Title */
-"Enable email notices" = "Povoliť e-mailové upozornenia";
+"Enable email notices" = "Povoliť emailové upozornenia";
 
 /* place holder */
 "Input Notification Email…" = "Zadajte email na zasielanie notifikácií…";
@@ -292,7 +292,7 @@
 "Add new custom field" = "Pridať nové vlastné pole";
 
 /* new email action */
-"Add new email" = "Pridať nový e-mail";
+"Add new email" = "Pridať nový email";
 
 /* new phone action */
 "Add new phone number" = "Pridať nové telefónne číslo";
@@ -307,7 +307,7 @@
 "Work" = "Práca";
 
 /* default vcard types */
-"Email" = "E-mail";
+"Email" = "Email";
 
 /* default vcard types */
 "Other" = "Iné";
@@ -367,13 +367,13 @@
 "Gender" = "Pohlavie";
 
 /* Send an email to the current contact (button title text) */
-"Email contact" = "E-mailový kontakt";
+"Email contact" = "Emailový kontakt";
 
 /* Call the contact (button title text) */
 "Call contact" = "Zavolať kontakt";
 
 /* contact detail view, email addresses section title */
-"Email addresses" = "E-mailové adresy";
+"Email addresses" = "Emailové adresy";
 
 /* contact section title */
 "Encrypted contact details" = "Šifrované kontaktné údaje";
@@ -419,9 +419,6 @@
  Title for the alert button to cancel disable content search.
 */
 "Cancel" = "Zrušiť";
-
-/* Got it action */
-"Got it" = "Rozumiem";
 
 /* Open action */
 "Open" = "Otvoriť";
@@ -563,7 +560,7 @@
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Zdá sa, že tento e-mail pochádza z adresy Proton Mail, ale prišiel z externého systému a nespĺňa naše overovacie požiadavky. Správa môže byť sfalšovaná alebo nesprávne preposlaná!";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Tento e-mail nesplnil požiadavky na overenie domény. Môže byť sfalšovaný alebo nesprávne preposlaný.";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Tento email nesplnil požiadavky na overenie svojej domény. Môže byť sfalšovaný alebo nesprávne preposlaný.";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Táto správa môže byť pokus o phishing. Skontrolujte odosielateľa a obsah správy, aby ste sa uistili o ich legitimite, prosím.";
@@ -584,7 +581,7 @@
 "Reading device contacts data…" = "Čítanie kontaktov v zariadení…";
 
 /* title for the contact import indicator */
-"Importing contacts..." = "Importing contacts...";
+"Importing contacts..." = "Import kontaktov...";
 
 /* Description */
 "Do you want to cancel the process?" = "Chcete prerušiť tento proces?";
@@ -757,7 +754,7 @@
 "Skip" = "Preskočiť";
 
 /* title of the next button */
-"Next" = "Ďalší";
+"Next" = "Ďalej";
 
 /* title of the next button */
 "Get Started" = "Začnite";
@@ -841,10 +838,10 @@
 "Storage Warning" = "Varovanie o dochádzajúcom mieste";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Využili ste všetok úložný priestor (%@). Ak chcete naďalej odosielať a prijímať e-maily, upgradujte svoj plán predplatného.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Využili ste všetok úložný priestor (%@). Ak chcete naďalej odosielať a prijímať emaily, upgradujte svoj plán predplatného.";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Využili ste %1$d%% vášho úložného priestoru (%2$@). Ak chcete naďalej odosielať a prijímať e-maily, prosím upgradujte svoj plán predplatného.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Využili ste %1$d%% vášho úložného priestoru (%2$@). Ak chcete naďalej odosielať a prijímať emaily, prosím upgradujte svoj plán predplatného.";
 
 /* Alert title */
 "Storage full" = "Plné úložisko";
@@ -856,7 +853,7 @@
 "Please upgrade your plan" = "Prosíme prejdite na vyšší plán";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Aby ste naďalej mohli odosielať a prijímať e-maily, navýšte svoj plán, prosím.";
+"Please upgrade your plan to continue to send and receive emails." = "Aby ste naďalej mohli odosielať a prijímať emaily, navýšte svoj plán, prosím.";
 
 /* Title */
 "Warning" = "Upozornenie";
@@ -1115,7 +1112,7 @@
 "Delete contact group" = "Zmazať skupinu kontaktov";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
-"Please select at least one email for the contact group" = "Vyberte aspoň jeden e-mail pre skupinu kontaktov";
+"Please select at least one email for the contact group" = "Vyberte aspoň jeden email pre skupinu kontaktov";
 
 /* The message will show up when the user attempts to create a contact group without any name specified */
 "Please provide a group name" = "Prosím, zadajte názov skupiny";
@@ -1199,7 +1196,7 @@
 "Limit reached" = "Dosiahnutý limit";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Je možné pridať iba jeden bezplatný účet";
+"Only two free accounts can be added" = "Je možné pridať len dva bezplatné účty";
 
 /* section title in settings */
 "Account settings" = "Nastavenia účtu";
@@ -1265,25 +1262,25 @@
 "Recipient not found" = "Príjemca nenájdený";
 
 /* The error message is shown in composer */
-"Invalid email address" = "Neplatná e-mailová adresa";
+"Invalid email address" = "Neplatná emailová adresa";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "Najmenej jedna e-mailová adresa príjemcu má nesprávny formát, skontrolujte ich prosím.";
+"At least one recipient email address is improperly formatted, please double check them." = "Najmenej jedna emailová adresa príjemcu má nesprávny formát, skontrolujte ich prosím.";
 
 /* incorrect email format error in composer */
 "Error sending" = "Chyba pri odosielaní";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "Minimálne jedna e-mailová adresa nebola v skupine nájdená";
+"At least one email address in the group could not be found" = "Minimálne jedna emailová adresa nebola v skupine nájdená";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Aspoň jedna e-mailová adresa/doména príjemcu neexistuje, alebo má zlý formát. Správa bola presunutá do konceptov.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Aspoň jedna emailová adresa/doména príjemcu neexistuje, alebo má zlý formát. Správa bola presunutá do konceptov.";
 
 /* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "Zadali ste aspoň jednu neplatnú e-mailovú adresu. Overte prosím príjemcu.";
+"You have entered at least one invalid email address. Please verify your recipients." = "Zadali ste aspoň jednu neplatnú emailovú adresu. Overte prosím príjemcu.";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found." = "Minimálne jedna e-mailová adresa nebola v skupine nájdená.";
+"At least one email address in the group could not be found." = "Minimálne jedna emailová adresa nebola v skupine nájdená.";
 
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "Zadali ste aspoň jedného neznámeho príjemcu. Overte prosím príjemcu.";
@@ -1388,7 +1385,7 @@
 "Delete %d Messages" = "Odstrániť $%d správy";
 
 /* No comment provided by engineer. */
-"Current Recovery Email" = "Aktuálny e-mail na obnovenie";
+"Current Recovery Email" = "Aktuálny email na obnovenie";
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Obnovenie povolené";
@@ -1442,7 +1439,7 @@
 "Parent folder" = "Nadradený priečinok";
 
 /* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Túto akciu nie je možné vrátiť späť. E-maily uložené v tomto priečinku nebudú vymazané a je možné ich nájsť v priečinku Všetky správy.";
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Túto akciu nie je možné vrátiť späť. Emaily uložené v tomto priečinku nebudú vymazané a je možné ich nájsť v priečinku Všetky správy.";
 
 /* Alert message when user tries to delete label */
 "This action cannot be undone." = "Túto akciu nie je možné vrátiť späť.";
@@ -1508,7 +1505,7 @@
 "Save as PDF" = "Uložiť ako PDF";
 
 /* No comment provided by engineer. */
-"View headers" = "Zobraziť hlavičku e-mailu";
+"View headers" = "Zobraziť hlavičku emailu";
 
 /* No comment provided by engineer. */
 "View HTML" = "Zobrazenie HTML";
@@ -1552,7 +1549,7 @@
 "Do you want to discard the changes?" = "Prajete si zrušiť zmeny?";
 
 /* No comment provided by engineer. */
-"Group emails from the same conversation together." = "Zoskupiť e-maily z rovnakej konverzácie.";
+"Group emails from the same conversation together." = "Zoskupiť emaily z rovnakej konverzácie.";
 
 /* No comment provided by engineer. */
 "Conversation grouping" = "Zoskupovanie konverzácií";
@@ -1675,7 +1672,7 @@
 "Set mail password" = "Nastavte heslo pre poštu";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
-"Set mail expiration" = "Nastaviť vypršanie e-mailu";
+"Set mail expiration" = "Nastaviť koniec platnosti mailu";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Schovať klávesnicu";
@@ -1693,7 +1690,7 @@
 "Go back (recommended)" = "Naspäť (odporúčané)";
 
 /* Description for undo send */
-"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Táto funkcia oneskoruje posielanie Vašich e-mailov, dáva možnosť prerušiť zasielanie správy, ktorá už bola na ceste a vrátiť ju späť.";
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Táto funkcia oneskoruje posielanie Vašich emailov, dáva možnosť prerušiť zasielanie správy, ktorá už bola na ceste a vrátiť ju späť.";
 
 /* The title of the scheduled message banner. */
 "This message will be sent on %@ at %@" = "Táto správa bude odoslaná %1$@ o %2$@";
@@ -1774,7 +1771,7 @@
 "PGP-signed" = "Podpísané pomocou PGP";
 
 /* The error message while calculating the encryption preferences */
-"Email address disabled" = "E-mailová adresa je deaktivovaná";
+"Email address disabled" = "Emailová adresa je deaktivovaná";
 
 /* The error message while calculating the encryption preferences */
 "No keys retrieved for internal user" = "Pre interného používateľa neboli nájdené žiadne kľúče";
@@ -1786,7 +1783,7 @@
 "Trusted keys are not valid for sending" = "Dôveryhodné kľúče nie sú použiteľné na odosielanie";
 
 /* The error message while calculating the encryption preferences */
-"No WKD key retrieved for user is valid for sending" = "Žiadny WKD kľúč pre užívateľov nie je platný pre odosielanie";
+"No WKD key retrieved for user is valid for sending" = "Žiadny získaný WKD kľúč pre používateľa nie je platný na odoslanie";
 
 /* The error message while calculating the encryption preferences */
 "The sending key is not valid" = "Kľúč na odosielanie je neplatný";
@@ -1834,19 +1831,19 @@
 "You can now choose and rearrange the actions in this bar" = "Teraz môžete vybrať a zmeniť usporiadanie akcií na tomto paneli nástrojov";
 
 /* Title of the banner alert */
-"Your Mail storage is %@ full" = "Your Mail storage is %@ full";
+"Your Mail storage is %@ full" = "Vaše Mail úložisko je zaplnené na %@";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "Vaše Drive úložisko je zaplnené na %@";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "Vaše Mail úložisko je plné";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "Vaše Drive úložisko je plné";
 
 /* Description of the banner alert */
-"Upgrade to get more storage." = "Upgrade to get more storage.";
+"Upgrade to get more storage." = "Upgradujte a získajte viac úložného priestoru.";
 
 /* Get more storage button action */
 "Not now" = "Teraz nie";
@@ -1889,6 +1886,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Odblokovať";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Váš harmonogram stojí za ochranu";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Váš kalendár je záznamom vášho života, Proton Calendar vám ho pomôže udržať v súkromí.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Získajte aplikáciu Proton Calendar";
+
 /* Name of the feature */
 "Email tracking protection" = "Ochrana pred emailovými sledovačmi";
 
@@ -1904,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "Načítať";
 
+/* Title of an event with missing title */
+"(no title)" = "(bez názvu)";
+
 /* As in: event organizer */
 "Organizer" = "Organizátor";
 
@@ -1911,22 +1920,22 @@
 "Show less" = "Zobraziť menej";
 
 /* Text shown when opening an invitation for a past event */
-"This event already ended" = "This event already ended";
+"This event already ended" = "Táto udalosť už skončila";
 
 /* Text shown when opening an invitation for a cancelled event */
-"This event has been cancelled" = "This event has been cancelled";
+"This event has been cancelled" = "Táto udalosť bola zrušená";
 
 /* Prompt above yes/no/maybe buttons */
-"Attending?" = "Attending?";
+"Attending?" = "Zúčastníte sa?";
 
 /* Part of a yes/no/maybe prompt */
-"Yes" = "Yes";
+"Yes" = "Áno";
 
 /* Part of a yes/no/maybe prompt */
-"No" = "No";
+"No" = "Nie";
 
 /* Part of a yes/no/maybe prompt */
-"Maybe" = "Maybe";
+"Maybe" = "Možno";
 
 /* Confirm attending an event */
 "Yes, I'll attend" = "Áno, zúčastním sa";
@@ -1935,19 +1944,100 @@
 "No, I won't attend" = "Nie, nezúčastním sa";
 
 /* Neither confirm nor deny attending an event */
-"I might attend" = "I might attend";
+"I might attend" = "Možno sa zúčastním";
+
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Účasť je voliteľná)";
+
+/* As in: Every 3 days */
+"Every %@" = "Každé %@";
+
+/* As in: on Saturday */
+"on %@" = "v %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "v %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "v %u. deň";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "do %@";
+
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ o %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "prijaté";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "odmietnuté";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "predbežne prijal(-a)";
+
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ má %2@ vašu pozvánku na %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "Pozývame vás na %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "UMIESTNENIE:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "POPIS:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "Udalosť %@ bola zrušená.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Odp.: Pozvánka na udalosť dňa %@";
+
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Odp.: Pozvánka na udalosť, ktorá sa začína %@";
+
+/* Occurring every day */
+"Daily" = "Denne";
+
+/* Occurring every week */
+"Weekly" = "Týždenne";
+
+/* Occurring every month */
+"Monthly" = "Mesačne";
+
+/* Occurring every year */
+"Yearly" = "Ročne";
+
+/* \"1st\" spelled out */
+"first" = "prvý";
+
+/* \"2nd\" spelled out */
+"second" = "druhý";
+
+/* \"3rd\" spelled out */
+"third" = "tretí";
+
+/* \"4th\" spelled out */
+"fourth" = "štvrtý";
+
+/* Opposite of \"first\" */
+"last" = "posledný";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Jednoduché prihlasovanie na podujatia";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Teraz môžete reagovať na pozvánku alebo zobraziť udalosť v Proton Calendar jedným ťuknutím. ";
 
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "Max. úložný priestor";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "Úložisko: %@ využitých";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
-
-/* Upgrade button action */
-"Upgrade" = "Upgradovať";
+"Drive: %@ full" = "Úložisko: %@ využitých";
 
 /* Official badge next to sender's name */
 "Official" = "Oficiálne";
@@ -1974,7 +2064,7 @@
 "Terms & conditions" = "Podmienky používania";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Používam Proton Mail a myslím si, že by sa vám mohol páčiť. Je to bezpečná e-mailová služba, ktorá chráni vaše súkromie. Zaregistrujte sa pomocou tohto odkazu a získajte 1 mesiac prémiových funkcií zadarmo:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Používam Proton Mail a myslím si, že by sa vám mohol páčiť. Je to bezpečná emailová služba, ktorá chráni vaše súkromie. Zaregistrujte sa pomocou tohto odkazu a získajte 1 mesiac prémiových funkcií zadarmo:";
 
 /* The content of the referral prompt view. */
 "Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Vaše súkromie je lepšie chránené, ak aj vaše kontakty používajú Proton Mail. Pozvite svojich priateľov do Protonu a každý z vás získa prémiové výhody zadarmo.";
@@ -1986,7 +2076,7 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Zapnite túto funkciu na automatické dopĺňanie emailových adries pomocou kontaktov zo všetkých vašich prihlásených účtov.";
 
 /* contacts auto import title in settings */
-"Auto-import device contacts" = "Auto-import device contacts";
+"Auto-import device contacts" = "Automatický import kontaktov zo zariadenia";
 
 /* contacts auto import footer in settings */
 "Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Zapnutím tejto funkcie automaticky pridáte nové kontakty zo zariadenia do aplikácie Proton Mail.";
@@ -1998,7 +2088,7 @@
 "The initial import may take some time and will only occur when the app is in the foreground." = "Prvý import môže nejaký čas trvať a prebehne iba vtedy, keď je aplikácia v popredí.";
 
 /* Alert to ask user to reauthorise access to contacts */
-"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission.";
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Prístup ku kontaktom bol zakázaný. Ak chcete povoliť automatický import, prejdite do nastavení a povoľte prístup ku kontaktom.";
 
 /* Settings lock protection section */
 "Protection" = "Ochrana";
@@ -2063,11 +2153,26 @@
 /* Title for application logs settings option */
 "Application logs" = "Záznamy aplikácie";
 
+/* Badge present on some spotlights */
+"New!" = "Nové!";
+
+/* Got it action */
+"Got it" = "Rozumiem";
+
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Prejsť na ďalší email";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Automaticky zobraziť nasledujúci email, keď je otvorený email vymazaný, archivovaný alebo presunutý.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Zapnúť túto funkciu";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "Zobraziť ďalší email v doručenej pošte po odstránení alebo presunutí aktuálneho emailu.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Čítajte emaily rýchlejšie";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Vyskytla sa neočakávaná chyba, kontaktujte podporu, prosím.\nChyba: %@";
@@ -2151,10 +2256,10 @@
 "Empty trash" = "Vyprázdniť kôš";
 
 /* Alert prompting to update Calendar */
-"Download the latest version of the Proton Calendar to open this event" = "Download the latest version of the Proton Calendar to open this event";
+"Download the latest version of the Proton Calendar to open this event" = "Stiahnite si najnovšiu verziu Proton Calendar na otvorenie tejto udalosti";
 
 /* Button to open App Store */
-"Download in App Store" = "Download in App Store";
+"Download in App Store" = "Stiahnuť v App Store";
 
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Otvoriť v Proton kalendári";
@@ -2208,7 +2313,7 @@
 "Unselect all" = "Zrušiť výber všetkého";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
-"Maximum selection reached" = "Maximum selection reached";
+"Maximum selection reached" = "Bol dosiahnutý maximálny počet výberov";
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Žiadny príjemca";
@@ -2271,7 +2376,7 @@
 "Snooze until %@" = "Odložiť do %@";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "Conversation unsnoozed";
+"Conversation unsnoozed" = "Odložená konverzácia bola obnovená";
 
 /* The title of snooze config in action sheet */
 "Snooze until..." = "Odložiť do...";
@@ -2292,7 +2397,7 @@
 "Want to snooze any time?" = "Chcete kedykoľvek odložiť?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "Odomknite vlastné časy odloženia po navýšení plánu";
 
 /* The benefit item for snooze promotion view */
 "Up to 15 email addresses/aliases" = "Až 15 emailových adries/aliasov";
@@ -2300,50 +2405,44 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Neobmedzený počet priečinkov, štítkov a filtrov";
 
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Odložiť na neskôr";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Pridať ako prílohu";
 
 /* The title in setting page */
-"Swipe to next message" = "Swipe to next message";
+"Swipe to next message" = "Potiahnite prstom pre prechod na ďalšiu správu";
 
 /* Description text for setting */
-"Allow navigating through messages by swiping left or right." = "Allow navigating through messages by swiping left or right.";
+"Allow navigating through messages by swiping left or right." = "Umožňuje navigáciu v správach posúvaním doľava alebo doprava.";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "Vaše kontakty na dosah ruky";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Pri hľadaní emailovej adresy nie je potrebné opúšťať aplikáciu. Synchronizujte kontakty zo zariadenia do aplikácie Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "Povoliť automatický import";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "Zatiaľ žiadne kontakty";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "Importovaním kontaktov zo zariadenia získate možnosť jednoducho odosielať emaily a pozvánky.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "Automatický import kontaktov";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "Import vašich kontaktov";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "Čoskoro sa tu objavia vaše kontakty.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "Automaticky pridávať nové kontakty zo zariadenia.";
 
 /* The title of the privacy and data in the account setting. */
-"Privacy and data" = "Privacy and data";
+"Privacy and data" = "Ochrana osobných údajov a dát";
 
 /* cell title in device settings */
 "Storage" = "Úložisko";
@@ -2353,6 +2452,18 @@
 
 /* settings general section title */
 "Change mailbox password" = "Zmeniť heslo k poštovej schránke";
+
+/* Description of a feature of a paid subscription */
+"15 GB storage" = "15 GB úložného priestoru";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u emailových adries";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Podpora vlastnej emailovej domény";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "Nová desktopová aplikácia Proton Mail";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonymná telemetria";
@@ -2364,4 +2475,25 @@
 "To improve our services, we sometimes collect anonymized usage data." = "Na zlepšenie našich služieb niekedy zhromažďujeme anonymizované údaje o používaní.";
 
 /* The subtitle of the crash report setting. */
-"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.";
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Ak aplikácia zlyhá, našim technikom sa odošle správa s podrobnosťami o príčine. Tie sa použijú len na zlepšenie aplikácie.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Upgradujte na %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "Na získanie väčšieho úložiska a prémiových funkcií.";
+
+/* Displayed next to the monthly price */
+"/month" = "/mesiac";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Získať %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Ušetríte %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Neplatné ID produktu: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Nákup už prebieha";

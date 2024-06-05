@@ -395,19 +395,11 @@ final class MailboxViewControllerTests: XCTestCase {
         let cells = try XCTUnwrap(sut.tableView.visibleCells as? [NewMailboxMessageCell])
         let firstCell = try XCTUnwrap(cells.first)
         XCTAssertEqual(
-            firstCell.mailboxItem?.snoozeTime(labelID: Message.Location.snooze.labelID),
-            Date(timeIntervalSince1970: 5000)
-        )
-        XCTAssertEqual(
             firstCell.customView.messageContentView.snoozeTimeLabel.text,
             PMDateFormatter.shared.stringForSnoozeTime(from: Date(timeIntervalSince1970: 5000))
         )
 
         let secondCell = try XCTUnwrap(cells[safe: 1])
-        XCTAssertEqual(
-            secondCell.mailboxItem?.snoozeTime(labelID: Message.Location.snooze.labelID),
-            Date(timeIntervalSince1970: 7000)
-        )
         XCTAssertEqual(
             secondCell.customView.messageContentView.snoozeTimeLabel.text,
             PMDateFormatter.shared.stringForSnoozeTime(from: Date(timeIntervalSince1970: 7000))
@@ -457,19 +449,11 @@ final class MailboxViewControllerTests: XCTestCase {
         let cells = try XCTUnwrap(sut.tableView.visibleCells as? [NewMailboxMessageCell])
         let firstCell = try XCTUnwrap(cells.first)
         XCTAssertEqual(
-            firstCell.mailboxItem?.snoozeTime(labelID: Message.Location.snooze.labelID),
-            Date(timeIntervalSince1970: 5000)
-        )
-        XCTAssertEqual(
             firstCell.customView.messageContentView.snoozeTimeLabel.text,
             PMDateFormatter.shared.stringForSnoozeTime(from: Date(timeIntervalSince1970: 5000))
         )
 
         let secondCell = try XCTUnwrap(cells[safe: 1])
-        XCTAssertEqual(
-            secondCell.mailboxItem?.snoozeTime(labelID: Message.Location.snooze.labelID),
-            Date(timeIntervalSince1970: 7000)
-        )
         XCTAssertEqual(
             secondCell.customView.messageContentView.snoozeTimeLabel.text,
             PMDateFormatter.shared.stringForSnoozeTime(from: Date(timeIntervalSince1970: 7000))
@@ -521,22 +505,11 @@ final class MailboxViewControllerTests: XCTestCase {
         let cells = try XCTUnwrap(sut.tableView.visibleCells as? [NewMailboxMessageCell])
         let firstCell = try XCTUnwrap(cells.first)
         XCTAssertEqual(
-            firstCell.mailboxItem?.snoozeTime(labelID: Message.Location.inbox.labelID),
-            Date(timeIntervalSince1970: 100000)
-        )
-        XCTAssertEqual(
             firstCell.customView.messageContentView.timeLabel.text,
             "January 02, 1970"
         )
 
         let secondCell = try XCTUnwrap(cells[safe: 1])
-        XCTAssertNil(
-            secondCell.mailboxItem?.snoozeTime(labelID: Message.Location.inbox.labelID)
-        )
-        XCTAssertEqual(
-            secondCell.mailboxItem?.time(labelID: Message.Location.inbox.labelID),
-            Date(timeIntervalSince1970: 8000)
-        )
         XCTAssertEqual(
             secondCell.customView.messageContentView.timeLabel.text,
             "January 01, 1970"
@@ -600,9 +573,6 @@ final class MailboxViewControllerTests: XCTestCase {
 
         let cells = try XCTUnwrap(sut.tableView.visibleCells as? [NewMailboxMessageCell])
         let firstCell = try XCTUnwrap(cells.first)
-        XCTAssertNil(
-            firstCell.mailboxItem?.snoozeTime(labelID: Message.Location.allmail.labelID)
-        )
         XCTAssertEqual(
             firstCell.mailboxItem?.time(labelID: Message.Location.allmail.labelID),
             Date(timeIntervalSince1970: 8000)
@@ -613,10 +583,6 @@ final class MailboxViewControllerTests: XCTestCase {
         )
 
         let secondCell = try XCTUnwrap(cells[safe: 1])
-        XCTAssertEqual(
-            secondCell.mailboxItem?.snoozeTime(labelID: Message.Location.inbox.labelID),
-            Date(timeIntervalSince1970: 100000)
-        )
         XCTAssertEqual(
             secondCell.customView.messageContentView.timeLabel.text,
             "January 02, 1970"
@@ -662,10 +628,6 @@ final class MailboxViewControllerTests: XCTestCase {
         let cells = try XCTUnwrap(sut.tableView.visibleCells as? [NewMailboxMessageCell])
         let firstCell = try XCTUnwrap(cells.first)
         XCTAssertEqual(
-            firstCell.mailboxItem?.snoozeTime(labelID: Message.Location.inbox.labelID),
-            Date(timeIntervalSince1970: 8000000)
-        )
-        XCTAssertEqual(
             firstCell.mailboxItem?.time(labelID: Message.Location.inbox.labelID),
             Date(timeIntervalSince1970: 7000000)
         )
@@ -675,9 +637,6 @@ final class MailboxViewControllerTests: XCTestCase {
         )
 
         let secondCell = try XCTUnwrap(cells[safe: 1])
-        XCTAssertNil(
-            secondCell.mailboxItem?.snoozeTime(labelID: Message.Location.inbox.labelID)
-        )
         XCTAssertEqual(
             secondCell.mailboxItem?.time(labelID: Message.Location.inbox.labelID),
             Date(timeIntervalSince1970: 7000000)
@@ -727,10 +686,6 @@ final class MailboxViewControllerTests: XCTestCase {
         let cells = try XCTUnwrap(sut.tableView.visibleCells as? [NewMailboxMessageCell])
         let firstCell = try XCTUnwrap(cells.first)
         XCTAssertEqual(
-            firstCell.mailboxItem?.snoozeTime(labelID: Message.Location.inbox.labelID),
-            Date(timeIntervalSince1970: 8000000)
-        )
-        XCTAssertEqual(
             firstCell.mailboxItem?.time(labelID: Message.Location.allmail.labelID),
             Date(timeIntervalSince1970: 7000001)
         )
@@ -740,9 +695,6 @@ final class MailboxViewControllerTests: XCTestCase {
         )
 
         let secondCell = try XCTUnwrap(cells[safe: 1])
-        XCTAssertNil(
-            secondCell.mailboxItem?.snoozeTime(labelID: Message.Location.allmail.labelID)
-        )
         XCTAssertEqual(
             secondCell.mailboxItem?.time(labelID: Message.Location.allmail.labelID),
             Date(timeIntervalSince1970: 7000000)

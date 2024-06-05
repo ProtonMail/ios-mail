@@ -28,13 +28,6 @@ final class SettingUpdateRequestTests: XCTestCase {
         XCTAssertEqual(sut.method, .put)
         XCTAssertEqual(sut.path, "/mail/v4/settings/signature")
         XCTAssertEqual(sut.parameters as? [String : String], ["Signature": signature])
-
-        let expected = UpdateSignature(signature: signature, authCredential: nil)
-        isEqual(sut: sut, expected: expected)
-        XCTAssertEqual(
-            expected.parameters as? [String : String],
-            sut.parameters as? [String : String]
-        )
     }
 
     func testInit_linkConfirmation() {
@@ -46,13 +39,6 @@ final class SettingUpdateRequestTests: XCTestCase {
 
         sut = SettingUpdateRequest.linkConfirmation(.openAtWill)
         XCTAssertEqual(sut.parameters as? [String : Int], ["ConfirmLink": 0])
-
-        let expected = UpdateLinkConfirmation(status: .openAtWill, authCredential: nil)
-        isEqual(sut: sut, expected: expected)
-        XCTAssertEqual(
-            expected.parameters as? [String : Int],
-            sut.parameters as? [String : Int]
-        )
     }
 
     func testInit_enableFolderColor() {
@@ -62,13 +48,6 @@ final class SettingUpdateRequestTests: XCTestCase {
         XCTAssertEqual(sut.method, .put)
         XCTAssertEqual(sut.path, "/mail/v4/settings/enablefoldercolor")
         XCTAssertEqual(sut.parameters as? [String : Int], ["EnableFolderColor": isEnable ? 1 : 0])
-
-        let expected = EnableFolderColorRequest(isEnable: isEnable)
-        isEqual(sut: sut, expected: expected)
-        XCTAssertEqual(
-            expected.parameters as? [String : Int],
-            sut.parameters as? [String : Int]
-        )
     }
 
     func testInit_inheritParentFolderColor() {
@@ -78,13 +57,6 @@ final class SettingUpdateRequestTests: XCTestCase {
         XCTAssertEqual(sut.method, .put)
         XCTAssertEqual(sut.path, "/mail/v4/settings/inheritparentfoldercolor")
         XCTAssertEqual(sut.parameters as? [String : Int], ["InheritParentFolderColor": isEnable ? 1 : 0])
-
-        let expected = InheritParentFolderColorRequest(isEnable: isEnable)
-        isEqual(sut: sut, expected: expected)
-        XCTAssertEqual(
-            expected.parameters as? [String : Int],
-            sut.parameters as? [String : Int]
-        )
     }
 
     func testInit_notify() {
@@ -94,13 +66,6 @@ final class SettingUpdateRequestTests: XCTestCase {
         XCTAssertEqual(sut.method, .put)
         XCTAssertEqual(sut.path, "/settings/email/notify")
         XCTAssertEqual(sut.parameters as? [String : Int], ["Notify": isEnable ? 1 : 0])
-
-        let expected = UpdateNotify(notify: isEnable.intValue, authCredential: nil)
-        isEqual(sut: sut, expected: expected)
-        XCTAssertEqual(
-            expected.parameters as? [String : Int],
-            sut.parameters as? [String : Int]
-        )
     }
 
     func testInit_telemetry() {
@@ -148,20 +113,6 @@ final class SettingUpdateRequestTests: XCTestCase {
                 "TwoFactorCode": twoFACode
             ]
         )
-
-        let expected = UpdateNotificationEmail(
-            clientEphemeral: clientEphemeral,
-            clientProof: clientProof,
-            sRPSession: srpSession,
-            notificationEmail: email,
-            tfaCode: twoFACode,
-            authCredential: nil
-        )
-        isEqual(sut: sut, expected: expected)
-        XCTAssertEqual(
-            expected.parameters as? [String : String],
-            sut.parameters as? [String : String]
-        )
     }
 
     func testInit_loginPassword() throws {
@@ -205,52 +156,6 @@ final class SettingUpdateRequestTests: XCTestCase {
         XCTAssertEqual(authDict["ModulusID"] as? String, modulusID)
         XCTAssertEqual(authDict["Salt"] as? String, salt)
         XCTAssertEqual(authDict["Verifier"] as? String, verifier)
-
-        let expected = UpdateLoginPassword(
-            clientEphemeral: clientEphemeral,
-            clientProof: clientProof,
-            SRPSession: srpSession,
-            modulusID: modulusID,
-            salt: salt,
-            verifer: verifier,
-            tfaCode: twoFACode,
-            authCredential: nil
-        )
-        isEqual(sut: sut, expected: expected)
-
-        XCTAssertEqual(
-            sut.parameters?["ClientEphemeral"] as? String,
-            expected.parameters?["ClientEphemeral"] as? String
-        )
-        XCTAssertEqual(
-            sut.parameters?["ClientProof"] as? String,
-            expected.parameters?["ClientProof"] as? String
-        )
-        XCTAssertEqual(
-            sut.parameters?["SRPSession"] as? String,
-            expected.parameters?["SRPSession"] as? String
-        )
-        XCTAssertEqual(
-            sut.parameters?["TwoFactorCode"] as? String,
-            expected.parameters?["TwoFactorCode"] as? String
-        )
-        let expectedAuthDict = try XCTUnwrap(expected.parameters?["Auth"] as? [String: Any])
-        XCTAssertEqual(
-            authDict["Version"] as? Int,
-            expectedAuthDict["Version"] as? Int
-        )
-        XCTAssertEqual(
-            authDict["ModulusID"] as? String,
-            expectedAuthDict["ModulusID"] as? String
-        )
-        XCTAssertEqual(
-            authDict["Salt"] as? String,
-            expectedAuthDict["Salt"] as? String
-        )
-        XCTAssertEqual(
-            authDict["Verifier"] as? String,
-            expectedAuthDict["Verifier"] as? String
-        )
     }
 
     private func isEqual(sut: Request, expected: Request) {

@@ -28,14 +28,13 @@ class MaxStorageTableViewCell: UITableViewCell, AccessibleCell {
     private var labelsStack: UIStackView!
     private var title: UILabel!
     private var caption: UILabel!
-    private var ctaButton: UIButton!
+    private var upgradeButton: UIButton!
     private weak var delegate: MaxStorageTableViewCellDelegate?
 
     enum Constants {
         static let iconSize: CGFloat = 24
         static let itemsSpacing: CGFloat = 13
         static let cellPadding: CGFloat = 17.5
-        static let buttonPadding = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -98,7 +97,7 @@ class MaxStorageTableViewCell: UITableViewCell, AccessibleCell {
 
         caption = UILabel()
         caption.translatesAutoresizingMaskIntoConstraints = false
-        caption.text = L11n.SideMenuStorageAlert.alertBoxCaption
+        caption.text = L10n.SideMenuStorageAlert.alertBoxCaption
         caption.textColor = ColorProvider.SidebarTextWeak
         caption.font = UIFont.preferredFont(for: .caption1, weight: .regular)
         caption.minimumScaleFactor = 0.8
@@ -114,23 +113,17 @@ class MaxStorageTableViewCell: UITableViewCell, AccessibleCell {
     }
 
     private func setupButtonUI() {
-        ctaButton = UIButton(type: .custom)
-        ctaButton.translatesAutoresizingMaskIntoConstraints = false
-        ctaButton.setTitle(L11n.SideMenuStorageAlert.upgradeButtonTitle, for: .normal)
-        ctaButton.titleLabel?.font = UIFont.preferredFont(for: .caption1, weight: .regular)
-        ctaButton.tintColor = ColorProvider.TextInverted
-        ctaButton.layer.cornerRadius = 8
-        ctaButton.backgroundColor = ColorProvider.SidebarInteractionWeakNorm
-        ctaButton.contentEdgeInsets = Constants.buttonPadding
-        ctaButton.addTarget(self, action: #selector(upgradeButtonTapped), for: .touchUpInside)
-        ctaButton.titleLabel?.minimumScaleFactor = 0.8
-        ctaButton.titleLabel?.adjustsFontSizeToFitWidth = true
-        contentView.addSubview(ctaButton)
+        upgradeButton = UIButton(image: IconProvider.arrowUp)
+        upgradeButton.translatesAutoresizingMaskIntoConstraints = false
+        upgradeButton.tintColor = ColorProvider.IconInverted
+        upgradeButton.addTarget(self, action: #selector(upgradeButtonTapped), for: .touchUpInside)
+        contentView.addSubview(upgradeButton)
 
         [
-            ctaButton.leadingAnchor.constraint(greaterThanOrEqualTo: labelsStack.trailingAnchor, constant: 8),
-            ctaButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            ctaButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.cellPadding)
+            upgradeButton.leadingAnchor.constraint(greaterThanOrEqualTo: labelsStack.trailingAnchor, constant: 8),
+            upgradeButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            upgradeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                    constant: -Constants.cellPadding)
         ].activate()
     }
 
@@ -159,8 +152,4 @@ class MaxStorageTableViewCell: UITableViewCell, AccessibleCell {
             bottomSeparator.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ].activate()
     }
-
-
-
-
 }

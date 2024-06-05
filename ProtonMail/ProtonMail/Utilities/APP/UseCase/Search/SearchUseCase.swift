@@ -39,7 +39,6 @@ final class MessageSearch: SearchUseCase {
 
 extension MessageSearch {
     struct Dependencies {
-        let userID: UserID
         let backendSearch: BackendSearchUseCase
     }
 

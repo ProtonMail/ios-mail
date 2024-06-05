@@ -20,9 +20,19 @@ import Combine
 @testable import ProtonMail
 
 class MockContactsSyncQueueProtocol: ContactsSyncQueueProtocol {
-    @PropertyStub(\MockContactsSyncQueueProtocol.progressPublisher, initialGet: CurrentValueSubject<ContactsSyncQueue.Progress, Never>(ContactsSyncQueue.Progress())) var progressPublisherStub
-    var progressPublisher: CurrentValueSubject<ContactsSyncQueue.Progress, Never> {
-        progressPublisherStub()
+    var progressPublisher: AnyPublisher<ContactsSyncQueue.Progress, Never> {
+        _progressPublisher.eraseToAnyPublisher()
+    }
+    var _progressPublisher: PassthroughSubject<ContactsSyncQueue.Progress, Never> = .init()
+
+    var protonStorageQuotaExceeded: AnyPublisher<Void, Never> {
+        _protonStorageQuotaExceeded.eraseToAnyPublisher()
+    }
+    var _protonStorageQuotaExceeded: PassthroughSubject<Void, Never> = .init()
+
+    @FuncStub(MockContactsSyncQueueProtocol.setup) var setupStub
+    func setup() {
+        setupStub()
     }
 
     @FuncStub(MockContactsSyncQueueProtocol.start) var startStub
@@ -43,6 +53,11 @@ class MockContactsSyncQueueProtocol: ContactsSyncQueueProtocol {
     @FuncStub(MockContactsSyncQueueProtocol.addTask) var addTaskStub
     func addTask(_ task: ContactTask) {
         addTaskStub(task)
+    }
+
+    @FuncStub(MockContactsSyncQueueProtocol.saveQueueToDisk) var saveQueueToDiskStub
+    func saveQueueToDisk() {
+        saveQueueToDiskStub()
     }
 
     @FuncStub(MockContactsSyncQueueProtocol.deleteQueue) var deleteQueueStub

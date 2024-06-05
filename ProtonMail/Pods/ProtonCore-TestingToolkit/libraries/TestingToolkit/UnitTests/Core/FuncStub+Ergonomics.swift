@@ -21,6 +21,12 @@
 
 extension FuncStub where Input == Void, A1 == Absent, A2 == Absent, A3 == Absent, A4 == Absent, A5 == Absent, A6 == Absent, A7 == Absent,
                          A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
+    
+    public convenience init(_ prototype: @escaping () -> () -> Output,
+                            initialReturn: InitialReturn<Input, Output>,
+                            function: String = #function, line: UInt = #line, file: String = #filePath) {
+        self.init(initialReturn: initialReturn, function: function, line: line, file: file)
+    }
 
     public convenience init<T>(_ prototype: (T) -> () -> Output,
                                initialReturn: @autoclosure @escaping () throws -> Output,
@@ -39,6 +45,11 @@ extension FuncStub where Input == Void, A1 == Absent, A2 == Absent, A3 == Absent
                                function: String = #function, line: UInt = #line, file: String = #filePath) {
         self.init(initialReturn: initialReturn, function: function, line: line, file: file)
     }
+    
+    public convenience init(_ prototype: () -> () -> Output,
+                            function: String = #function, line: UInt = #line, file: String = #filePath) where Output == Void {
+        self.init(function: function, line: line, file: file)
+    }
 
     public convenience init<T>(_ prototype: (T) -> () -> Output,
                                function: String = #function, line: UInt = #line, file: String = #filePath) where Output == Void {
@@ -48,6 +59,12 @@ extension FuncStub where Input == Void, A1 == Absent, A2 == Absent, A3 == Absent
 
 extension FuncStub where Input == A1, A2 == Absent, A3 == Absent, A4 == Absent, A5 == Absent, A6 == Absent, A7 == Absent,
                          A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
+    
+    public convenience init(_ prototype: @escaping () -> (A1) -> Output,
+                            initialReturn: InitialReturn<Input, Output>,
+                            function: String = #function, line: UInt = #line, file: String = #filePath) {
+        self.init(initialReturn: initialReturn, function: function, line: line, file: file)
+    }
 
     public convenience init<T>(_ prototype: (T) -> (A1) -> Output,
                                initialReturn: @autoclosure @escaping () throws -> Output,
@@ -75,6 +92,12 @@ extension FuncStub where Input == A1, A2 == Absent, A3 == Absent, A4 == Absent, 
 
 extension FuncStub where Input == (A1, A2), A3 == Absent, A4 == Absent, A5 == Absent, A6 == Absent, A7 == Absent,
                          A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
+    
+    public convenience init(_ prototype: @escaping () -> (A1, A2) -> Output,
+                            initialReturn: InitialReturn<Input, Output>,
+                            function: String = #function, line: UInt = #line, file: String = #filePath) {
+        self.init(initialReturn: initialReturn, function: function, line: line, file: file)
+    }
 
     public convenience init<T>(_ prototype: @escaping (T) -> (A1, A2) -> Output,
                                initialReturn: @autoclosure @escaping () throws -> Output,
@@ -102,6 +125,12 @@ extension FuncStub where Input == (A1, A2), A3 == Absent, A4 == Absent, A5 == Ab
 
 extension FuncStub where Input == (A1, A2, A3), A4 == Absent, A5 == Absent, A6 == Absent, A7 == Absent,
                          A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
+    
+    public convenience init(_ prototype: @escaping () -> (A1, A2, A3) -> Output,
+                            initialReturn: InitialReturn<Input, Output>,
+                            function: String = #function, line: UInt = #line, file: String = #filePath) {
+        self.init(initialReturn: initialReturn, function: function, line: line, file: file)
+    }
 
     public convenience init<T>(_ prototype: @escaping (T) -> (A1, A2, A3) -> Output,
                                initialReturn: @autoclosure @escaping () throws -> Output,
@@ -129,6 +158,12 @@ extension FuncStub where Input == (A1, A2, A3), A4 == Absent, A5 == Absent, A6 =
 
 extension FuncStub where Input == (A1, A2, A3, A4), A5 == Absent, A6 == Absent, A7 == Absent,
                          A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
+    
+    public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4) -> Output,
+                            initialReturn: InitialReturn<Input, Output>,
+                            function: String = #function, line: UInt = #line, file: String = #filePath) {
+        self.init(initialReturn: initialReturn, function: function, line: line, file: file)
+    }
 
     public convenience init<T>(_ prototype: @escaping (T) -> (A1, A2, A3, A4) -> Output,
                                initialReturn: @autoclosure @escaping () throws -> Output,
@@ -156,6 +191,12 @@ extension FuncStub where Input == (A1, A2, A3, A4), A5 == Absent, A6 == Absent, 
 
 extension FuncStub where Input == (A1, A2, A3, A4, A5), A6 == Absent, A7 == Absent,
                          A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
+    
+    public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5) -> Output,
+                            initialReturn: InitialReturn<Input, Output>,
+                            function: String = #function, line: UInt = #line, file: String = #filePath) {
+        self.init(initialReturn: initialReturn, function: function, line: line, file: file)
+    }
 
     public convenience init<T>(_ prototype: @escaping (T) -> (A1, A2, A3, A4, A5) -> Output,
                                initialReturn: @autoclosure @escaping () throws -> Output,
@@ -182,6 +223,12 @@ extension FuncStub where Input == (A1, A2, A3, A4, A5), A6 == Absent, A7 == Abse
 }
 
 extension FuncStub where Input == (A1, A2, A3, A4, A5, A6), A7 == Absent, A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
+    
+    public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5, A6) -> Output,
+                            initialReturn: InitialReturn<Input, Output>,
+                            function: String = #function, line: UInt = #line, file: String = #filePath) {
+        self.init(initialReturn: initialReturn, function: function, line: line, file: file)
+    }
 
     public convenience init<T>(_ prototype: @escaping (T) -> (A1, A2, A3, A4, A5, A6) -> Output,
                                initialReturn: @autoclosure @escaping () throws -> Output,
@@ -208,6 +255,12 @@ extension FuncStub where Input == (A1, A2, A3, A4, A5, A6), A7 == Absent, A8 == 
 }
 
 extension FuncStub where Input == (A1, A2, A3, A4, A5, A6, A7), A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
+    
+    public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5, A6, A7) -> Output,
+                            initialReturn: InitialReturn<Input, Output>,
+                            function: String = #function, line: UInt = #line, file: String = #filePath) {
+        self.init(initialReturn: initialReturn, function: function, line: line, file: file)
+    }
 
     public convenience init<T>(_ prototype: @escaping (T) -> (A1, A2, A3, A4, A5, A6, A7) -> Output,
                                initialReturn: @autoclosure @escaping () throws -> Output,
@@ -234,6 +287,12 @@ extension FuncStub where Input == (A1, A2, A3, A4, A5, A6, A7), A8 == Absent, A9
 }
 
 extension FuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8), A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
+    
+    public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5, A6, A7, A8) -> Output,
+                            initialReturn: InitialReturn<Input, Output>,
+                            function: String = #function, line: UInt = #line, file: String = #filePath) {
+        self.init(initialReturn: initialReturn, function: function, line: line, file: file)
+    }
 
     public convenience init<T>(_ prototype: @escaping (T) -> (A1, A2, A3, A4, A5, A6, A7, A8) -> Output,
                                initialReturn: @autoclosure @escaping () throws -> Output,
@@ -260,6 +319,12 @@ extension FuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8), A9 == Absent
 }
 
 extension FuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8, A9), A10 == Absent, A11 == Absent, A12 == Absent {
+    
+    public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5, A6, A7, A8, A9) -> Output,
+                            initialReturn: InitialReturn<Input, Output>,
+                            function: String = #function, line: UInt = #line, file: String = #filePath) {
+        self.init(initialReturn: initialReturn, function: function, line: line, file: file)
+    }
 
     public convenience init<T>(_ prototype: @escaping (T) -> (A1, A2, A3, A4, A5, A6, A7, A8, A9) -> Output,
                                initialReturn: @autoclosure @escaping () throws -> Output,
@@ -286,6 +351,12 @@ extension FuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8, A9), A10 == A
 }
 
 extension FuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10), A11 == Absent, A12 == Absent {
+    
+    public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) -> Output,
+                            initialReturn: InitialReturn<Input, Output>,
+                            function: String = #function, line: UInt = #line, file: String = #filePath) {
+        self.init(initialReturn: initialReturn, function: function, line: line, file: file)
+    }
 
     public convenience init<T>(_ prototype: @escaping (T) -> (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) -> Output,
                                initialReturn: @autoclosure @escaping () throws -> Output,
@@ -312,6 +383,12 @@ extension FuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10), A11
 }
 
 extension FuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11), A12 == Absent {
+    
+    public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) -> Output,
+                            initialReturn: InitialReturn<Input, Output>,
+                            function: String = #function, line: UInt = #line, file: String = #filePath) {
+        self.init(initialReturn: initialReturn, function: function, line: line, file: file)
+    }
 
     public convenience init<T>(_ prototype: @escaping (T) -> (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) -> Output,
                                initialReturn: @autoclosure @escaping () throws -> Output,
@@ -338,6 +415,12 @@ extension FuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)
 }
 
 extension FuncStub where Input == (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) {
+    
+    public convenience init(_ prototype: @escaping () -> (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) -> Output,
+                            initialReturn: InitialReturn<Input, Output>,
+                            function: String = #function, line: UInt = #line, file: String = #filePath) {
+        self.init(initialReturn: initialReturn, function: function, line: line, file: file)
+    }
 
     public convenience init<T>(_ prototype: @escaping (T) -> (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) -> Output,
                                initialReturn: @autoclosure @escaping () throws -> Output,

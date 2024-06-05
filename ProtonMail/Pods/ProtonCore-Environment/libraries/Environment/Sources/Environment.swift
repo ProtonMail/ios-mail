@@ -135,7 +135,8 @@ extension Environment {
             accountHost: "https://account.\(customDomain)",
             defaultHost: "https://\(customDomain)",
             apiHost: ProductionHosts.mailAPI.dohHost,
-            defaultPath: "/api"
+            defaultPath: "/api",
+            proxyToken: nil
         )
     }
 }

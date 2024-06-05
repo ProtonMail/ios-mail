@@ -1,0 +1,45 @@
+"Contact customer support" = "Obrnite se na podporo strankam";
+
+"Failed to get list of available products from App Store." = "Neuspešno pridobivanje seznama izdelkov iz App Store.";
+
+"Purchase is not possible." = "Nakup ni mogoč.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nas je obvestil, da ste nadgradili naročnino, vendar manjkajo nekateri tehnični podatki. Izpolnite poročilo o hrošču in naša ekipa za podporo strankam stopi v stik z vami.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple nas je obvestil, da ste nadgradili naročnino, vendar smo zaznali, da ste se zatem odjavili iz računa.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Izdelek, ki ste ga kupili v trgovini App Store, ni skladen z nobeno storitvijo na našem strežniku. Izpolnite poročilo o napaki in naša služba za podporo strankam vas bo kontaktirala.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Prijavite se v račun Proton Mail, za katerega želite nadgraditi paket, da se nakup dokonča.";
+
+"Apple informed us they could not process the purchase." = "Apple nas je obvestil, da nakupa ne more obdelati.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Uspešno smo aktivirali vašo naročnino. Ponovno zaženite aplikacijo in začnite uporabljati svojo novo storitev.";
+
+"Please unlock the app to proceed with your service plan activation" = "Za nadaljevanje aktivacije naročnine odklenite aplikacijo";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Prijavite se v račun Proton Mail, za katerega želite nadgraditi paket, da se dokonča aktivacija paketa.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Nepravilen status plačilnega žetona. Ponovno zaženite aplikacijo. Če se napaka nadaljuje, se obrnite na podporo.";
+
+"Do you want to activate the purchase for %@ address?" = "Ali želite aktivirati nakup za naslov %@?";
+
+"Yes, activate it for " = "Da, aktiviraj za ";
+
+"No, for another Proton Mail account" = "Ne, za drug Proton Mail račun";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Izbrane naročnine nismo mogli nadgraditi, zato smo plačilo dodali kot dobroimetje v vaš račun. Za več informacij in dokončanje nadgradnje se obrnite na podporo uporabnikom.";
+
+"Contact Support" = "Kontakt za podporo";
+
+"Dismiss" = "Opusti";
+
+"Payment failed" = "Neuspešno plačilo";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Registracija je uspela, vendar vaše plačilo ni bilo obdelano. Če želite ponovno poslati podatke za plačilo, kliknite Ponovi. Obračunano bo samo enkrat. Če se težava nadaljuje, se obrnite na službo za podporo strankam.";
+
+"Retry" = "Poskusite znova";
+
+"OK" = "V redu";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Strežniki Proton niso dosegljivi. Vzrok je lahko napačna konfiguracija omrežja, nedelovanje strežnikov Proton ali blokada strežnikov Proton";

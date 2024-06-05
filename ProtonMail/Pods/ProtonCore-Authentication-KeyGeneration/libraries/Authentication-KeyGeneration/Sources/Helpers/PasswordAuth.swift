@@ -20,34 +20,33 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCoreNetworking
 
-/// message packages
-final class PasswordAuth {
+public final class PasswordAuth: Package {
 
-    let AuthVersion: Int = 4
+    public let authVersion: Int = 4
 
     /// encrypted id
-    let ModulusID: String
+    public let modulusID: String
 
     /// base64 encoded
-    let salt: String
+    public let salt: String
 
     /// base64 encoded
-    let verifer: String
+    public let verifier: String
 
-    init(modulusID: String, salt: String, verifer: String) {
-        self.ModulusID = modulusID
+    public init(modulusID: String, salt: String, verifier: String) {
+        self.modulusID = modulusID
         self.salt = salt
-        self.verifer = verifer
+        self.verifier = verifier
     }
 
-    // Mark : override class functions
-    func toDictionary() -> [String: Any]? {
+    public var parameters: [String: Any]? {
         let out: [String: Any] = [
-            "Version": self.AuthVersion,
-            "ModulusID": self.ModulusID,
+            "Version": self.authVersion,
+            "ModulusID": self.modulusID,
             "Salt": self.salt,
-            "Verifier": self.verifer
+            "Verifier": self.verifier
         ]
         return out
     }

@@ -223,7 +223,7 @@
  Action
  Springboard (3D Touch) shortcuts action
 */
-"Compose" = "Redactar";
+"Compose" = "Escribir";
 
 /* Composer expiration page title */
 "Message expiration" = "Expiración del mensaje";
@@ -419,9 +419,6 @@
  Title for the alert button to cancel disable content search.
 */
 "Cancel" = "Cancelar";
-
-/* Got it action */
-"Got it" = "Entendido";
 
 /* Open action */
 "Open" = "Abrir";
@@ -1199,7 +1196,7 @@
 "Limit reached" = "Límite alcanzado";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Solo se puede añadir una cuenta gratuita.";
+"Only two free accounts can be added" = "Solo se pueden añadir dos cuentas gratuitas.";
 
 /* section title in settings */
 "Account settings" = "Configuración de la cuenta";
@@ -1630,7 +1627,7 @@
 "Action reverted" = "Acción revertida";
 
 /* An action title shows in ellipsis menu */
-"Compose message" = "Redactar mensaje";
+"Compose message" = "Escribir mensaje";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Vaciar papelera";
@@ -1889,6 +1886,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Desbloquear";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Tu agenda merece estar protegida.";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Tu calendario es un registro de tu vida y Proton Calendar te ayuda a mantenerlo privado.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Obtén la aplicación de Proton Calendar";
+
 /* Name of the feature */
 "Email tracking protection" = "Protección contra rastreos de correo electrónico";
 
@@ -1903,6 +1909,9 @@
 
 /* Button inside the banner */
 "Load" = "Cargar";
+
+/* Title of an event with missing title */
+"(no title)" = "(sin título)";
 
 /* As in: event organizer */
 "Organizer" = "Organizador";
@@ -1937,6 +1946,90 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "Podría asistir";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Asistencia opcional)";
+
+/* As in: Every 3 days */
+"Every %@" = "Cada %@";
+
+/* As in: on Saturday */
+"on %@" = "el %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "en el %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "el día %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "hasta el %@";
+
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ a las %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "aceptado";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "rechazado";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "aceptado provisionalmente";
+
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ ha %2@ la invitación para %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "Estás invitado a %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "UBICACIÓN:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "DESCRIPCIÓN:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ se ha cancelado.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Re: Invitación para un evento el %@";
+
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Re: Invitación para un evento que comienza el %@";
+
+/* Occurring every day */
+"Daily" = "Diariamente";
+
+/* Occurring every week */
+"Weekly" = "Semanalmente";
+
+/* Occurring every month */
+"Monthly" = "Mensualmente";
+
+/* Occurring every year */
+"Yearly" = "Anualmente";
+
+/* \"1st\" spelled out */
+"first" = "primero";
+
+/* \"2nd\" spelled out */
+"second" = "segundo";
+
+/* \"3rd\" spelled out */
+"third" = "tercero";
+
+/* \"4th\" spelled out */
+"fourth" = "cuarto";
+
+/* Opposite of \"first\" */
+"last" = "último";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Confirmación de asistencia a eventos mucho más fácil";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Ahora puedes responder a una invitación o ver el evento en Proton Calendar con un solo toque. ";
+
 /* Menu title */
 "Max Storage" = "Almacenamiento máximo";
 
@@ -1944,10 +2037,7 @@
 "Storage: %@ full" = "Almacenamiento: lleno al %@";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Almacenamiento de Drive: %@ lleno";
-
-/* Upgrade button action */
-"Upgrade" = "Actualizar";
+"Drive: %@ full" = "Drive: lleno al %@";
 
 /* Official badge next to sender's name */
 "Official" = "Oficial";
@@ -2063,11 +2153,26 @@
 /* Title for application logs settings option */
 "Application logs" = "Registros de la aplicación";
 
+/* Badge present on some spotlights */
+"New!" = "Nuevo";
+
+/* Got it action */
+"Got it" = "Entendido";
+
 /* The title of the setting of the next msg after move */
 "Jump to next email" = "Ir al correo electrónico siguiente";
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Muestra automáticamente el correo electrónico siguiente cuando el correo electrónico actual se elimina, archiva o mueve.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Activar la función";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "Visualiza el siguiente correo electrónico en tu bandeja de entrada cuando elimines o muevas el correo electrónico actual.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Lea tus correos electrónicos más rápido";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Se ha producido un error inesperado. Contacta con soporte.\nError: %@";
@@ -2082,7 +2187,7 @@
 "Couldn't open the message, try again." = "No se ha podido abrir el mensaje. Inténtalo de nuevo.";
 
 /* Error message when user open the share extension without account logged in. */
-"Please sign in to the Proton Mail app." = "Inicie sesión en la aplicación de Proton Mail.";
+"Please sign in to the Proton Mail app." = "Inicia sesión en la aplicación de Proton Mail.";
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply (to last message)" = "Responder (al último mensaje)";
@@ -2300,12 +2405,6 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Carpetas, etiquetas y filtros ilimitados";
 
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Establece cuándo un correo electrónico debería de reaparecer en tu bandeja de entrada con la función de pausar, ahora disponible en la barra de herramientas.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Pausar para después";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Añadir como adjunto";
 
@@ -2354,6 +2453,18 @@
 /* settings general section title */
 "Change mailbox password" = "Cambiar contraseña del buzón";
 
+/* Description of a feature of a paid subscription */
+"15 GB storage" = "15 GB de espacio de almacenamiento";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u direcciones de correo electrónico";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Soporte de dominio de correo personalizado";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "Nueva aplicación de escritorio para Proton Mail";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetría anónima";
 
@@ -2365,3 +2476,24 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Si la aplicación no funciona, se enviará un informe a nuestros ingenieros con los detalles del motivo. Solo lo usaremos para mejorar la app.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Mejorar a %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "Para desbloquear más almacenamiento y funciones premium.";
+
+/* Displayed next to the monthly price */
+"/month" = "/mes";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Obtén %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Ahorra un %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "El ID de producto no es válido: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "La compra ya está en progreso.";

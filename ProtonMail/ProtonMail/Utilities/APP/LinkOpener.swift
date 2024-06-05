@@ -44,7 +44,7 @@ enum LinkOpener: String, CaseIterable {
 
     var title: String {
         switch self {
-        case .safari: return "Safari"
+        case .safari: return "System Default"
         case .chrome: return "Chrome"
         case .firefox: return "Firefox"
         case .firefoxFocus: return "Firefox Focus"

@@ -60,17 +60,17 @@ enum SettingsAccountItem: Int, CustomStringConvertible {
     var description: String {
         switch self {
         case .singlePassword:
-            return L11n.AccountSettings.singlePassword
+            return L10n.AccountSettings.singlePassword
         case .loginPassword:
-            return L11n.AccountSettings.loginPassword
+            return L10n.AccountSettings.loginPassword
         case .mailboxPassword:
-            return L11n.AccountSettings.mailboxPassword
+            return L10n.AccountSettings.mailboxPassword
         case .recovery:
-            return L11n.AccountSettings.recoveryEmail
+            return L10n.AccountSettings.recoveryEmail
         case .storage:
-            return L11n.AccountSettings.storage
+            return L10n.AccountSettings.storage
         case .privacyAndData:
-            return L11n.AccountSettings.privacyAndData
+            return L10n.AccountSettings.privacyAndData
         case .accountRecovery:
             return AccountRecoveryModule.settingsItem
         }
@@ -111,7 +111,7 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
     var description: String {
         switch self {
         case .blockList:
-            return L11n.BlockSender.blockListSettingsItem
+            return L10n.BlockSender.blockListSettingsItem
         case .privacy:
             return LocalString._privacy
         case .conversation:
@@ -125,9 +125,9 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
         case .storage:
             return LocalString._local_storage_limit
         case .nextMsgAfterMove:
-            return L11n.NextMsgAfterMove.settingTitle
+            return L10n.NextMsgAfterMove.settingTitle
         case .autoDeleteSpamTrash:
-            return L11n.AutoDeleteSettings.settingTitle
+            return L10n.AutoDeleteSettings.settingTitle
         }
     }
 }
@@ -150,10 +150,7 @@ final class SettingsAccountViewModel {
             items.append(.accountRecovery)
         }
         items.append(.storage)
-
-        #if DEBUG
         items.append(.privacyAndData)
-        #endif
         return items
     }
 

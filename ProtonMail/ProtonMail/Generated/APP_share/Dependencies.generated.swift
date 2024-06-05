@@ -1,5 +1,7 @@
-// Generated using Sourcery 2.1.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.4 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
+// periphery:ignore:all
+
 import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 import ProtonCoreServices
@@ -566,12 +568,12 @@ extension UserContainer: HasFeatureFlagProvider {
     }
 }
 
-protocol HasFetchAndVerifyContacts {
-    var fetchAndVerifyContacts: FetchAndVerifyContacts { get }
+protocol HasFetchAndVerifyContactsUseCase {
+    var fetchAndVerifyContacts: FetchAndVerifyContactsUseCase { get }
 }
 
-extension UserContainer: HasFetchAndVerifyContacts {
-    var fetchAndVerifyContacts: FetchAndVerifyContacts {
+extension UserContainer: HasFetchAndVerifyContactsUseCase {
+    var fetchAndVerifyContacts: FetchAndVerifyContactsUseCase {
         fetchAndVerifyContactsFactory()
     }
 }
@@ -686,12 +688,12 @@ extension UserContainer: HasQueueHandler {
     }
 }
 
-protocol HasTelemetryService {
-    var telemetryService: TelemetryService { get }
+protocol HasTelemetryServiceProtocol {
+    var telemetryService: TelemetryServiceProtocol { get }
 }
 
-extension UserContainer: HasTelemetryService {
-    var telemetryService: TelemetryService {
+extension UserContainer: HasTelemetryServiceProtocol {
+    var telemetryService: TelemetryServiceProtocol {
         telemetryServiceFactory()
     }
 }

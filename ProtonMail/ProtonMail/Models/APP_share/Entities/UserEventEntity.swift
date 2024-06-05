@@ -21,16 +21,12 @@ struct UserEventEntity {
     let userID: UserID
     let eventID: String
     let updateTime: Date?
+}
 
+extension UserEventEntity {
     init(userEvent: UserEvent) {
         self.userID = .init(userEvent.userID)
         self.eventID = userEvent.eventID
         self.updateTime = userEvent.updateTime
-    }
-
-    init(userID: UserID, eventID: String, updateTime: Date?) {
-        self.userID = userID
-        self.eventID = eventID
-        self.updateTime = updateTime
     }
 }

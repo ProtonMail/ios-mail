@@ -32,7 +32,7 @@ extension ICalEvent: EventDefaultNotificationsMetadata {
 
 public struct ICalEvent {
 
-    public struct RawNotification {
+    public struct RawNotification: Equatable {
         public let type: ICalNotificationType
         public let trigger: String
 
@@ -88,6 +88,7 @@ public struct ICalEvent {
     public var isLastOccurrence: Bool = false
     public var numOfSelectedWeeklyOn: Int = 0
     public var ics: String
+    public internal(set) var color: String?
 
     public init(
         calendarId: String,
@@ -133,7 +134,8 @@ public struct ICalEvent {
         isFirstOccurrence _: Bool = false,
         isLastOccurrence _: Bool = false,
         numOfSelectedWeeklyOn: Int = 0,
-        ics: String = ""
+        ics: String = "",
+        color: String?
     ) {
         self.calendarId = calendarId
         self.localEventId = localEventId
@@ -177,6 +179,7 @@ public struct ICalEvent {
         self.mainEventRecurrence = mainEventRecurrence
         self.numOfSelectedWeeklyOn = numOfSelectedWeeklyOn
         self.ics = ics
+        self.color = color
     }
 }
 

@@ -102,18 +102,18 @@ extension ContactsSettingsViewModel {
         var title: String {
             switch self {
             case .combineContacts:
-                L11n.SettingsContacts.combinedContacts
+                L10n.SettingsContacts.combinedContacts
             case .autoImportContacts:
-                L11n.SettingsContacts.autoImportContacts
+                L10n.SettingsContacts.autoImportContacts
             }
         }
 
         var footer: String {
             switch self {
             case .combineContacts:
-                L11n.SettingsContacts.combinedContactsFooter
+                L10n.SettingsContacts.combinedContactsFooter
             case .autoImportContacts:
-                L11n.SettingsContacts.autoImportContactsFooter
+                L10n.SettingsContacts.autoImportContactsFooter
             }
         }
     }

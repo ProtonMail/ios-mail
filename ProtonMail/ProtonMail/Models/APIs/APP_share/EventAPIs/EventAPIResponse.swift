@@ -19,7 +19,6 @@ import Foundation
 import ProtonCoreEventsLoop
 
 struct EventAPIResponse: Decodable, EventPage {
-    let code: Int
     let eventID: String
     let refresh, more: Int
     let notices: [String]
@@ -39,7 +38,6 @@ struct EventAPIResponse: Decodable, EventPage {
     let messages: [MessageResponse]?
 
     private enum CodingKeys: String, CodingKey {
-        case code = "Code"
         case eventID = "EventID"
         case refresh = "Refresh"
         case more = "More"

@@ -229,7 +229,6 @@ class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
         // TODO: better way of passing dependencies other than this or yet another init parameter
         let keychain = user.container.keychain
         self.dependencies = .init(
-            userManager: user,
             updateMobileSignatureUseCase: UpdateMobileSignature(dependencies: .init(coreKeyMaker: coreKeyMaker, cache: userCachedStatus, keychain: keychain)),
             fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: coreKeyMaker, cache: userCachedStatus, keychain: keychain))
         )
@@ -315,7 +314,6 @@ class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
     }
 
     struct Dependencies {
-        let userManager: UserManager
         let updateMobileSignatureUseCase: UpdateMobileSignatureUseCase
         let fetchMobileSignatureUseCase: FetchMobileSignatureUseCase
     }
@@ -369,8 +367,7 @@ class ChangeNotificationEmailViewModel: SettingDetailsViewModel {
             complete(true, nil)
         } else {
             let service = userManager.userService
-            service.updateNotificationEmail(auth: userManager.authCredential,
-                                            user: userManager.userInfo,
+            service.updateNotificationEmail(user: userManager.userInfo,
                                             new_notification_email: new_value,
                                             login_password: password,
                                             twoFACode: tfaCode) { error in

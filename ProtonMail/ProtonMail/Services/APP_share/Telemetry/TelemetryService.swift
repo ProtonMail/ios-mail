@@ -17,7 +17,12 @@
 
 import Foundation
 
-struct TelemetryService {
+// sourcery: mock
+protocol TelemetryServiceProtocol {
+    func sendEvent(_ event: TelemetryEvent) async
+}
+
+struct TelemetryService: TelemetryServiceProtocol {
     typealias Dependencies = AnyObject & HasAPIService & HasUserDefaults
 
     private let userID: UserID
@@ -39,17 +44,21 @@ struct TelemetryService {
 
     func sendEvent(_ event: TelemetryEvent) async {
         guard
-            shouldBuildSendTelemetry,
             isTelemetrySettingOn(),
             frequencyAllowsSending(event: event)
         else { return }
 
         let request = TelemetryRequest(event: event)
-        do {
-            _ = try await dependencies.apiService.perform(request: request)
-            setEventSentAtIfNecessary(event)
-        } catch {
-            SystemLogger.log(error: error)
+
+        if shouldBuildSendTelemetry {
+            do {
+                _ = try await dependencies.apiService.perform(request: request)
+                setEventSentAtIfNecessary(event)
+            } catch {
+                SystemLogger.log(error: error)
+            }
+        } else {
+            SystemLogger.log(message: "Would send telemetry: \(event)")
         }
     }
 }
@@ -93,7 +102,7 @@ extension TelemetryService {
     }
 }
 
-struct TelemetryEvent {
+struct TelemetryEvent: Equatable {
     let measurementGroup: String
     let name: String
     let values: [String: Float]

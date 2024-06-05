@@ -22,20 +22,9 @@
 
 import Foundation
 
-class UserDefaultsSaver<T>: Saver<T> where T: Codable {
-}
-
-extension UserDefaults: KeyValueStoreProvider {
+extension UserDefaults {
     func int(forKey key: String) -> Int? {
         return self.object(forKey: key) as? Int
-    }
-
-    func data(forKey key: String, attributes: [CFString: Any]?) -> Data? {
-        return self.object(forKey: key) as? Data
-    }
-
-    func set(_ data: Data, forKey key: String, attributes: [CFString: Any]?) {
-        self.setValue(data, forKey: key)
     }
 
     func remove(forKey key: String) {

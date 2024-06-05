@@ -46,11 +46,11 @@ extension PinCodeSetupViewModel {
         var errorDescription: String? {
             switch self {
             case .pinTooShort:
-                return L11n.PinCodeSetup.pinTooShortError
+                return L10n.PinCodeSetup.pinTooShortError
             case .pinTooLong:
-                return L11n.PinCodeSetup.pinTooLongError
+                return L10n.PinCodeSetup.pinTooLongError
             case .pinDoesNotMatch:
-                return L11n.PinCodeSetup.pinMustMatch
+                return L10n.PinCodeSetup.pinMustMatch
             case .wrongPinCode:
                 // all of translations has `.` in the end
                 // Remove it

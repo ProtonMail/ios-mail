@@ -418,7 +418,7 @@ extension MailboxCoordinator {
             guard let self = self,
                   let message = message else {
                 self?.viewController?.navigationController?.popViewController(animated: true)
-                L11n.Error.cant_open_message.alertToastBottom()
+                L10n.Error.cant_open_message.alertToastBottom()
                 return
             }
             let messageID = message.messageID
@@ -445,7 +445,7 @@ extension MailboxCoordinator {
                     )
                     guard let conversation = conversation else {
                         self?.viewController?.navigationController?.popViewController(animated: true)
-                        L11n.Error.cant_open_message.alertToastBottom()
+                        L10n.Error.cant_open_message.alertToastBottom()
                         return
                     }
 
@@ -688,7 +688,7 @@ extension MailboxCoordinator: SnoozeSupport {
             }, cancelHandler: { [weak self] in
                 self?._snoozeDateConfigReceiver = nil
             }, showSendInTheFutureAlertHandler: {
-                L11n.Snooze.selectTimeInFuture.alertToastBottom()
+                L10n.Snooze.selectTimeInFuture.alertToastBottom()
             }
         )
         _snoozeDateConfigReceiver = receiver
@@ -702,7 +702,7 @@ extension MailboxCoordinator: SnoozeSupport {
         guard let viewController = self.viewController else { return }
         let dateStr = PMDateFormatter.shared.stringForSnoozeTime(from: date)
 
-        let title = String(format: L11n.Snooze.successBannerTitle, dateStr)
+        let title = String(format: L10n.Snooze.successBannerTitle, dateStr)
         let banner = PMBanner(message: title, style: PMBannerNewStyle.info)
         banner.show(at: PMBanner.onTopOfTheBottomToolBar, on: viewController)
     }

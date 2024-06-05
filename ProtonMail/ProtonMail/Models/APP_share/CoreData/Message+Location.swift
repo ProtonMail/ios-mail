@@ -28,10 +28,6 @@ extension Message {
         case draft = "1" //1 can't be removed
         case sent  = "2" //2 can't be removed
         case outbox = "9"
-
-        var labelID: LabelID {
-            return LabelID(rawValue)
-        }
     }
     
     /// Predefined location. matches with exclusive label id
@@ -70,11 +66,11 @@ extension Message {
             case .scheduled:
                 return LocalString._locations_scheduled_title
             case .blocked:
-                return L11n.BlockSender.blockListScreenTitle
+                return L10n.BlockSender.blockListScreenTitle
             case .almostAllMail:
                 return LocalString._menu_allmail_title
             case .snooze:
-                return L11n.Snooze.title
+                return L10n.Snooze.title
             }
         }
 

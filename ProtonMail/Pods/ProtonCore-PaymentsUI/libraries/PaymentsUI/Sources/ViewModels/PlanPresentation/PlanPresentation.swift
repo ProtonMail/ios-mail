@@ -119,7 +119,7 @@ extension PlanPresentation {
     }
 
     static func getLocale(from plan: InAppPurchasePlan, storeKitManager: StoreKitManagerProtocol) -> Locale? {
-        return plan.planLocale(from: storeKitManager)
+        return plan.priceLocale(from: storeKitManager)
     }
 }
 

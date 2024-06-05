@@ -20,7 +20,7 @@
 
 "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Inicieu la sessió al compte de Proton Mail pel qual esteu millorant el pla per poder completar l'activació del pla.";
 
-"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Estat del token de pagament incorrecte. Torneu a carregar l'aplicació. Si l'error persisteix, contacteu amb suport.";
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Estat del testimoni de pagament incorrecte. Torneu a carregar l'aplicació. Si l'error persisteix, contacteu amb suport.";
 
 "Do you want to activate the purchase for %@ address?" = "Voleu activar la compra per l'adreça %@?";
 

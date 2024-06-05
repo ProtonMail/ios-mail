@@ -36,15 +36,18 @@ struct FeatureFlagProviderImpl: FeatureFlagProvider {
             return override
         }
 
-        return featureFlagsRepository.isEnabled(featureFlag, for: userID.rawValue, reloadValue: reloadValue)
+        if ProcessInfo.isRunningUnitTests {
+            return true
+        } else {
+            return featureFlagsRepository.isEnabled(featureFlag, for: userID.rawValue, reloadValue: reloadValue)
+        }
     }
 
     private func localOverride(for featureFlag: MailFeatureFlag) -> Bool? {
         switch featureFlag {
         case .autoImportContacts:
-            return Application.isDebugOrEnterprise
-        case .snooze:
-            return ProcessInfo.isRunningUnitTests
+            let result = ProcessInfo.isRunningUnitTests ? true : nil
+            return result
         default:
             return nil
         }

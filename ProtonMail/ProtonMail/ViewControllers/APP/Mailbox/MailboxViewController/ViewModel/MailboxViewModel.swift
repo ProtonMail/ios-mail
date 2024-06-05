@@ -20,14 +20,17 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import Combine
 import CoreData
+import LifetimeTracker
 import ProtonCoreDataModel
-import ProtonCoreUtilities
+import ProtonCoreFeatureFlags
+import ProtonCoreLog
 import ProtonCoreServices
 import ProtonCoreUIFoundations
-import ProtonCoreFeatureFlags
+import ProtonCoreUtilities
 import ProtonMailAnalytics
+import ProtonMailUI
 
 struct LabelInfo {
     let name: String
@@ -48,13 +51,18 @@ protocol MailboxViewModelUIProtocol: AnyObject {
 class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, AttachmentPreviewViewModelProtocol {
     typealias Dependencies = HasCheckProtonServerStatus
     & HasFeatureFlagCache
+    & HasFeatureFlagProvider
     & HasFetchAttachmentUseCase
     & HasFetchAttachmentMetadataUseCase
     & HasFetchMessageDetailUseCase
     & HasFetchMessages
     & HasFetchSenderImage
     & HasMailEventsPeriodicScheduler
+    & HasPurchasePlan
+    & HasUpsellPageFactory
+    & HasUpsellOfferProvider
     & HasUpdateMailbox
+    & HasUpsellButtonStateProvider
     & HasUserDefaults
     & HasUserIntroductionProgressProvider
     & HasUsersManager
@@ -108,6 +116,12 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     }
     private(set) var isFirstFetch: Bool = true
 
+    var error: AnyPublisher<Error, Never> {
+        errorSubject.eraseToAnyPublisher()
+    }
+
+    private let errorSubject = PassthroughSubject<Error, Never>()
+
     weak var uiDelegate: MailboxViewModelUIProtocol?
 
     private let dependencies: Dependencies
@@ -133,6 +147,14 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         }
     }
 
+    var reloadRightBarButtons: AnyPublisher<Void, Never> {
+        let publishersThatAffectVisibleButtons: [AnyPublisher] = [
+            upsellButtonVisibilityHasChanged
+        ]
+
+        return Publishers.MergeMany(publishersThatAffectVisibleButtons).eraseToAnyPublisher()
+    }
+
     var isNewEventLoopEnabled: Bool {
         user.isNewEventLoopEnabled
     }
@@ -142,13 +164,11 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
     private(set) var diffableDataSource: MailboxDiffableDataSource?
 
-    var shouldShowMessageNavigationSpotlight: Bool {
-        dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .messageSwipeNavigation, toUserWith: user.userID)
-    }
-
     var isLoggingOut: Bool {
         dependencies.usersManager.loggingOutUserIDs.contains(user.userID)
     }
+
+    private var storageExceedObservation: Cancellable?
 
     init(labelID: LabelID,
          label: LabelInfo?,
@@ -184,9 +204,22 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
 
         super.init()
+        trackLifetime()
         self.setupStorageAlert()
         self.conversationStateProvider.add(delegate: self)
         dependencies.updateMailbox.setup(source: self)
+    }
+
+    func viewDidLoad() {
+        if !hasPreloadedPlanToUpsell && shouldShowUpsellButton {
+            Task {
+                do {
+                    try await dependencies.upsellOfferProvider.update()
+                } catch {
+                    PMLog.error(error)
+                }
+            }
+        }
     }
 
     /// localized navigation title. override it or return label name
@@ -232,8 +265,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         return .init(
             labelId: labelId.rawValue,
             title: .actionSheetTitle(selectedCount: selectedIDs.count, viewMode: locationViewMode),
-            locationViewMode: locationViewMode,
-            isSnoozeEnabled: user.isSnoozeEnabled
+            locationViewMode: locationViewMode
         )
     }
 
@@ -355,50 +387,37 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         dependencies.userDefaults[.lastTourVersion] = Constants.App.TourVersion
     }
 
-    func shouldShowJumpToNextMessageSpotlight() -> Bool {
-        guard !ProcessInfo.isRunningUITests else { return false }
-        // If one of logged in user has seen spotlight, shouldn't show it again
-        let shouldShow = dependencies.usersManager.users
-            .map {
-                dependencies
-                    .userIntroductionProgressProvider
-                    .shouldShowSpotlight(for: .jumpToNextMessage, toUserWith: $0.userID)
-            }
-            .reduce(true) { partialResult, shouldShow in
-                partialResult && shouldShow
-            }
-        return shouldShow
-    }
-
     func shouldShowAutoImportContactsSpotlight() -> Bool {
-        guard
-            user.container.autoImportContactsFeature.isFeatureEnabled,
-            !ProcessInfo.isRunningUITests
-        else { return false }
-        // If one of logged in user has seen spotlight, shouldn't show it again
-        let shouldShow = dependencies.usersManager.users
-            .map {
-                dependencies
-                    .userIntroductionProgressProvider
-                    .shouldShowSpotlight(for: .autoImportContacts, toUserWith: $0.userID)
-            }
-            .reduce(true) { partialResult, shouldShow in
-                partialResult && shouldShow
-            }
-        return shouldShow
+        user.container.autoImportContactsFeature.isFeatureEnabled && shouldShowSpotlight(for: .autoImportContacts)
     }
 
-    func hasSeenJumpToNextMessageSpotlight() {
+    func shouldShowSpotlight(for featureKey: SpotlightableFeatureKey) -> Bool {
+        guard !ProcessInfo.isRunningUITests else { return false }
+
+        if 
+            let remoteFeatureFlag = featureKey.correspondingRemoteFeatureFlag,
+            !dependencies.featureFlagProvider.isEnabled(remoteFeatureFlag, reloadValue: true)
+        {
+            return false
+        }
+
+        // If one of logged in user has seen spotlight, shouldn't show it again
+        return dependencies.usersManager.users.allSatisfy {
+            dependencies
+                .userIntroductionProgressProvider
+                .shouldShowSpotlight(for: featureKey, toUserWith: $0.userID)
+        }
+    }
+
+    func hasSeenSpotlight(for featureKey: SpotlightableFeatureKey) {
         dependencies
             .userIntroductionProgressProvider
-            .markSpotlight(for: .jumpToNextMessage, asSeen: true, byUserWith: user.userID)
+            .markSpotlight(for: featureKey, asSeen: true, byUserWith: user.userID)
     }
 
     func hasSeenAutoImportContactsSpotlight() {
         guard user.container.autoImportContactsFeature.isFeatureEnabled else { return }
-        dependencies
-            .userIntroductionProgressProvider
-            .markSpotlight(for: .autoImportContacts, asSeen: true, byUserWith: user.userID)
+        hasSeenSpotlight(for: .autoImportContacts)
     }
 
     func tagUIModels(for conversation: ConversationEntity) -> [TagUIModel] {
@@ -892,6 +911,12 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         )
         dependencies.importDeviceContacts.execute(params: params)
     }
+
+    func setupStorageObservation(didChanged: @escaping (Bool) -> Void) {
+        storageExceedObservation = user.$isStorageExceeded.sink(receiveValue: { value in
+            didChanged(value)
+        })
+    }
 }
 
 // MARK: - Data fetching methods
@@ -1135,29 +1160,20 @@ extension MailboxViewModel {
 extension MailboxViewModel {
 
     func canSelectMore() -> Bool {
-        if UserInfo.enableSelectAll {
-            let maximum = dependencies.featureFlagCache.featureFlags(for: user.userID)[.mailboxSelectionLimitation]
-            return selectedIDs.count < maximum
-        } else {
-            return true
-        }
+        let maximum = dependencies.featureFlagCache.featureFlags(for: user.userID)[.mailboxSelectionLimitation]
+        return selectedIDs.count < maximum
     }
 
     /// - Returns: Does id allow to be added?
     func select(id: String) -> Bool {
-        if UserInfo.enableSelectAll {
-            let maximum = dependencies.featureFlagCache.featureFlags(for: user.userID)[.mailboxSelectionLimitation]
-            guard selectedIDs.count < maximum else {
-                uiDelegate?.selectionDidChange()
-                return false
-            }
-            self.selectedIDs.insert(id)
+        let maximum = dependencies.featureFlagCache.featureFlags(for: user.userID)[.mailboxSelectionLimitation]
+        guard selectedIDs.count < maximum else {
             uiDelegate?.selectionDidChange()
-            return true
-        } else {
-            selectedIDs.insert(id)
-            return true
+            return false
         }
+        self.selectedIDs.insert(id)
+        uiDelegate?.selectionDidChange()
+        return true
     }
 
     func removeSelected(id: String) {
@@ -1332,10 +1348,10 @@ extension MailboxViewModel {
     }
 
     func alertToConfirmEnabling(completion: @escaping ((Error?) -> Void)) -> UIAlertController {
-        let alert = L11n.AutoDeleteSettings.enableAlertMessage.alertController()
-        alert.title = L11n.AutoDeleteSettings.enableAlertTitle
+        let alert = L10n.AutoDeleteSettings.enableAlertMessage.alertController()
+        alert.title = L10n.AutoDeleteSettings.enableAlertTitle
         let cancelTitle = LocalString._general_cancel_button
-        let confirm = UIAlertAction(title: L11n.AutoDeleteSettings.enableAlertButton, style: .default) { [weak self] _ in
+        let confirm = UIAlertAction(title: L10n.AutoDeleteSettings.enableAlertButton, style: .default) { [weak self] _ in
             guard let self else { return }
             self.updateAutoDeleteSetting(to: true, for: self.user, completion: { error in
                 completion(error)
@@ -1475,6 +1491,76 @@ extension MailboxViewModel {
 
     func startNewEventLoop() {
         dependencies.mailEventsPeriodicScheduler.enableSpecialLoop(forSpecialLoopID: user.userID.rawValue)
+    }
+}
+
+// MARK: - Upsell
+
+extension MailboxViewModel {
+    var isUpsellButtonVisible: Bool {
+        shouldShowUpsellButton && hasPreloadedPlanToUpsell
+    }
+
+    private var shouldShowUpsellButton: Bool {
+        dependencies.upsellButtonStateProvider.shouldShowUpsellButton
+    }
+
+    private var upsellButtonVisibilityHasChanged: AnyPublisher<Void, Never> {
+        dependencies
+            .upsellOfferProvider
+            .$availablePlan
+            .map { [unowned self] plan in
+                /**
+                 We can't use `isUpsellButtonVisible` here: $availablePlan publishes on willSet,
+                 which means `hasPreloadedPlanToUpsell` is based on an outdated value.
+                 */
+                plan != nil && shouldShowUpsellButton
+            }
+            .removeDuplicates()
+            .map { _ in }
+            .eraseToAnyPublisher()
+    }
+
+    private var hasPreloadedPlanToUpsell: Bool {
+        dependencies.upsellOfferProvider.availablePlan != nil
+    }
+
+    func upsellButtonWasTapped() {
+        dependencies.upsellButtonStateProvider.upsellButtonWasTapped()
+    }
+
+    func makeUpsellPageModel() -> UpsellPageModel? {
+        dependencies.upsellOfferProvider.availablePlan.map(dependencies.upsellPageFactory.makeUpsellPageModel)
+    }
+
+    func purchasePlan(storeKitProductId: String) async -> Bool {
+        SystemLogger.log(message: "Will purchase \(storeKitProductId)", category: .iap)
+
+        let result = await dependencies.purchasePlan.execute(storeKitProductId: storeKitProductId)
+
+        switch result {
+        case .planPurchased:
+            SystemLogger.log(message: "Purchase complete", category: .iap)
+
+            await user.fetchUserInfo()
+
+            return true
+        case .error(let error):
+            SystemLogger.log(error: error, category: .iap)
+
+            errorSubject.send(error)
+
+            return false
+        case .cancelled:
+            SystemLogger.log(message: "Purchase cancelled", category: .iap)
+            return false
+        }
+    }
+}
+
+extension MailboxViewModel: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
     }
 }
 

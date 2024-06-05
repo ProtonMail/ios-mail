@@ -22,20 +22,21 @@
 import Foundation
 import ProtonCoreCryptoGoInterface
 
-// public func SrpAuth(version hashVersion: Int,
-//                    userName: String,
-//                    password: String,
-//                    salt: String,
-//                    signedModulus: String,
-//                    serverEphemeral: String) throws -> SrpAuth? {
-//    var error: NSError?
-//    let outAuth = SrpNewAuth(hashVersion, userName, password, salt, signedModulus, serverEphemeral, &error)
-//
-//    if let err = error {
-//        throw err
-//    }
-//    return outAuth
-// }
+public func SrpAuth(version hashVersion: Int,
+                    username: String,
+                    password: String,
+                    salt: String,
+                    signedModulus: String,
+                    serverEphemeral: String) throws -> SrpAuth? {
+    var error: NSError?
+    let passwordSlic = password.data(using: .utf8)
+    let outAuth = CryptoGo.SrpNewAuth(hashVersion, username, passwordSlic, salt, signedModulus, serverEphemeral, &error)
+    
+    if let err = error {
+        throw err
+    }
+    return outAuth
+}
 
 public func SrpAuthForVerifier(_ password: String, _ signedModulus: String, _ rawSalt: Data) throws -> SrpAuth? {
     var error: NSError?

@@ -10,8 +10,8 @@ import fusion
 import ProtonCoreTestingToolkit
 
 fileprivate struct id {
-    static let singlePasswordLabel = L11n.AccountSettings.loginPassword
-    static let recoveryEmailLabel = L11n.AccountSettings.recoveryEmail
+    static let singlePasswordLabel = L10n.AccountSettings.loginPassword
+    static let recoveryEmailLabel = L10n.AccountSettings.recoveryEmail
     static let displayNameLabel = "Display Name"
     static let defaultLabel = LocalString._general_default
     static let signatureLabel = LocalString._settings_signature_title

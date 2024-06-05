@@ -54,43 +54,16 @@ extension UsersManagerProtocol {
     }
 }
 
-/// manager all the users and there services
+// swiftlint:disable force_try
 class UsersManager: UsersManagerProtocol {
-    enum Version: Int {
-        static let version: Int = 1 // this is app cache version
-
-        case ver0 = 0
-        case ver1 = 1
-    }
-
-    // For Migrate protocol
-    var latestVersion: Int
-
-    /// saver for versioning
-    let versionSaver: Saver<Int>
-
     enum CoderKey {
         // tracking the cache version added 1.12.0
         static let Version = "Last.Users.Manager.Version"
 
-        // old
-        static let keychainStore = "keychainStoreKeyProtectedWithMainKey"
         // new
         static let authKeychainStore = "authKeychainStoreKeyProtectedWithMainKey"
-        // old
-        static let userInfo = "userInfoKeyProtectedWithMainKey"
         // new
         static let usersInfo = "usersInfoKeyProtectedWithMainKey"
-
-        // new one, check if user logged in already
-        static let atLeastOneLoggedIn = "UsersManager.AtLeastoneLoggedIn"
-
-        // set at least one password set
-        static let mailboxPassword = "mailboxPasswordKeyProtectedWithMainKey"
-        static let username = "usernameKeyProtectedWithMainKey"
-
-        static let twoFAStatus = "twofaKey"
-        static let userPasswordMode = "userPasswordModeKey"
 
         static let disconnectedUsers = "disconnectedUsers"
         static let mailSettingsStore = "mailSettingsKeyProtectedWithMainKey"
@@ -120,9 +93,6 @@ class UsersManager: UsersManagerProtocol {
 
     init(dependencies: Dependencies) {
         self.doh.status = dependencies.userDefaults[.isDohOn] ? .on : .off
-        /// for migrate
-        self.latestVersion = Version.version
-        self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version, store: dependencies.userDefaults)
         keychain = dependencies.keychain
         coreKeyMaker = dependencies.keyMaker
         self.dependencies = dependencies
@@ -139,8 +109,8 @@ class UsersManager: UsersManagerProtocol {
      - Parameter user: user information
      - Parameter mailSettings: mail settings of the user
      **/
-    func add(auth: AuthCredential, user: UserInfo, mailSettings: MailSettings?) {
-        self.cleanRandomKeyIfNeeded()
+    func add(auth: AuthCredential, user: UserInfo, mailSettings: MailSettings?) throws {
+        try cleanRandomKeyIfNeeded()
         let session = auth.sessionID
         let apiService = PMAPIService.createAPIService(
             doh: doh,
@@ -225,27 +195,13 @@ class UsersManager: UsersManagerProtocol {
         return getUser(by: userID) != nil
     }
 
-    // tempery mirgration. will change this to version check
-    func hasUserName() -> Bool {
-        dependencies.userDefaults.data(forKey: CoderKey.username) != nil
-    }
-
     func tryRestore() {
         // try new version first
         guard coreKeyMaker.mainKey(by: keychain.randomPinProtection) != nil else {
             return
         }
 
-        if let result = loadUserDataInLegacyFormatFromCache() {
-            let oldAuth = result.auth
-            let oldUserInfo = result.userInfo
-
-            let user = createUserFromLegacyData(auth: oldAuth, userInfo: oldUserInfo)
-            self.users.append(user)
-            self.save()
-
-            clearLegacyData()
-        } else if let result = loadUserDataFromCache() {
+        if let result = try! loadUserDataFromCache() {
             self.users.removeAll()
 
             for cachedUserData in result {
@@ -289,7 +245,6 @@ class UsersManager: UsersManagerProtocol {
         }
 
         self.users.first?.cacheService.cleanSoftDeletedMessagesAndConversation()
-        self.loggedIn()
     }
 
     func save() {
@@ -311,7 +266,7 @@ class UsersManager: UsersManagerProtocol {
         // Check MAILIOS-854, MAILIOS-1208
         dependencies.userDefaults.set(lockedUsers.encryptedValue, forKey: CoderKey.usersInfo)
         dependencies.userDefaults.synchronize()
-        keychain.remove(forKey: CoderKey.authKeychainStore)
+        try! keychain.removeOrError(forKey: CoderKey.authKeychainStore)
 
         var mailSettingsList: [String: MailSettings] = [:]
         users.forEach { user in
@@ -464,12 +419,8 @@ extension UsersManager {
             self.dependencies.userDefaults.remove(forKey: CoderKey.usersInfo)
             self.dependencies.userDefaults.remove(forKey: CoderKey.authKeychainStore)
             self.dependencies.featureFlagsRepository.resetFlags()
-            self.keychain.remove(forKey: CoderKey.keychainStore)
-            self.keychain.remove(forKey: CoderKey.authKeychainStore)
-            self.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
-            self.keychain.remove(forKey: CoderKey.disconnectedUsers)
-
-            self.currentVersion = self.latestVersion
+            try! self.keychain.removeOrError(forKey: CoderKey.authKeychainStore)
+            try! self.keychain.removeOrError(forKey: CoderKey.disconnectedUsers)
 
             self.dependencies.userCachedStatus.cleanAllData()
 
@@ -494,37 +445,19 @@ extension UsersManager {
         // Have this value after 1.12.0
         let hasUsersInfo = dependencies.userDefaults.value(forKey: CoderKey.usersInfo) != nil
 
-        // Workaround to fix MAILIOS-150
-        // Method that checks signin or not before 1.11.17
-        let isMailboxPasswordStored = keychain.data(forKey: CoderKey.mailboxPassword) != nil
-        let isSignIn = hasUserName() && isMailboxPasswordStored
-
-        let authKeychainStore = keychain.data(forKey: CoderKey.authKeychainStore)
+        let authKeychainStore = try! keychain.dataOrError(forKey: CoderKey.authKeychainStore)
         let authUserDefaultStore = dependencies.userDefaults.data(forKey: CoderKey.authKeychainStore)
 
-        let hasUsers = (authKeychainStore != nil || authUserDefaultStore != nil) && (hasUsersInfo || isSignIn)
+        let hasUsers = (authKeychainStore != nil || authUserDefaultStore != nil)
 
         let message = """
         UsersManager.hasUsers \(hasUsers) - \
         authKeychainStore: \(authKeychainStore != nil); authUserDefaultStore: \(authUserDefaultStore != nil); \
-        hasUsersInfo: \(hasUsersInfo); isSignIn: \(isSignIn)
+        hasUsersInfo: \(hasUsersInfo);
         """
         Breadcrumbs.shared.add(message: message, to: .randomLogout)
 
         return hasUsers
-    }
-
-    var isPasswordStored: Bool {
-        return keychain.data(forKey: CoderKey.mailboxPassword) != nil ||
-            keychain.string(forKey: CoderKey.atLeastOneLoggedIn) != nil
-    }
-
-    var isMailboxPasswordStored: Bool {
-        return keychain.string(forKey: CoderKey.atLeastOneLoggedIn) != nil
-    }
-
-    func loggedIn() {
-        keychain.set("LoggedIn", forKey: CoderKey.atLeastOneLoggedIn)
     }
 
     struct CachedUserData {
@@ -533,13 +466,13 @@ extension UsersManager {
         let mailSettings: MailSettings?
     }
 
-    private func loadUserDataFromCache() -> [CachedUserData]? {
+    private func loadUserDataFromCache() throws -> [CachedUserData]? {
         guard let mainKey = coreKeyMaker.mainKey(by: keychain.randomPinProtection) else {
             SystemLogger.log(message: "Can not found mainkey", category: .restoreUserData, isError: true)
             return nil
         }
         let authDataInUserDefault = dependencies.userDefaults.data(forKey: CoderKey.authKeychainStore)
-        let authDataInKeyChain = keychain.data(forKey: CoderKey.authKeychainStore)
+        let authDataInKeyChain = try keychain.dataOrError(forKey: CoderKey.authKeychainStore)
         guard let encryptedAuthData = authDataInUserDefault ?? authDataInKeyChain else {
             SystemLogger.log(message: "Can not found encryptedAuthData", category: .restoreUserData, isError: true)
             return nil
@@ -549,9 +482,9 @@ extension UsersManager {
         let authCredentialsFromNSCoding = try? lockedAuthData.unlock(with: mainKey)
 
         guard let authCredentials: [AuthCredential] = authCredentialsFromNSCoding else {
-            dependencies.userDefaults.remove(forKey: CoderKey.authKeychainStore)
-            keychain.remove(forKey: CoderKey.authKeychainStore)
             SystemLogger.log(message: "Can not found authCredentials", category: .restoreUserData, isError: true)
+            dependencies.userDefaults.remove(forKey: CoderKey.authKeychainStore)
+            try keychain.removeOrError(forKey: CoderKey.authKeychainStore)
             return nil
         }
 
@@ -626,10 +559,10 @@ extension UsersManager {
      Persisted until logout of last user, protected with MainKey. */
     var disconnectedUsers: [DisconnectedUserHandle] {
         get {
-            dependencies.cachedUserDataProvider.fetchDisconnectedUsers()
+            try! dependencies.cachedUserDataProvider.fetchDisconnectedUsers()
         }
         set {
-            dependencies.cachedUserDataProvider.set(disconnectedUsers: newValue)
+            try! dependencies.cachedUserDataProvider.set(disconnectedUsers: newValue)
         }
     }
 
@@ -638,257 +571,15 @@ extension UsersManager {
     }
 }
 
-// MARK: - Legacy format user data
-extension UsersManager {
-    private func createUserFromLegacyData(auth: AuthCredential, userInfo: UserInfo) -> UserManager {
-        let sessionID = auth.sessionID
-        let apiService = PMAPIService.createAPIService(
-            doh: doh,
-            sessionUID: sessionID,
-            challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
-        )
-        apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
-#if !APP_EXTENSION
-        apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
-        apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
-#endif
-        if let oldMailBoxPassword = oldMailboxPassword() {
-            auth.update(password: oldMailBoxPassword)
-        }
-        userInfo.twoFactor = dependencies.userDefaults.integer(forKey: CoderKey.twoFAStatus)
-        userInfo.passwordMode = dependencies.userDefaults.integer(forKey: CoderKey.userPasswordMode)
-        let user = makeUser(
-            api: apiService,
-            userInfo: userInfo,
-            authCredential: auth,
-            mailSettings: nil
-        )
-        user.delegate = self
-        return user
-    }
-
-    /// Load user data in the format of legacy app like the version without multi-user support.
-    /// - Returns: tuple that contains auth and user info.
-    private func loadUserDataInLegacyFormatFromCache() -> (auth: AuthCredential, userInfo: UserInfo)? {
-        guard let auth = oldAuthFetch(), let userInfo = oldUserInfo() else {
-            return nil
-        }
-        return (auth, userInfo)
-    }
-
-    func clearLegacyData() {
-        dependencies.userDefaults.remove(forKey: CoderKey.twoFAStatus)
-        dependencies.userDefaults.remove(forKey: CoderKey.userPasswordMode)
-        dependencies.userDefaults.remove(forKey: CoderKey.username)
-        dependencies.userDefaults.remove(forKey: CoderKey.userInfo)
-        keychain.remove(forKey: CoderKey.keychainStore)
-    }
-
-    private func oldUserInfo() -> UserInfo? {
-        guard let mainKey = coreKeyMaker.mainKey(by: keychain.randomPinProtection),
-              let cypherData = dependencies.userDefaults.data(forKey: CoderKey.userInfo)
-        else {
-            return nil
-        }
-
-        let locked = Locked<UserInfo>(encryptedValue: cypherData)
-        return try? locked.unlock(with: mainKey)
-    }
-
-    private func oldAuthFetch() -> AuthCredential? {
-        guard let mainKey = coreKeyMaker.mainKey(by: keychain.randomPinProtection),
-              let encryptedData = keychain.data(forKey: CoderKey.keychainStore),
-              case let locked = Locked<Data>(encryptedValue: encryptedData),
-              let data = try? locked.unlock(with: mainKey),
-              let authCredential = AuthCredential.unarchive(data: data as NSData)
-        else {
-            return nil
-        }
-        return authCredential
-    }
-
-    private func oldMailboxPassword() -> String? {
-        guard let cypherBits = keychain.data(forKey: CoderKey.mailboxPassword),
-              let key = coreKeyMaker.mainKey(by: keychain.randomPinProtection)
-        else {
-            return nil
-        }
-        let locked = Locked<String>(encryptedValue: cypherBits)
-        return try? locked.unlock(with: key)
-    }
-}
-
 // MARK: - Legacy crypto functions
 extension UsersManager {
-    // swiftlint:disable:next cyclomatic_complexity function_body_length
-    func migrate_0_1() -> Bool {
-        guard let mainKey = coreKeyMaker.mainKey(by: keychain.randomPinProtection) else {
-            return false
-        }
-
-        if let legacyPwd = self.oldMailboxPasswordLegacy(),
-           let locked = try? Locked(clearValue: legacyPwd, with: mainKey) {
-            keychain.set(locked.encryptedValue, forKey: CoderKey.mailboxPassword)
-        }
-        if let legacyName = oldUserNameLegacy(), let locked = try? Locked(clearValue: legacyName, with: mainKey) {
-            keychain.set(locked.encryptedValue, forKey: CoderKey.username)
-        }
-
-        // check the older auth and older user format first
-        if let oldAuth = oldAuthFetchLegacy(), let user = oldUserInfoLegacy() {
-            let session = oldAuth.sessionID
-            let apiService = PMAPIService.createAPIService(
-                doh: doh,
-                sessionUID: session,
-                challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
-            )
-            apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
-            #if !APP_EXTENSION
-            apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
-            apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
-            #endif
-            let newUser = makeUser(
-                api: apiService,
-                userInfo: user,
-                authCredential: oldAuth,
-                mailSettings: nil
-            )
-            newUser.delegate = self
-            if let pwd = oldMailboxPassword() {
-                oldAuth.update(password: pwd)
-            }
-            user.twoFactor = dependencies.userDefaults.integer(forKey: CoderKey.twoFAStatus)
-            user.passwordMode = dependencies.userDefaults.integer(forKey: CoderKey.userPasswordMode)
-            self.users.append(newUser)
-            self.save()
-            // Then clear lagcy
-            dependencies.userDefaults.remove(forKey: CoderKey.username)
-            keychain.remove(forKey: CoderKey.keychainStore)
-            // save to newer version.
-            return true
-        } else {
-            guard let encryptedAuthData = keychain.data(forKey: CoderKey.authKeychainStore) else {
-                return false
-            }
-            let authlocked = Locked<[AuthCredential]>(encryptedValue: encryptedAuthData)
-            guard let auths = try? authlocked.lagcyUnlock(with: mainKey) else {
-                return false
-            }
-
-            guard let encryptedUsersData = dependencies.userDefaults.data(forKey: CoderKey.usersInfo) else {
-                return false
-            }
-
-            let userslocked = Locked<[UserInfo]>(encryptedValue: encryptedUsersData)
-            guard let userinfos = try? userslocked.lagcyUnlock(with: mainKey) else {
-                return false
-            }
-
-            guard userinfos.count == auths.count else {
-                return false
-            }
-
-            if !self.users.isEmpty {
-                return false
-            }
-
-            for (auth, user) in zip(auths, userinfos) {
-                let session = auth.sessionID
-                let apiService = PMAPIService.createAPIService(
-                    doh: self.doh,
-                    sessionUID: session,
-                    challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
-                )
-                apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
-                #if !APP_EXTENSION
-                apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
-                apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
-                #endif
-                let newUser = makeUser(
-                    api: apiService,
-                    userInfo: user,
-                    authCredential: auth,
-                    mailSettings: nil
-                )
-                newUser.delegate = self
-                self.users.append(newUser)
-            }
-
-            // save to the newer version
-            self.save()
-
-            let disconnectedUsers = self.disconnectedUsersLegacy()
-            if let data = try? JSONEncoder().encode(disconnectedUsers),
-               let locked = try? Locked(clearValue: data, with: mainKey) {
-                keychain.set(locked.encryptedValue, forKey: CoderKey.disconnectedUsers)
-            }
-            return true
-        }
-    }
-
-    func oldAuthFetchLegacy() -> AuthCredential? {
-        guard let mainKey = coreKeyMaker.mainKey(by: keychain.randomPinProtection),
-              let encryptedData = keychain.data(forKey: CoderKey.keychainStore),
-              case let locked = Locked<Data>(encryptedValue: encryptedData),
-              let data = try? locked.lagcyUnlock(with: mainKey),
-              let authCredential = AuthCredential.unarchive(data: data as NSData)
-        else {
-            return nil
-        }
-        return authCredential
-    }
-
-    private func oldUserInfoLegacy() -> UserInfo? {
-        guard let mainKey = coreKeyMaker.mainKey(by: keychain.randomPinProtection),
-              let cypherData = dependencies.userDefaults.data(forKey: CoderKey.userInfo)
-        else {
-            return nil
-        }
-        let locked = Locked<UserInfo>(encryptedValue: cypherData)
-        return try? locked.lagcyUnlock(with: mainKey)
-    }
-
-    private func oldMailboxPasswordLegacy() -> String? {
-        guard let cypherBits = keychain.data(forKey: CoderKey.mailboxPassword),
-              let key = coreKeyMaker.mainKey(by: keychain.randomPinProtection)
-        else {
-            return nil
-        }
-        let locked = Locked<String>(encryptedValue: cypherBits)
-        return try? locked.lagcyUnlock(with: key)
-    }
-
-    private func oldUserNameLegacy() -> String? {
-        guard let mainKey = coreKeyMaker.mainKey(by: keychain.randomPinProtection),
-              let cypherData = dependencies.userDefaults.data(forKey: CoderKey.username)
-        else {
-            return nil
-        }
-
-        let locked = Locked<String>(encryptedValue: cypherData)
-        return try? locked.lagcyUnlock(with: mainKey)
-    }
-
-    func disconnectedUsersLegacy() -> [DisconnectedUserHandle] {
-        // this locking/unlocking can be refactored to be @propertyWrapper on Swift 5.1
-        guard let mainKey = coreKeyMaker.mainKey(by: keychain.randomPinProtection),
-              let encryptedData = keychain.data(forKey: CoderKey.disconnectedUsers),
-              case let locked = Locked<Data>(encryptedValue: encryptedData),
-              let data = try? locked.lagcyUnlock(with: mainKey),
-              let loggedOutUserHandles = try? JSONDecoder().decode([DisconnectedUserHandle].self, from: data)
-        else {
-            return []
-        }
-        return loggedOutUserHandles
-    }
-
-    func cleanRandomKeyIfNeeded() {
+    private func cleanRandomKeyIfNeeded() throws {
         // Random key status is in the key chain
         // That means if the users delete the app
         // The key chain could keep the old data
         // If there is not user data, remove the random protection
         let dataInUserDefault = dependencies.userDefaults.data(forKey: CoderKey.authKeychainStore)
-        let dataInKeyChain = keychain.data(forKey: CoderKey.authKeychainStore)
+        let dataInKeyChain = try keychain.dataOrError(forKey: CoderKey.authKeychainStore)
         guard dataInUserDefault != nil || dataInKeyChain != nil,
               !self.users.isEmpty
         else {

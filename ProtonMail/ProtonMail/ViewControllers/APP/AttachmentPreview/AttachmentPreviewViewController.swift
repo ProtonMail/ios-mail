@@ -35,7 +35,7 @@ class AttachmentPreviewViewController: ProtonMailViewController {
 
     func showAttachmentPreviewBanner(at indexPath: IndexPath, index: Int) {
         let downloadBanner = PMBanner(
-            message: L11n.AttachmentPreview.downloadingAttachment,
+            message: L10n.AttachmentPreview.downloadingAttachment,
             style: PMBannerNewStyle.info
         )
         downloadBanner.addButton(text: LocalString._general_cancel_button) { [weak self, weak downloadBanner] _ in
@@ -67,7 +67,7 @@ class AttachmentPreviewViewController: ProtonMailViewController {
 
     func showAttachment(from file: SecureTemporaryFile) {
         guard QuickLookPresenter.canPreviewItem(at: file.url), let navigationController else {
-            let banner = PMBanner(message: L11n.AttachmentPreview.cannotPreviewMessage,
+            let banner = PMBanner(message: L10n.AttachmentPreview.cannotPreviewMessage,
                                   style: PMBannerNewStyle.info)
             banner.show(at: .bottom, on: self)
             return

@@ -51,3 +51,61 @@ public enum DynamicPlansHTTPResponseCodeStatus: String, Encodable, CaseIterable 
     case http5xx
     case unknown
 }
+
+public enum AcccountRecoveryCancellationHTTPResponseCodeStatus: String, Encodable, CaseIterable {
+    case cancellation
+    case connectionError
+    case http1xx
+    case http200
+    case http2xx
+    case http3xx
+    case http400
+    case http4xx
+    case http5xx
+    case notConnected
+    case parseError
+    case sslError
+    case unknown
+    case wrongPassword
+    case tooManyRequests
+}
+
+public enum PushNotificationsHTTPResponseCodeStatus: String, Encodable, CaseIterable {
+    case http1xx
+    case http200
+    case http2xx
+    case http3xx
+    case http400
+    case http401
+    case http403
+    case http408
+    case http421
+    case http422
+    case http4xx
+    case http500
+    case http503
+    case http5xx
+    case connectionError
+    case sslError
+    case unknown
+}
+
+public enum PushNotificationsPermissionsResponse: String, Encodable, CaseIterable {
+    case accepted
+    case rejected
+}
+
+public enum PushNotificationsReceivedResult: String, Encodable, CaseIterable {
+    case handled
+    case ignored
+}
+
+public enum ApplicationStatus: String, Encodable, CaseIterable {
+    case active
+    case inactive
+}
+
+public enum TwoFactorMode: String, Encodable, CaseIterable {
+    case enabled
+    case disabled
+}

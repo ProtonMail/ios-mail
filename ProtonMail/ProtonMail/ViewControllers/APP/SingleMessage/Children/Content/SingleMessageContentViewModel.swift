@@ -71,7 +71,6 @@ class SingleMessageContentViewModel {
 
     private let internetStatusProvider: InternetConnectionStatusProviderProtocol
     private let messageService: MessageDataService
-    private let observerID = UUID()
 
     var isExpanded = false {
         didSet { isExpanded ? createExpandedHeaderViewModel() : createNonExpandedHeaderViewModel() }
@@ -406,17 +405,9 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
 
     func updateAttachments() {
         let messageHeaders = messageInfoProvider.message.parsedHeaders
-        let basicEventInfo: BasicEventInfo?
-
-        if let eventUID = messageHeaders[MessageHeaderKey.pmCalendarEventUID] as? String {
-            let recurrenceID = messageHeaders[MessageHeaderKey.pmCalendarOccurrence] as? Int
-            basicEventInfo = .init(eventUID: eventUID, recurrenceID: recurrenceID)
-        } else {
-            basicEventInfo = nil
-        }
 
         DispatchQueue.main.async {
-            self.attachmentViewModel.basicEventInfoSourcedFromHeaders = basicEventInfo
+            self.attachmentViewModel.basicEventInfoSourcedFromHeaders = .init(messageHeaders: messageHeaders)
 
             self.attachmentViewModel.attachmentHasChanged(
                 nonInlineAttachments: self.messageInfoProvider.nonInlineAttachments.map(AttachmentNormal.init),

@@ -20,8 +20,8 @@ import ProtonCoreKeymaker
 
 // sourcery: mock
 protocol CachedUserDataProvider {
-    func set(disconnectedUsers: [UsersManager.DisconnectedUserHandle])
-    func fetchDisconnectedUsers() -> [UsersManager.DisconnectedUserHandle]
+    func set(disconnectedUsers: [UsersManager.DisconnectedUserHandle]) throws
+    func fetchDisconnectedUsers() throws -> [UsersManager.DisconnectedUserHandle]
 }
 
 class UserDataCache: CachedUserDataProvider {
@@ -32,26 +32,23 @@ class UserDataCache: CachedUserDataProvider {
     private let keyMaker: KeyMakerProtocol
     private let keychain: Keychain
 
-    init(
-        keyMaker: KeyMakerProtocol,
-        keychain: Keychain
-    ) {
+    init(keyMaker: KeyMakerProtocol, keychain: Keychain) {
         self.keyMaker = keyMaker
         self.keychain = keychain
     }
 
-    func set(disconnectedUsers: [UsersManager.DisconnectedUserHandle]) {
+    func set(disconnectedUsers: [UsersManager.DisconnectedUserHandle]) throws {
         guard let mainKey = keyMaker.mainKey(by: keychain.randomPinProtection),
               let data = try? JSONEncoder().encode(disconnectedUsers),
               let locked = try? Locked(clearValue: data, with: mainKey) else {
             return
         }
-        keychain.set(locked.encryptedValue, forKey: Constant.disconnectedUsers)
+        try keychain.setOrError(locked.encryptedValue, forKey: Constant.disconnectedUsers)
     }
 
-    func fetchDisconnectedUsers() -> [UsersManager.DisconnectedUserHandle] {
+    func fetchDisconnectedUsers() throws -> [UsersManager.DisconnectedUserHandle] {
         guard let mainKey = keyMaker.mainKey(by: keychain.randomPinProtection),
-              let encryptedData = keychain.data(forKey: Constant.disconnectedUsers),
+              let encryptedData = try keychain.dataOrError(forKey: Constant.disconnectedUsers),
               case let locked = Locked<Data>(encryptedValue: encryptedData),
               let data = try? locked.unlock(with: mainKey),
               let loggedOutUserHandles = try? JSONDecoder().decode(

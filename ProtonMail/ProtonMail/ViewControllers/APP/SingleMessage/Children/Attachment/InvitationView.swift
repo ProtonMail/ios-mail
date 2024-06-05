@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreUIFoundations
+import ProtonInboxRSVP
 
 final class InvitationView: UIView {
     private let container = SubviewFactory.container
@@ -25,6 +26,7 @@ final class InvitationView: UIView {
     private let widgetDetailsContainer = SubviewFactory.widgetDetailsContainer
     private let titleLabel = SubviewFactory.titleLabel
     private let timeLabel = SubviewFactory.timeLabel
+    private let optionalAttendanceLabel = SubviewFactory.optionalAttendanceLabel
     private let statusContainer = SubviewFactory.statusContainer
     private let statusLabel = SubviewFactory.statusLabel
     private let respondingViewContainer = SubviewFactory.respondingViewContainer
@@ -36,7 +38,7 @@ final class InvitationView: UIView {
 
     var onIntrinsicHeightChanged: (() -> Void)?
     var onParticipantTapped: ((String) -> Void)?
-    var onInvitationAnswered: ((InvitationAnswer) -> Void)?
+    var onInvitationAnswered: ((AttendeeStatusDisplay) -> Void)?
     var onOpenInCalendarTapped: ((URL) -> Void)?
 
     private var viewModel: InvitationViewModel? {
@@ -73,6 +75,7 @@ final class InvitationView: UIView {
 
         widgetDetailsContainer.addArrangedSubview(titleLabel)
         widgetDetailsContainer.addArrangedSubview(timeLabel)
+        widgetDetailsContainer.addArrangedSubview(optionalAttendanceLabel)
 
         statusContainer.addSubview(statusLabel)
         respondingViewContainer.addSubviews(respondingViewStackView)
@@ -113,8 +116,9 @@ final class InvitationView: UIView {
     func populate(with eventDetails: EventDetails) {
         let viewModel = InvitationViewModel(eventDetails: eventDetails)
 
-        titleLabel.set(text: eventDetails.title, preferredFont: .body, weight: .bold, textColor: viewModel.titleColor)
+        titleLabel.set(text: viewModel.title, preferredFont: .body, weight: .bold, textColor: viewModel.titleColor)
         timeLabel.set(text: viewModel.durationString, preferredFont: .subheadline, textColor: viewModel.titleColor)
+        optionalAttendanceLabel.isHidden = viewModel.isOptionalAttendanceLabelHidden
         statusLabel.set(text: viewModel.statusString, preferredFont: .subheadline, textColor: viewModel.titleColor)
         statusContainer.isHidden = viewModel.isStatusViewHidden
 
@@ -126,6 +130,11 @@ final class InvitationView: UIView {
         )
 
         detailsContainer.clearAllViews()
+
+        if let recurrence = eventDetails.recurrence {
+            detailsContainer.addArrangedSubview(SubviewFactory.recurrenceRow(recurrence: recurrence))
+        }
+
         detailsContainer.addArrangedSubview(SubviewFactory.calendarRow(calendar: eventDetails.calendar))
 
         if let location = eventDetails.location {
@@ -172,8 +181,10 @@ final class InvitationView: UIView {
         onIntrinsicHeightChanged?()
     }
 
-    private func respondingActions(except answerToExclude: InvitationAnswer? = nil) -> [UIAction] {
-        InvitationAnswer.allCases.filter { $0 != answerToExclude }.map { option in
+    private func respondingActions(except answerToExclude: AttendeeStatusDisplay? = nil) -> [UIAction] {
+        let orderedOptions: [AttendeeStatusDisplay] = [.yes, .no, .maybe]
+
+        return orderedOptions.filter { $0 != answerToExclude }.map { option in
             UIAction(title: option.shortTitle) { [weak self] _ in
                 self?.onInvitationAnswered?(option)
             }
@@ -192,7 +203,7 @@ final class InvitationView: UIView {
             let titleColorAttribute: [NSAttributedString.Key: UIColor] = [.foregroundColor: ColorProvider.TextNorm]
             let subtitleColorAttribute: [NSAttributedString.Key: UIColor] = [.foregroundColor: ColorProvider.TextWeak]
             let title = NSMutableAttributedString(string: "\(organizer.email)\n", attributes: titleColorAttribute)
-            let subtitle = NSAttributedString(string: L11n.Event.organizer, attributes: subtitleColorAttribute)
+            let subtitle = NSAttributedString(string: L10n.Event.organizer, attributes: subtitleColorAttribute)
             title.append(subtitle)
 
             let organizerButton = makeParticipantButton(participant: organizer)
@@ -284,6 +295,14 @@ private struct SubviewFactory {
         return view
     }
 
+    static var optionalAttendanceLabel: UILabel {
+        let view = UILabel()
+        view.adjustsFontSizeToFitWidth = true
+        view.setContentCompressionResistancePriority(.required, for: .vertical)
+        view.set(text: L10n.Event.attendanceOptional, preferredFont: .footnote, textColor: ColorProvider.TextWeak)
+        return view
+    }
+
     static var statusContainer: UIView {
         UIView()
     }
@@ -308,7 +327,7 @@ private struct SubviewFactory {
     static var attendingPromptLabel: UILabel {
         let view = UILabel()
         view.set(
-            text: L11n.Event.attendingPrompt,
+            text: L10n.Event.attendingPrompt,
             preferredFont: .footnote,
             weight: .bold,
             textColor: ColorProvider.TextNorm
@@ -353,7 +372,7 @@ private struct SubviewFactory {
     static var openInCalendarButton: UIButton {
         let view = UIButton()
         view.titleLabel?.set(text: nil, preferredFont: .footnote)
-        view.setTitle(L11n.ProtonCalendarIntegration.openInCalendar, for: .normal)
+        view.setTitle(L10n.ProtonCalendarIntegration.openInCalendar, for: .normal)
         view.setTitleColor(ColorProvider.TextAccent, for: .normal)
         return view
     }
@@ -362,6 +381,15 @@ private struct SubviewFactory {
         let view = genericStackView
         view.spacing = 8
         return view
+    }
+
+    static func recurrenceRow(recurrence: String) -> UIView {
+        let row = row(icon: \.arrowsRotate)
+
+        let label = detailsLabel(text: recurrence)
+        row.contentStackView.addArrangedSubview(label)
+
+        return row
     }
 
     static func calendarRow(calendar: EventDetails.Calendar) -> UIView {
@@ -422,6 +450,7 @@ private struct SubviewFactory {
 
     static func detailsLabel(text: String, textColor: UIColor = ColorProvider.TextNorm) -> UILabel {
         let view = UILabel()
+        view.numberOfLines = 0
         view.set(text: text, preferredFont: .footnote, textColor: textColor)
         return view
     }
@@ -431,26 +460,26 @@ private extension UIAction.Identifier {
     static let openInCalendar = Self(rawValue: "ch.protonmail.protonmail.action.openInCalendar")
 }
 
-private extension InvitationAnswer {
+private extension AttendeeStatusDisplay {
     var shortTitle: String {
         switch self {
         case .yes:
-            return L11n.Event.yesShort
+            return L10n.Event.yesShort
         case .no:
-            return L11n.Event.noShort
+            return L10n.Event.noShort
         case .maybe:
-            return L11n.Event.maybeShort
+            return L10n.Event.maybeShort
         }
     }
 
     var longTitle: String {
         switch self {
         case .yes:
-            return L11n.Event.yesLong
+            return L10n.Event.yesLong
         case .no:
-            return L11n.Event.noLong
+            return L10n.Event.noLong
         case .maybe:
-            return L11n.Event.maybeLong
+            return L10n.Event.maybeLong
         }
     }
 }

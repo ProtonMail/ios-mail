@@ -68,6 +68,7 @@ public struct SignupParameters {
     }
 }
 
+@available(*, deprecated, message: "SignupPasswordRestrictions is deprecated. Use PasswordRestrictions in ProtonCore-Utilities")
 public struct SignupPasswordRestrictions: OptionSet {
     public let rawValue: Int
     public init(rawValue: Int) { self.rawValue = rawValue }

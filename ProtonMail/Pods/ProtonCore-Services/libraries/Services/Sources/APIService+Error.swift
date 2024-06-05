@@ -73,6 +73,7 @@ public class APIErrorCode {
     public static let switchToSRPError = 8101
     public static let humanVerificationRequired = 9001
     public static let deviceVerificationRequired = 9002
+    public static let lockedScopeRequired = 9101
     public static let invalidVerificationCode = 12087
     public static let tooManyVerificationCodes = 12214
     public static let tooManyFailedVerificationAttempts = 85131

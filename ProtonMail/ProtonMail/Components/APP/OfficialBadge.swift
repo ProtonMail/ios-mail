@@ -26,7 +26,7 @@ final class OfficialBadge: PaddingLabel {
         backgroundColor = ColorProvider.BackgroundSecondary
 
         set(
-            text: L11n.OfficialBadge.title,
+            text: L10n.OfficialBadge.title,
             preferredFont: .footnote,
             weight: .semibold,
             textColor: ColorProvider.TextAccent

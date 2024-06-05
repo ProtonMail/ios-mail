@@ -28,7 +28,7 @@ class Analytics {
     static var shared = Analytics()
 
     enum Environment: String {
-        case production, enterprise
+        case production
     }
 
     private(set) var isEnabled = false
@@ -38,26 +38,21 @@ class Analytics {
     }
 
     private let analytics: ProtonMailAnalyticsProtocol
+    private var env: Environment = .production
 
     init(analytics: ProtonMailAnalyticsProtocol = ProtonMailAnalytics(endPoint: Analytics.sentryEndpoint)) {
         self.analytics = analytics
     }
 
-    func setup(isInDebug: Bool, environment: Environment) {
-        if isInDebug {
-            disableAnalytics()
-        } else {
-            analytics.setup(environment: environment.rawValue, debug: false)
-            enableAnalytics()
-        }
-    }
-
-    func disableAnalytics() {
-        isEnabled = false
-    }
-
-    func enableAnalytics() {
-        isEnabled = true
+    func setup(environment: Environment, reportCrashes: Bool, telemetry: Bool) {
+        env = environment
+        isEnabled = telemetry
+        analytics.setup(
+            environment: environment.rawValue,
+            debug: false,
+            reportCrashes: reportCrashes,
+            telemetry: telemetry
+        )
     }
 
     func assignUser(userID: UserID?) {

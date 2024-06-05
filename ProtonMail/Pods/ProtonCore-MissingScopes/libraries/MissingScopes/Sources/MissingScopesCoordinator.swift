@@ -93,6 +93,10 @@ public class MissingScopesCoordinator: MissingScopesCoordinatorDelegate {
 }
 
 extension MissingScopesCoordinator: PasswordVerifierViewControllerDelegate {
+    public func didShowWrongPassword() {
+        // noop
+    }
+    
     public func userUnlocked() {
         completion(.unlocked)
     }

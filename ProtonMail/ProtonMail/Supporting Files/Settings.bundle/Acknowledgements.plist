@@ -220,6 +220,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>Acknowledgements/ProtonCore-Features</string>
+			<key>Title</key>
+			<string>ProtonCore-Features</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>Acknowledgements/ProtonCore-ForceUpgrade</string>
 			<key>Title</key>
 			<string>ProtonCore-ForceUpgrade</string>
@@ -263,6 +271,14 @@
 			<string>Acknowledgements/ProtonCore-Keymaker</string>
 			<key>Title</key>
 			<string>ProtonCore-Keymaker</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Acknowledgements/ProtonCore-KeyManager</string>
+			<key>Title</key>
+			<string>ProtonCore-KeyManager</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -316,6 +332,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>Acknowledgements/ProtonCore-PasswordChange</string>
+			<key>Title</key>
+			<string>ProtonCore-PasswordChange</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>Acknowledgements/ProtonCore-PasswordRequest</string>
 			<key>Title</key>
 			<string>ProtonCore-PasswordRequest</string>
@@ -359,6 +383,14 @@
 			<string>Acknowledgements/ProtonCore-Services</string>
 			<key>Title</key>
 			<string>ProtonCore-Services</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Acknowledgements/ProtonCore-Telemetry</string>
+			<key>Title</key>
+			<string>ProtonCore-Telemetry</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

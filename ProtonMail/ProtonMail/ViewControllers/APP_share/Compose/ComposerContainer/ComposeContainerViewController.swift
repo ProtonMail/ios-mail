@@ -393,12 +393,7 @@ extension ComposeContainerViewController {
             target: target,
             action: isEnabled ? action : nil,
             style: .plain,
-            tintColor: tintColor,
-            squareSize: 22,
-            backgroundColor: .clear,
-            backgroundSquareSize: 35,
-            isRound: true,
-            imageInsets: .zero
+            tintColor: tintColor
         )
         return item
     }
@@ -678,8 +673,7 @@ extension ComposeContainerViewController: AttachmentController, ComposeContainer
     }
 
     private func calculateShouldAddedAsInline(mimeType: String) -> Bool {
-        return (AttachmentType.mimeTypeMap[.image] ?? []).contains(mimeType.lowercased()) &&
-            UserInfo.shareImagesAsInlineByDefault
+        return (AttachmentType.mimeTypeMap[.image] ?? []).contains(mimeType.lowercased())
     }
 
     func error(_ description: String) {
@@ -697,8 +691,7 @@ extension ComposeContainerViewController: AttachmentController, ComposeContainer
         // Insert inline attachment into the composer
         if attachment.isInline,
            let base64String = attachment.localURL?.toBase64(),
-           let contentID = attachment.contentId,
-           UserInfo.shareImagesAsInlineByDefault {
+           let contentID = attachment.contentId {
             let encodedData = "data:\(attachment.rawMimeType);base64, \(base64String)"
             editor.htmlEditor.insertEmbedImage(cid: "cid:\(contentID)", encodedData: encodedData) { [weak self] in
                 self?.updateAttachmentView(completion: completion)

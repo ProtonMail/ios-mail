@@ -257,7 +257,7 @@ private enum SubviewsFactory {
     static var customizeButton: UIButton {
         let button = UIButton(frame: .zero)
         button.backgroundColor = ColorProvider.InteractionWeak
-        button.setTitle(L11n.Toolbar.customizeSpotlight, for: .normal)
+        button.setTitle(L10n.Toolbar.customizeSpotlight, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 13)
         button.layer.cornerRadius = 8
         button.setTitleColor(ColorProvider.TextNorm, for: .normal)

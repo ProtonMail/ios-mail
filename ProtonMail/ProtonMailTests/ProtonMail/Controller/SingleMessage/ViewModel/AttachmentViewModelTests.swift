@@ -15,18 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import ProtonCoreTestingToolkit
 import XCTest
 @testable import ProtonMail
 
 class AttachmentViewModelTests: XCTestCase {
+    private var answerInvitation: MockAnswerInvitation!
+    private var extractBasicEventInfo: MockExtractBasicEventInfo!
+    private var fetchAttachment: MockFetchAttachment!
+    private var fetchAttachmentMetadata: MockFetchAttachmentMetadataUseCase!
+    private var fetchEventDetails: MockFetchEventDetails!
     private var featureFlagProvider: MockFeatureFlagProvider!
     private var urlOpener: MockURLOpener!
     private var user: UserManager!
-    private var eventRSVP: MockEventRSVP!
-    private var receivedRespondingStatuses: AsyncPublisher<AnyPublisher<AttachmentViewModel.RespondingStatus, Never>>.Iterator!
-    private var subscriptions: Set<AnyCancellable>!
+    private var receivedRespondingStatuses: EmittedValuesObserver<AttachmentViewModel.RespondingStatus>!
+    private var receivedErrors: EmittedValuesObserver<Error>!
 
     var sut: AttachmentViewModel!
     var testAttachments: [AttachmentInfo] = []
@@ -35,14 +38,12 @@ class AttachmentViewModelTests: XCTestCase {
 
     private let icsMimeType = "text/calendar"
 
-    private let stubbedBasicEventInfo = BasicEventInfo(eventUID: "foo", recurrenceID: nil)
+    private let stubbedBasicEventInfo = BasicEventInfo.inviteDataFromICS(eventUID: "foo", recurrenceID: nil)
 
-    private let stubbedEventDetails = EventDetails.make()
+    private var stubbedEventDetails: EventDetails!
 
     override func setUp() {
         super.setUp()
-
-        subscriptions = []
 
         urlOpener = MockURLOpener()
 
@@ -60,56 +61,69 @@ class AttachmentViewModelTests: XCTestCase {
             switch flag {
             case .calendarMiniLandingPage:
                 return self.isCalendarLandingPageEnabled
-            case .rsvpWidget:
-                return true
             default:
-                fatalError("Unexpected flag: \(flag)")
+                return true
             }
         }
 
-        user = UserManager(api: apiService, globalContainer: testContainer)
-        user.userInfo.userAddresses.append(.dummy.updated(email: stubbedEventDetails.invitees[0].email))
+        stubbedEventDetails = .make(
+            currentUserAmongInvitees: .init(email: "employee1@example.com", role: .unknown, status: .pending)
+        )
 
-        let fetchAttachmentMetadata = MockFetchAttachmentMetadataUseCase()
+        user = UserManager(api: apiService, globalContainer: testContainer)
+
+        answerInvitation = .init()
+
+        fetchAttachmentMetadata = .init()
         fetchAttachmentMetadata.executionStub.bodyIs { _, _ in
-            AttachmentMetadata(id: "", keyPacket: "")
+            AttachmentMetadata(keyPacket: "")
         }
 
-        let fetchAttachment = MockFetchAttachment()
+        fetchAttachment = .init()
         fetchAttachment.result = .success(
             AttachmentFile(attachmentId: "", fileUrl: URL(fileURLWithPath: ""), data: Data())
         )
 
-        eventRSVP = .init()
-        eventRSVP.extractBasicEventInfoStub.bodyIs { _, _ in
+        extractBasicEventInfo = .init()
+        extractBasicEventInfo.executeStub.bodyIs { _, _ in
             self.stubbedBasicEventInfo
         }
-        eventRSVP.fetchEventDetailsStub.bodyIs { _, _ in
-            self.stubbedEventDetails
+
+        fetchEventDetails = .init()
+        fetchEventDetails.executeStub.bodyIs { _, _ in
+            (self.stubbedEventDetails, nil)
         }
 
         user.container.reset()
-        user.container.eventRSVPFactory.register { self.eventRSVP }
+        user.container.answerInvitationFactory.register { self.answerInvitation }
+        user.container.extractBasicEventInfoFactory.register { self.extractBasicEventInfo }
         user.container.featureFlagProviderFactory.register { self.featureFlagProvider }
-        user.container.fetchAttachmentMetadataFactory.register { fetchAttachmentMetadata }
-        user.container.fetchAttachmentFactory.register { fetchAttachment }
+        user.container.fetchAttachmentMetadataFactory.register { self.fetchAttachmentMetadata }
+        user.container.fetchAttachmentFactory.register { self.fetchAttachment }
+        user.container.fetchEventDetailsFactory.register { self.fetchEventDetails }
 
         sut = AttachmentViewModel(dependencies: user.container)
-        receivedRespondingStatuses = sut.respondingStatus.values.makeAsyncIterator()
+        receivedRespondingStatuses = .init(observing: sut.respondingStatus)
+        receivedErrors = .init(observing: sut.error)
     }
 
     override func tearDown() {
         super.tearDown()
 
         receivedRespondingStatuses = nil
-        subscriptions = nil
+        receivedErrors = nil
         testAttachments.removeAll()
+        stubbedEventDetails = nil
 
         sut = nil
+        answerInvitation = nil
+        extractBasicEventInfo = nil
         featureFlagProvider = nil
+        fetchAttachment = nil
+        fetchAttachmentMetadata = nil
+        fetchEventDetails = nil
         urlOpener = nil
         user = nil
-        eventRSVP = nil
     }
 
     func testInit_withNonInlineAttachments_realAttachmentIsFalse_addAllAttachments() {
@@ -177,22 +191,22 @@ class AttachmentViewModelTests: XCTestCase {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
         sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
 
-        wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 1)
+        wait(self.extractBasicEventInfo.executeStub.callCounter == 1)
 
         let inlineICS = makeAttachment(isInline: true, mimeType: icsMimeType)
         sut.attachmentHasChanged(nonInlineAttachments: [inlineICS], mimeAttachments: [])
 
-        wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 2)
+        wait(self.extractBasicEventInfo.executeStub.callCounter == 2)
 
         let mimeICS = MimeAttachment(filename: "", size: 0, mime: icsMimeType, path: nil, disposition: nil)
         sut.attachmentHasChanged(nonInlineAttachments: [], mimeAttachments: [mimeICS])
 
-        wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 3)
+        wait(self.extractBasicEventInfo.executeStub.callCounter == 3)
 
         let nonICS = makeAttachment(isInline: false)
         sut.attachmentHasChanged(nonInlineAttachments: [nonICS], mimeAttachments: [])
 
-        wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 3)
+        wait(self.extractBasicEventInfo.executeStub.callCounter == 3)
     }
 
     func testGivenICSIsAttached_whenCalledMultipleTimesInQuickSuccession_doesntParseMultipleTimes() {
@@ -202,7 +216,7 @@ class AttachmentViewModelTests: XCTestCase {
             sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
         }
 
-        wait(self.eventRSVP.extractBasicEventInfoStub.callCounter == 1)
+        wait(self.extractBasicEventInfo.executeStub.callCounter == 1)
     }
 
     func testWhenICSIsFound_notifiesAboutProcessingProgress() async {
@@ -223,8 +237,8 @@ class AttachmentViewModelTests: XCTestCase {
         sut.basicEventInfoSourcedFromHeaders = stubbedBasicEventInfo
         sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
 
-        wait(self.eventRSVP.fetchEventDetailsStub.callCounter == 1)
-        XCTAssertEqual(eventRSVP.extractBasicEventInfoStub.callCounter, 0)
+        wait(self.fetchEventDetails.executeStub.callCounter == 1)
+        XCTAssertEqual(extractBasicEventInfo.executeStub.callCounter, 0)
     }
 
     func testGivenHeadersContainEventInfo_whenThereAreNoAttachments_thenShowsViewRegardless() async {
@@ -237,6 +251,20 @@ class AttachmentViewModelTests: XCTestCase {
 
         XCTAssert(sut.viewShouldBeShown)
     }
+
+    func testGivenICSIsCachedLocally_whenLoadingData_doesNotPerformNetworkRequests() {
+        let icsData = Data("foo".utf8)
+        let icsFile = SecureTemporaryFile(data: icsData, name: "ics.ics")
+        let ics = makeAttachment(isInline: false, localUrl: icsFile.url, mimeType: icsMimeType)
+
+        sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
+        wait(self.extractBasicEventInfo.executeStub.wasCalled)
+
+        XCTAssert(fetchAttachmentMetadata.executionStub.wasNotCalled)
+        XCTAssert(fetchAttachment.executionBlock.wasNotCalled)
+    }
+
+    // MARK: RSVP - Responding status
 
     func testRespondingStatus_whenAnsweringAndChangingAnswer_showsProcessingAndThenTheSelectedAnswerEachTime() async {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
@@ -258,11 +286,12 @@ class AttachmentViewModelTests: XCTestCase {
         await receivedRespondingStatuses.expectNextValue(toBe: .alreadyResponded(.maybe))
     }
 
-    func testRespondingStatus_whenAnsweringFails_revertsToPreviousValue() async {
+    func testRespondingStatus_whenAnsweringFails_revertsToPreviousValueAndPublisherError() async throws {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
+        let stubbedError = NSError.badResponse()
 
-        eventRSVP.respondToInvitationStub.bodyIs { _, _ in
-            throw NSError.badResponse()
+        answerInvitation.executeStub.bodyIs { _, _ in
+            throw stubbedError
         }
 
         await receivedRespondingStatuses.expectNextValue(toBe: .respondingUnavailable)
@@ -275,14 +304,24 @@ class AttachmentViewModelTests: XCTestCase {
 
         await receivedRespondingStatuses.expectNextValue(toBe: .responseIsBeingProcessed)
         await receivedRespondingStatuses.expectNextValue(toBe: .awaitingUserInput)
+
+        let receivedErrorOptional = await receivedErrors.next()
+        let receivedError = try XCTUnwrap(receivedErrorOptional) as NSError
+
+        switch receivedError {
+        case stubbedError:
+            break
+        default:
+            throw receivedError
+        }
     }
 
     func testRespondingStatus_whenUserHasPreviouslyResponded_isReflected() async {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
 
-        user.userInfo.userAddresses = [
-            .dummy.updated(email: stubbedEventDetails.invitees[1].email)
-        ]
+        stubbedEventDetails = .make(
+            currentUserAmongInvitees: .init(email: "employee1@example.com", role: .unknown, status: .accepted)
+        )
 
         await receivedRespondingStatuses.expectNextValue(toBe: .respondingUnavailable)
 
@@ -294,43 +333,28 @@ class AttachmentViewModelTests: XCTestCase {
     // MARK: RSVP: Cases where responding is unavailable
 
     func testResponding_whenUserIsNotAnInvitee_isNotAvailable() async {
-        user.userInfo.userAddresses[0] = user.userInfo.userAddresses[0]
-            .updated(email: "somethingOtherThanInvitee@example.com")
+        stubbedEventDetails = .make(currentUserAmongInvitees: nil)
 
         await ensureRespondingIsNotAvailableWhenICSIsReceived()
     }
 
     func testResponding_whenEventHasBeenCancelled_isNotAvailable() async {
-        eventRSVP.fetchEventDetailsStub.bodyIs { _, _ in
-                .make(status: .cancelled)
-        }
-
-        await ensureRespondingIsNotAvailableWhenICSIsReceived()
-    }
-
-    func testResponding_whenEventHasEnded_isNotAvailable() async {
-        eventRSVP.fetchEventDetailsStub.bodyIs { _, _ in
-                .make(endDate: .distantPast)
-        }
+        stubbedEventDetails = .make(
+            currentUserAmongInvitees: stubbedEventDetails.currentUserAmongInvitees,
+            status: .cancelled
+        )
 
         await ensureRespondingIsNotAvailableWhenICSIsReceived()
     }
 
     private func ensureRespondingIsNotAvailableWhenICSIsReceived() async {
         let ics = makeAttachment(isInline: false, mimeType: icsMimeType)
-        var receivedStates: [AttachmentViewModel.RespondingStatus] = []
-
-        sut.respondingStatus
-            .sink { value in
-                receivedStates.append(value)
-            }
-            .store(in: &subscriptions)
 
         sut.attachmentHasChanged(nonInlineAttachments: [ics], mimeAttachments: [])
 
+        await receivedRespondingStatuses.expectNextValue(toBe: .respondingUnavailable)
         await sleep(milliseconds: 50)
-
-        XCTAssertEqual(receivedStates, [.respondingUnavailable])
+        XCTAssertFalse(receivedRespondingStatuses.hasPendingUnreadValues)
     }
 
     // MARK: RSVP: Open in Calendar
@@ -387,12 +411,16 @@ class AttachmentViewModelTests: XCTestCase {
         XCTAssertEqual(instruction, .presentCalendarLandingPage)
     }
 
-    private func makeAttachment(isInline: Bool, mimeType: String = "text/plain") -> AttachmentInfo {
+    private func makeAttachment(
+        isInline: Bool,
+        localUrl: URL? = nil,
+        mimeType: String = "text/plain"
+    ) -> AttachmentInfo {
         return AttachmentInfo(
             fileName: String.randomString(50),
             size: 99,
             mimeType: mimeType,
-            localUrl: nil,
+            localUrl: localUrl,
             isDownloaded: true,
             id: "",
             isInline: isInline,

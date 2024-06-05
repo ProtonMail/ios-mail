@@ -19,7 +19,7 @@ import Foundation
 
 struct PushEncryptionKitSaver {
     static let shared: PushEncryptionKitSaver = .init(
-        saver: KeychainSaver(key: "PushEncryptionKits", cachingInMemory: false)
+        saver: KeychainSaver(key: "PushEncryptionKits")
     )
 
     let saver: Saver<[EncryptionKit]>

@@ -216,7 +216,7 @@ private enum SubviewFactory {
         label.font = UIFont.adjustedFont(forTextStyle: .title2, weight: .bold)
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center
-        label.text = L11n.ReferralProgram.title
+        label.text = L10n.ReferralProgram.title
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         return label
@@ -227,7 +227,7 @@ private enum SubviewFactory {
         label.textAlignment = .center
         label.lineBreakMode = .byWordWrapping
         label.font = UIFont.adjustedFont(forTextStyle: .subheadline)
-        label.text = L11n.ReferralProgram.promptContent
+        label.text = L10n.ReferralProgram.promptContent
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         return label
@@ -236,14 +236,14 @@ private enum SubviewFactory {
     static var referButton: ProtonButton {
         let button = ProtonButton()
         button.setMode(mode: .solid)
-        button.setTitle(L11n.ReferralProgram.referAFriend, for: .normal)
+        button.setTitle(L10n.ReferralProgram.referAFriend, for: .normal)
         return button
     }
 
     static var laterButton: ProtonButton {
         let button = ProtonButton()
         button.setMode(mode: .text)
-        button.setTitle(L11n.ReferralProgram.maybeLater, for: .normal)
+        button.setTitle(L10n.ReferralProgram.maybeLater, for: .normal)
         return button
     }
 }

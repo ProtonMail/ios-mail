@@ -28,6 +28,9 @@ public enum ScreenName: String, Encodable, CaseIterable {
     case congratulation = "congratulation"
     case createProtonAccountWithCurrentEmail = "create_proton_account_with_current_email"
     case planSelection = "plan_selection"
+    case changePassword = "change_password"
+    case changeMailboxPassword = "change_mailbox_password"
+    case changePassword2FA = "change_password_2fa"
 }
 
 public struct ScreenLoadCountLabels: Encodable, Equatable {

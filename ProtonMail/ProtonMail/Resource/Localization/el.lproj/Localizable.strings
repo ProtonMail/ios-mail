@@ -420,9 +420,6 @@
 */
 "Cancel" = "Ακύρωση";
 
-/* Got it action */
-"Got it" = "Το κατάλαβα";
-
 /* Open action */
 "Open" = "Άνοιγμα";
 
@@ -1199,7 +1196,7 @@
 "Limit reached" = "Εξάντληση ορίου";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Μόνο ένας δωρεάν λογαριασμός μπορεί να προστεθεί";
+"Only two free accounts can be added" = "Μόνο δύο δωρεάν λογαριασμοί μπορούν να προστεθούν";
 
 /* section title in settings */
 "Account settings" = "Ρυθμίσεις λογαριασμού";
@@ -1837,13 +1834,13 @@
 "Your Mail storage is %@ full" = "Ο αποθηκευτικός χώρος του Mail σας είναι %@ γεμάτος";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "Ο αποθηκευτικός χώρος του Drive σας είναι %@ γεμάτος";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "Ο αποθηκευτικός χώρος του Mail σας είναι γεμάτος";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "Ο αποθηκευτικός χώρος του Drive σας είναι γεμάτος";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Αναβαθμίστε για να αποκτήσετε περισσότερο χώρο αποθήκευσης.";
@@ -1889,6 +1886,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Κατάργηση από αποκλεισμό";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Το πρόγραμμά σας αξίζει να προστατευτεί";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Το ημερολόγιό σας είναι ένα αρχείο της ζωής σας, το Proton Calendar βοηθά να το διατηρήσετε ιδιωτικό.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Αποκτήστε την εφαρμογή Proton Calendar";
+
 /* Name of the feature */
 "Email tracking protection" = "Προστασία ιχνηλασίας μηνυμάτων";
 
@@ -1903,6 +1909,9 @@
 
 /* Button inside the banner */
 "Load" = "Φόρτωση";
+
+/* Title of an event with missing title */
+"(no title)" = "(χωρίς τίτλο)";
 
 /* As in: event organizer */
 "Organizer" = "Διοργανωτής";
@@ -1937,17 +1946,98 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "Μπορεί να παρευρεθώ";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Συμμετοχή προαιρετική)";
+
+/* As in: Every 3 days */
+"Every %@" = "Κάθε %@";
+
+/* As in: on Saturday */
+"on %@" = "στις %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "στις %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "στην ημέρα %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "μέχρι %@";
+
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ στο %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "αποδέχτηκε";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "απορρίφθηκε";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "προσωρινά αποδεκτή";
+
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ έχει %2@ την πρόσκλησή σας στο %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "Είστε προσκεκλημένοι στο %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "ΤΟΠΟΘΕΣΙΑ:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "ΠΕΡΙΓΡΑΦΗ:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "Η %@ ακυρώθηκε.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Re: Πρόσκληση για μια εκδήλωση στις %@";
+
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Απ: Πρόσκληση για ένα γεγονός που αρχίζει στις %@";
+
+/* Occurring every day */
+"Daily" = "Καθημερινά";
+
+/* Occurring every week */
+"Weekly" = "Εβδομαδιαία";
+
+/* Occurring every month */
+"Monthly" = "Μηνιαία";
+
+/* Occurring every year */
+"Yearly" = "Ετησίως";
+
+/* \"1st\" spelled out */
+"first" = "πρώτο";
+
+/* \"2nd\" spelled out */
+"second" = "δεύτερο";
+
+/* \"3rd\" spelled out */
+"third" = "τρίτο";
+
+/* \"4th\" spelled out */
+"fourth" = "τέταρτο";
+
+/* Opposite of \"first\" */
+"last" = "τελευταίο";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Εύκολη απάντηση σε εκδηλώσεις";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Τώρα μπορείτε να απαντήσετε σε μια πρόσκληση ή να προβάλετε την εκδήλωση στο Proton Calendar με ένα μόνο πάτημα. ";
+
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "Μέγιστος Αποθηκευτικός χώρος";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "Αποθηκευτικός χώρος: %@ πλήρης";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
-
-/* Upgrade button action */
-"Upgrade" = "Αναβάθμιση";
+"Drive: %@ full" = "Drive: %@ πλήρης";
 
 /* Official badge next to sender's name */
 "Official" = "Επίσημο";
@@ -2063,11 +2153,26 @@
 /* Title for application logs settings option */
 "Application logs" = "Αρχεία καταγραφών εφαρμογής";
 
+/* Badge present on some spotlights */
+"New!" = "Νέο!";
+
+/* Got it action */
+"Got it" = "Το κατάλαβα";
+
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Μετάβαση στο επόμενο μήνυμα";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Αυτόματη εμφάνιση του επόμενου μηνύματος όταν το τρέχον μήνυμα διαγράφεται, αρχειοθετείται ή μετακινείται.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Ενεργοποίηση χαρακτηριστικού";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "Προβάλετε το επόμενο μήνυμα ηλεκτρονικού ταχυδρομείου στα εισερχόμενά σας όταν διαγράφετε ή μετακινείτε το τρέχον μήνυμα ηλεκτρονικού ταχυδρομείου.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Ταχύτερη ανάγνωση μηνυμάτων ηλεκτρονικού ταχυδρομείου";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Παρουσιάστηκε μην αναμενόμενο σφάλμα, παρακαλούμε επικοινωνήστε με την υποστήριξη.\nΣφάλμα: %@";
@@ -2300,12 +2405,6 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Απεριόριστοι φάκελοι, ετικέτες, και φίλτρα";
 
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Ορίστε πότε ένα μήνυμα ηλεκτρονικού ταχυδρομείου θα εμφανίζεται ξανά στα εισερχόμενά σας με τη λειτουργία αναβολής, η οποία είναι τώρα διαθέσιμη στη γραμμή εργαλείων.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Αναβολή για αργότερα";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Προσθήκη ως συνημμένο";
 
@@ -2316,31 +2415,31 @@
 "Allow navigating through messages by swiping left or right." = "Επιτρέψτε την πλοήγηση στα μηνύματα σύροντας προς τα αριστερά ή προς τα δεξιά.";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "Οι επαφές σας στα χέρια σας";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Δε χρειάζεται να αποχωρήσετε από την εφαρμογή για να βρείτε μια διεύθυνση email. Συγχρονίστε επαφές από τη συσκευή σας στο Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "Ενεργοποίηση Αυτόματης Εισαγωγής";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "Καμία Επαφή";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "Εισαγάγετε επαφές από τη συσκευή σας για εύκολη αποστολή μηνυμάτων ηλεκτρονικού ταχυδρομείου και προσκλήσεων.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "Αυτόματη εισαγωγή επαφών";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "Εισαγωγή των επαφών σας";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "Οι επαφές σας θα εμφανιστούν εδώ σύντομα.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "Προσθέστε αυτόματα νέες επαφές από τη συσκευή σας.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Απόρρητο και δεδομένα";
@@ -2354,6 +2453,18 @@
 /* settings general section title */
 "Change mailbox password" = "Αλλαγή κωδικού γραμματοκιβωτίου";
 
+/* Description of a feature of a paid subscription */
+"15 GB storage" = "15 GB αποθηκευτικός χώρος";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u διευθύνσεις ηλεκτρονικού ταχυδρομείου";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Υποστήριξη προσαρμοσμένου τομέα ηλεκτρονικού ταχυδρομείου";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "Νέα Proton Mail εφαρμογή για υπολογιστές";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ανώνυμη τηλεμετρία";
 
@@ -2365,3 +2476,24 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Εάν η εφαρμογή διακοπεί, θα σταλεί μια αναφορά στους μηχανικούς μας με λεπτομέρειες σχετικά με την αιτία. Αυτά θα χρησιμοποιηθούν μόνο για τη βελτίωση της εφαρμογής.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Αναβάθμιση σε %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "Για να ξεκλειδώσετε περισσότερο χώρο αποθήκευσης και premium λειτουργίες.";
+
+/* Displayed next to the monthly price */
+"/month" = "/μήνα";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Αποκτήστε %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Εξοικονομίστε %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Μή εγκυρο αναγνωριστικό προϊόντος: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Αγορά ήδη σε εξέλιξη";

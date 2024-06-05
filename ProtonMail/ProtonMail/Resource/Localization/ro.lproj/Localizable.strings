@@ -420,9 +420,6 @@
 */
 "Cancel" = "Anulare";
 
-/* Got it action */
-"Got it" = "Am înțeles";
-
 /* Open action */
 "Open" = "Deschidere";
 
@@ -1199,7 +1196,7 @@
 "Limit reached" = "Limită atinsă";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Doar un singur cont gratuit poate fi adăugat";
+"Only two free accounts can be added" = "Se pot adăuga doar două conturi gratuite";
 
 /* section title in settings */
 "Account settings" = "Setări cont";
@@ -1834,13 +1831,13 @@
 "You can now choose and rearrange the actions in this bar" = "Puteți alege și rearanja acțiunile din această bară";
 
 /* Title of the banner alert */
-"Your Mail storage is %@ full" = "Spațiul de stocare mesaje este %@ ocupat";
+"Your Mail storage is %@ full" = "Spațiul de stocare din Mail este %@ ocupat";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "Spațiul din Drive este %@ ocupat.";
 
 /* Title of the banner alert */
-"Your Mail storage is full" = "Spațiul de stocare mesaje este plin";
+"Your Mail storage is full" = "Spațiul de stocare din Mail este plin";
 
 /* Title of the banner alert */
 "Your Drive storage is full" = "Your Drive storage is full";
@@ -1889,6 +1886,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Deblocare";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Merită să vă protejați propriul program";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Calendarul personal este o înregistrare a propriei vieți. Proton Calendar ajută la menținerea confidențială a acesteia.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Luați aplicația Proton Calendar";
+
 /* Name of the feature */
 "Email tracking protection" = "Protejare e-mail împotriva urmăririi";
 
@@ -1903,6 +1909,9 @@
 
 /* Button inside the banner */
 "Load" = "Încărcare";
+
+/* Title of an event with missing title */
+"(no title)" = "(fără titlu)";
 
 /* As in: event organizer */
 "Organizer" = "Organizator";
@@ -1937,17 +1946,98 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "S-ar putea";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Prezență opțională)";
+
+/* As in: Every 3 days */
+"Every %@" = "La fiecare %@";
+
+/* As in: on Saturday */
+"on %@" = "%@";
+
+/* As in: on the last Saturday */
+"on the %@" = "%@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "în ziua %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "până la %@";
+
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ la %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "acceptat";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "refuzat";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "acceptat provizoriu";
+
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ v-a %2@ invitația la %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "Ați primit o invitație la %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "LOC:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "DESCRIERE:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ a fost anulat.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Rs: Invitație la un eveniment %@";
+
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Rs: Invitație la un eveniment care începe %@";
+
+/* Occurring every day */
+"Daily" = "Zilnic";
+
+/* Occurring every week */
+"Weekly" = "Săptămânal";
+
+/* Occurring every month */
+"Monthly" = "Lunar";
+
+/* Occurring every year */
+"Yearly" = "Anual";
+
+/* \"1st\" spelled out */
+"first" = "prima";
+
+/* \"2nd\" spelled out */
+"second" = "a doua";
+
+/* \"3rd\" spelled out */
+"third" = "a treia";
+
+/* \"4th\" spelled out */
+"fourth" = "a patra";
+
+/* Opposite of \"first\" */
+"last" = "ultima";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Confirmați ușor participarea la evenimente";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Acum puteți răspunde la o invitație sau puteți vizualiza evenimentul în Proton Calendar cu o singură atingere.";
+
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "Spațiu stocare maxim";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "Spațiu: %@ ocupat";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
-
-/* Upgrade button action */
-"Upgrade" = "Modificare";
+"Drive: %@ full" = "Drive: %@ ocupat";
 
 /* Official badge next to sender's name */
 "Official" = "Oficial";
@@ -2063,11 +2153,26 @@
 /* Title for application logs settings option */
 "Application logs" = "Jurnale aplicație";
 
+/* Badge present on some spotlights */
+"New!" = "Nouă!";
+
+/* Got it action */
+"Got it" = "Am înțeles";
+
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Salt la mesajul următor";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Afișare automată următorul mesaj când un mesaj deschis este șters, arhivat sau mutat.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Activare funcție";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "Vizualizați următorul mesaj când îl ștergeți sau îl mutați pe cel curent.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Citire mai rapidă mesaje";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "A apărut o eroare neașteptată. Contactați serviciul de asistență.\nEroare: %@";
@@ -2300,12 +2405,6 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Foldere, etichete și filtre nelimitate";
 
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Setați când un mesaj ar trebui să reapară în folderul cu mesaje primite cu funcția de amânare, disponibilă acum în bara de instrumente.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Amânare";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Adăugare ca atașament";
 
@@ -2316,31 +2415,31 @@
 "Allow navigating through messages by swiping left or right." = "Permitere răsfoirea mesajelor prin glisare la stânga sau la dreapta.";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "Contactele personale la îndemână";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Nu trebuie să părăsiți aplicația pentru a găsi o adresă de e-mail. Sincronizați contactele de pe dispozitiv cu Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "Activare autoimportare";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "Încă nu există contacte";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "Importați contacte de pe dispozitiv pentru a trimite cu ușurință mesaje și invitații.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "Autoimportare contacte";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "Se importă contactele";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "Contactele vor apărea aici în scurt timp.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "Adăugați automat contacte noi de pe dispozitiv.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Confidențialitate și date";
@@ -2354,6 +2453,18 @@
 /* settings general section title */
 "Change mailbox password" = "Schimbare parolă mesaje";
 
+/* Description of a feature of a paid subscription */
+"15 GB storage" = "15 GiB spațiu de stocare";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u adrese de e-mail";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Suport pentru domeniu personal de e-mail";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "✓ Aplicație nouă Proton Mail pentru desktop";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetrie anonimă";
 
@@ -2365,3 +2476,24 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Dacă aplicația se blochează, va fi trimis un raport inginerilor noștri cu detalii despre cauză. Acestea vor fi folosite doar pentru a îmbunătăți aplicația.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Trecere la %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "Pentru a debloca mai mult spațiu și funcții premium.";
+
+/* Displayed next to the monthly price */
+"/month" = "/lună";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Luați %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Salvați %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "ID produs nevalid: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Achiziția este deja în desfășurare.";

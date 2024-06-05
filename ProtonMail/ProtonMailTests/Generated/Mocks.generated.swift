@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.1.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.4 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 import BackgroundTasks
 import CoreData
@@ -10,12 +10,20 @@ import ProtonCoreKeymaker
 import ProtonCorePaymentsUI
 import ProtonCoreServices
 import ProtonCoreTestingToolkit
+import ProtonInboxRSVP
 
 import class ProtonCoreDataModel.Address
-import class PromiseKit.Promise
 import class ProtonCoreDataModel.UserInfo
 
 @testable import ProtonMail
+
+class MockAnswerInvitation: AnswerInvitation {
+    @ThrowingFuncStub(MockAnswerInvitation.execute) var executeStub
+    func execute(parameters: AnswerInvitationWrapper.Parameters) throws {
+        try executeStub(parameters)
+    }
+
+}
 
 class MockAppRatingStatusProvider: AppRatingStatusProvider {
     @FuncStub(MockAppRatingStatusProvider.isAppRatingEnabled, initialReturn: Bool()) var isAppRatingEnabledStub
@@ -49,14 +57,9 @@ class MockAppRatingWrapper: AppRatingWrapper {
 }
 
 class MockAppTelemetry: AppTelemetry {
-    @FuncStub(MockAppTelemetry.enable) var enableStub
-    func enable() {
-        enableStub()
-    }
-
-    @FuncStub(MockAppTelemetry.disable) var disableStub
-    func disable() {
-        disableStub()
+    @FuncStub(MockAppTelemetry.configure) var configureStub
+    func configure(telemetry: Bool, reportCrashes: Bool) {
+        configureStub(telemetry, reportCrashes)
     }
 
     @FuncStub(MockAppTelemetry.assignUser) var assignUserStub
@@ -168,14 +171,14 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
 }
 
 class MockCachedUserDataProvider: CachedUserDataProvider {
-    @FuncStub(MockCachedUserDataProvider.set) var setStub
-    func set(disconnectedUsers: [UsersManager.DisconnectedUserHandle]) {
-        setStub(disconnectedUsers)
+    @ThrowingFuncStub(MockCachedUserDataProvider.set) var setStub
+    func set(disconnectedUsers: [UsersManager.DisconnectedUserHandle]) throws {
+        try setStub(disconnectedUsers)
     }
 
-    @FuncStub(MockCachedUserDataProvider.fetchDisconnectedUsers, initialReturn: [UsersManager.DisconnectedUserHandle]()) var fetchDisconnectedUsersStub
-    func fetchDisconnectedUsers() -> [UsersManager.DisconnectedUserHandle] {
-        fetchDisconnectedUsersStub()
+    @ThrowingFuncStub(MockCachedUserDataProvider.fetchDisconnectedUsers, initialReturn: [UsersManager.DisconnectedUserHandle]()) var fetchDisconnectedUsersStub
+    func fetchDisconnectedUsers() throws -> [UsersManager.DisconnectedUserHandle] {
+        try fetchDisconnectedUsersStub()
     }
 
 }
@@ -393,20 +396,10 @@ class MockDeviceRegistrationUseCase: DeviceRegistrationUseCase {
 
 }
 
-class MockEventRSVP: EventRSVP {
-    @ThrowingFuncStub(MockEventRSVP.extractBasicEventInfo, initialReturn: .crash) var extractBasicEventInfoStub
-    func extractBasicEventInfo(icsData: Data) throws -> BasicEventInfo {
-        try extractBasicEventInfoStub(icsData)
-    }
-
-    @ThrowingFuncStub(MockEventRSVP.fetchEventDetails, initialReturn: .crash) var fetchEventDetailsStub
-    func fetchEventDetails(basicEventInfo: BasicEventInfo) throws -> EventDetails {
-        try fetchEventDetailsStub(basicEventInfo)
-    }
-
-    @ThrowingFuncStub(MockEventRSVP.respondToInvitation) var respondToInvitationStub
-    func respondToInvitation(with answer: InvitationAnswer) throws {
-        try respondToInvitationStub(answer)
+class MockExtractBasicEventInfo: ExtractBasicEventInfo {
+    @ThrowingFuncStub(MockExtractBasicEventInfo.execute, initialReturn: .crash) var executeStub
+    func execute(icsData: Data) throws -> BasicEventInfo {
+        try executeStub(icsData)
     }
 
 }
@@ -473,6 +466,14 @@ class MockFetchEmailAddressesPublicKeyUseCase: FetchEmailAddressesPublicKeyUseCa
     @ThrowingFuncStub(MockFetchEmailAddressesPublicKeyUseCase.execute, initialReturn: .crash) var executeStub
     func execute(email: String) throws -> KeysResponse {
         try executeStub(email)
+    }
+
+}
+
+class MockFetchEventDetails: FetchEventDetails {
+    @ThrowingFuncStub(MockFetchEventDetails.execute, initialReturn: .crash) var executeStub
+    func execute(basicEventInfo: BasicEventInfo) throws -> (EventDetails, AnsweringContext?) {
+        try executeStub(basicEventInfo)
     }
 
 }
@@ -1225,6 +1226,14 @@ class MockSwipeActionInfo: SwipeActionInfo {
 
 }
 
+class MockTelemetryServiceProtocol: TelemetryServiceProtocol {
+    @FuncStub(MockTelemetryServiceProtocol.sendEvent) var sendEventStub
+    func sendEvent(_ event: TelemetryEvent) {
+        sendEventStub(event)
+    }
+
+}
+
 class MockURLOpener: URLOpener {
     @FuncStub(MockURLOpener.canOpenURL, initialReturn: Bool()) var canOpenURLStub
     func canOpenURL(_ url: URL) -> Bool {
@@ -1262,9 +1271,9 @@ class MockUnlockManagerDelegate: UnlockManagerDelegate {
         isUserStoredStub()
     }
 
-    @FuncStub(MockUnlockManagerDelegate.isMailboxPasswordStored, initialReturn: Bool()) var isMailboxPasswordStoredStub
-    func isMailboxPasswordStored(forUser uid: String?) -> Bool {
-        isMailboxPasswordStoredStub(uid)
+    @FuncStub(MockUnlockManagerDelegate.isMailboxPasswordStoredForActiveUser, initialReturn: Bool()) var isMailboxPasswordStoredForActiveUserStub
+    func isMailboxPasswordStoredForActiveUser() -> Bool {
+        isMailboxPasswordStoredForActiveUserStub()
     }
 
     @ThrowingFuncStub(MockUnlockManagerDelegate.setupCoreData) var setupCoreDataStub

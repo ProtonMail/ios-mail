@@ -118,7 +118,7 @@ final class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
                 handleAccessDenied(deniedAccess: reason)
             }
         } catch {
-            showErrorAndQuit(errorMsg: L11n.Error.core_data_setup_generic_messsage)
+            showErrorAndQuit(errorMsg: L10n.Error.core_data_setup_generic_messsage)
         }
     }
 
@@ -155,7 +155,7 @@ final class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
 
                 }
             case .noAuthenticatedAccountFound:
-                showErrorAndQuit(errorMsg: L11n.Error.sign_in_message)
+                showErrorAndQuit(errorMsg: L10n.Error.sign_in_message)
             }
         }
     }
@@ -229,7 +229,7 @@ final class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
         }
     }
 
-    func touch_id_action(_ sender: Any) {
+    func touch_id_action() {
         self.authenticateUser()
     }
 

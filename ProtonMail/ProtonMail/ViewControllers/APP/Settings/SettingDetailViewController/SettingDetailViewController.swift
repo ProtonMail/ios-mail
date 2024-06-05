@@ -138,7 +138,7 @@ class SettingDetailViewController: UIViewController, AccessibleView {
             textFiledSectionTitle.isHidden = true
         }
 
-        passwordTextField.placeholder = L11n.AccountSettings.loginPassword
+        passwordTextField.placeholder = L10n.AccountSettings.loginPassword
 
         passwordView.isHidden = true
 

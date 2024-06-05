@@ -32,12 +32,6 @@ extension Locked where T == [AuthCredential] {
         self.init(encryptedValue: locked.encryptedValue)
     }
 
-    internal func lagcyUnlock(with key: MainKey) throws -> T {
-        let locked = Locked<Data>(encryptedValue: self.encryptedValue)
-        let data = try locked.lagcyUnlock(with: key)
-        return try self.parse(data: data)
-    }
-
     internal func unlock(with key: MainKey) throws -> T {
         let locked = Locked<Data>(encryptedValue: self.encryptedValue)
         let data = try locked.unlock(with: key)

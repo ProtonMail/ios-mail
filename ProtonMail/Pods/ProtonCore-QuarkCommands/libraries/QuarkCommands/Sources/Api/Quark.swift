@@ -26,10 +26,16 @@ import ProtonCoreLog
 public typealias OnQuarkResponse = (URLResponse, Data?, Error?) -> Void
 
 extension URLRequest {
-    mutating func internalUrl(baseUrl: String, route: String, args: [String]) {
+    mutating func internalUrl(baseUrl: String, route: String, args: [String], useNewRoute: Bool = false) {
         let filteredArgs = args.filter { !$0.isEmpty }
         let joinedArgs = filteredArgs.joined(separator: "&")
-        guard let finalUrl = URL(string: "\(baseUrl)/internal/\(route)?\(joinedArgs)") else { return }
+
+        // Directly construct the final URL string with conditional path adjustment
+        let finalUrlString = baseUrl
+            .replacingOccurrences(of: "/api", with: useNewRoute ? "/internal-api" : "/api/internal")
+            + "/\(route)?\(joinedArgs)"
+
+        guard let finalUrl = URL(string: finalUrlString) else { return }
         url = finalUrl
     }
 }
@@ -49,8 +55,12 @@ public class Quark {
     private var httpClientReadTimeout: TimeInterval = 30
     private var httpClientWriteTimeout: TimeInterval = 30
     private var onResponse: OnQuarkResponse?
+    private var httpMethod: String = "GET"
+    private var rawData: Data?
+    let useNewRoute: Bool
 
-    public init() {
+    public init(useNewRoute: Bool = false) {
+        self.useNewRoute = useNewRoute
     }
 
     /**
@@ -119,6 +129,28 @@ public class Quark {
     }
 
     /**
+     * Sets the http method for the request.
+     * - Parameter method: the http method as a string (POST, GET...)
+     * - Returns: the Quark instance for chaining
+     */
+    @discardableResult
+    public func httpMethod(_ method: String) -> Quark {
+        self.httpMethod = method
+        return self
+    }
+
+    /**
+     * Sets the json data for the request.
+     * - Parameter data: json data
+     * - Returns: the Quark instance for chaining
+     */
+    @discardableResult
+    public func setRawData(_ data: Data) -> Quark {
+        self.rawData = data
+        return self
+    }
+
+    /**
      * Customizes the request using a builder block.
      * - Parameter requestBuilderBlock: the block with custom request configuration
      * - Returns: the Quark instance for chaining
@@ -169,7 +201,15 @@ public class Quark {
         }
 
         var request = URLRequest(url: URL(string: "https://dummy")!) // Using a dummy URL, internalUrl will replace it
-        request.internalUrl(baseUrl: baseUrl, route: route, args: self.args)
+        request.internalUrl(baseUrl: baseUrl, route: route, args: self.args, useNewRoute: useNewRoute)
+        request.httpMethod = self.httpMethod
+
+        // If rawData is not nil, set it as the request body
+        if let data = rawData {
+            request.httpBody = data
+            // Ensure to set the Content-Type if you're sending JSON or another specific type of data
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type") // Adjust as needed
+        }
 
         onRequestBuilder?(&request)
 

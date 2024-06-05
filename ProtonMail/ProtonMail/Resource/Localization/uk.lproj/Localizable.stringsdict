@@ -2,6 +2,26 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>%d times</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@times@</string>
+      <key>times</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%u рази</string>
+        <key>one</key>
+        <string>%u раз</string>
+        <key>few</key>
+        <string>%u разів</string>
+        <key>many</key>
+        <string>%u рази</string>
+      </dict>
+    </dict>
     <key>%u participants</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
@@ -17,9 +37,9 @@
         <key>one</key>
         <string>%u учасник</string>
         <key>few</key>
-        <string>%u учасників</string>
-        <key>many</key>
         <string>%u учасники</string>
+        <key>many</key>
+        <string>%u учасників</string>
       </dict>
     </dict>
     <key>You have %d new emails!</key>
@@ -29,9 +49,9 @@
       <key>newemails</key>
       <dict>
         <key>one</key>
-        <string>У вас %d нових листів!</string>
+        <string>У вас %d новий лист!</string>
         <key>few</key>
-        <string>У вас %d нових листів!</string>
+        <string>У вас %d нові листи!</string>
         <key>many</key>
         <string>У вас %d нових листів!</string>
         <key>NSStringFormatSpecTypeKey</key>
@@ -69,17 +89,17 @@
       <key>selected</key>
       <dict>
         <key>one</key>
-        <string>вибрано %d</string>
+        <string>Вибрано %d</string>
         <key>few</key>
-        <string>вибрано %d</string>
+        <string>Вибрано %d</string>
         <key>many</key>
-        <string>вибрано %d</string>
+        <string>Вибрано %d</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>вибрано %d</string>
+        <string>Вибрано %d</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>

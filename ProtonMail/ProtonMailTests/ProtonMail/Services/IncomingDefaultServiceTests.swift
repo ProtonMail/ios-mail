@@ -183,8 +183,7 @@ final class IncomingDefaultServiceTests: XCTestCase {
         storeStubbedObject(id: nil, time: .distantPast)
 
         let stubbedResponse = AddIncomingDefaultsResponse(
-            incomingDefault: .init(email: emailAddress, id: "New ID", location: .blocked, time: .distantFuture),
-            undoToken: UndoTokenData(token: "", tokenValidTime: 0)
+            incomingDefault: .init(email: emailAddress, id: "New ID", location: .blocked, time: .distantFuture)
         )
         apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(stubbedResponse))
@@ -205,8 +204,7 @@ final class IncomingDefaultServiceTests: XCTestCase {
         let id = String.randomString(16)
 
         let stubbedResponse = AddIncomingDefaultsResponse(
-            incomingDefault: .init(email: emailAddress, id: id, location: .blocked, time: .distantFuture),
-            undoToken: UndoTokenData(token: "", tokenValidTime: 0)
+            incomingDefault: .init(email: emailAddress, id: id, location: .blocked, time: .distantFuture)
         )
         apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(stubbedResponse))

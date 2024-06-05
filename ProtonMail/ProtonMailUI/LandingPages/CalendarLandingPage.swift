@@ -22,55 +22,15 @@ public struct CalendarLandingPage: View {
     @Environment(\.openURL)
     private var openURL
 
-    @Environment(\.presentationMode)
-    private var presentationMode
-
     @Environment(\.verticalSizeClass)
     private var verticalSizeClass
 
-    @State private var verticalOffset: CGFloat = 0
-
-    private let cornerRadius = 20.0
-    private let dragGestureDismissalThreshold = 100.0
-    private let screenHeight: CGFloat
+    public init() {
+    }
 
     public var body: some View {
-        VStack {
-            Spacer()
-
+        PartialOverlayActionSheet { dismiss in
             VStack {
-                VStack {
-                    Image(.grabber)
-                }
-                .frame(height: 20)
-                .gesture(
-                    DragGesture()
-                        .onChanged { value in
-                            withAnimation(.interactiveSpring) {
-                                verticalOffset = max(0, value.translation.height)
-                            }
-                        }
-                        .onEnded { value in
-                            if value.translation.height > dragGestureDismissalThreshold {
-                                dismiss()
-                            } else {
-                                withAnimation {
-                                    verticalOffset = 0
-                                }
-                            }
-                        }
-                )
-
-                HStack {
-                    CrossButton {
-                        dismiss()
-                    }
-                    .padding(.leading, 8)
-                    .padding(.vertical, 4)
-
-                    Spacer()
-                }
-
                 VStack(spacing: 16) {
                     IconProvider.calendarWordmarkNoBackground
                         .resizable()
@@ -78,11 +38,11 @@ public struct CalendarLandingPage: View {
                         .frame(height: 36)
                         .colorScheme(.dark)
 
-                    Text(L11n.CalendarLandingPage.headline)
+                    Text(L10n.CalendarLandingPage.headline)
                         .font(Font(UIFont.adjustedFont(forTextStyle: .title1, weight: .bold)))
                         .foregroundColor(ColorProvider.SidebarTextNorm)
 
-                    Text(L11n.CalendarLandingPage.subheadline)
+                    Text(L10n.CalendarLandingPage.subheadline)
                         .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
                         .foregroundColor(ColorProvider.SidebarTextWeak)
                 }
@@ -91,7 +51,7 @@ public struct CalendarLandingPage: View {
                 Spacer()
                     .frame(height: 40)
 
-                Button(L11n.CalendarLandingPage.getCalendar) {
+                Button(L10n.CalendarLandingPage.getCalendar) {
                     dismiss()
                     openURL(.AppStore.calendar)
                 }
@@ -106,36 +66,6 @@ public struct CalendarLandingPage: View {
                         .scaledToFit()
                 }
             }
-            .background(ColorProvider.SidebarBackground)
-            .colorScheme(.light)
-            .padding(.bottom, cornerRadius)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .circular))
-            .padding(.bottom, -cornerRadius)
-            .offset(y: verticalOffset)
-            .ignoresSafeArea(edges: [.bottom])
-        }
-        .ignoresSafeArea(edges: [.bottom])
-        .onAppear {
-            verticalOffset = screenHeight
-
-            withAnimation {
-                verticalOffset = 0
-            }
-        }
-    }
-
-    @MainActor
-    public init() {
-        screenHeight = UIScreen.main.bounds.height
-    }
-
-    private func dismiss() {
-        withAnimation(.easeInOut(duration: 0.25)) {
-            verticalOffset = screenHeight
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            presentationMode.wrappedValue.dismiss()
         }
     }
 }

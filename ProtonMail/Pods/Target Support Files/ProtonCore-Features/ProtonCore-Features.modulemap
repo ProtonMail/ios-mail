@@ -1,0 +1,6 @@
+framework module ProtonCoreFeatures {
+  umbrella header "ProtonCore-Features-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -50,6 +50,26 @@ final class InvitationViewModelTests: XCTestCase {
         XCTAssertEqual(sut.durationString, "Nov 16 – 17, 2023")
     }
 
+    func testWhenUserIsNotAmongInvitees_thenOptionalAttendanceIsNotShown() {
+        let eventDetails = EventDetails.make(currentUserAmongInvitees: nil)
+        let sut = InvitationViewModel(eventDetails: eventDetails)
+        XCTAssert(sut.isOptionalAttendanceLabelHidden)
+    }
+
+    func testWhenUserIsARequiredInvitee_thenOptionalAttendanceIsNotShown() {
+        let currentUser = EventDetails.Participant(email: "user@example.com", role: .required, status: .unknown)
+        let eventDetails = EventDetails.make(invitees: [currentUser], currentUserAmongInvitees: currentUser)
+        let sut = InvitationViewModel(eventDetails: eventDetails)
+        XCTAssert(sut.isOptionalAttendanceLabelHidden)
+    }
+
+    func testWhenUserIsAnOptionalInvitee_thenOptionalAttendanceIsNotShown() {
+        let currentUser = EventDetails.Participant(email: "user@example.com", role: .optional, status: .unknown)
+        let eventDetails = EventDetails.make(invitees: [currentUser], currentUserAmongInvitees: currentUser)
+        let sut = InvitationViewModel(eventDetails: eventDetails)
+        XCTAssertFalse(sut.isOptionalAttendanceLabelHidden)
+    }
+
     func testWhenEventHasNotEndedAndHasNotBeenCancelled_thenTitleColorIsNormAndStatusIsEmpty() {
         let eventDetails = EventDetails.make(endDate: .distantFuture, status: .confirmed)
         let sut = InvitationViewModel(eventDetails: eventDetails)
@@ -59,6 +79,11 @@ final class InvitationViewModelTests: XCTestCase {
     }
 
     func testWhenEventHasEndedOrHasBeenCancelled_thenTitleColorIsWeakAndStatusIsNotEmpty() {
+        struct TestScenario {
+            let endDate: Date
+            let status: EventDetails.EventStatus
+        }
+
         let scenarios: [TestScenario] = [
             .init(endDate: .distantPast, status: .confirmed),
             .init(endDate: .distantFuture, status: .cancelled),
@@ -86,8 +111,16 @@ final class InvitationViewModelTests: XCTestCase {
         XCTAssertEqual(sut.statusString, "This event has been cancelled")
     }
 
+    func testWhenEventHasEndedButIsRecurring_thenAlreadyEndedStatusIsNotShown() {
+        let eventDetails = EventDetails.make(endDate: .distantPast, recurrence: "anything")
+        let sut = InvitationViewModel(eventDetails: eventDetails)
+        XCTAssertNil(sut.statusString)
+    }
+
     func testWhenThereIsFewInvitees_thenExpansionButtonIsNotNeeded() {
-        let eventDetails = EventDetails.make(invitees: [.init(email: "attendee@example.com", status: .unknown)])
+        let eventDetails = EventDetails.make(
+            invitees: [.init(email: "attendee@example.com", role: .unknown, status: .unknown)]
+        )
         let sut = InvitationViewModel(eventDetails: eventDetails)
         XCTAssertNil(sut.expansionButtonTitle)
     }
@@ -109,9 +142,14 @@ final class InvitationViewModelTests: XCTestCase {
         XCTAssertEqual(sut.visibleInvitees, [])
         XCTAssertEqual(sut.expansionButtonTitle, "3 participants")
     }
-}
 
-private struct TestScenario {
-    let endDate: Date
-    let status: EventDetails.EventStatus
+    func testWhenEventHasNoTitle_thenNoTitleStringIsShown() {
+        let emptyTitles: [String?] = [nil, ""]
+
+        for emptyTitle in emptyTitles {
+            let eventDetails = EventDetails.make(title: emptyTitle)
+            let sut = InvitationViewModel(eventDetails: eventDetails)
+            XCTAssertEqual(sut.title, "(no title)")
+        }
+    }
 }

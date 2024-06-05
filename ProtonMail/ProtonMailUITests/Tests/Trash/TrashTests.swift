@@ -56,4 +56,32 @@ class TrashTests: FixtureAuthenticatedTestCase {
                 .verify.nothingToSeeHere()
         }
     }
+    
+    func testDeleteSingleMessageFromTrashFolder() {
+        runTestWithScenario(.trashOneMessage) {
+            InboxRobot()
+                .longClickMessageBySubject(scenario.subject)
+                .moveToTrash()
+                .menuDrawer()
+                .trash()
+                .longClickMessageBySubject(scenario.subject)
+                .delete()
+                .confirmMessageDeletion()
+                .verify.nothingToSeeHere()
+        }
+    }
+    
+    func testDeleteMultipleMessagesFromTrashFolder() {
+        runTestWithScenario(.trashMultipleMessages) {
+            InboxRobot()
+                .selectMultipleMessages([0,1])
+                .moveToTrash()
+                .menuDrawer()
+                .trash()
+                .selectMultipleMessages([0,1])
+                .delete()
+                .confirmMessageDeletion()
+                .verify.nothingToSeeHere()
+        }
+    }
 }

@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Alamofire
+import Combine
 import CoreData
 import LifetimeTracker
 import ProtonCoreDataModel
@@ -38,13 +39,14 @@ import UIKit
 
 class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintProtocol, ScheduledAlertPresenter, LifetimeTrackable {
     typealias Dependencies = HasPaymentsUIFactory
-        & ReferralProgramPromptPresenter.Dependencies
-        & HasMailboxMessageCellHelper
-        & HasFeatureFlagsRepository
-        & HasUserManager
-        & HasUserDefaults
-        & HasAddressBookService
-        & HasUserCachedStatus
+    & ReferralProgramPromptPresenter.Dependencies
+    & HasMailboxMessageCellHelper
+    & HasFeatureFlagsRepository
+    & HasUpsellTelemetryReporter
+    & HasUserManager
+    & HasUserDefaults
+    & HasAddressBookService
+    & HasUserCachedStatus
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -52,6 +54,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     let viewModel: MailboxViewModel
     private let dependencies: Dependencies
+    private var cancellables = Set<AnyCancellable>()
 
     private weak var coordinator: (MailboxCoordinatorProtocol & SnoozeSupport)?
 
@@ -95,6 +98,13 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     // MARK: PMToolBarView
     @IBOutlet private var toolBar: PMToolBarView!
 
+    private let titleLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.set(text: nil, preferredFont: .body, weight: .bold)
+        return titleLabel
+    }()
+
     // MARK: - Private attributes
 
     private var bannerContainer: UIView?
@@ -112,9 +122,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     // MARK: - Private views
     private var refreshControl: UIRefreshControl!
-
-    // MARK: - Left bar button
-    private var menuBarButtonItem: UIBarButtonItem!
 
     // MARK: - No result image and label
     @IBOutlet weak var noResultImage: UIImageView!
@@ -169,10 +176,18 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
     private var _snoozeDateConfigReceiver: SnoozeDateConfigReceiver?
 
+    override var title: String? {
+        didSet {
+            titleLabel.text = title
+        }
+    }
+
     init(viewModel: MailboxViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
         self.dependencies = dependencies
+
         super.init(viewModel: viewModel)
+
         viewModel.uiDelegate = self
         trackLifetime()
     }
@@ -298,6 +313,31 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
                          selector: #selector(tempNetworkError(_:)),
                          name: .tempNetworkError,
                          object: nil)
+
+        viewModel.setupStorageObservation { [weak self] newValue in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.setupRightButtons(self.viewModel.listEditing, isStorageExceeded: newValue)
+            }
+        }
+
+        viewModel
+            .error
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] error in
+                showErrorMessage(error as NSError)
+            }
+            .store(in: &cancellables)
+
+        viewModel
+            .reloadRightBarButtons
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] in
+                setupRightButtons(viewModel.listEditing, isStorageExceeded: viewModel.user.isStorageExceeded)
+            }
+            .store(in: &cancellables)
+
+        viewModel.viewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -317,7 +357,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         viewModel.user.undoActionManager.register(handler: self)
         reloadIfSwipeActionsDidChange()
         fetchEventInScheduledSend()
-        setupMenuButton(userInfo: dependencies.user.userInfo)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -467,11 +506,8 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)
 
-        setupMenuButton(userInfo: dependencies.user.userInfo)
-        self.menuBarButtonItem = self.navigationItem.leftBarButtonItem
-        self.menuBarButtonItem.tintColor = ColorProvider.IconNorm
-
         setUpNoResultView()
+        navigationItem.titleView = UIView()
         self.navigationItem.assignNavItemIndentifiers()
     }
 
@@ -574,6 +610,45 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     // MARK: - Button Targets
+
+    @objc
+    func upsellButtonTapped() {
+        guard let upsellPageModel = viewModel.makeUpsellPageModel() else {
+            return
+        }
+
+        dependencies.upsellTelemetryReporter.prepare()
+
+        Task { [weak self] in
+            await self?.dependencies.upsellTelemetryReporter.upsellButtonTapped()
+        }
+
+        let upsellPage = UpsellPage(model: upsellPageModel) { [unowned self] selectedProductId in
+            purchasePlan(storeKitProductId: selectedProductId, upsellPageModel: upsellPageModel)
+        }
+        let hostingController = SheetLikeSpotlightViewController(rootView: upsellPage)
+        hostingController.modalTransitionStyle = .crossDissolve
+        present(hostingController, animated: false)
+
+        viewModel.upsellButtonWasTapped()
+        setupRightButtons(viewModel.listEditing, isStorageExceeded: viewModel.user.isStorageExceeded)
+    }
+
+    private func purchasePlan(storeKitProductId: String, upsellPageModel: UpsellPageModel) {
+        Task { [weak self] in
+            guard let self else { return }
+
+            lockUI()
+            upsellPageModel.isBusy = true
+            let planPurchased = await self.viewModel.purchasePlan(storeKitProductId: storeKitProductId)
+            upsellPageModel.isBusy = false
+            unlockUI()
+
+            if planPurchased {
+                await presentedViewController?.dismiss(animated: true)
+            }
+        }
+    }
 
     @objc func composeButtonTapped() {
         coordinator?.go(to: .composer, sender: nil)
@@ -1074,15 +1149,18 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     private func setupLeftButtons(_ editingMode: Bool) {
-        var leftButtons: [UIBarButtonItem]
+        let menuButton = makeMenuButton(userInfo: dependencies.user.userInfo)
+        menuButton.customView?.alpha = editingMode ? 0 : 1
 
-        if !editingMode {
-            leftButtons = [self.menuBarButtonItem]
-        } else {
-            leftButtons = []
-        }
+        let titleItem = UIBarButtonItem(customView: titleLabel)
 
-        self.navigationItem.setLeftBarButtonItems(leftButtons, animated: true)
+        let leftBarButtonItems: [UIBarButtonItem] = [
+            menuButton,
+            .fixedSpace(20),
+            titleItem
+        ]
+
+        navigationItem.setLeftBarButtonItems(leftBarButtonItems, animated: true)
     }
 
     private func setupNavigationTitle(showSelected: Bool) {
@@ -1098,7 +1176,9 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     private func updateNavigationController(_ editingMode: Bool) {
         self.setupLeftButtons(editingMode)
         self.setupNavigationTitle(showSelected: editingMode)
-        self.setupRightButtons(editingMode)
+        self.setupRightButtons(
+            editingMode,
+            isStorageExceeded: viewModel.user.isStorageExceeded)
     }
 
     private func retry(delay: Double = 0) {
@@ -1244,18 +1324,28 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     private func showSpotlightIfNeeded() {
-        if viewModel.shouldShowAutoImportContactsSpotlight() {
+        if viewModel.shouldShowSpotlight(for: .answerInvitation) {
+            showAnswerInvitationSpotlight()
+        } else if viewModel.shouldShowAutoImportContactsSpotlight() {
             showAutoImportContactsSpotlight()
-        } else if viewModel.shouldShowJumpToNextMessageSpotlight() {
+        } else if viewModel.shouldShowSpotlight(for: .jumpToNextMessage) {
             showJumpToNextMessageSpotlight()
         }
     }
 
+    private func showAnswerInvitationSpotlight() {
+        let spotlightView = AnswerInvitationSpotlightView()
+        let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
+        spotlightView.config.hostingController = hosting
+        navigationController?.present(hosting, animated: false)
+        viewModel.hasSeenSpotlight(for: .answerInvitation)
+    }
+
     private func showJumpToNextMessageSpotlight() {
         let spotlightView = JumpToNextSpotlightView(
-            buttonTitle: L11n.NextMsgAfterMove.spotlightButtonTitle,
-            message: L11n.NextMsgAfterMove.spotlightMessage,
-            title: L11n.NextMsgAfterMove.spotlightTitle
+            buttonTitle: L10n.NextMsgAfterMove.spotlightButtonTitle,
+            message: L10n.NextMsgAfterMove.spotlightMessage,
+            title: L10n.NextMsgAfterMove.spotlightTitle
         ) { [weak self] hostingVC, didTapActionButton in
             hostingVC?.dismiss(animated: false)
             if didTapActionButton {
@@ -1268,14 +1358,14 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
         spotlightView.config.hostingController = hosting
         navigationController?.present(hosting, animated: false)
-        viewModel.hasSeenJumpToNextMessageSpotlight()
+        viewModel.hasSeenSpotlight(for: .jumpToNextMessage)
     }
 
     private func showAutoImportContactsSpotlight() {
         let spotlightView = AutoImportContactsSpotlightView(
-            buttonTitle: L11n.AutoImportContacts.spotlightButtonTitle,
-            message: L11n.AutoImportContacts.spotlightMessage,
-            title: L11n.AutoImportContacts.spotlightTitle
+            buttonTitle: L10n.AutoImportContacts.spotlightButtonTitle,
+            message: L10n.AutoImportContacts.spotlightMessage,
+            title: L10n.AutoImportContacts.spotlightTitle
         ) { [weak self] hostingVC, didTapActionButton in
             hostingVC?.dismiss(animated: false)
             if didTapActionButton {
@@ -1298,8 +1388,8 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     private func showContactAccessIsDenied() {
         let alert = UIAlertController(
-            title: L11n.SettingsContacts.autoImportContacts,
-            message: L11n.SettingsContacts.authoriseContactsInSettingsApp,
+            title: L10n.SettingsContacts.autoImportContacts,
+            message: L10n.SettingsContacts.authoriseContactsInSettingsApp,
             preferredStyle: .alert
         )
         alert.addOKAction()
@@ -1366,7 +1456,6 @@ extension MailboxViewController {
     }
 
     private func updateTopBarItemDisplay() {
-        guard UserInfo.enableSelectAll else { return }
         updateTimeLabel.isHidden = viewModel.listEditing
         selectAllButton.isHidden = !viewModel.listEditing
         if viewModel.listEditing {
@@ -1377,12 +1466,12 @@ extension MailboxViewController {
     }
 
     @objc
-    private func tapSelectAllButton(gesture: UITapGestureRecognizer) {
+    private func tapSelectAllButton() {
         selectAllButton.backgroundColor = ColorProvider.BackgroundSecondary
         UIView.animate(withDuration: 0.25) {
             self.selectAllButton.backgroundColor = .clear
         }
-        if selectAllLabel.text == L11n.MailBox.selectAll {
+        if selectAllLabel.text == L10n.MailBox.selectAll {
             selectAllMessages()
         } else {
             viewModel.removeAllSelectedIDs()
@@ -1422,19 +1511,19 @@ extension MailboxViewController {
             selectAllIcon.tintColor = ColorProvider.IconAccent
             selectAllIcon.image = Asset.icSquareChecked.image
             selectAllLabel.textColor = ColorProvider.TextAccent
-            selectAllLabel.text = L11n.MailBox.unselectAll
+            selectAllLabel.text = L10n.MailBox.unselectAll
             selectAllButton.isUserInteractionEnabled = true
         case (true, false):
             selectAllIcon.tintColor = ColorProvider.IconAccent
             selectAllIcon.image = Asset.icSquare.image
             selectAllLabel.textColor = ColorProvider.TextAccent
-            selectAllLabel.text = L11n.MailBox.selectAll
+            selectAllLabel.text = L10n.MailBox.selectAll
             selectAllButton.isUserInteractionEnabled = true
         case (false, _):
             selectAllIcon.tintColor = ColorProvider.IconDisabled
             selectAllIcon.image = Asset.icSquare.image
             selectAllLabel.textColor = ColorProvider.TextDisabled
-            selectAllLabel.text = L11n.MailBox.selectAll
+            selectAllLabel.text = L10n.MailBox.selectAll
             selectAllButton.isUserInteractionEnabled = false
         }
     }
@@ -2145,12 +2234,12 @@ extension MailboxViewController {
             break
         }
 
-        alertDescription.text = L11n.AlertBox.alertBoxDescription
+        alertDescription.text = L10n.AlertBox.alertBoxDescription
 
         alertLabel.textColor = ColorProvider.TextNorm
         alertDescription.textColor = ColorProvider.TextNorm
-        alertDismissButton.setTitle(L11n.AlertBox.alertBoxDismissButtonTitle, for: .normal)
-        alertButton.setTitle(L11n.AlertBox.alertBoxButtonTitle, for: .normal)
+        alertDismissButton.setTitle(L10n.AlertBox.alertBoxDismissButtonTitle, for: .normal)
+        alertButton.setTitle(L10n.AlertBox.alertBoxButtonTitle, for: .normal)
         alertButton.layer.cornerRadius = 8
         alertButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
         alertButton.addTarget(
@@ -2657,7 +2746,7 @@ extension MailboxViewController {
         selectAllIcon.tintColor = ColorProvider.IconAccent
         // TODO use ImageProvider when core library contains this image
         selectAllIcon.image = Asset.icSquare.image
-        selectAllLabel.set(text: L11n.MailBox.selectAll, preferredFont: .subheadline, textColor: ColorProvider.TextAccent)
+        selectAllLabel.set(text: L10n.MailBox.selectAll, preferredFont: .subheadline, textColor: ColorProvider.TextAccent)
 
         selectAllButton.roundCorner(12)
         selectAllButton.backgroundColor = .clear
@@ -2926,7 +3015,7 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
         updateCellBasedOnSelectionStatus()
 
         if !viewModel.canSelectMore() {
-            L11n.MailBox.maximumSelectionReached.alertToastBottom()
+            L10n.MailBox.maximumSelectionReached.alertToastBottom()
         }
     }
 

@@ -38,14 +38,6 @@ enum Application {
 #endif
     }
 
-    static var isEnterprise: Bool {
-#if Enterprise
-        return true
-#else
-        return false
-#endif
-    }
-
     static var isDebugOrEnterprise: Bool {
 #if DEBUG_ENTERPRISE
         return true

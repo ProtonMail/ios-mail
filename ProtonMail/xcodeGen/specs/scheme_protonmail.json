@@ -11,14 +11,7 @@
                   "Test"
                ]
             },
-            "language": "en",
-            "preActions": [
-               {
-                  "script": "#!/bin/sh\nif [[ ${CONFIGURATION} == *\"Debug\"* ]]; then\nbuildNumber=\"Debug\"\nfi;\n\nif [[ ${CONFIGURATION} == *\"Release\"* ]]; then\ncd ${SRCROOT}\nbuildNumber=\"$(git rev-list HEAD | wc -l | tr -d ' ')\"\nfi;\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/ProtonMail/Supporting Files/Info.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/ProtonMail/Supporting Files/InfoDev.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/PushService/Info.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/PushService/InfoDev.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/Share/Info.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/Share/InfoDev.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/Siri/Info.plist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${SRCROOT}/Siri/InfoDev.plist\"\n",
-                  "settingsTarget": "ProtonMail",
-                  "name": "Reset build version"
-               }
-            ]
+            "language": "en"
          },
          "run": {
             "config": "Debug",
@@ -63,6 +56,7 @@
             "language": "en",
             "region": "US",
             "environmentVariables": {
+               "PROJECT_ROOT": "${SRCROOT}",
                "TZ": "UTC"
             }
          },

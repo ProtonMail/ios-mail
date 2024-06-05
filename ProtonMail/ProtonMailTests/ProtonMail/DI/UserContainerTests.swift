@@ -90,12 +90,15 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.undoActionManager
         _ = strongRefToContainer?.userService
         _ = strongRefToContainer?.user
+        _ = strongRefToContainer?.answerInvitation
         _ = strongRefToContainer?.appRatingService
         _ = strongRefToContainer?.blockedSenderCacheUpdater
         _ = strongRefToContainer?.cleanUserLocalMessages
+        _ = strongRefToContainer?.emailAddressStorage
         _ = strongRefToContainer?.reportService
         _ = strongRefToContainer?.contactViewsFactory
-        _ = strongRefToContainer?.eventRSVP
+        _ = strongRefToContainer?.extractBasicEventInfo
+        _ = strongRefToContainer?.fetchEventDetails
         _ = strongRefToContainer?.fetchMessages
         _ = strongRefToContainer?.fetchSenderImage
         _ = strongRefToContainer?.importDeviceContacts
@@ -103,13 +106,21 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.nextMessageAfterMoveStatusProvider
         _ = strongRefToContainer?.payments
         _ = strongRefToContainer?.paymentsUIFactory
+        _ = strongRefToContainer?.planService
+        _ = strongRefToContainer?.purchaseManager
+        _ = strongRefToContainer?.purchasePlan
         _ = strongRefToContainer?.settingsViewsFactory
         _ = strongRefToContainer?.saveToolbarActionSettings
         _ = strongRefToContainer?.sendBugReport
+        _ = strongRefToContainer?.storeKitManager
         _ = strongRefToContainer?.toolbarActionProvider
         _ = strongRefToContainer?.toolbarSettingViewFactory
         _ = strongRefToContainer?.unblockSender
         _ = strongRefToContainer?.updateMailbox
+        _ = strongRefToContainer?.upsellButtonStateProvider
+        _ = strongRefToContainer?.upsellPageFactory
+        _ = strongRefToContainer?.upsellOfferProvider
+        _ = strongRefToContainer?.upsellTelemetryReporter
         // sourcery:end
 
         strongRefToUser = nil

@@ -25,8 +25,6 @@ struct DeviceAPI {
     enum APNEnvironment: Int {
         case development = 16
         case production = 6
-        case enterpriseDev = 17
-        case enterpriseProd = 7
     }
 }
 

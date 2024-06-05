@@ -138,11 +138,11 @@ final class WindowsCoordinator {
             let title: String
             let message: String
             if error.isSqlLiteDiskFull {
-                title = L11n.Error.core_data_setup_insufficient_disk_title
-                message = L11n.Error.core_data_setup_insufficient_disk_messsage
+                title = L10n.Error.core_data_setup_insufficient_disk_title
+                message = L10n.Error.core_data_setup_insufficient_disk_messsage
             } else {
                 title = LocalString._general_error_alert_title
-                message = String(format: L11n.Error.core_data_setup_generic_messsage, error.localizedDescription)
+                message = String(format: L10n.Error.core_data_setup_generic_messsage, error.localizedDescription)
             }
 
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -304,17 +304,6 @@ final class WindowsCoordinator {
         }
     }
 
-    private func restoreAppStates() {
-        guard appWindow != nil else { return }
-        self.appWindow.enumerateViewControllerHierarchy { controller, stop in
-            if let _ = controller as? MenuViewController,
-               let coordinator = self.menuCoordinator {
-                coordinator.handleSwitchView(deepLink: self.deepLink)
-                stop = true
-            }
-        }
-    }
-
     @discardableResult
     private func navigate(from source: UIWindow?, to destination: UIWindow, animated: Bool, completion: (() -> Void)? = nil) -> Bool {
         guard source != destination else {
@@ -364,17 +353,6 @@ final class WindowsCoordinator {
         ) { [weak self] noti in
             if let uid = noti.userInfo?["uid"] as? String {
                 self?.didReceiveTokenRevoke(uid: uid)
-            }
-        }
-
-        dependencies.notificationCenter.addObserver(
-            forName: .didFetchSettingsForPrimaryUser,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            if self?.arePrimaryUserSettingsFetched == false {
-                self?.arePrimaryUserSettingsFetched = true
-                self?.restoreAppStates()
             }
         }
 

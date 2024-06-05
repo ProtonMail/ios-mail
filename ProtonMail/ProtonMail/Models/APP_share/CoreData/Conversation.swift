@@ -23,7 +23,6 @@
 import CoreData
 import Foundation
 
-// sourcery: CoreDataHelpers
 final class Conversation: NSManagedObject {
     enum Attributes: String, CaseIterable {
         static let entityName = "Conversation"

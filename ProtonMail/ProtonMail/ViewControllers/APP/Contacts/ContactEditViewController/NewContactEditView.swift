@@ -131,21 +131,21 @@ private enum SubViewsFactory {
 
     static var displayNameField: UITextField {
         let view = UITextField()
-        view.attributedPlaceholder = L11n.ContactEdit.displayNamePlaceholder
+        view.attributedPlaceholder = L10n.ContactEdit.displayNamePlaceholder
             .apply(style: FontManager.DefaultStrong.foregroundColor(ColorProvider.TextWeak))
         return view
     }
 
     static var firstNameField: UITextField {
         let view = UITextField()
-        view.attributedPlaceholder = L11n.ContactEdit.firstNamePlaceholder
+        view.attributedPlaceholder = L10n.ContactEdit.firstNamePlaceholder
             .apply(style: FontManager.Default.foregroundColor(ColorProvider.TextWeak))
         return view
     }
 
     static var lastNameField: UITextField {
         let view = UITextField()
-        view.attributedPlaceholder = L11n.ContactEdit.lastNamePlaceholder
+        view.attributedPlaceholder = L10n.ContactEdit.lastNamePlaceholder
             .apply(style: FontManager.Default.foregroundColor(ColorProvider.TextWeak))
         return view
     }

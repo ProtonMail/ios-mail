@@ -118,7 +118,7 @@
  menu title
  The title of a subscription plans screen
 */
-"Subscription" = "訂閲計劃";
+"Subscription" = "訂購授權";
 
 /* menu title */
 "Manage accounts" = "管理帳號";
@@ -419,9 +419,6 @@
  Title for the alert button to cancel disable content search.
 */
 "Cancel" = "取消";
-
-/* Got it action */
-"Got it" = "了解";
 
 /* Open action */
 "Open" = "打開";
@@ -1199,7 +1196,7 @@
 "Limit reached" = "已達上限";
 
 /* Alert when the free account limit is reached */
-"Only two free accounts can be added" = "僅可加入兩個免費帳號";
+"Only two free accounts can be added" = "最多可新增兩個免費帳戶";
 
 /* section title in settings */
 "Account settings" = "帳號設定";
@@ -1837,13 +1834,13 @@
 "Your Mail storage is %@ full" = "您的 Mail 儲存空間%@滿了";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "您的雲端磁碟儲存空間%@滿了";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "您的 Mail 儲存空間已滿";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "您的 Drive 儲存空間已滿";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "升級以增加儲存。";
@@ -1889,6 +1886,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "解除攔截";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "你的行程安排很重要，值得受到保護";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "行事曆紀錄著你的生活軌跡，Proton Calendar 幫你守護隱私。";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "取得 Proton Calendar 應用程式";
+
 /* Name of the feature */
 "Email tracking protection" = "電郵追蹤防護";
 
@@ -1903,6 +1909,9 @@
 
 /* Button inside the banner */
 "Load" = "載入";
+
+/* Title of an event with missing title */
+"(no title)" = "(無標題)";
 
 /* As in: event organizer */
 "Organizer" = "召集人";
@@ -1937,17 +1946,98 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "或許參加";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(非必要出席)";
+
+/* As in: Every 3 days */
+"Every %@" = "每 %@";
+
+/* As in: on Saturday */
+"on %@" = "於 %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "在%@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "於 %u 日";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "直到 %@ 為止";
+
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@，於 %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "已接受";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "已拒絕";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "暫訂參與";
+
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ 中 %2@ 您的邀請出席 %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "你被邀請至%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "地點:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "說明:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ 已被取消。";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "回覆：誠摯邀請您參與訂於 %@ 的活動";
+
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "回覆：誠摯邀請您參與 %@ 開展的活動";
+
+/* Occurring every day */
+"Daily" = "每天";
+
+/* Occurring every week */
+"Weekly" = "每週";
+
+/* Occurring every month */
+"Monthly" = "每月";
+
+/* Occurring every year */
+"Yearly" = "每年";
+
+/* \"1st\" spelled out */
+"first" = "第一";
+
+/* \"2nd\" spelled out */
+"second" = "第二";
+
+/* \"3rd\" spelled out */
+"third" = "第三";
+
+/* \"4th\" spelled out */
+"fourth" = "第四";
+
+/* Opposite of \"first\" */
+"last" = "最後";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Easily RSVP to events";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "最大儲存";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "儲存: %@以滿";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
-
-/* Upgrade button action */
-"Upgrade" = "升級";
+"Drive: %@ full" = "硬碟: %@以滿";
 
 /* Official badge next to sender's name */
 "Official" = "官方";
@@ -1995,10 +2085,10 @@
 "Auto-import enabled" = "自動匯入已啟用";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "第一次匯入可能需要一些時間，而且只有在 App 處於前景（執行中）時才會進行。";
 
 /* Alert to ask user to reauthorise access to contacts */
-"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission.";
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "由於存取聯絡人功能被停用，自動匯入的功能無法使用。請前往設定 > 開啟「聯絡人」權限，以啟用自動匯入。";
 
 /* Settings lock protection section */
 "Protection" = "保護";
@@ -2063,20 +2153,35 @@
 /* Title for application logs settings option */
 "Application logs" = "應用程式紀錄";
 
+/* Badge present on some spotlights */
+"New!" = "新版!";
+
+/* Got it action */
+"Got it" = "了解";
+
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "跳到下一則電子郵件";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "刪除、封存或移動開啟中的郵件後，自動顯示下一封。";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "啟用功能";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "刪除或移動郵件後，自動顯示收件匣中的下一封郵件。";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "更快速地閱讀電子郵件";
 
 /* Message for error when app set up at launch fails */
-"An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
+"An unexpected error occurred, please contact support.\nError: %@" = "發生了預料外的狀況，請聯絡客服人員尋求協助。\n錯誤代碼：%@";
 
 /* Title for error when app set up at launch fails */
 "Insufficient disk space" = "硬碟空間不足";
 
 /* Message for error when app set up at launch fails */
-"The application cannot open due to insufficient disk space. Please delete some data and try again" = "The application cannot open due to insufficient disk space. Please delete some data and try again";
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "由於硬碟空間不足，應用程式無法開啟。請刪除一些資料後再試一次。";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "無法開啟訊息，請再嘗試。";
@@ -2151,7 +2256,7 @@
 "Empty trash" = "清空垃圾桶";
 
 /* Alert prompting to update Calendar */
-"Download the latest version of the Proton Calendar to open this event" = "Download the latest version of the Proton Calendar to open this event";
+"Download the latest version of the Proton Calendar to open this event" = "請下載最新版的 Proton Calendar 來開啟此活動";
 
 /* Button to open App Store */
 "Download in App Store" = "下載至App Store";
@@ -2178,7 +2283,7 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "此郵件的原寄件者已無效，您的訊息將會從預設電子郵件 %@ 寄出。";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
-"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+"Please retry after all attachments are uploaded." = "請等待所有附件都上傳完畢後再重試。";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "顯示名稱";
@@ -2208,7 +2313,7 @@
 "Unselect all" = "取消全選";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
-"Maximum selection reached" = "Maximum selection reached";
+"Maximum selection reached" = "已達選擇項目的數量上限";
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "無收件人";
@@ -2256,7 +2361,7 @@
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "此動作會使您退訂郵件清單。寄件者會收到通知，從此不再傳送郵件到此位址。";
 
 /* Alert telling the user that we are unable to preview this attachment */
-"Unable to preview this attachment" = "Unable to preview this attachment";
+"Unable to preview this attachment" = "無法預覽此附件";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
 "Downloading attachment" = "下載附件";
@@ -2300,12 +2405,6 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "資料夾、標籤和篩選器無上限";
 
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "使用緩辦功能，設定電子郵件何時於您的收件匣中重新陳閱，現已列於工具列中。";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "往後挪一下";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "新增附件";
 
@@ -2313,34 +2412,34 @@
 "Swipe to next message" = "滑動至下一則訊息";
 
 /* Description text for setting */
-"Allow navigating through messages by swiping left or right." = "Allow navigating through messages by swiping left or right.";
+"Allow navigating through messages by swiping left or right." = "啟用左右滑動切換訊息";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "聯絡人資訊一手掌握";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "不用離開應用程式也能找到電子郵件地址。將裝置上的聯絡人同步到 Proton Mail。";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "開啟自動匯入";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "還沒有任何聯絡人";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "從裝置匯入聯絡人，輕鬆發送電子郵件或邀請。";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "自動匯入聯絡人";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "匯入您的聯絡人";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "您的聯絡人即將顯示在此處。";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "自動從您的裝置新增聯絡人。";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "隱私與數據資料";
@@ -2354,6 +2453,18 @@
 /* settings general section title */
 "Change mailbox password" = "變更郵箱密碼";
 
+/* Description of a feature of a paid subscription */
+"15 GB storage" = "15 GB 儲存空間";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u電子郵件位址";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "支援自訂電子郵件網域";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "New Proton Mail desktop app";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "匿名遙測";
 
@@ -2364,4 +2475,25 @@
 "To improve our services, we sometimes collect anonymized usage data." = "為了改善我們的服務，我們有時候會蒐集匿名的使用資料。";
 
 /* The subtitle of the crash report setting. */
-"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.";
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "如果應用程式崩潰，系統將向我們的工程師發送詳細的崩潰報告。這些報告僅用於改進應用程式。";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "升級到 %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+
+/* Displayed next to the monthly price */
+"/month" = "/月";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "取得 %@";
+
+/* In the context of a discount */
+"Save %u%%" = "省下 %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "無效的產品編號 : $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Purchase already in progress";

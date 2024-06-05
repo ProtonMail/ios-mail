@@ -1,6 +1,9 @@
-// Generated using Sourcery 2.1.7 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.4 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
+// periphery:ignore:all
+
 import ProtonCorePayments
+import ProtonInboxRSVP
 
 protocol HasAddressBookService {
     var addressBookService: AddressBookService { get }
@@ -210,19 +213,19 @@ extension UserContainer: HasSignInManager {
     }
 }
 
-protocol HasStoreKitManagerImpl {
-    var storeKitManager: StoreKitManagerImpl { get }
+protocol HasStoreKitManagerDelegateImpl {
+    var storeKitManagerDelegate: StoreKitManagerDelegateImpl { get }
 }
 
-extension GlobalContainer: HasStoreKitManagerImpl {
-    var storeKitManager: StoreKitManagerImpl {
-        storeKitManagerFactory()
+extension GlobalContainer: HasStoreKitManagerDelegateImpl {
+    var storeKitManagerDelegate: StoreKitManagerDelegateImpl {
+        storeKitManagerDelegateFactory()
     }
 }
 
-extension UserContainer: HasStoreKitManagerImpl {
-    var storeKitManager: StoreKitManagerImpl {
-        globalContainer.storeKitManager
+extension UserContainer: HasStoreKitManagerDelegateImpl {
+    var storeKitManagerDelegate: StoreKitManagerDelegateImpl {
+        globalContainer.storeKitManagerDelegate
     }
 }
 
@@ -258,6 +261,16 @@ extension UserContainer: HasURLOpener {
     }
 }
 
+protocol HasAnswerInvitation {
+    var answerInvitation: AnswerInvitation { get }
+}
+
+extension UserContainer: HasAnswerInvitation {
+    var answerInvitation: AnswerInvitation {
+        answerInvitationFactory()
+    }
+}
+
 protocol HasAppRatingService {
     var appRatingService: AppRatingService { get }
 }
@@ -288,6 +301,16 @@ extension UserContainer: HasCleanUserLocalMessages {
     }
 }
 
+protocol HasEmailAddressStorage {
+    var emailAddressStorage: EmailAddressStorage { get }
+}
+
+extension UserContainer: HasEmailAddressStorage {
+    var emailAddressStorage: EmailAddressStorage {
+        emailAddressStorageFactory()
+    }
+}
+
 protocol HasBugReportService {
     var reportService: BugReportService { get }
 }
@@ -308,13 +331,23 @@ extension UserContainer: HasContactViewsFactory {
     }
 }
 
-protocol HasEventRSVP {
-    var eventRSVP: EventRSVP { get }
+protocol HasExtractBasicEventInfo {
+    var extractBasicEventInfo: ExtractBasicEventInfo { get }
 }
 
-extension UserContainer: HasEventRSVP {
-    var eventRSVP: EventRSVP {
-        eventRSVPFactory()
+extension UserContainer: HasExtractBasicEventInfo {
+    var extractBasicEventInfo: ExtractBasicEventInfo {
+        extractBasicEventInfoFactory()
+    }
+}
+
+protocol HasFetchEventDetails {
+    var fetchEventDetails: FetchEventDetails { get }
+}
+
+extension UserContainer: HasFetchEventDetails {
+    var fetchEventDetails: FetchEventDetails {
+        fetchEventDetailsFactory()
     }
 }
 
@@ -388,6 +421,36 @@ extension UserContainer: HasPaymentsUIFactory {
     }
 }
 
+protocol HasPlanService {
+    var planService: PlanService { get }
+}
+
+extension UserContainer: HasPlanService {
+    var planService: PlanService {
+        planServiceFactory()
+    }
+}
+
+protocol HasPurchaseManagerProtocol {
+    var purchaseManager: PurchaseManagerProtocol { get }
+}
+
+extension UserContainer: HasPurchaseManagerProtocol {
+    var purchaseManager: PurchaseManagerProtocol {
+        purchaseManagerFactory()
+    }
+}
+
+protocol HasPurchasePlan {
+    var purchasePlan: PurchasePlan { get }
+}
+
+extension UserContainer: HasPurchasePlan {
+    var purchasePlan: PurchasePlan {
+        purchasePlanFactory()
+    }
+}
+
 protocol HasSettingsViewsFactory {
     var settingsViewsFactory: SettingsViewsFactory { get }
 }
@@ -415,6 +478,16 @@ protocol HasSendBugReport {
 extension UserContainer: HasSendBugReport {
     var sendBugReport: SendBugReport {
         sendBugReportFactory()
+    }
+}
+
+protocol HasStoreKitManagerProtocol {
+    var storeKitManager: StoreKitManagerProtocol { get }
+}
+
+extension UserContainer: HasStoreKitManagerProtocol {
+    var storeKitManager: StoreKitManagerProtocol {
+        storeKitManagerFactory()
     }
 }
 
@@ -455,6 +528,46 @@ protocol HasUpdateMailbox {
 extension UserContainer: HasUpdateMailbox {
     var updateMailbox: UpdateMailbox {
         updateMailboxFactory()
+    }
+}
+
+protocol HasUpsellButtonStateProvider {
+    var upsellButtonStateProvider: UpsellButtonStateProvider { get }
+}
+
+extension UserContainer: HasUpsellButtonStateProvider {
+    var upsellButtonStateProvider: UpsellButtonStateProvider {
+        upsellButtonStateProviderFactory()
+    }
+}
+
+protocol HasUpsellPageFactory {
+    var upsellPageFactory: UpsellPageFactory { get }
+}
+
+extension UserContainer: HasUpsellPageFactory {
+    var upsellPageFactory: UpsellPageFactory {
+        upsellPageFactoryFactory()
+    }
+}
+
+protocol HasUpsellOfferProvider {
+    var upsellOfferProvider: UpsellOfferProvider { get }
+}
+
+extension UserContainer: HasUpsellOfferProvider {
+    var upsellOfferProvider: UpsellOfferProvider {
+        upsellOfferProviderFactory()
+    }
+}
+
+protocol HasUpsellTelemetryReporter {
+    var upsellTelemetryReporter: UpsellTelemetryReporter { get }
+}
+
+extension UserContainer: HasUpsellTelemetryReporter {
+    var upsellTelemetryReporter: UpsellTelemetryReporter {
+        upsellTelemetryReporterFactory()
     }
 }
 

@@ -34,7 +34,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '20.0.1'
+  '22.0.0'
 end
 
 def crypto_variant
@@ -70,6 +70,7 @@ def app_share_pods
   pod "ProtonCore-Authentication", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Hash', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Networking', :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-Telemetry", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Services', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-VCard', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-UIFoundations', :git => proton_core_path, :tag => proton_core_version
@@ -85,18 +86,23 @@ def app_pods
   pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountRecovery', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-PushNotifications', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Features', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-HumanVerification", :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Features', :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-KeyManager", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Login", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-LoginUI", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-MissingScopes", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Observability', :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-PasswordChange", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-PasswordRequest", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Payments", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-PaymentsUI", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonInboxICal', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxical'
+  pod 'ProtonInboxRSVP', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxrsvp.git'
   pod 'SideMenuSwift', :git=> 'git@gitlab.protontech.ch:jchen/SideMenu.git', :tag=>'v2.0.9.autolayout'
   pod 'SwipyCell', :git=> 'git@gitlab.protontech.ch:jchen/SwipyCell.git', :commit => '923310a'
   pod "SkeletonView", '1.30.4'
@@ -141,6 +147,7 @@ target 'ProtonMailUITests' do
   pod 'ProtonCore-QuarkCommands', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Environment', :git => proton_core_path, :tag => proton_core_version
   pod 'Yams'
+  pod 'ProtonInboxICal', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxical'
 end
 
 target 'Share' do

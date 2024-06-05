@@ -296,8 +296,6 @@ class LocalizedString {
     /// "Cancel"
     lazy var _general_cancel_button   = NSLocalizedString("Cancel", comment: "Cancel action")
 
-    lazy var _general_gotIt_button = NSLocalizedString("Got it", comment: "Got it action")
-
     /// "Open"
     lazy var _general_open_button     = NSLocalizedString("Open", comment: "Open action")
     /// "Remove"
@@ -1248,17 +1246,17 @@ class LocalizedString {
     lazy var _toolbar_spotlight_content: String = NSLocalizedString("You can now choose and rearrange the actions in this bar", comment: "The content of the Customize toolbar spotlight view.")
 
     var _title_notification_action_mark_as_read: String {
-        L11n.PushNotificationAction.mark_as_read
+        L10n.PushNotificationAction.mark_as_read
     }
     var _title_notification_action_archive: String {
-        L11n.PushNotificationAction.archive
+        L10n.PushNotificationAction.archive
     }
     var _title_notification_action_move_to_trash: String {
-        L11n.PushNotificationAction.move_to_trash
+        L10n.PushNotificationAction.move_to_trash
     }
 }
 
-enum L11n {
+enum L10n {
     struct AlertBox {
         static let alertBoxMailPercentageText = NSLocalizedString("Your Mail storage is %@ full", comment: "Title of the banner alert")
         static let alertBoxDrivePercentageText = NSLocalizedString("Your Drive storage is %@ full", comment: "Title of the banner alert")
@@ -1300,6 +1298,7 @@ enum L11n {
     }
 
     struct Event {
+        static let noTitle = NSLocalizedString("(no title)", comment: "Title of an event with missing title")
         static let organizer = NSLocalizedString("Organizer", comment: "As in: event organizer")
         static let participantCount = NSLocalizedString("%u participants", comment: "Title of the button to expand participant list")
         static let showLess = NSLocalizedString("Show less", comment: "Button to hide some items in the list to conserve screen estate")
@@ -1312,14 +1311,75 @@ enum L11n {
         static let yesLong = NSLocalizedString("Yes, I'll attend", comment: "Confirm attending an event")
         static let noLong = NSLocalizedString("No, I won't attend", comment: "Deny attending an event")
         static let maybeLong = NSLocalizedString("I might attend", comment: "Neither confirm nor deny attending an event")
+        static let attendanceOptional = NSLocalizedString("(Attendance optional)", comment: "Information that the user is an optional participant")
+        static let every = NSLocalizedString("Every %@", comment: "As in: Every 3 days")
+        static let onDays = NSLocalizedString("on %@", comment: "As in: on Saturday")
+        static let onThe = NSLocalizedString("on the %@", comment: "As in: on the last Saturday")
+        static let onDay = NSLocalizedString("on day %u", comment: "Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month")
+        static let times = NSLocalizedString("%d times", comment: "Count, as in: 1 time, 2 times")
+        static let until = NSLocalizedString("until %@", comment: "As in: Until Sep 27, 2025")
+    }
+
+    // this can be removed once CALIOS-2736 is done
+    enum InvitationEmail {
+        static let emailInvitationSubjectFullDateWithTimeAndTimeZone = NSLocalizedString(
+            "%1@ at %2@ %3@",
+            comment: "Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset"
+        )
+
+        static let accepted = NSLocalizedString("accepted", comment: "Status in an email body sent with an invitation answer")
+        static let declined = NSLocalizedString("declined", comment: "Status in an email body sent with an invitation answer")
+        static let tentativelyAccepted = NSLocalizedString("tentatively accepted", comment: "Status in an email body sent with an invitation answer")
+
+        enum Body {
+            static let content = NSLocalizedString(
+                "%1@ has %2@ your invitation to %3@",
+                comment: "Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title>"
+            )
+
+            static let title = NSLocalizedString("You are invited to %@", comment: "Part of the body of the email sent to the participants that indicates the event's title")
+            static let location = NSLocalizedString("LOCATION:\n%@", comment: "Part of the body of the email sent to the participants that indicates the event's location")
+            static let notes = NSLocalizedString("DESCRIPTION:\n%@", comment: "Part of the body of the email sent to the participants that indicates the event's notes")
+        }
+
+        static let cancellationBody = NSLocalizedString("%@ was cancelled.", comment: "Body of the email sent to the participants that indicates the event has been cancelled")
+
+        enum Answer {
+            enum Subject {
+                static let allDaySingle = NSLocalizedString("Re: Invitation for an event on %@", comment: "Subject of the email sent to the participants invited to a given all-day single event after answering")
+
+                static let other = NSLocalizedString(
+                    "Re: Invitation for an event starting on %@",
+                    comment: "Subject of an email sent with an invitation answer after answering"
+                )
+            }
+        }
+    }
+
+    struct Recurrence {
+        static let daily = NSLocalizedString("Daily", comment: "Occurring every day")
+        static let weekly = NSLocalizedString("Weekly", comment: "Occurring every week")
+        static let monthly = NSLocalizedString("Monthly", comment: "Occurring every month")
+        static let yearly = NSLocalizedString("Yearly", comment: "Occurring every year")
+        static let first = NSLocalizedString("first", comment: "\"1st\" spelled out")
+        static let second = NSLocalizedString("second", comment: "\"2nd\" spelled out")
+        static let third = NSLocalizedString("third", comment: "\"3rd\" spelled out")
+        static let fourth = NSLocalizedString("fourth", comment: "\"4th\" spelled out")
+        static let last = NSLocalizedString("last", comment: "Opposite of \"first\"")
+    }
+
+    struct RSVP {
+        struct Spotlight {
+            static let title = NSLocalizedString("Easily RSVP to events", comment: "Title of the spotlight view")
+            static let body = NSLocalizedString("Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ", comment: "Body of the spotlight view")
+        }
     }
 
     struct SideMenuStorageAlert {
         static let menuTitle = NSLocalizedString("Max Storage", comment: "Menu title")
         static let alertBoxMailTitle = NSLocalizedString("Storage: %@ full", comment: "Cell title that shows the percentage of the storage")
-        static let alertBoxDriveTitle = NSLocalizedString("Drive storage: %@ full", comment: "Cell title that shows the percentage of the storage")
+        static let alertBoxDriveTitle = NSLocalizedString("Drive: %@ full", comment: "Cell title that shows the percentage of the storage")
         static let alertBoxCaption = NSLocalizedString("Get more storage", comment: "Description of the action")
-        static let upgradeButtonTitle = NSLocalizedString("Upgrade", comment: "Upgrade button action")
     }
 
     struct OfficialBadge {
@@ -1385,6 +1445,11 @@ enum L11n {
     struct Settings {
         static let passwordUpdated = NSLocalizedString("Password updated", comment: "Message to show to user after updating password.")
         static let applicationLogs = NSLocalizedString("Application logs", comment: "Title for application logs settings option")
+    }
+
+    struct Spotlight {
+        static let new = NSLocalizedString("New!", comment: "Badge present on some spotlights")
+        static let gotIt = NSLocalizedString("Got it", comment: "Got it action")
     }
 
     struct NextMsgAfterMove {
@@ -1536,8 +1601,6 @@ enum L11n {
         static let addressBenefit = NSLocalizedString("Up to 15 email addresses/aliases", comment: "The benefit item for snooze promotion view")
         static let folderBenefit = NSLocalizedString("Unlimited folders, labels, and filters", comment: "The benefit item for snooze promotion view")
         static let domainBenefit = NSLocalizedString("Custom email domains", comment: "The benefit item for snooze promotion view")
-        static let spotlightDesc = NSLocalizedString("Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.", comment: "Description string shows in spotlight view")
-        static let spotlightTitle = NSLocalizedString("Snooze it for later", comment: "Description string shows in spotlight view")
     }
 
 	struct InlineAttachment {
@@ -1545,8 +1608,6 @@ enum L11n {
 	}
 
     struct MessageNavigation {
-        static let spotlightMessage = "You can now effortlessly navigate through messages by swiping left or right."
-        static let spotlightTitle = "Swipe to next message"
         static let settingTitle = NSLocalizedString("Swipe to next message", comment: "The title in setting page")
         static let settingDesc = NSLocalizedString(
             "Allow navigating through messages by swiping left or right.",
@@ -1576,10 +1637,27 @@ enum L11n {
         static let singlePassword = NSLocalizedString("Change password", comment: "settings general section title")
     }
 
+    enum PremiumPerks {
+        static let storage = NSLocalizedString("15 GB storage", comment: "Description of a feature of a paid subscription")
+        static let emailAddresses = NSLocalizedString("%u email addresses", comment: "Description of a feature of a paid subscription")
+        static let customEmailDomain = NSLocalizedString("Custom email domain support", comment: "Description of a feature of a paid subscription")
+        static let desktopApp = NSLocalizedString("New Proton Mail desktop app", comment: "Description of a feature of a paid subscription")
+    }
+
     struct PrivacyAndDataSettings {
         static let telemetry = NSLocalizedString("Anonymous telemetry", comment: "The title of the telemetry setting.")
         static let crashReport = NSLocalizedString("Anonymous crash reports", comment: "The title of the crash report setting.")
         static let telemetrySubtitle = NSLocalizedString("To improve our services, we sometimes collect anonymized usage data.", comment: "The subtitle of the anonymous telemetry setting.")
         static let crashReportSubtitle = NSLocalizedString("If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.", comment: "The subtitle of the crash report setting.")
+    }
+
+    enum Upsell {
+        static let upgradeToPlan = NSLocalizedString("Upgrade to %@", comment: "Title of the upsell page.")
+        static let mailPlusDescription = NSLocalizedString("To unlock more storage and premium features.", comment: "Subtitle of the upsell page.")
+        static let perMonth = NSLocalizedString("/month", comment: "Displayed next to the monthly price")
+        static let getPlan = NSLocalizedString("Get %@", comment: "CTA button to purchase a plan (e.g. Get Mail Plus)")
+        static let save = NSLocalizedString("Save %u%%", comment: "In the context of a discount")
+        static let invalidProductID = NSLocalizedString("Invalid product ID: $@", comment: "Error when trying to purchase an invalid product")
+        static let purchaseAlreadyInProgress = NSLocalizedString("Purchase already in progress", comment: "Error when the user tries to purchase a plan before the current transaction is finished")
     }
 }

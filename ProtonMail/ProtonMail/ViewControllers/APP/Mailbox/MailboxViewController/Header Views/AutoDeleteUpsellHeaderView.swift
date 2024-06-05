@@ -91,14 +91,14 @@ extension AutoDeleteUpsellHeaderView {
         static var upsellLabel: UILabel {
             let label = UILabel()
             label.numberOfLines = 0
-            label.set(text: L11n.AutoDeleteBanners.freeUpsell, preferredFont: .footnote)
+            label.set(text: L10n.AutoDeleteBanners.freeUpsell, preferredFont: .footnote)
             return label
         }
 
         static var learnMoreButton: UIButton {
             let button = ProtonButton()
             button.setMode(mode: .text)
-            button.setTitle(L11n.AutoDeleteBanners.learnMore, for: .normal)
+            button.setTitle(L10n.AutoDeleteBanners.learnMore, for: .normal)
             button.titleLabel?.adjustsFontForContentSizeCategory = true
             button.sizeToFit()
             return button

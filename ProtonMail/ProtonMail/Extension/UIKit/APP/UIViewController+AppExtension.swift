@@ -33,9 +33,13 @@ extension UIViewController {
     }
 
     func setupMenuButton(userInfo: UserInfo) {
+        navigationItem.leftBarButtonItem = makeMenuButton(userInfo: userInfo)
+    }
+
+    func makeMenuButton(userInfo: UserInfo) -> UIBarButtonItem {
         let menuButton = UIBarButtonItem(customView: menuButtonUI(userInfo: userInfo))
         menuButton.tintColor = ColorProvider.IconNorm
-        navigationItem.leftBarButtonItem = menuButton
+        return menuButton
     }
 
     private func menuButtonUI(userInfo: UserInfo) -> UIView {
@@ -104,5 +108,11 @@ extension UIViewController {
         let driveFactor = CGFloat(usedDriveSpace) / CGFloat(maxDriveSpace)
         return mailFactor > StorageAlertVisibility.bannerThreshold
         || driveFactor > StorageAlertVisibility.bannerThreshold
+    }
+
+    func dismiss(animated: Bool) async {
+        await withCheckedContinuation { continuation in
+            dismiss(animated: animated, completion: continuation.resume)
+        }
     }
 }

@@ -420,9 +420,6 @@
 */
 "Cancel" = "Cancelar";
 
-/* Got it action */
-"Got it" = "Entendido";
-
 /* Open action */
 "Open" = "Abrir";
 
@@ -1199,7 +1196,7 @@
 "Limit reached" = "Limite atingido";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Só é possível adicionar uma conta gratuita";
+"Only two free accounts can be added" = "Only two free accounts can be added";
 
 /* section title in settings */
 "Account settings" = "Definições de conta";
@@ -1840,7 +1837,7 @@
 "Your Drive storage is %@ full" = "Your Drive storage is %@ full";
 
 /* Title of the banner alert */
-"Your Mail storage is full" = "Your Mail storage is full";
+"Your Mail storage is full" = "O seu armazenamento Mail está cheio.";
 
 /* Title of the banner alert */
 "Your Drive storage is full" = "Your Drive storage is full";
@@ -1889,6 +1886,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Desbloquear";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Your schedule is worth protecting";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Get Proton Calendar app";
+
 /* Name of the feature */
 "Email tracking protection" = "Proteção contra o rastreamento de e-mail";
 
@@ -1904,6 +1910,9 @@
 /* Button inside the banner */
 "Load" = "Carregar";
 
+/* Title of an event with missing title */
+"(no title)" = "(sem título)";
+
 /* As in: event organizer */
 "Organizer" = "Organizador";
 
@@ -1911,7 +1920,7 @@
 "Show less" = "Mostrar menos";
 
 /* Text shown when opening an invitation for a past event */
-"This event already ended" = "This event already ended";
+"This event already ended" = "Este evento já terminou.";
 
 /* Text shown when opening an invitation for a cancelled event */
 "This event has been cancelled" = "This event has been cancelled";
@@ -1935,19 +1944,100 @@
 "No, I won't attend" = "Não, não estarei presente";
 
 /* Neither confirm nor deny attending an event */
-"I might attend" = "I might attend";
+"I might attend" = "Eu posso comparecer.";
+
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(presença opcional)";
+
+/* As in: Every 3 days */
+"Every %@" = "A cada %@";
+
+/* As in: on Saturday */
+"on %@" = "em %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "no dia %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "no dia %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "até %@";
+
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ às %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "accepted";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "recusado";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "aceite provisoriamente";
+
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ tem %2@ o seu convite para %3@.";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "You are invited to %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "LOCALIZAÇÃO:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "DESCRIÇÃO:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ foi cancelado.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Re: Convite para um evento em %@";
+
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Re: Convite para um evento a partir de %@";
+
+/* Occurring every day */
+"Daily" = "Diariamente";
+
+/* Occurring every week */
+"Weekly" = "Semanalmente";
+
+/* Occurring every month */
+"Monthly" = "Mensalmente";
+
+/* Occurring every year */
+"Yearly" = "Anualmente";
+
+/* \"1st\" spelled out */
+"first" = "primeiro";
+
+/* \"2nd\" spelled out */
+"second" = "segundo";
+
+/* \"3rd\" spelled out */
+"third" = "terceiro";
+
+/* \"4th\" spelled out */
+"fourth" = "quarto";
+
+/* Opposite of \"first\" */
+"last" = "último";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Easily RSVP to events";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
 
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "Armazenamento máximo";
 
 /* Cell title that shows the percentage of the storage */
 "Storage: %@ full" = "Storage: %@ full";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
-
-/* Upgrade button action */
-"Upgrade" = "Alterar a subscrição";
+"Drive: %@ full" = "Drive: %@ full";
 
 /* Official badge next to sender's name */
 "Official" = "Oficial";
@@ -1992,7 +2082,7 @@
 "Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
 
 /* Auto import alert title */
-"Auto-import enabled" = "Auto-import enabled";
+"Auto-import enabled" = "Importação automática ativada";
 
 /* Auto import alert message */
 "The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
@@ -2063,11 +2153,26 @@
 /* Title for application logs settings option */
 "Application logs" = "Registos da aplicação";
 
+/* Badge present on some spotlights */
+"New!" = "Novo";
+
+/* Got it action */
+"Got it" = "Entendido";
+
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Ir para o próximo e-mail";
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Ativar a funcionalidade";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Leia os e-mails mais rapidamente";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
@@ -2262,13 +2367,13 @@
 "Downloading attachment" = "A transferir anexo";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Snoozed until %@";
+"Snoozed until %@" = "Adiado até %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
 "Unsnooze" = "Retomar";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Snooze until %@";
+"Snooze until %@" = "Adiar até %@";
 
 /* Notification banner when user unsnooze a conversation */
 "Conversation unsnoozed" = "Conversation unsnoozed";
@@ -2300,14 +2405,8 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Pastas, etiquetas e filtros ilimitados";
 
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Adiar para mais tarde";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
-"Add it as attachment" = "Add it as attachment";
+"Add it as attachment" = "Adicionar como anexo";
 
 /* The title in setting page */
 "Swipe to next message" = "Swipe to next message";
@@ -2322,16 +2421,16 @@
 "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "Ativar a importação automática";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "Ainda não existem contactos.";
 
 /* The description for no contact hint view */
 "Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "Importar contactos automaticamente";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
 "Importing your contacts" = "Importing your contacts";
@@ -2354,6 +2453,18 @@
 /* settings general section title */
 "Change mailbox password" = "Alterar a palavra-passe da caixa de correio";
 
+/* Description of a feature of a paid subscription */
+"15 GB storage" = "15 GB de armazenamento";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u endereços de e-mail";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Custom email domain support";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "New Proton Mail desktop app";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetria anónima";
 
@@ -2365,3 +2476,24 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Melhorar para o plano %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+
+/* Displayed next to the monthly price */
+"/month" = "/mês";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Obter %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Poupe %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Invalid product ID: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Purchase already in progress";

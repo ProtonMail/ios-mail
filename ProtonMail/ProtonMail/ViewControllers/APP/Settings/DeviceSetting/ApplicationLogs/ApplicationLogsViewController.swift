@@ -46,7 +46,7 @@ final class ApplicationLogsViewController: UIViewController {
     }
 
     private func setUpUI() {
-        navigationItem.title = L11n.Settings.applicationLogs
+        navigationItem.title = L10n.Settings.applicationLogs
         let barButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(share))
         navigationItem.rightBarButtonItem = barButtonItem
         view.addSubview(textView)

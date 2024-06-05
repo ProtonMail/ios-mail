@@ -236,18 +236,18 @@ extension PromotionView {
         var title: String {
             switch self {
             case .scheduleSend:
-                return L11n.ScheduledSend.upSellTitle
+                return L10n.ScheduledSend.upSellTitle
             case .snooze:
-                return L11n.Snooze.promotionTitle
+                return L10n.Snooze.promotionTitle
             }
         }
 
         var contentDesc: String {
             switch self {
             case .scheduleSend:
-                return L11n.ScheduledSend.upSellContent
+                return L10n.ScheduledSend.upSellContent
             case .snooze:
-                return L11n.Snooze.promotionDesc
+                return L10n.Snooze.promotionDesc
             }
         }
 
@@ -295,23 +295,23 @@ extension PromotionView {
             var title: String {
                 switch self {
                 case .schedule:
-                    return L11n.ScheduledSend.itemSchedule
+                    return L10n.ScheduledSend.itemSchedule
                 case .folder:
-                    return L11n.ScheduledSend.itemFolder
+                    return L10n.ScheduledSend.itemFolder
                 case .storage:
-                    return L11n.ScheduledSend.itemStorage
+                    return L10n.ScheduledSend.itemStorage
                 case .addresses:
-                    return L11n.ScheduledSend.itemAddresses
+                    return L10n.ScheduledSend.itemAddresses
                 case .domains:
-                    return L11n.ScheduledSend.itemDomain
+                    return L10n.ScheduledSend.itemDomain
                 case .aliases:
-                    return L11n.ScheduledSend.itemAliases
+                    return L10n.ScheduledSend.itemAliases
                 case .snoozeAddresses:
-                    return L11n.Snooze.addressBenefit
+                    return L10n.Snooze.addressBenefit
                 case .snoozeFolder:
-                    return L11n.Snooze.folderBenefit
+                    return L10n.Snooze.folderBenefit
                 case .snoozeDomains:
-                    return L11n.Snooze.domainBenefit
+                    return L10n.Snooze.domainBenefit
                 }
             }
         }
@@ -338,7 +338,7 @@ extension PromotionView {
         static var titleLabel: UILabel = {
             let label = UILabel()
             label.numberOfLines = 0
-            label.text = L11n.ScheduledSend.upSellTitle
+            label.text = L10n.ScheduledSend.upSellTitle
             label.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
             label.textAlignment = .center
             label.adjustsFontForContentSizeCategory = true
@@ -349,7 +349,7 @@ extension PromotionView {
         static var contentLabel: UILabel = {
             let label = UILabel()
             label.numberOfLines = 0
-            label.text = L11n.ScheduledSend.upSellContent
+            label.text = L10n.ScheduledSend.upSellContent
             label.textAlignment = .center
             label.font = .adjustedFont(forTextStyle: .subheadline)
             label.adjustsFontForContentSizeCategory = true
@@ -368,7 +368,7 @@ extension PromotionView {
         static var upgradeButton: ProtonButton = {
             let button = ProtonButton()
             button.setMode(mode: .solid)
-            button.setTitle(L11n.ScheduledSend.upgradeTitle, for: .normal)
+            button.setTitle(L10n.ScheduledSend.upgradeTitle, for: .normal)
             return button
         }()
 

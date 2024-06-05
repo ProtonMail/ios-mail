@@ -52,7 +52,7 @@ class ConversationUnreadRequest: Request {
 }
 
 class ConversationUnreadResponse: Response {
-    var results: [ConversationUnreadData]?
+    var results: [GeneralConversationActionResult]?
 
     override func ParseResponse(_ response: [String: Any]) -> Bool {
         guard let responseData = response["Responses"] as? [[String: Any]],
@@ -60,28 +60,10 @@ class ConversationUnreadResponse: Response {
             return false
         }
 
-        guard let result = try? JSONDecoder().decode([ConversationUnreadData].self, from: data) else {
+        guard let result = try? JSONDecoder().decode([GeneralConversationActionResult].self, from: data) else {
             return false
         }
         results = result
         return true
-    }
-}
-
-struct ConversationUnreadData: Decodable {
-    let id: String
-    let response: ResponseCode
-
-    enum CodingKeys: String, CodingKey {
-        case id = "ID"
-        case response = "Response"
-    }
-
-    struct ResponseCode: Decodable {
-        let code: Int
-
-        enum CodingKeys: String, CodingKey {
-            case code = "Code"
-        }
     }
 }

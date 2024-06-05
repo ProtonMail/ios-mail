@@ -18,37 +18,50 @@
 import Combine
 
 protocol ContactsSyncQueueProtocol {
-    var progressPublisher: CurrentValueSubject<ContactsSyncQueue.Progress, Never> { get }
+    var progressPublisher: AnyPublisher<ContactsSyncQueue.Progress, Never> { get }
+    var protonStorageQuotaExceeded: AnyPublisher<Void, Never> { get }
 
+    func setup()
     func start()
     func pause()
     func resume()
     func addTask(_ task: ContactTask)
+    func saveQueueToDisk()
     func deleteQueue()
 }
 
 final class ContactsSyncQueue: ContactsSyncQueueProtocol {
-    typealias Dependencies = AnyObject & HasInternetConnectionStatusProviderProtocol & HasContactDataService
+    typealias Dependencies = AnyObject
+    & HasInternetConnectionStatusProviderProtocol
+    & HasContactDataService // not used here but forwarded to the operations that will be enqueued
 
     static let queueFilePrefix = "contactsQueue"
 
-    /// Subscribe to this publisher to get progress updates from the queue
-    let progressPublisher: CurrentValueSubject<ContactsSyncQueue.Progress, Never>
+    private let fileManager: FileManager
 
-    private let taskQueueURL: URL
-    private var hasQueueStarted: Bool = false
-    private var taskQueue: [ContactTask] {
-        didSet {
-            do {
-                let data = try JSONEncoder().encode(taskQueue)
-                try data.write(to: taskQueueURL)
-            } catch {
-                SystemLogger.log(error: error, category: .contacts)
-            }
-        }
+    /// Subscribe to this publisher to get progress updates from the queue
+    var progressPublisher: AnyPublisher<ContactsSyncQueue.Progress, Never> {
+        _progressPublisher.eraseToAnyPublisher()
     }
+    private let _progressPublisher: CurrentValueSubject<ContactsSyncQueue.Progress, Never>
+
+    /// Subscribe to know when the backend responds with storage exceeded
+    var protonStorageQuotaExceeded: AnyPublisher<Void, Never> {
+        _protonStorageQuotaExceeded.eraseToAnyPublisher()
+    }
+    private let _protonStorageQuotaExceeded: PassthroughSubject<Void, Never>
+
+    let taskQueueURL: URL
+    /// for testing purposes
+    var isPaused: Bool {
+        operationQueue.isSuspended
+    }
+
+    private var hasBeenSetup: Bool = false
+    private var taskQueue: [ContactTask]
     private let operationQueue: OperationQueue = {
         let queue = OperationQueue()
+        queue.isSuspended = true
         queue.qualityOfService = .background
         // using a low number to leave room for other network operations
         queue.maxConcurrentOperationCount = 3
@@ -58,26 +71,28 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
     private let serial = DispatchQueue(label: "ch.protonmail.protonmail.ContactsSyncRequests")
     private unowned let dependencies: Dependencies
 
-    init(userID: UserID, dependencies: Dependencies) {
+    init(userID: UserID, fileManager: FileManager = .default, dependencies: Dependencies) {
+        self.fileManager = fileManager
         let path = "\(Self.queueFilePrefix).\(userID.rawValue)"
-        var queueFileUrl = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent(path)
-        if FileManager.default.fileExists(atPath: queueFileUrl.absoluteString) {
+        var queueFileUrl = fileManager.applicationSupportDirectoryURL.appendingPathComponent(path)
+        if fileManager.fileExists(atPath: queueFileUrl.path) {
             BackupExcluder().excludeFromBackup(url: &queueFileUrl)
         }
         self.taskQueueURL = queueFileUrl
 
         self.taskQueue = []
-        self.progressPublisher = .init(Progress())
+        self._progressPublisher = .init(Progress())
+        self._protonStorageQuotaExceeded = .init()
         self.operationErrorHandler = .init(dependencies: dependencies)
         self.dependencies = dependencies
     }
 
-    /// Call before adding tasks. This function will load the persisted queue from disk and start the queue execution
-    func start() {
-        guard !hasQueueStarted else { return }
-        hasQueueStarted = true
-        SystemLogger.log(message: "queue started", category: .contacts)
-        if FileManager.default.fileExists(atPath: taskQueueURL.absoluteString) {
+    /// Call before adding tasks. This function will load the persisted queue from disk
+    func setup() {
+        guard !hasBeenSetup else { return }
+        hasBeenSetup = true
+        SystemLogger.log(message: "queue setup", category: .contacts)
+        if fileManager.fileExists(atPath: taskQueueURL.path) {
             do {
                 let data = try Data(contentsOf: taskQueueURL)
                 self.taskQueue = try JSONDecoder().decode([ContactTask].self, from: data)
@@ -85,8 +100,9 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
                 SystemLogger.log(error: error, category: .contacts)
                 self.taskQueue = []
             }
-            SystemLogger.log(message: "queue disk read count \(taskQueue.count)", category: .contacts)
+            SystemLogger.log(message: "queue disk read count: \(taskQueue.count) batches", category: .contacts)
         } else {
+            SystemLogger.log(message: "queue file does not exist", category: .contacts)
             self.taskQueue = []
         }
         updateProgressTotal(numAdded: taskQueue.reduce(0, { $0 + $1.numContacts }))
@@ -95,8 +111,12 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
         dependencies.internetConnectionStatusProvider.register(receiver: self, fireWhenRegister: false)
     }
 
+    func start() {
+        resume()
+    }
+
     func pause() {
-        guard hasQueueStarted else { return }
+        guard hasBeenSetup else { return }
         operationQueue.isSuspended = true
         SystemLogger.log(message: "queue paused", category: .contacts)
     }
@@ -108,8 +128,8 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
     }
 
     func addTask(_ task: ContactTask) {
-        guard hasQueueStarted else {
-            SystemLogger.log(message: "queue start() not called", category: .contacts, isError: true)
+        guard hasBeenSetup else {
+            SystemLogger.log(message: "queue setup() not called", category: .contacts, isError: true)
             return
         }
         serial.async { [weak self] in
@@ -123,6 +143,13 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
         }
     }
 
+    func saveQueueToDisk() {
+        serial.sync {
+            SystemLogger.log(message: "save contact sync queue to disk", category: .contacts)
+            saveQueueWithoutThreadSafety()
+        }
+    }
+
     /// Stops the queue, deallocates all information from memory and deletes the persisted
     /// queue in the file system.
     func deleteQueue() {
@@ -131,7 +158,7 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
             taskQueue.removeAll()
             resetProgress()
             do {
-                try FileManager.default.removeItem(at: taskQueueURL)
+                try fileManager.removeItem(at: taskQueueURL)
                 SystemLogger.log(message: "queue file deleted", category: .contacts)
             } catch {
                 SystemLogger.log(error: error, category: .contacts)
@@ -143,6 +170,17 @@ final class ContactsSyncQueue: ContactsSyncQueueProtocol {
 // MARK: Private
 
 extension ContactsSyncQueue {
+
+    /// This functions serialises the queue to disk. The thread safety is not the responsability of this function, but
+    /// it is of the functions calling it.
+    private func saveQueueWithoutThreadSafety() {
+        do {
+            let data = try JSONEncoder().encode(taskQueue)
+            try data.write(to: taskQueueURL)
+        } catch {
+            SystemLogger.log(error: error, category: .contacts)
+        }
+    }
 
     private func enqueueOperations(_ tasks: [ContactTask]) {
         let operations = tasks.map { task -> AsyncOperation in
@@ -161,25 +199,25 @@ extension ContactsSyncQueue {
     }
 
     private func updateProgressTotal(numAdded: Int) {
-        var progress = progressPublisher.value
+        var progress = _progressPublisher.value
         if progress.total == 0 {
             SystemLogger.log(message: "tasks added to empty queue", category: .contacts)
         }
         progress.total += numAdded
-        progressPublisher.send(progress)
+        _progressPublisher.send(progress)
     }
 
     private func incrementProgress(_ increment: Int) {
-        var progress = progressPublisher.value
+        var progress = _progressPublisher.value
         progress.finished += increment
         if progress.finished >= progress.total {
             SystemLogger.log(message: "enqueued tasks finished", category: .contacts)
         }
-        progressPublisher.send(progress)
+        _progressPublisher.send(progress)
     }
 
     private func resetProgress() {
-        progressPublisher.send(Progress())
+        _progressPublisher.send(Progress())
     }
 }
 
@@ -188,26 +226,42 @@ extension ContactsSyncQueue {
 extension ContactsSyncQueue: AsyncOperationDelegate {
 
     func taskFinished(operation: AsyncOperation, error: Error?) {
+        var hasReceivedAbort: Bool = false
         serial.sync {
             guard !operation.isCancelled else { return }
             guard let taskID = UUID(uuidString: operation.operationID) else { return }
 
             if let error = error as? NSError {
                 let resolution = operationErrorHandler.onOperationError(error)
-                let message = "operation resolution \(resolution) for \(taskID)"
-                SystemLogger.log(message: message, category: .contacts, isError: true)
+                logResolutionError(message: "Operation resolution \(resolution) for \(taskID)", error: error)
 
                 switch resolution {
-                case .abort:
+                case .skipTask:
                     removeFromTasksQueue(taskID: taskID)
-                case .pause:
+                case .pauseQueue:
                     pause()
                     enqueueOperationAgain(taskID: taskID)
+                case .abort:
+                    hasReceivedAbort = true
                 }
             } else {
                 removeFromTasksQueue(taskID: taskID)
             }
         }
+
+        if hasReceivedAbort {
+            // we publish to obervers outside the serial queue to avoid potential deadlocks
+            _protonStorageQuotaExceeded.send()
+        }
+    }
+
+    private func logResolutionError(message: String, error: Error) {
+        let message = """
+        \(message).
+        Internet status= \(dependencies.internetConnectionStatusProvider.status).
+        Error = \(error).
+        """
+        SystemLogger.log(message: message, category: .contacts, isError: true)
     }
 
     private func enqueueOperationAgain(taskID: UUID) {
@@ -220,6 +274,7 @@ extension ContactsSyncQueue: AsyncOperationDelegate {
         guard let index = taskQueue.firstIndex(where: { $0.taskID == taskID }) else { return }
         let finishedIncrement = taskQueue[index].numContacts
         taskQueue.remove(at: index)
+        saveQueueWithoutThreadSafety()
         incrementProgress(finishedIncrement)
         if taskQueue.isEmpty {
             resetProgress()

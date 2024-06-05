@@ -382,7 +382,7 @@
 "Share contact" = "Del kontakt";
 
 /* title */
-"Notes" = "Notater";
+"Notes" = "Noter";
 
 /* Action */
 "Upload device contacts" = "Upload enhedskontakter";
@@ -419,9 +419,6 @@
  Title for the alert button to cancel disable content search.
 */
 "Cancel" = "Annullér";
-
-/* Got it action */
-"Got it" = "Forstået";
 
 /* Open action */
 "Open" = "Åbn";
@@ -1085,7 +1082,7 @@
 "Is this bug report about an in-app purchase?" = "Omhandler denne fejlanmeldelse In-app køb?";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Vores kundeservice vil forsøge at aktivere dit serviceabonnement manuelt, hvis du accepterer at vedhæfte de tekniske data, som App Store har leveret til appen på købstidspunktet. Disse data omfatter ikke oplysninger om din iTunes-konto, Apple ID, tilknyttede betalingskort eller andre brugeroplysninger. De tekniske data hjælper os kun med at kontrollere og verificere, at transaktionen blev gennemført på App Store's servere.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Vores kundeservice vil forsøge at aktivere dit serviceabonnement manuelt, hvis du accepterer at vedhæfte de tekniske data, som App Store har leveret til appen på købstidspunktet. Disse data omfatter ikke oplysninger om din iTunes-konto, Apple ID, tilknyttede betalingskort eller andre brugeroplysninger. De tekniske data hjælper os kun med at kontrollere og bekræfte, at transaktionen blev gennemført på App Store's servere.";
 
 /* Error message */
 "Yes, attach details of payment" = "Ja, vedhæft betalingsoplysninger";
@@ -1181,10 +1178,10 @@
 "Insecure connection" = "Usikker forbindelse";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Validering af TLS-certifikat mislykkedes. Din forbindelse kan blive overvåget, og appen er midlertidigt blokeret af hensyn til din sikkerhed.\n\nSkift straks netværk.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Validering af TLS-certifikat mislykkedes. Din forbindelse kan være overvåget, og appen er midlertidigt blokeret af hensyn til din sikkerhed.\n\nSkift straks netværk.";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "TLS-certifikatvalidering mislykkedes. Din forbindelse kan overvåges, og appen blokeres midlertidigt af hensyn til din sikkerhed.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Validering af TLS-certifikat mislykkedes. Din forbindelse kan være overvåget, og appen er midlertidigt blokeret af hensyn til din sikkerhed.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Deaktivér validering";
@@ -1199,7 +1196,7 @@
 "Limit reached" = "Grænse nået";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Kun én gratis konto kan tilføjes";
+"Only two free accounts can be added" = "Der kan kun tilføjes to gratis konti";
 
 /* section title in settings */
 "Account settings" = "Kontoindstillinger";
@@ -1322,7 +1319,7 @@
  The title of the star action in action sheet
  VoiceOver title of star button in the message view
 */
-"Star" = "Stjerne";
+"Star" = "Stjernemarkér";
 
 /* The title of the star action in action sheet */
 "Unstar" = "Fjern stjernemarkering";
@@ -1837,13 +1834,13 @@
 "Your Mail storage is %@ full" = "Dit Mail-lager er %@ fyldt";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "Dit drev lagerplads er %@ fyldt";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "Din Mail lagerplads er fuld";
 
 /* Title of the banner alert */
-"Your Drive storage is full" = "Your Drive storage is full";
+"Your Drive storage is full" = "Din Drev lagerplads er fuld";
 
 /* Description of the banner alert */
 "Upgrade to get more storage." = "Opgrader for at få mere lagerplads.";
@@ -1889,6 +1886,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Fjern blokering";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Din tidsplan er værd at beskytte";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Din kalender er en registrering af dit liv, og Proton Calendar hjælper dig med at holde den privat.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Hent Proton Calendar gratis";
+
 /* Name of the feature */
 "Email tracking protection" = "Beskyttelse mod sporing af e-mail";
 
@@ -1903,6 +1909,9 @@
 
 /* Button inside the banner */
 "Load" = "Indlæs";
+
+/* Title of an event with missing title */
+"(no title)" = "(ingen titel)";
 
 /* As in: event organizer */
 "Organizer" = "Arrangør";
@@ -1937,17 +1946,98 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "Jeg deltager måske";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Deltagelse valgfri)";
+
+/* As in: Every 3 days */
+"Every %@" = "Hver %@";
+
+/* As in: on Saturday */
+"on %@" = "%@";
+
+/* As in: on the last Saturday */
+"on the %@" = "den %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "på dag %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "indtil %@";
+
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ ved %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "accepteret";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "afvist";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "foreløbig accepteret";
+
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ har %2@ din invitation til %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "Du er inviteret til %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "PLACERING:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "BESKRIVELSE:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ blev annulleret.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Re: Invitation til et event på %@";
+
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Re: Invitation til en event, der starter den %@";
+
+/* Occurring every day */
+"Daily" = "Dagligt";
+
+/* Occurring every week */
+"Weekly" = "Ugentligt";
+
+/* Occurring every month */
+"Monthly" = "Månedligt";
+
+/* Occurring every year */
+"Yearly" = "Årligt";
+
+/* \"1st\" spelled out */
+"first" = "første";
+
+/* \"2nd\" spelled out */
+"second" = "anden";
+
+/* \"3rd\" spelled out */
+"third" = "tredje";
+
+/* \"4th\" spelled out */
+"fourth" = "fjerde";
+
+/* Opposite of \"first\" */
+"last" = "sidste";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Svar venligst på events";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Nu kan du svare på en invitation eller se eventen i Proton Calendar med bare ét tryk. ";
+
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "Max lagerplads";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "Lagerplads: %@ fyldt";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive storage: %@ full";
-
-/* Upgrade button action */
-"Upgrade" = "Opgradér";
+"Drive: %@ full" = "Lagerplads: %@ fyldt";
 
 /* Official badge next to sender's name */
 "Official" = "Officiel";
@@ -2063,11 +2153,26 @@
 /* Title for application logs settings option */
 "Application logs" = "Applikationslogs";
 
+/* Badge present on some spotlights */
+"New!" = "Nyt!";
+
+/* Got it action */
+"Got it" = "Forstået";
+
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Gå til næste e-mail";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Vis automatisk den næste e-mail når en åben e-mail slettes, arkiveres eller flyttes.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Slå funktion til";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "Se den næste e-mail i din indbakke, når du sletter eller flytter den aktuelle e-mail.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Læs e-mails hurtigere";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Der opstod en ukendt fejl. Kontakt supporten.\nError: %@";
@@ -2300,12 +2405,6 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Ubegrænsede mapper, etiketter og filtre";
 
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Indstil, hvornår en e-mail skal dukke op igen i din indbakke med udsættelsesfunktionen, som nu er tilgængelig på værktøjslinjen.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Udsæt den til senere";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Tilføj som vedhæftet fil";
 
@@ -2316,31 +2415,31 @@
 "Allow navigating through messages by swiping left or right." = "Gør det muligt at navigere gennem beskeder ved at stryge til venstre eller højre.";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "Dine kontakter lige ved hånden";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Ingen grund til at forlade app'en for at finde en e-mailadresse. Synkroniser kontakter fra din enhed til Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "Aktiver automatisk import";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "Ingen kontakter endnu";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "Importer kontakter fra din enhed, for nemt at kunne sende emails og invitationer";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "Automatisk import af kontakter";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "Importerer dine kontakter";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "Dine kontakter vises her om kort tid";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "Tilføj automatisk nye kontakter fra din enhed";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Privatliv og data";
@@ -2354,6 +2453,18 @@
 /* settings general section title */
 "Change mailbox password" = "Skift postkasseadgangskode";
 
+/* Description of a feature of a paid subscription */
+"15 GB storage" = "15 GB lagerplads";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u e-mailadresser";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Understøttelse af brugerdefinerede e-maildomæner";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "Ny Proton Mail-skrivebordsapp";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonym telemetri";
 
@@ -2365,3 +2476,24 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Hvis appen bryder sammen, vil der blive sendt en rapport til vores teknikere med oplysninger om årsagen. Disse vil kun blive brugt til at forbedre appen.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Opgradér til %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "For at få mere lagerplads og premium-funktioner.";
+
+/* Displayed next to the monthly price */
+"/month" = "/måned";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Få %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Spar %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Ugyldigt produkt-ID: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Køb pågår allerede";

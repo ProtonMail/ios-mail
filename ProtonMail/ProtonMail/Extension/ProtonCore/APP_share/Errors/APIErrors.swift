@@ -41,6 +41,10 @@ extension APIErrorCode {
     /// Maximum size is 25mb
     /// Maximum number is 100 attachments
     static let tooManyAttachments = 2024
+    /// Even though the error code is the same as for `tooManyAttachments`, this error can also be returned when we do an operation
+    /// that requires storage and the user has reached the limit (e.g. create a contact)
+    static let storageQuotaExceeded = 2024
+
     /// For example, trying to upload attachment when account storage usage is 101mb/100mb
     static let accountStorageQuotaExceeded = 11100
     static let connectionAppearsToBeOffline = -1009

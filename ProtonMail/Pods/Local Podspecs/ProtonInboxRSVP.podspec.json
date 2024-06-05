@@ -1,0 +1,56 @@
+{
+  "name": "ProtonInboxRSVP",
+  "version": "0.3.0",
+  "summary": "ProtonInboxRSVP - CocoaPod for managing calendar event invitations",
+  "homepage": "https://gitlab.protontech.ch/apple/inbox/protoninboxrsvp",
+  "license": "GPLv3",
+  "authors": "Proton Inbox",
+  "source": {
+    "git": "https://gitlab.protontech.ch/apple/inbox/protoninboxrsvp.git",
+    "tag": "0.3.0"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "source_files": "Sources/**/*.{swift,h}",
+  "requires_arc": true,
+  "platforms": {
+    "ios": "14.1"
+  },
+  "dependencies": {
+    "ProtonInboxICal": [
+
+    ],
+    "ProtonCore-DataModel": [
+
+    ],
+    "ProtonCore-Networking": [
+
+    ],
+    "ProtonCore-Services": [
+
+    ],
+    "ProtonCore-Crypto": [
+
+    ],
+    "ProtonCore-Features": [
+
+    ]
+  },
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "source_files": "Tests/**/*.swift",
+      "dependencies": {
+        "Quick": [
+          "~> 5.0"
+        ],
+        "Nimble": [
+          "~> 10.0"
+        ]
+      }
+    }
+  ],
+  "swift_version": "5.6"
+}

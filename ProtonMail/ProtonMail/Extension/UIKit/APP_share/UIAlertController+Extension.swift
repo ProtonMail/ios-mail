@@ -38,8 +38,8 @@ extension UIAlertController {
 
     static func makeContactAccessDeniedAlert(completion: (() -> Void)? = nil) -> UIAlertController {
         let alert = UIAlertController(
-            title: L11n.SettingsContacts.autoImportContacts,
-            message: L11n.SettingsContacts.authoriseContactsInSettingsApp,
+            title: L10n.SettingsContacts.autoImportContacts,
+            message: L10n.SettingsContacts.authoriseContactsInSettingsApp,
             preferredStyle: .alert
         )
         alert.addOKAction { _ in

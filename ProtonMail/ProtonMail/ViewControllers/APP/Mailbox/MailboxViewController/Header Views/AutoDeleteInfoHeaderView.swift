@@ -22,7 +22,7 @@ class AutoDeleteSpamInfoHeaderView: AutoDeleteInfoHeaderView {
     override class var emptyButton: UIButton {
         let button = ProtonButton()
         button.setMode(mode: .text)
-        button.setTitle(L11n.AutoDeleteBanners.emptySpam, for: .normal)
+        button.setTitle(L10n.AutoDeleteBanners.emptySpam, for: .normal)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.sizeToFit()
         return button
@@ -33,7 +33,7 @@ class AutoDeleteTrashInfoHeaderView: AutoDeleteInfoHeaderView {
     override class var emptyButton: UIButton {
         let button = ProtonButton()
         button.setMode(mode: .text)
-        button.setTitle(L11n.AutoDeleteBanners.emptyTrash, for: .normal)
+        button.setTitle(L10n.AutoDeleteBanners.emptyTrash, for: .normal)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.sizeToFit()
         return button
@@ -122,7 +122,7 @@ extension AutoDeleteInfoHeaderView {
             let label = UILabel()
             label.numberOfLines = 0
             let style = FontManager.Caption.foregroundColor(ColorProvider.TextNorm)
-            label.set(text: L11n.AutoDeleteBanners.enabledInfoText.apply(style: style), preferredFont: .body)
+            label.set(text: L10n.AutoDeleteBanners.enabledInfoText.apply(style: style), preferredFont: .body)
             return label
         }
     }

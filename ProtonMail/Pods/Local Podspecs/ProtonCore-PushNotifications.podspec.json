@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-PushNotifications",
   "module_name": "ProtonCorePushNotifications",
-  "version": "20.0.0",
+  "version": "22.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "20.0.0"
+    "tag": "22.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -31,28 +31,28 @@
   },
   "dependencies": {
     "ProtonCore-Log": [
-      "20.0.0"
+      "22.0.0"
     ],
     "ProtonCore-DataModel": [
-      "20.0.0"
+      "22.0.0"
     ],
     "ProtonCore-Keymaker": [
-      "20.0.0"
+      "22.0.0"
     ],
     "ProtonCore-Networking": [
-      "20.0.0"
+      "22.0.0"
     ],
     "ProtonCore-Crypto": [
-      "20.0.0"
+      "22.0.0"
     ],
     "ProtonCore-CryptoGoInterface": [
-      "20.0.0"
+      "22.0.0"
     ],
     "ProtonCore-FeatureFlags": [
-      "20.0.0"
+      "22.0.0"
     ],
     "ProtonCore-Services": [
-      "20.0.0"
+      "22.0.0"
     ]
   },
   "default_subspecs": [
@@ -65,10 +65,10 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoImplementation/Crypto-Go": [
-          "20.0.0"
+          "22.0.0"
         ],
         "ProtonCore-TestingToolkit": [
-          "20.0.0"
+          "22.0.0"
         ]
       },
       "source_files": "libraries/PushNotifications/Tests/**/*.swift"
@@ -78,10 +78,10 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
-          "20.0.0"
+          "22.0.0"
         ],
         "ProtonCore-TestingToolkit": [
-          "20.0.0"
+          "22.0.0"
         ]
       },
       "source_files": "libraries/PushNotifications/Tests/**/*.swift"
@@ -91,10 +91,10 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
-          "20.0.0"
+          "22.0.0"
         ],
         "ProtonCore-TestingToolkit": [
-          "20.0.0"
+          "22.0.0"
         ]
       },
       "source_files": "libraries/PushNotifications/Tests/**/*.swift"
@@ -104,10 +104,10 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
-          "20.0.0"
+          "22.0.0"
         ],
         "ProtonCore-TestingToolkit": [
-          "20.0.0"
+          "22.0.0"
         ]
       },
       "source_files": "libraries/PushNotifications/Tests/**/*.swift"

@@ -25,13 +25,17 @@ class UserManagerTests: XCTestCase {
     private var mockAppTelemetry: MockAppTelemetry!
     private var userID: UserID!
     private var sut: UserManager!
+    private var testContainer: TestContainer!
 
     override func setUp() {
         super.setUp()
-
+        
+        testContainer = .init()
         mockAppTelemetry = .init()
         userID = UserID(String.randomString(100))
         sut = UserManager(api: APIServiceMock(), userID: userID.rawValue, appTelemetry: mockAppTelemetry)
+        sut.parentManager = testContainer.usersManager
+        testContainer.usersManager.add(newUser: sut)
     }
 
     override func tearDown() {
@@ -39,6 +43,7 @@ class UserManagerTests: XCTestCase {
         sut = nil
         mockAppTelemetry = nil
         userID = nil
+        testContainer = nil
     }
 
     func testGetUserID() {
@@ -57,16 +62,16 @@ class UserManagerTests: XCTestCase {
         sut.userInfo.telemetry = 0
 
         sut.becomeActiveUser()
-        XCTAssertFalse(mockAppTelemetry.enableStub.wasCalled)
-        XCTAssertTrue(mockAppTelemetry.disableStub.wasCalled)
+        XCTAssertTrue(mockAppTelemetry.configureStub.wasCalled)
+        XCTAssertEqual(mockAppTelemetry.configureStub.lastArguments?.a1, false)
     }
 
     func testBecomeActiveUser_whenTelemetryForUserIsEnabled_enablesTelemetry() {
         sut.userInfo.telemetry = 1
 
         sut.becomeActiveUser()
-        XCTAssertTrue(mockAppTelemetry.enableStub.wasCalled)
-        XCTAssertFalse(mockAppTelemetry.disableStub.wasCalled)
+        XCTAssertTrue(mockAppTelemetry.configureStub.wasCalled)
+        XCTAssertEqual(mockAppTelemetry.configureStub.lastArguments?.a1, true)
     }
 
     func testBecomeActiveUser_regardlessOfTelemerySetting_assignsTheUserToAnalytics() {

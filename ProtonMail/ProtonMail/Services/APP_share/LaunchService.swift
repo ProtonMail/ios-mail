@@ -52,7 +52,6 @@ final class Launch {
 
     private func loadUserData() {
         let usersManager = dependencies.usersManager
-        usersManager.run()
         usersManager.tryRestore()
 
         #if !APP_EXTENSION
@@ -61,11 +60,9 @@ final class Launch {
                 $0.messageService.injectTransientValuesIntoMessages()
             }
         }
-
-        if let primaryUser = usersManager.firstUser {
-            primaryUser.payments.storeKitManager.retryProcessingAllPendingTransactions(finishHandler: nil)
-        }
         #endif
+
+        NotificationCenter.default.post(name: .switchView, object: nil)
     }
 
     private func loadUsersIfMainKeyAvailable() {
@@ -73,6 +70,16 @@ final class Launch {
         if case .accessGranted = appAccess {
             loadUserData()
         }
+    }
+
+    private func setUpPrimaryUser() {
+        guard let primaryUser = dependencies.usersManager.firstUser else { return }
+#if !APP_EXTENSION
+        primaryUser.payments.storeKitManager.retryProcessingAllPendingTransactions(finishHandler: nil)
+    #if !DEBUG
+        primaryUser.updateTelemetryAndCatchCrash()
+    #endif
+#endif
     }
 }
 
@@ -90,6 +97,8 @@ extension Launch: LaunchService {
 
         /// If we have the main key in memory we can already load the users into `UsersManager`
         loadUsersIfMainKeyAvailable()
+
+        setUpPrimaryUser()
     }
 
     func loadUserDataAfterUnlock() {

@@ -25,76 +25,42 @@ extension NoContactView {
         static let paddingForLandscape: CGFloat = 6
         static let horizontalPadding: CGFloat = 32
     }
+}
 
-    public struct Texts {
-        private let title: String
-        private let description: String
-        private let importingTitle: String
-        private let importingDesc: String
-        let buttonTitle: String
-        let noPermissionAlertTitle: String
-        let noPermissionAlertMessage: String
-        let noPermissionButtonTitle: String
-
-        public init(
-            title: String,
-            description: String,
-            importingTitle: String,
-            importingDesc: String,
-            buttonTitle: String,
-            noPermissionAlertTitle: String,
-            noPermissionAlertMessage: String,
-            noPermissionButtonTitle: String
-        ) {
-            self.title = title
-            self.description = description
-            self.importingTitle = importingTitle
-            self.importingDesc = importingDesc
-            self.buttonTitle = buttonTitle
-            self.noPermissionAlertTitle = noPermissionAlertTitle
-            self.noPermissionAlertMessage = noPermissionAlertMessage
-            self.noPermissionButtonTitle = noPermissionButtonTitle
-        }
-
-        func displayedTitle(isImporting: Bool) -> String {
-            isImporting ? importingTitle : title
-        }
-
-        func displayedDesc(isImporting: Bool) -> String {
-            isImporting ? importingDesc : description
-        }
-    }
+public class NoContactViewModel: ObservableObject {
+    static let shared: NoContactViewModel = .init()
+    @Published public var isAutoImportContactsEnabled: Bool = false
+    public var onDidTapAutoImport: (() -> Void)?
 }
 
 public struct NoContactView: View {
-    public let config = HostingProvider()
-    private let texts: Texts
-    private let importingClosure: ((UIViewController?) -> Void)?
-    private let store = CNContactStore()
+    @ObservedObject public var model: NoContactViewModel = .shared
+
     @State private var verticalPadding = Constants.paddingForPortrait
-    @State private var isImporting: Bool
     @State private var showingAlert: Bool = .init(false)
 
-    public init(
-        texts: Texts,
-        isImporting: Bool,
-        importingClosure: ((UIViewController?) -> Void)?
-    ) {
-        self.texts = texts
-        _isImporting = .init(initialValue: isImporting)
-        self.importingClosure = importingClosure
+    private let store = CNContactStore()
+
+    public init() {}
+
+    private func displayedTitle(isImporting: Bool) -> String {
+        isImporting ? L10n.AutoImportContacts.importingTitle : L10n.AutoImportContacts.noContactTitle
+    }
+
+    private func displayedDesc(isImporting: Bool) -> String {
+        isImporting ? L10n.AutoImportContacts.importingDesc : L10n.AutoImportContacts.noContactDesc
     }
 
     public var body: some View {
         VStack(spacing: verticalPadding) {
             Image(uiImage: ImageAsset.autoImportContactsNoContact)
-            Text(texts.displayedTitle(isImporting: isImporting))
+            Text(displayedTitle(isImporting: model.isAutoImportContactsEnabled))
                 .font(Font(UIFont.adjustedFont(forTextStyle: .title2, weight: .bold)))
-            Text(texts.displayedDesc(isImporting: isImporting))
+            Text(displayedDesc(isImporting: model.isAutoImportContactsEnabled))
                 .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
                 .multilineTextAlignment(.center)
 
-            if isImporting {
+            if model.isAutoImportContactsEnabled {
                 Rectangle()
                     .frame(maxWidth: .infinity, minHeight: 48, maxHeight: 48)
                     .foregroundColor(.clear)
@@ -102,7 +68,7 @@ public struct NoContactView: View {
                 Button(action: {
                     self.importButtonIsClicked()
                 }, label: {
-                    Text(texts.buttonTitle)
+                    Text(L10n.AutoImportContacts.autoImportContactButtonTitle)
                         .frame(maxWidth: .infinity, minHeight: 48)
 
                 })
@@ -121,9 +87,9 @@ public struct NoContactView: View {
         )
         .alert(isPresented: $showingAlert, content: {
             Alert(
-                title: Text(texts.noPermissionAlertTitle),
-                message: Text(texts.noPermissionAlertMessage),
-                dismissButton: .cancel(Text(texts.noPermissionButtonTitle))
+                title: Text(L10n.SettingsContacts.autoImportContacts),
+                message: Text(L10n.SettingsContacts.authoriseContactsInSettingsApp),
+                dismissButton: .cancel(Text(LocalString._general_ok_action))
             )
         })
     }
@@ -160,8 +126,8 @@ public struct NoContactView: View {
     }
 
     private func startsToImportContact() {
-        isImporting.toggle()
-        importingClosure?(config.hostingController)
+        model.isAutoImportContactsEnabled.toggle()
+        model.onDidTapAutoImport?()
     }
 }
 
@@ -175,23 +141,8 @@ private struct AutoImportButtonStyle: ButtonStyle {
             .background(configuration.isPressed ? ColorProvider.BackgroundSecondary : Color.clear)
             .clipShape(RoundedRectangle(cornerSize: .init(width: 8, height: 8)))
     }
-
 }
 
 #Preview {
-    NoContactView(
-        texts: .init(
-            title: "No contacts yet",
-            description: "Import contacts from your device to send emails and invites with ease. ",
-            importingTitle: "Importing your contacts",
-            importingDesc: "Your contacts will appear here shortly.",
-            buttonTitle: "Auto-import contacts",
-            noPermissionAlertTitle: "Auto-import device contacts",
-            noPermissionAlertMessage: "Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission.",
-            noPermissionButtonTitle: "Ok"
-        ),
-        isImporting: false
-    ) { _ in
-        print("click button")
-    }
+    NoContactView()
 }

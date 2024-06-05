@@ -57,27 +57,9 @@ class ConversationDeleteResponse: Response {
             return false
         }
 
-        guard (try? JSONDecoder().decode([ConversationDeleteData].self, from: data)) != nil else {
+        guard (try? JSONDecoder().decode([GeneralConversationActionResult].self, from: data)) != nil else {
             return false
         }
         return true
-    }
-}
-
-struct ConversationDeleteData: Decodable {
-    let id: String
-    let response: ResponseCode
-
-    enum CodingKeys: String, CodingKey {
-        case id = "ID"
-        case response = "Response"
-    }
-
-    struct ResponseCode: Decodable {
-        let code: Int
-
-        enum CodingKeys: String, CodingKey {
-            case code = "Code"
-        }
     }
 }

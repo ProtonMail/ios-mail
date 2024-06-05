@@ -1,4 +1,7 @@
+// periphery:ignore:all
+
 import ProtonCorePayments
+import ProtonInboxRSVP
 
 {% for type in types.types where type.name == "GlobalContainer" or type.name == "UserContainer" %}
 {% for variable in type.computedVariables|definedInExtension where variable.name|hasSuffix:"Factory" and variable.typeName.name|hasPrefix:"Factory<" %}

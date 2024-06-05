@@ -5,13 +5,13 @@
 "CFBundleName" = "Proton Mail";
 
 /* Privacy - Media Library Usage Description */
-"NSAppleMusicUsageDescription" = "Diperlukan untuk melampirkan media ke dalam surel.";
+"NSAppleMusicUsageDescription" = "Diperlukan untuk melampirkan media ke dalam email.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Diperlukan untuk melampirkan foto ke dalam surel.";
+"NSCameraUsageDescription" = "Diperlukan untuk melampirkan foto ke dalam email.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Digunakan untuk mengakses alamat surel kontak yang tersimpan di perangkat, sehingga rincian kontak akan dapat langsung terisi di kala Anda menulis pesan baru atau mengunggah kontak secara manual ke dalam akun Anda. Seluruh informasi kontak yang ada tidak akan diunggah ke server kami tanpa sepengetahuan Anda.";
+"NSContactsUsageDescription" = "Digunakan untuk mengakses alamat email kontak yang tersimpan di perangkat, sehingga rincian kontak akan dapat langsung terisi di kala Anda menulis pesan baru atau mengunggah kontak secara manual ke dalam akun Anda. Seluruh informasi kontak yang ada tidak akan diunggah ke server kami tanpa sepengetahuan Anda.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Memungkinkan Anda untuk dapat membuka kunci aplikasi secara cepat dan aman.";
@@ -20,4 +20,4 @@
 "NSPhotoLibraryAddUsageDescription" = "Diperlukan untuk menyimpan lampiran berupa gambar ke dalam pustaka foto.";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "Diperlukan untuk melampirkan foto ke dalam surel.";
+"NSPhotoLibraryUsageDescription" = "Diperlukan untuk melampirkan foto ke dalam email.";

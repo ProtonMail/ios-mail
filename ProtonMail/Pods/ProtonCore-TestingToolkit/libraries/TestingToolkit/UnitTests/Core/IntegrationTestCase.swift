@@ -36,9 +36,31 @@ open class IntegrationTestCase: XCTestCase {
             guard !dynamicDomain.isEmpty else { return nil }
             return dynamicDomain
         }
-    }
+                                               }
 
     public var dynamicDomainAvailable: Bool { dynamicDomain != nil }
 
     open var host: String? { dynamicDomain.map { "https://\($0)" } }
+
+    private func randomAlphanumericString(length: Int = 10) -> String {
+        let allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        return  randomString(allowedChars, length: length)
+    }
+
+    private func randomString(_ allowedChars: String, length: Int) -> String {
+        return String((0..<length).map { _ in allowedChars.randomElement()! })
+    }
+
+    public var randomName: String {
+        randomAlphanumericString(length: 12)
+    }
+
+    public var randomPassword: String {
+        randomAlphanumericString(length: 8)
+    }
+
+    public var randomEmail: String {
+        let username = randomAlphanumericString(length: 12)
+        return "\(username)@proton.uitests"
+    }
 }

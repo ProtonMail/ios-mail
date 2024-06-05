@@ -29,6 +29,7 @@ protocol AttachmentViewControllerDelegate: AnyObject {
     func openAttachmentList(with attachments: [AttachmentInfo])
     func invitationViewWasChanged()
     func participantTapped(emailAddress: String)
+    func showError(error: Error)
 }
 
 class AttachmentViewController: UIViewController {
@@ -124,6 +125,13 @@ class AttachmentViewController: UIViewController {
             self?.viewModel.respondToInvitation(with: answer)
         }
 
+        viewModel.error
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] error in
+                self?.delegate?.showError(error: error)
+            }
+            .store(in: &subscriptions)
+
         viewModel.invitationViewState
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
@@ -170,11 +178,11 @@ class AttachmentViewController: UIViewController {
         case .promptToUpdateCalendarApp:
             let alert = UIAlertController(
                 title: "Proton Calendar",
-                message: L11n.ProtonCalendarIntegration.downloadCalendarAlert,
+                message: L10n.ProtonCalendarIntegration.downloadCalendarAlert,
                 preferredStyle: .actionSheet
             )
 
-            alert.addURLAction(title: L11n.ProtonCalendarIntegration.downloadInAppStore, url: .AppStore.calendar)
+            alert.addURLAction(title: L10n.ProtonCalendarIntegration.downloadInAppStore, url: .AppStore.calendar)
             alert.addCancelAction()
             present(alert, animated: true)
         case .goToAppStoreDirectly:

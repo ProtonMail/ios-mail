@@ -24,19 +24,20 @@
 import Foundation
 import ProtonCorePayments
 
-extension InAppPurchasePlan {
+public extension InAppPurchasePlan {
     func planPrice(from storeKitManager: StoreKitManagerProtocol) -> String? {
-        guard let storeKitProductId = storeKitProductId,
-              let price = storeKitManager.priceLabelForProduct(storeKitProductId: storeKitProductId)
-        else { return nil }
-        return PriceFormatter.formatPlanPrice(price: price.0.doubleValue, locale: price.1)
+        guard let priceLabel = priceLabel(from: storeKitManager) else { return nil }
+        return PriceFormatter.formatPlanPrice(price: priceLabel.value.doubleValue, 
+                                              locale: priceLabel.locale)
     }
 
-    func planLocale(from storeKitManager: StoreKitManagerProtocol) -> Locale? {
-        guard let storeKitProductId = storeKitProductId,
-              let price = storeKitManager.priceLabelForProduct(storeKitProductId: storeKitProductId)
-        else { return nil }
-        return price.1
+    func priceLocale(from storeKitManager: StoreKitManagerProtocol) -> Locale? {
+        priceLabel(from: storeKitManager)?.locale
+    }
+
+    func priceLabel(from storeKitManager: StoreKitManagerProtocol) -> (value: NSDecimalNumber, locale: Locale)? {
+        guard let storeKitProductId else { return nil }
+        return storeKitManager.priceLabelForProduct(storeKitProductId: storeKitProductId)
     }
 }
 

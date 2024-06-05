@@ -220,11 +220,11 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     private func presentWebView(url: URL) {
-        if UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url,
-                                      options: [:],
-                                      completionHandler: nil)
-        }
+        UIApplication.shared.open(
+            url,
+            options: [:],
+            completionHandler: nil
+        )
     }
 
     private func presentInAppSafari(url: URL) {

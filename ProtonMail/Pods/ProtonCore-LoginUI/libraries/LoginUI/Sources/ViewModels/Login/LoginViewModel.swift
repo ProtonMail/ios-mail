@@ -66,6 +66,10 @@ final class LoginViewModel {
     let challenge: PMChallenge
     let clientApp: ClientApp
 
+    var isCurrentlyUsingProxyDomain: Bool {
+        api.dohInterface.isCurrentlyUsingProxyDomain
+    }
+
     init(api: APIService, login: Login, challenge: PMChallenge, clientApp: ClientApp) {
         self.api = api
         self.login = login

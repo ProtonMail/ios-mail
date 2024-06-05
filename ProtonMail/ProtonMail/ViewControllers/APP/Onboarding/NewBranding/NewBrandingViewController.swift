@@ -79,7 +79,7 @@ extension NewBrandingViewController {
         self.contentTextView.delegate = self
 
         self.gotItButton.roundCorner(8)
-        self.gotItButton.setTitle(LocalString._general_gotIt_button, for: .normal)
+        self.gotItButton.setTitle(L10n.Spotlight.gotIt, for: .normal)
 
         let shadow: TempFigmaShadow = .init(
             color: ColorProvider.BrandLighten40.withAlphaComponent(0.18),

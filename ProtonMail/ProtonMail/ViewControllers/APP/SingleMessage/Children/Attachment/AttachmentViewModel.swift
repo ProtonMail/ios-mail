@@ -23,12 +23,15 @@
 import Combine
 import ProtonCoreDataModel
 import ProtonCoreUtilities
+import ProtonInboxRSVP
 
 final class AttachmentViewModel {
-    typealias Dependencies = HasEventRSVP
+    typealias Dependencies = HasAnswerInvitation
+    & HasExtractBasicEventInfo
     & HasFeatureFlagProvider
     & HasFetchAttachmentUseCase
     & HasFetchAttachmentMetadataUseCase
+    & HasFetchEventDetails
     & HasURLOpener
     & HasUserManager
 
@@ -44,6 +47,10 @@ final class AttachmentViewModel {
 
     var numberOfAttachments: Int {
         attachments.count
+    }
+
+    var error: AnyPublisher<Error, Never> {
+        errorSubject.eraseToAnyPublisher()
     }
 
     var invitationViewState: AnyPublisher<InvitationViewState, Never> {
@@ -74,8 +81,8 @@ final class AttachmentViewModel {
         numberOfAttachments != 0 || basicEventInfoSourcedFromHeaders != nil
     }
 
+    private let errorSubject = PassthroughSubject<Error, Never>()
     private let invitationViewSubject = CurrentValueSubject<InvitationViewState, Never>(.noInvitationFound)
-
     private let respondingStatusSubject = CurrentValueSubject<RespondingStatus, Never>(.respondingUnavailable)
 
     private var invitationProcessingTask: Task<Void, Never>? {
@@ -83,6 +90,8 @@ final class AttachmentViewModel {
             oldValue?.cancel()
         }
     }
+
+    private var answeringContext: AnsweringContext?
 
     private let dependencies: Dependencies
 
@@ -123,27 +132,36 @@ final class AttachmentViewModel {
                 switch initialInfo {
                 case .left(let attachmentInfo):
                     let icsData = try await fetchAndDecrypt(ics: attachmentInfo)
-                    basicEventInfo = try dependencies.eventRSVP.extractBasicEventInfo(icsData: icsData)
+                    basicEventInfo = try dependencies.extractBasicEventInfo.execute(icsData: icsData)
                 case .right(let value):
                     basicEventInfo = value
                 }
 
-                let eventDetails = try await dependencies.eventRSVP.fetchEventDetails(basicEventInfo: basicEventInfo)
+                let (eventDetails, answeringContext) = try await dependencies.fetchEventDetails.execute(
+                    basicEventInfo: basicEventInfo
+                )
+
+                self.answeringContext = answeringContext
                 invitationViewSubject.send(.invitationProcessed(eventDetails))
                 updateRespondingOptions(eventDetails: eventDetails)
             } catch {
-                if let rsvpError = error as? EventRSVPError, rsvpError != .noEventsReturnedFromAPI {
-                    PMAssertionFailure(rsvpError)
-                } else {
-                    SystemLogger.log(error: error)
-                }
-
                 invitationViewSubject.send(.noInvitationFound)
+
+                switch error {
+                case EventRSVPError.noEventsReturnedFromAPI:
+                    break
+                default:
+                    errorSubject.send(error)
+                }
             }
         }
     }
 
     private func fetchAndDecrypt(ics: AttachmentInfo) async throws -> Data {
+        if let localUrl = ics.localUrl, let data = try? Data(contentsOf: localUrl) {
+            return data
+        }
+
         let attachmentMetadata = try await dependencies.fetchAttachmentMetadata.execution(
             params: .init(attachmentID: ics.id)
         )
@@ -159,7 +177,7 @@ final class AttachmentViewModel {
         return attachment.data
     }
 
-    func respondToInvitation(with answer: InvitationAnswer) {
+    func respondToInvitation(with answer: AttendeeStatusDisplay) {
         // store this in case the update fails
         let currentValue = respondingStatusSubject.value
 
@@ -167,10 +185,16 @@ final class AttachmentViewModel {
 
         Task {
             do {
-                try await dependencies.eventRSVP.respondToInvitation(with: answer)
+                let parameters = AnswerInvitationWrapper.Parameters(
+                    answer: answer,
+                    context: answeringContext
+                )
+
+                try await dependencies.answerInvitation.execute(parameters: parameters)
+
                 respondingStatusSubject.send(.alreadyResponded(answer))
             } catch {
-                SystemLogger.log(error: error)
+                errorSubject.send(error)
                 respondingStatusSubject.send(currentValue)
             }
         }
@@ -190,17 +214,14 @@ final class AttachmentViewModel {
 
     private func updateRespondingOptions(eventDetails: EventDetails) {
         guard
-            UserInfo.isRSVPMilestoneTwoEnabled,
+            dependencies.featureFlagProvider.isEnabled(.answerInvitation, reloadValue: true),
             eventDetails.status != .cancelled,
-            eventDetails.endDate.isFuture,
-            let userAsAnInvitee = eventDetails.invitees.first(where: {
-                dependencies.user.userInfo.owns(emailAddress: $0.email)
-            })
+            let currentUserAmongInvitees = eventDetails.currentUserAmongInvitees
         else {
             return
         }
 
-        switch userAsAnInvitee.status {
+        switch currentUserAmongInvitees.status {
         case .accepted:
             respondingStatusSubject.send(.alreadyResponded(.yes))
         case .declined:
@@ -225,18 +246,12 @@ extension AttachmentViewModel {
         case respondingUnavailable
         case awaitingUserInput
         case responseIsBeingProcessed
-        case alreadyResponded(InvitationAnswer)
+        case alreadyResponded(AttendeeStatusDisplay)
     }
 
     enum InvitationViewState: Equatable {
         case noInvitationFound
         case invitationFoundAndProcessing
         case invitationProcessed(EventDetails)
-    }
-}
-
-private extension UserInfo {
-    func owns(emailAddress: String) -> Bool {
-        userAddresses.contains { $0.email.compare(emailAddress, options: [.caseInsensitive]) == .orderedSame }
     }
 }

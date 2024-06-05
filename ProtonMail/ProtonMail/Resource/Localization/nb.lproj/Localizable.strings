@@ -420,9 +420,6 @@
 */
 "Cancel" = "Avbryt";
 
-/* Got it action */
-"Got it" = "Forstått";
-
 /* Open action */
 "Open" = "Åpne";
 
@@ -1199,7 +1196,7 @@
 "Limit reached" = "Grense nådd";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Bare én gratis konto kan legges til";
+"Only two free accounts can be added" = "Bare to gratis kontoer kan legges til";
 
 /* section title in settings */
 "Account settings" = "Kontoinnstillinger";
@@ -1889,6 +1886,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Opphev blokkering";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Tidsplanen din er verdt å beskytte";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Kalenderen din er en oversikt over livet ditt, Proton Calendar hjelper deg med å holde den privat.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Få Proton Calendar-appen";
+
 /* Name of the feature */
 "Email tracking protection" = "Sporingsbeskyttelse for e-post";
 
@@ -1903,6 +1909,9 @@
 
 /* Button inside the banner */
 "Load" = "Last";
+
+/* Title of an event with missing title */
+"(no title)" = "(ingen tittel)";
 
 /* As in: event organizer */
 "Organizer" = "Arrangør";
@@ -1937,6 +1946,90 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "Jeg kan delta";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Oppmøte valgfritt)";
+
+/* As in: Every 3 days */
+"Every %@" = "Hver %@";
+
+/* As in: on Saturday */
+"on %@" = "på %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "på den %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "på dag %u";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "frem til %@";
+
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ kl. %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "akseptert";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "avslått";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "foreløpig akseptert";
+
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ har %2@ din invitasjon til %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "Du er invitert til %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "STED:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "BESKRIVELSE:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ ble kansellert.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Sv: Invitasjon til en hendelse den %@";
+
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Sv: Invitasjon til en hendelse med start den %@";
+
+/* Occurring every day */
+"Daily" = "Daglig";
+
+/* Occurring every week */
+"Weekly" = "Ukentlig";
+
+/* Occurring every month */
+"Monthly" = "Månedlig";
+
+/* Occurring every year */
+"Yearly" = "Årlig";
+
+/* \"1st\" spelled out */
+"first" = "første";
+
+/* \"2nd\" spelled out */
+"second" = "andre";
+
+/* \"3rd\" spelled out */
+"third" = "tredje";
+
+/* \"4th\" spelled out */
+"fourth" = "fjerde";
+
+/* Opposite of \"first\" */
+"last" = "siste";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Svar enkelt på hendelser";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Nå kan du svare på en invitasjon eller se hendelsen i Proton Calendar med bare ett trykk. ";
+
 /* Menu title */
 "Max Storage" = "Maks lagringsplass";
 
@@ -1944,10 +2037,7 @@
 "Storage: %@ full" = "Lagring: %@ full";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive-lagring: %@ full";
-
-/* Upgrade button action */
-"Upgrade" = "Oppgrader";
+"Drive: %@ full" = "Drive: %@ full";
 
 /* Official badge next to sender's name */
 "Official" = "Offisiell";
@@ -2063,11 +2153,26 @@
 /* Title for application logs settings option */
 "Application logs" = "Applikasjonslogger";
 
+/* Badge present on some spotlights */
+"New!" = "Ny!";
+
+/* Got it action */
+"Got it" = "Forstått";
+
 /* The title of the setting of the next msg after move */
 "Jump to next email" = "Gå til neste e-post";
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Vis automatisk neste e-post når gjeldende e-post slettes, arkiveres eller flyttes.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Slå på funksjon";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "Vis neste e-post i innboksen når du sletter eller flytter gjeldende e-post.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Les e-poster raskere";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Det oppstod en uventet feil, vennligst kontakt brukerstøtte.\nFeil: %@";
@@ -2300,12 +2405,6 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Ubegrenset antall mapper, etiketter og filtre";
 
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Angi når en e-post skal vises igjen i innboksen din med slumrefunksjonen, nå tilgjengelig på verktøylinjen.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Slumre det til senere";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Legg det til som vedlegg";
 
@@ -2354,6 +2453,18 @@
 /* settings general section title */
 "Change mailbox password" = "Endre postbokspassord";
 
+/* Description of a feature of a paid subscription */
+"15 GB storage" = "15 GB lagringsplass";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u e-postadresser";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Støtte for tilpasset e-postdomene";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "Ny Proton Mail-skrivebordsapp";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonym telemetri";
 
@@ -2365,3 +2476,24 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Hvis appen krasjer, vil det bli sendt en rapport til våre ingeniører med detaljer om årsaken. Vi vil kun bruke disse for å forbedre appen.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Oppgrader til %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "For å låse opp mer lagringsplass og premiumfunksjoner.";
+
+/* Displayed next to the monthly price */
+"/month" = "/måned";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Få %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Spar %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Ugyldig produkt-ID: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Kjøpet pågår allerede";

@@ -5,13 +5,13 @@
 "CFBundleName" = "Proton Mail";
 
 /* Privacy - Media Library Usage Description */
-"NSAppleMusicUsageDescription" = "Nevyhnutné na pripojenie médií k e-mailu.";
+"NSAppleMusicUsageDescription" = "Nevyhnutné na pripojenie médií k emailu.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Nevyhnutné na pripojenie fotografií k e-mailu.";
+"NSCameraUsageDescription" = "Nevyhnutné na pripojenie fotografií k emailu.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Používa sa na prístup k e-mailovým adresám kontaktov uložených v zariadení, aby sa dali použiť pri písaní správy alebo pri manuálnom nahrávaní kontaktov zariadenia do vášho účtu. Kontaktné informácie sa neodovzdávajú na naše servery bez výslovného opatrenia.";
+"NSContactsUsageDescription" = "Používa sa na prístup k emailovým adresám kontaktov uložených v zariadení, aby sa dali použiť pri písaní správy alebo pri manuálnom nahrávaní kontaktov zariadenia do vášho účtu. Kontaktné informácie sa neodovzdávajú na naše servery bez výslovného opatrenia.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Umožňuje vám rýchlo a bezpečne odomknúť vašu aplikáciu.";
@@ -20,4 +20,4 @@
 "NSPhotoLibraryAddUsageDescription" = "Nevyhnutné na ukladanie obrazových príloh do knižnice fotografií.";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "Nevyhnutné na pripojenie fotografií k e-mailu.";
+"NSPhotoLibraryUsageDescription" = "Nevyhnutné na pripojenie fotografií k emailu.";

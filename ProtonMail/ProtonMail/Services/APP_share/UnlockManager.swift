@@ -39,7 +39,7 @@ enum SignInUIFlow: Int {
 protocol UnlockManagerDelegate: AnyObject {
     func cleanAll(completion: @escaping () -> Void)
     func isUserStored() -> Bool
-    func isMailboxPasswordStored(forUser uid: String?) -> Bool
+    func isMailboxPasswordStoredForActiveUser() -> Bool
     func setupCoreData() throws
     func loadUserDataAfterUnlock()
 }
@@ -154,9 +154,8 @@ final class UnlockManager {
             afterBioAuthPassed()
         }
     }
-    
+
     func unlockIfRememberedCredentials(
-        forUser uid: String? = nil,
         requestMailboxPassword: () -> Void,
         unlockFailed: (() -> Void)? = nil,
         unlocked: (() -> Void)? = nil
@@ -183,7 +182,7 @@ final class UnlockManager {
             return
         }
 
-        guard delegate.isMailboxPasswordStored(forUser: uid) else { // this will provoke mainKey obtention
+        guard delegate.isMailboxPasswordStoredForActiveUser() else { // this will provoke mainKey obtention
             do {
                 try delegate.setupCoreData()
             } catch {

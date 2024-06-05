@@ -98,6 +98,10 @@ open class DoH: DoHInterface {
         getCurrentlyUsedUrl(defaultingTo: config.defaultHost) + config.defaultPath
     }
 
+    open func getProxyToken() -> String? {
+        return config.proxyToken
+    }
+
     private func getCurrentlyUsedUrl(defaultingTo defaultHost: String) -> String {
         guard doHProxyDomainsMechanismIsActive() else { return defaultHost }
 
@@ -185,7 +189,7 @@ open class DoH: DoHInterface {
 
     // MARK: - Caching
 
-    var isCurrentlyUsingProxyDomain: Bool {
+    open var isCurrentlyUsingProxyDomain: Bool {
         cacheQueue.sync {
             !caches.values.flatMap { $0 }.isEmpty
         }

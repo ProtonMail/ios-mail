@@ -23,13 +23,13 @@
 import Foundation
 
 class KeychainSaver<T>: Saver<T> where T: Codable {
-    convenience init(key: String, cachingInMemory: Bool = true) {
-        self.init(key: key, store: KeychainWrapper.keychain, cachingInMemory: cachingInMemory)
+    convenience init(key: String) {
+        self.init(key: key, store: KeychainWrapper.keychain)
     }
 }
 
 extension KeychainWrapper: KeyValueStoreProvider {
-    func data(forKey key: String) -> Data? {
+    func data(forKey key: String, attributes: [CFString: Any]?) -> Data? {
         do {
             return try dataOrError(forKey: key)
         } catch {
@@ -38,7 +38,7 @@ extension KeychainWrapper: KeyValueStoreProvider {
         return nil
     }
 
-    func set(_ data: Data, forKey key: String) {
+    func set(_ data: Data, forKey key: String, attributes: [CFString: Any]?) {
         do {
             try setOrError(data, forKey: key)
         } catch {
@@ -46,13 +46,11 @@ extension KeychainWrapper: KeyValueStoreProvider {
         }
     }
 
-    func set(_ intValue: Int, forKey key: String) {
-        assert(false, "Looks like this one is never actually used")
+    func remove(forKey key: String) {
+        do {
+            try removeOrError(forKey: key)
+        } catch {
+            SystemLogger.log(error: error)
+        }
     }
-
-    func int(forKey key: String) -> Int? {
-        assert(false, "Looks like this one is never actually used")
-        return nil
-    }
-
 }

@@ -22,10 +22,7 @@ extension UserManager: ToolbarActionProvider {
     var messageToolbarActions: [MessageViewActionSheetAction] {
         get {
             let serverActions = userInfo.messageToolbarActions.actions.compactMap({ ServerToolbarAction(rawValue: $0) })
-            var convertedActions = MessageViewActionSheetAction.convert(from: serverActions)
-            if !isSnoozeEnabled {
-                convertedActions.removeAll(where: { $0 == .snooze })
-            }
+            let convertedActions = MessageViewActionSheetAction.convert(from: serverActions)
             return convertedActions.isEmpty ? MessageViewActionSheetAction.defaultActions : convertedActions
         }
         set {
@@ -37,10 +34,7 @@ extension UserManager: ToolbarActionProvider {
     var listViewToolbarActions: [MessageViewActionSheetAction] {
         get {
             let serverActions = userInfo.listToolbarActions.actions.compactMap({ ServerToolbarAction(rawValue: $0) })
-            var convertedActions = MessageViewActionSheetAction.convert(from: serverActions)
-            if !isSnoozeEnabled {
-                convertedActions.removeAll(where: { $0 == .snooze })
-            }
+            let convertedActions = MessageViewActionSheetAction.convert(from: serverActions)
             return convertedActions.isEmpty ? MessageViewActionSheetAction.defaultActions : convertedActions
         }
         set {

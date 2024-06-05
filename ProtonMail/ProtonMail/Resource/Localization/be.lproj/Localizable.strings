@@ -420,9 +420,6 @@
 */
 "Cancel" = "Скасаваць";
 
-/* Got it action */
-"Got it" = "Зразумела";
-
 /* Open action */
 "Open" = "Адкрыць";
 
@@ -1085,7 +1082,7 @@
 "Is this bug report about an in-app purchase?" = "Гэта памылка датычыцца куплі ў праграме?";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Наша служба падтрымкі кліентаў паспрабуе змяніць ваш тарыфны план уручную, калі вы згадзіцеся дадаць тэхнічныя даныя, якія былі выдадзены крамай App Store праграме ў момант куплі. Сярод гэтых даных няма ніякіх падрабязнасцей пра ваш уліковы запіс iTunes, Apple ID, прывязаныя крэдытныя карткі або якой-небудзь іншай карыстальніцкай інфармацыі. Тэхнічныя даныя толькі дапамогуць нам праверыць, што трансакцыя цалкам завяршылася на серверах App Store.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Наша каманда падтрымкі кліентаў паспрабуе змяніць ваш тарыфны план уручную, калі вы згадзіцеся дадаць тэхнічныя даныя, якія былі выдадзены крамай App Store праграме ў момант куплі. Сярод гэтых даных няма ніякіх падрабязнасцей аб вашым уліковым запісе iTunes, Apple ID, прывязаных крэдытных картках або якой-небудзь іншай карыстальніцкай інфармацыі. Тэхнічныя даныя толькі дапамогуць нам праверыць, што трансакцыя цалкам завяршылася на серверах App Store.";
 
 /* Error message */
 "Yes, attach details of payment" = "Так, далучыць рэквізіты плацяжу";
@@ -1181,10 +1178,10 @@
 "Insecure connection" = "Небяспечнае падключэнне";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Не ўдалося праверыць сертыфікат TLS. Магчыма, што ваша падключэнне адсочваецца і праграма часова заблакіравана для вашай бяспекі.\n\nНеадкладна пераключыце сетку.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Не ўдалося праверыць сертыфікат TLS. Магчыма, што адбываецца назіранне за вашай сеткай і праграма часова заблакіравана для вашай бяспекі.\n\nНеадкладна пераключыце сетку.";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Не ўдалося праверыць сертыфікат TLS. Магчыма, што ваша падключэнне адсочваецца і праграма часова заблакіравана для вашай бяспекі.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Не ўдалося праверыць сертыфікат TLS. Магчыма, што адбываецца назіранне за вашай сеткай і праграма часова заблакіравана для вашай бяспекі.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Адключыць праверку";
@@ -1199,7 +1196,7 @@
 "Limit reached" = "Дасягнута абмежаванне";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Можна дадаць толькі адзін бясплатны ўліковы запіс";
+"Only two free accounts can be added" = "Можна дадаць толькі два бясплатныя ўліковыя запісы";
 
 /* section title in settings */
 "Account settings" = "Налады ўліковага запісу";
@@ -1373,10 +1370,10 @@
 "Enter your password to make changes" = "Увядзіце пароль для выканання змен";
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
-"Send read receipt" = "Адправіць апавяшчэнне пра прачытанне";
+"Send read receipt" = "Адправіць апавяшчэнне аб прачытанні";
 
 /* A label text which is displayed after sending read receipt to sender */
-"Receipt sent" = "Апавяшчэнне прачытання адпраўлена";
+"Receipt sent" = "Квітанцыя адпраўлена";
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Узнікла праблема з падключэннем да сервераў. Паспрабуйце падключыцца яшчэ раз.";
@@ -1454,10 +1451,10 @@
 "Inherited from parent folder" = "Унаследавана ад бацькоўскай папкі";
 
 /* Alert title */
-"Creating folder not allowed" = "Стварэнне папкі не дазволена";
+"Creating folder not allowed" = "Стварэнне папкі забаронена";
 
 /* Alert title */
-"Creating label not allowed" = "Стварэнне меткі не дазволена";
+"Creating label not allowed" = "Стварэнне меткі забаронена";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Перайдзіце на платны тарыфны план, каб выкарыстоўваць больш за 3 папкі";
@@ -1708,13 +1705,13 @@
 "Schedule will be removed" = "Расклад будзе выдалены";
 
 /* The alert title of the user trying to send a message that was schedule-send. */
-"Send immediately?" = "Адправіць адразу?";
+"Send immediately?" = "Адправіць неадкладна?";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Гэта паведамленне больш не запланавана для адпраўкі пазней. Калі вы ўсё яшчэ хочаце адправіць яго пазней, вы можаце націснуць на \"Запланаваць адпраўку\"";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
-"Send immediately" = "Адправіць адразу";
+"Send immediately" = "Адправіць неадкладна";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Цяпер вы можаце запланаваць адпраўку паведамленняў на больш позні час";
@@ -1889,6 +1886,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Разблакіраваць";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Ваш расклад варты абароны";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Каляндар з'яўляецца ўлікам падзей вашага жыцця. Proton Calendar дапамагае абараніць яго прыватнасць.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Атрымаць праграму Proton Calendar";
+
 /* Name of the feature */
 "Email tracking protection" = "Абарона ад праграм сачэння электроннай пошты";
 
@@ -1903,6 +1909,9 @@
 
 /* Button inside the banner */
 "Load" = "Загрузіць";
+
+/* Title of an event with missing title */
+"(no title)" = "(без загалоўка)";
 
 /* As in: event organizer */
 "Organizer" = "Арганізатар";
@@ -1937,6 +1946,90 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "Магчыма, пайду";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Удзельнічаць неабавязкова)";
+
+/* As in: Every 3 days */
+"Every %@" = "Кожныя %@";
+
+/* As in: on Saturday */
+"on %@" = "у %@";
+
+/* As in: on the last Saturday */
+"on the %@" = "у %@";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "у %u дзень";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "да %@";
+
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@ у %2@ %3@";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "прынята";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "адхілена";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "умоўна прынята";
+
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@ %2@ ваша запрашэнне на %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "Вас запрасілі на %@";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "МЕСЦАЗНАХОДЖАННЕ:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "АПІСАННЕ:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ было скасавана.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Re: Запрашэнне на падзею ў %@";
+
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Re: Запрашэнне на падзею, якая пачынаецца ў %@";
+
+/* Occurring every day */
+"Daily" = "Штодзень";
+
+/* Occurring every week */
+"Weekly" = "Штотыдзень";
+
+/* Occurring every month */
+"Monthly" = "Штомесяц";
+
+/* Occurring every year */
+"Yearly" = "Штогод";
+
+/* \"1st\" spelled out */
+"first" = "першы";
+
+/* \"2nd\" spelled out */
+"second" = "другі";
+
+/* \"3rd\" spelled out */
+"third" = "трэці";
+
+/* \"4th\" spelled out */
+"fourth" = "чацвёрты";
+
+/* Opposite of \"first\" */
+"last" = "апошні";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Лёгкі адказ на запрашэнне для падзей";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Цяпер вы адным націскам можаце адказаць на запрашэнне або паглядзець падзею ў Proton Calendar. ";
+
 /* Menu title */
 "Max Storage" = "Максімальная прастора ў сховішчы";
 
@@ -1944,10 +2037,7 @@
 "Storage: %@ full" = "Сховішча: запоўнена на %@";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Сховішча Drive: запоўнена на %@";
-
-/* Upgrade button action */
-"Upgrade" = "Палепшыць";
+"Drive: %@ full" = "Drive: запоўнены на %@";
 
 /* Official badge next to sender's name */
 "Official" = "Афіцыйны";
@@ -2063,11 +2153,26 @@
 /* Title for application logs settings option */
 "Application logs" = "Журнал праграмы";
 
+/* Badge present on some spotlights */
+"New!" = "Новае!";
+
+/* Got it action */
+"Got it" = "Зразумела";
+
 /* The title of the setting of the next msg after move */
 "Jump to next email" = "Перайсці да наступнага ліста";
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Аўтаматычна паказваць наступны ліст, калі адкрыты ліст выдалены, заархіваваны або перамешчаны.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Уключыць функцыю";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "Пераходзіць да прагляду наступнага ліста ў паштовай скрыні пры выдаленні або перамяшчэнні бягучага ліста.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "Чытайце свае лісты хутчэй";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Адбылася нечаканая памылка. Звяжыцеся са службай падтрымкі.\nПамылка: %@";
@@ -2205,7 +2310,7 @@
 "Select all" = "Выбраць усе";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Зняць выбар з усіх";
+"Unselect all" = "Скасаваць выбар усіх";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
 "Maximum selection reached" = "Дасягнуты максімум выбраных паведамленняў";
@@ -2300,12 +2405,6 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Неабмежаваная колькасць папак, метак і фільтраў";
 
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Задаць, калі ліст павінен з'явіцца ў вашай паштовай скрыні паўторна з функцыяй адкладання. Цяпер даступна на панэлі інструментаў.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Адкласці гэта на потым";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Дадаць як далучэнне";
 
@@ -2354,14 +2453,47 @@
 /* settings general section title */
 "Change mailbox password" = "Змяніць пароль паштовай скрыні";
 
+/* Description of a feature of a paid subscription */
+"15 GB storage" = "15 ГБ сховішча";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u адрасоў электроннай пошты";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Падтрымка карыстальніцкіх даменаў";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "Новая настольная праграма Proton Mail";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ананімная тэлеметрыя";
 
 /* The title of the crash report setting. */
-"Anonymous crash reports" = "Ананімная справаздачы пра збоі";
+"Anonymous crash reports" = "Ананімная справаздачы аб збоях";
 
 /* The subtitle of the anonymous telemetry setting. */
 "To improve our services, we sometimes collect anonymized usage data." = "Для ўдасканалення нашага сэрвісу час ад часу мы ананімна збіраем даныя аб выкарыстанні.";
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Справаздача з падрабязнасцямі будзе адпраўлена нашым інжынерам у выпадку, калі ў праграме адбыўся збой. Гэтыя даныя выкарыстоўваюцца толькі для паляпшэння праграмы.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "Палепшыць да %@";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "Для разблакіроўкі большага памеру сховішча і прэміяльных функцый.";
+
+/* Displayed next to the monthly price */
+"/month" = "/месяц";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "Атрымаць %@";
+
+/* In the context of a discount */
+"Save %u%%" = "Эканомія %u%%";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Памылковы ідэнтыфікатар прадукту: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Купля ўжо ажыццяўляецца";

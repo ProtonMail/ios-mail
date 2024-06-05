@@ -20,6 +20,7 @@ fileprivate struct id {
     static let moveToButtonIdentifier = "PMToolBarView.moveToButton"
     static let labelAsButtonIdentifier = "PMToolBarView.labelAsButton"
     static let moreButtonIdentifier = "PMToolBarView.moreButton"
+    static let deleteButtonIdentifier = "PMToolBarView.deleteButton"
 }
 
 class SelectionStateRobotInterface: CoreElements {
@@ -47,5 +48,10 @@ class SelectionStateRobotInterface: CoreElements {
     func more() -> SelectionStateRobotInterface {
         // TODO: Add implementation for more
         return self
+    }
+    
+    func delete() -> MailboxRobotInterface {
+        button(id.deleteButtonIdentifier).waitForHittable().tap()
+        return MailboxRobotInterface()
     }
 }

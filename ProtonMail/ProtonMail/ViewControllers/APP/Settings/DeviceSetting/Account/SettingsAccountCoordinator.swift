@@ -22,8 +22,11 @@
 
 import ProtonCoreAccountDeletion
 import ProtonCoreAccountRecovery
+import ProtonCoreDataModel
 import ProtonCoreLog
 import ProtonCoreNetworking
+import ProtonCorePasswordChange
+import ProtonCoreFeatureFlags
 import ProtonCorePaymentsUI
 import UIKit
 
@@ -38,6 +41,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     & HasKeyMakerProtocol
     & HasPaymentsUIFactory
     & HasUsersManager
+    & HasAPIService
 
     private let viewModel: SettingsAccountViewModel
     private let users: UsersManager
@@ -91,10 +95,16 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         switch dest {
         case .blockList:
             openBlockList()
+        case .singlePwd where FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true):
+            openCoreChangePassword(mode: .singlePassword)
         case .singlePwd:
             openChangePassword(ofType: ChangeSinglePasswordViewModel.self)
+        case .loginPwd where FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true):
+            openCoreChangePassword(mode: .loginPassword)
         case .loginPwd:
             openChangePassword(ofType: ChangeLoginPWDViewModel.self)
+        case .mailboxPwd where FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true):
+            openCoreChangePassword(mode: .mailboxPassword)
         case .mailboxPwd:
             openChangePassword(ofType: ChangeMailboxPWDViewModel.self)
         case .recoveryEmail:
@@ -146,6 +156,27 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         let viewModel = BlockedSendersViewModel(dependencies: dependencies)
         let viewController = BlockedSendersViewController(viewModel: viewModel)
         navigationController?.show(viewController, sender: nil)
+    }
+
+    private func openCoreChangePassword(mode: PasswordChangeModule.PasswordChangeMode) {
+        Task { @MainActor [weak self] in
+            guard let self = self else { return }
+            let viewController = PasswordChangeModule.makePasswordChangeViewController(
+                mode: mode,
+                apiService: dependencies.apiService,
+                authCredential: user.authCredential,
+                userInfo: user.userInfo,
+                completion: processSuccessfulPasswordChange
+            )
+            self.navigationController?.show(viewController, sender: true)
+        }
+    }
+
+    private func processSuccessfulPasswordChange(authCredential: AuthCredential, userInfo: UserInfo) {
+        user.update(userInfo: userInfo)
+        user.update(authCredential: authCredential)
+        self.navigationController?.popToRootViewController(animated: true)
+        L10n.Settings.passwordUpdated.alertToast(withTitle: false)
     }
 
     private func openChangePassword<T: ChangePasswordViewModel>(ofType viewModelType: T.Type) {

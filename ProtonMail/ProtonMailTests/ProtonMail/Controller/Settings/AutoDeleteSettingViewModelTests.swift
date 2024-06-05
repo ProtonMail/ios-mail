@@ -42,7 +42,7 @@ final class AutoDeleteSettingViewModelTests: XCTestCase {
 
         let result = sut.cellData(for: IndexPath(row: 0, section: 0))
 
-        XCTAssertEqual(result?.title, L11n.AutoDeleteSettings.rowTitle)
+        XCTAssertEqual(result?.title, L10n.AutoDeleteSettings.rowTitle)
         XCTAssertEqual(result?.status, mockAutoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabled)
     }
 
@@ -50,7 +50,7 @@ final class AutoDeleteSettingViewModelTests: XCTestCase {
         let result = try XCTUnwrap(sut.sectionFooter(section: 0))
         switch result {
         case .left(let text):
-            XCTAssertEqual(text, L11n.AutoDeleteSettings.rowFooterTitle)
+            XCTAssertEqual(text, L10n.AutoDeleteSettings.rowFooterTitle)
         case .right:
             XCTFail("Shouldn't be an attributedString")
         }

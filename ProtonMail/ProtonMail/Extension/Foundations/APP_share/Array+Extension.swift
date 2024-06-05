@@ -24,4 +24,16 @@ extension Array {
             Array(self[$0 ..< Swift.min($0 + size, count)])
         }
     }
+
+    /// Removes duplicates keeping the order of the array
+    ///
+    /// Use this function to use a custom attribute to determine whether 2 elements are duplicated or not.
+    /// e.g. `customers.unique { $0.name }`
+    func unique<T: Hashable>(uniqueIdentifier: ((Element) -> (T))) -> [Element] {
+        var seen = Set<T>()
+        return filter { item in
+            let uniqueID = uniqueIdentifier(item)
+            return seen.insert(uniqueID).inserted
+        }
+    }
 }

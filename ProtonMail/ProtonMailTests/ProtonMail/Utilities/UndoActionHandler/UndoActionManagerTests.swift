@@ -60,7 +60,7 @@ class UndoActionManagerTests: XCTestCase {
     }
 
     func testAddUndoToken_actionMatched() throws {
-        let token = UndoTokenData(token: "token", tokenValidTime: 0)
+        let token = UndoTokenData(token: "token")
         sut.register(handler: handlerMock)
         sut.addTitleWithAction(title: "title", action: .archive)
 
@@ -71,7 +71,7 @@ class UndoActionManagerTests: XCTestCase {
     }
 
     func testAddUndoToken_actionNotMatched() throws {
-        let token = UndoTokenData(token: "token", tokenValidTime: 0)
+        let token = UndoTokenData(token: "token")
         sut.register(handler: handlerMock)
         sut.addTitleWithAction(title: "title", action: .archive)
 
@@ -83,7 +83,7 @@ class UndoActionManagerTests: XCTestCase {
 
     func testAddUndoToken_tokenReturnAfterThreshold_handlerShouldNotBeCalled() {
         let expectation1 = expectation(description: "wait for threshold")
-        let token = UndoTokenData(token: "token", tokenValidTime: 10)
+        let token = UndoTokenData(token: "token")
         sut.register(handler: handlerMock)
         sut.addTitleWithAction(title: "title", action: .archive)
         XCTAssertFalse(handlerMock.isShowUndoActionCalled)
@@ -99,7 +99,7 @@ class UndoActionManagerTests: XCTestCase {
 
     func testAddUndoToken_tokenReturnBeforeThreshold_handlerShouldNotBeCalled() {
         let expectation1 = expectation(description: "wait for threshold")
-        let token = UndoTokenData(token: "token", tokenValidTime: 0)
+        let token = UndoTokenData(token: "token")
         sut.register(handler: handlerMock)
         sut.addTitleWithAction(title: "title", action: .archive)
         XCTAssertFalse(handlerMock.isShowUndoActionCalled)

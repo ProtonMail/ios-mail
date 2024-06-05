@@ -21,6 +21,7 @@
 //
 
 import ProtonCoreNetworking
+import ProtonCoreLog
 
 public struct ObservabilityEnv {
 
@@ -36,7 +37,14 @@ public struct ObservabilityEnv {
     ///     - requestPerformer: Should be an instance conforming to RequestPerforming used
     ///     before the user is logged in.
     public mutating func setupWorld(requestPerformer: RequestPerforming) {
-        self.observabilityService = ObservabilityServiceImpl(requestPerformer: requestPerformer)
+        self.observabilityService = ObservabilityServiceImpl(requestPerformer: requestPerformer) { _, result in
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                PMLog.error(error, sendToExternal: true)
+            }
+        }
     }
 
     var observabilityService: ObservabilityService?

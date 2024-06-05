@@ -22,9 +22,9 @@ import struct UIKit.CGFloat
 
 final class AutoDeleteSettingViewModel: SwitchToggleVMProtocol {
     var confirmationOnEnable: SwitchToggleVMActionConfirmation? {
-        SwitchToggleVMActionConfirmation(title: L11n.AutoDeleteSettings.enableAlertTitle,
-                                         message: L11n.AutoDeleteSettings.enableAlertMessage,
-                                         confirmationButton: L11n.AutoDeleteSettings.enableAlertButton)
+        SwitchToggleVMActionConfirmation(title: L10n.AutoDeleteSettings.enableAlertTitle,
+                                         message: L10n.AutoDeleteSettings.enableAlertMessage,
+                                         confirmationButton: L10n.AutoDeleteSettings.enableAlertButton)
     }
     var confirmationOnDisable: SwitchToggleVMActionConfirmation? {
         nil
@@ -66,14 +66,14 @@ extension AutoDeleteSettingViewModel: SwitchToggleVMInput {
 }
 
 extension AutoDeleteSettingViewModel: SwitchToggleVMOutput {
-    var title: String { L11n.AutoDeleteSettings.settingTitle }
+    var title: String { L10n.AutoDeleteSettings.settingTitle }
     var sectionNumber: Int { 1 }
     var rowNumber: Int { 1 }
     var headerTopPadding: CGFloat { 8 }
     var footerTopPadding: CGFloat { 8 }
 
     func cellData(for indexPath: IndexPath) -> (title: String, status: Bool)? {
-        (L11n.AutoDeleteSettings.rowTitle, autoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabled)
+        (L10n.AutoDeleteSettings.rowTitle, autoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabled)
     }
 
     func sectionHeader() -> String? {
@@ -81,6 +81,6 @@ extension AutoDeleteSettingViewModel: SwitchToggleVMOutput {
     }
 
     func sectionFooter(section: Int) -> Either<String, NSAttributedString>? {
-        Either.left(L11n.AutoDeleteSettings.rowFooterTitle)
+        Either.left(L10n.AutoDeleteSettings.rowFooterTitle)
     }
 }

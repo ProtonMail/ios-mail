@@ -23,6 +23,7 @@ fileprivate struct id {
     static let trashButtonIdentifier = LocalString._menu_trash_title
     static let skipOnboardingButtonLabel = LocalString._skip_btn_title
     static let allowContacsAccessOkButtonLabel = LocalString._general_ok_action
+    static let confirmDeleteButtonText = LocalString._general_delete_action
 
     // Referral prompt view elements identifiers
     static let referralContainerViewIdentifier = "ReferralPromptView.containerView"
@@ -151,6 +152,11 @@ class MailboxRobotInterface: CoreElements {
         XCUIDevice.shared.press(.home)
         sleep(3) 
         return PinRobot()
+    }
+    
+    func confirmMessageDeletion() -> MailboxRobotInterface {
+        button(id.confirmDeleteButtonText).tap()
+        return MailboxRobotInterface()
     }
 
     class ReferralPromptViewRobotInterface: CoreElements {

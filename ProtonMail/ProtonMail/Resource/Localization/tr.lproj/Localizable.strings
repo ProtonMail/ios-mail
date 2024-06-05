@@ -420,9 +420,6 @@
 */
 "Cancel" = "İptal";
 
-/* Got it action */
-"Got it" = "Anladım";
-
 /* Open action */
 "Open" = "Aç";
 
@@ -1199,7 +1196,7 @@
 "Limit reached" = "Sınıra ulaşıldı";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Yalnızca bir tane ücretsiz hesap eklenebilir";
+"Only two free accounts can be added" = "Yalnızca iki ücretsiz hesap eklenebilir";
 
 /* section title in settings */
 "Account settings" = "Hesap ayarları";
@@ -1837,7 +1834,7 @@
 "Your Mail storage is %@ full" = "Mail depolama alanınız %@ dolu";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Your Drive storage is %@ full";
+"Your Drive storage is %@ full" = "Drive depolama alanınız %@ dolu";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "Mail depolama alanınız dolu";
@@ -1889,6 +1886,15 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Engellemeyi kaldır";
 
+/* Headline of the Calendar landing page */
+"Your schedule is worth protecting" = "Takviminiz korunmaya değer";
+
+/* Subheadline of the Calendar landing page */
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Takviminiz yaşamınızın bir kaydıdır. Proton Calendar, gizli kalmasına yardımcı olur.";
+
+/* Button to open the App Store page for Proton Calendar */
+"Get Proton Calendar app" = "Proton Calendar uygulamasını edinin";
+
 /* Name of the feature */
 "Email tracking protection" = "E-posta izleme koruması";
 
@@ -1903,6 +1909,9 @@
 
 /* Button inside the banner */
 "Load" = "Yükle";
+
+/* Title of an event with missing title */
+"(no title)" = "(başlıksız)";
 
 /* As in: event organizer */
 "Organizer" = "Düzenleyici";
@@ -1937,17 +1946,98 @@
 /* Neither confirm nor deny attending an event */
 "I might attend" = "Katılabilirim";
 
+/* Information that the user is an optional participant */
+"(Attendance optional)" = "(Katılım isteğe bağlı)";
+
+/* As in: Every 3 days */
+"Every %@" = "Her %@";
+
+/* As in: on Saturday */
+"on %@" = "%@ günlerinde";
+
+/* As in: on the last Saturday */
+"on the %@" = "%@ gününde";
+
+/* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
+"on day %u" = "%u. gününde";
+
+/* As in: Until Sep 27, 2025 */
+"until %@" = "%@ tarihine kadar";
+
+/* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
+"%1@ at %2@ %3@" = "%1@, %2@ %3@ zamanında";
+
+/* Status in an email body sent with an invitation answer */
+"accepted" = "kabul etti";
+
+/* Status in an email body sent with an invitation answer */
+"declined" = "reddetti";
+
+/* Status in an email body sent with an invitation answer */
+"tentatively accepted" = "kesin olmamakla birlikte kabul etti";
+
+/* Body of an email sent with an invitation answer. Format: <event_attendee_email> has <accepted|tentatively accepted|declined> your invitation to <event_title> */
+"%1@ has %2@ your invitation to %3@" = "%1@, davetinizi %2@. Etkinlik: %3@";
+
+/* Part of the body of the email sent to the participants that indicates the event's title */
+"You are invited to %@" = "%@ etkinliğine davet edildiniz";
+
+/* Part of the body of the email sent to the participants that indicates the event's location */
+"LOCATION:\n%@" = "KONUM:\n%@";
+
+/* Part of the body of the email sent to the participants that indicates the event's notes */
+"DESCRIPTION:\n%@" = "AÇIKLAMA:\n%@";
+
+/* Body of the email sent to the participants that indicates the event has been cancelled */
+"%@ was cancelled." = "%@ iptal edildi.";
+
+/* Subject of the email sent to the participants invited to a given all-day single event after answering */
+"Re: Invitation for an event on %@" = "Ynt: %@ zamanındaki etkinlik daveti";
+
+/* Subject of an email sent with an invitation answer after answering */
+"Re: Invitation for an event starting on %@" = "Ynt: %@ zamanında başlayan etkinlik daveti";
+
+/* Occurring every day */
+"Daily" = "Günde bir";
+
+/* Occurring every week */
+"Weekly" = "Haftada bir";
+
+/* Occurring every month */
+"Monthly" = "Ayda bir";
+
+/* Occurring every year */
+"Yearly" = "Yılda bir";
+
+/* \"1st\" spelled out */
+"first" = "ilk";
+
+/* \"2nd\" spelled out */
+"second" = "ikinci";
+
+/* \"3rd\" spelled out */
+"third" = "üçüncü";
+
+/* \"4th\" spelled out */
+"fourth" = "dördüncü";
+
+/* Opposite of \"first\" */
+"last" = "sonuncu";
+
+/* Title of the spotlight view */
+"Easily RSVP to events" = "Etkinliklere kolayca yanıt verin";
+
+/* Body of the spotlight view */
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Tek bir dokunuşla bir davete yanıt verebilir veya etkinliği Proton Calendar üzerinde görüntüleyebilirsiniz. ";
+
 /* Menu title */
-"Max Storage" = "Maksimum depolama alanı";
+"Max Storage" = "En fazla depolama alanı";
 
 /* Cell title that shows the percentage of the storage */
 "Storage: %@ full" = "Depolama alanı %@ dolu";
 
 /* Cell title that shows the percentage of the storage */
-"Drive storage: %@ full" = "Drive depolama alanı: %@ dolu";
-
-/* Upgrade button action */
-"Upgrade" = "Yükselt";
+"Drive: %@ full" = "Drive: %@ dolu";
 
 /* Official badge next to sender's name */
 "Official" = "Resmi";
@@ -2063,11 +2153,26 @@
 /* Title for application logs settings option */
 "Application logs" = "Uygulama günlüğü kayıtları";
 
+/* Badge present on some spotlights */
+"New!" = "Yeni!";
+
+/* Got it action */
+"Got it" = "Anladım";
+
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Sonraki e-postaya geç";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "Açık bir e-posta silindiğinde, arşivlendiğinde ya da taşındığında otomatik olarak sonraki e-posta görüntülenir.";
+
+/* The title of the button of the jump to next message spotlight. */
+"Turn on feature" = "Özelliği aç";
+
+/* The content of the jump to next message spotlight. */
+"View the next email in your inbox when you delete or move the current email." = "Geçerli e-postayı sildiğinizde ya da taşıdığınızda gelen kutunuzdaki bir sonraki e-postayı görüntüleyin.";
+
+/* The title of the jump to next message spotlight. */
+"Read emails faster" = "E-postaları daha hızlı okuyun";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "Beklenmeyen bir sorun çıktı. Lütfen destek ekibi ile görüşün.\nHata: %@";
@@ -2300,12 +2405,6 @@
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Sınırsız sayıda klasör, etiket ve süzgeç";
 
-/* Description string shows in spotlight view */
-"Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar." = "Artık araç çubuğunda bulunan erteleme özelliği ile bir e-postanın gelen kutunuzda ne zaman yeniden görüneceğini ayarlayabilirsiniz.";
-
-/* Description string shows in spotlight view */
-"Snooze it for later" = "Daha sonraya ertele";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Dosya olarak ekle";
 
@@ -2319,28 +2418,28 @@
 "Your contacts at your fingertips" = "Kişileriniz parmak uçlarınızda";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Bir e-posta adresini bulmak için uygulamadan ayrılmanız gerekmez. Aygıtınızdaki kişileri Proton Mail ile eşitleyin.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "Otomatik içe aktarma kullanılsın";
 
 /* The title for no contact hint view */
-"No contacts yet" = "Henüz kişi yok";
+"No contacts yet" = "Henüz bir kişi yok";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Kolaylıkla e-posta göndermek ve davetler için cihazınızdan kişileri içeri aktarın.";
+"Import contacts from your device to send emails and invites with ease." = "Kolaylıkla e-posta göndermek ve davet etmek için aygıtınızdaki kişileri içe aktarın.";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Kişileri otomatik içeri aktar";
+"Auto-import contacts" = "Kişiler otomatik olarak içe aktarılsın";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
 "Importing your contacts" = "Kişileriniz içe aktarılıyor";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Kişileriniz kısa süre içerisinde burada gözükecek.";
+"Your contacts will appear here shortly." = "Kişileriniz kısa süre içerisinde burada görüntülenecek.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "Aygıtınızdaki yeni kişileri otomatik olarak ekleyin.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Gizlilik ve veriler";
@@ -2354,6 +2453,18 @@
 /* settings general section title */
 "Change mailbox password" = "Posta kutusu parolasını değiştir";
 
+/* Description of a feature of a paid subscription */
+"15 GB storage" = "15 GB depolama alanı";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses" = "%u e-posta adresi";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain support" = "Özel e-posta etki alanı desteği";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "Yeni Proton Mail masaüstü uygulaması";
+
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonim kullanım verileri";
 
@@ -2365,3 +2476,24 @@
 
 /* The subtitle of the crash report setting. */
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Uygulama çökerse, mühendislerimize nedeniyle ilgili bilgilerin bulunduğu bir bildirim gönderilir. Bu veriler yalnızca uygulamayı iyileştirmek için kullanılır.";
+
+/* Title of the upsell page. */
+"Upgrade to %@" = "%@ tarifesine yükselt";
+
+/* Subtitle of the upsell page. */
+"To unlock more storage and premium features." = "Daha fazla depolama alanı ve ücretli özellikler alın.";
+
+/* Displayed next to the monthly price */
+"/month" = "/ay";
+
+/* CTA button to purchase a plan (e.g. Get Mail Plus) */
+"Get %@" = "%@ alın";
+
+/* In the context of a discount */
+"Save %u%%" = "%u%% indirim";
+
+/* Error when trying to purchase an invalid product */
+"Invalid product ID: $@" = "Ürün kimliği geçersiz: $@";
+
+/* Error when the user tries to purchase a plan before the current transaction is finished */
+"Purchase already in progress" = "Satın alma işleminiz zaten sürüyor";

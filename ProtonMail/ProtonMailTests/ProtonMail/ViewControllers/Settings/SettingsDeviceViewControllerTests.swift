@@ -19,7 +19,7 @@ import XCTest
 @testable import ProtonMail
 import ProtonCoreTestingToolkit
 
-class SettingsDeviceViewControllerTests: XCTestCase {
+final class SettingsDeviceViewControllerTests: XCTestCase {
     var sut: SettingsDeviceViewController!
     var settingsDeviceCoordinatorMock: MockSettingsDeviceCoordinator!
 
@@ -72,20 +72,20 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         XCTAssertEqual(argument, .autoLock)
     }
 
-    func testAppSettings_combineContacts_openCorrectPage() throws {
+    func testAppSettings_contactSettings_openCorrectPage() throws {
         sut.loadViewIfNeeded()
 
-        sut.tableView(sut.tableView, didSelectRowAt: IndexPath(row: 2, section: 1))
+        sut.tableView(sut.tableView, didSelectRowAt: IndexPath(row: 4, section: 1))
 
         XCTAssertTrue(settingsDeviceCoordinatorMock.callGo.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(settingsDeviceCoordinatorMock.callGo.lastArguments?.first)
-        XCTAssertEqual(argument, .combineContact)
+        XCTAssertEqual(argument, .contactsSettings)
     }
 
     func testAppSettings_alternativeRouting_openCorrectPage() throws {
         sut.loadViewIfNeeded()
 
-        sut.tableView(sut.tableView, didSelectRowAt: IndexPath(row: 4, section: 1))
+        sut.tableView(sut.tableView, didSelectRowAt: IndexPath(row: 3, section: 1))
 
         XCTAssertTrue(settingsDeviceCoordinatorMock.callGo.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(settingsDeviceCoordinatorMock.callGo.lastArguments?.first)

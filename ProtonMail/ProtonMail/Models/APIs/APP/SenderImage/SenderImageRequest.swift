@@ -44,22 +44,36 @@ final class SenderImageRequest: Request {
     let bimiSelector: String?
 
     var path: String {
-        var urlComponents = URLComponents(string: "/core/v4/images/logo")
-        urlComponents?.queryItems = [
+        guard var urlComponents = URLComponents(string: "/core/v4/images/logo") else {
+            return ""
+        }
+
+        urlComponents.queryItems = [
             URLQueryItem(name: "Address", value: emailAddress),
             URLQueryItem(name: "Mode", value: isDarkMode ? "dark" : "light")
         ]
-        if let size = self.size {
-            urlComponents?.queryItems?.append(URLQueryItem(name: "Size", value: String(size.rawValue)))
+        if let size {
+            urlComponents.queryItems?.append(URLQueryItem(name: "Size", value: String(size.rawValue)))
         }
         if let bimiSelector = self.bimiSelector {
-            urlComponents?.queryItems?.append(URLQueryItem(name: "BimiSelector", value: bimiSelector))
+            urlComponents.queryItems?.append(URLQueryItem(name: "BimiSelector", value: bimiSelector))
         }
-        if let uid = self.uid {
-            urlComponents?.queryItems?.append(URLQueryItem(name: "UID", value: uid))
+        if let uid {
+            urlComponents.queryItems?.append(URLQueryItem(name: "UID", value: uid))
         }
-        urlComponents?.queryItems?.append(URLQueryItem(name: "Format", value: "png"))
-        return urlComponents?.url?.absoluteString ?? ""
+        urlComponents.queryItems?.append(URLQueryItem(name: "Format", value: "png"))
+
+        /*
+         Apple adheres to an RFC and do not encode `+` in query.
+         This is technically in violation of a W3C spec: https://www.w3.org/MarkUp/html-spec/html-spec_8.html#SEC8.2.1
+         and is also causing issues on the BE.
+         Apple support recommends doing that part manually: https://stackoverflow.com/a/27724627
+         */
+        urlComponents.percentEncodedQuery = urlComponents.percentEncodedQuery?.replacingOccurrences(
+            of: "+", with: "%2B"
+        )
+
+        return urlComponents.url?.absoluteString ?? ""
     }
 
     init(
