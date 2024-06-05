@@ -287,9 +287,17 @@ class UserManager: ObservableObject {
 
     func refreshFeatureFlags() {
         featureFlagsDownloadService.getFeatureFlags(completion: nil)
+
+        configureFeatureFlagsRepository()
+
         Task {
             try? await self.container.featureFlagsRepository.fetchFlags()
         }
+    }
+
+    func configureFeatureFlagsRepository() {
+        container.featureFlagsRepository.setUserId(userID.rawValue)
+        container.featureFlagsRepository.setApiService(apiService)
     }
 
     func activatePayments() {

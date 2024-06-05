@@ -188,7 +188,6 @@ class UsersManager: UsersManagerProtocol {
         users.insert(user, at: 0)
         save()
         firstUser?.becomeActiveUser()
-        FeatureFlagsRepository.shared.setUserId(user.userID.rawValue)
     }
 
     func isExist(userID: UserID) -> Bool {
@@ -228,8 +227,8 @@ class UsersManager: UsersManagerProtocol {
         }
         Breadcrumbs.shared.add(message: "restored \(self.users.count) users", to: .randomLogout)
 
-        if let userId = self.users.first?.userID.rawValue, !userId.isEmpty {
-            FeatureFlagsRepository.shared.setUserId(userId)
+        if let user = users.first {
+            user.configureFeatureFlagsRepository()
         }
 
         if !ProcessInfo.isRunningUnitTests {
