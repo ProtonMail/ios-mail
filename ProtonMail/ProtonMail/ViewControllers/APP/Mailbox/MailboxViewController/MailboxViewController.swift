@@ -41,7 +41,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     typealias Dependencies = HasPaymentsUIFactory
     & ReferralProgramPromptPresenter.Dependencies
     & HasMailboxMessageCellHelper
-    & HasFeatureFlagsRepository
     & HasUpsellTelemetryReporter
     & HasUserManager
     & HasUserDefaults
