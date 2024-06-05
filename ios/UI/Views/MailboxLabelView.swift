@@ -28,13 +28,13 @@ struct MailboxLabelView: View {
         min(uiModel.numExtraLabels, 99)
     }
     private var minWidth: CGFloat? {
-        uiModel.isEmpty ? nil : 30
+        uiModel.text.isEmpty ? nil : 30
     }
     private var maxWidth: CGFloat? {
         uiModel.isEmpty ? nil : 100
     }
-    private var textPadding: EdgeInsets {
-        uiModel.isEmpty
+    private var padding: EdgeInsets {
+        uiModel.text.isEmpty
         ? .init(.zero)
         : .init(
             top: DS.Spacing.small,
@@ -50,7 +50,7 @@ struct MailboxLabelView: View {
                 .font(.caption2)
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
-                .padding(textPadding)
+                .padding(padding)
                 .lineLimit(1)
                 .frame(minWidth: minWidth)
                 .background(
@@ -68,30 +68,41 @@ struct MailboxLabelView: View {
 }
 
 struct MailboxLabelUIModel: Identifiable {
-    let id: String
-    let color: Color
-    let text: String
+    let labelModels: [LabelUIModel]
+    
+    var allLabelIds: Set<PMLocalLabelId> {
+        Set(labelModels.map(\.labelId))
+    }
+
+    var id: PMLocalLabelId {
+        labelModels.first?.labelId ?? PMLocalLabelId.random()
+    }
+
+    var color: Color {
+        labelModels.first?.color ?? .clear
+    }
+
+    var text: String {
+        labelModels.first?.text ?? ""
+    }
+
     var numExtraLabels: Int {
-        allLabelIds.count - 1
+        labelModels.count - 1
     }
-    let allLabelIds: Set<PMLocalLabelId>
+
     var isEmpty: Bool {
-        text.isEmpty
+        labelModels.isEmpty
     }
 
-    init() {
-        self.id = UUID().uuidString
-        self.color = .clear
-        self.text = ""
-        self.allLabelIds = .init()
+    init(labelModels: [LabelUIModel] = []) {
+        self.labelModels = labelModels
     }
+}
 
-    init(id: String, color: Color, text: String, allLabelIds: Set<PMLocalLabelId>) {
-        self.id = id
-        self.color = color
-        self.text = text
-        self.allLabelIds = allLabelIds
-    }
+struct LabelUIModel {
+    let labelId: PMLocalLabelId
+    let text: String
+    let color: Color
 }
 
 #Preview {
@@ -100,52 +111,34 @@ struct MailboxLabelUIModel: Identifiable {
             MailboxLabelView(uiModel: .init())
                 .border(.red)
             MailboxLabelView(
+                uiModel: MailboxLabelUIModel(labelModels: [LabelUIModel(labelId: 0, text: "a", color: .blue)])
+            ).border(.red)
+            MailboxLabelView(
+                uiModel: MailboxLabelUIModel(labelModels: [
+                    .init(
+                        labelId: PMLocalLabelId.random(),
+                        text: "Work",
+                        color: .red
+                    )
+                ])
+            ).border(.red)
+            MailboxLabelView(
                 uiModel: MailboxLabelUIModel(
-                    id: UUID().uuidString,
-                    color: .blue,
-                    text: "a",
-                    allLabelIds: .init()
+                    labelModels: [.init(labelId: 0, text: "Holidays", color: Color.purple)]
+                    + LabelUIModel.random(num: 25)
                 )
             ).border(.red)
             MailboxLabelView(
                 uiModel: MailboxLabelUIModel(
-                    id: UUID().uuidString,
-                    color: .red,
-                    text: "Work",
-                    allLabelIds: Set(arrayLiteral: 0, 1, 2)
+                    labelModels: [LabelUIModel(labelId: 0, text: "surprise birthday party", color: .green)]
+                    + LabelUIModel.random(num: 240)
                 )
             ).border(.red)
             MailboxLabelView(
-                uiModel: MailboxLabelUIModel(
-                    id: UUID().uuidString,
-                    color: .purple,
-                    text: "Holidays",
-                    allLabelIds: Set(Array(0...25))
-                )
+                uiModel: MailboxLabelUIModel(labelModels: [.init(labelId: 0, text: "amazing pictures", color: .gray)])
             ).border(.red)
             MailboxLabelView(
-                uiModel: MailboxLabelUIModel(
-                    id: UUID().uuidString,
-                    color: .green,
-                    text: "surprise birthday party",
-                    allLabelIds: Set(Array(0...240))
-                )
-            ).border(.red)
-            MailboxLabelView(
-                uiModel: MailboxLabelUIModel(
-                    id: UUID().uuidString,
-                    color: .gray,
-                    text: "amazing pictures",
-                    allLabelIds: .init()
-                )
-            ).border(.red)
-            MailboxLabelView(
-                uiModel: MailboxLabelUIModel(
-                    id: UUID().uuidString,
-                    color: .gray,
-                    text: "surprise birthday party",
-                    allLabelIds: .init()
-                )
+                uiModel: MailboxLabelUIModel(labelModels: [.init(labelId: 0, text: "surprise birthday party", color: .gray)])
             ).border(.red)
         }
     }

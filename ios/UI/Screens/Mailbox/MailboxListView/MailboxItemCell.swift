@@ -303,7 +303,7 @@ enum MailboxItemCellEvent {
             isSelected: true,
             isSenderProtonOfficial: true,
             numMessages: 0,
-            labelUIModel: .init(id: "", color: .brown, text: "New", allLabelIds: .init()),
+            labelUIModel: .init(labelModels: [.init(labelId: 0, text: "New", color: .brown)]),
             expirationDate: nil,
             snoozeDate: nil
         )
@@ -326,7 +326,7 @@ enum MailboxItemCellEvent {
                 isSelected: false,
                 isSenderProtonOfficial: false,
                 numMessages: 3,
-                labelUIModel: .init(id: "", color: .purple, text: "Offer", allLabelIds: .init()),
+                labelUIModel: .init(labelModels: [LabelUIModel(labelId: 0, text: "Offer", color: .purple)]),
                 attachmentsUIModel: [.init(attachmentId: 1, icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf")],
                 replyIcons: .init(shouldShowForwardedIcon: true),
                 expirationDate: .now,
@@ -349,7 +349,8 @@ enum MailboxItemCellEvent {
                 isSelected: false,
                 isSenderProtonOfficial: true,
                 numMessages: 12,
-                labelUIModel: .init(id: "", color: .green, text: "Read later", allLabelIds: Set(arrayLiteral: 0, 1, 2)),
+                labelUIModel: MailboxLabelUIModel(
+                    labelModels: [.init(labelId: 0, text: "Read later", color: .green)] + LabelUIModel.random(num: 3)),
                 attachmentsUIModel: [
                     .init(attachmentId: 1, icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
                     .init(attachmentId: 2, icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),

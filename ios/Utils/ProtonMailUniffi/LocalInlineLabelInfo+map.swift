@@ -18,15 +18,16 @@
 import proton_mail_uniffi
 import struct SwiftUI.Color
 
+extension LocalInlineLabelInfo {
+
+    func toLabelUIModel() -> LabelUIModel {
+        .init(labelId: id, text: name, color: Color(hex: color))
+    }
+}
+
 extension Array where Element == LocalInlineLabelInfo {
 
     func toMailboxLabelUIModel() -> MailboxLabelUIModel {
-        guard let firstLabel = self.first else { return .init() }
-        return .init(
-            id: String(firstLabel.id),
-            color: Color(hex: firstLabel.color),
-            text: firstLabel.name,
-            allLabelIds: Set(self.map(\.id))
-        )
+        MailboxLabelUIModel(labelModels: self.map { $0.toLabelUIModel() })
     }
 }

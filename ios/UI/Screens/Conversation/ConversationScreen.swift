@@ -20,6 +20,7 @@ import SwiftUI
 
 struct ConversationScreen: View {
     @StateObject private var model: ConversationModel
+
     init(seed: ConversationScreenSeedUIModel) {
         self._model = StateObject(wrappedValue: .init(seed: seed))
     }
@@ -29,7 +30,7 @@ struct ConversationScreen: View {
 
             ScrollView {
                 VStack {
-                    conversationContentRowsView
+                    conversationContentView
                     messageListStateView
                         .frame(maxHeight: .infinity)
                 }
@@ -47,16 +48,16 @@ struct ConversationScreen: View {
         }
     }
 
-    private var conversationContentRowsView: some View {
-        VStack(spacing: 0) {
+    private var conversationContentView: some View {
+        VStack(alignment: .leading, spacing: 0) {
             subjectView
                 .padding(.top, DS.Spacing.standard)
                 .padding(.horizontal, DS.Spacing.large)
 
-            attachmentsView
-                .padding(.top, DS.Spacing.medium)
-                .padding(.leading, DS.Spacing.large)
-                .removeViewIf(model.seed.numAttachments < 1)
+            attachmentsAndLabelsView
+                .frame(height: 24)
+                .padding(.top, DS.Spacing.compact)
+                .removeViewIf(model.seed.hasNoAttachments && model.seed.labels.isEmpty)
         }
     }
 
@@ -71,7 +72,7 @@ struct ConversationScreen: View {
                     .padding(.top, DS.Spacing.large)
             case .messagesReady(let previous, let last):
                 messageList(previous: previous, last: last)
-                    .padding(.top, DS.Spacing.large)
+                    .padding(.top, DS.Spacing.compact)
             }
         }
     }
@@ -84,16 +85,26 @@ struct ConversationScreen: View {
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    private var attachmentsView: some View {
-        HStack {
-            Image(uiImage: DS.Icon.icPaperClip)
-                .resizable()
-                .frame(width: 14, height: 14)
-                .foregroundColor(DS.Color.Icon.weak)
-            Text("\(model.seed.numAttachments) \(LocalizationTemp.Plurals.file)")
-                .font(.caption)
-                .foregroundColor(DS.Color.Text.weak)
-            Spacer()
+    private var attachmentsAndLabelsView: some View {
+        HStack(alignment: .center) {
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(alignment: .center, spacing: DS.Spacing.small) {
+                    CapsuleView(
+                        text: "\(model.seed.numAttachments) \(LocalizationTemp.Plurals.file)",
+                        color: DS.Color.Background.secondary,
+                        icon: DS.Icon.icPaperClip,
+                        style: .attachment
+                    )
+                    .removeViewIf(model.seed.hasNoAttachments)
+
+                    ForEach(Array(model.seed.labels.enumerated()), id: \.element.labelId) { _, element in
+                        CapsuleView(text: element.text, color: element.color, icon: nil, style: .label)
+                    }
+                    .removeViewIf(model.seed.labels.isEmpty)
+
+                }
+            }
+            .contentMargins(.horizontal, DS.Spacing.large)
         }
     }
 
@@ -164,8 +175,12 @@ private extension View {
                         isSelected: false,
                         isSenderProtonOfficial: true,
                         numMessages: 3,
-                        labelUIModel: .init(),
-                        attachmentsUIModel: [.init(attachmentId: 4, icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")],
+                        labelUIModel: MailboxLabelUIModel(
+                            labelModels: [LabelUIModel(labelId: 0, text: "Work", color: .blue)]
+                        ),
+                        attachmentsUIModel: [
+                            .init(attachmentId: 4, icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")
+                        ],
                         expirationDate: nil,
                         snoozeDate: nil
                     )

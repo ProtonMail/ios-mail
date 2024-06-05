@@ -55,9 +55,18 @@ enum PreviewData {
     }
 
     static let mailboxLabels: [MailboxLabelUIModel] = [
-        .init(id: UUID().uuidString, color: Color(hex: "179FD9"), text: "Work", allLabelIds: Set(arrayLiteral: [2, 3].randomElement()!)),
-        .init(id: UUID().uuidString, color: Color(hex: "F78400"), text:  "Read later", allLabelIds: Set(arrayLiteral: [0, 1].randomElement()!)),
-        .init(id: UUID().uuidString, color: Color(hex: "3CBB3A"), text: "Newsletters", allLabelIds: .init()),
+        MailboxLabelUIModel(
+            labelModels: [.init(labelId: 0, text: "Work", color: Color(hex: "179FD9"))]
+            + LabelUIModel.random(num: [2, 3].randomElement()!)
+        ),
+        MailboxLabelUIModel(
+            labelModels: [.init(labelId: 0, text: "Read later", color: Color(hex: "F78400"))]
+            + LabelUIModel.random(num: [2, 3].randomElement()!)
+        ),
+        MailboxLabelUIModel(
+            labelModels: [.init(labelId: 0, text: "Newsletters", color: Color(hex: "3CBB3A"))]
+            + LabelUIModel.random(num: [2, 3].randomElement()!)
+        )
     ]
 
     static let attachments: [[AttachmentCapsuleUIModel]] = [
@@ -98,4 +107,17 @@ enum PreviewData {
     static let senderImage: UIImage = {
         UIImage(named: "avatar-fedex", in: .main, with: nil)!
     }()
+}
+
+extension LabelUIModel {
+
+    static func random(num: Int) -> [LabelUIModel] {
+        (0..<num).map { _ in
+            LabelUIModel(
+                labelId: PMLocalLabelId.random(),
+                text: ["a", "b", "c"].randomElement()!,
+                color: [Color.blue, .red, .green].randomElement()!
+            )
+        }
+    }
 }

@@ -24,3 +24,10 @@ typealias PMLocalAttachmentId = LocalAttachmentId
 typealias PMLocalConversationId = LocalConversationId
 typealias PMLocalMessageId = LocalMessageId
 typealias PMLocalLabelId = LocalLabelId
+
+extension PMLocalLabelId {
+
+    static func random() -> PMLocalLabelId {
+        PMLocalLabelId.random(in: (0..<PMLocalLabelId.max))
+    }
+}

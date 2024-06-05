@@ -221,4 +221,17 @@ enum ConversationScreenSeedUIModel {
             return conversationDetails.attachmentsUIModel.count
         }
     }
+
+    var hasNoAttachments: Bool {
+        numAttachments == 0
+    }
+
+    var labels: [LabelUIModel] {
+        switch self {
+        case .pushNotification(let messageId, let subject, let sender):
+            []
+        case .mailboxItem(let mailboxItemCellUIModel):
+            mailboxItemCellUIModel.labelUIModel.labelModels
+        }
+    }
 }
