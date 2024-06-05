@@ -42,10 +42,10 @@ struct MailboxScreen: View {
                         .edgesIgnoringSafeArea([.top, .bottom])
                 }
                 .navigationDestination(for: MailboxItemCellUIModel.self) { uiModel in
-                    ConversationScreen(seed: .mailboxItem(uiModel))
+                    mailboxItemDestination(uiModel: uiModel)
                 }
-                .navigationDestination(for: MailboxItemSeed.self) { info in
-                    ConversationScreen(seed: .pushNotification(messageId: info.messageId, subject: info.subject, sender: info.sender))
+                .navigationDestination(for: MailboxItemSeed.self) { seed in
+                    pushNotificationNewMessageDestination(seed: seed)
                 }
         }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
@@ -79,6 +79,30 @@ extension MailboxScreen {
             .easeInOut(duration: AppConstants.selectionModeStartDuration),
             value: mailboxModel.selectionMode.hasSelectedItems
         )
+    }
+
+    @ViewBuilder
+    private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
+        if uiModel.type == .conversation {
+            ConversationScreen(seed: .mailboxItem(uiModel))
+        } else {
+            messageScreen
+        }
+    }
+
+    @ViewBuilder
+    private func pushNotificationNewMessageDestination(seed: MailboxItemSeed) -> some View {
+        if mailboxModel.viewMode == .conversations {
+            ConversationScreen(
+                seed: .pushNotification(messageId: seed.messageId, subject: seed.subject, sender: seed.sender)
+            )
+        } else {
+            messageScreen
+        }
+    }
+
+    private var messageScreen: some View {
+        Text("Message view not implemented yet")
     }
 }
 

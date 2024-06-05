@@ -35,13 +35,14 @@ final class MailboxModel: ObservableObject {
 
     let selectionMode: SelectionModeState
 
+    var viewMode: MailSettingsViewMode {
+        mailbox?.viewMode() ?? .conversations
+    }
+
     private let pageSize: Int64 = 50
     private let mailSettings: PMMailSettingsProtocol
     private(set) var selectedMailbox: SelectedMailbox
     private var mailbox: Mailbox?
-    private var viewMode: MailSettingsViewMode {
-        mailbox?.viewMode() ?? .conversations
-    }
     private var conversationLiveQuery: MailboxConversationLiveQuery?
     private var messageLiveQuery: MailboxMessageLiveQuery?
     private let dependencies: Dependencies
