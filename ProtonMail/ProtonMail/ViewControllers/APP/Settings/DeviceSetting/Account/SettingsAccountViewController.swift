@@ -24,6 +24,7 @@ import LifetimeTracker
 import MBProgressHUD
 import ProtonCoreAccountDeletion
 import ProtonCoreAccountRecovery
+import ProtonCoreFeatureFlags
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
 import UIKit
@@ -78,6 +79,7 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
 
         view.backgroundColor = ColorProvider.BackgroundSecondary
         generateAccessibilityIdentifiers()
+        refreshUserInfo()
     }
 
     private func updateTitle() {
@@ -93,6 +95,16 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
             isAccountDeletionPending = false
         } else {
             self.tableView.reloadData()
+        }
+    }
+
+    func refreshUserInfo() {
+        guard FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.accountRecovery, reloadValue: true) else { return }
+        Task {
+            await viewModel.refreshUserInfo()
+            await MainActor.run {
+                self.tableView.reloadData()
+            }
         }
     }
 

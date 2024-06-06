@@ -279,4 +279,8 @@ final class SettingsAccountViewModel {
             }
         }
     }
+
+    func refreshUserInfo() async {
+        await userManager.fetchUserInfo()
+    }
 }
