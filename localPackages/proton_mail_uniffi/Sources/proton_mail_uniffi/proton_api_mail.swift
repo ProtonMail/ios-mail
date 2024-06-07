@@ -1964,14 +1964,16 @@ public struct UniffiGenCustomTypes {
     public var mid: MessageId
     public var eid: ExternalId
     public var mimeType: MimeType
+    public var msgFlags: MessageFlags
 
     // Default memberwise initializers are never public by default, so we
     // declare one manually.
-    public init(cid: ConversationId, mid: MessageId, eid: ExternalId, mimeType: MimeType) {
+    public init(cid: ConversationId, mid: MessageId, eid: ExternalId, mimeType: MimeType, msgFlags: MessageFlags) {
         self.cid = cid
         self.mid = mid
         self.eid = eid
         self.mimeType = mimeType
+        self.msgFlags = msgFlags
     }
 }
 
@@ -1991,6 +1993,9 @@ extension UniffiGenCustomTypes: Equatable, Hashable {
         if lhs.mimeType != rhs.mimeType {
             return false
         }
+        if lhs.msgFlags != rhs.msgFlags {
+            return false
+        }
         return true
     }
 
@@ -1999,6 +2004,7 @@ extension UniffiGenCustomTypes: Equatable, Hashable {
         hasher.combine(mid)
         hasher.combine(eid)
         hasher.combine(mimeType)
+        hasher.combine(msgFlags)
     }
 }
 
@@ -2010,7 +2016,8 @@ public struct FfiConverterTypeUniffiGenCustomTypes: FfiConverterRustBuffer {
                 cid: FfiConverterTypeConversationId.read(from: &buf), 
                 mid: FfiConverterTypeMessageId.read(from: &buf), 
                 eid: FfiConverterTypeExternalId.read(from: &buf), 
-                mimeType: FfiConverterTypeMimeType.read(from: &buf)
+                mimeType: FfiConverterTypeMimeType.read(from: &buf), 
+                msgFlags: FfiConverterTypeMessageFlags.read(from: &buf)
         )
     }
 
@@ -2019,6 +2026,7 @@ public struct FfiConverterTypeUniffiGenCustomTypes: FfiConverterRustBuffer {
         FfiConverterTypeMessageId.write(value.mid, into: &buf)
         FfiConverterTypeExternalId.write(value.eid, into: &buf)
         FfiConverterTypeMimeType.write(value.mimeType, into: &buf)
+        FfiConverterTypeMessageFlags.write(value.msgFlags, into: &buf)
     }
 }
 
@@ -3651,6 +3659,40 @@ public func FfiConverterTypeLabelId_lift(_ value: RustBuffer) throws -> LabelId 
 
 public func FfiConverterTypeLabelId_lower(_ value: LabelId) -> RustBuffer {
     return FfiConverterTypeLabelId.lower(value)
+}
+
+
+
+/**
+ * Typealias from the type name used in the UDL file to the builtin type.  This
+ * is needed because the UDL type name is used in function/method signatures.
+ */
+public typealias MessageFlags = UInt64
+public struct FfiConverterTypeMessageFlags: FfiConverter {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> MessageFlags {
+        return try FfiConverterUInt64.read(from: &buf)
+    }
+
+    public static func write(_ value: MessageFlags, into buf: inout [UInt8]) {
+        return FfiConverterUInt64.write(value, into: &buf)
+    }
+
+    public static func lift(_ value: UInt64) throws -> MessageFlags {
+        return try FfiConverterUInt64.lift(value)
+    }
+
+    public static func lower(_ value: MessageFlags) -> UInt64 {
+        return FfiConverterUInt64.lower(value)
+    }
+}
+
+
+public func FfiConverterTypeMessageFlags_lift(_ value: UInt64) throws -> MessageFlags {
+    return try FfiConverterTypeMessageFlags.lift(value)
+}
+
+public func FfiConverterTypeMessageFlags_lower(_ value: MessageFlags) -> UInt64 {
+    return FfiConverterTypeMessageFlags.lower(value)
 }
 
 

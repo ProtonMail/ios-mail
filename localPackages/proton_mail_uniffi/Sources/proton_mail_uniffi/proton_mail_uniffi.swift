@@ -1055,6 +1055,14 @@ public func FfiConverterTypeMailLabelsLiveQuery_lower(_ value: MailLabelsLiveQue
 public protocol MailSessionProtocol : AnyObject {
     
     /**
+     * Removes a user session and deletes all associated data.
+     *
+     * # Errors
+     * Returns error if data can not be removed or the db operation failed.
+     */
+    func deleteSession(session: StoredSession) throws 
+    
+    /**
      * Check whether the network is connected/online.
      */
     func isNetworkConnected()  -> Bool
@@ -1070,7 +1078,10 @@ public protocol MailSessionProtocol : AnyObject {
     func setNetworkConnected(online: Bool) 
     
     /**
-     * Retrieve the currently stored sessions.
+     * Return the list of active session.
+     *
+     * # Errors
+     * Returns error if the db query failed.
      */
     func storedSessions() throws  -> [StoredSession]
     
@@ -1150,6 +1161,19 @@ public static func create(params: MailSessionParams, keyChain: OsKeyChain, netwo
 
     
     /**
+     * Removes a user session and deletes all associated data.
+     *
+     * # Errors
+     * Returns error if data can not be removed or the db operation failed.
+     */
+open func deleteSession(session: StoredSession)throws  {try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
+    uniffi_proton_mail_uniffi_fn_method_mailsession_delete_session(self.uniffiClonePointer(),
+        FfiConverterTypeStoredSession.lower(session),$0
+    )
+}
+}
+    
+    /**
      * Check whether the network is connected/online.
      */
 open func isNetworkConnected() -> Bool {
@@ -1181,7 +1205,10 @@ open func setNetworkConnected(online: Bool) {try! rustCall() {
 }
     
     /**
-     * Retrieve the currently stored sessions.
+     * Return the list of active session.
+     *
+     * # Errors
+     * Returns error if the db query failed.
      */
 open func storedSessions()throws  -> [StoredSession] {
     return try  FfiConverterSequenceTypeStoredSession.lift(try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
@@ -1275,6 +1302,30 @@ public protocol MailUserSessionProtocol : AnyObject {
     func applicableLabels() throws  -> [LocalLabel]
     
     /**
+     * Retrieve a conversation by `id` in the `label_id` context.
+     *
+     * # Errors
+     * Returns error if the db query failed.
+     */
+    func conversationWithIdAndContext(id: UInt64, labelId: UInt64) throws  -> LocalConversation?
+    
+    /**
+     * Retrieve a conversation by `id` in the All Mail context.
+     *
+     * # Errors
+     * Returns error if the db query failed.
+     */
+    func conversationWithIdWithAllMailContext(id: UInt64) throws  -> LocalConversation?
+    
+    /**
+     * Retrieve a conversation by remote `id` in the All Mail context.
+     *
+     * # Errors
+     * Returns error if the db query failed.
+     */
+    func conversationWithRemoteId(id: ConversationId) throws  -> LocalConversation?
+    
+    /**
      * Execute exactly one pending action.
      */
     func executePendingAction() async throws 
@@ -1353,6 +1404,22 @@ public protocol MailUserSessionProtocol : AnyObject {
      * Log out a session.
      */
     func logout() async throws 
+    
+    /**
+     * Retrieve the message metadata from id.
+     *
+     * # Errors
+     * Returns error if the query failed.
+     */
+    func messageMetadata(id: UInt64) throws  -> LocalMessageMetadata?
+    
+    /**
+     * Retrieve the message metadata from `remote_id`.
+     *
+     * # Errors
+     * Returns error if the query failed.
+     */
+    func messageMetadataWithRemoteId(remoteId: MessageId) throws  -> LocalMessageMetadata?
     
     /**
      * Return the list of labels of type Folder into which a conversations or
@@ -1451,6 +1518,49 @@ open class MailUserSession:
 open func applicableLabels()throws  -> [LocalLabel] {
     return try  FfiConverterSequenceTypeLocalLabel.lift(try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
     uniffi_proton_mail_uniffi_fn_method_mailusersession_applicable_labels(self.uniffiClonePointer(),$0
+    )
+})
+}
+    
+    /**
+     * Retrieve a conversation by `id` in the `label_id` context.
+     *
+     * # Errors
+     * Returns error if the db query failed.
+     */
+open func conversationWithIdAndContext(id: UInt64, labelId: UInt64)throws  -> LocalConversation? {
+    return try  FfiConverterOptionTypeLocalConversation.lift(try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
+    uniffi_proton_mail_uniffi_fn_method_mailusersession_conversation_with_id_and_context(self.uniffiClonePointer(),
+        FfiConverterUInt64.lower(id),
+        FfiConverterUInt64.lower(labelId),$0
+    )
+})
+}
+    
+    /**
+     * Retrieve a conversation by `id` in the All Mail context.
+     *
+     * # Errors
+     * Returns error if the db query failed.
+     */
+open func conversationWithIdWithAllMailContext(id: UInt64)throws  -> LocalConversation? {
+    return try  FfiConverterOptionTypeLocalConversation.lift(try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
+    uniffi_proton_mail_uniffi_fn_method_mailusersession_conversation_with_id_with_all_mail_context(self.uniffiClonePointer(),
+        FfiConverterUInt64.lower(id),$0
+    )
+})
+}
+    
+    /**
+     * Retrieve a conversation by remote `id` in the All Mail context.
+     *
+     * # Errors
+     * Returns error if the db query failed.
+     */
+open func conversationWithRemoteId(id: ConversationId)throws  -> LocalConversation? {
+    return try  FfiConverterOptionTypeLocalConversation.lift(try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
+    uniffi_proton_mail_uniffi_fn_method_mailusersession_conversation_with_remote_id(self.uniffiClonePointer(),
+        FfiConverterTypeConversationId_lower(id),$0
     )
 })
 }
@@ -1653,6 +1763,34 @@ open func logout()async throws  {
             liftFunc: { $0 },
             errorHandler: FfiConverterTypeMailSessionError.lift
         )
+}
+    
+    /**
+     * Retrieve the message metadata from id.
+     *
+     * # Errors
+     * Returns error if the query failed.
+     */
+open func messageMetadata(id: UInt64)throws  -> LocalMessageMetadata? {
+    return try  FfiConverterOptionTypeLocalMessageMetadata.lift(try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
+    uniffi_proton_mail_uniffi_fn_method_mailusersession_message_metadata(self.uniffiClonePointer(),
+        FfiConverterUInt64.lower(id),$0
+    )
+})
+}
+    
+    /**
+     * Retrieve the message metadata from `remote_id`.
+     *
+     * # Errors
+     * Returns error if the query failed.
+     */
+open func messageMetadataWithRemoteId(remoteId: MessageId)throws  -> LocalMessageMetadata? {
+    return try  FfiConverterOptionTypeLocalMessageMetadata.lift(try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
+    uniffi_proton_mail_uniffi_fn_method_mailusersession_message_metadata_with_remote_id(self.uniffiClonePointer(),
+        FfiConverterTypeMessageId_lower(remoteId),$0
+    )
+})
 }
     
     /**
@@ -2001,7 +2139,8 @@ public protocol MailboxProtocol : AnyObject {
     func newConversationLiveQuery(limit: Int64, cb: MailboxLiveQueryUpdatedCallback) throws  -> MailboxConversationLiveQuery
     
     /**
-     * Create a live query for a conversation with `id`'s messages.
+     * Create a new live query for a conversation with `id` 's messages and return the first id of
+     * the first unread message that should be displayed to the user, if any.
      *
      * If this is the first time it is called for this conversation, the messages will
      * be retrieved from the server.
@@ -2009,7 +2148,19 @@ public protocol MailboxProtocol : AnyObject {
      * # Errors
      * Returns error if the request or the db query
      */
-    func newConversationMessagesLiveQuery(id: UInt64, cb: MailboxLiveQueryUpdatedCallback) async throws  -> MailboxConversationMessagesLiveQuery
+    func newConversationMessagesLiveQuery(id: UInt64, cb: MailboxLiveQueryUpdatedCallback) async throws  -> ConversationMessagesLiveQueryResult
+    
+    /**
+     * Create a new live query which track the total number and unread number of items present
+     * in the current mailbox.
+     *
+     * The returned values will track either messages or conversations depending on the
+     * current mailbox's view mode.
+     *
+     * # Errors
+     * Return error if the database operation failed.
+     */
+    func newItemLiveQuery(cb: MailboxLiveQueryUpdatedCallback) throws  -> MailboxItemCountLiveQuery
     
     /**
      * Create a live query for messages for the currently selected label.
@@ -2340,7 +2491,8 @@ open func newConversationLiveQuery(limit: Int64, cb: MailboxLiveQueryUpdatedCall
 }
     
     /**
-     * Create a live query for a conversation with `id`'s messages.
+     * Create a new live query for a conversation with `id` 's messages and return the first id of
+     * the first unread message that should be displayed to the user, if any.
      *
      * If this is the first time it is called for this conversation, the messages will
      * be retrieved from the server.
@@ -2348,7 +2500,7 @@ open func newConversationLiveQuery(limit: Int64, cb: MailboxLiveQueryUpdatedCall
      * # Errors
      * Returns error if the request or the db query
      */
-open func newConversationMessagesLiveQuery(id: UInt64, cb: MailboxLiveQueryUpdatedCallback)async throws  -> MailboxConversationMessagesLiveQuery {
+open func newConversationMessagesLiveQuery(id: UInt64, cb: MailboxLiveQueryUpdatedCallback)async throws  -> ConversationMessagesLiveQueryResult {
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
@@ -2357,12 +2509,30 @@ open func newConversationMessagesLiveQuery(id: UInt64, cb: MailboxLiveQueryUpdat
                     FfiConverterUInt64.lower(id),FfiConverterCallbackInterfaceMailboxLiveQueryUpdatedCallback.lower(cb)
                 )
             },
-            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_pointer,
-            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_pointer,
-            freeFunc: ffi_proton_mail_uniffi_rust_future_free_pointer,
-            liftFunc: FfiConverterTypeMailboxConversationMessagesLiveQuery.lift,
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
+            liftFunc: FfiConverterTypeConversationMessagesLiveQueryResult.lift,
             errorHandler: FfiConverterTypeMailboxError.lift
         )
+}
+    
+    /**
+     * Create a new live query which track the total number and unread number of items present
+     * in the current mailbox.
+     *
+     * The returned values will track either messages or conversations depending on the
+     * current mailbox's view mode.
+     *
+     * # Errors
+     * Return error if the database operation failed.
+     */
+open func newItemLiveQuery(cb: MailboxLiveQueryUpdatedCallback)throws  -> MailboxItemCountLiveQuery {
+    return try  FfiConverterTypeMailboxItemCountLiveQuery.lift(try rustCallWithError(FfiConverterTypeMailboxError.lift) {
+    uniffi_proton_mail_uniffi_fn_method_mailbox_new_item_live_query(self.uniffiClonePointer(),
+        FfiConverterCallbackInterfaceMailboxLiveQueryUpdatedCallback.lower(cb),$0
+    )
+})
 }
     
     /**
@@ -2772,6 +2942,154 @@ public func FfiConverterTypeMailboxConversationMessagesLiveQuery_lift(_ pointer:
 
 public func FfiConverterTypeMailboxConversationMessagesLiveQuery_lower(_ value: MailboxConversationMessagesLiveQuery) -> UnsafeMutableRawPointer {
     return FfiConverterTypeMailboxConversationMessagesLiveQuery.lower(value)
+}
+
+
+
+
+/**
+ * Live queries behave similarly to CoreData/Room's FetchedResult/ObservedQueries. However, since
+ * the observation happens from the rust side we can't provide optimal default integration in
+ * the target application runtime (JetPack Compose/SwiftUI).
+ *
+ * Live queries accept a callback which will be triggered when the query has been refreshed.
+ * Refresh can occur when the tables the query is watching are modified.
+ * Once a callback has occurred you should [`$name::value()`] to access the new data.
+ *
+ * [`$name::value()`] can be called as many times as you wish and will always return the
+ * latest result of the query.
+
+ */
+public protocol MailboxItemCountLiveQueryProtocol : AnyObject {
+    
+    /**
+     * Terminate the observer for this query and stop receiving updates.
+     */
+    func disconnect() 
+    
+    /**
+     * Get the latest value for this Query.
+     */
+    func value() throws  -> LabelItemCount
+    
+}
+
+/**
+ * Live queries behave similarly to CoreData/Room's FetchedResult/ObservedQueries. However, since
+ * the observation happens from the rust side we can't provide optimal default integration in
+ * the target application runtime (JetPack Compose/SwiftUI).
+ *
+ * Live queries accept a callback which will be triggered when the query has been refreshed.
+ * Refresh can occur when the tables the query is watching are modified.
+ * Once a callback has occurred you should [`$name::value()`] to access the new data.
+ *
+ * [`$name::value()`] can be called as many times as you wish and will always return the
+ * latest result of the query.
+
+ */
+open class MailboxItemCountLiveQuery:
+    MailboxItemCountLiveQueryProtocol {
+    fileprivate let pointer: UnsafeMutableRawPointer!
+
+    /// Used to instantiate a [FFIObject] without an actual pointer, for fakes in tests, mostly.
+    public struct NoPointer {
+        public init() {}
+    }
+
+    // TODO: We'd like this to be `private` but for Swifty reasons,
+    // we can't implement `FfiConverter` without making this `required` and we can't
+    // make it `required` without making it `public`.
+    required public init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        self.pointer = pointer
+    }
+
+    /// This constructor can be used to instantiate a fake object.
+    /// - Parameter noPointer: Placeholder value so we can have a constructor separate from the default empty one that may be implemented for classes extending [FFIObject].
+    ///
+    /// - Warning:
+    ///     Any object instantiated with this constructor cannot be passed to an actual Rust-backed object. Since there isn't a backing [Pointer] the FFI lower functions will crash.
+    public init(noPointer: NoPointer) {
+        self.pointer = nil
+    }
+
+    public func uniffiClonePointer() -> UnsafeMutableRawPointer {
+        return try! rustCall { uniffi_proton_mail_uniffi_fn_clone_mailboxitemcountlivequery(self.pointer, $0) }
+    }
+    // No primary constructor declared for this class.
+
+    deinit {
+        guard let pointer = pointer else {
+            return
+        }
+
+        try! rustCall { uniffi_proton_mail_uniffi_fn_free_mailboxitemcountlivequery(pointer, $0) }
+    }
+
+    
+
+    
+    /**
+     * Terminate the observer for this query and stop receiving updates.
+     */
+open func disconnect() {try! rustCall() {
+    uniffi_proton_mail_uniffi_fn_method_mailboxitemcountlivequery_disconnect(self.uniffiClonePointer(),$0
+    )
+}
+}
+    
+    /**
+     * Get the latest value for this Query.
+     */
+open func value()throws  -> LabelItemCount {
+    return try  FfiConverterTypeLabelItemCount_lift(try rustCallWithError(FfiConverterTypeLiveQueryError.lift) {
+    uniffi_proton_mail_uniffi_fn_method_mailboxitemcountlivequery_value(self.uniffiClonePointer(),$0
+    )
+})
+}
+    
+
+}
+
+public struct FfiConverterTypeMailboxItemCountLiveQuery: FfiConverter {
+
+    typealias FfiType = UnsafeMutableRawPointer
+    typealias SwiftType = MailboxItemCountLiveQuery
+
+    public static func lift(_ pointer: UnsafeMutableRawPointer) throws -> MailboxItemCountLiveQuery {
+        return MailboxItemCountLiveQuery(unsafeFromRawPointer: pointer)
+    }
+
+    public static func lower(_ value: MailboxItemCountLiveQuery) -> UnsafeMutableRawPointer {
+        return value.uniffiClonePointer()
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> MailboxItemCountLiveQuery {
+        let v: UInt64 = try readInt(&buf)
+        // The Rust code won't compile if a pointer won't fit in a UInt64.
+        // We have to go via `UInt` because that's the thing that's the size of a pointer.
+        let ptr = UnsafeMutableRawPointer(bitPattern: UInt(truncatingIfNeeded: v))
+        if (ptr == nil) {
+            throw UniffiInternalError.unexpectedNullPointer
+        }
+        return try lift(ptr!)
+    }
+
+    public static func write(_ value: MailboxItemCountLiveQuery, into buf: inout [UInt8]) {
+        // This fiddling is because `Int` is the thing that's the same size as a pointer.
+        // The Rust code won't compile if a pointer won't fit in a `UInt64`.
+        writeInt(&buf, UInt64(bitPattern: Int64(Int(bitPattern: lower(value)))))
+    }
+}
+
+
+
+
+public func FfiConverterTypeMailboxItemCountLiveQuery_lift(_ pointer: UnsafeMutableRawPointer) throws -> MailboxItemCountLiveQuery {
+    return try FfiConverterTypeMailboxItemCountLiveQuery.lift(pointer)
+}
+
+public func FfiConverterTypeMailboxItemCountLiveQuery_lower(_ value: MailboxItemCountLiveQuery) -> UnsafeMutableRawPointer {
+    return FfiConverterTypeMailboxItemCountLiveQuery.lower(value)
 }
 
 
@@ -3242,6 +3560,60 @@ public func FfiConverterTypeStoredSession_lift(_ pointer: UnsafeMutableRawPointe
 
 public func FfiConverterTypeStoredSession_lower(_ value: StoredSession) -> UnsafeMutableRawPointer {
     return FfiConverterTypeStoredSession.lower(value)
+}
+
+
+/**
+ * Result type for [`Mailbox::new_conversation_messages_live_query`],
+ */
+public struct ConversationMessagesLiveQueryResult {
+    /**
+     * Id of the message that should be opened and displayed to the user.
+     */
+    public var messageIdToOpen: UInt64?
+    /**
+     * Live query instance.
+     */
+    public var query: MailboxConversationMessagesLiveQuery
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(
+        /**
+         * Id of the message that should be opened and displayed to the user.
+         */messageIdToOpen: UInt64?, 
+        /**
+         * Live query instance.
+         */query: MailboxConversationMessagesLiveQuery) {
+        self.messageIdToOpen = messageIdToOpen
+        self.query = query
+    }
+}
+
+
+
+public struct FfiConverterTypeConversationMessagesLiveQueryResult: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> ConversationMessagesLiveQueryResult {
+        return
+            try ConversationMessagesLiveQueryResult(
+                messageIdToOpen: FfiConverterOptionUInt64.read(from: &buf), 
+                query: FfiConverterTypeMailboxConversationMessagesLiveQuery.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: ConversationMessagesLiveQueryResult, into buf: inout [UInt8]) {
+        FfiConverterOptionUInt64.write(value.messageIdToOpen, into: &buf)
+        FfiConverterTypeMailboxConversationMessagesLiveQuery.write(value.query, into: &buf)
+    }
+}
+
+
+public func FfiConverterTypeConversationMessagesLiveQueryResult_lift(_ buf: RustBuffer) throws -> ConversationMessagesLiveQueryResult {
+    return try FfiConverterTypeConversationMessagesLiveQueryResult.lift(buf)
+}
+
+public func FfiConverterTypeConversationMessagesLiveQueryResult_lower(_ value: ConversationMessagesLiveQueryResult) -> RustBuffer {
+    return FfiConverterTypeConversationMessagesLiveQueryResult.lower(value)
 }
 
 
@@ -5356,6 +5728,48 @@ fileprivate struct FfiConverterOptionTypeAPIEnvConfig: FfiConverterRustBuffer {
     }
 }
 
+fileprivate struct FfiConverterOptionTypeLocalConversation: FfiConverterRustBuffer {
+    typealias SwiftType = LocalConversation?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterTypeLocalConversation.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterTypeLocalConversation.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
+fileprivate struct FfiConverterOptionTypeLocalMessageMetadata: FfiConverterRustBuffer {
+    typealias SwiftType = LocalMessageMetadata?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterTypeLocalMessageMetadata.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterTypeLocalMessageMetadata.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
 fileprivate struct FfiConverterOptionTypeParsedHeaderValue: FfiConverterRustBuffer {
     typealias SwiftType = ParsedHeaderValue?
 
@@ -5542,6 +5956,12 @@ fileprivate struct FfiConverterSequenceTypeLocalMessageMetadata: FfiConverterRus
 
 
 
+
+
+
+
+
+
 private let UNIFFI_RUST_FUTURE_POLL_READY: Int8 = 0
 private let UNIFFI_RUST_FUTURE_POLL_MAYBE_READY: Int8 = 1
 
@@ -5655,6 +6075,9 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_maillabelslivequery_value() != 34268) {
         return InitializationResult.apiChecksumMismatch
     }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailsession_delete_session() != 46187) {
+        return InitializationResult.apiChecksumMismatch
+    }
     if (uniffi_proton_mail_uniffi_checksum_method_mailsession_is_network_connected() != 42192) {
         return InitializationResult.apiChecksumMismatch
     }
@@ -5664,13 +6087,22 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailsession_set_network_connected() != 47454) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailsession_stored_sessions() != 13893) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailsession_stored_sessions() != 56255) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailsession_user_context_from_session() != 61878) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_applicable_labels() != 64448) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_conversation_with_id_and_context() != 10910) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_conversation_with_id_with_all_mail_context() != 44598) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_conversation_with_remote_id() != 16574) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_execute_pending_action() != 49952) {
@@ -5695,6 +6127,12 @@ private var initializationResult: InitializationResult {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_logout() != 62214) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_message_metadata() != 11096) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_message_metadata_with_remote_id() != 55650) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_movable_folders() != 21776) {
@@ -5745,7 +6183,10 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_conversation_live_query() != 43504) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_conversation_messages_live_query() != 24042) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_conversation_messages_live_query() != 32841) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_item_live_query() != 59208) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_message_live_query() != 51759) {
@@ -5773,6 +6214,12 @@ private var initializationResult: InitializationResult {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailboxconversationmessageslivequery_value() != 1716) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailboxitemcountlivequery_disconnect() != 13030) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_proton_mail_uniffi_checksum_method_mailboxitemcountlivequery_value() != 61265) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailboxmessagelivequery_disconnect() != 56194) {

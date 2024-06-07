@@ -668,6 +668,78 @@ public func FfiConverterTypeFilteredMessages_lower(_ value: FilteredMessages) ->
 }
 
 
+/**
+ * Conversation/message statistic for a label.
+ */
+public struct LabelItemCount {
+    /**
+     * Number of unread messages or conversations.
+     */
+    public var unread: UInt64
+    /**
+     * Number of messages or conversations.
+     */
+    public var total: UInt64
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(
+        /**
+         * Number of unread messages or conversations.
+         */unread: UInt64, 
+        /**
+         * Number of messages or conversations.
+         */total: UInt64) {
+        self.unread = unread
+        self.total = total
+    }
+}
+
+
+extension LabelItemCount: Sendable {} 
+extension LabelItemCount: Equatable, Hashable {
+    public static func ==(lhs: LabelItemCount, rhs: LabelItemCount) -> Bool {
+        if lhs.unread != rhs.unread {
+            return false
+        }
+        if lhs.total != rhs.total {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(unread)
+        hasher.combine(total)
+    }
+}
+
+
+public struct FfiConverterTypeLabelItemCount: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> LabelItemCount {
+        return
+            try LabelItemCount(
+                unread: FfiConverterUInt64.read(from: &buf), 
+                total: FfiConverterUInt64.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: LabelItemCount, into buf: inout [UInt8]) {
+        FfiConverterUInt64.write(value.unread, into: &buf)
+        FfiConverterUInt64.write(value.total, into: &buf)
+    }
+}
+
+
+public func FfiConverterTypeLabelItemCount_lift(_ buf: RustBuffer) throws -> LabelItemCount {
+    return try FfiConverterTypeLabelItemCount.lift(buf)
+}
+
+public func FfiConverterTypeLabelItemCount_lower(_ value: LabelItemCount) -> RustBuffer {
+    return FfiConverterTypeLabelItemCount.lower(value)
+}
+
+
 public struct LocalAttachmentMetadata {
     public var id: LocalAttachmentId
     public var rid: AttachmentId?
@@ -1307,7 +1379,7 @@ public struct LocalMessageMetadata {
     public var isForwarded: Bool
     public var externalId: ExternalId?
     public var numAttachments: UInt32
-    public var flags: UInt64
+    public var flags: MessageFlags
     public var starred: Bool
     public var attachments: [LocalAttachmentMetadata]?
     public var labels: [LocalInlineLabelInfo]?
@@ -1315,7 +1387,7 @@ public struct LocalMessageMetadata {
 
     // Default memberwise initializers are never public by default, so we
     // declare one manually.
-    public init(id: LocalMessageId, rid: MessageId?, conversationId: LocalConversationId?, addressId: AddressId, order: UInt64, subject: String, unread: Bool, sender: MessageAddress, to: [MessageAddress], cc: [MessageAddress], bcc: [MessageAddress], time: UInt64, size: UInt64, expirationTime: UInt64, snoozeTime: UInt64, isReplied: Bool, isRepliedAll: Bool, isForwarded: Bool, externalId: ExternalId?, numAttachments: UInt32, flags: UInt64, starred: Bool, attachments: [LocalAttachmentMetadata]?, labels: [LocalInlineLabelInfo]?, avatarInformation: AvatarInformation) {
+    public init(id: LocalMessageId, rid: MessageId?, conversationId: LocalConversationId?, addressId: AddressId, order: UInt64, subject: String, unread: Bool, sender: MessageAddress, to: [MessageAddress], cc: [MessageAddress], bcc: [MessageAddress], time: UInt64, size: UInt64, expirationTime: UInt64, snoozeTime: UInt64, isReplied: Bool, isRepliedAll: Bool, isForwarded: Bool, externalId: ExternalId?, numAttachments: UInt32, flags: MessageFlags, starred: Bool, attachments: [LocalAttachmentMetadata]?, labels: [LocalInlineLabelInfo]?, avatarInformation: AvatarInformation) {
         self.id = id
         self.rid = rid
         self.conversationId = conversationId
@@ -1480,7 +1552,7 @@ public struct FfiConverterTypeLocalMessageMetadata: FfiConverterRustBuffer {
                 isForwarded: FfiConverterBool.read(from: &buf), 
                 externalId: FfiConverterOptionTypeExternalId.read(from: &buf), 
                 numAttachments: FfiConverterUInt32.read(from: &buf), 
-                flags: FfiConverterUInt64.read(from: &buf), 
+                flags: FfiConverterTypeMessageFlags.read(from: &buf), 
                 starred: FfiConverterBool.read(from: &buf), 
                 attachments: FfiConverterOptionSequenceTypeLocalAttachmentMetadata.read(from: &buf), 
                 labels: FfiConverterOptionSequenceTypeLocalInlineLabelInfo.read(from: &buf), 
@@ -1509,7 +1581,7 @@ public struct FfiConverterTypeLocalMessageMetadata: FfiConverterRustBuffer {
         FfiConverterBool.write(value.isForwarded, into: &buf)
         FfiConverterOptionTypeExternalId.write(value.externalId, into: &buf)
         FfiConverterUInt32.write(value.numAttachments, into: &buf)
-        FfiConverterUInt64.write(value.flags, into: &buf)
+        FfiConverterTypeMessageFlags.write(value.flags, into: &buf)
         FfiConverterBool.write(value.starred, into: &buf)
         FfiConverterOptionSequenceTypeLocalAttachmentMetadata.write(value.attachments, into: &buf)
         FfiConverterOptionSequenceTypeLocalInlineLabelInfo.write(value.labels, into: &buf)
@@ -1931,6 +2003,8 @@ fileprivate struct FfiConverterSequenceTypeMessageAddress: FfiConverterRustBuffe
         return seq
     }
 }
+
+
 
 
 

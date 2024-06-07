@@ -25,7 +25,7 @@ final class ConversationModel: Sendable, ObservableObject {
     @Published private(set) var scrollToMessageOnAppear: PMLocalMessageId? = nil
 
     private var mailbox: Mailbox?
-    private var messagesLiveQuery: MailboxConversationMessagesLiveQuery?
+    private var messagesLiveQuery: ConversationMessagesLiveQueryResult?
     private var expandedMessages: Set<PMLocalMessageId>
     private let dependencies: Dependencies
 
@@ -54,7 +54,8 @@ final class ConversationModel: Sendable, ObservableObject {
             let messages = await readLiveQueryValues()
             if let lastMessage = messages.last, case .expanded(let last) = lastMessage.type {
                 await updateState(.messagesReady(previous: messages.dropLast(), last: last))
-                scrollToMessageOnAppear = messages.count == 1 ? nil : lastMessage.id
+                let messageToScrollTo = messagesLiveQuery?.messageIdToOpen ?? lastMessage.id
+                scrollToMessageOnAppear = messages.count == 1 ? nil : messageToScrollTo
             }
         } catch {
             AppLogger.log(error: error, category: .mailboxItemDetail)
@@ -83,7 +84,7 @@ final class ConversationModel: Sendable, ObservableObject {
                 AppLogger.log(message: msg, category: .mailboxItemDetail, isError: true)
                 return []
             }
-            let messages = try messagesLiveQuery.value()
+            let messages = try messagesLiveQuery.query.value()
             guard let lastMessage = messages.last else { return [] }
             
             // list of messages except the last one
