@@ -22,7 +22,7 @@ import proton_mail_uniffi
 final class ConversationModel: Sendable, ObservableObject {
     @Published private(set) var state: State = .initial
     @Published private(set) var seed: ConversationScreenSeedUIModel
-    @Published private(set) var scrollToMessageOnAppear: PMLocalMessageId? = nil
+    @Published private(set) var scrollToMessage: PMLocalMessageId? = nil
 
     private var mailbox: Mailbox?
     private var messagesLiveQuery: ConversationMessagesLiveQueryResult?
@@ -51,12 +51,14 @@ final class ConversationModel: Sendable, ObservableObject {
                 id: conversationId,
                 cb: PMMailboxLiveQueryUpdatedCallback(delegate: self)
             )
+
+            setInitialOpenMessageAsExpanded()
+
             let messages = await readLiveQueryValues()
-            if let lastMessage = messages.last, case .expanded(let last) = lastMessage.type {
-                await updateState(.messagesReady(previous: messages.dropLast(), last: last))
-                let messageToScrollTo = messagesLiveQuery?.messageIdToOpen ?? lastMessage.id
-                scrollToMessageOnAppear = messages.count == 1 ? nil : messageToScrollTo
-            }
+            await updateStateToMessagesReady(with: messages)
+            
+            scrollToInitialOpenMessage(messages: messages)
+
         } catch {
             AppLogger.log(error: error, category: .mailboxItemDetail)
         }
@@ -70,11 +72,42 @@ final class ConversationModel: Sendable, ObservableObject {
                 expandedMessages.insert(messageId)
             }
             let messages = await readLiveQueryValues()
-            if let lastMessage = messages.last, case .expanded(let last) = lastMessage.type {
-                await updateState(.initial)
-                await updateState(.messagesReady(previous: messages.dropLast(), last: last))
-            }
+            await updateStateToMessagesReady(with: messages)
         }
+    }
+}
+
+extension ConversationModel {
+
+    private func setInitialOpenMessageAsExpanded() {
+        if let initialMessage = messagesLiveQuery?.messageIdToOpen {
+            expandedMessages.insert(initialMessage)
+        }
+    }
+
+    private func updateStateToMessagesReady(with messages: [MessageCellUIModel]) async {
+        if let lastMessage = messages.last, case .expanded(let last) = lastMessage.type {
+            await updateState(.messagesReady(previous: messages.dropLast(), last: last))
+        }
+    }
+
+    private func scrollToInitialOpenMessage(messages: [MessageCellUIModel]) {
+        logMessageIdToOpen()
+        let messageToScrollTo = messagesLiveQuery?.messageIdToOpen ?? messages.last?.id
+        scrollToMessage = messages.count == 1 ? nil : messageToScrollTo
+        if let messageToScrollTo {
+            expandedMessages.remove(messageToScrollTo)
+        }
+    }
+
+    private func logMessageIdToOpen() {
+        let value: String
+        if let messageIdToOpen = messagesLiveQuery?.messageIdToOpen {
+            value = String(messageIdToOpen)
+        } else {
+            value = "n/a"
+        }
+        AppLogger.logTemporarily(message: "messageIdToOpen = \(value)", category: .mailboxItemDetail)
     }
 
     private func readLiveQueryValues() async -> [MessageCellUIModel] {
@@ -120,8 +153,6 @@ final class ConversationModel: Sendable, ObservableObject {
     ) async throws -> ExpandedMessageCellUIModel {
         let messageBody = wait ? try await mailbox.messageBody(id: message.id).body() : nil
         return await message.toExpandedMessageCellUIModel(message: messageBody)
-
-//        return await message.toExpandedMessageCellUIModel(message:"\n\n[MESSAGE BODY NOT IMPLEMENTED YET] \n\n Yours sincerely, \n The ET team.")
     }
 
     @MainActor

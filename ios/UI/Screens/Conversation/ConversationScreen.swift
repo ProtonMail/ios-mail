@@ -136,7 +136,7 @@ struct ConversationScreen: View {
                 .id(last.messageId)
             }
             .task {
-                scrollView.scrollTo(model.scrollToMessageOnAppear, anchor: .top)
+                scrollView.scrollTo(model.scrollToMessage, anchor: .top)
             }
         }
     }
