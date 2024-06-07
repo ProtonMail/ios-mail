@@ -48,11 +48,20 @@ struct MessageBodyView: View {
     }
 
     private func messageBodyView(body: String) -> some View {
-        Text(body)
+        /**
+         Using `Text` for large body messages could choke the main thread and also arndomly
+         cap the amount of rendered characters.
+         TextEditor performs really well, but selection by double tap scrolls to the bottom ??!!
+         To be reviewed when working on rendering the message body.
+         */
+        TextEditor(text: .constant(body))
+            .scrollDisabled(true)
+            .fixedSize(horizontal: false, vertical: true)
             .font(.subheadline)
             .foregroundStyle(DS.Color.Text.norm)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, DS.Spacing.large)
             .padding(.horizontal, DS.Spacing.large)
+
     }
 }

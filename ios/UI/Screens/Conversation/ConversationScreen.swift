@@ -20,6 +20,7 @@ import SwiftUI
 
 struct ConversationScreen: View {
     @StateObject private var model: ConversationModel
+    @State private var animateViewIn: Bool = false
 
     init(seed: ConversationScreenSeedUIModel) {
         self._model = StateObject(wrappedValue: .init(seed: seed))
@@ -41,8 +42,12 @@ struct ConversationScreen: View {
                 isStarStateKnown: model.seed.isStarStateKnown,
                 isStarred: model.seed.isStarred
             )
+            .opacity(animateViewIn ? 1.0 : 0.0)
             .smoothScreenTransition()
             .task {
+                withAnimation(.easeIn) {
+                    animateViewIn = true
+                }
                 await model.fetchData()
             }
         }
