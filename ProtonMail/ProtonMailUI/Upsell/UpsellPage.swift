@@ -97,16 +97,21 @@ public struct UpsellPage: View {
     }
 
     private var infoSection: some View {
-        VStack(spacing: 4) {
-            if !hideLogo.value {
-                Image(.mailUpsell)
-                    .padding(-20)
-            }
+        VStack(spacing: 8) {
+            VStack(spacing: hideLogo.value ? 0 : 8) {
+                if hideLogo.value {
+                    Text(String(format: L10n.Upsell.upgradeToPlan, model.plan.name))
+                        .font(Font(UIFont.adjustedFont(forTextStyle: .title3, weight: .bold)))
+                        .foregroundColor(ColorProvider.SidebarTextNorm)
+                        .padding(-34)
+                } else {
+                    Image(.mailUpsell)
+                        .padding(-20)
 
-            VStack(spacing: 8) {
-                Text(String(format: L10n.Upsell.upgradeToPlan, model.plan.name))
-                    .font(Font(UIFont.adjustedFont(forTextStyle: .title1, weight: .bold)))
-                    .foregroundColor(ColorProvider.SidebarTextNorm)
+                    Text(String(format: L10n.Upsell.upgradeToPlan, model.plan.name))
+                        .font(Font(UIFont.adjustedFont(forTextStyle: .title1, weight: .bold)))
+                        .foregroundColor(ColorProvider.SidebarTextNorm)
+                }
 
                 Text(L10n.Upsell.mailPlusDescription)
                     .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
@@ -115,23 +120,25 @@ public struct UpsellPage: View {
             .padding(.horizontal, 16)
 
             VStack(alignment: .leading) {
-                ForEach(model.plan.perks, id: \.description) { perk in
+                ForEach(model.plan.perks.indices, id: \.self) { idx in
                     VStack(alignment: .leading) {
                         HStack(spacing: 12) {
-                            IconProvider[dynamicMember: perk.icon]
+                            IconProvider[dynamicMember: model.plan.perks[idx].icon]
                                 .frame(maxHeight: 20)
                                 .foregroundColor(ColorProvider.IconWeak)
                                 .preferredColorScheme(.dark)
 
-                            Text(perk.description)
+                            Text(model.plan.perks[idx].description)
                                 .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
                                 .foregroundColor(ColorProvider.SidebarTextWeak)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
 
-                        Rectangle()
-                            .frame(height: 1)
-                            .foregroundColor(.white.opacity(0.08))
+                        if idx != model.plan.perks.indices.last {
+                            Rectangle()
+                                .frame(height: 1)
+                                .foregroundColor(.white.opacity(0.08))
+                        }
                     }
                 }
             }
