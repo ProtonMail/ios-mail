@@ -1210,6 +1210,7 @@ class LocalizedString {
     lazy var _pgp_encrypted_signed_of_received = NSLocalizedString("PGP-encrypted and signed message", comment: "The message after tapping the encryption icon of message received.")
     lazy var _pgp_signed_verified_of_received = NSLocalizedString("PGP-signed message from verified sender", comment: "The message after tapping the encryption icon of message received.")
     lazy var _pgp_encrypted_of_received = NSLocalizedString("PGP-encrypted message", comment: "The message after tapping the encryption icon of message received.")
+    lazy var _pgp_signed_of_received = NSLocalizedString("PGP-signed message", comment: "The message after tapping the encryption icon of message received.")
     lazy var _pgp_signed_verification_failed_of_received = NSLocalizedString("PGP-signed message. Sender verification failed", comment: "The message after tapping the encryption icon of message received.")
 
     lazy var _end_to_end_encrypted_to_verified_recipient = NSLocalizedString("End-to-end encrypted to verified recipient", comment: "The message after tapping the encryption icon of recipient in composer.")
