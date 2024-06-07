@@ -123,17 +123,19 @@ struct ConversationScreen: View {
                             CollapsedMessageCell(uiModel: uiModel, isFirstCell: index == 0, onTap: {
                                 model.onMessageTap(messageId: cellUIModel.id)
                             })
+                            .id(cellUIModel.cellId)
                         case .expanded(let uiModel):
                             ExpandedMessageCell(uiModel: uiModel, isFirstCell: index == 0, onTap: {
                                 model.onMessageTap(messageId: cellUIModel.id)
                             })
+                            .id(cellUIModel.cellId)
                         }
                     }
                 }
                 ExpandedMessageCell(uiModel: last, isFirstCell: previous.isEmpty, onTap: {
                     model.onMessageTap(messageId: last.messageId)
                 })
-                .id(last.messageId)
+                .id(ConversationModel.lastCellId) // static value cause it won't be replaced with CollapsedMessageCell
             }
             .task {
                 scrollView.scrollTo(model.scrollToMessage, anchor: .top)

@@ -54,7 +54,7 @@ struct MessageBodyView: View {
          TextEditor performs really well, but selection by double tap scrolls to the bottom ??!!
          To be reviewed when working on rendering the message body.
          */
-        TextEditor(text: .constant(body))
+        TextEditor(text: .constant(String(body.prefix(5000))))
             .scrollDisabled(true)
             .fixedSize(horizontal: false, vertical: true)
             .font(.subheadline)

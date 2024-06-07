@@ -20,9 +20,11 @@ import proton_mail_uniffi
 
 @MainActor
 final class ConversationModel: Sendable, ObservableObject {
+    static let lastCellId = "last"
+
     @Published private(set) var state: State = .initial
     @Published private(set) var seed: ConversationScreenSeedUIModel
-    @Published private(set) var scrollToMessage: PMLocalMessageId? = nil
+    @Published private(set) var scrollToMessage: String? = nil
 
     private var mailbox: Mailbox?
     private var messagesLiveQuery: ConversationMessagesLiveQueryResult?
@@ -92,12 +94,10 @@ extension ConversationModel {
     }
 
     private func scrollToInitialOpenMessage(messages: [MessageCellUIModel]) {
+        guard messages.count > 1 else { return }
         logMessageIdToOpen()
-        let messageToScrollTo = messagesLiveQuery?.messageIdToOpen ?? messages.last?.id
-        scrollToMessage = messages.count == 1 ? nil : messageToScrollTo
-        if let messageToScrollTo {
-            expandedMessages.remove(messageToScrollTo)
-        }
+        let messageToScrollToId = messagesLiveQuery?.messageIdToOpen
+        scrollToMessage = messages.first(where: { $0.id == messageToScrollToId })?.cellId ?? Self.lastCellId
     }
 
     private func logMessageIdToOpen() {
@@ -127,7 +127,9 @@ extension ConversationModel {
 
                 let messageCellUIModel: MessageCellUIModelType
                 if expandedMessages.contains(message.id) {
-                    messageCellUIModel = try await .expanded(expandedMessageCellUIModel(for: message, wait: false, mailbox: mailbox))
+                    let wait = message.id == messagesLiveQuery.messageIdToOpen
+                    let uiModel = try await expandedMessageCellUIModel(for: message, wait: wait, mailbox: mailbox)
+                    messageCellUIModel = .expanded(uiModel)
                 } else {
                     messageCellUIModel = await .collapsed(message.toCollapsedMessageCellUIModel())
                 }
@@ -200,11 +202,28 @@ extension ConversationModel {
 struct MessageCellUIModel {
     let id: PMLocalMessageId
     let type: MessageCellUIModelType
+    
+    /// Used to identify Views in a way that allows to scroll to them and allows to refresh 
+    /// the screen when collapsiong/expanding cells. This is because we don't modify the
+    /// existing view but we replace it with another type so we need a different
+    /// id value: CollapsedMessageCell <--> ExpandedMessageCell
+    var cellId: String {
+        "\(id)-\(type.description)"
+    }
 }
 
 enum MessageCellUIModelType {
     case collapsed(CollapsedMessageCellUIModel)
     case expanded(ExpandedMessageCellUIModel)
+
+    var description: String {
+        switch self {
+        case .collapsed:
+            "collapsed"
+        case .expanded:
+            "expanded"
+        }
+    }
 }
 
 enum ConversationScreenSeedUIModel {
