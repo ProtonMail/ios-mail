@@ -19,16 +19,22 @@ import DesignSystem
 import SwiftUI
 
 struct SubscriptionScreen: View {
+    @Environment (\.colorScheme) var colorScheme: ColorScheme
     @StateObject private var model: SubscriptionModel = .init()
 
     var body: some View {
         NavigationStack {
             viewForState
+                .background(DS.Color.Background.norm)
+                .edgesIgnoringSafeArea(.bottom)
                 .navigationBarTitleDisplayMode(.inline)
                 .mainToolbar(title: LocalizationTemp.Settings.subscription)
         }
         .task {
-            model.generateSubscriptionUrl()
+            model.generateSubscriptionUrl(colorScheme: colorScheme)
+        }
+        .onChange(of: colorScheme) { _, newValue in
+            model.generateSubscriptionUrl(colorScheme: newValue)
         }
         .onDisappear {
             model.pollEvents()
@@ -46,7 +52,6 @@ extension SubscriptionScreen {
         case .urlReady(let url):
             VStack(alignment: .leading, spacing: 11) {
                 WebView(url: url)
-                    .edgesIgnoringSafeArea(.all)
             }
         case .error(let error):
             Text(String(describing: error))

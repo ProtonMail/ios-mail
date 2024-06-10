@@ -67,7 +67,7 @@ struct SidebarScreen: View {
 
             ScrollView(showsIndicators: false) {
                 foldersAndLabelsView
-//                subscriptionView
+                subscriptionView
                 appVersionView
             }
             Spacer()

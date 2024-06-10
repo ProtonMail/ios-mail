@@ -16,10 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import enum SwiftUI.ColorScheme
 
 final class SubscriptionModel: @unchecked Sendable, ObservableObject {
     @Published private(set) var state: State
-    private let domain: String = "proton.me"
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies = .init()) {
@@ -27,13 +27,17 @@ final class SubscriptionModel: @unchecked Sendable, ObservableObject {
         self.dependencies = dependencies
     }
 
-    func generateSubscriptionUrl() {
+    func generateSubscriptionUrl(colorScheme: ColorScheme) {
         guard let activeUser = dependencies.appContext.activeUserSession else { return }
         Task {
             await updateState(.forkingSession)
             do {
                 let selectorToken = try await activeUser.fork()
-                await updateState(.urlReady(url: subscriptionUrl(domain: domain, selector: selectorToken)))
+                let domain: String = "proton.me"
+                let appVersion = "Other"
+                let theme = colorScheme == .light ? "0" : "1"
+                let url = subscriptionUrl(domain: domain, appVersion: appVersion, theme: theme, selector: selectorToken)
+                await updateState(.urlReady(url: url))
             } catch {
                 AppLogger.log(error: error)
                 await updateState(.error(error))
@@ -50,8 +54,10 @@ final class SubscriptionModel: @unchecked Sendable, ObservableObject {
         state = newState
     }
 
-    private func subscriptionUrl(domain: String, selector: String) -> URL {
-        URL(string:"https://account.\(domain)/lite?action=subscription-details#selector=\(selector)")!
+    private func subscriptionUrl(domain: String, appVersion: String, theme: String, selector: String) -> URL {
+//        let params = "?action=subscription-details&app-version=\(appVersion)&theme=\(theme)#selector=\(selector)"
+        let params = "?action=subscription-details&theme=\(theme)#selector=\(selector)" // TODO: put app-version back
+        return URL(string:"https://account.\(domain)/lite\(params)")!
     }
 }
 
