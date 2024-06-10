@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "Mensaje PGP cifrado";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "Mensaje firmado con PGP";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Mensaje firmado con PGP. Error en la verificación del remitente.";
 
 /* The message after tapping the encryption icon of recipient in composer. */

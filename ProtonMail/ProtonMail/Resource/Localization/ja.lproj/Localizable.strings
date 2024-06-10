@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "PGP 暗号化されたメッセージ";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP-signed message";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP 署名されたメッセージです。送信者の検証に失敗しました";
 
 /* The message after tapping the encryption icon of recipient in composer. */

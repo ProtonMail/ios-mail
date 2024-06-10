@@ -1196,7 +1196,7 @@
 "Limit reached" = "Limit erreicht";
 
 /* Alert when the free account limit is reached */
-"Only two free accounts can be added" = "Es können nur zwei kostenlose Konten hinzugefügt werden";
+"Only two free accounts can be added" = "Es können nur zwei kostenlose Konten hinzugefügt werden.";
 
 /* section title in settings */
 "Account settings" = "Konteneinstellungen";
@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "PGP-verschlüsselte Nachricht";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP-signed message";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP-signierte Nachricht. Absenderverifizierung fehlgeschlagen.";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -1995,7 +1998,7 @@
 "Re: Invitation for an event on %@" = "AW: Einladung zu einem Termin am %@";
 
 /* Subject of an email sent with an invitation answer after answering */
-"Re: Invitation for an event starting on %@" = "AW: Einladung zu einem Termin, der am %@ beginnt";
+"Re: Invitation for an event starting on %@" = "Aw: Einladung zu einem Termin, der am %@ beginnt";
 
 /* Occurring every day */
 "Daily" = "Täglich";
@@ -2025,10 +2028,10 @@
 "last" = "Letzter";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Einfaches RSVP für Ereignisse";
+"Easily RSVP to events" = "Einfaches RSVP für Termine";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Jetzt kannst du mit nur einem Fingertipp auf eine Einladung antworten oder das Ereignis im Proton-Kalender anzeigen. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Du kannst jetzt mit nur einem Fingertipp auf eine Einladung antworten oder den Termin im Proton-Kalender anzeigen. ";
 
 /* Menu title */
 "Max Storage" = "Max. Speicherplatz";

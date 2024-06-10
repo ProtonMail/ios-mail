@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "Паведамленне зашыфравана з дапамогай PGP";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "Паведамленне падпісана з дапамогай PGP";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Паведамленне падпісана з дапамогай PGP. Не ўдалося праверыць адпраўніка";
 
 /* The message after tapping the encryption icon of recipient in composer. */

@@ -1627,7 +1627,7 @@
 "Action reverted" = "Acció desfeta";
 
 /* An action title shows in ellipsis menu */
-"Compose message" = "Escriu un missatge";
+"Compose message" = "Redacta un missatge";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Buida la paperera";
@@ -1751,6 +1751,9 @@
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message" = "Missatge xifrat amb PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "Missatge signat amb PGP";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Missatge signat amb PGP. No s'ha pogut verificar el remitent.";
@@ -2004,7 +2007,7 @@
 "Weekly" = "Setmanalment";
 
 /* Occurring every month */
-"Monthly" = "Cada mes";
+"Monthly" = "Mensual";
 
 /* Occurring every year */
 "Yearly" = "Anualment";
@@ -2280,7 +2283,7 @@
 "Sender changed" = "S'ha canviat el remitent.";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
-"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "El remitent original d'aquest missatge ja no és vàlid. El missatge s'enviarà des de la seva adreça per defecte %@.";
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "El remitent original d'aquest missatge ja no és vàlid. El missatge s'enviarà des de la vostra adreça per defecte %@.";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Torneu-ho a provar després de carregar tots els adjunts.";
@@ -2496,4 +2499,4 @@
 "Invalid product ID: $@" = "ID de producte no vàlid: $@";
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
-"Purchase already in progress" = "Purchase already in progress";
+"Purchase already in progress" = "La compra ja està en curs";

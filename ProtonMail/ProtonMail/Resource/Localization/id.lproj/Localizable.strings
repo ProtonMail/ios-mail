@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "Pesan terenkripsi PGP";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "Pesan yang ditandatangani PGP";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Pesan tertandatangani PGP. Verifikasi pengirim gagal";
 
 /* The message after tapping the encryption icon of recipient in composer. */

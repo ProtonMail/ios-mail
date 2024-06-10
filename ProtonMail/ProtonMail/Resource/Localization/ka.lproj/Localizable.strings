@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "PGP-ით დაშიფრული შეტყობინება";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP-signed message";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "შეტყობინება ხელმოწერილია PGP-ით. გამომგზავნის შემოწმების შეცდომა";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2085,7 +2088,7 @@
 "Auto-import enabled" = "ავტოშემოტანა ჩართულია";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "საწყის შემოტანას საკმაო დრო შეიძლება დასჭირდეს და მხოლოდ მაშინ შეიძლება მოხდეს, როცა აპი წინა პლანზეა.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "საწყის შემოტანას საკმაო დრო შეიძლება, დასჭირდეს და, მხოლოდ, მაშინ შეიძლება, მოხდეს, როცა აპი წინა პლანზეა.";
 
 /* Alert to ask user to reauthorise access to contacts */
 "Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "კონტაქტებთან წვდომა გათიშულია. ავტოშემოტანის ჩასართავად გადადით მორგების ფანჯარაზე და ჩართეთ კონტაქტის წვდომა.";
@@ -2163,7 +2166,7 @@
 "Jump to next email" = "შემდეგ ელფოსტაზე გადასვლა";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Automatically show the next email when an open email is deleted, archived, or moved." = "ავტომატურად მაჩვენე შემდეგი ელფოსტა, ღია ელფოსტა წაიშლება, დაარქივდება ან გადატანიი იქნება.";
+"Automatically show the next email when an open email is deleted, archived, or moved." = "ავტომატურად მაჩვენე შემდეგი ელფოსტა, ღია ელფოსტა წაიშლება, დაარქივდება ან გადატანილი იქნება.";
 
 /* The title of the button of the jump to next message spotlight. */
 "Turn on feature" = "ფუნქციის ჩართვა";

@@ -814,7 +814,7 @@
 "Go to settings" = "Idi na postavke";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign in" = "Go to sign in";
+"Go to sign in" = "Idi na prijavu";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Imate nespremljene promjene. Želite li ih spremiti?";
@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "PGP-šifrirana poruka";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP-signed message";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Poruka s PGP potpisom. Provjera pošiljatelja nije uspjela";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -1911,13 +1914,13 @@
 "Load" = "Učitaj";
 
 /* Title of an event with missing title */
-"(no title)" = "(no title)";
+"(no title)" = "(bez naslova)";
 
 /* As in: event organizer */
 "Organizer" = "Organizator";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "Prikaži manje";
 
 /* Text shown when opening an invitation for a past event */
 "This event already ended" = "This event already ended";
@@ -1926,7 +1929,7 @@
 "This event has been cancelled" = "This event has been cancelled";
 
 /* Prompt above yes/no/maybe buttons */
-"Attending?" = "Attending?";
+"Attending?" = "Prisustvujete?";
 
 /* Part of a yes/no/maybe prompt */
 "Yes" = "Da";
@@ -2385,7 +2388,7 @@
 "Later this week" = "Later this week";
 
 /* One of snooze option shows in action sheet */
-"This weekend" = "This weekend";
+"This weekend" = "Ovaj vikend";
 
 /* One of snooze option shows in action sheet */
 "Next week" = "Sljedeći tjedan";
@@ -2454,7 +2457,7 @@
 "Change mailbox password" = "Promijeni lozinku sandučića e-pošte";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB storage";
+"15 GB storage" = "15 GB pohrane";
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u adrese e-pošte";
@@ -2490,7 +2493,7 @@
 "Get %@" = "Nabavite %@";
 
 /* In the context of a discount */
-"Save %u%%" = "Save %u%%";
+"Save %u%%" = "Uštedite %u%%";
 
 /* Error when trying to purchase an invalid product */
 "Invalid product ID: $@" = "Invalid product ID: $@";

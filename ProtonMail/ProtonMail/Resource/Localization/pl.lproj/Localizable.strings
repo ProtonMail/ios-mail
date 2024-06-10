@@ -70,7 +70,7 @@
  Push notification action to archive
  The title of the archive action in action sheet
 */
-"Archive" = "Archiwizuj";
+"Archive" = "Archiwum";
 
 /* menu title */
 "Drafts" = "Szkice";
@@ -1751,6 +1751,9 @@
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message" = "Wiadomość zaszyfrowana PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "Wiadomość podpisana PGP";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Wiadomość podpisana PGP. Weryfikacja nadawcy nie powiodła się";

@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "Mensagem criptografada com PGP";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "Mensagem assinada por PGP";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Mensagem assinada pelo PGP. Erro na verificação do remetente";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2025,7 +2028,7 @@
 "last" = "último";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Easily RSVP to events";
+"Easily RSVP to events" = "Confirmação de assistência a eventos muito mais fácil";
 
 /* Body of the spotlight view */
 "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Agora você pode responder a um convite ou visualizar o evento no Proton Calendar em um só toque. ";
