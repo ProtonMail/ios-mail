@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "PGP-versleuteld bericht";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP-signed message";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP-ondertekend bericht. Verificatie afzender mislukt";
 
 /* The message after tapping the encryption icon of recipient in composer. */

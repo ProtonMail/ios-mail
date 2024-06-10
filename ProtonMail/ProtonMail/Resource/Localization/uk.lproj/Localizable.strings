@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "Зашифроване з PGP повідомлення";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP-signed message";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Підписане з PGP повідомлення. Не вдалося перевірити відправника";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2025,7 +2028,7 @@
 "last" = "останній";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Easily RSVP to events";
+"Easily RSVP to events" = "Легко RSVP до подій";
 
 /* Body of the spotlight view */
 "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Тепер ви можете відповісти на запрошення або переглянути подію в Proton Calendar одним дотиком. ";

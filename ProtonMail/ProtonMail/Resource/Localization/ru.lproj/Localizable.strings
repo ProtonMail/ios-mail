@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "Сообщение, зашифрованное PGP";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP-signed message";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Сообщение с подписью PGP. Сбой проверки отправителя";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -1911,7 +1914,7 @@
 "Load" = "Загрузить";
 
 /* Title of an event with missing title */
-"(no title)" = "(no title)";
+"(no title)" = "(без названия)";
 
 /* As in: event organizer */
 "Organizer" = "Организатор";
@@ -1950,16 +1953,16 @@
 "(Attendance optional)" = "(Посещение необязательно)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "Каждые %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "в(во) %@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "в %@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "на %u день";
 
 /* As in: Until Sep 27, 2025 */
 "until %@" = "до %@";
@@ -1968,10 +1971,10 @@
 "%1@ at %2@ %3@" = "%1@ в %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "принято";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "отклонено";
 
 /* Status in an email body sent with an invitation answer */
 "tentatively accepted" = "предварительно принято";
@@ -1983,13 +1986,13 @@
 "You are invited to %@" = "Вы приглашены на %@";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
-"LOCATION:\n%@" = "LOCATION:\n%@";
+"LOCATION:\n%@" = "МЕСТОПОЛОЖЕНИЕ:\n%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's notes */
 "DESCRIPTION:\n%@" = "ОПИСАНИЕ:\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ was cancelled.";
+"%@ was cancelled." = "%@ было отменено.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
 "Re: Invitation for an event on %@" = "Приглашение на событие, назначенное на %@";
@@ -2004,31 +2007,31 @@
 "Weekly" = "Еженедельно";
 
 /* Occurring every month */
-"Monthly" = "Monthly";
+"Monthly" = "Ежемесячно";
 
 /* Occurring every year */
 "Yearly" = "Ежегодно";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "первый";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "второй";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "третий";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "четвертый";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "последнее";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Easily RSVP to events";
+"Easily RSVP to events" = "Легко отправляйте приглашения на события";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Теперь вы можете ответить на приглашение или просмотреть событие в Proton Calendar одним касанием. ";
 
 /* Menu title */
 "Max Storage" = "Максимальное хранилище";
@@ -2037,7 +2040,7 @@
 "Storage: %@ full" = "Хранилище: заполнено на %@";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "Drive: заполнено на %@";
 
 /* Official badge next to sender's name */
 "Official" = "Официальный";
@@ -2154,7 +2157,7 @@
 "Application logs" = "Журналы приложения";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "Новое!";
 
 /* Got it action */
 "Got it" = "Понятно";
@@ -2454,16 +2457,16 @@
 "Change mailbox password" = "Изменить пароль почтового ящика";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB storage";
+"15 GB storage" = "15 ГБ хранилища";
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u адресов электронной почты";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain support" = "Custom email domain support";
+"Custom email domain support" = "Поддержка пользовательских доменов электронной почты";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"New Proton Mail desktop app" = "Новое приложение для настольных компьютеров Proton Mail";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Анонимная телеметрия";
@@ -2478,10 +2481,10 @@
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Если в приложении произойдет сбой, нашим инженерам будет отправлен отчет с подробным описанием причины. Эти данные будут использованы только для улучшения приложения.";
 
 /* Title of the upsell page. */
-"Upgrade to %@" = "Upgrade to %@";
+"Upgrade to %@" = "Улучшить до %@";
 
 /* Subtitle of the upsell page. */
-"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+"To unlock more storage and premium features." = "Чтобы разблокировать больше места в хранилище и платные функции.";
 
 /* Displayed next to the monthly price */
 "/month" = "/месяц";
