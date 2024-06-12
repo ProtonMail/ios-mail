@@ -1,0 +1,123 @@
+// Copyright (c) 2024 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+import SwiftUI
+
+struct CapsuleCloudView: View {
+    @State private var totalHeight: CGFloat = .zero
+
+    private let subviews: [CapsuleView]
+    private let innerPadding: CGFloat
+
+    init(subviews: [CapsuleView], innerPadding: CGFloat) {
+        self.subviews = subviews
+        self.innerPadding = innerPadding
+    }
+
+    var body: some View {
+        VStack {
+            GeometryReader { geometry in
+                generateContent(in: geometry)
+            }
+        }
+        .frame(height: totalHeight)
+    }
+
+    private func generateContent(in geometry: GeometryProxy) -> some View {
+        var xPos: CGFloat = .zero
+        var yPos: CGFloat = .zero
+
+        return ZStack(alignment: .topLeading) {
+            ForEach(subviews.indices, id: \.self) { index in
+                subviews[index]
+                    .padding([.horizontal, .vertical], innerPadding)
+                    .alignmentGuide(.leading) { viewDimensions in
+                        if (abs(xPos - viewDimensions.width) > geometry.size.width) {
+                            xPos = 0
+                            yPos -= viewDimensions.height
+                        }
+                        let result = xPos
+                        if isLast(index) {
+                            xPos = 0
+                        } else {
+                            xPos -= viewDimensions.width
+                        }
+                        return result
+                    }
+                    .alignmentGuide(.top) { viewDimensions in
+                        let result = yPos
+                        if isLast(index) {
+                            yPos = 0
+                        }
+                        return result
+                    }
+            }
+        }
+        .heightReader(binding: $totalHeight)
+    }
+
+    private func isLast(_ index: Int) -> Bool {
+        index == subviews.count-1
+    }
+}
+
+private extension View {
+    func heightReader(binding: Binding<CGFloat>) -> some View {
+        modifier(HeightReader(binding: binding))
+    }
+}
+
+private struct HeightReader: ViewModifier {
+    let binding: Binding<CGFloat>
+    func body(content: Content) -> some View {
+        content
+            .overlay {
+                GeometryReader { geometry -> Color in
+                    let rect = geometry.frame(in: .local)
+                    DispatchQueue.main.async {
+                        binding.wrappedValue = rect.size.height
+                    }
+                    return .clear
+                }
+            }
+    }
+}
+
+
+#Preview {
+    VStack {
+        Text("Labels").font(.largeTitle)
+        CapsuleCloudView(
+            subviews: [
+                CapsuleView(text: "Work", color: .green, style: .label),
+                CapsuleView(text: "People", color: .yellow, icon: UIImage(systemName: "person.crop.circle"), style: .attachment),
+                CapsuleView(text: "Friends & Family and Fools Around the World!", color: .cyan, style: .label),
+                CapsuleView(text: "Holidays ", color: .pink, style: .label),
+                CapsuleView(text: "Greece meetup", color: .blue, style: .label),
+                CapsuleView(text: "Reminders", color: .red, style: .label),
+                CapsuleView(text: "Shopping", color: .indigo, style: .label),
+                CapsuleView(text: "Games & Fun", color: .mint, icon: UIImage(systemName: "gamecontroller"), style: .attachment),
+                CapsuleView(text: "Sports", color: .orange, icon: UIImage(systemName: "volleyball.fill"), style: .attachment),
+                CapsuleView(text: "Shopping", color: .purple, style: .label)
+            ],
+            innerPadding: 2
+        )
+        .padding(10)
+        .border(.red)
+
+    }
+}

@@ -75,8 +75,16 @@ enum LocalizationTemp {
         static func snoozedTill(value: String) -> String { String(format: "Snoozed till %@", value) }
     }
 
-    enum Recipients {
-        static let to = "to"
+    enum MessageDetails {
+        static let from = "From"
+        static let to = "To"
+        static let cc = "Cc"
+        static let bcc = "Bcc"
+        static let date = "Date"
+        static let location = "Location"
+        static let label = "Label"
+        static let labels = "Labels"
+        static let other = "Other"
     }
 
     enum LabelPicker {

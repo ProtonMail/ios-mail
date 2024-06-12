@@ -41,12 +41,12 @@ struct ExpandedMessageCell: View {
             MessageCardTopView(cornerRadius: cardCornerRadius)
 
             VStack(spacing: 0) {
-                ExpandedMessageHeaderView(uiModel: uiModel, onTap: onTap)
+                MessageDetailsView(uiModel: uiModel.messageDetails, onTap: onTap)
                 MessageBodyView(messageBody: uiModel.message, messageId: uiModel.messageId, uiModel: uiModel)
 
                 Spacer()
 
-                MessageActionButtonsView(isSingleRecipient: uiModel.isSingleRecipient)
+                MessageActionButtonsView(isSingleRecipient: uiModel.messageDetails.isSingleRecipient)
             }
             .overlay { borderOnTheSides(show: isFirstCell) }
             .padding(.top, cardCornerRadius)
@@ -67,28 +67,38 @@ struct ExpandedMessageCell: View {
 struct ExpandedMessageCellUIModel {
     let messageId: PMLocalMessageId
     let message: String?
-    let sender: String
-    let date: Date
-    let senderPrivacy: String
-    let recipients: String
-    let isSingleRecipient: Bool
-    let avatar: AvatarUIModel
+    let messageDetails: MessageDetailsUIModel
 }
 
 #Preview {
 
-    VStack(spacing: 0) {
+    let messageDetails = MessageDetailsUIModel(
+        avatar: .init(initials: "Gg", senderImageParams: .init()),
+        sender: .init(name: "Camila Hall", address: "camila.hall@protonmail.ch", encryptionInfo: "End to end encrypted and signed"),
+        recipientsTo: [
+            .init(name: "Me", address: "eric.norbert@protonmail.ch"),
+        ],
+        recipientsCc: [
+            .init(name: "James Hayes", address: "james@proton.me"),
+            .init(name: "Riley Scott", address: "scott375@gmail.com"),
+            .init(name: "Layla Robinson", address: "layla.rob@protonmail.ch"),
+        ],
+        recipientsBcc: [
+            .init(name: "Isabella Coleman", address: "isa_coleman@protonmail.com"),
+        ],
+        date: .now,
+        location: .systemFolder(.inbox),
+        labels: [.init(labelId: 1, text: "Friends and Holidays", color: .blue)],
+        other: [.starred, .pinned]
+    )
+
+    return VStack(spacing: 0) {
         ExpandedMessageCell(
             uiModel: .init(
                 messageId: 0,
                 message: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it",
-                sender: "john@gmail.com",
-                date: .now,
-                senderPrivacy: "john@gmail.com",
-                recipients: "adrian@pm.me, brianne@proton.me, john_malkovich@yahoo.es",
-                isSingleRecipient: false,
-                avatar: .init(initials: "Gg", senderImageParams: .init())
-            ), 
+                messageDetails: messageDetails
+            ),
             isFirstCell: true,
             onTap: {}
         )
@@ -96,12 +106,7 @@ struct ExpandedMessageCellUIModel {
             uiModel: .init(
                 messageId: 1,
                 message: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it",
-                sender: "john@gmail.com",
-                date: .now,
-                senderPrivacy: "john@gmail.com",
-                recipients: "adrian@pm.me, brianne@proton.me, john_malkovich@yahoo.es",
-                isSingleRecipient: false,
-                avatar: .init(initials: "Gg", senderImageParams: .init())
+                messageDetails: messageDetails
             ),
             isFirstCell: false,
             onTap: {}

@@ -40,7 +40,7 @@ extension LocalConversation {
                 ),
                 backgroundColor: Color(hex: avatarInformation.color)
             ),
-            senders: senders.uiRepresentation,
+            senders: senders.addressUIRepresentation,
             subject: subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
             isRead: numUnread == 0,

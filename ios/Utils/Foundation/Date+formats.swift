@@ -22,7 +22,7 @@ extension Date {
     /**
      Mailbox date format
 
-     The date will support the locale passed which migth bring some differences to the following examples:
+     The date will support the current locale which migth bring some differences to the following examples:
      ```
      Today:       11:24
      This year:   Feb 24
@@ -44,7 +44,7 @@ extension Date {
     /**
      Mailbox date format
 
-     The date will support the locale passed which migth bring some differences to the following examples:
+     The date will support the current locale which migth bring some differences to the following examples:
      ```
      Today:           11:24
      From tomorrow:   Thu, Feb 24, 17:00
@@ -87,5 +87,17 @@ extension Date {
      */
     func localisedRemainingTimeFromNow() -> String {
         DateComponentsFormatter.remainingTimeFromNowFormatter.string(from: remainingTimeFromNow()) ?? ""
+    }
+
+    /**
+     Message details date format
+
+     The date will support the current locale which migth bring some differences to the following example:
+     ```
+     11 Jun 2024 at 10:35:24
+     ```
+     */
+    func messageDetailsFormat() -> String {
+        formatted(date: .abbreviated, time: .standard)
     }
 }

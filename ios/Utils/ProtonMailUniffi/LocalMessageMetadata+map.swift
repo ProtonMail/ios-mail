@@ -66,7 +66,7 @@ extension LocalMessageMetadata {
             messageId: id,
             sender: sender.uiRepresentation,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
-            recipients: recipientsUIRepresentation,
+            recipients: messageDetailUIModelRecipients().recipientsUIRepresentation,
             messagePreview: nil,
             isRead: !unread,
             avatar: await toAvatarUIModel()
@@ -80,12 +80,33 @@ extension LocalMessageMetadata {
         .init(
             messageId: id,
             message: message,
-            sender: sender.uiRepresentation,
-            date: Date(timeIntervalSince1970: TimeInterval(time)),
-            senderPrivacy: sender.address,
-            recipients: recipientsUIRepresentation,
-            isSingleRecipient: numberOfRecipients == 1,
-            avatar: await toAvatarUIModel()
+            messageDetails: MessageDetailsUIModel(
+                avatar: await toAvatarUIModel(),
+                sender: .init(name: sender.uiRepresentation, address: sender.address, encryptionInfo: "End to end encrypted and signed"), // TODO: !!
+                recipientsTo: to.map { $0.toMessageDetailUIModelRecipient() },
+                recipientsCc: cc.map { $0.toMessageDetailUIModelRecipient() },
+                recipientsBcc: bcc.map { $0.toMessageDetailUIModelRecipient() },
+                date: Date(timeIntervalSince1970: TimeInterval(time)),
+                location: .systemFolder(.inbox), // TODO: !!
+                labels: self.labels?.map {
+                    LabelUIModel(labelId: $0.id, text: $0.name, color: Color(hex: $0.color))
+                } ?? [],
+                other: messageDetailUIModelOther()
+            )
         )
+    }
+
+    private func messageDetailUIModelRecipients() -> [MessageDetail.Recipient] {
+        to.map { $0.toMessageDetailUIModelRecipient() }
+        + cc.map { $0.toMessageDetailUIModelRecipient() }
+        + bcc.map { $0.toMessageDetailUIModelRecipient() }
+    }
+
+    private func messageDetailUIModelOther() -> [MessageDetail.Other] {
+        var result = [MessageDetail.Other]()
+        if starred {
+            result.append(.starred)
+        }
+        return result
     }
 }

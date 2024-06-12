@@ -17,17 +17,9 @@
 
 import proton_mail_uniffi
 
-extension LocalMessageMetadata {
+extension MessageAddress {
 
-    var recipientsUIRepresentation: String {
-        let recipientArray = to.map(\.uiRepresentation)
-        + cc.map(\.uiRepresentation)
-        + bcc.map(\.uiRepresentation)
-        let recipients = recipientArray.joined(separator: ",")
-        return "\(LocalizationTemp.Recipients.to) \(recipients)"
-    }
-
-    var numberOfRecipients: Int {
-        [to + cc + bcc].flatMap { $0 }.count
+    func toMessageDetailUIModelRecipient() -> MessageDetail.Recipient {
+        .init(name: uiRepresentation, address: address)
     }
 }

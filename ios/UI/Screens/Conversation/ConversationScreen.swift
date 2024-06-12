@@ -103,7 +103,7 @@ struct ConversationScreen: View {
                     .removeViewIf(model.seed.hasNoAttachments)
 
                     ForEach(Array(model.seed.labels.enumerated()), id: \.element.labelId) { _, element in
-                        CapsuleView(text: element.text, color: element.color, icon: nil, style: .label)
+                        CapsuleView(text: element.text, color: element.color, style: .label)
                     }
                     .removeViewIf(model.seed.labels.isEmpty)
 

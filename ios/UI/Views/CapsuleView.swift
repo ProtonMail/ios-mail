@@ -22,7 +22,22 @@ struct CapsuleView: View {
     let text: String
     let color: Color
     let icon: UIImage?
+    let iconColor: Color?
     let style: CapsuleStyle
+
+    init(
+        text: String,
+        color: Color,
+        icon: UIImage? = nil,
+        iconColor: Color? = nil,
+        style: CapsuleStyle
+    ) {
+        self.text = text
+        self.color = color
+        self.icon = icon
+        self.iconColor = iconColor
+        self.style = style
+    }
 
     private var minWidth: CGFloat? {
         text.isEmpty ? nil : 30
@@ -44,8 +59,9 @@ struct CapsuleView: View {
             if let icon {
                 Image(uiImage: icon)
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: 14, height: 14)
-                    .foregroundColor(DS.Color.Icon.weak)
+                    .foregroundColor(iconColor ?? DS.Color.Icon.weak)
             }
             Text(text)
                 .font(.caption2)
@@ -79,10 +95,10 @@ struct CapsuleStyle {
 
 #Preview {
     VStack {
-        CapsuleView(text: "", color: DS.Color.Background.secondary, icon: nil, style: .attachment)
+        CapsuleView(text: "", color: DS.Color.Background.secondary, style: .attachment)
         CapsuleView(text: "2 files", color: DS.Color.Background.secondary, icon: DS.Icon.icPaperClip, style: .attachment)
-        CapsuleView(text: "Work", color: .blue, icon: nil, style: .label)
-        CapsuleView(text: "Friends & Fam", color: .pink, icon: nil, style: .label)
+        CapsuleView(text: "games", color: DS.Color.Background.secondary, icon: UIImage(systemName: "gamecontroller"), style: .attachment)
+        CapsuleView(text: "Work", color: .blue, style: .label)
+        CapsuleView(text: "Friends & Fam", color: .pink, style: .label)
     }
 }
-
