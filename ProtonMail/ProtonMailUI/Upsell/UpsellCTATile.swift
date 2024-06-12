@@ -45,7 +45,7 @@ struct UpsellCTATile: View {
             VStack(spacing: 14) {
                 VStack(spacing: 12) {
                     Text(DateComponents(month: purchasingOption.cycleInMonths), formatter: Self.planDurationFormatter)
-                        .font(.caption2)
+                        .font(Font(UIFont.adjustedFont(forTextStyle: .caption2)))
                         .foregroundColor(.white)
 
                     Text(purchasingOption.monthlyPrice)
@@ -53,7 +53,7 @@ struct UpsellCTATile: View {
                         .foregroundColor(.white)
                     +
                     Text(L10n.Upsell.perMonth)
-                        .font(.caption2)
+                        .font(Font(UIFont.adjustedFont(forTextStyle: .caption2)))
                         .foregroundColor(ColorProvider.SidebarTextWeak)
                 }
 

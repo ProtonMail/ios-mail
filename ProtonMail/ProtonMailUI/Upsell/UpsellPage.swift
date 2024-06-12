@@ -42,6 +42,19 @@ public struct UpsellPage: View {
         keyWindow?.safeAreaInsets ?? .zero
     }
 
+    private var infoSectionSpacing: CGFloat {
+        if hideLogo.value {
+            if #available(iOS 16, *) {
+                return 0
+            } else {
+                // this value is intended to work along titleFix()
+                return -24
+            }
+        } else {
+            return 8
+        }
+    }
+
     private var layoutTilesVertically: Bool {
         verticalSizeClass == .compact || enforceVerticalTiles.value
     }
@@ -98,12 +111,12 @@ public struct UpsellPage: View {
 
     private var infoSection: some View {
         VStack(spacing: 8) {
-            VStack(spacing: hideLogo.value ? 0 : 8) {
+            VStack(spacing: infoSectionSpacing) {
                 if hideLogo.value {
                     Text(String(format: L10n.Upsell.upgradeToPlan, model.plan.name))
                         .font(Font(UIFont.adjustedFont(forTextStyle: .title3, weight: .bold)))
                         .foregroundColor(ColorProvider.SidebarTextNorm)
-                        .padding(-34)
+                        .titleFix()
                 } else {
                     Image(.mailUpsell)
                         .padding(-20)
@@ -115,6 +128,7 @@ public struct UpsellPage: View {
 
                 Text(L10n.Upsell.mailPlusDescription)
                     .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
+                    .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(ColorProvider.SidebarTextWeak)
             }
             .padding(.horizontal, 16)
@@ -214,6 +228,18 @@ extension UpsellPage {
 
         mutating func reset() {
             value = initialValue
+        }
+    }
+}
+
+private extension View {
+    // negative padding does not seem to work correctly on iOS 15.5
+    func titleFix() -> some View {
+        if #available(iOS 16, *) {
+            return padding(-34)
+        } else {
+            // this is intended to work with a particular infoSectionSpacing
+            return offset(y: -34)
         }
     }
 }
