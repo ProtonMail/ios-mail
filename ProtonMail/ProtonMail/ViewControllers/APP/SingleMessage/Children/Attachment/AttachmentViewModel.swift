@@ -148,7 +148,7 @@ final class AttachmentViewModel {
                 invitationViewSubject.send(.noInvitationFound)
 
                 switch error {
-                case EventRSVPError.noEventsReturnedFromAPI:
+                case EventRSVPError.icsDoesNotContainSupportedMethod, EventRSVPError.noEventsReturnedFromAPI:
                     break
                 default:
                     errorSubject.send(error)
