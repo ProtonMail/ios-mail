@@ -19,16 +19,12 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxConversationMessageCountView: View {
-    let numMessages: Int
-
-    var normalisedNumMessages: String {
-        numMessages > 99 ? "+99" : "\(numMessages)"
-    }
+    let numMessages: UInt64
 
     private let cornerRadius = 6.0
 
     var body: some View {
-        Text(normalisedNumMessages)
+        Text(numMessages.toBadgeCapped())
             .font(.caption2)
             .fontWeight(.semibold)
             .foregroundStyle(DS.Color.Text.weak)

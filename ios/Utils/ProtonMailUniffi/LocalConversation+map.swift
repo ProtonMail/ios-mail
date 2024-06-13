@@ -47,7 +47,7 @@ extension LocalConversation {
             isStarred: starred,
             isSelected: selectedIds.contains(id),
             isSenderProtonOfficial: senders.first?.isProton ?? false,
-            numMessages: numMessages > 1 ? Int(numMessages) : 0,
+            numMessages: numMessages > 1 ? numMessages : 0,
             labelUIModel: labels?.toMailboxLabelUIModel() ?? .init(),
             attachmentsUIModel: (attachments ?? []).toAttachmentCapsuleUIModels(),
             expirationDate: Date(timeIntervalSince1970: TimeInterval(expirationTime)),

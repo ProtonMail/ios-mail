@@ -15,25 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_mail_uniffi
+import Foundation
 
-extension LocalLabelWithCount {
+extension UnsignedInteger {
 
-    func systemFolderToSidebarCellUIModel() -> SidebarCellUIModel? {
-        guard let rid,
-              let remoteId = UInt64(rid),
-              let systemFolderId = SystemFolderIdentifier(rawValue: remoteId)
-        else {
-            return nil
-        }
-        return SidebarCellUIModel(
-            id: id,
-            name: systemFolderId.localisedName,
-            icon: systemFolderId.icon,
-            badge: unreadCount > 0 ? unreadCount.toBadgeCapped() : "",
-            route: .mailbox(
-                label: SelectedMailbox(localId: id, name: systemFolderId.localisedName, systemFolder: systemFolderId)
-            )
-        )
+    func toBadgeCapped(at max: Self = 999) -> String {
+        self > max ? "\(max)+" : "\(self)"
     }
 }

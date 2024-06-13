@@ -190,7 +190,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
     let isSelected: Bool
 
     let isSenderProtonOfficial: Bool
-    let numMessages: Int
+    let numMessages: UInt64
     let labelUIModel: MailboxLabelUIModel
     let attachmentsUIModel: [AttachmentCapsuleUIModel]
     let replyIcons: ReplyIconsUIModel
@@ -209,7 +209,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         isStarred: Bool,
         isSelected: Bool,
         isSenderProtonOfficial: Bool,
-        numMessages: Int,
+        numMessages: UInt64,
         labelUIModel: MailboxLabelUIModel = .init(),
         attachmentsUIModel: [AttachmentCapsuleUIModel] = [],
         replyIcons: ReplyIconsUIModel = .init(),
