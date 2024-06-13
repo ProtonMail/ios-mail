@@ -26,6 +26,10 @@ extension SidebarMenuRobot {
         tapEntry(withLabel: UITestFolder.system(.archive).value)
     }
 
+    func openSubscription() {
+        tapEntry(withLabel: UITestSidebarEntry.subscription.rawValue)
+    }
+
     func tapEntry(withLabel label: String) {
         let model = UITestSidebarListItemEntryModel(label: label)
         model.tap()
@@ -44,7 +48,8 @@ extension SidebarMenuRobot {
 
         if let badge = entry.badge {
             model.isBadgeShown(value: badge)
-        } else {
+        }
+        else {
             model.isBadgeNotShown()
         }
     }

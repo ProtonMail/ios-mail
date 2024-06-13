@@ -18,33 +18,12 @@
 import Foundation
 import XCTest
 
-protocol Robot: ApplicationHolder {
-
-    var rootElement: XCUIElement { get }
-    func verifyShown() -> Self
-    func verifyHidden()
-
-    init()
+final class SubscriptionRobot: Robot {
+    var rootElement: XCUIElement {
+        application.otherElements[Identifiers.rootItem]
+    }
 }
 
-extension Robot {
-    private var timeout: TimeInterval { 30 }
-
-    @discardableResult func verifyShown() -> Self {
-        XCTAssert(
-            rootElement.waitForExistence(timeout: timeout),
-            "Root element of \(self) is not displayed."
-        )
-
-        return self
-    }
-
-    func verifyHidden() {
-        XCTAssertFalse(rootElement.isHittable, "Root element of \(self) is displayed.")
-    }
-
-    @discardableResult init(_ block: (Self) -> Void) {
-        self.init()
-        block(self)
-    }
+private struct Identifiers {
+    static let rootItem = "subscription.rootItem"
 }

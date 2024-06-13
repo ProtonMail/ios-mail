@@ -52,9 +52,17 @@ extension SubscriptionScreen {
         case .urlReady(let url):
             VStack(alignment: .leading, spacing: 11) {
                 WebView(url: url)
+                    .accessibilityIdentifier(SubscriptionScreenIdentifiers.webView)
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier(SubscriptionScreenIdentifiers.rootItem)
         case .error(let error):
             Text(String(describing: error))
         }
     }
+}
+
+private struct SubscriptionScreenIdentifiers {
+    static let rootItem = "subscription.rootItem"
+    static let webView = "subscription.webView"
 }

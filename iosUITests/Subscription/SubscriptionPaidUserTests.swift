@@ -16,35 +16,22 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import XCTest
 
-protocol Robot: ApplicationHolder {
+final class SubscriptionPaidUserTests: PMUIUnmockedNetworkTestCase {
 
-    var rootElement: XCUIElement { get }
-    func verifyShown() -> Self
-    func verifyHidden()
-
-    init()
-}
-
-extension Robot {
-    private var timeout: TimeInterval { 30 }
-
-    @discardableResult func verifyShown() -> Self {
-        XCTAssert(
-            rootElement.waitForExistence(timeout: timeout),
-            "Root element of \(self) is not displayed."
-        )
-
-        return self
+    override var loginType: UITestLoginType {
+        UITestLoginType.Unmocked.Black.Paid.Plus
     }
 
-    func verifyHidden() {
-        XCTAssertFalse(rootElement.isHittable, "Root element of \(self) is displayed.")
-    }
+    /// TestId 430811
+    func skip_testSubscriptionNavigationPaidUser() {
+        navigator.navigateTo(UITestDestination.subscription)
 
-    @discardableResult init(_ block: (Self) -> Void) {
-        self.init()
-        block(self)
+        let subscription = UITestSubscriptionEntry(name: "Mail Plus")
+
+        SubscriptionRobot {
+            $0.verifyShown()
+            $0.hasSubscription(value: subscription)
+        }
     }
 }

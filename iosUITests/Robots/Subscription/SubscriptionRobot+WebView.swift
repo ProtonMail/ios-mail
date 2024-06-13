@@ -18,33 +18,30 @@
 import Foundation
 import XCTest
 
-protocol Robot: ApplicationHolder {
+extension SubscriptionRobot {
 
-    var rootElement: XCUIElement { get }
-    func verifyShown() -> Self
-    func verifyHidden()
+    // MARK: UI Elements
 
-    init()
+    private var webView: XCUIElement {
+        rootElement.webViews[Identifiers.webView].firstMatch
+    }
+
+    // MARK: Assertions
+
+    func hasSubscription(value: UITestSubscriptionEntry) {
+        withWebViewVisible {
+            XCTAssertTrue(webView.staticTexts[value.name].exists)
+        }
+    }
+
+    private func withWebViewVisible(block: () -> Void) {
+        let timeout: TimeInterval = 30
+        XCTAssertTrue(webView.waitForExistence(timeout: timeout))
+
+        block()
+    }
 }
 
-extension Robot {
-    private var timeout: TimeInterval { 30 }
-
-    @discardableResult func verifyShown() -> Self {
-        XCTAssert(
-            rootElement.waitForExistence(timeout: timeout),
-            "Root element of \(self) is not displayed."
-        )
-
-        return self
-    }
-
-    func verifyHidden() {
-        XCTAssertFalse(rootElement.isHittable, "Root element of \(self) is displayed.")
-    }
-
-    @discardableResult init(_ block: (Self) -> Void) {
-        self.init()
-        block(self)
-    }
+private struct Identifiers {
+    static let webView = "subscription.webView"
 }

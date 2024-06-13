@@ -39,6 +39,9 @@ struct UITestNavigator: ApplicationHolder {
         case .inbox:
             // Inbox is the landing label, nothing to do.
             break
+        case .subscription:
+            MailboxRobot { $0.verifyShown().openSidebarMenu() }
+            SidebarMenuRobot { $0.openSubscription() }
         }
     }
 
