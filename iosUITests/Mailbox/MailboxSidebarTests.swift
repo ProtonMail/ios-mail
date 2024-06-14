@@ -65,7 +65,7 @@ final class MailboxSidebarTests: PMUIMockedNetworkTestCase {
             initials: "M",
             sender: "mobileappsuitesting2",
             subject: "Test message",
-            date: "6 Mar 2023",
+            date: "Mar 6, 2023",
             count: nil
         )
 
@@ -74,13 +74,15 @@ final class MailboxSidebarTests: PMUIMockedNetworkTestCase {
             initials: "M",
             sender: "mobileappsuitesting3",
             subject: "Base subject",
-            date: "28 Mar 2023",
+            date: "Mar 28, 2023",
             count: nil
         )
 
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
+            $0.verifyShown()
+
             $0.verifyMailboxTitle(folder: UITestFolder.system(.inbox))
             $0.hasEntries(entries: expectedInboxEntry)
             $0.openSidebarMenu()
