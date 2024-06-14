@@ -561,6 +561,8 @@ extension UsersManager {
         }
     }
 
+    // swiftlint:enable force_try
+
     var numberOfFreeAccounts: Int {
         users.filter { $0.userInfo.subscribed.rawValue == 0 }.count
     }
