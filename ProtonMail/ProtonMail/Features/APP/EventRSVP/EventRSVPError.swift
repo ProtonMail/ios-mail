@@ -20,7 +20,8 @@ import Foundation
 enum EventRSVPError: Error {
     case encryptedDataFoundButSessionKeyMissing
     case encryptedDataIsNotValidBase64
-    case icsDataDoesNotContainUID
+    case icsDoesNotContainSupportedMethod
+    case icsDoesNotContainUID
     case icsDataIsNotValidUTF8String
     case icsDoesNotContainEvents
     case keyPacketIsNotValidBase64
