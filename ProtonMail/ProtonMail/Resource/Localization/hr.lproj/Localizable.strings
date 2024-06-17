@@ -1753,7 +1753,7 @@
 "PGP-encrypted message" = "PGP-šifrirana poruka";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message" = "PGP-signed message";
+"PGP-signed message" = "PGP potpisana poruka";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Poruka s PGP potpisom. Provjera pošiljatelja nije uspjela";

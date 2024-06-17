@@ -1753,7 +1753,7 @@
 "PGP-encrypted message" = "PGP-šifrovaná zpráva";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message" = "PGP-signed message";
+"PGP-signed message" = "PGP-podepsaná zpráva";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP-podepsaná zpráva. Ověření odesílatele se nepodařilo";

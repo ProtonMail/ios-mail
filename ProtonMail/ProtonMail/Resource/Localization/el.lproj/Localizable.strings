@@ -1753,7 +1753,7 @@
 "PGP-encrypted message" = "Κρυπτογραφημένο μήνυμα με PGP";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message" = "PGP-signed message";
+"PGP-signed message" = "Μήνυμα υπογεγραμμένο PGP";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Μήνυμα υπογεγραμμένο PGP. Αποτυχία επαλήθευσης αποστολέα";

@@ -1753,7 +1753,7 @@
 "PGP-encrypted message" = "Izen awgelhan PGP";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message" = "PGP-signed message";
+"PGP-signed message" = "Izen yettuzmel s PGP";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Izen yettuzmel s PGP. Asenqed n umazan yecceḍ";
