@@ -44,10 +44,8 @@ struct BackendConfiguration {
                 fatalError("\(EnvironmentVariableKeys.backendApiDomain) environment variable not found")
             }
             self.environment = .custom(uiTestApiDomain)
-        } else if isDebugOrEnterprise(), let cachedEnv = configurationCache.readEnvironment() {
-            self.environment = cachedEnv
         } else {
-            self.environment = .mailProd
+            self.environment = .blackPayment
         }
        SystemLogger.log(message: "Environment: \(environment.doh.defaultHost)", category: .appLifeCycle)
     }
