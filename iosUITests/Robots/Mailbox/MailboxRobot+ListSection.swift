@@ -51,6 +51,11 @@ extension MailboxRobot {
             unselectItemAt(index: index)
         }
     }
+    
+    func waitForEntry(atIndex index: Int) {
+        let model = UITestMailboxListItemEntryModel(index: index)
+        model.waitForExistence(timeout: 30)
+    }
 
     // MARK: Assertions
 
@@ -92,5 +97,10 @@ extension MailboxRobot {
                 model.hasNoCount()
             }
         }
+    }
+    
+    func hasNoEntries() {
+        let model = UITestMailboxListItemEntryModel(index: 0)
+        model.doesNotExist()
     }
 }

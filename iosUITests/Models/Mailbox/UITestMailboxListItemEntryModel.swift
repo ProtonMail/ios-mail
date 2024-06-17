@@ -68,9 +68,17 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
     func tapCheckedAvatar() {
         avatarCheckedElement.tap()
     }
+    
+    func waitForExistence(timeout: TimeInterval) {
+        XCTAssertTrue(rootItem.waitForExistence(timeout: timeout))
+    }
 
     // MARK: Assertions
 
+    func doesNotExist() {
+        XCTAssertFalse(rootItem.exists)
+    }
+    
     func isItemSelected() {
         XCTAssertFalse(avatarTextElement.exists)
         XCTAssertTrue(avatarCheckedElement.exists)
