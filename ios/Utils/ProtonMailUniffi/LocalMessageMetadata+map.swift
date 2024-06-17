@@ -83,6 +83,7 @@ extension LocalMessageMetadata {
             messageDetails: MessageDetailsUIModel(
                 avatar: await toAvatarUIModel(),
                 sender: .init(name: sender.uiRepresentation, address: sender.address, encryptionInfo: "End to end encrypted and signed"), // TODO: !!
+                isSenderProtonOfficial: sender.isProton,
                 recipientsTo: to.map { $0.toMessageDetailUIModelRecipient() },
                 recipientsCc: cc.map { $0.toMessageDetailUIModelRecipient() },
                 recipientsBcc: bcc.map { $0.toMessageDetailUIModelRecipient() },

@@ -63,12 +63,14 @@ extension MessageDetailsView {
     }
 
     private var senderNameView: some View {
-        HStack(spacing: DS.Spacing.small) {
+        HStack(spacing: DS.Spacing.compact) {
             Text(uiModel.sender.name)
                 .font(DS.Font.body3)
                 .fontWeight(.semibold)
                 .lineLimit(1)
                 .foregroundColor(DS.Color.Text.norm)
+            ProtonOfficialBadgeView()
+                .removeViewIf(!uiModel.isSenderProtonOfficial)
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
                 .foregroundColor(DS.Color.Text.hint)
@@ -282,6 +284,7 @@ extension MessageDetailsView {
 struct MessageDetailsUIModel {
     let avatar: AvatarUIModel
     let sender: MessageDetail.Sender
+    let isSenderProtonOfficial: Bool
     var recipients: [MessageDetail.Recipient] {
         recipientsTo + recipientsCc + recipientsBcc
     }
@@ -334,6 +337,7 @@ extension Array where Element == MessageDetail.Recipient {
     let messageDetails = MessageDetailsUIModel(
         avatar: .init(initials: "", senderImageParams: .init()),
         sender: .init(name: "Camila Hall", address: "camila.hall@protonmail.ch", encryptionInfo: "End to end encrypted and signed"),
+        isSenderProtonOfficial: true,
         recipientsTo: [
             .init(name: "Me", address: "eric.norbert@protonmail.ch"),
         ],

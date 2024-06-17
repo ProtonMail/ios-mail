@@ -75,6 +75,7 @@ struct ExpandedMessageCellUIModel {
     let messageDetails = MessageDetailsUIModel(
         avatar: .init(initials: "Gg", senderImageParams: .init()),
         sender: .init(name: "Camila Hall", address: "camila.hall@protonmail.ch", encryptionInfo: "End to end encrypted and signed"),
+        isSenderProtonOfficial: true,
         recipientsTo: [
             .init(name: "Me", address: "eric.norbert@protonmail.ch"),
         ],
