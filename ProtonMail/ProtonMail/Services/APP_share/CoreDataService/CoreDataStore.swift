@@ -44,8 +44,6 @@ final class CoreDataStore {
             PMAssertionFailure(error)
         }
 
-        let dataProtectionStatus = establishDataProtectionStatus()
-
         let persistentStoreCoordinator = shared.container.persistentStoreCoordinator
         let persistentStores = persistentStoreCoordinator.persistentStores
 
@@ -65,10 +63,7 @@ final class CoreDataStore {
         } catch {
             PMAssertionFailure(error)
 
-            reportPersistentContainerError(
-                message: "Error deleting data store: \(String(describing: error))",
-                dataProtectionStatus: dataProtectionStatus
-            )
+            reportPersistentContainerError(message: "Error deleting data store: \(String(describing: error))")
         }
     }
 
@@ -82,8 +77,6 @@ final class CoreDataStore {
 
             SystemLogger.log(message: "Instantiating persistent container", category: .coreData)
             var url = self.databaseURL
-
-            let dataProtectionStatus = Self.establishDataProtectionStatus()
 
             performDataMigrationIfNeeded()
 
@@ -102,10 +95,7 @@ final class CoreDataStore {
             } catch {
                 try? FileManager.default.removeItem(at: databaseURL)
                 let err = String(describing: error)
-                CoreDataStore.reportPersistentContainerError(
-                    message: "Error loading persistent store: \(err)",
-                    dataProtectionStatus: dataProtectionStatus
-                )
+                CoreDataStore.reportPersistentContainerError(message: "Error loading persistent store: \(err)")
                 userCachedStatus.cleanAllData()
                 throw error
             }
@@ -113,7 +103,7 @@ final class CoreDataStore {
     }
 
     func performDataMigrationIfNeeded() {
-        guard isMigrationNeeded(), let currentModel = getManagedObjectModel() else {
+        guard let currentModel = getManagedObjectModel(), isMigrationNeeded(currentModel: currentModel) else {
             return
         }
         SystemLogger.log(message: "Data migration needed. target model version: \(currentModel.versionIdentifiers)", category: .coreDataMigration)
@@ -125,18 +115,14 @@ final class CoreDataStore {
         }
     }
 
-    private func isMigrationNeeded() -> Bool {
-        var isMigrationNeeded = false
+    private func isMigrationNeeded(currentModel: NSManagedObjectModel) -> Bool {
         do {
-            let sourceMetaData = try NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: databaseURL)
-            guard let model = getManagedObjectModel() else {
-                return isMigrationNeeded
-            }
-            isMigrationNeeded = !model.isConfiguration(withName: nil, compatibleWithStoreMetadata: sourceMetaData)
+            let sourceMetaData = try NSPersistentStoreCoordinator.metadataForPersistentStore(type: .sqlite, at: databaseURL)
+            return !currentModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: sourceMetaData)
         } catch {
             print(error)
+            return false
         }
-        return isMigrationNeeded
     }
 
     private func getManagedObjectModel() -> NSManagedObjectModel? {
@@ -146,22 +132,9 @@ final class CoreDataStore {
         return NSManagedObjectModel(contentsOf: URL(fileURLWithPath: path))
     }
 
-    @available(*, deprecated, message: "Remove this as soon as relevant reports show up in Sentry")
-    private static func establishDataProtectionStatus() -> String {
-#if APP_EXTENSION
-        return "n/a (extension)"
-#else
-        if Thread.isMainThread {
-            return UIApplication.shared.isProtectedDataAvailable ? "on": "off"
-        } else {
-            return "n/a (background thread)"
-        }
-#endif
-    }
-
-    private static func reportPersistentContainerError(message: String, dataProtectionStatus: String) {
+    private static func reportPersistentContainerError(message: String) {
         SystemLogger.log(message: message, category: .coreData, isError: true)
-        Analytics.shared.sendError(.coreDataInitialisation(error: message, dataProtectionStatus: dataProtectionStatus))
+        Analytics.shared.sendError(.coreDataInitialisation(error: message))
     }
 }
 
