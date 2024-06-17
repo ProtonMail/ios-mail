@@ -955,10 +955,10 @@
 "Import from…" = "Importar des de…";
 
 /* Alert title */
-"Attachment limit" = "Límit d'arxius adjunts";
+"Attachment limit" = "Límit de fitxers adjunts";
 
 /* Description */
-"The size limit for attachments is 25 MB." = "El límit de mida pels arxius adjunts és de 25Mb.";
+"The size limit for attachments is 25 MB." = "El límit de mida per als adjunts és de 25 MB.";
 
 /* Error */
 "Can't load the file" = "No es pot carregar el fitxer";
@@ -1478,7 +1478,7 @@
 "You are not connected. We cannot display the content of your message." = "No esteu connectat. No podem mostrar el contingut del vostre missatge.";
 
 /* No comment provided by engineer. */
-"Do you really want to remove this file from attachments?" = "N'esteu segur, de voler esborrar aquest arxiu dels arxius adjunts?";
+"Do you really want to remove this file from attachments?" = "Segur que voleu esborrar aquest fitxer dels adjunts?";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Carrega les imatges incrustades";
@@ -2400,7 +2400,7 @@
 "Want to snooze any time?" = "Voleu posposar els vostres missatges quan vulgueu?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Desbloquegeu els temps de posposició personalitzat quan milloreu el vostre pla";
+"Unlock custom snooze times when you upgrade" = "Desbloquegeu els temps de posposició personalitzats quan milloreu el vostre pla";
 
 /* The benefit item for snooze promotion view */
 "Up to 15 email addresses/aliases" = "Fins a 15 adreces de correu electrònic/àlies";

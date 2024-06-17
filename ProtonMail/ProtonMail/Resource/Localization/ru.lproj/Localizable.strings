@@ -1753,7 +1753,7 @@
 "PGP-encrypted message" = "Сообщение, зашифрованное PGP";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message" = "PGP-signed message";
+"PGP-signed message" = "Сообщение, подписанное PGP";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Сообщение с подписью PGP. Сбой проверки отправителя";

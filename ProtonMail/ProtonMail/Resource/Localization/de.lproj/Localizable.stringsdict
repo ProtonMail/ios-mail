@@ -285,9 +285,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Bist du sicher, dass du %d Nachricht dauerhaft löschen möchtest?</string>
+        <string>Möchtest du %d Nachricht wirklich dauerhaft löschen?</string>
         <key>other</key>
-        <string>Bist du sicher, dass du %d Nachrichten dauerhaft löschen möchtest?</string>
+        <string>Möchtest du %d Nachrichten wirklich dauerhaft löschen?</string>
       </dict>
     </dict>
     <key>Are you sure you want to permanently delete %d conversation?</key>
@@ -429,9 +429,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Bist du sicher, dass du diese Nachricht dauerhaft löschen möchtest?</string>
+        <string>Möchtest du diese Nachricht wirklich dauerhaft löschen?</string>
         <key>other</key>
-        <string>Bist du sicher, dass du diese %d Nachrichten dauerhaft löschen möchtest?</string>
+        <string>Möchtest du diese %d Nachrichten wirklich dauerhaft löschen?</string>
       </dict>
     </dict>
   </dict>

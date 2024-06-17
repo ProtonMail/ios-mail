@@ -1753,7 +1753,7 @@
 "PGP-encrypted message" = "PGP 加密邮件";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message" = "PGP-signed message";
+"PGP-signed message" = "PGP 签名邮件";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP 签名邮件，发件人验证失败";
@@ -1932,10 +1932,10 @@
 "Attending?" = "Attending?";
 
 /* Part of a yes/no/maybe prompt */
-"Yes" = "Yes";
+"Yes" = "确认";
 
 /* Part of a yes/no/maybe prompt */
-"No" = "No";
+"No" = "取消";
 
 /* Part of a yes/no/maybe prompt */
 "Maybe" = "Maybe";
@@ -2004,7 +2004,7 @@
 "Daily" = "每天";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "每周";
 
 /* Occurring every month */
 "Monthly" = "每月";

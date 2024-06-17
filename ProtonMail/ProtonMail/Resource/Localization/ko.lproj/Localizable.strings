@@ -1753,7 +1753,7 @@
 "PGP-encrypted message" = "PGP로 암호화된 메시지";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message" = "PGP-signed message";
+"PGP-signed message" = "PGP 서명된 메시지";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP-서명된 메시지. 전송자 인증 실패";
