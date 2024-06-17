@@ -7,7 +7,6 @@
 
 #include "Project-Shared.xcconfig"
 
-CODE_SIGN_IDENTITY = iPhone Developer
 CODE_SIGN_STYLE = Manual
 ENABLE_TESTABILITY = YES
 GCC_OPTIMIZATION_LEVEL = 0
