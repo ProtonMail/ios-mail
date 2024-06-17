@@ -93,12 +93,12 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
         }
     }
 
-    func read<T>(block: (NSManagedObjectContext) -> T) -> T {
-        rethrowingRead(block: block)
-    }
+    func read<T>(block: (NSManagedObjectContext) throws -> T) rethrows -> T {
+        let context = rootSavingContext
 
-    func read<T>(block: (NSManagedObjectContext) throws -> T) throws -> T {
-        try rethrowingRead(block: block)
+        return try context.performAndWait {
+            try block(context)
+        }
     }
 
     func write<T>(block: @escaping (NSManagedObjectContext) throws -> T) throws -> T {
@@ -125,14 +125,6 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
 
     func deleteAllData() async {
         await coreDataService.deleteAllData()
-    }
-
-    private func rethrowingRead<T>(block: (NSManagedObjectContext) throws -> T) rethrows -> T {
-        let context = rootSavingContext
-
-        return try context.performAndWait {
-            try block(context)
-        }
     }
 
     func createFetchedResultsController<T>(

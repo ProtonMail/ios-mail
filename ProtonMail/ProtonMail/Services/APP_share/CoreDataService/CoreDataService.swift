@@ -65,7 +65,7 @@ class CoreDataService: CoreDataContextProviderProtocol {
     }
 
     /// Executes the block synchronously and immediately - without a serial queue.
-    func read<T>(block: (NSManagedObjectContext) -> T) -> T {
+    func read<T>(block: (NSManagedObjectContext) throws -> T) rethrows -> T {
         let context: NSManagedObjectContext
 
         let hasBeenCalledFromTheWriteMethod = OperationQueue.current == serialQueue
@@ -78,34 +78,9 @@ class CoreDataService: CoreDataContextProviderProtocol {
             context = newContext
         }
 
-        var output: T!
-        let startTime = Date()
-
-        context.performAndWait {
-            output = block(context)
+        return try context.performAndWait {
+            try block(context)
         }
-
-        checkForOverlyLongExecutionIfOnMainThread(startTime: startTime)
-
-        return output
-    }
-
-    /*
-     Executes the block synchronously and immediately - without a serial queue.
-
-     This is the throwing variant of `read`. We might be able to adopt `rethrows` once we drop iOS 14 support.
-     */
-    func read<T>(block: (NSManagedObjectContext) throws -> T) throws -> T {
-        let result = read { (context: NSManagedObjectContext) -> Result<T, Error> in
-            do {
-                let output = try block(context)
-                return .success(output)
-            } catch {
-                return .failure(error)
-            }
-        }
-
-        return try result.get()
     }
 
     /*
@@ -150,11 +125,7 @@ class CoreDataService: CoreDataContextProviderProtocol {
                 }
             }
 
-            let startTime = Date()
-
             serialQueue.waitUntilAllOperationsAreFinished()
-
-            checkForOverlyLongExecutionIfOnMainThread(startTime: startTime)
         }
 
         return try result.get()
@@ -188,20 +159,6 @@ class CoreDataService: CoreDataContextProviderProtocol {
                 CoreDataStore.deleteDataStore()
                 continuation.resume()
             }
-        }
-    }
-
-    private func checkForOverlyLongExecutionIfOnMainThread(startTime: Date, caller: StaticString = #function) {
-        let elapsedTime = Date().timeIntervalSince(startTime)
-        if Thread.isMainThread && elapsedTime > 0.2 {
-            Analytics.shared.sendError(
-                .assertionFailure(
-                    message: "\(self).\(caller) took too long on the main thread", 
-                    caller: caller, 
-                    file: #file,
-                    line: #line
-                )
-            )
         }
     }
 
