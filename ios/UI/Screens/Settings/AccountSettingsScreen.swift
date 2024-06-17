@@ -18,25 +18,15 @@
 import DesignSystem
 import SwiftUI
 
-struct SettingsScreen: View {
-    @EnvironmentObject private var appUIState: AppUIState
+struct AccountSettingsScreen : View {
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section(
-                    header: EmptyView(),
-                    content: {
-                        NavigationLink(LocalizationTemp.Settings.accountSettings){
-                            AccountSettingsScreen()
-                        }
-                        .navigationBarTitleDisplayMode(.inline)
-                        .mainToolbar(title: LocalizationTemp.Settings.settings)
-                        .toolbarBackground(.visible, for: .navigationBar)
-                    })
-            }
-            .scrollContentBackground(.hidden)
-            .background(DS.Color.Background.secondary)
+        VStack {
+            ProtonAuthenticatedWebView(webViewPage: .mailSettings)
+                .background(DS.Color.Background.norm)
+                .edgesIgnoringSafeArea(.bottom)
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationToolbar(purpose: .simpleNavigation(title: LocalizationTemp.Settings.accountSettings))
     }
 }

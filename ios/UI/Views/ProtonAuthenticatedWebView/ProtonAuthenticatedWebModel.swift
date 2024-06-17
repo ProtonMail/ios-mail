@@ -18,11 +18,13 @@
 import Foundation
 import enum SwiftUI.ColorScheme
 
-final class SubscriptionModel: @unchecked Sendable, ObservableObject {
+final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
     @Published private(set) var state: State
+    private let webViewPage: ProtonAuthenticatedWebPage
     private let dependencies: Dependencies
 
-    init(dependencies: Dependencies = .init()) {
+    init(webViewPage: ProtonAuthenticatedWebPage, dependencies: Dependencies = .init()) {
+        self.webViewPage = webViewPage
         self.state = .forkingSession
         self.dependencies = dependencies
     }
@@ -36,7 +38,7 @@ final class SubscriptionModel: @unchecked Sendable, ObservableObject {
                 let domain: String = "proton.me"
                 let appVersion = "Other"
                 let theme = colorScheme == .light ? "0" : "1"
-                let url = subscriptionUrl(domain: domain, appVersion: appVersion, theme: theme, selector: selectorToken)
+                let url = webPageUrl(domain: domain, appVersion: appVersion, theme: theme, selector: selectorToken)
                 await updateState(.urlReady(url: url))
             } catch {
                 AppLogger.log(error: error)
@@ -54,14 +56,14 @@ final class SubscriptionModel: @unchecked Sendable, ObservableObject {
         state = newState
     }
 
-    private func subscriptionUrl(domain: String, appVersion: String, theme: String, selector: String) -> URL {
-//        let params = "?action=subscription-details&app-version=\(appVersion)&theme=\(theme)#selector=\(selector)"
-        let params = "?action=subscription-details&theme=\(theme)#selector=\(selector)" // TODO: put app-version back
+    private func webPageUrl(domain: String, appVersion: String, theme: String, selector: String) -> URL {
+//        let params = "?action=\(webViewPage.action)&app-version=\(appVersion)&theme=\(theme)#selector=\(selector)"
+        let params = "?action=\(webViewPage.action)&theme=\(theme)#selector=\(selector)" // TODO: put app-version back
         return URL(string:"https://account.\(domain)/lite\(params)")!
     }
 }
 
-extension SubscriptionModel {
+extension ProtonAuthenticatedWebModel {
 
     enum State {
         case forkingSession
@@ -70,13 +72,27 @@ extension SubscriptionModel {
     }
 }
 
-extension SubscriptionModel {
+extension ProtonAuthenticatedWebModel {
 
     struct Dependencies {
         let appContext: AppContext
 
         init(appContext: AppContext = .shared) {
             self.appContext = appContext
+        }
+    }
+}
+
+enum ProtonAuthenticatedWebPage {
+    case mailSettings
+    case subscriptionDetails
+
+    var action: String {
+        switch self {
+        case .mailSettings:
+            "mail-settings"
+        case .subscriptionDetails:
+            "subscription-details"
         }
     }
 }

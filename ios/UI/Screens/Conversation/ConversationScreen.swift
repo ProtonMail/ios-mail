@@ -38,9 +38,11 @@ struct ConversationScreen: View {
                 .frame(minHeight: proxy.size.height)
             }
             .navigationBarTitleDisplayMode(.inline)
-            .mailboxItemDetailToolbar(
-                isStarStateKnown: model.seed.isStarStateKnown,
-                isStarred: model.seed.isStarred
+            .navigationToolbar(
+                purpose: .itemDetail(
+                    isStarStateKnown: model.seed.isStarStateKnown,
+                    isStarred: model.seed.isStarred
+                )
             )
             .opacity(animateViewIn ? 1.0 : 0.0)
             .smoothScreenTransition()

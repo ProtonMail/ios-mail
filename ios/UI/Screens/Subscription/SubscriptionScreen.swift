@@ -19,50 +19,14 @@ import DesignSystem
 import SwiftUI
 
 struct SubscriptionScreen: View {
-    @Environment (\.colorScheme) var colorScheme: ColorScheme
-    @StateObject private var model: SubscriptionModel = .init()
-
+    
     var body: some View {
         NavigationStack {
-            viewForState
+            ProtonAuthenticatedWebView(webViewPage: .subscriptionDetails)
                 .background(DS.Color.Background.norm)
                 .edgesIgnoringSafeArea(.bottom)
                 .navigationBarTitleDisplayMode(.inline)
                 .mainToolbar(title: LocalizationTemp.Settings.subscription)
         }
-        .task {
-            model.generateSubscriptionUrl(colorScheme: colorScheme)
-        }
-        .onChange(of: colorScheme) { _, newValue in
-            model.generateSubscriptionUrl(colorScheme: newValue)
-        }
-        .onDisappear {
-            model.pollEvents()
-        }
     }
-}
-
-extension SubscriptionScreen {
-
-    @ViewBuilder
-    private var viewForState: some View {
-        switch model.state {
-        case .forkingSession:
-            ProgressView()
-        case .urlReady(let url):
-            VStack(alignment: .leading, spacing: 11) {
-                WebView(url: url)
-                    .accessibilityIdentifier(SubscriptionScreenIdentifiers.webView)
-            }
-            .accessibilityElement(children: .contain)
-            .accessibilityIdentifier(SubscriptionScreenIdentifiers.rootItem)
-        case .error(let error):
-            Text(String(describing: error))
-        }
-    }
-}
-
-private struct SubscriptionScreenIdentifiers {
-    static let rootItem = "subscription.rootItem"
-    static let webView = "subscription.webView"
 }

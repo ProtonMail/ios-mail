@@ -20,8 +20,7 @@ import SwiftUI
 
 struct MailboxItemDetailToolbar: ViewModifier {
     @Environment(\.presentationMode) var presentationMode
-    let isStarStateKnown: Bool
-    let isStarred: Bool
+    let purpose: Purpose
 
     func body(content: Content) -> some View {
         content
@@ -43,25 +42,68 @@ struct MailboxItemDetailToolbar: ViewModifier {
                             .stroke(DS.Color.Border.norm)
                     }
                 }
+                ToolbarItem(placement: .principal) {
+                    purpose.principalView
+                }
+
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        // TODO:
-                    }, label: {
-                        Image(uiImage: isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
-                            .foregroundStyle(isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
-                    })
-                    .removeViewIf(!isStarStateKnown)
+                    purpose.trailingView
                 }
             }
             .tint(DS.Color.Text.norm)
     }
 }
 
+extension MailboxItemDetailToolbar {
+
+    enum Purpose {
+        case itemDetail(isStarStateKnown: Bool, isStarred: Bool)
+        case simpleNavigation(title: String)
+
+        @ViewBuilder
+        var principalView: some View {
+            switch self {
+            case .itemDetail:
+                EmptyView()
+            case .simpleNavigation(let title):
+                if title.isEmpty {
+                    EmptyView()
+                } else {
+                    VStack(alignment: .leading) {
+                        Text(title)
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, DS.Spacing.medium)
+                }
+            }
+        }
+
+        @ViewBuilder
+        var trailingView: some View {
+            switch self {
+            case .itemDetail(let isStarStateKnown, let isStarred):
+                if isStarStateKnown {
+                    Button(action: {
+                        // TODO:
+                    }, label: {
+                        Image(uiImage: isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
+                            .foregroundStyle(isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
+                    })
+                } else {
+                    EmptyView()
+                }
+            case .simpleNavigation:
+                EmptyView()
+            }
+        }
+    }
+}
+
 extension View {
     @MainActor
-    func mailboxItemDetailToolbar(isStarStateKnown: Bool, isStarred: Bool) -> some View {
-        return self.modifier(
-            MailboxItemDetailToolbar(isStarStateKnown: isStarStateKnown, isStarred: isStarred)
-        )
+    func navigationToolbar(purpose: MailboxItemDetailToolbar.Purpose) -> some View {
+        return self.modifier(MailboxItemDetailToolbar(purpose: purpose))
     }
 }

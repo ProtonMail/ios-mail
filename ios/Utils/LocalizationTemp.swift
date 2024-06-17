@@ -100,6 +100,7 @@ enum LocalizationTemp {
 
     enum Settings {
         static let settings = "Settings"
+        static let accountSettings = "Account Settings"
         static let subscription = "Subscription"
     }
 

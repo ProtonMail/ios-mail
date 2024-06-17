@@ -67,6 +67,7 @@ struct SidebarScreen: View {
 
             ScrollView(showsIndicators: false) {
                 foldersAndLabelsView
+                settingsView
                 subscriptionView
                 appVersionView
             }
@@ -89,7 +90,24 @@ struct SidebarScreen: View {
                 }
             }
         }
-        .padding(.init(top: 24.0, leading: 16.0, bottom: 24.0, trailing: 16.0))
+        .padding(.init(top: 24.0, leading: 16.0, bottom: 0.0, trailing: 16.0))
+    }
+
+    var settingsView: some View {
+        VStack(spacing: 24) {
+            let uiModel = SidebarCellUIModel(
+                id: UInt64.max,
+                name: LocalizationTemp.Settings.settings,
+                icon: DS.Icon.icCogWheel,
+                badge: "",
+                route: .settings
+            )
+            SidebarCell(uiModel: uiModel, isSelected: false) {
+                screenModel.updateRoute(newRoute: uiModel.route)
+                appUIState.isSidebarOpen = false
+            }
+        }
+        .padding(.init(top: 44.0, leading: 16.0, bottom: 0.0, trailing: 16.0))
     }
 
     var subscriptionView: some View {
@@ -106,7 +124,7 @@ struct SidebarScreen: View {
                 appUIState.isSidebarOpen = false
             }
         }
-        .padding(.init(top: 24.0, leading: 16.0, bottom: 24.0, trailing: 16.0))
+        .padding(.init(top: 8.0, leading: 16.0, bottom: 0.0, trailing: 16.0))
     }
 
     var appVersionView: some View {
@@ -115,7 +133,7 @@ struct SidebarScreen: View {
             SidebarCell(uiModel: .init(id: UInt64.max, name: "[DEV] Share logs", icon: DS.Icon.icBug , badge: "", route: .appLaunching), isSelected: false) {
                 screenModel.onShareLogsTap()
             }
-            .padding(.init(top: 24.0, leading: 16.0, bottom: 24.0, trailing: 16.0))
+            .padding(.init(top: 44.0, leading: 16.0, bottom: 24.0, trailing: 16.0))
 
             Divider()
                 .background(DS.Color.Global.white)
