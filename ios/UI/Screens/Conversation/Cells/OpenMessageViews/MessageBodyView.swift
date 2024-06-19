@@ -41,7 +41,6 @@ struct MessageBodyView: View {
 
                 case .error(let error):
                     Text(String(describing: error))
-
                 }
             }
         }
@@ -62,6 +61,10 @@ struct MessageBodyView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, DS.Spacing.large)
             .padding(.horizontal, DS.Spacing.large)
-
+            .accessibilityIdentifier(MessageBodyViewIdentifiers.messageBody)
     }
+}
+
+private struct MessageBodyViewIdentifiers {
+    static let messageBody = "detail.messageBody"
 }

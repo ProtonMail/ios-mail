@@ -85,6 +85,7 @@ struct CollapsedMessageCell: View {
             .foregroundStyle(uiModel.isRead ? DS.Color.Text.hint : DS.Color.Text.norm)
             .lineLimit(1)
             .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityIdentifier(CollapsedMessageCellIdentifiers.preview)
     }
 
     private var senderRow: some View {
@@ -94,9 +95,11 @@ struct CollapsedMessageCell: View {
                 .fontWeight(uiModel.isRead ? .regular : .bold)
                 .lineLimit(1)
                 .foregroundColor(uiModel.isRead ? DS.Color.Text.weak : DS.Color.Text.norm)
+                .accessibilityIdentifier(CollapsedMessageCellIdentifiers.senderName)
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
                 .foregroundColor(uiModel.isRead ? DS.Color.Text.hint : DS.Color.Text.norm)
+                .accessibilityIdentifier(CollapsedMessageCellIdentifiers.dateText)
             Spacer()
         }
     }
@@ -146,4 +149,10 @@ enum CollapsedMessageCellEvent {
             avatar: .init(initials: "Pr", senderImageParams: .init())
         ), onTap: {})
     }
+}
+
+private struct CollapsedMessageCellIdentifiers {
+    static let senderName = "detail.header.collapsed.sender.name"
+    static let preview = "detail.header.collapsed.preview"
+    static let dateText = "detail.header.collapsed.date"
 }

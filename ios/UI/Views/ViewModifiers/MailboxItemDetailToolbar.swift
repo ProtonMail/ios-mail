@@ -41,6 +41,7 @@ struct MailboxItemDetailToolbar: ViewModifier {
                         Circle()
                             .stroke(DS.Color.Border.norm)
                     }
+                    .accessibilityIdentifier(MailboxItemDetailToolbarIdentifiers.backButton)
                 }
                 ToolbarItem(placement: .principal) {
                     purpose.principalView
@@ -91,6 +92,7 @@ extension MailboxItemDetailToolbar {
                         Image(uiImage: isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
                             .foregroundStyle(isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
                     })
+                    .accessibilityIdentifier(MailboxItemDetailToolbarIdentifiers.starButton)
                 } else {
                     EmptyView()
                 }
@@ -106,4 +108,9 @@ extension View {
     func navigationToolbar(purpose: MailboxItemDetailToolbar.Purpose) -> some View {
         return self.modifier(MailboxItemDetailToolbar(purpose: purpose))
     }
+}
+
+private struct MailboxItemDetailToolbarIdentifiers {
+    static let backButton = "detail.backButton"
+    static let starButton = "detail.starButton"
 }

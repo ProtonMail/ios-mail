@@ -71,9 +71,12 @@ extension MessageDetailsView {
                 .foregroundColor(DS.Color.Text.norm)
             ProtonOfficialBadgeView()
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
+				.accessibilityIdentifier(MessageDetailsViewIdentifiers.senderName)
+
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
                 .foregroundColor(DS.Color.Text.hint)
+                .accessibilityIdentifier(MessageDetailsViewIdentifiers.messageDate)
             Spacer()
         }
     }
@@ -84,6 +87,7 @@ extension MessageDetailsView {
                 .font(.caption)
                 .lineLimit(1)
                 .foregroundColor(DS.Color.Text.weak)
+                .accessibilityIdentifier(MessageDetailsViewIdentifiers.senderAddress)
             Spacer()
         }
     }
@@ -99,6 +103,7 @@ extension MessageDetailsView {
                     .font(.caption)
                     .lineLimit(1)
                     .foregroundColor(DS.Color.Text.weak)
+                    .accessibilityIdentifier(MessageDetailsViewIdentifiers.recipientsSummary)
                 Image(uiImage: isHeaderCollapsed ?  DS.Icon.icChevronDown : DS.Icon.icChevronUp)
                     .resizable()
                     .frame(width: 16, height: 16)
@@ -146,6 +151,8 @@ extension MessageDetailsView {
             RoundedRectangle(cornerSize: CGSize(width: DS.Radius.extraLarge, height: DS.Radius.extraLarge))
                 .stroke(DS.Color.Border.strong)
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRootItem)
     }
 
     private var fromRow: some View {
@@ -154,14 +161,17 @@ extension MessageDetailsView {
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.weak)
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
+                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderLabel)
 
             VStack(alignment: .leading) {
                 Text(uiModel.sender.name)
                     .font(.caption)
                     .foregroundStyle(DS.Color.Text.norm)
+                    .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderName)
                 Text(uiModel.sender.address)
                     .font(.caption)
                     .foregroundStyle(DS.Color.Text.accent)
+                    .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderAddress)
 //                Text(uiModel.sender.encryptionInfo)
 //                    .font(.caption)
 //                    .foregroundStyle(DS.Color.Text.weak)
@@ -177,7 +187,7 @@ extension MessageDetailsView {
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.weak)
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-
+                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientLabel(group: group))
             VStack(alignment: .leading) {
 
                 ForEach(recipients.indices, id:\.self) { index in
@@ -185,9 +195,11 @@ extension MessageDetailsView {
                     Text(recipient.name)
                         .font(.caption)
                         .foregroundStyle(DS.Color.Text.norm)
+                        .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientName(group: group, index: index))
                     Text(recipient.address)
                         .font(.caption)
                         .foregroundStyle(DS.Color.Text.accent)
+                        .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientValue(group: group, index: index))
                 }
             }
 
@@ -201,10 +213,12 @@ extension MessageDetailsView {
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.weak)
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
+                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderDateLabel)
 
             Text(uiModel.date.messageDetailsFormat())
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.norm)
+                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderDateValue)
 
             Spacer()
         }
@@ -262,21 +276,32 @@ extension MessageDetailsView {
             style: .attachment
         )
     }
+}
 
-    private enum RecipientGroup {
-        case to
-        case cc
-        case bcc
+private enum RecipientGroup {
+    case to
+    case cc
+    case bcc
 
-        var localisedText: String {
-            switch self {
-            case .to:
-                LocalizationTemp.MessageDetails.to
-            case .cc:
-                LocalizationTemp.MessageDetails.cc
-            case .bcc:
-                LocalizationTemp.MessageDetails.bcc
-            }
+    var localisedText: String {
+        switch self {
+        case .to:
+            LocalizationTemp.MessageDetails.to
+        case .cc:
+            LocalizationTemp.MessageDetails.cc
+        case .bcc:
+            LocalizationTemp.MessageDetails.bcc
+        }
+    }
+    
+    var accessibilityValue: String {
+        switch self {
+        case .to:
+            "to"
+        case .cc:
+            "cc"
+        case .bcc:
+            "bcc"
         }
     }
 }
@@ -363,4 +388,34 @@ extension Array where Element == MessageDetail.Recipient {
         isHeaderCollapsed: false,
         uiModel: messageDetails
     ) {}
+}
+
+private struct MessageDetailsViewIdentifiers {
+    static let senderName = "detail.header.senderName"
+    static let senderAddress = "detail.header.senderName"
+    static let recipientsSummary = "detail.header.recipients.summary"
+    static let messageDate = "detail.header.date"
+    
+    static let expandedHeaderRootItem = "detail.header.expanded.root"
+    static let expandedHeaderSenderLabel = "detail.header.expanded.sender.label"
+    static let expandedHeaderSenderName = "detail.header.expanded.sender.name"
+    static let expandedHeaderSenderAddress = "detail.header.expanded.sender.address"
+    
+    static func expandedHeaderRecipientLabel(group: RecipientGroup) -> String {
+        "details.header.expanded.\(group.accessibilityValue).label"
+    }
+    
+    static func expandedHeaderRecipientName(group: RecipientGroup, index: Int) -> String {
+        "details.header.expanded.\(group.accessibilityValue).name#\(index)"
+    }
+    
+    static func expandedHeaderRecipientValue(group: RecipientGroup, index: Int) -> String {
+        "details.header.expanded.\(group.accessibilityValue).value#\(index)"
+    }
+    
+    static let expandedHeaderDateLabel = "detail.header.expanded.date.label"
+    static let expandedHeaderDateValue = "detail.header.expanded.date.value"
+    
+    static let expandedHeaderOtherLabel = "detail.header.expanded.other.label"
+    static let expandedHeaderOtherValue = "detail.header.expanded.other.value"
 }

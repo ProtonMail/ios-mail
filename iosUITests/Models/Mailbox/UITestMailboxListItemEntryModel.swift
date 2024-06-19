@@ -57,6 +57,10 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
 
     // MARK: Actions
 
+    func tap() {
+        rootItem.tap()
+    }
+
     func longPress() {
         rootItem.press(forDuration: 2)
     }

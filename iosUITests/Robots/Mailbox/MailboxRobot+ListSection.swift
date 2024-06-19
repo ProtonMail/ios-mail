@@ -25,6 +25,11 @@ extension MailboxRobot {
         rootElement.swipeUp()
     }
 
+    func tapEntryAt(index: Int) {
+        let model = UITestMailboxListItemEntryModel(index: index)
+        model.tap()
+    }
+
     func longPressItemAt(index: Int) {
         let model = UITestMailboxListItemEntryModel(index: index)
         model.longPress()

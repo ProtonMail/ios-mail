@@ -36,6 +36,8 @@ struct ConversationScreen: View {
                         .frame(maxHeight: .infinity)
                 }
                 .frame(minHeight: proxy.size.height)
+                .accessibilityElement(children: .contain)
+                .accessibilityIdentifier(ConversationScreenIdentifiers.rootItem)
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationToolbar(
@@ -90,6 +92,7 @@ struct ConversationScreen: View {
             .fontWeight(.semibold)
             .foregroundStyle(DS.Color.Text.norm)
             .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityIdentifier(ConversationScreenIdentifiers.subjectText)
     }
 
     private var attachmentsAndLabelsView: some View {
@@ -126,11 +129,15 @@ struct ConversationScreen: View {
                                 model.onMessageTap(messageId: cellUIModel.id)
                             })
                             .id(cellUIModel.cellId)
+                            .accessibilityElement(children: .contain)
+                            .accessibilityIdentifier(ConversationScreenIdentifiers.collapsedCell(index))
                         case .expanded(let uiModel):
                             ExpandedMessageCell(uiModel: uiModel, isFirstCell: index == 0, onTap: {
                                 model.onMessageTap(messageId: cellUIModel.id)
                             })
                             .id(cellUIModel.cellId)
+                            .accessibilityElement(children: .contain)
+                            .accessibilityIdentifier(ConversationScreenIdentifiers.expandedCell(index))
                         }
                     }
                 }
@@ -138,10 +145,14 @@ struct ConversationScreen: View {
                     model.onMessageTap(messageId: last.messageId)
                 })
                 .id(ConversationModel.lastCellId) // static value cause it won't be replaced with CollapsedMessageCell
+                .accessibilityElement(children: .contain)
+                .accessibilityIdentifier(ConversationScreenIdentifiers.expandedCell())
             }
             .task {
                 scrollView.scrollTo(model.scrollToMessage, anchor: .top)
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier(ConversationScreenIdentifiers.messageList)
         }
     }
 }
@@ -202,5 +213,19 @@ private extension View {
 
     NavigationView {
         ConversationScreen(seed: .pushNotification(messageId: "0", subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia", sender: "him"))
+    }
+}
+
+private struct ConversationScreenIdentifiers {
+    static let rootItem = "detail.rootItem"
+    static let subjectText = "detail.subjectText"
+    static let messageList = "detail.messageList"
+    
+    static func collapsedCell(_ index: Int? = nil) -> String {
+        "detail.cell.collapsed#\(index ?? 0)"
+    }
+    
+    static func expandedCell(_ index: Int? = nil) -> String {
+        "detail.cell.expanded#\(index ?? 0)"
     }
 }
