@@ -142,7 +142,10 @@ final class InvitationView: UIView {
             detailsContainer.addArrangedSubview(SubviewFactory.locationRow(location: location))
         }
 
-        detailsContainer.addArrangedSubview(participantsRow)
+        if eventDetails.organizer != nil || !eventDetails.invitees.isEmpty {
+            detailsContainer.addArrangedSubview(participantsRow)
+        }
+
         detailsContainer.isHidden = false
 
         self.viewModel = viewModel
