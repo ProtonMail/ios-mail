@@ -99,7 +99,7 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
     }
 
     func refreshUserInfo() {
-        guard FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.accountRecovery, reloadValue: true) else { return }
+        guard viewModel.isAccountRecoveryEnabled else { return }
         Task {
             await viewModel.refreshUserInfo()
             await MainActor.run {
@@ -273,7 +273,7 @@ extension SettingsAccountViewController {
             let item = self.viewModel.accountItems[row]
             cellToUpdate.configure(left: item.description)
             switch item {
-            case .singlePassword, .loginPassword, .mailboxPassword, .privacyAndData:
+            case .singlePassword, .loginPassword, .mailboxPassword, .privacyAndData, .securityKeys:
                 break
             case .recovery:
                 cellToUpdate.configure(right: viewModel.recoveryEmail)
@@ -363,6 +363,8 @@ extension SettingsAccountViewController {
             self.coordinator.go(to: .loginPwd)
         case .mailboxPassword:
             self.coordinator.go(to: .mailboxPwd)
+        case .securityKeys:
+            self.coordinator.go(to: .securityKeys)
         case .recovery:
             self.coordinator.go(to: .recoveryEmail)
         case .privacyAndData:

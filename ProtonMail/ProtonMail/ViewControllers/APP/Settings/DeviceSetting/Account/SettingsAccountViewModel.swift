@@ -52,6 +52,7 @@ enum SettingsAccountItem: Int, CustomStringConvertible {
     case singlePassword
     case loginPassword
     case mailboxPassword
+    case securityKeys
     case recovery
     case storage
     case privacyAndData
@@ -65,6 +66,8 @@ enum SettingsAccountItem: Int, CustomStringConvertible {
             return L10n.AccountSettings.loginPassword
         case .mailboxPassword:
             return L10n.AccountSettings.mailboxPassword
+        case .securityKeys:
+            return L10n.AccountSettings.securityKeys
         case .recovery:
             return L10n.AccountSettings.recoveryEmail
         case .storage:
@@ -142,8 +145,11 @@ final class SettingsAccountViewModel {
         } else {
             items = [.loginPassword, .mailboxPassword]
         }
+        if userManager.isFido2Enabled {
+            items.append(.securityKeys)
+        }
         items.append(.recovery)
-        if userManager.isAccountRecoveryEnabled,
+        if isAccountRecoveryEnabled,
            let accountRecovery = userManager.userInfo.accountRecovery,
            accountRecovery.isVisibleInSettings
         {
@@ -181,6 +187,10 @@ final class SettingsAccountViewModel {
 
             return "\(formattedUsedSpace) / \(formattedMaxSpace)"
         }
+    }
+
+    var isAccountRecoveryEnabled: Bool {
+        userManager.isAccountRecoveryEnabled
     }
 
     var accountRecoveryText: String {

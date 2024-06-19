@@ -65,7 +65,7 @@ extension LoginService {
     private func fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
         user: User, mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
     ) {
-        manager.getAddresses { [weak self] result in
+        authManager.getAddresses { [weak self] result in
             switch result {
             case .failure(let error):
                 PMLog.error("Cannot fetch addresses for user", sendToExternal: true)
@@ -324,7 +324,7 @@ extension LoginService {
         createAddressKeys(user: user, address: address, mailboxPassword: mailboxPassword) { [weak self] result in
 
             func fetchUserDataAndRetryFetchingAddressesAndEncryptionData() {
-                self?.manager.getUserInfo { [weak self] result in
+                self?.authManager.getUserInfo { [weak self] result in
                     switch result {
                     case .success(let updatedUser):
                         // after the address keys generation — retry fetching the data
@@ -402,7 +402,7 @@ extension LoginService {
     private func getSalts(addresses: [Address], user: User, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         PMLog.debug("Fetching key salts")
 
-        manager.getKeySalts { [weak self] result in
+        authManager.getKeySalts { [weak self] result in
             switch result {
             case let .success(salts):
                 self?.makesPassphrasesAndValidateMailboxPassword(addresses: addresses, user: user, mailboxPassword: mailboxPassword, salts: salts, completion: completion)

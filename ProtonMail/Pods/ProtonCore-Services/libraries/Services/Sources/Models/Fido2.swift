@@ -29,7 +29,19 @@ public struct Fido2: Codable {
 
 public struct AuthenticationOptions: Codable {
     public let publicKey: PublicKey
-}
+
+    public var challenge: Data {
+        publicKey.challenge
+    }
+
+    public var relyingPartyIdentifier: String {
+        publicKey.rpId
+    }
+
+    public var allowedCredentialIds: [Data] {
+        publicKey.allowCredentials.map(\.id)
+    }
+ }
 
 public struct PublicKey: Codable {
     public let timeout: Int

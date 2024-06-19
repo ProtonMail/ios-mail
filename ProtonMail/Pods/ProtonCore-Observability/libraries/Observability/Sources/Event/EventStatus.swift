@@ -106,7 +106,8 @@ public enum ApplicationStatus: String, Encodable, CaseIterable {
 }
 
 public enum TwoFactorMode: String, Encodable, CaseIterable {
-    case enabled
+    case totp
+    case webauthn
     case disabled
 }
 
@@ -125,4 +126,23 @@ public enum PasswordChangeHTTPResponseCodeStatus: String, Encodable, CaseIterabl
     case cantGenerateSRPClient
     case keyUpdateFailed
     case unknown
+}
+
+public enum WebAuthnRequestStatus: String, Encodable, CaseIterable {
+    case authorizedFIDO2
+    case authorizedPasskey
+    case authorizedUnsupportedType
+    case authorizedMissingChallenge
+    case errorCanceled
+    case errorFailed
+    case errorInvalidResponse
+    case errorNotHandled
+    case errorUnknown
+    case errorNotInteractive
+    case errorOther
+}
+
+public enum TwoFAType: String, Encodable, CaseIterable {
+    case totp
+    case webauthn
 }

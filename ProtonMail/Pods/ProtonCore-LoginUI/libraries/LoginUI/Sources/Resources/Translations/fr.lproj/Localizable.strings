@@ -215,3 +215,39 @@
 "Sign in" = "Se connecter";
 
 "Troubleshoot" = "Dépannage";
+
+"Please choose how you want to confirm your identity." = "Choisissez la manière dont vous voulez confirmer votre identité.";
+
+"One-time code" = "Mot de passe unique";
+
+"Security key" = "Clé de sécurité";
+
+"Two-Factor Authentication" = "Authentification à deux facteurs";
+
+"Present a security key linked to your Proton Account." = "Présentez une clé de sécurité liée à votre compte Proton.";
+
+"Learn more" = "En savoir plus";
+
+"Invalid state. Please quit the app and try again in a few minutes." = "L'état n'est pas valide. Quittez l'application et essayez à nouveau dans quelques minutes.";
+
+"There was a problem reading your security key." = "Un problème est survenu lors de la lecture de votre clé de sécurité.";
+
+"We received an authorization from a type we don't support yet." = "Nous avons reçu un type d'autorisation que nous ne prenons pas encore en charge.";
+
+"Fetching your security keys details" = "Récupération des informations de vos clés de sécurité";
+
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "Vous n'avez pas encore de clés de sécurité enregistrées pour votre compte. Consultez la section Paramètres de notre site web pour ajouter des clés de sécurité.";
+
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "Une erreur s'est produite lors de la récupération de vos clés de sécurité. Vous pouvez également les vérifier depuis le site web de Proton %@.";
+
+"These are the security keys registered to your account" = "Voici les clés de sécurité enregistrées pour votre compte.";
+
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "Vous n'avez pas encore de clés de sécurité enregistrées pour votre compte. Utilisez l'application web de Proton %@ pour ajouter des clés de sécurité.";
+
+"Security Keys" = "Clés de sécurité";
+
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "Pour gérer, ajouter ou retirer des clés de sécurité, utilisez l'application web de Proton %@.";
+
+"Unexpected FIDO2 signature." = "Signature FIDO2 inattendue.";
+
+"We could not initiate the Secure Password update connection. Please try again." = "Nous n'avons pas pu établir la connexion pour la mise à jour du mot de passe sécurisé. Veuillez réessayer.";

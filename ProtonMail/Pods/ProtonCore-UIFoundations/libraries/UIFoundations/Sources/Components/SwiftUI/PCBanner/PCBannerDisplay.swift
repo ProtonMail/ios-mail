@@ -21,11 +21,13 @@
 import SwiftUI
 
 public enum BannerState: Equatable {
+    case success(content: PCBannerContent)
     case error(content: PCBannerContent)
     case none
 
     public static func == (lhs: BannerState, rhs: BannerState) -> Bool {
         switch (lhs, rhs) {
+        case (.success, .success): return true
         case (.error, .error): return true
         case (.none, .none): return true
         default: return false
@@ -112,6 +114,7 @@ public struct PCBannerDisplay: ViewModifier {
 
     var style: PCBannerStyle {
         switch bannerState {
+        case .success: return .init(style: .success)
         case .error: return .init(style: .error)
         case .none: return .init(style: .info)
         }
@@ -119,6 +122,7 @@ public struct PCBannerDisplay: ViewModifier {
 
     var content: PCBannerContent {
         switch bannerState {
+        case .success(let content): return content
         case .error(let content): return content
         case .none: return .init(message: "")
         }

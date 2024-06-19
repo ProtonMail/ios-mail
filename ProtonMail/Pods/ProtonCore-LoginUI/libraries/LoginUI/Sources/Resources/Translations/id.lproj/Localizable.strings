@@ -160,7 +160,7 @@
 
 "Creating your account" = "Membuat akun Anda";
 
-"Generating your address" = "Membuat alamat email Anda";
+"Generating your address" = "Menghasilkan alamat Anda";
 
 "Securing your account" = "Mengamankan akun Anda";
 
@@ -215,3 +215,39 @@
 "Sign in" = "Masuk";
 
 "Troubleshoot" = "Penyelesaian Masalah";
+
+"Please choose how you want to confirm your identity." = "Silakan tentukan bagaimana Anda ingin mengonfirmasi identitas Anda.";
+
+"One-time code" = "Kode sekali pakai";
+
+"Security key" = "Kunci keamanan";
+
+"Two-Factor Authentication" = "Autentikasi Dua Faktor";
+
+"Present a security key linked to your Proton Account." = "Tunjukkan kunci keamanan yang terhubung dengan Akun Proton Anda.";
+
+"Learn more" = "Pelajari lebih lanjut";
+
+"Invalid state. Please quit the app and try again in a few minutes." = "Kondisi tidak valid. Silakan keluar dari aplikasi dan coba lagi dalam beberapa menit.";
+
+"There was a problem reading your security key." = "Terdapat masalah dalam membaca kunci keamanan Anda.";
+
+"We received an authorization from a type we don't support yet." = "Kami telah menerima autorisasi dari tipe yang belum kami dukung.";
+
+"Fetching your security keys details" = "Mengambil rincian kunci keamanan Anda";
+
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "Anda belum memiliki kunci keamanan yang terpasang pada akun Anda. Silakan kunjungi bagian pengaturan pada situs web kami untuk menambahkan kunci keamanan.";
+
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "Terdapat kesalahan dalam mengambil kunci keamanan Anda. Anda juga dapat memeriksa kunci ini pada situs web Proton %@.";
+
+"These are the security keys registered to your account" = "Terdapat kunci keamanan yang terdaftar ke akun Anda";
+
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "Anda belum memiliki kunci keamanan yang terpasang pada akun Anda. Silakan gunakan aplikasi web Proton %@ untuk menambahkan kunci keamanan.";
+
+"Security Keys" = "Kunci Keamanan";
+
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "Untuk mengelola, menambahkan, atau menghapus kunci keamanan, silakan gunakan aplikasi web Proton %@.";
+
+"Unexpected FIDO2 signature." = "Tanda tangan FIDO2 tidak terduga.";
+
+"We could not initiate the Secure Password update connection. Please try again." = "Kami tidak dapat memulai koneksi pembaruan kata sandi aman. Silakan coba kembali.";

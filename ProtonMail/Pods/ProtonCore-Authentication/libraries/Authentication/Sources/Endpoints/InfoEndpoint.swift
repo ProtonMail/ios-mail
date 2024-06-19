@@ -30,16 +30,16 @@ extension AuthService {
             static let intent = "Intent"
         }
 
-        let username: String
+        let username: String?
         private let intent: Intent?
 
-        init(username: String, intent: Intent? = nil) {
+        init(username: String?, intent: Intent? = nil) {
             self.username = username
             self.intent = intent
         }
 
         var path: String {
-            return "/auth/info"
+            return "/core/v4/auth/info"
         }
 
         var method: HTTPMethod {
@@ -47,7 +47,10 @@ extension AuthService {
         }
 
         var parameters: [String: Any]? {
-            var parameters = [Key.userName: username]
+            var parameters = [String: Any]()
+            if let username {
+                parameters = [Key.userName: username]
+            }
             if let intent {
                 parameters[Key.intent] = intent.rawValue
             }

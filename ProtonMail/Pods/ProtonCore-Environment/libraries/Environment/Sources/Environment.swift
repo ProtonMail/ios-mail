@@ -29,6 +29,7 @@ public enum Environment {
     case driveProd
     case calendarProd
     case passProd
+    case walletProd
     case black
     case blackPayment
 
@@ -39,19 +40,20 @@ public enum Environment {
     static let productionDrive = ProductionDrive()
     static let productionCalendar = ProductionCalendar()
     static let productionPass = ProductionPass()
+    static let productionWallet = ProductionWallet()
     static let blackServer = Environment.buildCustomDoh(customDomain: "proton.black")
     static let blackPaymentsServer = Environment.buildCustomDoh(customDomain: "payments.proton.black")
 }
 
 extension Environment {
-    public static var productions: [Environment] = [.mailProd, .vpnProd, .driveProd, .calendarProd, .passProd]
+    public static var productions: [Environment] = [.mailProd, .vpnProd, .driveProd, .calendarProd, .passProd, .walletProd]
     public static var prebuild: [Environment] = productions + [.black, .blackPayment]
 }
 
 extension Environment: Equatable {
     public static func == (lhs: Environment, rhs: Environment) -> Bool {
         switch (lhs, rhs) {
-        case (.mailProd, .mailProd), (.vpnProd, .vpnProd), (.driveProd, .driveProd), (.calendarProd, .calendarProd),
+        case (.mailProd, .mailProd), (.vpnProd, .vpnProd), (.driveProd, .driveProd), (.calendarProd, .calendarProd), (.walletProd, .walletProd),
             (.black, .black), (.blackPayment, .blackPayment):
             return true
         case (.custom(let lvalue), .custom(let rvalue)):
@@ -80,6 +82,8 @@ extension Environment {
             Environment.productionCalendar.status = status
         case .passProd:
             Environment.productionPass.status = status
+        case .walletProd:
+            Environment.productionWallet.status = status
         case .black:
             Environment.blackServer.status = status
         case .blackPayment:
@@ -101,6 +105,8 @@ extension Environment {
             return Environment.productionCalendar
         case .passProd:
             return Environment.productionPass
+        case .walletProd:
+            return Environment.productionWallet
         case .black:
             return Environment.blackServer
         case .blackPayment:
@@ -122,6 +128,8 @@ extension Environment {
             return Environment.productionCalendar
         case .passProd:
             return Environment.productionPass
+        case .walletProd:
+            return Environment.productionWallet
         case .black, .blackPayment, .custom:
             fatalError("Invalid index")
         }

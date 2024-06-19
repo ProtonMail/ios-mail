@@ -115,12 +115,12 @@ final class Container {
 
     @MainActor
     func makeTOTPViewModel() -> TOTPView.ViewModel {
-        return TOTPView.ViewModel(login: login)
+        return TOTPView.ViewModel()
     }
 
     @available(iOS 15.0, *)
-    func makeFido2ViewModel(challenge: Data, relyingPartyIdentifier: String, allowedCredentialIds: [Data]) -> Fido2View.ViewModel {
-        .init(login: login, challenge: challenge, relyingPartyIdentifier: relyingPartyIdentifier, allowedCredentialIds: allowedCredentialIds)
+    func makeFido2ViewModel(authenticationOptions: AuthenticationOptions) -> Fido2View.ViewModel {
+        .init(authenticationOptions: authenticationOptions)
     }
 
     // MARK: Signup view models

@@ -49,7 +49,7 @@ struct PCButtonSolidStyle: ButtonStyle {
         }
         var backgroundNormal: Color
         switch brand {
-        case .proton, .vpn:
+        case .proton, .vpn, .wallet:
             backgroundNormal = ColorProvider.InteractionNorm
         case .pass:
             backgroundNormal = ColorProvider.InteractionNormMajor1PassTheme
@@ -63,7 +63,7 @@ struct PCButtonSolidStyle: ButtonStyle {
         switch brand {
         case .proton, .vpn:
             return 8.0
-        case .pass:
+        case .pass, .wallet:
             return 24.0
         }
     }

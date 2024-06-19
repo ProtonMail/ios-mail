@@ -32,7 +32,10 @@ public struct ChangePasswordUpdateLoginPasswordTotalLabels: Encodable, Equatable
 }
 
 extension ObservabilityEvent where Payload == PayloadWithLabels<ChangePasswordUpdateLoginPasswordTotalLabels> {
-    public static func updateLoginPassword(status: PasswordChangeHTTPResponseCodeStatus, twoFactorMode: TwoFactorMode) -> Self {
-        .init(name: "ios_core_changePassword_updateLoginPassword_total", labels: .init(status: status, twoFactorMode: twoFactorMode))
+    public static func updateLoginPassword(status: PasswordChangeHTTPResponseCodeStatus, 
+                                           twoFactorMode: TwoFactorMode) -> Self {
+        .init(name: "ios_core_changePassword_updateLoginPassword_total",
+              labels: .init(status: status, twoFactorMode: twoFactorMode),
+              version: .v2)
     }
 }

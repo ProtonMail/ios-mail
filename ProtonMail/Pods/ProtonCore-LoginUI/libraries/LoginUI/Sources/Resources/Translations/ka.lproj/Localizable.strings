@@ -215,3 +215,39 @@
 "Sign in" = "შესვლა";
 
 "Troubleshoot" = "შეცდომების გასწორება";
+
+"Please choose how you want to confirm your identity." = "აირჩიეთ, როგორ გნებავთ, თქვენი იდენტობა დაადასტუროთ.";
+
+"One-time code" = "ერთჯერადი კოდი";
+
+"Security key" = "უსაფრთხოების გასაღები";
+
+"Two-Factor Authentication" = "2FA";
+
+"Present a security key linked to your Proton Account." = "ჩასვით თქვენი Proton-ის ანგარიშზე მიბმული უსაფრთხოების გასაღები.";
+
+"Learn more" = "მეტის ნახვა";
+
+"Invalid state. Please quit the app and try again in a few minutes." = "Invalid state. Please quit the app and try again in a few minutes.";
+
+"There was a problem reading your security key." = "აღმოჩენილია პრობლემა თქვენი უსაფრთხოების გასაღების კითხვისას.";
+
+"We received an authorization from a type we don't support yet." = "We received an authorization from a type we don't support yet.";
+
+"Fetching your security keys details" = "თქვენი უაფრთხოების გასაღების დეტალების გამოთხოვა";
+
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys.";
+
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "An error occurred fetching your security keys. You can also check them on the Proton %@ website.";
+
+"These are the security keys registered to your account" = "თქვენს ანგარიშზე რეგისტრირებულია უსაფრთხოების გასაღებები";
+
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys.";
+
+"Security Keys" = "უსაფრთხოების გასაღებები";
+
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "To manage, add, or remove security keys, please use the Proton %@ web application.";
+
+"Unexpected FIDO2 signature." = "მოულოდნელი FIDO2 ხელმოწერა";
+
+"We could not initiate the Secure Password update connection. Please try again." = "We could not initiate the Secure Password update connection. Please try again.";

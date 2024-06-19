@@ -52,7 +52,7 @@ public class AuthService: Client {
         }
     }
 
-    public func info(username: String, intent: Intent?, complete: @escaping(_ response: Result<Either<AuthInfoResponse, SSOChallengeResponse>, ResponseError>) -> Void) {
+    public func info(username: String? = nil, intent: Intent? = nil, complete: @escaping(_ response: Result<Either<AuthInfoResponse, SSOChallengeResponse>, ResponseError>) -> Void) {
         var endpoint: InfoEndpoint
 
         if featureFlagsRepository.isEnabled(CoreFeatureFlagType.externalSSO, reloadValue: true),

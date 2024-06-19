@@ -31,12 +31,27 @@ public struct ProtonColor {
     }
 }
 
+public let ColorProvider = ColorProviderBase()
+
+@available(*, deprecated, renamed: "ColorProvider")
+public let UIColorManager = ColorProviderBase()
+
 @dynamicMemberLookup
 public final class ColorProviderBase {
+    public var iOSPalette: any ColorPaletteiOS {
+        switch brand {
+        case .proton, .vpn, .pass:
+            return ProtonColorPaletteiOS.instance
+        case .wallet:
+            return WalletColorPaletteiOS.instance
+        }
+    }
+
     public var brand: Brand {
         get { Brand.currentBrand }
         set { Brand.currentBrand = newValue }
     }
+
     fileprivate init() {}
 }
 
@@ -44,10 +59,20 @@ public final class ColorProviderBase {
 import UIKit
 
 extension ColorProviderBase {
+    public subscript(dynamicMember keypath: KeyPath<any ColorPaletteiOS, ProtonColor>) -> UIColor {
+        iOSPalette[keyPath: keypath].uiColor
+    }
+
+    public subscript(dynamicMember keypath: KeyPath<any ColorPaletteiOS, ProtonColor>) -> CGColor {
+        iOSPalette[keyPath: keypath].uiColor.cgColor
+    }
+
+    @available(*, deprecated, message: "Use the version using protocol ColorPaletteiOS")
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> UIColor {
         ProtonColorPaletteiOS.instance[keyPath: keypath].uiColor
     }
 
+    @available(*, deprecated, message: "Use the version using protocol ColorPaletteiOS")
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> CGColor {
         ProtonColorPaletteiOS.instance[keyPath: keypath].uiColor.cgColor
     }
@@ -102,7 +127,7 @@ public extension CGColor {
 
 #endif
 
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
 import AppKit
 import ProtonCoreUtilities
 
@@ -273,13 +298,18 @@ extension ColorProviderBase {
 
     #if canImport(UIKit)
 
+    public subscript(dynamicMember keypath: KeyPath<any ColorPaletteiOS, ProtonColor>) -> Color {
+        iOSPalette[keyPath: keypath].color
+    }
+
+    @available(*, deprecated, message: "Use the version using protocol ColorPaletteiOS")
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> Color {
         ProtonColorPaletteiOS.instance[keyPath: keypath].color
     }
 
     #endif
 
-    #if canImport(AppKit)
+    #if canImport(AppKit) && !targetEnvironment(macCatalyst)
 
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) -> Color {
         ProtonColorPalettemacOS.instance[keyPath: keypath].color
@@ -311,11 +341,6 @@ public extension Color {
     }
 }
 #endif
-
-public let ColorProvider = ColorProviderBase()
-
-@available(*, deprecated, renamed: "ColorProvider")
-public let UIColorManager = ColorProviderBase()
 
 struct HSBA: Equatable { let hue: CGFloat; let saturation: CGFloat; let brightness: CGFloat; let alpha: CGFloat }
 struct HSLA: Equatable { let hue: CGFloat; let saturation: CGFloat; let lightness: CGFloat; let alpha: CGFloat }

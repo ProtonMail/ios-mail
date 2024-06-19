@@ -30,6 +30,8 @@ enum UpdatePasswordError: Int, Error {
     case cantGenerateVerifier
     case cantGenerateSRPClient
     case keyUpdateFailed
+    case missingUserInfo
+    case missingAuthInfo
 
     case `default`
 }
@@ -51,8 +53,13 @@ extension UpdatePasswordError: LocalizedError {
             return PCTranslation.errorCantGenerateSRPClient.l10n
         case .keyUpdateFailed:
             return PCTranslation.errorKeyUpdateFailed.l10n
+        case .missingUserInfo:
+            return PCTranslation.errorMissingUserInfo.l10n
+        case .missingAuthInfo:
+            return PCTranslation.errorMissingAuthInfo.l10n
         case .default:
             return PCTranslation.errorUpdatePasswordDefault.l10n
+
         }
     }
 }
@@ -67,7 +74,7 @@ extension UpdatePasswordError {
         case .cantGenerateVerifier: return .cantGenerateVerifier
         case .cantGenerateSRPClient: return .cantGenerateSRPClient
         case .keyUpdateFailed: return .keyUpdateFailed
-        case .default: return .unknown
+        @unknown default: return .unknown
         }
     }
 }
