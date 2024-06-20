@@ -6,10 +6,12 @@
 //
 
 ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = $(inherited)
+CODE_SIGN_ENTITLEMENTS = ${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements
 CURRENT_PROJECT_VERSION = Debug
 DEFINES_MODULE = YES
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks
 LIBRARY_SEARCH_PATHS = $(inherited)
+PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail
 PRODUCT_MODULE_NAME = ProtonMail
 SWIFT_OBJC_BRIDGING_HEADER = ${SRCROOT}/ProtonMail/Supporting Files/ProtonMail-Bridging-Header.h
 SWIFT_STRICT_CONCURRENCY = targeted
