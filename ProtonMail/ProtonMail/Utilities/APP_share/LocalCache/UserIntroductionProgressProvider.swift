@@ -22,7 +22,6 @@ enum SpotlightableFeatureKey: String, CaseIterable {
     case scheduledSend
     case toolbarCustomization
     case messageSwipeNavigationAnimation
-    case messageSwipeNavigation
     case autoImportContacts
     case jumpToNextMessage
 
