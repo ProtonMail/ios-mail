@@ -15,6 +15,8 @@ public extension DS.Icon {
     static let icChevronLeft = icon(named: "ic-chevron-left")
     static let icChevronDown = icon(named: "ic-chevron-down")
     static let icChevronUp = icon(named: "ic-chevron-up")
+    static let icChevronTinyDown = icon(named: "ic-chevron-tiny-down")
+    static let icChevronTinyUp = icon(named: "ic-chevron-tiny-up")
     static let icCircleFilled = icon(named: "ic-circle-filled")
     static let icClock = icon(named: "ic-clock")
     static let icCogWheel = icon(named: "ic-cog-wheel")

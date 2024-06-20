@@ -60,7 +60,7 @@ struct ConversationScreen: View {
     private var conversationContentView: some View {
         VStack(alignment: .leading, spacing: 0) {
             subjectView
-                .padding(.top, DS.Spacing.standard)
+                .padding(.top, DS.Spacing.medium)
                 .padding(.horizontal, DS.Spacing.large)
 
             attachmentsAndLabelsView
@@ -78,7 +78,7 @@ struct ConversationScreen: View {
                 EmptyView()
             case .fetchingMessages:
                 ProgressView()
-                    .padding(.top, DS.Spacing.large)
+                    .padding(.top, DS.Spacing.medium)
             case .messagesReady(let previous, let last):
                 messageList(previous: previous, last: last)
                     .padding(.top, DS.Spacing.compact)

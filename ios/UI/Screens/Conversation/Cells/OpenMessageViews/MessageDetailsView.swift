@@ -43,7 +43,7 @@ extension MessageDetailsView {
         HStack(alignment: .top, spacing: 0) {
             AvatarCheckboxView(isSelected: false, avatar: uiModel.avatar, onDidChangeSelection: { _ in })
                 .frame(width: 40, height: 40)
-            VStack(spacing: DS.Spacing.small) {
+            VStack(alignment: .leading, spacing: DS.Spacing.small) {
                 senderNameView
                 senderAddressView
                 recipientsView
@@ -76,21 +76,17 @@ extension MessageDetailsView {
 
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
-                .foregroundColor(DS.Color.Text.hint)
+                .foregroundColor(DS.Color.Text.weak)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.messageDate)
-            Spacer()
         }
     }
 
     private var senderAddressView: some View {
-        HStack(spacing: DS.Spacing.small) {
-            Text(uiModel.sender.address)
-                .font(.caption)
-                .lineLimit(1)
-                .foregroundColor(DS.Color.Text.weak)
-                .accessibilityIdentifier(MessageDetailsViewIdentifiers.senderAddress)
-            Spacer()
-        }
+        Text(uiModel.sender.address)
+            .font(.caption)
+            .lineLimit(1)
+            .foregroundColor(DS.Color.Text.weak)
+            .accessibilityIdentifier(MessageDetailsViewIdentifiers.senderAddress)
     }
 
     private var recipientsView: some View {
@@ -105,17 +101,17 @@ extension MessageDetailsView {
                     .lineLimit(1)
                     .foregroundColor(DS.Color.Text.weak)
                     .accessibilityIdentifier(MessageDetailsViewIdentifiers.recipientsSummary)
-                Image(uiImage: isHeaderCollapsed ?  DS.Icon.icChevronDown : DS.Icon.icChevronUp)
+                Image(uiImage: isHeaderCollapsed ?  DS.Icon.icChevronTinyDown : DS.Icon.icChevronTinyUp)
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: 16, height: 16)
                     .foregroundColor(DS.Color.Icon.weak)
-                Spacer()
             }
         }
     }
 
     private var headerActionsView: some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .top, spacing: DS.Spacing.large) {
             Button(action: {}, label: {
                 Image(uiImage: uiModel.isSingleRecipient ? DS.Icon.icReplay : DS.Icon.icReplayAll)
             })
@@ -164,7 +160,7 @@ extension MessageDetailsView {
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderLabel)
 
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: DS.Spacing.tiny) {
                 Text(uiModel.sender.name)
                     .font(.caption)
                     .foregroundStyle(DS.Color.Text.norm)
@@ -189,18 +185,20 @@ extension MessageDetailsView {
                 .foregroundStyle(DS.Color.Text.weak)
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientLabel(group: group))
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: DS.Spacing.compact) {
 
                 ForEach(recipients.indices, id:\.self) { index in
                     let recipient = recipients[index]
-                    Text(recipient.name)
-                        .font(.caption)
-                        .foregroundStyle(DS.Color.Text.norm)
-                        .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientName(group: group, index: index))
-                    Text(recipient.address)
-                        .font(.caption)
-                        .foregroundStyle(DS.Color.Text.accent)
-                        .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientValue(group: group, index: index))
+                    VStack(alignment: .leading, spacing: DS.Spacing.tiny) {
+                        Text(recipient.name)
+                            .font(.caption)
+                            .foregroundStyle(DS.Color.Text.norm)
+                            .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientName(group: group, index: index))
+                        Text(recipient.address)
+                            .font(.caption)
+                            .foregroundStyle(DS.Color.Text.accent)
+                            .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientValue(group: group, index: index))
+                    }
                 }
             }
 
@@ -354,7 +352,7 @@ extension Array where Element == MessageDetail.Recipient {
 
     var recipientsUIRepresentation: String {
         let recipients = map(\.name).joined(separator: ", ")
-        return "\(LocalizationTemp.MessageDetails.to) \(recipients)"
+        return "\(LocalizationTemp.MessageDetails.to.lowercased()) \(recipients)"
     }
 }
 
