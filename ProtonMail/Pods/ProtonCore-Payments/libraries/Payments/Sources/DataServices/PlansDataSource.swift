@@ -23,6 +23,7 @@ import Foundation
 import ProtonCoreServices
 import Network
 import ProtonCoreFeatureFlags
+import ProtonCoreLog
 import ProtonCoreObservability
 import StoreKit
 
@@ -71,8 +72,12 @@ class PlansDataSource: PlansDataSourceProtocol {
     var lastFetchedProducts: [SKProduct] {
         if storeKitDataSource.availableProducts.isEmpty {
             // populate for next iteration
-            Task { // ignoring throws on purpose, not much we can do about it
-                try await fetchAvailablePlans()
+            Task {
+                do {
+                    try await fetchAvailablePlans()
+                } catch {
+                    PMLog.error("Could not fetch available plans: \(error)", sendToExternal: true)
+                }
             }
         }
         return storeKitDataSource.availableProducts

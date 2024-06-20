@@ -31,14 +31,17 @@ import ProtonCoreDataModel
 import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreServices
+import ProtonCorePasswordRequest
 
 public class PasswordChangeService {
     private let apiService: APIService
+    private let authService: AuthService
 
     // MARK: Public interface
 
     public init(api: APIService) {
         self.apiService = api
+        self.authService = .init(api: api)
     }
 
     public func updateLoginPassword(auth currentAuth: AuthCredential,
@@ -90,9 +93,10 @@ public class PasswordChangeService {
 
     public func updateUserPassword(auth currentAuth: AuthCredential,
                                    userInfo: UserInfo,
+                                   authInfo authInfoResponse: AuthInfoResponse? = nil,
                                    loginPassword: String,
                                    newPassword: Passphrase,
-                                   twoFACode: String?,
+                                   twoFAParams: TwoFAParams? = nil,
                                    buildAuth: Bool) async throws {
 
         let oldPassword = Passphrase(value: currentAuth.mailboxpassword)
@@ -107,7 +111,11 @@ public class PasswordChangeService {
             passwordAuth = try await generatePasswordAuth(newPassword: newPassword)
         }
 
-        let (_, authInfo): (URLSessionDataTask?, AuthInfoResponse) = try await apiService.perform(request: AuthAPI.Router.info(username: username))
+        let authInfo: AuthInfoResponse
+
+        if authInfoResponse != nil { authInfo = authInfoResponse! } else {
+           (_, authInfo) = try await apiService.perform(request: AuthAPI.Router.info(username: username))
+        }
 
         guard let auth = try SrpAuth(version: authInfo.version,
                                      username: username,
@@ -131,7 +139,7 @@ public class PasswordChangeService {
             keySalt: resultOfKeyUpdate.saltOfNewPassword.encodeBase64(),
             userlevelKeys: userInfo.isKeyV2 ? [] : resultOfKeyUpdate.updatedUserKeys,
             addressKeys: userInfo.isKeyV2 ? [] : resultOfKeyUpdate.updatedAddresses?.toKeys() ?? [],
-            tfaCode: twoFACode,
+            twoFAParams: twoFAParams,
             userKeys: resultOfKeyUpdate.updatedUserKeys,
             auth: passwordAuth,
             authCredential: currentAuth
@@ -149,6 +157,57 @@ public class PasswordChangeService {
         updateLocalKeys(authCredential: currentAuth,
                         userInfo: userInfo,
                         updatedKeyResult: resultOfKeyUpdate)
+    }
+
+    public func fetchAuthInfo() async throws -> AuthInfoResponse {
+        return try await withCheckedThrowingContinuation { continuation in
+            authService.info { response in
+                switch response {
+                case .success(let eitherResponse):
+                    switch eitherResponse {
+                    case .left(let authInfoResponse):
+                        continuation.resume(returning: authInfoResponse)
+                    case .right:
+                        assertionFailure("SSO challenge response should never be returned if the intent is nil")
+                        continuation.resume(throwing: AuthErrors.switchToSSOError)
+                    }
+                case .failure(let error):
+                    continuation.resume(throwing: AuthErrors.networkingError(error))
+                }
+            }
+        }
+    }
+
+    public func unlockPasswordWithFidoSignature(_ signature: Fido2Signature, userInfo: UserInfo,
+                                                authInfo: AuthInfoResponse, loginPassword: String) async throws {
+        guard let username = userInfo.userAddresses.defaultAddress()?.email else {
+            PMLog.error("Attempted to change password of user without username.")
+            throw UpdatePasswordError.invalidUserName
+        }
+
+        guard let auth = try SrpAuth(version: authInfo.version,
+                                     username: username,
+                                     password: loginPassword,
+                                     salt: authInfo.salt,
+                                     signedModulus: authInfo.modulus,
+                                     serverEphemeral: authInfo.serverEphemeral) else {
+            throw UpdatePasswordError.cantHashPassword
+        }
+        let srpClient = try auth.generateProofs(2048)
+
+        guard let clientEphemeral = srpClient.clientEphemeral,
+              let clientProof = srpClient.clientProof else {
+            throw UpdatePasswordError.cantGenerateSRPClient
+        }
+
+        let authEndpointData = AuthEndpointData(username: username,
+                                                ephemeral: clientEphemeral,
+                                                proof: clientProof,
+                                                srpSession: authInfo.srpSession)
+
+        let request = UnlockPasswordEndpoint(authData: authEndpointData, signature: signature)
+        try await apiService.perform(request: request)
+
     }
 
     private func generateLocalKeys(

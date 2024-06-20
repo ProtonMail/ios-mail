@@ -151,6 +151,8 @@ public enum LUITranslation: TranslationsExposing {
     case twofa_invalid_state_banner
     case twofa_invalid_2fa_key
     case twofa_unexpected_authorization_type
+    case twofa_unexpected_signature
+    case unavailable_authinfo
 
     public var l10n: String {
         switch self {
@@ -387,6 +389,12 @@ public enum LUITranslation: TranslationsExposing {
         case .twofa_unexpected_authorization_type:
             return localized(key: "We received an authorization from a type we don't support yet.",
                              comment: "Error shown when recieving a successful authorization of unkown type.")
+        case .twofa_unexpected_signature:
+            return localized(key: "Unexpected FIDO2 signature.",
+                             comment: "Error shown when receiving a FIDO2/Passkey signature that wasn't requested.")
+        case .unavailable_authinfo:
+            return localized(key: "We could not initiate the Secure Password update connection. Please try again.",
+                             comment: "Error shown when changing password on an account which has 2 Factor Auth configured, but can't retrieve the authentication challenge")
         }
     }
 }

@@ -40,7 +40,7 @@ struct PCButtonTextStyle: ButtonStyle {
         }
         var titleColorNormal: Color
         switch brand {
-        case .proton, .vpn:
+        case .proton, .vpn, .wallet:
             titleColorNormal = ColorProvider.TextAccent
         case .pass:
             titleColorNormal = ColorProvider.InteractionNormMajor2PassTheme

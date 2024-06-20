@@ -1636,6 +1636,7 @@ enum L10n {
         static let loginPassword = NSLocalizedString("Change account password", comment: "settings general section title")
         static let mailboxPassword = NSLocalizedString("Change mailbox password", comment: "settings general section title")
         static let singlePassword = NSLocalizedString("Change password", comment: "settings general section title")
+        static let securityKeys = NSLocalizedString("Security keys", comment: "settings general section title")
     }
 
     enum PremiumPerks {

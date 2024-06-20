@@ -26,7 +26,6 @@ import ProtonCoreNetworking
 
 /// Holds the bits necessary for signing a FIDO2 challenge
 public struct FIDO2Context {
-    public let authenticationOptions: AuthenticationOptions
     public let credential: Credential
     public let passwordMode: PasswordMode
 }
@@ -41,12 +40,15 @@ public struct Fido2Signature {
     public let authenticatorData: Data
     /// data about the client
     public let clientData: Data
+    /// original `AuthenticationOptions` used as challenge
+    public let authenticationOptions: AuthenticationOptions
 
     /// Memberwise initializer
-    public init(signature: Data, credentialID: Data, authenticatorData: Data, clientData: Data) {
+    public init(signature: Data, credentialID: Data, authenticatorData: Data, clientData: Data, authenticationOptions: AuthenticationOptions) {
         self.signature = signature
         self.credentialID = credentialID
         self.authenticatorData = authenticatorData
         self.clientData = clientData
+        self.authenticationOptions = authenticationOptions
     }
 }

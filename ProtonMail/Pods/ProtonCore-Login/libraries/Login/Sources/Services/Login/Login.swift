@@ -53,9 +53,9 @@ public enum LoginStatus {
     /// Need TOTP code
     case askTOTP
     /// Need either TOTP or FIDO2 key
-    case askAny2FA(FIDO2Context)
+    case askAny2FA(AuthenticationOptions)
     /// Need FIDO2 key
-    case askFIDO2(FIDO2Context)
+    case askFIDO2(AuthenticationOptions)
     /// Need second password
     case askSecondPassword
     /// Need username to transform external into internal account
@@ -349,7 +349,7 @@ public protocol Login {
     func login(username: String, password: String, intent: Intent?, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     /// Sends the TOTP code
     func provide2FACode(_ code: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
-    /// Sends the FIDO2 challenge signed
+    /// Sends the FIDO2 challenge signed to login
     func provideFido2Signature(_ signature: Fido2Signature, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func finishLoginFlow(mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func logout(credential: AuthCredential?, completion: @escaping (Result<Void, Error>) -> Void)

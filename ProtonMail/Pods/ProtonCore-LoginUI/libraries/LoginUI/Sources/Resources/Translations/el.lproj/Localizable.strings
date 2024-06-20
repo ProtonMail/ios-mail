@@ -215,3 +215,39 @@
 "Sign in" = "Είσοδος";
 
 "Troubleshoot" = "Αντιμετώπιση προβλημάτων";
+
+"Please choose how you want to confirm your identity." = "Παρακαλούμε επιλέξτε πώς θέλετε να επιβεβαιώσετε την ταυτότητά σας.";
+
+"One-time code" = "Κωδικός μίας χρήσης";
+
+"Security key" = "Κλειδί ασφαλείας";
+
+"Two-Factor Authentication" = "Ελεγχος Ταυτότητας δυο παραγόντων";
+
+"Present a security key linked to your Proton Account." = "Παρουσιάστε ένα κλειδί ασφαλείας συνδεδεμένο με τον λογαριασμό σας Proton.";
+
+"Learn more" = "Μάθετε περισσότερα";
+
+"Invalid state. Please quit the app and try again in a few minutes." = "Μη έγκυρη κατάσταση. Παρακαλούμε κλείστε την εφαρμογή και δοκιμάστε ξανά σε λίγα λεπτά.";
+
+"There was a problem reading your security key." = "Παρουσιάστηκε πρόβλημα κατά την ανάγνωση του κλειδιού ασφαλείας.";
+
+"We received an authorization from a type we don't support yet." = "Λάβαμε μια εξουσιοδότηση από έναν τύπο που δεν υποστηρίζουμε ακόμα.";
+
+"Fetching your security keys details" = "Λήψη των στοιχείων των κλειδιών ασφαλείας σας";
+
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "Δεν έχετε καταχωρίσει ακόμα κλειδιά ασφαλείας στον λογαριασμό σας. Παρακαλούμε επισκεφθείτε την ενότητα ρυθμίσεων στον ιστότοπό μας για να προσθέσετε κλειδιά ασφαλείας.";
+
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "Παρουσιάστηκε σφάλμα κατά τη λήψη των κλειδιών ασφαλείας σας. Μπορείτε επίσης να τα ελέγξετε στον ιστότοπο Proton %@.";
+
+"These are the security keys registered to your account" = "Αυτά είναι τα κλειδιά ασφαλείας που έχουν καταχωριστεί στον λογαριασμό σας";
+
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "Δεν έχετε καταχωρίσει ακόμα κλειδιά ασφαλείας στον λογαριασμό σας. Χρησιμοποιήστε την εφαρμογή ιστού Proton %@ για να προσθέσετε κλειδιά ασφαλείας.";
+
+"Security Keys" = "Κλειδιά Ασφαλείας";
+
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "Για να διαχειριστείτε, να προσθέσετε ή να αφαιρέσετε κλειδιά ασφαλείας, χρησιμοποιήστε την εφαρμογή ιστού Proton %@.";
+
+"Unexpected FIDO2 signature." = "Μη αναμενόμενη υπογραφή FIDO2.";
+
+"We could not initiate the Secure Password update connection. Please try again." = "Δεν ήταν δυνατή η εκκίνηση της σύνδεσης ενημέρωσης ασφαλούς κωδικού πρόσβασης. Παρακαλούμε προσπαθήστε ξανά.";

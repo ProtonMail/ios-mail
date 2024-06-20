@@ -22,16 +22,22 @@ import Foundation
 import ProtonCoreServices
 import ProtonCoreLog
 
-extension SecurityKeysView { 
+extension SecurityKeysView {
     public class ViewModel: ObservableObject {
 
         let apiService: APIService!
         @Published var viewState: SecurityKeysViewState = SecurityKeysViewState.initial
         let productName: String
+        let showingDismissButton: Bool
+        weak var navigationDelegate: NavigationDelegate?
 
-        public init(apiService: APIService, productName: String) {
+        public init(apiService: APIService,
+                    productName: String,
+                    showingDismissButton: Bool
+        ) {
             self.apiService = apiService
             self.productName = productName
+            self.showingDismissButton = showingDismissButton
         }
 
 #if DEBUG
@@ -39,6 +45,7 @@ extension SecurityKeysView {
         public init() {
             self.apiService = nil
             self.productName = "Core"
+            self.showingDismissButton = false
         }
 #endif
 
@@ -63,6 +70,11 @@ extension SecurityKeysView {
             let (_, response): (_, SettingsResponse) = try await apiService.perform(request: request)
             return response.userSettings._2FA.registeredKeys
         }
+
+        func dismiss() {
+            navigationDelegate?.userDidGoBack()
+        }
+
     }
 
 }

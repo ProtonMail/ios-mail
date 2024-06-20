@@ -16,12 +16,10 @@
     "tag": "1.10.0"
   },
   "platforms": {
-    "ios": "14.0",
-    "osx": "11.0"
+    "ios": null,
+    "osx": null
   },
-  "swift_versions": [
-    "5.6"
-  ],
+  "swift_versions": null,
   "frameworks": "XCTest",
   "pod_target_xcconfig": {
     "ENABLE_BITCODE": "NO"
@@ -29,6 +27,5 @@
   "source_files": [
     "third-party/swift-snapshot-testing/Sources",
     "third-party/swift-snapshot-testing/Sources/**/*.swift"
-  ],
-  "swift_version": "5.6"
+  ]
 }

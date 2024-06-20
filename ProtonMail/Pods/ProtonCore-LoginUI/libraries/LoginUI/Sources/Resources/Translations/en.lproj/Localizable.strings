@@ -216,7 +216,7 @@
 
 "Troubleshoot" = "Troubleshoot";
 
-"Your account has several 2FA mechanisms configured. Please choose how you want to confirm your identity." = "Your account has several 2FA mechanisms configured. Please choose how you want to confirm your identity.";
+"Please choose how you want to confirm your identity." = "Please choose how you want to confirm your identity.";
 
 "One-time code" = "One-time code";
 
@@ -247,3 +247,7 @@
 "Security Keys" = "Security Keys";
 
 "To manage, add, or remove security keys, please use the Proton %@ web application." = "To manage, add, or remove security keys, please use the Proton %@ web application.";
+
+"Unexpected FIDO2 signature." = "Unexpected FIDO2 signature.";
+
+"We could not initiate the Secure Password update connection. Please try again." = "We could not initiate the Secure Password update connection. Please try again.";

@@ -75,7 +75,7 @@ extension ProtonIcon {
 }
 #endif
 
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
 import AppKit
 
 public struct DarkModePreferingIcon {

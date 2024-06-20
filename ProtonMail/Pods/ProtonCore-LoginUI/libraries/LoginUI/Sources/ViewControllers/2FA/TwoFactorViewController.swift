@@ -28,10 +28,13 @@ import ProtonCoreLogin
 import ProtonCoreUIFoundations
 
 protocol TwoFactorViewControllerDelegate: NavigationDelegate, LoginStepsDelegate {
+    /// Communicate Login UI flow with 2FA finished with the UserData
     func twoFactorViewControllerDidFinish(data: LoginData, endLoading: @escaping () -> Void)
     func twoFactorViewControllerDidFail(error: LoginError)
 }
 
+/// View Controller for inputting TOTP code during login
+/// (currently not supporting change password scenario, too coupled to login use case)
 final class TwoFactorViewController: UIViewController, AccessibleView, Focusable {
 
     // MARK: - Outlets

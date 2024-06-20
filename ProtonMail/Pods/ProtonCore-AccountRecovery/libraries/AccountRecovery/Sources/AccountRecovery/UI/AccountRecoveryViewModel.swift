@@ -23,6 +23,7 @@
 #if os(iOS)
 import Foundation
 import ProtonCoreDataModel
+import ProtonCoreNetworking
 import ProtonCoreObservability
 import ProtonCorePasswordRequest
 import UIKit
@@ -132,6 +133,14 @@ extension AccountRecoveryView {
             loadData()
         }
 
+        public func didCloseWithAuthError(error: AuthErrors) {
+            ObservabilityEnv.report(
+                .accountRecoveryCancellationTotal(status: observabilityStatusError(error: error))
+            )
+            isLoaded = false
+            loadData()
+        }
+
         public func didCloseWithError(code: Int, description: String) {
             ObservabilityEnv.report(
                 .accountRecoveryCancellationTotal(status: .unknown)
@@ -144,6 +153,27 @@ extension AccountRecoveryView {
             ObservabilityEnv.report(
                 .accountRecoveryCancellationTotal(status: .wrongPassword)
             )
+        }
+
+        private func observabilityStatusError(error: AuthErrors) -> AcccountRecoveryCancellationHTTPResponseCodeStatus {
+            switch error {
+            case .parsingError:
+                return .parseError
+            case .wrongPassword:
+                return .wrongPassword
+            default:
+                guard let httpCode = error.httpCode else { return .unknown }
+                switch httpCode {
+                case 100...199: return .http1xx
+                case 200...299: return .http2xx
+                case 300...399: return .http3xx
+                case 429: return .tooManyRequests
+                case 495: return .sslError
+                case 400...499: return .http4xx
+                case 500...599: return .http5xx
+                default: return .unknown
+                }
+            }
         }
     }
 }

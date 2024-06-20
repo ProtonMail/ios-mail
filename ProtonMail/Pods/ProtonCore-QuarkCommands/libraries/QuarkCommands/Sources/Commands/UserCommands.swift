@@ -75,13 +75,14 @@ public extension Quark {
     }
 
     @discardableResult
-    func userCreateAddress(decryptedUserId: Int, password: String, email: String, genKeys: GenKeys = .Curve25519) throws -> CreateUserAddressQuarkResponse? {
+    func userCreateAddress(decryptedUserId: Int, password: String, email: String, genKeys: GenKeys = .Curve25519, isPrimary: Bool = false) throws -> CreateUserAddressQuarkResponse? {
         let args = [
             "userID=\(decryptedUserId)",
             "password=\(password)",
             "email=\(email)",
             "--gen-keys=\(genKeys.rawValue)",
-            "--format=json"
+            "--format=json",
+            "--primary=\(isPrimary ? "1": "0")"
         ]
 
         let request = try route(usersCreateAddress)

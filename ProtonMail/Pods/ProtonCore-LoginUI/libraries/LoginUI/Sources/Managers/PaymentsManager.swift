@@ -26,6 +26,7 @@ import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
 import ProtonCoreServices
 import ProtonCorePayments
+import ProtonCoreLog
 import ProtonCoreLogin
 import ProtonCorePaymentsUI
 import ProtonCoreUIFoundations
@@ -59,7 +60,11 @@ class PaymentsManager {
             // In the dynamic plans, fetching available IAPs from StoreKit is done alongside fetching available plans
             Task {
                 if case let .right(plansDataSource) = payments.planService {
-                    try await plansDataSource.fetchAvailablePlans()
+                    do {
+                        try await plansDataSource.fetchAvailablePlans()
+                    } catch {
+                        PMLog.error("Fetch available plans error: \(error)", sendToExternal: true)
+                    }
                     payments.storeKitManager.subscribeToPaymentQueue()
                 }
             }

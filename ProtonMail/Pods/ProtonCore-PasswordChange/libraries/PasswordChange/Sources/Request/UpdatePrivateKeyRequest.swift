@@ -19,6 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCoreAuthentication
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreNetworking
@@ -43,7 +44,7 @@ final class UpdatePrivateKeyRequest: Request {
     let clientEphemeral: String // base64 encoded
     let clientProof: String // base64 encoded
     let SRPSession: String // hex encoded session id
-    let tfaCode: String? // optional
+    let twoFAParams: TwoFAParams? // optional
     let keySalt: String // base64 encoded need random value
     var userLevelKeys: [Key]
     var userAddressKeys: [Key]
@@ -56,7 +57,7 @@ final class UpdatePrivateKeyRequest: Request {
          keySalt: String,
          userlevelKeys: [Key] = [],
          addressKeys: [Key] = [],
-         tfaCode: String? = nil,
+         twoFAParams: TwoFAParams? = nil,
          userKeys: [Key]?,
          auth: PasswordAuth?,
          authCredential: AuthCredential?) {
@@ -70,7 +71,7 @@ final class UpdatePrivateKeyRequest: Request {
         self.userKeys = userKeys
 
         // optional values
-        self.tfaCode = tfaCode
+        self.twoFAParams = twoFAParams
         self.auth = auth
 
         self.credential = authCredential
@@ -114,9 +115,10 @@ final class UpdatePrivateKeyRequest: Request {
             }
         }
 
-        if let code = tfaCode {
-            out["TwoFactorCode"] = code
+        if let twoFAParamsDictionary = twoFAParams?.asParameterDictionary {
+            out.merge(twoFAParamsDictionary, uniquingKeysWith: { a, _ in a })
         }
+
         if let auth_obj = self.auth {
             out["Auth"] = auth_obj.parameters
         }

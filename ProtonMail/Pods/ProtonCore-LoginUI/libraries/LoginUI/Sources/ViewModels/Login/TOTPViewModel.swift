@@ -29,16 +29,13 @@ import SwiftUI
 
 extension TOTPView {
     @MainActor
-    class ViewModel: ObservableObject {
+    public class ViewModel: ObservableObject {
         @Published var tfaFieldContent: PCTextFieldContent!
         @Published var bannerState: BannerState = .none
-        weak var delegate: TwoFactorViewControllerDelegate?
+        public weak var delegate: TwoFAProviderDelegate?
         @Published var isLoading = false
 
-        private let login: Login
-
-        init(login: Login) {
-            self.login = login
+        public init() {
 
             tfaFieldContent = .init(
                 title: LUITranslation.login_2fa_2fa_button_title.l10n,
@@ -51,29 +48,19 @@ extension TOTPView {
         func startValidation() {
             isLoading = true
             let code = tfaFieldContent.text
-            login.provide2FACode(code) { [weak self] result in
-                self?.isLoading = false
-                switch result {
-                case let .failure(error): self?.bannerState = .error(content: .init(message: error.userFacingMessageInLogin))
-                case let .success(status):
-                    switch status {
-                    case let .finished(data):
-                        self?.delegate?.twoFactorViewControllerDidFinish(data: data) { }
-                    case let .chooseInternalUsernameAndCreateInternalAddress(data):
-                        self?.login.availableUsernameForExternalAccountEmail(email: data.email) { [weak self] username in
-                            self?.delegate?.createAddressNeeded(data: data, defaultUsername: username)
-                        }
-                    case .askTOTP, .askAny2FA, .askFIDO2:
-                        PMLog.error("Asking for 2FA validation after successful 2FA validation is an invalid state", sendToExternal: true)
-                        self?.bannerState = .error(content: .init(message: LUITranslation.twofa_invalid_state_banner.l10n))
-                    case .askSecondPassword:
-                        self?.delegate?.mailboxPasswordNeeded()
-                    case .ssoChallenge:
-                        PMLog.error("Receiving SSO challenge after successful 2FA code is an invalid state", sendToExternal: true)
-                        self?.bannerState = .error(content: .init(message: LUITranslation.twofa_invalid_state_banner.l10n))
+
+            Task {
+                do {
+                    try await delegate?.providerDidObtain(factor: code)
+                    // don't update isLoading here, it stops way ahead of the view being dismissed
+                } catch {
+                    await MainActor.run {
+                        isLoading = false
+                        bannerState = .error(content: .init(message: error.localizedDescription))
                     }
                 }
             }
+
         }
     }
 }

@@ -82,7 +82,7 @@
 
 "Forgot password" = "Contrasenya oblidada";
 
-"Two-factor authentication" = "Autenticació de dos factors";
+"Two-factor authentication" = "Autenticació de doble factor";
 
 "Authenticate" = "Autentica";
 
@@ -192,7 +192,7 @@
 
 "Email address already used." = "L'adreça de correu electrònic ja està en ús.";
 
-"Please ask your admin to configure your sub-user." = "Demaneu a l'administrador que us configurin el sub-usuari.";
+"Please ask your admin to configure your sub-user." = "Demaneu a l'administrador que us configuri el sub-usuari.";
 
 "Would you like to receive a new verification code or use an alternate email address?" = "Voleu rebre un codi de verificació nou o utilitzar una adreça de correu electrònic alternativa?";
 
@@ -215,3 +215,39 @@
 "Sign in" = "Inicia la sessió";
 
 "Troubleshoot" = "Resolució de problemes";
+
+"Please choose how you want to confirm your identity." = "Si us plau, esculli com vol confirmar la seva identitat.";
+
+"One-time code" = "Codi d'un sol ús";
+
+"Security key" = "Clau de seguretat";
+
+"Two-Factor Authentication" = "Autenticació de doble factor";
+
+"Present a security key linked to your Proton Account." = "Presenti una clau de seguretat vinculada al seu compte de Proton.";
+
+"Learn more" = "Més informació";
+
+"Invalid state. Please quit the app and try again in a few minutes." = "Estat no vàlid. Si us plau, tanqui l'aplicació i torni-ho a provar d'aquí a uns minuts.";
+
+"There was a problem reading your security key." = "S'ha produït un problema en llegir la seva clau de seguretat.";
+
+"We received an authorization from a type we don't support yet." = "Hem rebut una autorització d'un tipus que encara no suportem.";
+
+"Fetching your security keys details" = "S'estan obtenint els detalls de les seves claus de seguretat";
+
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "Encara no té cap clau de seguretat registrada al seu compte. Visiti la secció de configuració del nostre lloc web per afegir claus de seguretat.";
+
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "S'ha produït un error en recuperar les seves claus de seguretat. També pot consultar-les al lloc web de Proton %@.";
+
+"These are the security keys registered to your account" = "Aquestes són les claus de seguretat registrades al seu compte";
+
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "Encara no té cap clau de seguretat registrada al seu compte. Utilitzi l'aplicació web Proton %@ per afegir claus de seguretat.";
+
+"Security Keys" = "Claus de seguretat";
+
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "Per gestionar, afegir o eliminar claus de seguretat, utilitzi l'aplicació web Proton %@.";
+
+"Unexpected FIDO2 signature." = "Signatura FIDO2 inesperada.";
+
+"We could not initiate the Secure Password update connection. Please try again." = "No hem pogut iniciar la connexió d'actualització de la contrasenya segura. Si us plau, torni-ho a provar.";

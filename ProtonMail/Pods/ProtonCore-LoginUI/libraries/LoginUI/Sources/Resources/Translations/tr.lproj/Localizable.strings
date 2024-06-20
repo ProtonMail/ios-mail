@@ -215,3 +215,39 @@
 "Sign in" = "Oturum aç";
 
 "Troubleshoot" = "Sorun gider";
+
+"Please choose how you want to confirm your identity." = "Lütfen kimliğinizi nasıl doğrulamak istediğinizi seçin.";
+
+"One-time code" = "Tek kullanımlık kod";
+
+"Security key" = "Güvenlik anahtarı";
+
+"Two-Factor Authentication" = "İki adımlı doğrulama";
+
+"Present a security key linked to your Proton Account." = "Proton hesabınızla ilişkilendirilmiş güvenlik anahtarını takın.";
+
+"Learn more" = "Ayrıntılı bilgi alın";
+
+"Invalid state. Please quit the app and try again in a few minutes." = "Durum geçersiz. Lütfen uygulamadan çıkıp birkaç dakika sonra yeniden deneyin.";
+
+"There was a problem reading your security key." = "Güvenlik anahtarınız okunurken bir sorun çıktı.";
+
+"We received an authorization from a type we don't support yet." = "Henüz desteklemediğimiz bir türde yetkilendirme aldık.";
+
+"Fetching your security keys details" = "Güvenlik anahtarı bilgileriniz alınıyor";
+
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "Hesabınızda henüz kayıtlı bir güvenlik anahtarı yok. Güvenlik anahtarı eklemek için lütfen sitemizdeki ayarlar bölümüne gidin.";
+
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "Güvenlik anahtarlarınız alınırken bir sorun çıktı. Bunları Proton %@ sitesinde de kontrol edebilirsiniz.";
+
+"These are the security keys registered to your account" = "Hesabınıza kayıtlı güvenlik anahtarları bunlar";
+
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "Hesabınızda henüz kayıtlı bir güvenlik anahtarı yok. Lütfen güvenlik anahtarı eklemek için Proton %@ İnternet uygulamasını kullanın.";
+
+"Security Keys" = "Güvenlik anahtarları";
+
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "Güvenlik anahtarlarını yönetmek, eklemek ya da kaldırmak için lütfen Proton %@ İnternet uygulamasını kullanın.";
+
+"Unexpected FIDO2 signature." = "Beklenmeyen FIDO2 imzası ile karşılaşıldı.";
+
+"We could not initiate the Secure Password update connection. Please try again." = "Güvenli parola güncelleme bağlantısını başlatamadık. Lütfen yeniden deneyin.";
