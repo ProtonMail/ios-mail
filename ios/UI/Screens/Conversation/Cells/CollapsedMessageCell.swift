@@ -152,7 +152,7 @@ enum CollapsedMessageCellEvent {
 }
 
 private struct CollapsedMessageCellIdentifiers {
-    static let senderName = "detail.header.collapsed.sender.name"
-    static let preview = "detail.header.collapsed.preview"
-    static let dateText = "detail.header.collapsed.date"
+    static let senderName = "detail.cell.collapsed.sender.name"
+    static let preview = "detail.cell.collapsed.preview"
+    static let dateText = "detail.cell.collapsed.date"
 }

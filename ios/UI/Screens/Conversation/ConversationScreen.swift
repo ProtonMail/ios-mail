@@ -146,7 +146,7 @@ struct ConversationScreen: View {
                 })
                 .id(ConversationModel.lastCellId) // static value cause it won't be replaced with CollapsedMessageCell
                 .accessibilityElement(children: .contain)
-                .accessibilityIdentifier(ConversationScreenIdentifiers.expandedCell())
+                .accessibilityIdentifier(ConversationScreenIdentifiers.expandedCell(previous.count))
             }
             .task {
                 scrollView.scrollTo(model.scrollToMessage, anchor: .top)
@@ -221,11 +221,11 @@ private struct ConversationScreenIdentifiers {
     static let subjectText = "detail.subjectText"
     static let messageList = "detail.messageList"
     
-    static func collapsedCell(_ index: Int? = nil) -> String {
-        "detail.cell.collapsed#\(index ?? 0)"
+    static func collapsedCell(_ index: Int) -> String {
+        "detail.cell.collapsed#\(index)"
     }
     
-    static func expandedCell(_ index: Int? = nil) -> String {
-        "detail.cell.expanded#\(index ?? 0)"
+    static func expandedCell(_ index: Int) -> String {
+        "detail.cell.expanded#\(index)"
     }
 }

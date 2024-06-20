@@ -69,9 +69,10 @@ extension MessageDetailsView {
                 .fontWeight(.semibold)
                 .lineLimit(1)
                 .foregroundColor(DS.Color.Text.norm)
+                .accessibilityIdentifier(MessageDetailsViewIdentifiers.senderName)
+
             ProtonOfficialBadgeView()
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
-				.accessibilityIdentifier(MessageDetailsViewIdentifiers.senderName)
 
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
@@ -391,8 +392,8 @@ extension Array where Element == MessageDetail.Recipient {
 }
 
 private struct MessageDetailsViewIdentifiers {
-    static let senderName = "detail.header.senderName"
-    static let senderAddress = "detail.header.senderName"
+    static let senderName = "detail.header.sender.name"
+    static let senderAddress = "detail.header.sender.address"
     static let recipientsSummary = "detail.header.recipients.summary"
     static let messageDate = "detail.header.date"
     
