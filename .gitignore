@@ -24,6 +24,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# environment variables
+.env
+
 ### Xcode ###
 # Xcode
 #
