@@ -120,6 +120,50 @@ final class UpsellTelemetryReporterTests: XCTestCase {
         XCTAssertEqual(transmittedEvent, expectedEvent)
     }
 
+    func testUpgradeFailed() async throws {
+        await sut.upgradeFailed(storeKitProductId: "iosmail_mail2022_12_usd_auto_renewing")
+
+        let transmittedEvent = try XCTUnwrap(telemetryService.sendEventStub.lastArguments?.value)
+
+        let expectedEvent = TelemetryEvent(
+            measurementGroup: "mail.any.upsell",
+            name: "upgrade_error",
+            values: [:],
+            dimensions: [
+                "plan_before_upgrade": "free",
+                "days_since_account_creation": ">60",
+                "upsell_modal_version": "A.1",
+                "selected_plan": "mail2022",
+                "selected_cycle": "12"
+            ],
+            frequency: .always
+        )
+
+        XCTAssertEqual(transmittedEvent, expectedEvent)
+    }
+
+    func testUpgradeCancelled() async throws {
+        await sut.upgradeCancelled(storeKitProductId: "iosmail_mail2022_12_usd_auto_renewing")
+
+        let transmittedEvent = try XCTUnwrap(telemetryService.sendEventStub.lastArguments?.value)
+
+        let expectedEvent = TelemetryEvent(
+            measurementGroup: "mail.any.upsell",
+            name: "upgrade_cancelled_by_user",
+            values: [:],
+            dimensions: [
+                "plan_before_upgrade": "free",
+                "days_since_account_creation": ">60",
+                "upsell_modal_version": "A.1",
+                "selected_plan": "mail2022",
+                "selected_cycle": "12"
+            ],
+            frequency: .always
+        )
+
+        XCTAssertEqual(transmittedEvent, expectedEvent)
+    }
+
     func testWhenUserAlreadyIsOnPremiumPlan_thenTheValueIsSentInTheEvent() async throws {
         plansDataSource.currentPlanStub.fixture = .init(
             subscriptions: [.init(title: "", name: "foo2024", description: "", entitlements: [])]
