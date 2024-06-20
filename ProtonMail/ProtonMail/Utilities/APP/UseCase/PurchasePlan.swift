@@ -31,6 +31,8 @@ struct PurchasePlan {
             return .error(PurchasePlanError.productNotFound(storeKitProductId: storeKitProductId))
         }
 
+        SystemLogger.log(message: "Will purchase \(storeKitProductId)", category: .iap)
+
         await dependencies.upsellTelemetryReporter.upgradeAttempt(storeKitProductId: storeKitProductId)
 
         let output = await withCheckedContinuation { continuation in
@@ -43,9 +45,14 @@ struct PurchasePlan {
 
         switch output {
         case .planPurchased:
+            SystemLogger.log(message: "Purchase of \(storeKitProductId) complete", category: .iap)
             await dependencies.upsellTelemetryReporter.upgradeSuccess(storeKitProductId: storeKitProductId)
-        default:
-            break
+        case .error(let error):
+            SystemLogger.log(error: error, category: .iap)
+            await dependencies.upsellTelemetryReporter.upgradeFailed(storeKitProductId: storeKitProductId)
+        case .cancelled:
+            SystemLogger.log(message: "Purchase of \(storeKitProductId) cancelled", category: .iap)
+            await dependencies.upsellTelemetryReporter.upgradeCancelled(storeKitProductId: storeKitProductId)
         }
 
         return output
