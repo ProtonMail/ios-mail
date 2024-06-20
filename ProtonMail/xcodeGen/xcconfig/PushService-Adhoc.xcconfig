@@ -9,7 +9,5 @@
 #include "Production-common.xcconfig"
 #include "../../Pods/Target Support Files/Pods-PushService/Pods-PushService.adhoc.xcconfig"
 
-CODE_SIGN_ENTITLEMENTS = ${SRCROOT}/PushService/PushService.entitlements
 OTHER_SWIFT_FLAGS = $(inherited) -DDEBUG_ENTERPRISE
-PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService
 PROVISIONING_PROFILE_SPECIFIER = protonmail push service release

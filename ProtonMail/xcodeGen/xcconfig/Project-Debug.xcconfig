@@ -7,7 +7,6 @@
 
 #include "Project-Shared.xcconfig"
 
-CODE_SIGN_STYLE = Manual
 ENABLE_TESTABILITY = YES
 GCC_OPTIMIZATION_LEVEL = 0
 GCC_PREPROCESSOR_DEFINITIONS = DEBUG=1 $(inherited)
