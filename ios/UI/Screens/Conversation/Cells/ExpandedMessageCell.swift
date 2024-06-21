@@ -22,23 +22,29 @@ struct ExpandedMessageCell: View {
     private let uiModel: ExpandedMessageCellUIModel
     private let onTap: () -> Void
 
-    /**
-     Determines how the horizontal edges of the card are rendered to give visual
-     continuation to the list (only visible in landscape mode).
-     */
+    private let hasShadow: Bool
+
+    // Determines how the horizontal edges of the card are rendered to give visual
+    // continuation to the list (only visible in landscape mode).
     private let isFirstCell: Bool
 
     private let cardCornerRadius = DS.Radius.extraLarge
 
-    init(uiModel: ExpandedMessageCellUIModel, isFirstCell: Bool = false, onTap: @escaping () -> Void) {
+    init(
+        uiModel: ExpandedMessageCellUIModel,
+        hasShadow: Bool = true,
+        isFirstCell: Bool = false,
+        onTap: @escaping () -> Void
+    ) {
         self.uiModel = uiModel
+        self.hasShadow = hasShadow
         self.isFirstCell = isFirstCell
         self.onTap = onTap
     }
 
     var body: some View {
         ZStack(alignment: .top) {
-            MessageCardTopView(cornerRadius: cardCornerRadius)
+            MessageCardTopView(cornerRadius: cardCornerRadius, hasShadow: hasShadow)
 
             VStack(spacing: 0) {
                 MessageDetailsView(uiModel: uiModel.messageDetails, onTap: onTap)
@@ -100,6 +106,7 @@ struct ExpandedMessageCellUIModel {
                 message: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it",
                 messageDetails: messageDetails
             ),
+            hasShadow: false,
             isFirstCell: true,
             onTap: {}
         )
@@ -109,6 +116,7 @@ struct ExpandedMessageCellUIModel {
                 message: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it",
                 messageDetails: messageDetails
             ),
+            hasShadow: true,
             isFirstCell: false,
             onTap: {}
         )

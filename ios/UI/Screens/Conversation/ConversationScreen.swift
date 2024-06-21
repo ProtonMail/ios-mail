@@ -141,9 +141,14 @@ struct ConversationScreen: View {
                         }
                     }
                 }
-                ExpandedMessageCell(uiModel: last, isFirstCell: previous.isEmpty, onTap: {
-                    model.onMessageTap(messageId: last.messageId)
-                })
+                ExpandedMessageCell(
+                    uiModel: last,
+                    hasShadow: !previous.isEmpty,
+                    isFirstCell: previous.isEmpty,
+                    onTap: {
+                        model.onMessageTap(messageId: last.messageId)
+                    }
+                )
                 .id(ConversationModel.lastCellId) // static value cause it won't be replaced with CollapsedMessageCell
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(ConversationScreenIdentifiers.expandedCell(previous.count))
@@ -161,7 +166,7 @@ private struct ModifiersForSmoothScreenTransition: ViewModifier {
 
     func body(content: Content) -> some View {
         /**
-         With the combination of a white background toolbar and clipping the content to th scrollview area
+         With the combination of a white background toolbar and clipping the content to the scrollview area
          we manage to have a nice UI transition from the mailbox to an expanded message that we have to scroll to.
          */
         content

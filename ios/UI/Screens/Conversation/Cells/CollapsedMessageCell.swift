@@ -64,7 +64,7 @@ struct CollapsedMessageCell: View {
     }
 
     private var messageCardTopView: some View {
-        MessageCardTopView(cornerRadius: DS.Radius.extraLarge)
+        MessageCardTopView(cornerRadius: DS.Radius.extraLarge, hasShadow: true)
     }
 
     private var messageDataView: some View {

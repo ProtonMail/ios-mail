@@ -20,16 +20,17 @@ import SwiftUI
 
 struct MessageCardTopView: View {
     let cornerRadius: CGFloat
+    let hasShadow: Bool
 
     var body: some View {
         RoundedRectangle(cornerRadius: cornerRadius, style: .circular)
             .trim(from: 0.5, to: 1.0)
             .stroke(DS.Color.Border.strong, lineWidth: 1)
-            .shadow(color: DS.Color.Shade.shade10, radius: 1, x:0, y: -2)
+            .shadow(color: hasShadow ? DS.Color.Shade.shade10 : .clear, radius: 1, x:0, y: -2)
             .frame(maxHeight: 2*cornerRadius)
     }
 }
 
 #Preview {
-    MessageCardTopView(cornerRadius: 40)
+    MessageCardTopView(cornerRadius: 40, hasShadow: true)
 }
