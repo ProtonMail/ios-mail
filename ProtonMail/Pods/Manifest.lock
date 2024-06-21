@@ -329,66 +329,66 @@ DEPENDENCIES:
   - "iosMonkey (from `git@gitlab.protontech.ch:tpe/ios-monkey.git`, commit `d11605f4`)"
   - MBProgressHUD (= 1.1.0)
   - PromiseKit (= 6.13.1)
-  - "ProtonCore-AccountDeletion (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-AccountRecovery (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-AccountSwitcher (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-APIClient (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Authentication (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Authentication-KeyGeneration (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Challenge (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Crypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-CryptoGoImplementation/Crypto-Go (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-CryptoGoInterface (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-DataModel (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Doh (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Environment (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-FeatureFlags (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Features (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-ForceUpgrade (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Foundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-GoLibs (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Hash (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-HumanVerification (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Keymaker (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-KeyManager (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Log (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Login (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-LoginUI (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-MissingScopes (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Networking (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Observability (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-PasswordChange (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-PasswordRequest (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Payments (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-PaymentsUI (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-PushNotifications (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-QuarkCommands (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Services (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Telemetry (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-TestingToolkit/UITests/AccountDeletion (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-TestingToolkit/UITests/Core (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-TestingToolkit/UITests/HumanVerification (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-TestingToolkit/UITests/Login (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-TestingToolkit/UITests/PaymentsUI (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-TestingToolkit/UnitTests/Authentication (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-TestingToolkit/UnitTests/Core (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-TestingToolkit/UnitTests/DataModel (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-TestingToolkit/UnitTests/Doh (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-TestingToolkit/UnitTests/Login (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-TestingToolkit/UnitTests/LoginUI (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-TestingToolkit/UnitTests/Networking (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-TestingToolkit/UnitTests/Services (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-TroubleShooting (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-UIFoundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
-  - "ProtonCore-VCard (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
+  - "ProtonCore-AccountDeletion (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-AccountRecovery (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-AccountSwitcher (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-APIClient (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Authentication (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Authentication-KeyGeneration (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Challenge (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Crypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-CryptoGoImplementation/Crypto-Go (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-CryptoGoInterface (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-DataModel (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Doh (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Environment (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-FeatureFlags (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Features (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-ForceUpgrade (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Foundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-GoLibs (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Hash (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-HumanVerification (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Keymaker (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-KeyManager (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Log (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Login (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-LoginUI (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-MissingScopes (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Networking (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Observability (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-PasswordChange (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-PasswordRequest (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Payments (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-PaymentsUI (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-PushNotifications (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-QuarkCommands (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Services (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Telemetry (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-TestingToolkit/UITests/AccountDeletion (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-TestingToolkit/UITests/Core (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-TestingToolkit/UITests/HumanVerification (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-TestingToolkit/UITests/Login (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-TestingToolkit/UITests/PaymentsUI (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-TestingToolkit/UnitTests/Authentication (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-TestingToolkit/UnitTests/Core (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-TestingToolkit/UnitTests/DataModel (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-TestingToolkit/UnitTests/Doh (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-TestingToolkit/UnitTests/Login (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-TestingToolkit/UnitTests/LoginUI (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-TestingToolkit/UnitTests/Networking (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-TestingToolkit/UnitTests/Services (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-TroubleShooting (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-UIFoundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
+  - "ProtonCore-VCard (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
   - "ProtonInboxICal (from `git@gitlab.protontech.ch:apple/inbox/protoninboxical.git`)"
   - "ProtonInboxRSVP (from `git@gitlab.protontech.ch:apple/inbox/protoninboxrsvp.git`)"
   - SDWebImage (~> 5.15)
   - "Sentry (from `git@gitlab.protontech.ch:jchen/sentry-cocoa.git`, tag `8.9.3.fork`)"
   - "SideMenuSwift (from `git@gitlab.protontech.ch:jchen/SideMenu.git`, tag `v2.0.9.autolayout`)"
   - SkeletonView (= 1.30.4)
-  - "swift-snapshot-testing (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.0`)"
+  - "swift-snapshot-testing (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `25.2.2`)"
   - SwiftSoup (~> 2.3)
   - "SwipyCell (from `git@gitlab.protontech.ch:jchen/SwipyCell.git`, commit `923310a`)"
   - TrustKit (from `https://github.com/ProtonMail/TrustKit.git`, branch `release/1.0.3`)
@@ -418,127 +418,127 @@ EXTERNAL SOURCES:
     :git: "git@gitlab.protontech.ch:tpe/ios-monkey.git"
   ProtonCore-AccountDeletion:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-AccountRecovery:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-AccountSwitcher:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-APIClient:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Authentication:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Authentication-KeyGeneration:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Challenge:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Crypto:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-CryptoGoImplementation:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-CryptoGoInterface:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-DataModel:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Doh:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Environment:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-FeatureFlags:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Features:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-ForceUpgrade:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Foundations:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-GoLibs:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Hash:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-HumanVerification:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Keymaker:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-KeyManager:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Log:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Login:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-LoginUI:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-MissingScopes:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Networking:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Observability:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-PasswordChange:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-PasswordRequest:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Payments:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-PaymentsUI:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-PushNotifications:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-QuarkCommands:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Services:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Telemetry:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-TestingToolkit:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-TroubleShooting:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-UIFoundations:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Utilities:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-VCard:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonInboxICal:
     :git: "git@gitlab.protontech.ch:apple/inbox/protoninboxical.git"
   ProtonInboxRSVP:
@@ -551,7 +551,7 @@ EXTERNAL SOURCES:
     :tag: v2.0.9.autolayout
   swift-snapshot-testing:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   SwipyCell:
     :commit: 923310a
     :git: "git@gitlab.protontech.ch:jchen/SwipyCell.git"
@@ -568,127 +568,127 @@ CHECKOUT OPTIONS:
     :git: "git@gitlab.protontech.ch:tpe/ios-monkey.git"
   ProtonCore-AccountDeletion:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-AccountRecovery:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-AccountSwitcher:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-APIClient:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Authentication:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Authentication-KeyGeneration:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Challenge:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Crypto:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-CryptoGoImplementation:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-CryptoGoInterface:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-DataModel:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Doh:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Environment:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-FeatureFlags:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Features:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-ForceUpgrade:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Foundations:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-GoLibs:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Hash:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-HumanVerification:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Keymaker:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-KeyManager:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Log:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Login:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-LoginUI:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-MissingScopes:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Networking:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Observability:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-PasswordChange:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-PasswordRequest:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Payments:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-PaymentsUI:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-PushNotifications:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-QuarkCommands:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Services:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Telemetry:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-TestingToolkit:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-TroubleShooting:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-UIFoundations:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-Utilities:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonCore-VCard:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   ProtonInboxICal:
     :commit: 19427b717b59264558b4fa81c1e06276843de87a
     :git: "git@gitlab.protontech.ch:apple/inbox/protoninboxical.git"
@@ -703,7 +703,7 @@ CHECKOUT OPTIONS:
     :tag: v2.0.9.autolayout
   swift-snapshot-testing:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 25.2.0
+    :tag: 25.2.2
   SwipyCell:
     :commit: 923310a
     :git: "git@gitlab.protontech.ch:jchen/SwipyCell.git"
@@ -744,7 +744,7 @@ SPEC CHECKSUMS:
   ProtonCore-KeyManager: 71256c06e7a3d2077dbb3594d44e6be59e39d471
   ProtonCore-Log: 709015bbdc8b865f7a5f5fd8fdd60658f1c52036
   ProtonCore-Login: f1030982dfb042abb4088714333d9bcb2812b396
-  ProtonCore-LoginUI: 82d88d503264ce68996f9c0da297fe65edb69c7b
+  ProtonCore-LoginUI: f26ebdcd5298e97c543cce36418a174216bf8f1f
   ProtonCore-MissingScopes: 547ee54e3451928aa06453bfb3166c0f2cd068cf
   ProtonCore-Networking: 483c22bfe00939155ae25749b2772a9f371695ef
   ProtonCore-Observability: 83424cce21e561934de84ce35a2127129c9da5be
@@ -775,6 +775,6 @@ SPEC CHECKSUMS:
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
   Yams: e10dae147f517ed57ecae37c5e8681bdf8fcab65
 
-PODFILE CHECKSUM: 9701cb6a34701786e2156ca5927b881a1e64f6e7
+PODFILE CHECKSUM: c409b194ef08b02df584f8c659f1128683dd1951
 
 COCOAPODS: 1.15.2

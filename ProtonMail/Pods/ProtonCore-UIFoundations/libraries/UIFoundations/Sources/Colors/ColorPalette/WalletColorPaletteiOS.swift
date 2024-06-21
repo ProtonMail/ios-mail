@@ -54,16 +54,16 @@ public struct WalletColorPaletteiOS: ColorPaletteiOS {
 
     // MARK: Notification
     public var NotificationError: ProtonColor {
-        ProtonColor(name: "Bittersweet")
+        ProtonColor(name: "Bittersweet", alternativeDarkName: "VividTangerine")
     }
     public var NotificationWarning: ProtonColor {
-        ProtonColor(name: "TreePoppy")
+        ProtonColor(name: "TreePoppy", alternativeDarkName: "TexasRose")
     }
     public var NotificationSuccess: ProtonColor {
-        ProtonColor(name: "MountainMeadow")
+        ProtonColor(name: "MountainMeadow", alternativeDarkName: "Tara")
     }
     public var NotificationNorm: ProtonColor {
-        BrandNorm
+        ProtonColor(name: "DreamyBlue", alternativeDarkName: "TitanWhite")
     }
 
     // MARK: Interaction norm
@@ -71,7 +71,7 @@ public struct WalletColorPaletteiOS: ColorPaletteiOS {
         BrandNorm
     }
     public var InteractionNormPressed: ProtonColor {
-        BrandDarken10
+        ProtonColor(name: "MoodyBlue", alternativeDarkName: "WhisperLila")
     }
     public var InteractionNormDisabled: ProtonColor {
         BrandLighten30
@@ -98,25 +98,25 @@ public struct WalletColorPaletteiOS: ColorPaletteiOS {
 
     // MARK: Shade
     public var Shade100: ProtonColor {
-        ProtonColor(name: "Mirage")
+        ProtonColor(name: "Mirage", alternativeDarkName: "White")
     }
     public var Shade80: ProtonColor {
-        ProtonColor(name: "Trout")
+        ProtonColor(name: "Trout", alternativeDarkName: "Manatee")
     }
     public var Shade60: ProtonColor {
-        ProtonColor(name: "MistySilver")
+        ProtonColor(name: "MistySilver", alternativeDarkName: "Topaz")
     }
     public var Shade50: ProtonColor {
-        ProtonColor(name: "Mischka")
+        ProtonColor(name: "Mischka", alternativeDarkName: "MulledWine")
     }
     public var Shade40: ProtonColor {
-        ProtonColor(name: "Mercury")
+        ProtonColor(name: "Mercury", alternativeDarkName: "BlueGunPowder")
     }
     public var Shade20: ProtonColor {
-        ProtonColor(name: "FrostWhisper")
+        ProtonColor(name: "FrostWhisper", alternativeDarkName: "Martinique")
     }
     public var Shade10: ProtonColor {
-        ProtonColor(name: "CloudVeil")
+        ProtonColor(name: "CloudVeil", alternativeDarkName: "BlueCinder")
     }
 
     // MARK: Text
@@ -136,7 +136,7 @@ public struct WalletColorPaletteiOS: ColorPaletteiOS {
         Shade0
     }
     public var TextAccent: ProtonColor {
-        BrandNorm
+        ProtonColor(name: "DreamyBlue", alternativeDarkName: "WhisperLila")
     }
 
     // MARK: Icon
@@ -156,7 +156,7 @@ public struct WalletColorPaletteiOS: ColorPaletteiOS {
         Shade0
     }
     public var IconAccent: ProtonColor {
-        BrandNorm
+        ProtonColor(name: "DreamyBlue", alternativeDarkName: "WhisperLila")
     }
 
     // MARK: Background

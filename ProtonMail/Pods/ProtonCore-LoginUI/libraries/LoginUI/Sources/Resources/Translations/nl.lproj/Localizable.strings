@@ -218,7 +218,7 @@
 
 "Please choose how you want to confirm your identity." = "Please choose how you want to confirm your identity.";
 
-"One-time code" = "One-time code";
+"One-time code" = "Eenmalige code";
 
 "Security key" = "Security key";
 
@@ -244,7 +244,7 @@
 
 "You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys.";
 
-"Security Keys" = "Security Keys";
+"Security Keys" = "Beveiligingssleutels";
 
 "To manage, add, or remove security keys, please use the Proton %@ web application." = "To manage, add, or remove security keys, please use the Proton %@ web application.";
 

@@ -222,7 +222,7 @@
 
 "Security key" = "Bezpečnostný kľúč";
 
-"Two-Factor Authentication" = "Dvojfaktorová autentizácia";
+"Two-Factor Authentication" = "Dvojstupňové overenie";
 
 "Present a security key linked to your Proton Account." = "Predložte bezpečnostný kľúč prepojený s vaším účtom Proton.";
 
@@ -232,22 +232,22 @@
 
 "There was a problem reading your security key." = "Pri čítaní vášho bezpečnostného kľúča došlo k problému.";
 
-"We received an authorization from a type we don't support yet." = "We received an authorization from a type we don't support yet.";
+"We received an authorization from a type we don't support yet." = "Dostali sme autorizáciu od typu, ktorý zatiaľ nepodporujeme.";
 
-"Fetching your security keys details" = "Fetching your security keys details";
+"Fetching your security keys details" = "Preberanie podrobností o vašich bezpečnostných kľúčoch";
 
-"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys.";
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "Vo svojom konte ešte nemáte zaregistrované žiadne bezpečnostné kľúče. Ak chcete pridať bezpečnostné kľúče, navštívte prosím sekciu nastavení na našej webovej lokalite.";
 
-"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "An error occurred fetching your security keys. You can also check them on the Proton %@ website.";
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "Pri načítaní vašich bezpečnostných kľúčov došlo k chybe. Môžete si ich skontrolovať aj na webovej lokalite Proton %@.";
 
-"These are the security keys registered to your account" = "These are the security keys registered to your account";
+"These are the security keys registered to your account" = "Toto sú bezpečnostné kľúče zaregistrované k vášmu účtu";
 
-"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys.";
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "Vo svojom konte ešte nemáte zaregistrované žiadne bezpečnostné kľúče. Na pridanie bezpečnostných kľúčov použite webovú aplikáciu Proton %@.";
 
 "Security Keys" = "Bezpečnostné kľúče";
 
-"To manage, add, or remove security keys, please use the Proton %@ web application." = "To manage, add, or remove security keys, please use the Proton %@ web application.";
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "Ak chcete spravovať, pridávať alebo odstraňovať bezpečnostné kľúče, použite prosím webovú aplikáciu Proton %@.";
 
-"Unexpected FIDO2 signature." = "Unexpected FIDO2 signature.";
+"Unexpected FIDO2 signature." = "Neočakávaný podpis FIDO2.";
 
-"We could not initiate the Secure Password update connection. Please try again." = "We could not initiate the Secure Password update connection. Please try again.";
+"We could not initiate the Secure Password update connection. Please try again." = "Nepodarilo sa nám spustiť pripojenie na aktualizáciu zabezpečeného hesla. Skúste to znova, prosím.";

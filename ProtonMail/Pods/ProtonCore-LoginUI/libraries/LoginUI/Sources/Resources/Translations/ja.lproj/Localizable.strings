@@ -218,11 +218,11 @@
 
 "Please choose how you want to confirm your identity." = "Please choose how you want to confirm your identity.";
 
-"One-time code" = "One-time code";
+"One-time code" = "ワンタイムコード";
 
-"Security key" = "Security key";
+"Security key" = "セキュリティキー";
 
-"Two-Factor Authentication" = "Two-Factor Authentication";
+"Two-Factor Authentication" = "2要素認証";
 
 "Present a security key linked to your Proton Account." = "Present a security key linked to your Proton Account.";
 
@@ -230,7 +230,7 @@
 
 "Invalid state. Please quit the app and try again in a few minutes." = "Invalid state. Please quit the app and try again in a few minutes.";
 
-"There was a problem reading your security key." = "There was a problem reading your security key.";
+"There was a problem reading your security key." = "セキュリティキーの読み込み中に問題が発生しました。";
 
 "We received an authorization from a type we don't support yet." = "We received an authorization from a type we don't support yet.";
 
@@ -244,7 +244,7 @@
 
 "You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys.";
 
-"Security Keys" = "Security Keys";
+"Security Keys" = "セキュリティキー";
 
 "To manage, add, or remove security keys, please use the Proton %@ web application." = "To manage, add, or remove security keys, please use the Proton %@ web application.";
 

@@ -22,9 +22,10 @@
 
 public enum PaymentLaunchBillingTotalStatus: String, Encodable, CaseIterable {
     case success
+    case purchasedPlan
     case planPurchaseProcessingInProgress
-    case purchaseError
     case apiBlocked
+    case purchaseError
     case canceled
     case renewalNotification
     case unknown
@@ -39,7 +40,12 @@ public struct PaymentLaunchBillingTotalLabels: Encodable, Equatable {
 }
 
 extension ObservabilityEvent where Payload == PayloadWithLabels<PaymentLaunchBillingTotalLabels> {
+    private enum Constants {
+        static let staticEventName = "ios_core_checkout_aiapBilling_launchBilling_total"
+        static let dynamicEventName = "ios_core_checkout_dynamicPlans_aiapBilling_launchBilling_total"
+    }
+
     public static func paymentLaunchBillingTotal(status: PaymentLaunchBillingTotalStatus, isDynamic: Bool = false) -> Self {
-        ObservabilityEvent(name: "ios_core_checkout_aiapBilling_launchBilling_total", labels: PaymentLaunchBillingTotalLabels(status: status))
+        ObservabilityEvent(name: isDynamic ? Constants.dynamicEventName : Constants.staticEventName, labels: PaymentLaunchBillingTotalLabels(status: status))
     }
 }

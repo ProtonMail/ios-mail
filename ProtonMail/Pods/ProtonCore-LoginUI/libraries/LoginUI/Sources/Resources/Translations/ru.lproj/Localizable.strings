@@ -216,38 +216,38 @@
 
 "Troubleshoot" = "Устранение неполадок";
 
-"Please choose how you want to confirm your identity." = "Please choose how you want to confirm your identity.";
+"Please choose how you want to confirm your identity." = "Выберите, как вы хотите подтвердить ваши личные данные.";
 
-"One-time code" = "One-time code";
+"One-time code" = "Одноразовый код";
 
 "Security key" = "Ключ безопасности";
 
-"Two-Factor Authentication" = "Two-Factor Authentication";
+"Two-Factor Authentication" = "Двухфакторная аутентификация";
 
-"Present a security key linked to your Proton Account." = "Present a security key linked to your Proton Account.";
+"Present a security key linked to your Proton Account." = "Предоставить ключ безопасности, связанный с вашим аккаунтом Proton.";
 
 "Learn more" = "Узнать больше";
 
-"Invalid state. Please quit the app and try again in a few minutes." = "Invalid state. Please quit the app and try again in a few minutes.";
+"Invalid state. Please quit the app and try again in a few minutes." = "Недействительное состояние. Выйдите из приложения и повторите попытку через несколько минут.";
 
-"There was a problem reading your security key." = "There was a problem reading your security key.";
+"There was a problem reading your security key." = "Возникла проблема при чтении ключа безопасности.";
 
-"We received an authorization from a type we don't support yet." = "We received an authorization from a type we don't support yet.";
+"We received an authorization from a type we don't support yet." = "Мы получили авторизацию от пока неподдерживаемого нами типа.";
 
-"Fetching your security keys details" = "Fetching your security keys details";
+"Fetching your security keys details" = "Загрузка информации о ключах безопасности";
 
-"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys.";
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "У вас еще нет ключей безопасности, зарегистрированных в вашей аккаунте. Чтобы добавить ключи безопасности, посетите раздел настроек на нашем сайте.";
 
-"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "An error occurred fetching your security keys. You can also check them on the Proton %@ website.";
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "Произошла ошибка при загрузке ключей безопасности. Вы также можете проверить их на веб-сайте Proton %@.";
 
-"These are the security keys registered to your account" = "These are the security keys registered to your account";
+"These are the security keys registered to your account" = "Это ключи безопасности, зарегистрированные в вашей учетной записи";
 
-"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys.";
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "У вас еще нет ключей безопасности, зарегистрированных в вашей учетной записи. Для добавления ключей безопасности воспользуйтесь веб-приложением Proton %@.";
 
-"Security Keys" = "Security Keys";
+"Security Keys" = "Ключи безопасности";
 
-"To manage, add, or remove security keys, please use the Proton %@ web application." = "To manage, add, or remove security keys, please use the Proton %@ web application.";
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "Для управления, добавления или удаления ключей безопасности используйте веб-приложение Proton %@.";
 
-"Unexpected FIDO2 signature." = "Unexpected FIDO2 signature.";
+"Unexpected FIDO2 signature." = "Неожиданная подпись FIDO2.";
 
-"We could not initiate the Secure Password update connection. Please try again." = "We could not initiate the Secure Password update connection. Please try again.";
+"We could not initiate the Secure Password update connection. Please try again." = "Нам не удалось установить подключение для обновления Secure Password. Попробуйте еще раз.";

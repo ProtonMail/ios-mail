@@ -80,7 +80,7 @@ extension DriveExclusiveTemporarilyAvailableColorProviderDesktopBase {
 #if canImport(SwiftUI)
 import SwiftUI
 
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, OSX 10.15, tvOS 15.0, watchOS 6.0, *)
 extension DriveExclusiveTemporarilyAvailableColorProviderMobileBase {
 
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> Color {
@@ -88,7 +88,7 @@ extension DriveExclusiveTemporarilyAvailableColorProviderMobileBase {
     }
 }
 
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, OSX 10.15, tvOS 15.0, watchOS 6.0, *)
 extension DriveExclusiveTemporarilyAvailableColorProviderDesktopBase {
 
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) -> Color {
