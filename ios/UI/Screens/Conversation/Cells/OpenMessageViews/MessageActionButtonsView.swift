@@ -53,11 +53,11 @@ private struct MessageActionButtonView: View {
             HStack(spacing: DS.Spacing.medium) {
                 Image(uiImage: image)
                     .resizable()
-                    .foregroundColor(DS.Color.Icon.weak)
+                    .foregroundColor(DS.Color.Icon.norm)
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 16, height: 16)
                 Text(text)
-                    .font(.caption)
+                    .font(DS.Font.body3)
                     .fontWeight(.regular)
                     .tint(DS.Color.Text.norm)
                     .lineLimit(1)

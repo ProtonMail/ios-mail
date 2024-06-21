@@ -46,12 +46,14 @@ struct LabelPickerView: View {
 
     var body: some View {
         ZStack {
-            VStack(spacing: DS.Spacing.large) {
+            VStack(spacing: DS.Spacing.medium) {
                 titleView
+                    .padding(.top, DS.Spacing.standard)
                 alsoArchiveView
                 labelList
                     .clipShape(.rect(cornerRadius: DS.Radius.large))
                 buttonDone
+                    .padding(.top, DS.Spacing.standard)
                 Spacer()
             }
             .accessibilityElement(children: .contain)
@@ -212,20 +214,24 @@ private struct LabelPickerCell: View {
     }
 
     var body: some View {
-        HStack() {
+        HStack(spacing: 0) {
             Circle()
                 .frame(width: 12)
                 .foregroundStyle(uiModel.color)
-                .padding(.leading, DS.Spacing.tiny)
+                .padding(.horizontal, DS.Spacing.small)
                 .accessibilityIdentifier(LabelPickerViewIdentifiers.cellIcon)
+
             Text(uiModel.name)
-                .font(DS.Font.body3)
+                .font(.subheadline)
                 .foregroundStyle(DS.Color.Text.weak)
                 .lineLimit(1)
-                .padding(.leading, DS.Spacing.moderatelyLarge)
-                .padding(.leading, DS.Spacing.small)
                 .accessibilityIdentifier(LabelPickerViewIdentifiers.cellText)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, DS.Spacing.large)
+
             Spacer()
+                .frame(width: DS.Spacing.large)
+
             Image(uiImage: selectionImage)
                 .opacity(uiModel.itemsWithLabel.atLeastOne ? 1 : 0)
                 .foregroundStyle(DS.Color.Brand.norm)

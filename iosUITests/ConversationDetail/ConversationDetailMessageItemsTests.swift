@@ -47,9 +47,9 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
         )
         
         let expectedCollapsedEntries = [
-            UITestConversationCollapsedItemEntry(index: 0, senderName: "notsofree@proton.black", date: "Jun 17", preview: "To youngbee@proton.black"),
-            UITestConversationCollapsedItemEntry(index: 1, senderName: "notsofree@proton.black", date: "Jun 18", preview: "To youngbee@proton.black"),
-            UITestConversationCollapsedItemEntry(index: 2, senderName: "Young Bee", date: "Jun 18", preview: "To notsofree@proton.black")
+            UITestConversationCollapsedItemEntry(index: 0, senderName: "notsofree@proton.black", date: "Jun 17", preview: "to youngbee@proton.black"),
+            UITestConversationCollapsedItemEntry(index: 1, senderName: "notsofree@proton.black", date: "Jun 18", preview: "to youngbee@proton.black"),
+            UITestConversationCollapsedItemEntry(index: 2, senderName: "Young Bee", date: "Jun 18", preview: "to notsofree@proton.black")
         ]
 
         navigator.navigateTo(UITestDestination.inbox)
@@ -100,8 +100,8 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
         )
         
         let expectedExpandedEntries = [
-            UITestConversationExpandedItemEntry(index: 0, senderName: "Young Bee", senderAddress: "youngbee@proton.black", date: "Jun 13", recipientsSummary: "To notsofree@proton.black"),
-            UITestConversationExpandedItemEntry(index: 2, senderName: "Young Bee", senderAddress: "youngbee@proton.black", date: "Jun 16", recipientsSummary: "To Test Free Account"),
+            UITestConversationExpandedItemEntry(index: 0, senderName: "Young Bee", senderAddress: "youngbee@proton.black", date: "Jun 13", recipientsSummary: "to notsofree@proton.black"),
+            UITestConversationExpandedItemEntry(index: 2, senderName: "Young Bee", senderAddress: "youngbee@proton.black", date: "Jun 16", recipientsSummary: "to Test Free Account"),
         ]
 
         navigator.navigateTo(UITestDestination.inbox)
@@ -158,9 +158,9 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
         )
         
         let expectedExpandedEntries = [
-            UITestConversationExpandedItemEntry(index: 0, senderName: "Young Bee", senderAddress: "youngbee@proton.black", date: "Jun 13", recipientsSummary: "To notsofree@proton.black"),
-            UITestConversationExpandedItemEntry(index: 1, senderName: "Test Free Account", senderAddress: "notsofree@proton.black", date: "Jun 15", recipientsSummary: "To Young Bee"),
-            UITestConversationExpandedItemEntry(index: 2, senderName: "Young Bee", senderAddress: "youngbee@proton.black", date: "Jun 16", recipientsSummary: "To Test Free Account"),
+            UITestConversationExpandedItemEntry(index: 0, senderName: "Young Bee", senderAddress: "youngbee@proton.black", date: "Jun 13", recipientsSummary: "to notsofree@proton.black"),
+            UITestConversationExpandedItemEntry(index: 1, senderName: "Test Free Account", senderAddress: "notsofree@proton.black", date: "Jun 15", recipientsSummary: "to Young Bee"),
+            UITestConversationExpandedItemEntry(index: 2, senderName: "Young Bee", senderAddress: "youngbee@proton.black", date: "Jun 16", recipientsSummary: "to Test Free Account"),
         ]
 
         navigator.navigateTo(UITestDestination.inbox)

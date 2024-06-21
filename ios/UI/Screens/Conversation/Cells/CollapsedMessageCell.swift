@@ -82,6 +82,7 @@ struct CollapsedMessageCell: View {
     private var previewRow: some View {
         Text(uiModel.messagePreview ?? uiModel.recipients)
             .font(.caption)
+            .fontWeight(uiModel.isRead ? .regular : .bold)
             .foregroundStyle(uiModel.isRead ? DS.Color.Text.hint : DS.Color.Text.norm)
             .lineLimit(1)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -98,6 +99,7 @@ struct CollapsedMessageCell: View {
                 .accessibilityIdentifier(CollapsedMessageCellIdentifiers.senderName)
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
+                .fontWeight(uiModel.isRead ? .regular : .bold)
                 .foregroundColor(uiModel.isRead ? DS.Color.Text.hint : DS.Color.Text.norm)
                 .accessibilityIdentifier(CollapsedMessageCellIdentifiers.dateText)
             Spacer()
