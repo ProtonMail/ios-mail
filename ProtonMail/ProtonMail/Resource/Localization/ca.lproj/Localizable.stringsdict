@@ -205,9 +205,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Queda %d intent abans de l'eliminació de les dades segures!</string>
+        <string>%d intent restant fins que se suprimeixin de forma segura les dades!</string>
         <key>other</key>
-        <string>Queden %d intents abans de l'eliminació de les dades segures!</string>
+        <string>%d intents restants fins que se suprimeixin de forma segura les dades!</string>
       </dict>
     </dict>
     <key>%1$d message moved to %2$@</key>

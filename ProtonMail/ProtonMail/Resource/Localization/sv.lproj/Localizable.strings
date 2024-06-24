@@ -2456,6 +2456,9 @@
 /* settings general section title */
 "Change mailbox password" = "Ändra lösenord för brevlådan";
 
+/* settings general section title */
+"Security keys" = "Säkerhetsnycklar";
+
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB lagringsutrymme";
 

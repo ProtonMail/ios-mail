@@ -2456,6 +2456,9 @@
 /* settings general section title */
 "Change mailbox password" = "Zmeniť heslo k poštovej schránke";
 
+/* settings general section title */
+"Security keys" = "Bezpečnostné kľúče";
+
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB úložného priestoru";
 

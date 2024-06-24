@@ -2456,6 +2456,9 @@
 /* settings general section title */
 "Change mailbox password" = "Posta kutusu parolasını değiştir";
 
+/* settings general section title */
+"Security keys" = "Güvenlik anahtarları";
+
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB depolama alanı";
 

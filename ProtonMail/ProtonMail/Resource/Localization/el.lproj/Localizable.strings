@@ -2456,6 +2456,9 @@
 /* settings general section title */
 "Change mailbox password" = "Αλλαγή κωδικού γραμματοκιβωτίου";
 
+/* settings general section title */
+"Security keys" = "Κλειδιά ασφαλείας";
+
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB αποθηκευτικός χώρος";
 
