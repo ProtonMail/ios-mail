@@ -208,8 +208,10 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         self.tableView.setEditing(false, animated: true)
         self.title = LocalString._contacts_title
 
-        self.tableView.reloadData()
         noContactsView.model.isAutoImportContactsEnabled = dependencies.autoImportContactsFeature.isSettingEnabledForUser
+
+        // reload table view in a way that will refresh no-contact views
+        publisher.send(publisher.value)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -382,6 +384,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
 
     private func showContactAutoSyncBannerIfNeeded() {
         guard viewModel.showShowContactAutoSyncBanner() else {
+            removeContactAutoSyncBanner()
             return
         }
 
@@ -398,16 +401,14 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
                             let alert = UIAlertController.makeContactAccessDeniedAlert()
                             self?.present(alert, animated: true, completion: nil)
                         }
-                        self?.tableView.tableHeaderView = nil
-                        self?.contactAutoSyncBannerHost = nil
+                        self?.removeContactAutoSyncBanner()
                         self?.viewModel.markAutoContactSyncAsSeen()
                     }
                 })
             },
             dismiss: { [weak self] in
                 self?.viewModel.markAutoContactSyncAsSeen()
-                self?.tableView.tableHeaderView = nil
-                self?.contactAutoSyncBannerHost = nil
+                self?.removeContactAutoSyncBanner()
             }
         )
         let hostVC = BannerHostViewController(rootView: banner)
@@ -427,6 +428,11 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
             tableView.tableHeaderView = headerView
         }
     }
+
+    private func removeContactAutoSyncBanner() {
+        tableView.tableHeaderView = nil
+        contactAutoSyncBannerHost = nil
+    }
 }
 
 // MARK: No contact hint
@@ -443,8 +449,7 @@ extension ContactsViewController {
         }
         noContactsUIView.isHidden = false
 
-        tableView.tableHeaderView = nil
-        contactAutoSyncBannerHost = nil
+        removeContactAutoSyncBanner()
     }
 
     private func autoImportContactIsStarted() {
