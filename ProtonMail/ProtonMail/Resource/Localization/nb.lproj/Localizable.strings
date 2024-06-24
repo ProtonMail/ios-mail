@@ -2456,6 +2456,9 @@
 /* settings general section title */
 "Change mailbox password" = "Endre postbokspassord";
 
+/* settings general section title */
+"Security keys" = "Sikkerhetsnøkler";
+
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB lagringsplass";
 

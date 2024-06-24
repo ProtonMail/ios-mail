@@ -2456,6 +2456,9 @@
 /* settings general section title */
 "Change mailbox password" = "Змяніць пароль паштовай скрыні";
 
+/* settings general section title */
+"Security keys" = "Ключы бяспекі";
+
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 ГБ сховішча";
 

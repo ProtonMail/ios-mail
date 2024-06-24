@@ -2456,6 +2456,9 @@
 /* settings general section title */
 "Change mailbox password" = "메일함 비밀번호 변경";
 
+/* settings general section title */
+"Security keys" = "보안 키";
+
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "저장공간 15GB";
 

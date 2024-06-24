@@ -70,7 +70,7 @@
  Push notification action to archive
  The title of the archive action in action sheet
 */
-"Archive" = "Arxivar";
+"Archive" = "Arxiu";
 
 /* menu title */
 "Drafts" = "Esborranys";
@@ -646,7 +646,7 @@
 "Resetting message cache…" = "Restablint la memòria cau del missatge…";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "Aquesta preferència tornarà a Safari si es desinstal·la el navegador escollit.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Aquesta preferència es desactivarà al Safari si el navegador triat es desinstal·la.";
 
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "L'URL a què intenteu accedir no és estàndard i pot no carregar-se correctament. Voleu obrir-lo amb el navegador per defecte del dispositiu?";
@@ -1169,7 +1169,7 @@
 "Please select at least one email" = "Seleccioneu com a mínim un correu electrònic.";
 
 /* Alert when auth token is revoked and switch to another */
-"Signed out from %@ and signed in with %@" = "Sessió de %1$@ tancada i iniciada amb %2$@";
+"Signed out from %@ and signed in with %@" = "S'ha tancat la sessió des de %1$@ i s'ha iniciat la sessió amb %2$@";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Canviar al compte ‘%@’";
@@ -1286,7 +1286,7 @@
 "You have entered at least one unknown recipient. Please verify your recipients." = "Heu introduït almenys un destinatari desconegut. Verifiqueu els vostres destinataris.";
 
 /* title of incorrect email format error while sending */
-"Sending failed" = "Enviament fallit";
+"Sending failed" = "Error en l'enviament";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Ves als esborranys";
@@ -2031,7 +2031,7 @@
 "Easily RSVP to events" = "Confirmi fàcilment els esdeveniments";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Ara pot respondre a una invitació o veure l'esdeveniment a Proton Calendar amb només un toc. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Ara podeu respondre a una invitació o veure l'esdeveniment a Proton Calendar amb només un toc. ";
 
 /* Menu title */
 "Max Storage" = "Emmagatzematge màxim";
@@ -2070,7 +2070,7 @@
 "I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "He estat usant Proton Mail i he pensat que us podria agradar. És un servei de correu electrònic segur que protegeix la vostra privacitat. Registreu-vos amb aquest enllaç per obtenir 1 mes de característiques prèmium gratuïtament:";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "La vostra privacitat està millor protegida si els vostres contactes també utilitzen Proton Mail. Convideu els vostres amics a Proton i cadascun obtindrà beneficis prèmium de forma gratuïta.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "La vostra privacitat està millor protegida si els vostres contactes també utilitzen Proton Mail. Convideu els amics a Proton i cadascun obtindrà beneficis prèmium de forma gratuïta.";
 
 /* The title of the maybe later button in referral prompt view. */
 "Maybe later" = "Potser després";
@@ -2361,7 +2361,7 @@
 "Unsubscribe?" = "Voleu anul·lar la subscripció?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Això us donarà de baixa de la llista de correu. El remitent serà notificat per deixar d'enviar correus electrònics a aquesta adreça.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Això us donarà de descarrega de la llista de correu. El remitent serà notificat per deixar d'enviar correus electrònics a aquesta adreça.";
 
 /* Alert telling the user that we are unable to preview this attachment */
 "Unable to preview this attachment" = "No s'ha pogut previsualitzar aquest adjunt";
@@ -2456,6 +2456,9 @@
 /* settings general section title */
 "Change mailbox password" = "Canviar contrasenya de la bústia de correu";
 
+/* settings general section title */
+"Security keys" = "Claus de seguretat";
+
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB d'emmagatzematge";
 
@@ -2478,7 +2481,7 @@
 "To improve our services, we sometimes collect anonymized usage data." = "Per millorar els nostres serveis, a vegades recopilem dades d'ús anònimes.";
 
 /* The subtitle of the crash report setting. */
-"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Si l'aplicació es falla, s'enviarà un informe als nostres enginyers amb detalls de la causa. Només s'utilitzaran per a millorar l'aplicació.";
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Si l'aplicació no funciona, s'enviarà un informe als nostres enginyers amb detalls de la causa. Només s'utilitzaran per a millorar l'aplicació.";
 
 /* Title of the upsell page. */
 "Upgrade to %@" = "Milloreu a %@";

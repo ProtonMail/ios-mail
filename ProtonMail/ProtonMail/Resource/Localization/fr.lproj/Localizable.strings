@@ -2456,6 +2456,9 @@
 /* settings general section title */
 "Change mailbox password" = "Changer le mot de passe de messagerie";
 
+/* settings general section title */
+"Security keys" = "Clés de sécurité";
+
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 Go d'espace de stockage";
 
