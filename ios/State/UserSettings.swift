@@ -21,7 +21,7 @@ final class UserSettings: ObservableObject {
     var mailboxActions: MailboxActionSettings
 
     var leadingSwipeAction: SwipeAction = .toggleReadStatus
-    var trailingSwipeAction: SwipeAction = .delete
+    var trailingSwipeAction: SwipeAction = .moveToTrash
 
     init(mailboxActions: MailboxActionSettings) {
         self.mailboxActions = mailboxActions

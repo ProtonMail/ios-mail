@@ -82,6 +82,7 @@ extension MailboxListView {
                     .mailboxSwipeActions(
                         isSelectionModeOn: model.selectionMode.hasSelectedItems,
                         itemId: item.id,
+                        systemFolder: model.selectedMailbox.systemFolder,
                         isItemRead: item.isRead,
                         onTapAction: model.onMailboxItemAction(_:itemIds:)
                     )

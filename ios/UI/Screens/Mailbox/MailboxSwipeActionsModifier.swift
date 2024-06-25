@@ -24,6 +24,7 @@ struct MailboxSwipeActionsModifier: ViewModifier {
     @State private(set) var triggerFeedback = false
     private let isSelectionModeOn: Bool
     private let itemId: PMMailboxItemId
+    private let systemFolder: SystemFolderIdentifier?
     private let isItemRead: Bool
     private let onTap: OnTapAction
 
@@ -35,9 +36,10 @@ struct MailboxSwipeActionsModifier: ViewModifier {
         userSettings.trailingSwipeAction
     }
 
-    init(isSelectionModeOn: Bool, itemId: PMMailboxItemId, isItemRead: Bool, onTapAction: @escaping OnTapAction) {
+    init(isSelectionModeOn: Bool, itemId: PMMailboxItemId, systemFolder: SystemFolderIdentifier?, isItemRead: Bool, onTapAction: @escaping OnTapAction) {
         self.isSelectionModeOn = isSelectionModeOn
         self.itemId = itemId
+        self.systemFolder = systemFolder
         self.isItemRead = isItemRead
         self.onTap = onTapAction
     }
@@ -47,12 +49,12 @@ struct MailboxSwipeActionsModifier: ViewModifier {
             content
         } else {
             content
-                .if(leadingSwipe.isActionAssigned) { view in
+                .if(leadingSwipe.isActionAssigned(systemFolder: systemFolder)) { view in
                     view.swipeActions(edge: .leading) {
                         button(for: leadingSwipe)
                     }
                 }
-                .if(trailingSwipe.isActionAssigned) { view in
+                .if(trailingSwipe.isActionAssigned(systemFolder: systemFolder)) { view in
                     view.swipeActions(edge: .trailing) {
                         button(for: trailingSwipe)
                     }
@@ -85,6 +87,7 @@ extension View {
     @MainActor func mailboxSwipeActions(
         isSelectionModeOn: Bool,
         itemId: PMMailboxItemId,
+        systemFolder: SystemFolderIdentifier?,
         isItemRead: Bool,
         onTapAction: @escaping MailboxSwipeActionsModifier.OnTapAction
     ) -> some View {
@@ -92,6 +95,7 @@ extension View {
             MailboxSwipeActionsModifier(
                 isSelectionModeOn: isSelectionModeOn,
                 itemId: itemId,
+                systemFolder: systemFolder,
                 isItemRead: isItemRead,
                 onTapAction: onTapAction
             )

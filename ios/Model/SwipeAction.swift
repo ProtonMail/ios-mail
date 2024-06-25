@@ -20,14 +20,19 @@ import SwiftUI
 
 enum SwipeAction {
     case none
-    case toggleReadStatus
     case delete
+    case moveToTrash
+    case toggleReadStatus
 
-    var isActionAssigned: Bool {
-        if case .none = self {
+    func isActionAssigned(systemFolder: SystemFolderIdentifier?) -> Bool {
+        switch self {
+        case .none:
             return false
+        case .delete, .toggleReadStatus:
+            return true
+        case .moveToTrash:
+            return systemFolder != .trash
         }
-        return true
     }
 
     /// if `true` the swipe action will optimistically remove the cell from the list
@@ -35,7 +40,7 @@ enum SwipeAction {
         switch self {
         case .none, .toggleReadStatus:
             return false
-        case .delete:
+        case .delete, .moveToTrash:
             return true
         }
     }
@@ -48,6 +53,8 @@ enum SwipeAction {
             return Action.toggleReadStatusAction(when: readStatus).icon
         case .delete:
             return Action.delete.icon
+        case .moveToTrash:
+            return Action.moveToTrash.icon
         }
     }
 
@@ -57,7 +64,7 @@ enum SwipeAction {
             return DS.Color.Global.white
         case .toggleReadStatus:
             return DS.Color.Brand.norm
-        case .delete:
+        case .delete, .moveToTrash:
             return DS.Color.Notification.error
         }
     }
@@ -72,7 +79,9 @@ extension SwipeAction {
             return newReadStatus == .read ? .markAsRead : .markAsUnread
         case .delete:
             return .delete
-        default:
+        case .moveToTrash:
+            return .moveToTrash
+        case .none:
             return nil
         }
     }
