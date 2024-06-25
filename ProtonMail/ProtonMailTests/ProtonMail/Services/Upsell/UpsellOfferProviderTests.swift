@@ -43,22 +43,26 @@ final class UpsellOfferProviderTests: XCTestCase {
     }
 
     func testUpdate_whenPlanMail2022IsAvailable_thenFetchesThatPlan() async throws {
+        try await preparePlanService()
         stubPlans(named: ["vpn2022", "mail2022", "mail2023"])
-
-        try await withFeatureFlags([.dynamicPlans]) {
-            try await sut.update()
-
-            XCTAssertNotNil(sut.availablePlan)
-        }
+        try await sut.update()
+        XCTAssertNotNil(sut.availablePlan)
     }
 
     func testUpdate_whenPlanMail2022IsNotAvailable_thenDoesntFetchThatPlan() async throws {
+        try await preparePlanService()
         stubPlans(named: ["vpn2022", "mail2023"])
+        try await sut.update()
+        XCTAssertNil(sut.availablePlan)
+    }
 
+    // planService getter has a side-effect where it calls fetchAvailableProducts() in a Task
+    // StoreKitDataSource does not handle concurrent calls to fetchAvailableProducts()
+    // this sometimes hangs the tests, so we have to call it in advance and let it finish
+    private func preparePlanService() async throws {
         try await withFeatureFlags([.dynamicPlans]) {
-            try await sut.update()
-
-            XCTAssertNil(sut.availablePlan)
+            _ = user.container.planService
+            try await Task.sleep(for: .milliseconds(100))
         }
     }
 
