@@ -27,6 +27,7 @@ extension LocalMessageMetadata {
 
         return MailboxItemCellUIModel(
             id: id,
+            conversationId: conversationId,
             type: .message,
             avatar: .init(
                 initials: avatarInformation.text,

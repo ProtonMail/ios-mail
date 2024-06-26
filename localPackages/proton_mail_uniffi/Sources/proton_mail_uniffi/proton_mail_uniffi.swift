@@ -1305,25 +1305,25 @@ public protocol MailUserSessionProtocol : AnyObject {
      * Retrieve a conversation by `id` in the `label_id` context.
      *
      * # Errors
-     * Returns error if the db query failed.
+     * Returns error if the db query or network request failed.
      */
-    func conversationWithIdAndContext(id: UInt64, labelId: UInt64) throws  -> LocalConversation?
+    func conversationWithIdAndContext(id: UInt64, labelId: UInt64) async throws  -> LocalConversation?
     
     /**
      * Retrieve a conversation by `id` in the All Mail context.
      *
      * # Errors
-     * Returns error if the db query failed.
+     * Returns error if the db query or network request failed.
      */
-    func conversationWithIdWithAllMailContext(id: UInt64) throws  -> LocalConversation?
+    func conversationWithIdWithAllMailContext(id: UInt64) async throws  -> LocalConversation?
     
     /**
      * Retrieve a conversation by remote `id` in the All Mail context.
      *
      * # Errors
-     * Returns error if the db query failed.
+     * Returns error if the db query or network request failed.
      */
-    func conversationWithRemoteId(id: ConversationId) throws  -> LocalConversation?
+    func conversationWithRemoteId(id: ConversationId) async throws  -> LocalConversation?
     
     /**
      * Execute exactly one pending action.
@@ -1338,12 +1338,14 @@ public protocol MailUserSessionProtocol : AnyObject {
     /**
      * Filter or Search conversations which match the given `filter`.
      *
+     * To correctly render the returned list a `label_id` needs to provided for context.
+     *
      * Note that search results are inserted into the database.
      *
      * # Errors
      * Returns error if the network request or the query failed.
      */
-    func filterConversations(filter: ConversationFilter) async throws  -> FilteredConversations
+    func filterConversations(filter: ConversationFilter, labelId: UInt64) async throws  -> FilteredConversations
     
     /**
      * Filter or Search messages which match the given `filter`.
@@ -1416,10 +1418,12 @@ public protocol MailUserSessionProtocol : AnyObject {
     /**
      * Retrieve the message metadata from `remote_id`.
      *
+     * If the data does not exist it is fetched from the servers.
+     *
      * # Errors
-     * Returns error if the query failed.
+     * Returns error if the query or the request failed.
      */
-    func messageMetadataWithRemoteId(remoteId: MessageId) throws  -> LocalMessageMetadata?
+    func messageMetadataWithRemoteId(remoteId: MessageId) async throws  -> LocalMessageMetadata?
     
     /**
      * Return the list of labels of type Folder into which a conversations or
@@ -1526,43 +1530,69 @@ open func applicableLabels()throws  -> [LocalLabel] {
      * Retrieve a conversation by `id` in the `label_id` context.
      *
      * # Errors
-     * Returns error if the db query failed.
+     * Returns error if the db query or network request failed.
      */
-open func conversationWithIdAndContext(id: UInt64, labelId: UInt64)throws  -> LocalConversation? {
-    return try  FfiConverterOptionTypeLocalConversation.lift(try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
-    uniffi_proton_mail_uniffi_fn_method_mailusersession_conversation_with_id_and_context(self.uniffiClonePointer(),
-        FfiConverterUInt64.lower(id),
-        FfiConverterUInt64.lower(labelId),$0
-    )
-})
+open func conversationWithIdAndContext(id: UInt64, labelId: UInt64)async throws  -> LocalConversation? {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_method_mailusersession_conversation_with_id_and_context(
+                    self.uniffiClonePointer(),
+                    FfiConverterUInt64.lower(id),FfiConverterUInt64.lower(labelId)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
+            liftFunc: FfiConverterOptionTypeLocalConversation.lift,
+            errorHandler: FfiConverterTypeMailboxError.lift
+        )
 }
     
     /**
      * Retrieve a conversation by `id` in the All Mail context.
      *
      * # Errors
-     * Returns error if the db query failed.
+     * Returns error if the db query or network request failed.
      */
-open func conversationWithIdWithAllMailContext(id: UInt64)throws  -> LocalConversation? {
-    return try  FfiConverterOptionTypeLocalConversation.lift(try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
-    uniffi_proton_mail_uniffi_fn_method_mailusersession_conversation_with_id_with_all_mail_context(self.uniffiClonePointer(),
-        FfiConverterUInt64.lower(id),$0
-    )
-})
+open func conversationWithIdWithAllMailContext(id: UInt64)async throws  -> LocalConversation? {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_method_mailusersession_conversation_with_id_with_all_mail_context(
+                    self.uniffiClonePointer(),
+                    FfiConverterUInt64.lower(id)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
+            liftFunc: FfiConverterOptionTypeLocalConversation.lift,
+            errorHandler: FfiConverterTypeMailboxError.lift
+        )
 }
     
     /**
      * Retrieve a conversation by remote `id` in the All Mail context.
      *
      * # Errors
-     * Returns error if the db query failed.
+     * Returns error if the db query or network request failed.
      */
-open func conversationWithRemoteId(id: ConversationId)throws  -> LocalConversation? {
-    return try  FfiConverterOptionTypeLocalConversation.lift(try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
-    uniffi_proton_mail_uniffi_fn_method_mailusersession_conversation_with_remote_id(self.uniffiClonePointer(),
-        FfiConverterTypeConversationId_lower(id),$0
-    )
-})
+open func conversationWithRemoteId(id: ConversationId)async throws  -> LocalConversation? {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_method_mailusersession_conversation_with_remote_id(
+                    self.uniffiClonePointer(),
+                    FfiConverterTypeConversationId_lower(id)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
+            liftFunc: FfiConverterOptionTypeLocalConversation.lift,
+            errorHandler: FfiConverterTypeMailboxError.lift
+        )
 }
     
     /**
@@ -1608,18 +1638,20 @@ open func executePendingActions()async throws  {
     /**
      * Filter or Search conversations which match the given `filter`.
      *
+     * To correctly render the returned list a `label_id` needs to provided for context.
+     *
      * Note that search results are inserted into the database.
      *
      * # Errors
      * Returns error if the network request or the query failed.
      */
-open func filterConversations(filter: ConversationFilter)async throws  -> FilteredConversations {
+open func filterConversations(filter: ConversationFilter, labelId: UInt64)async throws  -> FilteredConversations {
     return
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
                 uniffi_proton_mail_uniffi_fn_method_mailusersession_filter_conversations(
                     self.uniffiClonePointer(),
-                    FfiConverterTypeConversationFilter_lower(filter)
+                    FfiConverterTypeConversationFilter_lower(filter),FfiConverterUInt64.lower(labelId)
                 )
             },
             pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
@@ -1782,15 +1814,26 @@ open func messageMetadata(id: UInt64)throws  -> LocalMessageMetadata? {
     /**
      * Retrieve the message metadata from `remote_id`.
      *
+     * If the data does not exist it is fetched from the servers.
+     *
      * # Errors
-     * Returns error if the query failed.
+     * Returns error if the query or the request failed.
      */
-open func messageMetadataWithRemoteId(remoteId: MessageId)throws  -> LocalMessageMetadata? {
-    return try  FfiConverterOptionTypeLocalMessageMetadata.lift(try rustCallWithError(FfiConverterTypeMailSessionError.lift) {
-    uniffi_proton_mail_uniffi_fn_method_mailusersession_message_metadata_with_remote_id(self.uniffiClonePointer(),
-        FfiConverterTypeMessageId_lower(remoteId),$0
-    )
-})
+open func messageMetadataWithRemoteId(remoteId: MessageId)async throws  -> LocalMessageMetadata? {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_proton_mail_uniffi_fn_method_mailusersession_message_metadata_with_remote_id(
+                    self.uniffiClonePointer(),
+                    FfiConverterTypeMessageId_lower(remoteId)
+                )
+            },
+            pollFunc: ffi_proton_mail_uniffi_rust_future_poll_rust_buffer,
+            completeFunc: ffi_proton_mail_uniffi_rust_future_complete_rust_buffer,
+            freeFunc: ffi_proton_mail_uniffi_rust_future_free_rust_buffer,
+            liftFunc: FfiConverterOptionTypeLocalMessageMetadata.lift,
+            errorHandler: FfiConverterTypeMailboxError.lift
+        )
 }
     
     /**
@@ -2140,13 +2183,14 @@ public protocol MailboxProtocol : AnyObject {
     
     /**
      * Create a new live query for a conversation with `id` 's messages and return the first id of
-     * the first unread message that should be displayed to the user, if any.
+     * the  message that should be displayed to the user.
      *
      * If this is the first time it is called for this conversation, the messages will
      * be retrieved from the server.
      *
      * # Errors
-     * Returns error if the request or the db query
+     * Returns error if the db queries failed, the network request failed or the conversation
+     * has no messages.
      */
     func newConversationMessagesLiveQuery(id: UInt64, cb: MailboxLiveQueryUpdatedCallback) async throws  -> ConversationMessagesLiveQueryResult
     
@@ -2492,13 +2536,14 @@ open func newConversationLiveQuery(limit: Int64, cb: MailboxLiveQueryUpdatedCall
     
     /**
      * Create a new live query for a conversation with `id` 's messages and return the first id of
-     * the first unread message that should be displayed to the user, if any.
+     * the  message that should be displayed to the user.
      *
      * If this is the first time it is called for this conversation, the messages will
      * be retrieved from the server.
      *
      * # Errors
-     * Returns error if the request or the db query
+     * Returns error if the db queries failed, the network request failed or the conversation
+     * has no messages.
      */
 open func newConversationMessagesLiveQuery(id: UInt64, cb: MailboxLiveQueryUpdatedCallback)async throws  -> ConversationMessagesLiveQueryResult {
     return
@@ -3570,7 +3615,7 @@ public struct ConversationMessagesLiveQueryResult {
     /**
      * Id of the message that should be opened and displayed to the user.
      */
-    public var messageIdToOpen: UInt64?
+    public var messageIdToOpen: UInt64
     /**
      * Live query instance.
      */
@@ -3581,7 +3626,7 @@ public struct ConversationMessagesLiveQueryResult {
     public init(
         /**
          * Id of the message that should be opened and displayed to the user.
-         */messageIdToOpen: UInt64?, 
+         */messageIdToOpen: UInt64, 
         /**
          * Live query instance.
          */query: MailboxConversationMessagesLiveQuery) {
@@ -3596,13 +3641,13 @@ public struct FfiConverterTypeConversationMessagesLiveQueryResult: FfiConverterR
     public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> ConversationMessagesLiveQueryResult {
         return
             try ConversationMessagesLiveQueryResult(
-                messageIdToOpen: FfiConverterOptionUInt64.read(from: &buf), 
+                messageIdToOpen: FfiConverterUInt64.read(from: &buf), 
                 query: FfiConverterTypeMailboxConversationMessagesLiveQuery.read(from: &buf)
         )
     }
 
     public static func write(_ value: ConversationMessagesLiveQueryResult, into buf: inout [UInt8]) {
-        FfiConverterOptionUInt64.write(value.messageIdToOpen, into: &buf)
+        FfiConverterUInt64.write(value.messageIdToOpen, into: &buf)
         FfiConverterTypeMailboxConversationMessagesLiveQuery.write(value.query, into: &buf)
     }
 }
@@ -4395,6 +4440,8 @@ public enum MailboxError {
     
     case MessageDoesNotHaveRemoteId(message: String)
     
+    case ConversationHasNoMessages(message: String)
+    
     case ApiError(message: String)
     
     case InvalidViewMode(message: String)
@@ -4464,35 +4511,39 @@ public struct FfiConverterTypeMailboxError: FfiConverterRustBuffer {
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 11: return .ApiError(
+        case 11: return .ConversationHasNoMessages(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 12: return .InvalidViewMode(
+        case 12: return .ApiError(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 13: return .AddressDomainLogoError(
+        case 13: return .InvalidViewMode(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 14: return .AttachmentNotFound(
+        case 14: return .AddressDomainLogoError(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 15: return .AttachmentDecryption(
+        case 15: return .AttachmentNotFound(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 16: return .Db(
+        case 16: return .AttachmentDecryption(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 17: return .MessageDecryption(
+        case 17: return .Db(
             message: try FfiConverterString.read(from: &buf)
         )
         
-        case 18: return .Other(
+        case 18: return .MessageDecryption(
+            message: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 19: return .Other(
             message: try FfiConverterString.read(from: &buf)
         )
         
@@ -4527,22 +4578,24 @@ public struct FfiConverterTypeMailboxError: FfiConverterRustBuffer {
             writeInt(&buf, Int32(9))
         case .MessageDoesNotHaveRemoteId(_ /* message is ignored*/):
             writeInt(&buf, Int32(10))
-        case .ApiError(_ /* message is ignored*/):
+        case .ConversationHasNoMessages(_ /* message is ignored*/):
             writeInt(&buf, Int32(11))
-        case .InvalidViewMode(_ /* message is ignored*/):
+        case .ApiError(_ /* message is ignored*/):
             writeInt(&buf, Int32(12))
-        case .AddressDomainLogoError(_ /* message is ignored*/):
+        case .InvalidViewMode(_ /* message is ignored*/):
             writeInt(&buf, Int32(13))
-        case .AttachmentNotFound(_ /* message is ignored*/):
+        case .AddressDomainLogoError(_ /* message is ignored*/):
             writeInt(&buf, Int32(14))
-        case .AttachmentDecryption(_ /* message is ignored*/):
+        case .AttachmentNotFound(_ /* message is ignored*/):
             writeInt(&buf, Int32(15))
-        case .Db(_ /* message is ignored*/):
+        case .AttachmentDecryption(_ /* message is ignored*/):
             writeInt(&buf, Int32(16))
-        case .MessageDecryption(_ /* message is ignored*/):
+        case .Db(_ /* message is ignored*/):
             writeInt(&buf, Int32(17))
-        case .Other(_ /* message is ignored*/):
+        case .MessageDecryption(_ /* message is ignored*/):
             writeInt(&buf, Int32(18))
+        case .Other(_ /* message is ignored*/):
+            writeInt(&buf, Int32(19))
 
         
         }
@@ -6096,13 +6149,13 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_applicable_labels() != 64448) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_conversation_with_id_and_context() != 10910) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_conversation_with_id_and_context() != 52958) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_conversation_with_id_with_all_mail_context() != 44598) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_conversation_with_id_with_all_mail_context() != 13108) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_conversation_with_remote_id() != 16574) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_conversation_with_remote_id() != 45060) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_execute_pending_action() != 49952) {
@@ -6111,7 +6164,7 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_execute_pending_actions() != 15772) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_filter_conversations() != 21516) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_filter_conversations() != 47296) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_filter_messages() != 18013) {
@@ -6132,7 +6185,7 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_message_metadata() != 11096) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_message_metadata_with_remote_id() != 55650) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_message_metadata_with_remote_id() != 5163) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailusersession_movable_folders() != 21776) {
@@ -6183,7 +6236,7 @@ private var initializationResult: InitializationResult {
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_conversation_live_query() != 43504) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_conversation_messages_live_query() != 32841) {
+    if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_conversation_messages_live_query() != 12205) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_proton_mail_uniffi_checksum_method_mailbox_new_item_live_query() != 59208) {

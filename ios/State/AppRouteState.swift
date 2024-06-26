@@ -51,9 +51,9 @@ final class AppRouteState: ObservableObject, Sendable {
 enum Route: Equatable, CustomStringConvertible {
     case appLaunching
     case mailbox(label: SelectedMailbox)
+    case mailboxOpenMessage(seed: MailboxMessageSeed)
     case settings
     case subscription
-    case openMailboxItem(seed: MailboxItemSeed)
 
     var selectedMailbox: SelectedMailbox? {
         if case .mailbox(let label) = self {
@@ -79,7 +79,7 @@ enum Route: Equatable, CustomStringConvertible {
             "settings"
         case .subscription:
             "subscription"
-        case .openMailboxItem:
+        case .mailboxOpenMessage:
             "openMailboxItem"
         }
     }

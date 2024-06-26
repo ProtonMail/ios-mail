@@ -52,7 +52,7 @@ final class MailboxModel: ObservableObject {
         state: State = .loading,
         mailSettings: PMMailSettingsProtocol,
         appRoute: AppRouteState = .shared,
-        openedItem: MailboxItemSeed? = nil,
+        openedItem: MailboxMessageSeed? = nil,
         dependencies: Dependencies = .init()
     ) {
         AppLogger.log(message: "MailboxModel init", category: .mailbox)

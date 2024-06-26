@@ -179,6 +179,7 @@ extension MailboxItemCell {
 @Observable
 final class MailboxItemCellUIModel: Identifiable, Sendable {
     let id: PMMailboxItemId
+    let conversationId: PMLocalConversationId
     let type: MailboxItemType
     let avatar: AvatarUIModel
     let senders: String
@@ -200,6 +201,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
 
     init(
         id: PMMailboxItemId,
+        conversationId: PMLocalConversationId,
         type: MailboxItemType,
         avatar: AvatarUIModel,
         senders: String,
@@ -217,6 +219,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         snoozeDate: Date?
     ) {
         self.id = id
+        self.conversationId = conversationId
         self.type = type
         self.avatar = avatar
         self.senders = senders
@@ -293,6 +296,7 @@ enum MailboxItemCellEvent {
     var model: MailboxItemCellUIModel {
         MailboxItemCellUIModel(
             id: 0,
+            conversationId: 0,
             type: .conversation,
             avatar: .init(initials: "P", senderImageParams: .init()),
             senders: "Proton",
@@ -316,6 +320,7 @@ enum MailboxItemCellEvent {
         MailboxItemCell(
             uiModel: .init(
                 id: 0,
+                conversationId: 0,
                 type: .message,
                 avatar: .init(initials: "FE", senderImageParams: .init(), backgroundColor: .yellow),
                 senders: "FedEx",
@@ -339,6 +344,7 @@ enum MailboxItemCellEvent {
         MailboxItemCell(
             uiModel: .init(
                 id: 0,
+                conversationId: 0,
                 type: .message,
                 avatar: .init(initials: "MA", senderImageParams: .init(), backgroundColor: .cyan),
                 senders: "Mary, Elijah Wood, wiseman@pm.me",

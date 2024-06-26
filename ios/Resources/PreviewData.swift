@@ -35,6 +35,7 @@ enum PreviewData {
             let snoozeDate: Bool = ((1..<11).randomElement()!%10) == 0
             return .init(
                 id: UInt64.random(in: 1...UInt64.max),
+                conversationId: 0,
                 type: .conversation,
                 avatar: .init(initials: randomSenderSubject.0.prefix(2).uppercased(), senderImageParams: .init()),
                 senders: randomSenderSubject.0,

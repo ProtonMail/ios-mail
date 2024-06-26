@@ -29,4 +29,5 @@ extension Mailbox: @unchecked Sendable {}
 extension MailUserSettings: @unchecked Sendable {}
 
 extension MailboxConversationMessagesLiveQuery: @unchecked Sendable {}
+extension ConversationMessagesLiveQueryResult: @unchecked Sendable {}
 extension DecryptedMessageBody: @unchecked Sendable {}

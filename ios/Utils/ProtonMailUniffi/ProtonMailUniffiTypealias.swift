@@ -17,9 +17,9 @@
 
 import proton_mail_uniffi
 
-// Rust library aliases mappings to avoid having to import the library everywhere
+// Rust library aliases mappings to avoid having to import the SDK everywhere
 
-typealias PMMailboxItemId = LocalConversationId
+typealias PMMailboxItemId = UInt64 // it can be a LocalMessageId or a LocalConversationId
 typealias PMLocalAttachmentId = LocalAttachmentId
 typealias PMLocalConversationId = LocalConversationId
 typealias PMLocalMessageId = LocalMessageId

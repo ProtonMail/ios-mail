@@ -29,7 +29,7 @@ struct MailboxScreen: View {
         : mailboxModel.selectedMailbox.name
     }
 
-    init(customLabelModel: CustomLabelModel, mailSettings: PMMailSettingsProtocol, openedItem: MailboxItemSeed? = nil) {
+    init(customLabelModel: CustomLabelModel, mailSettings: PMMailSettingsProtocol, openedItem: MailboxMessageSeed? = nil) {
         self._mailboxModel = StateObject(wrappedValue: MailboxModel(mailSettings: mailSettings, openedItem: openedItem))
         self.customLabelModel = customLabelModel
     }
@@ -44,8 +44,8 @@ struct MailboxScreen: View {
                 .navigationDestination(for: MailboxItemCellUIModel.self) { uiModel in
                     mailboxItemDestination(uiModel: uiModel)
                 }
-                .navigationDestination(for: MailboxItemSeed.self) { seed in
-                    pushNotificationNewMessageDestination(seed: seed)
+                .navigationDestination(for: MailboxMessageSeed.self) { seed in
+                    messageSeedDestination(seed: seed)
                 }
         }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
@@ -83,26 +83,14 @@ extension MailboxScreen {
 
     @ViewBuilder
     private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
-        if uiModel.type == .conversation {
-            ConversationScreen(seed: .mailboxItem(uiModel))
-        } else {
-            messageScreen
-        }
+        ConversationDetailScreen(seed: .mailboxItem(item: uiModel, labelId: mailboxModel.selectedMailbox.localId))
     }
 
     @ViewBuilder
-    private func pushNotificationNewMessageDestination(seed: MailboxItemSeed) -> some View {
-        if mailboxModel.viewMode == .conversations {
-            ConversationScreen(
-                seed: .pushNotification(messageId: seed.messageId, subject: seed.subject, sender: seed.sender)
-            )
-        } else {
-            messageScreen
-        }
-    }
-
-    private var messageScreen: some View {
-        Text("Message view not implemented yet")
+    private func messageSeedDestination(seed: MailboxMessageSeed) -> some View {
+        ConversationDetailScreen(
+            seed: .message(remoteMessageId: seed.messageId, subject: seed.subject, sender: seed.sender)
+        )
     }
 }
 

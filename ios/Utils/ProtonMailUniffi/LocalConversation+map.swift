@@ -29,6 +29,7 @@ extension LocalConversation {
         }
         return MailboxItemCellUIModel(
             id: id,
+            conversationId: id,
             type: .conversation,
             avatar: .init(
                 initials: avatarInformation.text,

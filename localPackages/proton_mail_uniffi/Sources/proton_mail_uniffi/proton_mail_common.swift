@@ -1361,7 +1361,7 @@ public func FfiConverterTypeLocalLabelWithCount_lower(_ value: LocalLabelWithCou
 public struct LocalMessageMetadata {
     public var id: LocalMessageId
     public var rid: MessageId?
-    public var conversationId: LocalConversationId?
+    public var conversationId: LocalConversationId
     public var addressId: AddressId
     public var order: UInt64
     public var subject: String
@@ -1387,7 +1387,7 @@ public struct LocalMessageMetadata {
 
     // Default memberwise initializers are never public by default, so we
     // declare one manually.
-    public init(id: LocalMessageId, rid: MessageId?, conversationId: LocalConversationId?, addressId: AddressId, order: UInt64, subject: String, unread: Bool, sender: MessageAddress, to: [MessageAddress], cc: [MessageAddress], bcc: [MessageAddress], time: UInt64, size: UInt64, expirationTime: UInt64, snoozeTime: UInt64, isReplied: Bool, isRepliedAll: Bool, isForwarded: Bool, externalId: ExternalId?, numAttachments: UInt32, flags: MessageFlags, starred: Bool, attachments: [LocalAttachmentMetadata]?, labels: [LocalInlineLabelInfo]?, avatarInformation: AvatarInformation) {
+    public init(id: LocalMessageId, rid: MessageId?, conversationId: LocalConversationId, addressId: AddressId, order: UInt64, subject: String, unread: Bool, sender: MessageAddress, to: [MessageAddress], cc: [MessageAddress], bcc: [MessageAddress], time: UInt64, size: UInt64, expirationTime: UInt64, snoozeTime: UInt64, isReplied: Bool, isRepliedAll: Bool, isForwarded: Bool, externalId: ExternalId?, numAttachments: UInt32, flags: MessageFlags, starred: Bool, attachments: [LocalAttachmentMetadata]?, labels: [LocalInlineLabelInfo]?, avatarInformation: AvatarInformation) {
         self.id = id
         self.rid = rid
         self.conversationId = conversationId
@@ -1534,7 +1534,7 @@ public struct FfiConverterTypeLocalMessageMetadata: FfiConverterRustBuffer {
             try LocalMessageMetadata(
                 id: FfiConverterTypeLocalMessageId.read(from: &buf), 
                 rid: FfiConverterOptionTypeMessageId.read(from: &buf), 
-                conversationId: FfiConverterOptionTypeLocalConversationId.read(from: &buf), 
+                conversationId: FfiConverterTypeLocalConversationId.read(from: &buf), 
                 addressId: FfiConverterTypeAddressId.read(from: &buf), 
                 order: FfiConverterUInt64.read(from: &buf), 
                 subject: FfiConverterString.read(from: &buf), 
@@ -1563,7 +1563,7 @@ public struct FfiConverterTypeLocalMessageMetadata: FfiConverterRustBuffer {
     public static func write(_ value: LocalMessageMetadata, into buf: inout [UInt8]) {
         FfiConverterTypeLocalMessageId.write(value.id, into: &buf)
         FfiConverterOptionTypeMessageId.write(value.rid, into: &buf)
-        FfiConverterOptionTypeLocalConversationId.write(value.conversationId, into: &buf)
+        FfiConverterTypeLocalConversationId.write(value.conversationId, into: &buf)
         FfiConverterTypeAddressId.write(value.addressId, into: &buf)
         FfiConverterUInt64.write(value.order, into: &buf)
         FfiConverterString.write(value.subject, into: &buf)
@@ -1825,27 +1825,6 @@ fileprivate struct FfiConverterOptionTypeMessageId: FfiConverterRustBuffer {
         switch try readInt(&buf) as Int8 {
         case 0: return nil
         case 1: return try FfiConverterTypeMessageId.read(from: &buf)
-        default: throw UniffiInternalError.unexpectedOptionalTag
-        }
-    }
-}
-
-fileprivate struct FfiConverterOptionTypeLocalConversationId: FfiConverterRustBuffer {
-    typealias SwiftType = LocalConversationId?
-
-    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
-        guard let value = value else {
-            writeInt(&buf, Int8(0))
-            return
-        }
-        writeInt(&buf, Int8(1))
-        FfiConverterTypeLocalConversationId.write(value, into: &buf)
-    }
-
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
-        switch try readInt(&buf) as Int8 {
-        case 0: return nil
-        case 1: return try FfiConverterTypeLocalConversationId.read(from: &buf)
         default: throw UniffiInternalError.unexpectedOptionalTag
         }
     }

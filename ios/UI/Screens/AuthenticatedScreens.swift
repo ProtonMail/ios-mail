@@ -34,7 +34,7 @@ struct AuthenticatedScreens: View {
             switch appRoute.route {
             case .appLaunching, .mailbox:
                 MailboxScreen(customLabelModel: customLabelModel, mailSettings: mailSettings)
-            case .openMailboxItem(let item):
+            case .mailboxOpenMessage(let item):
                 MailboxScreen(customLabelModel: customLabelModel, mailSettings: mailSettings, openedItem: item)
             case .settings:
                 SettingsScreen()
