@@ -17,7 +17,7 @@
 
 import Foundation
 
-final class ConversationDetailHeaderTests: PMUIMockedNetworkTestCase {
+final class ConversationDetailHeaderMainTests: PMUIMockedNetworkTestCase {
     
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Paid.YoungBee
@@ -36,7 +36,7 @@ final class ConversationDetailHeaderTests: PMUIMockedNetworkTestCase {
         index: 0,
         senderName: "Not Proton",
         senderAddress: "no-reply@not.proton.black",
-        date: "May 20, 2024 at 10:01:37 AM",
+        timestamp: 1716199297,
         toRecipients: [UITestHeaderRecipientEntry(index: 0, name: "youngbee@proton.black", address: "youngbee@proton.black")]
     )
     

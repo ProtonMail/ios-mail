@@ -18,21 +18,12 @@
 import Foundation
 import XCTest
 
-final class ConversationDetailRobot: Robot {
-    var rootElement: XCUIElement {
-        application.otherElements[Identifiers.rootItem]
-    }
-    
-    var loader: XCUIElement {
-        application.activityIndicators[Identifiers.loader]
-    }
-    
-    func waitForLoaderToDisappear() {
-        XCTAssertTrue(loader.waitUntilGone())
-    }
-}
+extension XCUIElement {
 
-private struct Identifiers {
-    static let rootItem = "detail.rootItem"
-    static let loader = "detail.loader"
+    func waitUntilGone(timeout: TimeInterval = 10) -> Bool {
+        let predicateExpectation = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: self)
+        let result = XCTWaiter.wait(for: [predicateExpectation], timeout: timeout)
+        
+        return result == .completed
+    }
 }

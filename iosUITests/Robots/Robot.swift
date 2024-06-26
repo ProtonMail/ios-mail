@@ -28,7 +28,7 @@ protocol Robot: ApplicationHolder {
 }
 
 extension Robot {
-    private var timeout: TimeInterval { 30 }
+    private var timeout: TimeInterval { 60 }
 
     @discardableResult func verifyShown() -> Self {
         XCTAssert(

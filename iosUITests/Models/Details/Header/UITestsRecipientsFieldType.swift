@@ -16,23 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import XCTest
 
-final class ConversationDetailRobot: Robot {
-    var rootElement: XCUIElement {
-        application.otherElements[Identifiers.rootItem]
-    }
-    
-    var loader: XCUIElement {
-        application.activityIndicators[Identifiers.loader]
-    }
-    
-    func waitForLoaderToDisappear() {
-        XCTAssertTrue(loader.waitUntilGone())
-    }
-}
-
-private struct Identifiers {
-    static let rootItem = "detail.rootItem"
-    static let loader = "detail.loader"
+enum UITestsRecipientsFieldType: String {
+    case to = "to"
+    case cc = "cc"
+    case bcc = "bcc"
 }

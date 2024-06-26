@@ -79,6 +79,7 @@ struct ConversationDetailScreen: View {
             case .fetchingMessages:
                 ProgressView()
                     .padding(.top, DS.Spacing.medium)
+                    .accessibilityIdentifier(ConversationDetailScreenIdentifiers.loader)
             case .messagesReady(let previous, let last):
                 messageList(previous: previous, last: last)
                     .padding(.top, DS.Spacing.compact)
@@ -225,6 +226,7 @@ private extension View {
 
 private struct ConversationDetailScreenIdentifiers {
     static let rootItem = "detail.rootItem"
+    static let loader = "detail.loader"
     static let subjectText = "detail.subjectText"
     static let messageList = "detail.messageList"
     

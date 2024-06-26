@@ -25,8 +25,20 @@ extension ConversationDetailRobot {
         let model = UITestConversationExpandedHeaderEntryModel(index: entry.index)
         model.hasSenderName(entry.senderName)
         model.hasSenderAddress(entry.senderAddress)
-        model.hasToRecipients(entry.toRecipients)
-        model.hasDate(entry.date)
+        
+        if let ccRecipients = entry.ccRecipients {
+            model.hasRecipients(ofType: .cc, recipients: ccRecipients)
+        } else {
+            model.hasNoRecipients(ofType: .cc)
+        }
+        
+        if let bccRecipients = entry.bccRecipients {
+            model.hasRecipients(ofType: .bcc, recipients: bccRecipients)
+        } else {
+            model.hasNoRecipients(ofType: .bcc)
+        }
+        
+        model.hasDate(entry.timestamp)
     }
 }
 

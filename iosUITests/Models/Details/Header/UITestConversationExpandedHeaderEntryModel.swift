@@ -17,6 +17,7 @@
 
 import Foundation
 import XCTest
+import ProtonMail
 
 struct UITestConversationExpandedHeaderEntryModel: ApplicationHolder {
     let index: Int
@@ -39,11 +40,7 @@ struct UITestConversationExpandedHeaderEntryModel: ApplicationHolder {
     private var senderAddressText: XCUIElement {
         rootItem.staticTexts[Identifiers.senderAddressText]
     }
-    
-    private var toRecipientsLabel: XCUIElement {
-        rootItem.staticTexts[Identifiers.toRecipientLabel]
-    }
-    
+
     private var dateLabel: XCUIElement {
         rootItem.staticTexts[Identifiers.dateLabel]
     }
@@ -62,20 +59,28 @@ struct UITestConversationExpandedHeaderEntryModel: ApplicationHolder {
         XCTAssertEqual(senderAddressText.label, address)
     }
     
-    func hasDate(_ date: String) {
-        XCTAssertEqual(dateText.label, date)
+    func hasDate(_ timestamp: UInt64) {
+        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
+        XCTAssertEqual(dateText.label, date.formatted(date: .abbreviated, time: .standard))
     }
     
-    func hasToRecipients(_ recipients: [UITestHeaderRecipientEntry]) {
+    func hasNoRecipients(ofType type: UITestsRecipientsFieldType) {
+        let label = rootItem.staticTexts[Identifiers.recipientLabel(type: type)]
+        XCTAssertFalse(label.exists)
+    }
+    
+    func hasRecipients(ofType type: UITestsRecipientsFieldType, recipients: [UITestHeaderRecipientEntry]) {
         for recipient in recipients {
-            hasToRecipient(recipient)
+            hasRecipient(ofType: type, entry: recipient)
         }
     }
     
-    private func hasToRecipient(_ entry: UITestHeaderRecipientEntry) {
-        let name = rootItem.staticTexts[Identifiers.toRecipientName(atIndex: entry.index)]
-        let address = rootItem.staticTexts[Identifiers.toRecipientAddress(atIndex: entry.index)]
+    private func hasRecipient(ofType type: UITestsRecipientsFieldType, entry: UITestHeaderRecipientEntry) {
+        let label = rootItem.staticTexts[Identifiers.recipientLabel(type: type)]
+        let name = rootItem.staticTexts[Identifiers.recipientName(type: type, atIndex: entry.index)]
+        let address = rootItem.staticTexts[Identifiers.recipientAddress(type: type, atIndex: entry.index)]
         
+        XCTAssertTrue(label.exists)
         XCTAssertEqual(name.label, entry.name)
         XCTAssertEqual(address.label, entry.address)
     }
@@ -89,14 +94,16 @@ private struct Identifiers {
     static let senderNameText = "detail.header.expanded.sender.name"
     static let senderAddressText = "detail.header.expanded.sender.address"
     
-    static let toRecipientLabel = "details.header.expanded.to.label"
-    
-    static func toRecipientName(atIndex index: Int) -> String {
-        "details.header.expanded.to.name#\(index)"
+    static func recipientLabel(type: UITestsRecipientsFieldType) -> String {
+        "details.header.expanded.\(type.rawValue).label"
     }
     
-    static func toRecipientAddress(atIndex index: Int) -> String {
-        "details.header.expanded.to.value#\(index)"
+    static func recipientName(type: UITestsRecipientsFieldType, atIndex index: Int) -> String {
+        "details.header.expanded.\(type.rawValue).name#\(index)"
+    }
+    
+    static func recipientAddress(type: UITestsRecipientsFieldType, atIndex index: Int) -> String {
+        "details.header.expanded.\(type.rawValue).value#\(index)"
     }
     
     static let dateLabel = "detail.header.expanded.date.label"
