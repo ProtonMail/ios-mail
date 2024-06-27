@@ -63,6 +63,9 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
         }
         
         ConversationDetailRobot {
+            $0.verifyShown()
+            $0.waitForLoaderToDisappear()
+
             $0.hasCollapsedEntries(indexes: 0, 1)
             $0.hasExpandedEntries(indexes: 2)
         }
@@ -119,6 +122,9 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
         }
         
         ConversationDetailRobot {
+            $0.verifyShown()
+            $0.waitForLoaderToDisappear()
+            
             $0.hasCollapsedEntries(indexes: 0, 2, 3)
             $0.hasExpandedEntries(indexes: 1, 4)
         }
@@ -180,6 +186,9 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
         }
         
         ConversationDetailRobot {
+            $0.verifyShown()
+            $0.waitForLoaderToDisappear()
+            
             $0.hasCollapsedEntries(indexes: 0, 2, 3, 4)
             $0.hasExpandedEntries(indexes: 1, 5)
         }
@@ -241,6 +250,9 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
         }
         
         ConversationDetailRobot {
+            $0.verifyShown()
+            $0.waitForLoaderToDisappear()
+            
             $0.hasCollapsedEntries(indexes: 0, 1, 2, 3)
             $0.hasExpandedEntries(indexes: 4, 5)
         }
