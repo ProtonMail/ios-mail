@@ -19,8 +19,10 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxItemCell: View {
+    @State private(set) var isPressed: Bool = false
+
     let uiModel: MailboxItemCellUIModel
-    let isAttachmentHighlightEnabled: Bool
+    let isParentListSelectionEmpty: Bool
     let onEvent: (MailboxItemCellEvent) -> Void
 
     private var textColor: Color {
@@ -34,24 +36,11 @@ struct MailboxItemCell: View {
     var body: some View {
         HStack(spacing: DS.Spacing.large) {
             avatarView
-            VStack(spacing: 0) {
-                senderRowView
-                subjectRowView
-                expirationRowView
-                snoozedRowView
-                attachmentRowView
-            }
-        }
-        .contentShape(Rectangle())
-        .onTapGesture {
-            onEvent(.onTap)
-        }
-        .onLongPressGesture {
-            onEvent(.onLongPress)
+            mailboxItemContentView
         }
         .padding(.horizontal, DS.Spacing.large)
         .padding(.vertical, DS.Spacing.medium)
-        .background(uiModel.isSelected ? DS.Color.Background.secondary : DS.Color.Background.norm)
+        .background(uiModel.isSelected || isPressed ? DS.Color.Background.secondary : DS.Color.Background.norm)
     }
 }
 
@@ -64,6 +53,29 @@ extension MailboxItemCell {
             onDidChangeSelection: { onEvent(.onSelectedChange(isSelected: $0)) }
         )
         .frame(width: 40, height: 40)
+    }
+
+    private var mailboxItemContentView: some View {
+        VStack(spacing: 0) {
+            VStack(spacing: 0) {
+                senderRowView
+                subjectRowView
+                expirationRowView
+                snoozedRowView
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                onEvent(.onTap)
+            }
+            .onLongPressGesture(perform: {
+                onEvent(.onLongPress)
+            }, onPressingChanged: {
+                guard isParentListSelectionEmpty else { return }
+                isPressed = $0
+            })
+
+            attachmentRowView
+        }
     }
 
     private var senderRowView: some View {
@@ -166,7 +178,7 @@ extension MailboxItemCell {
 
         AttachmentsView(
             uiModel: uiModel.attachmentsUIModel,
-            isAttachmentHighlightEnabled: isAttachmentHighlightEnabled,
+            isAttachmentHighlightEnabled: isParentListSelectionEmpty,
             onTapEvent: {
                 onEvent(.onAttachmentTap(attachmentId: $0))
             }
@@ -315,7 +327,7 @@ enum MailboxItemCellEvent {
 
     return VStack {
 
-        MailboxItemCell(uiModel: model, isAttachmentHighlightEnabled: true, onEvent: { _ in })
+        MailboxItemCell(uiModel: model, isParentListSelectionEmpty: true, onEvent: { _ in })
 
         MailboxItemCell(
             uiModel: .init(
@@ -337,7 +349,7 @@ enum MailboxItemCellEvent {
                 expirationDate: .now,
                 snoozeDate: .now + 500
             ),
-            isAttachmentHighlightEnabled: true,
+            isParentListSelectionEmpty: true,
             onEvent: { _ in }
         )
 
@@ -366,7 +378,7 @@ enum MailboxItemCellEvent {
                 expirationDate: .now + 500,
                 snoozeDate: .now + 55000
             ),
-            isAttachmentHighlightEnabled: true,
+            isParentListSelectionEmpty: true,
             onEvent: { _ in }
         )
     }

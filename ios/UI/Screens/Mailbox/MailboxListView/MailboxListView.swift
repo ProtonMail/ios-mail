@@ -61,7 +61,7 @@ extension MailboxListView {
                 VStack {
                     MailboxItemCell(
                         uiModel: item,
-                        isAttachmentHighlightEnabled: !model.selectionMode.hasSelectedItems,
+                        isParentListSelectionEmpty: !model.selectionMode.hasSelectedItems,
                         onEvent: { [weak model] event in
                             switch event {
                             case .onTap:
