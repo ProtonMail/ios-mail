@@ -211,7 +211,7 @@ private extension View {
                         expirationDate: nil,
                         snoozeDate: nil
                     ),
-                    labelId: 1
+                    selectedMailbox: .inbox
                 )
         )
     }

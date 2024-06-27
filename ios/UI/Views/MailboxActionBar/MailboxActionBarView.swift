@@ -25,7 +25,7 @@ struct MailboxActionBarView: View {
     @State private var showLabelPicker: Bool = false
     @State private var showFolderPicker: Bool = false
 
-    private let mailbox: SelectedMailbox
+    private let selectedMailbox: SelectedMailbox
     private var mailboxActions: MailboxActionSettings {
         userSettings.mailboxActions
     }
@@ -34,12 +34,12 @@ struct MailboxActionBarView: View {
 
     init(
         selectionMode: SelectionModeState,
-        mailbox: SelectedMailbox,
+        selectedMailbox: SelectedMailbox,
         mailboxActionable: MailboxActionable,
         customLabelModel: CustomLabelModel
     ) {
         self.selectionMode = selectionMode
-        self.mailbox = mailbox
+        self.selectedMailbox = selectedMailbox
         self.mailboxActionable = mailboxActionable
         self.customLabelModel = customLabelModel
     }
@@ -77,7 +77,7 @@ struct MailboxActionBarView: View {
             .toAction(
                 selectionReadStatus: selectionMode.selectionStatus.readStatus,
                 selectionStarStatus: selectionMode.selectionStatus.starStatus,
-                systemFolder: mailbox.systemFolder ?? .inbox
+                systemFolder: selectedMailbox.systemFolder ?? .inbox
             ) {
             Button(action: {
                 if case .labelAs = action {
@@ -141,14 +141,14 @@ private extension View {
     return VStack {
         MailboxActionBarView(
             selectionMode:.init(selectedItems: Set([.init(id: 1, isRead: false, isStarred: true)])),
-            mailbox: .init(localId: 0, name: "", systemFolder: .archive),
+            selectedMailbox: .label(localLabelId: 0, name: "", systemFolder: .archive),
             mailboxActionable: EmptyMailboxActionable(),
             customLabelModel: .init()
         )
 
         MailboxActionBarView(
             selectionMode: .init(selectedItems: Set([.init(id: 1, isRead: true, isStarred: false)])),
-            mailbox: .init(localId: 0, name: "", systemFolder: .trash),
+            selectedMailbox: .label(localLabelId: 0, name: "", systemFolder: .trash),
             mailboxActionable: EmptyMailboxActionable(),
             customLabelModel: .init()
         )

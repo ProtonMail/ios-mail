@@ -17,17 +17,45 @@
 
 import UIKit
 
-final class SelectedMailbox: Equatable, Hashable, ObservableObject, Sendable {
-    let localId: PMLocalLabelId
-    let name: String
-    
-    /// Only available for system folders.
-    let systemFolder: SystemFolderIdentifier?
+enum SelectedMailbox: Equatable {
+    case inbox
+    case label(localLabelId: PMLocalLabelId, name: String, systemFolder: SystemFolderIdentifier?)
 
-    init(localId: PMLocalLabelId, name: String, systemFolder: SystemFolderIdentifier?) {
-        self.localId = localId
-        self.name = name
-        self.systemFolder = systemFolder
+    var isInbox: Bool {
+        switch self {
+        case .inbox:
+            return true
+        case .label:
+            return false
+        }
+    }
+
+    var localId: PMLocalLabelId {
+        switch self {
+        case .inbox:
+            return PMLocalLabelId.max
+        case .label(let labelId, _, _):
+            return labelId
+        }
+    }
+
+    var name: String {
+        switch self {
+        case .inbox:
+            return SystemFolderIdentifier.inbox.localisedName
+        case .label(_, let name, _):
+            return name
+        }
+    }
+
+    /// Only available for system folders mailboxes
+    var systemFolder: SystemFolderIdentifier? {
+        switch self {
+        case .inbox:
+            return SystemFolderIdentifier.inbox
+        case .label(_, _, let systemFolder):
+            return systemFolder
+        }
     }
 
     static func == (lhs: SelectedMailbox, rhs: SelectedMailbox) -> Bool {
@@ -38,15 +66,4 @@ final class SelectedMailbox: Equatable, Hashable, ObservableObject, Sendable {
         hasher.combine(localId)
         hasher.combine(name)
     }
-}
-
-extension SelectedMailbox {
-    
-    /// We use this placeholder when the app is launching and we don't have the
-    /// corresponding local labelId for inbox yet.
-    static let inboxPlaceholder = SelectedMailbox(
-        localId: UInt64.max,
-        name: SystemFolderIdentifier.inbox.localisedName,
-        systemFolder: .inbox
-    )
 }

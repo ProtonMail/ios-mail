@@ -18,15 +18,15 @@
 import Foundation
 
 enum ConversationDetailSeed {
-    case mailboxItem(item: MailboxItemCellUIModel, labelId: PMLocalLabelId)
+    case mailboxItem(item: MailboxItemCellUIModel, selectedMailbox: SelectedMailbox)
     case message(remoteMessageId: String, subject: String, sender: String)
 
-    var labelId: PMLocalLabelId? {
+    var selectedMailbox: SelectedMailbox {
         switch self {
-        case .mailboxItem(_, let labelId):
-            labelId
-        case .message:
-            nil
+        case .mailboxItem(_, let selectedMailbox):
+            return selectedMailbox
+        case .message(let remoteMessageId, let subject, let sender):
+            return .inbox
         }
     }
 

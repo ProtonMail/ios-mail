@@ -110,7 +110,7 @@ extension MailboxListView {
 }
 
 #Preview {
-    let route: AppRouteState = .init(route: .mailbox(label: .inboxPlaceholder))
+    let route: AppRouteState = .init(route: .mailbox(selectedMailbox: .inbox))
     let dummySettings = EmptyPMMailSettings()
 
     return MailboxListView(model: .init(

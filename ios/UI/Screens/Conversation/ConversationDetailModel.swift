@@ -73,10 +73,11 @@ extension ConversationDetailModel {
             throw ConversationModelError.noActiveSessionFound
         }
         let newMailbox: Mailbox
-        if let labelId = seed.labelId {
-            newMailbox = try await Mailbox(ctx: userSession, labelId: labelId)
-        } else {
+        switch seed.selectedMailbox {
+        case .inbox:
             newMailbox = try await Mailbox.inbox(ctx: userSession)
+        case .label(let localLabelId, _, _):
+            newMailbox = try await Mailbox(ctx: userSession, labelId: localLabelId)
         }
         mailbox = newMailbox
         return newMailbox

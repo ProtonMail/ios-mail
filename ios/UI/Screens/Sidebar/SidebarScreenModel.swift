@@ -49,30 +49,28 @@ final class SidebarScreenModel: ObservableObject, Sendable {
         guard let systemFolderQuery else { return }
         do {
             let folders = try systemFolderQuery.value()
-            setInitialFolderIfNeeded(from: folders)
+            setInitialMailboxByLabelIfNeeded(from: folders)
             systemFolders = folders.compactMap { $0.systemFolderToSidebarCellUIModel() }
         } catch {
             AppLogger.log(error: error)
         }
     }
-
-    private func setInitialFolderIfNeeded(from folders: [LocalLabelWithCount]) {
-        guard appRoute.route == .appLaunching, let firstSystemFolders = folders.first else {
+    
+    /// If we we still have `inbox` as a hardcoded mailbox, we update the route with the local label id
+    private func setInitialMailboxByLabelIfNeeded(from folders: [LocalLabelWithCount]) {
+        guard appRoute.route.isInboxHardcoded, let firstSystemFolders = folders.first else {
             return
         }
         var systemFolder: SystemFolderIdentifier? = nil
         if let rid = firstSystemFolders.rid, let remoteId = UInt64(rid) {
             systemFolder = SystemFolderIdentifier(rawValue: remoteId)
         }
-        appRoute.updateRoute(
-            to: .mailbox(
-                label: SelectedMailbox(
-                    localId: firstSystemFolders.id,
-                    name: firstSystemFolders.name,
-                    systemFolder: systemFolder
-                )
-            )
+        let selectedMailbox = SelectedMailbox.label(
+            localLabelId: firstSystemFolders.id,
+            name: firstSystemFolders.name,
+            systemFolder: systemFolder
         )
+        appRoute.updateRoute(to: .mailbox(selectedMailbox: selectedMailbox))
     }
 
     @MainActor

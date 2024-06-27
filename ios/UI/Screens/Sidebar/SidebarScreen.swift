@@ -83,7 +83,7 @@ struct SidebarScreen: View {
             ForEach(screenModel.systemFolders) { systemFolder in
                 SidebarCell(
                     uiModel: systemFolder,
-                    isSelected: systemFolder.id == screenModel.route.localLabelId
+                    isSelected: systemFolder.id == screenModel.route.selectedMailbox?.localId
                 ) {
                     screenModel.updateRoute(newRoute: systemFolder.route)
                     appUIState.isSidebarOpen = false
@@ -130,7 +130,7 @@ struct SidebarScreen: View {
     var appVersionView: some View {
         VStack {
 //            // temporary hacky share logs cell
-            SidebarCell(uiModel: .init(id: UInt64.max, name: "[DEV] Share logs", icon: DS.Icon.icBug , badge: "", route: .appLaunching), isSelected: false) {
+            SidebarCell(uiModel: .init(id: UInt64.max, name: "[DEV] Share logs", icon: DS.Icon.icBug , badge: "", route: .mailbox(selectedMailbox: .inbox)), isSelected: false) {
                 screenModel.onShareLogsTap()
             }
             .padding(.init(top: 44.0, leading: 16.0, bottom: 24.0, trailing: 16.0))
@@ -197,7 +197,7 @@ struct SidebarCell: View {
 
 #Preview {
     let appUIState = AppUIState(isSidebarOpen: true)
-    let route: AppRouteState = .init(route: .mailbox(label: .inboxPlaceholder))
+    let route: AppRouteState = .init(route: .mailbox(selectedMailbox: .inbox))
 
     struct PreviewWrapper: View {
         @State var appRoute: AppRouteState

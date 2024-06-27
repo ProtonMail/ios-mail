@@ -32,7 +32,7 @@ struct AuthenticatedScreens: View {
     var body: some View {
         ZStack {
             switch appRoute.route {
-            case .appLaunching, .mailbox:
+            case .mailbox:
                 MailboxScreen(customLabelModel: customLabelModel, mailSettings: mailSettings)
             case .mailboxOpenMessage(let item):
                 MailboxScreen(customLabelModel: customLabelModel, mailSettings: mailSettings, openedItem: item)

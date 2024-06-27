@@ -59,11 +59,7 @@ final class MailboxModel: ObservableObject {
         self.state = state
         self.mailSettings = mailSettings
         self.appRoute = appRoute
-        if let selectedMailbox = appRoute.route.selectedMailbox {
-            self.selectedMailbox = selectedMailbox
-        } else {
-            self.selectedMailbox = .inboxPlaceholder
-        }
+        self.selectedMailbox = appRoute.route.selectedMailbox ?? .inbox
         self.selectionMode = SelectionModeState()
         self.dependencies = dependencies
 
@@ -89,7 +85,7 @@ extension MailboxModel {
 
     private func setUpBindings() {
         appRoute
-            .selectedMailbox
+            .onSelectedMailboxChange
             .sink { [weak self] newSelectedMailbox in
                 Task {
                     guard let self else { return }
@@ -125,7 +121,7 @@ extension MailboxModel {
         await updateState(.loading)
         guard let userSession = dependencies.appContext.activeUserSession else { return }
         do {
-            mailbox = selectedMailbox == .inboxPlaceholder 
+            mailbox = selectedMailbox.isInbox
             ? try await Mailbox.inbox(ctx: userSession)
             : try await Mailbox(ctx: userSession, labelId: selectedMailbox.localId)
 

@@ -32,7 +32,11 @@ extension LocalLabelWithCount {
             icon: systemFolderId.icon,
             badge: unreadCount > 0 ? unreadCount.toBadgeCapped() : "",
             route: .mailbox(
-                label: SelectedMailbox(localId: id, name: systemFolderId.localisedName, systemFolder: systemFolderId)
+                selectedMailbox: .label(
+                    localLabelId: id,
+                    name: systemFolderId.localisedName,
+                    systemFolder: systemFolderId
+                )
             )
         )
     }

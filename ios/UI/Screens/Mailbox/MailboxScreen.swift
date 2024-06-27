@@ -69,7 +69,7 @@ extension MailboxScreen {
     private var mailboxActionBarView: some View {
         MailboxActionBarView(
             selectionMode: mailboxModel.selectionMode,
-            mailbox: mailboxModel.selectedMailbox,
+            selectedMailbox: mailboxModel.selectedMailbox,
             mailboxActionable: mailboxModel,
             customLabelModel: customLabelModel
         )
@@ -83,7 +83,7 @@ extension MailboxScreen {
 
     @ViewBuilder
     private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
-        ConversationDetailScreen(seed: .mailboxItem(item: uiModel, labelId: mailboxModel.selectedMailbox.localId))
+        ConversationDetailScreen(seed: .mailboxItem(item: uiModel, selectedMailbox: mailboxModel.selectedMailbox))
     }
 
     @ViewBuilder

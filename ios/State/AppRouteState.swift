@@ -20,13 +20,13 @@ import Foundation
 
 @MainActor
 final class AppRouteState: ObservableObject, Sendable {
-    static let shared = AppRouteState(route: .appLaunching)
+    static let shared = AppRouteState(route: .mailbox(selectedMailbox: .inbox))
 
     @Published private(set) var route: Route
-    var selectedMailbox: AnyPublisher<SelectedMailbox, Never> {
-        _selectedMailbox.eraseToAnyPublisher()
+    var onSelectedMailboxChange: AnyPublisher<SelectedMailbox, Never> {
+        selectedMailbox.eraseToAnyPublisher()
     }
-    private let _selectedMailbox: PassthroughSubject<SelectedMailbox, Never> = .init()
+    private let selectedMailbox: PassthroughSubject<SelectedMailbox, Never> = .init()
     private var cancellables = Set<AnyCancellable>()
 
     init(route: Route) {
@@ -36,7 +36,7 @@ final class AppRouteState: ObservableObject, Sendable {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newRoute in
                 if let newSelectedMailbox = newRoute.selectedMailbox {
-                    self?._selectedMailbox.send(newSelectedMailbox)
+                    self?.selectedMailbox.send(newSelectedMailbox)
                 }
             }
             .store(in: &cancellables)
@@ -49,30 +49,30 @@ final class AppRouteState: ObservableObject, Sendable {
 }
 
 enum Route: Equatable, CustomStringConvertible {
-    case appLaunching
-    case mailbox(label: SelectedMailbox)
+    case mailbox(selectedMailbox: SelectedMailbox)
     case mailboxOpenMessage(seed: MailboxMessageSeed)
     case settings
     case subscription
-
-    var selectedMailbox: SelectedMailbox? {
-        if case .mailbox(let label) = self {
-            return label
+    
+    /// Determines if the route has a selected mailbox with inbox instead of a local label
+    var isInboxHardcoded: Bool {
+        switch selectedMailbox {
+        case .inbox:
+            return true
+        case .none, .label:
+            return false
         }
-        return nil
     }
 
-    var localLabelId: PMLocalLabelId? {
-        if case .mailbox(let label) = self {
-            return label.localId
+    var selectedMailbox: SelectedMailbox? {
+        if case .mailbox(let selectedMailbox) = self {
+            return selectedMailbox
         }
         return nil
     }
 
     var description: String {
         switch self {
-        case .appLaunching:
-            "appLaunching"
         case .mailbox(let label):
             "mailbox \(label.name)"
         case .settings:
@@ -80,7 +80,7 @@ enum Route: Equatable, CustomStringConvertible {
         case .subscription:
             "subscription"
         case .mailboxOpenMessage:
-            "openMailboxItem"
+            "mailboxOpenMessage"
         }
     }
 }
