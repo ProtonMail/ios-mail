@@ -18,7 +18,7 @@
 import proton_mail_uniffi
 import SwiftUI
 
-final class SidebarScreenModel: ObservableObject, Sendable {
+final class SidebarModel: ObservableObject, Sendable {
     @ObservedObject private var appRoute: AppRouteState
 
     private(set) var systemFolders: [SidebarCellUIModel]
@@ -88,7 +88,7 @@ final class SidebarScreenModel: ObservableObject, Sendable {
     }
 }
 
-extension SidebarScreenModel: MailboxLiveQueryUpdatedCallback {
+extension SidebarModel: MailboxLiveQueryUpdatedCallback {
     
     func onUpdated() {
         Task {
@@ -97,7 +97,7 @@ extension SidebarScreenModel: MailboxLiveQueryUpdatedCallback {
     }
 }
 
-extension SidebarScreenModel {
+extension SidebarModel {
 
     struct Dependencies {
         let appContext: AppContext = .shared

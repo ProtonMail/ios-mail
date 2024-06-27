@@ -20,11 +20,11 @@ import SwiftUI
 
 struct SidebarScreen: View {
     @EnvironmentObject private var appUIState: AppUIState
-    @State private var screenModel: SidebarScreenModel
+    @State private var screenModel: SidebarModel
 
     private let animation: Animation = .easeInOut(duration: 0.2)
 
-    init(screenModel: SidebarScreenModel) {
+    init(screenModel: SidebarModel) {
         self.screenModel = screenModel
     }
 
@@ -102,7 +102,7 @@ struct SidebarScreen: View {
                 badge: "",
                 route: .settings
             )
-            SidebarCell(uiModel: uiModel, isSelected: false) {
+            SidebarCell(uiModel: uiModel, isSelected: screenModel.route == .settings ) {
                 screenModel.updateRoute(newRoute: uiModel.route)
                 appUIState.isSidebarOpen = false
             }
@@ -119,7 +119,7 @@ struct SidebarScreen: View {
                 badge: "",
                 route: .subscription
             )
-            SidebarCell(uiModel: uiModel, isSelected: false) {
+            SidebarCell(uiModel: uiModel, isSelected: screenModel.route == .subscription) {
                 screenModel.updateRoute(newRoute: uiModel.route)
                 appUIState.isSidebarOpen = false
             }
