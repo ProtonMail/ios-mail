@@ -33,17 +33,8 @@ audio:not([controls]) {
     display: none;
 }
 
-html {
-    font-size: 100%;
-}
-
-button,html,input,select,textarea {
-    font-family: -apple-system,sans-serif;
-}
-
 body {
-    font-family: -apple-system,Helvetica,Arial,sans-serif;
-    font-weight: 400;
+    font: -apple-system-body;
     margin: 0;
     width: 100%;
     box-sizing: border-box;
@@ -88,32 +79,26 @@ a:active,a:hover {
 }
 
 h1 {
-    font-size: 2em;
     margin: .67em 0;
 }
 
 h2 {
-    font-size: 1.5em;
     margin: .83em 0;
 }
 
 h3 {
-    font-size: 1.17em;
     margin: 1em 0;
 }
 
 h4 {
-    font-size: 1em;
     margin: 1.33em 0;
 }
 
 h5 {
-    font-size: .83em;
     margin: 1.67em 0;
 }
 
 h6 {
-    font-size: .75em;
     margin: 2.33em 0;
 }
 
@@ -125,14 +110,6 @@ abbr[title] {
     border-bottom: 1px dotted;
 }
 
-b,strong {
-    font-weight: 700;
-}
-
-dfn {
-    font-style: italic;
-}
-
 mark {
     background: #ff0;
     color: #000;
@@ -140,11 +117,6 @@ mark {
 
 p,pre {
     margin: 1em 0;
-}
-
-code,kbd,pre,samp {
-    font-family: monospace,serif;
-    font-size: 1em;
 }
 
 pre {
@@ -171,12 +143,7 @@ q:after,q:before {
     content: none;
 }
 
-small {
-    font-size: 80%;
-}
-
 sub,sup {
-    font-size: 75%;
     line-height: 0;
     position: relative;
     vertical-align: baseline;
@@ -250,11 +217,6 @@ legend {
     border: 0;
     padding: 0;
     white-space: normal;
-}
-
-
-.pm_font_larger {
-    font-size: 1.8em;
 }
 
 *[style*="min-height"] {
