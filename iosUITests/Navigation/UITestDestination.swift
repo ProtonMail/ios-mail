@@ -20,4 +20,5 @@ import Foundation
 enum UITestDestination {
     case inbox
     case subscription
+    case sent
 }

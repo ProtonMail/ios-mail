@@ -29,6 +29,10 @@ extension SidebarMenuRobot {
     func openSubscription() {
         tapEntry(withLabel: UITestSidebarEntry.subscription.rawValue)
     }
+    
+    func openSent() {
+        tapEntry(withLabel: UITestFolder.system(.sent).value)
+    }
 
     func tapEntry(withLabel label: String) {
         let model = UITestSidebarListItemEntryModel(label: label)

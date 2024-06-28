@@ -42,6 +42,9 @@ struct UITestNavigator: ApplicationHolder {
         case .subscription:
             MailboxRobot { $0.verifyShown().openSidebarMenu() }
             SidebarMenuRobot { $0.openSubscription() }
+        case .sent:
+            MailboxRobot { $0.verifyShown().openSidebarMenu() }
+            SidebarMenuRobot { $0.openSent() }
         }
     }
 
