@@ -414,7 +414,7 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
                                                                     plan: self.getPlanNameForObservabilityPurposes(plan: plan),
                                                                     isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
             case .renewalNotification:
-                break
+                ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .renewalNotification, isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
             }
         }
     }

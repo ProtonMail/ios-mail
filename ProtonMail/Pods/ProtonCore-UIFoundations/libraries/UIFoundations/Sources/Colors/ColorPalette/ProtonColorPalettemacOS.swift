@@ -98,5 +98,31 @@ public struct ProtonColorPalettemacOS {
     public let TextInvert = ProtonColor(name: "ProtonCarbonTextInvert")
     public let TextNorm = ProtonColor(name: "ProtonCarbonTextNorm")
     public let TextWeak = ProtonColor(name: "ProtonCarbonTextWeak")
+
+    // MARK: Accent
+    public let PurpleBase = ProtonColor(name: "SharedPurpleBase")
+    public let EnzianBase = ProtonColor(name: "SharedEnzianBase")
+    public let PinkBase = ProtonColor(name: "SharedPinkBase")
+    public let PlumBase = ProtonColor(name: "SharedPlumBase")
+    public let StrawberryBase = ProtonColor(name: "SharedStrawberryBase")
+    public let CeriseBase = ProtonColor(name: "SharedCeriseBase")
+    public let CarrotBase = ProtonColor(name: "SharedCarrotBase")
+    public let CopperBase = ProtonColor(name: "SharedCopperBase")
+    public let SaharaBase = ProtonColor(name: "SharedSaharaBase")
+    public let SoilBase = ProtonColor(name: "SharedSoilBase")
+    public let SlateblueBase = ProtonColor(name: "SharedSlateblueBase")
+    public let CobaltBase = ProtonColor(name: "SharedCobaltBase")
+    public let PacificBase = ProtonColor(name: "SharedPacificBase")
+    public let OceanBase = ProtonColor(name: "SharedOceanBase")
+    public let ReefBase = ProtonColor(name: "SharedReefBase")
+    public let PineBase = ProtonColor(name: "SharedPineBase")
+    public let FernBase = ProtonColor(name: "SharedFernBase")
+    public let ForestBase = ProtonColor(name: "SharedForestBase")
+    public let OliveBase = ProtonColor(name: "SharedOliveBase")
+    public let PickleBase = ProtonColor(name: "SharedPickleBase")
+
+    // MARK: Two special colors that consistently occur in designs even though they are not part af the palette
+    public let White = ProtonColor(name: "White")
+    public let Black = ProtonColor(name: "Black")
 }
 #endif

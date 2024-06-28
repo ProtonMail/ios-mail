@@ -82,17 +82,17 @@
 
 "Forgot password" = "He olvidado mi contraseña";
 
-"Two-factor authentication" = "Autenticación de doble factor";
+"Two-factor authentication" = "Autenticación de dos factores";
 
 "Authenticate" = "Autenticar";
 
-"Two-factor code" = "Código de doble factor";
+"Two-factor code" = "Código de dos factores";
 
 "Recovery code" = "Código de recuperación";
 
 "Use recovery code" = "Utilizar código de recuperación";
 
-"Use two-factor code" = "Utilizar código de doble factor";
+"Use two-factor code" = "Utilizar código de dos factores";
 
 "Enter the 6-digit code." = "Introduce el código de 6 dígitos.";
 
