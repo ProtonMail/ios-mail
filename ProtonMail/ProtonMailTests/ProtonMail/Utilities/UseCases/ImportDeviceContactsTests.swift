@@ -17,7 +17,7 @@
 
 import ProtonCoreDataModel
 import ProtonCoreCrypto
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 @testable import ProtonMail
 import XCTest
 

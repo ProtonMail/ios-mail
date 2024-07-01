@@ -10,6 +10,14 @@
             },
             {
                "package": "Difference"
+            },
+            {
+               "package": "ProtonCore",
+               "products": [
+                  "fusion",
+                  "ProtonCoreTestingToolkitUnitTestsFeatureFlag",
+                  "ProtonCoreTestingToolkitUnitTestsLoginUI"
+               ]
             }
          ],
          "sources": [

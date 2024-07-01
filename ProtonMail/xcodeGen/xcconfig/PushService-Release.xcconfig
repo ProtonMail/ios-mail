@@ -7,6 +7,5 @@
 
 #include "PushService-Shared.xcconfig"
 #include "Production-common.xcconfig"
-#include "../../Pods/Target Support Files/Pods-PushService/Pods-PushService.release.xcconfig"
 
 PROVISIONING_PROFILE_SPECIFIER = protonmail push service release

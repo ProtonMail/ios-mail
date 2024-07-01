@@ -19,7 +19,7 @@
 import XCTest
 import class ProtonCoreDataModel.UserInfo
 import class ProtonCoreNetworking.AuthCredential
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 
 final class PushNotificationActionsHandlerTests: XCTestCase {
     private var sut: PushNotificationActionsHandler!

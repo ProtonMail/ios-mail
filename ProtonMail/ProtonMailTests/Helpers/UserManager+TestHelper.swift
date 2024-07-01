@@ -18,7 +18,7 @@
 import ProtonCoreDataModel
 import ProtonCoreNetworking
 import ProtonCoreServices
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 import UIKit
 
 @testable import ProtonMail

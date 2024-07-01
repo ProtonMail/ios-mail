@@ -27,6 +27,8 @@ UI_TEST_IOS_VERSION = "17.2"
 UI_TEST_DEVICES = ["iPhone 15 Plus (#{UI_TEST_IOS_VERSION})"]
 UI_TEST_SCHEME = "ProtonMailUITests"
 
+ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
+
 def select_xcode
   xcodes(
     version: '15.1',

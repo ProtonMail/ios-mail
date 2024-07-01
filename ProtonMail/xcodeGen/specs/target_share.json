@@ -50,6 +50,17 @@
                "package": "ProtonCoreEventsLoop"
             },
             {
+               "package": "ProtonCore",
+               "products": [
+                  "ProtonCoreAuthenticationKeyGeneration",
+                  "ProtonCoreChallenge",
+                  "ProtonCoreCryptoGoImplementation",
+                  "ProtonCoreKeymaker",
+                  "ProtonCoreTelemetry",
+                  "ProtonCoreVCard"
+               ]
+            },
+            {
                "package": "SwiftCSSParser"
             }
          ],

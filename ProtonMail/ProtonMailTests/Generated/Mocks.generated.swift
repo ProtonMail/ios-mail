@@ -9,7 +9,7 @@ import ProtonCoreEnvironment
 import ProtonCoreKeymaker
 import ProtonCorePaymentsUI
 import ProtonCoreServices
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 import ProtonInboxRSVP
 import UIKit
 

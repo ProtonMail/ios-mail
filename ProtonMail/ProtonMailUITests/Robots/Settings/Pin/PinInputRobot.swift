@@ -7,7 +7,7 @@
 //
 
 import fusion
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUITestsLogin
 
 fileprivate struct id {
     static let pinCodeViewIdentifier = "PinCodeViewController.pinCodeView"

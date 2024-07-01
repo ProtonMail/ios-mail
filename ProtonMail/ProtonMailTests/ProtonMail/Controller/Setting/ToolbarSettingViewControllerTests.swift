@@ -18,7 +18,7 @@
 import ProtonCoreDataModel
 @testable import ProtonMail
 import XCTest
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 
 final class ToolbarSettingViewControllerTests: XCTestCase {
     var sut: ToolbarSettingViewController!

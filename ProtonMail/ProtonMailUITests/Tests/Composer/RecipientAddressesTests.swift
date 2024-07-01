@@ -6,7 +6,7 @@
 //  Copyright © 2021 Proton Mail. All rights reserved.
 //
 
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUITestsLogin
 
 class RecipientAddressesTests: FixtureAuthenticatedTestCase {
     

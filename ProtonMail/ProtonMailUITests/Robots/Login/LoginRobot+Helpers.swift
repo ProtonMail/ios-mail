@@ -8,7 +8,7 @@
 
 import XCTest
 import ProtonCoreQuarkCommands
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUITestsLogin
 
 extension LoginRobot {
 

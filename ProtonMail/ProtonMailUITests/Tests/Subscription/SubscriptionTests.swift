@@ -18,7 +18,7 @@
 import XCTest
 
 import ProtonCoreQuarkCommands
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUITestsPaymentsUI
 import StoreKitTest
 
 class SubscriptionTests: FixtureAuthenticatedTestCase {

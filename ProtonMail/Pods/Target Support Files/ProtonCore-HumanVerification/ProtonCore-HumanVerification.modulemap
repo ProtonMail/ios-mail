@@ -1,6 +1,0 @@
-framework module ProtonCoreHumanVerification {
-  umbrella header "ProtonCore-HumanVerification-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -17,7 +17,7 @@
 
 @testable import ProtonMail
 import XCTest
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 
 final class ConversationDataServiceTests: XCTestCase {
 

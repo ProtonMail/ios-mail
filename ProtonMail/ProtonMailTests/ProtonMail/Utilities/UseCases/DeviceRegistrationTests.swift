@@ -19,7 +19,7 @@ import Foundation
 import ProtonCoreDataModel
 import ProtonCoreNetworking
 @testable import ProtonMail
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 import XCTest
 
 final class DeviceRegistrationTests: XCTestCase {

@@ -22,6 +22,15 @@
                ]
             }
          ],
+         "dependencies": [
+            {
+               "package": "ProtonCore",
+               "products": [
+                  "ProtonCoreKeymaker",
+                  "ProtonCoreLog"
+               ]
+            }
+         ],
          "configFiles": {
             "Debug": "xcodeGen/xcconfig/Siri-Debug.xcconfig",
             "Release": "xcodeGen/xcconfig/Siri-Release.xcconfig",
