@@ -1151,7 +1151,7 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "No hem pogut enviar el vostre missatge, possiblement a causa d'una mala connexió de xarxa. El vostre missatge s'ha desat a Esborranys i s'enviarà automàticament la propera vegada que obriu l'aplicació.";
 
 /* Alert to confirm signout */
-"You will be switched to %@" = "Es canviarà a %@";
+"You will be switched to %@" = "Sereu redirigit a %@";
 
 /*
  Alert to confirm sign out
@@ -2178,7 +2178,7 @@
 "Read emails faster" = "Llegiu els correus electrònics més ràpid";
 
 /* Message for error when app set up at launch fails */
-"An unexpected error occurred, please contact support.\nError: %@" = "S'ha produït un error inesperat.\nError: %@";
+"An unexpected error occurred, please contact support.\nError: %@" = "S'ha produït un error inesperat. Contacteu amb el suport.\nError: %@";
 
 /* Title for error when app set up at launch fails */
 "Insufficient disk space" = "Espai de disc insuficient";

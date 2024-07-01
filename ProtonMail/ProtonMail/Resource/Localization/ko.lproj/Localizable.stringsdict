@@ -279,7 +279,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d 멤버</string>
+        <string>%d명 구성원</string>
       </dict>
     </dict>
     <key>In %d minutes</key>
