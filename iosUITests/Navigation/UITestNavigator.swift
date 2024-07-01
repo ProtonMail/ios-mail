@@ -77,7 +77,7 @@ struct UITestNavigator: ApplicationHolder {
     ) -> XCUIApplication {
         app.launchArguments += ["-uiTesting", "true"]
         app.launchArguments += ["-forceCleanState", "true"]
-        app.launchArguments += ["-AppleLanguages", "en"]
+        app.launchArguments += ["-AppleLanguages", "[\"en\"]"]
         app.launchArguments += ["-AppleLocale", "en_US"]
 
         if let serverPort = environment.mockServerPort {
