@@ -88,7 +88,7 @@ final class PaymentsUICoordinator {
         self.completionHandler = completionHandler
         if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             Task {
-                try await showPaymentsUI(servicePlan: planService)
+                await showPaymentsUI(servicePlan: planService)
             }
         } else {
             showPaymentsUI(servicePlan: planService, backendFetch: false)
@@ -101,7 +101,7 @@ final class PaymentsUICoordinator {
         self.completionHandler = completionHandler
         if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
             Task {
-                try await showPaymentsUI(servicePlan: planService)
+                await showPaymentsUI(servicePlan: planService)
             }
         } else {
             showPaymentsUI(servicePlan: planService, backendFetch: backendFetch)
@@ -110,7 +110,7 @@ final class PaymentsUICoordinator {
 
     // MARK: Private methods
 
-    private func showPaymentsUI(servicePlan: Either<ServicePlanDataServiceProtocol, PlansDataSourceProtocol>) async throws {
+    private func showPaymentsUI(servicePlan: Either<ServicePlanDataServiceProtocol, PlansDataSourceProtocol>) async {
         let paymentsUIViewController = await MainActor.run {
             let paymentsUIViewController = UIStoryboard.instantiate(
                 PaymentsUIViewController.self, storyboardName: storyboardName, inAppTheme: customization.inAppTheme
@@ -172,6 +172,7 @@ final class PaymentsUICoordinator {
             await MainActor.run {
                 showError(error: error)
             }
+            PMLog.error("Could not fetch plans \(error)", sendToExternal: true)
         }
     }
 
@@ -222,6 +223,7 @@ final class PaymentsUICoordinator {
                 DispatchQueue.main.async { [weak self] in
                     self?.showError(error: error)
                 }
+                PMLog.error("Could not fetch plans \(error)", sendToExternal: true)
             }
         }
     }
@@ -412,7 +414,7 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
                                                                     plan: self.getPlanNameForObservabilityPurposes(plan: plan),
                                                                     isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
             case .renewalNotification:
-                break
+                ObservabilityEnv.report(.paymentLaunchBillingTotal(status: .renewalNotification, isDynamic: self.featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan)))
             }
         }
     }

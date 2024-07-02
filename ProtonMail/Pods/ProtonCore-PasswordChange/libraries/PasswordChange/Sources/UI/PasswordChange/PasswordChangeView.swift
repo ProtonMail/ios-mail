@@ -126,7 +126,7 @@ public struct PasswordChangeView: View {
                 Text("Close")
                     .foregroundColor(ColorProvider.InteractionNorm)
             })
-        case .pass:
+        case .pass, .wallet:
             ZStack {
                 ColorProvider.PurpleBase.opacity(0.2)
                     .clipShape(Circle())

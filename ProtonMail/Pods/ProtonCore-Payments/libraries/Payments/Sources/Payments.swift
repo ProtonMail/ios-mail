@@ -68,7 +68,7 @@ public final class Payments {
                 do {
                     try await dataSource.fetchAvailablePlans()
                 } catch {
-                    PMLog.error(error)
+                    PMLog.error(error, sendToExternal: true)
                 }
             }
             return .right(dataSource)

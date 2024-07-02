@@ -63,18 +63,18 @@ extension LoginService: Login {
 
         var urlComponents = URLComponents(string: "\(host)/auth/sso/\(ssoChallengeResponse.ssoChallengeToken)")!
 
-        #if os(macOS)
+#if os(macOS)
         if let callbackScheme = self.ssoCallbackScheme,
-            let accountHostUrl = URL(string: accountHost),
-            let accountHostScheme = accountHostUrl.scheme {
+           let accountHostUrl = URL(string: accountHost),
+           let accountHostScheme = accountHostUrl.scheme {
 
             let modifiedAccountHost = accountHost.replacingOccurrences(of: accountHostScheme, with: callbackScheme)
             let finalRedirectBaseURLQueryParameter = URLQueryItem(name: "FinalRedirectBaseUrl",
-                                                                 value: "\(modifiedAccountHost)")
+                                                                  value: "\(modifiedAccountHost)")
 
             urlComponents.queryItems = [finalRedirectBaseURLQueryParameter]
         }
-        #endif
+#endif
 
         let url = urlComponents.url!
         var request = URLRequest(url: url)
@@ -96,8 +96,8 @@ extension LoginService: Login {
     }
 
     private func authenticateWithSSO(idpEmail: String, responseToken: SSOResponseToken, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        withAuthDelegateAvailable(completion) { authManager in
-            manager.authenticate(idpEmail: idpEmail, responseToken: responseToken) { result in
+        withAuthDelegateAvailable(completion) { authDelegate in
+            authManager.authenticate(idpEmail: idpEmail, responseToken: responseToken) { result in
                 switch result {
                 case let .success(status):
                     switch status {
@@ -120,7 +120,7 @@ extension LoginService: Login {
     }
 
     public func login(username: String, password: String, intent: Intent?, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        withAuthDelegateAvailable(completion) { authManager in
+        withAuthDelegateAvailable(completion) { authDelegate in
             self.username = username
             self.mailboxPassword = password
             var data: ChallengeProperties?
@@ -129,7 +129,7 @@ extension LoginService: Login {
             }
             PMLog.debug("Logging in with username and password")
 
-            manager.authenticate(username: username, password: password, challenge: data, intent: intent, srpAuth: nil) { result in
+            authManager.authenticate(username: username, password: password, challenge: data, intent: intent, srpAuth: nil) { result in
                 switch result {
                 case let .success(status):
                     switch status {
@@ -137,19 +137,19 @@ extension LoginService: Login {
                         self.totpContext = totpContext
                         PMLog.debug("Login successful but needs TOTP code")
                         completion(.success(.askTOTP))
-                    case let .askFIDO2(fido2Context):
+                    case let .askFIDO2(fido2Context, authenticationOptions):
                         self.fido2Context = fido2Context
                         PMLog.debug("Login successful but needs FIDO2 validation")
-                        completion(.success(.askFIDO2(fido2Context)))
-                    case let .askAny2FA(totpContext, fido2Context):
+                        completion(.success(.askFIDO2(authenticationOptions)))
+                    case let .askAny2FA(totpContext, fido2Context, authenticationOptions):
                         self.fido2Context = fido2Context
                         self.totpContext = totpContext
                         PMLog.debug("Login successful but needs 2FA validation")
-                        completion(.success(.askAny2FA(fido2Context)))
+                        completion(.success(.askAny2FA(authenticationOptions)))
                     case let .newCredential(credential, passwordMode):
                         self.handleValidCredentials(credential: credential, passwordMode: passwordMode, mailboxPassword: password, completion: completion)
                     case .updatedCredential(let credential):
-                        authManager.onSessionObtaining(credential: credential)
+                        authDelegate.onSessionObtaining(credential: credential)
                         self.apiService.setSessionUID(uid: credential.UID)
                         PMLog.error("No idea how to handle updatedCredential", sendToExternal: true)
                         completion(.failure(.invalidState))
@@ -168,7 +168,7 @@ extension LoginService: Login {
     }
 
     public func provide2FACode(_ code: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        withAuthDelegateAvailable(completion) { authManager in
+        withAuthDelegateAvailable(completion) { authDelegate in
             PMLog.debug("Confirming 2FA code")
             guard let context = self.totpContext else {
                 completion(.failure(.invalidState))
@@ -180,7 +180,7 @@ extension LoginService: Login {
                 return
             }
 
-            manager.confirm2FA(code, context: context) { result in
+            authManager.confirm2FA(code, context: context) { result in
                 switch result {
                 case let .success(status):
                     switch status {
@@ -194,7 +194,7 @@ extension LoginService: Login {
                         completion(.failure(.invalidState))
 
                     case .updatedCredential(let credential):
-                        authManager.onSessionObtaining(credential: credential)
+                        authDelegate.onSessionObtaining(credential: credential)
                         self.apiService.setSessionUID(uid: credential.UID)
                         PMLog.error("No idea how to handle updatedCredential", sendToExternal: true)
                         completion(.failure(.invalidState))
@@ -211,279 +211,280 @@ extension LoginService: Login {
         }
     }
 
-    public func provideFido2Signature(_ signature: Fido2Signature, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        if #available(iOS 15.0, macOS 12.0, *) {
-            withAuthDelegateAvailable(completion) { authManager in
+        public func provideFido2Signature(_ signature: Fido2Signature, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+            if #available(iOS 15.0, macOS 12.0, *) {
+                withAuthDelegateAvailable(completion) { authDelegate in
 
-                PMLog.debug("Sending FIDO2 challenge")
-                guard let mailboxPassword = mailboxPassword,
-                      let fido2Context else {
-                    completion(.failure(.invalidState))
-                    return
-                }
+                    PMLog.debug("Sending FIDO2 challenge")
+                    guard let mailboxPassword = mailboxPassword,
+                          let fido2Context else {
+                        completion(.failure(.invalidState))
+                        return
+                    }
 
-                manager.sendFIDO2Signature(signature, context: fido2Context) { result in
-                    switch result {
-                    case let .success(status):
-                        switch status {
-                        case let .newCredential(credential, passwordMode):
-                            PMLog.debug("2FA code accepted, updating the credentials context and moving further")
-                            self.totpContext = TOTPContext(credential: credential, passwordMode: passwordMode)
-                            self.handleValidCredentials(credential: credential, passwordMode: passwordMode, mailboxPassword: mailboxPassword, completion: completion)
+                    authManager.sendFIDO2Signature(signature, context: fido2Context) { result in
+                        switch result {
+                        case let .success(status):
+                            switch status {
+                            case let .newCredential(credential, passwordMode):
+                                PMLog.debug("2FA code accepted, updating the credentials context and moving further")
+                                self.totpContext = TOTPContext(credential: credential, passwordMode: passwordMode)
+                                self.handleValidCredentials(credential: credential, passwordMode: passwordMode, mailboxPassword: mailboxPassword, completion: completion)
 
-                        case .askTOTP, .askAny2FA, .askFIDO2:
-                            PMLog.error("Asking again for 2FA should never happen", sendToExternal: true)
-                            completion(.failure(.invalidState))
+                            case .askTOTP, .askAny2FA, .askFIDO2:
+                                PMLog.error("Asking again for 2FA should never happen", sendToExternal: true)
+                                completion(.failure(.invalidState))
 
-                        case .updatedCredential(let credential):
-                            authManager.onSessionObtaining(credential: credential)
-                            self.apiService.setSessionUID(uid: credential.UID)
-                            PMLog.error("No idea how to handle updatedCredential", sendToExternal: true)
-                            completion(.failure(.invalidState))
-                        case .ssoChallenge:
-                            PMLog.error("Obtaining SSO challenge should never happen", sendToExternal: true)
-                            completion(.failure(.invalidState))
+                            case .updatedCredential(let credential):
+                                authDelegate.onSessionObtaining(credential: credential)
+                                self.apiService.setSessionUID(uid: credential.UID)
+                                PMLog.error("No idea how to handle updatedCredential", sendToExternal: true)
+                                completion(.failure(.invalidState))
+                            case .ssoChallenge:
+                                PMLog.error("Obtaining SSO challenge should never happen", sendToExternal: true)
+                                completion(.failure(.invalidState))
+                            }
+                        case let .failure(error):
+                            PMLog.error("Confirming 2FA code failed with \(error)", sendToExternal: true)
+                            let loginError = error.asLoginError(in2FAContext: true)
+                            completion(.failure(loginError))
                         }
-                    case let .failure(error):
-                        PMLog.error("Confirming 2FA code failed with \(error)", sendToExternal: true)
-                        let loginError = error.asLoginError(in2FAContext: true)
-                        completion(.failure(loginError))
                     }
                 }
             }
         }
-    }
 
-    public func finishLoginFlow(mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        manager.getUserInfo { result in
-            switch result {
-            case .success(let user):
-                self.getAccountDataPerformingAccountMigrationIfNeeded(
-                    user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
-                )
-            case .failure(let error):
-                PMLog.error("Fetching user info with \(error)", sendToExternal: true)
-                completion(.failure(error.asLoginError()))
-            }
-        }
-    }
-
-    public func logout(credential: AuthCredential? = nil, completion: @escaping (Result<Void, Error>) -> Void) {
-        PMLog.debug("Logging out")
-
-        manager.closeSession(credential.map(Credential.init)) { result in
-            switch result {
-            case .success:
-                completion(.success)
-            case let .failure(error):
-                PMLog.error("Logout failed with \(error)", sendToExternal: true)
-                completion(.failure(error))
-            }
-        }
-    }
-
-    public func checkAvailabilityForUsernameAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
-        PMLog.debug(#function)
-
-        manager.checkAvailableUsernameWithoutSpecifyingDomain(username) { result in
-            completion(result.mapError { $0.asAvailabilityError() })
-        }
-    }
-
-    public func checkAvailabilityForInternalAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
-        PMLog.debug(#function)
-
-        manager.checkAvailableUsernameWithinDomain(username, domain: currentlyChosenSignUpDomain) { result in
-            completion(result.mapError { $0.asAvailabilityError() })
-        }
-    }
-
-    public func checkAvailabilityForExternalAccount(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
-        PMLog.debug(#function)
-
-        if let protonDomain = allSignUpDomains.first(where: { email.hasSuffix("@\($0)") }) {
-            let suffix = "@\(protonDomain)"
-            let username = String(email.dropLast(suffix.count))
-            // this message is provided just in case this error is not handled properly due to a bug
-            let nonUserFacingMessage = "The email address you provided is Proton Mail address. Please create Proton Mail account."
-            completion(.failure(.protonDomainUsedForExternalAccount(
-                username: username, domain: protonDomain, nonUserFacingMessage: nonUserFacingMessage
-            )))
-            return
-        }
-
-        manager.checkAvailableExternal(email) { result in
-            completion(result.mapError { $0.asAvailabilityError() })
-        }
-    }
-
-    public func setUsername(username: String, completion: @escaping (Result<(), SetUsernameError>) -> Void) {
-        PMLog.debug("Setting username")
-
-        manager.setUsername(username: username) { result in
-            switch result {
-            case .success:
-                completion(.success)
-            case let .failure(error):
-                completion(.failure(error.asSetUsernameError()))
-            }
-        }
-    }
-
-    public func createAccountKeysIfNeeded(user: User,
-                                          addresses: [Address]?,
-                                          mailboxPassword: String?,
-                                          completion: @escaping (Result<User, LoginError>) -> Void) {
-        PMLog.debug("Creating account keys if needed")
-        let isAccountKeyCreationNeeded = user.keys.first(where: { $0.primary == 1 }) == nil
-        guard isAccountKeyCreationNeeded else {
-            PMLog.debug("No need to create account key, moving forward")
-            completion(.success(user))
-            return
-        }
-        guard let mailboxPassword = mailboxPassword else {
-            PMLog.error("Cannot create account key because no mailbox password", sendToExternal: true)
-            completion(.failure(.invalidState))
-            return
-        }
-
-        // if no info about addresses was provided from the client, refresh it
-        startGeneratingKeys?()
-        guard let addresses = addresses else {
-            manager.getAddresses { [weak self] in
-                switch $0 {
-                case .success(let addresses):
-                    self?.createAccountKeysIfNeeded(user: user, addresses: addresses, mailboxPassword: mailboxPassword, completion: completion)
+        public func finishLoginFlow(mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+            authManager.getUserInfo { result in
+                switch result {
+                case .success(let user):
+                    self.getAccountDataPerformingAccountMigrationIfNeeded(
+                        user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
+                    )
                 case .failure(let error):
-                    PMLog.error("Login failed with \(error)", sendToExternal: true)
+                    PMLog.error("Fetching user info with \(error)", sendToExternal: true)
                     completion(.failure(error.asLoginError()))
                 }
             }
-            return
         }
 
-        guard !addresses.isEmpty else {
-            PMLog.debug("No addresses means no need to create account key, moving forward")
-            completion(.success(user))
-            return
+        public func logout(credential: AuthCredential? = nil, completion: @escaping (Result<Void, Error>) -> Void) {
+            PMLog.debug("Logging out")
+
+            authManager.closeSession(credential.map(Credential.init)) { result in
+                switch result {
+                case .success:
+                    completion(.success)
+                case let .failure(error):
+                    PMLog.error("Logout failed with \(error)", sendToExternal: true)
+                    completion(.failure(error))
+                }
+            }
         }
 
-        PMLog.debug("Creating account keys")
-        let manager = self.manager
-        manager.setupAccountKeys(addresses: addresses, password: mailboxPassword) { result in
-            switch result {
-            case let .failure(error):
-                PMLog.error("Cannot create account keys for user", sendToExternal: true)
-                completion(.failure(error.asLoginError()))
-            case .success:
-                manager.getUserInfo { result in
-                    switch result {
-                    case .success(let user):
-                        PMLog.debug("Keys set up, moving forward")
-                        completion(.success(user))
+        public func checkAvailabilityForUsernameAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+            PMLog.debug(#function)
+
+            authManager.checkAvailableUsernameWithoutSpecifyingDomain(username) { result in
+                completion(result.mapError { $0.asAvailabilityError() })
+            }
+        }
+
+        public func checkAvailabilityForInternalAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+            PMLog.debug(#function)
+
+            authManager.checkAvailableUsernameWithinDomain(username, domain: currentlyChosenSignUpDomain) { result in
+                completion(result.mapError { $0.asAvailabilityError() })
+            }
+        }
+
+        public func checkAvailabilityForExternalAccount(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+            PMLog.debug(#function)
+
+            if let protonDomain = allSignUpDomains.first(where: { email.hasSuffix("@\($0)") }) {
+                let suffix = "@\(protonDomain)"
+                let username = String(email.dropLast(suffix.count))
+                // this message is provided just in case this error is not handled properly due to a bug
+                let nonUserFacingMessage = "The email address you provided is Proton Mail address. Please create Proton Mail account."
+                completion(.failure(.protonDomainUsedForExternalAccount(
+                    username: username, domain: protonDomain, nonUserFacingMessage: nonUserFacingMessage
+                )))
+                return
+            }
+
+            authManager.checkAvailableExternal(email) { result in
+                completion(result.mapError { $0.asAvailabilityError() })
+            }
+        }
+
+        public func setUsername(username: String, completion: @escaping (Result<(), SetUsernameError>) -> Void) {
+            PMLog.debug("Setting username")
+
+            authManager.setUsername(username: username) { result in
+                switch result {
+                case .success:
+                    completion(.success)
+                case let .failure(error):
+                    completion(.failure(error.asSetUsernameError()))
+                }
+            }
+        }
+
+        public func createAccountKeysIfNeeded(user: User,
+                                              addresses: [Address]?,
+                                              mailboxPassword: String?,
+                                              completion: @escaping (Result<User, LoginError>) -> Void) {
+            PMLog.debug("Creating account keys if needed")
+            let isAccountKeyCreationNeeded = user.keys.first(where: { $0.primary == 1 }) == nil
+            guard isAccountKeyCreationNeeded else {
+                PMLog.debug("No need to create account key, moving forward")
+                completion(.success(user))
+                return
+            }
+            guard let mailboxPassword = mailboxPassword else {
+                PMLog.error("Cannot create account key because no mailbox password", sendToExternal: true)
+                completion(.failure(.invalidState))
+                return
+            }
+
+            // if no info about addresses was provided from the client, refresh it
+            startGeneratingKeys?()
+            guard let addresses = addresses else {
+                authManager.getAddresses { [weak self] in
+                    switch $0 {
+                    case .success(let addresses):
+                        self?.createAccountKeysIfNeeded(user: user, addresses: addresses, mailboxPassword: mailboxPassword, completion: completion)
                     case .failure(let error):
-                        PMLog.debug("Cannot refresh user state after keys creation")
+                        PMLog.error("Login failed with \(error)", sendToExternal: true)
                         completion(.failure(error.asLoginError()))
                     }
                 }
+                return
             }
-        }
-    }
 
-    public func createAddress(completion: @escaping (Result<Address, CreateAddressError>) -> Void) {
-        PMLog.debug("Creating address with domain \(currentlyChosenSignUpDomain)")
+            guard !addresses.isEmpty else {
+                PMLog.debug("No addresses means no need to create account key, moving forward")
+                completion(.success(user))
+                return
+            }
 
-        startGeneratingAddress?()
-        manager.createAddress(domain: currentlyChosenSignUpDomain) { result in
-            switch result {
-            case let .success(address):
-                completion(.success(address))
-            case let .failure(error):
-                switch error {
-                case .networkingError(let responseError) where responseError.responseCode == 2011:
-                    self.manager.getAddresses { result in
+            PMLog.debug("Creating account keys")
+            let manager = self.authManager
+            manager.setupAccountKeys(addresses: addresses, password: mailboxPassword) { result in
+                switch result {
+                case let .failure(error):
+                    PMLog.error("Cannot create account keys for user", sendToExternal: true)
+                    completion(.failure(error.asLoginError()))
+                case .success:
+                    manager.getUserInfo { result in
                         switch result {
-                        case let .success(addresses):
-                            if let internalOrCustomDomainAddress = addresses.first(where: { $0.isInternal || $0.isCustomDomain }) {
-                                completion(.failure(.alreadyHaveInternalOrCustomDomainAddress(internalOrCustomDomainAddress)))
-                            } else {
-                                completion(.failure(.cannotCreateInternalAddress(alreadyExistingAddress: addresses.first)))
-                            }
-
-                        case let .failure(.apiMightBeBlocked(message, originalError)):
-                            completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))
-                        case let .failure(error):
-                            completion(.failure(.generic(message: error.userFacingMessageInNetworking, code: error.codeInNetworking, originalError: error)))
+                        case .success(let user):
+                            PMLog.debug("Keys set up, moving forward")
+                            completion(.success(user))
+                        case .failure(let error):
+                            PMLog.debug("Cannot refresh user state after keys creation")
+                            completion(.failure(error.asLoginError()))
                         }
                     }
-                case .apiMightBeBlocked(let message, let originalError):
-                    completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))
-                default:
-                    completion(.failure(.generic(message: error.userFacingMessageInNetworking, code: error.codeInNetworking, originalError: error)))
                 }
             }
         }
-    }
 
-    public func createAddressKeys(user: User, address: Address, mailboxPassword: String, completion: @escaping (Result<Key, CreateAddressKeysError>) -> Void) {
-        PMLog.debug("Creating address keys")
+        public func createAddress(completion: @escaping (Result<Address, CreateAddressError>) -> Void) {
+            PMLog.debug("Creating address with domain \(currentlyChosenSignUpDomain)")
 
-        guard address.keys.isEmpty else {
-            completion(.failure(.alreadySet))
-            return
-        }
+            startGeneratingAddress?()
+            authManager.createAddress(domain: currentlyChosenSignUpDomain) { result in
+                switch result {
+                case let .success(address):
+                    completion(.success(address))
+                case let .failure(error):
+                    switch error {
+                    case .networkingError(let responseError) where responseError.responseCode == 2011:
+                        self.authManager.getAddresses { result in
+                            switch result {
+                            case let .success(addresses):
+                                if let internalOrCustomDomainAddress = addresses.first(where: { $0.isInternal || $0.isCustomDomain }) {
+                                    completion(.failure(.alreadyHaveInternalOrCustomDomainAddress(internalOrCustomDomainAddress)))
+                                } else {
+                                    completion(.failure(.cannotCreateInternalAddress(alreadyExistingAddress: addresses.first)))
+                                }
 
-        guard let primaryKey = user.keys.first(where: { $0.primary == 1 }) else {
-            PMLog.error("Cannot create address for user without primary key", sendToExternal: true)
-            completion(.failure(.generic(message: LSTranslation._loginservice_error_generic.l10n,
-                                         code: 0,
-                                         originalError: LoginError.invalidState)))
-            return
-        }
-
-        manager.getKeySalts { result in
-            switch result {
-            case let .failure(error):
-                completion(.failure(error.asCreateAddressKeysError()))
-            case let .success(salts):
-                guard let keySalt = salts.first(where: { $0.ID == primaryKey.keyID })?.keySalt, let salt = Data(base64Encoded: keySalt) else {
-                    PMLog.error("Missing salt for primary key", sendToExternal: true)
-                    completion(.failure(.generic(message: LSTranslation._loginservice_error_generic.l10n,
-                                                 code: 0,
-                                                 originalError: LoginError.invalidState)))
-                    return
-                }
-
-                self.manager.createAddressKey(user: user, address: address,
-                                              password: mailboxPassword, salt: salt, isPrimary: true) { result in
-                    switch result {
-                    case let .success(key):
-                        completion(.success(key))
-                    case let .failure(error):
-                        completion(.failure(error.asCreateAddressKeysError()))
+                            case let .failure(.apiMightBeBlocked(message, originalError)):
+                                completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))
+                            case let .failure(error):
+                                completion(.failure(.generic(message: error.userFacingMessageInNetworking, code: error.codeInNetworking, originalError: error)))
+                            }
+                        }
+                    case .apiMightBeBlocked(let message, let originalError):
+                        completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))
+                    default:
+                        completion(.failure(.generic(message: error.userFacingMessageInNetworking, code: error.codeInNetworking, originalError: error)))
                     }
                 }
             }
         }
-    }
 
-    public func availableUsernameForExternalAccountEmail(email: String, completion: @escaping (String?) -> Void) {
-        guard let username = email.components(separatedBy: "@").first else {
-            completion(nil)
-            return
-        }
-        checkAvailabilityForInternalAccount(username: username) { result in
-            switch result {
-            case .success:
-                completion(username)
-            case .failure:
-                // we ignore the error and just return nil by design
-                // reason being — this method is used for checking if the username
-                // we want to propose to the user converting from external to internal account
-                // is available. if we cannot confirm it, we don't want to block the user.
-                // we just won't propose them the username, but we will let them choose their own one
-                completion(nil)
+        public func createAddressKeys(user: User, address: Address, mailboxPassword: String, completion: @escaping (Result<Key, CreateAddressKeysError>) -> Void) {
+            PMLog.debug("Creating address keys")
+
+            guard address.keys.isEmpty else {
+                completion(.failure(.alreadySet))
+                return
+            }
+
+            guard let primaryKey = user.keys.first(where: { $0.primary == 1 }) else {
+                PMLog.error("Cannot create address for user without primary key", sendToExternal: true)
+                completion(.failure(.generic(message: LSTranslation._loginservice_error_generic.l10n,
+                                             code: 0,
+                                             originalError: LoginError.invalidState)))
+                return
+            }
+
+            authManager.getKeySalts { result in
+                switch result {
+                case let .failure(error):
+                    completion(.failure(error.asCreateAddressKeysError()))
+                case let .success(salts):
+                    guard let keySalt = salts.first(where: { $0.ID == primaryKey.keyID })?.keySalt, let salt = Data(base64Encoded: keySalt) else {
+                        PMLog.error("Missing salt for primary key", sendToExternal: true)
+                        completion(.failure(.generic(message: LSTranslation._loginservice_error_generic.l10n,
+                                                     code: 0,
+                                                     originalError: LoginError.invalidState)))
+                        return
+                    }
+
+                    self.authManager.createAddressKey(user: user, address: address,
+                                                      password: mailboxPassword, salt: salt, isPrimary: true) { result in
+                        switch result {
+                        case let .success(key):
+                            completion(.success(key))
+                        case let .failure(error):
+                            completion(.failure(error.asCreateAddressKeysError()))
+                        }
+                    }
+                }
             }
         }
-    }
+
+        public func availableUsernameForExternalAccountEmail(email: String, completion: @escaping (String?) -> Void) {
+            guard let username = email.components(separatedBy: "@").first else {
+                completion(nil)
+                return
+            }
+            checkAvailabilityForInternalAccount(username: username) { result in
+                switch result {
+                case .success:
+                    completion(username)
+                case .failure:
+                    // we ignore the error and just return nil by design
+                    // reason being — this method is used for checking if the username
+                    // we want to propose to the user converting from external to internal account
+                    // is available. if we cannot confirm it, we don't want to block the user.
+                    // we just won't propose them the username, but we will let them choose their own one
+                    completion(nil)
+                }
+            }
+        }
+
 }

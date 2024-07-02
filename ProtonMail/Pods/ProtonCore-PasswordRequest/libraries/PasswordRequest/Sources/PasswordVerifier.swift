@@ -72,6 +72,7 @@ public final class PasswordVerifier {
                     completion(.success(authInfoResponse))
                 case .right:
                     assertionFailure("SSO challenge response should never be returned if the intent is nil")
+                    completion(.failure(.switchToSSOError))
                 }
             case .failure(let error):
                 completion(.failure(.networkingError(error)))

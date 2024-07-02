@@ -31,8 +31,17 @@ import ProtonCoreUIFoundations
 public protocol PasswordVerifierViewControllerDelegate: AnyObject {
     func userUnlocked()
     func didCloseVerifyPassword()
-    func didCloseWithError(code: Int, description: String)
+    func didCloseWithAuthError(error: AuthErrors)
     func didShowWrongPassword() // but was not dismissed
+
+    @available(*, deprecated, message: "Use didCloseWithAuthError(error:)")
+    func didCloseWithError(code: Int, description: String)
+}
+
+public extension PasswordVerifierViewControllerDelegate {
+    func didCloseWithAuthError(error: AuthErrors) {
+        didCloseWithError(code: error.bestShotAtReasonableErrorCode, description: error.localizedDescription)
+    }
 }
 
 public final class PasswordVerifierViewController: UIViewController {
@@ -216,7 +225,7 @@ public final class PasswordVerifierViewController: UIViewController {
             dismiss(
                 animated: true,
                 completion: { [weak self] in
-                    self?.delegate?.didCloseWithError(code: error.codeInNetworking, description: error.localizedDescription)
+                    self?.delegate?.didCloseWithAuthError(error: error)
                 }
             )
         }

@@ -38,7 +38,7 @@ public protocol AuthenticatorInterface {
     /// Sends FIDO2 signed challenge to complete authentication after logging in with a FIDO2 enabled account
     /// - Parameters:
     ///   - signature: Signed challenge
-    ///   - context: Contains details pertaining to the original auth request and the challenge
+    ///   - context: Contains details pertaining to the original auth request 
     ///   - completion: Completion closure which will receive the result of the request
     func sendFIDO2Signature(_ signature: Fido2Signature, context: FIDO2Context, completion: @escaping Authenticator.Completion)
 

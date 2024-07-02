@@ -23,7 +23,7 @@
 
 import Foundation
 
-protocol NavigationDelegate: AnyObject {
+public protocol NavigationDelegate: AnyObject {
     func userDidGoBack()
 }
 

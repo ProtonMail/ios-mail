@@ -215,3 +215,39 @@
 "Sign in" = "Увайсці";
 
 "Troubleshoot" = "Выпраўленне непаладак";
+
+"Please choose how you want to confirm your identity." = "Выберыце, як вы хочаце пацвердзіць сваю ідэнтычнасць.";
+
+"One-time code" = "Аднаразовы код";
+
+"Security key" = "Ключ бяспекі";
+
+"Two-Factor Authentication" = "Двухфактарная аўтэнтыфікацыя";
+
+"Present a security key linked to your Proton Account." = "Дадзены ключ бяспекі, які звязаны з вашым уліковым запісам Proton.";
+
+"Learn more" = "Даведацца больш";
+
+"Invalid state. Please quit the app and try again in a few minutes." = "Памылковы стан. Выйдзіце з праграмы і паспрабуйце яшчэ раз праз некалькіх хвілін.";
+
+"There was a problem reading your security key." = "Узнікла праблема пры чытанні вашага ключа бяспекі.";
+
+"We received an authorization from a type we don't support yet." = "Мы атрымалі аўтарызацыю ад тыпу, які мы пакуль не падтрымліваем.";
+
+"Fetching your security keys details" = "Атрыманне падрабязнасцей вашых ключоў бяспекі";
+
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "У вашым уліковым запісе пакуль адсутнічаюць зарэгістраваныя ключы бяспекі. Наведайце раздзел налады нашага вэб-сайта, каб дадаць ключы бяспекі.";
+
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "Адбылася памылка пры атрыманні ключоў бяспекі. Вы таксама можаце праверыць іх на вэб-сайце Proton %@.";
+
+"These are the security keys registered to your account" = "Гэтыя ключы бяспекі зарэгістраваны ў вашым уліковым запісе";
+
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "У вашым уліковым запісе пакуль адсутнічаюць зарэгістраваныя ключы бяспекі. Скарыстайцеся вэб-праграмай Proton %@, каб дадаць ключы бяспекі.";
+
+"Security Keys" = "Ключы бяспекі";
+
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "Карыстайцеся вэб-праграмай Proton %@ для кіравання, дадавання або выдалення ключоў бяспекі.";
+
+"Unexpected FIDO2 signature." = "Нечаканы подпіс FIDO2.";
+
+"We could not initiate the Secure Password update connection. Please try again." = "Не атрымалася ініцыялізаваць абноўленае злучэнне бяспечнага пароля. Паспрабуйце яшчэ раз.";

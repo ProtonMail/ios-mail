@@ -109,7 +109,7 @@ public class ProtonButton: UIButton, AccessibleView {
         switch Brand.currentBrand {
         case .proton, .vpn:
             layer.cornerRadius = 8.0
-        case .pass:
+        case .pass, .wallet:
             layer.cornerRadius = 24.0
         }
         switch mode {
@@ -172,7 +172,7 @@ public class ProtonButton: UIButton, AccessibleView {
         setTitleColor(ColorProvider.White, for: .selected)
         setTitleColor(ColorProvider.White.withAlphaComponent(0.4), for: .disabled)
         switch Brand.currentBrand {
-        case .proton, .vpn:
+        case .proton, .vpn, .wallet:
             setBackgroundColor(ColorProvider.InteractionNorm, forState: .normal)
         case .pass:
             setBackgroundColor(.dynamic(light: ColorProvider.InteractionNorm,
@@ -186,7 +186,7 @@ public class ProtonButton: UIButton, AccessibleView {
 
     private func nonSolidLayout() {
         switch Brand.currentBrand {
-        case .proton, .vpn:
+        case .proton, .vpn, .wallet:
             setTitleColor(ColorProvider.TextAccent, for: .normal)
         case .pass:
             setTitleColor(.dynamic(light: ColorProvider.TextAccent,
@@ -204,7 +204,7 @@ public class ProtonButton: UIButton, AccessibleView {
     private func imageLayout(isImageOnly: Bool) {
         if isImageOnly {
             switch Brand.currentBrand {
-            case .proton, .vpn:
+            case .proton, .vpn, .wallet:
                 setTitleColor(ColorProvider.InteractionNorm, for: .normal)
             case .pass:
                 setTitleColor(.dynamic(light: ColorProvider.InteractionNorm,

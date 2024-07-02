@@ -1,6 +1,6 @@
 //
-//  DefaultResponse.swift
-//  ProtonCore-PasswordChange - Created on 20.03.2024.
+//  AuthenticationObservability.swift
+//  ProtonCore-Observability - Created on 11.06.2024.
 //
 //  Copyright (c) 2024 Proton Technologies AG
 //
@@ -20,19 +20,23 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCoreNetworking
+import ProtonCoreObservability
 
-public final class DefaultResponse: Response, Decodable {
+protocol AuthenticationObservability {
+    func observabilityAuth2FAStatusReport(twoFAType: TwoFAType, httpCode: Int?)
+}
 
-    public init(from decoder: Decoder) throws {
-        super.init()
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.responseCode = try container.decodeIfPresent(Int.self, forKey: .responseCode)
-    }
+extension AuthenticationObservability {
+    func observabilityAuth2FAStatusReport(twoFAType: TwoFAType, httpCode: Int?) {
 
-    required init() {}
+        let status: HTTPResponseCodeStatus = switch httpCode {
+        case .some(200...299): .http2xx
+        case .some(400...499): .http4xx
+        case .some(500...599): .http5xx
+        default: .unknown
+        }
 
-    enum CodingKeys: String, CodingKey {
-        case responseCode = "code"
+        ObservabilityEnv.report(.loginAuthWith2FATotalEvent(status: status,
+                                                            twoFAType: twoFAType))
     }
 }

@@ -25,11 +25,11 @@ import Foundation
 import SwiftUI
 import ProtonCoreUIFoundations
 
-struct TOTPView: View {
+public struct TOTPView: View {
 
     @ObservedObject var viewModel: ViewModel
 
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 24) {
             PCTextField(
                 style: .constant(.init(mode: .idle)),
@@ -52,7 +52,7 @@ struct TOTPView: View {
 
 #if DEBUG
 #Preview {
-    TOTPView(viewModel: TOTPView.ViewModel(login: LoginStub()))
+    TOTPView(viewModel: TOTPView.ViewModel())
 }
 #endif
 

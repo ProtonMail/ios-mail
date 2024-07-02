@@ -25,7 +25,9 @@ import SwiftUI
 import ProtonCoreUIFoundations
 
 @available(iOS 15.0, *)
+
 public struct Fido2View: View {
+
     @ObservedObject var viewModel: ViewModel
 
     var isNested: Bool = false
@@ -58,10 +60,16 @@ public struct Fido2View: View {
                 )
             )
         }
+        .padding(20)
         .frame(maxWidth: .infinity,
                maxHeight: .infinity,
                alignment: .top)
 
+    }
+
+    public init(viewModel: Fido2View.ViewModel, isNested: Bool = false) {
+        self.viewModel = viewModel
+        self.isNested = isNested
     }
 }
 
