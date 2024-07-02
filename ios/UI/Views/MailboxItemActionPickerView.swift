@@ -19,6 +19,8 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxItemActionPickerView: View {
+    @State private(set) var highlightedAction: Action? = nil
+
     private let mailboxItemIdentifier: MailboxItemIdentifier
     private let isSingleRecipient: Bool
     private let resolver: MailboxItemActionResolver
@@ -80,7 +82,7 @@ struct MailboxItemActionPickerView: View {
                     .foregroundStyle(DS.Color.Text.weak)
             }
         }
-        .background(DS.Color.Background.norm)
+        .buttonStyle(RegularButtonStyle())
         .clipShape(.rect(cornerRadius: DS.Radius.extraLarge))
     }
 
@@ -98,29 +100,36 @@ struct MailboxItemActionPickerView: View {
     private func section(actions: [MailboxItemAction]) -> some View {
         Section {
             ForEach(Array(actions.enumerated()), id: \.offset) { index, itemAction in
-                messageActionCell(for: resolver.action(for: itemAction))
+                let action = resolver.action(for: itemAction)
+                messageActionCell(for: action)
                     .customListLeadingSeparator()
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        onActionTap(action, mailboxItemIdentifier)
+                    }
+                    .onLongPressGesture(perform: {}, onPressingChanged: { isPressed in
+                        highlightedAction = isPressed ? action : nil
+                    })
+                    .listRowBackground(
+                        highlightedAction == action
+                        ? DS.Color.InteractionWeak.pressed
+                        : DS.Color.Background.norm
+                    )
             }
-            .listRowBackground(DS.Color.Background.norm)
         }
     }
 
     private func messageActionCell(for action: Action) -> some View {
-        Button(action: {
-            onActionTap(action, mailboxItemIdentifier)
-        }, label: {
-            HStack(spacing: DS.Spacing.large) {
-                Image(uiImage: action.icon)
-                    .iconModifier()
+        HStack(spacing: DS.Spacing.large) {
+            Image(uiImage: action.icon)
+                .iconModifier()
 
-                Text(action.name)
-                    .lineLimit(1)
-                    .font(.subheadline)
-                    .foregroundStyle(DS.Color.Text.weak)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-        })
-        .buttonStyle(BorderlessButtonStyle())
+            Text(action.name)
+                .lineLimit(1)
+                .font(.subheadline)
+                .foregroundStyle(DS.Color.Text.weak)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
     }
 }
 

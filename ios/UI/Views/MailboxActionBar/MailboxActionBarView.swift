@@ -107,7 +107,7 @@ struct MailboxActionBarView: View {
                 mailboxActionable.onLabelsSelected(labelIds: selectedLabelIds, alsoArchive: alsoArchive)
             }
         )
-        .pickerViewStyle()
+        .pickerViewStyle([.medium, .large])
     }
 
     private var folderPickerView: some View {
@@ -115,7 +115,7 @@ struct MailboxActionBarView: View {
             showFolderPicker.toggle()
             mailboxActionable.onFolderSelected(labelId: selectedFolderId)
         })
-        .pickerViewStyle()
+        .pickerViewStyle([.medium, .large])
     }
 }
 

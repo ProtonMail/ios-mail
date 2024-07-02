@@ -18,21 +18,24 @@
 import DesignSystem
 import SwiftUI
 
-struct PickerViewStyle: ViewModifier {
-    let detents: Set<PresentationDetent>
+struct RegularButtonStyle: ButtonStyle {
+    private let isEnabled: Bool
 
-    func body(content: Content) -> some View {
-        content
-            .background(DS.Color.Background.secondary)
-            .safeAreaPadding(.top, DS.Spacing.extraLarge)
-            .presentationContentInteraction(.scrolls)
-            .presentationCornerRadius(24)
-            .presentationDetents(detents)
+    init(isEnabled: Bool = true) {
+        self.isEnabled = isEnabled
     }
-}
 
-extension View {
-    func pickerViewStyle(_ detents: Set<PresentationDetent>) -> some View {
-        modifier(PickerViewStyle(detents: detents))
+    func makeBody(configuration: Self.Configuration) -> some View {
+        if isEnabled {
+            configuration
+                .label
+                .background(
+                    configuration.isPressed
+                    ? DS.Color.InteractionWeak.pressed
+                    : DS.Color.Background.norm
+                )
+        } else {
+            configuration.label
+        }
     }
 }
