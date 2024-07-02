@@ -82,10 +82,7 @@ extension FolderPickerView {
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier(FolderPickerViewIdentifiers.systemFoldersList)
         }
-        .introspect(.list, on: .iOS(.v17)) { collectionView in
-            // fixing the default top content inset
-            collectionView.contentInset.top = -34
-        }
+        .customListRemoveTopInset()
         .background(DS.Color.Background.secondary)
         .scrollContentBackground(.hidden)
         .scrollBounceBehavior(.basedOnSize)

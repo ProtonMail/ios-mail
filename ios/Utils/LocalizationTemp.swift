@@ -59,14 +59,20 @@ enum LocalizationTemp {
         static let moveToInbox = "Inbox"
         static let moveToSpam = "Move to spam"
         static let moveToTrash = "Move to trash"
+        static let print = "Print"
+        static let saveAsPDF = "Save as PDF"
         static let snooze = "Snooze"
         static let star = "Star"
+        static let renderInLightMode = "View message in light mode"
+        static let reportPhishing = "Report phishing"
         static let unstar = "Unstar"
+        static let viewHeaders = "View headers"
+        static let viewHTML = "View HTML"
     }
 
     enum MessageAction {
         static let reply = "Reply"
-        static let replyAll = "ReplyAll"
+        static let replyAll = "Reply all"
         static let forward = "Forward"
     }
 

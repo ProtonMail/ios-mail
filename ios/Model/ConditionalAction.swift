@@ -15,44 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import class UIKit.UIImage
+import Foundation
 
-enum MailboxAction {
-    case labelAs
-    case moveTo
-    case moveToSpam
-    case moveToTrash
-    case moveToArchive
-    case snooze
+/**
+ List of actions that  can change, depending on some conditions of the object receiving the action.
+ */
+enum ConditionalAction {
     case toggleReadStatus
     case toggleStarStatus
-}
+    case moveToTrash
+    case moveToArchive
 
-extension MailboxAction {
-
-    func toAction(
-        selectionReadStatus: SelectionReadStatus,
-        selectionStarStatus: SelectionStarStatus,
-        systemFolder: SystemFolderIdentifier
-    ) -> Action {
+    func toAction(params: ConditionalActionResolverParams) -> Action {
         switch self {
-        case .labelAs:
-            return .labelAs
-        case .moveTo:
-            return .moveTo
-        case .moveToSpam:
-            return .moveToSpam
         case .moveToTrash:
-            return systemFolder == .trash ? Action.delete : Action.moveToTrash
+            return params.systemFolder != .trash ? Action.moveToTrash : Action.delete
         case .moveToArchive:
-            return systemFolder == .archive ? Action.moveToInbox : Action.moveToArchive
-        case .snooze:
-            return .snooze
+            return params.systemFolder != .archive ? Action.moveToArchive : Action.moveToInbox
         case .toggleReadStatus:
-            return Action.toggleReadStatusAction(when: selectionReadStatus)
+            return Action.toggleReadStatusAction(when: params.selectionReadStatus)
         case .toggleStarStatus:
-            return Action.toggleStarStatusAction(when: selectionStarStatus)
+            return Action.toggleStarStatusAction(when: params.selectionStarStatus)
         }
     }
 }

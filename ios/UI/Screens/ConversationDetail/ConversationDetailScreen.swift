@@ -27,12 +27,16 @@ struct ConversationDetailScreen: View {
     }
 
     var body: some View {
+        conversationView
+    }
+
+    private var conversationView: some View {
         GeometryReader { proxy in
 
             ScrollView {
                 VStack {
                     conversationDataView
-                    messageListView
+                    ConversationDetailListView(model: model)
                         .frame(maxHeight: .infinity)
                 }
                 .frame(minHeight: proxy.size.height)
@@ -70,23 +74,6 @@ struct ConversationDetailScreen: View {
         }
     }
 
-    private var messageListView: some View {
-        VStack(spacing: 0) {
-
-            switch model.state {
-            case .initial:
-                EmptyView()
-            case .fetchingMessages:
-                ProgressView()
-                    .padding(.top, DS.Spacing.medium)
-                    .accessibilityIdentifier(ConversationDetailScreenIdentifiers.loader)
-            case .messagesReady(let previous, let last):
-                messageList(previous: previous, last: last)
-                    .padding(.top, DS.Spacing.compact)
-            }
-        }
-    }
-
     private var subjectView: some View {
         Text(model.seed.subject)
             .font(.title2)
@@ -116,49 +103,6 @@ struct ConversationDetailScreen: View {
                 }
             }
             .contentMargins(.horizontal, DS.Spacing.large)
-        }
-    }
-
-    private func messageList(previous: [MessageCellUIModel], last: ExpandedMessageCellUIModel) -> some View {
-        ScrollViewReader { scrollView in
-            VStack(spacing: 0) {
-                LazyVStack(spacing: 0) {
-                    ForEach(Array(previous.enumerated()), id: \.element.id) { index, cellUIModel in
-                        switch cellUIModel.type {
-                        case .collapsed(let uiModel):
-                            CollapsedMessageCell(uiModel: uiModel, isFirstCell: index == 0, onTap: {
-                                model.onMessageTap(messageId: cellUIModel.id)
-                            })
-                            .id(cellUIModel.cellId)
-                            .accessibilityElement(children: .contain)
-                            .accessibilityIdentifier(ConversationDetailScreenIdentifiers.collapsedCell(index))
-                        case .expanded(let uiModel):
-                            ExpandedMessageCell(uiModel: uiModel, isFirstCell: index == 0, onTap: {
-                                model.onMessageTap(messageId: cellUIModel.id)
-                            })
-                            .id(cellUIModel.cellId)
-                            .accessibilityElement(children: .contain)
-                            .accessibilityIdentifier(ConversationDetailScreenIdentifiers.expandedCell(index))
-                        }
-                    }
-                }
-                ExpandedMessageCell(
-                    uiModel: last,
-                    hasShadow: !previous.isEmpty,
-                    isFirstCell: previous.isEmpty,
-                    onTap: {
-                        model.onMessageTap(messageId: last.messageId)
-                    }
-                )
-                .id(ConversationDetailModel.lastCellId) // static value because it won't be replaced with CollapsedMessageCell
-                .accessibilityElement(children: .contain)
-                .accessibilityIdentifier(ConversationDetailScreenIdentifiers.expandedCell(previous.count))
-            }
-            .task {
-                scrollView.scrollTo(model.scrollToMessage, anchor: .top)
-            }
-            .accessibilityElement(children: .contain)
-            .accessibilityIdentifier(ConversationDetailScreenIdentifiers.messageList)
         }
     }
 }
@@ -226,15 +170,5 @@ private extension View {
 
 private struct ConversationDetailScreenIdentifiers {
     static let rootItem = "detail.rootItem"
-    static let loader = "detail.loader"
     static let subjectText = "detail.subjectText"
-    static let messageList = "detail.messageList"
-    
-    static func collapsedCell(_ index: Int) -> String {
-        "detail.cell.collapsed#\(index)"
-    }
-    
-    static func expandedCell(_ index: Int) -> String {
-        "detail.cell.expanded#\(index)"
-    }
 }

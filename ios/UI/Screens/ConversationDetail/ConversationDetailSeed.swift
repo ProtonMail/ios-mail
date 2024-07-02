@@ -25,7 +25,7 @@ enum ConversationDetailSeed {
         switch self {
         case .mailboxItem(_, let selectedMailbox):
             return selectedMailbox
-        case .message(let remoteMessageId, let subject, let sender):
+        case .message:
             return .inbox
         }
     }

@@ -34,9 +34,15 @@ enum Action {
     case moveToInbox
     case moveToSpam
     case moveToTrash
+    case print
+    case renderInLightMode
+    case reportPhishing
+    case saveAsPDF
     case star
     case snooze
     case unstar
+    case viewHeaders
+    case viewHTML
 
     var name: String {
         switch self {
@@ -58,12 +64,24 @@ enum Action {
             return LocalizationTemp.Action.moveToSpam
         case .moveToTrash:
             return LocalizationTemp.Action.moveToTrash
+        case .print:
+            return LocalizationTemp.Action.print
+        case .renderInLightMode:
+            return LocalizationTemp.Action.renderInLightMode
+        case .reportPhishing:
+            return LocalizationTemp.Action.reportPhishing
+        case .saveAsPDF:
+            return LocalizationTemp.Action.saveAsPDF
         case .snooze:
             return LocalizationTemp.Action.snooze
         case .star:
             return LocalizationTemp.Action.star
         case .unstar:
             return LocalizationTemp.Action.unstar
+        case .viewHeaders:
+            return LocalizationTemp.Action.viewHeaders
+        case .viewHTML:
+            return LocalizationTemp.Action.viewHTML
         }
     }
 
@@ -84,15 +102,27 @@ enum Action {
         case .moveToInbox:
             return DS.Icon.icInbox
         case .moveToSpam:
-            return DS.Icon.icFire
+            return DS.Icon.icSpam
         case .moveToTrash:
             return DS.Icon.icTrash
+        case .print:
+            return DS.Icon.icPrinter
+        case .renderInLightMode:
+            return DS.Icon.icSun
+        case .reportPhishing:
+            return DS.Icon.icHook
+        case .saveAsPDF:
+            return DS.Icon.icFilePDF
         case .snooze:
             return DS.Icon.icClock
         case .star:
             return DS.Icon.icStar
         case .unstar:
             return DS.Icon.icStarSlash
+        case .viewHeaders:
+            return DS.Icon.icFileLines
+        case .viewHTML:
+            return DS.Icon.icCode
         }
     }
 }

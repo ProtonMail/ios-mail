@@ -72,13 +72,16 @@ struct MailboxActionBarView: View {
     }
 
     @ViewBuilder
-    private func button(for mailboxAction: MailboxAction?) -> some View {
-        if let action = mailboxAction?
-            .toAction(
-                selectionReadStatus: selectionMode.selectionStatus.readStatus,
-                selectionStarStatus: selectionMode.selectionStatus.starStatus,
-                systemFolder: selectedMailbox.systemFolder ?? .inbox
-            ) {
+    private func button(for mailboxAction: MailboxItemAction?) -> some View {
+        if let mailboxAction {
+            let resolver = MailboxItemActionResolver(
+                params: .init(
+                    selectionReadStatus: selectionMode.selectionStatus.readStatus,
+                    selectionStarStatus: selectionMode.selectionStatus.starStatus, 
+                    systemFolder: selectedMailbox.systemFolder ?? .inbox
+                )
+            )
+            let action = resolver.action(for: mailboxAction)
             Button(action: {
                 if case .labelAs = action {
                     showLabelPicker.toggle()
@@ -116,25 +119,13 @@ struct MailboxActionBarView: View {
     }
 }
 
-private extension View {
-
-    func pickerViewStyle() -> some View {
-        self
-            .background(DS.Color.Background.secondary)
-            .safeAreaPadding(.top, DS.Spacing.extraLarge)
-            .presentationContentInteraction(.scrolls)
-            .presentationCornerRadius(24)
-            .presentationDetents([.medium, .large])
-    }
-}
-
 #Preview {
     let userSettings = UserSettings(
         mailboxActions: .init(
-            action1: .toggleReadStatus,
-            action2: .toggleStarStatus,
-            action3: .moveToTrash,
-            action4: .moveToArchive
+            action1: .conditional(.toggleReadStatus),
+            action2: .conditional(.toggleStarStatus),
+            action3: .conditional(.moveToTrash),
+            action4: .action(.moveToArchive)
         )
     )
 

@@ -29,16 +29,16 @@ final class UserSettings: ObservableObject {
 }
 
 struct MailboxActionSettings {
-    let action1: MailboxAction
-    let action2: MailboxAction
-    let action3: MailboxAction
-    let action4: MailboxAction
+    let action1: MailboxItemAction
+    let action2: MailboxItemAction
+    let action3: MailboxItemAction
+    let action4: MailboxItemAction
 
     init(
-        action1: MailboxAction = .toggleReadStatus,
-        action2: MailboxAction = .toggleStarStatus,
-        action3: MailboxAction = .moveToArchive,
-        action4: MailboxAction = .labelAs
+        action1: MailboxItemAction = .conditional(.toggleReadStatus),
+        action2: MailboxItemAction = .conditional(.toggleStarStatus),
+        action3: MailboxItemAction = .conditional(.moveToArchive),
+        action4: MailboxItemAction = .action(.labelAs)
     ) {
         self.action1 = action1
         self.action2 = action2

@@ -20,7 +20,7 @@ import SwiftUI
 
 struct ExpandedMessageCell: View {
     private let uiModel: ExpandedMessageCellUIModel
-    private let onTap: () -> Void
+    private let onEvent: (ExpandedMessageCellEvent) -> Void
 
     private let hasShadow: Bool
 
@@ -34,12 +34,12 @@ struct ExpandedMessageCell: View {
         uiModel: ExpandedMessageCellUIModel,
         hasShadow: Bool = true,
         isFirstCell: Bool = false,
-        onTap: @escaping () -> Void
+        onEvent: @escaping (ExpandedMessageCellEvent) -> Void
     ) {
         self.uiModel = uiModel
         self.hasShadow = hasShadow
         self.isFirstCell = isFirstCell
-        self.onTap = onTap
+        self.onEvent = onEvent
     }
 
     var body: some View {
@@ -47,7 +47,18 @@ struct ExpandedMessageCell: View {
             MessageCardTopView(cornerRadius: cardCornerRadius, hasShadow: hasShadow)
 
             VStack(spacing: 0) {
-                MessageDetailsView(uiModel: uiModel.messageDetails, onTap: onTap)
+                MessageDetailsView(uiModel: uiModel.messageDetails, onEvent: { event in
+                    switch event {
+                    case .onTap:
+                        onEvent(.onTap)
+                    case .onReply:
+                        onEvent(.onReply)
+                    case .onReplyAll:
+                        onEvent(.onReplyAll)
+                    case .onMoreActions:
+                        onEvent(.onMoreActions)
+                    }
+                })
                 MessageBodyView(messageBody: uiModel.message, messageId: uiModel.messageId, uiModel: uiModel)
 
                 Spacer()
@@ -70,10 +81,19 @@ struct ExpandedMessageCell: View {
     }
 }
 
-struct ExpandedMessageCellUIModel {
+struct ExpandedMessageCellUIModel: Identifiable {
+    var id: PMLocalMessageId { messageId }
     let messageId: PMLocalMessageId
     let message: String?
     let messageDetails: MessageDetailsUIModel
+}
+
+enum ExpandedMessageCellEvent {
+    case onTap
+    case onReply
+    case onReplyAll
+    case onForward
+    case onMoreActions
 }
 
 #Preview {
@@ -108,7 +128,7 @@ struct ExpandedMessageCellUIModel {
             ),
             hasShadow: false,
             isFirstCell: true,
-            onTap: {}
+            onEvent: { _ in }
         )
         ExpandedMessageCell(
             uiModel: .init(
@@ -118,7 +138,7 @@ struct ExpandedMessageCellUIModel {
             ),
             hasShadow: true,
             isFirstCell: false,
-            onTap: {}
+            onEvent: { _ in }
         )
     }
 }

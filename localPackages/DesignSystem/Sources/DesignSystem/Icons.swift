@@ -33,6 +33,7 @@ public extension DS.Icon {
     static let icPaperPlane = icon(named: "ic-paper-plane")
     static let icPencil = icon(named: "ic-pencil")
     static let icPlus = icon(named: "ic-plus")
+    static let icSpam = icon(named: "ic-spam")
     static let icStarFilled = icon(named: "ic-star-filled")
     static let icTrash = icon(named: "ic-trash")
     static let icTrashCross = icon(named: "ic-trash-cross")
@@ -50,12 +51,18 @@ public extension DS.Icon {
 // MARK: mailbox item actions
 
 public extension DS.Icon {
+    static let icCode = icon(named: "ic-code")
     static let icEnvelope = icon(named: "ic-envelope")
     static let icEnvelopeDot = icon(named: "ic-envelope-dot")
     static let icEnvelopeOpen = icon(named: "ic-envelope-open")
+    static let icFileLines = icon(named: "ic-file-lines")
+    static let icFilePDF = icon(named: "ic-file-pdf")
     static let icFolderArrowIn = icon(named: "ic-folder-arrow-in")
+    static let icHook = icon(named: "ic-hook")
+    static let icPrinter = icon(named: "ic-printer")
     static let icStar = icon(named: "ic-star")
     static let icStarSlash = icon(named: "ic-star-slash")
+    static let icSun = icon(named: "ic-sun")
     static let icTag = icon(named: "ic-tag")
     static let icThreeDotsHorizontal = icon(named: "ic-three-dots-horizontal")
 }

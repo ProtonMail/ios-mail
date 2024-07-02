@@ -21,7 +21,7 @@ import SwiftUI
 struct MessageDetailsView: View {
     @State private(set) var isHeaderCollapsed: Bool = true
     let uiModel: MessageDetailsUIModel
-    let onTap: () -> Void
+    let onEvent: (MessageDetailsEvent) -> Void
 
     private let messageDetailsLeftColumnWidth: CGFloat = 80
 
@@ -58,7 +58,7 @@ extension MessageDetailsView {
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            onTap()
+            onEvent(.onTap)
         }
     }
 
@@ -113,16 +113,19 @@ extension MessageDetailsView {
 
     private var headerActionsView: some View {
         HStack(alignment: .top, spacing: DS.Spacing.large) {
-            Button(action: {}, label: {
+            Button(action: {
+                onEvent(uiModel.isSingleRecipient ? .onReply : .onReplyAll)
+            }, label: {
                 Image(uiImage: uiModel.isSingleRecipient ? DS.Icon.icReplay : DS.Icon.icReplayAll)
             })
-            Button(action: {}, label: {
+            Button(action: {
+                onEvent(.onMoreActions)
+            }, label: {
                 Image(uiImage: DS.Icon.icThreeDotsHorizontal)
             })
         }
         .foregroundColor(DS.Color.Icon.weak)
     }
-
 }
 
 // MARK: Extended details
@@ -349,6 +352,13 @@ enum MessageDetail {
     }
 }
 
+enum MessageDetailsEvent {
+    case onTap
+    case onReply
+    case onReplyAll
+    case onMoreActions
+}
+
 extension Array where Element == MessageDetail.Recipient {
 
     var recipientsUIRepresentation: String {
@@ -387,7 +397,7 @@ extension Array where Element == MessageDetail.Recipient {
     return MessageDetailsView(
         isHeaderCollapsed: false,
         uiModel: messageDetails
-    ) {}
+    ) { _ in }
 }
 
 private struct MessageDetailsViewIdentifiers {
