@@ -32,7 +32,11 @@ public struct ChangePasswordUpdateMailboxPasswordTotalLabels: Encodable, Equatab
 }
 
 extension ObservabilityEvent where Payload == PayloadWithLabels<ChangePasswordUpdateMailboxPasswordTotalLabels> {
-    public static func updateMailboxPassword(status: PasswordChangeHTTPResponseCodeStatus, twoFactorMode: TwoFactorMode) -> Self {
-        .init(name: "ios_core_changePassword_updateMailboxPassword_total", labels: .init(status: status, twoFactorMode: twoFactorMode))
+    public static func updateMailboxPassword(status: PasswordChangeHTTPResponseCodeStatus, 
+                                             twoFactorMode: TwoFactorMode) -> Self {
+        .init(name: "ios_core_changePassword_updateMailboxPassword_total",
+              labels: .init(status: status,
+                            twoFactorMode: twoFactorMode),
+              version: .v2)
     }
 }

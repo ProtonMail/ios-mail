@@ -84,7 +84,13 @@ final class PMInternalTextField: UITextField {
 
     private func setup() {
         layer.masksToBounds = true
-        layer.cornerRadius = 8
+        switch Brand.currentBrand {
+        case .wallet:
+            layer.cornerRadius = 16
+        default:
+            layer.cornerRadius = 8
+        }
+
         layer.borderWidth = 1
         layer.borderColor = ColorProvider.InteractionWeakDisabled
     }

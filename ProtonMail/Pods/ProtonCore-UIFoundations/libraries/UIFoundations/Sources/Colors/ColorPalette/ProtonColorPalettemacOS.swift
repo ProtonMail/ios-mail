@@ -19,6 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if !targetEnvironment(macCatalyst)
 public struct ProtonColorPalettemacOS {
     static let instance = ProtonColorPalettemacOS()
 
@@ -124,3 +125,4 @@ public struct ProtonColorPalettemacOS {
     public let White = ProtonColor(name: "White")
     public let Black = ProtonColor(name: "Black")
 }
+#endif

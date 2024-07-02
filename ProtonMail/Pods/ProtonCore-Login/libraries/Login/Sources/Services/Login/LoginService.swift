@@ -38,7 +38,7 @@ public final class LoginService {
     let apiService: APIService
     var sessionId: String { apiService.sessionUID }
     let clientApp: ClientApp
-    let manager: AuthenticationManager
+    let authManager: AuthenticationManager
     var totpContext: TOTPContext?
     var fido2Context: FIDO2Context?
     var mailboxPassword: String?
@@ -79,7 +79,8 @@ public final class LoginService {
         self.clientApp = clientApp
         self.featureFlagsRepository = featureFlagsRepository
         self.ssoCallbackScheme = ssoCallbackScheme
-        manager = authenticator ?? Authenticator(api: api)
+        authManager = authenticator ?? Authenticator(api: api)
+
     }
 
     // MARK: - Configuration
@@ -118,19 +119,19 @@ public final class LoginService {
     }
 
     public func refreshCredentials(completion: @escaping (Result<Credential, LoginError>) -> Void) {
-        withAuthDelegateAvailable(completion) { authManager in
-            guard let old = authManager.credential(sessionUID: self.sessionId) else {
+        withAuthDelegateAvailable(completion) { authDelegate in
+            guard let old = authDelegate.credential(sessionUID: self.sessionId) else {
                 completion(.failure(.invalidState))
                 return
             }
-            manager.refreshCredential(old) { result in
+            authManager.refreshCredential(old) { result in
                 switch result {
                 case .failure(let error):
                     completion(.failure(error.asLoginError()))
                 case .success(.askTOTP), .success(.ssoChallenge), .success(.askFIDO2), .success(.askAny2FA):
                     completion(.failure(.invalidState))
                 case .success(.newCredential(let credential, _)), .success(.updatedCredential(let credential)):
-                    authManager.onUpdate(credential: credential, sessionUID: self.sessionId)
+                    authDelegate.onUpdate(credential: credential, sessionUID: self.sessionId)
                     self.apiService.setSessionUID(uid: credential.UID)
                     completion(.success(credential))
                 }
@@ -139,12 +140,12 @@ public final class LoginService {
     }
 
     public func refreshUserInfo(completion: @escaping (Result<User, LoginError>) -> Void) {
-        withAuthDelegateAvailable(completion) { authManager in
-            guard let credential = authManager.credential(sessionUID: sessionId) else {
+        withAuthDelegateAvailable(completion) { authDelegate in
+            guard let credential = authDelegate.credential(sessionUID: sessionId) else {
                 completion(.failure(.invalidState))
                 return
             }
-            manager.getUserInfo(credential) {
+            authManager.getUserInfo(credential) {
                 completion($0.mapError { $0.asLoginError() })
             }
         }
@@ -154,11 +155,11 @@ public final class LoginService {
 
     func handleValidCredentials(credential: Credential, passwordMode: PasswordMode, mailboxPassword: String?, isSSO: Bool = false, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         self.mailboxPassword = mailboxPassword
-        withAuthDelegateAvailable(completion) { authManager in
-            authManager.onSessionObtaining(credential: credential)
+        withAuthDelegateAvailable(completion) { authDelegate in
+            authDelegate.onSessionObtaining(credential: credential)
             self.apiService.setSessionUID(uid: credential.UID)
 
-            manager.getUserInfo { [weak self] result in
+            authManager.getUserInfo { [weak self] result in
                 guard let self else { return }
                 switch result {
                 case .success(let user):

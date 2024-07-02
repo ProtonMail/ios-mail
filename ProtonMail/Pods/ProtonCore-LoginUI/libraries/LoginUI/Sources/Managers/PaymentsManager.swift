@@ -26,6 +26,7 @@ import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
 import ProtonCoreServices
 import ProtonCorePayments
+import ProtonCoreLog
 import ProtonCoreLogin
 import ProtonCorePaymentsUI
 import ProtonCoreUIFoundations
@@ -59,7 +60,11 @@ class PaymentsManager {
             // In the dynamic plans, fetching available IAPs from StoreKit is done alongside fetching available plans
             Task {
                 if case let .right(plansDataSource) = payments.planService {
-                    try await plansDataSource.fetchAvailablePlans()
+                    do {
+                        try await plansDataSource.fetchAvailablePlans()
+                    } catch {
+                        PMLog.error("Fetch available plans error: \(error)", sendToExternal: true)
+                    }
                     payments.storeKitManager.subscribeToPaymentQueue()
                 }
             }
@@ -121,8 +126,9 @@ class PaymentsManager {
                 break
             case .toppedUpCredits:
                 completionHandler(.success(()))
-            case .planPurchaseProcessingInProgress:
-                break
+            case .planPurchaseProcessingInProgress(let plan):
+                self?.selectedPlan = plan
+                completionHandler(.success(()))
             }
         })
     }
@@ -149,11 +155,13 @@ class PaymentsManager {
                 }
 
             case .right(let planDataSource):
-                Task { [weak self] in
-                    do {
-                        try await planDataSource.fetchCurrentPlan()
-                        self?.payments.storeKitManager.retryProcessingAllPendingTransactions { [weak self] in
+
+                payments.storeKitManager.retryProcessingAllPendingTransactions { [weak self] in
+                    Task { [weak self] in
+                        do {
                             var possiblyPurchasedPlan: InAppPurchasePlan?
+                            try await planDataSource.fetchCurrentPlan()
+
                             if planDataSource.currentPlan?.hasExistingProtonSubscription ?? false {
                                 possiblyPurchasedPlan = self?.selectedPlan
                             }
@@ -161,9 +169,9 @@ class PaymentsManager {
                             self?.restoreExistingDelegate()
                             self?.payments.storeKitManager.unsubscribeFromPaymentQueue()
                             completionHandler(.success(possiblyPurchasedPlan))
+                        } catch {
+                            completionHandler(.failure(error))
                         }
-                    } catch {
-                        completionHandler(.failure(error))
                     }
                 }
             }

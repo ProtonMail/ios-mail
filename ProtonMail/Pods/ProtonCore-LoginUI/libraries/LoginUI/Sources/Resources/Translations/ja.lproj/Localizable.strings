@@ -215,3 +215,39 @@
 "Sign in" = "サインイン";
 
 "Troubleshoot" = "トラブルシューティング";
+
+"Please choose how you want to confirm your identity." = "Please choose how you want to confirm your identity.";
+
+"One-time code" = "ワンタイムコード";
+
+"Security key" = "セキュリティキー";
+
+"Two-Factor Authentication" = "2要素認証";
+
+"Present a security key linked to your Proton Account." = "Present a security key linked to your Proton Account.";
+
+"Learn more" = "詳細";
+
+"Invalid state. Please quit the app and try again in a few minutes." = "Invalid state. Please quit the app and try again in a few minutes.";
+
+"There was a problem reading your security key." = "セキュリティキーの読み込み中に問題が発生しました。";
+
+"We received an authorization from a type we don't support yet." = "We received an authorization from a type we don't support yet.";
+
+"Fetching your security keys details" = "Fetching your security keys details";
+
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys.";
+
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "An error occurred fetching your security keys. You can also check them on the Proton %@ website.";
+
+"These are the security keys registered to your account" = "These are the security keys registered to your account";
+
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys.";
+
+"Security Keys" = "セキュリティキー";
+
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "To manage, add, or remove security keys, please use the Proton %@ web application.";
+
+"Unexpected FIDO2 signature." = "Unexpected FIDO2 signature.";
+
+"We could not initiate the Secure Password update connection. Please try again." = "We could not initiate the Secure Password update connection. Please try again.";

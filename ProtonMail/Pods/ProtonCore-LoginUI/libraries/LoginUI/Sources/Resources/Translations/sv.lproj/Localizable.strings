@@ -215,3 +215,39 @@
 "Sign in" = "Logga in";
 
 "Troubleshoot" = "Felsök";
+
+"Please choose how you want to confirm your identity." = "Välj hur du vill bekräfta din identitet.";
+
+"One-time code" = "Engångskod";
+
+"Security key" = "Säkerhetsnyckel";
+
+"Two-Factor Authentication" = "Tvåfaktorsautentisering";
+
+"Present a security key linked to your Proton Account." = "Visa en säkerhetsnyckel länkat till ditt Proton-konto.";
+
+"Learn more" = "Lär dig mer";
+
+"Invalid state. Please quit the app and try again in a few minutes." = "Ogiltigt tillstånd. Avsluta appen och försök igen om några minuter.";
+
+"There was a problem reading your security key." = "Det var ett problem att läsa din säkerhetsnyckel.";
+
+"We received an authorization from a type we don't support yet." = "Vi har fått en auktorisering från en typ som vi inte stöder ännu.";
+
+"Fetching your security keys details" = "Hämtar detaljer om dina säkerhetsnycklar";
+
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "Du har inga säkerhetsnycklar registrerade på ditt konto ännu. Besök sektionen för inställningar på vår webbplats för att lägga till säkerhetsnycklar.";
+
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "Ett fel uppstod när dina säkerhetsnycklar skulle hämtas. Du kan också kontrollera dem på webbplatsen för Proton %@.";
+
+"These are the security keys registered to your account" = "Dessa är säkerhetsnycklarna registrerade till ditt konto";
+
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "Du har ännu inga säkerhetsnycklar registrerade på ditt konto. Använd webbapplikationen Proton %@ för att lägga till säkerhetsnycklar.";
+
+"Security Keys" = "Säkerhetsnycklar";
+
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "För att hantera, lägga till eller ta bort säkerhetsnycklar, använd Proton %@ webbapplikation.";
+
+"Unexpected FIDO2 signature." = "Oväntad FIDO2-signatur.";
+
+"We could not initiate the Secure Password update connection. Please try again." = "Vi kunde inte initiera anslutning för uppdatering av det säkra lösenordet. Försök igen.";

@@ -19,6 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if !targetEnvironment(macCatalyst)
 import ProtonCoreUtilities
 
 @dynamicMemberLookup
@@ -79,7 +80,7 @@ extension DriveExclusiveTemporarilyAvailableColorProviderDesktopBase {
 #if canImport(SwiftUI)
 import SwiftUI
 
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, OSX 10.15, tvOS 15.0, watchOS 6.0, *)
 extension DriveExclusiveTemporarilyAvailableColorProviderMobileBase {
 
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> Color {
@@ -87,7 +88,7 @@ extension DriveExclusiveTemporarilyAvailableColorProviderMobileBase {
     }
 }
 
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, OSX 10.15, tvOS 15.0, watchOS 6.0, *)
 extension DriveExclusiveTemporarilyAvailableColorProviderDesktopBase {
 
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) -> Color {
@@ -98,3 +99,4 @@ extension DriveExclusiveTemporarilyAvailableColorProviderDesktopBase {
 
 public let DriveExclusiveTemporarilyAvailableColorProviderMobile = DriveExclusiveTemporarilyAvailableColorProviderMobileBase()
 public let DriveExclusiveTemporarilyAvailableColorProviderDesktop = DriveExclusiveTemporarilyAvailableColorProviderDesktopBase()
+#endif

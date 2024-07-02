@@ -35,4 +35,7 @@ public extension View {
             self
         }
     }
+
+    /// Allow to apply a modifier conditionally (similar to above, but accepts availability conditionals)
+    func apply<V: View>(@ViewBuilder _ block: (Self) -> V) -> V { block(self) }
 }

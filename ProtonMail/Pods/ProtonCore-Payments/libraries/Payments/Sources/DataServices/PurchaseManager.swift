@@ -245,6 +245,10 @@ final class PurchaseManager: PurchaseManagerProtocol {
                 finishCallback(.toppedUpCredits)
             } else if case .autoRenewal = result {
                 finishCallback(.renewalNotification)
+            } else if case .withoutObtainingToken = result { // purchase during signup flow
+                finishCallback(.planPurchaseProcessingInProgress(processingPlan: plan))
+            } else if case .withoutExchangingToken = result { // purchase during signup flow
+                finishCallback(.planPurchaseProcessingInProgress(processingPlan: plan)) 
             } else {
                 finishCallback(.purchasedPlan(accountPlan: plan))
             }

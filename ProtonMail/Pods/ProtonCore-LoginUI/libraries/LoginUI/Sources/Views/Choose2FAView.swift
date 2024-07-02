@@ -23,6 +23,7 @@
 
 import SwiftUI
 import ProtonCoreLogin
+import ProtonCoreUIFoundations
 
 enum TwoFAType {
     case totp
@@ -30,27 +31,27 @@ enum TwoFAType {
 }
 
 @available(iOS 15.0, *)
-struct Choose2FAView: View {
+public struct Choose2FAView: View {
 
-    @State private var selectedType: TwoFAType = .totp
+    @State private var selectedType: TwoFAType = .fido2
 
     @ObservedObject var totpViewModel: TOTPView.ViewModel
     @ObservedObject var fido2ViewModel: Fido2View.ViewModel
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            Text("Your account has several 2FA mechanisms configured. Please choose how you want to confirm your identity.",
+            Text("Please choose how you want to confirm your identity.",
                  bundle: LUITranslation.bundle,
                  comment: "2FA choice screen header")
             Picker("Type", selection: $selectedType) {
-                Text("One-time code",
-                     bundle: LUITranslation.bundle,
-                     comment: "Single use TOTP code")
-                .tag(TwoFAType.totp)
                 Text("Security key",
                      bundle: LUITranslation.bundle,
                      comment: "A hardware based FIDO2 key")
                 .tag(TwoFAType.fido2)
+                Text("One-time code",
+                     bundle: LUITranslation.bundle,
+                     comment: "Single use TOTP code")
+                .tag(TwoFAType.totp)
             }
             .pickerStyle(.segmented)
             .disabled(totpViewModel.isLoading || fido2ViewModel.isLoading)
@@ -58,12 +59,14 @@ struct Choose2FAView: View {
             selectedView
 
         }
-        .font(.system(size: 20))
+        .font(.title3)
         .padding(20)
         .navigationTitle(Text("Two-Factor Authentication",
                               bundle: LUITranslation.bundle,
                               comment: "2FA screen title"))
         .navigationBarTitleDisplayMode(.inline)
+        .foregroundColor(ColorProvider.TextNorm)
+        .background(ColorProvider.BackgroundNorm)
         .frame(maxWidth: .infinity,
                maxHeight: .infinity,
                alignment: .top)
@@ -84,7 +87,7 @@ struct Choose2FAView: View {
         }
     }
 
-    init(totpViewModel: TOTPView.ViewModel, fido2ViewModel: Fido2View.ViewModel) {
+    public init(totpViewModel: TOTPView.ViewModel, fido2ViewModel: Fido2View.ViewModel) {
         self.totpViewModel = totpViewModel
         self.fido2ViewModel = fido2ViewModel
     }
@@ -95,11 +98,11 @@ struct Choose2FAView: View {
 #Preview {
     if #available(iOS 16.0, *) {
         NavigationStack {
-            Choose2FAView(totpViewModel: TOTPView.ViewModel(login: LoginStub()),
+            Choose2FAView(totpViewModel: TOTPView.ViewModel(),
                           fido2ViewModel: Fido2View.ViewModel.initial)
         }
     } else if #available(iOS 15.0, *) {
-        Choose2FAView(totpViewModel: TOTPView.ViewModel(login: LoginStub()),
+        Choose2FAView(totpViewModel: TOTPView.ViewModel(),
                       fido2ViewModel: Fido2View.ViewModel.initial)
     } else {
         // Fallback on earlier versions

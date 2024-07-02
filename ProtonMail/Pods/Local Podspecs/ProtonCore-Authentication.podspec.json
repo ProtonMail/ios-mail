@@ -42,6 +42,9 @@
     "ProtonCore-FeatureFlags": [
       "25.0.0"
     ],
+    "ProtonCore-Observability": [
+      "25.0.0"
+    ],
     "ProtonCore-Services": [
       "25.0.0"
     ]

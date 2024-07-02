@@ -1,8 +1,8 @@
 //
-//  Choose2FAViewController.swift
-//  ProtonCore-Login - Created on 8/5/2024.
+//  WebAuthnRequestTotalEvent.swift
+//  ProtonCore-Observability - Created on 10.06.24.
 //
-//  Copyright (c) 2022 Proton Technologies AG
+//  Copyright (c) 2024 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -19,12 +19,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-#if os(iOS)
+import ProtonCoreNetworking
 
-import UIKit
-import SwiftUI
+public struct WebAuthnRequestLabels: Encodable, Equatable {
+    let status: WebAuthnRequestStatus
+}
 
-@available(iOS 15.0, *)
-typealias Choose2FAViewController = UIHostingController<Choose2FAView>
-
-#endif
+extension ObservabilityEvent where Payload == PayloadWithLabels<WebAuthnRequestLabels> {
+    public static func webAuthnRequestTotal(status: WebAuthnRequestStatus) -> Self {
+        .init(name: "ios_core_webauthn_request_total", labels: .init(status: status))
+    }
+}

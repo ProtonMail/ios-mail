@@ -65,6 +65,8 @@ public enum PCTranslation: TranslationsExposing {
     case errorCantGenerateSRPClient
     case errorKeyUpdateFailed
     case errorUpdatePasswordDefault
+    case errorMissingAuthInfo
+    case errorMissingUserInfo
 
     public var l10n: String {
         switch self {
@@ -122,6 +124,11 @@ public enum PCTranslation: TranslationsExposing {
             return localized(key: "The private key update failed.", comment: "Error message")
         case .errorUpdatePasswordDefault:
             return localized(key: "Password update failed", comment: "Error message")
+        case .errorMissingAuthInfo:
+            return localized(key: "Missing AuthInfo", comment: "Error message")
+        case .errorMissingUserInfo:
+            return localized(key: "Missing UserInfo", comment: "Error message")
+
         }
     }
 }

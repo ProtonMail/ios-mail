@@ -529,6 +529,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
                                                    errorCompletion: @escaping ErrorCallback,
                                                    deferredCompletion: (() -> Void)? = nil) {
 
+        subscribeToPaymentQueue()
         let callbackCacheKey = UserInitiatedPurchaseCache(storeKitProductId: storeKitProduct.productIdentifier,
                                                           hashedUserId: hashedUserId)
         threadSafeCache.set(value: successCompletion, for: callbackCacheKey, in: \.successCompletion)
@@ -685,7 +686,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             // reappearing on every run
             callSuccessCompletion(for: cacheKey, with: .withPurchaseAlreadyProcessed)
         @unknown default:
-            break
+            PMLog.error("Unexpected unknown transaction state: \(transaction.transactionState)", sendToExternal: true)
         }
     }
 
@@ -744,6 +745,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             try informProtonBackendAboutPurchasedTransaction(transaction, cacheKey: cacheKey, completion: completion)
 
         } catch Errors.haveTransactionOfAnotherUser { // user login error
+            PMLog.error("Error: transaction is from another account", sendToExternal: true)
             confirmUserValidationBypass(cacheKey, Errors.haveTransactionOfAnotherUser) { [weak self] in
                 self?.transactionsQueue.addOperation { [weak self] in
                     self?.processStoreKitTransaction(transaction: transaction, shouldVerifyPurchaseWasForSameAccount: false)
@@ -752,16 +754,19 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             }
 
         } catch Errors.receiptLost { // receipt error
+            PMLog.error("Error: lost receipt", sendToExternal: true)
             callErrorCompletion(for: cacheKey, with: Errors.receiptLost)
             finishTransaction(transaction, nil)
             group.leave()
 
         } catch Errors.noNewSubscriptionInSuccessfulResponse { // error on BE
+            PMLog.error("Error: no new subscription in success response", sendToExternal: true)
             callErrorCompletion(for: cacheKey, with: Errors.noNewSubscriptionInSuccessfulResponse)
             finishTransaction(transaction, nil)
             group.leave()
 
         } catch Errors.alreadyPurchasedPlanDoesNotMatchBackend {
+            PMLog.error("Error: Already purchased plan does not match backend", sendToExternal: true)
             callErrorCompletion(for: cacheKey, with: Errors.alreadyPurchasedPlanDoesNotMatchBackend)
 
             if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) &&
@@ -773,6 +778,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
 
             group.leave()
         } catch let error { // other errors
+            PMLog.error("Error: \(error)", sendToExternal: true)
             callErrorCompletion(for: cacheKey, with: error)
             // should we call finishTransaction here, to avoid leaving transactions for the next run?
             group.leave()
@@ -862,8 +868,10 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         do {
             let customCompletion: ProcessCompletionCallback = { result in
                 switch result {
-                case .finished:
-                    ObservabilityEnv.report(.paymentSubscribeTotal(status: .successful, isDynamic: isDynamic))
+                case let .finished(result):
+                    if case .withoutExchangingToken = result { } else {
+                        ObservabilityEnv.report(.paymentSubscribeTotal(status: .successful, isDynamic: isDynamic))
+                    }
                 case .errored, .erroredWithUnspecifiedError:
                     ObservabilityEnv.report(.paymentSubscribeTotal(status: .failed, isDynamic: isDynamic))
                 }

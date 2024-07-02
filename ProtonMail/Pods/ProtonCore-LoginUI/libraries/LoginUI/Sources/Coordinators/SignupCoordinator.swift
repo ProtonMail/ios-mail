@@ -29,6 +29,7 @@ import ProtonCorePayments
 import ProtonCorePaymentsUI
 import ProtonCoreHumanVerification
 import ProtonCoreFoundations
+import ProtonCoreLog
 
 enum FlowStartKind {
     case over(UIViewController, UIModalTransitionStyle)
@@ -575,6 +576,7 @@ extension SignupCoordinator: CompleteViewControllerDelegate {
 
     // swiftlint:disable:next cyclomatic_complexity
     private func errorHandler(error: Error) {
+        PMLog.error(error, sendToExternal: true)
         longTermTask.inProgress = false
         if activeViewController != nil {
             navigationController?.popViewController(animated: true)

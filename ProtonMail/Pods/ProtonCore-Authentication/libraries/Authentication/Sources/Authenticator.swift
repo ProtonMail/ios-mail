@@ -25,17 +25,22 @@ import ProtonCoreCryptoGoInterface
 import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
 import ProtonCoreNetworking
+import ProtonCoreObservability
 import ProtonCoreServices
 
-public class Authenticator: NSObject, AuthenticatorInterface {
+public class Authenticator: NSObject, AuthenticatorInterface, AuthenticationObservability {
 
     public typealias Errors = AuthErrors
     public typealias Completion = (Result<Status, AuthErrors>) -> Void
 
+    /// Possible states after attempting to authenticate or providing 2FA factor
     public enum Status {
+        /// Request one-time code from the user
         case askTOTP(TOTPContext)
-        case askFIDO2(FIDO2Context)
-        case askAny2FA(TOTPContext, FIDO2Context)
+        /// Request the user to provide a security key
+        case askFIDO2(FIDO2Context, AuthenticationOptions)
+        /// Request the user to provide either a security key or a one-time code
+        case askAny2FA(TOTPContext, FIDO2Context, AuthenticationOptions)
         case newCredential(Credential, PasswordMode)
         case updatedCredential(Credential)
         case ssoChallenge(SSOChallengeResponse)
@@ -150,18 +155,19 @@ public class Authenticator: NSObject, AuthenticatorInterface {
                         self.apiService.setSessionUID(uid: credential.UID)
                         var totpContext: TOTPContext?
                         var fido2Context: FIDO2Context?
+                        var authenticationOptions: AuthenticationOptions?
                         if authResponse._2FA.enabled.contains(.totp) {
                             totpContext = .init(credential: credential, passwordMode: authResponse.passwordMode)
                         }
                         if authResponse._2FA.enabled.contains(.webAuthn) && areFidoKeysEnabled {
                             guard let fido2 = authResponse._2FA.FIDO2,
-                                  let authenticationOptions = fido2.authenticationOptions else {
+                                  let authOptions = fido2.authenticationOptions else {
                                 completion(.failure(Errors.emptyAuthInfoResponse))
                                 return
                             }
-                            fido2Context = .init(authenticationOptions: authenticationOptions,
-                                                 credential: credential,
+                            fido2Context = .init(credential: credential,
                                                  passwordMode: authResponse.passwordMode)
+                            authenticationOptions = authOptions
                         }
 
                         switch authResponse._2FA.enabled {
@@ -174,8 +180,8 @@ public class Authenticator: NSObject, AuthenticatorInterface {
                                     return completion(.failure(Errors.notImplementedYet("WebAuthn not implemented yet")))
                                 }
                         case .both where areFidoKeysEnabled:
-                            if let totpContext, let fido2Context {
-                                return completion(.success(.askAny2FA(totpContext, fido2Context)))
+                            if let totpContext, let fido2Context, let authenticationOptions {
+                                return completion(.success(.askAny2FA(totpContext, fido2Context, authenticationOptions)))
                             } else {
                                 return completion(.failure(.insufficientFIDO2Details))
                             }
@@ -190,8 +196,8 @@ public class Authenticator: NSObject, AuthenticatorInterface {
                                 completion(.failure(Errors.notImplementedYet("WebAuthn not implemented yet")))
                                 return
                             }
-                            if let fido2Context { 
-                                completion(.success(.askFIDO2(fido2Context)))
+                            if let authenticationOptions, let fido2Context {
+                                completion(.success(.askFIDO2(fido2Context, authenticationOptions)))
                             } else {
                                 completion(.failure(.insufficientFIDO2Details))
                             }
@@ -211,11 +217,15 @@ public class Authenticator: NSObject, AuthenticatorInterface {
                            context: TOTPContext, completion: @escaping Completion) {
         var route = AuthService.TwoFAEndpoint(code: twoFactorCode)
         route.auth = AuthCredential(context.credential)
-        self.apiService.perform(request: route) { (_, result: Result<AuthService.TwoFAResponse, ResponseError>) in
+        self.apiService.perform(request: route) { [weak self] (_, result: Result<AuthService.TwoFAResponse, ResponseError>) in
             switch result {
             case .failure(let responseError):
+                self?.observabilityAuth2FAStatusReport(twoFAType: .totp,
+                                                 httpCode: responseError.httpCode)
                 completion(.failure(.from(responseError)))
             case .success(let response):
+                self?.observabilityAuth2FAStatusReport(twoFAType: .totp,
+                                                 httpCode: 200)
                 var credential = context.credential
                 credential.scopes = response.scopes
                 completion(.success(.newCredential(credential, context.passwordMode)))
@@ -225,13 +235,15 @@ public class Authenticator: NSObject, AuthenticatorInterface {
 
     /// Send FIDO2 key signature
     public func sendFIDO2Signature(_ signature: Fido2Signature, context: FIDO2Context, completion: @escaping Completion) {
-        var route = AuthService.TwoFAEndpoint(signature: signature, authenticationOptions: context.authenticationOptions)
+        var route = AuthService.TwoFAEndpoint(signature: signature)
         route.auth = AuthCredential(context.credential)
-        self.apiService.perform(request: route) { (_, result: Result<AuthService.TwoFAResponse, ResponseError>) in
+        self.apiService.perform(request: route) { [weak self] (_, result: Result<AuthService.TwoFAResponse, ResponseError>) in
             switch result {
             case .failure(let responseError):
+                self?.observabilityAuth2FAStatusReport(twoFAType: .webauthn, httpCode: responseError.httpCode)
                 completion(.failure(.from(responseError)))
             case .success(let response):
+                self?.observabilityAuth2FAStatusReport(twoFAType: .webauthn, httpCode: 200)
                 var credential = context.credential
                 credential.scopes = response.scopes
                 completion(.success(.newCredential(credential, context.passwordMode)))
