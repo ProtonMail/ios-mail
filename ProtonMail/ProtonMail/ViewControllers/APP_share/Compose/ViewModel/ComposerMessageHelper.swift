@@ -359,8 +359,10 @@ extension ComposerMessageHelper {
 
     func deleteAttachment(
         _ attachment: AttachmentEntity,
+        caller: StaticString = #function,
         completion: @escaping () -> Void
     ) {
+        SystemLogger.log(message: "CMH deleteAttachment called by \(caller)", category: .draft)
         guard let msgID = draft?.messageID else { return }
         dependencies.messageDataService.delete(
             att: attachment,

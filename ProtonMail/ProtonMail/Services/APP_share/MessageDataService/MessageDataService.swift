@@ -266,6 +266,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     ///
     /// - Parameter att: Attachment
     func delete(att: AttachmentEntity, messageID: MessageID) -> Promise<Void> {
+        SystemLogger.log(message: "MDS deleting att \(att.id)", category: .draft)
+
         return Promise { seal in
             let objectID = att.objectID.rawValue.uriRepresentation().absoluteString
             let task = QueueManager.Task(
