@@ -59,7 +59,7 @@ struct LabelPickerView: View {
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier(LabelPickerViewIdentifiers.rootItem)
         }
-        .padding(.horizontal, DS.Spacing.extraLarge)
+        .padding(.horizontal, DS.Spacing.large)
         .background(DS.Color.Background.secondary)
         .task {
             await initialiseState()
@@ -264,14 +264,6 @@ private struct AddNewLabel: View {
         .customListLeadingSeparator()
     }
 }
-
-//#Preview {
-//    let colors: [Color] = [.red, .orange, .cyan, .purple, .yellow, .brown, .pink]
-//    let labels = ["Work", "Holiday 🏝️", "Newsletters"].map({ str in
-//        LabelPickerCellUIModel(id: UInt64.random(in: 1...UInt64.max), name: str, color: colors.randomElement()!, itemsWithLabel: .all)
-//    })
-////    return LabelPickerView(customLabelModel: <#T##CustomLabelModel#>, labelsOfSelectedItems: <#T##() -> [Set<PMLocalLabelId>]#>, onDoneTap: <#T##LabelPickerView.OnDoneTap##LabelPickerView.OnDoneTap##(_ selectedLabelIds: Set<PMLocalLabelId>, _ alsoArchive: Bool) -> Void#>
-//}
 
 #Preview {
     ZStack {

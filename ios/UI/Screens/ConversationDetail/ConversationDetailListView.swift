@@ -67,7 +67,7 @@ struct ConversationDetailListView: View {
                 print("action \(action) for item \(item)")
             }
         )
-        .pickerViewStyle([.large])
+        .pickerViewStyle([.medium, .large])
     }
 
     private func messageList(previous: [MessageCellUIModel], last: ExpandedMessageCellUIModel) -> some View {

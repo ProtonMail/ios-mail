@@ -40,15 +40,30 @@ struct MailboxItemActionPickerView: View {
     }
 
     var body: some View {
-        VStack(spacing: DS.Spacing.medium) {
-            replyActionButtons
-            actionList
+        actionList
+            .padding(.vertical, DS.Spacing.large)
+            .padding(.horizontal, -DS.Spacing.small)
+            .background(DS.Color.Background.secondary)
+            .accessibilityElement(children: .contain)
+    }
+
+    @MainActor
+    private var actionList: some View {
+        List {
+            Section {
+                replyActionButtons
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(EdgeInsets())
+            }
+
+            section(actions: MailboxItemActionPickerSection.first.actions(type: mailboxItemIdentifier.type))
+            section(actions: MailboxItemActionPickerSection.second.actions(type: mailboxItemIdentifier.type))
+            section(actions: MailboxItemActionPickerSection.third.actions(type: mailboxItemIdentifier.type))
         }
-        .padding(.top, DS.Spacing.large)
-        .background(DS.Color.Background.secondary)
         .scrollContentBackground(.hidden)
         .scrollBounceBehavior(.basedOnSize)
-        .accessibilityElement(children: .contain)
+        .customListRemoveTopInset()
+        .listSectionSpacing(DS.Spacing.medium)
     }
 
     @ViewBuilder
@@ -63,7 +78,6 @@ struct MailboxItemActionPickerView: View {
                     .removeViewIf(isSingleRecipient)
                 replyActionButton(name: LocalizationTemp.MessageAction.forward, icon: DS.Icon.icForward)
             }
-            .padding(.horizontal, 20)
             .clipped()
         }
     }
@@ -86,16 +100,6 @@ struct MailboxItemActionPickerView: View {
         .clipShape(.rect(cornerRadius: DS.Radius.extraLarge))
     }
 
-    @MainActor
-    private var actionList: some View {
-        List {
-            section(actions: MailboxItemActionPickerSection.first.actions(type: mailboxItemIdentifier.type))
-            section(actions: MailboxItemActionPickerSection.second.actions(type: mailboxItemIdentifier.type))
-            section(actions: MailboxItemActionPickerSection.third.actions(type: mailboxItemIdentifier.type))
-        }
-        .customListRemoveTopInset()
-        .listSectionSpacing(DS.Spacing.medium)
-    }
 
     private func section(actions: [MailboxItemAction]) -> some View {
         Section {
@@ -191,10 +195,12 @@ private struct SendActionButtonStack<Content: View>: View {
     var body: some View {
         if isSingleRecipient {
             HStack(spacing: DS.Spacing.medium, content: content)
-                .frame(maxWidth: .infinity, maxHeight: 52)
+                .frame(maxWidth: .infinity)
+                .frame(height: 52)
         } else {
             VStack(spacing: DS.Spacing.standard, content: content)
-                .frame(maxWidth: .infinity, maxHeight: 80)
+                .frame(maxWidth: .infinity)
+                .frame(height: 80)
         }
     }
 }

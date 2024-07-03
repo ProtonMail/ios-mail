@@ -82,6 +82,7 @@ extension FolderPickerView {
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier(FolderPickerViewIdentifiers.systemFoldersList)
         }
+        .padding(.horizontal, -DS.Spacing.small)
         .customListRemoveTopInset()
         .background(DS.Color.Background.secondary)
         .scrollContentBackground(.hidden)
