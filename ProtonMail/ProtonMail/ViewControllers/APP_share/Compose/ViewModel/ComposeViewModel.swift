@@ -499,7 +499,8 @@ extension ComposeViewModel {
         return cleanBody
     }
 
-    func deleteAttachment(_ attachment: AttachmentEntity) -> Promise<Void> {
+    func deleteAttachment(_ attachment: AttachmentEntity, caller: StaticString = #function) -> Promise<Void> {
+        SystemLogger.log(message: "CVM deleteAttachment called by \(caller)", category: .draft)
         self.user.usedSpace(minus: attachment.fileSize.int64Value)
         return Promise { seal in
             composerMessageHelper.deleteAttachment(attachment) {
