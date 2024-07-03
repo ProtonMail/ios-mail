@@ -19,6 +19,7 @@ import Foundation
 import XCTest
 
 struct UITestSidebarListItemEntryModel: ApplicationHolder {
+    let parent: XCUIElement
     let label: String
 
     // MARK: UI Elements
@@ -41,6 +42,10 @@ struct UITestSidebarListItemEntryModel: ApplicationHolder {
     }
 
     // MARK: Actions
+    
+    func findElement() {
+        XCTAssertTrue(UITestVisibilityHelper.shared.findElement(element: rootItem, parent: parent))
+    }
 
     func tap() {
         rootItem.tap()

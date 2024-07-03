@@ -51,21 +51,23 @@ final class AppContext: Sendable, ObservableObject {
             throw AppContextError.cacheDirectoryNotAccessible
         }
 
+        guard let appConfig = dependencies.appConfigService.appConfig else {
+            throw AppContextError.appConfigNotDefined
+        }
+
         // TODO: exclude application support from iCloud backup
 
         let applicationSupportPath = applicationSupportFolder.path()
         let cachePath = cacheFolder.path()
         AppLogger.logTemporarily(message: "path: \(cacheFolder)")
         
-        let apiEnvConfig = dependencies.apiEnvConfigService.getConfiguration()
-
         let params = MailSessionParams(
             sessionDir: applicationSupportPath,
             userDir: applicationSupportPath,
             mailCacheDir: cachePath,
             logDir: cachePath,
             logDebug: true,
-            apiEnvConfig: apiEnvConfig
+            apiEnvConfig: appConfig.apiEnvConfig
         )
 
         _mailSession = try MailSession.create(
@@ -89,7 +91,7 @@ extension AppContext {
         let fileManager: FileManager = .default
         let keychain: OsKeyChain = Keychain.shared
         let networkStatus: NetworkStatusChanged = NetworkStatusManager.shared
-        let apiEnvConfigService: ApiEnvConfigService = ApiEnvConfigService.shared
+        let appConfigService: AppConfigService = AppConfigService.shared
     }
 }
 
@@ -102,6 +104,7 @@ extension AppContext {
 enum AppContextError: Error {
     case applicationSupportDirectoryNotAccessible
     case cacheDirectoryNotAccessible
+    case appConfigNotDefined
 }
 
 final class Keychain: OsKeyChain, Sendable {

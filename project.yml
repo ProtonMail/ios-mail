@@ -56,11 +56,15 @@ targets:
         SWIFT_STRICT_CONCURRENCY: "complete"
       configs:
         UITests:
-           SWIFT_ACTIVE_COMPILATION_CONDITIONS: "UITESTS"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: "UITESTS"
+          PM_API_HOST: "proton.black"
+        Debug:
+          PM_API_HOST: "proton.me"
         Release:
           CODE_SIGN_STYLE: Manual
           CODE_SIGN_IDENTITY: "iPhone Distribution: Proton AG (2SB5Z68H26)"
           PROVISIONING_PROFILE_SPECIFIER: "Mail - Engineering Transformation - Distribution"
+          PM_API_HOST: "proton.me"
     info: 
       path: ios/Info/Info.plist  
       properties:
@@ -68,6 +72,7 @@ targets:
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         CFBundlePackageType: "$(PRODUCT_BUNDLE_PACKAGE_TYPE)"
+        PMApiHost: "$(PM_API_HOST)"
         LSRequiresIPhoneOS: YES
         UIApplicationSupportsIndirectInputEvents: YES
         UIApplicationSceneManifest:

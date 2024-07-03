@@ -31,12 +31,15 @@ final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
 
     func generateSubscriptionUrl(colorScheme: ColorScheme) {
         guard let activeUser = dependencies.appContext.activeUserSession else { return }
+        
+        guard let appConfig = dependencies.appConfigService.appConfig else { return }
+        let domain = appConfig.environment.domain
+        let appVersion = appConfig.appVersion
+        
         Task {
             await updateState(.forkingSession)
             do {
                 let selectorToken = try await activeUser.fork()
-                let domain: String = "proton.me"
-                let appVersion = "Other"
                 let theme = colorScheme == .light ? "0" : "1"
                 let url = webPageUrl(domain: domain, appVersion: appVersion, theme: theme, selector: selectorToken)
                 await updateState(.urlReady(url: url))
@@ -76,9 +79,11 @@ extension ProtonAuthenticatedWebModel {
 
     struct Dependencies {
         let appContext: AppContext
+        let appConfigService: AppConfigService
 
-        init(appContext: AppContext = .shared) {
+        init(appContext: AppContext = .shared, appConfigService: AppConfigService = .shared) {
             self.appContext = appContext
+            self.appConfigService = appConfigService
         }
     }
 }

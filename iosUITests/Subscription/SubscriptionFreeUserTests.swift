@@ -24,7 +24,7 @@ final class SubscriptionNavigationTests: PMUIUnmockedNetworkTestCase {
     }
 
     /// TestId 430810
-    func skip_testSubscriptionNavigationFreeUser() {
+    func testSubscriptionNavigationFreeUser() {
         navigator.navigateTo(UITestDestination.subscription)
 
         let subscription = UITestSubscriptionEntry(name: "Free")

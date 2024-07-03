@@ -35,7 +35,9 @@ extension SidebarMenuRobot {
     }
 
     func tapEntry(withLabel label: String) {
-        let model = UITestSidebarListItemEntryModel(label: label)
+        let model = UITestSidebarListItemEntryModel(parent: rootElement, label: label)
+        
+        model.findElement()
         model.tap()
     }
 
@@ -46,7 +48,9 @@ extension SidebarMenuRobot {
     }
 
     private func hasEntry(_ entry: UITestSidebarListItemEntry) {
-        let model = UITestSidebarListItemEntryModel(label: entry.text)
+        let model = UITestSidebarListItemEntryModel(parent: rootElement, label: entry.text)
+        
+        model.findElement()
         model.isIconDisplayed()
         model.isTextMatching(value: entry.text)
 

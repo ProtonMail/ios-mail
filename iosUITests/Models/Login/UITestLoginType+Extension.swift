@@ -30,8 +30,8 @@ extension UITestLoginType {
                 static let Free = UITestLoginType.loggedIn(
                     UITestUser(
                         id: "free",
-                        username: "free",
-                        password: "free"
+                        username: "freefreefree", // 'free' is upgraded for some reason
+                        password: "password"
                     )
                 )
             }

@@ -21,6 +21,8 @@ import XCTest
 extension SubscriptionRobot {
 
     // MARK: UI Elements
+    
+    private var defaultTimeout: TimeInterval { 30 }
 
     private var webView: XCUIElement {
         rootElement.webViews[Identifiers.webView].firstMatch
@@ -30,14 +32,12 @@ extension SubscriptionRobot {
 
     func hasSubscription(value: UITestSubscriptionEntry) {
         withWebViewVisible {
-            XCTAssertTrue(webView.staticTexts[value.name].exists)
+            XCTAssertTrue(webView.staticTexts[value.name].waitForExistence(timeout: defaultTimeout))
         }
     }
 
     private func withWebViewVisible(block: () -> Void) {
-        let timeout: TimeInterval = 30
-        XCTAssertTrue(webView.waitForExistence(timeout: timeout))
-
+        XCTAssertTrue(webView.waitForExistence(timeout: defaultTimeout))
         block()
     }
 }

@@ -16,22 +16,32 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import proton_mail_uniffi
 
-final class SubscriptionPaidUserTests: PMUIUnmockedNetworkTestCase {
-
-    override var loginType: UITestLoginType {
-        UITestLoginType.Unmocked.Black.Paid.Plus
+struct AppConfig: Sendable {
+    let appVersion: String
+    let environment: Environment
+    
+    struct Environment {
+        let domain: String
+        let apiBaseUrl: String
+        let userAgent: String
+        let isSrpProofSkipped: Bool
+        let isHttpAllowed: Bool
     }
+}
 
-    /// TestId 430811
-    func testSubscriptionNavigationPaidUser() {
-        navigator.navigateTo(UITestDestination.subscription)
+extension AppConfig {
 
-        let subscription = UITestSubscriptionEntry(name: "Mail Plus")
+    var apiEnvConfig: ApiEnvConfig {
+        let environment = self.environment
 
-        SubscriptionRobot {
-            $0.verifyShown()
-            $0.hasSubscription(value: subscription)
-        }
+        return ApiEnvConfig(
+            appVersion: appVersion,
+            baseUrl: environment.apiBaseUrl,
+            userAgent: environment.userAgent,
+            allowHttp: environment.isHttpAllowed,
+            skipSrpProofValidation: environment.isSrpProofSkipped
+        )
     }
 }

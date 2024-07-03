@@ -21,12 +21,6 @@ final class TestService: Sendable {
     static let shared: TestService = .init()
 }
 
-#if !UITESTS
-extension TestService: ApplicationServiceSetUp {
-    func setUpService() {}
-}
-#endif
-
 #if UITESTS
 extension TestService: ApplicationServiceSetUp {
 
@@ -54,5 +48,11 @@ extension TestService: ApplicationServiceSetUp {
         case applicationSupportDirectoryNotAccessible
         case cacheDirectoryNotAccessible
     }
+}
+#endif
+
+#if !UITESTS
+extension TestService: ApplicationServiceSetUp {
+    func setUpService() {}
 }
 #endif
