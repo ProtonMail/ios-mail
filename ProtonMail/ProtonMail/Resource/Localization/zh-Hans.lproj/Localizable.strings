@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "PGP 加密邮件";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP 签名邮件";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP 签名邮件，发件人验证失败";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -1929,10 +1932,10 @@
 "Attending?" = "Attending?";
 
 /* Part of a yes/no/maybe prompt */
-"Yes" = "Yes";
+"Yes" = "确认";
 
 /* Part of a yes/no/maybe prompt */
-"No" = "No";
+"No" = "取消";
 
 /* Part of a yes/no/maybe prompt */
 "Maybe" = "Maybe";
@@ -2001,7 +2004,7 @@
 "Daily" = "每天";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "每周";
 
 /* Occurring every month */
 "Monthly" = "每月";
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "更改邮箱密码";
+
+/* settings general section title */
+"Security keys" = "Security keys";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB storage";

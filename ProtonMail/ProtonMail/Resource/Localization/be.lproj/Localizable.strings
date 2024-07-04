@@ -739,7 +739,7 @@
 "Updated Proton, unified protection" = "Абноўлены Proton, уніфікаваная абарона";
 
 /* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Праглядайце ланцужкі паведамленняў у рэжыме размовы.";
+"Breeze through threaded messages in conversation mode." = "Праглядайце гутаркі паведамленняў у рэжыме размовы.";
 
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Запрасіце свае кантакты ў Proton Mail, каб выкарыстоўваць бесперабойнае скразное шыфраванне, або абараніце паролем паведамленні, якія вы ім адпраўляеце.";
@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "Паведамленне зашыфравана з дапамогай PGP";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "Паведамленне падпісана з дапамогай PGP";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Паведамленне падпісана з дапамогай PGP. Не ўдалося праверыць адпраўніка";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "Змяніць пароль паштовай скрыні";
+
+/* settings general section title */
+"Security keys" = "Ключы бяспекі";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 ГБ сховішча";

@@ -1148,7 +1148,7 @@
 "Problem sending message" = "Masalah dalam mengirim pesan";
 
 /* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Kami tidak dapat mengirimkan pesan Anda, yang antara lain dapat disebabkan oleh koneksi jaringan yang buruk. Pesan Anda telah tersimpan di Draf dan akan terkirim secara otomatis pada saat Anda kembali membuka aplikasi ke depannya.";
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Kami tidak dapat mengirimkan pesan Anda, yang kemungkinan disebabkan oleh koneksi jaringan yang buruk. Pesan Anda telah tersimpan di Draf dan akan terkirim secara otomatis pada saat Anda kembali membuka aplikasi ke depannya.";
 
 /* Alert to confirm signout */
 "You will be switched to %@" = "Anda akan dialihkan ke %@";
@@ -1226,7 +1226,7 @@
 "Combined contacts" = "Kontak gabungan";
 
 /* cell title in app settings */
-"Swipe actions" = "Tindakan usap";
+"Swipe actions" = "Gestur usap";
 
 /* cell title in app settings */
 "Alternative routing" = "Pengalihan lalu lintas alternatif";
@@ -1751,6 +1751,9 @@
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message" = "Pesan terenkripsi PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "Pesan yang ditandatangani PGP";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Pesan tertandatangani PGP. Verifikasi pengirim gagal";
@@ -2453,6 +2456,9 @@
 /* settings general section title */
 "Change mailbox password" = "Ubah kata sandi kotak surat";
 
+/* settings general section title */
+"Security keys" = "Kunci keamanan";
+
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "Ruang penyimpanan 15 GB";
 
@@ -2475,7 +2481,7 @@
 "To improve our services, we sometimes collect anonymized usage data." = "Demi meningkatkan kualitas layanan, kami mengumpulkan data penggunaan secara anonim dari waktu ke waktu.";
 
 /* The subtitle of the crash report setting. */
-"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Apabila aplikasi Anda mengalami crash, laporan crash terkait akan dikirim kepada tim kami beserta dengan rinciannya. Laporan ini hanya akan digunakan untuk meningkatkan kinerja aplikasi.";
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "Apabila aplikasi mengalami crash, laporan seputar crash terkait akan dikirim ke tim kami beserta dengan rincian perkaranya. Kami hanya akan menggunakan laporan ini untuk meningkatkan kinerja aplikasi.";
 
 /* Title of the upsell page. */
 "Upgrade to %@" = "Tingkatkan ke %@";

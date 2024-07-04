@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "Message chiffré par PGP";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "Message signé avec PGP";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Message signé par PGP. L'expéditeur n'a pas pu être vérifié.";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "Changer le mot de passe de messagerie";
+
+/* settings general section title */
+"Security keys" = "Clés de sécurité";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 Go d'espace de stockage";

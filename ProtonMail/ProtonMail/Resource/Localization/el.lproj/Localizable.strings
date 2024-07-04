@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "Κρυπτογραφημένο μήνυμα με PGP";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "Μήνυμα υπογεγραμμένο PGP";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Μήνυμα υπογεγραμμένο PGP. Αποτυχία επαλήθευσης αποστολέα";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "Αλλαγή κωδικού γραμματοκιβωτίου";
+
+/* settings general section title */
+"Security keys" = "Κλειδιά ασφαλείας";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB αποθηκευτικός χώρος";
