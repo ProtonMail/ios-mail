@@ -57,6 +57,10 @@ struct ExpandedMessageCell: View {
                         onEvent(.onReplyAll)
                     case .onMoreActions:
                         onEvent(.onMoreActions)
+                    case .onSenderTap:
+                        onEvent(.onSenderTap)
+                    case .onRecipientTap(let recipient):
+                        onEvent(.onRecipientTap(recipient))
                     }
                 })
                 MessageBodyView(messageBody: uiModel.message, messageId: uiModel.messageId, uiModel: uiModel)
@@ -90,16 +94,20 @@ struct ExpandedMessageCellUIModel: Identifiable {
 
 enum ExpandedMessageCellEvent {
     case onTap
+
     case onReply
     case onReplyAll
     case onForward
     case onMoreActions
+
+    case onSenderTap
+    case onRecipientTap(MessageDetail.Recipient)
 }
 
 #Preview {
 
     let messageDetails = MessageDetailsUIModel(
-        avatar: .init(initials: "Gg", senderImageParams: .init()),
+        avatar: .init(initials: "Gg", type: .sender(params: .init())),
         sender: .init(name: "Camila Hall", address: "camila.hall@protonmail.ch", encryptionInfo: "End to end encrypted and signed"),
         isSenderProtonOfficial: true,
         recipientsTo: [

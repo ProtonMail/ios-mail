@@ -18,26 +18,12 @@
 import DesignSystem
 import SwiftUI
 
-struct AvatarUIModel {
-    let initials: String
-    let senderImage: UIImage?
-    let backgroundColor: Color
-    let type: AvatarViewType
+extension Image {
 
-    init(
-        initials: String,
-        senderImage: UIImage? = nil,
-        backgroundColor: Color = DS.Color.Background.secondary,
-        type: AvatarViewType
-    ) {
-        self.initials = initials
-        self.senderImage = senderImage
-        self.backgroundColor = backgroundColor
-        self.type = type
+    func actionSheetIconModifier() -> some View {
+        self
+            .resizable()
+            .frame(width: 20, height: 20)
+            .foregroundStyle(DS.Color.Icon.norm)
     }
-}
-
-struct ExpirationDateUIModel {
-    let text: String
-    let color: Color
 }

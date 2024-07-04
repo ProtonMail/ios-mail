@@ -157,29 +157,33 @@ extension MessageDetailsView {
     }
 
     private var fromRow: some View {
-        HStack(alignment: .top, spacing: DS.Spacing.small) {
-            Text(LocalizationTemp.MessageDetails.from)
-                .font(.caption)
-                .foregroundStyle(DS.Color.Text.weak)
-                .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderLabel)
+        Button(action: {
+            onEvent(.onSenderTap)
+        }, label: {
+            HStack(alignment: .top, spacing: DS.Spacing.small) {
+                Text(LocalizationTemp.MessageDetails.from)
+                    .font(.caption)
+                    .foregroundStyle(DS.Color.Text.weak)
+                    .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
+                    .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderLabel)
 
-            VStack(alignment: .leading, spacing: DS.Spacing.tiny) {
-                Text(uiModel.sender.name)
-                    .font(.caption)
-                    .foregroundStyle(DS.Color.Text.norm)
-                    .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderName)
-                Text(uiModel.sender.address)
-                    .font(.caption)
-                    .foregroundStyle(DS.Color.Text.accent)
-                    .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderAddress)
-//                Text(uiModel.sender.encryptionInfo)
-//                    .font(.caption)
-//                    .foregroundStyle(DS.Color.Text.weak)
+                VStack(alignment: .leading, spacing: DS.Spacing.tiny) {
+                    Text(uiModel.sender.name)
+                        .font(.caption)
+                        .foregroundStyle(DS.Color.Text.norm)
+                        .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderName)
+                    Text(uiModel.sender.address)
+                        .font(.caption)
+                        .foregroundStyle(DS.Color.Text.accent)
+                        .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderAddress)
+    //                Text(uiModel.sender.encryptionInfo)
+    //                    .font(.caption)
+    //                    .foregroundStyle(DS.Color.Text.weak)
+                }
+
+                Spacer()
             }
-
-            Spacer()
-        }
+        })
     }
 
     private func recipientRow(_ group: RecipientGroup, recipients: [MessageDetail.Recipient]) -> some View {
@@ -193,15 +197,19 @@ extension MessageDetailsView {
 
                 ForEach(recipients.indices, id:\.self) { index in
                     let recipient = recipients[index]
-                    VStack(alignment: .leading, spacing: DS.Spacing.tiny) {
-                        Text(recipient.name)
-                            .font(.caption)
-                            .foregroundStyle(DS.Color.Text.norm)
-                            .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientName(group: group, index: index))
-                        Text(recipient.address)
-                            .font(.caption)
-                            .foregroundStyle(DS.Color.Text.accent)
-                            .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientValue(group: group, index: index))
+                    Button {
+                        onEvent(.onRecipientTap(recipient))
+                    } label: {
+                        VStack(alignment: .leading, spacing: DS.Spacing.tiny) {
+                            Text(recipient.name)
+                                .font(.caption)
+                                .foregroundStyle(DS.Color.Text.norm)
+                                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientName(group: group, index: index))
+                            Text(recipient.address)
+                                .font(.caption)
+                                .foregroundStyle(DS.Color.Text.accent)
+                                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientValue(group: group, index: index))
+                        }
                     }
                 }
             }
@@ -336,7 +344,8 @@ enum MessageDetail {
         let encryptionInfo: String
     }
 
-    struct Recipient {
+    struct Recipient: Identifiable {
+        var id: String { address } // Identifiable needed to present the action sheet
         let name: String
         let address: String
     }
@@ -357,6 +366,8 @@ enum MessageDetailsEvent {
     case onReply
     case onReplyAll
     case onMoreActions
+    case onSenderTap
+    case onRecipientTap(MessageDetail.Recipient)
 }
 
 extension Array where Element == MessageDetail.Recipient {
@@ -370,7 +381,7 @@ extension Array where Element == MessageDetail.Recipient {
 #Preview {
 
     let messageDetails = MessageDetailsUIModel(
-        avatar: .init(initials: "", senderImageParams: .init()),
+        avatar: .init(initials: "", type: .sender(params: .init())),
         sender: .init(name: "Camila Hall", address: "camila.hall@protonmail.ch", encryptionInfo: "End to end encrypted and signed"),
         isSenderProtonOfficial: true,
         recipientsTo: [

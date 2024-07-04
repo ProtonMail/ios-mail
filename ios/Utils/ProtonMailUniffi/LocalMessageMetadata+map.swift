@@ -32,12 +32,12 @@ extension LocalMessageMetadata {
             avatar: .init(
                 initials: avatarInformation.text,
                 senderImage: senderImage,
-                senderImageParams: .init(
+                backgroundColor: Color(hex: avatarInformation.color),
+                type: .sender(params: .init(
                     address: sender.address,
                     bimiSelector: sender.bimiSelector,
                     displaySenderImage: sender.displaySenderImage
-                ),
-                backgroundColor: Color(hex: avatarInformation.color)
+                ))
             ),
             senders: sender.uiRepresentation,
             subject: subject,

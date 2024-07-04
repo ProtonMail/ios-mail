@@ -41,7 +41,7 @@ struct AvatarCheckboxView: View {
                         }
                 }.accessibilityElement(children: .contain)
             } else {
-                avatarView()
+                AvatarView(avatar: avatar)
             }
         }
         .compositingGroup()
@@ -51,56 +51,24 @@ struct AvatarCheckboxView: View {
         }
         .accessibilityElement(children: .contain)
     }
-
-    @MainActor @ViewBuilder
-    private func avatarView() -> some View {
-        if let senderImage = avatar.senderImage {
-            senderImageView(uiImage: senderImage)
-        } else {
-            AsyncSenderImageView(senderImageParams: avatar.senderImageParams) { senderImage in
-                switch senderImage {
-                case .empty:
-                    initialsView
-                case .image(let uiImage):
-                    senderImageView(uiImage: uiImage)
-                }
-            }
-        }
-    }
-
-    private func senderImageView(uiImage: UIImage) -> some View {
-        Image(uiImage: uiImage)
-            .resizable()
-    }
-
-    private var initialsView: some View {
-        Text(avatar.initials)
-            .font(DS.Font.body3)
-            .fontWeight(.semibold)
-            .foregroundStyle(DS.Color.Global.white)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(avatar.backgroundColor)
-			.accessibilityIdentifier(AvatarCheckboxViewIdentifiers.avatarText)
-    }
 }
 
 #Preview {
     return VStack {
-        AvatarCheckboxView(isSelected: true, avatar: .init(initials: "Mb", senderImageParams: .init(), backgroundColor: .cyan)) { _ in}
+        AvatarCheckboxView(isSelected: true, avatar: .init(initials: "Mb", backgroundColor: .cyan, type: .sender(params: .init()))) { _ in}
             .frame(width: 40, height: 40)
             .clipped()
 
-        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "Mb", senderImageParams: .init(), backgroundColor: .cyan)) { _ in}
+        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "Mb", backgroundColor: .cyan, type: .sender(params: .init()))) { _ in}
             .frame(width: 40, height: 40)
             .clipped()
 
-        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "Mb", senderImageParams: .init(), backgroundColor: .cyan)) { _ in}
+        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "Mb", backgroundColor: .cyan, type: .sender(params: .init()))) { _ in}
             .frame(width: 40, height: 40)
             .clipped()
     }
 }
 
 private struct AvatarCheckboxViewIdentifiers {
-    static let avatarText = "avatar.text"
     static let avatarChecked = "avatar.checked"
 }

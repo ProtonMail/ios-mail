@@ -34,12 +34,12 @@ extension LocalConversation {
             avatar: .init(
                 initials: avatarInformation.text,
                 senderImage: senderImage,
-                senderImageParams: .init(
+                backgroundColor: Color(hex: avatarInformation.color),
+                type: .sender(params: .init(
                     address: senders.first?.address ?? "",
                     bimiSelector: senders.first?.bimiSelector,
                     displaySenderImage: senders.first?.displaySenderImage ?? true
-                ),
-                backgroundColor: Color(hex: avatarInformation.color)
+                ))
             ),
             senders: senders.addressUIRepresentation,
             subject: subject,

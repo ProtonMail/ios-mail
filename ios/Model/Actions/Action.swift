@@ -24,7 +24,7 @@ import class UIKit.UIImage
 
  The purpose of this enum is to declare icons and strings related to an action only once.
  */
-enum Action {
+enum Action: ActionPickerListElement {
     case delete
     case markAsRead
     case markAsUnread

@@ -25,12 +25,12 @@ extension LocalMessageMetadata {
         return .init(
             initials: avatarInformation.text,
             senderImage: cachedImage,
-            senderImageParams: .init(
+            backgroundColor: Color(hex: avatarInformation.color),
+            type: .sender(params: .init(
                 address: sender.address,
                 bimiSelector: sender.bimiSelector,
                 displaySenderImage: sender.displaySenderImage
-            ),
-            backgroundColor: Color(hex: avatarInformation.color)
+            ))
         )
     }
 }

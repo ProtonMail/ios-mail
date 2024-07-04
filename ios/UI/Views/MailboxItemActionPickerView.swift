@@ -40,30 +40,20 @@ struct MailboxItemActionPickerView: View {
     }
 
     var body: some View {
-        actionList
-            .padding(.vertical, DS.Spacing.large)
-            .padding(.horizontal, -DS.Spacing.small)
-            .background(DS.Color.Background.secondary)
-            .accessibilityElement(children: .contain)
-    }
-
-    @MainActor
-    private var actionList: some View {
-        List {
-            Section {
+        ActionPickerList(
+            headerContent: {
                 replyActionButtons
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets())
-            }
-
-            section(actions: MailboxItemActionPickerSection.first.actions(type: mailboxItemIdentifier.type))
-            section(actions: MailboxItemActionPickerSection.second.actions(type: mailboxItemIdentifier.type))
-            section(actions: MailboxItemActionPickerSection.third.actions(type: mailboxItemIdentifier.type))
-        }
-        .scrollContentBackground(.hidden)
-        .scrollBounceBehavior(.basedOnSize)
-        .customListRemoveTopInset()
-        .listSectionSpacing(DS.Spacing.medium)
+            },
+            sections: [
+                MailboxItemActionPickerSection.first.actions(type: mailboxItemIdentifier.type).map(resolver.action(for:)),
+                MailboxItemActionPickerSection.second.actions(type: mailboxItemIdentifier.type).map(resolver.action(for:)),
+                MailboxItemActionPickerSection.third.actions(type: mailboxItemIdentifier.type).map(resolver.action(for:))
+            ],
+            onElementTap: { action in
+                onActionTap(action, mailboxItemIdentifier)
+            })
     }
 
     @ViewBuilder
@@ -88,7 +78,7 @@ struct MailboxItemActionPickerView: View {
         } label: {
             SendActionButtonStack(isSingleRecipient: isSingleRecipient) {
                 Image(uiImage: icon)
-                    .iconModifier()
+                    .actionSheetIconModifier()
 
                 Text(name)
                     .lineLimit(1)
@@ -98,42 +88,6 @@ struct MailboxItemActionPickerView: View {
         }
         .buttonStyle(RegularButtonStyle())
         .clipShape(.rect(cornerRadius: DS.Radius.extraLarge))
-    }
-
-
-    private func section(actions: [MailboxItemAction]) -> some View {
-        Section {
-            ForEach(Array(actions.enumerated()), id: \.offset) { index, itemAction in
-                let action = resolver.action(for: itemAction)
-                messageActionCell(for: action)
-                    .customListLeadingSeparator()
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        onActionTap(action, mailboxItemIdentifier)
-                    }
-                    .onLongPressGesture(perform: {}, onPressingChanged: { isPressed in
-                        highlightedAction = isPressed ? action : nil
-                    })
-                    .listRowBackground(
-                        highlightedAction == action
-                        ? DS.Color.InteractionWeak.pressed
-                        : DS.Color.Background.norm
-                    )
-            }
-        }
-    }
-
-    private func messageActionCell(for action: Action) -> some View {
-        HStack(spacing: DS.Spacing.large) {
-            Image(uiImage: action.icon)
-                .iconModifier()
-
-            Text(action.name)
-                .lineLimit(1)
-                .font(.subheadline)
-                .foregroundStyle(DS.Color.Text.weak)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
     }
 }
 
@@ -202,16 +156,6 @@ private struct SendActionButtonStack<Content: View>: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: 80)
         }
-    }
-}
-
-private extension Image {
-
-    func iconModifier() -> some View {
-        self
-            .resizable()
-            .frame(width: 20, height: 20)
-            .foregroundStyle(DS.Color.Icon.norm)
     }
 }
 

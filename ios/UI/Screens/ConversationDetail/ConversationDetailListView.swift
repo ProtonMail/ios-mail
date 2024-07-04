@@ -22,8 +22,10 @@ struct ConversationDetailListView: View {
     @ObservedObject private var model: ConversationDetailModel
     @State private var showMessageActionPicker: Bool = false
     
-    /// This attribute triggers the message the action sheet for this message
+    /// These attributes trigger the different action sheets
     @State private var messageActionTarget: ExpandedMessageCellUIModel?
+    @State private var senderActionTarget: ExpandedMessageCellUIModel?
+    @State private var recipientActionTarget: MessageDetail.Recipient?
 
     init(model: ConversationDetailModel) {
         self.model = model
@@ -31,7 +33,6 @@ struct ConversationDetailListView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-
             switch model.state {
             case .initial:
                 EmptyView()
@@ -45,6 +46,8 @@ struct ConversationDetailListView: View {
             }
         }
         .sheet(item: $messageActionTarget, content: messageActionPicker)
+        .sheet(item: $senderActionTarget, content: senderActionPicker)
+        .sheet(item: $recipientActionTarget, content: recipientActionPicker)
     }
 
     private func messageActionPicker(target: ExpandedMessageCellUIModel) -> some View {
@@ -67,7 +70,31 @@ struct ConversationDetailListView: View {
                 print("action \(action) for item \(item)")
             }
         )
-        .pickerViewStyle([.medium, .large])
+        .pickerViewStyle([.large])
+    }
+
+    private func senderActionPicker(target: ExpandedMessageCellUIModel) -> some View {
+        return MessageAddressActionPickerView(
+            avatarUIModel: target.messageDetails.avatar,
+            name: target.messageDetails.sender.name,
+            emailAddress: target.messageDetails.sender.address
+        )
+        .pickerViewStyle([.height(450)])
+    }
+
+    private func recipientActionPicker(target: MessageDetail.Recipient) -> some View {
+        // TODO: The initials and background color should be provided from the Rust SDK
+        let avatarUIModel = AvatarUIModel(
+            initials: target.name.first?.uppercased() ?? "",
+            backgroundColor: DS.Color.Brand.darken10,
+            type: .other
+        )
+        return MessageAddressActionPickerView(
+            avatarUIModel: avatarUIModel,
+            name: target.name != target.address ? target.name : "",
+            emailAddress: target.address
+        )
+        .pickerViewStyle([.height(390)])
     }
 
     private func messageList(previous: [MessageCellUIModel], last: ExpandedMessageCellUIModel) -> some View {
@@ -125,6 +152,10 @@ struct ConversationDetailListView: View {
             break
         case .onMoreActions:
             messageActionTarget = uiModel
+        case .onSenderTap:
+            senderActionTarget = uiModel
+        case .onRecipientTap(let recipient):
+            recipientActionTarget = recipient
         }
     }
 }

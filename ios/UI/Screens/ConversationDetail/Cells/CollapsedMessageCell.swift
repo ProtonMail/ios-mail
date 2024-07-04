@@ -130,7 +130,7 @@ enum CollapsedMessageCellEvent {
             recipients: "john@gmail.com",
             messagePreview: "Dear All, This sounds absolutely incredible! Patagonia has been on my bucket list for ages.",
             isRead: true,
-            avatar: .init(initials: "Ba", senderImageParams: .init())
+            avatar: .init(initials: "Ba", type: .sender(params: .init()))
         ), isFirstCell: true, onTap: {})
         CollapsedMessageCell(uiModel: .init(
             messageId: 2,
@@ -139,7 +139,7 @@ enum CollapsedMessageCellEvent {
             recipients: "martha@proton.me",
             messagePreview: "I'm definitely on board for this adventure",
             isRead: false,
-            avatar: .init(initials: "De", senderImageParams: .init())
+            avatar: .init(initials: "De", type: .sender(params: .init()))
         ), onTap: {})
         CollapsedMessageCell(uiModel: .init(
             messageId: 3,
@@ -148,7 +148,7 @@ enum CollapsedMessageCellEvent {
             recipients: "john@gmail.com",
             messagePreview: nil,
             isRead: true,
-            avatar: .init(initials: "Pr", senderImageParams: .init())
+            avatar: .init(initials: "Pr", type: .sender(params: .init()))
         ), onTap: {})
     }
 }

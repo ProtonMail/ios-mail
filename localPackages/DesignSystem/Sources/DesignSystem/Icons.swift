@@ -67,6 +67,16 @@ public extension DS.Icon {
     static let icThreeDotsHorizontal = icon(named: "ic-three-dots-horizontal")
 }
 
+// MARK: message address actions
+
+public extension DS.Icon {
+    static let icCircleSlash = icon(named: "ic-circle-slash")
+    static let icSquares = icon(named: "ic-squares")
+    static let icPenSquare = icon(named: "ic-pen-square")
+    static let icPhone =  icon(named: "ic-phone")
+    static let icUserPlus =  icon(named: "ic-user-plus")
+}
+
 // MARK: File type icons
 
 public extension DS.Icon {

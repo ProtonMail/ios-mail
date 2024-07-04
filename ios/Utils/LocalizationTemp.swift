@@ -76,6 +76,15 @@ enum LocalizationTemp {
         static let forward = "Forward"
     }
 
+    enum MessageAddressAction {
+        static let newMessage = "New message"
+        static let call = "Call"
+        static let addToContacts = "Add to contacts"
+        static let blockContact = "Block this contact"
+        static let copyAddress = "Copy address"
+        static let copyName = "Copy name"
+    }
+
     enum MailboxCell {
         static func expiresIn(value: String) -> String { String(format: "Expires in %@", value) }
         static func snoozedTill(value: String) -> String { String(format: "Snoozed till %@", value) }

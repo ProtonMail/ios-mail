@@ -37,7 +37,7 @@ enum PreviewData {
                 id: UInt64.random(in: 1...UInt64.max),
                 conversationId: 0,
                 type: .conversation,
-                avatar: .init(initials: randomSenderSubject.0.prefix(2).uppercased(), senderImageParams: .init()),
+                avatar: .init(initials: randomSenderSubject.0.prefix(2).uppercased(), type: .sender(params: .init())),
                 senders: randomSenderSubject.0,
                 subject: randomSenderSubject.1,
                 date: Calendar.current.date(byAdding: .minute, value: -1 * (value*value*1005), to: Date())!,
