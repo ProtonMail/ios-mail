@@ -826,7 +826,7 @@
 "Recovery Code" = "Código de recuperación";
 
 /* Placeholder */
-"Two Factor Code" = "Código de doble factor";
+"Two Factor Code" = "Código de dos factores";
 
 /* Title */
 "Authentication" = "Autenticación";
@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "Mensaje cifrado con PGP";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "Mensaje firmado con PGP";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Mensaje firmado con PGP. Error al verificar el remitente.";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "Cambiar contraseña del buzón";
+
+/* settings general section title */
+"Security keys" = "Claves de seguridad";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB de espacio de almacenamiento";

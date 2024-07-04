@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "PGP ile şifrelenmiş ileti";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP ile imzalanmış ileti";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP ile imzalanmış ileti. Gönderici doğrulanamadı";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "Posta kutusu parolasını değiştir";
+
+/* settings general section title */
+"Security keys" = "Güvenlik anahtarları";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB depolama alanı";

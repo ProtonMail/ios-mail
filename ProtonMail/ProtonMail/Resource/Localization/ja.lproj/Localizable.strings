@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "PGP 暗号化されたメッセージ";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP 署名付きメッセージ";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP 署名されたメッセージです。送信者の検証に失敗しました";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2409,10 +2412,10 @@
 "Add it as attachment" = "Add it as attachment";
 
 /* The title in setting page */
-"Swipe to next message" = "Swipe to next message";
+"Swipe to next message" = "スワイプで次のメッセージへ移動";
 
 /* Description text for setting */
-"Allow navigating through messages by swiping left or right." = "Allow navigating through messages by swiping left or right.";
+"Allow navigating through messages by swiping left or right." = "左右にスワイプしてメッセージ間を移動できます。";
 
 /* The title of the spotlight of the auto import contacts. */
 "Your contacts at your fingertips" = "Your contacts at your fingertips";
@@ -2442,7 +2445,7 @@
 "Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
 
 /* The title of the privacy and data in the account setting. */
-"Privacy and data" = "Privacy and data";
+"Privacy and data" = "プライバシーとデータ";
 
 /* cell title in device settings */
 "Storage" = "ストレージ容量";
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "メールボックスのパスワードを変更";
+
+/* settings general section title */
+"Security keys" = "Security keys";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB storage";
@@ -2475,7 +2481,7 @@
 "To improve our services, we sometimes collect anonymized usage data." = "サービスを改善するため、匿名化されたデータを収集します。";
 
 /* The subtitle of the crash report setting. */
-"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.";
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "アプリのクラッシュ時に、原因の詳細を記載したレポートをエンジニアに送信します。レポートはアプリの改善にのみ使用されます。";
 
 /* Title of the upsell page. */
 "Upgrade to %@" = "Upgrade to %@";

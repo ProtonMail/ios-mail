@@ -1487,7 +1487,7 @@
 "This conversation contains trashed messages" = "Denne samtale indeholder slettede beskeder";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "Denne samtale indeholder ikke-kasserede beskeder.";
+"This conversation contains non-trashed messages." = "Denne samtale indeholder ikke-beskadigede beskeder.";
 
 /* No comment provided by engineer. */
 "Message actions" = "Beskedhandlinger";
@@ -1751,6 +1751,9 @@
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message" = "PGP-krypteret besked";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP-signeret besked";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP-signeret besked. Afsenderbekræftelse mislykkedes";
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "Skift postkasseadgangskode";
+
+/* settings general section title */
+"Security keys" = "Sikkerhedsnøgler";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB lagerplads";

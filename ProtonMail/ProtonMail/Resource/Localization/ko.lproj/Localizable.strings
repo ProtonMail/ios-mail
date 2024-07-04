@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "PGP로 암호화된 메시지";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP 서명된 메시지";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP-서명된 메시지. 전송자 인증 실패";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "메일함 비밀번호 변경";
+
+/* settings general section title */
+"Security keys" = "보안 키";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "저장공간 15GB";

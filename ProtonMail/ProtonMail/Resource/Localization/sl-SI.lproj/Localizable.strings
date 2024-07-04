@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "Sporočilo, šifrirano s PGP";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "Sporočilo, podpisano s PGP";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Sporočilo, podpisano s PGP. Preverjanje pošiljatelja neuspešno";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "Spremeni geslo poštnega nabiralnika";
+
+/* settings general section title */
+"Security keys" = "Security keys";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB prostora za shranjevanje";

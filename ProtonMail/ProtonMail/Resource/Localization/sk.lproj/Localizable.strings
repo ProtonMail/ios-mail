@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "Správa zašifrovaná pomocou PGP";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "Správa podpísaná cez PGP";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP-podpísaná správa. Overenie odosielateľa zlyhalo";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "Zmeniť heslo k poštovej schránke";
+
+/* settings general section title */
+"Security keys" = "Bezpečnostné kľúče";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB úložného priestoru";

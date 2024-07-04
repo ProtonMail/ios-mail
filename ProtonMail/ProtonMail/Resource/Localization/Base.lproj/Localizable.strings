@@ -1621,6 +1621,9 @@
 /* Text for the banner when content search is slow. */
 "Search taking too long? %1$@ from this search for faster results." = "Search taking too long? %1$@ from this search for faster results.";
 
+/* settings general section title */
+"Security keys" = "Security keys";
+
 /* The link in local storage downloaded messages. */
 "See details" = "See details";
 

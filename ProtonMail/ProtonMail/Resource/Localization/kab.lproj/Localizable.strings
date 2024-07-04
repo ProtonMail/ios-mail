@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "Izen awgelhan PGP";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "Izen yettuzmel s PGP";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Izen yettuzmel s PGP. Asenqed n umazan yecceḍ";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -1929,7 +1932,7 @@
 "Attending?" = "Attending?";
 
 /* Part of a yes/no/maybe prompt */
-"Yes" = "Yes";
+"Yes" = "Ih";
 
 /* Part of a yes/no/maybe prompt */
 "No" = "No";
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "Snifel awal uffir n tnaka n yimayl";
+
+/* settings general section title */
+"Security keys" = "Security keys";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB storage";
