@@ -1,3 +1,2 @@
-localPackages/proton_mail_uniffi/** filter=lfs diff=lfs merge=lfs -text
 . !text !filter !merge !diff
 * !text !filter !merge !diff
