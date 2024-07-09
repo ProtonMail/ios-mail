@@ -25,13 +25,20 @@ enum ConditionalAction {
     case toggleStarStatus
     case moveToTrash
     case moveToArchive
+    // use this instead of moveToArchive if you need to show moveToInbox in the trash folder as well
+    case moveToArchiveWithTrashFolderCondition
 
     func toAction(params: ConditionalActionResolverParams) -> Action {
         switch self {
         case .moveToTrash:
-            return params.systemFolder != .trash ? Action.moveToTrash : Action.delete
+            return params.systemFolder != .trash ? Action.moveToTrash : Action.deletePermanently
         case .moveToArchive:
             return params.systemFolder != .archive ? Action.moveToArchive : Action.moveToInbox
+        case .moveToArchiveWithTrashFolderCondition:
+            if params.systemFolder == .trash {
+                return Action.moveToInbox
+            }
+            return ConditionalAction.moveToArchive.toAction(params: params)
         case .toggleReadStatus:
             return Action.toggleReadStatusAction(when: params.selectionReadStatus)
         case .toggleStarStatus:

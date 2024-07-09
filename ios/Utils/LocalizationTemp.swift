@@ -50,13 +50,14 @@ enum LocalizationTemp {
     }
 
     enum Action {
-        static let delete = "Delete"
+        static let deletePermanently = "Delete permanently"
         static let labelAs = "Label as…"
-        static let markAsRead = "Mark as Read"
-        static let markAsUnread = "Mark as Unread"
+        static let markAsRead = "Mark as read"
+        static let markAsUnread = "Mark as unread"
         static let moveTo = "Move to…"
         static let moveToArchive = "Archive"
-        static let moveToInbox = "Inbox"
+        static let moveToInbox = "Move to inbox"
+        static let moveToInboxNotSpam = "Not spam"
         static let moveToSpam = "Move to spam"
         static let moveToTrash = "Move to trash"
         static let print = "Print"

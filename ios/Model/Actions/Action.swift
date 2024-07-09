@@ -25,13 +25,14 @@ import class UIKit.UIImage
  The purpose of this enum is to declare icons and strings related to an action only once.
  */
 enum Action: ActionPickerListElement {
-    case delete
+    case deletePermanently
     case markAsRead
     case markAsUnread
     case labelAs
     case moveTo
     case moveToArchive
     case moveToInbox
+    case moveToInboxFromSpam
     case moveToSpam
     case moveToTrash
     case print
@@ -46,8 +47,8 @@ enum Action: ActionPickerListElement {
 
     var name: String {
         switch self {
-        case .delete:
-            return LocalizationTemp.Action.delete
+        case .deletePermanently:
+            return LocalizationTemp.Action.deletePermanently
         case .labelAs:
             return LocalizationTemp.Action.labelAs
         case .markAsRead:
@@ -60,6 +61,8 @@ enum Action: ActionPickerListElement {
             return LocalizationTemp.Action.moveToArchive
         case .moveToInbox:
             return LocalizationTemp.Action.moveToInbox
+        case .moveToInboxFromSpam:
+            return LocalizationTemp.Action.moveToInboxNotSpam
         case .moveToSpam:
             return LocalizationTemp.Action.moveToSpam
         case .moveToTrash:
@@ -87,7 +90,7 @@ enum Action: ActionPickerListElement {
 
     var icon: UIImage {
         switch self {
-        case .delete:
+        case .deletePermanently:
             return DS.Icon.icTrashCross
         case .labelAs:
             return DS.Icon.icTag
@@ -101,6 +104,8 @@ enum Action: ActionPickerListElement {
             return DS.Icon.icArchiveBox
         case .moveToInbox:
             return DS.Icon.icInbox
+        case .moveToInboxFromSpam:
+            return DS.Icon.icNotSpam
         case .moveToSpam:
             return DS.Icon.icSpam
         case .moveToTrash:

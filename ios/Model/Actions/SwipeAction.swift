@@ -52,7 +52,7 @@ enum SwipeAction {
         case .toggleReadStatus:
             return Action.toggleReadStatusAction(when: readStatus).icon
         case .delete:
-            return Action.delete.icon
+            return Action.deletePermanently.icon
         case .moveToTrash:
             return Action.moveToTrash.icon
         }
@@ -78,7 +78,7 @@ extension SwipeAction {
             guard let newReadStatus else { return nil }
             return newReadStatus == .read ? .markAsRead : .markAsUnread
         case .delete:
-            return .delete
+            return .deletePermanently
         case .moveToTrash:
             return .moveToTrash
         case .none:

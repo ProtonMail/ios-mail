@@ -48,7 +48,10 @@ struct MailboxItemActionPickerView: View {
             },
             sections: [
                 MailboxItemActionPickerSection.first.actions(type: mailboxItemIdentifier.type).map(resolver.action(for:)),
-                MailboxItemActionPickerSection.second.actions(type: mailboxItemIdentifier.type).map(resolver.action(for:)),
+                MailboxItemActionPickerSection
+                    .second(isSpamFolder: resolver.params.systemFolder.isSpam)
+                    .actions(type: mailboxItemIdentifier.type)
+                    .map(resolver.action(for:)),
                 MailboxItemActionPickerSection.third.actions(type: mailboxItemIdentifier.type).map(resolver.action(for:))
             ],
             onElementTap: { action in
@@ -94,7 +97,7 @@ struct MailboxItemActionPickerView: View {
 private enum MailboxItemActionPickerSection {
 
     case first
-    case second
+    case second(isSpamFolder: Bool)
     case third
 
     func actions(type: MailboxItemType) -> [MailboxItemAction] {
@@ -114,13 +117,23 @@ private enum MailboxItemActionPickerSection {
                     .action(.labelAs)
                 ]
             }
-        case .second:
-            [
-                .conditional(.moveToTrash),
-                .conditional(.moveToArchive),
-                .action(.moveToSpam),
-                .action(.moveTo)
-            ]
+        case .second(let isSpamFolder):
+            if isSpamFolder {
+                [
+                    .action(.moveToInboxFromSpam),
+                    .action(.moveToTrash),
+                    .action(.deletePermanently),
+                    .action(.moveTo)
+                ]
+            }
+            else {
+                [
+                    .conditional(.moveToTrash),
+                    .conditional(.moveToArchiveWithTrashFolderCondition),
+                    .action(.moveToSpam),
+                    .action(.moveTo)
+                ]
+            }
         case .third:
             if type == .message {
                 [
@@ -139,6 +152,14 @@ private enum MailboxItemActionPickerSection {
                 ]
             }
         }
+    }
+}
+
+private extension SystemFolderIdentifier? {
+
+    var isSpam: Bool {
+        guard let self = self else { return false }
+        return self == .spam
     }
 }
 

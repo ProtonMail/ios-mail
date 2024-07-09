@@ -34,6 +34,7 @@ public extension DS.Icon {
     static let icPencil = icon(named: "ic-pencil")
     static let icPlus = icon(named: "ic-plus")
     static let icSpam = icon(named: "ic-spam")
+    static let icNotSpam = icon(named: "ic-no-spam")
     static let icStarFilled = icon(named: "ic-star-filled")
     static let icTrash = icon(named: "ic-trash")
     static let icTrashCross = icon(named: "ic-trash-cross")

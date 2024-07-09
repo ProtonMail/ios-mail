@@ -239,7 +239,7 @@ extension MailboxModel {
 
     func onMailboxItemAction(_ action: Action, itemIds: [PMMailboxItemId]) {
         switch action {
-        case .delete:
+        case .deletePermanently:
             actionDelete(ids: itemIds)
         case .markAsRead:
             actionUpdateReadStatus(to: .read, for: itemIds)
