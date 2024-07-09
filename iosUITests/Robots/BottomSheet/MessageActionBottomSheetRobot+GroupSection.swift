@@ -17,11 +17,23 @@
 
 import Foundation
 
-enum UITestDestination {
-    case inbox
-    case archive
-    case sent
-    case spam
-    case trash
-    case subscription
+extension MessageActionBottomSheetRobot {
+    
+    func hasEntries(_ entries: [UITestBottomSheetDynamicEntry]) {
+        for entry in entries {
+            hasEntry(entry)
+        }
+    }
+
+    private func hasEntry(_ entry: UITestBottomSheetDynamicEntry) {
+        
+        let model = UITestBottomSheetDynamicEntryModel(
+            section: entry.section,
+            index: entry.index,
+            text: entry.text
+        )
+
+        model.hasIcon()
+        model.hasText(entry.text)
+    }
 }

@@ -57,6 +57,8 @@ struct MailboxItemActionPickerView: View {
             onElementTap: { action in
                 onActionTap(action, mailboxItemIdentifier)
             })
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.rootItem)
     }
 
     @ViewBuilder
@@ -67,9 +69,12 @@ struct MailboxItemActionPickerView: View {
 
             HStack {
                 replyActionButton(name: LocalizationTemp.MessageAction.reply, icon: DS.Icon.icReplay)
+                    .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionReply)
                 replyActionButton(name: LocalizationTemp.MessageAction.replyAll, icon: DS.Icon.icReplayAll)
                     .removeViewIf(isSingleRecipient)
+                    .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionReplyAll)
                 replyActionButton(name: LocalizationTemp.MessageAction.forward, icon: DS.Icon.icForward)
+                    .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionForward)
             }
             .clipped()
         }
@@ -82,11 +87,13 @@ struct MailboxItemActionPickerView: View {
             SendActionButtonStack(isSingleRecipient: isSingleRecipient) {
                 Image(uiImage: icon)
                     .actionSheetIconModifier()
+                    .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionIcon)
 
                 Text(name)
                     .lineLimit(1)
                     .font(DS.Font.body3)
                     .foregroundStyle(DS.Color.Text.weak)
+                    .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionText)
             }
         }
         .buttonStyle(RegularButtonStyle())
@@ -220,4 +227,15 @@ private struct SendActionButtonStack<Content: View>: View {
         actionResolverParams: params,
         onActionTap: { _, _ in }
     )
+}
+
+struct MailboxItemActionPickerIdentifiers {
+    static let rootItem = "detail.actionPicker.rootItem"
+
+    static let composeActionsRootItem = "detail.actionPicker.compose"
+    static let composeActionReply = "detail.actionPicker.compose.reply"
+    static let composeActionReplyAll = "detail.actionPicker.compose.replyAll"
+    static let composeActionForward = "detail.actionPicker.compose.forward"
+    static let composeActionIcon = "detail.actionPicker.compose.icon"
+    static let composeActionText = "detail.actionPicker.compose.text"
 }

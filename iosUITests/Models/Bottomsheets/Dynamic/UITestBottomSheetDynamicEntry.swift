@@ -17,11 +17,8 @@
 
 import Foundation
 
-enum UITestDestination {
-    case inbox
-    case archive
-    case sent
-    case spam
-    case trash
-    case subscription
+struct UITestBottomSheetDynamicEntry {
+    let section: Int
+    let index: Int
+    let text: String
 }

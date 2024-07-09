@@ -123,6 +123,7 @@ extension MessageDetailsView {
             }, label: {
                 Image(uiImage: DS.Icon.icThreeDotsHorizontal)
             })
+            .accessibilityIdentifier(MessageDetailsViewIdentifiers.threeDotsButton)
         }
         .foregroundColor(DS.Color.Icon.weak)
     }
@@ -417,6 +418,7 @@ private struct MessageDetailsViewIdentifiers {
     static let messageDate = "detail.header.date"
     static let senderAddress = "detail.header.sender.address"
     static let recipientsSummary = "detail.header.recipients.summary"
+    static let threeDotsButton = "detail.header.button.actions"
     
     static let expandedHeaderRootItem = "detail.header.expanded.root"
     static let expandedHeaderSenderLabel = "detail.header.expanded.sender.label"

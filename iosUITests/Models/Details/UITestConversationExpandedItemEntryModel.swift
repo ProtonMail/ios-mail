@@ -42,11 +42,19 @@ struct UITestConversationExpandedItemEntryModel: ApplicationHolder {
     private var recipientsSummary: XCUIElement {
         rootItem.staticTexts[Identifiers.recipientsSummary]
     }
+    
+    private var threeDotsButton: XCUIElement {
+        rootItem.buttons[Identifiers.threeDotsButton]
+    }
         
     // MARK: - Actions
     
     func toggleItem() {
         senderName.tap()
+    }
+    
+    func tapThreeDots() {
+        threeDotsButton.tap()
     }
     
     // MARK: - Assertions
@@ -78,4 +86,5 @@ private struct Identifiers {
     static let senderAddress = "detail.header.sender.address"
     static let date = "detail.header.date"
     static let recipientsSummary = "detail.header.recipients.summary"
+    static let threeDotsButton = "detail.header.button.actions"
 }

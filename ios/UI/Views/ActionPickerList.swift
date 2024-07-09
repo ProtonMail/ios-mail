@@ -49,7 +49,7 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
             .listSectionSpacing(DS.Spacing.medium)
 
             ForEach(Array(sections.enumerated()), id: \.offset) { index, section in
-                sectionView(elements: section)
+                sectionView(elements: section, sectionIndex: index)
             }
         }
         .padding(.vertical, DS.Spacing.standard)
@@ -60,9 +60,10 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
         .scrollBounceBehavior(.basedOnSize)
         .presentationDragIndicator(.visible)
         .background(DS.Color.Background.secondary)
+        .accessibilityElement(children: .contain)
     }
 
-    private func sectionView(elements: [Element]) -> some View {
+    private func sectionView(elements: [Element], sectionIndex: Int) -> some View {
         Section {
             ForEach(Array(elements.enumerated()), id: \.offset) { index, element in
                 cell(for: element)
@@ -79,6 +80,8 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
                         ? DS.Color.InteractionWeak.pressed
                         : DS.Color.Background.norm
                     )
+                    .accessibilityElement(children: .contain)
+                    .accessibilityIdentifier(ActionPickerListIdentifiers.messageActionIdentifier(section: sectionIndex, index: index))
             }
         }
     }
@@ -87,12 +90,14 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
         HStack(spacing: DS.Spacing.large) {
             Image(uiImage: element.icon)
                 .actionSheetIconModifier()
+                .accessibilityIdentifier(ActionPickerListIdentifiers.messageActionIcon)
 
             Text(element.name)
                 .lineLimit(1)
                 .font(.subheadline)
                 .foregroundStyle(DS.Color.Text.weak)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .accessibilityIdentifier(ActionPickerListIdentifiers.messageActionText)
         }
     }
 }
@@ -107,4 +112,13 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
         Text("Header")
     }, sections: [[Item()]]) { _ in }
         .border(.purple)
+}
+
+struct ActionPickerListIdentifiers {
+    static let messageActionIcon = "detail.actionPicker.action.icon"
+    static let messageActionText = "detail.actionPicker.action.text"
+    
+    static func messageActionIdentifier(section: Int, index: Int) -> String {
+        "detail.actionPicker.section\(section).action\(index)"
+    }
 }

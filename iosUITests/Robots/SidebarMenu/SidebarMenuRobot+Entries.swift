@@ -33,6 +33,14 @@ extension SidebarMenuRobot {
     func openSent() {
         tapEntry(withLabel: UITestFolder.system(.sent).value)
     }
+    
+    func openTrash() {
+        tapEntry(withLabel: UITestFolder.system(.trash).value)
+    }
+    
+    func openSpam() {
+        tapEntry(withLabel: UITestFolder.system(.spam).value)
+    }
 
     func tapEntry(withLabel label: String) {
         let model = UITestSidebarListItemEntryModel(parent: rootElement, label: label)

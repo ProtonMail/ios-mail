@@ -18,6 +18,16 @@
 import Foundation
 
 extension ConversationDetailRobot {
+    
+    // MARK: Actions
+    
+    func tapThreeDots(at index: Int) {
+        let model = UITestConversationExpandedItemEntryModel(
+            index: index
+        )
+        
+        model.tapThreeDots()
+    }
 
     func tapExpandedEntry(at index: Int) {
         let model = UITestConversationExpandedItemEntryModel(

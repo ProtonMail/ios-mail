@@ -16,12 +16,21 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import XCTest
 
-enum UITestDestination {
-    case inbox
-    case archive
-    case sent
-    case spam
-    case trash
-    case subscription
+struct UITestBottomSheetDynamicSectionEntryModel {
+    let parent: XCUIElement
+    let index: Int
+    
+    var rootElement: XCUIElement {
+        parent.otherElements.matching(identifier: Identifiers.actionPickerSection).element(boundBy: 0)
+    }
+    
+    func isShown() {
+        XCTAssert(rootElement.exists)
+    }
+}
+
+private struct Identifiers {
+    static let actionPickerSection = "detail.actionPicker.section"
 }

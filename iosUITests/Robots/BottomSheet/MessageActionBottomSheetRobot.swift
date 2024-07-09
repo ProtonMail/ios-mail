@@ -16,12 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import XCTest
 
-enum UITestDestination {
-    case inbox
-    case archive
-    case sent
-    case spam
-    case trash
-    case subscription
+final class MessageActionBottomSheetRobot: Robot {
+    var rootElement: XCUIElement {
+        application.otherElements[Identifiers.rootItem]
+    }
+}
+
+private struct Identifiers {
+    static let rootItem = "detail.actionPicker.rootItem"
 }

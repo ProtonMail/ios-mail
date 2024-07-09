@@ -28,9 +28,7 @@ class UITestVisibilityHelper: ApplicationHolder {
     private let bottomSafeInsetSize = 50.0
     
     func findElement(element: XCUIElement, parent: XCUIElement, maxAttempts: Int = 5) -> Bool {
-        let result = evaluateElementVisibility(element: element)
-        
-        for i in 1...maxAttempts {
+        for _ in 1...maxAttempts {
             let visibility = evaluateElementVisibility(element: element)
             if (!visibility.isWithinSafeBounds) {
                 switch visibility.adjustDirection {
