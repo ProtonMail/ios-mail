@@ -48,12 +48,11 @@ struct MessageAddressActionPickerView: View {
                 .font(.subheadline)
                 .bold()
                 .foregroundStyle(DS.Color.Text.norm)
-                .removeViewIf(name.isEmpty)
 
             Text(verbatim: emailAddress)
-                .font(name.isEmpty ? .subheadline : .footnote)
-                .fontWeight(name.isEmpty ? .bold : .regular)
-                .foregroundStyle(name.isEmpty ? DS.Color.Text.norm : DS.Color.Text.weak)
+                .font(.footnote)
+                .fontWeight(.regular)
+                .foregroundStyle(DS.Color.Text.weak)
         }
         .frame(maxWidth: .infinity)
         .padding(.bottom, DS.Spacing.medium)

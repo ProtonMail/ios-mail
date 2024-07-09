@@ -91,7 +91,7 @@ struct ConversationDetailListView: View {
         )
         return MessageAddressActionPickerView(
             avatarUIModel: avatarUIModel,
-            name: target.name != target.address ? target.name : "",
+            name: target.name,
             emailAddress: target.address
         )
         .pickerViewStyle([.height(390)])
