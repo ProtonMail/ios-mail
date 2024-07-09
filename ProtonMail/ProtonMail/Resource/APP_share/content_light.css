@@ -21,8 +21,20 @@ audio:not([controls]) {
     display: none;
 }
 
+@media print {
+    body {
+        font-family: -apple-system,Helvetica,Arial,sans-serif;
+        font-weight: 400;
+    }
+}
+
+@media not print {
+    body {
+        font: -apple-system-body;
+    }
+}
+
 body {
-    font: -apple-system-body;
     margin: 0;
     width: 100%;
     box-sizing: border-box;

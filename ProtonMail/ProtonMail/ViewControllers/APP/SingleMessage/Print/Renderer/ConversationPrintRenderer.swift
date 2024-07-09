@@ -37,12 +37,14 @@ class ConversationPrintRenderer: UIPrintPageRenderer, LifetimeTrackable {
         .init(maxCount: 1)
     }
 
+    private let controllers: [SingleMessageContentViewController]
     private var conversationRenderers: [(WKWebView, [CustomViewPrintRenderer])] = []
     private var contentFormatters: [(UIViewPrintFormatter, [CustomViewPrintRenderer])] = []
     private var pagesHaveHeader: [Int: [CustomViewPrintRenderer]] = [:]
     private let elementClassName = "extra_space_for_print"
 
     init(_ controllers: [SingleMessageContentViewController]) {
+        self.controllers = controllers
         super.init()
         conversationRenderers = controllers.compactMap { $0.createPrintingSources() }
         conversationRenderers
@@ -58,6 +60,7 @@ class ConversationPrintRenderer: UIPrintPageRenderer, LifetimeTrackable {
 
         let element = "a\(String.randomString(7))a"
         let jsString = """
+        resetContentSize();
         let \(element) = document.createElement('div');
         \(element).classList.add('\(elementClassName)')
         \(element).style = 'width: 100vw; height: \(topOffset)px'
@@ -146,6 +149,9 @@ class ConversationPrintRenderer: UIPrintPageRenderer, LifetimeTrackable {
                     assertionFailure("\(error)")
                 }
             }
+
+            guard let controller = self.controllers[safe: pageIndex] else { return }
+            controller.messageBodyViewController.updateDynamicFontSize()
         }
     }
 }

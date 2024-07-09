@@ -376,7 +376,7 @@ class NewMessageBodyViewController: UIViewController {
         updateDynamicFontSize()
     }
 
-    private func updateDynamicFontSize() {
+    func updateDynamicFontSize() {
         let isUsingDefaultSizeCategory = view.traitCollection.preferredContentSizeCategory == .large
 
         if isUsingDefaultSizeCategory {
