@@ -1914,7 +1914,7 @@
 "Load" = "载入";
 
 /* Title of an event with missing title */
-"(no title)" = "(no title)";
+"(no title)" = "(无标题)";
 
 /* As in: event organizer */
 "Organizer" = "组织者";
@@ -1929,7 +1929,7 @@
 "This event has been cancelled" = "这项日程已取消";
 
 /* Prompt above yes/no/maybe buttons */
-"Attending?" = "Attending?";
+"Attending?" = "是否参加？";
 
 /* Part of a yes/no/maybe prompt */
 "Yes" = "确认";
@@ -1938,7 +1938,7 @@
 "No" = "取消";
 
 /* Part of a yes/no/maybe prompt */
-"Maybe" = "Maybe";
+"Maybe" = "可能";
 
 /* Confirm attending an event */
 "Yes, I'll attend" = "是，我将参加";
@@ -1947,34 +1947,34 @@
 "No, I won't attend" = "不，我不会参加";
 
 /* Neither confirm nor deny attending an event */
-"I might attend" = "I might attend";
+"I might attend" = "我可能参加";
 
 /* Information that the user is an optional participant */
 "(Attendance optional)" = "（非必须出席）";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "每 %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "在 %@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "在 %@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "在 %u 日";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "直到 %@";
 
 /* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
 "%1@ at %2@ %3@" = "%1@ 在 %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "已接受";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "已拒绝";
 
 /* Status in an email body sent with an invitation answer */
 "tentatively accepted" = "暂时接受";
@@ -1986,13 +1986,13 @@
 "You are invited to %@" = "您受邀参加 %@";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
-"LOCATION:\n%@" = "LOCATION:\n%@";
+"LOCATION:\n%@" = "位置：\n%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's notes */
-"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+"DESCRIPTION:\n%@" = "描述：\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ was cancelled.";
+"%@ was cancelled." = "%@ 已被取消。";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
 "Re: Invitation for an event on %@" = "回复：%@ 的活动邀请函";
@@ -2025,22 +2025,22 @@
 "fourth" = "第四个";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "最后";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Easily RSVP to events";
+"Easily RSVP to events" = "轻松回复事件邀请";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "现在，您只需轻轻一按即可响应邀请或查看 Proton 日历中的事件。 ";
 
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "存储上限";
 
 /* Cell title that shows the percentage of the storage */
 "Storage: %@ full" = "存储空间：已使用 %@";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "云盘：已使用 %@";
 
 /* Official badge next to sender's name */
 "Official" = "官方";
@@ -2157,7 +2157,7 @@
 "Application logs" = "应用程序日志";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "新！";
 
 /* Got it action */
 "Got it" = "知道了";
@@ -2175,7 +2175,7 @@
 "View the next email in your inbox when you delete or move the current email." = "删除或移动当前邮件后自动打开收件箱中的下一封邮件。";
 
 /* The title of the jump to next message spotlight. */
-"Read emails faster" = "Read emails faster";
+"Read emails faster" = "更快地阅读电子邮件";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "发生意外错误，请联系客服。\n错误信息：%@";
@@ -2412,40 +2412,40 @@
 "Add it as attachment" = "作为附件添加";
 
 /* The title in setting page */
-"Swipe to next message" = "Swipe to next message";
+"Swipe to next message" = "滑动至下一封邮件";
 
 /* Description text for setting */
-"Allow navigating through messages by swiping left or right." = "Allow navigating through messages by swiping left or right.";
+"Allow navigating through messages by swiping left or right." = "允许通过向左或向右滑动浏览邮件。";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "您的联系人触手可及";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "无需离开应用程序即可查找电子邮件地址。将联系人从您的设备同步到 Proton Mail。";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "启用自动导入";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "暂无联系人";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "从您的设备导入联系人以便轻松发送电子邮件和邀请。";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "自动导入联系人";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "正在导入您的联系人";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "您的联系人很快就会出现在这里。";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "从设备自动添加新联系人";
 
 /* The title of the privacy and data in the account setting. */
-"Privacy and data" = "Privacy and data";
+"Privacy and data" = "隐私和数据";
 
 /* cell title in device settings */
 "Storage" = "存储空间";
@@ -2457,19 +2457,19 @@
 "Change mailbox password" = "更改邮箱密码";
 
 /* settings general section title */
-"Security keys" = "Security keys";
+"Security keys" = "安全密钥";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB storage";
+"15 GB storage" = "15 GB 存储空间";
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u 个邮箱地址";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain support" = "Custom email domain support";
+"Custom email domain support" = "自有域名支持";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"New Proton Mail desktop app" = "新 Proton Mail 桌面应用程序";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "匿名遥测";
@@ -2481,13 +2481,13 @@
 "To improve our services, we sometimes collect anonymized usage data." = "为了提升服务质量，我们偶尔会收集一些匿名的使用数据。";
 
 /* The subtitle of the crash report setting. */
-"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.";
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "如果应用程序崩溃，我们会向我们的工程师发送一份报告，其中包含原因的详细信息。这些信息仅用于改进应用程序。";
 
 /* Title of the upsell page. */
-"Upgrade to %@" = "Upgrade to %@";
+"Upgrade to %@" = "升级至 %@";
 
 /* Subtitle of the upsell page. */
-"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+"To unlock more storage and premium features." = "解锁更多存储和高级功能。";
 
 /* Displayed next to the monthly price */
 "/month" = "/月";
@@ -2496,10 +2496,10 @@
 "Get %@" = "开通 %@";
 
 /* In the context of a discount */
-"Save %u%%" = "Save %u%%";
+"Save %u%%" = "立省 %u%%";
 
 /* Error when trying to purchase an invalid product */
-"Invalid product ID: $@" = "Invalid product ID: $@";
+"Invalid product ID: $@" = "无效的产品 ID：$@";
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
-"Purchase already in progress" = "Purchase already in progress";
+"Purchase already in progress" = "购买正在进行中";
