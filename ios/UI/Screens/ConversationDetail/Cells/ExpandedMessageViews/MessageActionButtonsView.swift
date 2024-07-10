@@ -57,7 +57,7 @@ private struct MessageActionButtonView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 16, height: 16)
                 Text(text)
-                    .font(DS.Font.body3)
+                    .fontBody3()
                     .fontWeight(.regular)
                     .tint(DS.Color.Text.norm)
                     .lineLimit(1)

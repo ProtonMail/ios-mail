@@ -68,7 +68,7 @@ struct AvatarView: View {
 
     private var initialsView: some View {
         Text(avatar.initials)
-            .font(DS.Font.body3)
+            .fontBody3()
             .fontWeight(.semibold)
             .foregroundStyle(DS.Color.Global.white)
             .frame(maxWidth: .infinity, maxHeight: .infinity)

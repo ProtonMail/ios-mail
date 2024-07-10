@@ -65,7 +65,7 @@ extension MessageDetailsView {
     private var senderNameView: some View {
         HStack(spacing: DS.Spacing.compact) {
             Text(uiModel.sender.name)
-                .font(DS.Font.body3)
+                .fontBody3()
                 .fontWeight(.semibold)
                 .lineLimit(1)
                 .foregroundColor(DS.Color.Text.norm)

@@ -91,7 +91,7 @@ struct MailboxItemActionPickerView: View {
 
                 Text(name)
                     .lineLimit(1)
-                    .font(DS.Font.body3)
+                    .fontBody3()
                     .foregroundStyle(DS.Color.Text.weak)
                     .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionText)
             }

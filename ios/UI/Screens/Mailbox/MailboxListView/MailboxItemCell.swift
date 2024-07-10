@@ -19,6 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxItemCell: View {
+    @Environment(\.sizeCategory) var sizeCategory
     @State private(set) var isPressed: Bool = false
 
     let uiModel: MailboxItemCellUIModel
@@ -103,7 +104,7 @@ extension MailboxItemCell {
     private var subjectRowView: some View {
         HStack(spacing: DS.Spacing.small) {
             Text(uiModel.subject)
-                .font(DS.Font.body3)
+                .fontBody3()
                 .fontWeight(uiModel.isRead ? .regular : .bold)
                 .lineLimit(1)
                 .foregroundColor(textColor)
