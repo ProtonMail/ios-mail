@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/ProtonMail/protoncore_ios",
         "state": {
           "branch": null,
-          "revision": "1624e6dff2ab07dfddeebd446583cd5c64fd7555",
-          "version": "25.2.4"
+          "revision": "aa90f835486fcd9638a20d67f9eb8cd0afb0a6c6",
+          "version": "25.2.5"
         }
       },
       {
@@ -150,8 +150,8 @@
         "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing",
         "state": {
           "branch": null,
-          "revision": "8ddd519780452729c6634ad6bd0d2595938e9ea3",
-          "version": "1.16.1"
+          "revision": "63d3b45dd249878a41c56274a748ca2c1c9c5230",
+          "version": "1.17.1"
         }
       },
       {
@@ -159,8 +159,8 @@
         "repositoryURL": "https://github.com/apple/swift-syntax",
         "state": {
           "branch": null,
-          "revision": "303e5c5c36d6a558407d364878df131c3546fad8",
-          "version": "510.0.2"
+          "revision": "4c6cc0a3b9e8f14b3ae2307c5ccae4de6167ac2c",
+          "version": "600.0.0-prerelease-2024-06-12"
         }
       },
       {

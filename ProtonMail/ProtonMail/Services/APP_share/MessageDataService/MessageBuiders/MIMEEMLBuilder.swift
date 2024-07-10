@@ -219,12 +219,12 @@ extension MIMEEMLBuilder {
         else { return nil }
 
         // image/png
-        let mimeType = dataURI[match.range(at: 2)].trimmingCharacters(in: .whitespacesAndNewlines)
+        let mimeType = dataURI.substring(with: match.range(at: 2)).trimmingCharacters(in: .whitespacesAndNewlines)
         // base64
-        let encoding = dataURI[match.range(at: 3)].trimmingCharacters(in: .whitespacesAndNewlines)
+        let encoding = dataURI.substring(with: match.range(at: 3)).trimmingCharacters(in: .whitespacesAndNewlines)
         // The maximum length is 64, should insert `\r\n` every 64 characters
         // Otherwise the EML is broken
-        let base64RawString = dataURI[match.range(at: 4)]
+        let base64RawString = dataURI.substring(with: match.range(at: 4))
             .trimmingCharacters(in: .whitespacesAndNewlines)
         let base64 = Base64String(alreadyEncoded: base64RawString)
         return (mimeType, encoding, base64)
