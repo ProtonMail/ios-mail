@@ -159,7 +159,7 @@ extension String {
             let match = regex.firstMatch(in: self, range: range),
             group < match.numberOfRanges
         else { return nil }
-        let result = self[match.range(at: group)]
+        let result = self.substring(with: match.range(at: group))
         return result
     }
 
@@ -319,7 +319,7 @@ extension String {
         return lists.joined(separator: ",")
     }
 
-    subscript(value: NSRange) -> String {
+    func substring(with value: NSRange) -> String {
         (self as NSString).substring(with: value)
     }
 }

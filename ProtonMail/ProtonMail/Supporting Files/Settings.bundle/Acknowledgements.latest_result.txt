@@ -112,7 +112,7 @@ name: lottie-ios, nameSpecified: Lottie, owner: airbnb, version: 4.3.3, source: 
 
 name: OHHTTPStubs, nameSpecified: OHHTTPStubs, owner: AliSoftware, version: 9.1.0, source: https://github.com/AliSoftware/OHHTTPStubs
 
-name: protoncore_ios, nameSpecified: ProtonCore, owner: ProtonMail, version: 25.2.4, source: https://github.com/ProtonMail/protoncore_ios
+name: protoncore_ios, nameSpecified: ProtonCore, owner: ProtonMail, version: 25.2.5, source: https://github.com/ProtonMail/protoncore_ios
 
 name: Reachability.swift, nameSpecified: Reachability, owner: ashleymills, version: 5.2.3, source: https://github.com/ashleymills/Reachability.swift
 
@@ -122,9 +122,9 @@ name: sentry-cocoa, nameSpecified: Sentry, owner: getsentry, version: 8.29.0, so
 
 name: swift-css-parser, nameSpecified: swift-css-parser, owner: stackotter, version: 0.1.2, source: https://github.com/stackotter/swift-css-parser
 
-name: swift-snapshot-testing, nameSpecified: swift-snapshot-testing, owner: pointfreeco, version: 1.16.1, source: https://github.com/pointfreeco/swift-snapshot-testing
+name: swift-snapshot-testing, nameSpecified: swift-snapshot-testing, owner: pointfreeco, version: 1.17.1, source: https://github.com/pointfreeco/swift-snapshot-testing
 
-name: swift-syntax, nameSpecified: swift-syntax, owner: apple, version: 510.0.2, source: https://github.com/apple/swift-syntax
+name: swift-syntax, nameSpecified: swift-syntax, owner: apple, version: 600.0.0-prerelease-2024-06-12, source: https://github.com/apple/swift-syntax
 
 name: SwiftOTP, nameSpecified: SwiftOTP, owner: lachlanbell, version: 2.0.3, source: https://github.com/lachlanbell/SwiftOTP
 
