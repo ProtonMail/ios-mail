@@ -139,7 +139,7 @@ final class ConversationDetailBottomSheetParticipantTests: PMUIMockedNetworkTest
     func testSenderBottomSheetFromSentFolder() async {
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
-                method: .post, // TBC it should be .get
+                method: .get,
                 remotePath: "/mail/v4/messages",
                 localPath: "messages_440537.json",
                 ignoreQueryParams: true
@@ -215,7 +215,7 @@ final class ConversationDetailBottomSheetParticipantTests: PMUIMockedNetworkTest
     func testParticipantBottomSheetInBccFieldWhenNotAContact() async {
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
-                method: .post, // TBC it should be .get
+                method: .get,
                 remotePath: "/mail/v4/messages",
                 localPath: "messages_440542.json",
                 ignoreQueryParams: true

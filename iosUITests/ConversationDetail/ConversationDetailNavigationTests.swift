@@ -67,7 +67,7 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
         // Mocks
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
-                method: .post, // TBC it should be .get
+                method: .get,
                 remotePath: "/mail/v4/messages",
                 localPath: "messages_435484.json",
                 ignoreQueryParams: true
@@ -110,7 +110,7 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
         // Mocks
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
-                method: .post, // TBC it should be .get
+                method: .get,
                 remotePath: "/mail/v4/messages",
                 localPath: "messages_435484.json",
                 ignoreQueryParams: true
@@ -160,7 +160,7 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
                 serveOnce: true
             ),
             NetworkRequest(
-                method: .post, // TBC it should be .get
+                method: .get,
                 remotePath: "/mail/v4/messages",
                 localPath: "messages_435485.json",
                 ignoreQueryParams: true
@@ -205,7 +205,7 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
                 serveOnce: true
             ),
             NetworkRequest(
-                method: .post, // TBC it should be .get
+                method: .get,
                 remotePath: "/mail/v4/messages",
                 localPath: "messages_435485.json",
                 ignoreQueryParams: true
@@ -254,7 +254,7 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
                 serveOnce: true
             ),
             NetworkRequest(
-                method: .post, // TBC it should be .get
+                method: .get,
                 remotePath: "/mail/v4/messages",
                 localPath: "messages_435505.json",
                 ignoreQueryParams: true
