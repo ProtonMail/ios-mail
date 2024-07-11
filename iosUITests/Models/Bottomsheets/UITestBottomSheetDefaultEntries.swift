@@ -83,5 +83,20 @@ struct UITestBottomSheetDefaultEntries {
             UITestBottomSheetDynamicEntry(section: 2, index: 4, text: "View HTML"),
             UITestBottomSheetDynamicEntry(section: 2, index: 5, text: "Report phishing")
         ]
+        
+        static let defaultSenderActions = [
+            UITestBottomSheetDynamicEntry(section: 0, index: 0, text: "New message"),
+            UITestBottomSheetDynamicEntry(section: 0, index: 1, text: "Add to contacts"),
+            UITestBottomSheetDynamicEntry(section: 1, index: 0, text: "Copy address"),
+            UITestBottomSheetDynamicEntry(section: 1, index: 1, text: "Copy name"),
+            UITestBottomSheetDynamicEntry(section: 2, index: 0, text: "Block this contact"),
+        ]
+        
+        static let defaultRecipientActions = [
+            UITestBottomSheetDynamicEntry(section: 0, index: 0, text: "New message"),
+            UITestBottomSheetDynamicEntry(section: 0, index: 1, text: "Add to contacts"),
+            UITestBottomSheetDynamicEntry(section: 1, index: 0, text: "Copy address"),
+            UITestBottomSheetDynamicEntry(section: 1, index: 1, text: "Copy name")
+        ]
     }
 }

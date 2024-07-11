@@ -18,12 +18,12 @@
 import Foundation
 import XCTest
 
-final class MessageActionBottomSheetRobot: Robot {
+final class ActionBottomSheetRobot: Robot {
     var rootElement: XCUIElement {
         application.otherElements[Identifiers.rootItem]
     }
 }
 
 private struct Identifiers {
-    static let rootItem = "detail.actionPicker.rootItem"
+    static let rootItem = "actionPicker.rootItem"
 }

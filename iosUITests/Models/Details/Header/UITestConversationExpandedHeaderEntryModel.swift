@@ -49,6 +49,17 @@ struct UITestConversationExpandedHeaderEntryModel: ApplicationHolder {
         rootItem.staticTexts[Identifiers.dateText]
     }
     
+    // MARK: Actions
+    
+    func tapSender() {
+        senderNameText.tap()
+    }
+    
+    func tapRecipient(ofType type: UITestsRecipientsFieldType, atPosition index: Int) {
+        let name = rootItem.staticTexts[Identifiers.recipientName(type: type, atIndex: index)]
+        name.tap()
+    }
+    
     // MARK: Assertions
     
     func hasSenderName(_ sender: String) {

@@ -58,7 +58,6 @@ struct MailboxItemActionPickerView: View {
                 onActionTap(action, mailboxItemIdentifier)
             })
         .accessibilityElement(children: .contain)
-        .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.rootItem)
     }
 
     @ViewBuilder
@@ -230,12 +229,10 @@ private struct SendActionButtonStack<Content: View>: View {
 }
 
 struct MailboxItemActionPickerIdentifiers {
-    static let rootItem = "detail.actionPicker.rootItem"
-
-    static let composeActionsRootItem = "detail.actionPicker.compose"
-    static let composeActionReply = "detail.actionPicker.compose.reply"
-    static let composeActionReplyAll = "detail.actionPicker.compose.replyAll"
-    static let composeActionForward = "detail.actionPicker.compose.forward"
-    static let composeActionIcon = "detail.actionPicker.compose.icon"
-    static let composeActionText = "detail.actionPicker.compose.text"
+    static let composeActionsRootItem = "actionPicker.compose"
+    static let composeActionReply = "actionPicker.compose.reply"
+    static let composeActionReplyAll = "actionPicker.compose.replyAll"
+    static let composeActionForward = "actionPicker.compose.forward"
+    static let composeActionIcon = "actionPicker.compose.icon"
+    static let composeActionText = "actionPicker.compose.text"
 }

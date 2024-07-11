@@ -61,6 +61,7 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
         .presentationDragIndicator(.visible)
         .background(DS.Color.Background.secondary)
         .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(ActionPickerListIdentifiers.rootElement)
     }
 
     private func sectionView(elements: [Element], sectionIndex: Int) -> some View {
@@ -115,10 +116,11 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
 }
 
 struct ActionPickerListIdentifiers {
-    static let messageActionIcon = "detail.actionPicker.action.icon"
-    static let messageActionText = "detail.actionPicker.action.text"
+    static let rootElement = "actionPicker.rootItem"
+    static let messageActionIcon = "actionPicker.action.icon"
+    static let messageActionText = "actionPicker.action.text"
     
     static func messageActionIdentifier(section: Int, index: Int) -> String {
-        "detail.actionPicker.section\(section).action\(index)"
+        "actionPicker.section\(section).action\(index)"
     }
 }

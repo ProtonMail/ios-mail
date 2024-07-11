@@ -17,6 +17,23 @@
 
 import Foundation
 
-struct UITestBottomSheetDynamicSectionEntry {
-    let index: Int
+extension ActionBottomSheetRobot {
+    
+    func hasEntries(_ entries: [UITestBottomSheetDynamicEntry]) {
+        for entry in entries {
+            hasEntry(entry)
+        }
+    }
+
+    private func hasEntry(_ entry: UITestBottomSheetDynamicEntry) {
+        
+        let model = UITestBottomSheetDynamicEntryModel(
+            section: entry.section,
+            index: entry.index,
+            text: entry.text
+        )
+
+        model.hasIcon()
+        model.hasText(entry.text)
+    }
 }

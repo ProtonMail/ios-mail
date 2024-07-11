@@ -48,11 +48,13 @@ struct MessageAddressActionPickerView: View {
                 .font(.subheadline)
                 .bold()
                 .foregroundStyle(DS.Color.Text.norm)
+                .accessibilityIdentifier(MessageAddressActionPickerViewIdentifiers.participantName)
 
             Text(verbatim: emailAddress)
                 .font(.footnote)
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.weak)
+                .accessibilityIdentifier(MessageAddressActionPickerViewIdentifiers.participantAddress)
         }
         .frame(maxWidth: .infinity)
         .padding(.bottom, DS.Spacing.medium)
@@ -85,4 +87,9 @@ private enum MessageAddressActionPickerSection {
             emailAddress: "aaron@proton.me"
         )
     }
+}
+
+struct MessageAddressActionPickerViewIdentifiers {
+    static let participantName = "actionPicker.participant.name"
+    static let participantAddress = "actionPicker.participant.address"
 }

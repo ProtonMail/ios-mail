@@ -59,11 +59,11 @@ struct UITestBottomSheetDynamicEntryModel: ApplicationHolder {
 }
 
 private struct Identifiers {
-    static let actionPickerSection = "detail.actionPicker.section"
-    static let actionIcon = "detail.actionPicker.action.icon"
-    static let actionText = "detail.actionPicker.action.text"
+    static let actionPickerSection = "actionPicker.section"
+    static let actionIcon = "actionPicker.action.icon"
+    static let actionText = "actionPicker.action.text"
     
     static func actionRoot(section: Int, index: Int) -> String{
-        "detail.actionPicker.section\(section).action\(index)"
+        "actionPicker.section\(section).action\(index)"
     }
 }

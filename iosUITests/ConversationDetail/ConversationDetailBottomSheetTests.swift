@@ -17,7 +17,7 @@
 
 import Foundation
 
-final class ConversationDetailsBottomSheetTests: PMUIMockedNetworkTestCase {
+final class ConversationDetailBottomSheetTests: PMUIMockedNetworkTestCase {
     
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Paid.YoungBee
@@ -170,7 +170,7 @@ final class ConversationDetailsBottomSheetTests: PMUIMockedNetworkTestCase {
             $0.tapThreeDots(at: 0)
         }
         
-        MessageActionBottomSheetRobot {
+        ActionBottomSheetRobot {
             $0.verifyShown()
             $0.hasEntries(entries)
         }

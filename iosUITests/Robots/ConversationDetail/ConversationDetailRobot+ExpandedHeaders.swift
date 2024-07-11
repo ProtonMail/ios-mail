@@ -40,5 +40,15 @@ extension ConversationDetailRobot {
         
         model.hasDate(entry.timestamp)
     }
+    
+    func tapSender() {
+        let model = UITestConversationExpandedHeaderEntryModel(index: 0)
+        model.tapSender()
+    }
+    
+    func tapRecipient(ofType type: UITestsRecipientsFieldType, atIndex index: Int) {
+        let model = UITestConversationExpandedHeaderEntryModel(index: 0)
+        model.tapRecipient(ofType: type, atPosition: index)
+    }
 }
 
