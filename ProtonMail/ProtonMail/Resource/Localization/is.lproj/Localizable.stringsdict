@@ -292,38 +292,6 @@
 			<string>Are you sure you want to delete these %d messages permanently?</string>
 		</dict>
 	</dict>
-	<key>Are you sure you want to permanently delete %d conversation?</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@conversation@</string>
-		<key>conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>Ertu viss um að þú viljir eyða %d samtali endanlega?</string>
-			<key>other</key>
-			<string>Ertu viss um að þú viljir eyða %d samtölum endanlega?</string>
-		</dict>
-	</dict>
-	<key>Are you sure you want to permanently delete %d message?</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@message@</string>
-		<key>message</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>Ertu viss um að þú viljir eyða %d skilaboði endanlega?</string>
-			<key>other</key>
-			<string>Ertu viss um að þú viljir eyða %d skilaboðum endanlega?</string>
-		</dict>
-	</dict>
 	<key>In %d minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
