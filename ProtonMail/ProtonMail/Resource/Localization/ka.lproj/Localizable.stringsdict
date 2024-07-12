@@ -1,438 +1,406 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-  <dict>
-    <key>%d times</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@times@</string>
-      <key>times</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>other</key>
-        <string>%u-ჯერ</string>
-        <key>one</key>
-        <string>%u-ხელ</string>
-      </dict>
-    </dict>
-    <key>%u participants</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@participants@</string>
-      <key>participants</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>other</key>
-        <string>%u მონაწილე</string>
-        <key>one</key>
-        <string>%u მონაწილე</string>
-      </dict>
-    </dict>
-    <key>You have %d new emails!</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@newemails@</string>
-      <key>newemails</key>
-      <dict>
-        <key>one</key>
-        <string>გაქვთ %d ახალი ელფოსტა!</string>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>other</key>
-        <string>გაქვთ %d ახალი ელფოსტა!</string>
-      </dict>
-    </dict>
-    <key>%d email trackers blocked</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@trackers@</string>
-      <key>trackers</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>დაბლოკილია %d ელფოსტის ტრეკერი</string>
-        <key>other</key>
-        <string>დაბლოკილია %d ელფოსტის ტრეკერი</string>
-      </dict>
-    </dict>
-    <key>%d selected</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@selected@</string>
-      <key>selected</key>
-      <dict>
-        <key>one</key>
-        <string>მონიშნულია %d</string>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>other</key>
-        <string>მონიშნულია %d</string>
-      </dict>
-    </dict>
-    <key>%d email trackers found</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@trackers@</string>
-      <key>trackers</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>აღმოჩენილია %d ელფოსტის ტრეკერი</string>
-        <key>other</key>
-        <string>აღმოჩენილია %d ელფოსტის ტრეკერი</string>
-      </dict>
-    </dict>
-    <key>Proton found %d trackers on this message.</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@trackers@</string>
-      <key>trackers</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Proton-მა ამ შეტყობინებაში %d ტრეკერი იპოვა და დაბლოკა.</string>
-        <key>other</key>
-        <string>Proton-მა ამ შეტყობინებაში %d ტრეკერი იპოვა და დაბლოკა.</string>
-      </dict>
-    </dict>
-    <key>+%d others</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@OTHER@</string>
-      <key>OTHER</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>d</string>
-        <key>one</key>
-        <string>კიდევ %d</string>
-        <key>other</key>
-        <string>კიდევ %d</string>
-      </dict>
-    </dict>
-    <key>Updated %d min ago</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@MINUTE@</string>
-      <key>MINUTE</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>d</string>
-        <key>one</key>
-        <string>განახლდა %d წუთის წინ</string>
-        <key>other</key>
-        <string>განახლდა %d წუთის წინ</string>
-      </dict>
-    </dict>
-    <key>%u message</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@message@</string>
-      <key>message</key>
-      <dict>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>one</key>
-        <string>%u შეტყობინება</string>
-        <key>other</key>
-        <string>%u შეტყობინება</string>
-      </dict>
-    </dict>
-    <key>%u conversation</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@CONVERSATION@</string>
-      <key>CONVERSATION</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%u საუბარი</string>
-        <key>other</key>
-        <string>%u საუბარი</string>
-      </dict>
-    </dict>
-    <key>%d attempt remaining</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@ATTEMPT@</string>
-      <key>ATTEMPT</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>დარჩენილია %d ცდა</string>
-        <key>other</key>
-        <string>დარჩენილია %d ცდა</string>
-      </dict>
-    </dict>
-    <key>%d attempt remaining until secure data wipe!</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@ATTEMPT@</string>
-      <key>ATTEMPT</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>თქვენი მონაცემების უსაფრთხოდ წაშლამდე დარჩენილია %d ცდა!</string>
-        <key>other</key>
-        <string>თქვენი მონაცემების უსაფრთხოდ წაშლამდე დარჩენილია %d ცდა!</string>
-      </dict>
-    </dict>
-    <key>%1$d message moved to %2$@</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@MSG@</string>
-      <key>MSG</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%1$d შეტყობინება გადატანილია %2$@ -ში</string>
-        <key>other</key>
-        <string>%1$d შეტყობინება გადატანილია %2$@ -ში</string>
-      </dict>
-    </dict>
-    <key>%1$d conversation moved to %2$@</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@Conversation@</string>
-      <key>Conversation</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%1$d საუბარი გადატანილია %2$@-ში</string>
-        <key>other</key>
-        <string>%1$d საუბარი გადატანილია %2$@-ში</string>
-      </dict>
-    </dict>
-    <key>%d message labeled</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@Message@</string>
-      <key>Message</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d შეტყობინებაზე ჭდე დასმულია</string>
-        <key>other</key>
-        <string>%d შეტყობინებაზე ჭდე დასმულია</string>
-      </dict>
-    </dict>
-    <key>%d conversation labeled</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@Conversation@</string>
-      <key>Conversation</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d შეტყობინებას ჭდე დაედო</string>
-        <key>other</key>
-        <string>%d შეტყობინებას ჭდე დაედო</string>
-      </dict>
-    </dict>
-    <key>Are you sure you want to permanently delete %d message?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@message@</string>
-      <key>message</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>დარწმუნებული ბრძანდებთ, რომ გნებავთ, სამუდამოდ წაშალოთ %d შეტყობინება?</string>
-        <key>other</key>
-        <string>დარწმუნებული ბრძანდებთ, რომ გნებავთ, სამუდამოდ წაშალოთ %d შეტყობინება?</string>
-      </dict>
-    </dict>
-    <key>Are you sure you want to permanently delete %d conversation?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@conversation@</string>
-      <key>conversation</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>დარწმუნებული ბრძანდებით, რომ გნებავთ, წაშალოთ %d საუბარი?</string>
-        <key>other</key>
-        <string>დარწმუნებული ბრძანდებით, რომ გნებავთ, წაშალოთ %d საუბარი?</string>
-      </dict>
-    </dict>
-    <key>%d member</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@member@</string>
-      <key>member</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d წევრი</string>
-        <key>other</key>
-        <string>%d წევრი</string>
-      </dict>
-    </dict>
-    <key>In %d minutes</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@minute@</string>
-      <key>minute</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d წუთში</string>
-        <key>other</key>
-        <string>%d წუთში</string>
-      </dict>
-    </dict>
-    <key>These %d messages will move to Drafts and have their schedule removed.</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@alertMessage@</string>
-      <key>alertMessage</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>ეს %d შეტყობინება გადავა მონახაზებში და განრიგი წაეშლება.</string>
-        <key>other</key>
-        <string>ეს %d შეტყობინება გადავა მონახაზებში და განრიგი წაეშლება.</string>
-      </dict>
-    </dict>
-    <key>%d message moved to Drafts</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@alertMessage@</string>
-      <key>alertMessage</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d შეტყობინება შენახულია მონახაზებში</string>
-        <key>other</key>
-        <string>%d შეტყობინება შენახულია მონახაზებში</string>
-      </dict>
-    </dict>
-    <key>%d seconds</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@second@</string>
-      <key>second</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d წამი</string>
-        <key>other</key>
-        <string>%d წამი</string>
-      </dict>
-    </dict>
-    <key>%d attachment</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@attachment@</string>
-      <key>attachment</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d მიმაგრებული ფაილი</string>
-        <key>other</key>
-        <string>%d მიმაგრებული ფაილი</string>
-      </dict>
-    </dict>
-    <key>%d Minutes</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@minutes@</string>
-      <key>minutes</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d წუთი</string>
-        <key>other</key>
-        <string>%d წუთი</string>
-      </dict>
-    </dict>
-    <key>Are you sure you want to delete these %d messages permanently?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@message@</string>
-      <key>message</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>დარწმუნებული ბრძანდებით, რომ გნებავთ, სამუდამოდ წაშალოთ ეს შეტყობინება?</string>
-        <key>other</key>
-        <string>დარწმუნებული ბრძანდებით, რომ გნებავთ, სამუდამოდ წაშალოთ %d შეტყობინება?</string>
-      </dict>
-    </dict>
-  </dict>
+<dict>
+	<key>%d times</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@times@</string>
+		<key>times</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%u-ჯერ</string>
+			<key>one</key>
+			<string>%u-ხელ</string>
+		</dict>
+	</dict>
+	<key>%u participants</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@participants@</string>
+		<key>participants</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%u მონაწილე</string>
+			<key>one</key>
+			<string>%u მონაწილე</string>
+		</dict>
+	</dict>
+	<key>You have %d new emails!</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@newemails@</string>
+		<key>newemails</key>
+		<dict>
+			<key>one</key>
+			<string>გაქვთ %d ახალი ელფოსტა!</string>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>გაქვთ %d ახალი ელფოსტა!</string>
+		</dict>
+	</dict>
+	<key>%d email trackers blocked</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@trackers@</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>დაბლოკილია %d ელფოსტის ტრეკერი</string>
+			<key>other</key>
+			<string>დაბლოკილია %d ელფოსტის ტრეკერი</string>
+		</dict>
+	</dict>
+	<key>%d selected</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@selected@</string>
+		<key>selected</key>
+		<dict>
+			<key>one</key>
+			<string>მონიშნულია %d</string>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>მონიშნულია %d</string>
+		</dict>
+	</dict>
+	<key>%d email trackers found</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@trackers@</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>აღმოჩენილია %d ელფოსტის ტრეკერი</string>
+			<key>other</key>
+			<string>აღმოჩენილია %d ელფოსტის ტრეკერი</string>
+		</dict>
+	</dict>
+	<key>Proton found %d trackers on this message.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@trackers@</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>Proton-მა ამ შეტყობინებაში %d ტრეკერი იპოვა და დაბლოკა.</string>
+			<key>other</key>
+			<string>Proton-მა ამ შეტყობინებაში %d ტრეკერი იპოვა და დაბლოკა.</string>
+		</dict>
+	</dict>
+	<key>+%d others</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@OTHER@</string>
+		<key>OTHER</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>კიდევ %d</string>
+			<key>other</key>
+			<string>კიდევ %d</string>
+		</dict>
+	</dict>
+	<key>Updated %d min ago</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
+		<key>MINUTE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>განახლდა %d წუთის წინ</string>
+			<key>other</key>
+			<string>განახლდა %d წუთის წინ</string>
+		</dict>
+	</dict>
+	<key>%u message</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@message@</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>one</key>
+			<string>%u შეტყობინება</string>
+			<key>other</key>
+			<string>%u შეტყობინება</string>
+		</dict>
+	</dict>
+	<key>%u conversation</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@CONVERSATION@</string>
+		<key>CONVERSATION</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u საუბარი</string>
+			<key>other</key>
+			<string>%u საუბარი</string>
+		</dict>
+	</dict>
+	<key>%d attempt remaining</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>დარჩენილია %d ცდა</string>
+			<key>other</key>
+			<string>დარჩენილია %d ცდა</string>
+		</dict>
+	</dict>
+	<key>%d attempt remaining until secure data wipe!</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>თქვენი მონაცემების უსაფრთხოდ წაშლამდე დარჩენილია %d ცდა!</string>
+			<key>other</key>
+			<string>თქვენი მონაცემების უსაფრთხოდ წაშლამდე დარჩენილია %d ცდა!</string>
+		</dict>
+	</dict>
+	<key>%1$d message moved to %2$@</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@</string>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%1$d შეტყობინება გადატანილია %2$@ -ში</string>
+			<key>other</key>
+			<string>%1$d შეტყობინება გადატანილია %2$@ -ში</string>
+		</dict>
+	</dict>
+	<key>%1$d conversation moved to %2$@</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@</string>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%1$d საუბარი გადატანილია %2$@-ში</string>
+			<key>other</key>
+			<string>%1$d საუბარი გადატანილია %2$@-ში</string>
+		</dict>
+	</dict>
+	<key>%d message labeled</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Message@</string>
+		<key>Message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d შეტყობინებაზე ჭდე დასმულია</string>
+			<key>other</key>
+			<string>%d შეტყობინებაზე ჭდე დასმულია</string>
+		</dict>
+	</dict>
+	<key>%d conversation labeled</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@</string>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d შეტყობინებას ჭდე დაედო</string>
+			<key>other</key>
+			<string>%d შეტყობინებას ჭდე დაედო</string>
+		</dict>
+	</dict>
+	<key>%d member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d წევრი</string>
+			<key>other</key>
+			<string>%d წევრი</string>
+		</dict>
+	</dict>
+	<key>In %d minutes</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@minute@</string>
+		<key>minute</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d წუთში</string>
+			<key>other</key>
+			<string>%d წუთში</string>
+		</dict>
+	</dict>
+	<key>These %d messages will move to Drafts and have their schedule removed.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@alertMessage@</string>
+		<key>alertMessage</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>ეს %d შეტყობინება გადავა მონახაზებში და განრიგი წაეშლება.</string>
+			<key>other</key>
+			<string>ეს %d შეტყობინება გადავა მონახაზებში და განრიგი წაეშლება.</string>
+		</dict>
+	</dict>
+	<key>%d message moved to Drafts</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@alertMessage@</string>
+		<key>alertMessage</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d შეტყობინება შენახულია მონახაზებში</string>
+			<key>other</key>
+			<string>%d შეტყობინება შენახულია მონახაზებში</string>
+		</dict>
+	</dict>
+	<key>%d seconds</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@second@</string>
+		<key>second</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d წამი</string>
+			<key>other</key>
+			<string>%d წამი</string>
+		</dict>
+	</dict>
+	<key>%d attachment</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@attachment@</string>
+		<key>attachment</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d მიმაგრებული ფაილი</string>
+			<key>other</key>
+			<string>%d მიმაგრებული ფაილი</string>
+		</dict>
+	</dict>
+	<key>%d Minutes</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@minutes@</string>
+		<key>minutes</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d წუთი</string>
+			<key>other</key>
+			<string>%d წუთი</string>
+		</dict>
+	</dict>
+	<key>Are you sure you want to delete these %d messages permanently?</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@message@</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>დარწმუნებული ბრძანდებით, რომ გნებავთ, სამუდამოდ წაშალოთ ეს შეტყობინება?</string>
+			<key>other</key>
+			<string>დარწმუნებული ბრძანდებით, რომ გნებავთ, სამუდამოდ წაშალოთ %d შეტყობინება?</string>
+		</dict>
+	</dict>
+</dict>
 </plist>

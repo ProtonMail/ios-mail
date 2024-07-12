@@ -1155,8 +1155,7 @@ class LocalizedString {
     lazy var _empty_spam = NSLocalizedString("Empty Spam", comment: "An action title shows in ellipsis menu")
     lazy var _empty_spam_folder = NSLocalizedString("Empty spam folder", comment: "Alert title")
     lazy var _cannot_empty_folder_now = NSLocalizedString("Cannot empty folder right now.", comment: "Warning message")
-    lazy var _clean_message_warning = NSLocalizedString("Are you sure you want to permanently delete %d message?", comment: "Warning message when users try to empty messages in the folder")
-    lazy var _clean_conversation_warning = NSLocalizedString("Are you sure you want to permanently delete %d conversation?", comment: "Warning message when users try to empty conversations in the folder")
+    lazy var _clean_message_warning = NSLocalizedString("Are you sure you want to permanently delete all messages within '%@'?", comment: "Warning message when users try to empty messages in the folder")
     lazy var _show_full_message = NSLocalizedString("…[Show full message]", comment: "Button title to show full encrypted message body when decryption failed")
 
     lazy var _token_revoke_noti_title = NSLocalizedString("Signed out of %@", comment: "The title of notification that will show when the token of one account is revoked")

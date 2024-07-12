@@ -270,14 +270,6 @@ final class MailboxViewModelTests: XCTestCase {
         XCTAssertEqual(sut.localizedNavigationTitle, "")
     }
 
-    func testGetCurrentViewMode() {
-        XCTAssertEqual(sut.currentViewMode, conversationStateProviderMock.viewMode)
-        conversationStateProviderMock.viewModeStub.fixture = .conversation
-        XCTAssertEqual(sut.currentViewMode, .conversation)
-        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
-        XCTAssertEqual(sut.currentViewMode, .singleMessage)
-    }
-
     func testGetLocationViewMode_inDraftAndSent_getSingleMessageOnly() {
         createSut(labelID: Message.Location.draft.rawValue,
                   labelType: .folder,
@@ -510,21 +502,15 @@ final class MailboxViewModelTests: XCTestCase {
     }
 
     func testGetEmptyFolderCheckMessage() {
-        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
-        XCTAssertEqual(sut.getEmptyFolderCheckMessage(count: 1),
-                       String(format: LocalString._clean_message_warning, 1))
 
-        conversationStateProviderMock.viewModeStub.fixture = .conversation
-        createSut(labelID: Message.Location.inbox.rawValue,
-                  labelType: .folder,
-                  isCustom: false,
-                  labelName: nil)
-        XCTAssertEqual(sut.getEmptyFolderCheckMessage(count: 10),
-                       String(format: LocalString._clean_conversation_warning, 10))
+        XCTAssertEqual(
+            sut.getEmptyFolderCheckMessage(folder: .trash),
+            "Are you sure you want to permanently delete all messages within 'Trash'?"
+        )
     }
 
     func testGetGroupContacts() {

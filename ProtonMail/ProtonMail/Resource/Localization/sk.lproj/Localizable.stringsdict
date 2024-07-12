@@ -1,546 +1,506 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-  <dict>
-    <key>%d times</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@times@</string>
-      <key>times</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>other</key>
-        <string>%u-krát</string>
-        <key>one</key>
-        <string>%u-krát</string>
-        <key>few</key>
-        <string>%u -krát</string>
-        <key>many</key>
-        <string>%u-krát</string>
-      </dict>
-    </dict>
-    <key>%u participants</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@participants@</string>
-      <key>participants</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>other</key>
-        <string>%u účastníkov</string>
-        <key>one</key>
-        <string>%u účastník</string>
-        <key>few</key>
-        <string>%u účastníka</string>
-        <key>many</key>
-        <string>%u účastníkov</string>
-      </dict>
-    </dict>
-    <key>You have %d new emails!</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@newemails@</string>
-      <key>newemails</key>
-      <dict>
-        <key>one</key>
-        <string>Máte %d nových správ!</string>
-        <key>few</key>
-        <string>Máte %d nové správy!</string>
-        <key>many</key>
-        <string>Máte %d nových správ!</string>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>other</key>
-        <string>Máte %d nových správ!</string>
-      </dict>
-    </dict>
-    <key>%d email trackers blocked</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@trackers@</string>
-      <key>trackers</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d emailový sledovač zablokovaný</string>
-        <key>few</key>
-        <string>%d emailové sledovače zablokované</string>
-        <key>many</key>
-        <string>%d emailových sledovačov zablokovaných</string>
-        <key>other</key>
-        <string>%d emailových sledovačov zablokovaných</string>
-      </dict>
-    </dict>
-    <key>%d selected</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@selected@</string>
-      <key>selected</key>
-      <dict>
-        <key>one</key>
-        <string>%d vybrané</string>
-        <key>few</key>
-        <string>%d vybraných</string>
-        <key>many</key>
-        <string>%d vybrané</string>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>other</key>
-        <string>%d vybraných</string>
-      </dict>
-    </dict>
-    <key>%d email trackers found</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@trackers@</string>
-      <key>trackers</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Nájdený %d emailový sledovač</string>
-        <key>few</key>
-        <string>Nájdené %d emailové sledovače</string>
-        <key>many</key>
-        <string>Nájdených %d emailových sledovačov</string>
-        <key>other</key>
-        <string>Nájdených %d emailových sledovačov</string>
-      </dict>
-    </dict>
-    <key>Proton found %d trackers on this message.</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@trackers@</string>
-      <key>trackers</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Proton našiel a zablokoval %d sledovač v tejto správe.</string>
-        <key>few</key>
-        <string>Proton našiel a zablokoval %d sledovače v tejto správe.</string>
-        <key>many</key>
-        <string>Proton našiel a zablokoval %d sledovačov v tejto správe.</string>
-        <key>other</key>
-        <string>Proton našiel a zablokoval %d sledovača v tejto správe.</string>
-      </dict>
-    </dict>
-    <key>+%d others</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@OTHER@</string>
-      <key>OTHER</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>d</string>
-        <key>one</key>
-        <string>%d iná</string>
-        <key>few</key>
-        <string>%d iné</string>
-        <key>many</key>
-        <string>%d iných</string>
-        <key>other</key>
-        <string>%d iných</string>
-      </dict>
-    </dict>
-    <key>Updated %d min ago</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@MINUTE@</string>
-      <key>MINUTE</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>d</string>
-        <key>one</key>
-        <string>Aktualizované pred %d minútou</string>
-        <key>few</key>
-        <string>Aktualizované pred %d minútami</string>
-        <key>many</key>
-        <string>Aktualizované pred %d minútami</string>
-        <key>other</key>
-        <string>Aktualizované pred %d minútami</string>
-      </dict>
-    </dict>
-    <key>%u message</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@message@</string>
-      <key>message</key>
-      <dict>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>one</key>
-        <string>%u správa</string>
-        <key>few</key>
-        <string>%u správy</string>
-        <key>many</key>
-        <string>%u správ</string>
-        <key>other</key>
-        <string>%u správ</string>
-      </dict>
-    </dict>
-    <key>%u conversation</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@CONVERSATION@</string>
-      <key>CONVERSATION</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%u konverzácia</string>
-        <key>few</key>
-        <string>%u konverzácie</string>
-        <key>many</key>
-        <string>%u konverzácií</string>
-        <key>other</key>
-        <string>%u konverzácií</string>
-      </dict>
-    </dict>
-    <key>%d attempt remaining</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@ATTEMPT@</string>
-      <key>ATTEMPT</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d zostávajúci pokus</string>
-        <key>few</key>
-        <string>%d zostávajúce pokusy</string>
-        <key>many</key>
-        <string>%d zostávajúcich pokusov</string>
-        <key>other</key>
-        <string>%d zostávajúcich pokusov</string>
-      </dict>
-    </dict>
-    <key>%d attempt remaining until secure data wipe!</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@ATTEMPT@</string>
-      <key>ATTEMPT</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Zostáva %d pokus do bezpečného vymazania údajov!</string>
-        <key>few</key>
-        <string>Zostávajú %d pokusy do bezpečného vymazania údajov!</string>
-        <key>many</key>
-        <string>Zostáva %d pokusov do bezpečného vymazania údajov!</string>
-        <key>other</key>
-        <string>Zostáva %d pokusu do bezpečného vymazania údajov!</string>
-      </dict>
-    </dict>
-    <key>%1$d message moved to %2$@</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@MSG@</string>
-      <key>MSG</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%1$d správa presunutá do priečinka %2$@</string>
-        <key>few</key>
-        <string>%1$d správy presunuté do priečinka %2$@</string>
-        <key>many</key>
-        <string>%1$d správ presunutých do priečinka %2$@</string>
-        <key>other</key>
-        <string>%1$d správ presunutých do priečinka %2$@</string>
-      </dict>
-    </dict>
-    <key>%1$d conversation moved to %2$@</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@Conversation@</string>
-      <key>Conversation</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%1$d konverzácia presunutá do priečinka %2$@</string>
-        <key>few</key>
-        <string>%1$d konverzácie presunuté do priečinka %2$@</string>
-        <key>many</key>
-        <string>%1$d konverzácii presunutých do priečinka %2$@</string>
-        <key>other</key>
-        <string>%1$d konverzácií presunutých do priečinka %2$@</string>
-      </dict>
-    </dict>
-    <key>%d message labeled</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@Message@</string>
-      <key>Message</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d správa označená</string>
-        <key>few</key>
-        <string>%d správy označené</string>
-        <key>many</key>
-        <string>%d správ označených</string>
-        <key>other</key>
-        <string>%d správ označených</string>
-      </dict>
-    </dict>
-    <key>%d conversation labeled</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@Conversation@</string>
-      <key>Conversation</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d konverzácia označená</string>
-        <key>few</key>
-        <string>%d konverzácie označené</string>
-        <key>many</key>
-        <string>%d konverzácií označených</string>
-        <key>other</key>
-        <string>%d konverzácií označených</string>
-      </dict>
-    </dict>
-    <key>Are you sure you want to permanently delete %d message?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@message@</string>
-      <key>message</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Naozaj chcete natrvalo vymazať %d správu?</string>
-        <key>few</key>
-        <string>Naozaj chcete natrvalo vymazať %d správy?</string>
-        <key>many</key>
-        <string>Naozaj chcete natrvalo vymazať %d správ?</string>
-        <key>other</key>
-        <string>Naozaj chcete natrvalo vymazať %d správ?</string>
-      </dict>
-    </dict>
-    <key>Are you sure you want to permanently delete %d conversation?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@conversation@</string>
-      <key>conversation</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Naozaj chcete natrvalo vymazať %d konverzáciu?</string>
-        <key>few</key>
-        <string>Naozaj chcete natrvalo vymazať %d konverzácie?</string>
-        <key>many</key>
-        <string>Naozaj chcete natrvalo vymazať %d konverzácií?</string>
-        <key>other</key>
-        <string>Naozaj chcete natrvalo vymazať %d konverzácií?</string>
-      </dict>
-    </dict>
-    <key>%d member</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@member@</string>
-      <key>member</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d člen</string>
-        <key>few</key>
-        <string>%d člena</string>
-        <key>many</key>
-        <string>%d člena</string>
-        <key>other</key>
-        <string>%d člena</string>
-      </dict>
-    </dict>
-    <key>In %d minutes</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@minute@</string>
-      <key>minute</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>O %d minútu</string>
-        <key>few</key>
-        <string>O %d minúty</string>
-        <key>many</key>
-        <string>O %d minút</string>
-        <key>other</key>
-        <string>O %d minút</string>
-      </dict>
-    </dict>
-    <key>These %d messages will move to Drafts and have their schedule removed.</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@alertMessage@</string>
-      <key>alertMessage</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Táto %d správa bude presunutá do Konceptov a jej plánovanie odstránené.</string>
-        <key>few</key>
-        <string>Tieto %d správy budú presunuté do Konceptov a ich plánovanie odstránené.</string>
-        <key>many</key>
-        <string>Týchto %d správ bude presunutých do Konceptov a ich plánovanie odstránené.</string>
-        <key>other</key>
-        <string>Týchto %d správ bude presunutých do Konceptov a ich plánovanie odstránené.</string>
-      </dict>
-    </dict>
-    <key>%d message moved to Drafts</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@alertMessage@</string>
-      <key>alertMessage</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d správa presunutá do Konceptov</string>
-        <key>few</key>
-        <string>%d správy presunuté do Konceptov</string>
-        <key>many</key>
-        <string>%d správ presunutých do Konceptov</string>
-        <key>other</key>
-        <string>%d správ presunutých do Konceptov</string>
-      </dict>
-    </dict>
-    <key>%d seconds</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@second@</string>
-      <key>second</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d sekunda</string>
-        <key>few</key>
-        <string>%d sekundy</string>
-        <key>many</key>
-        <string>%d sekúnd</string>
-        <key>other</key>
-        <string>%d sekúnd</string>
-      </dict>
-    </dict>
-    <key>%d attachment</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@attachment@</string>
-      <key>attachment</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d príloha</string>
-        <key>few</key>
-        <string>%d prílohy</string>
-        <key>many</key>
-        <string>%d príloh</string>
-        <key>other</key>
-        <string>%d príloh</string>
-      </dict>
-    </dict>
-    <key>%d Minutes</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@minutes@</string>
-      <key>minutes</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>%d minúta</string>
-        <key>few</key>
-        <string>%d minút</string>
-        <key>many</key>
-        <string>%d minúty</string>
-        <key>other</key>
-        <string>%d minúty</string>
-      </dict>
-    </dict>
-    <key>Are you sure you want to delete these %d messages permanently?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@message@</string>
-      <key>message</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Naozaj chcete túto správu natrvalo vymazať?</string>
-        <key>few</key>
-        <string>Naozaj chcete natrvalo vymazať tieto %d správy?</string>
-        <key>many</key>
-        <string>Naozaj chcete natrvalo vymazať týchto %d správ?</string>
-        <key>other</key>
-        <string>Naozaj chcete natrvalo vymazať týchto %d správ?</string>
-      </dict>
-    </dict>
-  </dict>
+<dict>
+	<key>%d times</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@times@</string>
+		<key>times</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%u-krát</string>
+			<key>one</key>
+			<string>%u-krát</string>
+			<key>few</key>
+			<string>%u -krát</string>
+			<key>many</key>
+			<string>%u-krát</string>
+		</dict>
+	</dict>
+	<key>%u participants</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@participants@</string>
+		<key>participants</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%u účastníkov</string>
+			<key>one</key>
+			<string>%u účastník</string>
+			<key>few</key>
+			<string>%u účastníka</string>
+			<key>many</key>
+			<string>%u účastníkov</string>
+		</dict>
+	</dict>
+	<key>You have %d new emails!</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@newemails@</string>
+		<key>newemails</key>
+		<dict>
+			<key>one</key>
+			<string>Máte %d nových správ!</string>
+			<key>few</key>
+			<string>Máte %d nové správy!</string>
+			<key>many</key>
+			<string>Máte %d nových správ!</string>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>Máte %d nových správ!</string>
+		</dict>
+	</dict>
+	<key>%d email trackers blocked</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@trackers@</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d emailový sledovač zablokovaný</string>
+			<key>few</key>
+			<string>%d emailové sledovače zablokované</string>
+			<key>many</key>
+			<string>%d emailových sledovačov zablokovaných</string>
+			<key>other</key>
+			<string>%d emailových sledovačov zablokovaných</string>
+		</dict>
+	</dict>
+	<key>%d selected</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@selected@</string>
+		<key>selected</key>
+		<dict>
+			<key>one</key>
+			<string>%d vybrané</string>
+			<key>few</key>
+			<string>%d vybraných</string>
+			<key>many</key>
+			<string>%d vybrané</string>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d vybraných</string>
+		</dict>
+	</dict>
+	<key>%d email trackers found</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@trackers@</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>Nájdený %d emailový sledovač</string>
+			<key>few</key>
+			<string>Nájdené %d emailové sledovače</string>
+			<key>many</key>
+			<string>Nájdených %d emailových sledovačov</string>
+			<key>other</key>
+			<string>Nájdených %d emailových sledovačov</string>
+		</dict>
+	</dict>
+	<key>Proton found %d trackers on this message.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@trackers@</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>Proton našiel a zablokoval %d sledovač v tejto správe.</string>
+			<key>few</key>
+			<string>Proton našiel a zablokoval %d sledovače v tejto správe.</string>
+			<key>many</key>
+			<string>Proton našiel a zablokoval %d sledovačov v tejto správe.</string>
+			<key>other</key>
+			<string>Proton našiel a zablokoval %d sledovača v tejto správe.</string>
+		</dict>
+	</dict>
+	<key>+%d others</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@OTHER@</string>
+		<key>OTHER</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d iná</string>
+			<key>few</key>
+			<string>%d iné</string>
+			<key>many</key>
+			<string>%d iných</string>
+			<key>other</key>
+			<string>%d iných</string>
+		</dict>
+	</dict>
+	<key>Updated %d min ago</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
+		<key>MINUTE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>Aktualizované pred %d minútou</string>
+			<key>few</key>
+			<string>Aktualizované pred %d minútami</string>
+			<key>many</key>
+			<string>Aktualizované pred %d minútami</string>
+			<key>other</key>
+			<string>Aktualizované pred %d minútami</string>
+		</dict>
+	</dict>
+	<key>%u message</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@message@</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>one</key>
+			<string>%u správa</string>
+			<key>few</key>
+			<string>%u správy</string>
+			<key>many</key>
+			<string>%u správ</string>
+			<key>other</key>
+			<string>%u správ</string>
+		</dict>
+	</dict>
+	<key>%u conversation</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@CONVERSATION@</string>
+		<key>CONVERSATION</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u konverzácia</string>
+			<key>few</key>
+			<string>%u konverzácie</string>
+			<key>many</key>
+			<string>%u konverzácií</string>
+			<key>other</key>
+			<string>%u konverzácií</string>
+		</dict>
+	</dict>
+	<key>%d attempt remaining</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d zostávajúci pokus</string>
+			<key>few</key>
+			<string>%d zostávajúce pokusy</string>
+			<key>many</key>
+			<string>%d zostávajúcich pokusov</string>
+			<key>other</key>
+			<string>%d zostávajúcich pokusov</string>
+		</dict>
+	</dict>
+	<key>%d attempt remaining until secure data wipe!</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>Zostáva %d pokus do bezpečného vymazania údajov!</string>
+			<key>few</key>
+			<string>Zostávajú %d pokusy do bezpečného vymazania údajov!</string>
+			<key>many</key>
+			<string>Zostáva %d pokusov do bezpečného vymazania údajov!</string>
+			<key>other</key>
+			<string>Zostáva %d pokusu do bezpečného vymazania údajov!</string>
+		</dict>
+	</dict>
+	<key>%1$d message moved to %2$@</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@</string>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%1$d správa presunutá do priečinka %2$@</string>
+			<key>few</key>
+			<string>%1$d správy presunuté do priečinka %2$@</string>
+			<key>many</key>
+			<string>%1$d správ presunutých do priečinka %2$@</string>
+			<key>other</key>
+			<string>%1$d správ presunutých do priečinka %2$@</string>
+		</dict>
+	</dict>
+	<key>%1$d conversation moved to %2$@</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@</string>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%1$d konverzácia presunutá do priečinka %2$@</string>
+			<key>few</key>
+			<string>%1$d konverzácie presunuté do priečinka %2$@</string>
+			<key>many</key>
+			<string>%1$d konverzácii presunutých do priečinka %2$@</string>
+			<key>other</key>
+			<string>%1$d konverzácií presunutých do priečinka %2$@</string>
+		</dict>
+	</dict>
+	<key>%d message labeled</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Message@</string>
+		<key>Message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d správa označená</string>
+			<key>few</key>
+			<string>%d správy označené</string>
+			<key>many</key>
+			<string>%d správ označených</string>
+			<key>other</key>
+			<string>%d správ označených</string>
+		</dict>
+	</dict>
+	<key>%d conversation labeled</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@</string>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d konverzácia označená</string>
+			<key>few</key>
+			<string>%d konverzácie označené</string>
+			<key>many</key>
+			<string>%d konverzácií označených</string>
+			<key>other</key>
+			<string>%d konverzácií označených</string>
+		</dict>
+	</dict>
+	<key>%d member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d člen</string>
+			<key>few</key>
+			<string>%d člena</string>
+			<key>many</key>
+			<string>%d člena</string>
+			<key>other</key>
+			<string>%d člena</string>
+		</dict>
+	</dict>
+	<key>In %d minutes</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@minute@</string>
+		<key>minute</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>O %d minútu</string>
+			<key>few</key>
+			<string>O %d minúty</string>
+			<key>many</key>
+			<string>O %d minút</string>
+			<key>other</key>
+			<string>O %d minút</string>
+		</dict>
+	</dict>
+	<key>These %d messages will move to Drafts and have their schedule removed.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@alertMessage@</string>
+		<key>alertMessage</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>Táto %d správa bude presunutá do Konceptov a jej plánovanie odstránené.</string>
+			<key>few</key>
+			<string>Tieto %d správy budú presunuté do Konceptov a ich plánovanie odstránené.</string>
+			<key>many</key>
+			<string>Týchto %d správ bude presunutých do Konceptov a ich plánovanie odstránené.</string>
+			<key>other</key>
+			<string>Týchto %d správ bude presunutých do Konceptov a ich plánovanie odstránené.</string>
+		</dict>
+	</dict>
+	<key>%d message moved to Drafts</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@alertMessage@</string>
+		<key>alertMessage</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d správa presunutá do Konceptov</string>
+			<key>few</key>
+			<string>%d správy presunuté do Konceptov</string>
+			<key>many</key>
+			<string>%d správ presunutých do Konceptov</string>
+			<key>other</key>
+			<string>%d správ presunutých do Konceptov</string>
+		</dict>
+	</dict>
+	<key>%d seconds</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@second@</string>
+		<key>second</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d sekunda</string>
+			<key>few</key>
+			<string>%d sekundy</string>
+			<key>many</key>
+			<string>%d sekúnd</string>
+			<key>other</key>
+			<string>%d sekúnd</string>
+		</dict>
+	</dict>
+	<key>%d attachment</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@attachment@</string>
+		<key>attachment</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d príloha</string>
+			<key>few</key>
+			<string>%d prílohy</string>
+			<key>many</key>
+			<string>%d príloh</string>
+			<key>other</key>
+			<string>%d príloh</string>
+		</dict>
+	</dict>
+	<key>%d Minutes</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@minutes@</string>
+		<key>minutes</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d minúta</string>
+			<key>few</key>
+			<string>%d minút</string>
+			<key>many</key>
+			<string>%d minúty</string>
+			<key>other</key>
+			<string>%d minúty</string>
+		</dict>
+	</dict>
+	<key>Are you sure you want to delete these %d messages permanently?</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@message@</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>Naozaj chcete túto správu natrvalo vymazať?</string>
+			<key>few</key>
+			<string>Naozaj chcete natrvalo vymazať tieto %d správy?</string>
+			<key>many</key>
+			<string>Naozaj chcete natrvalo vymazať týchto %d správ?</string>
+			<key>other</key>
+			<string>Naozaj chcete natrvalo vymazať týchto %d správ?</string>
+		</dict>
+	</dict>
+</dict>
 </plist>

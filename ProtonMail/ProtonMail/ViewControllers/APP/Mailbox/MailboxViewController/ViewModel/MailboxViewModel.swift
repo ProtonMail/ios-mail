@@ -231,10 +231,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         return location.localizedTitle
     }
 
-    var currentViewMode: ViewMode {
-        conversationStateProvider.viewMode
-    }
-
     var locationViewMode: ViewMode {
         let singleMessageOnlyLabels: [Message.Location] = [.draft, .sent, .scheduled]
         if let location = Message.Location(labelID),
@@ -683,33 +679,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         return result
     }
 
-    func updateListAndCounter(complete: @escaping (LabelCountEntity?) -> Void) {
-        let group = DispatchGroup()
-        group.enter()
-        self.messageService.updateMessageCount {
-            group.leave()
-        }
-
-        group.enter()
-        self.fetchMessages(time: 0, forceClean: false, isUnread: false) { _ in
-            group.leave()
-        }
-
-        group.notify(queue: DispatchQueue.main) { [weak self] in
-            delay(0.2) {
-                guard let self = self else { return }
-                // For operation context sync with main context
-                let count = self.user.labelService.lastUpdate(by: self.labelID, userID: self.user.userID)
-                complete(count)
-            }
-
-        }
-    }
-
-    func getEmptyFolderCheckMessage(count: Int) -> String {
-        let format = self.currentViewMode == .conversation ? LocalString._clean_conversation_warning: LocalString._clean_message_warning
-        let message = String(format: format, count)
-        return message
+    func getEmptyFolderCheckMessage(folder: LabelLocation) -> String {
+        String(format: LocalString._clean_message_warning, folder.localizedTitle)
     }
 
     func emptyFolder() {
