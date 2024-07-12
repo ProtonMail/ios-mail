@@ -220,22 +220,30 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
                 return
             }
             if newStep.contains(.sendingFinishedWithError) {
-                let alert = UIAlertController(
-                    title: "⚠️",
-                    message: self.latestError,
-                    preferredStyle: .alert
-                )
-                alert.addAction(
-                    .init(
-                        title: "Ok",
-                        style: .default,
-                        handler: {
-                            [weak self] _ in
-                            self?.step = .composing
-                        }
-                    )
-                )
-                self.stepAlert = alert
+                if let latestError {
+                    if latestError.isEmpty {
+                        PMAssertionFailure("Attempting to show prompt with empty message")
+                    } else {
+                        let alert = UIAlertController(
+                            title: "⚠️",
+                            message: latestError,
+                            preferredStyle: .alert
+                        )
+                        alert.addAction(
+                            .init(
+                                title: "Ok",
+                                style: .default,
+                                handler: {
+                                    [weak self] _ in
+                                    self?.step = .composing
+                                }
+                            )
+                        )
+                        self.stepAlert = alert
+                    }
+                } else {
+                    PMAssertionFailure("Attempting to show prompt without message")
+                }
                 return
             }
         }
